@@ -1,0 +1,162 @@
+from __future__ import annotations
+
+import argparse
+import fnmatch
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+
+import webview
+
+from bdo_api import Api, _load_config, _norm
+from bdo_cache import load_cache, read_meta_version, save_cache
+from bdo_models import PazEntry
+from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        prog="browser",
+        description="BDO PAZ Browser — omit --file/--list to open the GUI.",
+    )
+    parser.add_argument("--paz-folder", metavar="DIR", help="Path to the PAZ folder (default: last used)")
+    parser.add_argument("--file", metavar="PATTERN", help="File name or glob pattern to extract, e.g. title.dbss or *title*.dbss")
+    parser.add_argument("--list", metavar="PATTERN", help="List matching file paths without extracting, e.g. title*.dbss")
+    parser.add_argument("--output", metavar="DIR", help="Output directory for --file (default: current working directory)")
+    args = parser.parse_args()
+
+    if args.file:
+        sys.exit(_cli_extract(args))
+    elif args.list:
+        sys.exit(_cli_list(args))
+    else:
+        _launch_gui()
+
+
+def _launch_gui() -> None:
+    api = Api()
+    window = webview.create_window(
+        title="BDO PAZ Browser",
+        url=str(Path(__file__).parent / "ui" / "index.html"),
+        js_api=api,
+        width=1240,
+        height=780,
+        min_size=(900, 560),
+        background_color="#1a1a1a",
+    )
+    if window is not None:
+        api.set_window(window)
+    webview.start()
+
+
+def _resolve_paz_root(paz_folder: str | None) -> Path | None:
+    folder = paz_folder or _load_config().get("last_folder")
+    if not folder:
+        print("Error: use --paz-folder or open a folder in the GUI first.", file=sys.stderr)
+        return None
+    p = Path(folder)
+    if not p.is_dir():
+        print(f"Error: PAZ folder not found: {p}", file=sys.stderr)
+        return None
+    return p
+
+
+def _load_all_entries(paz_root: Path) -> list[PazEntry] | None:
+    print("Loading PAZ entries…")
+    try:
+        meta_path = find_single_meta_file(paz_root)
+        current_version = read_meta_version(meta_path)
+        cached = load_cache(paz_root)
+
+        if cached and cached[0] == current_version:
+            _, entries = cached
+            print(f"Loaded {len(entries):,} entries from cache.")
+        else:
+            print("Parsing PAZ files (first run, this may take a while)…")
+            entries = parse_meta_file(meta_path)
+            save_cache(paz_root, current_version, entries)
+            print(f"Parsed and cached {len(entries):,} entries.")
+        return entries
+    except Exception as ex:
+        print(f"Error loading PAZ folder: {ex}", file=sys.stderr)
+        return None
+
+
+def _match_entries(entries: list[PazEntry], pattern: str) -> list[PazEntry]:
+    q = pattern.replace("\\", "/").lower()
+    is_glob = any(c in q for c in ("*", "?", "["))
+
+    matches = []
+    for entry in entries:
+        path = _norm(entry.internal_path)
+        name = path.rsplit("/", 1)[-1]
+        if is_glob:
+            hit = fnmatch.fnmatch(path.lower(), q) or fnmatch.fnmatch(name.lower(), q)
+        else:
+            hit = q in path.lower()
+        if hit:
+            matches.append(entry)
+    return matches
+
+
+def _cli_list(args: argparse.Namespace) -> int:
+    paz_root = _resolve_paz_root(args.paz_folder)
+    if paz_root is None:
+        return 1
+
+    entries = _load_all_entries(paz_root)
+    if entries is None:
+        return 1
+
+    matches = _match_entries(entries, args.list)
+    if not matches:
+        print(f"No files found matching '{args.list}'.", file=sys.stderr)
+        return 1
+
+    print(f"\n{len(matches):,} file(s) matching '{args.list}':\n")
+    for entry in matches:
+        size_kb = entry.uncompressed_size / 1024
+        print(f"  {entry.internal_path}  ({size_kb:,.1f} KB)")
+    return 0
+
+
+def _cli_extract(args: argparse.Namespace) -> int:
+    paz_root = _resolve_paz_root(args.paz_folder)
+    if paz_root is None:
+        return 1
+
+    entries = _load_all_entries(paz_root)
+    if entries is None:
+        return 1
+
+    output_root = Path(args.output) if args.output else Path.cwd()
+
+    matches = _match_entries(entries, args.file)
+    if not matches:
+        print(f"No files found matching '{args.file}'.", file=sys.stderr)
+        return 1
+
+    print(f"Found {len(matches):,} file(s). Extracting to {output_root} …\n")
+
+    extracted = skipped = failed = 0
+    for i, entry in enumerate(matches, 1):
+        label = f"[{i}/{len(matches)}]"
+        try:
+            result = extract_entry(paz_root=paz_root, output_root=output_root, entry=entry, overwrite=False, flat=True)
+            if result == "skipped":
+                skipped += 1
+                print(f"  {label} SKIP  {entry.internal_path}")
+            else:
+                extracted += 1
+                print(f"  {label} OK    {entry.internal_path}")
+        except Exception as ex:
+            failed += 1
+            print(f"  {label} FAIL  {entry.internal_path}: {ex}", file=sys.stderr)
+
+    print(f"\nDone — {extracted} extracted, {skipped} skipped, {failed} failed.")
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    main()

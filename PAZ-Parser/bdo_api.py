@@ -1,0 +1,412 @@
+from __future__ import annotations
+
+import fnmatch
+import json
+import threading
+import time
+from pathlib import Path
+from typing import Any
+
+import webview
+
+_CONFIG_FILE = Path(__file__).parent / "paz_config.json"
+
+
+def _load_config() -> dict:
+    try:
+        return json.loads(_CONFIG_FILE.read_text()) if _CONFIG_FILE.exists() else {}
+    except Exception:
+        return {}
+
+
+def _save_last_folder(path: Path) -> None:
+    cfg = _load_config()
+    cfg["last_folder"] = str(path)
+    try:
+        _CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
+    except Exception:
+        pass
+
+from bdo_cache import load_cache, read_meta_version, save_cache
+from bdo_models import PazEntry
+from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
+from bdo_payload_reader import read_entry_payload
+from bdo_preview import DdsHandler, HexHandler, TextHandler, get_handler
+
+_hex_handler = HexHandler()
+
+
+_ICON_MAP: dict[str, str] = {
+    ".dds": "🖼", ".png": "🖼", ".jpg": "🖼", ".jpeg": "🖼", ".bmp": "🖼", ".tga": "🖼",
+    ".xml": "📋", ".json": "📋", ".yaml": "📋", ".yml": "📋",
+    ".txt": "📄", ".log": "📄", ".csv": "📄", ".ini": "📄", ".cfg": "📄",
+    ".htm": "🌐", ".html": "🌐",
+    ".lua": "📜",
+    ".pac": "📦", ".bss": "🔒", ".dbss": "🔒",
+}
+
+
+def _norm(path: str) -> str:
+    return path.replace("\\", "/")
+
+
+def _file_icon(ext: str) -> str:
+    return _ICON_MAP.get(ext.lower(), "·")
+
+
+def _count_entries(node: dict) -> int:
+    total = 0
+    for v in node.values():
+        if isinstance(v, PazEntry):
+            total += 1
+        elif isinstance(v, dict):
+            total += _count_entries(v)
+    return total
+
+
+class Api:
+    def __init__(self) -> None:
+        self._window: webview.Window | None = None
+        self._paz_root: Path | None = None
+        self._entries: list[PazEntry] = []
+        self._entry_map: dict[str, PazEntry] = {}
+        self._tree_data: dict = {}
+        self._disk_companions: dict[str, bytes] = {}
+        self._status = "Open a PAZ folder to begin."
+
+    def set_window(self, window: webview.Window) -> None:
+        self._window = window
+
+    # ── Internal helpers ──────────────────────────────────────────────────────
+
+    def _push_js(self, js: str) -> None:
+        if self._window is not None:
+            try:
+                self._window.evaluate_js(js)
+            except Exception:
+                pass
+
+    def _push_status(self, msg: str, progress: tuple[int, int] | None = None) -> None:
+        self._status = msg
+        payload = json.dumps({"message": msg, "progress": list(progress) if progress else None})
+        self._push_js(f"app.setStatus({payload})")
+
+    # ── Folder ────────────────────────────────────────────────────────────────
+
+    def open_folder(self) -> dict:
+        if self._window is None:
+            return {"ok": False, "error": "Window not initialized"}
+        result = self._window.create_file_dialog(webview.FileDialog.FOLDER)
+        if not result:
+            return {"ok": False}
+        self._paz_root = Path(result[0])
+        _save_last_folder(self._paz_root)
+        threading.Thread(target=self._load_entries, daemon=True).start()
+        return {"ok": True, "path": str(self._paz_root)}
+
+    def get_last_folder(self) -> dict:
+        path = _load_config().get("last_folder")
+        if path and Path(path).is_dir():
+            return {"path": path}
+        return {}
+
+    def open_folder_path(self, path: str) -> dict:
+        p = Path(path)
+        if not p.is_dir():
+            return {"ok": False, "error": "Folder not found"}
+        self._paz_root = p
+        threading.Thread(target=self._load_entries, daemon=True).start()
+        return {"ok": True, "path": str(self._paz_root)}
+
+    def _load_entries(self) -> None:
+        assert self._paz_root is not None
+        try:
+            meta_path = find_single_meta_file(self._paz_root)
+            current_version = read_meta_version(meta_path)
+            cached = load_cache(self._paz_root)
+
+            if cached and cached[0] == current_version:
+                _, entries = cached
+                msg = f"Loaded {len(entries):,} entries from cache  (game version {current_version})"
+            else:
+                stop_ticker = threading.Event()
+                start = time.monotonic()
+
+                def _ticker(stop: threading.Event, t0: float) -> None:
+                    while not stop.is_set():
+                        elapsed = int(time.monotonic() - t0)
+                        self._push_status(
+                            f"Parsing PAZ files… {elapsed}s elapsed  (first run only — result will be cached)"
+                        )
+                        stop.wait(0.5)
+
+                threading.Thread(target=_ticker, args=(stop_ticker, start), daemon=True).start()
+                try:
+                    entries = parse_meta_file(meta_path)
+                finally:
+                    stop_ticker.set()
+
+                save_cache(self._paz_root, current_version, entries)
+                msg = f"Parsed and cached {len(entries):,} entries  (game version {current_version})"
+
+            self._entries = entries
+            self._entry_map = {_norm(e.internal_path): e for e in entries}
+            self._tree_data = self._build_tree_data(entries)
+            self._load_disk_companions()
+            self._push_status(msg)
+            self._push_js("app.onFolderLoaded()")
+
+        except Exception as ex:
+            self._push_status(f"Error: {ex}")
+            self._push_js(f"app.showError({json.dumps(str(ex))})")
+
+    def _load_disk_companions(self) -> None:
+        if not self._paz_root:
+            return
+        candidates = {
+            "languagedata_en.loc": self._paz_root.parent / "ads" / "languagedata_en.loc",
+        }
+        for name, path in candidates.items():
+            if path.exists():
+                try:
+                    self._disk_companions[name] = path.read_bytes()
+                except Exception:
+                    pass
+
+    def _load_companion_sync(self, internal_path: str) -> bytes | None:
+        entry = self._entry_map.get(_norm(internal_path))
+        if not entry or not self._paz_root:
+            return None
+        try:
+            return read_entry_payload(
+                archive_path=self._paz_root / entry.archive_name,
+                entry=entry,
+            )
+        except Exception:
+            return None
+
+    # ── Tree ──────────────────────────────────────────────────────────────────
+
+    def _build_tree_data(self, entries: list[PazEntry]) -> dict:
+        root: dict = {}
+        for entry in entries:
+            parts = _norm(entry.internal_path).split("/")
+            node = root
+            for part in parts[:-1]:
+                node = node.setdefault(part, {})
+            node[parts[-1]] = entry
+        return root
+
+    def get_children(self, node_path: str) -> list[dict]:
+        """Return immediate children of a tree node for lazy loading."""
+        node: Any = self._tree_data
+        if node_path:
+            for part in node_path.split("/"):
+                if isinstance(node, dict):
+                    node = node.get(part, {})
+                else:
+                    return []
+
+        if not isinstance(node, dict):
+            return []
+
+        dirs  = sorted((k, v) for k, v in node.items() if isinstance(v, dict))
+        files = sorted((k, v) for k, v in node.items() if isinstance(v, PazEntry))
+
+        result: list[dict] = []
+        for name, child_node in dirs:
+            child_path = f"{node_path}/{name}" if node_path else name
+            result.append({
+                "id":          child_path,
+                "name":        name,
+                "type":        "dir",
+                "count":       _count_entries(child_node),
+                "icon":        "📁",
+                "has_children": bool(child_node),
+            })
+        for name, entry in files:
+            result.append({
+                "id":   _norm(entry.internal_path),
+                "name": name,
+                "type": "file",
+                "icon": _file_icon(Path(name).suffix),
+            })
+        return result
+
+    def search(self, query: str) -> list[dict]:
+        """Return up to 500 entries matching `query`.
+
+        Glob patterns (containing *, ?, or [) are matched against the full
+        path and against the filename alone.  Plain strings do substring match.
+        """
+        q = query.replace("\\", "/").lower()
+        is_glob = any(c in q for c in ("*", "?", "["))
+        results: list[dict] = []
+        for entry in self._entries:
+            path = _norm(entry.internal_path)
+            name = path.rsplit("/", 1)[-1]
+            path_lc = path.lower()
+            name_lc = name.lower()
+            if is_glob:
+                hit = fnmatch.fnmatch(path_lc, q) or fnmatch.fnmatch(name_lc, q)
+            else:
+                hit = q in path_lc
+            if hit:
+                results.append({
+                    "id":   path,
+                    "name": name,
+                    "path": path,
+                    "icon": _file_icon(Path(name).suffix),
+                })
+                if len(results) == 500:
+                    break
+        return results
+
+    # ── Entry loading ─────────────────────────────────────────────────────────
+
+    def load_entry(self, internal_path: str) -> dict:
+        entry = self._entry_map.get(_norm(internal_path))
+        if not entry or not self._paz_root:
+            return {"error": "Entry not found"}
+
+        meta = {
+            "archive":      entry.archive_name,
+            "path":         entry.internal_path,
+            "compressed":   f"{entry.compressed_size:,} B",
+            "uncompressed": f"{entry.uncompressed_size:,} B",
+            "offset":       f"0x{entry.offset:08X}",
+        }
+
+        try:
+            data = read_entry_payload(
+                archive_path=self._paz_root / entry.archive_name,
+                entry=entry,
+            )
+        except Exception as ex:
+            return {"error": str(ex), "meta": meta}
+
+        p = Path(entry.internal_path)
+        handler = get_handler(p.name, p.suffix)
+        is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
+        has_parsed = not is_plain
+
+        companions: dict[str, bytes] = dict(self._disk_companions)
+        for cp in handler.companions(entry):
+            raw = self._load_companion_sync(cp)
+            if raw is not None:
+                companions[Path(cp).name] = raw
+
+        html = None
+        if not isinstance(handler, HexHandler):
+            try:
+                html = handler.render(data, entry, companions)
+            except Exception as ex:
+                import html as _html
+                html = f'<div class="error">Render error: {_html.escape(str(ex))}</div>'
+
+        hex_html = _hex_handler.render(data, entry, {})
+
+        return {"html": html, "hex_html": hex_html, "has_parsed": has_parsed, "meta": meta}
+
+    # ── Extraction ────────────────────────────────────────────────────────────
+
+    def pick_output_folder(self) -> str | None:
+        if self._window is None:
+            return None
+        result = self._window.create_file_dialog(webview.FileDialog.FOLDER)
+        return result[0] if result else None
+
+    def extract_entries(self, paths: list[str], output_dir: str) -> dict:
+        if not self._paz_root:
+            return {"error": "No PAZ folder loaded"}
+
+        entries: list[PazEntry] = []
+        seen: set[str] = set()
+
+        for path in paths:
+            path = _norm(path)
+            if path in self._entry_map:
+                if path not in seen:
+                    seen.add(path)
+                    entries.append(self._entry_map[path])
+            else:
+                node: Any = self._tree_data
+                for part in path.split("/"):
+                    node = node.get(part, {}) if isinstance(node, dict) else {}
+                collect: list[PazEntry] = []
+                self._collect_recursive(node, collect)
+                for e in collect:
+                    ep = _norm(e.internal_path)
+                    if ep not in seen:
+                        seen.add(ep)
+                        entries.append(e)
+
+        if not entries:
+            return {"error": "No entries to extract"}
+
+        paz_root    = self._paz_root
+        output_root = Path(output_dir)
+        total       = len(entries)
+
+        def run() -> None:
+            extracted = skipped = failed = 0
+            for i, entry in enumerate(entries, 1):
+                try:
+                    result = extract_entry(
+                        paz_root=paz_root, output_root=output_root,
+                        entry=entry, overwrite=False,
+                    )
+                    if result == "skipped":
+                        skipped += 1
+                    else:
+                        extracted += 1
+                except Exception:
+                    failed += 1
+
+                if i % 25 == 0 or i == total:
+                    self._push_status(
+                        f"Extracting… {i}/{total}  —  {extracted} ok  {skipped} skipped  {failed} failed",
+                        (i, total),
+                    )
+
+            self._push_status(f"✓  Done — {extracted} extracted, {skipped} skipped, {failed} failed.")
+            self._push_js("app.onExtractionDone()")
+
+        threading.Thread(target=run, daemon=True).start()
+        return {"total": total}
+
+    def _collect_recursive(self, node: Any, out: list[PazEntry]) -> None:
+        if isinstance(node, PazEntry):
+            out.append(node)
+        elif isinstance(node, dict):
+            for v in node.values():
+                self._collect_recursive(v, out)
+
+    def get_selection_size(self, paths: list[str]) -> dict:
+        seen: set[str] = set()
+        total_bytes = 0
+
+        for path in paths:
+            path = _norm(path)
+            if path in self._entry_map:
+                if path not in seen:
+                    seen.add(path)
+                    total_bytes += self._entry_map[path].uncompressed_size
+            else:
+                node: Any = self._tree_data
+                for part in path.split("/"):
+                    node = node.get(part, {}) if isinstance(node, dict) else {}
+                entries: list[PazEntry] = []
+                self._collect_recursive(node, entries)
+                for e in entries:
+                    ep = _norm(e.internal_path)
+                    if ep not in seen:
+                        seen.add(ep)
+                        total_bytes += e.uncompressed_size
+
+        return {"count": len(seen), "bytes": total_bytes}
+
+    # ── Status ────────────────────────────────────────────────────────────────
+
+    def get_status(self) -> dict:
+        return {"message": self._status, "progress": None}

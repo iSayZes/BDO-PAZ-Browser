@@ -1,0 +1,3 @@
+pywebview>=4.0
+# Pillow is optional — only needed for DDS image preview
+# pillow>=10.0

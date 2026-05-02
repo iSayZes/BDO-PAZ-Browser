@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BDO PAZ Browser</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="toolbar">
+      <button id="btn-open" onclick="app.openFolder()">📂 Open PAZ Folder</button>
+      <span id="folder-path" class="muted">No folder selected</span>
+    </div>
+    <div class="sep-h"></div>
+
+    <div id="main">
+      <div id="sidebar">
+        <div id="search-bar">
+          <span class="search-icon">🔍</span>
+          <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" />
+        </div>
+        <div class="sep-h"></div>
+        <div id="tree-container">
+          <ul id="tree" class="tree-root"></ul>
+        </div>
+      </div>
+
+      <div id="v-divider"></div>
+
+      <div id="right-panel">
+        <div id="details-panel">
+          <div class="panel-title">Entry Details</div>
+          <div id="detail-grid" class="detail-grid">
+            <span class="detail-placeholder">No file selected</span>
+          </div>
+        </div>
+
+        <div id="h-divider"></div>
+
+        <div id="preview-panel">
+          <div class="preview-header">
+            <div class="panel-title" id="preview-title">Preview</div>
+            <div class="preview-tabs" id="preview-tabs" hidden>
+              <button class="tab-btn active" data-tab="hex" onclick="app.switchTab('hex')">Hex</button>
+              <button class="tab-btn" data-tab="parsed" onclick="app.switchTab('parsed')">Parsed</button>
+            </div>
+          </div>
+          <div id="preview-content">
+            <div class="placeholder">Select a file to preview.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep-h"></div>
+    <div id="bottom-bar">
+      <div id="status-row">
+        <span id="status-text">Open a PAZ folder to begin.</span>
+        <div id="progress-wrap" hidden>
+          <div id="progress-bar"><div id="progress-fill"></div></div>
+        </div>
+      </div>
+      <div id="extract-row">
+        <label class="muted">Output</label>
+        <input id="output-path" type="text" placeholder="Extract destination…" spellcheck="false" />
+        <button onclick="app.pickOutputFolder()">…</button>
+        <button onclick="app.extractSelected()">⬇ Extract Selected</button>
+        <button onclick="app.extractFolder()">📁 Extract Folder</button>
+        <span id="extract-badge" hidden></span>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

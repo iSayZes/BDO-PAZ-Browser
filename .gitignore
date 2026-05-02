@@ -1,0 +1,21 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.local
+.claude/
+CLAUDE.md
+.mcp.json
+
+# Added by code-review-graph
+.code-review-graph/
+.code-review-graphignore
+
+# Misc
+files/
+json/
+tools/
+__pycache__
+todo.md
+test-scripts/
+docs/paz_tree.md
+PAZ-Parser/paz_config.json

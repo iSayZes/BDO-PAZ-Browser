@@ -10,6 +10,7 @@ from .knowledgelearning.handler import (
     KnowledgeLearningHandler,
     KnowledgeLearningOffsetHandler,
 )
+from .npcpersonality.handler import NpcPersonalityHandler, NpcPersonalityOffsetHandler
 
 
 def register_dbss_handlers() -> None:
@@ -21,3 +22,5 @@ def register_dbss_handlers() -> None:
     register_handler("mentalcard.dbss", MentalCardHandler())
     register_handler("knowledgelearningoffset.dbss", KnowledgeLearningOffsetHandler())
     register_handler("knowledgelearning.dbss", KnowledgeLearningHandler())
+    register_handler("npcpersonalityoffset.dbss", NpcPersonalityOffsetHandler())
+    register_handler("npcpersonality.dbss", NpcPersonalityHandler())

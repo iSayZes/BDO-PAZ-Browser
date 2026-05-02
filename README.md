@@ -113,7 +113,7 @@ PAZ-Parser/
 docs/
 ├── handler.md              # Guide for writing preview handlers
 ├── style-guide.md          # UI color palette and component reference
-└── file formats/           # Per-format binary layout documentation
+└── file-formats/           # Per-format binary layout documentation
 ```
 
 ---

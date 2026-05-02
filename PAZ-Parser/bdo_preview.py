@@ -10,8 +10,10 @@ import sys
 
 from bdo_models import PazEntry
 
-_HEX_LIMIT  = 64  * 1024   # bytes shown in hex view
 _TEXT_LIMIT = 512 * 1024   # bytes shown in text view
+
+HEX_ROWS_PER_PAGE    = 512   # 512 × 16 bytes = 8 KB per page
+PARSED_RECORDS_PER_PAGE = 500
 
 
 class PreviewHandler(ABC):
@@ -27,6 +29,14 @@ class PreviewHandler(ABC):
         companions declared by `companions()` and any disk files pre-loaded by the browser.
         """
         ...
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict] | None:
+        """Return structured records for paging. None means this handler does not support paging."""
+        return None
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        """Render HTML for one page of records. Only called when get_records() returns non-None."""
+        raise NotImplementedError
 
 
 # ── Text ──────────────────────────────────────────────────────────────────────
@@ -76,17 +86,22 @@ class HexHandler(PreviewHandler):
     _ROW = 16
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        truncated = len(data) > _HEX_LIMIT
-        chunk     = data[:_HEX_LIMIT]
-        rows      = "".join(self._row_html(i, chunk[i:i + self._ROW])
-                            for i in range(0, len(chunk), self._ROW))
-        note = ""
-        if truncated:
-            note = (
-                f'<div class="hex-note">… truncated — showing first '
-                f'{_HEX_LIMIT // 1024} KB of {len(data) // 1024} KB</div>'
-            )
-        return f'<div class="hex-view">{rows}</div>{note}'
+        return self.render_page(data, 0)
+
+    def render_page(self, data: bytes, page: int, rows_per_page: int = HEX_ROWS_PER_PAGE) -> str:
+        byte_start = page * rows_per_page * self._ROW
+        byte_end   = byte_start + rows_per_page * self._ROW
+        chunk      = data[byte_start:byte_end]
+        rows       = "".join(
+            self._row_html(byte_start + i, chunk[i:i + self._ROW])
+            for i in range(0, len(chunk), self._ROW)
+        )
+        return f'<div class="hex-view">{rows}</div>'
+
+    @staticmethod
+    def page_count(data: bytes, rows_per_page: int = HEX_ROWS_PER_PAGE) -> int:
+        total_rows = (len(data) + HexHandler._ROW - 1) // HexHandler._ROW
+        return max(1, (total_rows + rows_per_page - 1) // rows_per_page)
 
     def _row_html(self, offset: int, chunk: bytes) -> str:
         hex_part   = " ".join(f"{b:02X}" for b in chunk)

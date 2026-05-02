@@ -616,6 +616,44 @@ button:hover {
   font-style: italic;
 }
 
+/* ── Page bar ─────────────────────────────────────────────────────────────── */
+
+.page-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.page-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--fg);
+  border-radius: 3px;
+  padding: 2px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--hover);
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.page-label {
+  font-size: 12px;
+  color: var(--fg-muted);
+  min-width: 60px;
+  text-align: center;
+}
+
 /* ── LOC view ─────────────────────────────────────────────────────────────── */
 
 .loc-view {

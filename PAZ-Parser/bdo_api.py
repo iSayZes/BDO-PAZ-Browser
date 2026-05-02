@@ -31,7 +31,9 @@ from bdo_cache import load_cache, read_meta_version, save_cache
 from bdo_models import PazEntry
 from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
 from bdo_payload_reader import read_entry_payload
-from bdo_preview import DdsHandler, HexHandler, TextHandler, get_handler
+from bdo_preview import (
+    DdsHandler, HexHandler, PARSED_RECORDS_PER_PAGE, TextHandler, get_handler,
+)
 
 _hex_handler = HexHandler()
 
@@ -80,6 +82,10 @@ class Api:
         self._tree_data: dict = {}
         self._disk_companions: dict[str, bytes] = {}
         self._status = "Open a PAZ folder to begin."
+        self._cached_path: str | None = None
+        self._cached_data: bytes | None = None
+        self._cached_records: list[dict] | None = None
+        self._cached_handler = None
 
     def set_window(self, window: webview.Window) -> None:
         self._window = window
@@ -284,6 +290,54 @@ class Api:
 
     # ── Entry loading ─────────────────────────────────────────────────────────
 
+    def _build_entry_response(
+        self,
+        data: bytes,
+        internal_path: str,
+        entry: PazEntry,
+        handler,
+        companions: dict[str, bytes],
+        meta: dict,
+    ) -> dict:
+        import html as _html_mod
+        is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
+        has_parsed = not is_plain
+
+        self._cached_path = _norm(internal_path)
+        self._cached_data = data
+        self._cached_records = None
+        self._cached_handler = None
+
+        hex_total_pages = HexHandler.page_count(data)
+        hex_html = _hex_handler.render_page(data, 0)
+
+        html = None
+        parsed_total_pages = 1
+        if not isinstance(handler, HexHandler):
+            records = handler.get_records(data, entry, companions)
+            if records is not None:
+                self._cached_records = records
+                self._cached_handler = handler
+                parsed_total_pages = max(1, (len(records) + PARSED_RECORDS_PER_PAGE - 1) // PARSED_RECORDS_PER_PAGE)
+                try:
+                    html = handler.render_records_page(records, 0, PARSED_RECORDS_PER_PAGE)
+                except Exception as ex:
+                    html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+            else:
+                try:
+                    html = handler.render(data, entry, companions)
+                except Exception as ex:
+                    html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+
+        return {
+            "html": html,
+            "hex_html": hex_html,
+            "has_parsed": has_parsed,
+            "meta": meta,
+            "hex_total_pages": hex_total_pages,
+            "parsed_total_pages": parsed_total_pages,
+        }
+
     def _load_disk_entry(self, internal_path: str) -> dict:
         name = internal_path[len(_DISK_VIRTUAL_PREFIX) + 1:]
         data = self._disk_companions.get(name)
@@ -308,18 +362,7 @@ class Api:
         }
         p = Path(name)
         handler = get_handler(p.name, p.suffix)
-        is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
-
-        html = None
-        if not isinstance(handler, HexHandler):
-            try:
-                html = handler.render(data, fake_entry, {})
-            except Exception as ex:
-                import html as _html_mod
-                html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
-
-        hex_html = _hex_handler.render(data, fake_entry, {})
-        return {"html": html, "hex_html": hex_html, "has_parsed": not is_plain, "meta": meta}
+        return self._build_entry_response(data, internal_path, fake_entry, handler, {}, meta)
 
     def load_entry(self, internal_path: str) -> dict:
         if internal_path.startswith(_DISK_VIRTUAL_PREFIX + "/"):
@@ -347,8 +390,6 @@ class Api:
 
         p = Path(entry.internal_path)
         handler = get_handler(p.name, p.suffix)
-        is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
-        has_parsed = not is_plain
 
         companions: dict[str, bytes] = dict(self._disk_companions)
         for cp in handler.companions(entry):
@@ -356,17 +397,42 @@ class Api:
             if raw is not None:
                 companions[Path(cp).name] = raw
 
-        html = None
-        if not isinstance(handler, HexHandler):
+        return self._build_entry_response(data, internal_path, entry, handler, companions, meta)
+
+    def get_hex_page(self, path: str, page: int) -> dict:
+        norm = _norm(path)
+        if self._cached_path == norm and self._cached_data is not None:
+            data = self._cached_data
+        elif path.startswith(_DISK_VIRTUAL_PREFIX + "/"):
+            name = path[len(_DISK_VIRTUAL_PREFIX) + 1:]
+            data = self._disk_companions.get(name)
+            if data is None:
+                return {"error": f"Disk file not loaded: {name}"}
+        else:
+            entry = self._entry_map.get(norm)
+            if not entry or not self._paz_root:
+                return {"error": "Entry not found"}
             try:
-                html = handler.render(data, entry, companions)
+                data = read_entry_payload(
+                    archive_path=self._paz_root / entry.archive_name,
+                    entry=entry,
+                )
             except Exception as ex:
-                import html as _html
-                html = f'<div class="error">Render error: {_html.escape(str(ex))}</div>'
+                return {"error": str(ex)}
+        return {"hex_html": _hex_handler.render_page(data, page)}
 
-        hex_html = _hex_handler.render(data, entry, {})
-
-        return {"html": html, "hex_html": hex_html, "has_parsed": has_parsed, "meta": meta}
+    def get_parsed_page(self, path: str, page: int) -> dict:
+        import html as _html_mod
+        norm = _norm(path)
+        if self._cached_path != norm or self._cached_records is None or self._cached_handler is None:
+            return {"error": "Page data not cached — reload the file first"}
+        try:
+            html = self._cached_handler.render_records_page(
+                self._cached_records, page, PARSED_RECORDS_PER_PAGE
+            )
+        except Exception as ex:
+            html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+        return {"html": html}
 
     # ── Extraction ────────────────────────────────────────────────────────────
 

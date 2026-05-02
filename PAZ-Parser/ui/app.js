@@ -10,6 +10,10 @@ const app = {
   _parsedHtml: null,
   _hexHtml: null,
   _activeTab: "hex",
+  _hexPage: 0,
+  _hexTotalPages: 1,
+  _parsedPage: 0,
+  _parsedTotalPages: 1,
 
   // ── Init ──────────────────────────────────────────────────────────────────
 
@@ -161,6 +165,10 @@ const app = {
     this._parsedHtml = null;
     this._hexHtml = null;
     this._activeTab = "hex";
+    this._hexPage = 0;
+    this._hexTotalPages = 1;
+    this._parsedPage = 0;
+    this._parsedTotalPages = 1;
 
     document.getElementById("preview-title").textContent = `${icon}  ${name}`;
     document.getElementById("preview-content").innerHTML = '<div class="placeholder">Loading…</div>';
@@ -174,6 +182,8 @@ const app = {
       this._parsedHtml = result.has_parsed ? (result.html || "") : null;
       this._hexHtml = result.hex_html || "";
       this._activeTab = "hex";
+      this._hexTotalPages = result.hex_total_pages ?? 1;
+      this._parsedTotalPages = result.parsed_total_pages ?? 1;
 
       const tabs = document.getElementById("preview-tabs");
       const content = document.getElementById("preview-content");
@@ -184,10 +194,15 @@ const app = {
           btn.classList.toggle("active", btn.dataset.tab === "hex");
         });
         content.innerHTML = this._hexHtml;
+        if (this._hexTotalPages > 1) content.appendChild(this._buildPageBar("hex", 0, this._hexTotalPages));
       } else {
         tabs.hidden = true;
         content.innerHTML = result.html ?? this._hexHtml;
-        if (result.html) this._initTableSort(content);
+        if (result.html) {
+          this._initTableSort(content);
+        } else if (this._hexTotalPages > 1) {
+          content.appendChild(this._buildPageBar("hex", 0, this._hexTotalPages));
+        }
       }
     }
 
@@ -203,9 +218,11 @@ const app = {
     const content = document.getElementById("preview-content");
     if (tab === "hex") {
       content.innerHTML = this._hexHtml;
+      if (this._hexTotalPages > 1) content.appendChild(this._buildPageBar("hex", this._hexPage, this._hexTotalPages));
     } else {
       content.innerHTML = this._parsedHtml || "";
       this._initTableSort(content);
+      if (this._parsedTotalPages > 1) content.appendChild(this._buildPageBar("parsed", this._parsedPage, this._parsedTotalPages));
     }
   },
 
@@ -359,6 +376,10 @@ const app = {
 
     this._parsedHtml = result.has_parsed ? (result.html || "") : null;
     this._hexHtml = result.hex_html || "";
+    this._hexPage = 0;
+    this._hexTotalPages = result.hex_total_pages ?? 1;
+    this._parsedPage = 0;
+    this._parsedTotalPages = result.parsed_total_pages ?? 1;
 
     const tabs = document.getElementById("preview-tabs");
     tabs.hidden = !result.has_parsed;
@@ -366,6 +387,53 @@ const app = {
     const content = document.getElementById("preview-content");
     content.innerHTML = this._parsedHtml || "";
     this._initTableSort(content);
+    if (this._parsedTotalPages > 1) content.appendChild(this._buildPageBar("parsed", 0, this._parsedTotalPages));
+  },
+
+  _buildPageBar(kind, page, total) {
+    const bar = document.createElement("div");
+    bar.className = "page-bar";
+    bar.dataset.kind = kind;
+
+    const prev = document.createElement("button");
+    prev.className = "page-btn";
+    prev.textContent = "◀ Prev";
+    prev.disabled = page === 0;
+    prev.onclick = () => kind === "hex" ? this._gotoHexPage(page - 1) : this._gotoParsedPage(page - 1);
+
+    const label = document.createElement("span");
+    label.className = "page-label";
+    label.textContent = `${page + 1} / ${total}`;
+
+    const next = document.createElement("button");
+    next.className = "page-btn";
+    next.textContent = "Next ▶";
+    next.disabled = page >= total - 1;
+    next.onclick = () => kind === "hex" ? this._gotoHexPage(page + 1) : this._gotoParsedPage(page + 1);
+
+    bar.append(prev, label, next);
+    return bar;
+  },
+
+  async _gotoHexPage(page) {
+    const result = await window.pywebview.api.get_hex_page(this._selectedPath, page);
+    if (result.error) return;
+    this._hexPage = page;
+    this._hexHtml = result.hex_html;
+    const content = document.getElementById("preview-content");
+    content.innerHTML = result.hex_html;
+    content.appendChild(this._buildPageBar("hex", page, this._hexTotalPages));
+  },
+
+  async _gotoParsedPage(page) {
+    const result = await window.pywebview.api.get_parsed_page(this._selectedPath, page);
+    if (result.error) return;
+    this._parsedPage = page;
+    this._parsedHtml = result.html;
+    const content = document.getElementById("preview-content");
+    content.innerHTML = result.html;
+    this._initTableSort(content);
+    content.appendChild(this._buildPageBar("parsed", page, this._parsedTotalPages));
   },
 
   showError(msg) {

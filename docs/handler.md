@@ -423,6 +423,8 @@ Raise only for actual programming errors.
 9. Keep raw hex switching in the frontend, not the handler.
 10. Move reusable logic to `_common/` when another format needs it.
 
+> **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. Changes to any file under `handlers/` — including private packages like `_dbss/` — take effect immediately. If a file is open on the Parsed tab, the preview re-renders automatically.
+
 ---
 
 ## Minimal New Format Example

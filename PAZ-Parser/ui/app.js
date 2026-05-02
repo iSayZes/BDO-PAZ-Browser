@@ -346,6 +346,28 @@ const app = {
     /* status updated by Python push */
   },
 
+  async onPluginsReloaded() {
+    this.setStatus({ message: "Plugins reloaded." });
+    if (this._activeTab === "parsed" && this._selectedPath) {
+      await this._refreshParsedView();
+    }
+  },
+
+  async _refreshParsedView() {
+    const result = await window.pywebview.api.load_entry(this._selectedPath);
+    if (result.error && !result.hex_html) return;
+
+    this._parsedHtml = result.has_parsed ? (result.html || "") : null;
+    this._hexHtml = result.hex_html || "";
+
+    const tabs = document.getElementById("preview-tabs");
+    tabs.hidden = !result.has_parsed;
+
+    const content = document.getElementById("preview-content");
+    content.innerHTML = this._parsedHtml || "";
+    this._initTableSort(content);
+  },
+
   showError(msg) {
     alert(msg);
   },
@@ -518,6 +540,10 @@ const app = {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && this._extractPaths.size > 0) {
         this._clearExtractSelection();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "r") {
+        e.preventDefault();
+        window.pywebview.api.reload_plugins();
       }
     });
   },

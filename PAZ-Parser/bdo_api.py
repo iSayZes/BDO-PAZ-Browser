@@ -406,6 +406,13 @@ class Api:
 
         return {"count": len(seen), "bytes": total_bytes}
 
+    # ── Plugins ───────────────────────────────────────────────────────────────
+
+    def reload_plugins(self) -> None:
+        import bdo_preview
+        bdo_preview.reload_plugins(Path(__file__).parent / "handlers")
+        self._push_js("app.onPluginsReloaded()")
+
     # ── Status ────────────────────────────────────────────────────────────────
 
     def get_status(self) -> dict:

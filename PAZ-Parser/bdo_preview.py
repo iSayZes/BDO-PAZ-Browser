@@ -111,6 +111,10 @@ _REGISTRY: dict[str, PreviewHandler] = {
     ".dds": DdsHandler(),
 }
 
+_BUILTIN_KEYS: frozenset[str] = frozenset(_REGISTRY)
+_PLUGIN_MODULE_NAMES: list[str] = []
+_PLUGIN_SYS_MODULES: set[str] = set()
+
 _hex_handler = HexHandler()
 
 
@@ -140,6 +144,8 @@ def load_plugins(handlers_dir: Path) -> None:
     if handlers_path not in sys.path:
         sys.path.insert(0, handlers_path)
 
+    before = set(sys.modules)
+
     for py_file in sorted(handlers_dir.glob("*.py")):
         if py_file.name.startswith("_"):
             continue
@@ -154,8 +160,23 @@ def load_plugins(handlers_dir: Path) -> None:
         try:
             sys.modules[py_file.stem] = module
             spec.loader.exec_module(module)
+            _PLUGIN_MODULE_NAMES.append(py_file.stem)
         except Exception as ex:
             print(f"[handlers] Failed to load {py_file.name}: {ex}")
+
+    _PLUGIN_SYS_MODULES.update(set(sys.modules) - before)
+
+
+def reload_plugins(handlers_dir: Path) -> None:
+    """Clear plugin-registered handlers and re-import all plugins."""
+    for key in list(_REGISTRY):
+        if key not in _BUILTIN_KEYS:
+            del _REGISTRY[key]
+    for name in _PLUGIN_SYS_MODULES:
+        sys.modules.pop(name, None)
+    _PLUGIN_SYS_MODULES.clear()
+    _PLUGIN_MODULE_NAMES.clear()
+    load_plugins(handlers_dir)
 
 
 load_plugins(Path(__file__).parent / "handlers")

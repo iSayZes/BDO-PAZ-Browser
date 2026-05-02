@@ -34,16 +34,9 @@ class TitleDbssHandler(PreviewHandler):
         loc_titles = parse_loc_titles(loc_raw) if loc_raw else {}
         has_loc = bool(loc_titles)
         records = extract_title_records(data, offset_map)
-        style_counts = Counter(record["style_value"] for record in records)
-        style_summary = " · ".join(
-            f"style {style}: {count}"
-            for style, count in sorted(style_counts.items())
-        )
 
         meta = (
             f"{len(records):,} blocks decoded  ·  {len(data):,} B"
-            + f"  ·  {style_summary}"
-            + ("  ·  EN names from loc" if has_loc else "")
         )
 
         headers: list[tuple[str, str, str]] = [

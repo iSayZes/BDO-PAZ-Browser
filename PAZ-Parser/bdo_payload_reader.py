@@ -37,7 +37,6 @@ def _blackdesert_unpack_core(
 ) -> int:
     """
     Custom BDO decompressor — ported from kukdh1/PAZ-Unpacker Crypt.cpp
-    (originally from quickbms).
 
     Returns the number of bytes written to `output`, or a negative error code.
     """
@@ -184,7 +183,7 @@ def read_entry_payload(archive_path: Path, entry: PazEntry) -> bytes:
     """
     Read, decrypt, and decompress a single PAZ entry.
 
-    Encryption is skipped for .dbss files (matches C++ CheckEncrypt logic).
+    Encryption is skipped for .dbss files.
     Decompression is applied when original_size > compressed_size OR when the
     first byte of the decrypted data is 0x6E.
     """

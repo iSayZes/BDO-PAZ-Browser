@@ -107,6 +107,7 @@ _REGISTRY: dict[str, PreviewHandler] = {
     **{ext: TextHandler() for ext in (
         ".xml", ".json", ".txt", ".csv", ".ini", ".cfg",
         ".log", ".htm", ".html", ".yaml", ".yml", ".lua",
+        ".ai"
     )},
     ".dds": DdsHandler(),
 }

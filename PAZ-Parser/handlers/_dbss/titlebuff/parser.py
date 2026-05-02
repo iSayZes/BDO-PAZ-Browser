@@ -2,15 +2,15 @@ from __future__ import annotations
 
 import re
 
-from _common.loc import parse_loc_entries, strip_pa_tags
+from _common.loc import loc_all_texts, strip_pa_tags
 
 from ..common.binary import debug_u32_fields
 from ..common.constants import PA_COLOR_MARKER
 from .model import TitleBuffRecord
 
 
-def find_title_effects_en(raw: bytes) -> dict[int, str]:
-    entries = parse_loc_entries(raw)
+def find_title_effects_en() -> dict[int, str]:
+    entries = loc_all_texts()
     result: dict[int, str] = {}
 
     for text in entries:

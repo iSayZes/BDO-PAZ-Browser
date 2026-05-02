@@ -69,6 +69,19 @@ u32 padding = 0
 char16[char_count]  (UTF-16 LE, no null terminator)
 ```
 
+### Localisation
+
+English names and trait descriptions are in `languagedata_en.loc` under `str_type=7`, keyed by `str_id1=zodiac_id`:
+
+| str_id4 | Field              |
+| ------- | ------------------ |
+| 0       | Sign name          |
+| 1       | Trait description  |
+
+Example lookup for zodiac_id=1: `loc_lookup(7, 1, 0, 0, 0)` → `"Hammer"`, `loc_lookup(7, 1, 0, 0, 1)` → trait text.
+
+---
+
 ### Zodiac ID → name mapping
 
 | ID | English name  | Korean constellation |

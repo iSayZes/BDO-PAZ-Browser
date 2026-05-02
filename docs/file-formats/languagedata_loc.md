@@ -8,10 +8,10 @@ Stores all localized strings for the game, including title names and requirement
 
 The file is **zlib-compressed**:
 
-| Offset | Type | Description                        |
-| ------ | ---- | ---------------------------------- |
-| +0x00  | u32  | Header / uncompressed size hint    |
-| +0x04  | ...  | zlib-compressed record stream      |
+| Offset | Type | Description                     |
+| ------ | ---- | ------------------------------- |
+| +0x00  | u32  | Header / uncompressed size hint |
+| +0x04  | ...  | zlib-compressed record stream   |
 
 Decompress with: `zlib.decompress(raw[4:])`
 
@@ -19,26 +19,44 @@ Decompress with: `zlib.decompress(raw[4:])`
 
 Each record in the decompressed stream:
 
-| Offset | Type   | Name     | Description                    | Confidence |
-| ------ | ------ | -------- | ------------------------------ | ---------- |
-| +0x00  | u32    | str_size | String length in UTF-16 chars  | High       |
-| +0x04  | u32    | str_type | String type identifier         | High       |
-| +0x08  | u32    | str_id1  | Primary ID (= title_id)        | High       |
-| +0x0C  | u16    | str_id2  | Secondary ID                   | Medium     |
-| +0x0E  | u8     | str_id3  | Unknown                        | Low        |
-| +0x0F  | u8     | str_id4  | Unknown                        | Low        |
-| +0x10  | UTF-16 | text     | String data (`str_size * 2` B) | High       |
-| ...    | u32    | padding  | Usually 0x00000000             | High       |
+| Offset | Type        | Name     | Description                                                                |
+| ------ | ----------- | -------- | -------------------------------------------------------------------------- |
+| +0x00  | u32         | str_size | Length of the string (UTF-16 code units, excluding trailing padding/nulls) |
+| +0x04  | u32         | str_type | String type identifier                                                     |
+| +0x08  | u32         | str_id1  | Primary ID (matches title_id in related DB files)                          |
+| +0x0C  | u16         | str_id2  | Secondary ID (likely subtype / grouping index)                             |
+| +0x0E  | u8          | str_id3  | Unknown (possibly flags or variant index)                                  |
+| +0x0F  | u8          | str_id4  | Unknown (possibly flags or variant index)                                  |
+| +0x10  | UTF-16LE[]  | text     | String data (`str_size` UTF-16 code units)                                 |
+| ...    | UTF-16LE[2] | padding  | Always 2 extra UTF-16 code units (4 bytes), typically `0x0000 0x0000`      |
 
 Next record starts at: `+0x10 + str_size * 2 + 4`
 
 ## Important Types
 
-| str_type | Meaning                           |
-| -------- | --------------------------------- |
-| 1        | Title names + requirements        |
-| 0        | General strings                   |
-| 37/38/39 | Other systems (ignore for titles) |
+| str_type | Meaning                                                                       |
+| -------- | ----------------------------------------------------------------------------- |
+| 0        | General strings                                                               |
+| 1        | Title names + requirements                                                    |
+| 6        | Npcs?                                                                         |
+| 7        | Zodiac sign data — `str_id1` = zodiac_id (1–12), `str_id4` selects sub-field |
+| 9        | Knowledge category (group) names — `str_id1` = node_id                       |
+| 34       | Knowledge entry names — `str_id1` = knowledge_id / entry_id                  |
+| 37/38/39 | Other systems                                                                 |
+
+### Type 1 sub-fields (`str_id4`)
+
+| str_id4 | Meaning             |
+| ------- | ------------------- |
+| 0       | Title name          |
+| 1       | Title requirement   |
+
+### Type 7 sub-fields (`str_id4`)
+
+| str_id4 | Meaning           | Example                               |
+| ------- | ----------------- | ------------------------------------- |
+| 0       | Sign name         | `"Hammer"`                            |
+| 1       | Trait description | `"Brave, Conservative, Hot-Blooded."` |
 
 ## Notes
 
@@ -54,5 +72,6 @@ str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
 
 ## Open Questions
 
-- What do `str_id3` and `str_id4` represent?
+- What does `str_id3` represent?
 - Whether `str_id2` encodes a sub-type or sequence index
+- Whether `str_id4` has sub-field semantics in types other than 7

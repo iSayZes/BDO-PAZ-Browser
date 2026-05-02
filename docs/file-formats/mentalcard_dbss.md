@@ -42,8 +42,8 @@ Each record (pointed to by offset):
 ## Relationships
 
 offset → mentalcard.dbss record  
-entry_id → loc → name  
-node_id → loc → category name  
+entry_id → loc (str_type=34) → knowledge entry name  
+node_id → loc (str_type=9) → knowledge category name  
 
 ---
 

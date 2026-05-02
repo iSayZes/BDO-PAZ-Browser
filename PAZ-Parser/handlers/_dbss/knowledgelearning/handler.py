@@ -7,10 +7,8 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from .parser import (
-    KNOWLEDGE_RECORD_KIND,
     parse_knowledgelearning_offset_records,
     parse_knowledgelearning_records,
-    parse_loc_entries,
 )
 
 
@@ -61,23 +59,17 @@ class KnowledgeLearningOffsetHandler(PreviewHandler):
         if not records and len(data) < 12:
             return _error("knowledgelearningoffset.dbss is too small.")
 
-        kind_counts = Counter(record["kind"] for record in records)
-        kind_summary = " · ".join(
-            f"kind {kind}: {count:,}"
-            for kind, count in sorted(kind_counts.items())
-        )
-
         meta = (
             f"{len(records):,} offset records · {len(data):,} B"
-            + (f" · {kind_summary}" if kind_summary else "")
         )
+
+
 
         headers = [
             ("Row", "num"),
             ("DBSS Offset", "num"),
             ("Kind", "num"),
             ("Idx ID", "num"),
-            ("Kind Meaning", ""),
         ]
 
         rows = [
@@ -86,7 +78,6 @@ class KnowledgeLearningOffsetHandler(PreviewHandler):
                 f"0x{record['offset']:08X}",
                 record["kind"],
                 record["idx_id"],
-                "Knowledge mob-kill" if record["kind"] == KNOWLEDGE_RECORD_KIND else "—",
             ]
             for record in records
         ]
@@ -98,10 +89,7 @@ class KnowledgeLearningHandler(PreviewHandler):
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
 
-        return [
-            f"{folder}/knowledgelearningoffset.dbss",
-            f"{folder}/languagedata_en.loc",
-        ]
+        return [f"{folder}/knowledgelearningoffset.dbss"]
 
     def render(
         self,
@@ -110,36 +98,23 @@ class KnowledgeLearningHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> str:
         offset_raw = companions.get("knowledgelearningoffset.dbss")
-        loc_raw = companions.get("languagedata_en.loc")
 
         if offset_raw is None:
             return _error("knowledgelearningoffset.dbss companion not found.")
 
-        loc_entries = parse_loc_entries(loc_raw) if loc_raw else {}
-        records = parse_knowledgelearning_records(data, offset_raw, loc_entries)
+        records = parse_knowledgelearning_records(data, offset_raw)
 
-        knowledge_records = [
-            record for record in records
-            if record["kind"] == KNOWLEDGE_RECORD_KIND
-        ]
-
-        with_mob_name = sum(1 for record in records if record["mob_name"])
         with_knowledge_name = sum(1 for record in records if record["knowledge_name"])
 
         meta = (
             f"{len(records):,} records · {len(data):,} B"
-            f" · {len(knowledge_records):,} kind-13 knowledge records"
-            f" · {with_mob_name:,} mob names"
             f" · {with_knowledge_name:,} knowledge names"
-            + (" · EN loc loaded" if loc_entries else "")
         )
 
         headers = [
             ("Row", "num"),
             ("Offset", "num"),
             ("Kind", "num"),
-            ("Mob ID", "num"),
-            ("Mob Name", ""),
             ("Knowledge ID", "num"),
             ("Knowledge Name", ""),
         ]
@@ -149,8 +124,6 @@ class KnowledgeLearningHandler(PreviewHandler):
                 record["row"],
                 f"0x{record['offset']:08X}",
                 record["kind"],
-                record["mob_id"],
-                record["mob_name"] or "—",
                 record["knowledge_id"] or "—",
                 record["knowledge_name"] or "—",
             ]

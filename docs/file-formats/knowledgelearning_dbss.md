@@ -2,10 +2,9 @@
 
 ## Overview
 
-Defines how knowledge is obtained.
-
-Primary use:
-Mob kill → unlock knowledge entry
+Defines how knowledge entries are obtained. Contains multiple kinds of unlock
+triggers — not only mob kills. Kind 13 is the mob-kill variant; other kinds
+exist but their semantics are not yet fully documented.
 
 ---
 
@@ -19,52 +18,49 @@ Structure:
 - Repeating 12-byte records:
 
 | Offset | Type | Meaning |
-|--------|------|--------|
+|--------|------|---------|
 | +0x00  | u32  | Offset into `knowledgelearning.dbss` |
 | +0x04  | u32  | Kind |
-| +0x08  | u32  | Index ID (usually mob ID) |
+| +0x08  | u32  | Index ID (meaning depends on kind) |
 
 ---
 
 ### knowledgelearning.dbss
 
-Observed layout:
+Observed layout for kind 13 records:
 
 | Offset | Type | Meaning |
-|--------|------|--------|
-| +0x00  | u32  | Mob ID |
+|--------|------|---------|
+| +0x00  | u32  | Field A (mob ID for kind 13) |
 | +0x09  | u32  | Knowledge ID |
+
+Layout for other kinds is not yet documented.
 
 ---
 
-## Key Concept
-
-### kind
+## Known Kinds
 
 | Value | Meaning |
-|------|--------|
-| 13   | Knowledge via mob kill |
-
-Only kind 13 is relevant for standard knowledge unlocks.
+|-------|---------|
+| 13    | Knowledge via mob kill |
+| other | Unknown — other unlock triggers |
 
 ---
 
 ## Relationships
 
-mob_id → loc → mob name  
-knowledge_id → loc → knowledge entry name  
+knowledge_id → loc (str_type=34) → knowledge entry name
 
 ---
 
 ## Notes
 
 - Offset file drives parsing
-- DBSS layout is semi-structured
-- +9 offset is observed, not guaranteed
+- DBSS layout at +0x09 is observed for kind 13, not guaranteed for other kinds
 
 ---
 
 ## Usage
 
-- Map mobs to knowledge entries
+- Map unlock triggers to knowledge entries
 - Build knowledge acquisition systems

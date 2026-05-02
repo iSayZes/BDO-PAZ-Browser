@@ -99,7 +99,11 @@ They do not control individual title name colors.
 
 The official English text is not row-by-row inside `titlebufflist.dbss`.
 
-It appears in `languagedata_en.loc` as one or more multiline tooltip entries containing all Title Effects lines, for example:
+It appears in `languagedata_en.loc` as one multiline tooltip entries containing all Title Effects lines.
+
+type: 37, id1=3723587620, id2=1, id3=0, id4=0
+
+for example:
 
 ```text
 Acquire x50: Luck <PAColor0xff00baff>+1<PAOldColor>

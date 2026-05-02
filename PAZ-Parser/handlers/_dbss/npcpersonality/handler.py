@@ -5,22 +5,8 @@ import html
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.loc import loc_lookup
 from .parser import parse_npcpersonality_records, parse_npcpersonalityoffset_records
-
-_HOROSCOPE_NAMES: dict[int, str] = {
-    1: "Hammer",
-    2: "Boat",
-    3: "Shield",
-    4: "Giant",
-    5: "Camel",
-    6: "Black Dragon",
-    7: "Treant Owl",
-    8: "Elephant",
-    9: "Key",
-    10: "Wagon",
-    11: "Sealing Stone",
-    12: "Goblin",
-}
 
 
 def _e(value: object) -> str:
@@ -29,7 +15,8 @@ def _e(value: object) -> str:
 
 def _decode_personality_type(code: int) -> str:
     major = code // 100
-    return _HOROSCOPE_NAMES.get(major, f"?{major}")
+    name = loc_lookup(7, major)
+    return name if name else f"?{major}"
 
 
 def _group_cell(group_id: int, item_count: int) -> str:
@@ -113,18 +100,14 @@ class NpcPersonalityOffsetHandler(PreviewHandler):
             return _error("npcpersonalityoffset.dbss: no records found.")
 
         headers = [
-            ("Row", "num"),
             ("Personality ID", "num"),
             ("Data Offset", "num"),
-            ("Size (B)", "num"),
         ]
 
         rows = [
             [
-                rec["row"],
                 rec["personality_id"],
                 f"0x{rec['data_offset']:08X}",
-                rec["data_size"],
             ]
             for rec in records
         ]

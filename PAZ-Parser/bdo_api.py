@@ -43,6 +43,13 @@ _ICON_MAP: dict[str, str] = {
     ".htm": "🌐", ".html": "🌐",
     ".lua": "📜",
     ".pac": "📦", ".bss": "🔒", ".dbss": "🔒",
+    ".loc": "💬",
+}
+
+_DISK_VIRTUAL_PREFIX = "__disk__"
+
+_LOC_CANDIDATES: dict[str, tuple[str, ...]] = {
+    "languagedata_en.loc": ("ads", "languagedata_en.loc"),
 }
 
 
@@ -163,13 +170,15 @@ class Api:
     def _load_disk_companions(self) -> None:
         if not self._paz_root:
             return
-        candidates = {
-            "languagedata_en.loc": self._paz_root.parent / "ads" / "languagedata_en.loc",
-        }
-        for name, path in candidates.items():
+        for name, rel_parts in _LOC_CANDIDATES.items():
+            path = self._paz_root.parent.joinpath(*rel_parts)
             if path.exists():
                 try:
-                    self._disk_companions[name] = path.read_bytes()
+                    raw = path.read_bytes()
+                    self._disk_companions[name] = raw
+                    if name == "languagedata_en.loc":
+                        from _common.loc import init_loc  # noqa: PLC0415
+                        init_loc(raw)
                 except Exception:
                     pass
 
@@ -214,6 +223,17 @@ class Api:
         files = sorted((k, v) for k, v in node.items() if isinstance(v, PazEntry))
 
         result: list[dict] = []
+
+        if not node_path:
+            for name in sorted(self._disk_companions):
+                result.append({
+                    "id":   f"{_DISK_VIRTUAL_PREFIX}/{name}",
+                    "name": name,
+                    "type": "file",
+                    "icon": _file_icon(Path(name).suffix),
+                    "disk": True,
+                })
+
         for name, child_node in dirs:
             child_path = f"{node_path}/{name}" if node_path else name
             result.append({
@@ -264,7 +284,47 @@ class Api:
 
     # ── Entry loading ─────────────────────────────────────────────────────────
 
+    def _load_disk_entry(self, internal_path: str) -> dict:
+        name = internal_path[len(_DISK_VIRTUAL_PREFIX) + 1:]
+        data = self._disk_companions.get(name)
+        if data is None:
+            return {"error": f"Disk file not loaded: {name}"}
+
+        fake_entry = PazEntry(
+            archive_name="<disk>",
+            internal_path=name,
+            offset=0,
+            compressed_size=len(data),
+            uncompressed_size=len(data),
+            compression_type=0,
+            encryption_type=0,
+        )
+        meta = {
+            "archive":      "<disk>",
+            "path":         name,
+            "compressed":   "—",
+            "uncompressed": f"{len(data):,} B",
+            "offset":       "—",
+        }
+        p = Path(name)
+        handler = get_handler(p.name, p.suffix)
+        is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
+
+        html = None
+        if not isinstance(handler, HexHandler):
+            try:
+                html = handler.render(data, fake_entry, {})
+            except Exception as ex:
+                import html as _html_mod
+                html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+
+        hex_html = _hex_handler.render(data, fake_entry, {})
+        return {"html": html, "hex_html": hex_html, "has_parsed": not is_plain, "meta": meta}
+
     def load_entry(self, internal_path: str) -> dict:
+        if internal_path.startswith(_DISK_VIRTUAL_PREFIX + "/"):
+            return self._load_disk_entry(internal_path)
+
         entry = self._entry_map.get(_norm(internal_path))
         if not entry or not self._paz_root:
             return {"error": "Entry not found"}

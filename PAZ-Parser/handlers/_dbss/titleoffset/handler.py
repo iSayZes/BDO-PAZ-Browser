@@ -15,11 +15,10 @@ class TitleOffsetHandler(PreviewHandler):
         headers = [
             ("Title ID", "num", ""),
             ("Offset", "num", ""),
-            ("Size (B)", "num", ""),
         ]
 
         rows = [
-            [e(title_id), e(f"0x{offset:08X}"), e(size)]
+            [e(title_id), e(f"0x{offset:08X}")]
             for title_id, (offset, size) in sorted(offset_map.items())
         ]
 

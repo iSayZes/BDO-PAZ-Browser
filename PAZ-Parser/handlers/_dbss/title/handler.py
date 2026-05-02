@@ -5,7 +5,7 @@ from collections import Counter
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.loc import parse_loc_titles
+from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 
 from ..common.binary import parse_offset_table, u32_hi, u32_lo
 from ..common.constants import DEFAULT_PA_COLOR
@@ -18,21 +18,16 @@ class TitleDbssHandler(PreviewHandler):
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
 
-        return [
-            f"{folder}/titleoffset.dbss",
-            f"{folder}/languagedata_en.loc",
-        ]
+        return [f"{folder}/titleoffset.dbss"]
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         offset_raw = companions.get("titleoffset.dbss")
-        loc_raw = companions.get("languagedata_en.loc")
 
         if offset_raw is None:
             return error("titleoffset.dbss companion not found — cannot parse blocks.")
 
         offset_map = parse_offset_table(offset_raw)
-        loc_titles = parse_loc_titles(loc_raw) if loc_raw else {}
-        has_loc = bool(loc_titles)
+        has_loc = is_loc_loaded()
         records = extract_title_records(data, offset_map)
 
         meta = (
@@ -119,7 +114,8 @@ class TitleDbssHandler(PreviewHandler):
             ]
 
             if has_loc:
-                en_name, en_req = loc_titles.get(record["title_id"], ("", ""))
+                en_name = loc_lookup(1, record["title_id"])
+                en_req = strip_pa_tags(loc_lookup(1, record["title_id"], 0, 0, 1))
                 row += [
                     e(en_name),
                     e(en_req),

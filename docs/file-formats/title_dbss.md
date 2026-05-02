@@ -9,7 +9,6 @@ It does **not** appear to directly store the final visible title color as a simp
 ## Companion Files
 
 - `titleoffset.dbss` — required. Provides `title_id -> (offset, size)` block lookup.
-- `languagedata_en.loc` — optional but useful. Resolves `title_id` to English title name and requirement text.
 
 ## Offset File Format: titleoffset.dbss
 
@@ -153,7 +152,9 @@ Likely sources still to investigate:
 1. Use `titleoffset.dbss` to slice blocks.
 2. Detect layout by title ID position.
 3. Read `style_value`, but label it as `Style?/Category?`.
-4. Parse `languagedata_en.loc` for English name/requirement.
+4. Look up English name/requirement from `languagedata_en.loc`:
+   - Name: `str_type=1, str_id1=title_id, str_id4=0`
+   - Requirement: `str_type=1, str_id1=title_id, str_id4=1`
 5. Strip PA tags from English requirement text for readability.
 6. Preserve/debug PA tags separately.
 7. Treat `+0x14+` as variable payload, not fixed fields.

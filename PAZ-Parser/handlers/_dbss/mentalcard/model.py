@@ -4,9 +4,7 @@ from typing import TypedDict
 
 
 class MentalCardRecord(TypedDict):
-    row: int
     offset: int
-    size: int
     internal_id: int
     entry_id: int
     node_id: int

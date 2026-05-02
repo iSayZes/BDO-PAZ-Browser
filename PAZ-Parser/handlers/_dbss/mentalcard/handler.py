@@ -6,7 +6,6 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from .parser import (
-    parse_loc_entries,
     parse_mentalcard_offset_records,
     parse_mentalcard_records,
 )
@@ -60,18 +59,15 @@ class MentalCardOffsetHandler(PreviewHandler):
             return _error("mentalcardoffset.dbss is too small.")
 
         headers = [
-            ("Row", "num"),
-            ("DBSS Offset", "num"),
-            ("Size (B)", "num"),
             ("Internal ID", "num"),
+            ("DBSS Offset", "num"),
         ]
 
         rows = [
             [
-                row,
-                f"0x{dbss_offset:08X}",
-                size,
                 internal_id,
+                f"0x{dbss_offset:08X}",
+
             ]
             for row, dbss_offset, size, internal_id in records
         ]
@@ -85,10 +81,7 @@ class MentalCardHandler(PreviewHandler):
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
 
-        return [
-            f"{folder}/mentalcardoffset.dbss",
-            f"{folder}/languagedata_en.loc",
-        ]
+        return [f"{folder}/mentalcardoffset.dbss"]
 
     def render(
         self,
@@ -97,41 +90,29 @@ class MentalCardHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> str:
         offset_raw = companions.get("mentalcardoffset.dbss")
-        loc_raw = companions.get("languagedata_en.loc")
 
         if offset_raw is None:
             return _error("mentalcardoffset.dbss companion not found.")
 
-        loc_entries = parse_loc_entries(loc_raw) if loc_raw else {}
-        records = parse_mentalcard_records(data, offset_raw, loc_entries)
+        records = parse_mentalcard_records(data, offset_raw)
 
         with_entry_name = sum(1 for record in records if record["entry_name"])
         with_node_name = sum(1 for record in records if record["node_name"])
 
         meta = (
             f"{len(records):,} mentalcard records · {len(data):,} B"
-            f" · {with_entry_name:,} entry names"
-            f" · {with_node_name:,} node names"
-            + (" · EN loc loaded" if loc_entries else "")
+            f" · {with_entry_name:,} entry names · {with_node_name:,} node names"
         )
 
         headers = [
-            ("Row", "num"),
-            ("Offset", "num"),
-            ("Size (B)", "num"),
-            ("Internal ID", "num"),
-            ("Entry ID", "num"),
-            ("Entry Name", ""),
-            ("Node ID", "num"),
-            ("Node Name", ""),
+            ("Knowledge ID", "num"),
+            ("Knowledge Name", ""),
+            ("Category ID", "num"),
+            ("Category Name", ""),
         ]
 
         rows = [
             [
-                record["row"],
-                f"0x{record['offset']:08X}",
-                record["size"],
-                record["internal_id"],
                 record["entry_id"],
                 record["entry_name"] or "—",
                 record["node_id"],

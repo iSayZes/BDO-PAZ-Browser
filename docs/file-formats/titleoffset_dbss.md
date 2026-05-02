@@ -11,16 +11,16 @@ Companion file: `title.dbss` — the main title data file this index addresses.
 
 ### Header (4 bytes)
 
-| Offset | Type | Field | Notes                   |
-| ------ | ---- | ----- | ----------------------- |
-| 0x00   | u32  | count | Number of offset records|
+| Offset | Type | Field | Notes                    |
+| ------ | ---- | ----- | ------------------------ |
+| 0x00   | u32  | count | Number of offset records |
 
 ### Offset Record (12 bytes, repeated `count` times)
 
-| Offset | Type | Field    | Notes                                      |
-| ------ | ---- | -------- | ------------------------------------------ |
-| 0x00   | u32  | title_id | Unique title identifier                    |
-| 0x04   | u32  | offset   | Byte offset into `title.dbss`              |
+| Offset | Type | Field    | Notes                                          |
+| ------ | ---- | -------- | ---------------------------------------------- |
+| 0x00   | u32  | title_id | Unique title identifier                        |
+| 0x04   | u32  | offset   | Byte offset into `title.dbss`                  |
 | 0x08   | u32  | size     | Byte count of the record block in `title.dbss` |
 
 To read a title record: seek to `offset` in `title.dbss` and read `size` bytes.

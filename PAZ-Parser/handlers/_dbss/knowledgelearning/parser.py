@@ -28,7 +28,6 @@ def parse_knowledgelearning_offset_records(
         pos = start + index * record_size
 
         records.append(KnowledgeLearningOffsetRecord(
-            row=index,
             offset=read_u32(offset_data, pos),
             kind=read_u32(offset_data, pos + 4),
             idx_id=read_u32(offset_data, pos + 8),
@@ -55,7 +54,6 @@ def parse_knowledgelearning_records(
         knowledge_id = read_u32(dbss_data, dbss_offset + 9)
 
         records.append(KnowledgeLearningRecord(
-            row=offset_record["row"],
             offset=dbss_offset,
             kind=kind,
             knowledge_id=knowledge_id,

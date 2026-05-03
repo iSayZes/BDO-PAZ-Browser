@@ -34,19 +34,42 @@ def main() -> None:
         _launch_gui()
 
 
+def _apply_window_icon(window) -> None:
+    try:
+        import ctypes
+        icon_path = str(Path(__file__).parent / "ui" / "favicon.ico")
+        LR_LOADFROMFILE = 0x0010
+        LR_DEFAULTSIZE  = 0x0040
+        IMAGE_ICON      = 1
+        WM_SETICON      = 0x0080
+        hicon = ctypes.windll.user32.LoadImageW(
+            None, icon_path, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE
+        )
+        if not hicon:
+            return
+        hwnd = getattr(window, "native_handle", None) or \
+               ctypes.windll.user32.FindWindowW(None, "BDO PAZ Browser")
+        if hwnd:
+            ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 1, hicon)  # ICON_BIG
+            ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 0, hicon)  # ICON_SMALL
+    except Exception:
+        pass
+
+
 def _launch_gui() -> None:
     api = Api()
     window = webview.create_window(
         title="BDO PAZ Browser",
         url=str(Path(__file__).parent / "ui" / "index.html"),
         js_api=api,
-        width=1240,
-        height=780,
+        width=1280,
+        height=800,
         min_size=(900, 560),
         background_color="#1a1a1a",
     )
     if window is not None:
         api.set_window(window)
+        window.events.shown += lambda: _apply_window_icon(window)
     webview.start()
 
 

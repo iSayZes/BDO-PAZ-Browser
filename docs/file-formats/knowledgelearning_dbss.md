@@ -2,9 +2,9 @@
 
 ## Overview
 
-Defines how knowledge entries are obtained. Contains multiple kinds of unlock
-triggers — not only mob kills. Kind 13 is the mob-kill variant; other kinds
-exist but their semantics are not yet fully documented.
+Defines how knowledge entries are obtained. Parsing is driven by
+`knowledgelearningoffset.dbss`, which maps each entry to its offset in
+`knowledgelearning.dbss` and supplies the entry's kind and an index ID.
 
 ---
 
@@ -12,55 +12,47 @@ exist but their semantics are not yet fully documented.
 
 ### knowledgelearningoffset.dbss
 
-Structure:
-
-- 12-byte header
+- 12-byte header (skipped)
 - Repeating 12-byte records:
 
-| Offset | Type | Meaning |
-|--------|------|---------|
-| +0x00  | u32  | Offset into `knowledgelearning.dbss` |
-| +0x04  | u32  | Kind |
-| +0x08  | u32  | Index ID (meaning depends on kind) |
+| Offset | Type | Name    | Description                                      |
+| ------ | ---- | ------- | ------------------------------------------------ |
+| +0x00  | u32  | offset  | Byte offset into `knowledgelearning.dbss`        |
+| +0x04  | u32  | kind    | Unlock trigger type (see Known Kinds below)      |
+| +0x08  | u32  | idx_id  | Index ID — meaning depends on kind               |
 
 ---
 
 ### knowledgelearning.dbss
 
-Observed layout for kind 13 records:
+Records are accessed by absolute byte offset from the offset file.
+Only one field is currently parsed:
 
-| Offset | Type | Meaning |
-|--------|------|---------|
-| +0x00  | u32  | Field A (mob ID for kind 13) |
-| +0x09  | u32  | Knowledge ID |
-
-Layout for other kinds is not yet documented.
+| Offset | Type | Name         | Description                              |
+| ------ | ---- | ------------ | ---------------------------------------- |
+| +0x00  | ?    | unknown      | 9 bytes — layout not yet documented      |
+| +0x09  | u32  | knowledge_id | Knowledge entry ID (matches LOC str_type=34 and `mentalcard.dbss`) |
 
 ---
 
 ## Known Kinds
 
-| Value | Meaning |
-|-------|---------|
-| 13    | Knowledge via mob kill |
+| Value | Meaning                        |
+| ----- | ------------------------------ |
+| 13    | Knowledge via mob kill         |
 | other | Unknown — other unlock triggers |
 
 ---
 
 ## Relationships
 
-knowledge_id → loc (str_type=34) → knowledge entry name
+- `knowledge_id` → LOC `str_type=34`, `str_id1=knowledge_id` → knowledge entry name
+- `knowledge_id` → `mentalcard.dbss` entry_id → node/category
 
 ---
 
-## Notes
+## Open Questions
 
-- Offset file drives parsing
-- DBSS layout at +0x09 is observed for kind 13, not guaranteed for other kinds
-
----
-
-## Usage
-
-- Map unlock triggers to knowledge entries
-- Build knowledge acquisition systems
+- What are the 9 bytes at +0x00 in `knowledgelearning.dbss`? (kind 13 speculation: mob ID at +0x00)
+- What does `idx_id` encode for each kind?
+- Are there other parsed fields in non-kind-13 records?

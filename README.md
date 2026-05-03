@@ -4,6 +4,8 @@
 
 A Python tool for browsing, extracting, and previewing files from **Black Desert Online**'s `.paz` game archives, with a plugin system for parsing BDO-specific binary formats.
 
+![BDO PAZ Browser](docs/assets/screenshot.png)
+
 ---
 
 ## Features
@@ -11,6 +13,7 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 - **GUI browser** — tree-view file explorer for the full PAZ archive, with live search and file preview
 - **CLI extraction** — extract files by name or glob pattern without opening the GUI
 - **File preview** — text, hex dump, DDS images, and parsed binary tables for known formats
+- **Paged preview** — large files (hex and parsed tabs) are paged; navigate with Prev/Next without loading the full DOM
 - **Plugin system** — add handlers for new binary formats by dropping a file into `handlers/`
 - **Caching** — PAZ index is parsed once and cached; subsequent launches load instantly
 
@@ -134,6 +137,22 @@ class MyFormatHandler(PreviewHandler):
 
 register_handler("myfile.dbss", MyFormatHandler())
 ```
+
+For formats with many rows, opt into **paged rendering** by implementing two additional methods:
+
+```python
+class MyFormatHandler(PreviewHandler):
+    def get_records(self, data, entry, companions) -> list[dict] | None:
+        # Parse all records once; return list of dicts (cached in memory for paging + future search)
+        return [{"id": r.id, "name": r.name} for r in parse(data)]
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        start, end = page * page_size, min((page + 1) * page_size, len(records))
+        rows = "".join(f"<tr><td>{r['id']}</td><td>{r['name']}</td></tr>" for r in records[start:end])
+        return f"<table><thead>...</thead><tbody>{rows}</tbody></table>"
+```
+
+The browser automatically adds Prev/Next navigation when `get_records()` returns a non-`None` list.
 
 See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, and registration patterns.
 

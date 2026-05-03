@@ -66,18 +66,17 @@ class KnowledgeLearningOffsetHandler(PreviewHandler):
 
 
         headers = [
-            ("Row", "num"),
-            ("DBSS Offset", "num"),
-            ("Kind", "num"),
+
             ("Idx ID", "num"),
+            ("Kind", "num"),
+            ("DBSS Offset", "num")
         ]
 
         rows = [
             [
-                record["row"],
-                f"0x{record['offset']:08X}",
-                record["kind"],
                 record["idx_id"],
+                record["kind"],
+                f"0x{record['offset']:08X}"
             ]
             for record in records
         ]
@@ -112,20 +111,18 @@ class KnowledgeLearningHandler(PreviewHandler):
         )
 
         headers = [
-            ("Row", "num"),
-            ("Offset", "num"),
-            ("Kind", "num"),
             ("Knowledge ID", "num"),
+            ("Kind", "num"),
             ("Knowledge Name", ""),
+            ("Offset", "num"),
         ]
 
         rows = [
             [
-                record["row"],
-                f"0x{record['offset']:08X}",
-                record["kind"],
                 record["knowledge_id"] or "—",
+                record["kind"],
                 record["knowledge_name"] or "—",
+                f"0x{record['offset']:08X}"
             ]
             for record in records
         ]

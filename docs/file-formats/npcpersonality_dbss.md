@@ -89,7 +89,7 @@ as the main file.
 | 0x00   | u16  | personality_id | Matches `personality_id` in the main record                                                                    |
 | 0x02   | u32  | data_offset    | Byte offset into main file; points 2 bytes past the record start (i.e. skips the leading `personality_id` u16) |
 | 0x06   | u16  | data_size      | Always 32 (= record size minus the 2-byte personality_id header)                                               |
-| 0x08   | u16  | padding        | Always 0                                                                                                       |
+| 0x08   | u16  | —              | Not parsed — assumed padding (record stride is 10, only 8 bytes are read)                                      |
 
 To locate a record in the main file given an offset record:
 `record_start = data_offset - 2`

@@ -22,12 +22,14 @@ Acquire x70: Luck +2 / Max Energy +1
 
 ## Offset File Format: titlebufflistoffset.dbss
 
-| Offset           | Type | Description                      |
-| ---------------- | ---- | -------------------------------- |
-| `+0x00`          | u32  | Entry count                      |
-| `+0x04 + n*0x0C` | u32  | Entry index / id                 |
-| `+0x08 + n*0x0C` | u32  | Offset into `titlebufflist.dbss` |
-| `+0x0C + n*0x0C` | u32  | Block size                       |
+- 4-byte header: u32 entry count
+- Repeating 12-byte records:
+
+| Offset | Type | Name     | Description                      |
+| ------ | ---- | -------- | -------------------------------- |
+| +0x00  | u32  | entry_id | Zero-based buff/effect row ID    |
+| +0x04  | u32  | offset   | Byte offset into `titlebufflist.dbss` |
+| +0x08  | u32  | size     | Block size in bytes              |
 
 Observed entry IDs are zero-based and align with `u32_00` inside each block.
 
@@ -37,9 +39,9 @@ Observed block structure:
 
 | Offset   | Type   | Name                               | Description                                           | Confidence |
 | -------- | ------ | ---------------------------------- | ----------------------------------------------------- | ---------- |
-| `+0x00`  | u32    | internal_id                        | Zero-based buff/effect row id                         | High       |
-| `+0x04`  | u32    | required_titles                    | Number of titles required to unlock this effect tier  | High       |
-| `+0x08+` | varies | KR text / PA tags / effect payload | Embedded UTF-16 Korean effect text and PAColor markup | High       |
+| `+0x00`  | u32    | internal_id                        | Zero-based buff/effect row id — read as raw u32 at offset 0x00    | High       |
+| `+0x04`  | u32    | required_titles                    | Title count to unlock this tier — read as raw u32 at offset 0x04  | High       |
+| `+0x08+` | varies | KR text / PA tags / effect payload | Embedded UTF-16 Korean effect text and PAColor markup              | High       |
 
 ## Key Fields
 

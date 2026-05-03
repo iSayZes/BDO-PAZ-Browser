@@ -4,7 +4,6 @@ from typing import TypedDict
 
 
 class KnowledgeLearningRecord(TypedDict):
-    row: int
     offset: int
     kind: int
     knowledge_id: int
@@ -12,7 +11,6 @@ class KnowledgeLearningRecord(TypedDict):
 
 
 class KnowledgeLearningOffsetRecord(TypedDict):
-    row: int
     offset: int
     kind: int
     idx_id: int

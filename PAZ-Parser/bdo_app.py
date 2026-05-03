@@ -33,6 +33,10 @@ def main() -> None:
     else:
         _launch_gui()
 
+def _set_app_user_model_id() -> None:
+    import ctypes
+    app_id = "bdo.paz.browser"
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
 
 def _apply_window_icon(window) -> None:
     try:
@@ -57,6 +61,8 @@ def _apply_window_icon(window) -> None:
 
 
 def _launch_gui() -> None:
+    _set_app_user_model_id()
+    
     api = Api()
     window = webview.create_window(
         title="BDO PAZ Browser",

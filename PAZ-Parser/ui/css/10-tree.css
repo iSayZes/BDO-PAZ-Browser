@@ -1,0 +1,86 @@
+/* ── Tree ─────────────────────────────────────────────────────────────────── */
+
+.tree-root,
+.tree-children {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tree-children {
+  padding-left: 16px;
+}
+
+.tree-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  border-radius: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tree-label:hover {
+  background: var(--surface2);
+}
+
+.tree-node.selected > .tree-label {
+  background: var(--accent-d);
+  color: var(--accent);
+}
+
+.tree-node.extract-selected > .tree-label {
+  background: rgba(34, 211, 238, 0.12);
+  outline: 1px solid rgba(34, 211, 238, 0.35);
+  outline-offset: -1px;
+}
+.tree-node.extract-selected > .tree-label .tree-name {
+  color: var(--cyan);
+}
+
+.tree-arrow {
+  color: var(--fg-dim);
+  font-size: 9px;
+  width: 10px;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+.tree-node.expanded > .tree-label .tree-arrow {
+  transform: rotate(90deg);
+}
+
+.tree-icon {
+  flex-shrink: 0;
+}
+
+.tree-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--fg2);
+  font-size: 12px;
+}
+.tree-node.selected > .tree-label .tree-name {
+  color: var(--accent);
+}
+
+.tree-count {
+  color: var(--fg-dim);
+  font-size: 10px;
+  margin-left: 3px;
+  flex-shrink: 0;
+}
+
+.tree-path {
+  color: var(--fg-dim);
+  font-size: 10px;
+  font-family: Consolas, monospace;
+  margin-left: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tree-node.loading > .tree-label {
+  color: var(--fg-dim);
+  font-style: italic;
+}

@@ -1,124 +1,106 @@
 from __future__ import annotations
 
-import html
-
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from ..common.html import e, error, table
 from .parser import (
     parse_mentalcard_offset_records,
     parse_mentalcard_records,
 )
 
 
-def _e(value: object) -> str:
-    return html.escape(str(value))
+_OFFSET_HEADERS: list[tuple[str, str, str]] = [
+    ("Internal ID",  "num", ""),
+    ("DBSS Offset",  "num", ""),
+]
 
-
-def _error(text: str) -> str:
-    return f'<div class="error">{_e(text)}</div>'
-
-
-def _table(meta: str, headers: list[tuple[str, str]], rows: list[list[object]]) -> str:
-    head = "".join(
-        f'<th class="{_e(css_class)} sortable">{_e(label)}</th>'
-        for label, css_class in headers
-    )
-
-    body = "".join(
-        "<tr>"
-        + "".join(
-            f'<td class="{_e(headers[index][1])}">{_e(cell)}</td>'
-            for index, cell in enumerate(row)
-        )
-        + "</tr>"
-        for row in rows
-    )
-
-    return (
-        f'<div class="table-meta">{_e(meta)}</div>'
-        '<div class="table-wrap">'
-        '<table class="data-table">'
-        f"<thead><tr>{head}</tr></thead>"
-        f"<tbody>{body}</tbody>"
-        "</table>"
-        "</div>"
-    )
+_CARD_HEADERS: list[tuple[str, str, str]] = [
+    ("Knowledge ID",    "num", ""),
+    ("Knowledge Name",  "",    ""),
+    ("Category ID",     "num", ""),
+    ("Category Name",   "",    ""),
+]
 
 
 class MentalCardOffsetHandler(PreviewHandler):
-    def render(
+    def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
-    ) -> str:
+    ) -> list[dict]:
         records = parse_mentalcard_offset_records(data)
-
-        if not records and len(data) < 12:
-            return _error("mentalcardoffset.dbss is too small.")
-
-        headers = [
-            ("Internal ID", "num"),
-            ("DBSS Offset", "num"),
-        ]
-
-        rows = [
-            [
-                internal_id,
-                f"0x{dbss_offset:08X}",
-
-            ]
+        return [
+            {"internal_id": internal_id, "dbss_offset": dbss_offset}
             for row, dbss_offset, size, internal_id in records
         ]
 
-        meta = f"{len(records):,} offset records · {len(data):,} B"
-
-        return _table(meta, headers, rows)
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        meta = f"{len(records):,} offset records"
+        rows = [
+            [e(r["internal_id"]), e(f"0x{r['dbss_offset']:08X}")]
+            for r in slice_
+        ]
+        return table(meta, _OFFSET_HEADERS, rows)
 
 
 class MentalCardHandler(PreviewHandler):
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-
         return [f"{folder}/mentalcardoffset.dbss"]
 
-    def render(
+    def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
-    ) -> str:
+    ) -> list[dict]:
         offset_raw = companions.get("mentalcardoffset.dbss")
-
         if offset_raw is None:
-            return _error("mentalcardoffset.dbss companion not found.")
+            raise ValueError("mentalcardoffset.dbss companion not found.")
 
         records = parse_mentalcard_records(data, offset_raw)
-
-        with_entry_name = sum(1 for record in records if record["entry_name"])
-        with_node_name = sum(1 for record in records if record["node_name"])
-
-        meta = (
-            f"{len(records):,} mentalcard records · {len(data):,} B"
-            f" · {with_entry_name:,} entry names · {with_node_name:,} node names"
-        )
-
-        headers = [
-            ("Knowledge ID", "num"),
-            ("Knowledge Name", ""),
-            ("Category ID", "num"),
-            ("Category Name", ""),
-        ]
-
-        rows = [
-            [
-                record["entry_id"],
-                record["entry_name"] or "—",
-                record["node_id"],
-                record["node_name"] or "—",
-            ]
+        return [
+            {
+                "entry_id":   record["entry_id"],
+                "entry_name": record["entry_name"] or "",
+                "node_id":    record["node_id"],
+                "node_name":  record["node_name"] or "",
+            }
             for record in records
         ]
 
-        return _table(meta, headers, rows)
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+
+        with_entry_name = sum(1 for r in records if r["entry_name"])
+        with_node_name  = sum(1 for r in records if r["node_name"])
+        meta = (
+            f"{len(records):,} mentalcard records"
+            f" · {with_entry_name:,} entry names · {with_node_name:,} node names"
+        )
+
+        rows = [
+            [
+                e(r["entry_id"]),
+                e(r["entry_name"] or "—"),
+                e(r["node_id"]),
+                e(r["node_name"] or "—"),
+            ]
+            for r in slice_
+        ]
+        return table(meta, _CARD_HEADERS, rows)

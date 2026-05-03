@@ -14,6 +14,8 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 - **CLI extraction** — extract files by name or glob pattern without opening the GUI
 - **File preview** — text, hex dump, DDS images, and parsed binary tables for known formats
 - **Paged preview** — large files (hex and parsed tabs) are paged; navigate with Prev/Next without loading the full DOM
+- **Tab search** — Ctrl+F inline search within hex (byte offset) and parsed (record) tabs; string and hex-pattern modes
+- **Export** — save the current file as raw binary (hex tab) or CSV (parsed tab) via the Entry Details panel
 - **Plugin system** — add handlers for new binary formats by dropping a file into `handlers/`
 - **Caching** — PAZ index is parsed once and cached; subsequent launches load instantly
 
@@ -31,6 +33,7 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 | `mentalcard.dbss`        | Knowledge entry → node/category ID mapping                   | [mentalcard](docs/file-formats/mentalcard_dbss.md)               |
 | `knowledgelearning.dbss` | Mob ID → knowledge ID mapping (kind 13 records)              | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md) |
 | `npcpersonality.dbss`    | NPC personality ID → type refs + behavioural float params    | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
+| `zodiacsign.dbss`        | Zodiac sign definitions — star coords, names, texture paths  | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
 
 All formats are little-endian. Unknown fields are named `unknown_*`.
 
@@ -99,8 +102,12 @@ PAZ-Parser/
 │
 ├── ui/                     # Web UI (HTML + JS + CSS)
 │   ├── index.html
-│   ├── app.js
-│   └── style.css
+│   ├── app.js              # Entry point — assembles feature modules
+│   ├── style.css           # CSS entry point — imports css/ modules
+│   ├── css/                # Per-component stylesheets (numbered load order)
+│   └── js/
+│       ├── core/           # Shared state and helpers
+│       └── features/       # Feature modules (tree, search, extraction, …)
 │
 └── handlers/               # Format preview plugins (auto-loaded)
     ├── dbss_handler.py     # DBSS entry point
@@ -126,33 +133,33 @@ docs/
 
 Drop a `.py` file (not starting with `_`) into `handlers/` — it is auto-loaded at startup.
 
+All parsed-view handlers must implement two methods:
+
 ```python
 # handlers/myformat_handler.py
 from bdo_preview import PreviewHandler, register_handler
 from bdo_models import PazEntry
 
 class MyFormatHandler(PreviewHandler):
-    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        return f"<pre>{len(data):,} bytes</pre>"
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        # Parse all records once. Returns plain dicts — no HTML.
+        # Cached in memory for paging, tab search, and CSV export.
+        return [{"id": r.id, "name": r.name} for r in parse(data)]
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        # Render one page of records as an HTML fragment.
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        rows = "".join(f"<tr><td>{r['id']}</td><td>{r['name']}</td></tr>" for r in slice_)
+        return f"<table><thead>...</thead><tbody>{rows}</tbody></table>"
 
 register_handler("myfile.dbss", MyFormatHandler())
 ```
 
-For formats with many rows, opt into **paged rendering** by implementing two additional methods:
-
-```python
-class MyFormatHandler(PreviewHandler):
-    def get_records(self, data, entry, companions) -> list[dict] | None:
-        # Parse all records once; return list of dicts (cached in memory for paging + future search)
-        return [{"id": r.id, "name": r.name} for r in parse(data)]
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        start, end = page * page_size, min((page + 1) * page_size, len(records))
-        rows = "".join(f"<tr><td>{r['id']}</td><td>{r['name']}</td></tr>" for r in records[start:end])
-        return f"<table><thead>...</thead><tbody>{rows}</tbody></table>"
-```
-
-The browser automatically adds Prev/Next navigation when `get_records()` returns a non-`None` list.
+The browser automatically handles:
+- Prev/Next page navigation
+- Inline tab search (Ctrl+F) across all record field values
+- CSV export of the full record list
 
 See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, and registration patterns.
 

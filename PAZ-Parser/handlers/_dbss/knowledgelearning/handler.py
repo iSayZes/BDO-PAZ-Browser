@@ -1,130 +1,106 @@
 from __future__ import annotations
 
-import html
-from collections import Counter
-
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from ..common.html import e, table
 from .parser import (
     parse_knowledgelearning_offset_records,
     parse_knowledgelearning_records,
 )
 
 
-def _e(value: object) -> str:
-    return html.escape(str(value))
+_OFFSET_HEADERS: list[tuple[str, str, str]] = [
+    ("Idx ID",      "num", ""),
+    ("Kind",        "num", ""),
+    ("DBSS Offset", "num", ""),
+]
 
-
-def _error(text: str) -> str:
-    return f'<div class="error">{_e(text)}</div>'
-
-
-def _table(meta: str, headers: list[tuple[str, str]], rows: list[list[object]]) -> str:
-    head = "".join(
-        f'<th class="{_e(css_class)} sortable">{_e(label)}</th>'
-        for label, css_class in headers
-    )
-
-    body = "".join(
-        "<tr>"
-        + "".join(
-            f'<td class="{_e(headers[index][1])}">{_e(cell)}</td>'
-            for index, cell in enumerate(row)
-        )
-        + "</tr>"
-        for row in rows
-    )
-
-    return (
-        f'<div class="table-meta">{_e(meta)}</div>'
-        '<div class="table-wrap">'
-        '<table class="data-table">'
-        f"<thead><tr>{head}</tr></thead>"
-        f"<tbody>{body}</tbody>"
-        "</table>"
-        "</div>"
-    )
+_LEARNING_HEADERS: list[tuple[str, str, str]] = [
+    ("Knowledge ID",    "num", ""),
+    ("Kind",            "num", ""),
+    ("Knowledge Name",  "",    ""),
+    ("Offset",          "num", ""),
+]
 
 
 class KnowledgeLearningOffsetHandler(PreviewHandler):
-    def render(
+    def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
-    ) -> str:
+    ) -> list[dict]:
         records = parse_knowledgelearning_offset_records(data)
-
-        if not records and len(data) < 12:
-            return _error("knowledgelearningoffset.dbss is too small.")
-
-        meta = (
-            f"{len(records):,} offset records · {len(data):,} B"
-        )
-
-
-
-        headers = [
-
-            ("Idx ID", "num"),
-            ("Kind", "num"),
-            ("DBSS Offset", "num")
+        return [
+            {"idx_id": rec["idx_id"], "kind": rec["kind"], "offset": rec["offset"]}
+            for rec in records
         ]
 
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        meta = f"{len(records):,} offset records"
         rows = [
-            [
-                record["idx_id"],
-                record["kind"],
-                f"0x{record['offset']:08X}"
-            ]
-            for record in records
+            [e(r["idx_id"]), e(r["kind"]), e(f"0x{r['offset']:08X}")]
+            for r in slice_
         ]
-
-        return _table(meta, headers, rows)
+        return table(meta, _OFFSET_HEADERS, rows)
 
 
 class KnowledgeLearningHandler(PreviewHandler):
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-
         return [f"{folder}/knowledgelearningoffset.dbss"]
 
-    def render(
+    def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
-    ) -> str:
+    ) -> list[dict]:
         offset_raw = companions.get("knowledgelearningoffset.dbss")
-
         if offset_raw is None:
-            return _error("knowledgelearningoffset.dbss companion not found.")
+            raise ValueError("knowledgelearningoffset.dbss companion not found.")
 
         records = parse_knowledgelearning_records(data, offset_raw)
-
-        with_knowledge_name = sum(1 for record in records if record["knowledge_name"])
-
-        meta = (
-            f"{len(records):,} records · {len(data):,} B"
-            f" · {with_knowledge_name:,} knowledge names"
-        )
-
-        headers = [
-            ("Knowledge ID", "num"),
-            ("Kind", "num"),
-            ("Knowledge Name", ""),
-            ("Offset", "num"),
-        ]
-
-        rows = [
-            [
-                record["knowledge_id"] or "—",
-                record["kind"],
-                record["knowledge_name"] or "—",
-                f"0x{record['offset']:08X}"
-            ]
+        return [
+            {
+                "knowledge_id":   record["knowledge_id"] or "",
+                "kind":           record["kind"],
+                "knowledge_name": record["knowledge_name"] or "",
+                "offset":         record["offset"],
+            }
             for record in records
         ]
 
-        return _table(meta, headers, rows)
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+
+        with_knowledge_name = sum(1 for r in records if r["knowledge_name"])
+        meta = (
+            f"{len(records):,} records"
+            f" · {with_knowledge_name:,} knowledge names"
+        )
+
+        rows = [
+            [
+                e(r["knowledge_id"] or "—"),
+                e(r["kind"]),
+                e(r["knowledge_name"] or "—"),
+                e(f"0x{r['offset']:08X}"),
+            ]
+            for r in slice_
+        ]
+        return table(meta, _LEARNING_HEADERS, rows)

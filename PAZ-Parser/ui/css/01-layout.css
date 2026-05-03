@@ -1,0 +1,27 @@
+/* ── Layout ───────────────────────────────────────────────────────────────── */
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.sep-h {
+  height: 1px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 12px;
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+#main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}

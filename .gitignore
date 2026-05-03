@@ -2,19 +2,13 @@
 .DS_Store
 Thumbs.db
 *.local
-.claude/
-CLAUDE.md
-.mcp.json
-
-# Added by code-review-graph
-.code-review-graph/
-.code-review-graphignore
+.vscode
+profile.prof
 
 # Misc
 files/
 json/
 tools/
-__pycache__
 todo.md
 test-scripts/
 docs/paz_tree.md

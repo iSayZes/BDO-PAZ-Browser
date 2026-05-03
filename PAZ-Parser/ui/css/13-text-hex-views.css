@@ -1,0 +1,39 @@
+/* ── Text / hex views ─────────────────────────────────────────────────────── */
+
+.text-view {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  color: var(--fg);
+  white-space: pre;
+  tab-size: 4;
+}
+
+.hex-view {
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.hex-row {
+  display: flex;
+  gap: 6px;
+}
+.hex-offset {
+  color: var(--cyan);
+  min-width: 68px;
+}
+.hex-bytes {
+  color: var(--fg);
+  min-width: 290px;
+}
+.hex-ascii {
+  color: var(--fg-muted);
+}
+
+.hex-note {
+  color: var(--fg-dim);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  margin-top: 8px;
+  font-style: italic;
+}

@@ -1,0 +1,46 @@
+/* ── Reset & root ─────────────────────────────────────────────────────────── */
+
+:root {
+  --bg: #1a1a1a;
+  --surface: #1e1e1e;
+  --surface2: #2a2a2a;
+  --surface3: #242424;
+  --hover: #363636;
+  --border: #333333;
+  --border2: #444444;
+  --border3: #555555;
+  --fg: #e0e0e0;
+  --fg2: #cccccc;
+  --fg-muted: #aaaaaa;
+  --fg-dim: #666666;
+  --fg-white: #ffffff;
+  --accent: #2dbe6c;
+  --accent-h: #33d977;
+  --accent-d: #1a3d2a;
+  --cyan: #22d3ee;
+  --error: #ff6b6b;
+  --warning: #e09050;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 13px;
+  overflow: hidden;
+  user-select: none;
+}

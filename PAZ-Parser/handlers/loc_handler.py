@@ -53,10 +53,8 @@ def _parse_all_loc_records(raw: bytes) -> list[tuple[int, int, int, int, int, in
 
 
 class LocHandler(PreviewHandler):
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict] | None:
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         raw = _parse_all_loc_records(data)
-        if not raw:
-            return None
         return [
             {"str_type": t, "str_id1": i1, "str_id2": i2, "str_id3": i3, "str_id4": i4, "text": text}
             for (_, t, i1, i2, i3, i4, text) in raw
@@ -99,13 +97,6 @@ class LocHandler(PreviewHandler):
   </table>
 </div>
 """
-
-    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        from bdo_preview import PARSED_RECORDS_PER_PAGE
-        records = self.get_records(data, entry, companions)
-        if records is None:
-            return '<div class="error">Failed to parse .loc file — not a valid LOC or decompression failed.</div>'
-        return self.render_records_page(records, 0, PARSED_RECORDS_PER_PAGE)
 
 
 register_handler(".loc", LocHandler())

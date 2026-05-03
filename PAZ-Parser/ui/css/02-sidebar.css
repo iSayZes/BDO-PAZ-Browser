@@ -1,0 +1,45 @@
+/* ── Sidebar ──────────────────────────────────────────────────────────────── */
+
+#sidebar {
+  width: 280px;
+  min-width: 140px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+#search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+}
+
+.search-icon {
+  color: var(--fg-dim);
+  font-size: 12px;
+}
+
+#search {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--fg);
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  outline: none;
+}
+#search:focus {
+  border-color: var(--border3);
+}
+
+#tree-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0;
+}

@@ -1,0 +1,24 @@
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+
+button {
+  background: var(--surface2);
+  color: var(--fg-muted);
+  border: 1px solid var(--border2);
+  padding: 4px 11px;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  border-radius: 3px;
+  white-space: nowrap;
+  transition:
+    background 0.1s,
+    color 0.1s;
+}
+button:hover {
+  background: var(--hover);
+  color: var(--fg-white);
+}
+
+#btn-open {
+  padding: 5px 14px;
+}

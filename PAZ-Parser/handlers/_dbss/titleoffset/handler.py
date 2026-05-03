@@ -7,19 +7,36 @@ from ..common.binary import parse_offset_table
 from ..common.html import e, table
 
 
+_HEADERS: list[tuple[str, str, str]] = [
+    ("Title ID", "num", ""),
+    ("Offset",   "num", ""),
+]
+
+
 class TitleOffsetHandler(PreviewHandler):
-    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
+    def get_records(
+        self,
+        data: bytes,
+        entry: PazEntry,
+        companions: dict[str, bytes],
+    ) -> list[dict]:
         offset_map = parse_offset_table(data)
-        meta = f"{len(offset_map):,} entries  ·  {len(data):,} B"
-
-        headers = [
-            ("Title ID", "num", ""),
-            ("Offset", "num", ""),
-        ]
-
-        rows = [
-            [e(title_id), e(f"0x{offset:08X}")]
+        return [
+            {"title_id": title_id, "offset": offset}
             for title_id, (offset, size) in sorted(offset_map.items())
         ]
 
-        return table(meta, headers, rows)
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        meta = f"{len(records):,} entries"
+        rows = [
+            [e(r["title_id"]), e(f"0x{r['offset']:08X}")]
+            for r in slice_
+        ]
+        return table(meta, _HEADERS, rows)

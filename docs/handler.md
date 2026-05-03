@@ -153,37 +153,51 @@ Extension handlers are useful for generic fallback previews.
 
 ## Handler Template
 
+All parsed-view handlers must implement `get_records()` and `render_records_page()`.
+
+- `get_records()` — parses the binary once and returns all records as plain dicts (no HTML). The result is cached for paging, tab search, and CSV export.
+- `render_records_page()` — converts one page of cached records into an HTML fragment.
+
 ```python
 # handlers/_example/myfile/handler.py
 
 from __future__ import annotations
 
-import html
-
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
+from _dbss.common.html import e, table
+
+
+_HEADERS = [
+    ("ID",   "num", ""),
+    ("Name", "",    ""),
+]
 
 
 class MyFileHandler(PreviewHandler):
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
+        return [f"{folder}/myindex.dbss"]
 
-        return [
-            f"{folder}/myindex.dbss",
-        ]
-
-    def render(
+    def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
-    ) -> str:
-        safe_name = html.escape(entry.internal_path)
-        size = len(data)
+    ) -> list[dict]:
+        return [{"id": r.id, "name": r.name} for r in _parse(data)]
 
-        return (
-            f'<div class="table-meta">{safe_name} · {size:,} B</div>'
-        )
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        meta = f"{len(records):,} records"
+        rows = [[e(r["id"]), e(r["name"])] for r in slice_]
+        return table(meta, _HEADERS, rows)
 ```
 
 ---
@@ -202,7 +216,7 @@ def companions(self, entry: PazEntry) -> list[str]:
     ]
 ```
 
-Companion files are passed into `render()` as:
+Companion files are passed into `get_records()` as:
 
 ```python
 companions: dict[str, bytes]
@@ -416,12 +430,14 @@ Raise only for actual programming errors.
 2. Create a private implementation folder starting with `_`.
 3. Add `__init__.py` to every package folder.
 4. Create a `registration.py`.
-5. Implement one or more `PreviewHandler` classes.
-6. Register by exact filename or extension.
-7. Escape all file-derived output.
-8. Use `companions()` for related files.
-9. Keep raw hex switching in the frontend, not the handler.
-10. Move reusable logic to `_common/` when another format needs it.
+5. Implement one or more `PreviewHandler` classes with `get_records()` and `render_records_page()`.
+6. `get_records()` must return plain dicts — no HTML. Include any LOC-lookup strings here so tab search can find them.
+7. `render_records_page()` slices `records[page * page_size : ...]` and returns an HTML fragment.
+8. Register by exact filename or extension.
+9. Escape all file-derived output (`e()` helper or `html.escape()`).
+10. Use `companions()` for related files.
+11. Keep raw hex switching in the frontend, not the handler.
+12. Move reusable logic to `_common/` when another format needs it.
 
 > **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. Changes to any file under `handlers/` — including private packages like `_dbss/` — take effect immediately. If a file is open on the Parsed tab, the preview re-renders automatically.
 
@@ -467,14 +483,28 @@ from __future__ import annotations
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
+from _dbss.common.html import e, table
+
+_HEADERS = [("Offset", "num", ""), ("Size", "num", "")]
 
 
 class TextureDdsHandler(PreviewHandler):
-    def render(
+    def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
+    ) -> list[dict]:
+        return [{"offset": 0, "size": len(data)}]
+
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
     ) -> str:
-        return f'<div class="table-meta">{len(data):,} B</div>'
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        rows = [[e(r["offset"]), e(r["size"])] for r in slice_]
+        return table(f"{len(records):,} records", _HEADERS, rows)
 ```

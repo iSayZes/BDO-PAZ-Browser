@@ -30,7 +30,10 @@
 
       <div id="right-panel">
         <div id="details-panel">
-          <div class="panel-title">Entry Details</div>
+          <div class="details-header">
+            <div class="panel-title">Entry Details</div>
+            <button id="btn-export" class="tab-btn" hidden onclick="app.exportFile()">⬇ Export</button>
+          </div>
           <div id="detail-grid" class="detail-grid">
             <span class="detail-placeholder">No file selected</span>
           </div>
@@ -46,9 +49,23 @@
               <button class="tab-btn" data-tab="parsed" onclick="app.switchTab('parsed')">Parsed</button>
             </div>
           </div>
+          <div id="tab-search-bar" hidden>
+            <div class="tsb-modes">
+              <button id="tab-search-mode-string" class="tsb-mode-btn active" onclick="app._setTabSearchMode('string')">String</button>
+              <button id="tab-search-mode-hex" class="tsb-mode-btn" onclick="app._setTabSearchMode('hex')">Hex</button>
+            </div>
+            <span class="tsb-prefix" id="tab-search-prefix" hidden>#</span>
+            <input id="tab-search-input" type="text" placeholder="Search…" autocomplete="off"
+                   oninput="app._onTabSearchInput(event)"
+                   onkeydown="app._onTabSearchKeydown(event)" />
+            <button class="tsb-nav-btn" onclick="app.tabSearchPrev()" title="Previous (Shift+Enter)">↑</button>
+            <button class="tsb-nav-btn" onclick="app.tabSearchNext()" title="Next (Enter)">↓</button>
+            <span id="tab-search-counter"></span>
+          </div>
           <div id="preview-content">
             <div class="placeholder">Select a file to preview.</div>
           </div>
+          <div id="page-bar-area"></div>
         </div>
       </div>
     </div>
@@ -71,6 +88,6 @@
       </div>
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>

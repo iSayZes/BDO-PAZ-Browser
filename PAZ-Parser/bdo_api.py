@@ -313,8 +313,13 @@ class Api:
 
         html = None
         parsed_total_pages = 1
-        if not isinstance(handler, HexHandler):
-            records = handler.get_records(data, entry, companions)
+        if has_parsed:
+            try:
+                records = handler.get_records(data, entry, companions)
+            except Exception as ex:
+                records = None
+                html = f'<div class="error">Parse error: {_html_mod.escape(str(ex))}</div>'
+
             if records is not None:
                 self._cached_records = records
                 self._cached_handler = handler
@@ -323,11 +328,11 @@ class Api:
                     html = handler.render_records_page(records, 0, PARSED_RECORDS_PER_PAGE)
                 except Exception as ex:
                     html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
-            else:
-                try:
-                    html = handler.render(data, entry, companions)
-                except Exception as ex:
-                    html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+        elif not isinstance(handler, HexHandler):
+            try:
+                html = handler.render(data, entry, companions)
+            except Exception as ex:
+                html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
 
         return {
             "html": html,
@@ -540,6 +545,111 @@ class Api:
         self._push_js("app.onPluginsReloaded()")
 
     # ── Status ────────────────────────────────────────────────────────────────
+
+    def search_content(self, path: str, query: str, mode: str, tab: str) -> dict:
+        """Search file content.
+
+        mode: "hex" | "string"
+        tab:  "hex" | "parsed"
+        Returns {"offsets": [...]} (byte offsets) for hex tab,
+                {"record_indices": [...]} for parsed tab.
+        """
+        norm = _norm(path)
+
+        if tab == "parsed":
+            if self._cached_path != norm or self._cached_records is None:
+                return {"error": "No parsed data cached — reload the file"}
+            q = query.lower()
+            indices = [
+                i for i, rec in enumerate(self._cached_records)
+                if any(q in str(v).lower() for v in rec.values())
+            ]
+            return {"record_indices": indices, "total": len(indices)}
+
+        # hex tab — search raw bytes
+        if self._cached_path == norm and self._cached_data is not None:
+            data = self._cached_data
+        elif path.startswith(_DISK_VIRTUAL_PREFIX + "/"):
+            name = path[len(_DISK_VIRTUAL_PREFIX) + 1:]
+            data = self._disk_companions.get(name)
+            if data is None:
+                return {"error": f"Disk file not loaded: {name}"}
+        else:
+            return {"error": "File data not cached — reload the file"}
+
+        if mode == "hex":
+            hex_clean = query.replace(" ", "")
+            if not hex_clean or len(hex_clean) % 2 != 0:
+                return {"offsets": [], "total": 0}
+            try:
+                needles = [bytes.fromhex(hex_clean)]
+            except ValueError:
+                return {"offsets": [], "total": 0}
+        else:
+            if not query:
+                return {"offsets": [], "total": 0}
+            needles = [query.encode("utf-8")]
+            try:
+                utf16 = query.encode("utf-16-le")
+                if utf16 != needles[0]:
+                    needles.append(utf16)
+            except Exception:
+                pass
+
+        seen: set[int] = set()
+        offsets: list[int] = []
+        for needle in needles:
+            start = 0
+            while (idx := data.find(needle, start)) != -1:
+                if idx not in seen:
+                    seen.add(idx)
+                    offsets.append(idx)
+                start = idx + 1
+        offsets.sort()
+
+        return {"offsets": offsets, "total": len(offsets)}
+
+    def export_file(self, path: str, tab: str) -> dict:
+        if self._window is None:
+            return {"error": "Window not initialized"}
+
+        norm = _norm(path)
+        filename = norm.rsplit("/", 1)[-1]
+
+        if tab == "parsed" and self._cached_path == norm and self._cached_records is not None:
+            import csv
+            import io
+            records = self._cached_records
+            buf = io.StringIO()
+            if records:
+                writer = csv.DictWriter(buf, fieldnames=list(records[0].keys()))
+                writer.writeheader()
+                writer.writerows(records)
+            data = buf.getvalue().encode("utf-8-sig")
+            save_filename = Path(filename).stem + ".csv"
+            file_types = ("CSV files (*.csv)", "All files (*.*)")
+        else:
+            if self._cached_path == norm and self._cached_data is not None:
+                data = self._cached_data
+            else:
+                return {"error": "File data not cached — reload the file"}
+            save_filename = filename
+            file_types = ("All files (*.*)",)
+
+        result = self._window.create_file_dialog(
+            webview.FileDialog.SAVE,
+            save_filename=save_filename,
+            file_types=file_types,
+        )
+        if not result:
+            return {"cancelled": True}
+
+        out_path = Path(result[0] if isinstance(result, (list, tuple)) else result)
+        try:
+            out_path.write_bytes(data)
+        except Exception as ex:
+            return {"error": str(ex)}
+        return {"ok": True, "path": str(out_path)}
 
     def get_status(self) -> dict:
         return {"message": self._status, "progress": None}

@@ -1,0 +1,20 @@
+/* ── Image view ───────────────────────────────────────────────────────────── */
+
+.img-view {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+}
+
+.img-meta {
+  color: var(--fg-dim);
+  font-size: 11px;
+}
+
+.img-view img {
+  max-width: 100%;
+  max-height: calc(100% - 24px);
+  object-fit: contain;
+  display: block;
+}

@@ -1,0 +1,76 @@
+/* ── Bottom bar ───────────────────────────────────────────────────────────── */
+
+#bottom-bar {
+  background: var(--surface);
+  padding: 6px 12px 8px;
+  flex-shrink: 0;
+}
+
+#status-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+#status-text {
+  color: var(--fg-dim);
+  font-size: 11px;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#progress-wrap {
+  flex: 0 0 200px;
+}
+
+#progress-bar {
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+#progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.1s;
+}
+
+#extract-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#extract-row label {
+  color: var(--fg-dim);
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+#extract-badge {
+  color: var(--cyan);
+  font-size: 11px;
+  font-family: Consolas, monospace;
+  white-space: nowrap;
+  margin-left: 4px;
+}
+
+#output-path {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--fg);
+  font-size: 11px;
+  padding: 3px 7px;
+  border-radius: 3px;
+  outline: none;
+  font-family: Consolas, monospace;
+}
+#output-path:focus {
+  border-color: var(--border3);
+}

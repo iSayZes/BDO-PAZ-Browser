@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import html as _html
 import struct
 from pathlib import Path
 
@@ -9,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler, register_handler
+from _dbss.common.html import e, table
 
 _RECORD_SIZE = 8  # u32 title_id + u32 category_id
 
@@ -19,37 +19,11 @@ _CATEGORIES: dict[int, str] = {
     3: "Fishing",
 }
 
-
-class TitleCategoryBssHandler(PreviewHandler):
-    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        records = _parse(data)
-        meta    = f"{len(records):,} records  ·  {len(data):,} B"
-
-        rows = []
-        for title_id, category_id in records:
-            cat_name = _CATEGORIES.get(category_id, f"Unknown ({category_id})")
-            rows.append(
-                f"<tr>"
-                f"<td class='num'>{title_id}</td>"
-                f"<td class='num'>{category_id}</td>"
-                f"<td>{_html.escape(cat_name)}</td>"
-                f"</tr>"
-            )
-
-        body = "".join(rows)
-        return (
-            f'<div class="table-meta">{_html.escape(meta)}</div>'
-            f'<div class="table-wrap">'
-            f'<table class="data-table">'
-            f'<thead><tr>'
-            f'<th class="num sortable">Title ID</th>'
-            f'<th class="num sortable">Cat ID</th>'
-            f'<th class="sortable">Category</th>'
-            f'</tr></thead>'
-            f'<tbody>{body}</tbody>'
-            f'</table>'
-            f'</div>'
-        )
+_HEADERS = [
+    ("Title ID", "num", ""),
+    ("Cat ID",   "num", ""),
+    ("Category", "",    ""),
+]
 
 
 def _parse(data: bytes) -> list[tuple[int, int]]:
@@ -58,6 +32,28 @@ def _parse(data: bytes) -> list[tuple[int, int]]:
         struct.unpack_from("<II", data, i * _RECORD_SIZE)
         for i in range(count)
     ]
+
+
+class TitleCategoryBssHandler(PreviewHandler):
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        return [
+            {"title_id": title_id, "category_id": category_id}
+            for title_id, category_id in _parse(data)
+        ]
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        meta = f"{len(records):,} records"
+        rows = [
+            [
+                e(r["title_id"]),
+                e(r["category_id"]),
+                e(_CATEGORIES.get(r["category_id"], f"Unknown ({r['category_id']})")),
+            ]
+            for r in slice_
+        ]
+        return table(meta, _HEADERS, rows)
 
 
 register_handler("titlecategory.bss", TitleCategoryBssHandler())

@@ -1,0 +1,57 @@
+/* ── Details panel ────────────────────────────────────────────────────────── */
+
+#details-panel {
+  height: 150px;
+  min-height: 70px;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  overflow: hidden;
+}
+
+.details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.details-header .panel-title {
+  margin-bottom: 0;
+}
+
+.panel-title {
+  font-weight: 600;
+  color: var(--fg-white);
+  font-size: 12px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 3px 0;
+}
+
+.detail-placeholder {
+  color: var(--fg-dim);
+  font-size: 12px;
+}
+
+.detail-label {
+  color: var(--fg-muted);
+  font-size: 11px;
+  padding: 1px 0;
+  white-space: nowrap;
+}
+
+.detail-value {
+  color: var(--accent);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 11px;
+  padding: 1px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

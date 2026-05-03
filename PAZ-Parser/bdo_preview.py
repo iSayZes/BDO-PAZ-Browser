@@ -22,26 +22,37 @@ class PreviewHandler(ABC):
         return []
 
     @abstractmethod
-    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        """Return an HTML fragment to display in the preview panel.
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        """Return all records as plain dicts (raw values — no HTML).
 
-        `companions` is keyed by filename (basename) and includes both PAZ-internal
-        companions declared by `companions()` and any disk files pre-loaded by the browser.
+        Parsed-view handlers must implement this. Raise NotImplementedError for
+        handlers that only produce hex/text/image output (HexHandler, TextHandler,
+        DdsHandler) — those are excluded from the parsed tab by `has_parsed` in
+        bdo_api.py and this method is never called on them.
         """
-        ...
+        raise NotImplementedError
 
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict] | None:
-        """Return structured records for paging. None means this handler does not support paging."""
-        return None
-
+    @abstractmethod
     def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        """Render HTML for one page of records. Only called when get_records() returns non-None."""
+        """Render HTML for one page of records.
+
+        `records` is the full list returned by get_records(). Slice with
+        ``records[page * page_size : (page + 1) * page_size]`` inside this method.
+        """
         raise NotImplementedError
 
 
 # ── Text ──────────────────────────────────────────────────────────────────────
 
 class TextHandler(PreviewHandler):
+    """Renders plain text files. Does not produce a parsed view."""
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        raise NotImplementedError
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        raise NotImplementedError
+
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         truncated = len(data) > _TEXT_LIMIT
         content   = data[:_TEXT_LIMIT].decode("utf-8", errors="replace")
@@ -57,6 +68,14 @@ class TextHandler(PreviewHandler):
 # ── DDS / Image ───────────────────────────────────────────────────────────────
 
 class DdsHandler(PreviewHandler):
+    """Renders DDS / image files. Does not produce a parsed view."""
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        raise NotImplementedError
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        raise NotImplementedError
+
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         try:
             from PIL import Image
@@ -83,7 +102,15 @@ class DdsHandler(PreviewHandler):
 # ── Hex dump ──────────────────────────────────────────────────────────────────
 
 class HexHandler(PreviewHandler):
+    """Renders raw hex dump. Does not produce a parsed view."""
+
     _ROW = 16
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        raise NotImplementedError
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         return self.render_page(data, 0)

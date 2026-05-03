@@ -1,0 +1,11 @@
+/* ── Color swatch ─────────────────────────────────────────────────────────── */
+
+.color-swatch {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  margin-right: 4px;
+  vertical-align: middle;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}

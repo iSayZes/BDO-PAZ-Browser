@@ -1,0 +1,87 @@
+/* ── Inline tab search bar ─────────────────────────────────────────────────── */
+
+#tab-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0 6px;
+  flex-shrink: 0;
+}
+
+.tsb-modes {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.tsb-mode-btn {
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 3px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+}
+
+.tsb-mode-btn:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.tsb-mode-btn.active {
+  background: var(--accent-d);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tsb-prefix {
+  color: var(--fg-dim);
+  font-family: "Consolas", "Cascadia Code", monospace;
+  font-size: 12px;
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
+#tab-search-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--fg);
+  font-size: 12px;
+  font-family: "Consolas", "Cascadia Code", monospace;
+  padding: 3px 8px;
+  border-radius: 3px;
+  outline: none;
+}
+
+#tab-search-input:focus {
+  border-color: var(--border3);
+}
+
+.tsb-nav-btn {
+  padding: 2px 7px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+#tab-search-counter {
+  font-size: 11px;
+  color: var(--fg-muted);
+  min-width: 64px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Highlight matched row in hex view */
+.hex-row.search-match {
+  background: var(--accent-d);
+  outline: 1px solid var(--accent);
+  border-radius: 2px;
+}
+
+/* Highlight matched row in parsed/table view */
+table tbody tr.search-match td {
+  background: var(--accent-d);
+  outline: 1px solid var(--accent);
+}

@@ -23,17 +23,20 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 
 ## Documented Formats
 
-| File                     | Description                                                  | Docs                                                               |
-| ------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------------ |
-| `languagedata_en.loc`    | Localization string table (zlib-compressed, UTF-16-LE)       | [loc](docs/file-formats/languagedata_loc.md)                     |
-| `title.dbss`             | Title record table (multiple layouts, embedded PAColor text) | [title](docs/file-formats/title_dbss.md)                         |
-| `titleoffset.dbss`       | Index into `title.dbss` — maps title ID → offset/size        | [titleoffset](docs/file-formats/titleoffset_dbss.md)             |
-| `titlebufflist.dbss`     | Title collection buff rewards (KR text + LOC tooltip match)  | [titlebufflist](docs/file-formats/titlebufflist_dbss.md)         |
-| `titlecategory.bss`      | Groups titles into display categories                        | [titlecategory](docs/file-formats/titlecategory_bss.md)          |
-| `mentalcard.dbss`        | Knowledge entry → node/category ID mapping                   | [mentalcard](docs/file-formats/mentalcard_dbss.md)               |
-| `knowledgelearning.dbss` | Mob ID → knowledge ID mapping (kind 13 records)              | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md) |
-| `npcpersonality.dbss`    | NPC personality ID → type refs + behavioural float params    | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
-| `zodiacsign.dbss`        | Zodiac sign definitions — star coords, names, texture paths  | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
+| File                            | Description                                                                    | Docs                                                               |
+| ------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `languagedata_en.loc`           | Localization string table (zlib-compressed, UTF-16-LE)                         | [loc](docs/file-formats/languagedata_loc.md)                       |
+| `title.dbss`                    | Title record table (multiple layouts, embedded PAColor text)                   | [title](docs/file-formats/title_dbss.md)                           |
+| `titleoffset.dbss`              | Index into `title.dbss` — maps title ID → offset/size                          | [titleoffset](docs/file-formats/titleoffset_dbss.md)               |
+| `titlebufflist.dbss`            | Title collection buff rewards (KR text + LOC tooltip match)                    | [titlebufflist](docs/file-formats/titlebufflist_dbss.md)           |
+| `titlecategory.bss`             | Groups titles into display categories                                          | [titlecategory](docs/file-formats/titlecategory_bss.md)            |
+| `mentalcard.dbss`               | Knowledge entry → node/category ID mapping                                     | [mentalcard](docs/file-formats/mentalcard_dbss.md)                 |
+| `knowledgelearning.dbss`        | Mob ID → knowledge ID mapping (kind 13 records)                                | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md)   |
+| `npcpersonality.dbss`           | NPC personality ID → type refs + behavioural float params                      | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
+| `npcgift.dbss`                  | NPC gift item table + confession-response dialogue                             | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
+| `zodiacsign.dbss`               | Zodiac sign definitions — star coords, names, texture paths                    | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
+| `characterspawntype.dbss`       | Entity spawn-type flag table — 44 boolean attributes per entity                | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
+| `characterspawntypeoffset.dbss` | PABR index into `characterspawntype.dbss` — maps entity id_low16 → offset/size | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 
 All formats are little-endian. Unknown fields are named `unknown_*`.
 
@@ -157,6 +160,7 @@ register_handler("myfile.dbss", MyFormatHandler())
 ```
 
 The browser automatically handles:
+
 - Prev/Next page navigation
 - Inline tab search (Ctrl+F) across all record field values
 - CSV export of the full record list

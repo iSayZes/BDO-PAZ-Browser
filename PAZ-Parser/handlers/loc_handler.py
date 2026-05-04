@@ -14,6 +14,18 @@ from _common.loc import decompress_loc
 from _dbss.common.binary import u32
 
 
+_TYPE_NAMES = {
+    0: "General strings",
+    1: "Title names + requirements",
+    4: "Territory names",
+    6: "NPC names",
+    7: "Zodiac sign data",
+    9: "Knowledge category names",
+    34: "Knowledge entry names",
+    54: "NPC gift/confession response dialogue",
+}
+
+
 def _u16(data: bytes, pos: int) -> int:
     return struct.unpack_from("<H", data, pos)[0]
 
@@ -56,7 +68,15 @@ class LocHandler(PreviewHandler):
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         raw = _parse_all_loc_records(data)
         return [
-            {"str_type": t, "str_id1": i1, "str_id2": i2, "str_id3": i3, "str_id4": i4, "text": text}
+            {
+                "str_id1": i1,
+                "str_id2": i2,
+                "str_id3": i3,
+                "str_id4": i4,
+                "str_type": t,
+                "str_type_text": _TYPE_NAMES.get(t, "Unknown"),
+                "text": text,
+            }
             for (_, t, i1, i2, i3, i4, text) in raw
         ]
 
@@ -66,11 +86,12 @@ class LocHandler(PreviewHandler):
         end   = min(start + page_size, total)
         rows_html = "".join(
             f"<tr>"
-            f"<td>{_html.escape(str(r['str_type']))}</td>"
             f"<td>{_html.escape(str(r['str_id1']))}</td>"
             f"<td>{_html.escape(str(r['str_id2']))}</td>"
             f"<td>{r['str_id3']}</td>"
             f"<td>{r['str_id4']}</td>"
+            f"<td>{_html.escape(str(r['str_type']))}</td>"
+            f"<td>{_html.escape(r['str_type_text'])}</td>"
             f"<td class='loc-text'>{_html.escape(r['text'])}</td>"
             f"</tr>"
             for r in records[start:end]
@@ -83,11 +104,12 @@ class LocHandler(PreviewHandler):
   <table class="loc-table">
     <thead>
       <tr>
-        <th>Type</th>
-        <th>ID 1</th>
-        <th>ID 2</th>
-        <th>ID 3</th>
-        <th>ID 4</th>
+        <th>Id1</th>
+        <th>Id2</th>
+        <th>Id3</th>
+        <th>Id4</th>
+        <th>Type (number)</th>
+        <th>Type (text)</th>
         <th>Text</th>
       </tr>
     </thead>

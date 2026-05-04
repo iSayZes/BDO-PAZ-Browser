@@ -47,6 +47,10 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 9        | Knowledge category (group) names — `str_id1` = node_id                       |
 | 34       | Knowledge entry names — `str_id1` = knowledge_id / entry_id                  |
 | 37/38/39 | Other systems                                                                |
+| 54       | NPC gift/confession response dialogue — `str_id1` = NPC ID                   |
+
+The parsed preview labels only confirmed types. Unconfirmed or ambiguous types
+are shown as `Unknown`.
 
 ### Type 1 sub-fields (`str_id4`)
 
@@ -62,18 +66,32 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 0       | Sign name         | `"Hammer"`                            |
 | 1       | Trait description | `"Brave, Conservative, Hot-Blooded."` |
 
+## Example
+
+str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
+
+## Suggested UI Layout
+
+| Column        | Type | Notes                                                        |
+| ------------- | ---- | ------------------------------------------------------------ |
+| Id1           | num  | `str_id1`                                                    |
+| Id2           | num  | `str_id2`                                                    |
+| Id3           | num  | `str_id3`                                                    |
+| Id4           | num  | `str_id4`                                                    |
+| Type (number) | num  | `str_type`                                                   |
+| Type (text)   | text | Human-readable label for confirmed types, otherwise Unknown |
+| Text          | text | Localized string                                             |
+
 ## Notes
 
 - All four ID fields together form a compound identifier; `str_id1` is the primary lookup key.
 - The same `str_id1` can appear multiple times with `str_type=1`:
   one entry for the title name (`str_id4=0`), one for the requirement text (`str_id4=1`).
 - `str_id1` matches `title_id` in `title.dbss` and `titleoffset.dbss`.
+- For `str_type=54`, `str_id1` matches `npc_id` in `npcgiftdata.dbss` and
+  provides the English localized gift/confession response dialogue.
 - The file is located on disk at `<paz_root_parent>/ads/languagedata_en.loc`
   (one level above the PAZ folder) and is pre-loaded by the browser as a companion for all handlers.
-
-## Example
-
-str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
 
 ## Open Questions
 

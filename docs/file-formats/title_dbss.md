@@ -128,7 +128,28 @@ payload:
   Korean title text / requirement text / PAColor markup / other variable data
 ```
 
-## Current Open Question: Title Name Color
+## Recommended Parser Behavior
+
+1. Use `titleoffset.dbss` to slice blocks.
+2. Detect layout by title ID position.
+3. Read `style_value`, but label it as `Style?/Category?`.
+4. Look up English name/requirement from `languagedata_en.loc`:
+   - Name: `str_type=1, str_id1=title_id, str_id4=0`
+   - Requirement: `str_type=1, str_id1=title_id, str_id4=1`
+5. Strip PA tags from English requirement text for readability.
+6. Preserve/debug PA tags separately.
+7. Treat `+0x14+` as variable payload, not fixed fields.
+8. Add a first-PAColor-offset column to avoid misreading UTF-16 text as integers.
+
+## Notes
+
+- `Darkness` and `II` can share `style_value`, `u32_04`, and `u32_20`, yet appear visually different in-game.
+- Short titles like `II`, `IV`, `VI` cause fields like `u32_14` to decode as UTF-16 title characters.
+- `TITLEBUFFLIST.DBSS` was investigated but turned out to describe title collection bonuses, not per-title name colors.
+
+## Open Questions
+
+### Title Name Color
 
 The visible title name color has not been proven to come from `title.dbss` alone.
 
@@ -146,22 +167,3 @@ Likely sources still to investigate:
 - UI scripts / title rendering logic
 - another DBSS file related to title grade/type/color
 - hardcoded handling by title ID or title group
-
-## Recommended Parser Behavior
-
-1. Use `titleoffset.dbss` to slice blocks.
-2. Detect layout by title ID position.
-3. Read `style_value`, but label it as `Style?/Category?`.
-4. Look up English name/requirement from `languagedata_en.loc`:
-   - Name: `str_type=1, str_id1=title_id, str_id4=0`
-   - Requirement: `str_type=1, str_id1=title_id, str_id4=1`
-5. Strip PA tags from English requirement text for readability.
-6. Preserve/debug PA tags separately.
-7. Treat `+0x14+` as variable payload, not fixed fields.
-8. Add a first-PAColor-offset column to avoid misreading UTF-16 text as integers.
-
-## Example Debug Notes
-
-- `Darkness` and `II` can share `style_value`, `u32_04`, and `u32_20`, yet appear visually different in-game.
-- Short titles like `II`, `IV`, `VI` cause fields like `u32_14` to decode as UTF-16 title characters.
-- `TITLEBUFFLIST.DBSS` was investigated but turned out to describe title collection bonuses, not per-title name colors.

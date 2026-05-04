@@ -6,6 +6,7 @@
   flex-shrink: 0;
   padding: 10px 14px;
   overflow: hidden;
+  user-select: text;
 }
 
 .details-header {

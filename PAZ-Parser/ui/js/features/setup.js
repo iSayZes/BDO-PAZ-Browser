@@ -7,6 +7,19 @@ export const setupMethods = {
     });
   },
 
+  _setupImageZoom() {
+    const content = document.getElementById("preview-content");
+    content.addEventListener("wheel", (e) => {
+      if (!e.ctrlKey) return;
+      const img = content.querySelector(".img-view img");
+      if (!img) return;
+      e.preventDefault();
+      const current = parseFloat(img.style.zoom) || 1;
+      const delta = e.deltaY < 0 ? 0.1 : -0.1;
+      img.style.zoom = Math.max(0.1, Math.round((current + delta) * 10) / 10);
+    }, { passive: false });
+  },
+
   _setupEscapeClear() {
     document.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "f") {

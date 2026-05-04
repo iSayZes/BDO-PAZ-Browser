@@ -4,6 +4,7 @@ import base64
 import html as _html
 import importlib.util
 import io
+import re as _re
 from abc import ABC, abstractmethod
 from pathlib import Path
 import sys
@@ -77,6 +78,19 @@ class DdsHandler(PreviewHandler):
         raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
+        name = _html.escape(Path(entry.internal_path).name)
+        ext  = Path(entry.internal_path).suffix.lower()
+
+        if ext == ".gif":
+            b64 = base64.b64encode(data).decode()
+            return (
+                f'<div class="img-view">'
+                f'<div class="img-meta">GIF</div>'
+                f'<div class="img-scroll">'
+                f'<img src="data:image/gif;base64,{b64}" alt="{name}">'
+                f'</div></div>'
+            )
+
         try:
             from PIL import Image
         except ImportError:
@@ -90,12 +104,12 @@ class DdsHandler(PreviewHandler):
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         b64  = base64.b64encode(buf.getvalue()).decode()
-        name = _html.escape(Path(entry.internal_path).name)
         return (
             f'<div class="img-view">'
             f'<div class="img-meta">{img.width} × {img.height} px</div>'
+            f'<div class="img-scroll">'
             f'<img src="data:image/png;base64,{b64}" alt="{name}">'
-            f'</div>'
+            f'</div></div>'
         )
 
 
@@ -143,15 +157,73 @@ class HexHandler(PreviewHandler):
         )
 
 
+# ── Alt-view (two-tab: primary render + alternate render) ─────────────────────
+
+class AltViewHandler(PreviewHandler):
+    """Two-tab handler with a primary view (e.g. text) and an alternate view (e.g. rendered).
+
+    Override render() for the primary tab and render_alt() for the secondary tab.
+    Set primary_label / alt_label class attributes to name the tabs.
+    """
+
+    primary_label: str = "Text"
+    alt_label: str = "Rendered"
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:  # noqa: ARG002
+        raise NotImplementedError
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:  # noqa: ARG002
+        raise NotImplementedError
+
+    @abstractmethod
+    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str: ...
+
+    @abstractmethod
+    def render_alt(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str: ...
+
+
+class SvgHandler(AltViewHandler):
+    """SVG files: Text tab shows source, Rendered tab shows the image inline."""
+
+    primary_label = "Text"
+    alt_label = "Rendered"
+
+    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
+        content = data.decode("utf-8", errors="replace")
+        return f'<pre class="text-view">{_html.escape(content)}</pre>'
+
+    def render_alt(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
+        import re as _re
+        text = data.decode("utf-8", errors="replace")
+        # Strip XML declaration and DOCTYPE — external DTD references block Chromium data-URI rendering
+        text = _re.sub(r"<\?xml[^?]*\?>", "", text)
+        text = _re.sub(r"<!DOCTYPE[^>]*>", "", text)
+        b64  = base64.b64encode(text.encode("utf-8")).decode()
+        name = _html.escape(Path(entry.internal_path).name)
+        return (
+            f'<div class="img-view">'
+            f'<div class="img-scroll">'
+            f'<img src="data:image/svg+xml;base64,{b64}" alt="{name}">'
+            f'</div></div>'
+        )
+
+
 # ── Registry ──────────────────────────────────────────────────────────────────
+
+_image_handler = DdsHandler()
 
 _REGISTRY: dict[str, PreviewHandler] = {
     **{ext: TextHandler() for ext in (
         ".xml", ".json", ".txt", ".csv", ".ini", ".cfg",
         ".log", ".htm", ".html", ".yaml", ".yml", ".lua",
-        ".ai"
+        ".ai", ".css", ".js", ".h", ".srt",
+        ".mxml", ".weathercolortablexml", ".xmp",
     )},
-    ".dds": DdsHandler(),
+    **{ext: _image_handler for ext in (
+        ".dds", ".dds1", ".dds11",
+        ".png", ".jpg", ".bmp", ".gif", ".tga", ".tif",
+    )},
+    ".svg": SvgHandler(),
 }
 
 _BUILTIN_KEYS: frozenset[str] = frozenset(_REGISTRY)
@@ -173,6 +245,42 @@ def get_handler(name: str, ext: str) -> PreviewHandler:
 def register_handler(key: str, handler: PreviewHandler) -> None:
     """Register by filename (e.g. 'titleoffset.dbss') or extension (e.g. '.dbss')."""
     _REGISTRY[key.lower()] = handler
+
+
+def get_binary_handlers() -> list[str]:
+    """Return sorted list of registered binary (non-builtin) handler keys."""
+    return sorted(k for k in _REGISTRY if k not in _BUILTIN_KEYS)
+
+
+def get_builtin_formats() -> list[str]:
+    """Return sorted list of built-in (text/image) format extensions."""
+    return sorted(_BUILTIN_KEYS)
+
+
+def unique_format_keys(entries: list[PazEntry]) -> list[str]:
+    """Return sorted unique format keys derived from PAZ entries.
+
+    Formats with a named registry entry (e.g. 'title.dbss') are keyed by
+    full filename so each is counted separately. Everything else is keyed by
+    extension (e.g. '.pac'), grouping unknown variants together.
+    """
+    _numeric_bss = _re.compile(r"^\d+_\d+\.bss$")
+
+    keys: set[str] = set()
+    for entry in entries:
+        name = entry.internal_path.replace("\\", "/").rsplit("/", 1)[-1].lower()
+        if "." not in name:
+            continue
+        ext  = "." + name.rsplit(".", 1)[-1]
+        if name in _REGISTRY:
+            keys.add(name)
+        elif _numeric_bss.match(name):
+            keys.add("x_y.bss")
+        elif ext in (".bss", ".dbss"):
+            keys.add(name)
+        else:
+            keys.add(ext)
+    return sorted(keys)
 
 
 # ── Plugin auto-loader ────────────────────────────────────────────────────────

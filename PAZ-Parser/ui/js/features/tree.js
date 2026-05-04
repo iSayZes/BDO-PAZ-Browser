@@ -115,6 +115,8 @@ export const treeMethods = {
     this._hexTotalPages = 1;
     this._parsedPage = 0;
     this._parsedTotalPages = 1;
+    this._isAltView = false;
+    this._tabLabels = null;
 
     document.getElementById("preview-title").textContent = `${icon}  ${name}`;
     document.getElementById("preview-content").innerHTML = '<div class="placeholder">Loading…</div>';
@@ -132,11 +134,23 @@ export const treeMethods = {
       this._activeTab = "hex";
       this._hexTotalPages = result.hex_total_pages ?? 1;
       this._parsedTotalPages = result.parsed_total_pages ?? 1;
+      this._isAltView = !!result.tab_labels;
+      this._tabLabels = result.tab_labels || null;
 
       const tabs = document.getElementById("preview-tabs");
       const content = document.getElementById("preview-content");
 
       document.getElementById("btn-export").hidden = false;
+
+      const hexTabBtn    = tabs.querySelector('[data-tab="hex"]');
+      const parsedTabBtn = tabs.querySelector('[data-tab="parsed"]');
+      if (this._tabLabels) {
+        hexTabBtn.textContent    = this._tabLabels[0];
+        parsedTabBtn.textContent = this._tabLabels[1];
+      } else {
+        hexTabBtn.textContent    = "Hex";
+        parsedTabBtn.textContent = "Parsed";
+      }
 
       if (result.has_parsed) {
         tabs.hidden = false;
@@ -146,6 +160,9 @@ export const treeMethods = {
         content.innerHTML = this._hexHtml;
         this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", 0, this._hexTotalPages) : null);
         this.showTabSearchBar(true);
+        if (this._isAltView) {
+          document.getElementById("tab-search-mode-hex").hidden = true;
+        }
       } else {
         tabs.hidden = true;
         this.showTabSearchBar(false);
@@ -182,10 +199,16 @@ export const treeMethods = {
     if (tab === "hex") {
       content.innerHTML = this._hexHtml;
       this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", this._hexPage, this._hexTotalPages) : null);
+      if (this._isAltView) {
+        document.getElementById("tab-search-mode-hex").hidden = true;
+      }
     } else {
       content.innerHTML = this._parsedHtml || "";
       this._initTableSort(content);
       this._setPageBar(this._parsedTotalPages > 1 ? this._buildPageBar("parsed", this._parsedPage, this._parsedTotalPages) : null);
+      if (this._isAltView) {
+        this.showTabSearchBar(false);
+      }
     }
   },
 };

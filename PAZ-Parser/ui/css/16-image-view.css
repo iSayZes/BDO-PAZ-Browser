@@ -12,9 +12,14 @@
   font-size: 11px;
 }
 
+.img-scroll {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .img-view img {
-  max-width: 100%;
-  max-height: calc(100% - 24px);
-  object-fit: contain;
   display: block;
 }

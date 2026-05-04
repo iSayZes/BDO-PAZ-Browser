@@ -24,12 +24,15 @@ def main() -> None:
     parser.add_argument("--file", metavar="PATTERN", help="File name or glob pattern to extract, e.g. title.dbss or *title*.dbss")
     parser.add_argument("--list", metavar="PATTERN", help="List matching file paths without extracting, e.g. title*.dbss")
     parser.add_argument("--output", metavar="DIR", help="Output directory for --file (default: current working directory)")
+    parser.add_argument("--formats", action="store_true", help="Show supported file formats and exit")
     args = parser.parse_args()
 
     if args.file:
         sys.exit(_cli_extract(args))
     elif args.list:
         sys.exit(_cli_list(args))
+    elif args.formats:
+        sys.exit(_cli_formats(args))
     else:
         _launch_gui()
 
@@ -127,6 +130,58 @@ def _match_entries(entries: list[PazEntry], pattern: str) -> list[PazEntry]:
         if hit:
             matches.append(entry)
     return matches
+
+
+_FORMATS_IGNORE: frozenset[str] = frozenset({
+    # Add extensions or filenames to hide from --formats output
+    # e.g. ".pac", "x_y.bss"
+    ".zip",
+    ".temp",
+    ".exe",
+    ".wr",
+    ".woff", # Font
+    ".wem",
+    ".volumefog",
+    ".volumedecal",
+    ".vnm",
+    ".ttf", # Font
+})
+
+
+def _cli_formats(args: argparse.Namespace) -> int:
+    from bdo_preview import _BUILTIN_KEYS, _REGISTRY, unique_format_keys
+
+    paz_root = _resolve_paz_root(args.paz_folder)
+    if paz_root is None:
+        return 1
+
+    entries = _load_all_entries(paz_root)
+    if entries is None:
+        return 1
+
+    all_keys = [k for k in unique_format_keys(entries) if k not in _FORMATS_IGNORE]
+    generic  = [k for k in all_keys if k in _BUILTIN_KEYS]
+    binary   = [k for k in all_keys if k not in _BUILTIN_KEYS]
+
+    registered_handlers = {k for k in _REGISTRY if k not in _BUILTIN_KEYS and k not in _FORMATS_IGNORE}
+    supported_binary   = sorted({k for k in binary if k in _REGISTRY} | registered_handlers)
+    unsupported_binary = [k for k in binary if k not in _REGISTRY and k not in registered_handlers]
+
+    supported   = sorted(generic + supported_binary)
+    unsupported = sorted(unsupported_binary)
+    n_supported = len(supported)
+    n_total     = n_supported + len(unsupported)
+
+    print(f"File formats: {n_supported}/{n_total} supported")
+    print()
+    print(f"Supported ({n_supported}):")
+    for k in supported:
+        print(f"  {k}")
+    print()
+    print(f"Unsupported ({len(unsupported)}):")
+    for k in unsupported:
+        print(f"  {k}")
+    return 0
 
 
 def _cli_list(args: argparse.Namespace) -> int:

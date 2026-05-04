@@ -2,13 +2,17 @@
 
 ## Purpose
 
-Stores per-title metadata and embedded Korean title/requirement payload data.
+Stores title metadata, the raw Korean title text, raw Korean requirement text,
+category, and optional inline PAColor markup for special title names.
 
-It does **not** appear to directly store the final visible title color as a simple RGB value. Earlier assumptions that `style_value`, `_PA_COLOR_MARKER`, or fixed fields like `u32_20` directly map to the title name color were disproven by matching rows with different visible colors.
+`title.dbss` is block-addressed by `titleoffset.dbss`; it is not a flat fixed
+record table.
 
 ## Companion Files
 
-- `titleoffset.dbss` — required. Provides `title_id -> (offset, size)` block lookup.
+- `titleoffset.dbss` - required. Provides `title_id -> (offset, size)` block
+  lookup.
+- `languagedata_en.loc` - optional for English title/requirement display.
 
 ## Offset File Format: titleoffset.dbss
 
@@ -19,151 +23,249 @@ It does **not** appear to directly store the final visible title color as a simp
 | `+0x08 + n*0x0C` | u32  | Offset into `title.dbss` |
 | `+0x0C + n*0x0C` | u32  | Block size               |
 
-## Layout Detection
+Observed sample: 3,048 entries. The largest `offset + size` equals the
+`title.dbss` byte length, so the offset table accounts for the full file.
 
-Layout is not determined by a dedicated layout ID. Detect it by checking where the `title_id` appears in the block.
+## General Block Header
 
-| Condition                       | Layout |
-| ------------------------------- | ------ |
-| `u32(block + 0x08) == title_id` | A      |
-| `u32(block + 0x0C) == title_id` | B      |
-| `u32(block + 0x10) == title_id` | C      |
+All inspected records fit one generalized header. The older A/B/C layouts are
+just `key_count` values 1, 2, and 3.
 
-## Observed Layout A
+| Offset                    | Type      | Name                 | Description                                                       |
+| ------------------------- | --------- | -------------------- | ----------------------------------------------------------------- |
+| `+0x00`                   | u32       | key_count            | Number of 32-bit key/hash/group fields before `title_id`          |
+| `+0x04`                   | u32[]     | key_values           | `key_count` values                                                |
+| `+0x04 + key_count*4`     | u32       | title_id             | Matches offset entry and loc string ID                            |
+| `+0x08 + key_count*4`     | u32       | style_or_title_len   | Usually a style value; for styled title records, title length - 1 |
+| `+0x0C + key_count*4`     | u32       | zero                 | Observed `0`                                                      |
+| `+0x10 + key_count*4`     | utf16-le  | title/requirement    | Variable text payload                                             |
 
-Most inspected titles use Layout A.
+Observed `key_count` distribution:
 
-| Offset   | Type   | Name                  | Description                                                                                                                                 | Confidence |
-| -------- | ------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `+0x00`  | u32    | unknown/version-ish   | Usually `1` in observed rows                                                                                                                | Medium     |
-| `+0x04`  | u32    | group/hash/category?  | Repeats across related title groups, but not enough to define color                                                                         | Low        |
-| `+0x08`  | u32    | title_id              | Matches offset entry and loc string id                                                                                                      | High       |
-| `+0x0C`  | u32    | style_value/category? | Small enum-like value. Not final color.                                                                                                     | Medium     |
-| `+0x10`  | u32    | unknown               | Often `0` in observed rows                                                                                                                  | Low        |
-| `+0x14+` | varies | payload               | Variable payload. Often begins raw UTF-16 title text / text fragments / PA tags. Do not treat all later `u32_*` reads as structured fields. | High       |
+| key_count | Count | Former Layout |
+| --------- | ----- | ------------- |
+| 1         | 2,844 | A             |
+| 2         | 175   | B             |
+| 3         | 15    | C             |
+| 4         | 1     | Previously `?` |
+| 6         | 13    | Previously `?` |
 
-## Observed Layout B
-
-| Offset   | Type   | Name                  | Description                                       |
-| -------- | ------ | --------------------- | ------------------------------------------------- |
-| `+0x00`  | u32    | unknown               | First field                                       |
-| `+0x0C`  | u32    | title_id              | Matches offset entry and loc string id            |
-| `+0x10`  | u32    | style_value/category? | Small enum-like value. Not final color by itself. |
-| `+0x14+` | varies | payload               | Variable payload                                  |
-
-## Observed Layout C
-
-| Offset   | Type   | Name                  | Description                                       |
-| -------- | ------ | --------------------- | ------------------------------------------------- |
-| `+0x00`  | u32    | unknown               | First field                                       |
-| `+0x10`  | u32    | title_id              | Matches offset entry and loc string id            |
-| `+0x14`  | u32    | style_value/category? | Small enum-like value. Not final color by itself. |
-| `+0x18+` | varies | payload               | Variable payload                                  |
-
-## Important Correction: PAColor Tags
-
-`title.dbss` blocks can contain UTF-16 PA tags such as:
+This means title ID offset is:
 
 ```text
-<PAColor0xfff32200>Title Requirement<PAOldColor>
+0x04 + key_count * 4
 ```
 
-Observed behavior indicates these tags are usually inline formatting for requirement/body text, **not the final color of the title name**.
-
-The common value:
+and the style/length field offset is:
 
 ```text
-fff32200
+title_id_offset + 0x04
 ```
 
-appears as a default-ish requirement text marker and should not be treated as title name color.
+## Text Payload
 
-## Important Correction: style_value
-
-`style_value` is not enough to identify title name color.
-
-Counterexample observed:
-
-| Title ID | Title                      | style_value | Visual Result |
-| -------- | -------------------------- | ----------- | ------------- |
-| `2117`   | The Greatest Guardian      | `7`         | Special color |
-| `44`     | Stoneback Crab Artisan     | `7`         | Normal blue   |
-| `45`     | Stoneback Crab Philosopher | `7`         | Normal blue   |
-
-So `style_value` is likely a category/display class/progression grouping, not a direct color enum.
-
-## Important Correction: Fixed u32 Fields After +0x14
-
-Several later `u32_*` values are actually UTF-16 text interpreted as integers.
-
-Examples:
-
-| Raw u32      | UTF-16 fragment |
-| ------------ | --------------- |
-| `0x006F0043` | `Co`            |
-| `0x006F006C` | `lo`            |
-| `0x00300072` | `r0`            |
-| `0x00430041` | `AC`            |
-| `0x00780030` | `x0`            |
-
-These are fragments of strings such as:
+Most records have a plain Korean title followed by the Korean requirement
+string.
 
 ```text
-<PAColor0x...
+utf16 title text
+u16 requirement_text_length
+u16 0
+u16 0
+u16 0
+utf16 requirement text, usually with PAColor tags
+u16 0
+u16 0
+u32 category_id
+padding / optional extra payload
 ```
 
-For debugging, find the first `_PA_COLOR_MARKER` offset and avoid treating fields at or after that offset as structured numeric fields.
+The `requirement_text_length` is the UTF-16 code-unit length of the tagged
+requirement string, not the visible text length after stripping PA tags.
 
-## Current Best Interpretation
+Example, title ID `44`:
+
+| Field | Value |
+| ----- | ----- |
+| English title | `Stoneback Crab Artisan` |
+| Korean title | `돌멘게 공예가` |
+| Requirement length marker | `66` |
+| Tagged requirement length | `66` |
+| Plain requirement length | `35` |
+| Category | `1` / Combat |
+
+## Styled Title Records
+
+Thirty records, title IDs `3645..3674`, begin their text payload with a PAColor
+tag. These are class "MASTER ..." titles. For these records, the header field
+after `title_id` is not a style enum; it is the styled title payload length
+minus one.
+
+Example, title ID `3645`:
+
+| Field | Value |
+| ----- | ----- |
+| Header field | `231` |
+| Styled title payload length | `232` UTF-16 code units |
+| Plain title after stripping tags | `MASTER WARRIOR` |
+| Requirement length marker | `115` |
+| Category | `0` / World |
+
+The final code unit of the styled title payload is still the requirement length
+marker, same as normal records.
+
+## Category IDs
+
+`title.dbss` itself carries a category field after the requirement text.
+
+| ID | Name       |
+| -- | ---------- |
+| 0  | World      |
+| 1  | Combat     |
+| 2  | Life Skill |
+| 3  | Fishing    |
+
+## Extra Payload And Title Color
+
+Most default-color titles have no non-zero payload after the category field.
+Most non-default-color titles have a 64-byte or 88-byte extra payload. The title
+color is encoded near the end of that payload as both an ASCII `AARRGGBB`
+string and the same value as a little-endian u32.
+
+64-byte color payload tail:
+
+| Offset | Type      | Name        | Description                         |
+| ------ | --------- | ----------- | ----------------------------------- |
+| `+0x2C` | u32      | color_len   | Observed `8`                        |
+| `+0x34` | char[8]  | color_argb  | ASCII hex, e.g. `FFFF7124`          |
+| `+0x3C` | u32      | color_value | Same value as little-endian integer |
+
+Example:
 
 ```text
-fixed header:
-  +0x00 unknown/version-ish
-  +0x04 group/category/hash-ish
-  title_id at layout-dependent offset
-  style_value immediately after title_id
-  +next field often 0
-
-payload:
-  Korean title text / requirement text / PAColor markup / other variable data
+46 46 46 46 37 31 32 34 24 71 ff ff
+F  F  F  F  7  1  2  4  packed 0xFFFF7124
 ```
+
+This decodes to `0xFFFF7124`, displayed in CSS as `#FF7124`.
+
+88-byte payloads add an aura/effect string before the color:
+
+| Offset | Type     | Name          | Description                                      |
+| ------ | -------- | ------------- | ------------------------------------------------ |
+| `+0x24` | u32     | effect_len    | Observed `0x18`                                  |
+| `+0x2C` | char[]  | effect_name   | e.g. `vCalsutain_Buff_Aura_02A`                  |
+| `+0x44` | u32     | color_len     | Observed `8`                                     |
+| `+0x4C` | char[8] | color_argb    | ASCII hex                                        |
+| `+0x54` | u32     | color_value   | Same color as little-endian integer              |
+
+The name is probably misspelled data (`Calsutain` instead of `Calustian` or
+similar), so parsers should preserve it exactly.
+
+In the current extracted sample, 335 records decode a title color from this
+payload. For example, title ID `3451` (`Fisher`) has the same `0xFFAFEEEE`
+payload color as `Angel`. This was visually confirmed in-game.
+
+Other visual confirmations:
+
+| Titles | Payload Color | Result |
+| ------ | ------------- | ------ |
+| `The Greatest Guardian`, `#BDORemastered`, `One of the Greatest` | `0xFFFF7124` | Same color |
+| `REBOOT` | `0xFFFF7124` | Same color family as the titles above |
+| `Nouverikant` | `0xFFFFB400` | Not the same as `REBOOT` |
+
+These confirmations support using the DBSS payload color as the precise source
+for individual non-default title display.
+
+## PAColor Tags
+
+Requirement text commonly starts with:
+
+```text
+<PAColor0xFFf32200>칭호 조건<PAOldColor>:
+```
+
+This default requirement label color is not the visible title-name color.
+
+Special "MASTER ..." title names are different: their title payload itself is
+PAColor-tagged, so those PAColor tags are part of the displayed title name.
+
+## Style Field
+
+For normal records, `style_or_title_len` is a style/category-like value. Common
+observed values include `2..17`, with rare values through `28`, `43`, and a few
+high values used only by styled title records.
+
+`style_or_title_len` is not enough by itself to identify the final visible title
+color. Counterexample:
+
+| Title ID | Title                      | Header Field | Visual Result |
+| -------- | -------------------------- | ------------ | ------------- |
+| `2117`   | The Greatest Guardian      | `7`          | Special color |
+| `44`     | Stoneback Crab Artisan     | `7`          | Normal blue   |
+| `45`     | Stoneback Crab Philosopher | `7`          | Normal blue   |
+
+## Optional Extra Payload
+
+Some color payloads also include small non-zero integers at offsets such as
+`+0x14` and `+0x1C`. These look like grouping/effect parameters, not the title
+color itself.
 
 ## Recommended Parser Behavior
 
 1. Use `titleoffset.dbss` to slice blocks.
-2. Detect layout by title ID position.
-3. Read `style_value`, but label it as `Style?/Category?`.
-4. Look up English name/requirement from `languagedata_en.loc`:
+2. Read `key_count`, then derive `title_id_offset`.
+3. Read `key_values`, `title_id`, `style_or_title_len`, and the zero field.
+4. If text starts with a PAColor tag, treat `style_or_title_len` as styled title
+   payload length minus one.
+5. Otherwise treat `style_or_title_len` as the normal style field.
+6. Extract Korean title text, tagged Korean requirement text, requirement
+   length marker, and category.
+7. Strip PA tags only for readable display; keep raw PA tags for debugging.
+8. Look up English name/requirement from `languagedata_en.loc`:
    - Name: `str_type=1, str_id1=title_id, str_id4=0`
    - Requirement: `str_type=1, str_id1=title_id, str_id4=1`
-5. Strip PA tags from English requirement text for readability.
-6. Preserve/debug PA tags separately.
-7. Treat `+0x14+` as variable payload, not fixed fields.
-8. Add a first-PAColor-offset column to avoid misreading UTF-16 text as integers.
+
+## Suggested UI Layout
+
+| Column | Align | Notes |
+| ------ | ----- | ----- |
+| Title ID | num | Loc lookup key |
+| Category | | Decoded category name, falling back to the numeric value |
+| Title Color | | Swatch from extra payload, if present |
+| Title | | English loc text, falling back to Korean; colored when a payload color exists |
+| Title Requirements | | English loc text, falling back to Korean |
+| Special | | `True` when the title has a non-default payload color or inline title PAColor |
+| Effect | | Extra payload effect/aura string, if present |
 
 ## Notes
 
-- `Darkness` and `II` can share `style_value`, `u32_04`, and `u32_20`, yet appear visually different in-game.
-- Short titles like `II`, `IV`, `VI` cause fields like `u32_14` to decode as UTF-16 title characters.
-- `TITLEBUFFLIST.DBSS` was investigated but turned out to describe title collection bonuses, not per-title name colors.
+- The previously unknown `?` layouts are now explained by `key_count` values 4
+  and 6.
+- The old `u32_14`, `u32_18`, and similar columns can be UTF-16 text fragments,
+  not structured integers.
+- `titlecategory.bss` is not needed for category display; `title.dbss` carries
+  the category after the requirement string.
 
 ## Open Questions
 
-### Title Name Color
+### Extra Payload Parameters
 
-The visible title name color has not been proven to come from `title.dbss` alone.
+The color value and optional aura/effect name are now decoded, but several
+earlier integers in the extra payload are still unresolved.
 
-Disproven candidates:
+### Normal Title Name Color
 
-- `_PA_COLOR_MARKER` in `title.dbss` — appears to be requirement/body text formatting.
-- `style_value` alone — same style can produce different visible title colors.
-- `u32_04` alone — same group/hash can produce different visible title colors.
-- `u32_20` alone — same key can show different visible colors, and later fields may be text/payload depending on block.
-- `u32_14` — often just raw untranslated UTF-16 title text.
+For titles without an extra color payload, the default visible color is still
+not stored as a per-record RGB value in `title.dbss`. Disproven candidates:
+
+- Requirement `_PA_COLOR_MARKER`
+- `style_or_title_len` alone
+- A fixed early `u32` field after the title text
 
 Likely sources still to investigate:
 
 - client-side title color table
 - UI scripts / title rendering logic
 - another DBSS file related to title grade/type/color
-- hardcoded handling by title ID or title group
+- implicit default color chosen by title category/UI code

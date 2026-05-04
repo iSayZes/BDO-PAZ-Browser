@@ -32,7 +32,7 @@ from bdo_models import PazEntry
 from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
 from bdo_payload_reader import read_entry_payload
 from bdo_preview import (
-    DdsHandler, HexHandler, PARSED_RECORDS_PER_PAGE, TextHandler, get_handler,
+    AltViewHandler, DdsHandler, HexHandler, PARSED_RECORDS_PER_PAGE, TextHandler, get_handler,
 )
 
 _hex_handler = HexHandler()
@@ -300,8 +300,9 @@ class Api:
         meta: dict,
     ) -> dict:
         import html as _html_mod
+        is_alt   = isinstance(handler, AltViewHandler)
         is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
-        has_parsed = not is_plain
+        has_parsed = not is_plain and not is_alt
 
         self._cached_path = _norm(internal_path)
         self._cached_data = data
@@ -313,7 +314,20 @@ class Api:
 
         html = None
         parsed_total_pages = 1
-        if has_parsed:
+        tab_labels = None
+
+        if is_alt:
+            try:
+                hex_html = handler.render(data, entry, companions)
+            except Exception as ex:
+                hex_html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+            try:
+                html = handler.render_alt(data, entry, companions)
+            except Exception as ex:
+                html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+            hex_total_pages = 1
+            tab_labels = [handler.primary_label, handler.alt_label]
+        elif has_parsed:
             try:
                 records = handler.get_records(data, entry, companions)
             except Exception as ex:
@@ -337,7 +351,8 @@ class Api:
         return {
             "html": html,
             "hex_html": hex_html,
-            "has_parsed": has_parsed,
+            "has_parsed": has_parsed or is_alt,
+            "tab_labels": tab_labels,
             "meta": meta,
             "hex_total_pages": hex_total_pages,
             "parsed_total_pages": parsed_total_pages,
@@ -644,7 +659,8 @@ class Api:
         if not result:
             return {"cancelled": True}
 
-        out_path = Path(result[0] if isinstance(result, (list, tuple)) else result)
+        path_str = result[0] if isinstance(result, (list, tuple)) else result
+        out_path = Path(str(path_str))
         try:
             out_path.write_bytes(data)
         except Exception as ex:

@@ -23,3 +23,10 @@ body:
         - Other / unsure
     validations:
       required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Hex observations, layout guesses, companion files, encoding hints — anything useful.
+    validations:
+      required: false

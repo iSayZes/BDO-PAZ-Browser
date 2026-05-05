@@ -45,7 +45,7 @@ jobs:
           goal_map = {
               'Document format':               'Document 📄',
               'Add parsed preview handler':    'New Handler ✨',
-              'Fix existing parser or handler':'Fix Handler 🔧',
+              'Fix existing handler':           'Fix Handler 🔧',
               'Improve decoded fields':        'Improve 🔬',
               'Investigate unknown bytes':     'Investigate 🔍',
               'Other / unsure':                'Other ❓',

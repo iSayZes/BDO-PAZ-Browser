@@ -3,7 +3,7 @@ description: Request or document support for a Black Desert Online file format.
 title: "filename.ext"
 labels:
   - "type: file-format 🗂️"
-  - "status: New 👀"
+  - "status: new 👀"
 body:
   - type: markdown
     attributes:

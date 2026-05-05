@@ -42,7 +42,7 @@
   description: Unidentified or uncategorized file format.
 
 # status: pipeline stage
-- name: "status: New 👀"
+- name: "status: new 👀"
   color: "e0e0e0"
   description: Newly opened, not yet reviewed or categorized.
 - name: "status: invalid title ⁉️"

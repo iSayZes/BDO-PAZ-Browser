@@ -40,7 +40,7 @@ jobs:
           issue_labels = json.loads(os.environ['ISSUE_LABELS'])
 
           STATUS_LABELS = [
-              'status: New 👀',
+              'status: new 👀',
               'status: needs-research 🔍',
               'status: in-progress 🚧',
               'status: ready-for-handler 🟢',
@@ -77,9 +77,9 @@ jobs:
               ('status: ready-for-handler 🟢', 'ready-for-handler 🟢'),
               ('status: in-progress 🚧',        'in-progress 🚧'),
               ('status: needs-research 🔍',     'needs-research 🔍'),
-              ('status: New 👀',                'New 👀'),
+              ('status: new 👀',                'new 👀'),
           ]
-          status = 'New 👀'
+          status = 'new 👀'
           for label, display in status_priority:
               if label in issue_labels:
                   status = display
@@ -87,7 +87,7 @@ jobs:
 
           def make_child(number, g, s, closed=False):
               box = 'x' if closed else ' '
-              s = 'done' if closed else s
+              s = 'done ✅' if closed else s
               return f'  - [{box}] #{number} - {g} - {s}'
 
           result = subprocess.run(

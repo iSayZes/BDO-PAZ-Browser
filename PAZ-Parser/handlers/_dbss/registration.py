@@ -13,6 +13,7 @@ from .knowledgelearning.handler import (
 )
 from .npcpersonality.handler import NpcPersonalityHandler, NpcPersonalityOffsetHandler
 from .quest.handler import QuestDbssHandler
+from .questgroup.handler import QuestGroupDbssHandler
 from .zodiacsign.handler import (
     ZodiacSignHandler,
     ZodiacSignOffsetHandler,
@@ -35,6 +36,7 @@ def register_dbss_handlers() -> None:
     register_handler("npcpersonalityoffset.dbss", NpcPersonalityOffsetHandler())
     register_handler("npcpersonality.dbss", NpcPersonalityHandler())
     register_handler("quest.dbss", QuestDbssHandler())
+    register_handler("questgroup.dbss", QuestGroupDbssHandler())
     register_handler("zodiacsignoffset.dbss", ZodiacSignOffsetHandler())
     register_handler("zodiacsign.dbss", ZodiacSignHandler())
     register_handler("zodiacsignorderoffset.dbss", ZodiacSignOrderOffsetHandler())

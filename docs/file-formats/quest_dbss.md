@@ -24,7 +24,7 @@ icon: Icon/Quest/Hadum08.dds
 ### Connections
 
 - [languagedata_en.loc](languagedata_loc.md) — English quest dialogue/objective strings, observed as LOC `str_type=39` keyed by `quest_id`
-- `questgroup.dbss` — likely groups/categories quests; extraction failed in the current sample, so relationship is not yet confirmed
+- [questgroup.dbss](questgroup_dbss.md) — groups quest chains and lists child quest IDs that resolve to `quest.dbss`
 
 ---
 
@@ -33,7 +33,7 @@ icon: Icon/Quest/Hadum08.dds
 | File                  | Required | Role                                                                 |
 | --------------------- | -------- | -------------------------------------------------------------------- |
 | `languagedata_en.loc` | Optional | English quest strings; raw `quest.dbss` stores Korean objective text |
-| `questgroup.dbss`     | Optional | Likely quest grouping metadata; not decoded yet                      |
+| `questgroup.dbss`     | Optional | Quest chain/group metadata; links group names to child quest IDs     |
 
 All multi-byte values are little-endian.
 
@@ -156,6 +156,6 @@ Icon paths are ASCII NUL-terminated and appear near record tails, often preceded
 
 `quest_id` resolves to multiple LOC type 39 rows with different `id2`/`id4` values. Need map for title, summary, objective, start dialogue, and completion dialogue.
 
-### `questgroup.dbss`
+### `questgroup.dbss` Coverage
 
-`questgroup.dbss` appears related by name, but extraction failed with a size mismatch in the current archive sample. Need a valid extraction before documenting companion semantics.
+`questgroup.dbss` confirms one relationship to this file: each child link is a `(group_id, quest_no)` pair whose raw 4 bytes equal a `quest.dbss` `quest_id`. It does not explain the remaining variable-length payload fields in `quest.dbss`.

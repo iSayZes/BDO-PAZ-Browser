@@ -86,6 +86,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 | `characterspawntype.dbss`       | Entity spawn-type flag table — 44 boolean attributes per entity                | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterspawntypeoffset.dbss` | PABR index into `characterspawntype.dbss` — maps entity id_low16 → offset/size | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `quest.dbss`                    | Variable-length quest definitions with scripts, objectives, and icon paths     | [quest](docs/file-formats/quest_dbss.md)                           |
+| `questgroup.dbss`               | Quest chain/group table with Korean names and child quest ID links             | [questgroup](docs/file-formats/questgroup_dbss.md)                 |
 
 All formats are little-endian. Unknown fields are named `unknown_*`.
 
@@ -170,7 +171,9 @@ PAZ-Parser/
     │   ├── titlebuff/
     │   ├── mentalcard/
     │   ├── mentaltheme/
-    │   └── knowledgelearning/
+    │   ├── knowledgelearning/
+    │   ├── quest/
+    │   └── questgroup/
     └── _common/            # Helpers shared across formats
         └── loc.py
 

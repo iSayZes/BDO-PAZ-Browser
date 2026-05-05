@@ -6,7 +6,7 @@ on:
 
 jobs:
   update:
-    if: "contains(github.event.issue.labels.*.name, 'type: file-format 🗂️')"
+    if: "contains(github.event.issue.labels.*.name, 'type: file-format 🗂️') && !(github.event.action == 'unlabeled' && github.event.issue.state == 'closed')"
     concurrency:
       group: tracking-issue-${{ github.event.issue.number }}
       cancel-in-progress: true

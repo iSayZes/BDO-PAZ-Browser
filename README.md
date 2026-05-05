@@ -85,6 +85,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 | `zodiacsign.dbss`               | Zodiac sign definitions — star coords, names, texture paths                    | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
 | `characterspawntype.dbss`       | Entity spawn-type flag table — 44 boolean attributes per entity                | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterspawntypeoffset.dbss` | PABR index into `characterspawntype.dbss` — maps entity id_low16 → offset/size | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
+| `quest.dbss`                    | Variable-length quest definitions with scripts, objectives, and icon paths     | [quest](docs/file-formats/quest_dbss.md)                           |
 
 All formats are little-endian. Unknown fields are named `unknown_*`.
 

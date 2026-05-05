@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import struct
+import sys
 from pathlib import Path
 
 from bdo_ice import BDO_ICE_KEY, IceCipher
@@ -145,7 +146,7 @@ def _blackdesert_unpack_core(
     return pOutputIndex
 
 
-def bdo_decompress(data: bytes) -> bytes:
+def bdo_decompress(data: bytes, expected_size: int | None = None) -> bytes:
     """
     Decompress a BDO payload.
 
@@ -155,17 +156,28 @@ def bdo_decompress(data: bytes) -> bytes:
 
     Long mode:  bytes 1-4 = compressed_length, bytes 5-8 = decompressed_length
     Short mode: byte 1 = compressed_length,    byte 2    = decompressed_length
+
+    expected_size: when provided (from PAZ entry metadata), overrides the
+    decompressed_length field in the header if they differ.
     """
     flags = data[0]
     is_long = bool(flags & 0x02)
     is_compressed = bool(flags & 0x01)
 
     if is_long:
-        decompressed_length: int = struct.unpack_from("<I", data, 5)[0]
+        header_size: int = struct.unpack_from("<I", data, 5)[0]
         raw_offset = 9
     else:
-        decompressed_length = data[2]
+        header_size = data[2]
         raw_offset = 3
+
+    if expected_size is not None and expected_size != header_size:
+        print(
+            f"[bdo_decompress] header decompressed_length={header_size} "
+            f"doesn't match expected_size={expected_size}; using expected_size",
+            file=sys.stderr,
+        )
+    decompressed_length = expected_size if expected_size is not None else header_size
 
     if not is_compressed:
         return data[raw_offset : raw_offset + decompressed_length]
@@ -212,6 +224,15 @@ def read_entry_payload(archive_path: Path, entry: PazEntry) -> bytes:
     )
 
     if needs_decompress:
-        return bdo_decompress(decrypted)
+        decompressed = bdo_decompress(decrypted, expected_size=entry.uncompressed_size)
+        if len(decompressed) != entry.uncompressed_size and len(decrypted) == entry.uncompressed_size:
+            print(
+                f"[read_entry_payload] decompressed size {len(decompressed)} != "
+                f"expected {entry.uncompressed_size} for {entry.internal_path}; "
+                f"using raw payload instead",
+                file=sys.stderr,
+            )
+            return decrypted
+        return decompressed
 
     return decrypted

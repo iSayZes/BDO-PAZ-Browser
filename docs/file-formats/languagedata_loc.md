@@ -72,7 +72,8 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 8        | Mount skills?                                                                |
 | 9        | Knowledge category (group) names — `str_id1` = node_id                       |
 | 34       | Knowledge entry names — `str_id1` = knowledge_id / entry_id                  |
-| 37/38/39 | Other systems                                                                |
+| 37/38    | Other systems                                                                |
+| 39       | Quest text?                                                                  |
 | 54       | NPC gift/confession response dialogue — `str_id1` = NPC ID                   |
 
 The parsed preview labels only confirmed types. Unconfirmed or ambiguous types

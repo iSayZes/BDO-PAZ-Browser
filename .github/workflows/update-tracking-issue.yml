@@ -26,6 +26,7 @@ jobs:
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ toJson(github.event.issue.body) }}
           EVENT_ACTION: ${{ github.event.action }}
+          ISSUE_STATE: ${{ github.event.issue.state }}
           ISSUE_LABELS: ${{ toJson(github.event.issue.labels.*.name) }}
         run: |
           python3 << 'EOF'
@@ -35,6 +36,7 @@ jobs:
           issue_title  = os.environ['ISSUE_TITLE']
           issue_body   = json.loads(os.environ['ISSUE_BODY'])
           event_action = os.environ['EVENT_ACTION']
+          issue_state  = os.environ['ISSUE_STATE']
           issue_labels = json.loads(os.environ['ISSUE_LABELS'])
 
           STATUS_LABELS = [
@@ -136,8 +138,19 @@ jobs:
                   if not has_children:
                       lines.pop(parent_idx)
 
+          elif event_action == 'closed':
+              if child_idx is not None:
+                  lines[child_idx] = make_child(issue_number, goal, status, closed=True)
+              active_labels = [l for l in STATUS_LABELS if l in issue_labels]
+              if active_labels:
+                  remove_args = []
+                  for l in active_labels:
+                      remove_args += ['--remove-label', l]
+                  subprocess.run(['gh', 'issue', 'edit', issue_number] + remove_args, check=True)
+                  print(f'Removed status labels from #{issue_number}: {active_labels}')
+
           elif child_idx is not None:
-              lines[child_idx] = make_child(issue_number, goal, status, closed=(event_action == 'closed'))
+              lines[child_idx] = make_child(issue_number, goal, status, closed=(issue_state == 'closed'))
 
           else:
               print(f'No child line for #{issue_number} ({ext}) — skipping.')

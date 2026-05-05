@@ -1,4 +1,4 @@
-# BDO Knowledge Tracker — Visual Style Guide
+# Visual Style Guide
 
 A reference for the color palette, typography, spacing, and UI patterns used across this project.
 

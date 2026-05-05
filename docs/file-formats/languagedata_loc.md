@@ -1,8 +1,34 @@
-# languagedata_en.loc Format
+# `languagedata_en.loc` Format
 
 ## Purpose
 
-Stores all localized strings for the game, including title names and requirements.
+Stores all localized strings for the game, keyed by a compound ID (str_type, str_id1–4). Used as the primary English text source across all file format handlers.
+
+Example:
+
+```text
+str_type: 1, str_id1: 44, str_id4: 0  →  "Stoneback Crab Artisan"
+str_type: 7, str_id1: 1,  str_id4: 0  →  "Hammer"
+str_type: 54, str_id1: 40012          →  "Thank you! I really like this."
+```
+
+## Graph
+
+### Tags
+
+- file format
+- loc
+- localization
+
+### Connections
+
+- [title.dbss](title_dbss.md) — title names and requirements (str_type=1)
+- [zodiacsign.dbss](zodiacsign_dbss.md) — zodiac sign names and traits (str_type=7)
+- [npcgift.dbss](npcgift_dbss.md) — NPC gift dialogue (str_type=54)
+- [mentalcard.dbss](mentalcard_dbss.md) — knowledge entries (str_type=34) and categories (str_type=9)
+- [titlebufflist.dbss](titlebufflist_dbss.md) — title effects tooltip (str_type=37)
+
+---
 
 ## File Layout
 
@@ -24,8 +50,8 @@ Each record in the decompressed stream:
 | +0x00  | u32         | str_size | Length of the string (UTF-16 code units, excluding trailing padding/nulls) |
 | +0x04  | u32         | str_type | String type identifier                                                     |
 | +0x08  | u32         | str_id1  | Primary ID — main lookup key (matches title_id, knowledge_id, etc.)        |
-| +0x0C  | u16         | str_id2  | ID part 2 — secondary component of the compound ID                        |
-| +0x0E  | u8          | str_id3  | ID part 3 — tertiary component of the compound ID                         |
+| +0x0C  | u16         | str_id2  | ID part 2 — secondary component of the compound ID                         |
+| +0x0E  | u8          | str_id3  | ID part 3 — tertiary component of the compound ID                          |
 | +0x0F  | u8          | str_id4  | ID part 4 — selects sub-field within the record (e.g. name vs requirement) |
 | +0x10  | UTF-16LE[]  | text     | String data (`str_size` UTF-16 code units)                                 |
 | ...    | UTF-16LE[2] | padding  | Always 2 extra UTF-16 code units (4 bytes), typically `0x0000 0x0000`      |
@@ -72,15 +98,15 @@ str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
 
 ## Suggested UI Layout
 
-| Column        | Type | Notes                                                        |
-| ------------- | ---- | ------------------------------------------------------------ |
-| Id1           | num  | `str_id1`                                                    |
-| Id2           | num  | `str_id2`                                                    |
-| Id3           | num  | `str_id3`                                                    |
-| Id4           | num  | `str_id4`                                                    |
-| Type (number) | num  | `str_type`                                                   |
+| Column        | Type | Notes                                                       |
+| ------------- | ---- | ----------------------------------------------------------- |
+| Id1           | num  | `str_id1`                                                   |
+| Id2           | num  | `str_id2`                                                   |
+| Id3           | num  | `str_id3`                                                   |
+| Id4           | num  | `str_id4`                                                   |
+| Type (number) | num  | `str_type`                                                  |
 | Type (text)   | text | Human-readable label for confirmed types, otherwise Unknown |
-| Text          | text | Localized string                                             |
+| Text          | text | Localized string                                            |
 
 ## Notes
 

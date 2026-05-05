@@ -1,67 +1,85 @@
-# titlebufflist.dbss Format
+# `titlebufflist.dbss` Format
 
 ## Purpose
 
-Stores the title collection bonus/effect list shown in-game under **Title Effects**.
+Stores the title collection bonus/effect list shown in-game under **Title Effects**. Each record maps a required title count threshold to the bonus effects unlocked at that tier. This file is **not** responsible for individual title name colors.
 
-This file is **not** responsible for individual title name colors.
-
-Example in-game display:
+Example:
 
 ```text
 Acquire x50: Luck +1
 Acquire x60: Luck +2
 Acquire x70: Luck +2 / Max Energy +1
-...
 ```
+
+## Graph
+
+### Tags
+
+- file format
+- dbss
+- title
+- title buff
+- title effects
+- collection bonus
+
+### Connections
+
+- [titlebufflistoffset.dbss](#titlebufflistoffsetdbss) — required; provides block offsets and sizes
+- [title.dbss](title_dbss.md) — source of individual title data
+- [languagedata_en.loc](languagedata_loc.md) — English multiline Title Effects tooltip (str_type=37)
+
+---
 
 ## Companion Files
 
-- `titlebufflistoffset.dbss` — required. Provides block offsets and sizes.
-- `languagedata_en.loc` — optional but useful. Contains the official English multiline Title Effects tooltip.
+| File                       | Required | Role                               |
+| -------------------------- | -------- | ---------------------------------- |
+| `titlebufflistoffset.dbss` | Required | Provides block offsets and sizes   |
+| `languagedata_en.loc`      | Optional | English display text for each tier |
 
-## Offset File Format: titlebufflistoffset.dbss
+All multi-byte values are little-endian.
+
+---
+
+## File Layout
+
+### titlebufflistoffset.dbss
 
 - 4-byte header: u32 entry count
 - Repeating 12-byte records:
 
-| Offset | Type | Name     | Description                      |
-| ------ | ---- | -------- | -------------------------------- |
-| +0x00  | u32  | entry_id | Zero-based buff/effect row ID    |
-| +0x04  | u32  | offset   | Byte offset into `titlebufflist.dbss` |
-| +0x08  | u32  | size     | Block size in bytes              |
+| Offset  | Type | Name     | Description                           |
+| ------- | ---- | -------- | ------------------------------------- |
+| `+0x00` | u32  | entry_id | Zero-based buff/effect row ID         |
+| `+0x04` | u32  | offset   | Byte offset into `titlebufflist.dbss` |
+| `+0x08` | u32  | size     | Block size in bytes                   |
 
-Observed entry IDs are zero-based and align with `u32_00` inside each block.
+Observed entry IDs are zero-based and align with `internal_id` inside each block.
 
-## Block Structure
+---
 
-Observed block structure:
+## Record Structure
 
-| Offset   | Type   | Name                               | Description                                           | Confidence |
-| -------- | ------ | ---------------------------------- | ----------------------------------------------------- | ---------- |
-| `+0x00`  | u32    | internal_id                        | Zero-based buff/effect row id — read as raw u32 at offset 0x00    | High       |
-| `+0x04`  | u32    | required_titles                    | Title count to unlock this tier — read as raw u32 at offset 0x04  | High       |
-| `+0x08+` | varies | KR text / PA tags / effect payload | Embedded UTF-16 Korean effect text and PAColor markup              | High       |
+### Block Layout
 
-## Key Fields
+| Offset   | Type   | Name            | Description                                                      | Confidence |
+| -------- | ------ | --------------- | ---------------------------------------------------------------- | ---------- |
+| `+0x00`  | u32    | internal_id     | Zero-based buff/effect row ID — same as the offset file entry_id | High       |
+| `+0x04`  | u32    | required_titles | Title count to unlock this tier                                  | High       |
+| `+0x08+` | varies | text_payload    | Embedded UTF-16LE Korean effect text and PAColor markup          | High       |
 
-### internal_id / offset id
+#### internal_id / Display Level
 
-The offset-file entry id and block `u32_00` represent the same row, with display level usually shown as `internal_id + 1`.
+The offset file's `entry_id` and block `internal_id` represent the same row. Display level is usually `internal_id + 1`:
 
-Example:
+| Display Level | internal_id |
+| ------------- | ----------- |
+| 1             | 0           |
+| 2             | 1           |
+| 3             | 2           |
 
-| Display Level | internal_id (`u32_00`) |
-| ------------- | ---------------------- |
-| 1             | 0                      |
-| 2             | 1                      |
-| 3             | 2                      |
-
-### required_titles
-
-`u32_04` is the title count requirement.
-
-Examples:
+#### required_titles Examples
 
 | internal_id | required_titles | Meaning            |
 | ----------- | --------------- | ------------------ |
@@ -69,49 +87,48 @@ Examples:
 | 1           | 60              | Acquire x60 titles |
 | 2           | 70              | Acquire x70 titles |
 
+---
+
 ## Embedded Korean Text
 
-The DBSS block contains Korean text directly, such as:
+The DBSS block contains Korean text directly:
 
 ```text
 칭호 50개 습득 : 행운 잠재력 <PAColor0xFF00BAFF>+1단계<PAOldColor>
 ```
 
-This can be decoded from the first `<PAColor...` area or by decoding the payload as UTF-16LE. The leading binary/header bytes should not be displayed as text.
+Decode the payload as UTF-16LE. The leading binary/header bytes should not be displayed as text.
 
-## PAColor Tags
+### PAColor Tags
 
-The effect values use PA color markup:
+Effect values use PA color markup:
 
 ```text
 <PAColor0xFF00BAFF>+1단계<PAOldColor>
 ```
 
-Observed color:
-
 | Color      | Meaning                                           |
 | ---------- | ------------------------------------------------- |
 | `FF00BAFF` | Blue/cyan highlight used for numeric bonus values |
 
-These tags color the **bonus numbers** in the Title Effects tooltip.
+These tags color the bonus numbers in the Title Effects tooltip, not individual title name colors.
 
-They do not control individual title name colors.
+---
 
 ## English Text
 
-The official English text is not row-by-row inside `titlebufflist.dbss`.
+The official English text appears in `languagedata_en.loc` as one multiline tooltip entry containing all Title Effects lines:
 
-It appears in `languagedata_en.loc` as one multiline tooltip entries containing all Title Effects lines.
+```text
+str_type: 37, str_id1: 3723587620, str_id2: 1, str_id3: 0, str_id4: 0
+```
 
-type: 37, id1=3723587620, id2=1, id3=0, id4=0
-
-for example:
+Example content:
 
 ```text
 Acquire x50: Luck <PAColor0xff00baff>+1<PAOldColor>
 Acquire x60: Luck <PAColor0xff00baff>+2<PAOldColor>
 Acquire x70: Luck <PAColor0xff00baff>+2<PAOldColor> / Max Energy <PAColor0xff00baff>+1<PAOldColor>
-...
 ```
 
 Recommended lookup:
@@ -120,30 +137,25 @@ Recommended lookup:
 2. Find the multiline entry containing `Acquire x50: Luck`.
 3. Split it into lines.
 4. Map each line by the `Acquire x{required_titles}:` prefix.
-5. Use `u32_04` from the DBSS row to select the matching English line.
+5. Use `required_titles` from the DBSS row to select the matching English line.
 
-## Recommended Handler Columns
+---
 
-Suggested UI columns:
+## Suggested UI Layout
 
-| Column           | Source                                                    |
-| ---------------- | --------------------------------------------------------- |
-| Level            | `u32_00 + 1`                                              |
-| Required Titles  | `u32_04`                                                  |
-| EN Buff Text     | parsed from `languagedata_en.loc` by required title count |
-| KR Buff Text     | decoded from DBSS block                                   |
-| Offset           | offset file                                               |
-| Debug u32 Fields | first few u32 values for investigation                    |
+| Column          | Source                                                    |
+| --------------- | --------------------------------------------------------- |
+| Level           | `internal_id + 1`                                         |
+| Required Titles | `required_titles`                                         |
+| EN Buff Text    | Parsed from `languagedata_en.loc` by required title count |
+| KR Buff Text    | Decoded from DBSS block                                   |
+| Offset          | From offset file                                          |
 
-## Example Rows
+---
 
-| Level | Required Titles | EN Meaning                           |
-| ----- | --------------- | ------------------------------------ |
-| 1     | 50              | Acquire x50: Luck +1                 |
-| 2     | 60              | Acquire x60: Luck +2                 |
-| 3     | 70              | Acquire x70: Luck +2 / Max Energy +1 |
+## Reference Data
 
-## Known Effect Progression
+### Known Effect Progression
 
 | Required Titles | Effects                                               |
 | --------------- | ----------------------------------------------------- |
@@ -166,6 +178,10 @@ Suggested UI columns:
 | 1,500           | Luck +3 / Max Energy +8 / EXP +12% / Max Stamina +150 |
 | 2,000           | Luck +3 / Max Energy +8 / EXP +12% / Max Stamina +200 |
 
+---
+
 ## Open Questions
 
-- Exact meaning of unknown payload bytes after `u32_04` and before the first visible text marker.
+### Unknown Payload Bytes
+
+Exact meaning of the bytes after `required_titles` (`+0x08`) and before the first visible Korean text marker.

@@ -1,4 +1,4 @@
-# title.dbss Format
+# `title.dbss` Format
 
 ## Purpose
 
@@ -7,6 +7,31 @@ category, and optional inline PAColor markup for special title names.
 
 `title.dbss` is block-addressed by `titleoffset.dbss`; it is not a flat fixed
 record table.
+
+Example:
+
+```text
+title_id: 44  →  "Stoneback Crab Artisan" (Combat)
+Korean: 돌멘게 공예가
+Requirement: Kill Stoneback Crabs
+```
+
+## Graph
+
+### Tags
+
+- file format
+- dbss
+- title
+
+### Connections
+
+- [titleoffset.dbss](titleoffset_dbss.md) — required; provides block offset lookup
+- [titlecategory.bss](titlecategory_bss.md) — redundant category source
+- [titlebufflist.dbss](titlebufflist_dbss.md) — title collection bonus effects
+- [languagedata_en.loc](languagedata_loc.md) — English title names and requirements
+
+---
 
 ## Companion Files
 
@@ -31,22 +56,22 @@ Observed sample: 3,048 entries. The largest `offset + size` equals the
 All inspected records fit one generalized header. The older A/B/C layouts are
 just `key_count` values 1, 2, and 3.
 
-| Offset                    | Type      | Name                 | Description                                                       |
-| ------------------------- | --------- | -------------------- | ----------------------------------------------------------------- |
-| `+0x00`                   | u32       | key_count            | Number of 32-bit key/hash/group fields before `title_id`          |
-| `+0x04`                   | u32[]     | key_values           | `key_count` values                                                |
-| `+0x04 + key_count*4`     | u32       | title_id             | Matches offset entry and loc string ID                            |
-| `+0x08 + key_count*4`     | u32       | style_or_title_len   | Usually a style value; for styled title records, title length - 1 |
-| `+0x0C + key_count*4`     | u32       | zero                 | Observed `0`                                                      |
-| `+0x10 + key_count*4`     | utf16-le  | title/requirement    | Variable text payload                                             |
+| Offset                | Type     | Name               | Description                                                       |
+| --------------------- | -------- | ------------------ | ----------------------------------------------------------------- |
+| `+0x00`               | u32      | key_count          | Number of 32-bit key/hash/group fields before `title_id`          |
+| `+0x04`               | u32[]    | key_values         | `key_count` values                                                |
+| `+0x04 + key_count*4` | u32      | title_id           | Matches offset entry and loc string ID                            |
+| `+0x08 + key_count*4` | u32      | style_or_title_len | Usually a style value; for styled title records, title length - 1 |
+| `+0x0C + key_count*4` | u32      | zero               | Observed `0`                                                      |
+| `+0x10 + key_count*4` | utf16-le | title/requirement  | Variable text payload                                             |
 
 Observed `key_count` distribution:
 
-| key_count | Count | Former Layout |
-| --------- | ----- | ------------- |
-| 1         | 2,844 | A             |
-| 2         | 175   | B             |
-| 3         | 15    | C             |
+| key_count | Count | Former Layout  |
+| --------- | ----- | -------------- |
+| 1         | 2,844 | A              |
+| 2         | 175   | B              |
+| 3         | 15    | C              |
 | 4         | 1     | Previously `?` |
 | 6         | 13    | Previously `?` |
 
@@ -85,14 +110,14 @@ requirement string, not the visible text length after stripping PA tags.
 
 Example, title ID `44`:
 
-| Field | Value |
-| ----- | ----- |
-| English title | `Stoneback Crab Artisan` |
-| Korean title | `돌멘게 공예가` |
-| Requirement length marker | `66` |
-| Tagged requirement length | `66` |
-| Plain requirement length | `35` |
-| Category | `1` / Combat |
+| Field                     | Value                    |
+| ------------------------- | ------------------------ |
+| English title             | `Stoneback Crab Artisan` |
+| Korean title              | `돌멘게 공예가`          |
+| Requirement length marker | `66`                     |
+| Tagged requirement length | `66`                     |
+| Plain requirement length  | `35`                     |
+| Category                  | `1` / Combat             |
 
 ## Styled Title Records
 
@@ -103,13 +128,13 @@ minus one.
 
 Example, title ID `3645`:
 
-| Field | Value |
-| ----- | ----- |
-| Header field | `231` |
-| Styled title payload length | `232` UTF-16 code units |
-| Plain title after stripping tags | `MASTER WARRIOR` |
-| Requirement length marker | `115` |
-| Category | `0` / World |
+| Field                            | Value                   |
+| -------------------------------- | ----------------------- |
+| Header field                     | `231`                   |
+| Styled title payload length      | `232` UTF-16 code units |
+| Plain title after stripping tags | `MASTER WARRIOR`        |
+| Requirement length marker        | `115`                   |
+| Category                         | `0` / World             |
 
 The final code unit of the styled title payload is still the requirement length
 marker, same as normal records.
@@ -118,12 +143,12 @@ marker, same as normal records.
 
 `title.dbss` itself carries a category field after the requirement text.
 
-| ID | Name       |
-| -- | ---------- |
-| 0  | World      |
-| 1  | Combat     |
-| 2  | Life Skill |
-| 3  | Fishing    |
+| ID  | Name       |
+| --- | ---------- |
+| 0   | World      |
+| 1   | Combat     |
+| 2   | Life Skill |
+| 3   | Fishing    |
 
 ## Extra Payload And Title Color
 
@@ -134,11 +159,11 @@ string and the same value as a little-endian u32.
 
 64-byte color payload tail:
 
-| Offset | Type      | Name        | Description                         |
-| ------ | --------- | ----------- | ----------------------------------- |
-| `+0x2C` | u32      | color_len   | Observed `8`                        |
-| `+0x34` | char[8]  | color_argb  | ASCII hex, e.g. `FFFF7124`          |
-| `+0x3C` | u32      | color_value | Same value as little-endian integer |
+| Offset  | Type    | Name        | Description                         |
+| ------- | ------- | ----------- | ----------------------------------- |
+| `+0x2C` | u32     | color_len   | Observed `8`                        |
+| `+0x34` | char[8] | color_argb  | ASCII hex, e.g. `FFFF7124`          |
+| `+0x3C` | u32     | color_value | Same value as little-endian integer |
 
 Example:
 
@@ -151,13 +176,13 @@ This decodes to `0xFFFF7124`, displayed in CSS as `#FF7124`.
 
 88-byte payloads add an aura/effect string before the color:
 
-| Offset | Type     | Name          | Description                                      |
-| ------ | -------- | ------------- | ------------------------------------------------ |
-| `+0x24` | u32     | effect_len    | Observed `0x18`                                  |
-| `+0x2C` | char[]  | effect_name   | e.g. `vCalsutain_Buff_Aura_02A`                  |
-| `+0x44` | u32     | color_len     | Observed `8`                                     |
-| `+0x4C` | char[8] | color_argb    | ASCII hex                                        |
-| `+0x54` | u32     | color_value   | Same color as little-endian integer              |
+| Offset  | Type    | Name        | Description                         |
+| ------- | ------- | ----------- | ----------------------------------- |
+| `+0x24` | u32     | effect_len  | Observed `0x18`                     |
+| `+0x2C` | char[]  | effect_name | e.g. `vCalsutain_Buff_Aura_02A`     |
+| `+0x44` | u32     | color_len   | Observed `8`                        |
+| `+0x4C` | char[8] | color_argb  | ASCII hex                           |
+| `+0x54` | u32     | color_value | Same color as little-endian integer |
 
 The name is probably misspelled data (`Calsutain` instead of `Calustian` or
 similar), so parsers should preserve it exactly.
@@ -168,11 +193,11 @@ payload color as `Angel`. This was visually confirmed in-game.
 
 Other visual confirmations:
 
-| Titles | Payload Color | Result |
-| ------ | ------------- | ------ |
-| `The Greatest Guardian`, `#BDORemastered`, `One of the Greatest` | `0xFFFF7124` | Same color |
-| `REBOOT` | `0xFFFF7124` | Same color family as the titles above |
-| `Nouverikant` | `0xFFFFB400` | Not the same as `REBOOT` |
+| Titles                                                           | Payload Color | Result                                |
+| ---------------------------------------------------------------- | ------------- | ------------------------------------- |
+| `The Greatest Guardian`, `#BDORemastered`, `One of the Greatest` | `0xFFFF7124`  | Same color                            |
+| `REBOOT`                                                         | `0xFFFF7124`  | Same color family as the titles above |
+| `Nouverikant`                                                    | `0xFFFFB400`  | Not the same as `REBOOT`              |
 
 These confirmations support using the DBSS payload color as the precise source
 for individual non-default title display.
@@ -228,15 +253,15 @@ color itself.
 
 ## Suggested UI Layout
 
-| Column | Align | Notes |
-| ------ | ----- | ----- |
-| Title ID | num | Loc lookup key |
-| Category | | Decoded category name, falling back to the numeric value |
-| Title Color | | Swatch from extra payload, if present |
-| Title | | English loc text, falling back to Korean; colored when a payload color exists |
-| Title Requirements | | English loc text, falling back to Korean |
-| Special | | `True` when the title has a non-default payload color or inline title PAColor |
-| Effect | | Extra payload effect/aura string, if present |
+| Column             | Align | Notes                                                                         |
+| ------------------ | ----- | ----------------------------------------------------------------------------- |
+| Title ID           | num   | Loc lookup key                                                                |
+| Category           |       | Decoded category name, falling back to the numeric value                      |
+| Title Color        |       | Swatch from extra payload, if present                                         |
+| Title              |       | English loc text, falling back to Korean; colored when a payload color exists |
+| Title Requirements |       | English loc text, falling back to Korean                                      |
+| Special            |       | `True` when the title has a non-default payload color or inline title PAColor |
+| Effect             |       | Extra payload effect/aura string, if present                                  |
 
 ## Notes
 

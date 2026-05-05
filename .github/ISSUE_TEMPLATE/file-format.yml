@@ -1,0 +1,25 @@
+name: File format
+description: Request or document support for a Black Desert Online file format.
+title: "filename.ext"
+labels:
+  - "type: file-format 🗂️"
+  - "status: New 👀"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for reverse-engineering notes, parsed-preview handler requests, or format behavior changes.
+        Title should be the filename or extension, e.g. `yachtdicepreset.dbss` or `.pac`.
+  - type: dropdown
+    id: goal
+    attributes:
+      label: Goal
+      options:
+        - Document format
+        - Add parsed preview handler
+        - Fix existing handler
+        - Improve decoded fields
+        - Investigate unknown bytes
+        - Other / unsure
+    validations:
+      required: true

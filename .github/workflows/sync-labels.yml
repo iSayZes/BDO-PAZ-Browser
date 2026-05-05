@@ -1,0 +1,54 @@
+name: Sync labels
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/labels.yml
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync labels to GitHub
+        env:
+          GH_TOKEN: ${{ secrets.PAZ_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          python3 << 'EOF'
+          import yaml, json, subprocess, sys
+
+          with open('.github/labels.yml') as f:
+              desired = yaml.safe_load(f)
+
+          result = subprocess.run(
+              ['gh', 'label', 'list', '--limit', '200', '--json', 'name,color,description'],
+              capture_output=True, text=True, check=True
+          )
+          current = {l['name']: l for l in json.loads(result.stdout)}
+          desired_map = {l['name']: l for l in desired}
+
+          for name in list(current):
+              if name not in desired_map:
+                  print(f'Deleting: {name}')
+                  subprocess.run(['gh', 'label', 'delete', name, '--yes'], check=True)
+
+          for label in desired:
+              name = label['name']
+              color = label['color'].lstrip('#')
+              desc = label.get('description', '')
+              if name in current:
+                  print(f'Updating: {name}')
+                  subprocess.run(['gh', 'label', 'edit', name, '--color', color, '--description', desc], check=True)
+              else:
+                  print(f'Creating: {name}')
+                  subprocess.run(['gh', 'label', 'create', name, '--color', color, '--description', desc], check=True)
+
+          print('Done.')
+          EOF

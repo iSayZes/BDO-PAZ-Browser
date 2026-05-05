@@ -1,0 +1,93 @@
+# type: kind of work
+- name: "type: bug 🐛"
+  color: "d73a4a"
+  description: Something isn't working.
+- name: "type: enhancement ✨"
+  color: "a2eeef"
+  description: New feature or request.
+- name: "type: documentation 📝"
+  color: "0075ca"
+  description: Improvements or additions to documentation.
+- name: "type: question ❓"
+  color: "d876e3"
+  description: Further information is requested.
+- name: "type: refactor 🔨"
+  color: "e4e669"
+  description: Code cleanup or restructuring with no behavior change.
+- name: "type: file-format 🗂️"
+  color: "5319e7"
+  description: File format research, docs, or handler work.
+- name: "type: parser 🔬"
+  color: "1d76db"
+  description: Binary parsing, decoding, or extraction behavior.
+
+# format: specific BDO file format
+- name: "format: bss 📄"
+  color: "c2e0c6"
+  description: BSS script or structured data formats.
+- name: "format: dbss 📋"
+  color: "bfdadc"
+  description: DBSS table-like binary formats.
+- name: "format: loc 🌐"
+  color: "d4c5f9"
+  description: Localization archive or text lookup formats.
+- name: "format: pac 📦"
+  color: "fef2c0"
+  description: PAC package or asset container formats.
+- name: "format: paz 🗜️"
+  color: "f9d0c4"
+  description: PAZ archive, meta, extraction, or payload formats.
+- name: "format: unknown ❓"
+  color: "ededed"
+  description: Unidentified or uncategorized file format.
+
+# status: pipeline stage
+- name: "status: New 👀"
+  color: "e0e0e0"
+  description: Newly opened, not yet reviewed or categorized.
+- name: "status: invalid title ⁉️"
+  color: "e11d48"
+  description: Issue title does not follow the required filename.ext format.
+- name: "status: needs-research 🔍"
+  color: "d4c5f9"
+  description: Needs reverse-engineering or format confirmation.
+- name: "status: blocked 🔒"
+  color: "b60205"
+  description: Waiting on missing data, access, or upstream decision.
+- name: "status: in-progress 🚧"
+  color: "fbca04"
+  description: Actively being worked on.
+- name: "status: ready-for-handler 🟢"
+  color: "0e8a16"
+  description: Format is documented enough to implement a preview handler.
+
+# priority: urgency
+- name: "priority: high 🔴"
+  color: "b60205"
+  description: Urgent — blocks progress or affects core functionality.
+- name: "priority: medium 🟡"
+  color: "fbca04"
+  description: Important but not blocking.
+- name: "priority: low 🟢"
+  color: "0e8a16"
+  description: Nice to have, tackle when bandwidth allows.
+
+# meta: issue hygiene
+- name: "meta: tracking 📋"
+  color: "0052cc"
+  description: Master tracking issue for a group of related issues.
+- name: "meta: duplicate 👯"
+  color: "cfd3d7"
+  description: This issue or pull request already exists.
+- name: "meta: wontfix 🙅"
+  color: "ffffff"
+  description: This will not be worked on.
+- name: "meta: invalid 🚫"
+  color: "e4e669"
+  description: This doesn't seem right.
+- name: "meta: good first issue 🌱"
+  color: "7057ff"
+  description: Good for newcomers.
+- name: "meta: help wanted 🙋"
+  color: "008672"
+  description: Extra attention is needed.

@@ -6,6 +6,7 @@ from .title.handler import TitleDbssHandler
 from .titlebuff.handler import TitleBuffListHandler, TitleBuffListOffsetHandler
 from .titleoffset.handler import TitleOffsetHandler
 from .mentalcard.handler import MentalCardHandler, MentalCardOffsetHandler
+from .mentaltheme.handler import MentalThemeHandler, MentalThemeOffsetHandler
 from .knowledgelearning.handler import (
     KnowledgeLearningHandler,
     KnowledgeLearningOffsetHandler,
@@ -26,6 +27,8 @@ def register_dbss_handlers() -> None:
     register_handler("titlebufflist.dbss", TitleBuffListHandler())
     register_handler("mentalcardoffset.dbss", MentalCardOffsetHandler())
     register_handler("mentalcard.dbss", MentalCardHandler())
+    register_handler("mentalthemeoffset.dbss", MentalThemeOffsetHandler())
+    register_handler("mentaltheme.dbss", MentalThemeHandler())
     register_handler("knowledgelearningoffset.dbss", KnowledgeLearningOffsetHandler())
     register_handler("knowledgelearning.dbss", KnowledgeLearningHandler())
     register_handler("npcpersonalityoffset.dbss", NpcPersonalityOffsetHandler())

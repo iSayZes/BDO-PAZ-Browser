@@ -31,6 +31,7 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 | `titlebufflist.dbss`            | Title collection buff rewards (KR text + LOC tooltip match)                    | [titlebufflist](docs/file-formats/titlebufflist_dbss.md)           |
 | `titlecategory.bss`             | Groups titles into display categories                                          | [titlecategory](docs/file-formats/titlecategory_bss.md)            |
 | `mentalcard.dbss`               | Knowledge entry → node/category ID mapping                                     | [mentalcard](docs/file-formats/mentalcard_dbss.md)                 |
+| `mentaltheme.dbss`              | Knowledge group/category tree with rewards, entries, and child themes          | [mentaltheme](docs/file-formats/mentaltheme_dbss.md)               |
 | `knowledgelearning.dbss`        | Mob ID → knowledge ID mapping (kind 13 records)                                | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md)   |
 | `npcpersonality.dbss`           | NPC personality ID → type refs + behavioural float params                      | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
 | `npcgift.dbss`                  | NPC gift item table + confession-response dialogue                             | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
@@ -120,6 +121,7 @@ PAZ-Parser/
     │   ├── titleoffset/
     │   ├── titlebuff/
     │   ├── mentalcard/
+    │   ├── mentaltheme/
     │   └── knowledgelearning/
     └── _common/            # Helpers shared across formats
         └── loc.py

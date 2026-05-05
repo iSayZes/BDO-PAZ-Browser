@@ -21,6 +21,53 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 
 ---
 
+## Contributing Format Coverage
+
+BDO has hundreds of undocumented binary formats. Active work is tracked in **[issue #1 — Format Coverage Tracker](../../issues/1)**.
+
+To contribute, open a new issue using the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`). It will appear in the tracker automatically.
+
+---
+
+## Writing a Preview Handler
+
+Drop a `.py` file (not starting with `_`) into `handlers/` — it is auto-loaded at startup.
+
+All parsed-view handlers must implement two methods:
+
+```python
+# handlers/myformat_handler.py
+from bdo_preview import PreviewHandler, register_handler
+from bdo_models import PazEntry
+
+class MyFormatHandler(PreviewHandler):
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        # Parse all records once. Returns plain dicts — no HTML.
+        # Cached in memory for paging, tab search, and CSV export.
+        return [{"id": r.id, "name": r.name} for r in parse(data)]
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        # Render one page of records as an HTML fragment.
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        rows = "".join(f"<tr><td>{r['id']}</td><td>{r['name']}</td></tr>" for r in slice_)
+        return f"<table><thead>...</thead><tbody>{rows}</tbody></table>"
+
+register_handler("myfile.dbss", MyFormatHandler())
+```
+
+The browser automatically handles:
+
+- Prev/Next page navigation
+- Inline tab search (Ctrl+F) across all record field values
+- CSV export of the full record list
+
+See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, and registration patterns.
+
+> **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. If you have a file open on the Parsed tab, the preview re-renders automatically with the updated handler.
+
+---
+
 ## Documented Formats
 
 | File                            | Description                                                                    | Docs                                                               |
@@ -131,45 +178,6 @@ docs/
 ├── style-guide.md          # UI color palette and component reference
 └── file-formats/           # Per-format binary layout documentation
 ```
-
----
-
-## Writing a Preview Handler
-
-Drop a `.py` file (not starting with `_`) into `handlers/` — it is auto-loaded at startup.
-
-All parsed-view handlers must implement two methods:
-
-```python
-# handlers/myformat_handler.py
-from bdo_preview import PreviewHandler, register_handler
-from bdo_models import PazEntry
-
-class MyFormatHandler(PreviewHandler):
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        # Parse all records once. Returns plain dicts — no HTML.
-        # Cached in memory for paging, tab search, and CSV export.
-        return [{"id": r.id, "name": r.name} for r in parse(data)]
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        # Render one page of records as an HTML fragment.
-        start = page * page_size
-        slice_ = records[start : start + page_size]
-        rows = "".join(f"<tr><td>{r['id']}</td><td>{r['name']}</td></tr>" for r in slice_)
-        return f"<table><thead>...</thead><tbody>{rows}</tbody></table>"
-
-register_handler("myfile.dbss", MyFormatHandler())
-```
-
-The browser automatically handles:
-
-- Prev/Next page navigation
-- Inline tab search (Ctrl+F) across all record field values
-- CSV export of the full record list
-
-See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, and registration patterns.
-
-> **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. If you have a file open on the Parsed tab, the preview re-renders automatically with the updated handler.
 
 ---
 

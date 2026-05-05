@@ -59,24 +59,24 @@ The first observed record starts at file offset `0x00000004`; the next confirmed
 
 ### Quest Record (variable length)
 
-| Offset   | Type              | Field               | Notes                                                                                   |
-| -------- | ----------------- | ------------------- | --------------------------------------------------------------------------------------- |
-| `+0x00`  | u32               | quest_id_a          | Quest identifier                                                                         |
-| `+0x04`  | u32               | quest_id_b          | Duplicate of `quest_id_a` in observed records                                           |
-| `+0x08`  | u32               | unknown_08          | Observed `0` in sampled records                                                         |
-| `+0x0C`  | u32               | condition_len       | UTF-16 code unit count for `condition_script`                                           |
-| `+0x10`  | u32               | condition_zero      | Observed `0`                                                                            |
-| `+0x14`  | utf16le[len]      | condition_script    | Quest availability / prerequisite expression                                            |
-| varies   | u32               | action_len          | UTF-16 code unit count for `action_script`                                              |
-| varies   | u32               | action_zero         | Observed `0`                                                                            |
-| varies   | utf16le[len]      | action_script       | Completion target/action expression                                                     |
-| varies   | u8[]              | zero_padding_a      | Zero padding before objective text length; length varies                                |
-| varies   | u32               | objective_len       | UTF-16 code unit count for `objective_text_kr`                                          |
-| varies   | u32               | objective_zero      | Observed `0`                                                                            |
-| varies   | utf16le[len]      | objective_text_kr   | Korean objective text shown in quest UI                                                 |
-| varies   | u8[]              | unknown_payload     | Mixed numeric fields and text/rich-text payloads; includes PAColor markup in some rows  |
-| varies   | ascii nul-terminated | icon_path        | Quest icon path such as `Icon/Quest/Hadum08.dds`; appears near the tail of each record  |
-| varies   | u8[]              | unknown_tail        | Numeric flags/config values after icon path                                             |
+| Offset  | Type                 | Field             | Notes                                                                                  |
+| ------- | -------------------- | ----------------- | -------------------------------------------------------------------------------------- |
+| `+0x00` | u32                  | quest_id_a        | Quest identifier                                                                       |
+| `+0x04` | u32                  | quest_id_b        | Duplicate of `quest_id_a` in observed records                                          |
+| `+0x08` | u32                  | unknown_08        | Observed `0` in sampled records                                                        |
+| `+0x0C` | u32                  | condition_len     | UTF-16 code unit count for `condition_script`                                          |
+| `+0x10` | u32                  | condition_zero    | Observed `0`                                                                           |
+| `+0x14` | utf16le[len]         | condition_script  | Quest availability / prerequisite expression                                           |
+| varies  | u32                  | action_len        | UTF-16 code unit count for `action_script`                                             |
+| varies  | u32                  | action_zero       | Observed `0`                                                                           |
+| varies  | utf16le[len]         | action_script     | Completion target/action expression                                                    |
+| varies  | u8[]                 | zero_padding_a    | Zero padding before objective text length; length varies                               |
+| varies  | u32                  | objective_len     | UTF-16 code unit count for `objective_text_kr`                                         |
+| varies  | u32                  | objective_zero    | Observed `0`                                                                           |
+| varies  | utf16le[len]         | objective_text_kr | Korean objective text shown in quest UI                                                |
+| varies  | u8[]                 | unknown_payload   | Mixed numeric fields and text/rich-text payloads; includes PAColor markup in some rows |
+| varies  | ascii nul-terminated | icon_path         | Quest icon path such as `Icon/Quest/Hadum08.dds`; appears near the tail of each record |
+| varies  | u8[]                 | unknown_tail      | Numeric flags/config values after icon path                                            |
 
 ### Length-Prefixed UTF-16 Field
 
@@ -90,11 +90,11 @@ The first observed record starts at file offset `0x00000004`; the next confirmed
 
 ## Observed Records
 
-| File Offset | Quest ID | Condition | Action | Objective KR | Icon |
-| ----------- | -------- | --------- | ------ | ------------ | ---- |
-| `0x00000004` | `125285` | `checkFieldType(hadumField);getLevel()>59;clearquest(2080,10);` | `killMonsterGroup(189,1);` | `<악몽의 그림자> 기가고드 처치하기;` | `Icon/Quest/Hadum08.dds` |
-| `0x000005F8` | `65536` | `getLevel()>0;` | `gatheritem(16004,0,1);` | `응축된 마력의 블랙스톤 제작하기;` | `Icon/Quest/GrowthPass_GUV_07.dds` |
-| `0x00000936` | `115546` | `getLevel()>30;<or>clearquest(654,4);` | `killmonster(20007,10); killmonster(20009,6); killmonster(24001,2);` | `임프 병사 처치하기;임프 요술사 처치하기;임프 방어탑 파괴하기;` | `Icon/Quest/Imp.dds` |
+| File Offset  | Quest ID | Condition                                                       | Action                                                               | Objective KR                                                    | Icon                               |
+| ------------ | -------- | --------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------- |
+| `0x00000004` | `125285` | `checkFieldType(hadumField);getLevel()>59;clearquest(2080,10);` | `killMonsterGroup(189,1);`                                           | `<악몽의 그림자> 기가고드 처치하기;`                            | `Icon/Quest/Hadum08.dds`           |
+| `0x000005F8` | `65536`  | `getLevel()>0;`                                                 | `gatheritem(16004,0,1);`                                             | `응축된 마력의 블랙스톤 제작하기;`                              | `Icon/Quest/GrowthPass_GUV_07.dds` |
+| `0x00000936` | `115546` | `getLevel()>30;<or>clearquest(654,4);`                          | `killmonster(20007,10); killmonster(20009,6); killmonster(24001,2);` | `임프 병사 처치하기;임프 요술사 처치하기;임프 방어탑 파괴하기;` | `Icon/Quest/Imp.dds`               |
 
 ---
 
@@ -102,11 +102,11 @@ The first observed record starts at file offset `0x00000004`; the next confirmed
 
 `quest_id` matches LOC `str_type=39` entries for quest dialogue/objective text. Example matches from `languagedata_en.loc`:
 
-| Quest ID | LOC Type | Example English Text |
-| -------- | -------- | -------------------- |
-| `125285` | `39` | `Hand over Mark of Hadum.` |
-| `125285` | `39` | `A greater darkness is approaching.` |
-| `115546` | `39` | `Discover Western Gateway` |
+| Quest ID | LOC Type | Example English Text                 |
+| -------- | -------- | ------------------------------------ |
+| `125285` | `39`     | `Hand over Mark of Hadum.`           |
+| `125285` | `39`     | `A greater darkness is approaching.` |
+| `115546` | `39`     | `Discover Western Gateway`           |
 
 Quest IDs can collide with other LOC domains. For example, `65536` also matches item LOC `str_type=0`, so UI code should prefer quest LOC type `39` when resolving quest display strings.
 
@@ -114,21 +114,23 @@ Quest IDs can collide with other LOC domains. For example, `65536` also matches 
 
 ## Suggested UI Layout
 
-| Column        | Type | Notes                                                        |
-| ------------- | ---- | ------------------------------------------------------------ |
-| Quest ID      | num  | `quest_id_a`; right-aligned                                  |
-| Title / Name  | text | Prefer LOC type 39 when a suitable title/name row is known   |
-| Condition     | text | `condition_script`                                           |
-| Action        | text | `action_script`                                              |
-| Objective KR  | text | Inline Korean objective text                                 |
-| Objective EN  | text | LOC type 39 fallback when matching row semantics are known   |
-| Icon          | text | `icon_path`; render thumbnail when DDS preview is available  |
+| Column       | Type | Notes                                                       |
+| ------------ | ---- | ----------------------------------------------------------- |
+| Quest ID     | num  | `quest_id_a`; right-aligned                                 |
+| Title / Name | text | Prefer LOC type 39 when a suitable title/name row is known  |
+| Condition    | text | `condition_script`                                          |
+| Action       | text | `action_script`                                             |
+| Objective    | text | Prefer LOC type 39 objective text; fall back to inline Korean objective text |
+| Icon         | text | `icon_path`; render thumbnail when DDS preview is available |
 
 ---
 
 ## Notes
 
 - `quest.dbss` is much larger than existing documented DBSS samples: observed decompressed size is `36,525,439` bytes.
+- Parsed preview is implemented as a lazy handler because the table has nearly twenty thousand variable-length records.
+- The preview derives record boundaries by validating repeated quest IDs plus the first length-prefixed UTF-16 script fields, then scans to the next valid record start.
+- English columns use all loaded LOC type `39` rows keyed by `quest_id`; exact title/objective row semantics remain provisional.
 - `(file_size - 4) / count` is not integral, confirming variable-length records.
 - No `questoffset.dbss` was found. `guildquestoffset.dbss` and `journalquestoffset.dbss` exist for related formats, but not for the main quest table.
 - Scripts use readable expression syntax such as `getLevel()>30`, `<or>`, `clearquest(group,id)`, `killmonster(id,count)`, `gatheritem(item_id,?,count)`, and `meet(npc_id,count)`.

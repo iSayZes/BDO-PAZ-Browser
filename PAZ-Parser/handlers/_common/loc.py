@@ -24,19 +24,22 @@ def decompress_loc(raw: bytes) -> bytes | None:
 
 # (str_type, str_id1, str_id2, str_id3, str_id4) → text
 _LOC_INDEX: dict[tuple[int, int, int, int, int], str] | None = None
+# (str_type, str_id1) -> text values in file order
+_LOC_PREFIX: dict[tuple[int, int], list[str]] | None = None
 # all text values in file order
 _LOC_ALL:   list[str] | None = None
 
 
 def init_loc(raw: bytes) -> None:
     """Parse languagedata_en.loc once at startup. Safe to call again on reload."""
-    global _LOC_INDEX, _LOC_ALL
+    global _LOC_INDEX, _LOC_PREFIX, _LOC_ALL
 
     data = decompress_loc(raw)
     if data is None:
         return
 
     index:     dict[tuple[int, int, int, int, int], str] = {}
+    prefix:    dict[tuple[int, int], list[str]] = {}
     all_texts: list[str] = []
 
     pos = 0
@@ -56,10 +59,12 @@ def init_loc(raw: bytes) -> None:
         pos = text_end + 4
 
         index[(str_type, str_id1, str_id2, str_id3, str_id4)] = text
+        prefix.setdefault((str_type, str_id1), []).append(text)
         all_texts.append(text)
 
-    _LOC_INDEX = index
-    _LOC_ALL   = all_texts
+    _LOC_INDEX  = index
+    _LOC_PREFIX = prefix
+    _LOC_ALL    = all_texts
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -79,6 +84,14 @@ def loc_lookup(
     if _LOC_INDEX is None:
         return ""
     return _LOC_INDEX.get((str_type, str_id1, str_id2, str_id3, str_id4), "")
+
+
+def loc_lookup_prefix(str_type: int, str_id1: int) -> list[str]:
+    """Return all strings matching a type/id1 pair in LOC index order."""
+    if _LOC_PREFIX is None:
+        return []
+
+    return list(_LOC_PREFIX.get((str_type, str_id1), []))
 
 
 def loc_all_texts() -> list[str]:

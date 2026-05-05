@@ -25,6 +25,7 @@ def main() -> None:
     parser.add_argument("--list", metavar="PATTERN", help="List matching file paths without extracting, e.g. title*.dbss")
     parser.add_argument("--output", metavar="DIR", help="Output directory for --file (default: current working directory)")
     parser.add_argument("--formats", action="store_true", help="Show supported file formats and exit")
+    parser.add_argument("--profile", action="store_true", help="Enable backend timing and browser-side JS profiling for the GUI")
     args = parser.parse_args()
 
     if args.file:
@@ -34,7 +35,7 @@ def main() -> None:
     elif args.formats:
         sys.exit(_cli_formats(args))
     else:
-        _launch_gui()
+        _launch_gui(profile=args.profile)
 
 def _set_app_user_model_id() -> None:
     import ctypes
@@ -63,13 +64,16 @@ def _apply_window_icon(window) -> None:
         pass
 
 
-def _launch_gui() -> None:
+def _launch_gui(profile: bool = False) -> None:
     _set_app_user_model_id()
-    
-    api = Api()
+    url = str(Path(__file__).parent / "ui" / "index.html")
+    if profile:
+        url += "?profile=1"
+
+    api = Api(profile=profile)
     window = webview.create_window(
         title="BDO PAZ Browser",
-        url=str(Path(__file__).parent / "ui" / "index.html"),
+        url=url,
         js_api=api,
         width=1280,
         height=800,
@@ -79,7 +83,7 @@ def _launch_gui() -> None:
     if window is not None:
         api.set_window(window)
         window.events.shown += lambda: _apply_window_icon(window)
-    webview.start()
+    webview.start(debug=profile)
 
 
 def _resolve_paz_root(paz_folder: str | None) -> Path | None:

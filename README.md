@@ -67,7 +67,7 @@ pip install -r PAZ-Parser/requirements.txt
 ### GUI
 
 ```bash
-python PAZ-Parser/bdo_app.py
+python browser.py
 ```
 
 On first launch, click **Open Folder** and select your BDO PAZ directory (typically `Black Desert/Paz`). The index is parsed and cached — subsequent launches load from cache automatically.

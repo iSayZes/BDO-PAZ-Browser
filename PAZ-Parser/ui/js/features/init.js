@@ -20,6 +20,7 @@ export const initMethods = {
       const el = document.getElementById("folder-path");
       el.textContent = last.path;
       el.classList.remove("muted");
+      await this._showTreeLoading();
       window.pywebview.api.open_folder_path(last.path);
     }
   },

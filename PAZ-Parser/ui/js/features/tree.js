@@ -7,10 +7,31 @@ export const treeMethods = {
     document.getElementById("search").value = "";
     const tree = document.getElementById("tree");
     tree.innerHTML = "";
+    tree.appendChild(this._buildTreeLoadingNode());
+    await this._nextPaint();
     const children = await window.pywebview.api.get_children("");
+    tree.innerHTML = "";
     for (const item of children) {
       tree.appendChild(this._buildNode(item));
     }
+  },
+
+  _buildTreeLoadingNode() {
+    const loading = document.createElement("li");
+    loading.className = "tree-node loading";
+    loading.innerHTML = '<span class="tree-label"><span class="loading-spinner" aria-hidden="true"></span><span class="tree-name">Loading...</span></span>';
+    return loading;
+  },
+
+  _showTreeLoading() {
+    const tree = document.getElementById("tree");
+    tree.innerHTML = "";
+    tree.appendChild(this._buildTreeLoadingNode());
+    return this._nextPaint();
+  },
+
+  _nextPaint() {
+    return new Promise((resolve) => requestAnimationFrame(resolve));
   },
 
   _buildNode(item) {
@@ -78,12 +99,13 @@ export const treeMethods = {
     if (!ul) return;
 
     if (ul.hidden) {
+      ul.hidden = false;
+      li.classList.add("expanded");
+      this._currentFolderPath = li.dataset.id;
+
       if (!li._loaded) {
         li._loaded = true;
-        const loading = document.createElement("li");
-        loading.className = "tree-node loading";
-        loading.innerHTML = '<span class="tree-label"><span class="tree-name">Loading…</span></span>';
-        ul.appendChild(loading);
+        ul.appendChild(this._buildTreeLoadingNode());
 
         const children = await window.pywebview.api.get_children(li.dataset.id);
         ul.innerHTML = "";
@@ -91,9 +113,6 @@ export const treeMethods = {
           ul.appendChild(this._buildNode(child));
         }
       }
-      ul.hidden = false;
-      li.classList.add("expanded");
-      this._currentFolderPath = li.dataset.id;
     } else {
       ul.hidden = true;
       li.classList.remove("expanded");
@@ -101,6 +120,7 @@ export const treeMethods = {
   },
 
   async _selectFile(path, name, icon) {
+    const setupStart = performance.now();
     document.querySelectorAll(".tree-node.selected").forEach((n) => n.classList.remove("selected"));
     const node = document.querySelector(`.tree-node[data-id="${CSS.escape(path)}"]`);
     if (node) node.classList.add("selected");
@@ -119,13 +139,22 @@ export const treeMethods = {
     this._tabLabels = null;
 
     document.getElementById("preview-title").textContent = `${icon}  ${name}`;
-    document.getElementById("preview-content").innerHTML = '<div class="placeholder">Loading…</div>';
+    document.getElementById("preview-content").innerHTML = '<div class="placeholder preview-loading"><span class="loading-spinner" aria-hidden="true"></span><span>Loading...</span></div>';
     document.getElementById("preview-tabs").hidden = true;
     document.getElementById("btn-export").hidden = true;
     this._setPageBar(null);
+    window.appProfile?.record("_selectFile.setup", performance.now() - setupStart);
 
+    const apiStart = performance.now();
     const result = await window.pywebview.api.load_entry(path);
+    window.appProfile?.record("_selectFile.api.load_entry", performance.now() - apiStart);
+    if (result.profile && window.appProfile) {
+      for (const [key, value] of Object.entries(result.profile)) {
+        window.appProfile.record(`_selectFile.${key}`, Number(value));
+      }
+    }
 
+    const renderStart = performance.now();
     if (result.error && !result.hex_html) {
       document.getElementById("preview-content").innerHTML = `<div class="error">Error: ${this._esc(result.error)}</div>`;
     } else {
@@ -175,8 +204,13 @@ export const treeMethods = {
         }
       }
     }
+    window.appProfile?.record("_selectFile.render_result", performance.now() - renderStart);
 
-    if (result.meta) this._setDetails(result.meta);
+    if (result.meta) {
+      const detailsStart = performance.now();
+      this._setDetails(result.meta);
+      window.appProfile?.record("_selectFile.set_details", performance.now() - detailsStart);
+    }
   },
 
   async exportFile() {

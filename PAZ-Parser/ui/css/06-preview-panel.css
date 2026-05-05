@@ -62,6 +62,13 @@
   color: var(--fg-dim);
   font-size: 12px;
 }
+
+.preview-loading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .error {
   color: var(--error);
   font-size: 12px;

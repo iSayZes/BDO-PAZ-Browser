@@ -14,6 +14,7 @@ import { dividerMethods } from "./js/features/dividers.js";
 import { setupMethods } from "./js/features/setup.js";
 import { helperMethods } from "./js/core/helpers.js";
 import { tabSearchMethods } from "./js/features/tab-search.js";
+import { installProfiler } from "./js/core/profiler.js";
 
 Object.assign(
   app,
@@ -31,6 +32,8 @@ Object.assign(
   helperMethods,
   tabSearchMethods,
 );
+
+installProfiler(app);
 
 window.app = app;
 window.addEventListener("pywebviewready", () => app.init());

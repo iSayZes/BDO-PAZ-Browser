@@ -74,7 +74,8 @@ def _count_entries(node: dict) -> int:
 
 
 class Api:
-    def __init__(self) -> None:
+    def __init__(self, profile: bool = False) -> None:
+        self._profile = profile
         self._window: webview.Window | None = None
         self._paz_root: Path | None = None
         self._entries: list[PazEntry] = []
@@ -85,12 +86,22 @@ class Api:
         self._cached_path: str | None = None
         self._cached_data: bytes | None = None
         self._cached_records: list[dict] | None = None
+        self._cached_record_search_text: list[str] | None = None
         self._cached_handler = None
+        self._cached_entry: PazEntry | None = None
+        self._cached_companions: dict[str, bytes] = {}
 
     def set_window(self, window: webview.Window) -> None:
         self._window = window
 
     # ── Internal helpers ──────────────────────────────────────────────────────
+
+    def _ts(self) -> float:
+        return time.perf_counter() if self._profile else 0.0
+
+    def _te(self, profile: dict, key: str, start: float) -> None:
+        if self._profile:
+            profile[key] = (time.perf_counter() - start) * 1000
 
     def _push_js(self, js: str) -> None:
         if self._window is not None:
@@ -300,6 +311,7 @@ class Api:
         meta: dict,
     ) -> dict:
         import html as _html_mod
+        profile: dict[str, float] = {}
         is_alt   = isinstance(handler, AltViewHandler)
         is_plain = isinstance(handler, (HexHandler, TextHandler, DdsHandler))
         has_parsed = not is_plain and not is_alt
@@ -307,10 +319,15 @@ class Api:
         self._cached_path = _norm(internal_path)
         self._cached_data = data
         self._cached_records = None
+        self._cached_record_search_text = None
         self._cached_handler = None
+        self._cached_entry = entry
+        self._cached_companions = companions
 
         hex_total_pages = HexHandler.page_count(data)
+        start = self._ts()
         hex_html = _hex_handler.render_page(data, 0)
+        self._te(profile, "backend.hex_render_ms", start)
 
         html = None
         parsed_total_pages = 1
@@ -318,18 +335,36 @@ class Api:
 
         if is_alt:
             try:
+                start = self._ts()
                 hex_html = handler.render(data, entry, companions)
+                self._te(profile, "backend.alt_primary_render_ms", start)
             except Exception as ex:
                 hex_html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
             try:
+                start = self._ts()
                 html = handler.render_alt(data, entry, companions)
+                self._te(profile, "backend.alt_secondary_render_ms", start)
             except Exception as ex:
                 html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
             hex_total_pages = 1
             tab_labels = [handler.primary_label, handler.alt_label]
+        elif has_parsed and handler.supports_lazy_records():
+            self._cached_handler = handler
+            try:
+                start = self._ts()
+                record_count = handler.get_record_count(data, entry, companions)
+                self._te(profile, "backend.lazy_count_ms", start)
+                parsed_total_pages = max(1, (record_count + PARSED_RECORDS_PER_PAGE - 1) // PARSED_RECORDS_PER_PAGE)
+                start = self._ts()
+                html = handler.render_data_page(data, entry, companions, 0, PARSED_RECORDS_PER_PAGE)
+                self._te(profile, "backend.lazy_page_render_ms", start)
+            except Exception as ex:
+                html = f'<div class="error">Parse error: {_html_mod.escape(str(ex))}</div>'
         elif has_parsed:
             try:
+                start = self._ts()
                 records = handler.get_records(data, entry, companions)
+                self._te(profile, "backend.parse_records_ms", start)
             except Exception as ex:
                 records = None
                 html = f'<div class="error">Parse error: {_html_mod.escape(str(ex))}</div>'
@@ -339,16 +374,20 @@ class Api:
                 self._cached_handler = handler
                 parsed_total_pages = max(1, (len(records) + PARSED_RECORDS_PER_PAGE - 1) // PARSED_RECORDS_PER_PAGE)
                 try:
+                    start = self._ts()
                     html = handler.render_records_page(records, 0, PARSED_RECORDS_PER_PAGE)
+                    self._te(profile, "backend.parsed_page_render_ms", start)
                 except Exception as ex:
                     html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
         elif not isinstance(handler, HexHandler):
             try:
+                start = self._ts()
                 html = handler.render(data, entry, companions)
+                self._te(profile, "backend.render_ms", start)
             except Exception as ex:
                 html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
 
-        return {
+        response = {
             "html": html,
             "hex_html": hex_html,
             "has_parsed": has_parsed or is_alt,
@@ -357,6 +396,9 @@ class Api:
             "hex_total_pages": hex_total_pages,
             "parsed_total_pages": parsed_total_pages,
         }
+        if self._profile:
+            response["profile"] = profile
+        return response
 
     def _load_disk_entry(self, internal_path: str) -> dict:
         name = internal_path[len(_DISK_VIRTUAL_PREFIX) + 1:]
@@ -401,23 +443,32 @@ class Api:
         }
 
         try:
+            start = self._ts()
             data = read_entry_payload(
                 archive_path=self._paz_root / entry.archive_name,
                 entry=entry,
             )
         except Exception as ex:
             return {"error": str(ex), "meta": meta}
+        read_payload_ms = (time.perf_counter() - start) * 1000 if self._profile else 0.0
 
         p = Path(entry.internal_path)
         handler = get_handler(p.name, p.suffix)
 
         companions: dict[str, bytes] = dict(self._disk_companions)
+        start = self._ts()
         for cp in handler.companions(entry):
             raw = self._load_companion_sync(cp)
             if raw is not None:
                 companions[Path(cp).name] = raw
+        load_companions_ms = (time.perf_counter() - start) * 1000 if self._profile else 0.0
 
-        return self._build_entry_response(data, internal_path, entry, handler, companions, meta)
+        response = self._build_entry_response(data, internal_path, entry, handler, companions, meta)
+        if self._profile:
+            response.setdefault("profile", {})
+            response["profile"]["backend.read_payload_ms"] = read_payload_ms
+            response["profile"]["backend.load_companions_ms"] = load_companions_ms
+        return response
 
     def get_hex_page(self, path: str, page: int) -> dict:
         norm = _norm(path)
@@ -444,12 +495,27 @@ class Api:
     def get_parsed_page(self, path: str, page: int) -> dict:
         import html as _html_mod
         norm = _norm(path)
-        if self._cached_path != norm or self._cached_records is None or self._cached_handler is None:
+        if self._cached_path != norm or self._cached_handler is None:
             return {"error": "Page data not cached — reload the file first"}
         try:
-            html = self._cached_handler.render_records_page(
-                self._cached_records, page, PARSED_RECORDS_PER_PAGE
-            )
+            if self._cached_records is not None:
+                html = self._cached_handler.render_records_page(
+                    self._cached_records, page, PARSED_RECORDS_PER_PAGE
+                )
+            elif (
+                self._cached_data is not None
+                and self._cached_entry is not None
+                and self._cached_handler.supports_lazy_records()
+            ):
+                html = self._cached_handler.render_data_page(
+                    self._cached_data,
+                    self._cached_entry,
+                    self._cached_companions,
+                    page,
+                    PARSED_RECORDS_PER_PAGE,
+                )
+            else:
+                return {"error": "Page data not cached — reload the file first"}
         except Exception as ex:
             html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
         return {"html": html}
@@ -572,12 +638,33 @@ class Api:
         norm = _norm(path)
 
         if tab == "parsed":
-            if self._cached_path != norm or self._cached_records is None:
+            if self._cached_path != norm:
+                return {"error": "No parsed data cached — reload the file"}
+            if (
+                self._cached_records is None
+                and self._cached_data is not None
+                and self._cached_entry is not None
+                and self._cached_handler is not None
+                and self._cached_handler.supports_lazy_records()
+            ):
+                indices = self._cached_handler.search_records(
+                    self._cached_data,
+                    self._cached_entry,
+                    self._cached_companions,
+                    query,
+                )
+                return {"record_indices": indices, "total": len(indices)}
+            if self._cached_records is None:
                 return {"error": "No parsed data cached — reload the file"}
             q = query.lower()
+            if self._cached_record_search_text is None:
+                self._cached_record_search_text = [
+                    "\t".join(str(value).lower() for value in rec.values())
+                    for rec in self._cached_records
+                ]
             indices = [
-                i for i, rec in enumerate(self._cached_records)
-                if any(q in str(v).lower() for v in rec.values())
+                i for i, text in enumerate(self._cached_record_search_text)
+                if q in text
             ]
             return {"record_indices": indices, "total": len(indices)}
 
@@ -631,10 +718,24 @@ class Api:
         norm = _norm(path)
         filename = norm.rsplit("/", 1)[-1]
 
-        if tab == "parsed" and self._cached_path == norm and self._cached_records is not None:
+        if tab == "parsed" and self._cached_path == norm and (
+            self._cached_records is not None
+            or (
+                self._cached_data is not None
+                and self._cached_entry is not None
+                and self._cached_handler is not None
+                and self._cached_handler.supports_lazy_records()
+            )
+        ):
             import csv
             import io
             records = self._cached_records
+            if records is None:
+                records = self._cached_handler.get_records(
+                    self._cached_data,
+                    self._cached_entry,
+                    self._cached_companions,
+                )
             buf = io.StringIO()
             if records:
                 writer = csv.DictWriter(buf, fieldnames=list(records[0].keys()))

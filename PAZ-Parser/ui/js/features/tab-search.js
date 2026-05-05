@@ -112,11 +112,14 @@ export const tabSearchMethods = {
       return;
     }
 
+    const apiStart = performance.now();
     const result = await window.pywebview.api.search_content(
       this._selectedPath, query, _mode, this._activeTab,
     );
+    window.appProfile?.record("_doTabSearch.api.search_content", performance.now() - apiStart);
     if (seq !== _seq) return;
 
+    const resultStart = performance.now();
     if (result.error || result.offsets?.length === 0 || result.record_indices?.length === 0) {
       _matches = result.error ? [] : (result.offsets ?? result.record_indices ?? []);
       _matchIndex = _matches.length > 0 ? 0 : -1;
@@ -126,6 +129,7 @@ export const tabSearchMethods = {
     }
 
     this._updateSearchCounter();
+    window.appProfile?.record("_doTabSearch.process_results", performance.now() - resultStart);
     if (_matchIndex >= 0) await this._jumpToMatch(_matchIndex);
   },
 

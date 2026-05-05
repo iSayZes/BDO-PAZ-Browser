@@ -25,6 +25,8 @@ _TYPE_NAMES = {
     54: "NPC gift/confession response dialogue",
 }
 
+_LocRecordMeta = tuple[int, int, int, int, int, int, int, int]
+
 
 def _u16(data: bytes, pos: int) -> int:
     return struct.unpack_from("<H", data, pos)[0]
@@ -64,24 +66,130 @@ def _parse_all_loc_records(raw: bytes) -> list[tuple[int, int, int, int, int, in
     return records
 
 
+def _record_to_dict(data: bytes, meta: _LocRecordMeta) -> dict:
+    _, str_type, str_id1, str_id2, str_id3, str_id4, text_start, text_end = meta
+    text = data[text_start:text_end].decode("utf-16-le", errors="replace")
+    return {
+        "str_id1": str_id1,
+        "str_id2": str_id2,
+        "str_id3": str_id3,
+        "str_id4": str_id4,
+        "str_type": str_type,
+        "str_type_text": _TYPE_NAMES.get(str_type, "Unknown"),
+        "text": text,
+    }
+
+
+class _LocIndex:
+    def __init__(self, raw: bytes) -> None:
+        self.data = decompress_loc(raw)
+        self.records: list[_LocRecordMeta] = []
+        self.search_texts: list[str] | None = None
+        if self.data is None:
+            return
+
+        pos = 0
+        while pos + 16 <= len(self.data):
+            str_size = u32(self.data, pos)
+            str_type = u32(self.data, pos + 4)
+            str_id1  = u32(self.data, pos + 8)
+            str_id2  = _u16(self.data, pos + 12)
+            str_id3  = _u8(self.data, pos + 14)
+            str_id4  = _u8(self.data, pos + 15)
+            text_start = pos + 16
+            text_end = text_start + str_size * 2
+
+            if text_end + 4 > len(self.data):
+                break
+
+            self.records.append((
+                str_size,
+                str_type,
+                str_id1,
+                str_id2,
+                str_id3,
+                str_id4,
+                text_start,
+                text_end,
+            ))
+            pos = text_end + 4
+
+    def record_dict(self, index: int) -> dict:
+        if self.data is None:
+            return {}
+        return _record_to_dict(self.data, self.records[index])
+
+    def page(self, page: int, page_size: int) -> list[dict]:
+        start = page * page_size
+        end = min(start + page_size, len(self.records))
+        return [self.record_dict(index) for index in range(start, end)]
+
+    def search(self, query: str) -> list[int]:
+        if self.data is None:
+            return []
+        q = query.lower()
+        if self.search_texts is None:
+            search_texts: list[str] = []
+            for meta in self.records:
+                _, str_type, str_id1, str_id2, str_id3, str_id4, text_start, text_end = meta
+                text = self.data[text_start:text_end].decode("utf-16-le", errors="replace")
+                type_text = _TYPE_NAMES.get(str_type, "Unknown")
+                search_texts.append(
+                    f"{str_id1}\t{str_id2}\t{str_id3}\t{str_id4}\t{str_type}\t{type_text}\t{text}".lower()
+                )
+            self.search_texts = search_texts
+        return [index for index, text in enumerate(self.search_texts) if q in text]
+
+
 class LocHandler(PreviewHandler):
+    def __init__(self) -> None:
+        self._cache_key: tuple[int, int] | None = None
+        self._cache_index: _LocIndex | None = None
+
+    def _index(self, data: bytes) -> _LocIndex:
+        key = (id(data), len(data))
+        if self._cache_key != key or self._cache_index is None:
+            self._cache_key = key
+            self._cache_index = _LocIndex(data)
+        return self._cache_index
+
+    def supports_lazy_records(self) -> bool:
+        return True
+
+    def get_record_count(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> int:
+        return len(self._index(data).records)
+
+    def render_data_page(
+        self,
+        data: bytes,
+        entry: PazEntry,
+        companions: dict[str, bytes],
+        page: int,
+        page_size: int,
+    ) -> str:
+        index = self._index(data)
+        return self._render_page(index.page(page, page_size), page, page_size, len(index.records))
+
+    def search_records(
+        self,
+        data: bytes,
+        entry: PazEntry,
+        companions: dict[str, bytes],
+        query: str,
+    ) -> list[int]:
+        return self._index(data).search(query)
+
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        raw = _parse_all_loc_records(data)
-        return [
-            {
-                "str_id1": i1,
-                "str_id2": i2,
-                "str_id3": i3,
-                "str_id4": i4,
-                "str_type": t,
-                "str_type_text": _TYPE_NAMES.get(t, "Unknown"),
-                "text": text,
-            }
-            for (_, t, i1, i2, i3, i4, text) in raw
-        ]
+        index = self._index(data)
+        return [index.record_dict(i) for i in range(len(index.records))]
 
     def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
         total = len(records)
+        start = page * page_size
+        end = min(start + page_size, total)
+        return self._render_page(records[start:end], page, page_size, total)
+
+    def _render_page(self, records: list[dict], page: int, page_size: int, total: int) -> str:
         start = page * page_size
         end   = min(start + page_size, total)
         rows_html = "".join(
@@ -94,7 +202,7 @@ class LocHandler(PreviewHandler):
             f"<td>{_html.escape(r['str_type_text'])}</td>"
             f"<td class='loc-text'>{_html.escape(r['text'])}</td>"
             f"</tr>"
-            for r in records[start:end]
+            for r in records
         )
         return f"""
 <div class="loc-view">

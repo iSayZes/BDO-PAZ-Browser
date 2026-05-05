@@ -22,6 +22,40 @@ class PreviewHandler(ABC):
         """Return internal PAZ paths of files this handler needs alongside the main file."""
         return []
 
+    def supports_lazy_records(self) -> bool:
+        """Return True when the handler can page/search without materializing all records."""
+        return False
+
+    def get_record_count(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> int:
+        """Return record count for lazy parsed handlers."""
+        return len(self.get_records(data, entry, companions))
+
+    def render_data_page(
+        self,
+        data: bytes,
+        entry: PazEntry,
+        companions: dict[str, bytes],
+        page: int,
+        page_size: int,
+    ) -> str:
+        """Render a parsed page directly from source data for lazy parsed handlers."""
+        return self.render_records_page(self.get_records(data, entry, companions), page, page_size)
+
+    def search_records(
+        self,
+        data: bytes,
+        entry: PazEntry,
+        companions: dict[str, bytes],
+        query: str,
+    ) -> list[int]:
+        """Return matching record indices for lazy parsed handlers."""
+        q = query.lower()
+        records = self.get_records(data, entry, companions)
+        return [
+            i for i, rec in enumerate(records)
+            if any(q in str(value).lower() for value in rec.values())
+        ]
+
     @abstractmethod
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         """Return all records as plain dicts (raw values — no HTML).

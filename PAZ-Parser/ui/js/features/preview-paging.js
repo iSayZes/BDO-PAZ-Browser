@@ -32,6 +32,12 @@ export const previewPagingMethods = {
     return bar;
   },
 
+  _scrollPreviewToTop() {
+    const content = document.getElementById("preview-content");
+    content.scrollTop = 0;
+    content.scrollLeft = 0;
+  },
+
   async _gotoHexPage(page) {
     const result = await window.pywebview.api.get_hex_page(this._selectedPath, page);
     if (result.error) return;
@@ -39,6 +45,7 @@ export const previewPagingMethods = {
     this._hexHtml = result.hex_html;
     const content = document.getElementById("preview-content");
     content.innerHTML = result.hex_html;
+    this._scrollPreviewToTop();
     this._setPageBar(this._buildPageBar("hex", page, this._hexTotalPages));
   },
 
@@ -49,6 +56,7 @@ export const previewPagingMethods = {
     this._parsedHtml = result.html;
     const content = document.getElementById("preview-content");
     content.innerHTML = result.html;
+    this._scrollPreviewToTop();
     this._initTableSort(content);
     this._setPageBar(this._buildPageBar("parsed", page, this._parsedTotalPages));
   },

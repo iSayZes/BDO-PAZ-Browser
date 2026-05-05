@@ -15,9 +15,12 @@ export const searchMethods = {
     }
     this._inSearch = true;
 
+    const apiStart = performance.now();
     const results = await window.pywebview.api.search(query);
+    window.appProfile?.record("_doSearch.api.search", performance.now() - apiStart);
     if (seq !== this._searchSeq) return;
 
+    const renderStart = performance.now();
     const tree = document.getElementById("tree");
     tree.innerHTML = "";
 
@@ -42,5 +45,6 @@ export const searchMethods = {
 
     const cap = results.length === 500 ? "500+ " : `${results.length.toLocaleString()} `;
     this.setStatus({ message: `Found ${cap}files matching "${query}"` });
+    window.appProfile?.record("_doSearch.render_results", performance.now() - renderStart);
   },
 };

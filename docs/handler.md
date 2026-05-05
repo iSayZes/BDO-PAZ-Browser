@@ -202,6 +202,34 @@ class MyFileHandler(PreviewHandler):
 
 ---
 
+## Lazy Parsed Handlers
+
+Large formats can opt into lazy parsed records so the browser can page and search
+without materializing every row during file selection.
+
+Override `supports_lazy_records()` and provide count, page, and search methods:
+
+```python
+class LargeFileHandler(PreviewHandler):
+    def supports_lazy_records(self) -> bool:
+        return True
+
+    def get_record_count(self, data, entry, companions) -> int:
+        return _index(data).count
+
+    def render_data_page(self, data, entry, companions, page, page_size) -> str:
+        records = _index(data).records_for_page(page, page_size)
+        return _render_table(records, page, page_size)
+
+    def search_records(self, data, entry, companions, query) -> list[int]:
+        return _index(data).search(query)
+```
+
+Keep `get_records()` implemented as a compatibility fallback for CSV export and
+non-lazy callers. Handlers that do not opt in keep the original eager behavior.
+
+---
+
 ## Companion Files
 
 Override `companions()` when a handler needs related files.
@@ -433,11 +461,12 @@ Raise only for actual programming errors.
 5. Implement one or more `PreviewHandler` classes with `get_records()` and `render_records_page()`.
 6. `get_records()` must return plain dicts — no HTML. Include any LOC-lookup strings here so tab search can find them.
 7. `render_records_page()` slices `records[page * page_size : ...]` and returns an HTML fragment.
-8. Register by exact filename or extension.
-9. Escape all file-derived output (`e()` helper or `html.escape()`).
-10. Use `companions()` for related files.
-11. Keep raw hex switching in the frontend, not the handler.
-12. Move reusable logic to `_common/` when another format needs it.
+8. For very large formats, optionally implement lazy parsed methods so paging and search do not require eager parsing.
+9. Register by exact filename or extension.
+10. Escape all file-derived output (`e()` helper or `html.escape()`).
+11. Use `companions()` for related files.
+12. Keep raw hex switching in the frontend, not the handler.
+13. Move reusable logic to `_common/` when another format needs it.
 
 > **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. Changes to any file under `handlers/` — including private packages like `_dbss/` — take effect immediately. If a file is open on the Parsed tab, the preview re-renders automatically.
 

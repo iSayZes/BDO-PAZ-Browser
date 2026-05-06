@@ -197,6 +197,7 @@ export const treeMethods = {
         this.showTabSearchBar(false);
         content.innerHTML = result.html ?? this._hexHtml;
         if (result.html) {
+          this._initStreamThumbnails(content);
           this._initTableSort(content);
           this._setPageBar(null);
         } else {

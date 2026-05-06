@@ -65,12 +65,17 @@ def _apply_window_icon(window) -> None:
 
 
 def _launch_gui(profile: bool = False) -> None:
+    from bdo_server import LocalServer
+
     _set_app_user_model_id()
     url = str(Path(__file__).parent / "ui" / "index.html")
     if profile:
         url += "?profile=1"
 
-    api = Api(profile=profile)
+    server = LocalServer()
+    server.start()
+    api = Api(profile=profile, server=server)
+    server.set_reader(api)
     window = webview.create_window(
         title="BDO PAZ Browser",
         url=url,
@@ -83,7 +88,10 @@ def _launch_gui(profile: bool = False) -> None:
     if window is not None:
         api.set_window(window)
         window.events.shown += lambda: _apply_window_icon(window)
-    webview.start(debug=profile)
+    try:
+        webview.start(debug=profile)
+    finally:
+        server.stop()
 
 
 def _resolve_paz_root(paz_folder: str | None) -> Path | None:
@@ -149,6 +157,11 @@ _FORMATS_IGNORE: frozenset[str] = frozenset({
     ".volumedecal",
     ".vnm",
     ".ttf", # Font
+    ".otf", # Font
+    ".ani", # Cursor/animation, not a game format
+    ".bin", # Generic binary, too common to be useful without more context
+    ".luac", # Compiled Lua, not sure i cba
+    ".link", # Shortcut/link file, not a game format
 })
 
 

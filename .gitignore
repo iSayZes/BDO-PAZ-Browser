@@ -8,8 +8,9 @@ profile.prof
 # Misc
 files/
 json/
-tools/
+tools/*
 todo.md
 test-scripts/
+tests/fixtures/unpacked/
 docs/paz_tree.md
 PAZ-Parser/paz_config.json

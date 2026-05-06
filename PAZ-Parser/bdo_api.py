@@ -32,10 +32,12 @@ from bdo_models import PazEntry
 from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
 from bdo_payload_reader import read_entry_payload
 from bdo_preview import (
-    AltViewHandler, DdsHandler, HexHandler, PARSED_RECORDS_PER_PAGE, TextHandler, get_handler,
+    AltViewHandler, DdsHandler, HEX_ROWS_PER_PAGE, HexHandler, PARSED_RECORDS_PER_PAGE,
+    StreamPreviewHandler, TextHandler, get_handler,
 )
 
 _hex_handler = HexHandler()
+_HEX_BYTES_PER_PAGE = HEX_ROWS_PER_PAGE * 16
 
 
 _ICON_MAP: dict[str, str] = {
@@ -44,6 +46,7 @@ _ICON_MAP: dict[str, str] = {
     ".txt": "📄", ".log": "📄", ".csv": "📄", ".ini": "📄", ".cfg": "📄",
     ".htm": "🌐", ".html": "🌐",
     ".lua": "📜",
+    ".webm": "🎬",
     ".pac": "📦", ".bss": "🔒", ".dbss": "🔒",
     ".loc": "💬",
 }
@@ -74,8 +77,9 @@ def _count_entries(node: dict) -> int:
 
 
 class Api:
-    def __init__(self, profile: bool = False) -> None:
+    def __init__(self, profile: bool = False, server: Any | None = None) -> None:
         self._profile = profile
+        self._server = server
         self._window: webview.Window | None = None
         self._paz_root: Path | None = None
         self._entries: list[PazEntry] = []
@@ -210,6 +214,39 @@ class Api:
             )
         except Exception:
             return None
+
+    def get_entry(self, internal_path: str) -> PazEntry | None:
+        return self._entry_map.get(_norm(internal_path))
+
+    def read_entry(self, internal_path: str) -> bytes:
+        entry = self.get_entry(internal_path)
+        if not entry or not self._paz_root:
+            raise FileNotFoundError(internal_path)
+        return read_entry_payload(
+            archive_path=self._paz_root / entry.archive_name,
+            entry=entry,
+        )
+
+    def get_stream_mime_type(self, internal_path: str) -> str:
+        p = Path(internal_path)
+        handler = get_handler(p.name, p.suffix)
+        if isinstance(handler, StreamPreviewHandler):
+            return handler.mime_type
+        return "application/octet-stream"
+
+    def is_streamable(self, internal_path: str) -> bool:
+        p = Path(internal_path)
+        return isinstance(get_handler(p.name, p.suffix), StreamPreviewHandler)
+
+    def stream_url(self, internal_path: str) -> str:
+        if self._server is None:
+            raise RuntimeError("Local stream server not available")
+        return self._server.stream_url(_norm(internal_path))
+
+    def get_server_info(self) -> dict:
+        if self._server is None:
+            return {}
+        return {"port": self._server.port, "token": self._server.token}
 
     # ── Tree ──────────────────────────────────────────────────────────────────
 
@@ -400,6 +437,44 @@ class Api:
             response["profile"] = profile
         return response
 
+    def _build_stream_response(
+        self,
+        internal_path: str,
+        entry: PazEntry,
+        handler: StreamPreviewHandler,
+        meta: dict,
+    ) -> dict:
+        import html as _html_mod
+
+        self._cached_path = _norm(internal_path)
+        self._cached_data = None
+        self._cached_records = None
+        self._cached_record_search_text = None
+        self._cached_handler = None
+        self._cached_entry = entry
+        self._cached_companions = {}
+
+        try:
+            stream_url = self.stream_url(entry.internal_path)
+            html = handler.render_stream(stream_url, entry)
+        except Exception as ex:
+            stream_url = ""
+            html = f'<div class="error">Render error: {_html_mod.escape(str(ex))}</div>'
+
+        return {
+            "html": html,
+            "hex_html": "",
+            "has_parsed": False,
+            "tab_labels": None,
+            "meta": meta,
+            "hex_total_pages": max(1, (entry.uncompressed_size + _HEX_BYTES_PER_PAGE - 1) // _HEX_BYTES_PER_PAGE),
+            "parsed_total_pages": 1,
+            "stream": {
+                "url": stream_url,
+                "mime": handler.mime_type,
+            },
+        }
+
     def _load_disk_entry(self, internal_path: str) -> dict:
         name = internal_path[len(_DISK_VIRTUAL_PREFIX) + 1:]
         data = self._disk_companions.get(name)
@@ -442,6 +517,18 @@ class Api:
             "offset":       f"0x{entry.offset:08X}",
         }
 
+        p = Path(entry.internal_path)
+        handler = get_handler(p.name, p.suffix)
+
+        if isinstance(handler, StreamPreviewHandler):
+            response = self._build_stream_response(internal_path, entry, handler, meta)
+            if self._profile:
+                response["profile"] = {
+                    "backend.read_payload_ms": 0.0,
+                    "backend.load_companions_ms": 0.0,
+                }
+            return response
+
         try:
             start = self._ts()
             data = read_entry_payload(
@@ -451,9 +538,6 @@ class Api:
         except Exception as ex:
             return {"error": str(ex), "meta": meta}
         read_payload_ms = (time.perf_counter() - start) * 1000 if self._profile else 0.0
-
-        p = Path(entry.internal_path)
-        handler = get_handler(p.name, p.suffix)
 
         companions: dict[str, bytes] = dict(self._disk_companions)
         start = self._ts()
@@ -747,6 +831,11 @@ class Api:
         else:
             if self._cached_path == norm and self._cached_data is not None:
                 data = self._cached_data
+            elif norm in self._entry_map and self._paz_root:
+                try:
+                    data = self.read_entry(norm)
+                except Exception as ex:
+                    return {"error": str(ex)}
             else:
                 return {"error": "File data not cached — reload the file"}
             save_filename = filename

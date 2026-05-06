@@ -230,6 +230,43 @@ non-lazy callers. Handlers that do not opt in keep the original eager behavior.
 
 ---
 
+## Streamed Preview Handlers
+
+Large browser-native previews should subclass `StreamPreviewHandler` instead of
+reading the full payload into HTML.
+
+Use streamed handlers for formats that can preview from a local URL, such as
+video or audio. The API supplies a tokenized localhost URL and skips the eager
+`read_entry_payload(...)` call during initial selection.
+
+```python
+from bdo_models import PazEntry
+from bdo_preview import StreamPreviewHandler, register_handler
+
+
+class MyVideoHandler(StreamPreviewHandler):
+    mime_type = "video/webm"
+
+    def render_stream(self, stream_url: str, entry: PazEntry) -> str:
+        return (
+            '<div class="video-view">'
+            f'<video controls preload="metadata" src="{stream_url}"></video>'
+            '</div>'
+        )
+
+
+register_handler(".webm", MyVideoHandler())
+```
+
+Rules:
+
+- `mime_type` should match the streamed content type.
+- `render_stream()` returns only the preview shell HTML.
+- Do not base64-encode the payload inside the handler.
+- The stream endpoint supports browser `Range` requests, but the current backend still decodes the full entry before slicing the response.
+
+---
+
 ## Companion Files
 
 Override `companions()` when a handler needs related files.

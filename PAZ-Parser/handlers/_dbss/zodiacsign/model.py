@@ -36,3 +36,8 @@ class ZodiacSignOrderOffsetRecord(TypedDict):
     data_offset: int
     data_size: int
     padding: int
+
+
+class ZodiacSignIndexRecord(TypedDict):
+    slot: int
+    zodiac_id: int

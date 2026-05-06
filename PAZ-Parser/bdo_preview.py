@@ -147,6 +147,41 @@ class DdsHandler(PreviewHandler):
         )
 
 
+# ── Streamed previews ────────────────────────────────────────────────────────
+
+class StreamPreviewHandler(PreviewHandler):
+    """Renders a primary preview from a local stream URL instead of raw bytes."""
+
+    mime_type = "application/octet-stream"
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        raise NotImplementedError
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        raise NotImplementedError
+
+    def render_stream(self, stream_url: str, entry: PazEntry) -> str:
+        raise NotImplementedError
+
+
+class VideoHandler(StreamPreviewHandler):
+    """Renders browser-native video formats through the local stream server."""
+
+    def __init__(self, mime_type: str) -> None:
+        self.mime_type = mime_type
+
+    def render_stream(self, stream_url: str, entry: PazEntry) -> str:
+        name = _html.escape(Path(entry.internal_path).name)
+        url = _html.escape(stream_url, quote=True)
+        return (
+            f'<div class="video-view">'
+            f'<video controls crossorigin="anonymous" data-stream-thumbnail="first-frame" '
+            f'preload="metadata" src="{url}" title="{name}">'
+            f'</video>'
+            f'</div>'
+        )
+
+
 # ── Hex dump ──────────────────────────────────────────────────────────────────
 
 class HexHandler(PreviewHandler):
@@ -245,6 +280,7 @@ class SvgHandler(AltViewHandler):
 # ── Registry ──────────────────────────────────────────────────────────────────
 
 _image_handler = DdsHandler()
+_webm_handler = VideoHandler("video/webm")
 
 _REGISTRY: dict[str, PreviewHandler] = {
     **{ext: TextHandler() for ext in (
@@ -257,6 +293,7 @@ _REGISTRY: dict[str, PreviewHandler] = {
         ".dds", ".dds1", ".dds11",
         ".png", ".jpg", ".bmp", ".gif", ".tga", ".tif",
     )},
+    ".webm": _webm_handler,
     ".svg": SvgHandler(),
 }
 

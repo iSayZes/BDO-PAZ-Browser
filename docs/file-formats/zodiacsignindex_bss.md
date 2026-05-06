@@ -30,10 +30,10 @@ slot 11 -> zodiac_id 12 -> Goblin
 
 ## Companion Files
 
-| File                  | Required | Role                                  |
-| --------------------- | -------- | ------------------------------------- |
+| File                  | Required | Role                                   |
+| --------------------- | -------- | -------------------------------------- |
 | `zodiacsign.dbss`     | Required | Resolves each `zodiac_id` to sign data |
-| `languagedata_en.loc` | Optional | English names for display             |
+| `languagedata_en.loc` | Optional | English names for display              |
 
 All multi-byte values are little-endian.
 
@@ -43,26 +43,26 @@ All multi-byte values are little-endian.
 
 ### Header (8 bytes)
 
-| Offset  | Type  | Field | Notes                      |
-| ------- | ----- | ----- | -------------------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)             |
+| Offset  | Type  | Field | Notes                          |
+| ------- | ----- | ----- | ------------------------------ |
+| `+0x00` | u8[4] | magic | `PABR` (ASCII)                 |
 | `+0x04` | u32   | count | Number of entries; observed 12 |
 
 ### Entry (1 byte, repeated `count` times)
 
-| Offset  | Type | Field     | Notes                                 |
-| ------- | ---- | --------- | ------------------------------------- |
+| Offset  | Type | Field     | Notes                                            |
+| ------- | ---- | --------- | ------------------------------------------------ |
 | `+0x00` | u8   | zodiac_id | 1-based ID into `zodiacsign.dbss`; observed 1-12 |
 
 ### Trailer (12 bytes)
 
 Follows the last entry.
 
-| Offset  | Type | Field          | Notes                                         |
-| ------- | ---- | -------------- | --------------------------------------------- |
-| `+0x00` | u32  | reserved_a     | Always 0                                      |
+| Offset  | Type | Field          | Notes                                                  |
+| ------- | ---- | -------------- | ------------------------------------------------------ |
+| `+0x00` | u32  | reserved_a     | Always 0                                               |
 | `+0x04` | u32  | end_of_entries | Byte offset immediately after entries; observed `0x14` |
-| `+0x08` | u32  | reserved_b     | Always 0                                      |
+| `+0x08` | u32  | reserved_b     | Always 0                                               |
 
 ---
 
@@ -87,10 +87,9 @@ Follows the last entry.
 
 ## Suggested UI Layout
 
-| Column    | Type | Notes                                        |
-| --------- | ---- | -------------------------------------------- |
-| Slot      | num  | Zero-based row position in this file         |
-| Zodiac ID | num  | `zodiac_id`                                  |
+| Column    | Type | Notes                                               |
+| --------- | ---- | --------------------------------------------------- |
+| Zodiac ID | num  | `zodiac_id`                                         |
 | Name      | text | Prefer LOC str_type=7, str_id1=zodiac_id, str_id4=0 |
 
 ---

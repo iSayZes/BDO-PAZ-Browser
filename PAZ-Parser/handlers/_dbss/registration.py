@@ -14,6 +14,7 @@ from .knowledgelearning.handler import (
 from .npcpersonality.handler import NpcPersonalityHandler, NpcPersonalityOffsetHandler
 from .quest.handler import QuestDbssHandler
 from .questgroup.handler import QuestGroupDbssHandler
+from .worldquest.handler import WorldQuestDbssHandler
 from .npcgift.handler import (
     NpcGiftOffsetHandler,
     NpcGiftHandler,
@@ -26,6 +27,15 @@ from .zodiacsign.handler import (
     ZodiacSignOffsetHandler,
     ZodiacSignOrderHandler,
     ZodiacSignOrderOffsetHandler,
+)
+from .plantzone.handler import PlantZoneOffsetHandler, PlantZoneHandler
+from .characterspawntype.handler import (
+    CharacterSpawnTypeOffsetHandler,
+    CharacterSpawnTypeHandler,
+)
+from .characterstatic.handler import (
+    CharacterStaticOffsetHandler,
+    CharacterStaticHandler,
 )
 
 
@@ -44,6 +54,7 @@ def register_dbss_handlers() -> None:
     register_handler("npcpersonality.dbss", NpcPersonalityHandler())
     register_handler("quest.dbss", QuestDbssHandler())
     register_handler("questgroup.dbss", QuestGroupDbssHandler())
+    register_handler("worldquest.dbss", WorldQuestDbssHandler())
     register_handler("npcgiftoffset.dbss", NpcGiftOffsetHandler())
     register_handler("npcgift.dbss", NpcGiftHandler())
     register_handler("npcgiftdataoffset.dbss", NpcGiftDataOffsetHandler())
@@ -53,3 +64,9 @@ def register_dbss_handlers() -> None:
     register_handler("zodiacsignorderoffset.dbss", ZodiacSignOrderOffsetHandler())
     register_handler("zodiacsignorder.dbss", ZodiacSignOrderHandler())
     register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())
+    register_handler("plantzoneoffset.dbss", PlantZoneOffsetHandler())
+    register_handler("plantzone.dbss", PlantZoneHandler())
+    register_handler("characterspawntypeoffset.dbss", CharacterSpawnTypeOffsetHandler())
+    register_handler("characterspawntype.dbss", CharacterSpawnTypeHandler())
+    register_handler("characterstaticoffset.dbss", CharacterStaticOffsetHandler())
+    register_handler("characterstatic.dbss", CharacterStaticHandler())

@@ -70,9 +70,9 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Supports 2/399 .bss formats.
-- Supports 22/375 .dbss formats.
-- Supports 23/82 other formats.
+- Handler Supported 2/399 .bss formats.
+- Handler Supported 29/375 .dbss formats.
+- Handler Supported 23/23 other formats.
 
 ## Documented Formats
 
@@ -80,20 +80,37 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 | ------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | `characterspawntype.dbss`       | Entity spawn-type flag table — 44 boolean attributes per entity                | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterspawntypeoffset.dbss` | PABR index into `characterspawntype.dbss` — maps entity id_low16 → offset/size | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
+| `characterstatic.dbss`          | Variable-length character/NPC static records with inline action scripts        | [characterstatic](docs/file-formats/characterstatic_dbss.md)       |
+| `characterstaticoffset.dbss`    | PABR index into `characterstatic.dbss` — maps character id → payload offset    | [characterstatic](docs/file-formats/characterstatic_dbss.md)       |
 | `knowledgelearning.dbss`        | Mob ID → knowledge ID mapping (kind 13 records)                                | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md)   |
+| `knowledgelearningoffset.dbss`  | Offset index into `knowledgelearning.dbss` — provides byte offset, kind, idx   | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md)   |
 | `languagedata_en.loc`           | Localization string table (zlib-compressed, UTF-16-LE)                         | [loc](docs/file-formats/languagedata_loc.md)                       |
 | `mentalcard.dbss`               | Knowledge entry → node/category ID mapping                                     | [mentalcard](docs/file-formats/mentalcard_dbss.md)                 |
+| `mentalcardoffset.dbss`         | Offset index into `mentalcard.dbss` — provides byte offset and block size      | [mentalcard](docs/file-formats/mentalcard_dbss.md)                 |
 | `mentaltheme.dbss`              | Knowledge group/category tree with rewards, entries, and child themes          | [mentaltheme](docs/file-formats/mentaltheme_dbss.md)               |
+| `mentalthemeoffset.dbss`        | Offset index into `mentaltheme.dbss` — maps theme ID → payload offset/size     | [mentaltheme](docs/file-formats/mentaltheme_dbss.md)               |
 | `npcgift.dbss`                  | NPC gift item table + confession-response dialogue                             | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
+| `npcgiftdata.dbss`              | NPC confession-response dialogue records (variable-length, Korean UTF-16)      | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
+| `npcgiftdataoffset.dbss`        | ID-keyed index into `npcgiftdata.dbss`                                         | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
+| `npcgiftetc.bss`                | PABR global gift-system config block (8 fields, 32 bytes)                      | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
+| `npcgiftoffset.dbss`            | ID-keyed index into `npcgift.dbss`                                             | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
 | `npcpersonality.dbss`           | NPC personality ID → type refs + behavioural float params                      | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
+| `npcpersonalityoffset.dbss`     | ID-keyed sequential index into `npcpersonality.dbss`                           | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
 | `plantzone.dbss`                | Variable-length plant-zone records with a required offset table                | [plantzone](docs/file-formats/plantzone_dbss.md)                   |
+| `plantzoneoffset.dbss`          | Offset index into `plantzone.dbss` — maps record ID → byte offset/size         | [plantzone](docs/file-formats/plantzone_dbss.md)                   |
 | `quest.dbss`                    | Variable-length quest definitions with scripts, objectives, and icon paths     | [quest](docs/file-formats/quest_dbss.md)                           |
 | `questgroup.dbss`               | Quest chain/group table with Korean names and child quest ID links             | [questgroup](docs/file-formats/questgroup_dbss.md)                 |
 | `title.dbss`                    | Title record table (multiple layouts, embedded PAColor text)                   | [title](docs/file-formats/title_dbss.md)                           |
 | `titlebufflist.dbss`            | Title collection buff rewards (KR text + LOC tooltip match)                    | [titlebufflist](docs/file-formats/titlebufflist_dbss.md)           |
+| `titlebufflistoffset.dbss`      | Offset index into `titlebufflist.dbss` — maps entry ID → byte offset/size      | [titlebufflist](docs/file-formats/titlebufflist_dbss.md)           |
 | `titlecategory.bss`             | Groups titles into display categories                                          | [titlecategory](docs/file-formats/titlecategory_bss.md)            |
 | `titleoffset.dbss`              | Index into `title.dbss` — maps title ID → offset/size                          | [titleoffset](docs/file-formats/titleoffset_dbss.md)               |
+| `worldquest.dbss`               | Empty world quest table placeholder with a zero record count                   | [worldquest](docs/file-formats/worldquest_dbss.md)                 |
 | `zodiacsign.dbss`               | Zodiac sign definitions — star coords, names, texture paths                    | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
+| `zodiacsignindex.bss`           | PABR display-order index mapping slot → zodiac ID for the 12 horoscope signs   | [zodiacsignindex](docs/file-formats/zodiacsignindex_bss.md)        |
+| `zodiacsignoffset.dbss`         | ID-keyed index into `zodiacsign.dbss` — 9-byte rows (u8 id + u32 offset/size) | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
+| `zodiacsignorder.dbss`          | Per-personality-type constellation drawing-order sequences (24 records)        | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
+| `zodiacsignorderoffset.dbss`    | ID-keyed index into `zodiacsignorder.dbss` — maps personality type → offset    | [zodiacsign](docs/file-formats/zodiacsign_dbss.md)                 |
 
 All formats are little-endian. Unknown fields are named `unknown_*`.
 

@@ -2,12 +2,12 @@
 
 ## Purpose
 
-Defines how knowledge entries are obtained. Records map knowledge IDs to their unlock trigger type and an associated index ID. Parsing is driven by `knowledgelearningoffset.dbss`, which provides each entry's byte offset, kind, and index ID.
+Defines how knowledge entries are obtained. Records map knowledge IDs to their unlock trigger type (`kind`) and an associated index ID. All observed records have kind=13; the exact meaning of this value is not yet confirmed. Parsing is driven by `knowledgelearningoffset.dbss`, which provides each entry's byte offset, kind, and index ID.
 
 Example:
 
 ```text
-kind: 13 (mob kill)  →  knowledge_id: 4521  →  "Imp Captain"
+kind: 13  →  knowledge_id: 4521  →  "Imp Captain"
 ```
 
 ## Graph
@@ -63,10 +63,9 @@ Records are accessed by absolute byte offset from the offset file. Only one fiel
 
 ### Known `kind` Values
 
-| Value | Meaning                         |
-| ----- | ------------------------------- |
-| 13    | Knowledge via mob kill          |
-| other | Unknown — other unlock triggers |
+| Value | Meaning                                              |
+| ----- | ---------------------------------------------------- |
+| 13    | Only value observed so far — exact meaning uncertain |
 
 ---
 
@@ -84,6 +83,6 @@ What are the 9 bytes at `+0x00` in `knowledgelearning.dbss`? For kind 13, specul
 
 What does `idx_id` encode for each kind value?
 
-### Non-kind-13 Record Fields
+### Other `kind` Values
 
-Are there additional parsed fields in records with kinds other than 13?
+All records observed so far have kind=13. Are there other kind values in practice, and if so, do they change the record layout?

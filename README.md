@@ -70,9 +70,9 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-Supports 2/399 .bss formats.
-Supports 22/375 .dbss formats.
-Supports 23/82 other formats.
+- Supports 2/399 .bss formats.
+- Supports 22/375 .dbss formats.
+- Supports 23/82 other formats.
 
 ## Documented Formats
 

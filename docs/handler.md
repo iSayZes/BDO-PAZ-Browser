@@ -288,8 +288,17 @@ python -m pytest -v -s
 Pytest expands each spec into a separate test item and parses each handler once:
 
 Use `case_id` from `tests.framework` for `pytest.mark.parametrize(..., ids=case_id)`
-so test output names stay readable (`row count`, `position = 0`, `TitleId = 3`)
-instead of pytest's default `spec0`, `spec1`, `spec2`.
+so test output names stay readable instead of pytest's default `spec0`, `spec1`, `spec2`.
+
+| Spec type   | ID format                              | Example                          |
+|-------------|----------------------------------------|----------------------------------|
+| `CountTest` | `row count`                            | `row count`                      |
+| `PosTest`   | `position = {pos}`                     | `position = 0`                   |
+| `SchemaTest`| `schema: {key1}, {key2}, ...`          | `schema: id, name, kind`         |
+| `RangeTest` | `{col} in [{min}, {max}]`              | `kind in [1, 13]`                |
+| `TargetTest`| `{col} = {value}`                      | `TitleId = 3`                    |
+| `TargetTest`| `{col} in {a}-{b}` (2-value collection)| `slot in 0-19598`                |
+| `TargetTest`| `{col} in {v1}, {v2}, ...` (3+)        | `kind in 1, 2, 5`                |
 
 ```text
 title.dbss

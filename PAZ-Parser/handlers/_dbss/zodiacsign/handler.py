@@ -3,32 +3,14 @@ from __future__ import annotations
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.loc import loc_lookup, strip_pa_tags
-
-from ..common.html import e, error, table
+from _common.html import e, error, table
+from _common.zodiacsign.loc import resolve_loc_type7
+from _common.zodiacsign.parser import parse_zodiacsign_records
 from .parser import (
-    parse_zodiacsignindex_records,
-    parse_zodiacsign_records,
     parse_zodiacsignoffset_records,
     parse_zodiacsignorder_records,
     parse_zodiacsignorderoffset_records,
 )
-
-
-def _resolve_loc_type7(
-    zodiac_ids: list[int],
-) -> tuple[dict[int, str], dict[int, str]]:
-    """Return (names, traits) keyed by zodiac_id using the module-level loc index."""
-    names:  dict[int, str] = {}
-    traits: dict[int, str] = {}
-    for zid in zodiac_ids:
-        name  = loc_lookup(7, zid, 0, 0, 0)
-        trait = loc_lookup(7, zid, 0, 0, 1)
-        if name:
-            names[zid]  = name
-        if trait:
-            traits[zid] = strip_pa_tags(trait)
-    return names, traits
 
 
 def _truncate(text: str, max_len: int = 100) -> str:
@@ -62,12 +44,6 @@ _ORDER_OFFSET_HEADERS: list[tuple[str, str, str]] = [
     ("Data Offset",      "num", ""),
 ]
 
-_INDEX_HEADERS: list[tuple[str, str, str]] = [
-    ("Zodiac ID", "num", ""),
-    ("Name",      "",    ""),
-]
-
-
 class ZodiacSignHandler(PreviewHandler):
     def get_records(
         self,
@@ -80,7 +56,7 @@ class ZodiacSignHandler(PreviewHandler):
             return []
 
         zodiac_ids = [rec["zodiac_id"] for rec in records]
-        loc_names, loc_traits = _resolve_loc_type7(zodiac_ids)
+        loc_names, loc_traits = resolve_loc_type7(zodiac_ids)
 
         result: list[dict] = []
         for rec in records:
@@ -178,7 +154,7 @@ class ZodiacSignOrderHandler(PreviewHandler):
             return []
 
         unique_majors = list({rec["personality_type"] // 100 for rec in records})
-        loc_names, _ = _resolve_loc_type7(unique_majors)
+        loc_names, _ = resolve_loc_type7(unique_majors)
 
         result: list[dict] = []
         for rec in records:
@@ -253,50 +229,3 @@ class ZodiacSignOrderOffsetHandler(PreviewHandler):
         return table(meta, _ORDER_OFFSET_HEADERS, rows)
 
 
-class ZodiacSignIndexHandler(PreviewHandler):
-    def companions(self, entry: PazEntry) -> list[str]:
-        folder = entry.internal_path.rsplit("/", 1)[0]
-        if folder == entry.internal_path:
-            return ["zodiacsign.dbss"]
-        return [f"{folder}/zodiacsign.dbss"]
-
-    def get_records(
-        self,
-        data: bytes,
-        entry: PazEntry,
-        companions: dict[str, bytes],
-    ) -> list[dict]:
-        zodiacsign_raw = companions.get("zodiacsign.dbss")
-        if zodiacsign_raw is None:
-            raise ValueError("zodiacsign.dbss companion not found.")
-
-        records = parse_zodiacsignindex_records(data)
-        valid_ids = {rec["zodiac_id"] for rec in parse_zodiacsign_records(zodiacsign_raw)}
-        loc_names, _ = _resolve_loc_type7([rec["zodiac_id"] for rec in records])
-
-        result: list[dict] = []
-        for rec in records:
-            zodiac_id = rec["zodiac_id"]
-            result.append({
-                "slot": rec["slot"],
-                "zodiac_id": zodiac_id,
-                "name": loc_names.get(zodiac_id, f"#{zodiac_id}"),
-                "known": zodiac_id in valid_ids,
-            })
-
-        return result
-
-    def render_records_page(
-        self,
-        records: list[dict],
-        page: int,
-        page_size: int,
-    ) -> str:
-        start = page * page_size
-        slice_ = records[start : start + page_size]
-        meta = f"{len(records):,} zodiac index entries"
-        rows = [
-            [e(r["zodiac_id"]), e(r["name"])]
-            for r in slice_
-        ]
-        return table(meta, _INDEX_HEADERS, rows)

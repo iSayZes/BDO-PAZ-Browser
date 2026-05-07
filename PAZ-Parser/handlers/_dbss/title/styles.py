@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ..common.binary import u32_hi, u32_lo
+from _common.binary import u32_hi, u32_lo
 
 # Do not treat these as confirmed color names.
 # These are only observed numeric values until verified against in-game data.

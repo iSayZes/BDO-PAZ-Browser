@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import re
-import struct
 from dataclasses import dataclass
 
+from _common.binary import u32 as _u32
 from .model import QuestRecord
 
 
@@ -16,12 +16,6 @@ _ICON_RE = re.compile(rb"Icon/[A-Za-z0-9_./ \-]+\.dds", re.IGNORECASE)
 class QuestIndex:
     declared_count: int
     starts: list[int]
-
-
-def _u32(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 4 > len(data):
-        return 0
-    return struct.unpack_from("<I", data, offset)[0]
 
 
 def _is_text_clean(text: str) -> bool:

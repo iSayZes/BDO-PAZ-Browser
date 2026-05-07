@@ -4,8 +4,8 @@ import re
 
 from _common.loc import loc_all_texts, strip_pa_tags
 
-from ..common.binary import debug_u32_fields
-from ..common.constants import PA_COLOR_MARKER
+from _common.binary import debug_u32_fields
+from _common.constants import PA_COLOR_MARKER
 from .model import TitleBuffRecord
 
 

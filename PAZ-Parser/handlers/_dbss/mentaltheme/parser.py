@@ -1,30 +1,11 @@
 from __future__ import annotations
 
-import struct
-
+from _common.binary import u8 as _u8, u16 as _u16, u32 as _u32
 from _common.loc import loc_lookup, strip_pa_tags
 from .model import MentalThemeOffsetRecord, MentalThemeRecord
 
 _OFFSET_RECORD_SIZE = 10
 _STATS_SIZE = 23
-
-
-def _u8(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 1 > len(data):
-        return 0
-    return data[offset]
-
-
-def _u16(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 2 > len(data):
-        return 0
-    return struct.unpack_from("<H", data, offset)[0]
-
-
-def _u32(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 4 > len(data):
-        return 0
-    return struct.unpack_from("<I", data, offset)[0]
 
 
 def _decode_utf16le(data: bytes, offset: int, code_units: int) -> str:

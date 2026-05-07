@@ -5,7 +5,7 @@ from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup_prefix, strip_pa_tags
 
-from ..common.html import e, table
+from _common.html import e, table
 from .parser import QuestIndex, build_quest_index, parse_quest_record, parse_quest_records
 
 

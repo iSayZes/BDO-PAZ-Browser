@@ -165,7 +165,7 @@ from __future__ import annotations
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
-from _dbss.common.html import e, table
+from _common.html import e, table
 
 
 _HEADERS = [
@@ -331,7 +331,7 @@ Use shared HTML helpers when available.
 Example:
 
 ```python
-from _dbss.common.html import table, error
+from _common.html import table, error
 ```
 
 ---
@@ -393,7 +393,7 @@ from _dbss.registration import register_dbss_handlers
 From inside a format package:
 
 ```python
-from _dbss.common.binary import u32
+from _common.binary import u32
 from _common.loc import parse_loc_entries
 ```
 
@@ -549,7 +549,7 @@ from __future__ import annotations
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
-from _dbss.common.html import e, table
+from _common.html import e, table
 
 _HEADERS = [("Offset", "num", ""), ("Size", "num", "")]
 

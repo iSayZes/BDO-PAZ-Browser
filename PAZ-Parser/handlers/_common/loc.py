@@ -4,7 +4,7 @@ import re
 import struct
 import zlib
 
-from _dbss.common.binary import u32
+from _common.binary import u32
 
 _PA_TAG_RE = re.compile(r"<PA[^>]+>")
 

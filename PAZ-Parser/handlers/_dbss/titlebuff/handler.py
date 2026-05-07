@@ -5,8 +5,8 @@ from bdo_preview import PreviewHandler
 
 from _common.loc import strip_pa_tags
 
-from ..common.binary import parse_offset_table
-from ..common.html import debug_cell, e, error, table
+from _common.binary import parse_offset_table
+from _common.html import debug_cell, e, error, table
 from .parser import extract_titlebuff_records, find_title_effects_en
 
 

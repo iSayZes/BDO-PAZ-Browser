@@ -3,8 +3,8 @@ from __future__ import annotations
 import re
 import string
 
-from ..common.binary import debug_u32_fields, u32
-from ..common.pa_color import extract_pa_colors, first_pa_color_offset
+from _common.binary import debug_u32_fields, u16 as _u16, u32
+from _common.pa_color import extract_pa_colors, first_pa_color_offset
 from .model import TitleRecord
 
 _PA_TAG_START = "<PA".encode("utf-16-le")
@@ -49,13 +49,6 @@ def style_offset_for_layout(layout: str) -> int:
         return title_offset_for_key_count(int(layout[1:])) + 4
 
     return offsets.get(layout, 0)
-
-
-def _u16(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 2 > len(data):
-        return 0
-
-    return int.from_bytes(data[offset:offset + 2], "little")
 
 
 def _decode_utf16(data: bytes, start: int, end: int) -> str:

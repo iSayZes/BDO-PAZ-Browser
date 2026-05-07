@@ -4,7 +4,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
-from ..common.html import e, table, error
+from _common.html import e, table, error
 from .parser import (
     parse_characterstaticoffset_records,
     parse_characterstatic_records,

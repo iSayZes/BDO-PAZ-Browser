@@ -4,7 +4,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import loc_lookup
-from ..common.html import e, table
+from _common.html import e, table
 from .parser import parse_npcpersonality_records, parse_npcpersonalityoffset_records
 
 

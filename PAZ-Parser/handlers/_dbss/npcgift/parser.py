@@ -1,25 +1,12 @@
 from __future__ import annotations
 
-import struct
-
+from _common.binary import u16 as _u16, u32 as _u32
 from _common.loc import is_loc_loaded, loc_lookup, loc_lookup_prefix, strip_pa_tags
 
 from .model import NpcGiftDataRecord, NpcGiftFlatRecord, NpcGiftOffsetRecord
 
 _OFFSET_RECORD_SIZE = 10  # u16 npc_id + u32 data_offset + u16 data_size + u16 padding
 _GIFT_ROW_SIZE = 12       # u32 item_id + u32 amity_a + u32 amity_b
-
-
-def _u16(data: bytes, pos: int) -> int:
-    if pos < 0 or pos + 2 > len(data):
-        return 0
-    return struct.unpack_from("<H", data, pos)[0]
-
-
-def _u32(data: bytes, pos: int) -> int:
-    if pos < 0 or pos + 4 > len(data):
-        return 0
-    return struct.unpack_from("<I", data, pos)[0]
 
 
 def _npc_name(npc_id: int) -> str:

@@ -6,12 +6,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-import struct
-
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler, register_handler
+from _common.binary import u8, u16, u32
 from _common.loc import decompress_loc
-from _dbss.common.binary import u32
 
 
 _TYPE_NAMES = {
@@ -28,14 +26,6 @@ _TYPE_NAMES = {
 _LocRecordMeta = tuple[int, int, int, int, int, int, int, int]
 
 
-def _u16(data: bytes, pos: int) -> int:
-    return struct.unpack_from("<H", data, pos)[0]
-
-
-def _u8(data: bytes, pos: int) -> int:
-    return data[pos]
-
-
 def _parse_all_loc_records(raw: bytes) -> list[tuple[int, int, int, int, int, int, str]]:
     """Parse all loc records: (str_size, str_type, str_id1, str_id2, str_id3, str_id4, text)."""
     data = decompress_loc(raw)
@@ -49,9 +39,9 @@ def _parse_all_loc_records(raw: bytes) -> list[tuple[int, int, int, int, int, in
         str_size = u32(data, pos)
         str_type = u32(data, pos + 4)
         str_id1  = u32(data, pos + 8)
-        str_id2  = _u16(data, pos + 12)
-        str_id3  = _u8(data, pos + 14)
-        str_id4  = _u8(data, pos + 15)
+        str_id2  = u16(data, pos + 12)
+        str_id3  = u8(data, pos + 14)
+        str_id4  = u8(data, pos + 15)
 
         text_start = pos + 16
         text_end   = text_start + str_size * 2
@@ -93,9 +83,9 @@ class _LocIndex:
             str_size = u32(self.data, pos)
             str_type = u32(self.data, pos + 4)
             str_id1  = u32(self.data, pos + 8)
-            str_id2  = _u16(self.data, pos + 12)
-            str_id3  = _u8(self.data, pos + 14)
-            str_id4  = _u8(self.data, pos + 15)
+            str_id2  = u16(self.data, pos + 12)
+            str_id3  = u8(self.data, pos + 14)
+            str_id4  = u8(self.data, pos + 15)
             text_start = pos + 16
             text_end = text_start + str_size * 2
 

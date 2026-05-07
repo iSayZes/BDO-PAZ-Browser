@@ -3,7 +3,7 @@ from __future__ import annotations
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from ..common.html import e, error, table
+from _common.html import e, error, table
 from .parser import (
     parse_mentalcard_offset_records,
     parse_mentalcard_records,

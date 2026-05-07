@@ -3,8 +3,8 @@ from __future__ import annotations
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from ..common.binary import parse_offset_table
-from ..common.html import e, table
+from _common.binary import parse_offset_table
+from _common.html import e, table
 
 
 _HEADERS: list[tuple[str, str, str]] = [

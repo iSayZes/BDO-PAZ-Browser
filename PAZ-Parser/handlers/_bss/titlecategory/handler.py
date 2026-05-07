@@ -1,14 +1,9 @@
 from __future__ import annotations
 
-import struct
-from pathlib import Path
-
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from bdo_models import PazEntry
-from bdo_preview import PreviewHandler, register_handler
-from _dbss.common.html import e, table
+from bdo_preview import PreviewHandler
+from _common.binary import u32
+from _common.html import e, table
 
 _RECORD_SIZE = 8  # u32 title_id + u32 category_id
 
@@ -29,7 +24,7 @@ _HEADERS = [
 def _parse(data: bytes) -> list[tuple[int, int]]:
     count = len(data) // _RECORD_SIZE
     return [
-        struct.unpack_from("<II", data, i * _RECORD_SIZE)
+        (u32(data, i * _RECORD_SIZE), u32(data, i * _RECORD_SIZE + 4))
         for i in range(count)
     ]
 
@@ -54,6 +49,3 @@ class TitleCategoryBssHandler(PreviewHandler):
             for r in slice_
         ]
         return table(meta, _HEADERS, rows)
-
-
-register_handler("titlecategory.bss", TitleCategoryBssHandler())

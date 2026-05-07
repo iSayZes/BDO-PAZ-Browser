@@ -1,29 +1,10 @@
 from __future__ import annotations
 
-import struct
-
+from _common.binary import f32 as _f32, u16 as _u16, u32 as _u32
 from .model import NpcPersonalityOffsetRecord, NpcPersonalityRecord
 
 _RECORD_SIZE = 34
 _OFFSET_RECORD_SIZE = 10
-
-
-def _u16(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 2 > len(data):
-        return 0
-    return struct.unpack_from("<H", data, offset)[0]
-
-
-def _u32(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 4 > len(data):
-        return 0
-    return struct.unpack_from("<I", data, offset)[0]
-
-
-def _f32(data: bytes, offset: int) -> float:
-    if offset < 0 or offset + 4 > len(data):
-        return 0.0
-    return struct.unpack_from("<f", data, offset)[0]
 
 
 def parse_npcpersonality_records(data: bytes) -> list[NpcPersonalityRecord]:

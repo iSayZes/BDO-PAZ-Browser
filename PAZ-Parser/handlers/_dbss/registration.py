@@ -22,7 +22,6 @@ from .npcgift.handler import (
     NpcGiftDataHandler,
 )
 from .zodiacsign.handler import (
-    ZodiacSignIndexHandler,
     ZodiacSignHandler,
     ZodiacSignOffsetHandler,
     ZodiacSignOrderHandler,
@@ -63,7 +62,6 @@ def register_dbss_handlers() -> None:
     register_handler("zodiacsign.dbss", ZodiacSignHandler())
     register_handler("zodiacsignorderoffset.dbss", ZodiacSignOrderOffsetHandler())
     register_handler("zodiacsignorder.dbss", ZodiacSignOrderHandler())
-    register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())
     register_handler("plantzoneoffset.dbss", PlantZoneOffsetHandler())
     register_handler("plantzone.dbss", PlantZoneHandler())
     register_handler("characterspawntypeoffset.dbss", CharacterSpawnTypeOffsetHandler())

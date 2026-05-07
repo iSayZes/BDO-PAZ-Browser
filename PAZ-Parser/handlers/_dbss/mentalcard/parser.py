@@ -1,14 +1,8 @@
 from __future__ import annotations
 
+from _common.binary import u32 as read_u32
 from _common.loc import loc_lookup
 from .model import MentalCardRecord
-
-
-def read_u32(data: bytes, offset: int) -> int:
-    if offset < 0 or offset + 4 > len(data):
-        return 0
-
-    return int.from_bytes(data[offset:offset + 4], byteorder="little", signed=False)
 
 
 def parse_mentalcard_records(

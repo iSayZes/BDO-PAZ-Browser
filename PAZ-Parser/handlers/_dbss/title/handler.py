@@ -5,8 +5,8 @@ from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 
-from ..common.binary import parse_offset_table
-from ..common.html import color_cell, e, table
+from _common.binary import parse_offset_table
+from _common.html import color_cell, e, table
 from .parser import extract_title_records
 
 

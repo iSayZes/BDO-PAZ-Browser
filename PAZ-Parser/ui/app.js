@@ -14,6 +14,7 @@ import { dividerMethods } from "./js/features/dividers.js";
 import { setupMethods } from "./js/features/setup.js";
 import { helperMethods } from "./js/core/helpers.js";
 import { tabSearchMethods } from "./js/features/tab-search.js";
+import { globalSearchMethods } from "./js/features/global-search.js";
 import { installProfiler } from "./js/core/profiler.js";
 
 Object.assign(
@@ -31,6 +32,7 @@ Object.assign(
   setupMethods,
   helperMethods,
   tabSearchMethods,
+  globalSearchMethods,
 );
 
 installProfiler(app);

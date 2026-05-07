@@ -19,6 +19,25 @@
         <div id="search-bar">
           <span class="search-icon">🔍</span>
           <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" />
+          <button id="btn-content-search" title="Search in file contents" onclick="app.toggleContentSearch()">Search in all files</button>
+        </div>
+        <div id="content-search-bar" hidden>
+          <div class="csb-row">
+            <div class="csb-modes">
+              <button id="csb-mode-string" class="csb-mode-btn active" onclick="app._setCsbMode('string')">String</button>
+              <button id="csb-mode-hex" class="csb-mode-btn" onclick="app._setCsbMode('hex')">Hex</button>
+            </div>
+            <input id="csb-input" type="text" placeholder="Pattern…" autocomplete="off" spellcheck="false" />
+            <button id="csb-go" onclick="app._runGlobalSearch()">Search</button>
+            <button id="csb-cancel" hidden onclick="app.cancelGlobalSearch()">✕ Cancel</button>
+          </div>
+          <div class="csb-ext-row">
+            <span class="csb-ext-label">In:</span>
+            <div class="csb-ext-chips">
+              <span class="csb-ext-chip active" data-ext=".bss" onclick="app._toggleCsbExt('.bss')">.bss</span>
+              <span class="csb-ext-chip active" data-ext=".dbss" onclick="app._toggleCsbExt('.dbss')">.dbss</span>
+            </div>
+          </div>
         </div>
         <div class="sep-h"></div>
         <div id="tree-container">

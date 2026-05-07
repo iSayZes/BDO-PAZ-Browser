@@ -10,6 +10,7 @@ export const app = {
   _parsedHtml: null,
   _hexHtml: null,
   _activeTab: "hex",
+  _inGlobalSearch: false,
   _hexPage: 0,
   _hexTotalPages: 1,
   _parsedPage: 0,

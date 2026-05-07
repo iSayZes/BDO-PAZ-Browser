@@ -202,6 +202,99 @@ class MyFileHandler(PreviewHandler):
 
 ---
 
+## Unit Tests
+
+Every parsed handler should have a handler-local pytest file named `test_handler.py`.
+Place it beside the handler implementation so the format contract stays close to the
+code that parses it.
+
+Example:
+
+```text
+PAZ-Parser/
+├── tests/
+│   ├── framework.py          # public re-export for test helpers
+│   ├── specs.py              # CountTest, PosTest, TargetTest, SchemaTest, RangeTest
+│   ├── models.py             # HandlerCase, HandlerResult
+│   ├── runner.py             # run_case()
+│   ├── fixtures.py           # auto-fetches test inputs
+│   └── fixtures/             # gitignored cached binaries
+└── handlers/
+    └── _dbss/
+        └── title/
+            ├── handler.py
+            └── test_handler.py
+```
+
+`HandlerCase` describes one handler input and its assertions:
+
+```python
+from tests.framework import CountTest, HandlerCase, PosTest, TargetTest
+
+CASE = HandlerCase(
+    handler_name="title.dbss",
+    data_file="title.dbss",
+    companion_files={"titleoffset.dbss": "titleoffset.dbss"},
+    loc_file="languagedata_en.loc",
+    uses_loc=True,
+    loc_fields=["Title", "TitleRequirements"],
+    internal_path="gamecommondata/binary/title.dbss",
+    tests=[
+        CountTest(expected=3048),
+        TargetTest(col="TitleId", value=3, expected={"TitleId": 3}),
+        PosTest(pos=0, expected={"TitleId": 1}),
+    ],
+)
+```
+
+Available specs:
+
+| Spec | Purpose |
+|---|---|
+| `CountTest` | Checks total parsed row count. |
+| `PosTest` | Checks a record at a specific zero-based position. |
+| `TargetTest` | Finds records by column value and checks one or more expected rows. |
+| `SchemaTest` | Checks required keys exist on every row. |
+| `RangeTest` | Checks every value in one column is within a min/max range. |
+
+Expected dictionaries use subset matching. Tests only check declared keys, so adding
+new fields to a handler does not break existing tests.
+
+If `get_records()` returns raw snake_case fields but the test should assert the
+user-facing table contract, add a `record_mapper` to `HandlerCase`. The mapper
+receives one raw record and returns the normalized dictionary used by test specs.
+
+Fixtures are input files required by tests. Do not commit extracted game files.
+`PAZ-Parser/tests/fixtures/` is gitignored except for `.gitkeep`. Missing fixtures
+are fetched automatically:
+
+- PAZ files are extracted with `browser.py --file <name> --output PAZ-Parser/tests/fixtures`.
+- External files such as `languagedata_en.loc` are copied from the configured game folder.
+
+The app must have a saved PAZ folder in `PAZ-Parser/paz_config.json`. Open a PAZ
+folder once in the GUI if test fixture fetching fails.
+
+Run all unit tests with:
+
+```bash
+python -m pytest -v -s
+```
+
+Pytest expands each spec into a separate test item and parses each handler once:
+
+```text
+title.dbss
+  rows:   3,048
+  parse:  64 ms
+  loc:    0 misses / 6,096 lookups
+
+PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[row count] PASSED
+PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[TitleId = 3] PASSED
+PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[position = 0] PASSED
+```
+
+---
+
 ## Lazy Parsed Handlers
 
 Large formats can opt into lazy parsed records so the browser can page and search
@@ -502,8 +595,9 @@ Raise only for actual programming errors.
 9. Register by exact filename or extension.
 10. Escape all file-derived output (`e()` helper or `html.escape()`).
 11. Use `companions()` for related files.
-12. Keep raw hex switching in the frontend, not the handler.
-13. Move reusable logic to `_common/` when another format needs it.
+12. Add a handler-local `test_handler.py` with at least count and representative row tests.
+13. Keep raw hex switching in the frontend, not the handler.
+14. Move reusable logic to `_common/` when another format needs it.
 
 > **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. Changes to any file under `handlers/` — including private packages like `_dbss/` — take effect immediately. If a file is open on the Parsed tab, the preview re-renders automatically.
 

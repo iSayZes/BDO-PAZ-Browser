@@ -72,7 +72,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 2/399 .bss formats.
+- Handler Supported 3/399 .bss formats.
 - Handler Supported 29/375 .dbss formats.
 - Handler Supported 23/23 other formats.
 
@@ -80,6 +80,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 | File                            | Description                                                                                                | Docs                                                               |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `allquestlist.bss`              | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                   | [allquestlist](docs/file-formats/allquestlist_bss.md)              |
 | `characterspawntype.dbss`       | Entity spawn-type flag table — 44 boolean attributes per entity                                            | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterspawntypeoffset.dbss` | PABR index into `characterspawntype.dbss` — maps entity id_low16 → offset/size                             | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterstatic.dbss`          | Variable-length character/NPC static records with inline action scripts                                    | [characterstatic](docs/file-formats/characterstatic_dbss.md)       |
@@ -137,6 +138,26 @@ pip install -r PAZ-Parser/requirements.txt
 
 ---
 
+## Testing
+
+Handler unit tests use pytest and live beside the handler they cover. Missing test inputs are fetched into the gitignored `PAZ-Parser/tests/fixtures/` cache from the configured PAZ folder.
+
+Install dev dependencies:
+
+```bash
+python -m pip install -r PAZ-Parser/requirements-dev.txt
+```
+
+Run all unit tests:
+
+```bash
+python -m pytest -v -s
+```
+
+Open a PAZ folder once in the GUI if fixture fetching has no saved game path yet.
+
+---
+
 ## Usage
 
 ### GUI
@@ -178,6 +199,8 @@ PAZ-Parser/
 ├── bdo_models.py           # Data models
 ├── bdo_ice.py              # ICE cipher implementation
 ├── bdo_preview.py          # Preview handler registry + built-in handlers
+├── conftest.py             # pytest setup and handler test summary output
+├── tests/                  # Handler unit test framework and gitignored fixtures
 │
 ├── ui/                     # Web UI (HTML + JS + CSS)
 │   ├── index.html

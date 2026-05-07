@@ -27,6 +27,7 @@ str_type: 54, str_id1: 40012          →  "Thank you! I really like this."
 - [npcgift.dbss](npcgift_dbss.md) — NPC gift dialogue (str_type=54)
 - [mentalcard.dbss](mentalcard_dbss.md) — knowledge entries (str_type=34) and categories (str_type=9)
 - [titlebufflist.dbss](titlebufflist_dbss.md) — title effects tooltip (str_type=37)
+- [journalquest.dbss](journalquest_dbss.md) — journal quest adventure log page titles and story text (str_type=18, str_id1=journal_cat_id)
 
 ---
 
@@ -64,20 +65,27 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | -------- | ---------------------------------------------------------------------------- |
 | 0        | General strings                                                              |
 | 1        | Title names + requirements                                                   |
-| 2        | Skill names?                                                                 |
+| 2        | Skill names                                                                  |
 | 4        | Territory names                                                              |
-| 5        | Buff text?                                                                   |
-| 6        | Npcs?                                                                        |
+| 5        | Buff/effect text; some rows include the buff name plus effect, most only effect |
+| 6        | NPC names                                                                    |
 | 7        | Zodiac sign data — `str_id1` = zodiac_id (1–12), `str_id4` selects sub-field |
-| 8        | Mount skills?                                                                |
+| 8        | Mount skill names                                                            |
 | 9        | Knowledge category (group) names — `str_id1` = node_id                       |
+| 10       | Buff effects / fairy skill names; exact split is not confirmed               |
+| 11       | City names, with some node names mixed in                                    |
+| 12       | Region/area names such as O'dyllita, Mountain of Eternal Winter, Valencia    |
+| 15       | Emote/pose/placeable interaction names                                       |
+| 16       | House/facility type names                                                    |
+| 18       | Quest and journal page text; two key domains share this type — see Type 18 sub-fields below      |
+| 25       | Quest chain/group names — `str_id1` = chain/group ID (matches `questgroup.dbss` group_id)        |
 | 34       | Knowledge entry names — `str_id1` = knowledge_id / entry_id                  |
 | 37/38    | Other systems                                                                |
-| 39       | Quest text?                                                                  |
+| 39       | Audio voice lines                                                            |
 | 54       | NPC gift/confession response dialogue — `str_id1` = NPC ID                   |
 
-The parsed preview labels only confirmed types. Unconfirmed or ambiguous types
-are shown as `Unknown`.
+The parsed preview labels confirmed and useful provisional types. Unconfirmed
+types are shown as `Unknown`.
 
 ### Type 1 sub-fields (`str_id4`)
 
@@ -92,6 +100,38 @@ are shown as `Unknown`.
 | ------- | ----------------- | ------------------------------------- |
 | 0       | Sign name         | `"Hammer"`                            |
 | 1       | Trait description | `"Brave, Conservative, Hot-Blooded."` |
+
+### Type 18 — two domains
+
+Type 18 is shared by regular quests and journal quest (adventure log) pages. The `str_id1` value determines which domain applies.
+
+#### Regular quests (`quest.dbss`)
+
+| Field    | Value                                                  |
+| -------- | ------------------------------------------------------ |
+| `str_id1` | `quest_chain_id` — packed lower 16 bits of the quest record's packed ID |
+| `str_id2` | `quest_id` — packed upper 16 bits                      |
+| `str_id4` | Sub-field selector (see table below; provisional)      |
+
+| str_id4 | Meaning (provisional)          |
+| ------- | ------------------------------ |
+| 0       | Quest title                    |
+| 1       | Summary / description          |
+| 2       | NPC / speaker name             |
+| 3       | Objective text                 |
+
+#### Journal quest adventure log pages (`journalquest.dbss`)
+
+| Field    | Value                                                              |
+| -------- | ------------------------------------------------------------------ |
+| `str_id1` | `journal_cat_id` — from the page reference u32 in the entry tail  |
+| `str_id2` | Page number (1-based)                                             |
+| `str_id4` | Sub-field selector (see table below; confirmed)                   |
+
+| str_id4 | Meaning       | Example                                 |
+| ------- | ------------- | --------------------------------------- |
+| 0       | Page title    | `"Hey There Big Fellow!"`               |
+| 1       | Story text    | `"January 2\n\nMy name is Deve. …"`    |
 
 ## Example
 
@@ -124,4 +164,4 @@ str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
 
 - What values does `str_id3` take in practice — whether it's always 0 or carries meaningful data
 - Whether `str_id2` encodes a sub-type, sequence index, or part of a 6-byte composite key with id3/id4
-- Whether `str_id4` has sub-field semantics in types other than 1 and 7
+- Whether `str_id4` has sub-field semantics in types other than 1, 7, and 18

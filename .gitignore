@@ -14,3 +14,5 @@ test-scripts/
 tests/fixtures/unpacked/
 docs/paz_tree.md
 PAZ-Parser/paz_config.json
+PAZ-Parser/tests/fixtures/*
+!PAZ-Parser/tests/fixtures/.gitkeep

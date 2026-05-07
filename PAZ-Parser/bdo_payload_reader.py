@@ -218,9 +218,15 @@ def read_entry_payload(archive_path: Path, entry: PazEntry) -> bytes:
         decrypted = ice_decrypt_bytes(raw_payload)
 
     # Decompress when flagged by size mismatch or the 0x6E magic byte.
+    # Skip the 0x6E check when the raw bytes already equal the expected
+    # uncompressed size — those bytes are stored raw, not compressed.
     needs_decompress = (
         entry.uncompressed_size > entry.compressed_size
-        or (len(decrypted) > 0 and decrypted[0] == 0x6E)
+        or (
+            len(decrypted) > 0
+            and decrypted[0] == 0x6E
+            and len(decrypted) != entry.uncompressed_size
+        )
     )
 
     if needs_decompress:

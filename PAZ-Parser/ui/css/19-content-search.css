@@ -1,0 +1,178 @@
+/* ── Global content-search bar (sidebar) ────────────────────────────────────── */
+
+#btn-content-search {
+  flex-shrink: 0;
+  padding: 2px 7px;
+  font-size: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+#btn-content-search:hover {
+  background: var(--hover);
+  color: var(--fg);
+  border-color: var(--border);
+}
+#btn-content-search.active {
+  background: var(--accent-d);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#content-search-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 6px 10px 8px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.csb-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.csb-modes {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.csb-mode-btn {
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 3px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+.csb-mode-btn:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+.csb-mode-btn.active {
+  background: var(--accent-d);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#csb-input {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  color: var(--fg);
+  font-size: 12px;
+  font-family: "Consolas", "Cascadia Code", monospace;
+  padding: 3px 8px;
+  border-radius: 3px;
+  outline: none;
+}
+#csb-input:focus {
+  border-color: var(--border3);
+}
+
+#csb-go {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  font-size: 11px;
+  border-radius: 3px;
+}
+
+#csb-cancel {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  font-size: 11px;
+  border-radius: 3px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  cursor: pointer;
+}
+#csb-cancel:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.csb-ext-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.csb-ext-label {
+  flex-shrink: 0;
+}
+.csb-ext-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.csb-ext-chip {
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-family: "Consolas", "Cascadia Code", monospace;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--fg-muted);
+  cursor: pointer;
+  user-select: none;
+}
+.csb-ext-chip:hover {
+  border-color: var(--border2);
+  color: var(--fg);
+}
+.csb-ext-chip.active {
+  background: var(--accent-d);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Results shown in the tree area */
+.csb-result {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.csb-result:hover {
+  background: var(--hover);
+}
+.csb-result-name {
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  max-width: 160px;
+}
+.csb-result-path {
+  color: var(--fg-muted);
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.csb-result-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: var(--accent-d);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  margin-left: auto;
+}

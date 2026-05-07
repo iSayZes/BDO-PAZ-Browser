@@ -15,11 +15,21 @@ from _common.loc import decompress_loc
 _TYPE_NAMES = {
     0: "General strings",
     1: "Title names + requirements",
+    2: "Skill names",
     4: "Territory names",
+    5: "Buff/effect text",
     6: "NPC names",
     7: "Zodiac sign data",
+    8: "Mount skill names",
     9: "Knowledge category names",
+    10: "Buff effects / fairy skill names",
+    11: "City/node names",
+    12: "Region/area names",
+    15: "Emote/pose names",
+    16: "House/facility type names",
+    18: "Quest text/titles",
     34: "Knowledge entry names",
+    39: "Audio voice lines",
     54: "NPC gift/confession response dialogue",
 }
 

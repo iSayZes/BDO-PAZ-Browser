@@ -7,6 +7,8 @@ class QuestRecord(TypedDict):
     row: int
     offset: int
     size: int
+    packed_quest_id: int
+    quest_chain_id: int
     quest_id: int
     condition_script: str
     action_script: str

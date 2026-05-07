@@ -194,7 +194,7 @@ export const treeMethods = {
         }
       } else {
         tabs.hidden = true;
-        this.showTabSearchBar(false);
+        this.showTabSearchBar(!result.stream);
         content.innerHTML = result.html ?? this._hexHtml;
         if (result.html) {
           this._initStreamThumbnails(content);

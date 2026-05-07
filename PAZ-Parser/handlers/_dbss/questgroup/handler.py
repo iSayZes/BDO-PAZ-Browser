@@ -4,6 +4,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, table
+from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_questgroup_records
 
 
@@ -11,8 +12,7 @@ _HEADERS: list[tuple[str, str, str]] = [
     ("Group ID", "num", ""),
     ("Name", "", ""),
     ("Quests", "num", ""),
-    ("Quest IDs", "", ""),
-    ("Group:No", "", ""),
+    ("Quest Titles", "", ""),
 ]
 
 
@@ -20,6 +20,14 @@ def _join_limited(values: list[str], max_items: int = 8) -> str:
     if len(values) <= max_items:
         return ", ".join(values)
     return ", ".join(values[:max_items]) + f", ... (+{len(values) - max_items})"
+
+
+def _group_name_en(group_id: int) -> str:
+    return strip_pa_tags(loc_lookup(25, group_id)).strip()
+
+
+def _quest_title_en(chain_id: int, quest_no: int) -> str:
+    return strip_pa_tags(loc_lookup(18, chain_id, quest_no, 0, 0)).strip()
 
 
 class QuestGroupDbssHandler(PreviewHandler):
@@ -30,27 +38,27 @@ class QuestGroupDbssHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> list[dict]:
         records: list[dict] = []
+        has_loc = is_loc_loaded()
 
         for record in parse_questgroup_records(data):
-            quest_ids = [quest["quest_id"] for quest in record["quests"]]
-            quest_links = [
-                f"{quest['group_id']}:{quest['quest_no']}"
-                for quest in record["quests"]
-            ]
-            records.append(
-                {
-                    "row": record["row"],
-                    "offset": record["offset"],
-                    "size": record["size"],
-                    "group_id": record["group_id"],
-                    "name_kr": record["name_kr"],
-                    "quest_count": record["quest_count"],
-                    "quest_ids": quest_ids,
-                    "quest_links": quest_links,
-                    "quest_ids_text": ", ".join(str(quest_id) for quest_id in quest_ids),
-                    "quest_links_text": ", ".join(quest_links),
-                }
-            )
+            name_en = _group_name_en(record["group_id"]) if has_loc else ""
+            quest_titles: list[str] = []
+            for quest in record["quests"]:
+                title = _quest_title_en(quest["group_id"], quest["quest_no"]) if has_loc else ""
+                quest_titles.append(title or f"{quest['group_id']}:{quest['quest_no']}")
+
+            records.append({
+                "row": record["row"],
+                "offset": record["offset"],
+                "size": record["size"],
+                "group_id": record["group_id"],
+                "name_kr": record["name_kr"],
+                "name_en": name_en,
+                "name": name_en or record["name_kr"],
+                "quest_count": record["quest_count"],
+                "quest_titles": quest_titles,
+                "quest_titles_text": ", ".join(quest_titles),
+            })
 
         return records
 
@@ -67,10 +75,9 @@ class QuestGroupDbssHandler(PreviewHandler):
         rows = [
             [
                 e(r["group_id"]),
-                e(r["name_kr"]),
+                e(r["name"]),
                 e(r["quest_count"]),
-                e(_join_limited([str(quest_id) for quest_id in r["quest_ids"]])),
-                e(_join_limited(r["quest_links"])),
+                e(_join_limited(r["quest_titles"])),
             ]
             for r in slice_
         ]

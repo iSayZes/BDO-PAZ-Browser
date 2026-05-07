@@ -119,4 +119,4 @@ quest_id = (quest_no << 16) | group_id
 
 ### Localization
 
-Group names are stored inline as Korean UTF-16 text. No LOC mapping has been confirmed yet, so an English preview should display raw Korean unless a later localization relationship is found.
+Group names are stored inline as Korean UTF-16 text. Exact Korean group-name strings were not found in the observed English LOC cache. LOC type `18` rows keyed by `str_id1=group_id` provide child quest titles, not group names, so an English group-name preview should still display raw Korean unless a later category-name mapping is found.

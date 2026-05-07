@@ -14,6 +14,7 @@ export const initMethods = {
     this._setupEscapeClear();
     this._setupImageZoom();
     this._initTabSearch();
+    this._initGlobalSearch();
 
     const last = await window.pywebview.api.get_last_folder();
     if (last && last.path) {

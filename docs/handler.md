@@ -229,7 +229,7 @@ PAZ-Parser/
 `HandlerCase` describes one handler input and its assertions:
 
 ```python
-from tests.framework import CountTest, HandlerCase, PosTest, TargetTest
+from tests.framework import CountTest, HandlerCase, PosTest, TargetTest, case_id
 
 CASE = HandlerCase(
     handler_name="title.dbss",
@@ -245,6 +245,11 @@ CASE = HandlerCase(
         PosTest(pos=0, expected={"TitleId": 1}),
     ],
 )
+
+
+@pytest.mark.parametrize("spec", CASE.tests, ids=case_id)
+def test_title_dbss(spec, title_result):
+    spec.check(title_result.records)
 ```
 
 Available specs:
@@ -281,6 +286,10 @@ python -m pytest -v -s
 ```
 
 Pytest expands each spec into a separate test item and parses each handler once:
+
+Use `case_id` from `tests.framework` for `pytest.mark.parametrize(..., ids=case_id)`
+so test output names stay readable (`row count`, `position = 0`, `TitleId = 3`)
+instead of pytest's default `spec0`, `spec1`, `spec2`.
 
 ```text
 title.dbss

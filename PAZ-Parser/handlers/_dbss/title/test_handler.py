@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 
 from _common.loc import strip_pa_tags
-from tests.framework import CountTest, HandlerCase, HandlerResult, PosTest, RangeTest, SchemaTest, TargetTest, run_case
+from tests.framework import CountTest, HandlerCase, HandlerResult, PosTest, RangeTest, SchemaTest, TargetTest, case_id, run_case
 
 from .handler import _category_label
 
@@ -105,21 +105,6 @@ CASE = HandlerCase(
 )
 
 
-def _case_id(spec: object) -> str:
-    if isinstance(spec, CountTest):
-        return "row count"
-    if isinstance(spec, PosTest):
-        return f"position = {spec.pos}"
-    if isinstance(spec, TargetTest):
-        if isinstance(spec.value, tuple):
-            values = [str(item) for item in spec.value]
-            if len(values) == 2:
-                return f"{spec.col} in {values[0]}-{values[1]}"
-            return f"{spec.col} in {', '.join(values)}"
-        return f"{spec.col} = {spec.value}"
-    return spec.__class__.__name__.lower()
-
-
 @pytest.fixture(scope="module")
 def title_result(request: Any) -> HandlerResult:
     result = getattr(request.module, "_HANDLER_RESULT", None)
@@ -129,6 +114,6 @@ def title_result(request: Any) -> HandlerResult:
     return result
 
 
-@pytest.mark.parametrize("spec", CASE.tests, ids=_case_id)
+@pytest.mark.parametrize("spec", CASE.tests, ids=case_id)
 def test_title_dbss(spec: Any, title_result: HandlerResult) -> None:
     spec.check(title_result.records)

@@ -41,7 +41,7 @@ Group 2 — Shakatu Merchant Collection Log (cat_id=30006)
 | File                         | Required | Role                                                                        |
 | ---------------------------- | -------- | --------------------------------------------------------------------------- |
 | `journalquestoffset.dbss`    | Required | Provides `(group_id, entry_no) → (byte_offset, byte_size)` record lookup   |
-| `languagedata_en.loc`        | Optional | English journal page titles and story text via LOC type=18                  |
+| `languagedata_en.loc`        | Optional | English journal metadata via LOC type=63; page titles and story text via LOC type=18 |
 
 All multi-byte values are little-endian.
 
@@ -167,6 +167,15 @@ Note: Groups are stored in the offset file in the order shown above (group 10 ap
 
 ## Localization
 
+Journal category metadata is in LOC `str_type=63`:
+
+| LOC Field  | Value                       | Notes                                              |
+| ---------- | --------------------------- | -------------------------------------------------- |
+| `str_type` | `63`                        |                                                    |
+| `str_id1`  | `group_id`                  | Journal group number                              |
+| `str_id2`  | `entry_no`                  | Entry number within the group                     |
+| `str_id4`  | `0` = category title, `1` = subtitle, `2` = unlock condition, `3` = volume title | Some groups have no `id4=2` unlock text |
+
 Journal page titles and story text are in LOC `str_type=18`:
 
 | LOC Field  | Value                       | Notes                                              |
@@ -176,7 +185,7 @@ Journal page titles and story text are in LOC `str_type=18`:
 | `str_id2`  | page number (1-based)       | Corresponds to (page_ref lo16 or hi16) + offset    |
 | `str_id4`  | `0` = page title, `1` = story text |                                             |
 
-The inline `journal_title` / `subtitle` fields in each record are Korean. English equivalents are not stored directly in `journalquest.dbss`; use LOC type=18 or a separate category name table.
+The inline `journal_title` / `subtitle` / `page_vol_title` fields in each record are Korean. English equivalents are in LOC type=63 for most entries. English page titles and story text are in LOC type=18.
 
 ---
 
@@ -187,10 +196,11 @@ The inline `journal_title` / `subtitle` fields in each record are Korean. Englis
 | Group               | num  | `group_id`                                                      |
 | Entry               | num  | `entry_no`                                                      |
 | Journal Category ID | num  | `journal_cat_id` from page ref u32                              |
-| Title               | text | `journal_title` (inline Korean); LOC type=18 id1=cat_id for English page names |
-| Subtitle            | text | `subtitle` (inline Korean)                                      |
-| Volume              | text | `page_vol_title` (inline Korean)                                |
-| Unlock Condition    | text | `unlock_condition` with PAColor markup stripped or rendered     |
+| Title               | text | LOC type=63 `id4=0`, falling back to inline Korean `journal_title` |
+| Subtitle            | text | LOC type=63 `id4=1`, falling back to inline Korean `subtitle`     |
+| Volume              | text | LOC type=63 `id4=3`, falling back to inline Korean `page_vol_title` |
+| Page Titles         | text | English LOC type=18 page titles resolved from page references    |
+| Unlock Condition    | text | LOC type=63 `id4=2`, falling back to inline Korean `unlock_condition` with PAColor markup stripped |
 | Pages               | num  | `page_count`                                                    |
 | Combine Model       | text | `combine_model` (ASCII scene asset ID)                          |
 | Static Model        | text | `static_model` (ASCII mesh asset ID)                            |

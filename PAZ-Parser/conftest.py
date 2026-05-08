@@ -54,9 +54,12 @@ def pytest_collection_finish(session: pytest.Session) -> None:
                     f"{result.loc_fallback_count:,} misses / "
                     f"{result.loc_total_calls:,} lookups"
                 )
-            reporter.write_line(
-                f"{case.handler_name}\n"
-                f"  rows:   {result.row_count:,}\n"
-                f"  parse:  {result.elapsed_ms:.0f} ms\n"
-                f"  loc:    {loc}"
-            )
+            reporter.write_sep("=", case.handler_name)
+            reporter.write_line(f"rows:   {result.row_count:,}")
+            reporter.write_line(f"parse:  {result.elapsed_ms:.0f} ms")
+            reporter.write_line(f"loc:    {loc}")
+
+def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
+    items.sort(key=lambda item: (item.path.name if item.path else "", item.name))
+    for item in items:
+        item._nodeid = item.name

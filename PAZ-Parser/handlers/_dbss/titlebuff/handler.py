@@ -4,9 +4,8 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import strip_pa_tags
-
 from _common.binary import parse_offset_table
-from _common.html import debug_cell, e, error, table
+from _common.html import e, table
 from .parser import extract_titlebuff_records, find_title_effects_en
 
 
@@ -18,8 +17,7 @@ _OFFSET_HEADERS: list[tuple[str, str, str]] = [
 _BUFF_HEADERS: list[tuple[str, str, str]] = [
     ("Level", "num", ""),
     ("Required Titles", "num", ""),
-    ("EN Buff Text", "", ""),
-    ("KR Buff Text", "", ""),
+    ("Text", "", ""),
     ("Offset", "num", ""),
 ]
 
@@ -79,8 +77,7 @@ class TitleBuffListHandler(PreviewHandler):
             result.append({
                 "level": debug_u32["u32_00"] + 1,
                 "required_titles": required_titles,
-                "en_text": en_effects.get(required_titles, ""),
-                "kr_text": rec["raw_text"],
+                "text": strip_pa_tags(en_effects.get(required_titles, "")),
                 "offset": rec["offset"],
             })
 
@@ -95,17 +92,15 @@ class TitleBuffListHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
 
-        has_en = any(r["en_text"] for r in records)
-        meta = f"{len(records):,} buff blocks decoded" + ("  ·  EN effects from loc" if has_en else "")
+        has_text = any(r["text"] for r in records)
+        meta = f"{len(records):,} buff blocks decoded" + ("  ·  effects from loc" if has_text else "")
 
         rows: list[list] = []
         for r in slice_:
-            en_raw = r["en_text"]
             rows.append([
                 e(r["level"]),
                 e(r["required_titles"]),
-                e(strip_pa_tags(en_raw)) if en_raw else "—",
-                e(r["kr_text"]),
+                e(r["text"]) if r["text"] else "—",
                 e(f"0x{r['offset']:08X}"),
             ])
 

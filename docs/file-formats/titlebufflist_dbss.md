@@ -147,8 +147,7 @@ Recommended lookup:
 | --------------- | --------------------------------------------------------- |
 | Level           | `internal_id + 1`                                         |
 | Required Titles | `required_titles`                                         |
-| EN Buff Text    | Parsed from `languagedata_en.loc` by required title count |
-| KR Buff Text    | Decoded from DBSS block                                   |
+| Text            | Parsed from `languagedata_en.loc` by required title count |
 | Offset          | From offset file                                          |
 
 ---

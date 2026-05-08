@@ -15,6 +15,7 @@ from .npcpersonality.handler import NpcPersonalityHandler, NpcPersonalityOffsetH
 from .quest.handler import QuestDbssHandler
 from .questgroup.handler import QuestGroupDbssHandler
 from .worldquest.handler import WorldQuestDbssHandler
+from .journalquest.handler import JournalQuestDbssHandler, JournalQuestOffsetHandler
 from .npcgift.handler import (
     NpcGiftOffsetHandler,
     NpcGiftHandler,
@@ -54,6 +55,8 @@ def register_dbss_handlers() -> None:
     register_handler("quest.dbss", QuestDbssHandler())
     register_handler("questgroup.dbss", QuestGroupDbssHandler())
     register_handler("worldquest.dbss", WorldQuestDbssHandler())
+    register_handler("journalquestoffset.dbss", JournalQuestOffsetHandler())
+    register_handler("journalquest.dbss", JournalQuestDbssHandler())
     register_handler("npcgiftoffset.dbss", NpcGiftOffsetHandler())
     register_handler("npcgift.dbss", NpcGiftHandler())
     register_handler("npcgiftdataoffset.dbss", NpcGiftDataOffsetHandler())

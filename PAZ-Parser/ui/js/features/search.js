@@ -1,5 +1,7 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 export const searchMethods = {
   scheduleSearch(query) {
     clearTimeout(this._searchTimer);
@@ -44,7 +46,7 @@ export const searchMethods = {
     }
 
     const cap = results.length === 500 ? "500+ " : `${results.length.toLocaleString()} `;
-    this.setStatus({ message: `Found ${cap}files matching "${query}"` });
+    this.setStatus({ key: "status.found", args: { cap, query } });
     window.appProfile?.record("_doSearch.render_results", performance.now() - renderStart);
   },
 };

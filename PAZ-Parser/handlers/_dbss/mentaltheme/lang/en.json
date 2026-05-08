@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "themeId": "Theme ID",
+    "payloadOffset": "Payload Offset",
+    "payloadSize": "Payload Size"
+  },
+  "columns": {
+    "themeId": "Theme ID",
+    "name": "Name",
+    "parentId": "Parent ID",
+    "parentName": "Parent Name",
+    "energyReward1": "Energy Reward 1",
+    "energyReward2": "Energy Reward 2",
+    "entries": "Entries",
+    "childrenGroups": "Children Groups"
+  }
+}

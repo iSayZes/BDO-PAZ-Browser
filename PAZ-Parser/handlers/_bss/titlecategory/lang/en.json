@@ -1,0 +1,7 @@
+{
+  "columns": {
+    "titleId": "Title ID",
+    "categoryId": "Cat ID",
+    "category": "Category"
+  }
+}

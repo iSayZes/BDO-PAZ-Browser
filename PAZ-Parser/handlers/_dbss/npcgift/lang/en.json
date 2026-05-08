@@ -1,0 +1,20 @@
+{
+  "offsetColumns": {
+    "npcId": "NPC ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "giftColumns": {
+    "npcId": "NPC ID",
+    "npcName": "NPC Name",
+    "itemId": "Item ID",
+    "itemName": "Item Name",
+    "amity": "Amity"
+  },
+  "dataColumns": {
+    "npcId": "NPC ID",
+    "npcName": "NPC Name",
+    "unknownParam": "Unknown Param",
+    "dialogue": "Dialogue"
+  }
+}

@@ -1,24 +1,18 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import QuestIndex, build_quest_index, parse_quest_record
 
 
-_HEADERS: list[tuple[str, str, str]] = [
-    ("Display ID", "num", ""),
-    ("Chain ID", "num", ""),
-    ("Quest ID", "num", ""),
-    ("Title / Name", "", ""),
-    ("Condition", "", ""),
-    ("Action", "", ""),
-    ("Objective", "", ""),
-    ("Icon", "", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 def _truncate(text: str, max_len: int = 140) -> str:
@@ -218,4 +212,15 @@ class QuestDbssHandler(PreviewHandler):
         if icon_only:
             meta += f" · {icon_only:,} icon-only on this page"
 
-        return table(meta, _HEADERS, rows)
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("displayId", "Display ID"), "num", ""),
+            (cols.get("chainId", "Chain ID"), "num", ""),
+            (cols.get("questId", "Quest ID"), "num", ""),
+            (cols.get("titleName", "Title / Name"), "", ""),
+            (cols.get("condition", "Condition"), "", ""),
+            (cols.get("action", "Action"), "", ""),
+            (cols.get("objective", "Objective"), "", ""),
+            (cols.get("icon", "Icon"), "", ""),
+        ]
+        return table(meta, headers, rows)

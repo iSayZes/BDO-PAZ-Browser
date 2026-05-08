@@ -1,0 +1,18 @@
+{
+  "offsetColumns": {
+    "personalityId": "Personality ID",
+    "dataOffset": "Data Offset"
+  },
+  "columns": {
+    "row": "Row",
+    "id": "ID",
+    "groupA": "Group A (ID ×cnt)",
+    "groupB": "Group B (ID ×cnt)",
+    "groupC": "Group C (ID ×cnt)",
+    "intMin": "Int Min",
+    "intMax": "Int Max",
+    "favMin": "Fav Min",
+    "favMax": "Fav Max",
+    "horoscope": "Horoscope"
+  }
+}

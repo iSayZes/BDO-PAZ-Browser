@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "recordId": "Record ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "columns": {
+    "zoneId": "Zone ID",
+    "variant": "Variant",
+    "linkedId": "Linked ID",
+    "values": "Values",
+    "dataSize": "Data Size"
+  }
+}

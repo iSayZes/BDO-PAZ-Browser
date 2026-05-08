@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import loc_lookup
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import parse_npcpersonality_records, parse_npcpersonalityoffset_records
 
+_LANG_DIR = Path(__file__).parent / "lang"
 
 def _decode_personality_type(code: int) -> str:
     major = code // 100
@@ -18,25 +22,6 @@ def _group_str(group_id: int, item_count: int) -> str:
     if group_id == 0:
         return "—"
     return f"{group_id} ×{item_count}"
-
-
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Personality ID", "num", ""),
-    ("Data Offset",    "num", ""),
-]
-
-_PERSONALITY_HEADERS: list[tuple[str, str, str]] = [
-    ("Row",                "num", ""),
-    ("ID",                 "num", ""),
-    ("Group A (ID ×cnt)", "num", ""),
-    ("Group B (ID ×cnt)", "num", ""),
-    ("Group C (ID ×cnt)", "num", ""),
-    ("Int Min",            "num", ""),
-    ("Int Max",            "num", ""),
-    ("Fav Min",            "num", ""),
-    ("Fav Max",            "num", ""),
-    ("Horoscope",          "",    ""),
-]
 
 
 class NpcPersonalityOffsetHandler(PreviewHandler):
@@ -61,11 +46,16 @@ class NpcPersonalityOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("personalityId", "Personality ID"), "num", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+        ]
         rows = [
             [e(r["personality_id"]), e(f"0x{r['data_offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class NpcPersonalityHandler(PreviewHandler):
@@ -104,6 +94,19 @@ class NpcPersonalityHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} personality records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("row", "Row"), "num", ""),
+            (cols.get("id", "ID"), "num", ""),
+            (cols.get("groupA", "Group A (ID ×cnt)"), "num", ""),
+            (cols.get("groupB", "Group B (ID ×cnt)"), "num", ""),
+            (cols.get("groupC", "Group C (ID ×cnt)"), "num", ""),
+            (cols.get("intMin", "Int Min"), "num", ""),
+            (cols.get("intMax", "Int Max"), "num", ""),
+            (cols.get("favMin", "Fav Min"), "num", ""),
+            (cols.get("favMax", "Fav Max"), "num", ""),
+            (cols.get("horoscope", "Horoscope"), "", ""),
+        ]
         rows = [
             [
                 e(r["row"]),
@@ -119,4 +122,4 @@ class NpcPersonalityHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _PERSONALITY_HEADERS, rows)
+        return table(meta, headers, rows)

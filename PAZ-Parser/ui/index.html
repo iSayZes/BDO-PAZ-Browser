@@ -9,8 +9,9 @@
   </head>
   <body>
     <div id="toolbar">
-      <button id="btn-open" onclick="app.openFolder()">📂 Open PAZ Folder</button>
-      <span id="folder-path" class="muted">No folder selected</span>
+      <button id="btn-open" onclick="app.openFolder()" data-i18n="toolbar.openFolder">📂 Open PAZ Folder</button>
+      <span id="folder-path" class="muted" data-i18n="toolbar.noFolderSelected">No folder selected</span>
+      <button id="btn-settings" onclick="app.openSettings()" data-i18n-title="toolbar.settings" title="Settings">⚙️</button>
     </div>
     <div class="sep-h"></div>
 
@@ -18,21 +19,21 @@
       <div id="sidebar">
         <div id="search-bar">
           <span class="search-icon">🔍</span>
-          <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" />
-          <button id="btn-content-search" title="Search in file contents" onclick="app.toggleContentSearch()">Search in all files</button>
+          <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" data-i18n-placeholder="sidebar.filterFiles" />
+          <button id="btn-content-search" data-i18n-title="sidebar.searchInFilesTitle" title="Search in file contents" onclick="app.toggleContentSearch()" data-i18n="sidebar.searchInFiles">Search in all files</button>
         </div>
         <div id="content-search-bar" hidden>
           <div class="csb-row">
             <div class="csb-modes">
-              <button id="csb-mode-string" class="csb-mode-btn active" onclick="app._setCsbMode('string')">String</button>
-              <button id="csb-mode-hex" class="csb-mode-btn" onclick="app._setCsbMode('hex')">Hex</button>
+              <button id="csb-mode-string" class="csb-mode-btn active" onclick="app._setCsbMode('string')" data-i18n="contentSearch.modeString">String</button>
+              <button id="csb-mode-hex" class="csb-mode-btn" onclick="app._setCsbMode('hex')" data-i18n="contentSearch.modeHex">Hex</button>
             </div>
-            <input id="csb-input" type="text" placeholder="Pattern…" autocomplete="off" spellcheck="false" />
-            <button id="csb-go" onclick="app._runGlobalSearch()">Search</button>
-            <button id="csb-cancel" hidden onclick="app.cancelGlobalSearch()">✕ Cancel</button>
+            <input id="csb-input" type="text" placeholder="Pattern…" autocomplete="off" spellcheck="false" data-i18n-placeholder="contentSearch.pattern" />
+            <button id="csb-go" onclick="app._runGlobalSearch()" data-i18n="contentSearch.search">Search</button>
+            <button id="csb-cancel" hidden onclick="app.cancelGlobalSearch()" data-i18n="contentSearch.cancel">✕ Cancel</button>
           </div>
           <div class="csb-ext-row">
-            <span class="csb-ext-label">In:</span>
+            <span class="csb-ext-label" data-i18n="contentSearch.in">In:</span>
             <div class="csb-ext-chips">
               <span class="csb-ext-chip active" data-ext=".bss" onclick="app._toggleCsbExt('.bss')">.bss</span>
               <span class="csb-ext-chip active" data-ext=".dbss" onclick="app._toggleCsbExt('.dbss')">.dbss</span>
@@ -50,11 +51,11 @@
       <div id="right-panel">
         <div id="details-panel">
           <div class="details-header">
-            <div class="panel-title">Entry Details</div>
-            <button id="btn-export" class="tab-btn" hidden onclick="app.exportFile()">⬇ Export</button>
+            <div class="panel-title" data-i18n="details.title">Entry Details</div>
+            <button id="btn-export" class="tab-btn" hidden onclick="app.exportFile()" data-i18n="details.export">⬇ Export</button>
           </div>
           <div id="detail-grid" class="detail-grid">
-            <span class="detail-placeholder">No file selected</span>
+            <span class="detail-placeholder" data-i18n="details.noFileSelected">No file selected</span>
           </div>
         </div>
 
@@ -62,27 +63,28 @@
 
         <div id="preview-panel">
           <div class="preview-header">
-            <div class="panel-title" id="preview-title">Preview</div>
+            <div class="panel-title" id="preview-title" data-i18n="preview.title">Preview</div>
             <div class="preview-tabs" id="preview-tabs" hidden>
-              <button class="tab-btn active" data-tab="hex" onclick="app.switchTab('hex')">Hex</button>
-              <button class="tab-btn" data-tab="parsed" onclick="app.switchTab('parsed')">Parsed</button>
+              <button class="tab-btn active" data-tab="hex" onclick="app.switchTab('hex')" data-i18n="preview.tabHex">Hex</button>
+              <button class="tab-btn" data-tab="parsed" onclick="app.switchTab('parsed')" data-i18n="preview.tabParsed">Parsed</button>
             </div>
           </div>
           <div id="tab-search-bar" hidden>
             <div class="tsb-modes">
-              <button id="tab-search-mode-string" class="tsb-mode-btn active" onclick="app._setTabSearchMode('string')">String</button>
-              <button id="tab-search-mode-hex" class="tsb-mode-btn" onclick="app._setTabSearchMode('hex')">Hex</button>
+              <button id="tab-search-mode-string" class="tsb-mode-btn active" onclick="app._setTabSearchMode('string')" data-i18n="tabSearch.modeString">String</button>
+              <button id="tab-search-mode-hex" class="tsb-mode-btn" onclick="app._setTabSearchMode('hex')" data-i18n="tabSearch.modeHex">Hex</button>
             </div>
             <span class="tsb-prefix" id="tab-search-prefix" hidden>#</span>
             <input id="tab-search-input" type="text" placeholder="Search…" autocomplete="off"
                    oninput="app._onTabSearchInput(event)"
-                   onkeydown="app._onTabSearchKeydown(event)" />
+                   onkeydown="app._onTabSearchKeydown(event)"
+                   data-i18n-placeholder="tabSearch.placeholder" />
             <button class="tsb-nav-btn" onclick="app.tabSearchPrev()" title="Previous (Shift+Enter)">↑</button>
             <button class="tsb-nav-btn" onclick="app.tabSearchNext()" title="Next (Enter)">↓</button>
             <span id="tab-search-counter"></span>
           </div>
           <div id="preview-content">
-            <div class="placeholder">Select a file to preview.</div>
+            <div class="placeholder" data-i18n="preview.selectFile">Select a file to preview.</div>
           </div>
           <div id="page-bar-area"></div>
         </div>
@@ -98,12 +100,41 @@
         </div>
       </div>
       <div id="extract-row">
-        <label class="muted">Output</label>
-        <input id="output-path" type="text" placeholder="Extract destination…" spellcheck="false" />
+        <label class="muted" data-i18n="bottomBar.output">Output</label>
+        <input id="output-path" type="text" placeholder="Extract destination…" spellcheck="false" data-i18n-placeholder="bottomBar.extractDestination" />
         <button onclick="app.pickOutputFolder()">…</button>
-        <button onclick="app.extractSelected()">⬇ Extract Selected</button>
-        <button onclick="app.extractFolder()">📁 Extract Folder</button>
+        <button onclick="app.extractSelected()" data-i18n="bottomBar.extractSelected">⬇ Extract Selected</button>
+        <button onclick="app.extractFolder()" data-i18n="bottomBar.extractFolder">📁 Extract Folder</button>
         <span id="extract-badge" hidden></span>
+      </div>
+    </div>
+
+    <div id="settings-overlay" class="settings-overlay" hidden>
+      <div class="settings-modal" role="dialog" aria-label="Settings">
+        <div class="settings-header">
+          <span data-i18n="settings.title">Settings</span>
+          <button class="settings-close" onclick="app.closeSettings()">✕</button>
+        </div>
+        <div class="settings-body">
+          <label class="settings-label" data-i18n="settings.pazFolder">PAZ Folder</label>
+          <div class="settings-path-row">
+            <input id="settings-paz-path" type="text" spellcheck="false" />
+            <button onclick="app.browseSettingsPazFolder()">…</button>
+          </div>
+          <label class="settings-label" data-i18n="settings.language">Language</label>
+          <select id="settings-language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+            <option value="sp">Español</option>
+            <option value="ru">Русский</option>
+            <option value="kr">한국어</option>
+          </select>
+        </div>
+        <div class="settings-footer">
+          <button onclick="app.closeSettings()" data-i18n="settings.cancel">Cancel</button>
+          <button class="btn-primary" onclick="app.saveSettings()" data-i18n="settings.save">Save</button>
+        </div>
       </div>
     </div>
 

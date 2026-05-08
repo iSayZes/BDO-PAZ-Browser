@@ -180,5 +180,10 @@ str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
   provides the English localized gift/confession response dialogue.
 - The file is located on disk at `<paz_root_parent>/ads/languagedata_en.loc`
   (one level above the PAZ folder) and is pre-loaded by the browser as a companion for all handlers.
+- To get a loc file you dont have go here:
+  http://nez-o-dn.playblackdesert.com/UploadData/ads_files copy the number and replace x here:
+  http://nez-o-dn.playblackdesert.com/UploadData/ads/languagedata_ru/x/languagedata_ru.loc
+
+  and also the ru if you need another one.
 
 ## Open Questions

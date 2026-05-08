@@ -1,5 +1,7 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 export const previewPagingMethods = {
   _setPageBar(bar) {
     const area = document.getElementById("page-bar-area");
@@ -14,7 +16,7 @@ export const previewPagingMethods = {
 
     const prev = document.createElement("button");
     prev.className = "page-btn";
-    prev.textContent = "◀ Prev";
+    prev.textContent = t("pageBar.prev");
     prev.disabled = page === 0;
     prev.onclick = () => kind === "hex" ? this._gotoHexPage(page - 1) : this._gotoParsedPage(page - 1);
 
@@ -24,7 +26,7 @@ export const previewPagingMethods = {
 
     const next = document.createElement("button");
     next.className = "page-btn";
-    next.textContent = "Next ▶";
+    next.textContent = t("pageBar.next");
     next.disabled = page >= total - 1;
     next.onclick = () => kind === "hex" ? this._gotoHexPage(page + 1) : this._gotoParsedPage(page + 1);
 

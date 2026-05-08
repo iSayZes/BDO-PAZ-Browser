@@ -1,5 +1,7 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 export const tableMethods = {
   _initTableSort(container) {
     container.querySelectorAll(".data-table th.sortable").forEach((th, colIdx) => {
@@ -78,7 +80,7 @@ export const tableMethods = {
         .join("\t");
 
       await navigator.clipboard.writeText(values);
-      this.setStatus({ message: "Copied selected row." });
+      this.setStatus({ key: "status.copiedRow" });
     });
   },
 };

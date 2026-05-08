@@ -1,0 +1,11 @@
+{
+  "offsetColumns": {
+    "idLow16": "ID Low16",
+    "byteOffset": "Byte Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "entityId": "entity_id",
+    "nameEn": "Name (EN)"
+  }
+}

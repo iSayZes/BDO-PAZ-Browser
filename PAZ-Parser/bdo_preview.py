@@ -18,6 +18,8 @@ PARSED_RECORDS_PER_PAGE = 500
 
 
 class PreviewHandler(ABC):
+    lang: str = "en"
+
     def companions(self, entry: PazEntry) -> list[str]:
         """Return internal PAZ paths of files this handler needs alongside the main file."""
         return []
@@ -316,6 +318,13 @@ def get_handler(name: str, ext: str) -> PreviewHandler:
 def register_handler(key: str, handler: PreviewHandler) -> None:
     """Register by filename (e.g. 'titleoffset.dbss') or extension (e.g. '.dbss')."""
     _REGISTRY[key.lower()] = handler
+
+
+def set_handler_lang(lang: str) -> None:
+    """Propagate the active UI language to all registered handlers."""
+    for handler in _REGISTRY.values():
+        handler.lang = lang
+    _hex_handler.lang = lang
 
 
 def get_binary_handlers() -> list[str]:

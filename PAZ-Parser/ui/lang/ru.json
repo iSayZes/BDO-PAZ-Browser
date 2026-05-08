@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "language": "Русский",
+    "code": "ru",
+    "authors": [],
+    "notes": "Отсутствующие ключи автоматически берутся из en.json."
+  },
+  "toolbar": {
+    "openFolder": "📂 Открыть папку PAZ",
+    "noFolderSelected": "Папка не выбрана",
+    "settings": "Настройки"
+  },
+  "sidebar": {
+    "filterFiles": "Фильтр файлов…",
+    "searchInFiles": "Искать во всех файлах",
+    "searchInFilesTitle": "Искать в содержимом файлов"
+  },
+  "contentSearch": {
+    "modeString": "Текст",
+    "modeHex": "Hex",
+    "pattern": "Шаблон…",
+    "search": "Поиск",
+    "cancel": "✕ Отмена",
+    "in": "В:"
+  },
+  "details": {
+    "title": "Сведения о записи",
+    "export": "⬇ Экспорт",
+    "noFileSelected": "Файл не выбран",
+    "archive": "📦  Архив",
+    "path": "📍  Путь",
+    "compressed": "🗜  Сжато",
+    "uncompressed": "📄  Без сжатия",
+    "offset": "#  Смещение"
+  },
+  "preview": {
+    "title": "Предпросмотр",
+    "tabHex": "Hex",
+    "tabParsed": "Разобрано",
+    "selectFile": "Выберите файл для предпросмотра.",
+    "loading": "Загрузка…"
+  },
+  "tabSearch": {
+    "modeString": "Текст",
+    "modeHex": "Hex",
+    "placeholder": "Поиск…"
+  },
+  "pageBar": {
+    "prev": "◀ Назад",
+    "next": "Далее ▶"
+  },
+  "bottomBar": {
+    "output": "Вывод",
+    "extractDestination": "Папка назначения…",
+    "extractSelected": "⬇ Извлечь выбранное",
+    "extractFolder": "📁 Извлечь папку"
+  },
+  "settings": {
+    "title": "Настройки",
+    "pazFolder": "Папка PAZ",
+    "language": "Язык",
+    "cancel": "Отмена",
+    "save": "Сохранить"
+  },
+  "tree": {
+    "loading": "Загрузка..."
+  },
+  "status": {
+    "loadedFromCache": "{count} записей загружено из кэша (версия игры {version})",
+    "parsing": "Разбор файлов PAZ… прошло {elapsed} с (только первый запуск — результат будет кэширован)",
+    "parsedAndCached": "{count} записей разобрано и кэшировано (версия игры {version})",
+    "error": "Ошибка: {message}",
+    "extracting": "Извлечение… {done}/{total} — {extracted} ok  {skipped} пропущено  {failed} с ошибкой",
+    "extractDone": "✓  Готово — извлечено: {extracted}, пропущено: {skipped}, ошибок: {failed}.",
+    "searching": "Поиск… просканировано {done}/{total} файлов, совпадений пока: {matches}",
+    "searchDone": "Поиск завершён — найдено файлов: {matches} из {total} просканированных",
+    "pluginsReloaded": "Плагины перезагружены.",
+    "found": "Найдено файлов по запросу \"{query}\": {cap}",
+    "copiedRow": "Выбранная строка скопирована.",
+    "searchError": "Ошибка поиска: {message}"
+  }
+}

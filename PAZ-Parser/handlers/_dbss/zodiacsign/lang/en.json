@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "id": "ID",
+    "name": "Name",
+    "stars": "Stars",
+    "pairs": "Pairs",
+    "constellation": "Constellation",
+    "traits": "Traits",
+    "traitsEn": "Traits (EN)",
+    "traitsKr": "Traits (KR)"
+  },
+  "offsetColumns": {
+    "zodiacId": "Zodiac ID",
+    "dataOffset": "Data Offset"
+  },
+  "orderColumns": {
+    "row": "Row",
+    "personality": "Personality",
+    "zodiac": "Zodiac",
+    "variant": "Variant",
+    "triggers": "Triggers",
+    "sequence": "Sequence"
+  },
+  "orderOffsetColumns": {
+    "personalityType": "Personality Type",
+    "dataOffset": "Data Offset"
+  }
+}

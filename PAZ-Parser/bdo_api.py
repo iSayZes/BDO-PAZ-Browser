@@ -19,9 +19,9 @@ def _load_config() -> dict:
         return {}
 
 
-def _save_last_folder(path: Path) -> None:
+def _save_config(updates: dict) -> None:
     cfg = _load_config()
-    cfg["last_folder"] = str(path)
+    cfg.update(updates)
     try:
         _CONFIG_FILE.write_text(json.dumps(cfg, indent=2))
     except Exception:
@@ -33,7 +33,7 @@ from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_fil
 from bdo_payload_reader import read_entry_payload
 from bdo_preview import (
     AltViewHandler, DdsHandler, HEX_ROWS_PER_PAGE, HexHandler, PARSED_RECORDS_PER_PAGE,
-    StreamPreviewHandler, TextHandler, get_handler,
+    StreamPreviewHandler, TextHandler, get_handler, set_handler_lang,
 )
 
 _hex_handler = HexHandler()
@@ -53,9 +53,15 @@ _ICON_MAP: dict[str, str] = {
 
 _DISK_VIRTUAL_PREFIX = "__disk__"
 
-_LOC_CANDIDATES: dict[str, tuple[str, ...]] = {
-    "languagedata_en.loc": ("ads", "languagedata_en.loc"),
+_LOC_LANG_MAP: dict[str, tuple[str, ...] | None] = {
+    "en": ("ads", "languagedata_en.loc"),
+    "de": ("ads", "languagedata_de.loc"),
+    "fr": ("ads", "languagedata_fr.loc"),
+    "sp": ("ads", "languagedata_sp.loc"),
+    "ru": ("ads", "languagedata_ru.loc"),
+    "kr": None,
 }
+_VALID_LANGUAGES = frozenset(_LOC_LANG_MAP)
 
 
 def _norm(path: str) -> str:
@@ -126,6 +132,7 @@ class Api:
 
     def set_window(self, window: webview.Window) -> None:
         self._window = window
+        set_handler_lang(_load_config().get("language", "en"))
 
     # ── Internal helpers ──────────────────────────────────────────────────────
 
@@ -143,10 +150,11 @@ class Api:
             except Exception:
                 pass
 
-    def _push_status(self, msg: str, progress: tuple[int, int] | None = None) -> None:
-        self._status = msg
-        payload = json.dumps({"message": msg, "progress": list(progress) if progress else None})
-        self._push_js(f"app.setStatus({payload})")
+    def _push_status(self, msg: str | dict, progress: tuple[int, int] | None = None) -> None:
+        self._status = msg if isinstance(msg, str) else msg.get("key", "")
+        data: dict = msg if isinstance(msg, dict) else {"message": msg}
+        data["progress"] = list(progress) if progress else None
+        self._push_js(f"app.setStatus({json.dumps(data)})")
 
     # ── Folder ────────────────────────────────────────────────────────────────
 
@@ -157,7 +165,7 @@ class Api:
         if not result:
             return {"ok": False}
         self._paz_root = Path(result[0])
-        _save_last_folder(self._paz_root)
+        _save_config({"last_folder": str(self._paz_root)})
         threading.Thread(target=self._load_entries, daemon=True).start()
         return {"ok": True, "path": str(self._paz_root)}
 
@@ -175,6 +183,51 @@ class Api:
         threading.Thread(target=self._load_entries, daemon=True).start()
         return {"ok": True, "path": str(self._paz_root)}
 
+    def browse_folder(self) -> dict:
+        """Open a folder picker without side effects — for use in the settings modal."""
+        if self._window is None:
+            return {"ok": False, "error": "Window not initialized"}
+        result = self._window.create_file_dialog(webview.FileDialog.FOLDER)
+        if not result:
+            return {"ok": False}
+        return {"ok": True, "path": str(Path(result[0]))}
+
+    # ── Settings ──────────────────────────────────────────────────────────────
+
+    def get_settings(self) -> dict:
+        cfg = _load_config()
+        return {
+            "paz_path": cfg.get("last_folder", ""),
+            "language": cfg.get("language", "en"),
+        }
+
+    def save_settings(self, paz_path: str, language: str) -> dict:
+        if language not in _VALID_LANGUAGES:
+            return {"ok": False, "error": f"Invalid language: {language}"}
+        old_cfg = _load_config()
+        _save_config({"last_folder": paz_path, "language": language})
+        self._reload_loc(language)
+        if paz_path != old_cfg.get("last_folder", "") and Path(paz_path).is_dir():
+            self._paz_root = Path(paz_path)
+            threading.Thread(target=self._load_entries, daemon=True).start()
+        return {"ok": True}
+
+    def _reload_loc(self, language: str) -> None:
+        from _common.loc import init_loc  # noqa: PLC0415
+        set_handler_lang(language)
+        rel = _LOC_LANG_MAP.get(language)
+        if rel is None or not self._paz_root:
+            init_loc(None)
+            return
+        path = self._paz_root.parent.joinpath(*rel)
+        if path.exists():
+            try:
+                init_loc(path.read_bytes())
+            except Exception:
+                pass
+        else:
+            init_loc(None)
+
     def _load_entries(self) -> None:
         assert self._paz_root is not None
         try:
@@ -184,7 +237,7 @@ class Api:
 
             if cached and cached[0] == current_version:
                 _, entries = cached
-                msg = f"Loaded {len(entries):,} entries from cache  (game version {current_version})"
+                msg = {"key": "status.loadedFromCache", "args": {"count": f"{len(entries):,}", "version": current_version}}
             else:
                 stop_ticker = threading.Event()
                 start = time.monotonic()
@@ -193,7 +246,7 @@ class Api:
                     while not stop.is_set():
                         elapsed = int(time.monotonic() - t0)
                         self._push_status(
-                            f"Parsing PAZ files… {elapsed}s elapsed  (first run only — result will be cached)"
+                            {"key": "status.parsing", "args": {"elapsed": elapsed}}
                         )
                         stop.wait(0.5)
 
@@ -204,7 +257,7 @@ class Api:
                     stop_ticker.set()
 
                 save_cache(self._paz_root, current_version, entries)
-                msg = f"Parsed and cached {len(entries):,} entries  (game version {current_version})"
+                msg = {"key": "status.parsedAndCached", "args": {"count": f"{len(entries):,}", "version": current_version}}
 
             self._entries = entries
             self._entry_map = {_norm(e.internal_path): e for e in entries}
@@ -214,21 +267,22 @@ class Api:
             self._push_js("app.onFolderLoaded()")
 
         except Exception as ex:
-            self._push_status(f"Error: {ex}")
+            self._push_status({"key": "status.error", "args": {"message": str(ex)}})
             self._push_js(f"app.showError({json.dumps(str(ex))})")
 
     def _load_disk_companions(self) -> None:
         if not self._paz_root:
             return
-        for name, rel_parts in _LOC_CANDIDATES.items():
-            path = self._paz_root.parent.joinpath(*rel_parts)
+        language = _load_config().get("language", "en")
+        rel = _LOC_LANG_MAP.get(language)
+        if rel is not None:
+            path = self._paz_root.parent.joinpath(*rel)
             if path.exists():
                 try:
                     raw = path.read_bytes()
-                    self._disk_companions[name] = raw
-                    if name == "languagedata_en.loc":
-                        from _common.loc import init_loc  # noqa: PLC0415
-                        init_loc(raw)
+                    self._disk_companions[rel[-1]] = raw
+                    from _common.loc import init_loc  # noqa: PLC0415
+                    init_loc(raw)
                 except Exception:
                     pass
 
@@ -690,11 +744,11 @@ class Api:
 
                 if i % 25 == 0 or i == total:
                     self._push_status(
-                        f"Extracting… {i}/{total}  —  {extracted} ok  {skipped} skipped  {failed} failed",
+                        {"key": "status.extracting", "args": {"done": i, "total": total, "extracted": extracted, "skipped": skipped, "failed": failed}},
                         (i, total),
                     )
 
-            self._push_status(f"✓  Done — {extracted} extracted, {skipped} skipped, {failed} failed.")
+            self._push_status({"key": "status.extractDone", "args": {"extracted": extracted, "skipped": skipped, "failed": failed}})
             self._push_js("app.onExtractionDone()")
 
         threading.Thread(target=run, daemon=True).start()
@@ -940,7 +994,7 @@ class Api:
                 return
 
             if i % 50 == 0:
-                self._push_status(f"Searching… {i}/{total} files scanned, {len(results)} match(es) so far")
+                self._push_status({"key": "status.searching", "args": {"done": i, "total": total, "matches": len(results)}})
 
             try:
                 data = read_entry_payload(
@@ -970,7 +1024,5 @@ class Api:
                     "icon":  _file_icon(Path(entry.internal_path).suffix),
                 })
 
-        self._push_status(
-            f"Search complete — {len(results)} file(s) matched out of {total} scanned"
-        )
+        self._push_status({"key": "status.searchDone", "args": {"matches": len(results), "total": total}})
         self._push_js(f"app.onGlobalSearchDone({json.dumps(results)})")

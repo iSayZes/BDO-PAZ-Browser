@@ -1,5 +1,7 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 export const extractionMethods = {
   _toggleExtractSelect(li, path) {
     if (this._extractPaths.has(path)) {
@@ -76,7 +78,7 @@ export const extractionMethods = {
   },
 
   async onPluginsReloaded() {
-    this.setStatus({ message: "Plugins reloaded." });
+    this.setStatus({ key: "status.pluginsReloaded" });
     if (this._activeTab === "parsed" && this._selectedPath) {
       await this._refreshParsedView();
     }

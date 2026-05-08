@@ -1,12 +1,20 @@
 "use strict";
 
+import { loadLang, applyTranslations } from "../core/i18n.js";
+
 export const initMethods = {
   async init() {
     const saved = localStorage.getItem("outputPath");
     if (saved) document.getElementById("output-path").value = saved;
 
-    const status = await window.pywebview.api.get_status();
+    const [status, settings] = await Promise.all([
+      window.pywebview.api.get_status(),
+      window.pywebview.api.get_settings(),
+    ]);
     this.setStatus(status);
+
+    await loadLang(settings.language ?? "en");
+    applyTranslations();
 
     this._setupDividers();
     this._setupOutputPathSave();

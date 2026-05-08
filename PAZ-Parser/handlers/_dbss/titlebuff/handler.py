@@ -1,25 +1,18 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import strip_pa_tags
 from _common.binary import parse_offset_table
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import extract_titlebuff_records, find_title_effects_en
 
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Buff ID", "num", ""),
-    ("Offset", "num", ""),
-]
-
-_BUFF_HEADERS: list[tuple[str, str, str]] = [
-    ("Level", "num", ""),
-    ("Required Titles", "num", ""),
-    ("Text", "", ""),
-    ("Offset", "num", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class TitleBuffListOffsetHandler(PreviewHandler):
@@ -44,11 +37,16 @@ class TitleBuffListOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} entries"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("buffId", "Buff ID"), "num", ""),
+            (cols.get("offset", "Offset"), "num", ""),
+        ]
         rows = [
             [e(r["buff_id"]), e(f"0x{r['offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class TitleBuffListHandler(PreviewHandler):
@@ -94,6 +92,13 @@ class TitleBuffListHandler(PreviewHandler):
 
         has_text = any(r["text"] for r in records)
         meta = f"{len(records):,} buff blocks decoded" + ("  ·  effects from loc" if has_text else "")
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("level", "Level"), "num", ""),
+            (cols.get("requiredTitles", "Required Titles"), "num", ""),
+            (cols.get("text", "Text"), "", ""),
+            (cols.get("offset", "Offset"), "num", ""),
+        ]
 
         rows: list[list] = []
         for r in slice_:
@@ -104,4 +109,4 @@ class TitleBuffListHandler(PreviewHandler):
                 e(f"0x{r['offset']:08X}"),
             ])
 
-        return table(meta, _BUFF_HEADERS, rows)
+        return table(meta, headers, rows)

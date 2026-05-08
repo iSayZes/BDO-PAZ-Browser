@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, error, table
+from _common.lang import load_handler_strings
 from _common.zodiacsign.loc import resolve_loc_type7
 from _common.zodiacsign.parser import parse_zodiacsign_records
 from .parser import (
@@ -13,36 +16,12 @@ from .parser import (
 )
 
 
+_LANG_DIR = Path(__file__).parent / "lang"
+
+
 def _truncate(text: str, max_len: int = 100) -> str:
     return text if len(text) <= max_len else text[:max_len] + "…"
 
-
-_SIGN_HEADERS: list[tuple[str, str, str]] = [
-    ("ID",              "num", ""),
-    ("Name",            "",    ""),
-    ("Stars",           "num", ""),
-    ("Pairs",           "num", ""),
-    ("Constellation",   "",    ""),
-    ("Traits",          "",    ""),
-]
-
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Zodiac ID",    "num", ""),
-    ("Data Offset",  "num", ""),
-]
-
-_ORDER_HEADERS: list[tuple[str, str, str]] = [
-    ("Personality",  "num", ""),
-    ("Zodiac",       "",    ""),
-    ("Variant",      "num", ""),
-    ("Triggers",     "num", ""),
-    ("Sequence",     "",    ""),
-]
-
-_ORDER_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Personality Type", "num", ""),
-    ("Data Offset",      "num", ""),
-]
 
 class ZodiacSignHandler(PreviewHandler):
     def get_records(
@@ -83,8 +62,19 @@ class ZodiacSignHandler(PreviewHandler):
         slice_ = records[start : start + page_size]
 
         loc_ok = any(r["en_trait"] for r in records)
-        headers = list(_SIGN_HEADERS)
-        headers[5] = ("Traits (EN)" if loc_ok else "Traits (KR)", "", "")
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("id", "ID"), "num", ""),
+            (cols.get("name", "Name"), "", ""),
+            (cols.get("stars", "Stars"), "num", ""),
+            (cols.get("pairs", "Pairs"), "num", ""),
+            (cols.get("constellation", "Constellation"), "", ""),
+            (
+                cols.get("traitsEn" if loc_ok else "traitsKr", "Traits (EN)" if loc_ok else "Traits (KR)"),
+                "",
+                "",
+            ),
+        ]
 
         meta = f"{len(records):,} zodiac signs"
         rows: list[list] = []
@@ -127,11 +117,16 @@ class ZodiacSignOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("zodiacId", "Zodiac ID"), "num", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+        ]
         rows = [
             [e(r["zodiac_id"]), e(f"0x{r['data_offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class ZodiacSignOrderHandler(PreviewHandler):
@@ -182,6 +177,7 @@ class ZodiacSignOrderHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} order records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("orderColumns", {})
         rows = [
             [
                 e(r["row"]),
@@ -195,8 +191,13 @@ class ZodiacSignOrderHandler(PreviewHandler):
         ]
         # Add "Row" column that was present in the original render()
         headers: list[tuple[str, str, str]] = [
-            ("Row",          "num", ""),
-        ] + _ORDER_HEADERS
+            (cols.get("row", "Row"), "num", ""),
+            (cols.get("personality", "Personality"), "num", ""),
+            (cols.get("zodiac", "Zodiac"), "", ""),
+            (cols.get("variant", "Variant"), "num", ""),
+            (cols.get("triggers", "Triggers"), "num", ""),
+            (cols.get("sequence", "Sequence"), "", ""),
+        ]
         return table(meta, headers, rows)
 
 
@@ -222,10 +223,14 @@ class ZodiacSignOrderOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("orderOffsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("personalityType", "Personality Type"), "num", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+        ]
         rows = [
             [e(r["personality_type"]), e(f"0x{r['data_offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _ORDER_OFFSET_HEADERS, rows)
-
+        return table(meta, headers, rows)
 

@@ -1,5 +1,7 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 export const treeMethods = {
   async _loadTreeRoot() {
     this._inSearch = false;
@@ -19,7 +21,7 @@ export const treeMethods = {
   _buildTreeLoadingNode() {
     const loading = document.createElement("li");
     loading.className = "tree-node loading";
-    loading.innerHTML = '<span class="tree-label"><span class="loading-spinner" aria-hidden="true"></span><span class="tree-name">Loading...</span></span>';
+    loading.innerHTML = `<span class="tree-label"><span class="loading-spinner" aria-hidden="true"></span><span class="tree-name">${t("tree.loading")}</span></span>`;
     return loading;
   },
 
@@ -139,7 +141,7 @@ export const treeMethods = {
     this._tabLabels = null;
 
     document.getElementById("preview-title").textContent = `${icon}  ${name}`;
-    document.getElementById("preview-content").innerHTML = '<div class="placeholder preview-loading"><span class="loading-spinner" aria-hidden="true"></span><span>Loading...</span></div>';
+    document.getElementById("preview-content").innerHTML = `<div class="placeholder preview-loading"><span class="loading-spinner" aria-hidden="true"></span><span>${t("preview.loading")}</span></div>`;
     document.getElementById("preview-tabs").hidden = true;
     document.getElementById("btn-export").hidden = true;
     this._setPageBar(null);
@@ -177,8 +179,8 @@ export const treeMethods = {
         hexTabBtn.textContent    = this._tabLabels[0];
         parsedTabBtn.textContent = this._tabLabels[1];
       } else {
-        hexTabBtn.textContent    = "Hex";
-        parsedTabBtn.textContent = "Parsed";
+        hexTabBtn.textContent    = t("preview.tabHex");
+        parsedTabBtn.textContent = t("preview.tabParsed");
       }
 
       if (result.has_parsed) {

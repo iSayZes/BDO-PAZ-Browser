@@ -1,28 +1,16 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import parse_mentaltheme_records, parse_mentalthemeoffset_records
 
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Theme ID",       "num", ""),
-    ("Payload Offset", "num", ""),
-    ("Payload Size",   "num", ""),
-]
-
-_THEME_HEADERS: list[tuple[str, str, str]] = [
-    ("Theme ID",        "num", ""),
-    ("Name",            "",    ""),
-    ("Parent ID",       "num", ""),
-    ("Parent Name",     "",    ""),
-    ("Energy Reward 1", "",    ""),
-    ("Energy Reward 2", "",    ""),
-    ("Entries",         "num", ""),
-    ("Children Groups", "num", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 def _reward(amount: int, need_count: int) -> str:
@@ -68,6 +56,12 @@ class MentalThemeOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("themeId", "Theme ID"), "num", ""),
+            (cols.get("payloadOffset", "Payload Offset"), "num", ""),
+            (cols.get("payloadSize", "Payload Size"), "num", ""),
+        ]
         rows = [
             [
                 e(r["theme_id"]),
@@ -76,7 +70,7 @@ class MentalThemeOffsetHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class MentalThemeHandler(PreviewHandler):
@@ -142,6 +136,17 @@ class MentalThemeHandler(PreviewHandler):
             f"{len(records):,} mentaltheme records"
             f" · {with_theme_name:,} theme names · {with_parent_name:,} parent names"
         )
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("themeId", "Theme ID"), "num", ""),
+            (cols.get("name", "Name"), "", ""),
+            (cols.get("parentId", "Parent ID"), "num", ""),
+            (cols.get("parentName", "Parent Name"), "", ""),
+            (cols.get("energyReward1", "Energy Reward 1"), "", ""),
+            (cols.get("energyReward2", "Energy Reward 2"), "", ""),
+            (cols.get("entries", "Entries"), "num", ""),
+            (cols.get("childrenGroups", "Children Groups"), "num", ""),
+        ]
 
         rows = [
             [
@@ -156,4 +161,4 @@ class MentalThemeHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _THEME_HEADERS, rows)
+        return table(meta, headers, rows)

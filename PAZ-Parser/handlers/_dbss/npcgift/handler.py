@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import (
     parse_gift_offset_records,
     parse_npcgift_records,
@@ -12,26 +15,7 @@ from .parser import (
 )
 
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("NPC ID",      "num", ""),
-    ("Data Offset", "num", ""),
-    ("Data Size",   "num", ""),
-]
-
-_GIFT_HEADERS: list[tuple[str, str, str]] = [
-    ("NPC ID",    "num", ""),
-    ("NPC Name",  "",    ""),
-    ("Item ID",   "num", ""),
-    ("Item Name", "",    ""),
-    ("Amity",     "num", ""),
-]
-
-_DATA_HEADERS: list[tuple[str, str, str]] = [
-    ("NPC ID",        "num", ""),
-    ("NPC Name",      "",    ""),
-    ("Unknown Param", "num", ""),
-    ("Dialogue",      "",    ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class _NpcGiftOffsetHandler(PreviewHandler):
@@ -54,6 +38,12 @@ class _NpcGiftOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("npcId", "NPC ID"), "num", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+            (cols.get("dataSize", "Data Size"), "num", ""),
+        ]
         rows = [
             [
                 e(r["npc_id"]),
@@ -62,7 +52,7 @@ class _NpcGiftOffsetHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class NpcGiftOffsetHandler(_NpcGiftOffsetHandler):
@@ -97,6 +87,14 @@ class NpcGiftHandler(PreviewHandler):
         meta = f"{len(records):,} gift rows"
         if loc:
             meta += f" · {with_npc_name:,} NPC names · {with_item_name:,} item names"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("giftColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("npcId", "NPC ID"), "num", ""),
+            (cols.get("npcName", "NPC Name"), "", ""),
+            (cols.get("itemId", "Item ID"), "num", ""),
+            (cols.get("itemName", "Item Name"), "", ""),
+            (cols.get("amity", "Amity"), "num", ""),
+        ]
 
         rows = [
             [
@@ -108,7 +106,7 @@ class NpcGiftHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _GIFT_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class NpcGiftDataHandler(PreviewHandler):
@@ -134,6 +132,13 @@ class NpcGiftDataHandler(PreviewHandler):
         meta = f"{len(records):,} NPC dialogue records"
         if loc:
             meta += f" · {with_loc:,} with LOC type 54 text"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("dataColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("npcId", "NPC ID"), "num", ""),
+            (cols.get("npcName", "NPC Name"), "", ""),
+            (cols.get("unknownParam", "Unknown Param"), "num", ""),
+            (cols.get("dialogue", "Dialogue"), "", ""),
+        ]
 
         rows = [
             [
@@ -144,4 +149,4 @@ class NpcGiftDataHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _DATA_HEADERS, rows)
+        return table(meta, headers, rows)

@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "language": "English",
+    "code": "en",
+    "authors": [],
+    "notes": "This is the source language. All other files fall back to these strings for missing keys."
+  },
+  "toolbar": {
+    "openFolder": "📂 Open PAZ Folder",
+    "noFolderSelected": "No folder selected",
+    "settings": "Settings"
+  },
+  "sidebar": {
+    "filterFiles": "Filter files…",
+    "searchInFiles": "Search in all files",
+    "searchInFilesTitle": "Search in file contents"
+  },
+  "contentSearch": {
+    "modeString": "String",
+    "modeHex": "Hex",
+    "pattern": "Pattern…",
+    "search": "Search",
+    "cancel": "✕ Cancel",
+    "in": "In:"
+  },
+  "details": {
+    "title": "Entry Details",
+    "export": "⬇ Export",
+    "noFileSelected": "No file selected",
+    "archive": "📦  Archive",
+    "path": "📍  Path",
+    "compressed": "🗜  Compressed",
+    "uncompressed": "📄  Uncompressed",
+    "offset": "#  Offset"
+  },
+  "preview": {
+    "title": "Preview",
+    "tabHex": "Hex",
+    "tabParsed": "Parsed",
+    "selectFile": "Select a file to preview.",
+    "loading": "Loading…"
+  },
+  "tabSearch": {
+    "modeString": "String",
+    "modeHex": "Hex",
+    "placeholder": "Search…"
+  },
+  "pageBar": {
+    "prev": "◀ Prev",
+    "next": "Next ▶"
+  },
+  "bottomBar": {
+    "output": "Output",
+    "extractDestination": "Extract destination…",
+    "extractSelected": "⬇ Extract Selected",
+    "extractFolder": "📁 Extract Folder"
+  },
+  "settings": {
+    "title": "Settings",
+    "pazFolder": "PAZ Folder",
+    "language": "Language",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "tree": {
+    "loading": "Loading..."
+  },
+  "status": {
+    "loadedFromCache": "Loaded {count} entries from cache (game version {version})",
+    "parsing": "Parsing PAZ files… {elapsed}s elapsed (first run only — result will be cached)",
+    "parsedAndCached": "Parsed and cached {count} entries (game version {version})",
+    "error": "Error: {message}",
+    "extracting": "Extracting… {done}/{total} — {extracted} ok  {skipped} skipped  {failed} failed",
+    "extractDone": "✓  Done — {extracted} extracted, {skipped} skipped, {failed} failed.",
+    "searching": "Searching… {done}/{total} files scanned, {matches} match(es) so far",
+    "searchDone": "Search complete — {matches} file(s) matched out of {total} scanned",
+    "pluginsReloaded": "Plugins reloaded.",
+    "found": "Found {cap}files matching \"{query}\"",
+    "copiedRow": "Copied selected row.",
+    "searchError": "Search error: {message}"
+  }
+}

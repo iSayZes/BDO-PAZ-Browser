@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "language": "Español",
+    "code": "sp",
+    "authors": [],
+    "notes": "Las claves que faltan usan en.json automáticamente."
+  },
+  "toolbar": {
+    "openFolder": "📂 Abrir carpeta PAZ",
+    "noFolderSelected": "No se ha seleccionado ninguna carpeta",
+    "settings": "Ajustes"
+  },
+  "sidebar": {
+    "filterFiles": "Filtrar archivos…",
+    "searchInFiles": "Buscar en todos los archivos",
+    "searchInFilesTitle": "Buscar en el contenido de los archivos"
+  },
+  "contentSearch": {
+    "modeString": "Texto",
+    "modeHex": "Hex",
+    "pattern": "Patrón…",
+    "search": "Buscar",
+    "cancel": "✕ Cancelar",
+    "in": "En:"
+  },
+  "details": {
+    "title": "Detalles de la entrada",
+    "export": "⬇ Exportar",
+    "noFileSelected": "No se ha seleccionado ningún archivo",
+    "archive": "📦  Archivo",
+    "path": "📍  Ruta",
+    "compressed": "🗜  Comprimido",
+    "uncompressed": "📄  Sin comprimir",
+    "offset": "#  Desplazamiento"
+  },
+  "preview": {
+    "title": "Vista previa",
+    "tabHex": "Hex",
+    "tabParsed": "Analizado",
+    "selectFile": "Seleccione un archivo para previsualizar.",
+    "loading": "Cargando…"
+  },
+  "tabSearch": {
+    "modeString": "Texto",
+    "modeHex": "Hex",
+    "placeholder": "Buscar…"
+  },
+  "pageBar": {
+    "prev": "◀ Anterior",
+    "next": "Siguiente ▶"
+  },
+  "bottomBar": {
+    "output": "Salida",
+    "extractDestination": "Destino de extracción…",
+    "extractSelected": "⬇ Extraer seleccionados",
+    "extractFolder": "📁 Extraer carpeta"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "pazFolder": "Carpeta PAZ",
+    "language": "Idioma",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "tree": {
+    "loading": "Cargando..."
+  },
+  "status": {
+    "loadedFromCache": "{count} entradas cargadas desde la caché (versión del juego {version})",
+    "parsing": "Analizando archivos PAZ… {elapsed}s transcurridos (solo la primera ejecución — el resultado se guardará en caché)",
+    "parsedAndCached": "{count} entradas analizadas y guardadas en caché (versión del juego {version})",
+    "error": "Error: {message}",
+    "extracting": "Extrayendo… {done}/{total} — {extracted} ok  {skipped} omitidos  {failed} fallidos",
+    "extractDone": "✓  Listo — {extracted} extraídos, {skipped} omitidos, {failed} fallidos.",
+    "searching": "Buscando… {done}/{total} archivos escaneados, {matches} coincidencia(s) hasta ahora",
+    "searchDone": "Búsqueda completada — {matches} archivo(s) coincidieron de {total} escaneados",
+    "pluginsReloaded": "Plugins recargados.",
+    "found": "{cap}archivos encontrados que coinciden con \"{query}\"",
+    "copiedRow": "Fila seleccionada copiada.",
+    "searchError": "Error de búsqueda: {message}"
+  }
+}

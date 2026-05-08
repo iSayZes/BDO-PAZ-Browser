@@ -1,0 +1,12 @@
+{
+  "offsetColumns": {
+    "internalId": "Internal ID",
+    "dbssOffset": "DBSS Offset"
+  },
+  "columns": {
+    "knowledgeId": "Knowledge ID",
+    "knowledgeName": "Knowledge Name",
+    "categoryId": "Category ID",
+    "categoryName": "Category Name"
+  }
+}

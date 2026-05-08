@@ -1,5 +1,7 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 // Module-level state
 let _gsMode = "string";
 let _gsRunning = false;
@@ -77,7 +79,7 @@ export const globalSearchMethods = {
     );
 
     if (result.error) {
-      this.setStatus({ message: `Search error: ${result.error}` });
+      this.setStatus({ key: "status.searchError", args: { message: result.error } });
       _gsRunning = false;
       this._updateCsbButtons(false);
     }

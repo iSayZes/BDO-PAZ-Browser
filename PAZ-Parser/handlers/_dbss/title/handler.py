@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 
 from _common.binary import parse_offset_table
@@ -10,16 +13,7 @@ from _common.html import color_cell, e, table
 from .parser import extract_title_records
 
 
-_HEADERS: list[tuple[str, str, str]] = [
-    ("Title ID", "num", ""),
-    ("Category", "", ""),
-    ("Title Color", "", ""),
-    ("Title", "", ""),
-    ("Title Requirements", "", ""),
-    ("Special", "", ""),
-    ("Effect", "", ""),
-]
-
+_LANG_DIR = Path(__file__).parent / "lang"
 
 _CATEGORY_NAMES: dict[int, str] = {
     0: "World",
@@ -74,6 +68,17 @@ class TitleDbssHandler(PreviewHandler):
         page: int,
         page_size: int,
     ) -> str:
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("titleId",           "Title ID"),           "num", ""),
+            (cols.get("category",          "Category"),           "",    ""),
+            (cols.get("titleColor",        "Title Color"),        "",    ""),
+            (cols.get("title",             "Title"),              "",    ""),
+            (cols.get("titleRequirements", "Title Requirements"), "",    ""),
+            (cols.get("special",           "Special"),            "",    ""),
+            (cols.get("effect",            "Effect"),             "",    ""),
+        ]
+
         start = page * page_size
         slice_ = records[start : start + page_size]
 
@@ -95,4 +100,4 @@ class TitleDbssHandler(PreviewHandler):
                 e(record["title_effect_name"] or "-"),
             ])
 
-        return table(f"{len(records):,} titles decoded", _HEADERS, rows)
+        return table(f"{len(records):,} titles decoded", headers, rows)

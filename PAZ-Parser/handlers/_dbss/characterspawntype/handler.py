@@ -1,16 +1,20 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import (
     parse_characterspawntype_records,
     parse_characterspawntypeoffset_records,
 )
 
 _NUM_FLAGS = 44
+_LANG_DIR = Path(__file__).parent / "lang"
 
 _FLAG_NAMES: dict[int, str] = {
     1: "villa_vendor",
@@ -23,13 +27,6 @@ _FLAG_NAMES: dict[int, str] = {
     32: "timed_spawn",
     43: "main_quest",
 }
-
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("ID Low16",    "num", ""),
-    ("Byte Offset", "num", ""),
-    ("Size",        "num", ""),
-]
-
 
 def _lookup_name(entity_id: int) -> str:
     name = loc_lookup(6, entity_id)
@@ -71,11 +68,17 @@ class CharacterSpawnTypeOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("idLow16", "ID Low16"), "num", ""),
+            (cols.get("byteOffset", "Byte Offset"), "num", ""),
+            (cols.get("size", "Size"), "num", ""),
+        ]
         rows = [
             [e(r["id_low16"]), e(f"0x{r['offset']:08X}"), e(r["size"])]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class CharacterSpawnTypeHandler(PreviewHandler):
@@ -105,9 +108,12 @@ class CharacterSpawnTypeHandler(PreviewHandler):
         active = [i for i in range(_NUM_FLAGS) if any(r["flags"][i] for r in records)]
         has_loc = is_loc_loaded()
 
-        headers: list[tuple[str, str, str]] = [("entity_id", "num", "")]
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("entityId", "entity_id"), "num", "")
+        ]
         if has_loc:
-            headers.append(("Name (EN)", "", ""))
+            headers.append((cols.get("nameEn", "Name (EN)"), "", ""))
         headers.extend(_flag_header(i) for i in active)
 
         start = page * page_size

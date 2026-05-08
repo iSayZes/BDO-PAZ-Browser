@@ -1,0 +1,82 @@
+{
+  "_meta": {
+    "language": "Deutsch",
+    "code": "de",
+    "authors": [],
+    "notes": "Fehlende Schlüssel greifen automatisch auf en.json zurück."
+  },
+  "toolbar": {
+    "openFolder": "📂 PAZ-Ordner öffnen",
+    "noFolderSelected": "Kein Ordner ausgewählt",
+    "settings": "Einstellungen"
+  },
+  "sidebar": {
+    "filterFiles": "Dateien filtern…",
+    "searchInFiles": "In allen Dateien suchen",
+    "searchInFilesTitle": "In Dateiinhalten suchen"
+  },
+  "contentSearch": {
+    "modeString": "Text",
+    "modeHex": "Hex",
+    "pattern": "Muster…",
+    "search": "Suchen",
+    "cancel": "✕ Abbrechen",
+    "in": "In:"
+  },
+  "details": {
+    "title": "Eintragsdetails",
+    "export": "⬇ Exportieren",
+    "noFileSelected": "Keine Datei ausgewählt",
+    "archive": "📦  Archiv",
+    "path": "📍  Pfad",
+    "compressed": "🗜  Komprimiert",
+    "uncompressed": "📄  Unkomprimiert",
+    "offset": "#  Offset"
+  },
+  "preview": {
+    "title": "Vorschau",
+    "tabHex": "Hex",
+    "tabParsed": "Geparst",
+    "selectFile": "Datei für Vorschau auswählen.",
+    "loading": "Laden…"
+  },
+  "tabSearch": {
+    "modeString": "Text",
+    "modeHex": "Hex",
+    "placeholder": "Suchen…"
+  },
+  "pageBar": {
+    "prev": "◀ Zurück",
+    "next": "Weiter ▶"
+  },
+  "bottomBar": {
+    "output": "Ausgabe",
+    "extractDestination": "Extraktionsziel…",
+    "extractSelected": "⬇ Auswahl extrahieren",
+    "extractFolder": "📁 Ordner extrahieren"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "pazFolder": "PAZ-Ordner",
+    "language": "Sprache",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
+  },
+  "tree": {
+    "loading": "Laden..."
+  },
+  "status": {
+    "loadedFromCache": "{count} Einträge aus dem Cache geladen (Spielversion {version})",
+    "parsing": "PAZ-Dateien werden geparst… {elapsed}s verstrichen (nur beim ersten Lauf — Ergebnis wird zwischengespeichert)",
+    "parsedAndCached": "{count} Einträge geparst und zwischengespeichert (Spielversion {version})",
+    "error": "Fehler: {message}",
+    "extracting": "Extrahiere… {done}/{total} — {extracted} ok  {skipped} übersprungen  {failed} fehlgeschlagen",
+    "extractDone": "✓  Fertig — {extracted} extrahiert, {skipped} übersprungen, {failed} fehlgeschlagen.",
+    "searching": "Suche… {done}/{total} Dateien gescannt, bisher {matches} Treffer",
+    "searchDone": "Suche abgeschlossen — {matches} Datei(en) von {total} gescannten gefunden",
+    "pluginsReloaded": "Plugins neu geladen.",
+    "found": "{cap}Dateien passend zu \"{query}\" gefunden",
+    "copiedRow": "Ausgewählte Zeile kopiert.",
+    "searchError": "Suchfehler: {message}"
+  }
+}

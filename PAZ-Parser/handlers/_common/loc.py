@@ -30,9 +30,15 @@ _LOC_PREFIX: dict[tuple[int, int], list[str]] | None = None
 _LOC_ALL:   list[str] | None = None
 
 
-def init_loc(raw: bytes) -> None:
-    """Parse languagedata_en.loc once at startup. Safe to call again on reload."""
+def init_loc(raw: bytes | None) -> None:
+    """Parse a languagedata_*.loc file. Pass None to clear all LOC data."""
     global _LOC_INDEX, _LOC_PREFIX, _LOC_ALL
+
+    if raw is None:
+        _LOC_INDEX = None
+        _LOC_PREFIX = None
+        _LOC_ALL = None
+        return
 
     data = decompress_loc(raw)
     if data is None:

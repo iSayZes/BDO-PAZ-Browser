@@ -1,26 +1,19 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, error, table
+from _common.lang import load_handler_strings
 from .parser import (
     parse_mentalcard_offset_records,
     parse_mentalcard_records,
 )
 
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Internal ID",  "num", ""),
-    ("DBSS Offset",  "num", ""),
-]
-
-_CARD_HEADERS: list[tuple[str, str, str]] = [
-    ("Knowledge ID",    "num", ""),
-    ("Knowledge Name",  "",    ""),
-    ("Category ID",     "num", ""),
-    ("Category Name",   "",    ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class MentalCardOffsetHandler(PreviewHandler):
@@ -45,11 +38,16 @@ class MentalCardOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("internalId", "Internal ID"), "num", ""),
+            (cols.get("dbssOffset", "DBSS Offset"), "num", ""),
+        ]
         rows = [
             [e(r["internal_id"]), e(f"0x{r['dbss_offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class MentalCardHandler(PreviewHandler):
@@ -93,6 +91,13 @@ class MentalCardHandler(PreviewHandler):
             f"{len(records):,} mentalcard records"
             f" · {with_entry_name:,} entry names · {with_node_name:,} node names"
         )
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("knowledgeId", "Knowledge ID"), "num", ""),
+            (cols.get("knowledgeName", "Knowledge Name"), "", ""),
+            (cols.get("categoryId", "Category ID"), "num", ""),
+            (cols.get("categoryName", "Category Name"), "", ""),
+        ]
 
         rows = [
             [
@@ -103,4 +108,4 @@ class MentalCardHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _CARD_HEADERS, rows)
+        return table(meta, headers, rows)

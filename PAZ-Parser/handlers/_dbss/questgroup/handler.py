@@ -1,19 +1,17 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_questgroup_records
 
 
-_HEADERS: list[tuple[str, str, str]] = [
-    ("Group ID", "num", ""),
-    ("Name", "", ""),
-    ("Quests", "num", ""),
-    ("Quest Titles", "", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 def _join_limited(values: list[str], max_items: int = 8) -> str:
@@ -72,6 +70,13 @@ class QuestGroupDbssHandler(PreviewHandler):
         slice_ = records[start:start + page_size]
         total_links = sum(r["quest_count"] for r in records)
         meta = f"{len(records):,} quest groups · {total_links:,} quest links"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("groupId", "Group ID"), "num", ""),
+            (cols.get("name", "Name"), "", ""),
+            (cols.get("quests", "Quests"), "num", ""),
+            (cols.get("questTitles", "Quest Titles"), "", ""),
+        ]
         rows = [
             [
                 e(r["group_id"]),
@@ -81,4 +86,4 @@ class QuestGroupDbssHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _HEADERS, rows)
+        return table(meta, headers, rows)

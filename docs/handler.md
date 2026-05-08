@@ -493,6 +493,112 @@ Rule of thumb:
 
 ---
 
+## Localization
+
+The app's active language code (`"en"`, `"de"`, `"fr"`, `"sp"`, `"ru"`, `"kr"`) is
+available to every handler via `self.lang`. It is set automatically before any handler
+method is called and updated whenever the user changes language in Settings.
+
+Use it in `get_records()` to return language-appropriate display strings:
+
+```python
+_LABELS = {
+    "en": {"active": "Active", "inactive": "Inactive"},
+    "de": {"active": "Aktiv",  "inactive": "Inaktiv"},
+    "kr": {"active": "활성",    "inactive": "비활성"},
+}
+
+class MyHandler(PreviewHandler):
+    def get_records(self, data, entry, companions):
+        labels = _LABELS.get(self.lang, _LABELS["en"])
+        return [
+            {"id": r.id, "status": labels["active"] if r.active else labels["inactive"]}
+            for r in _parse(data)
+        ]
+```
+
+For larger string sets, ship JSON files next to the handler and use the shared helper:
+
+```python
+from pathlib import Path
+from _common.lang import load_handler_strings
+
+_LANG_DIR = Path(__file__).parent / "lang"
+
+class MyHandler(PreviewHandler):
+    def get_records(self, data, entry, companions):
+        s = load_handler_strings(self.lang, _LANG_DIR)
+        ...
+```
+
+`load_handler_strings(lang, strings_dir)` tries `{strings_dir}/{lang}.json` then falls
+back to `{strings_dir}/en.json`. Returns `{}` if neither file exists.
+
+**Example `lang/en.json`** for a handler that displays category names and column headers:
+
+```json
+{
+  "columns": {
+    "id":       "Title ID",
+    "category": "Category",
+    "title":    "Title",
+    "effect":   "Effect"
+  },
+  "category": {
+    "0": "World",
+    "1": "Combat",
+    "2": "Life Skill",
+    "3": "Fishing"
+  }
+}
+```
+
+A partial translation file (`lang/de.json`) only needs to cover the keys it changes:
+
+```json
+{
+  "category": {
+    "0": "Welt",
+    "1": "Kampf",
+    "2": "Lebensfertigkeiten",
+    "3": "Angeln"
+  }
+}
+```
+
+Missing keys are not resolved automatically by `load_handler_strings` — if you ship
+partial files, do the merge yourself:
+
+```python
+import json
+from pathlib import Path
+from _common.lang import load_handler_strings
+
+_LANG_DIR = Path(__file__).parent / "lang"
+
+def _strings(lang: str) -> dict:
+    if lang == "en":
+        return load_handler_strings("en", _LANG_DIR)
+    base = load_handler_strings("en", _LANG_DIR)
+    override = load_handler_strings(lang, _LANG_DIR)
+    # shallow-merge each top-level section
+    return {k: {**base.get(k, {}), **override.get(k, {})} for k in base}
+```
+
+For most handlers a flat single-language file is simpler — only bother with partial
+merging when the string table is large enough that translators would realistically
+only cover part of it.
+
+Rules:
+- Always provide English (`"en"`) as the fallback — `self.lang` may be a code your
+  handler does not yet translate.
+- Put translated strings in `get_records()` so they land in `records` dicts, which
+  means tab search and CSV export also see the localized values.
+- Do not put translated labels directly in `render_records_page()` — the HTML layer
+  should be format-agnostic.
+
+---
+
 ## Import Rules
 
 From a root handler:
@@ -607,7 +713,7 @@ Raise only for actual programming errors.
 3. Add `__init__.py` to every package folder.
 4. Create a `registration.py`.
 5. Implement one or more `PreviewHandler` classes with `get_records()` and `render_records_page()`.
-6. `get_records()` must return plain dicts — no HTML. Include any LOC-lookup strings here so tab search can find them.
+6. `get_records()` must return plain dicts — no HTML. Include any LOC-lookup strings here so tab search can find them. Use `self.lang` for language-aware display strings.
 7. `render_records_page()` slices `records[page * page_size : ...]` and returns an HTML fragment.
 8. For very large formats, optionally implement lazy parsed methods so paging and search do not require eager parsing.
 9. Register by exact filename or extension.

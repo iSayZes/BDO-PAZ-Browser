@@ -1,0 +1,15 @@
+{
+  "offsetColumns": {
+    "idLow16": "ID Low16",
+    "byteOffset": "Byte Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "characterId": "Character ID",
+    "nameEn": "Name (EN)",
+    "script": "Script",
+    "knowledgeId": "Knowledge ID",
+    "payloadSize": "Payload Size",
+    "unknownType": "Unknown Type"
+  }
+}

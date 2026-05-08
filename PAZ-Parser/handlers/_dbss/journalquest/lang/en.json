@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "group": "Group",
+    "entry": "Entry",
+    "offset": "Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "group": "Group",
+    "entry": "Entry",
+    "journalCategoryId": "Journal Category ID",
+    "title": "Title",
+    "subtitle": "Subtitle",
+    "volume": "Volume",
+    "pageTitles": "Page Titles",
+    "unlockCondition": "Unlock Condition",
+    "pages": "Pages",
+    "combineModel": "Combine Model",
+    "staticModel": "Static Model"
+  }
+}

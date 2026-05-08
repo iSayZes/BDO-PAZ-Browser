@@ -1,16 +1,16 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.binary import parse_offset_table
 from _common.html import e, table
+from _common.lang import load_handler_strings
 
 
-_HEADERS: list[tuple[str, str, str]] = [
-    ("Title ID", "num", ""),
-    ("Offset",   "num", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class TitleOffsetHandler(PreviewHandler):
@@ -35,8 +35,13 @@ class TitleOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} entries"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("titleId", "Title ID"), "num", ""),
+            (cols.get("offset", "Offset"), "num", ""),
+        ]
         rows = [
             [e(r["title_id"]), e(f"0x{r['offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _HEADERS, rows)
+        return table(meta, headers, rows)

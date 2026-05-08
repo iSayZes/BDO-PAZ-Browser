@@ -29,6 +29,8 @@ BDO has hundreds of undocumented binary formats — contributions and correction
 
 **Improve existing docs** — the format docs in [`docs/file-formats/`](docs/file-formats/) are not all complete. Each doc has an **Open Questions** section listing specific unknowns — if you can answer any of them, feel free to update the doc directly.
 
+**Translate the UI** — UI strings live in [`PAZ-Parser/ui/lang/`](PAZ-Parser/ui/lang/) as small JSON files, one per language. Missing keys fall back to English automatically, so partial translations are fine. See [`TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md) for instructions.
+
 ---
 
 ## Writing a Preview Handler
@@ -64,7 +66,7 @@ The browser automatically handles:
 - Inline tab search (Ctrl+F) across all record field values
 - CSV export of the full record list
 
-See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, and registration patterns.
+See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, registration patterns, and [adding translations](docs/handler.md#localization).
 
 > **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. If you have a file open on the Parsed tab, the preview re-renders automatically with the updated handler.
 

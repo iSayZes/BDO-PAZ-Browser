@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 from _common.binary import u32
 from _common.html import e, table
+from _common.lang import load_handler_strings
 
 _RECORD_SIZE = 8  # u32 title_id + u32 category_id
+_LANG_DIR = Path(__file__).parent / "lang"
 
 _CATEGORIES: dict[int, str] = {
     0: "World",
@@ -13,13 +17,6 @@ _CATEGORIES: dict[int, str] = {
     2: "Life Skill",
     3: "Fishing",
 }
-
-_HEADERS = [
-    ("Title ID", "num", ""),
-    ("Cat ID",   "num", ""),
-    ("Category", "",    ""),
-]
-
 
 def _parse(data: bytes) -> list[tuple[int, int]]:
     count = len(data) // _RECORD_SIZE
@@ -40,6 +37,12 @@ class TitleCategoryBssHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers = [
+            (cols.get("titleId", "Title ID"), "num", ""),
+            (cols.get("categoryId", "Cat ID"), "num", ""),
+            (cols.get("category", "Category"), "", ""),
+        ]
         rows = [
             [
                 e(r["title_id"]),
@@ -48,4 +51,4 @@ class TitleCategoryBssHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _HEADERS, rows)
+        return table(meta, headers, rows)

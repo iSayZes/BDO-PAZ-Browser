@@ -1,25 +1,16 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import parse_offset_records, parse_plantzone_records
 
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Record ID",   "num", ""),
-    ("Data Offset", "num", ""),
-    ("Data Size",   "num", ""),
-]
-
-_PLANTZONE_HEADERS: list[tuple[str, str, str]] = [
-    ("Zone ID",   "num", ""),
-    ("Variant",   "num", ""),
-    ("Linked ID", "num", ""),
-    ("Values",    "",    ""),
-    ("Data Size", "num", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class PlantZoneOffsetHandler(PreviewHandler):
@@ -40,6 +31,12 @@ class PlantZoneOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("recordId", "Record ID"), "num", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+            (cols.get("dataSize", "Data Size"), "num", ""),
+        ]
         rows = [
             [
                 e(r["record_id"]),
@@ -48,7 +45,7 @@ class PlantZoneOffsetHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class PlantZoneHandler(PreviewHandler):
@@ -76,6 +73,14 @@ class PlantZoneHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} plant zone records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("zoneId", "Zone ID"), "num", ""),
+            (cols.get("variant", "Variant"), "num", ""),
+            (cols.get("linkedId", "Linked ID"), "num", ""),
+            (cols.get("values", "Values"), "", ""),
+            (cols.get("dataSize", "Data Size"), "num", ""),
+        ]
         rows = [
             [
                 e(r["record_id"]),
@@ -86,4 +91,4 @@ class PlantZoneHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _PLANTZONE_HEADERS, rows)
+        return table(meta, headers, rows)

@@ -1,27 +1,19 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from .parser import (
     parse_knowledgelearning_offset_records,
     parse_knowledgelearning_records,
 )
 
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("Idx ID",      "num", ""),
-    ("Kind",        "num", ""),
-    ("DBSS Offset", "num", ""),
-]
-
-_LEARNING_HEADERS: list[tuple[str, str, str]] = [
-    ("Knowledge ID",    "num", ""),
-    ("Kind",            "num", ""),
-    ("Knowledge Name",  "",    ""),
-    ("Offset",          "num", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class KnowledgeLearningOffsetHandler(PreviewHandler):
@@ -46,11 +38,17 @@ class KnowledgeLearningOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("idxId", "Idx ID"), "num", ""),
+            (cols.get("kind", "Kind"), "num", ""),
+            (cols.get("dbssOffset", "DBSS Offset"), "num", ""),
+        ]
         rows = [
             [e(r["idx_id"]), e(r["kind"]), e(f"0x{r['offset']:08X}")]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class KnowledgeLearningHandler(PreviewHandler):
@@ -93,6 +91,13 @@ class KnowledgeLearningHandler(PreviewHandler):
             f"{len(records):,} records"
             f" · {with_knowledge_name:,} knowledge names"
         )
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("knowledgeId", "Knowledge ID"), "num", ""),
+            (cols.get("kind", "Kind"), "num", ""),
+            (cols.get("knowledgeName", "Knowledge Name"), "", ""),
+            (cols.get("offset", "Offset"), "num", ""),
+        ]
 
         rows = [
             [
@@ -103,4 +108,4 @@ class KnowledgeLearningHandler(PreviewHandler):
             ]
             for r in slice_
         ]
-        return table(meta, _LEARNING_HEADERS, rows)
+        return table(meta, headers, rows)

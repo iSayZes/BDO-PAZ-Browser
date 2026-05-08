@@ -1,8 +1,11 @@
 "use strict";
 
+import { t } from "../core/i18n.js";
+
 export const statusMethods = {
   setStatus(data) {
-    document.getElementById("status-text").textContent = data.message;
+    const msg = data.key ? t(data.key, data.args ?? {}) : (data.message ?? "");
+    document.getElementById("status-text").textContent = msg;
     const wrap = document.getElementById("progress-wrap");
     if (data.progress) {
       const [val, total] = data.progress;

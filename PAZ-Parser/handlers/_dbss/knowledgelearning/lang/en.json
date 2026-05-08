@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "idxId": "Idx ID",
+    "kind": "Kind",
+    "dbssOffset": "DBSS Offset"
+  },
+  "columns": {
+    "knowledgeId": "Knowledge ID",
+    "kind": "Kind",
+    "knowledgeName": "Knowledge Name",
+    "offset": "Offset"
+  }
+}

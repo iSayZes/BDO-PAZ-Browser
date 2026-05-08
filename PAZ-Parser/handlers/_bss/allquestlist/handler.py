@@ -1,18 +1,17 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.lang import load_handler_strings
 from _common.html import e, table
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_allquestlist_records
 
 
-_HEADERS: list[tuple[str, str, str]] = [
-    ("Main ID", "num", ""),
-    ("Sub ID", "num", ""),
-    ("Title", "", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 def _quest_title(quest_chain_id: int, quest_id: int) -> str:
@@ -56,6 +55,13 @@ class AllQuestListBssHandler(PreviewHandler):
         if with_titles:
             meta += f" · {with_titles:,} with LOC titles"
 
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("mainId", "Main ID"), "num", ""),
+            (cols.get("subId", "Sub ID"), "num", ""),
+            (cols.get("title", "Title"), "", ""),
+        ]
+
         rows = [
             [
                 e(record["quest_chain_id"]),
@@ -65,4 +71,4 @@ class AllQuestListBssHandler(PreviewHandler):
             for record in slice_
         ]
 
-        return table(meta, _HEADERS, rows)
+        return table(meta, headers, rows)

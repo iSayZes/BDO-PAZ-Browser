@@ -1,18 +1,18 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, table
+from _common.lang import load_handler_strings
 from _common.zodiacsign.loc import resolve_loc_type7
 from _common.zodiacsign.parser import parse_zodiacsign_records
 from .parser import parse_zodiacsignindex_records
 
 
-_INDEX_HEADERS: list[tuple[str, str, str]] = [
-    ("Zodiac ID", "num", ""),
-    ("Name",      "",    ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class ZodiacSignIndexHandler(PreviewHandler):
@@ -57,8 +57,13 @@ class ZodiacSignIndexHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} zodiac index entries"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("zodiacId", "Zodiac ID"), "num", ""),
+            (cols.get("name", "Name"), "", ""),
+        ]
         rows = [
             [e(r["zodiac_id"]), e(r["name"])]
             for r in slice_
         ]
-        return table(meta, _INDEX_HEADERS, rows)
+        return table(meta, headers, rows)

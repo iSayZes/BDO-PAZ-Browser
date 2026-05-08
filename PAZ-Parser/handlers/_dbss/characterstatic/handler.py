@@ -1,28 +1,19 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from _common.html import e, table, error
+from _common.lang import load_handler_strings
 from .parser import (
     parse_characterstaticoffset_records,
     parse_characterstatic_records,
 )
 
-_OFFSET_HEADERS: list[tuple[str, str, str]] = [
-    ("ID Low16",    "num", ""),
-    ("Byte Offset", "num", ""),
-    ("Size",        "num", ""),
-]
-
-_STATIC_HEADERS_BASE: list[tuple[str, str, str]] = [
-    ("Character ID",  "num", ""),
-    ("Script",        "",    ""),
-    ("Knowledge ID",  "num", ""),
-    ("Payload Size",  "num", ""),
-    ("Unknown Type",  "num", ""),
-]
+_LANG_DIR = Path(__file__).parent / "lang"
 
 
 class CharacterStaticOffsetHandler(PreviewHandler):
@@ -43,11 +34,17 @@ class CharacterStaticOffsetHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         meta = f"{len(records):,} offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("idLow16", "ID Low16"), "num", ""),
+            (cols.get("byteOffset", "Byte Offset"), "num", ""),
+            (cols.get("size", "Size"), "num", ""),
+        ]
         rows = [
             [e(r["id_low16"]), e(f"0x{r['offset']:08X}"), e(r["size"])]
             for r in slice_
         ]
-        return table(meta, _OFFSET_HEADERS, rows)
+        return table(meta, headers, rows)
 
 
 class CharacterStaticHandler(PreviewHandler):
@@ -101,10 +98,18 @@ class CharacterStaticHandler(PreviewHandler):
 
         has_loc = is_loc_loaded()
 
-        headers: list[tuple[str, str, str]] = [("Character ID", "num", "")]
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("characterId", "Character ID"), "num", "")
+        ]
         if has_loc:
-            headers.append(("Name (EN)", "", ""))
-        headers += _STATIC_HEADERS_BASE[1:]
+            headers.append((cols.get("nameEn", "Name (EN)"), "", ""))
+        headers += [
+            (cols.get("script", "Script"), "", ""),
+            (cols.get("knowledgeId", "Knowledge ID"), "num", ""),
+            (cols.get("payloadSize", "Payload Size"), "num", ""),
+            (cols.get("unknownType", "Unknown Type"), "num", ""),
+        ]
 
         start = page * page_size
         slice_ = records[start : start + page_size]

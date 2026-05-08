@@ -1,0 +1,8 @@
+{
+  "columns": {
+    "groupId": "Group ID",
+    "name": "Name",
+    "quests": "Quests",
+    "questTitles": "Quest Titles"
+  }
+}

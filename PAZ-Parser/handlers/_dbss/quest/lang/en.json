@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "displayId": "Display ID",
+    "chainId": "Chain ID",
+    "questId": "Quest ID",
+    "titleName": "Title / Name",
+    "condition": "Condition",
+    "action": "Action",
+    "objective": "Objective",
+    "icon": "Icon"
+  }
+}

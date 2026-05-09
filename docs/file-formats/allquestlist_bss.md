@@ -25,6 +25,10 @@ slot 2 -> packed_quest_id 6751209 -> chain 1001, quest 103
 
 - [quest.dbss](quest_dbss.md) - quest definition table with the same declared count and packed quest ID form; current parser extracts `canonical_link` IDs that resolve strongly into this list
 - [questgroup.dbss](questgroup_dbss.md) - confirms packed quest IDs are `(quest_id << 16) | quest_chain_id`
+- [acceptquest.bss](acceptquest_bss.md) - contains the same quest ID set in acceptance-related order with two side fields
+- [completequest.bss](completequest_bss.md) - contains the same quest ID set in completion-related order with two side fields
+- [mainquest.bss](mainquest_bss.md) - groups a subset of quest IDs into main-quest UI sequences
+- [newquest.bss](newquest_bss.md) - groups quest IDs into new-quest UI sequences
 - [languagedata_en.loc](languagedata_loc.md) - English quest text keyed by LOC type 18 with `str_id1=quest_chain_id` and `str_id2=quest_id`
 
 ---
@@ -34,6 +38,10 @@ slot 2 -> packed_quest_id 6751209 -> chain 1001, quest 103
 | File                  | Required | Role                                                                 |
 | --------------------- | -------- | -------------------------------------------------------------------- |
 | `quest.dbss`          | Optional | Provides quest record payloads that use the same packed ID scheme    |
+| `acceptquest.bss`     | Optional | Provides the same quest ID set in acceptance-related order            |
+| `completequest.bss`   | Optional | Provides the same quest ID set in completion-related order            |
+| `mainquest.bss`       | Optional | Provides main-quest UI sequence groups for a subset of quest IDs      |
+| `newquest.bss`        | Optional | Provides new-quest UI sequence groups for a subset of quest IDs       |
 | `languagedata_en.loc` | Optional | Provides quest title/objective text for display via LOC type `18`    |
 
 All multi-byte values are little-endian.

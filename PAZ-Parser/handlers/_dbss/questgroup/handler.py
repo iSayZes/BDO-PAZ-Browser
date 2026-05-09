@@ -8,6 +8,7 @@ from bdo_preview import PreviewHandler
 from _common.html import e, table
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
+from _common.quest.quest import quest_title
 from .parser import parse_questgroup_records
 
 
@@ -24,10 +25,6 @@ def _group_name_en(group_id: int) -> str:
     return strip_pa_tags(loc_lookup(25, group_id)).strip()
 
 
-def _quest_title_en(chain_id: int, quest_no: int) -> str:
-    return strip_pa_tags(loc_lookup(18, chain_id, quest_no, 0, 0)).strip()
-
-
 class QuestGroupDbssHandler(PreviewHandler):
     def get_records(
         self,
@@ -42,7 +39,7 @@ class QuestGroupDbssHandler(PreviewHandler):
             name_en = _group_name_en(record["group_id"]) if has_loc else ""
             quest_titles: list[str] = []
             for quest in record["quests"]:
-                title = _quest_title_en(quest["group_id"], quest["quest_no"]) if has_loc else ""
+                title = quest_title(quest["group_id"], quest["quest_no"]) if has_loc else ""
                 quest_titles.append(title or f"{quest['group_id']}:{quest['quest_no']}")
 
             records.append({

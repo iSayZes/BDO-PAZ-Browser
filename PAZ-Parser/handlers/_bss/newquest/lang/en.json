@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "group": "Group",
+    "mainId": "Main ID",
+    "subId": "Sub ID",
+    "title": "Title",
+    "sequenceA": "Sequence A",
+    "sequenceB": "Sequence B",
+    "sequenceC": "Sequence C"
+  }
+}

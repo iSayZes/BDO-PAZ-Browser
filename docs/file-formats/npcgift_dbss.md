@@ -33,7 +33,7 @@ Confession response: "감사합니다! 정말 좋아해요."
 | ------------------------ | -------- | ------------------------------------------------------ |
 | `npcgiftoffset.dbss`     | Required | ID-keyed index into `npcgift.dbss`                     |
 | `npcgiftdataoffset.dbss` | Required | ID-keyed index into `npcgiftdata.dbss`                 |
-| `npcgiftetc.bss`         | Optional | Small PABR config block with global gift-system values |
+| `npcgiftetc.bss`         | Optional | Small PABR config block with global gift-system values; see [npcgiftetc_bss.md](npcgiftetc_bss.md) |
 
 All multi-byte values are little-endian.
 
@@ -121,19 +121,7 @@ The companion `data_size` equals `12 + text_len * 2 + 4`, excluding the leading 
 
 ### npcgiftetc.bss
 
-Small PABR config block (32 bytes) with global gift-system values:
-
-| Offset  | Type    | Field     | Observed |
-| ------- | ------- | --------- | -------- |
-| `+0x00` | char[4] | magic     | `PABR`   |
-| `+0x04` | u16     | unknown_a | 5        |
-| `+0x06` | u16     | unknown_b | 5        |
-| `+0x08` | u32     | unknown_c | 1000     |
-| `+0x0C` | u32     | unknown_d | 50000000 |
-| `+0x10` | u32     | unknown_e | 0        |
-| `+0x14` | u32     | unknown_f | 0        |
-| `+0x18` | u32     | unknown_g | 20       |
-| `+0x1C` | u32     | unknown_h | 0        |
+Small PABR config block (32 bytes) with global gift-system values. See [npcgiftetc_bss.md](npcgiftetc_bss.md) for the standalone layout.
 
 ---
 

@@ -74,7 +74,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 3/399 .bss formats.
+- Handler Supported 5/399 .bss formats.
 - Handler Supported 31/375 .dbss formats.
 - Handler Supported 23/23 other formats.
 
@@ -82,22 +82,26 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 | File                            | Description                                                                                                | Docs                                                               |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `acceptquest.bss`               | PABR quest ID list in acceptance-related order with two side fields                                        | [acceptquest](docs/file-formats/acceptquest_bss.md)                |
 | `allquestlist.bss`              | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                   | [allquestlist](docs/file-formats/allquestlist_bss.md)              |
 | `characterspawntype.dbss`       | Entity spawn-type flag table — 44 boolean attributes per entity                                            | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterspawntypeoffset.dbss` | PABR index into `characterspawntype.dbss` — maps entity id_low16 → offset/size                             | [characterspawntype](docs/file-formats/characterspawntype_dbss.md) |
 | `characterstatic.dbss`          | Variable-length character/NPC static records with inline action scripts                                    | [characterstatic](docs/file-formats/characterstatic_dbss.md)       |
 | `characterstaticoffset.dbss`    | PABR index into `characterstatic.dbss` — maps character id → payload offset                                | [characterstatic](docs/file-formats/characterstatic_dbss.md)       |
+| `completequest.bss`             | PABR quest ID list in completion-related order with two side fields                                        | [completequest](docs/file-formats/completequest_bss.md)            |
 | `knowledgelearning.dbss`        | Knowledge unlock trigger definitions — maps knowledge IDs to trigger type (`kind`) and associated index ID | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md)   |
 | `knowledgelearningoffset.dbss`  | Offset index into `knowledgelearning.dbss` — provides byte offset, kind, idx                               | [knowledgelearning](docs/file-formats/knowledgelearning_dbss.md)   |
 | `languagedata_en.loc`           | Localization string table (zlib-compressed, UTF-16-LE)                                                     | [loc](docs/file-formats/languagedata_loc.md)                       |
+| `mainquest.bss`                 | PABR main-quest UI sequence groups with quest references and UTF-16 text payload                           | [mainquest](docs/file-formats/mainquest_bss.md)                    |
 | `mentalcard.dbss`               | Knowledge entry → node/category ID mapping                                                                 | [mentalcard](docs/file-formats/mentalcard_dbss.md)                 |
 | `mentalcardoffset.dbss`         | Offset index into `mentalcard.dbss` — provides byte offset and block size                                  | [mentalcard](docs/file-formats/mentalcard_dbss.md)                 |
 | `mentaltheme.dbss`              | Knowledge group/category tree with rewards, entries, and child themes                                      | [mentaltheme](docs/file-formats/mentaltheme_dbss.md)               |
 | `mentalthemeoffset.dbss`        | Offset index into `mentaltheme.dbss` — maps theme ID → payload offset/size                                 | [mentaltheme](docs/file-formats/mentaltheme_dbss.md)               |
+| `newquest.bss`                  | PABR new-quest UI sequence groups with quest references and UTF-16 text payload                            | [newquest](docs/file-formats/newquest_bss.md)                      |
 | `npcgift.dbss`                  | NPC gift item table + confession-response dialogue                                                         | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
 | `npcgiftdata.dbss`              | NPC confession-response dialogue records (variable-length, Korean UTF-16)                                  | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
 | `npcgiftdataoffset.dbss`        | ID-keyed index into `npcgiftdata.dbss`                                                                     | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
-| `npcgiftetc.bss`                | PABR global gift-system config block (8 fields, 32 bytes)                                                  | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
+| `npcgiftetc.bss`                | PABR global gift-system config block (32 bytes)                                                            | [npcgiftetc](docs/file-formats/npcgiftetc_bss.md)                  |
 | `npcgiftoffset.dbss`            | ID-keyed index into `npcgift.dbss`                                                                         | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
 | `npcpersonality.dbss`           | NPC personality ID → type refs + behavioural float params                                                  | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
 | `npcpersonalityoffset.dbss`     | ID-keyed sequential index into `npcpersonality.dbss`                                                       | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |

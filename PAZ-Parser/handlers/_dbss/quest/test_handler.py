@@ -5,6 +5,9 @@ from typing import Any
 
 import pytest
 
+from bdo_models import PazEntry
+from bdo_preview import get_handler
+from tests.fixtures import ensure_fixtures
 from tests.framework import CountTest, HandlerCase, HandlerResult, PosTest, SchemaTest, TargetTest, case_id, run_case
 
 
@@ -65,6 +68,45 @@ def quest_result(request: Any) -> HandlerResult:
     return result
 
 
+@pytest.fixture(scope="module")
+def quest_lazy_context() -> tuple[Any, bytes, PazEntry, dict[str, bytes]]:
+    fixture_paths = ensure_fixtures(CASE)
+
+    from _common.loc import init_loc
+
+    init_loc(fixture_paths[str(CASE.loc_file)].read_bytes())
+    entry = PazEntry(
+        archive_name="",
+        internal_path=CASE.internal_path,
+        offset=0,
+        compressed_size=0,
+        uncompressed_size=0,
+        compression_type=0,
+        encryption_type=0,
+    )
+    handler = get_handler("quest.dbss", ".dbss")
+    return handler, fixture_paths[str(CASE.data_file)].read_bytes(), entry, {}
+
+
 @pytest.mark.parametrize("spec", CASE.tests, ids=case_id)
 def test_quest_dbss(spec: Any, quest_result: HandlerResult) -> None:
     spec.check(quest_result.records)
+
+
+def test_quest_dbss_lazy_page(quest_lazy_context: tuple[Any, bytes, PazEntry, dict[str, bytes]]) -> None:
+    handler, data, entry, companions = quest_lazy_context
+
+    assert handler.supports_lazy_records()
+    assert handler.get_record_count(data, entry, companions) == 19481
+
+    html = handler.render_data_page(data, entry, companions, page=0, page_size=25)
+
+    assert "19,481 quests" in html
+    assert "[Elvia Weekly] Gigagord" in html
+    assert "Icon/Quest/Hadum08.dds" in html
+
+
+def test_quest_dbss_lazy_search(quest_lazy_context: tuple[Any, bytes, PazEntry, dict[str, bytes]]) -> None:
+    handler, data, entry, companions = quest_lazy_context
+
+    assert 100 in handler.search_records(data, entry, companions, "Puzzling Words")

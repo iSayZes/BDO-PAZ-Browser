@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "field": "Field",
+    "value": "Value",
+    "notes": "Notes"
+  },
+  "notes": {
+    "Global gift-system value": "Global gift-system value",
+    "Observed zero": "Observed zero"
+  }
+}

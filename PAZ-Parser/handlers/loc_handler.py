@@ -142,19 +142,9 @@ class _LocIndex:
 
 
 class LocHandler(PreviewHandler):
-    def __init__(self) -> None:
-        self._cache_key: tuple[int, int] | None = None
-        self._cache_index: _LocIndex | None = None
 
     def _index(self, data: bytes) -> _LocIndex:
-        key = (id(data), len(data))
-        if self._cache_key != key or self._cache_index is None:
-            self._cache_key = key
-            self._cache_index = _LocIndex(data)
-        return self._cache_index
-
-    def supports_lazy_records(self) -> bool:
-        return True
+        return self._data_cache(data, "index", lambda: _LocIndex(data))
 
     def get_record_count(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> int:
         return len(self._index(data).records)

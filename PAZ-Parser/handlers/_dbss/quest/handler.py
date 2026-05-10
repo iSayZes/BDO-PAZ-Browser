@@ -35,18 +35,9 @@ def _quest_loc_texts(quest_chain_id: int, quest_id: int) -> list[str]:
 
 
 class QuestDbssHandler(PreviewHandler):
-    _index: QuestIndex | None = None
-    _index_data_id: int | None = None
-
-    def supports_lazy_records(self) -> bool:
-        return True
 
     def _get_index(self, data: bytes) -> QuestIndex:
-        data_id = id(data)
-        if self._index is None or self._index_data_id != data_id:
-            self._index = build_quest_index(data)
-            self._index_data_id = data_id
-        return self._index
+        return self._data_cache(data, "index", lambda: build_quest_index(data))
 
     def get_record_count(
         self,

@@ -122,6 +122,7 @@ export const treeMethods = {
   },
 
   async _selectFile(path, name, icon) {
+    const seq = ++this._selectSeq;
     const setupStart = performance.now();
     document.querySelectorAll(".tree-node.selected").forEach((n) => n.classList.remove("selected"));
     const node = document.querySelector(`.tree-node[data-id="${CSS.escape(path)}"]`);
@@ -149,6 +150,7 @@ export const treeMethods = {
 
     const apiStart = performance.now();
     const result = await window.pywebview.api.load_entry(path);
+    if (seq !== this._selectSeq) return;
     window.appProfile?.record("_selectFile.api.load_entry", performance.now() - apiStart);
     if (result.profile && window.appProfile) {
       for (const [key, value] of Object.entries(result.profile)) {

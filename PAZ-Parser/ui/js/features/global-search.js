@@ -82,8 +82,12 @@ export const globalSearchMethods = {
       this.setStatus({ key: "status.searchError", args: { message: result.error } });
       _gsRunning = false;
       this._updateCsbButtons(false);
+      return;
     }
-    // results delivered via onGlobalSearchDone callback
+
+    // Clear tree now — results will stream in via onGlobalSearchResult
+    this._inGlobalSearch = true;
+    document.getElementById("tree").innerHTML = "";
   },
 
   async cancelGlobalSearch() {
@@ -92,10 +96,21 @@ export const globalSearchMethods = {
     this._updateCsbButtons(false);
   },
 
-  onGlobalSearchDone(results) {
+  onGlobalSearchResult(items) {
+    this._appendGlobalSearchItems(items);
+  },
+
+  onGlobalSearchDone(_summary) {
     _gsRunning = false;
     this._updateCsbButtons(false);
-    this._showGlobalSearchResults(results);
+    const tree = document.getElementById("tree");
+    if (this._inGlobalSearch && !tree.children.length) {
+      const li = document.createElement("li");
+      li.className = "tree-node";
+      li.style.cssText = "padding:8px 12px;color:var(--fg-muted);font-size:12px";
+      li.textContent = "No matches found.";
+      tree.appendChild(li);
+    }
   },
 
   _updateCsbButtons(running) {
@@ -103,12 +118,9 @@ export const globalSearchMethods = {
     document.getElementById("csb-cancel").hidden = !running;
   },
 
-  _showGlobalSearchResults(results) {
-    this._inGlobalSearch = true;
+  _appendGlobalSearchItems(items) {
     const tree = document.getElementById("tree");
-    tree.innerHTML = "";
-
-    for (const item of results) {
+    for (const item of items) {
       const li = document.createElement("li");
       li.className = "tree-node tree-file csb-result";
 
@@ -130,16 +142,6 @@ export const globalSearchMethods = {
 
       li.append(icon, name, path, badge);
       li.addEventListener("click", () => this._selectFile(item.path, item.name, item.icon));
-      tree.appendChild(li);
-    }
-
-    if (results.length === 0) {
-      const li = document.createElement("li");
-      li.className = "tree-node";
-      li.style.padding = "8px 12px";
-      li.style.color = "var(--fg-muted)";
-      li.style.fontSize = "12px";
-      li.textContent = "No matches found.";
       tree.appendChild(li);
     }
   },

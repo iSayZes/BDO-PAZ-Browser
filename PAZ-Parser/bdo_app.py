@@ -9,10 +9,10 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import webview
 
-from bdo_api import Api, _load_config, _norm
-from bdo_cache import load_cache, read_meta_version, save_cache
+from api.bdo_api import Api, _load_config, _norm
+from paz.bdo_cache import load_cache, read_meta_version, save_cache
 from bdo_models import PazEntry
-from bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
+from paz.bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
 
 
 def main() -> None:

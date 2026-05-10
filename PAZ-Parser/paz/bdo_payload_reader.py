@@ -4,7 +4,7 @@ import struct
 import sys
 from pathlib import Path
 
-from bdo_ice import BDO_ICE_KEY, IceCipher
+from .bdo_ice import BDO_ICE_KEY, IceCipher
 from bdo_models import PazEntry
 
 _CIPHER: IceCipher = IceCipher(BDO_ICE_KEY)
@@ -31,6 +31,80 @@ def ice_decrypt_bytes(data: bytes, key: bytes = BDO_ICE_KEY) -> bytes:
 
 # ── BDO decompression ─────────────────────────────────────────────────────────
 
+def _bd_parse_header(data: bytes | bytearray) -> tuple[int, int]:
+    """Read the BDO compression header flags and return (pInputIndex, pLastInputIndex)."""
+    flags = data[0]
+    if flags & 0x02:
+        uiCompressedLength: int = struct.unpack_from("<I", data, 1)[0]
+        pInputIndex = 9
+    else:
+        uiCompressedLength = data[1]
+        pInputIndex = 3
+    return pInputIndex, uiCompressedLength - 1
+
+
+def _bd_decode_backref(
+    data: bytes | bytearray,
+    pInputIndex: int,
+    uiBlockHeader: int,
+) -> tuple[int, int, int]:
+    """Decode a back-reference block and return (uiRepeatIndex, uiBlockLength, new_pInputIndex)."""
+    header_low2 = uiBlockHeader & 0x03
+    if header_low2 == 0x03:
+        if (uiBlockHeader & 0x7F) == 3:
+            uiRepeatIndex = uiBlockHeader >> 15
+            uiBlockLength = ((uiBlockHeader >> 7) & 0xFF) + 3
+            pInputIndex += 4
+        else:
+            uiRepeatIndex = (uiBlockHeader >> 7) & 0x1FFFF
+            uiBlockLength = ((uiBlockHeader >> 2) & 0x1F) + 2
+            pInputIndex += 3
+    elif header_low2 == 0x02:
+        uiRepeatIndex = (uiBlockHeader & 0xFFFF) >> 6   # uint16_t cast
+        uiBlockLength = ((uiBlockHeader >> 2) & 0xF) + 3
+        pInputIndex += 2
+    elif header_low2 == 0x01:
+        uiRepeatIndex = (uiBlockHeader & 0xFFFF) >> 2   # uint16_t cast
+        uiBlockLength = 3
+        pInputIndex += 2
+    else:
+        uiRepeatIndex = (uiBlockHeader & 0xFF) >> 2     # uint8_t cast
+        uiBlockLength = 3
+        pInputIndex += 1
+    return uiRepeatIndex, uiBlockLength, pInputIndex
+
+
+def _bd_copy_tail(
+    data: bytes | bytearray,
+    output: bytearray,
+    pInputIndex: int,
+    pLastInputIndex: int,
+    pOutputIndex: int,
+    pLastOutputIndex: int,
+    uiBlockGroupHeader: int,
+) -> int:
+    """Copy remaining bytes one at a time until the output buffer is full.
+
+    Returns final pOutputIndex, or -4 if input is exhausted prematurely.
+    """
+    pEndOfInput = pLastInputIndex + 1
+    while True:
+        if uiBlockGroupHeader == 1:
+            pInputIndex += 4
+            uiBlockGroupHeader = 0x80000000
+
+        if pInputIndex >= pEndOfInput:
+            return -4
+
+        output[pOutputIndex] = data[pInputIndex]
+        pOutputIndex += 1
+        pInputIndex += 1
+        uiBlockGroupHeader >>= 1
+
+        if pOutputIndex > pLastOutputIndex:
+            return pOutputIndex
+
+
 def _blackdesert_unpack_core(
     data: bytes | bytearray,
     output: bytearray,
@@ -45,15 +119,7 @@ def _blackdesert_unpack_core(
     uiBlockGroupHeader = 1
     pLastOutputIndex = decompressed_length - 1
 
-    flags = data[0]
-    if flags & 0x02:
-        uiCompressedLength: int = struct.unpack_from("<I", data, 1)[0]
-        pInputIndex = 9
-    else:
-        uiCompressedLength = data[1]
-        pInputIndex = 3
-
-    pLastInputIndex = uiCompressedLength - 1
+    pInputIndex, pLastInputIndex = _bd_parse_header(data)
 
     while True:
         # ── Inner loop: process one bit from the group header ─────────────
@@ -73,28 +139,9 @@ def _blackdesert_unpack_core(
                 break  # literal run
 
             # ── Back-reference block ──────────────────────────────────────
-            header_low2 = uiBlockHeader & 0x03
-            if header_low2 == 0x03:
-                if (uiBlockHeader & 0x7F) == 3:
-                    uiRepeatIndex = uiBlockHeader >> 15
-                    uiBlockLength = ((uiBlockHeader >> 7) & 0xFF) + 3
-                    pInputIndex += 4
-                else:
-                    uiRepeatIndex = (uiBlockHeader >> 7) & 0x1FFFF
-                    uiBlockLength = ((uiBlockHeader >> 2) & 0x1F) + 2
-                    pInputIndex += 3
-            elif header_low2 == 0x02:
-                uiRepeatIndex = (uiBlockHeader & 0xFFFF) >> 6   # uint16_t cast
-                uiBlockLength = ((uiBlockHeader >> 2) & 0xF) + 3
-                pInputIndex += 2
-            elif header_low2 == 0x01:
-                uiRepeatIndex = (uiBlockHeader & 0xFFFF) >> 2   # uint16_t cast
-                uiBlockLength = 3
-                pInputIndex += 2
-            else:
-                uiRepeatIndex = (uiBlockHeader & 0xFF) >> 2     # uint8_t cast
-                uiBlockLength = 3
-                pInputIndex += 1
+            uiRepeatIndex, uiBlockLength, pInputIndex = _bd_decode_backref(
+                data, pInputIndex, uiBlockHeader
+            )
 
             # Mimic C++ unsigned arithmetic for the length bound check.
             remaining_unsigned = (pLastOutputIndex - pOutputIndex - 3) & 0xFFFFFFFF
@@ -125,23 +172,10 @@ def _blackdesert_unpack_core(
 
     # ── Tail: copy remaining bytes one at a time ──────────────────────────
     if pOutputIndex <= pLastOutputIndex:
-        pEndOfInput = pLastInputIndex + 1
-
-        while True:
-            if uiBlockGroupHeader == 1:
-                pInputIndex += 4
-                uiBlockGroupHeader = 0x80000000
-
-            if pInputIndex >= pEndOfInput:
-                return -4
-
-            output[pOutputIndex] = data[pInputIndex]
-            pOutputIndex += 1
-            pInputIndex += 1
-            uiBlockGroupHeader >>= 1
-
-            if pOutputIndex > pLastOutputIndex:
-                return pOutputIndex
+        return _bd_copy_tail(
+            data, output, pInputIndex, pLastInputIndex,
+            pOutputIndex, pLastOutputIndex, uiBlockGroupHeader,
+        )
 
     return pOutputIndex
 
@@ -242,3 +276,36 @@ def read_entry_payload(archive_path: Path, entry: PazEntry) -> bytes:
         return decompressed
 
     return decrypted
+
+
+# ── Range / page read ─────────────────────────────────────────────────────────
+
+def can_range_read(entry: PazEntry) -> bool:
+    """True when bytes can be sliced directly from the archive without full decode.
+
+    Requires both conditions:
+    - .dbss extension: no ICE encryption applied
+    - compressed_size == uncompressed_size: no compression applied
+    """
+    return (
+        entry.internal_path.endswith(".dbss")
+        and entry.compressed_size == entry.uncompressed_size
+    )
+
+
+def read_entry_range(archive_path: Path, entry: PazEntry, offset: int, length: int) -> bytes:
+    """Read `length` decoded bytes starting at `offset` within the entry payload.
+
+    Seeks directly for range-readable entries (no encryption, no compression).
+    Falls back to full decode + slice for compressed or encrypted entries.
+    """
+    if can_range_read(entry):
+        available = max(0, entry.uncompressed_size - offset)
+        to_read = min(length, available)
+        if to_read <= 0:
+            return b""
+        with archive_path.open("rb") as f:
+            f.seek(entry.offset + offset)
+            return f.read(to_read)
+    data = read_entry_payload(archive_path, entry)
+    return data[offset : offset + length]

@@ -24,13 +24,44 @@ class PreviewHandler(ABC):
         """Return internal PAZ paths of files this handler needs alongside the main file."""
         return []
 
+    def _data_cache(self, data: bytes, name: str, build_fn):
+        """Return a named per-data cache value, rebuilding when data object identity changes.
+
+        Handlers use this to build an index once per data payload and reuse it across
+        get_record_count / render_data_page / search_records calls without duplicating
+        the id(data) cache pattern.
+
+        Usage:
+            def _my_index(self, data):
+                return self._data_cache(data, "index", lambda: build_index(data))
+        """
+        cache: dict = getattr(self, "_handler_caches", None)
+        if cache is None:
+            self._handler_caches: dict = {}
+            cache = self._handler_caches
+        data_id = id(data)
+        slot = cache.get(name)
+        if slot is None or slot[0] != data_id:
+            value = build_fn()
+            cache[name] = (data_id, value)
+            return value
+        return slot[1]
+
     def supports_lazy_records(self) -> bool:
-        """Return True when the handler can page/search without materializing all records."""
-        return False
+        """Return True when the handler supports lazy paging (default: True for all handlers).
+
+        The base implementation caches get_records() per data object so that paging,
+        count, and search all reuse the same parse result without re-reading data.
+        Override to return False only when the handler requires full eager materialisation
+        before any paging — this should be rare and requires explicit justification.
+        """
+        return True
 
     def get_record_count(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> int:
-        """Return record count for lazy parsed handlers."""
-        return len(self.get_records(data, entry, companions))
+        """Return record count. Uses _data_cache to avoid re-parsing on every call."""
+        return len(self._data_cache(
+            data, "_records", lambda: self.get_records(data, entry, companions)
+        ))
 
     def render_data_page(
         self,
@@ -40,8 +71,11 @@ class PreviewHandler(ABC):
         page: int,
         page_size: int,
     ) -> str:
-        """Render a parsed page directly from source data for lazy parsed handlers."""
-        return self.render_records_page(self.get_records(data, entry, companions), page, page_size)
+        """Render a parsed page from cached records. Override for true streaming/lazy parsing."""
+        records = self._data_cache(
+            data, "_records", lambda: self.get_records(data, entry, companions)
+        )
+        return self.render_records_page(records, page, page_size)
 
     def search_records(
         self,
@@ -50,9 +84,11 @@ class PreviewHandler(ABC):
         companions: dict[str, bytes],
         query: str,
     ) -> list[int]:
-        """Return matching record indices for lazy parsed handlers."""
+        """Return matching record indices. Uses _data_cache to avoid re-parsing."""
         q = query.lower()
-        records = self.get_records(data, entry, companions)
+        records = self._data_cache(
+            data, "_records", lambda: self.get_records(data, entry, companions)
+        )
         return [
             i for i, rec in enumerate(records)
             if any(q in str(value).lower() for value in rec.values())
@@ -202,10 +238,13 @@ class HexHandler(PreviewHandler):
 
     def render_page(self, data: bytes, page: int, rows_per_page: int = HEX_ROWS_PER_PAGE) -> str:
         byte_start = page * rows_per_page * self._ROW
-        byte_end   = byte_start + rows_per_page * self._ROW
-        chunk      = data[byte_start:byte_end]
-        rows       = "".join(
-            self._row_html(byte_start + i, chunk[i:i + self._ROW])
+        chunk      = data[byte_start : byte_start + rows_per_page * self._ROW]
+        return self.render_bytes(chunk, byte_start)
+
+    def render_bytes(self, chunk: bytes, base_offset: int) -> str:
+        """Render an already-sliced byte range starting at `base_offset`."""
+        rows = "".join(
+            self._row_html(base_offset + i, chunk[i:i + self._ROW])
             for i in range(0, len(chunk), self._ROW)
         )
         return f'<div class="hex-view">{rows}</div>'
@@ -213,6 +252,12 @@ class HexHandler(PreviewHandler):
     @staticmethod
     def page_count(data: bytes, rows_per_page: int = HEX_ROWS_PER_PAGE) -> int:
         total_rows = (len(data) + HexHandler._ROW - 1) // HexHandler._ROW
+        return max(1, (total_rows + rows_per_page - 1) // rows_per_page)
+
+    @staticmethod
+    def page_count_for_size(size: int, rows_per_page: int = HEX_ROWS_PER_PAGE) -> int:
+        """Page count when only the byte length is known (no full payload needed)."""
+        total_rows = (size + HexHandler._ROW - 1) // HexHandler._ROW
         return max(1, (total_rows + rows_per_page - 1) // rows_per_page)
 
     def _row_html(self, offset: int, chunk: bytes) -> str:

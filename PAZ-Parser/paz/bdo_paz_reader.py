@@ -4,7 +4,7 @@ import logging
 import struct
 from pathlib import Path
 
-from bdo_ice import BDO_ICE_KEY, IceCipher
+from .bdo_ice import BDO_ICE_KEY, IceCipher
 from bdo_models import PazEntry, PazTable
 
 # One cipher instance is shared — the key schedule is computed once at import.

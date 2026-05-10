@@ -7,10 +7,10 @@ import sys
 from pathlib import Path
 from typing import BinaryIO
 
-from bdo_meta_reader import read_bdo_meta
+from .bdo_meta_reader import read_bdo_meta
 from bdo_models import MetaFile, PazEntry
-from bdo_paz_reader import parse_paz_file
-from bdo_payload_reader import read_entry_payload
+from .bdo_paz_reader import parse_paz_file
+from .bdo_payload_reader import read_entry_payload
 
 
 class PazFormatError(Exception):

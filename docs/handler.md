@@ -155,8 +155,8 @@ Extension handlers are useful for generic fallback previews.
 
 All parsed-view handlers must implement `get_records()` and `render_records_page()`.
 
-- `get_records()` — parses the binary once and returns all records as plain dicts (no HTML). The result is cached for paging, tab search, and CSV export.
-- `render_records_page()` — converts one page of cached records into an HTML fragment.
+- `get_records()` — parses the binary and returns all records as plain dicts (no HTML). The base class caches the result per data object using `_data_cache`, so paging, tab search, and CSV export all reuse the same parse without re-reading the file.
+- `render_records_page()` — converts one page of records into an HTML fragment.
 
 ```python
 # handlers/_example/myfile/handler.py
@@ -315,29 +315,52 @@ PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[position = 0] P
 
 ## Lazy Parsed Handlers
 
-Large formats can opt into lazy parsed records so the browser can page and search
-without materializing every row during file selection.
+All handlers are lazy by default. The base class caches the result of `get_records()`
+per data object, so paging, search, and record count never re-parse the same file.
+No opt-in is required — implement `get_records()` and `render_records_page()` and the
+rest is handled automatically.
 
-Override `supports_lazy_records()` and provide count, page, and search methods:
+### Building a Parsed Index
+
+For formats that build a heavy internal structure (an offset table, a packed index,
+etc.), use `_data_cache()` to build it once per data object:
 
 ```python
-class LargeFileHandler(PreviewHandler):
-    def supports_lazy_records(self) -> bool:
-        return True
+class MyFormatHandler(PreviewHandler):
+
+    def _get_index(self, data: bytes) -> MyIndex:
+        # Build once; rebuild only when data object identity changes.
+        return self._data_cache(data, "index", lambda: build_index(data))
 
     def get_record_count(self, data, entry, companions) -> int:
-        return _index(data).count
+        return self._get_index(data).count
 
     def render_data_page(self, data, entry, companions, page, page_size) -> str:
-        records = _index(data).records_for_page(page, page_size)
+        # Parse only the needed page — avoid materialising all records first.
+        records = self._get_index(data).records_for_page(page, page_size)
         return _render_table(records, page, page_size)
 
     def search_records(self, data, entry, companions, query) -> list[int]:
-        return _index(data).search(query)
+        return self._get_index(data).search(query)
+
+    def get_records(self, data, entry, companions) -> list[dict]:
+        # Compatibility fallback for CSV export and test assertions.
+        return self._get_index(data).all_records()
 ```
 
-Keep `get_records()` implemented as a compatibility fallback for CSV export and
-non-lazy callers. Handlers that do not opt in keep the original eager behavior.
+`_data_cache(data, name, build_fn)` supports multiple named slots per handler instance
+and rebuilds automatically when a different file is selected. Use a descriptive name
+(`"index"`, `"offset_table"`) so slots do not collide if the handler caches more than one
+structure.
+
+### When to Override `render_data_page`
+
+Override `render_data_page()` only when the format supports **parsing a single page
+without reading all records first** — for example, a format with a stored offset table
+that lets you seek directly to each record.
+
+If `get_records()` is fast (small file, trivial parse), the base implementation is
+sufficient: it calls `get_records()` once, caches the result, and slices it per page.
 
 ---
 
@@ -715,7 +738,7 @@ Raise only for actual programming errors.
 5. Implement one or more `PreviewHandler` classes with `get_records()` and `render_records_page()`.
 6. `get_records()` must return plain dicts — no HTML. Include any LOC-lookup strings here so tab search can find them. Use `self.lang` for language-aware display strings.
 7. `render_records_page()` slices `records[page * page_size : ...]` and returns an HTML fragment.
-8. For very large formats, optionally implement lazy parsed methods so paging and search do not require eager parsing.
+8. Paging and search are lazy by default. For formats with a heavy internal structure, use `_data_cache()` to build the index once and override `render_data_page()` to parse only the requested page.
 9. Register by exact filename or extension.
 10. Escape all file-derived output (`e()` helper or `html.escape()`).
 11. Use `companions()` for related files.
@@ -792,3 +815,5 @@ class TextureDdsHandler(PreviewHandler):
         rows = [[e(r["offset"]), e(r["size"])] for r in slice_]
         return table(f"{len(records):,} records", _HEADERS, rows)
 ```
+
+This is the simplest possible handler — `get_records()` is called once per file and the base class caches the result automatically. If the format requires a heavy parse (offset table, packed index), see the [Lazy Parsed Handlers](#lazy-parsed-handlers) section and use `_data_cache()` to build the index once.

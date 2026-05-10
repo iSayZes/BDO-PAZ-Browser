@@ -6,6 +6,7 @@ export const app = {
   _extractPaths: new Set(),
   _searchTimer: null,
   _searchSeq: 0,
+  _selectSeq: 0,
   _inSearch: false,
   _parsedHtml: null,
   _hexHtml: null,

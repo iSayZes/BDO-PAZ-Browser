@@ -196,17 +196,33 @@ If `--paz-folder` is omitted, the CLI reuses the last folder opened in the GUI.
 ```
 PAZ-Parser/
 ├── bdo_app.py              # Entry point — GUI + CLI
-├── bdo_api.py              # pywebview JS API bridge
-├── bdo_paz_reader.py       # PAZ archive parser
-├── bdo_paz_extract.py      # File extraction logic
-├── bdo_meta_reader.py      # Meta file reader
-├── bdo_payload_reader.py   # Payload decompression + ICE decryption
-├── bdo_cache.py            # PAZ index cache
-├── bdo_models.py           # Data models
-├── bdo_ice.py              # ICE cipher implementation
+├── bdo_models.py           # Data models (shared by all handlers)
 ├── bdo_preview.py          # Preview handler registry + built-in handlers
+├── bdo_server.py           # Local HTTP server for stream preview
 ├── conftest.py             # pytest setup and handler test summary output
-├── tests/                  # Handler unit test framework and gitignored fixtures
+│
+├── api/                    # pywebview JS API bridge
+│   ├── bdo_api.py          # Routing and dispatch
+│   ├── bdo_api_helpers.py  # Shared constants and utilities (_norm, _file_icon)
+│   ├── bdo_api_preview.py  # Preview assembly and entry loading (PreviewMixin)
+│   └── bdo_api_search.py   # File content search — single-file and cross-file (SearchMixin)
+│
+├── paz/                    # PAZ archive reading and caching
+│   ├── bdo_cache.py        # PAZ index cache
+│   ├── bdo_ice.py          # ICE cipher implementation
+│   ├── bdo_meta_reader.py  # Meta file reader
+│   ├── bdo_payload_cache.py# LRU payload cache
+│   ├── bdo_payload_reader.py# Payload decompression + ICE decryption
+│   ├── bdo_paz_extract.py  # File extraction logic
+│   └── bdo_paz_reader.py   # PAZ archive parser
+│
+├── tests/                  # Unit test framework and gitignored fixtures
+│   ├── framework.py        # Public re-export for test helpers
+│   ├── specs.py            # CountTest, PosTest, TargetTest, SchemaTest, RangeTest
+│   ├── models.py           # HandlerCase, HandlerResult
+│   ├── runner.py           # run_case()
+│   ├── fixtures.py         # Auto-fetches test inputs from PAZ folder
+│   └── fixtures/           # Gitignored cached binaries
 │
 ├── ui/                     # Web UI (HTML + JS + CSS)
 │   ├── index.html

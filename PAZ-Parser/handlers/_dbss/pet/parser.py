@@ -46,7 +46,7 @@ def parse_petgrade_records(data: bytes) -> list[dict]:
         if pos + _PETGRADE_RECORD_SIZE > len(data):
             break
 
-        key, padding, key_dup, padding_dup, grade_count = struct.unpack_from("<HHHHI", data, pos)
+        key, padding, key_dup, padding_dup, grade = struct.unpack_from("<HHHHI", data, pos)
         variant = key & 0xFF
         species = key >> 8
         records.append({
@@ -54,7 +54,7 @@ def parse_petgrade_records(data: bytes) -> list[dict]:
             "variant": variant,
             "species": species,
             "key_dup": key_dup,
-            "grade_count": grade_count,
+            "grade": grade,
             "padding": padding,
             "padding_dup": padding_dup,
         })
@@ -67,7 +67,7 @@ def build_petgrade_map(data: bytes | None) -> dict[tuple[int, int], int]:
         return {}
 
     return {
-        (record["species"], record["variant"]): record["grade_count"]
+        (record["species"], record["variant"]): record["grade"]
         for record in parse_petgrade_records(data)
     }
 
@@ -84,7 +84,7 @@ def _parse_pet_payload(row: int, offset_record: dict, block: bytes, grade_map: d
     if len(block) < _PET_HEADER_SIZE + _PET_FOOTER_SIZE:
         raise ValueError(f"pet record {row} is too small")
 
-    pet_id, variant, species, reserved_04, grade, reserved_06, max_level = struct.unpack_from("<HBBBBBB", block, 0)
+    pet_id, variant, species, reserved_04, tier, reserved_06, max_level = struct.unpack_from("<HBBBBBB", block, 0)
     const_90000000 = struct.unpack_from("<I", block, 0x08)[0]
     reserved_0c = block[0x0C]
     reserved_0d = struct.unpack_from("<H", block, 0x0D)[0]
@@ -115,7 +115,7 @@ def _parse_pet_payload(row: int, offset_record: dict, block: bytes, grade_map: d
         "pet_id_hex": f"0x{pet_id:04X}",
         "variant": variant,
         "species": species,
-        "grade": grade,
+        "tier": tier,
         "max_level": max_level,
         "equip_skill_slots": equip_skill_slots,
         "type_param": type_param,
@@ -124,7 +124,7 @@ def _parse_pet_payload(row: int, offset_record: dict, block: bytes, grade_map: d
         "acquire_type_id": acquire_type_id,
         "equip_skill_id": equip_skill_id,
         "grade_score": grade_score,
-        "grade_count": grade_map.get((species, variant)),
+        "grade": grade_map.get((species, variant)),
         "offset": offset_record["data_offset"],
         "size": offset_record["data_size"],
         "unknown_12": unknown_12,

@@ -3,13 +3,20 @@
     "petId": "Pet ID",
     "name": "Name",
     "species": "Species ID",
-    "grade": "Grade",
+    "tier": "Tier",
     "skillSlots": "Skill Slots",
     "maxLevel": "Max Level",
     "acquireType": "Acquire Type",
     "equipSkillId": "Equip Skill ID",
-    "gradeCount": "Grade Count",
+    "grade": "Grade",
     "iconPath": "Icon Path"
+  },
+  "grades": {
+    "5": "Special",
+    "4": "Rare",
+    "3": "Premium",
+    "2": "Rare",
+    "1": "Classic"
   },
   "offsetColumns": {
     "petId": "Pet ID",
@@ -19,6 +26,6 @@
   "gradeColumns": {
     "species": "Species",
     "variant": "Variant",
-    "gradeCount": "Grade Count"
+    "grade": "Grade"
   }
 }

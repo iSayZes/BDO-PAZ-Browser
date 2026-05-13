@@ -71,13 +71,13 @@ class PetGradeHandler(PreviewHandler):
         headers: list[tuple[str, str, str]] = [
             (cols.get("species", "Species"), "num", ""),
             (cols.get("variant", "Variant"), "num", ""),
-            (cols.get("gradeCount", "Grade Count"), "num", ""),
+            (cols.get("grade", "Grade"), "num", ""),
         ]
         rows = [
             [
                 e(r["species"]),
                 e(r["variant"]),
-                e(r["grade_count"]),
+                e(r["grade"]),
             ]
             for r in slice_
         ]
@@ -105,12 +105,16 @@ class PetDbssHandler(PreviewHandler):
         grade_raw = companions.get("petgrade.dbss")
         records = parse_pet_records(data, offset_raw, grade_raw)
         has_loc = is_loc_loaded()
+        strings = load_handler_strings(self.lang, _LANG_DIR)
+        grade_names = strings.get("grades", {})
         for record in records:
             loc_name = ""
             if has_loc:
                 loc_name = strip_pa_tags(loc_lookup(6, record["pet_id"])).strip()
             record["pet_name"] = loc_name
             record["display_name"] = loc_name or str(record["species"])
+            grade = record.get("grade")
+            record["grade_name"] = grade_names.get(str(grade), str(grade) if grade is not None else "")
         return records
 
     def render_records_page(
@@ -122,21 +126,21 @@ class PetDbssHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         species_count = len({r["species"] for r in records})
-        with_grade_count = sum(1 for r in records if r.get("grade_count") is not None)
+        with_grade = sum(1 for r in records if r.get("grade") is not None)
         meta = f"{len(records):,} pets · {species_count:,} species"
-        if with_grade_count:
-            meta += f" · {with_grade_count:,} with grade metadata"
+        if with_grade:
+            meta += f" · {with_grade:,} with grade metadata"
         cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
         headers: list[tuple[str, str, str]] = [
             (cols.get("petId", "Pet ID"), "num", ""),
             (cols.get("name", "Name"), "", ""),
             (cols.get("species", "Species ID"), "num", ""),
-            (cols.get("grade", "Grade"), "num", ""),
+            (cols.get("tier", "Tier"), "num", ""),
             (cols.get("skillSlots", "Skill Slots"), "num", ""),
             (cols.get("maxLevel", "Max Level"), "num", ""),
             (cols.get("acquireType", "Acquire Type"), "num", ""),
             (cols.get("equipSkillId", "Equip Skill ID"), "num", ""),
-            (cols.get("gradeCount", "Grade Count"), "num", ""),
+            (cols.get("grade", "Grade"), "", ""),
             (cols.get("iconPath", "Icon Path"), "", ""),
         ]
         rows = [
@@ -144,12 +148,12 @@ class PetDbssHandler(PreviewHandler):
                 e(r["pet_id"]),
                 e(r["display_name"]),
                 e(r["species"]),
-                e(r["grade"]),
+                e(r["tier"]),
                 e(r["equip_skill_slots"]),
                 e(r["max_level"]),
                 e(r["acquire_type_id"]),
                 e(r["equip_skill_id"]),
-                e(r["grade_count"] if r.get("grade_count") is not None else "-"),
+                e(r["grade_name"] or "-"),
                 e(r["icon_path"]),
             ]
             for r in slice_

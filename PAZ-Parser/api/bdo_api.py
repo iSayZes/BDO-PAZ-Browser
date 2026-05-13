@@ -490,7 +490,8 @@ class Api(PreviewMixin, SearchMixin):
 
     def reload_plugins(self) -> None:
         import bdo_preview
-        bdo_preview.reload_plugins(Path(__file__).parent / "handlers")
+        bdo_preview.reload_plugins(Path(__file__).parent.parent / "handlers")
+        self._reload_loc(_load_config().get("language", "en"))
         self._push_js("app.onPluginsReloaded()")
 
     # ── Status ────────────────────────────────────────────────────────────────

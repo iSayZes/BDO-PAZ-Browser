@@ -2,14 +2,14 @@
 
 ## Purpose
 
-Maps each (species, variant) pet combination to a `grade_count` value. 203 records cover all distinct (species, variant) pairs present in `pet.dbss`. The meaning of `grade_count` is not fully confirmed — values range 1–6 and do not directly correspond to the number of grade tiers the pet appears at in `pet.dbss`.
+Maps each (species, variant) pet combination to a grade value. 203 records cover all distinct (species, variant) pairs present in `pet.dbss`. Values 1–5 map to known grade labels; value 6 remains unconfirmed.
 
 Example:
 
 ```text
-species=1 (Cat), variant=6  →  grade_count=3
-species=2 (Dog), variant=6  →  grade_count=1
-species=25 (Airiss), ...    →  grade_count varies
+species=1 (Cat), variant=6  →  grade=3 (Premium)
+species=2 (Dog), variant=6  →  grade=1 (Classic)
+species=25 (Airiss), ...    →  grade varies
 ```
 
 ## Graph
@@ -22,7 +22,7 @@ species=25 (Airiss), ...    →  grade_count varies
 
 ### Connections
 
-- [pet.dbss](pet_dbss.md) — join on `(species << 8) | variant` to enrich pet records with grade_count
+- [pet.dbss](pet_dbss.md) — join on `(species << 8) | variant` to enrich pet records with grade
 - [petgradeoffset.dbss](petgrade_dbss.md#petgradeoffsetdbss) — keyed offset index for this file
 
 ---
@@ -53,7 +53,7 @@ All multi-byte values are little-endian.
 | `+0x02` | u16  | —           | Always 0; padding                                                  |
 | `+0x04` | u16  | key_dup     | Duplicate of `key`                                                 |
 | `+0x06` | u16  | —           | Always 0; padding                                                  |
-| `+0x08` | u32  | grade_count | Number of grade tiers for this (species, variant) — see Open Questions |
+| `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Rare, 5 Special — see Open Questions |
 
 > The combined key is `(species << 8) | variant`, stored as a u16 followed by a zero u16. This matches the key format used in `petgradeoffset.dbss`.
 
@@ -84,21 +84,21 @@ Provides O(1) lookup by (species, variant) key. 203 entries, one per main-file r
 
 ## Joining with pet.dbss
 
-To enrich a `pet.dbss` record with its `grade_count`:
+To enrich a `pet.dbss` record with its `grade`:
 
 ```python
 lookup_key = (species << 8) | variant  # both from pet.dbss record
-grade_count = grade_map.get((species, variant), None)
+grade = grade_map.get((species, variant), None)
 ```
 
-where `grade_map` is built from `petgradeoffset.dbss` as `{(species, variant): grade_count}`.
+where `grade_map` is built from `petgradeoffset.dbss` as `{(species, variant): grade}`.
 
 ---
 
 ## Notes
 
-- 203 unique (species, variant) pairs; 1782 total pet records → average ~8.8 records per pair (one per grade level × number of grade levels).
-- `grade_count` observed range: 1–6. Values do not equal the number of grade tiers a pet appears at in `pet.dbss` — e.g. Cat variant=5 has `grade_count=1` but appears at grades 1–4.
+- 203 unique (species, variant) pairs; 1782 total pet records → average ~8.8 records per pair across pet tiers.
+- `grade` observed range: 1–6. Values 1–5 map to Classic, Rare, Premium, Rare, Special. Value 6 remains unconfirmed.
 - Record order in the main file differs from offset file order (the offset file is an arbitrary-order index, not sequential).
 - The key encoding `(species << 8) | variant` appears only in this file pair; `pet.dbss` stores `variant` and `species` as separate bytes at `+0x02` and `+0x03`.
 
@@ -106,6 +106,6 @@ where `grade_map` is built from `petgradeoffset.dbss` as `{(species, variant): g
 
 ## Open Questions
 
-### `grade_count` semantics
+### `grade` value 6
 
-Confirmed range 1–6; does not match the observed number of grade records per (species, variant) in `pet.dbss`. Possible interpretations: number of upgrade stages, a quality tier grouping, or an index into a separate upgrade-cost table. Requires cross-referencing against in-game upgrade UI or another binary file.
+Values 1–5 map to known grade labels, but value 6 is still unconfirmed. Requires cross-referencing against in-game upgrade UI or another binary file.

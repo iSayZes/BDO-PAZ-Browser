@@ -27,6 +27,7 @@ icon: New_UI_Common_forLua\Window\Stable\Pet\GoldStar_Pet_0004.dds
 - [petgrade.dbss](petgrade_dbss.md) — join on `(species, variant)` to get `grade_count` per pet type
 - [petequipskillaquire.dbss](petequipskillaquire_dbss.md) — `acquire_type_id` keys into this table
 - [petequipskill.bss](petequipskill_bss.md) — `equip_skill_id` keys into this file for skill name and type
+- [petexp.dbss](petexp_dbss.md) — pet EXP tables; `max_level` values match this file's level counts
 
 ---
 
@@ -62,7 +63,7 @@ Each record is stored as `[u16 key_prefix][data_bytes]`. The `key_prefix` (2 byt
 | ------- | ---- | ----------------- | ---------------------------------------------------------------------------------------- |
 | `+0x00` | u16  | pet_id            | Unique record key; equal to the preceding 2-byte file prefix                             |
 | `+0x02` | u8   | variant           | Sub-variant within the species (1–54 observed)                                           |
-| `+0x03` | u8   | species           | Pet family/model code (see enum below)                                                   |
+| `+0x03` | u8   | species           | Pet family/model code                                                                    |
 | `+0x04` | u8   | —                 | Always 0; reserved                                                                       |
 | `+0x05` | u8   | grade             | Tier (0 = lowest, 4 = highest for regular pets)                                          |
 | `+0x06` | u8   | —                 | Always 1; reserved                                                                       |
@@ -142,51 +143,22 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 
 ---
 
-## Enum Values
-
-### `species` codes (partial — observed only)
-
-| ID  | Pet family                                        |
-| --- | ------------------------------------------------- |
-| 1   | Cat                                               |
-| 2   | Dog                                               |
-| 3   | Hawk                                              |
-| 10  | Red Panda                                         |
-| 11  | Parrot                                            |
-| 12  | Polar Bear                                        |
-| 14  | Marshmallow (unknown sub-type)                    |
-| 18  | Griffon                                           |
-| 23  | Mixed / generic (Owl, Pig, Imp, Ghost Sword, ...) |
-| 25  | Airiss (Fairy)                                    |
-| 38  | Dragon / Gold Gamoth                              |
-| 39  | Gamoth (variant)                                  |
-| 41  | Archer Wolf                                       |
-| 42  | Black Gamoth                                      |
-| 54  | Ice Gamoth                                        |
-| 56  | Dark Haetae                                       |
-| 58  | Gold Mole                                         |
-| 65  | Ato Ratron                                        |
-| 80  | Skeleton                                          |
-| 104 | Seokho                                            |
-| 105 | Gold Star                                         |
-
-The full list has 100+ species values; only a representative subset is confirmed here.
-
----
-
 ## Suggested UI Layout
 
-| Column         | Type | Notes                                                 |
-| -------------- | ---- | ----------------------------------------------------- |
-| Pet ID         | num  | `pet_id` (right-aligned, show as hex and decimal)     |
-| Species        | text | Decoded from `species` enum; fall back to raw number  |
-| Grade          | num  | `grade` (0–4)                                         |
-| Skill Slots    | num  | `equip_skill_slots`                                   |
-| Max Level      | num  | `skill_capacity` (10 for normal, 20/30/50 for Airiss) |
-| Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`        |
-| Equip Skill ID | num  | `equip_skill_id`                                      |
-| Icon           | icon | DDS at icon path                                      |
-| Icon Path      | text | Raw path string                                       |
+| Column         | Type | Notes                                                                 |
+| -------------- | ---- | --------------------------------------------------------------------- |
+| Pet ID         | num  | `pet_id` as decimal only                                              |
+| Name           | text | LOC type 6 lookup with `str_id1 = pet_id`; fallback to raw species ID |
+| Species ID     | num  | Raw `species` code                                                    |
+| Grade          | num  | `grade` (0–4)                                                         |
+| Skill Slots    | num  | `equip_skill_slots`                                                   |
+| Max Level      | num  | `skill_capacity` (10 for normal, 20/30/50 for Airiss)                 |
+| Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`                        |
+| Equip Skill ID | num  | `equip_skill_id`                                                      |
+| Grade Count    | num  | Optional `petgrade.dbss` join on `(species, variant)`                 |
+| Icon Path      | text | Raw path string; no separate icon preview column                      |
+
+Rows are sorted by `pet_id` ascending for stable browsing.
 
 ---
 
@@ -195,6 +167,7 @@ The full list has 100+ species values; only a representative subset is confirmed
 - Total file size = 6 + Σ(2 + `data_size`) for all 1782 records = 332420 bytes.
 - Record size varies because `icon_path_len` differs per pet (observed: 55–68 bytes). The 32-byte header and 94-byte footer are fixed; only the path varies.
 - `pet_id` appears three times per record: as the 2-byte key prefix in the file, as field `+0x00` in the data header, and as the `pet_id` field in the `petoffset.dbss` index.
+- English pet display names resolve from `languagedata_en.loc` with `str_type = 6` and `str_id1 = pet_id`.
 - `equip_skill_slots` = `grade + 1` for all regular pets (values 1–4). Airiss pets break this rule, reaching values of 7, 8, or 9.
 - `skill_capacity` is 10 for all regular pets. Airiss variants: grade 1 = 20, grade 2 = 30, grade 3 = 50.
 - Byte `+0x12` value is unknown; it does NOT reliably match the icon filename's 4-digit number (e.g. Cat_0991 → byte=0, Cat_0000 → byte=45).
@@ -221,10 +194,6 @@ Ten u32 values, all 1,000,000, in every record. Possible candidates: experience 
 ### `acquire_type_id` semantics
 
 `acquire_type_id` keys into `petequipskillaquire.dbss`, which defines per-slot acquisition costs (3 cost fields per slot, 14 sub-entries per record). The semantic meaning of the three cost fields (silver / item / removal cost?) and which sub-entry index maps to which slot is not confirmed.
-
-### `species` enum completeness
-
-100+ distinct species values exist; only ~20 are confirmed by name. The full mapping requires cross-referencing against game assets or community data.
 
 ### `type_param` (`+0x14`)
 

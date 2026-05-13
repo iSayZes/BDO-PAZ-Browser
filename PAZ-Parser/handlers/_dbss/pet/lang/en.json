@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "petId": "Pet ID",
+    "name": "Name",
+    "species": "Species ID",
+    "grade": "Grade",
+    "skillSlots": "Skill Slots",
+    "maxLevel": "Max Level",
+    "acquireType": "Acquire Type",
+    "equipSkillId": "Equip Skill ID",
+    "gradeCount": "Grade Count",
+    "iconPath": "Icon Path"
+  },
+  "offsetColumns": {
+    "petId": "Pet ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "gradeColumns": {
+    "species": "Species",
+    "variant": "Variant",
+    "gradeCount": "Grade Count"
+  }
+}

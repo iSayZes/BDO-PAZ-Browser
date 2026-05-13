@@ -75,7 +75,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 ## Supported Formats
 
 - Handler Supported 5/399 .bss formats.
-- Handler Supported 31/375 .dbss formats.
+- Handler Supported 34/375 .dbss formats.
 - Handler Supported 23/23 other formats.
 
 ## Documented Formats
@@ -105,6 +105,10 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 | `npcgiftoffset.dbss`            | ID-keyed index into `npcgift.dbss`                                                                         | [npcgift](docs/file-formats/npcgift_dbss.md)                       |
 | `npcpersonality.dbss`           | NPC personality ID → type refs + behavioural float params                                                  | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
 | `npcpersonalityoffset.dbss`     | ID-keyed sequential index into `npcpersonality.dbss`                                                       | [npcpersonality](docs/file-formats/npcpersonality_dbss.md)         |
+| `petaction.dbss`                | Pet action icon records with UTF-16 DDS paths for commands/reactions                                       | [petaction](docs/file-formats/petaction_dbss.md)                   |
+| `petactionoffset.dbss`          | Keyed offset index into `petaction.dbss`                                                                   | [petaction](docs/file-formats/petaction_dbss.md)                   |
+| `petexp.dbss`                   | Pet experience tables keyed by EXP table ID, with per-level u64 thresholds                                | [petexp](docs/file-formats/petexp_dbss.md)                         |
+| `petexpoffset.dbss`             | Keyed offset index into `petexp.dbss`                                                                      | [petexp](docs/file-formats/petexp_dbss.md)                         |
 | `plantzone.dbss`                | Variable-length plant-zone records with a required offset table                                            | [plantzone](docs/file-formats/plantzone_dbss.md)                   |
 | `plantzoneoffset.dbss`          | Offset index into `plantzone.dbss` — maps record ID → byte offset/size                                     | [plantzone](docs/file-formats/plantzone_dbss.md)                   |
 | `quest.dbss`                    | Variable-length quest definitions with scripts, objectives, and icon paths                                 | [quest](docs/file-formats/quest_dbss.md)                           |

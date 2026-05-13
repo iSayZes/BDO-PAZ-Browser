@@ -37,6 +37,7 @@ from .characterstatic.handler import (
     CharacterStaticOffsetHandler,
     CharacterStaticHandler,
 )
+from .pet.handler import PetDbssHandler, PetGradeHandler, PetOffsetHandler
 
 
 def register_dbss_handlers() -> None:
@@ -71,3 +72,6 @@ def register_dbss_handlers() -> None:
     register_handler("characterspawntype.dbss", CharacterSpawnTypeHandler())
     register_handler("characterstaticoffset.dbss", CharacterStaticOffsetHandler())
     register_handler("characterstatic.dbss", CharacterStaticHandler())
+    register_handler("petoffset.dbss", PetOffsetHandler())
+    register_handler("petgrade.dbss", PetGradeHandler())
+    register_handler("pet.dbss", PetDbssHandler())

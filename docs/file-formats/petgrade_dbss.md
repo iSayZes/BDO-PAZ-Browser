@@ -49,13 +49,13 @@ All multi-byte values are little-endian.
 
 | Offset  | Type | Field       | Notes                                                              |
 | ------- | ---- | ----------- | ------------------------------------------------------------------ |
-| `+0x00` | u16  | variant     | Matches `variant` (`+0x02`) in `pet.dbss`                          |
-| `+0x02` | u16  | species     | Matches `species` (`+0x03`) in `pet.dbss`                          |
-| `+0x04` | u16  | variant_dup | Always equal to `variant`; purpose unknown                         |
-| `+0x06` | u16  | species_dup | Always equal to `species`; purpose unknown                         |
+| `+0x00` | u16  | key         | `(species << 8) \| variant`; low byte = variant, high byte = species |
+| `+0x02` | u16  | —           | Always 0; padding                                                  |
+| `+0x04` | u16  | key_dup     | Duplicate of `key`                                                 |
+| `+0x06` | u16  | —           | Always 0; padding                                                  |
 | `+0x08` | u32  | grade_count | Number of grade tiers for this (species, variant) — see Open Questions |
 
-> The combined key is `(species << 8) | variant`, stored as a u32 with the upper 2 bytes zero. This matches the key format used in `petgradeoffset.dbss`.
+> The combined key is `(species << 8) | variant`, stored as a u16 followed by a zero u16. This matches the key format used in `petgradeoffset.dbss`.
 
 ---
 
@@ -109,4 +109,3 @@ where `grade_map` is built from `petgradeoffset.dbss` as `{(species, variant): g
 ### `grade_count` semantics
 
 Confirmed range 1–6; does not match the observed number of grade records per (species, variant) in `pet.dbss`. Possible interpretations: number of upgrade stages, a quality tier grouping, or an index into a separate upgrade-cost table. Requires cross-referencing against in-game upgrade UI or another binary file.
-

@@ -66,7 +66,7 @@ Each record is stored as `[u16 key_prefix][data_bytes]`. The `key_prefix` (2 byt
 | `+0x04` | u8   | —                 | Always 0; reserved                                                                       |
 | `+0x05` | u8   | grade             | Tier (0 = lowest, 4 = highest for regular pets)                                          |
 | `+0x06` | u8   | —                 | Always 1; reserved                                                                       |
-| `+0x07` | u8   | skill_capacity    | Usually 10; Airiss variants have 20, 30, or 50                                           |
+| `+0x07` | u8   | max_level         | Usually 10; Airiss variants have 20, 30, or 50                                           |
 | `+0x08` | u32  | —                 | Always `0x90000000`; purpose unknown                                                     |
 | `+0x0C` | u8   | —                 | Always 1; reserved                                                                       |
 | `+0x0D` | u16  | —                 | Always 0; reserved                                                                       |
@@ -157,7 +157,7 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 | 14  | Marshmallow (unknown sub-type)                    |
 | 18  | Griffon                                           |
 | 23  | Mixed / generic (Owl, Pig, Imp, Ghost Sword, ...) |
-| 25  | Airiss                                            |
+| 25  | Airiss (Fairy)                                    |
 | 38  | Dragon / Gold Gamoth                              |
 | 39  | Gamoth (variant)                                  |
 | 41  | Archer Wolf                                       |
@@ -182,7 +182,7 @@ The full list has 100+ species values; only a representative subset is confirmed
 | Species        | text | Decoded from `species` enum; fall back to raw number  |
 | Grade          | num  | `grade` (0–4)                                         |
 | Skill Slots    | num  | `equip_skill_slots`                                   |
-| Skill Capacity | num  | `skill_capacity` (10 for normal, 20/30/50 for Airiss) |
+| Max Level      | num  | `skill_capacity` (10 for normal, 20/30/50 for Airiss) |
 | Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`        |
 | Equip Skill ID | num  | `equip_skill_id`                                      |
 | Icon           | icon | DDS at icon path                                      |

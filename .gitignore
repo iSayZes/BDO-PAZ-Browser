@@ -4,6 +4,7 @@ Thumbs.db
 *.local
 .vscode
 profile.prof
+*__pycache__/
 
 # Misc
 files/

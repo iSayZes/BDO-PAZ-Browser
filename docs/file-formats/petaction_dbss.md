@@ -24,14 +24,16 @@ icon_path: New_Icon/08_Servant_Skill/02_Pet/Action_0_Like.dds
 ### Connections
 
 - [petactionoffset.dbss](petaction_dbss.md#petactionoffsetdbss) - keyed offset index for this file
+- [languagedata_en.loc](languagedata_loc.md) - localized action names with `str_type=19`, `str_id1=action_id`
 
 ---
 
 ## Companion Files
 
-| File                    | Required | Role                                               |
-| ----------------------- | -------- | -------------------------------------------------- |
-| `petactionoffset.dbss`  | Required | `action_id -> (record_offset, record_size)` lookup |
+| File                   | Required | Role                                               |
+| ---------------------- | -------- | -------------------------------------------------- |
+| `petactionoffset.dbss` | Required | `action_id -> (record_offset, record_size)` lookup |
+| `languagedata_en.loc`  | Optional | English action names via LOC type 19               |
 
 All multi-byte values are little-endian.
 
@@ -41,9 +43,9 @@ All multi-byte values are little-endian.
 
 `petaction.dbss` has no standalone header or record count. Records start at byte `0x0000`; use `petactionoffset.dbss` to enumerate them.
 
-| Offset  | Type | Field   | Notes                                           |
-| ------- | ---- | ------- | ----------------------------------------------- |
-| `+0x00` | row  | records | Variable-size record stream; observed 10 rows   |
+| Offset  | Type | Field   | Notes                                         |
+| ------- | ---- | ------- | --------------------------------------------- |
+| `+0x00` | row  | records | Variable-size record stream; observed 10 rows |
 
 ---
 
@@ -55,55 +57,55 @@ Records are variable size because `icon_path_len` differs. Most records are 146-
 
 Offsets are relative to `record_offset` from `petactionoffset.dbss`.
 
-| Offset  | Type       | Field           | Notes                                                          |
-| ------- | ---------- | --------------- | -------------------------------------------------------------- |
-| `+0x00` | u32        | action_id       | Primary key; matches offset-table key                          |
-| `+0x04` | u32        | reserved_04     | Always 0                                                       |
-| `+0x08` | u32        | reserved_08     | Always 0                                                       |
-| `+0x0C` | u32        | magic           | Always `0xDEBA1DCD`                                            |
-| `+0x10` | u32        | action_group    | Usually 2; observed 4 only for action ID 7 (`Action_7_Play2`)  |
-| `+0x14` | u32        | reserved_14     | Always 0                                                       |
-| `+0x18` | u32        | icon_hash       | Hash-like value associated with the icon/action                |
-| `+0x1C` | u32        | icon_path_len   | UTF-16 code-unit count for `icon_path`; no null terminator     |
-| `+0x20` | u32        | reserved_20     | Always 0                                                       |
-| `+0x24` | utf16le[]  | icon_path       | `icon_path_len * 2` bytes                                      |
-| varies  | u8 x 12    | trailing_zeroes | Always 12 zero bytes after the icon path                       |
+| Offset  | Type      | Field           | Notes                                                         |
+| ------- | --------- | --------------- | ------------------------------------------------------------- |
+| `+0x00` | u32       | action_id       | Primary key; matches offset-table key                         |
+| `+0x04` | u32       | reserved_04     | Always 0                                                      |
+| `+0x08` | u32       | reserved_08     | Always 0                                                      |
+| `+0x0C` | u32       | magic           | Always `0xDEBA1DCD`                                           |
+| `+0x10` | u32       | action_group    | Usually 2; observed 4 only for action ID 7 (`Action_7_Play2`) |
+| `+0x14` | u32       | reserved_14     | Always 0                                                      |
+| `+0x18` | u32       | icon_hash       | Hash-like value associated with the icon/action               |
+| `+0x1C` | u32       | icon_path_len   | UTF-16 code-unit count for `icon_path`; no null terminator    |
+| `+0x20` | u32       | reserved_20     | Always 0                                                      |
+| `+0x24` | utf16le[] | icon_path       | `icon_path_len * 2` bytes                                     |
+| varies  | u8 x 12   | trailing_zeroes | Always 12 zero bytes after the icon path                      |
 
 ### Extended Hash Record
 
 Action ID 7 (`Action_7_Play2.dds`) has `action_group = 4` and inserts a second hash before `icon_path_len`.
 
-| Offset  | Type       | Field           | Notes                                                      |
-| ------- | ---------- | --------------- | ---------------------------------------------------------- |
-| `+0x00` | u32        | action_id       | 7                                                          |
-| `+0x04` | u32        | reserved_04     | Always 0                                                   |
-| `+0x08` | u32        | reserved_08     | Always 0                                                   |
-| `+0x0C` | u32        | magic           | `0xDEBA1DCD`                                               |
-| `+0x10` | u32        | action_group    | 4                                                          |
-| `+0x14` | u32        | reserved_14     | Always 0                                                   |
-| `+0x18` | u32        | icon_hash_a     | `0xD06CC6C5` observed                                      |
-| `+0x1C` | u32        | icon_hash_b     | `0xAE30B9AC` observed                                      |
-| `+0x20` | u32        | icon_path_len   | 51 UTF-16 code units                                       |
-| `+0x24` | u32        | reserved_24     | Always 0                                                   |
-| `+0x28` | utf16le[]  | icon_path       | `New_Icon/08_Servant_Skill/02_Pet/Action_7_Play2.dds`     |
-| varies  | u8 x 12    | trailing_zeroes | Always 12 zero bytes after the icon path                   |
+| Offset  | Type      | Field           | Notes                                                 |
+| ------- | --------- | --------------- | ----------------------------------------------------- |
+| `+0x00` | u32       | action_id       | 7                                                     |
+| `+0x04` | u32       | reserved_04     | Always 0                                              |
+| `+0x08` | u32       | reserved_08     | Always 0                                              |
+| `+0x0C` | u32       | magic           | `0xDEBA1DCD`                                          |
+| `+0x10` | u32       | action_group    | 4                                                     |
+| `+0x14` | u32       | reserved_14     | Always 0                                              |
+| `+0x18` | u32       | icon_hash_a     | `0xD06CC6C5` observed                                 |
+| `+0x1C` | u32       | icon_hash_b     | `0xAE30B9AC` observed                                 |
+| `+0x20` | u32       | icon_path_len   | 51 UTF-16 code units                                  |
+| `+0x24` | u32       | reserved_24     | Always 0                                              |
+| `+0x28` | utf16le[] | icon_path       | `New_Icon/08_Servant_Skill/02_Pet/Action_7_Play2.dds` |
+| varies  | u8 x 12   | trailing_zeroes | Always 12 zero bytes after the icon path              |
 
 ---
 
 ## Observed Records
 
-| Action ID | Action Name | Group | Hash Values                 | Icon Path                                                    |
-| --------- | ----------- | ----- | --------------------------- | ------------------------------------------------------------ |
-| 0         | Like        | 2     | `0xC068AE30`                | `New_Icon/08_Servant_Skill/02_Pet/Action_0_Like.dds`        |
-| 1         | Feed        | 2     | `0xC774BA39`                | `New_Icon/08_Servant_Skill/02_Pet/Action_9_Feed.dds`        |
-| 2         | Angry       | 2     | `0xB0A8D654`                | `New_Icon/08_Servant_Skill/02_Pet/Action_2_Angry.dds`       |
-| 3         | Sleepy      | 2     | `0xB9BCC878`                | `New_Icon/08_Servant_Skill/02_Pet/Action_3_Sleepy.dds`      |
-| 4         | Jump        | 2     | `0xD504C810`                | `New_Icon/08_Servant_Skill/02_Pet/Action_4_Jump.dds`        |
-| 5         | Sit         | 2     | `0xAE30C549`                | `New_Icon/08_Servant_Skill/02_Pet/Action_5_Sit.dds`         |
-| 6         | Play1       | 2     | `0xB09CC7A5`                | `New_Icon/08_Servant_Skill/02_Pet/Action_6_Play1.dds`       |
-| 7         | Play2       | 4     | `0xD06CC6C5`, `0xAE30B9AC` | `New_Icon/08_Servant_Skill/02_Pet/Action_7_Play2.dds`       |
-| 8         | Bark        | 2     | `0xC74CC6B8`                | `New_Icon/08_Servant_Skill/02_Pet/Action_8_Bark.dds`        |
-| 9         | Dislike     | 2     | `0xC9D0C090`                | `New_Icon/08_Servant_Skill/02_Pet/Action_1_Dislike.dds`     |
+| Action ID | LOC Name | Icon Name | Group | Hash Values                | Icon Path                                               |
+| --------- | -------- | --------- | ----- | -------------------------- | ------------------------------------------------------- |
+| 0         | Joy      | Like      | 2     | `0xC068AE30`               | `New_Icon/08_Servant_Skill/02_Pet/Action_0_Like.dds`    |
+| 1         | Feed     | Feed      | 2     | `0xC774BA39`               | `New_Icon/08_Servant_Skill/02_Pet/Action_9_Feed.dds`    |
+| 2         | Angry    | Angry     | 2     | `0xB0A8D654`               | `New_Icon/08_Servant_Skill/02_Pet/Action_2_Angry.dds`   |
+| 3         | Sleepy   | Sleepy    | 2     | `0xB9BCC878`               | `New_Icon/08_Servant_Skill/02_Pet/Action_3_Sleepy.dds`  |
+| 4         | Jump     | Jump      | 2     | `0xD504C810`               | `New_Icon/08_Servant_Skill/02_Pet/Action_4_Jump.dds`    |
+| 5         | Sit      | Sit       | 2     | `0xAE30C549`               | `New_Icon/08_Servant_Skill/02_Pet/Action_5_Sit.dds`     |
+| 6         | Play     | Play1     | 2     | `0xB09CC7A5`               | `New_Icon/08_Servant_Skill/02_Pet/Action_6_Play1.dds`   |
+| 7         | Crouch   | Play2     | 4     | `0xD06CC6C5`, `0xAE30B9AC` | `New_Icon/08_Servant_Skill/02_Pet/Action_7_Play2.dds`   |
+| 8         | Weep     | Bark      | 2     | `0xC74CC6B8`               | `New_Icon/08_Servant_Skill/02_Pet/Action_8_Bark.dds`    |
+| 9         | Sulky    | Dislike   | 2     | `0xC9D0C090`               | `New_Icon/08_Servant_Skill/02_Pet/Action_1_Dislike.dds` |
 
 > Action ID 1 points to `Action_9_Feed.dds`, and action ID 9 points to `Action_1_Dislike.dds`. The record key order and filename number are not the same for those two actions.
 
@@ -115,29 +117,28 @@ Provides keyed lookup into `petaction.dbss` and supplies the record count.
 
 ### Header (4 bytes)
 
-| Offset  | Type | Field | Notes                              |
-| ------- | ---- | ----- | ---------------------------------- |
-| `+0x00` | u32  | count | Number of action records (10)      |
+| Offset  | Type | Field | Notes                         |
+| ------- | ---- | ----- | ----------------------------- |
+| `+0x00` | u32  | count | Number of action records (10) |
 
 ### Offset Record (12 bytes, repeated `count` times)
 
-| Offset  | Type | Field         | Notes                                         |
-| ------- | ---- | ------------- | --------------------------------------------- |
-| `+0x00` | u32  | action_id     | Key for the action/icon record                |
-| `+0x04` | u32  | record_offset | Absolute byte offset in `petaction.dbss`      |
-| `+0x08` | u32  | record_size   | Size of the record in bytes                   |
+| Offset  | Type | Field         | Notes                                    |
+| ------- | ---- | ------------- | ---------------------------------------- |
+| `+0x00` | u32  | action_id     | Key for the action/icon record           |
+| `+0x04` | u32  | record_offset | Absolute byte offset in `petaction.dbss` |
+| `+0x08` | u32  | record_size   | Size of the record in bytes              |
 
 ---
 
 ## Suggested UI Layout
 
-| Column      | Type | Notes                                      |
-| ----------- | ---- | ------------------------------------------ |
-| Action ID   | num  | Primary key; right-aligned                 |
-| Action Name | text | Derived from icon filename suffix          |
-| Group       | num  | `action_group`                             |
-| Icon        | icon | DDS preview from `icon_path`, when loaded  |
-| Icon Path   | text | Full UTF-16 source path                    |
+| Column      | Type | Notes                             |
+| ----------- | ---- | --------------------------------- |
+| Action ID   | num  | Primary key; right-aligned        |
+| Icon        | Icon | Rendered from `icon_path`         |
+| Action Name | text | LOC type 19 name; fallback to icon filename suffix |
+| Group       | num  | `action_group`                    |
 
 ---
 
@@ -146,6 +147,7 @@ Provides keyed lookup into `petaction.dbss` and supplies the record count.
 - `petaction.dbss` itself starts with action ID 0, not a count. Always use `petactionoffset.dbss` to enumerate records.
 - Icon paths are UTF-16-LE and are not null-terminated. A fixed 12-byte zero trailer follows each path.
 - The `magic` value `0xDEBA1DCD` appears in every record.
+- Action names resolve through `languagedata_en.loc` with `str_type=19` and `str_id1=action_id`. The icon filename suffix is an asset name and does not always match the UI label.
 
 ---
 
@@ -157,4 +159,4 @@ The `icon_hash` values look like hashes or resource identifiers, but the hashing
 
 ### Action ID Consumers
 
-No confirmed cross-reference was found in currently documented pet formats. The consuming pet UI or behavior table should join by `action_id`, but the exact source file is not confirmed.
+The action IDs are confirmed in-game to match LOC type 19 labels. The consuming pet UI or behavior table should join by `action_id`, but the exact source file is not confirmed.

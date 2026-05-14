@@ -63,3 +63,49 @@ def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
     items.sort(key=lambda item: (item.path.name if item.path else "", item.name))
     for item in items:
         item._nodeid = item.name
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--clean",
+        action="store_true",
+        default=False,
+        help="Show only failed tests and a pass/total summary",
+    )
+
+
+def pytest_configure(config: pytest.Config) -> None:
+    if config.getoption("--clean", default=False):
+        config.pluginmanager.register(_CleanPlugin(config), "clean_plugin")
+
+
+class _CleanPlugin:
+    def __init__(self, config: pytest.Config) -> None:
+        self._failures: list[str] = []
+        self._passed = 0
+        self._failed = 0
+        config.option.verbose = -1
+
+    def pytest_runtest_logreport(self, report: pytest.TestReport) -> None:
+        if report.when != "call":
+            return
+        if report.passed:
+            self._passed += 1
+        elif report.failed:
+            self._failed += 1
+            self._failures.append(report.nodeid)
+
+    @pytest.hookimpl(tryfirst=True)
+    def pytest_terminal_summary(self, terminalreporter: Any, exitstatus: int) -> None:
+        import time
+
+        elapsed = int(time.time() - terminalreporter._sessionstarttime)
+        duration = f"{elapsed // 3600:02d}:{(elapsed % 3600) // 60:02d}:{elapsed % 60:02d}"
+
+        for nodeid in self._failures:
+            terminalreporter.write_line(f"FAILED  {nodeid}", red=True)
+        total = self._passed + self._failed
+        color = "green" if not self._failures else "red"
+        terminalreporter.write_sep("=", f"{self._passed}/{total} passed in {duration}", **{color: True})
+        terminalreporter.stats.clear()
+        terminalreporter.summary_stats = lambda: None

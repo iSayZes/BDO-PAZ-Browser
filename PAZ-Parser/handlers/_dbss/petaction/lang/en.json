@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "actionId": "Action ID",
+    "actionName": "Action Name",
+    "group": "Group",
+    "icon": "Icon"
+  },
+  "offsetColumns": {
+    "actionId": "Action ID",
+    "recordOffset": "Record Offset",
+    "recordSize": "Record Size"
+  }
+}

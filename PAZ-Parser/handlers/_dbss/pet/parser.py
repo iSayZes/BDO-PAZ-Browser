@@ -9,6 +9,7 @@ _PET_HEADER_SIZE = 32
 _PET_FOOTER_SIZE = 94
 _PETGRADE_HEADER_SIZE = 4
 _PETGRADE_RECORD_SIZE = 12
+_PETGRADE_OFFSET_RECORD_SIZE = 12
 
 
 def parse_petoffset_records(data: bytes) -> list[dict]:
@@ -55,6 +56,66 @@ def parse_petgrade_records(data: bytes) -> list[dict]:
             "species": species,
             "key_dup": key_dup,
             "grade": grade,
+            "padding": padding,
+            "padding_dup": padding_dup,
+        })
+
+    return records
+
+
+def parse_petgradeoffset_records(data: bytes) -> list[dict]:
+    if len(data) < _PETGRADE_HEADER_SIZE:
+        return []
+
+    (count,) = struct.unpack_from("<I", data, 0)
+    records: list[dict] = []
+
+    for index in range(count):
+        pos = _PETGRADE_HEADER_SIZE + index * _PETGRADE_OFFSET_RECORD_SIZE
+        if pos + _PETGRADE_OFFSET_RECORD_SIZE > len(data):
+            break
+
+        key, padding, data_offset, data_size = struct.unpack_from("<HHII", data, pos)
+        variant = key & 0xFF
+        species = key >> 8
+        records.append({
+            "key": key,
+            "variant": variant,
+            "species": species,
+            "data_offset": data_offset,
+            "data_size": data_size,
+            "record_start": data_offset - 4,
+            "padding": padding,
+        })
+
+    return records
+
+
+def parse_petgrade_records_with_offsets(data: bytes, offset_data: bytes) -> list[dict]:
+    records: list[dict] = []
+    offsets = parse_petgradeoffset_records(offset_data)
+
+    for row, offset_record in enumerate(offsets):
+        record_start = offset_record["record_start"]
+        data_offset = offset_record["data_offset"]
+        data_size = offset_record["data_size"]
+        if record_start < _PETGRADE_HEADER_SIZE or data_offset + data_size > len(data):
+            raise ValueError(f"pet grade record {row} exceeds file size")
+
+        key, padding, key_dup, padding_dup, grade = struct.unpack_from("<HHHHI", data, record_start)
+        variant = key & 0xFF
+        species = key >> 8
+        records.append({
+            "key": key,
+            "variant": variant,
+            "species": species,
+            "key_dup": key_dup,
+            "grade": grade,
+            "data_offset": data_offset,
+            "data_size": data_size,
+            "record_start": record_start,
+            "offset_key": offset_record["key"],
+            "key_match": key == key_dup == offset_record["key"],
             "padding": padding,
             "padding_dup": padding_dup,
         })

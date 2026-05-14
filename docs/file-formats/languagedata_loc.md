@@ -28,6 +28,7 @@ str_type: 54, str_id1: 40012          →  "Thank you! I really like this."
 - [mentalcard.dbss](mentalcard_dbss.md) — knowledge entries (str_type=34) and categories (str_type=9)
 - [titlebufflist.dbss](titlebufflist_dbss.md) — title effects tooltip (str_type=37)
 - [journalquest.dbss](journalquest_dbss.md) — journal quest adventure log metadata (str_type=63, str_id1=group_id) and page titles/story text (str_type=18, str_id1=journal_cat_id)
+- [petaction.dbss](petaction_dbss.md) — pet action labels (str_type=19, str_id1=action_id)
 
 ---
 
@@ -78,6 +79,8 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 15       | Emote/pose/placeable interaction names                                                      |
 | 16       | House/facility type names                                                                   |
 | 18       | Quest and journal page text; two key domains share this type — see Type 18 sub-fields below |
+| 19       | Pet action labels — `str_id1` = `petaction.dbss` action_id                                  |
+| 22       | Worker skill names and descriptions — `str_id1` = skill ID, `str_id4` selects sub-field     |
 | 25       | Quest chain/group names — `str_id1` = chain/group ID (matches `questgroup.dbss` group_id)   |
 | 34       | Knowledge entry names — `str_id1` = knowledge_id / entry_id                                 |
 | 37/38    | Other systems                                                                               |
@@ -133,6 +136,56 @@ Type 18 is shared by regular quests and journal quest (adventure log) pages. The
 | ------- | ---------- | ----------------------------------- |
 | 0       | Page title | `"Hey There Big Fellow!"`           |
 | 1       | Story text | `"January 2\n\nMy name is Deve. …"` |
+
+### Type 19 — pet action labels (`petaction.dbss`)
+
+Type 19 stores localized pet action labels keyed by `action_id`.
+
+| Field     | Value                                 |
+| --------- | ------------------------------------- |
+| `str_id1` | `action_id` from `petaction.dbss`     |
+| `str_id2` | Observed `0`                          |
+| `str_id3` | Observed `0`                          |
+| `str_id4` | Observed `0`                          |
+
+Observed English labels:
+
+| action_id | Text   |
+| --------- | ------ |
+| 0         | Joy    |
+| 1         | Feed   |
+| 2         | Angry  |
+| 3         | Sleepy |
+| 4         | Jump   |
+| 5         | Sit    |
+| 6         | Play   |
+| 7         | Crouch |
+| 8         | Weep   |
+| 9         | Sulky  |
+
+### Type 22 — worker skill names and descriptions
+
+Type 22 stores worker skill display text keyed by skill ID. `str_id4` selects the text role.
+
+| Field     | Value                                |
+| --------- | ------------------------------------ |
+| `str_id1` | Worker skill ID                      |
+| `str_id2` | Observed `0`                         |
+| `str_id3` | Observed `0`                         |
+| `str_id4` | Sub-field selector (see table below) |
+
+| str_id4 | Meaning           | Example              |
+| ------- | ----------------- | -------------------- |
+| 0       | Skill name        | `"Wings C"`          |
+| 1       | Skill description | `"Movement Speed +6%"` |
+
+Observed English examples:
+
+| str_id1 | str_id4=0 | str_id4=1            |
+| ------- | --------- | -------------------- |
+| 1603    | Wings C   | Movement Speed +6%   |
+| 1602    | Wings B   | Movement Speed +8%   |
+| 1601    | Wings A   | Movement Speed +11%  |
 
 ### Type 63 — journal quest metadata (`journalquest.dbss`)
 

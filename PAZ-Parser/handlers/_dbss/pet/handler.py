@@ -8,7 +8,12 @@ from bdo_preview import PreviewHandler
 from _common.html import e, icon_cell, table
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
-from .parser import parse_pet_records, parse_petgrade_records, parse_petoffset_records
+from .parser import (
+    parse_pet_records,
+    parse_petgrade_records_with_offsets,
+    parse_petgradeoffset_records,
+    parse_petoffset_records,
+)
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -50,13 +55,26 @@ class PetOffsetHandler(PreviewHandler):
 
 
 class PetGradeHandler(PreviewHandler):
+    def companions(self, entry: PazEntry) -> list[str]:
+        folder = entry.internal_path.rsplit("/", 1)[0]
+        return [f"{folder}/petgradeoffset.dbss"]
+
     def get_records(
         self,
         data: bytes,
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
-        return parse_petgrade_records(data)
+        offset_raw = companions.get("petgradeoffset.dbss")
+        if offset_raw is None:
+            raise ValueError("petgradeoffset.dbss companion not found.")
+
+        records = parse_petgrade_records_with_offsets(data, offset_raw)
+        grade_names = load_handler_strings(self.lang, _LANG_DIR).get("grades", {})
+        for record in records:
+            grade = record["grade"]
+            record["grade_name"] = grade_names.get(str(grade), f"Unknown ({grade})")
+        return records
 
     def render_records_page(
         self,
@@ -69,15 +87,60 @@ class PetGradeHandler(PreviewHandler):
         meta = f"{len(records):,} pet grade records"
         cols = load_handler_strings(self.lang, _LANG_DIR).get("gradeColumns", {})
         headers: list[tuple[str, str, str]] = [
+            (cols.get("key", "Key"), "num", ""),
             (cols.get("species", "Species"), "num", ""),
             (cols.get("variant", "Variant"), "num", ""),
-            (cols.get("grade", "Grade"), "num", ""),
+            (cols.get("grade", "Grade"), "", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+            (cols.get("dataSize", "Data Size"), "num", ""),
         ]
         rows = [
             [
+                e(f"0x{r['key']:04X} ({r['key']})"),
                 e(r["species"]),
                 e(r["variant"]),
-                e(r["grade"]),
+                e(r["grade_name"]),
+                e(f"0x{r['data_offset']:08X}"),
+                e(r["data_size"]),
+            ]
+            for r in slice_
+        ]
+        return table(meta, headers, rows)
+
+
+class PetGradeOffsetHandler(PreviewHandler):
+    def get_records(
+        self,
+        data: bytes,
+        entry: PazEntry,
+        companions: dict[str, bytes],
+    ) -> list[dict]:
+        return parse_petgradeoffset_records(data)
+
+    def render_records_page(
+        self,
+        records: list[dict],
+        page: int,
+        page_size: int,
+    ) -> str:
+        start = page * page_size
+        slice_ = records[start : start + page_size]
+        meta = f"{len(records):,} pet grade offset records"
+        cols = load_handler_strings(self.lang, _LANG_DIR).get("gradeOffsetColumns", {})
+        headers: list[tuple[str, str, str]] = [
+            (cols.get("key", "Key"), "num", ""),
+            (cols.get("species", "Species"), "num", ""),
+            (cols.get("variant", "Variant"), "num", ""),
+            (cols.get("dataOffset", "Data Offset"), "num", ""),
+            (cols.get("dataSize", "Data Size"), "num", ""),
+        ]
+        rows = [
+            [
+                e(f"0x{r['key']:04X} ({r['key']})"),
+                e(r["species"]),
+                e(r["variant"]),
+                e(f"0x{r['data_offset']:08X}"),
+                e(r["data_size"]),
             ]
             for r in slice_
         ]

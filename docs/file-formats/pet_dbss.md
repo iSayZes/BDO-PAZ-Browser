@@ -59,25 +59,25 @@ Each record is stored as `[u16 key_prefix][data_bytes]`. The `key_prefix` (2 byt
 
 #### Fixed Header (32 bytes)
 
-| Offset  | Type | Field             | Notes                                                                                    |
-| ------- | ---- | ----------------- | ---------------------------------------------------------------------------------------- |
-| `+0x00` | u16  | pet_id            | Unique record key; equal to the preceding 2-byte file prefix                             |
-| `+0x02` | u8   | variant           | Sub-variant within the species (1–54 observed)                                           |
-| `+0x03` | u8   | species           | Pet family/model code                                                                    |
-| `+0x04` | u8   | —                 | Always 0; reserved                                                                       |
-| `+0x05` | u8   | tier              | Tier (0 = lowest, 4 = highest for regular pets)                                          |
-| `+0x06` | u8   | —                 | Always 1; reserved                                                                       |
-| `+0x07` | u8   | max_level         | Usually 10; Airiss variants have 20, 30, or 50                                           |
-| `+0x08` | u32  | —                 | Always `0x90000000`; purpose unknown                                                     |
-| `+0x0C` | u8   | —                 | Always 1; reserved                                                                       |
-| `+0x0D` | u16  | —                 | Always 0; reserved                                                                       |
+| Offset  | Type | Field             | Notes                                                                                   |
+| ------- | ---- | ----------------- | --------------------------------------------------------------------------------------- |
+| `+0x00` | u16  | pet_id            | Unique record key; equal to the preceding 2-byte file prefix                            |
+| `+0x02` | u8   | variant           | Sub-variant within the species (1–54 observed)                                          |
+| `+0x03` | u8   | species           | Pet family/model code                                                                   |
+| `+0x04` | u8   | —                 | Always 0; reserved                                                                      |
+| `+0x05` | u8   | tier              | Tier (0 = lowest, 4 = highest for regular pets)                                         |
+| `+0x06` | u8   | —                 | Always 1; reserved                                                                      |
+| `+0x07` | u8   | max_level         | Usually 10; Airiss variants have 20, 30, or 50                                          |
+| `+0x08` | u32  | —                 | Always `0x90000000`; purpose unknown                                                    |
+| `+0x0C` | u8   | —                 | Always 1; reserved                                                                      |
+| `+0x0D` | u16  | —                 | Always 0; reserved                                                                      |
 | `+0x0F` | u8   | equip_skill_slots | Number of equip skill slots; = `tier + 1` for regular pets (max 4); Airiss have up to 9 |
-| `+0x10` | u16  | —                 | Always 0; reserved                                                                       |
-| `+0x12` | u8   | —                 | Purpose unknown; not reliably equal to the icon filename number                          |
-| `+0x13` | u8   | —                 | Always 0; reserved                                                                       |
-| `+0x14` | u32  | type_param        | Pet-type specific value (0 for many species; non-zero for some)                          |
-| `+0x18` | u32  | icon_path_len     | Byte length of the icon path string (no null terminator)                                 |
-| `+0x1C` | u32  | —                 | Always 0; reserved                                                                       |
+| `+0x10` | u16  | —                 | Always 0; reserved                                                                      |
+| `+0x12` | u8   | —                 | Purpose unknown; not reliably equal to the icon filename number                         |
+| `+0x13` | u8   | —                 | Always 0; reserved                                                                      |
+| `+0x14` | u32  | type_param        | Pet-type specific value (0 for many species; non-zero for some)                         |
+| `+0x18` | u32  | icon_path_len     | Byte length of the icon path string (no null terminator)                                |
+| `+0x1C` | u32  | —                 | Always 0; reserved                                                                      |
 
 #### Icon Path (variable, `icon_path_len` bytes)
 
@@ -91,29 +91,29 @@ The icon path is ASCII-encoded with no null terminator; its byte length is given
 
 #### Fixed Footer (94 bytes, immediately after the icon path)
 
-| Offset  | Type     | Field           | Notes                                                          |
-| ------- | -------- | --------------- | -------------------------------------------------------------- |
-| `+0x00` | u32      | const_30000_a   | Always 30000 across all 1782 records                           |
-| `+0x04` | u32      | —               | Always 0                                                       |
-| `+0x08` | u32      | const_15000     | Always 15000 (= const_30000_a / 2)                             |
-| `+0x0C` | u32      | —               | Always 0                                                       |
-| `+0x10` | u32      | const_30000_b   | Always 30000                                                   |
-| `+0x14` | u32      | —               | Always 0                                                       |
-| `+0x18` | u32      | const_500000    | Always 500000                                                  |
-| `+0x1C` | u32      | const_1000000   | Always 1000000                                                 |
-| `+0x20` | u32      | const_2         | Always 2                                                       |
+| Offset  | Type     | Field           | Notes                                                         |
+| ------- | -------- | --------------- | ------------------------------------------------------------- |
+| `+0x00` | u32      | const_30000_a   | Always 30000 across all 1782 records                          |
+| `+0x04` | u32      | —               | Always 0                                                      |
+| `+0x08` | u32      | const_15000     | Always 15000 (= const_30000_a / 2)                            |
+| `+0x0C` | u32      | —               | Always 0                                                      |
+| `+0x10` | u32      | const_30000_b   | Always 30000                                                  |
+| `+0x14` | u32      | —               | Always 0                                                      |
+| `+0x18` | u32      | const_500000    | Always 500000                                                 |
+| `+0x1C` | u32      | const_1000000   | Always 1000000                                                |
+| `+0x20` | u32      | const_2         | Always 2                                                      |
 | `+0x24` | u16      | acquire_type_id | Key into `petequipskillaquire.dbss`; 0 = none; varies by tier |
 | `+0x26` | u16      | equip_skill_id  | Pet equip-skill identifier; varies by pet type and tier       |
-| `+0x28` | u16      | —               | Always 0; padding                                              |
-| `+0x2A` | u32 × 10 | upgrade_table   | 10 values, all 1000000; purpose unknown                        |
-| `+0x52` | u8       | —               | Always 0                                                       |
-| `+0x53` | u8       | tier_score      | 17 for tier ≥ 3; 16 for tier 2; 11 for tier ≤ 1                |
-| `+0x54` | u8       | —               | Always 0                                                       |
-| `+0x55` | u8       | —               | Always 26; purpose unknown                                     |
-| `+0x56` | u8       | —               | Always 0                                                       |
-| `+0x57` | u8       | —               | Always 1; purpose unknown                                      |
-| `+0x58` | u8       | —               | Always 1; purpose unknown                                      |
-| `+0x59` | u8 × 5   | —               | Always 0; padding                                              |
+| `+0x28` | u16      | —               | Always 0; padding                                             |
+| `+0x2A` | u32 × 10 | upgrade_table   | 10 values, all 1000000; purpose unknown                       |
+| `+0x52` | u8       | —               | Always 0                                                      |
+| `+0x53` | u8       | tier_score      | 17 for tier ≥ 3; 16 for tier 2; 11 for tier ≤ 1               |
+| `+0x54` | u8       | —               | Always 0                                                      |
+| `+0x55` | u8       | —               | Always 26; purpose unknown                                    |
+| `+0x56` | u8       | —               | Always 0                                                      |
+| `+0x57` | u8       | —               | Always 1; purpose unknown                                     |
+| `+0x58` | u8       | —               | Always 1; purpose unknown                                     |
+| `+0x59` | u8 × 5   | —               | Always 0; padding                                             |
 
 > Footer offsets are relative to the byte immediately following the icon path.
 
@@ -145,17 +145,17 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 
 ## Suggested UI Layout
 
-| Column         | Type | Notes                                                                 |
-| -------------- | ---- | --------------------------------------------------------------------- |
-| Pet ID         | num  | `pet_id` as decimal only                                              |
-| Icon           | text | Rendered from `icon_path`; shown immediately after Pet ID             |
-| Name           | text | LOC type 6 lookup with `str_id1 = pet_id`; fallback to raw species ID |
-| Species ID     | num  | Raw `species` code                                                    |
-| Tier           | num  | `tier` (0–4)                                                          |
-| Skill Slots    | num  | `equip_skill_slots`                                                   |
-| Max Level      | num  | `skill_capacity` (10 for normal, 20/30/50 for Airiss)                 |
-| Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`                        |
-| Equip Skill ID | num  | `equip_skill_id`                                                      |
+| Column         | Type | Notes                                                                                                  |
+| -------------- | ---- | ------------------------------------------------------------------------------------------------------ |
+| Pet ID         | num  | `pet_id` as decimal only                                                                               |
+| Icon           | Icon | Rendered from `icon_path`; shown immediately after Pet ID                                              |
+| Name           | text | LOC type 6 lookup with `str_id1 = pet_id`; fallback to raw species ID                                  |
+| Species ID     | num  | Raw `species` code                                                                                     |
+| Tier           | num  | `tier` (0–4)                                                                                           |
+| Skill Slots    | num  | `equip_skill_slots`                                                                                    |
+| Max Level      | num  | `skill_capacity` (10 for normal, 20/30/50 for Airiss)                                                  |
+| Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`                                                         |
+| Equip Skill ID | num  | `equip_skill_id`                                                                                       |
 | Grade          | text | Optional `petgrade.dbss` join on `(species, variant)`: 1 Classic, 2 Rare, 3 Premium, 4 Rare, 5 Special |
 
 Rows are sorted by `pet_id` ascending for stable browsing.

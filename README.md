@@ -74,8 +74,8 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 5/399 .bss formats.
-- Handler Supported 34/375 .dbss formats.
+- Handler Supported 5/402 .bss formats.
+- Handler Supported 39/375 .dbss formats.
 - Handler Supported 23/23 other formats.
 
 ## Documented Formats
@@ -109,6 +109,8 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 | `petactionoffset.dbss`          | Keyed offset index into `petaction.dbss`                                                                   | [petaction](docs/file-formats/petaction_dbss.md)                   |
 | `petexp.dbss`                   | Pet experience tables keyed by EXP table ID, with per-level u64 thresholds                                | [petexp](docs/file-formats/petexp_dbss.md)                         |
 | `petexpoffset.dbss`             | Keyed offset index into `petexp.dbss`                                                                      | [petexp](docs/file-formats/petexp_dbss.md)                         |
+| `petgrade.dbss`                 | Pet species/variant grade table                                                                           | [petgrade](docs/file-formats/petgrade_dbss.md)                     |
+| `petgradeoffset.dbss`           | Keyed offset index into `petgrade.dbss`                                                                    | [petgrade](docs/file-formats/petgrade_dbss.md)                     |
 | `plantzone.dbss`                | Variable-length plant-zone records with a required offset table                                            | [plantzone](docs/file-formats/plantzone_dbss.md)                   |
 | `plantzoneoffset.dbss`          | Offset index into `plantzone.dbss` — maps record ID → byte offset/size                                     | [plantzone](docs/file-formats/plantzone_dbss.md)                   |
 | `quest.dbss`                    | Variable-length quest definitions with scripts, objectives, and icon paths                                 | [quest](docs/file-formats/quest_dbss.md)                           |

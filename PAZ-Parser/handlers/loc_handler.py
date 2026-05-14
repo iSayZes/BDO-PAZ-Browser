@@ -28,6 +28,8 @@ _TYPE_NAMES = {
     15: "Emote/pose names",
     16: "House/facility type names",
     18: "Quest text/titles",
+    19: "Pet action labels",
+    22: "Worker skill names + descriptions",
     34: "Knowledge entry names",
     39: "Audio voice lines",
     54: "NPC gift/confession response dialogue",

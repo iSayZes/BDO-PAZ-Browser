@@ -24,8 +24,18 @@
     "dataSize": "Data Size"
   },
   "gradeColumns": {
+    "key": "Key",
     "species": "Species",
     "variant": "Variant",
-    "grade": "Grade"
+    "grade": "Grade",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "gradeOffsetColumns": {
+    "key": "Key",
+    "species": "Species",
+    "variant": "Variant",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
   }
 }

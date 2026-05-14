@@ -88,6 +88,7 @@ The project uses a loose 4px base grid.
 | Standard gap             | `8px`                     |
 | Medium gap               | `10px`                    |
 | Large gap                | `16px`                    |
+| Data table row height    | User setting, `20–64px`   |
 | Panel section padding    | `10px 16px` – `14px 16px` |
 | Input padding            | `7px 10px`                |
 | Tag/badge padding        | `2px 8px`                 |

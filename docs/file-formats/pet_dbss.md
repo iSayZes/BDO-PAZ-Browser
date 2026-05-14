@@ -148,6 +148,7 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 | Column         | Type | Notes                                                                 |
 | -------------- | ---- | --------------------------------------------------------------------- |
 | Pet ID         | num  | `pet_id` as decimal only                                              |
+| Icon           | text | Rendered from `icon_path`; shown immediately after Pet ID             |
 | Name           | text | LOC type 6 lookup with `str_id1 = pet_id`; fallback to raw species ID |
 | Species ID     | num  | Raw `species` code                                                    |
 | Tier           | num  | `tier` (0–4)                                                          |
@@ -156,7 +157,6 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 | Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`                        |
 | Equip Skill ID | num  | `equip_skill_id`                                                      |
 | Grade          | text | Optional `petgrade.dbss` join on `(species, variant)`: 1 Classic, 2 Rare, 3 Premium, 4 Rare, 5 Special |
-| Icon Path      | text | Raw path string; no separate icon preview column                      |
 
 Rows are sorted by `pet_id` ascending for stable browsing.
 

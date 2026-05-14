@@ -7,7 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 
-from _common.html import e, table
+from _common.html import e, icon_cell, table
 from _common.lang import load_handler_strings
 from .parser import QuestIndex, build_quest_index, parse_quest_record
 
@@ -193,7 +193,7 @@ class QuestDbssHandler(PreviewHandler):
                 e(_truncate(record["condition_script"])),
                 e(_truncate(record["action_script"])),
                 e(_truncate(objective) if objective else "-"),
-                e(record["icon_path"] or "-"),
+                icon_cell(record["icon_path"]),
             ])
 
         meta = f"{total:,} quests"

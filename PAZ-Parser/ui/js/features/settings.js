@@ -9,6 +9,7 @@ export const settingsMethods = {
     const s = await window.pywebview.api.get_settings();
     document.getElementById("settings-paz-path").value = s.paz_path ?? "";
     document.getElementById("settings-language").value = s.language ?? "en";
+    document.getElementById("settings-table-row-height").value = s.table_row_height ?? 27;
     document.getElementById("settings-overlay").hidden = false;
 
     this._settingsEscHandler = (e) => {
@@ -35,8 +36,10 @@ export const settingsMethods = {
   async saveSettings() {
     const pazPath = document.getElementById("settings-paz-path").value.trim();
     const language = document.getElementById("settings-language").value;
-    const result = await window.pywebview.api.save_settings(pazPath, language);
+    const tableRowHeight = Number(document.getElementById("settings-table-row-height").value);
+    const result = await window.pywebview.api.save_settings(pazPath, language, tableRowHeight);
     if (!result?.ok) return;
+    this._applyTableRowHeight(result.table_row_height ?? tableRowHeight);
     this.closeSettings();
     await loadLang(language);
     applyTranslations();
@@ -46,5 +49,10 @@ export const settingsMethods = {
       const icon = node?.querySelector(".tree-icon")?.textContent ?? "";
       await this._selectFile(this._selectedPath, name, icon);
     }
+  },
+
+  _applyTableRowHeight(value) {
+    const height = Math.max(20, Math.min(64, Number.parseInt(value, 10) || 27));
+    document.documentElement.style.setProperty("--table-row-height", `${height}px`);
   },
 };

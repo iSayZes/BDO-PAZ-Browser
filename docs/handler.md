@@ -465,8 +465,12 @@ Use shared HTML helpers when available.
 Example:
 
 ```python
-from _common.html import table, error
+from _common.html import error, icon_cell, table
 ```
+
+Use `icon_cell(path)` for icon path columns so DBSS/BSS table previews keep
+consistent spacing and escaping. The frontend lazy-loads matching PAZ image
+entries into those cells, while parsed CSV export keeps the raw icon path field.
 
 ---
 

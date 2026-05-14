@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import e, table
+from _common.html import e, icon_cell, table
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_pet_records, parse_petgrade_records, parse_petoffset_records
@@ -133,6 +133,7 @@ class PetDbssHandler(PreviewHandler):
         cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
         headers: list[tuple[str, str, str]] = [
             (cols.get("petId", "Pet ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
             (cols.get("name", "Name"), "", ""),
             (cols.get("species", "Species ID"), "num", ""),
             (cols.get("tier", "Tier"), "num", ""),
@@ -141,11 +142,11 @@ class PetDbssHandler(PreviewHandler):
             (cols.get("acquireType", "Acquire Type"), "num", ""),
             (cols.get("equipSkillId", "Equip Skill ID"), "num", ""),
             (cols.get("grade", "Grade"), "", ""),
-            (cols.get("iconPath", "Icon Path"), "", ""),
         ]
         rows = [
             [
                 e(r["pet_id"]),
+                icon_cell(r["icon_path"]),
                 e(r["display_name"]),
                 e(r["species"]),
                 e(r["tier"]),
@@ -154,7 +155,6 @@ class PetDbssHandler(PreviewHandler):
                 e(r["acquire_type_id"]),
                 e(r["equip_skill_id"]),
                 e(r["grade_name"] or "-"),
-                e(r["icon_path"]),
             ]
             for r in slice_
         ]

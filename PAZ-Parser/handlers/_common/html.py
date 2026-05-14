@@ -23,6 +23,24 @@ def color_cell(colors: list[str]) -> str:
     return " ".join(parts)
 
 
+def icon_cell(path: object, image_src: str | None = None) -> str:
+    icon_path = str(path).strip()
+    if not icon_path:
+        return "-"
+
+    escaped_path = e(icon_path)
+    thumb = '<span class="icon-cell-thumb icon-cell-placeholder" aria-hidden="true"></span>'
+    if image_src:
+        thumb = f'<img class="icon-cell-thumb" src="{e(image_src)}" alt="" loading="lazy">'
+
+    return (
+        f'<span class="icon-cell" title="{escaped_path}" data-icon-path="{escaped_path}">'
+        f'{thumb}'
+        f'<span class="icon-cell-path">{escaped_path}</span>'
+        f'</span>'
+    )
+
+
 def debug_cell(fields: dict[str, int], highlight_offset: int) -> str:
     parts: list[str] = []
 

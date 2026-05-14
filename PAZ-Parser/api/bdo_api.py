@@ -49,6 +49,9 @@ _LOC_LANG_MAP: dict[str, tuple[str, ...] | None] = {
     "kr": None,
 }
 _VALID_LANGUAGES = frozenset(_LOC_LANG_MAP)
+_DEFAULT_TABLE_ROW_HEIGHT = 27
+_MIN_TABLE_ROW_HEIGHT = 20
+_MAX_TABLE_ROW_HEIGHT = 64
 
 
 def _count_entries(node: dict) -> int:
@@ -61,6 +64,14 @@ def _count_entries(node: dict) -> int:
     return total
 
 
+def _table_row_height(value: object) -> int:
+    try:
+        height = int(value)
+    except (TypeError, ValueError):
+        height = _DEFAULT_TABLE_ROW_HEIGHT
+    return max(_MIN_TABLE_ROW_HEIGHT, min(_MAX_TABLE_ROW_HEIGHT, height))
+
+
 class Api(PreviewMixin, SearchMixin):
     def __init__(self, profile: bool = False, server: Any | None = None) -> None:
         self._profile = profile
@@ -69,6 +80,9 @@ class Api(PreviewMixin, SearchMixin):
         self._paz_root: Path | None = None
         self._entries: list[PazEntry] = []
         self._entry_map: dict[str, PazEntry] = {}
+        self._entry_map_lower: dict[str, PazEntry] = {}
+        self._icon_entry_cache: dict[str, PazEntry | None] = {}
+        self._icon_data_url_cache: dict[str, str] = {}
         self._tree_data: dict = {}
         self._disk_companions: dict[str, bytes] = {}
         self._status = "Open a PAZ folder to begin."
@@ -148,18 +162,24 @@ class Api(PreviewMixin, SearchMixin):
         return {
             "paz_path": cfg.get("last_folder", ""),
             "language": cfg.get("language", "en"),
+            "table_row_height": _table_row_height(cfg.get("table_row_height")),
         }
 
-    def save_settings(self, paz_path: str, language: str) -> dict:
+    def save_settings(self, paz_path: str, language: str, table_row_height: int | None = None) -> dict:
         if language not in _VALID_LANGUAGES:
             return {"ok": False, "error": f"Invalid language: {language}"}
         old_cfg = _load_config()
-        _save_config({"last_folder": paz_path, "language": language})
+        row_height = _table_row_height(table_row_height)
+        _save_config({
+            "last_folder": paz_path,
+            "language": language,
+            "table_row_height": row_height,
+        })
         self._reload_loc(language)
         if paz_path != old_cfg.get("last_folder", "") and Path(paz_path).is_dir():
             self._paz_root = Path(paz_path)
             threading.Thread(target=self._load_entries, daemon=True).start()
-        return {"ok": True}
+        return {"ok": True, "table_row_height": row_height}
 
     def _reload_loc(self, language: str) -> None:
         from _common.loc import init_loc  # noqa: PLC0415
@@ -211,6 +231,9 @@ class Api(PreviewMixin, SearchMixin):
 
             self._entries = entries
             self._entry_map = {_norm(e.internal_path): e for e in entries}
+            self._entry_map_lower = {path.lower(): entry for path, entry in self._entry_map.items()}
+            self._icon_entry_cache.clear()
+            self._icon_data_url_cache.clear()
             self._tree_data = self._build_tree_data(entries)
             self._load_disk_companions()
             self._push_status(msg)

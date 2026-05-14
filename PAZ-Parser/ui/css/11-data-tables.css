@@ -55,10 +55,38 @@
 }
 
 .data-table td {
-  padding: 4px 10px;
   border-bottom: 1px solid var(--surface3);
   color: var(--fg2);
   font-family: inherit;
+  height: var(--table-row-height);
+  padding: 0 10px;
+  vertical-align: middle;
+}
+
+.icon-cell {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+  min-width: 0;
+}
+
+.icon-cell-thumb {
+  border-radius: 3px;
+  flex: 0 0 auto;
+  height: calc(var(--table-row-height) - 4px);
+  object-fit: contain;
+  width: calc(var(--table-row-height) - 4px);
+}
+
+.icon-cell-placeholder {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04)),
+    var(--surface2);
+  border: 1px solid var(--border);
+}
+
+.icon-cell-path {
+  min-width: 0;
 }
 
 .data-table tbody tr:nth-child(even) td {

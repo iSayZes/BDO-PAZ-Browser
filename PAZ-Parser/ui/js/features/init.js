@@ -15,6 +15,7 @@ export const initMethods = {
 
     await loadLang(settings.language ?? "en");
     applyTranslations();
+    this._applyTableRowHeight(settings.table_row_height);
 
     this._setupDividers();
     this._setupOutputPathSave();

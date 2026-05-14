@@ -101,6 +101,7 @@ export const extractionMethods = {
     const content = document.getElementById("preview-content");
     content.innerHTML = this._parsedHtml || "";
     this._initTableSort(content);
+    this._initTableIcons(content);
     this._setPageBar(this._parsedTotalPages > 1 ? this._buildPageBar("parsed", 0, this._parsedTotalPages) : null);
   },
 };

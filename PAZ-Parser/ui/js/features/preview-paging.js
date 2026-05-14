@@ -60,6 +60,7 @@ export const previewPagingMethods = {
     content.innerHTML = result.html;
     this._scrollPreviewToTop();
     this._initTableSort(content);
+    this._initTableIcons(content);
     this._setPageBar(this._buildPageBar("parsed", page, this._parsedTotalPages));
   },
 

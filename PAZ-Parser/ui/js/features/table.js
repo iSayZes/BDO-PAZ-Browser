@@ -9,6 +9,65 @@ export const tableMethods = {
     });
   },
 
+  _initTableIcons(container) {
+    const cells = [...container.querySelectorAll(".icon-cell[data-icon-path]")];
+    if (!cells.length) return;
+
+    if (!this._iconUrlCache) {
+      this._iconUrlCache = new Map();
+    }
+
+    if (!this._iconObserver) {
+      this._iconObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          this._iconObserver.unobserve(entry.target);
+          this._loadIconCell(entry.target);
+        });
+      }, {
+        root: document.getElementById("preview-content"),
+        rootMargin: "128px",
+      });
+    }
+
+    cells.forEach((cell) => {
+      if (cell.dataset.iconObserved === "1") return;
+      cell.dataset.iconObserved = "1";
+      this._iconObserver.observe(cell);
+    });
+  },
+
+  async _loadIconCell(cell) {
+    const path = cell.dataset.iconPath;
+    if (!path || cell.dataset.iconLoaded === "1") return;
+    cell.dataset.iconLoaded = "1";
+
+    let url = this._iconUrlCache.get(path);
+    if (url === undefined) {
+      const result = await window.pywebview.api.get_icon_data_url(path);
+      url = result?.url || "";
+      this._iconUrlCache.set(path, url);
+    }
+
+    if (!url) {
+      cell.classList.add("icon-cell-missing");
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.className = "icon-cell-thumb";
+    img.src = url;
+    img.alt = "";
+    img.loading = "lazy";
+
+    const thumb = cell.querySelector(".icon-cell-thumb");
+    if (thumb) {
+      thumb.replaceWith(img);
+    } else {
+      cell.prepend(img);
+    }
+  },
+
   _sortTable(th, colIdx) {
     const table = th.closest("table");
     const tbody = table.querySelector("tbody");

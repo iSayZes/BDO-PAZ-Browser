@@ -203,6 +203,7 @@ export const treeMethods = {
         if (result.html) {
           this._initStreamThumbnails(content);
           this._initTableSort(content);
+          this._initTableIcons(content);
           this._setPageBar(null);
         } else {
           this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", 0, this._hexTotalPages) : null);
@@ -244,6 +245,7 @@ export const treeMethods = {
     } else {
       content.innerHTML = this._parsedHtml || "";
       this._initTableSort(content);
+      this._initTableIcons(content);
       this._setPageBar(this._parsedTotalPages > 1 ? this._buildPageBar("parsed", this._parsedPage, this._parsedTotalPages) : null);
       if (this._isAltView) {
         this.showTabSearchBar(false);

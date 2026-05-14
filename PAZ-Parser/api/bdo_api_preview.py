@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import io
 import time
 from pathlib import Path
 
@@ -22,10 +24,81 @@ from bdo_preview import (
 
 _hex_handler = HexHandler()
 _HEX_BYTES_PER_PAGE = HEX_ROWS_PER_PAGE * 16
+_IMAGE_DATA_MIME_BY_EXT = {
+    ".gif": "image/gif",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+}
 
 
 class PreviewMixin:
     """Preview assembly, entry loading, hex/parsed paging, and export methods."""
+
+    def _resolve_icon_entry(self, icon_path: str) -> PazEntry | None:
+        norm = _norm(icon_path).strip().lstrip("/")
+        if not norm:
+            return None
+
+        cache = getattr(self, "_icon_entry_cache", None)
+        if cache is not None and norm in cache:
+            return cache[norm]
+
+        entry = self._entry_map.get(norm)
+        if entry is None:
+            lower_map = getattr(self, "_entry_map_lower", {})
+            entry = lower_map.get(norm.lower())
+
+        if entry is None:
+            suffix = norm.lower()
+            lower_map = getattr(self, "_entry_map_lower", {})
+            for key, candidate in lower_map.items():
+                if key.endswith(suffix):
+                    entry = candidate
+                    break
+
+        if cache is not None:
+            cache[norm] = entry
+        return entry
+
+    def get_icon_data_url(self, icon_path: str) -> dict:
+        norm = _norm(icon_path).strip()
+        if not norm:
+            return {"error": "Icon path is empty"}
+
+        cache = getattr(self, "_icon_data_url_cache", None)
+        if cache is not None and norm in cache:
+            return {"url": cache[norm]}
+
+        entry = self._resolve_icon_entry(norm)
+        if entry is None:
+            return {"error": f"Icon entry not found: {icon_path}"}
+
+        try:
+            data = self.read_entry(entry.internal_path)
+            ext = Path(entry.internal_path).suffix.lower()
+            mime = _IMAGE_DATA_MIME_BY_EXT.get(ext)
+            if mime is not None:
+                b64 = base64.b64encode(data).decode("ascii")
+                url = f"data:{mime};base64,{b64}"
+            else:
+                try:
+                    from PIL import Image
+                except ImportError:
+                    return {"error": "Pillow not installed"}
+
+                img = Image.open(io.BytesIO(data)).convert("RGBA")
+                img.thumbnail((64, 64))
+                buf = io.BytesIO()
+                img.save(buf, format="PNG")
+                b64 = base64.b64encode(buf.getvalue()).decode("ascii")
+                url = f"data:image/png;base64,{b64}"
+        except Exception as ex:
+            return {"error": str(ex)}
+
+        if cache is not None:
+            cache[norm] = url
+        return {"url": url}
 
     def _build_entry_response(
         self,

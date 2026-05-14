@@ -79,7 +79,8 @@
   border-color: var(--accent);
 }
 
-#settings-language {
+#settings-language,
+#settings-table-row-height {
   background: var(--surface2);
   border: 1px solid var(--border2);
   color: var(--fg);
@@ -91,8 +92,21 @@
   cursor: pointer;
   width: 100%;
 }
-#settings-language:focus {
+#settings-language:focus,
+#settings-table-row-height:focus {
   border-color: var(--accent);
+}
+
+.settings-row-height {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.settings-unit {
+  color: var(--fg-muted);
+  font-size: 12px;
+  min-width: 20px;
 }
 
 .settings-footer {

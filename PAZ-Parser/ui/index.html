@@ -130,6 +130,11 @@
             <option value="ru">Русский</option>
             <option value="kr">한국어</option>
           </select>
+          <label class="settings-label" data-i18n="settings.tableRowHeight">Table Row Height</label>
+          <div class="settings-row-height">
+            <input id="settings-table-row-height" type="number" min="20" max="64" step="1" />
+            <span class="settings-unit">px</span>
+          </div>
         </div>
         <div class="settings-footer">
           <button onclick="app.closeSettings()" data-i18n="settings.cancel">Cancel</button>

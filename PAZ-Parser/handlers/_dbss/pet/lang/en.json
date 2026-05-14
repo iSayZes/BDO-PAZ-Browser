@@ -9,7 +9,7 @@
     "acquireType": "Acquire Type",
     "equipSkillId": "Equip Skill ID",
     "grade": "Grade",
-    "iconPath": "Icon Path"
+    "icon": "Icon"
   },
   "grades": {
     "5": "Special",

@@ -45,6 +45,7 @@ from .pet.handler import (
 )
 from .petaction.handler import PetActionHandler, PetActionOffsetHandler
 from .petexp.handler import PetExpHandler, PetExpOffsetHandler
+from .petskill.handler import PetSkillHandler, PetSkillOffsetHandler
 
 
 def register_dbss_handlers() -> None:
@@ -87,3 +88,5 @@ def register_dbss_handlers() -> None:
     register_handler("petaction.dbss", PetActionHandler())
     register_handler("petexpoffset.dbss", PetExpOffsetHandler())
     register_handler("petexp.dbss", PetExpHandler())
+    register_handler("petskilloffset.dbss", PetSkillOffsetHandler())
+    register_handler("petskill.dbss", PetSkillHandler())

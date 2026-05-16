@@ -10,6 +10,7 @@ Example:
 str_type: 1, str_id1: 44, str_id4: 0  →  "Stoneback Crab Artisan"
 str_type: 7, str_id1: 1,  str_id4: 0  →  "Hammer"
 str_type: 54, str_id1: 40012          →  "Thank you! I really like this."
+str_type: 71, str_id1: 47, str_id3: 12 →  "Guile"
 ```
 
 ## Graph
@@ -29,6 +30,7 @@ str_type: 54, str_id1: 40012          →  "Thank you! I really like this."
 - [titlebufflist.dbss](titlebufflist_dbss.md) — title effects tooltip (str_type=37)
 - [journalquest.dbss](journalquest_dbss.md) — journal quest adventure log metadata (str_type=63, str_id1=group_id) and page titles/story text (str_type=18, str_id1=journal_cat_id)
 - [petaction.dbss](petaction_dbss.md) — pet action labels (str_type=19, str_id1=action_id)
+- [employeename.dbss](employeename_dbss.md) — employee names (str_type=71, str_id1=employee_name_id, str_id3=12)
 
 ---
 
@@ -87,6 +89,7 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 39       | Audio voice lines                                                                           |
 | 54       | NPC gift/confession response dialogue — `str_id1` = NPC ID                                  |
 | 63       | Journal quest adventure log metadata — `str_id1` = group_id, `str_id2` = entry_no           |
+| 71       | Employee names — `str_id1` = `employeename.dbss` employee_name_id, `str_id3` = 12           |
 
 The parsed preview labels confirmed and useful provisional types. Unconfirmed
 types are shown as `Unknown`.
@@ -141,12 +144,12 @@ Type 18 is shared by regular quests and journal quest (adventure log) pages. The
 
 Type 19 stores localized pet action labels keyed by `action_id`.
 
-| Field     | Value                                 |
-| --------- | ------------------------------------- |
-| `str_id1` | `action_id` from `petaction.dbss`     |
-| `str_id2` | Observed `0`                          |
-| `str_id3` | Observed `0`                          |
-| `str_id4` | Observed `0`                          |
+| Field     | Value                             |
+| --------- | --------------------------------- |
+| `str_id1` | `action_id` from `petaction.dbss` |
+| `str_id2` | Observed `0`                      |
+| `str_id3` | Observed `0`                      |
+| `str_id4` | Observed `0`                      |
 
 Observed English labels:
 
@@ -174,18 +177,18 @@ Type 22 stores worker skill display text keyed by skill ID. `str_id4` selects th
 | `str_id3` | Observed `0`                         |
 | `str_id4` | Sub-field selector (see table below) |
 
-| str_id4 | Meaning           | Example              |
-| ------- | ----------------- | -------------------- |
-| 0       | Skill name        | `"Wings C"`          |
+| str_id4 | Meaning           | Example                |
+| ------- | ----------------- | ---------------------- |
+| 0       | Skill name        | `"Wings C"`            |
 | 1       | Skill description | `"Movement Speed +6%"` |
 
 Observed English examples:
 
-| str_id1 | str_id4=0 | str_id4=1            |
-| ------- | --------- | -------------------- |
-| 1603    | Wings C   | Movement Speed +6%   |
-| 1602    | Wings B   | Movement Speed +8%   |
-| 1601    | Wings A   | Movement Speed +11%  |
+| str_id1 | str_id4=0 | str_id4=1           |
+| ------- | --------- | ------------------- |
+| 1603    | Wings C   | Movement Speed +6%  |
+| 1602    | Wings B   | Movement Speed +8%  |
+| 1601    | Wings A   | Movement Speed +11% |
 
 ### Type 63 — journal quest metadata (`journalquest.dbss`)
 
@@ -207,9 +210,26 @@ Type 63 stores localized Adventure Log / journal metadata keyed by the journal g
 
 Some journal groups do not have unlock-condition rows (`str_id4=2`), and placeholder group 8 may have no type 63 rows.
 
-## Example
+### Type 71 — employee names (`employeename.dbss`)
 
-str_type: 1, str_id1: 218, text: "Mudskipper Enthusiast"
+Type 71 stores localized employee display names keyed by `employee_name_id`.
+
+| Field     | Value                                       |
+| --------- | ------------------------------------------- |
+| `str_id1` | `employee_name_id` from `employeename.dbss` |
+| `str_id2` | Observed `0`                                |
+| `str_id3` | Observed `12`                               |
+| `str_id4` | Observed `0`                                |
+
+Observed English examples:
+
+| employee_name_id | Text      |
+| ---------------- | --------- |
+| 1                | Philav    |
+| 15               | Neil Moss |
+| 34               | Pilgrave  |
+| 47               | Guile     |
+| 60               | Tails     |
 
 ## Suggested UI Layout
 

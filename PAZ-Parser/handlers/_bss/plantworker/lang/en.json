@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "workerId": "Worker ID",
+    "name": "Name",
+    "nextWorkerId": "Next Tier",
+    "moveSpeed": "Move",
+    "stamina": "Stamina",
+    "luck": "Luck",
+    "baseWorkSpeed": "Work Speed",
+    "icon": "Icon"
+  }
+}

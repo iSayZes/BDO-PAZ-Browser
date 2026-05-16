@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "acquireTypeId": "Acquire Type ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size",
+    "recordStart": "Record Start"
+  },
+  "columns": {
+    "acquireTypeId": "Acquire Type ID",
+    "activeEntries": "Active Entries",
+    "maxCost": "Max Cost",
+    "costTable": "Cost Table"
+  }
+}

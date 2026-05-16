@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "skillId": "Skill ID",
+    "icon": "Icon",
+    "name": "Name",
+    "description": "Description",
+    "weight": "Weight",
+    "effectType": "Effect Type",
+    "target": "Target",
+    "effectA": "Effect A",
+    "effectB": "Effect B"
+  }
+}

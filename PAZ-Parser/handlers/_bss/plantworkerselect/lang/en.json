@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "selectionId": "Selection ID",
+    "selectionName": "Selection Name",
+    "workerId": "Worker ID",
+    "workerName": "Worker Name",
+    "hireCost": "Hire Cost"
+  }
+}

@@ -31,6 +31,7 @@ str_type: 71, str_id1: 47, str_id3: 12 →  "Guile"
 - [journalquest.dbss](journalquest_dbss.md) — journal quest adventure log metadata (str_type=63, str_id1=group_id) and page titles/story text (str_type=18, str_id1=journal_cat_id)
 - [petaction.dbss](petaction_dbss.md) — pet action labels (str_type=19, str_id1=action_id)
 - [employeename.dbss](employeename_dbss.md) — employee names (str_type=71, str_id1=employee_name_id, str_id3=12)
+- [plantworkerselect.bss](plantworkerselect_bss.md) — town/node selection names (str_type=17, str_id1=selection_id)
 
 ---
 
@@ -80,6 +81,7 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 12       | Region/area names such as O'dyllita, Mountain of Eternal Winter, Valencia                   |
 | 15       | Emote/pose/placeable interaction names                                                      |
 | 16       | House/facility type names                                                                   |
+| 17       | Town/node names — `str_id1` = selection_id from `plantworkerselect.bss`                     |
 | 18       | Quest and journal page text; two key domains share this type — see Type 18 sub-fields below |
 | 19       | Pet action labels — `str_id1` = `petaction.dbss` action_id                                  |
 | 22       | Worker skill names and descriptions — `str_id1` = skill ID, `str_id4` selects sub-field     |
@@ -107,6 +109,27 @@ types are shown as `Unknown`.
 | ------- | ----------------- | ------------------------------------- |
 | 0       | Sign name         | `"Hammer"`                            |
 | 1       | Trait description | `"Brave, Conservative, Hot-Blooded."` |
+
+### Type 17 — town/node names (`plantworkerselect.bss`)
+
+Type 17 stores localized town and node names used as worker-selection locations.
+
+| Field     | Value                                          |
+| --------- | ---------------------------------------------- |
+| `str_id1` | `selection_id` from `plantworkerselect.bss`    |
+| `str_id2` | Observed `0`                                   |
+| `str_id3` | Observed `0`                                   |
+| `str_id4` | Observed `0`                                   |
+
+Observed English examples:
+
+| str_id1 | Text                   |
+| ------- | ---------------------- |
+| 5       | Velia                  |
+| 32      | Heidel                 |
+| 77      | Calpheon City          |
+| 735     | Grana                  |
+| 1444    | Bukpo                  |
 
 ### Type 18 — two domains
 

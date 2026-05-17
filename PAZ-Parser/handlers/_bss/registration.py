@@ -3,17 +3,20 @@ from __future__ import annotations
 from bdo_preview import register_handler
 
 from .allquestlist.handler import AllQuestListBssHandler
+from .exploration.handler import ExplorationBssHandler
 from .newquest.handler import NewQuestBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .plantworker.handler import PlantWorkerBssHandler
 from .plantworkerpassiveskill.handler import PlantWorkerPassiveSkillBssHandler
 from .plantworkerselect.handler import PlantWorkerSelectBssHandler
+from .planttown.handler import PlantTownBssHandler
 from .titlecategory.handler import TitleCategoryBssHandler
 from .zodiacsignindex.handler import ZodiacSignIndexHandler
 
 
 def register_bss_handlers() -> None:
     register_handler("allquestlist.bss", AllQuestListBssHandler())
+    register_handler("exploration.bss", ExplorationBssHandler())
     register_handler("newquest.bss", NewQuestBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("plantworker.bss", PlantWorkerBssHandler())
@@ -22,5 +25,6 @@ def register_bss_handlers() -> None:
         PlantWorkerPassiveSkillBssHandler(),
     )
     register_handler("plantworkerselect.bss", PlantWorkerSelectBssHandler())
+    register_handler("planttown.bss", PlantTownBssHandler())
     register_handler("titlecategory.bss", TitleCategoryBssHandler())
     register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())

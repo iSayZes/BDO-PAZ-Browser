@@ -32,6 +32,7 @@ str_type: 71, str_id1: 47, str_id3: 12 →  "Guile"
 - [petaction.dbss](petaction_dbss.md) — pet action labels (str_type=19, str_id1=action_id)
 - [employeename.dbss](employeename_dbss.md) — employee names (str_type=71, str_id1=employee_name_id, str_id3=12)
 - [plantworkerselect.bss](plantworkerselect_bss.md) — town/node selection names (str_type=17, str_id1=selection_id)
+- [planttown.bss](planttown_bss.md) — town/node names (str_type=29, str_id1=node_id)
 
 ---
 
@@ -86,6 +87,7 @@ Next record starts at: `+0x10 + str_size * 2 + 4`
 | 19       | Pet action labels — `str_id1` = `petaction.dbss` action_id                                  |
 | 22       | Worker skill names and descriptions — `str_id1` = skill ID, `str_id4` selects sub-field     |
 | 25       | Quest chain/group names — `str_id1` = chain/group ID (matches `questgroup.dbss` group_id)   |
+| 29       | Town/node names — `str_id1` = node_id from `planttown.bss`; `str_id4` selects sub-field      |
 | 34       | Knowledge entry names — `str_id1` = knowledge_id / entry_id                                 |
 | 37/38    | Other systems                                                                               |
 | 39       | Audio voice lines                                                                           |
@@ -212,6 +214,32 @@ Observed English examples:
 | 1603    | Wings C   | Movement Speed +6%  |
 | 1602    | Wings B   | Movement Speed +8%  |
 | 1601    | Wings A   | Movement Speed +11% |
+
+### Type 29 — town/node names (`planttown.bss`)
+
+Type 29 stores localized town and node display text keyed by node ID. `planttown.bss` uses `str_id4=0` as the user-facing node name.
+
+| Field     | Value                                |
+| --------- | ------------------------------------ |
+| `str_id1` | `node_id` from `planttown.bss`       |
+| `str_id2` | Observed `0`                         |
+| `str_id3` | Observed `0`                         |
+| `str_id4` | Sub-field selector (see table below) |
+
+| str_id4 | Meaning                  | Example       |
+| ------- | ------------------------ | ------------- |
+| 0       | Node display name        | `"Velia"`     |
+| 1       | Node category/descriptor | `"This is a city."` |
+
+Observed English examples:
+
+| str_id1 | str_id4=0              | str_id4=1         |
+| ------- | ---------------------- | ----------------- |
+| 1785    | Nampo's Moodle Village | A normal node.    |
+| 1623    | Grána                  | A normal node.    |
+| 1301    | Valencia City          | This is a city.   |
+| 601     | Calpheon               | This is a city.   |
+| 1       | Velia                  | This is a city.   |
 
 ### Type 63 — journal quest metadata (`journalquest.dbss`)
 

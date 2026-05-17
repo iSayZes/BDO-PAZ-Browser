@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "knowledgeId": "Knowledge ID",
+    "knowledgeName": "Knowledge Name",
+    "groupId": "Group ID",
+    "enabled": "Enabled",
+    "anchorId": "Anchor ID",
+    "radius": "Radius"
+  }
+}

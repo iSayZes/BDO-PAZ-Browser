@@ -113,24 +113,6 @@ def _parse_fixed_strings(data: bytes, offset: int) -> tuple[str, str, str, int] 
     return condition_script, action_script, objective_text_kr, pos
 
 
-def looks_like_quest_start(data: bytes, offset: int) -> bool:
-    if offset + 24 > len(data):
-        return False
-
-    quest_id = _u32(data, offset)
-    if quest_id == 0 or quest_id > 10_000_000:
-        return False
-
-    if _u32(data, offset + 4) != quest_id:
-        return False
-
-    if _u32(data, offset + 8) != 0:
-        return False
-
-    parsed = _parse_fixed_strings(data, offset)
-    return parsed is not None
-
-
 def _looks_like_relaxed_quest_start(data: bytes, offset: int) -> bool:
     if offset + 24 > len(data):
         return False
@@ -157,36 +139,16 @@ def _find_record_start_before_icon(data: bytes, start: int, end: int) -> int | N
     return None
 
 
-def _find_next_start(data: bytes, start: int) -> int:
-    offset = start + (start & 1)
-    while offset + 24 <= len(data):
-        if looks_like_quest_start(data, offset):
-            return offset
-        offset += 2
-    return len(data)
-
-
 def build_quest_index(data: bytes) -> QuestIndex:
     if len(data) < 4:
         return QuestIndex(0, [], [], [], [], [])
 
     declared_count = _u32(data, 0)
-    sequential_starts: list[int] = []
-    offset = 4
-
-    while len(sequential_starts) < declared_count and offset + 24 <= len(data):
-        if not looks_like_quest_start(data, offset):
-            break
-
-        sequential_starts.append(offset)
-        parsed = _parse_fixed_strings(data, offset)
-        next_scan_start = parsed[3] if parsed is not None else offset + 24
-        next_offset = _find_next_start(data, max(next_scan_start, offset + 24))
-        if next_offset <= offset or next_offset >= len(data):
-            break
-        offset = next_offset
-
     icons = list(_ICON_RE.finditer(data))
+
+    if not icons:
+        return QuestIndex(declared_count, [], [], [], [], [])
+
     record_starts: list[int | None] = []
     icon_paths: list[str] = []
     canonical_quest_ids: list[int] = []
@@ -196,11 +158,6 @@ def build_quest_index(data: bytes) -> QuestIndex:
         record_starts.append(_find_record_start_before_icon(data, window_start, icon.start()))
         icon_paths.append(icon.group(0).decode("ascii", errors="replace"))
         canonical_quest_ids.append(_canonical_quest_id(data, window_start, icon.start()))
-
-    if not record_starts:
-        record_starts = list(sequential_starts)
-        icon_paths = [""] * len(record_starts)
-        canonical_quest_ids = [0] * len(record_starts)
 
     record_ends: list[int] = []
     for index, start in enumerate(record_starts):

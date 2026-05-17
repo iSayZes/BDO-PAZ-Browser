@@ -19,8 +19,8 @@
       <div id="sidebar">
         <div id="search-bar">
           <span class="search-icon">🔍</span>
-          <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" data-i18n-placeholder="sidebar.filterFiles" />
-          <button id="btn-content-search" data-i18n-title="sidebar.searchInFilesTitle" title="Search in file contents" onclick="app.toggleContentSearch()" data-i18n="sidebar.searchInFiles">Search in all files</button>
+          <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" data-i18n-placeholder="sidebar.filterFiles" disabled />
+          <button id="btn-content-search" data-i18n-title="sidebar.searchInFilesTitle" title="Search in file contents" onclick="app.toggleContentSearch()" data-i18n="sidebar.searchInFiles" disabled>Search in all files</button>
         </div>
         <div id="content-search-bar" hidden>
           <div class="csb-row">

@@ -6,7 +6,11 @@ export const treeMethods = {
   async _loadTreeRoot() {
     this._inSearch = false;
     this._clearExtractSelection();
-    document.getElementById("search").value = "";
+    const searchEl = document.getElementById("search");
+    const contentSearchBtn = document.getElementById("btn-content-search");
+    searchEl.value = "";
+    searchEl.disabled = true;
+    contentSearchBtn.disabled = true;
     const tree = document.getElementById("tree");
     tree.innerHTML = "";
     tree.appendChild(this._buildTreeLoadingNode());
@@ -16,6 +20,8 @@ export const treeMethods = {
     for (const item of children) {
       tree.appendChild(this._buildNode(item));
     }
+    searchEl.disabled = false;
+    contentSearchBtn.disabled = false;
   },
 
   _buildTreeLoadingNode() {

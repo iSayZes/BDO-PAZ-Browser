@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "acquireTypeId": "Acquire Type ID",
+    "group": "Group",
+    "tier": "Tier",
+    "sub0CostA": "Sub[0] Cost A",
+    "sub0CostC": "Sub[0] Cost C",
+    "costTable": "Cost Table"
+  },
+  "offsetColumns": {
+    "acquireTypeId": "Acquire Type ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size",
+    "recordStart": "Record Start"
+  }
+}

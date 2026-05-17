@@ -46,6 +46,10 @@ from .pet.handler import (
 from .petaction.handler import PetActionHandler, PetActionOffsetHandler
 from .petexp.handler import PetExpHandler, PetExpOffsetHandler
 from .petskill.handler import PetSkillHandler, PetSkillOffsetHandler
+from .petequipskillaquire.handler import (
+    PetEquipSkillAcquireHandler,
+    PetEquipSkillAcquireOffsetHandler,
+)
 from .fairyequipskillaquire.handler import (
     FairyEquipSkillAcquireHandler,
     FairyEquipSkillAcquireOffsetHandler,
@@ -95,6 +99,11 @@ def register_dbss_handlers() -> None:
     register_handler("petexp.dbss", PetExpHandler())
     register_handler("petskilloffset.dbss", PetSkillOffsetHandler())
     register_handler("petskill.dbss", PetSkillHandler())
+    register_handler(
+        "petequipskillaquireoffset.dbss",
+        PetEquipSkillAcquireOffsetHandler(),
+    )
+    register_handler("petequipskillaquire.dbss", PetEquipSkillAcquireHandler())
     register_handler(
         "fairyequipskillaquireoffset.dbss",
         FairyEquipSkillAcquireOffsetHandler(),

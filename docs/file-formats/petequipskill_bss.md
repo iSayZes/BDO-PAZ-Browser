@@ -2,12 +2,12 @@
 
 ## Purpose
 
-Defines the equip-skill catalog for pets, keyed by `equip_skill_id` from `pet.dbss`. 88 distinct skill entries span two sections: Section 1 (regular-pet catalog, IDs 0–42) and Section 2 (extended catalog, IDs 15–104). Each entry records the skill's type group, tier marker, and a localization ID that resolves to the in-game skill name.
+Defines the equip-skill catalog for pets, keyed by `equip_skill_id` from `pet.dbss`. 116 skill entries span two sections: Section 1 (regular-pet catalog, IDs 0–42) and Section 2 (extended catalog, IDs 15–111). Each entry records the skill's type group, tier marker, and a localization ID that resolves to the in-game skill name and pet equip-skill icon number.
 
 Example:
 
 ```text
-equip_skill_id: 15  →  S2 type=4  loc=49061  "Fishing EXP +1%"
+equip_skill_id: 15  →  S2 type=4  loc=49061  "Skill EXP +1%"
 equip_skill_id: 91  →  S2 type=18 loc=49162  "Barter EXP +1%"
 equip_skill_id: 42  →  S1 type=20 loc=49089  "Knowledge Gain Chance Lv. 4"
 ```
@@ -25,6 +25,7 @@ equip_skill_id: 42  →  S1 type=20 loc=49089  "Knowledge Gain Chance Lv. 4"
 
 - [pet.dbss](pet_dbss.md) — `equip_skill_id` field keys into this file
 - Localization (`loc_id`) resolved via `loc-tool.py --type 10 --id <loc_id>`
+- Icon assets use the same numeric ID as `loc_id`: `ui_texture/icon/new_icon/08_servant_skill/02_pet/equipskill_{loc_id:08d}.dds`
 
 ---
 
@@ -68,18 +69,19 @@ Fifteen placeholder records for IDs 43–57 (currently unassigned). Each record 
 
 ---
 
-### Section 2 — Extended Pet Skills (188 × 16 bytes, offset `0x2F8`)
+### Section 2 — Extended Pet Skills (variable stream, offset `0x2F8`)
 
-Covers `equip_skill_id` 15–104 (Airiss and premium pets, plus overlap with Section 1). Stride = **16 bytes**. Records with `equip_skill_id = 200` are null placeholders.
+Covers `equip_skill_id` 15–111 (Airiss and premium pets, plus overlap with Section 1). Base stride = **16 bytes**. Records with `equip_skill_id = 200` are null placeholders. Records with `extra_flag = 1` carry an additional u32 after the base record.
 
 | Offset  | Type | Field         | Notes                                              |
 | ------- | ---- | ------------- | -------------------------------------------------- |
-| `+0x00` | u32  | equip_skill_id| Unique skill record key (15–104, or 200 = null)   |
+| `+0x00` | u32  | equip_skill_id| Unique skill record key (15–111, or 200 = null)   |
 | `+0x04` | u32  | skill_type    | Skill group (different numbering from Section 1)   |
 | `+0x08` | u8   | tier          | Always 1; purpose of field unclear                |
 | `+0x09` | u8   | —             | Always 0; padding                                 |
 | `+0x0A` | u16  | loc_id        | Localization key → skill name (type 10 string)    |
-| `+0x0C` | u32  | extra_flag    | Usually 0; occasionally 1 (IDs 65, 79, 104)       |
+| `+0x0C` | u32  | extra_flag    | Usually 0; 1 means an extra u32 follows           |
+| `+0x10` | u32  | extra_value   | Present only when `extra_flag = 1`                |
 
 ---
 
@@ -114,14 +116,13 @@ Covers `equip_skill_id` 15–104 (Airiss and premium pets, plus overlap with Sec
 
 | Equip skill IDs | Skill name (loc resolution)                      |
 | --------------- | ------------------------------------------------ |
-| 15–18           | Fishing EXP +1%, +2%, +3%, +5%                  |
-| 20–23           | Hunting EXP +1%, +2%, +3%, +5%                  |
-| 35–38           | Gathering EXP +1%, +2%, +3%, +5%                |
-| 40–42           | Hunting Speed +1, +2, +3                        |
-| 43              | Knowledge Gain Chance Lv. 4                     |
+| 15–18           | Skill EXP +1%, +2%, +3%, +4%                    |
+| 20–23           | Life EXP +1%, +2%, +3%, +4%                     |
+| 35–38           | Durability Reduction Resistance +1%–+4%         |
+| 40–43           | Normal and Higher Grade Knowledge Gain Chance   |
 | 51–54           | Tingling Breath II / II+ / II++ / II+++          |
-| 55–57           | Gathering EXP Boost I / II / III                |
-| 60–62           | Cooking EXP Boost I / II / III                  |
+| 55–57           | Weight Limit +20/+30/+40 LT                     |
+| 60–62           | Feathery Steps I / II / III                     |
 | 65              | Max HP +25  *(extra_flag = 1)*                  |
 | 70–74           | Combat EXP +1%, +2%, +3%, +4%, +5%              |
 | 75–78           | Death Penalty Resistance +1%, +3%, +5%, +4%     |
@@ -130,8 +131,7 @@ Covers `equip_skill_id` 15–104 (Airiss and premium pets, plus overlap with Sec
 | 87–90           | Sailing EXP +1%, +2%, +3%, +5%                  |
 | 91–94           | Barter EXP +1%, +2%, +3%, +5%                   |
 | 95–98           | Big Ship Inventory Weight +50/+75/+100/+150 LT  |
-| 99–103          | Single-tier extras (Skill EXP, Life EXP, etc.)  |
-| 104             | Max HP +125  *(extra_flag = 1)*                 |
+| 99–111          | Single-tier extras (Skill EXP, Life EXP, etc.)  |
 
 ---
 
@@ -139,7 +139,7 @@ Covers `equip_skill_id` 15–104 (Airiss and premium pets, plus overlap with Sec
 
 ```python
 def get_equip_skill(data, equip_skill_id):
-    # Section 2 preferred for IDs 15–104 (extended catalog)
+    # Section 2 preferred for IDs 15–111 (extended catalog)
     s2 = parse_section2(data)
     if equip_skill_id in s2:
         return s2[equip_skill_id]
@@ -158,10 +158,10 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 - `equip_skill_id = 200` in Section 2 records is a null placeholder; ignore these.
 - Section 1 tiers use 3 entries per skill type (high/mid/mid), ordered descending by tier value.
 - Section 2 tiers use 4 entries (e.g., +1%/+2%/+3%/+5%), also ordered ascending by value.
-- The `extra_flag` = 1 in Section 2 identifies at least 3 IDs (65, 79, 104); the semantic is unconfirmed — possibly marks Airiss-exclusive skills.
-- `skill_type` numbering is **independent** between sections — type 4 in S1 (Luck) ≠ type 4 in S2 (Fishing EXP).
-- Total file size: 3772 bytes = 4 (PABR) + 516 (S1) + 240 (null) + 3008 (S2) + 4 (trailing padding).
-- Localization IDs are in the range 49001–49175 for confirmed skills; use `loc-tool.py --type 10 --id <loc_id>` to resolve.
+- The `extra_flag` = 1 in Section 2 identifies several records (including IDs 65–68, 79–82, 104, and 107) and adds one trailing u32 `extra_value`; the semantic is unconfirmed — possibly marks Airiss-exclusive skills.
+- `skill_type` numbering is **independent** between sections — type 4 in S1 (Luck) ≠ type 4 in S2 (Skill EXP).
+- Total file size: 3772 bytes = 4 (PABR) + 516 (S1) + 240 (null) + variable Section 2 stream + 4 (trailing padding).
+- Localization IDs are in the range 49001–49176 for confirmed skills; use `loc-tool.py --type 10 --id <loc_id>` to resolve.
 - This file defines **which skills are available** (the catalog). The per-pet slot **costs** are defined separately in `petequipskillaquire.dbss` via `acquire_type_id`. The two cross-references in `pet.dbss` are independent.
 
 ---
@@ -172,6 +172,7 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 | -------------- | ---- | ----------------------------------------------------------- |
 | Equip Skill ID | num  | `equip_skill_id` (right-aligned)                           |
 | Skill Name     | text | Resolved from `loc_id` (type 10 string); fall back to raw  |
+| Icon           | Icon | `equipskill_<loc_id:08d>.dds`                              |
 | Skill Type     | num  | `skill_type` (group code)                                  |
 | Section        | text | "S1" or "S2" (indicates which catalog entry is used)       |
 
@@ -181,11 +182,11 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 
 ### ID overlap (15–42) across sections
 
-Skills 15–42 appear in both Section 1 and Section 2 with different loc IDs (S1: 3-tier e.g. Fishing EXP +5%, S2: 4-tier e.g. Fishing EXP +1%). The rule for which section to use for a given `equip_skill_id` is not confirmed. Hypothesis: Section 2 is for Airiss/premium pets; Section 1 for regular pets. Cross-referencing with which species use which IDs in `pet.dbss` would confirm.
+Skills 15–42 appear in both Section 1 and Section 2 with different loc IDs (S1: 3-tier e.g. Fishing EXP +5%, S2: 4-tier e.g. Skill EXP +1%). The rule for which section to use for a given `equip_skill_id` is not confirmed. Hypothesis: Section 2 is for Airiss/premium pets; Section 1 for regular pets. Cross-referencing with which species use which IDs in `pet.dbss` would confirm.
 
 ### `extra_flag` in Section 2
 
-Three Section 2 records have `extra_flag = 1` (IDs 65, 79, 104). The semantic is unknown. Candidates: Airiss-exclusive flag, skill incompatibility marker, or unlock requirement.
+Several Section 2 records have `extra_flag = 1` and a trailing `extra_value`. Known IDs include 65–68, 79–82, 104, and 107. The semantic is unknown. Candidates: Airiss-exclusive flag, skill incompatibility marker, alternate skill group, or unlock requirement.
 
 ### `skill_type` semantic
 

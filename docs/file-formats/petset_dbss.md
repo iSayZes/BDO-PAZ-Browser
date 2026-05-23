@@ -29,9 +29,9 @@ count: 0
 
 ## Companion Files
 
-| File                 | Required | Role                                                      |
-| -------------------- | -------- | --------------------------------------------------------- |
-| `petsetoffset.dbss`  | Optional | Empty offset companion; currently mirrors zero row count  |
+| File                | Required | Role                                                     |
+| ------------------- | -------- | -------------------------------------------------------- |
+| `petsetoffset.dbss` | Optional | Empty offset companion; currently mirrors zero row count |
 
 All multi-byte values are little-endian.
 
@@ -41,8 +41,8 @@ All multi-byte values are little-endian.
 
 ### Header (4 bytes)
 
-| Offset  | Type | Field | Notes                       |
-| ------- | ---- | ----- | --------------------------- |
+| Offset  | Type | Field | Notes                         |
+| ------- | ---- | ----- | ----------------------------- |
 | `+0x00` | u32  | count | Number of records; observed 0 |
 
 No record stream follows when `count = 0`.
@@ -53,8 +53,8 @@ No record stream follows when `count = 0`.
 
 ### Header (4 bytes)
 
-| Offset  | Type | Field | Notes                       |
-| ------- | ---- | ----- | --------------------------- |
+| Offset  | Type | Field | Notes                                |
+| ------- | ---- | ----- | ------------------------------------ |
 | `+0x00` | u32  | count | Number of offset records; observed 0 |
 
 No offset records follow when `count = 0`.
@@ -72,5 +72,4 @@ an empty-state message with the zero count.
 
 - `petset.dbss` size: 4 bytes (`00 00 00 00`).
 - `petsetoffset.dbss` size: 4 bytes (`00 00 00 00`).
-- `tools/binary_probe.py` classifies both files as high-confidence empty DBSS files.
 - The file name suggests a pet grouping or set feature, but no current records are available to infer a record structure.

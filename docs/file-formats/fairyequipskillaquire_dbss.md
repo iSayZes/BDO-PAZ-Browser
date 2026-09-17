@@ -2,14 +2,16 @@
 
 ## Purpose
 
-Defines fairy equip-skill acquisition cost tables keyed by acquire type IDs `501` through `504`. Each record stores 14 three-field cost sub-entries. `fairyequipskillaquireoffset.dbss` provides the keyed lookup into the main file.
+Defines the **skill roll table** used when a fairy's skills are changed. Each record is one fairy grade and holds a weight for every skill in [fairyequipskill.bss](fairyequipskill_bss.md), expressed in parts-per-million. A weight of `0` means that grade cannot roll that skill.
+
+This is the data behind the "% chance to obtain the new skill" the game shows on the Change Skill window.
 
 Example:
 
 ```text
-acquire_type_id: 504
-sub[0]: 20000, 30000, 30000
-sub[9]: 100000, 0, 10000
+Radiant (504) → Miraculous Cheer V: weight 100000 = 10.0%
+Faint   (501) → Morning Star:       weight 250000 = 25.0%
+Faint   (501) → Tingling Breath II: weight 0      = cannot roll
 ```
 
 ## Graph
@@ -20,20 +22,23 @@ sub[9]: 100000, 0, 10000
 - dbss
 - fairy
 - equip skill
+- drop rate
 
 ### Connections
 
-- [fairyequipskillaquireoffset.dbss](#fairyequipskillaquireoffsetdbss) - keyed offset index
-- `fairyequipskill.bss` - related fairy equip-skill table; no direct key relationship to acquire type IDs `501`-`504` was confirmed
-- `fairyskillchange.dbss` - related fairy skill-change data; not required to parse this file
+- [fairyequipskill.bss](fairyequipskill_bss.md) — the skill catalog; weights are indexed by its `equip_skill_id`
+- [fairyequipskillaquireoffset.dbss](#fairyequipskillaquireoffsetdbss) — keyed offset index
+- [petequipskillaquire.dbss](petequipskillaquire_dbss.md) — identical record layout for pets
+- [fairyskillchange.dbss](fairyskillchange_dbss.md) — the Theiah's Orb cost of performing the reroll
 
 ---
 
 ## Companion Files
 
-| File                                 | Required | Role                                             |
-| ------------------------------------ | -------- | ------------------------------------------------ |
-| `fairyequipskillaquireoffset.dbss`   | Required | `acquire_type_id -> (data_offset, data_size)` index |
+| File                               | Required | Role                                                  |
+| ---------------------------------- | -------- | ----------------------------------------------------- |
+| `fairyequipskillaquireoffset.dbss` | Required | `acquire_type_id → (data_offset, data_size)` index    |
+| `fairyequipskill.bss`              | Optional | Resolves a weight's `equip_skill_id` to a skill name  |
 
 All multi-byte values are little-endian.
 
@@ -43,83 +48,87 @@ All multi-byte values are little-endian.
 
 ### Header (4 bytes)
 
-| Offset  | Type | Field | Notes                            |
-| ------- | ---- | ----- | -------------------------------- |
-| `+0x00` | u32  | count | Number of records; observed `4`  |
+| Offset  | Type | Field | Notes                           |
+| ------- | ---- | ----- | ------------------------------- |
+| `+0x00` | u32  | count | Number of records; observed `4` |
 
 ### Record (176 bytes, repeated `count` times)
 
-| Offset  | Type      | Field      | Notes                                        |
-| ------- | --------- | ---------- | -------------------------------------------- |
-| `+0x00` | u32       | packed_key | `(acquire_type_id << 16) \| acquire_type_id` |
-| `+0x04` | u32       | reserved   | Always `0` in observed records               |
-| `+0x08` | entry[14] | cost_table | 14 x 12-byte cost sub-entries                |
+| Offset  | Type    | Field      | Notes                                                 |
+| ------- | ------- | ---------- | ----------------------------------------------------- |
+| `+0x00` | u32     | packed_key | `(acquire_type_id << 16) \| acquire_type_id`          |
+| `+0x04` | u32[43] | weights    | Roll weight per `equip_skill_id`, in parts-per-million |
+
+`4 + 43 × 4 = 176` bytes exactly. `weights[i]` is the chance of rolling the skill whose `equip_skill_id` is `i`; index `0` is the first weight, **not** a reserved field.
 
 The first 2 bytes of each record are the file key prefix. The offset companion points to `record_start + 2`, so use `record_start = data_offset - 2` to read the full u32-aligned record.
 
-#### Cost Sub-entry (12 bytes x 14)
+---
 
-Each sub-entry starts at `+0x08 + index * 12`:
+## Acquire Type IDs — Fairy Grades
 
-| Offset  | Type | Field   | Notes                                   |
-| ------- | ---- | ------- | --------------------------------------- |
-| `+0x00` | u32  | cost_a  | Primary raw cost value; `0` if unused   |
-| `+0x04` | u32  | cost_b  | Secondary raw cost value; `0` if unused |
-| `+0x08` | u32  | cost_c  | Tertiary raw cost value; `0` if unused  |
+The four keys are the four fairy grades, ascending:
 
-Sub-entries 12 and 13 are all-zero in every observed record.
+| acquire_type_id | Fairy grade | Rollable skills | Max skill rank |
+| --------------- | ----------- | --------------- | -------------- |
+| `501`           | Faint       | 6               | I              |
+| `502`           | Glimmering  | 13              | III            |
+| `503`           | Brilliant   | 18              | IV             |
+| `504`           | Radiant     | 30              | V              |
+
+Every record's weights sum to exactly `1,000,000`, so each column below is a complete probability distribution.
 
 ---
 
-## Observed Records
+## Roll Chances
 
-| Acquire Type ID | Data Offset | Data Size | Non-zero Sub-entry Count | Notes                    |
-| --------------- | ----------- | --------- | ------------------------ | ------------------------ |
-| `504`           | `0x000006`  | `174`     | `12`                     | Most populated row       |
-| `503`           | `0x0000B6`  | `174`     | `9`                      | Uses mostly `50000`      |
-| `502`           | `0x000166`  | `174`     | `8`                      | Uses `70000`/`150000`    |
-| `501`           | `0x000216`  | `174`     | `5`                      | Sparse highest-cost row  |
+`—` means the grade cannot roll that skill.
 
-### Cost Matrix
+| equip_skill_id | Skill                  | Faint  | Glimmering | Brilliant | Radiant |
+| -------------- | ---------------------- | ------ | ---------- | --------- | ------- |
+| 0              | Tingling Breath I      | 15.0%  | 7.0%       | 5.0%      | 1.0%    |
+| 1              | Tingling Breath II     | —      | 7.0%       | 5.0%      | 2.0%    |
+| 2              | Tingling Breath III    | —      | —          | 5.0%      | 3.0%    |
+| 3              | Tingling Breath IV     | —      | —          | —         | 3.0%    |
+| 4              | Tingling Breath V      | —      | —          | —         | 3.0%    |
+| 5              | Feathery Steps I       | 15.0%  | 7.0%       | 5.0%      | 1.0%    |
+| 6              | Feathery Steps II      | —      | 7.0%       | 5.0%      | 2.0%    |
+| 7              | Feathery Steps III     | —      | —          | 5.0%      | 3.0%    |
+| 8              | Feathery Steps IV      | —      | —          | —         | 4.0%    |
+| 9              | Feathery Steps V       | —      | —          | —         | 5.0%    |
+| 10             | Fairy's Tear I         | 15.0%  | 7.0%       | 5.0%      | 2.0%    |
+| 11             | Fairy's Tear II        | —      | 7.0%       | 5.0%      | 3.0%    |
+| 12             | Fairy's Tear III       | —      | —          | 5.0%      | 4.0%    |
+| 13             | Fairy's Tear IV        | —      | —          | —         | 5.0%    |
+| 14             | Inexhaustible Well I   | 15.0%  | 7.0%       | 5.0%      | 1.0%    |
+| 15             | Inexhaustible Well II  | —      | 7.0%       | 5.0%      | 2.0%    |
+| 16             | Inexhaustible Well III | —      | 7.0%       | 5.0%      | 3.0%    |
+| 17             | Inexhaustible Well IV  | —      | —          | 5.0%      | 3.0%    |
+| 18             | Inexhaustible Well V   | —      | —          | —         | 4.0%    |
+| 19             | Morning Star           | 25.0%  | 15.0%      | 10.0%     | 3.0%    |
+| 24             | Miraculous Cheer I     | 15.0%  | 8.0%       | 5.0%      | 3.0%    |
+| 25             | Miraculous Cheer II    | —      | 7.0%       | 5.0%      | 4.0%    |
+| 26             | Miraculous Cheer III   | —      | 7.0%       | 5.0%      | 5.0%    |
+| 27             | Miraculous Cheer IV    | —      | —          | 10.0%     | 6.0%    |
+| 28             | Miraculous Cheer V     | —      | —          | —         | 10.0%   |
+| 30             | Continuous Care I      | —      | —          | —         | 1.0%    |
+| 31             | Continuous Care II     | —      | —          | —         | 2.0%    |
+| 32             | Continuous Care III    | —      | —          | —         | 3.0%    |
+| 33             | Continuous Care IV     | —      | —          | —         | 4.0%    |
+| 34             | Continuous Care V      | —      | —          | —         | 5.0%    |
+| **Total**      |                        | 100.0% | 100.0%     | 100.0%    | 100.0%  |
 
-Each cell is `(cost_a, cost_b, cost_c)`. Omitted sub-entries are `(0, 0, 0)`.
+### Never-rolled skills
 
-| Acquire Type ID | Sub-entry | Values                  |
-| --------------- | --------- | ----------------------- |
-| `504`           | `0`       | `(20000, 30000, 30000)` |
-| `504`           | `1`       | `(30000, 10000, 20000)` |
-| `504`           | `2`       | `(30000, 40000, 50000)` |
-| `504`           | `3`       | `(20000, 30000, 40000)` |
-| `504`           | `4`       | `(50000, 10000, 20000)` |
-| `504`           | `5`       | `(30000, 30000, 40000)` |
-| `504`           | `6`       | `(30000, 0, 0)`         |
-| `504`           | `7`       | `(0, 0, 30000)`         |
-| `504`           | `8`       | `(40000, 50000, 60000)` |
-| `504`           | `9`       | `(100000, 0, 10000)`    |
-| `504`           | `10`      | `(20000, 30000, 40000)` |
-| `504`           | `11`      | `(50000, 0, 0)`         |
-| `503`           | `0`       | `(50000, 50000, 0)`     |
-| `503`           | `1`       | `(0, 50000, 50000)`     |
-| `503`           | `2`       | `(50000, 0, 0)`         |
-| `503`           | `3`       | `(50000, 50000, 50000)` |
-| `503`           | `4`       | `(0, 50000, 50000)`     |
-| `503`           | `5`       | `(50000, 50000, 0)`     |
-| `503`           | `6`       | `(100000, 0, 0)`        |
-| `503`           | `7`       | `(0, 0, 50000)`         |
-| `503`           | `8`       | `(50000, 50000, 100000)` |
-| `502`           | `0`       | `(70000, 0, 0)`         |
-| `502`           | `1`       | `(0, 70000, 70000)`     |
-| `502`           | `3`       | `(70000, 70000, 0)`     |
-| `502`           | `4`       | `(0, 70000, 70000)`     |
-| `502`           | `5`       | `(70000, 0, 0)`         |
-| `502`           | `6`       | `(150000, 0, 0)`        |
-| `502`           | `7`       | `(0, 0, 80000)`         |
-| `502`           | `8`       | `(70000, 70000, 0)`     |
-| `501`           | `1`       | `(0, 150000, 0)`        |
-| `501`           | `3`       | `(150000, 0, 0)`        |
-| `501`           | `4`       | `(0, 150000, 0)`        |
-| `501`           | `6`       | `(250000, 0, 0)`        |
-| `501`           | `7`       | `(0, 0, 150000)`        |
+Five catalog entries carry a weight of `0` in every grade and are therefore unreachable through a skill change:
+
+| equip_skill_id | Skill                       | Why                                     |
+| -------------- | --------------------------- | --------------------------------------- |
+| 20             | Miraculous Cheer 10 Seconds | Legacy naming, superseded by `I`–`V`    |
+| 21             | Miraculous Cheer 9 Seconds  | Legacy naming                           |
+| 22             | Miraculous Cheer 8 Seconds  | Legacy naming                           |
+| 23             | Miraculous Cheer 7 Seconds  | Legacy naming                           |
+| 29             | Gift                        | Every fairy starts with it; never rolled |
 
 ---
 
@@ -127,8 +136,8 @@ Each cell is `(cost_a, cost_b, cost_c)`. Omitted sub-entries are `(0, 0, 0)`.
 
 ### Header (4 bytes)
 
-| Offset  | Type | Field | Notes                                              |
-| ------- | ---- | ----- | -------------------------------------------------- |
+| Offset  | Type | Field | Notes                                               |
+| ------- | ---- | ----- | --------------------------------------------------- |
 | `+0x00` | u32  | count | Must equal `fairyequipskillaquire.dbss` count (`4`) |
 
 ### Offset Record (10 bytes, repeated `count` times)
@@ -144,34 +153,47 @@ Rows are ordered descending by key and ascending by `data_offset`.
 
 ---
 
+## Lookup Recipe
+
+```python
+def roll_chance(record, equip_skill_id):
+    weight = record["weights"][equip_skill_id]
+    return weight / record["total_weight"]  # total is 1,000,000 for fairies
+```
+
+---
+
 ## Suggested UI Layout
 
-| Column          | Type | Notes                                           |
-| --------------- | ---- | ----------------------------------------------- |
-| Acquire Type ID | num  | `acquire_type_id`; right-aligned numeric column |
-| Active Entries  | num  | Count of sub-entries with any non-zero cost     |
-| Max Cost        | num  | Maximum value across all cost fields            |
-| Cost Table      | text | 14 sub-entries with three raw cost values each  |
+| Column      | Type | Notes                                                |
+| ----------- | ---- | ---------------------------------------------------- |
+| Fairy Grade | text | Grade name from `acquire_type_id`; falls back to ID  |
+| Skill ID    | num  | `equip_skill_id` the weight indexes (right-aligned)  |
+| Skill Name  | text | Resolved via the catalog's `loc_id` (LOC type 10)    |
+| Chance      | num  | `weight / total_weight` as a percentage              |
+| Weight      | num  | Raw parts-per-million value                          |
 
-For detailed views, show one row per `(acquire_type_id, sub_entry_index)` and omit all-zero sub-entries by default.
+Show one row per `(acquire_type_id, equip_skill_id)` and omit zero weights, since a zero means the skill is not rollable at all.
 
 ---
 
 ## Notes
 
-- The format is structurally identical to `petequipskillaquire.dbss`, but with only 4 fairy acquire type records instead of 21 pet acquire type records.
-- Extracted `fairyequipskill.bss` contains fairy skill IDs such as `49096`-`49129` and `49177`-`49181`; it did not contain acquire type IDs `501`-`504`.
-- Extracted `fairyskillchange.dbss` and `fairyskillchangeoffset.dbss` are 50-row, 12-byte fixed tables. They are related to fairy skill changes, but are not needed for this acquire-cost table.
-- LOC lookup for IDs `501`-`504` has many unrelated matches and no confirmed fairy acquire-type labels.
+- Weights are **probabilities, not costs**. Earlier revisions of this document described the record as an acquisition cost table with `cost_a`/`cost_b`/`cost_c` triples and a `reserved` field; that reading was wrong. The values are parts-per-million and the "reserved" u32 is simply `weights[0]`.
+- The record is a flat 43-element array, not 14 sub-entries of 3 values. The apparent triples were an artifact of grouping a dense array into 12-byte rows.
+- Three independent checks confirm the reading: every grade sums to exactly `1,000,000`; the non-zero index set per grade matches the published per-tier skill availability exactly; and the highest rank reachable per grade (I / III / IV / V) matches the published rank caps.
+- 43 weight slots cover `equip_skill_id` `0`–`42`, while the fairy catalog only defines `0`–`34`. Slots `35`–`42` are zero in every record — spare capacity shared with the pet table, which uses the same 176-byte record.
+- Only Radiant can roll rank IV and V skills, which the weight table encodes directly rather than through a separate cap field.
+- Morning Star is weighted far above any other skill at low grades (25% for Faint) and drops to 3% at Radiant.
 
 ---
 
 ## Open Questions
 
-### Acquire type semantics
-
-IDs `501`-`504` are most likely the four fairy grades — Faint, Glimmering, Brilliant and Radiant — since there are exactly four of them and fairies come in exactly four grades. The cost gradient supports this: `501` is the sparsest row but carries the highest values (`150000`, `250000`), while `504` is the most populated with the lowest (`20000`-`50000`). Which end is Radiant is not established, and no extracted companion file confirms the mapping.
-
 ### Sub-entry semantic mapping
 
-The 14 sub-entry indices and the meanings of `cost_a`, `cost_b`, and `cost_c` are not confirmed. Candidate meanings include skill slot, fairy skill group, fairy tier, or distinct acquisition resources/cost phases.
+Resolved. The former "14 sub-entries with `cost_a`/`cost_b`/`cost_c`" structure does not exist; the record is a flat weight array indexed by `equip_skill_id`. This entry is retained so the disproven reading is not re-derived.
+
+### Spare weight slots
+
+Slots `35`–`42` are always zero for fairies. Whether they are reserved for future fairy skills or exist only because the record size is shared with `petequipskillaquire.dbss` is unconfirmed.

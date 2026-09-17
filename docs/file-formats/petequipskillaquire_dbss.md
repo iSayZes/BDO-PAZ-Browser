@@ -2,13 +2,16 @@
 
 ## Purpose
 
-Defines the cost table for pet equip skill acquisition, keyed by `acquire_type_id` from `pet.dbss`. 21 records cover all distinct acquire tiers: 5 groups (0–4, 101–104, 201–204, 301–304, 401–404) plus one null (key=0). Each record contains 14 × 3-field cost sub-entries whose semantic mapping is not fully confirmed.
+Defines the **skill roll table** for pet equip skills, keyed by `acquire_type_id` from [pet.dbss](pet_dbss.md). Each record holds a weight for every skill in [petequipskill.bss](petequipskill_bss.md), and a weight of `0` means that acquire type cannot roll that skill.
+
+Each acquire type is a themed pool: some favour life skills, others combat and gathering. 21 records cover 5 key groups (`0`–`4`, `101`–`104`, `201`–`204`, `301`–`304`, `401`–`404`), of which key `0` is an empty placeholder.
 
 Example:
 
 ```text
-acquire_type_id: 304  →  group=3 (regular pet), tier=4 (grade 3–4)
-sub[0].cost_a: 160000   sub[1].cost_a: 150000
+acquire_type_id 204 → Karma Recovery +5%: weight 160000 of 750000 = 21.3%
+acquire_type_id 401 → Combat EXP +5%:     weight 120000 of 700000 = 17.1%
+acquire_type_id 401 → Cooking EXP +5%:    weight  10000 of 700000 =  1.4%
 ```
 
 ## Graph
@@ -19,19 +22,23 @@ sub[0].cost_a: 160000   sub[1].cost_a: 150000
 - dbss
 - pet
 - equip skill
+- drop rate
 
 ### Connections
 
 - [pet.dbss](pet_dbss.md) — `acquire_type_id` field keys into this file
-- [petequipskillaquireoffset.dbss](petequipskillaquire_dbss.md#petequipskillaquireoffsetdbss) — keyed offset index
+- [petequipskill.bss](petequipskill_bss.md) — the skill catalog; weights are indexed by its `equip_skill_id`
+- [petequipskillaquireoffset.dbss](#petequipskillaquireoffsetdbss) — keyed offset index
+- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md) — identical record layout for fairies
 
 ---
 
 ## Companion Files
 
-| File                              | Required | Role                                              |
-| --------------------------------- | -------- | ------------------------------------------------- |
-| `petequipskillaquireoffset.dbss`  | Required | `acquire_type_id → (data_offset, data_size)` index |
+| File                             | Required | Role                                                 |
+| -------------------------------- | -------- | ---------------------------------------------------- |
+| `petequipskillaquireoffset.dbss` | Required | `acquire_type_id → (data_offset, data_size)` index   |
+| `petequipskill.bss`              | Optional | Resolves a weight's `equip_skill_id` to a skill name |
 
 All multi-byte values are little-endian.
 
@@ -41,130 +48,157 @@ All multi-byte values are little-endian.
 
 ### Header (4 bytes)
 
-| Offset  | Type | Field | Notes                           |
-| ------- | ---- | ----- | ------------------------------- |
-| `+0x00` | u32  | count | Number of records (observed: 21)|
+| Offset  | Type | Field | Notes                            |
+| ------- | ---- | ----- | -------------------------------- |
+| `+0x00` | u32  | count | Number of records; observed `21` |
 
 ### Record (176 bytes, repeated `count` times)
 
-| Offset   | Type      | Field       | Notes                                              |
-| -------- | --------- | ----------- | -------------------------------------------------- |
-| `+0x00`  | u32       | packed_key  | `(acquire_type_id << 16) \| acquire_type_id`       |
-| `+0x04`  | u32       | —           | Always 0; reserved                                 |
-| `+0x08`  | entry[14] | cost_table  | 14 × 12-byte sub-entries (see below)               |
+| Offset  | Type    | Field      | Notes                                          |
+| ------- | ------- | ---------- | ---------------------------------------------- |
+| `+0x00` | u32     | packed_key | `(acquire_type_id << 16) \| acquire_type_id`   |
+| `+0x04` | u32[43] | weights    | Roll weight per `equip_skill_id`               |
 
-The `packed_key` field encodes `acquire_type_id` in both u16 halves: the low u16 is the 2-byte file key prefix; the high u16 is the first 2 bytes of the data payload.
+`4 + 43 × 4 = 176` bytes exactly. `weights[i]` is the weight of the skill whose `equip_skill_id` is `i` in Section 1 of the catalog; index `0` is the first weight, **not** a reserved field.
 
-#### Cost Sub-entry (12 bytes × 14)
-
-Each sub-entry starts at `+0x08 + index × 12`:
-
-| Offset  | Type | Field   | Notes                                              |
-| ------- | ---- | ------- | -------------------------------------------------- |
-| `+0x00` | u32  | cost_a  | Primary cost value; 0 if not applicable            |
-| `+0x04` | u32  | cost_b  | Secondary cost value; 0 if not applicable          |
-| `+0x08` | u32  | cost_c  | Tertiary cost value; 0 if not applicable           |
-
-Sub-entries 12 and 13 are always all-zero in every record. Sub-entries 0–11 carry varying values (see Key Groups below).
+The first 2 bytes of each record are the file key prefix. The offset companion points to `record_start + 2`, so use `record_start = data_offset - 2` to read the full u32-aligned record.
 
 ---
 
-## Key Groups
+## Acquire Type IDs
 
-Keys follow the pattern `(group × 100) + tier`, where:
+Keys decompose as `group × 100 + tier`, except the low keys `0`–`4` which have group `0`.
 
-| Group prefix | Tier range | Applies to                                     |
-| ------------ | ---------- | ---------------------------------------------- |
-| 0 (keys 1–4) | 1–4        | Basic/starter pet acquire type                 |
-| 1 (101–104)  | 1–4        | Mid-tier pet acquire type                      |
-| 2 (201–204)  | 1–4        | Higher-tier acquire type (identical to group 3)|
-| 3 (301–304)  | 1–4        | Regular pets (most common in pet.dbss)         |
-| 4 (401–404)  | 1–4        | Premium/Airiss pet acquire type                |
-| 0 (key 0)    | —          | Null record; all-zero (used when `acquire_type_id=0` in pet.dbss) |
-
-Groups 2 and 3 produce **identical** sub-entry content for matching tiers (201==301, 202==302, 203==303, 204==304).
-
-### Tier effect on sub[0].cost_a
-
-| Tier suffix | Groups 0–3 sub[0].cost_a | Group 4 sub[0].cost_a |
-| ----------- | ------------------------ | --------------------- |
-| 1, 2        | 120000                   | 10000                 |
-| 3, 4        | 160000                   | 10000                 |
-
-Group 4 (Airiss) uses 50000 and 120000 where other groups use 30000 and 150000.
+| Key group   | Meaning                                              |
+| ----------- | ---------------------------------------------------- |
+| `0`         | Empty placeholder — all 43 weights are `0`           |
+| `1`–`4`     | Life-skill oriented pool                             |
+| `101`–`104` | Hunting / Training / Trading / Fishing oriented pool |
+| `201`–`204` | Combat, Gathering and Fishing oriented pool          |
+| `301`–`304` | Byte-identical to `201`–`204`                        |
+| `401`–`404` | Broad, near-even pool across most skills             |
 
 ---
 
-## petequipskillaquireoffset.dbss
+## Rollable Skills
+
+Only 14 of the catalog's 43 Section 1 entries carry a non-zero weight in any record, and the same 14 appear in every populated record. Each is the **middle** entry of its three-entry skill type group — the `+5%` tier — or the sole entry where the group has only one.
+
+| equip_skill_id | skill_type | Skill               |
+| -------------- | ---------- | ------------------- |
+| 1              | 1          | Karma Recovery +5%  |
+| 4              | 2          | Combat EXP +5%      |
+| 7              | 3          | Gathering EXP +5%   |
+| 9              | 4          | Luck +1             |
+| 10             | 5          | Fishing Speed +1    |
+| 11             | 6          | Gathering Speed +1  |
+| 15             | 8          | Fishing EXP +5%     |
+| 18             | 9          | Hunting EXP +5%     |
+| 21             | 10         | Cooking EXP +5%     |
+| 24             | 11         | Alchemy EXP +5%     |
+| 27             | 12         | Processing EXP +5%  |
+| 30             | 13         | Training EXP +5%    |
+| 33             | 14         | Trading EXP +5%     |
+| 36             | 15         | Farming EXP +5%     |
+
+Skill types 7, 16, 17, 18, 19 and 20 (Death Penalty Resist, Life EXP, Weight Limit, Durability Resistance, Skill EXP, Knowledge Gain) have no weight in any record and are never rolled here.
+
+---
+
+## Roll Chances
+
+Chance is `weight / total_weight` for that record. Values below are percentages.
+
+| Skill                  | 1    | 2    | 3    | 4    | 101  | 102  | 103  | 104  | 201  | 202  | 203  | 204  | 301  | 302  | 303  | 304  | 401  | 402  | 403  | 404  |
+| ---------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Karma Recovery +5%     | 12.4 | 12.4 | 15.8 | 15.8 | 14.5 | 14.1 | 18.0 | 18.0 | 16.9 | 16.9 | 21.3 | 21.3 | 16.9 | 16.9 | 21.3 | 21.3 | 1.4  | 1.4  | 1.4  | 1.4  |
+| Combat EXP +5%         | 1.0  | 1.0  | 1.0  | 1.0  | 1.2  | 1.2  | 1.1  | 1.1  | 21.1 | 21.1 | 20.0 | 20.0 | 21.1 | 21.1 | 20.0 | 20.0 | 17.1 | 17.1 | 17.1 | 17.1 |
+| Gathering EXP +5%      | 1.0  | 1.0  | 1.0  | 1.0  | 1.2  | 1.2  | 1.1  | 1.1  | 21.1 | 21.1 | 20.0 | 20.0 | 21.1 | 21.1 | 20.0 | 20.0 | 17.1 | 17.1 | 17.1 | 17.1 |
+| Luck +1                | 3.1  | 3.1  | 3.0  | 3.0  | 3.6  | 3.5  | 3.4  | 3.4  | 4.2  | 4.2  | 4.0  | 4.0  | 4.2  | 4.2  | 4.0  | 4.0  | 7.1  | 7.1  | 7.1  | 7.1  |
+| Fishing Speed +1       | 1.0  | 1.0  | 1.0  | 1.0  | 1.2  | 3.5  | 3.4  | 3.4  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 7.1  | 7.1  | 7.1  | 7.1  |
+| Gathering Speed +1     | 1.0  | 1.0  | 1.0  | 1.0  | 1.2  | 1.2  | 1.1  | 1.1  | 4.2  | 4.2  | 4.0  | 4.0  | 4.2  | 4.2  | 4.0  | 4.0  | 7.1  | 7.1  | 7.1  | 7.1  |
+| Fishing EXP +5%        | 15.5 | 15.5 | 14.9 | 14.9 | 18.1 | 17.6 | 16.9 | 16.9 | 21.1 | 21.1 | 20.0 | 20.0 | 21.1 | 21.1 | 20.0 | 20.0 | 17.1 | 17.1 | 17.1 | 17.1 |
+| Hunting EXP +5%        | 1.0  | 1.0  | 1.0  | 1.0  | 18.1 | 17.6 | 16.9 | 16.9 | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 17.1 | 17.1 | 17.1 | 17.1 |
+| Cooking EXP +5%        | 15.5 | 15.5 | 14.9 | 14.9 | 1.2  | 1.2  | 1.1  | 1.1  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.4  | 1.4  |
+| Alchemy EXP +5%        | 15.5 | 15.5 | 14.9 | 14.9 | 1.2  | 1.2  | 1.1  | 1.1  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.4  | 1.4  |
+| Processing EXP +5%     | 15.5 | 15.5 | 14.9 | 14.9 | 1.2  | 1.2  | 1.1  | 1.1  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.4  | 1.4  |
+| Training EXP +5%       | 1.0  | 1.0  | 1.0  | 1.0  | 18.1 | 17.6 | 16.9 | 16.9 | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.4  | 1.4  |
+| Trading EXP +5%        | 1.0  | 1.0  | 1.0  | 1.0  | 18.1 | 17.6 | 16.9 | 16.9 | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.4  | 1.4  |
+| Farming EXP +5%        | 15.5 | 15.5 | 14.9 | 14.9 | 1.2  | 1.2  | 1.1  | 1.1  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.3  | 1.3  | 1.4  | 1.4  | 1.4  | 1.4  |
+
+### Record Totals
+
+Unlike the fairy table, pet weights are **not** normalised to `1,000,000`:
+
+| Total weight | Acquire types                          |
+| ------------ | -------------------------------------- |
+| `700,000`    | `401`, `402`, `403`, `404`             |
+| `710,000`    | `201`, `202`, `301`, `302`             |
+| `750,000`    | `203`, `204`, `303`, `304`             |
+| `830,000`    | `101`                                  |
+| `850,000`    | `102`                                  |
+| `890,000`    | `103`, `104`                           |
+| `970,000`    | `1`, `2`                               |
+| `1,010,000`  | `3`, `4`                               |
+| `0`          | `0` (placeholder)                      |
+
+Because `3` and `4` exceed `1,000,000`, these cannot be parts-per-million probabilities the way the fairy weights are. Treat them as relative weights and normalise by the record total.
+
+---
+
+## `petequipskillaquireoffset.dbss`
 
 ### Header (4 bytes)
 
 | Offset  | Type | Field | Notes                                              |
 | ------- | ---- | ----- | -------------------------------------------------- |
-| `+0x00` | u32  | count | Must equal `petequipskillaquire.dbss` count (21)   |
+| `+0x00` | u32  | count | Must equal `petequipskillaquire.dbss` count (`21`) |
 
 ### Offset Record (10 bytes, repeated `count` times)
 
-| Offset  | Type | Field       | Notes                                                                       |
-| ------- | ---- | ----------- | --------------------------------------------------------------------------- |
-| `+0x00` | u16  | key         | `acquire_type_id`                                                           |
-| `+0x02` | u32  | data_offset | Absolute byte offset in main file past the 2-byte key prefix                |
-| `+0x06` | u16  | data_size   | Always 174 (= 176 − 2-byte key prefix)                                      |
-| `+0x08` | u16  | —           | Always 0; padding                                                           |
-
-`record_start = data_offset - 2` gives the position of the full 176-byte record.
-
----
-
-## Observed Values
-
-All non-zero values in cost sub-entries are multiples of 10000:
-
-| Value   | Groups seen in              |
-| ------- | --------------------------- |
-| 10000   | All groups                  |
-| 30000   | Groups 0–3                  |
-| 50000   | Group 4 only                |
-| 120000  | Groups 0–3 (tiers 1–2); Group 4 (all tiers) |
-| 150000  | Groups 0–3                  |
-| 160000  | Groups 0–3 (tiers 3–4)      |
+| Offset  | Type | Field       | Notes                                                        |
+| ------- | ---- | ----------- | ------------------------------------------------------------ |
+| `+0x00` | u16  | key         | `acquire_type_id`                                            |
+| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
+| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
+| `+0x08` | u16  | padding     | Always `0`                                                   |
 
 ---
 
 ## Suggested UI Layout
 
-| Column           | Type | Notes                                                           |
-| ---------------- | ---- | --------------------------------------------------------------- |
-| Acquire Type ID  | num  | `acquire_type_id` (right-aligned, hex and decimal)              |
-| Group            | num  | `acquire_type_id // 100`                                        |
-| Tier             | num  | `acquire_type_id % 100`                                         |
-| Sub[0] Cost A    | num  | First sub-entry primary cost                                    |
-| Sub[0] Cost C    | num  | First sub-entry tertiary cost                                   |
+| Column          | Type | Notes                                               |
+| --------------- | ---- | --------------------------------------------------- |
+| Acquire Type ID | num  | `acquire_type_id` (right-aligned)                   |
+| Skill ID        | num  | `equip_skill_id` the weight indexes                 |
+| Skill Name      | text | Resolved via the catalog's `loc_id` (LOC type 10)   |
+| Chance          | num  | `weight / total_weight` as a percentage             |
+| Weight          | num  | Raw weight value                                    |
 
-For a full cost breakdown, display all 12 active sub-entries with their three cost fields.
+Show one row per `(acquire_type_id, equip_skill_id)` and omit zero weights, since a zero means the skill is not rollable.
 
 ---
 
 ## Notes
 
-- The null record (key=0) is all-zero; it corresponds to pets where `acquire_type_id=0` in `pet.dbss` (no acquire cost defined).
-- Groups 2 and 3 are structurally identical per tier — confirmed by comparing all 14 sub-entries for 201↔301, 202↔302, 203↔303, 204↔304.
-- Group 4 (Airiss type) is the only group where all four tiers share the same sub-entry content (401==402==403==404).
-- The 2-byte key prefix and the first 2 bytes of data together form a single u32 `(key<<16)|key`. Reading the record as u32-aligned from the key prefix is cleaner than splitting at the data boundary.
-- Sub-entries 12 and 13 (offsets +0x98 and +0xA4) are always zero in all 21 records.
+- Weights are **roll weights, not costs**. Earlier revisions of this document described the record as a cost table with `cost_a`/`cost_b`/`cost_c` triples and a `reserved` field; that reading was wrong. The record is a flat 43-element weight array and the "reserved" u32 is simply `weights[0]`.
+- The layout is shared with [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), where the same structure is confirmed against published per-grade skill availability and every record sums to exactly `1,000,000`.
+- Weights index Section 1 of `petequipskill.bss` (`equip_skill_id` `0`–`42`), which is exactly the 43 available slots. The extended Section 2 catalog is not addressable here.
+- `301`–`304` are byte-identical to `201`–`204`, and `401`–`404` are identical to each other. Several other keys pair up (`1`=`2`, `3`=`4`, `103`=`104`).
+- Only the `+5%` mid-tier of each skill group is rollable; the `+7%` and duplicate `+5%` entries never appear.
 
 ---
 
 ## Open Questions
 
+### Weight normalisation
+
+Fairy records sum to exactly `1,000,000`, but pet totals range from `700,000` to `1,010,000`. Whether the shortfall represents a chance of no skill being granted, whether the client simply normalises by the record total, or whether `3`/`4` exceeding a million is a data error, is unconfirmed.
+
+### Acquire type grouping
+
+The `group × 100 + tier` split fits the key values, and the pools are clearly themed by skill category, but which pet species or grade maps to which group has not been traced through `pet.dbss`. The exact duplication of `201`–`204` by `301`–`304` suggests one group is a reserved or legacy copy.
+
 ### Sub-entry semantic mapping
 
-Each record has 14 sub-entries with 3 u32 cost fields. The index (0–13) and the meaning of cost_a / cost_b / cost_c are not confirmed. Candidates: slot number (pet has max 9 equip slots), skill level tier, or skill category. The 3 fields may encode (acquire cost, reacquire/reroll cost, removal cost) or three different resource types (silver, special items, stamps). Cross-referencing against the in-game pet stable UI cost display or `petequipskill.bss` would help.
-
-### Key group semantics
-
-Groups 0–4 map to distinct pet tiers, but which game concept each group prefix represents is not confirmed. Group 4 (Airiss) is identified by its unique cost values. Groups 0–3 likely correspond to regular pet quality tiers or species categories, but the exact mapping is unconfirmed.
-
-### Tier suffix meaning
-
-Tiers 1–4 within each group differ only at sub[0].cost_a (120000 vs 160000). The tier suffix likely tracks grade range (e.g., tiers 1–2 = grades 0–1, tiers 3–4 = grades 2–4), but the exact grade-to-tier mapping is unconfirmed.
+Resolved. The former "14 sub-entries with `cost_a`/`cost_b`/`cost_c`" structure does not exist; the apparent triples were an artifact of grouping a dense 43-element array into 12-byte rows, and the 14 "active" sub-entries were simply the 14 rollable skills. This entry is retained so the disproven reading is not re-derived.

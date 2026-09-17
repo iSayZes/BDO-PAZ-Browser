@@ -208,9 +208,9 @@ The acquisition cost tables are keyed by `acquire_type_id` `501`–`504`, which 
 
 ### Which skills a fairy of a given grade can roll
 
-A fairy learns one random skill from this catalog every 10 levels, and each learned skill rolls a random level of `1`–`5` — the `I`–`V` ladders below. Higher fairy grades have better odds of higher skill levels, and only Radiant (grade 4) fairies can roll level 4 or above.
+Resolved. A fairy learns one random skill from this catalog every 10 levels, and each learned skill rolls a random rank of `1`–`5` — the `I`–`V` ladders below. The per-grade odds live in [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), whose four records are the four fairy grades and whose weights are indexed by this file's `equip_skill_id`. Only Radiant carries non-zero weights for rank IV and V.
 
-No extracted file yet encodes those odds or the grade cap. [fairyskillchange.dbss](fairyskillchange_dbss.md) is *not* it — that file is the Theiah's Orb price of a reroll, keyed by fairy level, and shares no key with this catalog. The per-grade roll table remains unlocated.
+That table also explains two oddities here: `equip_skill_id 29` (Gift) has weight `0` in every grade because every fairy starts with it, and the four legacy `Miraculous Cheer` "`N` Seconds" entries (`20`–`23`) are likewise `0` everywhere, confirming they are dead records.
 
 ### `tier` field purpose
 

@@ -6,9 +6,10 @@
     "recordStart": "Record Start"
   },
   "columns": {
-    "acquireTypeId": "Acquire Type ID",
-    "activeEntries": "Active Entries",
-    "maxCost": "Max Cost",
-    "costTable": "Cost Table"
+    "fairyGrade": "Fairy Grade",
+    "equipSkillId": "Skill ID",
+    "skillName": "Skill Name",
+    "chance": "Chance",
+    "weight": "Weight"
   }
 }

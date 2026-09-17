@@ -104,6 +104,36 @@ def parse_meta_file(meta_path: Path) -> list[PazEntry]:
     return all_entries
 
 
+def trim_payload_padding(payload: bytes, entry: PazEntry) -> bytes:
+    """Return exactly `entry.uncompressed_size` bytes of payload.
+
+    Some small entries decompress to slightly more than the recorded size, with
+    the surplus being zero padding from the compressed block. That padding is
+    not part of the file, so it is trimmed. A short payload, or surplus holding
+    non-zero data, still means the entry did not decode correctly.
+    """
+    expected: int = entry.uncompressed_size
+    actual: int = len(payload)
+
+    if actual == expected:
+        return payload
+
+    if actual < expected:
+        raise PazFormatError(
+            f"Size mismatch for {entry.internal_path}: "
+            f"expected {expected}, got {actual}"
+        )
+
+    surplus: bytes = payload[expected:]
+    if any(surplus):
+        raise PazFormatError(
+            f"Size mismatch for {entry.internal_path}: "
+            f"expected {expected}, got {actual} with non-zero trailing data"
+        )
+
+    return payload[:expected]
+
+
 def extract_entry(
     paz_root: Path,
     output_root: Path,
@@ -133,13 +163,7 @@ def extract_entry(
         entry=entry,
     )
 
-    if len(final_payload) != entry.uncompressed_size:
-        raise PazFormatError(
-            f"Size mismatch for {entry.internal_path}: "
-            f"expected {entry.uncompressed_size}, got {len(final_payload)}"
-        )
-
-    output_path.write_bytes(final_payload)
+    output_path.write_bytes(trim_payload_padding(final_payload, entry))
     return "extracted"
 
 

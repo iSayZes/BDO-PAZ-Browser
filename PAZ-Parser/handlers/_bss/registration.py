@@ -4,6 +4,7 @@ from bdo_preview import register_handler
 
 from .allquestlist.handler import AllQuestListBssHandler
 from .exploration.handler import ExplorationBssHandler
+from .fairyequipskill.handler import FairyEquipSkillBssHandler
 from .newquest.handler import NewQuestBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
@@ -18,6 +19,7 @@ from .zodiacsignindex.handler import ZodiacSignIndexHandler
 def register_bss_handlers() -> None:
     register_handler("allquestlist.bss", AllQuestListBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
+    register_handler("fairyequipskill.bss", FairyEquipSkillBssHandler())
     register_handler("newquest.bss", NewQuestBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())

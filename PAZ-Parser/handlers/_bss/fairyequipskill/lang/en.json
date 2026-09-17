@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "equipSkillId": "Equip Skill ID",
+    "icon": "Icon",
+    "skillName": "Skill Name",
+    "description": "Description",
+    "skillType": "Skill Type",
+    "locId": "Loc ID"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "level": "Level",
+    "orbCost": "Theiah's Orbs"
+  },
+  "offsetColumns": {
+    "level": "Level",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size",
+    "recordStart": "Record Start"
+  }
+}

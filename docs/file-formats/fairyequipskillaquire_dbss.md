@@ -170,7 +170,7 @@ For detailed views, show one row per `(acquire_type_id, sub_entry_index)` and om
 
 ### Acquire type semantics
 
-IDs `501`-`504` likely identify fairy equip-skill acquisition tiers or fairy grades, but no extracted companion file confirmed the exact mapping.
+IDs `501`-`504` are most likely the four fairy grades — Faint, Glimmering, Brilliant and Radiant — since there are exactly four of them and fairies come in exactly four grades. The cost gradient supports this: `501` is the sparsest row but carries the highest values (`150000`, `250000`), while `504` is the most populated with the lowest (`20000`-`50000`). Which end is Radiant is not established, and no extracted companion file confirms the mapping.
 
 ### Sub-entry semantic mapping
 

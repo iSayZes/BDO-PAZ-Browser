@@ -5,6 +5,9 @@ from bdo_preview import register_handler
 from .allquestlist.handler import AllQuestListBssHandler
 from .exploration.handler import ExplorationBssHandler
 from .fairyequipskill.handler import FairyEquipSkillBssHandler
+from .fairyfeedenchantfailcount.handler import (
+    FairyFeedEnchantFailCountBssHandler,
+)
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .newquest.handler import NewQuestBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
@@ -21,6 +24,10 @@ def register_bss_handlers() -> None:
     register_handler("allquestlist.bss", AllQuestListBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
     register_handler("fairyequipskill.bss", FairyEquipSkillBssHandler())
+    register_handler(
+        "fairyfeedenchantfailcount.bss",
+        FairyFeedEnchantFailCountBssHandler(),
+    )
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
     register_handler("newquest.bss", NewQuestBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())

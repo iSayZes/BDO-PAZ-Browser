@@ -163,6 +163,13 @@ steps and 16× at the last.
 - Sprouting may only be attempted once per fairy unless a rebirth is used, and a
   successful Sprout resets the fairy's skills — which are then rerolled from
   `fairyequipskillaquire.dbss` at the new grade.
+- A fairy can only Sprout at its tier's level cap, which community guides give as
+  10 for Faint, 20 for Glimmering, 30 for Brilliant, and 50 for Radiant. Those
+  caps are not stored in this file.
+- A failed Sprout consumes the fairy's single attempt permanently; the only way
+  back is a cash-shop Rebirth. That makes `items_for_max` the practically
+  relevant column — players push to the 100% cost rather than gamble on
+  `rate_ppm`, because there is no second roll to fall back on.
 - `success_cap_ppm` is `1,000,000` in every record, the same parts-per-million
   convention already confirmed for `fairyequipskillaquire.dbss` and
   `petequipskillaquire.dbss`.

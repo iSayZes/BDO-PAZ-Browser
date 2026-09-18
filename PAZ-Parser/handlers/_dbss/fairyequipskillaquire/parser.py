@@ -4,17 +4,16 @@ from _common.equipskill_roll import (
     parse_roll_offset_records,
     parse_roll_records,
 )
+from _common.fairy import FAIRY_GRADES
 
 
 _LABEL = "fairyequipskillaquire"
 
-# Acquire type IDs are the four fairy grades, ascending.
-FAIRY_GRADES: dict[int, tuple[int, str]] = {
-    501: (1, "Faint"),
-    502: (2, "Glimmering"),
-    503: (3, "Brilliant"),
-    504: (4, "Radiant"),
-}
+__all__ = [
+    "FAIRY_GRADES",
+    "parse_fairyequipskillaquire_records",
+    "parse_fairyequipskillaquireoffset_records",
+]
 
 
 def parse_fairyequipskillaquireoffset_records(data: bytes) -> list[dict]:

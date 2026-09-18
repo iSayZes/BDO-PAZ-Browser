@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "step": "Step",
+    "upgrade": "Upgrade",
+    "icon": "Icon",
+    "item": "Item",
+    "itemId": "Item ID",
+    "chancePerItem": "Chance / Item",
+    "ratePpm": "Rate (ppm)",
+    "itemsForMax": "Items for Max"
+  }
+}

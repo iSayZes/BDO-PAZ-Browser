@@ -31,6 +31,24 @@ _IMAGE_DATA_MIME_BY_EXT = {
     ".png": "image/png",
 }
 
+# Some icons exist only under a prefixed filename in the same folder. Handlers
+# emit the canonical unprefixed path, so try these siblings before the much
+# slower suffix scan over every entry.
+_ICON_SIBLING_PREFIXES = ("web_",)
+
+
+def _icon_sibling_paths(norm: str) -> list[str]:
+    """Return prefixed sibling paths to try for an icon path that missed."""
+    folder, sep, name = norm.rpartition("/")
+    if not sep or not name:
+        return []
+
+    return [
+        f"{folder}/{prefix}{name}"
+        for prefix in _ICON_SIBLING_PREFIXES
+        if not name.startswith(prefix)
+    ]
+
 
 class PreviewMixin:
     """Preview assembly, entry loading, hex/parsed paging, and export methods."""
@@ -48,6 +66,13 @@ class PreviewMixin:
         if entry is None:
             lower_map = getattr(self, "_entry_map_lower", {})
             entry = lower_map.get(norm.lower())
+
+        if entry is None:
+            lower_map = getattr(self, "_entry_map_lower", {})
+            for sibling in _icon_sibling_paths(norm):
+                entry = self._entry_map.get(sibling) or lower_map.get(sibling.lower())
+                if entry is not None:
+                    break
 
         if entry is None:
             suffix = norm.lower()

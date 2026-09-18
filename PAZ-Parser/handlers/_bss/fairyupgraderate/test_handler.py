@@ -60,7 +60,7 @@ CASE = HandlerCase(
                 "item_name": "Sweet Honey Wine",
                 "rate_ppm": 22222,
                 "items_for_max": 45,
-                "icon_path": f"{_ICON_DIR}/web_00054030.png",
+                "icon_path": f"{_ICON_DIR}/00054030.png",
                 "upgrade": "Faint → Glimmering",
             },
         ),
@@ -72,7 +72,7 @@ CASE = HandlerCase(
                 "item_name": "Ornette's Dark Honey Wine",
                 "rate_ppm": 333333,
                 "items_for_max": 3,
-                "icon_path": f"{_ICON_DIR}/web_00018448.png",
+                "icon_path": f"{_ICON_DIR}/00018448.png",
             },
         ),
         # Published Tier 3 -> Tier 4 cost: 400 Sweet Honey Wine or 25 Ornette's.

@@ -520,6 +520,41 @@ Rule of thumb:
 
 ---
 
+## Icons
+
+`icon_cell(path)` renders an icon cell. The path is not fetched at parse time —
+the UI lazily resolves it against the PAZ entry map when the cell scrolls into
+view, so a handler only has to emit a correct path string.
+
+For item icons, use `_common/item_icon.py` rather than hand-writing a template:
+
+```python
+from _common.item_icon import item_icon_path
+
+row["icon_path"] = item_icon_path(item_id)
+```
+
+Item icons live in one flat folder keyed by item ID
+(`ui_texture/icon/new_icon/product_icon_png/{item_id:08d}.png`). Items also have
+a `.dds` icon, but those sit in per-category folders that differ per item and are
+not derivable from the ID, so the flat PNG folder is the only usable source.
+
+That folder mixes two naming schemes. Of ~17,000 files, ~11,800 are 8-digit item
+IDs and ~400 are `web_`-prefixed IDs; the resolver retries prefixed siblings
+before falling back to a suffix scan, so handlers always emit the canonical
+unprefixed path and do not special-case those.
+
+The rest are keyed by asset name (`inhouse_cultivate_sea_clam_01_wall.png`), which
+cannot be derived from an item ID. Items in that group render as a missing-icon
+placeholder rather than a wrong icon, and closing the gap needs an item ID to
+icon name mapping that is not yet decoded. Expect roughly 90% icon coverage on a
+table of arbitrary items.
+
+Skill and other non-item icons still use a format-local template, because their
+folders are format-specific rather than shared.
+
+---
+
 ## Localization
 
 The app's active language code (`"en"`, `"de"`, `"fr"`, `"sp"`, `"ru"`, `"kr"`) is

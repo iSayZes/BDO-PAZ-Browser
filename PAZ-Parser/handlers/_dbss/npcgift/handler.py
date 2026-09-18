@@ -6,7 +6,8 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded
-from _common.html import e, table
+from _common.html import e, icon_cell, table
+from _common.item_icon import item_icon_path
 from _common.lang import load_handler_strings
 from .parser import (
     parse_gift_offset_records,
@@ -70,7 +71,14 @@ class NpcGiftHandler(PreviewHandler):
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
-        return [dict(r) for r in parse_npcgift_records(data)]
+        records: list[dict] = []
+
+        for record in parse_npcgift_records(data):
+            row = dict(record)
+            row["icon_path"] = item_icon_path(row["item_id"])
+            records.append(row)
+
+        return records
 
     def render_records_page(
         self,
@@ -92,6 +100,7 @@ class NpcGiftHandler(PreviewHandler):
             (cols.get("npcId", "NPC ID"), "num", ""),
             (cols.get("npcName", "NPC Name"), "", ""),
             (cols.get("itemId", "Item ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
             (cols.get("itemName", "Item Name"), "", ""),
             (cols.get("amity", "Amity"), "num", ""),
         ]
@@ -101,6 +110,7 @@ class NpcGiftHandler(PreviewHandler):
                 e(r["npc_id"]),
                 e(r["npc_name"] or "—"),
                 e(r["item_id"]),
+                icon_cell(r["icon_path"]),
                 e(r["item_name"] or "—"),
                 e(r["amity"]),
             ]

@@ -114,11 +114,11 @@ These are the only two items in `languagedata_en.loc` whose tooltip says the
 item can be used to _grow your Fairy_, and both appear in `fairyfeedingitem.dbss`.
 
 Item icons are derived from the item ID as
-`ui_texture/icon/new_icon/product_icon_png/web_{item_id:08d}.png`. Each item also
-has a `.dds` icon, but those sit in per-category folders that differ per item
+`ui_texture/icon/new_icon/product_icon_png/{item_id:08d}.png`. Each item also has
+a `.dds` icon, but those sit in per-category folders that differ per item
 (`03_etc/09_petitem/` for 54030, `09_cash/` for 18448) and are not derivable from
-the ID. In `product_icon_png` the unprefixed `{item_id:08d}.png` exists for 54030
-but not for 18448, so the `web_` variant is the form usable for both.
+the ID. Item 18448 has no unprefixed PNG, only a `web_`-prefixed one; the preview
+icon resolver falls back to that sibling, so the canonical path is still correct.
 
 ---
 
@@ -149,7 +149,7 @@ steps and 16× at the last.
 | ------------- | ---- | -------------------------------------------------------- |
 | Step          | num  | Record index, 0-based                                    |
 | Upgrade       | text | Grade transition label derived from the record index     |
-| Icon          | text | Item icon, `product_icon_png/web_{item_id:08d}.png`      |
+| Icon          | text | Item icon, `product_icon_png/{item_id:08d}.png`          |
 | Item          | text | LOC name for `item_id`, falls back to the raw ID         |
 | Item ID       | num  | Raw `item_id`                                            |
 | Chance / Item | num  | `rate_ppm / success_cap_ppm` as a percentage             |

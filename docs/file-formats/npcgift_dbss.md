@@ -131,11 +131,18 @@ Small PABR config block (32 bytes) with global gift-system values. See [npcgifte
 
 | Column    | Type | Notes                                                |
 | --------- | ---- | ---------------------------------------------------- |
-| NPC ID    | num  | `npc_id`                                             |
-| NPC Name  | text | LOC str_type=6, str_id1=npc_id                       |
-| Item ID   | num  | `item_id`                                            |
-| Item Name | text | LOC str_type=0, str_id1=item_id                      |
-| Amity     | num  | `amity_a`; `amity_b` is a duplicate in observed data |
+| NPC ID    | num  | `npc_id`                                              |
+| NPC Name  | text | LOC str_type=6, str_id1=npc_id                        |
+| Item ID   | num  | `item_id`                                             |
+| Icon      | text | Item icon, `product_icon_png/{item_id:08d}.png`       |
+| Item Name | text | LOC str_type=0, str_id1=item_id                       |
+| Amity     | num  | `amity_a`; `amity_b` is a duplicate in observed data  |
+
+100 of the 112 distinct gift items resolve an icon from their item ID. The
+remaining 12 are keyed in `product_icon_png` by asset name instead
+(item 24626 is `inhouse_cultivate_sea_clam_01_wall.png`), which is not
+derivable from the ID, so those render as a missing-icon placeholder. Closing
+that gap needs an item ID to icon name mapping that is not yet decoded.
 
 ### npcgiftdata.dbss
 

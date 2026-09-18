@@ -17,7 +17,16 @@ GIFT_CASE = HandlerCase(
     loc_fields=["NPC Name", "Item Name"],
     internal_path="gamecommondata/binary/npcgift.dbss",
     tests=[
-        SchemaTest(required_keys=["npc_id", "npc_name", "item_id", "item_name", "amity"]),
+        SchemaTest(
+            required_keys=[
+                "npc_id",
+                "npc_name",
+                "item_id",
+                "item_name",
+                "amity",
+                "icon_path",
+            ],
+        ),
         CountTest(expected=119),
         PosTest(
             pos=0,
@@ -27,6 +36,9 @@ GIFT_CASE = HandlerCase(
                 "item_id": 24626,
                 "item_name": "King Clam Wall Ornament",
                 "amity": 48,
+                "icon_path": (
+                    "ui_texture/icon/new_icon/product_icon_png/00024626.png"
+                ),
             },
         ),
         PosTest(

@@ -7,6 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.fairy import upgrade_step_label
 from _common.html import e, icon_cell, table
+from _common.item_icon import item_icon_path
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_fairyupgraderate_records
@@ -16,11 +17,6 @@ _LANG_DIR = Path(__file__).parent / "lang"
 
 # Item display names live in LOC type 0, keyed by item ID.
 _LOC_TYPE_ITEM = 0
-
-# Item icons are keyed by item ID. The category-specific .dds folders differ per
-# item, so use product_icon_png, the one folder that is derivable from the ID.
-# The web_ variant is the form present for every item used by this file.
-_ICON_PATH = "ui_texture/icon/new_icon/product_icon_png/web_{item_id:08d}.png"
 
 _CHANCE_DECIMALS = 4
 
@@ -46,7 +42,7 @@ class FairyUpgradeRateBssHandler(PreviewHandler):
             item_id = row["item_id"]
             row["upgrade"] = upgrade_step_label(row["step"])
             row["item_name"] = _item_name(item_id)
-            row["icon_path"] = _ICON_PATH.format(item_id=item_id)
+            row["icon_path"] = item_icon_path(item_id)
             records.append(row)
 
         return records

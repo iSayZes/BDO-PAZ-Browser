@@ -534,21 +534,32 @@ from _common.item_icon import item_icon_path
 row["icon_path"] = item_icon_path(item_id)
 ```
 
-Item icons live in one flat folder keyed by item ID
-(`ui_texture/icon/new_icon/product_icon_png/{item_id:08d}.png`). Items also have
-a `.dds` icon, but those sit in per-category folders that differ per item and are
-not derivable from the ID, so the flat PNG folder is the only usable source.
+`item_icon_path()` tries two sources in order:
 
-That folder mixes two naming schemes. Of ~17,000 files, ~11,800 are 8-digit item
-IDs and ~400 are `web_`-prefixed IDs; the resolver retries prefixed siblings
-before falling back to a suffix scan, so handlers always emit the canonical
-unprefixed path and do not special-case those.
+1. **The item icon index**, built from the level-0 records of
+   [itemenchant.dbss](file-formats/itemenchant_dbss.md), which store each item's
+   icon path inline. The app builds it once per PAZ folder in
+   `Api._load_item_icons()` and injects it with `init_item_icons()`, the same way
+   `init_loc()` supplies LOC data. It is cached to disk by
+   `paz/bdo_icon_cache.py`, invalidated on the PAZ meta version.
+2. **Derivation from the item ID** in the flat `product_icon_png` folder, used
+   when the index is unavailable or has no entry for that item.
 
-The rest are keyed by asset name (`inhouse_cultivate_sea_clam_01_wall.png`), which
-cannot be derived from an item ID. Items in that group render as a missing-icon
-placeholder rather than a wrong icon, and closing the gap needs an item ID to
-icon name mapping that is not yet decoded. Expect roughly 90% icon coverage on a
-table of arbitrary items.
+The index matters because most item icons are not reachable from the ID. Of
+~77,000 files under `ui_texture/icon`, the ID-named ones live in dozens of
+per-category folders, and thousands more are named after a 3D asset
+(`inhouse_cultivate_sea_clam_01_wall.dds`) with no numeric component at all.
+
+| Item set                     | Derived from ID | With the index |
+| ---------------------------- | --------------- | -------------- |
+| All LOC type 0 IDs           | 14.9%           | 93.7%          |
+| `npcgift.dbss` gift items    | 90%             | 100%           |
+
+Cash-shop product icons are deliberately excluded. `cashproduct.dbss` links a
+product to the item it grants, but its icon is the shop product art, not the
+item's icon — item 1 (Silver) maps to `loyalties.dds`, the product that grants
+it. Its icons differ from the item's own in every overlapping case, and it adds
+no items that `itemenchant.dbss` does not already cover.
 
 Skill and other non-item icons still use a format-local template, because their
 folders are format-specific rather than shared.

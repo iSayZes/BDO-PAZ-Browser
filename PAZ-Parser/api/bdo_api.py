@@ -33,6 +33,7 @@ from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, _ICON_MAP, _file_icon, _norm 
 from .bdo_api_preview import PreviewMixin  # noqa: E402
 from .bdo_api_search import SearchMixin  # noqa: E402
 from paz.bdo_cache import load_cache, read_meta_version, save_cache  # noqa: E402
+from paz.bdo_icon_cache import load_icon_cache, save_icon_cache  # noqa: E402
 from bdo_models import PazEntry  # noqa: E402
 from paz.bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file  # noqa: E402
 from paz.bdo_payload_cache import cached_read_entry_payload, clear_payload_cache  # noqa: E402
@@ -236,12 +237,59 @@ class Api(PreviewMixin, SearchMixin):
             self._icon_data_url_cache.clear()
             self._tree_data = self._build_tree_data(entries)
             self._load_disk_companions()
+            self._load_item_icons(current_version)
             self._push_status(msg)
             self._push_js("app.onFolderLoaded()")
 
         except Exception as ex:
             self._push_status({"key": "status.error", "args": {"message": str(ex)}})
             self._push_js(f"app.showError({json.dumps(str(ex))})")
+
+    _ITEM_ENCHANT = "gamecommondata/binary/itemenchant.dbss"
+    _ITEM_ENCHANT_OFFSET = "gamecommondata/binary/itemenchantoffset.dbss"
+
+    def _load_item_icons(self, version: int) -> None:
+        """Install the item ID to icon path index, from cache or by building it.
+
+        Items whose icon is named after a 3D asset or filed under a per-category
+        folder cannot be reached from the ID, so the index is the only way to
+        show their icon. A failure here is not fatal: handlers fall back to
+        deriving a path from the item ID.
+        """
+        from _common.item_icon import init_item_icons  # noqa: PLC0415
+
+        if not self._paz_root:
+            return
+
+        cached = load_icon_cache(self._paz_root)
+        if cached and cached[0] == version:
+            init_item_icons(cached[1])
+            return
+
+        try:
+            from _dbss.itemenchant.parser import (  # noqa: PLC0415
+                build_item_icon_index,
+            )
+
+            data = self._load_companion_sync(self._ITEM_ENCHANT)
+            offset_data = self._load_companion_sync(self._ITEM_ENCHANT_OFFSET)
+            if data is None or offset_data is None:
+                init_item_icons(None)
+                return
+
+            icons = build_item_icon_index(data, offset_data)
+        except Exception as ex:
+            init_item_icons(None)
+            self._push_status(
+                {"key": "status.iconIndexFailed", "args": {"message": str(ex)}}
+            )
+            return
+
+        init_item_icons(icons)
+        try:
+            save_icon_cache(self._paz_root, version, icons)
+        except Exception:
+            pass
 
     def _load_disk_companions(self) -> None:
         if not self._paz_root:

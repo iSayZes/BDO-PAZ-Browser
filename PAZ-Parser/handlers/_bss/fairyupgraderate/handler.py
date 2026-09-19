@@ -7,7 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.fairy import upgrade_step_label
 from _common.html import e, icon_cell, table
-from _common.item_icon import item_icon_path
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_fairyupgraderate_records
@@ -42,7 +42,7 @@ class FairyUpgradeRateBssHandler(PreviewHandler):
             item_id = row["item_id"]
             row["upgrade"] = upgrade_step_label(row["step"])
             row["item_name"] = _item_name(item_id)
-            row["icon_path"] = item_icon_path(item_id)
+            row["icon_path"] = icon_path(IconKind.ITEM, item_id)
             records.append(row)
 
         return records

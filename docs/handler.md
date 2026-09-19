@@ -155,8 +155,8 @@ Extension handlers are useful for generic fallback previews.
 
 All parsed-view handlers must implement `get_records()` and `render_records_page()`.
 
-- `get_records()` — parses the binary and returns all records as plain dicts (no HTML). The base class caches the result per data object using `_data_cache`, so paging, tab search, and CSV export all reuse the same parse without re-reading the file.
-- `render_records_page()` — converts one page of records into an HTML fragment.
+- `get_records()` parses the binary and returns all records as plain dicts (no HTML). The base class caches the result per data object using `_data_cache`, so paging, tab search, and CSV export all reuse the same parse without re-reading the file.
+- `render_records_page()` converts one page of records into an HTML fragment.
 
 ```python
 # handlers/_example/myfile/handler.py
@@ -317,7 +317,7 @@ PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[position = 0] P
 
 All handlers are lazy by default. The base class caches the result of `get_records()`
 per data object, so paging, search, and record count never re-parse the same file.
-No opt-in is required — implement `get_records()` and `render_records_page()` and the
+No opt-in is required: implement `get_records()` and `render_records_page()` and the
 rest is handled automatically.
 
 ### Building a Parsed Index
@@ -336,7 +336,7 @@ class MyFormatHandler(PreviewHandler):
         return self._get_index(data).count
 
     def render_data_page(self, data, entry, companions, page, page_size) -> str:
-        # Parse only the needed page — avoid materialising all records first.
+        # Parse only the needed page, avoid materialising all records first.
         records = self._get_index(data).records_for_page(page, page_size)
         return _render_table(records, page, page_size)
 
@@ -356,7 +356,7 @@ structure.
 ### When to Override `render_data_page`
 
 Override `render_data_page()` only when the format supports **parsing a single page
-without reading all records first** — for example, a format with a stored offset table
+without reading all records first**, for example a format with a stored offset table
 that lets you seek directly to each record.
 
 If `get_records()` is fast (small file, trivial parse), the base implementation is
@@ -522,28 +522,88 @@ Rule of thumb:
 
 ## Icons
 
-`icon_cell(path)` renders an icon cell. The path is not fetched at parse time —
+`icon_cell(path)` renders an icon cell. The path is not fetched at parse time,
 the UI lazily resolves it against the PAZ entry map when the cell scrolls into
 view, so a handler only has to emit a correct path string.
 
-For item icons, use `_common/item_icon.py` rather than hand-writing a template:
+Icons are looked up by **kind and entity ID** through `_common/icon_index.py`,
+never by hand-written template:
 
 ```python
-from _common.item_icon import item_icon_path
+from _common.icon_index import IconKind, icon_path
 
-row["icon_path"] = item_icon_path(item_id)
+row["icon_path"] = icon_path(IconKind.ITEM, item_id)
 ```
 
-`item_icon_path()` tries two sources in order:
+`icon_path()` tries two sources in order:
 
-1. **The item icon index**, built from the level-0 records of
-   [itemenchant.dbss](file-formats/itemenchant_dbss.md), which store each item's
-   icon path inline. The app builds it once per PAZ folder in
-   `Api._load_item_icons()` and injects it with `init_item_icons()`, the same way
-   `init_loc()` supplies LOC data. It is cached to disk by
-   `paz/bdo_icon_cache.py`, invalidated on the PAZ meta version.
-2. **Derivation from the item ID** in the flat `product_icon_png` folder, used
-   when the index is unavailable or has no entry for that item.
+1. **The icon index for that kind.** For `IconKind.ITEM` it is built from the
+   level-0 records of [itemenchant.dbss](file-formats/itemenchant_dbss.md),
+   which store each item's icon path inline. The app builds every index once per
+   PAZ folder in `Api._load_icon_indexes()` and injects them with
+   `init_icon_index()`, the same way `init_loc()` supplies LOC data. Results are
+   cached by `paz/bdo_icon_cache.py`, keyed by `IconKind.value` and invalidated
+   on the PAZ meta version.
+2. **Derivation from the ID**, when that kind declares one and the index has no
+   entry. `IconKind.ITEM` derives into the flat `product_icon_png` folder.
+
+Kinds are an `Enum` so a typo is a failure at import rather than a silently
+empty icon column. Adding one means adding the member, its optional deriver in
+`_DERIVERS`, and one entry in `Api._icon_index_builders()` naming the source
+table, its offset companion (or `None`) and the builder.
+
+| Kind        | Source                  | Entries | Derivation fallback   |
+| ----------- | ----------------------- | ------- | --------------------- |
+| `ITEM`      | `itemenchant.dbss`      | 69,954  | `product_icon_png`    |
+| `QUEST`     | `quest.dbss`            | 16,377  | none                  |
+| `CHARACTER` | `characterobject.dbss`  | 4,817   | none                  |
+
+### Fixing an icon by hand
+
+`icon_path()` checks three tiers in order: **override, index, derivation.**
+
+Overrides live in `_common/icon_overrides.json`, keyed by `IconKind.value` then
+entity ID. They are repo data, not PAZ data, so they survive every index rebuild
+and every game patch:
+
+```json
+{
+  "item": { "222": "ui_texture/icon/new_icon/03_etc/00000222.dds" },
+  "quest": {},
+  "character": {}
+}
+```
+
+An empty string means "this entity genuinely has no icon", which suppresses a
+wrong derived guess rather than replacing it. A malformed file is reported by
+`icon_override_error()` and ignored rather than crashing the app;
+`tools/icon_coverage.py` prints that warning and the applied count per kind.
+
+Overrides are the intended fix for the ~850 IDs whose source table references an
+icon the client does not ship. Those references do not change between patches,
+so a correction made once keeps working.
+
+When an icon cannot be resolved at all, the preview serves
+`FALLBACK_ICON_PATH`, the game's own `00000000.png` "unknown" art, which BDO
+itself assigns to a handful of real items, so a broken reference renders
+placeholder art instead of an empty cell.
+
+How far each index actually reaches differs a lot, so check before assuming an
+icon column will look populated. Measured with `tools/icon_coverage.py`:
+
+| Kind        | IDs that exist | Resolve to a real file |
+| ----------- | -------------- | ---------------------- |
+| `ITEM`      | 73,790         | 93.8%                  |
+| `QUEST`     | 19,486         | 83.9%                  |
+| `CHARACTER` | 24,418         | 18.1%                  |
+
+`CHARACTER` is low because `characterobject.dbss` only describes NPCs that have
+a world object, 4,817 of 24,418. That is expected rather than broken, but it
+means a character icon column is mostly empty.
+
+Only `ITEM` declares a derivation. Quest and character icons are named after
+assets far more often than after their ID, so a guess would be wrong more often
+than right; those kinds return an empty path and the cell renders a placeholder.
 
 The index matters because most item icons are not reachable from the ID. Of
 ~77,000 files under `ui_texture/icon`, the ID-named ones live in dozens of
@@ -557,7 +617,7 @@ per-category folders, and thousands more are named after a 3D asset
 
 Cash-shop product icons are deliberately excluded. `cashproduct.dbss` links a
 product to the item it grants, but its icon is the shop product art, not the
-item's icon — item 1 (Silver) maps to `loyalties.dds`, the product that grants
+item's icon: item 1 (Silver) maps to `loyalties.dds`, the product that grants
 it. Its icons differ from the item's own in every overlapping case, and it adds
 no items that `itemenchant.dbss` does not already cover.
 
@@ -639,7 +699,7 @@ A partial translation file (`lang/de.json`) only needs to cover the keys it chan
 }
 ```
 
-Missing keys are not resolved automatically by `load_handler_strings` — if you ship
+Missing keys are not resolved automatically by `load_handler_strings`. If you ship
 partial files, do the merge yourself:
 
 ```python
@@ -658,16 +718,16 @@ def _strings(lang: str) -> dict:
     return {k: {**base.get(k, {}), **override.get(k, {})} for k in base}
 ```
 
-For most handlers a flat single-language file is simpler — only bother with partial
+For most handlers a flat single-language file is simpler, so only bother with partial
 merging when the string table is large enough that translators would realistically
 only cover part of it.
 
 Rules:
-- Always provide English (`"en"`) as the fallback — `self.lang` may be a code your
+- Always provide English (`"en"`) as the fallback, since `self.lang` may be a code your
   handler does not yet translate.
 - Put translated strings in `get_records()` so they land in `records` dicts, which
   means tab search and CSV export also see the localized values.
-- Do not put translated labels directly in `render_records_page()` — the HTML layer
+- Do not put translated labels directly in `render_records_page()`, because the HTML layer
   should be format-agnostic.
 
 ---
@@ -786,7 +846,7 @@ Raise only for actual programming errors.
 3. Add `__init__.py` to every package folder.
 4. Create a `registration.py`.
 5. Implement one or more `PreviewHandler` classes with `get_records()` and `render_records_page()`.
-6. `get_records()` must return plain dicts — no HTML. Include any LOC-lookup strings here so tab search can find them. Use `self.lang` for language-aware display strings.
+6. `get_records()` must return plain dicts, no HTML. Include any LOC-lookup strings here so tab search can find them. Use `self.lang` for language-aware display strings.
 7. `render_records_page()` slices `records[page * page_size : ...]` and returns an HTML fragment.
 8. Paging and search are lazy by default. For formats with a heavy internal structure, use `_data_cache()` to build the index once and override `render_data_page()` to parse only the requested page.
 9. Register by exact filename or extension.
@@ -796,7 +856,7 @@ Raise only for actual programming errors.
 13. Keep raw hex switching in the frontend, not the handler.
 14. Move reusable logic to `_common/` when another format needs it.
 
-> **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. Changes to any file under `handlers/` — including private packages like `_dbss/` — take effect immediately. If a file is open on the Parsed tab, the preview re-renders automatically.
+> **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. Changes to any file under `handlers/`, including private packages like `_dbss/`, take effect immediately. If a file is open on the Parsed tab, the preview re-renders automatically.
 
 ---
 
@@ -866,4 +926,4 @@ class TextureDdsHandler(PreviewHandler):
         return table(f"{len(records):,} records", _HEADERS, rows)
 ```
 
-This is the simplest possible handler — `get_records()` is called once per file and the base class caches the result automatically. If the format requires a heavy parse (offset table, packed index), see the [Lazy Parsed Handlers](#lazy-parsed-handlers) section and use `_data_cache()` to build the index once.
+This is the simplest possible handler: `get_records()` is called once per file and the base class caches the result automatically. If the format requires a heavy parse (offset table, packed index), see the [Lazy Parsed Handlers](#lazy-parsed-handlers) section and use `_data_cache()` to build the index once.

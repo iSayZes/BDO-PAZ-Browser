@@ -7,7 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded
 from _common.html import e, icon_cell, table
-from _common.item_icon import item_icon_path
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from .parser import (
     parse_gift_offset_records,
@@ -20,7 +20,7 @@ _LANG_DIR = Path(__file__).parent / "lang"
 
 
 class _NpcGiftOffsetHandler(PreviewHandler):
-    """Shared handler for npcgiftoffset.dbss and npcgiftdataoffset.dbss — identical layout."""
+    """Shared handler for npcgiftoffset.dbss and npcgiftdataoffset.dbss, identical layout."""
 
     def get_records(
         self,
@@ -75,7 +75,7 @@ class NpcGiftHandler(PreviewHandler):
 
         for record in parse_npcgift_records(data):
             row = dict(record)
-            row["icon_path"] = item_icon_path(row["item_id"])
+            row["icon_path"] = icon_path(IconKind.ITEM, row["item_id"])
             records.append(row)
 
         return records

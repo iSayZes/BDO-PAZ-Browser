@@ -97,6 +97,12 @@ class PreviewMixin:
 
         entry = self._resolve_icon_entry(norm)
         if entry is None:
+            # A referenced icon that is not shipped still gets placeholder art
+            # rather than an empty cell.
+            from _common.icon_index import FALLBACK_ICON_PATH  # noqa: PLC0415
+
+            entry = self._resolve_icon_entry(_norm(FALLBACK_ICON_PATH))
+        if entry is None:
             return {"error": f"Icon entry not found: {icon_path}"}
 
         try:
@@ -250,7 +256,7 @@ class PreviewMixin:
     ) -> dict:
         """Build a load_entry response for HexHandler entries using range-reads.
 
-        Stores entry but not full data — get_hex_page will seek per-page.
+        Stores entry but not full data; get_hex_page will seek per-page.
         """
         self._cached_path = _norm(internal_path)
         self._cached_data = None
@@ -324,7 +330,7 @@ class PreviewMixin:
                 }
             return response
 
-        # Fast path: hex-only entry stored raw — seek directly, skip full decode.
+        # Fast path: hex-only entry stored raw, so seek directly and skip the full decode.
         if isinstance(handler, HexHandler) and can_range_read(entry):
             try:
                 start = self._ts()
@@ -410,9 +416,9 @@ class PreviewMixin:
         import html as _html_mod
         norm = _norm(path)
         if self._cached_path != norm or self._cached_handler is None:
-            return {"error": "Page data not cached — reload the file first"}
+            return {"error": "Page data not cached, reload the file first"}
         if self._cached_data is None or self._cached_entry is None:
-            return {"error": "Page data not cached — reload the file first"}
+            return {"error": "Page data not cached, reload the file first"}
         try:
             html = self._cached_handler.render_data_page(
                 self._cached_data,
@@ -461,7 +467,7 @@ class PreviewMixin:
                 except Exception as ex:
                     return {"error": str(ex)}
             else:
-                return {"error": "File data not cached — reload the file"}
+                return {"error": "File data not cached, reload the file"}
             save_filename = filename
             file_types = ("All files (*.*)",)
 

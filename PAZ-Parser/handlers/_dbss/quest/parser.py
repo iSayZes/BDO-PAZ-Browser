@@ -222,3 +222,32 @@ def parse_quest_records(data: bytes) -> list[QuestRecord]:
             records.append(record)
 
     return records
+
+
+# Stored quest icon paths already start at "Icon/", so they hang off ui_texture.
+QUEST_ICON_ROOT = "ui_texture/"
+
+
+def build_quest_icon_index(
+    data: bytes,
+    offset_data: bytes | None = None,
+) -> dict[int, str]:
+    """Map canonical quest ID to icon path.
+
+    `quest.dbss` has no offset companion, so this reuses the scan-built index
+    the handler already relies on. `offset_data` is accepted and ignored to keep
+    one builder signature across icon kinds.
+    """
+    index = build_quest_index(data)
+    icons: dict[int, str] = {}
+
+    for quest_id, icon in zip(index.canonical_quest_ids, index.icon_paths):
+        if not quest_id or not icon:
+            continue
+
+        # A few stored paths carry a doubled separator, such as
+        # "Icon/Quest//lost_wagon.dds", which can never match a PAZ entry.
+        path = icon.lower().replace("//", "/")
+        icons[quest_id] = f"{QUEST_ICON_ROOT}{path}"
+
+    return icons

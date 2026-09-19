@@ -148,7 +148,7 @@ class Api(PreviewMixin, SearchMixin):
         return {"ok": True, "path": str(self._paz_root)}
 
     def browse_folder(self) -> dict:
-        """Open a folder picker without side effects — for use in the settings modal."""
+        """Open a folder picker without side effects, for use in the settings modal."""
         if self._window is None:
             return {"ok": False, "error": "Window not initialized"}
         result = self._window.create_file_dialog(webview.FileDialog.FOLDER)
@@ -237,7 +237,7 @@ class Api(PreviewMixin, SearchMixin):
             self._icon_data_url_cache.clear()
             self._tree_data = self._build_tree_data(entries)
             self._load_disk_companions()
-            self._load_item_icons(current_version)
+            self._load_icon_indexes(current_version)
             self._push_status(msg)
             self._push_js("app.onFolderLoaded()")
 
@@ -245,51 +245,94 @@ class Api(PreviewMixin, SearchMixin):
             self._push_status({"key": "status.error", "args": {"message": str(ex)}})
             self._push_js(f"app.showError({json.dumps(str(ex))})")
 
-    _ITEM_ENCHANT = "gamecommondata/binary/itemenchant.dbss"
-    _ITEM_ENCHANT_OFFSET = "gamecommondata/binary/itemenchantoffset.dbss"
+    def _icon_index_builders(self) -> dict:
+        """kind -> (source path, companion path or None, builder).
 
-    def _load_item_icons(self, version: int) -> None:
-        """Install the item ID to icon path index, from cache or by building it.
-
-        Items whose icon is named after a 3D asset or filed under a per-category
-        folder cannot be reached from the ID, so the index is the only way to
-        show their icon. A failure here is not fatal: handlers fall back to
-        deriving a path from the item ID.
+        Adding a kind is one entry: point it at its table and the function that
+        turns that table into {entity_id: icon path}.
         """
-        from _common.item_icon import init_item_icons  # noqa: PLC0415
+        from _common.icon_index import IconKind  # noqa: PLC0415
+        from _dbss.characterobject.parser import (  # noqa: PLC0415
+            build_character_icon_index,
+        )
+        from _dbss.itemenchant.parser import build_item_icon_index  # noqa: PLC0415
+        from _dbss.quest.parser import build_quest_icon_index  # noqa: PLC0415
+
+        binary = "gamecommondata/binary"
+        return {
+            IconKind.ITEM: (
+                f"{binary}/itemenchant.dbss",
+                f"{binary}/itemenchantoffset.dbss",
+                build_item_icon_index,
+            ),
+            IconKind.QUEST: (
+                f"{binary}/quest.dbss",
+                None,
+                build_quest_icon_index,
+            ),
+            IconKind.CHARACTER: (
+                f"{binary}/characterobject.dbss",
+                f"{binary}/characterobjectoffset.dbss",
+                build_character_icon_index,
+            ),
+        }
+
+    def _load_icon_indexes(self, version: int) -> None:
+        """Install every icon index, from cache or by building it.
+
+        Icons whose file is named after a 3D asset, or filed under a
+        per-category folder, cannot be reached from an entity ID, so the index
+        is the only way to show them. A failure here is not fatal: kinds that
+        declare a derivation still fall back to it.
+        """
+        from _common.icon_index import (  # noqa: PLC0415
+            IconKind,
+            clear_icon_indexes,
+            init_icon_index,
+        )
 
         if not self._paz_root:
             return
 
+        clear_icon_indexes()
+
         cached = load_icon_cache(self._paz_root)
         if cached and cached[0] == version:
-            init_item_icons(cached[1])
+            by_value = {kind.value: kind for kind in IconKind}
+            for name, mapping in cached[1].items():
+                kind = by_value.get(name)
+                if kind is not None:
+                    init_icon_index(kind, mapping)
             return
 
+        indexes: dict[str, dict[int, str]] = {}
         try:
-            from _dbss.itemenchant.parser import (  # noqa: PLC0415
-                build_item_icon_index,
-            )
+            for kind, (source, companion, build) in self._icon_index_builders().items():
+                data = self._load_companion_sync(source)
+                if data is None:
+                    continue
 
-            data = self._load_companion_sync(self._ITEM_ENCHANT)
-            offset_data = self._load_companion_sync(self._ITEM_ENCHANT_OFFSET)
-            if data is None or offset_data is None:
-                init_item_icons(None)
-                return
+                offset_data = None
+                if companion is not None:
+                    offset_data = self._load_companion_sync(companion)
+                    if offset_data is None:
+                        continue
 
-            icons = build_item_icon_index(data, offset_data)
+                mapping = build(data, offset_data)
+                init_icon_index(kind, mapping)
+                indexes[kind.value] = mapping
         except Exception as ex:
-            init_item_icons(None)
+            clear_icon_indexes()
             self._push_status(
                 {"key": "status.iconIndexFailed", "args": {"message": str(ex)}}
             )
             return
 
-        init_item_icons(icons)
-        try:
-            save_icon_cache(self._paz_root, version, icons)
-        except Exception:
-            pass
+        if indexes:
+            try:
+                save_icon_cache(self._paz_root, version, indexes)
+            except Exception:
+                pass
 
     def _load_disk_companions(self) -> None:
         if not self._paz_root:

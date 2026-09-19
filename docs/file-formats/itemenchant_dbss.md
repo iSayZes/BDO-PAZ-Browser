@@ -98,21 +98,23 @@ The same trailer shape used by
 ## Key Packing
 
 ```text
-key = (enchant_level << 24) | item_id
+key = (key_variant << 24) | item_id
 ```
 
-| Field         | Bits    | Observed range           |
-| ------------- | ------- | ------------------------ |
-| enchant_level | 31..24  | 0-25                     |
-| item_id       | 23..0   | 1-1,000,827              |
+| Field       | Bits   | Observed range |
+| ----------- | ------ | -------------- |
+| key_variant | 31..24 | 0-25           |
+| item_id     | 23..0  | 1-1,000,827    |
 
-Level `0` is the base item. Levels `1`-`25` are that item at each enchant step,
-so an enchantable item contributes many rows.
+The low 24 bits are confirmed item IDs: 69,292 of them match a name in
+`languagedata_en.loc`. **What the high byte means is not confirmed.** Variant `0`
+is the base item, with exactly one record per item ID, which is all the icon
+index needs.
 
-| Key group        | Rows    | Meaning                        |
-| ---------------- | ------- | ------------------------------ |
-| level 0          | 69,954  | One per base item              |
-| levels 1-25      | 100,011 | Enchanted variants             |
+| Key group     | Rows    | Meaning                     |
+| ------------- | ------- | --------------------------- |
+| variant 0     | 69,954  | One per base item           |
+| variants 1-25 | 100,011 | Unconfirmed, see the open question |
 
 ---
 
@@ -186,11 +188,9 @@ only approach that covers items whose icon is named after a 3D asset
 | Column        | Type | Notes                                             |
 | ------------- | ---- | ------------------------------------------------- |
 | Item ID       | num  | `item_id` from the key                            |
-| Enchant Level | num  | `enchant_level` from the key; `—` when 0          |
 | Icon          | text | First block string, prefixed `ui_texture/icon/`   |
 | Item          | text | LOC `str_type=0`, `str_id1=item_id`               |
 | Effect Tag    | text | Second block string when present                  |
-| Block Size    | num  | `data_size` from the companion                    |
 
 ---
 
@@ -238,8 +238,12 @@ The optional second string looks like an effect or sound tag
 350 sampled blocks, all of them weapons or armour. What consumes it, and whether
 other tag families exist, is unconfirmed.
 
-### Level Range
+### Key Variant Meaning
 
-Keys carry enchant levels 0-25, but BDO's visible enchant range is narrower.
-Whether levels above 20 are internal padding, a different enchant track, or
-unused is not established.
+The high byte of the key runs 0-25. It was first read as an enchant level, since
+the file is named `itemenchant`, but that does not hold up: BDO's visible
+enchant range is narrower than 25, and the values do not line up with enchant
+levels in the app. Whether the byte is an enchant step, a different upgrade
+track, a variant index, or something else is unresolved, so the field is named
+`key_variant` and is not displayed. Variant `0` is reliably the base item, which
+is the only property the icon index depends on.

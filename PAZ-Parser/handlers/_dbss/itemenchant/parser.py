@@ -9,9 +9,11 @@ _OFFSET_HEADER_SIZE = 8
 _OFFSET_ROW_SIZE = 12
 _TRAILER_SIZE = 12
 
-# key = (enchant_level << 24) | item_id
+# key = (variant << 24) | item_id. Variant 0 is the base item and there is
+# exactly one per item ID. What the non-zero variants mean is unconfirmed: the
+# observed range 0-25 is wider than BDO's visible enchant levels.
 _ITEM_ID_MASK = 0x00FFFFFF
-_ENCHANT_LEVEL_SHIFT = 24
+_KEY_VARIANT_SHIFT = 24
 
 # Stored icon paths are relative to this folder.
 ICON_ROOT = "ui_texture/icon/"
@@ -37,7 +39,7 @@ def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
         records.append({
             "key": key,
             "item_id": key & _ITEM_ID_MASK,
-            "enchant_level": key >> _ENCHANT_LEVEL_SHIFT,
+            "key_variant": key >> _KEY_VARIANT_SHIFT,
             "data_offset": u32(data, pos + 0x04),
             "data_size": u32(data, pos + 0x08),
         })
@@ -46,7 +48,7 @@ def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
 
 
 def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
-    """Parse one row per (item, enchant level), carrying the inline icon path.
+    """Parse one row per (item, key variant), carrying the inline icon path.
 
     The first string in a block is always the icon path; an optional second
     string is an effect tag such as `ITEM_BIC_HIT_1`.
@@ -66,7 +68,7 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
         icon = strings[0] if strings else ""
         records.append({
             "item_id": row["item_id"],
-            "enchant_level": row["enchant_level"],
+            "key_variant": row["key_variant"],
             "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
             "effect_tag": strings[1] if len(strings) > 1 else "",
             "block_size": row["data_size"],
@@ -76,15 +78,15 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
 
 
 def build_item_icon_index(data: bytes, offset_data: bytes) -> dict[int, str]:
-    """Map item ID to icon path using only the level-0 (base item) records.
+    """Map item ID to icon path using only the variant-0 (base item) records.
 
-    Enchanted variants repeat the base item's icon, so skipping them cuts the
+    Non-zero variants repeat the base item's icon, so skipping them cuts the
     work to a third without losing an entry.
     """
     index: dict[int, str] = {}
 
     for row in parse_itemenchantoffset_records(offset_data):
-        if row["enchant_level"]:
+        if row["key_variant"]:
             continue
 
         start = row["data_offset"]

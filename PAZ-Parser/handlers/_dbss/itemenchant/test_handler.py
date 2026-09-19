@@ -35,7 +35,7 @@ CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "item_id",
-                "enchant_level",
+                "key_variant",
                 "icon_path",
                 "effect_tag",
                 "block_size",
@@ -43,14 +43,15 @@ CASE = HandlerCase(
             ],
         ),
         CountTest(expected=169_965),
-        RangeTest(col="enchant_level", min_val=0, max_val=25),
+        # Variant 0 is the base item: exactly one per item ID.
+        RangeTest(col="key_variant", min_val=0, max_val=25),
         RangeTest(col="item_id", min_val=1, max_val=1_000_827),
         # The furniture case: icon path comes from the block, not the item ID.
         TargetTest(
             col="item_id",
             value=_KING_CLAM,
             expected={
-                "enchant_level": 0,
+                "key_variant": 0,
                 "item_name": "King Clam Wall Ornament",
                 "icon_path": (
                     f"{_ICON_ROOT}/03_etc/06_housing/"
@@ -65,7 +66,7 @@ CASE = HandlerCase(
             pos=0,
             expected={
                 "item_id": 697192,
-                "enchant_level": 24,
+                "key_variant": 24,
                 "block_size": 1378,
             },
         ),

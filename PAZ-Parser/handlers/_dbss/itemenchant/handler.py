@@ -52,14 +52,12 @@ class ItemEnchantOffsetHandler(PreviewHandler):
         cols = load_handler_strings(self.lang, _LANG_DIR).get("offsetColumns", {})
         headers: list[tuple[str, str, str]] = [
             (cols.get("itemId", "Item ID"), "num", ""),
-            (cols.get("enchantLevel", "Enchant Level"), "num", ""),
             (cols.get("dataOffset", "Data Offset"), "num", ""),
             (cols.get("dataSize", "Data Size"), "num", ""),
         ]
         rows = [
             [
                 e(record["item_id"]),
-                e(record["enchant_level"] or _EMPTY),
                 e(f"0x{record['data_offset']:08X}"),
                 e(f"{record['data_size']:,}"),
             ]
@@ -100,7 +98,7 @@ class ItemEnchantHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         items = len({record["item_id"] for record in records})
-        meta = f"{len(records):,} enchant records across {items:,} items"
+        meta = f"{len(records):,} records across {items:,} items"
 
         with_icon = sum(1 for record in records if record["icon_path"])
         if with_icon:
@@ -109,20 +107,16 @@ class ItemEnchantHandler(PreviewHandler):
         cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
         headers: list[tuple[str, str, str]] = [
             (cols.get("itemId", "Item ID"), "num", ""),
-            (cols.get("enchantLevel", "Enchant Level"), "num", ""),
             (cols.get("icon", "Icon"), "", ""),
             (cols.get("item", "Item"), "", ""),
             (cols.get("effectTag", "Effect Tag"), "", ""),
-            (cols.get("blockSize", "Block Size"), "num", ""),
         ]
         rows = [
             [
                 e(record["item_id"]),
-                e(record["enchant_level"] or _EMPTY),
                 icon_cell(record["icon_path"]) if record["icon_path"] else _EMPTY,
                 e(record.get("item_name") or record["item_id"]),
                 e(record["effect_tag"] or _EMPTY),
-                e(f"{record['block_size']:,}"),
             ]
             for record in slice_
         ]

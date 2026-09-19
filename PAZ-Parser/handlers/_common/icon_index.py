@@ -32,11 +32,6 @@ class IconKind(Enum):
 
 ITEM_ICON_DIR = "ui_texture/icon/new_icon/product_icon_png"
 
-# The game's own "unknown" art, which it assigns to a handful of real items.
-# Served when a referenced icon is not in the PAZ, so a broken reference shows
-# placeholder art instead of an empty cell.
-FALLBACK_ICON_PATH = f"{ITEM_ICON_DIR}/00000000.png"
-
 
 def _derive_item_icon(item_id: int) -> str:
     return f"{ITEM_ICON_DIR}/{item_id:08d}.png"

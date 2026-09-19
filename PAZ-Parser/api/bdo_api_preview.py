@@ -97,12 +97,8 @@ class PreviewMixin:
 
         entry = self._resolve_icon_entry(norm)
         if entry is None:
-            # A referenced icon that is not shipped still gets placeholder art
-            # rather than an empty cell.
-            from _common.icon_index import FALLBACK_ICON_PATH  # noqa: PLC0415
-
-            entry = self._resolve_icon_entry(_norm(FALLBACK_ICON_PATH))
-        if entry is None:
+            # The UI renders a dash for a miss, so report it rather than
+            # substituting art for an icon the client does not ship.
             return {"error": f"Icon entry not found: {icon_path}"}
 
         try:

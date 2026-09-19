@@ -583,10 +583,11 @@ Overrides are the intended fix for the ~850 IDs whose source table references an
 icon the client does not ship. Those references do not change between patches,
 so a correction made once keeps working.
 
-When an icon cannot be resolved at all, the preview serves
-`FALLBACK_ICON_PATH`, the game's own `00000000.png` "unknown" art, which BDO
-itself assigns to a handful of real items, so a broken reference renders
-placeholder art instead of an empty cell.
+When a referenced icon is not in the PAZ, the cell collapses to a dash rather
+than leaving an empty swatch beside a path that resolves to nothing. The full
+path stays in the cell's `title` attribute, so it is still there on hover. That
+covers the roughly 850 IDs whose source table points at an icon the client does
+not ship, until an override supplies the right path.
 
 How far each index actually reaches differs a lot, so check before assuming an
 icon column will look populated. Measured against the live PAZ:

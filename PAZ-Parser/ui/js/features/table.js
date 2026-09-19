@@ -50,7 +50,11 @@ export const tableMethods = {
     }
 
     if (!url) {
+      // Not shipped in the PAZ. Collapse to a dash rather than leave an empty
+      // swatch beside a path that resolves to nothing. The full path stays in
+      // the cell's title attribute.
       cell.classList.add("icon-cell-missing");
+      cell.textContent = "-";
       return;
     }
 

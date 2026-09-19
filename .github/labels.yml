@@ -64,7 +64,7 @@
 # priority: urgency
 - name: "priority: high 🔴"
   color: "b60205"
-  description: Urgent — blocks progress or affects core functionality.
+  description: Urgent, blocks progress or affects core functionality.
 - name: "priority: medium 🟡"
   color: "fbca04"
   description: Important but not blocking.

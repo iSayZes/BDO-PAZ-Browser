@@ -53,7 +53,7 @@ class PreviewHandler(ABC):
         The base implementation caches get_records() per data object so that paging,
         count, and search all reuse the same parse result without re-reading data.
         Override to return False only when the handler requires full eager materialisation
-        before any paging — this should be rare and requires explicit justification.
+        before any paging, this should be rare and requires explicit justification.
         """
         return True
 
@@ -96,11 +96,11 @@ class PreviewHandler(ABC):
 
     @abstractmethod
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        """Return all records as plain dicts (raw values — no HTML).
+        """Return all records as plain dicts (raw values, no HTML).
 
         Parsed-view handlers must implement this. Raise NotImplementedError for
         handlers that only produce hex/text/image output (HexHandler, TextHandler,
-        DdsHandler) — those are excluded from the parsed tab by `has_parsed` in
+        DdsHandler), those are excluded from the parsed tab by `has_parsed` in
         bdo_api.py and this method is never called on them.
         """
         raise NotImplementedError
@@ -132,7 +132,7 @@ class TextHandler(PreviewHandler):
         note      = ""
         if truncated:
             note = (
-                f'\n<span class="hex-note">… truncated — showing first '
+                f'\n<span class="hex-note">… truncated, showing first '
                 f'{_TEXT_LIMIT // 1024} KB of {len(data) // 1024} KB</span>'
             )
         return f'<pre class="text-view">{_html.escape(content)}</pre>{note}'
@@ -166,7 +166,7 @@ class DdsHandler(PreviewHandler):
         try:
             from PIL import Image
         except ImportError:
-            return '<div class="error">Pillow not installed — pip install pillow</div>'
+            return '<div class="error">Pillow not installed, pip install pillow</div>'
 
         try:
             img = Image.open(io.BytesIO(data)).convert("RGBA")
@@ -311,7 +311,7 @@ class SvgHandler(AltViewHandler):
     def render_alt(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         import re as _re
         text = data.decode("utf-8", errors="replace")
-        # Strip XML declaration and DOCTYPE — external DTD references block Chromium data-URI rendering
+        # Strip XML declaration and DOCTYPE, external DTD references block Chromium data-URI rendering
         text = _re.sub(r"<\?xml[^?]*\?>", "", text)
         text = _re.sub(r"<!DOCTYPE[^>]*>", "", text)
         b64  = base64.b64encode(text.encode("utf-8")).decode()

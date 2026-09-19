@@ -27,9 +27,9 @@ level 50  → 5 Theiah's Orbs
 
 ### Connections
 
-- [fairyskillchangeoffset.dbss](#fairyskillchangeoffsetdbss) — level-keyed offset index
-- [fairyequipskill.bss](fairyequipskill_bss.md) — the fairy skill catalog whose entries a reroll draws from; no shared key
-- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md) — fairy equip-skill acquisition costs
+- [fairyskillchangeoffset.dbss](#fairyskillchangeoffsetdbss), level-keyed offset index
+- [fairyequipskill.bss](fairyequipskill_bss.md), the fairy skill catalog whose entries a reroll draws from; no shared key
+- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), fairy equip-skill acquisition costs
 
 ---
 
@@ -59,7 +59,7 @@ Total file size: 604 bytes = 4 (count) + 50 × 12 (records).
 
 | Offset  | Type | Field    | Notes                                              |
 | ------- | ---- | -------- | -------------------------------------------------- |
-| `+0x00` | u32  | key      | Record key — the fairy level; equals `level`       |
+| `+0x00` | u32  | key      | Record key, the fairy level; equals `level`       |
 | `+0x04` | u32  | level    | Fairy level, `1`–`50`                              |
 | `+0x08` | u32  | orb_cost | Theiah's Orbs required to reroll skills, `1`–`5`   |
 
@@ -85,7 +85,7 @@ The in-game cost table is usually quoted as starting at level 10 (`10`–`19` �
 
 ## Record Order
 
-Records are stored out of level order. The first stored keys are `47, 46, 45, 44, 43, 42, 41, 40`, and the file continues in descending runs that jump between bands. This is why the offset companion exists — a reader seeking a specific level must use the index rather than computing `4 + (level - 1) * 12`.
+Records are stored out of level order. The first stored keys are `47, 46, 45, 44, 43, 42, 41, 40`, and the file continues in descending runs that jump between bands. This is why the offset companion exists, a reader seeking a specific level must use the index rather than computing `4 + (level - 1) * 12`.
 
 ---
 
@@ -148,7 +148,7 @@ For `fairyskillchangeoffset.dbss`:
 Context for reading this file and [fairyequipskill.bss](fairyequipskill_bss.md) together. These
 mechanics are established in-game behaviour, not values decoded from this file:
 
-Fairies come in four grades — Faint (tier 1, 10 levels, 2 skills), Glimmering (tier 2, 20 levels,
+Fairies come in four grades, Faint (tier 1, 10 levels, 2 skills), Glimmering (tier 2, 20 levels,
 3 skills), Brilliant (tier 3, 30 levels, 4 skills) and Radiant (tier 4, 50 levels, 6 skills). Every
 fairy starts with Gift (Luck +1) and learns one random additional skill every 10 levels.
 
@@ -162,7 +162,7 @@ fairies can roll level 4 or above.
 
 - Both files are exactly 604 bytes and carry the same record count, stride, and ordering.
 - `key` and `level` are identical in every record, so the two cannot be told apart from this data alone; the split is inferred from where the offset companion points.
-- No localization is involved — the format contains no strings and no LOC IDs.
+- No localization is involved, the format contains no strings and no LOC IDs.
 - The cost bands are uneven: 1 orb covers 19 levels while 2–4 orbs cover 10 each and 5 orbs applies only at level 50.
 - `orb_cost` is **not** a fairy grade. Fairy grades run `1`–`4` (Faint through Radiant); this field runs `1`–`5` and is keyed by level, not grade.
 - The `1`–`5` range coincidentally matches the `I`–`V` skill-level ladders in the catalog. The two are unrelated: this field is a reroll price, and the catalog ladder is the rolled skill's level.
@@ -173,7 +173,7 @@ fairies can roll level 4 or above.
 
 ### Relationship to the skill catalog
 
-The two files are **not keyed to each other**. If this file were indexed by `equip_skill_id` it would have to include key `0` and stop at `34`; instead it starts at `1`, runs to `50`, and 16 of its keys (`35`–`50`) match no skill in the catalog, while the catalog's `equip_skill_id 0` has no key here. A reroll clearly draws from the catalog, but the file that constrains *which* entries and at what skill level — the per-grade roll table implied by "only Radiant fairies can roll level 4+" — has not been located.
+The two files are **not keyed to each other**. If this file were indexed by `equip_skill_id` it would have to include key `0` and stop at `34`; instead it starts at `1`, runs to `50`, and 16 of its keys (`35`–`50`) match no skill in the catalog, while the catalog's `equip_skill_id 0` has no key here. A reroll clearly draws from the catalog, but the file that constrains *which* entries and at what skill level, the per-grade roll table implied by "only Radiant fairies can roll level 4+", has not been located.
 
 ### Record ordering
 

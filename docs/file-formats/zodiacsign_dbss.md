@@ -24,12 +24,12 @@ Stars: 5 positions, icon: Customize_Zodiac_M_Hammer.dds
 
 ### Connections
 
-- [zodiacsignoffset.dbss](#zodiacsignoffsetdbss) — ID-keyed index for this file
-- [zodiacsignorder.dbss](#zodiacsignorderdbss) — per-personality drawing-order sequences
-- [zodiacsignorderoffset.dbss](#zodiacsignorderoffsetdbss) — index for zodiacsignorder
-- [zodiacsignindex.bss](zodiacsignindex_bss.md) — compact display/index order for the 12 zodiac IDs
-- [npcpersonality.dbss](npcpersonality_dbss.md) — cross-references zodiac_id via `personality_type // 100`
-- [languagedata_en.loc](languagedata_loc.md) — English names and trait descriptions (str_type=7)
+- [zodiacsignoffset.dbss](#zodiacsignoffsetdbss), ID-keyed index for this file
+- [zodiacsignorder.dbss](#zodiacsignorderdbss), per-personality drawing-order sequences
+- [zodiacsignorderoffset.dbss](#zodiacsignorderoffsetdbss), index for zodiacsignorder
+- [zodiacsignindex.bss](zodiacsignindex_bss.md), compact display/index order for the 12 zodiac IDs
+- [npcpersonality.dbss](npcpersonality_dbss.md), cross-references zodiac_id via `personality_type // 100`
+- [languagedata_en.loc](languagedata_loc.md), English names and trait descriptions (str_type=7)
 
 ---
 
@@ -236,5 +236,5 @@ Maps each personality type (2 variants × 12 signs = 24 records) to a slot-trigg
 - `star_positions` (x, y) pairs are 2D coordinates on the zodiac constellation display (range roughly ±250). The third float of each triple is always 1.0 and can be ignored.
 - `personality_type` in `npcpersonality.dbss` cross-references `zodiac_id` via `major = personality_type // 100`.
 - `zodiacsignindex.bss` has a `PABR` magic header and lists the 12 zodiac IDs sequentially; see [zodiacsignindex_bss.md](zodiacsignindex_bss.md).
-- Variant 2 `step_indices` typically differ from variant 1 — they represent an alternate drawing order. Variant 1 is usually the canonical forward order; variant 2 may reverse or reorder steps.
+- Variant 2 `step_indices` typically differ from variant 1, they represent an alternate drawing order. Variant 1 is usually the canonical forward order; variant 2 may reverse or reorder steps.
 - Major 9 (Key): only `personality_type` 901 exists in `npcpersonality.dbss`, but `zodiacsignorder.dbss` defines both 901 and 902.

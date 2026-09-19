@@ -137,4 +137,4 @@ The arrays between `+0x20` and `+0x38F` are not fully identified.
 
 ### unknown_loc_a and unknown_loc_b
 
-Both fields resolve to unrelated LOC rows in current English data — their purpose is unconfirmed.
+Both fields resolve to unrelated LOC rows in current English data, their purpose is unconfirmed.

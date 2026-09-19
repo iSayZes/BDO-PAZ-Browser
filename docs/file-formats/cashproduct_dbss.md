@@ -8,7 +8,7 @@ Korean display text, an **inline icon path**, and the item ID the product grants
 
 This is the second source of item icons after
 [itemenchant.dbss](itemenchant_dbss.md), and the only one that covers cash-shop
-products, whose icons are keyed by **product ID rather than item ID** — the
+products, whose icons are keyed by **product ID rather than item ID**, the
 reason thousands of ID-named icons match no item.
 
 Example:
@@ -62,8 +62,7 @@ The first block starts at byte `4` and the last ends exactly at end of file
 
 ## `cashproductoffset.dbss`
 
-Unlike most offset companions this file has **no `PABR` magic and no trailer** —
-a 4-byte count followed by rows, ending exactly at `4 + count × 12`
+Unlike most offset companions this file has **no `PABR` magic and no trailer**, a 4-byte count followed by rows, ending exactly at `4 + count × 12`
 (344,272 bytes observed).
 
 | Offset  | Type | Field | Notes                            |
@@ -159,7 +158,7 @@ start at `New_Icon/` and take the prefix `ui_texture/icon/`.
 ## Notes
 
 - Product IDs and item IDs are separate ID spaces. Product 117722 grants item
-  340916 and uses icon `00105099` — three unrelated numbers. Only this file ties
+  340916 and uses icon `00105099`, three unrelated numbers. Only this file ties
   them together.
 - The block's display text is Korean only; English names come from LOC via the
   linked item ID, not from this file.

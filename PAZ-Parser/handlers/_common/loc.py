@@ -101,7 +101,7 @@ def loc_lookup_prefix(str_type: int, str_id1: int) -> list[str]:
 
 
 def loc_all_texts() -> list[str]:
-    """All text values in file order — for content-based scanning."""
+    """All text values in file order, for content-based scanning."""
     if _LOC_ALL is None:
         return []
     return _LOC_ALL

@@ -1,5 +1,5 @@
 """
-ICE block cipher — ported from kukdh1/PAZ-Unpacker Crypt.cpp.
+ICE block cipher, ported from kukdh1/PAZ-Unpacker Crypt.cpp.
 
 Only the decrypt path is needed for PAZ extraction; encrypt is included for
 completeness.

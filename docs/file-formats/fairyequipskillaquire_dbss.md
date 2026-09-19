@@ -26,10 +26,10 @@ Faint   (501) → Tingling Breath II: weight 0      = cannot roll
 
 ### Connections
 
-- [fairyequipskill.bss](fairyequipskill_bss.md) — the skill catalog; weights are indexed by its `equip_skill_id`
-- [fairyequipskillaquireoffset.dbss](#fairyequipskillaquireoffsetdbss) — keyed offset index
-- [petequipskillaquire.dbss](petequipskillaquire_dbss.md) — identical record layout for pets
-- [fairyskillchange.dbss](fairyskillchange_dbss.md) — the Theiah's Orb cost of performing the reroll
+- [fairyequipskill.bss](fairyequipskill_bss.md), the skill catalog; weights are indexed by its `equip_skill_id`
+- [fairyequipskillaquireoffset.dbss](#fairyequipskillaquireoffsetdbss), keyed offset index
+- [petequipskillaquire.dbss](petequipskillaquire_dbss.md), identical record layout for pets
+- [fairyskillchange.dbss](fairyskillchange_dbss.md), the Theiah's Orb cost of performing the reroll
 
 ---
 
@@ -65,7 +65,7 @@ The first 2 bytes of each record are the file key prefix. The offset companion p
 
 ---
 
-## Acquire Type IDs — Fairy Grades
+## Acquire Type IDs, Fairy Grades
 
 The four keys are the four fairy grades, ascending:
 
@@ -182,7 +182,7 @@ Show one row per `(acquire_type_id, equip_skill_id)` and omit zero weights, sinc
 - Weights are **probabilities, not costs**. Earlier revisions of this document described the record as an acquisition cost table with `cost_a`/`cost_b`/`cost_c` triples and a `reserved` field; that reading was wrong. The values are parts-per-million and the "reserved" u32 is simply `weights[0]`.
 - The record is a flat 43-element array, not 14 sub-entries of 3 values. The apparent triples were an artifact of grouping a dense array into 12-byte rows.
 - Three independent checks confirm the reading: every grade sums to exactly `1,000,000`; the non-zero index set per grade matches the published per-tier skill availability exactly; and the highest rank reachable per grade (I / III / IV / V) matches the published rank caps.
-- 43 weight slots cover `equip_skill_id` `0`–`42`, while the fairy catalog only defines `0`–`34`. Slots `35`–`42` are zero in every record — spare capacity shared with the pet table, which uses the same 176-byte record.
+- 43 weight slots cover `equip_skill_id` `0`–`42`, while the fairy catalog only defines `0`–`34`. Slots `35`–`42` are zero in every record, spare capacity shared with the pet table, which uses the same 176-byte record.
 - Only Radiant can roll rank IV and V skills, which the weight table encodes directly rather than through a separate cap field.
 - Morning Star is weighted far above any other skill at low grades (25% for Faint) and drops to 3% at Radiant.
 

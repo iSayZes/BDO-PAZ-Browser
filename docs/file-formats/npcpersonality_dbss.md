@@ -23,8 +23,8 @@ interest: 11–37, favor: 10–35
 
 ### Connections
 
-- [zodiacsign.dbss](zodiacsign_dbss.md) — personality_type maps to zodiac_id via `major = personality_type // 100`
-- [languagedata_en.loc](languagedata_loc.md) — knowledge group names (str_type=9)
+- [zodiacsign.dbss](zodiacsign_dbss.md), personality_type maps to zodiac_id via `major = personality_type // 100`
+- [languagedata_en.loc](languagedata_loc.md), knowledge group names (str_type=9)
 
 ---
 
@@ -51,7 +51,7 @@ All multi-byte values are little-endian.
 | Offset  | Type | Field              | Notes                                                         |
 | ------- | ---- | ------------------ | ------------------------------------------------------------- |
 | `+0x00` | u16  | personality_id     | Unique personality identifier                                 |
-| `+0x02` | u32  | interest_group_a   | `(item_count << 16) \| group_id` — first amity interest group |
+| `+0x02` | u32  | interest_group_a   | `(item_count << 16) \| group_id`, first amity interest group |
 | `+0x06` | u32  | interest_group_b   | Second amity interest group                                   |
 | `+0x0A` | u32  | interest_group_c   | Third amity interest group                                    |
 | `+0x0E` | u16  | personality_id_dup | Always equal to `personality_id` at `+0x00`; purpose unknown  |
@@ -67,7 +67,7 @@ Each `interest_group` field is a packed u32:
 
 ```text
 bits 31–16 : item_count  (knowledge entries from this group the NPC is interested in)
-bits 15–0  : group_id    (knowledge group ID — matches node_id in mentalcard.dbss)
+bits 15–0  : group_id    (knowledge group ID, matches node_id in mentalcard.dbss)
 ```
 
 `item_count` matches the denominator shown in the in-game amity UI (e.g. "Vendors of Serendia (0/4)"). Observed values: 0, 1, 2, 4, 5, 6, 7, 8, 10. All three fields in a record typically share the same `item_count` (1121 of 1182 records). `item_count=0` is valid and still appears in the amity UI.
@@ -120,7 +120,7 @@ An index file with one entry per personality record, stored in the same order as
 
 `record_start = data_offset - 2`
 
-The offset file's `data_offset` values increment by exactly 34 (the main record stride) for each successive entry — it is a 1-to-1 sequential index providing no reordering.
+The offset file's `data_offset` values increment by exactly 34 (the main record stride) for each successive entry, it is a 1-to-1 sequential index providing no reordering.
 
 ---
 
@@ -144,7 +144,7 @@ The offset file's `data_offset` values increment by exactly 34 (the main record 
 
 ## Notes
 
-- All 1182 `personality_id` values are unique — it is a true record key.
+- All 1182 `personality_id` values are unique, it is a true record key.
 - `personality_id_dup` at `+0x0E` is always identical to `personality_id` at `+0x00`; appears to be alignment padding or a redundant lookup key.
 - The `variant` in `personality_type` (1 or 2) is not exposed in `amity-npcs.json`; its in-game meaning is unknown. Distribution is roughly even (584 variant-1, 598 variant-2).
 - Confirmed against Amerigo (NPC ID 41013): all three groups show `item_count=4`, matching the UI display "Vendors of Serendia (0/4)", "Serendia Adventure Log II (0/4)", "Plants (Serendia) (0/4)".

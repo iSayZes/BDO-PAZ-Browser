@@ -27,6 +27,6 @@ body:
     id: notes
     attributes:
       label: Notes
-      description: Hex observations, layout guesses, companion files, encoding hints — anything useful.
+      description: Hex observations, layout guesses, companion files, encoding hints, anything useful.
     validations:
       required: false

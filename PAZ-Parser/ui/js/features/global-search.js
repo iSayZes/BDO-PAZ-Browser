@@ -30,7 +30,7 @@ export const globalSearchMethods = {
     bar.hidden = !hidden;
     btn.classList.toggle("active", !hidden ? false : true);
     if (!hidden) {
-      // closing — restore tree if we were showing results
+      // closing, restore tree if we were showing results
       if (this._inGlobalSearch) this._exitGlobalSearchResults();
     } else {
       document.getElementById("csb-input").focus();
@@ -85,7 +85,7 @@ export const globalSearchMethods = {
       return;
     }
 
-    // Clear tree now — results will stream in via onGlobalSearchResult
+    // Clear tree now, results will stream in via onGlobalSearchResult
     this._inGlobalSearch = true;
     document.getElementById("tree").innerHTML = "";
   },

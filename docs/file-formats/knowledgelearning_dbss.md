@@ -20,8 +20,8 @@ kind: 13  →  knowledge_id: 4521  →  "Imp Captain"
 
 ### Connections
 
-- [mentalcard.dbss](mentalcard_dbss.md) — maps the same knowledge_id to its UI node/category
-- [languagedata_en.loc](languagedata_loc.md) — English entry names (str_type=34, str_id1=knowledge_id)
+- [mentalcard.dbss](mentalcard_dbss.md), maps the same knowledge_id to its UI node/category
+- [languagedata_en.loc](languagedata_loc.md), English entry names (str_type=34, str_id1=knowledge_id)
 
 ---
 
@@ -46,7 +46,7 @@ All multi-byte values are little-endian.
 | ------- | ---- | ------ | ------------------------------------------- |
 | `+0x00` | u32  | offset | Byte offset into `knowledgelearning.dbss`   |
 | `+0x04` | u32  | kind   | Unlock trigger type (see Enum Values below) |
-| `+0x08` | u32  | idx_id | Index ID — meaning depends on kind          |
+| `+0x08` | u32  | idx_id | Index ID, meaning depends on kind          |
 
 ### knowledgelearning.dbss
 
@@ -54,7 +54,7 @@ Records are accessed by absolute byte offset from the offset file. Only one fiel
 
 | Offset  | Type | Name         | Description                                                        |
 | ------- | ---- | ------------ | ------------------------------------------------------------------ |
-| `+0x00` | ?    | unknown      | 9 bytes — layout not yet documented                                |
+| `+0x00` | ?    | unknown      | 9 bytes, layout not yet documented                                |
 | `+0x09` | u32  | knowledge_id | Knowledge entry ID (matches LOC str_type=34 and `mentalcard.dbss`) |
 
 ---
@@ -65,7 +65,7 @@ Records are accessed by absolute byte offset from the offset file. Only one fiel
 
 | Value | Meaning                                              |
 | ----- | ---------------------------------------------------- |
-| 13    | Only value observed so far — exact meaning uncertain |
+| 13    | Only value observed so far, exact meaning uncertain |
 
 ---
 

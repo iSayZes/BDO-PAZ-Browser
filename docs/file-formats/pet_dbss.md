@@ -23,11 +23,11 @@ icon: New_UI_Common_forLua\Window\Stable\Pet\GoldStar_Pet_0004.dds
 
 ### Connections
 
-- [petoffset.dbss](petoffset_dbss.md) — keyed offset index for this file
-- [petgrade.dbss](petgrade_dbss.md) — join on `(species, variant)` to get grade per pet type
-- [petequipskillaquire.dbss](petequipskillaquire_dbss.md) — `acquire_type_id` keys into this table
-- [petequipskill.bss](petequipskill_bss.md) — `equip_skill_id` keys into this file for skill name and type
-- [petexp.dbss](petexp_dbss.md) — pet EXP tables; `max_level` values match this file's level counts
+- [petoffset.dbss](petoffset_dbss.md), keyed offset index for this file
+- [petgrade.dbss](petgrade_dbss.md), join on `(species, variant)` to get grade per pet type
+- [petequipskillaquire.dbss](petequipskillaquire_dbss.md), `acquire_type_id` keys into this table
+- [petequipskill.bss](petequipskill_bss.md), `equip_skill_id` keys into this file for skill name and type
+- [petexp.dbss](petexp_dbss.md), pet EXP tables; `max_level` values match this file's level counts
 
 ---
 
@@ -49,7 +49,7 @@ All multi-byte values are little-endian.
 | Offset  | Type | Field            | Notes                                                                        |
 | ------- | ---- | ---------------- | ---------------------------------------------------------------------------- |
 | `+0x00` | u32  | count            | Number of pet records (observed: 1782)                                       |
-| `+0x04` | u16  | first_record_key | `pet_id` of the first record — part of record 0, not a separate header field |
+| `+0x04` | u16  | first_record_key | `pet_id` of the first record, part of record 0, not a separate header field |
 
 > `+0x04` is the key prefix of the first record, not a standalone header field. Records begin immediately at `+0x04`.
 
@@ -121,7 +121,7 @@ The icon path is ASCII-encoded with no null terminator; its byte length is given
 
 ## petoffset.dbss
 
-Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored in file order — use the offset to locate any record.
+Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored in file order, use the offset to locate any record.
 
 ### Header (4 bytes)
 
@@ -197,7 +197,7 @@ Ten u32 values, all 1,000,000, in every record. Possible candidates: experience 
 
 ### `type_param` (`+0x14`)
 
-Varies by pet type (0 for many; non-zero values like 0x00BF7A00 for others). Consistent within a species group. Purpose unknown — could be a bitfield of capabilities, a hash, or a sub-type attribute.
+Varies by pet type (0 for many; non-zero values like 0x00BF7A00 for others). Consistent within a species group. Purpose unknown, could be a bitfield of capabilities, a hash, or a sub-type attribute.
 
 ### `tier_score` (`+0x53`)
 

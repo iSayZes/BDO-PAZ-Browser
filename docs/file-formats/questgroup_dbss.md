@@ -22,7 +22,7 @@ quests: 66558, 132094, 197630
 
 ### Connections
 
-- [quest.dbss](quest_dbss.md) — child quest IDs resolve to `quest.dbss` record IDs
+- [quest.dbss](quest_dbss.md), child quest IDs resolve to `quest.dbss` record IDs
 
 ---
 

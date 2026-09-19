@@ -26,10 +26,10 @@ acquire_type_id 401 → Cooking EXP +5%:    weight  10000 of 700000 =  1.4%
 
 ### Connections
 
-- [pet.dbss](pet_dbss.md) — `acquire_type_id` field keys into this file
-- [petequipskill.bss](petequipskill_bss.md) — the skill catalog; weights are indexed by its `equip_skill_id`
-- [petequipskillaquireoffset.dbss](#petequipskillaquireoffsetdbss) — keyed offset index
-- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md) — identical record layout for fairies
+- [pet.dbss](pet_dbss.md), `acquire_type_id` field keys into this file
+- [petequipskill.bss](petequipskill_bss.md), the skill catalog; weights are indexed by its `equip_skill_id`
+- [petequipskillaquireoffset.dbss](#petequipskillaquireoffsetdbss), keyed offset index
+- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), identical record layout for fairies
 
 ---
 
@@ -71,7 +71,7 @@ Keys decompose as `group × 100 + tier`, except the low keys `0`–`4` which hav
 
 | Key group   | Meaning                                              |
 | ----------- | ---------------------------------------------------- |
-| `0`         | Empty placeholder — all 43 weights are `0`           |
+| `0`         | Empty placeholder, all 43 weights are `0`           |
 | `1`–`4`     | Life-skill oriented pool                             |
 | `101`–`104` | Hunting / Training / Trading / Fishing oriented pool |
 | `201`–`204` | Combat, Gathering and Fishing oriented pool          |
@@ -82,7 +82,7 @@ Keys decompose as `group × 100 + tier`, except the low keys `0`–`4` which hav
 
 ## Rollable Skills
 
-Only 14 of the catalog's 43 Section 1 entries carry a non-zero weight in any record, and the same 14 appear in every populated record. Each is the **middle** entry of its three-entry skill type group — the `+5%` tier — or the sole entry where the group has only one.
+Only 14 of the catalog's 43 Section 1 entries carry a non-zero weight in any record, and the same 14 appear in every populated record. Each is the **middle** entry of its three-entry skill type group, the `+5%` tier, or the sole entry where the group has only one.
 
 | equip_skill_id | skill_type | Skill               |
 | -------------- | ---------- | ------------------- |

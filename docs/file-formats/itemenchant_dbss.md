@@ -6,7 +6,7 @@ The per-item enchant table, and in practice the closest thing the client data ha
 to a master item table. It holds one variable-length block per
 (item, enchant level) pair, keyed through a required offset companion. Each block
 carries the item's **icon path as an inline string**, which makes this file the
-authoritative item ID to icon mapping — the one thing that cannot be derived from
+authoritative item ID to icon mapping, the one thing that cannot be derived from
 an item ID alone.
 
 At roughly 194 MB it is the largest file in the game data.
@@ -74,7 +74,7 @@ so the block stream is gap-free.
 
 | Offset  | Type | Field       | Notes                                        |
 | ------- | ---- | ----------- | -------------------------------------------- |
-| `+0x00` | u32  | key         | Packed item ID and enchant level — see below |
+| `+0x00` | u32  | key         | Packed item ID and enchant level, see below |
 | `+0x04` | u32  | data_offset | Byte offset of the block in `itemenchant.dbss` |
 | `+0x08` | u32  | data_size   | Block length in bytes                        |
 
@@ -137,8 +137,8 @@ yet decoded.
 | `+0x04` | u32    | zero   | Always 0 in observed data      |
 | `+0x08` | char[] | text   | ASCII, not null-terminated     |
 
-The string does **not** sit at a fixed block offset — 47 distinct offsets were
-observed across a 400-block sample — so a parser must scan for the
+The string does **not** sit at a fixed block offset, 47 distinct offsets were
+observed across a 400-block sample, so a parser must scan for the
 `(length, 0, ascii × length)` shape rather than seek a constant.
 
 A block holds at most two strings:
@@ -197,7 +197,7 @@ only approach that covers items whose icon is named after a 3D asset
 ## Notes
 
 - `itemenchantbackendtest.dbss` (73 MB) contains the identical set of 169,962
-  icon path references and 21,768 unique paths — it looks like a test copy and
+  icon path references and 21,768 unique paths, it looks like a test copy and
   adds nothing. `itemenchantbackend.dbss` (121 MB) contains no icon paths at all.
 - 17 `gamecommondata` tables store inline icon paths this way. After this file
   the largest are `cashproduct.dbss` (14,750 unique paths, keyed by cash product

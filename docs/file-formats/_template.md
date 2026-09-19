@@ -14,7 +14,7 @@ Short example of the in-game meaning, UI display, or decoded output.
 
 ### Tags
 
-<!-- Tags describe the file's domain — use whatever fits, no fixed list. -->
+<!-- Tags describe the file's domain, use whatever fits, no fixed list. -->
 
 - file format
 - <!-- dbss | bss | loc | paz -->
@@ -22,8 +22,8 @@ Short example of the in-game meaning, UI display, or decoded output.
 
 ### Connections
 
-- [companion-file.ext](companion_file_ext.md) — brief role description
-- [offset-file.ext](offset_file_ext.md) — brief role description
+- [companion-file.ext](companion_file_ext.md), brief role description
+- [offset-file.ext](offset_file_ext.md), brief role description
 
 ---
 

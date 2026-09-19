@@ -46,7 +46,7 @@ def test_can_range_read_compressed_non_dbss() -> None:
     assert not can_range_read(_entry(path="foo.bss", compressed=60, uncompressed=100))
 
 
-# ── read_entry_range — direct seek path ──────────────────────────────────────
+# ── read_entry_range, direct seek path ──────────────────────────────────────
 
 def test_read_entry_range_direct_full(tmp_path: pytest.TempPathFactory) -> None:
     payload = bytes(range(256))

@@ -23,7 +23,7 @@ equip_skill_id: 42  →  S1 type=20 loc=49089  "Knowledge Gain Chance Lv. 4"
 
 ### Connections
 
-- [pet.dbss](pet_dbss.md) — `equip_skill_id` field keys into this file
+- [pet.dbss](pet_dbss.md), `equip_skill_id` field keys into this file
 - Localization (`loc_id`) resolved via `loc-tool.py --type 10 --id <loc_id>`
 - Icon assets use the same numeric ID as `loc_id`: `ui_texture/icon/new_icon/08_servant_skill/02_pet/equipskill_{loc_id:08d}.dds`
 
@@ -31,7 +31,7 @@ equip_skill_id: 42  →  S1 type=20 loc=49089  "Knowledge Gain Chance Lv. 4"
 
 ## Companion Files
 
-None — `petequipskill.bss` is a standalone catalog with no offset index.
+None, `petequipskill.bss` is a standalone catalog with no offset index.
 
 All multi-byte values are little-endian.
 
@@ -49,7 +49,7 @@ Records begin immediately at `+0x04`.
 
 ---
 
-### Section 1 — Standard Pet Skills (43 × 12 bytes, offset `0x004`)
+### Section 1, Standard Pet Skills (43 × 12 bytes, offset `0x004`)
 
 Covers `equip_skill_id` 0–42 (regular pets). Stride = **12 bytes**.
 
@@ -69,7 +69,7 @@ Fifteen placeholder records for IDs 43–57 (currently unassigned). Each record 
 
 ---
 
-### Section 2 — Extended Pet Skills (variable stream, offset `0x2F8`)
+### Section 2, Extended Pet Skills (variable stream, offset `0x2F8`)
 
 Covers `equip_skill_id` 15–111 (Airiss and premium pets, plus overlap with Section 1). Base stride = **16 bytes**. Records with `equip_skill_id = 200` are null placeholders. Records with `extra_flag = 1` carry an additional u32 after the base record.
 
@@ -154,12 +154,12 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 
 ## Notes
 
-- No offset companion file — the file is small enough to scan linearly.
+- No offset companion file, the file is small enough to scan linearly.
 - `equip_skill_id = 200` in Section 2 records is a null placeholder; ignore these.
 - Section 1 tiers use 3 entries per skill type (high/mid/mid), ordered descending by tier value.
 - Section 2 tiers use 4 entries (e.g., +1%/+2%/+3%/+5%), also ordered ascending by value.
-- The `extra_flag` = 1 in Section 2 identifies several records (including IDs 65–68, 79–82, 104, and 107) and adds one trailing u32 `extra_value`; the semantic is unconfirmed — possibly marks Airiss-exclusive skills.
-- `skill_type` numbering is **independent** between sections — type 4 in S1 (Luck) ≠ type 4 in S2 (Skill EXP).
+- The `extra_flag` = 1 in Section 2 identifies several records (including IDs 65–68, 79–82, 104, and 107) and adds one trailing u32 `extra_value`; the semantic is unconfirmed, possibly marks Airiss-exclusive skills.
+- `skill_type` numbering is **independent** between sections, type 4 in S1 (Luck) ≠ type 4 in S2 (Skill EXP).
 - Total file size: 3772 bytes = 4 (PABR) + 516 (S1) + 240 (null) + variable Section 2 stream + 4 (trailing padding).
 - Localization IDs are in the range 49001–49176 for confirmed skills; use `loc-tool.py --type 10 --id <loc_id>` to resolve.
 - This file defines **which skills are available** (the catalog). The per-pet slot **costs** are defined separately in `petequipskillaquire.dbss` via `acquire_type_id`. The two cross-references in `pet.dbss` are independent.

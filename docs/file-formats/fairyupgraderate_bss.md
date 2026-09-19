@@ -28,16 +28,16 @@ step 2 (Brilliant -> Radiant): Sweet Honey Wine          0.2500% per item, 400 f
 
 ### Connections
 
-- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md) — establishes the four fairy grades and the same parts-per-million convention; skills are rerolled from it after a successful Sprout
-- [fairyequipskill.bss](fairyequipskill_bss.md) — fairy skill catalog rolled after Sprouting
-- [fairyskillchange.dbss](fairyskillchange_dbss.md) — fairy skill reroll cost, the other fairy-side cost table
-- [languagedata_en.loc](languagedata_loc.md) — English item names for `item_id`
+- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), establishes the four fairy grades and the same parts-per-million convention; skills are rerolled from it after a successful Sprout
+- [fairyequipskill.bss](fairyequipskill_bss.md), fairy skill catalog rolled after Sprouting
+- [fairyskillchange.dbss](fairyskillchange_dbss.md), fairy skill reroll cost, the other fairy-side cost table
+- [languagedata_en.loc](languagedata_loc.md), English item names for `item_id`
 
 ---
 
 ## Companion Files
 
-The format is self-contained — there is no `fairyupgraderateoffset.dbss`.
+The format is self-contained, there is no `fairyupgraderateoffset.dbss`.
 
 | File                    | Required | Role                                                         |
 | ----------------------- | -------- | ------------------------------------------------------------ |
@@ -70,12 +70,12 @@ One record per grade transition, in ascending grade order.
 | `+0x05` | u32  | entry_count      | 2        | Number of item entries that follow           |
 | `+0x09` | —    | entries          |          | `entry_count` × 16-byte entries              |
 
-Records carry no explicit key — the upgrade step is the record index.
+Records carry no explicit key, the upgrade step is the record index.
 
 ### Entry (16 bytes, repeated `entry_count` times)
 
 One entry per item type that can be used for this Sprouting step. Only one item
-type may be used per attempt — the entries are alternatives, not a combined pool.
+type may be used per attempt, the entries are alternatives, not a combined pool.
 
 | Offset  | Type | Field         | Notes                                                              |
 | ------- | ---- | ------------- | ------------------------------------------------------------------ |
@@ -89,7 +89,7 @@ capped at `items_for_max`.
 
 ### Trailer (12 bytes)
 
-Follows the last record — the same trailer shape used by
+Follows the last record, the same trailer shape used by
 [zodiacsignindex.bss](zodiacsignindex_bss.md).
 
 | Offset  | Type | Field          | Observed | Notes                                 |
@@ -161,14 +161,14 @@ steps and 16× at the last.
 ## Notes
 
 - Sprouting may only be attempted once per fairy unless a rebirth is used, and a
-  successful Sprout resets the fairy's skills — which are then rerolled from
+  successful Sprout resets the fairy's skills, which are then rerolled from
   `fairyequipskillaquire.dbss` at the new grade.
 - A fairy can only Sprout at its tier's level cap, which community guides give as
   10 for Faint, 20 for Glimmering, 30 for Brilliant, and 50 for Radiant. Those
   caps are not stored in this file.
 - A failed Sprout consumes the fairy's single attempt permanently; the only way
   back is a cash-shop Rebirth. That makes `items_for_max` the practically
-  relevant column — players push to the 100% cost rather than gamble on
+  relevant column, players push to the 100% cost rather than gamble on
   `rate_ppm`, because there is no second roll to fall back on.
 - `success_cap_ppm` is `1,000,000` in every record, the same parts-per-million
   convention already confirmed for `fairyequipskillaquire.dbss` and
@@ -202,5 +202,5 @@ where it varies would distinguish these.
 
 Sprouting can be retried after a rebirth, but nothing in this file encodes a
 retry allowance, a rebirth cost, or a changed rate on a retry. Those values live
-elsewhere — `fairyfeedenchantfailcount.bss` and the fairy potion tables are the
+elsewhere, `fairyfeedenchantfailcount.bss` and the fairy potion tables are the
 nearest undecoded candidates.

@@ -22,7 +22,7 @@ title_id: 218 →  category: 0 (World)
 
 ### Connections
 
-- [title.dbss](title_dbss.md) — title data file; also carries category inline after requirement text
+- [title.dbss](title_dbss.md), title data file; also carries category inline after requirement text
 
 ---
 
@@ -57,7 +57,7 @@ Record count = `file_size / 8`.
 ## Notes
 
 - Little-endian throughout.
-- No file header — parsing relies solely on file size being a multiple of 8.
+- No file header, parsing relies solely on file size being a multiple of 8.
 - Category IDs outside 0–3 are decoded as `Unknown (N)` by the preview handler.
 - `title.dbss` also carries the category field inline after requirement text; `titlecategory.bss` is not needed for category display.
 - WIP: handler output is currently inaccurate.

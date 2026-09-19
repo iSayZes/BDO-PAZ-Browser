@@ -25,15 +25,15 @@ group 7: sub_key 0  -> (300, 350)
 
 ### Connections
 
-- [fairyupgraderate.bss](fairyupgraderate_bss.md) — fairy Sprouting success rates, the other fairy enchant-side table
-- [fairyequipskill.bss](fairyequipskill_bss.md) — fairy skill catalog rerolled after a successful Sprout
-- [fairyskillchange.dbss](fairyskillchange_dbss.md) — fairy skill reroll cost
+- [fairyupgraderate.bss](fairyupgraderate_bss.md), fairy Sprouting success rates, the other fairy enchant-side table
+- [fairyequipskill.bss](fairyequipskill_bss.md), fairy skill catalog rerolled after a successful Sprout
+- [fairyskillchange.dbss](fairyskillchange_dbss.md), fairy skill reroll cost
 
 ---
 
 ## Companion Files
 
-The format is self-contained — there is no `fairyfeedenchantfailcountoffset.dbss`,
+The format is self-contained, there is no `fairyfeedenchantfailcountoffset.dbss`,
 and no companion is needed to parse it.
 
 All multi-byte values are little-endian.
@@ -72,7 +72,7 @@ records.
 | `+0x03` | u32  | value_a  | 0 whenever `sub_key` is non-zero                   |
 | `+0x07` | u32  | value_b  | 200, 300, or 350                                   |
 
-The 11-byte entry is unaligned — `value_a` starts at an odd offset — so a parser
+The 11-byte entry is unaligned, `value_a` starts at an odd offset, so a parser
 must read the two u32 fields at `+0x03` and `+0x07` rather than assume 4-byte
 alignment.
 
@@ -172,5 +172,5 @@ Only groups 1 and 2 split into two entries, distinguished by `sub_key` 19 and
 be item IDs and do not match the fairy-growth item IDs used by
 `fairyupgraderate.bss`. Fairy levels are the strongest candidate, since the tier
 level caps are 10, 20, 30, and 50, putting 19 and 20 exactly at the Glimmering
-cap boundary — but no file read so far keys anything by level 19 or 20, so this
+cap boundary, but no file read so far keys anything by level 19 or 20, so this
 stays unconfirmed.

@@ -42,7 +42,7 @@ _RESULT_BATCH = 20
 
 
 class SearchMixin:
-    """Content search methods — single-file and cross-file — for Api."""
+    """Content search methods, single-file and cross-file, for Api."""
 
     def search_content(self, path: str, query: str, mode: str, tab: str) -> dict:
         """Search file content.
@@ -56,9 +56,9 @@ class SearchMixin:
 
         if tab == "parsed":
             if self._cached_path != norm:
-                return {"error": "No parsed data cached — reload the file"}
+                return {"error": "No parsed data cached, reload the file"}
             if self._cached_data is None or self._cached_entry is None or self._cached_handler is None:
-                return {"error": "No parsed data cached — reload the file"}
+                return {"error": "No parsed data cached, reload the file"}
             indices = self._cached_handler.search_records(
                 self._cached_data,
                 self._cached_entry,
@@ -67,7 +67,7 @@ class SearchMixin:
             )
             return {"record_indices": indices, "total": len(indices)}
 
-        # hex tab — search raw bytes
+        # hex tab, search raw bytes
         if self._cached_path == norm and self._cached_data is not None:
             data = self._cached_data
         elif path.startswith(_DISK_VIRTUAL_PREFIX + "/"):
@@ -76,7 +76,7 @@ class SearchMixin:
             if data is None:
                 return {"error": f"Disk file not loaded: {name}"}
         else:
-            return {"error": "File data not cached — reload the file"}
+            return {"error": "File data not cached, reload the file"}
 
         needles = _build_needles(query, mode)
         if needles is None:

@@ -10,32 +10,32 @@ A Python tool for browsing, extracting, and previewing files from **Black Desert
 
 ## Features
 
-- **GUI browser** — tree-view file explorer for the full PAZ archive, with live search and file preview
-- **CLI extraction** — extract files by name or glob pattern without opening the GUI
-- **File preview** — text, hex dump, DDS images, and parsed binary tables for known formats
-- **Paged preview** — large files (hex and parsed tabs) are paged; navigate with Prev/Next without loading the full DOM
-- **Tab search** — Ctrl+F inline search within hex (byte offset) and parsed (record) tabs; string and hex-pattern modes
-- **Export** — save the current file as raw binary (hex tab) or CSV (parsed tab) via the Entry Details panel
-- **Plugin system** — add handlers for new binary formats by dropping a file into `handlers/`
-- **Caching** — PAZ index is parsed once and cached; subsequent launches load instantly
+- **GUI browser**, tree-view file explorer for the full PAZ archive, with live search and file preview
+- **CLI extraction**, extract files by name or glob pattern without opening the GUI
+- **File preview**, text, hex dump, DDS images, and parsed binary tables for known formats
+- **Paged preview**, large files (hex and parsed tabs) are paged; navigate with Prev/Next without loading the full DOM
+- **Tab search**, Ctrl+F inline search within hex (byte offset) and parsed (record) tabs; string and hex-pattern modes
+- **Export**, save the current file as raw binary (hex tab) or CSV (parsed tab) via the Entry Details panel
+- **Plugin system**, add handlers for new binary formats by dropping a file into `handlers/`
+- **Caching**, PAZ index is parsed once and cached; subsequent launches load instantly
 
 ---
 
 ## Contributing Format Coverage
 
-BDO has hundreds of undocumented binary formats — contributions and corrections are welcome.
+BDO has hundreds of undocumented binary formats, contributions and corrections are welcome.
 
-**Reverse engineer a new format** — open a new issue using the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`).
+**Reverse engineer a new format**, open a new issue using the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`).
 
-**Improve existing docs** — the format docs in [`docs/file-formats/`](docs/file-formats/) are not all complete. Each doc has an **Open Questions** section listing specific unknowns — if you can answer any of them, feel free to update the doc directly.
+**Improve existing docs**, the format docs in [`docs/file-formats/`](docs/file-formats/) are not all complete. Each doc has an **Open Questions** section listing specific unknowns, if you can answer any of them, feel free to update the doc directly.
 
-**Translate the UI** — UI strings live in [`PAZ-Parser/ui/lang/`](PAZ-Parser/ui/lang/) as small JSON files, one per language. Missing keys fall back to English automatically, so partial translations are fine. See [`TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md) for instructions.
+**Translate the UI**, UI strings live in [`PAZ-Parser/ui/lang/`](PAZ-Parser/ui/lang/) as small JSON files, one per language. Missing keys fall back to English automatically, so partial translations are fine. See [`TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md) for instructions.
 
 ---
 
 ## Writing a Preview Handler
 
-Drop a `.py` file (not starting with `_`) into `handlers/` — it is auto-loaded at startup.
+Drop a `.py` file (not starting with `_`) into `handlers/`, it is auto-loaded at startup.
 
 All parsed-view handlers must implement two methods:
 
@@ -46,7 +46,7 @@ from bdo_models import PazEntry
 
 class MyFormatHandler(PreviewHandler):
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        # Parse all records once. Returns plain dicts — no HTML.
+        # Parse all records once. Returns plain dicts, no HTML.
         # Cached in memory for paging, tab search, and CSV export.
         return [{"id": r.id, "name": r.name} for r in parse(data)]
 
@@ -87,8 +87,8 @@ See [docs/documented-formats.md](docs/documented-formats.md) for the full table.
 ## Requirements
 
 - Python 3.10+
-- [pywebview](https://pywebview.flowrl.com/) — GUI shell
-- [Pillow](https://python-pillow.org/) — optional, for DDS image preview
+- [pywebview](https://pywebview.flowrl.com/), GUI shell
+- [Pillow](https://python-pillow.org/), optional, for DDS image preview
 
 ```
 pip install pywebview
@@ -131,7 +131,7 @@ Open a PAZ folder once in the GUI if fixture fetching has no saved game path yet
 python browser.py
 ```
 
-On first launch, click **Open Folder** and select your BDO PAZ directory (typically `Black Desert/Paz`). The index is parsed and cached — subsequent launches load from cache automatically.
+On first launch, click **Open Folder** and select your BDO PAZ directory (typically `Black Desert/Paz`). The index is parsed and cached, subsequent launches load from cache automatically.
 
 ### CLI
 
@@ -154,7 +154,7 @@ If `--paz-folder` is omitted, the CLI reuses the last folder opened in the GUI.
 
 ```
 PAZ-Parser/
-├── bdo_app.py              # Entry point — GUI + CLI
+├── bdo_app.py              # Entry point, GUI + CLI
 ├── bdo_models.py           # Data models (shared by all handlers)
 ├── bdo_preview.py          # Preview handler registry + built-in handlers
 ├── bdo_server.py           # Local HTTP server for stream preview
@@ -164,7 +164,7 @@ PAZ-Parser/
 │   ├── bdo_api.py          # Routing and dispatch
 │   ├── bdo_api_helpers.py  # Shared constants and utilities (_norm, _file_icon)
 │   ├── bdo_api_preview.py  # Preview assembly and entry loading (PreviewMixin)
-│   └── bdo_api_search.py   # File content search — single-file and cross-file (SearchMixin)
+│   └── bdo_api_search.py   # File content search, single-file and cross-file (SearchMixin)
 │
 ├── paz/                    # PAZ archive reading and caching
 │   ├── bdo_cache.py        # PAZ index cache
@@ -185,8 +185,8 @@ PAZ-Parser/
 │
 ├── ui/                     # Web UI (HTML + JS + CSS)
 │   ├── index.html
-│   ├── app.js              # Entry point — assembles feature modules
-│   ├── style.css           # CSS entry point — imports css/ modules
+│   ├── app.js              # Entry point, assembles feature modules
+│   ├── style.css           # CSS entry point, imports css/ modules
 │   ├── css/                # Per-component stylesheets (numbered load order)
 │   └── js/
 │       ├── core/           # Shared state and helpers

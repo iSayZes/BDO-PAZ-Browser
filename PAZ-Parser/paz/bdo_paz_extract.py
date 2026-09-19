@@ -304,7 +304,7 @@ def extract_all(
             logging.error("[%d/%d] FAILED %s: %s", i, total, entry.internal_path, ex)
 
     logging.info(
-        "Done — extracted: %d  skipped: %d  failed: %d  total: %d",
+        "Done, extracted: %d  skipped: %d  failed: %d  total: %d",
         extracted, skipped, failed, total,
     )
 

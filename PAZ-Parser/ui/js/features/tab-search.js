@@ -1,6 +1,6 @@
 "use strict";
 
-// Module-level state — kept off the shared app object intentionally.
+// Module-level state, kept off the shared app object intentionally.
 // Only tab-search.js writes these; other modules call the exported methods.
 let _matches = [];
 let _matchIndex = -1;
@@ -23,7 +23,7 @@ export const tabSearchMethods = {
     });
   },
 
-  // Called by tree.js after file loads — show only when tabs are visible.
+  // Called by tree.js after file loads, show only when tabs are visible.
   showTabSearchBar(show) {
     const bar = document.getElementById("tab-search-bar");
     if (!bar) return;
@@ -197,7 +197,7 @@ export const tabSearchMethods = {
     const rowBottomRelative = rowRect.bottom - scrollerRect.top;
 
     if (rowTopRelative < theadHeight) {
-      // Row is above (or under) sticky header — scroll it just below the header.
+      // Row is above (or under) sticky header, scroll it just below the header.
       scroller.scrollTop += rowTopRelative - theadHeight;
     } else if (rowBottomRelative > scroller.clientHeight) {
       // Row is below the visible area.

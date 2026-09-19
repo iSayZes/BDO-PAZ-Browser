@@ -67,7 +67,7 @@ def test_evicts_oldest_when_over_cap() -> None:
     e3 = _entry(offset=20, compressed_size=5)
     cache.put(_path(), e1, b"a" * 5)
     cache.put(_path(), e2, b"b" * 5)
-    # e3 pushes total to 15 — e1 (oldest) evicted
+    # e3 pushes total to 15, e1 (oldest) evicted
     cache.put(_path(), e3, b"c" * 5)
     assert cache.get(_path(), e1) is None
     assert cache.get(_path(), e2) == b"b" * 5
@@ -81,10 +81,10 @@ def test_access_promotes_to_most_recent() -> None:
     e3 = _entry(offset=20, compressed_size=5)
     cache.put(_path(), e1, b"a" * 5)
     cache.put(_path(), e2, b"b" * 5)
-    # access e1 — makes e2 the oldest
+    # access e1, makes e2 the oldest
     cache.get(_path(), e1)
     cache.put(_path(), e3, b"c" * 5)
-    assert cache.get(_path(), e1) == b"a" * 5  # promoted — survives
+    assert cache.get(_path(), e1) == b"a" * 5  # promoted, survives
     assert cache.get(_path(), e2) is None        # evicted
     assert cache.get(_path(), e3) == b"c" * 5
 

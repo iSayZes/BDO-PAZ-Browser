@@ -1,11 +1,11 @@
-# Example custom handler — rename to something like myformat_handler.py and implement.
+# Example custom handler, rename to something like myformat_handler.py and implement.
 #
 # Drop any *.py file (not starting with _) here and it is loaded at browser startup.
 # Each file can call register_handler() for one or more filenames or extensions.
 #
 # Keys:
-#   "somefile.dbss"  — exact filename match (checked first)
-#   ".dbss"          — extension fallback (used if no filename match exists)
+#   "somefile.dbss", exact filename match (checked first)
+#   ".dbss", extension fallback (used if no filename match exists)
 #
 # Companion files:
 #   Override companions() to declare additional files the handler needs.
@@ -46,9 +46,9 @@
 #         entry: PazEntry,
 #         companions: dict[str, bytes],
 #     ) -> list[dict]:
-#         # Parse all records once. Return plain dicts — no HTML.
-#         # companions["myindex.dbss"]        — PAZ-internal companion (if loaded)
-#         # companions["languagedata_en.loc"]  — pre-loaded disk file (if found)
+#         # Parse all records once. Return plain dicts, no HTML.
+#         # companions["myindex.dbss"], PAZ-internal companion (if loaded)
+#         # companions["languagedata_en.loc"], pre-loaded disk file (if found)
 #         return [{"id": i, "value": b} for i, b in enumerate(data)]
 #
 #     def render_records_page(
@@ -84,7 +84,7 @@
 #         return self._get_index(data).count
 #
 #     def render_data_page(self, data, entry, companions, page, page_size) -> str:
-#         # Parse only the requested page from the index — skip materialising all records.
+#         # Parse only the requested page from the index, skip materialising all records.
 #         records = self._get_index(data).records_for_page(page, page_size)
 #         return _render_table(records, page, page_size)
 #
@@ -92,7 +92,7 @@
 #         return self._get_index(data).search(query)
 #
 #     def get_records(self, data, entry, companions) -> list[dict]:
-#         # Compatibility fallback — used by CSV export and test assertions.
+#         # Compatibility fallback, used by CSV export and test assertions.
 #         return self._get_index(data).all_records()
 #
 #     def render_records_page(self, records, page, page_size) -> str:

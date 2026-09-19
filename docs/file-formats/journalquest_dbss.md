@@ -7,13 +7,13 @@ Journal quest (adventure log) category and entry data. Defines the 12 journal lo
 Example:
 
 ```text
-Group 1 — Igor Batali's Adventure Log (cat_id=748)
+Group 1, Igor Batali's Adventure Log (cat_id=748)
   Entry 1 / Volume 1: unlock = "[Calpheon] territory main quest OR
       [Special Growth] Fughar's Memorandum Ch. 6 completion, Lv. 51"
   Pages: 3 (LOC type=18, id1=748, id2=1..3)
     "Hey There Big Fellow!" | "Irresistible Lure" | "The Divine Entity inside the Cave"
 
-Group 2 — Shakatu Merchant Collection Log (cat_id=30006)
+Group 2, Shakatu Merchant Collection Log (cat_id=30006)
   Entry 1: unlock = ...
   Pages: 4 (LOC type=18, id1=30006, id2=1..4)
     "Accidental First Encounter" | "We Meet Again, Friend!" | ...
@@ -31,8 +31,8 @@ Group 2 — Shakatu Merchant Collection Log (cat_id=30006)
 
 ### Connections
 
-- [journalquestoffset.dbss](journalquestoffset_dbss.md) — index mapping `(group_id, entry_no)` to `(byte_offset, byte_size)` in this file
-- [languagedata_en.loc](languagedata_loc.md) — journal page titles (`id4=0`) and story text (`id4=1`) via LOC `str_type=18`, `str_id1=journal_cat_id`, `str_id2=page_no`
+- [journalquestoffset.dbss](journalquestoffset_dbss.md), index mapping `(group_id, entry_no)` to `(byte_offset, byte_size)` in this file
+- [languagedata_en.loc](languagedata_loc.md), journal page titles (`id4=0`) and story text (`id4=1`) via LOC `str_type=18`, `str_id1=journal_cat_id`, `str_id2=page_no`
 
 ---
 
@@ -124,7 +124,7 @@ Two ASCII NUL-terminated strings appear near the tail of each record, separated 
 
 N page reference `u32` values linking this entry to its journal pages via LOC type=18. Encoding varies by group type:
 
-**Type A** — `(journal_cat_id << 16) | page_index` (groups 1, 4, 7, 11, 12):
+**Type A**, `(journal_cat_id << 16) | page_index` (groups 1, 4, 7, 11, 12):
 
 | Field          | Notes                                                                                  |
 | -------------- | -------------------------------------------------------------------------------------- |
@@ -132,7 +132,7 @@ N page reference `u32` values linking this entry to its journal pages via LOC ty
 | `page_count`   | u32; count of page refs; follows the N values                                          |
 | terminal       | u16 = `0x0000` (2 extra bytes; record size is not a multiple of 4 for these groups)   |
 
-**Type B** — `(page_index << 16) | journal_cat_id` (groups 2, 3, 5, 6, 8, 9, 10):
+**Type B**, `(page_index << 16) | journal_cat_id` (groups 2, 3, 5, 6, 8, 9, 10):
 
 | Field          | Notes                                                                                  |
 | -------------- | -------------------------------------------------------------------------------------- |

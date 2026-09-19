@@ -62,7 +62,7 @@ class TitleBuffListHandler(PreviewHandler):
     ) -> list[dict]:
         offset_raw = companions.get("titlebufflistoffset.dbss")
         if offset_raw is None:
-            raise ValueError("titlebufflistoffset.dbss companion not found — cannot parse blocks.")
+            raise ValueError("titlebufflistoffset.dbss companion not found, cannot parse blocks.")
 
         offset_map = parse_offset_table(offset_raw)
         records = extract_titlebuff_records(data, offset_map)

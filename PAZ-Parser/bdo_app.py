@@ -18,7 +18,7 @@ from paz.bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="browser",
-        description="BDO PAZ Browser — omit --file/--list to open the GUI.",
+        description="BDO PAZ Browser, omit --file/--list to open the GUI.",
     )
     parser.add_argument("--paz-folder", metavar="DIR", help="Path to the PAZ folder (default: last used)")
     parser.add_argument("--file", metavar="PATTERN", help="File name or glob pattern to extract, e.g. title.dbss or *title*.dbss")
@@ -314,7 +314,7 @@ def _cli_extract(args: argparse.Namespace) -> int:
             failed += 1
             print(f"  {label} FAIL  {entry.internal_path}: {ex}", file=sys.stderr)
 
-    print(f"\nDone — {extracted} extracted, {skipped} skipped, {failed} failed.")
+    print(f"\nDone, {extracted} extracted, {skipped} skipped, {failed} failed.")
     return 1 if failed else 0
 
 

@@ -21,7 +21,7 @@ title_id: 44  →  offset: 0x1A3C, size: 0x98
 
 ### Connections
 
-- [title.dbss](title_dbss.md) — main data file this index addresses
+- [title.dbss](title_dbss.md), main data file this index addresses
 
 ---
 

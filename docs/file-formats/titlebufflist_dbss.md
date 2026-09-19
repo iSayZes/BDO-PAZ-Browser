@@ -25,9 +25,9 @@ Acquire x70: Luck +2 / Max Energy +1
 
 ### Connections
 
-- [titlebufflistoffset.dbss](#titlebufflistoffsetdbss) — required; provides block offsets and sizes
-- [title.dbss](title_dbss.md) — source of individual title data
-- [languagedata_en.loc](languagedata_loc.md) — English multiline Title Effects tooltip (str_type=37)
+- [titlebufflistoffset.dbss](#titlebufflistoffsetdbss), required; provides block offsets and sizes
+- [title.dbss](title_dbss.md), source of individual title data
+- [languagedata_en.loc](languagedata_loc.md), English multiline Title Effects tooltip (str_type=37)
 
 ---
 
@@ -65,7 +65,7 @@ Observed entry IDs are zero-based and align with `internal_id` inside each block
 
 | Offset   | Type   | Name            | Description                                                      | Confidence |
 | -------- | ------ | --------------- | ---------------------------------------------------------------- | ---------- |
-| `+0x00`  | u32    | internal_id     | Zero-based buff/effect row ID — same as the offset file entry_id | High       |
+| `+0x00`  | u32    | internal_id     | Zero-based buff/effect row ID, same as the offset file entry_id | High       |
 | `+0x04`  | u32    | required_titles | Title count to unlock this tier                                  | High       |
 | `+0x08+` | varies | text_payload    | Embedded UTF-16LE Korean effect text and PAColor markup          | High       |
 

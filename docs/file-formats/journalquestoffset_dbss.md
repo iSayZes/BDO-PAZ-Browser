@@ -15,7 +15,7 @@ Index file for `journalquest.dbss`. Maps each `(group_id, entry_no)` pair to a `
 
 ### Connections
 
-- [journalquest.dbss](journalquest_dbss.md) — main data file; records are located using this index
+- [journalquest.dbss](journalquest_dbss.md), main data file; records are located using this index
 
 ---
 
@@ -74,5 +74,5 @@ for i in range(group_count):
 ## Notes
 
 - File size: `4 + group_count × 120` bytes (120-byte chunks align only by coincidence with 12 groups; the 120-byte chunks are a physical storage artifact, not meaningful blocks).
-- Groups are stored in the order: 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 10 — group 10 appears last.
+- Groups are stored in the order: 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 10, group 10 appears last.
 - Byte offsets are absolute offsets into `journalquest.dbss` starting from byte 0.

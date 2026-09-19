@@ -22,7 +22,7 @@ records: none
 
 ### Connections
 
-- [quest.dbss](quest_dbss.md) — related quest definition table; no direct field relationship observed in this empty file
+- [quest.dbss](quest_dbss.md), related quest definition table; no direct field relationship observed in this empty file
 
 ---
 

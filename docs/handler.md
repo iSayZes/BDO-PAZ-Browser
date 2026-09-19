@@ -576,8 +576,8 @@ and every game patch:
 
 An empty string means "this entity genuinely has no icon", which suppresses a
 wrong derived guess rather than replacing it. A malformed file is reported by
-`icon_override_error()` and ignored rather than crashing the app;
-`tools/icon_coverage.py` prints that warning and the applied count per kind.
+`icon_override_error()` and ignored rather than crashing the app, so check that
+helper if an override does not take effect.
 
 Overrides are the intended fix for the ~850 IDs whose source table references an
 icon the client does not ship. Those references do not change between patches,
@@ -589,7 +589,7 @@ itself assigns to a handful of real items, so a broken reference renders
 placeholder art instead of an empty cell.
 
 How far each index actually reaches differs a lot, so check before assuming an
-icon column will look populated. Measured with `tools/icon_coverage.py`:
+icon column will look populated. Measured against the live PAZ:
 
 | Kind        | IDs that exist | Resolve to a real file |
 | ----------- | -------------- | ---------------------- |

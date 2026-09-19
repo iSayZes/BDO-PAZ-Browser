@@ -4,7 +4,7 @@ from _common.binary import u32
 from _common.prefixed_string import find_prefixed_ascii, read_prefixed_utf16
 
 
-# The offset companion has no PABR magic and no trailer — a u32 count then rows.
+# The offset companion has no PABR magic and no trailer, a u32 count then rows.
 _OFFSET_HEADER_SIZE = 4
 _OFFSET_ROW_SIZE = 12
 

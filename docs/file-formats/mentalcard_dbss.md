@@ -20,8 +20,8 @@ entry_id: 4521  →  node_id: 113  →  "Vendors of Serendia"
 
 ### Connections
 
-- [knowledgelearning.dbss](knowledgelearning_dbss.md) — maps the same knowledge_id to its unlock trigger
-- [languagedata_en.loc](languagedata_loc.md) — entry names (str_type=34) and category names (str_type=9)
+- [knowledgelearning.dbss](knowledgelearning_dbss.md), maps the same knowledge_id to its unlock trigger
+- [languagedata_en.loc](languagedata_loc.md), entry names (str_type=34) and category names (str_type=9)
 
 ---
 
@@ -54,7 +54,7 @@ Each record (8 bytes, pointed to by offset file):
 
 | Offset  | Type | Name     | Description                             |
 | ------- | ---- | -------- | --------------------------------------- |
-| `+0x00` | u32  | entry_id | Knowledge entry ID — primary lookup key |
+| `+0x00` | u32  | entry_id | Knowledge entry ID, primary lookup key |
 | `+0x04` | u32  | node_id  | UI node / category ID                   |
 
 ---
@@ -63,7 +63,7 @@ Each record (8 bytes, pointed to by offset file):
 
 - `entry_id` → LOC `str_type=34`, `str_id1=entry_id` → knowledge entry name
 - `node_id` → LOC `str_type=9`, `str_id1=node_id` → knowledge category name
-- `internal_id` (offset file) and `entry_id` (data file) are distinct fields — they may coincide but are read from separate positions.
+- `internal_id` (offset file) and `entry_id` (data file) are distinct fields, they may coincide but are read from separate positions.
 - Fixed-size records with no embedded strings; requires `.loc` for human-readable names.
 
 ---

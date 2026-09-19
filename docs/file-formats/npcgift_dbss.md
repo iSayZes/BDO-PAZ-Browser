@@ -23,7 +23,7 @@ Confession response: "감사합니다! 정말 좋아해요."
 
 ### Connections
 
-- [languagedata_en.loc](languagedata_loc.md) — NPC names (str_type=6), item names (str_type=0), English dialogue (str_type=54)
+- [languagedata_en.loc](languagedata_loc.md), NPC names (str_type=6), item names (str_type=0), English dialogue (str_type=54)
 
 ---
 

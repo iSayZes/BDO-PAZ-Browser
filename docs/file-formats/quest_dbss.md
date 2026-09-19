@@ -23,10 +23,10 @@ icon: Icon/Quest/Hadum08.dds
 
 ### Connections
 
-- [languagedata_en.loc](languagedata_loc.md) — English quest title/text strings, mapped to LOC `str_type=18` with `str_id1=quest_chain_id` and `str_id2=quest_id`; `str_type=39` appears to contain voice/dialogue lines and should not be used as quest title text
-- [allquestlist.bss](allquestlist_bss.md) — PABR list of canonical/display packed quest IDs; count matches `quest.dbss`, and most extracted `canonical_link` IDs resolve into this list
-- [questgroup.dbss](questgroup_dbss.md) — groups quest chains and lists child quest IDs that resolve to `quest.dbss`
-- [journalquest.dbss](journalquest_dbss.md) — adventure log / journal quest category data; related quest format with its own offset index
+- [languagedata_en.loc](languagedata_loc.md), English quest title/text strings, mapped to LOC `str_type=18` with `str_id1=quest_chain_id` and `str_id2=quest_id`; `str_type=39` appears to contain voice/dialogue lines and should not be used as quest title text
+- [allquestlist.bss](allquestlist_bss.md), PABR list of canonical/display packed quest IDs; count matches `quest.dbss`, and most extracted `canonical_link` IDs resolve into this list
+- [questgroup.dbss](questgroup_dbss.md), groups quest chains and lists child quest IDs that resolve to `quest.dbss`
+- [journalquest.dbss](journalquest_dbss.md), adventure log / journal quest category data; related quest format with its own offset index
 
 ---
 
@@ -250,4 +250,4 @@ Values `0..15` and `18` have been sampled and mapped to apparent quest categorie
 
 ### Payload Sub-records Beyond `0x003BAE30`
 
-The canonical link sub-record (`0x003BAE30`) is the only confirmed structure in `unknown_payload`. The payload likely contains additional structured sub-records encoding rewards, reputation gains, XP values, item drops, or other quest config data. Whether these are worth decoding — and what marker bytes or length prefixes identify them — is not yet investigated.
+The canonical link sub-record (`0x003BAE30`) is the only confirmed structure in `unknown_payload`. The payload likely contains additional structured sub-records encoding rewards, reputation gains, XP values, item drops, or other quest config data. Whether these are worth decoding, and what marker bytes or length prefixes identify them, is not yet investigated.

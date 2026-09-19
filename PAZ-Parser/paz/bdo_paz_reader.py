@@ -7,7 +7,7 @@ from pathlib import Path
 from .bdo_ice import BDO_ICE_KEY, IceCipher
 from bdo_models import PazEntry, PazTable
 
-# One cipher instance is shared — the key schedule is computed once at import.
+# One cipher instance is shared, the key schedule is computed once at import.
 _CIPHER: IceCipher = IceCipher(BDO_ICE_KEY)
 
 
@@ -36,7 +36,7 @@ def _parse_string_table(data: bytes, length: int) -> list[str]:
         try:
             end = data.index(b"\x00", offset)
         except ValueError:
-            # No null terminator — take remainder as last string.
+            # No null terminator, take remainder as last string.
             strings.append(data[offset:length].decode("utf-8", errors="replace"))
             break
         strings.append(data[offset:end].decode("utf-8", errors="replace"))

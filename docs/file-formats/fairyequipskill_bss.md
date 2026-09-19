@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the fairy skill catalog — the 35 skills a fairy can hold, grouped into 8 skill types with tier progressions (e.g. `Tingling Breath I`–`V`). Each record stores its skill type group, a tier marker, and a localization ID that resolves to both the skill name and its effect description, and that doubles as the icon filename number.
+Defines the fairy skill catalog, the 35 skills a fairy can hold, grouped into 8 skill types with tier progressions (e.g. `Tingling Breath I`–`V`). Each record stores its skill type group, a tier marker, and a localization ID that resolves to both the skill name and its effect description, and that doubles as the icon filename number.
 
 The remainder of the file is a 200-slot reserved block of null placeholders, so the catalog can grow without changing the layout.
 
@@ -25,8 +25,8 @@ equip_skill_id: 34  →  type=8  loc=49181  "Continuous Care V"  / "Auto-use fro
 
 ### Connections
 
-- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md) — fairy equip-skill acquisition cost tables; no confirmed key relationship to this catalog
-- [petequipskill.bss](petequipskill_bss.md) — structurally the same PABR catalog format for pets
+- [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), fairy equip-skill acquisition cost tables; no confirmed key relationship to this catalog
+- [petequipskill.bss](petequipskill_bss.md), structurally the same PABR catalog format for pets
 - Localization (`loc_id`) resolved via `loc-tool.py --type 10 --id <loc_id>`
 - Icon assets use the `loc_id`: `ui_texture/icon/new_icon/08_servant_skill/02_pet/equipskill_fairy_{loc_id:08d}.dds`
 
@@ -34,7 +34,7 @@ equip_skill_id: 34  →  type=8  loc=49181  "Continuous Care V"  / "Auto-use fro
 
 ## Companion Files
 
-None — `fairyequipskill.bss` is a standalone catalog with no offset index.
+None, `fairyequipskill.bss` is a standalone catalog with no offset index.
 
 | File                  | Required | Role                                             |
 | --------------------- | -------- | ------------------------------------------------ |
@@ -61,7 +61,7 @@ Total file size: 3636 bytes = 4 (magic) + 420 (catalog) + 3200 (reserved block) 
 | ------- | ------ | ----- | -------------- |
 | `+0x00` | char×4 | magic | `PABR` (ASCII) |
 
-Records begin immediately at `+0x04`. There is **no record count field** — the catalog is terminated by the first record whose `equip_skill_id` is `200`.
+Records begin immediately at `+0x04`. There is **no record count field**, the catalog is terminated by the first record whose `equip_skill_id` is `200`.
 
 ### Skill Record (12 bytes, ×35, offset `0x004`)
 
@@ -77,7 +77,7 @@ Records begin immediately at `+0x04`. There is **no record count field** — the
 
 Two hundred unused catalog slots. Every record is `[u32 200][u32 0][u32 0][u32 0]`, where `200` is the null-entry sentinel. Skip these when parsing.
 
-Note the stride here is **16 bytes**, not the 12 used by live records — matching the wider Section 2 record shape in `petequipskill.bss`, whose extended catalog is fully populated. In `fairyequipskill.bss` that extended section is entirely null.
+Note the stride here is **16 bytes**, not the 12 used by live records, matching the wider Section 2 record shape in `petequipskill.bss`, whose extended catalog is fully populated. In `fairyequipskill.bss` that extended section is entirely null.
 
 ### Trailer (12 bytes, offset `0xE28`)
 
@@ -182,7 +182,7 @@ The `tier` and padding fields are internal-only and omitted from the table.
 
 ## Notes
 
-- No offset companion file — the file is small enough to scan linearly.
+- No offset companion file, the file is small enough to scan linearly.
 - The catalog has no count field; parsing stops at the first `equip_skill_id == 200`, the same null sentinel `petequipskill.bss` uses.
 - `skill_type` numbering is fairy-local and does **not** match `petequipskill.bss` type numbering.
 - The `I`–`V` suffix in a skill's name is the **rolled skill level**, assigned randomly when a fairy learns the skill. Each full group is therefore a five-rung ladder of the same effect; Fairy's Tear stops at `IV`, and Morning Star and Gift carry no suffix at all. This is separate from the record's `tier` field, which is always `1`.
@@ -208,7 +208,7 @@ The acquisition cost tables are keyed by `acquire_type_id` `501`–`504`, which 
 
 ### Which skills a fairy of a given grade can roll
 
-Resolved. A fairy learns one random skill from this catalog every 10 levels, and each learned skill rolls a random rank of `1`–`5` — the `I`–`V` ladders below. The per-grade odds live in [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), whose four records are the four fairy grades and whose weights are indexed by this file's `equip_skill_id`. Only Radiant carries non-zero weights for rank IV and V.
+Resolved. A fairy learns one random skill from this catalog every 10 levels, and each learned skill rolls a random rank of `1`–`5`, the `I`–`V` ladders below. The per-grade odds live in [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md), whose four records are the four fairy grades and whose weights are indexed by this file's `equip_skill_id`. Only Radiant carries non-zero weights for rank IV and V.
 
 That table also explains two oddities here: `equip_skill_id 29` (Gift) has weight `0` in every grade because every fairy starts with it, and the four legacy `Miraculous Cheer` "`N` Seconds" entries (`20`–`23`) are likewise `0` everywhere, confirming they are dead records.
 

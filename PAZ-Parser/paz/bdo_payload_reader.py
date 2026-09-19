@@ -111,7 +111,7 @@ def _blackdesert_unpack_core(
     decompressed_length: int,
 ) -> int:
     """
-    Custom BDO decompressor — ported from kukdh1/PAZ-Unpacker Crypt.cpp
+    Custom BDO decompressor, ported from kukdh1/PAZ-Unpacker Crypt.cpp
 
     Returns the number of bytes written to `output`, or a negative error code.
     """
@@ -185,8 +185,8 @@ def bdo_decompress(data: bytes, expected_size: int | None = None) -> bytes:
     Decompress a BDO payload.
 
     Header layout (byte 0 = flags):
-      bit 0 (0x01) — data is compressed
-      bit 1 (0x02) — long mode (4-byte lengths), else short mode (1-byte lengths)
+      bit 0 (0x01), data is compressed
+      bit 1 (0x02), long mode (4-byte lengths), else short mode (1-byte lengths)
 
     Long mode:  bytes 1-4 = compressed_length, bytes 5-8 = decompressed_length
     Short mode: byte 1 = compressed_length,    byte 2    = decompressed_length
@@ -253,7 +253,7 @@ def read_entry_payload(archive_path: Path, entry: PazEntry) -> bytes:
 
     # Decompress when flagged by size mismatch or the 0x6E magic byte.
     # Skip the 0x6E check when the raw bytes already equal the expected
-    # uncompressed size — those bytes are stored raw, not compressed.
+    # uncompressed size, those bytes are stored raw, not compressed.
     needs_decompress = (
         entry.uncompressed_size > entry.compressed_size
         or (

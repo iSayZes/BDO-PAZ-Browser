@@ -22,8 +22,8 @@ species=25 (Airiss), ...    →  grade varies
 
 ### Connections
 
-- [pet.dbss](pet_dbss.md) — join on `(species << 8) | variant` to enrich pet records with grade
-- [petgradeoffset.dbss](petgrade_dbss.md#petgradeoffsetdbss) — keyed offset index for this file
+- [pet.dbss](pet_dbss.md), join on `(species << 8) | variant` to enrich pet records with grade
+- [petgradeoffset.dbss](petgrade_dbss.md#petgradeoffsetdbss), keyed offset index for this file
 
 ---
 
@@ -53,7 +53,7 @@ All multi-byte values are little-endian.
 | `+0x02` | u16  | —           | Always 0; padding                                                  |
 | `+0x04` | u16  | key_dup     | Duplicate of `key`                                                 |
 | `+0x06` | u16  | —           | Always 0; padding                                                  |
-| `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Rare, 5 Special — see Open Questions |
+| `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Rare, 5 Special, see Open Questions |
 
 > The combined key is `(species << 8) | variant`, stored as a u16 followed by a zero u16. This matches the key format used in `petgradeoffset.dbss`.
 

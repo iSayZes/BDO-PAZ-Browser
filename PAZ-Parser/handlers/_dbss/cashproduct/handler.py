@@ -6,6 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, icon_cell, table
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import (
@@ -85,7 +86,12 @@ class CashProductHandler(PreviewHandler):
 
         records = parse_cashproduct_records(data, offset_raw)
         for record in records:
-            record["item_name"] = _item_name(record["item_id"])
+            item_id = record["item_id"]
+            # The item's own icon, not the shop tile the product stores.
+            record["icon_path"] = icon_path(IconKind.ITEM, item_id) if item_id else ""
+            # LOC already answers in the user's language; the block's Korean
+            # name is only a fallback for products with no linked item.
+            record["item_name"] = _item_name(item_id) or record["product_name"]
 
         return records
 
@@ -102,21 +108,15 @@ class CashProductHandler(PreviewHandler):
 
         cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
         headers: list[tuple[str, str, str]] = [
-            (cols.get("productId", "Product ID"), "num", ""),
-            (cols.get("icon", "Icon"), "", ""),
-            (cols.get("product", "Product"), "", ""),
             (cols.get("itemId", "Item ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
             (cols.get("item", "Item"), "", ""),
-            (cols.get("blockSize", "Block Size"), "num", ""),
         ]
         rows = [
             [
-                e(record["product_id"]),
-                icon_cell(record["icon_path"]) if record["icon_path"] else _EMPTY,
-                e(record["product_name"] or _EMPTY),
                 e(record["item_id"] or _EMPTY),
+                icon_cell(record["icon_path"]) if record["icon_path"] else _EMPTY,
                 e(record.get("item_name") or _EMPTY),
-                e(f"{record['block_size']:,}"),
             ]
             for record in slice_
         ]

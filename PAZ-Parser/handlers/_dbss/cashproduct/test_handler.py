@@ -18,7 +18,8 @@ from tests.framework import (
 )
 
 
-_ICON_DIR = "ui_texture/icon/new_icon/09_cash/03_product"
+_TILE_DIR = "ui_texture/icon/new_icon/09_cash/03_product"
+_DERIVED_DIR = "ui_texture/icon/new_icon/product_icon_png"
 
 CASE = HandlerCase(
     handler_name="cashproduct.dbss",
@@ -33,10 +34,11 @@ CASE = HandlerCase(
             required_keys=[
                 "product_id",
                 "product_name",
-                "icon_path",
+                "product_icon_path",
                 "item_id",
                 "block_size",
                 "item_name",
+                "icon_path",
             ],
         ),
         CountTest(expected=28_689),
@@ -45,21 +47,26 @@ CASE = HandlerCase(
             pos=0,
             expected={
                 "product_id": 114415,
-                "icon_path": f"{_ICON_DIR}/00103985.dds",
+                "product_icon_path": f"{_TILE_DIR}/00103985.dds",
                 "item_id": 613110,
                 "block_size": 764,
+                # The displayed icon keys off the item, not the shop tile. No
+                # index is installed under test, so this is the derived
+                # fallback; the app resolves it through the item index.
+                "icon_path": f"{_DERIVED_DIR}/00613110.png",
             },
         ),
-        # Product ID, icon ID and item ID are three unrelated numbers; only this
+        # Product ID, tile ID and item ID are three unrelated numbers; only this
         # file ties them together.
         TargetTest(
             col="product_id",
             value=117722,
             expected={
-                "icon_path": f"{_ICON_DIR}/00105099.dds",
+                "product_icon_path": f"{_TILE_DIR}/00105099.dds",
                 "item_id": 340916,
                 "item_name": "[Guardian] Shell Belle Outfit Set",
                 "block_size": 1294,
+                "icon_path": f"{_DERIVED_DIR}/00340916.png",
             },
         ),
     ],

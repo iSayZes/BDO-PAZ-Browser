@@ -55,7 +55,12 @@ def _linked_item_id(data: bytes, icon_end: int, block_end: int) -> int:
 
 
 def parse_cashproduct_records(data: bytes, offset_data: bytes) -> list[dict]:
-    """Parse one row per cash product, carrying its icon path and linked item."""
+    """Parse one row per cash product, carrying its shop tile and linked item.
+
+    The stored path is the Pearl Shop tile for the product, not the item's own
+    icon. 58% of products share a tile with another, so a whole collection can
+    point at one promotional image. Use the linked item ID for an item icon.
+    """
     records: list[dict] = []
 
     for row in parse_cashproductoffset_records(offset_data):
@@ -76,7 +81,7 @@ def parse_cashproduct_records(data: bytes, offset_data: bytes) -> list[dict]:
         records.append({
             "product_id": row["product_id"],
             "product_name": read_prefixed_utf16(data, start + _NAME_PREFIX_OFFSET),
-            "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
+            "product_icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
             "item_id": _linked_item_id(data, icon_end, end) if icon else 0,
             "block_size": row["data_size"],
         })

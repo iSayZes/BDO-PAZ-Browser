@@ -6,10 +6,15 @@ The Pearl Shop product catalog. One variable-length block per cash product,
 keyed by product ID through a required offset companion. Each block carries
 Korean display text, an **inline icon path**, and the item ID the product grants.
 
-This is the second source of item icons after
-[itemenchant.dbss](itemenchant_dbss.md), and the only one that covers cash-shop
-products, whose icons are keyed by **product ID rather than item ID**, the
-reason thousands of ID-named icons match no item.
+The stored icon is the **Pearl Shop tile for the product, not the item's own
+icon**. 16,620 of the 28,689 products (57.9%) share a tile with another product,
+so a whole seasonal collection points at one promotional image and 480 unrelated
+products all use `loyalties.dds`. For an item icon, follow the linked item ID
+into [itemenchant.dbss](itemenchant_dbss.md) instead.
+
+Product IDs are a separate ID space from items because a purchase is not an
+item: one product can grant several items, the same item can be sold by several
+products, and the tile is marketing art for the offer.
 
 Example:
 
@@ -144,14 +149,15 @@ start at `New_Icon/` and take the prefix `ui_texture/icon/`.
 
 ## Suggested UI Layout
 
-| Column     | Type | Notes                                              |
-| ---------- | ---- | -------------------------------------------------- |
-| Product ID | num  | `product_id`                                        |
-| Icon       | text | Icon path, prefixed `ui_texture/`                   |
-| Product    | text | Korean `name` from the block                        |
-| Item ID    | num  | Linked `item_id`; `—` when absent                   |
-| Item       | text | LOC `str_type=0`, `str_id1=item_id`                 |
-| Block Size | num  | `data_size` from the companion                      |
+| Column  | Type | Notes                                                        |
+| ------- | ---- | ------------------------------------------------------------ |
+| Item ID | num  | Linked `item_id`; `-` when absent                            |
+| Icon    | text | The item's own icon, resolved from `item_id`, not the tile   |
+| Item    | text | LOC name in the user's language; falls back to Korean `name` |
+
+`product_icon_path` and `product_id` are parsed but not shown. The tile is
+marketing art for the offer rather than an item icon, and the product ID is the
+shop key rather than anything the reader is looking up.
 
 ---
 

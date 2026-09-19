@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "enchantLevel": "Enchant Level",
+    "icon": "Icon",
+    "item": "Item",
+    "effectTag": "Effect Tag",
+    "blockSize": "Block Size"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "enchantLevel": "Enchant Level",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  }
+}

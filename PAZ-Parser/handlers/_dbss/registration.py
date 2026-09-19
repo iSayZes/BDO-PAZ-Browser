@@ -15,6 +15,14 @@ from .npcpersonality.handler import NpcPersonalityHandler, NpcPersonalityOffsetH
 from .quest.handler import QuestDbssHandler
 from .questgroup.handler import QuestGroupDbssHandler
 from .worldquest.handler import WorldQuestDbssHandler
+from .cashproduct.handler import (
+    CashProductHandler,
+    CashProductOffsetHandler,
+)
+from .itemenchant.handler import (
+    ItemEnchantHandler,
+    ItemEnchantOffsetHandler,
+)
 from .journalquest.handler import JournalQuestDbssHandler, JournalQuestOffsetHandler
 from .npcgift.handler import (
     NpcGiftOffsetHandler,
@@ -77,6 +85,10 @@ def register_dbss_handlers() -> None:
     register_handler("quest.dbss", QuestDbssHandler())
     register_handler("questgroup.dbss", QuestGroupDbssHandler())
     register_handler("worldquest.dbss", WorldQuestDbssHandler())
+    register_handler("cashproduct.dbss", CashProductHandler())
+    register_handler("cashproductoffset.dbss", CashProductOffsetHandler())
+    register_handler("itemenchant.dbss", ItemEnchantHandler())
+    register_handler("itemenchantoffset.dbss", ItemEnchantOffsetHandler())
     register_handler("journalquestoffset.dbss", JournalQuestOffsetHandler())
     register_handler("journalquest.dbss", JournalQuestDbssHandler())
     register_handler("npcgiftoffset.dbss", NpcGiftOffsetHandler())

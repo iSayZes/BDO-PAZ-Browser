@@ -189,11 +189,11 @@ class QuestDbssHandler(PreviewHandler):
                 e(record["packed_quest_id"]),
                 e(record["quest_chain_id"]),
                 e(record["quest_id"]),
+                icon_cell(record["icon_path"]),
                 e(_truncate(title) if title else "-"),
                 e(_truncate(record["condition_script"])),
                 e(_truncate(record["action_script"])),
                 e(_truncate(objective) if objective else "-"),
-                icon_cell(record["icon_path"]),
             ])
 
         meta = f"{total:,} quests"
@@ -208,10 +208,10 @@ class QuestDbssHandler(PreviewHandler):
             (cols.get("displayId", "Display ID"), "num", ""),
             (cols.get("chainId", "Chain ID"), "num", ""),
             (cols.get("questId", "Quest ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
             (cols.get("titleName", "Title / Name"), "", ""),
             (cols.get("condition", "Condition"), "", ""),
             (cols.get("action", "Action"), "", ""),
             (cols.get("objective", "Objective"), "", ""),
-            (cols.get("icon", "Icon"), "", ""),
         ]
         return table(meta, headers, rows)

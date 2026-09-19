@@ -99,8 +99,7 @@ quest_id = (quest_no << 16) | group_id
 | Group ID    | num  | `group_id`; right-aligned                                   |
 | Name        | text | Raw Korean `name_kr`; use localization if a mapping is found |
 | Quests      | num  | Number of linked child quests                               |
-| Quest IDs   | text | Comma-separated derived `quest.dbss` IDs                    |
-| Group:No    | text | Compact raw child links as `group_id:quest_no`              |
+| Quest Titles | text | LOC titles for the child quests, falling back to their IDs |
 
 ---
 

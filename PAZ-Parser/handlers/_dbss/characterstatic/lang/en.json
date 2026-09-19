@@ -7,6 +7,7 @@
   "columns": {
     "characterId": "Character ID",
     "nameEn": "Name (EN)",
+    "icon": "Icon",
     "script": "Script",
     "knowledgeId": "Knowledge ID",
     "payloadSize": "Payload Size",

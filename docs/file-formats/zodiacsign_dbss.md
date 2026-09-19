@@ -220,14 +220,16 @@ Maps each personality type (2 variants × 12 signs = 24 records) to a slot-trigg
 
 ## Suggested UI Layout
 
-| Column       | Type | Notes                                        |
-| ------------ | ---- | -------------------------------------------- |
-| Zodiac ID    | num  | `zodiac_id`                                  |
-| Name (EN)    | text | LOC str_type=7, str_id1=zodiac_id, str_id4=0 |
-| Name (KR)    | text | Decoded `constellation_name` from text_block |
-| Traits (EN)  | text | LOC str_type=7, str_id1=zodiac_id, str_id4=1 |
-| Star Count   | num  | `float_count`                                |
-| Icon (Small) | text | `icon_small` path                            |
+| Column        | Type | Notes                                             |
+| ------------- | ---- | ------------------------------------------------- |
+| ID            | num  | `zodiac_id`                                       |
+| Name          | text | LOC `str_type=7`, `str_id1=zodiac_id`, `str_id4=0` |
+| Stars         | num  | Number of stars in the constellation              |
+| Pairs         | num  | Number of connecting line pairs                   |
+| Constellation | text | Rendered star layout                              |
+| Traits        | text | Trait text, preferring the user's language        |
+| Traits (EN)   | text | LOC `str_id4=1` English trait text                |
+| Traits (KR)   | text | Inline Korean trait text from the record          |
 
 ---
 

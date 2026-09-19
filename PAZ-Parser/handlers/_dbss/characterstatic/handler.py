@@ -100,7 +100,8 @@ class CharacterStaticHandler(PreviewHandler):
 
         cols = load_handler_strings(self.lang, _LANG_DIR).get("columns", {})
         headers: list[tuple[str, str, str]] = [
-            (cols.get("characterId", "Character ID"), "num", "")
+            (cols.get("characterId", "Character ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
         ]
         if has_loc:
             headers.append((cols.get("nameEn", "Name (EN)"), "", ""))
@@ -117,7 +118,11 @@ class CharacterStaticHandler(PreviewHandler):
 
         rows: list[list[str]] = []
         for r in slice_:
-            row: list[str] = [e(r["character_id"])]
+            path = icon_path(IconKind.CHARACTER, r["character_id"])
+            row: list[str] = [
+                e(r["character_id"]),
+                icon_cell(path) if path else "-",
+            ]
             if has_loc:
                 row.append(e(r["name_en"]))
             row.append(e(r["script"]))

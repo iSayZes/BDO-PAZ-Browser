@@ -109,6 +109,7 @@ quest_id       = packed_quest_id >> 16
 | ------- | ---- | --------------------------------------------------------------------- |
 | Main ID | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`                     |
 | Sub ID  | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`                        |
+| Icon    | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
 | Title   | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`      |
 
 ---

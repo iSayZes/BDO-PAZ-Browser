@@ -2,6 +2,7 @@
   "columns": {
     "mainId": "Main ID",
     "subId": "Sub ID",
+    "icon": "Icon",
     "title": "Title"
   }
 }

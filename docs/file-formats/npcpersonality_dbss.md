@@ -126,19 +126,18 @@ The offset file's `data_offset` values increment by exactly 34 (the main record 
 
 ## Suggested UI Layout
 
-| Column           | Type | Notes                                    |
-| ---------------- | ---- | ---------------------------------------- |
-| Personality ID   | num  | `personality_id` (also show as hex)      |
-| Personality Type | num  | `personality_type`                       |
-| Horoscope        | text | Decoded from `personality_type` via enum |
-| Group A ID       | num  | `interest_group_a & 0xFFFF`              |
-| Group A Count    | num  | `interest_group_a >> 16`                 |
-| Group B ID       | num  | `interest_group_b & 0xFFFF`              |
-| Group B Count    | num  | `interest_group_b >> 16`                 |
-| Group C ID       | num  | `interest_group_c & 0xFFFF`              |
-| Group C Count    | num  | `interest_group_c >> 16`                 |
-| Interest Range   | text | `interest_min` – `interest_max_excl − 1` |
-| Favor Range      | text | `favor_min` – `favor_max_excl − 1`       |
+| Column            | Type | Notes                                            |
+| ----------------- | ---- | ------------------------------------------------ |
+| Row               | num  | Record index within the file                     |
+| ID                | num  | `personality_id`                                 |
+| Group A (ID ×cnt) | num  | `group_a_id` with its repeat count               |
+| Group B (ID ×cnt) | num  | `group_b_id` with its repeat count               |
+| Group C (ID ×cnt) | num  | `group_c_id` with its repeat count               |
+| Int Min           | num  | Interest range lower bound                       |
+| Int Max           | num  | Interest range upper bound                       |
+| Fav Min           | num  | Favor range lower bound                          |
+| Fav Max           | num  | Favor range upper bound                          |
+| Horoscope         | text | Zodiac sign resolved from the personality type   |
 
 ---
 

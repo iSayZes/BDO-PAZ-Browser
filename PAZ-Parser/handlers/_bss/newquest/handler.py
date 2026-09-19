@@ -5,7 +5,8 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import e, table
+from _common.html import e, icon_cell, table
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded
 from _common.quest.quest import quest_title
@@ -32,6 +33,7 @@ class NewQuestBssHandler(PreviewHandler):
                 if has_loc
                 else ""
             )
+            row["icon_path"] = icon_path(IconKind.QUEST, record["packed_quest_id"])
             records.append(row)
 
         return records
@@ -55,6 +57,7 @@ class NewQuestBssHandler(PreviewHandler):
             (cols.get("group", "Group"), "num", ""),
             (cols.get("mainId", "Main ID"), "num", ""),
             (cols.get("subId", "Sub ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
             (cols.get("title", "Title"), "", ""),
             (cols.get("sequenceA", "Sequence A"), "num", ""),
             (cols.get("sequenceB", "Sequence B"), "num", ""),
@@ -65,6 +68,7 @@ class NewQuestBssHandler(PreviewHandler):
                 e(record["group"]),
                 e(record["quest_chain_id"]),
                 e(record["quest_id"]),
+                icon_cell(record["icon_path"]) if record["icon_path"] else "-",
                 e(record.get("title") or "-"),
                 e(record["sequence_a"]),
                 e(record["sequence_b"]),

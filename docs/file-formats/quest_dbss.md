@@ -184,11 +184,11 @@ titles/objectives.
 | Display ID   | num  | Prefer `canonical_link.canonical_quest_id`; fallback to packed ID from `+0x00` |
 | Chain ID     | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`           |
 | Quest ID     | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`              |
+| Icon         | text | `icon_path` read from the record; thumbnail when available  |
 | Title / Name | text | LOC type 18 `str_id4=0` when available                      |
 | Condition    | text | `condition_script`                                          |
 | Action       | text | `action_script`                                             |
 | Objective    | text | Prefer LOC type 18 objective text; fall back to inline Korean objective text |
-| Icon         | text | `icon_path`; render thumbnail when DDS preview is available |
 
 ---
 

@@ -3,10 +3,10 @@
     "displayId": "Display ID",
     "chainId": "Chain ID",
     "questId": "Quest ID",
+    "icon": "Icon",
     "titleName": "Title / Name",
     "condition": "Condition",
     "action": "Action",
-    "objective": "Objective",
-    "icon": "Icon"
+    "objective": "Objective"
   }
 }

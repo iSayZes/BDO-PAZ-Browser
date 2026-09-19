@@ -152,7 +152,8 @@ Rows sorted by `data_offset` cover the whole main file from `+0x04` through EOF 
 | Column       | Type | Notes |
 | ------------ | ---- | ----- |
 | Character ID | num  | `character_id_low16`; right-aligned |
-| Name         | text | LOC lookup `str_type=6`, `str_id1=character_id`; prefer English, fallback to ID |
+| Icon         | text | Resolved from the character ID through the character icon index; covers about 20% of characters |
+| Name (EN)    | text | LOC lookup `str_type=6`, `str_id1=character_id`; shown only when LOC is loaded |
 | Script       | text | Decoded UTF-16BE script string |
 | Knowledge ID | num | Extract from `getknowledge(<id>);` when present |
 | Payload Size | num | Useful for debugging variable layouts |

@@ -115,6 +115,7 @@ The first payload bytes resemble another small header followed by UTF-16 text, b
 | Group        | num  | Decoded group index `0..223`                                     |
 | Main ID      | num  | `quest_chain_id`; LOC type 18 `str_id1`                          |
 | Sub ID       | num  | `quest_id`; LOC type 18 `str_id2`                                |
+| Icon         | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
 | Title        | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0` |
 | Sequence A   | num  | Raw `sequence_a`                                                 |
 | Sequence B   | num  | Raw `sequence_b`                                                 |

@@ -6,7 +6,8 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.lang import load_handler_strings
-from _common.html import e, table
+from _common.html import e, icon_cell, table
+from _common.icon_index import IconKind, icon_path
 from _common.loc import is_loc_loaded
 from _common.quest.quest import quest_title
 from .parser import parse_allquestlist_records
@@ -32,6 +33,7 @@ class AllQuestListBssHandler(PreviewHandler):
                 if has_loc
                 else ""
             )
+            row["icon_path"] = icon_path(IconKind.QUEST, record["packed_quest_id"])
             records.append(row)
 
         return records
@@ -53,6 +55,7 @@ class AllQuestListBssHandler(PreviewHandler):
         headers: list[tuple[str, str, str]] = [
             (cols.get("mainId", "Main ID"), "num", ""),
             (cols.get("subId", "Sub ID"), "num", ""),
+            (cols.get("icon", "Icon"), "", ""),
             (cols.get("title", "Title"), "", ""),
         ]
 
@@ -60,6 +63,7 @@ class AllQuestListBssHandler(PreviewHandler):
             [
                 e(record["quest_chain_id"]),
                 e(record["quest_id"]),
+                icon_cell(record["icon_path"]) if record["icon_path"] else "-",
                 e(record.get("title") or "-"),
             ]
             for record in slice_

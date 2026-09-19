@@ -100,11 +100,10 @@ To read a name record: seek to `offset` in `employeename.dbss`, read `size` byte
 
 ## Suggested UI Layout
 
-| Column           | Type | Notes                                    |
-| ---------------- | ---- | ---------------------------------------- |
-| employee_name_id | num  | Right-aligned primary key                                                        |
-| Name             | text | Prefer LOC type `71`, id1 `employee_name_id`, id3 `12`; fall back to inline Korean |
-| char_count       | num  | Useful for validation; hidden by default                                         |
+| Column            | Type | Notes                                          |
+| ----------------- | ---- | ---------------------------------------------- |
+| Employee Name ID  | num  | `employee_name_id`                             |
+| Name              | text | LOC name, falling back to the inline Korean    |
 
 ---
 

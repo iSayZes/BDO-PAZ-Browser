@@ -101,9 +101,9 @@ class KnowledgeLearningHandler(PreviewHandler):
 
         rows = [
             [
-                e(r["knowledge_id"] or "—"),
+                e(r["knowledge_id"] or "-"),
                 e(r["kind"]),
-                e(r["knowledge_name"] or "—"),
+                e(r["knowledge_name"] or "-"),
                 e(f"0x{r['offset']:08X}"),
             ]
             for r in slice_

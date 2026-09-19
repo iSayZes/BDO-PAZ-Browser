@@ -28,13 +28,26 @@ class IconKind(Enum):
     ITEM = "item"
     QUEST = "quest"
     CHARACTER = "character"
+    PET_EQUIP_SKILL = "pet_equip_skill"
+    FAIRY_EQUIP_SKILL = "fairy_equip_skill"
 
 
 ITEM_ICON_DIR = "ui_texture/icon/new_icon/product_icon_png"
 
 
+SERVANT_SKILL_ICON_DIR = "ui_texture/icon/new_icon/08_servant_skill/02_pet"
+
+
 def _derive_item_icon(item_id: int) -> str:
     return f"{ITEM_ICON_DIR}/{item_id:08d}.png"
+
+
+def _derive_pet_equip_skill_icon(loc_id: int) -> str:
+    return f"{SERVANT_SKILL_ICON_DIR}/equipskill_{loc_id:08d}.dds"
+
+
+def _derive_fairy_equip_skill_icon(loc_id: int) -> str:
+    return f"{SERVANT_SKILL_ICON_DIR}/equipskill_fairy_{loc_id:08d}.dds"
 
 
 # Fallback path templates, used only when the index has no entry. Kinds absent
@@ -42,6 +55,8 @@ def _derive_item_icon(item_id: int) -> str:
 # more often than after their ID, so a guess would be wrong more than right.
 _DERIVERS: dict[IconKind, Callable[[int], str]] = {
     IconKind.ITEM: _derive_item_icon,
+    IconKind.PET_EQUIP_SKILL: _derive_pet_equip_skill_icon,
+    IconKind.FAIRY_EQUIP_SKILL: _derive_fairy_equip_skill_icon,
 }
 
 # kind -> {entity_id: PAZ icon path}

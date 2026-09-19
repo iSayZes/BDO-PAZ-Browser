@@ -557,6 +557,8 @@ table, its offset companion (or `None`) and the builder.
 | `ITEM`      | `itemenchant.dbss`      | 69,954  | `product_icon_png`    |
 | `QUEST`     | `quest.dbss`            | 16,377  | none                  |
 | `CHARACTER` | `characterobject.dbss`  | 4,817   | none                  |
+| `PET_EQUIP_SKILL`   | none          | 0       | `08_servant_skill/02_pet` |
+| `FAIRY_EQUIP_SKILL` | none          | 0       | `08_servant_skill/02_pet` |
 
 ### Fixing an icon by hand
 
@@ -602,7 +604,9 @@ icon column will look populated. Measured against the live PAZ:
 a world object, 4,817 of 24,418. That is expected rather than broken, but it
 means a character icon column is mostly empty.
 
-Only `ITEM` declares a derivation. Quest and character icons are named after
+The two equip-skill kinds are derivation only: no table stores their paths, but
+routing them through the registry keeps every icon template in one module and
+lets `icon_overrides.json` correct them like any other kind. Quest and character icons are named after
 assets far more often than after their ID, so a guess would be wrong more often
 than right; those kinds return an empty path and the cell renders a placeholder.
 
@@ -622,8 +626,11 @@ item's icon: item 1 (Silver) maps to `loyalties.dds`, the product that grants
 it. Its icons differ from the item's own in every overlapping case, and it adds
 no items that `itemenchant.dbss` does not already cover.
 
-Skill and other non-item icons still use a format-local template, because their
-folders are format-specific rather than shared.
+Handlers that read an icon path stored in their own records, such as `pet.dbss`,
+`petaction.dbss`, `quest.dbss`, `plantworker.bss`, `itemenchant.dbss` and
+`cashproduct.dbss`, keep using that path directly. It is already authoritative,
+and for `itemenchant` and `quest` the index is built from it, so routing those
+through `icon_path()` would be circular.
 
 ---
 

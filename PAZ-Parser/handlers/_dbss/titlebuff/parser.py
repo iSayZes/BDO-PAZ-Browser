@@ -36,7 +36,7 @@ def decode_titlebuff_text(block: bytes) -> str:
     start = block.find(PA_COLOR_MARKER)
 
     if start == -1:
-        return "—"
+        return "-"
 
     text = block[start:].decode("utf-16-le", errors="ignore")
     text = text.replace("\x00", "")

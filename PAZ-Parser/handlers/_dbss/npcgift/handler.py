@@ -108,10 +108,10 @@ class NpcGiftHandler(PreviewHandler):
         rows = [
             [
                 e(r["npc_id"]),
-                e(r["npc_name"] or "—"),
+                e(r["npc_name"] or "-"),
                 e(r["item_id"]),
                 icon_cell(r["icon_path"]),
-                e(r["item_name"] or "—"),
+                e(r["item_name"] or "-"),
                 e(r["amity"]),
             ]
             for r in slice_
@@ -153,7 +153,7 @@ class NpcGiftDataHandler(PreviewHandler):
         rows = [
             [
                 e(r["npc_id"]),
-                e(r["npc_name"] or "—"),
+                e(r["npc_name"] or "-"),
                 e(r["unknown_param"]),
                 e(r["dialogue"]),
             ]

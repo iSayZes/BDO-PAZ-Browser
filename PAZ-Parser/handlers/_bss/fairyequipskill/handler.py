@@ -6,17 +6,13 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, icon_cell, table
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_fairyequipskill_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-_ICON_PATH = (
-    "ui_texture/icon/new_icon/08_servant_skill/02_pet/"
-    "equipskill_fairy_{loc_id:08d}.dds"
-)
-
 _LOC_TYPE = 10
 # Within LOC type 10 the fourth sub-id selects name vs effect description.
 _LOC_ID4_NAME = 0
@@ -44,7 +40,7 @@ class FairyEquipSkillBssHandler(PreviewHandler):
             loc_id = row["loc_id"]
             row["skill_name"] = _loc_text(loc_id, _LOC_ID4_NAME)
             row["skill_description"] = _loc_text(loc_id, _LOC_ID4_DESCRIPTION)
-            row["icon_path"] = _ICON_PATH.format(loc_id=loc_id)
+            row["icon_path"] = icon_path(IconKind.FAIRY_EQUIP_SKILL, loc_id)
             records.append(row)
 
         return records

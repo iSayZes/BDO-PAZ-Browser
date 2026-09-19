@@ -290,9 +290,9 @@ class PreviewMixin:
         meta = {
             "archive":      "<disk>",
             "path":         name,
-            "compressed":   "—",
+            "compressed":   "-",
             "uncompressed": f"{len(data):,} B",
-            "offset":       "—",
+            "offset":       "-",
         }
         p = Path(name)
         handler = get_handler(p.name, p.suffix)

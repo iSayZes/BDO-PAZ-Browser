@@ -20,7 +20,7 @@ def _decode_personality_type(code: int) -> str:
 
 def _group_str(group_id: int, item_count: int) -> str:
     if group_id == 0:
-        return "—"
+        return "-"
     return f"{group_id} ×{item_count}"
 
 

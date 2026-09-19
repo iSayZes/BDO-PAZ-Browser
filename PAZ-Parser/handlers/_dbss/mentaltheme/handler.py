@@ -15,7 +15,7 @@ _LANG_DIR = Path(__file__).parent / "lang"
 
 def _reward(amount: int, need_count: int) -> str:
     if amount == 0 and need_count == 0:
-        return "—"
+        return "-"
     return f"+{amount} at {need_count} entries"
 
 
@@ -26,7 +26,7 @@ def _reward_2(
     need_count_2: int,
 ) -> str:
     if amount_1 == amount_2 and need_count_1 == need_count_2:
-        return "—"
+        return "-"
     return _reward(amount_2, need_count_2)
 
 
@@ -151,9 +151,9 @@ class MentalThemeHandler(PreviewHandler):
         rows = [
             [
                 e(r["theme_id"]),
-                e(r["name"] or "—"),
-                e(r["parent_id"] or "—"),
-                e(r["parent_name"] or "—"),
+                e(r["name"] or "-"),
+                e(r["parent_id"] or "-"),
+                e(r["parent_name"] or "-"),
                 e(r["energy_reward_1"]),
                 e(r["energy_reward_2"]),
                 e(r["entry_count"]),

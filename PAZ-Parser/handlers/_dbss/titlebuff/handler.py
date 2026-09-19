@@ -105,7 +105,7 @@ class TitleBuffListHandler(PreviewHandler):
             rows.append([
                 e(r["level"]),
                 e(r["required_titles"]),
-                e(r["text"]) if r["text"] else "—",
+                e(r["text"]) if r["text"] else "-",
                 e(f"0x{r['offset']:08X}"),
             ])
 

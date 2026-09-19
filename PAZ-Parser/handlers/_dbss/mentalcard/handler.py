@@ -102,9 +102,9 @@ class MentalCardHandler(PreviewHandler):
         rows = [
             [
                 e(r["entry_id"]),
-                e(r["entry_name"] or "—"),
+                e(r["entry_name"] or "-"),
                 e(r["node_id"]),
-                e(r["node_name"] or "—"),
+                e(r["node_name"] or "-"),
             ]
             for r in slice_
         ]

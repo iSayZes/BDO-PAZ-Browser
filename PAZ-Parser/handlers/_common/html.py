@@ -9,7 +9,7 @@ def e(value: object) -> str:
 
 def color_cell(colors: list[str]) -> str:
     if not colors:
-        return "—"
+        return "-"
 
     parts: list[str] = []
 

@@ -11,7 +11,7 @@ from .parser import parse_fairyfeedenchantfailcount_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-_EMPTY = "—"
+_EMPTY = "-"
 
 
 class FairyFeedEnchantFailCountBssHandler(PreviewHandler):

@@ -20,7 +20,7 @@ _OFFSET_FILE = "itemenchantoffset.dbss"
 # Item display names live in LOC type 0, keyed by item ID.
 _LOC_TYPE_ITEM = 0
 
-_EMPTY = "—"
+_EMPTY = "-"
 
 
 def _item_name(item_id: int) -> str:

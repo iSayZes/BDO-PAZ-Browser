@@ -47,4 +47,4 @@ def packed_word_cell(fields: dict[str, int], max_offset: int | None) -> str:
 
         parts.append(f"{name}=0x{value:08X} ({hi}:{lo})")
 
-    return " ".join(parts) if parts else "—"
+    return " ".join(parts) if parts else "-"

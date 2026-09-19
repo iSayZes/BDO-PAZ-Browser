@@ -6,13 +6,13 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import e, icon_cell, table
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_petequipskill_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-_ICON_PATH = "ui_texture/icon/new_icon/08_servant_skill/02_pet/equipskill_{loc_id:08d}.dds"
 
 
 def _skill_name(loc_id: int) -> str:
@@ -34,7 +34,7 @@ class PetEquipSkillBssHandler(PreviewHandler):
         for record in parse_petequipskill_records(data):
             row = dict(record)
             row["skill_name"] = _skill_name(row["loc_id"])
-            row["icon_path"] = _ICON_PATH.format(loc_id=row["loc_id"])
+            row["icon_path"] = icon_path(IconKind.PET_EQUIP_SKILL, row["loc_id"])
             records.append(row)
 
         return records

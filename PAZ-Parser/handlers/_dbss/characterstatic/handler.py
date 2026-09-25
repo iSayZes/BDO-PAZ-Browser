@@ -6,7 +6,8 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
-from _common.html import e, table, error
+from _common.html import e, error, icon_cell, table
+from _common.icon_index import IconKind, icon_path
 from _common.lang import load_handler_strings
 from .parser import (
     parse_characterstaticoffset_records,

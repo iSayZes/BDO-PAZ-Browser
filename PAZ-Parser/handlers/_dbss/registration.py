@@ -67,6 +67,7 @@ from .fairyskillchange.handler import (
     FairySkillChangeOffsetHandler,
 )
 from .employeename.handler import EmployeeNameHandler, EmployeeNameOffsetHandler
+from .buff.handler import BuffHandler, BuffOffsetHandler
 
 
 def register_dbss_handlers() -> None:
@@ -132,3 +133,5 @@ def register_dbss_handlers() -> None:
     register_handler("fairyskillchange.dbss", FairySkillChangeHandler())
     register_handler("employeenameoffset.dbss", EmployeeNameOffsetHandler())
     register_handler("employeename.dbss", EmployeeNameHandler())
+    register_handler("buffoffset.dbss", BuffOffsetHandler())
+    register_handler("buff.dbss", BuffHandler())

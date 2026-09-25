@@ -6,6 +6,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------- |
 | `acceptquest.bss`                  | PABR quest ID list in acceptance-related order with two side fields                                            | [acceptquest](file-formats/acceptquest_bss.md)                      | 1              |
 | `allquestlist.bss`                 | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                       | [allquestlist](file-formats/allquestlist_bss.md)                    | 0              |
+| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 4 |
+| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 4 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
 | `cashproductoffset.dbss` | Product-ID index into `cashproduct.dbss`; no PABR magic and no trailer | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
 | `characterspawntype.dbss`          | Entity spawn-type flag table, 44 boolean attributes per entity                                                | [characterspawntype](file-formats/characterspawntype_dbss.md)       | 0              |

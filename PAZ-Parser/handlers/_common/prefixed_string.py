@@ -68,3 +68,33 @@ def find_prefixed_ascii(data: bytes, start: int, end: int) -> list[str]:
         found.append(data[text_start:text_start + length].decode("ascii"))
 
     return found
+
+
+def read_prefixed_at(
+    data: bytes,
+    prefix_at: int,
+    end: int,
+    *,
+    wide: bool,
+) -> tuple[str, int]:
+    """Read a string whose prefix sits at a known position, with no length cap.
+
+    For tables that chain strings back to back, where each read must return the
+    position of the next field. `wide` selects UTF-16LE (length in characters)
+    over ASCII (length in bytes). Raises ValueError when the prefix is malformed
+    or the text would run past `end`, since every later field would be misread.
+    """
+    if prefix_at + STRING_PREFIX_SIZE > end:
+        raise ValueError(f"string prefix at 0x{prefix_at:X} runs past 0x{end:X}")
+
+    length = u32(data, prefix_at)
+    if u32(data, prefix_at + 4) != 0:
+        raise ValueError(f"string prefix at 0x{prefix_at:X} has a non-zero high word")
+
+    start = prefix_at + STRING_PREFIX_SIZE
+    text_end = start + length * (2 if wide else 1)
+    if text_end > end:
+        raise ValueError(f"string at 0x{start:X} runs past 0x{end:X}")
+
+    encoding = "utf-16-le" if wide else "ascii"
+    return data[start:text_end].decode(encoding, errors="replace"), text_end

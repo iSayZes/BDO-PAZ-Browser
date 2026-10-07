@@ -55,6 +55,16 @@ jobs:
         if: steps.plan.outputs.release == 'true'
         run: python build.py --version ${{ steps.plan.outputs.version }}
 
+      # What a user runs to check the download; a CRLF line ending in the
+      # .sha256 made it fail for v2026.10.07.
+      - name: Check the hash file
+        if: steps.plan.outputs.release == 'true'
+        shell: bash
+        working-directory: dist
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+        run: sha256sum -c "BDO-PAZ-Browser-v$VERSION-windows.zip.sha256"
+
       - name: Publish
         if: steps.plan.outputs.release == 'true'
         shell: bash

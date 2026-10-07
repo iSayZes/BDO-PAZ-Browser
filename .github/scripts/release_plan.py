@@ -132,7 +132,7 @@ def main() -> int:
     today = datetime.now(timezone.utc).strftime("%Y.%m.%d")
     is_release, version, text = plan(args.ref, today)
     if args.notes_file:
-        Path(args.notes_file).write_text(text, encoding="utf-8")
+        Path(args.notes_file).write_text(text, encoding="utf-8", newline="\n")
     else:
         print(text, end="")
     print(f"release={str(is_release).lower()} version={version}", file=sys.stderr)

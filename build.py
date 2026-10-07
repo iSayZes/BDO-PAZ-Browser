@@ -129,7 +129,8 @@ def _write_sha256(path: Path) -> Path:
         while chunk := file.read(_HASH_CHUNK):
             digest.update(chunk)
     sha_path = path.with_name(f"{path.name}.sha256")
-    sha_path.write_text(f"{digest.hexdigest()}  {path.name}\n", encoding="utf-8")
+    # LF even on Windows: `sha256sum -c` reads a CR as part of the file name.
+    sha_path.write_text(f"{digest.hexdigest()}  {path.name}\n", encoding="utf-8", newline="\n")
     return sha_path
 
 

@@ -107,19 +107,22 @@ jobs:
             --target "$GITHUB_SHA"
 
       # After the exe, so a failed exe release publishes no pack; a rerun plans
-      # both again. handlers-latest is never GitHub's "latest" release.
+      # both again. handlers-latest is never GitHub's "latest" release. The
+      # title names the pack version, so the releases list shows which pack is
+      # live; the app finds the pack by its tag, never by the title.
       - name: Publish the handler pack
         if: steps.pack.outputs.pack == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          PACK_VERSION: ${{ steps.pack.outputs.pack_version }}
         run: |
           if gh release view handlers-latest > /dev/null 2>&1; then
             gh release upload handlers-latest handler-pack/manifest.json --clobber
-            gh release edit handlers-latest --notes-file pack-notes.md
+            gh release edit handlers-latest --title "Handler pack $PACK_VERSION" --notes-file pack-notes.md
           else
             gh release create handlers-latest handler-pack/manifest.json \
-              --title "Handler pack" \
+              --title "Handler pack $PACK_VERSION" \
               --notes-file pack-notes.md \
               --latest=false \
               --target "$GITHUB_SHA"

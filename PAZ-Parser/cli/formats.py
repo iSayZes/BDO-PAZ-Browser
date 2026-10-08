@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from bdo_preview import _BUILTIN_KEYS, _REGISTRY, get_binary_handlers, unique_format_keys
+from bdo_preview import _BUILTIN_KEYS, _REGISTRY, get_binary_handlers, plugin_failures, unique_format_keys
 
 from .errors import CliError
 from .session import open_session
@@ -92,12 +92,15 @@ _FORMATS_IGNORE: frozenset[str] = frozenset({
 def run_handlers(args: argparse.Namespace) -> int:
     """Every registered handler key, one per line; needs no PAZ folder.
 
-    The release workflow compares the exe's list with the source's, so a
-    handler that fails to import in the exe stops the release.
+    Exits with 1 when a handler file failed to import. build.py compares the
+    exe's list with the source's, so such a handler stops the release; the
+    app update and a handler pack install check a new version with it too.
     """
     for key in get_binary_handlers():
         print(key)
-    return 0
+    for name, reason in plugin_failures().items():
+        error(f"{name} failed to load: {reason}")
+    return 1 if plugin_failures() else 0
 
 
 def run_formats(args: argparse.Namespace) -> int:

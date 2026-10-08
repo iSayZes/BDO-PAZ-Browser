@@ -7,6 +7,11 @@
 Writes dist/BDO-PAZ-Browser/ and dist/BDO-PAZ-Browser-v<version>-windows.zip,
 with a .sha256 file next to the zip. PyInstaller's work folder, build/, is
 deleted after a successful run and kept after a failed one for its logs.
+
+The bundled handler pack gets its manifest.json: the release workflow's
+(`--handler-manifest`, the pack it publishes) or, for a local build, one made
+here with every handler at the build's version. The build fails when the
+bundled handler files differ from the manifest.
 """
 
 from __future__ import annotations
@@ -27,13 +32,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "PAZ-Parser"))
 
-from app_version import parse_version  # noqa: E402
+from app_version import parse_version, source_commit  # noqa: E402
+from bdo_preview import BUNDLED_HANDLERS_DIR, load_plugins  # noqa: E402
+from handler_api import HANDLER_API  # noqa: E402
+from updates.handler_manifest import (  # noqa: E402
+    MANIFEST_NAME,
+    HandlerManifest,
+    ManifestError,
+    file_hashes,
+    read_manifest,
+    write_manifest,
+)
+from updates.handler_sets import pack_manifest  # noqa: E402
 
 APP_NAME = "BDO-PAZ-Browser"
 CLI_EXE = "bdo-paz-cli.exe"
 SPEC = ROOT / "browser.spec"
 DIST_DIR = ROOT / "dist"
 WORK_DIR = ROOT / "build"
+# Where PyInstaller puts the bundled handler pack, under the dist folder.
+BUNDLED_PACK = Path("_internal") / "handlers"
 # Lines of the handler list diff shown when the exe and the source disagree.
 _MAX_DIFF_LINES = 40
 _HASH_CHUNK = 1024 * 1024
@@ -49,8 +67,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         _check_version(version)
         _check_environment()
+        manifest = _handler_manifest(args.handler_manifest, version)
         app_dir = _run_pyinstaller(version)
         _check_handlers(app_dir)
+        _bundle_manifest(app_dir, manifest)
         print(f"build: {app_dir}")
         if not args.no_zip:
             zip_path = _write_zip(app_dir, version)
@@ -66,6 +86,10 @@ def _parse_args(argv: Sequence[str] | None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(prog="build", description="Build the Windows exe and its zip.")
     parser.add_argument("--version", metavar="YYYY.MM.DD[.N]", help="Date version (default: today)")
     parser.add_argument("--no-zip", action="store_true", help="Stop after the checked dist folder")
+    parser.add_argument(
+        "--handler-manifest", metavar="FILE",
+        help="manifest.json of the bundled handler pack (default: made here, every handler at --version)",
+    )
     return parser.parse_args(argv)
 
 
@@ -110,6 +134,32 @@ def _check_handlers(app_dir: Path) -> None:
         diff = list(difflib.unified_diff(source, built, "source", "exe", lineterm=""))
         raise BuildError("the exe's handlers differ from the source:\n" + "\n".join(diff[:_MAX_DIFF_LINES]))
     print(f"build: the exe registers all {len(built)} handlers")
+
+
+def _handler_manifest(path: str | None, version: str) -> HandlerManifest:
+    """The given manifest, or one for the handlers of this checkout."""
+    if path is None:
+        load_plugins(BUNDLED_HANDLERS_DIR)
+        return pack_manifest(BUNDLED_HANDLERS_DIR, version, source_commit() or "unknown", HANDLER_API)
+    try:
+        manifest = read_manifest(Path(path))
+    except (OSError, ManifestError) as ex:
+        raise BuildError(f"could not read the handler manifest {path}: {ex}") from ex
+    if manifest.handler_api != HANDLER_API:
+        raise BuildError(f"{path} is for handler API {manifest.handler_api}, this code has {HANDLER_API}")
+    return manifest
+
+
+def _bundle_manifest(app_dir: Path, manifest: HandlerManifest) -> None:
+    """Write manifest.json into the bundled pack, whose files must be the manifest's."""
+    pack_dir = app_dir / BUNDLED_PACK
+    bundled = file_hashes(pack_dir)
+    if bundled != dict(manifest.files):
+        names = sorted({name for name, _ in set(bundled.items()) ^ set(manifest.files.items())})
+        listed = "\n".join(names[:_MAX_DIFF_LINES])
+        raise BuildError(f"the bundled handler files differ from the manifest in {len(names)} files:\n{listed}")
+    write_manifest(manifest, pack_dir / MANIFEST_NAME)
+    print(f"build: handler pack {manifest.version} with {len(manifest.files)} files")
 
 
 def _write_zip(app_dir: Path, version: str) -> Path:

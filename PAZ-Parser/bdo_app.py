@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import subprocess
 import sys
 import threading
 from collections.abc import Callable
@@ -8,11 +9,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from bdo_preview import BUNDLED_HANDLERS_DIR, load_plugins, use_handlers_dir
+from bdo_preview import load_plugins, plugin_failures, use_handlers_dir
+from updates.handler_packs import active_pack, mark_running_pack_bad
 
-# The core imports `_common` from the handlers folder, so the folder goes on
-# the path before the imports below.
-use_handlers_dir(BUNDLED_HANDLERS_DIR)
+# The core imports `_common` from the handlers folder, so the pack this run
+# uses (updates/handler_packs.py) goes on the path before the imports below.
+use_handlers_dir(active_pack().folder)
 
 import webview
 
@@ -24,7 +26,7 @@ from cli.formats import run_formats, run_handlers
 from cli.index import run_index
 from cli.records import run_records
 from cli.render import run_render
-from cli.update import run_check_app_update, run_update_app
+from cli.update import run_check_app_update, run_update_app, update_handlers
 from cli.stdio import close_stdout_quietly, configure_logging, is_closed_pipe, use_utf8_stdio
 
 # Options that only mean something with one command, checked in _check_options.
@@ -37,23 +39,47 @@ def main() -> None:
     args = parser.parse_args()
     _check_options(parser, args)
     adopt_legacy_config(LEGACY_CONFIG_FILE)
-    load_plugins(BUNDLED_HANDLERS_DIR)
+    _load_handlers()
 
     command = _command(args)
-    if command is None:
+    if command is None and not args.update_handlers:
         _launch_gui(profile=args.profile, after_update=args.after_update)
         return
 
     use_utf8_stdio()
     configure_logging()
     try:
-        code = command(args)
+        code = _run_command(command, args)
     except OSError as ex:
         if not is_closed_pipe(ex):
             raise
         code = 0
     close_stdout_quietly()
     sys.exit(code)
+
+
+def _load_handlers() -> None:
+    """Register the pack's handlers; an installed pack that fails to load is never picked again."""
+    pack = active_pack()
+    load_plugins(pack.folder)
+    failures = plugin_failures()
+    if failures:
+        mark_running_pack_bad(pack, "; ".join(f"{name}: {reason}" for name, reason in failures.items()))
+
+
+def _run_command(command: Callable[[argparse.Namespace], int] | None, args: argparse.Namespace) -> int:
+    """`--update-handlers` first, when given, then the command."""
+    if not args.update_handlers:
+        return command(args) if command is not None else 0
+    code, is_installed = update_handlers()
+    if code != 0 or command is None:
+        return code
+    if is_installed:
+        # This process runs the old pack; the command runs again with the new one.
+        rest = [arg for arg in sys.argv[1:] if arg != "--update-handlers"]
+        sys.stdout.flush()
+        return subprocess.call([sys.executable, *rest])
+    return command(args)
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -78,6 +104,10 @@ def _build_parser() -> argparse.ArgumentParser:
     commands.add_argument(
         "--update-app", metavar="ZIP", nargs="?", const="",
         help="Windows exe: install the newest release, or a downloaded release zip, after this command exits",
+    )
+    parser.add_argument(
+        "--update-handlers", action="store_true",
+        help="Windows exe: install a newer handler pack first, then run the command; alone, only update",
     )
 
     parser.add_argument("--output", metavar="DIR", help="Output directory for --file (default: current working directory)")

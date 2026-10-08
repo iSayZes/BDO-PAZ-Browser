@@ -24,6 +24,18 @@ to, and run `BDO-PAZ-Browser.exe`. The zip holds `BDO-PAZ-Browser.exe`,
 - A newer release shows up as a green notice next to the settings button;
   **Update** installs it in a few seconds and keeps `data`. From the command line:
   `bdo-paz-cli.exe --update-app`.
+- New and fixed handlers come without a new release: on start the app
+  downloads the changed handler files in the background, then offers a restart
+  to use them. From the command line: `bdo-paz-cli.exe --update-handlers`.
+- On start the app contacts GitHub twice: the releases API for a newer release
+  and the `handlers-latest` release for a newer handler pack. Turn off **Check
+  for updates on start** and **Update handlers on start** in the settings and it
+  stays offline.
+- The bottom bar shows the version, `app version v2026.10.12`, and with a
+  parsed file selected the version of its handler, `buffsimply.bss 2026.10.14`.
+  From source both are commits: the checkout's, and the last commit that
+  changed the handler's files (with a `+` for uncommitted edits). The bug
+  report form asks for both.
 
 To run from source or write handlers, see [Requirements](#requirements).
 
@@ -43,6 +55,7 @@ To run from source or write handlers, see [Requirements](#requirements).
 - **Caching**: the PAZ index is parsed once and cached; later launches read it from the cache. Every cache lives outside the game folder, in the `cache` folder of the data folder with one subfolder per PAZ folder, so a test client keeps its own. Caches an older version left next to the PAZ files move over on the next start
 - **Data folder**: settings (`paz_config.json`) and caches live in `%LOCALAPPDATA%\BDO-PAZ-Browser` when running from source, and in `data\` next to the exe in the Windows build, so the unzipped folder holds everything (an exe folder that can't be written, such as one in Program Files, falls back to `%LOCALAPPDATA%`). The **Data Folder** setting picks another folder: the settings are copied there (replacing any already in it, the old copy stays), the caches in the old folder are deleted, and the loaded client's PAZ index is saved again in the new one. A picked folder that is gone, such as an unplugged drive, is replaced by the default until it is back. Settings an older version kept next to the code move over on the next start. The settings file carries a `config_version`: a newer app updates older settings on load, settings it can't read are renamed to `paz_config.backup.json` and the app starts with defaults, and an older app reads newer settings as they are and keeps their keys
 - **App updates** (Windows exe): on start the app asks GitHub for a newer release (the **Check for updates on start** setting, on by default) and shows a banner. Its popup lists the release notes, with **Update** and **Open on GitHub**. **Update** downloads the release zip, checks its SHA-256, closes the app and swaps the new version in: `data` moves along, and when the new `bdo-paz-cli.exe --handlers` fails, the old version is put back. Nothing updates without a click. From source, update with `git pull`
+- **Handler updates** (Windows exe): handlers ship apart from the exe as handler packs, the `handlers/` folder of one commit with a `manifest.json` (SHA-256 per file, the `HANDLER_API` it needs, each handler's version). On start the app reads the manifest of the `handlers-latest` release (the **Update handlers on start** setting, on by default; **Check now** runs it at once). For a newer pack it copies the unchanged files from the running pack, downloads the changed ones from GitHub, checks every hash and that the pack loads in `bdo-paz-cli.exe --handlers`, and then offers **Restart now**. A pack for another `HANDLER_API` needs a newer app first; a pack that fails to load is never tried again and the app keeps its own handlers. Packs live in `handlers\` in the data folder. A handler's version is the pack in which its code, or a `_common` module it imports, last changed
 - **Parsed table cache**: parsed tables are kept on disk, so a big table reopens in a fraction of its parse time (`detail_dialog.dbss` 1.3 s to 0.25 s, `itemenchant.dbss` with its default sort 2.1 s to 0.5 s). The **Parsed Table Cache** setting picks Off, Cache tables when opened (default) or Cache all tables in the background, which parses every table A to Z while the app is idle; the status bar shows the table it is on, how far the pass is, and when it waits for you. A table stays cached across a patch that leaves it, its companions and the LOC text or lookup indexes it reads unchanged. **Delete all caches** in the settings removes the parsed table, icon thumbnail and lookup index caches; the PAZ index cache stays, since rebuilding it takes over a minute. In the background mode, the pass then waits for the next start instead of filling the cache again right away
 
 ## Contributing Format Coverage
@@ -246,12 +259,26 @@ checks that `bdo-paz-cli.exe --handlers` lists the same handlers as
 `dist/BDO-PAZ-Browser-v<version>-windows.zip` with a `.sha256` file. The
 version is today's date unless `--version 2026.10.12` sets it; `--no-zip`
 stops after the checked folder. The handlers are copied in as plain files
-under `_internal/handlers`, without their tests. Adding or changing handlers
-needs the source version: the exe has no handler reload (Ctrl+R).
+under `_internal/handlers`, without their tests and with LF line endings, as
+the bundled handler pack. Its `manifest.json` comes from `--handler-manifest
+FILE` (the release workflow passes the pack it publishes) or is made from the
+checkout with every handler at the build's version; the build fails when the
+bundled files differ from it. Adding or changing handlers needs the source
+version: the exe has no handler reload (Ctrl+R).
 
 To try the update flow without a GitHub release, set `BDO_PAZ_RELEASES_URL` to a
 JSON file in the shape of GitHub's releases API whose asset URLs point at a
-newer build's zip and `.sha256`; `file://` URLs work.
+newer build's zip and `.sha256`; `file://` URLs work. For handler packs, set
+`BDO_PAZ_HANDLERS_URL` to a `manifest.json` and `BDO_PAZ_HANDLER_FILES_URL` to
+where its files are, with a `{path}` field (and `{commit}`, which the default
+`raw.githubusercontent.com` address uses). `BDO_PAZ_HANDLERS_DIR` runs one
+handlers folder for one process.
+
+Releases: `.github/workflows/release.yml` runs on every push to `main`.
+`.github/scripts/release_plan.py` publishes an exe release when the app core
+changed since the last `v<date>` tag; a change under `PAZ-Parser/handlers`
+alone makes none. `.github/scripts/handler_pack.py` compares the handlers with
+the `handlers-latest` manifest and, when they differ, uploads a new one there.
 
 ## Usage
 
@@ -290,6 +317,11 @@ python browser.py --handlers
 bdo-paz-cli.exe --check-app-update
 bdo-paz-cli.exe --update-app
 bdo-paz-cli.exe --update-app BDO-PAZ-Browser-v2026.10.12-windows.zip
+
+# Windows exe: install a newer handler pack; with a command, it then runs with the new pack.
+# Without --update-handlers the CLI never contacts GitHub.
+bdo-paz-cli.exe --update-handlers
+bdo-paz-cli.exe --update-handlers --records buffsimply.bss
 
 # Lookup indexes: every kind with its size, all entries of one kind, or one ID
 python browser.py --index
@@ -348,11 +380,14 @@ PAZ-Parser/
 │   ├── records.py          # --records (record_filter.py, record_output.py)
 │   ├── render.py           # --render
 │   ├── index.py            # --index
-│   └── update.py           # --check-app-update, --update-app
+│   └── update.py           # --check-app-update, --update-app, --update-handlers
 │
-├── updates/                # App updates for the Windows exe
+├── updates/                # App and handler updates for the Windows exe
 │   ├── releases.py         # The newest release from the GitHub releases API
-│   └── install.py          # Download, SHA-256 check, unpack, the swap helper
+│   ├── install.py          # Download, SHA-256 check, unpack, the swap helper
+│   ├── handler_manifest.py # Handler pack files, manifest.json, per-handler versions
+│   ├── handler_sets.py     # The pack files each loaded handler reads
+│   └── handler_packs.py    # The pack a start runs, installing a newer one, cleanup
 │
 ├── bench/                  # benchmark.py commands (see Benchmarking)
 │   ├── cli.py              # run, compare, profile
@@ -378,6 +413,7 @@ PAZ-Parser/
 │   ├── bdo_recent_tables.py# Which handlers keep their parsed tables in memory
 │   ├── bdo_api_search.py   # File content search, single-file and cross-file (SearchMixin)
 │   ├── bdo_api_updates.py  # The update banner check and one-click install (UpdateMixin)
+│   ├── bdo_api_handler_updates.py# Handler pack update on start, Check now, restart, versions
 │   └── config_migrations.py# paz_config.json versions and the steps between them
 │
 ├── paz/                    # PAZ archive reading and caching

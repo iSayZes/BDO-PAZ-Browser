@@ -102,6 +102,8 @@
         <div id="progress-wrap" hidden>
           <div id="progress-bar"><div id="progress-fill"></div></div>
         </div>
+        <!-- The app's version, and the selected file's handler with its pack version. -->
+        <span id="app-version"></span>
       </div>
       <div id="extract-row">
         <label class="muted" data-i18n="bottomBar.output">Output</label>
@@ -149,6 +151,14 @@
             <input id="settings-check-app-updates" type="checkbox" />
             <span data-i18n="settings.checkAppUpdates">Check for updates on start</span>
           </label>
+          <div id="settings-update-handlers-row" class="settings-handlers-row" hidden>
+            <label class="settings-check" data-i18n-title="settings.updateHandlersHint" title="Download new and fixed handlers from GitHub when the app starts. They are used after a restart.">
+              <input id="settings-update-handlers" type="checkbox" />
+              <span data-i18n="settings.updateHandlers">Update handlers on start</span>
+            </label>
+            <button id="settings-check-handlers" onclick="app.checkHandlersNow()" data-i18n="settings.checkHandlersNow">Check now</button>
+            <span id="settings-handlers-result" class="settings-unit"></span>
+          </div>
           <label class="settings-label" for="settings-data-folder" data-i18n="settings.dataFolder">Data Folder</label>
           <div class="settings-path-row">
             <!-- Empty for the default folder, which get_settings() puts in the placeholder. -->
@@ -215,6 +225,23 @@
         <div class="settings-footer">
           <button onclick="app.openAppUpdatePage()" data-i18n="appUpdate.openOnGitHub">Open on GitHub</button>
           <button id="app-update-install" class="btn-primary" onclick="app.installAppUpdate()" data-i18n="appUpdate.install">Update</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="handler-update-overlay" class="settings-overlay" hidden>
+      <div class="settings-modal app-update-modal" role="dialog" aria-labelledby="handler-update-title">
+        <div class="settings-header">
+          <span id="handler-update-title"></span>
+          <button class="settings-close" onclick="app.closeHandlerUpdate()" data-i18n-title="handlerUpdate.later" title="Later">✕</button>
+        </div>
+        <div class="app-update-body">
+          <div id="handler-update-current" class="settings-unit"></div>
+          <div id="handler-update-notes" class="app-update-notes"></div>
+        </div>
+        <div class="settings-footer">
+          <button onclick="app.closeHandlerUpdate()" data-i18n="handlerUpdate.later">Later</button>
+          <button id="handler-update-restart" class="btn-primary" onclick="app.restartForHandlers()" data-i18n="handlerUpdate.restart">Restart now</button>
         </div>
       </div>
     </div>

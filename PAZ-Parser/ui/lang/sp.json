@@ -148,6 +148,9 @@
     "handledOnlyHint": "Limitar el árbol de archivos y las búsquedas a archivos con vista de tabla analizada",
     "checkAppUpdates": "Buscar actualizaciones al iniciar",
     "checkAppUpdatesHint": "Consultar en GitHub si hay una versión más reciente al iniciar. Actualizar siempre requiere un clic.",
+    "updateHandlers": "Actualizar handlers al iniciar",
+    "updateHandlersHint": "Descargar handlers nuevos y corregidos de GitHub al iniciar la app. Se usan tras reiniciar.",
+    "checkHandlersNow": "Comprobar ahora",
     "recordsCache": "Caché de tablas",
     "recordsCacheHint": "Guardar en disco las tablas analizadas para reabrirlas sin volver a analizarlas",
     "recordsCacheOff": "Desactivada",
@@ -247,5 +250,27 @@
     "failed": "La actualización falló: {message}",
     "nothingToInstall": "No hay ninguna actualización para instalar.",
     "otherInstances": "Cierre primero las demás ventanas y comandos de BDO PAZ Browser."
+  },
+  "footer": {
+    "app": "versión de la app v{version}",
+    "appSource": "versión de la app {commit}",
+    "appSourceNoGit": "versión de la app (código fuente)",
+    "handler": "{key} {version}",
+    "commit": "Commit {commit}",
+    "handlers": "Paquete de handlers {version}"
+  },
+  "handlerUpdate": {
+    "title": "Handlers actualizados a {version}",
+    "current": "Reinicia la app para usarlos. Hasta entonces sigue con el paquete de handlers {version}.",
+    "currentBundled": "Reinicia la app para usarlos. Hasta entonces sigue con los handlers que trae.",
+    "later": "Más tarde",
+    "restart": "Reiniciar ahora",
+    "checking": "Comprobando…",
+    "upToDate": "Los handlers están al día ({version}).",
+    "needsApp": "El paquete de handlers {version} necesita una app más nueva: {url}",
+    "bad": "El paquete de handlers {version} ya falló al cargar; se quedan los handlers actuales.",
+    "failed": "Falló la actualización de handlers: {message}",
+    "sourceOnly": "Las actualizaciones de handlers solo existen en el exe de Windows; desde el código fuente los handlers son PAZ-Parser/handlers.",
+    "restartFailed": "No se pudo reiniciar la app: {message}"
   }
 }

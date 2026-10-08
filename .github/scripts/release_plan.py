@@ -1,4 +1,4 @@
-"""Plan a release: did the app change since the last one, its date version, its notes.
+"""Plan an exe release: did the app core change since the last one, its date version, its notes.
 
     python .github/scripts/release_plan.py                  # preview for HEAD
     python .github/scripts/release_plan.py --ref staging    # what a release PR would ship
@@ -7,8 +7,10 @@ The release workflow adds `--github-output "$GITHUB_OUTPUT" --notes-file notes.m
 and publishes when `release` is true.
 
 Releases are tags `v<date version>` (`v2026.10.07`, `v2026.10.07.2` for a
-second that day). The notes list the commit subjects since the last release
-that touch the app (merge commits and tests left out), grouped by
+second that day). A change under `PAZ-Parser/handlers` alone makes no exe
+release: it reaches the exe as a handler pack (`handler_pack.py`). The notes
+list the commit subjects since the last release that touch the app, handlers
+included (merge commits and tests left out), grouped by
 Conventional Commit type; docs, test, ci, chore, style and build commits are
 left out. Only the newest `MAX_LISTED` are listed, then a "+N more changes"
 line with a link to all of them; the first release, with no tag before it,
@@ -30,7 +32,7 @@ sys.path.insert(0, str(ROOT / "PAZ-Parser"))
 
 from app_version import parse_version  # noqa: E402
 
-# What ships in the exe: a change here makes a release.
+# What ships in the exe; the release notes list commits touching these.
 APP_PATHS = (
     "PAZ-Parser",
     "browser.py",
@@ -42,6 +44,8 @@ APP_PATHS = (
     ":(exclude)PAZ-Parser/requirements-dev.txt",
     ":(exclude,glob)PAZ-Parser/**/test_*.py",
 )
+# A change here makes an exe release: the app without the handlers, which handler packs update.
+CORE_PATHS = (*APP_PATHS, ":(exclude)PAZ-Parser/handlers")
 # Release note sections, in order, by commit type; None is a subject without a type.
 SECTIONS: tuple[tuple[str, frozenset[str | None]], ...] = (
     ("New", frozenset({"feat"})),
@@ -82,17 +86,29 @@ def commit_type(subject: str) -> str | None:
     return match.group("type") if match else None
 
 
-def notes(subjects: list[str], previous: str | None, version: str, repo: str | None) -> str:
-    """Markdown release notes; `subjects` newest first, as `git log` gives them."""
+def listed_subjects(subjects: list[str]) -> list[str]:
+    """The subjects of a type the notes list (SECTIONS), in their order."""
     listed_types = frozenset().union(*(types for _, types in SECTIONS))
-    listed = [subject for subject in subjects if commit_type(subject) in listed_types]
-    shown, more = listed[:MAX_LISTED], len(listed) - MAX_LISTED
+    return [subject for subject in subjects if commit_type(subject) in listed_types]
 
-    lines = ["First Windows release.", ""] if previous is None else []
+
+def section_lines(subjects: list[str]) -> list[str]:
+    """`### New` and the other sections for `subjects` (newest first), each listed oldest first."""
+    lines: list[str] = []
     for title, types in SECTIONS:
-        picked = [subject for subject in reversed(shown) if commit_type(subject) in types]
+        picked = [subject for subject in reversed(subjects) if commit_type(subject) in types]
         if picked:
             lines += [f"### {title}", "", *(f"- {subject}" for subject in picked), ""]
+    return lines
+
+
+def notes(subjects: list[str], previous: str | None, version: str, repo: str | None) -> str:
+    """Markdown release notes; `subjects` newest first, as `git log` gives them."""
+    listed = listed_subjects(subjects)
+    more = len(listed) - MAX_LISTED
+
+    lines = ["First Windows release.", ""] if previous is None else []
+    lines += section_lines(listed[:MAX_LISTED])
     if not listed:
         lines += ["No app changes worth listing.", ""]
     link = _all_commits_link(repo, previous, version)
@@ -116,7 +132,7 @@ def plan(ref: str, today: str) -> tuple[bool, str, str]:
     tags = release_tags()
     previous = tags[-1] if tags else None
     span = f"{previous}..{ref}" if previous else ref
-    changed = git("diff", "--name-only", f"{previous}", ref, "--", *APP_PATHS).strip() if previous else "first"
+    changed = git("diff", "--name-only", f"{previous}", ref, "--", *CORE_PATHS).strip() if previous else "first"
     subjects = git("log", "--no-merges", "--format=%s", span, "--", *APP_PATHS).splitlines()
     version = next_version(tags, today)
     return bool(changed), version, notes(subjects, previous, version, os.environ.get("GITHUB_REPOSITORY"))

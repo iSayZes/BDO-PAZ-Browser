@@ -99,6 +99,17 @@ def project_modules(roots: list[ModuleType]) -> dict[str, ModuleType]:
     return found
 
 
+def project_files(roots: Iterable[object]) -> list[Path]:
+    """The files `source_fingerprint(roots)` hashes: module sources and the JSON beside them.
+
+    Modules without a source file, the core modules in the exe, are left out.
+    """
+    modules = project_modules([_module_of(root) for root in roots])
+    sources = {Path(inspect.getfile(module)) for module in modules.values()}
+    found = {path for path in sources if path.is_file()} | set(_data_files(modules.values()))
+    return sorted(found, key=lambda path: path.as_posix())
+
+
 def _module_of(root: object) -> ModuleType:
     return root if isinstance(root, ModuleType) else sys.modules[getattr(root, "__module__")]
 

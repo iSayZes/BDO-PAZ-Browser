@@ -11,12 +11,13 @@
 #
 # The handlers go in as loose files under _internal/handlers (the bundled
 # handler pack), not into the archive, so their source is hashed for the
-# caches and a pack can replace them. The archive holds the core plus the
-# standard library modules handler code may import (handler_api.py).
+# caches and a downloaded pack can stand in for them. They go in as a pack
+# ships (updates/handler_manifest.py: no tests, LF line endings), and build.py
+# adds the pack's manifest.json. The archive holds the core plus the standard
+# library modules handler code may import (handler_api.py).
 
 import json
 import os
-import subprocess
 import sys
 import time
 from pathlib import Path
@@ -25,8 +26,9 @@ ROOT = Path(SPECPATH)
 SRC = ROOT / "PAZ-Parser"
 sys.path.insert(0, str(SRC))
 
-from app_version import BUILD_INFO_NAME, parse_version  # noqa: E402
+from app_version import BUILD_INFO_NAME, parse_version, source_commit  # noqa: E402
 from handler_api import STDLIB_MODULES  # noqa: E402
+from updates.handler_manifest import pack_file_bytes, pack_files  # noqa: E402
 
 APP_NAME = "BDO-PAZ-Browser"
 CLI_NAME = "bdo-paz-cli"
@@ -39,19 +41,10 @@ HANDLER_MODULES = sorted(
 )
 
 
-def _git_commit() -> str:
-    """The short commit hash, or "unknown" outside a git checkout."""
-    try:
-        result = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True)
-    except OSError:
-        return "unknown"
-    return result.stdout.strip() if result.returncode == 0 else "unknown"
-
-
 def _build_info_file() -> str:
     version = os.environ.get("BDO_APP_VERSION") or time.strftime("%Y.%m.%d")
     parse_version(version)  # fail the build on a malformed version
-    commit = os.environ.get("BDO_APP_COMMIT") or _git_commit()
+    commit = os.environ.get("BDO_APP_COMMIT") or source_commit() or "unknown"
     path = Path(workpath) / BUILD_INFO_NAME
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"version": version, "commit": commit}), encoding="utf-8")
@@ -89,17 +82,16 @@ cli = EXE(
 
 
 def _handler_pack() -> list[tuple[str, str, str]]:
-    """handlers/ without tests or bytecode. Tree() can't do it: an exclude
-    pattern is a glob only when it starts with `*`, so `test_*.py` matches nothing."""
-    handlers_dir = SRC / "handlers"
-    return [
-        (str(Path("handlers") / path.relative_to(handlers_dir)), str(path), "DATA")
-        for path in sorted(handlers_dir.rglob("*"))
-        if path.is_file()
-        and "__pycache__" not in path.parts
-        and not path.name.startswith("test_")
-        and path.suffix != ".pyc"
-    ]
+    """handlers/ as a pack ships, copied to the work folder first: the
+    checkout may have CRLF line endings, the pack's hashes are of LF files."""
+    staged_dir = Path(workpath) / "handler-pack"
+    entries = []
+    for name, source in pack_files(SRC / "handlers").items():
+        staged = staged_dir / name
+        staged.parent.mkdir(parents=True, exist_ok=True)
+        staged.write_bytes(pack_file_bytes(source))
+        entries.append((str(Path("handlers") / name), str(staged), "DATA"))
+    return entries
 
 
 ui = Tree(str(SRC / "ui"), prefix="ui")

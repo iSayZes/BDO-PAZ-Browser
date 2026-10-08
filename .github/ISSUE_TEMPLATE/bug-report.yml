@@ -34,7 +34,14 @@ body:
     id: version
     attributes:
       label: Version (release or commit)
-      description: The release, e.g. `v2026.10.12` (in the zip's name, or from `bdo-paz-cli.exe --check-app-update`), or from source the output of `git rev-parse --short HEAD`.
+      description: The version at the bottom right of the window, e.g. `app version v2026.10.12` (also from `bdo-paz-cli.exe --check-app-update`), or from source `app version a1b2c3d`.
+    validations:
+      required: false
+  - type: input
+    id: handler
+    attributes:
+      label: Handler and version
+      description: For a parsed table, what the bottom bar shows next to the app version with the file selected, e.g. `buffsimply.bss 2026.10.14`, or from source `buffsimply.bss d2e474f`.
     validations:
       required: false
   - type: input

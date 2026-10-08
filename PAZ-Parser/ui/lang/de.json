@@ -148,6 +148,9 @@
     "handledOnlyHint": "Dateibaum und Suchen auf Dateien mit ausgewerteter Tabellenansicht beschränken",
     "checkAppUpdates": "Beim Start nach Updates suchen",
     "checkAppUpdatesHint": "Beim Start bei GitHub nach einer neueren Version fragen. Aktualisiert wird nur auf Klick.",
+    "updateHandlers": "Handler beim Start aktualisieren",
+    "updateHandlersHint": "Beim Start neue und korrigierte Handler von GitHub laden. Sie gelten nach einem Neustart.",
+    "checkHandlersNow": "Jetzt prüfen",
     "recordsCache": "Tabellen-Cache",
     "recordsCacheHint": "Ausgewertete Tabellen auf der Festplatte behalten, damit sie ohne erneutes Auswerten öffnen",
     "recordsCacheOff": "Aus",
@@ -247,5 +250,27 @@
     "failed": "Update fehlgeschlagen: {message}",
     "nothingToInstall": "Kein Update zum Installieren.",
     "otherInstances": "Schließe zuerst die anderen BDO PAZ Browser Fenster und Befehle."
+  },
+  "footer": {
+    "app": "App-Version v{version}",
+    "appSource": "App-Version {commit}",
+    "appSourceNoGit": "App-Version (Quellcode)",
+    "handler": "{key} {version}",
+    "commit": "Commit {commit}",
+    "handlers": "Handler-Paket {version}"
+  },
+  "handlerUpdate": {
+    "title": "Handler auf {version} aktualisiert",
+    "current": "Starte die App neu, um sie zu nutzen. Bis dahin bleibt Handler-Paket {version} aktiv.",
+    "currentBundled": "Starte die App neu, um sie zu nutzen. Bis dahin bleiben die mitgelieferten Handler aktiv.",
+    "later": "Später",
+    "restart": "Jetzt neu starten",
+    "checking": "Wird geprüft…",
+    "upToDate": "Die Handler sind aktuell ({version}).",
+    "needsApp": "Handler-Paket {version} braucht eine neuere App: {url}",
+    "bad": "Handler-Paket {version} ließ sich schon einmal nicht laden; die aktuellen Handler bleiben.",
+    "failed": "Handler-Update fehlgeschlagen: {message}",
+    "sourceOnly": "Handler-Updates gibt es nur in der Windows-Exe; aus dem Quellcode sind die Handler PAZ-Parser/handlers.",
+    "restartFailed": "Die App konnte nicht neu starten: {message}"
   }
 }

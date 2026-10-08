@@ -1,8 +1,9 @@
 """The contract between the app core and the handlers, and its version.
 
-Handlers will ship apart from the Windows exe as handler packs: the
-`handlers/` folder of one commit, downloaded by an exe that may be older or
-newer than the pack. A pack and an exe fit when their `HANDLER_API` matches.
+Handlers ship apart from the Windows exe as handler packs: the `handlers/`
+folder of one commit, downloaded by an exe that may be older or newer than
+the pack (`updates/handler_packs.py`). A pack and an exe fit when their
+`HANDLER_API` matches.
 
 Two sides make up the contract:
 

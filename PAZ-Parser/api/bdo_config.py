@@ -75,6 +75,11 @@ def check_app_updates_setting(cfg: dict) -> bool:
     return cfg.get("check_app_updates") is not False
 
 
+def update_handlers_setting(cfg: dict) -> bool:
+    """The exe's "Update handlers on start" setting; on unless saved as false."""
+    return cfg.get("update_handlers") is not False
+
+
 # "Parsed table cache": never, when a table is opened, or every table in the background.
 RECORDS_CACHE_MODES = ("off", "open", "all")
 _DEFAULT_RECORDS_CACHE_MODE = "open"

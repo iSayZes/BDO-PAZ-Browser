@@ -26,6 +26,14 @@
   flex: 0 0 200px;
 }
 
+/* `app version v2026.10.07 · buffsimply.bss 2026.10.12`, for bug reports. */
+#app-version {
+  color: var(--fg-muted);
+  font-size: 11px;
+  font-family: Consolas, monospace;
+  white-space: nowrap;
+}
+
 #progress-bar {
   height: 3px;
   background: var(--surface2);

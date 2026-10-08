@@ -168,6 +168,7 @@ export const treeMethods = {
     this._tabLabels = null;
 
     document.getElementById("preview-title").textContent = `${icon}  ${name}`;
+    this.showHandlerVersion(name);
     document.getElementById("preview-content").innerHTML = `<div class="placeholder preview-loading"><span class="loading-spinner" aria-hidden="true"></span><span>${t("preview.loading")}</span></div>`;
     document.getElementById("preview-tabs").hidden = true;
     document.getElementById("btn-export").hidden = true;

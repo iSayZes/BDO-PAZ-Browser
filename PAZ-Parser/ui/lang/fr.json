@@ -148,6 +148,9 @@
     "handledOnlyHint": "Limiter l'arborescence et les recherches aux fichiers avec une vue de table analysée",
     "checkAppUpdates": "Rechercher les mises à jour au démarrage",
     "checkAppUpdatesHint": "Demander à GitHub s'il existe une version plus récente au démarrage. La mise à jour demande toujours un clic.",
+    "updateHandlers": "Mettre à jour les handlers au démarrage",
+    "updateHandlersHint": "Télécharger les handlers nouveaux et corrigés depuis GitHub au démarrage. Ils servent après un redémarrage.",
+    "checkHandlersNow": "Vérifier maintenant",
     "recordsCache": "Cache des tables",
     "recordsCacheHint": "Garder les tables analysées sur le disque pour les rouvrir sans nouvelle analyse",
     "recordsCacheOff": "Désactivé",
@@ -247,5 +250,27 @@
     "failed": "Échec de la mise à jour : {message}",
     "nothingToInstall": "Aucune mise à jour à installer.",
     "otherInstances": "Fermez d'abord les autres fenêtres et commandes de BDO PAZ Browser."
+  },
+  "footer": {
+    "app": "version de l'app v{version}",
+    "appSource": "version de l'app {commit}",
+    "appSourceNoGit": "version de l'app (source)",
+    "handler": "{key} {version}",
+    "commit": "Commit {commit}",
+    "handlers": "Pack de handlers {version}"
+  },
+  "handlerUpdate": {
+    "title": "Handlers mis à jour vers {version}",
+    "current": "Redémarrez l'app pour les utiliser. D'ici là, elle garde le pack de handlers {version}.",
+    "currentBundled": "Redémarrez l'app pour les utiliser. D'ici là, elle garde les handlers fournis avec elle.",
+    "later": "Plus tard",
+    "restart": "Redémarrer",
+    "checking": "Vérification…",
+    "upToDate": "Les handlers sont à jour ({version}).",
+    "needsApp": "Le pack de handlers {version} demande une app plus récente : {url}",
+    "bad": "Le pack de handlers {version} n'a pas pu être chargé auparavant ; les handlers actuels restent.",
+    "failed": "Échec de la mise à jour des handlers : {message}",
+    "sourceOnly": "Les mises à jour des handlers n'existent que dans l'exe Windows ; depuis le code source, les handlers sont PAZ-Parser/handlers.",
+    "restartFailed": "Impossible de redémarrer l'app : {message}"
   }
 }

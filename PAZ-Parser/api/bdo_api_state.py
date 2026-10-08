@@ -35,6 +35,8 @@ class ApiState:
         self._window: webview.Window | None = None
         # The newer release the last update check found (`UpdateMixin`).
         self._app_update: Release | None = None
+        # Held while a handler pack check or install runs (`HandlerUpdateMixin`).
+        self._handler_update_lock = threading.Lock()
         self._paz_root: Path | None = None
         # The loaded folder's cache folder (`app_dirs.client_cache_dir`).
         self._cache_dir: Path | None = None

@@ -148,6 +148,9 @@
     "handledOnlyHint": "파일 트리와 검색을 분석된 테이블 보기가 있는 파일로 제한합니다",
     "checkAppUpdates": "시작할 때 업데이트 확인",
     "checkAppUpdatesHint": "앱을 시작할 때 GitHub에서 새 버전을 확인합니다. 업데이트는 항상 클릭해야 진행됩니다.",
+    "updateHandlers": "시작할 때 핸들러 업데이트",
+    "updateHandlersHint": "앱을 시작할 때 GitHub에서 새 핸들러와 수정된 핸들러를 받습니다. 다시 시작한 뒤에 적용됩니다.",
+    "checkHandlersNow": "지금 확인",
     "recordsCache": "테이블 캐시",
     "recordsCacheHint": "분석한 테이블을 디스크에 보관해 다시 분석하지 않고 엽니다",
     "recordsCacheOff": "끄기",
@@ -247,5 +250,27 @@
     "failed": "업데이트 실패: {message}",
     "nothingToInstall": "설치할 업데이트가 없습니다.",
     "otherInstances": "먼저 다른 BDO PAZ Browser 창과 명령을 닫으세요."
+  },
+  "footer": {
+    "app": "앱 버전 v{version}",
+    "appSource": "앱 버전 {commit}",
+    "appSourceNoGit": "앱 버전 (소스)",
+    "handler": "{key} {version}",
+    "commit": "커밋 {commit}",
+    "handlers": "핸들러 팩 {version}"
+  },
+  "handlerUpdate": {
+    "title": "핸들러를 {version}(으)로 업데이트했습니다",
+    "current": "사용하려면 앱을 다시 시작하세요. 그때까지는 핸들러 팩 {version}을(를) 계속 사용합니다.",
+    "currentBundled": "사용하려면 앱을 다시 시작하세요. 그때까지는 앱에 포함된 핸들러를 계속 사용합니다.",
+    "later": "나중에",
+    "restart": "지금 다시 시작",
+    "checking": "확인 중…",
+    "upToDate": "핸들러가 최신입니다 ({version}).",
+    "needsApp": "핸들러 팩 {version}에는 더 새로운 앱이 필요합니다: {url}",
+    "bad": "핸들러 팩 {version}은(는) 전에 불러오지 못했습니다. 현재 핸들러를 유지합니다.",
+    "failed": "핸들러 업데이트 실패: {message}",
+    "sourceOnly": "핸들러 업데이트는 Windows exe에만 있습니다. 소스 코드로 실행하면 핸들러는 PAZ-Parser/handlers입니다.",
+    "restartFailed": "앱을 다시 시작하지 못했습니다: {message}"
   }
 }

@@ -1,4 +1,4 @@
-"""`--check-app-update` and `--update-app [ZIP]`: app updates from the command line."""
+"""`--check-app-update`, `--update-app [ZIP]` and `--update-handlers`: updates from the command line."""
 from __future__ import annotations
 
 import argparse
@@ -14,7 +14,8 @@ from updates.install import (
     start_swap,
     unpack,
 )
-from updates.releases import UpdateError, newer_release, newest_release
+from updates.handler_packs import PackCheck, check_for_update, clean_up_packs
+from updates.releases import RELEASES_PAGE, UpdateError, newer_release, newest_release
 
 from .stdio import error, progress
 
@@ -89,3 +90,34 @@ def _install_newest(current: str) -> PreparedUpdate | None:
     zip_path.unlink(missing_ok=True)
     start_swap(update, restart_gui=False)
     return update
+
+
+def update_handlers() -> tuple[int, bool]:
+    """`--update-handlers`: install a newer handler pack. Returns (exit code, installed?).
+
+    The only CLI path that asks GitHub for handlers, so scripted runs
+    without it behave the same every time.
+    """
+    if build_info() is None:
+        error("--update-handlers works in the Windows exe; from source the handlers are PAZ-Parser/handlers")
+        return 1, False
+    clean_up_packs()
+    progress("Checking for handler updates")
+    try:
+        check = check_for_update()
+    except UpdateError as ex:
+        error(str(ex))
+        return 1, False
+    print(describe_pack_check(check))
+    return 0, check.outcome == "installed"
+
+
+def describe_pack_check(check: PackCheck) -> str:
+    version = check.latest.version
+    if check.outcome == "installed":
+        return f"Installed handler pack {version} ({check.downloaded} files downloaded)."
+    if check.outcome == "needs_app":
+        return f"Handler pack {version} needs a newer app: {RELEASES_PAGE}"
+    if check.outcome == "bad":
+        return f"Handler pack {version} failed to load before; keeping the current handlers."
+    return f"Handlers are up to date ({version})."

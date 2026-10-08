@@ -516,6 +516,8 @@ _PLUGIN_MODULE_NAMES: list[str] = []
 _PLUGIN_SYS_MODULES: set[str] = set()
 # Resolved folders already loaded, so a second entry point call is a no-op.
 _LOADED_PLUGIN_DIRS: set[str] = set()
+# Plugin file name -> why it failed to import, for the loads so far.
+_PLUGIN_FAILURES: dict[str, str] = {}
 
 _hex_handler = HexHandler()
 _handler_lang = PreviewHandler.lang
@@ -574,6 +576,17 @@ def clear_handler_caches() -> None:
 def get_binary_handlers() -> list[str]:
     """Return sorted list of registered binary (non-builtin) handler keys."""
     return sorted(k for k in _REGISTRY if k not in _BUILTIN_KEYS)
+
+
+def handler_key(name: str, ext: str) -> str | None:
+    """The registry key a binary handler reads file `name` under, as get_handler() looks it up.
+
+    None when only a built-in view, or the hex view, reads it.
+    """
+    for key in (name.lower(), ext.lower()):
+        if key in _REGISTRY:
+            return None if key in _BUILTIN_KEYS else key
+    return None
 
 
 def is_handled_file(name: str) -> bool:
@@ -675,8 +688,14 @@ def load_plugins(handlers_dir: Path) -> None:
             _PLUGIN_MODULE_NAMES.append(py_file.stem)
         except Exception as ex:
             print(f"[handlers] Failed to load {py_file.name}: {ex}")
+            _PLUGIN_FAILURES[py_file.name] = f"{type(ex).__name__}: {ex}"
 
     _PLUGIN_SYS_MODULES.update(set(sys.modules) - before)
+
+
+def plugin_failures() -> dict[str, str]:
+    """Plugin file name -> the error it failed to import with; empty when all loaded."""
+    return dict(_PLUGIN_FAILURES)
 
 
 def reload_plugins(handlers_dir: Path) -> None:
@@ -689,4 +708,5 @@ def reload_plugins(handlers_dir: Path) -> None:
     _PLUGIN_SYS_MODULES.clear()
     _PLUGIN_MODULE_NAMES.clear()
     _LOADED_PLUGIN_DIRS.clear()
+    _PLUGIN_FAILURES.clear()
     load_plugins(handlers_dir)

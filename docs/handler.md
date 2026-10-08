@@ -1593,8 +1593,9 @@ If something is shared across formats, move it to `_common/`.
 
 ### Handler API
 
-Handlers will ship apart from the Windows exe as handler packs, so handler code
-may import only what every exe bundles. `handler_api.py` lists it:
+Handlers ship apart from the Windows exe as handler packs (see Handler Packs
+below), so handler code may import only what every exe bundles.
+`handler_api.py` lists it:
 
 | List | Holds |
 |------|-------|
@@ -1613,6 +1614,23 @@ or renamed function, or a changed signature or return shape, in a
 `CORE_MODULES` module or a `CORE_CALLED_COMMON` module. Adding a module to an
 allowlist is a bump too, since an older exe lacks it. Adding a function or a
 handler is not.
+
+### Handler Packs
+
+A merge into `main` that changes `handlers/` publishes a handler pack, with no
+new exe: the release workflow writes `manifest.json`
+(`.github/scripts/handler_pack.py`) into the `handlers-latest` release, and
+every exe with the same `HANDLER_API` downloads the changed files on its next
+start. The pack is everything under `handlers/` except `test_*.py`, so a data
+file a handler reads must live in that folder, and text files ship with LF
+line endings.
+
+A handler's version is the pack in which its code last changed: the module
+that defines its class, the project modules that module imports (a `_common`
+fix counts for every handler that imports it) and the JSON files next to
+them, the files `source_fingerprint.project_files()` returns. A file the
+handler opens by path without importing it is not in that set, so a change
+to it alone leaves the version as it was.
 
 ## Required `__init__.py`
 

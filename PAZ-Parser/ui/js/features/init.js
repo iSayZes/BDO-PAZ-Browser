@@ -26,8 +26,11 @@ export const initMethods = {
     this._initTabSearch();
     this._initGlobalSearch();
     this._setupAppUpdate();
-    // Not awaited: the check asks GitHub and must not hold up the folder load.
+    this._setupHandlerUpdate();
+    this.showAppVersion();
+    // Not awaited: the checks ask GitHub and must not hold up the folder load.
     this.checkAppUpdate();
+    window.pywebview.api.start_handler_update();
 
     const last = await window.pywebview.api.get_last_folder();
     if (last && last.path) {

@@ -27,7 +27,7 @@ Open your `Black Desert/Paz` folder once in the GUI, so the tests know where to 
 - Branch from `staging` and open the pull request into `staging`, not `main`. `main` holds the released state and only moves with a release.
 - The pull request title is a [Conventional Commit](https://www.conventionalcommits.org/) subject (see Conventions). Pull requests are squash merged, so the title becomes the commit on `staging` and a line in the release notes.
 - Open unfinished work as a draft pull request.
-- Releases are pull requests from `staging` into `main`, opened by the maintainer.
+- Releases are pull requests from `staging` into `main`, opened by the maintainer. A release with handler changes only publishes a handler pack, which the Windows exe downloads on start, and no new exe.
 
 CI runs pyright and the tests on every pull request. Its runner has no game client, so it skips the tests that need game files; the full run is the local one below.
 

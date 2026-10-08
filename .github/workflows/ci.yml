@@ -2,13 +2,15 @@ name: CI
 
 on:
   # Work is committed straight onto staging; releases are PRs into main.
-  # A push runs only when something that can change a result changed.
+  # A push runs only when something that can change a result changed: the
+  # files pyright and the tests read (pyrightconfig.json "include").
   push:
     branches: [staging]
     paths:
       - "PAZ-Parser/**"
       - browser.py
       - benchmark.py
+      - build.py
       - pytest.ini
       - pyrightconfig.json
       - .github/workflows/ci.yml

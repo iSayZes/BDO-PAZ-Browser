@@ -117,6 +117,14 @@
   gap: 8px;
 }
 
+/* "Update handlers on start", its "Check now" button and what the check found. */
+.settings-handlers-row {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .settings-check {
   align-items: center;
   color: var(--fg2);

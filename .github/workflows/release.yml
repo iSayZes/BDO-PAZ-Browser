@@ -1,8 +1,13 @@
 name: Release
 
 # main only moves with a merged release PR from staging, so every push here is
-# a release candidate. release_plan.py decides: app files changed since the
-# last release -> build and publish v<date>; only docs, tests or CI -> nothing.
+# a release candidate. Two plans:
+# - release_plan.py: the app core changed since the last v<date> tag -> build
+#   and publish the exe. Handler changes alone make no exe release.
+# - handler_pack.py: the handler files differ from the handlers-latest
+#   manifest -> upload the new manifest.json there; exes download the
+#   changed files from raw.githubusercontent.com.
+# Only docs, tests or CI -> nothing.
 on:
   push:
     branches: [main]
@@ -32,28 +37,60 @@ jobs:
           cache: pip
           cache-dependency-path: PAZ-Parser/requirements*.txt
 
-      - name: Plan
+      - name: Plan the exe release
         id: plan
         shell: bash
         run: python .github/scripts/release_plan.py --github-output "$GITHUB_OUTPUT" --notes-file notes.md
 
+      # None before the first pack: every handler then starts at its version.
+      - name: Download the published handler manifest
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view handlers-latest > /dev/null 2>&1; then
+            gh release download handlers-latest --pattern manifest.json --dir previous-pack
+          else
+            echo "No handler pack published yet"
+          fi
+
+      # Handlers import only the standard library, so this runs before the install.
+      - name: Plan the handler pack
+        id: pack
+        shell: bash
+        run: >-
+          python .github/scripts/handler_pack.py
+          --previous previous-pack/manifest.json --output handler-pack/manifest.json
+          --github-output "$GITHUB_OUTPUT" --notes-file pack-notes.md
+
       - name: Install dependencies
-        if: steps.plan.outputs.release == 'true'
+        if: steps.plan.outputs.release == 'true' || steps.pack.outputs.pack == 'true'
         run: python -m pip install -r PAZ-Parser/requirements-dev.txt -r PAZ-Parser/requirements-build.txt
 
       - name: Pyright
-        if: steps.plan.outputs.release == 'true'
+        if: steps.plan.outputs.release == 'true' || steps.pack.outputs.pack == 'true'
         run: python -m pyright
 
       # The runner has no client, so tests that need game files skip.
       - name: Tests
-        if: steps.plan.outputs.release == 'true'
+        if: steps.plan.outputs.release == 'true' || steps.pack.outputs.pack == 'true'
         run: python -m pytest --clean
 
-      # build.py fails when the exe's handlers differ from the source's.
+      # build.py fails when the exe's handlers differ from the source's, or
+      # the bundled handler files from the manifest.
       - name: Build
         if: steps.plan.outputs.release == 'true'
-        run: python build.py --version ${{ steps.plan.outputs.version }}
+        run: python build.py --version ${{ steps.plan.outputs.version }} --handler-manifest handler-pack/manifest.json
+
+      # What a user runs to check the download; a CRLF line ending in the
+      # .sha256 made it fail for v2026.10.07.
+      - name: Check the hash file
+        if: steps.plan.outputs.release == 'true'
+        shell: bash
+        working-directory: dist
+        env:
+          VERSION: ${{ steps.plan.outputs.version }}
+        run: sha256sum -c "BDO-PAZ-Browser-v$VERSION-windows.zip.sha256"
 
       - name: Publish
         if: steps.plan.outputs.release == 'true'
@@ -68,3 +105,22 @@ jobs:
             --title "v$VERSION" \
             --notes-file notes.md \
             --target "$GITHUB_SHA"
+
+      # After the exe, so a failed exe release publishes no pack; a rerun plans
+      # both again. handlers-latest is never GitHub's "latest" release.
+      - name: Publish the handler pack
+        if: steps.pack.outputs.pack == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view handlers-latest > /dev/null 2>&1; then
+            gh release upload handlers-latest handler-pack/manifest.json --clobber
+            gh release edit handlers-latest --notes-file pack-notes.md
+          else
+            gh release create handlers-latest handler-pack/manifest.json \
+              --title "Handler pack" \
+              --notes-file pack-notes.md \
+              --latest=false \
+              --target "$GITHUB_SHA"
+          fi

@@ -148,6 +148,9 @@
     "handledOnlyHint": "Limit the file tree and searches to files with a parsed table view",
     "checkAppUpdates": "Check for updates on start",
     "checkAppUpdatesHint": "Ask GitHub for a newer release when the app starts. Updating always takes a click.",
+    "updateHandlers": "Update handlers on start",
+    "updateHandlersHint": "Download new and fixed handlers from GitHub when the app starts. They are used after a restart.",
+    "checkHandlersNow": "Check now",
     "recordsCache": "Parsed Table Cache",
     "recordsCacheHint": "Keep parsed tables on disk so they reopen without parsing again",
     "recordsCacheOff": "Off",
@@ -247,5 +250,27 @@
     "failed": "Update failed: {message}",
     "nothingToInstall": "No update to install.",
     "otherInstances": "Close the other BDO PAZ Browser windows and commands first."
+  },
+  "footer": {
+    "app": "app version v{version}",
+    "appSource": "app version {commit}",
+    "appSourceNoGit": "app version (source)",
+    "handler": "{key} {version}",
+    "commit": "Commit {commit}",
+    "handlers": "Handler pack {version}"
+  },
+  "handlerUpdate": {
+    "title": "Handlers updated to {version}",
+    "current": "Restart the app to use them. Until then it keeps handler pack {version}.",
+    "currentBundled": "Restart the app to use them. Until then it keeps the handlers it came with.",
+    "later": "Later",
+    "restart": "Restart now",
+    "checking": "Checking…",
+    "upToDate": "Handlers are up to date ({version}).",
+    "needsApp": "Handler pack {version} needs a newer app: {url}",
+    "bad": "Handler pack {version} failed to load before; the current handlers stay.",
+    "failed": "Handler update failed: {message}",
+    "sourceOnly": "Handler updates are only in the Windows exe; from source the handlers are PAZ-Parser/handlers.",
+    "restartFailed": "Could not restart the app: {message}"
   }
 }

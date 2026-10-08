@@ -176,11 +176,15 @@ The two hex strings always equal the two ARGB values (case aside: `ffD2691E`,
 `guide_texture_ref` is set only on the 13 `#FixedLanternSpot` rows, one image
 per zone (`Combine_Etc_DekiaLanterns_GroundTooltip_01` to `_13`): a map of
 where the Dehkia's Lantern can be summoned, shown when the tag is clicked.
+Each name is a whole texture of the same name, lower-cased, in the folder its
+first two parts name: `ui_texture/combine/etc/combine_etc_dekialanterns_groundtooltip_01.dds`.
+All 13 exist on client 3458 (717.8 KB each). The Korean tooltips store a line
+break as the two characters `\n`, where LOC has a real newline.
 Some colours are shared: `0xFF63B6E6` on `#NoItemCollectGauge`,
 `#NoAgrisFever`, both Golden Pig Caves, Atoraxxion and Orzekea, and
 `0xFFCB6768` on `#TreasurePieces`, `#RedArtifacts` and `#HighestTier`.
 
-Tags 1 to 5, 17 and 36 are on no hunting ground on client 3458; LOC type 117
+Only tag 17 (`#PartyOf4`) is on no hunting ground on client 3458; LOC type 117
 names all 45 plus a key 46 with the same `#DivineAuthority` text as 45.
 
 ## Suggested UI Layout
@@ -205,6 +209,21 @@ names all 45 plus a key 46 with the same `#DivineAuthority` text as 45.
 | Species     | text | `tribe_type` as `{value} {label}` (`1 Demihumans`); the label from LOC type 37, falling back to the enum name (`1 NonHuman`) |
 
 The position and region keys stay on the record but out of the table.
+
+### `dropuitaginfo.bss`
+
+| Column      | Type  | Notes                                                                      |
+| ----------- | ----- | -------------------------------------------------------------------------- |
+| Key         | num   | `key`; right-aligned                                                       |
+| Name        | text  | LOC type 117 `str_id4` 0, falling back to the Korean name; drawn as the tag pill in its two colours, as on the hunting grounds |
+| Guide Image | image | The guide image texture; dash on rows without one; sorts by the texture name |
+| Colours     | text  | `texture_color / font_color` as `0xFF5384D5 / 0xFFA6C0EA`; sorts by `texture_color` |
+| Description | text  | LOC type 117 `str_id4` 1 in its `<PAColor>` colours (`pa_fields`), falling back to the Korean tooltip; one line, cut after 120 characters |
+| Hunting Grounds | text | Names (LOC type 116, falling back to the Korean name) of the `dropuihuntinggroundinfo.bss` rows whose `tag_keys` hold the tag, in file order; dash without that file |
+
+The handler loads `dropuihuntinggroundinfo.bss` as an optional companion for
+the Hunting Grounds column. The two hex colour strings stay out of the
+record, since they repeat the ARGB values.
 
 ## Notes
 
@@ -248,3 +267,15 @@ The position and region keys stay on the record but out of the table.
   (UV 128,314 to 228,339) that is white at alpha 51. `SetColor` tints it, so
   the background shows `texture_color` at about 20% over the window, and a
   tag whose two colours are equal (34 of 45) still reads.
+
+## Open Questions
+
+### Where the Client Resolves a Guide Image Name
+
+The window Lua hands `getTagGuideTextureId` to
+`PaGlobalFunc_DropItemImageToolTip_Open` as a texture ID. I have not found the
+table that maps such an ID to a file, so the handler takes the file of the
+same name in the folder the first two name parts give. That holds for all 13
+names on client 3458, but `Combine_Etc_DropItem_Tag_BG` is a sprite inside
+`combine_etc_dropitem.dds`, so a later guide image could be a sprite too and
+then show a dash.

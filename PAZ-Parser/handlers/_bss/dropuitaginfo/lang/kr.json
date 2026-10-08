@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "key": "키",
+    "name": "이름",
+    "guideImage": "가이드 이미지",
+    "colors": "색상",
+    "description": "설명",
+    "huntingGrounds": "사냥터"
+  },
+  "meta": {
+    "count": "태그 {count}개"
+  }
+}

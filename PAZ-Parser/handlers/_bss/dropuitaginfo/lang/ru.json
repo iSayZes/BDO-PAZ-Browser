@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "name": "Название",
+    "guideImage": "Изображение-подсказка",
+    "colors": "Цвета",
+    "description": "Описание",
+    "huntingGrounds": "Места охоты"
+  },
+  "meta": {
+    "count": "Меток: {count}"
+  }
+}

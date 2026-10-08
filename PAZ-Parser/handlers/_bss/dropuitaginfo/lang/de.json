@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "name": "Name",
+    "guideImage": "Hilfebild",
+    "colors": "Farben",
+    "description": "Beschreibung",
+    "huntingGrounds": "Jagdgebiete"
+  },
+  "meta": {
+    "count": "{count} Tags"
+  }
+}

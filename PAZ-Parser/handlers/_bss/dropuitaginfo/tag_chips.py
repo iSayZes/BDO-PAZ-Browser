@@ -1,4 +1,4 @@
-"""The Tags column drawn as the drop item window draws its tags.
+"""Drop item window tags drawn as the window draws them.
 
 Each tag is a pill: the `Combine_Etc_DropItem_Tag_BG` texture (white at alpha
 51 in `combine/etc/combine_etc_dropitem.dds`) tinted with the tag's

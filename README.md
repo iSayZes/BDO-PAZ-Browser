@@ -119,7 +119,7 @@ See [docs/documented-formats.md](docs/documented-formats.md) for the full table.
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.14
 - [pywebview](https://pywebview.flowrl.com/) for the GUI shell
 - [aiohttp](https://docs.aiohttp.org/) for the local stream server
 - [numpy](https://numpy.org/) for ICE decryption

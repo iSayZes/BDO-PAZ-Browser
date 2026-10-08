@@ -13,7 +13,7 @@ Thanks for helping out. BDO has hundreds of undocumented binary formats, so rese
 
 ## Setup
 
-You need Python 3.10+ and a local Black Desert Online install, since tests read their inputs from your PAZ folder. Without one, the tests that need game files are skipped.
+You need Python 3.14 and a local Black Desert Online install, since tests read their inputs from your PAZ folder. Without one, the tests that need game files are skipped.
 
 ```bash
 python -m pip install -r PAZ-Parser/requirements-dev.txt

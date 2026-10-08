@@ -10,8 +10,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `base_dialog.dbss` | Base record of every NPC dialog: Korean display name and the speech bubble lines shown over the NPC, keyed like `detail_dialog.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 |
 | `base_dialogoffset.dbss` | PABR index into `base_dialog.dbss`, same layout and keys as `detail_dialogoffset.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 |
 | `blizzardregioninfo.bss` | PABR snow regions of the Mountain of Eternal Winter and Ulukita: a key, the `regioninfo.bss` region and three unconfirmed values | [blizzardregioninfo](file-formats/blizzardregioninfo_bss.md) | 3 |
-| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 4 |
-| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 4 |
+| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 6 |
+| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 6 |
 | `buffsimply.bss` | PABR compact buff table, 30-byte rows with buff ID, icon path and `unknown_str` string indices, `is_shown` and flags | [buffsimply](file-formats/buffsimply_bss.md) | 1 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
 | `cashproductoffset.dbss` | Index into `cashproduct.dbss`, maps product ID → offset/size; no PABR magic and no trailer | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
@@ -28,14 +28,16 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `detail_dialogoffset.dbss` | PABR index into `detail_dialog.dbss`, maps `dialog_index << 16 \| character_id` → offset/size | [detail_dialog](file-formats/detail_dialog_dbss.md) | 2 |
 | `dialogtext.dbss` | Named pools of NPC lines with voice tags, picked by `{GetRandomText(<name>)}` greetings | [dialogtext](file-formats/dialogtext_dbss.md) | 0 |
 | `dialogtextoffset.dbss` | Bare index into `dialogtext.dbss` (no magic, no trailer), maps pool key → offset/size | [dialogtext](file-formats/dialogtext_dbss.md) | 0 |
-| `dropuihuntinggroundinfo.bss` | Drop item window hunting grounds: region tab, filter categories, monsters, repeat and sudden quests, drop items, tags, regions, titles, recommended and Total Stat AP / DP, node and Max AP Limit | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 0 |
-| `dropuimaincategoryinfo.bss` | Drop item window region tabs: tab key → territory (LOC type 12) and tab icon | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 0 |
-| `dropuisubcategoryinfo.bss` | Drop item window filter categories (party, Elvia, Marni's Realm, Dehkia, ...): Korean name and button icon | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 0 |
-| `dropuitaginfo.bss` | Drop item window tags: Korean name and tooltip, Dehkia's Lantern guide image, tag background and text colours | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 0 |
+| `dropuihuntinggroundinfo.bss` | Drop item window hunting grounds: region tab, filter categories, monsters, repeat and sudden quests, drop items, tags, regions, titles, recommended and Total Stat AP / DP, node and Max AP Limit | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 1 |
+| `dropuimaincategoryinfo.bss` | Drop item window region tabs: tab key → territory (LOC type 12) and tab icon | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 1 |
+| `dropuisubcategoryinfo.bss` | Drop item window filter categories (party, Elvia, Marni's Realm, Dehkia, ...): Korean name and button icon | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 1 |
+| `dropuitaginfo.bss` | Drop item window tags: Korean name and tooltip, Dehkia's Lantern guide image, tag background and text colours | [dropuihuntinggroundinfo](file-formats/dropuihuntinggroundinfo_bss.md) | 1 |
 | `edaniaregioninfo.bss` | PABR Edania regions: the `__eEdaniaRegion` value (castle domain) and a 3-byte value equal to the `unknown_02` of the castle's `regioninfo.bss` region | [edaniaregioninfo](file-formats/edaniaregioninfo_bss.md) | 1 |
 | `employeeexp.bss` | Sailor levelling table: EXP to the next level and per-ability level-up growth dice for each sailor and level | [employeeexp](file-formats/employeeexp_bss.md) | 1 |
 | `employeename.dbss`                | Employee name table with inline Korean source names and LOC-backed English display names                       | [employeename](file-formats/employeename_dbss.md)                   | 1              |
 | `employeenameoffset.dbss`          | Offset index into `employeename.dbss`, maps employee name ID → offset/size                                    | [employeename](file-formats/employeename_dbss.md)                   | 1              |
+| `employeespawninfo.dbss` | Hire data of the sailors in Velia, Port Epheria and Iliya Island per character: sailor key, spawn position keys, hire item and the Korean accept and refuse lines | [employeespawninfo](file-formats/employeespawninfo_dbss.md) | 2 |
+| `employeespawninfooffset.dbss` | Index into `employeespawninfo.dbss`, maps character key → offset/size | [employeespawninfo](file-formats/employeespawninfo_dbss.md) | 2 |
 | `employeespawnposition.dbss` | Spawn positions of hireable sailors in Velia, Port Epheria and Iliya Island: world position, facing direction and region key | [employeespawnposition](file-formats/employeespawnposition_dbss.md) | 1 |
 | `employeespawnpositionoffset.dbss` | Index into `employeespawnposition.dbss`, maps spawn position key → offset/size | [employeespawnposition](file-formats/employeespawnposition_dbss.md) | 1 |
 | `employeestaticstatus.bss` | PABR sailor and First Mate stats: one row per sailor type and level with its character, icon and ability slots | [employeestaticstatus](file-formats/employeestaticstatus_bss.md) | 2 |

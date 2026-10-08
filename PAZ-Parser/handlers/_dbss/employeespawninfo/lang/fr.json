@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "characterKey": "ID du personnage",
+    "dataOffset": "Décalage des données",
+    "dataSize": "Taille des données"
+  },
+  "columns": {
+    "characterKey": "ID du personnage",
+    "employeeKey": "ID du marin",
+    "name": "Nom",
+    "towns": "Villes",
+    "spawnPositions": "Points d'apparition",
+    "hireItem": "Objet d'engagement",
+    "respawn": "Réapparition",
+    "acceptText": "Réplique d'accord",
+    "refuseText": "Réplique de refus"
+  },
+  "meta": {
+    "count": "{count} marins à engager"
+  }
+}

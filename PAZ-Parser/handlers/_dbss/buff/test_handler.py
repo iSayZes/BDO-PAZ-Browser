@@ -492,6 +492,10 @@ def test_korean_title_survives_without_loc() -> None:
         (142, [3176, 0], "Obtain Title: 3176"),
         # Without the TELEPORT_NEAREST_NODE index the point shows its key alone.
         (23, [0, 340], "Teleport to point 0/340"),
+        # Test item A1_001 moves to the instance field named A1_001.
+        (176, [17, 0, 4001], "Teleport to Instance Field 4001"),
+        # Monster property keys have no name in the client; see buff_dbss.md.
+        (180, [67], ""),
         # A kind outside the confirmed ones.
         (80, [10, 100], ""),
         # An effect type that is not decoded.
@@ -569,6 +573,7 @@ def test_over_time_text(
         # No confirmed meaning: no labels at all.
         (EffectInput(39, [0, 8]), {}),
         (EffectInput(16, [521]), {1: "Group"}),
+        (EffectInput(176, [17, 0, 4001]), {3: "Instance Field"}),
         (EffectInput(72, [0, 8, 1, 0]), {1: "All Towns"}),
         (EffectInput(73, [0, 5]), {2: "Southwestern Calpheon"}),
         (EffectInput(187, [0, 300, 2]), {3: "Earth"}),

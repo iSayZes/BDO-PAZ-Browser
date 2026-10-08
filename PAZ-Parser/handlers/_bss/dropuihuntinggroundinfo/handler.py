@@ -15,8 +15,10 @@ from _common.loc import loc_text
 from _common.node import node_name
 from _common.quest.quest import quest_title
 from _common.title import title_name
-from .parser import TagColors, parse_hunting_ground_records, parse_tag_colors, parse_territory_keys
-from .tag_chips import tag_chips_cell
+from _bss.dropuitaginfo.parser import TagColors, parse_tag_colors
+from _bss.dropuitaginfo.tag_chips import tag_chips_cell
+from _bss.dropuitaginfo.text import tag_name
+from .parser import parse_hunting_ground_records, parse_territory_keys
 from .tribe_labels import tribe_text
 
 
@@ -30,7 +32,6 @@ _LIST_PREVIEW_ITEMS = 8
 _LOC_TERRITORY = 12
 _LOC_TERRITORY_NAME = 1
 _LOC_CATEGORY = 115
-_LOC_TAG = 117
 
 # Packed quest key: low u16 quest chain, high u16 quest, as in allquestlist.bss.
 _QUEST_CHAIN_MASK = 0xFFFF
@@ -126,7 +127,7 @@ class DropUiHuntingGroundInfoBssHandler(PreviewHandler):
                 "quests": [
                     _quest_text(k) for k in record["repeat_quest_keys"] + record["sudden_quest_keys"]
                 ],
-                "tags": _names(record["tag_keys"], lambda k: loc_text(_LOC_TAG, k)),
+                "tags": _names(record["tag_keys"], tag_name),
                 "_tag_colors": [tag_colors.get(k) for k in record["tag_keys"]],
                 "titles": _names(record["title_keys"], title_name),
             })

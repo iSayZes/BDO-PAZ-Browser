@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "characterKey": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "employeeKey": "선원 ID",
+    "name": "이름",
+    "towns": "마을",
+    "spawnPositions": "출현 위치",
+    "hireItem": "고용 아이템",
+    "respawn": "재등장",
+    "acceptText": "수락 대사",
+    "refuseText": "거절 대사"
+  },
+  "meta": {
+    "count": "고용 가능한 선원 {count}명"
+  }
+}

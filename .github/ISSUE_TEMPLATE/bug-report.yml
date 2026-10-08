@@ -49,6 +49,6 @@ body:
     attributes:
       label: Environment
       description: OS, Python version and game region / client language.
-      placeholder: Windows 11, Python 3.12, EU client, English
+      placeholder: Windows 11, Python 3.14, EU client, English
     validations:
       required: false

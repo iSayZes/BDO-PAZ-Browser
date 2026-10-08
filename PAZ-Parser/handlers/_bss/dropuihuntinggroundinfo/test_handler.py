@@ -20,9 +20,7 @@ from tests.framework import (
 from tests.runner import load_case
 
 from _bss.dropuihuntinggroundinfo import tribe_labels
-from _bss.dropuihuntinggroundinfo.parser import TagColors, parse_tag_colors, parse_territory_keys
-from _bss.dropuihuntinggroundinfo.tag_chips import tag_chip, tag_chips_cell
-from _common.html import more_marker
+from _bss.dropuihuntinggroundinfo.parser import parse_territory_keys
 from _bss.dropuihuntinggroundinfo.tribe_labels import TRIBE_LABELS, tribe_label, tribe_text
 from _bss.stringtable.parser import GAME_SHEET, parse_key_hashes
 from _common.html import e
@@ -154,37 +152,10 @@ def test_items_column_shows_each_item_with_its_icon(hunting_ground_result: Handl
     assert f'<span class="icon-cell-label">{e(aresion["items"][0])}</span>' in html
 
 
-def _luminance(argb: int) -> int:
-    return sum((argb >> shift) & 0xFF for shift in (16, 8, 0))
-
-
-def test_tag_text_is_the_lighter_colour(hunting_ground_result: HandlerResult) -> None:
-    """Where a tag's colours differ, the text (`font_color`) is the lighter one."""
-    colors = parse_tag_colors(hunting_ground_result.source.file(_TAG_INFO_FILE))
-    darker_text = {key: c for key, c in colors.items() if _luminance(c.font) < _luminance(c.texture)}
-
-    assert colors
-    assert not darker_text, f"tags with darker text than background: {darker_text}"
-
-
 def test_every_tag_has_its_colours(hunting_ground_result: HandlerResult) -> None:
     for record in hunting_ground_result.records:
         assert len(record["_tag_colors"]) == len(record["tags"])
         assert None not in record["_tag_colors"], f"hunting ground {record['key']} has a tag without colours"
-
-
-def test_tag_chip_tints_the_background_and_colours_the_text() -> None:
-    chip = tag_chip("#Stun & Co", TagColors(texture=0xFFD2691E, font=0xFFFFA500))
-
-    assert chip == (
-        '<span class="tag-chip" style="background: rgba(210, 105, 30, 0.2); '
-        'color: rgba(255, 165, 0, 1)">#Stun &amp; Co</span>'
-    )
-    # Without dropuitaginfo.bss the tag is its plain name.
-    assert tag_chip("#Stun & Co", None) == "#Stun &amp; Co"
-    assert tag_chips_cell([], [], 3) == "-"
-    # Pills sit side by side as in game, and the rest is counted.
-    assert tag_chips_cell(["A", "B", "C"], [None, None, None], 2) == f"A B {more_marker(1, ['C'])}"
 
 
 def test_tribe_label_hashes_match_stringtable() -> None:

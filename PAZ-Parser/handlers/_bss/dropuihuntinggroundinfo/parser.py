@@ -7,14 +7,13 @@ Each row lists the zone's region tab, filter categories, monsters, quests,
 drop items, tags, regions and titles (each a u32 count and its values), then
 its position, recommended and Total Stat AP / DP, node, Max AP Limit and
 monster species. `dropuimaincategoryinfo.bss` maps the region tab to a
-territory, and `dropuitaginfo.bss` gives each tag its colours. Full layouts in
-docs/file-formats/dropuihuntinggroundinfo_bss.md.
+territory; `_bss/dropuitaginfo/parser.py` reads the tag colours. Full layouts
+in docs/file-formats/dropuihuntinggroundinfo_bss.md.
 """
 
 from __future__ import annotations
 
 import struct
-from typing import NamedTuple
 
 from _common.binary import u32
 from _common.pabr_strings import check_pabr, fixed_row_offsets, read_string_table, string_at, string_table_start
@@ -33,17 +32,6 @@ _TAIL = struct.Struct("<3fffIffIIB")
 
 # u32 key | u16 territory_key | u32 icon_ref
 _MAIN_CATEGORY = struct.Struct("<IHI")
-
-# u32 key | u32 name_ref | u32 guide_texture_ref | u32 desc_ref
-# | u32 texture_color_ref | u32 font_color_ref | u32 texture_color | u32 font_color
-_TAG = struct.Struct("<8I")
-
-
-class TagColors(NamedTuple):
-    """The ARGB colours a tag is drawn in: its background tint and its text."""
-
-    texture: int
-    font: int
 
 
 def _row_count(data: bytes, name: str) -> int:
@@ -137,16 +125,3 @@ def parse_territory_keys(data: bytes) -> dict[int, int]:
         key, territory_key, _icon_ref = _MAIN_CATEGORY.unpack_from(data, offset)
         territories[key] = territory_key
     return territories
-
-
-def parse_tag_colors(data: bytes) -> dict[int, TagColors]:
-    """Tag key -> its colours, from `dropuitaginfo.bss`.
-
-    Raises ValueError on a bad magic or when the rows do not end where the
-    string table starts.
-    """
-    colors: dict[int, TagColors] = {}
-    for offset in fixed_row_offsets(data, _TAG.size, "dropuitaginfo.bss"):
-        key, *_refs, texture_color, font_color = _TAG.unpack_from(data, offset)
-        colors[key] = TagColors(texture_color, font_color)
-    return colors

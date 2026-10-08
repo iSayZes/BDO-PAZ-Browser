@@ -109,8 +109,8 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 41/403 .bss formats.
-- Handler Supported 83/374 .dbss formats.
+- Handler Supported 42/403 .bss formats.
+- Handler Supported 85/374 .dbss formats.
 - Handler Supported 24 other formats.
 
 ## Documented Formats
@@ -119,7 +119,7 @@ See [docs/documented-formats.md](docs/documented-formats.md) for the full table.
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.14
 - [pywebview](https://pywebview.flowrl.com/) for the GUI shell
 - [aiohttp](https://docs.aiohttp.org/) for the local stream server
 - [numpy](https://numpy.org/) for ICE decryption

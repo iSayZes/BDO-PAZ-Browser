@@ -244,6 +244,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 160   | 29   | Movement, attack and casting speed rates | `param_1` Movement Speed, `param_2` Attack Speed, `param_3` Casting Speed, each per million and signed |
 | 168   | 16   | No Guard Gauge recovery       | No parameters                                                     |
 | 169   | 37   | Healing reduction             | `param_1` per million, shown negative (`Target's Recovery -10%`)  |
+| 176   | 48   | Teleport to an instance field | `param_3` = `instancefield.dbss` key (`Teleport to Instance Field 4001`); `param_1` `17` on all, meaning unknown |
 | 181   | 58   | Breath/Strength/Health EXP %  | `param_1` = kind as in type 89, `3` one training-EXP passive (unlabelled); `param_2` per million |
 | 186   | 4    | Black Shrine aura stat        | `param_1` = `1` fixed aura, `0` the aura the player picks (Light Orb); `param_2` = points; `param_3` = aura as type 187: `0` Sun, `1` Moon, `2` Earth |
 | 187   | 298  | Flat AP and DP                | `param_1` = AP, `param_2` = DP, both can be set; `param_3` = Land of the Morning Light attribute: `0` Sun, `1` Moon, `2` Earth |
@@ -517,6 +518,119 @@ and bdocodex tooltips, since most of these buffs have no text:
   53091 to 53094) and the older `Chance to Catch Large Fish +1%` (52301 to
   52305). The kind 2 buff texts read `Chance to Catch Rare Fish`, the
   stale side.
+
+The batch of 2026-10-08 took the two largest types left. Neither has an
+English text that states an amount.
+
+- **176** test teleports: the 48 buffs (`A1 : VN_00` to `A1 : VN_53`,
+  hidden, no text or icon) store `param_1` `17` and `param_3` `4001` to
+  `4024`, each value on two buffs. The skills that apply them, 51001 to 51054
+  (LOC type 10 `A1_001` to `A1_054`), read `A1 Teleport`; the second set,
+  56901 to 56954, is named after the buffs and reads `A1`. Items A1_001 to
+  A1_024 (720601 to 720624) apply buffs 54901 to 54924, which store 4001 to
+  4024. `instancefield.dbss` (199 records, keys through
+  `instancefieldoffset.dbss`, each holding a length-prefixed ASCII name)
+  has keys 4001 to 4066, named `A1_001` to `A1_066`, so item, skill and
+  field share one name. Items A1_031 to A1_054 apply the same 24 buffs
+  again, and the second 24 buffs (54931 to 54954) belong to skills only. The
+  column writes `Teleport to Instance Field 4001`, since the fields have no
+  LOC name. `A1` looks like Abyss One: the waypoint graph of field 4001
+  (`mapdata_instancedungeon_4001explore.bwp`) names its points
+  `road(magnus)_001` onwards, and the type 23 test buffs next to these read
+  `A1 : 마그누스 내 A로 이동` ("A1: move to A inside Magnus").
+- **180**, read but left as a dash: extra damage to one group of monsters.
+  9 of the 41 Korean names say `프로퍼티스` ("properties"), some with a rate
+  the buff does not store (`에다니아 수렵 프로퍼티스 300%`, "Edania hunting
+  properties 300%"). `param_1` is the only parameter set, apart from
+  `param_3` `-1000000` on 44186, and it follows the target of the English
+  texts:
+
+  | `param_1` | Buffs | Target in the English text |
+  | --------- | ----- | -------------------------- |
+  | 51 | 42107 | `Honglim Base bandits` |
+  | 52 | 42187, 42197 | `certain monsters` (Orbita's Light) |
+  | 57 | 44133 | `Edania Hunting Monsters` |
+  | 59 | 44186, 46003 | `World Boss Muraka` |
+  | 61 | 44191 | `certain monsters` (Flame of Arrogance II) |
+  | 65 | 44203 | `Elion's followers` |
+  | 67, 68, 69 | 46005, 46006, 46007 | `Aresion Temple`, `Scales of Judgment` and `Event Horizon monsters` |
+  | 168 | 43538 | `Elvia Calpheon monsters` (Blessing of the Ancient Spirits) |
+  | 169 | 43532, 51751 | `Elvia Calpheon monsters` (Essence of Living Hope, Corrupted Darkness) |
+  | 189 | 41819 | `certain monsters` (Seculion's energy) |
+  | 193, 194 | 41899, 41902 | `<Void Burned> Lava Tribe`; 194 is the Mareca version (`[마레카]`) |
+  | 195 to 198 | 41909 to 41912 | `monsters that appear from the Fear of the Frost`, Rift, Ancients, Void (Limbo's Blessing) |
+
+  That is 21 texts. The other 20 buffs have none that names a target: 53
+  (Power of Azureach: Black Spirit), 55, 56 (Time of Sycraia), 58 (Altar of
+  Blood Golden Pig King, `150%`), 63 (Monster Basher, `대괴수탄`, "giant
+  monster shell"), 70 (Remnant of Markthanan's Authority, `150%`), 153 to 155
+  (Blessing of Valtarra, Okiara and Narc, buffs 59493 to 59495: the
+  Elvia weapons, orbs that drop from Elvia monsters and give a 10-minute
+  weapon buff with a 20-minute cooldown; see the Elvia weapons table
+  below), 164 to 167 (Gyfin Rhasia), 178
+  (Bamboo Legion soul cleanse), 183, 185 and 199 (Essence and Rumblings of
+  Ulukita), and 195 on Limbo's Blessing: Trial (47077). The two Essence of
+  Ulukita keys are the two Ulukita hunting grounds of the Pearl Abyss wiki
+  (wikiNo 350): in City of the Dead, CC on the Tehmelun Messenger at the
+  right moment knocks the nearby monsters down and gives the player the
+  buff "which will let you easily defeat the monsters"; in Tungrad Ruins,
+  detonating a Tungrad Visionary gives it, and "all the surrounding monsters
+  will be stunned and have their DP decreased". Which key is which zone is
+  not confirmed: 183 is on buffs 41801, 41802 and 55283 (item 65333, skills
+  42249, 42250 and 57081, all named Essence of Ulukita), 199 on 41914 (skill
+  42334, no LOC name). The action charts of the Tehmelun Messenger (21016,
+  `m0134_witch_03_normal.paac`) and the Tungrad Visionary (21011,
+  `m0097_ancient_wizard_f_normal.paac`) hold none of the four skill numbers.
+  The key is not a
+  `dropuihuntinggroundinfo.bss` key: those run 0 to 119, and 51 is
+  Sherekhan Necropolis (Day), 67 Orc Camp [Elvia], where the texts name
+  Honglim Base (95) and Aresion Temple (117). It is not the characterstatic
+  `unknown_p3` either (51 there is on Mask Owls, 67 on pirates). 193 and 194
+  reach one target from two attackers, the player and Mareca, so the key
+  looks like a property the bearer gains and the target monsters take extra
+  damage from; the rate lives outside this file. Blessing of Crimsonflare,
+  Everlight and Voidreach add `※ While this effect is active, buff effects
+  targeting specific monsters will not activate`. Type 179 uses 153 to 155
+  too (see the batch of 2026-10-04). See Open Questions.
+
+  Elvia weapons, keys 153 to 155 of types 179 and 180. The zones are where
+  Garmoth's Elvia Realm (Serendia) guide says each orb colour is "most
+  useful"; while the buff is on, the player can use the Elvia skill, which
+  gives the monsters -20 AP / DP:
+
+  | `param_1` | Buff | Orb | Zones (Garmoth) |
+  | --------- | ---- | --- | --------------- |
+  | 153 | 59493 Blessing of Valtarra | Red | Bloody Monastery, Birgahi Den, Swamp Naga Habitat |
+  | 154 | 59494 Blessing of Okiara | Blue | Castle Ruins, Orc Camp |
+  | 155 | 59495 Blessing of Narc | Yellow | Swamp Fogan Habitat, Altar Imp Habitat |
+
+  For these three keys the type 180 key stands for a set of hunting
+  grounds, not one monster. The damage bonus is still not stored in the
+  buff.
+
+  Most of these buffs come from zone pickups, which is how most of the
+  game's random zone events work. As far as I know: a monster drops a
+  hidden item, picking it up uses it on the spot, and it either applies a
+  buff or spawns something. Time of Sycraia (56343) is one. The Elvia orbs
+  work the same way: the hidden item spawns the orb, and interacting with
+  the orb (R, per Garmoth) gives the weapon buff. The orb characters look
+  like Young Valtarra, Young Okiara and Young Narc (24890 to 24892, model
+  `monster/hadum/elementalweapon_h_normal`); no item places them through
+  `character_id`. Each colour has two buff items, a main weapon one
+  (757395 to 757397, icons `mainweapon_fire`, `_water`, `_thunder`) and an
+  awakening weapon one (757398 to 757400, `awakenweapon_*`), and both
+  cast the same skill.
+
+  The 16 items that apply type 180 buffs (the Elvia weapon items 757395
+  to 757400, Time of Sycraia, Essence and Rumblings of Ulukita 65333 and
+  65338, Dark Crimson Gem Fragment 980114, the Lingering Powers 980144 to
+  980146, Corrupting Darkness 56506, Limbo's Blessing: Trial 56289 and
+  Monster Basher 56084) carry no flag for being used on pickup in
+  `itemenchant.dbss`: all but Monster Basher (a cannonball, `item_type` 6)
+  are `item_type` 2, `category` 18, like 11,067 of the 13,275
+  consumables, and none of the fixed bytes before `+0xF2` is shared by the
+  15 and rare elsewhere. The flag is likely on the hidden drop, not on
+  these buff items.
 
 Type 142 renders as `Obtain Title: Back Home Again`, from LOC type 1; the
 items that apply it read `Using this item will grant you the Olvium Frontia!
@@ -954,6 +1068,34 @@ matched against it.
 Enum Values are confirmed; the rest have not been worked out. For 39, 40, 41
 and 43 `param_1` is `3`; bdo-data-extractor reads it as the target (`0` melee,
 `1` ranged, `2` magic, `3` all).
+
+### What names the type 180 property keys?
+
+`param_1` of type 180 (and 153 to 155 of type 179) picks the monsters a buff
+deals extra damage to (see Effect text), but no client table read so far
+names the keys or holds the damage rate (`150%`, `300%` in the Korean
+names). The bdocodex item pages of Dark Crimson Gem Fragment (980114, buff
+46003) and Essence of Ulukita (65333, buff 55283) show only the effect name
+(`World Boss Muraka Properties`, `Essence of Ulukita`), no rate or target
+(checked 2026-10-08).
+
+The keys look like hunting ground property IDs: every target named so far
+is a zone or its monsters (the Elvia weapon zones, the two Ulukita zones,
+Aresion Temple, Scales of Judgment, Event Horizon, Elvia Calpheon, Honglim
+Base), and six Korean names say `사냥터` ("hunting ground"), such as `아알
+사냥터 프로퍼티스` ("Aal hunting ground properties") and `엘리언 영역
+사냥터 프로퍼티스` ("Elion's realm hunting ground properties"). 56, Time of
+Sycraia, would then be Sycraia Underwater Ruins. They are not
+`regiongroupinfo.bss` keys either: 153 is Valtarra Mountains there, but 155
+is Tooth Fairy Forest and 199 Pit of the Undying. A client file that lists
+these numbers next to zones or character IDs would settle it; otherwise
+they are server data and the column keeps the dash.
+
+### What is type 176 `param_1`?
+
+It is `17` on all 48 buffs. `instancefield.dbss` key 17 is `CrimsonField`,
+which does not fit test teleports into the `A1_` fields, so it is probably a
+teleport kind or mode. A second value on any buff would show what it does.
 
 ### Does an equal level replace a buff of the same group?
 

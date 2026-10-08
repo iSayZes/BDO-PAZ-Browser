@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "key": "Key",
+    "name": "Name",
+    "guideImage": "Guide Image",
+    "colors": "Colours",
+    "description": "Description",
+    "huntingGrounds": "Hunting Grounds"
+  },
+  "meta": {
+    "count": "{count} tags"
+  }
+}

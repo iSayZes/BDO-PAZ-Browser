@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "columns": {
+    "characterKey": "Character ID",
+    "employeeKey": "Sailor ID",
+    "name": "Name",
+    "towns": "Towns",
+    "spawnPositions": "Spawn Positions",
+    "hireItem": "Hire Item",
+    "respawn": "Respawn",
+    "acceptText": "Accept Line",
+    "refuseText": "Refuse Line"
+  },
+  "meta": {
+    "count": "{count} hireable sailors"
+  }
+}

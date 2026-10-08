@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "key": "Clave",
+    "name": "Nombre",
+    "guideImage": "Imagen de guía",
+    "colors": "Colores",
+    "description": "Descripción",
+    "huntingGrounds": "Zonas de caza"
+  },
+  "meta": {
+    "count": "{count} etiquetas"
+  }
+}

@@ -7,6 +7,7 @@
   "columns": {
     "spawnPositionKey": "Точка появления",
     "region": "Регион",
+    "sailors": "Матросы",
     "x": "X",
     "y": "Y",
     "z": "Z",

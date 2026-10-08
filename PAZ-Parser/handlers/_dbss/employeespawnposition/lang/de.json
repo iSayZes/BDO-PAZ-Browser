@@ -7,6 +7,7 @@
   "columns": {
     "spawnPositionKey": "Erscheinungsort",
     "region": "Region",
+    "sailors": "Seefahrer",
     "x": "X",
     "y": "Y",
     "z": "Z",

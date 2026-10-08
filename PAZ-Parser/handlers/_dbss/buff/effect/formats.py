@@ -373,6 +373,14 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     ),
     # Healing reduction stored positive: "Target's Recovery -10%".
     169: (EffectLine("Target's Recovery", 1, PERCENT, is_negated=True),),
+    # Test items A1_001 to A1_024, whose skills read "A1 Teleport": param_3
+    # is the instancefield.dbss key (4001 is the field named `A1_001`).
+    # param_1 is 17 on all 48 buffs, meaning unknown.
+    176: (
+        EffectLine(
+            "Teleport to Instance Field", 3, KEY, when={1: 17}, value_label="Instance Field"
+        ),
+    ),
     # Token of Desert Trading (409) reads "Trade Goods Price Doubled" for
     # 1000000; item 408 reads "+50%" for 750000, which its Korean name gives.
     131: (EffectLine("Trade Item Price", 1, PERCENT),),

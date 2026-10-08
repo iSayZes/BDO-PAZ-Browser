@@ -6,6 +6,7 @@ from .allquestlist.handler import AllQuestListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
+from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
 from .employeeexp.handler import EmployeeExpBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
@@ -50,6 +51,7 @@ def register_bss_handlers() -> None:
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),
     )
+    register_handler("dropuitaginfo.bss", DropUiTagInfoBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())

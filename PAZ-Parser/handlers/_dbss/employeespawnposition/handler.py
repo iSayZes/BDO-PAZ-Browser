@@ -5,24 +5,26 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, sort_keys, table
+from _common.html import Column, e, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import loc_text
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from _common.town import town_name
+from _dbss.employeespawninfo.text import sailors_by_spawn_position
 from .parser import parse_employeespawnposition_records, parse_employeespawnpositionoffset_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "employeespawnpositionoffset.dbss"
-
-# Region names, keyed by region key.
-_LOC_REGION = 17
+_SAILOR_FILE = "employeespawninfo.dbss"
+_SAILOR_OFFSET_FILE = "employeespawninfooffset.dbss"
+_EMPTY = "-"
+_LIST_PREVIEW_ITEMS = 5
 _DIRECTION_DECIMALS = 2
 
 
 def _region_name(region_key: int) -> str:
     """The region's LOC name, else its key."""
-    return loc_text(_LOC_REGION, region_key) or str(region_key)
+    return town_name(region_key) or str(region_key)
 
 
 def _direction_text(record: dict) -> str:
@@ -50,6 +52,8 @@ class EmployeeSpawnPositionHandler(PreviewHandler):
         return [
             Column(cols["spawnPositionKey"], "num", sort_key="spawn_position_key"),
             Column(cols["region"], sort_key="region"),
+            # A list column: it would only sort by its string form.
+            Column(cols["sailors"]),
             Column(cols["x"], "num", sort_key="pos_x"),
             Column(cols["y"], "num", sort_key="pos_y"),
             Column(cols["z"], "num", sort_key="pos_z"),
@@ -61,7 +65,7 @@ class EmployeeSpawnPositionHandler(PreviewHandler):
 
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/{_OFFSET_FILE}"]
+        return [f"{folder}/{_OFFSET_FILE}", f"{folder}/{_SAILOR_FILE}", f"{folder}/{_SAILOR_OFFSET_FILE}"]
 
     def get_records(
         self,
@@ -73,11 +77,20 @@ class EmployeeSpawnPositionHandler(PreviewHandler):
         if offset_raw is None:
             raise ValueError(f"{_OFFSET_FILE} companion not found.")
 
+        sailor_data = companions.get(_SAILOR_FILE)
+        sailor_offset_data = companions.get(_SAILOR_OFFSET_FILE)
+        # Without both sailor files the Sailors column is a dash.
+        sailors = (
+            sailors_by_spawn_position(sailor_data, sailor_offset_data)
+            if sailor_data is not None and sailor_offset_data is not None
+            else {}
+        )
         return [
             {
                 **record,
                 "region": _region_name(record["region_key"]),
                 "direction": _direction_text(record),
+                "sailors": sailors.get(record["spawn_position_key"], []),
             }
             for record in parse_employeespawnposition_records(data, offset_raw)
         ]
@@ -94,6 +107,7 @@ class EmployeeSpawnPositionHandler(PreviewHandler):
             [
                 e(r["spawn_position_key"]),
                 e(r["region"]),
+                text_list_cell(r["sailors"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 e(f"{r['pos_x']:,.0f}"),
                 e(f"{r['pos_y']:,.0f}"),
                 e(f"{r['pos_z']:,.0f}"),

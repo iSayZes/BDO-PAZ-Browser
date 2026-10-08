@@ -7,6 +7,7 @@
   "columns": {
     "spawnPositionKey": "Spawn Position",
     "region": "Region",
+    "sailors": "Sailors",
     "x": "X",
     "y": "Y",
     "z": "Z",

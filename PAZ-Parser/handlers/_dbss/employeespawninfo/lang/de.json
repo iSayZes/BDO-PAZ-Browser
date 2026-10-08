@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "employeeKey": "Seefahrer-ID",
+    "name": "Name",
+    "towns": "Städte",
+    "spawnPositions": "Erscheinungsorte",
+    "hireItem": "Gegenstand zum Anheuern",
+    "respawn": "Wiedererscheinen",
+    "acceptText": "Zusage",
+    "refuseText": "Absage"
+  },
+  "meta": {
+    "count": "{count} anheuerbare Seefahrer"
+  }
+}

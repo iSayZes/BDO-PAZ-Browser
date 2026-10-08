@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "columns": {
+    "characterKey": "ID персонажа",
+    "employeeKey": "ID матроса",
+    "name": "Имя",
+    "towns": "Поселения",
+    "spawnPositions": "Точки появления",
+    "hireItem": "Предмет для найма",
+    "respawn": "Возрождение",
+    "acceptText": "Фраза согласия",
+    "refuseText": "Фраза отказа"
+  },
+  "meta": {
+    "count": "Матросов для найма: {count}"
+  }
+}

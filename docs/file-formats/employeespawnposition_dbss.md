@@ -17,9 +17,9 @@ spawn position 46   Iliya Island   (162,702, -4,856, 301,174)   facing ( 0.17, 0
 | File                               | Required | Role                                                      |
 | ---------------------------------- | -------- | --------------------------------------------------------- |
 | `employeespawnpositionoffset.dbss` | Required | `spawn_position_key -> (offset, size)` of every row       |
-| `languagedata_en.loc`              | Optional | Region names (LOC type 17, `str_id1` = `region_key`)      |
-
-Related but not read by the handler: `employeespawninfo.dbss` points at these rows (see Notes).
+| `employeespawninfo.dbss`           | Optional | Sailors that list each spawn position, for the Sailors column |
+| `employeespawninfooffset.dbss`     | Optional | Offset table of `employeespawninfo.dbss`                  |
+| `languagedata_en.loc`              | Optional | Region names (LOC type 17, `str_id1` = `region_key`), sailor names and titles (type 6) |
 
 All multi-byte values are little-endian.
 
@@ -78,6 +78,7 @@ The rows are in file order, which is not key order (41, 1, 42, 2, 43, 3, 4, 5, 4
 | -------------- | ---- | ------------------------------------------------------------ |
 | Spawn Position | num  | `spawn_position_key`                                         |
 | Region         | text | LOC type 17 name of `region_key`, falling back to the key    |
+| Sailors        | text | `Sailor <Ambitious>` for every `employeespawninfo.dbss` row whose `spawn_position_keys` hold this key, in that file's order; dash without both sailor files |
 | X              | num  | `pos_x`, whole number                                        |
 | Y              | num  | `pos_y`, whole number                                        |
 | Z              | num  | `pos_z`, whole number                                        |
@@ -96,7 +97,7 @@ The rows are in file order, which is not key order (41, 1, 42, 2, 43, 3, 4, 5, 4
 ## Notes
 
 - "Employee" in these file names means sailor: the client's sailor windows (`panel_window_sailormanager_all_*.luac`) work on `ToClient_getEmployeeWrapperByIndex`, `getEmployeeKey` and the `__eEmployeeAbility_*` ship stats, and the characters `employeespawninfo.dbss` places here (`59053` to `59072`) are all named Sailor in `characterstatic.dbss` with model `npc/employee_sailor`.
-- `employeespawninfo.dbss` rows (one per sailor character, keyed by a u16 character key) hold a u32 index, a u32 count and that many u32 spawn position keys. Examples: character `59061` lists `1` and `41` (Velia and Port Epheria), `59054` lists `46` (Iliya Island only), `59068` lists `44` and `50`. Every key 1 to 5 and 41 to 50 appears there; the file itself has no handler yet.
+- `employeespawninfo.dbss` rows (one per sailor character, keyed by a u16 character key) hold a sailor key, a u32 count and that many u32 spawn position keys, see [employeespawninfo](employeespawninfo_dbss.md). Examples: character `59061` lists `1` and `41` (Velia and Port Epheria), `59054` lists `46` (Iliya Island only), `59068` lists `44` and `50`. Every key 1 to 5 and 41 to 50 appears there.
 - The spawn position keys are their own key space. They overlap employee name IDs in `employeename.dbss` (1 to 60) only by value; nothing links the two.
 - The three regions match the towns where sailors can be hired in game: Velia, Port Epheria and Iliya Island.
 

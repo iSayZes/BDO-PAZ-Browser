@@ -92,4 +92,4 @@ To read a name record: seek to `offset` in `employeename.dbss`, read `size` byte
 
 ### Employee Foreign Keys
 
-None of the decoded sailor files hold an ID from this table. `employeestaticstatus.bss` and `employeeexp.bss` key their rows by sailor key (`1` to `29` and `1` to `23`), see [employeestaticstatus](employeestaticstatus_bss.md) and [employeeexp](employeeexp_bss.md); `employeespawnposition.dbss` keys are spawn position keys. Other employee DBSS files contain values that overlap this table's IDs, but those formats are not decoded enough to name exact fields here.
+None of the decoded sailor files hold an ID from this table. `employeestaticstatus.bss` and `employeeexp.bss` key their rows by sailor key (`1` to `29` and `1` to `23`), see [employeestaticstatus](employeestaticstatus_bss.md) and [employeeexp](employeeexp_bss.md); `employeespawnposition.dbss` keys are spawn position keys, and `employeespawninfo.dbss` holds a sailor key (`1` to `20`) and spawn position keys, see [employeespawninfo](employeespawninfo_dbss.md). Other employee DBSS files contain values that overlap this table's IDs, but those formats are not decoded enough to name exact fields here.

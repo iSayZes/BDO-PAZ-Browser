@@ -1,0 +1,21 @@
+{
+  "offsetColumns": {
+    "characterKey": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos"
+  },
+  "columns": {
+    "characterKey": "ID del personaje",
+    "employeeKey": "ID del marinero",
+    "name": "Nombre",
+    "towns": "Pueblos",
+    "spawnPositions": "Puntos de aparición",
+    "hireItem": "Objeto de contratación",
+    "respawn": "Reaparición",
+    "acceptText": "Frase de aceptación",
+    "refuseText": "Frase de rechazo"
+  },
+  "meta": {
+    "count": "{count} marineros para contratar"
+  }
+}

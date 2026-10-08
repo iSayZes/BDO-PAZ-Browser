@@ -10,8 +10,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `base_dialog.dbss` | Base record of every NPC dialog: Korean display name and the speech bubble lines shown over the NPC, keyed like `detail_dialog.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 |
 | `base_dialogoffset.dbss` | PABR index into `base_dialog.dbss`, same layout and keys as `detail_dialogoffset.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 |
 | `blizzardregioninfo.bss` | PABR snow regions of the Mountain of Eternal Winter and Ulukita: a key, the `regioninfo.bss` region and three unconfirmed values | [blizzardregioninfo](file-formats/blizzardregioninfo_bss.md) | 3 |
-| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 4 |
-| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 4 |
+| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 6 |
+| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 6 |
 | `buffsimply.bss` | PABR compact buff table, 30-byte rows with buff ID, icon path and `unknown_str` string indices, `is_shown` and flags | [buffsimply](file-formats/buffsimply_bss.md) | 1 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
 | `cashproductoffset.dbss` | Index into `cashproduct.dbss`, maps product ID → offset/size; no PABR magic and no trailer | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |

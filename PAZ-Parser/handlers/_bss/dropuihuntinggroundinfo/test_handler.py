@@ -87,8 +87,8 @@ CASE = HandlerCase(
             col="key",
             value=_MANSHA_FOREST,
             expected={
-                "name_kr": "만샤 숲",
-                "name": "Mansha Forest",
+                "name_kr": "Lv.50 만샤 숲",
+                "name": "Lv. 50 Mansha Forest",
                 "region": "Calpheon",
                 "node_key": 715,
                 "species": "1 Demihumans",
@@ -98,8 +98,8 @@ CASE = HandlerCase(
             col="key",
             value=_ARESION_TEMPLE,
             expected={
-                "name_kr": "아레시온 신전",
-                "name": "Aresion Temple",
+                "name_kr": "Lv.74 아레시온 신전",
+                "name": "Lv. 74 Aresion Temple",
                 "region": "Inner Edania",
                 "node_key": 2110,
                 "node_name": "Aresion Temple",

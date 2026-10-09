@@ -12,7 +12,7 @@ from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.lookup_index import IndexKind, index_entries, lookup
 from _common.pa_text import pa_cell, pa_fields, pa_html, pa_key
-from _common.pabr_offset import parse_pabr_offset_rows
+from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _common.offset_table import (
     OffsetColumn,
     OffsetTableHandler,
@@ -93,7 +93,7 @@ def buff_offset_handler() -> OffsetTableHandler:
             offset_column("offset", "dataOffset"),
             size_column("size", "size"),
         ],
-        offset_records(parse_pabr_offset_rows, "buff_id"),
+        offset_records(parse_pabr_u32_offset_rows, "buff_id"),
     )
 
 
@@ -169,7 +169,7 @@ class BuffHandler(PreviewHandler):
         if not offset_data:
             raise ValueError(f"{_OFFSET_FILE} companion not found")
 
-        records = parse_buff_records(data, parse_pabr_offset_rows(offset_data))
+        records = parse_buff_records(data, parse_pabr_u32_offset_rows(offset_data))
         for record in records:
             raw = _raw_description(record["buff_id"], record["description_kr"])
             record.update(pa_fields("title", extract_title_pa(raw)))

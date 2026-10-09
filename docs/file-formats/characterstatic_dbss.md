@@ -75,7 +75,7 @@ Offsets are relative to `data_offset`. The two scripts are length-prefixed, so e
 | `p+5`   | u32  | npc_kind         | Low byte is the character kind (see below); higher bits look like flags |
 | `p+9`   | u32  | unknown_p9       | Usually `0`; `65535` on 2,921 rows |
 | `p+13`  | u32  | unknown_p13      | Usually `0`; high-bit values such as `0x80000000` on some rows |
-| `p+17` onward | ... | attributes  | Mixed u32/f32-like fields; many common constants and zero regions |
+| `p+17` onward | ... | attributes  | Mixed u32/f32-like fields; many common constants and zero regions. Client 3464 inserted 8 bytes, at `p+196` on most rows |
 
 Reading `p+1` as a u32 (as bdo-data-extractor does) only works when `unknown_p3` is `0`; on 2,453 rows the high half is non-zero, so the ID is a u16.
 
@@ -98,7 +98,7 @@ Values `5`, `6`, `12`, `15` and `17` occur on 1 to 50 rows each. The value names
 
 ### Model Path
 
-Every record holds at least one model path, stored as an i64 byte length followed by ASCII text with no terminator, e.g. `[i64 25] npc/pedu2/npc_pedu2_named`. Its position after `p` varies (most often `p+291`), so find it by scanning for the length-prefixed string. 315 records hold a second path-like string; the longer one is the model. Top-level folders: `monster` (13,655), `npc` (5,078), `creature` (2,109), `object` (1,359), `riding` (793), `cash` (473).
+Every record holds at least one model path, stored as an i64 byte length followed by ASCII text with no terminator, e.g. `[i64 25] npc/pedu2/npc_pedu2_named`. Its position after `p` varies (most often `p+299` on client 3464, `p+291` before), so find it by scanning for the length-prefixed string. 315 records hold a second path-like string; the longer one is the model. Top-level folders: `monster` (13,655), `npc` (5,078), `creature` (2,109), `object` (1,359), `riding` (793), `cash` (473).
 
 The same length-prefixed ASCII form holds one or two other strings per record,
 behaviour names rather than paths: `9999` (8,212 rows in the 24,017-record
@@ -112,14 +112,19 @@ Offsets are relative to the end of the payload (`data_offset + payload_size`).
 
 | Offset | Type | Field      | Notes |
 | ------ | ---- | ---------- | ----- |
-| `-23`  | u8   | class_type | Gameplay class enum; `101` on every non-player row, `0`-`46` on the 106 `playercharacterstatic.bss` members |
-| `-22`  | u8   | unknown_t22 | `0`, or `3` on 65 rows (siege structures such as `12821` "Field HQ" and the node forts) |
-| `-21`  | u8[2] | zero      | Always `0` |
-| `-4`   | f32  | unknown_tail_f32 | `5000.0` on 23,836 rows, `15000.0` on 339, `3000.0` on 157, `1000.0` on 70 |
+| `-24`  | u8   | class_type | Gameplay class enum; `101` on every non-player row, `0`-`46` on the 106 `playercharacterstatic.bss` members |
+| `-23`  | u8   | unknown_t23 | `0`, or `3` on 65 rows (siege structures such as `12821` "Field HQ" and the node forts) |
+| `-22`  | u8[2] | zero      | Always `0` |
+| `-5`   | f32  | unknown_tail_f32 | `5000.0` on 23,969 rows, `15000.0` on 339, `3000.0` on 157, `1000.0` on 70 |
+| `-1`   | u8   | unknown_t1 | New in client 3464; `1` on 2,418 rows, 2,388 of them with `npc_kind` low byte `1`; else `0` |
 
-`class_type` is a different ID from `character_id`: Warrior is character `1` / class `0`, Ranger `2` / `4`, Sorceress `3` / `8`, Berserker `4` / `12`, Tamer `5` / `16`, Musa `21` / `20`, Valkyrie `25` / `24`. The class number resolves through LOC `str_type=21` (class names) and is the value the client's `getClassType()` returns. bdo-data-extractor reads it as a u32; that fails on the 65 rows where `unknown_t22` is `3`, so it is read here as a u8. Kunoichi and Ninja are separate classes (`25` and `26` in LOC type 21): character `26` Kunoichi has `25` and character `27` Ninja has `26`, but character `209`, also named Kunoichi with the same female model (`pc/13_pnw/ninjawomenaction_noweaponmain_w`), stores `26`. Whether that is a data slip or means something is not known; it cannot be seen in game.
+Before client 3464 the payload ended at the f32, so each offset above sat one
+byte closer to the end (`class_type` at `-23`). The parser reads only the
+current layout.
 
-Observed `payload_size` ranges from `456` to `1033` bytes (older fixture: `478` to `1055`).
+`class_type` is a different ID from `character_id`: Warrior is character `1` / class `0`, Ranger `2` / `4`, Sorceress `3` / `8`, Berserker `4` / `12`, Tamer `5` / `16`, Musa `21` / `20`, Valkyrie `25` / `24`. The class number resolves through LOC `str_type=21` (class names) and is the value the client's `getClassType()` returns. bdo-data-extractor reads it as a u32; that fails on the 65 rows where `unknown_t23` is `3`, so it is read here as a u8. Kunoichi and Ninja are separate classes (`25` and `26` in LOC type 21): character `26` Kunoichi has `25` and character `27` Ninja has `26`, but character `209`, also named Kunoichi with the same female model (`pc/13_pnw/ninjawomenaction_noweaponmain_w`), stores `26`. Whether that is a data slip or means something is not known; it cannot be seen in game.
+
+Observed `payload_size` ranges from `465` to `1042` bytes on client 3464 (earlier clients: `456` to `1033`; older fixture: `478` to `1055`).
 
 ## Script Values
 
@@ -195,7 +200,7 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 
 ## Notes
 
-- Observed files contain `24418` records (older fixture: `24017`; 2026-09-27 client: `24551`).
+- Observed files contain `24418` records (older fixture: `24017`; 2026-09-27 client and client 3464: `24551`).
 - Offset rows are sorted by descending character ID in early data but should be treated as an index, not as a sorted table guarantee.
 - `character_id` values are unique u16s; the highest observed is `65302`.
 - LOC lookup confirms sample IDs: `47759` is "Yamarko", `16640` is "Dev Plant210", and `62223` is "Wandering Merchant".
@@ -214,9 +219,9 @@ The block after `npc_kind` contains many stable fields and constants, but its su
 
 The low byte tracks the model folder (`0` player, `1`/`7`/`8` monster, `2` NPC, `3` pet or mount, `4` object, `9` summon), but the names of the values are not confirmed, and the high bits (e.g. `0xFE0C0003` on 2,788 rows) are unmapped. bdo-data-extractor calls it a semantic entity-kind bitfield with partly unmapped combat flags.
 
-### What are `unknown_p3`, `unknown_p`, and `unknown_t22`?
+### What are `unknown_p3`, `unknown_p`, `unknown_t23` and `unknown_t1`?
 
-`unknown_p3` is non-zero on 2,453 rows, all but one of kind `1` (monster), with values such as `95` and `184`. `unknown_p` is `1` on 346 rows, and `unknown_t22` is `3` only on siege structures. None has been tied to another table.
+`unknown_p3` is non-zero on 2,453 rows, all but one of kind `1` (monster), with values such as `95` and `184`. `unknown_p` is `1` on 346 rows, `unknown_t23` is `3` only on siege structures, and `unknown_t1` (added in client 3464) is `1` on 2,418 rows, nearly all monsters. None has been tied to another table.
 
 ### What is the 8-byte payload header?
 

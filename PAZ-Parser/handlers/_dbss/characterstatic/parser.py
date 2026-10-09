@@ -5,7 +5,7 @@ The payload opens with two length-prefixed scripts, then the ID again:
 
     u8[8] header | u8 tag 0x15 | action_script | condition_script
     | u8 | u16 character_id | u16 | u32 npc_kind | ... model_path ...
-    | ... | u8 class_type @ end-23
+    | ... | u8 class_type @ end-24 | u8[23]
 
 Both scripts are an i64 UTF-16 code-unit count followed by UTF-16LE text. The
 model path is an i64 byte count plus ASCII at no fixed offset, so it is found by
@@ -29,7 +29,7 @@ _CHARACTER_ID = 0x01
 _NPC_KIND = 0x05
 _AFTER_SCRIPTS_SIZE = _NPC_KIND + 4
 # From the end of the payload.
-_CLASS_TYPE_FROM_END = 23
+_CLASS_TYPE_FROM_END = 24
 # class_type on every row that is not a player character.
 NO_CLASS_TYPE = 101
 

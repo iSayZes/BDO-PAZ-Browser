@@ -12,7 +12,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `blizzardregioninfo.bss` | PABR snow regions of the Mountain of Eternal Winter and Ulukita: a key, the `regioninfo.bss` region and three unconfirmed values | [blizzardregioninfo](file-formats/blizzardregioninfo_bss.md) | 3 |
 | `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 6 |
 | `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 6 |
-| `buffsimply.bss` | PABR compact buff table, 30-byte rows with buff ID, icon path and `unknown_str` string indices, `is_shown` and flags | [buffsimply](file-formats/buffsimply_bss.md) | 1 |
+| `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `unknown_str` string indices, `is_shown` and flags | [buffsimply](file-formats/buffsimply_bss.md) | 1 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
 | `cashproductoffset.dbss` | Index into `cashproduct.dbss`, maps product ID → offset/size; no PABR magic and no trailer | [cashproduct](file-formats/cashproduct_dbss.md) | 4 |
 | `characterfunction.dbss` | NPC dialog functions: per character, 37 fixed slots of Korean button text and condition script (Shop, Repair, Stable, Conversation, Node Management ...), with managed and represented node keys; English button text in LOC type 32 | [characterfunction](file-formats/characterfunction_dbss.md) | 5 |

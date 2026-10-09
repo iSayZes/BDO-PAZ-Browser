@@ -2,7 +2,7 @@
 
 Each record chains fixed blocks and length-prefixed strings:
 
-    u16 buff_id | name | 133-byte stats block | unknown_str | icon_path
+    u32 buff_id | name | 133-byte stats block | unknown_str | icon_path
     | u8 is_shown | u32 apply_rate | description | 27-byte tail block
 
 Full layout in docs/file-formats/buff_dbss.md.
@@ -15,11 +15,12 @@ import struct
 from _common.binary import u16, u32
 from _common.buff import buff_icon_path
 from _common.inline_text import decode_inline_text
-from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
+from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import read_prefixed_at
 from _common.teleport import TELEPORT_EFFECT_TYPE, teleport_point_id
 
 
+_ID_SIZE = 4
 STATS_BLOCK_SIZE = 133
 TAIL_BLOCK_SIZE = 27
 PARAM_COUNT = 10
@@ -47,10 +48,10 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
     end = start + row.size
     if end > len(data):
         raise ValueError(f"buff {row.entry_id} runs past the end of buff.dbss")
-    if u16(data, start) != row.entry_id:
+    if u32(data, start) != row.entry_id:
         raise ValueError(f"buff {row.entry_id} record does not start with its own ID")
 
-    name, stats = read_prefixed_at(data, start + 2, end, wide=True)
+    name, stats = read_prefixed_at(data, start + _ID_SIZE, end, wide=True)
     unknown_str, pos = read_prefixed_at(data, stats + STATS_BLOCK_SIZE, end, wide=True)
     icon, pos = read_prefixed_at(data, pos, end, wide=False)
 
@@ -98,7 +99,7 @@ def parse_buff_records(data: bytes, offset_rows: list[PabrOffsetRow]) -> list[di
 
 def _teleport_buffs(data: bytes, offset_data: bytes) -> list[dict]:
     """The effect type 23 buffs, which name a teleport.dbss section and key."""
-    records = parse_buff_records(data, parse_pabr_offset_rows(offset_data))
+    records = parse_buff_records(data, parse_pabr_u32_offset_rows(offset_data))
     return [record for record in records if record["effect_type"] == TELEPORT_EFFECT_TYPE]
 
 

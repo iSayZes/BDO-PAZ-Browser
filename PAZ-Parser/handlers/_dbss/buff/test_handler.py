@@ -126,7 +126,6 @@ BUFF_CASE = HandlerCase(
                 "is_shown": False,
             },
         ),
-        TargetTest(col="buff_id", value=48727, expected={"effect": "Combat EXP +15%"}),
         # Summon: Keeper Marg: in game "Marg's attack damage 579%" and
         # "Recover 250 MP every 10 sec".
         TargetTest(
@@ -279,6 +278,14 @@ def test_boon_titles_keep_their_game_colour(buff_result: HandlerResult) -> None:
         html = pa_html(record["_title_pa"])
         assert html.startswith('<span class="pa-color" style="color: rgba(')
         assert e(_BOON_TITLE) in html
+
+
+def test_boon_exp_buff_reads_its_own_rate(buff_result: HandlerResult) -> None:
+    """Buff 48727 of Adventure's Boon renders its stored rate (per million) as Combat EXP."""
+    record = next(r for r in buff_result.records if r["buff_id"] == 48727)
+
+    assert (record["effect_type"], record["param_2"]) == (25, 0)
+    assert record["effect"] == f"Combat EXP +{record['param_1'] // 10_000}%"
 
 
 def test_buff_group_levels_are_unique(buff_result: HandlerResult) -> None:

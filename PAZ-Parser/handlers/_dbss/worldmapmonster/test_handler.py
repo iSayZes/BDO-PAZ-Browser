@@ -70,7 +70,7 @@ MARKER_CASE = HandlerCase(
                 "name": "Basilisk Den",
                 "icon_path": f"{_BOSS_DIR}/worldmapmonster_36.dds",
                 "hunting_ground_key": _BASILISK_DEN_HUNTING_GROUND,
-                "hunting_ground": "Basilisk Den",
+                "hunting_ground": "Lv. 57 Basilisk Den",
             },
         ),
         TargetTest(

@@ -49,8 +49,9 @@ Unlike `skilloffset.dbss` this index has no magic and no trailer: a u32 count
 ### Skill Simply Record (variable, `size` bytes from `offset`)
 
 Four lists make the record variable. Offsets marked `H+`, `N+` and `E+` count
-from the end of `hashes`, `next_rank_keys` and `exclusive_skill_nos`. Fields
-called "zero" are `0` on every record of client 3458.
+from the end of `hashes`, `next_rank_keys` and `exclusive_skill_nos`. Record
+counts in the table are from client 3458, and fields called "zero" are `0` on
+every record of it.
 
 | Offset  | Type    | Field               | Notes                                                              |
 | ------- | ------- | ------------------- | ------------------------------------------------------------------ |
@@ -308,7 +309,7 @@ needs skills whose tooltip shows such a value.
 
 Needs class: Wizard (a new character below level 8)
 
-The byte is set on 4,643 records and none of them costs skill points. On
+On client 3458 the byte is set on 4,643 records and none of them costs skill points. On
 Wizard it is set on the base skills, whose tooltips show "Required Skill
 Points : 0" ("Fireball IV", "Lightning V", "Teleport III"), and clear on
 Awakening and Prime skills. The skill window and skill tooltip Lua

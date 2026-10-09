@@ -26,7 +26,7 @@ buff_id 48830
 | `skill.dbss`, `itemenchant.dbss` | Optional | Applied By and inherited titles, through the `BUFF_ITEMS` and `SKILL_BUFFS` lookup indexes |
 | `exploration.bss`, `mapdata_realexplore2.bwp` | Optional | Sub-node names of type 37 (`Bambu Valley - Mining`), through the `NODE_PARENT` lookup index |
 
-[`buffsimply.bss`](buffsimply_bss.md) holds the same buff IDs in fixed 30-byte
+[`buffsimply.bss`](buffsimply_bss.md) holds the same buff IDs in fixed 32-byte
 rows with the icon path, `unknown_str`, `is_shown` and a few stats bytes. It is
 not needed to read this file.
 
@@ -43,7 +43,8 @@ The records tile the file exactly: sorted by offset, each ends where the next
 begins, and the last ends at EOF.
 
 Observed records: 44,609 in the pre-2026-09-27 test fixture, 44,645 in the
-2026-09-27 client. The row counts elsewhere in this doc are from the fixture.
+2026-09-27 client (3458), 44,683 on client 3464. The row counts elsewhere in
+this doc are from the pre-2026-09-27 fixture.
 
 ## Record Structure
 
@@ -53,7 +54,7 @@ count characters, ASCII lengths count bytes.
 
 | Order | Type               | Field       | Notes                                                    |
 | ----- | ------------------ | ----------- | -------------------------------------------------------- |
-| 1     | u16                | buff_id     | Always equals the offset row's `buff_id`                 |
+| 1     | u32                | buff_id     | Always equals the offset row's `buff_id`; a u16 before client 3464, see Notes |
 | 2     | prefixed UTF-16    | name        | Internal Korean label; no LOC counterpart                |
 | 3     | 133 bytes          | stats block | See Stats Block below                                    |
 | 4     | prefixed UTF-16    | unknown_str | Short digit text, `"0"` in 39,455 rows; 186 distinct     |
@@ -63,7 +64,7 @@ count characters, ASCII lengths count bytes.
 | 8     | prefixed UTF-16    | description | Korean, with `<PAColor>` tags; empty in 30,290 rows      |
 | 9     | 27 bytes           | tail block  | See Tail Block below                                     |
 
-Record sizes range from 203 to 2,198 bytes, median 237.
+Record sizes range from 205 to 2,200 bytes, median 239, on client 3464.
 
 ### Stats Block (133 bytes)
 
@@ -115,9 +116,9 @@ Offsets are relative to the end of the description string. Mostly zero.
 
 ## `buffoffset.dbss`
 
-`PABR` index into `buff.dbss`, the same layout as `characterstaticoffset.dbss`
-except that `data_offset` points *at* the inline `buff_id` and `size` includes
-it.
+`PABR` index into `buff.dbss` with u32 IDs, the layout of
+`mentalcardoffset.dbss` (`parse_pabr_u32_offset_rows`). `data_offset` points
+*at* the inline `buff_id` and `size` includes it.
 
 ### Header (8 bytes)
 
@@ -126,20 +127,23 @@ it.
 | `+0x00` | u8[4] | magic | ASCII `PABR`                               |
 | `+0x04` | u32   | count | Always equals the `buff.dbss` count        |
 
-### Index Row (10 bytes, repeated `count` times)
+### Index Row (12 bytes, repeated `count` times)
 
 | Offset  | Type | Field       | Notes                                           |
 | ------- | ---- | ----------- | ----------------------------------------------- |
-| `+0x00` | u16  | buff_id     | Unique; 43 to 65,528                            |
-| `+0x02` | u32  | data_offset | Absolute offset of the record in `buff.dbss`    |
-| `+0x06` | u32  | size        | Record size in bytes, including the `buff_id`   |
+| `+0x00` | u32  | buff_id     | Unique; 43 to 65,528, plus five IDs from 700,000 to 4,100,000,000 on client 3464 |
+| `+0x04` | u32  | data_offset | Absolute offset of the record in `buff.dbss`    |
+| `+0x08` | u32  | size        | Record size in bytes, including the `buff_id`   |
+
+Before client 3464 the row was 10 bytes with a u16 `buff_id`, the layout of
+`characterstaticoffset.dbss`. The parser reads only the u32 layout.
 
 ### Trailer (12 bytes)
 
 | Offset  | Type | Value  | Notes                                         |
 | ------- | ---- | ------ | --------------------------------------------- |
 | `+0x00` | u32  | `0`    |                                               |
-| `+0x04` | u32  | varies | End offset of the index rows (`446098`)       |
+| `+0x04` | u32  | varies | End offset of the index rows (`536204` on client 3464) |
 | `+0x08` | u32  | `0`    |                                               |
 
 ## Enum Values
@@ -949,6 +953,15 @@ development items (233 to 250, 252). 248 to 251 are not exclusive.
 
 ## Notes
 
+- Client 3464 widened `buff_id` from u16 to u32 in this file, in
+  `buffoffset.dbss` (10-byte rows to 12), in `buffsimply.bss` (30-byte rows
+  to 32) and in the `skill.dbss` buff slots. The other fields kept their
+  layout. The five new buffs above 65,535 are the effects of
+  `아그리스의 축복 주문서` ("Agris blessing scroll", one hour each):
+  700000 Combat EXP +300%, 1000000 item drop rate +30%, 10000000 monster
+  damage reduction +10, 100000000 death penalty resistance +5% and
+  4100000000 Max Weight +100 LT. Their IDs are round numbers far above the
+  old 65,528 maximum.
 - `icon_path` is set in 15,272 records over 1,017 distinct paths. 221 of those
   hold the literal placeholder `UNKNOWN`, a few use backslash separators and
   three double a separator (`04_PC_Skill//04_Debuff`). Resolve by
@@ -995,8 +1008,8 @@ development items (233 to 250, 252). 248 to 251 are not exclusive.
   | 48724   | All Accuracy +8          | 40          | 3        | 8       |
   | 48725   | All Damage Reduction +8  | 43          | 3        | 8       |
   | 48726   | Max HP +150              | 2           | 150      | 0       |
-  | 48727   | Combat EXP +15%          | 25          | 150000   | 0       |
-  | 48728   | Skill EXP +15%           | 25          | 150000   | 1       |
+  | 48727   | Combat EXP +30%          | 25          | 300000   | 0       |
+  | 48728   | Skill EXP +30%           | 25          | 300000   | 1       |
 
   The 60 and 300 minute variants sit either side, at 48717 and 48729.
 - Only headline buffs have a display name, and it is not a field: their

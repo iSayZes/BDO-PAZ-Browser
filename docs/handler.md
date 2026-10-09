@@ -1170,7 +1170,7 @@ skills) that would otherwise show only an ID.
 
 `BUFF_ICON` maps a buff ID to its icon. It reads
 [buffsimply.bss](file-formats/buffsimply_bss.md), which stores the same icon
-paths as `buff.dbss` in fixed 30-byte rows (1.4 MB against 12 MB of
+paths as `buff.dbss` in fixed 32-byte rows (1.4 MB against 12 MB of
 variable-length records). Buffs without an icon or with the `UNKNOWN`
 placeholder are left out. Read it through `IconKind.BUFF`, or through
 `buff_list_cell()` in `_common/buff.py`, which draws a buff list with icons

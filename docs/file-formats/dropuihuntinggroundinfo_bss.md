@@ -12,7 +12,7 @@ Example:
 
 ```text
 hunting ground 117, region tab 13 (Inner Edania), categories 3 (Marni's Realm), 8 (Allan Serbin's Landscape)
-  name     아레시온 신전 -> "Aresion Temple" (LOC 116)
+  name     Lv.74 아레시온 신전 -> "Lv. 74 Aresion Temple" (LOC 116)
   AP / DP  recommended 415 / 495, Total Stat 2455 / 850
   Max AP   2485 (5%)
   node     2110 Aresion Temple (LOC 29)
@@ -227,6 +227,10 @@ record, since they repeat the ARGB values.
 
 ## Notes
 
+- Since client 3464 every one of the 112 names opens with a level, in the
+  Korean string table (`Lv.74 아레시온 신전`) and in LOC type 116
+  (`Lv. 74 Aresion Temple`). The node names (LOC type 29) carry none. The
+  handler shows the names as stored.
 - The drop item window Lua (`window/dropitem/panel_window_renewdropitem_all_1`)
   reads the row through `ToClient_getDropUIHuntingGroundStaticStatusWrapper`;
   its getters match the fields: `getMainCategoryKey`,

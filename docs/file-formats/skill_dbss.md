@@ -96,8 +96,8 @@ empty name `N` is `17`.
 | `N+53`  | u16        | stamina_cost        | Stamina the skill costs; `0` on 26,635 records, `1` on 2,825, up to `600`; see below |
 | `N+55`  | u8[23]     | unknown_n55         | Not decoded                                                     |
 | `N+78`  | u32        | cooldown_ms         | Cooldown in milliseconds; `0` on 22,798 records, see Notes      |
-| `N+82`  | u16[10]    | buff_ids            | `buff.dbss` IDs, zero-padded; see below                          |
-| `N+102` | string     | description         | Korean description, UTF-16; empty on 21,114 records, `UNKNOWN` on 1,284, `<null>` on 43. The Korean source of LOC type `13` for the same `(skill_no, level)`, and often the same text as LOC type `10` `str_id4 = 1`, see Notes. Line breaks are stored as the two characters `\n` (873 on client 3458) and decoded by the parser |
+| `N+82`  | u32[10]    | buff_ids            | `buff.dbss` IDs, zero-padded; see below                          |
+| `N+122` | string     | description         | Korean description, UTF-16; empty on 21,114 records, `UNKNOWN` on 1,284, `<null>` on 43. The Korean source of LOC type `13` for the same `(skill_no, level)`, and often the same text as LOC type `10` `str_id4 = 1`, see Notes. Line breaks are stored as the two characters `\n` (873 on client 3458) and decoded by the parser |
 | next    | string     | script              | UTF-16 effect script such as `DAM_ATT_2(...)`, `AWAKEN();`, `BATH();`; empty on 21,594 records |
 | next    | u8[36]     | unknown_tail        | Not decoded                                                     |
 | next    | u32        | next_skill_count    | `0` on 25,209 records, `1` on 4,560; up to `75`, see below       |
@@ -108,14 +108,19 @@ empty name `N` is `17`.
 | next    | f32        | unknown_f32         | `-1.0` on 29,722 records, else `0.0`                            |
 | next    | u8[3]      | unknown_end         | Usually zero                                                    |
 
-Every one of the 30,424 records on client 3458 walks to exactly its `size`
+Every one of the 30,481 records on client 3464 walks to exactly its `size`
 with this layout.
 
 ### `buff_ids`
 
-Ten u16 slots. The IDs fill the front and the rest are `0`; no record has a
-non-zero ID after a zero. 20,362 records name one buff, 507 fill all ten, and
-107 name none. Every ID is a `buff.dbss` key.
+Ten u32 slots. The IDs fill the front and the rest are `0`; no record has a
+non-zero ID after a zero. On client 3464, 20,418 records name one buff, 507
+fill all ten, and 96 name none. Every ID is a `buff.dbss` key.
+
+Before client 3464 the slots were u16, so the block was 20 bytes shorter and
+`description` started at `N+102`. The widening came with the first buff IDs
+above 65,535 (see the `buff.dbss` Notes); skills 44974 to 44978 (level 1)
+apply those five buffs. The parser reads only the u32 layout.
 
 This is the item to buff link: `itemenchant.dbss` `skill_key_1` and
 `skill_key_2` are keys of this table, and the buffs of both skills are the

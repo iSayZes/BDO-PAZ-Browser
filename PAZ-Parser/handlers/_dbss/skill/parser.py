@@ -5,7 +5,7 @@ record. A record, in order:
 
     u32 skill_key | u32 level_1_key | u8 | ascii name | u32 name_hash
     | u8[40] | u16 resource_cost | u8[7] | u16 stamina_cost | u8[23]
-    | u32 cooldown_ms | u16[10] buff_ids | utf16 description
+    | u32 cooldown_ms | u32[10] buff_ids | utf16 description
     | utf16 script | u8[36] | u32 n + n x u32 next_skill_keys | u32 0
     | u32 m + m x u32 base_skill_keys | f32 | u8[3]
 
@@ -28,7 +28,7 @@ _U16 = struct.Struct("<H")
 _U32 = struct.Struct("<I")
 _KEY_PAIR = struct.Struct("<II")
 _BUFF_SLOTS = 10
-_BUFF_IDS = struct.Struct(f"<{_BUFF_SLOTS}H")
+_BUFF_IDS = struct.Struct(f"<{_BUFF_SLOTS}I")
 # The 74 bytes between name_hash and cooldown_ms: unknown_n04, resource_cost
 # (MP or WP, by class), unknown_n46, stamina_cost, unknown_n55.
 _UNKNOWN_N04_SIZE = 40

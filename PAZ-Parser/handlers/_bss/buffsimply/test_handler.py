@@ -19,7 +19,7 @@ from tests.framework import (
 
 from _bss.buffsimply.parser import build_buff_icon_index
 from _common.buff import buff_icon_path
-from _common.pabr_offset import parse_pabr_offset_rows
+from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _dbss.buff.parser import parse_buff_records
 
 
@@ -44,21 +44,21 @@ CASE = HandlerCase(
                 "description",
                 "is_shown",
                 "unknown_str",
-                "unknown_02",
-                "unknown_05",
-                "unknown_06",
+                "unknown_04",
                 "unknown_07",
+                "unknown_08",
                 "unknown_09",
-                "unknown_0a",
-                "unknown_0f",
-                "unknown_10",
-                "unknown_14",
+                "unknown_0b",
+                "unknown_0c",
+                "unknown_11",
+                "unknown_12",
                 "unknown_16",
+                "unknown_18",
             ],
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
-        RangeTest(col="unknown_0f", min_val=0, max_val=1),
-        RangeTest(col="unknown_14", min_val=0, max_val=1),
+        RangeTest(col="unknown_11", min_val=0, max_val=1),
+        RangeTest(col="unknown_16", min_val=0, max_val=1),
         TargetTest(
             col="buff_id",
             value=48830,
@@ -93,7 +93,7 @@ def test_buffsimply_bss(spec: Any, buffsimply_result: HandlerResult) -> None:
 def test_rows_copy_their_buff_dbss_record(buffsimply_result: HandlerResult) -> None:
     """Same buffs in buffoffset.dbss order, with the same icon, is_shown and unknown_str."""
     source = buffsimply_result.source
-    offset_rows = parse_pabr_offset_rows(source.file(_BUFF_OFFSET_FILE))
+    offset_rows = parse_pabr_u32_offset_rows(source.file(_BUFF_OFFSET_FILE))
     fields = ("buff_id", "icon_path", "is_shown", "unknown_str")
     expected = [
         {field: record[field] for field in fields}

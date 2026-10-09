@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "setId": "ID de set",
+    "name": "Nom",
+    "lightstones": "Pierres de lumière",
+    "substitutes": "Substituts",
+    "effect": "Effet",
+    "skillId": "ID de compétence",
+    "buffs": "Bonus"
+  },
+  "meta": {
+    "count": "{count} sets de pierres de lumière"
+  }
+}

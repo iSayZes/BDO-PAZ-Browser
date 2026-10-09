@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "setId": "ID набора",
+    "name": "Название",
+    "lightstones": "Светящиеся камни",
+    "substitutes": "Замены",
+    "effect": "Эффект",
+    "skillId": "ID навыка",
+    "buffs": "Эффекты"
+  },
+  "meta": {
+    "count": "Наборов светящихся камней: {count}"
+  }
+}

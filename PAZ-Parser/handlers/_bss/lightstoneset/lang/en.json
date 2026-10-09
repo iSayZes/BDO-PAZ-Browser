@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "setId": "Set ID",
+    "name": "Name",
+    "lightstones": "Lightstones",
+    "substitutes": "Substitutes",
+    "effect": "Effect",
+    "skillId": "Skill ID",
+    "buffs": "Buffs"
+  },
+  "meta": {
+    "count": "{count} Lightstone sets"
+  }
+}

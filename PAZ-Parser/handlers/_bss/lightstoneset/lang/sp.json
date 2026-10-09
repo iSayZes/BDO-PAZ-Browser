@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "setId": "ID del conjunto",
+    "name": "Nombre",
+    "lightstones": "Piedras de luz",
+    "substitutes": "Sustitutos",
+    "effect": "Efecto",
+    "skillId": "ID de habilidad",
+    "buffs": "Bonificadores"
+  },
+  "meta": {
+    "count": "{count} conjuntos de piedras de luz"
+  }
+}

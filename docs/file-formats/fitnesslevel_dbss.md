@@ -44,7 +44,7 @@ The blocks fill the file exactly: 4 + 3 x (4 + 51 x 29) = 4,453 bytes on client 
 | ------- | ---- | ------------ | ---------------------------------------------------------------------------------------------- |
 | `+0x00` | u8   | fitness_type | `0` Breath, `1` Strength, `2` Health; equals the block index                                   |
 | `+0x01` | u32  | level        | `0` to `50`, ascending inside a block                                                          |
-| `+0x05` | u64  | exp          | EXP needed to go from this level to the next (assumed, see Open Questions); `0` on level 0, rising to 5,500,000 (Breath, Strength) and 2,750,000 (Health) on level 50 |
+| `+0x05` | u64  | exp          | EXP needed to go from this level to the next, read like `lifeexp.dbss` (Notes); `0` on level 0, rising to 5,500,000 (Breath, Strength) and 2,750,000 (Health) on level 50 |
 | `+0x0D` | f32  | max_stamina  | Breath total: max Stamina bonus; `0` in Strength and Health rows                               |
 | `+0x11` | f32  | weight_limit | Strength total: weight limit bonus in 1/10,000 LT (`400000` is 40 LT); `0` elsewhere          |
 | `+0x15` | f32  | max_hp       | Health total: max HP bonus; `0` elsewhere                                                      |
@@ -118,9 +118,4 @@ The first Breath row sits at `0x08`, after the type count and Breath's level cou
 - The client reads a fitness level and its EXP through `getFitnessLevel`, `getCurrFitnessExperiencePoint` and `getDemandFItnessExperiencePoint` (`panel_characterinfo_basic_all_3.luac`); the bonus shown in the tooltip comes from `ToClient_GetFitnessLevelStatus(type)`.
 - The four stat floats are cumulative totals, not per-level increments: every column only rises with the level (Breath 25, 50, 75 up to 800; Strength 2 LT up to 80 LT; Health HP 10 up to 490 and MP/WP/SP 10 up to 300).
 - Breath and Strength have the same EXP from level 41 up and Strength needs less than Breath on levels 1 to 40.
-
-## Open Questions
-
-### EXP Row Direction
-
-Assumed: `exp` on level N is the EXP needed to go from N to N + 1, because characters are believed to start every fitness stat at Lv.1. Row 0 is then an unused placeholder (`0` EXP, no bonus), and the level 50 value is the bar's demand at the max level. Not confirmed: the game shows no EXP number, only a bar the Lua draws as current / demand, and the stat tooltips only settle the bonus side (see Level Row). If a fresh character shows Breath Lv.0 instead, `exp` is the EXP to reach level N and the `exp` description above needs flipping.
+- Row direction: read like [lifeexp](lifeexp_dbss.md), where a packet capture confirmed that the row of level N is the EXP to go from N to N + 1. Both tables use the same block shape and the client draws both bars as current / demand (`getCurrFitnessExperiencePoint` / `getDemandFItnessExperiencePoint` here, the life skill pair there). Row 0 (`0` EXP, no bonus) is then an unused placeholder, as characters start every fitness stat at Lv.1. No fitness capture yet; a fitness EXP message whose bar matches row N + 1, or a fresh character at Breath Lv.0, would flip it.

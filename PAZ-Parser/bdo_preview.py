@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import base64
+import codecs
 from array import array
 import html as _html
 import importlib.util
@@ -19,6 +20,8 @@ from table_sort import SORT_DESC, TableSort, sort_order
 from ui_text import set_ui_language, ui_text
 
 _TEXT_LIMIT = 512 * 1024   # bytes shown in text view
+# Tried in order. Korean 3ds Max exports (.pa, .pc) are CP949, not UTF-8.
+_TEXT_ENCODINGS: tuple[str, ...] = ("utf-8", "cp949")
 
 HEX_ROWS_PER_PAGE    = 512   # 512 × 16 bytes = 8 KB per page
 PARSED_RECORDS_PER_PAGE = 500
@@ -286,6 +289,22 @@ def set_records_source(source: RecordsSource | None) -> None:
 
 # ── Text ──────────────────────────────────────────────────────────────────────
 
+def decode_text(data: bytes, is_truncated: bool = False) -> str:
+    """Decode with the first of `_TEXT_ENCODINGS` that reads the whole buffer.
+
+    A truncated buffer may end inside a multibyte character; that tail is
+    dropped instead of failing the encoding. When none fits, UTF-8 with
+    replacement characters.
+    """
+    for encoding in _TEXT_ENCODINGS:
+        decoder = codecs.getincrementaldecoder(encoding)()
+        try:
+            return decoder.decode(data, final=not is_truncated)
+        except UnicodeDecodeError:
+            continue
+    return data.decode("utf-8", errors="replace")
+
+
 class TextHandler(PreviewHandler):
     """Renders plain text files. Does not produce a parsed view."""
 
@@ -297,7 +316,7 @@ class TextHandler(PreviewHandler):
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         truncated = len(data) > _TEXT_LIMIT
-        content   = data[:_TEXT_LIMIT].decode("utf-8", errors="replace")
+        content   = decode_text(data[:_TEXT_LIMIT], is_truncated=truncated)
         note      = ""
         if truncated:
             text = ui_text("preview.truncated", shown=_TEXT_LIMIT // 1024, total=len(data) // 1024)
@@ -502,6 +521,9 @@ _REGISTRY: dict[str, PreviewHandler] = {
         ".log", ".htm", ".html", ".yaml", ".yml", ".lua",
         ".ai", ".css", ".js", ".h", ".srt",
         ".mxml", ".weathercolortablexml", ".xmp",
+        ".cl", ".ifl",
+        # 3ds Max text exports of meshes and animations
+        ".pa", ".pc", ".ph", ".pm", ".pami",
     )},
     **{ext: _image_handler for ext in (
         ".dds", ".dds1", ".dds11",

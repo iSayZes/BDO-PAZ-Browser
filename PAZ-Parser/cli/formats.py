@@ -31,61 +31,53 @@ _FORMATS_IGNORE: frozenset[str] = frozenset({
     ".dxil", # Compiled DirectX shader, not a game format
     ".fxo10", # Compiled DirectX Shader, not a game format
     ".fxo11", # Compiled DirectX Shader, not a game format
-    # skip for now/I have not checked these:
-    ".barrier",
-    ".bk2",
-    ".bkd",
-    ".bnk", # Wwise SoundBank?
-    ".chroma",
-    ".cl",
-    ".col", # Computational boundary data?
-    ".collisiondata2", # Computational boundary data?
-    ".combine",
-    ".data",
-    ".db", # Database File?
-    ".fcb",
-    ".gnf",
-    ".hdr", # Radiance HDR Image?
-    ".hlod", # Level of Detail?
-    ".house",
-    ".ifl",
-    ".ipam",
-    ".light",
-    ".lightlist",
-    ".lod", # Level of Detail?
-    ".mapdata",
-    ".namelist",
-    ".object",
-    ".pa",
-    ".paa", # Animation?
-    ".paac",
-    ".paach",
-    ".paap",
-    ".pab", # Skeleton?
-    ".pabav",
-    ".pac", # Skinned Mesh / Character Models?
-    ".pad",
-    ".pae",
-    ".paem",
-    ".pah",
-    ".pam", # Static Object Mesh?
-    ".pami",
-    ".pas",
-    ".paseqfe",
-    ".pat",
-    ".pc",
-    ".pcm", # Pulse-Code Modulation?
-    ".ph",
-    ".pm",
-    ".probe",
-    ".procedural",
-    ".r3m",
-    ".rid",
-    ".tome",
-    ".tree",
-    ".treelist",
-    ".treelist2",
-    ".vnl",
+    ".barrier", # Siege barrier outlines, x/y/z float points (gamecommondata/villagesiegebarrier)
+    ".bk2", # Bink 2 video, "KB2j" magic (ui_movie)
+    ".bkd", # Region map block data, pairs with .rid (ui_texture/minimap/area/*.bmp.bkd)
+    ".bnk", # Wwise SoundBank, "BKHD" magic (sound2022/windows/<language>)
+    ".chroma", # RGB lighting effects for keyboard, mouse and mousepad (gamecommondata/ledani)
+    ".col", # Collision objects in neighbouring sectors (1 file in mapdata_real)
+    ".collisiondata2", # Havok tagfile, "TAG0" + "SDKV20170100", collision per sector
+    ".combine", # World data per sector (mapdata_real/sectormapinfo_combine)
+    ".data", # Raw floats: terrain heightfield.data and effect/turbulence.data
+    ".db", # Windows thumbs.db left in texture/
+    ".fcb", # 3 effect files of 4 to 68 bytes (effect/texture)
+    ".gnf", # PS4 texture, "GNF " magic (1 file)
+    ".hdr", # Radiance HDR environment maps, "#?RADIANCE" magic (texture/)
+    ".hlod", # HLOD sector coordinate list (mapdata_real/hloddata)
+    ".house", # Every housing slot key, e.g. HH_-101_-1_88_1_0 (1 file)
+    ".ipam", # Object mesh paths and placements per sector (object/intergrate)
+    ".light", # Event map lights (mapdata_real/event)
+    ".lightlist", # Far light list (mapdata_real/farlightlist.lightlist)
+    ".lod", # Float point list per town, e.g. hideltown.lod
+    ".mapdata", # LOD map data per sector (sectormapinfo_combine/*_lod.mapdata)
+    ".namelist", # Far tree model names, .srt paths (mapdata_real)
+    ".object", # Event map object placements with .pam paths
+    ".paa", # Animations, binary form of the .pa text exports (character/motion)
+    ".paac", # Action charts per character (character/binaryactionchart)
+    ".paach", # Action chart header shared by the .paac files
+    ".paap", # Object bounding box pack (object/aabb_pack.paap)
+    ".pab", # Skeleton? (character/model)
+    ".pabav", # Action chart version stamp, 20 bytes (1 file)
+    ".pac", # Skinned character meshes? (character/model)
+    ".pad", # Animation data packs (character/motion/*/animdatapack.pad)
+    ".pae", # Effects (effectbin)
+    ".paem", # Effect meshes (effectbin/mesh)
+    ".pah", # Effect meshes, binary form of the .ph text exports? (effect/mesh)
+    ".pam", # Static object meshes, binary form of the .pm text exports? (object/)
+    ".pas", # Cutscenes (character/cutscene)
+    ".paseqfe", # Sequences, most are 20-byte stubs (sequence/)
+    ".pat", # Head data (character/model/*/head/*_mt_*.pat)
+    ".pcm", # Small PAR file next to the .pam meshes (object/), not audio
+    ".probe", # Probes per sector, almost all empty (mapdata_real/probe)
+    ".procedural", # Event map procedural ground decoration
+    ".r3m", # Old effect meshes (effect/mesh/oldpah)
+    ".rid", # Region map colour table, pairs with .bkd
+    ".tome", # Occluders per sector (mapdata_real/occluder)
+    ".tree", # Event map tree placements
+    ".treelist", # Far tree placements (mapdata_real/fartreelist)
+    ".treelist2", # Far tree placements, second version of .treelist
+    ".vnl", # Navigation data, pairs with .vnm (gamecommondata/char_navigation)
 })
 
 

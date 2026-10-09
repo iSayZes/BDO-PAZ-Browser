@@ -25,7 +25,7 @@ import _common.loc as loc
 from _common.duration import format_duration
 from _common.html import e
 from _common.inline_text import decode_inline_text
-from _common.lookup_index import IndexKind
+from _common.lookup_index import IndexKind, init_index
 from _common.pa_text import pa_html
 
 from _bss.stringtable.parser import GAME_SHEET_LOC_ID2
@@ -503,7 +503,7 @@ def test_korean_title_survives_without_loc() -> None:
         (142, [3176, 0], "Obtain Title: 3176"),
         # Without the TELEPORT_NEAREST_NODE index the point shows its key alone.
         (23, [0, 340], "Teleport to point 0/340"),
-        # Test item A1_001 moves to the instance field named A1_001.
+        # Without the INSTANCE_FIELD_NAME index the field shows its key alone.
         (176, [17, 0, 4001], "Teleport to Instance Field 4001"),
         # Monster property keys have no name in the client; see buff_dbss.md.
         (180, [67], ""),
@@ -583,7 +583,6 @@ def test_over_time_text(
         # No confirmed meaning: no labels at all.
         (EffectInput(39, [0, 8]), {}),
         (EffectInput(16, [521]), {1: "Group"}),
-        (EffectInput(176, [17, 0, 4001]), {3: "Instance Field"}),
         (EffectInput(72, [0, 8, 1, 0]), {1: "All Towns"}),
         (EffectInput(73, [0, 5]), {2: "Southwestern Calpheon"}),
         (EffectInput(187, [0, 300, 2]), {3: "Earth"}),
@@ -592,6 +591,7 @@ def test_over_time_text(
         (EffectInput(14, [4, 5000]), {1: "Stun", 2: "5 sec"}),
         # A named effect without a name labels nothing.
         (EffectInput(23, [0, 340]), {}),
+        (EffectInput(176, [17, 0, 4001]), {}),
     ],
 )
 def test_param_labels(buff: EffectInput, expected: dict[int, str]) -> None:
@@ -693,6 +693,17 @@ def test_teleport_effect_names_the_nearest_node(monkeypatch: pytest.MonkeyPatch)
     buff = EffectInput(23, [0, 371])
     assert effect_text(buff) == "Teleport to point 0/371, near Marni's Lab (12 m)"
     assert param_labels(buff) == {2: "Marni's Lab (12 m)"}
+
+
+def test_instance_field_effect_names_the_field() -> None:
+    # Test item A1_001 moves to the instance field named A1_001.
+    init_index(IndexKind.INSTANCE_FIELD_NAME, {4001: "A1_001"})
+    try:
+        buff = EffectInput(176, [17, 0, 4001])
+        assert effect_text(buff) == "Teleport to Instance Field A1_001"
+        assert param_labels(buff) == {3: "A1_001"}
+    finally:
+        init_index(IndexKind.INSTANCE_FIELD_NAME, None)
 
 
 def test_worker_contract_names_worker_and_town(monkeypatch: pytest.MonkeyPatch) -> None:

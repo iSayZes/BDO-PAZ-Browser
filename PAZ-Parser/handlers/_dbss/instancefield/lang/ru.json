@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "Ключ",
+    "byteOffset": "Смещение (байт)",
+    "size": "Размер"
+  },
+  "columns": {
+    "key": "Ключ",
+    "name": "Название",
+    "sectorX": "Сектор X",
+    "sectorY": "Сектор Y",
+    "sectorZ": "Сектор Z"
+  },
+  "meta": {
+    "count": "Инстанс-полей: {count}"
+  }
+}

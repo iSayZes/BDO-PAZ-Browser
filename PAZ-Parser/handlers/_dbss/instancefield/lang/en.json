@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "Key",
+    "byteOffset": "Byte Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "key": "Key",
+    "name": "Name",
+    "sectorX": "Sector X",
+    "sectorY": "Sector Y",
+    "sectorZ": "Sector Z"
+  },
+  "meta": {
+    "count": "{count} instance fields"
+  }
+}

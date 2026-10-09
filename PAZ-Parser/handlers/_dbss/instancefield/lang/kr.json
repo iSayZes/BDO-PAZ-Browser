@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "키",
+    "byteOffset": "바이트 오프셋",
+    "size": "크기"
+  },
+  "columns": {
+    "key": "키",
+    "name": "이름",
+    "sectorX": "섹터 X",
+    "sectorY": "섹터 Y",
+    "sectorZ": "섹터 Z"
+  },
+  "meta": {
+    "count": "인스턴스 필드 {count}개"
+  }
+}

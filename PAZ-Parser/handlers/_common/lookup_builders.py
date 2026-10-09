@@ -37,6 +37,7 @@ from _dbss.characterobject.parser import build_character_icon_index
 from _dbss.characterstatic.parser import build_knowledge_character_index
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
 from _dbss.detail_dialog.parser import build_character_lease_index
+from _dbss.instancefield.parser import build_instance_field_name_index
 from _dbss.itemenchant.parser import (
     build_buff_item_index,
     build_character_item_index,
@@ -87,6 +88,7 @@ BUFF = f"{_BINARY}/buff.dbss"
 BUFF_OFFSET = f"{_BINARY}/buffoffset.dbss"
 TELEPORT = f"{_BINARY}/teleport.dbss"
 LIGHTSTONESET = f"{_BINARY}/lightstoneset.bss"
+INSTANCEFIELD = f"{_BINARY}/instancefield.dbss"
 WORLDMAP = f"gamecommondata/waypoint_binary/{WORLDMAP_FILE}"
 
 # Every built index, keyed by `IndexKind.value`.
@@ -179,6 +181,8 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.TELEPORT_NEAREST_NODE, (TELEPORT, WORLDMAP), build_teleport_nearest_node_index),
     # Lightstone item -> its sets, for the itemenchant.dbss Lightstone Sets column.
     IndexSpec(IndexKind.LIGHTSTONE_SETS, (LIGHTSTONESET,), build_lightstone_set_index),
+    # Instance field key -> name, for the buff.dbss Effect text of type 176.
+    IndexSpec(IndexKind.INSTANCE_FIELD_NAME, (INSTANCEFIELD,), build_instance_field_name_index),
 )
 
 

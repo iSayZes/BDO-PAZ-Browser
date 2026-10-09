@@ -1135,6 +1135,7 @@ IDs (`LookupValue`).
 | `TELEPORT_BUFF_NAME_KR` | `buff.dbss`, `buffoffset.dbss`      | Korean buff name |
 | `TELEPORT_NEAREST_NODE` | `teleport.dbss`, `mapdata_realexplore2.bwp` | `(node key, metres)` |
 | `LIGHTSTONE_SETS` | `lightstoneset.bss`                       | set IDs (tuple) |
+| `INSTANCE_FIELD_NAME` | `instancefield.dbss`                  | internal field name |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1295,6 +1296,14 @@ is built by `build_lightstone_set_index()` in `_bss/lightstoneset/parser.py`.
 Read it through `item_set_ids()` in `_bss/lightstoneset/item_sets.py`, whose
 `set_label_tagged()` names a set by its LOC type 113 name; the
 `itemenchant.dbss` Lightstone Sets column uses both.
+
+`INSTANCE_FIELD_NAME` maps an
+[instancefield.dbss](file-formats/instancefield_dbss.md) key to the field's
+internal ASCII name (`A1_001`, `Solare_Arena_Kell`); no LOC type names the
+fields. It is built by `build_instance_field_name_index()` in
+`_dbss/instancefield/parser.py`. Read it through `instance_field_name()` in
+`_common/instance_field.py`; the `buff.dbss` Effect text of type 176 uses it,
+`Teleport to Instance Field A1_001`.
 
 ## Icons
 

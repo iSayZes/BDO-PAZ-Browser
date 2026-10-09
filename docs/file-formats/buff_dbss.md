@@ -258,7 +258,10 @@ English text, by item names and bdocodex tooltips (see Effect text).
 The `param_1` life skills of type 80, from the English text of its buffs:
 `0` Gathering, `1` Fishing, `2` Hunting, `3` Cooking, `4` Alchemy, `5`
 Processing, `6` Training, `7` Trading, `8` Farming, `9` Sailing, `11` Barter.
-No buff with text uses `10`. Kinds `5` and `6` of type 93 each appear on a
+This is the client's `CppEnums.LifeExperienceType` numbering (see
+[lifeexp.dbss](lifeexp_dbss.md)), and the browser names each life skill from
+the loaded LOC, as `lifeexp.dbss` does. `10` is the spare slot `temp1`, which
+has no name and no buff with text. Kinds `5` and `6` of type 93 each appear on a
 single buff with text. Kind `2` of type 128 appears only on
 `Mermaid's Wish III`, so it stays unlabelled.
 

@@ -8,8 +8,10 @@ docs/file-formats/buff_dbss.md (Enum Values and Effect text).
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
+
+from _dbss.lifeexp.labels import LIFE_SKILLS, life_skill_name
 
 from .units import CRAFT_SECONDS, FLAT, KEY, METRES, MINUTES, PERCENT, SECONDS, WEIGHT, Unit
 
@@ -22,6 +24,8 @@ class EffectLine:
     value) holds that value and the amount in `value_param` is not zero.
     `kind_labels` names those parameters for the Param columns, and
     `value_label` names the amount where nothing else tells what it is.
+    `kind_name` names the value of `kind_param` when the buff is read, for
+    names that follow the loaded LOC; `{kind}` in `label` takes that name.
     """
 
     label: str
@@ -36,6 +40,8 @@ class EffectLine:
     # `500000` reads `Fall Damage -50%`.
     is_negated: bool = False
     template: str = "{label} {amount}"
+    kind_param: int = 0
+    kind_name: Callable[[int], str] | None = None
 
 
 def recovery(label: str, value_param: int) -> EffectLine:
@@ -94,24 +100,45 @@ class OverTimeEffect:
     damage_kinds: Mapping[str, str] = field(default_factory=dict)
 
 
-_LIFE_SKILLS = {
-    0: "Gathering",
-    1: "Fishing",
-    2: "Hunting",
-    3: "Cooking",
-    4: "Alchemy",
-    5: "Processing",
-    6: "Training",
-    7: "Trading",
-    8: "Farming",
-    9: "Sailing",
-    11: "Barter",
-}
+# The life skills the client names; the spare slots `temp1` to `temp4` have no
+# name and no buff with text.
+_LIFE_SKILL_IDS = tuple(skill for skill, label in LIFE_SKILLS.items() if label.key)
+
+
+def life_skill_lines(
+    kind_param: int,
+    label: str,
+    value_param: int,
+    unit: Unit = FLAT,
+    when: Mapping[int, int] | None = None,
+    kind_labels: Mapping[int, str] | None = None,
+    skills: Mapping[int, Mapping[int, int]] | None = None,
+) -> tuple[EffectLine, ...]:
+    """One line per life skill in `kind_param`, named from LOC when read.
+
+    `skills` limits the lines to some life skills, each with its own extra
+    `when`; by default every named life skill gets a line.
+    """
+    extra_when_by_skill = skills if skills is not None else dict.fromkeys(_LIFE_SKILL_IDS, {})
+    return tuple(
+        EffectLine(
+            label,
+            value_param,
+            unit,
+            when={**(when or {}), **extra_when, kind_param: skill},
+            kind_labels=kind_labels or {},
+            kind_param=kind_param,
+            kind_name=life_skill_name,
+        )
+        for skill, extra_when in extra_when_by_skill.items()
+    )
+
 
 # Type 149 `param_2` by life skill, the same on every buff with text. The
 # [Life Skill Season] buffs pair Gathering and Processing with 2 to 7 for
 # single tools (`Processing_Hoe Mastery`); those stay unlabelled.
 _MASTERY_PARAM_2 = {0: 0, 1: 0, 2: 1, 3: 1, 4: 1, 5: 0, 6: 1, 9: 1}
+_MASTERY_SKILLS = {skill: {2: param_2} for skill, param_2 in _MASTERY_PARAM_2.items()}
 # Type 149 `param_1` for every life skill at once.
 _ALL_LIFE_SKILLS = 15
 
@@ -194,15 +221,13 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     25: (
         *kinds(2, "{kind} EXP", {0: "Combat", 1: "Skill"}, 1, PERCENT),
         # Life EXP names its life skill in param_3, 15 for all of them.
-        *(
-            EffectLine(
-                f"{name} EXP",
-                1,
-                PERCENT,
-                when={2: 2, 3: skill},
-                kind_labels={2: "Life", 3: name},
-            )
-            for skill, name in {**_LIFE_SKILLS, _ALL_LIFE_SKILLS: "Life"}.items()
+        *life_skill_lines(3, "{kind} EXP", 1, PERCENT, when={2: 2}, kind_labels={2: "Life"}),
+        EffectLine(
+            "Life EXP",
+            1,
+            PERCENT,
+            when={2: 2, 3: _ALL_LIFE_SKILLS},
+            kind_labels={2: "Life", 3: "Life"},
         ),
     ),
     29: (EffectLine("Weight Limit", 1, WEIGHT),),
@@ -294,7 +319,7 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
         2,
     ),
     79: (recovery("Energy", 1),),
-    80: kinds(1, "{kind} EXP", _LIFE_SKILLS, 2),
+    80: life_skill_lines(1, "{kind} EXP", 2),
     89: kinds(1, "{kind} EXP", _BREATH_STRENGTH_HEALTH, 2),
     90: (EffectLine("Death Penalty Resistance", 1, PERCENT),),
     91: (EffectLine("Durability Reduction Resistance", 1, PERCENT),),
@@ -403,15 +428,7 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
         EffectLine("Extra AP Against Adventurers", 2, value_label="Adventurer AP"),
     ),
     149: (
-        *(
-            EffectLine(
-                f"{_LIFE_SKILLS[skill]} Mastery",
-                3,
-                when={1: skill, 2: param_2},
-                kind_labels={1: _LIFE_SKILLS[skill]},
-            )
-            for skill, param_2 in _MASTERY_PARAM_2.items()
-        ),
+        *life_skill_lines(1, "{kind} Mastery", 3, skills=_MASTERY_SKILLS),
         EffectLine(
             "Life Skill Mastery",
             3,

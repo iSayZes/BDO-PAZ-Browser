@@ -933,6 +933,7 @@ _common/
 ├── character.py         # character names and titles (LOC type 6)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
+├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
 ├── html.py
 ├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
 ├── offset_table.py      # OffsetTableHandler: the one preview handler for every offset companion

@@ -6,6 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_name
+from _common.enum_name import enum_name
 from _common.html import Column, e, sort_keys, table, text_list_cell
 from _common.knowledge import knowledge_name
 from _common.lang import handler_text, load_handler_strings
@@ -18,10 +19,6 @@ from .parser import NODE_KIND_NAMES, parse_exploration_records
 _LANG_DIR = Path(__file__).parent / "lang"
 _LIST_PREVIEW_ITEMS = 6
 _EMPTY = "-"
-
-
-def _kind_name(kind: int) -> str:
-    return NODE_KIND_NAMES[kind] if kind < len(NODE_KIND_NAMES) else str(kind)
 
 
 def _character(character_id: int) -> str:
@@ -77,7 +74,7 @@ class ExplorationBssHandler(PreviewHandler):
                 # LOC type 29 is the display name; the Korean source name
                 # stands in when LOC is not loaded or has no entry.
                 "node_name": node_name(record["node_key"]) or record["name_kr"],
-                "kind": _kind_name(record["node_kind"]),
+                "kind": enum_name(NODE_KIND_NAMES, record["node_kind"]),
                 "main_sub": sub if record["is_sub_node"] else main,
                 # Empty sorts last and exports as an empty cell.
                 "manager": _character(record["manager_id"]) or None,

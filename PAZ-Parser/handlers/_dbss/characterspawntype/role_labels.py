@@ -10,6 +10,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from pathlib import Path
 
+from _common.enum_name import enum_name
 from _common.lang import load_handler_strings
 from .navi_labels import navi_label
 from .parser import SPAWN_TYPE_NAMES
@@ -19,7 +20,7 @@ _LANG_DIR = Path(__file__).parent / "lang"
 
 def spawn_type_name(spawn_type: int) -> str:
     """The client enum name, or the bare value outside the enum."""
-    return SPAWN_TYPE_NAMES[spawn_type] if 0 <= spawn_type < len(SPAWN_TYPE_NAMES) else str(spawn_type)
+    return enum_name(SPAWN_TYPE_NAMES, spawn_type)
 
 
 def role_label_overrides(lang: str) -> dict[str, str]:

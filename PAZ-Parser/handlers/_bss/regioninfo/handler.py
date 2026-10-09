@@ -7,6 +7,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_name
+from _common.enum_name import enum_name
 from _common.html import Column, e, flag_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_text
@@ -22,10 +23,6 @@ _LOC_TERRITORY = 12
 _LOC_TERRITORY_NAME = 1
 # Siege rate limits are stored on the 1,000,000 = 100% scale.
 _RATE_PER_PERCENT = 10_000
-
-
-def _enum_name(names: tuple[str, ...], value: int) -> str:
-    return names[value] if value < len(names) else str(value)
 
 
 def _region_name(region_key: int) -> str:
@@ -68,7 +65,7 @@ def _display_fields(record: dict) -> dict:
         # LOC type 17 is the display name; the Korean source name stands in
         # when LOC is not loaded or has no entry.
         "region_name": _region_name(record["region_key"]) or record["name_kr"],
-        "region_type_name": _enum_name(REGION_TYPE_NAMES, record["region_type"]),
+        "region_type_name": enum_name(REGION_TYPE_NAMES, record["region_type"]),
         "node_war_day_name": NODE_WAR_DAY_NAMES[day] if has_node_war else None,
         # Sorts the days in week order; regions without a node war sort last.
         "node_war_day_order": day if has_node_war else None,

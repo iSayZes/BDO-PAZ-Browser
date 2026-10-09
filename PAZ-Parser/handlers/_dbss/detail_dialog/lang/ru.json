@@ -10,7 +10,9 @@
     "dialog": "Диалог",
     "character": "Персонаж",
     "greeting": "Приветствие",
+    "contentsTypes": "Функции",
     "options": "Варианты",
+    "dialogButtonTypes": "Типы вариантов",
     "optionTitles": "Названия вариантов",
     "leases": "Аренда"
   },

@@ -10,7 +10,9 @@
     "dialog": "Dialog",
     "character": "Character",
     "greeting": "Greeting",
+    "contentsTypes": "Functions",
     "options": "Options",
+    "dialogButtonTypes": "Option Types",
     "optionTitles": "Option Titles",
     "leases": "Leases"
   },

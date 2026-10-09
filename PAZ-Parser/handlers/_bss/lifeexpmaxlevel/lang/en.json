@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "lifeSkillId": "Life Skill ID",
+    "lifeSkill": "Life Skill",
+    "maxLevel": "Max Level",
+    "maxRank": "Max Rank"
+  },
+  "meta": {
+    "count": "{count} life skills"
+  }
+}

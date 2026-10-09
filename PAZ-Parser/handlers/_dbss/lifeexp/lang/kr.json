@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "lifeSkillId": "생활 ID",
+    "lifeSkill": "생활",
+    "level": "레벨",
+    "rank": "등급",
+    "exp": "다음 레벨 필요 경험치"
+  },
+  "offsetColumns": {
+    "lifeSkillId": "생활 ID",
+    "level": "레벨",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "meta": {
+    "count": "레벨 {count}개 · 생활 {skills}개",
+    "offsetCount": "오프셋 레코드 {count}개 · 생활 {skills}개"
+  }
+}

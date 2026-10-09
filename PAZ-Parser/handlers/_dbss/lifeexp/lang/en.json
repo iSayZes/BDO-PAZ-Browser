@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "lifeSkillId": "Life Skill ID",
+    "lifeSkill": "Life Skill",
+    "level": "Level",
+    "rank": "Rank",
+    "exp": "EXP to Next Level"
+  },
+  "offsetColumns": {
+    "lifeSkillId": "Life Skill ID",
+    "level": "Level",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "meta": {
+    "count": "{count} levels · {skills} life skills",
+    "offsetCount": "{count} offset records · {skills} life skills"
+  }
+}

@@ -71,6 +71,7 @@ from .petaction.handler import PetActionHandler, pet_action_offset_handler
 from .petexp.handler import PetExpHandler, pet_exp_offset_handler
 from .pcgrowth.handler import PcGrowthHandler, pc_growth_offset_handler
 from .fitnesslevel.handler import FitnessLevelHandler, fitness_level_offset_handler
+from .lifeexp.handler import LifeExpHandler, life_exp_offset_handler
 from .petskill.handler import PetSkillHandler, pet_skill_offset_handler
 from .petequipskillaquire.handler import (
     PetEquipSkillAcquireHandler,
@@ -168,6 +169,8 @@ def register_dbss_handlers() -> None:
     register_handler("pcgrowth.dbss", PcGrowthHandler())
     register_handler("fitnessleveloffset.dbss", fitness_level_offset_handler())
     register_handler("fitnesslevel.dbss", FitnessLevelHandler())
+    register_handler("lifeexpoffset.dbss", life_exp_offset_handler())
+    register_handler("lifeexp.dbss", LifeExpHandler())
     register_handler("petskilloffset.dbss", pet_skill_offset_handler())
     register_handler("petskill.dbss", PetSkillHandler())
     register_handler(

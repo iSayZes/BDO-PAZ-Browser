@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "lifeSkillId": "ID de profession",
+    "lifeSkill": "Profession",
+    "maxLevel": "Niveau max.",
+    "maxRank": "Rang max."
+  },
+  "meta": {
+    "count": "{count} professions"
+  }
+}

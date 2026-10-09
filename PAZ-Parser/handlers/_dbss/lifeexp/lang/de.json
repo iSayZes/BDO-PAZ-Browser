@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "lifeSkillId": "Arbeitstalent-ID",
+    "lifeSkill": "Arbeitstalent",
+    "level": "Stufe",
+    "rank": "Rang",
+    "exp": "EP bis zur nächsten Stufe"
+  },
+  "offsetColumns": {
+    "lifeSkillId": "Arbeitstalent-ID",
+    "level": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "meta": {
+    "count": "{count} Stufen · {skills} Arbeitstalente",
+    "offsetCount": "{count} Offset-Einträge · {skills} Arbeitstalente"
+  }
+}

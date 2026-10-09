@@ -18,6 +18,7 @@ from .fairyfeedenchantfailcount.handler import (
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
+from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .menu.handler import MenuBssHandler
@@ -69,6 +70,7 @@ def register_bss_handlers() -> None:
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),
     )
+    register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
     register_handler("menu.bss", MenuBssHandler())

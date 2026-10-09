@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "lifeSkillId": "생활 ID",
+    "lifeSkill": "생활",
+    "maxLevel": "최대 레벨",
+    "maxRank": "최대 등급"
+  },
+  "meta": {
+    "count": "생활 {count}개"
+  }
+}

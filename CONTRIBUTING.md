@@ -50,6 +50,7 @@ Also check that:
 ## Conventions
 
 - **Unknown fields** are named `unknown_<offset>` (e.g. `unknown_10`) until their meaning is confirmed. Don't guess a name; describe the observation in the doc's Open Questions instead.
+- **One doc per record layout.** Every `.bss` / `.dbss` gets its own doc in `docs/file-formats/`, named after the file (`dropuitaginfo_bss.md`). Only an `*offset.dbss` index, which goes in its main file's doc, and files that share one layout and one handler class (`ui_skillgroup_{awakening,combat,succession}.bss` in `ui_skillgroup_bss.md`) share a doc. The Companion Files table lists the files a handler loads and links each one to its own doc.
 - **Tests survive game patches.** Assert structure and stable identity (schemas, ranges, known IDs), never row counts, positions or balance values that change with an update.
 - **Text columns** use the loaded LOC language first, then fall back to the inline Korean text.
 - **Small, focused files.** Split code by responsibility and reuse the shared helpers in `handlers/_common/` and `handlers/_dbss/common/` rather than copying them.

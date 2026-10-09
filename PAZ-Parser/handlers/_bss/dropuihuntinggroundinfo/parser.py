@@ -7,8 +7,9 @@ Each row lists the zone's region tab, filter categories, monsters, quests,
 drop items, tags, regions and titles (each a u32 count and its values), then
 its position, recommended and Total Stat AP / DP, node, Max AP Limit and
 monster species. `dropuimaincategoryinfo.bss` maps the region tab to a
-territory; `_bss/dropuitaginfo/parser.py` reads the tag colours. Full layouts
-in docs/file-formats/dropuihuntinggroundinfo_bss.md.
+territory; `_bss/dropuitaginfo/parser.py` reads the tag colours. Layouts in
+docs/file-formats/dropuihuntinggroundinfo_bss.md and
+docs/file-formats/dropuimaincategoryinfo_bss.md.
 """
 
 from __future__ import annotations

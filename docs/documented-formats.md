@@ -53,6 +53,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `fairyupgraderate.bss` | Fairy Sprouting success rates, per-item chance and guaranteed-success item count for each grade upgrade | [fairyupgraderate](file-formats/fairyupgraderate_bss.md) | 2 | 0 |
 | `fitnesslevel.dbss` | Breath, Strength and Health level tables: EXP per level and the max Stamina, weight limit, max HP and max MP/WP/SP bonus | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
 | `fitnessleveloffset.dbss` | Index into `fitnesslevel.dbss`, one block per fitness type, maps level → offset/size | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
+| `fitnessmaxlevel.bss` | PABR max level per fitness type (50 for Breath, Strength and Health on client 3464) | [fitnessmaxlevel](file-formats/fitnessmaxlevel_bss.md) | 0 | 0 |
 | `groupcameradata.bss` | PABR cutscene skip summaries: scene ID, Korean title, recap and quote, and region symbol icon path (LOC type 97) | [groupcameradata](file-formats/groupcameradata_bss.md) | 0 | 0 |
 | `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
 | `instancefieldmapinfo.bss` | PABR map data per instance field key: GAME sheet name and description keys, map image and sprite region, centre point and radius, entry item, team spawn points | [instancefieldmapinfo](file-formats/instancefieldmapinfo_bss.md) | 3 | 0 |

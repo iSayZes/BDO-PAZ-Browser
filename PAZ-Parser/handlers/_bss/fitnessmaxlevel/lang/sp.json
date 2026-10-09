@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "fitnessTypeId": "ID de atributo físico",
+    "fitnessType": "Atributos físicos",
+    "maxLevel": "Nivel máx."
+  },
+  "meta": {
+    "count": "{count} atributos físicos"
+  }
+}

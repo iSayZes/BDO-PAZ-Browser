@@ -114,7 +114,8 @@ The first Breath row sits at `0x08`, after the type count and Breath's level cou
 
 ## Notes
 
-- `fitnessmaxlevel.bss` (28 bytes) is a related file: `PABR`, three u32 values of `50`, then the 12 bytes `0, 16, 0`. The three 50s look like the maximum level per fitness type, which matches the 51 rows (levels 0 to 50) per block here and the client's `[Trial] Breath Lv. 50` items, but it has no handler yet.
+- `fitnessmaxlevel.bss` stores the max level of each fitness type, `50` for all three on client 3464, the top row of every block here; see [fitnessmaxlevel](fitnessmaxlevel_bss.md).
+- Level 30 is the soft cap. No file stores it, but on client 3464 the EXP to the next level jumps between rows 30 and 31 in every block: Breath 20,000 to 50,000, Strength 10,000 to 30,000, Health 5,000 to 20,000. Up to row 30 the step between rows is at most 3,500.
 - The client reads a fitness level and its EXP through `getFitnessLevel`, `getCurrFitnessExperiencePoint` and `getDemandFItnessExperiencePoint` (`panel_characterinfo_basic_all_3.luac`); the bonus shown in the tooltip comes from `ToClient_GetFitnessLevelStatus(type)`.
 - The four stat floats are cumulative totals, not per-level increments: every column only rises with the level (Breath 25, 50, 75 up to 800; Strength 2 LT up to 80 LT; Health HP 10 up to 490 and MP/WP/SP 10 up to 300).
 - Breath and Strength have the same EXP from level 41 up and Strength needs less than Breath on levels 1 to 40.

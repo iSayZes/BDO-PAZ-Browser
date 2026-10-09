@@ -41,4 +41,4 @@ A bare array of u32 values with no header and no `PABR` magic. 60 bytes on clien
 ## Notes
 
 - Trading (7) gets `180` here although `lifeexp.dbss` holds finite EXP for it only up to level 60; see the [lifeexp](lifeexp_dbss.md) Notes.
-- `fitnessmaxlevel.bss` is the matching file for `fitnesslevel.dbss` but has `PABR` magic and a different layout; see [fitnesslevel](fitnesslevel_dbss.md).
+- `fitnessmaxlevel.bss` is the matching file for `fitnesslevel.dbss` but has `PABR` magic and a different layout; see [fitnessmaxlevel](fitnessmaxlevel_bss.md).

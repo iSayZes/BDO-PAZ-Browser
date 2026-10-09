@@ -8,6 +8,7 @@ from bdo_preview import PreviewHandler
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from .labels import fitness_type_name, fitness_type_names
 from .parser import parse_fitnesslevel_records, parse_fitnessleveloffset_records
 
 
@@ -72,9 +73,9 @@ class FitnessLevelHandler(PreviewHandler):
         if offset_raw is None:
             raise ValueError(f"{_OFFSET_FILE} companion not found.")
 
-        type_names = load_handler_strings(self.lang, _LANG_DIR)["fitnessTypes"]
+        names = fitness_type_names(self.lang)
         return [
-            {**record, "fitness_name": type_names.get(str(record["fitness_type"]), str(record["fitness_type"]))}
+            {**record, "fitness_name": fitness_type_name(names, record["fitness_type"])}
             for record in parse_fitnesslevel_records(data, offset_raw)
         ]
 

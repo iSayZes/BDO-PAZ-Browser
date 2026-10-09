@@ -1,0 +1,25 @@
+{
+  "offsetColumns": {
+    "classType": "직업 유형",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "characterKey": "캐릭터 ID",
+    "gender": "성별",
+    "playable": "플레이 가능",
+    "starterWeapons": "초기 무기",
+    "classWeapons": "직업 무기",
+    "selectMovie": "선택 영상",
+    "description": "설명"
+  },
+  "gender": {
+    "male": "남성",
+    "female": "여성"
+  },
+  "meta": {
+    "count": "직업 유형 {count}개"
+  }
+}

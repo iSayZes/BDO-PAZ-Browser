@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "classType": "Type de classe",
+    "className": "Classe",
+    "playable": "Jouable"
+  },
+  "meta": {
+    "count": "{count} types de classe · {playable} jouables"
+  }
+}

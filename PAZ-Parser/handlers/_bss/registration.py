@@ -22,6 +22,7 @@ from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .menu.handler import MenuBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
+from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
 from .plantworker.handler import PlantWorkerBssHandler
@@ -71,6 +72,7 @@ def register_bss_handlers() -> None:
     register_handler("menu.bss", MenuBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
+    register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())
     register_handler("plantworker.bss", PlantWorkerBssHandler())

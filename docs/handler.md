@@ -936,7 +936,7 @@ _common/
 ├── html.py
 ├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
 ├── offset_table.py      # OffsetTableHandler: the one preview handler for every offset companion
-├── pabr_offset.py       # offset companions: u16 or u32 keys, with or without PABR magic
+├── pabr_offset.py       # offset companions: u8, u16 or u32 keys, with or without PABR magic
 ├── prefixed_string.py   # length-prefixed strings: strict and lenient readers
 ├── inline_text.py       # decode_inline_text(): the stored \n escape of inline text
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
@@ -950,8 +950,9 @@ _common/
 
 Read an offset companion with `parse_pabr_offset_rows()` (PABR magic, count,
 u16-keyed rows), `parse_pabr_u32_offset_rows()` (the same with u32 keys, e.g.
-`mentalcardoffset.dbss`), `parse_bare_offset_rows()` or
-`parse_bare_u32_offset_rows()` (count, rows), never by hand. A u16 field
+`mentalcardoffset.dbss`), `parse_bare_offset_rows()`,
+`parse_bare_u32_offset_rows()` or `parse_bare_u8_offset_rows()` (count, rows;
+the u8 key of `pcgrowthoffset.dbss`), never by hand. A u16 field
 followed by a zero u16 (`plantzoneoffset.dbss` keys, `petoffset.dbss` sizes)
 reads as one u32. Walk a record of fixed fields
 and u64-prefixed strings with `RecordReader(data, start, end, label)`: `unpack`,

@@ -1,0 +1,25 @@
+{
+  "offsetColumns": {
+    "classType": "Тип класса",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "columns": {
+    "classType": "Тип класса",
+    "className": "Класс",
+    "characterKey": "ID персонажа",
+    "gender": "Пол",
+    "playable": "Играбельный",
+    "starterWeapons": "Стартовое оружие",
+    "classWeapons": "Оружие класса",
+    "selectMovie": "Видео выбора",
+    "description": "Описание"
+  },
+  "gender": {
+    "male": "Мужской",
+    "female": "Женский"
+  },
+  "meta": {
+    "count": "Типов класса: {count}"
+  }
+}

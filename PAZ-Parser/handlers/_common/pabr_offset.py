@@ -5,7 +5,8 @@ Most `*offset.dbss` companions share one layout: ASCII `PABR`, a u32 row count,
 such as `mentalcardoffset.dbss` and `detail_dialogoffset.dbss`, store a u32 ID
 instead (`parse_pabr_u32_offset_rows`). A few, such as `petexpoffset.dbss`,
 store the u16 layout with no magic and no trailer, and `dialogtextoffset.dbss`
-the u32 layout that way (`parse_bare_u32_offset_rows`). Whether `offset`
+the u32 layout that way (`parse_bare_u32_offset_rows`), and
+`pcgrowthoffset.dbss` a u8 ID that way (`parse_bare_u8_offset_rows`). Whether `offset`
 points at an inline copy of the ID or just past it differs per table, so
 callers interpret the offset themselves.
 """
@@ -23,6 +24,7 @@ PABR_MAGIC = b"PABR"
 _COUNT_SIZE = 4
 _ROW = struct.Struct("<HII")
 _U32_ROW = struct.Struct("<III")
+_U8_ROW = struct.Struct("<BII")
 
 
 @dataclass(frozen=True)
@@ -74,6 +76,17 @@ def parse_bare_u32_offset_rows(data: bytes) -> list[PabrOffsetRow]:
         raise ValueError("offset table is too short to hold its row count")
 
     return _parse_rows(data, 0, _U32_ROW)
+
+
+def parse_bare_u8_offset_rows(data: bytes) -> list[PabrOffsetRow]:
+    """Return every index row of a bare offset table keyed by a u8 ID.
+
+    Raises ValueError on a count the file cannot hold.
+    """
+    if len(data) < _COUNT_SIZE:
+        raise ValueError("offset table is too short to hold its row count")
+
+    return _parse_rows(data, 0, _U8_ROW)
 
 
 def _parse_rows(data: bytes, count_at: int, row: struct.Struct) -> list[PabrOffsetRow]:

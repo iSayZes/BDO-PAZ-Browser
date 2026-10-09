@@ -15,7 +15,8 @@
     "dyeable": "염색",
     "objectId": "배치물 ID",
     "object": "배치물",
-    "buffs": "버프"
+    "buffs": "버프",
+    "lightstoneSets": "광명석 조합"
   },
   "offsetColumns": {
     "itemId": "아이템 ID",

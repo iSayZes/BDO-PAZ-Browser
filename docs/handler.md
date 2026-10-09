@@ -1133,6 +1133,7 @@ IDs (`LookupValue`).
 | `TELEPORT_BUFFS` | `buff.dbss`, `buffoffset.dbss`             | buff IDs (tuple) |
 | `TELEPORT_BUFF_NAME_KR` | `buff.dbss`, `buffoffset.dbss`      | Korean buff name |
 | `TELEPORT_NEAREST_NODE` | `teleport.dbss`, `mapdata_realexplore2.bwp` | `(node key, metres)` |
+| `LIGHTSTONE_SETS` | `lightstoneset.bss`                       | set IDs (tuple) |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1284,6 +1285,15 @@ way: each point's nearest worldmap node and its distance, found without LOC
 over every node (`build_teleport_nearest_node_index()` in
 `_dbss/teleport/parser.py`). `teleport_point_place()` turns it into `Marni's
 Lab (12 m)` for the `buff.dbss` Effect text of type 23.
+
+`LIGHTSTONE_SETS` maps a Lightstone item to the
+[lightstoneset.bss](file-formats/lightstoneset_bss.md) sets it counts toward,
+in ascending set ID order: a member to every set that lists it, and a
+substitute (an Amplified Lightstone) to the sets of its base Lightstone. It
+is built by `build_lightstone_set_index()` in `_bss/lightstoneset/parser.py`.
+Read it through `item_set_ids()` in `_bss/lightstoneset/item_sets.py`, whose
+`set_label_tagged()` names a set by its LOC type 113 name; the
+`itemenchant.dbss` Lightstone Sets column uses both.
 
 ## Icons
 

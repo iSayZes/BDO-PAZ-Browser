@@ -72,6 +72,8 @@ class IndexKind(Enum):
     TELEPORT_BUFF_NAME_KR = "teleport_buff_name_kr"
     # (nearest worldmap node key, metres) of each teleport point.
     TELEPORT_NEAREST_NODE = "teleport_nearest_node"
+    # Set IDs each Lightstone item counts toward, as a member or substitute.
+    LIGHTSTONE_SETS = "lightstone_sets"
 
 
 # Dependency name each read reports to `data_deps`, built once per kind.

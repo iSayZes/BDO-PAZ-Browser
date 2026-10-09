@@ -19,7 +19,7 @@ from tests.framework import (
     run_case,
 )
 
-from _bss.lightstoneset.parser import parse_lightstone_sets, substitute_ids
+from _bss.lightstoneset.parser import build_lightstone_set_index, parse_lightstone_sets, substitute_ids
 from _bss.lightstoneset.text import split_set_text
 from _common.lookup_index import IndexKind
 
@@ -122,6 +122,21 @@ def test_every_member_counts_as_itself(lightstoneset_result: HandlerResult) -> N
 
     assert {item_id for item_id in members if parsed.substitutes.get(item_id) != item_id} == set()
     assert set(parsed.substitutes.values()) <= members
+
+
+def test_set_index_links_members_and_substitutes(lightstoneset_result: HandlerResult) -> None:
+    data = lightstoneset_result.source.data
+    parsed = parse_lightstone_sets(data)
+    index = build_lightstone_set_index(data)
+
+    assert _EDANIA_SET in index[_TWISTED]
+    assert _EDANIA_SET in index[_IRIDESCENT]
+    # An Amplified Lightstone counts toward the sets of its base Lightstone.
+    assert index[_AMPLIFIED_TWISTED] == index[_TWISTED]
+    for record in parsed.sets:
+        for item_id in record["member_ids"]:
+            assert record["set_id"] in index[item_id]
+    assert all(list(set_ids) == sorted(set(set_ids)) for set_ids in index.values())
 
 
 def test_substitute_ids_skip_the_member_itself() -> None:

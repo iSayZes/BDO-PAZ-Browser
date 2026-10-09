@@ -15,6 +15,7 @@ Full layout in docs/file-formats/lightstoneset_bss.md.
 from __future__ import annotations
 
 import struct
+from collections import defaultdict
 from typing import NamedTuple
 
 from _common.binary import u32
@@ -83,3 +84,23 @@ def substitute_ids(member_ids: list[int], substitutes: dict[int, int]) -> list[i
         for item_id, member_id in substitutes.items()
         if member_id in members and item_id != member_id
     ]
+
+
+def build_lightstone_set_index(data: bytes) -> dict[int, tuple[int, ...]]:
+    """The `LIGHTSTONE_SETS` index: each Lightstone item to the sets it counts
+    toward, by ascending set ID.
+
+    A member counts toward every set that lists it, a substitute toward the
+    sets of the member it stands in for.
+    """
+    parsed = parse_lightstone_sets(data)
+    sets_by_member: defaultdict[int, set[int]] = defaultdict(set)
+    for record in parsed.sets:
+        for member_id in record["member_ids"]:
+            sets_by_member[member_id].add(record["set_id"])
+    counted_as = {**{member_id: member_id for member_id in sets_by_member}, **parsed.substitutes}
+    return {
+        item_id: tuple(sorted(sets_by_member[member_id]))
+        for item_id, member_id in counted_as.items()
+        if member_id in sets_by_member
+    }

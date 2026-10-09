@@ -30,6 +30,7 @@ item 58011 ([Event] Fence)
 | `itemenchantoffset.dbss`  | Required | Maps the packed key to a block offset and size |
 | `languagedata_en.loc`     | Optional | Item name and description for the item ID (`str_type=0`, `str_id4` 0 and 1) |
 | `skill.dbss`              | Optional | The buffs of `skill_key_1` and `skill_key_2`, through the `SKILL_BUFFS` lookup index |
+| `lightstoneset.bss`       | Optional | The Lightstone sets an item counts toward, through the `LIGHTSTONE_SETS` lookup index |
 
 All multi-byte values are little-endian.
 
@@ -427,6 +428,7 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Object ID     | num  | `character_id` of the placed object or summoned pet; dash when `0` |
 | Object        | text | LOC `str_type=6`, `str_id1=character_id`          |
 | Buffs         | list | Buffs of `skill_key_1`, then `skill_key_2` (`SKILL_BUFFS` lookup index), each once, with buff icon and the first line of its LOC type `5` text in its game colours; sorts by count |
+| Lightstone Sets | list | Sets of [lightstoneset.bss](lightstoneset_bss.md) that list the item as a member or substitute (`LIGHTSTONE_SETS` lookup index), as set ID and LOC type `113` name in its colour; sorts by count |
 
 ## Notes
 

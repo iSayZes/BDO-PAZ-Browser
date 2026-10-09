@@ -46,6 +46,9 @@ _OFFSET_FILE = "itemenchantoffset.dbss"
 _BOON_ITEM = 761880
 _BOON_SKILL_KEY = 47683 << 16 | 1
 _BOON_BUFFS = (48723, 48724, 48725, 48726, 48727, 48728)
+# Lightstone of Fire: Twisted, a member of set 182 [The Wild: Edania].
+_TWISTED_LIGHTSTONE = 758021
+_EDANIA_SET = 182
 # Field checks from itemenchant_dbss.md, in game or on bdocodex (2026-10-05).
 _BASTEER_LONGSWORD = 10011
 _KHARAZAD_NECKLACE = 11697
@@ -80,7 +83,10 @@ CASE = HandlerCase(
     uses_loc=True,
     loc_fields=["Item"],
     internal_path="gamecommondata/binary/itemenchant.dbss",
-    lookup_indexes={IndexKind.SKILL_BUFFS: {_BOON_SKILL_KEY: _BOON_BUFFS}},
+    lookup_indexes={
+        IndexKind.SKILL_BUFFS: {_BOON_SKILL_KEY: _BOON_BUFFS},
+        IndexKind.LIGHTSTONE_SETS: {_TWISTED_LIGHTSTONE: (_EDANIA_SET,)},
+    },
     tests=[
         SchemaTest(
             required_keys=[
@@ -110,6 +116,9 @@ CASE = HandlerCase(
                 "buff_ids",
                 "buffs",
                 "buff_count",
+                "lightstone_set_ids",
+                "lightstone_sets",
+                "lightstone_set_count",
             ],
         ),
         DeclaredCountTest(declared=_declared_items),
@@ -164,6 +173,21 @@ CASE = HandlerCase(
             col="item_id",
             value=_WEAPON,
             expected={"skill_keys": [], "buff_ids": [], "buff_count": None},
+        ),
+        # A Lightstone lists its sets by ID and LOC type 113 name.
+        TargetTest(
+            col="item_id",
+            value=_TWISTED_LIGHTSTONE,
+            expected={
+                "lightstone_set_ids": [_EDANIA_SET],
+                "lightstone_sets": [f"{_EDANIA_SET} [The Wild: Edania]"],
+                "lightstone_set_count": 1,
+            },
+        ),
+        TargetTest(
+            col="item_id",
+            value=_WEAPON,
+            expected={"lightstone_set_ids": [], "lightstone_sets": [], "lightstone_set_count": None},
         ),
         TargetTest(
             col="item_id",

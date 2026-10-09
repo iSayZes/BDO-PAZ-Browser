@@ -10,9 +10,10 @@ from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table
 from _common.item_grade import item_grade_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import LOC_NULL, loc_tagged, loc_text
-from _common.pa_text import pa_cell, pa_fields, pa_line_cell
+from _common.pa_text import pa_cell, pa_fields, pa_key, pa_line_cell, pa_list_cell, pa_list_fields
 from _common.skill import skill_buff_ids
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from _bss.lightstoneset.item_sets import item_set_ids, set_label_tagged
 from .labels import binding_label, classes_label, trade_label
 from .parser import (
     parse_itemenchant_records,
@@ -46,8 +47,10 @@ def _item_name(record: dict) -> str:
 
 
 def _with_links(record: dict, values: dict[str, str], classes: str) -> dict:
-    """The parsed record plus its item name, placed character, buffs and field labels."""
+    """The parsed record plus its item name, placed character, buffs, Lightstone
+    sets and field labels."""
     buff_ids = skill_buff_ids(record["skill_keys"])
+    set_ids = item_set_ids(record["item_id"])
     return {
         **record,
         # None sorts last and exports empty.
@@ -69,6 +72,10 @@ def _with_links(record: dict, values: dict[str, str], classes: str) -> dict:
         "buff_ids": buff_ids,
         "buffs": [buff_label(buff_id) for buff_id in buff_ids],
         "buff_count": len(buff_ids) or None,
+        # From the LIGHTSTONE_SETS lookup index; empty when it is not loaded.
+        "lightstone_set_ids": list(set_ids),
+        **pa_list_fields("lightstone_sets", [set_label_tagged(set_id) for set_id in set_ids]),
+        "lightstone_set_count": len(set_ids) or None,
     }
 
 
@@ -109,6 +116,7 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["objectId"], "num", sort_key="character_id"),
             Column(cols["object"], sort_key="character_name"),
             Column(cols["buffs"], sort_key="buff_count"),
+            Column(cols["lightstoneSets"], sort_key="lightstone_set_count"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -169,6 +177,7 @@ class ItemEnchantHandler(PreviewHandler):
                 _optional_cell(record["character_id"]),
                 e(record["character_name"] or _EMPTY),
                 buff_list_cell(record["buff_ids"], _LIST_PREVIEW_ITEMS) or _EMPTY,
+                pa_list_cell(record[pa_key("lightstone_sets")], _LIST_PREVIEW_ITEMS),
             ]
             for record in slice_
         ]

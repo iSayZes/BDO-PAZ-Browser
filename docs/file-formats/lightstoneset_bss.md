@@ -117,6 +117,10 @@ of" the base and the Amplified Lightstone, which matches these rows.
   `+200`) name items with no LOC type 0 name and no item icon on client 3464.
 - Iridescent Lightstone (`766101`) is a member of 50 sets, always as the
   last stone.
+- The `LIGHTSTONE_SETS` lookup index (`build_lightstone_set_index()` in
+  `parser.py`) maps each member and substitute item ID to the sets it counts
+  toward, so the [itemenchant.dbss](itemenchant_dbss.md) Lightstone Sets
+  column lists them without opening this file.
 - The LOC type 113 name of set 96 repeats itself: `[Drills: Blight-Fallen]
   [Drills: Blight-Fallen]`, while the skill name is `Set 96 - [Drills:
   Blight-Fallen]`.

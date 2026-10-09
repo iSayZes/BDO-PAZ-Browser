@@ -2,22 +2,23 @@
 
 ## Purpose
 
-Defines the NPC gift/confession data used by the in-game "Give Gift" interaction. The main file maps NPC IDs to accepted gift item IDs and the Amity gained for each gift. The data file maps the same NPC IDs to Korean confession-response dialogue text.
+The gift items of the in-game "Give Gift" interaction: per NPC, the accepted gift item IDs and the Amity gained for each. The NPC's reply to a confession is in [`npcgiftdata.dbss`](npcgiftdata_dbss.md), keyed by the same NPC IDs.
 
 Example:
 
 ```text
-NPC: Crio (40012)  →  item: 7023 (Haystack)  →  amity: 30
-Confession response: "감사합니다! 정말 좋아해요."
+NPC: Crio (40012)  →  item: 7023 (Haystack)  →  amity: 40
 ```
 
 ## Companion Files
 
-| File                     | Required | Role                                                   |
-| ------------------------ | -------- | ------------------------------------------------------ |
-| `npcgiftoffset.dbss`     | Required | ID-keyed index into `npcgift.dbss`                     |
-| `npcgiftdataoffset.dbss` | Required | ID-keyed index into `npcgiftdata.dbss`                 |
-| `npcgiftetc.bss`         | Optional | Small PABR config block with global gift-system values; see [npcgiftetc_bss.md](npcgiftetc_bss.md) |
+| File                  | Required | Role                                        |
+| --------------------- | -------- | ------------------------------------------- |
+| `languagedata_en.loc` | Optional | NPC names (6), item names (0)               |
+
+`npcgiftoffset.dbss` is the ID-keyed index into this file (below).
+`npcgiftetc.bss` holds the global gift-system values, see
+[npcgiftetc_bss.md](npcgiftetc_bss.md).
 
 All multi-byte values are little-endian.
 
@@ -68,75 +69,25 @@ Observed `gift_count` values: in the pre-2026-09-27 fixture 23 records have 5 ro
 | `+0x04` | u32  | amity_a | Amity gained by giving this item                                   |
 | `+0x08` | u32  | amity_b | Duplicate Amity value; equal to `amity_a` on every observed row (119 pre-2026-09-27, 117 in the 2026-09-27 client) |
 
-### npcgiftdataoffset.dbss
-
-Same 4-byte header and 10-byte offset record layout as `npcgiftoffset.dbss`, but offsets point into `npcgiftdata.dbss`.
-
-### npcgiftdata.dbss
-
-#### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                     |
-| ------- | ---- | ----- | ----------------------------------------- |
-| `+0x00` | u32  | count | Number of dialogue records (observed: 24) |
-
-#### Dialogue Record (variable length)
-
-| Offset  | Type              | Field         | Notes                                                                                                                        |
-| ------- | ----------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `+0x00` | u16               | npc_id        | NPC key                                                                                                                      |
-| `+0x02` | u32               | unknown_02    | Observed: 70 for 23 records, 35 for NPC 43408. Not the LOC type.                                                             |
-| `+0x06` | u32               | text_len      | Number of visible UTF-16 code units in `text`                                                                                |
-| `+0x0A` | u32               | zero          | Observed: 0                                                                                                                  |
-| `+0x0E` | utf16le[text_len] | text          | Korean confession-response dialogue                                                                                          |
-| varies  | u16[2]            | tail          | Two trailing code units after `text`; observed values include `00 00 00 00`, `FF FF FF FF`, `00 00 41 DF`, and `00 00 3D E6` |
-
-The companion `data_size` equals `12 + text_len * 2 + 4`, excluding the leading `npc_id`. English localized equivalents are in LOC type 54 keyed by the same `npc_id`.
-
-### npcgiftetc.bss
-
-Small PABR config block (32 bytes) with global gift-system values. See [npcgiftetc_bss.md](npcgiftetc_bss.md) for the standalone layout.
-
 ## Suggested UI Layout
-
-### npcgift.dbss
 
 | Column    | Type | Notes                                                |
 | --------- | ---- | ---------------------------------------------------- |
 | NPC ID    | num  | `npc_id`                                              |
 | NPC Name  | text | LOC str_type=6, str_id1=npc_id                        |
 | Item ID   | num  | `item_id`                                             |
-| Icon      | text | Item icon, `product_icon_png/{item_id:08d}.png`       |
+| Icon      | text | Item icon from the item icon index                    |
 | Item Name | text | LOC str_type=0, str_id1=item_id, in its grade colour (`ITEM_GRADE`) |
 | Amity     | num  | `amity_a`; `amity_b` is a duplicate in observed data  |
 
-100 of the 112 distinct gift items in the pre-2026-09-27 fixture resolve an icon from their item ID. The
-remaining 12 are keyed in `product_icon_png` by asset name instead
-(item 24626 is `inhouse_cultivate_sea_clam_01_wall.png`), which is not
-derivable from the ID, so those render as a missing-icon placeholder. Closing
-that gap needs an item ID to icon name mapping that is not yet decoded.
-
-### npcgiftdata.dbss
-
-| Column        | Type | Notes                                                                  |
-| ------------- | ---- | ---------------------------------------------------------------------- |
-| NPC ID        | num  | `npc_id`                                                               |
-| NPC Name      | text | LOC str_type=6, str_id1=npc_id                                         |
-| Dialogue      | text | English LOC str_type=54 when available; Korean inline text as fallback |
+All 110 distinct gift items resolve an icon through the item icon index
+(`_common/icon_index.py`), including those whose icon file is named after the
+asset, not the ID (item 24626 is
+`ui_texture/icon/new_icon/03_etc/06_housing/inhouse_cultivate_sea_clam_01_wall.dds`).
 
 ## Notes
 
-- `npcgift.dbss` and `npcgiftdata.dbss` share the same 24 NPC IDs and offset record order, but the main records are not stored in ID-sorted order.
+- `npcgift.dbss` and [`npcgiftdata.dbss`](npcgiftdata_dbss.md) share the same 24 NPC IDs and offset record order, but the main records are not stored in ID-sorted order.
 - `item_id` is ambiguous across LOC types; use str_type=0 for item display names, not str_type=34 knowledge names.
 - Example: NPC 40012 (Crio) accepts item 7023, which resolves via str_type=0 to "Haystack" and via str_type=34 to "Omelet". Use str_type=0 for gift item names.
 - `npc_id` resolves via LOC str_type=32, str_id4=29 for the "Give Gift" interaction label.
-
-## Open Questions
-
-### `unknown_02` in npcgiftdata.dbss
-
-The meaning of `unknown_02` (observed: 70 for 23 records, 35 for NPC 43408) is not known. Earlier versions of this doc called it `unknown_param`.
-
-### Dialogue Tail Bytes
-
-The two trailing UTF-16 code units after dialogue text (`tail`) carry values including `FF FF FF FF` and non-zero pairs; their purpose is unknown.

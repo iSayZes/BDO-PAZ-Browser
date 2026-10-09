@@ -10,6 +10,7 @@
     "characterKey": "Charakter-ID",
     "gender": "Geschlecht",
     "playable": "Spielbar",
+    "combatType": "Kampfart",
     "starterWeapons": "Startwaffen",
     "classWeapons": "Klassenwaffen",
     "selectMovie": "Auswahlvideo",

@@ -10,6 +10,7 @@
     "characterKey": "캐릭터 ID",
     "gender": "성별",
     "playable": "플레이 가능",
+    "combatType": "공격 형태",
     "starterWeapons": "초기 무기",
     "classWeapons": "직업 무기",
     "selectMovie": "선택 영상",

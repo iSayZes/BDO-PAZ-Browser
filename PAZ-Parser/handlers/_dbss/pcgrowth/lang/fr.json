@@ -10,6 +10,7 @@
     "characterKey": "ID du personnage",
     "gender": "Genre",
     "playable": "Jouable",
+    "combatType": "Type de combat",
     "starterWeapons": "Armes de départ",
     "classWeapons": "Armes de classe",
     "selectMovie": "Vidéo de sélection",

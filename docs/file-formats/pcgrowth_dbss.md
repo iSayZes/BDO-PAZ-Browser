@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The class selection record of every class type: the player character key of the class, its gender, the beginner weapons of the class, the main, sub and awakening weapon of the class, the Korean name and description, and the class selection video. Despite the name, the file holds no per-level stat growth; nothing in it is indexed by character level. `pcgrowthoffset.dbss` lists where each record sits, [pcgrowthsimply](pcgrowthsimply_bss.md) is a fixed-row list of the same class types with a playable flag, and [pcgrowthdefaultcharacterkey](pcgrowthdefaultcharacterkey_bss.md) stores one character key.
+The class selection record of every class type: the player character key of the class, its gender, its combat type (melee, ranged or magic), the beginner weapons of the class, the main, sub and awakening weapon of the class, the Korean name and description, and the class selection video. Despite the name, the file holds no per-level stat growth; nothing in it is indexed by character level. `pcgrowthoffset.dbss` lists where each record sits, [pcgrowthsimply](pcgrowthsimply_bss.md) is a fixed-row list of the same class types with a playable flag, and [pcgrowthdefaultcharacterkey](pcgrowthdefaultcharacterkey_bss.md) stores one character key.
 
 Example (client 3464):
 
@@ -23,7 +23,7 @@ The class type is the number `getClassType()` returns and the bit of a class mas
 | --------------------------------- | -------- | ----------------------------------------------------------- |
 | `pcgrowthoffset.dbss`             | Required | `class_type -> (offset, size)` of every record              |
 | `pcgrowthsimply.bss`              | Optional | Playable flag per class type, see [pcgrowthsimply](pcgrowthsimply_bss.md) |
-| `languagedata_en.loc`             | Optional | Class name and description (type 21), item names (type 0)   |
+| `languagedata_en.loc`             | Optional | Class name and description (type 21), combat type (type 37), item names (type 0) |
 
 All multi-byte values are little-endian.
 
@@ -92,7 +92,7 @@ Offsets count from the start of the block.
 | Offset            | Type       | Field         | Notes                                                                                 |
 | ----------------- | ---------- | ------------- | ------------------------------------------------------------------------------------- |
 | `+0x00`           | f32[6]     | unknown_00    | Two triples of values from `0.0` to `1.0`; the triples are equal on 36 of 47 records  |
-| `+0x18`           | u8         | unknown_18    | `0` to `2`; `1` on Ranger, Archer, Deadeye and Agent only                             |
+| `+0x18`           | u8         | combat_type   | `__eAttackType`: `0` Direct (melee), `1` Range, `2` Magical; see Notes                |
 | `+0x19`           | u32[3]     | class_weapons | Item IDs of the main, sub and awakening weapon (Warrior: Rusty Longsword, Round Shield, Mercenary's Steel Greatsword); `0` for none |
 | `+0x25`           | u16        | unknown_25    | `1` when the main weapon is set, else `0`                                             |
 | `+0x27`           | f32[6]     | unknown_27    | First value `230.0` to `270.0`, then `0.3` to `0.8`, `-0.5` to `-0.3`, `-38.0` to `50.0`, `0.0`, `0.0` |
@@ -136,6 +136,7 @@ The rows are in file order, which is not key order: 46 down to 32, 15 down to 0,
 | Class name  | type 21, `str_id1` = `class_type`, `str_id4` 0        |
 | Description | type 21, `str_id1` = `class_type`, `str_id4` 1        |
 | Weapons     | type 0, `str_id1` = item ID                           |
+| Combat type | type 37, `GAME` sheet key per value (see Notes)       |
 
 LOC type 21 has a name and a description for all 47 class types on client 3464, including the unused slots (`Ain (No Use)`, `PYFW5`). The English text matches the inline Korean (class type 0: `Warrior` for `워리어`). The handler shows the LOC name and falls back to the inline Korean, as does the [pcgrowthsimply](pcgrowthsimply_bss.md) handler.
 
@@ -150,6 +151,7 @@ LOC type 21 has a name and a description for all 47 class types on client 3464, 
 | Character ID    | num  | `character_key`                                                       |
 | Gender          | text | `gender` as Male or Female                                            |
 | Playable        | flag | `is_playable` from `pcgrowthsimply.bss`; a dash without that file      |
+| Combat Type     | text | `combat_type` as its LOC label, else the enum name                     |
 | Starter Weapons | text | `starter_weapons` with item icons and names                           |
 | Class Weapons   | text | Non-zero `class_weapons`, main, sub and awakening                     |
 | Selection Video | text | `select_movie`                                                        |
@@ -169,6 +171,15 @@ The `unknown_*` fields, `consume_actions` and `weapon_models` stay on the record
 
 - iDevelopThings/bdo-data-extractor `FORMATS.md` lists this record layout. Checked against client 3464: the offset table and the record walk match, and all 47 records end at their recorded size. It reads the presentation block as seven f32 and a u32 at `+0x43`, with four extra u32 only on Shai; this doc reads `+0x3F` as a pair count, which gives the same byte total.
 - `starter_weapons` start with the same main and sub weapon as `class_weapons` on every class with class weapons except Wukong and Ninja, which list them in another order (Ninja: Old Shuriken before Old Kunai).
+- `combat_type` is the `__eAttackType` value that `global_newclass_data.luac` stores per class as `_attackType`. `panel_characterinfo_basic_all_1.luac` labels it on the character info panel with the `GAME` sheet keys `LUA_WARRIOR_AWAKEN_COMBAT_TYPE` (`Melee`), `LUA_RANGER_SUCCESSION_COMBAT_TYPE` (`Ranged`) and `LUA_ATKTYPE_MAGIC` (`Magic`); `combat_types.py` stores their `stringtable.bss` hashes. The Combat Type tooltip in game lists the same classes per value as the file:
+
+  | Value | Label  | Playable class types |
+  | ----- | ------ | -------------------- |
+  | `0`   | Melee  | Warrior (0), Wukong (3), Guardian (5), Scholar (6), Drakania (7), Nova (9), Corsair (10), Lahn (11), Berserker (12), Shai (17), Striker (19), Musa (20), Maehwa (21), Mystic (23), Valkyrie (24), Kunoichi (25), Ninja (26), Seraph (32) |
+  | `1`   | Ranged | Ranger (4), Archer (29), Deadeye (34), Agent (35) |
+  | `2`   | Magic  | Hashashin (1), Sage (2), Sorceress (8), Maegu (15), Tamer (16), Dark Knight (27), Wizard (28), Woosa (30), Witch (31), Dosa (33) |
+
+  Hashashin and Dark Knight fight at close range but count as magic classes. Of the unplayable slots, 13, 14, 22 and 36 hold `0`, and 18 and 37 to 46 hold `2`.
 - The ten unplayable class types 37 to 46 (`PYFM`, `PYFW` to `PYFM5`, `PYFW5`) copy the Dosa (male) and Woosa (female) records: same gender, starter weapons, video, models and `unknown_09`, no class weapons.
 
 ## Open Questions
@@ -181,17 +192,9 @@ The `unknown_*` fields, `consume_actions` and `weapon_models` stay on the record
 
 The 99 bytes are the same on every class except `+0x5E`. The f32 triples have world-coordinate magnitudes, so the block could hold the start positions and directions (`270`, `180`) of a new character, but no table links them yet. `unknown_5e` (`0` to `3`) has no matching class grouping.
 
-### Presentation Values
+### Presentation Block
 
-`unknown_18` takes three values on the 32 playable class types:
-
-| Value | Playable class types |
-| ----- | -------------------- |
-| `0` | Warrior (0), Wukong (3), Guardian (5), Scholar (6), Drakania (7), Nova (9), Corsair (10), Lahn (11), Berserker (12), Shai (17), Striker (19), Musa (20), Maehwa (21), Mystic (23), Valkyrie (24), Kunoichi (25), Ninja (26), Seraph (32) |
-| `1` | Ranger (4), Archer (29), Deadeye (34), Agent (35) |
-| `2` | Hashashin (1), Sage (2), Sorceress (8), Maegu (15), Tamer (16), Dark Knight (27), Wizard (28), Woosa (30), Witch (31), Dosa (33) |
-
-Of the unplayable slots, 13, 14, 22 and 36 hold `0`, and 18 and 37 to 46 hold `2`. The split could be the attack type the game gives each class (`0` melee, `1` ranged, `2` magic): Hashashin and Dark Knight fight at close range but would count as magic classes there. No client Lua or table names the field yet. The two f32 groups could be class selection camera and colour settings. The Shai pairs (`0, 31, 4, 31`) could also read as a zero u32 followed by `31, 4, 31, 0`.
+The two f32 groups could be class selection camera and colour settings. The Shai pairs (`0, 31, 4, 31`) could also read as a zero u32 followed by `31, 4, 31, 0`.
 
 ### Second Model List
 

@@ -10,6 +10,7 @@
     "characterKey": "Character ID",
     "gender": "Gender",
     "playable": "Playable",
+    "combatType": "Combat Type",
     "starterWeapons": "Starter Weapons",
     "classWeapons": "Class Weapons",
     "selectMovie": "Selection Video",

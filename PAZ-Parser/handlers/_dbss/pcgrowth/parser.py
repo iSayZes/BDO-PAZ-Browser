@@ -35,7 +35,7 @@ _U32 = struct.Struct("<I")
 _SETUP_BLOCK = struct.Struct("<99s")
 _SETUP_VARYING = 0x5E
 _CONSUME_ACTION_COUNT = 4
-# f32[6] | u8 unknown_18 | u32 class_weapons[3] | u16 unknown_25 | f32[6] | u32 pair_count
+# f32[6] | u8 combat_type | u32 class_weapons[3] | u16 unknown_25 | f32[6] | u32 pair_count
 _PRESENTATION_HEAD = struct.Struct("<24sB3IH24sI")
 _PAIR_SIZE = 8
 
@@ -57,10 +57,10 @@ def _model_paths(reader: RecordReader) -> list[str]:
 
 
 def _presentation(reader: RecordReader) -> dict:
-    _, unknown_18, main, sub, awakening, unknown_25, _, pair_count = reader.unpack(_PRESENTATION_HEAD)
+    _, combat_type, main, sub, awakening, unknown_25, _, pair_count = reader.unpack(_PRESENTATION_HEAD)
     reader.skip(pair_count * _PAIR_SIZE + _U32.size)
     return {
-        "unknown_18": unknown_18,
+        "combat_type": combat_type,
         "class_weapons": [main, sub, awakening],
         "unknown_25": unknown_25,
     }

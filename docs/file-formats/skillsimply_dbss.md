@@ -61,7 +61,7 @@ called "zero" are `0` on every record of client 3458.
 | `+0x0D` | u8      | unknown_0d          | `0` with `branch` `0`, else the other branch                       |
 | `+0x0E` | u32     | hash_count          | `1` on 29,916 records, up to `4`                                   |
 | `+0x12` | u32[]   | hashes              | Hash-like values; `0x6016CFF7` is the first on 18,784 records, 444 distinct |
-| `H+0`   | u8      | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see Open Questions  |
+| `H+0`   | u8      | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see In-Game Checks  |
 | `H+1`   | u32     | need_level          | Character level needed to learn it; see below                      |
 | `H+5`   | u16     | previous_rank_no    | Skill number of the rank before it, `0` on the first rank          |
 | `H+7`   | u32     | next_rank_count     | `0` on 26,056 records, `1` on 4,099, up to `5`                     |
@@ -95,7 +95,7 @@ called "zero" are `0` on every record of client 3458.
 | `N+58`  | u64     | exclusive_count     | `0` on 29,716 records, up to `5`                                   |
 | `N+66`  | u16[]   | exclusive_skill_nos | Skill numbers it cannot be held with, see below                    |
 | `E+0`   | u8[8]   | zero                |                                                                    |
-| `E+8`   | u8      | unknown_e08         | Equals `skill.dbss` `unknown_08` on every record                   |
+| `E+8`   | u8      | unknown_e08         | Equals `skill.dbss` `unknown_08` on every record; see Notes        |
 | `E+9`   | u8      | unknown_e09         | `1` on 255 records, all active                                     |
 | `E+10`  | u32     | base_skill_count    | `1` on 155 records, else `0`                                       |
 | `E+14`  | u32[]   | base_skill_keys     | Equals `skill.dbss` `base_skill_keys` on every record              |
@@ -280,25 +280,46 @@ arbitrary.
   from "Fireball IV" or "Lightning V". The tooltip's "Effect Details" lines
   are LOC type `46`, keyed by 32-bit IDs that appear in none of the skill
   tables; the class action chart (`.paac`) is the likely source.
+- `unknown_e08` follows the damage line of the tooltip's "Effect Details" on
+  7 of 8 Wizard skills checked in game. It is `1` on "Flame's Calling",
+  "Magma Bomb" and "Fireball IV", which show damage, and `0` on
+  "Archwizardry: Mass Teleport", "Prime: Elemental Palace", "Speed Spell III"
+  and "Summon: Keeper Marg", which show none. "Elementalization" is the
+  exception: it stores `1` but deals no damage (it moves the character
+  backwards for 250 stamina, 5 s cooldown). So the field keeps its offset
+  name.
 
 ## Open Questions
-
-### Is `unknown_h00` the auto-learn flag?
-
-It is set on 4,643 records and none of them costs skill points. On Wizard it
-is set on the base skills, whose tooltips show "Required Skill Points : 0"
-("Fireball IV", "Lightning V", "Teleport III"), and clear on Awakening and
-Prime skills. The skill tooltip Lua reads an "auto learn by level" flag
-(`isAutoLearnSkillByLevel`), which fits, but 4,661 other records also cost 0
-points without the flag (fusion and Black Spirit skills among them), so 0
-points alone does not prove it.
 
 ### What do the remaining flags and `hashes` hold?
 
 The other `unknown_` bytes are small flags and enums (`unknown_n07` is `558`
-on most records).
+on most records). `unknown_e08` marks damage skills on Wizard except
+"Elementalization" (see Notes); what else it tracks is not known.
 `hashes` is up to four hash-like values that also split by weapon on Wizard
 (`0x6016CFF7` on the staff skills, `0xD6CCB471` on "Water Sphere II"). The skill
 tooltip Lua also reads an HP cost and a learning item, which are candidates;
 the MP and stamina costs turned out to live in `skill.dbss`. Matching them
 needs skills whose tooltip shows such a value.
+
+## In-Game Checks
+
+### Is `unknown_h00` the Auto-Learn Flag?
+
+Needs class: Wizard (a new character below level 8)
+
+The byte is set on 4,643 records and none of them costs skill points. On
+Wizard it is set on the base skills, whose tooltips show "Required Skill
+Points : 0" ("Fireball IV", "Lightning V", "Teleport III"), and clear on
+Awakening and Prime skills. The skill window and skill tooltip Lua
+(`panel_window_skill_global.luac`, `panel_tooltip_skillgroup_1.luac`) read
+an "auto learn by level" flag (`isAutoLearnSkillByLevel`), which fits, but
+4,661 other records also cost 0 points without the flag (fusion and Black
+Spirit skills among them, and Wizard's "Access Awakening Requirement", which the awakening quest
+grants), so 0 points alone does not prove it.
+
+Level the character from 7 to 10 without opening the skill window, then open
+it. "Teleport I" (level 8) and "Magic Arrow II", "Concentrated Magic Arrow I"
+and "Healing Aura I" (level 10) all store `1`. If they show as learned with
+no Learn button, `unknown_h00` is the auto-learn flag; if they wait for a
+click, it is something else.

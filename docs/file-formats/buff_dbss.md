@@ -711,7 +711,7 @@ The other type 18 parameters are open:
   flame tower summon") points at 26701, `Ahib Salun Wolf Spearmaiden`, whose
   model is `infinitydefence/monster/4/m0004_defence_knightwolf`, one of the
   defence-mode monsters at 26829 to 26879. The tower comes from somewhere
-  else, or the item was repointed without its buff; open.
+  else, or the item was repointed without its buff; see In-Game Checks.
 
 The Wizard's Summon: Keeper Marg skill (2250) shows how a skill splits one
 tooltip over several buffs, all lasting 60 min:
@@ -841,7 +841,7 @@ reads `Recover 5 WP each time when struck` on bdocodex, and its buff 80
 stores `5` under `8`. `2` (one buff, 50046, `HP -100`, Ancient Magic Crystal
 - Temptation on the target) and `5` (12 buffs, the "To_Self" effects of
 crystals and Giant's Belt, types 29 and 67) are open; their skills have no
-tooltip on bdocodex. Fixed damage is stored negative and written as a
+tooltip on bdocodex (see Open Questions). Fixed damage is stored negative and written as a
 positive amount.
 
 ### Stacking (`stacking_category`, `is_exclusive`, `group`, `buff_level`)
@@ -909,8 +909,8 @@ An ordinary elixir does not end an active draught, as the flag predicts;
 I checked it in game on 2026-10-06: Elixir of Mastery (1155) drunk after
 Beast's Draught left the draught's buffs in place. The tooltip's `do not
 stack` line only holds in one direction: a draught ends elixirs, an elixir
-leaves a draught alone. Still open: whether an equal level replaces a buff
-of the same group.
+leaves a draught alone. Whether an equal level replaces a buff of the same
+group is in In-Game Checks.
 
 | Value | Buffs | Exclusive | Item type |
 | ----- | ----: | --------- | --------- |
@@ -1113,12 +1113,21 @@ It is `17` on all 48 buffs. `instancefield.dbss` key 17 is `CrimsonField`,
 which does not fit test teleports into the `A1_` fields, so it is probably a
 teleport kind or mode. A second value on any buff would show what it does.
 
-### Does an equal level replace a buff of the same group?
+### What do `condition_type` 2 and 5 mean?
 
-A higher `buff_level` blocks a lower one in its `group` (see Stacking), but
-whether the same level refreshes or replaces the active buff is not known.
-Using the same Adventurer's Luck scroll twice settles it. Whether an elixir
-ends a draught is settled: it does not (see Stacking).
+`2` is on one buff, 50046 (`HP -100` on the target), from Ancient Magic
+Crystal - Temptation (15504). `5` is on 12 `(Self)` buffs, among them 50048,
+50042 and 50039 from the Agony, Destruction and Enchantment crystals (15505,
+15503, 15502) and the Giant's Belt `To_Self` buffs 50294, 50296 and 50299
+(skill [Giant's Belt_Lv. 1](https://bdocodex.com/us/skill/50112/)), which no
+item in `itemenchant.dbss` casts. bdocodex lists only the crystals' transfuse
+stats, not the triggered effects. LOC ties each crystal to a weapon of the
+same name and a skill used with it (`Only available by using a Temptation
+skill with a Temptation weapon`). The crystals cannot be checked in game:
+[Grumpy Green's crystal list](https://grumpygreen.cricket/crystal-npc/) names
+Magic Crystal - Temptation, Destruction, Agony and Enchantment among the
+crystals deleted on 2024-01-31. A Giant's Belt tooltip or a skill text that
+names the trigger would settle `5`.
 
 ### Is `buff_level` a level or a category?
 
@@ -1126,3 +1135,29 @@ bdo-data-extractor splits `+0x00` into `i16 Category`, `u8 CategoryLevel` and
 `u8 Level`. The two bytes are zero in every record here, the i16 counts up
 on staged buffs such as boss stages, and it ranks the buffs of one `group`
 (see Notes), so it is kept as `buff_level` until the client names it.
+
+## In-Game Checks
+
+### Altar of Blood Flame Tower Name Plate
+
+Needs item: [[Altar of Blood] Flame Tower](https://bdocodex.com/us/item/761902/)
+
+Needs zone: Altar of Blood
+
+The item's buff 48677 points at character 26701, `Ahib Salun Wolf
+Spearmaiden`, a defence-mode wolf knight model (see Notes). Use the item in
+the Altar of Blood and read the spawned tower's name plate. `Ahib Salun Wolf
+Spearmaiden` means the buff does spawn 26701 and the tower look comes from
+elsewhere; a Flame Tower name means the tower is another character and the
+item was repointed without its buff.
+
+### Equal Buff Level in a Group
+
+Needs item: [[Scroll] Adventurer's Luck I](https://bdocodex.com/us/item/761895/)
+
+A higher `buff_level` blocks a lower one in its `group` (see Stacking), but
+whether the same level refreshes or replaces the active buff is not known.
+Use the scroll, wait a minute, then use a second one and read the buff's
+remaining time. A full duration again means an equal level replaces or
+refreshes the active buff; an error message or an unchanged timer with the
+scroll kept means an equal level is blocked like a lower one.

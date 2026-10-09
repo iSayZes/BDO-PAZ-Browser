@@ -87,7 +87,7 @@ empty name `N` is `17`.
 | ------- | ---------- | ------------------- | --------------------------------------------------------------- |
 | `+0x00` | u32        | skill_key           | Equals the index key                                            |
 | `+0x04` | u32        | level_1_key         | `skill_no << 16 \| 1`; equals `skill_key` except on the 82 keys above level 1 |
-| `+0x08` | u8         | unknown_08          | Non-zero on 8,842 records                                       |
+| `+0x08` | u8         | unknown_08          | Non-zero on 8,842 records; equals `skillsimply.dbss` `unknown_e08`, which follows damage tooltips on Wizard |
 | `+0x09` | string     | name                | ASCII internal name such as `SUMMON_BOSS`, `SETUP_QUESTITEM`; empty on 24,794 records |
 | `N+0`   | u32        | name_hash           | `0` when `name` is empty; one value per name (4,461 names)      |
 | `N+4`   | u8[40]     | unknown_n04         | Not decoded                                                     |

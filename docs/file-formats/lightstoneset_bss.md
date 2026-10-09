@@ -114,7 +114,8 @@ of" the base and the Amplified Lightstone, which matches these rows.
   (`[Blacksmith's Blessing]`, `[Brown Bear]`), so these are sets the client
   no longer has.
 - The 21 substitute rows from `764201` to `764221` (Lightstone of Flora
-  `+200`) name items with no LOC type 0 name and no item icon on client 3464.
+  `+200`) name items with no LOC type 0 name and no item icon on client 3464;
+  In-Game Checks has a test for whether they exist.
 - Iridescent Lightstone (`766101`) is a member of 50 sets, always as the
   last stone.
 - The `LIGHTSTONE_SETS` lookup index (`build_lightstone_set_index()` in
@@ -134,3 +135,22 @@ of" the base and the Amplified Lightstone, which matches these rows.
   `ToClient_getLightStoneSet`, `ToClient_getLightStoneSetByInvenSlotNo` and
   `ToClient_getLightStoneSetByFromLifeEquipSlotNo` and write it to the set
   option text.
+
+## In-Game Checks
+
+### Amplified Lightstones of Flora
+
+Needs item (all):
+
+- [Lightstone of Flora: Wildlife](https://bdocodex.com/us/item/764001/), or any other Lightstone of Flora (`764001` to `764021`)
+- [Crystallized Energy of Endtimes](https://bdocodex.com/us/item/821252/) x30
+- [Magical Shard](https://bdocodex.com/us/item/4918/) x50
+- [Magical Lightstone Crystal](https://bdocodex.com/us/item/766108/) x100
+
+The LOC description of Crystallized Energy of Endtimes gives the Amplified
+Lightstone recipe: Heating "Lightstone (any type) x1" with the three
+materials above. Heat a Lightstone of Flora with them. If it gives an
+Amplified Lightstone of Flora (item `764001` + 200 = `764201` for Wildlife),
+the 21 substitute rows from `764201` to `764221` are live items whose name
+and icon the client lacks. If Heating rejects a Flora Lightstone, they are
+rows for items the game does not hand out.

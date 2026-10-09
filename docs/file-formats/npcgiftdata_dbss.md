@@ -73,10 +73,17 @@ excluding the leading `npc_id`.
 
 ## Open Questions
 
-### `unknown_02`
-
-The meaning of `unknown_02` (observed: 70 for 23 records, 35 for NPC 43408 Luwensley) is not known. Earlier versions of this doc called it `unknown_param`. The gift window and dialog Lua read the reply text but have no getter for this value. An Amity threshold for the confession fits the range; comparing a confession to Luwensley with one to another NPC (the Amity needed before the Confess button works, and the Amity change after it) would test that.
-
 ### Dialogue Tail Bytes
 
 The two trailing UTF-16 code units after dialogue text (`tail`) carry values including `FF FF FF FF` and non-zero pairs; their purpose is unknown.
+
+## In-Game Checks
+
+### Confession Amity for `unknown_02`
+
+Needs NPC (all):
+
+- [Luwensley](https://bdocodex.com/us/npc/43408/)
+- [Crio](https://bdocodex.com/us/npc/40012/)
+
+`unknown_02` is 70 for 23 records and 35 for Luwensley (43408); earlier versions of this doc called it `unknown_param`. The gift window and dialog Lua read the reply text but have no getter for this value. Note the lowest Amity at which the Confess button works for each NPC, and the Amity change after the confession. If Luwensley accepts a confession from about half the Amity Crio needs, or the change after it is half as large, `unknown_02` is an Amity value for the confession; the same numbers for both NPCs rule that out.

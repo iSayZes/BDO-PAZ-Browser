@@ -144,4 +144,12 @@ The per-group number matches the numbers the BDO wiki lists next to each interes
 
 ### Are the upper bounds inclusive?
 
-An earlier version of this doc called `interest_max` and `favor_max` exclusive (usable maximum one less than stored) without recorded evidence. Ornella's in-game favor reached `28`, her stored maximum in the pre-2026-09-27 fixture (`29` in client 3458), which argues against that, but other readings fall below the stored minimums (see Notes), so the stored range may not bound what the game rolls. How the displayed range is derived from the stored one is open.
+An earlier version of this doc called `interest_max` and `favor_max` exclusive (usable maximum one less than stored) without recorded evidence. Ornella's in-game favor reached `28`, her stored maximum in the pre-2026-09-27 fixture (`29` in client 3458), which argues against that, but other readings fall below the stored minimums (see Notes), so the stored range may not bound what the game rolls. How the displayed range is derived from the stored one is open; the check for Ornella's current maximum is under In-Game Checks.
+
+## In-Game Checks
+
+### Ornella's Favor Maximum
+
+Needs NPC: [Ornella](https://bdocodex.com/us/npc/41002/)
+
+Ornella's stored favor range is `26` to `29` in client 3458. The NPC rolls Favor at the start of each conversation (see Notes), so start about 20 new conversations with her and write down each Favor. A `29` means `favor_max` is inclusive; `26` to `28` only, with `28` seen, means the usable maximum is one less than stored. Readings below `26` mean the stored range does not bound the roll, as for Oliviero and Cleia.

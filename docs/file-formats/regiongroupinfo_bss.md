@@ -96,10 +96,14 @@ Two flags that are always equal. They are `0` on the 19 groups without a node ex
 
 Set on 14 groups: Velia, Heidel, Glish, Calpheon, Trent, Keplan, Altinova, Olvia, Valencia City, Shakatu, Sand Grain Bazaar, Duvencrune, O'draxxia and Olvia Academy. These are all main towns, but other main towns such as Iliya Island, Tarif, Port Epheria, Grána and Arehaza are missing, so it is not just "is a town". It may mark towns with a certain service (guild house, node war base or similar); the in-game feature it drives is unknown.
 
-### Purpose of position
-
-The position is a world point near the group's node, and several groups share one exact point. It could be the respawn or return point for the group, or the anchor of a map label. A respawn test in one of the groups that share a point (for example group 160, node 1692) would show whether the character lands there.
-
 ### unknown_19, unknown_1d, unknown_21 and unknown_31
 
 Three u32 values of `1000000` and a u8 of `1` on every row. A constant cannot be told apart from the data alone; they may be rates or caps that only a patch would change.
+
+## In-Game Checks
+
+### Respawn at the Group Position
+
+Needs zone: region group 160 (node 1692, O'dyllita Castle)
+
+The position is a world point near the group's node, and several groups share one exact point: groups 160 to 176 and 194 to 198 all hold `-127640, 8789, -446513`. It could be the respawn or return point for the group, or the anchor of a map label. Die in group 160 and revive at the nearest town. If the character lands at `-127640, 8789, -446513`, the position is the group's respawn point; a different spot leaves the map label reading.

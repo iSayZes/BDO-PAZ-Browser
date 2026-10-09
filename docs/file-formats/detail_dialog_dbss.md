@@ -80,7 +80,7 @@ Every one of the 59,776 records in client 3458 walks with this layout and ends e
 
 | Order | Type | Field | Notes |
 | ----- | ---- | ----- | ----- |
-| 1 | u8          | unknown_line_kind | The NPC function the line belongs to, see Localization; `2` is `shop`. `2` on 120 of 197 lines, otherwise `3` to `39` |
+| 1 | u8          | unknown_line_kind | The NPC function the line belongs to, a client `CppEnums.ContentsType` value (see Notes); `2` (`Contents_Shop`) on 120 of 197 lines, otherwise `3` to `39` |
 | 2 | u64 + utf16 | text              | Korean |
 
 ### Option
@@ -89,7 +89,7 @@ Every one of the 59,776 records in client 3458 walks with this layout and ends e
 | ----- | ---- | ----- | ----- |
 | 1 | u64 + utf16 | condition | Client script that must hold for the option to show, e.g. `!getitemcount(3001,0)>0;`; may be empty |
 | 2 | u64 + utf16 | title | Korean option label; many start with a bracketed category such as `[교환]` (exchange) or `[대여]` (lease) |
-| 3 | u32         | unknown_option_kind | `0` to `7` or `99`; see Notes |
+| 3 | u32         | unknown_option_kind | A client `CppEnums.DialogButtonType` value, `0` to `7`, or `99`; see Notes |
 | 4 | u64 + utf16 | text | The NPC's answer, Korean |
 | 5 | u64 + utf16 | action | Client script run when the option is picked, e.g. `buyItemByPoint(58010,0,1,5,3)`; may be empty |
 | 6 | u16         | text_id | LOC text ID of the title and text, see Localization |
@@ -114,7 +114,7 @@ The Korean strings are localized in LOC type `39`, keyed by the record's `key`, 
 | `3` | Option `text`, with the option's `text_id` | 36,112 of 36,276 options |
 | `4` | Conditional greeting `text`, with its `text_id` | 12,796 of 12,796 |
 
-For Martina Finto (`0x00019C58`), field `0` of text ID `689` reads "It's so lonely here, all by myself... David doesn't...", and option text ID `42` field `2` reads `[Rent] Small Fence`. The function names of field `1` (`shop`, `repair`, `extract`, `weakenItem`, `talk`, `exchange`) name what `unknown_line_kind` picks; only kind `2` = `shop` is tied down so far.
+For Martina Finto (`0x00019C58`), field `0` of text ID `689` reads "It's so lonely here, all by myself... David doesn't...", and option text ID `42` field `2` reads `[Rent] Small Fence`. The function names of field `1` (`shop`, `repair`, `extract`, `weakenItem`, `talk`, `exchange`) name what `unknown_line_kind` picks: `2` `shop`, `4` `repair`, `19` `extract`, `33` `weakenItem`, `38` `talk`, `39` `exchange` and the others in Notes.
 
 ## Lease Options
 
@@ -139,14 +139,11 @@ One row per record:
 - The key's low 16 bits are a character ID: 49,252 of the 59,776 records resolve to a LOC type `6` name, and 10,153 of the other 10,524 are shared social dialogs (`Social_Low_Front_01` and similar), many on low IDs such as `817` to `864`. The high 16 bits number the dialogs of one character from `0` up; the main NPC dialog is usually index `1` (`0x00019C58` Martina Finto, `0x00019C51` Igor Bartali). 3,788 of 4,569 characters have one record.
 - The main dialog's `internal_name` is often the NPC's name plus a digit (`IgorBartali1`, `OttavioFerre1`).
 - A greeting can be the tag `{GetRandomText(<name>)}`, which picks a line from the pool of that name in [dialogtext.dbss](dialogtext_dbss.md), e.g. `{GetRandomText(PEDU_47759_1)}`.
-- `unknown_option_kind` follows the kind of option by the title prefixes and actions: `1` knowledge (지식, `pushknowledge`), `3` cutscenes and videos (회상, 이야기, `showCutScene`, `showVideo`), `4` and `5` exchanges (교환, `ExchangeItem...`), `6` time-limited quests (시간 제한, `resettimeattackquest`), `7` sequences (`playsequence`) and `99` options with an empty action. `0` (21,252) and `2` (4,185) mix quest turn-ins, returns and leases. It may pick the option's icon or button style, which the game would show, but that is not checked.
+- `unknown_option_kind` is the client's `CppEnums.DialogButtonType` (`global_define_cpp_enum.luac`), listed in order from `0`: `eDialogButton_Normal`, `_Knowledge`, `_Function`, `_CutScene`, `_Exchange`, `_ExceptExchange`, `_TimeAttack`, `_Sequence`, `_Count`. The data fits that order by the title prefixes and actions: `1` knowledge (지식, `pushknowledge`), `3` cutscenes and videos (회상, 이야기, `showCutScene`, `showVideo`), `4` and `5` exchanges (교환, `ExchangeItem...`), `6` time-limited quests (시간 제한, `resettimeattackquest`) and `7` sequences (`playsequence`). `0` (21,252, Normal) and `2` (4,185, Function) mix quest turn-ins, returns and leases; `99` (options with an empty action) is not in the enum. The dialog list Lua (`panel_dialog_list_all_1.luac`) reads it as `_dialogButtonType`: it starts the cutscene for `eDialogButton_CutScene` and the sequence state for `eDialogButton_Sequence`, and `panel_dialog_exchangelist_all_2.luac` checks `eDialogButton_Exchange` and `eDialogButton_ExceptExchange` for the exchange list.
+- `unknown_line_kind` is the client's `CppEnums.ContentsType`, listed in order from `0` (`Contents_Quest`, `Contents_NewQuest`, `Contents_Shop`, `Contents_Skill`, `Contents_Repair`, `Contents_Auction`, `Contents_Inn`, `Contents_Warehouse`, `Contents_IntimacyGame`, `Contents_Stable`, `Contents_Transfer`, ...). The line kinds match the function names in LOC type `39` field `1` on 135 of the 136 records with lines: `2` `shop`, `3` `skill`, `4` `repair`, `5` `auction`, `6` `inn`, `7` `warehouse`, `9` `stable`, `10` `transfer`, `19` `extract` (`Contents_Extract`), `33` `weakenItem` (`Contents_WeakenEnchant`), `38` `talk` and `39` `exchange`. The exception is `0x0001A075` (character `41077`), which stores `9` where LOC says `shop`. The LOC string does not keep the record's line order: `0x0001B7B1` stores kinds `39, 38, 33, 4, 2, 19` and LOC lists `shop`, `repair`, `extract`, `weakenItem`, `talk`, `exchange`.
 - The whole file walks in about 0.5 s after decompression. The `CHARACTER_LEASES` lookup index (see `docs/handler.md`) collects every lease option per character from it for the `npcsimply.bss` Leases column.
 
 ## Open Questions
-
-### What do `unknown_option_kind` and `unknown_line_kind` pick?
-
-The option kind groups options by type (see Notes). Comparing the look of a knowledge option (kind `1`), an exchange (`4` or `5`) and a lease (`0`) on one NPC in game would show whether it picks the icon or style. The greeting line kind names an NPC function (see Localization), but only `2` = `shop` maps one to one so far.
 
 ### What are `unknown_name_2` and `unknown_list`?
 

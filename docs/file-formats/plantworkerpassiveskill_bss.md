@@ -85,18 +85,18 @@ Direct stat and work-speed effects. `effect_target` is `0` for generic stat modi
 
 | Effect Target | Meaning | Example Skill |
 | ------------- | ------- | ------------- |
-| `0` | Generic stat modifier | `1603` Wings C, `1103` Simple C, `1503` Lucky Guy C |
-| `1` | Jeweler work speed | `1001` Polishing Knowledge |
-| `2` | Mass production work speed | `1002` Mass Production Knowledge |
-| `3` | Weapon/armor workshop speed | `1003` Workshop Knowledge |
-| `4` | Tool workshop speed | `1004` Tool Knowledge |
-| `5` | Furniture workshop speed | `1005` Furniture Knowledge |
-| `7` | Costume workshop speed | `1007` Costume Knowledge |
-| `8` | Refinery/specialty work speed | `1008` General Knowledge |
-| `9` | Cannon/siege weapon work speed | `1009` Siege Knowledge |
-| `10` | Ship/wagon/horse gear work speed | `1010` Mount Knowledge |
-| `11` | Node/farm work speed | `1011` Farm Knowledge |
-| `13` | Specialty node work speed | `1013` Specialty Node Knowledge |
+| `0` | Generic stat modifier | `1603` [Wings C](https://bdocodex.com/us/sskill/1603/), `1103` [Simple C](https://bdocodex.com/us/sskill/1103/), `1503` [Lucky Guy C](https://bdocodex.com/us/sskill/1503/) |
+| `1` | Jeweler work speed | `1001` [Polishing Knowledge](https://bdocodex.com/us/sskill/1001/) |
+| `2` | Mass production work speed | `1002` [Mass Production Knowledge](https://bdocodex.com/us/sskill/1002/) |
+| `3` | Weapon/armor workshop speed | `1003` [Workshop Knowledge](https://bdocodex.com/us/sskill/1003/) |
+| `4` | Tool workshop speed | `1004` [Tool Knowledge](https://bdocodex.com/us/sskill/1004/) |
+| `5` | Furniture workshop speed | `1005` [Furniture Knowledge](https://bdocodex.com/us/sskill/1005/) |
+| `7` | Costume workshop speed | `1007` [Costume Knowledge](https://bdocodex.com/us/sskill/1007/) |
+| `8` | Refinery/specialty work speed | `1008` [General Knowledge](https://bdocodex.com/us/sskill/1008/) |
+| `9` | Cannon/siege weapon work speed | `1009` [Siege Knowledge](https://bdocodex.com/us/sskill/1009/) |
+| `10` | Ship/wagon/horse gear work speed | `1010` [Mount Knowledge](https://bdocodex.com/us/sskill/1010/) |
+| `11` | Node/farm work speed | `1011` [Farm Knowledge](https://bdocodex.com/us/sskill/1011/) |
+| `13` | Specialty node work speed | `1013` [Specialty Node Knowledge](https://bdocodex.com/us/sskill/1013/) |
 
 Observed scaling:
 
@@ -116,12 +116,12 @@ Material refund effects. `effect_target` is the chance scaled by `1,000,000`. `e
 
 | Example Skill | Effect Target | Meaning | Effect Values |
 | ------------- | ------------- | ------- | ------------- |
-| `1203` Thrifty C | `50000` | 5% chance | `100000`, `100000` |
-| `1202` Thrifty B | `70000` | 7% chance | `100000`, `100000` |
-| `1201` Thrifty A | `100000` | 10% chance | `100000`, `100000` |
-| `2003` Unexpected Luck C | `1000` | Extremely low chance | `1000000`, `1000000` |
-| `2002` Unexpected Luck B | `3000` | Very low chance | `1000000`, `1000000` |
-| `2001` Unexpected Luck A | `5000` | Low chance | `1000000`, `1000000` |
+| `1203` [Thrifty C](https://bdocodex.com/us/sskill/1203/) | `50000` | 5% chance | `100000`, `100000` |
+| `1202` [Thrifty B](https://bdocodex.com/us/sskill/1202/) | `70000` | 7% chance | `100000`, `100000` |
+| `1201` [Thrifty A](https://bdocodex.com/us/sskill/1201/) | `100000` | 10% chance | `100000`, `100000` |
+| `2003` [Unexpected Luck C](https://bdocodex.com/us/sskill/2003/) | `1000` | Extremely low chance | `1000000`, `1000000` |
+| `2002` [Unexpected Luck B](https://bdocodex.com/us/sskill/2002/) | `3000` | Very low chance | `1000000`, `1000000` |
+| `2001` [Unexpected Luck A](https://bdocodex.com/us/sskill/2001/) | `5000` | Low chance | `1000000`, `1000000` |
 
 ### `effect_type = 2` - Stats per Level Up
 
@@ -129,9 +129,9 @@ Per-level stat growth effects. `effect_target` identifies the stat that grows on
 
 | Effect Target | Meaning | Example Skill | Effect Value |
 | ------------- | ------- | ------------- | ------------ |
-| `0` | Movement speed | `1901` Leg Work | `5000` = Movement Speed +0.5% per level |
-| `1` | Work speed | `1902` Craftsmanship | `200000` = Work Speed +0.2 per level |
-| `2` | Luck | `1903` Blessed Hand | `2000` = Luck +0.2 per level |
+| `0` | Movement speed | `1901` [Leg Work](https://bdocodex.com/us/sskill/1901/) | `5000` = Movement Speed +0.5% per level |
+| `1` | Work speed | `1902` [Craftsmanship](https://bdocodex.com/us/sskill/1902/) | `200000` = Work Speed +0.2 per level |
+| `2` | Luck | `1903` [Blessed Hand](https://bdocodex.com/us/sskill/1903/) | `2000` = Luck +0.2 per level |
 
 ### `effect_type = 6` - Extra Work
 
@@ -139,16 +139,16 @@ Extra-work effects. `effect_target` identifies the production category and `effe
 
 | Effect Target | Meaning | Example Skill |
 | ------------- | ------- | ------------- |
-| `5001` | Weapon production | `1916` Weapon Production |
-| `5002` | Armor production | `1917` Armor Production |
-| `5003` | Life clothes production | `1918` Life Clothes Production |
-| `5004` | Siege weapon production | `1922` Siege Weapon Production |
-| `9001` | Produce packing | `1904` Produce Packing |
-| `9002` | Herb packing | `1905` Herb Packing |
-| `9003` | Mushroom packing | `1906` Mushroom Packing |
-| `9004` | Fish packing | `1907` Fish Packing |
-| `9005` | Timber packing | `1908` Timber Packing |
-| `9006` | Ore packing | `1909` Ore Packing |
+| `5001` | Weapon production | `1916` [Weapon Production](https://bdocodex.com/us/sskill/1916/) |
+| `5002` | Armor production | `1917` [Armor Production](https://bdocodex.com/us/sskill/1917/) |
+| `5003` | Life clothes production | `1918` [Life Clothes Production](https://bdocodex.com/us/sskill/1918/) |
+| `5004` | Siege weapon production | `1922` [Siege Weapon Production](https://bdocodex.com/us/sskill/1922/) |
+| `9001` | Produce packing | `1904` [Produce Packing](https://bdocodex.com/us/sskill/1904/) |
+| `9002` | Herb packing | `1905` [Herb Packing](https://bdocodex.com/us/sskill/1905/) |
+| `9003` | Mushroom packing | `1906` [Mushroom Packing](https://bdocodex.com/us/sskill/1906/) |
+| `9004` | Fish packing | `1907` [Fish Packing](https://bdocodex.com/us/sskill/1907/) |
+| `9005` | Timber packing | `1908` [Timber Packing](https://bdocodex.com/us/sskill/1908/) |
+| `9006` | Ore packing | `1909` [Ore Packing](https://bdocodex.com/us/sskill/1909/) |
 
 ### String Table
 
@@ -171,12 +171,12 @@ The string table is a flat pool, not grouped records. Skill records choose any s
 
 | Skill ID | Name | Icon | Description | Weight | Effect Values |
 | -------- | ---- | ---- | ----------- | ------ | ------------- |
-| `1603` | Wings C | `1303.dds` | Movement Speed +6% | `1000` | `60000`, `0` |
-| `1602` | Wings B | `1302.dds` | Movement Speed +8% | `1050` | `80000`, `0` |
-| `1601` | Wings A | `1301.dds` | Movement Speed +11% | `1400` | `110000`, `0` |
-| `1923` | Adv. Siege Weapon Production | `1923.dds` | Extra Work (+3) Done for Siege Weapons | `2500` | `3`, `0` |
-| `1203` | Thrifty C | `1203.dds` | 5% Chance to Return 10% of 1 Crafting Material | `1000` | `100000`, `100000` |
-| `1012` | Adept Worker | `1012_N.dds` | Work Speed +2, Movement Speed +7% | `1050` | `70000`, `0`; extra `2000000`, `1` |
+| `1603` | [Wings C](https://bdocodex.com/us/sskill/1603/) | `1303.dds` | Movement Speed +6% | `1000` | `60000`, `0` |
+| `1602` | [Wings B](https://bdocodex.com/us/sskill/1602/) | `1302.dds` | Movement Speed +8% | `1050` | `80000`, `0` |
+| `1601` | [Wings A](https://bdocodex.com/us/sskill/1601/) | `1301.dds` | Movement Speed +11% | `1400` | `110000`, `0` |
+| `1923` | [Adv. Siege Weapon Production](https://bdocodex.com/us/sskill/1923/) | `1923.dds` | Extra Work (+3) Done for Siege Weapons | `2500` | `3`, `0` |
+| `1203` | [Thrifty C](https://bdocodex.com/us/sskill/1203/) | `1203.dds` | 5% Chance to Return 10% of 1 Crafting Material | `1000` | `100000`, `100000` |
+| `1012` | [Adept Worker](https://bdocodex.com/us/sskill/1012/) | `1012_N.dds` | Work Speed +2, Movement Speed +7% | `1050` | `70000`, `0`; extra `2000000`, `1` |
 
 ## Suggested UI Layout
 
@@ -220,7 +220,15 @@ The shown values are scaled from the raw fields, which stay on the record unchan
 | ------- | -------- | ------ |
 | Refund chance (`effect_type = 1`) | All 6 refund skills match their text (`7000` is "0.7% Chance"), and the 2026-09-27 update changed value and text together (`50000`/`70000`/`100000` read 5/7/10% before, `7000`/`10000`/`15000` read 0.7/1/1.5% after) | Confirmed |
 | Stat code (`effect_type = 2`) | `0`/`1`/`2` match the stat named in all 4 descriptions, with the same codes `effect_value_b` uses for `effect_type = 0` | Confirmed |
-| Category key (`effect_type = 0` targets `1` to `13`, `effect_type = 6`) | Each value goes with exactly one category wording across 32 skills, including the paired `10xx`/`20xx` skills (`1009` and `2015` are both target `9`, both "Cannon/Siege Weapon"), and workermanjs applies the skills by the same categories (see below) | Very likely |
+| Category key (`effect_type = 0` targets `1` to `13`, `effect_type = 6`) | Each value goes with exactly one category wording across 32 skills, including the paired `10xx`/`20xx` skills (`1009` and `2015` are both target `9`, both "Cannon/Siege Weapon"), and workermanjs applies the skills by the same categories (see In-Game Checks) | Very likely |
 | Category names | Taken from those descriptions; no table in the client files found that names the keys (`houseinforeceipe.dbss` numbers workshops differently) | Not confirmed |
 
-Whether the client actually reads `effect_target` to decide which work gets the bonus, rather than the description being written separately, is not proven from the client files. [workermanjs](https://github.com/shrddr/workermanjs), a worker planner whose model is checked against observed yields, applies the skills with the same split (`src/stores/game.js`, `wspdBonus`, 2026-09-26): general work speed (target `0`) counts everywhere; target `11` (its `wspd_farm`, the skill now worded "Node Work Speed") counts on every node and in no workshop; a workshop adds only the skill of its own industry (`wspd_jewelry`, `wspd_weap` and so on, one per target `1` to `5`, `7` to `10` and `13`); and target `8` (`wspd_refine`, "Refinery/Specialty") also counts in the six packing workshops, which match the `effect_type = 6` targets `9001` to `9006` by name. Its hand-written skill list puts every skill ID in the same category as its `effect_target` here. An in-game check would still settle it: a worker with Node Knowledge (`1011`) should get the +5 on node work only.
+## In-Game Checks
+
+### Farm Knowledge Counts on Nodes Only
+
+Needs worker: one with [Farm Knowledge](https://bdocodex.com/us/sskill/1011/) (`1011`, "Node Work Speed +5")
+
+Whether the client reads `effect_target` to decide which work gets the bonus is not proven from the client files. [workermanjs](https://github.com/shrddr/workermanjs), a worker planner whose model is checked against observed yields, applies the skills with the same split (`src/stores/game.js`, `wspdBonus`, 2026-09-26): general work speed (target `0`) counts everywhere; target `11` (its `wspd_farm`, the skill now worded "Node Work Speed") counts on every node and in no workshop; a workshop adds only the skill of its own industry (`wspd_jewelry`, `wspd_weap` and so on, one per target `1` to `5`, `7` to `10` and `13`); and target `8` (`wspd_refine`, "Refinery/Specialty") also counts in the six packing workshops, which match the `effect_type = 6` targets `9001` to `9006` by name. Its hand-written skill list puts every skill ID in the same category as its `effect_target` here.
+
+Put the worker on a node, then in a workshop of any industry, and compare the work time per cycle with the worker's base work speed. If the time matches work speed + 5 on the node and the base work speed in the workshop, the client applies the bonus by `effect_target` (`11`, node work) as read here. A +5 in the workshop too means the target does not limit it.

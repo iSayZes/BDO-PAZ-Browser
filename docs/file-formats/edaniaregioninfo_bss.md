@@ -84,6 +84,27 @@ The `unknown_*` fields stay on the record for search and CSV but out of the tabl
 
 ## Open Questions
 
-### unknown_00 and unknown_04
+### Why the Value Is Stored Twice
 
-Two equal 3-byte values per row. For the five first-group castles each equals the `regioninfo.bss` `unknown_02` of the castle's region, which bdo-data-extractor reads as the region's world-map colour, so these are likely the colour of each Edania domain, for instance on the world map overlay that `ToClient_ToggleEdaniaArea` switches. Why the value is stored twice (fill and border, or two map layers) and what the `_Count` row's `100d10` is used for are not known. Comparing the Edania area overlay colours on the world map with these values would confirm it.
+`unknown_04` equals `unknown_00` on every row. Whether the two are fill and
+border, or two map layers, and what the `_Count` row's `100d10` is used for
+are not known. The In-Game Check below only settles what the value is.
+
+## In-Game Checks
+
+### Edania Overlay Colours
+
+Needs zone: Edania
+
+`unknown_00` and `unknown_04` are two equal 3-byte values per row. For the
+five first-group castles each equals the `regioninfo.bss` `unknown_02` of the
+castle's region, which bdo-data-extractor reads as the region's world-map
+colour, so these are likely the colour of each Edania domain, for instance on
+the world map overlay that `ToClient_ToggleEdaniaArea` switches.
+
+Open the world map over Edania, switch the Edania area overlay on and compare
+each domain's colour with its row: Aetherion `f51c0a`, Orbita `375090`,
+Event Horizon (Voidekaia) `680877`. Matching colours confirm the field as the
+domain colour. Read in file order the values are RGB (`f51c0a` red-orange);
+if Aetherion shows blue instead, the bytes are BGR (`0a1cf5`). A domain
+overlay that matches no row means the colour comes from somewhere else.

@@ -206,11 +206,9 @@ for (100 or 200).
   level its tooltip asks for in game (2026-10-05). Main weapons like Kzarka
   Gauntlet store `1`, and need no level.
 
-bdo-data-extractor also names a max stack at
-`+0x65` (`0x7FFFFFFF` in 70,159 base items, stackable or not) and a Pearl
-Shop flag at `+0xA4`. Neither bdocodex nor my own items could show those,
-so they stay unchecked here. The only items with a smaller max stack are
-HP / MP Potion (Beginner) (20), Deputy Token (99) and Combat EXP Scroll (61).
+bdo-data-extractor also names a max stack at `+0x65` and a Pearl Shop flag
+at `+0xA4`. Neither bdocodex nor my own items could show those, so they stay
+unchecked here (see Open Questions and In-Game Checks).
 
 The skill keys are fixed fields, read at `+0xCC` and `+0xD0` whatever the
 strings hold. Every enchant level of an item stores the same keys as its base
@@ -459,10 +457,6 @@ after `enhancement_type`, are undecoded here and in bdo-data-extractor. The
 fields below have a name there that neither bdocodex nor my own items could
 confirm (2026-10-05):
 
-- **Max stack** (`+0x65`): `0x7FFFFFFF` in 70,159 base items, stackable or
-  not. Only HP / MP Potion (Beginner) (20), Deputy Token (99) and Combat EXP
-  Scroll (61) store a small number; whether their stacks stop there is
-  unchecked.
 - **Pearl Shop flag** (`+0xA4`): `1` in 28,511 base items, which fits the
   outfits, but no tooltip line shows it.
 - **Trade type `4`**: Redfin Anthias, Opah and 107 other fish. bdocodex says
@@ -492,3 +486,22 @@ offset, so it cannot be named `unknown_<offset>`) looks like an effect or sound 
 other tag families exist, is unconfirmed. Earlier versions called it
 `effect_tag` and showed it as an Effect Tag column; it stays on the record for
 search and CSV but is no longer shown.
+
+## In-Game Checks
+
+### Max Stack at `+0x65`
+
+Needs item (any one):
+
+- [HP Potion (Beginner)](https://bdocodex.com/us/item/502/), 21 or more
+- [MP Potion (Beginner)](https://bdocodex.com/us/item/503/), 21 or more
+
+bdo-data-extractor names `+0x65` max stack. It is `0x7FFFFFFF` on almost
+every base item, stackable or not, and `0xFFFFFF00` on 120 items such as
+`336063` and `607880` to `607895`. Five store a small number: 20 for both
+potions, 99 for Deputy Token (65208), 61 for Combat EXP Scroll (848) and 1
+for Ashen Crow Horse Gear (336064). Deputy Token is a moderator item
+("It is used to control abusers of the Megaphone item") and horse gear does
+not stack, so the potions are the test items. Put more than 20 of one potion in the inventory and
+look at the slots. If it splits into a second stack at 20, `+0x65` is the
+max stack. If it stays in one stack, the field is something else.

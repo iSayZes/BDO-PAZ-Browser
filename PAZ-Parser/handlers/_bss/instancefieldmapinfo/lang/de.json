@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "field": "Feld",
+    "title": "Titel",
+    "description": "Beschreibung",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Radius (m)",
+    "image": "Bild",
+    "entryItem": "Eintrittsgegenstand",
+    "spawns": "Startpunkte"
+  },
+  "meta": {
+    "count": "{count} Instanzfeld-Karten"
+  }
+}

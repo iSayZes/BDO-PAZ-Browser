@@ -7,6 +7,7 @@
   "columns": {
     "key": "키",
     "name": "이름",
+    "title": "제목",
     "sectorX": "섹터 X",
     "sectorY": "섹터 Y",
     "sectorZ": "섹터 Z"

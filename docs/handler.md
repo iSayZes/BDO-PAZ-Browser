@@ -425,7 +425,7 @@ Available specs:
 | `SchemaTest` | Checks required keys exist on every row. |
 | `RangeTest` | Checks every value in one column is within a min/max range. `None` (an empty cell) is skipped. |
 | `PaFieldTest` | Checks a `pa_fields` text: the plain field is its tagged copy without tags, and some row keeps a game colour. |
-| `UserLanguageTest` | Checks no row shows Korean in the given text fields with English LOC loaded, so a missed LOC lookup fails. |
+| `UserLanguageTest` | Checks no row shows Korean in the given text fields with English LOC loaded, so a missed LOC lookup fails. `None` is skipped. |
 
 `HandlerResult.check(spec)` runs a spec against the parsed records and the input
 bytes (`CaseInput`: the data file and its companions by basename). Only
@@ -1136,6 +1136,7 @@ IDs (`LookupValue`).
 | `TELEPORT_NEAREST_NODE` | `teleport.dbss`, `mapdata_realexplore2.bwp` | `(node key, metres)` |
 | `LIGHTSTONE_SETS` | `lightstoneset.bss`                       | set IDs (tuple) |
 | `INSTANCE_FIELD_NAME` | `instancefield.dbss`                  | internal field name |
+| `INSTANCE_FIELD_TITLE` | `instancefieldmapinfo.bss`, `stringtable.bss` | `GAME` sheet key hash of the title |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1302,8 +1303,20 @@ Read it through `item_set_ids()` in `_bss/lightstoneset/item_sets.py`, whose
 internal ASCII name (`A1_001`, `Solare_Arena_Kell`); no LOC type names the
 fields. It is built by `build_instance_field_name_index()` in
 `_dbss/instancefield/parser.py`. Read it through `instance_field_name()` in
-`_common/instance_field.py`; the `buff.dbss` Effect text of type 176 uses it,
-`Teleport to Instance Field A1_001`.
+`_common/instance_field.py`.
+
+`INSTANCE_FIELD_TITLE` maps the same key to the `GAME` sheet hash of the
+field's title key in
+[instancefieldmapinfo.bss](file-formats/instancefieldmapinfo_bss.md)
+(`INSTANCEDUNGEONDATA_A1_001_NAME`), so the text follows the loaded LOC
+language without a rebuild. It is built by
+`build_instance_field_title_index()` in `_bss/instancefieldmapinfo/parser.py`
+and read through `instance_field_title()` in
+`_bss/instancefieldmapinfo/titles.py` (LOC type 37, `The Magnus: The Great
+Single Path`). `instance_field_label()` there joins both indexes; the
+`buff.dbss` Effect text of type 176 uses it, `Teleport to Instance Field The
+Magnus: The Great Single Path (A1_001)`, and the `instancefield.dbss` Title
+column uses the title alone.
 
 ## Icons
 

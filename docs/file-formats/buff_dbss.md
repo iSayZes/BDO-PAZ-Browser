@@ -25,7 +25,7 @@ buff_id 48830
 | `languagedata_en.loc` | Optional | English descriptions, `str_type=5`                |
 | `skill.dbss`, `itemenchant.dbss` | Optional | Applied By and inherited titles, through the `BUFF_ITEMS` and `SKILL_BUFFS` lookup indexes |
 | `exploration.bss`, `mapdata_realexplore2.bwp` | Optional | Sub-node names of type 37 (`Bambu Valley - Mining`), through the `NODE_PARENT` lookup index |
-| `instancefield.dbss` | Optional | Field names of type 176 (`A1_001`), through the `INSTANCE_FIELD_NAME` lookup index |
+| `instancefield.dbss`, `instancefieldmapinfo.bss` | Optional | Field names and titles of type 176, through the `INSTANCE_FIELD_NAME` and `INSTANCE_FIELD_TITLE` lookup indexes |
 
 [`buffsimply.bss`](buffsimply_bss.md) holds the same buff IDs in fixed 32-byte
 rows with the icon path, `unknown_str`, `is_shown` and a few stats bytes. It is
@@ -249,7 +249,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 160   | 29   | Movement, attack and casting speed rates | `param_1` Movement Speed, `param_2` Attack Speed, `param_3` Casting Speed, each per million and signed |
 | 168   | 16   | No Guard Gauge recovery       | No parameters                                                     |
 | 169   | 37   | Healing reduction             | `param_1` per million, shown negative (`Target's Recovery -10%`)  |
-| 176   | 48   | Teleport to an instance field | `param_3` = [instancefield.dbss](instancefield_dbss.md) key (`Teleport to Instance Field A1_001`); `param_1` `17` on all, meaning unknown |
+| 176   | 48   | Teleport to an instance field | `param_3` = [instancefield.dbss](instancefield_dbss.md) key (`Teleport to Instance Field The Magnus: The Great Single Path (A1_001)`); `param_1` `17` on all, meaning unknown |
 | 181   | 58   | Breath/Strength/Health EXP %  | `param_1` = kind as in type 89, `3` one training-EXP passive (unlabelled); `param_2` per million |
 | 186   | 4    | Black Shrine aura stat        | `param_1` = `1` fixed aura, `0` the aura the player picks (Light Orb); `param_2` = points; `param_3` = aura as type 187: `0` Sun, `1` Moon, `2` Earth |
 | 187   | 298  | Flat AP and DP                | `param_1` = AP, `param_2` = DP, both can be set; `param_3` = Land of the Morning Light attribute: `0` Sun, `1` Moon, `2` Earth |
@@ -540,9 +540,11 @@ English text that states an amount.
   named `A1_001` to `A1_066`, so item, skill and field share one name.
   Items A1_031 to A1_054 apply the same 24 buffs again, and the second 24
   buffs (54931 to 54954) belong to skills only. The fields have no LOC name,
-  so the column writes the internal one, `Teleport to Instance Field
-  A1_001`, through the `INSTANCE_FIELD_NAME` lookup index, and the key
-  without it. `A1` looks like Abyss One: the waypoint graph of field 4001
+  so the column writes the `instancefieldmapinfo.bss` title and the
+  internal name, `Teleport to Instance Field The Magnus: The Great Single
+  Path (A1_001)`, through the `INSTANCE_FIELD_TITLE` and
+  `INSTANCE_FIELD_NAME` lookup indexes; either alone when the other is
+  missing, the key without both. `A1` looks like Abyss One: the waypoint graph of field 4001
   (`mapdata_instancedungeon_4001explore.bwp`) names its points
   `road(magnus)_001` onwards, and the type 23 test buffs next to these read
   `A1 : 마그누스 내 A로 이동` ("A1: move to A inside Magnus").

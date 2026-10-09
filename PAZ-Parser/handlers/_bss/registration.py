@@ -17,6 +17,7 @@ from .fairyfeedenchantfailcount.handler import (
 )
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
+from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
@@ -66,6 +67,7 @@ def register_bss_handlers() -> None:
     )
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
+    register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),

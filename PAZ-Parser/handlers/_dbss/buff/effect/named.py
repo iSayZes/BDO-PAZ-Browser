@@ -11,8 +11,8 @@ from __future__ import annotations
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 
+from _bss.instancefieldmapinfo.titles import instance_field_label
 from _common.character import character_name
-from _common.instance_field import instance_field_name
 from _common.knowledge import knowledge_name, theme_name
 from _common.node import full_node_name
 from _common.quest.quest import quest_title
@@ -149,11 +149,12 @@ NAMED_EFFECTS: dict[int, tuple[NamedEffect, ...]] = {
     142: (NamedEffect("Obtain Title: {name}", title_name),),
     # Test items A1_001 to A1_024, whose skills read "A1 Teleport": param_3
     # is the instancefield.dbss key, and the field shares the item's name
-    # (4001 is `A1_001`). param_1 is 17 on all 48 buffs, meaning unknown.
+    # (4001 is `A1_001`, titled `The Magnus: The Great Single Path`).
+    # param_1 is 17 on all 48 buffs, meaning unknown.
     176: (
         NamedEffect(
             "Teleport to Instance Field {name}",
-            instance_field_name,
+            instance_field_label,
             key_params=(3,),
             when={1: 17},
         ),

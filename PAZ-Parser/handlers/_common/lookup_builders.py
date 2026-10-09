@@ -24,6 +24,7 @@ from _common.icon_index import borrow_icons
 from _bss.buffsimply.parser import build_buff_icon_index
 from _bss.exploration.parser import build_node_parent_index
 from _bss.groupcameradata.parser import build_cutscene_icon_index
+from _bss.instancefieldmapinfo.parser import build_instance_field_title_index
 from _bss.lightstoneset.parser import build_lightstone_set_index
 from _bss.mansionpartinfo.parser import build_manor_part_icon_index
 from _bss.menu.parser import build_menu_icon_index, build_menu_icon_region_index
@@ -89,6 +90,8 @@ BUFF_OFFSET = f"{_BINARY}/buffoffset.dbss"
 TELEPORT = f"{_BINARY}/teleport.dbss"
 LIGHTSTONESET = f"{_BINARY}/lightstoneset.bss"
 INSTANCEFIELD = f"{_BINARY}/instancefield.dbss"
+INSTANCEFIELDMAPINFO = f"{_BINARY}/instancefieldmapinfo.bss"
+STRINGTABLE = f"{_BINARY}/stringtable.bss"
 WORLDMAP = f"gamecommondata/waypoint_binary/{WORLDMAP_FILE}"
 
 # Every built index, keyed by `IndexKind.value`.
@@ -183,6 +186,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.LIGHTSTONE_SETS, (LIGHTSTONESET,), build_lightstone_set_index),
     # Instance field key -> name, for the buff.dbss Effect text of type 176.
     IndexSpec(IndexKind.INSTANCE_FIELD_NAME, (INSTANCEFIELD,), build_instance_field_name_index),
+    # Instance field key -> GAME sheet hash of its title, read in the loaded LOC language.
+    IndexSpec(
+        IndexKind.INSTANCE_FIELD_TITLE,
+        (INSTANCEFIELDMAPINFO, STRINGTABLE),
+        build_instance_field_title_index,
+    ),
 )
 
 

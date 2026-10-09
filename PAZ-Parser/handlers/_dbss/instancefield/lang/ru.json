@@ -7,6 +7,7 @@
   "columns": {
     "key": "Ключ",
     "name": "Название",
+    "title": "Заголовок",
     "sectorX": "Сектор X",
     "sectorY": "Сектор Y",
     "sectorZ": "Сектор Z"

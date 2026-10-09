@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "lifeSkillId": "ID de profession",
+    "lifeSkill": "Profession",
+    "level": "Niveau",
+    "rank": "Rang",
+    "exp": "EXP pour le prochain niveau"
+  },
+  "offsetColumns": {
+    "lifeSkillId": "ID de profession",
+    "level": "Niveau",
+    "dataOffset": "Décalage des données",
+    "dataSize": "Taille des données"
+  },
+  "meta": {
+    "count": "{count} niveaux · {skills} professions",
+    "offsetCount": "{count} entrées de décalage · {skills} professions"
+  }
+}

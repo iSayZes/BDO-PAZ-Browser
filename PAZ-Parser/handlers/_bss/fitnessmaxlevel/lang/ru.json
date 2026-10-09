@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "fitnessTypeId": "ID параметра тела",
+    "fitnessType": "Параметры тела",
+    "maxLevel": "Макс. ур."
+  },
+  "meta": {
+    "count": "Параметров тела: {count}"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "offsetColumns": {
+    "classType": "Klassentyp",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "columns": {
+    "classType": "Klassentyp",
+    "className": "Klasse",
+    "characterKey": "Charakter-ID",
+    "gender": "Geschlecht",
+    "playable": "Spielbar",
+    "combatType": "Kampfart",
+    "starterWeapons": "Startwaffen",
+    "classWeapons": "Klassenwaffen",
+    "selectMovie": "Auswahlvideo",
+    "description": "Beschreibung"
+  },
+  "gender": {
+    "male": "Männlich",
+    "female": "Weiblich"
+  },
+  "meta": {
+    "count": "{count} Klassentypen"
+  }
+}

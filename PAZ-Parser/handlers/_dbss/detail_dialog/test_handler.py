@@ -7,7 +7,12 @@ import pytest
 
 from _common.lease import Lease, lease_pairs
 from _dbss.detail_dialog.lease import parse_lease
-from _dbss.detail_dialog.parser import build_character_lease_index, split_key
+from _dbss.detail_dialog.parser import (
+    CONTENTS_TYPE_NAMES,
+    DIALOG_BUTTON_TYPE_NAMES,
+    build_character_lease_index,
+    split_key,
+)
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -21,6 +26,8 @@ from tests.framework import (
 )
 
 _OFFSET_FILE = "detail_dialogoffset.dbss"
+# Options with an empty action store this value, outside DialogButtonType.
+_NO_ACTION_BUTTON_TYPE = "99"
 # Martina Finto's main dialog: dialog index 1 of character 40024.
 _MARTINA_MAIN = 1 << 16 | 40024
 _SMALL_FENCE = 58010
@@ -42,7 +49,9 @@ DIALOG_CASE = HandlerCase(
                 "character",
                 "internal_name",
                 "greeting",
+                "contents_types",
                 "option_count",
+                "dialog_button_types",
                 "option_titles",
                 "leases",
                 "lease_item_ids",
@@ -149,3 +158,13 @@ def test_dialog_text_uses_the_user_language(dialog_result: HandlerResult) -> Non
     martina = next(r for r in dialog_result.records if r["key"] == _MARTINA_MAIN)
     assert "[Rent] Small Fence" in martina["option_titles"]
     assert martina["greeting"].isascii()
+
+
+def test_dialog_enum_values_have_client_names(dialog_result: HandlerResult) -> None:
+    """Every stored kind is a CppEnums member; only the empty-action 99 stays a number."""
+    contents_types = {name for r in dialog_result.records for name in r["contents_types"]}
+    button_types = {name for r in dialog_result.records for name in r["dialog_button_types"]}
+    assert contents_types <= set(CONTENTS_TYPE_NAMES)
+    assert "Shop" in contents_types
+    assert button_types <= {*DIALOG_BUTTON_TYPE_NAMES, _NO_ACTION_BUTTON_TYPE}
+    assert "Normal" in button_types

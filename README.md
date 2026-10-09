@@ -22,11 +22,15 @@ to, and run `BDO-PAZ-Browser.exe`. The zip holds `BDO-PAZ-Browser.exe`,
   deleting the folder takes them along. A folder the exe can't write to, such as
   one in Program Files, uses `%LOCALAPPDATA%\BDO-PAZ-Browser` instead.
 - A newer release shows up as a green notice next to the settings button;
-  **Update** installs it in a few seconds and keeps `data`. From the command line:
+  **Update** installs it in a few seconds and keeps `data`. It checks the zip's
+  SHA-256 and puts the old version back when the new one can't load its
+  handlers. Nothing updates without a click. From the command line:
   `bdo-paz-cli.exe --update-app`.
 - New and fixed handlers come without a new release: on start the app
   downloads the changed handler files in the background, then offers a restart
-  to use them. From the command line: `bdo-paz-cli.exe --update-handlers`.
+  to use them. A pack that needs a newer app, or fails to load, is skipped and
+  the app keeps its own handlers ([Handler Packs](docs/handler.md#handler-packs)).
+  From the command line: `bdo-paz-cli.exe --update-handlers`.
 - On start the app contacts GitHub twice: the releases API for a newer release
   and the `handlers-latest` release for a newer handler pack. Turn off **Check
   for updates on start** and **Update handlers on start** in the settings and it
@@ -41,22 +45,17 @@ To run from source or write handlers, see [Requirements](#requirements).
 
 ## Features
 
-- **GUI browser**: tree-view file explorer for the full PAZ archive, with live search and file preview
-- **CLI extraction**: extract files by name or glob pattern without opening the GUI
-- **File preview**: text, hex dump, DDS images, and parsed binary tables for known formats
-- **Paged preview**: large files (hex and parsed tabs) are paged; navigate with Prev/Next without loading the full DOM
-- **Sortable tables**: click a column header to sort the whole parsed table, not just the page on screen; a table opens sorted by its first column, highest first, until you click another sort, which is remembered per file
-- **Tab search**: Ctrl+F inline search within hex (byte offset) and parsed (record) tabs; string and hex-pattern modes
-- **Export**: save the current file as raw binary (hex tab) or CSV (parsed tab) via the Entry Details panel
-- **Game text colours**: LOC text shows the colours of its `<PAColor>` tags, as in game; the **Show game text tags** setting (off by default) also shows the tags themselves
-- **Handled tables only**: the **Show only handled tables** setting (off by default) limits the file tree, file search, content search and folder extraction to files with a parsed table view, plus the LOC file
-- **Languages**: the language setting picks both the UI text and the LOC file the tables read game text from (`ads/languagedata_<code>.loc`), which also sits at the top of the file tree and follows a language switch. A client ships only its region's LOC files; when the picked language's file is missing, a corner warning says only the UI is in that language and the tables show their Korean text. Dismissing it keeps it closed for that language, and the settings still mark the language with a ⚠ icon
-- **Plugin system**: add handlers for new binary formats by dropping a file into `handlers/`
-- **Caching**: the PAZ index is parsed once and cached; later launches read it from the cache. Every cache lives outside the game folder, in the `cache` folder of the data folder with one subfolder per PAZ folder, so a test client keeps its own. Caches an older version left next to the PAZ files move over on the next start
-- **Data folder**: settings (`paz_config.json`) and caches live in `%LOCALAPPDATA%\BDO-PAZ-Browser` when running from source, and in `data\` next to the exe in the Windows build, so the unzipped folder holds everything (an exe folder that can't be written, such as one in Program Files, falls back to `%LOCALAPPDATA%`). The **Data Folder** setting picks another folder: the settings are copied there (replacing any already in it, the old copy stays), the caches in the old folder are deleted, and the loaded client's PAZ index is saved again in the new one. A picked folder that is gone, such as an unplugged drive, is replaced by the default until it is back. Settings an older version kept next to the code move over on the next start. The settings file carries a `config_version`: a newer app updates older settings on load, settings it can't read are renamed to `paz_config.backup.json` and the app starts with defaults, and an older app reads newer settings as they are and keeps their keys
-- **App updates** (Windows exe): on start the app asks GitHub for a newer release (the **Check for updates on start** setting, on by default) and shows a banner. Its popup lists the release notes, with **Update** and **Open on GitHub**. **Update** downloads the release zip, checks its SHA-256, closes the app and swaps the new version in: `data` moves along, and when the new `bdo-paz-cli.exe --handlers` fails, the old version is put back. Nothing updates without a click. From source, update with `git pull`
-- **Handler updates** (Windows exe): handlers ship apart from the exe as handler packs, the `handlers/` folder of one commit with a `manifest.json` (SHA-256 per file, the `HANDLER_API` it needs, each handler's version). On start the app reads the manifest of the `handlers-latest` release (the **Update handlers on start** setting, on by default; **Check now** runs it at once). For a newer pack it copies the unchanged files from the running pack, downloads the changed ones from GitHub, checks every hash and that the pack loads in `bdo-paz-cli.exe --handlers`, and then offers **Restart now**. A pack for another `HANDLER_API` needs a newer app first; a pack that fails to load is never tried again and the app keeps its own handlers. Packs live in `handlers\` in the data folder. A handler's version is the pack in which its code, or a `_common` module it imports, last changed
-- **Parsed table cache**: parsed tables are kept on disk, so a big table reopens in a fraction of its parse time (`detail_dialog.dbss` 1.3 s to 0.25 s, `itemenchant.dbss` with its default sort 2.1 s to 0.5 s). The **Parsed Table Cache** setting picks Off, Cache tables when opened (default) or Cache all tables in the background, which parses every table A to Z while the app is idle; the status bar shows the table it is on, how far the pass is, and when it waits for you. A table stays cached across a patch that leaves it, its companions and the LOC text or lookup indexes it reads unchanged. **Delete all caches** in the settings removes the parsed table, icon thumbnail and lookup index caches; the PAZ index cache stays, since rebuilding it takes over a minute. In the background mode, the pass then waits for the next start instead of filling the cache again right away
+- Tree view of every file in the PAZ archives, with live name search, content search and a preview panel.
+- Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row.
+- Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
+- Ctrl+F inside the hex tab (byte offset, string or hex pattern) and the table tab (records).
+- Export of the open file as raw binary, or its parsed table as CSV.
+- Game text in the language you pick, with the colours of its `<PAColor>` tags as in game; **Show game text tags** shows the tags too. A client ships only its region's LOC files, so for a missing one the tables show their Korean text and a corner warning says so.
+- **Show only handled tables** limits the file tree, searches and folder extraction to files with a parsed table, plus the LOC file.
+- A command-line version that lists, extracts and queries parsed records (see [CLI](#cli)).
+- New formats are handler files dropped into `handlers/` (see [Writing a Preview Handler](#writing-a-preview-handler)).
+- The PAZ index and parsed tables are cached on disk: `detail_dialog.dbss` reopens in 0.25 s instead of 1.3 s (see [Settings and Data Folder](#settings-and-data-folder)).
+- The Windows exe updates itself and its handlers from GitHub (see [Download](#download)).
 
 ## Contributing Format Coverage
 
@@ -64,7 +63,7 @@ BDO has hundreds of undocumented binary formats. Contributions and corrections a
 
 **Reverse engineer a new format**: open a new issue using the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`).
 
-**Improve existing docs**: the format docs in [`docs/file-formats/`](docs/file-formats/) are not all complete. Each doc has an **Open Questions** section listing specific unknowns. If you can answer any of them, update the doc directly.
+**Improve existing docs**: the format docs in [`docs/file-formats/`](docs/file-formats/) are not all complete. Each doc has an **Open Questions** section listing specific unknowns. If you can answer any of them, update the doc directly. Some docs also end with an **In-Game Checks** section: a test that needs a given item, quest, NPC, class or zone. A player who has it can answer the check without reading the binary layout.
 
 **Translate the UI**: UI strings live in [`PAZ-Parser/ui/lang/`](PAZ-Parser/ui/lang/) as small JSON files, one per language. Missing keys fall back to English automatically, so partial translations are fine. See [`TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md) for instructions.
 
@@ -109,9 +108,9 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 42/401 .bss formats.
-- Handler Supported 85/374 .dbss formats.
-- Handler Supported 24 other formats.
+- Handler Supported 47/401 .bss formats.
+- Handler Supported 91/374 .dbss formats.
+- Handler Supported 31 other formats.
 
 ## Documented Formats
 
@@ -289,6 +288,36 @@ python browser.py
 ```
 
 On first launch, click **Open Folder** and select your BDO PAZ directory (typically `Black Desert/Paz`). The index is parsed and cached, and later launches load it from the cache.
+
+### Settings and Data Folder
+
+Settings (`paz_config.json`), caches and downloaded handler packs live in the
+data folder: `data\` next to the exe in the Windows build, or
+`%LOCALAPPDATA%\BDO-PAZ-Browser` from source and when the exe folder can't be
+written. Caches sit in its `cache` folder, one subfolder per PAZ folder, so a
+test client keeps its own.
+
+The **Data Folder** setting picks another folder. The settings are copied
+there (replacing any already in it; the old copy stays), the caches in the
+old folder are deleted, and the loaded client's PAZ index is saved again in
+the new one. A picked folder that is gone, such as an unplugged drive, is
+replaced by the default until it is back.
+
+The **Parsed Table Cache** setting is Off, Cache tables when opened (default)
+or Cache all tables in the background. The background mode parses every
+table A to Z while the app is idle, and the status bar shows the table it is
+on and how far the pass is. A table stays cached across a patch that leaves
+it, its companions and the LOC text or lookup indexes it reads unchanged.
+**Delete all caches** removes the parsed table, icon thumbnail and lookup
+index caches; the PAZ index cache stays, since rebuilding it takes over a
+minute.
+
+`paz_config.json` carries a `config_version`. A newer app updates older
+settings on load; settings it can't read are renamed to
+`paz_config.backup.json` and the app starts with defaults; an older app reads
+newer settings as they are and keeps their keys. Settings and caches that an
+older version kept next to the code or the PAZ files move to the data folder
+on the next start.
 
 ### CLI
 

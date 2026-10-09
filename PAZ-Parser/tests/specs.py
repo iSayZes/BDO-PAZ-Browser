@@ -123,7 +123,8 @@ class UserLanguageTest:
 
     Each field is a user-facing column that reads LOC first and falls back to
     the inline Korean, so a Korean value means the LOC lookup was missed. A
-    field may hold a string or a list of strings.
+    field may hold a string or a list of strings; `None` (an empty cell) is
+    skipped.
     """
 
     fields: list[str]
@@ -133,7 +134,7 @@ class UserLanguageTest:
             for field in self.fields:
                 value = record[field]
                 texts = value if isinstance(value, list) else [value]
-                if any(_HANGUL.search(text) for text in texts):
+                if any(_HANGUL.search(text) for text in texts if text is not None):
                     raise AssertionError(f"UserLanguageTest records[{pos}].{field}={value!r} is Korean")
         return f"UserLanguageTest no Korean in {', '.join(self.fields)}"
 

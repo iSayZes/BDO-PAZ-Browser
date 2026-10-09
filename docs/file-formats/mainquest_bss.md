@@ -73,4 +73,4 @@ On client 3458 all 120 groups have a name (type 43 has 170, keys 1 to 171, so so
 
 ### Shared Fields
 
-`unknown_06` and the roles of the two scripts are open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).
+`unknown_06` and the roles of the two scripts are open for all four lists; see the Open Questions and In-Game Checks of [`newquest.bss`](newquest_bss.md).

@@ -24,12 +24,15 @@ hunting ground 117, region tab 13 (Inner Edania), categories 3 (Marni's Realm), 
 
 ## Companion Files
 
-| File                          | Required | Role                                                                      |
-| ----------------------------- | -------- | ------------------------------------------------------------------------- |
-| `dropuimaincategoryinfo.bss`  | Optional | Region tabs: tab key -> territory and tab icon, see below                 |
-| `dropuisubcategoryinfo.bss`   | Optional | Filter categories: Korean name and button icon, see below                 |
-| `dropuitaginfo.bss`           | Optional | Tags: Korean name and tooltip, Dehkia's Lantern guide image, tag and text colours, see below |
-| `languagedata_en.loc`         | Optional | Zone names (116), categories (115), tags (117), territories (12), monsters (6), items (0), quests (18), regions (17), titles (1), nodes (29) |
+| File                                                          | Required | Role                                                      |
+| ------------------------------------------------------------- | -------- | --------------------------------------------------------- |
+| [`dropuimaincategoryinfo.bss`](dropuimaincategoryinfo_bss.md) | Optional | Region tabs: tab key -> territory, for the Region column  |
+| [`dropuitaginfo.bss`](dropuitaginfo_bss.md)                   | Optional | Tag pill colours for the Tags column                      |
+| `languagedata_en.loc`                                         | Optional | Zone names (116), categories (115), tags (117), territories (12), monsters (6), items (0), quests (18), regions (17), titles (1), nodes (29) |
+
+[`dropuisubcategoryinfo.bss`](dropuisubcategoryinfo_bss.md) holds the filter
+categories of `sub_category_keys`; the handler names them from LOC type 115
+alone.
 
 `dropuiurlinfo.bss` (20 bytes) is an empty PABR block on client 3458 (count
 0).
@@ -106,87 +109,6 @@ zones; `1` Mansha Forest, Catfishman Camp, Rhutum Outstation; `2` Hexe
 Sanctuary, Soldier's Grave, Cyclops Land; `3` Polly's Forest, Navarn Steppe,
 Ash Forest, Olun's Valley; `4` Aetherion Castle to Scales of Judgment.
 
-### `dropuimaincategoryinfo.bss`
-
-PABR block of 13 fixed 10-byte rows plus the counted string table, which
-holds only the 13 tab icon names (`Combine_Etc_DropItem_Icon_Tab_04`, ...).
-
-| Offset  | Type | Field         | Notes                                                       |
-| ------- | ---- | ------------- | ----------------------------------------------------------- |
-| `+0x00` | u32  | key           | Region tab, 1 to 13                                         |
-| `+0x04` | u16  | territory_key | LOC type 12 `str_id1`; `str_id4` 1 is the tab name           |
-| `+0x06` | u32  | icon_ref      | String table index of the tab icon                          |
-
-The tabs are Balenos, Serendia, Calpheon, Mediah, Valencia, Kamasylvia,
-Drieghan, O'dyllita, Mountain of Eternal Winter, Ulukita, Land of the Morning
-Light, Outer Edania and Inner Edania; the Great Ocean (territory 5) has no
-tab, and tabs 10 and 11 swap the territory order.
-
-### `dropuisubcategoryinfo.bss`
-
-PABR block of 8 fixed 12-byte rows plus the counted string table (15
-strings: the Korean names and the button icon names).
-
-| Offset  | Type | Field    | Notes                                                    |
-| ------- | ---- | -------- | -------------------------------------------------------- |
-| `+0x00` | u32  | key      | Category, 1 to 8; LOC type 115 `str_id1`                  |
-| `+0x04` | u32  | name_ref | String table index of the Korean name                    |
-| `+0x08` | u32  | icon_ref | String table index of the button icon; 6 and 7 share one |
-
-| Key | Korean            | LOC type 115              |
-| --- | ----------------- | ------------------------- |
-| 1   | 파티 사냥터       | Party Zones               |
-| 2   | 엘비아의 영역     | Elvia Realm               |
-| 3   | 마르니의 밀실     | Marni's Realm             |
-| 4   | 지역 의뢰         | Region Quests             |
-| 5   | 추천              | Suggested                 |
-| 6   | 데키아의 등불     | Dehkia's Lantern          |
-| 7   | 데키아의 등불 II  | Dehkia's Lantern II       |
-| 8   | 알란 세르빈의 풍경 | Allan Serbin's Landscape |
-
-No hunting ground stores 5 or 7.
-
-### `dropuitaginfo.bss`
-
-PABR block of 45 fixed 32-byte rows plus the counted string table (118
-strings: the Korean names and tooltips, the guide image names and the colours
-as hex text). Rows are sorted by key, 1 to 45 with no gaps.
-
-| Offset  | Type | Field                 | Notes                                                                    |
-| ------- | ---- | --------------------- | ------------------------------------------------------------------------ |
-| `+0x00` | u32  | key                   | Tag key, as in `tag_keys`; LOC type 117 `str_id1`                         |
-| `+0x04` | u32  | name_ref              | String table index of the Korean name (`#다수의 몬스터와 전투`); LOC `str_id4` 0 is the English one (`#LotsOfMobs`) |
-| `+0x08` | u32  | guide_texture_ref     | String table index of the guide image name; the empty string on 32 rows   |
-| `+0x0C` | u32  | desc_ref              | String table index of the Korean tooltip, with `<PAColor>` tags; LOC `str_id4` 1 is the English one |
-| `+0x10` | u32  | texture_color_ref     | String table index of `texture_color` as hex text (`ffe1ba65`)           |
-| `+0x14` | u32  | font_color_ref        | String table index of `font_color` as hex text                           |
-| `+0x18` | u32  | texture_color         | Tag background colour, ARGB (`0xFFE1BA65`)                                |
-| `+0x1C` | u32  | font_color            | Tag text colour, ARGB                                                     |
-
-The two hex strings always equal the two ARGB values (case aside: `ffD2691E`,
-`ff3CB371`), so the strings carry nothing extra. The colours are the same on
-34 rows; the other 11 have a darker background and a lighter text:
-
-| Keys                     | Tag                         | `texture_color` | `font_color` |
-| ------------------------ | --------------------------- | --------------- | ------------ |
-| 20, 21, 23, 25 to 32, 42, 43 | `#FixedLanternSpot`     | `0xFF5384D5`    | `0xFFA6C0EA` |
-| 38, 39, 40               | Stun, knockdown, knockback  | `0xFFD2691E`    | `0xFFFFA500` |
-| 41                       | `#AllanSerbinsLandscape`    | `0xFF3CB371`    | `0xFF98FB98` |
-
-`guide_texture_ref` is set only on the 13 `#FixedLanternSpot` rows, one image
-per zone (`Combine_Etc_DekiaLanterns_GroundTooltip_01` to `_13`): a map of
-where the Dehkia's Lantern can be summoned, shown when the tag is clicked.
-Each name is a whole texture of the same name, lower-cased, in the folder its
-first two parts name: `ui_texture/combine/etc/combine_etc_dekialanterns_groundtooltip_01.dds`.
-All 13 exist on client 3458 (717.8 KB each). The Korean tooltips store a line
-break as the two characters `\n`, where LOC has a real newline.
-Some colours are shared: `0xFF63B6E6` on `#NoItemCollectGauge`,
-`#NoAgrisFever`, both Golden Pig Caves, Atoraxxion and Orzekea, and
-`0xFFCB6768` on `#TreasurePieces`, `#RedArtifacts` and `#HighestTier`.
-
-Only tag 17 (`#PartyOf4`) is on no hunting ground on client 3458; LOC type 117
-names all 45 plus a key 46 with the same `#DivineAuthority` text as 45.
-
 ## Suggested UI Layout
 
 | Column      | Type | Notes                                                                       |
@@ -209,21 +131,6 @@ names all 45 plus a key 46 with the same `#DivineAuthority` text as 45.
 | Species     | text | `tribe_type` as `{value} {label}` (`1 Demihumans`); the label from LOC type 37, falling back to the enum name (`1 NonHuman`) |
 
 The position and region keys stay on the record but out of the table.
-
-### `dropuitaginfo.bss`
-
-| Column      | Type  | Notes                                                                      |
-| ----------- | ----- | -------------------------------------------------------------------------- |
-| Key         | num   | `key`; right-aligned                                                       |
-| Name        | text  | LOC type 117 `str_id4` 0, falling back to the Korean name; drawn as the tag pill in its two colours, as on the hunting grounds |
-| Guide Image | image | The guide image texture; dash on rows without one; sorts by the texture name |
-| Colours     | text  | `texture_color / font_color` as `0xFF5384D5 / 0xFFA6C0EA`; sorts by `texture_color` |
-| Description | text  | LOC type 117 `str_id4` 1 in its `<PAColor>` colours (`pa_fields`), falling back to the Korean tooltip; one line, cut after 120 characters |
-| Hunting Grounds | text | Names (LOC type 116, falling back to the Korean name) of the `dropuihuntinggroundinfo.bss` rows whose `tag_keys` hold the tag, in file order; dash without that file |
-
-The handler loads `dropuihuntinggroundinfo.bss` as an optional companion for
-the Hunting Grounds column. The two hex colour strings stay out of the
-record, since they repeat the ARGB values.
 
 ## Notes
 
@@ -254,32 +161,3 @@ record, since they repeat the ARGB values.
   Ancient Spirit Dust), not the packed `itemenchant.dbss` key.
 - bdo-viewer (built on bdo-data-extractor) counts 105 zones; the file holds
   112 rows.
-- The same Lua draws each tag through `ToClient_getDropUITagStaticStatusWrapper`:
-  `tagControl:SetColor(getTextureColor())`, `SetFontColor(getFontColor())`,
-  the text from `getTagString`, the tooltip from `getTagTooltipDescString`
-  under the `LUA_DROPITEMUI_TOOLTIP_TAG_TITLE` heading, and on click the
-  guide image from `getTagGuideTextureId` when `isExistGuideTextureId`.
-- Which slot is which colour comes from
-  [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor)
-  (`DecodeTags`: `+0x18` texture, `+0x1C` font) and fits the data: wherever
-  the two differ, `+0x1C` is the lighter shade, as text on a tinted
-  background would be. The getters alone do not show the order; the game
-  confirms it: on Aakman, `#Knockdown/Bound` is orange text on a brown pill.
-- The tag control's texture (`StaticText_Tag_Templete` in
-  `ui_data/window/dropitem/panel_window_dropitem_all_renew.xml`) is
-  `Combine_Etc_DropItem_Tag_BG`, a pill in `combine/etc/combine_etc_dropitem.dds`
-  (UV 128,314 to 228,339) that is white at alpha 51. `SetColor` tints it, so
-  the background shows `texture_color` at about 20% over the window, and a
-  tag whose two colours are equal (34 of 45) still reads.
-
-## Open Questions
-
-### Where the Client Resolves a Guide Image Name
-
-The window Lua hands `getTagGuideTextureId` to
-`PaGlobalFunc_DropItemImageToolTip_Open` as a texture ID. I have not found the
-table that maps such an ID to a file, so the handler takes the file of the
-same name in the folder the first two name parts give. That holds for all 13
-names on client 3458, but `Combine_Etc_DropItem_Tag_BG` is a sprite inside
-`combine_etc_dropitem.dds`, so a later guide image could be a sprite too and
-then show a dash.

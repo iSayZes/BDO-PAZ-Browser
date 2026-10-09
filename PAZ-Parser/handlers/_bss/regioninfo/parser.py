@@ -81,7 +81,7 @@ _TAIL_UNKNOWNS = _UnknownLayout(
 
 # CppEnums.RegionType from global_define_cpp_enum.luac, without the
 # "eRegionType_" prefix. The file also uses 7 and 8, which no client enum
-# names (see the format doc's Open Questions).
+# names (see the format doc's In-Game Checks).
 REGION_TYPE_NAMES: tuple[str, ...] = (
     "MinorTown", "MainTown", "Hunting", "Siege", "Fortress", "CastleInSiege", "Arena",
 )

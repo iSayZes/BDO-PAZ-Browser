@@ -6,8 +6,7 @@
 Each row holds the tag key, its Korean name and tooltip, the Dehkia's Lantern
 guide image name and the tag's background and text colours (as hex text and
 as ARGB u32s). `dropuihuntinggroundinfo.bss` lists the tag keys of each zone.
-Full layout in the `dropuitaginfo.bss` section of
-docs/file-formats/dropuihuntinggroundinfo_bss.md.
+Full layout in docs/file-formats/dropuitaginfo_bss.md.
 """
 
 from __future__ import annotations

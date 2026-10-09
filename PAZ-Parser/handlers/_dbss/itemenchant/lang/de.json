@@ -15,7 +15,8 @@
     "dyeable": "Färbbar",
     "objectId": "Objekt-ID",
     "object": "Objekt",
-    "buffs": "Buffs"
+    "buffs": "Buffs",
+    "lightstoneSets": "Lichtstein-Kombinationen"
   },
   "offsetColumns": {
     "itemId": "Gegenstands-ID",

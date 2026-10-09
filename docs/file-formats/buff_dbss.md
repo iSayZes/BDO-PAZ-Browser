@@ -25,6 +25,7 @@ buff_id 48830
 | `languagedata_en.loc` | Optional | English descriptions, `str_type=5`                |
 | `skill.dbss`, `itemenchant.dbss` | Optional | Applied By and inherited titles, through the `BUFF_ITEMS` and `SKILL_BUFFS` lookup indexes |
 | `exploration.bss`, `mapdata_realexplore2.bwp` | Optional | Sub-node names of type 37 (`Bambu Valley - Mining`), through the `NODE_PARENT` lookup index |
+| `instancefield.dbss`, `instancefieldmapinfo.bss` | Optional | Field names and titles of type 176, through the `INSTANCE_FIELD_NAME` and `INSTANCE_FIELD_TITLE` lookup indexes |
 
 [`buffsimply.bss`](buffsimply_bss.md) holds the same buff IDs in fixed 32-byte
 rows with the icon path, `unknown_str`, `is_shown` and a few stats bytes. It is
@@ -248,7 +249,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 160   | 29   | Movement, attack and casting speed rates | `param_1` Movement Speed, `param_2` Attack Speed, `param_3` Casting Speed, each per million and signed |
 | 168   | 16   | No Guard Gauge recovery       | No parameters                                                     |
 | 169   | 37   | Healing reduction             | `param_1` per million, shown negative (`Target's Recovery -10%`)  |
-| 176   | 48   | Teleport to an instance field | `param_3` = `instancefield.dbss` key (`Teleport to Instance Field 4001`); `param_1` `17` on all, meaning unknown |
+| 176   | 48   | Teleport to an instance field | `param_3` = [instancefield.dbss](instancefield_dbss.md) key (`Teleport to Instance Field The Magnus: The Great Single Path (A1_001)`); `param_1` `17` on all, meaning unknown |
 | 181   | 58   | Breath/Strength/Health EXP %  | `param_1` = kind as in type 89, `3` one training-EXP passive (unlabelled); `param_2` per million |
 | 186   | 4    | Black Shrine aura stat        | `param_1` = `1` fixed aura, `0` the aura the player picks (Light Orb); `param_2` = points; `param_3` = aura as type 187: `0` Sun, `1` Moon, `2` Earth |
 | 187   | 298  | Flat AP and DP                | `param_1` = AP, `param_2` = DP, both can be set; `param_3` = Land of the Morning Light attribute: `0` Sun, `1` Moon, `2` Earth |
@@ -258,7 +259,10 @@ English text, by item names and bdocodex tooltips (see Effect text).
 The `param_1` life skills of type 80, from the English text of its buffs:
 `0` Gathering, `1` Fishing, `2` Hunting, `3` Cooking, `4` Alchemy, `5`
 Processing, `6` Training, `7` Trading, `8` Farming, `9` Sailing, `11` Barter.
-No buff with text uses `10`. Kinds `5` and `6` of type 93 each appear on a
+This is the client's `CppEnums.LifeExperienceType` numbering (see
+[lifeexp.dbss](lifeexp_dbss.md)), and the browser names each life skill from
+the loaded LOC, as `lifeexp.dbss` does. `10` is the spare slot `temp1`, which
+has no name and no buff with text. Kinds `5` and `6` of type 93 each appear on a
 single buff with text. Kind `2` of type 128 appears only on
 `Mermaid's Wish III`, so it stays unlabelled.
 
@@ -532,13 +536,15 @@ English text that states an amount.
   (LOC type 10 `A1_001` to `A1_054`), read `A1 Teleport`; the second set,
   56901 to 56954, is named after the buffs and reads `A1`. Items A1_001 to
   A1_024 (720601 to 720624) apply buffs 54901 to 54924, which store 4001 to
-  4024. `instancefield.dbss` (199 records, keys through
-  `instancefieldoffset.dbss`, each holding a length-prefixed ASCII name)
-  has keys 4001 to 4066, named `A1_001` to `A1_066`, so item, skill and
-  field share one name. Items A1_031 to A1_054 apply the same 24 buffs
-  again, and the second 24 buffs (54931 to 54954) belong to skills only. The
-  column writes `Teleport to Instance Field 4001`, since the fields have no
-  LOC name. `A1` looks like Abyss One: the waypoint graph of field 4001
+  4024. [instancefield.dbss](instancefield_dbss.md) has keys 4001 to 4066,
+  named `A1_001` to `A1_066`, so item, skill and field share one name.
+  Items A1_031 to A1_054 apply the same 24 buffs again, and the second 24
+  buffs (54931 to 54954) belong to skills only. The fields have no LOC name,
+  so the column writes the `instancefieldmapinfo.bss` title and the
+  internal name, `Teleport to Instance Field The Magnus: The Great Single
+  Path (A1_001)`, through the `INSTANCE_FIELD_TITLE` and
+  `INSTANCE_FIELD_NAME` lookup indexes; either alone when the other is
+  missing, the key without both. `A1` looks like Abyss One: the waypoint graph of field 4001
   (`mapdata_instancedungeon_4001explore.bwp`) names its points
   `road(magnus)_001` onwards, and the type 23 test buffs next to these read
   `A1 : 마그누스 내 A로 이동` ("A1: move to A inside Magnus").
@@ -708,7 +714,7 @@ The other type 18 parameters are open:
   flame tower summon") points at 26701, `Ahib Salun Wolf Spearmaiden`, whose
   model is `infinitydefence/monster/4/m0004_defence_knightwolf`, one of the
   defence-mode monsters at 26829 to 26879. The tower comes from somewhere
-  else, or the item was repointed without its buff; open.
+  else, or the item was repointed without its buff; see In-Game Checks.
 
 The Wizard's Summon: Keeper Marg skill (2250) shows how a skill splits one
 tooltip over several buffs, all lasting 60 min:
@@ -838,7 +844,7 @@ reads `Recover 5 WP each time when struck` on bdocodex, and its buff 80
 stores `5` under `8`. `2` (one buff, 50046, `HP -100`, Ancient Magic Crystal
 - Temptation on the target) and `5` (12 buffs, the "To_Self" effects of
 crystals and Giant's Belt, types 29 and 67) are open; their skills have no
-tooltip on bdocodex. Fixed damage is stored negative and written as a
+tooltip on bdocodex (see Open Questions). Fixed damage is stored negative and written as a
 positive amount.
 
 ### Stacking (`stacking_category`, `is_exclusive`, `group`, `buff_level`)
@@ -906,8 +912,8 @@ An ordinary elixir does not end an active draught, as the flag predicts;
 I checked it in game on 2026-10-06: Elixir of Mastery (1155) drunk after
 Beast's Draught left the draught's buffs in place. The tooltip's `do not
 stack` line only holds in one direction: a draught ends elixirs, an elixir
-leaves a draught alone. Still open: whether an equal level replaces a buff
-of the same group.
+leaves a draught alone. Whether an equal level replaces a buff of the same
+group is in In-Game Checks.
 
 | Value | Buffs | Exclusive | Item type |
 | ----- | ----: | --------- | --------- |
@@ -1110,12 +1116,21 @@ It is `17` on all 48 buffs. `instancefield.dbss` key 17 is `CrimsonField`,
 which does not fit test teleports into the `A1_` fields, so it is probably a
 teleport kind or mode. A second value on any buff would show what it does.
 
-### Does an equal level replace a buff of the same group?
+### What do `condition_type` 2 and 5 mean?
 
-A higher `buff_level` blocks a lower one in its `group` (see Stacking), but
-whether the same level refreshes or replaces the active buff is not known.
-Using the same Adventurer's Luck scroll twice settles it. Whether an elixir
-ends a draught is settled: it does not (see Stacking).
+`2` is on one buff, 50046 (`HP -100` on the target), from Ancient Magic
+Crystal - Temptation (15504). `5` is on 12 `(Self)` buffs, among them 50048,
+50042 and 50039 from the Agony, Destruction and Enchantment crystals (15505,
+15503, 15502) and the Giant's Belt `To_Self` buffs 50294, 50296 and 50299
+(skill [Giant's Belt_Lv. 1](https://bdocodex.com/us/skill/50112/)), which no
+item in `itemenchant.dbss` casts. bdocodex lists only the crystals' transfuse
+stats, not the triggered effects. LOC ties each crystal to a weapon of the
+same name and a skill used with it (`Only available by using a Temptation
+skill with a Temptation weapon`). The crystals cannot be checked in game:
+[Grumpy Green's crystal list](https://grumpygreen.cricket/crystal-npc/) names
+Magic Crystal - Temptation, Destruction, Agony and Enchantment among the
+crystals deleted on 2024-01-31. A Giant's Belt tooltip or a skill text that
+names the trigger would settle `5`.
 
 ### Is `buff_level` a level or a category?
 
@@ -1123,3 +1138,29 @@ bdo-data-extractor splits `+0x00` into `i16 Category`, `u8 CategoryLevel` and
 `u8 Level`. The two bytes are zero in every record here, the i16 counts up
 on staged buffs such as boss stages, and it ranks the buffs of one `group`
 (see Notes), so it is kept as `buff_level` until the client names it.
+
+## In-Game Checks
+
+### Altar of Blood Flame Tower Name Plate
+
+Needs item: [[Altar of Blood] Flame Tower](https://bdocodex.com/us/item/761902/)
+
+Needs zone: Altar of Blood
+
+The item's buff 48677 points at character 26701, `Ahib Salun Wolf
+Spearmaiden`, a defence-mode wolf knight model (see Notes). Use the item in
+the Altar of Blood and read the spawned tower's name plate. `Ahib Salun Wolf
+Spearmaiden` means the buff does spawn 26701 and the tower look comes from
+elsewhere; a Flame Tower name means the tower is another character and the
+item was repointed without its buff.
+
+### Equal Buff Level in a Group
+
+Needs item: [[Scroll] Adventurer's Luck I](https://bdocodex.com/us/item/761895/)
+
+A higher `buff_level` blocks a lower one in its `group` (see Stacking), but
+whether the same level refreshes or replaces the active buff is not known.
+Use the scroll, wait a minute, then use a second one and read the buff's
+remaining time. A full duration again means an equal level replaces or
+refreshes the active buff; an error message or an unchanged timer with the
+scroll kept means an equal level is blocked like a lower one.

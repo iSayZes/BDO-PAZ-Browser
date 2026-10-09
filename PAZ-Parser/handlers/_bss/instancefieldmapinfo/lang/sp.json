@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Clave",
+    "field": "Campo",
+    "title": "Título",
+    "description": "Descripción",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Radio (m)",
+    "image": "Imagen",
+    "entryItem": "Objeto de entrada",
+    "spawns": "Puntos de aparición"
+  },
+  "meta": {
+    "count": "{count} mapas de campo de instancia"
+  }
+}

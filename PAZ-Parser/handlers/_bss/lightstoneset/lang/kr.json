@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "setId": "세트 ID",
+    "name": "이름",
+    "lightstones": "광명석",
+    "substitutes": "대체 광명석",
+    "effect": "효과",
+    "skillId": "기술 ID",
+    "buffs": "버프"
+  },
+  "meta": {
+    "count": "광명석 세트 {count}개"
+  }
+}

@@ -36,7 +36,7 @@ All multi-byte values are little-endian.
 | `+0x02` | u16  | -           | Always 0; padding                                                  |
 | `+0x04` | u16  | key_dup     | Duplicate of `key`                                                 |
 | `+0x06` | u16  | -           | Always 0; padding                                                  |
-| `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Event, 5 Special, see Open Questions |
+| `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Event, 5 Special, see In-Game Checks |
 
 > The combined key is `(species << 8) | variant`, stored as a u16 followed by a zero u16. This matches the key format used in `petgradeoffset.dbss`.
 
@@ -80,10 +80,15 @@ where `grade_map` is built from `petgradeoffset.dbss` as `{(species, variant): g
 - Record order in the main file differs from offset file order (the offset file is an arbitrary-order index, not sequential).
 - The key encoding `(species << 8) | variant` appears only in this file pair; `pet.dbss` stores `variant` and `species` as separate bytes at `+0x02` and `+0x03`.
 
-## Open Questions
+## In-Game Checks
 
-### `grade` value 6
+### Grade Value 6
 
-Values 1–5 map to the five fusion window grade titles, but value 6 is still unconfirmed: the Lua lists no sixth title, and only the 5 Mole records carry it. They are the Pit-A-Pat Mole (item 47983, pets 55749 to 55752 and 56594).
+Needs item (all):
 
-bdocodex (2026-10-07) shows the Pit-A-Pat Mole as Type: Special. Its pet type follows this field, since it shows Young Rauno (grade 4) as Event and Young Crimson Dragon (grade 5) as Special, but it could map 6 to Special by its own fallback. In game: does the pet exchange window show the Pit-A-Pat Mole as Special, and can it be exchanged with a Special pet?
+- [[Pet] Pit-A-Pat Mole](https://bdocodex.com/us/item/47983/)
+- [[Pet] Young Crimson Dragon](https://bdocodex.com/us/item/18480/)
+
+Values 1 to 5 map to the five fusion window grade titles, but the Lua lists no sixth title, and only the 5 Mole records carry value 6. They are the Pit-A-Pat Mole (item 47983, pets 55749 to 55752 and 56594). bdocodex (2026-10-07) shows the Pit-A-Pat Mole as Type: Special. Its pet type follows this field, since it shows Young Rauno (grade 4) as Event and Young Crimson Dragon (grade 5) as Special, but it could map 6 to Special by its own fallback. Its item page also says the Mole "can only be Exchanged with pets of the same kind", a line the Young Crimson Dragon page does not carry.
+
+Put the Pit-A-Pat Mole in the pet exchange window and read the grade title, then try to add the Young Crimson Dragon. A Special title and an accepted Dragon mean 6 is a second Special value. No title, or a window that takes only other Moles, means 6 is a grade of its own that the fusion window has no title for.

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "fitnessTypeId": "Fitness ID",
+    "fitnessType": "Fitness",
+    "maxLevel": "Max Level"
+  },
+  "meta": {
+    "count": "{count} fitness types"
+  }
+}

@@ -15,7 +15,8 @@
     "dyeable": "Dyeable",
     "objectId": "Object ID",
     "object": "Object",
-    "buffs": "Buffs"
+    "buffs": "Buffs",
+    "lightstoneSets": "Lightstone Sets"
   },
   "offsetColumns": {
     "itemId": "Item ID",

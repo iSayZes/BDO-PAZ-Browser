@@ -10,7 +10,9 @@
     "dialog": "대화",
     "character": "캐릭터",
     "greeting": "인사",
+    "contentsTypes": "기능",
     "options": "선택지",
+    "dialogButtonTypes": "선택지 종류",
     "optionTitles": "선택지 제목",
     "leases": "대여"
   },

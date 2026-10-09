@@ -121,8 +121,21 @@ One row per subgroup; the item list is the useful part.
 
 ### What `unknown_33` Holds
 
-It is `1,000,000` on almost every entry, which reads like a chance in millionths (100%), but 383 entries hold more than one million (up to `9,000,000`). It may be a weight, a count scaled by one million, or a rate with a different base. In game, what a subgroup entry with `2,000,000` gives would settle it.
+It is `1,000,000` on almost every entry, which reads like a chance in millionths (100%), but 383 entries hold more than one million (up to `9,000,000`). It may be a weight or a rate with a different base. A count scaled by one million does not fit: Azwell Kriegsmesser (11355) stores `7,700,000` in subgroup 51625, Great Crow Necklace (964401) `2,500,000` in subgroup 32005 and Ship License: Raft (49005) `2,000,000` in subgroup 50018, items nobody gets 7.7, 2.5 or 2 of. The table that picks a subgroup is not decoded, so no box is known to open one of these subgroups for an in-game test.
 
 ### Subgroup 55000 Fields
 
-The trade goods entries set a block of i64 values that behave like a price band around `unknown_3b`: the top is always 130%, the floor is one of five shares per item group (Ancient coins 30%; Garlic, Onion, Grape crates and most dried fish 65%; Pepper, Strawberry crates 75%; Potato, Barley, Wheat crates 85%; Witch's Poison Herb and some dried fish 95%), and `unknown_5b` is a 1% step. The trade sell price is `Base Value x Distance Bonus x Trading Bonus x Bargain - Material Cost`, so `unknown_3b` would be the original Base Value and the band the range the current Base Value moves in. That needs an in-game check: the trade manager's current price for Pepper Crate (7401) staying between 1,350 and 2,340, and Ancient Gold Coin (55001) dropping below 65% of its original price. What `unknown_53`, `unknown_26` and `unknown_83` control is open. `unknown_53` looks like a price swing size with a direction set per row. These entries leave `unknown_33` at `0` and set `unknown_83` instead, so `unknown_83` may play the same role as `unknown_33` in other subgroups: a per-item weight, higher for cheaper goods.
+The trade goods entries set a block of i64 values that behave like a price band around `unknown_3b`: the top is always 130%, the floor is one of five shares per item group (Ancient coins 30%; Garlic, Onion, Grape crates and most dried fish 65%; Pepper, Strawberry crates 75%; Potato, Barley, Wheat crates 85%; Witch's Poison Herb and some dried fish 95%), and `unknown_5b` is a 1% step. The trade sell price is `Base Value x Distance Bonus x Trading Bonus x Bargain - Material Cost`, so `unknown_3b` would be the original Base Value and the band the range the current Base Value moves in; In-Game Checks has the test. What `unknown_53`, `unknown_26` and `unknown_83` control is open. `unknown_53` looks like a price swing size with a direction set per row. These entries leave `unknown_33` at `0` and set `unknown_83` instead, so `unknown_83` may play the same role as `unknown_33` in other subgroups: a per-item weight, higher for cheaper goods.
+
+## In-Game Checks
+
+### Subgroup 55000 Price Band
+
+Needs item (all):
+
+- [Pepper Crate](https://bdocodex.com/us/item/7401/)
+- [Ancient Gold Coin](https://bdocodex.com/us/item/55001/)
+
+Needs NPC: any Trade Manager
+
+Pepper Crate stores `unknown_3b` 1,800, `unknown_43` 1,350 (75%) and `unknown_4b` 2,340 (130%); Ancient Gold Coin stores 900, 270 (30%) and 1,170. Read the current Base Value the Trade Manager shows for both over several days. If Pepper Crate stays between 1,350 and 2,340 and Ancient Gold Coin drops below 585 (65% of 900), `unknown_3b` is the original Base Value and `unknown_43` and `unknown_4b` are the floor and ceiling of the current one. A Pepper Crate price outside 1,350 to 2,340 rules the band out.

@@ -166,13 +166,42 @@ Client 3458:
 
 What we think: `script_2` says when the quest is offered and `script_1` when it is ruled out. This is read from the patterns above, not confirmed in game, so the columns are labelled Offered When* and Ruled Out When*, the `*` (with a header tooltip) marking the role as our reading. The record fields stay `script_1` / `script_2` by position. Some `mainquest.bss` rows put a requirement in `script_1` with a negation (all of chain 4015, `Descendant of Giants` to `Elric Monastery Report`, has `!clearquest(4001,1);`), which fits "hidden while this holds". `Bridle of Destiny` (4001 / 1), the quest that check names, carries it in its own `script_1` too, so under this reading it and the 4015 chain only show for a character that cleared it before. That looks like an older Mediah opening that newer characters skip. The client Lua (`panel_newquest.luac`, `panel_widget_mainquest.luac`) gets the lists through `ToClient_GetQuestList` and names neither script.
 
-In-game checks that would confirm the roles (client 3458 data). Each says what the game shows if the reading is right:
-
-- **Branch ruled out once the other is taken** (`recommendationquest.bss`, group `[ADV Support] Inventory Expansion!`): `Techthon and Quality Iron` (2001 / 137) and `Puia and the Wooden Box Design` (2001 / 138) each list the other in `script_1` with `clearQuest` or `progressQuest`. Accept one, and the other should leave the group's list right away, not only after the first is completed.
-- **Crossroad ruled out once the other is cleared** (`mainquest.bss`, group `[Mountain of Eternal Winter] In Search of the Flame that Consumes Gods`): `[Crossroad] One Game is All Yar Need` (7500 / 81) and `[Crossroad] No Silver, No Meal` (7500 / 82) list only `clearquest` of each other. The other branch should stay listed while the first is in progress and leave once it is completed.
-- **Hidden until cleared** (`mainquest.bss`, group `[Lv. 51 Mediah] Dark Energy that Looms Over Mediah`): on a character that never did `Bridle of Destiny`, neither it nor `Descendant of Giants` to `Elric Monastery Report` (4015 / 1 to 7) should be listed in the group.
-- **Offered from a level** (`recommendationquest.bss`, group `[Life 101] The Adventurer That Does It All`): every quest has `getLevel()>59;` in `script_2`. On a level 59 character the group's quests should not be offered; at level 60 they should.
+The In-Game Checks below would confirm the roles (client 3458 data).
 
 ### Duplicate Quest References
 
 A quest in two groups has a condition line under both group keys, so a quest can be listed by two events (11060 / 1 in the 2019 and 2020 Halloween groups). Whether the game shows both copies at once is not confirmed.
+
+## In-Game Checks
+
+Each check says what the game shows if the script roles in Open Questions are right.
+
+### Branch Ruled Out Once the Other Is Taken
+
+Needs quest (any one):
+
+- [Techthon and Quality Iron](https://bdocodex.com/us/quest/2001/137/)
+- [Puia and the Wooden Box Design](https://bdocodex.com/us/quest/2001/138/)
+
+In `recommendationquest.bss`, group `[ADV Support] Inventory Expansion!`, each of the two quests lists the other in `script_1` with `clearQuest` or `progressQuest`. Accept one, and the other should leave the group's list right away, not only after the first is completed.
+
+### Crossroad Ruled Out Once the Other Is Cleared
+
+Needs quest (any one):
+
+- [[Everfrost] [Crossroad] One Game is All Yar Need](https://bdocodex.com/us/quest/7500/81/)
+- [[Everfrost] [Crossroad] No Silver, No Meal](https://bdocodex.com/us/quest/7500/82/)
+
+In `mainquest.bss`, group `[Mountain of Eternal Winter] In Search of the Flame that Consumes Gods`, the two quests list only `clearquest` of each other. The other branch should stay listed while the first is in progress and leave once it is completed.
+
+### Hidden Until Cleared
+
+Needs quest: [Bridle of Destiny](https://bdocodex.com/us/quest/4001/1/)
+
+In `mainquest.bss`, group `[Lv. 51 Mediah] Dark Energy that Looms Over Mediah`, `Bridle of Destiny` (4001 / 1) and `Descendant of Giants` to `Elric Monastery Report` (4015 / 1 to 7) carry `!clearquest(4001,1);` in `script_1`. On a character that never did `Bridle of Destiny`, none of them should be listed in the group.
+
+### Offered From a Level
+
+Needs quest: [[Life 101] The Adventurer That Does It All](https://bdocodex.com/us/quest/40055/1/)
+
+In `recommendationquest.bss`, group `[Life 101] The Adventurer That Does It All`, every quest (40055 / 1 to 9) has `getLevel()>59;` in `script_2`. On a level 59 character the group's quests should not be offered; once it reaches level 60 they should.

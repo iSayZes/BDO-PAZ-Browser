@@ -143,7 +143,7 @@ Page text is LOC `str_type=18` keyed by the page's packed quest ID, like any que
 - Unlock text uses BDO rich-text markup: `<PAColor0xAARRGGBB>` to set color (e.g. `<PAColor0xFFf3d900>`), `<PAOldColor>` to reset, and backtick-delimited quest names.
 - Journal 6 ("Event Logs") is the only group whose Korean journal name differs between books (two variants: event logs and 10th anniversary event logs). In game all seven books sit under one "Event Logs (6/7)" journal with the description "Special adventure logs available during events." (2026-09-28).
 - The journal window shows the books as a shelf sorted by `book_key`, with the key printed on each cover and "?" for a book not obtained yet. Journal 6 shows 1, 2, 7, 8, 10, 11, 12 (checked in game, 2026-09-28), although the offset file lists 1, 2, 10, 7, 8, 11, 12 and the data file stores 1, 10, 2, 7, 8, 11, 12. So neither file order is the display order; bdo-data-extractor's claim that the index order is the UI order does not hold.
-- The journals themselves are sorted by `journal_key` too: the main bookshelf fills columns of four, 1 to 4, 5 to 8 and 9 to 12, although the offset file lists journal 10 after 12. In my game (2026-09-28) the slot for journal 10 (Outer Edania) is empty and journal 13 (Inner Edania) does not show, on a family that has not started the Edania questline, so a journal probably stays off the shelf until its story starts.
+- The journals themselves are sorted by `journal_key` too: the main bookshelf fills columns of four, 1 to 4, 5 to 8 and 9 to 12, although the offset file lists journal 10 after 12. In my game (2026-09-28) the slot for journal 10 (Outer Edania) is empty and journal 13 (Inner Edania) does not show, on a family that has not started the Edania questline. In-Game Checks has the test for when they appear.
 - `is_record_book` marks a record book: every page completes passively from what the player has already done, and the book reads as a story, with no Goal line, no reward and no claim button. Every page quest of a record book (448 pages, client 3458) has only a passive `action_script` check: `collectknowledge(...)` (318, Donghae and Hwanghae), `alreadyclearquest(...)` (118, the Edania journals) or `checkLevelUp(1)` (12, Event Logs book 8, objective "접속하기", log in). Other books are mostly real tasks (`meet` 134, `killmonster` 114, `gatheritem`, `exchangeitem` and others), with a few passive pages mixed in. Checked in game (2026-09-28): Event Logs book 8 reads as a long story ("An Adventurer's Story (1/4)") with no Goal line or reward, while book 2 shows "Goal: Find the note Reubens hid", "Upon Completion: Black Stone" and "This adventure log must be completed in order"; a Storybook - Donghae book has no Goal line or claim button either, and a page not earned yet shows as "???" ("Untold stories are waiting to be discovered. Embark on quests to uncover the hidden tales."). The flag does not pick the cover or the spine: book 8 has the same red cover as book 2, and Storybook - Donghae looks like Storybook - Morning Bosses (not a record book) on the shelf. bdo-data-extractor leaves the byte unnamed.
 - Each page quest has a `quest.dbss` record whose `quest_category` is `11`; that value occurs on no other quest. Page records hold the journal's permanent Family-stat rewards (see [quest.dbss](quest_dbss.md)).
 
@@ -152,3 +152,15 @@ Page text is LOC `str_type=18` keyed by the page's packed quest ID, like any que
 ### Unreferenced LOC Type 63 Rows
 
 LOC 63 has `str_id2=0` rows for journal keys 1 to 13 with names that do not match the current journals (key 2 is "Rulupee's Travels" in LOC but "Shakatu Merchants' Archive" in the file). Whether these are leftovers or something else is unknown. Journal 13 ("Inner Edania") was LOC-only until the 2026-09-27 update shipped its books, so LOC can run ahead of the data files.
+
+## In-Game Checks
+
+### Edania Journals on the Shelf
+
+Needs quest (all):
+
+- [[Edania] First Steps Toward the End Times](https://bdocodex.com/us/quest/9100/1/), the start of the Edania questline
+- [[Edania] Into the Nightmare](https://bdocodex.com/us/quest/9100/5/), the unlock of journal 10 book 1
+- [[Edania] The Two Keys](https://bdocodex.com/us/quest/9301/8/), the unlock of journal 13 book 1
+
+On a family that has not started the Edania questline, the slot for journal 10 (Outer Edania) is empty and journal 13 (Inner Edania) is missing (2026-09-28). Open the main bookshelf after each quest. Journal 10 should fill the empty slot of the third column and journal 13 should start a fourth column, which confirms the shelf places journals by `journal_key`. If journal 10 shows after First Steps Toward the End Times, a journal joins the shelf when its questline starts; if it only shows after Into the Nightmare, it joins with its first book. Journal 13 showing only after The Two Keys fits the second reading.

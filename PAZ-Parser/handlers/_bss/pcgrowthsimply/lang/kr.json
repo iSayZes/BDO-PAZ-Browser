@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "playable": "플레이 가능"
+  },
+  "meta": {
+    "count": "직업 유형 {count}개 · 플레이 가능 {playable}개"
+  }
+}

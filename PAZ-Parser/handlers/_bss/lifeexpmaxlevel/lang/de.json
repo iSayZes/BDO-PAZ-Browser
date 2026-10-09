@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "lifeSkillId": "Arbeitstalent-ID",
+    "lifeSkill": "Arbeitstalent",
+    "maxLevel": "Höchststufe",
+    "maxRank": "Höchster Rang"
+  },
+  "meta": {
+    "count": "{count} Arbeitstalente"
+  }
+}

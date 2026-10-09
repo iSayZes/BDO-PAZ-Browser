@@ -72,6 +72,12 @@ class IndexKind(Enum):
     TELEPORT_BUFF_NAME_KR = "teleport_buff_name_kr"
     # (nearest worldmap node key, metres) of each teleport point.
     TELEPORT_NEAREST_NODE = "teleport_nearest_node"
+    # Set IDs each Lightstone item counts toward, as a member or substitute.
+    LIGHTSTONE_SETS = "lightstone_sets"
+    # Internal name of each instancefield.dbss field (`A1_001`), for buff type 176.
+    INSTANCE_FIELD_NAME = "instance_field_name"
+    # GAME sheet key hash of each instance field title (instancefieldmapinfo.bss).
+    INSTANCE_FIELD_TITLE = "instance_field_title"
 
 
 # Dependency name each read reports to `data_deps`, built once per kind.

@@ -15,7 +15,8 @@
     "dyeable": "Покраска",
     "objectId": "ID объекта",
     "object": "Объект",
-    "buffs": "Эффекты"
+    "buffs": "Эффекты",
+    "lightstoneSets": "Комбинации светящихся камней"
   },
   "offsetColumns": {
     "itemId": "ID предмета",

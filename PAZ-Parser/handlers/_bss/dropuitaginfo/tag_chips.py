@@ -3,8 +3,7 @@
 Each tag is a pill: the `Combine_Etc_DropItem_Tag_BG` texture (white at alpha
 51 in `combine/etc/combine_etc_dropitem.dds`) tinted with the tag's
 `texture_color`, and its name in `font_color` (`tagControl:SetColor` /
-`SetFontColor` in the window Lua). See the `dropuitaginfo.bss` section of
-docs/file-formats/dropuihuntinggroundinfo_bss.md.
+`SetFontColor` in the window Lua). See docs/file-formats/dropuitaginfo_bss.md.
 """
 
 from __future__ import annotations

@@ -15,7 +15,8 @@
     "dyeable": "Colorable",
     "objectId": "ID d'objet placé",
     "object": "Objet placé",
-    "buffs": "Bonus"
+    "buffs": "Bonus",
+    "lightstoneSets": "Sets de Pierres de lumière"
   },
   "offsetColumns": {
     "itemId": "ID d'objet",

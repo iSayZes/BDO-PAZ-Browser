@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import replace
+from collections.abc import Iterator
 from typing import Any
 
 import pytest
@@ -17,15 +18,22 @@ from tests.framework import (
     header_count,
     run_case,
 )
+from tests.loc_counter import reset_loc
+from tests.loc_data import LocRow, loc_bytes
 
+import _common.loc as loc
 from _common.duration import format_duration
 from _common.html import e
 from _common.inline_text import decode_inline_text
-from _common.lookup_index import IndexKind
+from _common.lookup_index import IndexKind, init_index
 from _common.pa_text import pa_html
+
+from _bss.stringtable.parser import GAME_SHEET_LOC_ID2
+from _bss.stringtable.text import LOC_UI_STRING
 
 from _dbss.buff.effect import EffectInput, effect_text, param_labels
 from _dbss.buff.title import extract_title, title_leaders
+from _dbss.lifeexp.labels import LIFE_SKILLS
 
 
 # Backslash and `n`, how the tables store a line break in inline text.
@@ -363,12 +371,9 @@ def test_korean_title_survives_without_loc() -> None:
         (9, [25000, 0], "Movement Speed +2.5%"),
         # Life EXP names its life skill in param_3, 15 for all.
         (25, [150000, 2, 15], "Life EXP +15%"),
-        # Hunter's Clothes (Costume) reads "Hunting EXP +10%" on bdocodex.
-        (25, [100000, 2, 2], "Hunting EXP +10%"),
         (25, [100000, 0, 0], "Combat EXP +10%"),
         (39, [3, 8], "All AP +8"),
         (43, [3, -2], "All Damage Reduction -2"),
-        (80, [4, 2560350], "Alchemy EXP +2,560,350"),
         (93, [4, 50000], "Critical Hit Extra Damage +5%"),
         (105, [8, 100000], "Ignore All Resistance +10%"),
         # Weight in ten-thousandths of an LT, durations in milliseconds.
@@ -387,7 +392,6 @@ def test_korean_title_survives_without_loc() -> None:
         # The amount sits in the parameter of its target.
         (136, [30, 0], "Extra AP Against Monsters +30"),
         (136, [0, 6], "Extra AP Against Adventurers +6"),
-        (149, [2, 1, 70], "Hunting Mastery +70"),
         (149, [15, 0, 100], "Life Skill Mastery +100"),
         # A [Life Skill Season] single-tool mastery.
         (149, [0, 2, 580], ""),
@@ -499,11 +503,11 @@ def test_korean_title_survives_without_loc() -> None:
         (142, [3176, 0], "Obtain Title: 3176"),
         # Without the TELEPORT_NEAREST_NODE index the point shows its key alone.
         (23, [0, 340], "Teleport to point 0/340"),
-        # Test item A1_001 moves to the instance field named A1_001.
+        # Without the INSTANCE_FIELD_NAME index the field shows its key alone.
         (176, [17, 0, 4001], "Teleport to Instance Field 4001"),
         # Monster property keys have no name in the client; see buff_dbss.md.
         (180, [67], ""),
-        # A kind outside the confirmed ones.
+        # Life skill 10 is the spare slot `temp1`: no name, no line.
         (80, [10, 100], ""),
         # An effect type that is not decoded.
         (45, [1, 2], ""),
@@ -574,26 +578,71 @@ def test_over_time_text(
         (EffectInput(136, [10, 0]), {1: "Monster AP"}),
         (EffectInput(136, [0, 6]), {2: "Adventurer AP"}),
         (EffectInput(120, [0, 15000]), {1: "Rate", 2: "1.5%"}),
-        (EffectInput(149, [6, 1, 5]), {1: "Training"}),
         (EffectInput(4, [250], tick_ms=10000), {1: "every 10 sec"}),
         (EffectInput(1, [-15], condition_type=4), {1: "when struck"}),
         # No confirmed meaning: no labels at all.
         (EffectInput(39, [0, 8]), {}),
         (EffectInput(16, [521]), {1: "Group"}),
-        (EffectInput(176, [17, 0, 4001]), {3: "Instance Field"}),
         (EffectInput(72, [0, 8, 1, 0]), {1: "All Towns"}),
         (EffectInput(73, [0, 5]), {2: "Southwestern Calpheon"}),
         (EffectInput(187, [0, 300, 2]), {3: "Earth"}),
-        (EffectInput(25, [100000, 2, 2]), {1: "10%", 2: "Life", 3: "Hunting"}),
         (EffectInput(53, [1000]), {1: "10m"}),
         (EffectInput(97, [15, 21600]), {1: "Secret Book of Old Moon", 2: "15 days"}),
         (EffectInput(14, [4, 5000]), {1: "Stun", 2: "5 sec"}),
         # A named effect without a name labels nothing.
         (EffectInput(23, [0, 340]), {}),
+        (EffectInput(176, [17, 0, 4001]), {}),
     ],
 )
 def test_param_labels(buff: EffectInput, expected: dict[int, str]) -> None:
     assert param_labels(buff) == expected
+
+
+# Life skill names as the English LOC holds them under their GAME sheet keys.
+_LIFE_SKILL_NAMES = {2: "Hunting", 4: "Alchemy", 6: "Training"}
+
+
+@pytest.fixture
+def life_skill_loc() -> Iterator[None]:
+    rows: list[LocRow] = [
+        (LOC_UI_STRING, LIFE_SKILLS[skill].key_hash or 0, GAME_SHEET_LOC_ID2, 0, 0, name)
+        for skill, name in _LIFE_SKILL_NAMES.items()
+    ]
+    reset_loc()
+    loc.init_loc(loc_bytes(rows))
+    yield
+    reset_loc()
+
+
+@pytest.mark.usefixtures("life_skill_loc")
+@pytest.mark.parametrize(
+    ("effect_type", "params", "expected"),
+    [
+        # Hunter's Clothes (Costume) reads "Hunting EXP +10%" on bdocodex.
+        (25, [100000, 2, 2], "Hunting EXP +10%"),
+        (80, [4, 2560350], "Alchemy EXP +2,560,350"),
+        (149, [2, 1, 70], "Hunting Mastery +70"),
+    ],
+)
+def test_life_skill_effect_text(effect_type: int, params: list[int], expected: str) -> None:
+    assert effect_text(EffectInput(effect_type, params)) == expected
+
+
+@pytest.mark.usefixtures("life_skill_loc")
+@pytest.mark.parametrize(
+    ("buff", "expected"),
+    [
+        (EffectInput(149, [6, 1, 5]), {1: "Training"}),
+        (EffectInput(25, [100000, 2, 2]), {1: "10%", 2: "Life", 3: "Hunting"}),
+    ],
+)
+def test_life_skill_param_labels(buff: EffectInput, expected: dict[int, str]) -> None:
+    assert param_labels(buff) == expected
+
+
+def test_life_skill_without_loc_shows_its_enum_name() -> None:
+    reset_loc()
+    assert effect_text(EffectInput(25, [100000, 2, 2])) == "hunting EXP +10%"
 
 
 def test_title_leaders_follow_the_skill_that_applies_them() -> None:
@@ -644,6 +693,17 @@ def test_teleport_effect_names_the_nearest_node(monkeypatch: pytest.MonkeyPatch)
     buff = EffectInput(23, [0, 371])
     assert effect_text(buff) == "Teleport to point 0/371, near Marni's Lab (12 m)"
     assert param_labels(buff) == {2: "Marni's Lab (12 m)"}
+
+
+def test_instance_field_effect_names_the_field() -> None:
+    # Test item A1_001 moves to the instance field named A1_001.
+    init_index(IndexKind.INSTANCE_FIELD_NAME, {4001: "A1_001"})
+    try:
+        buff = EffectInput(176, [17, 0, 4001])
+        assert effect_text(buff) == "Teleport to Instance Field A1_001"
+        assert param_labels(buff) == {3: "A1_001"}
+    finally:
+        init_index(IndexKind.INSTANCE_FIELD_NAME, None)
 
 
 def test_worker_contract_names_worker_and_town(monkeypatch: pytest.MonkeyPatch) -> None:

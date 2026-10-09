@@ -1,0 +1,18 @@
+{
+  "offsetColumns": {
+    "key": "Clave",
+    "byteOffset": "Desplazamiento (bytes)",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "key": "Clave",
+    "name": "Nombre",
+    "title": "Título",
+    "sectorX": "Sector X",
+    "sectorY": "Sector Y",
+    "sectorZ": "Sector Z"
+  },
+  "meta": {
+    "count": "{count} campos de instancia"
+  }
+}

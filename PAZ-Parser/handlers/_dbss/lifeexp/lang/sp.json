@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "lifeSkillId": "ID de profesión",
+    "lifeSkill": "Profesión",
+    "level": "Nivel",
+    "rank": "Rango",
+    "exp": "Exp. para el siguiente nivel"
+  },
+  "offsetColumns": {
+    "lifeSkillId": "ID de profesión",
+    "level": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos"
+  },
+  "meta": {
+    "count": "{count} niveles · {skills} profesiones",
+    "offsetCount": "{count} entradas de desplazamiento · {skills} profesiones"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "byteOffset": "Byte-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "key": "Schlüssel",
+    "name": "Name",
+    "title": "Titel",
+    "sectorX": "Sektor X",
+    "sectorY": "Sektor Y",
+    "sectorZ": "Sektor Z"
+  },
+  "meta": {
+    "count": "{count} Instanzfelder"
+  }
+}

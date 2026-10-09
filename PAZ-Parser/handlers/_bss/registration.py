@@ -16,12 +16,17 @@ from .fairyfeedenchantfailcount.handler import (
     FairyFeedEnchantFailCountBssHandler,
 )
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
+from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
+from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
+from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
+from .lightstoneset.handler import LightstoneSetBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .menu.handler import MenuBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
+from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
 from .plantworker.handler import PlantWorkerBssHandler
@@ -62,15 +67,20 @@ def register_bss_handlers() -> None:
         FairyFeedEnchantFailCountBssHandler(),
     )
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
+    register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
+    register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),
     )
+    register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
+    register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
     register_handler("menu.bss", MenuBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
+    register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())
     register_handler("plantworker.bss", PlantWorkerBssHandler())

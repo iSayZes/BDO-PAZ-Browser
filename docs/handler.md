@@ -425,7 +425,7 @@ Available specs:
 | `SchemaTest` | Checks required keys exist on every row. |
 | `RangeTest` | Checks every value in one column is within a min/max range. `None` (an empty cell) is skipped. |
 | `PaFieldTest` | Checks a `pa_fields` text: the plain field is its tagged copy without tags, and some row keeps a game colour. |
-| `UserLanguageTest` | Checks no row shows Korean in the given text fields with English LOC loaded, so a missed LOC lookup fails. |
+| `UserLanguageTest` | Checks no row shows Korean in the given text fields with English LOC loaded, so a missed LOC lookup fails. `None` is skipped. |
 
 `HandlerResult.check(spec)` runs a spec against the parsed records and the input
 bytes (`CaseInput`: the data file and its companions by basename). Only
@@ -933,10 +933,11 @@ _common/
 ├── character.py         # character names and titles (LOC type 6)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
+├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
 ├── html.py
 ├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
 ├── offset_table.py      # OffsetTableHandler: the one preview handler for every offset companion
-├── pabr_offset.py       # offset companions: u16 or u32 keys, with or without PABR magic
+├── pabr_offset.py       # offset companions: u8, u16 or u32 keys, with or without PABR magic
 ├── prefixed_string.py   # length-prefixed strings: strict and lenient readers
 ├── inline_text.py       # decode_inline_text(): the stored \n escape of inline text
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
@@ -950,8 +951,9 @@ _common/
 
 Read an offset companion with `parse_pabr_offset_rows()` (PABR magic, count,
 u16-keyed rows), `parse_pabr_u32_offset_rows()` (the same with u32 keys, e.g.
-`mentalcardoffset.dbss`), `parse_bare_offset_rows()` or
-`parse_bare_u32_offset_rows()` (count, rows), never by hand. A u16 field
+`mentalcardoffset.dbss`), `parse_bare_offset_rows()`,
+`parse_bare_u32_offset_rows()` or `parse_bare_u8_offset_rows()` (count, rows;
+the u8 key of `pcgrowthoffset.dbss`), never by hand. A u16 field
 followed by a zero u16 (`plantzoneoffset.dbss` keys, `petoffset.dbss` sizes)
 reads as one u32. Walk a record of fixed fields
 and u64-prefixed strings with `RecordReader(data, start, end, label)`: `unpack`,
@@ -1132,6 +1134,9 @@ IDs (`LookupValue`).
 | `TELEPORT_BUFFS` | `buff.dbss`, `buffoffset.dbss`             | buff IDs (tuple) |
 | `TELEPORT_BUFF_NAME_KR` | `buff.dbss`, `buffoffset.dbss`      | Korean buff name |
 | `TELEPORT_NEAREST_NODE` | `teleport.dbss`, `mapdata_realexplore2.bwp` | `(node key, metres)` |
+| `LIGHTSTONE_SETS` | `lightstoneset.bss`                       | set IDs (tuple) |
+| `INSTANCE_FIELD_NAME` | `instancefield.dbss`                  | internal field name |
+| `INSTANCE_FIELD_TITLE` | `instancefieldmapinfo.bss`, `stringtable.bss` | `GAME` sheet key hash of the title |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1283,6 +1288,35 @@ way: each point's nearest worldmap node and its distance, found without LOC
 over every node (`build_teleport_nearest_node_index()` in
 `_dbss/teleport/parser.py`). `teleport_point_place()` turns it into `Marni's
 Lab (12 m)` for the `buff.dbss` Effect text of type 23.
+
+`LIGHTSTONE_SETS` maps a Lightstone item to the
+[lightstoneset.bss](file-formats/lightstoneset_bss.md) sets it counts toward,
+in ascending set ID order: a member to every set that lists it, and a
+substitute (an Amplified Lightstone) to the sets of its base Lightstone. It
+is built by `build_lightstone_set_index()` in `_bss/lightstoneset/parser.py`.
+Read it through `item_set_ids()` in `_bss/lightstoneset/item_sets.py`, whose
+`set_label_tagged()` names a set by its LOC type 113 name; the
+`itemenchant.dbss` Lightstone Sets column uses both.
+
+`INSTANCE_FIELD_NAME` maps an
+[instancefield.dbss](file-formats/instancefield_dbss.md) key to the field's
+internal ASCII name (`A1_001`, `Solare_Arena_Kell`); no LOC type names the
+fields. It is built by `build_instance_field_name_index()` in
+`_dbss/instancefield/parser.py`. Read it through `instance_field_name()` in
+`_common/instance_field.py`.
+
+`INSTANCE_FIELD_TITLE` maps the same key to the `GAME` sheet hash of the
+field's title key in
+[instancefieldmapinfo.bss](file-formats/instancefieldmapinfo_bss.md)
+(`INSTANCEDUNGEONDATA_A1_001_NAME`), so the text follows the loaded LOC
+language without a rebuild. It is built by
+`build_instance_field_title_index()` in `_bss/instancefieldmapinfo/parser.py`
+and read through `instance_field_title()` in
+`_bss/instancefieldmapinfo/titles.py` (LOC type 37, `The Magnus: The Great
+Single Path`). `instance_field_label()` there joins both indexes; the
+`buff.dbss` Effect text of type 176 uses it, `Teleport to Instance Field The
+Magnus: The Great Single Path (A1_001)`, and the `instancefield.dbss` Title
+column uses the title alone.
 
 ## Icons
 

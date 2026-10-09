@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "lifeSkillId": "ID ремесла",
+    "lifeSkill": "Ремесло",
+    "maxLevel": "Макс. ур.",
+    "maxRank": "Макс. ранг"
+  },
+  "meta": {
+    "count": "Ремесел: {count}"
+  }
+}

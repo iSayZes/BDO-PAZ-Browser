@@ -69,7 +69,9 @@ from .pet.handler import (
 )
 from .petaction.handler import PetActionHandler, pet_action_offset_handler
 from .petexp.handler import PetExpHandler, pet_exp_offset_handler
+from .pcgrowth.handler import PcGrowthHandler, pc_growth_offset_handler
 from .fitnesslevel.handler import FitnessLevelHandler, fitness_level_offset_handler
+from .lifeexp.handler import LifeExpHandler, life_exp_offset_handler
 from .petskill.handler import PetSkillHandler, pet_skill_offset_handler
 from .petequipskillaquire.handler import (
     PetEquipSkillAcquireHandler,
@@ -95,6 +97,7 @@ from .skilltype.handler import SkillTypeHandler
 from .skillsimply.handler import SkillSimplyHandler
 from .skillsimply.parser import parse_skillsimply_offset_rows
 from .teleport.handler import TeleportHandler, teleport_offset_handler
+from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -163,8 +166,12 @@ def register_dbss_handlers() -> None:
     register_handler("petaction.dbss", PetActionHandler())
     register_handler("petexpoffset.dbss", pet_exp_offset_handler())
     register_handler("petexp.dbss", PetExpHandler())
+    register_handler("pcgrowthoffset.dbss", pc_growth_offset_handler())
+    register_handler("pcgrowth.dbss", PcGrowthHandler())
     register_handler("fitnessleveloffset.dbss", fitness_level_offset_handler())
     register_handler("fitnesslevel.dbss", FitnessLevelHandler())
+    register_handler("lifeexpoffset.dbss", life_exp_offset_handler())
+    register_handler("lifeexp.dbss", LifeExpHandler())
     register_handler("petskilloffset.dbss", pet_skill_offset_handler())
     register_handler("petskill.dbss", PetSkillHandler())
     register_handler(
@@ -197,3 +204,5 @@ def register_dbss_handlers() -> None:
     register_handler("worldmapmonster.dbss", WorldMapMonsterHandler())
     register_handler("teleportoffset.dbss", teleport_offset_handler())
     register_handler("teleport.dbss", TeleportHandler())
+    register_handler("instancefieldoffset.dbss", instance_field_offset_handler())
+    register_handler("instancefield.dbss", InstanceFieldHandler())

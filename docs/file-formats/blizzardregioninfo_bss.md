@@ -78,14 +78,31 @@ The `unknown_*` fields stay on the record for search and CSV but out of the tabl
 
 ## Open Questions
 
-### unknown_06 and unknown_0a
-
-Two integers per row where the first is always smaller than the second, in sets such as `50000` / `120000` and `400000` / `800000`. They read like a minimum and maximum, perhaps a blizzard interval or duration in milliseconds (50 s to 2 min, 6.7 to 13.3 min), but neither the client Lua nor LOC mentions a blizzard timer. Timing how long a blizzard lasts, or how long the weather stays clear, at Bronte's Bolt against the Mountain of Eternal Winter would settle it.
-
-### unknown_0e
-
-A float of `1.0`, `2.0` or `3.0`, highest in the Mountain of Eternal Winter core and Velandir and lowest at Bronte's Bolt. It could be a blizzard strength or a weather level for the region; nothing in the client names it.
-
 ### Gaps in key
 
 The keys skip `3`, `4` and `5`. Those rows may have been removed in an earlier patch; the client does not show whether the key is read anywhere.
+
+## In-Game Checks
+
+### Blizzard Timing and Strength
+
+Needs zone (all):
+
+- Bronte's Bolt
+- Mountain of Eternal Winter
+
+`unknown_06` and `unknown_0a` are two integers per row where the first is
+always smaller than the second, in sets such as `50000` / `120000` and
+`400000` / `800000`. They read like a minimum and maximum in milliseconds (50
+s to 2 min, 6.7 to 13.3 min), but neither the client Lua nor LOC mentions a
+blizzard timer. `unknown_0e` is `1.0`, `2.0` or `3.0`, lowest at Bronte's Bolt
+and highest in the Mountain of Eternal Winter core (region 1126) and
+Velandir; nothing in the client names it.
+
+Stand at Bronte's Bolt and time several blizzards and the clear spells
+between them. Lengths between 50 s and 2 min match the `50000` / `120000`
+pair, which makes the pair a duration range; a match in one phase only
+(blizzard or clear) says which phase it times. Then compare a blizzard in
+the Mountain of Eternal Winter core (`3.0`) with one at Bronte's Bolt
+(`1.0`): a visibly stronger blizzard, or a larger slow or damage effect,
+makes `unknown_0e` a strength level.

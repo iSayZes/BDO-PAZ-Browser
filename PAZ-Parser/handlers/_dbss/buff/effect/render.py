@@ -45,14 +45,25 @@ def _applying_lines(buff: EffectInput) -> list[EffectLine]:
     return [line for line in EFFECT_LINES.get(buff.effect_type, ()) if _applies(line, buff)]
 
 
+def _kind_name(line: EffectLine, buff: EffectInput) -> str:
+    """The LOC name of the line's kind (`Hunting`), '' for a fixed label."""
+    return line.kind_name(buff.param(line.kind_param)) if line.kind_name else ""
+
+
+def _line_label(line: EffectLine, buff: EffectInput) -> str:
+    return line.label.format(kind=_kind_name(line, buff)) if line.kind_name else line.label
+
+
 def _line_text(line: EffectLine, buff: EffectInput) -> str:
     value = buff.param(line.value_param)
     amount = format_amount(-value if line.is_negated else value, line.unit, signed=line.is_signed)
-    return line.template.format(label=line.label, amount=amount)
+    return line.template.format(label=_line_label(line, buff), amount=amount)
 
 
 def _line_labels(line: EffectLine, buff: EffectInput) -> dict[int, str]:
     labels = dict(line.kind_labels)
+    if line.kind_name:
+        labels[line.kind_param] = _kind_name(line, buff)
     if line.value_label:
         labels[line.value_param] = line.value_label
     elif line.unit.is_scaled:

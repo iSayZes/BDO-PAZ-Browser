@@ -237,20 +237,6 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 
 ## Open Questions
 
-### What `unknown_60` and `unknown_83` are used for
-
-The Korean place name and world position are shared by many regions and pair up as one place (see Notes), which suggests the respawn or return point for the region. Checking a few regions in game, by dying or using a return option in, say, Ossuary and Coastal Cave (both point to Velia at `(-1226, -7012, 81647)`), would settle it.
-
-### Region types 7 and 8
-
-`CppEnums.RegionType` ends at Arena (6) with `_Count` = 7, but Pit of the Undying (950, 1070) has type 7 and one Battle Arena (1072) type 8. I searched all 3060 client Lua scripts: no `eRegionType_` value past Arena exists, and the only scripts that touch region types compare against `Siege`, `Fortress` and `MinorTown`. The game executable is packed, so its strings cannot be searched.
-
-What the client does have are region getters that fit the two types: `isPVEArenaZone` (used by the death message, game exit, manufacture and Morning Land boss panels) next to `isArenaZone` and `isArenaArea`. Pit of the Undying is a PvE arena, so type 7 is probably a PvE arena; `unknown_0d` (set on every type 6 arena and on 1072, not on Pit of the Undying) may be what `isArenaZone` reads. Type 8 is a third Battle Arena on Rema Island next to 436 and 437 (type 6); the only differences from 436 in the record are the type, the `unknown_02` colour and `unknown_tail_46` (437 also sets `unknown_0c`), so I cannot tell what sets it apart. Possibly the Battle Arena that Trial Characters are locked into. Entering 1072 in game and checking what the client shows (death message, exit prompt) would tell the two apart.
-
-### Which territories use Velia's limits
-
-Heidel's limit set is what Calpheon and Ulukita nodes show in game (see Notes). Velia's set (`560 / 410 / 768`, accuracy 680, damage reduction rate 20%) matches no node seen so far: the occupation mode nodes of Balenos and Serendia show other values. A Valencia or Edania node tooltip would confirm that those territories are uncapped like Altinova and Valencia City.
-
 ### Where the live node war values come from
 
 Several values the node tooltip shows are not in this file, or differ from it:
@@ -264,10 +250,6 @@ None of these values turns up in the extracted client tables. If a client table 
 ### Max war heroes
 
 Every node tooltip shows 3 max war heroes. `unknown_tail_15` is `3` on every node war region and `5` elsewhere, which makes it the only candidate, but a node with a different hero count is needed to confirm it.
-
-### `unknown_tail_86` as a mode key
-
-`unknown_tail_86` is `0`, `5` or `15` on the land node war regions and follows the territory pairs that share a gear score limit (550, 720, none), with `100` on the capitals. It may be the key that picks which capital's limit set a node uses (Heidel's for the `5` pair, see Notes). A Valencia or Edania node tooltip, expected to match the uncapped Altinova / Valencia City set, would test that.
 
 ### Accuracy rate or evasion rate
 
@@ -284,3 +266,36 @@ The list holds town region keys and includes the owning region; the extractor ca
 ### The unconfirmed flags
 
 `unknown_0c` (possibly a safe zone), `unknown_0e` and `unknown_11` (the extractor's `ocean` and `sea`), `unknown_10` (the extractor's `prison`, but set on Ibellab Oasis and Hystria Ruins too) and `unknown_1b` (the extractor's `locator`) have plausible readings that nothing in the client confirms yet.
+
+## In-Game Checks
+
+### Return Point in `unknown_60` / `unknown_83`
+
+Needs zone (any one):
+
+- Ossuary
+- Coastal Cave
+
+The Korean place name and world position are shared by many regions and pair up as one place (see Notes), which suggests the respawn or return point for the region. Ossuary and Coastal Cave both point to Velia at `(-1226, -7012, 81647)`. Die in one of them (or use a return option) and revive at the nearest town. If the character lands at that point, `unknown_60` / `unknown_83` are the region's return point; a different spot rules that out.
+
+### Region Types 7 and 8
+
+Needs zone (all):
+
+- Pit of the Undying (`950` or `1070`, type 7)
+- Battle Arena (`1072`, type 8)
+
+`CppEnums.RegionType` ends at Arena (6) with `_Count` = 7, but Pit of the Undying (950, 1070) has type 7 and one Battle Arena (1072) type 8. I searched all 3060 client Lua scripts: no `eRegionType_` value past Arena exists, and the only scripts that touch region types compare against `Siege`, `Fortress` and `MinorTown`. The game executable is packed, so its strings cannot be searched.
+
+What the client does have are region getters that fit the two types: `isPVEArenaZone` (used by the death message, game exit, manufacture and Morning Land boss panels) next to `isArenaZone` and `isArenaArea`. Pit of the Undying is a PvE arena, so type 7 is probably a PvE arena; `unknown_0d` (set on every type 6 arena and on 1072, not on Pit of the Undying) may be what `isArenaZone` reads. Type 8 is a third Battle Arena on Rema Island next to 436 and 437 (type 6); the only differences from 436 in the record are the type, the `unknown_02` colour and `unknown_tail_46` (437 also sets `unknown_0c`), so I cannot tell what sets it apart. Possibly the Battle Arena that Trial Characters are locked into.
+
+Enter both and note the death message and the exit prompt. If Pit of the Undying shows the PvE arena handling that `isPVEArenaZone` drives, type 7 is the PvE arena. If 1072 shows the same as Battle Arena 436, the difference of type 8 is not visible there; anything else (for example a Trial Character notice) names it.
+
+### Node War Limits Outside Calpheon and Ulukita
+
+Needs zone (any one):
+
+- a node war node in Valencia
+- a node war node in Edania
+
+Heidel's limit set is what Calpheon and Ulukita nodes show in game (see Notes). Read the node tooltip of one Valencia or Edania node. The expected result is the uncapped set of Altinova and Valencia City (`9999`). That would confirm the capital records as the limits per territory pair, and `unknown_tail_86` (`5` on Calpheon and Ulukita, `15` on Valencia and Edania) as the key that picks which capital's set a node uses. Velia's set (AP 560, damage reduction 410, evasion 768, accuracy 680, damage reduction rate 20%) matches no node seen so far: the occupation mode nodes of Balenos and Serendia show other values. Note any node that shows it.

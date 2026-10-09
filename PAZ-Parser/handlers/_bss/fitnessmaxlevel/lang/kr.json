@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "fitnessTypeId": "단련 ID",
+    "fitnessType": "단련",
+    "maxLevel": "최대 레벨"
+  },
+  "meta": {
+    "count": "단련 종류 {count}개"
+  }
+}

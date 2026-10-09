@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "fitnessTypeId": "ID de forme physique",
+    "fitnessType": "Forme physique",
+    "maxLevel": "Niveau max."
+  },
+  "meta": {
+    "count": "{count} types de forme physique"
+  }
+}

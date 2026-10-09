@@ -5,8 +5,8 @@ The offset file is `PABR`, a u32 count and 12-byte rows (`key`, `offset`,
 record is preceded by a copy of its key, and walks as:
 
     u32 key | u16 text_id | ascii internal_name | ascii unknown_name_2
-    | utf16 greeting | u32 n + n x (u8 kind, utf16 text)
-    | u32 n + n x (utf16 condition, utf16 title, u32 kind, utf16 text, utf16 action, u16 text_id)
+    | utf16 greeting | u32 n + n x (u8 contents_type, utf16 text)
+    | u32 n + n x (utf16 condition, utf16 title, u32 dialog_button_type, utf16 text, utf16 action, u16 text_id)
     | u32 n + n x (utf16 condition, utf16 text, u16 text_id)
     | u64 n + n x u16 | u32 0
 
@@ -34,10 +34,30 @@ _U32 = struct.Struct("<I")
 _U64 = struct.Struct("<Q")
 _KEY_AND_TEXT_ID = struct.Struct("<IH")
 
+# CppEnums.ContentsType from global_define_cpp_enum.luac, without the
+# "Contents_" prefix: the NPC function a greeting line belongs to.
+CONTENTS_TYPE_NAMES: tuple[str, ...] = (
+    "Quest", "NewQuest", "Shop", "Skill", "Repair", "Auction", "Inn", "Warehouse",
+    "IntimacyGame", "Stable", "Transfer", "Guild", "Explore", "DeliveryPerson",
+    "Enchant", "Socket", "Awaken", "ReAwaken", "LordMenu", "Extract", "Temp",
+    "TerritorySupply", "GuildShop", "ItemMarket", "Knowledge", "HelpDesk",
+    "SupplyShop", "MinorLordMenu", "FishSupplyShop", "Join", "GuildSupplyShop",
+    "Improve", "NpcGift", "WeakenEnchant", "DiceGame", "NewItemMarket", "Barter",
+    "Employee", "Talk", "Exchange", "Temp1", "MainQuest", "NewMainQuest",
+    "SeasonReward", "Wanted", "Crew", "YachtDice", "OldMoonSmelting", "PetUpgrade",
+)
+
+# CppEnums.DialogButtonType, without the "eDialogButton_" prefix and the
+# closing _Count. Options with an empty action store 99, outside the enum.
+DIALOG_BUTTON_TYPE_NAMES: tuple[str, ...] = (
+    "Normal", "Knowledge", "Function", "CutScene", "Exchange", "ExceptExchange",
+    "TimeAttack", "Sequence",
+)
+
 
 @dataclass(frozen=True)
 class GreetingLine:
-    unknown_line_kind: int
+    contents_type: int
     text: str
 
 
@@ -45,7 +65,7 @@ class GreetingLine:
 class DialogOption:
     condition: str
     title: str
-    unknown_option_kind: int
+    dialog_button_type: int
     text: str
     action: str
     text_id: int
@@ -101,11 +121,11 @@ def _count(reader: RecordReader, fmt: struct.Struct = _U32) -> int:
 def _read_option(reader: RecordReader) -> DialogOption:
     condition = reader.text(wide=True)
     title = reader.text(wide=True)
-    (kind,) = reader.unpack(_U32)
+    (dialog_button_type,) = reader.unpack(_U32)
     text = reader.text(wide=True)
     action = reader.text(wide=True)
     (text_id,) = reader.unpack(_U16)
-    return DialogOption(condition, title, kind, text, action, text_id)
+    return DialogOption(condition, title, dialog_button_type, text, action, text_id)
 
 
 def _read_conditional(reader: RecordReader) -> ConditionalGreeting:
@@ -116,8 +136,8 @@ def _read_conditional(reader: RecordReader) -> ConditionalGreeting:
 
 
 def _read_line(reader: RecordReader) -> GreetingLine:
-    (kind,) = reader.unpack(_U8)
-    return GreetingLine(kind, reader.text(wide=True))
+    (contents_type,) = reader.unpack(_U8)
+    return GreetingLine(contents_type, reader.text(wide=True))
 
 
 def parse_detail_dialog_record(data: bytes, row: PabrOffsetRow) -> DialogRecord:

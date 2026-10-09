@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Clé",
+    "field": "Champ",
+    "title": "Titre",
+    "description": "Description",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Rayon (m)",
+    "image": "Image",
+    "entryItem": "Objet d'entrée",
+    "spawns": "Points d'apparition"
+  },
+  "meta": {
+    "count": "{count} cartes de champ d'instance"
+  }
+}

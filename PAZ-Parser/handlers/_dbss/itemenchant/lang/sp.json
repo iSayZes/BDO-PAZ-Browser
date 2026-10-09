@@ -15,7 +15,8 @@
     "dyeable": "Teñible",
     "objectId": "ID del objeto colocado",
     "object": "Objeto colocado",
-    "buffs": "Bonificadores"
+    "buffs": "Bonificadores",
+    "lightstoneSets": "Combinaciones de piedras de luz"
   },
   "offsetColumns": {
     "itemId": "ID del objeto",

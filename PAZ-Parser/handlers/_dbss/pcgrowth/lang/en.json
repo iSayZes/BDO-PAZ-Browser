@@ -1,0 +1,26 @@
+{
+  "offsetColumns": {
+    "classType": "Class Type",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class",
+    "characterKey": "Character ID",
+    "gender": "Gender",
+    "playable": "Playable",
+    "combatType": "Combat Type",
+    "starterWeapons": "Starter Weapons",
+    "classWeapons": "Class Weapons",
+    "selectMovie": "Selection Video",
+    "description": "Description"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "meta": {
+    "count": "{count} class types"
+  }
+}

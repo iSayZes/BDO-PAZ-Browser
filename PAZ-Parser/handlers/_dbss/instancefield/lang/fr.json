@@ -1,0 +1,18 @@
+{
+  "offsetColumns": {
+    "key": "Clé",
+    "byteOffset": "Décalage (octets)",
+    "size": "Taille"
+  },
+  "columns": {
+    "key": "Clé",
+    "name": "Nom",
+    "title": "Titre",
+    "sectorX": "Secteur X",
+    "sectorY": "Secteur Y",
+    "sectorZ": "Secteur Z"
+  },
+  "meta": {
+    "count": "{count} champs d'instance"
+  }
+}

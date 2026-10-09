@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "setId": "Set-ID",
+    "name": "Name",
+    "lightstones": "Lichtsteine",
+    "substitutes": "Ersatz",
+    "effect": "Effekt",
+    "skillId": "Talent-ID",
+    "buffs": "Buffs"
+  },
+  "meta": {
+    "count": "{count} Lichtstein-Sets"
+  }
+}

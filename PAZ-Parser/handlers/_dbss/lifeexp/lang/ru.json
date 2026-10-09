@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "lifeSkillId": "ID ремесла",
+    "lifeSkill": "Ремесло",
+    "level": "Уровень",
+    "rank": "Ранг",
+    "exp": "Опыт до след. уровня"
+  },
+  "offsetColumns": {
+    "lifeSkillId": "ID ремесла",
+    "level": "Уровень",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "meta": {
+    "count": "Уровней: {count} · ремесел: {skills}",
+    "offsetCount": "Записей смещения: {count} · ремесел: {skills}"
+  }
+}

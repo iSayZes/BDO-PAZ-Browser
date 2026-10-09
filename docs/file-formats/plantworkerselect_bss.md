@@ -150,8 +150,12 @@ Green is taken from an in-game screenshot of a base Goblin Worker.
 - Old Wisdom Tree (`706`) prices its Papu and Fadus grades in reverse: Artisan `3500`, Professional `10000`, Skilled `30000`, base `90000`.
 - Checked in game on 2026-09-28: in Grána (`735`) a base worker costs 3,500, a Skilled 10,000 and a Professional 30,000; in Old Wisdom Tree an Artisan costs 3,500; in O'draxxia (`955`) a base Dwarf Worker (`8020`) costs 3,500; in Heidel (`32`) a Naive worker costs 1,500, a base 3,500, a Skilled 10,000 and an Artisan Goblin Worker (`7572`) 90,000. All nine match the stored `hire_cost` of that row, covering every price level.
 
-## Open Questions
+## In-Game Checks
 
-### Old Wisdom Tree Only Offers Artisans
+### Old Wisdom Tree Grades After the Event
 
-Old Wisdom Tree (`706`) lists all four Papu and Fadus grades, but in game only Artisan workers came up there (checked 2026-09-28, several rolls). Most likely an event is active; if base, Skilled and Professional workers come up again once it ends, the list is the whole story, and a base worker should then cost 90,000.
+Needs NPC: [Mathieu](https://bdocodex.com/us/npc/45593/)
+
+Needs zone: Old Wisdom Tree
+
+Old Wisdom Tree (`706`) lists all four Papu and Fadus grades, but on 2026-09-28 only Artisan Papu and Fadus workers came up there (3,500 silver, several rolls), most likely because of an event. Once it ends, roll workers at Mathieu a few times. If base, Skilled and Professional workers come up again, the list is the whole story and the reverse prices hold: a base worker costs 90,000. If only Artisans come up, something outside this file limits the grades there.

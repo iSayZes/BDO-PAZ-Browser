@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Key",
+    "field": "Field",
+    "title": "Title",
+    "description": "Description",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Radius (m)",
+    "image": "Image",
+    "entryItem": "Entry Item",
+    "spawns": "Spawns"
+  },
+  "meta": {
+    "count": "{count} instance field maps"
+  }
+}

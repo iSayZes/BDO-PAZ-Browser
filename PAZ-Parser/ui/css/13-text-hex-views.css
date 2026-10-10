@@ -2,7 +2,8 @@
 
 .text-view {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 12.5px;
+  line-height: 1.6;
   color: var(--color-text);
   white-space: pre;
   tab-size: 4;
@@ -10,21 +11,21 @@
 
 .hex-view {
   font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 12.5px;
+  line-height: 1.7;
 }
 
 .hex-row {
   display: flex;
-  gap: 6px;
+  gap: 24px;
 }
 .hex-offset {
-  color: var(--color-data);
-  min-width: 68px;
+  color: color-mix(in srgb, var(--color-accent) 85%, var(--color-bg));
+  min-width: 72px;
 }
 .hex-bytes {
   color: var(--color-text);
-  min-width: 290px;
+  min-width: 360px;
 }
 .hex-ascii {
   color: var(--color-text-2);

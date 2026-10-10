@@ -2,8 +2,9 @@
 
 .table-meta {
   color: var(--color-text-3);
+  font-family: var(--font-mono);
   font-size: 11px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .table-wrap {
@@ -12,16 +13,17 @@
 
 .data-table {
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 13px;
   width: 100%;
   white-space: nowrap;
 }
 
 .data-table th {
   background: var(--color-raised);
-  color: var(--color-text-3);
+  color: var(--color-text-2);
   font-weight: 500;
-  padding: 5px 10px;
+  height: 34px;
+  padding: 0 12px;
   text-align: left;
   border-bottom: 1px solid var(--color-line);
   position: sticky;
@@ -90,11 +92,11 @@ th.sort-pending::after {
 }
 
 .data-table td {
-  border-bottom: 1px solid var(--color-row-alt);
-  color: var(--color-text-soft);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-line) 70%, transparent);
+  color: var(--color-text);
   font-family: inherit;
   height: var(--table-row-height);
-  padding: 0 10px;
+  padding: 0 12px;
   vertical-align: middle;
 }
 
@@ -144,13 +146,11 @@ th.sort-pending::after {
   user-select: text;
 }
 
-.data-table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.06);
+.data-table tbody tr.selected-row td {
+  background: var(--color-accent-soft);
 }
-
 .data-table tbody tr.selected-row {
-  background: rgba(90, 150, 255, 0.22);
-  outline: 1px solid rgba(90, 150, 255, 0.65);
+  outline: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent);
 }
 
 /* Worker names colored by grade (plantworker.bss, plantworkerselect.bss) */
@@ -180,7 +180,7 @@ th.sort-pending::after {
 
 /* Yes/no cells (flag_cell) */
 .flag-yes {
-  color: var(--color-accent);
+  color: var(--color-data);
 }
 
 .flag-no {

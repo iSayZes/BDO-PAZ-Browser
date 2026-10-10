@@ -39,6 +39,8 @@
   "details": {
     "title": "Сведения о записи",
     "export": "Экспорт",
+    "exportRaw": "Исходный файл",
+    "exportCsv": "Таблица в CSV",
     "noFileSelected": "Файл не выбран",
     "archive": "Архив",
     "path": "Путь",
@@ -132,8 +134,8 @@
     "position": "{index} из {count}"
   },
   "pageBar": {
-    "prev": "◀ Назад",
-    "next": "Далее ▶"
+    "prev": "Назад",
+    "next": "Далее"
   },
   "bottomBar": {
     "output": "Вывод",

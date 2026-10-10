@@ -13,16 +13,3 @@
 #v-divider.dragging {
   background: linear-gradient(to right, transparent 1px, var(--color-accent) 1px 4px, transparent 4px);
 }
-
-#h-divider {
-  height: 5px;
-  margin: -2px 0;
-  z-index: 1;
-  background: linear-gradient(to bottom, transparent 2px, var(--color-line) 2px 3px, transparent 3px);
-  cursor: row-resize;
-  flex-shrink: 0;
-}
-#h-divider:hover,
-#h-divider.dragging {
-  background: linear-gradient(to bottom, transparent 1px, var(--color-accent) 1px 4px, transparent 4px);
-}

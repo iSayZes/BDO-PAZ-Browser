@@ -68,45 +68,51 @@
       <div id="v-divider"></div>
 
       <div id="right-panel">
-        <div id="details-panel">
-          <div class="details-header">
-            <div class="panel-title" data-i18n="details.title">Entry Details</div>
-            <button id="btn-export" class="tab-btn with-icon" hidden onclick="app.exportFile()"><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg><span data-i18n="details.export">Export</span></button>
-          </div>
+        <section id="details-panel" data-i18n-aria-label="details.title" aria-label="Entry Details">
           <div id="detail-grid" class="detail-grid">
             <span class="detail-placeholder" data-i18n="details.noFileSelected">No file selected</span>
           </div>
-        </div>
+          <div class="export-wrap">
+            <button id="btn-export" class="with-icon" hidden aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu" onclick="app.toggleExportMenu()"><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg><span data-i18n="details.export">Export</span><svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg></button>
+            <div id="export-menu" class="menu" role="menu" hidden>
+              <button role="menuitem" onclick="app.exportAs('raw')" data-i18n="details.exportRaw">Raw file</button>
+              <button id="export-csv" role="menuitem" onclick="app.exportAs('csv')" data-i18n="details.exportCsv">Table as CSV</button>
+            </div>
+          </div>
+        </section>
 
-        <div id="h-divider"></div>
-
-        <div id="preview-panel">
+        <section id="preview-panel" data-i18n-aria-label="preview.title" aria-label="Preview">
           <div class="preview-header">
             <div class="panel-title with-icon" id="preview-title" data-i18n="preview.title">Preview</div>
-            <div class="preview-tabs" id="preview-tabs" hidden>
-              <button class="tab-btn active" data-tab="hex" onclick="app.switchTab('hex')" data-i18n="preview.tabHex">Hex</button>
-              <button class="tab-btn" data-tab="parsed" onclick="app.switchTab('parsed')" data-i18n="preview.tabParsed">Parsed</button>
+            <div class="preview-tabs segmented" id="preview-tabs" role="tablist" hidden>
+              <button class="tab-btn active" role="tab" data-tab="hex" onclick="app.switchTab('hex')" data-i18n="preview.tabHex">Hex</button>
+              <button class="tab-btn" role="tab" data-tab="parsed" onclick="app.switchTab('parsed')" data-i18n="preview.tabParsed">Parsed</button>
             </div>
           </div>
           <div id="tab-search-bar" hidden>
-            <div class="tsb-modes">
+            <div class="segmented tsb-modes" role="group">
               <button id="tab-search-mode-string" class="tsb-mode-btn active" onclick="app._setTabSearchMode('string')" data-i18n="tabSearch.modeString">String</button>
               <button id="tab-search-mode-hex" class="tsb-mode-btn" onclick="app._setTabSearchMode('hex')" data-i18n="tabSearch.modeHex">Hex</button>
             </div>
-            <span class="tsb-prefix" id="tab-search-prefix" hidden>#</span>
-            <input id="tab-search-input" type="text" placeholder="Search…" autocomplete="off"
-                   oninput="app._onTabSearchInput(event)"
-                   onkeydown="app._onTabSearchKeydown(event)"
-                   data-i18n-placeholder="tabSearch.placeholder" />
-            <button class="tsb-nav-btn" onclick="app.tabSearchPrev()" data-i18n-title="tabSearch.previous" title="Previous (Shift+Enter)"><svg class="icon" aria-hidden="true"><use href="#icon-chevron-up"></use></svg></button>
-            <button class="tsb-nav-btn" onclick="app.tabSearchNext()" data-i18n-title="tabSearch.next" title="Next (Enter)"><svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg></button>
+            <label class="input-box tsb-box">
+              <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+              <span class="tsb-prefix" id="tab-search-prefix" hidden>#</span>
+              <input id="tab-search-input" type="text" placeholder="Search…" autocomplete="off"
+                     oninput="app._onTabSearchInput(event)"
+                     onkeydown="app._onTabSearchKeydown(event)"
+                     data-i18n-placeholder="tabSearch.placeholder"
+                     data-i18n-aria-label="tabSearch.placeholder" aria-label="Search…" />
+              <kbd class="kbd">Ctrl F</kbd>
+            </label>
             <span id="tab-search-counter"></span>
+            <button class="icon-button" onclick="app.tabSearchPrev()" data-i18n-title="tabSearch.previous" title="Previous (Shift+Enter)" data-i18n-aria-label="tabSearch.previous" aria-label="Previous (Shift+Enter)"><svg class="icon" aria-hidden="true"><use href="#icon-chevron-up"></use></svg></button>
+            <button class="icon-button" onclick="app.tabSearchNext()" data-i18n-title="tabSearch.next" title="Next (Enter)" data-i18n-aria-label="tabSearch.next" aria-label="Next (Enter)"><svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg></button>
           </div>
           <div id="preview-content">
             <div class="placeholder" data-i18n="preview.selectFile">Select a file to preview.</div>
           </div>
           <div id="page-bar-area"></div>
-        </div>
+        </section>
       </div>
     </div>
 

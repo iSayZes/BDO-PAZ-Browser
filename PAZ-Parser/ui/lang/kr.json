@@ -39,6 +39,8 @@
   "details": {
     "title": "항목 세부 정보",
     "export": "내보내기",
+    "exportRaw": "원본 파일",
+    "exportCsv": "표를 CSV로",
     "noFileSelected": "선택된 파일 없음",
     "archive": "아카이브",
     "path": "경로",
@@ -132,8 +134,8 @@
     "position": "{index} / {count}"
   },
   "pageBar": {
-    "prev": "◀ 이전",
-    "next": "다음 ▶"
+    "prev": "이전",
+    "next": "다음"
   },
   "bottomBar": {
     "output": "출력",

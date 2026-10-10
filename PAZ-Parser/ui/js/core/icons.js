@@ -53,6 +53,7 @@ const ICON_PATHS = {
   "chevron-up": '<path d="m18 15-6-6-6 6"/>',
   "chevron-down": '<path d="m6 9 6 6 6-6"/>',
   "chevron-right": '<path d="m9 18 6-6-6-6"/>',
+  "chevron-left": '<path d="m15 18-6-6 6-6"/>',
 };
 
 const SVG_NS = "http://www.w3.org/2000/svg";

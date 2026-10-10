@@ -92,6 +92,8 @@ adds its own rules only for layout.
 | `.input-box`    | A label wrapping an icon or caption and an input; accent border and ring on focus |
 | `.segmented`    | Two or three exclusive buttons in one track; the chosen one has `.active` |
 | `.with-icon`    | Inline-flex row for an icon before its label                         |
+| `.menu`         | A dropdown of `button` items under its trigger, which sits in a `position: relative` wrapper (`04-right-panel.css`) |
+| `.kbd`          | A key hint such as Ctrl F inside an input box (`04-right-panel.css`) |
 
 Disabled buttons drop their fill and use `--color-disabled`.
 

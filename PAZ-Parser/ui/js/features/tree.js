@@ -162,6 +162,8 @@ export const treeMethods = {
     this._cancelParsedPageRequest();
     this._isAltView = false;
     this._tabLabels = null;
+    this._canExportCsv = false;
+    this.closeExportMenu();
 
     document.getElementById("preview-title").replaceChildren(iconElement(icon), document.createTextNode(name));
     this.showHandlerVersion(name);
@@ -193,6 +195,8 @@ export const treeMethods = {
       this._parsedSort = result.sort ?? null;
       this._isAltView = !!result.tab_labels;
       this._tabLabels = result.tab_labels || null;
+      // Text/Rendered views have no records to write as CSV.
+      this._canExportCsv = !!result.has_parsed && !this._isAltView;
 
       const tabs = document.getElementById("preview-tabs");
       const content = document.getElementById("preview-content");
@@ -213,6 +217,7 @@ export const treeMethods = {
         tabs.hidden = false;
         tabs.querySelectorAll(".tab-btn").forEach((btn) => {
           btn.classList.toggle("active", btn.dataset.tab === "hex");
+          btn.setAttribute("aria-selected", String(btn.dataset.tab === "hex"));
         });
         content.innerHTML = this._hexHtml;
         this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", 0, this._hexTotalPages) : null);
@@ -243,14 +248,6 @@ export const treeMethods = {
     }
   },
 
-  async exportFile() {
-    if (!this._selectedPath) return;
-    const result = await window.pywebview.api.export_file(this._selectedPath, this._activeTab);
-    if (result?.error) {
-      this.setStatus({ key: "status.exportFailed", args: { message: result.error } });
-    }
-  },
-
   switchTab(tab) {
     if (this._hexHtml === null) return;
     this._activeTab = tab;
@@ -258,6 +255,7 @@ export const treeMethods = {
     this._resetTabSearch();
     document.getElementById("preview-tabs").querySelectorAll(".tab-btn").forEach((btn) => {
       btn.classList.toggle("active", btn.dataset.tab === tab);
+      btn.setAttribute("aria-selected", String(btn.dataset.tab === tab));
     });
     const content = document.getElementById("preview-content");
     if (tab === "hex") {

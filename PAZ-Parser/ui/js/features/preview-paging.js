@@ -1,6 +1,7 @@
 "use strict";
 
 import { t } from "../core/i18n.js";
+import { iconElement } from "../core/icons.js";
 
 export const previewPagingMethods = {
   _setPageBar(bar) {
@@ -15,8 +16,8 @@ export const previewPagingMethods = {
     bar.dataset.kind = kind;
 
     const prev = document.createElement("button");
-    prev.className = "page-btn";
-    prev.textContent = t("pageBar.prev");
+    prev.className = "page-btn with-icon";
+    prev.append(iconElement("chevron-left"), t("pageBar.prev"));
     prev.disabled = page === 0;
     prev.onclick = () => kind === "hex" ? this._gotoHexPage(page - 1) : this._gotoParsedPage(page - 1);
 
@@ -25,8 +26,8 @@ export const previewPagingMethods = {
     label.textContent = `${page + 1} / ${total}`;
 
     const next = document.createElement("button");
-    next.className = "page-btn";
-    next.textContent = t("pageBar.next");
+    next.className = "page-btn with-icon";
+    next.append(t("pageBar.next"), iconElement("chevron-right"));
     next.disabled = page >= total - 1;
     next.onclick = () => kind === "hex" ? this._gotoHexPage(page + 1) : this._gotoParsedPage(page + 1);
 

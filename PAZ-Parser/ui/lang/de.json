@@ -39,6 +39,8 @@
   "details": {
     "title": "Eintragsdetails",
     "export": "Exportieren",
+    "exportRaw": "Rohdatei",
+    "exportCsv": "Tabelle als CSV",
     "noFileSelected": "Keine Datei ausgewählt",
     "archive": "Archiv",
     "path": "Pfad",
@@ -132,8 +134,8 @@
     "position": "{index} von {count}"
   },
   "pageBar": {
-    "prev": "◀ Zurück",
-    "next": "Weiter ▶"
+    "prev": "Zurück",
+    "next": "Weiter"
   },
   "bottomBar": {
     "output": "Ausgabe",

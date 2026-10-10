@@ -22,7 +22,7 @@
 
 .panel-title {
   font-weight: 600;
-  color: var(--fg-white);
+  color: var(--color-text-strong);
   font-size: 12px;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -36,20 +36,20 @@
 }
 
 .detail-placeholder {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 12px;
 }
 
 .detail-label {
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   font-size: 11px;
   padding: 1px 0;
   white-space: nowrap;
 }
 
 .detail-value {
-  color: var(--accent);
-  font-family: Consolas, "Courier New", monospace;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
   font-size: 11px;
   padding: 1px 0;
   overflow: hidden;

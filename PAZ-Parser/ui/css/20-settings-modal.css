@@ -11,8 +11,8 @@
 }
 
 .settings-modal {
-  background: var(--surface);
-  border: 1px solid var(--border2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
   border-radius: 6px;
   width: 420px;
   display: flex;
@@ -25,23 +25,23 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-line);
   font-size: 13px;
   font-weight: 600;
-  color: var(--fg);
+  color: var(--color-text);
 }
 
 .settings-close {
   background: none;
   border: none;
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   padding: 2px 6px;
   font-size: 14px;
   line-height: 1;
 }
 .settings-close:hover {
-  color: var(--fg-white);
-  background: var(--hover);
+  color: var(--color-text-strong);
+  background: var(--color-hover);
 }
 
 .settings-body {
@@ -53,7 +53,7 @@
 
 .settings-label {
   font-size: 11px;
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 2px;
@@ -66,25 +66,25 @@
 
 .settings-path-row input {
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  color: var(--fg);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-text);
   padding: 5px 8px;
   font-size: 12px;
-  font-family: "Consolas", "Courier New", monospace;
+  font-family: var(--font-mono);
   border-radius: 3px;
   outline: none;
 }
 .settings-path-row input:focus {
-  border-color: var(--accent);
+  border-color: var(--color-accent);
 }
 
 #settings-language,
 #settings-records-cache,
 #settings-table-row-height {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  color: var(--fg);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-text);
   padding: 5px 8px;
   font-size: 12px;
   font-family: inherit;
@@ -96,7 +96,7 @@
 #settings-language:focus,
 #settings-records-cache:focus,
 #settings-table-row-height:focus {
-  border-color: var(--accent);
+  border-color: var(--color-accent);
 }
 
 .settings-row-height {
@@ -106,7 +106,7 @@
 }
 
 .settings-unit {
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   font-size: 12px;
   min-width: 20px;
 }
@@ -127,7 +127,7 @@
 
 .settings-check {
   align-items: center;
-  color: var(--fg2);
+  color: var(--color-text-soft);
   cursor: pointer;
   display: flex;
   font-size: 12px;
@@ -139,19 +139,19 @@
   justify-content: flex-end;
   gap: 8px;
   padding: 12px 16px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--color-line);
 }
 
 .btn-primary {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #000;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
   font-weight: 600;
 }
 .btn-primary:hover {
-  background: var(--accent-h);
-  border-color: var(--accent-h);
-  color: #000;
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: var(--color-on-accent);
 }
 
 /* Save in flight: a spinner before the label, dark on the accent colour. */
@@ -165,7 +165,7 @@
 }
 .btn-primary .loading-spinner {
   border-color: rgba(0, 0, 0, 0.25);
-  border-top-color: #000;
+  border-top-color: var(--color-on-accent);
 }
 
 #btn-settings {

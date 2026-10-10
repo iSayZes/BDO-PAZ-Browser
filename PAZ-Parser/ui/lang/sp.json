@@ -6,7 +6,7 @@
     "notes": "Las claves que faltan usan en.json automáticamente."
   },
   "toolbar": {
-    "openFolder": "📂 Abrir carpeta PAZ",
+    "openFolder": "Abrir carpeta PAZ",
     "noFolderSelected": "No se ha seleccionado ninguna carpeta",
     "settings": "Ajustes"
   },
@@ -20,7 +20,7 @@
     "modeHex": "Hex",
     "pattern": "Patrón…",
     "search": "Buscar",
-    "cancel": "✕ Cancelar",
+    "cancel": "Cancelar",
     "in": "En:",
     "noMatches": "No se encontraron coincidencias.",
     "matchOne": "1 coincidencia",
@@ -28,13 +28,13 @@
   },
   "details": {
     "title": "Detalles de la entrada",
-    "export": "⬇ Exportar",
+    "export": "Exportar",
     "noFileSelected": "No se ha seleccionado ningún archivo",
-    "archive": "📦  Archivo",
-    "path": "📍  Ruta",
-    "compressed": "🗜  Comprimido",
-    "uncompressed": "📄  Sin comprimir",
-    "offset": "#  Desplazamiento"
+    "archive": "Archivo",
+    "path": "Ruta",
+    "compressed": "Comprimido",
+    "uncompressed": "Sin comprimir",
+    "offset": "Desplazamiento"
   },
   "preview": {
     "title": "Vista previa",
@@ -128,8 +128,8 @@
   "bottomBar": {
     "output": "Salida",
     "extractDestination": "Destino de extracción…",
-    "extractSelected": "⬇ Extraer seleccionados",
-    "extractFolder": "📁 Extraer carpeta",
+    "extractSelected": "Extraer seleccionados",
+    "extractFolder": "Extraer carpeta",
     "browse": "Examinar",
     "fileOne": "{count} archivo",
     "fileMany": "{count} archivos",
@@ -182,7 +182,7 @@
     "error": "Error: {message}",
     "indexFailed": "No se pudieron crear los índices de búsqueda, faltan algunos iconos y enlaces: {message}",
     "extracting": "Extrayendo… {done}/{total}, {extracted} ok  {skipped} omitidos  {failed} fallidos",
-    "extractDone": "✓  Listo, {extracted} extraídos, {skipped} omitidos, {failed} fallidos.",
+    "extractDone": "Listo, {extracted} extraídos, {skipped} omitidos, {failed} fallidos.",
     "searching": "Buscando… {done}/{total} archivos escaneados, {matches} coincidencia(s) hasta ahora",
     "searchDone": "Búsqueda completada, {matches} archivo(s) coincidieron de {total} escaneados",
     "pluginsReloaded": "Plugins recargados.",

@@ -6,7 +6,7 @@
     "notes": "Отсутствующие ключи автоматически берутся из en.json."
   },
   "toolbar": {
-    "openFolder": "📂 Открыть папку PAZ",
+    "openFolder": "Открыть папку PAZ",
     "noFolderSelected": "Папка не выбрана",
     "settings": "Настройки"
   },
@@ -20,7 +20,7 @@
     "modeHex": "Hex",
     "pattern": "Шаблон…",
     "search": "Поиск",
-    "cancel": "✕ Отмена",
+    "cancel": "Отмена",
     "in": "В:",
     "noMatches": "Совпадений не найдено.",
     "matchOne": "Совпадений: 1",
@@ -28,13 +28,13 @@
   },
   "details": {
     "title": "Сведения о записи",
-    "export": "⬇ Экспорт",
+    "export": "Экспорт",
     "noFileSelected": "Файл не выбран",
-    "archive": "📦  Архив",
-    "path": "📍  Путь",
-    "compressed": "🗜  Сжато",
-    "uncompressed": "📄  Без сжатия",
-    "offset": "#  Смещение"
+    "archive": "Архив",
+    "path": "Путь",
+    "compressed": "Сжато",
+    "uncompressed": "Без сжатия",
+    "offset": "Смещение"
   },
   "preview": {
     "title": "Предпросмотр",
@@ -128,8 +128,8 @@
   "bottomBar": {
     "output": "Вывод",
     "extractDestination": "Папка назначения…",
-    "extractSelected": "⬇ Извлечь выбранное",
-    "extractFolder": "📁 Извлечь папку",
+    "extractSelected": "Извлечь выбранное",
+    "extractFolder": "Извлечь папку",
     "browse": "Обзор",
     "fileOne": "Файлов: {count}",
     "fileMany": "Файлов: {count}",
@@ -182,7 +182,7 @@
     "error": "Ошибка: {message}",
     "indexFailed": "Не удалось построить индексы поиска, некоторые значки и ссылки отсутствуют: {message}",
     "extracting": "Извлечение… {done}/{total}, {extracted} ok  {skipped} пропущено  {failed} с ошибкой",
-    "extractDone": "✓  Готово, извлечено: {extracted}, пропущено: {skipped}, ошибок: {failed}.",
+    "extractDone": "Готово, извлечено: {extracted}, пропущено: {skipped}, ошибок: {failed}.",
     "searching": "Поиск… просканировано {done}/{total} файлов, совпадений пока: {matches}",
     "searchDone": "Поиск завершён, найдено файлов: {matches} из {total} просканированных",
     "pluginsReloaded": "Плагины перезагружены.",

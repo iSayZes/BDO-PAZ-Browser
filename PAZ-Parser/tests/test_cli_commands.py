@@ -171,7 +171,7 @@ def test_standalone_page_carries_the_app_table_css() -> None:
 
     assert page.startswith("<!doctype html>")
     assert ".data-table" in page
-    assert "--surface2" in page
+    assert "--color-raised" in page
     assert '<div id="preview-content"><table class="data-table"></table></div>' in page
 
 

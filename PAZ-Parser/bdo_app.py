@@ -246,7 +246,7 @@ def _launch_gui(profile: bool = False, after_update: bool = False) -> None:
         width=1280,
         height=800,
         min_size=(900, 560),
-        background_color="#1a1a1a",
+        background_color="#121316",  # --color-bg in ui/css/00-reset-root.css
     )
     if window is not None:
         api.set_window(window)

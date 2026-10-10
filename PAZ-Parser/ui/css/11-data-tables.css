@@ -1,7 +1,7 @@
 /* ── Data tables ──────────────────────────────────────────────────────────── */
 
 .table-meta {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 11px;
   margin-bottom: 6px;
 }
@@ -18,12 +18,12 @@
 }
 
 .data-table th {
-  background: var(--surface2);
-  color: var(--fg-dim);
+  background: var(--color-raised);
+  color: var(--color-text-3);
   font-weight: 500;
   padding: 5px 10px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-line);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -38,7 +38,7 @@ th.sortable {
 th.sortable:hover,
 th.sortable.sort-asc,
 th.sortable.sort-desc {
-  color: var(--fg);
+  color: var(--color-text);
 }
 th.sortable::after {
   content: " ↕";
@@ -61,8 +61,8 @@ th.sort-pending::after {
   height: 7px;
   margin-left: 5px;
   vertical-align: -1px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
+  border: 2px solid var(--color-line);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   opacity: 1;
   animation: loading-spin 0.8s linear infinite;
@@ -90,8 +90,8 @@ th.sort-pending::after {
 }
 
 .data-table td {
-  border-bottom: 1px solid var(--surface3);
-  color: var(--fg2);
+  border-bottom: 1px solid var(--color-row-alt);
+  color: var(--color-text-soft);
   font-family: inherit;
   height: var(--table-row-height);
   padding: 0 10px;
@@ -116,8 +116,8 @@ th.sort-pending::after {
 .icon-cell-placeholder {
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04)),
-    var(--surface2);
-  border: 1px solid var(--border);
+    var(--color-raised);
+  border: 1px solid var(--color-line);
 }
 
 .icon-cell-path,
@@ -132,11 +132,11 @@ th.sort-pending::after {
 }
 
 .data-table tbody tr:nth-child(even) td {
-  background: var(--surface3);
+  background: var(--color-row-alt);
 }
 .data-table tbody tr:hover td {
-  background: var(--hover);
-  color: var(--fg-white);
+  background: var(--color-hover);
+  color: var(--color-text-strong);
 }
 
 .data-table tbody tr {
@@ -180,16 +180,16 @@ th.sort-pending::after {
 
 /* Yes/no cells (flag_cell) */
 .flag-yes {
-  color: var(--accent);
+  color: var(--color-accent);
 }
 
 .flag-no {
-  color: var(--error);
+  color: var(--color-danger);
 }
 
 /* A value taken from a linked row, such as a buff title from its headline buff */
 .inherited-cell {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
 }
 
 /* An inherited value keeps its game colour (pa_html), dimmed */
@@ -199,7 +199,7 @@ th.sort-pending::after {
 
 /* A <PA...> tag shown as text, with the "Show game text tags" setting on */
 .pa-tag {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
 }
 
 /* A hunting ground tag as the drop item window draws it: a pill tinted with

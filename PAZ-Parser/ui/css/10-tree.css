@@ -22,12 +22,12 @@
   overflow: hidden;
 }
 .tree-label:hover {
-  background: var(--surface2);
+  background: var(--color-raised);
 }
 
 .tree-node.selected > .tree-label {
-  background: var(--accent-d);
-  color: var(--accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
 }
 
 .tree-node.extract-selected > .tree-label {
@@ -36,11 +36,11 @@
   outline-offset: -1px;
 }
 .tree-node.extract-selected > .tree-label .tree-name {
-  color: var(--cyan);
+  color: var(--color-data);
 }
 
 .tree-arrow {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 9px;
   width: 10px;
   flex-shrink: 0;
@@ -52,44 +52,57 @@
 
 .tree-icon {
   flex-shrink: 0;
+  color: var(--color-text-3);
+}
+/* Kinds from the row's data-icon, as the API names them. Content search rows
+   hold the icon directly, tree and name search rows inside .tree-label. */
+.tree-node[data-icon="folder"] > .tree-label > .tree-icon {
+  color: var(--color-accent);
+}
+.tree-node[data-icon="parsed"] > .tree-label > .tree-icon,
+.tree-node[data-icon="parsed"] > .tree-icon {
+  color: var(--color-data);
+}
+.tree-node[data-icon="loc"] > .tree-label > .tree-icon {
+  color: var(--color-loc);
 }
 
 .tree-name {
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--fg2);
+  color: var(--color-text-soft);
   font-size: 12px;
 }
 .tree-node.selected > .tree-label .tree-name {
-  color: var(--accent);
+  color: var(--color-accent);
 }
 
 .tree-count {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 10px;
   margin-left: 3px;
   flex-shrink: 0;
 }
 
 .tree-path {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 10px;
-  font-family: Consolas, monospace;
+  font-family: var(--font-mono);
   margin-left: 6px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .tree-node.loading > .tree-label {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-style: italic;
 }
 
 .loading-spinner {
   width: 10px;
   height: 10px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
+  border: 2px solid var(--color-line);
+  border-top-color: var(--color-accent);
   border-radius: 50%;
   flex-shrink: 0;
   animation: loading-spin 0.8s linear infinite;

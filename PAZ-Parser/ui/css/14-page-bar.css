@@ -9,14 +9,14 @@
   align-items: center;
   gap: 8px;
   padding: 6px 8px;
-  border-top: 1px solid var(--border);
-  background: var(--surface);
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface);
 }
 
 .page-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  color: var(--fg);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-text);
   border-radius: 3px;
   padding: 2px 10px;
   font-size: 12px;
@@ -24,7 +24,7 @@
 }
 
 .page-btn:hover:not(:disabled) {
-  background: var(--hover);
+  background: var(--color-hover);
 }
 
 .page-btn:disabled {
@@ -34,7 +34,7 @@
 
 .page-label {
   font-size: 12px;
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   min-width: 60px;
   text-align: center;
 }

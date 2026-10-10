@@ -1,0 +1,21 @@
+/* ── Icons ────────────────────────────────────────────────────────────────── */
+
+/* Sprite icons from js/core/icons.js; they take the text colour of their parent. */
+.icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -0.125em;
+}
+
+/* A button or label with an icon before its text. */
+.with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}

@@ -27,7 +27,7 @@ from .bdo_config import (
     update_handlers_setting,
 )
 from .bdo_languages import UI_LANGUAGE_CODES, UI_LANGUAGES, game_language, loc_path, missing_loc_file
-from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, _file_icon, _norm, fold_entry_map, path_matcher
+from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, FOLDER_ICON, _file_icon, _norm, fold_entry_map, path_matcher
 from .bdo_api_preview import PreviewMixin
 from .bdo_api_search import SearchMixin
 from .bdo_tree import build_tree, collect_entries, count_entries, find_node, handled_entries
@@ -584,7 +584,7 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
                 "name":        name,
                 "type":        "dir",
                 "count":       count_entries(child_node),
-                "icon":        "📁",
+                "icon":        FOLDER_ICON,
                 "has_children": bool(child_node),
             })
         for name, entry in files:

@@ -35,7 +35,7 @@ _IMPORT_RE = re.compile(r'@import\s+url\("\./([^"]+)"\);')
 _PAGE_OVERRIDES = """
 html, body { height: auto; overflow: auto; user-select: text; }
 body { padding: 12px; }
-.render-note { color: var(--fg-dim); font-size: 11px; margin-bottom: 8px; }
+.render-note { color: var(--color-text-3); font-size: 11px; margin-bottom: 8px; }
 """
 
 

@@ -6,7 +6,7 @@
     "notes": "누락된 키는 자동으로 en.json에서 가져옵니다."
   },
   "toolbar": {
-    "openFolder": "📂 PAZ 폴더 열기",
+    "openFolder": "PAZ 폴더 열기",
     "noFolderSelected": "선택된 폴더 없음",
     "settings": "설정"
   },
@@ -20,7 +20,7 @@
     "modeHex": "16진수",
     "pattern": "패턴…",
     "search": "검색",
-    "cancel": "✕ 취소",
+    "cancel": "취소",
     "in": "위치:",
     "noMatches": "일치하는 항목이 없습니다.",
     "matchOne": "1개 일치",
@@ -28,13 +28,13 @@
   },
   "details": {
     "title": "항목 세부 정보",
-    "export": "⬇ 내보내기",
+    "export": "내보내기",
     "noFileSelected": "선택된 파일 없음",
-    "archive": "📦  아카이브",
-    "path": "📍  경로",
-    "compressed": "🗜  압축됨",
-    "uncompressed": "📄  압축 해제됨",
-    "offset": "#  오프셋"
+    "archive": "아카이브",
+    "path": "경로",
+    "compressed": "압축됨",
+    "uncompressed": "압축 해제됨",
+    "offset": "오프셋"
   },
   "preview": {
     "title": "미리보기",
@@ -128,8 +128,8 @@
   "bottomBar": {
     "output": "출력",
     "extractDestination": "추출 대상…",
-    "extractSelected": "⬇ 선택 항목 추출",
-    "extractFolder": "📁 폴더 추출",
+    "extractSelected": "선택 항목 추출",
+    "extractFolder": "폴더 추출",
     "browse": "찾아보기",
     "fileOne": "파일 {count}개",
     "fileMany": "파일 {count}개",
@@ -182,7 +182,7 @@
     "error": "오류: {message}",
     "indexFailed": "조회 인덱스를 만들 수 없어 일부 아이콘과 링크가 없습니다: {message}",
     "extracting": "추출 중… {done}/{total}, {extracted} 성공  {skipped} 건너뜀  {failed} 실패",
-    "extractDone": "✓  완료, {extracted}개 추출, {skipped}개 건너뜀, {failed}개 실패.",
+    "extractDone": "완료, {extracted}개 추출, {skipped}개 건너뜀, {failed}개 실패.",
     "searching": "검색 중… {done}/{total}개 파일 스캔됨, 현재 {matches}개 일치",
     "searchDone": "검색 완료, {total}개 스캔 중 {matches}개 파일 일치",
     "pluginsReloaded": "플러그인을 다시 불러왔습니다.",

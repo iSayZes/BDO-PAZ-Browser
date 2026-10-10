@@ -1,9 +1,9 @@
 /* ── Buttons ──────────────────────────────────────────────────────────────── */
 
 button {
-  background: var(--surface2);
-  color: var(--fg-muted);
-  border: 1px solid var(--border2);
+  background: var(--color-raised);
+  color: var(--color-text-2);
+  border: 1px solid var(--color-line-strong);
   padding: 4px 11px;
   font-size: 12px;
   font-family: inherit;
@@ -15,8 +15,8 @@ button {
     color 0.1s;
 }
 button:hover {
-  background: var(--hover);
-  color: var(--fg-white);
+  background: var(--color-hover);
+  color: var(--color-text-strong);
 }
 
 #btn-open {

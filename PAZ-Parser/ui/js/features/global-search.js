@@ -1,6 +1,7 @@
 "use strict";
 
 import { t } from "../core/i18n.js";
+import { iconElement } from "../core/icons.js";
 
 // Module-level state
 let _gsMode = "string";
@@ -107,7 +108,7 @@ export const globalSearchMethods = {
     if (this._inGlobalSearch && !tree.children.length) {
       const li = document.createElement("li");
       li.className = "tree-node";
-      li.style.cssText = "padding:8px 12px;color:var(--fg-muted);font-size:12px";
+      li.style.cssText = "padding:8px 12px;color:var(--color-text-2);font-size:12px";
       li.textContent = t("contentSearch.noMatches");
       tree.appendChild(li);
     }
@@ -123,10 +124,9 @@ export const globalSearchMethods = {
     for (const item of items) {
       const li = document.createElement("li");
       li.className = "tree-node tree-file csb-result";
+      li.dataset.icon = item.icon;
 
-      const icon  = document.createElement("span");
-      icon.className = "tree-icon";
-      icon.textContent = item.icon;
+      const icon  = iconElement(item.icon, "icon tree-icon");
 
       const name  = document.createElement("span");
       name.className = "csb-result-name";

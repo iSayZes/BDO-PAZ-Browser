@@ -473,8 +473,9 @@ PAZ-Parser/
 │   ├── app.js              # Entry point, assembles feature modules
 │   ├── style.css           # CSS entry point, imports css/ modules
 │   ├── css/                # Per-component stylesheets (numbered load order)
+│   ├── fonts/              # IBM Plex woff2 files and their OFL licence
 │   └── js/
-│       ├── core/           # Shared state and helpers
+│       ├── core/           # Shared state, helpers and the icon sprite
 │       └── features/       # Feature modules (tree, search, extraction, …)
 │
 └── handlers/               # Format preview plugins (auto-loaded)

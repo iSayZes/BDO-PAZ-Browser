@@ -2,24 +2,24 @@
 
 #v-divider {
   width: 4px;
-  background: var(--border);
+  background: var(--color-line);
   cursor: col-resize;
   flex-shrink: 0;
   transition: background 0.15s;
 }
 #v-divider:hover,
 #v-divider.dragging {
-  background: var(--border3);
+  background: var(--color-line-hover);
 }
 
 #h-divider {
   height: 4px;
-  background: var(--border);
+  background: var(--color-line);
   cursor: row-resize;
   flex-shrink: 0;
   transition: background 0.15s;
 }
 #h-divider:hover,
 #h-divider.dragging {
-  background: var(--border3);
+  background: var(--color-line-hover);
 }

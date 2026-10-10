@@ -1,25 +1,52 @@
 /* ── Reset & root ─────────────────────────────────────────────────────────── */
 
+/* Design tokens. docs/style-guide.md lists each one with its role. */
 :root {
-  --bg: #1a1a1a;
-  --surface: #1e1e1e;
-  --surface2: #2a2a2a;
-  --surface3: #242424;
-  --hover: #363636;
-  --border: #333333;
-  --border2: #444444;
-  --border3: #555555;
-  --fg: #e0e0e0;
-  --fg2: #cccccc;
-  --fg-muted: #aaaaaa;
-  --fg-dim: #666666;
-  --fg-white: #ffffff;
-  --accent: #2dbe6c;
-  --accent-h: #33d977;
-  --accent-d: #1a3d2a;
-  --cyan: #22d3ee;
-  --error: #ff6b6b;
-  --warning: #e09050;
+  /* Surfaces, darkest first */
+  --color-bg: #121316;
+  --color-sidebar: #16181b;
+  --color-surface: #191b1f;
+  --color-row-alt: #1c1e22;
+  --color-raised: #212429;
+  --color-hover: #2a2e34;
+  /* Lines */
+  --color-line: #2c3036;
+  --color-line-strong: #3a3f47;
+  --color-line-hover: #4a505a;
+  /* Text, strongest first */
+  --color-text-strong: #ffffff;
+  --color-text: #e8e6e1;
+  --color-text-soft: #c9c7c2;
+  --color-text-2: #a9adb4;
+  --color-text-3: #80858d;
+  --color-disabled: #5c6168;
+  /* Accent: selection, focus, primary buttons */
+  --color-accent: #e2a94f;
+  --color-accent-hover: #edbb69;
+  --color-accent-soft: rgba(226, 169, 79, 0.14);
+  --color-on-accent: #1a1408;
+  /* Meaning */
+  --color-data: #5bc8a8;
+  --color-loc: #b79cf0;
+  --color-warning: #f07b3f;
+  --color-danger: #e5484d;
+  /* Type: ui/fonts/fonts.css loads Plex; Malgun Gothic draws the Korean fallback text */
+  --font-sans: "IBM Plex Sans", "Malgun Gothic", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", Consolas, "Malgun Gothic", monospace;
+  /* Spacing and corner radii */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --radius-inner: 4px;
+  --radius-control: 7px;
+  --radius-card: 10px;
+  --radius-modal: 14px;
+  --radius-pill: 999px;
+
   --table-row-height: 27px;
   /* Worker grade name colors, as in game: Naive to Artisan, then named workers */
   --worker-grade-0: #ffffff;
@@ -47,7 +74,7 @@ body {
   height: 100%;
   background: var(--bg);
   color: var(--fg);
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 13px;
   overflow: hidden;
   user-select: none;

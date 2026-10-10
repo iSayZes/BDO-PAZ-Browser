@@ -6,7 +6,7 @@
     "notes": "Fehlende Schlüssel greifen automatisch auf en.json zurück."
   },
   "toolbar": {
-    "openFolder": "📂 PAZ-Ordner öffnen",
+    "openFolder": "PAZ-Ordner öffnen",
     "noFolderSelected": "Kein Ordner ausgewählt",
     "settings": "Einstellungen"
   },
@@ -20,7 +20,7 @@
     "modeHex": "Hex",
     "pattern": "Muster…",
     "search": "Suchen",
-    "cancel": "✕ Abbrechen",
+    "cancel": "Abbrechen",
     "in": "In:",
     "noMatches": "Keine Treffer gefunden.",
     "matchOne": "1 Treffer",
@@ -28,13 +28,13 @@
   },
   "details": {
     "title": "Eintragsdetails",
-    "export": "⬇ Exportieren",
+    "export": "Exportieren",
     "noFileSelected": "Keine Datei ausgewählt",
-    "archive": "📦  Archiv",
-    "path": "📍  Pfad",
-    "compressed": "🗜  Komprimiert",
-    "uncompressed": "📄  Unkomprimiert",
-    "offset": "#  Offset"
+    "archive": "Archiv",
+    "path": "Pfad",
+    "compressed": "Komprimiert",
+    "uncompressed": "Unkomprimiert",
+    "offset": "Offset"
   },
   "preview": {
     "title": "Vorschau",
@@ -128,8 +128,8 @@
   "bottomBar": {
     "output": "Ausgabe",
     "extractDestination": "Extraktionsziel…",
-    "extractSelected": "⬇ Auswahl extrahieren",
-    "extractFolder": "📁 Ordner extrahieren",
+    "extractSelected": "Auswahl extrahieren",
+    "extractFolder": "Ordner extrahieren",
     "browse": "Durchsuchen",
     "fileOne": "{count} Datei",
     "fileMany": "{count} Dateien",
@@ -182,7 +182,7 @@
     "error": "Fehler: {message}",
     "indexFailed": "Nachschlage-Indizes konnten nicht erstellt werden, einige Symbole und Verknüpfungen fehlen: {message}",
     "extracting": "Extrahiere… {done}/{total}, {extracted} ok  {skipped} übersprungen  {failed} fehlgeschlagen",
-    "extractDone": "✓  Fertig, {extracted} extrahiert, {skipped} übersprungen, {failed} fehlgeschlagen.",
+    "extractDone": "Fertig, {extracted} extrahiert, {skipped} übersprungen, {failed} fehlgeschlagen.",
     "searching": "Suche… {done}/{total} Dateien gescannt, bisher {matches} Treffer",
     "searchDone": "Suche abgeschlossen, {matches} Datei(en) von {total} gescannten gefunden",
     "pluginsReloaded": "Plugins neu geladen.",

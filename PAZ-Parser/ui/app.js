@@ -21,6 +21,7 @@ import { locWarningMethods } from "./js/features/loc-warning.js";
 import { appUpdateMethods } from "./js/features/app-update.js";
 import { handlerUpdateMethods } from "./js/features/handler-update.js";
 import { installProfiler } from "./js/core/profiler.js";
+import { installIconSprite } from "./js/core/icons.js";
 
 Object.assign(
   app,
@@ -46,6 +47,7 @@ Object.assign(
 );
 
 installProfiler(app);
+installIconSprite();
 
 window.app = app;
 window.addEventListener("pywebviewready", () => app.init());

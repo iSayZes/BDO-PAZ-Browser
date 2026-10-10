@@ -1,15 +1,15 @@
 /* ── Misc ─────────────────────────────────────────────────────────────────── */
 
 .muted {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 12px;
 }
 #folder-path {
-  color: var(--fg2);
+  color: var(--color-text-soft);
   font-size: 12px;
-  font-family: Consolas, monospace;
+  font-family: var(--font-mono);
 }
 #folder-path.muted {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-family: inherit;
 }

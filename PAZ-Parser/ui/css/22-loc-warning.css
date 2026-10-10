@@ -10,12 +10,12 @@
   gap: 10px;
   max-width: 360px;
   padding: 10px 12px;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-left: 3px solid var(--warning);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line-strong);
+  border-left: 3px solid var(--color-warning);
   border-radius: 6px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  color: var(--fg);
+  color: var(--color-text);
   font-size: 12px;
   line-height: 1.4;
 }
@@ -24,14 +24,14 @@
   flex: none;
   background: none;
   border: none;
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   padding: 0 4px;
   font-size: 12px;
   line-height: 1.4;
 }
 .loc-warning-close:hover {
-  color: var(--fg-white);
-  background: var(--hover);
+  color: var(--color-text-strong);
+  background: var(--color-hover);
 }
 
 /* The same warning as an icon next to the settings language list. */
@@ -45,7 +45,7 @@
 }
 
 .settings-warning-icon {
-  color: var(--warning);
+  color: var(--color-warning);
   font-size: 14px;
   cursor: help;
 }

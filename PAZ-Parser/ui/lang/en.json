@@ -6,7 +6,7 @@
     "notes": "This is the source language. All other files fall back to these strings for missing keys."
   },
   "toolbar": {
-    "openFolder": "📂 Open PAZ Folder",
+    "openFolder": "Open PAZ Folder",
     "noFolderSelected": "No folder selected",
     "settings": "Settings"
   },
@@ -20,7 +20,7 @@
     "modeHex": "Hex",
     "pattern": "Pattern…",
     "search": "Search",
-    "cancel": "✕ Cancel",
+    "cancel": "Cancel",
     "in": "In:",
     "noMatches": "No matches found.",
     "matchOne": "1 match",
@@ -28,13 +28,13 @@
   },
   "details": {
     "title": "Entry Details",
-    "export": "⬇ Export",
+    "export": "Export",
     "noFileSelected": "No file selected",
-    "archive": "📦  Archive",
-    "path": "📍  Path",
-    "compressed": "🗜  Compressed",
-    "uncompressed": "📄  Uncompressed",
-    "offset": "#  Offset"
+    "archive": "Archive",
+    "path": "Path",
+    "compressed": "Compressed",
+    "uncompressed": "Uncompressed",
+    "offset": "Offset"
   },
   "preview": {
     "title": "Preview",
@@ -128,8 +128,8 @@
   "bottomBar": {
     "output": "Output",
     "extractDestination": "Extract destination…",
-    "extractSelected": "⬇ Extract Selected",
-    "extractFolder": "📁 Extract Folder",
+    "extractSelected": "Extract Selected",
+    "extractFolder": "Extract Folder",
     "browse": "Browse",
     "fileOne": "{count} file",
     "fileMany": "{count} files",
@@ -182,7 +182,7 @@
     "error": "Error: {message}",
     "indexFailed": "Lookup indexes could not be built, some icons and links are missing: {message}",
     "extracting": "Extracting… {done}/{total}, {extracted} ok  {skipped} skipped  {failed} failed",
-    "extractDone": "✓  Done, {extracted} extracted, {skipped} skipped, {failed} failed.",
+    "extractDone": "Done, {extracted} extracted, {skipped} skipped, {failed} failed.",
     "searching": "Searching… {done}/{total} files scanned, {matches} match(es) so far",
     "searchDone": "Search complete, {matches} file(s) matched out of {total} scanned",
     "pluginsReloaded": "Plugins reloaded.",

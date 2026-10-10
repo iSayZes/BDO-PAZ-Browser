@@ -5,24 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>BDO PAZ Browser</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="fonts/fonts.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div id="toolbar">
-      <button id="btn-open" onclick="app.openFolder()" data-i18n="toolbar.openFolder">📂 Open PAZ Folder</button>
+      <button id="btn-open" class="with-icon" onclick="app.openFolder()"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg><span data-i18n="toolbar.openFolder">Open PAZ Folder</span></button>
       <span id="folder-path" class="muted" data-i18n="toolbar.noFolderSelected">No folder selected</span>
       <div id="app-update" class="app-update" role="status" hidden>
         <button id="app-update-text" class="app-update-open" onclick="app.openAppUpdate()"></button>
-        <button class="app-update-close" onclick="app.dismissAppUpdate()" data-i18n-title="appUpdate.dismiss" title="Dismiss">✕</button>
+        <button class="app-update-close" onclick="app.dismissAppUpdate()" data-i18n-title="appUpdate.dismiss" title="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
       </div>
-      <button id="btn-settings" onclick="app.openSettings()" data-i18n-title="toolbar.settings" title="Settings">⚙️</button>
+      <button id="btn-settings" onclick="app.openSettings()" data-i18n-title="toolbar.settings" title="Settings"><svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg></button>
     </div>
     <div class="sep-h"></div>
 
     <div id="main">
       <div id="sidebar">
         <div id="search-bar">
-          <span class="search-icon">🔍</span>
+          <svg class="icon search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
           <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" data-i18n-placeholder="sidebar.filterFiles" disabled />
           <button id="btn-content-search" data-i18n-title="sidebar.searchInFilesTitle" title="Search in file contents" onclick="app.toggleContentSearch()" data-i18n="sidebar.searchInFiles" disabled>Search in all files</button>
         </div>
@@ -34,7 +35,7 @@
             </div>
             <input id="csb-input" type="text" placeholder="Pattern…" autocomplete="off" spellcheck="false" data-i18n-placeholder="contentSearch.pattern" />
             <button id="csb-go" onclick="app._runGlobalSearch()" data-i18n="contentSearch.search">Search</button>
-            <button id="csb-cancel" hidden onclick="app.cancelGlobalSearch()" data-i18n="contentSearch.cancel">✕ Cancel</button>
+            <button id="csb-cancel" class="with-icon" hidden onclick="app.cancelGlobalSearch()"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg><span data-i18n="contentSearch.cancel">Cancel</span></button>
           </div>
           <div class="csb-ext-row">
             <span class="csb-ext-label" data-i18n="contentSearch.in">In:</span>
@@ -56,7 +57,7 @@
         <div id="details-panel">
           <div class="details-header">
             <div class="panel-title" data-i18n="details.title">Entry Details</div>
-            <button id="btn-export" class="tab-btn" hidden onclick="app.exportFile()" data-i18n="details.export">⬇ Export</button>
+            <button id="btn-export" class="tab-btn with-icon" hidden onclick="app.exportFile()"><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg><span data-i18n="details.export">Export</span></button>
           </div>
           <div id="detail-grid" class="detail-grid">
             <span class="detail-placeholder" data-i18n="details.noFileSelected">No file selected</span>
@@ -67,7 +68,7 @@
 
         <div id="preview-panel">
           <div class="preview-header">
-            <div class="panel-title" id="preview-title" data-i18n="preview.title">Preview</div>
+            <div class="panel-title with-icon" id="preview-title" data-i18n="preview.title">Preview</div>
             <div class="preview-tabs" id="preview-tabs" hidden>
               <button class="tab-btn active" data-tab="hex" onclick="app.switchTab('hex')" data-i18n="preview.tabHex">Hex</button>
               <button class="tab-btn" data-tab="parsed" onclick="app.switchTab('parsed')" data-i18n="preview.tabParsed">Parsed</button>
@@ -83,8 +84,8 @@
                    oninput="app._onTabSearchInput(event)"
                    onkeydown="app._onTabSearchKeydown(event)"
                    data-i18n-placeholder="tabSearch.placeholder" />
-            <button class="tsb-nav-btn" onclick="app.tabSearchPrev()" data-i18n-title="tabSearch.previous" title="Previous (Shift+Enter)">↑</button>
-            <button class="tsb-nav-btn" onclick="app.tabSearchNext()" data-i18n-title="tabSearch.next" title="Next (Enter)">↓</button>
+            <button class="tsb-nav-btn" onclick="app.tabSearchPrev()" data-i18n-title="tabSearch.previous" title="Previous (Shift+Enter)"><svg class="icon" aria-hidden="true"><use href="#icon-chevron-up"></use></svg></button>
+            <button class="tsb-nav-btn" onclick="app.tabSearchNext()" data-i18n-title="tabSearch.next" title="Next (Enter)"><svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg></button>
             <span id="tab-search-counter"></span>
           </div>
           <div id="preview-content">
@@ -109,8 +110,8 @@
         <label class="muted" data-i18n="bottomBar.output">Output</label>
         <input id="output-path" type="text" placeholder="Extract destination…" spellcheck="false" data-i18n-placeholder="bottomBar.extractDestination" />
         <button onclick="app.pickOutputFolder()" data-i18n-title="bottomBar.browse" title="Browse">…</button>
-        <button onclick="app.extractSelected()" data-i18n="bottomBar.extractSelected">⬇ Extract Selected</button>
-        <button onclick="app.extractFolder()" data-i18n="bottomBar.extractFolder">📁 Extract Folder</button>
+        <button class="with-icon" onclick="app.extractSelected()"><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg><span data-i18n="bottomBar.extractSelected">Extract Selected</span></button>
+        <button class="with-icon" onclick="app.extractFolder()"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg><span data-i18n="bottomBar.extractFolder">Extract Folder</span></button>
         <span id="extract-badge" hidden></span>
       </div>
     </div>
@@ -119,7 +120,7 @@
       <div class="settings-modal" role="dialog" aria-labelledby="settings-title">
         <div class="settings-header">
           <span id="settings-title" data-i18n="settings.title">Settings</span>
-          <button class="settings-close" onclick="app.closeSettings()" data-i18n-title="settings.close" title="Close">✕</button>
+          <button class="settings-close" onclick="app.closeSettings()" data-i18n-title="settings.close" title="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="settings-body">
           <label class="settings-label" data-i18n="settings.pazFolder">PAZ Folder</label>
@@ -131,7 +132,7 @@
           <div class="settings-language-row">
             <!-- Filled from get_settings(), the languages the UI is translated into. -->
             <select id="settings-language" onchange="app.showLanguageLocWarning()"></select>
-            <span id="settings-language-warning" class="settings-warning-icon" hidden>⚠</span>
+            <span id="settings-language-warning" class="settings-warning-icon" hidden><svg class="icon" aria-hidden="true"><use href="#icon-warning"></use></svg></span>
           </div>
           <label class="settings-label" data-i18n="settings.tableRowHeight">Table Row Height</label>
           <div class="settings-row-height">
@@ -187,7 +188,7 @@
       <div class="icon-preview-modal" role="dialog" aria-labelledby="icon-preview-title">
         <div class="settings-header">
           <span id="icon-preview-title" data-i18n="iconPreview.title">Icon</span>
-          <button class="settings-close" onclick="app.closeIconPreview()" data-i18n-title="iconPreview.close" title="Close">✕</button>
+          <button class="settings-close" onclick="app.closeIconPreview()" data-i18n-title="iconPreview.close" title="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="icon-preview-body">
           <div id="icon-preview-status" class="icon-preview-status"></div>
@@ -209,14 +210,14 @@
 
     <div id="loc-warning" class="loc-warning" role="status" hidden>
       <span id="loc-warning-text"></span>
-      <button class="loc-warning-close" onclick="app.dismissLocWarning()" data-i18n-title="locWarning.dismiss" title="Dismiss">✕</button>
+      <button class="loc-warning-close" onclick="app.dismissLocWarning()" data-i18n-title="locWarning.dismiss" title="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
     </div>
 
     <div id="app-update-overlay" class="settings-overlay" hidden>
       <div class="settings-modal app-update-modal" role="dialog" aria-labelledby="app-update-title">
         <div class="settings-header">
           <span id="app-update-title"></span>
-          <button class="settings-close" onclick="app.closeAppUpdate()" data-i18n-title="appUpdate.close" title="Close">✕</button>
+          <button class="settings-close" onclick="app.closeAppUpdate()" data-i18n-title="appUpdate.close" title="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="app-update-body">
           <div id="app-update-current" class="settings-unit"></div>
@@ -233,7 +234,7 @@
       <div class="settings-modal app-update-modal" role="dialog" aria-labelledby="handler-update-title">
         <div class="settings-header">
           <span id="handler-update-title"></span>
-          <button class="settings-close" onclick="app.closeHandlerUpdate()" data-i18n-title="handlerUpdate.later" title="Later">✕</button>
+          <button class="settings-close" onclick="app.closeHandlerUpdate()" data-i18n-title="handlerUpdate.later" title="Later"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="app-update-body">
           <div id="handler-update-current" class="settings-unit"></div>

@@ -15,24 +15,24 @@
 }
 
 .loc-count {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 11px;
   white-space: nowrap;
 }
 
 .loc-header input {
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line);
   border-radius: 4px;
-  color: var(--fg);
+  color: var(--color-text);
   font-size: 12px;
   padding: 4px 8px;
   outline: none;
   max-width: 340px;
 }
 .loc-header input:focus {
-  border-color: var(--accent);
+  border-color: var(--color-accent);
 }
 
 .loc-table {
@@ -42,12 +42,12 @@
 }
 
 .loc-table th {
-  background: var(--surface2);
-  color: var(--fg-dim);
+  background: var(--color-raised);
+  color: var(--color-text-3);
   font-weight: 500;
   padding: 5px 10px;
   text-align: left;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-line);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -55,8 +55,8 @@
 
 .loc-table td {
   padding: 3px 10px;
-  border-bottom: 1px solid var(--surface3);
-  color: var(--fg2);
+  border-bottom: 1px solid var(--color-row-alt);
+  color: var(--color-text-soft);
   vertical-align: top;
 }
 
@@ -67,15 +67,15 @@
 }
 
 .loc-table tbody tr:nth-child(even) td {
-  background: var(--surface3);
+  background: var(--color-row-alt);
 }
 .loc-table tbody tr:hover td {
-  background: var(--hover);
-  color: var(--fg-white);
+  background: var(--color-hover);
+  color: var(--color-text-strong);
 }
 
 .loc-no-results {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 12px;
   padding: 16px 0;
 }

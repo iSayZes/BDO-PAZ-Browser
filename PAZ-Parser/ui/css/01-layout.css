@@ -7,7 +7,7 @@ body {
 
 .sep-h {
   height: 1px;
-  background: var(--border);
+  background: var(--color-line);
   flex-shrink: 0;
 }
 
@@ -16,7 +16,7 @@ body {
   align-items: center;
   gap: 12px;
   padding: 7px 12px;
-  background: var(--surface);
+  background: var(--color-surface);
   flex-shrink: 0;
 }
 

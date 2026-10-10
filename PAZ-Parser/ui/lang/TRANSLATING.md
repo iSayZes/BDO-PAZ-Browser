@@ -35,7 +35,7 @@ Use the words the game client uses in that language, so a column reads like the 
 ```json
 {
   "toolbar": {
-    "openFolder": "📂 Open PAZ Folder"
+    "openFolder": "Open PAZ Folder"
   }
 }
 ```
@@ -49,14 +49,14 @@ Use the words the game client uses in that language, so a column reads like the 
     "authors": ["yourname"]
   },
   "toolbar": {
-    "openFolder": "📂 PAZ-Ordner öffnen"
+    "openFolder": "PAZ-Ordner öffnen"
   }
 }
 ```
 
 ## Rules
 
-- Keep emoji and punctuation that is part of the original string (e.g. `📂`, `⬇`, `✕`).
+- Keep punctuation and placeholders such as `{count}` that are part of the original string. Strings hold no emoji; the UI draws its icons next to the text.
 - Do not translate the `_meta` block keys (`language`, `code`, `authors`, `notes`).
 - Do not modify `en.json`, it is the source of truth.
 - String values only, do not add new keys that do not exist in `en.json`.

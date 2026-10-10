@@ -18,7 +18,7 @@
 
 
 #preview-title {
-  color: var(--fg-white);
+  color: var(--color-text-strong);
   font-weight: 600;
   font-size: 12px;
   text-transform: uppercase;
@@ -31,9 +31,9 @@
 }
 
 .tab-btn {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  color: var(--fg-muted);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line);
+  color: var(--color-text-2);
   font-size: 11px;
   padding: 2px 10px;
   cursor: pointer;
@@ -41,14 +41,14 @@
 }
 
 .tab-btn:hover {
-  background: var(--hover);
-  color: var(--fg);
+  background: var(--color-hover);
+  color: var(--color-text);
 }
 
 .tab-btn.active {
-  background: var(--accent-d);
-  border-color: var(--accent);
-  color: var(--accent);
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 #preview-content {
@@ -59,7 +59,7 @@
 }
 
 .placeholder {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 12px;
 }
 
@@ -70,12 +70,12 @@
 }
 
 .error {
-  color: var(--error);
+  color: var(--color-danger);
   font-size: 12px;
   padding: 4px 0;
 }
 .warning {
-  color: var(--warning);
+  color: var(--color-warning);
   font-size: 12px;
 }
 
@@ -86,8 +86,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0f1114;
-  border: 1px solid var(--border);
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
 }
 
 .video-view video {

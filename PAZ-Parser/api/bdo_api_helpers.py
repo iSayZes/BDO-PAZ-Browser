@@ -7,16 +7,17 @@ from bdo_models import PazEntry
 
 _DISK_VIRTUAL_PREFIX = "__disk__"
 
+# Icon names of the UI sprite (ui/js/core/icons.js) by file extension.
 _ICON_MAP: dict[str, str] = {
-    ".dds": "🖼", ".png": "🖼", ".jpg": "🖼", ".jpeg": "🖼", ".bmp": "🖼", ".tga": "🖼",
-    ".xml": "📋", ".json": "📋", ".yaml": "📋", ".yml": "📋",
-    ".txt": "📄", ".log": "📄", ".csv": "📄", ".ini": "📄", ".cfg": "📄",
-    ".htm": "🌐", ".html": "🌐",
-    ".lua": "📜",
-    ".webm": "🎬",
-    ".pac": "📦", ".bss": "🔒", ".dbss": "🔒",
-    ".loc": "💬",
+    ".dds": "image", ".png": "image", ".jpg": "image", ".jpeg": "image", ".bmp": "image", ".tga": "image",
+    ".xml": "code", ".json": "code", ".yaml": "code", ".yml": "code",
+    ".htm": "code", ".html": "code", ".lua": "code",
+    ".txt": "text", ".log": "text", ".csv": "text", ".ini": "text", ".cfg": "text",
+    ".webm": "video",
+    ".pac": "archive", ".bss": "parsed", ".dbss": "parsed",
+    ".loc": "loc",
 }
+FOLDER_ICON = "folder"
 
 
 def _norm(path: str) -> str:
@@ -34,7 +35,7 @@ def fold_entry_map(entry_map: dict[str, PazEntry]) -> dict[str, PazEntry]:
 
 
 def _file_icon(ext: str) -> str:
-    return _ICON_MAP.get(ext.lower(), "·")
+    return _ICON_MAP.get(ext.lower(), "file")
 
 
 def path_matcher(pattern: str) -> Callable[[str], bool]:

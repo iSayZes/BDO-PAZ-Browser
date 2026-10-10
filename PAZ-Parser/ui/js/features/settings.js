@@ -155,7 +155,7 @@ export const settingsMethods = {
     const node = document.querySelector(".tree-node.selected");
     let path = this._selectedPath;
     let name = node?.querySelector(".tree-name")?.textContent ?? "";
-    const icon = node?.querySelector(".tree-icon")?.textContent ?? "";
+    const icon = node?.dataset.icon ?? "file";
     if (locFile && path.startsWith(`${DISK_PREFIX}/`)) {
       path = `${DISK_PREFIX}/${locFile}`;
       name = locFile;

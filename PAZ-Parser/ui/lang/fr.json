@@ -6,7 +6,7 @@
     "notes": "Les clés manquantes utilisent automatiquement en.json."
   },
   "toolbar": {
-    "openFolder": "📂 Ouvrir le dossier PAZ",
+    "openFolder": "Ouvrir le dossier PAZ",
     "noFolderSelected": "Aucun dossier sélectionné",
     "settings": "Paramètres"
   },
@@ -20,7 +20,7 @@
     "modeHex": "Hex",
     "pattern": "Motif…",
     "search": "Rechercher",
-    "cancel": "✕ Annuler",
+    "cancel": "Annuler",
     "in": "Dans :",
     "noMatches": "Aucun résultat trouvé.",
     "matchOne": "1 résultat",
@@ -28,13 +28,13 @@
   },
   "details": {
     "title": "Détails de l'entrée",
-    "export": "⬇ Exporter",
+    "export": "Exporter",
     "noFileSelected": "Aucun fichier sélectionné",
-    "archive": "📦  Archive",
-    "path": "📍  Chemin",
-    "compressed": "🗜  Compressé",
-    "uncompressed": "📄  Décompressé",
-    "offset": "#  Décalage"
+    "archive": "Archive",
+    "path": "Chemin",
+    "compressed": "Compressé",
+    "uncompressed": "Décompressé",
+    "offset": "Décalage"
   },
   "preview": {
     "title": "Aperçu",
@@ -128,8 +128,8 @@
   "bottomBar": {
     "output": "Sortie",
     "extractDestination": "Destination d'extraction…",
-    "extractSelected": "⬇ Extraire la sélection",
-    "extractFolder": "📁 Extraire le dossier",
+    "extractSelected": "Extraire la sélection",
+    "extractFolder": "Extraire le dossier",
     "browse": "Parcourir",
     "fileOne": "{count} fichier",
     "fileMany": "{count} fichiers",
@@ -182,7 +182,7 @@
     "error": "Erreur : {message}",
     "indexFailed": "Impossible de créer les index de recherche, certaines icônes et certains liens manquent : {message}",
     "extracting": "Extraction… {done}/{total}, {extracted} ok  {skipped} ignorés  {failed} échoués",
-    "extractDone": "✓  Terminé, {extracted} extraits, {skipped} ignorés, {failed} échoués.",
+    "extractDone": "Terminé, {extracted} extraits, {skipped} ignorés, {failed} échoués.",
     "searching": "Recherche… {done}/{total} fichiers analysés, {matches} correspondance(s) pour l'instant",
     "searchDone": "Recherche terminée, {matches} fichier(s) trouvé(s) sur {total} analysés",
     "pluginsReloaded": "Plugins rechargés.",

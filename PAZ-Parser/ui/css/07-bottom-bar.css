@@ -1,7 +1,7 @@
 /* ── Bottom bar ───────────────────────────────────────────────────────────── */
 
 #bottom-bar {
-  background: var(--surface);
+  background: var(--color-surface);
   padding: 6px 12px 8px;
   flex-shrink: 0;
 }
@@ -14,7 +14,7 @@
 }
 
 #status-text {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 11px;
   flex: 1;
   white-space: nowrap;
@@ -28,22 +28,22 @@
 
 /* `app version v2026.10.07 · buffsimply.bss 2026.10.12`, for bug reports. */
 #app-version {
-  color: var(--fg-muted);
+  color: var(--color-text-2);
   font-size: 11px;
-  font-family: Consolas, monospace;
+  font-family: var(--font-mono);
   white-space: nowrap;
 }
 
 #progress-bar {
   height: 3px;
-  background: var(--surface2);
+  background: var(--color-raised);
   border-radius: 2px;
   overflow: hidden;
 }
 
 #progress-fill {
   height: 100%;
-  background: var(--accent);
+  background: var(--color-accent);
   width: 0%;
   transition: width 0.1s;
 }
@@ -55,30 +55,30 @@
 }
 
 #extract-row label {
-  color: var(--fg-dim);
+  color: var(--color-text-3);
   font-size: 11px;
   white-space: nowrap;
 }
 
 #extract-badge {
-  color: var(--cyan);
+  color: var(--color-data);
   font-size: 11px;
-  font-family: Consolas, monospace;
+  font-family: var(--font-mono);
   white-space: nowrap;
   margin-left: 4px;
 }
 
 #output-path {
   flex: 1;
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  color: var(--fg);
+  background: var(--color-raised);
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-text);
   font-size: 11px;
   padding: 3px 7px;
   border-radius: 3px;
   outline: none;
-  font-family: Consolas, monospace;
+  font-family: var(--font-mono);
 }
 #output-path:focus {
-  border-color: var(--border3);
+  border-color: var(--color-line-hover);
 }

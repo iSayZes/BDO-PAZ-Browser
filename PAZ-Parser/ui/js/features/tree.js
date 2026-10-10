@@ -1,6 +1,7 @@
 "use strict";
 
 import { t } from "../core/i18n.js";
+import { iconElement } from "../core/icons.js";
 
 export const treeMethods = {
   // Also runs when the filter box is cleared, so it must not disable the
@@ -62,6 +63,7 @@ export const treeMethods = {
     const li = document.createElement("li");
     li.className = `tree-node tree-${item.type}`;
     li.dataset.id = item.id;
+    li.dataset.icon = item.icon;
     // A rebuilt tree (settings saved, folder expanded again) keeps the selection marked.
     if (item.id === this._selectedPath) li.classList.add("selected");
 
@@ -75,10 +77,7 @@ export const treeMethods = {
       label.appendChild(arrow);
     }
 
-    const icon = document.createElement("span");
-    icon.className = "tree-icon";
-    icon.textContent = item.icon;
-    label.appendChild(icon);
+    label.appendChild(iconElement(item.icon, "icon tree-icon"));
 
     const name = document.createElement("span");
     name.className = "tree-name";
@@ -167,7 +166,7 @@ export const treeMethods = {
     this._isAltView = false;
     this._tabLabels = null;
 
-    document.getElementById("preview-title").textContent = `${icon}  ${name}`;
+    document.getElementById("preview-title").replaceChildren(iconElement(icon), document.createTextNode(name));
     this.showHandlerVersion(name);
     document.getElementById("preview-content").innerHTML = `<div class="placeholder preview-loading"><span class="loading-spinner" aria-hidden="true"></span><span>${t("preview.loading")}</span></div>`;
     document.getElementById("preview-tabs").hidden = true;

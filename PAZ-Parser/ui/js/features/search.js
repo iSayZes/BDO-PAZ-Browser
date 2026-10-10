@@ -1,6 +1,7 @@
 "use strict";
 
 import { t } from "../core/i18n.js";
+import { iconSvg } from "../core/icons.js";
 
 export const searchMethods = {
   scheduleSearch(query) {
@@ -30,11 +31,12 @@ export const searchMethods = {
       const li = document.createElement("li");
       li.className = "tree-node tree-file search-result";
       li.dataset.id = item.id;
+      li.dataset.icon = item.icon;
 
       const label = document.createElement("span");
       label.className = "tree-label";
       label.innerHTML =
-        `<span class="tree-icon">${item.icon}</span>` +
+        iconSvg(item.icon, "icon tree-icon") +
         `<span class="tree-name">${this._esc(item.name)}</span>` +
         `<span class="tree-path">${this._esc(item.path)}</span>`;
       label.addEventListener("click", (e) => {

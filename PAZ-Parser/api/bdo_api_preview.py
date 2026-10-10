@@ -215,6 +215,7 @@ class PreviewMixin(ApiState):
         html = None
         parsed_total_pages = 1
         tab_labels = None
+        view_label = None
 
         if is_alt:
             try:
@@ -255,12 +256,16 @@ class PreviewMixin(ApiState):
                 self._te(profile, "backend.render_ms", start)
             except Exception as ex:
                 html = _error_box("preview.renderError", ex)
+            if handler.view_label_key:
+                view_label = ui_text(handler.view_label_key)
 
         response = {
             "html": html,
             "hex_html": hex_html,
             "has_parsed": has_parsed or is_alt,
             "tab_labels": tab_labels,
+            # A text or image view: shown first, under this tab name next to Hex.
+            "view_label": view_label,
             "meta": meta,
             "hex_total_pages": hex_total_pages,
             "parsed_total_pages": parsed_total_pages,

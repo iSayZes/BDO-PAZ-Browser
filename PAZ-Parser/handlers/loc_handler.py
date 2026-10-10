@@ -20,8 +20,18 @@ from ui_text import ui_text
 
 _LocRecordMeta = tuple[int, int, int, int, int, int, int, int]
 
-# The record field each column sorts by, in column order; labels are `loc.columns.<field>`.
+# Record fields that sort the table; str_type_text sorts from the CLI and API only.
 _COLUMN_FIELDS = ("str_id1", "str_id2", "str_id3", "str_id4", "str_type", "str_type_text", "text")
+# The table's columns by the field they sort by, in order: the type number and
+# name share one Type column. Labels are `loc.columns.<key>`.
+_TABLE_COLUMNS = (
+    ("str_id1", "str_id1"),
+    ("str_id2", "str_id2"),
+    ("str_id3", "str_id3"),
+    ("str_id4", "str_id4"),
+    ("str_type", "type"),
+    ("text", "text"),
+)
 
 # Record fields that sort straight from the index tuple, by tuple position.
 _META_FIELD_POSITIONS = {
@@ -64,7 +74,7 @@ def _parse_all_loc_records(raw: bytes) -> list[tuple[int, int, int, int, int, in
 
 
 def _columns() -> list[Column]:
-    return [Column(ui_text(f"loc.columns.{field}"), sort_key=field) for field in _COLUMN_FIELDS]
+    return [Column(ui_text(f"loc.columns.{label}"), sort_key=field) for field, label in _TABLE_COLUMNS]
 
 
 def _type_name(str_type: int) -> str:
@@ -253,8 +263,8 @@ class LocHandler(PreviewHandler):
             f"<td>{_html.escape(str(r['str_id2']))}</td>"
             f"<td>{r['str_id3']}</td>"
             f"<td>{r['str_id4']}</td>"
-            f"<td>{_html.escape(str(r['str_type']))}</td>"
-            f"<td>{_html.escape(r['str_type_text'])}</td>"
+            f"<td class='loc-type'><span class='loc-type-num'>{r['str_type']}</span> "
+            f"{_html.escape(r['str_type_text'])}</td>"
             f"<td class='loc-text'>{pa_html(r['text'])}</td>"
             f"</tr>"
             for r in records

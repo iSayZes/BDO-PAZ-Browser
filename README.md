@@ -47,6 +47,7 @@ To run from source or write handlers, see [Requirements](#requirements).
 
 - Tree view of every file in the PAZ archives, with live name search, content search and a preview panel.
 - Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row.
+- Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
 - Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
 - Ctrl+F inside the hex tab (byte offset, string or hex pattern) and the table tab (records).
 - Export of the open file as raw binary, or its parsed table as CSV.
@@ -395,6 +396,7 @@ PAZ-Parser/
 ├── bdo_app.py              # Entry point, GUI launch + CLI argument parsing
 ├── bdo_models.py           # Data models (shared by all handlers)
 ├── bdo_preview.py          # Preview handler registry + built-in handlers
+├── preview_views.py        # Text and image view markup, DDS header facts
 ├── bdo_server.py           # Local HTTP server for stream preview
 ├── conftest.py             # pytest setup and handler test summary output
 ├── handler_api.py          # HANDLER_API and what handler code may import

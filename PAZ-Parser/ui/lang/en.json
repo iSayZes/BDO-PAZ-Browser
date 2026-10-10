@@ -59,7 +59,20 @@
     "renderError": "Render error: {message}",
     "parseError": "Parse error: {message}",
     "truncated": "… truncated, showing first {shown} KB of {total} KB",
-    "pillowMissing": "Pillow not installed, pip install pillow"
+    "pillowMissing": "Pillow not installed, pip install pillow",
+    "tabImage": "Image",
+    "lineOne": "{count} line",
+    "lineMany": "{count} lines",
+    "wrapLines": "Wrap lines",
+    "zoom": "Zoom",
+    "zoomFit": "Fit",
+    "background": "Background",
+    "bgChecker": "Checker",
+    "bgDark": "Dark",
+    "bgLight": "Light",
+    "mipOne": "{count} mip",
+    "mipMany": "{count} mips",
+    "alpha": "alpha {value}"
   },
   "loc": {
     "showing": "Showing {first}–{last} of {total} strings",
@@ -69,8 +82,7 @@
       "str_id2": "Id2",
       "str_id3": "Id3",
       "str_id4": "Id4",
-      "str_type": "Type (number)",
-      "str_type_text": "Type (text)",
+      "type": "Type",
       "text": "Text"
     },
     "types": {

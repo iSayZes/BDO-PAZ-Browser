@@ -32,9 +32,42 @@
   font-size: 16px;
 }
 
-/* Tabs use the .segmented track; tab-btn marks them for tree.js. */
+/* Tabs use the .segmented track; tab-btn marks them for tree.js. A text or
+   image view puts its own tab before Hex. */
 .preview-tabs > .tab-btn {
   padding: 4px 12px;
+}
+.preview-tabs.view-first > [data-tab="parsed"] {
+  order: -1;
+}
+
+/* The line over a text or image view: facts on the left, controls on the right. */
+.view-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+.view-meta {
+  color: var(--color-text-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.view-toolbar-gap {
+  flex: 1;
+}
+.view-label {
+  color: var(--color-text-3);
+  font-size: 12px;
+}
+.view-toolbar > button.active {
+  background: var(--color-accent-soft);
+  border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  color: var(--color-accent);
+}
+.text-view-wrap .view-toolbar {
+  justify-content: space-between;
 }
 
 #preview-content {

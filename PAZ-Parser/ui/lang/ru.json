@@ -59,7 +59,20 @@
     "renderError": "Ошибка отображения: {message}",
     "parseError": "Ошибка разбора: {message}",
     "truncated": "… обрезано, показаны первые {shown} КБ из {total} КБ",
-    "pillowMissing": "Pillow не установлен, pip install pillow"
+    "pillowMissing": "Pillow не установлен, pip install pillow",
+    "tabImage": "Изображение",
+    "lineOne": "Строк: {count}",
+    "lineMany": "Строк: {count}",
+    "wrapLines": "Перенос строк",
+    "zoom": "Масштаб",
+    "zoomFit": "Вписать",
+    "background": "Фон",
+    "bgChecker": "Шахматка",
+    "bgDark": "Тёмный",
+    "bgLight": "Светлый",
+    "mipOne": "Mip-уровней: {count}",
+    "mipMany": "Mip-уровней: {count}",
+    "alpha": "альфа {value}"
   },
   "loc": {
     "showing": "Показано {first}–{last} из {total} строк",
@@ -69,8 +82,7 @@
       "str_id2": "Id2",
       "str_id3": "Id3",
       "str_id4": "Id4",
-      "str_type": "Тип (число)",
-      "str_type_text": "Тип (текст)",
+      "type": "Тип",
       "text": "Текст"
     },
     "types": {

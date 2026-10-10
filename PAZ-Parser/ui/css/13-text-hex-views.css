@@ -9,6 +9,31 @@
   tab-size: 4;
 }
 
+/* Numbered lines; the numbers are counters, so they stay out of a copy. */
+.text-lines {
+  counter-reset: line;
+  white-space: normal;
+}
+.text-line {
+  counter-increment: line;
+  display: flex;
+  min-height: 1.6em;
+  white-space: pre;
+}
+.text-line::before {
+  content: counter(line);
+  flex: 0 0 auto;
+  min-width: 5ch;
+  padding-right: 16px;
+  color: var(--color-disabled);
+  text-align: right;
+  user-select: none;
+}
+.text-lines.wrap .text-line {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .hex-view {
   font-family: var(--font-mono);
   font-size: 12.5px;

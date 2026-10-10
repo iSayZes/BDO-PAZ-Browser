@@ -59,7 +59,20 @@
     "renderError": "Erreur d'affichage : {message}",
     "parseError": "Erreur d'analyse : {message}",
     "truncated": "… tronqué, affichage des {shown} premiers Ko sur {total} Ko",
-    "pillowMissing": "Pillow n'est pas installé, pip install pillow"
+    "pillowMissing": "Pillow n'est pas installé, pip install pillow",
+    "tabImage": "Image",
+    "lineOne": "{count} ligne",
+    "lineMany": "{count} lignes",
+    "wrapLines": "Retour à la ligne",
+    "zoom": "Zoom",
+    "zoomFit": "Ajuster",
+    "background": "Arrière-plan",
+    "bgChecker": "Damier",
+    "bgDark": "Sombre",
+    "bgLight": "Clair",
+    "mipOne": "{count} mip",
+    "mipMany": "{count} mips",
+    "alpha": "alpha {value}"
   },
   "loc": {
     "showing": "{first}–{last} sur {total} textes",
@@ -69,8 +82,7 @@
       "str_id2": "Id2",
       "str_id3": "Id3",
       "str_id4": "Id4",
-      "str_type": "Type (nombre)",
-      "str_type_text": "Type (texte)",
+      "type": "Type",
       "text": "Texte"
     },
     "types": {

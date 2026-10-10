@@ -163,12 +163,14 @@ export const treeMethods = {
     this._isAltView = false;
     this._tabLabels = null;
     this._canExportCsv = false;
+    this._isPlainView = false;
     this.closeExportMenu();
 
     document.getElementById("preview-title").replaceChildren(iconElement(icon), document.createTextNode(name));
     this.showHandlerVersion(name);
     document.getElementById("preview-content").innerHTML = `<div class="placeholder preview-loading"><span class="loading-spinner" aria-hidden="true"></span><span>${t("preview.loading")}</span></div>`;
     document.getElementById("preview-tabs").hidden = true;
+    document.getElementById("preview-tabs").classList.remove("view-first");
     document.getElementById("btn-export").hidden = true;
     this._setPageBar(null);
     window.appProfile?.record("_selectFile.setup", performance.now() - setupStart);
@@ -225,6 +227,23 @@ export const treeMethods = {
         if (this._isAltView) {
           document.getElementById("tab-search-mode-hex").hidden = true;
         }
+      } else if (result.view_label && result.html) {
+        // A text or image view: its own tab first, Hex next to it. The find
+        // bar searches bytes, so it shows on the Hex tab only.
+        this._isPlainView = true;
+        this._parsedHtml = result.html;
+        this._activeTab = "parsed";
+        parsedTabBtn.textContent = result.view_label;
+        tabs.classList.add("view-first");
+        tabs.hidden = false;
+        tabs.querySelectorAll(".tab-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === "parsed");
+          btn.setAttribute("aria-selected", String(btn.dataset.tab === "parsed"));
+        });
+        content.innerHTML = result.html;
+        this._initPreviewView(content);
+        this._setPageBar(null);
+        this.showTabSearchBar(false);
       } else {
         tabs.hidden = true;
         this.showTabSearchBar(!result.stream);
@@ -266,6 +285,12 @@ export const treeMethods = {
       if (this._isAltView) {
         document.getElementById("tab-search-mode-hex").hidden = true;
       }
+      if (this._isPlainView) this.showTabSearchBar(true);
+    } else if (this._isPlainView) {
+      content.innerHTML = this._parsedHtml || "";
+      this._initPreviewView(content);
+      this._setPageBar(null);
+      this.showTabSearchBar(false);
     } else {
       content.innerHTML = this._parsedHtml || "";
       this._initTableSort(content);

@@ -36,7 +36,9 @@ def test_loc_headers_are_sortable(loc: tuple) -> None:
 
     html = handler.render_data_page(data, entry, {}, 0, 10)
 
-    assert set(re.findall(r'data-sort-key="(\w+)"', html)) == set(handler.sortable_fields())
+    # The type name shares the Type column with its number; it sorts from the CLI only.
+    headers = set(re.findall(r'data-sort-key="(\w+)"', html))
+    assert headers == set(handler.sortable_fields()) - {"str_type_text"}
     assert "text" in handler.sortable_fields()
 
 

@@ -15,6 +15,7 @@ from typing import Protocol
 
 from bdo_models import PazEntry
 from gc_pause import gc_paused
+from preview_views import image_meta, image_view_html, text_view_html
 from record_fields import record_matches
 from table_sort import SORT_DESC, TableSort, sort_order
 from ui_text import set_ui_language, ui_text
@@ -29,6 +30,8 @@ PARSED_RECORDS_PER_PAGE = 500
 
 class PreviewHandler(ABC):
     lang: str = "en"
+    # ui/lang key naming a non-table view's tab next to Hex; None for tables and hex.
+    view_label_key: str | None = None
 
     def companions(self, entry: PazEntry) -> list[str]:
         """Return internal PAZ paths of files this handler needs alongside the main file."""
@@ -296,17 +299,25 @@ def decode_text(data: bytes, is_truncated: bool = False) -> str:
     dropped instead of failing the encoding. When none fits, UTF-8 with
     replacement characters.
     """
+    return decode_text_with_encoding(data, is_truncated)[0]
+
+
+def decode_text_with_encoding(data: bytes, is_truncated: bool = False) -> tuple[str, str]:
+    """`decode_text()` and the name of the encoding that read the buffer."""
     for encoding in _TEXT_ENCODINGS:
         decoder = codecs.getincrementaldecoder(encoding)()
         try:
-            return decoder.decode(data, final=not is_truncated)
+            return decoder.decode(data, final=not is_truncated), encoding
         except UnicodeDecodeError:
             continue
-    return data.decode("utf-8", errors="replace")
+    return data.decode("utf-8", errors="replace"), "utf-8"
 
 
 class TextHandler(PreviewHandler):
     """Renders plain text files. Does not produce a parsed view."""
+
+    # The tab the UI shows this view under, next to Hex.
+    view_label_key = "preview.tabText"
 
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         raise NotImplementedError
@@ -316,18 +327,20 @@ class TextHandler(PreviewHandler):
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         truncated = len(data) > _TEXT_LIMIT
-        content   = decode_text(data[:_TEXT_LIMIT], is_truncated=truncated)
-        note      = ""
+        content, encoding = decode_text_with_encoding(data[:_TEXT_LIMIT], is_truncated=truncated)
+        note = ""
         if truncated:
             text = ui_text("preview.truncated", shown=_TEXT_LIMIT // 1024, total=len(data) // 1024)
-            note = f'\n<span class="hex-note">{_html.escape(text)}</span>'
-        return f'<pre class="text-view">{_html.escape(content)}</pre>{note}'
+            note = f'<div class="hex-note">{_html.escape(text)}</div>'
+        return text_view_html(content, encoding, note)
 
 
 # ── DDS / Image ───────────────────────────────────────────────────────────────
 
 class DdsHandler(PreviewHandler):
     """Renders DDS / image files. Does not produce a parsed view."""
+
+    view_label_key = "preview.tabImage"
 
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         raise NotImplementedError
@@ -336,18 +349,12 @@ class DdsHandler(PreviewHandler):
         raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        name = _html.escape(Path(entry.internal_path).name)
+        name = Path(entry.internal_path).name
         ext  = Path(entry.internal_path).suffix.lower()
 
         if ext == ".gif":
             b64 = base64.b64encode(data).decode()
-            return (
-                f'<div class="img-view">'
-                f'<div class="img-meta">GIF</div>'
-                f'<div class="img-scroll">'
-                f'<img src="data:image/gif;base64,{b64}" alt="{name}">'
-                f'</div></div>'
-            )
+            return image_view_html(f"data:image/gif;base64,{b64}", name, image_meta(None, None, data, "GIF"))
 
         try:
             from PIL import Image
@@ -362,13 +369,7 @@ class DdsHandler(PreviewHandler):
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         b64  = base64.b64encode(buf.getvalue()).decode()
-        return (
-            f'<div class="img-view">'
-            f'<div class="img-meta">{img.width} × {img.height} px</div>'
-            f'<div class="img-scroll">'
-            f'<img src="data:image/png;base64,{b64}" alt="{name}">'
-            f'</div></div>'
-        )
+        return image_view_html(f"data:image/png;base64,{b64}", name, image_meta(img.width, img.height, data))
 
 
 # ── Streamed previews ────────────────────────────────────────────────────────

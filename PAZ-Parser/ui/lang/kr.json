@@ -59,7 +59,20 @@
     "renderError": "표시 오류: {message}",
     "parseError": "분석 오류: {message}",
     "truncated": "… 잘림, 전체 {total} KB 중 처음 {shown} KB 표시",
-    "pillowMissing": "Pillow가 설치되지 않았습니다, pip install pillow"
+    "pillowMissing": "Pillow가 설치되지 않았습니다, pip install pillow",
+    "tabImage": "이미지",
+    "lineOne": "{count}줄",
+    "lineMany": "{count}줄",
+    "wrapLines": "줄 바꿈",
+    "zoom": "확대/축소",
+    "zoomFit": "맞춤",
+    "background": "배경",
+    "bgChecker": "체크무늬",
+    "bgDark": "어둡게",
+    "bgLight": "밝게",
+    "mipOne": "밉맵 {count}개",
+    "mipMany": "밉맵 {count}개",
+    "alpha": "알파 {value}"
   },
   "loc": {
     "showing": "{total}개 중 {first}–{last}번째 문자열",
@@ -69,8 +82,7 @@
       "str_id2": "Id2",
       "str_id3": "Id3",
       "str_id4": "Id4",
-      "str_type": "유형 (번호)",
-      "str_type_text": "유형 (텍스트)",
+      "type": "유형",
       "text": "텍스트"
     },
     "types": {

@@ -23,6 +23,7 @@ export const initMethods = {
     this._setupIconPreview();
     this._setupEscapeClear();
     this._setupImageZoom();
+    this._setupPreviewViews();
     this._initTabSearch();
     this._initGlobalSearch();
     this._setupAppUpdate();

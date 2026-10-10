@@ -35,19 +35,19 @@ def loc() -> tuple[PreviewHandler, bytes, PazEntry]:
 
 
 def _type_cells(html: str) -> list[str]:
-    """The Type (text) cell of each row: the cell after the type number."""
-    return re.findall(r"<td>\d+</td><td>([^<]*)</td><td class='loc-text'>", html)
+    """The type name of each row, after the type number in the Type cell."""
+    return re.findall(r"<span class='loc-type-num'>\d+</span> ([^<]*)</td>", html)
 
 
 def test_labels_are_in_the_ui_language(loc: tuple) -> None:
     handler, data, entry = loc
-    english_header = ui_text("loc.columns.str_type_text")
+    english_header = ui_text("loc.columns.type")
 
     set_handler_lang("de")
     html = handler.render_data_page(data, entry, {}, 0, 10)
 
-    assert ui_text("loc.columns.str_type_text") != english_header
-    assert ui_text("loc.columns.str_type_text") in html
+    assert ui_text("loc.columns.type") != english_header
+    assert ui_text("loc.columns.type") in html
     assert _type_cells(html) == [ui_text(f"loc.types.{_KNOWN_TYPE}"), ui_text("loc.typeUnknown")]
     assert ui_text("loc.showing", first="1", last="2", total="2") in html
 

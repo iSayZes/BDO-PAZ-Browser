@@ -193,7 +193,14 @@
     "saving": "저장 중…",
     "browse": "찾아보기",
     "pixels": "px",
-    "close": "닫기"
+    "close": "닫기",
+    "sectionGameFiles": "게임 파일",
+    "sectionTables": "표",
+    "sectionUpdates": "업데이트",
+    "sectionData": "데이터 및 캐시",
+    "locMissing": "LOC 없음",
+    "rowHeightDown": "행 높이 줄이기",
+    "rowHeightUp": "행 높이 늘리기"
   },
   "tree": {
     "loading": "로딩 중..."
@@ -221,6 +228,9 @@
     "cachingTablesPaused": "앱이 사용 중이라 테이블 캐시를 일시 중지함 ({done}/{total})",
     "openFolder": "시작하려면 PAZ 폴더를 여세요.",
     "exportFailed": "내보내기 실패: {message}"
+  },
+  "firstRun": {
+    "body": "Black Desert 설치 폴더 안의 Paz 폴더를 고르세요. 처음 불러올 때 모든 아카이브 색인을 읽어 캐시에 저장하고, 이후 실행은 캐시에서 불러옵니다."
   },
   "iconPreview": {
     "title": "아이콘",

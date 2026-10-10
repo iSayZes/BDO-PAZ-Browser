@@ -26,9 +26,9 @@ export const settingsMethods = {
     document.getElementById("settings-table-row-height").value = s.table_row_height ?? 27;
     document.getElementById("settings-show-pa-tags").checked = s.show_pa_tags === true;
     document.getElementById("settings-handled-only").checked = s.handled_only === true;
-    document.getElementById("settings-check-app-updates-row").hidden = !s.app_version;
+    // Updates exist only in the exe; from source the section stays hidden.
+    document.getElementById("settings-updates").hidden = !s.app_version;
     document.getElementById("settings-check-app-updates").checked = s.check_app_updates !== false;
-    document.getElementById("settings-update-handlers-row").hidden = !s.app_version;
     document.getElementById("settings-update-handlers").checked = s.update_handlers !== false;
     document.getElementById("settings-handlers-result").textContent = "";
     document.getElementById("settings-records-cache").value = s.records_cache ?? "open";
@@ -62,6 +62,13 @@ export const settingsMethods = {
     icon.title = file
       ? t("locWarning.missing", { file, language: select.selectedOptions[0]?.text ?? select.value })
       : "";
+  },
+
+  // The - and + of the row height stepper, kept inside the input's min and max.
+  stepTableRowHeight(delta) {
+    const input = document.getElementById("settings-table-row-height");
+    const value = Number(input.value) || Number(input.min);
+    input.value = Math.min(Number(input.max), Math.max(Number(input.min), value + delta));
   },
 
   closeSettings() {

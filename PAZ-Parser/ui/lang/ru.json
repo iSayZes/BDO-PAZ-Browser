@@ -193,7 +193,14 @@
     "saving": "Сохранение…",
     "browse": "Обзор",
     "pixels": "пкс",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "sectionGameFiles": "Файлы игры",
+    "sectionTables": "Таблицы",
+    "sectionUpdates": "Обновления",
+    "sectionData": "Данные и кэш",
+    "locMissing": "Нет LOC",
+    "rowHeightDown": "Строки ниже",
+    "rowHeightUp": "Строки выше"
   },
   "tree": {
     "loading": "Загрузка..."
@@ -221,6 +228,9 @@
     "cachingTablesPaused": "Кэширование таблиц приостановлено, пока приложение занято ({done}/{total})",
     "openFolder": "Откройте папку PAZ, чтобы начать.",
     "exportFailed": "Не удалось экспортировать: {message}"
+  },
+  "firstRun": {
+    "body": "Выберите папку Paz в папке установки Black Desert. Первая загрузка читает индекс каждого архива и сохраняет его в кэш; следующие запуски загружаются из кэша."
   },
   "iconPreview": {
     "title": "Значок",

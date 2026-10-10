@@ -1,75 +1,113 @@
-/* ── Icon preview popup ─────────────────────────────────────────────────────── */
-/* Opened by a click on any icon cell; the overlay and header reuse the settings modal. */
+/* ── Icon preview dialog ──────────────────────────────────────────────────── */
+/* Opened by a click on any icon cell; the backdrop and header are the settings dialog's. */
 
 .icon-preview-modal {
-  background: var(--color-surface);
-  border: 1px solid var(--color-line-strong);
-  border-radius: 6px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
-  max-height: 90vh;
-  max-width: 90vw;
-  min-width: 320px;
+  min-width: 360px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 48px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-modal);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
 }
 
 .icon-preview-body {
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
+  padding: 20px;
   overflow: auto;
-  padding: 16px;
 }
 
 .icon-preview-status {
   color: var(--color-text-2);
   font-size: 13px;
 }
-
-.icon-preview-figure {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.icon-preview-status:empty {
+  display: none;
 }
 
+/* The sprite on its own, then the sheet with the region marked. */
+.icon-preview-figures {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 20px;
+}
+
+.icon-preview-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
 .icon-preview-figure figcaption {
   color: var(--color-text-2);
+  font-family: var(--font-mono);
   font-size: 11px;
+  text-align: center;
+}
+
+.icon-preview-tile,
+.icon-preview-frame {
+  background-color: var(--color-row-alt);
+  background-image: repeating-conic-gradient(#24272c 0% 25%, var(--color-row-alt) 0% 50%);
+  background-size: 16px 16px;
+  box-shadow: 0 0 0 1px var(--color-line);
+}
+.icon-preview-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  min-height: 160px;
+  padding: 12px;
+  border-radius: var(--radius-card);
 }
 
 /* The region box is positioned in percent of this frame, which hugs the image. */
 .icon-preview-frame {
-  line-height: 0;
   position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  line-height: 0;
 }
 
 .icon-preview-image {
   display: block;
-  max-height: 70vh;
-  max-width: 80vw;
+  max-height: 60vh;
+  max-width: 70vw;
 }
 
 .icon-preview-pixelated {
   image-rendering: pixelated;
 }
 
+/* The sprite's region: an accent outline, the rest of the sheet dimmed. */
 .icon-preview-region {
-  border: 2px solid var(--color-accent);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
-  pointer-events: auto;
   position: absolute;
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 0 9999px rgba(11, 12, 14, 0.45);
+  pointer-events: auto;
 }
 
 .icon-preview-path {
+  padding: 12px 20px;
+  border-top: 1px solid var(--color-line);
   color: var(--color-text-3);
   font-family: var(--font-mono);
   font-size: 11px;
   word-break: break-all;
 }
 
-/* Table cells: icons open the popup, sprites show a sheet placeholder until then. */
+/* Table cells: icons open the dialog, sprites show a sheet placeholder until then. */
 .icon-cell[data-icon-path]:not(.icon-cell-missing),
 .sprite-cell {
   cursor: zoom-in;

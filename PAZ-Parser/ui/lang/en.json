@@ -193,7 +193,14 @@
     "saving": "Saving…",
     "browse": "Browse",
     "pixels": "px",
-    "close": "Close"
+    "close": "Close",
+    "sectionGameFiles": "Game files",
+    "sectionTables": "Tables",
+    "sectionUpdates": "Updates",
+    "sectionData": "Data and cache",
+    "locMissing": "LOC missing",
+    "rowHeightDown": "Smaller rows",
+    "rowHeightUp": "Taller rows"
   },
   "tree": {
     "loading": "Loading..."
@@ -221,6 +228,9 @@
     "cachingTablesPaused": "Caching parsed tables paused while the app is busy ({done}/{total})",
     "openFolder": "Open a PAZ folder to begin.",
     "exportFailed": "Export failed: {message}"
+  },
+  "firstRun": {
+    "body": "Pick the Paz folder inside your Black Desert install. The first load reads every archive index and caches it; later starts load from the cache."
   },
   "iconPreview": {
     "title": "Icon",

@@ -49,6 +49,18 @@ button:disabled:hover {
   outline-color: var(--color-accent-hover);
 }
 
+/* An action that deletes: outlined in the danger color. */
+.btn-danger {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--color-danger) 55%, transparent);
+  color: color-mix(in srgb, var(--color-danger) 65%, white);
+}
+.btn-danger:hover {
+  background: color-mix(in srgb, var(--color-danger) 14%, transparent);
+  border-color: var(--color-danger);
+  color: color-mix(in srgb, var(--color-danger) 50%, white);
+}
+
 /* A square button holding only an icon; it needs an aria-label. */
 .icon-button {
   display: inline-flex;

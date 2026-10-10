@@ -138,65 +138,86 @@
     </footer>
 
     <div id="settings-overlay" class="settings-overlay" hidden>
-      <div class="settings-modal" role="dialog" aria-labelledby="settings-title">
+      <div class="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
         <div class="settings-header">
-          <span id="settings-title" data-i18n="settings.title">Settings</span>
-          <button class="settings-close" onclick="app.closeSettings()" data-i18n-title="settings.close" title="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+          <h1 id="settings-title" data-i18n="settings.title">Settings</h1>
+          <button class="settings-close icon-button" onclick="app.closeSettings()" data-i18n-title="settings.close" title="Close" data-i18n-aria-label="settings.close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="settings-body">
-          <label class="settings-label" data-i18n="settings.pazFolder">PAZ Folder</label>
-          <div class="settings-path-row">
-            <input id="settings-paz-path" type="text" spellcheck="false" />
-            <button onclick="app.browseSettingsPazFolder()" data-i18n-title="settings.browse" title="Browse">…</button>
-          </div>
-          <label class="settings-label" data-i18n="settings.language">Language</label>
-          <div class="settings-language-row">
-            <!-- Filled from get_settings(), the languages the UI is translated into. -->
-            <select id="settings-language" onchange="app.showLanguageLocWarning()"></select>
-            <span id="settings-language-warning" class="settings-warning-icon" hidden><svg class="icon" aria-hidden="true"><use href="#icon-warning"></use></svg></span>
-          </div>
-          <label class="settings-label" data-i18n="settings.tableRowHeight">Table Row Height</label>
-          <div class="settings-row-height">
-            <input id="settings-table-row-height" type="number" min="20" max="64" step="1" />
-            <span class="settings-unit" data-i18n="settings.pixels">px</span>
-          </div>
-          <label class="settings-check" data-i18n-title="settings.showPaTagsHint" title="Show the &lt;PAColor&gt; tags of game text next to its colours">
-            <input id="settings-show-pa-tags" type="checkbox" />
-            <span data-i18n="settings.showPaTags">Show game text tags</span>
-          </label>
-          <label class="settings-check" data-i18n-title="settings.handledOnlyHint" title="Limit the file tree and searches to files with a parsed table view">
-            <input id="settings-handled-only" type="checkbox" />
-            <span data-i18n="settings.handledOnly">Show only handled tables</span>
-          </label>
-          <!-- Only in the exe: from source, git pull updates. -->
-          <label id="settings-check-app-updates-row" class="settings-check" data-i18n-title="settings.checkAppUpdatesHint" title="Ask GitHub for a newer release when the app starts. Updating always takes a click." hidden>
-            <input id="settings-check-app-updates" type="checkbox" />
-            <span data-i18n="settings.checkAppUpdates">Check for updates on start</span>
-          </label>
-          <div id="settings-update-handlers-row" class="settings-handlers-row" hidden>
-            <label class="settings-check" data-i18n-title="settings.updateHandlersHint" title="Download new and fixed handlers from GitHub when the app starts. They are used after a restart.">
-              <input id="settings-update-handlers" type="checkbox" />
-              <span data-i18n="settings.updateHandlers">Update handlers on start</span>
+          <section class="settings-section">
+            <h2 data-i18n="settings.sectionGameFiles">Game files</h2>
+            <label class="settings-label" for="settings-paz-path" data-i18n="settings.pazFolder">PAZ Folder</label>
+            <div class="settings-path-row">
+              <input id="settings-paz-path" type="text" spellcheck="false" />
+              <button onclick="app.browseSettingsPazFolder()" data-i18n-title="settings.browse" title="Browse" data-i18n="settings.browse">Browse</button>
+            </div>
+            <label class="settings-label" for="settings-language" data-i18n="settings.language">Language</label>
+            <div class="settings-language-row">
+              <!-- Filled from get_settings(), the languages the UI is translated into. -->
+              <select id="settings-language" onchange="app.showLanguageLocWarning()"></select>
+              <span id="settings-language-warning" class="settings-loc-pill" hidden><svg class="icon" aria-hidden="true"><use href="#icon-warning"></use></svg><span data-i18n="settings.locMissing">LOC missing</span></span>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h2 data-i18n="settings.sectionTables">Tables</h2>
+            <div class="settings-inline">
+              <label class="settings-label" for="settings-table-row-height" data-i18n="settings.tableRowHeight">Table Row Height</label>
+              <div class="stepper">
+                <button class="stepper-btn" onclick="app.stepTableRowHeight(-1)" data-i18n-aria-label="settings.rowHeightDown" aria-label="Smaller rows">−</button>
+                <input id="settings-table-row-height" type="number" min="20" max="64" step="1" />
+                <button class="stepper-btn" onclick="app.stepTableRowHeight(1)" data-i18n-aria-label="settings.rowHeightUp" aria-label="Taller rows">+</button>
+              </div>
+              <span class="settings-unit"><span data-i18n="settings.pixels">px</span> · 20–64</span>
+            </div>
+            <label class="settings-check" data-i18n-title="settings.showPaTagsHint" title="Show the &lt;PAColor&gt; tags of game text next to its colours">
+              <input id="settings-show-pa-tags" type="checkbox" />
+              <span data-i18n="settings.showPaTags">Show game text tags</span>
             </label>
-            <button id="settings-check-handlers" onclick="app.checkHandlersNow()" data-i18n="settings.checkHandlersNow">Check now</button>
-            <span id="settings-handlers-result" class="settings-unit"></span>
-          </div>
-          <label class="settings-label" for="settings-data-folder" data-i18n="settings.dataFolder">Data Folder</label>
-          <div class="settings-path-row">
-            <!-- Empty for the default folder, which get_settings() puts in the placeholder. -->
-            <input id="settings-data-folder" type="text" spellcheck="false" data-i18n-title="settings.dataFolderHint" title="Where settings and caches are kept, with one cache folder per PAZ folder. Leave empty for the default." />
-            <button onclick="app.browseSettingsDataFolder()" data-i18n-title="settings.browse" title="Browse">…</button>
-          </div>
-          <label class="settings-label" for="settings-records-cache" data-i18n="settings.recordsCache">Parsed Table Cache</label>
-          <select id="settings-records-cache" data-i18n-title="settings.recordsCacheHint" title="Keep parsed tables on disk so they reopen without parsing again">
-            <option value="off" data-i18n="settings.recordsCacheOff">Off</option>
-            <option value="open" data-i18n="settings.recordsCacheOpen">Cache tables when opened</option>
-            <option value="all" data-i18n="settings.recordsCacheAll">Cache all tables in the background</option>
-          </select>
-          <div class="settings-cache-row">
-            <button id="settings-delete-caches" onclick="app.deleteCaches()" data-i18n="settings.deleteCaches">Delete all caches</button>
-            <span id="settings-cache-size" class="settings-unit"></span>
-          </div>
+            <label class="settings-check" data-i18n-title="settings.handledOnlyHint" title="Limit the file tree and searches to files with a parsed table view">
+              <input id="settings-handled-only" type="checkbox" />
+              <span data-i18n="settings.handledOnly">Show only handled tables</span>
+            </label>
+          </section>
+
+          <!-- Only in the exe: from source, git pull updates. -->
+          <section id="settings-updates" class="settings-section" hidden>
+            <h2 data-i18n="settings.sectionUpdates">Updates</h2>
+            <label id="settings-check-app-updates-row" class="settings-check" data-i18n-title="settings.checkAppUpdatesHint" title="Ask GitHub for a newer release when the app starts. Updating always takes a click.">
+              <input id="settings-check-app-updates" type="checkbox" />
+              <span data-i18n="settings.checkAppUpdates">Check for updates on start</span>
+            </label>
+            <div id="settings-update-handlers-row" class="settings-handlers-row">
+              <label class="settings-check" data-i18n-title="settings.updateHandlersHint" title="Download new and fixed handlers from GitHub when the app starts. They are used after a restart.">
+                <input id="settings-update-handlers" type="checkbox" />
+                <span data-i18n="settings.updateHandlers">Update handlers on start</span>
+              </label>
+              <button id="settings-check-handlers" class="with-icon" onclick="app.checkHandlersNow()"><svg class="icon" aria-hidden="true"><use href="#icon-update"></use></svg><span data-i18n="settings.checkHandlersNow">Check now</span></button>
+              <span id="settings-handlers-result" class="settings-unit"></span>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h2 data-i18n="settings.sectionData">Data and cache</h2>
+            <label class="settings-label" for="settings-data-folder" data-i18n="settings.dataFolder">Data Folder</label>
+            <div class="settings-path-row">
+              <!-- Empty for the default folder, which get_settings() puts in the placeholder. -->
+              <input id="settings-data-folder" type="text" spellcheck="false" data-i18n-title="settings.dataFolderHint" title="Where settings and caches are kept, with one cache folder per PAZ folder. Leave empty for the default." />
+              <button onclick="app.browseSettingsDataFolder()" data-i18n-title="settings.browse" title="Browse" data-i18n="settings.browse">Browse</button>
+            </div>
+            <div class="settings-inline">
+              <label class="settings-label" for="settings-records-cache" data-i18n="settings.recordsCache">Parsed Table Cache</label>
+              <select id="settings-records-cache" data-i18n-title="settings.recordsCacheHint" title="Keep parsed tables on disk so they reopen without parsing again">
+                <option value="off" data-i18n="settings.recordsCacheOff">Off</option>
+                <option value="open" data-i18n="settings.recordsCacheOpen">Cache tables when opened</option>
+                <option value="all" data-i18n="settings.recordsCacheAll">Cache all tables in the background</option>
+              </select>
+            </div>
+            <div class="settings-cache-row">
+              <span id="settings-cache-size" class="settings-unit"></span>
+              <button id="settings-delete-caches" class="btn-danger with-icon" onclick="app.deleteCaches()"><svg class="icon" aria-hidden="true"><use href="#icon-delete"></use></svg><span data-i18n="settings.deleteCaches">Delete all caches</span></button>
+            </div>
+          </section>
         </div>
         <div class="settings-footer">
           <button onclick="app.closeSettings()" data-i18n="settings.cancel">Cancel</button>
@@ -206,59 +227,64 @@
     </div>
 
     <div id="icon-preview-overlay" class="settings-overlay" hidden>
-      <div class="icon-preview-modal" role="dialog" aria-labelledby="icon-preview-title">
+      <div class="icon-preview-modal" role="dialog" aria-modal="true" aria-labelledby="icon-preview-title">
         <div class="settings-header">
-          <span id="icon-preview-title" data-i18n="iconPreview.title">Icon</span>
-          <button class="settings-close" onclick="app.closeIconPreview()" data-i18n-title="iconPreview.close" title="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+          <h1 id="icon-preview-title" class="with-icon" data-i18n="iconPreview.title">Icon</h1>
+          <button class="settings-close icon-button" onclick="app.closeIconPreview()" data-i18n-title="iconPreview.close" title="Close" data-i18n-aria-label="iconPreview.close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="icon-preview-body">
           <div id="icon-preview-status" class="icon-preview-status"></div>
-          <figure id="icon-preview-sprite" class="icon-preview-figure" hidden>
-            <img id="icon-preview-sprite-image" class="icon-preview-image" alt="" />
-            <figcaption data-i18n="iconPreview.sprite">Sprite</figcaption>
-          </figure>
-          <figure id="icon-preview-full" class="icon-preview-figure" hidden>
-            <div class="icon-preview-frame">
-              <img id="icon-preview-image" class="icon-preview-image" alt="" />
-              <div id="icon-preview-region" class="icon-preview-region" hidden></div>
-            </div>
-            <figcaption id="icon-preview-caption"></figcaption>
-          </figure>
-          <div id="icon-preview-path" class="icon-preview-path"></div>
+          <div class="icon-preview-figures">
+            <figure id="icon-preview-sprite" class="icon-preview-figure" hidden>
+              <div class="icon-preview-tile"><img id="icon-preview-sprite-image" class="icon-preview-image" alt="" /></div>
+              <figcaption data-i18n="iconPreview.sprite">Sprite</figcaption>
+            </figure>
+            <figure id="icon-preview-full" class="icon-preview-figure" hidden>
+              <div class="icon-preview-frame">
+                <img id="icon-preview-image" class="icon-preview-image" alt="" />
+                <div id="icon-preview-region" class="icon-preview-region" hidden></div>
+              </div>
+              <figcaption id="icon-preview-caption"></figcaption>
+            </figure>
+          </div>
         </div>
+        <div id="icon-preview-path" class="icon-preview-path"></div>
       </div>
     </div>
 
     <div id="loc-warning" class="loc-warning" role="status" hidden>
+      <svg class="icon loc-warning-icon" aria-hidden="true"><use href="#icon-warning"></use></svg>
       <span id="loc-warning-text"></span>
-      <button class="loc-warning-close" onclick="app.dismissLocWarning()" data-i18n-title="locWarning.dismiss" title="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+      <button class="loc-warning-close icon-button" onclick="app.dismissLocWarning()" data-i18n-title="locWarning.dismiss" title="Dismiss" data-i18n-aria-label="locWarning.dismiss" aria-label="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
     </div>
 
     <div id="app-update-overlay" class="settings-overlay" hidden>
-      <div class="settings-modal app-update-modal" role="dialog" aria-labelledby="app-update-title">
+      <div class="settings-modal app-update-modal" role="dialog" aria-modal="true" aria-labelledby="app-update-title">
         <div class="settings-header">
-          <span id="app-update-title"></span>
-          <button class="settings-close" onclick="app.closeAppUpdate()" data-i18n-title="appUpdate.close" title="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+          <svg class="icon update-modal-icon" aria-hidden="true"><use href="#icon-update"></use></svg>
+          <h1 id="app-update-title"></h1>
+          <button class="settings-close icon-button" onclick="app.closeAppUpdate()" data-i18n-title="appUpdate.close" title="Close" data-i18n-aria-label="appUpdate.close" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="app-update-body">
-          <div id="app-update-current" class="settings-unit"></div>
+          <div id="app-update-current" class="update-current"></div>
           <div id="app-update-notes" class="app-update-notes"></div>
         </div>
         <div class="settings-footer">
-          <button onclick="app.openAppUpdatePage()" data-i18n="appUpdate.openOnGitHub">Open on GitHub</button>
+          <button class="with-icon" onclick="app.openAppUpdatePage()"><svg class="icon" aria-hidden="true"><use href="#icon-external"></use></svg><span data-i18n="appUpdate.openOnGitHub">Open on GitHub</span></button>
           <button id="app-update-install" class="btn-primary" onclick="app.installAppUpdate()" data-i18n="appUpdate.install">Update</button>
         </div>
       </div>
     </div>
 
     <div id="handler-update-overlay" class="settings-overlay" hidden>
-      <div class="settings-modal app-update-modal" role="dialog" aria-labelledby="handler-update-title">
+      <div class="settings-modal app-update-modal" role="dialog" aria-modal="true" aria-labelledby="handler-update-title">
         <div class="settings-header">
-          <span id="handler-update-title"></span>
-          <button class="settings-close" onclick="app.closeHandlerUpdate()" data-i18n-title="handlerUpdate.later" title="Later"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+          <svg class="icon update-modal-icon" aria-hidden="true"><use href="#icon-update"></use></svg>
+          <h1 id="handler-update-title"></h1>
+          <button class="settings-close icon-button" onclick="app.closeHandlerUpdate()" data-i18n-title="handlerUpdate.later" title="Later" data-i18n-aria-label="handlerUpdate.later" aria-label="Later"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
         </div>
         <div class="app-update-body">
-          <div id="handler-update-current" class="settings-unit"></div>
+          <div id="handler-update-current" class="update-current"></div>
           <div id="handler-update-notes" class="app-update-notes"></div>
         </div>
         <div class="settings-footer">

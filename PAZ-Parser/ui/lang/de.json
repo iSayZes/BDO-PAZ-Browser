@@ -193,7 +193,14 @@
     "saving": "Wird gespeichert…",
     "browse": "Durchsuchen",
     "pixels": "px",
-    "close": "Schließen"
+    "close": "Schließen",
+    "sectionGameFiles": "Spieldateien",
+    "sectionTables": "Tabellen",
+    "sectionUpdates": "Updates",
+    "sectionData": "Daten und Cache",
+    "locMissing": "LOC fehlt",
+    "rowHeightDown": "Kleinere Zeilen",
+    "rowHeightUp": "Höhere Zeilen"
   },
   "tree": {
     "loading": "Laden..."
@@ -221,6 +228,9 @@
     "cachingTablesPaused": "Speichern der Tabellen pausiert, solange die App beschäftigt ist ({done}/{total})",
     "openFolder": "Öffne einen PAZ-Ordner, um zu beginnen.",
     "exportFailed": "Export fehlgeschlagen: {message}"
+  },
+  "firstRun": {
+    "body": "Wähle den Ordner Paz in deiner Black-Desert-Installation. Beim ersten Laden wird jeder Archivindex gelesen und zwischengespeichert; spätere Starts laden aus dem Cache."
   },
   "iconPreview": {
     "title": "Symbol",

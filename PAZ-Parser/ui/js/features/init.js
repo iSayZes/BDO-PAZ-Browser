@@ -38,6 +38,8 @@ export const initMethods = {
       this._showFolderPath(last.path);
       await this._showTreeLoading();
       window.pywebview.api.open_folder_path(last.path);
+    } else {
+      this._showFirstRun();
     }
   },
 };

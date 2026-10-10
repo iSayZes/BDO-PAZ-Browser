@@ -193,7 +193,14 @@
     "saving": "Guardando…",
     "browse": "Examinar",
     "pixels": "px",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "sectionGameFiles": "Archivos del juego",
+    "sectionTables": "Tablas",
+    "sectionUpdates": "Actualizaciones",
+    "sectionData": "Datos y caché",
+    "locMissing": "Falta el LOC",
+    "rowHeightDown": "Filas más pequeñas",
+    "rowHeightUp": "Filas más altas"
   },
   "tree": {
     "loading": "Cargando..."
@@ -221,6 +228,9 @@
     "cachingTablesPaused": "Caché de tablas en pausa mientras la aplicación está ocupada ({done}/{total})",
     "openFolder": "Abre una carpeta PAZ para empezar.",
     "exportFailed": "Error al exportar: {message}"
+  },
+  "firstRun": {
+    "body": "Elige la carpeta Paz de tu instalación de Black Desert. La primera carga lee cada índice de archivo y lo guarda en caché; los siguientes inicios cargan desde la caché."
   },
   "iconPreview": {
     "title": "Icono",

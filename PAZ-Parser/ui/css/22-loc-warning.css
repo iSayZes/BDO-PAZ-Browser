@@ -1,5 +1,6 @@
 /* ── Missing LOC file warning ──────────────────────────────────────────────── */
 
+/* A toast in the bottom-right corner, above the bottom bar. */
 .loc-warning {
   position: fixed;
   right: 16px;
@@ -7,34 +8,34 @@
   z-index: 900;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  max-width: 360px;
-  padding: 10px 12px;
-  background: var(--color-raised);
-  border: 1px solid var(--color-line-strong);
-  border-left: 3px solid var(--color-warning);
-  border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-  color: var(--color-text);
-  font-size: 12px;
-  line-height: 1.4;
+  gap: 12px;
+  max-width: 420px;
+  padding: 14px 10px 14px 16px;
+  background: color-mix(in srgb, var(--color-warning) 6%, var(--color-surface));
+  border: 1px solid color-mix(in srgb, var(--color-warning) 40%, transparent);
+  border-radius: var(--radius-card);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  color: var(--color-text-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.loc-warning-icon {
+  margin-top: 2px;
+  color: var(--color-warning);
+  font-size: 18px;
+}
+#loc-warning-text {
+  flex: 1;
 }
 
 .loc-warning-close {
-  flex: none;
-  background: none;
-  border: none;
-  color: var(--color-text-2);
-  padding: 0 4px;
-  font-size: 12px;
-  line-height: 1.4;
-}
-.loc-warning-close:hover {
-  color: var(--color-text-strong);
-  background: var(--color-hover);
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border-color: transparent;
 }
 
-/* The same warning as an icon next to the settings language list. */
+/* The same warning as a pill next to the settings language list. */
 .settings-language-row {
   display: flex;
   align-items: center;
@@ -44,8 +45,17 @@
   flex: 1;
 }
 
-.settings-warning-icon {
-  color: var(--color-warning);
-  font-size: 14px;
+.settings-loc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-warning) 16%, transparent);
+  color: color-mix(in srgb, var(--color-warning) 70%, white);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
   cursor: help;
 }

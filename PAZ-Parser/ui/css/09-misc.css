@@ -5,11 +5,13 @@
   font-size: 12px;
 }
 #folder-path {
-  color: var(--color-text-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text-2);
   font-size: 12px;
   font-family: var(--font-mono);
 }
 #folder-path.muted {
   color: var(--color-text-3);
-  font-family: inherit;
+  font-style: italic;
 }

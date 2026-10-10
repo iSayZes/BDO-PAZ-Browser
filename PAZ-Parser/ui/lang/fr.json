@@ -10,6 +10,16 @@
     "noFolderSelected": "Aucun dossier sélectionné",
     "settings": "Paramètres"
   },
+  "views": {
+    "label": "Vues",
+    "items": "Objets",
+    "quests": "Quêtes",
+    "knowledge": "Connaissances",
+    "npcs": "PNJ",
+    "recipes": "Recettes",
+    "map": "Carte",
+    "files": "Fichiers"
+  },
   "sidebar": {
     "filterFiles": "Filtrer les fichiers…",
     "searchInFiles": "Rechercher dans tous les fichiers",

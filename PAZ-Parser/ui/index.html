@@ -9,43 +9,57 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="toolbar">
-      <button id="btn-open" class="with-icon" onclick="app.openFolder()"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg><span data-i18n="toolbar.openFolder">Open PAZ Folder</span></button>
-      <span id="folder-path" class="muted" data-i18n="toolbar.noFolderSelected">No folder selected</span>
+    <header id="toolbar">
+      <div class="brand"><svg class="icon" aria-hidden="true"><use href="#icon-archive"></use></svg><span>PAZ Browser</span></div>
+      <!-- Files is the only view so far; the others stay disabled until they exist. -->
+      <nav id="view-rail" data-i18n-aria-label="views.label" aria-label="Views">
+          <button class="view-tab" disabled data-i18n-title="views.items" title="Items" data-i18n-aria-label="views.items" aria-label="Items"><svg class="icon" aria-hidden="true"><use href="#icon-items"></use></svg></button>
+          <button class="view-tab" disabled data-i18n-title="views.quests" title="Quests" data-i18n-aria-label="views.quests" aria-label="Quests"><svg class="icon" aria-hidden="true"><use href="#icon-quests"></use></svg></button>
+          <button class="view-tab" disabled data-i18n-title="views.knowledge" title="Knowledge" data-i18n-aria-label="views.knowledge" aria-label="Knowledge"><svg class="icon" aria-hidden="true"><use href="#icon-knowledge"></use></svg></button>
+          <button class="view-tab" disabled data-i18n-title="views.npcs" title="NPCs" data-i18n-aria-label="views.npcs" aria-label="NPCs"><svg class="icon" aria-hidden="true"><use href="#icon-npcs"></use></svg></button>
+          <button class="view-tab" disabled data-i18n-title="views.recipes" title="Recipes" data-i18n-aria-label="views.recipes" aria-label="Recipes"><svg class="icon" aria-hidden="true"><use href="#icon-recipes"></use></svg></button>
+          <button class="view-tab" disabled data-i18n-title="views.map" title="Map" data-i18n-aria-label="views.map" aria-label="Map"><svg class="icon" aria-hidden="true"><use href="#icon-map"></use></svg></button>
+        <span class="view-rail-sep" aria-hidden="true"></span>
+        <button class="view-tab with-icon active" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#icon-files-dev"></use></svg><span data-i18n="views.files">Files</span></button>
+      </nav>
+      <div class="toolbar-spacer"></div>
+      <button id="btn-open" class="path-button with-icon" onclick="app.openFolder()" data-i18n-title="toolbar.openFolder" title="Open PAZ Folder"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg><span id="folder-path" class="muted" data-i18n="toolbar.noFolderSelected">No folder selected</span></button>
       <div id="app-update" class="app-update" role="status" hidden>
-        <button id="app-update-text" class="app-update-open" onclick="app.openAppUpdate()"></button>
-        <button class="app-update-close" onclick="app.dismissAppUpdate()" data-i18n-title="appUpdate.dismiss" title="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+        <button id="app-update-open" class="app-update-open with-icon" onclick="app.openAppUpdate()"><svg class="icon" aria-hidden="true"><use href="#icon-update"></use></svg><span id="app-update-text"></span></button>
+        <button class="app-update-close" onclick="app.dismissAppUpdate()" data-i18n-title="appUpdate.dismiss" title="Dismiss" data-i18n-aria-label="appUpdate.dismiss" aria-label="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
       </div>
-      <button id="btn-settings" onclick="app.openSettings()" data-i18n-title="toolbar.settings" title="Settings"><svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg></button>
-    </div>
-    <div class="sep-h"></div>
+      <button id="btn-settings" class="icon-button" onclick="app.openSettings()" data-i18n-title="toolbar.settings" title="Settings" data-i18n-aria-label="toolbar.settings" aria-label="Settings"><svg class="icon" aria-hidden="true"><use href="#icon-settings"></use></svg></button>
+    </header>
 
     <div id="main">
       <div id="sidebar">
-        <div id="search-bar">
-          <svg class="icon search-icon" aria-hidden="true"><use href="#icon-search"></use></svg>
-          <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" data-i18n-placeholder="sidebar.filterFiles" disabled />
-          <button id="btn-content-search" data-i18n-title="sidebar.searchInFilesTitle" title="Search in file contents" onclick="app.toggleContentSearch()" data-i18n="sidebar.searchInFiles" disabled>Search in all files</button>
-        </div>
-        <div id="content-search-bar" hidden>
-          <div class="csb-row">
-            <div class="csb-modes">
-              <button id="csb-mode-string" class="csb-mode-btn active" onclick="app._setCsbMode('string')" data-i18n="contentSearch.modeString">String</button>
-              <button id="csb-mode-hex" class="csb-mode-btn" onclick="app._setCsbMode('hex')" data-i18n="contentSearch.modeHex">Hex</button>
+        <div class="sidebar-search">
+          <label id="search-bar" class="input-box">
+            <svg class="icon" aria-hidden="true"><use href="#icon-filter"></use></svg>
+            <input id="search" type="text" placeholder="Filter files…" autocomplete="off" oninput="app.scheduleSearch(this.value)" data-i18n-placeholder="sidebar.filterFiles" data-i18n-aria-label="sidebar.filterFiles" aria-label="Filter files…" disabled />
+          </label>
+          <div class="csb">
+            <button id="btn-content-search" class="csb-toggle" aria-expanded="false" aria-controls="content-search-bar" data-i18n-title="sidebar.searchInFilesTitle" title="Search in file contents" onclick="app.toggleContentSearch()" disabled><span data-i18n="sidebar.searchInFiles">Search in all files</span><svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"></use></svg></button>
+            <div id="content-search-bar" hidden>
+              <div class="segmented csb-modes" role="group">
+                <button id="csb-mode-string" class="csb-mode-btn active" onclick="app._setCsbMode('string')" data-i18n="contentSearch.modeString">String</button>
+                <button id="csb-mode-hex" class="csb-mode-btn" onclick="app._setCsbMode('hex')" data-i18n="contentSearch.modeHex">Hex</button>
+              </div>
+              <div class="csb-row">
+                <input id="csb-input" type="text" placeholder="Pattern…" autocomplete="off" spellcheck="false" data-i18n-placeholder="contentSearch.pattern" data-i18n-aria-label="contentSearch.pattern" aria-label="Pattern…" />
+                <button id="csb-go" class="btn-primary with-icon" onclick="app._runGlobalSearch()"><svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg><span data-i18n="contentSearch.search">Search</span></button>
+                <button id="csb-cancel" class="with-icon" hidden onclick="app.cancelGlobalSearch()"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg><span data-i18n="contentSearch.cancel">Cancel</span></button>
+              </div>
+              <div class="csb-ext-row">
+                <span class="csb-ext-label" data-i18n="contentSearch.in">In:</span>
+                <div class="csb-ext-chips">
+                  <span class="csb-ext-chip active" data-ext=".bss" onclick="app._toggleCsbExt('.bss')">.bss</span>
+                  <span class="csb-ext-chip active" data-ext=".dbss" onclick="app._toggleCsbExt('.dbss')">.dbss</span>
+                </div>
+              </div>
             </div>
-            <input id="csb-input" type="text" placeholder="Pattern…" autocomplete="off" spellcheck="false" data-i18n-placeholder="contentSearch.pattern" />
-            <button id="csb-go" onclick="app._runGlobalSearch()" data-i18n="contentSearch.search">Search</button>
-            <button id="csb-cancel" class="with-icon" hidden onclick="app.cancelGlobalSearch()"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg><span data-i18n="contentSearch.cancel">Cancel</span></button>
-          </div>
-          <div class="csb-ext-row">
-            <span class="csb-ext-label" data-i18n="contentSearch.in">In:</span>
-            <div class="csb-ext-chips">
-              <span class="csb-ext-chip active" data-ext=".bss" onclick="app._toggleCsbExt('.bss')">.bss</span>
-              <span class="csb-ext-chip active" data-ext=".dbss" onclick="app._toggleCsbExt('.dbss')">.dbss</span>
-            </div>
           </div>
         </div>
-        <div class="sep-h"></div>
         <div id="tree-container">
           <ul id="tree" class="tree-root"></ul>
         </div>
@@ -96,8 +110,7 @@
       </div>
     </div>
 
-    <div class="sep-h"></div>
-    <div id="bottom-bar">
+    <footer id="bottom-bar">
       <div id="status-row">
         <span id="status-text"></span>
         <div id="progress-wrap" hidden>
@@ -107,14 +120,16 @@
         <span id="app-version"></span>
       </div>
       <div id="extract-row">
-        <label class="muted" data-i18n="bottomBar.output">Output</label>
-        <input id="output-path" type="text" placeholder="Extract destination…" spellcheck="false" data-i18n-placeholder="bottomBar.extractDestination" />
-        <button onclick="app.pickOutputFolder()" data-i18n-title="bottomBar.browse" title="Browse">…</button>
-        <button class="with-icon" onclick="app.extractSelected()"><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg><span data-i18n="bottomBar.extractSelected">Extract Selected</span></button>
-        <button class="with-icon" onclick="app.extractFolder()"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg><span data-i18n="bottomBar.extractFolder">Extract Folder</span></button>
+        <label class="input-box output-box">
+          <span class="input-box-label" data-i18n="bottomBar.output">Output</span>
+          <input id="output-path" type="text" placeholder="Extract destination…" spellcheck="false" data-i18n-placeholder="bottomBar.extractDestination" />
+        </label>
+        <button class="icon-button" onclick="app.pickOutputFolder()" data-i18n-title="bottomBar.browse" title="Browse" data-i18n-aria-label="bottomBar.browse" aria-label="Browse"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg></button>
         <span id="extract-badge" hidden></span>
+        <button class="with-icon" onclick="app.extractSelected()"><svg class="icon" aria-hidden="true"><use href="#icon-download"></use></svg><span data-i18n="bottomBar.extractSelected">Extract Selected</span></button>
+        <button class="btn-primary with-icon" onclick="app.extractFolder()"><svg class="icon" aria-hidden="true"><use href="#icon-folder"></use></svg><span data-i18n="bottomBar.extractFolder">Extract Folder</span></button>
       </div>
-    </div>
+    </footer>
 
     <div id="settings-overlay" class="settings-overlay" hidden>
       <div class="settings-modal" role="dialog" aria-labelledby="settings-title">

@@ -142,18 +142,6 @@
   border-top: 1px solid var(--color-line);
 }
 
-.btn-primary {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-on-accent);
-  font-weight: 600;
-}
-.btn-primary:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
-  color: var(--color-on-accent);
-}
-
 /* Save in flight: a spinner before the label, dark on the accent colour. */
 .btn-busy {
   display: inline-flex;
@@ -166,10 +154,4 @@
 .btn-primary .loading-spinner {
   border-color: rgba(0, 0, 0, 0.25);
   border-top-color: var(--color-on-accent);
-}
-
-#btn-settings {
-  margin-left: auto;
-  font-size: 14px;
-  padding: 4px 10px;
 }

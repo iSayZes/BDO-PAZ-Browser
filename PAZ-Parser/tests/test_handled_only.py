@@ -10,6 +10,7 @@ import pytest
 import api.bdo_api as bdo_api
 import api.bdo_config as bdo_config
 from api.bdo_api import Api
+from api.bdo_api_helpers import _file_icon
 from api.bdo_tree import build_tree
 from bdo_models import PazEntry
 from bdo_preview import is_handled_file
@@ -177,3 +178,18 @@ def test_save_settings_stores_and_applies_setting(
     assert json.loads(config_file.read_text())["handled_only"] is True
     assert api.get_settings()["handled_only"] is True
     assert _ids(api.get_children("")) == {"gamecommondata"}
+
+
+@pytest.mark.parametrize(
+    ("path", "icon"),
+    [
+        (_HANDLED_TABLE, "parsed"),
+        (_HANDLED_WAYPOINT, "parsed"),
+        (_UNHANDLED_TABLE, "file"),
+        (_TEXTURE, "image"),
+        ("languagedata_en.loc", "loc"),
+        ("character/no_extension", "file"),
+    ],
+)
+def test_tree_icon_follows_the_handler_registry(path: str, icon: str) -> None:
+    assert _file_icon(Path(path).name) == icon

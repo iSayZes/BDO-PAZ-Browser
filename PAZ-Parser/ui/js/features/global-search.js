@@ -29,7 +29,8 @@ export const globalSearchMethods = {
     const btn = document.getElementById("btn-content-search");
     const hidden = bar.hidden;
     bar.hidden = !hidden;
-    btn.classList.toggle("active", !hidden ? false : true);
+    btn.classList.toggle("active", hidden);
+    btn.setAttribute("aria-expanded", String(hidden));
     if (!hidden) {
       // closing, restore tree if we were showing results
       if (this._inGlobalSearch) this._exitGlobalSearchResults();
@@ -41,7 +42,9 @@ export const globalSearchMethods = {
   _closeGlobalSearch() {
     const bar = document.getElementById("content-search-bar");
     bar.hidden = true;
-    document.getElementById("btn-content-search").classList.remove("active");
+    const btn = document.getElementById("btn-content-search");
+    btn.classList.remove("active");
+    btn.setAttribute("aria-expanded", "false");
     if (this._inGlobalSearch) this._exitGlobalSearchResults();
   },
 

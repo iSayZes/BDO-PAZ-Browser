@@ -10,6 +10,16 @@
     "noFolderSelected": "No se ha seleccionado ninguna carpeta",
     "settings": "Ajustes"
   },
+  "views": {
+    "label": "Vistas",
+    "items": "Objetos",
+    "quests": "Misiones",
+    "knowledge": "Conocimientos",
+    "npcs": "PNJ",
+    "recipes": "Recetas",
+    "map": "Mapa",
+    "files": "Archivos"
+  },
   "sidebar": {
     "filterFiles": "Filtrar archivos…",
     "searchInFiles": "Buscar en todos los archivos",

@@ -79,6 +79,22 @@ Spacing steps are `--space-1` to `--space-7`: 4, 8, 12, 16, 24, 32 and 48px.
 
 Table row height is a user setting from 20 to 64px (`--table-row-height`).
 
+## Controls
+
+`PAZ-Parser/ui/css/08-controls.css` styles the shared controls; a component
+adds its own rules only for layout.
+
+| Class           | Use                                                                  |
+| --------------- | -------------------------------------------------------------------- |
+| `button`        | Raised button: `--color-raised` fill, `--radius-control`, 2px accent focus ring |
+| `.btn-primary`  | The one main action of a bar or dialog: accent fill, `--color-on-accent` text |
+| `.icon-button`  | 30px square button with only an icon; it needs an `aria-label`     |
+| `.input-box`    | A label wrapping an icon or caption and an input; accent border and ring on focus |
+| `.segmented`    | Two or three exclusive buttons in one track; the chosen one has `.active` |
+| `.with-icon`    | Inline-flex row for an icon before its label                         |
+
+Disabled buttons drop their fill and use `--color-disabled`.
+
 ## Icons
 
 Icons are one SVG sprite built by `PAZ-Parser/ui/js/core/icons.js`: 24px grid,
@@ -89,11 +105,13 @@ or `iconElement()`. A button with an icon and a translated label keeps the
 label in its own `<span data-i18n>`, because `applyI18n()` replaces the text
 of the element that carries `data-i18n`.
 
-The file tree gets its icon names from `_ICON_MAP` in
-`PAZ-Parser/api/bdo_api_helpers.py`: `folder`, `parsed` (`.bss`, `.dbss`),
-`loc`, `image`, `code`, `text`, `video`, `archive` (`.pac`) and `file` for
-anything else. Folder icons use the accent, parsed tables `--color-data`, LOC
-files `--color-loc`, the rest `--color-text-3`.
+The file tree gets its icon names from `_file_icon()` in
+`PAZ-Parser/api/bdo_api_helpers.py`: `loc` for LOC files, `parsed` for any
+file a registered handler reads, then by extension `image`, `code`, `text`,
+`video` and `archive` (`.pac`), and `file` for the rest, including a `.bss` or
+`.dbss` without a handler. Folder icons use the accent, parsed tables
+`--color-data`, LOC files `--color-loc`, the rest `--color-text-3`; `file` rows
+also grey their name to `--color-text-2`.
 
 The UI uses no emoji, in markup or in `ui/lang/*.json`.
 

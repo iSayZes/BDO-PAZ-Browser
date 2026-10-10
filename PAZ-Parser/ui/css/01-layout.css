@@ -5,19 +5,91 @@ body {
   flex-direction: column;
 }
 
-.sep-h {
-  height: 1px;
-  background: var(--color-line);
-  flex-shrink: 0;
-}
-
 #toolbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 7px 12px;
+  gap: 16px;
+  padding: 8px 16px;
   background: var(--color-surface);
+  border-bottom: 1px solid var(--color-line);
   flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.brand .icon {
+  color: var(--color-accent);
+  font-size: 22px;
+}
+
+/* The views: icon-only tabs, then Files with its label. */
+#view-rail {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+}
+.view-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-text-2);
+  font-size: 13px;
+}
+.view-tab .icon {
+  font-size: 18px;
+}
+.view-tab:disabled,
+.view-tab:disabled:hover {
+  background: transparent;
+  color: var(--color-text-2);
+  opacity: 0.4;
+}
+.view-tab.active,
+.view-tab.active:hover {
+  padding: 0 14px 0 10px;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-weight: 500;
+}
+.view-rail-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 4px;
+  background: var(--color-line-strong);
+}
+
+.toolbar-spacer {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Shows the open PAZ folder; a click picks another. */
+.path-button {
+  max-width: 320px;
+  min-width: 0;
+  background: transparent;
+  border-color: var(--color-line);
+  color: var(--color-text-2);
+}
+.path-button .icon {
+  font-size: 16px;
 }
 
 #main {

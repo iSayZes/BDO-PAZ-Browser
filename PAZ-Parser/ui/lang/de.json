@@ -10,6 +10,16 @@
     "noFolderSelected": "Kein Ordner ausgewählt",
     "settings": "Einstellungen"
   },
+  "views": {
+    "label": "Ansichten",
+    "items": "Gegenstände",
+    "quests": "Quests",
+    "knowledge": "Wissen",
+    "npcs": "NPCs",
+    "recipes": "Rezepte",
+    "map": "Karte",
+    "files": "Dateien"
+  },
   "sidebar": {
     "filterFiles": "Dateien filtern…",
     "searchInFiles": "In allen Dateien suchen",

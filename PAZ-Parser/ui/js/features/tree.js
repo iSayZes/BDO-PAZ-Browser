@@ -71,10 +71,7 @@ export const treeMethods = {
     label.className = "tree-label";
 
     if (item.type === "dir") {
-      const arrow = document.createElement("span");
-      arrow.className = "tree-arrow";
-      arrow.textContent = "▶";
-      label.appendChild(arrow);
+      label.appendChild(iconElement("chevron-right", "icon tree-arrow"));
     }
 
     label.appendChild(iconElement(item.icon, "icon tree-icon"));
@@ -87,7 +84,7 @@ export const treeMethods = {
     if (item.type === "dir") {
       const count = document.createElement("span");
       count.className = "tree-count";
-      count.textContent = `(${(item.count || 0).toLocaleString()})`;
+      count.textContent = (item.count || 0).toLocaleString();
       label.appendChild(count);
     }
 

@@ -10,6 +10,16 @@
     "noFolderSelected": "선택된 폴더 없음",
     "settings": "설정"
   },
+  "views": {
+    "label": "보기",
+    "items": "아이템",
+    "quests": "의뢰",
+    "knowledge": "지식",
+    "npcs": "NPC",
+    "recipes": "레시피",
+    "map": "월드맵",
+    "files": "파일"
+  },
   "sidebar": {
     "filterFiles": "파일 필터…",
     "searchInFiles": "모든 파일에서 검색",

@@ -573,7 +573,7 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
                     "id":   f"{_DISK_VIRTUAL_PREFIX}/{name}",
                     "name": name,
                     "type": "file",
-                    "icon": _file_icon(Path(name).suffix),
+                    "icon": _file_icon(name),
                     "disk": True,
                 })
 
@@ -592,7 +592,7 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
                 "id":   _norm(entry.internal_path),
                 "name": name,
                 "type": "file",
-                "icon": _file_icon(Path(name).suffix),
+                "icon": _file_icon(name),
             })
         return result
 
@@ -613,7 +613,7 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
                     "id":   path,
                     "name": name,
                     "path": path,
-                    "icon": _file_icon(Path(name).suffix),
+                    "icon": _file_icon(name),
                 })
                 if len(results) == 500:
                     break

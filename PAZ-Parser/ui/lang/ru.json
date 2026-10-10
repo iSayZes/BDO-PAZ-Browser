@@ -10,6 +10,16 @@
     "noFolderSelected": "Папка не выбрана",
     "settings": "Настройки"
   },
+  "views": {
+    "label": "Разделы",
+    "items": "Предметы",
+    "quests": "Задания",
+    "knowledge": "Знания",
+    "npcs": "НИП",
+    "recipes": "Рецепты",
+    "map": "Карта",
+    "files": "Файлы"
+  },
   "sidebar": {
     "filterFiles": "Фильтр файлов…",
     "searchInFiles": "Искать во всех файлах",

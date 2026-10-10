@@ -170,7 +170,7 @@ class SearchMixin(ApiState):
             "name":  Path(entry.internal_path).name,
             "count": len(offsets),
             "first": offsets[0],
-            "icon":  _file_icon(Path(entry.internal_path).suffix),
+            "icon":  _file_icon(Path(entry.internal_path).name),
         }
 
     def _run_global_search(

@@ -191,26 +191,9 @@ def _set_app_user_model_id() -> None:
     app_id = "bdo.paz.browser"
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
 
-def _apply_window_icon(window) -> None:
-    try:
-        import ctypes
-        icon_path = str(Path(__file__).parent / "ui" / "favicon.ico")
-        LR_LOADFROMFILE = 0x0010
-        LR_DEFAULTSIZE  = 0x0040
-        IMAGE_ICON      = 1
-        WM_SETICON      = 0x0080
-        hicon = ctypes.windll.user32.LoadImageW(
-            None, icon_path, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE
-        )
-        if not hicon:
-            return
-        hwnd = getattr(window, "native_handle", None) or \
-               ctypes.windll.user32.FindWindowW(None, "BDO PAZ Browser")
-        if hwnd:
-            ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 1, hicon)  # ICON_BIG
-            ctypes.windll.user32.SendMessageW(hwnd, WM_SETICON, 0, hicon)  # ICON_SMALL
-    except Exception:
-        pass
+# The window and taskbar icon; from source the process is python.exe, whose
+# icon pywebview would use otherwise.
+_WINDOW_ICON = Path(__file__).parent / "ui" / "favicon.ico"
 
 
 # How long the window stays on top after an update restart.
@@ -243,18 +226,19 @@ def _launch_gui(profile: bool = False, after_update: bool = False) -> None:
         title="BDO PAZ Browser",
         url=url,
         js_api=api,
+        # Opens maximized; width and height are the size it restores down to.
         width=1280,
         height=800,
+        maximized=True,
         min_size=(900, 560),
         background_color="#121316",  # --color-bg in ui/css/00-reset-root.css
     )
     if window is not None:
         api.set_window(window)
-        window.events.shown += lambda: _apply_window_icon(window)
         if after_update:
             window.events.shown += lambda: _bring_to_front(window)
     try:
-        webview.start(debug=profile)
+        webview.start(debug=profile, icon=str(_WINDOW_ICON))
     finally:
         server.stop()
 

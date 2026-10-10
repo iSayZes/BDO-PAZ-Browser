@@ -1,4 +1,4 @@
-pywebview>=4.0
+pywebview>=6.2
 aiohttp>=3.9
 numpy>=2.0
 # Pillow is optional, only needed for DDS image preview

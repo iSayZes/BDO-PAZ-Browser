@@ -88,12 +88,14 @@ adds its own rules only for layout.
 | --------------- | -------------------------------------------------------------------- |
 | `button`        | Raised button: `--color-raised` fill, `--radius-control`, 2px accent focus ring |
 | `.btn-primary`  | The one main action of a bar or dialog: accent fill, `--color-on-accent` text |
+| `.btn-danger`   | An action that deletes, such as Delete all caches: outlined in `--color-danger` |
 | `.icon-button`  | 30px square button with only an icon; it needs an `aria-label`     |
 | `.input-box`    | A label wrapping an icon or caption and an input; accent border and ring on focus |
 | `.segmented`    | Two or three exclusive buttons in one track; the chosen one has `.active` |
 | `.with-icon`    | Inline-flex row for an icon before its label                         |
 | `.menu`         | A dropdown of `button` items under its trigger, which sits in a `position: relative` wrapper (`04-right-panel.css`) |
 | `.kbd`          | A key hint such as Ctrl F inside an input box (`04-right-panel.css`) |
+| `.settings-overlay`, `.settings-modal` | The backdrop and frame every dialog shares: `--radius-modal`, a header with an icon close button, the primary action at the right of the footer (`20-settings-modal.css`) |
 
 Disabled buttons drop their fill and use `--color-disabled`.
 

@@ -21,7 +21,7 @@ to, and run `BDO-PAZ-Browser.exe`. The zip holds `BDO-PAZ-Browser.exe`,
 - Settings and caches go into a `data` folder next to the exe, so moving or
   deleting the folder takes them along. A folder the exe can't write to, such as
   one in Program Files, uses `%LOCALAPPDATA%\BDO-PAZ-Browser` instead.
-- A newer release shows up as a green notice next to the settings button;
+- A newer release shows up as a teal notice next to the settings button;
   **Update** installs it in a few seconds and keeps `data`. It checks the zip's
   SHA-256 and puts the old version back when the new one can't load its
   handlers. Nothing updates without a click. From the command line:
@@ -50,7 +50,7 @@ To run from source or write handlers, see [Requirements](#requirements).
 - Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
 - Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
 - Ctrl+F inside the hex tab (byte offset, string or hex pattern) and the table tab (records).
-- Export of the open file as raw binary, or its parsed table as CSV.
+- Export of the open file as raw binary, or its parsed table as CSV, from the Export menu next to the entry details.
 - Game text in the language you pick, with the colours of its `<PAColor>` tags as in game; **Show game text tags** shows the tags too. A client ships only its region's LOC files, so for a missing one the tables show their Korean text and a corner warning says so.
 - **Show only handled tables** limits the file tree, searches and folder extraction to files with a parsed table, plus the LOC file.
 - A command-line version that lists, extracts and queries parsed records (see [CLI](#cli)).

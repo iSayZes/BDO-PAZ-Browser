@@ -35,6 +35,13 @@
   flex-shrink: 0;
 }
 
+/* Highlight the matched line in the Text tab */
+.text-line.search-match {
+  background: var(--color-accent-soft);
+  outline: 1px solid var(--color-accent);
+  border-radius: 2px;
+}
+
 /* Highlight matched row in hex view */
 .hex-row.search-match {
   background: var(--color-accent-soft);

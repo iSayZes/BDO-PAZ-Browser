@@ -129,6 +129,13 @@ def test_open_uses_default_sort_without_saving_it(config_file: Path) -> None:
     assert not config_file.exists()
 
 
+def test_open_sends_the_counts_the_page_bar_shows(config_file: Path) -> None:
+    response = _open(bytes([3, 1, 2]), _NumberHandler())
+
+    assert response["record_count"] == 3
+    assert response["byte_count"] == 3
+
+
 def test_open_prefers_saved_sort_over_default(config_file: Path) -> None:
     save_table_sort(_FILE_KEY, TableSort("v", "asc"))
 

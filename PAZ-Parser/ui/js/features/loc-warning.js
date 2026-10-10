@@ -25,6 +25,12 @@ export const locWarningMethods = {
     box.hidden = false;
   },
 
+  // The toast's link: pick another language in the settings.
+  openSettingsFromLocWarning() {
+    document.getElementById("loc-warning").hidden = true;
+    this.openSettings();
+  },
+
   dismissLocWarning() {
     document.getElementById("loc-warning").hidden = true;
     if (this._locWarningLanguage) {

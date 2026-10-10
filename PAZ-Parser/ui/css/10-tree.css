@@ -115,6 +115,25 @@
   font-style: italic;
 }
 
+/* Grey rows while the whole tree loads, where the names will be. */
+.tree-skeleton > .tree-label,
+.tree-skeleton > .tree-label:hover {
+  background: transparent;
+  cursor: default;
+}
+.skeleton-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: var(--radius-inner);
+  background: var(--color-raised);
+}
+.skeleton-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--color-raised);
+}
+
 .loading-spinner {
   width: 10px;
   height: 10px;

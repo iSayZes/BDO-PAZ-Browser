@@ -254,7 +254,11 @@
 
     <div id="loc-warning" class="loc-warning" role="status" hidden>
       <svg class="icon loc-warning-icon" aria-hidden="true"><use href="#icon-warning"></use></svg>
-      <span id="loc-warning-text"></span>
+      <div class="loc-warning-body">
+        <strong class="loc-warning-title" data-i18n="locWarning.title">Game text stays Korean</strong>
+        <span id="loc-warning-text"></span>
+        <button class="loc-warning-link" onclick="app.openSettingsFromLocWarning()" data-i18n="locWarning.openSettings">Change the language in Settings</button>
+      </div>
       <button class="loc-warning-close icon-button" onclick="app.dismissLocWarning()" data-i18n-title="locWarning.dismiss" title="Dismiss" data-i18n-aria-label="locWarning.dismiss" aria-label="Dismiss"><svg class="icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
     </div>
 

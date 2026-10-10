@@ -14,7 +14,7 @@ export const treeMethods = {
     document.getElementById("search").value = "";
     const tree = document.getElementById("tree");
     tree.innerHTML = "";
-    tree.appendChild(this._buildTreeLoadingNode());
+    tree.appendChild(this._buildTreeRootLoading());
     try {
       await this._nextPaint();
       const children = await window.pywebview.api.get_children("");
@@ -38,6 +38,28 @@ export const treeMethods = {
     document.getElementById("btn-content-search").disabled = !isEnabled;
   },
 
+  // A text view searches its own lines, in string mode; an image view has nothing to find.
+  _syncViewSearchBar() {
+    const isText = !!document.querySelector("#preview-content .text-lines");
+    this.showTabSearchBar(isText);
+    if (isText) this._syncSearchBarToTab("parsed");
+  },
+
+  // The whole tree is loading: the spinner row, then grey rows where names will be.
+  _buildTreeRootLoading() {
+    const rows = document.createDocumentFragment();
+    rows.appendChild(this._buildTreeLoadingNode());
+    const widths = [62, 48, 70, 55, 40, 66, 58, 45, 72, 50, 61, 38];
+    for (const width of widths) {
+      const row = document.createElement("li");
+      row.className = "tree-node tree-skeleton";
+      row.setAttribute("aria-hidden", "true");
+      row.innerHTML = `<span class="tree-label"><span class="skeleton-icon"></span><span class="skeleton-bar" style="width:${width}%"></span></span>`;
+      rows.appendChild(row);
+    }
+    return rows;
+  },
+
   _buildTreeLoadingNode() {
     const loading = document.createElement("li");
     loading.className = "tree-node loading";
@@ -51,7 +73,7 @@ export const treeMethods = {
     this._setSearchEnabled(false);
     const tree = document.getElementById("tree");
     tree.innerHTML = "";
-    tree.appendChild(this._buildTreeLoadingNode());
+    tree.appendChild(this._buildTreeRootLoading());
     return this._nextPaint();
   },
 
@@ -164,6 +186,8 @@ export const treeMethods = {
     this._tabLabels = null;
     this._canExportCsv = false;
     this._isPlainView = false;
+    this._recordCount = null;
+    this._byteCount = null;
     this.closeExportMenu();
 
     document.getElementById("preview-title").replaceChildren(iconElement(icon), document.createTextNode(name));
@@ -197,6 +221,8 @@ export const treeMethods = {
       this._parsedSort = result.sort ?? null;
       this._isAltView = !!result.tab_labels;
       this._tabLabels = result.tab_labels || null;
+      this._recordCount = result.record_count ?? null;
+      this._byteCount = result.byte_count ?? null;
       // Text/Rendered views have no records to write as CSV.
       this._canExportCsv = !!result.has_parsed && !this._isAltView;
 
@@ -243,7 +269,7 @@ export const treeMethods = {
         content.innerHTML = result.html;
         this._initPreviewView(content);
         this._setPageBar(null);
-        this.showTabSearchBar(false);
+        this._syncViewSearchBar();
       } else {
         tabs.hidden = true;
         this.showTabSearchBar(!result.stream);
@@ -290,7 +316,7 @@ export const treeMethods = {
       content.innerHTML = this._parsedHtml || "";
       this._initPreviewView(content);
       this._setPageBar(null);
-      this.showTabSearchBar(false);
+      this._syncViewSearchBar();
     } else {
       content.innerHTML = this._parsedHtml || "";
       this._initTableSort(content);

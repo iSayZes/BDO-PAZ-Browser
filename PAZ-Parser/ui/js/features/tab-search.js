@@ -1,6 +1,7 @@
 "use strict";
 
 import { t } from "../core/i18n.js";
+import { HEX_BYTES_PER_PAGE, PARSED_PER_PAGE } from "../core/paging.js";
 
 // Module-level state, kept off the shared app object intentionally.
 // Only tab-search.js writes these; other modules call the exported methods.
@@ -10,8 +11,6 @@ let _mode = "string";
 let _seq = 0;
 let _timer = null;
 
-const HEX_BYTES_PER_PAGE = 512 * 16; // must match bdo_preview.HEX_ROWS_PER_PAGE * _ROW
-const PARSED_PER_PAGE = 500;          // must match bdo_preview.PARSED_RECORDS_PER_PAGE
 
 export const tabSearchMethods = {
   _initTabSearch() {
@@ -123,6 +122,15 @@ export const tabSearchMethods = {
       return;
     }
 
+    // The Text tab searches the lines it shows, not the file's bytes.
+    if (this._isTextViewSearch()) {
+      _matches = this._findTextLines(query);
+      _matchIndex = _matches.length > 0 && shouldJump ? 0 : -1;
+      this._updateSearchCounter();
+      if (_matchIndex >= 0) this._jumpToMatch(_matchIndex);
+      return;
+    }
+
     const apiStart = performance.now();
     const result = await window.pywebview.api.search_content(
       this._selectedPath, query, _mode, this._activeTab,
@@ -163,7 +171,9 @@ export const tabSearchMethods = {
     const pos = _matches[index];
     if (pos === undefined) return;
 
-    if (this._activeTab === "hex") {
+    if (this._isTextViewSearch()) {
+      this._highlightTextLine(pos);
+    } else if (this._activeTab === "hex") {
       const page = Math.floor(pos / HEX_BYTES_PER_PAGE);
       if (page !== this._hexPage) await this._gotoHexPage(page);
       this._highlightHexOffset(pos);
@@ -172,6 +182,30 @@ export const tabSearchMethods = {
       if (page !== this._parsedPage && !(await this._gotoParsedPage(page))) return;
       this._highlightParsedRow(pos % PARSED_PER_PAGE);
     }
+  },
+
+  _isTextViewSearch() {
+    return this._isPlainView && this._activeTab === "parsed"
+      && !!document.querySelector("#preview-content .text-lines");
+  },
+
+  // Indices of the shown lines that hold `query`, ignoring case.
+  _findTextLines(query) {
+    const needle = query.toLowerCase();
+    const lines = document.querySelectorAll("#preview-content .text-line");
+    const found = [];
+    lines.forEach((line, index) => {
+      if (line.textContent.toLowerCase().includes(needle)) found.push(index);
+    });
+    return found;
+  },
+
+  _highlightTextLine(index) {
+    document.querySelectorAll(".text-line.search-match").forEach((l) => l.classList.remove("search-match"));
+    const line = document.querySelectorAll("#preview-content .text-line")[index];
+    if (!line) return;
+    line.classList.add("search-match");
+    line.scrollIntoView({ block: "nearest" });
   },
 
   _highlightHexOffset(byteOffset) {

@@ -24,8 +24,29 @@
   color: var(--color-warning);
   font-size: 18px;
 }
-#loc-warning-text {
+.loc-warning-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.loc-warning-title {
+  color: color-mix(in srgb, var(--color-warning) 70%, white);
+  font-weight: 600;
+}
+.loc-warning-link {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--color-accent);
+  font-size: 12px;
+  font-weight: 500;
+}
+.loc-warning-link:hover {
+  background: none;
+  color: var(--color-accent-hover);
+  text-decoration: underline;
 }
 
 .loc-warning-close {

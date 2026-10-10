@@ -147,7 +147,8 @@
   },
   "pageBar": {
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "rows": "Rows {first}–{last} of {total}"
   },
   "bottomBar": {
     "output": "Output",
@@ -271,7 +272,9 @@
   },
   "locWarning": {
     "missing": "You don't have {file} for {language}, so only the app's UI is in {language}. Game text in the tables stays Korean.",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "title": "Game text stays Korean",
+    "openSettings": "Change the language in Settings"
   },
   "appUpdate": {
     "available": "Version {version} is available",

@@ -147,7 +147,8 @@
   },
   "pageBar": {
     "prev": "Préc.",
-    "next": "Suiv."
+    "next": "Suiv.",
+    "rows": "Lignes {first} à {last} sur {total}"
   },
   "bottomBar": {
     "output": "Sortie",
@@ -271,7 +272,9 @@
   },
   "locWarning": {
     "missing": "Il vous manque {file} pour {language} : seule l'interface de l'application est en {language}. Les textes du jeu dans les tableaux restent en coréen.",
-    "dismiss": "Masquer"
+    "dismiss": "Masquer",
+    "title": "Les textes du jeu restent en coréen",
+    "openSettings": "Changer la langue dans les paramètres"
   },
   "appUpdate": {
     "available": "La version {version} est disponible",

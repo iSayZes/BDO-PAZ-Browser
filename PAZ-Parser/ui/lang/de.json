@@ -147,7 +147,8 @@
   },
   "pageBar": {
     "prev": "Zurück",
-    "next": "Weiter"
+    "next": "Weiter",
+    "rows": "Zeilen {first}–{last} von {total}"
   },
   "bottomBar": {
     "output": "Ausgabe",
@@ -271,7 +272,9 @@
   },
   "locWarning": {
     "missing": "Dir fehlt {file} für {language}, daher ist nur die Oberfläche der App auf {language}. Spieltexte in den Tabellen bleiben koreanisch.",
-    "dismiss": "Ausblenden"
+    "dismiss": "Ausblenden",
+    "title": "Spieltexte bleiben Koreanisch",
+    "openSettings": "Sprache in den Einstellungen ändern"
   },
   "appUpdate": {
     "available": "Version {version} ist verfügbar",

@@ -147,7 +147,8 @@
   },
   "pageBar": {
     "prev": "이전",
-    "next": "다음"
+    "next": "다음",
+    "rows": "{total}개 중 {first}–{last}행"
   },
   "bottomBar": {
     "output": "출력",
@@ -271,7 +272,9 @@
   },
   "locWarning": {
     "missing": "{language}용 {file} 파일이 없어 앱 UI만 {language}(으)로 표시됩니다. 표의 게임 텍스트는 한국어로 남습니다.",
-    "dismiss": "닫기"
+    "dismiss": "닫기",
+    "title": "게임 텍스트는 한국어로 남습니다",
+    "openSettings": "설정에서 언어 바꾸기"
   },
   "appUpdate": {
     "available": "버전 {version}을(를) 사용할 수 있습니다",

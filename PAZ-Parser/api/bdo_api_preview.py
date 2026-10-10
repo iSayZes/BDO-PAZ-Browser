@@ -216,6 +216,7 @@ class PreviewMixin(ApiState):
         parsed_total_pages = 1
         tab_labels = None
         view_label = None
+        record_count = None
 
         if is_alt:
             try:
@@ -266,6 +267,9 @@ class PreviewMixin(ApiState):
             "tab_labels": tab_labels,
             # A text or image view: shown first, under this tab name next to Hex.
             "view_label": view_label,
+            # For the page bar: "Rows 1-500 of N", and the byte range of a hex page.
+            "record_count": record_count,
+            "byte_count": len(data),
             "meta": meta,
             "hex_total_pages": hex_total_pages,
             "parsed_total_pages": parsed_total_pages,
@@ -341,6 +345,7 @@ class PreviewMixin(ApiState):
             "hex_total_pages": HexHandler.page_count_for_size(entry.uncompressed_size),
             "parsed_total_pages": 1,
             "hex_paging": "range",
+            "byte_count": entry.uncompressed_size,
         }
 
     def disk_entry(self, name: str) -> tuple[PazEntry, bytes] | None:

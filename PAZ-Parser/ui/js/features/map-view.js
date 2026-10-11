@@ -11,8 +11,10 @@ const TILE_PX = 256;
 // Panning stops this far past the map's edge, as a share of its size.
 const PAN_MARGIN = 0.1;
 const VIEW_PARTS = ["map-canvas", "map-message", "map-prompt", "map-progress"];
-// Pin marker size in px; the CSS draws it (25-map-view.css, .map-pin).
+// Pin marker sizes in px; the CSS draws them (25-map-view.css, .map-pin and
+// .map-pin-facing). A pin with a heading is an arrow, a bigger target.
 const PIN_SIZE = 14;
+const FACING_PIN_SIZE = 22;
 
 function worldCrs() {
   return L.extend({}, L.CRS.Simple, {
@@ -75,11 +77,23 @@ export const mapViewMethods = {
     if (!layer) return;
     layer.clearLayers();
     this._mapPins.forEach((pin) => {
-      const icon = L.divIcon({ className: `map-pin map-pin-${pin.type}`, iconSize: [PIN_SIZE, PIN_SIZE] });
       const label = pin.label || t(`map.pinTypes.${pin.type}`);
-      L.marker(L.latLng(pin.z, pin.x), { icon, keyboard: false })
+      L.marker(L.latLng(pin.z, pin.x), { icon: this._mapPinIcon(pin), keyboard: false })
         .bindTooltip(`${label} · ${t("map.coords", { x: formatCount(Math.round(pin.x)), z: formatCount(Math.round(pin.z)) })}`)
         .addTo(layer);
+    });
+  },
+
+  // A dot, or with a heading an arrow turned that many degrees clockwise from
+  // north. North is up on this map, so the CSS rotation is the heading itself.
+  _mapPinIcon(pin) {
+    if (pin.heading === null || pin.heading === undefined) {
+      return L.divIcon({ className: `map-pin map-pin-${pin.type}`, iconSize: [PIN_SIZE, PIN_SIZE] });
+    }
+    return L.divIcon({
+      className: `map-pin-facing map-pin-facing-${pin.type}`,
+      html: `<div class="map-pin-arrow" style="transform: rotate(${Number(pin.heading)}deg)"></div>`,
+      iconSize: [FACING_PIN_SIZE, FACING_PIN_SIZE],
     });
   },
 

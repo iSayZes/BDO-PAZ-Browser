@@ -52,10 +52,21 @@ def test_every_change_notifies_with_the_full_list() -> None:
 
 
 def test_parse_pin_request_reads_the_fields() -> None:
-    request = parse_pin_request({"type": "player", "x": 13800, "z": -76996.5, "y": -6715, "label": "Me"})
+    request = parse_pin_request(
+        {"type": "player", "x": 13800, "z": -76996.5, "y": -6715, "label": "Me", "heading": 171.5}
+    )
 
-    assert request == PinRequest(type="player", x=13800.0, z=-76996.5, y=-6715.0, label="Me")
-    assert parse_pin_request({"type": "marker", "x": 0, "z": 0}).y is None
+    assert request == PinRequest(type="player", x=13800.0, z=-76996.5, y=-6715.0, label="Me", heading=171.5)
+    marker = parse_pin_request({"type": "marker", "x": 0, "z": 0})
+    assert marker.y is None and marker.heading is None
+
+
+@pytest.mark.parametrize(("heading", "stored"), [(0, 0.0), (360, 0.0), (-90, 270.0), (725.5, 5.5), (None, None)])
+def test_heading_folds_into_0_to_360(heading: object, stored: float | None) -> None:
+    pin = PinStore().place(parse_pin_request({"type": "player", "x": 0, "z": 0, "heading": heading}))
+
+    assert pin.heading == stored
+    assert pin.to_dict()["heading"] == stored
 
 
 @pytest.mark.parametrize(
@@ -70,6 +81,9 @@ def test_parse_pin_request_reads_the_fields() -> None:
         {"type": "player", "x": WORLD_LIMIT_CM + 1, "z": 0},
         {"type": "player", "x": 0, "z": 0, "label": 5},
         {"type": "player", "x": 0, "z": 0, "label": "x" * (LABEL_MAX_LENGTH + 1)},
+        {"type": "player", "x": 0, "z": 0, "heading": "north"},
+        {"type": "player", "x": 0, "z": 0, "heading": True},
+        {"type": "player", "x": 0, "z": 0, "heading": float("inf")},
     ],
 )
 def test_parse_pin_request_refuses_bad_data(data: object) -> None:

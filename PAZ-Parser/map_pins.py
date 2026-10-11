@@ -2,8 +2,10 @@
 
 Pins come from the local HTTP API (`bdo_server.py`, docs/map-api.md) and live
 in memory while the app runs. Positions are world units (cm): x and z on the
-ground plane, y the optional height. A singleton pin type, such as `player`,
-keeps at most one pin: placing a new one replaces the old one.
+ground plane, y the optional height. The optional heading is the way the pin
+faces in degrees clockwise from north (+z), 0 to 360. A singleton pin type,
+such as `player`, keeps at most one pin: placing a new one replaces the old
+one.
 """
 
 from __future__ import annotations
@@ -47,6 +49,7 @@ class PinRequest:
     z: float
     y: float | None = None
     label: str = ""
+    heading: float | None = None
 
 
 @dataclass(frozen=True)
@@ -57,13 +60,22 @@ class Pin:
     z: float
     y: float | None
     label: str
+    heading: float | None = None
 
     def to_dict(self) -> dict:
-        return {"id": self.id, "type": self.type, "x": self.x, "y": self.y, "z": self.z, "label": self.label}
+        return {
+            "id": self.id,
+            "type": self.type,
+            "x": self.x,
+            "y": self.y,
+            "z": self.z,
+            "label": self.label,
+            "heading": self.heading,
+        }
 
 
 def parse_pin_request(data: object) -> PinRequest:
-    """A `PinRequest` from a JSON object: {"type", "x", "z", "y"?, "label"?}.
+    """A `PinRequest` from a JSON object: {"type", "x", "z", "y"?, "label"?, "heading"?}.
 
     Raises PinError on a missing or wrong field.
     """
@@ -84,7 +96,17 @@ def parse_pin_request(data: object) -> PinRequest:
         z=_coordinate(data, "z"),
         y=None if height is None else _coordinate(data, "y"),
         label=label,
+        heading=_heading(data.get("heading")),
     )
+
+
+def _heading(value: object) -> float | None:
+    """Degrees clockwise from north, folded into 0 to 360; None when absent."""
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+        raise PinError(f"heading must be a number of degrees, got {value!r}")
+    return float(value) % 360.0
 
 
 def _coordinate(data: dict, name: str) -> float:
@@ -125,6 +147,7 @@ class PinStore:
                 z=request.z,
                 y=request.y,
                 label=request.label,
+                heading=request.heading,
             )
             self._next_id += 1
             kept = self._pins

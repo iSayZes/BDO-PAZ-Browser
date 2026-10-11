@@ -39,6 +39,7 @@ height. North is +z. Pins live in memory and are gone when the app closes.
 | `x`, `z` | number | World position in cm |
 | `y` | number or null | Height in cm; not drawn |
 | `label` | string | Up to 100 characters; the tooltip shows the type name when empty |
+| `heading` | number or null | Degrees clockwise from north (+z), stored as 0 to 360; the pin is drawn as an arrow pointing that way, a dot when null |
 
 | Type | Rule |
 | --- | --- |
@@ -50,7 +51,7 @@ height. North is +z. Pins live in memory and are gone when the app closes.
 | Method and path | Body | Answer |
 | --- | --- | --- |
 | `GET /api/map/pins` | | `200 {"pins": [pin, ...]}` |
-| `POST /api/map/pins` | `{"type", "x", "z", "y"?, "label"?}` | `201 {"pin": pin}` |
+| `POST /api/map/pins` | `{"type", "x", "z", "y"?, "label"?, "heading"?}` | `201 {"pin": pin}` |
 | `DELETE /api/map/pins/{id}` | | `204`, or `404` when there is no such pin |
 | `DELETE /api/map/pins` | | `200 {"removed": n}`, every pin |
 | `DELETE /api/map/pins?type=player` | | `200 {"removed": n}`, the pins of one type |

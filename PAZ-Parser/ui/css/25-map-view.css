@@ -88,3 +88,19 @@
   background: var(--color-accent);
   box-shadow: 0 0 0 4px var(--color-accent-soft), 0 0 0 2px rgba(0, 0, 0, 0.45);
 }
+
+/* A pin with a heading: an arrowhead on the world position, its tip pointing
+   the way the pin faces (map-view.js turns .map-pin-arrow). The drop shadows
+   outline the clipped shape, which a border cannot. */
+.map-pin-facing {
+  filter: drop-shadow(0 0 1px var(--color-text-strong)) drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
+}
+.map-pin-arrow {
+  width: 100%;
+  height: 100%;
+  background: var(--color-data);
+  clip-path: polygon(50% 0, 92% 100%, 50% 74%, 8% 100%);
+}
+.map-pin-facing-player .map-pin-arrow {
+  background: var(--color-accent);
+}

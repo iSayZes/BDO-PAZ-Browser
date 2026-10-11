@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "Level",
+    "rank": "Rank",
+    "mastery": "Mastery"
+  },
+  "meta": {
+    "count": "{count} levels"
+  }
+}

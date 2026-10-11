@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Stufe",
+    "rank": "Rang",
+    "skillRate": "Chance auf Talent",
+    "speedRate": "Chance auf höheres min. Bewegungstempo"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

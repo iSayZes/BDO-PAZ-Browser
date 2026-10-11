@@ -1,5 +1,7 @@
 {
   "columns": {
+    "typeId": "종류 ID",
+    "type": "종류",
     "mastery": "숙련도",
     "prizeCatchRate": "보물 등급 그룹 증가 확률",
     "butcheringRate": "획득 수량",
@@ -18,9 +20,17 @@
     "brake": "제동",
     "horseCaptureRate": "말 포획 확률",
     "mountExp": "탑승물 경험치 획득량",
-    "higherTierHorse": "높은 세대의 말을 획득할 확률"
+    "higherTierHorse": "높은 세대의 말을 획득할 확률",
+    "basicDropRate": "기본 채집물 획득 확률",
+    "basicQuantity": "기본 채집물 획득 수량",
+    "specialDropRate": "특수 채집물 획득 확률",
+    "specialQuantity": "특수 채집물 획득 수량",
+    "rareDropRate": "희귀 채집물 획득 확률",
+    "rareQuantity": "희귀 채집물 획득 수량",
+    "massProcessBatches": "대량 가공 횟수"
   },
   "meta": {
-    "count": "숙련도 단계 {count}개"
+    "count": "숙련도 단계 {count}개",
+    "groupedCount": "숙련도 단계 {count}개 · 종류 {types}개"
   }
 }

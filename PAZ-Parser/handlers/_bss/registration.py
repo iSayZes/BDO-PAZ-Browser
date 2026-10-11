@@ -5,6 +5,7 @@ from bdo_preview import register_handler
 from .allquestlist.handler import AllQuestListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
@@ -52,6 +53,7 @@ from .stringtable.handler import StringTableBssHandler
 from .submenu.handler import SubmenuBssHandler
 from .territoryinfo.handler import TerritoryInfoBssHandler
 from .titlecategory.handler import TitleCategoryBssHandler
+from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
 from .zodiacsignindex.handler import ZodiacSignIndexHandler
 
@@ -60,6 +62,7 @@ def register_bss_handlers() -> None:
     register_handler("allquestlist.bss", AllQuestListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
     register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler(
         "dropuihuntinggroundinfo.bss",
@@ -92,7 +95,7 @@ def register_bss_handlers() -> None:
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
-    # One layout for the six life skill mastery tables, each with its own columns.
+    # One layout for the eight life skill mastery tables, each with its own columns.
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
@@ -125,6 +128,7 @@ def register_bss_handlers() -> None:
     register_handler("submenu.bss", SubmenuBssHandler())
     register_handler("territoryinfo.bss", TerritoryInfoBssHandler())
     register_handler("titlecategory.bss", TitleCategoryBssHandler())
+    register_handler("traininglevelskillstat.bss", TrainingLevelSkillStatBssHandler())
     # One layout for the three skill windows.
     for window in ("combat", "awakening", "succession"):
         register_handler(f"ui_skillgroup_{window}.bss", UiSkillGroupBssHandler())

@@ -1,5 +1,7 @@
 {
   "columns": {
+    "typeId": "Typ-ID",
+    "type": "Typ",
     "mastery": "Meisterung",
     "prizeCatchRate": "Fischrate für Außergewöhnlicher Fang",
     "butcheringRate": "Höhere Gegenstandszahl durch Schlachten",
@@ -18,9 +20,17 @@
     "brake": "Anhalten",
     "horseCaptureRate": "Pferdefangrate",
     "mountExp": "EP-Erwerb der Reittiere",
-    "higherTierHorse": "Pferd höherer Stufe aus Zucht oder Tausch"
+    "higherTierHorse": "Pferd höherer Stufe aus Zucht oder Tausch",
+    "basicDropRate": "Grundressource: Erwerbsrate",
+    "basicQuantity": "Grundressource: Erwerbsmenge",
+    "specialDropRate": "Spezialressource: Erwerbsrate",
+    "specialQuantity": "Spezialressource: Erwerbsmenge",
+    "rareDropRate": "Seltene Ressource: Erwerbsrate",
+    "rareQuantity": "Seltene Ressource: Erwerbsmenge",
+    "massProcessBatches": "Materialeinheiten bei Massenverarbeitung"
   },
   "meta": {
-    "count": "{count} Meisterungsstufen"
+    "count": "{count} Meisterungsstufen",
+    "groupedCount": "{count} Meisterungsstufen · {types} Typen"
   }
 }

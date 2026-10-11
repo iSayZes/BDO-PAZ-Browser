@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "레벨",
+    "rank": "등급",
+    "mastery": "숙련도"
+  },
+  "meta": {
+    "count": "레벨 {count}개"
+  }
+}

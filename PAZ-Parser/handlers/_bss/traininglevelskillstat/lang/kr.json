@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "레벨",
+    "rank": "등급",
+    "skillRate": "기술 습득 확률",
+    "speedRate": "이동 능력치 최소치 상향 확률"
+  },
+  "meta": {
+    "count": "레벨 {count}개"
+  }
+}

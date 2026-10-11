@@ -1,7 +1,8 @@
-"""Row fields and table columns of the six life skill mastery tables.
+"""Row fields and table columns of the life skill mastery tables.
 
 Every row is an f32 mastery threshold followed by 4-byte fields; only the
-fields differ per file. Rates are stored with 1,000,000 = 100%. Field names
+fields differ per file. Rates are stored with 1,000,000 = 100%. The gathering
+and processing tables hold one row group per type (`sub_types`). Field names
 come from the client Lua that reads each table (see
 docs/file-formats/masterystatdata_bss.md); fields the Lua does not name are
 `unknown_<offset>` and stay out of the table.
@@ -15,6 +16,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from .alchemy import extra_item_rates
+from .sub_types import GATHERING_TYPES, PROCESSING_TYPES, SubTypeLabel
 
 
 class CellFormat(Enum):
@@ -22,6 +24,8 @@ class CellFormat(Enum):
     RATE_2 = "rate2"
     # PaGlobalFunc_GlobalUtil_RoundRateToThridPoint: percent, 3 decimals.
     RATE_3 = "rate3"
+    # A whole number shown as is, such as a batch count.
+    COUNT = "count"
 
 
 @dataclass(frozen=True)
@@ -42,6 +46,9 @@ class MasteryTable:
     float_fields: frozenset[str] = frozenset()
     # Extra record fields computed from the parsed row.
     derive: Callable[[dict], dict] | None = None
+    # Group index -> type name, for files that hold one row group per type;
+    # None for files with a single row list.
+    sub_types: dict[int, SubTypeLabel] | None = None
 
     @property
     def row(self) -> struct.Struct:
@@ -147,4 +154,47 @@ TRAINING = MasteryTable(
     ),
 )
 
-MASTERY_TABLES: tuple[MasteryTable, ...] = (FISHING, COOKING, HUNTING, ALCHEMY, SAIL, TRAINING)
+# Pairs of getCollectingStatAddDropRate(i) and getCollectingStatAddDropCountRate(i)
+# for the basic, special and rare resources; the Lua does not read the fourth pair.
+GATHERING = MasteryTable(
+    file_name="collectingstatdata.bss",
+    fields=(
+        "add_drop_rate_0",
+        "add_drop_count_rate_0",
+        "add_drop_rate_1",
+        "add_drop_count_rate_1",
+        "add_drop_rate_2",
+        "add_drop_count_rate_2",
+        "unknown_1c",
+        "unknown_20",
+    ),
+    columns=(
+        ShownColumn("add_drop_rate_0", "basicDropRate"),
+        ShownColumn("add_drop_count_rate_0", "basicQuantity"),
+        ShownColumn("add_drop_rate_1", "specialDropRate"),
+        ShownColumn("add_drop_count_rate_1", "specialQuantity"),
+        ShownColumn("add_drop_rate_2", "rareDropRate"),
+        ShownColumn("add_drop_count_rate_2", "rareQuantity"),
+    ),
+    sub_types=GATHERING_TYPES,
+)
+
+# count_rate is what ToClient_getManufacturingStatCountRate returns, the
+# number of mass processing batches.
+PROCESSING = MasteryTable(
+    file_name="manufacturingstat.bss",
+    fields=("unknown_04", "count_rate", "unknown_0c"),
+    columns=(ShownColumn("count_rate", "massProcessBatches", CellFormat.COUNT),),
+    sub_types=PROCESSING_TYPES,
+)
+
+MASTERY_TABLES: tuple[MasteryTable, ...] = (
+    FISHING,
+    COOKING,
+    HUNTING,
+    ALCHEMY,
+    SAIL,
+    TRAINING,
+    GATHERING,
+    PROCESSING,
+)

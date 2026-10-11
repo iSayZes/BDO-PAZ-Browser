@@ -1,5 +1,7 @@
 {
   "columns": {
+    "typeId": "ID de tipo",
+    "type": "Tipo",
     "mastery": "Maestría",
     "prizeCatchRate": "Objetos y peces codiciados",
     "butcheringRate": "Obtención (cantidad)",
@@ -18,9 +20,17 @@
     "brake": "Frenada",
     "horseCaptureRate": "Probabilidad de capturar caballos",
     "mountExp": "Exp. (Montura)",
-    "higherTierHorse": "Montura de mayor grado mediante Cría o intercambios"
+    "higherTierHorse": "Montura de mayor grado mediante Cría o intercambios",
+    "basicDropRate": "Recurso básico: probabilidad de obtención",
+    "basicQuantity": "Recurso básico: cantidad de obtención",
+    "specialDropRate": "Recurso especial: probabilidad de obtención",
+    "specialQuantity": "Recurso especial: cantidad de obtención",
+    "rareDropRate": "Recurso inusual: probabilidad de obtención",
+    "rareQuantity": "Recurso inusual: cantidad de obtención",
+    "massProcessBatches": "Lotes al procesar en masa"
   },
   "meta": {
-    "count": "{count} niveles de maestría"
+    "count": "{count} niveles de maestría",
+    "groupedCount": "{count} niveles de maestría · {types} tipos"
   }
 }

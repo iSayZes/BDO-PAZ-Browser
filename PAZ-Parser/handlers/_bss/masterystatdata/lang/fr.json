@@ -1,5 +1,7 @@
 {
   "columns": {
+    "typeId": "ID du type",
+    "type": "Type",
     "mastery": "Maîtrise",
     "prizeCatchRate": "Prise prisée",
     "butcheringRate": "Objets supplémentaires en dépeçant",
@@ -18,9 +20,17 @@
     "brake": "Freinage",
     "horseCaptureRate": "Capture de cheval (%)",
     "mountExp": "EXP de monture",
-    "higherTierHorse": "Cheval de tier supérieur par l'élevage ou l'échange"
+    "higherTierHorse": "Cheval de tier supérieur par l'élevage ou l'échange",
+    "basicDropRate": "Ressource de base : taux d'acquisition",
+    "basicQuantity": "Ressource de base : quantité d'acquisition",
+    "specialDropRate": "Ressource spéciale : taux d'acquisition",
+    "specialQuantity": "Ressource spéciale : quantité d'acquisition",
+    "rareDropRate": "Ressource rare : taux d'acquisition",
+    "rareQuantity": "Ressource rare : quantité d'acquisition",
+    "massProcessBatches": "Lots en transformation de masse"
   },
   "meta": {
-    "count": "{count} paliers de maîtrise"
+    "count": "{count} paliers de maîtrise",
+    "groupedCount": "{count} paliers de maîtrise · {types} types"
   }
 }

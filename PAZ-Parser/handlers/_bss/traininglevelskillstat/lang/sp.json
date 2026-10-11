@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Nivel",
+    "rank": "Rango",
+    "skillRate": "Prob. de aprender habilidad",
+    "speedRate": "Prob. de mejor Vel. movimiento mínima"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

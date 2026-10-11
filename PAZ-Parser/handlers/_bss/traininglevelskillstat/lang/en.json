@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Level",
+    "rank": "Rank",
+    "skillRate": "Mount Skill Learn Chance",
+    "speedRate": "Higher Min. Movement Speed Chance"
+  },
+  "meta": {
+    "count": "{count} levels"
+  }
+}

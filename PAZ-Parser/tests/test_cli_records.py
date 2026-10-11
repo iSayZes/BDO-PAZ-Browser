@@ -10,7 +10,7 @@ from cli.record_filter import Op, filter_records, parse_condition
 from cli.record_output import OutputFormat, format_records, format_table, record_fields
 from cli.records import parse_fields, parse_sort, select_records
 from cli.values import display_text, parse_int
-from record_export import records_to_csv
+from record_export import csv_export_name, records_to_csv
 from table_sort import TableSort
 
 _RECORDS = [
@@ -199,6 +199,16 @@ def test_csv_matches_the_app_export() -> None:
     assert format_records(records, OutputFormat.CSV) == records_to_csv(records)
     assert records_to_csv(records) == 'id,name\r\n1,"a,b"\r\n'
     assert records_to_csv([]) == ""
+
+
+def test_the_csv_export_name_holds_the_client_and_handler_versions() -> None:
+    assert csv_export_name("buffsimply.bss", 3464, "2026.10.12") == "buffsimply_3464_2026.10.12.csv"
+    assert csv_export_name("languagedata_en.loc", 3464, "0d44990+") == "languagedata_en_3464_0d44990+.csv"
+
+
+def test_the_csv_export_name_leaves_out_unknown_versions() -> None:
+    assert csv_export_name("buffsimply.bss", None, None) == "buffsimply.csv"
+    assert csv_export_name("buffsimply.bss", 3464, None) == "buffsimply_3464.csv"
 
 
 def test_parse_int_reads_hex_and_decimal() -> None:

@@ -21,7 +21,7 @@ from .bdo_config import load_table_sort, save_table_sort, table_sort_file_key
 from bdo_models import PazEntry
 from paz.bdo_payload_cache import cached_read_entry_payload
 from paz.bdo_payload_reader import can_range_read, read_entry_range
-from record_export import records_to_csv
+from record_export import csv_export_name, records_to_csv
 from bdo_preview import (
     AltViewHandler,
     HEX_ROWS_PER_PAGE,
@@ -33,6 +33,7 @@ from bdo_preview import (
 )
 from table_sort import TableSort
 from ui_text import ui_text
+from updates.handler_versions import handler_version
 
 _hex_handler = HexHandler()
 # Decoded images kept for the icon popup; a sprite sheet serves every sprite on it.
@@ -561,7 +562,8 @@ class PreviewMixin(ApiState):
                 self._cached_companions,
             )
             data = records_to_csv(records).encode("utf-8-sig")
-            save_filename = Path(filename).stem + ".csv"
+            handler = handler_version(filename)
+            save_filename = csv_export_name(filename, self._meta_version, handler.version if handler else None)
             file_types = (ui_text("dialogs.csvFiles"), ui_text("dialogs.allFiles"))
         else:
             if self._cached_path == norm and self._cached_data is not None:

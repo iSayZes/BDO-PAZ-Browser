@@ -1666,6 +1666,11 @@ them, the files `source_fingerprint.project_files()` returns. A file the
 handler opens by path without importing it is not in that set, so a change
 to it alone leaves the version as it was.
 
+`updates/handler_versions.py` reads the running version for the GUI footer,
+`browser.py --handler-version <file or key>` and the `handler_version` field of
+`browser.py --records --json`, next to `client_version`. From source it is the last commit that changed
+that file set, with a `+` for uncommitted edits.
+
 ## Required `__init__.py`
 
 Every package folder should contain `__init__.py`.

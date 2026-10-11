@@ -89,6 +89,11 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
         return self._entries
 
     @property
+    def meta_version(self) -> int | None:
+        """The client version in the loaded folder's `.meta` header; None before a load."""
+        return self._meta_version
+
+    @property
     def paz_root(self) -> Path | None:
         return self._paz_root
 

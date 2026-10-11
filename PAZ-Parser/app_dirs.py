@@ -3,9 +3,10 @@
 The Data Folder is `%LOCALAPPDATA%\\BDO-PAZ-Browser` from source, `data\\` next
 to the exe in the Windows build (so the unzipped folder holds everything), or
 the folder picked in the settings. An exe whose folder isn't writable, such as
-one unzipped into Program Files, uses the `%LOCALAPPDATA%` folder too. It holds `paz_config.json` and `cache\\`, with one cache
-subfolder per client named after a hash of its PAZ path, so a test client
-keeps caches of its own.
+one unzipped into Program Files, uses the `%LOCALAPPDATA%` folder too. It holds
+`paz_config.json`, the saved map pins in `map_pins.json` and `cache\\`, with
+one cache subfolder per client named after a hash of its PAZ path, so a test
+client keeps caches of its own.
 
 The config can't hold its own location, so a picked folder is remembered in
 `location.json` in the default folder. A picked folder that is gone, such as
@@ -38,6 +39,10 @@ from app_version import is_frozen
 
 APP_NAME = "BDO-PAZ-Browser"
 CONFIG_NAME = "paz_config.json"
+# The map pins placed with `save` (`map_pins_file.py`).
+MAP_PINS_FILE = "map_pins.json"
+# What the user made: copied when another Data Folder is picked.
+USER_FILES = (CONFIG_NAME, MAP_PINS_FILE)
 # In the default Data Folder: {"data_folder": "<picked folder>"}, only while one is picked.
 LOCATION_FILE = "location.json"
 # Next to the exe: the Data Folder of the Windows build.
@@ -129,6 +134,11 @@ def config_file() -> Path:
     return data_dir() / CONFIG_NAME
 
 
+def map_pins_file() -> Path:
+    """`map_pins.json` in the Data Folder in use."""
+    return data_dir() / MAP_PINS_FILE
+
+
 def adopt_legacy_config(legacy: Path) -> None:
     """Move a config an older version kept at `legacy` into the Data Folder.
 
@@ -146,16 +156,17 @@ def adopt_legacy_config(legacy: Path) -> None:
         logging.warning("Could not move %s to %s", legacy, target, exc_info=True)
 
 
-def copy_config(source: Path, target: Path) -> None:
-    """Copy the config of Data Folder `source` into `target`, replacing one already there.
+def copy_user_files(source: Path, target: Path) -> None:
+    """Copy the config and saved map pins of Data Folder `source` into `target`, replacing any there.
 
-    The copy in `source` stays. Raises OSError when it cannot be copied.
+    A file `source` doesn't have is left alone in `target`. The copies in
+    `source` stay. Raises OSError when one cannot be copied.
     """
-    config = source / CONFIG_NAME
-    if not config.is_file():
-        return
-    target.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(config, target / CONFIG_NAME)
+    for name in USER_FILES:
+        file = source / name
+        if file.is_file():
+            target.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(file, target / name)
 
 
 def cache_root(data: Path) -> Path:

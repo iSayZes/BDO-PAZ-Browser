@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+from map_icons import PLAYER_ICON
 from map_pins import LABEL_MAX_LENGTH, WORLD_LIMIT_CM, Pin, PinError, PinRequest, PinStore, parse_pin_request
 
 
@@ -84,8 +85,30 @@ def test_heading_folds_into_0_to_360(heading: object, stored: float | None) -> N
         {"type": "player", "x": 0, "z": 0, "heading": "north"},
         {"type": "player", "x": 0, "z": 0, "heading": True},
         {"type": "player", "x": 0, "z": 0, "heading": float("inf")},
+        {"type": "marker", "x": 0, "z": 0, "icon": "castle_of_nowhere"},
+        {"type": "marker", "x": 0, "z": 0, "icon": 5},
+        {"type": "marker", "x": 0, "z": 0, "save": "yes"},
+        {"type": "player", "x": 0, "z": 0, "save": True},
     ],
 )
 def test_parse_pin_request_refuses_bad_data(data: object) -> None:
     with pytest.raises(PinError):
         parse_pin_request(data)
+
+
+def test_a_pin_without_an_icon_gets_its_types_icon() -> None:
+    store = PinStore()
+
+    player = store.place(parse_pin_request({"type": "player", "x": 0, "z": 0}))
+    marker = store.place(parse_pin_request({"type": "marker", "x": 0, "z": 0}))
+    tent = store.place(parse_pin_request({"type": "marker", "x": 0, "z": 0, "icon": "tent"}))
+
+    assert (player.icon, marker.icon, tent.icon) == (PLAYER_ICON, None, "tent")
+    assert tent.to_dict()["icon"] == "tent"
+
+
+def test_save_is_kept_on_the_pin() -> None:
+    pin = PinStore().place(parse_pin_request({"type": "marker", "x": 0, "z": 0, "save": True}))
+
+    assert pin.saved
+    assert pin.to_dict()["saved"] is True

@@ -11,10 +11,6 @@ const TILE_PX = 256;
 // Panning stops this far past the map's edge, as a share of its size.
 const PAN_MARGIN = 0.1;
 const VIEW_PARTS = ["map-canvas", "map-message", "map-prompt", "map-progress"];
-// Pin marker sizes in px; the CSS draws them (25-map-view.css, .map-pin and
-// .map-pin-facing). A pin with a heading is an arrow, a bigger target.
-const PIN_SIZE = 14;
-const FACING_PIN_SIZE = 22;
 
 function worldCrs() {
   return L.extend({}, L.CRS.Simple, {
@@ -66,34 +62,27 @@ export const mapViewMethods = {
     if (this._activeView === "map" && !this._leafletMap) this._showMapProgress(progress);
   },
 
-  // Pushed on every pin change of the map API: the full list.
-  onMapPinsChanged(pins) {
-    this._mapPins = pins;
-    this._drawMapPins();
+  // "X 13,800 · Z 76,996" for a world position, as the cursor readout shows it.
+  _mapCoords(x, z) {
+    return t("map.coords", { x: formatCount(Math.round(x)), z: formatCount(Math.round(z)) });
   },
 
-  _drawMapPins() {
-    const layer = this._mapPinLayer;
-    if (!layer) return;
-    layer.clearLayers();
-    this._mapPins.forEach((pin) => {
-      const label = pin.label || t(`map.pinTypes.${pin.type}`);
-      L.marker(L.latLng(pin.z, pin.x), { icon: this._mapPinIcon(pin), keyboard: false })
-        .bindTooltip(`${label} · ${t("map.coords", { x: formatCount(Math.round(pin.x)), z: formatCount(Math.round(pin.z)) })}`)
-        .addTo(layer);
-    });
-  },
-
-  // A dot, or with a heading an arrow turned that many degrees clockwise from
-  // north. North is up on this map, so the CSS rotation is the heading itself.
-  _mapPinIcon(pin) {
-    if (pin.heading === null || pin.heading === undefined) {
-      return L.divIcon({ className: `map-pin map-pin-${pin.type}`, iconSize: [PIN_SIZE, PIN_SIZE] });
-    }
+  // A game icon (map_icons.py) as a Leaflet icon, `height` px tall (its own
+  // size by default), on the position at its anchor or, `centered`, its middle.
+  // The PNG comes from the local server, like the tiles (map_icons_build.py).
+  _mapGameIcon(name, icon, { heading = 0, height = icon.size[1], centered = false } = {}) {
+    const url = this._mapIconUrl.replace("{name}", encodeURIComponent(name));
+    const scale = height / icon.size[1];
+    const width = icon.size[0] * scale;
+    const [anchorX, anchorY] = centered ? [width / 2, height / 2] : icon.anchor.map((value) => value * scale);
+    const turn = icon.turns
+      ? ` style="transform: rotate(${Number(heading)}deg); transform-origin: ${anchorX}px ${anchorY}px"`
+      : "";
     return L.divIcon({
-      className: `map-pin-facing map-pin-facing-${pin.type}`,
-      html: `<div class="map-pin-arrow" style="transform: rotate(${Number(pin.heading)}deg)"></div>`,
-      iconSize: [FACING_PIN_SIZE, FACING_PIN_SIZE],
+      className: "map-pin-icon",
+      html: `<img src="${url}" width="${width}" height="${height}" alt=""${turn}>`,
+      iconSize: [width, height],
+      iconAnchor: [anchorX, anchorY],
     });
   },
 
@@ -130,6 +119,7 @@ export const mapViewMethods = {
       document.getElementById(part).hidden = part !== id;
     });
     if (id !== "map-canvas") document.getElementById("map-coords").hidden = true;
+    document.getElementById("map-filters").hidden = id !== "map-canvas";
     if (message !== undefined) document.getElementById(id).textContent = message;
   },
 
@@ -186,26 +176,43 @@ export const mapViewMethods = {
 
     const coords = document.getElementById("map-coords");
     map.on("mousemove", (e) => {
-      coords.textContent = t("map.coords", {
-        x: formatCount(Math.round(e.latlng.lng)),
-        z: formatCount(Math.round(e.latlng.lat)),
-      });
+      coords.textContent = this._mapCoords(e.latlng.lng, e.latlng.lat);
       coords.hidden = false;
     });
     map.on("mouseout", () => {
       coords.hidden = true;
     });
     this._leafletMap = map;
+    this._mapIconUrl = state.iconUrl;
+    this._addMapNodeLayer(map);
     this._mapPinLayer = L.layerGroup().addTo(map);
-    this._loadMapPins();
+    this._mapPinMarkers = new Map();
+    this._loadMapLayers();
   },
 
+  // The saved filters and the icons first: the nodes and pins draw with them.
+  async _loadMapLayers() {
+    await this._loadMapFilter();
+    try {
+      this._mapIcons = await window.pywebview.api.get_map_icons();
+    } catch {
+      // Without icons every pin is a dot or an arrow, and there are no nodes.
+    }
+    await Promise.all([this._loadMapNodes(), this._loadMapPins()]);
+    if (this._leafletMap) this._renderMapFilters();
+  },
+
+  // Best effort. A push can draw pins before the icons are in, so the
+  // markers are made again once they are.
   async _loadMapPins() {
     try {
       this._mapPins = await window.pywebview.api.get_map_pins();
     } catch {
       // The pushes keep the list current from here on.
     }
+    if (!this._mapPinLayer) return;
+    this._mapPinLayer.clearLayers();
+    this._mapPinMarkers.clear();
     this._drawMapPins();
   },
 
@@ -213,6 +220,11 @@ export const mapViewMethods = {
     if (!this._leafletMap) return;
     this._leafletMap.remove();
     this._leafletMap = null;
+    this._mapNodes = null;
     this._mapPinLayer = null;
+    this._mapPinMarkers = null;
+    // The next map may be another client's, with icons of its own.
+    this._mapIcons = {};
+    this._mapIconUrl = "";
   },
 };

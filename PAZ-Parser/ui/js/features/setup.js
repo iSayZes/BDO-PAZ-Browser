@@ -1,9 +1,10 @@
 "use strict";
 
 export const setupMethods = {
+  // The Output folder is kept in the config (api/bdo_config.py output_path_setting).
   _setupOutputPathSave() {
     document.getElementById("output-path").addEventListener("change", (e) => {
-      localStorage.setItem("outputPath", e.target.value);
+      window.pywebview.api.save_output_path(e.target.value);
     });
   },
 

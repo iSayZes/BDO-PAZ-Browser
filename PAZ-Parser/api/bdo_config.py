@@ -102,6 +102,51 @@ def dismissed_loc_warnings(cfg: dict) -> frozenset[str]:
     return frozenset(code for code in codes if isinstance(code, str)) if isinstance(codes, list) else frozenset()
 
 
+# The bottom bar's Output folder, where Extract writes.
+OUTPUT_PATH_KEY = "output_path"
+# Longer than any Windows path; a longer value is not a folder.
+_OUTPUT_PATH_MAX_LENGTH = 32767
+
+
+def output_path_setting(cfg: dict) -> str:
+    """The saved Output folder; '' when none is saved."""
+    path = cfg.get(OUTPUT_PATH_KEY)
+    return path if isinstance(path, str) and len(path) <= _OUTPUT_PATH_MAX_LENGTH else ""
+
+
+# The Map view's Filters panel (map-filters.js): {"choices": {card: {row: on}},
+# "collapsed": [card, ...], "open": bool}, only the toggles the user changed.
+MAP_FILTERS_KEY = "map_filters"
+# More cards or rows than the panel will ever have; bigger saved data is cut.
+_MAP_FILTER_MAX_ITEMS = 200
+
+
+def map_filters_setting(cfg: dict) -> dict:
+    """The saved Map view filters, with anything not of the right shape dropped."""
+    saved = cfg.get(MAP_FILTERS_KEY)
+    saved = saved if isinstance(saved, dict) else {}
+    return {
+        "choices": _filter_choices(saved.get("choices")),
+        "collapsed": [card for card in _list(saved.get("collapsed")) if isinstance(card, str)][:_MAP_FILTER_MAX_ITEMS],
+        "open": saved.get("open") is not False,
+    }
+
+
+def _filter_choices(value: object) -> dict[str, dict[str, bool]]:
+    if not isinstance(value, dict):
+        return {}
+    cards = list(value.items())[:_MAP_FILTER_MAX_ITEMS]
+    return {
+        card: {row: on for row, on in list(rows.items())[:_MAP_FILTER_MAX_ITEMS] if isinstance(on, bool)}
+        for card, rows in cards
+        if isinstance(card, str) and isinstance(rows, dict)
+    }
+
+
+def _list(value: object) -> list:
+    return value if isinstance(value, list) else []
+
+
 def save_config(updates: dict) -> None:
     # A config from a newer app keeps its own version and keys.
     _write_config(config_file(), {VERSION_KEY: current_version(), **load_config(), **updates})

@@ -29,7 +29,17 @@ export const app = {
   // get_world_map() answer is dropped.
   _leafletMap: null,
   _mapSeq: 0,
-  // The map API's pins (map_pins.py) and the Leaflet layer that draws them.
+  // The map API's pins (map_pins.py), the Leaflet layer that draws them and
+  // its markers by pin id, and the game icons by name with the URL template
+  // of their files (map_icons_build.py).
   _mapPins: [],
   _mapPinLayer: null,
+  _mapPinMarkers: null,
+  _mapIcons: {},
+  _mapIconUrl: "",
+  // The worldmap node layer (map-nodes.js): its layer group and {node, name,
+  // marker} entries; the Filters panel's choices (map-filters.js), read from
+  // the config when the first map opens.
+  _mapNodes: null,
+  _mapFilter: null,
 };

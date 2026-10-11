@@ -1131,6 +1131,9 @@ IDs (`LookupValue`).
 | `SKILL_BUFFS`    | `skill.dbss`, `skilloffset.dbss`           | buff IDs (tuple) |
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
+| `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
+| `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
+| `NODE_LINKS`     | `mapdata_realexplore2.bwp`                 | linked node keys (tuple) |
 | `TELEPORT_BUFFS` | `buff.dbss`, `buffoffset.dbss`             | buff IDs (tuple) |
 | `TELEPORT_BUFF_NAME_KR` | `buff.dbss`, `buffoffset.dbss`      | Korean buff name |
 | `TELEPORT_NEAREST_NODE` | `teleport.dbss`, `mapdata_realexplore2.bwp` | `(node key, metres)` |
@@ -1275,6 +1278,19 @@ a name is missing, for a table with a better fallback than the bare sub-node
 name (`plantexchangegroup.bss` keeps its Korean label). `node_name()`
 in the same module is the plain LOC type 29 name the node tables show. It is
 built by `build_node_parent_index()` in `_bss/exploration/parser.py`.
+
+`MAP_NODE` holds the Map view's node layer: each enabled node with a worldmap
+waypoint and a radius above 0, as its `node_kind`, the waypoint's x and z in
+whole world cm, `is_sub_node` and whether it is a sea node (`is_sea_node()`:
+a Normal main node with no contribution cost, which colours its links). A sub-node has a waypoint of its own, while its
+`exploration.bss` position repeats its parent's. `NODE_NAME_KR` is the Korean
+`exploration.bss` name of each node, the fallback when LOC type 29 has none.
+The core reads both in `map_nodes.py`; `build_map_node_index()` and
+`build_node_name_kr_index()` in `_bss/exploration/parser.py` build them.
+`NODE_LINKS` holds the keys each worldmap waypoint links to, ascending, so
+every link is listed under both its ends; `map_nodes.py` keeps the links
+between two map nodes for the Map view's link lines. It is built by
+`build_node_link_index()` in `_bwp/waypoint/worldmap.py`.
 
 `TELEPORT_BUFFS` maps a [teleport.dbss](file-formats/teleport_dbss.md) point
 to the effect type 23 buffs that go there, and `TELEPORT_BUFF_NAME_KR` maps

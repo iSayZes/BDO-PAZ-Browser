@@ -1,10 +1,11 @@
 "use strict";
 
-// The views of the toolbar rail. Each view lists the panes of #main it shows;
-// switching hides every other pane. The toolbar and the bottom bar stay.
+// The views of the toolbar rail. Each view lists the panes it shows: parts of
+// #main and the bottom bar's extract row, which only Files uses; switching
+// hides every other pane. The toolbar and the bottom bar's status row stay.
 // `onShow` names the method that fills the view when it opens.
 const VIEWS = {
-  files: { panes: ["sidebar", "v-divider", "right-panel"] },
+  files: { panes: ["sidebar", "v-divider", "right-panel", "extract-row"] },
   map: { panes: ["map-view"], onShow: "_showMapView" },
 };
 

@@ -22,7 +22,7 @@ from typing import cast
 
 from _common.icon_index import borrow_icons
 from _bss.buffsimply.parser import build_buff_icon_index
-from _bss.exploration.parser import build_node_parent_index
+from _bss.exploration.parser import build_map_node_index, build_node_name_kr_index, build_node_parent_index
 from _bss.groupcameradata.parser import build_cutscene_icon_index
 from _bss.instancefieldmapinfo.parser import build_instance_field_title_index
 from _bss.lightstoneset.parser import build_lightstone_set_index
@@ -32,7 +32,7 @@ from _bss.plantexchangegroup.parser import build_production_item_index
 from _bss.questjournalvideoinfo.parser import build_quest_artwork_index
 from _bss.specialenchantitem.parser import build_item_key_icon_index
 from _bss.submenu.parser import build_submenu_icon_index, build_submenu_icon_region_index
-from _bwp.waypoint.worldmap import WORLDMAP_FILE
+from _bwp.waypoint.worldmap import WORLDMAP_FILE, build_node_link_index
 from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
 from _dbss.characterstatic.parser import build_knowledge_character_index
@@ -176,6 +176,10 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     ),
     # Sub-node -> parent node, so a sub-node reads `Bambu Valley - Mining`.
     IndexSpec(IndexKind.NODE_PARENT, (EXPLORATION, WORLDMAP), build_node_parent_index),
+    # The Map view's node layer (map_nodes.py): kind and waypoint position per node.
+    IndexSpec(IndexKind.MAP_NODE, (EXPLORATION, WORLDMAP), build_map_node_index),
+    IndexSpec(IndexKind.NODE_NAME_KR, (EXPLORATION,), build_node_name_kr_index),
+    IndexSpec(IndexKind.NODE_LINKS, (WORLDMAP,), build_node_link_index),
     # The 654 teleport buffs out of the 12 MB buff.dbss, to name teleport.dbss points.
     IndexSpec(IndexKind.TELEPORT_BUFFS, (BUFF, BUFF_OFFSET), build_teleport_buff_index),
     IndexSpec(IndexKind.TELEPORT_BUFF_NAME_KR, (BUFF, BUFF_OFFSET), build_teleport_buff_name_index),

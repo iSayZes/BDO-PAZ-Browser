@@ -9,7 +9,9 @@ from pathlib import Path
 import pytest
 
 from bdo_server import LocalServer
+from map_icons_build import build_icons
 from map_pins import PinStore
+from tests.map_icon_samples import sample_files
 from world_map import sea_variant
 from world_map_build import sea_path, tile_path
 
@@ -89,6 +91,19 @@ def test_a_tile_url_without_the_token_is_forbidden(server: LocalServer, tmp_path
     assert _status(_tile_url(template, 7, 0, 0).split("?")[0]) == 403
 
 
+def test_a_built_map_icon_is_served_as_png(server: LocalServer, tmp_path: Path) -> None:
+    build_icons(sample_files().get, tmp_path)
+    server.serve_map(tmp_path, 3464)
+    template = server.map_icon_url(3464)
+
+    body, content_type = _get(template.replace("{name}", "village"))
+
+    assert content_type == "image/png" and body.startswith(b"\x89PNG")
+    assert _status(template.replace("{name}", "tent")) == 404  # not built: the sample client lacks it
+    assert _status(server.map_icon_url(3458).replace("{name}", "village")) == 404
+    assert _status(template.replace("{name}", "village").split("?")[0]) == 403
+
+
 # ── Map API ──────────────────────────────────────────────────────────────────
 
 
@@ -140,6 +155,17 @@ def test_a_bad_pin_is_refused_with_the_reason(server: LocalServer, pins: PinStor
     assert status == 400
     assert isinstance(body, dict) and "type" in body["error"]
     assert pins.pins() == ()
+
+
+def test_a_pin_takes_an_icon_and_save(server: LocalServer, pins: PinStore) -> None:
+    status, body = _api(server, "POST", "/pins", {"type": "marker", "x": 0, "z": 0, "icon": "tent", "save": True})
+
+    assert status == 201
+    assert isinstance(body, dict)
+    assert (body["pin"]["icon"], body["pin"]["saved"]) == ("tent", True)
+    status, body = _api(server, "POST", "/pins", {"type": "player", "x": 0, "z": 0, "save": True})
+    assert status == 400
+    assert isinstance(body, dict) and "saved" in body["error"]
 
 
 def test_the_map_api_needs_the_token(server: LocalServer, pins: PinStore) -> None:

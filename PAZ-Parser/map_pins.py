@@ -1,9 +1,12 @@
 """Map pins: markers the Map view draws at world positions.
 
 Pins come from the local HTTP API (`bdo_server.py`, docs/map-api.md) and live
-in memory while the app runs. Positions are world units (cm): x and z on the
-ground plane, y the optional height. The optional heading is the way the pin
-faces in degrees clockwise from north (+z), 0 to 360. A singleton pin type,
+in memory while the app runs; a pin placed with `save` is also kept in
+`map_pins.json` (`map_pins_file.py`) and comes back on the next start.
+Positions are world units (cm): x and z on the ground plane, y the optional
+height. The optional heading is the way the pin faces in degrees clockwise
+from north (+z), 0 to 360. The optional icon names one of the game's world map
+icons (`map_icons.py`); a pin type can bring its own. A singleton pin type,
 such as `player`, keeps at most one pin: placing a new one replaces the old
 one.
 """
@@ -14,6 +17,9 @@ import math
 import threading
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from typing import Protocol
+
+from map_icons import ICON_NAMES, PLAYER_ICON
 
 
 @dataclass(frozen=True)
@@ -21,13 +27,18 @@ class PinType:
     name: str
     # At most one pin of this type; a new one replaces the old one.
     singleton: bool
+    # Can be placed with `save`. A player pin follows a live position, so a
+    # saved one would be stale on the next start.
+    can_save: bool
+    # The icon of a pin placed without one; None draws a dot.
+    default_icon: str | None = None
 
 
 PIN_TYPES: Mapping[str, PinType] = {
     pin_type.name: pin_type
     for pin_type in (
-        PinType("player", singleton=True),
-        PinType("marker", singleton=False),
+        PinType("player", singleton=True, can_save=False, default_icon=PLAYER_ICON),
+        PinType("marker", singleton=False, can_save=True),
     )
 }
 LABEL_MAX_LENGTH = 100
@@ -50,6 +61,8 @@ class PinRequest:
     y: float | None = None
     label: str = ""
     heading: float | None = None
+    icon: str | None = None
+    save: bool = False
 
 
 @dataclass(frozen=True)
@@ -61,6 +74,23 @@ class Pin:
     y: float | None
     label: str
     heading: float | None = None
+    icon: str | None = None
+    saved: bool = False
+
+    @classmethod
+    def from_request(cls, pin_id: str, request: PinRequest) -> Pin:
+        """The pin `request` asks for, with its type's icon when it names none."""
+        return cls(
+            id=pin_id,
+            type=request.type,
+            x=request.x,
+            z=request.z,
+            y=request.y,
+            label=request.label,
+            heading=request.heading,
+            icon=request.icon or PIN_TYPES[request.type].default_icon,
+            saved=request.save,
+        )
 
     def to_dict(self) -> dict:
         return {
@@ -71,11 +101,13 @@ class Pin:
             "z": self.z,
             "label": self.label,
             "heading": self.heading,
+            "icon": self.icon,
+            "saved": self.saved,
         }
 
 
 def parse_pin_request(data: object) -> PinRequest:
-    """A `PinRequest` from a JSON object: {"type", "x", "z", "y"?, "label"?, "heading"?}.
+    """A `PinRequest` from a JSON object: {"type", "x", "z", "y"?, "label"?, "heading"?, "icon"?, "save"?}.
 
     Raises PinError on a missing or wrong field.
     """
@@ -97,7 +129,25 @@ def parse_pin_request(data: object) -> PinRequest:
         y=None if height is None else _coordinate(data, "y"),
         label=label,
         heading=_heading(data.get("heading")),
+        icon=_icon(data.get("icon")),
+        save=_save(data.get("save", False), PIN_TYPES[pin_type]),
     )
+
+
+def _icon(value: object) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str) or value not in ICON_NAMES:
+        raise PinError(f"icon must be one of {', '.join(sorted(ICON_NAMES))}, got {value!r}")
+    return value
+
+
+def _save(value: object, pin_type: PinType) -> bool:
+    if not isinstance(value, bool):
+        raise PinError(f"save must be true or false, got {value!r}")
+    if value and not pin_type.can_save:
+        raise PinError(f"{pin_type.name} pins cannot be saved")
+    return value
 
 
 def _heading(value: object) -> float | None:
@@ -121,13 +171,26 @@ def _coordinate(data: dict, name: str) -> float:
 PinListener = Callable[[tuple[Pin, ...]], None]
 
 
-class PinStore:
-    """The pins of this session; thread safe, every change notifies the listeners."""
+class SavedPins(Protocol):
+    """Where saved pins live between runs (`map_pins_file.SavedPinsFile`)."""
 
-    def __init__(self) -> None:
+    def load(self) -> tuple[Pin, ...]: ...
+    def write(self, pins: tuple[Pin, ...]) -> None: ...
+
+
+class PinStore:
+    """The pins of this session; thread safe, every change notifies the listeners.
+
+    With `saved`, the store starts with the saved pins and writes them again
+    after every change that adds or removes one.
+    """
+
+    def __init__(self, saved: SavedPins | None = None) -> None:
         self._lock = threading.Lock()
-        self._pins: tuple[Pin, ...] = ()
-        self._next_id = 1
+        self._saved = saved
+        self._pins: tuple[Pin, ...] = saved.load() if saved is not None else ()
+        # Saved pins keep their ids, so new ones count on from the highest.
+        self._next_id = 1 + max((int(pin.id) for pin in self._pins if pin.id.isdigit()), default=0)
         self._listeners: tuple[PinListener, ...] = ()
 
     def subscribe(self, listener: PinListener) -> None:
@@ -140,21 +203,14 @@ class PinStore:
     def place(self, request: PinRequest) -> Pin:
         """Add a pin; a singleton type's old pin goes."""
         with self._lock:
-            pin = Pin(
-                id=str(self._next_id),
-                type=request.type,
-                x=request.x,
-                z=request.z,
-                y=request.y,
-                label=request.label,
-                heading=request.heading,
-            )
+            pin = Pin.from_request(str(self._next_id), request)
             self._next_id += 1
-            kept = self._pins
+            old = self._pins
+            kept = old
             if PIN_TYPES[request.type].singleton:
-                kept = tuple(old for old in kept if old.type != request.type)
-            self._pins = (*kept, pin)
-            pins = self._pins
+                kept = tuple(other for other in old if other.type != request.type)
+            pins = (*kept, pin)
+            self._update(old, pins)
         self._notify(pins)
         return pin
 
@@ -168,12 +224,22 @@ class PinStore:
 
     def _remove_where(self, matches: Callable[[Pin], bool]) -> int:
         with self._lock:
-            kept = tuple(pin for pin in self._pins if not matches(pin))
-            removed = len(self._pins) - len(kept)
-            self._pins = kept
+            old = self._pins
+            kept = tuple(pin for pin in old if not matches(pin))
+            self._update(old, kept)
+        removed = len(old) - len(kept)
         if removed:
             self._notify(kept)
         return removed
+
+    def _update(self, old: tuple[Pin, ...], pins: tuple[Pin, ...]) -> None:
+        """Make `pins` the store's pins, writing the saved ones when they changed; call with the lock held."""
+        self._pins = pins
+        if self._saved is None:
+            return
+        saved = tuple(pin for pin in pins if pin.saved)
+        if saved != tuple(pin for pin in old if pin.saved):
+            self._saved.write(saved)
 
     def _notify(self, pins: tuple[Pin, ...]) -> None:
         for listener in self._listeners:

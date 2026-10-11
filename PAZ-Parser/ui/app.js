@@ -23,6 +23,9 @@ import { handlerUpdateMethods } from "./js/features/handler-update.js";
 import { previewViewMethods } from "./js/features/preview-views.js";
 import { viewMethods } from "./js/features/views.js";
 import { mapViewMethods } from "./js/features/map-view.js";
+import { mapPinMethods } from "./js/features/map-pins.js";
+import { mapNodeMethods } from "./js/features/map-nodes.js";
+import { mapFilterMethods } from "./js/features/map-filters.js";
 import { installProfiler } from "./js/core/profiler.js";
 import { installIconSprite } from "./js/core/icons.js";
 
@@ -50,6 +53,9 @@ Object.assign(
   previewViewMethods,
   viewMethods,
   mapViewMethods,
+  mapPinMethods,
+  mapNodeMethods,
+  mapFilterMethods,
 );
 
 installProfiler(app);

@@ -60,7 +60,7 @@ Walking the records with this layout ends at `157283`, the footer ends at `15795
 | `+0x16` | u8     | grind_tier            | `2` on 11 records, `3` on Star's End 1704; meaning unconfirmed                                           |
 | `+0x17` | u32    | sub_key               | Unique when nonzero (522 records, all main nodes); `0` on every sub-node                                 |
 | `+0x1B` | u32    | sub_key_copy          | Equals `sub_key` or is `0` (40 main nodes, e.g. Velia, Heidel, Glish)                                    |
-| `+0x1F` | f32    | radius                | Examples `2700.0`, `9700.0`, `12700.0`                                                                   |
+| `+0x1F` | f32    | radius                | Examples `2700.0`, `9700.0`, `12700.0`; `0.0` only on Duvencrune 1651 (client 3464), a second Duvencrune far off the map that the Map view leaves out |
 | `+0x23` | f32    | radius_squared        | `radius²` in all records                                                                                 |
 | `+0x27` | u32    | description_index     | Index into `string_table`; 13 shared Korean descriptions, each maps 1:1 to LOC type 29 `str_id4=1`       |
 | `+0x2B` | u16    | manager_family_id     | Character ID (LOC type 6) shared by a main node and its production nodes; `0` on 120 records             |

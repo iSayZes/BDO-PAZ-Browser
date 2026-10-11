@@ -23,7 +23,7 @@ from bdo_models import MetaFile, PazEntry
 from app_dirs import (
     cache_root,
     client_cache_dir,
-    copy_config,
+    copy_user_files,
     data_dir,
     default_data_dir,
     move_out_of_game_folder,
@@ -113,11 +113,11 @@ class CacheMixin(ApiState):
         self._cache_dir = cache_dir
 
     def _move_data_dir(self, old: Path, new: Path) -> list[str]:
-        """Switch the Data Folder from `old` to `new`: copy the config, delete `old`'s caches.
+        """Switch the Data Folder from `old` to `new`: copy the config and saved pins, delete `old`'s caches.
 
-        The config is copied over any config already in `new`; the one in
-        `old` stays. Raises OSError, before anything changed, when the config
-        cannot be copied.
+        The config and saved map pins are copied over any already in `new`;
+        the ones in `old` stay. Raises OSError, before anything changed, when
+        they cannot be copied.
 
         The loaded folder's entry list is saved again from memory, so the next
         start skips the minute-long index rebuild. The thumbnail and records
@@ -126,7 +126,7 @@ class CacheMixin(ApiState):
         `old` are deleted too and rebuilt when their folder loads. Returns one
         message per old cache file that could not be deleted.
         """
-        copy_config(old, new)
+        copy_user_files(old, new)
         set_picked_data_dir(new)
         self._close_records_cache()
         self._close_thumbnail_cache()

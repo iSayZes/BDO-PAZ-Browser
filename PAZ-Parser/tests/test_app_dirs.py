@@ -12,6 +12,7 @@ from app_dirs import (
     APP_NAME,
     CONFIG_NAME,
     LOCATION_FILE,
+    MAP_PINS_FILE,
     MARKER_FILE,
     PORTABLE_FOLDER,
     adopt_legacy_config,
@@ -19,7 +20,7 @@ from app_dirs import (
     client_cache_dir,
     client_id,
     config_file,
-    copy_config,
+    copy_user_files,
     data_dir,
     default_data_dir,
     is_same_folder,
@@ -138,18 +139,32 @@ def test_a_config_already_in_the_data_folder_wins_over_the_legacy_one(tmp_path: 
     assert legacy.exists()
 
 
-def test_copying_the_config_replaces_the_target_and_keeps_the_source(tmp_path: Path) -> None:
+def test_copying_the_user_files_replaces_the_target_and_keeps_the_source(tmp_path: Path) -> None:
     source = tmp_path / "old"
     target = tmp_path / "new"
     source.mkdir()
     target.mkdir()
     (source / CONFIG_NAME).write_text('{"language": "de"}', encoding="utf-8")
     (target / CONFIG_NAME).write_text('{"language": "fr"}', encoding="utf-8")
+    (source / MAP_PINS_FILE).write_text('{"pins": []}', encoding="utf-8")
 
-    copy_config(source, target)
+    copy_user_files(source, target)
 
     assert (target / CONFIG_NAME).read_text(encoding="utf-8") == '{"language": "de"}'
-    assert (source / CONFIG_NAME).exists()
+    assert (target / MAP_PINS_FILE).read_text(encoding="utf-8") == '{"pins": []}'
+    assert (source / CONFIG_NAME).exists() and (source / MAP_PINS_FILE).exists()
+
+
+def test_a_user_file_the_source_lacks_stays_in_the_target(tmp_path: Path) -> None:
+    source = tmp_path / "old"
+    target = tmp_path / "new"
+    source.mkdir()
+    target.mkdir()
+    (target / MAP_PINS_FILE).write_text('{"pins": []}', encoding="utf-8")
+
+    copy_user_files(source, target)
+
+    assert (target / MAP_PINS_FILE).read_text(encoding="utf-8") == '{"pins": []}'
 
 
 def test_caches_live_in_the_cache_folder_of_the_data_folder(tmp_path: Path) -> None:

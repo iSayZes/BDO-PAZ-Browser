@@ -6,7 +6,12 @@ from typing import Any
 import pytest
 
 from _bss.exploration.connections import connection_fields
-from _bss.exploration.parser import build_node_parent_index
+from _bss.exploration.parser import (
+    NODE_KIND_NAMES,
+    build_map_node_index,
+    build_node_name_kr_index,
+    build_node_parent_index,
+)
 from _bwp.waypoint.worldmap import WORLDMAP_FILE
 from tests.framework import (
     DeclaredCountTest,
@@ -196,3 +201,53 @@ def test_node_parent_index_holds_only_sub_nodes_and_their_links(
 
 def test_node_parent_index_is_empty_without_a_graph(exploration_result: HandlerResult) -> None:
     assert build_node_parent_index(exploration_result.source.data, b"not a graph") == {}
+
+
+def test_map_node_index_places_enabled_nodes_on_their_waypoints(exploration_result: HandlerResult) -> None:
+    source = exploration_result.source
+    index = build_map_node_index(source.data, source.file(WORLDMAP_FILE))
+    by_key = {record["node_key"]: record for record in exploration_result.records}
+
+    assert index
+    for key, (kind, x, z, is_sub, is_sea) in index.items():
+        assert by_key[key]["enabled"], key
+        assert by_key[key]["radius"] > 0, key
+        assert 0 <= kind < len(NODE_KIND_NAMES), key
+        assert (kind, is_sub) == (by_key[key]["node_kind"], by_key[key]["is_sub_node"]), key
+        assert isinstance(x, int) and isinstance(z, int), key
+        assert is_sea in (0, 1), key
+
+
+def test_map_node_index_gives_a_sub_node_its_own_position(exploration_result: HandlerResult) -> None:
+    source = exploration_result.source
+    index = build_map_node_index(source.data, source.file(WORLDMAP_FILE))
+
+    # Elder's Bridge - Lumbering (209) hangs off Elder's Bridge (63) but sits elsewhere.
+    assert index[209][1:3] != index[63][1:3]
+
+
+def test_map_node_index_is_empty_without_a_graph(exploration_result: HandlerResult) -> None:
+    assert build_map_node_index(exploration_result.source.data, b"not a graph") == {}
+
+
+def test_node_name_kr_index_holds_the_korean_names(exploration_result: HandlerResult) -> None:
+    index = build_node_name_kr_index(exploration_result.source.data)
+
+    assert index
+    assert all(index[record["node_key"]] == record["name_kr"] for record in exploration_result.records if record["name_kr"])
+
+
+@pytest.mark.parametrize(("node_key", "sea"), [(1409, True), (1439, True), (1, False), (63, False), (209, False)])
+def test_map_node_index_marks_the_open_sea(exploration_result: HandlerResult, node_key: int, sea: bool) -> None:
+    # 1409 Margoria and 1439 Juur Sea against Velia, Elder's Bridge and its Lumbering sub-node.
+    source = exploration_result.source
+    index = build_map_node_index(source.data, source.file(WORLDMAP_FILE))
+    assert bool(index[node_key][4]) is sea
+
+
+def test_map_node_index_leaves_out_the_unreachable_second_duvencrune(exploration_result: HandlerResult) -> None:
+    # 1651 has no exploration radius and sits far off the map; 1649 is the town.
+    source = exploration_result.source
+    index = build_map_node_index(source.data, source.file(WORLDMAP_FILE))
+    assert 1651 not in index
+    assert 1649 in index

@@ -32,6 +32,36 @@
     "progressTiles": "타일 {done} / {total} · {percent}%",
     "failed": "마지막 빌드에 실패했습니다: {message}",
     "coords": "X {x} · Z {z}",
+    "removePin": "제거",
+    "pinSaved": "저장됨: 다시 시작해도 남음",
+    "filters": {
+      "title": "필터",
+      "search": "거점 검색…",
+      "nodes": "거점",
+      "hideAll": "모두 숨기기",
+      "markers": "표시",
+      "links": "연결",
+      "toggleGroup": "모두 보기/숨기기",
+      "collapse": "접기/펼치기"
+    },
+    "nodeKinds": {
+      "node": "일반 거점",
+      "village": "마을",
+      "city": "도시",
+      "gate": "관문",
+      "farm": "재배",
+      "trade": "무역",
+      "collect": "채집",
+      "quarry": "채광",
+      "logging": "벌목",
+      "dangerous": "위험 지역",
+      "finance": "자산 관리소",
+      "fish_trap": "통발",
+      "minor_finance": "소형 자산 관리소",
+      "monopoly_farm": "특산품",
+      "craft": "생산",
+      "excavation": "발굴"
+    },
     "pinTypes": {
       "player": "플레이어",
       "marker": "표시"
@@ -247,7 +277,9 @@
     "cachingTables": "테이블 캐시 중 {done}/{total}: {name}",
     "cachingTablesPaused": "앱이 사용 중이라 테이블 캐시를 일시 중지함 ({done}/{total})",
     "openFolder": "시작하려면 PAZ 폴더를 여세요.",
-    "exportFailed": "내보내기 실패: {message}"
+    "exportFailed": "내보내기 실패: {message}",
+    "pinRemoveFailed": "핀을 제거하지 못했습니다: {message}",
+    "mapFiltersSaveFailed": "지도 필터를 저장하지 못했습니다: {message}"
   },
   "firstRun": {
     "body": "Black Desert 설치 폴더 안의 Paz 폴더를 고르세요. 처음 불러올 때 모든 아카이브 색인을 읽어 캐시에 저장하고, 이후 실행은 캐시에서 불러옵니다."

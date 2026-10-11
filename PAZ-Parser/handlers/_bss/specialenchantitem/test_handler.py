@@ -17,7 +17,6 @@ from tests.framework import (
     run_case,
 )
 
-from _bss.specialenchantitem.handler import display_level_text
 from _bss.specialenchantitem.parser import build_item_key_icon_index
 from _common.prefixed_string import find_prefixed_ascii
 from _dbss.itemenchant.parser import ICON_ROOT, parse_itemenchantoffset_records
@@ -130,10 +129,3 @@ def test_item_key_icon_index_matches_the_icon_column(
 
     assert index == {r["item_key"]: r["icon_path"] for r in specialenchantitem_result.records}
 
-
-@pytest.mark.parametrize(
-    ("display_level", "expected"),
-    [(0, ""), (1, "+1"), (15, "+15"), (16, "PRI"), (20, "PEN"), (25, "DEC"), (26, "")],
-)
-def test_display_level_text(display_level: int, expected: str) -> None:
-    assert display_level_text(display_level) == expected

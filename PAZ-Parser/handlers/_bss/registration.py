@@ -5,6 +5,7 @@ from bdo_preview import register_handler
 from .allquestlist.handler import AllQuestListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .cronenchant.handler import CronEnchantBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
@@ -52,6 +53,7 @@ def register_bss_handlers() -> None:
     register_handler("allquestlist.bss", AllQuestListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler(
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),

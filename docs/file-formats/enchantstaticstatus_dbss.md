@@ -197,7 +197,8 @@ split into Enchant Key and Level, then Data Offset and Data Size.
 - Cron Stones are not in this file. bdocodex shows 34, 127 and 531 for
   Kzarka Gauntlet TRI, TET and PEN, and nothing here matches. The client
   reads them through `ToClient_GetCronStoneStaticStatus`, which suggests a
-  table of its own.
+  table of its own. It is not `cronenchant.bss`: despite the name, that file
+  is the Caphras enhancement table ([cronenchant](cronenchant_bss.md)).
 - The client Lua (`window/enchant/panel_widget_enchant_main_all`) names the
   concepts this file feeds: `ToClient_GetNeedMaterialItemStaticStatus`,
   `ToClient_GetPerfectEnchantEndurancePenalty`,

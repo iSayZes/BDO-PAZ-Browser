@@ -11,6 +11,7 @@ from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
 from .employeeexp.handler import EmployeeExpBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
+from .experience.handler import ExperienceBssHandler
 from .exploration.handler import ExplorationBssHandler
 from .fairyequipskill.handler import FairyEquipSkillBssHandler
 from .fairyfeedenchantfailcount.handler import (
@@ -19,6 +20,7 @@ from .fairyfeedenchantfailcount.handler import (
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
+from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
@@ -62,6 +64,7 @@ def register_bss_handlers() -> None:
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
+    register_handler("experience.bss", ExperienceBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
     register_handler("fairyequipskill.bss", FairyEquipSkillBssHandler())
     register_handler(
@@ -71,6 +74,10 @@ def register_bss_handlers() -> None:
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
+    register_handler(
+        "hardcorecharacterstatstaticstatus.bss",
+        HardcoreCharacterStatBssHandler(),
+    )
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",

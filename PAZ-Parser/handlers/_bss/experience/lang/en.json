@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class",
+    "level": "Level",
+    "ap": "AP",
+    "dp": "DP"
+  },
+  "meta": {
+    "count": "{count} level records · {classes} class types"
+  }
+}

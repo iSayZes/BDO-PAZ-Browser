@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import struct
 
+from _common.binary import whole_float
 from _common.pabr_strings import checked_string_table_start
 from _common.record_reader import RecordReader
 
@@ -33,11 +34,6 @@ _FLOAT_STATS = (
     "hidden_damage_reduction",
     "hp",
 )
-
-
-def _stat(value: float) -> float | int:
-    """Every stat is a whole number on client 3464; a fraction stays a float."""
-    return int(value) if value.is_integer() else value
 
 
 def _read_count(reader: RecordReader) -> int:
@@ -66,7 +62,8 @@ def _read_grade(reader: RecordReader, label: str) -> list[dict]:
             "caphras_level": caphras_level,
             "stones": total_stones - previous_total,
             "total_stones": total_stones,
-            **{name: _stat(value) for name, value in zip(_FLOAT_STATS, stats)},
+            # Every stat is a whole number on client 3464.
+            **{name: whole_float(value) for name, value in zip(_FLOAT_STATS, stats)},
             "mp": mp,
         })
         previous_total = total_stones

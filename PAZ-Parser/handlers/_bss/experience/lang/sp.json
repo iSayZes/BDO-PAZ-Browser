@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "level": "Nivel",
+    "ap": "Ataque",
+    "dp": "Defensa"
+  },
+  "meta": {
+    "count": "{count} registros de nivel · {classes} tipos de clase"
+  }
+}

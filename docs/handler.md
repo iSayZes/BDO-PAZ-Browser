@@ -928,7 +928,7 @@ Examples:
 ```text
 _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
-├── binary.py
+├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
 ├── character.py         # character names and titles (LOC type 6)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks

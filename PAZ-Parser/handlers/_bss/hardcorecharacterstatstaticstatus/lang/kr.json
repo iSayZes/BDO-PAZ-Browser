@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "ap": "공격력",
+    "dp": "방어력"
+  },
+  "meta": {
+    "count": "직업 유형 {count}개"
+  }
+}

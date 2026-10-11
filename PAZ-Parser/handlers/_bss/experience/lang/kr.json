@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "level": "레벨",
+    "ap": "공격력",
+    "dp": "방어력"
+  },
+  "meta": {
+    "count": "레벨 기록 {count}개 · 직업 유형 {classes}개"
+  }
+}

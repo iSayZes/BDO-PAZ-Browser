@@ -5,6 +5,7 @@
     "item": "Objet",
     "description": "Description",
     "maxLevel": "Niveau max.",
+    "enchantKey": "Clé d'optimisation",
     "requiredLevel": "Niv. requis",
     "classes": "Classes",
     "binding": "Liaison",

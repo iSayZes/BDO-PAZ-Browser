@@ -3,7 +3,7 @@ from __future__ import annotations
 import struct
 from collections.abc import Iterator
 
-from _common.binary import u8, u16, u64
+from _common.binary import u8, u16, u32, u64
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import STRING_PREFIX_SIZE, locate_prefixed_ascii, prefixes_ending_at
@@ -53,6 +53,11 @@ _SKILL_KEYS_STRUCT = struct.Struct("<II")
 # lowest string prefix in any block sits at +0xF2 (client 3458).
 _FIXED_FIELDS_END = 0xD4
 
+# The enchant key (enchantstaticstatus.dbss) is the u32 just before the Korean
+# name's length prefix; 0 when the item has no enhancement data. Every level of
+# an item stores the same key (client 3464).
+_ENCHANT_KEY_SIZE = 4
+
 # Relative to the end of the icon text: 1 when the item can be listed on the
 # Central Market, and 2 when it can go in the Family Inventory.
 _MARKETABLE = 0x00
@@ -95,16 +100,27 @@ def _block_strings(data: bytes, start: int, end: int) -> list[tuple[int, str]]:
     return locate_prefixed_ascii(data, start + _FIXED_FIELDS_END, end)
 
 
-def _name_kr(data: bytes, start: int, icon_prefix: int) -> str:
-    """The Korean item name, the UTF-16 string whose text ends at the icon's prefix.
+def _name_prefix(data: bytes, start: int, icon_prefix: int) -> int | None:
+    """Where the Korean name's length prefix starts: the UTF-16 string whose
+    text ends at the icon's prefix.
 
     The nearest prefix that fits is the name; one further back would hold
     the name's own bytes as text.
     """
-    pos = next(prefixes_ending_at(data, start + _FIXED_FIELDS_END, icon_prefix, wide=True), None)
-    if pos is None:
+    return next(prefixes_ending_at(data, start + _FIXED_FIELDS_END, icon_prefix, wide=True), None)
+
+
+def _name_kr(data: bytes, name_prefix: int | None, icon_prefix: int) -> str:
+    if name_prefix is None:
         return ""
-    return data[pos + STRING_PREFIX_SIZE:icon_prefix].decode("utf-16-le", errors="replace")
+    return data[name_prefix + STRING_PREFIX_SIZE:icon_prefix].decode("utf-16-le", errors="replace")
+
+
+def _enchant_key(data: bytes, name_prefix: int | None) -> int | None:
+    """The enchantstaticstatus.dbss key before the Korean name; None when 0 or not found."""
+    if name_prefix is None:
+        return None
+    return u32(data, name_prefix - _ENCHANT_KEY_SIZE) or None
 
 
 def _header_fields(data: bytes, start: int) -> dict:
@@ -163,10 +179,12 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
         strings = _block_strings(data, start, end)
         icon_prefix, icon = strings[0] if strings else (None, "")
         icon_end = None if icon_prefix is None else icon_prefix + STRING_PREFIX_SIZE + len(icon)
+        name_prefix = None if icon_prefix is None else _name_prefix(data, start, icon_prefix)
         records.append({
             "item_id": row["item_id"],
-            "name_kr": "" if icon_prefix is None else _name_kr(data, start, icon_prefix),
+            "name_kr": "" if icon_prefix is None else _name_kr(data, name_prefix, icon_prefix),
             "max_enchant_level": max_levels[row["item_id"]],
+            "enchant_key": _enchant_key(data, name_prefix),
             "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
             "grade": u8(data, start + _GRADE),
             "character_id": u16(data, start + _CHARACTER_ID),
@@ -200,6 +218,29 @@ def build_item_icon_index(data: bytes, offset_data: bytes) -> dict[int, str]:
             index[row["item_id"]] = f"{ICON_ROOT}{strings[0][1].lower()}"
 
     return index
+
+
+def build_enchant_key_item_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
+    """Map an enchantstaticstatus.dbss enchant key to its base item IDs, ascending.
+
+    Only level-0 records are read: every level of an item stores the key of
+    its base block. Items with key 0 have no enhancement data and are left out.
+    """
+    items_by_key: dict[int, list[int]] = {}
+
+    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+        start = row["data_offset"]
+        end = start + row["data_size"]
+        if end > len(data):
+            continue
+        strings = _block_strings(data, start, end)
+        if not strings:
+            continue
+        enchant_key = _enchant_key(data, _name_prefix(data, start, strings[0][0]))
+        if enchant_key:
+            items_by_key.setdefault(enchant_key, []).append(row["item_id"])
+
+    return {key: tuple(sorted(items)) for key, items in items_by_key.items()}
 
 
 def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:

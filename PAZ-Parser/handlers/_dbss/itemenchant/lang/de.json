@@ -5,6 +5,7 @@
     "item": "Gegenstand",
     "description": "Beschreibung",
     "maxLevel": "Höchststufe",
+    "enchantKey": "Verstärkungsschlüssel",
     "requiredLevel": "Erf. Stufe",
     "classes": "Klassen",
     "binding": "Bindung",

@@ -5,6 +5,7 @@
     "item": "Objeto",
     "description": "Descripción",
     "maxLevel": "Nivel máx.",
+    "enchantKey": "Clave de refuerzo",
     "requiredLevel": "Nivel req.",
     "classes": "Clases",
     "binding": "Vinculación",

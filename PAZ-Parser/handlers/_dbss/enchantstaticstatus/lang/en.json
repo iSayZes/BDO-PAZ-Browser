@@ -2,9 +2,11 @@
   "columns": {
     "enchantKey": "Enchant Key",
     "level": "Level",
+    "items": "Items",
     "material": "Material",
     "materialCount": "Count",
     "chance": "Chance",
+    "onFailure": "On Failure",
     "failDurability": "Fail Durability Loss",
     "perfectCount": "Perfect Count",
     "perfectDurability": "Perfect Durability Loss",
@@ -13,9 +15,17 @@
     "accuracy": "Accuracy",
     "evasion": "Evasion",
     "hiddenEvasion": "Hidden Evasion",
+    "damageReduction": "DR",
+    "hiddenDamageReduction": "Hidden DR",
+    "maxHp": "Max HP",
     "aidItems": "Aid Items",
     "effects": "Effects",
     "description": "Description"
+  },
+  "failResult": {
+    "1": "Safe",
+    "2": "Destroyed",
+    "3": "Downgrade"
   },
   "offsetColumns": {
     "enchantKey": "Enchant Key",

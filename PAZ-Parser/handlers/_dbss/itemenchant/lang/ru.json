@@ -5,6 +5,7 @@
     "item": "Предмет",
     "description": "Описание",
     "maxLevel": "Макс. ур.",
+    "enchantKey": "Ключ усиления",
     "requiredLevel": "Треб. ур.",
     "classes": "Классы",
     "binding": "Привязка",

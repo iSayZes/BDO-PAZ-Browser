@@ -64,6 +64,8 @@ class IndexKind(Enum):
     SKILL_BUFFS = "skill_buffs"
     # Base item IDs whose skills apply a buff (itemenchant.dbss -> skill.dbss).
     BUFF_ITEMS = "buff_items"
+    # Base item IDs per enchantstaticstatus.dbss enchant key, ascending.
+    ENCHANT_KEY_ITEMS = "enchant_key_items"
     # Parent node key of each sub-node (exploration.bss + the worldmap graph).
     NODE_PARENT = "node_parent"
     # (node_kind, x, z, is_sub_node, is_sea) of each enabled node with a

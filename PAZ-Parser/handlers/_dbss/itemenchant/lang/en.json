@@ -5,6 +5,7 @@
     "item": "Item",
     "description": "Description",
     "maxLevel": "Max Level",
+    "enchantKey": "Enchant Key",
     "requiredLevel": "Req. Level",
     "classes": "Classes",
     "binding": "Binding",

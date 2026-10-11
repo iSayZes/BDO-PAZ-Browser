@@ -6,7 +6,7 @@ from collections.abc import Iterator
 from _common.binary import u8, u16, u32, u64
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
-from _common.prefixed_string import STRING_PREFIX_SIZE, locate_prefixed_ascii, prefixes_ending_at
+from _common.prefixed_string import STRING_PREFIX_SIZE, locate_prefixed_ascii, prefixes_ending_at, read_prefixed_at
 from _dbss.skill.parser import build_skill_buff_index
 
 
@@ -63,6 +63,13 @@ _ENCHANT_KEY_SIZE = 4
 _MARKETABLE = 0x00
 _FAMILY_INVENTORY = 0x0D
 _FAMILY_INVENTORY_ALLOWED = 2
+# Three UTF-16 strings follow at +0x12 (a pet script, a box prompt, Exchange
+# Info); the enhancement type sits 13 bytes after the last of them. It is the
+# enhancement system (1 ordinary weapons and armour, 19 Sovereign) and the
+# group key of guaranteeenchantss.dbss; 0 when the item has none.
+_MESSAGES = 0x12
+_MESSAGE_COUNT = 3
+_ENHANCEMENT_TYPE_AFTER_MESSAGES = 0x0D
 
 
 def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
@@ -139,13 +146,34 @@ def _header_fields(data: bytes, start: int) -> dict:
     }
 
 
-def _after_icon_fields(data: bytes, icon_end: int | None) -> dict:
-    """The confirmed fields that follow the icon text; False without an icon."""
+def _icon_end(strings: list[tuple[int, str]]) -> int | None:
+    """Where the icon text (the block's first string) ends; None without an icon."""
+    if not strings:
+        return None
+    icon_prefix, icon = strings[0]
+    return icon_prefix + STRING_PREFIX_SIZE + len(icon)
+
+
+def _enhancement_type(data: bytes, icon_end: int, end: int) -> int:
+    """The u32 13 bytes after the three strings that follow the icon.
+
+    Raises ValueError when a string runs past the block, since the field
+    would then be read from the wrong place.
+    """
+    pos = icon_end + _MESSAGES
+    for _ in range(_MESSAGE_COUNT):
+        _, pos = read_prefixed_at(data, pos, end, wide=True)
+    return u32(data, pos + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
+
+
+def _after_icon_fields(data: bytes, icon_end: int | None, end: int) -> dict:
+    """The confirmed fields that follow the icon text; False and 0 without an icon."""
     if icon_end is None:
-        return {"marketable": False, "family_inventory": False}
+        return {"marketable": False, "family_inventory": False, "enhancement_type": 0}
     return {
         "marketable": bool(u8(data, icon_end + _MARKETABLE)),
         "family_inventory": u8(data, icon_end + _FAMILY_INVENTORY) == _FAMILY_INVENTORY_ALLOWED,
+        "enhancement_type": _enhancement_type(data, icon_end, end),
     }
 
 
@@ -178,7 +206,7 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
 
         strings = _block_strings(data, start, end)
         icon_prefix, icon = strings[0] if strings else (None, "")
-        icon_end = None if icon_prefix is None else icon_prefix + STRING_PREFIX_SIZE + len(icon)
+        icon_end = _icon_end(strings)
         name_prefix = None if icon_prefix is None else _name_prefix(data, start, icon_prefix)
         records.append({
             "item_id": row["item_id"],
@@ -189,7 +217,7 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
             "grade": u8(data, start + _GRADE),
             "character_id": u16(data, start + _CHARACTER_ID),
             **_header_fields(data, start),
-            **_after_icon_fields(data, icon_end),
+            **_after_icon_fields(data, icon_end, end),
             "skill_keys": list(_skill_keys(data, start)),
             "second_string": strings[1][1] if len(strings) > 1 else "",
             "block_size": row["data_size"],
@@ -241,6 +269,29 @@ def build_enchant_key_item_index(data: bytes, offset_data: bytes) -> dict[int, t
             items_by_key.setdefault(enchant_key, []).append(row["item_id"])
 
     return {key: tuple(sorted(items)) for key, items in items_by_key.items()}
+
+
+def build_enhancement_type_item_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
+    """Map an enhancement type (the guaranteeenchantss.dbss group) to its base item IDs, ascending.
+
+    Only level-0 records are read, like the enchant key index. Items with
+    type 0 cannot be enhanced and are left out.
+    """
+    items_by_type: dict[int, list[int]] = {}
+
+    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+        start = row["data_offset"]
+        end = start + row["data_size"]
+        if end > len(data):
+            continue
+        icon_end = _icon_end(_block_strings(data, start, end))
+        if icon_end is None:
+            continue
+        enhancement_type = _enhancement_type(data, icon_end, end)
+        if enhancement_type:
+            items_by_type.setdefault(enhancement_type, []).append(row["item_id"])
+
+    return {key: tuple(sorted(items)) for key, items in items_by_type.items()}
 
 
 def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:

@@ -27,6 +27,7 @@ from .itemenchant.handler import (
     ItemEnchantHandler,
     item_enchant_offset_handler,
 )
+from .guaranteeenchantss.handler import GuaranteeEnchantHandler
 from .enchantstaticstatus.handler import (
     EnchantStaticStatusHandler,
     enchant_static_status_offset_handler,
@@ -142,6 +143,7 @@ def register_dbss_handlers() -> None:
     register_handler("itemenchantoffset.dbss", item_enchant_offset_handler())
     register_handler("enchantstaticstatus.dbss", EnchantStaticStatusHandler())
     register_handler("enchantstaticstatusoffset.dbss", enchant_static_status_offset_handler())
+    register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())
     register_handler("itemsubgroupoffset.dbss", item_subgroup_offset_handler())
     register_handler("itemsubgroup.dbss", ItemSubgroupHandler())
     register_handler("journalquestoffset.dbss", journal_quest_offset_handler())

@@ -66,6 +66,8 @@ class IndexKind(Enum):
     BUFF_ITEMS = "buff_items"
     # Base item IDs per enchantstaticstatus.dbss enchant key, ascending.
     ENCHANT_KEY_ITEMS = "enchant_key_items"
+    # Base item IDs per enhancement type (the guaranteeenchantss.dbss group), ascending.
+    ENHANCEMENT_TYPE_ITEMS = "enhancement_type_items"
     # Parent node key of each sub-node (exploration.bss + the worldmap graph).
     NODE_PARENT = "node_parent"
     # (node_kind, x, z, is_sub_node, is_sea) of each enabled node with a

@@ -6,6 +6,7 @@
     "description": "Description",
     "maxLevel": "Max Level",
     "enchantKey": "Enchant Key",
+    "enhancementType": "Enhancement Type",
     "requiredLevel": "Req. Level",
     "classes": "Classes",
     "binding": "Binding",

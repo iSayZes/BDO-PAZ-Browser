@@ -299,9 +299,10 @@ It is not the Cron Stone count (Dim Tree Spirit's Armor needs 43, 131 and
 493 at DUO, TRI and TET) and not the Ancient Anvil count: Garmoth's Ancient
 Anvil guide lists 15 for a TET Blackstar main weapon going to PEN, where
 Blackstar Longsword (enchant key 84) stores 3,670 (7, 10, 40, 338 and 3,670
-for PRI to PEN). The anvil counts are in `guaranteeenchantss.dbss`, which
-matches Garmoth's tables row for row (not documented yet). It sits at two to four times the
-expected number of attempts on most lines (`1 / success_rate`: 1,330
+for PRI to PEN). The anvil counts are in
+[guaranteeenchantss.dbss](guaranteeenchantss_dbss.md), which matches
+Garmoth's tables row for row. The count stored here sits at two to four
+times the expected number of attempts on most lines (`1 / success_rate`: 1,330
 against 333 for Kzarka PEN).
 
 ### Remaining unknown fields

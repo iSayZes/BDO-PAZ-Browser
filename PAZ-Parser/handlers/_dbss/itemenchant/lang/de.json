@@ -6,6 +6,7 @@
     "description": "Beschreibung",
     "maxLevel": "Höchststufe",
     "enchantKey": "Verstärkungsschlüssel",
+    "enhancementType": "Verstärkungstyp",
     "requiredLevel": "Erf. Stufe",
     "classes": "Klassen",
     "binding": "Bindung",

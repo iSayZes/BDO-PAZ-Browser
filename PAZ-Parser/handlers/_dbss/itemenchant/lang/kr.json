@@ -6,6 +6,7 @@
     "description": "설명",
     "maxLevel": "최대 레벨",
     "enchantKey": "강화 키",
+    "enhancementType": "강화 유형",
     "requiredLevel": "요구 레벨",
     "classes": "적용 직업",
     "binding": "귀속",

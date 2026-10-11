@@ -1132,6 +1132,7 @@ IDs (`LookupValue`).
 | `SKILL_BUFFS`    | `skill.dbss`, `skilloffset.dbss`           | buff IDs (tuple) |
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `ENHANCEMENT_TYPE_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
 | `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
 | `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
@@ -1277,6 +1278,15 @@ by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same key. The
 `enchantstaticstatus.dbss` Items column reads it; `itemenchant.dbss` shows
 each item's own key as its Enchant Key column.
+
+`ENHANCEMENT_TYPE_ITEMS` maps an enhancement type (`enhancement_type` after
+the icon in [itemenchant.dbss](file-formats/itemenchant_dbss.md)) to its base
+items, in ascending ID order; type `0` is left out. It is built by
+`build_enhancement_type_item_index()` in `_dbss/itemenchant/parser.py` from the
+level-0 blocks. The
+[guaranteeenchantss.dbss](file-formats/guaranteeenchantss_dbss.md) Items
+column reads it; `itemenchant.dbss` shows each item's own type as its
+Enhancement Type column.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links

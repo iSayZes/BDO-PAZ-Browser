@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "enhancementType": "Enhancement Type",
+    "level": "Level",
+    "agrisCount": "Agris Essence",
+    "items": "Items"
+  },
+  "meta": {
+    "count": "{count} levels · {types} enhancement types"
+  }
+}

@@ -65,6 +65,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `fitnessleveloffset.dbss` | Index into `fitnesslevel.dbss`, one block per fitness type, maps level → offset/size | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
 | `fitnessmaxlevel.bss` | PABR max level per fitness type (50 for Breath, Strength and Health on client 3464) | [fitnessmaxlevel](file-formats/fitnessmaxlevel_bss.md) | 0 | 0 |
 | `groupcameradata.bss` | PABR cutscene skip summaries: scene ID, Korean title, recap and quote, and region symbol icon path (LOC type 97) | [groupcameradata](file-formats/groupcameradata_bss.md) | 0 | 0 |
+| `guaranteeenchantss.dbss` | Ancient Anvil table: Agris Essences needed for a guaranteed success per enhancement group and current level; the group is `enhancement_type` in `itemenchant.dbss` | [guaranteeenchantss](file-formats/guaranteeenchantss_dbss.md) | 1 | 0 |
 | `guildskillexperience.dbss` | Guild point EXP table: EXP to the next guild point level, levels 0 to 1000 on client 3464 | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |
 | `guildskillexperiencemaxlevel.bss` | PABR max level of the guild point table, same format as `skillexperiencemaxlevel.bss` (1000 on client 3464) | [skillexperiencemaxlevel](file-formats/skillexperiencemaxlevel_bss.md) | 0 | 0 |
 | `guildskillexperienceoffset.dbss` | Index into `guildskillexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |

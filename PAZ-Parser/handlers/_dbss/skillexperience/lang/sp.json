@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Nivel",
+    "exp": "Exp. para el siguiente nivel"
+  },
+  "offsetColumns": {
+    "level": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

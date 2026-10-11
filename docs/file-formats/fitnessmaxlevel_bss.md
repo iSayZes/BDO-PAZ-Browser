@@ -49,4 +49,4 @@ The same trailer closes `acceptquest.bss` and the PABR offset files.
 - The fitness type names are the ones in [fitnesslevel](fitnesslevel_dbss.md); both handlers read them through `_dbss/fitnesslevel/labels.py`.
 - Level 30 is the soft cap and this file does not store it. It shows only in the EXP column of `fitnesslevel.dbss`; see the [fitnesslevel](fitnesslevel_dbss.md) Notes.
 - `lifeexpmaxlevel.bss` is the life skill counterpart, a bare u32 array with no magic and no trailer; see [lifeexpmaxlevel](lifeexpmaxlevel_bss.md).
-- `skillexperiencemaxlevel.bss` and `guildskillexperiencemaxlevel.bss` (18 bytes each) also start with `PABR` but hold one u32 (`2000` and `1000`) followed by `00 00 06 00` and 6 zero bytes, a different layout.
+- `skillexperiencemaxlevel.bss` and `guildskillexperiencemaxlevel.bss` (18 bytes each) use the same magic and trailer around a u16 array (`2000` and `1000`, trailer `end_of_data` `6`); see [skillexperiencemaxlevel](skillexperiencemaxlevel_bss.md).

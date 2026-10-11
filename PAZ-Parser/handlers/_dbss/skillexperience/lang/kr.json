@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "레벨",
+    "exp": "다음 레벨 필요 경험치"
+  },
+  "offsetColumns": {
+    "level": "레벨",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "meta": {
+    "count": "레벨 {count}개"
+  }
+}

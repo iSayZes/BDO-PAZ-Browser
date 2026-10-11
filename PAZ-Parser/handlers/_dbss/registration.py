@@ -72,6 +72,8 @@ from .petexp.handler import PetExpHandler, pet_exp_offset_handler
 from .pcgrowth.handler import PcGrowthHandler, pc_growth_offset_handler
 from .fitnesslevel.handler import FitnessLevelHandler, fitness_level_offset_handler
 from .lifeexp.handler import LifeExpHandler, life_exp_offset_handler
+from .skillexperience.handler import LevelExpHandler, level_offset_handler
+from .skillexperience.parser import LEVEL_TABLES
 from .petskill.handler import PetSkillHandler, pet_skill_offset_handler
 from .petequipskillaquire.handler import (
     PetEquipSkillAcquireHandler,
@@ -172,6 +174,9 @@ def register_dbss_handlers() -> None:
     register_handler("fitnesslevel.dbss", FitnessLevelHandler())
     register_handler("lifeexpoffset.dbss", life_exp_offset_handler())
     register_handler("lifeexp.dbss", LifeExpHandler())
+    for level_table in LEVEL_TABLES:
+        register_handler(level_table.offset_file, level_offset_handler())
+        register_handler(level_table.file_name, LevelExpHandler(level_table))
     register_handler("petskilloffset.dbss", pet_skill_offset_handler())
     register_handler("petskill.dbss", PetSkillHandler())
     register_handler(

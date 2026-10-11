@@ -83,6 +83,10 @@ from .fairyequipskillaquire.handler import (
     FairyEquipSkillAcquireHandler,
     fairy_equip_skill_acquire_offset_handler,
 )
+from .fairyfeedingitem.handler import (
+    FairyFeedingItemHandler,
+    fairy_feeding_item_offset_handler,
+)
 from .fairyskillchange.handler import (
     FairySkillChangeHandler,
     fairy_skill_change_offset_handler,
@@ -189,6 +193,11 @@ def register_dbss_handlers() -> None:
         fairy_equip_skill_acquire_offset_handler(),
     )
     register_handler("fairyequipskillaquire.dbss", FairyEquipSkillAcquireHandler())
+    register_handler(
+        "fairyfeedingitemoffset.dbss",
+        fairy_feeding_item_offset_handler(),
+    )
+    register_handler("fairyfeedingitem.dbss", FairyFeedingItemHandler())
     register_handler(
         "fairyskillchangeoffset.dbss",
         fairy_skill_change_offset_handler(),

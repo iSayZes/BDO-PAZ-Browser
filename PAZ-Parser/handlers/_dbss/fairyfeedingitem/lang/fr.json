@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "exp": "EXP"
+  },
+  "offsetColumns": {
+    "itemId": "ID d'objet",
+    "dataOffset": "Décalage des données",
+    "dataSize": "Taille des données",
+    "recordStart": "Début d'enregistrement"
+  },
+  "meta": {
+    "count": "{count} objets de croissance de fée"
+  }
+}

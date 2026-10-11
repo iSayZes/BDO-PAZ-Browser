@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "exp": "EP"
+  },
+  "offsetColumns": {
+    "itemId": "Gegenstands-ID",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße",
+    "recordStart": "Datensatzbeginn"
+  },
+  "meta": {
+    "count": "{count} Gegenstände für Feen-Wachstum"
+  }
+}

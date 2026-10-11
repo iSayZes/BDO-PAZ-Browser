@@ -7,8 +7,8 @@ small HTTP API on the app's local server. A packet capture tool can move a
 ## Finding the Server
 
 The app writes `%LOCALAPPDATA%\BDO-PAZ-Browser\local_server.json` when it
-starts and deletes it when it closes. The file is always in that folder, also
-when a portable exe keeps its Data Folder next to the exe.
+starts and deletes it when it closes normally. The file is always in that
+folder, also when a portable exe keeps its Data Folder next to the exe.
 
 ```json
 {
@@ -21,6 +21,15 @@ when a portable exe keeps its Data Folder next to the exe.
 
 The port changes on every start, and so does the token. Read the file again
 after the app restarts.
+
+A crash or a killed process leaves the file behind, still naming the old port.
+The next start overwrites it, so the file only misleads while the app is
+closed. Before a connection error, check that process `pid` runs, and treat a
+file whose `pid` is gone as "the app isn't running". On Windows,
+`OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, pid)` failing with anything but
+access denied, or `GetExitCodeProcess` returning something other than
+`STILL_ACTIVE` (259), means the process is gone. Python's `os.kill(pid, 0)` is
+no check on Windows: it terminates the process.
 
 Every request sends the token as `Authorization: Bearer <token>`. The server
 listens on 127.0.0.1 only and sends no CORS headers, so a web page in a

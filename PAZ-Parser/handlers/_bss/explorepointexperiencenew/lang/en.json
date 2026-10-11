@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "points": "Contribution Points",
+    "exp": "Contribution EXP to Next Point"
+  },
+  "meta": {
+    "count": "{count} rows"
+  }
+}

@@ -13,6 +13,7 @@ from .employeeexp.handler import EmployeeExpBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
 from .experience.handler import ExperienceBssHandler
 from .exploration.handler import ExplorationBssHandler
+from .explorepointexperiencenew.handler import ExplorePointExperienceBssHandler
 from .fairyequipskill.handler import FairyEquipSkillBssHandler
 from .fairyfeedenchantfailcount.handler import (
     FairyFeedEnchantFailCountBssHandler,
@@ -70,6 +71,7 @@ def register_bss_handlers() -> None:
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
     register_handler("experience.bss", ExperienceBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
+    register_handler("explorepointexperiencenew.bss", ExplorePointExperienceBssHandler())
     register_handler("fairyequipskill.bss", FairyEquipSkillBssHandler())
     register_handler(
         "fairyfeedenchantfailcount.bss",

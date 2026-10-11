@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "mastery": "숙련도",
+    "prizeCatchRate": "보물 등급 그룹 증가 확률",
+    "butcheringRate": "획득 수량",
+    "massCooking": "대량 요리 발동 확률",
+    "maxDishes": "결과물 최대 수량 획득률",
+    "higherGradeDish": "상위 결과물 획득률",
+    "maxHigherGradeDishes": "상위 결과물 최대 수량 획득률",
+    "imperialProfit": "추가 이윤",
+    "maxProducts": "결과물 최대 수량 획득률",
+    "extraBasicItems": "일반 결과물 추가 획득률",
+    "extraSpecialItems": "특수 결과물 추가 획득률",
+    "extraRareItems": "희귀 결과물 추가 획득률",
+    "accel": "가속",
+    "speed": "속도",
+    "turn": "회전력",
+    "brake": "제동",
+    "horseCaptureRate": "말 포획 확률",
+    "mountExp": "탑승물 경험치 획득량",
+    "higherTierHorse": "높은 세대의 말을 획득할 확률"
+  },
+  "meta": {
+    "count": "숙련도 단계 {count}개"
+  }
+}

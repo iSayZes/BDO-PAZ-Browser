@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "mastery": "Maîtrise",
+    "prizeCatchRate": "Prise prisée",
+    "butcheringRate": "Objets supplémentaires en dépeçant",
+    "massCooking": "Cuisine de masse",
+    "maxDishes": "Nombre maximal de plats",
+    "higherGradeDish": "Plats de meilleure qualité",
+    "maxHigherGradeDishes": "Nombre maximal de plats de meilleure qualité",
+    "imperialProfit": "Bénéfices supplémentaires",
+    "maxProducts": "Nombre maximal de produits d'alchimie",
+    "extraBasicItems": "Objets communs additionnels",
+    "extraSpecialItems": "Objets spéciaux additionnels",
+    "extraRareItems": "Objets rares additionnels",
+    "accel": "Accélération",
+    "speed": "Vitesse",
+    "turn": "Virage",
+    "brake": "Freinage",
+    "horseCaptureRate": "Capture de cheval (%)",
+    "mountExp": "EXP de monture",
+    "higherTierHorse": "Cheval de tier supérieur par l'élevage ou l'échange"
+  },
+  "meta": {
+    "count": "{count} paliers de maîtrise"
+  }
+}

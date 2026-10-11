@@ -29,6 +29,7 @@ from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
+from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
@@ -93,6 +94,7 @@ def register_bss_handlers() -> None:
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
+    register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())

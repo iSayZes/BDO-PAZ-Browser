@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "exp": "EXP"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size",
+    "recordStart": "Record Start"
+  },
+  "meta": {
+    "count": "{count} fairy growth items"
+  }
+}

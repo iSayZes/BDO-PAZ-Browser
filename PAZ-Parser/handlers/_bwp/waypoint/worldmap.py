@@ -32,6 +32,17 @@ def worldmap_links(companions: Mapping[str, bytes]) -> dict[int, frozenset[int]]
     return neighbours(parse_waypoint_graph(worldmap))
 
 
+def build_node_link_index(worldmap: bytes) -> dict[int, tuple[int, ...]]:
+    """The `NODE_LINKS` index: each node key to the node keys it links to, ascending.
+
+    The graph stores every link both ways, so each link is in the index twice,
+    once under each end. An unreadable graph yields an empty index.
+    """
+    if not is_waypoint_graph(worldmap):
+        return {}
+    return {key: tuple(sorted(keys)) for key, keys in neighbours(parse_waypoint_graph(worldmap)).items()}
+
+
 def worldmap_waypoints(companions: Mapping[str, bytes]) -> tuple[Waypoint, ...]:
     """Every worldmap node with its position; empty when the graph is missing or not PABR."""
     worldmap = companions.get(WORLDMAP_FILE)

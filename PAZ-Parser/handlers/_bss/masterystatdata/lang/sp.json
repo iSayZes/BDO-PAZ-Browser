@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "mastery": "Maestría",
+    "prizeCatchRate": "Objetos y peces codiciados",
+    "butcheringRate": "Obtención (cantidad)",
+    "massCooking": "Cocina en masa",
+    "maxDishes": "Cantidad máxima de platos",
+    "higherGradeDish": "Plato de calidad superior",
+    "maxHigherGradeDishes": "Cantidad máxima de platos de calidad superior",
+    "imperialProfit": "Beneficio adicional",
+    "maxProducts": "Número máximo de objetos",
+    "extraBasicItems": "Objetos adicionales de calidad normal",
+    "extraSpecialItems": "Objetos especiales adicionales",
+    "extraRareItems": "Objetos inusuales adicionales",
+    "accel": "Aceleración",
+    "speed": "Velocidad",
+    "turn": "Viraje",
+    "brake": "Frenada",
+    "horseCaptureRate": "Probabilidad de capturar caballos",
+    "mountExp": "Exp. (Montura)",
+    "higherTierHorse": "Montura de mayor grado mediante Cría o intercambios"
+  },
+  "meta": {
+    "count": "{count} niveles de maestría"
+  }
+}

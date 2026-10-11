@@ -16,10 +16,13 @@ from paz.bdo_thumbnail_cache import ThumbnailCache
 from table_sort import TableSort
 
 from updates.releases import Release
+from app_dirs import map_pins_file
 from map_pins import Pin, PinStore
+from map_pins_file import SavedPinsFile
 from world_map import Sector
 from world_map_build import BuildProgress
 
+from .bdo_api_helpers import _norm
 from .bdo_recent_tables import RecentTables
 from .bdo_records_prefill import RecordsPrefill
 from .bdo_records_store import DataDigests, RecordStore
@@ -98,8 +101,9 @@ class ApiState:
         self._map_stop: threading.Event | None = None
         self._map_progress: BuildProgress | None = None
         self._map_error: str | None = None
-        # The map API's pins (`map_pins.py`); the page redraws on every change.
-        self._map_pins = PinStore()
+        # The map API's pins (`map_pins.py`), with the saved ones from the
+        # Data Folder; the page redraws on every change.
+        self._map_pins = PinStore(SavedPinsFile(map_pins_file))
         self._map_pins.subscribe(self._push_map_pins)
 
     def _wait_for_folder_text(self) -> None:
@@ -116,6 +120,11 @@ class ApiState:
         """The entry at the normalised `path` in any letter case, or None."""
         folded = path.lower()
         return self._entry_map.get(folded) or self._entry_map_folded.get(folded)
+
+    def _read_any_case(self, path: str) -> bytes | None:
+        """The file at `path` in any letter case, or None when the folder has none."""
+        entry = self._entry_ignoring_case(_norm(path))
+        return None if entry is None else self.read_entry(entry.internal_path)
 
     def _mark_activity(self) -> None:
         self._last_activity = time.monotonic()

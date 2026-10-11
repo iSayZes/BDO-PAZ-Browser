@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "category": "Categoría",
+    "gear": "Equipo",
+    "grade": "Grado",
+    "caphrasLevel": "Nivel de Caphras",
+    "stones": "Caphranitas",
+    "totalStones": "Caphranitas (total)",
+    "ap": "Ataque",
+    "dp": "Defensa",
+    "accuracy": "Precisión",
+    "evasion": "Evasión",
+    "hiddenEvasion": "Evasión oculta",
+    "damageReduction": "Reduc. de daño",
+    "hiddenDamageReduction": "Reduc. de daño oculta",
+    "hp": "Salud máx.",
+    "mp": "Maná máx."
+  },
+  "gear": {
+    "1": "Arma principal de jefe",
+    "2": "Arma del Despertar de jefe",
+    "3": "Arma azul",
+    "4": "Arma verde",
+    "5": "Arma secundaria de jefe",
+    "6": "Arma secundaria verde",
+    "7": "Armadura de jefe",
+    "8": "Armadura de Anasilvo sombrío",
+    "9": "Armadura azul",
+    "10": "Armadura verde"
+  },
+  "meta": {
+    "count": "{count} niveles de Caphras · {categories} categorías de equipo"
+  }
+}

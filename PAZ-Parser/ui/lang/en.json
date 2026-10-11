@@ -32,6 +32,36 @@
     "progressTiles": "{done} / {total} tiles · {percent}%",
     "failed": "The last build failed: {message}",
     "coords": "X {x} · Z {z}",
+    "removePin": "Remove",
+    "pinSaved": "Saved: back after a restart",
+    "filters": {
+      "title": "Filters",
+      "search": "Find a node…",
+      "nodes": "Nodes",
+      "hideAll": "Hide All",
+      "markers": "Markers",
+      "links": "Links",
+      "toggleGroup": "Show or hide all",
+      "collapse": "Collapse or expand"
+    },
+    "nodeKinds": {
+      "node": "Normal Node",
+      "village": "Town",
+      "city": "City",
+      "gate": "Gateway",
+      "farm": "Farming",
+      "trade": "Trade",
+      "collect": "Gathering",
+      "quarry": "Mining",
+      "logging": "Lumbering",
+      "dangerous": "Danger Zone",
+      "finance": "Investment Bank",
+      "fish_trap": "Fish Drying Yard",
+      "minor_finance": "Minor Investment Bank",
+      "monopoly_farm": "Specialties",
+      "craft": "Production",
+      "excavation": "Excavation"
+    },
     "pinTypes": {
       "player": "Player",
       "marker": "Marker"
@@ -247,7 +277,9 @@
     "cachingTables": "Caching parsed tables {done}/{total}: {name}",
     "cachingTablesPaused": "Caching parsed tables paused while the app is busy ({done}/{total})",
     "openFolder": "Open a PAZ folder to begin.",
-    "exportFailed": "Export failed: {message}"
+    "exportFailed": "Export failed: {message}",
+    "pinRemoveFailed": "Could not remove the pin: {message}",
+    "mapFiltersSaveFailed": "Could not save the map filters: {message}"
   },
   "firstRun": {
     "body": "Pick the Paz folder inside your Black Desert install. The first load reads every archive index and caches it; later starts load from the cache."

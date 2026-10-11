@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class",
+    "ap": "AP",
+    "dp": "DP"
+  },
+  "meta": {
+    "count": "{count} class types"
+  }
+}

@@ -2,9 +2,11 @@
   "columns": {
     "enchantKey": "Verstärkungsschlüssel",
     "level": "Stufe",
+    "items": "Gegenstände",
     "material": "Material",
     "materialCount": "Anzahl",
     "chance": "Verstärkungschance",
+    "onFailure": "Bei Fehlschlag",
     "failDurability": "Haltbarkeitsverlust",
     "perfectCount": "Anzahl (perfekt)",
     "perfectDurability": "Haltbarkeitsverlust (perfekt)",
@@ -13,9 +15,17 @@
     "accuracy": "Präzision",
     "evasion": "Ausweichen",
     "hiddenEvasion": "Verstecktes Ausweichen",
+    "damageReduction": "Schadensreduktion",
+    "hiddenDamageReduction": "Versteckte Schadensreduktion",
+    "maxHp": "Max. LP",
     "aidItems": "Hilfsgegenstände",
     "effects": "Effekte",
     "description": "Beschreibung"
+  },
+  "failResult": {
+    "1": "Sicher",
+    "2": "Zerstört",
+    "3": "Stufe sinkt"
   },
   "offsetColumns": {
     "enchantKey": "Verstärkungsschlüssel",

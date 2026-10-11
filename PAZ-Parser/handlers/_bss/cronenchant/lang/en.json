@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "category": "Category",
+    "gear": "Gear",
+    "grade": "Grade",
+    "caphrasLevel": "Caphras Level",
+    "stones": "Stones",
+    "totalStones": "Total Stones",
+    "ap": "AP",
+    "dp": "DP",
+    "accuracy": "Accuracy",
+    "evasion": "Evasion",
+    "hiddenEvasion": "Hidden Evasion",
+    "damageReduction": "DR",
+    "hiddenDamageReduction": "Hidden DR",
+    "hp": "Max HP",
+    "mp": "Max MP"
+  },
+  "gear": {
+    "1": "Boss Main Weapon",
+    "2": "Boss Awakening Weapon",
+    "3": "Blue Weapon",
+    "4": "Green Weapon",
+    "5": "Boss Sub-Weapon",
+    "6": "Green Sub-Weapon",
+    "7": "Boss Armor",
+    "8": "Dim Tree Armor",
+    "9": "Blue Armor",
+    "10": "Green Armor"
+  },
+  "meta": {
+    "count": "{count} Caphras levels · {categories} gear categories"
+  }
+}

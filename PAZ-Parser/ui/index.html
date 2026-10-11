@@ -134,6 +134,22 @@
           <p id="map-progress-tiles"></p>
         </section>
         <div id="map-coords" class="map-coords" hidden></div>
+        <!-- What the map shows: a node search, layer chips and a card per kind of content (map-filters.js). -->
+        <aside id="map-filters" class="map-filters" hidden>
+          <div class="map-filters-top">
+            <label class="input-box">
+              <svg class="icon" aria-hidden="true"><use href="#icon-search"></use></svg>
+              <input id="map-filters-search" type="text" autocomplete="off" spellcheck="false" data-i18n-placeholder="map.filters.search" data-i18n-aria-label="map.filters.search" placeholder="Find a node…" aria-label="Find a node…" oninput="app.onMapFilterSearch(this.value)" />
+            </label>
+            <button id="map-filters-toggle" class="map-filter-icon-button map-filters-toggle" type="button" aria-expanded="true" data-i18n-title="map.filters.collapse" data-i18n-aria-label="map.filters.collapse" title="Collapse or expand" aria-label="Collapse or expand" onclick="app.toggleMapFilters()">
+              <svg class="icon" aria-hidden="true"><use href="#icon-chevron-up"></use></svg>
+            </button>
+          </div>
+          <div id="map-filters-panel" class="map-filters-panel">
+            <button class="map-filters-hide-all" type="button" onclick="app.hideAllMapFilters()" data-i18n="map.filters.hideAll">Hide All</button>
+            <div id="map-filters-groups"></div>
+          </div>
+        </aside>
       </section>
     </div>
 

@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "category": "Catégorie",
+    "gear": "Équipement",
+    "grade": "Niveau",
+    "caphrasLevel": "Niveau de Caphras",
+    "stones": "Pierres de Caphras",
+    "totalStones": "Pierres de Caphras (total)",
+    "ap": "PA",
+    "dp": "PD",
+    "accuracy": "Précision",
+    "evasion": "Esquive",
+    "hiddenEvasion": "Esquive cachée",
+    "damageReduction": "Réduction des dégâts",
+    "hiddenDamageReduction": "Réduction des dégâts cachée",
+    "hp": "PV max.",
+    "mp": "PM max."
+  },
+  "gear": {
+    "1": "Arme principale de boss",
+    "2": "Arme d'éveil de boss",
+    "3": "Arme bleue",
+    "4": "Arme verte",
+    "5": "Arme secondaire de boss",
+    "6": "Arme secondaire verte",
+    "7": "Armure de boss",
+    "8": "Armure de l'Esprit des arbres d'Hebetate",
+    "9": "Armure bleue",
+    "10": "Armure verte"
+  },
+  "meta": {
+    "count": "{count} niveaux de Caphras · {categories} catégories d'équipement"
+  }
+}

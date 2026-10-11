@@ -2,9 +2,11 @@
   "columns": {
     "enchantKey": "강화 키",
     "level": "단계",
+    "items": "아이템",
     "material": "재료",
     "materialCount": "개수",
     "chance": "강화 확률",
+    "onFailure": "실패 시",
     "failDurability": "실패 시 내구도 감소",
     "perfectCount": "완벽 강화 개수",
     "perfectDurability": "완벽 강화 내구도 감소",
@@ -13,9 +15,17 @@
     "accuracy": "적중력",
     "evasion": "회피력",
     "hiddenEvasion": "숨겨진 회피",
+    "damageReduction": "피해 감소",
+    "hiddenDamageReduction": "숨겨진 피해 감소",
+    "maxHp": "최대 생명력",
     "aidItems": "보조 아이템",
     "effects": "효과",
     "description": "설명"
+  },
+  "failResult": {
+    "1": "안전",
+    "2": "파괴",
+    "3": "단계 하락"
   },
   "offsetColumns": {
     "enchantKey": "강화 키",

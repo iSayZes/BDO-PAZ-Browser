@@ -35,6 +35,11 @@ def f32(data: bytes, offset: int) -> float:
     return struct.unpack_from("<f", data, offset)[0]
 
 
+def whole_float(value: float) -> float | int:
+    """An f32 stat as int when it holds a whole number, else the float."""
+    return int(value) if value.is_integer() else value
+
+
 def u32_hi(value: int) -> int:
     return (value >> 16) & 0xFFFF
 

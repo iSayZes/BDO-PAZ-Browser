@@ -70,7 +70,7 @@ export const extractionMethods = {
     const path = await window.pywebview.api.pick_output_folder();
     if (path) {
       document.getElementById("output-path").value = path;
-      localStorage.setItem("outputPath", path);
+      window.pywebview.api.save_output_path(path);
     }
   },
 

@@ -41,9 +41,14 @@ def project(records: Sequence[dict], fields: Sequence[str]) -> list[dict]:
     return [{field: record.get(field) for field in fields} for record in records]
 
 
+def format_json(value: object) -> str:
+    """`value` as indented JSON; bytes as hex, sets as sorted lists, enums by value."""
+    return json.dumps(value, ensure_ascii=False, indent=2, default=_json_default) + "\n"
+
+
 def format_records(records: list[dict], output: OutputFormat) -> str:
     if output is OutputFormat.JSON:
-        return json.dumps(records, ensure_ascii=False, indent=2, default=_json_default) + "\n"
+        return format_json(records)
     if output is OutputFormat.CSV:
         return records_to_csv(records)
     # A single row was asked for by name, so show it whole.

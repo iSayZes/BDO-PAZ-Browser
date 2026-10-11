@@ -2,9 +2,11 @@
   "columns": {
     "enchantKey": "Clave de refuerzo",
     "level": "Nivel",
+    "items": "Objetos",
     "material": "Material",
     "materialCount": "Cantidad",
     "chance": "Probabilidad de refuerzo",
+    "onFailure": "Si falla",
     "failDurability": "Pérdida de durabilidad",
     "perfectCount": "Cantidad (perfecto)",
     "perfectDurability": "Pérdida de durabilidad (perfecto)",
@@ -13,9 +15,17 @@
     "accuracy": "Precisión",
     "evasion": "Evasión",
     "hiddenEvasion": "Evasión oculta",
+    "damageReduction": "Reduc. de daño",
+    "hiddenDamageReduction": "Reduc. de daño oculta",
+    "maxHp": "Salud máx.",
     "aidItems": "Objetos de ayuda",
     "effects": "Efectos",
     "description": "Descripción"
+  },
+  "failResult": {
+    "1": "Seguro",
+    "2": "Destruido",
+    "3": "Baja de nivel"
   },
   "offsetColumns": {
     "enchantKey": "Clave de refuerzo",

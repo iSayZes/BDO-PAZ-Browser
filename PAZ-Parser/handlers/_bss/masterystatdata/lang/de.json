@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "mastery": "Meisterung",
+    "prizeCatchRate": "Fischrate für Außergewöhnlicher Fang",
+    "butcheringRate": "Höhere Gegenstandszahl durch Schlachten",
+    "massCooking": "Massenproduktion beim Kochen",
+    "maxDishes": "Höchstzahl an Gerichten",
+    "higherGradeDish": "Gericht höherer Qualität",
+    "maxHigherGradeDishes": "Höchstzahl an Gerichten höherer Qualität",
+    "imperialProfit": "Zusätzlicher Profit",
+    "maxProducts": "Höchstzahl an Alchemieprodukten",
+    "extraBasicItems": "Zusätzliche Standardgegenstände",
+    "extraSpecialItems": "Zusätzliche Spezialgegenstände",
+    "extraRareItems": "Zusätzliche seltene Gegenstände",
+    "accel": "Beschleunigen",
+    "speed": "Tempo",
+    "turn": "Wenden",
+    "brake": "Anhalten",
+    "horseCaptureRate": "Pferdefangrate",
+    "mountExp": "EP-Erwerb der Reittiere",
+    "higherTierHorse": "Pferd höherer Stufe aus Zucht oder Tausch"
+  },
+  "meta": {
+    "count": "{count} Meisterungsstufen"
+  }
+}

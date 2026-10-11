@@ -4,9 +4,6 @@ import { loadLang, applyTranslations } from "../core/i18n.js";
 
 export const initMethods = {
   async init() {
-    const saved = localStorage.getItem("outputPath");
-    if (saved) document.getElementById("output-path").value = saved;
-
     const [status, settings] = await Promise.all([
       window.pywebview.api.get_status(),
       window.pywebview.api.get_settings(),
@@ -16,6 +13,7 @@ export const initMethods = {
     // After loadLang, so a keyed status reads in the saved language.
     this.setStatus(status);
     this._applyTableRowHeight(settings.table_row_height);
+    document.getElementById("output-path").value = settings.output_path ?? "";
 
     this._setupDividers();
     this._setupOutputPathSave();

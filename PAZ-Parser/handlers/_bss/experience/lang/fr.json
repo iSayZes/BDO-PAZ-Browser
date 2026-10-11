@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Type de classe",
+    "className": "Classe",
+    "level": "Niveau",
+    "ap": "PA",
+    "dp": "PD"
+  },
+  "meta": {
+    "count": "{count} entrées de niveau · {classes} types de classe"
+  }
+}

@@ -1,11 +1,14 @@
-"""`browser.py --formats` and `--handlers`: which file formats have a handler."""
+"""`browser.py --formats`, `--handlers` and `--handler-version`: which file formats have a handler, at which version."""
 from __future__ import annotations
 
 import argparse
 
 from bdo_preview import _BUILTIN_KEYS, _REGISTRY, get_binary_handlers, plugin_failures, unique_format_keys
+from updates.handler_versions import ActiveHandlerVersion, all_handler_versions, handler_version
 
 from .errors import CliError
+from .record_output import write_records
+from .records import output_format
 from .session import open_session
 from .stdio import error
 
@@ -93,6 +96,32 @@ def run_handlers(args: argparse.Namespace) -> int:
     for name, reason in plugin_failures().items():
         error(f"{name} failed to load: {reason}")
     return 1 if plugin_failures() else 0
+
+
+def run_handler_version(args: argparse.Namespace) -> int:
+    """The running version of the handler that reads NAME, or of every handler; needs no PAZ folder.
+
+    NAME is a file name, a PAZ path or a registry key. Exits with 1 when no
+    handler reads NAME or its version is unknown (from source without git).
+    """
+    output = output_format(args)
+    if not args.handler_version:
+        write_records([_version_record(found) for found in all_handler_versions()], output)
+        return 0
+
+    found = handler_version(args.handler_version)
+    if found is None:
+        error(f"no handler reads '{args.handler_version}'; --handlers lists every key.")
+        return 1
+    if found.version is None:
+        error(f"the {found.key} handler has no version (running from source without git).")
+        return 1
+    write_records([_version_record(found)], output)
+    return 0
+
+
+def _version_record(found: ActiveHandlerVersion) -> dict:
+    return {"handler": found.key, "version": found.version}
 
 
 def run_formats(args: argparse.Namespace) -> int:

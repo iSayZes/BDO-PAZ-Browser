@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "exp": "Опыт"
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных",
+    "recordStart": "Начало записи"
+  },
+  "meta": {
+    "count": "Предметов для роста феи: {count}"
+  }
+}

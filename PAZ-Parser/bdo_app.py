@@ -23,7 +23,7 @@ from api.bdo_api import Api
 from api.bdo_config import LEGACY_CONFIG_FILE
 from app_dirs import adopt_legacy_config, server_info_file
 from cli.files import run_extract, run_list
-from cli.formats import run_formats, run_handlers
+from cli.formats import run_formats, run_handler_version, run_handlers
 from cli.index import run_index
 from cli.records import run_records
 from cli.render import run_render
@@ -34,7 +34,7 @@ from cli.stdio import close_stdout_quietly, configure_logging, is_closed_pipe, u
 
 # Options that only mean something with one command, checked in _check_options.
 _RECORDS_ONLY = ("where", "fields")
-_OUTPUT_OPTIONS = ("json", "csv", "limit")
+_FORMAT_OPTIONS = ("json", "csv")
 
 
 def main() -> None:
@@ -97,6 +97,11 @@ def _build_parser() -> argparse.ArgumentParser:
     commands.add_argument("--list", metavar="PATTERN", help="List matching file paths without extracting, e.g. title*.dbss")
     commands.add_argument("--formats", action="store_true", help="Show supported file formats and exit")
     commands.add_argument("--handlers", action="store_true", help="List every registered handler key; needs no PAZ folder")
+    commands.add_argument(
+        "--handler-version", metavar="NAME", nargs="?", const="",
+        help="Print the version of the handler that reads NAME (file name or handler key); "
+        "without NAME, every handler's; needs no PAZ folder",
+    )
     commands.add_argument("--records", metavar="FILE", help="Print the parsed records of one file, e.g. buffsimply.bss")
     commands.add_argument("--render", metavar="FILE", help="Write one parsed page of FILE as standalone HTML to stdout")
     commands.add_argument(
@@ -138,8 +143,8 @@ def _build_parser() -> argparse.ArgumentParser:
         help="--records: sort by FIELD as the GUI table does, ascending or with :desc",
     )
     output = parser.add_mutually_exclusive_group()
-    output.add_argument("--json", action="store_true", help="--records / --index: JSON with full values")
-    output.add_argument("--csv", action="store_true", help="--records / --index: CSV like the app's export")
+    output.add_argument("--json", action="store_true", help="--records / --index / --handler-version: JSON with full values")
+    output.add_argument("--csv", action="store_true", help="--records / --index / --handler-version: CSV like the app's export")
     parser.add_argument("--limit", metavar="N", type=_positive_int, help="--records / --index: print at most N rows")
     parser.add_argument("--no-loc", action="store_true", help="--records / --render: do not load LOC text")
     parser.add_argument("--page", metavar="N", type=int, default=1, help="--render: page number, from 1 (default: 1)")
@@ -173,6 +178,8 @@ def _command(args: argparse.Namespace) -> Callable[[argparse.Namespace], int] | 
         return run_formats
     if args.handlers:
         return run_handlers
+    if args.handler_version is not None:
+        return run_handler_version
     if args.records:
         return run_records
     if args.render:
@@ -198,10 +205,12 @@ def _check_options(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
         for name in _RECORDS_ONLY:
             if getattr(args, name):
                 parser.error(f"--{name} needs --records")
-    if not (is_records or is_index):
-        for name in _OUTPUT_OPTIONS:
+    if not (is_records or is_index or args.handler_version is not None):
+        for name in _FORMAT_OPTIONS:
             if getattr(args, name):
-                parser.error(f"--{name} needs --records or --index")
+                parser.error(f"--{name} needs --records, --index or --handler-version")
+    if args.limit is not None and not (is_records or is_index):
+        parser.error("--limit needs --records or --index")
     if args.no_loc and not (is_records or args.render):
         parser.error("--no-loc needs --records or --render")
     if args.page != 1 and not args.render:

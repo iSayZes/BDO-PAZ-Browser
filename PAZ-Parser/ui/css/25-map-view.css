@@ -88,3 +88,230 @@
   background: var(--color-accent);
   box-shadow: 0 0 0 4px var(--color-accent-soft), 0 0 0 2px rgba(0, 0, 0, 0.45);
 }
+
+/* A pin with a heading: an arrowhead on the world position, its tip pointing
+   the way the pin faces (map-view.js turns .map-pin-arrow). The drop shadows
+   outline the clipped shape, which a border cannot. */
+.map-pin-facing {
+  filter: drop-shadow(0 0 1px var(--color-text-strong)) drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
+}
+.map-pin-arrow {
+  width: 100%;
+  height: 100%;
+  background: var(--color-data);
+  clip-path: polygon(50% 0, 92% 100%, 50% 74%, 8% 100%);
+}
+.map-pin-facing-player .map-pin-arrow {
+  background: var(--color-accent);
+}
+
+/* A pin with a game icon (map_icons.py): the image, anchored by map-view.js
+   on its tip, or for the player pointer on its head, which it turns around. */
+.map-pin-icon img {
+  display: block;
+  -webkit-user-drag: none;
+}
+
+/* A pin's popup: name, position, saved note and Remove, in the app's colours. */
+.map-pin-popup .leaflet-popup-content-wrapper,
+.map-pin-popup .leaflet-popup-tip {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+.map-pin-popup .leaflet-popup-content-wrapper {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+}
+.map-pin-popup .leaflet-popup-content {
+  margin: 10px 12px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+}
+.map-pin-popup a.leaflet-popup-close-button {
+  color: var(--color-text-2);
+}
+.map-pin-popup-name {
+  color: var(--color-text-strong);
+  font-weight: 600;
+  padding-right: 12px;
+}
+.map-pin-popup-coords {
+  color: var(--color-text-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.map-pin-popup-saved {
+  margin-top: 4px;
+  color: var(--color-text-2);
+}
+.map-pin-popup-remove {
+  margin-top: 8px;
+}
+
+/* The Filters panel (map-filters.js): over the map's top right, the search with the panel's collapse button,
+   then Hide All, the chips card and one card per kind of content, scrolling
+   when taller than the map. */
+.map-filters {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 1000;
+  width: 380px;
+  max-width: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.map-filters > * {
+  pointer-events: auto;
+}
+.map-filters-top {
+  display: flex;
+  gap: 8px;
+}
+.map-filters-top .input-box {
+  flex: 1;
+  height: 34px;
+  background: var(--color-surface);
+}
+.map-filters-toggle {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.map-filters-toggle[aria-expanded="false"] .icon {
+  transform: rotate(180deg);
+}
+.map-filters-panel {
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+.map-filters-hide-all {
+  width: 100%;
+  background: var(--color-surface);
+  border-color: var(--color-line);
+  color: var(--color-text-2);
+}
+.map-filter-card {
+  padding: 8px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+.map-filter-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px 6px;
+}
+.map-filter-card-head > .icon {
+  color: var(--color-accent);
+}
+.map-filter-card-title {
+  color: var(--color-text-strong);
+  font-size: 13px;
+  font-weight: 600;
+}
+/* "shown / total" of a card. */
+.map-filter-badge {
+  padding: 1px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-raised);
+  color: var(--color-text-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.map-filter-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-text-2);
+}
+.map-filter-card-head .map-filter-icon-button:first-of-type {
+  margin-left: auto;
+}
+/* Chips and rows: two columns of toggles, dimmed when off. */
+.map-filter-chips,
+.map-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.map-filter-chip,
+.map-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  background: var(--color-raised);
+  color: var(--color-text-3);
+  text-align: left;
+}
+.map-filter-row:not(.on) .map-filter-icon {
+  opacity: 0.4;
+}
+.map-filter-chip.on,
+.map-filter-row.on {
+  color: var(--color-text-strong);
+}
+.map-filter-chip.on {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+.map-filter-chip:disabled,
+.map-filter-chip:disabled:hover {
+  opacity: 0.4;
+  background: var(--color-raised);
+}
+.map-filter-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.map-filter-icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+/* A card's options under its rows (the Nodes card's Links), set apart by a line. */
+.map-filter-options {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-line);
+}
+/* A sprite icon in a row's icon slot. */
+.map-filter-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-2);
+}
+.map-filter-symbol .icon {
+  width: 16px;
+  height: 16px;
+}
+.map-filter-count {
+  flex: none;
+  color: var(--color-text-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}

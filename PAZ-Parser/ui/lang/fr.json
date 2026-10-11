@@ -32,6 +32,36 @@
     "progressTiles": "{done} / {total} tuiles · {percent} %",
     "failed": "La dernière construction a échoué : {message}",
     "coords": "X {x} · Z {z}",
+    "removePin": "Retirer",
+    "pinSaved": "Sauvegardé : revient après un redémarrage",
+    "filters": {
+      "title": "Filtres",
+      "search": "Chercher un géopoint…",
+      "nodes": "Géopoints",
+      "hideAll": "Tout masquer",
+      "markers": "Repères",
+      "links": "Connexions",
+      "toggleGroup": "Tout afficher ou masquer",
+      "collapse": "Replier ou déplier"
+    },
+    "nodeKinds": {
+      "node": "Géopoint normal",
+      "village": "Village",
+      "city": "Ville",
+      "gate": "Porte",
+      "farm": "Agriculture",
+      "trade": "Commerce",
+      "collect": "Récolte",
+      "quarry": "Minage",
+      "logging": "Bûcheronnage",
+      "dangerous": "Zone de danger",
+      "finance": "Banque d'investissement",
+      "fish_trap": "Champ de séchage de poisson",
+      "minor_finance": "Petite banque d'investissement",
+      "monopoly_farm": "Spécialités",
+      "craft": "Production",
+      "excavation": "Excavation"
+    },
     "pinTypes": {
       "player": "Joueur",
       "marker": "Repère"
@@ -247,7 +277,9 @@
     "cachingTables": "Mise en cache des tables {done}/{total} : {name}",
     "cachingTablesPaused": "Mise en cache des tables en pause pendant que l'application est occupée ({done}/{total})",
     "openFolder": "Ouvrez un dossier PAZ pour commencer.",
-    "exportFailed": "Échec de l'export : {message}"
+    "exportFailed": "Échec de l'export : {message}",
+    "pinRemoveFailed": "Impossible de retirer le repère : {message}",
+    "mapFiltersSaveFailed": "Impossible d'enregistrer les filtres de la carte : {message}"
   },
   "firstRun": {
     "body": "Choisissez le dossier Paz de votre installation de Black Desert. Le premier chargement lit chaque index d'archive et le met en cache ; les démarrages suivants chargent depuis le cache."

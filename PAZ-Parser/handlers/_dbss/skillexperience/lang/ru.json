@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Уровень",
+    "exp": "Опыт до след. уровня"
+  },
+  "offsetColumns": {
+    "level": "Уровень",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "meta": {
+    "count": "Уровней: {count}"
+  }
+}

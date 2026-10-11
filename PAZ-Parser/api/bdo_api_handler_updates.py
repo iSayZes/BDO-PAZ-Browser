@@ -7,13 +7,11 @@ import logging
 import subprocess
 import sys
 import threading
-from pathlib import Path
 
-from app_version import build_info, is_frozen, source_commit, source_commit_of
-from bdo_preview import handler_key
+from app_version import build_info, is_frozen, source_commit
 from ui_text import ui_text
 from updates.handler_packs import PackCheck, active_pack, check_for_update, clean_up_packs
-from updates.handler_sets import handler_files
+from updates.handler_versions import handler_version
 from updates.releases import RELEASES_PAGE, UpdateError
 
 from .bdo_api_state import ApiState
@@ -95,21 +93,12 @@ class HandlerUpdateMixin(ApiState):
         return {"label": label, "commit": commit, "handlers": pack.version}
 
     def get_handler_version(self, name: str) -> dict:
-        """`{key, version}` of the handler that reads file `name`, or {} when none does.
-
-        The version is the running pack's, from its manifest. From source it
-        is the commit that last changed the handler's files, with a `+` for
-        uncommitted edits (`app_version.source_commit_of`).
-        """
-        key = handler_key(Path(name).name, Path(name).suffix) if isinstance(name, str) else None
-        if key is None:
+        """`{key, version}` of the handler that reads file `name`, or {} when none does
+        or its version is unknown (`updates.handler_versions`)."""
+        found = handler_version(name) if isinstance(name, str) else None
+        if found is None or found.version is None:
             return {}
-        pack = active_pack()
-        if pack.manifest is not None:
-            handler = pack.manifest.handlers.get(key)
-            return {"key": key, "version": handler.version} if handler is not None else {}
-        version = source_commit_of([pack.folder / file for file in handler_files(pack.folder, key)])
-        return {"key": key, "version": version} if version is not None else {}
+        return {"key": found.key, "version": found.version}
 
 
 def _check_message(check: PackCheck) -> str:

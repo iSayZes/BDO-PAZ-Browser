@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "category": "Kategorie",
+    "gear": "Ausrüstung",
+    "grade": "Rang",
+    "caphrasLevel": "Caphras-Stufe",
+    "stones": "Caphras-Steine",
+    "totalStones": "Caphras-Steine gesamt",
+    "ap": "AK",
+    "dp": "VK",
+    "accuracy": "Präzision",
+    "evasion": "Ausweichen",
+    "hiddenEvasion": "Verstecktes Ausweichen",
+    "damageReduction": "Schadensreduktion",
+    "hiddenDamageReduction": "Versteckte Schadensreduktion",
+    "hp": "Max. LP",
+    "mp": "Max. MP"
+  },
+  "gear": {
+    "1": "Boss-Hauptwaffe",
+    "2": "Boss-Erweckungswaffe",
+    "3": "Blaue Waffe",
+    "4": "Grüne Waffe",
+    "5": "Boss-Sekundärwaffe",
+    "6": "Grüne Sekundärwaffe",
+    "7": "Boss-Rüstung",
+    "8": "Stumpfbaumgeister-Rüstung",
+    "9": "Blaue Rüstung",
+    "10": "Grüne Rüstung"
+  },
+  "meta": {
+    "count": "{count} Caphras-Stufen · {categories} Ausrüstungskategorien"
+  }
+}

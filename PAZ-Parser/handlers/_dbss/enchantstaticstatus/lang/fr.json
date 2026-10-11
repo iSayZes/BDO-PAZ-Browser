@@ -2,9 +2,11 @@
   "columns": {
     "enchantKey": "Clé d'optimisation",
     "level": "Niveau",
+    "items": "Objets",
     "material": "Matériau",
     "materialCount": "Quantité",
     "chance": "Chances d'optimisation",
+    "onFailure": "En cas d'échec",
     "failDurability": "Perte de durabilité",
     "perfectCount": "Quantité (parfaite)",
     "perfectDurability": "Perte de durabilité (parfaite)",
@@ -13,9 +15,17 @@
     "accuracy": "Précision",
     "evasion": "Esquive",
     "hiddenEvasion": "Esquive cachée",
+    "damageReduction": "Réduction des dégâts",
+    "hiddenDamageReduction": "Réduction des dégâts cachée",
+    "maxHp": "PV max.",
     "aidItems": "Objets d'aide",
     "effects": "Effets",
     "description": "Description"
+  },
+  "failResult": {
+    "1": "En sécurité",
+    "2": "Détruit",
+    "3": "Niveau baisse"
   },
   "offsetColumns": {
     "enchantKey": "Clé d'optimisation",

@@ -2,9 +2,11 @@
   "columns": {
     "enchantKey": "Ключ усиления",
     "level": "Уровень",
+    "items": "Предметы",
     "material": "Материал",
     "materialCount": "Кол-во",
     "chance": "Шанс усиления",
+    "onFailure": "При неудаче",
     "failDurability": "Потеря прочности",
     "perfectCount": "Кол-во (идеальное)",
     "perfectDurability": "Потеря прочности (идеальное)",
@@ -13,9 +15,17 @@
     "accuracy": "Меткость",
     "evasion": "Уклонение",
     "hiddenEvasion": "Скрытое уклонение",
+    "damageReduction": "Снижение урона",
+    "hiddenDamageReduction": "Скрытое снижение урона",
+    "maxHp": "Макс. НР",
     "aidItems": "Вспомогательные предметы",
     "effects": "Эффекты",
     "description": "Описание"
+  },
+  "failResult": {
+    "1": "Безопасно",
+    "2": "Разрушено",
+    "3": "Понижение"
   },
   "offsetColumns": {
     "enchantKey": "Ключ усиления",

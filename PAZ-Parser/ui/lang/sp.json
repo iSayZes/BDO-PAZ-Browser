@@ -32,6 +32,36 @@
     "progressTiles": "{done} / {total} teselas · {percent} %",
     "failed": "La última creación falló: {message}",
     "coords": "X {x} · Z {z}",
+    "removePin": "Eliminar",
+    "pinSaved": "Guardado: vuelve tras reiniciar",
+    "filters": {
+      "title": "Filtros",
+      "search": "Buscar nodo…",
+      "nodes": "Nodos",
+      "hideAll": "Ocultar todo",
+      "markers": "Marcadores",
+      "links": "Conexiones",
+      "toggleGroup": "Mostrar u ocultar todo",
+      "collapse": "Contraer o expandir"
+    },
+    "nodeKinds": {
+      "node": "Nodo normal",
+      "village": "Pueblo",
+      "city": "Ciudad",
+      "gate": "Puerta",
+      "farm": "Cultivo",
+      "trade": "Comercio",
+      "collect": "Recolección",
+      "quarry": "Extracción",
+      "logging": "Tala",
+      "dangerous": "Zona de peligro",
+      "finance": "Banco de inversión",
+      "fish_trap": "Secadero de pescado",
+      "minor_finance": "Banco de inversión menor",
+      "monopoly_farm": "Especialidades",
+      "craft": "Producción",
+      "excavation": "Excavación"
+    },
     "pinTypes": {
       "player": "Jugador",
       "marker": "Marcador"
@@ -247,7 +277,9 @@
     "cachingTables": "Guardando tablas en caché {done}/{total}: {name}",
     "cachingTablesPaused": "Caché de tablas en pausa mientras la aplicación está ocupada ({done}/{total})",
     "openFolder": "Abre una carpeta PAZ para empezar.",
-    "exportFailed": "Error al exportar: {message}"
+    "exportFailed": "Error al exportar: {message}",
+    "pinRemoveFailed": "No se pudo eliminar el marcador: {message}",
+    "mapFiltersSaveFailed": "No se pudieron guardar los filtros del mapa: {message}"
   },
   "firstRun": {
     "body": "Elige la carpeta Paz de tu instalación de Black Desert. La primera carga lee cada índice de archivo y lo guarda en caché; los siguientes inicios cargan desde la caché."

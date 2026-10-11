@@ -32,6 +32,36 @@
     "progressTiles": "{done} / {total} фрагментов · {percent}%",
     "failed": "Последняя сборка не удалась: {message}",
     "coords": "X {x} · Z {z}",
+    "removePin": "Удалить",
+    "pinSaved": "Сохранено: вернётся после перезапуска",
+    "filters": {
+      "title": "Фильтры",
+      "search": "Найти узел…",
+      "nodes": "Узлы",
+      "hideAll": "Скрыть все",
+      "markers": "Метки",
+      "links": "Связи",
+      "toggleGroup": "Показать или скрыть все",
+      "collapse": "Свернуть или развернуть"
+    },
+    "nodeKinds": {
+      "node": "Обычный узел",
+      "village": "Деревня",
+      "city": "Город",
+      "gate": "Врата",
+      "farm": "Урожай",
+      "trade": "Торговля",
+      "collect": "Сбор",
+      "quarry": "Горное дело",
+      "logging": "Лесозаготовки",
+      "dangerous": "Опасная зона",
+      "finance": "Биржа",
+      "fish_trap": "Сушка рыбы",
+      "minor_finance": "Малая биржа",
+      "monopoly_farm": "Особые товары",
+      "craft": "Производство",
+      "excavation": "Раскопки"
+    },
     "pinTypes": {
       "player": "Игрок",
       "marker": "Метка"
@@ -247,7 +277,9 @@
     "cachingTables": "Кэширование таблиц {done}/{total}: {name}",
     "cachingTablesPaused": "Кэширование таблиц приостановлено, пока приложение занято ({done}/{total})",
     "openFolder": "Откройте папку PAZ, чтобы начать.",
-    "exportFailed": "Не удалось экспортировать: {message}"
+    "exportFailed": "Не удалось экспортировать: {message}",
+    "pinRemoveFailed": "Не удалось удалить метку: {message}",
+    "mapFiltersSaveFailed": "Не удалось сохранить фильтры карты: {message}"
   },
   "firstRun": {
     "body": "Выберите папку Paz в папке установки Black Desert. Первая загрузка читает индекс каждого архива и сохраняет его в кэш; следующие запуски загружаются из кэша."

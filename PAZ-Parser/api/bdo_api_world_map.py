@@ -1,10 +1,11 @@
-"""The Map view's tiles: built once per client into the cache folder (WorldMapMixin).
+"""The Map view's tiles and pin icons: built once per client into the cache folder (WorldMapMixin).
 
 The first open shows a prompt with the tile count and an estimated size; its
 OK turns on the "Keep map updated" setting and starts the build. With the
 setting on, a folder load whose client has no finished map (a patch) builds
 it in the background. A build runs in its own thread, which drives the
-process pool of `world_map_build.py` and pushes progress to the page.
+process pool of `world_map_build.py` and pushes progress to the page, then
+cuts the pin icons into the same folder (`map_icons_build.py`).
 """
 
 from __future__ import annotations
@@ -17,7 +18,8 @@ import time
 from pathlib import Path
 
 from bdo_models import PazEntry
-from map_pins import PinStore
+from map_icons_build import build_icons, read_icon_index
+from map_nodes import map_nodes
 from world_map import (
     AVERAGE_TILE_BYTES,
     MAX_ZOOM,
@@ -43,7 +45,7 @@ from world_map_build import (
 
 from .bdo_api_helpers import _norm
 from .bdo_api_state import ApiState
-from .bdo_config import keep_map_updated_setting, load_config, save_config
+from .bdo_config import MAP_FILTERS_KEY, keep_map_updated_setting, load_config, map_filters_setting, save_config
 
 # Progress pushes to the page at most this often, plus the first and last tile of a zoom.
 _PROGRESS_INTERVAL_S = 0.2
@@ -52,20 +54,45 @@ _EXTRA_ZOOM = 2
 
 
 class WorldMapMixin(ApiState):
-    @property
-    def map_pins(self) -> PinStore:
-        """The pins the local server's map API changes (`map_api.py`)."""
-        return self._map_pins
-
-    def get_map_pins(self) -> list[dict]:
-        """Every pin, for the Map view when it opens; changes arrive by `app.onMapPinsChanged`."""
-        return [pin.to_dict() for pin in self._map_pins.pins()]
-
     def get_world_map(self) -> dict:
         """The Map view's state; see `_map_state()`."""
         self._mark_activity()
         with self._map_lock:
             return self._map_state()
+
+    def get_map_icons(self) -> dict[str, dict]:
+        """Icon name -> {"size", "anchor", "turns"} of the loaded client's pin icons; the files are at "iconUrl".
+
+        Built with the map; a map built before the icons, or in an older
+        icon format, gets them here. Empty while there is no finished map.
+        """
+        self._mark_activity()
+        with self._map_lock:
+            if self._cache_dir is None or self._meta_version is None or not self._is_map_current():
+                return {}
+            folder = version_folder(self._cache_dir, self._meta_version)
+            index = read_icon_index(folder)
+            return index if index is not None else self._build_map_icons(folder)
+
+    def get_map_filters(self) -> dict:
+        """The Filters panel's saved choices (`bdo_config.map_filters_setting`)."""
+        return map_filters_setting(load_config())
+
+    def save_map_filters(self, filters: object) -> dict:
+        """Save the Filters panel's choices in the config; returns what was saved.
+
+        Checked like a load, so the page cannot store anything but the panel's shape.
+        """
+        cleaned = map_filters_setting({MAP_FILTERS_KEY: filters})
+        save_config({MAP_FILTERS_KEY: cleaned})
+        return cleaned
+
+    def get_map_nodes(self) -> list[dict]:
+        """Every worldmap node with its name in the loaded language, kind icon and position (`map_nodes.py`)."""
+        self._mark_activity()
+        # The names need LOC, the nodes the lookup indexes.
+        self._wait_for_folder_text()
+        return [node.to_dict() for node in map_nodes()]
 
     def build_world_map(self) -> dict:
         """The prompt's OK: turn on "Keep map updated", start the build, return the new state."""
@@ -83,7 +110,8 @@ class WorldMapMixin(ApiState):
         {"state": "noFolder" | "noTiles"}, {"state": "building", "progress"},
         {"state": "ready", "tileUrl", "bounds", "minZoom", "maxZoom",
         "nativeZoom"}, or {"state": "prompt", "tiles", "bytes", "error"} where
-        "error" is the message of a failed build or None.
+        "error" is the message of a failed build or None. "iconUrl" is the
+        URL template of the pin icons (`get_map_icons`), `{name}` for a name.
         """
         if self._cache_dir is None or self._meta_version is None:
             return {"state": "noFolder"}
@@ -99,6 +127,7 @@ class WorldMapMixin(ApiState):
             return {
                 "state": "ready",
                 "tileUrl": self._server.serve_map(folder, self._meta_version),
+                "iconUrl": self._server.map_icon_url(self._meta_version),
                 "bounds": manifest.bounds.to_dict(),
                 "minZoom": MIN_ZOOM,
                 "maxZoom": MAX_ZOOM + _EXTRA_ZOOM,
@@ -171,6 +200,9 @@ class WorldMapMixin(ApiState):
                     on_progress=self._progress_pusher(stop),
                     should_stop=stop.is_set,
                 )
+                # Read from the loaded folder: a folder load stops the build first.
+                if not stop.is_set():
+                    self._build_map_icons(target)
             remove_other_maps(cache_dir, keep=target)
         except BuildStopped:
             was_stopped = True
@@ -186,6 +218,17 @@ class WorldMapMixin(ApiState):
             state = self._map_state()
         if not was_stopped:
             self._push_js(f"app.onMapStateChanged({json.dumps(state)})")
+
+    def _build_map_icons(self, folder: Path) -> dict[str, dict]:
+        """Cut the pin icons into the map `folder`; returns their index, empty when they fail.
+
+        Not fatal: without icons the pins are dots and arrows.
+        """
+        try:
+            return build_icons(self._read_any_case, folder)
+        except Exception:
+            logging.warning("Could not build the map pin icons in %s", folder, exc_info=True)
+            return {}
 
     def _progress_pusher(self, stop: threading.Event):
         last_push = 0.0

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "exp": "Exp."
+  },
+  "offsetColumns": {
+    "itemId": "ID del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos",
+    "recordStart": "Inicio de registro"
+  },
+  "meta": {
+    "count": "{count} objetos de progreso del hada"
+  }
+}

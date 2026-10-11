@@ -14,6 +14,7 @@ from aiohttp import web
 
 from bdo_models import PazEntry
 from map_api import add_map_api
+from map_icons_build import icon_file
 from map_pins import PinStore
 from world_map_build import tile_file
 
@@ -112,6 +113,10 @@ class LocalServer:
         self._map_tiles = None if folder is None else _MapTiles(folder=folder, version=version)
         return f"http://127.0.0.1:{self.port}/map/{version}/{{z}}/{{x}}/{{y}}.jpg?t={self.token}"
 
+    def map_icon_url(self, version: int) -> str:
+        """The URL template of the served map's icons (`map_icons_build.py`), `{name}` for the icon name."""
+        return f"http://127.0.0.1:{self.port}/map/{version}/icons/{{name}}.png?t={self.token}"
+
     def _run(self) -> None:
         loop = asyncio.new_event_loop()
         self._loop = loop
@@ -132,6 +137,7 @@ class LocalServer:
         app = web.Application()
         app.router.add_get("/stream", self._handle_stream)
         app.router.add_get(r"/map/{version:\d+}/{zoom:\d+}/{x:-?\d+}/{y:-?\d+}.jpg", self._handle_map_tile)
+        app.router.add_get(r"/map/{version:\d+}/icons/{name:[a-z_]+}.png", self._handle_map_icon)
         add_map_api(app, self.token, lambda: self._pins)
         self._runner = web.AppRunner(app)
         await self._runner.setup()
@@ -190,6 +196,18 @@ class LocalServer:
         if path is None:
             raise web.HTTPNotFound(text="No tile")
         return web.FileResponse(path, headers={"Cache-Control": _TILE_CACHE_CONTROL})
+
+    async def _handle_map_icon(self, request: web.Request) -> web.StreamResponse:
+        if request.query.get("t") != self.token:
+            raise web.HTTPForbidden(text="Invalid stream token")
+        tiles = self._map_tiles
+        if tiles is None or int(request.match_info["version"]) != tiles.version:
+            raise web.HTTPNotFound(text="No map for this client")
+        # Only the catalog's names: the path stays inside the icons folder.
+        path = icon_file(tiles.folder, request.match_info["name"])
+        if path is None:
+            raise web.HTTPNotFound(text="No such icon")
+        return web.FileResponse(path)
 
     @staticmethod
     def _decode_path(value: str) -> str:

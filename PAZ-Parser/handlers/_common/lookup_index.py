@@ -64,8 +64,17 @@ class IndexKind(Enum):
     SKILL_BUFFS = "skill_buffs"
     # Base item IDs whose skills apply a buff (itemenchant.dbss -> skill.dbss).
     BUFF_ITEMS = "buff_items"
+    # Base item IDs per enchantstaticstatus.dbss enchant key, ascending.
+    ENCHANT_KEY_ITEMS = "enchant_key_items"
     # Parent node key of each sub-node (exploration.bss + the worldmap graph).
     NODE_PARENT = "node_parent"
+    # (node_kind, x, z, is_sub_node, is_sea) of each enabled node with a
+    # worldmap waypoint, x and z in whole world cm, for the Map view's nodes.
+    MAP_NODE = "map_node"
+    # Korean exploration.bss name of each node, the fallback for LOC type 29.
+    NODE_NAME_KR = "node_name_kr"
+    # Node keys each worldmap node links to, for the Map view's node links.
+    NODE_LINKS = "node_links"
     # Buff IDs that teleport to a point, by teleport_point_id(section, key).
     TELEPORT_BUFFS = "teleport_buffs"
     # Korean names of the teleport buffs, the last fallback for naming a point.

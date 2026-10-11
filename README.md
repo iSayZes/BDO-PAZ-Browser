@@ -35,11 +35,15 @@ to, and run `BDO-PAZ-Browser.exe`. The zip holds `BDO-PAZ-Browser.exe`,
   and the `handlers-latest` release for a newer handler pack. Turn off **Check
   for updates on start** and **Update handlers on start** in the settings and it
   stays offline.
-- The bottom bar shows the version, `app version v2026.10.12`, and with a
-  parsed file selected the version of its handler, `buffsimply.bss 2026.10.14`.
+- The bottom bar shows the status and the version, `app version v2026.10.12`,
+  and with a parsed file selected the version of its handler,
+  `buffsimply.bss 2026.10.14`. Its Output folder and Extract buttons show in
+  the Files view only; the Output folder is saved in `paz_config.json`.
   From source both are commits: the checkout's, and the last commit that
   changed the handler's files (with a `+` for uncommitted edits). The bug
-  report form asks for both.
+  report form asks for both. `--handler-version` prints the handler version
+  on the command line, and `--records --json` writes it and the client
+  version into the export.
 
 To run from source or write handlers, see [Requirements](#requirements).
 
@@ -47,12 +51,13 @@ To run from source or write handlers, see [Requirements](#requirements).
 
 - Tree view of every file in the PAZ archives, with live name search, content search and a preview panel.
 - A Map view next to Files in the toolbar: the world map in Leaflet, built from the client's radar images (`ui_texture/new_ui_common_forlua/widget/rader/minimap_data_pack/rader_X_Y.dds`, one 128 px image per 12,800-unit sector). The first open asks to build the map tiles into the cache folder: on client 3464, 9,802 JPEG tiles over zoom 1 to 7, 216 MB, 13 s with 8 worker processes. Sectors without a radar image, and 2,803 sectors of placeholder art listed in `world_map.py` (client 3464), get one of 12 open sea images picked at random. The map uses world units, so the readout under the cursor shows the game's X and Z.
-- Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. See [Map API](docs/map-api.md).
+- The world map's nodes on the Map view: 1,074 nodes on client 3464, each with the game icon of its kind (32 px at every zoom) at its `mapdata_realexplore2.bwp` waypoint and its name as tooltip, and the graph's 1,230 links between them, drawn while both ends show, blue when an end is an open-sea node (Margoria, Ross Sea, Vadabin, Juur Sea) and orange on land (sub-nodes read `Velia - Bahar Investment Bank`). Main nodes show at every zoom, sub-nodes from zoom 6. A Filters panel has a node search (every match, at any zoom), Hide All, layer chips (Player, Markers) and a Nodes card with a toggle, icon and count per kind, a Links option and a shown / total badge. Only the node kinds start on; Player and Markers stay disabled until such a pin exists. The filter choices are saved in `paz_config.json` and come back on the next start.
+- Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. Pins can carry one of 29 game world map icons, built with the map tiles from the client's files (the node and position icons of `worldmap_grand_base.xml`, and the radar's own-character pointer for `player`). A marker placed with `save` comes back after a restart, and a click on a pin opens a Remove button. See [Map API](docs/map-api.md).
 - Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row.
 - Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
 - Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
 - Ctrl+F inside the hex tab (byte offset, string or hex pattern), the table tab (records) and the Text tab (lines).
-- Export of the open file as raw binary, or its parsed table as CSV, from the Export menu next to the entry details.
+- Export of the open file as raw binary, or its parsed table as CSV, from the Export menu next to the entry details. The CSV file name holds the client and handler versions, `buffsimply_3464_2026.10.12.csv`.
 - Game text in the language you pick, with the colours of its `<PAColor>` tags as in game; **Show game text tags** shows the tags too. A client ships only its region's LOC files, so for a missing one the tables show their Korean text and a corner warning says so.
 - **Show only handled tables** limits the file tree, searches and folder extraction to files with a parsed table, plus the LOC file.
 - A command-line version that lists, extracts and queries parsed records (see [CLI](#cli)).
@@ -111,8 +116,8 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 47/401 .bss formats.
-- Handler Supported 91/374 .dbss formats.
+- Handler Supported 58/401 .bss formats.
+- Handler Supported 99/374 .dbss formats.
 - Handler Supported 31 other formats.
 
 ## Documented Formats
@@ -294,14 +299,14 @@ On first launch, click **Open Folder** and select your BDO PAZ directory (typica
 
 ### Settings and Data Folder
 
-Settings (`paz_config.json`), caches and downloaded handler packs live in the
-data folder: `data\` next to the exe in the Windows build, or
-`%LOCALAPPDATA%\BDO-PAZ-Browser` from source and when the exe folder can't be
-written. Caches sit in its `cache` folder, one subfolder per PAZ folder, so a
-test client keeps its own.
+Settings (`paz_config.json`), saved map pins (`map_pins.json`), caches and
+downloaded handler packs live in the data folder: `data\` next to the exe in
+the Windows build, or `%LOCALAPPDATA%\BDO-PAZ-Browser` from source and when
+the exe folder can't be written. Caches sit in its `cache` folder, one
+subfolder per PAZ folder, so a test client keeps its own.
 
-The **Data Folder** setting picks another folder. The settings are copied
-there (replacing any already in it; the old copy stays), the caches in the
+The **Data Folder** setting picks another folder. The settings and saved map
+pins are copied there (replacing any already in it; the old copy stays), the caches in the
 old folder are deleted, and the loaded client's PAZ index is saved again in
 the new one. A picked folder that is gone, such as an unplugged drive, is
 replaced by the default until it is back.
@@ -312,13 +317,13 @@ table A to Z while the app is idle, and the status bar shows the table it is
 on and how far the pass is. A table stays cached across a patch that leaves
 it, its companions and the LOC text or lookup indexes it reads unchanged.
 **Delete all caches** removes the parsed table, icon thumbnail and lookup
-index caches and the map tiles; the PAZ index cache stays, since rebuilding it
-takes over a minute.
+index caches and the map tiles and pin icons; the PAZ index cache stays,
+since rebuilding it takes over a minute.
 
 **Keep map updated** is turned on by the Map view's first build. With it on,
 a folder load whose client has no finished map (after a game patch) builds
-the tiles again in the background, and the old client's tiles are deleted
-once the new ones are in place.
+the tiles and pin icons again in the background, and the old client's map is
+deleted once the new one is in place.
 
 `paz_config.json` carries a `config_version`. A newer app updates older
 settings on load; settings it can't read are renamed to
@@ -349,6 +354,11 @@ python browser.py --render buffsimply.bss --page 2 > page.html
 
 # Every registered handler key; needs no PAZ folder
 python browser.py --handlers
+
+# The version of the handler that reads a file (file name, PAZ path or key like .loc),
+# or of every handler without a name; takes --json / --csv; needs no PAZ folder
+python browser.py --handler-version buffsimply.bss
+python browser.py --handler-version
 
 # Windows exe: this version and the newest release, then install it (or a downloaded release zip)
 bdo-paz-cli.exe --check-app-update
@@ -389,12 +399,12 @@ file name, or a pattern that matches one file. Options:
 | `--where field*=text` | Text contains `text`, ignoring case. Text fields are searched as stored, so `*=\n` finds the two-character newline escape |
 | `--fields a,b,c` | Only these fields, in this order |
 | `--sort field[:desc]` | Sort as the GUI table does (empty values last, text ignoring case, ties in file order), before `--limit` |
-| `--json` / `--csv` | Full values as JSON, or CSV like the app's export. The default is an aligned text table; long cells are cut in the middle so both ends stay (a path keeps its file name), and a single row is shown whole |
+| `--json` / `--csv` | Full values as JSON, or CSV like the app's export. The default is an aligned text table; long cells are cut in the middle so both ends stay (a path keeps its file name), and a single row is shown whole. JSON is an object: `file` (the PAZ path), `client_version` (the `.meta` header version), `handler` (its key), `handler_version` (as `--handler-version` prints it, `null` from source without git) and `records` |
 | `--limit N` | At most N rows, after filtering |
 | `--no-loc` | Skip loading LOC (faster; text columns fall back to inline text) |
 
 Several `--where` options must all match. `--index` takes `--json`, `--csv`
-and `--limit` too.
+and `--limit` too, and prints JSON as a bare list.
 
 The CLI always shows game text tags, whatever the GUI setting: `--render`
 draws them next to the colours, and `--records` lists the tagged text in the
@@ -416,6 +426,10 @@ PAZ-Parser/
 ├── world_map_build.py      # Map tile build in a process pool, into the cache folder
 ├── world_map_export.py     # Map tiles and single map images for --map-tiles / --map-image
 ├── map_pins.py             # Map pins: types, validation, the session's pin store
+├── map_pins_file.py        # Saved map pins in map_pins.json
+├── map_icons.py            # Map pin icons cut from the client's world map and radar textures
+├── map_icons_build.py      # Map pin icons as PNG files in the map's cache folder
+├── map_nodes.py            # Worldmap nodes for the Map view, from the MAP_NODE lookup index
 ├── map_api.py              # The map API routes on the local server (docs/map-api.md)
 ├── conftest.py             # pytest setup and handler test summary output
 ├── handler_api.py          # HANDLER_API and what handler code may import
@@ -426,7 +440,7 @@ PAZ-Parser/
 │   ├── session.py          # Loads the PAZ folder headless through Api
 │   ├── parsed_file.py      # Resolves a file name to handler, payload, companions
 │   ├── files.py            # --list, --file
-│   ├── formats.py          # --formats, --handlers
+│   ├── formats.py          # --formats, --handlers, --handler-version
 │   ├── records.py          # --records (record_filter.py, record_output.py)
 │   ├── render.py           # --render
 │   ├── index.py            # --index
@@ -437,6 +451,7 @@ PAZ-Parser/
 │   ├── install.py          # Download, SHA-256 check, unpack, the swap helper
 │   ├── handler_manifest.py # Handler pack files, manifest.json, per-handler versions
 │   ├── handler_sets.py     # The pack files each loaded handler reads
+│   ├── handler_versions.py # The running version of a handler (footer, CLI)
 │   └── handler_packs.py    # The pack a start runs, installing a newer one, cleanup
 │
 ├── bench/                  # benchmark.py commands (see Benchmarking)
@@ -464,7 +479,8 @@ PAZ-Parser/
 │   ├── bdo_api_search.py   # File content search, single-file and cross-file (SearchMixin)
 │   ├── bdo_api_updates.py  # The update banner check and one-click install (UpdateMixin)
 │   ├── bdo_api_handler_updates.py# Handler pack update on start, Check now, restart, versions
-│   ├── bdo_api_world_map.py# Map view state, build prompt, background builds (WorldMapMixin)
+│   ├── bdo_api_world_map.py# Map view state, build prompt, background builds, pin icons (WorldMapMixin)
+│   ├── bdo_api_map_pins.py # Map pins for the page and the popup's Remove (MapPinsMixin)
 │   └── config_migrations.py# paz_config.json versions and the steps between them
 │
 ├── paz/                    # PAZ archive reading and caching

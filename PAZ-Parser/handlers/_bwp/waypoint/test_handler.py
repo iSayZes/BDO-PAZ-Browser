@@ -9,6 +9,7 @@ import pytest
 from bdo_models import PazEntry
 from bdo_preview import get_handler
 from _bwp.waypoint.parser import Group, Route, is_waypoint_graph, neighbours, parse_waypoint_graph
+from _bwp.waypoint.worldmap import build_node_link_index
 from tests.fixtures import FIXTURES_DIR, fetch_missing
 from tests.framework import (
     DeclaredCountTest,
@@ -157,3 +158,11 @@ def test_old_template_shows_notice_in_default_sort() -> None:
     assert sort is not None
     file_order = handler.render_data_page(data, entry, {}, 0, 50)
     assert handler.render_sorted_page(data, entry, {}, 0, 50, sort) == file_order
+
+
+def test_node_link_index_lists_each_link_under_both_ends() -> None:
+    assert build_node_link_index(_graph_bytes()) == {10: (11,), 11: (10,)}
+
+
+def test_node_link_index_is_empty_without_a_graph() -> None:
+    assert build_node_link_index(b"not a graph") == {}

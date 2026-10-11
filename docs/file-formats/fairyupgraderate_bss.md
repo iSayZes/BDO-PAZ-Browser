@@ -22,7 +22,7 @@ The format is self-contained; there is no `fairyupgraderateoffset.dbss`.
 | File                    | Required | Role                                                         |
 | ----------------------- | -------- | ------------------------------------------------------------ |
 | `languagedata_en.loc`   | Optional | Item name for `item_id` (`str_type=0`, `str_id1=item_id`)    |
-| `fairyfeedingitem.dbss` | Optional | Full fairy feeding item list; contains both `item_id` values |
+| `fairyfeedingitem.dbss` | Optional | Full fairy feeding item list ([fairyfeedingitem](fairyfeedingitem_dbss.md)); contains both `item_id` values |
 
 All multi-byte values are little-endian.
 

@@ -5,6 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.enchant_level import enchant_level_text
 from _common.html import Column, e, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.item_key import item_level_name
@@ -14,21 +15,6 @@ from .parser import parse_specialenchantitem_records
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 
-# Display levels above +15 are drawn as grades; LOC type 79 names confirm them.
-_FIRST_GRADE_LEVEL = 16
-_GRADES = ("PRI", "DUO", "TRI", "TET", "PEN", "HEX", "SEP", "OCT", "NOV", "DEC")
-
-
-def display_level_text(display_level: int) -> str:
-    """`+7`, `PEN` or `DEC` for a display level; '' for 0 or a value past DEC."""
-    if display_level <= 0:
-        return ""
-    if display_level < _FIRST_GRADE_LEVEL:
-        return f"+{display_level}"
-
-    grade = display_level - _FIRST_GRADE_LEVEL
-    return _GRADES[grade] if grade < len(_GRADES) else ""
-
 
 def _level_name(record: dict) -> str:
     """LOC type 79 name of this item level, else the stored Korean name."""
@@ -36,7 +22,7 @@ def _level_name(record: dict) -> str:
 
 
 def _level_record(record: dict) -> dict:
-    shown_as = display_level_text(record["display_level"])
+    shown_as = enchant_level_text(record["display_level"])
     return {
         **record,
         # Shown As sorts by display_level. A level with no text (0) renders a

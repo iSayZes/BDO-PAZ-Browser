@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "mastery": "Mastery",
+    "prizeCatchRate": "Prize Catch Fish Rate",
+    "butcheringRate": "Chance of Butchering More Items",
+    "massCooking": "Mass Cooking Chance",
+    "maxDishes": "Max Dishes Chance",
+    "higherGradeDish": "Higher Grade Dish Chance",
+    "maxHigherGradeDishes": "Max Higher Grade Dishes Chance",
+    "imperialProfit": "Imperial Delivery Extra Profit",
+    "maxProducts": "Max Products Chance",
+    "extraBasicItems": "Extra Basic Items",
+    "extraSpecialItems": "Extra Special Items",
+    "extraRareItems": "Extra Rare Items",
+    "accel": "Accel.",
+    "speed": "Speed",
+    "turn": "Turn",
+    "brake": "Brake",
+    "horseCaptureRate": "Horse Capture Rate",
+    "mountExp": "Mount EXP",
+    "higherTierHorse": "Higher Tier Horse Chance"
+  },
+  "meta": {
+    "count": "{count} mastery steps"
+  }
+}

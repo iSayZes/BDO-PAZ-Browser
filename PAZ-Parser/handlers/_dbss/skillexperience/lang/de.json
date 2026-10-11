@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Stufe",
+    "exp": "EP bis zur nächsten Stufe"
+  },
+  "offsetColumns": {
+    "level": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

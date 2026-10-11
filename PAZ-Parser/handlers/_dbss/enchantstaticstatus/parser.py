@@ -19,9 +19,9 @@ _LEVEL_SHIFT = 24
 _ENCHANT_KEY_MASK = 0x00FFFFFF
 
 # +0x00 to +0x42: key, level, material and count, perfect enhancement count,
-# unknown_19, 8 zero bytes, success rate, unknown_2d, 4 zero bytes,
+# unknown_19, 8 zero bytes, success rate, downgrade rate, 4 zero bytes,
 # durability, durability lost on failure, unknown_39, unknown_3b, durability
-# lost by a perfect enhancement, unknown_3e.
+# lost by a perfect enhancement, max HP.
 _HEADER = struct.Struct("<IBIQQQ8xII4xHHHBHf")
 # 25 f32 values bdo-data-extractor calls per-species AP; all unconfirmed.
 _SPECIES_VALUES_SIZE = 25 * 4
@@ -29,15 +29,19 @@ _U8 = struct.Struct("<B")
 _U32 = struct.Struct("<I")
 _F32 = struct.Struct("<f")
 # Seven stats, three f32 each (melee, ranged, magic): two unknown, AP min,
-# AP max, AP display, damage reduction (unconfirmed), evasion.
+# AP max, AP display, damage reduction, evasion.
 _LANE_STATS = struct.Struct("<21f")
 _AP_MIN, _AP_MAX, _EVASION = 2, 3, 6
 _LANES = 3
-# After the effect script: 13 unknown bytes.
-_AFTER_SCRIPT_SIZE = 13
+# After the effect script, 13 bytes; only byte 1, what a failed attempt
+# does, is decoded.
+_AFTER_SCRIPT = struct.Struct("<xB11x")
+# Fail results: the client's danger types (Safe, Broken, Gradedown); 0 is
+# stored on attempts that cannot fail.
+FAIL_CANNOT_FAIL, FAIL_SAFE, FAIL_DESTROYED, FAIL_DOWNGRADE = 0, 1, 2, 3
 # Per lane: evasion, hidden evasion, damage reduction, hidden damage reduction.
 _DEFENSE = struct.Struct("<4f")
-_HIDDEN_EVASION = 1
+_HIDDEN_EVASION, _DAMAGE_REDUCTION, _HIDDEN_DAMAGE_REDUCTION = 1, 2, 3
 # Three i32 -1 sentinels, then 65 unknown bytes.
 _SENTINELS = b"\xff" * 12
 _SENTINELS_FIELD = struct.Struct(f"{len(_SENTINELS)}s")
@@ -54,9 +58,11 @@ class _Header:
     material_count: int
     perfect_count: int
     success_rate: int
+    downgrade_rate: int
     max_durability: int
     fail_durability_loss: int
     perfect_durability_loss: int
+    max_hp: float
 
 
 def split_enchant_status_key(key: int) -> tuple[int, int]:
@@ -80,13 +86,13 @@ def parse_enchantstaticstatusoffset_records(data: bytes) -> list[dict]:
 
 def _read_header(reader: RecordReader, enchant_key: int, level: int) -> _Header:
     (stored_key, stored_level, material, count, perfect_count, _unknown_19,
-     rate, _unknown_2d, durability, fail_loss, _unknown_39, _unknown_3b,
-     perfect_loss, _unknown_3e) = reader.unpack(_HEADER)
+     rate, downgrade_rate, durability, fail_loss, _unknown_39, _unknown_3b,
+     perfect_loss, max_hp) = reader.unpack(_HEADER)
     if (stored_key, stored_level) != (enchant_key, level):
         raise ValueError(
             f"enchantstaticstatus block {enchant_key}/{level} stores {stored_key}/{stored_level}"
         )
-    return _Header(material, count, perfect_count, rate, durability, fail_loss, perfect_loss)
+    return _Header(material, count, perfect_count, rate, downgrade_rate, durability, fail_loss, perfect_loss, max_hp)
 
 
 def _lane_max(values: tuple[float, ...], stat: int) -> int:
@@ -104,6 +110,11 @@ def _read_accuracy(reader: RecordReader) -> int:
     return round(accuracy)
 
 
+def _defense_max(defense: list[tuple[float, ...]], stat: int) -> int:
+    """The highest lane of one tail defense value, rounded."""
+    return round(max(lane[stat] for lane in defense))
+
+
 def _read_aid_items(reader: RecordReader, label: str) -> list[int]:
     if reader.unpack(_SENTINELS_FIELD)[0] != _SENTINELS:
         raise ValueError(f"{label}: missing the -1 sentinels")
@@ -116,13 +127,15 @@ def _read_aid_items(reader: RecordReader, label: str) -> list[int]:
     return aids
 
 
-def _enhancement_fields(header: _Header, level: int) -> dict:
+def _enhancement_fields(header: _Header, level: int, fail_result: int) -> dict:
     """What the attempt to reach `level` costs; all None on level 0, the base item."""
     if not level:
         return {
             "material_item_id": None,
             "material_count": None,
             "success_chance": None,
+            "fail_result": None,
+            "downgrade_chance": None,
             "fail_durability_loss": None,
             "perfect_count": None,
             "perfect_durability_loss": None,
@@ -132,6 +145,9 @@ def _enhancement_fields(header: _Header, level: int) -> dict:
         "material_item_id": header.material_item_id,
         "material_count": header.material_count,
         "success_chance": header.success_rate / _RATE_PER_PERCENT,
+        "fail_result": fail_result,
+        # The chance a failure drops a level; 100 on nearly every downgrade attempt.
+        "downgrade_chance": header.downgrade_rate / _RATE_PER_PERCENT,
         "fail_durability_loss": header.fail_durability_loss,
         # None sorts last and exports empty: no perfect enhancement.
         "perfect_count": header.perfect_count if has_perfect else None,
@@ -149,7 +165,7 @@ def _parse_block(data: bytes, start: int, size: int, enchant_key: int, level: in
     reader.unpack(_U32)
     description_kr = reader.text(wide=True)
     effects = reader.text(wide=True)
-    reader.skip(_AFTER_SCRIPT_SIZE)
+    (fail_result,) = reader.unpack(_AFTER_SCRIPT)
     accuracy = _read_accuracy(reader)
     defense = [reader.unpack(_DEFENSE) for _ in range(_LANES)]
     aid_item_ids = _read_aid_items(reader, label)
@@ -158,13 +174,17 @@ def _parse_block(data: bytes, start: int, size: int, enchant_key: int, level: in
         "status_key": level << _LEVEL_SHIFT | enchant_key,
         "enchant_key": enchant_key,
         "level": level,
-        **_enhancement_fields(header, level),
+        **_enhancement_fields(header, level, fail_result),
         "max_durability": header.max_durability,
         "ap_min": _lane_max(lane_stats, _AP_MIN),
         "ap_max": _lane_max(lane_stats, _AP_MAX),
         "accuracy": accuracy,
         "evasion": _lane_max(lane_stats, _EVASION),
-        "hidden_evasion": round(max(lane[_HIDDEN_EVASION] for lane in defense)),
+        "hidden_evasion": _defense_max(defense, _HIDDEN_EVASION),
+        "damage_reduction": _defense_max(defense, _DAMAGE_REDUCTION),
+        "hidden_damage_reduction": _defense_max(defense, _HIDDEN_DAMAGE_REDUCTION),
+        # Ships and wagons show it as Max Durability, their HP.
+        "max_hp": round(header.max_hp),
         "aid_item_ids": aid_item_ids,
         "effects": effects,
         "description_kr": description_kr,

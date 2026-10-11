@@ -16,11 +16,13 @@ from .bdo_api_caches import CacheMixin
 from .bdo_api_handler_updates import HandlerUpdateMixin
 from .bdo_api_updates import UpdateMixin
 from .bdo_config import (
+    OUTPUT_PATH_KEY,
     RECORDS_CACHE_MODES,
     check_app_updates_setting,
     dismissed_loc_warnings,
     handled_only_setting,
     load_config,
+    output_path_setting,
     records_cache_setting,
     save_config,
     show_pa_tags_setting,
@@ -31,6 +33,7 @@ from .bdo_languages import UI_LANGUAGE_CODES, UI_LANGUAGES, game_language, loc_p
 from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, FOLDER_ICON, _file_icon, _norm, fold_entry_map, path_matcher
 from .bdo_api_preview import PreviewMixin
 from .bdo_api_search import SearchMixin
+from .bdo_api_map_pins import MapPinsMixin
 from .bdo_api_world_map import WorldMapMixin
 from .bdo_tree import build_tree, collect_entries, count_entries, find_node, handled_entries
 from paz.bdo_cache import load_cache, read_meta_version, save_cache
@@ -80,13 +83,18 @@ def _data_folder(text: str) -> str | None:
     return str(path)
 
 
-class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin):
+class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin):
     """Backend the UI calls through pywebview; the CLI loads folders through it too."""
 
     @property
     def entries(self) -> list[PazEntry]:
         """Every entry of the loaded folder, in meta file order."""
         return self._entries
+
+    @property
+    def meta_version(self) -> int | None:
+        """The client version in the loaded folder's `.meta` header; None before a load."""
+        return self._meta_version
 
     @property
     def paz_root(self) -> Path | None:
@@ -160,6 +168,7 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
             "check_app_updates": check_app_updates_setting(cfg),
             "update_handlers": update_handlers_setting(cfg),
             "keep_map_updated": keep_map_updated_setting(cfg),
+            "output_path": output_path_setting(cfg),
             # None from source: the settings hide the update checks then.
             "app_version": info.version if (info := build_info()) is not None else None,
         }
@@ -630,6 +639,12 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
         return results
 
     # ── Extraction ────────────────────────────────────────────────────────────
+
+    def save_output_path(self, path: object) -> str:
+        """Keep the bottom bar's Output folder for the next start; returns what was saved."""
+        saved = output_path_setting({OUTPUT_PATH_KEY: path.strip() if isinstance(path, str) else ""})
+        save_config({OUTPUT_PATH_KEY: saved})
+        return saved
 
     def pick_output_folder(self) -> str | None:
         if self._window is None:

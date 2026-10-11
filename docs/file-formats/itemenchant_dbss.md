@@ -154,7 +154,7 @@ fields that are not yet decoded.
 | `+0xCA` | u16  | unknown_ca   |                                                              |
 | `+0xCC` | u32  | skill_key_1  | Skill a consumable casts, a [`skill.dbss`](skill_dbss.md) key; its `buff_ids` are the item's buffs; `0` when none |
 | `+0xD0` | u32  | skill_key_2  | Second skill, used by composite meals; `0` when none          |
-| `+0xD4` | ...  | unknown      | Numeric fields up to the name: 16 or 21 bytes in most base blocks, 176 in 597 gear blocks, then a u32 that bdo-data-extractor calls the enchant key (0 in 40,025 base items, never the item ID); with the block's level it is the key of [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md) |
+| `+0xD4` | ...  | unknown      | Numeric fields up to the name: 16 or 21 bytes in most base blocks, 176 in 597 gear blocks, then `enchant_key` (u32, just before the Korean name's length prefix): with the block's level it is the key of [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); `0` in 40,025 base items (client 3458), which have no enhancement data. Every level of an item stores the key of its base block (all 70,213 items on client 3464) |
 | varies  | ...  | name_kr      | Korean item name: u64 character count, then UTF-16LE text that ends where the icon's prefix starts. Present in all 70,284 base blocks (client 3458) |
 | varies  | ...  | strings      | One or two length-prefixed ASCII strings                     |
 | varies  | ...  | unknown  | Remaining enchant data                   |
@@ -415,6 +415,7 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Item          | text | LOC `str_type=0`, `str_id1=item_id`, else `name_kr` (483 items on client 3458, mostly dev and Hardcore server items), in its `grade` colour |
 | Description   | text | LOC `str_type=0`, `str_id4=1`, in its game colours, on one line and cut; the file stores no description. 61,837 of 70,284 items have one on client 3458 |
 | Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced |
+| Enchant Key   | num  | `enchant_key`, the item's key in [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); dash when `0` |
 | Req. Level    | num  | `required_level`; dash when `0` or `1` |
 | Classes       | text | `class_mask` as LOC type 21 class names; "All" when every playable class is set, "All except ..." when up to three are missing |
 | Binding       | text | `vested_type` and `family_bound`: "On obtain (Family)", "On equip (Character)" and so on; dash when the item never binds |

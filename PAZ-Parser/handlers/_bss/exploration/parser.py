@@ -92,6 +92,52 @@ def parse_exploration_records(data: bytes) -> list[dict]:
     return records
 
 
+def is_sea_node(record: dict) -> bool:
+    """A node of the open sea: a Normal main node with no contribution cost.
+
+    On client 3464 these are the 51 Margoria, Ross Sea, Vadabin and Juur Sea
+    nodes (keys 1400 to 1452), Tiamat Sea and Oceanus Sea, and Red Battlefield
+    and Pit of the Undying, which have no worldmap links.
+    """
+    return record["node_kind"] == 0 and not record["is_sub_node"] and record["contribution"] == 0
+
+
+def build_map_node_index(exploration: bytes, worldmap: bytes) -> dict[int, tuple[int, ...]]:
+    """The `MAP_NODE` index: each enabled node key to (node_kind, x, z, is_sub_node, is_sea).
+
+    The position is the node's waypoint in `mapdata_realexplore2.bwp`, in
+    whole world cm; a sub-node has its own there, while its `exploration.bss`
+    position repeats its parent's. `is_sea` is `is_sea_node()`. Nodes without
+    a waypoint are left out, and so are nodes with no exploration radius: the
+    game cannot find them (on client 3464 only Duvencrune 1651, a second
+    Duvencrune far off the map). An unreadable graph yields an empty index.
+    """
+    if not is_waypoint_graph(worldmap):
+        return {}
+    waypoints = {waypoint.key: waypoint for waypoint in parse_waypoint_graph(worldmap).waypoints}
+    index: dict[int, tuple[int, ...]] = {}
+    for record in parse_exploration_records(exploration):
+        waypoint = waypoints.get(record["node_key"])
+        if record["enabled"] and record["radius"] > 0 and waypoint is not None:
+            index[record["node_key"]] = (
+                record["node_kind"],
+                round(waypoint.x),
+                round(waypoint.z),
+                record["is_sub_node"],
+                int(is_sea_node(record)),
+            )
+    return index
+
+
+def build_node_name_kr_index(exploration: bytes) -> dict[int, str]:
+    """The `NODE_NAME_KR` index: each node key to its Korean source name, the fallback for LOC type 29."""
+    return {
+        record["node_key"]: record["name_kr"]
+        for record in parse_exploration_records(exploration)
+        if record["name_kr"]
+    }
+
+
 def build_node_parent_index(exploration: bytes, worldmap: bytes) -> dict[int, int]:
     """The `NODE_PARENT` index: each sub-node key to the node it hangs off.
 

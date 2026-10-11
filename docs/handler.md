@@ -928,11 +928,12 @@ Examples:
 ```text
 _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
-├── binary.py
+├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
 ├── character.py         # character names and titles (LOC type 6)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
+├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
 ├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
 ├── html.py
 ├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
@@ -1130,7 +1131,11 @@ IDs (`LookupValue`).
 | `PRODUCTION_ITEMS` | `plantexchangegroup.bss`, `itemsubgroup.dbss`, `itemsubgroupoffset.dbss` | item keys (tuple) |
 | `SKILL_BUFFS`    | `skill.dbss`, `skilloffset.dbss`           | buff IDs (tuple) |
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
+| `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
+| `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
+| `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
+| `NODE_LINKS`     | `mapdata_realexplore2.bwp`                 | linked node keys (tuple) |
 | `TELEPORT_BUFFS` | `buff.dbss`, `buffoffset.dbss`             | buff IDs (tuple) |
 | `TELEPORT_BUFF_NAME_KR` | `buff.dbss`, `buffoffset.dbss`      | Korean buff name |
 | `TELEPORT_NEAREST_NODE` | `teleport.dbss`, `mapdata_realexplore2.bwp` | `(node key, metres)` |
@@ -1264,6 +1269,15 @@ every base item whose skills apply it, in ascending ID order; the
 `build_buff_item_index()` in `_dbss/itemenchant/parser.py`, which reads both
 tables, so `BUFF_ITEMS` costs no second read of `itemenchant.dbss`.
 
+`ENCHANT_KEY_ITEMS` maps an
+[enchantstaticstatus.dbss](file-formats/enchantstaticstatus_dbss.md) enchant
+key to the base items whose `itemenchant.dbss` block stores it, in ascending
+ID order; keys no item uses and items with key `0` are left out. It is built
+by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
+level-0 blocks, since every level of an item stores the same key. The
+`enchantstaticstatus.dbss` Items column reads it; `itemenchant.dbss` shows
+each item's own key as its Enchant Key column.
+
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links
 to in the worldmap graph, its parent; sub-nodes with no link or several are
@@ -1275,6 +1289,19 @@ a name is missing, for a table with a better fallback than the bare sub-node
 name (`plantexchangegroup.bss` keeps its Korean label). `node_name()`
 in the same module is the plain LOC type 29 name the node tables show. It is
 built by `build_node_parent_index()` in `_bss/exploration/parser.py`.
+
+`MAP_NODE` holds the Map view's node layer: each enabled node with a worldmap
+waypoint and a radius above 0, as its `node_kind`, the waypoint's x and z in
+whole world cm, `is_sub_node` and whether it is a sea node (`is_sea_node()`:
+a Normal main node with no contribution cost, which colours its links). A sub-node has a waypoint of its own, while its
+`exploration.bss` position repeats its parent's. `NODE_NAME_KR` is the Korean
+`exploration.bss` name of each node, the fallback when LOC type 29 has none.
+The core reads both in `map_nodes.py`; `build_map_node_index()` and
+`build_node_name_kr_index()` in `_bss/exploration/parser.py` build them.
+`NODE_LINKS` holds the keys each worldmap waypoint links to, ascending, so
+every link is listed under both its ends; `map_nodes.py` keeps the links
+between two map nodes for the Map view's link lines. It is built by
+`build_node_link_index()` in `_bwp/waypoint/worldmap.py`.
 
 `TELEPORT_BUFFS` maps a [teleport.dbss](file-formats/teleport_dbss.md) point
 to the effect type 23 buffs that go there, and `TELEPORT_BUFF_NAME_KR` maps
@@ -1665,6 +1692,11 @@ fix counts for every handler that imports it) and the JSON files next to
 them, the files `source_fingerprint.project_files()` returns. A file the
 handler opens by path without importing it is not in that set, so a change
 to it alone leaves the version as it was.
+
+`updates/handler_versions.py` reads the running version for the GUI footer,
+`browser.py --handler-version <file or key>` and the `handler_version` field of
+`browser.py --records --json`, next to `client_version`. From source it is the last commit that changed
+that file set, with a `+` for uncommitted edits.
 
 ## Required `__init__.py`
 

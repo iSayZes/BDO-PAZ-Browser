@@ -5,11 +5,13 @@ from bdo_preview import register_handler
 from .allquestlist.handler import AllQuestListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .cronenchant.handler import CronEnchantBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
 from .employeeexp.handler import EmployeeExpBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
+from .experience.handler import ExperienceBssHandler
 from .exploration.handler import ExplorationBssHandler
 from .fairyequipskill.handler import FairyEquipSkillBssHandler
 from .fairyfeedenchantfailcount.handler import (
@@ -18,11 +20,14 @@ from .fairyfeedenchantfailcount.handler import (
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
+from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
+from .masterystatdata.handler import MasteryStatDataBssHandler
+from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
@@ -38,6 +43,7 @@ from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestLi
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
+from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
 from .stringtable.handler import StringTableBssHandler
@@ -52,6 +58,7 @@ def register_bss_handlers() -> None:
     register_handler("allquestlist.bss", AllQuestListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler(
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),
@@ -60,6 +67,7 @@ def register_bss_handlers() -> None:
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
+    register_handler("experience.bss", ExperienceBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
     register_handler("fairyequipskill.bss", FairyEquipSkillBssHandler())
     register_handler(
@@ -69,6 +77,10 @@ def register_bss_handlers() -> None:
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
+    register_handler(
+        "hardcorecharacterstatstaticstatus.bss",
+        HardcoreCharacterStatBssHandler(),
+    )
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",
@@ -77,6 +89,9 @@ def register_bss_handlers() -> None:
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
+    # One layout for the six life skill mastery tables, each with its own columns.
+    for mastery_table in MASTERY_TABLES:
+        register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
@@ -97,6 +112,9 @@ def register_bss_handlers() -> None:
     register_handler("regiongroupinfo.bss", RegionGroupInfoBssHandler())
     register_handler("regioninfo.bss", RegionInfoBssHandler())
     register_handler("regioninfo_linkandcheckvalid2.bss", RegionLinkBssHandler())
+    # One layout for the combat skill point and guild point max levels.
+    for name in ("skillexperiencemaxlevel.bss", "guildskillexperiencemaxlevel.bss"):
+        register_handler(name, SkillExperienceMaxLevelBssHandler())
     register_handler("skillgroup.bss", SkillGroupBssHandler())
     register_handler("specialenchantitem.bss", SpecialEnchantItemBssHandler())
     register_handler("stringtable.bss", StringTableBssHandler())

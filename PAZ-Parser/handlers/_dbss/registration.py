@@ -72,6 +72,8 @@ from .petexp.handler import PetExpHandler, pet_exp_offset_handler
 from .pcgrowth.handler import PcGrowthHandler, pc_growth_offset_handler
 from .fitnesslevel.handler import FitnessLevelHandler, fitness_level_offset_handler
 from .lifeexp.handler import LifeExpHandler, life_exp_offset_handler
+from .skillexperience.handler import LevelExpHandler, level_offset_handler
+from .skillexperience.parser import LEVEL_TABLES
 from .petskill.handler import PetSkillHandler, pet_skill_offset_handler
 from .petequipskillaquire.handler import (
     PetEquipSkillAcquireHandler,
@@ -80,6 +82,10 @@ from .petequipskillaquire.handler import (
 from .fairyequipskillaquire.handler import (
     FairyEquipSkillAcquireHandler,
     fairy_equip_skill_acquire_offset_handler,
+)
+from .fairyfeedingitem.handler import (
+    FairyFeedingItemHandler,
+    fairy_feeding_item_offset_handler,
 )
 from .fairyskillchange.handler import (
     FairySkillChangeHandler,
@@ -172,6 +178,9 @@ def register_dbss_handlers() -> None:
     register_handler("fitnesslevel.dbss", FitnessLevelHandler())
     register_handler("lifeexpoffset.dbss", life_exp_offset_handler())
     register_handler("lifeexp.dbss", LifeExpHandler())
+    for level_table in LEVEL_TABLES:
+        register_handler(level_table.offset_file, level_offset_handler())
+        register_handler(level_table.file_name, LevelExpHandler(level_table))
     register_handler("petskilloffset.dbss", pet_skill_offset_handler())
     register_handler("petskill.dbss", PetSkillHandler())
     register_handler(
@@ -184,6 +193,11 @@ def register_dbss_handlers() -> None:
         fairy_equip_skill_acquire_offset_handler(),
     )
     register_handler("fairyequipskillaquire.dbss", FairyEquipSkillAcquireHandler())
+    register_handler(
+        "fairyfeedingitemoffset.dbss",
+        fairy_feeding_item_offset_handler(),
+    )
+    register_handler("fairyfeedingitem.dbss", FairyFeedingItemHandler())
     register_handler(
         "fairyskillchangeoffset.dbss",
         fairy_skill_change_offset_handler(),

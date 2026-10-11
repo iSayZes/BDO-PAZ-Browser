@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "ap": "Ataque",
+    "dp": "Defensa"
+  },
+  "meta": {
+    "count": "{count} tipos de clase"
+  }
+}

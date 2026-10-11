@@ -32,6 +32,36 @@
     "progressTiles": "{done} / {total} Kacheln · {percent} %",
     "failed": "Die letzte Erstellung ist fehlgeschlagen: {message}",
     "coords": "X {x} · Z {z}",
+    "removePin": "Entfernen",
+    "pinSaved": "Gespeichert: nach einem Neustart wieder da",
+    "filters": {
+      "title": "Filter",
+      "search": "Posten suchen…",
+      "nodes": "Posten",
+      "hideAll": "Alle ausblenden",
+      "markers": "Markierungen",
+      "links": "Verbindungen",
+      "toggleGroup": "Alle ein- oder ausblenden",
+      "collapse": "Ein- oder ausklappen"
+    },
+    "nodeKinds": {
+      "node": "Normaler Posten",
+      "village": "Stadt",
+      "city": "Hauptstadt",
+      "gate": "Tor",
+      "farm": "Anbau",
+      "trade": "Handel",
+      "collect": "Sammeln",
+      "quarry": "Bergbau",
+      "logging": "Holzfällen",
+      "dangerous": "Gefahrenzone",
+      "finance": "Investmentbank",
+      "fish_trap": "Fischtrockenplatz",
+      "minor_finance": "Kleine Investmentbank",
+      "monopoly_farm": "Spezialitäten",
+      "craft": "Produktion",
+      "excavation": "Ausgrabung"
+    },
     "pinTypes": {
       "player": "Spieler",
       "marker": "Markierung"
@@ -247,7 +277,9 @@
     "cachingTables": "Tabellen werden gespeichert {done}/{total}: {name}",
     "cachingTablesPaused": "Speichern der Tabellen pausiert, solange die App beschäftigt ist ({done}/{total})",
     "openFolder": "Öffne einen PAZ-Ordner, um zu beginnen.",
-    "exportFailed": "Export fehlgeschlagen: {message}"
+    "exportFailed": "Export fehlgeschlagen: {message}",
+    "pinRemoveFailed": "Markierung konnte nicht entfernt werden: {message}",
+    "mapFiltersSaveFailed": "Kartenfilter konnten nicht gespeichert werden: {message}"
   },
   "firstRun": {
     "body": "Wähle den Ordner Paz in deiner Black-Desert-Installation. Beim ersten Laden wird jeder Archivindex gelesen und zwischengespeichert; spätere Starts laden aus dem Cache."

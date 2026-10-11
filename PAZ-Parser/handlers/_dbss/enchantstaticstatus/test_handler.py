@@ -5,6 +5,7 @@ from typing import Any
 
 import pytest
 
+from _common.lookup_index import IndexKind
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -31,6 +32,7 @@ _CONCENTRATED_BLACK_STONE = 16004
 _SICILS_NECKLACE_ITEM = 11625
 _ESSENCE_OF_DAWN = 820979
 _DAWN_BLACK_STONE = 820984
+_KZARKA_GAUNTLET_ITEM = 11210
 
 
 def _status_key(enchant_key: int, level: int) -> int:
@@ -45,6 +47,8 @@ CASE = HandlerCase(
     uses_loc=True,
     loc_fields=["Material"],
     internal_path="gamecommondata/binary/enchantstaticstatus.dbss",
+    # Only the link the TargetTest checks; the real index is built from itemenchant.dbss.
+    lookup_indexes={IndexKind.ENCHANT_KEY_ITEMS: {_KZARKA_GAUNTLET: (_KZARKA_GAUNTLET_ITEM,)}},
     tests=[
         SchemaTest(
             required_keys=[
@@ -52,9 +56,15 @@ CASE = HandlerCase(
                 "enchant_key",
                 "level",
                 "material_item_id",
+                "item_ids",
+                "item_names",
+                "item_count",
                 "material_name",
                 "material_count",
                 "success_chance",
+                "fail_result",
+                "fail_result_name",
+                "downgrade_chance",
                 "fail_durability_loss",
                 "perfect_count",
                 "perfect_durability_loss",
@@ -64,6 +74,9 @@ CASE = HandlerCase(
                 "accuracy",
                 "evasion",
                 "hidden_evasion",
+                "damage_reduction",
+                "hidden_damage_reduction",
+                "max_hp",
                 "aid_item_ids",
                 "aid_names",
                 "aid_count",
@@ -77,6 +90,15 @@ CASE = HandlerCase(
         RangeTest(col="level", min_val=0, max_val=_MAX_LEVEL),
         # Stored in millionths, shown as a percentage.
         RangeTest(col="success_chance", min_val=0, max_val=100),
+        RangeTest(col="downgrade_chance", min_val=0, max_val=100),
+        # Safe, destroyed or downgrade; 0 on attempts that cannot fail.
+        RangeTest(col="fail_result", min_val=0, max_val=3),
+        # Every level of a key lists the items that enhance with it.
+        TargetTest(
+            col="status_key",
+            value=_status_key(_KZARKA_GAUNTLET, _PRI),
+            expected={"item_ids": [_KZARKA_GAUNTLET_ITEM], "item_names": ["Kzarka Gauntlet"], "item_count": 1},
+        ),
         # Level 0 is the base item: nothing to pay for it.
         TargetTest(
             col="status_key",

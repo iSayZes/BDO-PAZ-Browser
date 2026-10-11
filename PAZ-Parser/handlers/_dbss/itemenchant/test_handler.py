@@ -34,6 +34,8 @@ _WEAPON = 697192
 _BALACS_LUNCHBOX = 9359
 # Kzarka Gauntlet enhances +1 to +15, then PRI to PEN: levels 1-20.
 _KZARKA_GAUNTLET = 11210
+# Its enchantstaticstatus.dbss key (enchantstaticstatus_dbss.md).
+_KZARKA_GAUNTLET_ENCHANT_KEY = 662
 _PEN = 20
 # The key packs the item ID into its low 24 bits and the enchant level above them.
 _MAX_ITEM_ID = 0xFFFFFF
@@ -93,6 +95,7 @@ CASE = HandlerCase(
                 "item_id",
                 "name_kr",
                 "max_enchant_level",
+                "enchant_key",
                 "required_level",
                 "class_mask",
                 "classes",
@@ -192,7 +195,12 @@ CASE = HandlerCase(
         TargetTest(
             col="item_id",
             value=_KZARKA_GAUNTLET,
-            expected={"max_enchant_level": _PEN, "item_name": "Kzarka Gauntlet", "name_kr": "크자카 권갑"},
+            expected={
+                "max_enchant_level": _PEN,
+                "enchant_key": _KZARKA_GAUNTLET_ENCHANT_KEY,
+                "item_name": "Kzarka Gauntlet",
+                "name_kr": "크자카 권갑",
+            },
         ),
         # Main weapons need no level; Kzarka is for two classes, binds never,
         # sells on the market and can be dyed.
@@ -278,6 +286,21 @@ def test_item_grade_index_matches_the_grade_column(itemenchant_result: HandlerRe
     index = build_item_grade_index(source.data, source.file(_OFFSET_FILE))
 
     assert index == {r["item_id"]: r["grade"] for r in itemenchant_result.records}
+
+
+def test_enchant_key_item_index_matches_the_enchant_key_column(itemenchant_result: HandlerResult) -> None:
+    """IndexKind.ENCHANT_KEY_ITEMS is this table's Enchant Key column turned around."""
+    from _dbss.itemenchant.parser import build_enchant_key_item_index
+
+    source = itemenchant_result.source
+    index = build_enchant_key_item_index(source.data, source.file(_OFFSET_FILE))
+    expected: dict[int, list[int]] = {}
+    for record in itemenchant_result.records:
+        if record["enchant_key"]:
+            expected.setdefault(record["enchant_key"], []).append(record["item_id"])
+
+    assert index == {key: tuple(sorted(items)) for key, items in expected.items()}
+    assert _KZARKA_GAUNTLET in index[_KZARKA_GAUNTLET_ENCHANT_KEY]
 
 
 def test_build_item_icon_index_covers_the_furniture_case() -> None:

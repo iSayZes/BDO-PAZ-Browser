@@ -14,9 +14,16 @@ const FACING_PIN_SIZE = 22;
 export const mapPinMethods = {
   // Pushed on every pin change of the map API: the full list.
   onMapPinsChanged(pins) {
-    this._mapPins = pins;
+    this._setMapPins(pins);
     this._drawMapPins();
     this._refreshMapFilters();
+  },
+
+  // A chip that turns enabled with these pins may turn on (map-filters.js).
+  _setMapPins(pins) {
+    const wasDisabled = this._disabledMapLayers();
+    this._mapPins = pins;
+    this._turnOnEnabledMapLayers(wasDisabled);
   },
 
   // Updates the markers in place, so a pin's open popup stays open while

@@ -17,13 +17,15 @@ import { t } from "../core/i18n.js";
 // `_isMapLayerOn(id)` and `_isMapFilterShown(groupId, key)` before drawing.
 
 // Chips: id (storage key), label and icon, whether it starts on, when it is
-// disabled (nothing of it on the map), and the redraw after a change.
+// disabled (nothing of it on the map), whether it turns on when it goes from
+// disabled to enabled, and the redraw after a change.
 const FILTER_LAYERS = [
   {
     id: "player",
     label: "map.pinTypes.player",
     icon: "navigation",
     defaultOn: false,
+    onWhenEnabled: true,
     disabled: (app) => !app._mapPins.some((pin) => pin.type === "player"),
     apply: (app) => app._drawMapPins(),
   },
@@ -163,11 +165,12 @@ export const mapFilterMethods = {
     this._mapFiltersChanged([...FILTER_LAYERS, ...FILTER_GROUPS]);
   },
 
-  // After a toggle: save, redraw the layers `changed` names, rebuild the panel.
+  // After a toggle: save, redraw the layers `changed` names, rebuild the
+  // panel when a map is open.
   _mapFiltersChanged(changed) {
     this._saveMapFilter();
     new Set(changed.map((entry) => entry.apply)).forEach((apply) => apply(this));
-    this._renderMapFilters();
+    if (this._mapNodes) this._renderMapFilters();
   },
 
   // Built when a map opens and after every toggle; the scroll position stays.
@@ -188,6 +191,21 @@ export const mapFilterMethods = {
 
   _mapFilterSignatureNow() {
     return FILTER_LAYERS.map((layer) => Boolean(layer.disabled?.(this))).join();
+  },
+
+  _disabledMapLayers() {
+    return FILTER_LAYERS.filter((layer) => layer.disabled?.(this));
+  },
+
+  // After a pin change: turns on the `onWhenEnabled` chips of `wasDisabled`
+  // that are enabled now, so the first player pin shows. The saved choices
+  // load first, or the save would write the defaults over them.
+  async _turnOnEnabledMapLayers(wasDisabled) {
+    const enabled = wasDisabled.filter((layer) => layer.onWhenEnabled && !layer.disabled?.(this));
+    if (!enabled.length) return;
+    await this._loadMapFilter();
+    enabled.forEach((layer) => this._setMapFilterChoice(LAYERS_ID, layer.id, true));
+    this._mapFiltersChanged(enabled);
   },
 
   // The Filters card: one chip per layer.

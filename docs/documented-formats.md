@@ -6,6 +6,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------- | -------------- |
 | `*.bwp` (`mapdata_realexplore2.bwp`) | Waypoint graphs: keyed 3D waypoints with names and movement flags, directed links, groups and routes; `mapdata_realexplore2.bwp` is the worldmap node graph | [waypoint](file-formats/waypoint_bwp.md) | 1 | 0 |
 | `acceptquest.bss`                  | PABR quest ID list in acceptance-related order with two side fields                                            | [acceptquest](file-formats/acceptquest_bss.md)                      | 1              | 0 |
+| `alchemycharge.dbss` | Alchemy stone recharge materials: per stone type group, rows of (stone type, material item ID, durability points) | [alchemycharge](file-formats/alchemycharge_dbss.md) | 2 | 1 |
+| `alchemychargeoffset.dbss` | Index into `alchemycharge.dbss`, same groups, maps (stone type, item ID) → offset/size | [alchemycharge](file-formats/alchemycharge_dbss.md) | 2 | 1 |
 | `alchemystatdata.bss` | PABR Alchemy Mastery table: per 50 mastery, max products chance, Imperial Delivery extra profit and the extra item chance with its special and rare shares | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `alchemystatus.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `alchemystatusoffset.dbss` | Empty offset companion for `alchemystatus.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |

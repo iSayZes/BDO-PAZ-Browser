@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "stoneType": "Pierre d'alchimie",
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "chargePoint": "Durabilité"
+  },
+  "stoneTypes": {
+    "0": "Destruction",
+    "1": "Protection",
+    "2": "Profession"
+  },
+  "offsetColumns": {
+    "stoneType": "Type de pierre",
+    "itemId": "ID d'objet",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} matériaux · {types} types de pierre"
+  }
+}

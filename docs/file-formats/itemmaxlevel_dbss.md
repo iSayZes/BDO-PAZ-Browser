@@ -1,0 +1,105 @@
+# `itemmaxlevel.dbss` Format
+
+## Purpose
+
+Highest enhancement level per item, for every item with enhancement data. A
+row is the item ID and one byte: `20` for gear that goes to PEN, `5` for an
+accessory (PRI to PEN), `0` for an item that has an `enchant_key` but cannot
+be enhanced.
+
+```text
+item 10010 (Kzarka Longsword)  max level 20
+item 11607 (Ogre Ring)         max level 5
+```
+
+## Companion Files
+
+None. The handler reads the rows in file order and does not need
+`itemmaxleveloffset.dbss` (see below). Item names come from LOC type 0 and
+icons from the `ITEM_ICON` lookup index.
+
+All multi-byte values are little-endian.
+
+## File Layout
+
+A `PABR` table of fixed rows with an empty string table, read by
+`fixed_row_offsets()` in `_common/pabr_strings.py`.
+
+| Offset  | Type     | Field   | Notes                                                       |
+| ------- | -------- | ------- | ----------------------------------------------------------- |
+| `+0x00` | u8[4]    | magic   | `PABR`                                                      |
+| `+0x04` | u32      | count   | Number of rows; `30,201` on client 3464                     |
+| `+0x08` | row[]    | rows    | `count` 5-byte rows                                         |
+| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 5 * count`), `u32 0` |
+
+### Row (5 bytes)
+
+| Offset  | Type | Field             | Notes                                                    |
+| ------- | ---- | ----------------- | -------------------------------------------------------- |
+| `+0x00` | u32  | item_id           | Unique; the rows are not in ID order                     |
+| `+0x04` | u8   | max_enchant_level | Highest enhancement level; `0` to `25`                   |
+
+Values on client 3464:
+
+| max_enchant_level | Rows   |
+| ----------------- | ------ |
+| `0`               | 20,860 |
+| `1`               | 4,156  |
+| `2`               | 2      |
+| `3`               | 4      |
+| `5`               | 251    |
+| `7`               | 50     |
+| `10`              | 518    |
+| `15`              | 105    |
+| `20`              | 4,088  |
+| `25`              | 167    |
+
+## `itemmaxleveloffset.dbss`
+
+The `PABR` index layout of `skilloffset.dbss`, read by
+`parse_pabr_u32_offset_rows()` in `_common/pabr_offset.py`.
+
+| Offset  | Type     | Field   | Notes                                                       |
+| ------- | -------- | ------- | ----------------------------------------------------------- |
+| `+0x00` | u8[4]    | magic   | `PABR`                                                      |
+| `+0x04` | u32      | count   | Equals the `itemmaxlevel.dbss` count                        |
+| `+0x08` | row[]    | rows    | `count` 12-byte rows                                        |
+| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 12 * count`), `u32 0` |
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field   | Notes                                                       |
+| ------- | ---- | ------- | ----------------------------------------------------------- |
+| `+0x00` | u32  | item_id | Row key                                                     |
+| `+0x04` | u32  | offset  | Start of the item's row in `itemmaxlevel.dbss`, at its `item_id` |
+| `+0x08` | u32  | size    | Always `0`                                                  |
+
+The index rows are in neither ID nor file order; on client 3464 each points
+at the row of its own item.
+
+## Suggested UI Layout
+
+| Column    | Type | Notes                                             |
+| --------- | ---- | ------------------------------------------------- |
+| Item ID   | num  | `item_id`                                         |
+| Icon      | icon | Item icon                                         |
+| Item      | text | LOC type 0 name in its grade colour, else the ID  |
+| Max Level | num  | `max_enchant_level`                               |
+
+## Notes
+
+- The file is a copy of what [`itemenchant.dbss`](itemenchant_dbss.md)
+  already holds. On client 3464 its 30,201 items are exactly the items with a
+  non-zero `enchant_key`, and each row's value equals the highest
+  `enchant_level` among that item's `itemenchant.dbss` keys (the Max Level
+  column of that table). The 40,012 items without an `enchant_key` are left
+  out; all of them have max level `0`.
+  `test_itemmaxlevel_holds_the_max_level_of_every_item_with_an_enchant_key`
+  in the `itemenchant.dbss` tests checks this against the installed client.
+- The value is the stored level, not the shown one: accessories go to `5`,
+  drawn as PRI to PEN in game, while gear goes to `20`, where `16` to `20` are
+  PRI to PEN. So the table shows the number and not `enchant_level_text()`.
+- [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor)
+  describes the same `[u32 id][u8 maxLevel]` rows and the zero size column.
+- The Central Market Lua (`panel_window_marketplace_buy`) reads a max level
+  through `getMaxEnchantLevel()` on a market listing, not from this file.

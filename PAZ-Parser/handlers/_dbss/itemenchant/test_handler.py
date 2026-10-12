@@ -333,6 +333,19 @@ def test_enhancement_type_item_index_matches_the_enhancement_type_column(
     assert _BLACKSTAR_LONGSWORD in index[_BLACKSTAR]
 
 
+def test_itemmaxlevel_holds_the_max_level_of_every_item_with_an_enchant_key(
+    itemenchant_result: HandlerResult,
+) -> None:
+    """itemmaxlevel.dbss is this table's Max Level column, for the items with enhancement data."""
+    from _dbss.itemmaxlevel.parser import FILE_NAME as MAX_LEVEL_FILE, parse_itemmaxlevel_records
+    from tests.fixtures import load_binary_fixture
+
+    max_levels = parse_itemmaxlevel_records(load_binary_fixture(MAX_LEVEL_FILE))
+    expected = {r["item_id"]: r["max_enchant_level"] for r in itemenchant_result.records if r["enchant_key"]}
+
+    assert {r["item_id"]: r["max_enchant_level"] for r in max_levels} == expected
+
+
 def test_build_item_icon_index_covers_the_furniture_case() -> None:
     """The index is what lets an item ID reach an asset-named icon."""
     from _dbss.itemenchant.parser import build_item_icon_index

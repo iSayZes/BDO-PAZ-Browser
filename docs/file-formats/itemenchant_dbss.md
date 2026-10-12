@@ -414,7 +414,7 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Icon          | text | First block string, prefixed `ui_texture/icon/`   |
 | Item          | text | LOC `str_type=0`, `str_id1=item_id`, else `name_kr` (483 items on client 3458, mostly dev and Hardcore server items), in its `grade` colour |
 | Description   | text | LOC `str_type=0`, `str_id4=1`, in its game colours, on one line and cut; the file stores no description. 61,837 of 70,284 items have one on client 3458 |
-| Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced |
+| Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced. [itemmaxlevel.dbss](itemmaxlevel_dbss.md) stores the same value for every item with an `enchant_key` |
 | Enchant Key   | num  | `enchant_key`, the item's key in [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); dash when `0` |
 | Enhancement Type | num | `enhancement_type`, after the icon; the item's rows in [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md); dash when `0` |
 | Req. Level    | num  | `required_level`; dash when `0` or `1` |

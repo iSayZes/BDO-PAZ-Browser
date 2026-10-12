@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "maxLevel": "최대 레벨"
+  },
+  "offsetColumns": {
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "아이템 {count}개 · 강화 가능 {enhanceable}개"
+  }
+}

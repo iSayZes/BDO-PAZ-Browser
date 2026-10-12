@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "maxLevel": "Niveau max."
+  },
+  "offsetColumns": {
+    "itemId": "ID d'objet",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} objets · {enhanceable} optimisables"
+  }
+}

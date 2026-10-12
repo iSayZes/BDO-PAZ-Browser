@@ -106,6 +106,12 @@ from .skillsimply.handler import SkillSimplyHandler
 from .skillsimply.parser import parse_skillsimply_offset_rows
 from .skillpiece.handler import SkillPieceHandler, skill_piece_offset_handler
 from .itemmaxlevel.handler import ItemMaxLevelHandler, item_max_level_offset_handler
+from .itemimprovement.handler import (
+    ItemImprovementHandler,
+    ItemImprovementSourceHandler,
+    item_improvement_offset_handler,
+    item_improvement_source_offset_handler,
+)
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
 
@@ -133,6 +139,10 @@ def register_dbss_handlers() -> None:
     register_handler("skillpiece.dbss", SkillPieceHandler())
     register_handler("itemmaxleveloffset.dbss", item_max_level_offset_handler())
     register_handler("itemmaxlevel.dbss", ItemMaxLevelHandler())
+    register_handler("itemimprovementoffset.dbss", item_improvement_offset_handler())
+    register_handler("itemimprovement.dbss", ItemImprovementHandler())
+    register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())
+    register_handler("itemimprovementsource.dbss", ItemImprovementSourceHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
     register_handler("mentalthemeoffset.dbss", mental_theme_offset_handler())

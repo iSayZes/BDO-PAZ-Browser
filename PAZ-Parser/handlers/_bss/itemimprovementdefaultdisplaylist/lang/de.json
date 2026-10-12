@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "order": "Reihenfolge",
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "stone": "Stein"
+  },
+  "meta": {
+    "count": "{count} standardmäßig angezeigte Verbesserungssteine"
+  }
+}

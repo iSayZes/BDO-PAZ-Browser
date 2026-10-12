@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Clé",
+    "result": "Résultat",
+    "input": "Équipement",
+    "group": "Groupe",
+    "stones": "Pierres",
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "stone": "Pierre",
+    "category": "Catégorie",
+    "defaultDisplay": "Affichage par défaut"
+  },
+  "offsetColumns": {
+    "key": "Clé",
+    "itemId": "ID d'objet",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} entrées de reconversion",
+    "stones": "{count} pierres de reconversion"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "order": "순서",
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "stone": "개량석"
+  },
+  "meta": {
+    "count": "기본 표시 개량석 {count}개"
+  }
+}

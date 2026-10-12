@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Clave",
+    "result": "Resultado",
+    "input": "Equipo",
+    "group": "Grupo",
+    "stones": "Piedras",
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "stone": "Piedra",
+    "category": "Categoría",
+    "defaultDisplay": "Mostrar por defecto"
+  },
+  "offsetColumns": {
+    "key": "Clave",
+    "itemId": "ID del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} registros de mejora",
+    "stones": "{count} piedras de mejora"
+  }
+}

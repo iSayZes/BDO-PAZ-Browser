@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "order": "Ordre",
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "stone": "Pierre"
+  },
+  "meta": {
+    "count": "{count} pierres de reconversion affichées par défaut"
+  }
+}

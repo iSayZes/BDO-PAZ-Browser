@@ -68,9 +68,10 @@ which the alchemy stone Lua reads as the stone type
 | `3` to `5` | `unknown`   | Empty groups                                                            |
 | `6`, `7`   | Vell's Heart | `isAlchemyBellHeart()` in the same Lua returns true for these two types; empty groups |
 
-The sibling `alchemyupgrade.dbss` (the Polishing materials) has the same
-grouped shape with 8 groups, and its group 0 starts with 4052 Iron Ingot and
-group 1 with 4652 Ash Plywood, which agrees with the table above.
+The sibling [`alchemyupgrade.dbss`](alchemyupgrade_dbss.md) (the Polishing
+materials) has the same grouped layout with 8 groups: group 0 holds ingots and
+pure metal crystals, group 1 plywood and group 2 crops, which agrees with the
+table above.
 
 ## `alchemychargeoffset.dbss`
 

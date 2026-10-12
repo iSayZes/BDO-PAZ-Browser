@@ -1,23 +1,5 @@
 {
   "columns": {
-    "stoneType": "Alchemy Stone",
-    "itemId": "Item ID",
-    "icon": "Icon",
-    "item": "Item",
     "chargePoint": "Durability"
-  },
-  "stoneTypes": {
-    "0": "Destruction",
-    "1": "Protection",
-    "2": "Life"
-  },
-  "offsetColumns": {
-    "stoneType": "Stone Type",
-    "itemId": "Item ID",
-    "dataOffset": "Data Offset",
-    "size": "Size"
-  },
-  "meta": {
-    "count": "{count} materials · {types} stone types"
   }
 }

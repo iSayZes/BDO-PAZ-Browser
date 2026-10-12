@@ -11,6 +11,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `alchemystatdata.bss` | PABR Alchemy Mastery table: per 50 mastery, max products chance, Imperial Delivery extra profit and the extra item chance with its special and rare shares | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `alchemystatus.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `alchemystatusoffset.dbss` | Empty offset companion for `alchemystatus.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `alchemyupgrade.dbss` | Alchemy stone Polishing materials: per stone type group, rows of (stone type, material item ID, EXP per material as percent x 10,000) | [alchemyupgrade](file-formats/alchemyupgrade_dbss.md) | 1 | 1 |
+| `alchemyupgradeoffset.dbss` | Index into `alchemyupgrade.dbss`, same groups, maps (stone type, item ID) → offset/size | [alchemyupgrade](file-formats/alchemyupgrade_dbss.md) | 1 | 1 |
 | `allquestlist.bss`                 | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                       | [allquestlist](file-formats/allquestlist_bss.md)                    | 0              | 0 |
 | `base_dialog.dbss` | Base record of every NPC dialog: Korean display name and the speech bubble lines shown over the NPC, keyed like `detail_dialog.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |
 | `base_dialogoffset.dbss` | PABR index into `base_dialog.dbss`, same layout and keys as `detail_dialogoffset.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |

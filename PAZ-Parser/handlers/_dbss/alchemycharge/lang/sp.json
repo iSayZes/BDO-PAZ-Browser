@@ -1,23 +1,5 @@
 {
   "columns": {
-    "stoneType": "Piedra alquímica",
-    "itemId": "ID del objeto",
-    "icon": "Icono",
-    "item": "Objeto",
     "chargePoint": "Durabilidad"
-  },
-  "stoneTypes": {
-    "0": "Destrucción",
-    "1": "Protección",
-    "2": "Profesiones"
-  },
-  "offsetColumns": {
-    "stoneType": "Tipo de piedra",
-    "itemId": "ID del objeto",
-    "dataOffset": "Desplazamiento de datos",
-    "size": "Tamaño"
-  },
-  "meta": {
-    "count": "{count} materiales · {types} tipos de piedra"
   }
 }

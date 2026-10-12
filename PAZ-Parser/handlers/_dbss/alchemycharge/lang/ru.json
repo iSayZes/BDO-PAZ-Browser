@@ -1,23 +1,5 @@
 {
   "columns": {
-    "stoneType": "Алхим. камень",
-    "itemId": "ID предмета",
-    "icon": "Значок",
-    "item": "Предмет",
     "chargePoint": "Прочность"
-  },
-  "stoneTypes": {
-    "0": "Разрушение",
-    "1": "Защита",
-    "2": "Жизнь"
-  },
-  "offsetColumns": {
-    "stoneType": "Тип камня",
-    "itemId": "ID предмета",
-    "dataOffset": "Смещение данных",
-    "size": "Размер"
-  },
-  "meta": {
-    "count": "Материалов: {count} · типов камней: {types}"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "stoneType": "Piedra alquímica",
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto"
+  },
+  "stoneTypes": {
+    "0": "Destrucción",
+    "1": "Protección",
+    "2": "Profesiones",
+    "6": "Corazón de Vell",
+    "7": "Corazón de Vell"
+  },
+  "offsetColumns": {
+    "stoneType": "Tipo de piedra",
+    "itemId": "ID del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} materiales · {types} tipos de piedra"
+  }
+}

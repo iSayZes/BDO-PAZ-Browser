@@ -1,23 +1,5 @@
 {
   "columns": {
-    "stoneType": "Alchemiestein",
-    "itemId": "Gegenstands-ID",
-    "icon": "Symbol",
-    "item": "Gegenstand",
     "chargePoint": "Haltbarkeit"
-  },
-  "stoneTypes": {
-    "0": "Zerstörung",
-    "1": "Schutz",
-    "2": "Arbeit"
-  },
-  "offsetColumns": {
-    "stoneType": "Steintyp",
-    "itemId": "Gegenstands-ID",
-    "dataOffset": "Daten-Offset",
-    "size": "Größe"
-  },
-  "meta": {
-    "count": "{count} Materialien · {types} Steintypen"
   }
 }

@@ -112,6 +112,10 @@ from .skillpiece.handler import SkillPieceHandler, skill_piece_offset_handler
 from .itemmaxlevel.handler import ItemMaxLevelHandler, item_max_level_offset_handler
 from .itemtrade.handler import ItemTradeHandler, item_trade_offset_handler
 from .alchemycharge.handler import AlchemyChargeHandler, alchemy_charge_offset_handler
+from .itemtradegrouptonpc.handler import (
+    ItemTradeGroupToNpcHandler,
+    item_trade_group_to_npc_offset_handler,
+)
 from .itemimprovement.handler import (
     ItemImprovementHandler,
     ItemImprovementSourceHandler,
@@ -149,6 +153,8 @@ def register_dbss_handlers() -> None:
     register_handler("itemtrade.dbss", ItemTradeHandler())
     register_handler("alchemychargeoffset.dbss", alchemy_charge_offset_handler())
     register_handler("alchemycharge.dbss", AlchemyChargeHandler())
+    register_handler("itemtradegrouptonpcoffset.dbss", item_trade_group_to_npc_offset_handler())
+    register_handler("itemtradegrouptonpc.dbss", ItemTradeGroupToNpcHandler())
     register_handler("itemimprovementoffset.dbss", item_improvement_offset_handler())
     register_handler("itemimprovement.dbss", ItemImprovementHandler())
     register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())

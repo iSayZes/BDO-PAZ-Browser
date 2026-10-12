@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "npc": "НИП",
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "category": "Категория"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Предметов: {count} · НИП торговли: {npcs}"
+  }
+}

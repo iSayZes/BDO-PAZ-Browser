@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "npc": "NPC",
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "category": "Category"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} items · {npcs} trade NPCs"
+  }
+}

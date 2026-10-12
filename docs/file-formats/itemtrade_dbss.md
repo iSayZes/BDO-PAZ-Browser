@@ -77,7 +77,7 @@ The offset table shows Character ID, Data Offset and Size.
   `characterfunction.dbss` buttons include Trade (122 keys), plus four more:
   47546 Taeseok, 47563 Gyeonghwan and 47600 Chunsu (`<Trade Manager>`, whose
   LOC type `32` button reads `Trading`) and 40075 Fish Dad.
-- `itemtradegrouptonpc.dbss` and its offset table hold the same 126 keys on
+- [`itemtradegrouptonpc.dbss`](itemtradegrouptonpc_dbss.md) and its offset table hold the same 126 keys on
   client 3464, in a different order.
 - No NPC has a character icon in the `CHARACTER_ICON` index, so the table has
   no icon column.
@@ -87,4 +87,4 @@ The offset table shows Character ID, Data Offset and Size.
   `itemtradegrouptonpc.dbss` its key holds 1,501 trade items on client 3464,
   where every other key holds one. I read 40075 as the holder of the default
   trade list; whether every trade NPC uses that list is open in the
-  `itemtradegrouptonpc.dbss` doc.
+  [`itemtradegrouptonpc.dbss`](itemtradegrouptonpc_dbss.md) doc.

@@ -110,6 +110,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `itemtrade.dbss` | Bare list of u16 character keys of the NPCs that buy trade goods (trade managers, node managers) | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |
 | `itemtradegroupfromnpc.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `itemtradegroupfromnpcoffset.dbss` | Empty offset companion for `itemtradegroupfromnpc.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `itemtradegrouptonpc.dbss` | Trade goods per trade NPC: one group per `itemtrade.dbss` character key, 127-byte item entries with the item ID and its trade category | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 4 | 0 |
+| `itemtradegrouptonpcoffset.dbss` | Bare u16 index into `itemtradegrouptonpc.dbss`, maps character ID → group offset and size | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 4 | 0 |
 | `itemtradeoffset.dbss` | Bare u16 index into `itemtrade.dbss`, maps character key → key offset; the size column is always 2 | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |
 | `journalquest.dbss`                | Adventure log category and entry data, 12 journal categories with volumes, metadata, and PAColor unlock text  | [journalquest](file-formats/journalquest_dbss.md)                   | 1              | 1 |
 | `journalquestoffset.dbss`          | Index into `journalquest.dbss`, maps (group_id, entry_no) → offset/size                                       | [journalquestoffset](file-formats/journalquestoffset_dbss.md)       | 0              | 0 |

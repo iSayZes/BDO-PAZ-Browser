@@ -31,11 +31,17 @@ _PLACEHOLDERS = frozenset({"UNKNOWN", LOC_NULL, "0"})
 _PART_SEPARATOR = "\n\n"
 
 _LEVEL_MASK = 0xFFFF
+_SKILL_NO_SHIFT = 16
+
+
+def skill_key(skill_no: int, level: int) -> int:
+    """The skill key `skill_no << 16 | level` of one skill rank."""
+    return skill_no << _SKILL_NO_SHIFT | level
 
 
 def split_skill_key(skill_key: int) -> tuple[int, int]:
     """`(skill_no, level)` of a skill key."""
-    return skill_key >> 16, skill_key & _LEVEL_MASK
+    return skill_key >> _SKILL_NO_SHIFT, skill_key & _LEVEL_MASK
 
 
 def skill_name_tagged(skill_no: int) -> str:

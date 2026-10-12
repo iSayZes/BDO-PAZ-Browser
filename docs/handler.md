@@ -974,7 +974,8 @@ its own tagged lookup for the colours). All return `''` when LOC is not
 loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
 
-Tables in the skill cluster split a skill key with `split_skill_key()` and name
+Tables in the skill cluster build a skill key with `skill_key(skill_no, level)`,
+split one with `split_skill_key()` and name
 a skill with `skill_name(skill_no)` from `skill.py`: LOC type 10 first, then
 the Korean `skilltype.dbss` name from the `SKILL_NAME_KR` lookup index, so no
 skill table needs `skilltype.dbss` as a companion. A `GAME` sheet UI key

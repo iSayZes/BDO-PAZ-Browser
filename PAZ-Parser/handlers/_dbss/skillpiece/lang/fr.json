@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillId": "ID de compétence",
+    "set": "Bonus de set",
+    "points": "Points",
+    "level": "Niveau",
+    "requires": "Requis",
+    "effect": "Effet",
+    "buffs": "Bonus"
+  },
+  "offsetColumns": {
+    "skillId": "ID de compétence",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} paliers de bonus de set · {sets} compétences de set"
+  }
+}

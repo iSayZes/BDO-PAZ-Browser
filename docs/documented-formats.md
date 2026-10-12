@@ -154,6 +154,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `skillexperienceoffset.dbss` | Index into `skillexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [skillexperience](file-formats/skillexperience_dbss.md) | 1 | 0 |
 | `skillgroup.bss` | Skill window groups, each listing the skill keys of its ranks in order | [skillgroup](file-formats/skillgroup_bss.md) | 0 | 0 |
 | `skilloffset.dbss` | PABR index into `skill.dbss`, maps skill_key (skill_no << 16 \| level) → offset/size | [skill](file-formats/skill_dbss.md) | 2 | 0 |
+| `skillpiece.dbss` | Set effect tiers per set skill: points threshold, `skill.dbss` rank and the Korean set title, threshold label and bonus text; English text in LOC type 52 | [skillpiece](file-formats/skillpiece_dbss.md) | 2 | 0 |
+| `skillpieceoffset.dbss` | Index into `skillpiece.dbss`, maps the set skill number to offset/size (10-byte rows, offset past the u16 key prefix) | [skillpiece](file-formats/skillpiece_dbss.md) | 2 | 0 |
 | `skillsimply.dbss` | Learning rules of every skill rank: class mask, required level and skill points, required skills, rank chain, exclusive skills | [skillsimply](file-formats/skillsimply_dbss.md) | 1 | 1 |
 | `skillsimplyoffset.dbss` | Bare u32-keyed index into `skillsimply.dbss` (no magic, no trailer) | [skillsimply](file-formats/skillsimply_dbss.md) | 1 | 1 |
 | `skilltype.dbss` | Presentation record of every skill: Korean name and family name, active/passive kind, icon path | [skilltype](file-formats/skilltype_dbss.md) | 1 | 0 |

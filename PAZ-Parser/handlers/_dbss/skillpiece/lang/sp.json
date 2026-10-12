@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillId": "ID de habilidad",
+    "set": "Efecto del conjunto",
+    "points": "Puntos",
+    "level": "Nivel",
+    "requires": "Requiere",
+    "effect": "Efecto",
+    "buffs": "Bonificadores"
+  },
+  "offsetColumns": {
+    "skillId": "ID de habilidad",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} niveles de efecto de conjunto · {sets} habilidades de conjunto"
+  }
+}

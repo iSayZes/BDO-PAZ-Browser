@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "level": "Уровень",
+    "exp": "Опыт",
+    "hp": "HP",
+    "stamina": "Силы",
+    "weight": "Вес",
+    "accel": "Ускорение",
+    "speed": "Скорость",
+    "turn": "Поворот",
+    "brake": "Тормоз",
+    "hpDice": "Кубик HP",
+    "staminaDice": "Кубик сил",
+    "moveDice": "Кубик движения"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "level": "Уровень",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "units": {
+    "weight": "LT"
+  },
+  "meta": {
+    "count": "{count} записей уровней · {servants} транспорта и кораблей"
+  }
+}

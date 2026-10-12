@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "level": "Level",
+    "exp": "EXP",
+    "hp": "HP",
+    "stamina": "Stamina",
+    "weight": "Weight",
+    "accel": "Accel.",
+    "speed": "Speed",
+    "turn": "Turn",
+    "brake": "Brake",
+    "hpDice": "HP Dice",
+    "staminaDice": "Stamina Dice",
+    "moveDice": "Movement Dice"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "level": "Level",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "units": {
+    "weight": "LT"
+  },
+  "meta": {
+    "count": "{count} level records · {servants} mounts and ships"
+  }
+}

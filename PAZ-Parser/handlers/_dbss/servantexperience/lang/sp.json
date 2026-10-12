@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "level": "Nivel",
+    "exp": "Exp.",
+    "hp": "Salud",
+    "stamina": "Aguante",
+    "weight": "Peso",
+    "accel": "Aceleración",
+    "speed": "Velocidad",
+    "turn": "Viraje",
+    "brake": "Frenada",
+    "hpDice": "Dado de salud",
+    "staminaDice": "Dado de aguante",
+    "moveDice": "Dado de movimiento"
+  },
+  "offsetColumns": {
+    "characterId": "ID del personaje",
+    "level": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "units": {
+    "weight": "lt"
+  },
+  "meta": {
+    "count": "{count} registros de nivel · {servants} monturas y barcos"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "maxLevel": "Niveau max."
+  },
+  "meta": {
+    "count": "{count} montures et navires"
+  }
+}

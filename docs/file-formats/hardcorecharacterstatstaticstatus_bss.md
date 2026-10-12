@@ -53,8 +53,10 @@ Fields are unaligned.
 | `+0x00` | u8        | class_type | Equals the row index; the class type `getClassType()` returns |
 | `+0x01` | stat body | stats      | The [experience.bss](experience_bss.md) Stat Body            |
 
-The `unknown_*` fields and `ap_bonus` / `dp_bonus` keep the names and the
-body-relative offsets of the `experience.bss` Stat Body table.
+The body fields (`max_hp`, `max_mp`, the `unknown_*` fields, `ap_bonus` and
+`dp_bonus`) keep the names and the body-relative offsets of the
+`experience.bss` Stat Body table; `max_hp` and `max_mp` hold the `1.0` and `1`
+placeholders here too.
 
 ## Suggested UI Layout
 
@@ -69,6 +71,15 @@ body-relative offsets of the `experience.bss` Stat Body table.
 
 - On client 3464 all 47 bodies are byte-identical and equal the
   `experience.bss` level 60 to 130 body, the one with both bonuses.
+- The table has a row for every class type, while the LOC type 37 server
+  text (id `970407542`) opens Hardcore characters to four classes: Warrior,
+  Ranger, Sorceress and Berserker. The class list comes from the server
+  through `ToClient_getHardCorePossbieClassFromIndex()` in
+  `panel_lobby_classselect_renew.lua`.
+- The two `5, 5, 5` triads (`unknown_3c`, `unknown_64`) are likely speed
+  ranks and their limits; the client Lua lead and the other files with this
+  body are in the [experience.bss](experience_bss.md#the-constant-fields)
+  Open Questions.
 - bdo-data-extractor describes the same 201-byte rows and the level 60
   match.
 - The parser is `_bss/hardcorecharacterstatstaticstatus/parser.py`; it reads
@@ -79,6 +90,13 @@ body-relative offsets of the `experience.bss` Stat Body table.
 ### What Reads the Table
 
 No client Lua names the file or a function that returns its values. The
-Hardcore character info panels (`panel_characterinfo_hardcore_*`) show
-titles and survival points, not these stats, so whether the server uses the
-row in place of the `experience.bss` record for Hardcore characters is open.
+Hardcore basic info panel (`panel_characterinfo_hardcore_basic_all_3.lua`,
+`FromClient_CharInfoBasic_HardCore_All_BattleStatUpdate`) shows total AP and
+DP through `ToClient_getOffence()` and `ToClient_getDefence()`, the same
+getters the normal panel calls, so a Hardcore character's totals do not show
+whether the server adds this row in place of the `experience.bss` record.
+Garmoth's Hardcore PvP Server guide (pre-season, March 2025) lists a level 63
+start and Combat EXP as unavailable. Level 63 falls in the `experience.bss`
+level 60 to 130 range, whose body equals every row here, so both readings give
+the same AP and DP. The client data holds no starting level: the lobby reads
+the entry level from `ToClient_isHardCoreChannelEnterPossibleLevel()`.

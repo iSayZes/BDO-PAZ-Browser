@@ -46,6 +46,7 @@ from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestLi
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
+from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
@@ -100,6 +101,7 @@ def register_bss_handlers() -> None:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
+    register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())

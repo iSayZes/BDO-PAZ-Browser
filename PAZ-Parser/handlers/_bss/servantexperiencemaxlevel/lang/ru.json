@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "maxLevel": "Макс. ур."
+  },
+  "meta": {
+    "count": "{count} транспорта и кораблей"
+  }
+}

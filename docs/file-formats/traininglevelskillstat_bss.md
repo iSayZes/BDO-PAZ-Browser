@@ -99,5 +99,10 @@ entry `n` = level `n + 1` reading.
   rank text with `rank_text` from `_dbss/lifeexp/labels.py`.
 - The column labels follow `LUA_CHARACTERINFO_LIFE_TRAINING_DESC_2` in each
   language's LOC.
-- The executable is packed: the member names do not occur in
-  `BlackDesert64.exe`, so the struct order comes from the tooltip check above.
+- In the mount Growth Calculator, `add_servant_stat_rate` raises the
+  lowest movement gain a level-up can roll to `1 + round(die max x rate /
+  1,000,000)` tenths of a percent, where the die is the horse's movement
+  dice in [servantexperience.dbss](servantexperience_dbss.md); every value
+  from that floor to the die maximum stays equally likely. I checked it on a
+  `1D13` and a `1D10` horse at three Training levels (the table is in that
+  doc's Notes).

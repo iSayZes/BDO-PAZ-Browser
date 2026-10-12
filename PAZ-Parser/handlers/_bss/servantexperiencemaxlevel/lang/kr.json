@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "name": "이름",
+    "maxLevel": "최대 레벨"
+  },
+  "meta": {
+    "count": "탑승물과 선박 {count}개"
+  }
+}

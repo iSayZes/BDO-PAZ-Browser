@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "level": "Stufe",
+    "exp": "EP",
+    "hp": "LP",
+    "stamina": "Ausdauer",
+    "weight": "Gewicht",
+    "accel": "Beschleunigen",
+    "speed": "Tempo",
+    "turn": "Wenden",
+    "brake": "Anhalten",
+    "hpDice": "LP-Würfel",
+    "staminaDice": "Ausdauer-Würfel",
+    "moveDice": "Bewegungswürfel"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "level": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "units": {
+    "weight": "LT"
+  },
+  "meta": {
+    "count": "{count} Stufeneinträge · {servants} Reittiere und Schiffe"
+  }
+}

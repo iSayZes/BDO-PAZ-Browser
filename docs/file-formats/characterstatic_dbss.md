@@ -215,6 +215,8 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 
 The block after `npc_kind` contains many stable fields and constants, but its sub-structure is not confirmed. Additional cross-references, a client symbol name list, or in-game examples are needed before naming fields beyond raw offsets.
 
+One piece is known from other files: on client 3464, 15,064 records carry the 200-byte stat body of [experience.bss](experience_bss.md) (found by its four `1.0` floats), with `5, 5, 5` and `10, 10, 10` triads as in [servantexperience.dbss](servantexperience_dbss.md). Where the body starts relative to `npc_kind` is not mapped.
+
 ### What do the `npc_kind` values and high bits mean?
 
 The low byte tracks the model folder (`0` player, `1`/`7`/`8` monster, `2` NPC, `3` pet or mount, `4` object, `9` summon), but the names of the values are not confirmed, and the high bits (e.g. `0xFE0C0003` on 2,788 rows) are unmapped. bdo-data-extractor calls it a semantic entity-kind bitfield with partly unmapped combat flags.

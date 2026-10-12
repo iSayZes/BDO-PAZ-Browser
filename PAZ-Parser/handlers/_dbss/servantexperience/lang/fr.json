@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "level": "Niveau",
+    "exp": "EXP",
+    "hp": "PV",
+    "stamina": "Endurance",
+    "weight": "Poids",
+    "accel": "Accélération",
+    "speed": "Vitesse",
+    "turn": "Virage",
+    "brake": "Freinage",
+    "hpDice": "Dé de PV",
+    "staminaDice": "Dé d'endurance",
+    "moveDice": "Dé de mouvement"
+  },
+  "offsetColumns": {
+    "characterId": "ID du personnage",
+    "level": "Niveau",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "units": {
+    "weight": "LT"
+  },
+  "meta": {
+    "count": "{count} entrées de niveau · {servants} montures et navires"
+  }
+}

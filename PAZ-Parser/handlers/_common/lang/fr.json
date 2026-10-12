@@ -1,5 +1,11 @@
 {
+  "emptyColumns": {
+    "count": "Nombre",
+    "status": "Statut"
+  },
   "meta": {
-    "offsetRecords": "{count} entrées de décalage"
+    "offsetRecords": "{count} entrées de décalage",
+    "headerCount": "Nombre dans l'en-tête : {count}",
+    "noRecords": "Aucune entrée"
   }
 }

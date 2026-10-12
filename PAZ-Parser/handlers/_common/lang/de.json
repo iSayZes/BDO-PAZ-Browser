@@ -1,5 +1,11 @@
 {
+  "emptyColumns": {
+    "count": "Anzahl",
+    "status": "Status"
+  },
   "meta": {
-    "offsetRecords": "{count} Offset-Einträge"
+    "offsetRecords": "{count} Offset-Einträge",
+    "headerCount": "Anzahl im Header: {count}",
+    "noRecords": "Keine Einträge"
   }
 }

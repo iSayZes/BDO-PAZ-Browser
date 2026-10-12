@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "count": "개수",
-    "status": "상태"
-  },
-  "meta": {
-    "count": "헤더 개수: {count}"
-  }
-}

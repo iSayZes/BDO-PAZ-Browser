@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offset": "오프셋",
+    "field": "필드",
+    "value": "값"
+  },
+  "meta": {
+    "words": "u32 워드 {count}개"
+  }
+}

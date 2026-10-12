@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offset": "Смещение",
+    "field": "Поле",
+    "value": "Значение"
+  },
+  "meta": {
+    "words": "Слов u32: {count}"
+  }
+}

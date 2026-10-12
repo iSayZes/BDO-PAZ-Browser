@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from bdo_preview import register_handler
 
+from _common.empty_table import EmptyTableHandler
+
 from .title.handler import TitleDbssHandler
 from .titlebuff.handler import TitleBuffListHandler, title_buff_list_offset_handler
 from .titleoffset.handler import title_offset_handler
@@ -17,7 +19,8 @@ from .knowledgelearning.handler import (
 from .npcpersonality.handler import NpcPersonalityHandler, npc_personality_offset_handler
 from .quest.handler import QuestDbssHandler
 from .questgroup.handler import QuestGroupDbssHandler
-from .worldquest.handler import WorldQuestDbssHandler
+from .empty_tables.tables import EMPTY_TABLES
+from .itemcouponreward.handler import ItemCouponRewardOffsetHandler
 from .worldmapmonster.handler import WorldMapMonsterHandler, world_map_monster_offset_handler
 from .cashproduct.handler import (
     CashProductHandler,
@@ -153,7 +156,9 @@ def register_dbss_handlers() -> None:
     register_handler("npcpersonality.dbss", NpcPersonalityHandler())
     register_handler("quest.dbss", QuestDbssHandler())
     register_handler("questgroup.dbss", QuestGroupDbssHandler())
-    register_handler("worldquest.dbss", WorldQuestDbssHandler())
+    for name in EMPTY_TABLES:
+        register_handler(name, EmptyTableHandler(name))
+    register_handler("itemcouponrewardoffset.dbss", ItemCouponRewardOffsetHandler())
     register_handler("cashproduct.dbss", CashProductHandler())
     register_handler("cashproductoffset.dbss", cash_product_offset_handler())
     register_handler("itemenchant.dbss", ItemEnchantHandler())

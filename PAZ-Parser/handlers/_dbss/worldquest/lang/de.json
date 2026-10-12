@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "count": "Anzahl",
-    "status": "Status"
-  },
-  "meta": {
-    "count": "Anzahl im Header: {count}"
-  }
-}

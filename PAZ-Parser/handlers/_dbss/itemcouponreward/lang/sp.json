@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offset": "Desplazamiento",
+    "field": "Campo",
+    "value": "Valor"
+  },
+  "meta": {
+    "words": "{count} palabras u32"
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "count": "Count",
-    "status": "Status"
-  },
-  "meta": {
-    "count": "Header count: {count}"
-  }
-}

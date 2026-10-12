@@ -933,6 +933,7 @@ _common/
 ├── character.py         # character names and titles (LOC type 6)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
+├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
 ├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
 ├── html.py
@@ -963,6 +964,12 @@ check; it raises ValueError as soon as a field runs past the record. For inline
 strings at unknown positions, `read_prefixed_at()` reads a prefix at a known
 position and returns the next one; `read_prefixed_utf16()` and
 `find_prefixed_ascii()` are for text whose position is only a guess.
+
+A table the client ships with a u32 count of `0` gets no package of its
+own: add its file name to `EMPTY_TABLES` in `_dbss/empty_tables/tables.py`,
+and the registration gives it an `EmptyTableHandler(file_name)`. The preview
+is one status row with the count, and a file that declares records raises
+ValueError; the table then needs its own handler.
 
 Name a character with `character_name()` from `character.py` (LOC type 6; its
 title, `<Storage Keeper>`, with `character_title()`), a

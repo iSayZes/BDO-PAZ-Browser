@@ -7,13 +7,19 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `*.bwp` (`mapdata_realexplore2.bwp`) | Waypoint graphs: keyed 3D waypoints with names and movement flags, directed links, groups and routes; `mapdata_realexplore2.bwp` is the worldmap node graph | [waypoint](file-formats/waypoint_bwp.md) | 1 | 0 |
 | `acceptquest.bss`                  | PABR quest ID list in acceptance-related order with two side fields                                            | [acceptquest](file-formats/acceptquest_bss.md)                      | 1              | 0 |
 | `alchemystatdata.bss` | PABR Alchemy Mastery table: per 50 mastery, max products chance, Imperial Delivery extra profit and the extra item chance with its special and rare shares | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `alchemystatus.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `alchemystatusoffset.dbss` | Empty offset companion for `alchemystatus.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `allquestlist.bss`                 | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                       | [allquestlist](file-formats/allquestlist_bss.md)                    | 0              | 0 |
 | `base_dialog.dbss` | Base record of every NPC dialog: Korean display name and the speech bubble lines shown over the NPC, keyed like `detail_dialog.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |
 | `base_dialogoffset.dbss` | PABR index into `base_dialog.dbss`, same layout and keys as `detail_dialogoffset.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |
 | `blizzardregioninfo.bss` | PABR snow regions of the Mountain of Eternal Winter and Ulukita: a key, the `regioninfo.bss` region and three unconfirmed values | [blizzardregioninfo](file-formats/blizzardregioninfo_bss.md) | 1 | 1 |
 | `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 6 | 2 |
+| `buffcondition.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `buffconditionoffset.dbss` | Empty offset companion for `buffcondition.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 6 | 2 |
 | `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `unknown_str` string indices, `is_shown` and flags | [buffsimply](file-formats/buffsimply_bss.md) | 1 | 0 |
+| `cashforui.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `cashforuioffset.dbss` | Empty offset companion for `cashforui.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |
 | `cashproductoffset.dbss` | Index into `cashproduct.dbss`, maps product ID → offset/size; no PABR magic and no trailer | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |
 | `characterfunction.dbss` | NPC dialog functions: per character, 37 fixed slots of Korean button text and condition script (Shop, Repair, Stable, Conversation, Node Management ...), with managed and represented node keys; English button text in LOC type 32 | [characterfunction](file-formats/characterfunction_dbss.md) | 5 | 0 |
@@ -24,6 +30,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `characterspawntypeoffset.dbss`    | PABR index into `characterspawntype.dbss`, maps character_id → offset/size                                    | [characterspawntype](file-formats/characterspawntype_dbss.md)       | 1              | 0 |
 | `characterstatic.dbss`             | Variable-length character/NPC static records with inline action scripts                                        | [characterstatic](file-formats/characterstatic_dbss.md)             | 5              | 0 |
 | `characterstaticoffset.dbss`       | PABR index into `characterstatic.dbss`, maps character id_low16 → offset/size                                 | [characterstatic](file-formats/characterstatic_dbss.md)             | 5              | 0 |
+| `chinaspawnoption.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `chinaspawnoptionoffset.dbss` | Empty offset companion for `chinaspawnoption.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `collectingstatdata.bss` | PABR Gathering Mastery table, one row group per gathering type (Water Scooping to Mining): per 50 mastery, drop rate and quantity of basic, special and rare resources | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `commonlifestatdata.bss` | PABR list of the Gathering and Processing mastery each life level gives, one f32 per level 1 to 180 | [commonlifestatdata](file-formats/commonlifestatdata_bss.md) | 0 | 0 |
 | `completequest.bss`                | PABR quest ID list in completion-related order with two side fields                                            | [completequest](file-formats/completequest_bss.md)                  | 1              | 0 |
@@ -64,16 +72,26 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `fitnesslevel.dbss` | Breath, Strength and Health level tables: EXP per level and the max Stamina, weight limit, max HP and max MP/WP/SP bonus | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
 | `fitnessleveloffset.dbss` | Index into `fitnesslevel.dbss`, one block per fitness type, maps level → offset/size | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
 | `fitnessmaxlevel.bss` | PABR max level per fitness type (50 for Breath, Strength and Health on client 3464) | [fitnessmaxlevel](file-formats/fitnessmaxlevel_bss.md) | 0 | 0 |
+| `grenadedata.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `grenadedataoffset.dbss` | Empty offset companion for `grenadedata.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `groupcameradata.bss` | PABR cutscene skip summaries: scene ID, Korean title, recap and quote, and region symbol icon path (LOC type 97) | [groupcameradata](file-formats/groupcameradata_bss.md) | 0 | 0 |
+| `growthpasspointshop.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `growthpasspointshopoffset.dbss` | Empty offset companion for `growthpasspointshop.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `guaranteeenchantss.dbss` | Ancient Anvil table: Agris Essences needed for a guaranteed success per enhancement group and current level; the group is `enhancement_type` in `itemenchant.dbss` | [guaranteeenchantss](file-formats/guaranteeenchantss_dbss.md) | 1 | 0 |
 | `guildskillexperience.dbss` | Guild point EXP table: EXP to the next guild point level, levels 0 to 1000 on client 3464 | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |
 | `guildskillexperiencemaxlevel.bss` | PABR max level of the guild point table, same format as `skillexperiencemaxlevel.bss` (1000 on client 3464) | [skillexperiencemaxlevel](file-formats/skillexperiencemaxlevel_bss.md) | 0 | 0 |
 | `guildskillexperienceoffset.dbss` | Index into `guildskillexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |
 | `hardcorecharacterstatstaticstatus.bss` | PABR, one 201-byte row per class type: u8 class type and the `experience.bss` stat body (AP and DP bonuses); every row equals the level 60 body | [hardcorecharacterstatstaticstatus](file-formats/hardcorecharacterstatstaticstatus_bss.md) | 1 | 0 |
 | `huntingstatdata.bss` | PABR Hunting Mastery table: chance of butchering more items per 50 mastery; the other seven fields are 0 on client 3464 | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `installation.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `installationoffset.dbss` | Empty offset companion for `installation.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `instancedungeonskillstatic.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `instancedungeonskillstaticoffset.dbss` | Empty offset companion for `instancedungeonskillstatic.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
 | `instancefieldmapinfo.bss` | PABR map data per instance field key: GAME sheet name and description keys, map image and sprite region, centre point and radius, entry item, team spawn points | [instancefieldmapinfo](file-formats/instancefieldmapinfo_bss.md) | 3 | 0 |
 | `instancefieldoffset.dbss` | Index into `instancefield.dbss`, maps key to offset/size (10-byte rows); no PABR magic | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
+| `itemcouponreward.dbss` | Empty item coupon reward table placeholder: a zero record count and 12 zero bytes | [itemcouponreward](file-formats/itemcouponreward_dbss.md) | 2 | 0 |
+| `itemcouponrewardoffset.dbss` | Offset companion for `itemcouponreward.dbss`: count 4 and four zero u32 words, shown as raw words | [itemcouponreward](file-formats/itemcouponreward_dbss.md) | 2 | 0 |
 | `itemenchant.dbss` | Per-item enchant blocks keyed by item ID + enchant level; carries the inline icon path that maps item ID to icon, the Korean name, the character the item places or summons, and the item's level, classes, binding, durability, market, Family Inventory, trade and dye fields | [itemenchant](file-formats/itemenchant_dbss.md) | 3 | 1 |
 | `itemenchantoffset.dbss` | Key/offset index into `itemenchant.dbss`, maps packed `(enchant_level << 24) \| item_id` → offset/size | [itemenchant](file-formats/itemenchant_dbss.md) | 3 | 1 |
 | `itemimprovement.dbss` | Gear Reform records: result and input item IDs and the reform group that ties them to the stones | [itemimprovement](file-formats/itemimprovement_dbss.md) | 3 | 0 |
@@ -85,6 +103,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `itemmaxleveloffset.dbss` | PABR index into `itemmaxlevel.dbss`, maps item ID → row offset; the size column is always 0 | [itemmaxlevel](file-formats/itemmaxlevel_dbss.md) | 0 | 0 |
 | `itemsubgroup.dbss` | Item subgroups: variable-length lists of 135-byte item entries used by worker production, trade goods and more | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 2 | 1 |
 | `itemsubgroupoffset.dbss` | PABR index into `itemsubgroup.dbss`, maps subgroup key → offset/size (10-byte rows) | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 2 | 1 |
+| `itemtradegroupfromnpc.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `itemtradegroupfromnpcoffset.dbss` | Empty offset companion for `itemtradegroupfromnpc.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `journalquest.dbss`                | Adventure log category and entry data, 12 journal categories with volumes, metadata, and PAColor unlock text  | [journalquest](file-formats/journalquest_dbss.md)                   | 1              | 1 |
 | `journalquestoffset.dbss`          | Index into `journalquest.dbss`, maps (group_id, entry_no) → offset/size                                       | [journalquestoffset](file-formats/journalquestoffset_dbss.md)       | 0              | 0 |
 | `knowledgelearning.dbss` | How knowledge cards are learned: table 0 maps a character ID to the card it teaches, table 1 an item ID | [knowledgelearning](file-formats/knowledgelearning_dbss.md) | 1 | 0 |
@@ -129,9 +149,11 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `petexpoffset.dbss`                | Keyed offset index into `petexp.dbss`, maps exp_table_id → offset/size                                         | [petexp](file-formats/petexp_dbss.md)                               | 1              | 0 |
 | `petgrade.dbss`                    | Pet species/variant grade table                                                                                | [petgrade](file-formats/petgrade_dbss.md)                           | 0              | 1 |
 | `petgradeoffset.dbss`              | Keyed offset index into `petgrade.dbss`, maps `(species << 8) \| variant` → offset/size                        | [petgrade](file-formats/petgrade_dbss.md)                           | 0              | 1 |
+| `petmarketsetting.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `petmarketsettingoffset.dbss` | Empty offset companion for `petmarketsetting.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petoffset.dbss`                   | Keyed offset index into `pet.dbss`, maps pet ID → offset/size                                                 | [pet](file-formats/pet_dbss.md)                                     | 7              | 0 |
-| `petset.dbss`                      | Empty pet set table placeholder with zero records                                                              | [petset](file-formats/petset_dbss.md)                               | 0              | 0 |
-| `petsetoffset.dbss`                | Empty offset companion for `petset.dbss`                                                                       | [petset](file-formats/petset_dbss.md)                               | 0              | 0 |
+| `petset.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `petsetoffset.dbss` | Empty offset companion for `petset.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petskill.dbss`                    | Pet skill effect tables keyed by pet skill ID, with baseline and per-level raw effect rows                     | [petskill](file-formats/petskill_dbss.md)                           | 4              | 0 |
 | `petskilloffset.dbss`              | Keyed offset index into `petskill.dbss`, maps pet_skill_id → offset/size                                       | [petskill](file-formats/petskill_dbss.md)                           | 4              | 0 |
 | `plantexchangegroup.bss` | PABR worker production groups: production key, Korean label and the item subgroup it produces | [plantexchangegroup](file-formats/plantexchangegroup_bss.md) | 0 | 0 |
@@ -152,6 +174,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `regioninfo_linkandcheckvalid2.bss` | PABR region link lists: per region the town regions it links to, a copy of `regioninfo.bss` `unknown_d2_keys` | [regioninfo_linkandcheckvalid2](file-formats/regioninfo_linkandcheckvalid2_bss.md) | 2 | 0 |
 | `repetitionquest.bss` | PABR repeatable (daily, weekly, contribution) quest groups with quest references, condition scripts and a Korean string table; English text in LOC type 42; `newquest.bss` layout | [repetitionquest](file-formats/repetitionquest_bss.md) | 1 | 0 |
 | `sailstatdata.bss` | PABR Sailing Mastery table: per 50 mastery, ship acceleration, speed, turn and brake bonus by `ServantStatType` | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `servantcategory.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `servantcategoryoffset.dbss` | Empty offset companion for `servantcategory.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `servantexperience.dbss` | Mount and ship level table keyed by `level << 16 \| character_id`: EXP to the next level, max HP, stamina and weight, the four movement stats by `ServantStatType` and six level-up bonus dice, around the `experience.bss` stat body | [servantexperience](file-formats/servantexperience_dbss.md) | 3 | 0 |
 | `servantexperiencemaxlevel.bss` | u32 count, then (u16 character ID, u16 top level) per servant; matches the levels of `servantexperience.dbss` | [servantexperiencemaxlevel](file-formats/servantexperiencemaxlevel_bss.md) | 0 | 0 |
 | `servantexperienceoffset.dbss` | Index into `servantexperience.dbss`, maps `level << 16 \| character_id` → offset/size | [servantexperience](file-formats/servantexperience_dbss.md) | 3 | 0 |
@@ -185,7 +209,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `ui_skillgroup_succession.bss` | Succession skill window grids, same format; empty on client 3458 | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `worldmapmonster.dbss` | World map monster markers: Korean label lines and name (LOC type 40), world position, marker illustration and condition script | [worldmapmonster](file-formats/worldmapmonster_dbss.md) | 2 | 0 |
 | `worldmapmonsteroffset.dbss` | Bare u16-keyed index into `worldmapmonster.dbss` (no magic, no trailer), maps marker key → offset/size | [worldmapmonster](file-formats/worldmapmonster_dbss.md) | 2 | 0 |
-| `worldquest.dbss`                  | Empty world quest table placeholder with a zero record count                                                   | [worldquest](file-formats/worldquest_dbss.md)                       | 1              | 0 |
+| `worldquest.dbss` | Empty table: a u32 count of 0 and no records; no offset companion | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `zodiacsign.dbss`                  | Zodiac sign definitions, star coords, names, texture paths                                                    | [zodiacsign](file-formats/zodiacsign_dbss.md)                       | 0              | 0 |
 | `zodiacsignindex.bss`              | PABR display-order index mapping slot → zodiac ID for the 12 horoscope signs                                   | [zodiacsignindex](file-formats/zodiacsignindex_bss.md)              | 0              | 0 |
 | `zodiacsignoffset.dbss`            | ID-keyed index into `zodiacsign.dbss`, maps u8 zodiac_id → offset/size (9-byte rows)                          | [zodiacsign](file-formats/zodiacsign_dbss.md)                       | 0              | 0 |

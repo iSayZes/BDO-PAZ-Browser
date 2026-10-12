@@ -1,5 +1,11 @@
 {
+  "emptyColumns": {
+    "count": "Количество",
+    "status": "Состояние"
+  },
   "meta": {
-    "offsetRecords": "Записей смещений: {count}"
+    "offsetRecords": "Записей смещений: {count}",
+    "headerCount": "Число в заголовке: {count}",
+    "noRecords": "Нет записей"
   }
 }

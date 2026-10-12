@@ -1,5 +1,11 @@
 {
+  "emptyColumns": {
+    "count": "개수",
+    "status": "상태"
+  },
   "meta": {
-    "offsetRecords": "오프셋 레코드 {count}개"
+    "offsetRecords": "오프셋 레코드 {count}개",
+    "headerCount": "헤더 개수: {count}",
+    "noRecords": "레코드 없음"
   }
 }

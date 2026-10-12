@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "title": "Title"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} trade NPCs"
+  }
+}

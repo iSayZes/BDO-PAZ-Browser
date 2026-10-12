@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "title": "Título"
+  },
+  "offsetColumns": {
+    "characterId": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} PNJ de comercio"
+  }
+}

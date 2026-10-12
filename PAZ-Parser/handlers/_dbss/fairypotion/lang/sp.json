@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "potionType": "Tipo de poción",
+    "resource": "Recurso",
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto"
+  },
+  "resources": {
+    "0": "Salud",
+    "1": "Maná",
+    "2": "Voluntad",
+    "3": "Fe"
+  },
+  "offsetColumns": {
+    "potionType": "Tipo de poción",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos"
+  },
+  "meta": {
+    "count": "{count} pociones de hada en {lists} listas"
+  }
+}

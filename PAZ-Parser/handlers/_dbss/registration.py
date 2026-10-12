@@ -92,6 +92,7 @@ from .fairyfeedingitem.handler import (
     FairyFeedingItemHandler,
     fairy_feeding_item_offset_handler,
 )
+from .fairypotion.handler import FairyPotionHandler, fairy_potion_offset_handler
 from .fairyskillchange.handler import (
     FairySkillChangeHandler,
     fairy_skill_change_offset_handler,
@@ -230,6 +231,8 @@ def register_dbss_handlers() -> None:
         fairy_feeding_item_offset_handler(),
     )
     register_handler("fairyfeedingitem.dbss", FairyFeedingItemHandler())
+    register_handler("fairypotionoffset.dbss", fairy_potion_offset_handler())
+    register_handler("fairypotion.dbss", FairyPotionHandler())
     register_handler(
         "fairyskillchangeoffset.dbss",
         fairy_skill_change_offset_handler(),

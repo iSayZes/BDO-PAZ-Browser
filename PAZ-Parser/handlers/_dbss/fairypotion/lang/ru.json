@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "potionType": "Тип зелья",
+    "resource": "Ресурс",
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет"
+  },
+  "resources": {
+    "0": "HP",
+    "1": "MP",
+    "2": "FP",
+    "3": "DP"
+  },
+  "offsetColumns": {
+    "potionType": "Тип зелья",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "meta": {
+    "count": "Зелий феи: {count} в {lists} списках"
+  }
+}

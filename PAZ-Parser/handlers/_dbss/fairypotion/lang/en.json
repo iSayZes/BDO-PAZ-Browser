@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "potionType": "Potion Type",
+    "resource": "Resource",
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item"
+  },
+  "resources": {
+    "0": "HP",
+    "1": "MP",
+    "2": "WP",
+    "3": "SP"
+  },
+  "offsetColumns": {
+    "potionType": "Potion Type",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "meta": {
+    "count": "{count} fairy potions in {lists} lists"
+  }
+}

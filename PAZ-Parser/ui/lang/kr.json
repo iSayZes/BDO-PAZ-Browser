@@ -270,7 +270,7 @@
     "reloadSourceOnly": "핸들러 다시 불러오기는 소스 코드로 실행할 때만 가능합니다.",
     "updateDownloading": "v{version} 다운로드 중: {mb} MB",
     "updateInstalling": "v{version} 설치 중, 앱이 다시 시작됩니다…",
-    "found": "\"{query}\"와 일치하는 파일 {cap}개 발견",
+    "found": "\"{query}\"와 일치하는 파일 {count}개 발견",
     "copiedRow": "선택한 행을 복사했습니다.",
     "searchError": "검색 오류: {message}",
     "pageError": "페이지를 불러올 수 없습니다: {message}",

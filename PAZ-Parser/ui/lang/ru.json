@@ -270,7 +270,7 @@
     "reloadSourceOnly": "Перезагрузка обработчиков доступна только при запуске из исходного кода.",
     "updateDownloading": "Загрузка v{version}: {mb} МБ",
     "updateInstalling": "Установка v{version}, приложение перезапустится…",
-    "found": "Найдено файлов по запросу \"{query}\": {cap}",
+    "found": "Найдено файлов по запросу \"{query}\": {count}",
     "copiedRow": "Выбранная строка скопирована.",
     "searchError": "Ошибка поиска: {message}",
     "pageError": "Не удалось загрузить страницу: {message}",

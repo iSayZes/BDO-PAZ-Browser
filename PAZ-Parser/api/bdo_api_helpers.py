@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import fnmatch
 from collections.abc import Callable
+from typing import NamedTuple
 
 from bdo_models import PazEntry
 from bdo_preview import is_handled_file
@@ -45,6 +46,29 @@ def _file_icon(name: str) -> str:
     if is_handled_file(name):
         return "parsed"
     return _ICON_MAP.get(ext, "file")
+
+
+class FileSearchHits(NamedTuple):
+    """Every match of one file search, kept while the page scrolls through them."""
+
+    query: str
+    # The entry list searched (`Api._visible_entries()`); another list means
+    # a new folder, handler set or "Show only handled tables" setting.
+    entries: list[PazEntry]
+    paths: tuple[str, ...]
+
+
+def folder_then_name(path: str) -> tuple[str, str]:
+    """Sort key for a normalised PAZ path: its folder, then its file name,
+    both ignoring case, so a folder's files stay together above its subfolders."""
+    folder, _, name = path.lower().rpartition("/")
+    return folder, name
+
+
+def search_result(path: str) -> dict:
+    """The file-search row for normalised PAZ path `path`."""
+    name = path.rsplit("/", 1)[-1]
+    return {"id": path, "name": name, "path": path, "icon": _file_icon(name)}
 
 
 def path_matcher(pattern: str) -> Callable[[str], bool]:

@@ -49,7 +49,7 @@ To run from source or write handlers, see [Requirements](#requirements).
 
 ## Features
 
-- Tree view of every file in the PAZ archives, with live name search, content search and a preview panel.
+- Tree view of every file in the PAZ archives, with live name search (every match, by folder, then file name, loaded 1,000 at a time as you scroll), content search and a preview panel.
 - A Map view next to Files in the toolbar: the world map in Leaflet, built from the client's radar images (`ui_texture/new_ui_common_forlua/widget/rader/minimap_data_pack/rader_X_Y.dds`, one 128 px image per 12,800-unit sector). The first open asks to build the map tiles into the cache folder: on client 3464, 9,802 JPEG tiles over zoom 1 to 7, 216 MB, 13 s with 8 worker processes. Sectors without a radar image, and 2,803 sectors of placeholder art listed in `world_map.py` (client 3464), get one of 12 open sea images picked at random. The map uses world units, so the readout under the cursor shows the game's X and Z.
 - The world map's nodes on the Map view: 1,074 nodes on client 3464, each with the game icon of its kind (32 px at every zoom) at its `mapdata_realexplore2.bwp` waypoint and its name as tooltip, and the graph's 1,230 links between them, drawn while both ends show, blue when an end is an open-sea node (Margoria, Ross Sea, Vadabin, Juur Sea) and orange on land (sub-nodes read `Velia - Bahar Investment Bank`). Main nodes show at every zoom, sub-nodes from zoom 6. A Filters panel has a node search (every match, at any zoom), Hide All, layer chips (Player, Markers) and a Nodes card with a toggle, icon and count per kind, a Links option and a shown / total badge. Only the node kinds start on; Player and Markers stay disabled until such a pin exists, and Player turns on when a player pin appears. The filter choices are saved in `paz_config.json` and come back on the next start.
 - Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. Pins can carry one of 29 game world map icons, built with the map tiles from the client's files (the node and position icons of `worldmap_grand_base.xml`, and the radar's own-character pointer for `player`). A marker placed with `save` comes back after a restart, and a click on a pin opens a Remove button. See [Map API](docs/map-api.md).
@@ -477,6 +477,7 @@ PAZ-Parser/
 │   ├── bdo_records_prefill.py# Background pass that caches every table
 │   ├── bdo_recent_tables.py# Which handlers keep their parsed tables in memory
 │   ├── bdo_api_search.py   # File content search, single-file and cross-file (SearchMixin)
+│   ├── bdo_api_file_search.py# File name search, sorted and paged for the tree (FileSearchMixin)
 │   ├── bdo_api_updates.py  # The update banner check and one-click install (UpdateMixin)
 │   ├── bdo_api_handler_updates.py# Handler pack update on start, Check now, restart, versions
 │   ├── bdo_api_world_map.py# Map view state, build prompt, background builds, pin icons (WorldMapMixin)

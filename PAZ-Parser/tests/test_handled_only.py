@@ -80,7 +80,7 @@ def test_setting_off_shows_every_file() -> None:
     api = _api(handled_only=False)
 
     assert _ids(api.get_children("")) == {"gamecommondata", "ui_texture"}
-    assert _ids(api.search("*")) == set(_PATHS)
+    assert _ids(api.search("*")["items"]) == set(_PATHS)
 
 
 def test_setting_on_hides_unhandled_files_and_empty_folders() -> None:
@@ -104,7 +104,7 @@ def test_setting_on_counts_only_handled_files() -> None:
 def test_setting_on_limits_file_search() -> None:
     api = _api(handled_only=True)
 
-    assert _ids(api.search("*")) == {_HANDLED_TABLE, _HANDLED_WAYPOINT}
+    assert _ids(api.search("*")["items"]) == {_HANDLED_TABLE, _HANDLED_WAYPOINT}
 
 
 def test_disk_loc_stays_at_root() -> None:
@@ -118,7 +118,7 @@ def test_hidden_companion_still_loads(monkeypatch: pytest.MonkeyPatch) -> None:
     api = _api(handled_only=True)
     monkeypatch.setattr(bdo_api, "cached_read_entry_payload", lambda archive_path, entry: b"x")
 
-    assert _UNHANDLED_TABLE not in _ids(api.search("*"))
+    assert _UNHANDLED_TABLE not in _ids(api.search("*")["items"])
     assert api._load_companion_sync(_UNHANDLED_TABLE) == b"x"
 
 

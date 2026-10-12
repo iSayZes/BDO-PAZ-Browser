@@ -22,7 +22,7 @@ from map_pins_file import SavedPinsFile
 from world_map import Sector
 from world_map_build import BuildProgress
 
-from .bdo_api_helpers import _norm
+from .bdo_api_helpers import FileSearchHits, _norm
 from .bdo_recent_tables import RecentTables
 from .bdo_records_prefill import RecordsPrefill
 from .bdo_records_store import DataDigests, RecordStore
@@ -63,6 +63,8 @@ class ApiState:
         self._handled_only = False
         # (handled entries, their tree), built on first use per folder load.
         self._handled_view: tuple[list[PazEntry], dict] | None = None
+        # The last file search's matches (`FileSearchMixin`).
+        self._file_search: FileSearchHits | None = None
         self._disk_companions: dict[str, bytes] = {}
         # The last status pushed, as setStatus() takes it, for a page that reloads.
         self._status: dict = {"key": "status.openFolder"}

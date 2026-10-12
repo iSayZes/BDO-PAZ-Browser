@@ -270,7 +270,7 @@
     "reloadSourceOnly": "Handler reload is only available when running from source.",
     "updateDownloading": "Downloading v{version}: {mb} MB",
     "updateInstalling": "Installing v{version}, the app restarts…",
-    "found": "Found {cap}files matching \"{query}\"",
+    "found": "Found {count} files matching \"{query}\"",
     "copiedRow": "Copied selected row.",
     "searchError": "Search error: {message}",
     "pageError": "Could not load page: {message}",

@@ -10,6 +10,8 @@ export const app = {
   _searchSeq: 0,
   _selectSeq: 0,
   _inSearch: false,
+  // Loads the next page of file search results on scroll (search.js).
+  _searchMoreObserver: null,
   _parsedHtml: null,
   _hexHtml: null,
   _activeTab: "hex",

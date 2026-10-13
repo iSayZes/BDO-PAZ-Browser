@@ -13,7 +13,7 @@ quest 40022 / 2 -> offered after clearquest(40022,1);
 
 ## File Layout
 
-Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group a 10-byte header, 17-byte quest reference rows and a 13-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
+Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group an 11-byte header, 17-byte quest reference rows and a 12-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
 
 | Field                                  | Observed                                              |
 | -------------------------------------- | ----------------------------------------------------- |
@@ -21,7 +21,7 @@ Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byt
 | First group                            | key `104`, `14` rows                                  |
 | Group header `unknown_06`              | `0`, except `1` on key 101 `[Invitation from I] Someone Beckons` |
 | Group trailer start / end index        | Index `2`, the empty string: no event period          |
-| Row `unknown_00`                       | `0`, except `1` on 7 rows, see Open Questions         |
+| Row `unknown_10`                       | `0`, except `1` on 7 rows, see Open Questions         |
 | Row `script_1_index`                   | Empty string on 2,667 rows, a script on 601           |
 | Row `script_2_index`                   | Empty string on 1,348 rows, a script on 1,920         |
 | String table                           | `3,490` strings; `string_count` at `0x0000E3D4`       |
@@ -57,19 +57,19 @@ On client 3458 all 120 groups have a name (type 43 has 170, keys 1 to 171, so so
 | Offered When* | text | `script_2` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
 | Ruled Out When* | text | `script_1` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
 
-`group` (the index in file order), `unknown_00`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
+`group` (the index in file order), `unknown_10`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
 
 ## Notes
 
 - Decompressed size is `447,790` bytes on client 3458.
 - No quest appears twice; every group key is unique.
-- Earlier versions of this doc read the later group header as 22 bytes starting one byte later, so each row took its leading `unknown_00` from the byte before it; the row values were the same. They named the first header's `group_key` `unknown_00` and the later header's `group_key` `unknown_0c`.
+- Earlier versions of this doc read the later group header as 22 bytes starting one byte later, so each row took its leading flag byte from the byte before it; the row values were the same. Up to client 3464 the flag was still read one row late, see the Notes of [`newquest.bss`](newquest_bss.md). They named the first header's `group_key` `unknown_00` and the later header's `group_key` `unknown_0c`.
 
 ## Open Questions
 
-### Row Byte `unknown_00`
+### Row Byte `unknown_10`
 
-`1` on only 7 rows, all in group key 51: quests 6603 / 3 to 8 and 6002 / 13. What it changes is not confirmed.
+`1` on only 7 rows, all in group key 51: quests 6603 / 2 to 8, which share one `script_1` (client 3464). What it changes is not confirmed.
 
 ### Shared Fields
 

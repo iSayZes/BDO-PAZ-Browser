@@ -11,7 +11,7 @@ class QuestListRecord(TypedDict):
     event_start: str
     event_end: str
     row: int
-    unknown_00: int
+    unknown_10: int
     quest_chain_id: int
     quest_id: int
     packed_quest_id: int

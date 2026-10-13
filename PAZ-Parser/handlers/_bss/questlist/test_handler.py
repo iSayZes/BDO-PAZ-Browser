@@ -31,7 +31,7 @@ _REQUIRED_KEYS = [
     "event_start",
     "event_end",
     "row",
-    "unknown_00",
+    "unknown_10",
     "quest_chain_id",
     "quest_id",
     "packed_quest_id",
@@ -71,7 +71,7 @@ def _list_case(name: str, tests: list) -> HandlerCase:
 
 NEWQUEST_CASE = _list_case("newquest", [
     # Zero in every row; a row read off its 17-byte stride would not be.
-    RangeTest(col="unknown_00", min_val=0, max_val=0),
+    RangeTest(col="unknown_10", min_val=0, max_val=0),
     TargetTest(
         col="packed_quest_id",
         value=600883,
@@ -94,7 +94,7 @@ NEWQUEST_CASE = _list_case("newquest", [
 
 MAINQUEST_CASE = _list_case("mainquest", [
     # `1` on a few rows, `0` on the rest.
-    RangeTest(col="unknown_00", min_val=0, max_val=1),
+    RangeTest(col="unknown_10", min_val=0, max_val=1),
     TargetTest(
         col="packed_quest_id",
         value=105558,
@@ -114,7 +114,7 @@ MAINQUEST_CASE = _list_case("mainquest", [
 ])
 
 RECOMMENDATIONQUEST_CASE = _list_case("recommendationquest", [
-    RangeTest(col="unknown_00", min_val=0, max_val=0),
+    RangeTest(col="unknown_10", min_val=0, max_val=0),
     TargetTest(
         col="packed_quest_id",
         value=171127,
@@ -128,7 +128,7 @@ RECOMMENDATIONQUEST_CASE = _list_case("recommendationquest", [
 ])
 
 REPETITIONQUEST_CASE = _list_case("repetitionquest", [
-    RangeTest(col="unknown_00", min_val=0, max_val=0),
+    RangeTest(col="unknown_10", min_val=0, max_val=0),
     TargetTest(
         col="packed_quest_id",
         value=74644,
@@ -199,3 +199,16 @@ def test_event_period_only_in_the_event_list(case: HandlerCase) -> None:
             continue
         assert _EVENT_TIME_RE.fullmatch(start) and _EVENT_TIME_RE.fullmatch(end), (start, end)
         assert start < end, record["group"]
+
+
+def test_flagged_mainquest_rows_share_one_script_1() -> None:
+    """The rows with `unknown_10` set are one run that shares its `script_1`.
+
+    With the flag read as the first byte of the row, each flag lands one row
+    late: the run loses its first row and gains a row with another script.
+    """
+    flagged = [record for record in _result(MAINQUEST_CASE).records if record["unknown_10"]]
+
+    assert len({record["script_1"] for record in flagged}) <= 1, [
+        (record["packed_quest_id"], record["script_1"]) for record in flagged
+    ]

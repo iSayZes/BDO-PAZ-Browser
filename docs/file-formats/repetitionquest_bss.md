@@ -12,7 +12,7 @@ group 0 (key 51, "[Throne of Edana] [Weekly] For the Throne") -> quest 9108 / 1 
 
 ## File Layout
 
-Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group a 10-byte header, 17-byte quest reference rows and a 13-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
+Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group an 11-byte header, 17-byte quest reference rows and a 12-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
 
 | Field                                  | Observed                                              |
 | -------------------------------------- | ----------------------------------------------------- |
@@ -20,7 +20,7 @@ Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byt
 | First group                            | key `51`, `10` rows                                   |
 | Group header `unknown_06`              | `0` on every group                                    |
 | Group trailer start / end index        | Index `31`, the empty string: no event period         |
-| Row `unknown_00`                       | `0` on every row                                      |
+| Row `unknown_10`                       | `0` on every row                                      |
 | Row `script_1_index`                   | Empty string on 678 rows, a script on 128             |
 | Row `script_2_index`                   | Empty string on 517 rows, a script on 289             |
 | String table                           | `633` strings; `string_count` at `0x000039DE`         |
@@ -56,7 +56,7 @@ On client 3458 all 48 groups have a name (type 42 has 54, keys 1 to 54, so some 
 | Offered When* | text | `script_2` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
 | Ruled Out When* | text | `script_1` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
 
-`group` (the index in file order), `unknown_00`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
+`group` (the index in file order), `unknown_10`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
 
 ## Notes
 

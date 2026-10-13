@@ -22,9 +22,9 @@ All multi-byte values are little-endian unless noted otherwise.
 ```text
 header (8)
 group[group_count]:
-    group header (10)
+    group header (11)
     quest reference row (17) x quest_ref_count
-    group trailer (13)
+    group trailer (12)
 string table: u32 string_count, string entry x string_count
 file trailer (8)
 ```
@@ -36,35 +36,33 @@ file trailer (8)
 | `+0x00` | char[4] | magic       | `PABR` (ASCII)                             |
 | `+0x04` | u32     | group_count | Number of quest groups; `232` on client 3458 |
 
-### Group Header (10 bytes)
+### Group Header (11 bytes)
 
 | Offset  | Type | Field           | Notes                                                                   |
 | ------- | ---- | --------------- | ----------------------------------------------------------------------- |
 | `+0x00` | u16  | group_key       | The group's key, see Localization; unique per group                     |
 | `+0x02` | u32  | name_index      | String table index of the Korean group name (`group_name_kr`); `0` for the first group |
 | `+0x06` | u8   | unknown_06      | `0` on most groups; see Open Questions                                  |
-| `+0x07` | u16  | quest_ref_count | Number of following rows                                                |
-| `+0x09` | u8   | padding         | Observed zero                                                           |
+| `+0x07` | u32  | quest_ref_count | Number of following rows                                                |
 
 ### Quest Reference Row (17 bytes, repeated `quest_ref_count` times)
 
 | Offset  | Type | Field          | Notes                                                                   |
 | ------- | ---- | -------------- | ----------------------------------------------------------------------- |
-| `+0x00` | u8   | unknown_00     | `0` on every row here; `1` on 7 `mainquest.bss` rows                    |
-| `+0x01` | u16  | quest_chain_id | LOC type 18 `str_id1`; combines with `quest_id` to form quest key       |
-| `+0x03` | u16  | quest_id       | LOC type 18 `str_id2`; combines with `quest_chain_id` to form quest key |
-| `+0x05` | u32  | condition_index | String table index of the Korean condition line (`condition_kr`), the source of the LOC condition line |
-| `+0x09` | u32  | script_1_index | String table index of the first condition script (`script_1`), often the empty string; see String Table |
-| `+0x0D` | u32  | script_2_index | String table index of the second condition script (`script_2`), often the empty string; see String Table |
+| `+0x00` | u16  | quest_chain_id | LOC type 18 `str_id1`; combines with `quest_id` to form quest key       |
+| `+0x02` | u16  | quest_id       | LOC type 18 `str_id2`; combines with `quest_chain_id` to form quest key |
+| `+0x04` | u32  | condition_index | String table index of the Korean condition line (`condition_kr`), the source of the LOC condition line |
+| `+0x08` | u32  | script_1_index | String table index of the first condition script (`script_1`), often the empty string; see String Table |
+| `+0x0C` | u32  | script_2_index | String table index of the second condition script (`script_2`), often the empty string; see String Table |
+| `+0x10` | u8   | unknown_10     | `0` on every row here; `1` on 7 `mainquest.bss` rows                    |
 
-### Group Trailer (13 bytes)
+### Group Trailer (12 bytes)
 
 | Offset  | Type | Field        | Notes                                                                  |
 | ------- | ---- | ------------ | ---------------------------------------------------------------------- |
-| `+0x00` | u8   | unknown_00   | Observed zero                                                          |
-| `+0x01` | u32  | event_start_index | String table index of the event start (`event_start`), e.g. `2019-10-16 04:00`; the empty string in the other three lists |
-| `+0x05` | u32  | event_end_index   | String table index of the event end (`event_end`), e.g. `2019-11-13 05:59`; always after the start |
-| `+0x09` | u32  | unknown_09   | Observed `0` in every group of the four files                          |
+| `+0x00` | u32  | event_start_index | String table index of the event start (`event_start`), e.g. `2019-10-16 04:00`; the empty string in the other three lists |
+| `+0x04` | u32  | event_end_index   | String table index of the event end (`event_end`), e.g. `2019-11-13 05:59`; always after the start |
+| `+0x08` | u32  | unknown_08   | Observed `0` in every group of the four files                          |
 
 The start of group 1 `[Event] Black Desert 2019 Halloween` is `2019-10-16 04:00`, and its English condition lines read `Oct 16 (after maintenance) - ...`.
 
@@ -147,14 +145,15 @@ Client 3458:
 | Offered When* | text | `script_2` on one line; the `*` marks the role as our reading, not confirmed (see Open Questions) |
 | Ruled Out When* | text | `script_1` on one line; the `*` marks the role as our reading, not confirmed (see Open Questions) |
 
-`group` (the index in file order), `unknown_00`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The other three lists show the same columns without Event Start and Event End.
+`group` (the index in file order), `unknown_10`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The other three lists show the same columns without Event Start and Event End.
 
 ## Notes
 
 - Decompressed size is `820,905` bytes on client 3458 (`816,761` with 224 groups and 1,255 rows before 2026-09-27).
 - 27 quests sit in two groups (29 before 2026-09-27); each copy has its own condition line in LOC.
 - The string table indexes shift whenever a string is added earlier in the file, so `condition_index` / `script_1_index` / `script_2_index` are not stable across patches: quest `77129` had `condition_index = 899` before 2026-09-27 and `896` after.
-- Earlier versions of this doc and the handler read a 10-byte first group header and a 23-byte later one: the previous group's trailer followed by the next group's header. The rows were the same. They called the row's `unknown_00` `flags`, called `condition_index` / `script_1_index` / `script_2_index` `sequence_a` / `sequence_b` / `sequence_c` and later `unknown_05` / `unknown_09` / `unknown_0d`, and named the header fields `header_flag`, `unknown_a` to `unknown_d`, `group_key_a` and `group_key_b`.
+- Earlier versions of this doc and the handler read a 10-byte first group header and a 23-byte later one: the previous group's trailer followed by the next group's header. The rows were the same. They called the row flag `flags`, called `condition_index` / `script_1_index` / `script_2_index` `sequence_a` / `sequence_b` / `sequence_c` and later `unknown_05` / `unknown_09` / `unknown_0d`, and named the header fields `header_flag`, `unknown_a` to `unknown_d`, `group_key_a` and `group_key_b`.
+- Until client 3464 this doc and the handler read a u16 `quest_ref_count` plus a padding byte, a row that opened with a u8 `unknown_00`, and a trailer that opened with a zero byte. Group sizes were the same, but each row took the flag byte of the row before it. `mainquest.bss` decides it: the 7 rows with the flag set are 6603 / 2 to 8, the whole run that shares the `script_1` `getknowledge(6392);<or>clearquest(21601,1);<or>!clearquest(351,1);`. The old reading flagged 6603 / 3 to 8 and 6002 / 13, which has another `script_1`. The [calpheonlabs](https://github.com/marceloclp/calpheonlabs) `newquest.bss` page reads the layout the same way.
 
 ## Open Questions
 

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "npc": "NPC",
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "category": "구분"
+  },
+  "offsetColumns": {
+    "characterId": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "아이템 {count}개 · 무역 NPC {npcs}명"
+  }
+}

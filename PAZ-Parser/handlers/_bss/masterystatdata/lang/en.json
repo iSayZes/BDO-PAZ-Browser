@@ -1,5 +1,7 @@
 {
   "columns": {
+    "typeId": "Type ID",
+    "type": "Type",
     "mastery": "Mastery",
     "prizeCatchRate": "Prize Catch Fish Rate",
     "butcheringRate": "Chance of Butchering More Items",
@@ -18,9 +20,17 @@
     "brake": "Brake",
     "horseCaptureRate": "Horse Capture Rate",
     "mountExp": "Mount EXP",
-    "higherTierHorse": "Higher Tier Horse Chance"
+    "higherTierHorse": "Higher Tier Horse Chance",
+    "basicDropRate": "Basic Resources Drop Rate",
+    "basicQuantity": "Basic Resources Quantity",
+    "specialDropRate": "Special Resources Drop Rate",
+    "specialQuantity": "Special Resources Quantity",
+    "rareDropRate": "Rare Resources Drop Rate",
+    "rareQuantity": "Rare Resources Quantity",
+    "massProcessBatches": "Mass Process Batches"
   },
   "meta": {
-    "count": "{count} mastery steps"
+    "count": "{count} mastery steps",
+    "groupedCount": "{count} mastery steps · {types} types"
   }
 }

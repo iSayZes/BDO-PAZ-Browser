@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "maxLevel": "Макс. ур."
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Предметов: {count} · можно усилить: {enhanceable}"
+  }
+}

@@ -612,17 +612,26 @@ def handler_key(name: str, ext: str) -> str | None:
     return None
 
 
-def is_handled_file(name: str) -> bool:
-    """True when a registered binary handler, not a built-in view, reads `name`.
+def _registry_keys(name: str) -> tuple[str, ...]:
+    """The registry keys get_handler() tries for `name`: full name, then extension.
 
-    Looks the file up as get_handler() does: full name first, then extension.
-    Runs once per PAZ entry when the handled-only view is built, so it skips
-    `Path` for speed.
+    Skips `Path` for speed: is_handled_file() runs once per PAZ entry when the
+    handled-only view is built.
     """
     name = name.lower()
     _, dot, ext = name.rpartition(".")
-    keys = (name, f".{ext}") if dot else (name,)
-    return any(key in _REGISTRY and key not in _BUILTIN_KEYS for key in keys)
+    return (name, f".{ext}") if dot else (name,)
+
+
+def is_handled_file(name: str) -> bool:
+    """True when a registered binary handler, not a built-in view, reads `name`."""
+    return any(key in _REGISTRY and key not in _BUILTIN_KEYS for key in _registry_keys(name))
+
+
+def has_preview(name: str) -> bool:
+    """True when a handler or a built-in text, image or video view reads `name`,
+    False when it opens in the hex view only."""
+    return any(key in _REGISTRY for key in _registry_keys(name))
 
 
 def get_builtin_formats() -> list[str]:

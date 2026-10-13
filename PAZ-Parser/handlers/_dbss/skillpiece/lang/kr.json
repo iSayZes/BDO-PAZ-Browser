@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillId": "기술 ID",
+    "set": "세트 효과",
+    "points": "포인트",
+    "level": "레벨",
+    "requires": "조건",
+    "effect": "효과",
+    "buffs": "버프"
+  },
+  "offsetColumns": {
+    "skillId": "기술 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "세트 효과 단계 {count}개 · 세트 기술 {sets}개"
+  }
+}

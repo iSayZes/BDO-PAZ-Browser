@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "sectorX": "Сектор X",
+    "sectorZ": "Сектор Z"
+  },
+  "meta": {
+    "count": "Боссов: {count}"
+  }
+}

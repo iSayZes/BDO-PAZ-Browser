@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillId": "Talent-ID",
+    "set": "Seteffekt",
+    "points": "Punkte",
+    "level": "Stufe",
+    "requires": "Benötigt",
+    "effect": "Effekt",
+    "buffs": "Buffs"
+  },
+  "offsetColumns": {
+    "skillId": "Talent-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Seteffekt-Stufen · {sets} Set-Talente"
+  }
+}

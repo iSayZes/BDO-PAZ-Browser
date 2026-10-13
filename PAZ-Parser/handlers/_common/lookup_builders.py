@@ -43,6 +43,7 @@ from _dbss.itemenchant.parser import (
     build_buff_item_index,
     build_character_item_index,
     build_enchant_key_item_index,
+    build_enhancement_type_item_index,
     build_item_grade_index,
     build_item_icon_index,
 )
@@ -114,6 +115,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.ITEM_GRADE, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_grade_index),
     # enchantstaticstatus.dbss key -> the items that enhance with it.
     IndexSpec(IndexKind.ENCHANT_KEY_ITEMS, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_enchant_key_item_index),
+    # Enhancement type -> its items, for the guaranteeenchantss.dbss Items column.
+    IndexSpec(
+        IndexKind.ENHANCEMENT_TYPE_ITEMS,
+        (ITEMENCHANT, ITEMENCHANT_OFFSET),
+        build_enhancement_type_item_index,
+    ),
     IndexSpec(IndexKind.QUEST_ICON, (QUEST, ALLQUESTLIST), build_quest_icon_index),
     IndexSpec(
         IndexKind.CHARACTER_ICON,

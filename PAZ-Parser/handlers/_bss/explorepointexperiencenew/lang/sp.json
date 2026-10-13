@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "points": "Puntos de contribución",
+    "exp": "Exp. (Contribución) para el siguiente punto"
+  },
+  "meta": {
+    "count": "{count} filas"
+  }
+}

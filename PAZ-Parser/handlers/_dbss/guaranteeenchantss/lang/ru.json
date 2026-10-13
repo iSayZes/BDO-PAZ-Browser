@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "enhancementType": "Тип усиления",
+    "level": "Уровень",
+    "agrisCount": "Эссенция Агриса",
+    "items": "Предметы"
+  },
+  "meta": {
+    "count": "{count} уровней · {types} типов усиления"
+  }
+}

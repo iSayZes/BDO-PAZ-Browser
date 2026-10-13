@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "order": "Order",
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "stone": "Stone"
+  },
+  "meta": {
+    "count": "{count} reform stones shown by default"
+  }
+}

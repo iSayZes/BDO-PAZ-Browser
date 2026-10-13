@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "Nivel",
+    "rank": "Rango",
+    "mastery": "Maestría"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

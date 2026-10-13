@@ -1,19 +1,25 @@
-# `{alchemy,cooking,fishing,hunting,sail,training}statdata.bss` Format
+# `{alchemy,collecting,cooking,fishing,hunting,sail,training}statdata.bss` and `manufacturingstat.bss` Format
 
 ## Purpose
 
-The life skill mastery tables: for each mastery step of 50, from 3000 down to
-0, the bonuses that the Life Skill tab tooltips show. Six files share the
-layout and differ only in the fields after the mastery value:
+The life skill mastery tables: for each mastery step, the bonuses that the
+Life Skill tab tooltips show. Eight files share the layout and differ only
+in the fields after the mastery value and in the number of row groups:
 
-| File                   | Life skill | Row size | Fields after mastery (client 3464) |
-| ---------------------- | ---------- | -------- | ---------------------------------- |
-| `fishingstatdata.bss`  | Fishing    | 8        | 1                                  |
-| `cookingstatdata.bss`  | Cooking    | 24       | 5                                  |
-| `huntingstatdata.bss`  | Hunting    | 36       | 8                                  |
-| `alchemystatdata.bss`  | Alchemy    | 40       | 9                                  |
-| `sailstatdata.bss`     | Sailing    | 44       | 10                                 |
-| `trainingstatdata.bss` | Training   | 16       | 3                                  |
+| File                     | Life skill | Row groups      | Row size | Fields after mastery |
+| ------------------------ | ---------- | --------------- | -------- | -------------------- |
+| `fishingstatdata.bss`    | Fishing    | 1               | 8        | 1                    |
+| `cookingstatdata.bss`    | Cooking    | 1               | 24       | 5                    |
+| `huntingstatdata.bss`    | Hunting    | 1               | 36       | 8                    |
+| `alchemystatdata.bss`    | Alchemy    | 1               | 40       | 9                    |
+| `sailstatdata.bss`       | Sailing    | 1               | 44       | 10                   |
+| `trainingstatdata.bss`   | Training   | 1               | 16       | 3                    |
+| `collectingstatdata.bss` | Gathering  | one per type    | 36       | 8                    |
+| `manufacturingstat.bss`  | Processing | one per type    | 16       | 3                    |
+
+The six single-group files step by 50 mastery from 3000 down to 0. The
+gathering table does the same once per gathering type; the processing table
+runs up from 1 to 2999 once per processing type.
 
 ```text
 cookingstatdata.bss, mastery 3000:
@@ -21,25 +27,46 @@ cookingstatdata.bss, mastery 3000:
   max higher grade dishes 76.45%, Imperial Delivery extra profit 181.25%
 ```
 
-`collectingstatdata.bss` (gathering), `manufacturingstat.bss` (processing) and
-`commonlifestatdata.bss` (mastery from life levels) have other layouts and are
-not covered here.
+The Gathering and Processing mastery that life levels give is in
+[`commonlifestatdata.bss`](commonlifestatdata_bss.md), which has its own
+layout.
 
 The files are self-contained. All multi-byte values are little-endian.
 
 ## File Layout
 
 The PABR layout of [`blizzardregioninfo.bss`](blizzardregioninfo_bss.md):
-fixed rows, an empty string table and the 8-byte trailer.
+fixed rows, an empty string table and the 8-byte trailer. The rows come in
+groups, each with its own row count; a single-group file is the plain PABR
+table.
 
 | Offset   | Type    | Field        | Notes                                           |
 | -------- | ------- | ------------ | ----------------------------------------------- |
 | `+0x00`  | char[4] | magic        | ASCII `PABR`                                    |
-| `+0x04`  | u32     | count        | Number of rows; `61` in every file on client 3464 |
-| `+0x08`  | row[]   | rows         | `count` rows, highest mastery first             |
+| `+0x04`  | group[] | groups       | Groups back to back until `table_start`         |
 | after    | u32     | string_count | Always `0`                                      |
-| EOF - 8  | u32     | table_start  | Offset of `string_count`, where the rows end    |
+| EOF - 8  | u32     | table_start  | Offset of `string_count`, where the groups end  |
 | EOF - 4  | u32     | zero         | Always `0`                                      |
+
+### Group
+
+| Offset  | Type  | Field | Notes                         |
+| ------- | ----- | ----- | ----------------------------- |
+| `+0x00` | u32   | count | Number of rows in the group   |
+| `+0x04` | row[] | rows  | `count` rows                  |
+
+The group index, counted from 0, is the type `subType` that the Lua passes to
+the table's getter (see [Gathering Row](#gathering-row-36-bytes) and
+[Processing Row](#processing-row-16-bytes)). Group counts on client 3464:
+
+| File                     | Groups | Group counts                           |
+| ------------------------ | ------ | -------------------------------------- |
+| six single-group files   | 1      | `61`                                   |
+| `collectingstatdata.bss` | 19     | `0`, then `61` for groups 1 to 7, then `0` for groups 8 to 18 |
+| `manufacturingstat.bss`  | 7      | `0`, then `76` for groups 1 to 6       |
+
+The seven gathering groups are byte-identical on client 3464, and so are
+the six processing groups.
 
 ## Record Structure
 
@@ -47,7 +74,7 @@ Every row opens with the mastery threshold:
 
 | Offset  | Type | Field   | Notes                                                     |
 | ------- | ---- | ------- | --------------------------------------------------------- |
-| `+0x00` | f32  | mastery | `3000.0` down to `0.0` in steps of 50 on client 3464      |
+| `+0x00` | f32  | mastery | `3000.0` down to `0.0` in steps of 50 on client 3464; `1.0` up to `2999.0` in `manufacturingstat.bss` |
 
 The fields after it are u32 rates unless noted, with `1,000,000` = 100%.
 `PaGlobalFunc_GlobalUtil_RoundRateToSecondPoint` in `global_util_ui.luac`
@@ -179,10 +206,105 @@ The tooltip (`LUA_CHARACTERINFO_LIFE_TRAINING_DESC_1`) fills `rate1` to
 tooltip at Training Mastery 385 shows 3.84%, 5.62% and 2.00%: the mastery 350
 row's `+0x04`, `+0x0C` and `+0x08` (client 3464).
 
+### Gathering Row (36 bytes)
+
+| Offset  | Type | Field                 | Notes                                                 |
+| ------- | ---- | --------------------- | ----------------------------------------------------- |
+| `+0x04` | u32  | add_drop_rate_0       | `getCollectingStatAddDropRate(0)`, Basic Resources "Drop rate" |
+| `+0x08` | u32  | add_drop_count_rate_0 | `getCollectingStatAddDropCountRate(0)`, Basic Resources "Quantity" |
+| `+0x0C` | u32  | add_drop_rate_1       | Same getters with index 1, Special Resources          |
+| `+0x10` | u32  | add_drop_count_rate_1 |                                                       |
+| `+0x14` | u32  | add_drop_rate_2       | Same getters with index 2, Rare Resources             |
+| `+0x18` | u32  | add_drop_count_rate_2 |                                                       |
+| `+0x1C` | u32  | unknown_1c            | `500,000` in every row on client 3464                 |
+| `+0x20` | u32  | unknown_20            | `0` in every row on client 3464                       |
+
+The gathering tooltip in `panel_characterinfo_life_all_2.luac` calls
+`ToClient_LoadCollectingStatData(subType)` for the hovered gathering type,
+then reads `ToClient_getCollectingStatAddDropRate(ii)` and
+`ToClient_getCollectingStatAddDropCountRate(ii)` for `ii` = 0 to count - 2
+into `LUA_COLLECTING_POWER_DESC_1` to `_3` ("Basic Resources", "Special
+Resources", "Rare Resources", each with "Drop rate +{rate1}%" and "Quantity
++{rate2}%"). Three tiers read up to count - 2 leave a fourth entry, and the
+32 bytes after the mastery hold four (drop rate, quantity) pairs.
+
+The pairs read in row order, not as four drop rates followed by four
+quantities. With pairs, all six tooltip values are 0 at mastery 0 and rise
+with mastery, as `LUA_COLLECTING_POWER_DESC_MAIN` says ("Higher Gathering
+Mastery increases the gathered drop rate and quantity of basic, special, and
+rare resources"). Read as two arrays, the rare quantity would be `+0x1C`,
+`500,000` (+50%) at every mastery including 0 (client 3464). The fourth pair
+(`+0x1C`, `+0x20`) is constant and nothing reads it. The in-game tooltips of
+Lumbering, Fluid Collecting and Butchering at Gathering Mastery 440 show
+Basic +80.00% / +50.49%, Special +25.25% / +12.62% and Rare +31.56% /
++10.52%, the mastery 400 row read as pairs (client 3464).
+
+On client 3464 the basic drop rate is 0 at mastery 0 and 50 and `800,000`
+(+80%) from 100 up; the other five values rise to 500%, 250%, 125%, 312.31%
+and 105.80% at 3000.
+
+The group index is the `subType`: the Life Skill tab names group `n` with
+`_SUBLIFE_COLLECT_STRING[n]` in `panel_characterinfo_life_all.luac`, keys of
+the `RESOURCE` sheet:
+
+| Group | Key                                                  | Name (English LOC) |
+| ----- | ---------------------------------------------------- | ------------------ |
+| 1     | `PANEL_CHARACTERINFO_RENEW_WATERING_TITLE`            | Water Scooping     |
+| 2     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_FELLING`      | Lumbering          |
+| 3     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_SAP`          | Fluid Collecting   |
+| 4     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_HOMMY`        | Hoe Gathering      |
+| 5     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_SLAUGHTER`    | Butchering         |
+| 6     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_TANNING`      | Tanning            |
+| 7     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_MINING`       | Mining             |
+
+The buff detail panel (`panel_characterinfo_buffdetail_all.luac`) passes
+`__eCollectToolType_Axe` and the other tool types to the same
+`ToClient_LoadCollectingStatData`, so the group index is also the
+`CollectToolType`: `CppEnums.CollectToolTypeName` lists BareHands,
+EmptyBottle, Axe, Syringe, Hoe, ButcheryKnife, SkinKnife and Pickax first,
+and group 0 (bare hands) is empty. `LUA_COLLECTING_POWER_DESC_SUB_1` to `_7`
+list the resources of each type ("Basic Resources: Timber, Plank, Log" for
+group 2).
+
+### Processing Row (16 bytes)
+
+| Offset  | Type | Field      | Notes                                                        |
+| ------- | ---- | ---------- | ------------------------------------------------------------ |
+| `+0x04` | u32  | unknown_04 | 1,000,000 x (1 - 10 / `count_rate`) in every row on client 3464 |
+| `+0x08` | u32  | count_rate | `ToClient_getManufacturingStatCountRate(subType)`, mass processing batches |
+| `+0x0C` | u32  | unknown_0c | `0` in every row on client 3464                              |
+
+The processing tooltip fills `data2` of `LUA_MANUFACTURING_POWER_TOOLTIP_DESC`
+("You can mass process {data2} batches of materials at once") with
+`tostring(ToClient_getManufacturingStatCountRate(subType))`, and the
+processing window (`panel_window_manufacture_all_2.luac`) puts the same
+value in `LUA_MANUFACTURING_POWER_DESC` ("(Mass Process {count} times)").
+`+0x08` is the only whole-number count in the row: `10` at mastery 1 up to
+`315` at 2999 on client 3464. `+0x04` follows from it (`90,909` for 11
+batches, `968,253` for 315), and no Lua reads a second processing value.
+
+The rows run up: mastery `1.0`, then `19.0` to `779.0` in steps of 20, and
+larger steps up to `2999.0` (client 3464). At Processing Mastery 480 every
+type shows "(Mass Process 34 times)", the `479.0` row; the `499.0` row would
+give 35, so the client takes the row at or below the mastery here too. The group index is the `subType`,
+named by `_SUBLIFE_MANUFACTURE[n]`; the processing window passes its tab
+index + 1:
+
+| Group | Key                                                  | Name (English LOC) |
+| ----- | ---------------------------------------------------- | ------------------ |
+| 1     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_SHAKING`      | Shaking            |
+| 2     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_GRIDING`      | Grinding           |
+| 3     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_FIREWOOD`     | Chopping           |
+| 4     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_DRYING`       | Drying             |
+| 5     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_THINOUT`      | Filtering          |
+| 6     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_HEATING`      | Heating            |
+
 ## Suggested UI Layout
 
 Every table opens with the mastery column; the rest depends on the file.
-Rate columns are right-aligned percents, rounded like the tooltip.
+Rate columns are right-aligned percents, rounded like the tooltip. The
+gathering and processing tables put the type ID and type name in front of
+Mastery.
 
 | File                   | Columns after Mastery                                                    |
 | ---------------------- | ------------------------------------------------------------------------ |
@@ -192,10 +314,14 @@ Rate columns are right-aligned percents, rounded like the tooltip.
 | `alchemystatdata.bss`  | Max Products, Extra Basic Items, Extra Special Items, Extra Rare Items (3 decimals), Imperial Delivery Extra Profit |
 | `sailstatdata.bss`     | Accel., Speed, Turn, Brake                                               |
 | `trainingstatdata.bss` | Horse Capture Rate, Mount EXP, Higher Tier Horse Chance                  |
+| `collectingstatdata.bss` | Basic, Special and Rare Resources Drop Rate and Quantity, in tier order |
+| `manufacturingstat.bss` | Mass Process Batches (`count_rate`, a plain number)                     |
 
-| Column  | Type | Notes                       |
-| ------- | ---- | --------------------------- |
-| Mastery | num  | `mastery`, shown as `3000`  |
+| Column  | Type | Notes                                                                 |
+| ------- | ---- | --------------------------------------------------------------------- |
+| Type ID | num  | `sub_type`, the group index; gathering and processing only            |
+| Type    | text | LOC text of the group's `RESOURCE` key; gathering and processing only |
+| Mastery | num  | `mastery`, shown as `3000`                                            |
 
 The sailing cannon fields stay in the records but out of the table, since no
 UI shows them.
@@ -203,21 +329,25 @@ UI shows them.
 ## Notes
 
 - The handler is one class, `_bss/masterystatdata/handler.py`; the fields and
-  columns of each file are a `MasteryTable` in `spec.py`.
+  columns of each file are a `MasteryTable` in `spec.py`. The type names
+  resolve through the `stringtable.bss` key hashes stored in `sub_types.py`.
 - The client takes the row at or below the player's mastery and does not
-  interpolate: the in-game tooltips at Cooking 595, Hunting 405 and
-  Training 385 match the 550, 400 and 350 rows exactly (client 3464); the
-  600 row would give mass cooking 22.37% instead of 21.16%.
+  interpolate: the in-game tooltips at Cooking 595, Hunting 405,
+  Training 385, Gathering 440 and Processing 480 match the 550, 400, 350,
+  400 and 479 rows exactly (client 3464); the 600 cooking row would give
+  mass cooking 22.37% instead of 21.16%.
 - Most curves change slope at mastery 2000: below it many values are perfect
   squares (Cooking `+0x0C` at 1200 is `78,400` = 280²), above it they rise by
   a fixed step per 50 mastery.
 - `15690`, `15691` and `15692` in the Alchemy rows are not the extra items:
   item 15690 is "Glorious Crystal of Gallantry - Ah'krad", 15691 the Olucas
   crystal and 15692 "Resplendent Medal of Honor". They are not
-  `itemsubgroup.dbss` keys and do not occur as u32 in `itemmaingroup.bss`.
+  `itemsubgroup.dbss` keys, and `itemmaingroup.bss` holds none of them as a
+  u32 or u16 at any byte offset, nor as ASCII digits (client 3464).
 - bdo-data-extractor (`FORMATS.md`, "Life-skill mastery and level-effect
-  tables") lists the six shapes and the `1,000,000` = 100% scale without
-  naming columns.
+  tables") lists the eight shapes and the `1,000,000` = 100% scale, and calls
+  the gathering pairs dropRate / quantityRate and the processing fields
+  procRate / batchSize. The names here come from the client Lua instead.
 
 ## Open Questions
 
@@ -232,3 +362,16 @@ and rare extra item groups, but no decoded table holds them.
 The enum names the four values from `+0x1C`, but they hold mastery / 50 like
 `unknown_04`, not a rate, and no UI reads them. Whether sailing mastery
 changes cannon stats is not shown anywhere in the client.
+
+### The Processing Rate `unknown_04`
+
+`unknown_04` in `manufacturingstat.bss` is 1 - 10 / batches, scaled to
+1,000,000. It could be the share of processing time a mass process saves
+over ten single runs, but no Lua or tooltip reads it.
+
+### The Gathering Groups 8 To 18 And The Fourth Pair
+
+`collectingstatdata.bss` ends with eleven empty groups after Mining. The
+tool types after Pickax in `CppEnums.CollectToolTypeName` (Tweezers, Pray,
+MagnifyingLens, MassStone, FishingChair, Whip, Oar, Reserve) are eight, not
+eleven. The constant fourth pair (`unknown_1c`, `unknown_20`) has no reader.

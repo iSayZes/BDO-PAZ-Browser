@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "title": "Title",
+    "skillId": "Skill ID",
+    "skill": "Skill"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} weather actors · {skills} with a skill"
+  }
+}

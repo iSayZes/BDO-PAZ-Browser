@@ -6,6 +6,7 @@
     "description": "Description",
     "maxLevel": "Niveau max.",
     "enchantKey": "Clé d'optimisation",
+    "enhancementType": "Type d'optimisation",
     "requiredLevel": "Niv. requis",
     "classes": "Classes",
     "binding": "Liaison",

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "enhancementType": "Tipo de refuerzo",
+    "level": "Nivel",
+    "agrisCount": "Esencia de Agris",
+    "items": "Objetos"
+  },
+  "meta": {
+    "count": "{count} niveles · {types} tipos de refuerzo"
+  }
+}

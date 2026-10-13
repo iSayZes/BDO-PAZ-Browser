@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "count": "Nombre",
-    "status": "Statut"
-  },
-  "meta": {
-    "count": "Nombre dans l'en-tête : {count}"
-  }
-}

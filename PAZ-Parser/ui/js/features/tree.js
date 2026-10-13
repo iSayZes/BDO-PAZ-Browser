@@ -86,6 +86,7 @@ export const treeMethods = {
     li.className = `tree-node tree-${item.type}`;
     li.dataset.id = item.id;
     li.dataset.icon = item.icon;
+    li.classList.toggle("supported", item.supported === true);
     // A rebuilt tree (settings saved, folder expanded again) keeps the selection marked.
     if (item.id === this._selectedPath) li.classList.add("selected");
 

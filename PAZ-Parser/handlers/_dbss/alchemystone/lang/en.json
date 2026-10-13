@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "stoneType": "Alchemy Stone",
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item"
+  },
+  "stoneTypes": {
+    "0": "Destruction",
+    "1": "Protection",
+    "2": "Life",
+    "6": "Vell's Heart",
+    "7": "Vell's Heart"
+  },
+  "offsetColumns": {
+    "stoneType": "Stone Type",
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} materials · {types} stone types"
+  }
+}

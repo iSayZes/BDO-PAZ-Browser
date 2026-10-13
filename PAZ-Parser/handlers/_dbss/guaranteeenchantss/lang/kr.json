@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "enhancementType": "강화 유형",
+    "level": "단계",
+    "agrisCount": "아그리스의 정수",
+    "items": "아이템"
+  },
+  "meta": {
+    "count": "단계 {count}개 · 강화 유형 {types}개"
+  }
+}

@@ -2,12 +2,19 @@
 ICE block cipher, ported from kukdh1/PAZ-Unpacker Crypt.cpp.
 
 Only the decrypt path is needed for PAZ extraction; encrypt is included for
-completeness. The rounds run on numpy arrays, all blocks at once.
+completeness. The key schedule and S-boxes are built here. The rounds run in
+`_bdo_native.ice_crypt` (Rust) when it is installed, else on numpy arrays,
+all blocks at once (`crypt_blocks_numpy`, the reference). The two must return
+the same bytes (`tests/test_payload_decode.py`).
 """
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import numpy as np
 import numpy.typing as npt
+
+from . import native_backend
 
 # ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -94,6 +101,8 @@ Words = npt.NDArray[np.uint32]
 
 _SBOX: list[list[int]] = _build_sbox()
 _S0, _S1, _S2, _S3 = (np.array(column, dtype=np.uint32) for column in _SBOX)
+# The four S-boxes as `_bdo_native.ice_crypt` takes them: 4096 little-endian u32.
+_SBOX_BYTES: bytes = np.concatenate([_S0, _S1, _S2, _S3]).astype("<u4").tobytes()
 
 
 # ── Block loop ────────────────────────────────────────────────────────────────
@@ -102,9 +111,11 @@ _S0, _S1, _S2, _S3 = (np.array(column, dtype=np.uint32) for column in _SBOX)
 _BLOCK_HALF = np.dtype(">u4")
 
 Subkey = tuple[int, int, int]
+# (data, subkeys in round order) -> every 8-byte block run through the rounds.
+Crypt = Callable[[bytes, tuple[Subkey, ...]], bytes]
 
 
-def _crypt_blocks(data: bytes, subkeys: tuple[Subkey, ...]) -> bytes:
+def crypt_blocks_numpy(data: bytes, subkeys: tuple[Subkey, ...]) -> bytes:
     """Run the ICE Feistel rounds over every 8-byte block of `data`.
 
     Encrypt and decrypt differ only in the order of `subkeys`. Blocks do not
@@ -132,6 +143,15 @@ def _crypt_blocks(data: bytes, subkeys: tuple[Subkey, ...]) -> bytes:
     out[0::2] = right
     out[1::2] = left
     return out.tobytes()
+
+
+def _crypt_blocks_native(data: bytes, subkeys: tuple[Subkey, ...]) -> bytes:
+    assert native_backend.ICE_CRYPT is not None
+    return native_backend.ICE_CRYPT(data, subkeys, _SBOX_BYTES)
+
+
+NATIVE_CRYPT: Crypt | None = _crypt_blocks_native if native_backend.ICE_CRYPT is not None else None
+CRYPT: Crypt = NATIVE_CRYPT or crypt_blocks_numpy
 
 
 # ── Key schedule ──────────────────────────────────────────────────────────────
@@ -192,13 +212,14 @@ class IceCipher:
         self._encrypt_subkeys: tuple[Subkey, ...] = tuple((sk[0], sk[1], sk[2]) for sk in keysched)
         self._decrypt_subkeys: tuple[Subkey, ...] = self._encrypt_subkeys[::-1]
 
-    def decrypt(self, data: bytes) -> bytes:
+    def decrypt(self, data: bytes, crypt: Crypt | None = None) -> bytes:
+        """`crypt`: the backend, `CRYPT` when None; the parity tests pass each one."""
         _check_block_size(data)
-        return _crypt_blocks(data, self._decrypt_subkeys)
+        return (crypt or CRYPT)(data, self._decrypt_subkeys)
 
-    def encrypt(self, data: bytes) -> bytes:
+    def encrypt(self, data: bytes, crypt: Crypt | None = None) -> bytes:
         _check_block_size(data)
-        return _crypt_blocks(data, self._encrypt_subkeys)
+        return (crypt or CRYPT)(data, self._encrypt_subkeys)
 
 
 def _check_block_size(data: bytes) -> None:

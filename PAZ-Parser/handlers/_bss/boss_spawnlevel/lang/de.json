@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossKey": "Boss-Schlüssel",
+    "level": "Stufe",
+    "image": "Bild",
+    "boss": "Boss",
+    "reward": "Belohnung"
+  },
+  "meta": {
+    "count": "{count} Stufen · {bosses} Gildenbosse"
+  }
+}

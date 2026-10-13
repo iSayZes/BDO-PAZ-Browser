@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "order": "Orden",
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "stone": "Piedra"
+  },
+  "meta": {
+    "count": "{count} piedras de mejora mostradas por defecto"
+  }
+}

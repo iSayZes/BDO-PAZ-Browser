@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "boss": "Boss",
+    "levels": "Stufen",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "range": "Reichweite"
+  },
+  "meta": {
+    "count": "{count} Gildenbosse"
+  }
+}

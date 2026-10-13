@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "npc": "PNJ",
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "category": "Catégorie"
+  },
+  "offsetColumns": {
+    "characterId": "ID du personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} objets · {npcs} PNJ de commerce"
+  }
+}

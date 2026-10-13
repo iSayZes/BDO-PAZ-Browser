@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "키",
+    "result": "결과",
+    "input": "장비",
+    "group": "그룹",
+    "stones": "개량석",
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "stone": "개량석",
+    "category": "구분",
+    "defaultDisplay": "기본 표시"
+  },
+  "offsetColumns": {
+    "key": "키",
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "개량 항목 {count}개",
+    "stones": "개량석 {count}개"
+  }
+}

@@ -43,6 +43,11 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r PAZ-Parser/requirements-dev.txt
 
+      # The runner has Rust; the tests then check _bdo_native against the
+      # Python and numpy decoders.
+      - name: Build the native decoders
+        run: python -m pip install ./PAZ-Parser/native
+
       - name: Pyright
         run: python -m pyright
 

@@ -10,10 +10,10 @@ import pytest
 import api.bdo_api as bdo_api
 import api.bdo_config as bdo_config
 from api.bdo_api import Api
-from api.bdo_api_helpers import _file_icon
+from api.bdo_api_helpers import _ICON_MAP, file_row_fields
 from api.bdo_tree import build_tree
 from bdo_models import PazEntry
-from bdo_preview import is_handled_file
+from bdo_preview import get_builtin_formats, is_handled_file
 
 _HANDLED_TABLE = "gamecommondata/binary/buff.dbss"
 _HANDLED_WAYPOINT = "gamecommondata/waypoint_binary/patrol.bwp"
@@ -80,7 +80,7 @@ def test_setting_off_shows_every_file() -> None:
     api = _api(handled_only=False)
 
     assert _ids(api.get_children("")) == {"gamecommondata", "ui_texture"}
-    assert _ids(api.search("*")) == set(_PATHS)
+    assert _ids(api.search("*")["items"]) == set(_PATHS)
 
 
 def test_setting_on_hides_unhandled_files_and_empty_folders() -> None:
@@ -104,7 +104,7 @@ def test_setting_on_counts_only_handled_files() -> None:
 def test_setting_on_limits_file_search() -> None:
     api = _api(handled_only=True)
 
-    assert _ids(api.search("*")) == {_HANDLED_TABLE, _HANDLED_WAYPOINT}
+    assert _ids(api.search("*")["items"]) == {_HANDLED_TABLE, _HANDLED_WAYPOINT}
 
 
 def test_disk_loc_stays_at_root() -> None:
@@ -118,7 +118,7 @@ def test_hidden_companion_still_loads(monkeypatch: pytest.MonkeyPatch) -> None:
     api = _api(handled_only=True)
     monkeypatch.setattr(bdo_api, "cached_read_entry_payload", lambda archive_path, entry: b"x")
 
-    assert _UNHANDLED_TABLE not in _ids(api.search("*"))
+    assert _UNHANDLED_TABLE not in _ids(api.search("*")["items"])
     assert api._load_companion_sync(_UNHANDLED_TABLE) == b"x"
 
 
@@ -181,15 +181,21 @@ def test_save_settings_stores_and_applies_setting(
 
 
 @pytest.mark.parametrize(
-    ("path", "icon"),
+    ("path", "icon", "supported"),
     [
-        (_HANDLED_TABLE, "parsed"),
-        (_HANDLED_WAYPOINT, "parsed"),
-        (_UNHANDLED_TABLE, "file"),
-        (_TEXTURE, "image"),
-        ("languagedata_en.loc", "loc"),
-        ("character/no_extension", "file"),
+        (_HANDLED_TABLE, "parsed", True),
+        (_HANDLED_WAYPOINT, "parsed", True),
+        (_UNHANDLED_TABLE, "file", False),
+        (_TEXTURE, "image", True),
+        ("ui/style.css", "code", True),
+        ("character/model.pac", "archive", False),
+        ("languagedata_en.loc", "loc", True),
+        ("character/no_extension", "file", False),
     ],
 )
-def test_tree_icon_follows_the_handler_registry(path: str, icon: str) -> None:
-    assert _file_icon(Path(path).name) == icon
+def test_tree_icon_follows_the_handler_registry(path: str, icon: str, supported: bool) -> None:
+    assert file_row_fields(Path(path).name) == {"icon": icon, "supported": supported}
+
+
+def test_every_builtin_view_has_a_tree_icon() -> None:
+    assert set(get_builtin_formats()) - _ICON_MAP.keys() == set()

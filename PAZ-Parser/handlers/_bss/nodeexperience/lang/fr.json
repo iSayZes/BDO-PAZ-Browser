@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "Niveau du géopoint",
+    "exp": "EXP pour le prochain niveau",
+    "energy": "Énergie pour le prochain niveau"
+  },
+  "meta": {
+    "count": "{count} niveaux"
+  }
+}

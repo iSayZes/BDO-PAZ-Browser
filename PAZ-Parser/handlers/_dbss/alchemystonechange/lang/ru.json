@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "material": "Материал",
+    "condition": "Условие",
+    "resultId": "ID результата",
+    "result": "Результат"
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Рецептов роста: {count} · материалов: {materials}"
+  }
+}

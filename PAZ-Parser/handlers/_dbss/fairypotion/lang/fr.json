@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "potionType": "Type de potion",
+    "resource": "Ressource",
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet"
+  },
+  "resources": {
+    "0": "PV",
+    "1": "PM",
+    "2": "PF",
+    "3": "PS"
+  },
+  "offsetColumns": {
+    "potionType": "Type de potion",
+    "dataOffset": "Décalage des données",
+    "dataSize": "Taille des données"
+  },
+  "meta": {
+    "count": "{count} potions de fée dans {lists} listes"
+  }
+}

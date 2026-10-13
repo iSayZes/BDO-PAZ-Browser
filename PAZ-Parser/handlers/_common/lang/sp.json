@@ -1,5 +1,11 @@
 {
+  "emptyColumns": {
+    "count": "Cantidad",
+    "status": "Estado"
+  },
   "meta": {
-    "offsetRecords": "{count} entradas de desplazamiento"
+    "offsetRecords": "{count} entradas de desplazamiento",
+    "headerCount": "Cantidad en la cabecera: {count}",
+    "noRecords": "Sin registros"
   }
 }

@@ -31,6 +31,7 @@ def environment_differences(old: BenchResult, new: BenchResult) -> list[str]:
         ("power plan", old.machine.power_plan, new.machine.power_plan),
         ("OS", old.machine.os, new.machine.os),
         ("Python", old.machine.python, new.machine.python),
+        ("decoders", old.machine.decoders or "unknown", new.machine.decoders or "unknown"),
         ("pinned CPU", old.pin.cpu, new.pin.cpu),
         ("high priority", old.pin.is_high_priority, new.pin.is_high_priority),
         ("fixture", old.fixture.name, new.fixture.name),

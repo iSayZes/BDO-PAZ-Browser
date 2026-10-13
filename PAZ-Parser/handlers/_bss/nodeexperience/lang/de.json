@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "Postenstufe",
+    "exp": "EP bis zur nächsten Stufe",
+    "energy": "Energie bis zur nächsten Stufe"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

@@ -36,6 +36,7 @@ def _result(**changes: object) -> BenchResult:
             python="CPython 3.12.0",
             git_commit="0123456789abcdef",
             is_git_dirty=False,
+            decoders="native",
         ),
         pin=PinState(cpu=2, efficiency_class=1, top_efficiency_class=1, is_high_priority=True),
         fixture=FixtureInfo(name="pad00001.paz", files=3, stored_bytes=100, size_bytes=300, sha256="ab" * 32),
@@ -92,6 +93,20 @@ def test_another_schema_version_is_refused() -> None:
 
     with pytest.raises(ValueError, match="schema"):
         result_from_json(data)
+
+
+def test_a_schema_1_result_reads_without_decoders() -> None:
+    data = result_to_json(_result())
+    data["schema"] = 1
+    del data["machine"]["decoders"]
+
+    assert result_from_json(data).machine.decoders is None
+
+
+def test_comparing_python_and_native_decoders_names_the_difference() -> None:
+    python = _result(machine=replace(_result().machine, decoders="python"))
+
+    assert "decoders: python -> native" in environment_differences(python, _result())
 
 
 def test_stage_times_must_be_non_negative_numbers() -> None:

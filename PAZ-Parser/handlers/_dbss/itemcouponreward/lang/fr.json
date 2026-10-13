@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offset": "Décalage",
+    "field": "Champ",
+    "value": "Valeur"
+  },
+  "meta": {
+    "words": "{count} mots u32"
+  }
+}

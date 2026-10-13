@@ -52,7 +52,8 @@
   text-align: left;
   border-bottom: 1px solid var(--color-line);
   position: sticky;
-  top: 0;
+  /* Flush with the scroll edge of #preview-content, over its top padding. */
+  top: calc(-1 * var(--preview-content-pad-top, 0px));
   z-index: 1;
 }
 

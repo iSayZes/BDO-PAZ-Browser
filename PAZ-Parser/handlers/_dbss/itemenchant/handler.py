@@ -56,6 +56,8 @@ def _with_links(record: dict, values: dict[str, str], classes: str) -> dict:
         # None sorts last and exports empty.
         "required_level": record["required_level"] if record["required_level"] > _NO_LEVEL_LIMIT else None,
         "classes": classes,
+        # 0 means "cannot be enhanced"; None sorts last and exports empty.
+        "enhancement_type": record["enhancement_type"] or None,
         "binding": binding_label(record["vested_type"], record["family_bound"], values),
         "trade": trade_label(record["trade_type"], values),
         # In its grade colour, as the game draws item names; Korean when LOC has no row.
@@ -106,6 +108,7 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["description"], sort_key="description"),
             Column(cols["maxLevel"], "num", sort_key="max_enchant_level"),
             Column(cols["enchantKey"], "num", sort_key="enchant_key"),
+            Column(cols["enhancementType"], "num", sort_key="enhancement_type"),
             Column(cols["requiredLevel"], "num", sort_key="required_level"),
             Column(cols["classes"], sort_key="classes"),
             Column(cols["binding"], sort_key="binding"),
@@ -168,6 +171,7 @@ class ItemEnchantHandler(PreviewHandler):
                 pa_line_cell(record, "description"),
                 e(record["max_enchant_level"]),
                 _optional_cell(record["enchant_key"]),
+                _optional_cell(record["enhancement_type"]),
                 _optional_cell(record["required_level"]),
                 e(record["classes"] or _EMPTY),
                 e(record["binding"] or _EMPTY),

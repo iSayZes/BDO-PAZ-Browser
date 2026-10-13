@@ -13,8 +13,11 @@ from .machine import Machine
 from .pinning import PinState
 from .timing import StageTiming
 
-# Bumped when a field changes meaning; older files are then refused.
-SCHEMA_VERSION = 1
+# Bumped when a field changes meaning or is added. Schema 1 files still read,
+# without `machine.decoders`; other versions are refused.
+SCHEMA_VERSION = 2
+_DECODERS_SCHEMA = 2
+_READABLE_SCHEMAS = (1, SCHEMA_VERSION)
 
 
 @dataclass(frozen=True)
@@ -92,8 +95,8 @@ def result_from_json(data: object) -> BenchResult:
     """Raises ValueError naming the first missing or mistyped field."""
     root = _Fields(data, "result")
     schema = root.integer("schema")
-    if schema != SCHEMA_VERSION:
-        raise ValueError(f"schema {schema}, this benchmark reads schema {SCHEMA_VERSION}")
+    if schema not in _READABLE_SCHEMAS:
+        raise ValueError(f"schema {schema}, this benchmark reads schema {' and '.join(map(str, _READABLE_SCHEMAS))}")
 
     machine = root.child("machine")
     pin = root.child("pin")
@@ -110,6 +113,7 @@ def result_from_json(data: object) -> BenchResult:
             python=machine.text("python"),
             git_commit=machine.optional_text("git_commit"),
             is_git_dirty=machine.optional_flag("is_git_dirty"),
+            decoders=machine.optional_text("decoders") if schema >= _DECODERS_SCHEMA else None,
         ),
         pin=PinState(
             cpu=pin.optional_integer("cpu"),

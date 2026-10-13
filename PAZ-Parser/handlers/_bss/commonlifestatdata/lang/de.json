@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "Stufe",
+    "rank": "Rang",
+    "mastery": "Meisterung"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

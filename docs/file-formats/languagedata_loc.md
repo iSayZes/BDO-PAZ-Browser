@@ -525,7 +525,8 @@ code. Type 71 keeps `12` in `str_id3` too.
 
 Type 52 holds 448 rows over 93 IDs. `str_id1` is the `skillpiece.dbss`
 record key (87 of the 93 IDs; 89 are also skill numbers in `skill.dbss`).
-`str_id2` is the tier's `apply` value and `str_id4` selects the string:
+`str_id2` is the tier's `level` and `str_id4` selects the string; see
+[`skillpiece.dbss`](skillpiece_dbss.md):
 
 | str_id4 | Meaning                   | Example                          |
 | ------- | ------------------------- | -------------------------------- |

@@ -206,7 +206,7 @@ export const mapViewMethods = {
   // markers are made again once they are.
   async _loadMapPins() {
     try {
-      this._mapPins = await window.pywebview.api.get_map_pins();
+      this._setMapPins(await window.pywebview.api.get_map_pins());
     } catch {
       // The pushes keep the list current from here on.
     }

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "icon": "Значок",
+    "name": "Имя",
+    "tab": "Вкладка",
+    "reinforcedId": "ID усиленного",
+    "reinforcedName": "Усиленный босс",
+    "rewards": "Основные награды",
+    "spawnTimes": "Время появления",
+    "position": "Позиция"
+  },
+  "meta": {
+    "count": "Боссов: {count}"
+  }
+}

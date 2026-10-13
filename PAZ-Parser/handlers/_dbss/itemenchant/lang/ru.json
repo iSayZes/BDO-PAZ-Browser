@@ -6,6 +6,7 @@
     "description": "Описание",
     "maxLevel": "Макс. ур.",
     "enchantKey": "Ключ усиления",
+    "enhancementType": "Тип усиления",
     "requiredLevel": "Треб. ур.",
     "classes": "Классы",
     "binding": "Привязка",

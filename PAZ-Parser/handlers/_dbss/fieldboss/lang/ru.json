@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "title": "Титул"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "byteOffset": "Смещение (байт)",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Персонажей: {count}"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "result": "Результат",
+    "input": "Снаряжение",
+    "group": "Группа",
+    "stones": "Камни",
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "stone": "Камень",
+    "category": "Категория",
+    "defaultDisplay": "Показ по умолчанию"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Записей улучшения: {count}",
+    "stones": "Камней улучшения: {count}"
+  }
+}

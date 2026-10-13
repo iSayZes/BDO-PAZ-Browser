@@ -7,9 +7,13 @@ place, so a stopped or failed build never leaves half a map behind.
 tiles under it.
 
 The tiles are made in a process pool. Reading a radar image is ICE decryption
-and `bdo_decompress` in Python, which threads cannot run in parallel: on client
-3464, 8 processes read and decode the 27,691 radar images in 5.8 s, one
-process in 34 s and 8 threads in 59 s.
+and `bdo_decompress`; with the Python decoders threads cannot run them in
+parallel: on client 3464, 8 processes read and decode the 27,691 radar images
+in 5.8 s, one process in 34 s and 8 threads in 59 s. `_bdo_native` decodes
+without holding the GIL, and threads still lose: a radar image is 128x128
+pixels, and each step of a tile (read, DDS open, convert, JPEG save) takes 10
+to 60 µs, mostly Python and Pillow call overhead under the GIL. On client 3464
+with `_bdo_native`, zoom 7 takes 2.4 s on 8 processes and 8.6 s on 8 threads.
 """
 
 from __future__ import annotations

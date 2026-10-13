@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "potionType": "Trank-Typ",
+    "resource": "Ressource",
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand"
+  },
+  "resources": {
+    "0": "LP",
+    "1": "MP",
+    "2": "WP",
+    "3": "KP"
+  },
+  "offsetColumns": {
+    "potionType": "Trank-Typ",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "meta": {
+    "count": "{count} Feen-Tränke in {lists} Listen"
+  }
+}

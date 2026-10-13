@@ -270,7 +270,7 @@
     "reloadSourceOnly": "Handler neu laden geht nur beim Start aus dem Quellcode.",
     "updateDownloading": "Lade v{version} herunter: {mb} MB",
     "updateInstalling": "Installiere v{version}, die App startet neu…",
-    "found": "{cap}Dateien passend zu \"{query}\" gefunden",
+    "found": "{count} Dateien passend zu \"{query}\" gefunden",
     "copiedRow": "Ausgewählte Zeile kopiert.",
     "searchError": "Suchfehler: {message}",
     "pageError": "Seite konnte nicht geladen werden: {message}",

@@ -60,6 +60,12 @@ _OBSIDIAN_BLACKSTAR_ARMOR = 732052
 _PUMPKIN_GHOST_SEED = 55725
 _APPRENTICES_MEDICINE_BOX = 9866
 _ARSHA_PURGATUM_180_DAYS = 830533
+# Enhancement types (itemenchant_dbss.md, After the Icon): ordinary weapons and
+# armour 1, Blackstar 2, Kharazad 21.
+_ORDINARY_GEAR = 1
+_BLACKSTAR_LONGSWORD = 715001
+_BLACKSTAR = 2
+_KHARAZAD = 21
 
 
 def _base_item_count(offsets: bytes) -> int:
@@ -96,6 +102,7 @@ CASE = HandlerCase(
                 "name_kr",
                 "max_enchant_level",
                 "enchant_key",
+                "enhancement_type",
                 "required_level",
                 "class_mask",
                 "classes",
@@ -215,6 +222,12 @@ CASE = HandlerCase(
                 "dyeable": True,
             },
         ),
+        # The enhancement type is the guaranteeenchantss.dbss group; None
+        # (sorts last) on items that cannot be enhanced.
+        TargetTest(col="item_id", value=_KZARKA_GAUNTLET, expected={"enhancement_type": _ORDINARY_GEAR}),
+        TargetTest(col="item_id", value=_BLACKSTAR_LONGSWORD, expected={"enhancement_type": _BLACKSTAR}),
+        TargetTest(col="item_id", value=_KHARAZAD_NECKLACE, expected={"enhancement_type": _KHARAZAD}),
+        TargetTest(col="item_id", value=_BALACS_LUNCHBOX, expected={"enhancement_type": None}),
         TargetTest(
             col="item_id",
             value=_DANDELION_KAMASYLVEN_SWORD,
@@ -301,6 +314,36 @@ def test_enchant_key_item_index_matches_the_enchant_key_column(itemenchant_resul
 
     assert index == {key: tuple(sorted(items)) for key, items in expected.items()}
     assert _KZARKA_GAUNTLET in index[_KZARKA_GAUNTLET_ENCHANT_KEY]
+
+
+def test_enhancement_type_item_index_matches_the_enhancement_type_column(
+    itemenchant_result: HandlerResult,
+) -> None:
+    """IndexKind.ENHANCEMENT_TYPE_ITEMS is this table's Enhancement Type column turned around."""
+    from _dbss.itemenchant.parser import build_enhancement_type_item_index
+
+    source = itemenchant_result.source
+    index = build_enhancement_type_item_index(source.data, source.file(_OFFSET_FILE))
+    expected: dict[int, list[int]] = {}
+    for record in itemenchant_result.records:
+        if record["enhancement_type"]:
+            expected.setdefault(record["enhancement_type"], []).append(record["item_id"])
+
+    assert index == {key: tuple(sorted(items)) for key, items in expected.items()}
+    assert _BLACKSTAR_LONGSWORD in index[_BLACKSTAR]
+
+
+def test_itemmaxlevel_holds_the_max_level_of_every_item_with_an_enchant_key(
+    itemenchant_result: HandlerResult,
+) -> None:
+    """itemmaxlevel.dbss is this table's Max Level column, for the items with enhancement data."""
+    from _dbss.itemmaxlevel.parser import FILE_NAME as MAX_LEVEL_FILE, parse_itemmaxlevel_records
+    from tests.fixtures import load_binary_fixture
+
+    max_levels = parse_itemmaxlevel_records(load_binary_fixture(MAX_LEVEL_FILE))
+    expected = {r["item_id"]: r["max_enchant_level"] for r in itemenchant_result.records if r["enchant_key"]}
+
+    assert {r["item_id"]: r["max_enchant_level"] for r in max_levels} == expected
 
 
 def test_build_item_icon_index_covers_the_furniture_case() -> None:

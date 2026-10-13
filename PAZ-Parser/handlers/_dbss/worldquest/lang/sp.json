@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "count": "Cantidad",
-    "status": "Estado"
-  },
-  "meta": {
-    "count": "Cantidad en la cabecera: {count}"
-  }
-}

@@ -70,11 +70,14 @@
   justify-content: space-between;
 }
 
+/* The top padding is a variable so sticky table headers can rise over it:
+   a sticky `top: 0` stops at the padding edge, and rows would show above it. */
 #preview-content {
+  --preview-content-pad-top: 12px;
   flex: 1;
   overflow: auto;
   min-height: 0;
-  padding: 12px 16px;
+  padding: var(--preview-content-pad-top) 16px 12px;
   user-select: text;
 }
 

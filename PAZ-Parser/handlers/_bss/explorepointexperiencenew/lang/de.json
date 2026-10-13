@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "points": "Beitragspunkte",
+    "exp": "Beitrag-EP bis zum nächsten Punkt"
+  },
+  "meta": {
+    "count": "{count} Zeilen"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Niveau",
+    "rank": "Rang",
+    "skillRate": "Chance d'apprendre une compétence",
+    "speedRate": "Chance de stats de déplacement plus élevées"
+  },
+  "meta": {
+    "count": "{count} niveaux"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "potionType": "물약 종류",
+    "resource": "자원",
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템"
+  },
+  "resources": {
+    "0": "생명력",
+    "1": "정신력",
+    "2": "투지",
+    "3": "신성력"
+  },
+  "offsetColumns": {
+    "potionType": "물약 종류",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "meta": {
+    "count": "요정 물약 {count}개 · 목록 {lists}개"
+  }
+}

@@ -75,8 +75,8 @@ not in this table is 0 in every body on client 3464.
 
 | Offset  | Type   | Field      | Notes                                                 |
 | ------- | ------ | ---------- | ----------------------------------------------------- |
-| `+0x04` | f32    | unknown_04 | Always `1.0`                                          |
-| `+0x08` | u32    | unknown_08 | Always `1`                                            |
+| `+0x04` | f32    | max_hp     | Always `1.0` here; mount HP in `servantexperience.dbss` |
+| `+0x08` | u32    | max_mp     | Always `1` here; mount stamina in `servantexperience.dbss` |
 | `+0x20` | f32    | unknown_20 | Always `1.0`                                          |
 | `+0x3C` | u32[3] | unknown_3c | `0, 0, 0` at level 0, `5, 5, 5` from level 1          |
 | `+0x50` | f32    | unknown_50 | Always `1.0`                                          |
@@ -112,6 +112,17 @@ from 0 to 1.
 - Each row of [hardcorecharacterstatstaticstatus.bss](hardcorecharacterstatstaticstatus_bss.md)
   holds a stat body; on client 3464 every one equals the level 60 body here.
 - The stat body is `_bss/experience/stat_body.py`, which both handlers import.
+- On client 3464 two more files carry the same 200-byte body:
+  `characterstatic.dbss` (15,064 bodies found by its four `1.0` floats) and
+  every record of [servantexperience.dbss](servantexperience_dbss.md), where
+  the body starts at record `+0x0A` and holds the mount's max HP (`+0x04`),
+  max stamina (`+0x08`) and max weight (`+0x48`, LT x 10,000), checked
+  against the stable window. Both hold `5, 5, 5` at `+0x3C` and
+  `10, 10, 10` at `+0x64`. `characterstatic.dbss` also sets the u32 at
+  `+0x48`, max weight, which is 0 here: `1` on 13,629 bodies, `100000` on 1,177, `0` on
+  254 and `10000000` on 4. `servantexperience.dbss` keeps three inline `1D1`
+  strings at body `+0xA0`, the place of this file's string fields (The `1D1`
+  String).
 - bdo-data-extractor describes 228-byte records with 20 reserved bytes and the
   stat body at `+0x1C`. On client 3464 the reserved run is 28 bytes and the
   records are 236 bytes; with 228 the groups do not end before the string
@@ -119,21 +130,38 @@ from 0 to 1.
   `+0x78`) are `ap_bonus` and `dp_bonus` here.
 - The level-up window gets HP, MP, stun and weight gains from the same event
   (`hp, mp, stun, weight, lvdd, lvpv`), but no field of this file changes
-  with them.
+  with them. `max_hp` and `max_mp` hold `1.0` and `1` on every level, the
+  level 0 placeholders of `servantexperience.dbss`, so player HP and MP come
+  from another table.
 
 ## Open Questions
 
 ### The Constant Fields
 
-`unknown_04`, `unknown_08`, `unknown_20`, `unknown_50` and `unknown_70` hold
+`unknown_20`, `unknown_50` and `unknown_70` hold
 the same value in every record, and `unknown_3c` and `unknown_64` only change
 between level 0 and level 1, so the data gives nothing to tell them apart.
 bdo-data-extractor links the two `5, 5, 5` triads to attack and defence growth
 without naming a stat.
+
+The client Lua points to speed ranks. `FromClient_CharInfoBasic_All_PotentialUpdate`
+in `panel_characterinfo_basic_all_3.lua` reads three speed indexes, `0`
+movement, `1` attack and `1 + _battleSpeed` casting, caps
+`characterStatPointSpeed(i)` at `characterStatPointLimitedSpeed(i)` and shows
+the result minus 5. A character with no speed gear shows `0`, so its base rank
+is 5, the value of `unknown_3c` in every body of the four files that carry it
+(see Notes). `unknown_64` would then be the rank limit: `10` (base 5 plus the
+`+5` the window draws) in `characterstatic.dbss` and `servantexperience.dbss`,
+but `5` here, which would hold a player at `+0`. With all three values equal
+in every body, the data cannot confirm the reading or the movement, attack,
+casting order.
 
 ### The `1D1` String
 
 The string table holds the dice expression `1D1`, in the form of the
 `employeeexp.bss` growth dice (`1D5+30`). String index 0 is that string, so
 any of the always-0 u32 fields could be an index to it; no field holds a
-nonzero index.
+nonzero index. [servantexperience.dbss](servantexperience_dbss.md) points
+to body `+0xA0`, `+0xA8` and `+0xB0`: its records store three inline `1D1`
+strings, each followed by a 0 u32, from the matching place in the body. The
+use of the dice stays open.

@@ -1,0 +1,9 @@
+[build-system]
+requires = ["maturin>=1.15,<2"]
+build-backend = "maturin"
+
+[project]
+name = "bdo-native"
+description = "Compiled BDO payload decoders (decompression, ICE) for BDO PAZ Browser"
+requires-python = ">=3.12"
+dynamic = ["version"]

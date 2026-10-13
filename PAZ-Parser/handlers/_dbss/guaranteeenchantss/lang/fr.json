@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "enhancementType": "Type d'optimisation",
+    "level": "Niveau",
+    "agrisCount": "Essence d'Agris",
+    "items": "Objets"
+  },
+  "meta": {
+    "count": "{count} niveaux · {types} types d'optimisation"
+  }
+}

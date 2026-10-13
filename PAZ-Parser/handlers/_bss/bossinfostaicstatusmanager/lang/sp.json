@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "icon": "Icono",
+    "name": "Nombre",
+    "tab": "Pestaña",
+    "reinforcedId": "ID reforzado",
+    "reinforcedName": "Nombre reforzado",
+    "rewards": "Recompensas principales",
+    "spawnTimes": "Horas de aparición",
+    "position": "Posición"
+  },
+  "meta": {
+    "count": "{count} jefes"
+  }
+}

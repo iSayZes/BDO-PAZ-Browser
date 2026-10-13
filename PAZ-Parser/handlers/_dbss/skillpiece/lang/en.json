@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillId": "Skill ID",
+    "set": "Set Effect",
+    "points": "Points",
+    "level": "Level",
+    "requires": "Requires",
+    "effect": "Effect",
+    "buffs": "Buffs"
+  },
+  "offsetColumns": {
+    "skillId": "Skill ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} set effect tiers · {sets} set skills"
+  }
+}

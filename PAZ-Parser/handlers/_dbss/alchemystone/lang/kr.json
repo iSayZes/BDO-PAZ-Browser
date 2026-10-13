@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "stoneType": "연금석",
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템"
+  },
+  "stoneTypes": {
+    "0": "파괴",
+    "1": "수호",
+    "2": "생명",
+    "6": "벨의 심장",
+    "7": "벨의 심장"
+  },
+  "offsetColumns": {
+    "stoneType": "연금석 종류",
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "재료 {count}개 · 연금석 종류 {types}개"
+  }
+}

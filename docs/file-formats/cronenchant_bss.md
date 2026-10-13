@@ -200,8 +200,5 @@ every sample; none does. The scans also catch the low byte of a u16 or u32,
 so the item side either stores other values that the client maps to these
 keys, or the client works the category out from other item fields. Grade
 plus gear type (main, awakening, sub-weapon, armor) would explain every
-sample except Dim Tree armor, which has a key of its own. The code behind
-`getCronKey()` is in `BlackDesert64.exe`, which is packed with
-Themida/WinLicense (encrypted sections, entropy 7.97 to 7.99), so it cannot
-be read on disk. Until the link is found, the table cannot list the items
+sample except Dim Tree armor, which has a key of its own. Until the link is found, the table cannot list the items
 per category.

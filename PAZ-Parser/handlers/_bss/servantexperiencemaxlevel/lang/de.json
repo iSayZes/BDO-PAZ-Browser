@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "maxLevel": "Höchststufe"
+  },
+  "meta": {
+    "count": "{count} Reittiere und Schiffe"
+  }
+}

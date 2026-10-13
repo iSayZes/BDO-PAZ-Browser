@@ -270,7 +270,7 @@
     "reloadSourceOnly": "Le rechargement des handlers n'est possible qu'en lançant depuis le code source.",
     "updateDownloading": "Téléchargement de v{version} : {mb} Mo",
     "updateInstalling": "Installation de v{version}, l'application redémarre…",
-    "found": "Trouvé {cap}fichiers correspondant à \"{query}\"",
+    "found": "Trouvé {count} fichiers correspondant à \"{query}\"",
     "copiedRow": "Ligne sélectionnée copiée.",
     "searchError": "Erreur de recherche : {message}",
     "pageError": "Impossible de charger la page : {message}",

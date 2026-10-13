@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "enchantLevel": "강화 단계",
+    "icon": "아이콘",
+    "item": "아이템"
+  },
+  "offsetColumns": {
+    "itemKey": "아이템 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "아이템 키 {count}개 · 아이템 {items}개"
+  }
+}

@@ -270,7 +270,7 @@
     "reloadSourceOnly": "Recargar handlers solo es posible al ejecutar desde el código fuente.",
     "updateDownloading": "Descargando v{version}: {mb} MB",
     "updateInstalling": "Instalando v{version}, la aplicación se reinicia…",
-    "found": "{cap}archivos encontrados que coinciden con \"{query}\"",
+    "found": "{count} archivos encontrados que coinciden con \"{query}\"",
     "copiedRow": "Fila seleccionada copiada.",
     "searchError": "Error de búsqueda: {message}",
     "pageError": "No se pudo cargar la página: {message}",

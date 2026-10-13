@@ -64,11 +64,13 @@
 .tree-node[data-icon="folder"] > .tree-label > .tree-icon {
   color: var(--color-accent);
 }
-.tree-node[data-icon="parsed"] > .tree-label > .tree-icon,
-.tree-node[data-icon="parsed"] > .tree-icon {
+/* A file with a preview other than the hex view (the API's `supported`). */
+.tree-node.supported > .tree-label > .tree-icon,
+.tree-node.supported > .tree-icon {
   color: var(--color-data);
 }
-.tree-node[data-icon="loc"] > .tree-label > .tree-icon {
+.tree-node[data-icon="loc"] > .tree-label > .tree-icon,
+.tree-node[data-icon="loc"] > .tree-icon {
   color: var(--color-loc);
 }
 
@@ -77,8 +79,8 @@
   text-overflow: ellipsis;
   color: var(--color-text);
 }
-/* A .bss or .dbss without a handler, or any file of an unknown kind. */
-.tree-node[data-icon="file"] > .tree-label .tree-name {
+/* A file that opens in the hex view only, such as a .bss or .dbss without a handler. */
+.tree-file:not(.supported) > .tree-label .tree-name {
   color: var(--color-text-2);
 }
 .tree-node.selected > .tree-label .tree-name {

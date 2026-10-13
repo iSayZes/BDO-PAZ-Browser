@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "maxLevel": "Nivel máx."
+  },
+  "offsetColumns": {
+    "itemId": "ID del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} objetos · {enhanceable} reforzables"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "material": "Material",
+    "condition": "Bedingung",
+    "resultId": "Ergebnis-ID",
+    "result": "Ergebnis"
+  },
+  "offsetColumns": {
+    "itemId": "Gegenstands-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Wachstumsrezepte · {materials} Materialien"
+  }
+}

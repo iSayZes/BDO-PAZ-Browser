@@ -5,7 +5,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, _file_icon, _norm
+from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, _norm, file_row_fields
 from .bdo_api_state import ApiState
 from paz.bdo_payload_reader import read_entry_payload
 from table_sort import positions_in_order
@@ -170,7 +170,7 @@ class SearchMixin(ApiState):
             "name":  Path(entry.internal_path).name,
             "count": len(offsets),
             "first": offsets[0],
-            "icon":  _file_icon(Path(entry.internal_path).name),
+            **file_row_fields(Path(entry.internal_path).name),
         }
 
     def _run_global_search(

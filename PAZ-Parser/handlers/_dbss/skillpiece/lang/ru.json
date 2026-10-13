@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillId": "ID навыка",
+    "set": "Эффект набора",
+    "points": "Очки",
+    "level": "Уровень",
+    "requires": "Требуется",
+    "effect": "Эффект",
+    "buffs": "Эффекты"
+  },
+  "offsetColumns": {
+    "skillId": "ID навыка",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Ступеней эффектов набора: {count} · навыков наборов: {sets}"
+  }
+}

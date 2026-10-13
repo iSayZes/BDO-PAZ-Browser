@@ -285,7 +285,7 @@ Needs zone (all):
 - Pit of the Undying (`950` or `1070`, type 7)
 - Battle Arena (`1072`, type 8)
 
-`CppEnums.RegionType` ends at Arena (6) with `_Count` = 7, but Pit of the Undying (950, 1070) has type 7 and one Battle Arena (1072) type 8. I searched all 3060 client Lua scripts: no `eRegionType_` value past Arena exists, and the only scripts that touch region types compare against `Siege`, `Fortress` and `MinorTown`. The game executable is packed, so its strings cannot be searched.
+`CppEnums.RegionType` ends at Arena (6) with `_Count` = 7, but Pit of the Undying (950, 1070) has type 7 and one Battle Arena (1072) type 8. I searched all 3060 client Lua scripts: no `eRegionType_` value past Arena exists, and the only scripts that touch region types compare against `Siege`, `Fortress` and `MinorTown`.
 
 What the client does have are region getters that fit the two types: `isPVEArenaZone` (used by the death message, game exit, manufacture and Morning Land boss panels) next to `isArenaZone` and `isArenaArea`. Pit of the Undying is a PvE arena, so type 7 is probably a PvE arena; `unknown_0d` (set on every type 6 arena and on 1072, not on Pit of the Undying) may be what `isArenaZone` reads. Type 8 is a third Battle Arena on Rema Island next to 436 and 437 (type 6); the only differences from 436 in the record are the type, the `unknown_02` colour and `unknown_tail_46` (437 also sets `unknown_0c`), so I cannot tell what sets it apart. Possibly the Battle Arena that Trial Characters are locked into.
 

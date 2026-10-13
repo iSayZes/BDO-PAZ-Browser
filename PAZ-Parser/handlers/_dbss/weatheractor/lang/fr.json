@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "title": "Titre",
+    "skillId": "ID de compétence",
+    "skill": "Compétence"
+  },
+  "offsetColumns": {
+    "characterId": "ID du personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} acteurs météo · {skills} avec une compétence"
+  }
+}

@@ -49,9 +49,9 @@ To run from source or write handlers, see [Requirements](#requirements).
 
 ## Features
 
-- Tree view of every file in the PAZ archives, with live name search, content search and a preview panel.
+- Tree view of every file in the PAZ archives, with live name search (every match, by folder, then file name, loaded 1,000 at a time as you scroll), content search and a preview panel.
 - A Map view next to Files in the toolbar: the world map in Leaflet, built from the client's radar images (`ui_texture/new_ui_common_forlua/widget/rader/minimap_data_pack/rader_X_Y.dds`, one 128 px image per 12,800-unit sector). The first open asks to build the map tiles into the cache folder: on client 3464, 9,802 JPEG tiles over zoom 1 to 7, 216 MB, 13 s with 8 worker processes. Sectors without a radar image, and 2,803 sectors of placeholder art listed in `world_map.py` (client 3464), get one of 12 open sea images picked at random. The map uses world units, so the readout under the cursor shows the game's X and Z.
-- The world map's nodes on the Map view: 1,074 nodes on client 3464, each with the game icon of its kind (32 px at every zoom) at its `mapdata_realexplore2.bwp` waypoint and its name as tooltip, and the graph's 1,230 links between them, drawn while both ends show, blue when an end is an open-sea node (Margoria, Ross Sea, Vadabin, Juur Sea) and orange on land (sub-nodes read `Velia - Bahar Investment Bank`). Main nodes show at every zoom, sub-nodes from zoom 6. A Filters panel has a node search (every match, at any zoom), Hide All, layer chips (Player, Markers) and a Nodes card with a toggle, icon and count per kind, a Links option and a shown / total badge. Only the node kinds start on; Player and Markers stay disabled until such a pin exists. The filter choices are saved in `paz_config.json` and come back on the next start.
+- The world map's nodes on the Map view: 1,074 nodes on client 3464, each with the game icon of its kind (32 px at every zoom) at its `mapdata_realexplore2.bwp` waypoint and its name as tooltip, and the graph's 1,230 links between them, drawn while both ends show, blue when an end is an open-sea node (Margoria, Ross Sea, Vadabin, Juur Sea) and orange on land (sub-nodes read `Velia - Bahar Investment Bank`). Main nodes show at every zoom, sub-nodes from zoom 6. A Filters panel has a node search (every match, at any zoom), Hide All, layer chips (Player, Markers) and a Nodes card with a toggle, icon and count per kind, a Links option and a shown / total badge. Only the node kinds start on; Player and Markers stay disabled until such a pin exists, and Player turns on when a player pin appears. The filter choices are saved in `paz_config.json` and come back on the next start.
 - Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. Pins can carry one of 29 game world map icons, built with the map tiles from the client's files (the node and position icons of `worldmap_grand_base.xml`, and the radar's own-character pointer for `player`). A marker placed with `save` comes back after a restart, and a click on a pin opens a Remove button. See [Map API](docs/map-api.md).
 - Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row.
 - Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
@@ -116,8 +116,8 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 58/401 .bss formats.
-- Handler Supported 99/374 .dbss formats.
+- Handler Supported 70/401 .bss formats.
+- Handler Supported 154/374 .dbss formats.
 - Handler Supported 31 other formats.
 
 ## Documented Formats
@@ -136,6 +136,35 @@ See [docs/documented-formats.md](docs/documented-formats.md) for the full table.
 pip install -r PAZ-Parser/requirements.txt
 pip install pillow        # optional
 ```
+
+### Native Decoders (Optional)
+
+`PAZ-Parser/native/` is the BDO decompressor and the ICE rounds in Rust,
+built into the `_bdo_native` module with [PyO3](https://pyo3.rs/) and
+[maturin](https://www.maturin.rs/). `paz/bdo_decompress.py` and
+`paz/bdo_ice.py` use it when it is installed (`paz/native_backend.py`) and
+their Python and numpy versions otherwise, so a checkout without Rust still
+runs. On client 3464 (CPU 2, Python 3.14):
+
+| Stage | Python and numpy | `_bdo_native` |
+|---|---|---|
+| Decrypt the 14 MB texture | 0.140 s | 0.012 s |
+| Decompress it | 0.748 s | 0.023 s |
+| Read it (disk, decrypt, decompress) | 0.892 s | 0.038 s |
+| Extract all of `pad05889.paz` | 1.984 s | 0.368 s |
+| Map tile build, all zooms, 8 processes | 16.2 s | 11.0 s |
+
+It needs a Rust toolchain ([rustup](https://rustup.rs/), MSVC on Windows):
+
+```
+pip install ./PAZ-Parser/native
+```
+
+Install it again after changing the Rust code. The Python versions are the
+reference: `PAZ-Parser/tests/test_decompress.py` runs both decompressors on
+encoded streams, client payloads and truncated or corrupted copies, and
+`PAZ-Parser/tests/test_payload_decode.py` both ICE versions on random data;
+each fails when the bytes or errors differ.
 
 ## Testing
 
@@ -223,8 +252,8 @@ such as `--loc de`) or the folder's entry list (`--folder`). The stages:
 To keep numbers comparable, each run:
 
 - **Pins the process to one CPU** (`--cpu`, default 2) at high priority.
-  The decode loops run on one core anyway (ICE through numpy, decompression
-  in pure Python). Pinning
+  The decode loops run on one core anyway (ICE and decompression in
+  `_bdo_native`, or numpy and Python without it). Pinning
   stops the OS moving the run between cores; on a hybrid Intel CPU an
   efficiency core runs this code about 1.8x slower, so the benchmark refuses
   one and lists the performance cores. The pin is read back after setting
@@ -239,9 +268,12 @@ To keep numbers comparable, each run:
   is the steadiest figure for CPU-bound code; the median and spread show the
   noise.
 - **Saves a fingerprint** with the timings: CPU model, logical CPUs, RAM,
-  power plan, OS, Python, git commit, the pinned CPU and the input hash.
+  power plan, OS, Python, the decoders (`native` with `_bdo_native`
+  installed, else `python`), git commit, the pinned CPU and the input hash.
   `compare` lists every difference besides the code, so a speedup only
-  counts when that list is empty.
+  counts when that list is empty; a `python -> native` decoders line is the
+  native speedup. Results from before the decoders field (schema 1) still
+  read, with the decoders as unknown.
 
 `--memory` adds one run per stage under `tracemalloc` for the peak memory.
 It traces every allocation, so that run is many times slower and never
@@ -257,8 +289,12 @@ the `_internal` folder they share. To build it yourself, on Windows:
 
 ```bash
 python -m pip install -r PAZ-Parser/requirements-build.txt
+python -m pip install ./PAZ-Parser/native   # optional, see Native Decoders
 python build.py
 ```
+
+Without `_bdo_native` installed, `build.py` prints a warning and the exe
+decodes with numpy and Python. The release workflow installs it.
 
 `build.py` runs PyInstaller with `browser.spec` into `dist/BDO-PAZ-Browser/`,
 checks that `bdo-paz-cli.exe --handlers` lists the same handlers as
@@ -477,6 +513,7 @@ PAZ-Parser/
 │   ├── bdo_records_prefill.py# Background pass that caches every table
 │   ├── bdo_recent_tables.py# Which handlers keep their parsed tables in memory
 │   ├── bdo_api_search.py   # File content search, single-file and cross-file (SearchMixin)
+│   ├── bdo_api_file_search.py# File name search, sorted and paged for the tree (FileSearchMixin)
 │   ├── bdo_api_updates.py  # The update banner check and one-click install (UpdateMixin)
 │   ├── bdo_api_handler_updates.py# Handler pack update on start, Check now, restart, versions
 │   ├── bdo_api_world_map.py# Map view state, build prompt, background builds, pin icons (WorldMapMixin)
@@ -488,12 +525,20 @@ PAZ-Parser/
 │   ├── bdo_ice.py          # ICE cipher implementation
 │   ├── bdo_meta_reader.py  # Meta file reader
 │   ├── bdo_payload_cache.py# LRU payload cache
-│   ├── bdo_payload_reader.py# Payload decompression + ICE decryption
+│   ├── bdo_payload_reader.py# Entry payload read: ICE decryption, then decompression
+│   ├── bdo_decompress.py   # BDO decompression: Python decoder, _bdo_native when installed
+│   ├── native_backend.py   # The _bdo_native functions, None when it is not installed
 │   ├── source_fingerprint.py# Code hash that invalidates the disk caches
 │   ├── bdo_thumbnail_cache.py# Icon thumbnail cache (SQLite, in the cache folder)
 │   ├── bdo_records_cache.py# Parsed table cache (SQLite, in the cache folder)
 │   ├── bdo_paz_extract.py  # File extraction logic
 │   └── bdo_paz_reader.py   # PAZ archive parser
+│
+├── native/                 # _bdo_native, the decoders in Rust (see Native Decoders)
+│   ├── src/decoder.rs      # Port of the Python decompressor, range checked, never panics
+│   ├── src/ice.rs          # ICE rounds; the key schedule and S-boxes come from bdo_ice.py
+│   ├── src/lib.rs          # PyO3 module: unpack(), ice_crypt(), both without holding the GIL
+│   └── _bdo_native.pyi     # Type stub, shipped in the wheel and read by pyright
 │
 ├── tests/                  # Unit test framework and gitignored fixtures
 │   ├── framework.py        # Public re-export for test helpers
@@ -504,6 +549,7 @@ PAZ-Parser/
 │   ├── runner.py           # run_case()
 │   ├── fixtures.py         # Auto-fetches test inputs from PAZ folder
 │   ├── fixture_sync.py     # Refreshes fixtures when the client changes
+│   ├── decompress_streams.py# BDO stream encoder for the decompress tests
 │   └── fixtures/           # Gitignored cached binaries
 │
 ├── ui/                     # Web UI (HTML + JS + CSS)

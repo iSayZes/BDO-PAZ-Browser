@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossKey": "보스 키",
+    "level": "단계",
+    "image": "이미지",
+    "boss": "보스",
+    "reward": "보상"
+  },
+  "meta": {
+    "count": "단계 {count}개 · 길드 보스 {bosses}개"
+  }
+}

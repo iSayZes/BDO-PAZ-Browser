@@ -63,10 +63,12 @@ A pin with an icon is drawn as that icon, upright. A pin without one is a dot,
 or with a heading an arrow pointing that way. The `player` icon turns with the
 heading, and faces north when the pin has none.
 
-Pins start hidden on the map: the Map view's Filters panel has a Player and
-a Markers chip, off until switched on, and a chip stays disabled while no pin
-of its type exists. The choice is kept per viewer, so once Player is on, a
-live player pin shows on every later start.
+The Map view's Filters panel has a Player and a Markers chip, and a chip
+stays disabled while no pin of its type exists. Markers start hidden until the
+chip is switched on. Player turns on by itself each time a player pin appears
+while none exists, so a new live position shows at once; switching it off
+hides the pin until the next time one appears. The choices are saved in
+`paz_config.json`.
 
 Clicking a pin on the map opens its name, position and a Remove button, so a
 pin can be removed without the API. Removing a saved pin removes it from

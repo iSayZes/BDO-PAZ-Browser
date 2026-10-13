@@ -11,7 +11,7 @@ from _common.html import Column, e, sort_keys, table
 from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.pa_text import pa_cell, pa_fields, pa_key, pa_list_cell, pa_list_fields
-from _common.skill import skill_buff_ids
+from _common.skill import skill_buff_ids, skill_key
 from .parser import parse_lightstone_sets, substitute_ids
 from .text import set_text
 
@@ -22,13 +22,12 @@ _LIST_PREVIEW_ITEMS = 4
 _EFFECT_PREVIEW_LINES = 6
 # The set skill has one rank; skill.dbss keys its buffs under level 1.
 _SET_SKILL_LEVEL = 1
-_SKILL_NO_SHIFT = 16
 
 
 def _set_record(record: dict, substitutes: dict[int, int]) -> dict:
     text = set_text(record["set_id"], record["text_kr"])
     substitute_item_ids = substitute_ids(record["member_ids"], substitutes)
-    buff_ids = skill_buff_ids([record["skill_no"] << _SKILL_NO_SHIFT | _SET_SKILL_LEVEL])
+    buff_ids = skill_buff_ids([skill_key(record["skill_no"], _SET_SKILL_LEVEL)])
     return {
         **record,
         "member_count": len(record["member_ids"]),

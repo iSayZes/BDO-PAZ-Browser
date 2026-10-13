@@ -933,6 +933,7 @@ _common/
 ├── character.py         # character names and titles (LOC type 6)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
+├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
 ├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
 ├── html.py
@@ -964,6 +965,12 @@ strings at unknown positions, `read_prefixed_at()` reads a prefix at a known
 position and returns the next one; `read_prefixed_utf16()` and
 `find_prefixed_ascii()` are for text whose position is only a guess.
 
+A table the client ships with a u32 count of `0` gets no package of its
+own: add its file name to `EMPTY_TABLES` in `_dbss/empty_tables/tables.py`,
+and the registration gives it an `EmptyTableHandler(file_name)`. The preview
+is one status row with the count, and a file that declares records raises
+ValueError; the table then needs its own handler.
+
 Name a character with `character_name()` from `character.py` (LOC type 6; its
 title, `<Storage Keeper>`, with `character_title()`), a
 knowledge entry with `knowledge_name()` from `knowledge.py` (LOC type 34), a
@@ -974,7 +981,8 @@ its own tagged lookup for the colours). All return `''` when LOC is not
 loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
 
-Tables in the skill cluster split a skill key with `split_skill_key()` and name
+Tables in the skill cluster build a skill key with `skill_key(skill_no, level)`,
+split one with `split_skill_key()` and name
 a skill with `skill_name(skill_no)` from `skill.py`: LOC type 10 first, then
 the Korean `skilltype.dbss` name from the `SKILL_NAME_KR` lookup index, so no
 skill table needs `skilltype.dbss` as a companion. A `GAME` sheet UI key
@@ -1132,6 +1140,7 @@ IDs (`LookupValue`).
 | `SKILL_BUFFS`    | `skill.dbss`, `skilloffset.dbss`           | buff IDs (tuple) |
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `ENHANCEMENT_TYPE_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
 | `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
 | `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
@@ -1277,6 +1286,15 @@ by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same key. The
 `enchantstaticstatus.dbss` Items column reads it; `itemenchant.dbss` shows
 each item's own key as its Enchant Key column.
+
+`ENHANCEMENT_TYPE_ITEMS` maps an enhancement type (`enhancement_type` after
+the icon in [itemenchant.dbss](file-formats/itemenchant_dbss.md)) to its base
+items, in ascending ID order; type `0` is left out. It is built by
+`build_enhancement_type_item_index()` in `_dbss/itemenchant/parser.py` from the
+level-0 blocks. The
+[guaranteeenchantss.dbss](file-formats/guaranteeenchantss_dbss.md) Items
+column reads it; `itemenchant.dbss` shows each item's own type as its
+Enhancement Type column.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links
@@ -1437,6 +1455,12 @@ and missing IDs.
 A table shows one with `sprite_icon_cell(sheet_path, region)` from
 `_common/html.py`: a sheet placeholder that loads nothing, since every row
 shares the sheet. `icon_cell()` would draw the whole sheet.
+
+A table that stores a UI texture key (`Combine_Etc_WorldMap_BossList_Begg`)
+instead of a path gets the sheet and region from
+`parse_texture_regions(xml, keys)` in `_common/texture_string.py`, which reads
+the `<Texture ID UV Path>` entries of a `ui_texture/texturestringkey/*.xml`
+companion; `bossinfostaicstatusmanager.bss` reads `texturestring_combine.xml`.
 
 ### Icon Popup
 

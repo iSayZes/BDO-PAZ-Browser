@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "enchantLevel": "Niveau d'optimisation",
+    "icon": "Icône",
+    "item": "Objet"
+  },
+  "offsetColumns": {
+    "itemKey": "Clé d'objet",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} clés d'objet · {items} objets"
+  }
+}

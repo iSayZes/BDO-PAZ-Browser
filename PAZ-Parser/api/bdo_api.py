@@ -30,7 +30,8 @@ from .bdo_config import (
     keep_map_updated_setting,
 )
 from .bdo_languages import UI_LANGUAGE_CODES, UI_LANGUAGES, game_language, loc_path, missing_loc_file
-from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, FOLDER_ICON, _file_icon, _norm, fold_entry_map, path_matcher
+from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, FOLDER_ICON, _norm, file_row_fields, fold_entry_map
+from .bdo_api_file_search import FileSearchMixin
 from .bdo_api_preview import PreviewMixin
 from .bdo_api_search import SearchMixin
 from .bdo_api_map_pins import MapPinsMixin
@@ -83,7 +84,7 @@ def _data_folder(text: str) -> str | None:
     return str(path)
 
 
-class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin):
+class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin):
     """Backend the UI calls through pywebview; the CLI loads folders through it too."""
 
     @property
@@ -390,6 +391,8 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
         self._open_thumbnail_cache(self._cache_dir, current_version)
         self._tree_data = build_tree(entries)
         self._handled_view = None
+        # Holds the old entry list; the next search would drop it anyway.
+        self._file_search = None
         self._disk_companions = {}
         self._clear_world_map()
         loc_raw = self._read_loc(load_config().get("language", "en")) if read_loc else None
@@ -592,7 +595,7 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
                     "id":   f"{_DISK_VIRTUAL_PREFIX}/{name}",
                     "name": name,
                     "type": "file",
-                    "icon": _file_icon(name),
+                    **file_row_fields(name),
                     "disk": True,
                 })
 
@@ -611,32 +614,9 @@ class Api(PreviewMixin, SearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin
                 "id":   _norm(entry.internal_path),
                 "name": name,
                 "type": "file",
-                "icon": _file_icon(name),
+                **file_row_fields(name),
             })
         return result
-
-    def search(self, query: str) -> list[dict]:
-        """Return up to 500 entries matching `query`.
-
-        Glob patterns (containing *, ?, or [) are matched against the full
-        path and against the filename alone.  Plain strings do substring match.
-        """
-        self._mark_activity()
-        is_hit = path_matcher(query)
-        results: list[dict] = []
-        for entry in self._visible_entries():
-            path = _norm(entry.internal_path)
-            name = path.rsplit("/", 1)[-1]
-            if is_hit(path):
-                results.append({
-                    "id":   path,
-                    "name": name,
-                    "path": path,
-                    "icon": _file_icon(name),
-                })
-                if len(results) == 500:
-                    break
-        return results
 
     # ── Extraction ────────────────────────────────────────────────────────────
 

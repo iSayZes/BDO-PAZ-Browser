@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from bdo_preview import register_handler
 
+from _common.empty_table import EmptyTableHandler
+
 from .title.handler import TitleDbssHandler
 from .titlebuff.handler import TitleBuffListHandler, title_buff_list_offset_handler
 from .titleoffset.handler import title_offset_handler
@@ -17,7 +19,8 @@ from .knowledgelearning.handler import (
 from .npcpersonality.handler import NpcPersonalityHandler, npc_personality_offset_handler
 from .quest.handler import QuestDbssHandler
 from .questgroup.handler import QuestGroupDbssHandler
-from .worldquest.handler import WorldQuestDbssHandler
+from .empty_tables.tables import EMPTY_TABLES
+from .itemcouponreward.handler import ItemCouponRewardOffsetHandler
 from .worldmapmonster.handler import WorldMapMonsterHandler, world_map_monster_offset_handler
 from .cashproduct.handler import (
     CashProductHandler,
@@ -27,6 +30,7 @@ from .itemenchant.handler import (
     ItemEnchantHandler,
     item_enchant_offset_handler,
 )
+from .guaranteeenchantss.handler import GuaranteeEnchantHandler
 from .enchantstaticstatus.handler import (
     EnchantStaticStatusHandler,
     enchant_static_status_offset_handler,
@@ -69,6 +73,7 @@ from .pet.handler import (
 )
 from .petaction.handler import PetActionHandler, pet_action_offset_handler
 from .petexp.handler import PetExpHandler, pet_exp_offset_handler
+from .servantexperience.handler import ServantExperienceHandler, servant_experience_offset_handler
 from .pcgrowth.handler import PcGrowthHandler, pc_growth_offset_handler
 from .fitnesslevel.handler import FitnessLevelHandler, fitness_level_offset_handler
 from .lifeexp.handler import LifeExpHandler, life_exp_offset_handler
@@ -87,6 +92,7 @@ from .fairyfeedingitem.handler import (
     FairyFeedingItemHandler,
     fairy_feeding_item_offset_handler,
 )
+from .fairypotion.handler import FairyPotionHandler, fairy_potion_offset_handler
 from .fairyskillchange.handler import (
     FairySkillChangeHandler,
     fairy_skill_change_offset_handler,
@@ -102,6 +108,25 @@ from .skill.handler import SkillHandler, skill_offset_handler
 from .skilltype.handler import SkillTypeHandler
 from .skillsimply.handler import SkillSimplyHandler
 from .skillsimply.parser import parse_skillsimply_offset_rows
+from .skillpiece.handler import SkillPieceHandler, skill_piece_offset_handler
+from .itemmaxlevel.handler import ItemMaxLevelHandler, item_max_level_offset_handler
+from .itemtrade.handler import ItemTradeHandler, item_trade_offset_handler
+from .alchemycharge.handler import AlchemyChargeHandler, alchemy_charge_offset_handler
+from .itemtradegrouptonpc.handler import (
+    ItemTradeGroupToNpcHandler,
+    item_trade_group_to_npc_offset_handler,
+)
+from .alchemyupgrade.handler import AlchemyUpgradeHandler, alchemy_upgrade_offset_handler
+from .alchemystonechange.handler import AlchemyStoneChangeHandler, alchemy_stone_change_offset_handler
+from .waititem.handler import WaitItemHandler, wait_item_offset_handler
+from .fieldboss.handler import FieldBossHandler, field_boss_offset_handler
+from .weatheractor.handler import WeatherActorHandler, weather_actor_offset_handler
+from .itemimprovement.handler import (
+    ItemImprovementHandler,
+    ItemImprovementSourceHandler,
+    item_improvement_offset_handler,
+    item_improvement_source_offset_handler,
+)
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
 
@@ -125,6 +150,30 @@ def register_dbss_handlers() -> None:
     register_handler("skilltype.dbss", SkillTypeHandler())
     register_handler("skillsimplyoffset.dbss", skill_offset_handler(parse_skillsimply_offset_rows))
     register_handler("skillsimply.dbss", SkillSimplyHandler())
+    register_handler("skillpieceoffset.dbss", skill_piece_offset_handler())
+    register_handler("skillpiece.dbss", SkillPieceHandler())
+    register_handler("itemmaxleveloffset.dbss", item_max_level_offset_handler())
+    register_handler("itemmaxlevel.dbss", ItemMaxLevelHandler())
+    register_handler("itemtradeoffset.dbss", item_trade_offset_handler())
+    register_handler("itemtrade.dbss", ItemTradeHandler())
+    register_handler("alchemychargeoffset.dbss", alchemy_charge_offset_handler())
+    register_handler("alchemycharge.dbss", AlchemyChargeHandler())
+    register_handler("itemtradegrouptonpcoffset.dbss", item_trade_group_to_npc_offset_handler())
+    register_handler("itemtradegrouptonpc.dbss", ItemTradeGroupToNpcHandler())
+    register_handler("alchemyupgradeoffset.dbss", alchemy_upgrade_offset_handler())
+    register_handler("alchemyupgrade.dbss", AlchemyUpgradeHandler())
+    register_handler("alchemystonechangeoffset.dbss", alchemy_stone_change_offset_handler())
+    register_handler("alchemystonechange.dbss", AlchemyStoneChangeHandler())
+    register_handler("waititemoffset.dbss", wait_item_offset_handler())
+    register_handler("waititem.dbss", WaitItemHandler())
+    register_handler("fieldbossoffset.dbss", field_boss_offset_handler())
+    register_handler("fieldboss.dbss", FieldBossHandler())
+    register_handler("weatheractoroffset.dbss", weather_actor_offset_handler())
+    register_handler("weatheractor.dbss", WeatherActorHandler())
+    register_handler("itemimprovementoffset.dbss", item_improvement_offset_handler())
+    register_handler("itemimprovement.dbss", ItemImprovementHandler())
+    register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())
+    register_handler("itemimprovementsource.dbss", ItemImprovementSourceHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
     register_handler("mentalthemeoffset.dbss", mental_theme_offset_handler())
@@ -135,13 +184,16 @@ def register_dbss_handlers() -> None:
     register_handler("npcpersonality.dbss", NpcPersonalityHandler())
     register_handler("quest.dbss", QuestDbssHandler())
     register_handler("questgroup.dbss", QuestGroupDbssHandler())
-    register_handler("worldquest.dbss", WorldQuestDbssHandler())
+    for name in EMPTY_TABLES:
+        register_handler(name, EmptyTableHandler(name))
+    register_handler("itemcouponrewardoffset.dbss", ItemCouponRewardOffsetHandler())
     register_handler("cashproduct.dbss", CashProductHandler())
     register_handler("cashproductoffset.dbss", cash_product_offset_handler())
     register_handler("itemenchant.dbss", ItemEnchantHandler())
     register_handler("itemenchantoffset.dbss", item_enchant_offset_handler())
     register_handler("enchantstaticstatus.dbss", EnchantStaticStatusHandler())
     register_handler("enchantstaticstatusoffset.dbss", enchant_static_status_offset_handler())
+    register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())
     register_handler("itemsubgroupoffset.dbss", item_subgroup_offset_handler())
     register_handler("itemsubgroup.dbss", ItemSubgroupHandler())
     register_handler("journalquestoffset.dbss", journal_quest_offset_handler())
@@ -172,6 +224,8 @@ def register_dbss_handlers() -> None:
     register_handler("petaction.dbss", PetActionHandler())
     register_handler("petexpoffset.dbss", pet_exp_offset_handler())
     register_handler("petexp.dbss", PetExpHandler())
+    register_handler("servantexperienceoffset.dbss", servant_experience_offset_handler())
+    register_handler("servantexperience.dbss", ServantExperienceHandler())
     register_handler("pcgrowthoffset.dbss", pc_growth_offset_handler())
     register_handler("pcgrowth.dbss", PcGrowthHandler())
     register_handler("fitnessleveloffset.dbss", fitness_level_offset_handler())
@@ -198,6 +252,8 @@ def register_dbss_handlers() -> None:
         fairy_feeding_item_offset_handler(),
     )
     register_handler("fairyfeedingitem.dbss", FairyFeedingItemHandler())
+    register_handler("fairypotionoffset.dbss", fairy_potion_offset_handler())
+    register_handler("fairypotion.dbss", FairyPotionHandler())
     register_handler(
         "fairyskillchangeoffset.dbss",
         fairy_skill_change_offset_handler(),

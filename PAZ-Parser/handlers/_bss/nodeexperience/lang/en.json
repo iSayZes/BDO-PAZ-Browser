@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "level": "Node Level",
+    "exp": "EXP to Next Level",
+    "energy": "Energy to Next Level"
+  },
+  "meta": {
+    "count": "{count} levels"
+  }
+}

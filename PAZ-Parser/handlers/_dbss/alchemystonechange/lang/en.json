@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "material": "Material",
+    "condition": "Condition",
+    "resultId": "Result ID",
+    "result": "Result"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Growth recipes · {materials} materials"
+  }
+}

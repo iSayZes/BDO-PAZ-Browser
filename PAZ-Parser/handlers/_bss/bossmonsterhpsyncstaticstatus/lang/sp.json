@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "key": "Clave",
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "sectorX": "Sector X",
+    "sectorZ": "Sector Z"
+  },
+  "meta": {
+    "count": "{count} jefes"
+  }
+}

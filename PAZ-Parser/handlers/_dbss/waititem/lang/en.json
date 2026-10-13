@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "enchantLevel": "Enchant Level",
+    "icon": "Icon",
+    "item": "Item"
+  },
+  "offsetColumns": {
+    "itemKey": "Item Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} item keys · {items} items"
+  }
+}

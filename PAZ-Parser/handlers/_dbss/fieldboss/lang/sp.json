@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "title": "Título"
+  },
+  "offsetColumns": {
+    "characterId": "ID del personaje",
+    "byteOffset": "Desplazamiento (bytes)",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} personajes"
+  }
+}

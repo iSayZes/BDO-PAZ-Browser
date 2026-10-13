@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "result": "Ergebnis",
+    "input": "Ausrüstung",
+    "group": "Gruppe",
+    "stones": "Steine",
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "stone": "Stein",
+    "category": "Kategorie",
+    "defaultDisplay": "Standardanzeige"
+  },
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "itemId": "Gegenstands-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Verbesserungseinträge",
+    "stones": "{count} Verbesserungssteine"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "enhancementType": "Verstärkungstyp",
+    "level": "Stufe",
+    "agrisCount": "Agris-Essenz",
+    "items": "Gegenstände"
+  },
+  "meta": {
+    "count": "{count} Stufen · {types} Verstärkungstypen"
+  }
+}

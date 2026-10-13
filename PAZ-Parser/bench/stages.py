@@ -46,10 +46,10 @@ from api.bdo_languages import loc_path
 from cli.session import open_session, resolve_paz_root
 from _common.loc import decompress_loc, init_loc
 from paz.bdo_cache import CACHE_FILE
+from paz.bdo_decompress import bdo_decompress
 from paz.bdo_meta_reader import read_bdo_meta
 from paz.bdo_paz_extract import extract_entries, extract_entry, find_single_meta_file, parse_meta_file
 from paz.bdo_payload_reader import (
-    bdo_decompress,
     ice_decrypt_bytes,
     is_encrypted,
     needs_decompress,

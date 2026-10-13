@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "maxLevel": "Max Level"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} items · {enhanceable} enhanceable"
+  }
+}

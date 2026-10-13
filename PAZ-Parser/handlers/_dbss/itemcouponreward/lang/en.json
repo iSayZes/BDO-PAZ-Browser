@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offset": "Offset",
+    "field": "Field",
+    "value": "Value"
+  },
+  "meta": {
+    "words": "{count} u32 words"
+  }
+}

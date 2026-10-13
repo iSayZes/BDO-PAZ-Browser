@@ -1,0 +1,179 @@
+# `bossinfostaicstatusmanager.bss` Format
+
+## Purpose
+
+The bosses of the Boss Info window (`panel_worldmap_bosslist_all`, opened
+from the world map): one variable-length record per boss with its tab, its
+character, an optional reinforced form, the window's two images, the main
+rewards, a world position and, for world bosses, the weekly spawn times. The
+window reads a record through `ToClient_getBossStaticStatus(index)`. On
+client 3464 the 28 records are 14 World bosses, the 5 Field bosses, 6 Dark
+Rift bosses and 3 Hunting/Sniper bosses. The file name spells "staic" for
+"static".
+
+```text
+23069  Dastard Bheg  Field  rewards 11015 Bheg's Gloves, 8904 Concentrated Boss Crystal, ... (12)
+                            spawn times: none ("Random Spawn")
+23001  Kzarka        World  reinforced 23172 Nightmarish Kzarka
+                            spawn times: group 0 [1860, 4320, ...], group 1 [600, 2655, ...] (7 each)
+```
+
+## Companion Files
+
+| File                                                 | Required | Role                                                                 |
+| ---------------------------------------------------- | -------- | -------------------------------------------------------------------- |
+| `stringtable.bss`                                    | Optional | Tab names, keys `LUA_WORLDMAP_BOSSLIST_TOOLTIP_<boss_info_type>`     |
+| `ui_texture/texturestringkey/texturestring_combine.xml` | Optional | Resolves the texture keys to a DDS file and a UV rectangle           |
+| `languagedata_en.loc`                                | Optional | LOC type 6 boss names, LOC type 0 reward item names                  |
+
+All multi-byte values are little-endian.
+
+## File Layout
+
+| Offset             | Type     | Field        | Notes                                                         |
+| ------------------ | -------- | ------------ | ------------------------------------------------------------- |
+| `+0x00`            | char[4]  | magic        | `PABR`                                                        |
+| `+0x04`            | u32      | record_count | `28` on client 3464                                           |
+| `+0x08`            | record[] | records      | Variable size; the last one ends where the string table starts |
+| table start        | ...      | strings      | Counted string table (`_common/pabr_strings.py`)              |
+| end - 8            | u32      | table_start  | Offset of the string table                                    |
+| end - 4            | u32      | zero         |                                                               |
+
+The string table holds the texture keys, an `Img_` key followed by the list
+key for each image set (`Combine_Etc_WorldMap_BossList_Img_Begg`,
+`Combine_Etc_WorldMap_BossList_Begg`): 60 strings for 30 sets on client
+3464.
+
+## Record Structure
+
+### Boss Record (variable size)
+
+| Order | Type           | Field                   | Notes                                                                 |
+| ----- | -------------- | ----------------------- | --------------------------------------------------------------------- |
+| 1     | group list     | spawn_times             | See [Group List](#group-list); empty on every non-World record        |
+| 2     | group list     | unknown_ids             | Same groups and lengths as `spawn_times`, one ID per time; see Open Questions |
+| 3     | u32 + u32[]    | reward_items            | Count, then item IDs: the "Main Rewards" row of the window            |
+| 4     | u32            | main_texture            | String index of the large boss image (`Img_` key)                     |
+| 5     | u32            | list_texture            | String index of the list entry image; always `main_texture + 1`       |
+| 6     | u16            | character_id            | `characterstatic.dbss` character ID, LOC type 6                       |
+| 7     | u8             | has_reinforced          | `0` or `1`; when `1`, fields 8 to 11 follow                           |
+| 8     | u16            | reinforced_character_id | The reinforced form (23172 Nightmarish Kzarka for 23001 Kzarka)       |
+| 9     | u32            | reinforced_main_texture | String index                                                          |
+| 10    | u32            | reinforced_list_texture | String index                                                          |
+| 11    | u32 + u32[]    | reinforced_reward_items | Count, then item IDs                                                  |
+| 12    | f32 x 3        | position                | World position; the second value is the height                       |
+| 13    | u8             | boss_info_type          | Window tab, see [Boss Info Types](#boss-info-types)                   |
+| 14    | u8             | unknown_flag            | `1` on the 14 World records, `0` on the rest                          |
+| 15    | u8             | is_event_boss           | `1` only on 21878 Gift Box; see Notes                                 |
+
+The reinforced form stores its textures before its rewards, the reverse of
+fields 3 to 5.
+
+### Group List
+
+| Type    | Field       | Notes                                              |
+| ------- | ----------- | -------------------------------------------------- |
+| u32     | group_count | `0`, or `2` on World records                       |
+| group[] | groups      | `group_count` times: u8 group key, u32 count, u32[count] values |
+
+The group keys are `0` then `1` on every record that has groups.
+
+## Boss Info Types
+
+The window tab, named by `stringtable.bss` key
+`LUA_WORLDMAP_BOSSLIST_TOOLTIP_<n>`.
+
+| Value | Tab            | Records (client 3464)                                                    |
+| ----- | -------------- | ------------------------------------------------------------------------ |
+| 0     | World          | 14: Gift Box, Kzarka, Nouver, Karanda, Kutum, Offin, Garmoth, Vell, Quint, Muraka, Bulgasal, Uturi, Sangoon, Golden Pig King |
+| 1     | Field          | 5: Dastard Bheg, Red Nose, Dim Tree Spirit, Giant Mudster, Katzvariak    |
+| 2     | Dark Rift      | 6: Red Nose, Dastard Bheg, Muskan, Dim Tree Spirit, Ferrid, Griffon (25501 to 25531) |
+| 3     | Hunting/Sniper | 3: Rawr-Rawr, Blue Whale, Fugitive Khalk                                 |
+| 4     | Event          | None in the file                                                         |
+
+`TOOLTIP_5` is "Hunting", the console name of tab 3.
+
+## Suggested UI Layout
+
+| Column          | Type | Notes                                                                    |
+| --------------- | ---- | ------------------------------------------------------------------------ |
+| Character ID    | num  | `character_id`                                                           |
+| Icon            | icon | `list_texture` sprite, through `texturestring_combine.xml`               |
+| Name            | text | LOC type 6 name                                                          |
+| Tab             | text | `boss_info_type` tab name                                                |
+| Reinforced ID   | num  | `reinforced_character_id`; dash without one                              |
+| Reinforced Name | text | LOC type 6 name; dash without one                                        |
+| Main Rewards    | text | Item names of `reward_items`, a short preview list                       |
+| Spawn Times     | num  | Number of values in group 0 of `spawn_times`; dash when empty            |
+| Position        | text | `x, y, z`, rounded                                                       |
+
+The table opens in file order, which groups the records by tab.
+`unknown_ids` and `unknown_flag` stay hidden.
+
+## Notes
+
+- The Lua calls on a record are `getBossInfoType()`,
+  `getCharacterKeyRaw(isReinforce)`, `getCharacterName(isReinforce)`,
+  `getMainTextureID(isReinforce)`, `getSubTextureID(isReinforce)`,
+  `getRewardItemKeyListSize(isReinforce)` / `getRewardItemKeyByIndex`,
+  `getPosition()`, `getNextSpawnLeftTime(serverUtc)` and `isEventBoss()`.
+  `ToClient_isReinforceBoss(index)` picks the form.
+- A record without spawn times is the window's "Random Spawn"
+  (`LUA_WORLDMAP_BOSSLIST_RANDOM_APPEAR`): the Lua shows it when
+  `getNextSpawnLeftTime` returns `-1`, and all five Field bosses show it in
+  game while their `spawn_times` are empty.
+- Dastard Bheg's 12 `reward_items` (11015 Bheg's Gloves, 8904 Concentrated
+  Boss Crystal, 42435 Latent Boss Aura, 44926 Awakening Weapon Box, 15992
+  Liverto Weapon Bundle, 15606 Ancient Magic Crystal of Crimson Flame -
+  Power, 757010 Mythical Feather, 721002 Ancient Spirit Dust, 17839 and
+  17829 Advice of Valks (+40) and (+30), 752023 Mass of Pure Magic, 768495
+  Ode to Heroes of Yore) are the window's Main Rewards row in order.
+- `is_event_boss` drives the event tag on a list entry
+  (`eventTag:SetShow(bossInfo:isEventBoss() == true)`); 21878 Gift Box, the
+  one record with it set, is an event boss with its own `Gift` image set.
+- Quint and Muraka have the same `spawn_times` and the same `unknown_ids`
+  (`158, 139` and `556, 560`), the only IDs shared by two records. They
+  spawn together in game.
+- The 8 reinforced forms have their own reward lists; 23001 Kzarka's
+  reinforced list adds 4 items and drops 4. All reward values are below
+  `2^24`, so they are item IDs with no enhancement level.
+- Both groups of a World record hold the same number of times, but only
+  Garmoth (13 of 14 times) and Vell have group 1 at group 0 minus 420
+  minutes; the other bosses' groups are two unrelated timetables.
+- The four Land of the Morning Light bosses (Bulgasal, Uturi, Sangoon,
+  Golden Pig King) each have their own reinforced character (28733 to
+  28736), all named Dark Bonghwang with the same model and the
+  `Blackphoenix` image set.
+- Khalk's two texture keys are spelled differently
+  (`Combine_Etc_WorldMap_BossList_Img_Kalk`, `..._Kark`); both resolve in
+  `texturestring_combine.xml`, so the pairing is by string index, not name.
+- `fieldboss.dbss` holds every Field record's character, but it is a
+  different list (694 characters); see [fieldboss](fieldboss_dbss.md).
+
+## Open Questions
+
+### unknown_ids
+
+One u32 per spawn time, `101` to `1102` on client 3464, unique except for
+the Quint and Muraka pair. The boss alert Lua (`panel_bossalert_alarm`)
+works from character keys and times only, so nothing in Lua names these.
+
+### unknown_flag
+
+`1` on exactly the World records. The Lua only enables the Boss
+Notification button on the World tab, but it decides that by tab, not by a
+record field, so the byte cannot be told apart from the tab.
+
+## In-Game Checks
+
+### spawn_times as Minutes of the Week
+
+Needs zone: anywhere with the world map
+
+Every value is below 10,080, the minutes in a week. Open the world map,
+then Boss Info on the World tab, and note the clock time with the countdown
+of Kzarka, Garmoth and Vell. If each countdown ends on a value of one group
+read as day `value // 1440` and minute of day `value % 1440` from the same
+week start, `spawn_times` are minutes of the week; the group that matches
+is the one this client's region uses (the other may be the second service
+region of the same client), and the offset gives the week start.

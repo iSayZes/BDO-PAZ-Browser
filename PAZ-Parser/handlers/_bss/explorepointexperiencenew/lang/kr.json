@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "points": "공헌도",
+    "exp": "다음 공헌도 필요 경험치"
+  },
+  "meta": {
+    "count": "행 {count}개"
+  }
+}

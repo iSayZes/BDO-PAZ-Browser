@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "enchantLevel": "Nivel de refuerzo",
+    "icon": "Icono",
+    "item": "Objeto"
+  },
+  "offsetColumns": {
+    "itemKey": "Clave del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} claves de objeto · {items} objetos"
+  }
+}

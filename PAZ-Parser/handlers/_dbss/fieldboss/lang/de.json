@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "title": "Titel"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "byteOffset": "Byte-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Charaktere"
+  }
+}

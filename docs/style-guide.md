@@ -126,7 +126,8 @@ of the element that carries `data-i18n`.
 
 The file tree gets its icon names from `_file_icon()` in
 `PAZ-Parser/api/bdo_api_helpers.py`: `loc` for LOC files, `ai` (a horned
-monster head) for `.ai` scripts the AI Script handler reads, `parsed` for any
+monster head) for `.ai` scripts the AI Script handler reads, `combo` (Lucide's
+gamepad) for `.cl` combo lists the Combo List handler reads, `parsed` for any
 other file a registered handler reads, then by extension `image`, `code`, `text`,
 `video` and `archive` (`.pac`), and `file` for the rest, including a `.bss` or
 `.dbss` without a handler. Each file row also carries `supported` from

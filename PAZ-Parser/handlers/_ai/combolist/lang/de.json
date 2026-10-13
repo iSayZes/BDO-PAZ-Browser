@@ -1,0 +1,37 @@
+{
+  "tab": "Kombo-Liste",
+  "columns": {
+    "combo": "Kombo",
+    "weapon": "Waffe",
+    "consoleOnly": "Nur Pad",
+    "checks": "Talentprüfung",
+    "steps": "Schritte"
+  },
+  "meta": {
+    "count": "{count} Kombos"
+  },
+  "summary": {
+    "list": "Kombo-Liste",
+    "combos": "Kombos",
+    "steps": "Schritte",
+    "commands": "Talentbefehle",
+    "weapons": "Kombos nach Waffe"
+  },
+  "checks": {
+    "learned": "erlernt",
+    "cooldown": "Abklingzeit",
+    "both": "erlernt + Abklingzeit"
+  },
+  "weapons": {
+    "0": "Allgemein",
+    "1": "Hauptwaffe",
+    "2": "Erweckung",
+    "3": "Reittier"
+  },
+  "awakening": {
+    "0": "Beide",
+    "1": "Nur Hauptwaffe",
+    "2": "Nur Erweckung"
+  },
+  "footnote": "Talentnummern sind die Talentnummern aus skill.dbss, benannt über LOC. Die Pad-Taste steht für Schultertaste, Richtung, Aktionstaste; 0 heißt keine. Tasten zeigen, wie lange sie gehalten werden, in ms ab Beginn des Schritts; ein Schritt listet jeden Talentbefehl seines Namens. Die Namen der Waffen- und Erweckungsarten folgen den Kommentaren der Datei."
+}

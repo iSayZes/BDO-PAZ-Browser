@@ -1,4 +1,5 @@
-/* ── AI Script view (.ai, handlers/_ai/aiscript/render.py) ───────────────── */
+/* ── AI Script view (.ai, handlers/_ai/aiscript/render.py) and Combo List
+   view (.cl, handlers/_ai/combolist/render.py), which shares its classes ── */
 
 /* Summary: counts, HP gates, InitialState variables, and when the script has
    them the characters that run it, macros and imports */
@@ -122,13 +123,17 @@
 }
 
 /* Table: rows grow with their steps, text wraps in the step columns */
-.ai-script .data-table td {
+.ai-script .data-table td,
+.ai-combo-list .data-table td {
   height: auto;
   padding-block: 6px;
   vertical-align: top;
 }
+/* Runs and Transitions; Skill checks and Steps */
 .ai-script .data-table td:nth-child(4),
-.ai-script .data-table td:nth-child(5) {
+.ai-script .data-table td:nth-child(5),
+.ai-combo-list .data-table td:nth-child(4),
+.ai-combo-list .data-table td:nth-child(5) {
   white-space: normal;
 }
 .ai-section {

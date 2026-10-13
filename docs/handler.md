@@ -151,8 +151,8 @@ same order, built-in text and image views aside. A new handler shows up there
 with no second list to update. An extension key such as `.dbss` would count
 every file of that extension as handled, so register known formats by name.
 
-A handler may take over a key a built-in view reads: `.ai` is a built-in text
-key, and the `.ai` handler replaces it. `is_plugin_key()` tells a plugin's
+A handler may take over a key a built-in view reads: `.ai` and `.cl` are
+built-in text keys, and the `.ai` and `.cl` handlers replace them. `is_plugin_key()` tells a plugin's
 handler from the built-in one, so such a file counts as handled, and
 `reload_plugins()` puts the built-in view back before it imports the
 handlers again.
@@ -944,14 +944,14 @@ class AiScriptHandler(PreviewHandler):
         return _TEXT_VIEW.render(data, entry, companions)
 ```
 
-The `.ai` handler (`handlers/_ai/aiscript/`) is the one user so far.
+The `.ai` and `.cl` handlers (`handlers/_ai/aiscript/`, `handlers/_ai/combolist/`) use it.
 
 ## Tab Name
 
 The Parsed tab reads "Parsed" unless the handler overrides `parsed_label()`
-to return a name in its own language. The `.ai` handler names it from its
-`lang/*.json` (`"tab": "AI Script"`); `load_entry` passes it on as
-`parsed_label`.
+to return a name in its own language. The `.ai` and `.cl` handlers name it
+from their `lang/*.json` (`"tab": "AI Script"`, `"Combo List"`); `load_entry`
+passes it on as `parsed_label`.
 
 ## Links Between Rows
 
@@ -968,7 +968,8 @@ the first record whose field reads the value, compared as text
 (`Api.find_record()` in `api/bdo_api_search.py`, `_openRecord()` in
 `preview-views.js`). The status bar says so when no record matches.
 `record_link()` in `_common/html.py` builds the button. The `.ai` Used by box
-links each character to its `characterstatic.dbss` row.
+links each character to its `characterstatic.dbss` row, and the `.cl` view
+each skill number to its first `skill.dbss` row.
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries

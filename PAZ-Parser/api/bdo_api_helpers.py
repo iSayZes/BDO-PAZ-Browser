@@ -29,6 +29,7 @@ FOLDER_ICON = "folder"
 # Icons of handled files by extension, in place of the table icon `parsed`.
 _HANDLED_ICON_MAP: dict[str, str] = {
     ".ai": "ai",
+    ".cl": "combo",
 }
 
 
@@ -48,7 +49,7 @@ def fold_entry_map(entry_map: dict[str, PazEntry]) -> dict[str, PazEntry]:
 
 def _file_icon(name: str) -> str:
     """The tree icon for file `name`: when a handler reads it `loc`, the
-    extension's handled icon (`ai`) or `parsed`; else by extension, `file` for
+    extension's handled icon (`ai`, `combo`) or `parsed`; else by extension, `file` for
     a `.bss`/`.dbss` without a handler or an unknown kind."""
     ext = name[name.rfind("."):].lower() if "." in name else ""
     if ext == ".loc":

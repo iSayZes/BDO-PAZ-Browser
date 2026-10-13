@@ -1,0 +1,37 @@
+{
+  "tab": "Combo List",
+  "columns": {
+    "combo": "Combo",
+    "weapon": "Weapon",
+    "consoleOnly": "Pad only",
+    "checks": "Skill checks",
+    "steps": "Steps"
+  },
+  "meta": {
+    "count": "{count} combos"
+  },
+  "summary": {
+    "list": "Combo list",
+    "combos": "combos",
+    "steps": "steps",
+    "commands": "skill commands",
+    "weapons": "Combos by weapon"
+  },
+  "checks": {
+    "learned": "learned",
+    "cooldown": "cooldown",
+    "both": "learned + cooldown"
+  },
+  "weapons": {
+    "0": "Common",
+    "1": "Main Weapon",
+    "2": "Awakening",
+    "3": "Mount"
+  },
+  "awakening": {
+    "0": "Both",
+    "1": "Main Weapon only",
+    "2": "Awakening only"
+  },
+  "footnote": "Skill numbers are the skill.dbss skill numbers, named from LOC. The pad key reads shoulder button, direction, face button; 0 is none. Keys show how long each is held, in ms from the step's start; a step lists every skill command of its name. Weapon and awakening type labels follow the file's own comments."
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "material": "Material",
+    "condition": "Condición",
+    "resultId": "ID del resultado",
+    "result": "Resultado"
+  },
+  "offsetColumns": {
+    "itemId": "ID del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} recetas de Crecimiento · {materials} materiales"
+  }
+}

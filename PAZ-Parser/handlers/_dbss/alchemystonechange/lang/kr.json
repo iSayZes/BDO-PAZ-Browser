@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "material": "재료",
+    "condition": "조건",
+    "resultId": "결과 ID",
+    "result": "결과"
+  },
+  "offsetColumns": {
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "성장 조합 {count}개 · 재료 {materials}개"
+  }
+}

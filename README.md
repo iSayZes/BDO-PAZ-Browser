@@ -117,7 +117,7 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 ## Supported Formats
 
 - Handler Supported 66/401 .bss formats.
-- Handler Supported 146/374 .dbss formats.
+- Handler Supported 148/374 .dbss formats.
 - Handler Supported 31 other formats.
 
 ## Documented Formats

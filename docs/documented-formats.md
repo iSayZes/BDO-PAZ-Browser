@@ -11,6 +11,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `alchemystatdata.bss` | PABR Alchemy Mastery table: per 50 mastery, max products chance, Imperial Delivery extra profit and the extra item chance with its special and rare shares | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `alchemystatus.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `alchemystatusoffset.dbss` | Empty offset companion for `alchemystatus.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `alchemystonechange.dbss` | Growth recipes for alchemy stones, Hearts and Totems of the Sea: item, material item and count, inline `getLifeLevel` condition, result item | [alchemystonechange](file-formats/alchemystonechange_dbss.md) | 2 | 1 |
+| `alchemystonechangeoffset.dbss` | Index into `alchemystonechange.dbss`, maps item ID → offset/size | [alchemystonechange](file-formats/alchemystonechange_dbss.md) | 2 | 1 |
 | `alchemyupgrade.dbss` | Alchemy stone Polishing materials: per stone type group, rows of (stone type, material item ID, EXP per material as percent x 10,000) | [alchemyupgrade](file-formats/alchemyupgrade_dbss.md) | 1 | 1 |
 | `alchemyupgradeoffset.dbss` | Index into `alchemyupgrade.dbss`, same groups, maps (stone type, item ID) → offset/size | [alchemyupgrade](file-formats/alchemyupgrade_dbss.md) | 1 | 1 |
 | `allquestlist.bss`                 | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                       | [allquestlist](file-formats/allquestlist_bss.md)                    | 0              | 0 |

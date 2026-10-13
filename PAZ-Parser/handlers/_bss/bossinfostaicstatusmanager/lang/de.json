@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "icon": "Symbol",
+    "name": "Name",
+    "tab": "Tab",
+    "reinforcedId": "Verstärkt-ID",
+    "reinforcedName": "Verstärkter Name",
+    "rewards": "Hauptbelohnungen",
+    "spawnTimes": "Erscheinungszeiten",
+    "position": "Position"
+  },
+  "meta": {
+    "count": "{count} Bosse"
+  }
+}

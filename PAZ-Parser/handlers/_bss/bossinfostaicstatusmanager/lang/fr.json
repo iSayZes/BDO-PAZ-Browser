@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "icon": "Icône",
+    "name": "Nom",
+    "tab": "Onglet",
+    "reinforcedId": "ID renforcé",
+    "reinforcedName": "Nom renforcé",
+    "rewards": "Récompenses principales",
+    "spawnTimes": "Horaires d'apparition",
+    "position": "Position"
+  },
+  "meta": {
+    "count": "{count} boss"
+  }
+}

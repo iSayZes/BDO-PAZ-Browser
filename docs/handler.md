@@ -1456,6 +1456,12 @@ A table shows one with `sprite_icon_cell(sheet_path, region)` from
 `_common/html.py`: a sheet placeholder that loads nothing, since every row
 shares the sheet. `icon_cell()` would draw the whole sheet.
 
+A table that stores a UI texture key (`Combine_Etc_WorldMap_BossList_Begg`)
+instead of a path gets the sheet and region from
+`parse_texture_regions(xml, keys)` in `_common/texture_string.py`, which reads
+the `<Texture ID UV Path>` entries of a `ui_texture/texturestringkey/*.xml`
+companion; `bossinfostaicstatusmanager.bss` reads `texturestring_combine.xml`.
+
 ### Icon Popup
 
 A click on any icon cell opens a popup (`ui/js/features/icon-preview.js`)

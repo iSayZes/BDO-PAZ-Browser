@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "icon": "아이콘",
+    "name": "이름",
+    "tab": "탭",
+    "reinforcedId": "강화 ID",
+    "reinforcedName": "강화 보스",
+    "rewards": "주요 보상",
+    "spawnTimes": "출현 시간",
+    "position": "위치"
+  },
+  "meta": {
+    "count": "보스 {count}개"
+  }
+}

@@ -19,6 +19,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `base_dialog.dbss` | Base record of every NPC dialog: Korean display name and the speech bubble lines shown over the NPC, keyed like `detail_dialog.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |
 | `base_dialogoffset.dbss` | PABR index into `base_dialog.dbss`, same layout and keys as `detail_dialogoffset.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |
 | `blizzardregioninfo.bss` | PABR snow regions of the Mountain of Eternal Winter and Ulukita: a key, the `regioninfo.bss` region and three unconfirmed values | [blizzardregioninfo](file-formats/blizzardregioninfo_bss.md) | 1 | 1 |
+| `bossinfostaicstatusmanager.bss` | Boss Info window bosses: PABR variable records of tab, character and reinforced form, texture keys, main rewards, world position and weekly spawn times | [bossinfostaicstatusmanager](file-formats/bossinfostaicstatusmanager_bss.md) | 2 | 1 |
 | `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 6 | 2 |
 | `buffcondition.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `buffconditionoffset.dbss` | Empty offset companion for `buffcondition.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |

@@ -24,6 +24,7 @@ from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
+from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
@@ -90,6 +91,7 @@ def register_bss_handlers() -> None:
         HardcoreCharacterStatBssHandler(),
     )
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
+    register_handler("bossinfostaicstatusmanager.bss", BossInfoStaicStatusManagerBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",

@@ -127,6 +127,9 @@ Sample records confirmed from `mentaltheme.dbss`, `mentalthemeoffset.dbss`, `men
 - All 931 themes have an LOC `str_type=9` name; LOC has 12 more type 9 IDs that match no theme.
 - `mentalthemeoffset.dbss` uses 10-byte rows, unlike the 12-byte offset records used by `mentalcardoffset.dbss` and `knowledgelearningoffset.dbss`.
 - `child_ids` are stored in binary/UI order.
+- The Knowledge window (client Lua `panel_knowledge_main`) lists a root only when its `circularColorValue` table has a colour for the key: `1`, `5001`, `5020`, `10001`, `20001`, `25001`, `30001`, `31300` and `31310`. The other two roots, `10399` None and `10320` Bosses (Calpheon), have no colour and are not listed. Under a listed root the window adds every child theme, then the theme's cards.
+- The window appends `getIncreaseWp() / getMaxIncreaseWp()` to a theme's name (`Lua_Knowledge_TalkingPowerUp`). Read as the two tiers, `increase_wp_2` is the theme's total energy, not an amount on top of `increase_wp`: Refugee Camp (`10319`, +1 at 5, +2 at 13) reads `x/2`.
+- "People of the Black Desert" (`19`) and "First Mate" (`33`, child `295`) are children of Characters (`1`) here, but the Knowledge window does not show them (in-game check 2026-10-13), and `panel_knowledge_main` has no filter for them. No field in this file marks them. Theme `19` holds retired NPCs (Eden Marsella, Lavodhim), the crop cards (`7236` to `7255`, `7821` to `7827`), cards without an LOC name and card `19` "NPC Pathfind Preventive Knowledge"; `33` holds one card without an LOC name.
 - The DBSS files should be treated as the source of truth for this format.
 
 ## Open Questions

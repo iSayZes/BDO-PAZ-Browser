@@ -87,7 +87,7 @@ Follows `model_path`. Verified for every kind-2 record: walking these fields end
 | `+0x22C` | string   | action_name | Empty in 3,887 records; else `OBJECT_BED_GoingToBed` (73) or `USE_BATHTUB_PREFARE` (3) |
 | ...      | u32      | action_hash | `0` exactly when `action_name` is empty                                |
 | ...      | string   | icon_path   | Empty in 9 records                                                     |
-| ...      | u8[48]   | tail        | All zero except bytes `44..46` in 6 records                            |
+| ...      | u8[48]   | tail        | See [Furniture Tail](#furniture-tail)                                  |
 
 #### Furniture Block
 
@@ -105,7 +105,27 @@ The 556-byte block is constant across all kind-2 records except for these bytes.
 | `+0x15A` | u32  | crop_key_b  | `0`, or `57100 + n` on the same records                              |
 | `+0x15E` | u8   | unknown_15e | `10` on the crop records, else `0`                                   |
 | `+0x17A` | u16  | unknown_17a | 136 values; `0` (809), `10` (498), `25`, `125`, `200`, `100`, `50`   |
-| `+0x21B` | u32  | unknown_21b | `100` in 3,729 records                                               |
+| `+0x21B` | u8   | unknown_21b | `100`, or `0` in 13 records (client 3464)                            |
+| `+0x21C` | u16  | summon_character | Character the object spawns; `0` when it spawns none             |
+
+On client 3464, `summon_character` names a character in 39 records:
+Chicken Feed (1248) spawns Chicken (9099), Haystack (1245) spawns Dairy Cow
+(9078), and the `[Oasis]` objects 18951 to 18977 spawn their characters 39801
+to 39830 (`[Oasis] Ethan the Butler` 18977 -> `Oasis Ethan` 39830). An earlier
+version of this doc read `+0x21B` as a u32, which merged this ID into it.
+
+#### Furniture Tail
+
+| Offset | Type    | Field       | Observed (client 3464, 3,969 kind-2 records)                    |
+| ------ | ------- | ----------- | --------------------------------------------------------------- |
+| `+0`   | u8[40]  | reserved    | Always zero                                                     |
+| `+40`  | u32     | unknown_28  | Always `0xFFFFFFFF`                                             |
+| `+44`  | u32     | repair_item | Item ID of the tool's repair item; `0` except in 6 records      |
+
+The 6 `repair_item` records are the crafting tools: Advanced Cooking Utensil
+(1033) takes item 757406 Baermalo Hona's Advanced Cooking Repair Tool, and
+Morning Light Traditional Alchemy Tool (1535) takes 757574 Morning Light
+Traditional Alchemy Repair Tool.
 
 ### Structure Body (`object_kind != 2`, 1,160 records)
 
@@ -190,7 +210,7 @@ The handler parses only the record prefix. The inline Korean house names are not
 
 ### Furniture Block Fields
 
-Only about 20 of the 556 block bytes vary. `unknown_17a` takes round values (`10`, `25`, `50`, `100`, `125`, `200`) that fit interior points, and `unknown_21b` is `100` almost everywhere, but neither has been matched to in-game data.
+Only about 20 of the 556 block bytes vary. `unknown_17a` takes round values (`10`, `25`, `50`, `100`, `125`, `200`) that fit interior points, and the u8 `unknown_21b` is `100` almost everywhere, but neither has been matched to in-game data.
 
 ### Multi-floor Hull Geometry
 

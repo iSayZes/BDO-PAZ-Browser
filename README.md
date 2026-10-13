@@ -268,10 +268,12 @@ To keep numbers comparable, each run:
   is the steadiest figure for CPU-bound code; the median and spread show the
   noise.
 - **Saves a fingerprint** with the timings: CPU model, logical CPUs, RAM,
-  power plan, OS, Python, git commit, the pinned CPU and the input hash.
+  power plan, OS, Python, the decoders (`native` with `_bdo_native`
+  installed, else `python`), git commit, the pinned CPU and the input hash.
   `compare` lists every difference besides the code, so a speedup only
-  counts when that list is empty. The fingerprint does not record whether
-  `_bdo_native` was installed; name the runs after it.
+  counts when that list is empty; a `python -> native` decoders line is the
+  native speedup. Results from before the decoders field (schema 1) still
+  read, with the decoders as unknown.
 
 `--memory` adds one run per stage under `tracemalloc` for the peak memory.
 It traces every allocation, so that run is many times slower and never

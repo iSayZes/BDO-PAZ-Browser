@@ -22,3 +22,5 @@ NativeIceCrypt = Callable[[bytes, Sequence[tuple[int, int, int]], bytes], bytes]
 
 UNPACK: NativeUnpack | None = _bdo_native.unpack if _bdo_native is not None else None
 ICE_CRYPT: NativeIceCrypt | None = _bdo_native.ice_crypt if _bdo_native is not None else None
+# Which decoders run, for the benchmark fingerprint: "native" or "python".
+NAME: str = "native" if _bdo_native is not None else "python"

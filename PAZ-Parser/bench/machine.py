@@ -8,6 +8,8 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
+from paz import native_backend
+
 _GIT_TIMEOUT_S = 10
 
 
@@ -22,6 +24,8 @@ class Machine:
     git_commit: str | None
     # Tracked files changed since the commit; untracked files do not count.
     is_git_dirty: bool | None
+    # "native" with `_bdo_native` installed, else "python"; None in a schema 1 file.
+    decoders: str | None
 
 
 def describe_machine(repo_root: Path) -> Machine:
@@ -35,6 +39,7 @@ def describe_machine(repo_root: Path) -> Machine:
         python=f"{platform.python_implementation()} {platform.python_version()}",
         git_commit=commit,
         is_git_dirty=is_dirty,
+        decoders=native_backend.NAME,
     )
 
 

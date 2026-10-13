@@ -10,13 +10,14 @@ _GB = 1024 * _MB
 
 
 def describe_machine_line(machine: Machine) -> str:
-    """One line: CPU, logical CPUs, RAM, power plan, Python."""
+    """One line: CPU, logical CPUs, RAM, power plan, Python, decoders."""
     parts = [
         machine.cpu_model or "unknown CPU",
         f"{machine.logical_cpus} logical CPUs" if machine.logical_cpus else None,
         f"{machine.ram_bytes / _GB:.1f} GB RAM" if machine.ram_bytes else None,
         f"power plan {machine.power_plan}" if machine.power_plan else None,
         machine.python,
+        f"{machine.decoders} decoders" if machine.decoders else None,
     ]
     return ", ".join(part for part in parts if part)
 

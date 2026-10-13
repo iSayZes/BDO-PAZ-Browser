@@ -221,6 +221,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `ui_skillgroup_succession.bss` | Succession skill window grids, same format; empty on client 3458 | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `waititem.dbss` | Central Market Registration Queue items: 17-byte rows of item key, item ID, enhancement level and an unknown u32 (`900`) | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `waititemoffset.dbss` | Index into `waititem.dbss`, maps item key → offset/size | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
+| `weatheractor.dbss` | Weather actors (Cloudy Day, Night, Typhoon, Sandstorm, Margoria storms, bosses and monsters): 75-byte rows of u16 character key, type byte, floats, small integers and a skill key on three rows | [weatheractor](file-formats/weatheractor_dbss.md) | 4 | 0 |
+| `weatheractoroffset.dbss` | Index into `weatheractor.dbss`, maps u16 character key → offset/size | [weatheractor](file-formats/weatheractor_dbss.md) | 4 | 0 |
 | `worldmapmonster.dbss` | World map monster markers: Korean label lines and name (LOC type 40), world position, marker illustration and condition script | [worldmapmonster](file-formats/worldmapmonster_dbss.md) | 2 | 0 |
 | `worldmapmonsteroffset.dbss` | Bare u16-keyed index into `worldmapmonster.dbss` (no magic, no trailer), maps marker key → offset/size | [worldmapmonster](file-formats/worldmapmonster_dbss.md) | 2 | 0 |
 | `worldquest.dbss` | Empty table: a u32 count of 0 and no records; no offset companion | [empty](file-formats/empty_dbss.md) | 1 | 0 |

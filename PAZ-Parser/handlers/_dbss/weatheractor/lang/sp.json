@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "title": "Título",
+    "skillId": "ID de habilidad",
+    "skill": "Habilidad"
+  },
+  "offsetColumns": {
+    "characterId": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} actores de clima · {skills} con habilidad"
+  }
+}

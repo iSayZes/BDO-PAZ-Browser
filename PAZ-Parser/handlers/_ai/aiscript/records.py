@@ -2,18 +2,28 @@
 
 The plain fields (`runs`, `transitions`, `reached_from`, ...) are text for tab
 search and CSV; the `_` fields hold the same steps as dicts for the table.
+`_script` is one dict shared by every record, with what belongs to the whole
+script (macros, imports, the characters that run it), so the summary reads it
+on any page.
 """
 from __future__ import annotations
 
-from .script import PHASE_END, PHASE_START, PHASE_TICK, AiState
+from .script import PHASE_END, PHASE_START, PHASE_TICK, AiScript, AiState
 from .steps import STEP_TRANSITION, hp_variables, step_dicts, step_text
 
 _PHASES = (PHASE_START, PHASE_TICK, PHASE_END)
 
 
-def script_records(states: list[AiState], strings: dict) -> list[dict]:
+def script_records(script: AiScript, strings: dict, users: list[tuple[int, str]]) -> list[dict]:
+    """`users` are the (character ID, name) pairs that run the script."""
+    states = script.states
     hp_vars = hp_variables(states)
     incoming = reached_from(states)
+    shared = {
+        "macros": [list(macro) for macro in script.macros],
+        "imports": list(script.imports),
+        "users": [list(user) for user in users],
+    }
     records = []
     for state in states:
         steps = step_dicts(state, hp_vars, strings["hp"])
@@ -33,6 +43,7 @@ def script_records(states: list[AiState], strings: dict) -> list[dict]:
             "_steps": steps,
             "_edges": [list(edge) for edge in state.edges],
             "_reached_from": sources,
+            "_script": shared,
         })
     return records
 
@@ -49,7 +60,7 @@ def is_run_step(step: dict) -> bool:
     return step["phase"] != PHASE_TICK or step["type"] != STEP_TRANSITION
 
 
-def reached_from(states: list[AiState]) -> dict[str, list[str]]:
+def reached_from(states: tuple[AiState, ...]) -> dict[str, list[str]]:
     """Target state -> the states and handlers that lead to it, in file order, itself left out."""
     sources: dict[str, dict[str, None]] = {}
     for state in states:

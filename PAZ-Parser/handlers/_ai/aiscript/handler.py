@@ -1,7 +1,7 @@
 """`.ai` preview handler: an NPC or monster AI script as one row per state.
 
-The Parsed tab is the AI Script view (summary, then the states in file
-order); the Text tab next to it shows the script's XML. See
+The Parsed tab, named AI Script, shows a summary, the behavior filter and the
+states in file order; the Text tab next to it shows the script's XML. See
 docs/file-formats/aiscript_ai.md.
 """
 from __future__ import annotations
@@ -17,6 +17,8 @@ from _common.lang import handler_text, load_handler_strings
 from .records import script_records
 from .render import ScriptRenderer
 from .script import parse_script
+from .summary import summary_html
+from .users import script_users
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _TEXT_VIEW = TextHandler()
@@ -41,6 +43,9 @@ class AiScriptHandler(PreviewHandler):
             Column(cols["reachedFrom"]),
         ]
 
+    def parsed_label(self) -> str:
+        return self._strings()["tab"]
+
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
 
@@ -48,7 +53,7 @@ class AiScriptHandler(PreviewHandler):
         return None
 
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        return script_records(parse_script(decode_text(data)), self._strings())
+        return script_records(parse_script(decode_text(data)), self._strings(), script_users(entry.internal_path))
 
     def render_text(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         return _TEXT_VIEW.render(data, entry, companions)
@@ -74,7 +79,8 @@ class AiScriptHandler(PreviewHandler):
         meta = handler_text(self.lang, _LANG_DIR, "meta.count", count=len(records))
         return (
             '<div class="ai-script">'
-            f'{renderer.summary()}'
+            f'{summary_html(renderer)}'
+            f'{renderer.filter_bar()}'
             f'{table(meta, self._columns(), rows)}'
             f'<p class="ai-footnote">{e(strings["footnote"])}</p>'
             '</div>'

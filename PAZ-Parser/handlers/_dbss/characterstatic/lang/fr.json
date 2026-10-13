@@ -13,6 +13,7 @@
     "knowledgeId": "ID de connaissance",
     "npcKind": "Genre de PNJ",
     "classType": "Type de classe",
+    "aiScript": "Script d'IA",
     "model": "Modèle",
     "payloadSize": "Taille des données utiles"
   },

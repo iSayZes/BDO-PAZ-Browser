@@ -90,6 +90,10 @@ class PreviewHandler(ABC):
         """
         return None
 
+    def parsed_label(self) -> str | None:
+        """Name of the Parsed tab in the handler's language, or None for "Parsed"."""
+        return None
+
     def supports_lazy_records(self) -> bool:
         """Return True when the handler supports lazy paging (default: True for all handlers).
 

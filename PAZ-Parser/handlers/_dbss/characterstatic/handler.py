@@ -57,6 +57,7 @@ class CharacterStaticHandler(PreviewHandler):
             Column(cols["knowledgeId"], "num", sort_key="knowledge_id"),
             Column(cols["npcKind"], "num", sort_key="npc_kind_low"),
             Column(cols["classType"], "num", sort_key="class_type"),
+            Column(cols["aiScript"], sort_key="ai_script"),
             Column(cols["model"], sort_key="model_path"),
             Column(cols["payloadSize"], "num", sort_key="payload_size"),
         ]
@@ -100,6 +101,7 @@ class CharacterStaticHandler(PreviewHandler):
                 "npc_kind_low": r["npc_kind"] & _NPC_KIND_LOW_MASK,
                 # 101 means "not a player character"; None sorts last.
                 "class_type": None if r["class_type"] == NO_CLASS_TYPE else r["class_type"],
+                "ai_script": r["ai_script"],
                 "model_path": r["model_path"],
                 "payload_size": r["payload_size"],
             }
@@ -134,6 +136,7 @@ class CharacterStaticHandler(PreviewHandler):
             row.append(_optional(r["knowledge_id"]))
             row.append(e(r["npc_kind_low"]))
             row.append(_optional(r["class_type"]))
+            row.append(e(r["ai_script"] or _EMPTY))
             row.append(e(r["model_path"] or _EMPTY))
             row.append(e(r["payload_size"]))
             rows.append(row)

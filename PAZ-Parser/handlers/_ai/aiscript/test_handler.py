@@ -6,6 +6,7 @@ from typing import Any
 import pytest
 
 from tests.framework import HandlerCase, HandlerResult, SchemaTest, TargetTest, case_id, run_case
+from .handler import AiScriptHandler
 
 _FILE = "mutanttreedummer_boss.ai"
 
@@ -53,3 +54,7 @@ def test_reached_from_names_only_rows_of_the_file(ai_result: HandlerResult) -> N
     names = {record["state"] for record in ai_result.records}
     for record in ai_result.records:
         assert set(record["_reached_from"]) <= names
+
+
+def test_the_parsed_tab_is_named_ai_script() -> None:
+    assert AiScriptHandler().parsed_label() == "AI Script"

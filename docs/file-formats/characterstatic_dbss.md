@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Variable-length character/NPC static data table: render and interaction metadata for every character template (player classes, NPCs, monsters, mounts, objects), not combat stats. Each record is keyed by a character ID and stores two inline scripts, the character's kind, a model path, a large numeric attribute block and, for player characters, the gameplay class type. Many NPC records have a `getknowledge(<id>);` script, which links the character to the knowledge entry the player gains by talking to it.
+Variable-length character/NPC static data table: render and interaction metadata for every character template (player classes, NPCs, monsters, mounts, objects), not combat stats. Each record is keyed by a character ID and stores two inline scripts, the character's kind, the name of its AI script, a model path, a large numeric attribute block and, for player characters, the gameplay class type. Many NPC records have a `getknowledge(<id>);` script, which links the character to the knowledge entry the player gains by talking to it.
 
 Example:
 
@@ -100,11 +100,38 @@ Values `5`, `6`, `12`, `15` and `17` occur on 1 to 50 rows each. The value names
 
 Every record holds at least one model path, stored as an i64 byte length followed by ASCII text with no terminator, e.g. `[i64 25] npc/pedu2/npc_pedu2_named`. Its position after `p` varies (most often `p+299` on client 3464, `p+291` before), so find it by scanning for the length-prefixed string. 315 records hold a second path-like string; the longer one is the model. Top-level folders: `monster` (13,655), `npc` (5,078), `creature` (2,109), `object` (1,359), `riding` (793), `cash` (473).
 
-The same length-prefixed ASCII form holds one or two other strings per record,
-behaviour names rather than paths: `9999` (8,212 rows in the 24,017-record
-fixture), `9999_Bow`, `Monsters_Main_Manager`, `Pet_Dog`, `HiredWorker`. None
-contains a `/`, so the parser takes the longest string with a `/` in it as
-`model_path`. In that fixture every record has exactly one such string.
+The same length-prefixed ASCII form holds one or two other strings per record.
+None contains a `/`, so the parser takes the longest string with a `/` in it as
+`model_path`. On client 3464 (24,551 records) the strings come in this order:
+
+| Strings | Rows | Example |
+| ------- | ---- | ------- |
+| AI script, model path | 14,400 | `47791`: `9999`, `npc/pedu2/npc_pedu2_named` |
+| AI script, model path, voice | 10,103 | `47343`: `NPC_Social_MorningLand`, `npc/npc_named_morningland_stand`, `NPC_VCE_47343` |
+| model path, voice | 44 | `47`: `pc/36_pyfw/pyfwaction_noweapon`, `PC_VCE_28PMYF` |
+| model path | 4 | `37`: `pc/19_prum/rutumaction_noweapon` |
+
+### AI Script
+
+The string right before the model path is `ai_script`, the stem of the
+character's [`.ai` script](aiscript_ai.md) without its folder or extension:
+`9999` for `character/aiscript/9999.ai`, `Party_Leader_Dragon_Boss` for `29929`
+Garmoth. On client 3464, 24,503 records name one. Of the 48 that store the
+model path first and name none, 47 are player characters with a `pc/` model;
+the other 59 player-like records name one, such as `Maid_PC_Common` on `39855`.
+
+The names compare with the file stems without case. Of the 5,895 distinct
+names, 5,621 match one of the 7,037 distinct stems of the 7,070 `.ai` files;
+327 records name one of 274 scripts the client does not ship
+(`Hadum_M0519_Demonland_Gimmick`). The most common names are `9999` (8,280
+records) and `9999_Bow` (1,893).
+
+The app groups these names into the `CHARACTER_AI_SCRIPT` lookup index
+(`build_character_ai_script_index`), which the `.ai` view reads for its Used by
+box.
+
+The string after the model path, on 10,147 rows, holds `VCE` (`NPC_VCE_47343`,
+`PC_VCE_28PMYF`, `Creature_Fairy_E_Common_VCE`). The parser does not read it.
 
 ### Payload Tail
 
@@ -195,6 +222,7 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 | Knowledge ID | num  | Extract from `getknowledge(<id>);` (case-insensitive) when present; dash otherwise, stored as `None` so it sorts last |
 | NPC Kind     | num  | `npc_kind` low byte (`npc_kind_low` in the handler, which also keeps the full u32 for search and CSV) |
 | Class Type   | num  | `class_type`; dash when `101` (not a player character), stored as `None` so it sorts last |
+| AI Script    | text | `ai_script`; dash when empty |
 | Model        | text | `model_path` |
 | Payload Size | num  | Useful for debugging variable layouts |
 

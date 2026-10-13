@@ -274,6 +274,7 @@
     "copiedRow": "선택한 행을 복사했습니다.",
     "searchError": "검색 오류: {message}",
     "pageError": "페이지를 불러올 수 없습니다: {message}",
+    "recordNotFound": "이 표에 {field} {value} 행이 없습니다",
     "cachingTables": "테이블 캐시 중 {done}/{total}: {name}",
     "cachingTablesPaused": "앱이 사용 중이라 테이블 캐시를 일시 중지함 ({done}/{total})",
     "openFolder": "시작하려면 PAZ 폴더를 여세요.",

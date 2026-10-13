@@ -4,12 +4,14 @@ Each offset row points just past a two-byte inline copy of the character ID.
 The payload opens with two length-prefixed scripts, then the ID again:
 
     u8[8] header | u8 tag 0x15 | action_script | condition_script
-    | u8 | u16 character_id | u16 | u32 npc_kind | ... model_path ...
+    | u8 | u16 character_id | u16 | u32 npc_kind | ... ai_script model_path ...
     | ... | u8 class_type @ end-24 | u8[23]
 
 Both scripts are an i64 UTF-16 code-unit count followed by UTF-16LE text. The
 model path is an i64 byte count plus ASCII at no fixed offset, so it is found by
-scanning; it is the only folder path among the record's ASCII strings.
+scanning; it is the only folder path among the record's ASCII strings. The
+string right before it names the character's AI script, the stem of an `.ai`
+file (`9999`, `Monsters_Main_Manager`).
 Full layout in docs/file-formats/characterstatic_dbss.md.
 """
 
@@ -45,13 +47,20 @@ def _read_script(data: bytes, pos: int, end: int, character_id: int) -> tuple[st
     return data[pos + _I64.size:text_end].decode("utf-16-le"), text_end
 
 
-def _model_path(data: bytes, start: int, end: int) -> str:
-    """Longest folder path among the ASCII strings in `[start, end)`.
+def _ai_script_and_model(data: bytes, start: int, end: int) -> tuple[str, str]:
+    """(ai_script, model_path) from the ASCII strings in `[start, end)`.
 
-    The other strings are behaviour names such as `9999` or `Pet_Dog`.
+    The model path is the longest folder path; the AI script is the string
+    right before it, '' when the path comes first (player characters).
     """
-    paths = [text for text in find_prefixed_ascii(data, start, end) if "/" in text]
-    return max(paths, key=len, default="")
+    texts = list(find_prefixed_ascii(data, start, end))
+    paths = [text for text in texts if "/" in text]
+    if not paths:
+        return "", ""
+    model_path = max(paths, key=len)
+    before = texts[: texts.index(model_path)]
+    ai_script = before[-1] if before and "/" not in before[-1] else ""
+    return ai_script, model_path
 
 
 def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
@@ -70,6 +79,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
     if struct.unpack_from("<H", data, pos + _CHARACTER_ID)[0] != character_id:
         raise ValueError(f"character {character_id} record does not repeat its own ID")
 
+    ai_script, model_path = _ai_script_and_model(data, pos + _AFTER_SCRIPTS_SIZE, end)
     return {
         "character_id": character_id,
         "action_script": action_script,
@@ -77,7 +87,8 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
         "knowledge_id": knowledge_id_of(action_script),
         "npc_kind": struct.unpack_from("<I", data, pos + _NPC_KIND)[0],
         "class_type": data[end - _CLASS_TYPE_FROM_END],
-        "model_path": _model_path(data, pos + _AFTER_SCRIPTS_SIZE, end),
+        "ai_script": ai_script,
+        "model_path": model_path,
         "payload_size": row.size,
     }
 
@@ -112,3 +123,19 @@ def build_knowledge_character_index(data: bytes, offset_data: bytes) -> dict[int
         knowledge_id: tuple(sorted(ids))
         for knowledge_id, ids in characters.items()
     }
+
+
+def build_character_ai_script_index(data: bytes, offset_data: bytes) -> dict[int, str]:
+    """Map character ID to the stem of its `.ai` script, for characters that name one.
+
+    A malformed record is skipped, as in `build_knowledge_character_index`.
+    """
+    scripts: dict[int, str] = {}
+    for row in parse_pabr_offset_rows(offset_data):
+        try:
+            ai_script = _parse_record(data, row)["ai_script"]
+        except (ValueError, struct.error):
+            continue
+        if ai_script:
+            scripts[row.entry_id] = ai_script
+    return scripts

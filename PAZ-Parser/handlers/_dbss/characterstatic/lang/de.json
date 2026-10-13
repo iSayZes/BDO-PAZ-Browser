@@ -13,6 +13,7 @@
     "knowledgeId": "Wissens-ID",
     "npcKind": "NPC-Art",
     "classType": "Klassentyp",
+    "aiScript": "KI-Skript",
     "model": "Modell",
     "payloadSize": "Nutzdatengröße"
   },

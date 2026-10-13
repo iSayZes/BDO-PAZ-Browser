@@ -274,6 +274,7 @@
     "copiedRow": "Copied selected row.",
     "searchError": "Search error: {message}",
     "pageError": "Could not load page: {message}",
+    "recordNotFound": "No row with {field} {value} in this table",
     "cachingTables": "Caching parsed tables {done}/{total}: {name}",
     "cachingTablesPaused": "Caching parsed tables paused while the app is busy ({done}/{total})",
     "openFolder": "Open a PAZ folder to begin.",

@@ -100,8 +100,7 @@ export const previewPagingMethods = {
       if (this._activeTab !== "parsed") return true;
       content.innerHTML = result.html;
       this._scrollPreviewToTop();
-      this._initTableSort(content);
-      this._initTableIcons(content);
+      this._initParsedTable(content);
       this._setPageBar(this._buildPageBar("parsed", page, this._parsedTotalPages));
       return true;
     } finally {

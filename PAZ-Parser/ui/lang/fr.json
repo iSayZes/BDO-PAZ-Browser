@@ -274,6 +274,7 @@
     "copiedRow": "Ligne sélectionnée copiée.",
     "searchError": "Erreur de recherche : {message}",
     "pageError": "Impossible de charger la page : {message}",
+    "recordNotFound": "Aucune ligne avec {field} {value} dans ce tableau",
     "cachingTables": "Mise en cache des tables {done}/{total} : {name}",
     "cachingTablesPaused": "Mise en cache des tables en pause pendant que l'application est occupée ({done}/{total})",
     "openFolder": "Ouvrez un dossier PAZ pour commencer.",

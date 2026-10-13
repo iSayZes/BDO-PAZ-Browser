@@ -37,6 +37,8 @@ class IndexKind(Enum):
     KNOWLEDGE_LEARNING_CHARACTERS = "knowledge_learning_characters"
     # Items that teach a card through knowledgelearning.dbss.
     KNOWLEDGE_LEARNING_ITEMS = "knowledge_learning_items"
+    # Stem of the `.ai` script each character runs (characterstatic.dbss), as written.
+    CHARACTER_AI_SCRIPT = "character_ai_script"
     # Flat (item_id, cost, ...) pairs; read through _common/lease.py.
     CHARACTER_LEASES = "character_leases"
     SKILL_ICON = "skill_icon"

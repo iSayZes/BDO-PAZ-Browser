@@ -183,3 +183,17 @@ def test_search_reports_positions_in_sorted_view(config_file: Path) -> None:
     result = api.search_content(_PATH, "30", "string", "parsed")
 
     assert result["record_indices"] == [2]
+
+
+def test_find_record_reports_its_position_in_the_sorted_view(config_file: Path) -> None:
+    api = _api_with_cached_file(bytes([30, 10, 20]))
+    assert api.find_record(_PATH, "v", "10") == {"position": 1}
+
+    api.get_parsed_page(_PATH, 0, "v", "asc")  # shows 10, 20, 30
+    assert api.find_record(_PATH, "v", "10") == {"position": 0}
+    assert api.find_record(_PATH, "v", "99") == {"position": None}
+
+
+def test_find_record_needs_the_file_open(config_file: Path) -> None:
+    api = _api_with_cached_file(bytes([1]))
+    assert "error" in api.find_record("gamecommondata/binary/other.dbss", "v", "1")

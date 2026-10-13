@@ -274,6 +274,7 @@
     "copiedRow": "Fila seleccionada copiada.",
     "searchError": "Error de búsqueda: {message}",
     "pageError": "No se pudo cargar la página: {message}",
+    "recordNotFound": "No hay ninguna fila con {field} {value} en esta tabla",
     "cachingTables": "Guardando tablas en caché {done}/{total}: {name}",
     "cachingTablesPaused": "Caché de tablas en pausa mientras la aplicación está ocupada ({done}/{total})",
     "openFolder": "Abre una carpeta PAZ para empezar.",

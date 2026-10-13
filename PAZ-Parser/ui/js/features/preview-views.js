@@ -5,7 +5,8 @@ import { t } from "../core/i18n.js";
 // The toolbars of the text and image views (preview_views.py builds them):
 // Wrap lines, image zoom and background, and the pixel under the cursor.
 // Also the links between rows of a parsed table (`goto-record`, the state
-// names of an .ai script).
+// names of an .ai script), links into another table (`open-record`, the
+// characters that run an .ai script) and the .ai behavior filter (`ai-filter`).
 const ZOOM_CLASSES = ["zoom-fit", "zoom-1", "zoom-2"];
 const BACKGROUND_CLASSES = ["bg-checker", "bg-dark", "bg-light"];
 
@@ -32,6 +33,8 @@ export const previewViewMethods = {
       else if (action === "image-zoom") this._setImageZoom(button);
       else if (action === "image-background") this._setImageBackground(button);
       else if (action === "goto-record") this._showParsedRecord(Number(button.dataset.record));
+      else if (action === "ai-filter") this._toggleAiFilter(button.dataset.value);
+      else if (action === "open-record") this._openRecord(button.dataset);
     });
   },
 
@@ -39,6 +42,59 @@ export const previewViewMethods = {
   _initPreviewView(root) {
     const view = root.querySelector(".img-view");
     if (view) this._initImageReadout(view);
+  },
+
+  // Opens the file at `path` on its Parsed tab and pages to the first record
+  // whose `field` reads `value` (Api.find_record), as Ctrl+F marks a match.
+  async _openRecord({ path, field, value }) {
+    await this._selectFile(path, path.slice(path.lastIndexOf("/") + 1), "parsed");
+    if (this._selectedPath !== path || this._parsedHtml === null) return;
+    if (this._activeTab !== "parsed") this.switchTab("parsed", { isSaved: false });
+    const result = await window.pywebview.api.find_record(path, field, value);
+    if (this._selectedPath !== path) return;
+    if (result.error) {
+      this.setStatus({ key: "status.pageError", args: { message: result.error } });
+    } else if (result.position === null) {
+      this.setStatus({ key: "status.recordNotFound", args: { field, value } });
+    } else {
+      await this._showParsedRecord(result.position);
+    }
+  },
+
+  _toggleAiFilter(value) {
+    if (this._aiFilter.has(value)) this._aiFilter.delete(value);
+    else this._aiFilter.add(value);
+    this._applyAiFilter(document.getElementById("preview-content"));
+  },
+
+  // Shows only the rows whose state name carries a picked `data-behavior`
+  // (handlers/_ai/aiscript/render.py), on the page in `root`; none picked
+  // shows every row. The pick holds while paging and sorting.
+  _applyAiFilter(root) {
+    const bar = root.querySelector(".ai-filter");
+    if (!bar) return;
+    bar.querySelectorAll('button[data-action="ai-filter"]').forEach((chip) => {
+      const isOn = this._aiFilter.has(chip.dataset.value);
+      chip.classList.toggle("active", isOn);
+      chip.setAttribute("aria-pressed", String(isOn));
+    });
+    const rows = [...root.querySelectorAll(".data-table tbody tr")];
+    let shown = 0;
+    for (const row of rows) {
+      const behavior = row.querySelector(".ai-name")?.dataset.behavior;
+      row.hidden = this._aiFilter.size > 0 && !this._aiFilter.has(behavior);
+      if (!row.hidden) shown += 1;
+    }
+    bar.querySelector(".ai-filter-count").textContent = this._aiFilter.size
+      ? bar.dataset.shown.replace("{shown}", shown).replace("{total}", rows.length)
+      : "";
+  },
+
+  // A link or a find match that lands on a row the filter hides clears the filter.
+  _revealFilteredRow(row) {
+    if (!row.hidden) return;
+    this._aiFilter.clear();
+    this._applyAiFilter(document.getElementById("preview-content"));
   },
 
   _toggleTextWrap(button) {

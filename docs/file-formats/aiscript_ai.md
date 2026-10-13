@@ -13,7 +13,9 @@ character/aiscript/boss/mutanttreedummer_boss.ai
 
 ## Companion Files
 
-None. No client table found so far links a character to its script; `characterKey` values inside a script (`summonCharacter`, `target_characterKey`) are character IDs.
+None to read the script. [characterstatic.dbss](characterstatic_dbss.md#ai-script) names the script of each character by file stem, without folder or extension (`9999` for `character/aiscript/9999.ai`); the view lists those characters under Used by, through the `CHARACTER_AI_SCRIPT` lookup index. On client 3464, 5,643 of the 7,070 files have a stem some character names. The stem is not unique: 31 stems exist in two folders, mostly `character/ai_check/before/` copies of `character/aiscript/` files, and both files list the same characters.
+
+Values of attributes and condition tags whose name ends in `characterKey` are character IDs, several joined by `|`: `summonCharacter characterKey`, `summonCharacters CharacterKey`, `target_characterKey`, `checkCharacterKey`, `ownercharacterkey`.
 
 ## File Layout
 
@@ -41,7 +43,7 @@ Text, CRLF line endings. On client 3464, 4,855 files read as UTF-8 (216 of them 
 </root>
 ```
 
-Other elements directly under `<root>` on client 3464: `<macro_value_define>` (81, named expressions such as `Protected_Check="0 == (...)"`), `<compute>` (50), `<changeState>` (25), `<end>` (9), `<import filepath="/Summon/Horse.ai"/>` (3), `<start>` (3) and one `<handle>`. The AI Script view does not show them; the Text tab does.
+Other elements directly under `<root>` on client 3464: `<macro_value_define>` (81, each naming one expression, `Protected_Check="0 == (...)"`, that states use as `<compute expr="Protected_Check"/>`), `<compute>` (50), `<changeState>` (25), `<end>` (9), `<import filepath="/Summon/Horse.ai"/>` (3), `<start>` (3) and one `<handle>`. The AI Script view shows the macros and imports in its summary; the others are only in the Text tab.
 
 ### Not Valid XML
 
@@ -98,9 +100,10 @@ Most states have a Korean developer comment on the line above (`<!-- 대기 -->`
 
 ## Suggested UI Layout
 
-The `.ai` handler (`handlers/_ai/aiscript/`) shows one row per state and handler under a summary. It opens in file order and sorts by State, Behavior and Cycle:
+The `.ai` handler (`handlers/_ai/aiscript/`) names the Parsed tab AI Script and shows one row per state and handler under a summary and a behavior filter. It opens in file order and sorts by State, Behavior and Cycle:
 
-- Summary: counts of states, handlers and transitions; HP gates (transitions behind a condition on an HP variable, with the states they start from); the variables `InitialState` declares.
+- Summary: counts of states, handlers and transitions; HP gates (transitions behind a condition on an HP variable, with the states they start from); the variables `InitialState` declares. When the script has them: Used by (the characters whose `characterstatic.dbss` record names the file, `Name (ID)`, the first 40 then a count; each opens its `characterstatic.dbss` row), the macros (name and the start of the expression, all of it on hover) and the imports.
+- Behavior filter: one chip per behavior with its row count in the whole script (`handler` for handlers, `-` for a state without one); a script with one behavior has none. Picked chips show only those rows of the shown page; the pick holds while paging and sorting, and a state link or a Ctrl+F match on a hidden row clears it. On client 3464, 15 of the 7,070 files have more than 500 rows, the size of a page.
 - State: section title, name, developer comment.
 - Behavior: `behavior` (`handler` for handlers), `action`, other attributes.
 - Cycle (ms): `CallCycleTime`.
@@ -108,11 +111,11 @@ The `.ai` handler (`handlers/_ai/aiscript/`) shows one row per state and handler
 - Transitions: every-cycle transitions with their conditions as chips, then the event attributes (`exit → Wait`).
 - Reached from: states and handlers that lead here.
 
-State names are links to their row; a name the file has no state for shows in the warning colour. A variable filled by `compute expr="getHpRate()"` reads as percent of max HP, so `variable name="_HP" cmp="<=" value="70"` shows as `HP ≤ 70%`. The Text tab next to the table shows the XML with colours.
+State names are links to their row; a name the file has no state for shows in the warning colour. A variable filled by `compute expr="getHpRate()"` reads as percent of max HP, so `variable name="_HP" cmp="<=" value="70"` shows as `HP ≤ 70%`; a bound held in another variable (`value="AI_MoveWarp_HP"`) gets no `%`. A subject with exactly two conditions on a transition, a lower and an upper bound with nothing besides `cmp` and `value`, shows as one range chip: `distance cmp=">" value="300"` and `distance cmp="<=" value="500"` read `300 < distance ≤ 500`. Character IDs show with their LOC type 6 name: `target_characterKey = 27134 (Forest Sacrament) | 27135 (Sky Sacrament)`. The Text tab next to the table shows the XML with colours.
 
 ## Notes
 
-- 5,420 of 271,686 transitions on client 3464 name a state that is not in the file. Two `<import>` elements pull states from other scripts, which covers some of them.
+- 5,420 of 271,686 transitions on client 3464 name a state that is not in the file. The three `<import>` elements pull states from other scripts, which covers some of them.
 - `level cmp="<=" value="5"` and `self_combinePoint` are shown as written.
 
 ## Open Questions
@@ -129,6 +132,6 @@ State names are links to their row; a name the file has no state for shows in th
 
 Which element an unmatched end tag closes, and which value of a repeated attribute wins, in the client's own reader.
 
-### Script of a Character
+### Scripts the Client Does Not Ship
 
-No table found so far names the script a character runs, so the view has no "used by" list.
+On client 3464, 327 `characterstatic.dbss` records name one of 274 scripts with no `.ai` file (`Hadum_M0519_Demonland_Gimmick`). Whether the server holds them, or the characters are unused, is not known.

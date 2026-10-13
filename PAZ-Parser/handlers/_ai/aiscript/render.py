@@ -1,22 +1,25 @@
-"""HTML of the AI Script view: the summary over the table, and the table cells.
+"""HTML of the AI Script view: the table cells and the behavior filter.
 
 State names are buttons with `data-action="goto-record"` and the target's
 record index; ui/js/features/preview-views.js pages to that row and marks it.
-Styles: ui/css/26-ai-script.css.
+The behavior chips (`data-action="ai-filter"`) hide the rows of the shown page
+whose state name carries another `data-behavior`. The boxes over the table are
+in summary.py. Styles: ui/css/26-ai-script.css.
 """
 from __future__ import annotations
 
-from ui_text import fill_placeholders
+from collections import Counter
 
 from _common.html import e
 
 from .records import is_run_step
 from .script import KIND_HANDLER, PHASE_END, PHASE_START, PHASE_TICK
-from .steps import STEP_TRANSITION, VARIABLE_PREFIX
+from .steps import STEP_TRANSITION
 
-_INITIAL_STATE = "InitialState"
 _EMPTY = '<span class="ai-dim">-</span>'
 _PHASES = (PHASE_START, PHASE_TICK, PHASE_END)
+# The filter value of a state without a `behavior` attribute.
+_NO_BEHAVIOR = "-"
 
 
 def record_index(records: list[dict]) -> dict[str, int]:
@@ -27,12 +30,19 @@ def record_index(records: list[dict]) -> dict[str, int]:
     return index
 
 
+def behavior_key(record: dict) -> str:
+    """The filter value of a row: `handler`, or the state's behavior in lower case."""
+    if record["kind"] == KIND_HANDLER:
+        return KIND_HANDLER
+    return record["behavior"].lower() or _NO_BEHAVIOR
+
+
 class ScriptRenderer:
-    """Cells and summary of one script, with its name index and strings."""
+    """Cells of one script, with its name index and strings."""
 
     def __init__(self, records: list[dict], strings: dict) -> None:
-        self._records = records
-        self._strings = strings
+        self.records = records
+        self.strings = strings
         self._index = record_index(records)
 
     # ── Links and chips ──────────────────────────────────────────────────────
@@ -40,7 +50,7 @@ class ScriptRenderer:
     def state_link(self, name: str) -> str:
         position = self._index.get(name)
         if position is None:
-            title = e(self._strings["missingState"])
+            title = e(self.strings["missingState"])
             return f'<span class="ai-state-link missing" title="{title}">{e(name) or "-"}</span>'
         return (
             f'<button type="button" class="ai-state-link" data-action="goto-record" '
@@ -48,8 +58,9 @@ class ScriptRenderer:
         )
 
     @staticmethod
-    def _chip(text: str, is_hp: bool = False) -> str:
-        return f'<span class="ai-cond{" hp" if is_hp else ""}">{e(text)}</span>'
+    def chip(text: str, is_hp: bool = False, is_wrapped: bool = False) -> str:
+        classes = "ai-cond" + (" hp" if is_hp else "") + (" wrap" if is_wrapped else "")
+        return f'<span class="{classes}">{e(text)}</span>'
 
     def _transition_line(self, step: dict) -> str:
         parts = ['<span class="ai-arrow">→</span>', self.state_link(step["to"])]
@@ -58,8 +69,8 @@ class ScriptRenderer:
         if step["dice"]:
             parts.append(f'<span class="ai-dice">dice {e(step["dice"])}</span>')
         if step["extra"]:
-            parts.append(self._chip(step["extra"]))
-        parts += [self._chip(c["text"], c["hp"]) for c in step["conditions"]]
+            parts.append(self.chip(step["extra"]))
+        parts += [self.chip(c["text"], c["hp"], c["wrap"]) for c in step["conditions"]]
         return f'<div class="ai-transition">{"".join(parts)}</div>'
 
     def _step_line(self, step: dict) -> str:
@@ -67,22 +78,43 @@ class ScriptRenderer:
             return self._transition_line(step)
         return f'<div class="ai-action{" hp" if step["hp"] else ""}">{e(step["text"])}</div>'
 
+    # ── Behavior filter ──────────────────────────────────────────────────────
+
+    def filter_bar(self) -> str:
+        """One chip per behavior with its row count in the whole script; '' for one behavior."""
+        counts = Counter(behavior_key(record) for record in self.records)
+        if len(counts) < 2:
+            return ""
+        labels = self.strings["filter"]
+        chips = "".join(
+            f'<button type="button" class="ai-chip" data-action="ai-filter" data-value="{e(key)}" '
+            f'aria-pressed="false">{e(self.strings["handler"] if key == KIND_HANDLER else key)}'
+            f'<span class="ai-chip-count">{count:,}</span></button>'
+            for key, count in sorted(counts.items())
+        )
+        return (
+            f'<div class="ai-filter" data-shown="{e(labels["shown"])}">'
+            f'<span class="ai-filter-label">{e(labels["label"])}</span>{chips}'
+            '<span class="ai-filter-count" aria-live="polite"></span></div>'
+        )
+
     # ── Cells ────────────────────────────────────────────────────────────────
 
     def id_cell(self, record: dict, section: str) -> str:
         head = f'<div class="ai-section">{e(section)}</div>' if section else ""
         note = f'<div class="ai-note">{e(record["note"])}</div>' if record["note"] else ""
-        return f'{head}<div class="ai-name">{e(record["state"])}</div>{note}'
+        name = f'<div class="ai-name" data-behavior="{e(behavior_key(record))}">{e(record["state"])}</div>'
+        return f"{head}{name}{note}"
 
     def behavior_cell(self, record: dict) -> str:
         is_handler = record["kind"] == KIND_HANDLER
-        behavior = self._strings["handler"] if is_handler else record["behavior"]
+        behavior = self.strings["handler"] if is_handler else record["behavior"]
         lines = [f"<div>{e(behavior)}</div>" if behavior else ""]
         lines += [f'<div class="ai-detail">{e(text)}</div>' for text in (record["action"], record["attributes"]) if text]
         return "".join(lines) or _EMPTY
 
     def runs_cell(self, record: dict) -> str:
-        labels = self._strings["phases"]
+        labels = self.strings["phases"]
         blocks = []
         for phase in _PHASES:
             steps = [step for step in record["_steps"] if step["phase"] == phase and is_run_step(step)]
@@ -103,67 +135,6 @@ class ScriptRenderer:
     def reached_from_cell(self, record: dict) -> str:
         sources = record["_reached_from"]
         if not sources:
-            text = self._strings["event"] if record["kind"] == KIND_HANDLER else "-"
+            text = self.strings["event"] if record["kind"] == KIND_HANDLER else "-"
             return f'<span class="ai-dim">{e(text)}</span>'
         return f'<div class="ai-links">{"".join(self.state_link(name) for name in sources)}</div>'
-
-    # ── Summary ──────────────────────────────────────────────────────────────
-
-    def summary(self) -> str:
-        labels = self._strings["summary"]
-        return (
-            '<div class="ai-summary">'
-            f'{self._box(labels["script"], self._counts())}'
-            f'{self._box(labels["hpGates"], self._hp_gates())}'
-            f'{self._box(labels["variables"], self._variables())}'
-            '</div>'
-        )
-
-    @staticmethod
-    def _box(title: str, body: str) -> str:
-        return f'<div class="ai-box"><div class="ai-box-title">{e(title)}</div>{body}</div>'
-
-    def _counts(self) -> str:
-        labels = self._strings["summary"]
-        handlers = sum(1 for r in self._records if r["kind"] == KIND_HANDLER)
-        transitions = sum(
-            sum(1 for step in r["_steps"] if step["type"] == STEP_TRANSITION) + len(r["_edges"])
-            for r in self._records
-        )
-        counts = [
-            (len(self._records) - handlers, labels["states"]),
-            (handlers, labels["handlers"]),
-            (transitions, labels["transitions"]),
-        ]
-        items = "".join(f'<div class="ai-count"><b>{count:,}</b><span>{e(label)}</span></div>' for count, label in counts)
-        return f'<div class="ai-counts">{items}</div>'
-
-    def _hp_gates(self) -> str:
-        """Transitions behind an HP condition, one line per (condition, target)."""
-        gates: dict[tuple[str, str], dict[str, None]] = {}
-        for record in self._records:
-            for step in record["_steps"]:
-                if step["type"] != STEP_TRANSITION:
-                    continue
-                for condition in step["conditions"]:
-                    if condition["gate"]:
-                        gates.setdefault((condition["text"], step["to"]), {})[record["state"]] = None
-        if not gates:
-            return f'<div class="ai-dim">{e(self._strings["summary"]["none"])}</div>'
-        from_text = self._strings["summary"]["from"]
-        lines = "".join(
-            f'<li>{self._chip(text, True)}<span class="ai-arrow">→</span>{self.state_link(target)}'
-            f'<span class="ai-from">{e(fill_placeholders(from_text, names=", ".join(sources)))}</span></li>'
-            for (text, target), sources in gates.items()
-        )
-        return f'<ul class="ai-gates">{lines}</ul>'
-
-    def _variables(self) -> str:
-        initial = next((r for r in self._records if r["state"] == _INITIAL_STATE), None)
-        steps = [] if initial is None else [
-            step for step in initial["_steps"] if step["type"] != STEP_TRANSITION and step["tag"].lower() == "variable"
-        ]
-        if not steps:
-            return f'<div class="ai-dim">{e(self._strings["summary"]["none"])}</div>'
-        chips = "".join(self._chip(step["text"].removeprefix(f"{VARIABLE_PREFIX} "), step["hp"]) for step in steps)
-        return f'<div class="ai-vars">{chips}</div>'

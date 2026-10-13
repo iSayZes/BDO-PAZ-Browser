@@ -3,6 +3,14 @@
 import { t } from "../core/i18n.js";
 
 export const tableMethods = {
+  // What a parsed page needs once it is in the preview: sortable headers,
+  // icons, and the .ai behavior filter (preview-views.js).
+  _initParsedTable(container) {
+    this._initTableSort(container);
+    this._initTableIcons(container);
+    this._applyAiFilter(container);
+  },
+
   // Parsed tables sort on the server over every record, not just the page on
   // screen. Only headers the handler gave a sort key are clickable.
   _initTableSort(container) {

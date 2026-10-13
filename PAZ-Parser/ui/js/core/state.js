@@ -24,6 +24,9 @@ export const app = {
   _parsedTotalPages: 1,
   // Active parsed-table sort, {field, dir}, or null for file order.
   _parsedSort: null,
+  // Behaviors picked in the .ai behavior filter; rows of other behaviors are
+  // hidden on every parsed page of the open file (preview-views.js).
+  _aiFilter: new Set(),
   // Bumped per parsed page request so late responses can be dropped.
   _parsedPageSeq: 0,
   // The open view of the toolbar rail (views.js).

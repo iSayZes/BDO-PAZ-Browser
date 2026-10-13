@@ -5,9 +5,11 @@ text columns that search and CSV read are built from the same values.
 """
 from __future__ import annotations
 
-from collections.abc import Iterable
+import re
+from collections.abc import Iterable, Sequence
 
 from _ai.xml_tree import XmlNode
+from _common.character import character_name
 from .script import AiState, is_transition
 
 STEP_ACTION = "action"
@@ -19,6 +21,14 @@ VARIABLE_PREFIX = "var"
 _CHANGE_STATE = "changestate"
 _HP_EXPRESSION = "gethprate()"
 _OPS = {"<=": "≤", ">=": "≥", "==": "=", "!=": "≠"}
+# A lower bound as read from the left of a range: `distance > 300` is `300 < distance`.
+_LOWER_BOUNDS = {">": "<", ">=": "≤"}
+_UPPER_BOUNDS = frozenset({"<", "<="})
+# Attributes and condition tags that end in this hold character IDs
+# (`summonCharacter characterKey`, `target_characterKey`), several joined by `|`.
+_CHARACTER_KEY = "characterkey"
+_LIST_SEPARATOR = "|"
+_NUMBER = re.compile(r"-?\d+(?:\.\d+)?")
 # Transition attributes not repeated on the line: the target, the dice chip,
 # and the animation blend time.
 _TRANSITION_SHOWN_APART = frozenset({"state", "dice", "blendtime"})
@@ -48,8 +58,29 @@ def step_dicts(state: AiState, hp_vars: frozenset[str], hp_label: str) -> list[d
     ]
 
 
+def _is_character_key(name: str) -> bool:
+    return name.lower().endswith(_CHARACTER_KEY)
+
+
+def character_ids_text(value: str) -> str:
+    """Character IDs with their names: `28494 (Kzarka)`, several joined by ` | `.
+
+    An ID without a name in the loaded LOC, or any value that is not a whole
+    number, stays as written.
+    """
+    parts = []
+    for part in value.split(_LIST_SEPARATOR):
+        name = character_name(int(part)) if part.strip().isdigit() else ""
+        parts.append(f"{part} ({name})" if name else part)
+    return f" {_LIST_SEPARATOR} ".join(parts)
+
+
 def _attr_text(node: XmlNode, skip: frozenset[str] = frozenset()) -> list[str]:
-    return [f"{key}={value}" for key, value in node.attrs.items() if key.lower() not in skip]
+    return [
+        f"{key}={character_ids_text(value) if _is_character_key(key) else value}"
+        for key, value in node.attrs.items()
+        if key.lower() not in skip
+    ]
 
 
 def _action(phase: str, node: XmlNode, hp_vars: frozenset[str]) -> dict:
@@ -76,33 +107,107 @@ def _transition(phase: str, node: XmlNode, hp_vars: frozenset[str], hp_label: st
         "to": node.attr("state"),
         "dice": node.attr("dice"),
         "extra": extra,
-        "conditions": [condition_dict(child, hp_vars, hp_label) for child in node.children],
+        "conditions": condition_dicts(node.children, hp_vars, hp_label),
     }
 
 
+def _is_variable(node: XmlNode) -> bool:
+    return node.name == "variable" and node.has_attr("name")
+
+
+def _is_hp(node: XmlNode, hp_vars: frozenset[str]) -> bool:
+    return _is_variable(node) and node.attr("name") in hp_vars
+
+
+def _subject(node: XmlNode, hp_vars: frozenset[str], hp_label: str) -> str:
+    """What a condition tests: `HP` for an HP variable, a variable's name, else the tag."""
+    if _is_hp(node, hp_vars):
+        return hp_label
+    return node.attr("name") if _is_variable(node) else node.tag
+
+
+def condition_dicts(nodes: Sequence[XmlNode], hp_vars: frozenset[str], hp_label: str) -> list[dict]:
+    """The conditions of one transition, in file order.
+
+    A subject with exactly two conditions, a lower and an upper bound, reads as
+    one range in the place of the first: `300 < distance ≤ 500`.
+    """
+    by_subject: dict[str, list[int]] = {}
+    for position, node in enumerate(nodes):
+        by_subject.setdefault(_subject(node, hp_vars, hp_label).lower(), []).append(position)
+
+    ranges: dict[int, dict] = {}
+    for positions in by_subject.values():
+        bounds = _range_bounds([nodes[position] for position in positions])
+        if bounds is not None:
+            ranges[positions[0]] = _range_dict(*bounds, hp_vars, hp_label)
+    merged_away = {positions[1] for positions in by_subject.values() if positions[0] in ranges}
+    return [
+        ranges.get(position) or condition_dict(node, hp_vars, hp_label)
+        for position, node in enumerate(nodes)
+        if position not in merged_away
+    ]
+
+
+def _is_plain_comparison(node: XmlNode) -> bool:
+    """Only `cmp` and `value` (and a variable's `name`), so nothing is lost in a range."""
+    shown_apart = _VARIABLE_CONDITION_SHOWN_APART if _is_variable(node) else _CONDITION_SHOWN_APART
+    return node.has_attr("cmp") and node.has_attr("value") and not _attr_text(node, shown_apart)
+
+
+def _range_bounds(nodes: list[XmlNode]) -> tuple[XmlNode, XmlNode] | None:
+    """(lower, upper) when the two conditions on one subject bound it from both sides."""
+    if len(nodes) != 2 or not all(_is_plain_comparison(node) for node in nodes):
+        return None
+    lower = next((node for node in nodes if node.attr("cmp") in _LOWER_BOUNDS), None)
+    upper = next((node for node in nodes if node.attr("cmp") in _UPPER_BOUNDS), None)
+    return None if lower is None or upper is None else (lower, upper)
+
+
+def _with_unit(value: str, is_hp: bool) -> str:
+    """`70%` for a number compared with HP; a variable name (`AI_Warp_HP`) stays as written."""
+    return f"{value}%" if is_hp and _NUMBER.fullmatch(value.strip()) else value
+
+
+def _range_dict(lower: XmlNode, upper: XmlNode, hp_vars: frozenset[str], hp_label: str) -> dict:
+    is_hp = _is_hp(lower, hp_vars)
+    low_cmp, high_cmp = lower.attr("cmp"), upper.attr("cmp")
+    text = (
+        f"{_with_unit(lower.attr('value'), is_hp)} {_LOWER_BOUNDS[low_cmp]} {_subject(lower, hp_vars, hp_label)} "
+        f"{_OPS.get(high_cmp, high_cmp)} {_with_unit(upper.attr('value'), is_hp)}"
+    )
+    return {"text": text, "hp": is_hp, "gate": is_hp, "wrap": False}
+
+
 def condition_dict(node: XmlNode, hp_vars: frozenset[str], hp_label: str) -> dict:
-    """`{"text": "HP ≤ 70%", "hp": True, "gate": True}`.
+    """`{"text": "HP ≤ 70%", "hp": True, "gate": True, "wrap": False}`.
 
     `hp` marks a condition on an HP variable; `gate` leaves out `HP ≤ 100%`,
-    which always holds.
+    which always holds. `wrap` marks a list value (`Wait|Move_Random`), which
+    may break across lines.
     """
-    is_variable = node.name == "variable" and node.has_attr("name")
-    is_hp = is_variable and node.attr("name") in hp_vars
-    subject = hp_label if is_hp else node.attr("name") if is_variable else node.tag
-    unit = "%" if is_hp else ""
+    is_variable = _is_variable(node)
+    is_hp = _is_hp(node, hp_vars)
     cmp, value = node.attr("cmp"), node.attr("value")
+    if _is_character_key(node.tag):
+        value = character_ids_text(value)
 
-    parts = [subject]
+    parts = [_subject(node, hp_vars, hp_label)]
     if node.has_attr("cmp"):
-        parts.append(f"{_OPS.get(cmp, cmp)} {value}{unit}")
+        parts.append(f"{_OPS.get(cmp, cmp)} {_with_unit(value, is_hp)}")
     elif node.has_attr("min") or node.has_attr("max"):
-        parts.append(f"{node.attr('min')}…{node.attr('max')}{unit}")
+        parts.append(f"{node.attr('min')}…{_with_unit(node.attr('max'), is_hp)}")
     elif node.has_attr("value"):
-        parts.append(f"= {value}{unit}")
+        parts.append(f"= {_with_unit(value, is_hp)}")
     parts += _attr_text(node, _VARIABLE_CONDITION_SHOWN_APART if is_variable else _CONDITION_SHOWN_APART)
 
     is_always = cmp == "<=" and value == "100"
-    return {"text": " ".join(parts), "hp": is_hp, "gate": is_hp and not is_always}
+    return {
+        "text": " ".join(parts),
+        "hp": is_hp,
+        "gate": is_hp and not is_always,
+        "wrap": _LIST_SEPARATOR in value,
+    }
 
 
 def transition_text(step: dict) -> str:

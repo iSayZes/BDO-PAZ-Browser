@@ -191,6 +191,7 @@ export const treeMethods = {
     this._parsedPage = 0;
     this._parsedTotalPages = 1;
     this._parsedSort = null;
+    this._aiFilter = new Set();
     this._cancelParsedPageRequest();
     this._isAltView = false;
     this._tabLabels = null;
@@ -249,7 +250,7 @@ export const treeMethods = {
         parsedTabBtn.textContent = this._tabLabels[1];
       } else {
         hexTabBtn.textContent    = t("preview.tabHex");
-        parsedTabBtn.textContent = t("preview.tabParsed");
+        parsedTabBtn.textContent = result.parsed_label || t("preview.tabParsed");
       }
 
       if (result.has_parsed) {
@@ -287,8 +288,7 @@ export const treeMethods = {
         content.innerHTML = result.html ?? this._hexHtml;
         if (result.html) {
           this._initStreamThumbnails(content);
-          this._initTableSort(content);
-          this._initTableIcons(content);
+          this._initParsedTable(content);
           this._setPageBar(null);
         } else {
           this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", 0, this._hexTotalPages) : null);
@@ -349,8 +349,7 @@ export const treeMethods = {
       this._syncViewSearchBar();
     } else {
       content.innerHTML = this._parsedHtml || "";
-      this._initTableSort(content);
-      this._initTableIcons(content);
+      this._initParsedTable(content);
       this._setPageBar(this._parsedTotalPages > 1 ? this._buildPageBar("parsed", this._parsedPage, this._parsedTotalPages) : null);
       if (this._isAltView) {
         this.showTabSearchBar(false);

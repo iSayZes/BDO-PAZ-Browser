@@ -225,6 +225,7 @@ class PreviewMixin(ApiState):
         parsed_total_pages = 1
         tab_labels = None
         view_label = None
+        parsed_label = None
         record_count = None
 
         if is_alt:
@@ -245,6 +246,7 @@ class PreviewMixin(ApiState):
         elif has_parsed:
             self._cached_handler = handler
             self._recent_tables.viewed(handler)
+            parsed_label = handler.parsed_label()
             try:
                 start = self._ts()
                 record_count = handler.get_record_count(data, entry, companions)
@@ -282,6 +284,8 @@ class PreviewMixin(ApiState):
             "saved_tab": preview_tab_setting(load_config(), internal_path),
             # A text or image view: shown first, under this tab name next to Hex.
             "view_label": view_label,
+            # The Parsed tab's name when the handler gives one ("AI Script"); None for "Parsed".
+            "parsed_label": parsed_label,
             # A parsed text format's source (`.ai`): a Text tab after Parsed.
             "text_html": text_html,
             # For the page bar: "Rows 1-500 of N", and the byte range of a hex page.

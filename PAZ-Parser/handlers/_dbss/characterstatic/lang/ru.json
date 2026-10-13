@@ -13,6 +13,7 @@
     "knowledgeId": "ID знания",
     "npcKind": "Вид НИП",
     "classType": "Тип класса",
+    "aiScript": "Скрипт ИИ",
     "model": "Модель",
     "payloadSize": "Размер полезных данных"
   },

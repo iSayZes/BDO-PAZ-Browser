@@ -1,4 +1,5 @@
 {
+  "tab": "Script d'IA",
   "columns": {
     "state": "État",
     "behavior": "Comportement",
@@ -23,11 +24,18 @@
     "hpGates": "Seuils de PV",
     "variables": "Variables (InitialState)",
     "none": "Aucun",
-    "from": "depuis {names}"
+    "from": "depuis {names}",
+    "usedBy": "Utilisé par",
+    "macros": "Macros",
+    "imports": "Imports"
   },
   "hp": "PV",
   "handler": "handler",
   "event": "événement",
   "missingState": "Aucun état de ce nom dans le fichier",
-  "footnote": "Toutes les conditions d'une transition doivent être remplies. dice est affiché tel qu'écrit ; on ne sait pas encore s'il s'agit d'une chance en pourcentage ou d'un poids. PV est une variable que le script remplit avec getHpRate(), sa valeur est donc un pourcentage des PV max. La ligne grise sous un état est le commentaire du développeur placé au-dessus dans le fichier."
+  "filter": {
+    "label": "Comportement",
+    "shown": "{shown} lignes sur {total} sur cette page"
+  },
+  "footnote": "Toutes les conditions d'une transition doivent être remplies. dice est affiché tel qu'écrit ; on ne sait pas encore s'il s'agit d'une chance en pourcentage ou d'un poids. PV est une variable que le script remplit avec getHpRate(), sa valeur est donc un pourcentage des PV max. La ligne grise sous un état est le commentaire du développeur placé au-dessus dans le fichier. Une borne inférieure et une borne supérieure sur le même sujet s'affichent comme un seul intervalle. Les puces de comportement filtrent les lignes de la page affichée et restent actives d'une page à l'autre."
 }

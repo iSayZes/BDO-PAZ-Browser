@@ -30,7 +30,7 @@ STATIC_CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "character_id", "name", "action_script", "condition_script",
-                "knowledge_id", "npc_kind", "npc_kind_low", "class_type", "model_path", "payload_size",
+                "knowledge_id", "npc_kind", "npc_kind_low", "class_type", "ai_script", "model_path", "payload_size",
             ]
         ),
         # The data file's own count; the parser walks the offset table's rows.
@@ -43,6 +43,8 @@ STATIC_CASE = HandlerCase(
                 "action_script": "",
                 "knowledge_id": None,
                 "npc_kind": 8,
+                # The stem of character/aiscript/9999.ai.
+                "ai_script": "9999",
                 "model_path": "monster/dummy_normal",
             },
         ),
@@ -65,7 +67,8 @@ STATIC_CASE = HandlerCase(
         TargetTest(
             col="character_id",
             value=1,
-            expected={"class_type": 0, "model_path": "pc/1_phm/fighteraction_noweapon"},
+            # Player characters store their model path first and name no script.
+            expected={"class_type": 0, "ai_script": "", "model_path": "pc/1_phm/fighteraction_noweapon"},
         ),
         TargetTest(col="character_id", value=2, expected={"class_type": 4}),
     ],

@@ -13,6 +13,7 @@
     "knowledgeId": "Knowledge ID",
     "npcKind": "NPC Kind",
     "classType": "Class Type",
+    "aiScript": "AI Script",
     "model": "Model",
     "payloadSize": "Payload Size"
   },

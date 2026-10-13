@@ -1,6 +1,7 @@
 /* ── AI Script view (.ai, handlers/_ai/aiscript/render.py) ───────────────── */
 
-/* Summary: counts, HP gates, InitialState variables */
+/* Summary: counts, HP gates, InitialState variables, and when the script has
+   them the characters that run it, macros and imports */
 .ai-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -56,6 +57,68 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px 8px;
+}
+/* A long variable value (`_WaypointValue1 = [...]`) wraps inside its box */
+.ai-vars .ai-cond {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.ai-expr {
+  min-width: 0;
+  color: var(--color-text-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+/* Behavior filter: one chip per behavior, over the table */
+.ai-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+}
+.ai-filter-label,
+.ai-filter-count {
+  color: var(--color-text-3);
+  font-size: 12px;
+}
+.ai-filter-count {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+.ai-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text-2);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  user-select: none;
+}
+.ai-chip:hover {
+  border-color: var(--color-line-hover);
+  color: var(--color-text);
+}
+.ai-chip.active {
+  border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+.ai-chip:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+.ai-chip-count {
+  color: var(--color-text-3);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Table: rows grow with their steps, text wraps in the step columns */
@@ -133,6 +196,10 @@
 .ai-cond.hp {
   background: var(--color-accent-soft);
   color: var(--color-accent);
+}
+/* A list value (`32001 (Wolf) | 32002 (Wolf)`) may break across lines */
+.ai-cond.wrap {
+  white-space: normal;
 }
 .ai-dice {
   background: color-mix(in srgb, var(--color-data) 12%, transparent);

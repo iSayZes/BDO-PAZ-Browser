@@ -234,6 +234,7 @@ export const tabSearchMethods = {
     const rows = document.querySelectorAll("table tbody tr");
     const target = rows[localIndex];
     if (!target) return;
+    this._revealFilteredRow(target);
     target.classList.add("search-match");
 
     // #preview-content is the scroll container; sticky thead is top:0 inside it.

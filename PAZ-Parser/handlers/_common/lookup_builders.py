@@ -35,7 +35,7 @@ from _bss.submenu.parser import build_submenu_icon_index, build_submenu_icon_reg
 from _bwp.waypoint.worldmap import WORLDMAP_FILE, build_node_link_index
 from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
-from _dbss.characterstatic.parser import build_knowledge_character_index
+from _dbss.characterstatic.parser import build_character_ai_script_index, build_knowledge_character_index
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
 from _dbss.detail_dialog.parser import build_character_lease_index
 from _dbss.instancefield.parser import build_instance_field_name_index
@@ -136,6 +136,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.KNOWLEDGE_CHARACTERS,
         (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
         build_knowledge_character_index,
+    ),
+    # Character -> its AI script, for the "Used by" list of an .ai file.
+    IndexSpec(
+        IndexKind.CHARACTER_AI_SCRIPT,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_ai_script_index,
     ),
     IndexSpec(
         IndexKind.KNOWLEDGE_LEARNING_CHARACTERS,

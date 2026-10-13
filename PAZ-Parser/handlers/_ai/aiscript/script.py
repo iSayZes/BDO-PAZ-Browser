@@ -5,16 +5,22 @@ A state runs its `<start>` children once on entry, its other children every
 `state` attribute (`changeState`, `findTarget`, ...) is a transition to that
 state; its own children are the conditions that must all hold. A handler
 (`HandleTakeDamage`, ...) runs its children when the event happens.
+
+Under `<root>` next to them: `<macro_value_define>` names expressions that a
+`compute expr` can use (`Protected_Check="0 == (...)"`), and `<import
+filepath="/Summon/Horse.ai"/>` pulls in the states of another script.
 """
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 
+from _ai.sections import section_and_note
 from _ai.xml_tree import XmlNode, parse_xml
 
 KIND_STATE = "state"
 KIND_HANDLER = "handler"
+_MACROS = "macro_value_define"
+_IMPORT = "import"
 
 PHASE_START = "start"
 PHASE_TICK = "tick"
@@ -28,11 +34,6 @@ EDGE_ATTRS = frozenset({
 })
 # Attributes a state row shows in their own columns.
 _OWN_ATTRS = frozenset({"name", "behavior", "action", "callcycletime"})
-
-# A comment with a run of these is a section title such as
-# `<!-- ■■■ 비전투 상태 ■■■ -->` or `<!-- 비 전투 상태 ----- -->`.
-_DECORATION = re.compile(r"■|[-=*#~]{3,}")
-_DECORATION_CHARS = "■□◆◇●○★☆▶▷◀◁-=*#~ "
 
 
 @dataclass(frozen=True)
@@ -53,33 +54,36 @@ class AiState:
     steps: tuple[tuple[str, XmlNode], ...]
 
 
+@dataclass(frozen=True)
+class AiScript:
+    states: tuple[AiState, ...]
+    # (name, expression) of every `<macro_value_define>` attribute, in file order.
+    macros: tuple[tuple[str, str], ...]
+    # `filepath` of every `<import>`, as written.
+    imports: tuple[str, ...]
+
+
 def is_transition(node: XmlNode) -> bool:
     return node.has_attr("state")
 
 
-def parse_script(text: str) -> list[AiState]:
-    """States and handlers of the script, in file order."""
+def parse_script(text: str) -> AiScript:
+    """States and handlers of the script in file order, with its macros and imports."""
     document = parse_xml(text)
     root = next((node for node in document.children if node.name == "root"), document)
     states: list[AiState] = []
     section = ""
     for node in root.children:
-        section, note = _section_and_note(node.comments, section)
+        section, note = section_and_note(node.comments, section)
         if node.name in (KIND_STATE, KIND_HANDLER):
             states.append(_state(node, section, note))
-    return states
-
-
-def _section_and_note(comments: tuple[str, ...], section: str) -> tuple[str, str]:
-    note = ""
-    for comment in comments:
-        if _DECORATION.search(comment):
-            title = comment.strip(_DECORATION_CHARS)
-            if title:
-                section, note = title, ""
-        else:
-            note = comment
-    return section, note
+    return AiScript(
+        states=tuple(states),
+        macros=tuple(
+            (key, value) for node in root.children if node.name == _MACROS for key, value in node.attrs.items()
+        ),
+        imports=tuple(node.attr("filepath") for node in root.children if node.name == _IMPORT),
+    )
 
 
 def _state(node: XmlNode, section: str, note: str) -> AiState:

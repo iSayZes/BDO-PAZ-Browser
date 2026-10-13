@@ -274,6 +274,7 @@
     "copiedRow": "Выбранная строка скопирована.",
     "searchError": "Ошибка поиска: {message}",
     "pageError": "Не удалось загрузить страницу: {message}",
+    "recordNotFound": "В этой таблице нет строки с {field} {value}",
     "cachingTables": "Кэширование таблиц {done}/{total}: {name}",
     "cachingTablesPaused": "Кэширование таблиц приостановлено, пока приложение занято ({done}/{total})",
     "openFolder": "Откройте папку PAZ, чтобы начать.",

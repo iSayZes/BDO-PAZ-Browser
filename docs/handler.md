@@ -946,6 +946,13 @@ class AiScriptHandler(PreviewHandler):
 
 The `.ai` handler (`handlers/_ai/aiscript/`) is the one user so far.
 
+## Tab Name
+
+The Parsed tab reads "Parsed" unless the handler overrides `parsed_label()`
+to return a name in its own language. The `.ai` handler names it from its
+`lang/*.json` (`"tab": "AI Script"`); `load_entry` passes it on as
+`parsed_label`.
+
 ## Links Between Rows
 
 A button with `data-action="goto-record"` and `data-record="<index>"` pages
@@ -954,6 +961,20 @@ the parsed table to that record and marks its row, as Ctrl+F does
 the shown order: take it from the `records` list `render_records_page()`
 gets, which is the sorted list on a sorted page. The `.ai` state names use it
 (`handlers/_ai/aiscript/render.py`).
+
+A button with `data-action="open-record"`, `data-path` (a PAZ path),
+`data-field` and `data-value` opens that file on its Parsed tab and pages to
+the first record whose field reads the value, compared as text
+(`Api.find_record()` in `api/bdo_api_search.py`, `_openRecord()` in
+`preview-views.js`). The status bar says so when no record matches.
+`record_link()` in `_common/html.py` builds the button. The `.ai` Used by box
+links each character to its `characterstatic.dbss` row.
+
+The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
+`preview-views.js`) hide the rows of the shown page whose `.ai-name` carries
+another `data-behavior`. The pick holds while paging and sorting and clears
+when another file opens, or when a link or a Ctrl+F match lands on a hidden
+row.
 
 ## Shared Helpers
 
@@ -1160,6 +1181,7 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_CHARACTERS` | `characterstatic.dbss`, `characterstaticoffset.dbss` | character IDs (tuple) |
 | `KNOWLEDGE_LEARNING_CHARACTERS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | character IDs (tuple) |
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
+| `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
 | `SKILL_ICON`     | `skilltype.dbss`, `skilltypeoffset.dbss`   | icon path      |
 | `SKILL_NAME_KR`  | `skilltype.dbss`, `skilltypeoffset.dbss`   | Korean name    |
@@ -1203,6 +1225,12 @@ in ascending ID order. The two overlap but neither covers the other, so the
 `KNOWLEDGE_LEARNING_ITEMS` maps a card to the items that teach it (table 1),
 in ascending ID order; the Learned From Items column shows them with
 `item_key_list_cell()`.
+
+`CHARACTER_AI_SCRIPT` maps a character to the AI script its
+[characterstatic.dbss](file-formats/characterstatic_dbss.md) record names, a
+file stem as written (`Monsters_Main_Manager`). The `.ai` handler reads the
+whole index and keeps the characters whose stem matches its file, without
+case, for its Used by box.
 
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
 option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),

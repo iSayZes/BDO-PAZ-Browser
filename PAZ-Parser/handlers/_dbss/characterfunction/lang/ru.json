@@ -9,7 +9,16 @@
     "name": "Название",
     "functions": "Функции",
     "managedNodes": "Управляемые узлы",
-    "town": "Поселение"
+    "town": "Поселение",
+    "itemGroups": "Группы предметов",
+    "mounts": "Транспорт"
+  },
+  "itemGroupKinds": {
+    "shopBuy": "Магазин",
+    "shopSell": "Магазин (Продажа)",
+    "guildShopBuy": "Магазин гильдии",
+    "guildShopSell": "Магазин гильдии (Продажа)",
+    "trade": "Торговля"
   },
   "meta": {
     "count": "Записей: {count}"

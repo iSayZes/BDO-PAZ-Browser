@@ -211,29 +211,8 @@
   color: var(--color-data);
 }
 
-/* A state name that pages to its row; one the file lacks is a dotted warning */
-.ai-state-link,
-.ai-state-link:hover {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-  color: var(--color-data);
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: inherit;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--color-data) 35%, transparent);
-  text-underline-offset: 2px;
-}
-.ai-state-link:hover {
-  color: var(--color-text-strong);
-}
-.ai-state-link:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 1px;
-}
+/* A state name that pages to its row, styled with .record-link in
+   11-data-tables.css; one the file lacks is a dotted warning */
 .ai-state-link.missing {
   color: var(--color-warning);
   cursor: default;

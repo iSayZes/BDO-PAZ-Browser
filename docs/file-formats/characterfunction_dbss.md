@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The dialog functions of every NPC: one record per character, holding the buttons its dialog window offers (Shop, Repair, Stable, Conversation, Node Management and so on), each with its Korean button text and an optional condition script that hides it. The Node Management slot also lists the nodes the NPC manages and the town it represents.
+The dialog functions of every NPC: one record per character, holding the buttons its dialog window offers (Shop, Repair, Stable, Conversation, Node Management and so on), each with its Korean button text and an optional condition script that hides it. The Node Management slot also lists the nodes the NPC manages and the town it represents, the shop, guild shop and trade slots point at the [`itemmaingroup.bss`](itemmaingroup_bss.md) item lists of their Buy and Sell tabs, and the stable slot lists the vehicle types it keeps.
 
 Example:
 
@@ -11,6 +11,8 @@ character 40025 Emma Bartali  -> Trade, Conversation, Node Management
                                  manages Bartali Farm (21), Potato Farming (131), ... Specialties (104)
 character 40017 Igor Bartali  -> represents Velia (node 1)
 character 24646 Cradle - Sol Magia -> Shop, Repair
+character 47459 Benyamin      -> Shop: buy group 50503 (potions), sell group 52001
+character 59279 Miles         -> Stable: 53 RaceHorse
 ```
 
 ## Companion Files
@@ -91,17 +93,17 @@ On the slots with a `has_button` field, that u8 is `1` exactly when `name` is no
 
 | #  | Offset   | Slot                         | LOC | Records | Korean names                                                       | LOC text                                                        | Slot fields |
 | -- | -------- | ---------------------------- | --- | ------: | ------------------------------------------------------------------ | --------------------------------------------------------------- | ----------- |
-| 1  | `+0x004` | `shop`                       | 0   | 893     | 상점, 환전소, 비밀 상점, 일꾼 계약, 그믐달 상점, ... (25 names)      | Shop, Currency Exchange, Secret Shop, Contract Workers, Old Moon Shop, War Shop (Tier 1) ... | u32 `unknown_014` |
-| 2  | `+0x018` | `unknown_018`                | -   | 0       |                                                                    |                                                                 | u32 `unknown_028` |
-| 3  | `+0x02C` | `guild_shop`                 | 4   | 63      | 길드 상점, 길드 군수품, 길드 대장 상점                              | Guild Shop, Guild Military Supply, Guild Master Shop            | u32 `unknown_03c` |
-| 4  | `+0x040` | `unknown_040`                | -   | 0       |                                                                    |                                                                 | u32 `unknown_050` |
-| 5  | `+0x054` | `trade`                      | 2   | 125     | 무역                                                               | Trade, Trading                                                  | u32 `unknown_064` |
+| 1  | `+0x004` | `shop`                       | 0   | 893     | 상점, 환전소, 비밀 상점, 일꾼 계약, 그믐달 상점, ... (25 names)      | Shop, Currency Exchange, Secret Shop, Contract Workers, Old Moon Shop, War Shop (Tier 1) ... | u32 `shop_buy_group` |
+| 2  | `+0x018` | `shop_sell`                  | -   | 0       |                                                                    |                                                                 | u32 `shop_sell_group` |
+| 3  | `+0x02C` | `guild_shop`                 | 4   | 63      | 길드 상점, 길드 군수품, 길드 대장 상점                              | Guild Shop, Guild Military Supply, Guild Master Shop            | u32 `guild_shop_buy_group` |
+| 4  | `+0x040` | `guild_shop_sell`            | -   | 0       |                                                                    |                                                                 | u32 `guild_shop_sell_group` |
+| 5  | `+0x054` | `trade`                      | 2   | 125     | 무역                                                               | Trade, Trading                                                  | u32 `trade_group` |
 | 6  | `+0x068` | `auction`                    | 6   | 48      | 일꾼거래소, 황실 경매, 길드 하우스 경매, 경매 : 천년의 걸작          | Worker Exchange, Imperial Auction, Guild House Auction, Auction: Thousand Years Masterpiece | u32 `unknown_078`, u8[14] `unknown_07c`, u32 `unknown_08a`, u8[32] `unknown_08e` |
 | 7  | `+0x0AE` | `learn_skill`                | 10  | 53      | 기술 배우기                                                        | Learn Skills                                                    | u8 `has_button` |
 | 8  | `+0x0BF` | `repair`                     | 11  | 260     | 수리                                                               | Repair                                                          | u8 `has_button` |
 | 9  | `+0x0D0` | `traces_of_blood`            | -   | 9       | 피의 흔적                                                          |                                                                 | u8 `has_button` |
 | 10 | `+0x0E1` | `storage`                    | 12  | 34      | 창고                                                               | Storage                                                         | u8 `has_button` |
-| 11 | `+0x0F2` | `stable`                     | 13  | 171     | 마구간, 선착장, 길드 선착장, 길드 탑승물 관리                       | Stable, Wharf, Guild Wharf, Manage Guild Mounts                 | u8 `unknown_102`, u8 list `unknown_103` |
+| 11 | `+0x0F2` | `stable`                     | 13  | 171     | 마구간, 선착장, 길드 선착장, 길드 탑승물 관리                       | Stable, Wharf, Guild Wharf, Manage Guild Mounts                 | u8 `servant_where_type`, u8 list `vehicle_types` |
 | 12 | `+0x107` | `transport`                  | 14  | 32      | 수송                                                               | Transport                                                       | u8 `has_button` |
 | 13 | `+0x118` | `unknown_118`                | -   | 0       |                                                                    |                                                                 | u8 `has_button` |
 | 14 | `+0x129` | `conversation`               | 16  | 1,133   | 이야기 교류                                                        | Conversation                                                    | u8 `has_button`, u8 `unknown_13a` |
@@ -129,7 +131,7 @@ On the slots with a `has_button` field, that u8 is `1` exactly when `name` is no
 | 36 | `+0x2B2` | `pet_training`               | 38  | 6       | 반려동물 5세대 훈련                                                | Tier 5 Pet Training                                             | u8 `has_button`, u8 `unknown_2c3` |
 | 37 | `+0x2C4` | `lightstone`                 | 39  | 1       | 광명석 교환/정화                                                   | Lightstone                                                      | u8 `unknown_2d4` |
 
-A list is a u32 count followed by that many items. The slot keys are the parser's names, after the button text; the five `unknown_*` slots never have button text.
+A list is a u32 count followed by that many items. The slot keys are the parser's names, after the button text; `shop_sell` and `guild_shop_sell` are named after their item group (see Slot Fields). They and the four `unknown_*` slots never have button text.
 
 ### Tail (7 bytes)
 
@@ -144,15 +146,15 @@ A list is a u32 count followed by that many items. The slot keys are the parser'
 
 | Field               | Slot               | Observed                                                                                     |
 | ------------------- | ------------------ | -------------------------------------------------------------------------------------------- |
-| `unknown_014`       | `shop`             | Non-zero on 884 of the 893 shop records and nowhere else; 491 values in `32,002` to `55,053` |
-| `unknown_028`       | `unknown_018`      | `52001` (683), `52002` (41), `32001` (16), `52004` (3), else `0`; the slot never has a button |
-| `unknown_03c`       | `guild_shop`       | Non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908`             |
-| `unknown_050`       | `unknown_040`      | `52003` on 61 records, else `0`                                                              |
-| `unknown_064`       | `trade`            | Non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146`                 |
+| `shop_buy_group`    | `shop`             | `itemmaingroup.bss` group of the Shop window's Buy tab; non-zero on 884 of the 893 shop records and nowhere else; 491 values in `32,002` to `55,053` |
+| `shop_sell_group`   | `shop_sell`        | Group of the Sell tab: `52001` (683), `52002` (41), `32001` (16), `52004` (3), else `0`; the slot never has a button |
+| `guild_shop_buy_group` | `guild_shop`    | Group of the guild shop's Buy tab; non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908` |
+| `guild_shop_sell_group` | `guild_shop_sell` | Group of the guild shop's Sell tab: `52003` on 61 of the 63 guild shop records, else `0` |
+| `trade_group`       | `trade`            | `itemmaingroup.bss` group; non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146` |
 | `unknown_078`       | `auction`          | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
 | `unknown_08a`       | `auction`          | `104` on 46 shop NPCs without an auction button, 44 of them with `unknown_078` = `105`; the two `u8` spans around it are always zero |
-| `unknown_102`       | `stable`           | `0` Stable and Wharf, `1` Guild Wharf and Manage Guild Mounts, `2` and `5` one stable each, `9` without a stable |
-| `unknown_103`       | `stable`           | u8 list; Stable `0, 2, 3, 9, 28, 32, 40, 48, 53` (80), Wharf `18, 29, 33, 44, 46, 52, 55, 56, 57, 60` (34), Guild Wharf `34`, Manage Guild Mounts `4, 35, 63` |
+| `servant_where_type` | `stable`          | `CppEnums.ServantWhereType`, see Vehicle Types; `9` without a stable                         |
+| `vehicle_types`     | `stable`           | u8 list of `CppEnums.VehicleType` values, see Vehicle Types; empty without a stable          |
 | `managed_node_keys` | `node_management`  | `exploration.bss` node keys whose `manager_family_id` is this character, in all 957 entries  |
 | `town_node_keys`    | `node_management`  | One node on 21 records, each a town whose `exploration.bss` `representative_id` is this character (Velia `1` -> 40017) |
 | `unknown_13a`       | `conversation`     | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0`                     |
@@ -170,6 +172,37 @@ A list is a u32 count followed by that many items. The slot keys are the parser'
 
 The `<Null>` text is a placeholder: `season_special_gift` stores it as `name` in 2,139 records, and LOC type `32` index `34` holds `<Null>` for 138 of them. It is not a button.
 
+### Item Groups
+
+The five `*_group` fields are [`itemmaingroup.bss`](itemmaingroup_bss.md) group IDs; all 884, 743, 63, 61 and 125 non-zero values are in its ID set (client 3464). The client's shop window (`panel_dialog_npcshop_all_1.luac`) has a Buy and a Sell tab, filled from `npcShop_getBuyCount()` / `npcShop_getItemBuy()` and `npcShop_getSellCount()` / `npcShop_getItemSell()`, and opens for `npcShop_isShopContents()` or `npcShop_isGuildShopContents()`. Each shop and guild shop NPC stores two groups, and their items tell them apart:
+
+| Field                   | Example (client 3464)                                                                                       |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `shop_buy_group`        | General store Benyamin (47459): group 50503, HP and MP potions; Currency Exchange Lafi Bedmountain (47745): 50022, Gold Bar 1G to 10,000G |
+| `shop_sell_group`       | 52001, 11,556 items on 683 NPCs, holding Black Stone and Iron Ore but not Memory Fragment or Cron Stone; 52002 on 41 NPCs, 36 of them Currency Exchange, Gold Bars and Bartali Gold Bar; 52004 on the 3 Crow Shop NPCs, ocean materials such as Luminous Cobalt Ingot |
+| `guild_shop_buy_group`  | Edan (47754): 51100, `[Guild]` potions, Parchment, Seal                                                      |
+| `guild_shop_sell_group` | 52003, 390 items such as `[Guild] HP Potion (Small)`                                                                                   |
+| `trade_group`           | Isobelle Encarotia (47747): 54146; every trade group lists subgroup 54001 (item 55151) under `checkexplore(103, 1)` |
+
+`shop_sell_group` sits in its own slot right after `shop` and `guild_shop_sell_group` after `guild_shop`. 11 records set `shop_sell_group` without a shop button; all of them hold `52001`.
+
+Checked in game (2026-10-14, client 3464): Benyamin's Shop Sell tab lists 14 items from a full inventory, Black Stone among them, and every one of them is in group `52001`, his `shop_sell_group`. The Memory Fragment in the same inventory, which `52001` does not hold, is not listed. His Purchase tab lists exactly the 18 items of his `shop_buy_group`, `50503` (HP and MP potions, Medical Kit, the two Alchemy Tools, Empty Crystal and the two Atanis Fireflies), in the order the subgroup stores them.
+
+### Vehicle Types
+
+`vehicle_types` is a u32 count and that many u8 `CppEnums.VehicleType` values (`global_define_cpp_enum.luac`). Every stored value is an enum member. The list is in stored order and can repeat a value: 8 stables store `53` twice.
+
+| Button               | `servant_where_type` | `vehicle_types` (client 3464)                                                                                   |
+| -------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Stable (91)          | `0` User             | `0` Horse, `2` Camel, `3` Donkey, `9` Carriage, `28` CowCarriage, `32` MountainGoat, `40` RidableBabyElephant, `48` RepairableCarriage, `53` RaceHorse; 88 stables take all nine |
+| Wharf (40)           | `0` User             | `18` Boat, `29` Raft, `33` FishingBoat, `44` PersonalBattleShip, `46` PersonTradeShip, `52` PersonalBoat, `55` FastShip, `56` CashPersonalTradeShip, `57` CashPersonalBattleShip, `60` Carrack; 34 wharves take all ten, 5 only the first three, 1 all but FastShip |
+| Guild Wharf (20)     | `1` Guild            | `34` SailingBoat                                                                                                |
+| Manage Guild Mounts (18) | `1` Guild        | `4` Elephant, `35` Train, `63` GuildDragon                                                                      |
+| Stable, Forward Supply Depot (37094) | `2` Siege | `0` Horse, `2` Camel                                                                                  |
+| Stable, Miles (59279) | `5` RaceHorse       | `53` RaceHorse                                                                                                  |
+
+`servant_where_type` follows `CppEnums.ServantWhereType` (`ServantWhereTypeUser` 0, `Guild` 1, `Siege` 2, `RaceHorse` 5); the enum gives `5` to both `Camping` and `RaceHorse`, and the one stable with `5` takes only race horses. The `9` on the 1,975 records without a stable is past `ServantWhereTypeCount` (8).
+
 ## Suggested UI Layout
 
 | Column        | Type | Notes                                                                                   |
@@ -179,23 +212,24 @@ The `<Null>` text is a placeholder: `season_special_gift` stores it as `name` in
 | Functions     | text | Button of each slot with button text, in slot order: LOC type `32` (`str_id1` = character ID, `str_id4` = the slot's LOC index), else the Korean `name` |
 | Managed Nodes | text | `managed_node_keys` by LOC type `29` name (`Bambu Valley - Mining` for sub-nodes), else the key |
 | Town          | text | `town_node_keys` the same way                                                           |
+| Item Groups   | text | Each non-zero `*_group` field as a label (Shop, Shop (Sell), Guild Shop, Guild Shop (Sell), Trade) and the group ID linking to its `itemmaingroup.bss` row, one per line |
+| Mounts        | text | `vehicle_types` as `value EnumName` (`0 Horse`), each value once, in stored order        |
 
-Conditions and the `unknown_*` fields stay out of the table.
+Conditions, `servant_where_type` and the `unknown_*` fields stay out of the table.
 
 ## Notes
 
 - 97 records have no button text in any slot.
 - LOC type `32` names buttons for 2,049 of the 2,146 characters. It also holds 69 characters this file has no record for, and an index `33` (`temp` or `[PH]`) on 436 records, 414 of them Node Management NPCs, that matches no slot.
 - The slot order is close to, but not the same as, the client's `CppEnums.ContentsType` (`Contents_Shop`, `Contents_Skill`, `Contents_Repair`, `Contents_Auction`, `Contents_Warehouse`, `Contents_IntimacyGame`, `Contents_Stable`, ... in `global_define_cpp_enum.luac`), and the LOC indexes do not follow the slot order either (Trade is LOC `2` but the fifth slot).
-- `unknown_103` looks like vehicle types: the Lua `CppEnums.VehicleType` lists `Type_Horse`, `Type_Cannon`, `Type_Camel`, `Type_Donkey`, `Type_Elephant` first, which fits `0, 2, 3` on stables and `4` on Manage Guild Mounts, but the later values were not checked against the enum's numbers.
-- `itemtradegrouptonpc.dbss` is keyed by character ID too (47747 is a trade NPC), so `unknown_064` is not its key.
+- `itemtradegrouptonpc.dbss` is keyed by character ID too (47747 is a trade NPC), so `trade_group` is not its key.
 - `unknown_268` values are not `exploration.bss` node keys: only 31 of 91 match a node, and those nodes belong to other managers.
 
 ## Open Questions
 
-### Slot Keys
+### Auction Keys
 
-The u32 after the shop, guild shop, trade and auction strings, and in the two slots that never have a button, look like keys into another table (shop `50022`, guild shop `51100`, trade `54146`, auction `140` for Worker Exchange). No client table with these keys has been found, so they stay `unknown_*`.
+`unknown_078` (`140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction) and `unknown_08a` (`104`) look like keys into another table, but none of their values is an `itemmaingroup.bss` group ID (0 of 94 and 0 of 46 records, client 3464), and no other client table with these keys has been found.
 
 ### Head and Tail Bytes
 
@@ -203,7 +237,7 @@ The u32 after the shop, guild shop, trade and auction strings, and in the two sl
 
 ### Slots Without Button Text
 
-Five slots (`unknown_018`, `unknown_040`, `unknown_118`, `unknown_175`, `unknown_1aa`) never carry button text, although `unknown_018` and `unknown_040` carry keys on 743 and 61 records. They may be functions whose button text the client builds itself, such as Inn or Socket.
+Four slots (`unknown_118`, `unknown_175`, `unknown_1aa`, `unknown_1f0`) never carry button text; their fields are always `0`, or `0xFFFF` for `unknown_1ba`. They may be functions whose button text the client builds itself, such as Inn or Socket.
 
 ### Territory-like Values
 

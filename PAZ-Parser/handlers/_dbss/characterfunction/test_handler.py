@@ -6,8 +6,10 @@ from typing import Any
 import pytest
 
 from _bss.exploration.parser import parse_exploration_records
+from _bss.itemmaingroup.parser import parse_itemmaingroup_records
 from _common.pabr_offset import parse_pabr_offset_rows
-from _dbss.characterfunction.layout import SLOTS
+from _common.vehicle_type import VEHICLE_TYPE_NAMES
+from _dbss.characterfunction.layout import ITEM_GROUP_FIELDS, SLOTS
 from _dbss.characterfunction.parser import parse_characterfunction_records
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
@@ -40,6 +42,8 @@ FUNCTION_CASE = HandlerCase(
                 "character_id", "name", "functions", "functions_text",
                 "managed_node_keys", "managed_nodes", "managed_nodes_text",
                 "town_node_keys", "town_nodes", "town_nodes_text",
+                *(field for _, field in ITEM_GROUP_FIELDS),
+                "vehicle_types", "vehicles", "vehicles_text",
             ]
         ),
         # The data file's own count; the parser walks the offset table's rows.
@@ -128,3 +132,36 @@ def test_node_lists_match_exploration(function_result: HandlerResult) -> None:
     ]
 
     assert not mismatches
+
+
+def test_item_groups_are_itemmaingroup_groups(function_result: HandlerResult) -> None:
+    """Every non-zero shop, sell and trade group is a group ID of itemmaingroup.bss."""
+    group_ids = {group.group_id for group in parse_itemmaingroup_records(load_binary_fixture("itemmaingroup.bss"))}
+
+    missing = [
+        (record["character_id"], field, record[field])
+        for record in function_result.records
+        for _, field in ITEM_GROUP_FIELDS
+        if record[field] and record[field] not in group_ids
+    ]
+
+    assert not missing
+
+
+def test_vehicle_types_are_enum_members(function_result: HandlerResult) -> None:
+    """Stable vehicle types are CppEnums.VehicleType values, and only stables store them."""
+    source = function_result.source
+    records = parse_characterfunction_records(
+        source.data, parse_pabr_offset_rows(source.file(_OFFSET_FILE))
+    )
+
+    unknown = [
+        (record.character_id, value)
+        for record in records
+        for value in record.vehicle_types
+        if value not in VEHICLE_TYPE_NAMES
+    ]
+    without_stable = [record.character_id for record in records if record.vehicle_types and not record.slot("stable").name]
+
+    assert not unknown
+    assert not without_stable

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Item subgroups: named lists of items that other tables hand out as a group. Each record is one subgroup key followed by its item entries. Worker production uses it through [`plantexchangegroup.bss`](plantexchangegroup_bss.md) (`item_subgroup_key`); the other 16,000+ subgroups belong to tables not decoded yet (drops, boxes, trade goods). `itemsubgroupoffset.dbss` is required to address the variable-length records.
+Item subgroups: named lists of items that other tables hand out as a group. Each record is one subgroup key followed by its item entries. Worker production uses it through [`plantexchangegroup.bss`](plantexchangegroup_bss.md) (`item_subgroup_key`); NPC shops and trade managers reach theirs through [`itemmaingroup.bss`](itemmaingroup_bss.md) groups; the other subgroups belong to tables not decoded yet (drops, boxes, trade goods). `itemsubgroupoffset.dbss` is required to address the variable-length records.
 
 ```text
 subgroup 42356 -> Elder Tree Timber (4611), Bloody Tree Knot (5005), Elder Tree Sap (5014)
@@ -115,7 +115,7 @@ One row per subgroup; the item list is the useful part.
 - Worker production subgroups use one entry shape only: `enchant_level=0`, `unknown_33=1,000,000`, every other field zero (815 entries in 364 subgroups). 278 of their 281 distinct item IDs have an English LOC type 0 name; 4016, 4017 and 4415 have none.
 - Subgroup 55000 (246 entries) lists trade goods: crates such as Pepper Crate (7401) and Garlic Crate (7402), packaged dried fish such as Packaged Dried Dace (55947), and items such as Mansha Goblin Mask (55026), and 54001 holds one entry (item 55151). They are the only subgroups that set `unknown_37` to `unknown_83`; the i64 fields look like a price range (`unknown_43 < unknown_3b < unknown_4b`), but that is not confirmed.
 - The largest subgroups are 52001 (11,560 entries), 32001 (707) and 52003 (391).
-- The 36 subgroup keys that `plantzone.dbss` zones reach but this index lacks (41208-41212, 43183-43195, 44059, 44060, 44860-44874, 45018) have no record in `bartersubgroup.bss` or `limiteditemsubgroup.bss` either (45018 matches bytes in `limiteditemsubgroup.bss` only inside unrelated rows). 44059 and 44060 do appear as u32 values in the undocumented `itemmaingroup.bss`, which may be a lead for those two.
+- The 36 subgroup keys that `plantzone.dbss` zones reach but this index lacks (41208-41212, 43183-43195, 44059, 44060, 44860-44874, 45018) have no record in `bartersubgroup.bss` or `limiteditemsubgroup.bss` either (45018 matches bytes in `limiteditemsubgroup.bss` only inside unrelated rows). 44059 and 44060 are [`itemmaingroup.bss`](itemmaingroup_bss.md) group IDs, pointing at subgroups 42339 and 42340 (client 3464); the other 34 are not.
 
 ## Open Questions
 

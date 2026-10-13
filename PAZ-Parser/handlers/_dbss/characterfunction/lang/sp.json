@@ -9,7 +9,16 @@
     "name": "Nombre",
     "functions": "Funciones",
     "managedNodes": "Nodos gestionados",
-    "town": "Pueblo"
+    "town": "Pueblo",
+    "itemGroups": "Grupos de objetos",
+    "mounts": "Monturas"
+  },
+  "itemGroupKinds": {
+    "shopBuy": "Tienda",
+    "shopSell": "Tienda (Vender)",
+    "guildShopBuy": "Tienda de hermandad",
+    "guildShopSell": "Tienda de hermandad (Vender)",
+    "trade": "Comercio"
   },
   "meta": {
     "count": "{count} entradas"

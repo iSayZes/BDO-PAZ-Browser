@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupId": "Group ID",
+    "subgroups": "Subgroups",
+    "itemCount": "Items",
+    "items": "Item Names"
+  },
+  "meta": {
+    "count": "{count} item main groups · {entries} subgroup entries"
+  }
+}

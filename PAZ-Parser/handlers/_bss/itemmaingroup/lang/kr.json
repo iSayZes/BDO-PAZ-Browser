@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupId": "그룹 ID",
+    "subgroups": "하위 그룹",
+    "itemCount": "아이템",
+    "items": "아이템명"
+  },
+  "meta": {
+    "count": "아이템 메인 그룹 {count}개 · 하위 그룹 항목 {entries}개"
+  }
+}

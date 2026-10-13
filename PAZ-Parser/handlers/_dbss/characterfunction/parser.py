@@ -20,7 +20,7 @@ from types import MappingProxyType
 from _common.binary import u16
 from _common.pabr_offset import PabrOffsetRow
 from _common.record_reader import RecordReader
-from .layout import HEAD_FIELDS, SLOTS, TAIL_FIELDS, FieldSpec, SlotSpec
+from .layout import HEAD_FIELDS, ITEM_GROUP_FIELDS, SLOTS, TAIL_FIELDS, FieldSpec, SlotSpec
 
 FieldValue = int | tuple[int, ...]
 
@@ -60,9 +60,26 @@ class CharacterFunctionRecord:
         """Town nodes this character represents (`exploration.bss` representative)."""
         return self._node_keys("town_node_keys")
 
+    @property
+    def vehicle_types(self) -> tuple[int, ...]:
+        """`CppEnums.VehicleType` values the stable takes, as stored; one can repeat."""
+        return self._list_field("stable", "vehicle_types")
+
+    @property
+    def item_groups(self) -> dict[str, int]:
+        """`itemmaingroup.bss` group IDs by field name, 0 for none, in slot order."""
+        return {field: self._int_field(slot, field) for slot, field in ITEM_GROUP_FIELDS}
+
     def _node_keys(self, field: str) -> tuple[int, ...]:
-        keys = self.slot("node_management").fields[field]
-        return keys if isinstance(keys, tuple) else ()
+        return self._list_field("node_management", field)
+
+    def _list_field(self, slot: str, field: str) -> tuple[int, ...]:
+        values = self.slot(slot).fields[field]
+        return values if isinstance(values, tuple) else ()
+
+    def _int_field(self, slot: str, field: str) -> int:
+        value = self.slot(slot).fields[field]
+        return value if isinstance(value, int) else 0
 
 
 def parse_characterfunction_records(

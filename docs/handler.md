@@ -967,9 +967,12 @@ A button with `data-action="open-record"`, `data-path` (a PAZ path),
 the first record whose field reads the value, compared as text
 (`Api.find_record()` in `api/bdo_api_search.py`, `_openRecord()` in
 `preview-views.js`). The status bar says so when no record matches.
-`record_link()` in `_common/html.py` builds the button. The `.ai` Used by box
-links each character to its `characterstatic.dbss` row, and the `.cl` view
-each skill number to its first `skill.dbss` row.
+`record_link()` in `_common/html.py` builds the button; the `record-link`
+class (`11-data-tables.css`) styles it as a link in a table cell. The `.ai`
+Used by box links each character to its `characterstatic.dbss` row, the `.cl`
+view each skill number to its first `skill.dbss` row, `characterfunction.dbss`
+each shop group to its `itemmaingroup.bss` row, and `itemmaingroup.bss` each
+subgroup to its `itemsubgroup.dbss` row.
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries

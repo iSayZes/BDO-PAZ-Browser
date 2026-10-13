@@ -57,12 +57,16 @@ HEAD_FIELDS: tuple[FieldSpec, ...] = (
     _u8("unknown_003"),
 )
 
+# The `*_group` fields are `itemmaingroup.bss` group IDs, 0 for none: the shop
+# window's Buy and Sell tab lists, and the trade item list. `vehicle_types`
+# holds `CppEnums.VehicleType` values, `servant_where_type` a
+# `CppEnums.ServantWhereType` (9 on records without a stable).
 SLOTS: tuple[SlotSpec, ...] = (
-    SlotSpec("shop", 0, (_u32("unknown_014"),)),
-    SlotSpec("unknown_018", None, (_u32("unknown_028"),)),
-    SlotSpec("guild_shop", 4, (_u32("unknown_03c"),)),
-    SlotSpec("unknown_040", None, (_u32("unknown_050"),)),
-    SlotSpec("trade", 2, (_u32("unknown_064"),)),
+    SlotSpec("shop", 0, (_u32("shop_buy_group"),)),
+    SlotSpec("shop_sell", None, (_u32("shop_sell_group"),)),
+    SlotSpec("guild_shop", 4, (_u32("guild_shop_buy_group"),)),
+    SlotSpec("guild_shop_sell", None, (_u32("guild_shop_sell_group"),)),
+    SlotSpec("trade", 2, (_u32("trade_group"),)),
     SlotSpec(
         "auction",
         6,
@@ -77,7 +81,7 @@ SLOTS: tuple[SlotSpec, ...] = (
     SlotSpec("repair", 11, (_HAS_BUTTON,)),
     SlotSpec("traces_of_blood", None, (_HAS_BUTTON,)),
     SlotSpec("storage", 12, (_HAS_BUTTON,)),
-    SlotSpec("stable", 13, (_u8("unknown_102"), FieldSpec("unknown_103", "u8[]"))),
+    SlotSpec("stable", 13, (_u8("servant_where_type"), FieldSpec("vehicle_types", "u8[]"))),
     SlotSpec("transport", 14, (_HAS_BUTTON,)),
     SlotSpec("unknown_118", None, (_HAS_BUTTON,)),
     SlotSpec("conversation", 16, (_HAS_BUTTON, _u8("unknown_13a"))),
@@ -112,6 +116,15 @@ SLOTS: tuple[SlotSpec, ...] = (
     SlotSpec("yar", 36, (_u8("unknown_2b1"),)),
     SlotSpec("pet_training", 38, (_HAS_BUTTON, _u8("unknown_2c3"))),
     SlotSpec("lightstone", 39, (_u8("unknown_2d4"),)),
+)
+
+# (slot key, field) of every `itemmaingroup.bss` group ID, in slot order.
+ITEM_GROUP_FIELDS: tuple[tuple[str, str], ...] = (
+    ("shop", "shop_buy_group"),
+    ("shop_sell", "shop_sell_group"),
+    ("guild_shop", "guild_shop_buy_group"),
+    ("guild_shop_sell", "guild_shop_sell_group"),
+    ("trade", "trade_group"),
 )
 
 TAIL_FIELDS: tuple[FieldSpec, ...] = (

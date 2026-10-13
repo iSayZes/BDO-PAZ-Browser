@@ -129,24 +129,88 @@ Traditional Alchemy Repair Tool.
 
 ### Structure Body (`object_kind != 2`, 1,160 records)
 
-Houses, buildings, farms, tents, barricades and siege towers. Only the leading strings are walked with certainty; see [Open Questions](#open-questions).
+Houses, buildings, farms, tents, barricades and siege towers. Follows `model_path`. Verified for every structure record of client 3464: walking these fields ends exactly at `data_size` (`test_record_walk.py` walks all records of the installed client).
 
-| Order | Type     | Field           | Notes                                                              |
-| ----- | -------- | --------------- | ------------------------------------------------------------------ |
-| 1     | string   | hull_model_path | Present in all 1,160 records; the model path with a `_HH` or `_HH_NR` suffix |
-| 2     | string   | hull_name       | Empty in 220 records (towers, barricades); houses use `HH_<a>_<b>_<c>_<d>_<e>` |
-| 3     | u8       | has_hull        | `1` when hull geometry follows                                     |
-| 4     | ...      | hull geometry   | Float geometry, see below                                          |
-| 5     | string   | material_path   | e.g. `Real_ETC/Material/Icon_Real_ETC_Material_Tent_N_00000000.dds` |
-| 6     | string   | unknown string  | Observed `10`                                                      |
-| 7     | wstring  | name_kr, description_kr | Houses only; UTF-16-LE Korean name and description           |
-| 8     | string   | icon_path       | Houses use per-house icons such as `Icon/New_Icon/03_ETC/06_Housing/2101-1.dds` |
+| Order | Type        | Field           | Notes                                                              |
+| ----- | ----------- | --------------- | ------------------------------------------------------------------ |
+| 1     | string      | hull_model_path | The model path with a `_HH` or `_HH_NR` suffix                     |
+| 2     | string      | hull_name       | Empty when `layer_count` is `0`; houses use `HH_<a>_<b>_<c>_<d>_<e>`, other structures a model name such as `Tower_AdBase_01_HH_NR` |
+| 3     | u8          | unknown_flag    | `1` (1,085) or `0` (75)                                            |
+| 4     | u32         | layer_count     | Hull layers that follow; `0` to `4`                                |
+| 5     | u32         | unknown_b       | Always equal to `layer_count`                                      |
+| 6     | ...         | layers          | `layer_count` times, see [Hull Layers](#hull-layers)               |
+| 7     | u8[333]     | unknown_block   | Fixed block, not decoded                                           |
+| 8     | string      | material_path   | e.g. `Real_ETC/Material/Icon_Real_ETC_Material_Tent_N_00000000.dds`; never empty |
+| 9     | u8[16]      | unknown_after_material | Not decoded                                                 |
+| 10    | string      | unknown_digits  | ASCII digits; see below                                            |
+| 11    | ...         | tail            | [House Tail](#house-tail) when `hull_name` starts with `HH_`, else [Structure Suffix](#structure-suffix) |
 
-The hull geometry starts with three u32 values (`a`, `b`, `hull_count`), then per hull a u32 `face_count` and `face_count * 140` bytes of f32 data. 12 faces is by far the most common (1,852 hulls). `a` and `b` are always equal (`0`, `1`, `2`, `3` or `4`). This walk lands a constant 333 bytes before `material_path` for 769 single-floor records, but not for multi-floor houses.
+On client 3464, `layer_count` is `0` in 220 records (barricades, siege towers and
+other guild structures, all with an empty `hull_name`), `1` in 820, `2` in 102,
+`3` in 17 and `4` in 1. The records with two or more layers are houses (kinds
+`1`, `5` and `9`). `unknown_digits` is `10` in every record except the 25 kind
+`1` records, which hold 21 other values from `60` to `900`.
+
+#### Hull Layers
+
+| Order | Type           | Field      | Notes                                       |
+| ----- | -------------- | ---------- | ------------------------------------------- |
+| 1     | u32            | hull_count | Hulls in this layer; `1` to `17`            |
+| 2     | ...            | hulls      | `hull_count` times: a u32 `face_count`, then `face_count * 140` bytes of f32 data |
+
+On client 3464, 2,267 of the 2,321 hulls have 12 faces. Earlier versions of
+this doc read `a`, `b` and `hull_count` as one header; the hull count repeats
+per layer, so a walk that read it once ended short on every multi-layer house.
+
+#### House Tail
+
+The 865 records whose `hull_name` starts with `HH_` (client 3464: kinds `5`
+(815), `1` (25), `9` (17) and `36` (8)).
+
+| Order | Type    | Field          | Notes                                                  |
+| ----- | ------- | -------------- | ------------------------------------------------------ |
+| 1     | wstring | name_kr        | UTF-16-LE Korean text; see below                       |
+| 2     | wstring | description_kr | UTF-16-LE Korean text; see below                       |
+| 3     | u8[162] | house_block    | Fixed block, not decoded                               |
+| 4     | string  | icon_path      | Set in all 865; e.g. `Icon/New_Icon/03_ETC/06_Housing/2101-1.dds` |
+| 5     | string  | icon_path_2    | Set in 17 records, as `<id>-2.dds` or `<id>_2.dds` next to slot 1 |
+| 6     | string  | unknown_path_3 | Empty in all 865                                       |
+| 7     | string  | unknown_path_4 | Empty in all 865                                       |
+| 8     | u8[24]  | house_tail     | Not decoded                                            |
+
+`name_kr` is not the house name. On client 3464, 817 of the 865 records store
+the same placeholder pair: `풋내기 대장장이의 집` ("Novice Blacksmith's House")
+and a description of that house. Only these records carry their own text:
+
+| Records | `name_kr`                                            | `description_kr`             |
+| ------: | ---------------------------------------------------- | ---------------------------- |
+| 25      | Guild house names, e.g. `벨리아 길드 하우스`           | `{TextBind:GUILDHOUSE_01}` to `_25` |
+| 17      | Annex lines, e.g. `<PAColor0xFFf3d900>알사비의 별채<PAOldColor>\n주문서 : 신체 강화법\n일일 의뢰 : 토벌` | The placeholder story |
+| 6       | `대저택`                                              | `대저택`                      |
+
+`icon_path` names the record's own ID (`2101-1.dds`, `3823.dds`) in 686
+records; the rest share one, such as the five Radiant Lands, Angavu and
+Cheongsa Island houses 3874 to 3878 on `3873.dds`.
+
+#### Structure Suffix
+
+The 295 records whose `hull_name` does not start with `HH_` end in a fixed
+234-byte block. Bytes `+0` to `+15` are zero, `+152` is a u16 `0xFFFF` and
+`+226` a u32 `0xFFFFFFFF` in all of them; the u8 at `+148` is `0` in the 220
+records with an empty `hull_name` and `1` in the other 75. The rest is not
+decoded.
 
 ### Icon Path
 
-The icon index does not walk the structure body; it scans each record for the first `icon/...(dds|png)` match. 4,817 of 5,123 records contain one, and 17 contain more than one; the index keeps the first. Material paths (`Real_ETC/Material/Icon_...`) have no `icon/` folder, so the scan skips them.
+The icon index does not walk the record body; it scans each record for the first `icon/...(dds|png)` match. 4,817 of 5,123 records contain one, and 17 contain more than one; the index keeps the first. Material paths (`Real_ETC/Material/Icon_...`) have no `icon/` folder, so the scan skips them. On client 3464, the 17 records with two matches are the houses with an `icon_path_2`, and the first match is their `icon_path`.
+
+The walked `icon_path` (furniture body, or slot 1 of the house tail) gives the same PAZ path as the scan for 5,124 of the 5,129 records of client 3464. On the other five the walked path names no file the client ships, so the index keeps the scan:
+
+| Character | Stored `icon_path`                                       | Scan                                    |
+| --------- | -------------------------------------------------------- | --------------------------------------- |
+| 15267 to 15269 | `Icon/New_Icon/03_ETC/06_Housing/Rot_Island_OBJ_Deco_20.dds?` (`_21`, `_22`) | Drops the stray `?`; the `.dds` file exists |
+| 15031     | `Icon/New_Icon/03_ETC/06_Housing/InHouse_Ber_DPFO_Jukebox_01.pam` | No match, so no own icon |
+| 4758      | `Icon/New_Icon/03_ETC/06_Housing/Inhouse_Cash_View_035_SetBdds` | No match, so no own icon |
 
 Two stored forms, which resolve to the same PAZ folder:
 
@@ -195,7 +259,7 @@ Grouped by model folder; the kind numbers are observed, not named by the client.
 | Kind         | num  | `object_kind`                                              |
 | Model        | text | `model_path`                                               |
 
-The handler parses only the record prefix. The inline Korean house names are not used as a name fallback, because reaching them means walking the hull geometry (see [Open Questions](#open-questions)).
+The handler parses only the record prefix. It does not fall back to `name_kr` when LOC type `6` has no name: on client 3464 the only houses a LOC leaves unnamed are 3874 to 3878 in `languagedata_ru.loc` (the en, de, fr and sp files name all 865), and all five store the placeholder `풋내기 대장장이의 집`.
 
 ## Notes
 
@@ -212,9 +276,9 @@ The handler parses only the record prefix. The inline Korean house names are not
 
 Only about 20 of the 556 block bytes vary. `unknown_17a` takes round values (`10`, `25`, `50`, `100`, `125`, `200`) that fit interior points, and the u8 `unknown_21b` is `100` almost everywhere, but neither has been matched to in-game data.
 
-### Multi-floor Hull Geometry
+### Structure Body Blocks
 
-The hull walk (`a`, `b`, `hull_count`, then `face_count * 140` bytes per hull) accounts for single-hull records only. Houses with `a = b = 2` or more leave a consistent but different remainder (181 bytes for 102 records), so a per-floor structure sits between the hulls that is not decoded yet. Until it is, fields after the geometry can only be found by scanning.
+The walk crosses `unknown_block` (333 bytes), `unknown_after_material` (16), `house_block` (162), `house_tail` (24) and the 234-byte structure suffix without decoding them. Also open: whether a hull layer is a house floor (only houses have two or more), what `unknown_flag` and `unknown_b` select, and what the 21 `unknown_digits` values of the kind `1` records (`60` to `900`) measure.
 
 ### Kind Names
 

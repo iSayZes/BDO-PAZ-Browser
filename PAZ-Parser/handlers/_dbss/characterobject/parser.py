@@ -5,8 +5,9 @@ Each record opens with a fixed prefix, then a body chosen by `object_kind`:
     u16 character_id | u8 object_kind | u8 x3 | model_path | kind-specific body
 
 Only the prefix is parsed here. The icon path sits at no fixed offset in the
-body, so the icon index scans for it instead. Full layout in
-docs/file-formats/characterobject_dbss.md.
+body, so the icon index scans for it instead of walking the body: the scan
+also drops the stray `?` three stored paths end with. Full layout in
+docs/file-formats/characterobject_dbss.md; test_record_walk.py walks it.
 
 Unlike `itemenchant.dbss`, blocks are not stored in key order, so offsets jump
 around the file and a contiguity check on consecutive rows fails.

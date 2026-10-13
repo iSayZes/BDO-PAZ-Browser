@@ -32,6 +32,7 @@ _EVENT_FENCE_CHARACTER = 2053
 _WEAPON = 697192
 # Balacs Lunchbox, a yellow (grade 3) item (itemenchant_dbss.md).
 _BALACS_LUNCHBOX = 9359
+_LIGHT_LEATHER_BARDING = 52602
 # Kzarka Gauntlet enhances +1 to +15, then PRI to PEN: levels 1-20.
 _KZARKA_GAUNTLET = 11210
 # Its enchantstaticstatus.dbss key (enchantstaticstatus_dbss.md).
@@ -66,6 +67,13 @@ _ORDINARY_GEAR = 1
 _BLACKSTAR_LONGSWORD = 715001
 _BLACKSTAR = 2
 _KHARAZAD = 21
+# Equipment types the tooltip names (PaGlobalFunc_Util_ClassEquipParts):
+# longsword 1 (a main-hand type), necklace 15.
+_LONGSWORD = 1
+_NECKLACE = 15
+_BLACK_STONE = 16001
+# Servant gear with a non-empty `unknown_5d`, so its later header fields move.
+_OQUILLA_SAIL_BALANCE = 607887
 
 
 def _base_item_count(offsets: bytes) -> int:
@@ -103,6 +111,10 @@ CASE = HandlerCase(
                 "max_enchant_level",
                 "enchant_key",
                 "enhancement_type",
+                "equip_type",
+                "equip_slot",
+                "slot",
+                "stackable",
                 "required_level",
                 "class_mask",
                 "classes",
@@ -263,6 +275,33 @@ CASE = HandlerCase(
             value=_APPRENTICES_MEDICINE_BOX,
             expected={"trade_type": 3, "trade": "Imperial Crafting Delivery"},
         ),
+        # Gear names its slot as the tooltip does and does not stack.
+        TargetTest(
+            col="item_id",
+            value=_BASTEER_LONGSWORD,
+            expected={"slot": "Main Weapon", "equip_type": _LONGSWORD, "stackable": False},
+        ),
+        TargetTest(
+            col="item_id",
+            value=_KHARAZAD_NECKLACE,
+            expected={"slot": "Necklace", "equip_type": _NECKLACE, "stackable": False},
+        ),
+        # Items that are not equipment have no slot and type; materials and food stack.
+        TargetTest(
+            col="item_id",
+            value=_BLACK_STONE,
+            expected={"slot": "", "equip_type": None, "stackable": True},
+        ),
+        TargetTest(col="item_id", value=_BALACS_LUNCHBOX, expected={"slot": "", "stackable": True}),
+        # Mount gear (no class can wear it) shows the bare slot number, not "Armor".
+        TargetTest(col="item_id", value=_LIGHT_LEATHER_BARDING, expected={"slot": "3"}),
+        # The fields after `unknown_5d` are read past its entries: a sail
+        # places no character and casts no skill.
+        TargetTest(
+            col="item_id",
+            value=_OQUILLA_SAIL_BALANCE,
+            expected={"character_id": None, "skill_keys": []},
+        ),
     ],
 )
 
@@ -306,6 +345,46 @@ def test_every_block_opens_and_closes_with_its_packed_key(itemenchant_result: Ha
     ]
 
     assert not bad, f"blocks whose key copies differ from the offset row: {bad[:5]}"
+
+
+def test_every_block_walks_to_its_name_and_icon(itemenchant_result: HandlerResult) -> None:
+    """The counted lists lead to the Korean name and an icon path in every block, every level."""
+    from _dbss.itemenchant.layout import read_block_strings
+    from _dbss.itemenchant.parser import parse_itemenchantoffset_records
+
+    source = itemenchant_result.source
+    data = source.data
+    bad = []
+    for row in parse_itemenchantoffset_records(source.file(_OFFSET_FILE)):
+        start = row["data_offset"]
+        strings = read_block_strings(data, start, start + row["data_size"])
+        if not strings.name_kr or not strings.icon.lower().endswith(".dds"):
+            bad.append(row["key"])
+
+    assert not bad, f"blocks whose walk ends on no name or icon: {bad[:5]}"
+
+
+def test_slot_label_hashes_match_stringtable() -> None:
+    from _bss.stringtable.parser import GAME_SHEET, parse_key_hashes
+    from _dbss.itemenchant.slot_labels import SLOT_LABELS
+    from tests.fixtures import load_binary_fixture
+
+    hashes = parse_key_hashes(load_binary_fixture("stringtable.bss"), GAME_SHEET)
+    wrong = {
+        label.key: (label.key_hash, hashes.get(label.key))
+        for label in SLOT_LABELS.values()
+        if hashes.get(label.key) != label.key_hash
+    }
+    assert not wrong, f"slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+
+
+def test_every_stored_slot_has_a_label(itemenchant_result: HandlerResult) -> None:
+    """A slot the client adds shows as a bare number until it gets a label."""
+    from _dbss.itemenchant.slot_labels import NO_SLOT, SLOT_LABELS
+
+    unlabelled = {r["equip_slot"] for r in itemenchant_result.records} - set(SLOT_LABELS) - {NO_SLOT}
+    assert not unlabelled, f"equip_slot values without a label: {sorted(unlabelled)}"
+    assert all(record["slot"] for record in itemenchant_result.records if record["equip_slot"] != NO_SLOT)
 
 
 def test_item_grade_index_matches_the_grade_column(itemenchant_result: HandlerResult) -> None:
@@ -400,7 +479,7 @@ def test_build_character_item_index_links_placed_objects_and_pets() -> None:
     assert index[_EVENT_FENCE_CHARACTER] == _EVENT_FENCE
     # [Pet] Striped Cat (Tier 3) summons character 9425, "Cat".
     assert index[9425] == 860014
-    # Named by 120 unrelated items, so it is not a link and is left out.
+    # Servant gear read without its `unknown_5d` entries once named character 1.
     assert 1 not in index
 
 

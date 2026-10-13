@@ -1219,7 +1219,8 @@ IDs (`LookupValue`).
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
-[itemenchant.dbss](file-formats/itemenchant_dbss.md)); characters named by zero
+[itemenchant.dbss](file-formats/itemenchant_dbss.md), moved back by the
+`unknown_5d` byte count on mount and ship gear); characters named by zero
 or several items are left out. The `characterobject.dbss` Item column reads it.
 
 `KNOWLEDGE_CHARACTERS` maps a knowledge card to every character whose

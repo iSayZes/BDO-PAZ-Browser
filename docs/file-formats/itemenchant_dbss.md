@@ -112,11 +112,23 @@ Per-item maximum on the 2026-09-27 client, checked in game (2026-09-28):
 
 ## Block Structure
 
-Only the key, the placed character and the strings are confirmed. A block
-opens with its packed key and ends with a large run of enchant-related numeric
-fields that are not yet decoded. On client 3464 both copies of the key, at
-`+0x00` and at end-6, equal the offset row's key in all 168,680 blocks. An earlier version of this
-doc called both the item ID, which holds only for the level-0 blocks.
+A block opens with its packed key and a header of fixed fields, then counted
+lists, the Korean name and the icon path, and ends with a large run of
+enchant-related fields that are not yet decoded. On client 3464 both copies of
+the key, at `+0x00` and at end-6, equal the offset row's key in all 168,680
+blocks. An earlier version of this doc called both the item ID, which holds
+only for the level-0 blocks.
+
+The header holds one counted field, `unknown_5d`. The offsets below hold for
+blocks where its count is `0`; every field after it moves by the count. On
+client 3464 the count is `1` in 740 blocks and `4` in one (all levels; 120
+base items with `1`, Ashen Crow Horse Gear with `4`), all of them mount or
+ship gear: horse and donkey barding, saddles, stirrups, champrons and
+horseshoes, Oquilla and Epheria Carrack parts, Galley parts. Read at the
+fixed offsets, the 120 base items with `1` named character `1`, cast skill
+key `1` and stored `0xFFFFFF00` at `+0x65`; read past the count they name no
+character, cast no skill and store `0x7FFFFFFF` like other gear. Required
+level, dyeable and durability change with them.
 
 | Offset  | Type | Field    | Notes                                    |
 | ------- | ---- | -------- | ---------------------------------------- |
@@ -124,25 +136,32 @@ doc called both the item ID, which holds only for the level-0 blocks.
 | `+0x04` | u8   | item_type    | Tooltip class (`EItemType`), see below                       |
 | `+0x05` | u8   | category     | Item classification                                          |
 | `+0x06` | u8   | grade        | `0` to `5`, the item name colour, see below                  |
-| `+0x07` | ...  | unknown      | Numeric fields                                               |
-| `+0x13` | u8[43] | unknown_13 | Always `0x2E` in all 70,284 base blocks                     |
+| `+0x07` | u8   | equip_type   | Equipment type; `0` on items that are not equipment. See below |
+| `+0x08` | u8[6] | unknown     | Numeric fields                                               |
+| `+0x0E` | u8   | equip_slot   | Equipment slot, `__eEquipSlotNo`; `46` when the item goes in no slot. See below |
+| `+0x0F` | u8   | unknown      | `2` (60,289 base items), `0` (8,581) or `1` (1,343) on client 3464 |
+| `+0x10` | u8[46] | unknown    | `equip_slot` values, the rest filled with `46`; see `equip_slot` below |
 | `+0x3E` | u8   | unknown_3e   |                                                              |
 | `+0x3F` | i32  | weight       | Divide by 10,000 for LT                                      |
-| `+0x43` | ...  | unknown      | Numeric fields                                               |
+| `+0x43` | u8   | stackable    | `1` when copies of the item share one inventory slot; see below |
+| `+0x44` | u8   | unknown_44   | `1` in 10,027 base items on client 3464, see Open Questions  |
 | `+0x45` | u32  | expiration_minutes | `0` when the item does not expire; set in 4,580 base items |
 | `+0x49` | u8   | vested_type  | When the item binds: `0` never (34,516 base items), `1` when obtained (17,372), `2` when equipped (18,396) |
 | `+0x4A` | u8   | family_bound | `1` binds to the family, `0` to the character; set in 5,942 base items |
 | `+0x4B` | u8   | for_trade    | `1` on trade goods that Trade Managers buy; 2,007 base items |
 | `+0x4C` | u8   | trade_type   | Kind of trade good, only set with `for_trade`, see below     |
 | `+0x4D` | u64  | class_mask   | Classes that can use the item, bit `n` for class ID `n`. All-class items set most bits, so test single bits |
-| `+0x55` | ...  | unknown      | Numeric fields                                               |
+| `+0x55` | u8[8] | unknown     | Numeric fields                                               |
+| `+0x5D` | u32  | unknown_5d   | Count, followed by that many bytes; `0` except on mount and ship gear, see above. The bytes are `1` to `4` on the Epheria Carrack parts, matching Advance, Balance, Volante and Valor, and `1, 4, 5, 10` on Ashen Crow Horse Gear |
 | `+0x61` | u8   | required_level | Character level needed to use the item; `0` or `1` when there is none, above `1` in 3,734 base items |
-| `+0x62` | ...  | unknown      | Numeric fields                                               |
+| `+0x62` | u8[3] | unknown     | Numeric fields                                               |
+| `+0x65` | u32  | unknown_65   | bdo-data-extractor: max stack. See In-Game Checks            |
+| `+0x69` | ...  | unknown      | Numeric fields                                               |
 | `+0x6E` | i64  | buy_price    |                                                              |
 | `+0x76` | i64  | sell_price   |                                                              |
 | `+0x7E` | i32  | repair_price |                                                              |
 | `+0x82` | ...  | unknown      | Numeric fields                                               |
-| `+0xA8` | u8   | dyeable      | `0`: the item cannot be dyed (45,895 base items). `1` (24,373): it can, if it also has dye parts, which this file does not hold, see below. 16 wagon parts store `3` |
+| `+0xA8` | u8   | dyeable      | `0`: the item cannot be dyed (45,780 base items on client 3464). `1` (24,433): it can, if it also has dye parts, which this file does not hold, see below |
 | `+0xA9` | u8   | unknown_a9   |                                                              |
 | `+0xAA` | u16  | character_id | Character the item places or summons; `0` when none. See below |
 | `+0xAC` | u8   | unknown_ac   | Not the number of dye slots, see below. `0` on all 3,960 object links; across base items `0` (61,650), `1` (4,786), `2` (2,165), `5` (1,052), `10` (218) |
@@ -156,10 +175,11 @@ doc called both the item ID, which holds only for the level-0 blocks.
 | `+0xCA` | u16  | unknown_ca   |                                                              |
 | `+0xCC` | u32  | skill_key_1  | Skill a consumable casts, a [`skill.dbss`](skill_dbss.md) key; its `buff_ids` are the item's buffs; `0` when none |
 | `+0xD0` | u32  | skill_key_2  | Second skill, used by composite meals; `0` when none          |
-| `+0xD4` | ...  | unknown      | Numeric fields up to the name: 16 or 21 bytes in most base blocks, 176 in 597 gear blocks, then `enchant_key` (u32, just before the Korean name's length prefix): with the block's level it is the key of [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); `0` in 40,025 base items (client 3458), which have no enhancement data. Every level of an item stores the key of its base block (all 70,213 items on client 3464) |
-| varies  | ...  | name_kr      | Korean item name: u64 character count, then UTF-16LE text that ends where the icon's prefix starts. Present in all 70,284 base blocks (client 3458) |
-| varies  | ...  | strings      | One or two length-prefixed ASCII strings                     |
-| varies  | ...  | unknown  | Remaining enchant data                   |
+| `+0xD4` | ...  | lists        | Counted lists up to the name, see below                      |
+| varies  | u32  | enchant_key  | With the block's level, the key of [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); `0` in 40,025 base items (client 3458), which have no enhancement data. Every level of an item stores the key of its base block (all 70,213 items on client 3464) |
+| varies  | ...  | name_kr      | Korean item name: u64 character count, then UTF-16LE text. Present in all 70,284 base blocks (client 3458) |
+| varies  | ...  | icon         | Icon path, a length-prefixed ASCII string; see below          |
+| varies  | ...  | unknown  | Remaining enchant data, see After the icon |
 
 Checked on Balacs Lunchbox (`9359`): `item_type` 2, `grade` 3, `weight`
 1,000 (0.1 LT), `buy_price` 38,775, `sell_price` 1,551, and a non-zero
@@ -285,9 +305,109 @@ the counts are base items here.
 Values 11 to 20 also occur (1,092 items) and are unnamed. Every one of the
 3,597 `Installation` items and the 279 `Tent` items names a placed character.
 
+#### `equip_type`
+
+The type the item tooltip names after "Equipment": `panel_tooltip_item`
+passes `getEquipType()` to `PaGlobalFunc_Util_ClassEquipParts`
+(`include/global_util_ui`), which maps it to a slot label. On client 3464
+the values it lists match the slots the items store, except `43`: the Lua
+labels it Matchlock, and its four items, such as Bird-Hunting Matchlock, go
+in slot 0.
+
+| `equip_type` | Lua labels | `equip_slot` | Examples |
+| ------------ | ---------- | ------------ | -------- |
+| 1, 2, 3, 6, 28, 29, 31, 63, 65, 67, 73, 78, 80, 83, 86, 88, 89, 93, 96, 97, 100, 109, 112, 114, 116 | main weapon | 0 | Basteer Longsword (1), Arsha's Kriegsmesser IV (63) |
+| 8, 32, 33, 34, 36, 37, 55, 56, 66, 70, 74, 79, 81, 87, 90, 94, 98, 99, 108, 110, 113, 115, 117 | sub-weapon | 1 | Sovereign Kunai (55) |
+| 9, 11, 12, 13 | upper body, gloves, boots, helm | 3, 4, 5, 6 | Golden Crow Armor, Tuvala Helmet |
+| 15, 16, 17, 18 | necklace, ring, earring, belt | 7, 8, 10, 12 | Kharazad Necklace, Young Crow Ring, Young Crow Earring, Young Crow Belt |
+| 22, 24, 25, 26 | avatar chest, gloves, boots, helm | 14, 15, 16, 17 | Outfits |
+| 30, 35, 38 to 41 | avatar weapons, underwear, face decorations | 18 to 23 | |
+| 44, 59, 48, 53 | fishing rod, float, harpoon, matchlock | 40, 41, 42, 43 | Thin Harpoon (48), Verti Matchlock (53) |
+| 46, 54, 57, 58, 72, 92 | gathering tool, alchemy stone, awakening weapon and its outfit, Adventurer's Tome, artifact | 2, 27, 29, 30, 31, 32 | |
+
+`PaGlobalFunc_Equipment_All_AccSlotNo` (`panel_window_equipment_all_3`)
+picks the first or second ring, earring or artifact slot for types `16`,
+`17` and `92`; the items store only the first (8, 10 and 32; no base item
+stores 9, 11 or 33 on client 3464). The client Lua has no name per value, so
+the table does not show it yet; it stays on the record and in the export. Equipment (`item_type` 1) always
+stores a non-zero type and a slot below `46`, and every other item stores
+`0` and `46` (29,918 and 40,295 base items on client 3464).
+
+#### `equip_slot`
+
+`__eEquipSlotNo`, the slot `ToClient_getEquipmentItem` and the servant's
+`getEquipItem` take in `panel_tooltip_item`. `CppEnums.EquipSlotNo` in
+`include/global_define_cpp_enum` numbers `rightHand` (0) to `artifact2`
+(33), the life tools `Axe` (34) to `Pickaxe` (39) and `Fishing` (40), then
+ends with `Hunting = 41` and a count of 42. The client is past that list:
+items store 41 to 46, and `CppEnums.SlotNoIdToString` labels 12 slots from
+`__eEquipSlotNoAxe` to `__eEquipSlotNoTemp`, in that order. The numbers 41 to
+45 follow from the items and from `equip_type` above: floats store 41
+(type 59, `LUA_LIFEEQUIP_TOOLTIP_08`), harpoons 42, matchlocks 43, sniper
+rifles 44, and the Lil' Otter and Lil' Papu carriers 45 (`__eEquipSlotNoTemp`,
+labelled `LUA_EQUIPMENT_AVATAR_BACK`, Accessory (Back)). 46 is the slot
+count, stored by every item that goes in no slot. The numbers of slots 41 to
+45 are our reading from those items, not from a client table: the client
+lists no number for them.
+
+The browser shows the `SlotNoIdToString` label in the app language (LOC type
+37, see [stringtable.bss](stringtable_bss.md)). Slots 24 to 26 are not in that
+table and use `CppEnums.EquipSlotNoString` instead. Mount and ship gear store the same numbers
+for their own parts (horse barding 3, saddle 4, stirrups 5, champron 6,
+horseshoe 12; ship sails 25 and 26), so their label is the character slot
+of that number.
+
+The 46 bytes at `+0x10` hold more slot numbers, filled up with `46`. They are
+set in 3,770 base items on client 3464, always from the first byte, and name
+the slots next to `equip_slot`: outfits in slot 14 list 15, 16 and often 17,
+and the `[Agent]` armour sets in slot 3, such as [Agent] Shroud Knight Armor,
+list 4, 5 and 6. Whether these are the slots an item also covers is open.
+
+#### `stackable`
+
+`1` on 14,708 of the 70,213 base items on client 3464. The client's item
+slot (`global_util_ui_slot`) draws an item's stack count when
+`isStackableXXX()` is true. The flag fits the item kinds:
+
+- `0` on every equipment item (29,918 base items) and in every block above
+  enchant level 0 (98,467).
+- `1` on currencies, seals and tokens, Black Stone, Memory Fragment, Caphras
+  Stone, ores and logs, HP Potion (Beginner) and Balacs Lunchbox.
+- `0` on fish sold to Trade Managers, such as Requiem Shark and all 109
+  trade goods of trade type 4; `1` on trade goods such as Coal Dust Pouch.
+- `1` on all four items whose `unknown_65` is not `0x7FFFFFFF` (the two
+  beginner potions, Deputy Token, Combat EXP Scroll).
+
+calpheonlabs names `+0x43` "isStackable" and `+0x44` "appliesDirectly".
+
+### Before the name
+
+From `+0xD4` (plus the `unknown_5d` count) to the icon, a block is a fixed
+sequence of counted lists and strings:
+
+| Order | Type | Field | Notes |
+| ----: | ---- | ----- | ----- |
+| 1 | u32 count, 5-byte entries | unknown_d4 | A class type (u8) and a u32 per entry. Set in 28,101 base items on client 3464, and every entry's class is one `class_mask` allows; 32 entries on armour for all classes |
+| 2 | u32 count, 5-byte entries | unknown | Set in 498 base items on client 3464: one entry in 330, two in 164, six in 4. 490 of them are `category` 9 or 11 (`eItemClassify_PearlGoods`, `eItemClassify_Vehicle`), mostly mount, wagon and ship gear |
+| 3 | u8[4] | unknown | `0` in 67,081 base items on client 3464; most others set only the third byte, `1` to `10` |
+| 4 | u32 count, u32 entries | unknown | Up to three entries; set in 2,575 base items on client 3464 |
+| 5 | u32 | enchant_key | See Block Structure |
+| 6 | u64 count, UTF-16LE | name_kr | Korean name |
+| 7 | length-prefixed ASCII | icon | Icon path |
+
+This walk reaches the name and the icon in all 168,680 blocks on client 3464,
+and gives the same `enchant_key`, `name_kr` and icon as reading backwards
+from the icon in every block, which is how the browser found them before.
+calpheonlabs reads this region as four layouts (one list of 5-byte entries
+and a u32 list, two lists of 5-byte entries, or two lists with one or four
+bytes between them). On client 3464 those are this one layout: the two-list
+layouts are blocks whose first list is empty and second is not, and the
+"one byte" and "four bytes" between the lists are the `unknown_5d` entries
+of mount and ship gear, which moved the whole header.
+
 ### Placed or summoned character
 
-`character_id` sits in the fixed numeric part: in every block, at every level, the first string's prefix starts at `+0xF2` (242) or later (client 3458), and every block is at least 693 bytes long.
+`character_id` sits in the fixed numeric part, at `+0xAA` plus the `unknown_5d` count: in every block, at every level, the first string's prefix starts at `+0xF2` (242) or later (client 3458), and every block is at least 693 bytes long.
 
 | Measure (level-0 blocks)                         | Value |
 | ------------------------------------------------ | ----: |
@@ -302,7 +422,7 @@ All 5,095 are `characterstatic.dbss` IDs; the ones without an object record are 
 
 Examples: `58001` Strong Fence Garden (item) → `2001` Strong Fence Garden; `820908` Truffle Mushroom Hypha → `1436` Truffle Mushroom Crop; `860014` [Pet] Striped Cat (Tier 3) → `9425` Cat. Of the 3,960 object links, 2,961 have identical item and character names; the rest pair a seed with its crop or a `[Guild]` item with its structure.
 
-Character `1` is named by 120 unrelated items, so there the value is not a link. The browser keeps only characters named by exactly one item.
+The counts above include character `1`, which 120 unrelated items seemed to name: those are the mount and ship gear read without their `unknown_5d` entries (see Block Structure). Read past them, no item names character `1`. On client 3464, 5,112 characters are named by at least one item and 4 by more than one. The browser keeps only characters named by exactly one item.
 
 ### Length-prefixed string
 
@@ -312,30 +432,34 @@ Character `1` is named by 120 unrelated items, so there the value is not a link.
 | `+0x04` | u32    | zero   | Always 0 in observed data      |
 | `+0x08` | char[] | text   | ASCII, not null-terminated     |
 
-The string does **not** sit at a fixed block offset: 47 distinct offsets were
-observed across a 400-block sample, so a parser must scan for the
-`(length, 0, ascii × length)` shape rather than seek a constant. The browser
-starts the scan at `+0xD4`, where the fixed fields end.
-
-A block holds at most two strings:
+The strings do not sit at a fixed block offset: 47 distinct offsets were
+observed across a 400-block sample. The browser reaches the icon through the
+lists before the name (see Before the name). A block holds at most two ASCII
+strings:
 
 | Position | Content                                                        |
 | -------- | -------------------------------------------------------------- |
 | first    | Icon path, relative to `ui_texture/icon/`                       |
 | second   | Optional `second_string` such as `ITEM_BIC_HIT_1`; absent in most blocks, meaning unconfirmed |
 
-The first string is always the icon path. In a 400-block sample the length
-prefix matched the string length 400 out of 400 times.
+The second string sits in the undecoded part after the icon, so the browser
+scans for the `(length, 0, ascii × length)` shape from the end of the icon.
 
 ### Resolving the icon path
 
-Stored paths always begin with `New_Icon/`, so the PAZ path is the stored value
-prefixed with `ui_texture/icon/`, matched case-insensitively:
+The PAZ path is the stored value prefixed with `ui_texture/icon/`, matched
+case-insensitively:
 
 ```text
 New_Icon/03_ETC/06_Housing/InHouse_Cultivate_Sea_Clam_01_Wall.dds
   -> ui_texture/icon/new_icon/03_etc/06_housing/inhouse_cultivate_sea_clam_01_wall.dds
 ```
+
+On client 3464 every icon path ends in `.dds` and all but one begin with
+`New_Icon` in some case: item `66022` stores `Item_Icon/00724507.dds`, and
+`1000525` stores `New_icon/`. Seven base items (`9707`, `9708`, `9724`,
+`9725`, `720707`, `790810`, `810580`) separate some folders with
+backslashes, such as `New_Icon/03_ETC\03_Quest_Item/00042393.dds`.
 
 ### After the icon
 
@@ -419,10 +543,12 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced. [itemmaxlevel.dbss](itemmaxlevel_dbss.md) stores the same value for every item with an `enchant_key` |
 | Enchant Key   | num  | `enchant_key`, the item's key in [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); dash when `0` |
 | Enhancement Type | num | `enhancement_type`, after the icon; the item's rows in [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md); dash when `0` |
+| Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Mount and ship gear (`class_mask` `0`, 927 base items on client 3464) show the bare number: they store the character slot numbers with other meanings, and their own slots are not mapped yet |
 | Req. Level    | num  | `required_level`; dash when `0` or `1` |
 | Classes       | text | `class_mask` as LOC type 21 class names; "All" when every playable class is set, "All except ..." when up to three are missing |
 | Binding       | text | `vested_type` and `family_bound`: "On obtain (Family)", "On equip (Character)" and so on; dash when the item never binds |
 | Durability    | num  | `max_durability`; dash for `32,767` |
+| Stackable     | flag | `stackable` |
 | Marketable    | flag | `marketable`, after the icon |
 | Family Inventory | flag | `family_inventory` is `2`, after the icon |
 | Trade         | text | `trade_type` of trade goods: Trade Manager (`0` and `4`), Trade Manager (Karma loss) (`1`), Imperial Crafting Delivery (`3`), Guild trade (`5`); dash for other items |
@@ -456,10 +582,10 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 ### Enchant Data Fields
 
 Only the fields named in Block Structure and After the icon are checked
-here. The variable bytes between `+0xD4` and the name, and the remainder
-after `enhancement_type`, are undecoded here and in bdo-data-extractor. The
-fields below have a name there that neither bdocodex nor my own items could
-confirm (2026-10-05):
+here. The entries of the lists between `+0xD4` and the name, and the
+remainder after `enhancement_type`, are undecoded here and in
+bdo-data-extractor. The fields below have a name there that neither bdocodex
+nor my own items could confirm (2026-10-05):
 
 - **Pearl Shop flag** (`+0xA4`): `1` in 28,511 base items, which fits the
   outfits, but no tooltip line shows it.
@@ -474,6 +600,26 @@ confirm (2026-10-05):
   example, Magic Crystal of Infinity, is no longer in the game.
 - **Dye parts**: `unknown_ac` is not the count, and no byte of the block
   holds it; where the client gets it (likely the model) is open.
+
+### Header Fields Without a Meaning
+
+These fields have a known shape on client 3464 but no confirmed meaning:
+
+- `unknown_44` is `1` in 10,027 base items, among them 6,780 of the 6,862
+  items whose icon sits in `03_ETC/12_DoApplyDirectlyItem`, the folder the
+  quest reward window (`panel_dialog_reward`) takes its EXP icons from.
+  Advice of Valks (+10) and copies of Silver, Milk and Beer that are type
+  `2` also store `1`. calpheonlabs calls it "appliesDirectly"; no Lua getter
+  ties it to the offset.
+- `unknown_5d` lists bytes on mount and ship gear only. The Epheria Carrack
+  and Oquilla parts store `1` to `4` in the order Advance, Balance, Volante,
+  Valor, so it may be the ship or horse kinds the part fits.
+- The slot numbers at `+0x10` may be the slots an outfit also covers.
+- Mount and ship gear store slot numbers whose tooltip labels name
+  character slots (a barding stores the chest slot `3`); the labels the
+  servant equipment window uses for them are not mapped.
+- The entries of the lists before the name: the first holds a class type and
+  a u32 per allowed class.
 
 ### Items Without a Record
 
@@ -500,12 +646,14 @@ Needs item (any one):
 - [HP Potion (Beginner)](https://bdocodex.com/us/item/502/), 21 or more
 - [MP Potion (Beginner)](https://bdocodex.com/us/item/503/), 21 or more
 
-bdo-data-extractor names `+0x65` max stack. It is `0x7FFFFFFF` on almost
-every base item, stackable or not, and `0xFFFFFF00` on 120 items such as
-`336063` and `607880` to `607895`. Five store a small number: 20 for both
-potions, 99 for Deputy Token (65208), 61 for Combat EXP Scroll (848) and 1
-for Ashen Crow Horse Gear (336064). Deputy Token is a moderator item
-("It is used to control abusers of the Megaphone item") and horse gear does
-not stack, so the potions are the test items. Put more than 20 of one potion in the inventory and
-look at the slots. If it splits into a second stack at 20, `+0x65` is the
-max stack. If it stays in one stack, the field is something else.
+bdo-data-extractor names `+0x65` (`unknown_65`) max stack. On client 3464
+it is `0x7FFFFFFF` on every base item, stackable or not, except four that
+store a small number: 20 for both potions, 99 for Deputy Token (65208) and
+61 for Combat EXP Scroll (848). All four have `stackable` set. An earlier
+version also listed `0xFFFFFF00` on 120 items and 1 on Ashen Crow Horse Gear
+(336064); those were mount and ship gear read without their `unknown_5d`
+entries. Deputy Token is a moderator item ("It is used to control abusers of
+the Megaphone item"), so the potions are the test items. Put more than 20 of
+one potion in the inventory and look at the slots. If it splits into a
+second stack at 20, `+0x65` is the max stack. If it stays in one stack, the
+field is something else.

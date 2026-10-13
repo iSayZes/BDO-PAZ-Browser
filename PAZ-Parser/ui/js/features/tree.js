@@ -294,6 +294,7 @@ export const treeMethods = {
           this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", 0, this._hexTotalPages) : null);
         }
       }
+      this._openSavedTab(result.saved_tab);
     }
     window.appProfile?.record("_selectFile.render_result", performance.now() - renderStart);
 
@@ -304,8 +305,21 @@ export const treeMethods = {
     }
   },
 
-  switchTab(tab) {
+  // The tab last picked for this file's type (saved per extension in
+  // paz_config.json, bdo_config.preview_tab_setting), when the file has it:
+  // a .dbss without a handler has no Parsed tab. Else the first tab stays.
+  _openSavedTab(tab) {
+    if (!tab || tab === this._activeTab) return;
+    const tabs = document.getElementById("preview-tabs");
+    const button = tabs.querySelector(`[data-tab="${tab}"]`);
+    if (!tabs.hidden && button && !button.hidden) this.switchTab(tab, { isSaved: false });
+  },
+
+  // `isSaved`: remember the tab for this file type; off when the tab is
+  // opened because it was the remembered one.
+  switchTab(tab, { isSaved = true } = {}) {
     if (this._hexHtml === null) return;
+    if (isSaved) window.pywebview.api.save_preview_tab(this._selectedPath, tab);
     this._activeTab = tab;
     this._syncSearchBarToTab(tab);
     this._resetTabSearch();

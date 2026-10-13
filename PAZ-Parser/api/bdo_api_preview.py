@@ -17,7 +17,14 @@ from .bdo_icon_images import (
     sprite_data_url,
     thumbnail_data_url,
 )
-from .bdo_config import load_table_sort, save_table_sort, table_sort_file_key
+from .bdo_config import (
+    load_config,
+    load_table_sort,
+    preview_tab_setting,
+    save_preview_tab_setting,
+    save_table_sort,
+    table_sort_file_key,
+)
 from bdo_models import PazEntry
 from paz.bdo_payload_cache import cached_read_entry_payload
 from paz.bdo_payload_reader import can_range_read, read_entry_range
@@ -271,6 +278,8 @@ class PreviewMixin(ApiState):
             "hex_html": hex_html,
             "has_parsed": has_parsed or is_alt,
             "tab_labels": tab_labels,
+            # The tab last picked for this file type; the UI opens it when the file has it.
+            "saved_tab": preview_tab_setting(load_config(), internal_path),
             # A text or image view: shown first, under this tab name next to Hex.
             "view_label": view_label,
             # A parsed text format's source (`.ai`): a Text tab after Parsed.
@@ -546,6 +555,11 @@ class PreviewMixin(ApiState):
         except Exception as ex:
             html = _error_box("preview.renderError", ex)
         return {"html": html}
+
+    def save_preview_tab(self, path: str, tab: str) -> None:
+        """Remember `tab` (hex, parsed or text) as the one files of `path`'s type open on."""
+        if isinstance(path, str) and isinstance(tab, str):
+            save_preview_tab_setting(path, tab)
 
     def export_file(self, path: str, tab: str) -> dict:
         self._mark_activity()

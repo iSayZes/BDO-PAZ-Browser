@@ -6,6 +6,8 @@
     "category": "Category",
     "icon": "Icon",
     "titleName": "Title / Name",
+    "acceptNpc": "Accept NPC",
+    "completeNpc": "Complete NPC",
     "condition": "Condition",
     "action": "Action",
     "objective": "Objective",

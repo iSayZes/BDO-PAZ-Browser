@@ -48,6 +48,7 @@ from .plantworkerselect.handler import PlantWorkerSelectBssHandler
 from .planttown.handler import PlantTownBssHandler
 from .questjournalvideoinfo.handler import QuestJournalVideoInfoBssHandler
 from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestListBssHandler
+from .questnpc.handler import QuestNpcBssHandler
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
@@ -128,6 +129,9 @@ def register_bss_handlers() -> None:
     # One layout for the four quest lists, each with its own LOC type.
     for name, loc_type in QUEST_LIST_LOC_TYPES.items():
         register_handler(name, QuestListBssHandler(loc_type, has_event_period=name in EVENT_PERIOD_LISTS))
+    # One layout for the NPC dialog that gives and that takes each quest.
+    for name in ("acceptquest.bss", "completequest.bss"):
+        register_handler(name, QuestNpcBssHandler(name))
     register_handler("regiongroupinfo.bss", RegionGroupInfoBssHandler())
     register_handler("regioninfo.bss", RegionInfoBssHandler())
     register_handler("regioninfo_linkandcheckvalid2.bss", RegionLinkBssHandler())

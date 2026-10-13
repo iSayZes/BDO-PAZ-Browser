@@ -6,6 +6,8 @@
     "category": "Kategorie",
     "icon": "Symbol",
     "titleName": "Titel / Name",
+    "acceptNpc": "NPC (Annehmen)",
+    "completeNpc": "NPC (Abgeschlossen)",
     "condition": "Bedingung",
     "action": "Aktion",
     "objective": "Ziel",

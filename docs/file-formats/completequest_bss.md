@@ -2,92 +2,74 @@
 
 ## Purpose
 
-Lists quest IDs in completion-related order with two small per-row side fields. The middle two fields in every row form a quest key that matches `allquestlist.bss` exactly once.
+The NPC dialog that takes each quest (the turn-in): one 8-byte row per quest with the quest key, the NPC's character key and the dialog index. `dialog_index << 16 | npc_id` is the `detail_dialog.dbss` key of the dialog, and the same value is `complete_dialog_key` at `+0x04` of the quest's `quest.dbss` record. The layout is that of [acceptquest_bss.md](acceptquest_bss.md), which holds the dialog that gives the quest.
 
 Example:
 
 ```text
-row 0 -> quest 8500 / 4 -> [LoML] Emma's Invitation
+quest 8500 / 4 ([LoML] Emma's Invitation)
+  npc_id 59875 (Quest NPC), dialog_index 73
+  detail_dialog key 73 << 16 | 59875 = 0x0049E9E3, which LOC type 38 names "Igor Bartali"
 ```
 
-## File Layout
+## Companion Files
+
+| File                  | Required | Role |
+| --------------------- | -------- | ---- |
+| `languagedata_*.loc`  | Optional | Quest titles (type `18`), NPC names (type `6`) and the name the NPC shows in the dialog (type `38`, keyed `npc_id`, `dialog_index`) |
 
 All multi-byte values are little-endian.
 
-### Header (8 bytes)
+## File Layout
 
-| Offset  | Type    | Field | Notes                             |
-| ------- | ------- | ----- | --------------------------------- |
-| `+0x00` | char[4] | magic | `PABR` (ASCII)                    |
-| `+0x04` | u32     | count | Number of rows; observed `19,599` |
+The header, row stream and trailer of `acceptquest.bss`: ASCII `PABR`, a u32 `count` (`19,267` on client 3464), `count` 8-byte rows, then `u32 0` (an empty PABR string table), `u32 rows_end` (`8 + count * 8`) and `u32 0`. The file is `8 + count * 8 + 12` bytes (`154,156` on client 3464).
 
-### Row Stream
-
-Rows start immediately after the header at `+0x08`.
-
-| Offset  | Type | Field          | Notes                                                                   |
-| ------- | ---- | -------------- | ----------------------------------------------------------------------- |
-| `+0x00` | u16  | unknown_a      | Completion-side value; observed range `0..64535`                       |
-| `+0x02` | u16  | quest_chain_id | LOC type 18 `str_id1`; combines with `quest_id` to form quest key       |
-| `+0x04` | u16  | quest_id       | LOC type 18 `str_id2`; combines with `quest_chain_id` to form quest key |
-| `+0x06` | u16  | unknown_b      | Completion-side value; observed range `0..20314`                       |
-
-Derived packed quest ID:
-
-```text
-packed_quest_id = (quest_id << 16) | quest_chain_id
-```
-
-### Trailer (12 bytes)
-
-Follows the last row.
-
-| Offset  | Type | Field          | Observed | Notes                                               |
-| ------- | ---- | -------------- | -------- | --------------------------------------------------- |
-| `+0x00` | u32  | reserved_a     | `0`      | Observed zero                                       |
-| `+0x04` | u32  | end_of_rows    | `156800` | Byte offset immediately after rows; `8 + count * 8` |
-| `+0x08` | u32  | reserved_b     | `0`      | Observed zero                                       |
+The rows are grouped by NPC: every NPC's rows form one run, and the rows without an NPC form one more. On client 3464 that is 2,024 runs for 2,023 NPCs plus the no-NPC run.
 
 ## Record Structure
 
 ### Complete Quest Row (8 bytes, repeated `count` times)
 
-| Offset  | Type | Field          | Notes                     |
-| ------- | ---- | -------------- | ------------------------- |
-| `+0x00` | u16  | unknown_a      | Not part of the quest key |
-| `+0x02` | u16  | quest_chain_id | Main quest key part       |
-| `+0x04` | u16  | quest_id       | Sub quest key part        |
-| `+0x06` | u16  | unknown_b      | Not part of the quest key |
+| Offset  | Type | Field          | Notes |
+| ------- | ---- | -------------- | ----- |
+| `+0x00` | u16  | npc_id         | Character key (`characterstatic.dbss`) of the NPC who takes the quest; `0` when the quest names none |
+| `+0x02` | u16  | quest_chain_id | LOC type 18 `str_id1` |
+| `+0x04` | u16  | quest_id       | LOC type 18 `str_id2` |
+| `+0x06` | u16  | dialog_index   | The NPC's dialog: `dialog_index << 16 \| npc_id` is a `detail_dialog.dbss` and `base_dialog.dbss` key. `0` (the Black Spirit) or `1` when `npc_id` is `0`, except one row with `12` |
+
+Derived packed quest ID, as in `allquestlist.bss`:
+
+```text
+packed_quest_id = (quest_id << 16) | quest_chain_id
+```
 
 ## Reference Rows
 
-| Row | unknown_a | Quest Chain ID | Quest ID | unknown_b | Example LOC Title             |
-| --: | --------: | -------------: | -------: | --------: | ----------------------------- |
-| 0   | `59875`   | `8500`         | `4`      | `73`      | `[LoML] Emma's Invitation`    |
-| 1   | `59875`   | `8500`         | `5`      | `73`      | `[LoML] Time is Cruel`        |
-| 3   | `59875`   | `8501`         | `2`      | `1`       | LOC type 18 title when available |
-| 11  | `59875`   | `8502`         | `1`      | `8`       | LOC type 18 title when available |
+Client 3464, names from `languagedata_en.loc`:
+
+| Quest (Chain / Quest) | Title                         | npc_id | NPC Name (type 6) | dialog_index | Dialog Name (type 38) |
+| --------------------- | ----------------------------- | -----: | ----------------- | -----------: | --------------------- |
+| 1001 / 4              | Cat on the Roof               | 40066  | Mariano           | 1            | Mariano               |
+| 1001 / 49             | Dins, Spoiling for a Fight    | 544    | Villager          | 326          | Vigilante             |
+| 8500 / 4              | [LoML] Emma's Invitation      | 59875  | Quest NPC         | 73           | Igor Bartali          |
 
 ## Suggested UI Layout
 
-| Column    | Type | Notes                                                            |
-| --------- | ---- | ---------------------------------------------------------------- |
-| Main ID   | num  | `quest_chain_id`; LOC type 18 `str_id1`                          |
-| Sub ID    | num  | `quest_id`; LOC type 18 `str_id2`                                |
-| Title     | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0` |
-| Unknown A | num  | Raw `unknown_a`                                                  |
-| Unknown B | num  | Raw `unknown_b`                                                  |
+The columns of `acceptquest.bss`: Quest ID, Main ID, Sub ID, Title, NPC ID, NPC Name, Dialog and Dialog Name, with a dash in the NPC cells of rows without an NPC; their dialog stays.
 
 ## Notes
 
-- Observed decompressed size is `156,812` bytes.
-- File size matches `8 + (19599 * 8) + 12`.
-- Trailer `end_of_rows` is `156,800` decimal, equal to `8 + count * 8`.
-- The `(quest_chain_id, quest_id)` pair resolves to the same 19,599 packed quest IDs as `allquestlist.bss`. The sets are identical, but row order is almost entirely different from `allquestlist.bss`.
-- `completequest.bss` and `acceptquest.bss` have the same size, header, row width, and trailer shape. Both use the middle two `u16` fields as the quest key, but the side fields differ.
+Figures from client 3464.
+
+- Each packed quest ID of `allquestlist.bss` appears exactly once, in a different order from `allquestlist.bss` and from `acceptquest.bss`.
+- `npc_id` is nonzero on 15,728 rows, and every one of those values is a `characterstatic.dbss` key. The other 3,539 rows have no NPC; their `dialog_index` is `0` on 2,507, `1` on 1,031 and `12` on one (quest 21420 / 7, a key `detail_dialog.dbss` does not hold). Dialogs `0` and `1` of NPC `0` are those of `acceptquest.bss`: `0` is the Black Spirit.
+- 15,672 of the 15,728 NPC rows give a `detail_dialog.dbss` key. On the 5,971 rows whose NPC has more than one dialog, 5,931 name one of that NPC's dialog indexes, where always taking the NPC's lowest index would match 561.
+- The LOC type 38 dialog name differs from the LOC type 6 name on 4,557 rows. The generic Quest NPC character `59875` speaks as Igor Bartali, Dolswe, Yibang and others, one name per dialog.
+- `quest.dbss` stores `dialog_index << 16 | npc_id` of this file as its `complete_dialog_key` (`+0x04`) for all 19,267 quests.
+- Quest scripts call `meet(npc_id, dialog_index)` with the same pair (see `quest_dbss.md`): 3,196 rows of this file hold their exact pair in a `meet()` call of their own quest, against 403 rows of `acceptquest.bss`.
 
 ## Open Questions
 
-### unknown_a and unknown_b
+### Dialogs the Client Lacks
 
-The two side fields are not confirmed. They likely encode completion-related grouping, flags, rewards, routing, or ordering data, but current local evidence only confirms their boundaries and relationship to quest keys.
+56 NPC rows (client 3464) give a `dialog_index << 16 | npc_id` key that `detail_dialog.dbss` does not hold, as in `acceptquest.bss`. The largest groups are character `59725` (18 rows) and the Villager character `35695` (14 rows).

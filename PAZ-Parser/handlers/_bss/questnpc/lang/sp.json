@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "questId": "ID de misión",
+    "mainId": "ID principal",
+    "subId": "ID secundario",
+    "title": "Título",
+    "npcId": "ID del PNJ",
+    "npcName": "Nombre del PNJ",
+    "dialog": "Diálogo",
+    "dialogName": "Nombre del diálogo"
+  },
+  "meta": {
+    "count": "{count} misiones · {npc_count} PNJ"
+  }
+}

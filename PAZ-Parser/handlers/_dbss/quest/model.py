@@ -17,6 +17,8 @@ class QuestRecord(TypedDict):
     offset: int
     size: int
     packed_quest_id: int
+    accept_dialog_key: int
+    complete_dialog_key: int
     quest_chain_id: int
     quest_id: int
     quest_category: int

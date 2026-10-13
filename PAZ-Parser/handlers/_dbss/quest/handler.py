@@ -13,6 +13,7 @@ from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 
 from _common.html import Column, e, icon_cell, sort_keys, table, truncate
 from _common.lang import handler_text, load_handler_strings
+from _common.quest.dialog import dialog_speaker
 from _bss.allquestlist.parser import parse_allquestlist_records
 from .model import FamilyStat
 from .parser import QuestIndex, build_quest_index, parse_quest_record
@@ -77,6 +78,8 @@ class QuestDbssHandler(PreviewHandler):
             Column(cols["category"], "num", sort_key="quest_category"),
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["titleName"], sort_key="title"),
+            Column(cols["acceptNpc"], sort_key="accept_npc"),
+            Column(cols["completeNpc"], sort_key="complete_npc"),
             Column(cols["condition"], sort_key="condition_script"),
             Column(cols["action"], sort_key="action_script"),
             Column(cols["objective"], sort_key="objective"),
@@ -110,6 +113,8 @@ class QuestDbssHandler(PreviewHandler):
             **pa_fields("objective", _objective(loc_texts) or parsed["objective_text_kr"]),
             # Empty sorts last and exports as an empty cell.
             "family_stat_text": _family_stat_text(parsed["family_stats"]) or None,
+            "accept_npc": dialog_speaker(parsed["accept_dialog_key"]),
+            "complete_npc": dialog_speaker(parsed["complete_dialog_key"]),
         }
 
     def _records_at(self, data: bytes, companions: dict[str, bytes], rows: Iterable[int]) -> list[dict]:
@@ -219,6 +224,8 @@ class QuestDbssHandler(PreviewHandler):
                 e(record["quest_category"]),
                 icon_cell(record["icon_path"]),
                 pa_cell(record, "title", _TEXT_PREVIEW_CHARS),
+                e(record["accept_npc"] or "-"),
+                e(record["complete_npc"] or "-"),
                 e(_truncate(record["condition_script"])),
                 e(_truncate(record["action_script"])),
                 pa_cell(record, "objective", _TEXT_PREVIEW_CHARS),

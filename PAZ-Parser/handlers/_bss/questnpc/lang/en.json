@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "questId": "Quest ID",
+    "mainId": "Main ID",
+    "subId": "Sub ID",
+    "title": "Title",
+    "npcId": "NPC ID",
+    "npcName": "NPC Name",
+    "dialog": "Dialog",
+    "dialogName": "Dialog Name"
+  },
+  "meta": {
+    "count": "{count} quests · {npc_count} NPCs"
+  }
+}

@@ -17,8 +17,8 @@ slot 2 -> packed_quest_id 196891 -> chain 283, quest 3   -> quest.dbss record 2
 | File                  | Required | Role                                                                 |
 | --------------------- | -------- | -------------------------------------------------------------------- |
 | `quest.dbss`          | Optional | Quest records, stored in the same order as this list                 |
-| `acceptquest.bss`     | Optional | Provides the same quest ID set in acceptance-related order            |
-| `completequest.bss`   | Optional | Provides the same quest ID set in completion-related order            |
+| `acceptquest.bss`     | Optional | The NPC dialog that gives each quest of this list                     |
+| `completequest.bss`   | Optional | The NPC dialog that takes each quest of this list                     |
 | `mainquest.bss`       | Optional | Provides main-quest UI sequence groups for a subset of quest IDs      |
 | `newquest.bss`        | Optional | Provides new-quest UI sequence groups for a subset of quest IDs       |
 | `languagedata_en.loc` | Optional | Provides quest title/objective text for display via LOC type `18`    |

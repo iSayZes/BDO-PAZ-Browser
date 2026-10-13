@@ -49,6 +49,10 @@ CASE = HandlerCase(
                 "offset",
                 "size",
                 "packed_quest_id",
+                "accept_dialog_key",
+                "complete_dialog_key",
+                "accept_npc",
+                "complete_npc",
                 "quest_chain_id",
                 "quest_id",
                 "quest_category",
@@ -102,6 +106,17 @@ CASE = HandlerCase(
         ),
         # One of the three records that store no icon path.
         TargetTest(col="packed_quest_id", value=69183, expected={"icon_path": ""}),
+        # Villager 544 gives the quest as Dins (dialog 430) and takes it as a Vigilante (326).
+        TargetTest(
+            col="packed_quest_id",
+            value=49 << 16 | 1001,
+            expected={
+                "accept_dialog_key": 430 << 16 | 544,
+                "complete_dialog_key": 326 << 16 | 544,
+                "accept_npc": "Dins",
+                "complete_npc": "Vigilante",
+            },
+        ),
     ],
 )
 
@@ -194,3 +209,22 @@ def test_quest_dbss_default_sort_reads_ids_from_index(
         [record["packed_quest_id"] for record in quest_result.records], sort.descending
     )
     assert list(handler.sorted_order(data, entry, companions, sort)) == expected
+
+
+@pytest.mark.parametrize(("file_name", "field"), [
+    ("acceptquest.bss", "accept_dialog_key"),
+    ("completequest.bss", "complete_dialog_key"),
+])
+def test_quest_dbss_dialog_keys_match_the_quest_npc_files(
+    quest_result: HandlerResult, file_name: str, field: str,
+) -> None:
+    """Each quest's dialog key is `dialog_index << 16 | npc_id` of its row in the NPC file."""
+    from _bss.questnpc.parser import parse_quest_npc_records
+    from tests.fixtures import load_binary_fixture
+
+    rows = {
+        row["packed_quest_id"]: row["dialog_index"] << 16 | row["npc_id"]
+        for row in parse_quest_npc_records(load_binary_fixture(file_name), file_name)
+    }
+    for record in quest_result.records:
+        assert record[field] == rows[record["packed_quest_id"]], record["packed_quest_id"]

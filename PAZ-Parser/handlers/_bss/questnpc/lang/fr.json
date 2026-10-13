@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "questId": "ID de quête",
+    "mainId": "ID principal",
+    "subId": "ID secondaire",
+    "title": "Titre",
+    "npcId": "ID du PNJ",
+    "npcName": "Nom du PNJ",
+    "dialog": "Dialogue",
+    "dialogName": "Nom du dialogue"
+  },
+  "meta": {
+    "count": "{count} quêtes · {npc_count} PNJ"
+  }
+}

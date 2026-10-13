@@ -2,12 +2,13 @@
 
 ## Purpose
 
-Defines the knowledge group/category tree. Each theme record stores a group ID, Korean inline group name, parent group, energy reward thresholds, direct knowledge entries, and child theme IDs.
+Defines the knowledge group/category tree. Each theme record stores a group ID, Korean inline group name, parent group, energy reward thresholds, the theme's bookshelf item, direct knowledge entries, and child theme IDs.
 
 Example:
 
 ```text
 theme_id: 10319 -> parent: 10030 -> "Refugee Camp"
+bookshelf_item: 2532 -> "Bookshelf with Knowledge on Monsters of the Refugee Camp"
 entries: 4327, 4325, 4324, ... -> knowledge entries in that group
 ```
 
@@ -17,7 +18,7 @@ entries: 4327, 4325, 4324, ... -> knowledge entries in that group
 | ------------------------ | -------- | ----------------------------------------------------- |
 | `mentalthemeoffset.dbss` | Required | Provides theme ID, payload offset, and payload size   |
 | `mentalcard.dbss`        | Optional | Confirms entry ID -> theme ID membership              |
-| `languagedata_en.loc`    | Optional | Provides localized English names for themes/entries   |
+| `languagedata_en.loc`    | Optional | Provides localized English names for themes, entries and bookshelf items |
 
 All multi-byte values are little-endian.
 
@@ -58,7 +59,7 @@ Each payload is preceded by a 2-byte `theme_id` lead in the main stream. The off
 | `+0x00`       | u16              | theme_id        | Knowledge group/category ID; matches offset row            |
 | `+0x02`       | i64              | name_len        | Number of UTF-16LE code units in `name_ko`                 |
 | `+0x0A`       | utf16le[]        | name_ko         | Inline Korean theme name, `name_len * 2` bytes             |
-| after name    | Theme Stats      | stats           | Parent and energy reward thresholds                        |
+| after name    | Theme Stats      | stats           | Parent, energy reward thresholds and bookshelf item        |
 | after stats   | u32[]            | entries         | Direct knowledge entry IDs                                 |
 | after entries | Child Theme List | children        | Direct child theme IDs                                     |
 
@@ -72,10 +73,17 @@ Each payload is preceded by a 2-byte `theme_id` lead in the main stream. The off
 | `+0x08` | u16  | increase_wp_2   | Second energy reward amount                           |
 | `+0x0A` | u32  | need_count_2    | Entries needed for second reward                      |
 | `+0x0E` | u8   | unknown_0e      | Observed `0` or `1`; see Open Questions               |
-| `+0x0F` | u32  | unknown_0f      | Usually `0`; see Open Questions                       |
+| `+0x0F` | u32  | bookshelf_item  | Item ID of the theme's bookshelf (LOC type 0), or `0` |
 | `+0x13` | u32  | entry_count     | Number of direct `entries` that follow                 |
 
-Earlier versions of this doc called `unknown_0e` `unknown_flag` and `unknown_0f` `unknown_value`.
+Earlier versions of this doc called `unknown_0e` `unknown_flag`, and `bookshelf_item` `unknown_value`, then `unknown_0f`.
+
+### Bookshelf Item
+
+`bookshelf_item` names an item whose LOC type 0 name is "Bookshelf with Knowledge on" plus the theme's subject: Refugee Camp (`10319`) holds `2532` "Bookshelf with Knowledge on Monsters of the Refugee Camp", Quarry (`10318`) holds `2531`, Beasts (Balenos) (`10101`) holds `2501` "Bookshelf with Knowledge on Beast Monsters (Balenos)". The item's description (LOC type 0 `str_id4=1`) reads "A bookshelf filled with knowledge on monsters in the Refugee Camp."
+
+On client 3464, 33 themes carry a bookshelf item and the rest store `0`. The items are `2501` to `2533`, one per theme, in theme ID order: 4 themes under Ecology of Eastern Balenos (`10010`), 11 under Ecology of Serendia (`10020`), 17 under Ecology of Calpheon (`10030`) and Steppe (Kamasylvia) (`10601`) under Ecology of Kamasylvia (`10065`). All 33 have `unknown_0e = 1`. calpheonlabs reads the field the same way (`bookshelfItemId`).
+
 
 ### Entries (`entry_count * 4` bytes)
 
@@ -117,6 +125,7 @@ Sample records confirmed from `mentaltheme.dbss`, `mentalthemeoffset.dbss`, `men
 | Energy Reward 2 | text | Render as `-` when it duplicates reward 1 or both values are `0`; otherwise `+{increase_wp_2} at {need_count_2} entries`. Sorts by `energy_reward_2_amount`, `None` for a dash |
 | Entries         | num  | `entry_count`                                             |
 | Children Groups | num  | `child_count`                                             |
+| Bookshelf       | text | Item icon and LOC type 0 name of `bookshelf_item` in its grade colour; dash for `0`, stored as `None` so it sorts last |
 
 ## Notes
 
@@ -134,6 +143,6 @@ Sample records confirmed from `mentaltheme.dbss`, `mentalthemeoffset.dbss`, `men
 
 ## Open Questions
 
-### `unknown_0e` and `unknown_0f` Meaning
+### `unknown_0e` Meaning
 
-The 5 bytes at stats offsets `+0x0E..+0x12` read as a u8 `unknown_0e` plus a u32 `unknown_0f`. `unknown_0e` is `1` on 232 themes (94 of them under Trade). `unknown_0f` is `0` on 898 themes; the other 33 all have `unknown_0e = 1` and carry unique consecutive values `2501` to `2533` in theme ID order (`10101` to `10601`, ecology groups of Serendia, Calpheon and neighbours), which looks like a sort or unlock index. Neither meaning is confirmed.
+`unknown_0e` is a u8 at stats offset `+0x0E`, `0` or `1`. On client 3464 it is `1` on 232 themes (94 of them under Trade), the 33 themes with a `bookshelf_item` among them. calpheonlabs reads it as a switch for the C/B/A/A+/S knowledge grades; that reading is not confirmed here. The Knowledge window Lua (`panel_knowledge_main`, `panel_window_knowledge_renew`) has no theme getter for it: its only grade switch is the per-user display option `__eKnowledgeGrade`. The value also shows no link to the cards' `body_value` in `mentalcard.dbss`.

@@ -5,7 +5,9 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, sort_keys, table
+from _common.html import Column, e, icon_html_label_cell, sort_keys, table
+from _common.icon_index import IconKind, icon_path
+from _common.item_key import item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import (
     OffsetColumn,
@@ -14,6 +16,7 @@ from _common.offset_table import (
     picked_records,
     size_column,
 )
+from _common.pa_text import pa_fields, pa_html, pa_key
 from .model import MentalThemeRecord
 from .parser import parse_mentaltheme_records, parse_mentalthemeoffset_records
 
@@ -46,6 +49,24 @@ def _shown_amount(reward: str, amount: int) -> int | None:
     return None if reward == _EMPTY else amount
 
 
+def _bookshelf_fields(item_id: int) -> dict:
+    """The theme's bookshelf item: ID (None for none), name in its grade colour and icon path."""
+    if not item_id:
+        return {"bookshelf_item": None, **pa_fields("bookshelf", ""), "bookshelf_icon_path": ""}
+    return {
+        "bookshelf_item": item_id,
+        **pa_fields("bookshelf", item_key_text_tagged(item_id)),
+        "bookshelf_icon_path": icon_path(IconKind.ITEM, item_id),
+    }
+
+
+def _bookshelf_cell(record: dict) -> str:
+    """The bookshelf item's icon and name in its grade colour, or a dash."""
+    if not record["bookshelf"]:
+        return _EMPTY
+    return icon_html_label_cell(record["bookshelf_icon_path"], pa_html(record[pa_key("bookshelf")]))
+
+
 def _theme_record(record: MentalThemeRecord) -> dict:
     reward_1 = _reward(record["increase_wp"], record["need_count"])
     reward_2 = _reward_2(
@@ -68,6 +89,7 @@ def _theme_record(record: MentalThemeRecord) -> dict:
         "energy_reward_2_entries": record["need_count_2"],
         "entry_count": record["entry_count"],
         "child_count": record["child_count"],
+        **_bookshelf_fields(record["bookshelf_item"]),
         "name_ko": record["name_ko"],
         "entry_ids": record["entry_ids"],
         "entry_names": record["entry_names"],
@@ -75,7 +97,6 @@ def _theme_record(record: MentalThemeRecord) -> dict:
         "payload_offset": record["payload_offset"],
         "payload_size": record["payload_size"],
         "unknown_0e": record["unknown_0e"],
-        "unknown_0f": record["unknown_0f"],
         "terminator": record["terminator"],
     }
 
@@ -104,6 +125,7 @@ class MentalThemeHandler(PreviewHandler):
             Column(cols["energyReward2"], sort_key="energy_reward_2_amount"),
             Column(cols["entries"], "num", sort_key="entry_count"),
             Column(cols["childrenGroups"], "num", sort_key="child_count"),
+            Column(cols["bookshelf"], sort_key="bookshelf"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -155,6 +177,7 @@ class MentalThemeHandler(PreviewHandler):
                 e(r["energy_reward_2"]),
                 e(r["entry_count"]),
                 e(r["child_count"]),
+                _bookshelf_cell(r),
             ]
             for r in slice_
         ]

@@ -12,7 +12,8 @@
     "energyReward1": "Награда энергией 1",
     "energyReward2": "Награда энергией 2",
     "entries": "Записи",
-    "childrenGroups": "Подгруппы"
+    "childrenGroups": "Подгруппы",
+    "bookshelf": "Книжный шкаф"
   },
   "meta": {
     "count": "Тем знаний: {count} · названий тем: {with_theme_name} · имён родителей: {with_parent_name}"

@@ -111,7 +111,7 @@ def parse_mentaltheme_records(
             increase_wp_2=_u16(dbss_data, stats_offset + 0x08),
             need_count_2=_u32(dbss_data, stats_offset + 0x0A),
             unknown_0e=_u8(dbss_data, stats_offset + 0x0E),
-            unknown_0f=_u32(dbss_data, stats_offset + 0x0F),
+            bookshelf_item=_u32(dbss_data, stats_offset + 0x0F),
             entry_count=entry_count,
             entry_ids=", ".join(str(entry_id) for entry_id in entry_ids),
             entry_names=" | ".join(entry_names),

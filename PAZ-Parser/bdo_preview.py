@@ -19,6 +19,7 @@ from preview_views import image_meta, image_view_html, text_view_html
 from record_fields import record_matches
 from table_sort import SORT_DESC, TableSort, sort_order
 from ui_text import set_ui_language, ui_text
+from xml_highlight import highlight_xml_lines, is_xml_path
 
 _TEXT_LIMIT = 512 * 1024   # bytes shown in text view
 # Tried in order. Korean 3ds Max exports (.pa, .pc) are CP949, not UTF-8.
@@ -313,6 +314,21 @@ def decode_text_with_encoding(data: bytes, is_truncated: bool = False) -> tuple[
     return data.decode("utf-8", errors="replace"), "utf-8"
 
 
+def render_text_view(data: bytes, entry: PazEntry) -> str:
+    """The Text view of `data`: numbered lines, XML colours for XML files.
+
+    Shows the first `_TEXT_LIMIT` bytes, with a note when the file is longer.
+    """
+    truncated = len(data) > _TEXT_LIMIT
+    content, encoding = decode_text_with_encoding(data[:_TEXT_LIMIT], is_truncated=truncated)
+    note = ""
+    if truncated:
+        text = ui_text("preview.truncated", shown=_TEXT_LIMIT // 1024, total=len(data) // 1024)
+        note = f'<div class="hex-note">{_html.escape(text)}</div>'
+    highlight = highlight_xml_lines if is_xml_path(entry.internal_path) else None
+    return text_view_html(content, encoding, note, highlight)
+
+
 class TextHandler(PreviewHandler):
     """Renders plain text files. Does not produce a parsed view."""
 
@@ -326,13 +342,7 @@ class TextHandler(PreviewHandler):
         raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        truncated = len(data) > _TEXT_LIMIT
-        content, encoding = decode_text_with_encoding(data[:_TEXT_LIMIT], is_truncated=truncated)
-        note = ""
-        if truncated:
-            text = ui_text("preview.truncated", shown=_TEXT_LIMIT // 1024, total=len(data) // 1024)
-            note = f'<div class="hex-note">{_html.escape(text)}</div>'
-        return text_view_html(content, encoding, note)
+        return render_text_view(data, entry)
 
 
 # ── DDS / Image ───────────────────────────────────────────────────────────────
@@ -492,11 +502,9 @@ class SvgHandler(AltViewHandler):
     alt_label_key = "preview.tabRendered"
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        content = data.decode("utf-8", errors="replace")
-        return f'<pre class="text-view">{_html.escape(content)}</pre>'
+        return render_text_view(data, entry)
 
     def render_alt(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        import re as _re
         text = data.decode("utf-8", errors="replace")
         # Strip XML declaration and DOCTYPE, external DTD references block Chromium data-URI rendering
         text = _re.sub(r"<\?xml[^?]*\?>", "", text)

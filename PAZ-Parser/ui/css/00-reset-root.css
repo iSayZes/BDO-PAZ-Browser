@@ -30,6 +30,14 @@
   --color-loc: #b79cf0;
   --color-warning: #f07b3f;
   --color-danger: #e5484d;
+  /* Syntax colours of the Text view (xml_highlight.py) */
+  --syntax-tag: #7fb0e6;
+  --syntax-attr: var(--color-loc);
+  --syntax-value: var(--color-data);
+  --syntax-comment: var(--color-text-3);
+  --syntax-decl: var(--color-text-2);
+  --syntax-punct: var(--color-text-3);
+  --syntax-entity: var(--color-accent);
   /* Type: ui/fonts/fonts.css loads Plex; Malgun Gothic draws the Korean fallback text */
   --font-sans: "IBM Plex Sans", "Malgun Gothic", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", Consolas, "Malgun Gothic", monospace;

@@ -48,6 +48,21 @@ properties, never raw hex values. Game-data colors (item grades, worker grades,
 Warning and danger differ from the accent in hue and lightness, so a warning
 border never reads as a focus ring.
 
+### Syntax
+
+The Text view colours XML files (`xml_highlight.py`). Each class reads one
+token, so a theme changes the colours by redefining the tokens.
+
+| Token              | Value                  | Class                        |
+| ------------------ | ---------------------- | ---------------------------- |
+| `--syntax-tag`     | `#7fb0e6`              | `.xml-tag`, element names    |
+| `--syntax-attr`    | `var(--color-loc)`     | `.xml-attr`, attribute names |
+| `--syntax-value`   | `var(--color-data)`    | `.xml-value`, quoted values  |
+| `--syntax-comment` | `var(--color-text-3)`  | `.xml-comment`, `.xml-cdata` |
+| `--syntax-decl`    | `var(--color-text-2)`  | `.xml-decl`, `<?xml ?>` and `<!DOCTYPE>` |
+| `--syntax-punct`   | `var(--color-text-3)`  | `.xml-punct`, `<`, `</`, `=`, `>`, `/>` |
+| `--syntax-entity`  | `var(--color-accent)`  | `.xml-entity`, `&amp;` and other references in text |
+
 ## Type
 
 | Token         | Stack                                                          |

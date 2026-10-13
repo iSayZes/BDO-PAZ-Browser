@@ -185,8 +185,7 @@ export const tabSearchMethods = {
   },
 
   _isTextViewSearch() {
-    return this._isPlainView && this._activeTab === "parsed"
-      && !!document.querySelector("#preview-content .text-lines");
+    return !!document.querySelector("#preview-content .text-lines");
   },
 
   // Indices of the shown lines that hold `query`, ignoring case.

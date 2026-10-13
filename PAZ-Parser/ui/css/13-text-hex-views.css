@@ -34,6 +34,16 @@
   overflow-wrap: anywhere;
 }
 
+/* XML colours (xml_highlight.py), from the --syntax-* tokens */
+.xml-tag { color: var(--syntax-tag); }
+.xml-attr { color: var(--syntax-attr); }
+.xml-value { color: var(--syntax-value); }
+.xml-comment,
+.xml-cdata { color: var(--syntax-comment); }
+.xml-decl { color: var(--syntax-decl); }
+.xml-punct { color: var(--syntax-punct); }
+.xml-entity { color: var(--syntax-entity); }
+
 .hex-view {
   font-family: var(--font-mono);
   font-size: 12.5px;

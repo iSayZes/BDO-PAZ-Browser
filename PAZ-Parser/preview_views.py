@@ -7,8 +7,12 @@ from __future__ import annotations
 
 import html as _html
 import struct
+from collections.abc import Callable
 
 from ui_text import ui_text
+
+# Lines in, one HTML string per line out.
+LineHighlighter = Callable[[list[str]], list[str]]
 
 # DDS file layout: the "DDS " magic, then a 124-byte DDS_HEADER whose fields
 # sit at these offsets from the start of the file.
@@ -52,14 +56,24 @@ def text_lines(text: str) -> list[str]:
     return lines
 
 
-def text_view_html(text: str, encoding: str, note_html: str = "") -> str:
-    """Numbered lines under `N lines · UTF-8 · CRLF` and a Wrap lines toggle."""
+def text_view_html(
+    text: str,
+    encoding: str,
+    note_html: str = "",
+    highlight: LineHighlighter | None = None,
+) -> str:
+    """Numbered lines under `N lines · UTF-8 · CRLF` and a Wrap lines toggle.
+
+    `highlight` turns the lines into coloured HTML, one string per line
+    (`xml_highlight.highlight_xml_lines`); without it each line is escaped text.
+    """
     lines = text_lines(text)
     meta = [_count("preview.line", len(lines)), _ENCODING_NAMES.get(encoding, encoding.upper())]
     ending = line_ending(text)
     if ending:
         meta.append(ending)
-    rows = "".join(f'<div class="text-line">{_html.escape(line)}</div>' for line in lines)
+    line_html = highlight(lines) if highlight else [_html.escape(line) for line in lines]
+    rows = "".join(f'<div class="text-line">{line}</div>' for line in line_html)
     return (
         '<div class="text-view-wrap">'
         '<div class="view-toolbar">'

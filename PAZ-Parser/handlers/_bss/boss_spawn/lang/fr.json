@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Clé",
+    "boss": "Boss",
+    "levels": "Niveaux",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "range": "Portée"
+  },
+  "meta": {
+    "count": "{count} boss de guilde"
+  }
+}

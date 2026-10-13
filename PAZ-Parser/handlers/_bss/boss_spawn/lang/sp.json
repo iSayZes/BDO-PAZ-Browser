@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Clave",
+    "boss": "Jefe",
+    "levels": "Niveles",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "range": "Alcance"
+  },
+  "meta": {
+    "count": "{count} jefes de gremio"
+  }
+}

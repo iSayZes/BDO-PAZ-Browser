@@ -25,6 +25,9 @@ from .groupcameradata.handler import GroupCameraDataBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHandler
+from .boss_spawn.handler import BossSpawnBssHandler
+from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
+from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
@@ -92,6 +95,9 @@ def register_bss_handlers() -> None:
     )
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler("bossinfostaicstatusmanager.bss", BossInfoStaicStatusManagerBssHandler())
+    register_handler("boss_spawn.bss", BossSpawnBssHandler())
+    register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
+    register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",

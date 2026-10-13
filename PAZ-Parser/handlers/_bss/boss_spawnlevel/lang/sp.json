@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossKey": "Clave del jefe",
+    "level": "Nivel",
+    "image": "Imagen",
+    "boss": "Jefe",
+    "reward": "Recompensa"
+  },
+  "meta": {
+    "count": "{count} niveles · {bosses} jefes de gremio"
+  }
+}

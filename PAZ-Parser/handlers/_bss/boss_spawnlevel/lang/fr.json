@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossKey": "Clé du boss",
+    "level": "Niveau",
+    "image": "Image",
+    "boss": "Boss",
+    "reward": "Récompense"
+  },
+  "meta": {
+    "count": "{count} niveaux · {bosses} boss de guilde"
+  }
+}

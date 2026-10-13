@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "key": "Clé",
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "sectorX": "Secteur X",
+    "sectorZ": "Secteur Z"
+  },
+  "meta": {
+    "count": "{count} boss"
+  }
+}

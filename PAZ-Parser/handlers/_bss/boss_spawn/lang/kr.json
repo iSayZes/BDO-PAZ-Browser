@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "키",
+    "boss": "보스",
+    "levels": "단계 수",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "range": "범위"
+  },
+  "meta": {
+    "count": "길드 보스 {count}개"
+  }
+}

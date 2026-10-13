@@ -214,6 +214,7 @@ class PreviewMixin(ApiState):
         self._te(profile, "backend.hex_render_ms", start)
 
         html = None
+        text_html = None
         parsed_total_pages = 1
         tab_labels = None
         view_label = None
@@ -251,6 +252,10 @@ class PreviewMixin(ApiState):
                 self._te(profile, "backend.lazy_page_render_ms", start)
             except Exception as ex:
                 html = _error_box("preview.parseError", ex)
+            try:
+                text_html = handler.render_text(data, entry, companions)
+            except Exception as ex:
+                text_html = _error_box("preview.renderError", ex)
         elif not isinstance(handler, HexHandler):
             try:
                 start = self._ts()
@@ -268,6 +273,8 @@ class PreviewMixin(ApiState):
             "tab_labels": tab_labels,
             # A text or image view: shown first, under this tab name next to Hex.
             "view_label": view_label,
+            # A parsed text format's source (`.ai`): a Text tab after Parsed.
+            "text_html": text_html,
             # For the page bar: "Rows 1-500 of N", and the byte range of a hex page.
             "record_count": record_count,
             "byte_count": len(data),

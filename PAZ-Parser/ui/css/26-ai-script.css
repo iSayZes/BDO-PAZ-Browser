@@ -1,0 +1,177 @@
+/* ── AI Script view (.ai, handlers/_ai/aiscript/render.py) ───────────────── */
+
+/* Summary: counts, HP gates, InitialState variables */
+.ai-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.ai-box {
+  background: var(--color-row-alt);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-inner);
+  padding: 10px var(--space-3);
+  min-width: 0;
+}
+.ai-box-title {
+  margin-bottom: var(--space-2);
+  color: var(--color-text-3);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ai-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.ai-count b {
+  display: block;
+  color: var(--color-text-strong);
+  font-size: 20px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.ai-count span,
+.ai-from {
+  color: var(--color-text-3);
+  font-size: 12px;
+}
+.ai-gates {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+}
+.ai-gates li,
+.ai-transition {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+}
+.ai-vars,
+.ai-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+
+/* Table: rows grow with their steps, text wraps in the step columns */
+.ai-script .data-table td {
+  height: auto;
+  padding-block: 6px;
+  vertical-align: top;
+}
+.ai-script .data-table td:nth-child(4),
+.ai-script .data-table td:nth-child(5) {
+  white-space: normal;
+}
+.ai-section {
+  margin-bottom: 2px;
+  color: var(--color-accent);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.ai-name {
+  color: var(--color-text-strong);
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+.ai-note {
+  color: var(--color-text-3);
+  font-size: 12px;
+}
+.ai-detail,
+.ai-kind,
+.ai-edge {
+  color: var(--color-text-3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.ai-dim,
+.ai-arrow {
+  color: var(--color-disabled);
+}
+.ai-block {
+  display: grid;
+  gap: 3px;
+  min-width: 220px;
+}
+.ai-block + .ai-block {
+  margin-top: 6px;
+}
+.ai-phase {
+  color: var(--color-text-3);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.ai-action {
+  color: var(--color-text-soft);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.ai-action.hp {
+  color: var(--color-accent);
+}
+
+/* Condition chips; an HP condition in the accent colour */
+.ai-cond,
+.ai-dice {
+  padding: 0 5px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+.ai-cond {
+  background: var(--color-raised);
+  color: var(--color-text-2);
+}
+.ai-cond.hp {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+.ai-dice {
+  background: color-mix(in srgb, var(--color-data) 12%, transparent);
+  color: var(--color-data);
+}
+
+/* A state name that pages to its row; one the file lacks is a dotted warning */
+.ai-state-link,
+.ai-state-link:hover {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--color-data);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-data) 35%, transparent);
+  text-underline-offset: 2px;
+}
+.ai-state-link:hover {
+  color: var(--color-text-strong);
+}
+.ai-state-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+.ai-state-link.missing {
+  color: var(--color-warning);
+  cursor: default;
+  text-decoration-style: dotted;
+}
+
+.ai-footnote {
+  max-width: 80ch;
+  margin-top: var(--space-3);
+  color: var(--color-text-3);
+  font-size: 12px;
+  line-height: 1.55;
+}

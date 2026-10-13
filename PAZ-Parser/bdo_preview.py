@@ -82,6 +82,14 @@ class PreviewHandler(ABC):
         if cache:
             self._handler_caches = {name: slot for name, slot in cache.items() if slot[0] is not data}
 
+    def render_text(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str | None:
+        """HTML of a Text tab next to the parsed view, or None for no Text tab.
+
+        For a parsed text format (`.ai` scripts), so the source stays one
+        click away; such a handler returns `TextHandler().render(...)`.
+        """
+        return None
+
     def supports_lazy_records(self) -> bool:
         """Return True when the handler supports lazy paging (default: True for all handlers).
 
@@ -542,7 +550,8 @@ _REGISTRY: dict[str, PreviewHandler] = {
     ".svg": SvgHandler(),
 }
 
-_BUILTIN_KEYS: frozenset[str] = frozenset(_REGISTRY)
+# The built-in views. A plugin may replace one (`.ai`); see is_plugin_key().
+_BUILTIN_HANDLERS: dict[str, PreviewHandler] = dict(_REGISTRY)
 _PLUGIN_MODULE_NAMES: list[str] = []
 _PLUGIN_SYS_MODULES: set[str] = set()
 # Resolved folders already loaded, so a second entry point call is a no-op.
@@ -604,9 +613,27 @@ def clear_handler_caches() -> None:
         handler.clear_data_cache()
 
 
+def is_plugin_key(key: str) -> bool:
+    """True when a handler from `handlers/`, not a built-in view, is registered under `key`.
+
+    A plugin may take over a built-in key: the `.ai` handler replaces the
+    text view of `.ai` files.
+    """
+    handler = _REGISTRY.get(key)
+    return handler is not None and handler is not _BUILTIN_HANDLERS.get(key)
+
+
 def get_binary_handlers() -> list[str]:
     """Return sorted list of registered binary (non-builtin) handler keys."""
-    return sorted(k for k in _REGISTRY if k not in _BUILTIN_KEYS)
+    return sorted(k for k in _REGISTRY if is_plugin_key(k))
+
+
+def _first_plugin_key(keys: Sequence[str]) -> str | None:
+    """The first of `keys` that is registered, when a plugin reads it; else None."""
+    for key in keys:
+        if key in _REGISTRY:
+            return key if is_plugin_key(key) else None
+    return None
 
 
 def handler_key(name: str, ext: str) -> str | None:
@@ -614,10 +641,7 @@ def handler_key(name: str, ext: str) -> str | None:
 
     None when only a built-in view, or the hex view, reads it.
     """
-    for key in (name.lower(), ext.lower()):
-        if key in _REGISTRY:
-            return None if key in _BUILTIN_KEYS else key
-    return None
+    return _first_plugin_key((name.lower(), ext.lower()))
 
 
 def _registry_keys(name: str) -> tuple[str, ...]:
@@ -633,7 +657,7 @@ def _registry_keys(name: str) -> tuple[str, ...]:
 
 def is_handled_file(name: str) -> bool:
     """True when a registered binary handler, not a built-in view, reads `name`."""
-    return any(key in _REGISTRY and key not in _BUILTIN_KEYS for key in _registry_keys(name))
+    return _first_plugin_key(_registry_keys(name)) is not None
 
 
 def has_preview(name: str) -> bool:
@@ -643,8 +667,8 @@ def has_preview(name: str) -> bool:
 
 
 def get_builtin_formats() -> list[str]:
-    """Return sorted list of built-in (text/image) format extensions."""
-    return sorted(_BUILTIN_KEYS)
+    """Return sorted list of built-in (text/image) format extensions a plugin has not taken over."""
+    return sorted(k for k in _BUILTIN_HANDLERS if not is_plugin_key(k))
 
 
 def unique_format_keys(entries: list[PazEntry]) -> list[str]:
@@ -739,10 +763,12 @@ def plugin_failures() -> dict[str, str]:
 
 
 def reload_plugins(handlers_dir: Path) -> None:
-    """Clear plugin-registered handlers and re-import all plugins."""
-    for key in list(_REGISTRY):
-        if key not in _BUILTIN_KEYS:
-            del _REGISTRY[key]
+    """Clear plugin-registered handlers and re-import all plugins.
+
+    A built-in key a plugin took over gets its built-in view back first.
+    """
+    _REGISTRY.clear()
+    _REGISTRY.update(_BUILTIN_HANDLERS)
     for name in _PLUGIN_SYS_MODULES:
         sys.modules.pop(name, None)
     _PLUGIN_SYS_MODULES.clear()

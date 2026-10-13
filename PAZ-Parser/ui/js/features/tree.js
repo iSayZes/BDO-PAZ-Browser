@@ -3,6 +3,7 @@
 import { t } from "../core/i18n.js";
 import { iconElement } from "../core/icons.js";
 
+
 export const treeMethods = {
   // Also runs when the filter box is cleared, so it must not disable the
   // search input: that would blur it and drop keystrokes. It shares
@@ -36,6 +37,13 @@ export const treeMethods = {
   _setSearchEnabled(isEnabled) {
     document.getElementById("search").disabled = !isEnabled;
     document.getElementById("btn-content-search").disabled = !isEnabled;
+  },
+
+  // The Text tab of a parsed text format (.ai): shown when the handler sent
+  // its source view, hidden for every other file.
+  _setTextTab(textHtml) {
+    this._textHtml = textHtml ?? null;
+    document.querySelector('#preview-tabs [data-tab="text"]').hidden = !this._textHtml;
   },
 
   // A text view searches its own lines, in string mode; an image view has nothing to find.
@@ -176,6 +184,7 @@ export const treeMethods = {
     this._selectedPath = path;
     this._parsedHtml = null;
     this._hexHtml = null;
+    this._setTextTab(null);
     this._activeTab = "hex";
     this._hexPage = 0;
     this._hexTotalPages = 1;
@@ -216,6 +225,7 @@ export const treeMethods = {
     } else {
       this._parsedHtml = result.has_parsed ? (result.html || "") : null;
       this._hexHtml = result.hex_html || "";
+      this._setTextTab(result.text_html);
       this._activeTab = "hex";
       this._hexTotalPages = result.hex_total_pages ?? 1;
       this._parsedTotalPages = result.parsed_total_pages ?? 1;
@@ -313,6 +323,11 @@ export const treeMethods = {
         document.getElementById("tab-search-mode-hex").hidden = true;
       }
       if (this._isPlainView) this.showTabSearchBar(true);
+    } else if (tab === "text") {
+      content.innerHTML = this._textHtml || "";
+      this._initPreviewView(content);
+      this._setPageBar(null);
+      this._syncViewSearchBar();
     } else if (this._isPlainView) {
       content.innerHTML = this._parsedHtml || "";
       this._initPreviewView(content);

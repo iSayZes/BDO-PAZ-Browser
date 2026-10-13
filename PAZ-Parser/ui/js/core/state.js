@@ -14,6 +14,8 @@ export const app = {
   _searchMoreObserver: null,
   _parsedHtml: null,
   _hexHtml: null,
+  // A parsed text format's source view (.ai), shown on the Text tab.
+  _textHtml: null,
   _activeTab: "hex",
   _inGlobalSearch: false,
   _hexPage: 0,

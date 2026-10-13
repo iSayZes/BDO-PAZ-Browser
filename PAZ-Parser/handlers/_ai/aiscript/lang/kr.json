@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "state": "상태",
+    "behavior": "행동",
+    "cycle": "주기 (ms)",
+    "runs": "실행",
+    "transitions": "전환",
+    "reachedFrom": "진입 경로"
+  },
+  "meta": {
+    "count": "상태 및 핸들러 {count}개"
+  },
+  "phases": {
+    "start": "시작",
+    "tick": "매 주기",
+    "end": "종료"
+  },
+  "summary": {
+    "script": "스크립트",
+    "states": "상태",
+    "handlers": "핸들러",
+    "transitions": "전환",
+    "hpGates": "생명력 조건",
+    "variables": "변수 (InitialState)",
+    "none": "없음",
+    "from": "{names}에서"
+  },
+  "hp": "생명력",
+  "handler": "핸들러",
+  "event": "이벤트",
+  "missingState": "파일에 이 이름의 상태가 없습니다",
+  "footnote": "전환의 조건은 모두 충족되어야 합니다. dice는 파일에 적힌 그대로 표시하며, 퍼센트 확률인지 가중치인지는 확인되지 않았습니다. 생명력은 스크립트가 getHpRate()로 채우는 변수이므로 값은 최대 생명력의 퍼센트입니다. 상태 이름 아래 회색 줄은 파일에서 그 위에 있는 개발자 주석입니다."
+}

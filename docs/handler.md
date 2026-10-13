@@ -151,6 +151,12 @@ same order, built-in text and image views aside. A new handler shows up there
 with no second list to update. An extension key such as `.dbss` would count
 every file of that extension as handled, so register known formats by name.
 
+A handler may take over a key a built-in view reads: `.ai` is a built-in text
+key, and the `.ai` handler replaces it. `is_plugin_key()` tells a plugin's
+handler from the built-in one, so such a file counts as handled, and
+`reload_plugins()` puts the built-in view back before it imports the
+handlers again.
+
 ## Handler Template
 
 All parsed-view handlers must implement `get_records()` and `render_records_page()`.
@@ -918,6 +924,36 @@ The main preview UI is responsible for switching between:
 Do not manually include raw hex tabs inside individual handlers.
 
 This keeps all handlers consistent.
+
+## Text Tab
+
+A parsed handler for a text format can add a Text tab after the Parsed tab
+by overriding `render_text()`; the base class returns None, which means no
+tab. Return the built-in text view, so the tab gets the numbered lines, the
+Wrap lines toggle, line search and XML colours (`xml_highlight.py`) like any
+text file:
+
+```python
+from bdo_preview import PreviewHandler, TextHandler
+
+_TEXT_VIEW = TextHandler()
+
+
+class AiScriptHandler(PreviewHandler):
+    def render_text(self, data, entry, companions):
+        return _TEXT_VIEW.render(data, entry, companions)
+```
+
+The `.ai` handler (`handlers/_ai/aiscript/`) is the one user so far.
+
+## Links Between Rows
+
+A button with `data-action="goto-record"` and `data-record="<index>"` pages
+the parsed table to that record and marks its row, as Ctrl+F does
+(`_showParsedRecord()` in `tab-search.js`). The index is the record's place in
+the shown order: take it from the `records` list `render_records_page()`
+gets, which is the sorted list on a sorted page. The `.ai` state names use it
+(`handlers/_ai/aiscript/render.py`).
 
 ## Shared Helpers
 

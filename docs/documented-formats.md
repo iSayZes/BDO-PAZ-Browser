@@ -4,6 +4,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 
 | File                               | Description                                                                                                    | Docs                                                                | Open Questions | In-Game Checks |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | -------------- | -------------- |
+| `*.ai` | NPC and monster AI scripts: XML state machines of `<state>` and `<handler>` elements with transitions, conditions and actions; 4,428 of 7,070 are not well-formed XML (client 3464) | [aiscript](file-formats/aiscript_ai.md) | 4 | 0 |
 | `*.bwp` (`mapdata_realexplore2.bwp`) | Waypoint graphs: keyed 3D waypoints with names and movement flags, directed links, groups and routes; `mapdata_realexplore2.bwp` is the worldmap node graph | [waypoint](file-formats/waypoint_bwp.md) | 1 | 0 |
 | `acceptquest.bss`                  | PABR quest ID list in acceptance-related order with two side fields                                            | [acceptquest](file-formats/acceptquest_bss.md)                      | 1              | 0 |
 | `alchemycharge.dbss` | Alchemy stone recharge materials: per stone type group, rows of (stone type, material item ID, durability points) | [alchemycharge](file-formats/alchemycharge_dbss.md) | 2 | 1 |

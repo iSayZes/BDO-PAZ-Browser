@@ -92,6 +92,7 @@ export const extractionMethods = {
 
     this._parsedHtml = result.has_parsed ? (result.html || "") : null;
     this._hexHtml = result.hex_html || "";
+    this._setTextTab(result.text_html);
     this._hexPage = 0;
     this._hexTotalPages = result.hex_total_pages ?? 1;
     this._parsedPage = 0;

@@ -4,6 +4,8 @@ import { t } from "../core/i18n.js";
 
 // The toolbars of the text and image views (preview_views.py builds them):
 // Wrap lines, image zoom and background, and the pixel under the cursor.
+// Also the links between rows of a parsed table (`goto-record`, the state
+// names of an .ai script).
 const ZOOM_CLASSES = ["zoom-fit", "zoom-1", "zoom-2"];
 const BACKGROUND_CLASSES = ["bg-checker", "bg-dark", "bg-light"];
 
@@ -29,6 +31,7 @@ export const previewViewMethods = {
       if (action === "toggle-wrap") this._toggleTextWrap(button);
       else if (action === "image-zoom") this._setImageZoom(button);
       else if (action === "image-background") this._setImageBackground(button);
+      else if (action === "goto-record") this._showParsedRecord(Number(button.dataset.record));
     });
   },
 

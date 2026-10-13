@@ -118,15 +118,16 @@ Disabled buttons drop their fill and use `--color-disabled`.
 
 Icons are one SVG sprite built by `PAZ-Parser/ui/js/core/icons.js`: 24px grid,
 1.75 stroke, drawn in `currentColor`, with paths from Lucide (ISC License,
-notice in that file). Static markup uses
+notice in that file) and one of the app's own, `ai`. Static markup uses
 `<svg class="icon"><use href="#icon-NAME"></use></svg>`; JS uses `iconSvg()`
 or `iconElement()`. A button with an icon and a translated label keeps the
 label in its own `<span data-i18n>`, because `applyI18n()` replaces the text
 of the element that carries `data-i18n`.
 
 The file tree gets its icon names from `_file_icon()` in
-`PAZ-Parser/api/bdo_api_helpers.py`: `loc` for LOC files, `parsed` for any
-file a registered handler reads, then by extension `image`, `code`, `text`,
+`PAZ-Parser/api/bdo_api_helpers.py`: `loc` for LOC files, `ai` (a horned
+monster head) for `.ai` scripts the AI Script handler reads, `parsed` for any
+other file a registered handler reads, then by extension `image`, `code`, `text`,
 `video` and `archive` (`.pac`), and `file` for the rest, including a `.bss` or
 `.dbss` without a handler. Each file row also carries `supported` from
 `file_row_fields()`, true when a handler or a built-in text, image or video

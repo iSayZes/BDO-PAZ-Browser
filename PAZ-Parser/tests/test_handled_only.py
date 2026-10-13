@@ -10,10 +10,10 @@ import pytest
 import api.bdo_api as bdo_api
 import api.bdo_config as bdo_config
 from api.bdo_api import Api
-from api.bdo_api_helpers import _file_icon
+from api.bdo_api_helpers import _ICON_MAP, file_row_fields
 from api.bdo_tree import build_tree
 from bdo_models import PazEntry
-from bdo_preview import is_handled_file
+from bdo_preview import get_builtin_formats, is_handled_file
 
 _HANDLED_TABLE = "gamecommondata/binary/buff.dbss"
 _HANDLED_WAYPOINT = "gamecommondata/waypoint_binary/patrol.bwp"
@@ -181,15 +181,21 @@ def test_save_settings_stores_and_applies_setting(
 
 
 @pytest.mark.parametrize(
-    ("path", "icon"),
+    ("path", "icon", "supported"),
     [
-        (_HANDLED_TABLE, "parsed"),
-        (_HANDLED_WAYPOINT, "parsed"),
-        (_UNHANDLED_TABLE, "file"),
-        (_TEXTURE, "image"),
-        ("languagedata_en.loc", "loc"),
-        ("character/no_extension", "file"),
+        (_HANDLED_TABLE, "parsed", True),
+        (_HANDLED_WAYPOINT, "parsed", True),
+        (_UNHANDLED_TABLE, "file", False),
+        (_TEXTURE, "image", True),
+        ("ui/style.css", "code", True),
+        ("character/model.pac", "archive", False),
+        ("languagedata_en.loc", "loc", True),
+        ("character/no_extension", "file", False),
     ],
 )
-def test_tree_icon_follows_the_handler_registry(path: str, icon: str) -> None:
-    assert _file_icon(Path(path).name) == icon
+def test_tree_icon_follows_the_handler_registry(path: str, icon: str, supported: bool) -> None:
+    assert file_row_fields(Path(path).name) == {"icon": icon, "supported": supported}
+
+
+def test_every_builtin_view_has_a_tree_icon() -> None:
+    assert set(get_builtin_formats()) - _ICON_MAP.keys() == set()

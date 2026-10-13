@@ -83,4 +83,5 @@ def test_result_row_names_the_file() -> None:
         "name": "buff.dbss",
         "path": "gamecommondata/binary/buff.dbss",
         "icon": "parsed",
+        "supported": True,
     }

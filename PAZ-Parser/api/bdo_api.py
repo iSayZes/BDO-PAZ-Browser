@@ -30,7 +30,7 @@ from .bdo_config import (
     keep_map_updated_setting,
 )
 from .bdo_languages import UI_LANGUAGE_CODES, UI_LANGUAGES, game_language, loc_path, missing_loc_file
-from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, FOLDER_ICON, _file_icon, _norm, fold_entry_map
+from .bdo_api_helpers import _DISK_VIRTUAL_PREFIX, FOLDER_ICON, _norm, file_row_fields, fold_entry_map
 from .bdo_api_file_search import FileSearchMixin
 from .bdo_api_preview import PreviewMixin
 from .bdo_api_search import SearchMixin
@@ -595,7 +595,7 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, H
                     "id":   f"{_DISK_VIRTUAL_PREFIX}/{name}",
                     "name": name,
                     "type": "file",
-                    "icon": _file_icon(name),
+                    **file_row_fields(name),
                     "disk": True,
                 })
 
@@ -614,7 +614,7 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, H
                 "id":   _norm(entry.internal_path),
                 "name": name,
                 "type": "file",
-                "icon": _file_icon(name),
+                **file_row_fields(name),
             })
         return result
 

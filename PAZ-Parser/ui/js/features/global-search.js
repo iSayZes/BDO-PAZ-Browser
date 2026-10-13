@@ -128,6 +128,7 @@ export const globalSearchMethods = {
       const li = document.createElement("li");
       li.className = "tree-node tree-file csb-result";
       li.dataset.icon = item.icon;
+      li.classList.toggle("supported", item.supported === true);
 
       const icon  = iconElement(item.icon, "icon tree-icon");
 

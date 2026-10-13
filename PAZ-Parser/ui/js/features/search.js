@@ -70,6 +70,7 @@ export const searchMethods = {
     li.className = "tree-node tree-file search-result";
     li.dataset.id = item.id;
     li.dataset.icon = item.icon;
+    li.classList.toggle("supported", item.supported === true);
 
     const label = document.createElement("span");
     label.className = "tree-label";

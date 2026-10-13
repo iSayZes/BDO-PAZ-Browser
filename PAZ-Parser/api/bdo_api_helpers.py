@@ -5,17 +5,23 @@ from collections.abc import Callable
 from typing import NamedTuple
 
 from bdo_models import PazEntry
-from bdo_preview import is_handled_file
+from bdo_preview import has_preview, is_handled_file
 
 _DISK_VIRTUAL_PREFIX = "__disk__"
 
 # Icon names of the UI sprite (ui/js/core/icons.js) by file extension, for
-# files no handler reads (_file_icon()).
+# files no handler reads (_file_icon()). Covers every built-in view's extension
+# (bdo_preview._REGISTRY), so a file with a preview never gets the plain icon.
 _ICON_MAP: dict[str, str] = {
-    ".dds": "image", ".png": "image", ".jpg": "image", ".jpeg": "image", ".bmp": "image", ".tga": "image",
+    ".dds": "image", ".dds1": "image", ".dds11": "image", ".png": "image", ".jpg": "image",
+    ".bmp": "image", ".gif": "image", ".tga": "image", ".tif": "image", ".svg": "image",
     ".xml": "code", ".json": "code", ".yaml": "code", ".yml": "code",
-    ".htm": "code", ".html": "code", ".lua": "code",
+    ".htm": "code", ".html": "code", ".lua": "code", ".css": "code", ".js": "code", ".h": "code",
+    # XML: NPC AI state machines (.ai), class combo lists (.cl, character/pcaiscript/)
+    ".ai": "code", ".cl": "code", ".mxml": "code", ".xmp": "code", ".weathercolortablexml": "code",
     ".txt": "text", ".log": "text", ".csv": "text", ".ini": "text", ".cfg": "text",
+    ".srt": "text", ".ifl": "text",
+    ".pa": "text", ".pc": "text", ".ph": "text", ".pm": "text", ".pami": "text",
     ".webm": "video",
     ".pac": "archive",
 }
@@ -48,6 +54,12 @@ def _file_icon(name: str) -> str:
     return _ICON_MAP.get(ext, "file")
 
 
+def file_row_fields(name: str) -> dict[str, str | bool]:
+    """The icon fields of a file row in the tree or a search: its `icon` name,
+    and `supported`, True when the file has a preview other than the hex view."""
+    return {"icon": _file_icon(name), "supported": has_preview(name)}
+
+
 class FileSearchHits(NamedTuple):
     """Every match of one file search, kept while the page scrolls through them."""
 
@@ -68,7 +80,7 @@ def folder_then_name(path: str) -> tuple[str, str]:
 def search_result(path: str) -> dict:
     """The file-search row for normalised PAZ path `path`."""
     name = path.rsplit("/", 1)[-1]
-    return {"id": path, "name": name, "path": path, "icon": _file_icon(name)}
+    return {"id": path, "name": name, "path": path, **file_row_fields(name)}
 
 
 def path_matcher(pattern: str) -> Callable[[str], bool]:

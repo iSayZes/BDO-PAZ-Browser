@@ -113,9 +113,11 @@ The file tree gets its icon names from `_file_icon()` in
 `PAZ-Parser/api/bdo_api_helpers.py`: `loc` for LOC files, `parsed` for any
 file a registered handler reads, then by extension `image`, `code`, `text`,
 `video` and `archive` (`.pac`), and `file` for the rest, including a `.bss` or
-`.dbss` without a handler. Folder icons use the accent, parsed tables
-`--color-data`, LOC files `--color-loc`, the rest `--color-text-3`; `file` rows
-also grey their name to `--color-text-2`.
+`.dbss` without a handler. Each file row also carries `supported` from
+`file_row_fields()`, true when a handler or a built-in text, image or video
+view reads the file. Folder icons use the accent, LOC files `--color-loc`,
+other supported files `--color-data`, the rest `--color-text-3`; files that
+open in the hex view only also grey their name to `--color-text-2`.
 
 The UI uses no emoji, in markup or in `ui/lang/*.json`.
 

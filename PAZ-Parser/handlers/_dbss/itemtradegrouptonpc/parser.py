@@ -2,8 +2,9 @@
 
 A u32 group count, then one group per character key: the u16 key, a u32 item
 count and that many 127-byte item entries. Each entry repeats the key, then
-holds the u32 item ID and the item's trade category (`enCommerceType`) near
-its end; the rest is zero but for three unknown fields. No `PABR` magic and no
+holds the u32 item ID, its trade group type (the code `itemtradeetc.bss`
+pairs for the desert buff) and the item's trade category (`enCommerceType`)
+near its end; the rest is zero but for three unknown fields. No `PABR` magic and no
 string table. `itemtradegrouptonpcoffset.dbss` points at each group, so
 reading the groups in order needs no index. Layout in
 docs/file-formats/itemtradegrouptonpc_dbss.md.
@@ -26,7 +27,7 @@ ENTRY_SIZE = 127
 
 # u16 character key, u32 item ID at the start of an entry.
 _ENTRY_HEAD = struct.Struct("<HI")
-_UNKNOWN_36 = 0x36
+_TRADE_GROUP_TYPE = 0x36
 _UNKNOWN_37 = 0x37
 _UNKNOWN_6B = struct.Struct("<H")
 _UNKNOWN_6B_OFFSET = 0x6B
@@ -72,8 +73,8 @@ def _entry(data: bytes, start: int, group_character_id: int) -> dict:
     return {
         "character_id": character_id,
         "item_id": item_id,
+        "trade_group_type": data[start + _TRADE_GROUP_TYPE],
         "commerce_type": data[start + _COMMERCE_TYPE],
-        "unknown_36": data[start + _UNKNOWN_36],
         "unknown_37": data[start + _UNKNOWN_37],
         "unknown_6b": _UNKNOWN_6B.unpack_from(data, start + _UNKNOWN_6B_OFFSET)[0],
         "unknown_7c": data[start + _UNKNOWN_7C],

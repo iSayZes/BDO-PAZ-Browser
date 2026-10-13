@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fromGroup": "Groupe d'origine*",
+    "toGroup": "Groupe de destination*",
+    "distance": "Distance",
+    "addRate": "Taux de l'effet positif du désert"
+  },
+  "meta": {
+    "count": "{count} paires de groupes de commerce"
+  }
+}

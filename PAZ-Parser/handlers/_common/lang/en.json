@@ -7,5 +7,12 @@
     "offsetRecords": "{count} offset records",
     "headerCount": "Header count: {count}",
     "noRecords": "No records"
+  },
+  "tradeGroups": {
+    "1": "Other Regions",
+    "2": "Valencia City",
+    "3": "Ibellab Oasis",
+    "99": "Shared Goods",
+    "tooltip": "* Named after the trade NPCs and goods that hold the code; the client does not name it"
   }
 }

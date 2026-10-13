@@ -7,5 +7,12 @@
     "offsetRecords": "{count} entrées de décalage",
     "headerCount": "Nombre dans l'en-tête : {count}",
     "noRecords": "Aucune entrée"
+  },
+  "tradeGroups": {
+    "1": "Autres régions",
+    "2": "Ville de Valencia",
+    "3": "Oasis d'Ibellab",
+    "99": "Marchandises communes",
+    "tooltip": "* Nommé d'après les PNJ marchands et les marchandises qui portent ce code ; le client ne le nomme pas"
   }
 }

@@ -5,7 +5,8 @@
     "itemId": "ID d'objet",
     "icon": "Icône",
     "item": "Objet",
-    "category": "Catégorie"
+    "category": "Catégorie",
+    "tradeGroup": "Groupe de commerce*"
   },
   "offsetColumns": {
     "characterId": "ID du personnage",

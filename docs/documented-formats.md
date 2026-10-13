@@ -120,10 +120,11 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `itemsubgroup.dbss` | Item subgroups: variable-length lists of 135-byte item entries used by worker production, trade goods and more | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 2 | 1 |
 | `itemsubgroupoffset.dbss` | PABR index into `itemsubgroup.dbss`, maps subgroup key → offset/size (10-byte rows) | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 2 | 1 |
 | `itemtrade.dbss` | Bare list of u16 character keys of the NPCs that buy trade goods (trade managers, node managers) | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |
+| `itemtradeetc.bss` | PABR table of the desert trade buff per pair of trade group types (distance and rate), then five unknown 12-byte rows | [itemtradeetc](file-formats/itemtradeetc_bss.md) | 3 | 2 |
 | `itemtradegroupfromnpc.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `itemtradegroupfromnpcoffset.dbss` | Empty offset companion for `itemtradegroupfromnpc.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
-| `itemtradegrouptonpc.dbss` | Trade goods per trade NPC: one group per `itemtrade.dbss` character key, 127-byte item entries with the item ID and its trade category | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 4 | 0 |
-| `itemtradegrouptonpcoffset.dbss` | Bare u16 index into `itemtradegrouptonpc.dbss`, maps character ID → group offset and size | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 4 | 0 |
+| `itemtradegrouptonpc.dbss` | Trade goods per trade NPC: one group per `itemtrade.dbss` character key, 127-byte item entries with the item ID, its trade category and its trade group type | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 3 | 0 |
+| `itemtradegrouptonpcoffset.dbss` | Bare u16 index into `itemtradegrouptonpc.dbss`, maps character ID → group offset and size | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 3 | 0 |
 | `itemtradeoffset.dbss` | Bare u16 index into `itemtrade.dbss`, maps character key → key offset; the size column is always 2 | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |
 | `journalquest.dbss`                | Adventure log category and entry data, 12 journal categories with volumes, metadata, and PAColor unlock text  | [journalquest](file-formats/journalquest_dbss.md)                   | 1              | 1 |
 | `journalquestoffset.dbss`          | Index into `journalquest.dbss`, maps (group_id, entry_no) → offset/size                                       | [journalquestoffset](file-formats/journalquestoffset_dbss.md)       | 0              | 0 |

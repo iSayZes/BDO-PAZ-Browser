@@ -29,6 +29,7 @@ from .boss_spawn.handler import BossSpawnBssHandler
 from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
 from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
+from .itemtradeetc.handler import ItemTradeEtcBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
@@ -100,6 +101,7 @@ def register_bss_handlers() -> None:
     register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
     register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
+    register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),

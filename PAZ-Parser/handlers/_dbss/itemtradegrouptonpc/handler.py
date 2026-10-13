@@ -14,6 +14,7 @@ from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pa_text import pa_cell, pa_fields
 from _common.pabr_offset import parse_bare_offset_rows
+from _common.trade_group import trade_group_text, trade_group_tooltip
 from .commerce_types import commerce_type_name
 from .parser import parse_itemtradegrouptonpc_records
 
@@ -44,6 +45,11 @@ class ItemTradeGroupToNpcHandler(PreviewHandler):
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["item"], sort_key="item_name"),
             Column(cols["category"], sort_key="commerce_type_name"),
+            Column(
+                cols["tradeGroup"],
+                extra_attrs=f'title="{e(trade_group_tooltip(self.lang))}"',
+                sort_key="trade_group_type",
+            ),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -62,6 +68,7 @@ class ItemTradeGroupToNpcHandler(PreviewHandler):
                 **pa_fields("item_name", item_name_tagged(record["item_id"])),
                 "icon_path": icon_path(IconKind.ITEM, record["item_id"]),
                 "commerce_type_name": commerce_type_name(record["commerce_type"]),
+                "trade_group_text": trade_group_text(self.lang, record["trade_group_type"]),
             }
             for record in parse_itemtradegrouptonpc_records(data)
         ]
@@ -88,6 +95,7 @@ class ItemTradeGroupToNpcHandler(PreviewHandler):
                 icon_cell(r["icon_path"]),
                 pa_cell(r, "item_name") if r["item_name"] else e(r["item_id"]),
                 e(r["commerce_type_name"]),
+                e(r["trade_group_text"]),
             ]
             for r in records[start : start + page_size]
         ]

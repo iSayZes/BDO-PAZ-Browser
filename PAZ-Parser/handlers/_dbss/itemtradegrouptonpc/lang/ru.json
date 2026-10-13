@@ -5,7 +5,8 @@
     "itemId": "ID предмета",
     "icon": "Значок",
     "item": "Предмет",
-    "category": "Категория"
+    "category": "Категория",
+    "tradeGroup": "Торговая группа*"
   },
   "offsetColumns": {
     "characterId": "ID персонажа",

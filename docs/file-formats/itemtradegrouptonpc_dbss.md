@@ -49,7 +49,7 @@ byte.
 | `+0x00` | u16  | character_id  | Repeats the group key                                        |
 | `+0x02` | u32  | item_id       | Item key, LOC type `0`; the top byte is `0` in every entry   |
 | `+0x06` | u8[] | padding       | 48 bytes, all `0` on client 3464                             |
-| `+0x36` | u8   | unknown_36    | `1`, `2`, `3` or `99`, see Open Questions                    |
+| `+0x36` | u8   | trade_group_type | `1`, `2`, `3` or `99`, see [Trade Group Types](#trade-group-types) |
 | `+0x37` | u8   | unknown_37    | `1` in every entry on client 3464                            |
 | `+0x38` | u8[] | padding       | 51 bytes, all `0` on client 3464                             |
 | `+0x6B` | u16  | unknown_6b    | `0` or a three-digit code, see Open Questions                |
@@ -80,6 +80,32 @@ after `Trade Item`, and the trade market tabs use the same keys. Every
 `10` is `enCommerceType_Max`. The handler stores the key hashes in
 `commerce_types.py`, and `test_commerce_type_hashes_match_stringtable` checks
 them against `stringtable.bss`.
+
+### Trade Group Types
+
+`trade_group_type` is the code that
+[`itemtradeetc.bss`](itemtradeetc_bss.md) pairs for the desert trade buff:
+the trade sell list (`panel_dialog_trade_mybasket_all_1.luac`) passes the
+trade item's `getTradeGroupType()` and the trade NPC's to
+`ToClient_TradeGroupFromToAddPercent` and `ToClient_TradeGroupFromToDistance`,
+and `itemtradeetc.bss` holds pairs of exactly these four codes. The client
+does not name the codes. On client 3464:
+
+| Code | Entries (client 3464)                                                                    |
+| ---- | ---------------------------------------------------------------------------------------- |
+| 1    | 122 of the 125 one-item groups; 233 Fish Dad entries, the regional goods 55101 to 55402  |
+| 2    | The groups of 45011 Yis Kunjamin and 45012 Burita Allon, the Valencia City trade managers |
+| 3    | The group of 45209 Shuriar, the Ibellab Oasis trade manager                              |
+| 99   | The other 1,268 Fish Dad entries, such as 55001 Ancient Gold Coin and 8201 Mudskipper    |
+
+Valencia City and Ibellab Oasis are the two places the client's text gives
+the desert trade bonus (see the `itemtradeetc.bss` notes).
+
+The labels the tables show with each code (`1 Other Regions`,
+`2 Valencia City`, `3 Ibellab Oasis`, `99 Shared Goods`) are our wording, not
+the game's: the client has no name for any code. The place names use the
+client's words for the two places; `Other Regions` and `Shared Goods` are
+ours. The labels live in `_common/lang/` (`tradeGroups`).
 
 ## `itemtradegrouptonpcoffset.dbss`
 
@@ -114,6 +140,7 @@ One row per item entry.
 | Icon         | icon | Item icon                                     |
 | Item         | text | LOC type `0` in the item's grade colour       |
 | Category     | text | `commerce_type` name, LOC type `37`           |
+| Trade Group* | text | `trade_group_type` with our label: `1 Other Regions`, `2 Valencia City`, `3 Ibellab Oasis`, `99 Shared Goods`. The `*` in the header (tooltip) marks the labels as ours: they come from the NPCs and goods that hold each code, not from a client name |
 
 The offset table shows Character ID, Data Offset and Size.
 
@@ -139,18 +166,6 @@ The offset table shows Character ID, Data Offset and Size.
   [empty](empty_dbss.md)).
 
 ## Open Questions
-
-### What unknown_36 Holds
-
-On client 3464: `1` in 122 of the 125 one-item groups and on 233 Fish Dad
-entries, all of them 55xxx regional goods such as 55102 Velian Wine; `2`
-under 45011 Yis Kunjamin and 45012 Burita Allon; `3` under 45209 Shuriar;
-`99` on the other 1,268 Fish Dad entries. The client reads a trade group type
-from both the trade item and the NPC (`getTradeGroupType()` in
-`panel_dialog_trade_mybasket_all_1.luac`, passed to
-`ToClient_TradeGroupFromToAddPercent` and `ToClient_TradeGroupFromToDistance`
-for the desert price bonus). This byte may be the item's group type, but
-nothing in the file ties the two together.
 
 ### What unknown_6b Holds
 

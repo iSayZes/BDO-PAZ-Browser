@@ -112,13 +112,15 @@ Per-item maximum on the 2026-09-27 client, checked in game (2026-09-28):
 
 ## Block Structure
 
-Only the item ID, the placed character and the strings are confirmed. A block
-opens with the item ID and ends with a large run of enchant-related numeric
-fields that are not yet decoded.
+Only the key, the placed character and the strings are confirmed. A block
+opens with its packed key and ends with a large run of enchant-related numeric
+fields that are not yet decoded. On client 3464 both copies of the key, at
+`+0x00` and at end-6, equal the offset row's key in all 168,680 blocks. An earlier version of this
+doc called both the item ID, which holds only for the level-0 blocks.
 
 | Offset  | Type | Field    | Notes                                    |
 | ------- | ---- | -------- | ---------------------------------------- |
-| `+0x00` | u32  | item_id      | Repeats the item ID from the key                             |
+| `+0x00` | u32  | key          | Repeats the packed key of the offset row, enchant level included |
 | `+0x04` | u8   | item_type    | Tooltip class (`EItemType`), see below                       |
 | `+0x05` | u8   | category     | Item classification                                          |
 | `+0x06` | u8   | grade        | `0` to `5`, the item name colour, see below                  |
@@ -354,7 +356,7 @@ Layout from bdo-data-extractor; it reads cleanly in all 70,284 base blocks
 | varies  | u32       | enhancement_group | `enhancement_type × 1000` plus a family index in 70,268 base items, e.g. Kharazad necklace 21000 |
 | varies  | u32       | enhancement_type  | Enhancement system: `0` none, `1` ordinary weapons and armour, `13` ordinary accessories, `19` Sovereign weapons, `21` Kharazad, `23` Tuvala weapons and armour; the full list is in bdo-data-extractor. Also the `group` of the Ancient Anvil table, [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md) |
 | varies  | ...       | unknown       | Undecoded remainder, holding `second_string` about 330 bytes in |
-| end-6   | u32       | item_id       | Repeats the item ID, in all 70,284 base blocks |
+| end-6   | u32       | key           | Repeats the packed key, like `+0x00` |
 | end-2   | u16       | unknown_crystal_group | `0xFFFF` except in 481 base items, e.g. Magic Crystal of Infinity - Valor `100`, which is no longer in the game; bdo-data-extractor: the crystal transfusion group |
 
 `marketable` matches bdocodex on the 16 items checked above: Kharazad

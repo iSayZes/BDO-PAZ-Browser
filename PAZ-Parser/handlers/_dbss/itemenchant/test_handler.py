@@ -292,6 +292,22 @@ def test_every_item_has_a_name(itemenchant_result: HandlerResult) -> None:
     assert all(record["item_name"] for record in records)
 
 
+def test_every_block_opens_and_closes_with_its_packed_key(itemenchant_result: HandlerResult) -> None:
+    """`+0x00` and end-6 repeat the offset row's packed key, enchant level included."""
+    from _dbss.itemenchant.parser import parse_itemenchantoffset_records
+
+    source = itemenchant_result.source
+    data = source.data
+    bad = [
+        row["key"]
+        for row in parse_itemenchantoffset_records(source.file(_OFFSET_FILE))
+        if struct.unpack_from("<I", data, row["data_offset"])[0] != row["key"]
+        or struct.unpack_from("<I", data, row["data_offset"] + row["data_size"] - 6)[0] != row["key"]
+    ]
+
+    assert not bad, f"blocks whose key copies differ from the offset row: {bad[:5]}"
+
+
 def test_item_grade_index_matches_the_grade_column(itemenchant_result: HandlerResult) -> None:
     from _dbss.itemenchant.parser import build_item_grade_index
 

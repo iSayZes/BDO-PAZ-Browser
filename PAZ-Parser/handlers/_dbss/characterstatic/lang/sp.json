@@ -12,9 +12,15 @@
     "conditionScript": "Condición",
     "knowledgeId": "ID de conocimiento",
     "npcKind": "Tipo de PNJ",
+    "grade": "Grado",
+    "karma": "Alineamiento",
+    "navalFame": "Renombre naval",
+    "vehicleType": "Tipo de vehículo",
     "classType": "Tipo de clase",
     "aiScript": "Script de IA",
     "model": "Modelo",
+    "sourceItemId": "ID del objeto de origen",
+    "sourceItem": "Objeto de origen",
     "payloadSize": "Tamaño de carga"
   },
   "meta": {

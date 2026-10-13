@@ -12,9 +12,15 @@
     "conditionScript": "Condition",
     "knowledgeId": "Knowledge ID",
     "npcKind": "NPC Kind",
+    "grade": "Grade",
+    "karma": "Karma",
+    "navalFame": "Naval Fame",
+    "vehicleType": "Vehicle Type",
     "classType": "Class Type",
     "aiScript": "AI Script",
     "model": "Model",
+    "sourceItemId": "Source Item ID",
+    "sourceItem": "Source Item",
     "payloadSize": "Payload Size"
   },
   "meta": {

@@ -5,7 +5,10 @@ from typing import Any
 
 import pytest
 
-from _dbss.characterstatic.parser import build_knowledge_character_index
+from _common.pabr_offset import parse_pabr_offset_rows
+from _dbss.characterstatic.parser import build_knowledge_character_index, parse_characterstatic_records
+from _dbss.itemenchant.parser import build_character_item_index
+from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -30,7 +33,9 @@ STATIC_CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "character_id", "name", "action_script", "condition_script",
-                "knowledge_id", "npc_kind", "npc_kind_low", "class_type", "ai_script", "model_path", "payload_size",
+                "knowledge_id", "npc_kind", "grade", "tendency_on_dead", "ocean_tendency",
+                "vehicle_type", "vehicle_type_name", "class_type", "ai_script", "model_path",
+                "source_item_id", "source_item_name", "payload_size",
             ]
         ),
         # The data file's own count; the parser walks the offset table's rows.
@@ -58,7 +63,6 @@ STATIC_CASE = HandlerCase(
                 "condition_script": "getOceanTendency()>-1;",
                 "knowledge_id": 2095,
                 "npc_kind": 2,
-                "npc_kind_low": 2,
             },
         ),
         # The getknowledge match ignores case.
@@ -71,6 +75,12 @@ STATIC_CASE = HandlerCase(
             expected={"class_type": 0, "ai_script": "", "model_path": "pc/1_phm/fighteraction_noweapon"},
         ),
         TargetTest(col="character_id", value=2, expected={"class_type": 4}),
+        # Grade 4 is CppEnums.CharacterGradeType_Boss, the grade the Lua boss gauge checks.
+        TargetTest(col="character_id", value=29929, expected={"name": "Garmoth", "grade": 4, "vehicle_type": None}),
+        # Vehicle type 0 is Type_Horse, a value and not the "no vehicle" dash.
+        TargetTest(col="character_id", value=9001, expected={"vehicle_type": 0, "vehicle_type_name": "Horse"}),
+        # The item that places the character, as itemenchant.dbss links it.
+        TargetTest(col="character_id", value=2053, expected={"source_item_id": 58011}),
     ],
 )
 
@@ -130,3 +140,31 @@ def test_knowledge_index_holds_every_granting_character(static_result: HandlerRe
             expected.setdefault(record["knowledge_id"], []).append(record["character_id"])
 
     assert index == {knowledge_id: tuple(sorted(ids)) for knowledge_id, ids in expected.items()}
+
+
+def test_source_item_matches_the_itemenchant_link(static_result: HandlerResult) -> None:
+    """A stored source item is the item whose itemenchant.dbss record names the character."""
+    links = build_character_item_index(
+        load_binary_fixture("itemenchant.dbss"),
+        load_binary_fixture("itemenchantoffset.dbss"),
+    )
+    stored = {
+        record["character_id"]: record["source_item_id"]
+        for record in static_result.records
+        if record["source_item_id"] is not None
+    }
+
+    assert stored
+    assert {character_id: links.get(character_id) for character_id in stored} == stored
+
+
+def test_korean_name_follows_the_model_path(static_result: HandlerResult) -> None:
+    """The first UTF-16 string after the model path is the Korean name."""
+    source = static_result.source
+    records = parse_characterstatic_records(
+        source.data, parse_pabr_offset_rows(source.file("characterstaticoffset.dbss"))
+    )
+    names = {record["character_id"]: record["name_kr"] for record in records}
+
+    assert names[29929] == "가모스"
+    assert names[1] == "워리어"

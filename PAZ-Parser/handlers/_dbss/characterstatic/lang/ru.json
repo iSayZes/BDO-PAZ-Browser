@@ -12,9 +12,15 @@
     "conditionScript": "Условие",
     "knowledgeId": "ID знания",
     "npcKind": "Вид НИП",
+    "grade": "Ранг",
+    "karma": "Карма",
+    "navalFame": "Морской рейтинг",
+    "vehicleType": "Тип транспорта",
     "classType": "Тип класса",
     "aiScript": "Скрипт ИИ",
     "model": "Модель",
+    "sourceItemId": "ID исходного предмета",
+    "sourceItem": "Исходный предмет",
     "payloadSize": "Размер полезных данных"
   },
   "meta": {

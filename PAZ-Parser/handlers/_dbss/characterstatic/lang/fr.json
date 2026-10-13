@@ -12,9 +12,15 @@
     "conditionScript": "Condition",
     "knowledgeId": "ID de connaissance",
     "npcKind": "Genre de PNJ",
+    "grade": "Grade",
+    "karma": "Karma",
+    "navalFame": "Renommée navale",
+    "vehicleType": "Type de véhicule",
     "classType": "Type de classe",
     "aiScript": "Script d'IA",
     "model": "Modèle",
+    "sourceItemId": "ID d'objet source",
+    "sourceItem": "Objet source",
     "payloadSize": "Taille des données utiles"
   },
   "meta": {

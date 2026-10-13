@@ -4,14 +4,17 @@ Each offset row points just past a two-byte inline copy of the character ID.
 The payload opens with two length-prefixed scripts, then the ID again:
 
     u8[8] header | u8 tag 0x15 | action_script | condition_script
-    | u8 | u16 character_id | u16 | u32 npc_kind | ... ai_script model_path ...
-    | ... | u8 class_type @ end-24 | u8[23]
+    | u8 | u16 character_id | u16 | u8 npc_kind | u8 grade
+    | i32 tendency_on_dead | i32 ocean_tendency | ... | u8 vehicle_type @ p+166
+    | ... ai_script model_path name_kr ...
+    | u8 class_type @ end-24 | ... | u32 source_item_id @ end-15 | ...
 
 Both scripts are an i64 UTF-16 code-unit count followed by UTF-16LE text. The
 model path is an i64 byte count plus ASCII at no fixed offset, so it is found by
 scanning; it is the only folder path among the record's ASCII strings. The
 string right before it names the character's AI script, the stem of an `.ai`
-file (`9999`, `Monsters_Main_Manager`).
+file (`9999`, `Monsters_Main_Manager`), and the UTF-16 string right after it is
+the Korean name.
 Full layout in docs/file-formats/characterstatic_dbss.md.
 """
 
@@ -21,7 +24,7 @@ import struct
 
 from _common.knowledge_script import knowledge_id_of
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
-from _common.prefixed_string import find_prefixed_ascii
+from _common.prefixed_string import STRING_PREFIX_SIZE, locate_prefixed_ascii, read_prefixed_at
 
 _TAG = 0x08
 _TAG_VALUE = 0x15
@@ -29,13 +32,23 @@ _ACTION_SCRIPT = 0x09
 # From the first byte after condition_script.
 _CHARACTER_ID = 0x01
 _NPC_KIND = 0x05
-_AFTER_SCRIPTS_SIZE = _NPC_KIND + 4
+_GRADE = 0x06
+_TENDENCY_ON_DEAD = 0x07
+_OCEAN_TENDENCY = 0x0B
+_VEHICLE_TYPE = 0xA6
+# The fixed fields end before the AI script and model path strings.
+_FIXED_SIZE = _VEHICLE_TYPE + 1
 # From the end of the payload.
 _CLASS_TYPE_FROM_END = 24
+_SOURCE_ITEM_FROM_END = 15
 # class_type on every row that is not a player character.
 NO_CLASS_TYPE = 101
+# vehicle_type on every row that is not a vehicle; not a CppEnums.VehicleType member.
+NO_VEHICLE_TYPE = 65
 
 _I64 = struct.Struct("<q")
+_I32 = struct.Struct("<i")
+_U32 = struct.Struct("<I")
 
 
 def _read_script(data: bytes, pos: int, end: int, character_id: int) -> tuple[str, int]:
@@ -47,20 +60,23 @@ def _read_script(data: bytes, pos: int, end: int, character_id: int) -> tuple[st
     return data[pos + _I64.size:text_end].decode("utf-16-le"), text_end
 
 
-def _ai_script_and_model(data: bytes, start: int, end: int) -> tuple[str, str]:
-    """(ai_script, model_path) from the ASCII strings in `[start, end)`.
+def _record_strings(data: bytes, start: int, end: int) -> tuple[str, str, str]:
+    """(ai_script, model_path, name_kr) from the strings in `[start, end)`.
 
-    The model path is the longest folder path; the AI script is the string
-    right before it, '' when the path comes first (player characters).
+    The model path is the longest folder path among the ASCII strings; the AI
+    script is the string right before it, '' when the path comes first
+    (player characters). The Korean name is the UTF-16 string right after it.
     """
-    texts = list(find_prefixed_ascii(data, start, end))
-    paths = [text for text in texts if "/" in text]
+    found = locate_prefixed_ascii(data, start, end)
+    paths = [(prefix_at, text) for prefix_at, text in found if "/" in text]
     if not paths:
-        return "", ""
-    model_path = max(paths, key=len)
-    before = texts[: texts.index(model_path)]
-    ai_script = before[-1] if before and "/" not in before[-1] else ""
-    return ai_script, model_path
+        return "", "", ""
+    model_at, model_path = max(paths, key=lambda path: len(path[1]))
+    model_index = found.index((model_at, model_path))
+    before = found[model_index - 1][1] if model_index else ""
+    ai_script = "" if "/" in before else before
+    name_kr, _ = read_prefixed_at(data, model_at + STRING_PREFIX_SIZE + len(model_path), end, wide=True)
+    return ai_script, model_path, name_kr
 
 
 def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
@@ -74,21 +90,27 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
 
     action_script, pos = _read_script(data, start + _ACTION_SCRIPT, end, character_id)
     condition_script, pos = _read_script(data, pos, end, character_id)
-    if pos + _AFTER_SCRIPTS_SIZE > end:
+    if pos + _FIXED_SIZE > end:
         raise ValueError(f"character {character_id} ends inside its fixed fields")
     if struct.unpack_from("<H", data, pos + _CHARACTER_ID)[0] != character_id:
         raise ValueError(f"character {character_id} record does not repeat its own ID")
 
-    ai_script, model_path = _ai_script_and_model(data, pos + _AFTER_SCRIPTS_SIZE, end)
+    ai_script, model_path, name_kr = _record_strings(data, pos + _FIXED_SIZE, end)
     return {
         "character_id": character_id,
         "action_script": action_script,
         "condition_script": condition_script,
         "knowledge_id": knowledge_id_of(action_script),
-        "npc_kind": struct.unpack_from("<I", data, pos + _NPC_KIND)[0],
+        "npc_kind": data[pos + _NPC_KIND],
+        "grade": data[pos + _GRADE],
+        "tendency_on_dead": _I32.unpack_from(data, pos + _TENDENCY_ON_DEAD)[0],
+        "ocean_tendency": _I32.unpack_from(data, pos + _OCEAN_TENDENCY)[0],
+        "vehicle_type": data[pos + _VEHICLE_TYPE],
         "class_type": data[end - _CLASS_TYPE_FROM_END],
+        "source_item_id": _U32.unpack_from(data, end - _SOURCE_ITEM_FROM_END)[0],
         "ai_script": ai_script,
         "model_path": model_path,
+        "name_kr": name_kr,
         "payload_size": row.size,
     }
 

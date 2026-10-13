@@ -12,9 +12,15 @@
     "conditionScript": "Bedingung",
     "knowledgeId": "Wissens-ID",
     "npcKind": "NPC-Art",
+    "grade": "Rang",
+    "karma": "Karma",
+    "navalFame": "Seefahrerruhm",
+    "vehicleType": "Fahrzeugtyp",
     "classType": "Klassentyp",
     "aiScript": "KI-Skript",
     "model": "Modell",
+    "sourceItemId": "Quellgegenstands-ID",
+    "sourceItem": "Quellgegenstand",
     "payloadSize": "Nutzdatengröße"
   },
   "meta": {

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "enchantLevel": "Уровень усиления",
+    "icon": "Значок",
+    "item": "Предмет"
+  },
+  "offsetColumns": {
+    "itemKey": "Ключ предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Ключей предметов: {count} · предметов: {items}"
+  }
+}

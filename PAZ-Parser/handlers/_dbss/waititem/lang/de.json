@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "enchantLevel": "Verstärkungsstufe",
+    "icon": "Symbol",
+    "item": "Gegenstand"
+  },
+  "offsetColumns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gegenstandsschlüssel · {items} Gegenstände"
+  }
+}

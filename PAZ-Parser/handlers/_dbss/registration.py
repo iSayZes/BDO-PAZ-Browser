@@ -118,6 +118,7 @@ from .itemtradegrouptonpc.handler import (
 )
 from .alchemyupgrade.handler import AlchemyUpgradeHandler, alchemy_upgrade_offset_handler
 from .alchemystonechange.handler import AlchemyStoneChangeHandler, alchemy_stone_change_offset_handler
+from .waititem.handler import WaitItemHandler, wait_item_offset_handler
 from .itemimprovement.handler import (
     ItemImprovementHandler,
     ItemImprovementSourceHandler,
@@ -161,6 +162,8 @@ def register_dbss_handlers() -> None:
     register_handler("alchemyupgrade.dbss", AlchemyUpgradeHandler())
     register_handler("alchemystonechangeoffset.dbss", alchemy_stone_change_offset_handler())
     register_handler("alchemystonechange.dbss", AlchemyStoneChangeHandler())
+    register_handler("waititemoffset.dbss", wait_item_offset_handler())
+    register_handler("waititem.dbss", WaitItemHandler())
     register_handler("itemimprovementoffset.dbss", item_improvement_offset_handler())
     register_handler("itemimprovement.dbss", ItemImprovementHandler())
     register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())

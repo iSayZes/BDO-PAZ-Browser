@@ -49,6 +49,8 @@ class IndexKind(Enum):
     ITEM_KEY_ICON = "item_key_icon"
     # Grade (0 to 5) of each base item ID, which colours its name.
     ITEM_GRADE = "item_grade"
+    # Korean itemenchant.dbss names, the fallback when LOC type 0 has none.
+    ITEM_NAME_KR = "item_name_kr"
     # Journal page artwork by packed quest ID, not the quest's own icon.
     QUEST_ARTWORK_ICON = "quest_artwork_icon"
     # Manor part blueprints by manor_part_key(character_id, part).

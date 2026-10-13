@@ -46,6 +46,7 @@ from _dbss.itemenchant.parser import (
     build_enhancement_type_item_index,
     build_item_grade_index,
     build_item_icon_index,
+    build_item_name_kr_index,
 )
 from _dbss.knowledgelearning.parser import (
     build_knowledge_learning_character_index,
@@ -113,6 +114,7 @@ class IndexSpec:
 INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.ITEM_ICON, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_icon_index),
     IndexSpec(IndexKind.ITEM_GRADE, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_grade_index),
+    IndexSpec(IndexKind.ITEM_NAME_KR, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_name_kr_index),
     # enchantstaticstatus.dbss key -> the items that enhance with it.
     IndexSpec(IndexKind.ENCHANT_KEY_ITEMS, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_enchant_key_item_index),
     # Enhancement type -> its items, for the guaranteeenchantss.dbss Items column.

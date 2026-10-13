@@ -1191,6 +1191,7 @@ IDs (`LookupValue`).
 | `BUFF_ICON`      | `buffsimply.bss`                           | icon path      |
 | `ITEM_KEY_ICON`  | `specialenchantitem.bss`                   | icon path      |
 | `ITEM_GRADE`     | `itemenchant.dbss`, `itemenchantoffset.dbss` | grade, 0 to 5 |
+| `ITEM_NAME_KR`   | `itemenchant.dbss`, `itemenchantoffset.dbss` | Korean name    |
 | `QUEST_ARTWORK_ICON` | `questjournalvideoinfo.bss`            | artwork path   |
 | `MANOR_PART_ICON` | `mansionpartinfo.bss`                     | icon path      |
 | `CUTSCENE_ICON`  | `groupcameradata.bss`                      | icon path      |
@@ -1296,6 +1297,11 @@ own Item column from the record. A single item name column uses
 `item_name_tagged(item_id)` from `_common/item_key.py` with `pa_fields()`
 (`cashproduct.dbss`, `fairyupgraderate.bss`, `characterobject.dbss`), and
 the lease lists use `lease_text_tagged()` from `_common/lease.py`.
+
+`item_name()` (and so `item_name_tagged()` and the item list cells) falls
+back to `ITEM_NAME_KR`, the Korean name the item's level-0 block stores, when
+LOC type 0 has no name or LOC is not loaded, so item columns follow the same
+user language, then Korean order as character names.
 
 Six small tables are indexed although only their own handlers show their
 icons today, so a later table can reuse them without opening the source

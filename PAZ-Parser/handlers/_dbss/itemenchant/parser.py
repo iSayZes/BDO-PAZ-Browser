@@ -294,6 +294,30 @@ def build_enhancement_type_item_index(data: bytes, offset_data: bytes) -> dict[i
     return {key: tuple(sorted(items)) for key, items in items_by_type.items()}
 
 
+def build_item_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
+    """Map base item ID to the Korean name its level-0 block stores, when it has one.
+
+    The fallback for items LOC type 0 does not name (`_common/item_key.py`).
+    """
+    index: dict[int, str] = {}
+
+    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+        start = row["data_offset"]
+        end = start + row["data_size"]
+        if end > len(data):
+            continue
+
+        strings = _block_strings(data, start, end)
+        if not strings:
+            continue
+        icon_prefix = strings[0][0]
+        name = _name_kr(data, _name_prefix(data, start, icon_prefix), icon_prefix).strip()
+        if name:
+            index[row["item_id"]] = name
+
+    return index
+
+
 def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:
     """Map base item ID to its grade, from the level-0 records.
 

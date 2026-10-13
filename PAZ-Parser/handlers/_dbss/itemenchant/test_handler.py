@@ -429,3 +429,13 @@ def test_item_grade_tagged_wraps_the_name_in_its_grade_colour() -> None:
     # An unknown grade or a missing name stays plain.
     assert item_grade_tagged("Kzarka Longsword", len(ITEM_GRADE_COLORS)) == "Kzarka Longsword"
     assert item_grade_tagged("", 3) == ""
+
+
+def test_item_name_kr_index_matches_the_korean_name_column(itemenchant_result: HandlerResult) -> None:
+    from _dbss.itemenchant.parser import build_item_name_kr_index
+
+    source = itemenchant_result.source
+    index = build_item_name_kr_index(source.data, source.file(_OFFSET_FILE))
+    expected = {r["item_id"]: r["name_kr"].strip() for r in itemenchant_result.records if r["name_kr"].strip()}
+
+    assert index == expected

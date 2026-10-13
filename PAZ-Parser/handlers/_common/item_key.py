@@ -25,6 +25,7 @@ from _common.html import hidden_slice, icon_html_list_cell
 from _common.icon_index import IconKind, icon_path
 from _common.item_grade import item_grade, item_grade_tagged
 from _common.loc import loc_lookup, loc_text, strip_pa_tags
+from _common.lookup_index import IndexKind, lookup
 from _common.pa_text import pa_html
 
 LOC_ITEM_NAME = 0
@@ -40,8 +41,13 @@ def split_item_key(item_key: int) -> tuple[int, int]:
 
 
 def item_name(item_id: int) -> str:
-    """LOC type 0 name of an item, or '' when it has none or LOC is not loaded."""
-    return loc_text(LOC_ITEM_NAME, item_id)
+    """LOC type 0 name of an item, else the Korean name `itemenchant.dbss` stores, else ''."""
+    return loc_text(LOC_ITEM_NAME, item_id) or _item_name_kr(item_id)
+
+
+def _item_name_kr(item_id: int) -> str:
+    name = lookup(IndexKind.ITEM_NAME_KR, item_id)
+    return name if isinstance(name, str) else ""
 
 
 def item_level_name(item_id: int, enchant_level: int) -> str:

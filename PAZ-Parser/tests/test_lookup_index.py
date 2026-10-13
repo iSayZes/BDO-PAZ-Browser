@@ -67,3 +67,14 @@ def test_kind_values_are_stable_cache_keys() -> None:
     assert IndexKind.CHARACTER_ICON.value == "character_icon"
     assert IndexKind.CHARACTER_ITEM.value == "character_item"
     assert len({kind.value for kind in IndexKind}) == len(list(IndexKind))
+
+
+def test_item_name_falls_back_to_the_korean_name() -> None:
+    from _common.item_key import item_name
+
+    # An item ID no LOC names, so the result does not depend on a loaded LOC.
+    unnamed_item = 0xFFFFFE
+    init_index(IndexKind.ITEM_NAME_KR, {unnamed_item: "[이벤트] 울타리"})
+
+    assert item_name(unnamed_item) == "[이벤트] 울타리"
+    assert item_name(unnamed_item - 1) == ""

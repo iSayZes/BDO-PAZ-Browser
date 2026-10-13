@@ -27,3 +27,6 @@ bench-results/
 # PyInstaller output (browser.spec)
 /build/
 /dist/
+
+# Rust build output (PAZ-Parser/native)
+PAZ-Parser/native/target/

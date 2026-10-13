@@ -137,6 +137,35 @@ pip install -r PAZ-Parser/requirements.txt
 pip install pillow        # optional
 ```
 
+### Native Decoders (Optional)
+
+`PAZ-Parser/native/` is the BDO decompressor and the ICE rounds in Rust,
+built into the `_bdo_native` module with [PyO3](https://pyo3.rs/) and
+[maturin](https://www.maturin.rs/). `paz/bdo_decompress.py` and
+`paz/bdo_ice.py` use it when it is installed (`paz/native_backend.py`) and
+their Python and numpy versions otherwise, so a checkout without Rust still
+runs. On client 3464 (CPU 2, Python 3.14):
+
+| Stage | Python and numpy | `_bdo_native` |
+|---|---|---|
+| Decrypt the 14 MB texture | 0.140 s | 0.012 s |
+| Decompress it | 0.748 s | 0.023 s |
+| Read it (disk, decrypt, decompress) | 0.892 s | 0.038 s |
+| Extract all of `pad05889.paz` | 1.984 s | 0.368 s |
+| Map tile build, all zooms, 8 processes | 16.2 s | 11.0 s |
+
+It needs a Rust toolchain ([rustup](https://rustup.rs/), MSVC on Windows):
+
+```
+pip install ./PAZ-Parser/native
+```
+
+Install it again after changing the Rust code. The Python versions are the
+reference: `PAZ-Parser/tests/test_decompress.py` runs both decompressors on
+encoded streams, client payloads and truncated or corrupted copies, and
+`PAZ-Parser/tests/test_payload_decode.py` both ICE versions on random data;
+each fails when the bytes or errors differ.
+
 ## Testing
 
 Handler unit tests use pytest and live beside the handler they cover. Missing test inputs are fetched into the gitignored `PAZ-Parser/tests/fixtures/` cache from the configured PAZ folder. When the installed client changes, the next run fetches all of them again (details in `docs/handler.md`).
@@ -223,8 +252,8 @@ such as `--loc de`) or the folder's entry list (`--folder`). The stages:
 To keep numbers comparable, each run:
 
 - **Pins the process to one CPU** (`--cpu`, default 2) at high priority.
-  The decode loops run on one core anyway (ICE through numpy, decompression
-  in pure Python). Pinning
+  The decode loops run on one core anyway (ICE and decompression in
+  `_bdo_native`, or numpy and Python without it). Pinning
   stops the OS moving the run between cores; on a hybrid Intel CPU an
   efficiency core runs this code about 1.8x slower, so the benchmark refuses
   one and lists the performance cores. The pin is read back after setting
@@ -241,7 +270,8 @@ To keep numbers comparable, each run:
 - **Saves a fingerprint** with the timings: CPU model, logical CPUs, RAM,
   power plan, OS, Python, git commit, the pinned CPU and the input hash.
   `compare` lists every difference besides the code, so a speedup only
-  counts when that list is empty.
+  counts when that list is empty. The fingerprint does not record whether
+  `_bdo_native` was installed; name the runs after it.
 
 `--memory` adds one run per stage under `tracemalloc` for the peak memory.
 It traces every allocation, so that run is many times slower and never
@@ -257,8 +287,12 @@ the `_internal` folder they share. To build it yourself, on Windows:
 
 ```bash
 python -m pip install -r PAZ-Parser/requirements-build.txt
+python -m pip install ./PAZ-Parser/native   # optional, see Native Decoders
 python build.py
 ```
+
+Without `_bdo_native` installed, `build.py` prints a warning and the exe
+decodes with numpy and Python. The release workflow installs it.
 
 `build.py` runs PyInstaller with `browser.spec` into `dist/BDO-PAZ-Browser/`,
 checks that `bdo-paz-cli.exe --handlers` lists the same handlers as
@@ -489,12 +523,20 @@ PAZ-Parser/
 │   ├── bdo_ice.py          # ICE cipher implementation
 │   ├── bdo_meta_reader.py  # Meta file reader
 │   ├── bdo_payload_cache.py# LRU payload cache
-│   ├── bdo_payload_reader.py# Payload decompression + ICE decryption
+│   ├── bdo_payload_reader.py# Entry payload read: ICE decryption, then decompression
+│   ├── bdo_decompress.py   # BDO decompression: Python decoder, _bdo_native when installed
+│   ├── native_backend.py   # The _bdo_native functions, None when it is not installed
 │   ├── source_fingerprint.py# Code hash that invalidates the disk caches
 │   ├── bdo_thumbnail_cache.py# Icon thumbnail cache (SQLite, in the cache folder)
 │   ├── bdo_records_cache.py# Parsed table cache (SQLite, in the cache folder)
 │   ├── bdo_paz_extract.py  # File extraction logic
 │   └── bdo_paz_reader.py   # PAZ archive parser
+│
+├── native/                 # _bdo_native, the decoders in Rust (see Native Decoders)
+│   ├── src/decoder.rs      # Port of the Python decompressor, range checked, never panics
+│   ├── src/ice.rs          # ICE rounds; the key schedule and S-boxes come from bdo_ice.py
+│   ├── src/lib.rs          # PyO3 module: unpack(), ice_crypt(), both without holding the GIL
+│   └── _bdo_native.pyi     # Type stub, shipped in the wheel and read by pyright
 │
 ├── tests/                  # Unit test framework and gitignored fixtures
 │   ├── framework.py        # Public re-export for test helpers
@@ -505,6 +547,7 @@ PAZ-Parser/
 │   ├── runner.py           # run_case()
 │   ├── fixtures.py         # Auto-fetches test inputs from PAZ folder
 │   ├── fixture_sync.py     # Refreshes fixtures when the client changes
+│   ├── decompress_streams.py# BDO stream encoder for the decompress tests
 │   └── fixtures/           # Gitignored cached binaries
 │
 ├── ui/                     # Web UI (HTML + JS + CSS)

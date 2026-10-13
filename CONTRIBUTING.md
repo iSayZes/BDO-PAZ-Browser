@@ -23,6 +23,8 @@ python browser.py
 
 Open your `Black Desert/Paz` folder once in the GUI, so the tests know where to fetch fixtures from.
 
+The compiled decoders are optional. With a Rust toolchain installed, `python -m pip install ./PAZ-Parser/native` builds them, and the tests then also check them against the Python and numpy versions. Install it again after changing the Rust code.
+
 ## Branches and Pull Requests
 
 - Branch from `staging` and open the pull request into `staging`, not `main`. `main` holds the released state and only moves with a release.

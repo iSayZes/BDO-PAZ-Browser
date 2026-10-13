@@ -105,6 +105,13 @@ def _check_environment() -> None:
         raise BuildError("the exe builds on Windows only")
     if importlib.util.find_spec("PyInstaller") is None:
         raise BuildError("PyInstaller is missing: python -m pip install -r PAZ-Parser/requirements-build.txt")
+    # Optional: without it the exe decodes with numpy and Python, about 20x slower.
+    if importlib.util.find_spec("_bdo_native") is None:
+        print(
+            "build: warning: _bdo_native is not installed, the exe will decode with numpy and Python; "
+            "python -m pip install ./PAZ-Parser/native (needs Rust)",
+            file=sys.stderr,
+        )
 
 
 def _run_pyinstaller(version: str) -> Path:

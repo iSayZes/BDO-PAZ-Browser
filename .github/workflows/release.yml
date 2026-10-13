@@ -67,6 +67,12 @@ jobs:
         if: steps.plan.outputs.release == 'true' || steps.pack.outputs.pack == 'true'
         run: python -m pip install -r PAZ-Parser/requirements-dev.txt -r PAZ-Parser/requirements-build.txt
 
+      # PyInstaller bundles it from the environment; without it the exe
+      # decodes with numpy and Python.
+      - name: Build the native decoders
+        if: steps.plan.outputs.release == 'true' || steps.pack.outputs.pack == 'true'
+        run: python -m pip install ./PAZ-Parser/native
+
       - name: Pyright
         if: steps.plan.outputs.release == 'true' || steps.pack.outputs.pack == 'true'
         run: python -m pyright

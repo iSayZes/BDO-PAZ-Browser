@@ -104,6 +104,12 @@ CASE = HandlerCase(
             value=197406,
             expected={"quest_category": 11, "family_stat_labels": ["Stamina"]},
         ),
+        # A Growth Pass quest whose LOC title is a TextBind placeholder (LOC type 59).
+        TargetTest(
+            col="packed_quest_id",
+            value=3 << 16 | 4470,
+            expected={"title_en": "[Menu] Quick Hotkey Settings"},
+        ),
         # One of the three records that store no icon path.
         TargetTest(col="packed_quest_id", value=69183, expected={"icon_path": ""}),
         # Villager 544 gives the quest as Dins (dialog 430) and takes it as a Vigilante (326).

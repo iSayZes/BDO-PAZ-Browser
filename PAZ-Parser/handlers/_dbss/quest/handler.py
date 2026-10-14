@@ -8,12 +8,13 @@ from bdo_preview import PreviewHandler
 from record_fields import record_matches
 from table_sort import TableSort, sort_order_by_values
 
-from _common.loc import is_loc_loaded, loc_lookup
+from _common.loc import is_loc_loaded
 from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 
 from _common.html import Column, e, icon_cell, sort_keys, table, truncate
 from _common.lang import handler_text, load_handler_strings
 from _common.quest.dialog import dialog_cell, dialog_speaker
+from _common.quest.quest import quest_text_tagged
 from _bss.allquestlist.parser import parse_allquestlist_records
 from .model import FamilyStat
 from .parser import QuestIndex, build_quest_index, parse_quest_record
@@ -31,14 +32,14 @@ def _truncate(text: str) -> str:
 
 
 def _quest_loc_texts(quest_chain_id: int, quest_id: int) -> list[str]:
-    """LOC type 18 texts of a quest with their PA tags, each visible text once."""
+    """LOC type 18 texts of a quest with their PA tags and TextBinds filled, each visible text once."""
     if not is_loc_loaded():
         return []
 
     seen: set[str] = set()
     texts: list[str] = []
     for str_id4 in range(10):
-        text = loc_lookup(18, quest_chain_id, quest_id, 0, str_id4).strip()
+        text = quest_text_tagged(quest_chain_id, quest_id, str_id4)
         clean = strip_pa_tags(text).strip()
         if clean and clean not in seen:
             seen.add(clean)

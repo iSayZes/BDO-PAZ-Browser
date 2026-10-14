@@ -87,6 +87,7 @@ are `str_id2 | str_id3 << 16`. Their `key0` is `str_type` and their `id` is
 | 52       | Item-set bonus text, `str_id1` = `skillpiece.dbss` key; see Type 52 below                  |
 | 54       | NPC gift/confession response dialogue, `str_id1` = NPC ID                                  |
 | 58       | `newquest.bss` group names (`str_id1` = group key, `str_id4=0`) and quest condition lines (`str_id1` = packed quest ID, `str_id2` = group key, `str_id4=1`); see Type 58 below |
+| 59       | TextBind text, `str_id1` = key hash of the TextBind name, `str_id4` = variant 0 to 3; see Type 59 below |
 | 63       | Journal quest adventure log metadata, `str_id1` = journal_key, `str_id2` = book_key         |
 | 71       | Employee names, `str_id1` = `employeename.dbss` employee_name_id, `str_id3` = 12           |
 | 107      | Growth Pass category names (`"Game Tips"`, `"HYPERBOOST"`), `str_id1` = `growthpasscategory.dbss` key 1 to 9, `str_id2=0`; siege object descriptions sit in the same type under `str_id1 = 59791` |
@@ -462,7 +463,8 @@ description and acquisition strings.
 Type 37 holds 54,094 UI strings, the translations of
 [`stringtable.bss`](stringtable_bss.md). `str_id1` is the hash of the string
 key (`LUA_WIDGET_TOWNNPCNAVI_NPCTYPETEXT_6` -> `0x4D282741`), which
-`stringtable.bss` stores next to each key. `str_id2` is the sheet the key sits
+`stringtable.bss` stores next to each key; the hash function is in
+[`stringtable.bss`](stringtable_bss.md), Key Hash. `str_id2` is the sheet the key sits
 in:
 
 | str_id2 | Sheet         | Holds                                   |
@@ -560,6 +562,35 @@ groups (key 51 `[Throne of Edana] [Weekly] For the Throne`). On client 3458
 every group of the three files has a name and every row a condition line.
 Each type has more names than its file has groups (170 for 120, 192 for
 122, 54 for 48).
+
+### Type 59, TextBind text
+
+LOC text can name another text instead of holding it. Two forms occur, on
+client 3464: `{StringTableBind(TextBind:NAME)}` in 268 type 18 rows (24 of
+them hold nothing else) and 4 type 39 rows, and `{TextBind:NAME}` in item,
+Pearl Shop and other texts (12,267 type 0 rows, 18,347 type 50 rows, 452
+type 59 rows). Both resolve here:
+
+| Field     | Value |
+| --------- | ----- |
+| `str_id1` | Key hash of NAME, the `stringtable.bss` hash (lookup3 `hashlittle`, UTF-16LE, seed `0xC5EDE`) |
+| `str_id2` | `0` |
+| `str_id3` | `0` |
+| `str_id4` | Variant, `0` to `3` |
+
+Every one of the 1,087 names used in either form has a type 59 row, and
+type 59 holds 4,784 rows over 1,203 names. Quest 4470 / 3 of the
+Growth Pass is `{StringTableBind(TextBind:GROWTHPASS_PC_CONSOLE_SEP1)}`,
+`str_id1 = 2946305045`, whose variants read `0` `[Menu] Quick Hotkey
+Settings`, `1` and `2` `[Menu] Ring Menu Setting` and `3` `[Menu] Quick
+Hotkey Settings`. `resolve_text_binds()` in `_common/text_bind.py` fills the
+`StringTableBind` form with variant `0` in quest titles and texts
+(`quest_text_tagged()`), journal page titles and `detail_dialog.dbss` text. The `{TextBind:NAME}`
+form is not filled yet.
+
+A type 59 text can hold `{KeyBind:NAME}` (`USING_CLICK_RMB` is `Press
+{KeyBind:Attack2}`), and type 18 holds `{StringTableBind(KeyBind:NAME)}` on
+866 rows. Both name a player key binding, not fixed text, and stay as written.
 
 ### Type 63, journal quest metadata (`journalquest.dbss`)
 
@@ -672,6 +703,12 @@ while groups `11` to `15`, `16` to `20` and `300` to `302` repeat one message
 (`Olivia`, `Elixir of Old Memory`, `Study: Farmer Drunk on the Scent of Grapes`)
 with different lore text. That pattern suggests quest or dialogue scripts pick
 the message by group and index.
+
+### Type 59 variants
+
+Which condition picks `str_id4` `1` to `3` of a TextBind text is not known.
+Variants `1` and `2` of the Growth Pass names read `Ring Menu`, a console
+control, so they may be console texts; the browser shows variant `0`.
 
 ### Type 123 key
 

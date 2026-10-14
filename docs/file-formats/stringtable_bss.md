@@ -41,7 +41,7 @@ string in the table is UTF-16LE (`is_wide=1`).
 
 | Offset  | Type | Field      | Notes                                                        |
 | ------- | ---- | ---------- | ------------------------------------------------------------ |
-| `+0x00` | u32  | sheet_hash | Hash of the sheet name; same hash family as `key_hash`       |
+| `+0x00` | u32  | sheet_hash | Key hash of the sheet name (see Key Hash)                    |
 | `+0x04` | u32  | name_ref   | String table index of the sheet name (`GAME`, `RESOURCE`, ...) |
 | `+0x08` | u32  | row_count  | Number of 16-byte rows that follow                           |
 
@@ -49,7 +49,7 @@ string in the table is UTF-16LE (`is_wide=1`).
 
 | Offset  | Type | Field     | Notes                                                              |
 | ------- | ---- | --------- | ------------------------------------------------------------------ |
-| `+0x00` | u32  | key_hash  | Hash of the key string; the LOC type `37` `str_id1`                 |
+| `+0x00` | u32  | key_hash  | Key hash of the key string (see Key Hash); the LOC type `37` `str_id1` |
 | `+0x04` | u32  | key_ref   | String table index of the key, e.g. `NPCSHOP_BUY`                  |
 | `+0x08` | u32  | value_ref | String table index of the Korean text; never empty, 7 are one space |
 | `+0x0C` | u32  | zero      | Always `0`                                                         |
@@ -58,6 +58,17 @@ Rows are not sorted by hash or key. The string table is interned: each string
 is stored once, in the order the sheets first use it (sheet name, then key
 and value of each row), and later uses point back. No key repeats within a
 sheet; 6,553 values reuse an earlier text such as `"확인"`.
+
+### Key Hash
+
+`key_hash` and `sheet_hash` are Bob Jenkins' lookup3 `hashlittle()` over the
+UTF-16LE string without a terminator, seed `0xC5EDE`:
+`LUA_GROWTHPASS_WIDGET_ICON_NOTICE_NEW_DESC` -> `1517777731`, `GAME` ->
+`3183609639`. It matches all 50,992 key hashes and all 8 sheet hashes on
+client 3464 (`test_every_key_hash_is_the_key_hash_of_its_key` and
+`test_every_sheet_hash_is_the_key_hash_of_its_name`). The same function keys
+the LOC type 59 TextBind texts (see `languagedata_loc.md`, Type 59). The
+browser computes it with `key_hash()` in `_common/string_hash.py`.
 
 ## Sheets
 
@@ -138,27 +149,15 @@ file does not sort its rows).
 - Seven `GAME` values are a single space (`LUA_JOIN_LOCALWAR_RULE7`,
   `LUA_LOCALWARINFO_DESC_RULETEXT_9` and others on client 3458), unused rule
   and condition lines; the table shows them as a dash when LOC has no text.
-- Some values forward to another key rather than holding text, e.g.
+- Some values forward to another text rather than holding it, e.g.
   `ALCHEMY_COOK_TEXT_DESCRPITION` = `{TextBind:TEXTBIND_ALCHEMY_COOK_TEXT_DESCRPITION}`,
-  and the LOC text keeps the same placeholder. Values also carry `<PAColor...>`
+  and the LOC text keeps the same placeholder. The text it names is LOC type
+  59, keyed by the key hash of the name (`languagedata_loc.md`, Type 59). Values also carry `<PAColor...>`
   tags and `{name}` placeholders.
 - bdo-data-extractor names the sheets `GAME`, `RESOURCE`, `ACTIONCHART` and
   others; the names are stored in this file, so that part is now confirmed.
-- Hash functions tried against `key_hash` and `sheet_hash` without a match, on
-  ASCII, UTF-16LE and UTF-32LE, as is, lower and upper case, with and without
-  a terminator: CRC-32 (zlib, MPEG-2, Castagnoli, no final xor), FNV-1 and
-  FNV-1a, Jenkins `hashlittle` (seed 0 and `0x7C`), Murmur3 (seed 0), djb2,
-  sdbm, ELF and the Java string hash. Nothing needs the function, since every
-  key is stored with its hash.
 
 ## Open Questions
-
-### Hash Function
-
-`key_hash` and `sheet_hash` come from one function of the string alone (the 44
-keys in two sheets share a hash), but none of the common 32-bit hashes listed
-in Notes reproduce it. Knowing it would let a key that appears only in client
-scripts, never in this file, be looked up in LOC directly.
 
 ### `str_id3 = 1` Variants
 

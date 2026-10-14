@@ -879,6 +879,14 @@ one: `skill_name_tagged()` / `skill_description_tagged()` in `_common/skill.py`,
 `quest_title_tagged()` in `_common/quest/quest.py` and `ui_hash_tagged()` in
 `_bss/stringtable/text.py`.
 
+Quest and journal page text (LOC type 18) goes through `quest_text_tagged()`
+in `_common/quest/quest.py`, which fills `{StringTableBind(TextBind:NAME)}`
+placeholders with `resolve_text_binds()` from `_common/text_bind.py`: the
+LOC type 59 text keyed by `key_hash(NAME)` (`_common/string_hash.py`, the
+`stringtable.bss` key hash). `detail_dialog.dbss` runs its LOC type 39 text
+through `resolve_text_binds()` too. Placeholders LOC has no text for, and
+key bindings, stay as written.
+
 An icon list label in colour goes through `icon_html_label_cell()` /
 `icon_html_list_cell()`, which take labels that are already safe HTML
 (`pa_html()` output); `icon_label_cell()` / `icon_list_cell()` escape plain
@@ -1009,6 +1017,8 @@ _common/
 ├── pa_text.py           # game text tags: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
+├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
+├── text_bind.py         # resolve_text_binds(): TextBind placeholders filled from LOC type 59
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 

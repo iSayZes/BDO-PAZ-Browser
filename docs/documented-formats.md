@@ -135,7 +135,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `knowledgelearning.dbss` | How knowledge cards are learned: table 0 maps a character ID to the card it teaches, table 1 an item ID | [knowledgelearning](file-formats/knowledgelearning_dbss.md) | 1 | 0 |
 | `knowledgelearningcharacterkey.bss` | Knowledge table 0 grouped by card: each card ID with the u16 IDs of the characters that teach it | [knowledgelearningcharacterkey](file-formats/knowledgelearningcharacterkey_bss.md) | 0 | 0 |
 | `knowledgelearningoffset.dbss` | Index into `knowledgelearning.dbss`, maps source ID → offset/size per table | [knowledgelearning](file-formats/knowledgelearning_dbss.md) | 1 | 0 |
-| `languagedata_en.loc`              | Localization string table (zlib-compressed, UTF-16-LE)                                                         | [loc](file-formats/languagedata_loc.md)                             | 4              | 0 |
+| `languagedata_en.loc`              | Localization string table (zlib-compressed, UTF-16-LE)                                                         | [loc](file-formats/languagedata_loc.md)                             | 5              | 0 |
 | `lifeexp.dbss` | Life skill EXP tables: EXP per level (0 to 180) for each of the 15 life skill slots, with the client's rank names (Beginner to Guru) | [lifeexp](file-formats/lifeexp_dbss.md) | 0 | 0 |
 | `lifeexpmaxlevel.bss` | Max level per life skill, a bare u32 array (180 for every life skill on client 3464) | [lifeexpmaxlevel](file-formats/lifeexpmaxlevel_bss.md) | 0 | 0 |
 | `lifeexpoffset.dbss` | Index into `lifeexp.dbss`, one block per life skill, maps level → offset/size | [lifeexp](file-formats/lifeexp_dbss.md) | 0 | 0 |
@@ -220,7 +220,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `skilltype.dbss` | Presentation record of every skill: Korean name and family name, active/passive kind, icon path | [skilltype](file-formats/skilltype_dbss.md) | 1 | 0 |
 | `skilltypeoffset.dbss` | PABR index into `skilltype.dbss`, same layout as `skilloffset.dbss` | [skilltype](file-formats/skilltype_dbss.md) | 1 | 0 |
 | `specialenchantitem.bss` | PABR per-level table of the items whose name or icon changes with enhancement: item key, shown level, icon path and Korean name string indices | [specialenchantitem](file-formats/specialenchantitem_bss.md) | 1 | 0 |
-| `stringtable.bss` | Korean source of the keyed UI strings in eight sheets; each key's hash is the LOC type 37 `str_id1` | [stringtable](file-formats/stringtable_bss.md) | 2 | 0 |
+| `stringtable.bss` | Korean source of the keyed UI strings in eight sheets; each key's hash is the LOC type 37 `str_id1` | [stringtable](file-formats/stringtable_bss.md) | 1 | 0 |
 | `submenu.bss` | PABR main menu entries grouped by category: position, title UI string key, sprite sheet and icon region | [submenu](file-formats/submenu_bss.md) | 1 | 0 |
 | `teleport.dbss` | Teleport buff destinations: sections of 18-byte records, key, section and world position; buff type 23 stores section and key | [teleport](file-formats/teleport_dbss.md) | 2 | 0 |
 | `teleportoffset.dbss` | Positional index of the `teleport.dbss` records per section (index, offset, size), not keyed by the record key | [teleport](file-formats/teleport_dbss.md) | 2 | 0 |

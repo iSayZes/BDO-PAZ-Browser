@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "item": "Item",
+    "needItem": "Need Item",
+    "resultItem": "Result Item",
+    "resultMaterial": "Result Material",
+    "reformGroup": "Reform Group"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} extractable items"
+  }
+}

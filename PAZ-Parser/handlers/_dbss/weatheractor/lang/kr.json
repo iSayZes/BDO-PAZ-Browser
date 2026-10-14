@@ -3,6 +3,8 @@
     "characterId": "캐릭터 ID",
     "name": "이름",
     "title": "칭호",
+    "weatherType": "날씨 종류",
+    "radius": "반경",
     "skillId": "기술 ID",
     "skill": "기술"
   },

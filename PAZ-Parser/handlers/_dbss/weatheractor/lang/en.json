@@ -3,6 +3,8 @@
     "characterId": "Character ID",
     "name": "Name",
     "title": "Title",
+    "weatherType": "Weather Type",
+    "radius": "Radius",
     "skillId": "Skill ID",
     "skill": "Skill"
   },

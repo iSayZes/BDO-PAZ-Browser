@@ -3,6 +3,8 @@
     "characterId": "ID del personaje",
     "name": "Nombre",
     "title": "Título",
+    "weatherType": "Tipo de clima",
+    "radius": "Radio",
     "skillId": "ID de habilidad",
     "skill": "Habilidad"
   },

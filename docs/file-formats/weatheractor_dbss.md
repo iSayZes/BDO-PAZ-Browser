@@ -43,16 +43,16 @@ Value spreads are from client 3464.
 | `+0x00` | u16     | key           | Row key; equals `character_key` on every row                 |
 | `+0x02` | u8      | unknown_02    | `1` on every row                                             |
 | `+0x03` | u16     | character_key | Character key, LOC type 6 names it                           |
-| `+0x05` | u8      | unknown_05    | `3` on 93 rows; `0`, `1`, `2` (5 rows) and `4` on the others |
-| `+0x06` | f32     | unknown_06    | `4000` to `192000`; `10000` on 71 rows                        |
-| `+0x0A` | f32     | unknown_0a    | `0`, `0.3`, `0.8` or `1.0`                                   |
-| `+0x0E` | f32     | unknown_0e    | `0`, `0.2`, `0.3` or `1.0`                                   |
-| `+0x12` | f32     | unknown_12    | `10.0` on 2 rows, else `0`                                   |
-| `+0x16` | f32     | unknown_16    | `12000` or `120000` on 7 rows, else `0`                      |
-| `+0x1A` | f32     | unknown_1a    | `1.0` on 2 rows, else `0`                                    |
-| `+0x1E` | u8[4]   | unknown_1e    | All zero                                                     |
+| `+0x05` | u8      | weather_type  | `gc::EWeatherType`, see Weather Types; `3` on 93 rows          |
+| `+0x06` | f32     | radius        | `4000` to `192000`; `10000` on 71 rows, `150000` on the four time-of-day actors |
+| `+0x0A` | f32     | rain_amount   | `0`, `0.3`, `0.8` or `1.0`                                   |
+| `+0x0E` | f32     | cloud_rate    | `0`, `0.2`, `0.3` or `1.0`                                   |
+| `+0x12` | f32     | damage_max    | `10.0` on 2 rows, else `0`                                   |
+| `+0x16` | f32     | damage_radius | `12000` or `120000` on 7 rows, else `0`                      |
+| `+0x1A` | f32     | damage_radius_rate | `1.0` on 2 rows, else `0`                               |
+| `+0x1E` | f32     | push_pull_speed | Always `0`                                                 |
 | `+0x22` | u32     | skill_key     | `skill_no << 16 \| level`, the `skill.dbss` key; `0` on 98 rows |
-| `+0x26` | u32     | unknown_26    | `5000`, `50000` or `1000000` on the skill rows, else `0`     |
+| `+0x26` | u32     | skill_apply_rate | `5000`, `50000` or `1000000` on the skill rows, else `0`  |
 | `+0x2A` | u32     | unknown_2a    | `1000000` on 23400 Erebjork, else `0`                        |
 | `+0x2E` | f32     | unknown_2e    | `5.0` on 23400 Erebjork, else `0`                            |
 | `+0x32` | u8[12]  | unknown_32    | All zero                                                     |
@@ -64,13 +64,13 @@ Value spreads are from client 3464.
 
 The skill rows on client 3464:
 
-| character_key            | skill_key           | Skill                     | unknown_26 |
-| ------------------------ | ------------------- | ------------------------- | ---------- |
+| character_key            | skill_key           | Skill                     | skill_apply_rate |
+| ------------------------ | ------------------- | ------------------------- | ---------------- |
 | 27063 Sandstorm          | 40337 rank 1        | Debuff Sandstorm          | `1000000`  |
 | 27109 Margoria Typhoon   | 40438 rank 1        | Typhoon Lightning         | `5000`     |
 | 20759 Margoria Storm     | 40438 rank 1        | Typhoon Lightning         | `50000`    |
 
-71 rows share one byte pattern (`unknown_06` `10000`, `unknown_3e` `29`,
+71 rows share one byte pattern (`radius` `10000`, `unknown_3e` `29`,
 `unknown_40` `13.0`, `unknown_44` `99`, `unknown_4a` `1`): monsters from
 24405 Red Orc to 24517 Small Altar Imp.
 
@@ -94,6 +94,8 @@ not in the main file's order (the first one points at main row 21).
 | Character ID | num  | `character_key`                                            |
 | Name         | text | LOC type 6 name, else the ID                               |
 | Title        | text | LOC type 6 title (`str_id4` 1); a dash when there is none  |
+| Weather Type | text | `weather_type` as its `gc::EWeatherType` name, else the number |
+| Radius       | num  | `radius`                                                   |
 | Skill ID     | num  | The skill number of `skill_key`; a dash when `0`           |
 | Skill        | text | Skill icon and LOC type 10 name; a dash when `0`           |
 
@@ -112,32 +114,28 @@ The offset table shows Character ID, Data Offset and Size.
   water, oil, grass) in `global_define_cpp_enum`, but no Lua reads this
   file or names a weather actor field.
 
+## Weather Types
+
+`weather_type` follows `gc::EWeatherType` of the 2016 client (the debug symbols, see Field Names). No current client Lua names the values, and 3 and 4 came after 2016. Rows per value on client 3464:
+
+| Value | Name       | Rows | Actors                                                         |
+| ----- | ---------- | ---: | -------------------------------------------------------------- |
+| `0`   | Cyclone    | 1    | 27006 Typhoon                                                  |
+| `1`   | DesertWind | 1    | 27063 Sandstorm                                                |
+| `2`   | Weather    | 5    | Typhoon, Margoria Typhoon, Margoria Storm, Christmas Snow, Blizzard of Christmas |
+| `3`   | -          | 93   | Time-of-day actors (Dawn, Morning, Cloudy Day, Night), monsters and objects |
+| `4`   | -          | 1    | 23400 Erebjork                                                 |
+
+## Field Names
+
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::WeatherActorStaticStatus` lists `_key`, `_weatherApplyType`, `_weatherApplyRadius`, `_weatherRainAmount`, `_weatherCloudRate`, `_weatherDamageMax`, `_weatherDamageRadiusMax`, `_weatherDamageRadiusRate`, `_weatherPushPullSpeed`, `_weatherSkillKey` and `_weatherSkillApplyRate` in the order this row stores them from `+0x03`. The server-side `WeatherActor_Table` of the BdoEmu server (about 2021) holds 11 of the 101 actors (the storms, Sandstorm, Vell, Kzarka and the Margoria actors), and on all 11 its columns `Type`, `Radius`, `DamageMax`, `DamageRadius`, `DamageRadiusRate`, `SkillNo` and `SkillApplyRate` equal the fields named after them. Its `RainAmount` and `CloudRate` are the same values in millionths (`800000` for `0.8`), and `PushPullSpeed` is `0` like `push_pull_speed`.
+
 ## Open Questions
 
-### unknown_05
+### unknown_2a and unknown_2e
 
-Five values, `3` on 93 rows. The weather actors spread over all five
-(27006 Typhoon `0`, 27063 Sandstorm `1`, 27093 Typhoon and 49641 Christmas
-Snow `2`, 45381 Cloudy Day `3`, 23400 Erebjork `4`), so it is not a plain
-weather or monster split.
-
-### unknown_06 to unknown_1a
-
-`unknown_06` runs from `4000` to `192000` and is `150000` on the four
-time-of-day actors (45379 Dawn, 45380 Morning, 45381 Cloudy Day, 45378
-Night), which would fit a range in centimetres (1.5 km), but no
-client text gives the unit. `unknown_0a` and `unknown_0e` sit between `0`
-and `1` like weights.
-
-### unknown_26, unknown_2a and unknown_2e
-
-`unknown_26` is set only next to a skill key. `1000000` is 100% on the
-client's usual rate scale, but `5000` and `50000` also fit a time in
-milliseconds.
+`unknown_2a` (`1000000`) and `unknown_2e` (`5.0`) are set only on 23400 Erebjork, the only actor of weather type `4`. The server table has `WaveScale` and `Time` after the skill columns, but both are `0` on its 11 rows, so neither can be matched.
 
 ### unknown_3e, unknown_40 and unknown_44
 
-`unknown_3e` (u16), `unknown_40` (f32) and `unknown_44` (u16) are set
-together. `unknown_44` is `99` on 89 rows; on 27517 Kzarka (`2`), 20755
-Margoria Phantom Ship (`10`) and 23085 Vell (`99`) it equals `unknown_3e`,
-and on 10 rows both are `0`.
+`unknown_3e` (u16), `unknown_40` (f32) and `unknown_44` (u16) are set together. `unknown_44` is `99` on 89 rows; on 27517 Kzarka (`2`), 20755 Margoria Phantom Ship (`10`) and 23085 Vell (`99`) it equals `unknown_3e`, and on 10 rows both are `0`. The server's `WeatherColorTable` equals both of them on its 11 rows, so one of the two is the colour table index, but those rows cannot tell which. `unknown_40` (`13.0` on 75 rows, at most `23.0`) fits an hour of the day.

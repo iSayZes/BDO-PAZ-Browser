@@ -1,8 +1,9 @@
 """`weatheractor.dbss`: the characters tied to the weather system.
 
 A u32 row count, then 75-byte rows with no `PABR` magic and no string
-table: a u16 key, the character key, a type byte, floats and small integers
-whose meaning is open, and on a few rows a skill key. `weatheractoroffset.dbss`
+table: a u16 key, the character key, the weather type, the radius, rain,
+cloud and damage values, a skill key with its apply rate, and a few fields
+whose meaning is open. `weatheractoroffset.dbss`
 points 2 bytes into each row, past its key. Layout in
 docs/file-formats/weatheractor_dbss.md.
 """
@@ -14,25 +15,29 @@ import struct
 from _common.binary import u32
 
 
+# gc::EWeatherType member names of the 2016 client (eWeatherType_ prefix
+# dropped); the file also stores 3 and 4, which came later.
+WEATHER_TYPE_NAMES: tuple[str, ...] = ("Cyclone", "DesertWind", "Weather")
+
 FILE_NAME = "weatheractor.dbss"
 OFFSET_FILE = "weatheractoroffset.dbss"
 
 _COUNT_SIZE = 4
-_ROW = struct.Struct("<HBHB6f4sIIIf12sHfH4sB")
+_ROW = struct.Struct("<HBHB7fIIIf12sHfH4sB")
 _FIELDS = (
     "key",
     "unknown_02",
     "character_key",
-    "unknown_05",
-    "unknown_06",
-    "unknown_0a",
-    "unknown_0e",
-    "unknown_12",
-    "unknown_16",
-    "unknown_1a",
-    "unknown_1e",
+    "weather_type",
+    "radius",
+    "rain_amount",
+    "cloud_rate",
+    "damage_max",
+    "damage_radius",
+    "damage_radius_rate",
+    "push_pull_speed",
     "skill_key",
-    "unknown_26",
+    "skill_apply_rate",
     "unknown_2a",
     "unknown_2e",
     "unknown_32",

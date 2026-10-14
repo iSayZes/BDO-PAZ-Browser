@@ -12,6 +12,7 @@ from _common.html import Column, e, flag_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_text
 from _common.node import node_name
+from _common.skill import skill_name
 from _common.town import town_name
 from .parser import NODE_WAR_DAY_NAMES, REGION_TYPE_NAMES, parse_regioninfo_records
 
@@ -58,7 +59,22 @@ def _resistance_limit(values: list[int] | None) -> str:
     return " / ".join(_rate(value) for value in values)
 
 
-def _display_fields(record: dict) -> dict:
+def _skills(*skill_nos: int) -> str | None:
+    """`skill_no name` of each set skill joined by ' / ', or None when none is set."""
+    named = [_named_key(skill_no, skill_name) for skill_no in skill_nos]
+    return " / ".join(name for name in named if name) or None
+
+
+def _return_point(record: dict, region_by_name_kr: dict[str, int]) -> str | None:
+    """LOC name of the region whose Korean name is the return point's, else that Korean name."""
+    name_kr = record["return_position_name"]
+    if not name_kr:
+        return None
+    region_key = region_by_name_kr.get(name_kr)
+    return (region_key is not None and _region_name(region_key)) or name_kr
+
+
+def _display_fields(record: dict, region_by_name_kr: dict[str, int]) -> dict:
     day = record["node_war_day"]
     has_node_war = day < len(NODE_WAR_DAY_NAMES)
     return {
@@ -72,6 +88,9 @@ def _display_fields(record: dict) -> dict:
         "territory": _territory(record["territory_key"]),
         "capital": _region_name(record["capital_region_key"]) or str(record["capital_region_key"]),
         "node": _named_key(record["node_key"], node_name),
+        "day_skill": _skills(record["skill_no"], record["skill_no_2"]),
+        "night_skill": _skills(record["night_skill_no"]),
+        "return_point": _return_point(record, region_by_name_kr),
         "guild_wharf_manager": _named_key(record["guild_wharf_manager_key"], character_name),
         # 0 participants means no node war; sorts last.
         "max_participants_sort": record["max_participants"] or None,
@@ -92,6 +111,10 @@ class RegionInfoBssHandler(PreviewHandler):
             Column(cols["regionGroup"], "num", sort_key="region_group_key"),
             Column(cols["nodeWarDay"], sort_key="node_war_day_order"),
             Column(cols["desert"], sort_key="is_desert"),
+            Column(cols["safeZone"], sort_key="is_safe_zone"),
+            Column(cols["daySkill"], sort_key="day_skill"),
+            Column(cols["nightSkill"], sort_key="night_skill"),
+            Column(cols["returnPoint"], sort_key="return_point"),
             Column(cols["guildWharfManager"], sort_key="guild_wharf_manager"),
             Column(cols["maxParticipants"], "num", sort_key="max_participants_sort"),
             Column(cols["apLimit"], "num", sort_key="siege_ap_limit"),
@@ -111,10 +134,13 @@ class RegionInfoBssHandler(PreviewHandler):
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
-        return [
-            {**record, **_display_fields(record)}
-            for record in parse_regioninfo_records(data)
-        ]
+        records = parse_regioninfo_records(data)
+        # The return point is stored as a Korean place name; the first region
+        # with that name gives it a LOC name.
+        region_by_name_kr: dict[str, int] = {}
+        for record in records:
+            region_by_name_kr.setdefault(record["name_kr"], record["region_key"])
+        return [{**record, **_display_fields(record, region_by_name_kr)} for record in records]
 
     def render_records_page(
         self,
@@ -137,6 +163,10 @@ class RegionInfoBssHandler(PreviewHandler):
                 e(record["region_group_key"]),
                 e(record["node_war_day_name"] or _EMPTY),
                 flag_cell(bool(record["is_desert"])),
+                flag_cell(bool(record["is_safe_zone"])),
+                e(record["day_skill"] or _EMPTY),
+                e(record["night_skill"] or _EMPTY),
+                e(record["return_point"] or _EMPTY),
                 e(record["guild_wharf_manager"] or _EMPTY),
                 e(record["max_participants"] or _EMPTY),
                 e(_flat_limit(record["siege_ap_limit"])),

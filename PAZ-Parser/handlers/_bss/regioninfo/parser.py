@@ -24,16 +24,57 @@ _KEY_SIZE = 2
 _VECTOR_SIZE = 12
 
 # Head field offsets.
-_COLOR = 0x02
+# The colour is stored blue, green, red (then a zero alpha byte).
+_COLOR_BLUE = 0x02
+_COLOR_GREEN = 0x03
+_COLOR_RED = 0x04
 _REGION_TYPE = 0x06
 _NODE_WAR_DAY = 0x07
 _IS_DESERT = 0x0F
 _TERRITORY_KEY = 0x5A
 _NAME_INDEX = 0x5C
-_UNKNOWN_NAME_INDEX = 0x60
+_RETURN_POSITION_NAME_INDEX = 0x60
 _CAPITAL_REGION_KEY = 0x64
 _REGION_GROUP_KEY = 0x68
 _NODE_KEY = 0x6F
+# Named head fields by type. The names are the Region_Table columns (and the
+# 2016 client's gc::RegionInfo members) whose values match these offsets.
+_HEAD_U8 = {
+    "is_safe_zone": 0x0C,
+    "is_arena_zone": 0x0D,
+    "is_sea": 0x0E,
+    "is_not_dig": 0x10,
+    "is_ocean": 0x11,
+    "is_prison": 0x12,
+    "is_accessible_area": 0x1B,
+    "is_node_access": 0x1C,
+    "is_locator": 0x25,
+    "is_ancient_dungeon": 0x36,
+    "is_escape": 0x37,
+    "is_special_zone": 0x38,
+    "is_vehicle_dead_zone": 0x39,
+    "region_attribute_type": 0x73,
+    "exploration_point": 0x93,
+    "is_free_revival_area": 0xD1,
+}
+_HEAD_U16 = {
+    "skill_no": 0x3C,
+    "skill_no_2": 0x44,
+    "night_skill_no": 0x54,
+    "trade_origin_region_key": 0x66,
+    "waypoint_key": 0x6B,
+}
+_HEAD_U32 = {
+    "villain_respawn_node_key": 0x26,
+    "skill_apply_rate": 0x3E,
+    "skill_apply_rate_2": 0x46,
+    "night_skill_apply_rate": 0x56,
+}
+_HEAD_POSITIONS = {
+    "villain_respawn_position": 0x2A,
+    "return_position": 0x83,
+}
+_POSITION_SIZE = 3
 # Tail field offsets. The siege fields are node war stat limits: flat stats are
 # f32, rates u32 on the 1,000,000 = 100% scale.
 _MAX_PARTICIPANTS = 0x03
@@ -44,6 +85,7 @@ _SIEGE_DR_RATE_LIMIT = 0x4D
 _SIEGE_ACCURACY_LIMIT = 0x51
 _SIEGE_RESISTANCE_LIMITS = 0x59
 _RESISTANCE_COUNT = 4
+_IS_WORLD_BOSS_REWARD = 0x18
 _GUILD_WHARF_MANAGER = 0xA9
 
 
@@ -62,17 +104,14 @@ class _UnknownLayout(NamedTuple):
 # fields are unknown_<offset>, tail fields unknown_tail_<offset> (relative to
 # the tail start). Spans that are zero in every record are not kept.
 _HEAD_UNKNOWNS = _UnknownLayout(
-    u8=(
-        0x0B, 0x0C, 0x0D, 0x0E, *range(0x10, 0x1D), 0x1F, 0x25,
-        *range(0x36, 0x3B), 0x42, 0x52, 0x73, 0x93, 0xD1,
-    ),
-    u16=(0x1D, 0x66, 0x6B),
-    u32=(0x20, 0x26, 0x3C, 0x44, 0x54, 0x95, 0xAD, 0xB1, 0xB5),
-    f32_arrays={0x2A: 3, 0x77: 3, 0x83: 3, 0x99: 5},
+    u8=(0x0B, *range(0x13, 0x1B), 0x1F, 0x3A, 0x42, 0x52),
+    u16=(0x1D,),
+    u32=(0x20, 0x95, 0xAD, 0xB1, 0xB5),
+    f32_arrays={0x77: 3, 0x99: 5},
     u32_arrays={0xB9: 6},
 )
 _TAIL_UNKNOWNS = _UnknownLayout(
-    u8=(0x15, 0x17, 0x18, 0x45, 0x46, 0x6D, 0x86, 0x88, 0x89, 0x91),
+    u8=(0x15, 0x17, 0x45, 0x46, 0x6D, 0x86, 0x88, 0x89, 0x91),
     u16=(0x01, 0x4B),
     u32=(0x11, 0x47, 0x55, 0x69, 0x9A, 0xA2),
     f32=(0x39, 0x3D),
@@ -137,6 +176,22 @@ def _siege_fields(data: bytes, tail: int) -> dict:
     }
 
 
+def _color(data: bytes, head: int) -> str:
+    """The region colour as `rrggbb` hex."""
+    return bytes(data[head + o] for o in (_COLOR_RED, _COLOR_GREEN, _COLOR_BLUE)).hex()
+
+
+def _named_head_fields(data: bytes, head: int) -> dict:
+    """The confirmed head fields that `_parse_record` does not read itself."""
+    fields: dict = {name: data[head + o] for name, o in _HEAD_U8.items()}
+    fields.update({name: u16(data, head + o) for name, o in _HEAD_U16.items()})
+    fields.update({name: u32(data, head + o) for name, o in _HEAD_U32.items()})
+    fields.update({
+        name: _floats(data, head + o, _POSITION_SIZE) for name, o in _HEAD_POSITIONS.items()
+    })
+    return fields
+
+
 def _unknown_fields(data: bytes, base: int, layout: _UnknownLayout, prefix: str) -> dict:
     """The unconfirmed fields of the block at `base`, named `<prefix><offset>`."""
     fields: dict = {f"{prefix}{o:02x}": data[base + o] for o in layout.u8}
@@ -173,8 +228,10 @@ def _parse_record(data: bytes, head: int, end: int, strings: list[str]) -> tuple
         "node_key": u16(data, head + _NODE_KEY),
         "guild_wharf_manager_key": u16(data, tail + _GUILD_WHARF_MANAGER),
         **_siege_fields(data, tail),
-        "unknown_02": data[head + _COLOR : head + _COLOR + 3].hex(),
-        "unknown_60": string_at(strings, u32(data, head + _UNKNOWN_NAME_INDEX)),
+        "color": _color(data, head),
+        "return_position_name": string_at(strings, u32(data, head + _RETURN_POSITION_NAME_INDEX)),
+        **_named_head_fields(data, head),
+        "is_world_boss_reward": data[tail + _IS_WORLD_BOSS_REWARD],
         **_unknown_fields(data, head, _HEAD_UNKNOWNS, "unknown_"),
         "unknown_d2_keys": list(struct.unpack_from(f"<{key_count}H", data, head + _HEAD_SIZE + 4)),
         "unknown_d2_vectors": [

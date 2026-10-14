@@ -32,8 +32,8 @@ EDANIA_REGION_NAMES: tuple[str, ...] = (
 
 
 def _rgb_hex(data: bytes, offset: int) -> str:
-    """Three bytes as hex in file order, the way regioninfo.bss keeps unknown_02."""
-    return data[offset : offset + _RGB_SIZE].hex()
+    """Three bytes stored blue, green, red as `rrggbb`, the way regioninfo.bss reads its colour."""
+    return data[offset : offset + _RGB_SIZE][::-1].hex()
 
 
 def _parse_row(data: bytes, pos: int) -> dict:

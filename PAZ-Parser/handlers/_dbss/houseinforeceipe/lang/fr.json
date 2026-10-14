@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "receipeKey": "Clé",
+    "name": "Nom",
+    "useType": "Utilisation",
+    "iconType": "Type d'icône",
+    "needItemKey": "Clé de besoin",
+    "levels": "Niveaux",
+    "exchanges": "Échanges"
+  },
+  "offsetColumns": {
+    "receipeKey": "Clé",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "cells": {
+    "level": "Niveau {level} :"
+  },
+  "meta": {
+    "count": "{count} utilisations de résidence · {exchanges} clés d'échange"
+  }
+}

@@ -131,6 +131,7 @@ from .itemimprovement.handler import (
 from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
+from .houseinforeceipe.handler import HouseInfoReceipeHandler, house_info_receipe_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -282,3 +283,5 @@ def register_dbss_handlers() -> None:
     register_handler("teleport.dbss", TeleportHandler())
     register_handler("instancefieldoffset.dbss", instance_field_offset_handler())
     register_handler("instancefield.dbss", InstanceFieldHandler())
+    register_handler("houseinforeceipeoffset.dbss", house_info_receipe_offset_handler())
+    register_handler("houseinforeceipe.dbss", HouseInfoReceipeHandler())

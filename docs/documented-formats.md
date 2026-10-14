@@ -103,6 +103,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `guildskillexperiencemaxlevel.bss` | PABR max level of the guild point table, same format as `skillexperiencemaxlevel.bss` (1000 on client 3464) | [skillexperiencemaxlevel](file-formats/skillexperiencemaxlevel_bss.md) | 0 | 0 |
 | `guildskillexperienceoffset.dbss` | Index into `guildskillexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |
 | `hardcorecharacterstatstaticstatus.bss` | PABR, one 201-byte row per class type: u8 class type and the `experience.bss` stat body (AP and DP bonuses); every row equals the level 60 body | [hardcorecharacterstatstaticstatus](file-formats/hardcorecharacterstatstaticstatus_bss.md) | 1 | 0 |
+| `houseinforeceipe.dbss` | House uses (receipes): key, Korean name, `eHouseUseType` and `eHouseIconType`, `houseinfoneeditem.dbss` group, item exchange keys per house level 1 to 5 | [houseinforeceipe](file-formats/houseinforeceipe_dbss.md) | 3 | 0 |
+| `houseinforeceipeoffset.dbss` | Index into `houseinforeceipe.dbss`, maps receipe key → offset/size | [houseinforeceipe](file-formats/houseinforeceipe_dbss.md) | 3 | 0 |
 | `huntingstatdata.bss` | PABR Hunting Mastery table: chance of butchering more items per 50 mastery; the other seven fields are 0 on client 3464 | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `installation.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `installationoffset.dbss` | Empty offset companion for `installation.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |

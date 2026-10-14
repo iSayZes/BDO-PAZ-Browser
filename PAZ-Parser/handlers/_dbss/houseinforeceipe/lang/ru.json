@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "receipeKey": "Ключ",
+    "name": "Название",
+    "useType": "Применение",
+    "iconType": "Тип значка",
+    "needItemKey": "Ключ требований",
+    "levels": "Уровни",
+    "exchanges": "Обмен"
+  },
+  "offsetColumns": {
+    "receipeKey": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "cells": {
+    "level": "Ур. {level}:"
+  },
+  "meta": {
+    "count": "Применений дома: {count} · ключей обмена: {exchanges}"
+  }
+}

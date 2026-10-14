@@ -250,7 +250,31 @@
     "sectionData": "Data and cache",
     "locMissing": "LOC missing",
     "rowHeightDown": "Smaller rows",
-    "rowHeightUp": "Taller rows"
+    "rowHeightUp": "Taller rows",
+    "tabs": {
+      "general": "General",
+      "files": "Files",
+      "map": "Map"
+    },
+    "sectionCache": "Cache",
+    "sectionOtherClients": "Other PAZ folders",
+    "caches": {
+      "pazIndex": "PAZ index",
+      "indexes": "Lookup indexes",
+      "thumbnails": "Icon thumbnails",
+      "records": "Parsed tables",
+      "map": "World map"
+    },
+    "cacheConfirm": {
+      "pazIndex": "Delete the PAZ index cache of this PAZ folder?\n\nThe next start reads every archive header again, which takes over a minute.",
+      "indexes": "Delete the lookup index cache of this PAZ folder?\n\nThe next start builds the lookup indexes again.",
+      "thumbnails": "Delete the icon thumbnail cache of this PAZ folder?\n\nIcons decode again when they are shown.",
+      "records": "Delete the parsed table cache of this PAZ folder?\n\nTables parse again when they are opened.",
+      "map": "Delete the world map of this PAZ folder?\n\nThe Map view asks to build it again."
+    },
+    "deleteCache": "Delete",
+    "folderMissing": "Folder not found",
+    "otherClientConfirm": "Delete every cache of {folder}?\n\nThey are built again when that folder is opened."
   },
   "tree": {
     "loading": "Loading..."
@@ -320,7 +344,8 @@
     "fileNotCached": "File data not cached, reload the file",
     "parsedNotCached": "No parsed data cached, reload the file",
     "invalidSearchPattern": "Invalid search pattern",
-    "noFilesMatchExtensions": "No files match the selected extensions"
+    "noFilesMatchExtensions": "No files match the selected extensions",
+    "unknownCache": "Unknown cache: {id}"
   },
   "locWarning": {
     "missing": "You don't have {file} for {language}, so only the app's UI is in {language}. Game text in the tables stays Korean.",

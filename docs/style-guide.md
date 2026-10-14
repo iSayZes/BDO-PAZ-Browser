@@ -111,6 +111,8 @@ adds its own rules only for layout.
 | `.menu`         | A dropdown of `button` items under its trigger, which sits in a `position: relative` wrapper (`04-right-panel.css`) |
 | `.kbd`          | A key hint such as Ctrl F inside an input box (`04-right-panel.css`) |
 | `.settings-overlay`, `.settings-modal` | The backdrop and frame every dialog shares: `--radius-modal`, a header with an icon close button, the primary action at the right of the footer (`20-settings-modal.css`) |
+| `.settings-tabs`, `.settings-tab` | The Settings dialog's tab list on the left, one `.settings-panel` per tab; the shown tab has `.active` (`20-settings-modal.css`) |
+| `.settings-cache-list` | A boxed list of `.settings-cache-item` rows: name, size and a `.btn-danger` Delete (`20-settings-modal.css`) |
 
 Disabled buttons drop their fill and use `--color-disabled`.
 

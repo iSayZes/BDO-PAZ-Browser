@@ -1,6 +1,7 @@
 "use strict";
 
 import { loadLang, applyTranslations, t } from "../core/i18n.js";
+import { SETTINGS_TABS } from "./views.js";
 
 // Tree id prefix of the files read from disk (`_DISK_VIRTUAL_PREFIX` in api/bdo_api_helpers.py).
 const DISK_PREFIX = "__disk__";
@@ -37,15 +38,47 @@ export const settingsMethods = {
     dataFolder.value = s.data_folder ?? "";
     dataFolder.placeholder = s.default_data_folder ?? "";
     this._savedDataFolder = dataFolder.value;
-    this._showCacheSize(s.cache_bytes ?? 0);
     this._savedHandledOnly = s.handled_only === true;
     this._savedLanguage = s.language ?? "en";
+    this._fillSettingsTabs();
+    this.showSettingsTab("general");
+    // Sizes fill in after the modal opens: counting the map folders takes a moment.
+    document.getElementById("settings-cache-size").textContent = "";
+    this._loadCacheUsage();
     document.getElementById("settings-overlay").hidden = false;
 
     this._settingsEscHandler = (e) => {
       if (e.key === "Escape") this.closeSettings();
     };
     document.addEventListener("keydown", this._settingsEscHandler);
+  },
+
+  // One tab button per SETTINGS_TABS entry; each shows #settings-tab-<id>.
+  _fillSettingsTabs() {
+    const list = document.getElementById("settings-tabs");
+    if (list.childElementCount > 0) return;
+    list.replaceChildren(...SETTINGS_TABS.map((id) => {
+      const button = document.createElement("button");
+      button.className = "settings-tab";
+      button.dataset.settingsTab = id;
+      button.dataset.i18n = `settings.tabs.${id}`;
+      button.textContent = t(`settings.tabs.${id}`);
+      button.setAttribute("role", "tab");
+      button.setAttribute("aria-controls", `settings-tab-${id}`);
+      button.addEventListener("click", () => this.showSettingsTab(id));
+      return button;
+    }));
+  },
+
+  showSettingsTab(id) {
+    document.querySelectorAll("#settings-tabs .settings-tab").forEach((tab) => {
+      const isActive = tab.dataset.settingsTab === id;
+      tab.classList.toggle("active", isActive);
+      tab.setAttribute("aria-selected", String(isActive));
+    });
+    document.querySelectorAll("#settings-overlay .settings-panel").forEach((panel) => {
+      panel.hidden = panel.id !== `settings-tab-${id}`;
+    });
   },
 
   _fillLanguages(languages, missingLoc) {
@@ -170,27 +203,6 @@ export const settingsMethods = {
       name = locFile;
     }
     await this._selectFile(path, name, icon);
-  },
-
-  async deleteCaches() {
-    if (!window.confirm(t("settings.deleteCachesConfirm"))) return;
-    const button = document.getElementById("settings-delete-caches");
-    button.disabled = true;
-    try {
-      const result = await window.pywebview.api.delete_caches();
-      const size = document.getElementById("settings-cache-size");
-      size.textContent = result?.ok
-        ? t("settings.cachesDeleted", { size: this._fmtBytes(result.freed ?? 0) })
-        : t("settings.cachesDeleteFailed", { message: result?.error ?? "" });
-      // The map tiles went with the caches.
-      this._resetMapView();
-    } finally {
-      button.disabled = false;
-    }
-  },
-
-  _showCacheSize(bytes) {
-    document.getElementById("settings-cache-size").textContent = t("settings.cacheSize", { size: this._fmtBytes(bytes) });
   },
 
   // The filter changes what the tree, file search and global search show, and

@@ -23,6 +23,7 @@ from app_dirs import (
     copy_user_files,
     data_dir,
     default_data_dir,
+    disk_bytes,
     is_same_folder,
     move_out_of_game_folder,
     picked_data_dir,
@@ -295,3 +296,14 @@ def test_an_emptied_root_is_removed(tmp_path: Path) -> None:
 
 def test_removing_a_missing_root_does_nothing(tmp_path: Path) -> None:
     assert remove_cache_root(tmp_path / "missing", _NAMES) == []
+
+
+def test_disk_bytes_counts_files_in_subfolders(tmp_path: Path) -> None:
+    tiles = tmp_path / "map" / "7"
+    tiles.mkdir(parents=True)
+    (tiles / "0.jpg").write_bytes(b"x" * 3)
+    (tmp_path / "a.cache").write_bytes(b"x" * 4)
+
+    assert disk_bytes(tmp_path) == 7
+    assert disk_bytes(tmp_path / "a.cache") == 4
+    assert disk_bytes(tmp_path / "gone") == 0

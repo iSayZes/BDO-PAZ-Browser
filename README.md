@@ -343,6 +343,12 @@ the Windows build, or `%LOCALAPPDATA%\BDO-PAZ-Browser` from source and when
 the exe folder can't be written. Caches sit in its `cache` folder, one
 subfolder per PAZ folder, so a test client keeps its own.
 
+The Settings dialog has one tab per area: **General** (Language, PAZ Folder,
+Data Folder, the update checks and the caches every view reads), **Files**
+(Table Row Height, game text tags, Show only handled tables, Parsed Table
+Cache) and **Map** (Keep map updated, the world map). A view adds its tab
+once it exists. It opens on General; Save and Cancel cover every tab.
+
 The **Data Folder** setting picks another folder. The settings and saved map
 pins are copied there (replacing any already in it; the old copy stays), the caches in the
 old folder are deleted, and the loaded client's PAZ index is saved again in
@@ -354,9 +360,22 @@ or Cache all tables in the background. The background mode parses every
 table A to Z while the app is idle, and the status bar shows the table it is
 on and how far the pass is. A table stays cached across a patch that leaves
 it, its companions and the LOC text or lookup indexes it reads unchanged.
-**Delete all caches** removes the parsed table, icon thumbnail and lookup
-index caches and the map tiles and pin icons; the PAZ index cache stays,
-since rebuilding it takes over a minute.
+
+Each tab lists the caches of the loaded PAZ folder that belong to it, with
+their size and a **Delete** button:
+
+| Cache | Tab | After Delete |
+| --- | --- | --- |
+| PAZ index | General | The next start reads every archive header again, over a minute |
+| Lookup indexes | General | Built again on the next start |
+| Icon thumbnails | General | Each icon decodes again when shown |
+| Parsed tables | Files | Each table parses again when opened |
+| World map | Map | The Map view asks to build it again |
+
+**Delete all caches** on General removes all of them but the PAZ index and
+shows their total. Below it, General lists the cache folders of other PAZ
+folders in the data folder, marks those whose PAZ folder is gone and deletes
+one with its **Delete**.
 
 **Keep map updated** is turned on by the Map view's first build. With it on,
 a folder load whose client has no finished map (after a game patch) builds
@@ -510,7 +529,8 @@ PAZ-Parser/
 │   ├── bdo_languages.py    # The 13 game languages, their LOC files and UI support
 │   ├── bdo_icon_images.py  # Icon thumbnails, the icon popup image and sprite crops
 │   ├── bdo_api_preview.py  # Preview assembly and entry loading (PreviewMixin)
-│   ├── bdo_api_caches.py   # Cache folder, parsed table cache modes, Delete all caches (CacheMixin)
+│   ├── bdo_api_caches.py   # Cache folder, parsed table cache modes (CacheMixin)
+│   ├── bdo_api_cache_usage.py# Cache table: size and Delete per cache, Delete all, other clients (CacheUsageMixin)
 │   ├── bdo_records_store.py# Parsed table cache keys and dependency digests
 │   ├── bdo_records_prefill.py# Background pass that caches every table
 │   ├── bdo_recent_tables.py# Which handlers keep their parsed tables in memory

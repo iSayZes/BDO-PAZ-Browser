@@ -15,9 +15,10 @@
   background: var(--color-surface);
   border: 1px solid var(--color-line-strong);
   border-radius: var(--radius-modal);
-  width: 600px;
+  width: 760px;
   max-width: calc(100vw - 32px);
-  max-height: calc(100vh - 48px);
+  /* One height for every tab, so switching tabs does not resize the modal. */
+  height: min(600px, calc(100vh - 48px));
   display: flex;
   flex-direction: column;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
@@ -45,12 +46,54 @@
   border-color: transparent;
 }
 
+/* The tab list on the left, the selected tab's settings on the right. */
 .settings-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.settings-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 150px;
+  flex-shrink: 0;
+  padding: 14px 10px;
+  background: var(--color-sidebar);
+  border-right: 1px solid var(--color-line);
+}
+.settings-tab {
+  padding: 7px 12px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--color-text-2);
+  font-size: 13px;
+  text-align: left;
+}
+.settings-tab:hover {
+  background: var(--color-hover);
+}
+.settings-tab.active,
+.settings-tab.active:hover {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.settings-panels {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+}
+.settings-panel {
   display: flex;
   flex-direction: column;
   gap: 22px;
   padding: 20px 22px;
-  overflow-y: auto;
+}
+.settings-panel[hidden] {
+  display: none;
 }
 
 .settings-section {
@@ -188,7 +231,41 @@
   flex: 1;
 }
 
-/* The cache size and the delete button, in one box. */
+/* One row per cache: name, size and Delete, in one box per list. */
+.settings-cache-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+}
+.settings-cache-list[hidden] {
+  display: none;
+}
+.settings-cache-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+}
+.settings-cache-item + .settings-cache-item {
+  border-top: 1px solid var(--color-line);
+}
+.settings-cache-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-soft);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The PAZ folder of another client's cache. */
+.settings-cache-path {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* The total of Delete all and its button, in one box. */
 .settings-cache-row {
   display: flex;
   align-items: center;

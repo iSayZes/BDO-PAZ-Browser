@@ -250,7 +250,31 @@
     "sectionData": "Datos y caché",
     "locMissing": "Falta el LOC",
     "rowHeightDown": "Filas más pequeñas",
-    "rowHeightUp": "Filas más altas"
+    "rowHeightUp": "Filas más altas",
+    "tabs": {
+      "general": "General",
+      "files": "Archivos",
+      "map": "Mapa"
+    },
+    "sectionCache": "Caché",
+    "sectionOtherClients": "Otras carpetas PAZ",
+    "caches": {
+      "pazIndex": "Índice PAZ",
+      "indexes": "Índices de búsqueda",
+      "thumbnails": "Miniaturas de iconos",
+      "records": "Tablas analizadas",
+      "map": "Mapa del mundo"
+    },
+    "cacheConfirm": {
+      "pazIndex": "¿Borrar la caché del índice PAZ de esta carpeta PAZ?\n\nEl próximo inicio volverá a leer todas las cabeceras de archivo, lo que tarda más de un minuto.",
+      "indexes": "¿Borrar la caché de índices de búsqueda de esta carpeta PAZ?\n\nEl próximo inicio reconstruirá los índices de búsqueda.",
+      "thumbnails": "¿Borrar la caché de miniaturas de iconos de esta carpeta PAZ?\n\nLos iconos se decodificarán de nuevo al mostrarse.",
+      "records": "¿Borrar la caché de tablas de esta carpeta PAZ?\n\nLas tablas se analizarán de nuevo al abrirlas.",
+      "map": "¿Borrar el mapa del mundo de esta carpeta PAZ?\n\nLa vista Mapa ofrecerá volver a crearlo."
+    },
+    "deleteCache": "Borrar",
+    "folderMissing": "Carpeta no encontrada",
+    "otherClientConfirm": "¿Borrar todas las cachés de {folder}?\n\nSe vuelven a crear al abrir esa carpeta."
   },
   "tree": {
     "loading": "Cargando..."
@@ -320,7 +344,8 @@
     "fileNotCached": "Los datos del archivo no están en caché, vuelve a cargar el archivo",
     "parsedNotCached": "No hay datos analizados en caché, vuelve a cargar el archivo",
     "invalidSearchPattern": "Patrón de búsqueda no válido",
-    "noFilesMatchExtensions": "Ningún archivo coincide con las extensiones elegidas"
+    "noFilesMatchExtensions": "Ningún archivo coincide con las extensiones elegidas",
+    "unknownCache": "Caché desconocida: {id}"
   },
   "locWarning": {
     "missing": "No tienes {file} para {language}, así que solo la interfaz de la aplicación está en {language}. Los textos del juego en las tablas siguen en coreano.",

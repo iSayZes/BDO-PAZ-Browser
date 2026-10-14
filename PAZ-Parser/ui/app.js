@@ -16,6 +16,7 @@ import { helperMethods } from "./js/core/helpers.js";
 import { tabSearchMethods } from "./js/features/tab-search.js";
 import { globalSearchMethods } from "./js/features/global-search.js";
 import { settingsMethods } from "./js/features/settings.js";
+import { settingsCacheMethods } from "./js/features/settings-caches.js";
 import { iconPreviewMethods } from "./js/features/icon-preview.js";
 import { locWarningMethods } from "./js/features/loc-warning.js";
 import { appUpdateMethods } from "./js/features/app-update.js";
@@ -46,6 +47,7 @@ Object.assign(
   tabSearchMethods,
   globalSearchMethods,
   settingsMethods,
+  settingsCacheMethods,
   iconPreviewMethods,
   locWarningMethods,
   appUpdateMethods,

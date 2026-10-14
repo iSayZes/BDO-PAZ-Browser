@@ -1,4 +1,4 @@
-"""The disk caches: their folder, the parsed records cache and "delete all".
+"""The disk caches: their folder and the parsed records cache.
 
 Each PAZ folder has its own cache folder in the Data Folder's `cache` folder
 (`app_dirs.py`). Changing the "Data Folder" setting copies the config over,
@@ -11,6 +11,9 @@ The "Parsed table cache" setting picks how records are cached:
 - `open`: a table's records are saved the first time it is parsed (default)
 - `all`: as `open`, plus a background pass that parses every table A to Z
   while the app is idle (`api/bdo_records_prefill.py`)
+
+Sizes and deleting per cache, as the settings tabs list them, are in
+`api/bdo_api_cache_usage.py`.
 """
 
 from __future__ import annotations
@@ -39,7 +42,6 @@ from paz.bdo_payload_reader import read_entry_payload
 from paz.bdo_records_cache import RecordsCache
 from paz.bdo_thumbnail_cache import ThumbnailCache
 from table_sort import TableSort
-from ui_text import ui_text
 from world_map_build import MAP_FOLDER
 
 from .bdo_api_state import ApiState
@@ -52,25 +54,17 @@ from .bdo_tree import handled_entries
 _IDLE_AFTER_S = 2.0
 
 
-# What "Delete all caches" removes. The PAZ index cache (`bdo_cache.py`) is
-# kept: rebuilding it reads every archive header again, over a minute, and
-# only a patch makes it stale.
-_DELETABLE_CACHE_FILES = (
+# Every file of a client's cache folder; the world map is its `MAP_FOLDER`.
+CACHE_FILES = (
+    bdo_cache.CACHE_FILE,
     bdo_index_cache.CACHE_FILE,
     bdo_thumbnail_cache.CACHE_FILE,
     bdo_records_cache.CACHE_FILE,
 )
-# Every file of a client's cache folder.
-CACHE_FILES = (bdo_cache.CACHE_FILE, *_DELETABLE_CACHE_FILES)
-
-
-def cache_files(cache_dir: Path) -> list[Path]:
-    """The cache files "Delete all caches" removes from `cache_dir`."""
-    return [cache_dir / name for name in _DELETABLE_CACHE_FILES]
 
 
 class CacheMixin(ApiState):
-    """Records cache lifecycle, the shared data digests and "Delete all caches"."""
+    """Cache folder, records and thumbnail cache lifecycle, the shared data digests."""
 
     # ── Inputs of the cache keys ─────────────────────────────────────────────
 
@@ -143,9 +137,15 @@ class CacheMixin(ApiState):
         except OSError:
             # Not fatal: the next start parses the meta file again.
             logging.warning("Could not write the PAZ index cache in %s", self._cache_dir, exc_info=True)
-        self._thumbnail_cache = ThumbnailCache(self._cache_dir, self._meta_version)
+        self._open_thumbnail_cache()
         self._open_records_cache()
         return errors
+
+    def _open_thumbnail_cache(self) -> None:
+        """Open the loaded folder's thumbnail cache; none before its PAZ index is in."""
+        self._close_thumbnail_cache()
+        if self._cache_dir is not None and self._meta_version is not None:
+            self._thumbnail_cache = ThumbnailCache(self._cache_dir, self._meta_version)
 
     def _close_thumbnail_cache(self) -> None:
         if self._thumbnail_cache is not None:
@@ -256,54 +256,3 @@ class CacheMixin(ApiState):
         """Put the folder's load message back once the pass no longer needs the line."""
         if self._folder_status is not None:
             self._push_status(dict(self._folder_status))
-
-    # ── Settings ─────────────────────────────────────────────────────────────
-
-    def _cache_size(self) -> int:
-        """Bytes the `cache_files()` and the world map of the loaded folder take on disk."""
-        if self._cache_dir is None:
-            return 0
-        files = sum(path.stat().st_size for path in cache_files(self._cache_dir) if path.is_file())
-        return files + self._world_map_bytes()
-
-    def delete_caches(self) -> dict:
-        """Delete the `cache_files()` and the world map of the loaded folder.
-
-        What is loaded stays loaded; a running map build stops. The thumbnail and records caches reopen
-        empty; the lookup indexes are rebuilt on the next launch. The "all"
-        mode's background pass does not start again until the next launch,
-        so deleting is not undone straight away.
-        """
-        self._wait_for_folder_text()
-        if self._cache_dir is None:
-            return {"ok": False, "error": ui_text("errors.noFolderLoaded")}
-
-        was_filling = self._records_prefill is not None
-        self._close_records_cache()
-        self._close_thumbnail_cache()
-
-        freed = 0
-        errors: list[str] = []
-        for path in cache_files(self._cache_dir):
-            try:
-                size = path.stat().st_size
-                path.unlink()
-                freed += size
-            except FileNotFoundError:
-                continue
-            except OSError as ex:
-                errors.append(f"{path.name}: {ex}")
-
-        map_freed, map_errors = self._delete_world_map()
-        freed += map_freed
-        errors.extend(map_errors)
-
-        if self._meta_version is not None:
-            self._thumbnail_cache = ThumbnailCache(self._cache_dir, self._meta_version)
-        self._open_records_cache(fill=False)
-        if was_filling:
-            # The stopped pass leaves its last progress on the status line.
-            self._show_folder_status()
-        if errors:
-            return {"ok": False, "freed": freed, "error": "; ".join(errors)}
-        return {"ok": True, "freed": freed}

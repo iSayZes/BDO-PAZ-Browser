@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Index",
+    "action": "Verarbeitung",
+    "materials": "Materialien",
+    "resultGroup": "Ergebnisgruppe",
+    "resultItems": "Ergebnisgegenstände"
+  },
+  "meta": {
+    "count": "{count} Verarbeitungsrezepte · {materials} Materialien"
+  }
+}

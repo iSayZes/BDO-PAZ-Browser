@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Stores every world region: towns, hunting grounds, castles, arenas, caves and sea areas. The primary key is a region key that resolves through LOC `str_type=17` (the region name). Each record also carries the region type, the node war day, the territory and its capital, the region group, the worldmap node the region belongs to and, for 20 port regions, the Guild Wharf Manager NPC.
+Stores every world region: towns, hunting grounds, castles, arenas, caves and sea areas. The primary key is a region key that resolves through LOC `str_type=17` (the region name). Each record also carries the region type, the node war day, the territory and its capital, the region group, the worldmap node the region belongs to, the zone flags (safe zone, sea, desert, prison and others), the region buff skills by day and night, the return point and, for 20 port regions, the Guild Wharf Manager NPC.
 
 Example:
 
@@ -13,6 +13,8 @@ region_key=290 -> Longleaf Tree Sentry Post (Hunting, Calpheon, node war on Tues
 ```
 
 The layout follows [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, section 11). I walked it against the client 3458 file: every record tiles exactly up to the string table and every span it calls reserved is zero in all 1594 records. One tail field is split wrongly there (see Region Tail). Field meanings marked confirmed below were checked against LOC, the client's Lua enums and the linked tables; the extractor's other names stay `unknown_*` here.
+
+Most of the zone flags and keys are named from two more sources (see Field Names below): the 2016 client's debug symbols, whose `gc::RegionInfo` lists its members in the order this record stores them, and the server-side `Region_Table` of the BdoEmu server (about 2021), whose columns match these offsets value for value. Five more of the extractor's names turned out wrong that way (`+0x0E`, `+0x10`, `+0x11`, `+0x1B`, `+0x66`).
 
 ## Companion Files
 
@@ -44,58 +46,64 @@ Offsets are hex; the extractor's decimal offset is in the notes where it named t
 | Offset  | Type      | Field              | Notes |
 | ------- | --------- | ------------------ | ----- |
 | `+0x00` | u16       | region_key         | LOC `str_type=17`, `str_id1=region_key`; unique; all 1594 resolve |
-| `+0x02` | u8[3]     | unknown_02         | Extractor: RGB world-map colour (`mapColor`). Not checked; kept as a hex string. `edaniaregioninfo.bss` stores the same value for the five first-group Edania castles |
-| `+0x05` | u8        | reserved           | Always `0` |
+| `+0x02` | u8[3]     | color              | Region colour stored blue, green, red; the parser returns `rrggbb` (Velia `820000`). `edaniaregioninfo.bss` stores the same value for the five first-group Edania castles |
+| `+0x05` | u8        | reserved           | Always `0`; the alpha byte of the colour (a 4-byte `pa::Color` in the 2016 client) |
 | `+0x06` | u8        | region_type        | `CppEnums.RegionType`; see Enum Values |
 | `+0x07` | u8        | node_war_day       | `CppEnums.VillageSiegeType`, Sunday `0` to Saturday `6`; `7` (the enum's `_Count`) for no node war |
 | `+0x08` | u8[3]     | reserved           | Always `0` |
 | `+0x0B` | u8        | unknown_0b         | Values `0`, `1`, `3`, `4`; `3` on Velia, Heidel, Altinova and Valencia City, `4` on the Margoria islands |
-| `+0x0C` | bool      | unknown_0c         | Set on 318 regions, among them Velia, Glish, Ossuary, Heidel Castle and Lake Flondor; possibly a safe zone |
-| `+0x0D` | bool      | unknown_0d         | Set on the 9 arena regions |
-| `+0x0E` | bool      | unknown_0e         | Extractor: `ocean`. Set on 199 regions, mostly islands and sea |
+| `+0x0C` | bool      | is_safe_zone       | Set on 318 regions, among them Velia, Glish, Ossuary, Heidel Castle and Lake Flondor |
+| `+0x0D` | bool      | is_arena_zone      | Set on the 9 arena regions. Named from the 2016 member order (`_isArenaZone` between `_isSafeZone` and `_isSea`); the client Lua reads `isArenaZone` |
+| `+0x0E` | bool      | is_sea             | Set on 199 regions, mostly islands and sea. The extractor calls it `ocean` |
 | `+0x0F` | bool      | is_desert          | Set on 43 regions, all in Valencia (territory 4): the Great Desert, the sand dunes, Pilgrim's Sanctums, Cantusa, Aakman |
-| `+0x10` | bool      | unknown_10         | Extractor: `prison`. Set on 8 desert regions: Aakman Temple, Scarlet Sand Chamber, Ibellab Oasis, Hystria Ruins, Roud Sulfur Mine, Pila Ku Jail, Muiquun, Jail |
-| `+0x11` | bool      | unknown_11         | Extractor: `sea`. Set on 62 regions: Sea, Margoria, Oquilla's Eye, Crow Merchants' Vessel |
-| `+0x12` | bool[9]   | unknown_12 .. unknown_1a | Several mirror `region_type` (`0x13` = Siege or CastleInSiege, `0x14` = Fortress, `0x18` = MainTown, `0x19` = MinorTown, `0x1A` = either town); `0x12` is set on Jail only |
-| `+0x1B` | bool      | unknown_1b         | Extractor: `locator`. Set on 1514 regions |
-| `+0x1C` | bool      | unknown_1c         | Set on 118 regions |
+| `+0x10` | bool      | is_not_dig         | Set on 8 desert regions: Aakman Temple, Scarlet Sand Chamber, Ibellab Oasis, Hystria Ruins, Roud Sulfur Mine, Pila Ku Jail, Muiquun, Jail. The extractor calls it `prison`. Likely turns off Shabby Shovel digging, see Notes |
+| `+0x11` | bool      | is_ocean           | Set on 62 regions: Sea, Margoria, Oquilla's Eye, Crow Merchants' Vessel. The extractor calls it `sea`; the client Lua has `isOceanZone` next to the sea checks |
+| `+0x12` | bool      | is_prison          | Set on Jail (697) only |
+| `+0x13` | bool[8]   | unknown_13 .. unknown_1a | Several mirror `region_type` (`0x13` = Siege or CastleInSiege, `0x14` = Fortress, `0x18` = MainTown, `0x19` = MinorTown, `0x1A` = either town); see Open Questions |
+| `+0x1B` | bool      | is_accessible_area | Set on 1514 regions. The extractor calls it `locator`; the client Lua reads `isAccessibleArea` |
+| `+0x1C` | bool      | is_node_access     | Set on 118 regions |
 | `+0x1D` | u16       | unknown_1d         | |
 | `+0x1F` | bool      | unknown_1f         | Set on 54 regions (Rameda Island, Altar of Agris, Western Guard Camp) |
 | `+0x20` | u32       | unknown_20         | `22950` in every record (the extractor saw `19950`), so it changes between patches |
 | `+0x24` | u8        | reserved           | Always `0` |
-| `+0x25` | bool      | unknown_25         | |
-| `+0x26` | u32       | unknown_26         | Extractor: outlaw respawn waypoint key. Set on 204 records, all exploration node keys (Muiquun for several desert regions) |
-| `+0x2A` | f32[3]    | unknown_2a         | Extractor: the position paired with `unknown_26` |
-| `+0x36` | bool[5]   | unknown_36 .. unknown_3a | |
+| `+0x25` | bool      | is_locator         | |
+| `+0x26` | u32       | villain_respawn_node_key | Exploration node key where an outlaw respawns. Set on 204 records, all exploration node keys (Muiquun for several desert regions) |
+| `+0x2A` | f32[3]    | villain_respawn_position | The position paired with `villain_respawn_node_key`. Named from the 2016 member order (`_villainRespawnPosition` follows the key); no server column to check it against |
+| `+0x36` | bool      | is_ancient_dungeon | Set on Aakman Temple (688) and Hystria Ruins (689) |
+| `+0x37` | bool      | is_escape          | Set on most regions; clear on Atoraxion, the arenas and battlefields, Oquilla's Eye, Kamasylvia, Duvencrune, Muiquun and a few caves |
+| `+0x38` | bool      | is_special_zone    | Set on Atoraxion, the arenas and battlefields, Sea Palace, Mountain of Eternal Winter, Pit of the Undying, Aakman Temple, Hystria Ruins, Ruins of Tzol |
+| `+0x39` | bool      | is_vehicle_dead_zone | Set only on `is_special_zone` regions |
+| `+0x3A` | bool      | unknown_3a         | |
 | `+0x3B` | u8        | reserved           | Always `0` |
-| `+0x3C` | u32       | unknown_3c         | |
-| `+0x40` | u8[2]     | reserved           | Always `0` |
+| `+0x3C` | u16       | skill_no           | Region buff skill by day; see Notes |
+| `+0x3E` | u32       | skill_apply_rate   | Apply rate of `skill_no` |
 | `+0x42` | bool      | unknown_42         | |
 | `+0x43` | u8        | reserved           | Always `0` |
-| `+0x44` | u32       | unknown_44         | |
-| `+0x48` | u8[10]    | reserved           | Always `0` |
+| `+0x44` | u16       | skill_no_2         | A second region skill; set on the Margoria regions only |
+| `+0x46` | u32       | skill_apply_rate_2 | Apply rate of `skill_no_2` |
+| `+0x4A` | u8[8]     | reserved           | Always `0` |
 | `+0x52` | bool      | unknown_52         | |
 | `+0x53` | u8        | reserved           | Always `0` |
-| `+0x54` | u32       | unknown_54         | |
-| `+0x58` | u8[2]     | reserved           | Always `0` |
+| `+0x54` | u16       | night_skill_no     | Region buff skill at night; see Notes |
+| `+0x56` | u32       | night_skill_apply_rate | Apply rate of `night_skill_no` |
 | `+0x5A` | u8        | territory_key      | Territory 0 to 13; LOC `str_type=12`, `str_id4=1` names it (Balenos, Serendia ... Inner Edania). The key of `territoryinfo.bss` |
 | `+0x5B` | u8        | reserved           | Always `0` |
 | `+0x5C` | u32       | name_index         | Index into `string_table`; the region's Korean name (`벨리아 마을` for Velia) |
-| `+0x60` | u32       | unknown_60         | Index into `string_table`; a Korean place name, see Notes. The extractor calls it the capital's name, which it is not |
+| `+0x60` | u32       | return_position_name | Index into `string_table`; the Korean name of the region's return point, see Notes. The extractor calls it the capital's name, which it is not |
 | `+0x64` | u16       | capital_region_key | Region key of the territory capital: the same in every region of a territory and always that territory's `MainTown` (Velia, Heidel, Calpheon City ... Angavu Outpost) |
-| `+0x66` | u16       | unknown_66         | A region key. Extractor: affiliated town. Often the region itself or a nearby town, but also non-town regions (Evergart Falls points to 417) |
+| `+0x66` | u16       | trade_origin_region_key | A region key: the trade origin (`getTradeOriginRegion` in the client Lua). The extractor calls it the affiliated town. Often the region itself or a nearby town, but also non-town regions (Evergart Falls points to 417) |
 | `+0x68` | u16       | region_group_key   | Key of `regiongroupinfo.bss`: the file has 250 records and this field 250 distinct values (`0` on 32 regions) |
 | `+0x6A` | u8        | reserved           | Always `0` |
-| `+0x6B` | u16       | unknown_6b         | Non-zero on 628 records; equals `node_key` on 873 (zero included) |
+| `+0x6B` | u16       | waypoint_key       | Non-zero on 628 records; equals `node_key` on 873 (zero included) |
 | `+0x6D` | u8[2]     | reserved           | Always `0` |
 | `+0x6F` | u16       | node_key           | `exploration.bss` node key; non-zero on 1331 records and every one is a node. The node that covers the region (Lumbering 1 -> Trent) |
 | `+0x71` | u8[2]     | reserved           | Always `0` |
-| `+0x73` | bool      | unknown_73         | |
+| `+0x73` | u8        | region_attribute_type | `1` on Velia (5) and Velia Beach (444), `0` elsewhere (client 3464) |
 | `+0x74` | u8[3]     | reserved           | Always `0` |
 | `+0x77` | f32[3]    | unknown_77         | Extractor: waypoint position. Zero on 1580 records |
-| `+0x83` | f32[3]    | unknown_83         | A world position shared by many regions; pairs with `unknown_60`, see Notes. The extractor calls it the region position, which it is not |
+| `+0x83` | f32[3]    | return_position    | The return point's world position, shared by many regions; pairs with `return_position_name`, see Notes. The extractor calls it the region position, which it is not |
 | `+0x8F` | u8[4]     | reserved           | Always `0` |
-| `+0x93` | bool      | unknown_93         | |
+| `+0x93` | u8        | exploration_point  | `1` except on Velia (1), Sea (2), Deep Sea (175) and Valencia City (229) (client 3464) |
 | `+0x94` | u8        | reserved           | Always `0` |
 | `+0x95` | u32       | unknown_95         | |
 | `+0x99` | f32[5]    | unknown_99         | Velia: `45, 38, 0, 55, 0.6` |
@@ -103,7 +111,7 @@ Offsets are hex; the extractor's decimal offset is in the notes where it named t
 | `+0xB1` | u32       | unknown_b1         | |
 | `+0xB5` | u32       | unknown_b5         | `0xFFFFFFFF` in every record |
 | `+0xB9` | u32[6]    | unknown_b9         | Set mainly on towns; Velia `105580, 105554, 105551, 105607, 105547, 105580` |
-| `+0xD1` | bool      | unknown_d1         | |
+| `+0xD1` | bool      | is_free_revival_area | The client Lua reads `isFreeRevivalArea` |
 
 ### Counted Lists (after the head)
 
@@ -134,7 +142,7 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | `+0x15` | u8        | unknown_tail_15         | `3` on the 63 node war regions, `5` elsewhere. Possibly the max war heroes, which the node tooltip shows as 3 |
 | `+0x16` | u8        | reserved                | Always `0` |
 | `+0x17` | u8        | unknown_tail_17         | `3` in every record |
-| `+0x18` | bool      | unknown_tail_18         | Set on Margoria (Vell's Realm) (871) only |
+| `+0x18` | bool      | is_world_boss_reward    | Set on Margoria (Vell's Realm) (871) only |
 | `+0x19` | f32[6]    | unknown_tail_19         | Two world positions, set on 117 regions; on 84 both are the same point, on 31 the second is zero (Pit of the Undying among them), on 2 they differ |
 | `+0x31` | u64       | reserved                | Always `0` |
 | `+0x39` | f32       | unknown_tail_39         | `FLT_MAX`, or on the siege regions the same value as `siege_ap_limit` |
@@ -164,6 +172,55 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | `+0xA2` | u32       | unknown_tail_a2         | On the siege regions only; always `unknown_tail_9a + 7812500` on node war regions, `+39062500` on the capitals |
 | `+0xA6` | u8[3]     | reserved                | Always `0` |
 | `+0xA9` | u16       | guild_wharf_manager_key | NPC character key; set on 20 regions and every NPC is titled `<Guild Wharf Manager>` in LOC (Robert in Velia, Sebastian in Port Epheria, Elro in Oquilla's Eye) |
+
+## Field Names
+
+Two sources name most of the head fields:
+
+- The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::RegionInfo` lists the members `_regionKey`, `_colorKey`, `_regionType`, `_isSafeZone`, `_isArenaZone`, `_isSea`, `_isDesert`, `_isPrison`, seven town and war flags, `_accessibleArea`, `_villageTaxLevel`, `_dropGroupRerollCountOfSieger`, `_isLocator`, `_villainRespawnExploreKey`, `_villainRespawnPosition`, `_isAncientDungeon`, `_isEscape`, the day and night region skills, `_territoryKey`, `_areaName`, `_returnRegionName`, `_tradeOriginRegionKey`, `_regionGroupKey`, `_waypointKey`, `_exploreKey`, `_regionAttributeType`, `_returnPosition`, `_explorationPoint` ... `_isFreeRevivalArea` in this order. Today's record stores them in the same order without padding or pointers, with newer fields in between. Its loader, `GameCommonParameterLoaderFromExcel::LoadRegionInformation`, reads them from the columns of `Region_Table`.
+- The BdoEmu server (about 2021) ships the developers' `Region_Table` with its original column names and values. I matched every column against every head and tail offset over the 896 region keys it shares with the client file.
+
+Matches on client 3464 (896 shared region keys). The mismatches are regions changed since 2021:
+
+| Offset      | Field                     | `Region_Table` column      | Matching regions |
+| ----------- | ------------------------- | -------------------------- | ---------------- |
+| `+0x02`     | color                     | `B`, `G`, `R`              | 895              |
+| `+0x0C`     | is_safe_zone              | `IsSafe`                   | 889              |
+| `+0x0E`     | is_sea                    | `IsSea`                    | 893              |
+| `+0x0F`     | is_desert                 | `IsDesert`                 | 896              |
+| `+0x10`     | is_not_dig                | `IsNotDig`                 | 896              |
+| `+0x11`     | is_ocean                  | `IsOcean`                  | 895              |
+| `+0x12`     | is_prison                 | `IsPrison`                 | 896              |
+| `+0x1B`     | is_accessible_area        | `AccessibleArea`           | 867              |
+| `+0x1C`     | is_node_access            | `isNodeAccess`             | 891              |
+| `+0x25`     | is_locator                | `Locator`                  | 894              |
+| `+0x26`     | villain_respawn_node_key  | `VillainRespawnExploreKey` | 822              |
+| `+0x36`     | is_ancient_dungeon        | `IsAncientDungeon`         | 896              |
+| `+0x37`     | is_escape                 | `Isescape`                 | 895              |
+| `+0x38`     | is_special_zone           | `IsSpecialZone`            | 896              |
+| `+0x39`     | is_vehicle_dead_zone      | `VehicleDeadZone`          | 896              |
+| `+0x3C`     | skill_no                  | `SkillNo`                  | 896              |
+| `+0x3E`     | skill_apply_rate          | `SkillApplyRate`           | 896              |
+| `+0x44`     | skill_no_2                | `SkillNo2`                 | 896              |
+| `+0x46`     | skill_apply_rate_2        | `SkillApplyRate2`          | 896              |
+| `+0x54`     | night_skill_no            | `NightSkillNo`             | 896              |
+| `+0x56`     | night_skill_apply_rate    | `NightSkillApplyRate`      | 896              |
+| `+0x5A`     | territory_key             | `TerritoryKey`             | 886              |
+| `+0x5C`     | name_index                | `AreaName`                 | 838              |
+| `+0x60`     | return_position_name      | `ReturnPositionName`       | 752              |
+| `+0x66`     | trade_origin_region_key   | `TradeOriginRegion`        | 868              |
+| `+0x68`     | region_group_key          | `RegionGroupKey`           | 890              |
+| `+0x6B`     | waypoint_key              | `WaypointKey`              | 890              |
+| `+0x6F`     | node_key                  | `ExploreKey`               | 889              |
+| `+0x73`     | region_attribute_type     | `RegionAttributeType`      | 896              |
+| `+0x83`     | return_position           | `ReturnPositionX`, `Y`     | 838              |
+| `+0x93`     | exploration_point         | `ExplorationPoint`         | 896              |
+| `+0xD1`     | is_free_revival_area      | `FreeRevivalArea`          | 884              |
+| tail `+0x18`| is_world_boss_reward      | `WorldBossReward`          | 896              |
+
+`villain_respawn_node_key` matches less often because the node keys were renumbered: the server's `1001` is `1727` here. The server's `ReturnPositionZ` column holds place-name text, so only X and Y were compared. Columns with no match in this file: the music columns (`BankNo_*`, `MusicIdx_*`), `Temperature`, `Humility`, `WindDir`, `OilRate`, `WaterRate` (constant on the server), `VillageTaxLevel`, `IsChallengeSiege`, `LimitMemberAtSiege`, `MonsterGroupForTotem` and the node war day (`VillageSiegeType`, changed since 2021; `node_war_day` stays on the client Lua enum).
+
+`is_arena_zone` (`+0x0D`) and `villain_respawn_position` (`+0x2A`) have no column; they are named from their place in the 2016 member order between two matched fields.
 
 ## Enum Values
 
@@ -200,6 +257,10 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 | Region Group        | num  | `region_group_key` |
 | Node War Day        | text | Day name; `-` for none; sorts in week order, none last |
 | Desert              | flag | `is_desert` |
+| Safe Zone           | flag | `is_safe_zone` |
+| Day Skill           | text | `skill_no` and `skill_no_2` with their LOC type 10 names, joined by ` / `; `-` when neither is set |
+| Night Skill         | text | `night_skill_no` with its LOC type 10 name |
+| Return Point        | text | `return_position_name` as the LOC type 17 name of the first region with that Korean name, else the Korean name |
 | Guild Wharf Manager | text | `guild_wharf_manager_key` with its NPC name; `-` when 0 |
 | Max Participants    | num  | `max_participants`; `-` when 0 |
 | AP Limit            | num  | `siege_ap_limit`; `-` when there is no limit |
@@ -212,10 +273,12 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 ## Notes
 
 - **LOC type 17 is the region name.** All 1594 region keys resolve in LOC type 17, which has 1658 IDs; the other 64 (750, 807 to 809, 821, 1177, 1178, 1417 ...) have no region in this client and look like retired regions. The `plantworkerselect.bss` selection IDs are region keys too: all 31 are towns of type `MainTown` or `MinorTown`. So both readings hold: type 17 names regions, and the worker-selection towns are regions; the `buff.dbss` town keys name towns through the same type. [`languagedata_loc.md`](languagedata_loc.md) says so.
-- **`region_info.xml`** (`gamecommondata/`) keys its boxes by the same region key: `<box region_index=...>` matches `region_key`, and every one of its 183 region keys exists here. It is not a box per region: it holds 721 boxes (AABB plus an oriented box, `fieldNo="1"` on all) for 183 regions, nearly all caves, interiors and other small enclosed regions (Ossuary, Coastal Cave, Imp Cave, Secret Cave, Basement Cellar). Each box has a `property_index` into a 187-entry `propertyArray` of `WeatherTable`/`WeatherTime` values, and a `binArray` of 10626 grid cells indexes the boxes spatially. The `unknown_83` position falls inside the region's own boxes for only 18 of the 183, which is one reason it is not the region position.
-- **`unknown_60` and `unknown_83` form a pair.** Grouping the records by the `unknown_83` position gives 230 groups, and 214 of them share a single `unknown_60` name: 90 regions point to `벨리아 마을` (Velia) at `(-1226, -7012, 81647)`, 107 to `하킨자 성전` (Hakinza Sanctuary), 81 to `알티노바` (Altinova). The name is often the territory capital or the `unknown_66` region, but matches neither consistently (463 and 470 of 1594). It looks like the place a player returns or revives to, but nothing in the client confirms that yet.
+- **`region_info.xml`** (`gamecommondata/`) keys its boxes by the same region key: `<box region_index=...>` matches `region_key`, and every one of its 183 region keys exists here. It is not a box per region: it holds 721 boxes (AABB plus an oriented box, `fieldNo="1"` on all) for 183 regions, nearly all caves, interiors and other small enclosed regions (Ossuary, Coastal Cave, Imp Cave, Secret Cave, Basement Cellar). Each box has a `property_index` into a 187-entry `propertyArray` of `WeatherTable`/`WeatherTime` values, and a `binArray` of 10626 grid cells indexes the boxes spatially. The `return_position` falls inside the region's own boxes for only 18 of the 183, so it is not the region position.
+- **The return point.** `return_position_name` and `return_position` are `Region_Table`'s `ReturnPositionName` and `ReturnPositionX/Y/Z` (`_returnRegionName` and `_returnPosition` in the 2016 client). Grouping the records by the position gives 230 groups, and 214 of them share a single name: 90 regions point to `벨리아 마을` (Velia) at `(-1226, -7012, 81647)`, 107 to `하킨자 성전` (Hakinza Sanctuary), 81 to `알티노바` (Altinova). The name is often the territory capital or the `trade_origin_region_key` region, but matches neither consistently (463 and 470 of 1594, client 3458).
 - The node war regions are field regions plus a few castles and towns: each day from Sunday to Thursday lists one region from each of six territories, for example Sunday holds Forest of Plunder, Orc Camp, Quint Hill, Valencia Castle, Neruda Plain and Neftak Outpost.
-- Several flag bytes repeat `region_type` (see `unknown_12` .. `unknown_1a`), so they may be the client's per-type properties expanded into the record. The tail does the same for the two types past the enum: `unknown_tail_45` marks type 7 and `unknown_tail_46` type 8.
+- Several flag bytes repeat `region_type` (see `unknown_13` .. `unknown_1a`), so they may be the client's per-type properties expanded into the record. The tail does the same for the two types past the enum: `unknown_tail_45` marks type 7 and `unknown_tail_46` type 8.
+- **Region buff skills.** `skill_no` applies by day and `night_skill_no` at night, each with its apply rate. On client 3464 the set records are: the Valencia desert regions with `40338` Debuff Desert Morning (rate `50000`) by day and `40339` Debuff Desert Evening (`45000`) at night; Mountain of Eternal Winter with `41517` (no LOC skill name) by day and `40339` at night; the Margoria regions and the Crow Merchants' Vessel with `40434` Summon Phantom Ship by day and night, plus `40452` Summon Margoria Grim Reaper in `skill_no_2`. The scale of the apply rates is not known.
+- **`is_not_dig` and the Shabby Shovel.** The Shabby Shovel (item `16139`, sold by the Valencia material vendors) says "You can dig the sand with this in the desert" and yields a Bag of Muddy Water (`6657`). Every `is_not_dig` region also has `is_desert` set, and all eight are enclosed or special spots inside the desert (temples, ruins, a mine, two jails, the Ibellab Oasis, Muiquun). So the flag likely turns off shovel digging where `is_desert` would allow it. Neither the client Lua nor the server code reads it, so this rests on the region list; see In-Game Checks.
 - **The siege block in the tail.** `max_participants`, the `siege_*` limits and `unknown_tail_11`, `_39`, `_3d`, `_55`, `_86`, `_9a` and `_a2` are filled only on the 63 node war regions and the four capitals Velia, Heidel, Altinova and Valencia City; every other region carries `FLT_MAX`, `0x7FFFFFFF` or `0` there, and `+0x4D` holds `658`; the parser leaves every `siege_*` limit `None` where `max_participants` is 0. The client reads the same limits per region through `ToClient_getLimitSiegeDDByRegionKey`, `...HitByRegionKey`, `...DVByRegionKey`, `...PVByRegionKey`, `...DVRateByRegionKey`, `...HitRateByRegionKey` and `...StunResistByRegionKey` (`panel_worldmap_nodetooltip_villagewar_all_1.luac`, `new_worldmap_territorytooltip.luac`), and the participant cap through `getMaxMemberAtSiege`.
 - **How the limit fields were mapped.** The node war regions use five fixed limit sets:
 
@@ -263,20 +326,25 @@ Every node tooltip shows 3 max war heroes. `unknown_tail_15` is `3` on every nod
 
 The list holds town region keys and includes the owning region; the extractor calls it a warehouse group. Velia's list covers the mainland towns but not Valencia City or Shakatu. It is not the transport network: in game, Velia's transport window sends to Valencia City (and every other town with a storage), though Valencia City is not in Velia's list. The same question is open for [`regioninfo_linkandcheckvalid2.bss`](regioninfo_linkandcheckvalid2_bss.md).
 
-### The unconfirmed flags
+### Town and War Flags
 
-`unknown_0c` (possibly a safe zone), `unknown_0e` and `unknown_11` (the extractor's `ocean` and `sea`), `unknown_10` (the extractor's `prison`, but set on Ibellab Oasis and Hystria Ruins too) and `unknown_1b` (the extractor's `locator`) have plausible readings that nothing in the client confirms yet.
+`unknown_13` .. `unknown_1a` have no `Region_Table` column. The 2016 `gc::RegionInfo` has seven computed flags at this place: `_isKingWarZoneOnly`, `_isLordWarZoneOnly`, `_isVillageWarZone`, `_isKingOrLordWarZone`, `_isMainTown`, `_isMinorTown` and `_isMainOrMinorTown`. That fits what the bytes hold (`0x13` on Siege and CastleInSiege, `0x14` on Fortress, `0x18` to `0x1A` on the towns), but this file has eight bytes for the seven, so which one is new is open. The client Lua reads `isVillageWarZone` and `isKingOrLordWarZone`.
+
+### Remaining Unknown Head Fields
+
+`unknown_0b`, `unknown_1d`, `unknown_1f`, `unknown_20`, `unknown_3a`, `unknown_42`, `unknown_52`, `unknown_77`, `unknown_95`, `unknown_99`, `unknown_ad`, `unknown_b1`, `unknown_b5` and `unknown_b9` match no `Region_Table` column. `unknown_0b` (`3` on the capitals) does not match `VillageTaxLevel` either.
 
 ## In-Game Checks
 
-### Return Point in `unknown_60` / `unknown_83`
+### Shabby Shovel in a No-Dig Region
 
-Needs zone (any one):
+This checks whether `is_not_dig` turns off desert digging.
 
-- Ossuary
-- Coastal Cave
+1. Buy a Shabby Shovel from a material vendor in Valencia.
+2. Use it in the open desert, for example in the Great Desert of Valencia. Note that you get a Bag of Muddy Water.
+3. Go to Ibellab Oasis or Roud Sulfur Mine (both have `is_not_dig` set) and use it again.
 
-The Korean place name and world position are shared by many regions and pair up as one place (see Notes), which suggests the respawn or return point for the region. Ossuary and Coastal Cave both point to Velia at `(-1226, -7012, 81647)`. Die in one of them (or use a return option) and revive at the nearest town. If the character lands at that point, `unknown_60` / `unknown_83` are the region's return point; a different spot rules that out.
+Expected result: the shovel works in step 2 and is refused or yields nothing in step 3. If it works in step 3 too, the flag does something else.
 
 ### Region Types 7 and 8
 
@@ -287,7 +355,7 @@ Needs zone (all):
 
 `CppEnums.RegionType` ends at Arena (6) with `_Count` = 7, but Pit of the Undying (950, 1070) has type 7 and one Battle Arena (1072) type 8. I searched all 3060 client Lua scripts: no `eRegionType_` value past Arena exists, and the only scripts that touch region types compare against `Siege`, `Fortress` and `MinorTown`.
 
-What the client does have are region getters that fit the two types: `isPVEArenaZone` (used by the death message, game exit, manufacture and Morning Land boss panels) next to `isArenaZone` and `isArenaArea`. Pit of the Undying is a PvE arena, so type 7 is probably a PvE arena; `unknown_0d` (set on every type 6 arena and on 1072, not on Pit of the Undying) may be what `isArenaZone` reads. Type 8 is a third Battle Arena on Rema Island next to 436 and 437 (type 6); the only differences from 436 in the record are the type, the `unknown_02` colour and `unknown_tail_46` (437 also sets `unknown_0c`), so I cannot tell what sets it apart. Possibly the Battle Arena that Trial Characters are locked into.
+What the client does have are region getters that fit the two types: `isPVEArenaZone` (used by the death message, game exit, manufacture and Morning Land boss panels) next to `isArenaZone` and `isArenaArea`. Pit of the Undying is a PvE arena, so type 7 is probably a PvE arena. `is_arena_zone` is set on every type 6 arena and on 1072, not on Pit of the Undying. Type 8 is a third Battle Arena on Rema Island next to 436 and 437 (type 6); the only differences from 436 in the record are the type, the colour and `unknown_tail_46` (437 also sets `is_safe_zone`), so I cannot tell what sets it apart. Possibly the Battle Arena that Trial Characters are locked into.
 
 Enter both and note the death message and the exit prompt. If Pit of the Undying shows the PvE arena handling that `isPVEArenaZone` drives, type 7 is the PvE arena. If 1072 shows the same as Battle Arena 436, the difference of type 8 is not visible there; anything else (for example a Trial Character notice) names it.
 

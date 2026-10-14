@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "groupId": "ID du groupe",
+    "subgroups": "Sous-groupes",
+    "selectOnlyOne": "Un seul",
+    "itemCount": "Objets",
+    "items": "Noms des objets"
+  },
+  "meta": {
+    "count": "{count} groupes principaux d'objets · {entries} entrées de sous-groupe"
+  }
+}

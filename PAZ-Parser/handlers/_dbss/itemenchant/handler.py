@@ -19,6 +19,10 @@ from .parser import (
     parse_itemenchant_records,
     parse_itemenchantoffset_records,
 )
+from .life_slots import NO_LIFE_EQUIP_TYPE, life_slot_label
+from .servant_slots import servant_slot_label
+from .slot_labels import NO_SLOT, slot_label
+from .weapon_types import weapon_type_names
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -46,9 +50,10 @@ def _item_name(record: dict) -> str:
     return loc_text(_LOC_TYPE_ITEM, record["item_id"]) or record["name_kr"]
 
 
-def _with_links(record: dict, values: dict[str, str], classes: str) -> dict:
+def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, weapon_type: str) -> dict:
     """The parsed record plus its item name, placed character, buffs, Lightstone
-    sets and field labels."""
+    sets and field labels; `classes`, `slot` and `weapon_type` are the labels
+    of its class mask, equipment slot and equipment type."""
     buff_ids = skill_buff_ids(record["skill_keys"])
     set_ids = item_set_ids(record["item_id"])
     return {
@@ -56,6 +61,10 @@ def _with_links(record: dict, values: dict[str, str], classes: str) -> dict:
         # None sorts last and exports empty.
         "required_level": record["required_level"] if record["required_level"] > _NO_LEVEL_LIMIT else None,
         "classes": classes,
+        # 0 on items that are not equipment; None sorts last and exports empty.
+        "equip_type": record["equip_type"] or None,
+        "slot": slot,
+        "weapon_type": weapon_type,
         # 0 means "cannot be enhanced"; None sorts last and exports empty.
         "enhancement_type": record["enhancement_type"] or None,
         "binding": binding_label(record["vested_type"], record["family_bound"], values),
@@ -79,6 +88,22 @@ def _with_links(record: dict, values: dict[str, str], classes: str) -> dict:
         **pa_list_fields("lightstone_sets", [set_label_tagged(set_id) for set_id in set_ids]),
         "lightstone_set_count": len(set_ids) or None,
     }
+
+
+def _slot_text(record: dict, slots: dict[int, str]) -> str:
+    """The slot's tooltip label; servant and Life Skill gear's label for their slots.
+
+    Servant gear stores the character slot numbers with other meanings (a
+    barding in Chest), so it is labelled by `servant_slots.py`, and shows the
+    bare number where no servant group labels its slot. Life Skill gear goes
+    in no character slot; `life_slots.py` labels its Life Skill tab slot.
+    """
+    equip_slot = record["equip_slot"]
+    if record["servant_kinds"] and equip_slot != NO_SLOT:
+        return servant_slot_label(record["servant_kinds"], equip_slot) or str(equip_slot)
+    if record["life_equip_type"] != NO_LIFE_EQUIP_TYPE:
+        return life_slot_label(record["life_equip_type"])
+    return slots[equip_slot]
 
 
 def _optional_cell(value: int | None) -> str:
@@ -109,10 +134,13 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["maxLevel"], "num", sort_key="max_enchant_level"),
             Column(cols["enchantKey"], "num", sort_key="enchant_key"),
             Column(cols["enhancementType"], "num", sort_key="enhancement_type"),
+            Column(cols["slot"], sort_key="slot"),
+            Column(cols["weaponType"], sort_key="weapon_type"),
             Column(cols["requiredLevel"], "num", sort_key="required_level"),
             Column(cols["classes"], sort_key="classes"),
             Column(cols["binding"], sort_key="binding"),
             Column(cols["durability"], "num", sort_key="max_durability"),
+            Column(cols["stackable"], sort_key="stackable"),
             Column(cols["marketable"], sort_key="marketable"),
             Column(cols["familyInventory"], sort_key="family_inventory"),
             Column(cols["trade"], sort_key="trade"),
@@ -144,9 +172,20 @@ class ItemEnchantHandler(PreviewHandler):
 
         values = load_handler_strings(self.lang, _LANG_DIR)["values"]
         records = parse_itemenchant_records(data, offset_raw)
-        # About 150 masks cover all items, so each label is built once.
+        # About 150 masks and 40 slots cover all items, so each label is built once.
         classes = {mask: classes_label(mask, values) for mask in {record["class_mask"] for record in records}}
-        return [_with_links(record, values, classes[record["class_mask"]]) for record in records]
+        slots = {slot: slot_label(slot) for slot in {record["equip_slot"] for record in records}}
+        weapon_types = weapon_type_names(records)
+        return [
+            _with_links(
+                record,
+                values,
+                classes[record["class_mask"]],
+                _slot_text(record, slots),
+                weapon_types.get(record["equip_type"], ""),
+            )
+            for record in records
+        ]
 
     def render_records_page(
         self,
@@ -172,10 +211,13 @@ class ItemEnchantHandler(PreviewHandler):
                 e(record["max_enchant_level"]),
                 _optional_cell(record["enchant_key"]),
                 _optional_cell(record["enhancement_type"]),
+                e(record["slot"] or _EMPTY),
+                e(record["weapon_type"] or _EMPTY),
                 _optional_cell(record["required_level"]),
                 e(record["classes"] or _EMPTY),
                 e(record["binding"] or _EMPTY),
                 _optional_cell(record["max_durability"]),
+                flag_cell(record["stackable"]),
                 flag_cell(record["marketable"]),
                 flag_cell(record["family_inventory"]),
                 e(record["trade"] or _EMPTY),

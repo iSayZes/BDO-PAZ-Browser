@@ -20,7 +20,7 @@ from _common.offset_table import (
     offset_records,
     size_column,
 )
-from .effect import EffectInput, effect_text, param_labels
+from .effect import EFFECT_TYPE_NAMES, EffectInput, effect_text, effect_type_text, param_labels
 from .parser import PARAM_COUNT, parse_buff_records
 from .title import extract_title_pa, title_leaders
 
@@ -126,7 +126,7 @@ def _buff_row(r: dict) -> list[str]:
         e(r["effect"]) if r["effect"] else _EMPTY,
         item_key_list_cell(r["applied_by_item_ids"], _LIST_PREVIEW_ITEMS) or _EMPTY,
         e(r["level"]),
-        e(r["effect_type"]),
+        e(effect_type_text(r["effect_type"])),
         e(r["duration"]) if r["duration"] else _EMPTY,
         *(_param_cell(r[f"param_{index}"], labels.get(index)) for index in range(1, _SHOWN_PARAMS + 1)),
     ]
@@ -144,7 +144,8 @@ class BuffHandler(PreviewHandler):
             Column(cols["effect"], sort_key="effect"),
             Column(cols["appliedBy"], sort_key="applied_by_count"),
             Column(cols["level"], "num", sort_key="level"),
-            Column(cols["effectType"], "num", sort_key="effect_type"),
+            # Sorts by the number; the cell adds the 2016 name where there is one.
+            Column(cols["effectType"], sort_key="effect_type"),
             Column(cols["duration"], "num", sort_key="duration_ms"),
             *(
                 Column(cols.get(f"param{index}", f"Param {index}"), "num", sort_key=f"param_{index}")
@@ -175,6 +176,7 @@ class BuffHandler(PreviewHandler):
             record.update(pa_fields("title", extract_title_pa(raw)))
             record.update(pa_fields("description", raw))
             record["effect"] = effect_text(_effect_input(record))
+            record["effect_type_name"] = EFFECT_TYPE_NAMES.get(record["effect_type"], "")
             record["duration"] = format_duration(record["duration_ms"])
             # 0 means no duration. None renders a dash and sorts last.
             record["duration_ms"] = record["duration_ms"] or None

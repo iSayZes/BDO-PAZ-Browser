@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Index",
+    "action": "Action",
+    "materials": "Materials",
+    "resultGroup": "Result Group",
+    "resultItems": "Result Items"
+  },
+  "meta": {
+    "count": "{count} processing recipes · {materials} materials"
+  }
+}

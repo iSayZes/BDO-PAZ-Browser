@@ -73,7 +73,7 @@ The same numbers appear on the BDO wiki next to each NPC's interest groups, but 
 | 11    | 1101      | 1102      | Sealing Stone |
 | 12    | 1201      | 1202      | Goblin        |
 
-Confirmed by cross-referencing `amity-npcs.json` horoscope fields against `personality_id` values. Majors 1 and 9 have only variant 1.
+[`zodiacsignorder.dbss`](zodiacsignorder_dbss.md) stores the sign of every `personality_type` as `zodiac_id`, and it equals the major in all 24 records (client 3464). The names are LOC type 7 sign names from [`zodiacsign.dbss`](zodiacsign_dbss.md). Majors 1 and 9 have only variant 1 here.
 
 ## npcpersonalityoffset.dbss
 
@@ -117,7 +117,7 @@ Every offset row points at a record that repeats its `personality_id`, and every
 
 - All 1182 `personality_id` values are unique; it is a true record key.
 - `personality_id_dup` at `+0x0E` is always identical to `personality_id` at `+0x00`; appears to be alignment padding or a redundant lookup key.
-- The `variant` in `personality_type` (1 or 2) is not exposed in `amity-npcs.json`; its in-game meaning is unknown. Distribution is roughly even (584 variant-1, 598 variant-2).
+- The `variant` in `personality_type` (1 or 2) picks one of the two star orders in `zodiacsignorder.dbss`; any other in-game meaning is unknown. Distribution is roughly even (584 variant-1, 598 variant-2).
 - The groups and `unknown_*` numbers match the BDO wiki for Amerigo (41013): Vendors of Serendia, Serendia Adventure Log II and Plants (Serendia), `4` each.
 - The NPC rolls its Interest Level and Favor at the start of each conversation, and keeps them when the conversation is continued ([Black Desert Foundry, Story Exchange guide](https://www.blackdesertfoundry.com/story-exchange-guide/)). Readings do not always fall inside the stored ranges, though: see the table below.
 - They match the wiki for Oliviero (41091) too: Serendia Adventure Log II, Officers of Serendia and Plants (Serendia), `6` each. Each group holds more cards than its `unknown_*` number (18, 13 and 11 here). Sharing a group does not mean sharing topics: Amerigo, who also has Serendia Adventure Log II, did not offer the Log II cards Oliviero did. Which cards an NPC offers is open.

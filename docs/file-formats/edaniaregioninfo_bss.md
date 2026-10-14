@@ -2,14 +2,14 @@
 
 ## Purpose
 
-Holds one row per Edania region, the ten castle domains that guilds hold in Edania (Aetherion to Voidekaia), plus a row for the "no region" value. Each row stores the client's `__eEdaniaRegion` value and two 3-byte values that equal the `regioninfo.bss` `unknown_02` colour of the region's castle where that castle has a region of its own.
+Holds one row per Edania region, the ten castle domains that guilds hold in Edania (Aetherion to Voidekaia), plus a row for the "no region" value. Each row stores the client's `__eEdaniaRegion` value and two 3-byte values that equal the `regioninfo.bss` `color` of the region's castle where that castle has a region of its own.
 
 Example:
 
 ```text
-edania_region=0  -> Aetherion Castle   (f51c0a, the unknown_02 of region 1581 Aetherion Castle)
-edania_region=2  -> Orbita Castle      (375090, the unknown_02 of region 1571 Orbita Castle)
-edania_region=9  -> Event Horizon      (680877, no matching region)
+edania_region=0  -> Aetherion Castle   (0a1cf5, the color of region 1581 Aetherion Castle)
+edania_region=2  -> Orbita Castle      (905037, the color of region 1571 Orbita Castle)
+edania_region=9  -> Event Horizon      (770868, no matching region)
 edania_region=10 -> none (_Count)      (100d10)
 ```
 
@@ -41,7 +41,7 @@ The file is `8 + 9 × 11 + 12 = 119` bytes. The parser rejects a file whose rows
 
 | Offset  | Type  | Field         | Notes                                                                                                   |
 | ------- | ----- | ------------- | ------------------------------------------------------------------------------------------------------- |
-| `+0x00` | u8[3] | unknown_00    | Kept as a hex string in file order, as `regioninfo.bss` keeps `unknown_02`; see Notes                   |
+| `+0x00` | u8[3] | unknown_00    | Stored blue, green, red like the `regioninfo.bss` `color`; the parser returns `rrggbb`. See Notes        |
 | `+0x03` | u8    | reserved      | Always `0`                                                                                              |
 | `+0x04` | u8[3] | unknown_04    | Equals `unknown_00` on every row                                                                        |
 | `+0x07` | u8    | reserved      | Always `0`                                                                                              |
@@ -65,7 +65,7 @@ The file is `8 + 9 × 11 + 12 = 119` bytes. The parser rejects a file whose rows
 | `9`   | Voidekaia   | `LUA_EDANIA_SYSTEM_CASTLE_NAME_10` | Event Horizon       |
 | `10`  | _Count      |                                   | none                |
 
-Orbita and Tenebraum swap key numbers 3 and 4. The file confirms the values of the first five: their `unknown_00` matches the `regioninfo.bss` `unknown_02` of exactly one region each, and that region is the castle of the same name (1581 Aetherion Castle, 1621 Nymphamaré Castle, 1571 Orbita Castle, 1611 Tenebraum Castle, 1596 Zephyros Castle).
+Orbita and Tenebraum swap key numbers 3 and 4. The file confirms the values of the first five: their `unknown_00` matches the `regioninfo.bss` `color` of exactly one region each, and that region is the castle of the same name (1581 Aetherion Castle, 1621 Nymphamaré Castle, 1571 Orbita Castle, 1611 Tenebraum Castle, 1596 Zephyros Castle).
 
 ## Suggested UI Layout
 
@@ -96,15 +96,12 @@ are not known. The In-Game Check below only settles what the value is.
 
 Needs zone: Edania
 
-`unknown_00` and `unknown_04` are two equal 3-byte values per row. For the
-five first-group castles each equals the `regioninfo.bss` `unknown_02` of the
-castle's region, which bdo-data-extractor reads as the region's world-map
-colour, so these are likely the colour of each Edania domain, for instance on
-the world map overlay that `ToClient_ToggleEdaniaArea` switches.
+This checks whether `unknown_00` is the colour of each Edania domain on the world map.
 
-Open the world map over Edania, switch the Edania area overlay on and compare
-each domain's colour with its row: Aetherion `f51c0a`, Orbita `375090`,
-Event Horizon (Voidekaia) `680877`. Matching colours confirm the field as the
-domain colour. Read in file order the values are RGB (`f51c0a` red-orange);
-if Aetherion shows blue instead, the bytes are BGR (`0a1cf5`). A domain
-overlay that matches no row means the colour comes from somewhere else.
+For the five first-group castles `unknown_00` equals the `regioninfo.bss` `color` of the castle's region, and `regioninfo.bss` stores that colour blue, green, red (its `R`, `G` and `B` match the server-side `Region_Table` on 895 of 896 regions, client 3464). Read the same way, the rows here are Aetherion `0a1cf5` (blue), Orbita `905037` (brown-red) and Event Horizon (Voidekaia) `770868` (purple).
+
+1. Open the world map over Edania.
+2. Switch the Edania area overlay on (`ToClient_ToggleEdaniaArea`).
+3. Note the colour of the Aetherion, Orbita and Event Horizon domains.
+
+Expected result: the three domains show those colours. A domain colour that matches no row means the overlay takes its colour from somewhere else.

@@ -1,0 +1,41 @@
+{
+  "tab": "Script de IA",
+  "columns": {
+    "state": "Estado",
+    "behavior": "Comportamiento",
+    "cycle": "Ciclo (ms)",
+    "runs": "Ejecuta",
+    "transitions": "Transiciones",
+    "reachedFrom": "Llega desde"
+  },
+  "meta": {
+    "count": "{count} estados y handlers"
+  },
+  "phases": {
+    "start": "inicio",
+    "tick": "cada ciclo",
+    "end": "fin"
+  },
+  "summary": {
+    "script": "Script",
+    "states": "estados",
+    "handlers": "handlers",
+    "transitions": "transiciones",
+    "hpGates": "Umbrales de salud",
+    "variables": "Variables (InitialState)",
+    "none": "Ninguno",
+    "from": "desde {names}",
+    "usedBy": "Usado por",
+    "macros": "Macros",
+    "imports": "Importaciones"
+  },
+  "hp": "Salud",
+  "handler": "handler",
+  "event": "evento",
+  "missingState": "No hay ningún estado con este nombre en el archivo",
+  "filter": {
+    "label": "Comportamiento",
+    "shown": "{shown} de {total} filas en esta página"
+  },
+  "footnote": "Todas las condiciones de una transición deben cumplirse. dice se muestra tal como está escrito; no está confirmado si es una probabilidad en porcentaje o un peso. Salud es una variable que el script rellena con getHpRate(), así que su valor es el porcentaje de Salud máx. La línea gris bajo un estado es el comentario del desarrollador que tiene encima en el archivo. Un límite inferior y uno superior sobre el mismo valor se muestran como un solo rango. Los chips de comportamiento filtran las filas de la página mostrada y siguen activos al cambiar de página."
+}

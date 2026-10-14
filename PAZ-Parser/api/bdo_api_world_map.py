@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import json
 import logging
-import shutil
 import threading
 import time
 from pathlib import Path
@@ -35,7 +34,6 @@ from world_map_build import (
     BuildStopped,
     RadarSource,
     build_map,
-    map_root,
     read_manifest,
     read_radar,
     remove_other_maps,
@@ -264,30 +262,8 @@ class WorldMapMixin(ApiState):
         if self._server is not None:
             self._server.serve_map(None, 0)
 
-    def _world_map_bytes(self) -> int:
-        """Bytes the finished maps of the loaded folder's cache take."""
-        if self._cache_dir is None:
-            return 0
-        root = map_root(self._cache_dir)
-        if not root.is_dir():
-            return 0
-        manifests = (read_manifest(folder) for folder in root.iterdir() if folder.is_dir())
-        return sum(manifest.bytes for manifest in manifests if manifest is not None)
-
-    def _delete_world_map(self) -> tuple[int, list[str]]:
-        """Stop a build and delete every map of the loaded folder: (bytes freed, error messages)."""
-        if self._cache_dir is None:
-            return 0, []
-        freed = self._world_map_bytes()
+    def _release_world_map(self) -> None:
+        """Before the map folder is deleted: stop a build and stop serving the tiles."""
         self._stop_map_build()
         if self._server is not None:
             self._server.serve_map(None, 0)
-        errors: list[str] = []
-
-        def on_error(_function, path, ex) -> None:
-            errors.append(f"{Path(path).name}: {ex}")
-
-        root = map_root(self._cache_dir)
-        if root.is_dir():
-            shutil.rmtree(root, onexc=on_error)
-        return (0 if errors else freed), errors[:1]

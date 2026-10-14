@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import argparse
 
-from bdo_preview import _BUILTIN_KEYS, _REGISTRY, get_binary_handlers, plugin_failures, unique_format_keys
+from bdo_preview import _REGISTRY, get_binary_handlers, get_builtin_formats, plugin_failures, unique_format_keys
 from updates.handler_versions import ActiveHandlerVersion, all_handler_versions, handler_version
 
 from .errors import CliError
@@ -132,10 +132,11 @@ def run_formats(args: argparse.Namespace) -> int:
         return 1
 
     all_keys = [k for k in unique_format_keys(api.entries) if k not in _FORMATS_IGNORE]
-    generic  = [k for k in all_keys if k in _BUILTIN_KEYS]
-    binary   = [k for k in all_keys if k not in _BUILTIN_KEYS]
+    builtin  = set(get_builtin_formats())
+    generic  = [k for k in all_keys if k in builtin]
+    binary   = [k for k in all_keys if k not in builtin]
 
-    registered_handlers = {k for k in _REGISTRY if k not in _BUILTIN_KEYS and k not in _FORMATS_IGNORE}
+    registered_handlers = {k for k in get_binary_handlers() if k not in _FORMATS_IGNORE}
     supported_binary   = sorted({k for k in binary if k in _REGISTRY} | registered_handlers)
     unsupported_binary = [k for k in binary if k not in _REGISTRY and k not in registered_handlers]
 

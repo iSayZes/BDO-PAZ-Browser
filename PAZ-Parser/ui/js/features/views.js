@@ -3,13 +3,18 @@
 // The views of the toolbar rail. Each view lists the panes it shows: parts of
 // #main and the bottom bar's extract row, which only Files uses; switching
 // hides every other pane. The toolbar and the bottom bar's status row stay.
-// `onShow` names the method that fills the view when it opens.
+// `onShow` names the method that fills the view when it opens, `settingsTab`
+// the Settings tab with the view's settings (#settings-tab-<id> in index.html).
 const VIEWS = {
-  files: { panes: ["sidebar", "v-divider", "right-panel", "extract-row"] },
-  map: { panes: ["map-view"], onShow: "_showMapView" },
+  files: { panes: ["sidebar", "v-divider", "right-panel", "extract-row"], settingsTab: "files" },
+  map: { panes: ["map-view"], onShow: "_showMapView", settingsTab: "map" },
 };
 
 const ALL_PANES = [...new Set(Object.values(VIEWS).flatMap((view) => view.panes))];
+
+// The Settings tabs: General, then one per view that has settings. A view
+// that is not in VIEWS yet, a disabled rail button, has no tab.
+export const SETTINGS_TABS = ["general", ...Object.values(VIEWS).flatMap((view) => view.settingsTab ?? [])];
 
 export const viewMethods = {
   switchView(id) {

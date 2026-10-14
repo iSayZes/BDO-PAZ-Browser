@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "categoryKey": "Ключ категории",
+    "row": "Строка",
+    "column": "Столбец",
+    "cellType": "Тип ячейки",
+    "mainId": "Основной ID",
+    "subId": "Доп. ID",
+    "icon": "Значок",
+    "title": "Название"
+  },
+  "meta": {
+    "count": "Ячеек сетки: {count} · категорий: {layouts}"
+  }
+}

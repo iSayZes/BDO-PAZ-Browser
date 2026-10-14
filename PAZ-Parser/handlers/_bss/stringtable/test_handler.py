@@ -19,8 +19,9 @@ from tests.framework import (
     run_case,
 )
 
-from _bss.stringtable.parser import SHEET_LOC_ID2
+from _bss.stringtable.parser import SHEET_LOC_ID2, parse_sheet_hashes
 from _common.pabr_strings import string_table_start
+from _common.string_hash import key_hash
 
 
 _SHEET_HEADER_SIZE = 12
@@ -109,3 +110,14 @@ def test_records_follow_the_hash_order(stringtable_result: HandlerResult) -> Non
 
 def test_every_row_has_a_key(stringtable_result: HandlerResult) -> None:
     assert all(record["key"] for record in stringtable_result.records)
+
+
+def test_every_key_hash_is_the_key_hash_of_its_key(stringtable_result: HandlerResult) -> None:
+    """lookup3 over the UTF-16LE key with seed 0xC5EDE (`_common/string_hash.py`)."""
+    for record in stringtable_result.records:
+        assert key_hash(record["key"]) == record["key_hash"], record["key"]
+
+
+def test_every_sheet_hash_is_the_key_hash_of_its_name(stringtable_result: HandlerResult) -> None:
+    for name, sheet_hash in parse_sheet_hashes(stringtable_result.source.data).items():
+        assert key_hash(name) == sheet_hash, name

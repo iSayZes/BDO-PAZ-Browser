@@ -1,0 +1,37 @@
+{
+  "tab": "Lista de combos",
+  "columns": {
+    "combo": "Combo",
+    "weapon": "Arma",
+    "consoleOnly": "Solo mando",
+    "checks": "Comprob. de habilidades",
+    "steps": "Pasos"
+  },
+  "meta": {
+    "count": "{count} combos"
+  },
+  "summary": {
+    "list": "Lista de combos",
+    "combos": "combos",
+    "steps": "pasos",
+    "commands": "comandos de habilidad",
+    "weapons": "Combos por arma"
+  },
+  "checks": {
+    "learned": "aprendida",
+    "cooldown": "reutilización",
+    "both": "aprendida + reutilización"
+  },
+  "weapons": {
+    "0": "Común",
+    "1": "Arma principal",
+    "2": "Despertar",
+    "3": "Montura"
+  },
+  "awakening": {
+    "0": "Ambos",
+    "1": "Solo arma principal",
+    "2": "Solo despertar"
+  },
+  "footnote": "Los números de habilidad son los de skill.dbss, con nombre de LOC. La tecla del mando se lee gatillo, dirección, botón; 0 es ninguno. Las teclas muestran cuánto se mantienen, en ms desde el inicio del paso; un paso lista cada comando de habilidad de su nombre. Los nombres de tipo de arma y de despertar siguen los comentarios del archivo."
+}

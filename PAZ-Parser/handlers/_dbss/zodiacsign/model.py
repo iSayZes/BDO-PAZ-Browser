@@ -15,7 +15,7 @@ class ZodiacSignOrderRecord(TypedDict):
     personality_type: int
     zodiac_id: int
     trigger_count: int
-    trigger_order: list
+    trigger_order: list[int]
 
 
 class ZodiacSignOrderOffsetRecord(TypedDict):

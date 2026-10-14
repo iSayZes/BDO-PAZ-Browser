@@ -8,11 +8,10 @@ keyed by buff ID. See docs/file-formats/buff_dbss.md.
 
 from __future__ import annotations
 
-import re
 from collections.abc import Sequence
 
 from _common.html import hidden_slice, icon_html_list_cell
-from _common.icon_index import IconKind, icon_path
+from _common.icon_index import IconKind, clean_stored_icon_path, icon_path
 from _common.loc import LOC_NULL, loc_lookup
 from _common.pa_text import pa_html, strip_pa_tags
 
@@ -22,13 +21,11 @@ LOC_BUFF_DESCRIPTION = 5
 
 # Some records store this literal instead of leaving the path empty.
 _ICON_PLACEHOLDER = "unknown"
-# A few paths double a separator (`04_pc_skill//04_debuff`).
-_REPEATED_SLASHES = re.compile(r"/{2,}")
 
 
 def buff_icon_path(stored: str) -> str:
     """PAZ path for a stored buff icon, or an empty string when there is none."""
-    path = _REPEATED_SLASHES.sub("/", stored.strip().replace("\\", "/")).lower()
+    path = clean_stored_icon_path(stored)
     if not path or path == _ICON_PLACEHOLDER:
         return ""
     return f"{BUFF_ICON_ROOT}{path}"

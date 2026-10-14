@@ -1,0 +1,41 @@
+{
+  "tab": "AI Script",
+  "columns": {
+    "state": "State",
+    "behavior": "Behavior",
+    "cycle": "Cycle (ms)",
+    "runs": "Runs",
+    "transitions": "Transitions",
+    "reachedFrom": "Reached from"
+  },
+  "meta": {
+    "count": "{count} states and handlers"
+  },
+  "phases": {
+    "start": "start",
+    "tick": "each cycle",
+    "end": "end"
+  },
+  "summary": {
+    "script": "Script",
+    "states": "states",
+    "handlers": "handlers",
+    "transitions": "transitions",
+    "hpGates": "HP gates",
+    "variables": "Variables (InitialState)",
+    "none": "None",
+    "from": "from {names}",
+    "usedBy": "Used by",
+    "macros": "Macros",
+    "imports": "Imports"
+  },
+  "hp": "HP",
+  "handler": "handler",
+  "event": "event",
+  "missingState": "No state with this name in the file",
+  "filter": {
+    "label": "Behavior",
+    "shown": "{shown} of {total} rows on this page"
+  },
+  "footnote": "All conditions on a transition must hold. dice is shown as written; whether it is a percent chance or a weight is not confirmed. HP is a variable the script fills with getHpRate(), so its value is percent of max HP. The grey line under a state name is the developer comment above it in the file. A lower and an upper bound on one subject show as one range. The behavior chips filter the rows of the shown page and stay on while paging."
+}

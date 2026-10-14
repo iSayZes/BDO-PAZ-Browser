@@ -35,9 +35,9 @@ from _bss.submenu.parser import build_submenu_icon_index, build_submenu_icon_reg
 from _bwp.waypoint.worldmap import WORLDMAP_FILE, build_node_link_index
 from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
-from _dbss.characterstatic.parser import build_knowledge_character_index
+from _dbss.characterstatic.parser import build_character_ai_script_index, build_knowledge_character_index
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
-from _dbss.detail_dialog.parser import build_character_lease_index
+from _dbss.detail_dialog.parser import build_character_lease_index, build_dialog_key_index
 from _dbss.instancefield.parser import build_instance_field_name_index
 from _dbss.itemenchant.parser import (
     build_buff_item_index,
@@ -46,6 +46,7 @@ from _dbss.itemenchant.parser import (
     build_enhancement_type_item_index,
     build_item_grade_index,
     build_item_icon_index,
+    build_item_name_kr_index,
 )
 from _dbss.knowledgelearning.parser import (
     build_knowledge_learning_character_index,
@@ -113,6 +114,7 @@ class IndexSpec:
 INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.ITEM_ICON, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_icon_index),
     IndexSpec(IndexKind.ITEM_GRADE, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_grade_index),
+    IndexSpec(IndexKind.ITEM_NAME_KR, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_item_name_kr_index),
     # enchantstaticstatus.dbss key -> the items that enhance with it.
     IndexSpec(IndexKind.ENCHANT_KEY_ITEMS, (ITEMENCHANT, ITEMENCHANT_OFFSET), build_enchant_key_item_index),
     # Enhancement type -> its items, for the guaranteeenchantss.dbss Items column.
@@ -137,6 +139,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
         build_knowledge_character_index,
     ),
+    # Character -> its AI script, for the "Used by" list of an .ai file.
+    IndexSpec(
+        IndexKind.CHARACTER_AI_SCRIPT,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_ai_script_index,
+    ),
     IndexSpec(
         IndexKind.KNOWLEDGE_LEARNING_CHARACTERS,
         (KNOWLEDGELEARNING, KNOWLEDGELEARNING_OFFSET),
@@ -152,6 +160,8 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         (DETAIL_DIALOG, DETAIL_DIALOG_OFFSET),
         build_character_lease_index,
     ),
+    # Which quest dialog keys open a detail_dialog.dbss row.
+    IndexSpec(IndexKind.DIALOG_KEYS, (DETAIL_DIALOG_OFFSET,), build_dialog_key_index),
     IndexSpec(IndexKind.SKILL_ICON, (SKILLTYPE, SKILLTYPE_OFFSET), build_skill_icon_index),
     IndexSpec(IndexKind.SKILL_NAME_KR, (SKILLTYPE, SKILLTYPE_OFFSET), build_skill_name_index),
     # buffsimply.bss holds the buff.dbss icon paths in fixed rows, 1.4 MB against 12 MB.

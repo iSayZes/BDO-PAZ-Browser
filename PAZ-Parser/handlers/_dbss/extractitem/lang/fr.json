@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "item": "Objet",
+    "needItem": "Objet requis",
+    "resultItem": "Objet obtenu",
+    "resultMaterial": "Matériau obtenu",
+    "reformGroup": "Groupe de reconversion"
+  },
+  "offsetColumns": {
+    "itemId": "ID d'objet",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} objets pouvant être extraits"
+  }
+}

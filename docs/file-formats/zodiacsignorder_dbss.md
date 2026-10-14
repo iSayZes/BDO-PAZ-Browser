@@ -35,17 +35,18 @@ Records are **not** stored sequentially; use the offset file to locate them.
 
 ### Record (variable, 21 to 27 bytes)
 
-| Offset  | Type                      | Field                | Notes                                               |
-| ------- | ------------------------- | -------------------- | --------------------------------------------------- |
-| `+0x00` | u16                       | personality_type     | `major × 100 + variant`; range 101 to 1202          |
-| `+0x02` | u16                       | trigger_count        | Total trigger steps = `1 + len(step_indices)`       |
-| `+0x04` | u32                       | reserved_a           | Always 0                                            |
-| `+0x08` | u32                       | reserved_b           | 0 for variant 1; variant 2 may have non-zero values |
-| `+0x0C` | u16 × (trigger_count − 1) | step_indices         | 0-indexed slot indices for steps 1 onward           |
-| -       | u8                        | zodiac_id            | Which zodiac sign (1 to 12)                         |
-| -       | u16                       | personality_type_dup | Duplicate of `personality_type` at `+0x00`          |
+| Offset  | Type                | Field                | Notes                                      |
+| ------- | ------------------- | -------------------- | ------------------------------------------ |
+| `+0x00` | u16                 | personality_type     | `major × 100 + variant`; range 101 to 1202 |
+| `+0x02` | u32                 | trigger_count        | Number of `trigger_order` values           |
+| `+0x06` | u32                 | reserved             | Always 0                                   |
+| `+0x0A` | u16 × trigger_count | trigger_order        | 0-indexed star slots, in lighting order    |
+| -       | u8                  | zodiac_id            | Which zodiac sign (1 to 12)                |
+| -       | u16                 | personality_type_dup | Duplicate of `personality_type` at `+0x00` |
 
-`trigger_order` (as used in-game) = `[0] + list(step_indices)`. The first trigger is always slot 0.
+The first star is stored like the others. It is not always slot 0: on
+client 3464, 7 of the 24 records start elsewhere (902, 102, 1002, 202, 302,
+1202, 502).
 
 `slots` = `zodiacsign.float_count` for that `zodiac_id`.
 
@@ -75,5 +76,5 @@ Records are **not** stored sequentially; use the offset file to locate them.
 
 ## Notes
 
-- Variant 2 `step_indices` typically differ from variant 1; they are an alternate drawing order. Variant 1 is usually the canonical forward order; variant 2 may reverse or reorder steps.
+- Variant 2 is a second drawing order for the same stars. It can reverse variant 1 (1001 is `0,1,2,3,4`, 1002 is `4,3,2,1,0`) or reorder it (902 is `2,1,0,3,2,1`).
 - Major 9 (Key): only `personality_type` 901 exists in `npcpersonality.dbss`, but `zodiacsignorder.dbss` defines both 901 and 902.

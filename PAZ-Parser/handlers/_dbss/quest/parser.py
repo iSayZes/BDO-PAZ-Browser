@@ -3,7 +3,7 @@
 There is no offset table. Records sit back to back from `+0x04`, and record
 `i` belongs to packed quest ID `allquestlist[i]`:
 
-    u32 unknown_00 | u32 unknown_04 | u32 unknown_08 | condition_script | action_script
+    u32 accept_dialog_key | u32 complete_dialog_key | u32 unknown_08 | condition_script | action_script
     | objective_gap | objective_text_kr | u32 quest_category
     Q: u32 packed_quest_id | ... | u8 block_kind @ Q+0x14
     | u32 reward_entry_count @ Q+0x15 | 178-byte reward entries | ...
@@ -31,6 +31,7 @@ from .model import FamilyStat, QuestRecord
 
 _HEADER_SIZE = 4
 _LEAD_SIZE = 12
+_COMPLETE_DIALOG_KEY = 4
 _STRING_PREFIX_SIZE = 8
 _CATEGORY_SIZE = 4
 _TRAILER_SIZE = 13
@@ -271,6 +272,8 @@ def parse_quest_record(data: bytes, index: QuestIndex, row: int) -> QuestRecord:
         offset=start,
         size=echo + _ECHO_TO_NEXT - start,
         packed_quest_id=packed_quest_id,
+        accept_dialog_key=u32(data, start),
+        complete_dialog_key=u32(data, start + _COMPLETE_DIALOG_KEY),
         quest_chain_id=packed_quest_id & 0xFFFF,
         quest_id=packed_quest_id >> 16,
         quest_category=u32(data, quest_offset - _CATEGORY_SIZE),

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "categoryKey": "Clave de categoría",
+    "row": "Fila",
+    "column": "Columna",
+    "cellType": "Tipo de celda",
+    "mainId": "ID principal",
+    "subId": "ID secundario",
+    "icon": "Icono",
+    "title": "Título"
+  },
+  "meta": {
+    "count": "{count} celdas de cuadrícula · {layouts} categorías"
+  }
+}

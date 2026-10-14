@@ -37,8 +37,12 @@ class IndexKind(Enum):
     KNOWLEDGE_LEARNING_CHARACTERS = "knowledge_learning_characters"
     # Items that teach a card through knowledgelearning.dbss.
     KNOWLEDGE_LEARNING_ITEMS = "knowledge_learning_items"
+    # Stem of the `.ai` script each character runs (characterstatic.dbss), as written.
+    CHARACTER_AI_SCRIPT = "character_ai_script"
     # Flat (item_id, cost, ...) pairs; read through _common/lease.py.
     CHARACTER_LEASES = "character_leases"
+    # Every detail_dialog.dbss key -> its character ID; read through _common/quest/dialog.py.
+    DIALOG_KEYS = "dialog_keys"
     SKILL_ICON = "skill_icon"
     # Korean skilltype.dbss names, the fallback when LOC type 10 has none.
     SKILL_NAME_KR = "skill_name_kr"
@@ -47,6 +51,8 @@ class IndexKind(Enum):
     ITEM_KEY_ICON = "item_key_icon"
     # Grade (0 to 5) of each base item ID, which colours its name.
     ITEM_GRADE = "item_grade"
+    # Korean itemenchant.dbss names, the fallback when LOC type 0 has none.
+    ITEM_NAME_KR = "item_name_kr"
     # Journal page artwork by packed quest ID, not the quest's own icon.
     QUEST_ARTWORK_ICON = "quest_artwork_icon"
     # Manor part blueprints by manor_part_key(character_id, part).

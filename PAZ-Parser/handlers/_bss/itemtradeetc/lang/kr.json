@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fromGroup": "출발 그룹*",
+    "toGroup": "도착 그룹*",
+    "distance": "거리",
+    "addRate": "사막 버프 비율"
+  },
+  "meta": {
+    "count": "무역 그룹 쌍 {count}개"
+  }
+}

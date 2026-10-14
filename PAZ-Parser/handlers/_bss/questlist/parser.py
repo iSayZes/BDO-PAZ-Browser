@@ -2,7 +2,7 @@
 and `repetitionquest.bss` share one layout.
 
     PABR | u32 group_count
-    | group_count x (10-byte group header | 17-byte row x row_count | 13-byte group trailer)
+    | group_count x (11-byte group header | 17-byte row x row_count | 12-byte group trailer)
     | string table | u32 string_table_start | u32 0
 
 Every text (group names, condition lines, condition scripts, event dates) is
@@ -23,13 +23,13 @@ from .model import QuestListRecord
 _MAGIC = b"PABR"
 _HEADER_SIZE = 8
 
-# u16 group_key | u32 name_index | u8 unknown_06 | u16 row_count | u8 padding
-_GROUP_HEADER = struct.Struct("<HIBHx")
-# u8 unknown_00 | u16 quest_chain_id | u16 quest_id | u32 condition_index
-# | u32 script_1_index | u32 script_2_index
-_ROW = struct.Struct("<BHHIII")
-# u8 zero | u32 event_start_index | u32 event_end_index | u32 zero
-_GROUP_TRAILER = struct.Struct("<xII4x")
+# u16 group_key | u32 name_index | u8 unknown_06 | u32 row_count
+_GROUP_HEADER = struct.Struct("<HIBI")
+# u16 quest_chain_id | u16 quest_id | u32 condition_index | u32 script_1_index
+# | u32 script_2_index | u8 unknown_10
+_ROW = struct.Struct("<HHIIIB")
+# u32 event_start_index | u32 event_end_index | u32 zero
+_GROUP_TRAILER = struct.Struct("<II4x")
 
 # Event times are stored without zero padding (`2018-10-3 10:00`).
 _EVENT_TIME_RE = re.compile(r"(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{2})")
@@ -122,7 +122,7 @@ def _row_record(
     strings: list[str],
 ) -> QuestListRecord:
     (
-        unknown_00, quest_chain_id, quest_id, condition_index, script_1_index, script_2_index,
+        quest_chain_id, quest_id, condition_index, script_1_index, script_2_index, unknown_10,
     ) = _ROW.unpack_from(data, offset)
     return {
         "group": group.index,
@@ -132,7 +132,7 @@ def _row_record(
         "event_start": group.event_start,
         "event_end": group.event_end,
         "row": row,
-        "unknown_00": unknown_00,
+        "unknown_10": unknown_10,
         "quest_chain_id": quest_chain_id,
         "quest_id": quest_id,
         "packed_quest_id": (quest_id << 16) | quest_chain_id,

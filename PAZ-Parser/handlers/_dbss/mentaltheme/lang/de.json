@@ -12,7 +12,8 @@
     "energyReward1": "Energiebelohnung 1",
     "energyReward2": "Energiebelohnung 2",
     "entries": "Einträge",
-    "childrenGroups": "Untergruppen"
+    "childrenGroups": "Untergruppen",
+    "bookshelf": "Bücherregal"
   },
   "meta": {
     "count": "{count} Wissensthemen · {with_theme_name} Themennamen · {with_parent_name} übergeordnete Namen"

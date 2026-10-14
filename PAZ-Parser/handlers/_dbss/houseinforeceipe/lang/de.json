@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "receipeKey": "Schlüssel",
+    "name": "Name",
+    "useType": "Verwendung",
+    "iconType": "Symboltyp",
+    "needItemKey": "Bedarfsschlüssel",
+    "levels": "Stufen",
+    "exchanges": "Tausch"
+  },
+  "offsetColumns": {
+    "receipeKey": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "cells": {
+    "level": "Stufe {level}:"
+  },
+  "meta": {
+    "count": "{count} Hausverwendungen · {exchanges} Tauschschlüssel"
+  }
+}

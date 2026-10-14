@@ -20,6 +20,12 @@ from tests.framework import (
 
 
 _MAIN_TOWN = REGION_TYPE_NAMES.index("MainTown")
+_FLAGS = (
+    "is_desert", "is_safe_zone", "is_arena_zone", "is_sea", "is_not_dig", "is_ocean",
+    "is_prison", "is_accessible_area", "is_node_access", "is_locator", "is_ancient_dungeon",
+    "is_escape", "is_special_zone", "is_vehicle_dead_zone", "is_free_revival_area",
+    "is_world_boss_reward",
+)
 
 CASE = HandlerCase(
     handler_name="regioninfo.bss",
@@ -27,7 +33,7 @@ CASE = HandlerCase(
     companion_files={},
     loc_file="languagedata_en.loc",
     uses_loc=True,
-    loc_fields=["Region", "Territory", "Capital", "Node", "Guild Wharf Manager"],
+    loc_fields=["Region", "Territory", "Capital", "Node", "Day Skill", "Night Skill", "Return Point", "Guild Wharf Manager"],
     internal_path="gamecommondata/binary/regioninfo.bss",
     tests=[
         SchemaTest(
@@ -49,7 +55,25 @@ CASE = HandlerCase(
                 "node",
                 "guild_wharf_manager_key",
                 "guild_wharf_manager",
-                "unknown_60",
+                "color",
+                "is_safe_zone",
+                "is_sea",
+                "is_not_dig",
+                "is_ocean",
+                "is_prison",
+                "is_accessible_area",
+                "villain_respawn_node_key",
+                "villain_respawn_position",
+                "skill_no",
+                "skill_apply_rate",
+                "night_skill_no",
+                "night_skill_apply_rate",
+                "return_position_name",
+                "return_position",
+                "trade_origin_region_key",
+                "waypoint_key",
+                "is_free_revival_area",
+                "is_world_boss_reward",
                 "unknown_d2_keys",
                 "unknown_d2_vectors",
                 "max_participants",
@@ -62,13 +86,17 @@ CASE = HandlerCase(
         DeclaredCountTest(declared=header_count(offset=4)),
         # CppEnums.VillageSiegeType: Sunday 0 to Saturday 6, 7 for none.
         RangeTest(col="node_war_day", min_val=0, max_val=7),
-        RangeTest(col="is_desert", min_val=0, max_val=1),
+        *[RangeTest(col=flag, min_val=0, max_val=1) for flag in _FLAGS],
         TargetTest(
             col="region_key",
             value=5,
             expected={
                 "region_name": "Velia",
                 "name_kr": "벨리아 마을",
+                "is_safe_zone": 1,
+                "return_position_name": "벨리아 마을",
+                "return_point": "Velia",
+                "trade_origin_region_key": 5,
                 "region_type_name": "MainTown",
                 "territory_key": 0,
                 "territory": "Balenos",

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "groupId": "ID группы",
+    "subgroups": "Подгруппы",
+    "selectOnlyOne": "Только одна",
+    "itemCount": "Предметы",
+    "items": "Названия предметов"
+  },
+  "meta": {
+    "count": "Основных групп предметов: {count} · записей подгрупп: {entries}"
+  }
+}

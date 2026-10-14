@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "Regionsschlüssel",
+    "region": "Region",
+    "characterId": "Charakter-ID",
+    "npc": "NPC"
+  },
+  "meta": {
+    "count": "{count} Warentausch-NPCs"
+  }
+}

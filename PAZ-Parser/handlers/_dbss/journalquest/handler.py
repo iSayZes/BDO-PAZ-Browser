@@ -10,6 +10,7 @@ from _common.lang import handler_text, load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup
 from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from _common.quest.quest import quest_text_tagged
 from .parser import parse_journalquest_offset_records, parse_journalquest_records
 
 
@@ -18,7 +19,7 @@ _LIST_PREVIEW_ITEMS = 6
 
 
 def _page_title(journal_cat_id: int, page_no: int) -> str:
-    return strip_pa_tags(loc_lookup(18, journal_cat_id, page_no, 0, 0)).strip()
+    return strip_pa_tags(quest_text_tagged(journal_cat_id, page_no)).strip()
 
 
 def _journal_tagged(group_id: int, entry_no: int, field_id: int) -> str:

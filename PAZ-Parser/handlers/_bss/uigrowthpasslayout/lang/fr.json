@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "categoryKey": "Clé de catégorie",
+    "row": "Ligne",
+    "column": "Colonne",
+    "cellType": "Type de cellule",
+    "mainId": "ID principal",
+    "subId": "ID secondaire",
+    "icon": "Icône",
+    "title": "Titre"
+  },
+  "meta": {
+    "count": "{count} cellules de grille · {layouts} catégories"
+  }
+}

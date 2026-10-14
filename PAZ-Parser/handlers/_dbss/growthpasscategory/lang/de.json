@@ -1,0 +1,16 @@
+{
+  "offsetColumns": {
+    "categoryKey": "Kategorieschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "categoryKey": "Kategorieschlüssel",
+    "icon": "Symbol",
+    "name": "Name",
+    "questChain": "Haupt-ID"
+  },
+  "meta": {
+    "count": "{count} Growth-Pass-Kategorien"
+  }
+}

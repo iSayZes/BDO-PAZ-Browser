@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "receipeKey": "키",
+    "name": "이름",
+    "useType": "용도",
+    "iconType": "아이콘 종류",
+    "needItemKey": "필요 아이템 키",
+    "levels": "단계",
+    "exchanges": "교환"
+  },
+  "offsetColumns": {
+    "receipeKey": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "cells": {
+    "level": "{level}단계:"
+  },
+  "meta": {
+    "count": "집 용도 {count}개 · 교환 키 {exchanges}개"
+  }
+}

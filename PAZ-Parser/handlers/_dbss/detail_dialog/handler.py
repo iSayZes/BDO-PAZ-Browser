@@ -12,6 +12,7 @@ from _common.lang import handler_text, load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup
 from _common.pa_text import pa_fields, pa_key, pa_line_cell, pa_list_cell, pa_list_fields, strip_pa_tags
 from _common.lease import lease_text_tagged
+from _common.text_bind import resolve_text_binds
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from _common.pabr_offset import PabrOffsetRow
 from .parser import (
@@ -38,7 +39,7 @@ def _dialog_text(record: DialogRecord, text_id: int, field: int, has_loc: bool) 
     """The user-language text of one dialog string with its PA tags, or "" without LOC."""
     if not has_loc:
         return ""
-    text = loc_lookup(_LOC_DIALOG, record.key, text_id, 0, field).strip()
+    text = resolve_text_binds(loc_lookup(_LOC_DIALOG, record.key, text_id, 0, field).strip())
     return text if strip_pa_tags(text).strip() else ""
 
 

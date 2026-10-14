@@ -8,8 +8,18 @@
     "characterId": "Character ID",
     "name": "Name",
     "functions": "Functions",
+    "shopType": "Shop Type",
     "managedNodes": "Managed Nodes",
-    "town": "Town"
+    "town": "Town",
+    "itemGroups": "Item Groups",
+    "mounts": "Mounts"
+  },
+  "itemGroupKinds": {
+    "shopBuy": "Shop",
+    "shopSell": "Shop (Sell)",
+    "guildShopBuy": "Guild Shop",
+    "guildShopSell": "Guild Shop (Sell)",
+    "trade": "Trade"
   },
   "meta": {
     "count": "{count} records"

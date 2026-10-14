@@ -151,6 +151,12 @@ same order, built-in text and image views aside. A new handler shows up there
 with no second list to update. An extension key such as `.dbss` would count
 every file of that extension as handled, so register known formats by name.
 
+A handler may take over a key a built-in view reads: `.ai` and `.cl` are
+built-in text keys, and the `.ai` and `.cl` handlers replace them. `is_plugin_key()` tells a plugin's
+handler from the built-in one, so such a file counts as handled, and
+`reload_plugins()` puts the built-in view back before it imports the
+handlers again.
+
 ## Handler Template
 
 All parsed-view handlers must implement `get_records()` and `render_records_page()`.
@@ -873,6 +879,14 @@ one: `skill_name_tagged()` / `skill_description_tagged()` in `_common/skill.py`,
 `quest_title_tagged()` in `_common/quest/quest.py` and `ui_hash_tagged()` in
 `_bss/stringtable/text.py`.
 
+Quest and journal page text (LOC type 18) goes through `quest_text_tagged()`
+in `_common/quest/quest.py`, which fills `{StringTableBind(TextBind:NAME)}`
+placeholders with `resolve_text_binds()` from `_common/text_bind.py`: the
+LOC type 59 text keyed by `key_hash(NAME)` (`_common/string_hash.py`, the
+`stringtable.bss` key hash). `detail_dialog.dbss` runs its LOC type 39 text
+through `resolve_text_binds()` too. Placeholders LOC has no text for, and
+key bindings, stay as written.
+
 An icon list label in colour goes through `icon_html_label_cell()` /
 `icon_html_list_cell()`, which take labels that are already safe HTML
 (`pa_html()` output); `icon_label_cell()` / `icon_list_cell()` escape plain
@@ -919,6 +933,61 @@ Do not manually include raw hex tabs inside individual handlers.
 
 This keeps all handlers consistent.
 
+## Text Tab
+
+A parsed handler for a text format can add a Text tab after the Parsed tab
+by overriding `render_text()`; the base class returns None, which means no
+tab. Return the built-in text view, so the tab gets the numbered lines, the
+Wrap lines toggle, line search and XML colours (`xml_highlight.py`) like any
+text file:
+
+```python
+from bdo_preview import PreviewHandler, TextHandler
+
+_TEXT_VIEW = TextHandler()
+
+
+class AiScriptHandler(PreviewHandler):
+    def render_text(self, data, entry, companions):
+        return _TEXT_VIEW.render(data, entry, companions)
+```
+
+The `.ai` and `.cl` handlers (`handlers/_ai/aiscript/`, `handlers/_ai/combolist/`) use it.
+
+## Tab Name
+
+The Parsed tab reads "Parsed" unless the handler overrides `parsed_label()`
+to return a name in its own language. The `.ai` and `.cl` handlers name it
+from their `lang/*.json` (`"tab": "AI Script"`, `"Combo List"`); `load_entry`
+passes it on as `parsed_label`.
+
+## Links Between Rows
+
+A button with `data-action="goto-record"` and `data-record="<index>"` pages
+the parsed table to that record and marks its row, as Ctrl+F does
+(`_showParsedRecord()` in `tab-search.js`). The index is the record's place in
+the shown order: take it from the `records` list `render_records_page()`
+gets, which is the sorted list on a sorted page. The `.ai` state names use it
+(`handlers/_ai/aiscript/render.py`).
+
+A button with `data-action="open-record"`, `data-path` (a PAZ path),
+`data-field` and `data-value` opens that file on its Parsed tab and pages to
+the first record whose field reads the value, compared as text
+(`Api.find_record()` in `api/bdo_api_search.py`, `_openRecord()` in
+`preview-views.js`). The status bar says so when no record matches.
+`record_link()` in `_common/html.py` builds the button; the `record-link`
+class (`11-data-tables.css`) styles it as a link in a table cell. The `.ai`
+Used by box links each character to its `characterstatic.dbss` row, the `.cl`
+view each skill number to its first `skill.dbss` row, `characterfunction.dbss`
+each shop group to its `itemmaingroup.bss` row, and `itemmaingroup.bss` each
+subgroup to its `itemsubgroup.dbss` row.
+
+The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
+`preview-views.js`) hide the rows of the shown page whose `.ai-name` carries
+another `data-behavior`. The pick holds while paging and sorting and clears
+when another file opens, or when a link or a Ctrl+F match lands on a hidden
+row.
+
 ## Shared Helpers
 
 Use `_common/` for helpers shared by multiple formats.
@@ -948,6 +1017,8 @@ _common/
 ├── pa_text.py           # game text tags: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
+├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
+├── text_bind.py         # resolve_text_binds(): TextBind placeholders filled from LOC type 59
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 
@@ -977,7 +1048,9 @@ knowledge entry with `knowledge_name()` from `knowledge.py` (LOC type 34), a
 worldmap node with `node_name()` or `full_node_name()` from `node.py` (LOC
 type 29, see `NODE_PARENT` under Lookup Indexes) and a title with
 `title_name()` from `title.py` (LOC type 1, tags removed; `title.dbss` keeps
-its own tagged lookup for the colours). All return `''` when LOC is not
+its own tagged lookup for the colours) and the speaker of an NPC dialog with
+`dialog_name()` or `dialog_speaker()` from `quest/dialog.py` (LOC type 38 keyed
+`npc_id`, `dialog_index`, else the LOC type 6 name). All return `''` when LOC is not
 loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
 
@@ -1124,12 +1197,15 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_CHARACTERS` | `characterstatic.dbss`, `characterstaticoffset.dbss` | character IDs (tuple) |
 | `KNOWLEDGE_LEARNING_CHARACTERS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | character IDs (tuple) |
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
+| `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
+| `DIALOG_KEYS`    | `detail_dialogoffset.dbss`                 | character ID   |
 | `SKILL_ICON`     | `skilltype.dbss`, `skilltypeoffset.dbss`   | icon path      |
 | `SKILL_NAME_KR`  | `skilltype.dbss`, `skilltypeoffset.dbss`   | Korean name    |
 | `BUFF_ICON`      | `buffsimply.bss`                           | icon path      |
 | `ITEM_KEY_ICON`  | `specialenchantitem.bss`                   | icon path      |
 | `ITEM_GRADE`     | `itemenchant.dbss`, `itemenchantoffset.dbss` | grade, 0 to 5 |
+| `ITEM_NAME_KR`   | `itemenchant.dbss`, `itemenchantoffset.dbss` | Korean name    |
 | `QUEST_ARTWORK_ICON` | `questjournalvideoinfo.bss`            | artwork path   |
 | `MANOR_PART_ICON` | `mansionpartinfo.bss`                     | icon path      |
 | `CUTSCENE_ICON`  | `groupcameradata.bss`                      | icon path      |
@@ -1154,8 +1230,12 @@ IDs (`LookupValue`).
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
-[itemenchant.dbss](file-formats/itemenchant_dbss.md)); characters named by zero
+[itemenchant.dbss](file-formats/itemenchant_dbss.md), moved back by the
+`unknown_5d` byte count on mount and ship gear); characters named by zero
 or several items are left out. The `characterobject.dbss` Item column reads it.
+The `characterstatic.dbss` `source_item_id` holds the same link for 4,874 of
+its 5,108 characters and none it lacks (client 3464), so the index does not
+read it.
 
 `KNOWLEDGE_CHARACTERS` maps a knowledge card to every character whose
 `getknowledge(<id>);` action script grants it, in ascending ID order.
@@ -1168,6 +1248,12 @@ in ascending ID order. The two overlap but neither covers the other, so the
 in ascending ID order; the Learned From Items column shows them with
 `item_key_list_cell()`.
 
+`CHARACTER_AI_SCRIPT` maps a character to the AI script its
+[characterstatic.dbss](file-formats/characterstatic_dbss.md) record names, a
+file stem as written (`Monsters_Main_Manager`). The `.ai` handler reads the
+whole index and keeps the characters whose stem matches its file, without
+case, for its Used by box.
+
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
 option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),
 in dialog order and without repeats, as flat `(item_id, cost)` pairs. It is
@@ -1176,6 +1262,15 @@ Read it through `dialog_leases(character_id)` in `_common/lease.py`, which
 unpacks the pairs with `lease_pairs()`. The `npcsimply.bss` Leases column
 reads it. Its source is 27 MB, which takes about 2 s to read and
 build once per client.
+
+`DIALOG_KEYS` holds every dialog key (`dialog_index << 16 | npc_id`) of
+`detail_dialog.dbss`, read from its offset file alone, with the character ID
+as value. `dialog_cell()` in `_common/quest/dialog.py` links a quest dialog
+key to its `detail_dialog.dbss` row only when the index holds it: on client
+3464, 71 of the 4,983 accept keys and 41 of the 5,288 complete keys of
+`quest.dbss` have no row and stay plain text. The `quest.dbss` Accept NPC and
+Complete NPC cells and the Dialog cell of the `acceptquest.bss` /
+`completequest.bss` view use it.
 
 `SKILL_ICON` maps a skill number to the icon its `skilltype.dbss` record
 stores; skills without one are left out. `skill.dbss`, `skillgroup.bss` (the
@@ -1229,6 +1324,11 @@ own Item column from the record. A single item name column uses
 `item_name_tagged(item_id)` from `_common/item_key.py` with `pa_fields()`
 (`cashproduct.dbss`, `fairyupgraderate.bss`, `characterobject.dbss`), and
 the lease lists use `lease_text_tagged()` from `_common/lease.py`.
+
+`item_name()` (and so `item_name_tagged()` and the item list cells) falls
+back to `ITEM_NAME_KR`, the Korean name the item's level-0 block stores, when
+LOC type 0 has no name or LOC is not loaded, so item columns follow the same
+user language, then Korean order as character names.
 
 Six small tables are indexed although only their own handlers show their
 icons today, so a later table can reuse them without opening the source
@@ -1460,7 +1560,8 @@ A table that stores a UI texture key (`Combine_Etc_WorldMap_BossList_Begg`)
 instead of a path gets the sheet and region from
 `parse_texture_regions(xml, keys)` in `_common/texture_string.py`, which reads
 the `<Texture ID UV Path>` entries of a `ui_texture/texturestringkey/*.xml`
-companion; `bossinfostaicstatusmanager.bss` reads `texturestring_combine.xml`.
+companion; `bossinfostaicstatusmanager.bss` and `growthpasscategory.dbss` read
+`texturestring_combine.xml`.
 
 ### Icon Popup
 

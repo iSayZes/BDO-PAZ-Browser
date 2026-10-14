@@ -11,6 +11,7 @@
     "gender": "Пол",
     "playable": "Играбельный",
     "combatType": "Форма атаки",
+    "resource": "Ресурс",
     "starterWeapons": "Стартовое оружие",
     "classWeapons": "Оружие класса",
     "selectMovie": "Видео выбора",

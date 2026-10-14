@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fromGroup": "From Group*",
+    "toGroup": "To Group*",
+    "distance": "Distance",
+    "addRate": "Desert Buff Rate"
+  },
+  "meta": {
+    "count": "{count} trade group pairs"
+  }
+}

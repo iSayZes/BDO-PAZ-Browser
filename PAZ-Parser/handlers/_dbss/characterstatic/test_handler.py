@@ -5,7 +5,10 @@ from typing import Any
 
 import pytest
 
-from _dbss.characterstatic.parser import build_knowledge_character_index
+from _common.pabr_offset import parse_pabr_offset_rows
+from _dbss.characterstatic.parser import build_knowledge_character_index, parse_characterstatic_records
+from _dbss.itemenchant.parser import build_character_item_index
+from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -29,8 +32,10 @@ STATIC_CASE = HandlerCase(
     tests=[
         SchemaTest(
             required_keys=[
-                "character_id", "name", "action_script", "condition_script",
-                "knowledge_id", "npc_kind", "npc_kind_low", "class_type", "model_path", "payload_size",
+                "character_id", "name", "title", "label_kr", "action_script", "condition_script",
+                "knowledge_id", "npc_kind", "npc_kind_name", "grade", "tendency_on_dead", "ocean_tendency",
+                "vehicle_type", "vehicle_type_name", "class_type", "ai_script", "model_path",
+                "source_item_id", "source_item_name", "payload_size",
             ]
         ),
         # The data file's own count; the parser walks the offset table's rows.
@@ -42,7 +47,11 @@ STATIC_CASE = HandlerCase(
                 "name": "Dev Plant210",
                 "action_script": "",
                 "knowledge_id": None,
+                # gc::CharacterKind Installation, the kind of placed furniture.
                 "npc_kind": 8,
+                "npc_kind_name": "Installation",
+                # The stem of character/aiscript/9999.ai.
+                "ai_script": "9999",
                 "model_path": "monster/dummy_normal",
             },
         ),
@@ -56,18 +65,38 @@ STATIC_CASE = HandlerCase(
                 "condition_script": "getOceanTendency()>-1;",
                 "knowledge_id": 2095,
                 "npc_kind": 2,
-                "npc_kind_low": 2,
+                "npc_kind_name": "Npc",
             },
         ),
+        # The LOC title in the user's language; the internal label exists only in Korean.
+        TargetTest(
+            col="character_id",
+            value=47791,
+            expected={"title": "<Node Manager>", "label_kr": "에다니아2_아우리스 해안_거점관리인_idx53"},
+        ),
+        # Without a LOC title the Korean one stands in.
+        TargetTest(col="character_id", value=47481, expected={"title": "<여관 관리인>"}),
         # The getknowledge match ignores case.
         TargetTest(col="character_id", value=50613, expected={"knowledge_id": 933}),
         # class_type differs from character_id: Warrior is 1 / 0, Ranger 2 / 4.
         TargetTest(
             col="character_id",
             value=1,
-            expected={"class_type": 0, "model_path": "pc/1_phm/fighteraction_noweapon"},
+            # Player characters store their model path first and name no script.
+            expected={"class_type": 0, "ai_script": "", "model_path": "pc/1_phm/fighteraction_noweapon"},
         ),
         TargetTest(col="character_id", value=2, expected={"class_type": 4}),
+        # Grade 4 is CppEnums.CharacterGradeType_Boss, the grade the Lua boss gauge checks.
+        TargetTest(col="character_id", value=29929, expected={"name": "Garmoth", "grade": 4, "vehicle_type": None}),
+        # Gathering nodes are gc::CharacterKind Collect, gates SiegeGate.
+        TargetTest(col="character_id", value=11982, expected={"name": "Rhyolite", "npc_kind": 4, "npc_kind_name": "Collect"}),
+        TargetTest(col="character_id", value=529, expected={"npc_kind": 5, "npc_kind_name": "SiegeGate"}),
+        # Vehicle type 0 is Type_Horse, a value and not the "no vehicle" dash.
+        TargetTest(col="character_id", value=9001, expected={"vehicle_type": 0, "vehicle_type_name": "Horse"}),
+        # The Lua enum skips 6; the 2016 gc::VehicleType name fits the crank.
+        TargetTest(col="character_id", value=35423, expected={"vehicle_type": 6, "vehicle_type_name": "GateCrank"}),
+        # The item that places the character, as itemenchant.dbss links it.
+        TargetTest(col="character_id", value=2053, expected={"source_item_id": 58011}),
     ],
 )
 
@@ -127,3 +156,33 @@ def test_knowledge_index_holds_every_granting_character(static_result: HandlerRe
             expected.setdefault(record["knowledge_id"], []).append(record["character_id"])
 
     assert index == {knowledge_id: tuple(sorted(ids)) for knowledge_id, ids in expected.items()}
+
+
+def test_source_item_matches_the_itemenchant_link(static_result: HandlerResult) -> None:
+    """A stored source item is the item whose itemenchant.dbss record names the character."""
+    links = build_character_item_index(
+        load_binary_fixture("itemenchant.dbss"),
+        load_binary_fixture("itemenchantoffset.dbss"),
+    )
+    stored = {
+        record["character_id"]: record["source_item_id"]
+        for record in static_result.records
+        if record["source_item_id"] is not None
+    }
+
+    assert stored
+    assert {character_id: links.get(character_id) for character_id in stored} == stored
+
+
+def test_korean_strings_follow_the_model_path(static_result: HandlerResult) -> None:
+    """The UTF-16 strings after the model path: Korean name, internal label, title."""
+    source = static_result.source
+    records = parse_characterstatic_records(
+        source.data, parse_pabr_offset_rows(source.file("characterstaticoffset.dbss"))
+    )
+    by_id = {record["character_id"]: record for record in records}
+
+    assert by_id[29929]["name_kr"] == "가모스"
+    assert by_id[1]["name_kr"] == "워리어"
+    assert by_id[47791]["title_kr"] == "<거점 관리인>"
+    assert all(record["name_kr"] and record["label_kr"] for record in records)

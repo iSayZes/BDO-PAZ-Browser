@@ -74,7 +74,7 @@ CASE = HandlerCase(
                 "icon_path",
                 "commerce_type",
                 "commerce_type_name",
-                "unknown_36",
+                "trade_group_type",
                 "unknown_37",
                 "unknown_6b",
                 "unknown_7c",
@@ -208,3 +208,14 @@ def test_an_empty_group_reads_back() -> None:
 def test_a_broken_table_raises(data: bytes) -> None:
     with pytest.raises(ValueError):
         parse_itemtradegrouptonpc_records(data)
+
+
+def test_every_trade_group_code_has_a_label(trade_group_result: HandlerResult) -> None:
+    """A code the labels in `_common/lang/` lack would show as a bare number."""
+    bare = {
+        record["trade_group_type"]
+        for record in trade_group_result.records
+        if record["trade_group_text"] == str(record["trade_group_type"])
+    }
+
+    assert not bare, f"trade group codes without a label: {sorted(bare)}"

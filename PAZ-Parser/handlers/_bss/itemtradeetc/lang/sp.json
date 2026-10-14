@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fromGroup": "Grupo de origen*",
+    "toGroup": "Grupo de destino*",
+    "distance": "Distancia",
+    "addRate": "Tasa del bonificador de desierto"
+  },
+  "meta": {
+    "count": "{count} pares de grupos de comercio"
+  }
+}

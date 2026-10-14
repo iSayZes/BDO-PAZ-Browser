@@ -8,8 +8,18 @@
     "characterId": "ID du personnage",
     "name": "Nom",
     "functions": "Fonctions",
+    "shopType": "Type de boutique",
     "managedNodes": "Géopoints gérés",
-    "town": "Ville"
+    "town": "Ville",
+    "itemGroups": "Groupes d'objets",
+    "mounts": "Montures"
+  },
+  "itemGroupKinds": {
+    "shopBuy": "Boutique",
+    "shopSell": "Boutique (Vendre)",
+    "guildShopBuy": "Boutique de guilde",
+    "guildShopSell": "Boutique de guilde (Vendre)",
+    "trade": "Commerce"
   },
   "meta": {
     "count": "{count} entrées"

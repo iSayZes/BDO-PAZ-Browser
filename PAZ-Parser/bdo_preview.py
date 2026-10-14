@@ -19,6 +19,7 @@ from preview_views import image_meta, image_view_html, text_view_html
 from record_fields import record_matches
 from table_sort import SORT_DESC, TableSort, sort_order
 from ui_text import set_ui_language, ui_text
+from xml_highlight import highlight_xml_lines, is_xml_path
 
 _TEXT_LIMIT = 512 * 1024   # bytes shown in text view
 # Tried in order. Korean 3ds Max exports (.pa, .pc) are CP949, not UTF-8.
@@ -80,6 +81,18 @@ class PreviewHandler(ABC):
         cache: dict | None = getattr(self, "_handler_caches", None)
         if cache:
             self._handler_caches = {name: slot for name, slot in cache.items() if slot[0] is not data}
+
+    def render_text(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str | None:
+        """HTML of a Text tab next to the parsed view, or None for no Text tab.
+
+        For a parsed text format (`.ai` scripts), so the source stays one
+        click away; such a handler returns `TextHandler().render(...)`.
+        """
+        return None
+
+    def parsed_label(self) -> str | None:
+        """Name of the Parsed tab in the handler's language, or None for "Parsed"."""
+        return None
 
     def supports_lazy_records(self) -> bool:
         """Return True when the handler supports lazy paging (default: True for all handlers).
@@ -313,6 +326,21 @@ def decode_text_with_encoding(data: bytes, is_truncated: bool = False) -> tuple[
     return data.decode("utf-8", errors="replace"), "utf-8"
 
 
+def render_text_view(data: bytes, entry: PazEntry) -> str:
+    """The Text view of `data`: numbered lines, XML colours for XML files.
+
+    Shows the first `_TEXT_LIMIT` bytes, with a note when the file is longer.
+    """
+    truncated = len(data) > _TEXT_LIMIT
+    content, encoding = decode_text_with_encoding(data[:_TEXT_LIMIT], is_truncated=truncated)
+    note = ""
+    if truncated:
+        text = ui_text("preview.truncated", shown=_TEXT_LIMIT // 1024, total=len(data) // 1024)
+        note = f'<div class="hex-note">{_html.escape(text)}</div>'
+    highlight = highlight_xml_lines if is_xml_path(entry.internal_path) else None
+    return text_view_html(content, encoding, note, highlight)
+
+
 class TextHandler(PreviewHandler):
     """Renders plain text files. Does not produce a parsed view."""
 
@@ -326,13 +354,7 @@ class TextHandler(PreviewHandler):
         raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        truncated = len(data) > _TEXT_LIMIT
-        content, encoding = decode_text_with_encoding(data[:_TEXT_LIMIT], is_truncated=truncated)
-        note = ""
-        if truncated:
-            text = ui_text("preview.truncated", shown=_TEXT_LIMIT // 1024, total=len(data) // 1024)
-            note = f'<div class="hex-note">{_html.escape(text)}</div>'
-        return text_view_html(content, encoding, note)
+        return render_text_view(data, entry)
 
 
 # ── DDS / Image ───────────────────────────────────────────────────────────────
@@ -492,11 +514,9 @@ class SvgHandler(AltViewHandler):
     alt_label_key = "preview.tabRendered"
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        content = data.decode("utf-8", errors="replace")
-        return f'<pre class="text-view">{_html.escape(content)}</pre>'
+        return render_text_view(data, entry)
 
     def render_alt(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
-        import re as _re
         text = data.decode("utf-8", errors="replace")
         # Strip XML declaration and DOCTYPE, external DTD references block Chromium data-URI rendering
         text = _re.sub(r"<\?xml[^?]*\?>", "", text)
@@ -534,7 +554,8 @@ _REGISTRY: dict[str, PreviewHandler] = {
     ".svg": SvgHandler(),
 }
 
-_BUILTIN_KEYS: frozenset[str] = frozenset(_REGISTRY)
+# The built-in views. A plugin may replace one (`.ai`); see is_plugin_key().
+_BUILTIN_HANDLERS: dict[str, PreviewHandler] = dict(_REGISTRY)
 _PLUGIN_MODULE_NAMES: list[str] = []
 _PLUGIN_SYS_MODULES: set[str] = set()
 # Resolved folders already loaded, so a second entry point call is a no-op.
@@ -596,9 +617,27 @@ def clear_handler_caches() -> None:
         handler.clear_data_cache()
 
 
+def is_plugin_key(key: str) -> bool:
+    """True when a handler from `handlers/`, not a built-in view, is registered under `key`.
+
+    A plugin may take over a built-in key: the `.ai` handler replaces the
+    text view of `.ai` files.
+    """
+    handler = _REGISTRY.get(key)
+    return handler is not None and handler is not _BUILTIN_HANDLERS.get(key)
+
+
 def get_binary_handlers() -> list[str]:
     """Return sorted list of registered binary (non-builtin) handler keys."""
-    return sorted(k for k in _REGISTRY if k not in _BUILTIN_KEYS)
+    return sorted(k for k in _REGISTRY if is_plugin_key(k))
+
+
+def _first_plugin_key(keys: Sequence[str]) -> str | None:
+    """The first of `keys` that is registered, when a plugin reads it; else None."""
+    for key in keys:
+        if key in _REGISTRY:
+            return key if is_plugin_key(key) else None
+    return None
 
 
 def handler_key(name: str, ext: str) -> str | None:
@@ -606,10 +645,7 @@ def handler_key(name: str, ext: str) -> str | None:
 
     None when only a built-in view, or the hex view, reads it.
     """
-    for key in (name.lower(), ext.lower()):
-        if key in _REGISTRY:
-            return None if key in _BUILTIN_KEYS else key
-    return None
+    return _first_plugin_key((name.lower(), ext.lower()))
 
 
 def _registry_keys(name: str) -> tuple[str, ...]:
@@ -625,7 +661,7 @@ def _registry_keys(name: str) -> tuple[str, ...]:
 
 def is_handled_file(name: str) -> bool:
     """True when a registered binary handler, not a built-in view, reads `name`."""
-    return any(key in _REGISTRY and key not in _BUILTIN_KEYS for key in _registry_keys(name))
+    return _first_plugin_key(_registry_keys(name)) is not None
 
 
 def has_preview(name: str) -> bool:
@@ -635,8 +671,8 @@ def has_preview(name: str) -> bool:
 
 
 def get_builtin_formats() -> list[str]:
-    """Return sorted list of built-in (text/image) format extensions."""
-    return sorted(_BUILTIN_KEYS)
+    """Return sorted list of built-in (text/image) format extensions a plugin has not taken over."""
+    return sorted(k for k in _BUILTIN_HANDLERS if not is_plugin_key(k))
 
 
 def unique_format_keys(entries: list[PazEntry]) -> list[str]:
@@ -731,10 +767,12 @@ def plugin_failures() -> dict[str, str]:
 
 
 def reload_plugins(handlers_dir: Path) -> None:
-    """Clear plugin-registered handlers and re-import all plugins."""
-    for key in list(_REGISTRY):
-        if key not in _BUILTIN_KEYS:
-            del _REGISTRY[key]
+    """Clear plugin-registered handlers and re-import all plugins.
+
+    A built-in key a plugin took over gets its built-in view back first.
+    """
+    _REGISTRY.clear()
+    _REGISTRY.update(_BUILTIN_HANDLERS)
     for name in _PLUGIN_SYS_MODULES:
         sys.modules.pop(name, None)
     _PLUGIN_SYS_MODULES.clear()

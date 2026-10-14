@@ -53,8 +53,10 @@ To run from source or write handlers, see [Requirements](#requirements).
 - A Map view next to Files in the toolbar: the world map in Leaflet, built from the client's radar images (`ui_texture/new_ui_common_forlua/widget/rader/minimap_data_pack/rader_X_Y.dds`, one 128 px image per 12,800-unit sector). The first open asks to build the map tiles into the cache folder: on client 3464, 9,802 JPEG tiles over zoom 1 to 7, 216 MB, 13 s with 8 worker processes. Sectors without a radar image, and 2,803 sectors of placeholder art listed in `world_map.py` (client 3464), get one of 12 open sea images picked at random. The map uses world units, so the readout under the cursor shows the game's X and Z.
 - The world map's nodes on the Map view: 1,074 nodes on client 3464, each with the game icon of its kind (32 px at every zoom) at its `mapdata_realexplore2.bwp` waypoint and its name as tooltip, and the graph's 1,230 links between them, drawn while both ends show, blue when an end is an open-sea node (Margoria, Ross Sea, Vadabin, Juur Sea) and orange on land (sub-nodes read `Velia - Bahar Investment Bank`). Main nodes show at every zoom, sub-nodes from zoom 6. A Filters panel has a node search (every match, at any zoom), Hide All, layer chips (Player, Markers) and a Nodes card with a toggle, icon and count per kind, a Links option and a shown / total badge. Only the node kinds start on; Player and Markers stay disabled until such a pin exists, and Player turns on when a player pin appears. The filter choices are saved in `paz_config.json` and come back on the next start.
 - Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. Pins can carry one of 29 game world map icons, built with the map tiles from the client's files (the node and position icons of `worldmap_grand_base.xml`, and the radar's own-character pointer for `player`). A marker placed with `save` comes back after a restart, and a click on a pin opens a Remove button. See [Map API](docs/map-api.md).
-- Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row.
-- Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
+- Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row. Each file type opens on the tab last picked for it (Parsed, Text or Hex) when the file has that tab, else on its first tab; the tab is saved per extension in `paz_config.json`, with `.bss` and `.dbss` as one type and `.dds`, `.dds1` and `.dds11` as another.
+- Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. XML files (`.xml`, `.ai`, `.cl`, `.mxml`, `.weathercolortablexml`, `.xmp`, `.svg`) colour tags, attributes, values and comments. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
+- NPC and monster AI scripts (`.ai`) get an AI Script tab: a summary of states, HP gates, variables, the characters that run the script (from `characterstatic.dbss`), macros and imports, behavior filter chips, then one row per state with its developer comment, behavior, cycle time, actions, transitions with their conditions (`300 < distance ≤ 500`, character IDs with names), and the states that lead to it. State names jump to their row; a Text tab keeps the XML. See [aiscript](docs/file-formats/aiscript_ai.md).
+- Class combo lists (`.cl`) get a Combo List tab: one row per combo with its weapon type, the skills it checks as learned and off cooldown (named from LOC), and its steps with skill names, pad keys and the keyboard and mouse input of each action. A Text tab keeps the XML. See [combolist](docs/file-formats/combolist_cl.md).
 - Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
 - Ctrl+F inside the hex tab (byte offset, string or hex pattern), the table tab (records) and the Text tab (lines).
 - Export of the open file as raw binary, or its parsed table as CSV, from the Export menu next to the entry details. The CSV file name holds the client and handler versions, `buffsimply_3464_2026.10.12.csv`.
@@ -116,8 +118,8 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 70/401 .bss formats.
-- Handler Supported 154/374 .dbss formats.
+- Handler Supported 81/401 .bss formats.
+- Handler Supported 160/374 .dbss formats.
 - Handler Supported 31 other formats.
 
 ## Documented Formats
@@ -341,6 +343,12 @@ the Windows build, or `%LOCALAPPDATA%\BDO-PAZ-Browser` from source and when
 the exe folder can't be written. Caches sit in its `cache` folder, one
 subfolder per PAZ folder, so a test client keeps its own.
 
+The Settings dialog has one tab per area: **General** (Language, PAZ Folder,
+Data Folder, the update checks and the caches every view reads), **Files**
+(Table Row Height, game text tags, Show only handled tables, Parsed Table
+Cache) and **Map** (Keep map updated, the world map). A view adds its tab
+once it exists. It opens on General; Save and Cancel cover every tab.
+
 The **Data Folder** setting picks another folder. The settings and saved map
 pins are copied there (replacing any already in it; the old copy stays), the caches in the
 old folder are deleted, and the loaded client's PAZ index is saved again in
@@ -352,9 +360,22 @@ or Cache all tables in the background. The background mode parses every
 table A to Z while the app is idle, and the status bar shows the table it is
 on and how far the pass is. A table stays cached across a patch that leaves
 it, its companions and the LOC text or lookup indexes it reads unchanged.
-**Delete all caches** removes the parsed table, icon thumbnail and lookup
-index caches and the map tiles and pin icons; the PAZ index cache stays,
-since rebuilding it takes over a minute.
+
+Each tab lists the caches of the loaded PAZ folder that belong to it, with
+their size and a **Delete** button:
+
+| Cache | Tab | After Delete |
+| --- | --- | --- |
+| PAZ index | General | The next start reads every archive header again, over a minute |
+| Lookup indexes | General | Built again on the next start |
+| Icon thumbnails | General | Each icon decodes again when shown |
+| Parsed tables | Files | Each table parses again when opened |
+| World map | Map | The Map view asks to build it again |
+
+**Delete all caches** on General removes all of them but the PAZ index and
+shows their total. Below it, General lists the cache folders of other PAZ
+folders in the data folder, marks those whose PAZ folder is gone and deletes
+one with its **Delete**.
 
 **Keep map updated** is turned on by the Map view's first build. With it on,
 a folder load whose client has no finished map (after a game patch) builds
@@ -508,7 +529,8 @@ PAZ-Parser/
 │   ├── bdo_languages.py    # The 13 game languages, their LOC files and UI support
 │   ├── bdo_icon_images.py  # Icon thumbnails, the icon popup image and sprite crops
 │   ├── bdo_api_preview.py  # Preview assembly and entry loading (PreviewMixin)
-│   ├── bdo_api_caches.py   # Cache folder, parsed table cache modes, Delete all caches (CacheMixin)
+│   ├── bdo_api_caches.py   # Cache folder, parsed table cache modes (CacheMixin)
+│   ├── bdo_api_cache_usage.py# Cache table: size and Delete per cache, Delete all, other clients (CacheUsageMixin)
 │   ├── bdo_records_store.py# Parsed table cache keys and dependency digests
 │   ├── bdo_records_prefill.py# Background pass that caches every table
 │   ├── bdo_recent_tables.py# Which handlers keep their parsed tables in memory

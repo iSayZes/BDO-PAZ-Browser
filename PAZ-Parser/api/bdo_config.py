@@ -171,12 +171,60 @@ def _back_up(path: Path) -> None:
         logging.warning("Could not rename %s to %s", path, BACKUP_NAME, exc_info=True)
 
 
+# The preview tab last picked per file type: {".dbss": "parsed", ".xml": "hex"}.
+# A file of that type opens on it when it has that tab (tree.js).
+PREVIEW_TABS_KEY = "preview_tabs"
+PREVIEW_TAB_NAMES = frozenset({"hex", "parsed", "text"})
+# Extensions that share one remembered tab: .bss and .dbss are both tables,
+# .dds1 and .dds11 are DDS images.
+_PREVIEW_TAB_TYPES = {".bss": ".dbss", ".dds1": ".dds", ".dds11": ".dds"}
+# More file types than the client has; a bigger saved table is cut.
+_PREVIEW_TABS_MAX_ITEMS = 500
+
+
+def preview_tab_type(internal_path: str) -> str:
+    """The file type a remembered tab is kept under: the lowercased extension,
+    with `_PREVIEW_TAB_TYPES` folding some together; "" without an extension."""
+    stem, dot, ext = _file_name(internal_path).rpartition(".")
+    ext = f".{ext}" if dot and stem else ""
+    return _PREVIEW_TAB_TYPES.get(ext, ext)
+
+
+def _saved_preview_tabs(cfg: dict) -> dict[str, str]:
+    saved = cfg.get(PREVIEW_TABS_KEY)
+    if not isinstance(saved, dict):
+        return {}
+    items = list(saved.items())[:_PREVIEW_TABS_MAX_ITEMS]
+    return {kind: tab for kind, tab in items if isinstance(kind, str) and tab in PREVIEW_TAB_NAMES}
+
+
+def preview_tab_setting(cfg: dict, internal_path: str) -> str | None:
+    """The tab last picked for files of `internal_path`'s type, or None."""
+    return _saved_preview_tabs(cfg).get(preview_tab_type(internal_path))
+
+
+def save_preview_tab_setting(internal_path: str, tab: str) -> None:
+    """Remember `tab` for files of `internal_path`'s type. Writes only when it changed."""
+    if tab not in PREVIEW_TAB_NAMES:
+        return
+    tabs = _saved_preview_tabs(load_config())
+    kind = preview_tab_type(internal_path)
+    if tabs.get(kind) == tab:
+        return
+    save_config({PREVIEW_TABS_KEY: {**tabs, kind: tab}})
+
+
 def table_sort_file_key(internal_path: str) -> str:
     """Config key for a file's sort: its lowercased file name.
 
     Handlers are chosen by file name, so every file sharing a name shares its
     columns and can share a sort.
     """
+    return _file_name(internal_path)
+
+
+def _file_name(internal_path: str) -> str:
+    """The lowercased file name of a PAZ path."""
     return internal_path.replace("\\", "/").rsplit("/", 1)[-1].lower()
 
 

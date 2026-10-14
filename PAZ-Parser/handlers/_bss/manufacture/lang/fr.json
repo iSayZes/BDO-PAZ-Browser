@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Index",
+    "action": "Transformation",
+    "materials": "Matériaux",
+    "resultGroup": "Groupe de résultat",
+    "resultItems": "Objets obtenus"
+  },
+  "meta": {
+    "count": "{count} recettes de transformation · {materials} matériaux"
+  }
+}

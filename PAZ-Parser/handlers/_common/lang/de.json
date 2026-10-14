@@ -7,5 +7,12 @@
     "offsetRecords": "{count} Offset-Einträge",
     "headerCount": "Anzahl im Header: {count}",
     "noRecords": "Keine Einträge"
+  },
+  "tradeGroups": {
+    "1": "Andere Regionen",
+    "2": "Valencia-Stadt",
+    "3": "Ibelap-Oase",
+    "99": "Gemeinsame Waren",
+    "tooltip": "* Benannt nach den Handels-NPCs und Waren mit diesem Code; der Client benennt ihn nicht"
   }
 }

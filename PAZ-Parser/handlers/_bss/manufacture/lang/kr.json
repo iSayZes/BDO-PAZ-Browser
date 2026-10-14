@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "인덱스",
+    "action": "가공",
+    "materials": "재료",
+    "resultGroup": "결과 그룹",
+    "resultItems": "결과 아이템"
+  },
+  "meta": {
+    "count": "가공 레시피 {count}개 · 재료 {materials}개"
+  }
+}

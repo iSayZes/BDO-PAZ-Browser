@@ -8,8 +8,18 @@
     "characterId": "캐릭터 ID",
     "name": "이름",
     "functions": "기능",
+    "shopType": "상점 종류",
     "managedNodes": "관리 거점",
-    "town": "마을"
+    "town": "마을",
+    "itemGroups": "아이템 그룹",
+    "mounts": "탑승물"
+  },
+  "itemGroupKinds": {
+    "shopBuy": "상점",
+    "shopSell": "상점 (판매)",
+    "guildShopBuy": "길드 상점",
+    "guildShopSell": "길드 상점 (판매)",
+    "trade": "무역"
   },
   "meta": {
     "count": "레코드 {count}개"

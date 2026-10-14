@@ -6,6 +6,8 @@
     "category": "Категория",
     "icon": "Значок",
     "titleName": "Название / имя",
+    "acceptNpc": "НИП (Принять)",
+    "completeNpc": "НИП (Завершено)",
     "condition": "Условие",
     "action": "Действие",
     "objective": "Цель",

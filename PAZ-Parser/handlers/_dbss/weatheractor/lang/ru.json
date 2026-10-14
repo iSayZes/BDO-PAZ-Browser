@@ -3,6 +3,8 @@
     "characterId": "ID персонажа",
     "name": "Имя",
     "title": "Титул",
+    "weatherType": "Тип погоды",
+    "radius": "Радиус",
     "skillId": "ID навыка",
     "skill": "Навык"
   },

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "questId": "의뢰 ID",
+    "mainId": "메인 ID",
+    "subId": "서브 ID",
+    "title": "제목",
+    "npcId": "NPC ID",
+    "npcName": "NPC 이름",
+    "dialog": "대화",
+    "dialogName": "대화 이름"
+  },
+  "meta": {
+    "count": "의뢰 {count}개 · NPC {npc_count}명"
+  }
+}

@@ -27,11 +27,14 @@ GAME_SHEET = "GAME"
 # LOC type 37 str_id2 of the GAME sheet's keys.
 GAME_SHEET_LOC_ID2 = 1
 
+# The sheet of the UI panel resources (`PANEL_*` keys).
+RESOURCE_SHEET = "RESOURCE"
+
 # LOC type 37 str_id2 of every sheet's keys, by sheet name (stringtable_bss.md).
 SHEET_LOC_ID2 = {
     "CUTSCENE": 0,
-    "GAME": GAME_SHEET_LOC_ID2,
-    "RESOURCE": 2,
+    GAME_SHEET: GAME_SHEET_LOC_ID2,
+    RESOURCE_SHEET: 2,
     "ACTIONCHART": 3,
     "TOOL": 4,
     "WEB": 5,
@@ -50,8 +53,8 @@ class StringRow:
     value: str
 
 
-def _iter_sheets(data: bytes, strings: list[str]) -> Iterator[tuple[str, bytes]]:
-    """`(sheet name, row bytes)` for every sheet in file order.
+def _iter_sheets(data: bytes, strings: list[str]) -> Iterator[tuple[int, str, bytes]]:
+    """`(sheet hash, sheet name, row bytes)` for every sheet in file order.
 
     Raises ValueError when the file is not a PABR string table or a sheet runs
     past the file.
@@ -62,12 +65,12 @@ def _iter_sheets(data: bytes, strings: list[str]) -> Iterator[tuple[str, bytes]]
     (sheet_count,) = _U32.unpack_from(data, 4)
     pos = 8
     for _ in range(sheet_count):
-        _, name_ref, row_count = _SHEET_HEADER.unpack_from(data, pos)
+        sheet_hash, name_ref, row_count = _SHEET_HEADER.unpack_from(data, pos)
         pos += _SHEET_HEADER.size
         rows_end = pos + row_count * _ROW.size
         if rows_end > len(data):
             raise ValueError(f"stringtable sheet at 0x{pos:X} runs past the file")
-        yield string_at(strings, name_ref), data[pos:rows_end]
+        yield sheet_hash, string_at(strings, name_ref), data[pos:rows_end]
         pos = rows_end
 
 
@@ -76,7 +79,7 @@ def parse_rows(data: bytes) -> list[StringRow]:
     strings = read_string_table(data)
     return [
         StringRow(sheet, key_hash, string_at(strings, key_ref), string_at(strings, value_ref))
-        for sheet, rows in _iter_sheets(data, strings)
+        for _, sheet, rows in _iter_sheets(data, strings)
         for key_hash, key_ref, value_ref, _ in _ROW.iter_unpack(rows)
     ]
 
@@ -86,7 +89,7 @@ def parse_sheet_key_hashes(data: bytes, sheet_names: Iterable[str]) -> dict[str,
     wanted = set(sheet_names)
     found: dict[str, dict[str, int]] = {name: {} for name in wanted}
     strings = read_string_table(data)
-    for name, rows in _iter_sheets(data, strings):
+    for _, name, rows in _iter_sheets(data, strings):
         if name in wanted:
             found[name] = {
                 string_at(strings, key_ref): key_hash
@@ -98,3 +101,8 @@ def parse_sheet_key_hashes(data: bytes, sheet_names: Iterable[str]) -> dict[str,
 def parse_key_hashes(data: bytes, sheet_name: str) -> dict[str, int]:
     """`key -> key_hash` for every row of one sheet; empty when it is absent."""
     return parse_sheet_key_hashes(data, (sheet_name,))[sheet_name]
+
+
+def parse_sheet_hashes(data: bytes) -> dict[str, int]:
+    """`sheet name -> sheet_hash` in file order."""
+    return {name: sheet_hash for sheet_hash, name, _ in _iter_sheets(data, read_string_table(data))}

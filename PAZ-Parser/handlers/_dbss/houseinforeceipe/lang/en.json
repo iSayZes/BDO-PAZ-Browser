@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "receipeKey": "Key",
+    "name": "Name",
+    "useType": "Use Type",
+    "iconType": "Icon Type",
+    "needItemKey": "Need Item Key",
+    "levels": "Levels",
+    "exchanges": "Exchanges"
+  },
+  "offsetColumns": {
+    "receipeKey": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "cells": {
+    "level": "Lv {level}:"
+  },
+  "meta": {
+    "count": "{count} house uses · {exchanges} exchange keys"
+  }
+}

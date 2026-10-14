@@ -67,6 +67,14 @@ def test_extension_handler_is_handled() -> None:
     assert is_handled_file("languagedata_en.loc")
 
 
+def test_a_handler_that_replaces_a_builtin_view_is_handled() -> None:
+    # The .ai and .cl handlers take over the built-in text view of their files.
+    assert is_handled_file("mutanttreedummer_boss.ai")
+    assert is_handled_file("valkyrie_auto.cl")
+    assert ".ai" not in get_builtin_formats()
+    assert ".cl" not in get_builtin_formats()
+
+
 def test_builtin_views_and_unknown_tables_are_not_handled() -> None:
     assert not is_handled_file("new_icon.dds")
     assert not is_handled_file("readme.txt")
@@ -185,6 +193,8 @@ def test_save_settings_stores_and_applies_setting(
     [
         (_HANDLED_TABLE, "parsed", True),
         (_HANDLED_WAYPOINT, "parsed", True),
+        ("character/aiscript/boss/mutanttreedummer_boss.ai", "ai", True),
+        ("character/pcaiscript/valkyrie_auto.cl", "combo", True),
         (_UNHANDLED_TABLE, "file", False),
         (_TEXTURE, "image", True),
         ("ui/style.css", "code", True),

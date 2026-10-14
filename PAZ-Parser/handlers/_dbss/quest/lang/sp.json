@@ -6,6 +6,8 @@
     "category": "Categoría",
     "icon": "Icono",
     "titleName": "Título / nombre",
+    "acceptNpc": "PNJ (Aceptar)",
+    "completeNpc": "PNJ (Completar)",
     "condition": "Condición",
     "action": "Acción",
     "objective": "Objetivo",

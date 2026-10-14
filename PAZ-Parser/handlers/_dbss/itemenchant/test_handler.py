@@ -32,6 +32,16 @@ _EVENT_FENCE_CHARACTER = 2053
 _WEAPON = 697192
 # Balacs Lunchbox, a yellow (grade 3) item (itemenchant_dbss.md).
 _BALACS_LUNCHBOX = 9359
+# Servant gear (servant_slots.py): a horse barding in Chest (3), a horse
+# costume saddle in 15 (the client table says stirrups), a wagon cover in Body
+# (25), a Caravel sail in 25, a rowboat cargo container in Boots (5), and a
+# camping tent's look in 6, labelled from the camp window.
+_LIGHT_LEATHER_BARDING = 52602
+_ORZEKEL_SADDLE = 336046
+_SHABBY_WAGON_COVER = 53501
+_CARAVEL_WHITE_WIND_SAIL = 49652
+_ROWBOAT_CARGO_CONTAINER = 49201
+_NAPHART_CAMPING_TENT = 18881
 # Kzarka Gauntlet enhances +1 to +15, then PRI to PEN: levels 1-20.
 _KZARKA_GAUNTLET = 11210
 # Its enchantstaticstatus.dbss key (enchantstaticstatus_dbss.md).
@@ -66,6 +76,23 @@ _ORDINARY_GEAR = 1
 _BLACKSTAR_LONGSWORD = 715001
 _BLACKSTAR = 2
 _KHARAZAD = 21
+# Equipment types the tooltip names (PaGlobalFunc_Util_ClassEquipParts):
+# longsword 1 (a main-hand type), necklace 15.
+_LONGSWORD = 1
+_NECKLACE = 15
+# A sub-weapon, named after its Central Market subcategory like main weapons.
+_SOVEREIGN_KUNAI = 930007
+# Life Skill gear (life_slots.py): Cooking clothes (type 12, Cooking tab 3),
+# a gathering tool, a life tool, a ring, a knot and the orb (any tab, 15).
+_LOGGIA_COOKS_CLOTHES = 705119
+_LOGGIA_LUMBERING_AXE = 720520
+_LOGGIA_FISHING_CHAIR = 705537
+_LOGGIA_RING = 705503
+_VENIA_KNOT = 860363
+_EVERGREEN_ORB = 933601
+_BLACK_STONE = 16001
+# Servant gear with a non-empty `unknown_5d`, so its later header fields move.
+_OQUILLA_SAIL_BALANCE = 607887
 
 
 def _base_item_count(offsets: bytes) -> int:
@@ -103,6 +130,16 @@ CASE = HandlerCase(
                 "max_enchant_level",
                 "enchant_key",
                 "enhancement_type",
+                "equip_type",
+                "weapon_type",
+                "equip_slot",
+                "slot",
+                "servant_kinds",
+                "life_equip_type",
+                "life_restrict_type",
+                "market_category",
+                "market_sub_category",
+                "stackable",
                 "required_level",
                 "class_mask",
                 "classes",
@@ -263,6 +300,53 @@ CASE = HandlerCase(
             value=_APPRENTICES_MEDICINE_BOX,
             expected={"trade_type": 3, "trade": "Imperial Crafting Delivery"},
         ),
+        # Gear names its slot as the tooltip does and does not stack.
+        TargetTest(
+            col="item_id",
+            value=_BASTEER_LONGSWORD,
+            expected={"slot": "Main Weapon", "equip_type": _LONGSWORD, "weapon_type": "Longsword", "stackable": False},
+        ),
+        # Weapon types are named from their market subcategory, also when the
+        # item is not listed (Basteer Longsword); other gear has its slot only.
+        TargetTest(col="item_id", value=_KZARKA_GAUNTLET, expected={"weapon_type": "Gauntlet"}),
+        TargetTest(col="item_id", value=_SOVEREIGN_KUNAI, expected={"slot": "Sub-weapon", "weapon_type": "Kunai"}),
+        TargetTest(
+            col="item_id",
+            value=_KHARAZAD_NECKLACE,
+            expected={"slot": "Necklace", "equip_type": _NECKLACE, "weapon_type": "", "stackable": False},
+        ),
+        # Items that are not equipment have no slot and type; materials and food stack.
+        TargetTest(
+            col="item_id",
+            value=_BLACK_STONE,
+            expected={"slot": "", "equip_type": None, "stackable": True},
+        ),
+        TargetTest(col="item_id", value=_BALACS_LUNCHBOX, expected={"slot": "", "stackable": True}),
+        # Servant gear names the slot of its servant, not the character slot.
+        TargetTest(col="item_id", value=_LIGHT_LEATHER_BARDING, expected={"slot": "Barding"}),
+        TargetTest(col="item_id", value=_ORZEKEL_SADDLE, expected={"slot": "Saddle (Costume)"}),
+        TargetTest(col="item_id", value=_SHABBY_WAGON_COVER, expected={"slot": "Cover"}),
+        TargetTest(col="item_id", value=_CARAVEL_WHITE_WIND_SAIL, expected={"slot": "Sail"}),
+        TargetTest(col="item_id", value=_ROWBOAT_CARGO_CONTAINER, expected={"slot": "Cargo Container"}),
+        TargetTest(col="item_id", value=_NAPHART_CAMPING_TENT, expected={"slot": "Appearance"}),
+        # Life Skill gear names its Life Skill tab slot.
+        TargetTest(
+            col="item_id",
+            value=_LOGGIA_COOKS_CLOTHES,
+            expected={"slot": "Armor", "life_equip_type": 12, "life_restrict_type": 3},
+        ),
+        TargetTest(col="item_id", value=_LOGGIA_LUMBERING_AXE, expected={"slot": "Lumbering Axe"}),
+        TargetTest(col="item_id", value=_LOGGIA_FISHING_CHAIR, expected={"slot": "Tool"}),
+        TargetTest(col="item_id", value=_LOGGIA_RING, expected={"slot": "Ring", "life_restrict_type": 15}),
+        TargetTest(col="item_id", value=_VENIA_KNOT, expected={"slot": "Knot"}),
+        TargetTest(col="item_id", value=_EVERGREEN_ORB, expected={"slot": "Orb"}),
+        # The fields after `unknown_5d` are read past its entries: a sail
+        # places no character and casts no skill.
+        TargetTest(
+            col="item_id",
+            value=_OQUILLA_SAIL_BALANCE,
+            expected={"character_id": None, "skill_keys": []},
+        ),
     ],
 )
 
@@ -290,6 +374,133 @@ def test_every_item_has_a_name(itemenchant_result: HandlerResult) -> None:
 
     assert all(record["name_kr"] for record in records)
     assert all(record["item_name"] for record in records)
+
+
+def test_every_block_opens_and_closes_with_its_packed_key(itemenchant_result: HandlerResult) -> None:
+    """`+0x00` and end-6 repeat the offset row's packed key, enchant level included."""
+    from _dbss.itemenchant.parser import parse_itemenchantoffset_records
+
+    source = itemenchant_result.source
+    data = source.data
+    bad = [
+        row["key"]
+        for row in parse_itemenchantoffset_records(source.file(_OFFSET_FILE))
+        if struct.unpack_from("<I", data, row["data_offset"])[0] != row["key"]
+        or struct.unpack_from("<I", data, row["data_offset"] + row["data_size"] - 6)[0] != row["key"]
+    ]
+
+    assert not bad, f"blocks whose key copies differ from the offset row: {bad[:5]}"
+
+
+def test_every_block_walks_to_its_name_and_icon(itemenchant_result: HandlerResult) -> None:
+    """The counted lists lead to the Korean name and an icon path in every block, every level."""
+    from _dbss.itemenchant.layout import read_block_strings
+    from _dbss.itemenchant.parser import parse_itemenchantoffset_records
+
+    source = itemenchant_result.source
+    data = source.data
+    bad = []
+    for row in parse_itemenchantoffset_records(source.file(_OFFSET_FILE)):
+        start = row["data_offset"]
+        strings = read_block_strings(data, start, start + row["data_size"])
+        if not strings.name_kr or not strings.icon.lower().endswith(".dds"):
+            bad.append(row["key"])
+
+    assert not bad, f"blocks whose walk ends on no name or icon: {bad[:5]}"
+
+
+def test_slot_label_hashes_match_stringtable() -> None:
+    from _bss.stringtable.parser import GAME_SHEET, parse_key_hashes
+    from _dbss.itemenchant.slot_labels import SLOT_LABELS
+    from tests.fixtures import load_binary_fixture
+
+    hashes = parse_key_hashes(load_binary_fixture("stringtable.bss"), GAME_SHEET)
+    wrong = {
+        label.key: (label.key_hash, hashes.get(label.key))
+        for label in SLOT_LABELS.values()
+        if hashes.get(label.key) != label.key_hash
+    }
+    assert not wrong, f"slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+
+
+def test_servant_and_life_slot_label_hashes_match_stringtable() -> None:
+    from _bss.stringtable.parser import parse_sheet_key_hashes
+    from _dbss.itemenchant.life_slots import LIFE_SLOT_LABELS
+    from _dbss.itemenchant.servant_slots import SERVANT_SLOT_LABELS
+    from tests.fixtures import load_binary_fixture
+
+    labels = [label for group in SERVANT_SLOT_LABELS.values() for label in group.values()]
+    labels += LIFE_SLOT_LABELS.values()
+    hashes = parse_sheet_key_hashes(load_binary_fixture("stringtable.bss"), {label.sheet for label in labels})
+    wrong = {
+        label.key: (label.key_hash, hashes.get(label.sheet, {}).get(label.key))
+        for label in labels
+        if hashes.get(label.sheet, {}).get(label.key) != label.key_hash
+    }
+    assert not wrong, f"slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+
+
+def test_life_gear_types_have_a_label(itemenchant_result: HandlerResult) -> None:
+    """A Life Skill gear type the client adds shows no slot until it gets a label."""
+    from _dbss.itemenchant.life_slots import LIFE_SLOT_LABELS, NO_LIFE_EQUIP_TYPE
+
+    stored = {record["life_equip_type"] for record in itemenchant_result.records}
+    unlabelled = stored - set(LIFE_SLOT_LABELS) - {NO_LIFE_EQUIP_TYPE}
+    assert not unlabelled, f"life_equip_type values without a label: {sorted(unlabelled)}"
+
+
+def test_only_life_gear_has_a_life_skill_tab(itemenchant_result: HandlerResult) -> None:
+    """Items that are not Life Skill gear store the "any tab" restrict type."""
+    from _dbss.itemenchant.life_slots import NO_LIFE_EQUIP_TYPE
+
+    any_tab = 15
+    bad = [
+        record["item_id"]
+        for record in itemenchant_result.records
+        if record["life_equip_type"] == NO_LIFE_EQUIP_TYPE and record["life_restrict_type"] != any_tab
+    ]
+    assert not bad, f"items with no life gear type but a Life Skill tab: {bad[:5]}"
+
+
+def test_servant_gear_slots_have_a_label_in_their_group(itemenchant_result: HandlerResult) -> None:
+    """A servant group's slot the client adds shows as a bare number until it gets a label."""
+    from _dbss.itemenchant.servant_slots import SERVANT_SLOT_LABELS, servant_group
+    from _dbss.itemenchant.slot_labels import NO_SLOT
+
+    unlabelled = {
+        (group, record["equip_slot"])
+        for record in itemenchant_result.records
+        if record["servant_kinds"] and record["equip_slot"] != NO_SLOT
+        and (group := servant_group(record["servant_kinds"])) is not None
+        and record["equip_slot"] not in SERVANT_SLOT_LABELS[group]
+    }
+    assert not unlabelled, f"servant (group, equip_slot) pairs without a label: {sorted(unlabelled)}"
+
+
+def test_only_servant_gear_has_servant_kinds(itemenchant_result: HandlerResult) -> None:
+    """Gear a class can wear never names a servant, and gear no class can wear always does."""
+    from _dbss.itemenchant.slot_labels import NO_SLOT
+
+    equipment = [r for r in itemenchant_result.records if r["equip_slot"] != NO_SLOT]
+    both = [r["item_id"] for r in equipment if r["class_mask"] and r["servant_kinds"]]
+    neither = [r["item_id"] for r in equipment if not r["class_mask"] and not r["servant_kinds"]]
+    assert not both, f"gear with classes and servant kinds: {both[:5]}"
+    assert not neither, f"gear with neither classes nor servant kinds: {neither[:5]}"
+
+
+def test_icon_paths_use_forward_slashes(itemenchant_result: HandlerResult) -> None:
+    """A few blocks store backslashes (Essence of Dawn Box); the parser turns them into slashes."""
+    bad = [r["item_id"] for r in itemenchant_result.records if "\\" in r["icon_path"] or "//" in r["icon_path"]]
+    assert not bad, f"icon paths with a backslash or doubled slash: {bad[:5]}"
+
+
+def test_every_stored_slot_has_a_label(itemenchant_result: HandlerResult) -> None:
+    """A slot the client adds shows as a bare number until it gets a label."""
+    from _dbss.itemenchant.slot_labels import NO_SLOT, SLOT_LABELS
+
+    unlabelled = {r["equip_slot"] for r in itemenchant_result.records} - set(SLOT_LABELS) - {NO_SLOT}
+    assert not unlabelled, f"equip_slot values without a label: {sorted(unlabelled)}"
+    assert all(record["slot"] for record in itemenchant_result.records if record["equip_slot"] != NO_SLOT)
 
 
 def test_item_grade_index_matches_the_grade_column(itemenchant_result: HandlerResult) -> None:
@@ -384,7 +595,7 @@ def test_build_character_item_index_links_placed_objects_and_pets() -> None:
     assert index[_EVENT_FENCE_CHARACTER] == _EVENT_FENCE
     # [Pet] Striped Cat (Tier 3) summons character 9425, "Cat".
     assert index[9425] == 860014
-    # Named by 120 unrelated items, so it is not a link and is left out.
+    # Servant gear read without its `unknown_5d` entries once named character 1.
     assert 1 not in index
 
 
@@ -413,3 +624,13 @@ def test_item_grade_tagged_wraps_the_name_in_its_grade_colour() -> None:
     # An unknown grade or a missing name stays plain.
     assert item_grade_tagged("Kzarka Longsword", len(ITEM_GRADE_COLORS)) == "Kzarka Longsword"
     assert item_grade_tagged("", 3) == ""
+
+
+def test_item_name_kr_index_matches_the_korean_name_column(itemenchant_result: HandlerResult) -> None:
+    from _dbss.itemenchant.parser import build_item_name_kr_index
+
+    source = itemenchant_result.source
+    index = build_item_name_kr_index(source.data, source.file(_OFFSET_FILE))
+    expected = {r["item_id"]: r["name_kr"].strip() for r in itemenchant_result.records if r["name_kr"].strip()}
+
+    assert index == expected

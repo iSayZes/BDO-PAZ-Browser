@@ -46,9 +46,9 @@ Offsets count from `data_offset`. `n` is `starter_count`.
 | ---------------- | -------------------- | ---------------- | --------------------------------------------------------------------------------------- |
 | `+0x00`          | u8                   | class_type       | Same as the copy before it and the offset row key                                       |
 | `+0x01`          | u16                  | character_key    | Player prototype; LOC type 6 names it like the class (`1` Warrior, `2` Ranger)          |
-| `+0x03`          | u16                  | unknown_03       | `101` to `149`; `100 + character_key` on 24 of 47 records                               |
-| `+0x05`          | u16                  | unknown_05       | `521` to `536`                                                                          |
-| `+0x07`          | u16                  | unknown_07       | `201` to `214`                                                                          |
+| `+0x03`          | u16                  | background_character_key | `101` to `149`; `100 + character_key` on 24 of 47 records. LOC type 6 names `101` Warrior, `102` Ranger |
+| `+0x05`          | u16                  | alterego_character_key | `521` to `536`; LOC type 6 names them Combat Mercenary (`521` to `524`) and PC Mercenary (`536`) |
+| `+0x07`          | u16                  | worker_character_key | `201` to `214`; LOC type 6 names `201` Warrior_TEST, `206` Musa, `214` Guardian      |
 | `+0x09`          | u32                  | unknown_09       | `0xED819B97` for character 1; the low byte is `0x96 + character_key` on class types 0 to 36 |
 | `+0x0D`          | u8                   | unknown_0d       | Always `101`                                                                            |
 | `+0x0E`          | u32                  | starter_count    | `0` to `3`                                                                              |
@@ -81,7 +81,7 @@ Offsets count from the start of the block. The 99 bytes are the same on all 47 r
 | `+0x58` | u32    | unknown_58 | `0`                                                                      |
 | `+0x5C` | u8     | unknown_5c | `1`                                                                      |
 | `+0x5D` | u8     | unknown_5d | `0`                                                                      |
-| `+0x5E` | u8     | unknown_5e | `0` to `3` (22, 16, 6 and 3 records); the only byte that differs per class |
+| `+0x5E` | u8     | combat_resource_type | `CppEnums.CombatResourceType`, see Notes; the only byte that differs per class |
 | `+0x5F` | u8     | unknown_5f | `2`                                                                      |
 | `+0x60` | u8[3]  | unknown_60 | `0`                                                                      |
 
@@ -91,7 +91,8 @@ Offsets count from the start of the block.
 
 | Offset            | Type       | Field         | Notes                                                                                 |
 | ----------------- | ---------- | ------------- | ------------------------------------------------------------------------------------- |
-| `+0x00`           | f32[6]     | unknown_00    | Two triples of values from `0.0` to `1.0`; the triples are equal on 36 of 47 records  |
+| `+0x00`           | f32[3]     | combo_color   | RGB, `0.0` to `1.0`; the parser returns `rrggbb` (Warrior `bc963f`)                    |
+| `+0x0C`           | f32[3]     | awaken_combo_color | RGB of the awakening; equal to `combo_color` on 36 of 47 records                  |
 | `+0x18`           | u8         | combat_type   | `__eAttackType`: `0` Direct (melee), `1` Range, `2` Magical; see Notes                |
 | `+0x19`           | u32[3]     | class_weapons | Item IDs of the main, sub and awakening weapon (Warrior: Rusty Longsword, Round Shield, Mercenary's Steel Greatsword); `0` for none |
 | `+0x25`           | u16        | unknown_25    | `1` when the main weapon is set, else `0`                                             |
@@ -152,6 +153,7 @@ LOC type 21 has a name and a description for all 47 class types on client 3464, 
 | Gender          | text | `gender` as Male or Female                                            |
 | Playable        | flag | `is_playable` from `pcgrowthsimply.bss`; a dash without that file      |
 | Combat Type     | text | `combat_type` as its LOC label, else the enum name                     |
+| Resource        | text | `combat_resource_type` as its LOC label (MP, WP, SP), else the enum name |
 | Starter Weapons | text | `starter_weapons` with item icons and names                           |
 | Class Weapons   | text | Non-zero `class_weapons`, main, sub and awakening                     |
 | Selection Video | text | `select_movie`                                                        |
@@ -180,21 +182,46 @@ The `unknown_*` fields, `consume_actions` and `weapon_models` stay on the record
   | `2`   | Magic  | Hashashin (1), Sage (2), Sorceress (8), Maegu (15), Tamer (16), Dark Knight (27), Wizard (28), Woosa (30), Witch (31), Dosa (33) |
 
   Hashashin and Dark Knight fight at close range but count as magic classes. Of the unplayable slots, 13, 14, 22 and 36 hold `0`, and 18 and 37 to 46 hold `2`.
+- `combat_resource_type` is the resource bar of the class. The character info panel (`panel_characterinfo_basic_all_1.luac`) labels each `CppEnums.CombatResourceType` value with a `GAME` sheet key; `combat_types.py` stores their hashes too. Counts are records on client 3464:
+
+  | Value | Enum | Key                             | English | Records | Examples                         |
+  | ----- | ---- | ------------------------------- | ------- | ------: | -------------------------------- |
+  | `0`   | MP   | `LUA_CHARACTERINFO_TEXT_MP`     | MP      | 22      | Sorceress, Wizard, Witch, Tamer  |
+  | `1`   | FP   | `LUA_CHARACTERINFO_TEXT_FP_NEW` | WP      | 16      | Warrior, Musa, Guardian, Striker |
+  | `2`   | EP   | `LUA_CHARACTERINFO_TEXT_EP`     | MP      | 6       | Ranger, Shai, Archer, Deadeye    |
+  | `3`   | BP   | `LUA_SELFCHARACTERINFO_BP`      | SP      | 3       | Valkyrie, Nova, Seraph           |
+
 - The ten unplayable class types 37 to 46 (`PYFM`, `PYFW` to `PYFM5`, `PYFW5`) copy the Dosa (male) and Woosa (female) records: same gender, starter weapons, video, models and `unknown_09`, no class weapons.
+
+## Field Names
+
+The 2016 client (build of 2016-01-11) ships with debug symbols, and its `gc::PcGrowthStaticStatus` lists `_key`, `_characterKey`, `_backgroundCharacterKey`, `_alteregoCharacterKey`, `_workerCharacterKey`, `_parentKey`, `_defaultItemListKey`, `_startPosition`, three endurance decrease rates, `_fieldNo`, `_combatResourceType`, `_baseExploreNode`, `_name`, `_desc`, `_classMovie`, `_isWoman`, `_resourceSaveEffect[4]`, `_comboColor`, `_mainAttackType` and three default weapon keys in this order, the order this record stores them in. The server-side `PC_Set_Table` of the BdoEmu server (about 2021) has a column for each; I matched them over the 32 class types it shares with client 3464. Several classes have been reworked since, so the matches are partial but each one is the best column for its field:
+
+| Field                    | `PC_Set_Table` column  | Matching (of 32) |
+| ------------------------ | ---------------------- | ---------------: |
+| character_key            | `CharacterKey`         | 32               |
+| background_character_key | `BackgroundCharacterKey` | 24             |
+| alterego_character_key   | `AlteregoKey`          | 27               |
+| worker_character_key     | `WorkerCharacterKey`   | 26               |
+| combat_resource_type     | `CombatResourceType`   | 25               |
+| combo_color              | `ComboColor` (0 to 255 per channel) | 23  |
+| awaken_combo_color       | `AwakenComboColor`     | 22               |
+| combat_type              | `MainAttackType`       | 22               |
+| class_weapons            | `DefaultVisibleWeapon`, `DefaultVisibleSubWeapon`, `DefaultVisibleAwakenWeapon` | 21 |
 
 ## Open Questions
 
-### Header Fields unknown_03 to unknown_0d
+### Header Fields unknown_09 and unknown_0d
 
-`unknown_03` equals `100 + character_key` on 24 of 47 records (Warrior `101`, Wizard `129`) but not on the others (Kunoichi `132` for character 26, Woosa `117` for character 31). `unknown_05` (`521` to `536`) and `unknown_07` (`201` to `214`) take few values that many classes share. `unknown_09` follows the character key in its low byte. They could be keys of a customization, skeleton or animation table; no table has been matched yet.
+`unknown_09` follows the character key in its low byte, and `unknown_0d` is always `101`. The 2016 struct has only `_parentKey` (a class type) between the worker key and the starter item list, so both are later additions or a reworked `_parentKey`.
 
 ### Setup Block
 
-The 99 bytes are the same on every class except `+0x5E`. The f32 triples have world-coordinate magnitudes, so the block could hold the start positions and directions (`270`, `180`) of a new character, but no table links them yet. `unknown_5e` (`0` to `3`) has no matching class grouping.
+The 99 bytes are the same on every class except `combat_resource_type`. In the 2016 order the start position, three endurance decrease rates and `_fieldNo` come here. `unknown_10` (`-44361.7`, `1303.6`, `-1832.2`) is close to the server's `StartPosition` (`-44361, 1350, -1832`), and `unknown_00` and `unknown_0c` could be the newer `NewStartPosition` and its direction, but the server values (`-59881, -3758.18, 48109`) do not match, so neither is named yet.
 
 ### Presentation Block
 
-The two f32 groups could be class selection camera and colour settings. The Shai pairs (`0, 31, 4, 31`) could also read as a zero u32 followed by `31, 4, 31, 0`.
+`unknown_25` is `1` on exactly the playable classes, like the server's `IsOpen`, but it matches only 22 of 32 server rows. The f32[6] at `+0x27` do not match the server's `StartCharacterAngle` (`160, -0.6, 2.3`). The Shai pairs (`0, 31, 4, 31`) could also read as a zero u32 followed by `31, 4, 31, 0`.
 
 ### Second Model List
 

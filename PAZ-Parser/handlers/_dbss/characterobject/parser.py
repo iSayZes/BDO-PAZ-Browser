@@ -5,8 +5,9 @@ Each record opens with a fixed prefix, then a body chosen by `object_kind`:
     u16 character_id | u8 object_kind | u8 x3 | model_path | kind-specific body
 
 Only the prefix is parsed here. The icon path sits at no fixed offset in the
-body, so the icon index scans for it instead. Full layout in
-docs/file-formats/characterobject_dbss.md.
+body, so the icon index scans for it instead of walking the body: the scan
+also drops the stray `?` three stored paths end with. Full layout in
+docs/file-formats/characterobject_dbss.md; test_record_walk.py walks it.
 
 Unlike `itemenchant.dbss`, blocks are not stored in key order, so offsets jump
 around the file and a contiguity check on consecutive rows fails.
@@ -31,6 +32,13 @@ _NEW_ICON_ROOT = "ui_texture/icon/"
 # The optional "New_" keeps a "New_Icon/..." path whole; without it the match
 # starts at the inner "Icon/" and drops a folder level.
 _ICON_RE = re.compile(rb"(?i)(?:new_)?icon/[ -~]{3,120}?\.(?:dds|png)")
+
+# gc::ObjectKind member names of the 2016 client (ObjectKind_ prefix dropped).
+# The file also stores kinds 10 to 37, which came later and have no name.
+OBJECT_KIND_NAMES: tuple[str, ...] = (
+    "PersonalTent", "FixedHouse", "Installation", "Barricade", "KingTent",
+    "InnRoom", "LordTent", "Trap", "VillageTent", "Villa",
+)
 
 _KIND = 0x02
 _MODEL_PATH = 0x06

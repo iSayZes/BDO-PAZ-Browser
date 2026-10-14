@@ -52,24 +52,21 @@ def parse_zodiacsignorder_records(
 
         # data_offset points 2 bytes past record start (skips leading u16 personality_type)
         rec_start = data_offset - 2
-        if rec_start < 0 or rec_start + 12 > len(data):
+        if rec_start < 0 or rec_start + 10 > len(data):
             continue
 
         pos = rec_start + 2  # skip personality_type already known
-        trigger_count = _u16(data, pos)
-        pos += 2
-        pos += 8  # reserved_a (u32) + reserved_b (u32)
+        trigger_count = _u32(data, pos)
+        pos += 8  # trigger_count (u32) + reserved (u32)
 
-        step_count = max(0, trigger_count - 1)
-        step_indices: list[int] = []
-        for _ in range(step_count):
+        trigger_order: list[int] = []
+        for _ in range(trigger_count):
             if pos + 2 > len(data):
                 break
-            step_indices.append(_u16(data, pos))
+            trigger_order.append(_u16(data, pos))
             pos += 2
 
         zodiac_id = _u8(data, pos)
-        trigger_order = [0] + step_indices
 
         records.append(
             ZodiacSignOrderRecord(

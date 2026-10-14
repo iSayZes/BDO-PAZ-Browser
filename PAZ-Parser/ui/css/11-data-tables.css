@@ -218,3 +218,32 @@ th.sort-pending::after {
   text-decoration: underline dotted;
   text-underline-offset: 2px;
 }
+
+/* A value that opens or pages to another row (record_link); the .ai state
+   names share the look */
+.record-link,
+.record-link:hover,
+.ai-state-link,
+.ai-state-link:hover {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--color-data);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-data) 35%, transparent);
+  text-underline-offset: 2px;
+}
+.record-link:hover,
+.ai-state-link:hover {
+  color: var(--color-text-strong);
+}
+.record-link:focus-visible,
+.ai-state-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}

@@ -178,15 +178,22 @@ export const tabSearchMethods = {
       if (page !== this._hexPage) await this._gotoHexPage(page);
       this._highlightHexOffset(pos);
     } else {
-      const page = Math.floor(pos / PARSED_PER_PAGE);
-      if (page !== this._parsedPage && !(await this._gotoParsedPage(page))) return;
-      this._highlightParsedRow(pos % PARSED_PER_PAGE);
+      await this._showParsedRecord(pos);
     }
   },
 
+  // Pages the parsed table to the record at `pos` (its place in the shown
+  // order) and marks its row. Also used by the .ai state links (preview-views.js).
+  async _showParsedRecord(pos) {
+    const page = Math.floor(pos / PARSED_PER_PAGE);
+    if (page !== this._parsedPage && !(await this._gotoParsedPage(page))) return;
+    this._highlightParsedRow(pos % PARSED_PER_PAGE);
+  },
+
+  // Any tab showing numbered text lines: a text file's view, the Text tab of
+  // an SVG or of a parsed script (.ai).
   _isTextViewSearch() {
-    return this._isPlainView && this._activeTab === "parsed"
-      && !!document.querySelector("#preview-content .text-lines");
+    return !!document.querySelector("#preview-content .text-lines");
   },
 
   // Indices of the shown lines that hold `query`, ignoring case.
@@ -227,6 +234,7 @@ export const tabSearchMethods = {
     const rows = document.querySelectorAll("table tbody tr");
     const target = rows[localIndex];
     if (!target) return;
+    this._revealFilteredRow(target);
     target.classList.add("search-match");
 
     // #preview-content is the scroll container; sticky thead is top:0 inside it.

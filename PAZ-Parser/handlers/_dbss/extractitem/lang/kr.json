@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "item": "아이템",
+    "needItem": "필요 아이템",
+    "resultItem": "결과 아이템",
+    "resultMaterial": "결과 재료",
+    "reformGroup": "개량 그룹"
+  },
+  "offsetColumns": {
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "추출 가능 아이템 {count}개"
+  }
+}

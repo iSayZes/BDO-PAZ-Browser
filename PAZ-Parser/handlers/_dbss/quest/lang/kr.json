@@ -6,6 +6,8 @@
     "category": "카테고리",
     "icon": "아이콘",
     "titleName": "제목 / 이름",
+    "acceptNpc": "NPC (수락)",
+    "completeNpc": "NPC (완료)",
     "condition": "조건",
     "action": "행동",
     "objective": "목표",

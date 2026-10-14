@@ -1,0 +1,41 @@
+{
+  "tab": "KI-Skript",
+  "columns": {
+    "state": "Zustand",
+    "behavior": "Verhalten",
+    "cycle": "Zyklus (ms)",
+    "runs": "Ablauf",
+    "transitions": "Übergänge",
+    "reachedFrom": "Erreicht von"
+  },
+  "meta": {
+    "count": "{count} Zustände und Handler"
+  },
+  "phases": {
+    "start": "Start",
+    "tick": "jeder Zyklus",
+    "end": "Ende"
+  },
+  "summary": {
+    "script": "Skript",
+    "states": "Zustände",
+    "handlers": "Handler",
+    "transitions": "Übergänge",
+    "hpGates": "LP-Schwellen",
+    "variables": "Variablen (InitialState)",
+    "none": "Keine",
+    "from": "von {names}",
+    "usedBy": "Verwendet von",
+    "macros": "Makros",
+    "imports": "Importe"
+  },
+  "hp": "LP",
+  "handler": "Handler",
+  "event": "Ereignis",
+  "missingState": "Kein Zustand mit diesem Namen in der Datei",
+  "filter": {
+    "label": "Verhalten",
+    "shown": "{shown} von {total} Zeilen auf dieser Seite"
+  },
+  "footnote": "Alle Bedingungen eines Übergangs müssen erfüllt sein. dice steht wie in der Datei; ob es eine Chance in Prozent oder eine Gewichtung ist, ist nicht bestätigt. LP ist eine Variable, die das Skript mit getHpRate() füllt, ihr Wert ist also Prozent der max. LP. Die graue Zeile unter einem Zustand ist der Entwicklerkommentar darüber in der Datei. Eine untere und eine obere Grenze desselben Werts stehen als ein Bereich. Die Verhaltens-Chips filtern die Zeilen der angezeigten Seite und bleiben beim Blättern aktiv."
+}

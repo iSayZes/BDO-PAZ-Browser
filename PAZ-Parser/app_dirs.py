@@ -255,38 +255,78 @@ def _move_unless_open(old: Path, new: Path) -> None:
         raise
 
 
+def client_cache_folders(cache_root: Path) -> list[Path]:
+    """The client folders the app made under `cache_root`: those with a marker file."""
+    if not cache_root.is_dir():
+        return []
+    return [folder for folder in cache_root.iterdir() if (folder / MARKER_FILE).is_file()]
+
+
+def client_paz_folder(folder: Path) -> Path | None:
+    """The PAZ folder the marker of client folder `folder` names, or None when it cannot be read."""
+    try:
+        text = (folder / MARKER_FILE).read_text(encoding="utf-8").strip()
+    except (OSError, ValueError):
+        return None
+    return Path(text) if text else None
+
+
 def remove_cache_root(cache_root: Path, names: Iterable[str], folders: Iterable[str] = ()) -> list[str]:
     """Delete the client folders the app made under `cache_root`, then the root if empty.
 
-    Deletes the files `names`, the subfolders `folders` with what is in them,
-    and the marker in every folder that has a marker, and the folder once
-    nothing else is left in it. Other files and folders are kept. Returns one
-    message per file or subfolder that could not be deleted.
+    Each client folder goes as `remove_client_cache()` deletes it; other files
+    and folders are kept. Returns one message per file or subfolder that
+    could not be deleted.
     """
-    if not cache_root.is_dir():
-        return []
     names = tuple(names)
     folders = tuple(folders)
     errors: list[str] = []
-    for folder in cache_root.iterdir():
-        if not (folder / MARKER_FILE).is_file():
-            continue
-        for name in folders:
-            try:
-                shutil.rmtree(folder / name)
-            except FileNotFoundError:
-                pass
-            except OSError as ex:
-                errors.append(f"{folder.name}/{name}: {ex}")
-        # The marker goes last, so a folder that kept a file is found again next time.
-        for name in (*names, MARKER_FILE):
-            try:
-                (folder / name).unlink(missing_ok=True)
-            except OSError as ex:
-                errors.append(f"{folder.name}/{name}: {ex}")
-        _remove_if_empty(folder)
+    for folder in client_cache_folders(cache_root):
+        errors.extend(remove_client_cache(folder, names, folders))
     _remove_if_empty(cache_root)
     return errors
+
+
+def remove_client_cache(folder: Path, names: Iterable[str], folders: Iterable[str] = ()) -> list[str]:
+    """Delete the files `names`, the subfolders `folders` and the marker of client folder `folder`.
+
+    The folder goes too once nothing else is left in it. Returns one message
+    per file or subfolder that could not be deleted.
+    """
+    errors: list[str] = []
+    for name in folders:
+        try:
+            shutil.rmtree(folder / name)
+        except FileNotFoundError:
+            pass
+        except OSError as ex:
+            errors.append(f"{folder.name}/{name}: {ex}")
+    # The marker goes last, so a folder that kept a file is found again next time.
+    for name in (*names, MARKER_FILE):
+        try:
+            (folder / name).unlink(missing_ok=True)
+        except OSError as ex:
+            errors.append(f"{folder.name}/{name}: {ex}")
+    _remove_if_empty(folder)
+    return errors
+
+
+def disk_bytes(path: Path) -> int:
+    """Bytes the file `path`, or every file under the folder `path`, takes; 0 when it is gone."""
+    try:
+        if path.is_file():
+            return path.stat().st_size
+        total = 0
+        with os.scandir(path) as entries:
+            for entry in entries:
+                if entry.is_dir(follow_symlinks=False):
+                    total += disk_bytes(Path(entry.path))
+                elif entry.is_file(follow_symlinks=False):
+                    total += entry.stat(follow_symlinks=False).st_size
+        return total
+    except OSError:
+        # Gone, or deleted while it was counted.
+        return 0
 
 
 def _remove_if_empty(folder: Path) -> None:

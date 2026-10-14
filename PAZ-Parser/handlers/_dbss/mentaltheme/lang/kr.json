@@ -12,7 +12,8 @@
     "energyReward1": "기운 보상 1",
     "energyReward2": "기운 보상 2",
     "entries": "항목",
-    "childrenGroups": "하위 그룹"
+    "childrenGroups": "하위 그룹",
+    "bookshelf": "책장"
   },
   "meta": {
     "count": "지식 테마 {count}개 · 테마 이름 {with_theme_name}개 · 상위 이름 {with_parent_name}개"

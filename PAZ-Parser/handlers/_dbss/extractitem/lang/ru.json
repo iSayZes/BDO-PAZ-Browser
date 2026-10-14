@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "item": "Предмет",
+    "needItem": "Необходимый предмет",
+    "resultItem": "Получаемый предмет",
+    "resultMaterial": "Получаемый материал",
+    "reformGroup": "Группа улучшения"
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Предметов для извлечения: {count}"
+  }
+}

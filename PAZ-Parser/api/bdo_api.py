@@ -12,7 +12,7 @@ import webview
 
 from app_dirs import data_dir, default_data_dir, is_same_folder, picked_data_dir
 from app_version import build_info, is_frozen
-from .bdo_api_caches import CacheMixin
+from .bdo_api_cache_usage import CacheUsageMixin
 from .bdo_api_handler_updates import HandlerUpdateMixin
 from .bdo_api_updates import UpdateMixin
 from .bdo_config import (
@@ -84,7 +84,7 @@ def _data_folder(text: str) -> str | None:
     return str(path)
 
 
-class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin):
+class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin):
     """Backend the UI calls through pywebview; the CLI loads folders through it too."""
 
     @property
@@ -163,7 +163,6 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, H
             "records_cache": records_cache_setting(cfg),
             "data_folder": str(picked or ""),
             "default_data_folder": str(default_data_dir()),
-            "cache_bytes": self._cache_size(),
             "languages": [{"code": language.code, "name": language.name} for language in UI_LANGUAGES],
             "missing_loc": self._missing_loc_files(),
             "check_app_updates": check_app_updates_setting(cfg),
@@ -388,7 +387,7 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, H
         self._icon_entry_cache.clear()
         self._icon_data_url_cache.clear()
         self._icon_preview_images.clear()
-        self._open_thumbnail_cache(self._cache_dir, current_version)
+        self._open_thumbnail_cache()
         self._tree_data = build_tree(entries)
         self._handled_view = None
         # Holds the old entry list; the next search would drop it anyway.
@@ -415,10 +414,6 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheMixin, UpdateMixin, H
         self._folder_status = msg
         if cache_records:
             self._open_records_cache()
-
-    def _open_thumbnail_cache(self, cache_dir: Path, meta_version: int) -> None:
-        self._close_thumbnail_cache()
-        self._thumbnail_cache = ThumbnailCache(cache_dir, meta_version)
 
     def _parse_with_ticker(self, meta_path: Path) -> list[PazEntry]:
         """Parse the meta file while pushing the elapsed time to the status bar."""

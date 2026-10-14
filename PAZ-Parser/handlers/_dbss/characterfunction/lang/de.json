@@ -8,8 +8,18 @@
     "characterId": "Charakter-ID",
     "name": "Name",
     "functions": "Funktionen",
+    "shopType": "Ladentyp",
     "managedNodes": "Verwaltete Posten",
-    "town": "Stadt"
+    "town": "Stadt",
+    "itemGroups": "Gegenstandsgruppen",
+    "mounts": "Reittiere"
+  },
+  "itemGroupKinds": {
+    "shopBuy": "Laden",
+    "shopSell": "Laden (Verkaufen)",
+    "guildShopBuy": "Gildenladen",
+    "guildShopSell": "Gildenladen (Verkaufen)",
+    "trade": "Handel"
   },
   "meta": {
     "count": "{count} Einträge"

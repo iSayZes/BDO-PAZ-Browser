@@ -7,13 +7,22 @@
   "columns": {
     "characterId": "ID персонажа",
     "name": "Имя",
+    "title": "Титул",
+    "label": "Внутренняя метка",
     "icon": "Значок",
     "actionScript": "Скрипт действия",
     "conditionScript": "Условие",
     "knowledgeId": "ID знания",
     "npcKind": "Вид НИП",
+    "grade": "Ранг",
+    "karma": "Карма",
+    "navalFame": "Морской рейтинг",
+    "vehicleType": "Тип транспорта",
     "classType": "Тип класса",
+    "aiScript": "Скрипт ИИ",
     "model": "Модель",
+    "sourceItemId": "ID исходного предмета",
+    "sourceItem": "Исходный предмет",
     "payloadSize": "Размер полезных данных"
   },
   "meta": {

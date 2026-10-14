@@ -250,7 +250,31 @@
     "sectionData": "Daten und Cache",
     "locMissing": "LOC fehlt",
     "rowHeightDown": "Kleinere Zeilen",
-    "rowHeightUp": "Höhere Zeilen"
+    "rowHeightUp": "Höhere Zeilen",
+    "tabs": {
+      "general": "Allgemein",
+      "files": "Dateien",
+      "map": "Karte"
+    },
+    "sectionCache": "Cache",
+    "sectionOtherClients": "Andere PAZ-Ordner",
+    "caches": {
+      "pazIndex": "PAZ-Index",
+      "indexes": "Nachschlage-Indizes",
+      "thumbnails": "Symbol-Vorschaubilder",
+      "records": "Ausgewertete Tabellen",
+      "map": "Weltkarte"
+    },
+    "cacheConfirm": {
+      "pazIndex": "PAZ-Index-Cache dieses PAZ-Ordners löschen?\n\nDer nächste Start liest alle Archiv-Header neu, das dauert über eine Minute.",
+      "indexes": "Nachschlage-Index-Cache dieses PAZ-Ordners löschen?\n\nDer nächste Start erstellt die Nachschlage-Indizes neu.",
+      "thumbnails": "Symbol-Cache dieses PAZ-Ordners löschen?\n\nSymbole werden beim Anzeigen neu dekodiert.",
+      "records": "Tabellen-Cache dieses PAZ-Ordners löschen?\n\nTabellen werden beim Öffnen neu ausgewertet.",
+      "map": "Weltkarte dieses PAZ-Ordners löschen?\n\nDie Kartenansicht bietet an, sie neu zu erstellen."
+    },
+    "deleteCache": "Löschen",
+    "folderMissing": "Ordner nicht gefunden",
+    "otherClientConfirm": "Alle Caches von {folder} löschen?\n\nSie werden neu erstellt, wenn dieser Ordner geöffnet wird."
   },
   "tree": {
     "loading": "Laden..."
@@ -274,6 +298,7 @@
     "copiedRow": "Ausgewählte Zeile kopiert.",
     "searchError": "Suchfehler: {message}",
     "pageError": "Seite konnte nicht geladen werden: {message}",
+    "recordNotFound": "Keine Zeile mit {field} {value} in dieser Tabelle",
     "cachingTables": "Tabellen werden gespeichert {done}/{total}: {name}",
     "cachingTablesPaused": "Speichern der Tabellen pausiert, solange die App beschäftigt ist ({done}/{total})",
     "openFolder": "Öffne einen PAZ-Ordner, um zu beginnen.",
@@ -319,7 +344,8 @@
     "fileNotCached": "Dateidaten nicht zwischengespeichert, lade die Datei neu",
     "parsedNotCached": "Keine ausgewerteten Daten zwischengespeichert, lade die Datei neu",
     "invalidSearchPattern": "Ungültiges Suchmuster",
-    "noFilesMatchExtensions": "Keine Dateien mit den gewählten Endungen"
+    "noFilesMatchExtensions": "Keine Dateien mit den gewählten Endungen",
+    "unknownCache": "Unbekannter Cache: {id}"
   },
   "locWarning": {
     "missing": "Dir fehlt {file} für {language}, daher ist nur die Oberfläche der App auf {language}. Spieltexte in den Tabellen bleiben koreanisch.",

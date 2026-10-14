@@ -4,10 +4,12 @@ import struct
 from collections.abc import Iterator
 
 from _common.binary import u8, u16, u32, u64
+from _common.icon_index import clean_stored_icon_path
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
-from _common.prefixed_string import STRING_PREFIX_SIZE, locate_prefixed_ascii, prefixes_ending_at, read_prefixed_at
+from _common.prefixed_string import locate_prefixed_ascii, read_prefixed_at
 from _dbss.skill.parser import build_skill_buff_index
+from .layout import BlockStrings, header_shift, read_block_strings
 
 
 # Keys are packed item keys (`_common/item_key.py`). Level 0 is the base item
@@ -19,6 +21,13 @@ ICON_ROOT = "ui_texture/icon/"
 
 # The item grade, 0 (white) to 5, which colours the item name (`_common/item_grade.py`).
 _GRADE = 0x06
+# The equipment type; 0 on items that are not equipment. Weapon types are
+# named after their Central Market subcategory (`weapon_types.py`).
+_EQUIP_TYPE = 0x07
+# The equipment slot, an `__eEquipSlotNo*` value (`slot_labels.py`).
+_EQUIP_SLOT = 0x0E
+# 1 when copies of the item share one inventory slot.
+_STACKABLE = 0x43
 
 # When the item binds: 0 never, 1 when obtained, 2 when equipped. The flag
 # after it binds to the family instead of the character.
@@ -29,6 +38,13 @@ _FOR_TRADE = 0x4B
 _TRADE_TYPE = 0x4C
 # Bit n allows class type n (`_common/class_type.py`).
 _CLASS_MASK = 0x4D
+# Bit n allows `CppEnums.ServantKind` n; 0 on everything but servant gear
+# (`servant_slots.py`).
+_SERVANT_KINDS = 0x55
+
+# The fields below follow `unknown_5d` (`layout.py`): these offsets hold when
+# it is empty, and move by `header_shift` on servant gear.
+
 # Character level needed to use the item; 0 or 1 when there is none.
 _REQUIRED_LEVEL = 0x61
 # 0 when the item can never be dyed. 1 allows it, but only an item whose
@@ -43,20 +59,16 @@ _CHARACTER_ID = 0xAA
 _NO_DURABILITY = 32_767
 _MAX_DURABILITY = 0xC5
 
+# The Central Market category and subcategory, LOC type 44 `str_id1` and
+# `str_id2`; 255 when the item is not listed.
+_MARKET_CATEGORY = 0xC8
+_MARKET_SUB_CATEGORY = 0xC9
+
 # skill_key_1 and skill_key_2: the skills a consumable casts, `skill.dbss`
 # keys whose buff_ids are the item's buffs; 0 when unused. Every level of an
 # item stores the same keys.
 _SKILL_KEYS = 0xCC
 _SKILL_KEYS_STRUCT = struct.Struct("<II")
-
-# The fixed numeric fields end here, so the string scan starts here. The
-# lowest string prefix in any block sits at +0xF2 (client 3458).
-_FIXED_FIELDS_END = 0xD4
-
-# The enchant key (enchantstaticstatus.dbss) is the u32 just before the Korean
-# name's length prefix; 0 when the item has no enhancement data. Every level of
-# an item stores the same key (client 3464).
-_ENCHANT_KEY_SIZE = 4
 
 # Relative to the end of the icon text: 1 when the item can be listed on the
 # Central Market, and 2 when it can go in the Family Inventory.
@@ -70,6 +82,10 @@ _FAMILY_INVENTORY_ALLOWED = 2
 _MESSAGES = 0x12
 _MESSAGE_COUNT = 3
 _ENHANCEMENT_TYPE_AFTER_MESSAGES = 0x0D
+# The Life Skill gear kind and the Life Skill tab it is for (`life_slots.py`),
+# after the three strings; 37 and 15 on items that are not Life Skill gear.
+_LIFE_EQUIP_TYPE_AFTER_MESSAGES = 0x29
+_LIFE_RESTRICT_TYPE_AFTER_MESSAGES = 0x2A
 
 
 def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
@@ -102,84 +118,91 @@ def _base_rows(offset_rows: list[dict]) -> Iterator[dict]:
     return (row for row in offset_rows if not row["enchant_level"])
 
 
-def _block_strings(data: bytes, start: int, end: int) -> list[tuple[int, str]]:
-    """The length-prefixed ASCII strings of the block `[start, end)`, each with its prefix position."""
-    return locate_prefixed_ascii(data, start + _FIXED_FIELDS_END, end)
+def _block_strings(data: bytes, row: dict) -> BlockStrings:
+    """The enchant key, Korean name and icon of an offset row's block."""
+    start = row["data_offset"]
+    try:
+        return read_block_strings(data, start, start + row["data_size"])
+    except ValueError as error:
+        raise ValueError(f"itemenchant.dbss block for key {row['key']}: {error}") from error
 
 
-def _name_prefix(data: bytes, start: int, icon_prefix: int) -> int | None:
-    """Where the Korean name's length prefix starts: the UTF-16 string whose
-    text ends at the icon's prefix.
-
-    The nearest prefix that fits is the name; one further back would hold
-    the name's own bytes as text.
-    """
-    return next(prefixes_ending_at(data, start + _FIXED_FIELDS_END, icon_prefix, wide=True), None)
+def _icon_path(icon: str) -> str:
+    return f"{ICON_ROOT}{clean_stored_icon_path(icon)}"
 
 
-def _name_kr(data: bytes, name_prefix: int | None, icon_prefix: int) -> str:
-    if name_prefix is None:
-        return ""
-    return data[name_prefix + STRING_PREFIX_SIZE:icon_prefix].decode("utf-16-le", errors="replace")
+def _second_string(data: bytes, icon_end: int, end: int) -> str:
+    """The first length-prefixed ASCII string after the icon, or ''."""
+    strings = locate_prefixed_ascii(data, icon_end, end)
+    return strings[0][1] if strings else ""
 
 
-def _enchant_key(data: bytes, name_prefix: int | None) -> int | None:
-    """The enchantstaticstatus.dbss key before the Korean name; None when 0 or not found."""
-    if name_prefix is None:
-        return None
-    return u32(data, name_prefix - _ENCHANT_KEY_SIZE) or None
+def _late_fields_at(data: bytes, start: int) -> int:
+    """The base for the header fields after `unknown_5d`: `start`, moved by its count."""
+    return start + header_shift(data, start)
 
 
 def _header_fields(data: bytes, start: int) -> dict:
-    """The confirmed fixed fields of the block at `start`; itemenchant_dbss.md has the evidence."""
-    durability = u16(data, start + _MAX_DURABILITY)
-    for_trade = bool(u8(data, start + _FOR_TRADE))
+    """The confirmed header fields of the block at `start`; itemenchant_dbss.md has the evidence.
+
+    The block must lie inside `data`: this runs once per item, so the bytes
+    are indexed directly instead of through the bounds-checked `u8`.
+    """
+    late = _late_fields_at(data, start)
+    durability = u16(data, late + _MAX_DURABILITY)
     return {
-        "required_level": u8(data, start + _REQUIRED_LEVEL),
+        "grade": data[start + _GRADE],
+        "equip_type": data[start + _EQUIP_TYPE],
+        "equip_slot": data[start + _EQUIP_SLOT],
+        "stackable": bool(data[start + _STACKABLE]),
+        "vested_type": data[start + _VESTED_TYPE],
+        "family_bound": bool(data[start + _FAMILY_BOUND]),
+        "trade_type": data[start + _TRADE_TYPE] if data[start + _FOR_TRADE] else None,
         "class_mask": u64(data, start + _CLASS_MASK),
-        "vested_type": u8(data, start + _VESTED_TYPE),
-        "family_bound": bool(u8(data, start + _FAMILY_BOUND)),
+        "servant_kinds": u32(data, start + _SERVANT_KINDS),
+        "required_level": data[late + _REQUIRED_LEVEL],
+        "dyeable": bool(data[late + _DYEABLE]),
+        "character_id": u16(data, late + _CHARACTER_ID),
         # None sorts last and exports empty.
         "max_durability": None if durability == _NO_DURABILITY else durability,
-        "trade_type": u8(data, start + _TRADE_TYPE) if for_trade else None,
-        "dyeable": bool(u8(data, start + _DYEABLE)),
+        "market_category": data[late + _MARKET_CATEGORY],
+        "market_sub_category": data[late + _MARKET_SUB_CATEGORY],
+        "skill_keys": list(_skill_keys(data, late)),
     }
 
 
-def _icon_end(strings: list[tuple[int, str]]) -> int | None:
-    """Where the icon text (the block's first string) ends; None without an icon."""
-    if not strings:
-        return None
-    icon_prefix, icon = strings[0]
-    return icon_prefix + STRING_PREFIX_SIZE + len(icon)
+def _messages_end(data: bytes, icon_end: int, end: int) -> int:
+    """Where the three strings that follow the icon end.
 
-
-def _enhancement_type(data: bytes, icon_end: int, end: int) -> int:
-    """The u32 13 bytes after the three strings that follow the icon.
-
-    Raises ValueError when a string runs past the block, since the field
-    would then be read from the wrong place.
+    Raises ValueError when a string runs past the block, since the fields
+    after them would then be read from the wrong place.
     """
     pos = icon_end + _MESSAGES
     for _ in range(_MESSAGE_COUNT):
         _, pos = read_prefixed_at(data, pos, end, wide=True)
-    return u32(data, pos + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
+    return pos
 
 
-def _after_icon_fields(data: bytes, icon_end: int | None, end: int) -> dict:
-    """The confirmed fields that follow the icon text; False and 0 without an icon."""
-    if icon_end is None:
-        return {"marketable": False, "family_inventory": False, "enhancement_type": 0}
+def _enhancement_type(data: bytes, icon_end: int, end: int) -> int:
+    """The u32 13 bytes after the three strings that follow the icon."""
+    return u32(data, _messages_end(data, icon_end, end) + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
+
+
+def _after_icon_fields(data: bytes, icon_end: int, end: int) -> dict:
+    """The confirmed fields that follow the icon text."""
+    messages_end = _messages_end(data, icon_end, end)
     return {
         "marketable": bool(u8(data, icon_end + _MARKETABLE)),
         "family_inventory": u8(data, icon_end + _FAMILY_INVENTORY) == _FAMILY_INVENTORY_ALLOWED,
-        "enhancement_type": _enhancement_type(data, icon_end, end),
+        "enhancement_type": u32(data, messages_end + _ENHANCEMENT_TYPE_AFTER_MESSAGES),
+        "life_equip_type": u8(data, messages_end + _LIFE_EQUIP_TYPE_AFTER_MESSAGES),
+        "life_restrict_type": u8(data, messages_end + _LIFE_RESTRICT_TYPE_AFTER_MESSAGES),
     }
 
 
-def _skill_keys(data: bytes, start: int) -> tuple[int, ...]:
-    """The non-zero skill keys of the block at `start`, in slot order."""
-    return tuple(key for key in _SKILL_KEYS_STRUCT.unpack_from(data, start + _SKILL_KEYS) if key)
+def _skill_keys(data: bytes, late: int) -> tuple[int, ...]:
+    """The non-zero skill keys of a block, in slot order; `late` is from `_late_fields_at`."""
+    return tuple(key for key in _SKILL_KEYS_STRUCT.unpack_from(data, late + _SKILL_KEYS) if key)
 
 
 def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
@@ -187,9 +210,9 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
 
     Higher levels mostly repeat the base item's icon (the items of
     `specialenchantitem.bss` store their own per level), and what else differs
-    per level is not decoded, so they only contribute `max_enchant_level`. The first
-    string in a block is always the icon path; what the optional second string
-    (e.g. `ITEM_BIC_HIT_1`) means is unconfirmed.
+    per level is not decoded, so they only contribute `max_enchant_level`. What
+    the optional ASCII string after the icon (e.g. `ITEM_BIC_HIT_1`) means is
+    unconfirmed.
     """
     offset_rows = parse_itemenchantoffset_records(offset_data)
     max_levels = max_enchant_levels(offset_rows)
@@ -204,22 +227,17 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
                 f"{end:,} but the file is {len(data):,} bytes."
             )
 
-        strings = _block_strings(data, start, end)
-        icon_prefix, icon = strings[0] if strings else (None, "")
-        icon_end = _icon_end(strings)
-        name_prefix = None if icon_prefix is None else _name_prefix(data, start, icon_prefix)
+        strings = _block_strings(data, row)
         records.append({
             "item_id": row["item_id"],
-            "name_kr": "" if icon_prefix is None else _name_kr(data, name_prefix, icon_prefix),
+            "name_kr": strings.name_kr,
             "max_enchant_level": max_levels[row["item_id"]],
-            "enchant_key": _enchant_key(data, name_prefix),
-            "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
-            "grade": u8(data, start + _GRADE),
-            "character_id": u16(data, start + _CHARACTER_ID),
+            # None sorts last and exports empty.
+            "enchant_key": strings.enchant_key or None,
+            "icon_path": _icon_path(strings.icon),
             **_header_fields(data, start),
-            **_after_icon_fields(data, icon_end, end),
-            "skill_keys": list(_skill_keys(data, start)),
-            "second_string": strings[1][1] if len(strings) > 1 else "",
+            **_after_icon_fields(data, strings.icon_end, end),
+            "second_string": _second_string(data, strings.icon_end, end),
             "block_size": row["data_size"],
         })
 
@@ -236,14 +254,9 @@ def build_item_icon_index(data: bytes, offset_data: bytes) -> dict[int, str]:
     index: dict[int, str] = {}
 
     for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        end = start + row["data_size"]
-        if end > len(data):
+        if row["data_offset"] + row["data_size"] > len(data):
             continue
-
-        strings = _block_strings(data, start, end)
-        if strings:
-            index[row["item_id"]] = f"{ICON_ROOT}{strings[0][1].lower()}"
+        index[row["item_id"]] = _icon_path(_block_strings(data, row).icon)
 
     return index
 
@@ -257,14 +270,9 @@ def build_enchant_key_item_index(data: bytes, offset_data: bytes) -> dict[int, t
     items_by_key: dict[int, list[int]] = {}
 
     for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        end = start + row["data_size"]
-        if end > len(data):
+        if row["data_offset"] + row["data_size"] > len(data):
             continue
-        strings = _block_strings(data, start, end)
-        if not strings:
-            continue
-        enchant_key = _enchant_key(data, _name_prefix(data, start, strings[0][0]))
+        enchant_key = _block_strings(data, row).enchant_key
         if enchant_key:
             items_by_key.setdefault(enchant_key, []).append(row["item_id"])
 
@@ -280,18 +288,31 @@ def build_enhancement_type_item_index(data: bytes, offset_data: bytes) -> dict[i
     items_by_type: dict[int, list[int]] = {}
 
     for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        end = start + row["data_size"]
+        end = row["data_offset"] + row["data_size"]
         if end > len(data):
             continue
-        icon_end = _icon_end(_block_strings(data, start, end))
-        if icon_end is None:
-            continue
-        enhancement_type = _enhancement_type(data, icon_end, end)
+        enhancement_type = _enhancement_type(data, _block_strings(data, row).icon_end, end)
         if enhancement_type:
             items_by_type.setdefault(enhancement_type, []).append(row["item_id"])
 
     return {key: tuple(sorted(items)) for key, items in items_by_type.items()}
+
+
+def build_item_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
+    """Map base item ID to the Korean name its level-0 block stores, when it has one.
+
+    The fallback for items LOC type 0 does not name (`_common/item_key.py`).
+    """
+    index: dict[int, str] = {}
+
+    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+        if row["data_offset"] + row["data_size"] > len(data):
+            continue
+        name = _block_strings(data, row).name_kr.strip()
+        if name:
+            index[row["item_id"]] = name
+
+    return index
 
 
 def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:
@@ -314,17 +335,16 @@ def build_character_item_index(data: bytes, offset_data: bytes) -> dict[int, int
     """Map character ID to the one base item that places or summons it.
 
     Only level-0 records are read. A character named by more than one item is
-    left out, because the value is then not a link: character 1 is named by 120
-    unrelated items, and the few others with two or more have no single icon.
+    left out, because it then has no single icon to borrow.
     """
     items_by_character: dict[int, list[int]] = {}
 
     for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
-        if start + _CHARACTER_ID + 2 > len(data):
+        if start + row["data_size"] > len(data):
             continue
 
-        character_id = u16(data, start + _CHARACTER_ID)
+        character_id = u16(data, _late_fields_at(data, start) + _CHARACTER_ID)
         if character_id:
             items_by_character.setdefault(character_id, []).append(row["item_id"])
 
@@ -351,10 +371,10 @@ def build_buff_item_index(
 
     for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
-        if start + _SKILL_KEYS + _SKILL_KEYS_STRUCT.size > len(data):
+        if start + row["data_size"] > len(data):
             continue
 
-        for skill_key in _skill_keys(data, start):
+        for skill_key in _skill_keys(data, _late_fields_at(data, start)):
             for buff_id in skill_buffs.get(skill_key, ()):
                 items_by_buff.setdefault(buff_id, set()).add(row["item_id"])
 

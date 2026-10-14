@@ -72,7 +72,35 @@ class SearchMixin(ApiState):
                 indices = positions_in_order(order, indices)
             return {"record_indices": indices, "total": len(indices)}
 
-        # hex tab, search raw bytes
+        return self._search_bytes(path, norm, query, mode)
+
+    def find_record(self, path: str, field: str, value: str) -> dict:
+        """Place of the first record whose `field` reads `value` in the shown order of the open table.
+
+        For a link into another table (`data-action="open-record"`): the UI
+        opens the file, then pages to this position. Values compare as text,
+        so `"27265"` finds the integer 27265. `{"position": None}` when no
+        record matches.
+        """
+        self._mark_activity()
+        self._wait_for_folder_text()
+        if self._cached_path != _norm(path) or self._cached_handler is None:
+            return {"error": ui_text("errors.parsedNotCached")}
+        if self._cached_data is None or self._cached_entry is None:
+            return {"error": ui_text("errors.parsedNotCached")}
+        args = (self._cached_data, self._cached_entry, self._cached_companions)
+        records = self._cached_handler.all_records(*args)
+        wanted = str(value)
+        index = next((i for i, record in enumerate(records) if str(record.get(field)) == wanted), None)
+        if index is None:
+            return {"position": None}
+        if self._cached_sort is not None:
+            order = self._cached_handler.sorted_order(*args, self._cached_sort)
+            index = positions_in_order(order, [index])[0]
+        return {"position": index}
+
+    def _search_bytes(self, path: str, norm: str, query: str, mode: str) -> dict:
+        """Byte offsets of `query` in the open file or a loaded disk file, for the hex tab."""
         if self._cached_path == norm and self._cached_data is not None:
             data = self._cached_data
         elif path.startswith(_DISK_VIRTUAL_PREFIX + "/"):

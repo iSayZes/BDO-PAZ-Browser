@@ -48,11 +48,11 @@ Strings are a u64 character count (equivalently a u32 count plus a u32 zero) fol
 
 | Offset  | Type             | Field             | Notes                                                                                   |
 | ------- | ---------------- | ----------------- | --------------------------------------------------------------------------------------- |
-| `+0x00` | u32              | unknown_00        | Never equals the record's quest ID (0 of 18,988); only 512 values are `allquestlist` IDs |
-| `+0x04` | u32              | unknown_04        | Equals `unknown_00` in 11,419 records; `0x10000`/`0x0` and `0x0`/`0x0` are common        |
+| `+0x00` | u32              | accept_dialog_key | `dialog_index << 16 \| npc_id` of the NPC dialog that gives the quest (`detail_dialog.dbss` key); `acceptquest.bss` row of the quest. `0` or `0x10000` without an NPC |
+| `+0x04` | u32              | complete_dialog_key | The same for the dialog that takes the quest; `completequest.bss` row of the quest       |
 | `+0x08` | u32              | unknown_08        | `0` in 18,920 of 18,988                                                                 |
 | `+0x0C` | u64 + utf16le[n] | condition_script  | Accept/prerequisite expression, e.g. `getLevel()>30;<or>clearquest(654,4);`             |
-| varies  | u64 + utf16le[n] | action_script     | Completion expression, e.g. `killmonster(20007,10);`, `meet(npc_id,count)`              |
+| varies  | u64 + utf16le[n] | action_script     | Completion expression, e.g. `killmonster(20007,10);`, `meet(npc_id,dialog_index)`       |
 | varies  | u8[]             | objective_gap     | 24 zero bytes in 18,209 records; 26 to 100+ bytes in the rest (content not decoded)     |
 | varies  | u64 + utf16le[n] | objective_text_kr | Korean objective text shown in the quest UI; line breaks are stored as `\n` (28 on client 3458) and decoded by the parser |
 | varies  | u32              | quest_category    | Formerly `link_type`; see Quest Category below                                          |
@@ -74,7 +74,7 @@ Strings are a u64 character count (equivalently a u32 count plus a u32 zero) fol
 | varies     | u32           | packed_quest_id_echo | Repeats `packed_quest_id`                                                        |
 | varies     | u8[13]        | trailer            | Most common: `00 × 9, 01 00 00 00` (5,075) and all zero (2,882); record ends here  |
 
-Earlier versions of this doc called `unknown_00`, `unknown_04` and `unknown_08` `lead_a`, `lead_b` and `lead_zero` (and before that `packed_quest_id_a` and `packed_quest_id_b`), and `unknown_q08` `reserved_q08`.
+Earlier versions of this doc called `accept_dialog_key` and `complete_dialog_key` `unknown_00` and `unknown_04`, and before that, with `unknown_08`, `lead_a`, `lead_b` and `lead_zero` (and `packed_quest_id_a` and `packed_quest_id_b`); `unknown_q08` was `reserved_q08`.
 
 The split between the 13-byte `trailer` and the next record's 12-byte lead is inferred from record 0 (12 bytes before its first string at `+0x0C`) and from the last record (13 bytes after its echo to end of file). [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) groups `packed_quest_id_echo`, the trailer and the next record's lead, scripts and objective into one "condition tail" of the earlier quest; our data shows those scripts belong to the next quest: in 8,066 of 11,672 such blocks with a `clearquest` call it names the previous step of the next quest, versus 170 for the earlier quest.
 
@@ -147,7 +147,7 @@ Garmoth leaves out four journals that also grant stats, which is why its Invento
 
 Fixture file (`PAZ-Parser/tests/fixtures/quest.dbss`):
 
-| File Offset  | `unknown_00` | Packed Quest ID | Condition                                                       | Action                                                               | Objective KR                                                    | Icon                               |
+| File Offset  | `accept_dialog_key` | Packed Quest ID | Condition                                                       | Action                                                               | Objective KR                                                    | Icon                               |
 | ------------ | ------------ | --------------- | --------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------- | ---------------------------------- |
 | `0x00000004` | `125285`     | `1050655`       | `checkFieldType(hadumField);getLevel()>59;clearquest(2080,10);` | `killMonsterGroup(189,1);`                                           | `<악몽의 그림자> 기가고드 처치하기;`                            | `Icon/Quest/Hadum08.dds`           |
 | `0x000005F8` | `65536`      | `463223`        | `getLevel()>0;`                                                 | `gatheritem(16004,0,1);`                                             | `응축된 마력의 블랙스톤 제작하기;`                              | `Icon/Quest/GrowthPass_GUV_07.dds` |
@@ -186,6 +186,8 @@ titles/objectives.
 | Category     | num  | `quest_category`                                            |
 | Icon         | text | `icon_path` read from the record; thumbnail when available  |
 | Title / Name | text | LOC type 18 `str_id4=0` when available                      |
+| Accept NPC   | text | Speaker of `accept_dialog_key`: LOC type 38 (`npc_id`, `dialog_index`), else the LOC type 6 NPC name; `Black Spirit` for key `0`, a dash when neither names it. Opens the `detail_dialog.dbss` row of the key, plain text when that table has no such row (`DIALOG_KEYS` index) |
+| Complete NPC | text | The same for `complete_dialog_key`                          |
 | Condition    | text | `condition_script`                                          |
 | Action       | text | `action_script`                                             |
 | Objective    | text | Prefer LOC type 18 `str_id4=3`; fall back to inline Korean objective text |
@@ -199,17 +201,15 @@ titles/objectives.
 - The icon path is read through its u64 prefix, not a pattern match. That recovers paths the old `Icon/[A-Za-z0-9_./ -]+` pattern cut short or missed: `Icon/Quest/O'dylilta_820115.dds`, `UI_Artwork/IC_01245.dds`, and `New_Icon/03_ETC/...`, which the pattern read as `Icon/03_ETC/...`. Three records store no icon at all: `69183`, `69175` and `8456145`. The old scan-based icon index had given them, and about a hundred other quests (mostly O'dyllita and Sherekhan ones), a neighbouring record's icon or a truncated path.
 - The Family Stat column lists the non-`16` unions of the counted reward entries (skipped when `block_kind` is `0`). On both files that is 104 entries: the 98 real Family stats plus six type `12`/`13` entries in the chain `1627` test quests, shown by type number only.
 - `(file_size - 4) / count` is not integral, confirming variable-length records.
-- There is no step/canonical record split: `unknown_00`/`unknown_04` are not quest IDs, and the record's own ID is `packed_quest_id` in the fixed block.
+- There is no step/canonical record split: `accept_dialog_key`/`complete_dialog_key` are not quest IDs, and the record's own ID is `packed_quest_id` in the fixed block.
+- `accept_dialog_key` and `complete_dialog_key` equal `dialog_index << 16 | npc_id` of the quest's `acceptquest.bss` and `completequest.bss` rows in all 19,267 quests of client 3464; those two files index the same values grouped by NPC. The two are equal in 11,519 quests. Fixture row `463223` holds `65536` (`0x10000`): no NPC, dialog index `1`.
 - Some decoded rows have no direct LOC type 18 title (27 of 18,988 current IDs). In those cases the scripts may still reference localized display quests through `clearquest(chain,id)`.
 - No `questoffset.dbss` was found. `guildquestoffset.dbss` and `journalquestoffset.dbss` exist for related formats, but not for the main quest table.
-- Scripts use semicolon-separated calls and comparisons, `!` negation and markers such as `<or>`: `getLevel()>30`, `clearquest(group,id)`, `killmonster(id,count)`, `gatheritem(item_id,?,count)`, `meet(npc_id,count)`, `collectknowledge(id)`.
+- Scripts use semicolon-separated calls and comparisons, `!` negation and markers such as `<or>`: `getLevel()>30`, `clearquest(group,id)`, `killmonster(id,count)`, `gatheritem(item_id,?,count)`, `meet(npc_id,dialog_index)`, `collectknowledge(id)`.
+- The second `meet()` argument is a dialog index of the NPC (`dialog_index << 16 | npc_id` is a `detail_dialog.dbss` key), not a count. On client 3464 the action scripts hold 15,948 `meet()` calls: 889 pass only the NPC key, and of the 3,929 two-argument calls whose NPC has `detail_dialog.dbss` records, 3,906 name one of its dialogs. Where the NPC has more than one dialog that is 1,973 of 1,977 calls, against 196 if the argument were always the NPC's lowest index. The 11,130 calls whose NPC has no dialog record pass `1` in 11,084 cases.
 - Journal-page records (`quest_category = 11`) all have `block_kind = 7`, zero `unknown_q08` and zero `unknown_q10`; the 91 pages with a Family stat use reward entry 0.
 
 ## Open Questions
-
-### `unknown_00` / `unknown_04` Meaning
-
-The two u32 before the accept script are equal in 11,419 records and are mostly not quest IDs (common values `0x0001C204`, `0x00019C47`, `0x0001AE99`). They may be NPC or giver keys, but nothing has been matched to another table yet.
 
 ### Shifted Fixed Block (`block_kind = 0`)
 

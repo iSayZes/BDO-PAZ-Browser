@@ -73,7 +73,11 @@ OBJECT_CASE = HandlerCase(
         TargetTest(
             col="character_id",
             value=2101,
-            expected={"object_kind": 5, "model_path": "02_balenos/velia/balenos_velia_str_house_05.pam"},
+            expected={
+                "object_kind": 5,
+                "object_kind_name": "InnRoom",
+                "model_path": "02_balenos/velia/balenos_velia_str_house_05.pam",
+            },
         ),
     ],
 )

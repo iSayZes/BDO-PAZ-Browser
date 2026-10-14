@@ -7,13 +7,22 @@
   "columns": {
     "characterId": "캐릭터 ID",
     "name": "이름",
+    "title": "칭호",
+    "label": "내부 라벨",
     "icon": "아이콘",
     "actionScript": "행동 스크립트",
     "conditionScript": "조건",
     "knowledgeId": "지식 ID",
     "npcKind": "NPC 종류",
+    "grade": "등급",
+    "karma": "성향",
+    "navalFame": "해상 명성",
+    "vehicleType": "탑승물 종류",
     "classType": "직업 유형",
+    "aiScript": "AI 스크립트",
     "model": "모델",
+    "sourceItemId": "원본 아이템 ID",
+    "sourceItem": "원본 아이템",
     "payloadSize": "본문 크기"
   },
   "meta": {

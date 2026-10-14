@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "questId": "ID задания",
+    "mainId": "Основной ID",
+    "subId": "Доп. ID",
+    "title": "Название",
+    "npcId": "ID НИП",
+    "npcName": "Имя НИП",
+    "dialog": "Диалог",
+    "dialogName": "Имя в диалоге"
+  },
+  "meta": {
+    "count": "Заданий: {count} · НИП: {npc_count}"
+  }
+}

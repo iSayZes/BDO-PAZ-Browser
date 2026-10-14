@@ -25,7 +25,7 @@ class MentalThemeRecord(TypedDict):
     increase_wp_2: int
     need_count_2: int
     unknown_0e: int
-    unknown_0f: int
+    bookshelf_item: int
     entry_count: int
     entry_ids: str
     entry_names: str

@@ -7,5 +7,12 @@
     "offsetRecords": "{count} entradas de desplazamiento",
     "headerCount": "Cantidad en la cabecera: {count}",
     "noRecords": "Sin registros"
+  },
+  "tradeGroups": {
+    "1": "Otras regiones",
+    "2": "Valencia capital",
+    "3": "Oasis de Ibellab",
+    "99": "Mercancías comunes",
+    "tooltip": "* Nombrado según los PNJ comerciantes y las mercancías con este código; el cliente no lo nombra"
   }
 }

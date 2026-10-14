@@ -1,0 +1,16 @@
+{
+  "offsetColumns": {
+    "categoryKey": "Category Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "categoryKey": "Category Key",
+    "icon": "Icon",
+    "name": "Name",
+    "questChain": "Main ID"
+  },
+  "meta": {
+    "count": "{count} Growth Pass categories"
+  }
+}

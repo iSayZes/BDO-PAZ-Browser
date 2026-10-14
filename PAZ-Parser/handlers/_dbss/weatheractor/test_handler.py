@@ -24,6 +24,8 @@ from .parser import FILE_NAME, OFFSET_FILE, parse_weatheractor_records
 
 
 _SANDSTORM = 27063
+# gc::EWeatherType DesertWind.
+_DESERT_WIND = 1
 _DEBUFF_SANDSTORM = 40337
 _CLOUDY_DAY = 45381
 _COUNT_OFFSET = 0
@@ -42,14 +44,21 @@ CASE = HandlerCase(
     tests=[
         SchemaTest(required_keys=[
             "key", "character_key", "name", "title", "skill_key", "skill_no", "skill_level", "skill_name",
-            "unknown_05", "unknown_06", "unknown_26", "unknown_3e", "unknown_40", "unknown_44", "unknown_4a",
+            "weather_type", "radius", "rain_amount", "cloud_rate", "damage_max", "damage_radius",
+            "damage_radius_rate", "push_pull_speed", "skill_apply_rate",
+            "unknown_3e", "unknown_40", "unknown_44", "unknown_4a",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         # The Sandstorm actor casts Debuff Sandstorm.
         TargetTest(
             col="character_key",
             value=_SANDSTORM,
-            expected={"name": "Sandstorm", "skill_no": _DEBUFF_SANDSTORM, "skill_name": "Debuff Sandstorm"},
+            expected={
+                "name": "Sandstorm",
+                "skill_no": _DEBUFF_SANDSTORM,
+                "skill_name": "Debuff Sandstorm",
+                "weather_type": _DESERT_WIND,
+            },
         ),
         TargetTest(col="character_key", value=_CLOUDY_DAY, expected={"name": "Cloudy Day", "skill_no": None}),
     ],

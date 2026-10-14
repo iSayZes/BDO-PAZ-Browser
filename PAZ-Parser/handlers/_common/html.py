@@ -81,6 +81,17 @@ def text_list_cell(values: Sequence[object], max_items: int, separator: str = ",
     )
 
 
+def record_link(text: str, path: str, field: str, value: object, css_class: str = "") -> str:
+    """A button that opens the table at PAZ `path` on the first record whose `field` reads `value`.
+
+    `_openRecord()` in ui/js/features/preview-views.js handles the click.
+    """
+    return (
+        f'<button type="button" class="{e(css_class)}" data-action="open-record" data-path="{e(path)}" '
+        f'data-field="{e(field)}" data-value="{e(value)}">{e(text)}</button>'
+    )
+
+
 def flag_cell(is_set: bool) -> str:
     """A yes/no cell: a green check mark or a red cross."""
     return '<span class="flag-yes">✓</span>' if is_set else '<span class="flag-no">✗</span>'

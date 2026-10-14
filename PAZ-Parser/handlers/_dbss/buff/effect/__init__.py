@@ -12,11 +12,13 @@ interval and condition.
 - `named.py`: the types whose parameters name something in LOC.
 - `render.py`: the Effect text and the Param labels from those entries.
 - `units.py`: how amounts are scaled and written.
+- `type_names.py`: the 2016 client's names of the effect types.
 
 Kept out of `handler.py` so the tests can import it (see "Unit Tests" in
 docs/handler.md).
 """
 
 from .render import EffectInput, effect_text, param_labels
+from .type_names import EFFECT_TYPE_NAMES, effect_type_text
 
-__all__ = ["EffectInput", "effect_text", "param_labels"]
+__all__ = ["EFFECT_TYPE_NAMES", "EffectInput", "effect_text", "effect_type_text", "param_labels"]

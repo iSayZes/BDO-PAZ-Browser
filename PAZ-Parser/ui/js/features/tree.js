@@ -3,6 +3,7 @@
 import { t } from "../core/i18n.js";
 import { iconElement } from "../core/icons.js";
 
+
 export const treeMethods = {
   // Also runs when the filter box is cleared, so it must not disable the
   // search input: that would blur it and drop keystrokes. It shares
@@ -36,6 +37,13 @@ export const treeMethods = {
   _setSearchEnabled(isEnabled) {
     document.getElementById("search").disabled = !isEnabled;
     document.getElementById("btn-content-search").disabled = !isEnabled;
+  },
+
+  // The Text tab of a parsed text format (.ai): shown when the handler sent
+  // its source view, hidden for every other file.
+  _setTextTab(textHtml) {
+    this._textHtml = textHtml ?? null;
+    document.querySelector('#preview-tabs [data-tab="text"]').hidden = !this._textHtml;
   },
 
   // A text view searches its own lines, in string mode; an image view has nothing to find.
@@ -176,12 +184,14 @@ export const treeMethods = {
     this._selectedPath = path;
     this._parsedHtml = null;
     this._hexHtml = null;
+    this._setTextTab(null);
     this._activeTab = "hex";
     this._hexPage = 0;
     this._hexTotalPages = 1;
     this._parsedPage = 0;
     this._parsedTotalPages = 1;
     this._parsedSort = null;
+    this._aiFilter = new Set();
     this._cancelParsedPageRequest();
     this._isAltView = false;
     this._tabLabels = null;
@@ -216,6 +226,7 @@ export const treeMethods = {
     } else {
       this._parsedHtml = result.has_parsed ? (result.html || "") : null;
       this._hexHtml = result.hex_html || "";
+      this._setTextTab(result.text_html);
       this._activeTab = "hex";
       this._hexTotalPages = result.hex_total_pages ?? 1;
       this._parsedTotalPages = result.parsed_total_pages ?? 1;
@@ -239,7 +250,7 @@ export const treeMethods = {
         parsedTabBtn.textContent = this._tabLabels[1];
       } else {
         hexTabBtn.textContent    = t("preview.tabHex");
-        parsedTabBtn.textContent = t("preview.tabParsed");
+        parsedTabBtn.textContent = result.parsed_label || t("preview.tabParsed");
       }
 
       if (result.has_parsed) {
@@ -277,13 +288,13 @@ export const treeMethods = {
         content.innerHTML = result.html ?? this._hexHtml;
         if (result.html) {
           this._initStreamThumbnails(content);
-          this._initTableSort(content);
-          this._initTableIcons(content);
+          this._initParsedTable(content);
           this._setPageBar(null);
         } else {
           this._setPageBar(this._hexTotalPages > 1 ? this._buildPageBar("hex", 0, this._hexTotalPages) : null);
         }
       }
+      this._openSavedTab(result.saved_tab);
     }
     window.appProfile?.record("_selectFile.render_result", performance.now() - renderStart);
 
@@ -294,8 +305,21 @@ export const treeMethods = {
     }
   },
 
-  switchTab(tab) {
+  // The tab last picked for this file's type (saved per extension in
+  // paz_config.json, bdo_config.preview_tab_setting), when the file has it:
+  // a .dbss without a handler has no Parsed tab. Else the first tab stays.
+  _openSavedTab(tab) {
+    if (!tab || tab === this._activeTab) return;
+    const tabs = document.getElementById("preview-tabs");
+    const button = tabs.querySelector(`[data-tab="${tab}"]`);
+    if (!tabs.hidden && button && !button.hidden) this.switchTab(tab, { isSaved: false });
+  },
+
+  // `isSaved`: remember the tab for this file type; off when the tab is
+  // opened because it was the remembered one.
+  switchTab(tab, { isSaved = true } = {}) {
     if (this._hexHtml === null) return;
+    if (isSaved) window.pywebview.api.save_preview_tab(this._selectedPath, tab);
     this._activeTab = tab;
     this._syncSearchBarToTab(tab);
     this._resetTabSearch();
@@ -313,6 +337,11 @@ export const treeMethods = {
         document.getElementById("tab-search-mode-hex").hidden = true;
       }
       if (this._isPlainView) this.showTabSearchBar(true);
+    } else if (tab === "text") {
+      content.innerHTML = this._textHtml || "";
+      this._initPreviewView(content);
+      this._setPageBar(null);
+      this._syncViewSearchBar();
     } else if (this._isPlainView) {
       content.innerHTML = this._parsedHtml || "";
       this._initPreviewView(content);
@@ -320,8 +349,7 @@ export const treeMethods = {
       this._syncViewSearchBar();
     } else {
       content.innerHTML = this._parsedHtml || "";
-      this._initTableSort(content);
-      this._initTableIcons(content);
+      this._initParsedTable(content);
       this._setPageBar(this._parsedTotalPages > 1 ? this._buildPageBar("parsed", this._parsedPage, this._parsedTotalPages) : null);
       if (this._isAltView) {
         this.showTabSearchBar(false);

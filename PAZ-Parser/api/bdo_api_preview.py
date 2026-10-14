@@ -17,7 +17,14 @@ from .bdo_icon_images import (
     sprite_data_url,
     thumbnail_data_url,
 )
-from .bdo_config import load_table_sort, save_table_sort, table_sort_file_key
+from .bdo_config import (
+    load_config,
+    load_table_sort,
+    preview_tab_setting,
+    save_preview_tab_setting,
+    save_table_sort,
+    table_sort_file_key,
+)
 from bdo_models import PazEntry
 from paz.bdo_payload_cache import cached_read_entry_payload
 from paz.bdo_payload_reader import can_range_read, read_entry_range
@@ -214,9 +221,11 @@ class PreviewMixin(ApiState):
         self._te(profile, "backend.hex_render_ms", start)
 
         html = None
+        text_html = None
         parsed_total_pages = 1
         tab_labels = None
         view_label = None
+        parsed_label = None
         record_count = None
 
         if is_alt:
@@ -237,6 +246,7 @@ class PreviewMixin(ApiState):
         elif has_parsed:
             self._cached_handler = handler
             self._recent_tables.viewed(handler)
+            parsed_label = handler.parsed_label()
             try:
                 start = self._ts()
                 record_count = handler.get_record_count(data, entry, companions)
@@ -251,6 +261,10 @@ class PreviewMixin(ApiState):
                 self._te(profile, "backend.lazy_page_render_ms", start)
             except Exception as ex:
                 html = _error_box("preview.parseError", ex)
+            try:
+                text_html = handler.render_text(data, entry, companions)
+            except Exception as ex:
+                text_html = _error_box("preview.renderError", ex)
         elif not isinstance(handler, HexHandler):
             try:
                 start = self._ts()
@@ -266,8 +280,14 @@ class PreviewMixin(ApiState):
             "hex_html": hex_html,
             "has_parsed": has_parsed or is_alt,
             "tab_labels": tab_labels,
+            # The tab last picked for this file type; the UI opens it when the file has it.
+            "saved_tab": preview_tab_setting(load_config(), internal_path),
             # A text or image view: shown first, under this tab name next to Hex.
             "view_label": view_label,
+            # The Parsed tab's name when the handler gives one ("AI Script"); None for "Parsed".
+            "parsed_label": parsed_label,
+            # A parsed text format's source (`.ai`): a Text tab after Parsed.
+            "text_html": text_html,
             # For the page bar: "Rows 1-500 of N", and the byte range of a hex page.
             "record_count": record_count,
             "byte_count": len(data),
@@ -539,6 +559,11 @@ class PreviewMixin(ApiState):
         except Exception as ex:
             html = _error_box("preview.renderError", ex)
         return {"html": html}
+
+    def save_preview_tab(self, path: str, tab: str) -> None:
+        """Remember `tab` (hex, parsed or text) as the one files of `path`'s type open on."""
+        if isinstance(path, str) and isinstance(tab, str):
+            save_preview_tab_setting(path, tab)
 
     def export_file(self, path: str, tab: str) -> dict:
         self._mark_activity()

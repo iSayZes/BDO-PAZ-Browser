@@ -183,6 +183,11 @@ The reference project labels `zone_category` as `1` island, `2` coastal, `5` inl
 
 `zone_index`, `grind_zone` and `grind_tier` are sparse. The reference project describes `grind_zone` as a Marni/Elvia grind-zone index and `grind_tier` as a recommended-AP tier; neither is confirmed by another file. The tier looks doubtful: the 11 nodes with `2` include non-grind places such as Polly's Forest (1624) and Tooth Fairy Forest (1619) next to Gyfin Rhasia Temple (1626) and Desert Naga Temple (1322), and only Star's End (1704) has `3`. `grind_zone` equals `zone_index` on only 6 of its 25 nonzero records.
 
+Open: what the 11 nodes with `grind_tier` `2` share. They are Roud Sulfur
+Mine, Ash Forest, Gyfin Rhasia Temple, Polly's Forest, Tooth Fairy Forest,
+Mirumok Ruins, Manshaum Forest, Navarn Steppe, Ancado Coast, Pilgrim's
+Sanctum: Obedience and Desert Naga Temple; Star's End is the only `3`.
+
 ### Packed Index and Area
 
 The `0x20000` flag in `packed_index` is constant, but the low 17 bits are zero on 768 records and non-unique elsewhere, so the reference project's "node enumeration" reading does not hold as stated. Cities carry round values (Velia 1, Heidel 101, Calpheon 301, Valencia City 1201). The target of `packed_area`'s high word (44 values) is not confirmed.

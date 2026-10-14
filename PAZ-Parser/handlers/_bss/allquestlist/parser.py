@@ -1,3 +1,9 @@
+"""PABR list of packed quest IDs: a u32 count, the IDs, a 12-byte trailer.
+
+`allquestlist.bss`, `growthpassquestlist.bss` and the three
+`seasonpassquestlist*.bss` files share it.
+"""
+
 from __future__ import annotations
 
 from _common.binary import u32 as _u32
@@ -15,7 +21,7 @@ def parse_allquestlist_records(data: bytes) -> list[AllQuestListRecord]:
         return []
 
     if data[:4] != _MAGIC:
-        raise ValueError("allquestlist.bss has invalid magic.")
+        raise ValueError("Quest ID list has invalid magic.")
 
     count = _u32(data, 4)
     entries_start = _HEADER_SIZE

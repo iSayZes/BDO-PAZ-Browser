@@ -49,6 +49,7 @@ from .zodiacsign.handler import (
 )
 from .plantzone.handler import plant_zone_offset_handler, PlantZoneHandler
 from .itemsubgroup.handler import ItemSubgroupHandler, item_subgroup_offset_handler
+from .growthpasscategory.handler import GrowthPassCategoryHandler, growth_pass_category_offset_handler
 from .characterspawntype.handler import (
     character_spawn_type_offset_handler,
     CharacterSpawnTypeHandler,
@@ -127,8 +128,10 @@ from .itemimprovement.handler import (
     item_improvement_offset_handler,
     item_improvement_source_offset_handler,
 )
+from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
+from .houseinforeceipe.handler import HouseInfoReceipeHandler, house_info_receipe_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -174,6 +177,8 @@ def register_dbss_handlers() -> None:
     register_handler("itemimprovement.dbss", ItemImprovementHandler())
     register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())
     register_handler("itemimprovementsource.dbss", ItemImprovementSourceHandler())
+    register_handler("extractitemoffset.dbss", extract_item_offset_handler())
+    register_handler("extractitem.dbss", ExtractItemHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
     register_handler("mentalthemeoffset.dbss", mental_theme_offset_handler())
@@ -194,6 +199,8 @@ def register_dbss_handlers() -> None:
     register_handler("enchantstaticstatus.dbss", EnchantStaticStatusHandler())
     register_handler("enchantstaticstatusoffset.dbss", enchant_static_status_offset_handler())
     register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())
+    register_handler("growthpasscategoryoffset.dbss", growth_pass_category_offset_handler())
+    register_handler("growthpasscategory.dbss", GrowthPassCategoryHandler())
     register_handler("itemsubgroupoffset.dbss", item_subgroup_offset_handler())
     register_handler("itemsubgroup.dbss", ItemSubgroupHandler())
     register_handler("journalquestoffset.dbss", journal_quest_offset_handler())
@@ -276,3 +283,5 @@ def register_dbss_handlers() -> None:
     register_handler("teleport.dbss", TeleportHandler())
     register_handler("instancefieldoffset.dbss", instance_field_offset_handler())
     register_handler("instancefield.dbss", InstanceFieldHandler())
+    register_handler("houseinforeceipeoffset.dbss", house_info_receipe_offset_handler())
+    register_handler("houseinforeceipe.dbss", HouseInfoReceipeHandler())

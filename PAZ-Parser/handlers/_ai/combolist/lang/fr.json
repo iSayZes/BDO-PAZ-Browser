@@ -1,0 +1,37 @@
+{
+  "tab": "Liste de combos",
+  "columns": {
+    "combo": "Combo",
+    "weapon": "Arme",
+    "consoleOnly": "Manette seule",
+    "checks": "Vérif. de compétences",
+    "steps": "Étapes"
+  },
+  "meta": {
+    "count": "{count} combos"
+  },
+  "summary": {
+    "list": "Liste de combos",
+    "combos": "combos",
+    "steps": "étapes",
+    "commands": "commandes de compétence",
+    "weapons": "Combos par arme"
+  },
+  "checks": {
+    "learned": "apprise",
+    "cooldown": "recharge",
+    "both": "apprise + recharge"
+  },
+  "weapons": {
+    "0": "Commun",
+    "1": "Arme principale",
+    "2": "Éveil",
+    "3": "Monture"
+  },
+  "awakening": {
+    "0": "Les deux",
+    "1": "Arme principale seule",
+    "2": "Éveil seul"
+  },
+  "footnote": "Les numéros de compétence sont ceux de skill.dbss, nommés via LOC. La touche de manette se lit gâchette, direction, bouton ; 0 signifie aucun. Les touches indiquent leur durée d'appui, en ms depuis le début de l'étape ; une étape liste chaque commande de compétence de son nom. Les noms de types d'arme et d'éveil suivent les commentaires du fichier."
+}

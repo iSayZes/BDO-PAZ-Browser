@@ -3,6 +3,7 @@ from __future__ import annotations
 from bdo_preview import register_handler
 
 from .allquestlist.handler import AllQuestListBssHandler
+from .barter_npclist.handler import BarterNpcListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
@@ -29,9 +30,12 @@ from .boss_spawn.handler import BossSpawnBssHandler
 from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
 from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
+from .itemmaingroup.handler import ItemMainGroupBssHandler
+from .itemtradeetc.handler import ItemTradeEtcBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
+from .manufacture.handler import ManufactureBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
@@ -48,6 +52,7 @@ from .plantworkerselect.handler import PlantWorkerSelectBssHandler
 from .planttown.handler import PlantTownBssHandler
 from .questjournalvideoinfo.handler import QuestJournalVideoInfoBssHandler
 from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestListBssHandler
+from .questnpc.handler import QuestNpcBssHandler
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
@@ -61,11 +66,21 @@ from .territoryinfo.handler import TerritoryInfoBssHandler
 from .titlecategory.handler import TitleCategoryBssHandler
 from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
+from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
 from .zodiacsignindex.handler import ZodiacSignIndexHandler
 
 
 def register_bss_handlers() -> None:
-    register_handler("allquestlist.bss", AllQuestListBssHandler())
+    # One layout: PABR, a count and packed quest IDs.
+    for name in (
+        "allquestlist.bss",
+        "growthpassquestlist.bss",
+        "seasonpassquestlist.bss",
+        "seasonpassquestlistforcash.bss",
+        "seasonpassquestlistfornormal.bss",
+    ):
+        register_handler(name, AllQuestListBssHandler())
+    register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
@@ -99,12 +114,15 @@ def register_bss_handlers() -> None:
     register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
     register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
+    register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
+    register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())
     register_handler(
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),
     )
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
+    register_handler("manufacture.bss", ManufactureBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
     # One layout for the eight life skill mastery tables, each with its own columns.
     for mastery_table in MASTERY_TABLES:
@@ -128,6 +146,9 @@ def register_bss_handlers() -> None:
     # One layout for the four quest lists, each with its own LOC type.
     for name, loc_type in QUEST_LIST_LOC_TYPES.items():
         register_handler(name, QuestListBssHandler(loc_type, has_event_period=name in EVENT_PERIOD_LISTS))
+    # One layout for the NPC dialog that gives and that takes each quest.
+    for name in ("acceptquest.bss", "completequest.bss"):
+        register_handler(name, QuestNpcBssHandler(name))
     register_handler("regiongroupinfo.bss", RegionGroupInfoBssHandler())
     register_handler("regioninfo.bss", RegionInfoBssHandler())
     register_handler("regioninfo_linkandcheckvalid2.bss", RegionLinkBssHandler())
@@ -144,4 +165,5 @@ def register_bss_handlers() -> None:
     # One layout for the three skill windows.
     for window in ("combat", "awakening", "succession"):
         register_handler(f"ui_skillgroup_{window}.bss", UiSkillGroupBssHandler())
+    register_handler("uigrowthpasslayout.bss", UiGrowthPassLayoutBssHandler())
     register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())

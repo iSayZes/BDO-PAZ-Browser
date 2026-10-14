@@ -7,6 +7,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_name, character_title
+from _common.enum_name import enum_name
 from _common.html import Column, e, icon_html_label_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.lang import handler_text, load_handler_strings
@@ -14,7 +15,7 @@ from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column
 from _common.pa_text import pa_fields, pa_html, pa_key
 from _common.pabr_offset import parse_bare_offset_rows
 from _common.skill import skill_name_tagged, split_skill_key
-from .parser import parse_weatheractor_records
+from .parser import WEATHER_TYPE_NAMES, parse_weatheractor_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -63,6 +64,8 @@ class WeatherActorHandler(PreviewHandler):
             Column(cols["characterId"], "num", sort_key="character_key"),
             Column(cols["name"], sort_key="name"),
             Column(cols["title"], sort_key="title"),
+            Column(cols["weatherType"], sort_key="weather_type"),
+            Column(cols["radius"], "num", sort_key="radius"),
             Column(cols["skillId"], "num", sort_key="skill_no"),
             Column(cols["skill"], sort_key="skill_name"),
         ]
@@ -98,6 +101,8 @@ class WeatherActorHandler(PreviewHandler):
                 e(r["character_key"]),
                 e(r["name"] or r["character_key"]),
                 e(r["title"] or _EMPTY),
+                e(enum_name(WEATHER_TYPE_NAMES, r["weather_type"])),
+                e(f"{r['radius']:g}"),
                 e(r["skill_no"]) if r["skill_no"] is not None else _EMPTY,
                 _skill_cell(r),
             ]

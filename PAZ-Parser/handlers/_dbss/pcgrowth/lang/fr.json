@@ -11,6 +11,7 @@
     "gender": "Genre",
     "playable": "Jouable",
     "combatType": "Type de combat",
+    "resource": "Ressource",
     "starterWeapons": "Armes de départ",
     "classWeapons": "Armes de classe",
     "selectMovie": "Vidéo de sélection",

@@ -17,8 +17,8 @@ slot 2 -> packed_quest_id 196891 -> chain 283, quest 3   -> quest.dbss record 2
 | File                  | Required | Role                                                                 |
 | --------------------- | -------- | -------------------------------------------------------------------- |
 | `quest.dbss`          | Optional | Quest records, stored in the same order as this list                 |
-| `acceptquest.bss`     | Optional | Provides the same quest ID set in acceptance-related order            |
-| `completequest.bss`   | Optional | Provides the same quest ID set in completion-related order            |
+| `acceptquest.bss`     | Optional | The NPC dialog that gives each quest of this list                     |
+| `completequest.bss`   | Optional | The NPC dialog that takes each quest of this list                     |
 | `mainquest.bss`       | Optional | Provides main-quest UI sequence groups for a subset of quest IDs      |
 | `newquest.bss`        | Optional | Provides new-quest UI sequence groups for a subset of quest IDs       |
 | `languagedata_en.loc` | Optional | Provides quest title/objective text for display via LOC type `18`    |
@@ -94,5 +94,6 @@ The older fixture starts with `1050655` (chain `2079`, quest `16`, `[Elvia Weekl
 - Physical order: walking `quest.dbss` sequentially, record `i` carries packed quest ID `entry[i]` at the start of its fixed block (after its objective text) and again in its trailing echo. The walk succeeds for all `18,988` current, `19,327` updated and `19,599` fixture records, so this list is the record-order index for `quest.dbss` (as stated by [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor)). See [quest_dbss.md](quest_dbss.md) for the record layout.
 - The list is not a byte offset table; it stores IDs only, so record offsets still have to be found by walking `quest.dbss`.
 - The entry encoding matches the packed quest ID relationship documented in `questgroup.dbss`.
+- [`growthpassquestlist.bss`](growthpassquestlist_bss.md) and the three [Black Spirit Pass lists](seasonpassquestlist_bss.md) use this layout and handler.
 - All 827 adventure-journal page quests from `journalquest.dbss` are in the current list.
 - LOC coverage: `18,961` of `18,988` current entries (fixture: `19,455` of `19,599`) have a LOC type `18`, `str_id4=0` title row keyed by `(quest_chain_id, quest_id)`.

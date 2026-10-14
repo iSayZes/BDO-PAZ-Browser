@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fromGroup": "Von Gruppe*",
+    "toGroup": "Zu Gruppe*",
+    "distance": "Distanz",
+    "addRate": "Wüstenbuff-Rate"
+  },
+  "meta": {
+    "count": "{count} Handelsgruppen-Paare"
+  }
+}

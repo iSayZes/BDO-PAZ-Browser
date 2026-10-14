@@ -6,6 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_name
+from _common.enum_name import enum_name
 from _bss.itemmaingroup.parser import ITEMMAINGROUP_PATH
 from _common.html import Column, e, error, html_list_cell, record_link, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
@@ -18,6 +19,7 @@ from _common.offset_table import (
     size_column,
 )
 from _common.pabr_offset import parse_pabr_offset_rows
+from .layout import SHOP_TYPE_NAMES
 from .parser import CharacterFunctionRecord, parse_characterfunction_records
 from .text import function_labels, node_names, vehicle_names
 
@@ -55,6 +57,7 @@ class CharacterFunctionHandler(PreviewHandler):
             columns.append(Column(cols["name"], sort_key="name"))
         columns += [
             Column(cols["functions"], sort_key="functions_text"),
+            Column(cols["shopType"], sort_key="shop_type_name"),
             Column(cols["managedNodes"], sort_key="managed_nodes_text"),
             Column(cols["town"], sort_key="town_nodes_text"),
             # A list of links: it would only sort by its string form.
@@ -109,6 +112,7 @@ class CharacterFunctionHandler(PreviewHandler):
                 row.append(e(r["name"] or _EMPTY))
             row += [
                 text_list_cell(r["functions"], _LIST_PREVIEW_ITEMS) or _EMPTY,
+                e(r["shop_type_name"] or _EMPTY),
                 text_list_cell(r["managed_nodes"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 text_list_cell(r["town_nodes"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 _item_groups_cell(r, labels) or _EMPTY,
@@ -124,12 +128,18 @@ def _record_fields(record: CharacterFunctionRecord) -> dict:
     managed_nodes = node_names(record.managed_node_keys)
     town_nodes = node_names(record.town_node_keys)
     vehicles = vehicle_names(record)
+    shop_type = record.head_value("shop_type")
     return {
         "character_id": record.character_id,
         "name": character_name(record.character_id),
         "functions": functions,
         # Full lists as text, so tab search, sorting and CSV export see every entry.
         "functions_text": ", ".join(functions),
+        "shop_type": shop_type,
+        # None for eShopType_None, so NPCs without a shop type sort last.
+        "shop_type_name": enum_name(SHOP_TYPE_NAMES, shop_type) if shop_type else None,
+        "trade_group_type": record.head_value("trade_group_type"),
+        "servant_type": record.head_value("servant_type"),
         "managed_node_keys": list(record.managed_node_keys),
         "managed_nodes": managed_nodes,
         "managed_nodes_text": ", ".join(managed_nodes),

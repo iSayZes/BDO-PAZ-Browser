@@ -8,6 +8,7 @@
     "characterId": "Charakter-ID",
     "name": "Name",
     "functions": "Funktionen",
+    "shopType": "Ladentyp",
     "managedNodes": "Verwaltete Posten",
     "town": "Stadt",
     "itemGroups": "Gegenstandsgruppen",

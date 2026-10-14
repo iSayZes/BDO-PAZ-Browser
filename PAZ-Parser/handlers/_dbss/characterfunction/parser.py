@@ -4,7 +4,7 @@ The data file opens with a u32 record count. Each offset row points just past a
 u16 inline copy of the character ID; the record there is the head, the
 function slots of `layout.py` and the tail, read in order:
 
-    u8[4] head | 37 x (name, condition, slot fields) | u8, u8, u32, u8 tail
+    u8[4] head | 40 x (name, condition, slot fields) | u8, u8, u32, u8 tail
 
 Every record must end exactly at its row's size, so a changed layout fails
 loudly. Full layout in docs/file-formats/characterfunction_dbss.md.
@@ -65,6 +65,11 @@ class CharacterFunctionRecord:
         """`CppEnums.VehicleType` values the stable takes, as stored; one can repeat."""
         return self._list_field("stable", "vehicle_types")
 
+    def head_value(self, field: str) -> int:
+        """A head byte (`shop_type`, `trade_group_type`, `is_smuggle_shop`, `servant_type`)."""
+        value = self.head[field]
+        return value if isinstance(value, int) else 0
+
     @property
     def item_groups(self) -> dict[str, int]:
         """`itemmaingroup.bss` group IDs by field name, 0 for none, in slot order."""
@@ -119,14 +124,8 @@ def _read_slot(reader: RecordReader, spec: SlotSpec) -> FunctionSlot:
 
 
 def _read_fields(reader: RecordReader, specs: tuple[FieldSpec, ...]) -> Mapping[str, FieldValue]:
-    """Read `specs` in order; "skip" spans are passed over and left out of the result."""
-    values: dict[str, FieldValue] = {}
-    for spec in specs:
-        if spec.kind == "skip":
-            reader.skip(spec.size)
-        else:
-            values[spec.name] = _read_field(reader, spec)
-    return MappingProxyType(values)
+    """Read `specs` in order."""
+    return MappingProxyType({spec.name: _read_field(reader, spec) for spec in specs})
 
 
 def _read_field(reader: RecordReader, spec: FieldSpec) -> FieldValue:

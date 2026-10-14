@@ -62,7 +62,7 @@ PABR index with 10-byte rows.
 
 ## Record Structure
 
-A record is a 4-byte head, 37 function slots in a fixed order, then a 7-byte tail. Nothing is optional: a slot the NPC does not use still stores its two strings (empty) and its fields. With every string and list empty a record is 732 bytes; 1,434 of 2,146 records are exactly that plus their string text. The offsets below are positions in such an all-empty record and name the `unknown_<hex>` fields; in a real record every string and list moves what follows it.
+A record is a 4-byte head, 40 function slots in a fixed order, then a 7-byte tail. Nothing is optional: a slot the NPC does not use still stores its two strings (empty) and its fields. With every string and list empty a record is 732 bytes; 1,434 of 2,146 records are exactly that plus their string text. The offsets below are positions in such an all-empty record and name the `unknown_<hex>` fields; in a real record every string and list moves what follows it.
 
 Walking head, slots and tail ends exactly at `data_size` in all 2,146 records.
 
@@ -70,10 +70,10 @@ Walking head, slots and tail ends exactly at `data_size` in all 2,146 records.
 
 | Offset   | Type | Field       | Observed                                                            |
 | -------- | ---- | ----------- | ------------------------------------------------------------------- |
-| `+0x000` | u8   | unknown_000 | `0` (1,521) to `16`; `14` on 22 Central Market NPCs without a shop  |
-| `+0x001` | u8   | unknown_001 | `1`, or `2` on characters 45011, 45012 and 45209                    |
-| `+0x002` | u8   | unknown_002 | Always `0`                                                          |
-| `+0x003` | u8   | unknown_003 | `6` (1,975), `0` (111) or `1` (60)                                  |
+| `+0x000` | u8   | shop_type        | `eShopType`, see Shop Types; `0` (1,521) to `16`, `14` (ItemMarket) exactly on the 22 Central Market NPCs |
+| `+0x001` | u8   | trade_group_type | `ETradeGroupType`: `1` Normal, or `2` Desert on the desert traders 45011, 45012 and 45209 |
+| `+0x002` | u8   | is_smuggle_shop  | Always `0`                                                          |
+| `+0x003` | u8   | servant_type     | `eServantType`: `0` Vehicle (111, the stable, guild mount and siege stable NPCs), `1` Ship (60, the wharves), `6` on the 1,975 records without a stable |
 
 ### Function Slot
 
@@ -94,44 +94,47 @@ On the slots with a `has_button` field, that u8 is `1` exactly when `name` is no
 | #  | Offset   | Slot                         | LOC | Records | Korean names                                                       | LOC text                                                        | Slot fields |
 | -- | -------- | ---------------------------- | --- | ------: | ------------------------------------------------------------------ | --------------------------------------------------------------- | ----------- |
 | 1  | `+0x004` | `shop`                       | 0   | 893     | 상점, 환전소, 비밀 상점, 일꾼 계약, 그믐달 상점, ... (25 names)      | Shop, Currency Exchange, Secret Shop, Contract Workers, Old Moon Shop, War Shop (Tier 1) ... | u32 `shop_buy_group` |
-| 2  | `+0x018` | `shop_sell`                  | -   | 0       |                                                                    |                                                                 | u32 `shop_sell_group` |
+| 2  | `+0x018` | `shop_sell`                  | -   | 0       | | | u32 `shop_sell_group` |
 | 3  | `+0x02C` | `guild_shop`                 | 4   | 63      | 길드 상점, 길드 군수품, 길드 대장 상점                              | Guild Shop, Guild Military Supply, Guild Master Shop            | u32 `guild_shop_buy_group` |
-| 4  | `+0x040` | `guild_shop_sell`            | -   | 0       |                                                                    |                                                                 | u32 `guild_shop_sell_group` |
+| 4  | `+0x040` | `guild_shop_sell`            | -   | 0       | | | u32 `guild_shop_sell_group` |
 | 5  | `+0x054` | `trade`                      | 2   | 125     | 무역                                                               | Trade, Trading                                                  | u32 `trade_group` |
-| 6  | `+0x068` | `auction`                    | 6   | 48      | 일꾼거래소, 황실 경매, 길드 하우스 경매, 경매 : 천년의 걸작          | Worker Exchange, Imperial Auction, Guild House Auction, Auction: Thousand Years Masterpiece | u32 `unknown_078`, u8[14] `unknown_07c`, u32 `unknown_08a`, u8[32] `unknown_08e` |
-| 7  | `+0x0AE` | `learn_skill`                | 10  | 53      | 기술 배우기                                                        | Learn Skills                                                    | u8 `has_button` |
-| 8  | `+0x0BF` | `repair`                     | 11  | 260     | 수리                                                               | Repair                                                          | u8 `has_button` |
-| 9  | `+0x0D0` | `traces_of_blood`            | -   | 9       | 피의 흔적                                                          |                                                                 | u8 `has_button` |
-| 10 | `+0x0E1` | `storage`                    | 12  | 34      | 창고                                                               | Storage                                                         | u8 `has_button` |
-| 11 | `+0x0F2` | `stable`                     | 13  | 171     | 마구간, 선착장, 길드 선착장, 길드 탑승물 관리                       | Stable, Wharf, Guild Wharf, Manage Guild Mounts                 | u8 `servant_where_type`, u8 list `vehicle_types` |
-| 12 | `+0x107` | `transport`                  | 14  | 32      | 수송                                                               | Transport                                                       | u8 `has_button` |
-| 13 | `+0x118` | `unknown_118`                | -   | 0       |                                                                    |                                                                 | u8 `has_button` |
-| 14 | `+0x129` | `conversation`               | 16  | 1,133   | 이야기 교류                                                        | Conversation                                                    | u8 `has_button`, u8 `unknown_13a` |
-| 15 | `+0x13B` | `create_guild`               | 17  | 17      | 길드 창설                                                          | Create Guild                                                    | u8 `has_button` |
-| 16 | `+0x14C` | `node_management`            | 18  | 523     | 탐험 거점 관리                                                     | Node Management                                                 | u32 list `managed_node_keys`, u32 list `town_node_keys` |
-| 17 | `+0x164` | `lord_information`           | 19  | 5       | 영주 정보                                                          | Lord Information                                                | u8 `has_button` |
-| 18 | `+0x175` | `unknown_175`                | -   | 0       |                                                                    |                                                                 | u8 `has_button`, u8 `unknown_186` |
-| 19 | `+0x187` | `extraction`                 | 21  | 53      | 추출                                                               | Extract, Extraction                                             | u8 `has_button` |
-| 20 | `+0x198` | `imperial_delivery`          | 23  | 7       | 황실 납품                                                          | Imperial Delivery                                               | u16 `unknown_1a8` |
-| 21 | `+0x1AA` | `unknown_1aa`                | -   | 0       |                                                                    |                                                                 | u16 `unknown_1ba` |
-| 22 | `+0x1BC` | `knowledge_management`       | 24  | 9       | 지식관리                                                           | Knowledge Management                                            | u8 `has_button` |
-| 23 | `+0x1CD` | `imperial_crafting_delivery` | 25  | 13      | 황실제작 납품                                                      | Imperial Crafting Delivery                                      | u8 `has_button`, u8 `unknown_1de` |
-| 24 | `+0x1DF` | `imperial_fishing_delivery`  | 26  | 13      | 황실낚시 납품                                                      | Imperial Fishing Delivery                                       | u8 `has_button` |
-| 25 | `+0x1F0` | `unknown_1f0`                | -   | 0       |                                                                    |                                                                 | u8 `has_button` |
-| 26 | `+0x201` | `skill_addon`                | 28  | 55      | 기술 특화                                                          | Skill Add-on                                                    | u8 `has_button`, u8 `unknown_212` |
-| 27 | `+0x213` | `give_gift`                  | 29  | 24      | 선물하기                                                           | Give Gift                                                       | u8 `has_button` |
-| 28 | `+0x224` | `cleanse_gear`               | 30  | 29      | 장비 정화                                                          | Cleanse Gear                                                    | u8 `has_button` |
-| 29 | `+0x235` | `black_spirit_adventure`     | -   | 1       | 흑정령의 모험                                                      |                                                                 | u8 `has_button` |
-| 30 | `+0x246` | `central_market`             | 31  | 22      | 통합 거래소                                                        | Central Market                                                  | u16 `unknown_256` |
-| 31 | `+0x258` | `maritime_trade`             | -   | 91      | 해상 교역                                                          |                                                                 | u16 `unknown_268` |
-| 32 | `+0x26A` | `hire_sailor`                | 32  | 23      | 선원 고용                                                          | Hire Sailor                                                     | u8 `unknown_27a`, u8 `has_button`, u8 `unknown_27c`, u16 `unknown_27d` |
-| 33 | `+0x27F` | `season_special_gift`        | 34  | 1       | 시즌 특별 선물                                                     | Season Special Gift                                             | u8 `unknown_28f` |
-| 34 | `+0x290` | `hall_of_honor`              | 35  | 1       | 영광의 전장                                                        | Hall of Honor                                                   | u8 `has_button` |
-| 35 | `+0x2A1` | `yar`                        | 36  | 8       | 야르                                                               | Yar, Yar!                                                       | u8 `unknown_2b1` |
-| 36 | `+0x2B2` | `pet_training`               | 38  | 6       | 반려동물 5세대 훈련                                                | Tier 5 Pet Training                                             | u8 `has_button`, u8 `unknown_2c3` |
-| 37 | `+0x2C4` | `lightstone`                 | 39  | 1       | 광명석 교환/정화                                                   | Lightstone                                                      | u8 `unknown_2d4` |
+| 6  | `+0x068` | `auction` | 6 | 48 | 일꾼거래소, 황실 경매, 길드 하우스 경매, 경매 : 천년의 걸작 | Worker Exchange, Imperial Auction, Guild House Auction, Auction: Thousand Years Masterpiece | u16 `auction_key` |
+| 7  | `+0x07A` | `mating` | - | 0 | | | u16 `mating_key` |
+| 8  | `+0x08C` | `inn` | - | 0 | | | u16 `inn_key` |
+| 9  | `+0x09E` | `reward_explore` | - | 0 | | | |
+| 10 | `+0x0AE` | `learn_skill` | 10 | 53 | 기술 배우기 | Learn Skills | u8 `has_button` |
+| 11 | `+0x0BF` | `repair` | 11 | 260 | 수리 | Repair | u8 `has_button` |
+| 12 | `+0x0D0` | `traces_of_blood` | - | 9 | 피의 흔적 | | u8 `has_button` |
+| 13 | `+0x0E1` | `storage` | 12 | 34 | 창고 | Storage | u8 `has_button` |
+| 14 | `+0x0F2` | `stable` | 13 | 171 | 마구간, 선착장, 길드 선착장, 길드 탑승물 관리 | Stable, Wharf, Guild Wharf, Manage Guild Mounts | u8 `servant_where_type`, u8 list `vehicle_types` |
+| 15 | `+0x107` | `transport` | 14 | 32 | 수송 | Transport | u8 `has_button` |
+| 16 | `+0x118` | `transport_person` | - | 0 | | | u8 `has_button` |
+| 17 | `+0x129` | `conversation` | 16 | 1,133 | 이야기 교류 | Conversation | u8 `has_button`, u8 `is_greet` |
+| 18 | `+0x13B` | `create_guild` | 17 | 17 | 길드 창설 | Create Guild | u8 `has_button` |
+| 19 | `+0x14C` | `node_management` | 18 | 523 | 탐험 거점 관리 | Node Management | u32 list `managed_node_keys`, u32 list `town_node_keys` |
+| 20 | `+0x164` | `lord_information` | 19 | 5 | 영주 정보 | Lord Information | u8 `has_button` |
+| 21 | `+0x175` | `minor_lord_menu` | - | 0 | | | u8 `has_button`, u8 `unknown_186` |
+| 22 | `+0x187` | `extraction` | 21 | 53 | 추출 | Extract, Extraction | u8 `has_button` |
+| 23 | `+0x198` | `imperial_delivery` | 23 | 7 | 황실 납품 | Imperial Delivery | u16 `territory_key` |
+| 24 | `+0x1AA` | `unknown_1aa` | - | 0 | | | u16 `unknown_1ba` |
+| 25 | `+0x1BC` | `knowledge_management` | 24 | 9 | 지식관리 | Knowledge Management | u8 `has_button` |
+| 26 | `+0x1CD` | `imperial_crafting_delivery` | 25 | 13 | 황실제작 납품 | Imperial Crafting Delivery | u8 `has_button`, u8 `supply_shop_key` |
+| 27 | `+0x1DF` | `imperial_fishing_delivery` | 26 | 13 | 황실낚시 납품 | Imperial Fishing Delivery | u8 `has_button` |
+| 28 | `+0x1F0` | `guild_supply_shop` | - | 0 | | | u8 `has_button` |
+| 29 | `+0x201` | `skill_addon` | 28 | 55 | 기술 특화 | Skill Add-on | u8 `has_button`, u8 `is_stallion_skill_training` |
+| 30 | `+0x213` | `give_gift` | 29 | 24 | 선물하기 | Give Gift | u8 `has_button` |
+| 31 | `+0x224` | `cleanse_gear` | 30 | 29 | 장비 정화 | Cleanse Gear | u8 `has_button` |
+| 32 | `+0x235` | `black_spirit_adventure` | - | 1 | 흑정령의 모험 | | u8 `has_button` |
+| 33 | `+0x246` | `central_market` | 31 | 22 | 통합 거래소 | Central Market | u16 `territory_key` |
+| 34 | `+0x258` | `maritime_trade` | - | 91 | 해상 교역 | | u16 `barter_region_key` |
+| 35 | `+0x26A` | `hire_sailor` | 32 | 23 | 선원 고용 | Hire Sailor | u8 `employee_job`, u8 `has_button`, u8 `unknown_27c`, u16 `employee_key` |
+| 36 | `+0x27F` | `season_special_gift` | 34 | 1 | 시즌 특별 선물 | Season Special Gift | u8 `unknown_28f` |
+| 37 | `+0x290` | `hall_of_honor` | 35 | 1 | 영광의 전장 | Hall of Honor | u8 `has_button` |
+| 38 | `+0x2A1` | `yar` | 36 | 8 | 야르 | Yar, Yar! | u8 `unknown_2b1` |
+| 39 | `+0x2B2` | `pet_training` | 38 | 6 | 반려동물 5세대 훈련 | Tier 5 Pet Training | u8 `has_button`, u8 `unknown_2c3` |
+| 40 | `+0x2C4` | `lightstone` | 39 | 1 | 광명석 교환/정화 | Lightstone | u8 `unknown_2d4` |
 
-A list is a u32 count followed by that many items. The slot keys are the parser's names, after the button text; `shop_sell` and `guild_shop_sell` are named after their item group (see Slot Fields). They and the four `unknown_*` slots never have button text.
+A list is a u32 count followed by that many items. The slot keys are the parser's names, after the button text; `shop_sell` and `guild_shop_sell` are named after their item group (see Slot Fields). They and the slots `mating`, `inn`, `reward_explore`, `transport_person`, `minor_lord_menu`, `unknown_1aa` and `guild_supply_shop` never have button text.
 
 ### Tail (7 bytes)
 
@@ -151,24 +154,27 @@ A list is a u32 count followed by that many items. The slot keys are the parser'
 | `guild_shop_buy_group` | `guild_shop`    | Group of the guild shop's Buy tab; non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908` |
 | `guild_shop_sell_group` | `guild_shop_sell` | Group of the guild shop's Sell tab: `52003` on 61 of the 63 guild shop records, else `0` |
 | `trade_group`       | `trade`            | `itemmaingroup.bss` group; non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146` |
-| `unknown_078`       | `auction`          | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
-| `unknown_08a`       | `auction`          | `104` on 46 shop NPCs without an auction button, 44 of them with `unknown_078` = `105`; the two `u8` spans around it are always zero |
+| `auction_key`       | `auction`          | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
+| `mating_key`        | `mating`           | `104` on 46 shop NPCs without an auction button, 44 of them with `auction_key` = `105` |
+| `inn_key`           | `inn`              | Always `0`                                                                                   |
 | `servant_where_type` | `stable`          | `CppEnums.ServantWhereType`, see Vehicle Types; `9` without a stable                         |
 | `vehicle_types`     | `stable`           | u8 list of `CppEnums.VehicleType` values, see Vehicle Types; empty without a stable          |
 | `managed_node_keys` | `node_management`  | `exploration.bss` node keys whose `manager_family_id` is this character, in all 957 entries  |
 | `town_node_keys`    | `node_management`  | One node on 21 records, each a town whose `exploration.bss` `representative_id` is this character (Velia `1` -> 40017) |
-| `unknown_13a`       | `conversation`     | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0`                     |
-| `unknown_1a8`       | `imperial_delivery` | `0` to `7` on the seven Imperial Delivery NPCs (one value each), else `0xFFFF`              |
+| `is_greet`          | `conversation`     | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0`                     |
+| `territory_key`     | `imperial_delivery` | Territory key, `0` to `7` on the seven Imperial Delivery NPCs (one value each), else `0xFFFF` (none) |
 | `unknown_1ba`       | `unknown_1aa`      | Always `0xFFFF`                                                                              |
-| `unknown_256`       | `central_market`   | `0` to `6` on Central Market NPCs (`0` on 16), else `0xFFFF`                                 |
-| `unknown_268`       | `maritime_trade`   | A different value on each of the 91 records, `92` to `1,557`, else `0`                       |
-| `unknown_27a`       | `hire_sailor`      | `0` on the 23 Hire Sailor records, `2` on all others                                         |
-| `unknown_27d`       | `hire_sailor`      | `1` to `23`, a different one per Hire Sailor record                                          |
+| `territory_key`     | `central_market`   | Territory key, `0` to `6` on Central Market NPCs (`0` on 16), else `0xFFFF` (none)          |
+| `barter_region_key` | `maritime_trade`   | `regioninfo.bss` region key of the island, port or ship where this NPC barters; a different one on each of the 91 records, else `0`. [`barter_npclist.bss`](barter_npclist_bss.md) lists the same 91 keys, each with this character's ID (all 91 match, client 3464) |
+| `employee_job`      | `hire_sailor`      | `employeestaticstatus.bss` `job`: `0` (Sailor) on the 23 Hire Sailor records, `2` on all others |
+| `employee_key`      | `hire_sailor`      | `1` to `23`, a different one per Hire Sailor record. With `employee_job` and `has_button` (`1`, the level) it names the `employeestaticstatus.bss` row of the sailor for hire: all 23 records resolve (client 3464) |
 | `unknown_28f`       | `season_special_gift` | `1` only on the record with button text                                                  |
 | `unknown_2b1`       | `yar`              | `1` on the 8 Yar records and two more                                                        |
 | `unknown_2c3`       | `pet_training`     | `1` on 23 records, all with Shop, Repair and Stable buttons                                  |
 | `unknown_2d4`       | `lightstone`       | `1` on the Lightstone record and on 32 stable NPCs                                           |
-| `unknown_186`, `unknown_1de`, `unknown_212`, `unknown_27c` | | `unknown_1de` is `1` exactly on the 13 Imperial Crafting Delivery records; `unknown_212` is `1` on 3; the others are always `0` |
+| `supply_shop_key`   | `imperial_crafting_delivery` | `1` exactly on the 13 Imperial Crafting Delivery records                           |
+| `is_stallion_skill_training` | `skill_addon` | `1` on 3 records                                                                     |
+| `unknown_186`, `unknown_27c` | | Always `0`                                                                          |
 
 The `<Null>` text is a placeholder: `season_special_gift` stores it as `name` in 2,139 records, and LOC type `32` index `34` holds `<Null>` for 138 of them. It is not a button.
 
@@ -203,6 +209,61 @@ Checked in game (2026-10-14, client 3464): Benyamin's Shop Sell tab lists 14 ite
 
 `servant_where_type` follows `CppEnums.ServantWhereType` (`ServantWhereTypeUser` 0, `Guild` 1, `Siege` 2, `RaceHorse` 5); the enum gives `5` to both `Camping` and `RaceHorse`, and the one stable with `5` takes only race horses. The `9` on the 1,975 records without a stable is past `ServantWhereTypeCount` (8).
 
+### Shop Types
+
+`shop_type` follows the `_shopType` table of `panel_dialog_main_all.luac` (the `eShopType_` members of the 2016 client's `gc::ShopType` stop at `DayRandomShop`; `ItemMarket` and `Instrument` came later). Records per value on client 3464:
+
+| Value | Name          | Records |
+| ----- | ------------- | ------: |
+| `0`   | None          | 1,521   |
+| `1`   | Potion        | 144     |
+| `2`   | Weapon        | 105     |
+| `3`   | Jewel         | 16      |
+| `4`   | Furniture     | 38      |
+| `5`   | Collect       | 59      |
+| `6`   | Fish          | 38      |
+| `7`   | Worker        | 31      |
+| `8`   | Alchemy       | 1       |
+| `9`   | Cook          | 35      |
+| `10`  | PC            | 0       |
+| `11`  | Grocery       | 90      |
+| `12`  | RandomShop    | 23      |
+| `13`  | DayRandomShop | 10      |
+| `14`  | ItemMarket    | 22      |
+| `15`  | Instrument    | 4       |
+| `16`  | (`_Count`)    | 9       |
+
+The 9 records with `16` (47022, 46041, 50973, 49525 to 49529, 49548) store the enum's `_Count`.
+
+## Field Names
+
+Most names above come from two sources. The 2016 client (build of 2016-01-11) ships with debug symbols: its `gc::CharacterFunctionStaticStatus` starts with `_shopType`, `_tradeGroupType`, `_isSmuggleShop` and `_servantType`, then holds a name, a condition and the slot fields for each function in this order: BuyingFromNpc, SellingToNpc, BuyingFromGuildShopNpc, SellingToGuildShopNpc, Trading, Auction (`_auctionKey`), Mating (`_matingKey`), Inn (`_innKey`), RewardExplore, TrainSkill, Repair, Warehouse, Stable, Transfer, TransferPerson, IntimacyGame (`_isIntimacyGame`, `_isGreet`), Guild, Explore (`_exploreWaypoints`, `_guideWaypoints`), LordMenu, MinorLordMenu (`_minorLordRegionKey`), Extract, TerritoryTrade, TerritorySupply, ItemMarket, Knowledge, SupplyShop, FishSupplyShop and GuildSupplyShop. The server-side `CharacterFunction_Table` of the BdoEmu server (about 2021) has a column for each, and I matched every column against every field over the 1,318 characters it shares with the client file.
+
+The LOC index of a button is the function's place in that column order: `0` BuyingFromNpc, `2` Trading, `4` BuyingFromGuildShopNpc, `6` Auction, `10` TrainSkill ... `23` TerritorySupply, `27` GuildSupplyShop, `31` NewItemMarket, `32` Employee.
+
+Matches on client 3464 (1,318 shared characters):
+
+| Field                        | Slot                         | `CharacterFunction_Table` column | Matching |
+| ---------------------------- | ---------------------------- | -------------------------------- | -------: |
+| shop_type                    | head                         | `ShopType`                       | 1,302    |
+| trade_group_type             | head                         | `TradeGroupType`                 | 1,318    |
+| auction_key                  | `auction`                    | `AuctionKey`                     | 1,318    |
+| mating_key                   | `mating`                     | `MatingKey`                      | 1,318    |
+| servant_where_type           | `stable`                     | `StableType`                     | 1,316    |
+| vehicle_types                | `stable`                     | `StableKey`                      | 1,305    |
+| is_greet                     | `conversation`               | `isGreetNpc`                     | 1,303    |
+| managed_node_keys            | `node_management`            | `ExploreWaypoint`                | 1,271    |
+| town_node_keys               | `node_management`            | `GuideWaypoint`                  | 1,316    |
+| name, territory_key          | `imperial_delivery`          | `TerritorySupplyName`, `TerritoryKeyForTerritorySupply` | 1,317 |
+| supply_shop_key              | `imperial_crafting_delivery` | `SupplyShopKey`                  | 1,318    |
+| is_stallion_skill_training   | `skill_addon`                | `isStallionSkillExpTraining`     | 1,318    |
+| name                         | `black_spirit_adventure`     | `DiceGame`                       | 1,318    |
+| name, territory_key          | `central_market`             | `NewItemMarketName`, `TerritoryKeyForNewItemMarket` | 1,317 |
+| name, barter_region_key             | `maritime_trade`             | `BarterName`, `isBarter`         | 1,318    |
+| employee_job, employee_key   | `hire_sailor`                | `EmployeeJob`, `EmployeeType`    | 1,318    |
+
+The `territory_key` fields hold `0xFFFF` where the server column is empty, and `employee_job` holds `2`. `is_smuggle_shop`, `servant_type`, `inn_key` and the slots `reward_explore`, `transport_person`, `minor_lord_menu` and `guild_supply_shop` have no server column with values; they are named from their place in the 2016 member order between matched fields. `servant_type` follows `gc::ServantType` (`0` Vehicle, `1` Ship, `2` Pet), which the stable records bear out (see Head). The old `auction` slot fields (`unknown_078` u32, 14 skipped bytes, `unknown_08a` u32, 32 skipped bytes) were the auction key and the empty Mating, Inn and RewardExplore slots read across.
+
 ## Suggested UI Layout
 
 | Column        | Type | Notes                                                                                   |
@@ -210,6 +271,7 @@ Checked in game (2026-10-14, client 3464): Benyamin's Shop Sell tab lists 14 ite
 | Character ID  | num  | `character_id`                                                                          |
 | Name          | text | LOC type `6`; shown only when LOC is loaded                                             |
 | Functions     | text | Button of each slot with button text, in slot order: LOC type `32` (`str_id1` = character ID, `str_id4` = the slot's LOC index), else the Korean `name` |
+| Shop Type     | text | `shop_type` member name; `-` for `None`                                                 |
 | Managed Nodes | text | `managed_node_keys` by LOC type `29` name (`Bambu Valley - Mining` for sub-nodes), else the key |
 | Town          | text | `town_node_keys` the same way                                                           |
 | Item Groups   | text | Each non-zero `*_group` field as a label (Shop, Shop (Sell), Guild Shop, Guild Shop (Sell), Trade) and the group ID linking to its `itemmaingroup.bss` row, one per line |
@@ -221,28 +283,20 @@ Conditions, `servant_where_type` and the `unknown_*` fields stay out of the tabl
 
 - 97 records have no button text in any slot.
 - LOC type `32` names buttons for 2,049 of the 2,146 characters. It also holds 69 characters this file has no record for, and an index `33` (`temp` or `[PH]`) on 436 records, 414 of them Node Management NPCs, that matches no slot.
-- The slot order is close to, but not the same as, the client's `CppEnums.ContentsType` (`Contents_Shop`, `Contents_Skill`, `Contents_Repair`, `Contents_Auction`, `Contents_Warehouse`, `Contents_IntimacyGame`, `Contents_Stable`, ... in `global_define_cpp_enum.luac`), and the LOC indexes do not follow the slot order either (Trade is LOC `2` but the fifth slot).
+- The slot order is close to, but not the same as, the client's `CppEnums.ContentsType` (`Contents_Shop`, `Contents_Skill`, `Contents_Repair`, `Contents_Auction`, `Contents_Warehouse`, `Contents_IntimacyGame`, `Contents_Stable`, ... in `global_define_cpp_enum.luac`), and the LOC indexes do not follow the slot order either (Trade is LOC `2` but the fifth slot): they follow the column order of `CharacterFunction_Table`, see Field Names.
 - `itemtradegrouptonpc.dbss` is keyed by character ID too (47747 is a trade NPC), so `trade_group` is not its key.
-- `unknown_268` values are not `exploration.bss` node keys: only 31 of 91 match a node, and those nodes belong to other managers.
+- `barter_region_key` values are region keys, not `exploration.bss` node keys: the barter windows key their lists by region (`ToClient_barterWrapper(RegionKey(regionKey))` in `panel_window_barterinfosearch_2.luac`).
 
 ## Open Questions
 
-### Auction Keys
+### Auction and Mating Keys
 
-`unknown_078` (`140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction) and `unknown_08a` (`104`) look like keys into another table, but none of their values is an `itemmaingroup.bss` group ID (0 of 94 and 0 of 46 records, client 3464), and no other client table with these keys has been found.
+`auction_key` (`140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction) and `mating_key` (`104`) are keys of the auction and mating tables (`gc::AuctionStaticStatus` in the 2016 client), but none of their values is an `itemmaingroup.bss` group ID (0 of 94 and 0 of 46 records, client 3464), and the client file holding those tables has not been found.
 
-### Head and Tail Bytes
+### Tail Bytes
 
-`unknown_000` takes 16 values and is `14` on Central Market NPCs without a shop, so it is not a shop type alone. `unknown_003` is `6` on most records, and `unknown_2d5` is `1` exactly on the trade NPCs. None of them has been tied to a client enum.
+`unknown_2d5` is `1` exactly on the 125 trade NPCs and `2` elsewhere. Neither the 2016 member list nor the server table has a field for it.
 
 ### Slots Without Button Text
 
-Four slots (`unknown_118`, `unknown_175`, `unknown_1aa`, `unknown_1f0`) never carry button text; their fields are always `0`, or `0xFFFF` for `unknown_1ba`. They may be functions whose button text the client builds itself, such as Inn or Socket.
-
-### Territory-like Values
-
-`unknown_1a8` (Imperial Delivery) runs `0` to `7` and `unknown_256` (Central Market) `0` to `6`, one value per town NPC (Velia `0`, Heidel `1`, Calpheon `2`), which suggests a territory index, but no table confirms it.
-
-### Maritime Trade and Hire Sailor Values
-
-`unknown_268` is unique per maritime trade NPC and `unknown_27d` numbers the 23 Hire Sailor NPCs `1` to `23`. What either one indexes is not known.
+`unknown_1aa` (`unknown_1ba` always `0xFFFF`) has no column match. By the LOC column order it is likely TerritoryTrade (`22`, next to TerritorySupply), but this file stores it after `imperial_delivery`, while the 2016 client stores TerritoryTrade first. `minor_lord_menu` stores `0` in both bytes, where the 2016 client had a u16 `_minorLordRegionKey`; the server still lists a region key for 155 characters.

@@ -8,6 +8,7 @@
     "characterId": "ID del personaje",
     "name": "Nombre",
     "functions": "Funciones",
+    "shopType": "Tipo de tienda",
     "managedNodes": "Nodos gestionados",
     "town": "Pueblo",
     "itemGroups": "Grupos de objetos",

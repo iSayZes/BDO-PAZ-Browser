@@ -8,6 +8,7 @@
     "characterId": "ID du personnage",
     "name": "Nom",
     "functions": "Fonctions",
+    "shopType": "Type de boutique",
     "managedNodes": "Géopoints gérés",
     "town": "Ville",
     "itemGroups": "Groupes d'objets",

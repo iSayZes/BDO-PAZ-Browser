@@ -10,7 +10,7 @@ from _bss.itemmaingroup.parser import parse_itemmaingroup_records
 from _common.pabr_offset import parse_pabr_offset_rows
 from _common.vehicle_type import VEHICLE_TYPE_NAMES
 from _dbss.characterfunction.layout import ITEM_GROUP_FIELDS, SLOTS
-from _dbss.characterfunction.parser import parse_characterfunction_records
+from _dbss.characterfunction.parser import CharacterFunctionRecord, parse_characterfunction_records
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
@@ -27,6 +27,10 @@ _OFFSET_FILE = "characterfunctionoffset.dbss"
 # Igor Bartali represents Velia (node 1), the anchor exploration.bss uses too.
 _VELIA_REPRESENTATIVE = 40017
 _VELIA_NODE = 1
+# eShopType_ItemMarket in the _shopType table of panel_dialog_main_all.luac.
+_SHOP_TYPE_ITEM_MARKET = 14
+# servant_type on records without a stable (past eServantType's members).
+_NO_SERVANT_TYPE = 6
 
 FUNCTION_CASE = HandlerCase(
     handler_name="characterfunction.dbss",
@@ -101,12 +105,14 @@ def test_characterfunctionoffset(spec: Any, offset_result: HandlerResult) -> Non
     offset_result.check(spec)
 
 
+def _parsed_records(function_result: HandlerResult) -> list[CharacterFunctionRecord]:
+    source = function_result.source
+    return parse_characterfunction_records(source.data, parse_pabr_offset_rows(source.file(_OFFSET_FILE)))
+
+
 def test_has_button_flags_match_the_button_text(function_result: HandlerResult) -> None:
     """Where a slot has the flag, it is 1 exactly when the slot has button text."""
-    source = function_result.source
-    records = parse_characterfunction_records(
-        source.data, parse_pabr_offset_rows(source.file(_OFFSET_FILE))
-    )
+    records = _parsed_records(function_result)
     flagged = {spec.key for spec in SLOTS if any(field.name == "has_button" for field in spec.fields)}
 
     mismatches = [
@@ -150,10 +156,7 @@ def test_item_groups_are_itemmaingroup_groups(function_result: HandlerResult) ->
 
 def test_vehicle_types_are_enum_members(function_result: HandlerResult) -> None:
     """Stable vehicle types are CppEnums.VehicleType values, and only stables store them."""
-    source = function_result.source
-    records = parse_characterfunction_records(
-        source.data, parse_pabr_offset_rows(source.file(_OFFSET_FILE))
-    )
+    records = _parsed_records(function_result)
 
     unknown = [
         (record.character_id, value)
@@ -165,3 +168,25 @@ def test_vehicle_types_are_enum_members(function_result: HandlerResult) -> None:
 
     assert not unknown
     assert not without_stable
+
+
+def test_central_market_npcs_have_the_item_market_shop_type(function_result: HandlerResult) -> None:
+    """A Central Market button comes with shop_type eShopType_ItemMarket, and only there."""
+    mismatches = [
+        record.character_id
+        for record in _parsed_records(function_result)
+        if bool(record.slot("central_market").name) != (record.head["shop_type"] == _SHOP_TYPE_ITEM_MARKET)
+    ]
+
+    assert not mismatches
+
+
+def test_servant_type_is_set_exactly_on_stables(function_result: HandlerResult) -> None:
+    """Records whose stable keeps vehicles have a servant type; the rest store the filler."""
+    mismatches = [
+        record.character_id
+        for record in _parsed_records(function_result)
+        if bool(record.vehicle_types) == (record.head["servant_type"] == _NO_SERVANT_TYPE)
+    ]
+
+    assert not mismatches

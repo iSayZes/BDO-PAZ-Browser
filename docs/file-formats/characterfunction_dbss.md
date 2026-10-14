@@ -147,34 +147,38 @@ A list is a u32 count followed by that many items. The slot keys are the parser'
 
 ### Slot Fields
 
-| Field               | Slot               | Observed                                                                                     |
-| ------------------- | ------------------ | -------------------------------------------------------------------------------------------- |
-| `shop_buy_group`    | `shop`             | `itemmaingroup.bss` group of the Shop window's Buy tab; non-zero on 884 of the 893 shop records and nowhere else; 491 values in `32,002` to `55,053` |
-| `shop_sell_group`   | `shop_sell`        | Group of the Sell tab: `52001` (683), `52002` (41), `32001` (16), `52004` (3), else `0`; the slot never has a button |
-| `guild_shop_buy_group` | `guild_shop`    | Group of the guild shop's Buy tab; non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908` |
-| `guild_shop_sell_group` | `guild_shop_sell` | Group of the guild shop's Sell tab: `52003` on 61 of the 63 guild shop records, else `0` |
-| `trade_group`       | `trade`            | `itemmaingroup.bss` group; non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146` |
-| `auction_key`       | `auction`          | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
-| `mating_key`        | `mating`           | `104` on 46 shop NPCs without an auction button, 44 of them with `auction_key` = `105` |
-| `inn_key`           | `inn`              | Always `0`                                                                                   |
-| `servant_where_type` | `stable`          | `CppEnums.ServantWhereType`, see Vehicle Types; `9` without a stable                         |
-| `vehicle_types`     | `stable`           | u8 list of `CppEnums.VehicleType` values, see Vehicle Types; empty without a stable          |
-| `managed_node_keys` | `node_management`  | `exploration.bss` node keys whose `manager_family_id` is this character, in all 957 entries  |
-| `town_node_keys`    | `node_management`  | One node on 21 records, each a town whose `exploration.bss` `representative_id` is this character (Velia `1` -> 40017) |
-| `is_greet`          | `conversation`     | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0`                     |
-| `territory_key`     | `imperial_delivery` | Territory key, `0` to `7` on the seven Imperial Delivery NPCs (one value each), else `0xFFFF` (none) |
-| `unknown_1ba`       | `unknown_1aa`      | Always `0xFFFF`                                                                              |
-| `territory_key`     | `central_market`   | Territory key, `0` to `6` on Central Market NPCs (`0` on 16), else `0xFFFF` (none)          |
-| `barter_region_key` | `maritime_trade`   | `regioninfo.bss` region key of the island, port or ship where this NPC barters; a different one on each of the 91 records, else `0`. [`barter_npclist.bss`](barter_npclist_bss.md) lists the same 91 keys, each with this character's ID (all 91 match, client 3464) |
-| `employee_job`      | `hire_sailor`      | `employeestaticstatus.bss` `job`: `0` (Sailor) on the 23 Hire Sailor records, `2` on all others |
-| `employee_key`      | `hire_sailor`      | `1` to `23`, a different one per Hire Sailor record. With `employee_job` and `has_button` (`1`, the level) it names the `employeestaticstatus.bss` row of the sailor for hire: all 23 records resolve (client 3464) |
-| `unknown_28f`       | `season_special_gift` | `1` only on the record with button text                                                  |
-| `unknown_2b1`       | `yar`              | `1` on the 8 Yar records and two more                                                        |
-| `unknown_2c3`       | `pet_training`     | `1` on 23 records, all with Shop, Repair and Stable buttons                                  |
-| `unknown_2d4`       | `lightstone`       | `1` on the Lightstone record and on 32 stable NPCs                                           |
-| `supply_shop_key`   | `imperial_crafting_delivery` | `1` exactly on the 13 Imperial Crafting Delivery records                           |
-| `is_stallion_skill_training` | `skill_addon` | `1` on 3 records                                                                     |
-| `unknown_186`, `unknown_27c` | | Always `0`                                                                          |
+Offsets are positions in the all-empty record, like the Slots table: a field sits `0x10` past its slot, after the two empty strings. A list counts as its 4-byte count. `has_button` is left out; see Function Slot.
+
+| Offset   | Type       | Field                      | Slot                         | Observed |
+| -------- | ---------- | -------------------------- | ---------------------------- | -------- |
+| `+0x014` | u32        | shop_buy_group             | `shop`                       | `itemmaingroup.bss` group of the Shop window's Buy tab; non-zero on 884 of the 893 shop records and nowhere else; 491 values in `32,002` to `55,053` |
+| `+0x028` | u32        | shop_sell_group            | `shop_sell`                  | Group of the Sell tab: `52001` (683), `52002` (41), `32001` (16), `52004` (3), else `0`; the slot never has a button |
+| `+0x03C` | u32        | guild_shop_buy_group       | `guild_shop`                 | Group of the guild shop's Buy tab; non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908` |
+| `+0x050` | u32        | guild_shop_sell_group      | `guild_shop_sell`            | Group of the guild shop's Sell tab: `52003` on 61 of the 63 guild shop records, else `0` |
+| `+0x064` | u32        | trade_group                | `trade`                      | `itemmaingroup.bss` group; non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146` |
+| `+0x078` | u16        | auction_key                | `auction`                    | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
+| `+0x08A` | u16        | mating_key                 | `mating`                     | `104` on 46 shop NPCs without an auction button, 44 of them with `auction_key` = `105` |
+| `+0x09C` | u16        | inn_key                    | `inn`                        | Always `0` |
+| `+0x102` | u8         | servant_where_type         | `stable`                     | `CppEnums.ServantWhereType`, see Vehicle Types; `9` without a stable |
+| `+0x103` | u8 list    | vehicle_types              | `stable`                     | `CppEnums.VehicleType` values, see Vehicle Types; empty without a stable |
+| `+0x13A` | u8         | is_greet                   | `conversation`               | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0` |
+| `+0x15C` | u32 list   | managed_node_keys          | `node_management`            | `exploration.bss` node keys whose `manager_family_id` is this character, in all 957 entries |
+| `+0x160` | u32 list   | town_node_keys             | `node_management`            | One node on 21 records, each a town whose `exploration.bss` `representative_id` is this character (Velia `1` -> 40017) |
+| `+0x186` | u8         | unknown_186                | `minor_lord_menu`            | Always `0` |
+| `+0x1A8` | u16        | territory_key              | `imperial_delivery`          | Territory key, `0` to `7` on the seven Imperial Delivery NPCs (one value each), else `0xFFFF` (none) |
+| `+0x1AA` | string x 2 | unknown_1aa                | `unknown_1aa`                | The slot's own `name` and `condition`; no record has button text in it |
+| `+0x1BA` | u16        | unknown_1ba                | `unknown_1aa`                | Always `0xFFFF` |
+| `+0x1DE` | u8         | supply_shop_key            | `imperial_crafting_delivery` | `1` exactly on the 13 Imperial Crafting Delivery records |
+| `+0x212` | u8         | is_stallion_skill_training | `skill_addon`                | `1` on 3 records |
+| `+0x256` | u16        | territory_key              | `central_market`             | Territory key, `0` to `6` on Central Market NPCs (`0` on 16), else `0xFFFF` (none) |
+| `+0x268` | u16        | barter_region_key          | `maritime_trade`             | `regioninfo.bss` region key of the island, port or ship where this NPC barters; a different one on each of the 91 records, else `0`. [`barter_npclist.bss`](barter_npclist_bss.md) lists the same 91 keys, each with this character's ID (all 91 match, client 3464) |
+| `+0x27A` | u8         | employee_job               | `hire_sailor`                | `employeestaticstatus.bss` `job`: `0` (Sailor) on the 23 Hire Sailor records, `2` on all others |
+| `+0x27C` | u8         | unknown_27c                | `hire_sailor`                | Always `0` |
+| `+0x27D` | u16        | employee_key               | `hire_sailor`                | `1` to `23`, a different one per Hire Sailor record. With `employee_job` and `has_button` (`1`, the level) it names the `employeestaticstatus.bss` row of the sailor for hire: all 23 records resolve (client 3464) |
+| `+0x28F` | u8         | unknown_28f                | `season_special_gift`        | `1` only on the record with button text |
+| `+0x2B1` | u8         | unknown_2b1                | `yar`                        | `1` on the 8 Yar records and two more |
+| `+0x2C3` | u8         | unknown_2c3                | `pet_training`               | `1` on 23 records, all with Shop, Repair and Stable buttons |
+| `+0x2D4` | u8         | unknown_2d4                | `lightstone`                 | `1` on the Lightstone record and on 32 stable NPCs |
 
 The `<Null>` text is a placeholder: `season_special_gift` stores it as `name` in 2,139 records, and LOC type `32` index `34` holds `<Null>` for 138 of them. It is not a button.
 

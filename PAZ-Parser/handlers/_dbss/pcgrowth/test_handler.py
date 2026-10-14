@@ -8,7 +8,13 @@ import pytest
 from _bss.stringtable.parser import GAME_SHEET, parse_key_hashes
 from _common.class_type import PLAYABLE_CLASSES_MASK
 from _dbss.pcgrowth import combat_types
-from _dbss.pcgrowth.combat_types import COMBAT_TYPE_LABELS, combat_type_label, combat_type_text
+from _dbss.pcgrowth.combat_types import (
+    COMBAT_TYPE_LABELS,
+    RESOURCE_TYPE_LABELS,
+    combat_type_label,
+    combat_type_text,
+    resource_type_label,
+)
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
@@ -44,7 +50,14 @@ CASE = HandlerCase(
             required_keys=[
                 "class_type",
                 "character_key",
+                "background_character_key",
+                "alterego_character_key",
+                "worker_character_key",
                 "starter_weapons",
+                "combat_resource_type",
+                "combat_resource_name",
+                "combo_color",
+                "awaken_combo_color",
                 "name_kr",
                 "description_kr",
                 "select_movie",
@@ -65,13 +78,25 @@ CASE = HandlerCase(
         RangeTest(col="class_type", min_val=0, max_val=_MAX_CLASS_TYPE),
         RangeTest(col="gender", min_val=0, max_val=1),
         RangeTest(col="combat_type", min_val=min(COMBAT_TYPE_LABELS), max_val=max(COMBAT_TYPE_LABELS)),
+        RangeTest(
+            col="combat_resource_type", min_val=min(RESOURCE_TYPE_LABELS), max_val=max(RESOURCE_TYPE_LABELS)
+        ),
         # Class type and character key differ: Ranger is class 4, character 2.
         TargetTest(
             col="class_type",
             value=0,
-            expected={"character_key": 1, "gender": 0, "name_kr": "워리어", "combat_type_name": "Melee"},
+            expected={
+                "character_key": 1,
+                "gender": 0,
+                "name_kr": "워리어",
+                "combat_type_name": "Melee",
+                "combat_resource_name": "WP",
+            },
         ),
         TargetTest(col="class_type", value=4, expected={"character_key": 2, "gender": 1, "combat_type_name": "Ranged"}),
+        # Sorceress uses MP, Valkyrie SP.
+        TargetTest(col="class_type", value=8, expected={"combat_resource_name": "MP"}),
+        TargetTest(col="class_type", value=24, expected={"combat_resource_name": "SP"}),
         TargetTest(col="class_type", value=25, expected={"character_key": 26, "class_name": "Kunoichi"}),
         # The character info tooltip lists Hashashin under Magic, not melee.
         TargetTest(col="class_type", value=1, expected={"combat_type_name": "Magic"}),
@@ -138,20 +163,26 @@ def test_playable_is_none_without_pcgrowthsimply() -> None:
     assert all(r["is_playable"] is None for r in result.records)
 
 
-def test_combat_type_hashes_match_stringtable() -> None:
+def test_label_hashes_match_stringtable() -> None:
     hashes = parse_key_hashes(load_binary_fixture("stringtable.bss"), GAME_SHEET)
     wrong = {
         label.key: (label.key_hash, hashes.get(label.key))
-        for label in COMBAT_TYPE_LABELS.values()
+        for label in (*COMBAT_TYPE_LABELS.values(), *RESOURCE_TYPE_LABELS.values())
         if hashes.get(label.key) != label.key_hash
     }
-    assert not wrong, f"combat type hashes differ from stringtable.bss (stored, file): {wrong}"
+    assert not wrong, f"label hashes differ from stringtable.bss (stored, file): {wrong}"
 
 
 def test_combat_types_have_english_text() -> None:
     load_case(CASE)
     missing = [label.enum_name for value, label in COMBAT_TYPE_LABELS.items() if not combat_type_label(value)]
     assert not missing, f"combat types without LOC text: {missing}"
+
+
+def test_resource_types_have_english_text() -> None:
+    load_case(CASE)
+    missing = [label.enum_name for value, label in RESOURCE_TYPE_LABELS.items() if not resource_type_label(value)]
+    assert not missing, f"combat resource types without LOC text: {missing}"
 
 
 def test_combat_type_without_label_shows_enum_name(monkeypatch: pytest.MonkeyPatch) -> None:

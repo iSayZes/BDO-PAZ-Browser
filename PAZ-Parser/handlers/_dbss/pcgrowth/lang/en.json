@@ -11,6 +11,7 @@
     "gender": "Gender",
     "playable": "Playable",
     "combatType": "Combat Type",
+    "resource": "Resource",
     "starterWeapons": "Starter Weapons",
     "classWeapons": "Class Weapons",
     "selectMovie": "Selection Video",

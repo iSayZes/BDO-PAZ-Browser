@@ -13,7 +13,7 @@ from _common.loc import loc_tagged
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from _common.pa_text import pa_fields, pa_line_cell
 from _bss.pcgrowthsimply.parser import parse_pcgrowthsimply_records
-from .combat_types import combat_type_text
+from .combat_types import combat_type_text, resource_type_text
 from .parser import parse_pcgrowth_records, parse_pcgrowthoffset_records
 from .text import class_display_name
 
@@ -48,6 +48,7 @@ def _text_fields(record: dict) -> dict:
     return {
         "class_name": class_display_name(class_type, record["name_kr"]),
         "combat_type_name": combat_type_text(record["combat_type"]),
+        "combat_resource_name": resource_type_text(record["combat_resource_type"]),
         **pa_fields("description", description),
     }
 
@@ -62,6 +63,7 @@ class PcGrowthHandler(PreviewHandler):
             Column(cols["gender"], sort_key="gender"),
             Column(cols["playable"], sort_key="is_playable"),
             Column(cols["combatType"], sort_key="combat_type"),
+            Column(cols["resource"], sort_key="combat_resource_type"),
             Column(cols["starterWeapons"]),
             Column(cols["classWeapons"]),
             Column(cols["selectMovie"], sort_key="select_movie"),
@@ -115,6 +117,7 @@ class PcGrowthHandler(PreviewHandler):
                 e(genders.get(_GENDER_KEYS.get(r["gender"], ""), r["gender"])),
                 _EMPTY if r["is_playable"] is None else flag_cell(r["is_playable"]),
                 e(r["combat_type_name"]),
+                e(r["combat_resource_name"]),
                 item_key_list_cell(r["starter_weapons"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 item_key_list_cell([w for w in r["class_weapons"] if w], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 e(r["select_movie"] or _EMPTY),

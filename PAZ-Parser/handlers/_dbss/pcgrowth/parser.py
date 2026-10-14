@@ -3,7 +3,8 @@
 The main file is a u32 count and one variable-length row per class type, each
 after a u8 copy of its class type:
 
-    u8 class_type | u16 character_key | 3 x u16 + u32 + u8 unknown
+    u8 class_type | u16 character_key | u16 background, alter ego and worker
+    character keys | u32 + u8 unknown
     | u32 starter_count | u32 starter_weapons[starter_count]
     | 99-byte block | u64-prefixed UTF-16 name_kr, description_kr, select_movie
     | u8 gender | 4 x u64-prefixed ASCII consume_actions
@@ -27,16 +28,25 @@ from _common.record_reader import RecordReader
 _KEY_PREFIX_SIZE = 1
 _HEAD = struct.Struct("<BHHHHIB")
 _HEAD_FIELDS = (
-    "class_type", "character_key", "unknown_03", "unknown_05", "unknown_07", "unknown_09", "unknown_0d",
+    "class_type",
+    "character_key",
+    "background_character_key",
+    "alterego_character_key",
+    "worker_character_key",
+    "unknown_09",
+    "unknown_0d",
 )
 _U8 = struct.Struct("<B")
 _U32 = struct.Struct("<I")
-# Same bytes in every row of client 3464 except the u8 at +0x5E.
+# Same bytes in every row of client 3464 except the u8 at +0x5E, the
+# CppEnums.CombatResourceType of the class.
 _SETUP_BLOCK = struct.Struct("<99s")
-_SETUP_VARYING = 0x5E
+_SETUP_COMBAT_RESOURCE_TYPE = 0x5E
 _CONSUME_ACTION_COUNT = 4
-# f32[6] | u8 combat_type | u32 class_weapons[3] | u16 unknown_25 | f32[6] | u32 pair_count
-_PRESENTATION_HEAD = struct.Struct("<24sB3IH24sI")
+# f32[3] combo_color | f32[3] awaken_combo_color | u8 combat_type
+# | u32 class_weapons[3] | u16 unknown_25 | f32[6] | u32 pair_count
+_PRESENTATION_HEAD = struct.Struct("<3f3fB3IH24sI")
+_COLOR_SCALE = 255
 _PAIR_SIZE = 8
 
 
@@ -56,10 +66,19 @@ def _model_paths(reader: RecordReader) -> list[str]:
     return paths
 
 
+def _rgb_hex(channels: tuple[float, ...]) -> str:
+    """Three 0.0 to 1.0 channels as `rrggbb`."""
+    return bytes(round(channel * _COLOR_SCALE) for channel in channels).hex()
+
+
 def _presentation(reader: RecordReader) -> dict:
-    _, combat_type, main, sub, awakening, unknown_25, _, pair_count = reader.unpack(_PRESENTATION_HEAD)
+    values = reader.unpack(_PRESENTATION_HEAD)
+    combo, awaken_combo = values[0:3], values[3:6]
+    combat_type, main, sub, awakening, unknown_25, _, pair_count = values[6:]
     reader.skip(pair_count * _PAIR_SIZE + _U32.size)
     return {
+        "combo_color": _rgb_hex(combo),
+        "awaken_combo_color": _rgb_hex(awaken_combo),
         "combat_type": combat_type,
         "class_weapons": [main, sub, awakening],
         "unknown_25": unknown_25,
@@ -93,7 +112,7 @@ def _class_record(data: bytes, offset_row: dict) -> dict:
     return {
         **head,
         "starter_weapons": starter_weapons,
-        "unknown_5e": setup[_SETUP_VARYING],
+        "combat_resource_type": setup[_SETUP_COMBAT_RESOURCE_TYPE],
         "name_kr": name_kr,
         "description_kr": description_kr,
         "select_movie": select_movie,

@@ -44,6 +44,10 @@ _BOON_ITEM = 761880
 _BOON_SKILL_KEY = 47683 << 16 | 1
 _BOON_BUFFS = (48723, 48724, 48725, 48726, 48727, 48728)
 _BOON_TITLE = "[Blessing] Adventure's Boon"
+# gc::BuffModule::Type of the 2016 client: eBuffModuleCount, and the
+# eDeprecatedBuffModule slot that type 19 (Sailor EXP) reuses.
+_BUFF_MODULE_COUNT_2016 = 132
+_REUSED_DEPRECATED_TYPE = 19
 
 
 BUFF_CASE = HandlerCase(
@@ -65,6 +69,7 @@ BUFF_CASE = HandlerCase(
                 "name",
                 "level",
                 "effect_type",
+                "effect_type_name",
                 "duration_ms",
                 "tick_ms",
                 "duration",
@@ -294,6 +299,26 @@ def test_boon_exp_buff_reads_its_own_rate(buff_result: HandlerResult) -> None:
 
     assert (record["effect_type"], record["param_2"]) == (25, 0)
     assert record["effect"] == f"Combat EXP +{record['param_1'] // 10_000}%"
+
+
+def test_boon_exp_buff_names_its_2016_module(buff_result: HandlerResult) -> None:
+    """Type 25 is gc::BuffModule::Type eExperienceRateBuffModule in the 2016 client."""
+    record = next(r for r in buff_result.records if r["buff_id"] == 48727)
+
+    assert record["effect_type_name"] == "ExperienceRate"
+
+
+def test_types_with_effect_text_have_a_2016_name(buff_result: HandlerResult) -> None:
+    """Every type up to the 2016 eBuffModuleCount (132) that has an Effect text keeps its
+    2016 module name, except 19, the deprecated module reused for Sailor EXP."""
+    unnamed = {
+        r["effect_type"]
+        for r in buff_result.records
+        if r["effect"] and r["effect_type"] < _BUFF_MODULE_COUNT_2016 and r["effect_type"] != _REUSED_DEPRECATED_TYPE
+        and not r["effect_type_name"]
+    }
+
+    assert not unnamed
 
 
 def test_buff_group_levels_are_unique(buff_result: HandlerResult) -> None:

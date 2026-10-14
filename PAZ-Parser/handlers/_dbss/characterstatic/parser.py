@@ -46,6 +46,12 @@ _SOURCE_ITEM_FROM_END = 15
 NO_CLASS_TYPE = 101
 # vehicle_type on every row that is not a vehicle; not a CppEnums.VehicleType member.
 NO_VEHICLE_TYPE = 65
+# gc::CharacterKind member names of the 2016 client, in value order. The file
+# also stores 12, 15 and 17, which came later and have no name.
+NPC_KIND_NAMES: tuple[str, ...] = (
+    "Player", "Monster", "Npc", "Vehicle", "Collect",
+    "SiegeGate", "SiegeSymbol", "Household", "Installation", "InstanceObject",
+)
 
 _I64 = struct.Struct("<q")
 _I32 = struct.Struct("<i")

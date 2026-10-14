@@ -274,6 +274,65 @@ stay unlabelled. Type 89 `param_3` is `1` on 8 food buffs and `0` elsewhere;
 food that grants Health EXP is limited by the Satiated buff (type 184), which
 may be what it marks, unconfirmed.
 
+### 2016 Module Names
+
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its
+`gc::BuffModule::Type` names the effect types, `0` `eBuffApplicationBuffModule`
+to `131` `eSellTradeItemPriceRateModule`, closed by `eBuffModuleCount` `132`.
+The numbering still holds: every type in the tables above matches its module
+(`9` `eMoveSpeedVariationRateBuffModule`, `38` `eCreateCardBuffModule` for
+knowledge, `46` `eDiceTribeDamageVariationAmountBuffModule` for species AP,
+`103` `eRegistWorkerBuffModule`), except `19` `eDeprecatedBuffModule`, which
+now holds the Sailor EXP buffs. Types from `132` came later and have no name.
+
+The module names also fit most types without an Effect text, on client 3464:
+
+| Value | Module (without `e` and `BuffModule`) | Buffs that store it |
+| ----- | ------------------------------------- | ------------------- |
+| 0     | BuffApplication                       | `2025` Guild Squad Special Attack; `param_4` is another buff ID |
+| 7     | InfiniteSp                            | `- Effect: Unlimited Stamina` |
+| 28    | FireGenerate                          | Fire shells of cannons, dark flame summons |
+| 31    | AggroVariationAmount                  | `버프 : 어그로 (20%)`, barricade and campfire aggro |
+| 32    | Revival                               | Revival potions and necklaces |
+| 33    | HideIdentity                          | `Hides your character name` |
+| 34    | Transformation                        | Display buffs (see Display buffs); the snowboard buffs store `param_1` `8173` |
+| 35    | NotInteraction                        | Jail (`You are currently locked up in the jail.`), escort NPCs |
+| 36    | ActionRestrictionRelease              | `액션제한해지 (공용)` |
+| 54    | VaryEfficiencyOfTradeInShop           | `Shop Discount +10%` |
+| 58    | VaryDistanceOfView                    | Display buffs; `param_1` on the vision buffs |
+| 64    | HideAction                            | `투명(운영자)` (GM invisibility) |
+| 65    | VaryProtectRateOfTradeItem            | `Trade Item Damage Protection +50%` |
+| 70    | FixedDamage                           | Damage in shares of max HP (`피격자 총 HP 3% 피해`) |
+| 75    | StopRegen                             | `Nullify Regeneration` |
+| 77    | VaryMorale                            | `Guild Morale +1` |
+| 81    | EfficiencyOfFishing                   | Bite time buffs (`Greatly reduces time required to catch fish.`) |
+| 83    | TentHavestGrowCorrection              | Crop growth by temperature and humidity |
+| 85-88 | Current, Max, Regen, ActiveRegen SubResourcePointVariationAmount | Class sub-resource points (`[수렵] 전용 총 서브리소스 포인트+1`) |
+| 99    | VaryPermanentWeight                   | `영구 무게 증가 - 50LT` |
+| 102   | TamingServant                         | `Buff for checking Taming.` |
+| 104   | TendencyAquireRate                    | `Karma Recovery +15%` |
+| 110   | ChangeBlackSpiritMonster              | `[흑정령의 분노] 몬스터 흑정령화` |
+| 114   | AddManufactureAtWareHouseEquipCount   | `Storage Item Processing` |
+| 115   | AddEnchantValuePackCount              | Enhancement stack count |
+| 116, 117 | AddDamageRateHpToMp, AddDamageRateToMp | Magical Shield I to IV |
+| 119   | RevivalOthers                         | `Effect: Revive all guild members` |
+| 122   | DutyFree                              | Pearl item tax exemption |
+| 123   | CustomizationFree                     | `뷰티샵 자유 이용` |
+| 125   | AutoLevelUp                           | Black Spirit training (`Training`) |
+| 127   | UseGuildBustCall                      | Guild member gathering |
+| 129   | VaryMaxAdrenalin                      | `Self-obtainable Black Spirit's Rage +25%` |
+| 130   | AddedBiddingRateAtItemMarket          | `거래소 입찰 확률 10% 증가` |
+
+Five types do not fit their module and keep no name: `13`
+`eHungerStateVariationAmountBuffModule` (Plague God and Dragon God energies),
+`15` `eShieldGuardVariationAmountBuffModule` (`65376` Doomcaller's Oath),
+`19` (above), `82` `eCollectorEquipmentBuffModule` (`Monsters in Balenos are
+not aware.`) and `124` `eVaryGuildProtectMemberCountModule` (`Elephant Trap
+Trip`). No buff stores `12`, `20` to `22`, `26`, `27`, `42`, `44`, `55`, `61`,
+`74`, `78`, `92`, `96`, `113` or `118`. The browser's Effect Type cell adds the
+module name for the types that fit (`9 MoveSpeedVariationRate`),
+from `_dbss/buff/effect/type_names.py`.
+
 ### Effect text
 
 The browser's Effect column renders the parameters of every type above in the
@@ -951,7 +1010,7 @@ development items (233 to 250, 252). 248 to 251 are not exclusive.
 | Effect      | text | The parameters as text for the confirmed effect types (see Effect text); dash otherwise |
 | Applied By  | list | Base items whose skills apply the buff (`BUFF_ITEMS` lookup index), with item icons and grade colours; sorts by count |
 | Level       | num  | `buff_level`                                                        |
-| Effect Type | num  | `effect_type`                                                       |
+| Effect Type | text | `effect_type` and its 2016 module name (`9 MoveSpeedVariationRate`, see 2016 Module Names); the bare number for the rest. Sorts by the number |
 | Duration    | text | `duration_ms` formatted as h/min/s; dash when `0`, stored as `None` so it sorts last                   |
 | Param 1     | num  | `param_1`, then what it means for the effect type where confirmed: `3 (Kamasylvian Monsters)`, `25000 (2.5%)`, `10 (Monster AP)`, `250 (every 10 sec)`. Labels over 24 characters (character and quest names) are cut, in full on hover. Sorts by the raw value |
 | Param 2     | num  | `param_2`, labelled the same way                                    |

@@ -1,8 +1,10 @@
 """Names of `CppEnums.VehicleType` values, as listed in `global_define_cpp_enum.luac`.
 
 The enum is sparse, so the names sit in a dict keyed by value, without the
-`Type_` prefix. Tables also store values the enum does not name
-(`characterstatic.dbss`: `6` on cranks, `8` on Heuklang); those show as the
+`Type_` prefix. Six values the Lua enum leaves out take their member name
+from the 2016 client's `gc::VehicleType` (`VehicleType_` prefix dropped),
+because the characters that store them in `characterstatic.dbss` still fit
+it: `6` GateCrank on cranks, `8` Haetae on Heuklang. Other values show as the
 bare number.
 """
 
@@ -15,7 +17,9 @@ VEHICLE_TYPE_NAMES: dict[int, str] = {
     3: "Donkey",
     4: "Elephant",
     5: "Bomb",
+    6: "GateCrank",  # 2016 name
     7: "Ladder",
+    8: "Haetae",  # 2016 name
     9: "Carriage",
     10: "QuestObjectSheep",
     11: "QuestObjectCart",
@@ -26,10 +30,14 @@ VEHICLE_TYPE_NAMES: dict[int, str] = {
     17: "QuestObjectPumpkin",
     18: "Boat",
     19: "QuestObjectBrokenFrag",
+    20: "QuestDonkey",  # 2016 name
+    21: "Catapult",  # 2016 name
     22: "Ballista",
+    23: "Catapult2",  # 2016 name
     24: "QuestObjectHerbalMachines",
     25: "QuestObjectExtractor",
     26: "Cow",
+    27: "LumberVerticalSaw",  # 2016 name
     28: "CowCarriage",
     29: "Raft",
     30: "Cat",

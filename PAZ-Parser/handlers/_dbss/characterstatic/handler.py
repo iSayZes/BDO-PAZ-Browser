@@ -19,7 +19,7 @@ from _common.offset_table import (
     offset_records,
     size_column,
 )
-from .parser import NO_CLASS_TYPE, NO_VEHICLE_TYPE, parse_characterstatic_records
+from .parser import NO_CLASS_TYPE, NO_VEHICLE_TYPE, NPC_KIND_NAMES, parse_characterstatic_records
 from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -28,6 +28,17 @@ _EMPTY = "-"
 
 def _optional(value: int | None) -> str:
     return _EMPTY if value is None else e(value)
+
+
+def _npc_kind_name(npc_kind: int) -> str:
+    """The gc::CharacterKind name, or '' for the later kinds it does not have."""
+    return NPC_KIND_NAMES[npc_kind] if npc_kind < len(NPC_KIND_NAMES) else ""
+
+
+def _npc_kind_text(record: dict) -> str:
+    """`4 Collect`, or the bare kind without a name."""
+    name = record["npc_kind_name"]
+    return f"{record['npc_kind']} {name}" if name else str(record["npc_kind"])
 
 
 def character_static_offset_handler() -> OffsetTableHandler:
@@ -54,7 +65,8 @@ class CharacterStaticHandler(PreviewHandler):
             Column(cols["actionScript"], sort_key="action_script"),
             Column(cols["conditionScript"], sort_key="condition_script"),
             Column(cols["knowledgeId"], "num", sort_key="knowledge_id"),
-            Column(cols["npcKind"], "num", sort_key="npc_kind"),
+            # Sorts by the number; the cell adds the 2016 name where there is one.
+            Column(cols["npcKind"], sort_key="npc_kind"),
             Column(cols["grade"], "num", sort_key="grade"),
             Column(cols["karma"], "num", sort_key="tendency_on_dead"),
             Column(cols["navalFame"], "num", sort_key="ocean_tendency"),
@@ -119,7 +131,7 @@ class CharacterStaticHandler(PreviewHandler):
             row.append(e(r["action_script"]))
             row.append(e(r["condition_script"]))
             row.append(_optional(r["knowledge_id"]))
-            row.append(e(r["npc_kind"]))
+            row.append(e(_npc_kind_text(r)))
             row.append(e(r["grade"]))
             row.append(e(r["tendency_on_dead"]))
             row.append(e(r["ocean_tendency"]))
@@ -153,6 +165,7 @@ def _record(raw: dict) -> dict:
         "condition_script": raw["condition_script"],
         "knowledge_id": raw["knowledge_id"],
         "npc_kind": raw["npc_kind"],
+        "npc_kind_name": _npc_kind_name(raw["npc_kind"]),
         "grade": raw["grade"],
         "tendency_on_dead": raw["tendency_on_dead"],
         "ocean_tendency": raw["ocean_tendency"],

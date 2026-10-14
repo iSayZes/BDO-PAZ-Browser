@@ -55,7 +55,8 @@ STAT_LABELS: dict[SkillStat, str] = {
     SkillStat.LUCK: "Luck",
 }
 
-# Work categories of flat work-speed skills, named as their descriptions name them.
+# Work categories of flat work-speed skills (`CppEnums.ApplyWorkingType` values),
+# named as their descriptions name them.
 WORK_CATEGORY_LABELS: dict[int, str] = {
     1: "Jeweler",
     2: "Mass Production",

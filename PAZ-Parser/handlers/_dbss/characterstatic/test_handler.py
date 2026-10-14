@@ -33,7 +33,7 @@ STATIC_CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "character_id", "name", "title", "label_kr", "action_script", "condition_script",
-                "knowledge_id", "npc_kind", "grade", "tendency_on_dead", "ocean_tendency",
+                "knowledge_id", "npc_kind", "npc_kind_name", "grade", "tendency_on_dead", "ocean_tendency",
                 "vehicle_type", "vehicle_type_name", "class_type", "ai_script", "model_path",
                 "source_item_id", "source_item_name", "payload_size",
             ]
@@ -47,7 +47,9 @@ STATIC_CASE = HandlerCase(
                 "name": "Dev Plant210",
                 "action_script": "",
                 "knowledge_id": None,
+                # gc::CharacterKind Installation, the kind of placed furniture.
                 "npc_kind": 8,
+                "npc_kind_name": "Installation",
                 # The stem of character/aiscript/9999.ai.
                 "ai_script": "9999",
                 "model_path": "monster/dummy_normal",
@@ -63,6 +65,7 @@ STATIC_CASE = HandlerCase(
                 "condition_script": "getOceanTendency()>-1;",
                 "knowledge_id": 2095,
                 "npc_kind": 2,
+                "npc_kind_name": "Npc",
             },
         ),
         # The LOC title in the user's language; the internal label exists only in Korean.
@@ -85,8 +88,13 @@ STATIC_CASE = HandlerCase(
         TargetTest(col="character_id", value=2, expected={"class_type": 4}),
         # Grade 4 is CppEnums.CharacterGradeType_Boss, the grade the Lua boss gauge checks.
         TargetTest(col="character_id", value=29929, expected={"name": "Garmoth", "grade": 4, "vehicle_type": None}),
+        # Gathering nodes are gc::CharacterKind Collect, gates SiegeGate.
+        TargetTest(col="character_id", value=11982, expected={"name": "Rhyolite", "npc_kind": 4, "npc_kind_name": "Collect"}),
+        TargetTest(col="character_id", value=529, expected={"npc_kind": 5, "npc_kind_name": "SiegeGate"}),
         # Vehicle type 0 is Type_Horse, a value and not the "no vehicle" dash.
         TargetTest(col="character_id", value=9001, expected={"vehicle_type": 0, "vehicle_type_name": "Horse"}),
+        # The Lua enum skips 6; the 2016 gc::VehicleType name fits the crank.
+        TargetTest(col="character_id", value=35423, expected={"vehicle_type": 6, "vehicle_type_name": "GateCrank"}),
         # The item that places the character, as itemenchant.dbss links it.
         TargetTest(col="character_id", value=2053, expected={"source_item_id": 58011}),
     ],

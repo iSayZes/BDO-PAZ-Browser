@@ -79,24 +79,43 @@ display_description = LOC type 22, str_id1=skill_id, str_id4=1; fallback inline_
 
 ## Effect Types
 
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its
+`gc::PlantWorkerPassiveSkillBuff::PassiveBuffType` numbers the effect types
+`0` WorkEfficience, `1` ReturnItem, `2` LevelStatAdditional, `3`
+AddActionPoint, `4` WorkEfficiencePercent, `5` WorkEfficienceStatic and `6`
+RepeatWorking, which fit the four types this file uses. Each type has its own
+`ApplyTypeIndex` enum that names its parameters in the order `effect_target`,
+`effect_value_a`, `effect_value_b`:
+
+| `effect_type` | `effect_target` | `effect_value_a` | `effect_value_b` |
+| ------------- | --------------- | ---------------- | ---------------- |
+| `0` WorkEfficience | WorkingType | ApplyValue | ApplyTargetType (`0` MoveSpeed, `1` WorkEfficience, `2` Luck) |
+| `1` ReturnItem | ReturnPercents | ReturnCountPercentsMin | ReturnCountPercentsMax |
+| `2` LevelStatAdditional | AdditionalType (`0` MoveSpeed, `1` WorkEfficience, `2` Luck) | AdditionalValue | |
+| `6` RepeatWorking | WorkingGroup | ApplyValue | |
+
 ### `effect_type = 0` - Flat Stats
 
 Direct stat and work-speed effects. `effect_target` is `0` for generic stat modifiers such as movement speed, work speed, and luck. For named work-speed knowledge skills, `effect_target` identifies the work category.
 
-| Effect Target | Meaning | Example Skill |
-| ------------- | ------- | ------------- |
-| `0` | Generic stat modifier | `1603` [Wings C](https://bdocodex.com/us/sskill/1603/), `1103` [Simple C](https://bdocodex.com/us/sskill/1103/), `1503` [Lucky Guy C](https://bdocodex.com/us/sskill/1503/) |
-| `1` | Jeweler work speed | `1001` [Polishing Knowledge](https://bdocodex.com/us/sskill/1001/) |
-| `2` | Mass production work speed | `1002` [Mass Production Knowledge](https://bdocodex.com/us/sskill/1002/) |
-| `3` | Weapon/armor workshop speed | `1003` [Workshop Knowledge](https://bdocodex.com/us/sskill/1003/) |
-| `4` | Tool workshop speed | `1004` [Tool Knowledge](https://bdocodex.com/us/sskill/1004/) |
-| `5` | Furniture workshop speed | `1005` [Furniture Knowledge](https://bdocodex.com/us/sskill/1005/) |
-| `7` | Costume workshop speed | `1007` [Costume Knowledge](https://bdocodex.com/us/sskill/1007/) |
-| `8` | Refinery/specialty work speed | `1008` [General Knowledge](https://bdocodex.com/us/sskill/1008/) |
-| `9` | Cannon/siege weapon work speed | `1009` [Siege Knowledge](https://bdocodex.com/us/sskill/1009/) |
-| `10` | Ship/wagon/horse gear work speed | `1010` [Mount Knowledge](https://bdocodex.com/us/sskill/1010/) |
-| `11` | Node/farm work speed | `1011` [Farm Knowledge](https://bdocodex.com/us/sskill/1011/) |
-| `13` | Specialty node work speed | `1013` [Specialty Node Knowledge](https://bdocodex.com/us/sskill/1013/) |
+The work category is a `CppEnums.ApplyWorkingType` value
+(`global_define_cpp_enum.luac`, the same members as the 2016 enum), and each
+member fits the skills that store it.
+
+| Effect Target | `ApplyWorkingType` | Meaning | Example Skill |
+| ------------- | ------------------ | ------- | ------------- |
+| `0` | All | Generic stat modifier | `1603` [Wings C](https://bdocodex.com/us/sskill/1603/), `1103` [Simple C](https://bdocodex.com/us/sskill/1103/), `1503` [Lucky Guy C](https://bdocodex.com/us/sskill/1503/) |
+| `1` | Cutting | Jeweler work speed | `1001` [Polishing Knowledge](https://bdocodex.com/us/sskill/1001/) |
+| `2` | LargeCraft | Mass production work speed | `1002` [Mass Production Knowledge](https://bdocodex.com/us/sskill/1002/) |
+| `3` | WorkShop | Weapon/armor workshop speed | `1003` [Workshop Knowledge](https://bdocodex.com/us/sskill/1003/) |
+| `4` | Tools | Tool workshop speed | `1004` [Tool Knowledge](https://bdocodex.com/us/sskill/1004/) |
+| `5` | Furniture | Furniture workshop speed | `1005` [Furniture Knowledge](https://bdocodex.com/us/sskill/1005/) |
+| `7` | Wardrobe | Costume workshop speed | `1007` [Costume Knowledge](https://bdocodex.com/us/sskill/1007/) |
+| `8` | Normal | Refinery/specialty work speed | `1008` [General Knowledge](https://bdocodex.com/us/sskill/1008/) |
+| `9` | SiegeWeapons | Cannon/siege weapon work speed | `1009` [Siege Knowledge](https://bdocodex.com/us/sskill/1009/) |
+| `10` | WagonParts | Ship/wagon/horse gear work speed | `1010` [Mount Knowledge](https://bdocodex.com/us/sskill/1010/) |
+| `11` | Zone | Node/farm work speed | `1011` [Farm Knowledge](https://bdocodex.com/us/sskill/1011/) |
+| `13` | Monopoly | Specialty node work speed | `1013` [Specialty Node Knowledge](https://bdocodex.com/us/sskill/1013/) |
 
 Observed scaling:
 
@@ -112,7 +131,7 @@ Observed scaling:
 
 ### `effect_type = 1` - Full Refund
 
-Material refund effects. `effect_target` is the chance scaled by `1,000,000`. `effect_value_a` is the share of the material refunded, on the same scale (`1000000` is a full refund). `effect_value_b` equals `effect_value_a` on every refund record in both clients (`100000` before the 2026-09-27 update, when the text read "10% of 1 Crafting Material", `1000000` after), so it is shown on the same scale; which of the two the game reads is not known.
+Material refund effects. `effect_target` is the chance scaled by `1,000,000`. `effect_value_a` is the share of the material refunded, on the same scale (`1000000` is a full refund). `effect_value_b` equals `effect_value_a` on every refund record in both clients (`100000` before the 2026-09-27 update, when the text read "10% of 1 Crafting Material", `1000000` after), so it is shown on the same scale. The 2016 names (ReturnCountPercentsMin and ReturnCountPercentsMax) read them as the low and high end of the refunded share, which are equal on every record.
 
 | Example Skill | Effect Target | Meaning | Effect Values |
 | ------------- | ------------- | ------- | ------------- |
@@ -220,8 +239,9 @@ The shown values are scaled from the raw fields, which stay on the record unchan
 | ------- | -------- | ------ |
 | Refund chance (`effect_type = 1`) | All 6 refund skills match their text (`7000` is "0.7% Chance"), and the 2026-09-27 update changed value and text together (`50000`/`70000`/`100000` read 5/7/10% before, `7000`/`10000`/`15000` read 0.7/1/1.5% after) | Confirmed |
 | Stat code (`effect_type = 2`) | `0`/`1`/`2` match the stat named in all 4 descriptions, with the same codes `effect_value_b` uses for `effect_type = 0` | Confirmed |
-| Category key (`effect_type = 0` targets `1` to `13`, `effect_type = 6`) | Each value goes with exactly one category wording across 32 skills, including the paired `10xx`/`20xx` skills (`1009` and `2015` are both target `9`, both "Cannon/Siege Weapon"), and workermanjs applies the skills by the same categories (see In-Game Checks) | Very likely |
-| Category names | Taken from those descriptions; no table in the client files found that names the keys (`houseinforeceipe.dbss` numbers workshops differently) | Not confirmed |
+| Category key (`effect_type = 0` targets `1` to `13`) | The 2016 client names the slot WorkingType, and `CppEnums.ApplyWorkingType` names every stored value with a member that fits its skills (`1` Cutting on Polishing Knowledge, `13` Monopoly on Specialty Node Knowledge) | Confirmed |
+| Category key (`effect_type = 6`) | The 2016 client names the slot WorkingGroup. Each value goes with exactly one category wording across its skills, and workermanjs applies the skills by the same categories (see In-Game Checks) | Very likely |
+| Category names (`effect_type = 6`) | Taken from the descriptions; no client table names the `5001` to `9006` keys | Not confirmed |
 
 ## In-Game Checks
 

@@ -79,7 +79,7 @@ Offsets are relative to `data_offset`. The two scripts are length-prefixed, so e
 | `p`     | u8   | unknown_p        | `0` on 24,072 rows, `1` on 346 |
 | `p+1`   | u16  | character_id     | Equals the offset-table key on all 24,418 rows |
 | `p+3`   | u16  | unknown_p3       | `0` on 21,965 rows; non-zero on 2,453, all but one with `npc_kind` `1` (e.g. `29929` Garmoth `95`, `29916` Mole `184`) |
-| `p+5`   | u8   | npc_kind         | Character kind; see [`npc_kind` Values](#npc_kind-values) |
+| `p+5`   | u8   | npc_kind         | `gc::CharacterKind` of the 2016 client; see [`npc_kind` Values](#npc_kind-values) |
 | `p+6`   | u8   | grade            | `CppEnums.CharacterGradeType`; see [Grade](#grade) |
 | `p+7`   | i32  | tendency_on_dead | Karma change when the character dies; see [Karma](#karma) |
 | `p+11`  | i32  | ocean_tendency   | Naval fame value on sea monsters and ships; see [Ocean Tendency](#ocean-tendency) |
@@ -93,20 +93,26 @@ An earlier version of this doc read `p+5` as a u32 `npc_kind` with flag bits abo
 
 ### `npc_kind` Values
 
-Observed correlation between `npc_kind` and the first folder of `model_path`:
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its
+`gc::CharacterKind::Type` names `0` to `9`, and the characters that store each
+value still fit the name:
 
-| Value | Rows | Model folders |
-| ----- | ---- | ------------- |
-| `0`   | 61    | `pc` only; exactly the player-character IDs `1`-`47` and `201`-`214` |
-| `1`   | 9,112 | Mostly `monster`, also `infinitydefence`, `pc_summon`, `object` |
-| `2`   | 6,201 | Mostly `npc`, also `object`, `monster` |
-| `3`   | 3,293 | `creature`, `riding`, `cash` (pets and mounts) |
-| `4`   | 564   | `object` only |
-| `7`   | 940   | Mostly `monster` |
-| `8`   | 3,964 | `monster` |
-| `9`   | 220   | `summon` |
+| Value | `gc::CharacterKind` | Rows (client 3464) | Model folders | Examples |
+| ----- | ------------------- | ----- | ------------- | -------- |
+| `0`   | Player              | 61    | `pc` only; exactly the player-character IDs `1`-`47` and `201`-`214` | `1` Warrior |
+| `1`   | Monster             | 9,212 | Mostly `monster`, also `infinitydefence`, `pc_summon`, `object` | `29929` Garmoth |
+| `2`   | Npc                 | 6,225 | Mostly `npc`, also `object`, `monster` | `47791` Ehren |
+| `3`   | Vehicle             | 3,296 | `creature`, `riding`, `cash` (pets and mounts) | `9001` Beginner's Brown Horse, `35423` Crank, carried quest objects |
+| `4`   | Collect             | 564   | `object` only | `11982` Rhyolite, trees |
+| `5`   | SiegeGate           | 10    |               | `529` Outer Gate |
+| `6`   | SiegeSymbol         | 1     |               | `517` Siege Guardian Stone |
+| `7`   | Household           | 940   | Mostly `monster` | Field HQ, Command Post, Indomitable Flag |
+| `8`   | Installation        | 3,970 | `monster` | `16110` Beautiful Opal Vase, `16640` Dev Plant210 |
+| `9`   | InstanceObject      | 220   | `summon` | `12842` Flimsy Wooden Fence, barricades |
 
-Values `5`, `6`, `12`, `15` and `17` occur on 1 to 50 rows each. The value names are not confirmed.
+`12`, `15` and `17` (1, 1 and 50 rows) came after 2016 and have no name. The
+Lua's `CppEnums.ActorType` (`4` Gate, `5` Alterego, `6` Collect, `9` Deadbody)
+is a different numbering and fits only `0` to `3`.
 
 ### Grade
 
@@ -146,7 +152,7 @@ Every other kind stores `0`. Values range from `-200000` to `500`. The positive 
 
 `vehicle_type` is a `CppEnums.VehicleType` value (`global_define_cpp_enum.luac`). The enum is sparse (`0` to `63` with gaps), and the names fit the characters that store them on client 3464: `0` Horse on 319 rows (`9001` Beginner's Brown Horse), `30` Cat on 778 and `31` Dog on 1,682 (pets), `18` Boat (`9032` Rowboat), `34` SailingBoat (`9090` Galley), `47` CampingTent (`9999` Camp), `58` BossMonster (`31629` Skyrend), `60` Carrack (`31045` Epheria Carrack), `63` GuildDragon (`31125` Doomcaller).
 
-Every record of `npc_kind` `3` stores a vehicle type; every other record stores `65`, except two kind `2` Shrine Relics (`30122`, `30167`) with `5` Bomb. `65` is not an enum member and reads as "not a vehicle". The data also holds values the enum does not name: `6` (cranks, `35423`), `8` (Heuklang, `60076`), `20` (`59720` Fwuzzy), `21` and `23` (Catapults `9038`, `9039`) and `27` (`9046` Log).
+Every record of `npc_kind` `3` stores a vehicle type; every other record stores `65`, except two kind `2` Shrine Relics (`30122`, `30167`) with `5` Bomb. `65` is not an enum member and reads as "not a vehicle". The data also holds values the Lua enum does not name: `6` (cranks, `35423`), `8` (Heuklang, `60076`), `20` (`59720` Fwuzzy), `21` and `23` (Catapults `9038`, `9039`) and `27` (`9046` Log). The 2016 client's `gc::VehicleType` names all six, and the names fit: `6` GateCrank, `8` Haetae, `20` QuestDonkey, `21` Catapult, `23` Catapult2, `27` LumberVerticalSaw. The browser uses those names for them (`_common/vehicle_type.py`). Where both enums name a value, the Lua wins (`26` Cow, 2016 MilkCow; `35` Train, 2016 Tank).
 
 ### Model Path
 
@@ -316,7 +322,7 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 | Action Script | text | `action_script` |
 | Condition    | text | `condition_script` |
 | Knowledge ID | num  | Extract from `getknowledge(<id>);` (case-insensitive) when present; dash otherwise, stored as `None` so it sorts last |
-| NPC Kind     | num  | `npc_kind` |
+| NPC Kind     | text | `npc_kind` and its `gc::CharacterKind` name (`4 Collect`); the bare number for `12`, `15` and `17`. Sorts by the number |
 | Grade        | num  | `grade` as the bare number: the `CppEnums.CharacterGradeType` names do not fit workers, see [Grade](#grade) |
 | Karma        | num  | `tendency_on_dead` |
 | Naval Fame   | num  | `ocean_tendency`; the client's word for naval fame |
@@ -346,10 +352,6 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 The block after `ocean_tendency` contains many stable fields and constants, but its sub-structure is not confirmed. Additional cross-references, a client symbol name list, or in-game examples are needed before naming fields beyond raw offsets.
 
 One piece is known from other files: on client 3464, 15,064 records carry the 200-byte stat body of [experience.bss](experience_bss.md) (found by its four `1.0` floats), with `5, 5, 5` and `10, 10, 10` triads as in [servantexperience.dbss](servantexperience_dbss.md). Where the body starts relative to `p` is not mapped.
-
-### What do the `npc_kind` values mean?
-
-The kind tracks the model folder (`0` player, `1`/`7`/`8` monster, `2` NPC, `3` pet or mount, `4` object, `9` summon), but the names of the values are not confirmed. `CppEnums.ActorType` in the Lua (`0` Player, `1` Monster, `2` Npc, `3` Vehicle, `4` Gate, `5` Alterego, `6` Collect, `7` Household, `8` Installation, `9` Deadbody) fits `0` to `3` only: kind `4` holds gathering nodes (`11982` Rhyolite), `5` gates (`529` Outer Gate), `8` furniture (`16110` Beautiful Opal Vase) and `9` siege buildings (`12842` Flimsy Wooden Fence).
 
 ### What are `unknown_p3`, `unknown_p`, `unknown_t23`, `unknown_t7` and `unknown_t1`?
 

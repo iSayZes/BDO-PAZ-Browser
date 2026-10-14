@@ -55,6 +55,7 @@ from _dbss.knowledgelearning.parser import (
 from _dbss.quest.parser import build_quest_icon_index
 from _dbss.skill.parser import build_skill_buff_index
 from _dbss.teleport.parser import build_teleport_nearest_node_index
+from _dbss.textbind.parser import build_text_bind_kr_index
 from _dbss.skilltype.parser import build_skill_icon_index, build_skill_name_index
 from _dbss.worldmapmonster.parser import build_worldmap_marker_icon_index
 
@@ -95,6 +96,7 @@ LIGHTSTONESET = f"{_BINARY}/lightstoneset.bss"
 INSTANCEFIELD = f"{_BINARY}/instancefield.dbss"
 INSTANCEFIELDMAPINFO = f"{_BINARY}/instancefieldmapinfo.bss"
 STRINGTABLE = f"{_BINARY}/stringtable.bss"
+TEXTBIND = f"{_BINARY}/textbind.dbss"
 WORLDMAP = f"gamecommondata/waypoint_binary/{WORLDMAP_FILE}"
 
 # Every built index, keyed by `IndexKind.value`.
@@ -164,6 +166,8 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.DIALOG_KEYS, (DETAIL_DIALOG_OFFSET,), build_dialog_key_index),
     IndexSpec(IndexKind.SKILL_ICON, (SKILLTYPE, SKILLTYPE_OFFSET), build_skill_icon_index),
     IndexSpec(IndexKind.SKILL_NAME_KR, (SKILLTYPE, SKILLTYPE_OFFSET), build_skill_name_index),
+    # Records follow the count back to back, so the offset companion is not needed.
+    IndexSpec(IndexKind.TEXT_BIND_KR, (TEXTBIND,), build_text_bind_kr_index),
     # buffsimply.bss holds the buff.dbss icon paths in fixed rows, 1.4 MB against 12 MB.
     IndexSpec(IndexKind.BUFF_ICON, (BUFFSIMPLY,), build_buff_icon_index),
     # The per-level icons of itemenchant.dbss for the items that change icon, 175 KB.

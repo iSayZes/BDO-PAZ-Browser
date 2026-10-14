@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "Key",
+    "offset": "Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "key": "Key",
+    "text": "Text",
+    "variant_1": "Variant 1",
+    "variant_2": "Variant 2",
+    "variant_3": "Variant 3"
+  },
+  "meta": {
+    "count": "{count} TextBind texts"
+  }
+}

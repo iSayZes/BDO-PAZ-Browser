@@ -83,7 +83,7 @@ One row per cell that is not `Blank`:
 
 - Decompressed size on client 3464: `1,724` bytes; the grids end at `0x6B0`, the offset in the trailer.
 - On client 3464 category 7 holds quests 4470 / 1 to 40 in rows of four with no linking lines between rows, and category 9 holds quests 4472 / 1 to 13 between two vertical lines that branch into each row.
-- Some titles are unresolved `{StringTableBind(TextBind:...)}` placeholders (4470 / 3), the same as in `allquestlist.bss`.
+- Some LOC titles are `{StringTableBind(TextBind:...)}` placeholders (4470 / 3); the Title column shows the LOC type 59 text they name (`languagedata_loc.md`, Type 59).
 - calpheonlabs has no page for this table.
 
 ## Open Questions

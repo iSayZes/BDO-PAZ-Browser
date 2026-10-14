@@ -152,8 +152,11 @@ file does not sort its rows).
 - Some values forward to another text rather than holding it, e.g.
   `ALCHEMY_COOK_TEXT_DESCRPITION` = `{TextBind:TEXTBIND_ALCHEMY_COOK_TEXT_DESCRPITION}`,
   and the LOC text keeps the same placeholder. The text it names is LOC type
-  59, keyed by the key hash of the name (`languagedata_loc.md`, Type 59). Values also carry `<PAColor...>`
-  tags and `{name}` placeholders.
+  59, keyed by the key hash of the name (`languagedata_loc.md`, Type 59), or
+  the Korean `textbind.dbss` record of that key. The Text column shows it
+  filled; the Korean column keeps the value as stored. 460 values hold a
+  placeholder on client 3464. Values also carry `<PAColor...>` tags and
+  `{name}` placeholders.
 - bdo-data-extractor names the sheets `GAME`, `RESOURCE`, `ACTIONCHART` and
   others; the names are stored in this file, so that part is now confirmed.
 

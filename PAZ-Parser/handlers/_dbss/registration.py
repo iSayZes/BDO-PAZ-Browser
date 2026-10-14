@@ -11,6 +11,7 @@ from .mentalcard.handler import MentalCardHandler, mental_card_offset_handler
 from .detail_dialog.handler import DetailDialogHandler, detail_dialog_offset_handler
 from .base_dialog.handler import BaseDialogHandler
 from .dialogtext.handler import DialogTextHandler, dialog_text_offset_handler
+from .textbind.handler import TextBindHandler, text_bind_offset_handler
 from .mentaltheme.handler import MentalThemeHandler, mental_theme_offset_handler
 from .knowledgelearning.handler import (
     KnowledgeLearningHandler,
@@ -181,6 +182,8 @@ def register_dbss_handlers() -> None:
     register_handler("extractitem.dbss", ExtractItemHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
+    register_handler("textbindoffset.dbss", text_bind_offset_handler())
+    register_handler("textbind.dbss", TextBindHandler())
     register_handler("mentalthemeoffset.dbss", mental_theme_offset_handler())
     register_handler("mentaltheme.dbss", MentalThemeHandler())
     register_handler("knowledgelearningoffset.dbss", knowledge_learning_offset_handler())

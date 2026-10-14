@@ -148,6 +148,33 @@ def test_strip_pa_tags_keeps_whitespace() -> None:
     assert strip_pa_tags(_BOON) == "[Blessing] Adventure's Boon\nAll AP +8"
 
 
+# A key binding, in both forms (USING_CLICK_RMB is `Press {KeyBind:Attack2}`).
+_KEY_HINT = "Press {KeyBind:Attack2} or {StringTableBind(KeyBind:Confirm)}"
+_ATTACK2_CHIP = '<kbd class="key-bind">Attack2</kbd>'
+
+
+def test_key_binding_reads_as_its_action_name() -> None:
+    assert strip_pa_tags(_KEY_HINT) == "Press [Attack2] or [Confirm]"
+
+
+def test_key_binding_is_a_chip_in_html() -> None:
+    assert pa_html(_KEY_HINT) == f'Press {_ATTACK2_CHIP} or <kbd class="key-bind">Confirm</kbd>'
+
+
+def test_key_binding_without_colours_is_plain_text() -> None:
+    assert pa_html(_KEY_HINT, colors=False) == e(strip_pa_tags(_KEY_HINT))
+
+
+@pytest.mark.usefixtures("shown_tags")
+def test_shown_tags_keep_the_key_binding_before_its_chip() -> None:
+    assert pa_html("{KeyBind:Attack2}") == f'<span class="pa-tag">{{KeyBind:Attack2}}</span>{_ATTACK2_CHIP}'
+
+
+def test_max_chars_keeps_a_key_binding_whole_or_cuts_before_it() -> None:
+    assert pa_html(_KEY_HINT, max_chars=15) == f"Press {_ATTACK2_CHIP}…"
+    assert pa_html(_KEY_HINT, max_chars=10) == "Press …"
+
+
 def test_argb_css_opaque() -> None:
     assert argb_css(0xFFE9BD23) == _GOLD
 

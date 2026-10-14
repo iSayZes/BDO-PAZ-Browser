@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "Clé",
+    "offset": "Décalage",
+    "size": "Taille"
+  },
+  "columns": {
+    "key": "Clé",
+    "text": "Texte",
+    "variant_1": "Variante 1",
+    "variant_2": "Variante 2",
+    "variant_3": "Variante 3"
+  },
+  "meta": {
+    "count": "{count} textes TextBind"
+  }
+}

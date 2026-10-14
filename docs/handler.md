@@ -879,13 +879,24 @@ one: `skill_name_tagged()` / `skill_description_tagged()` in `_common/skill.py`,
 `quest_title_tagged()` in `_common/quest/quest.py` and `ui_hash_tagged()` in
 `_bss/stringtable/text.py`.
 
-Quest and journal page text (LOC type 18) goes through `quest_text_tagged()`
-in `_common/quest/quest.py`, which fills `{StringTableBind(TextBind:NAME)}`
-placeholders with `resolve_text_binds()` from `_common/text_bind.py`: the
-LOC type 59 text keyed by `key_hash(NAME)` (`_common/string_hash.py`, the
-`stringtable.bss` key hash). `detail_dialog.dbss` runs its LOC type 39 text
-through `resolve_text_binds()` too. Placeholders LOC has no text for, and
-key bindings, stay as written.
+Every LOC read (`loc_lookup()`, `loc_lookup_prefix()`, `loc_type_entries()`)
+fills TextBind placeholders, `{TextBind:NAME}` and
+`{StringTableBind(TextBind:NAME)}`, with the LOC type 59 text keyed by
+`key_hash(NAME)` (`_common/string_hash.py`, the `stringtable.bss` key hash),
+else the Korean `textbind.dbss` text from the `TEXT_BIND_KR` lookup index.
+`_common/text_bind.py` finds and replaces the placeholders; `_common/loc.py`
+supplies the text. A Korean fallback a handler shows itself, such as
+`row.value` in `stringtable.bss` or a quest objective, goes through
+`resolve_text_binds()` from `_common/loc.py`:
+
+```python
+**pa_fields("objective", _objective(loc_texts) or resolve_text_binds(parsed["objective_text_kr"])),
+```
+
+A name with no text in either source keeps its placeholder. Key bindings
+(`{KeyBind:NAME}`, `{StringTableBind(KeyBind:NAME)}`) stay in the text and
+render through `pa_text.py`: `strip_pa_tags()` writes `[NAME]`, `pa_html()` a
+`key-bind` chip.
 
 An icon list label in colour goes through `icon_html_label_cell()` /
 `icon_html_list_cell()`, which take labels that are already safe HTML
@@ -906,7 +917,9 @@ at least one copy keeps a `<PAColor>` tag.
 `pa_html(raw, colors=False)` drops the colours and returns
 `e(strip_pa_tags(raw))`, so a column can turn colour off without changing its
 call. Colours nest; a stray `<PAOldColor>` is dropped, colours left open are
-closed at the end, and other `<PA...>` tags are dropped. The **Show game text
+closed at the end, and other `<PA...>` tags are dropped. A key binding
+becomes a `<kbd class="key-bind">` chip with the action name, or `[NAME]` with
+`colors=False`. The **Show game text
 tags** setting (off by default) makes `pa_html` show every tag as a dimmed
 `pa-tag` span too; the app applies it through `set_show_pa_tags()` at start and
 on save, and the CLI always turns it on. A colour stored as a u32 rather than
@@ -1014,11 +1027,11 @@ _common/
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
 ├── knowledge.py         # knowledge entry names (LOC type 34)
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
-├── pa_text.py           # game text tags: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
+├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
-├── text_bind.py         # resolve_text_binds(): TextBind placeholders filled from LOC type 59
+├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 
@@ -1206,6 +1219,7 @@ IDs (`LookupValue`).
 | `ITEM_KEY_ICON`  | `specialenchantitem.bss`                   | icon path      |
 | `ITEM_GRADE`     | `itemenchant.dbss`, `itemenchantoffset.dbss` | grade, 0 to 5 |
 | `ITEM_NAME_KR`   | `itemenchant.dbss`, `itemenchantoffset.dbss` | Korean name    |
+| `TEXT_BIND_KR`   | `textbind.dbss`                            | Korean PC text |
 | `QUEST_ARTWORK_ICON` | `questjournalvideoinfo.bss`            | artwork path   |
 | `MANOR_PART_ICON` | `mansionpartinfo.bss`                     | icon path      |
 | `CUTSCENE_ICON`  | `groupcameradata.bss`                      | icon path      |
@@ -1281,6 +1295,11 @@ first rank's icon) and the `ui_skillgroup_*.bss` skill windows read it through
 `skill_name()` in `_common/skill.py` falls back to it when LOC type 10 has no
 name, which on client 3458 names 1,920 `skill.dbss` ranks (set effects, event
 skills) that would otherwise show only an ID.
+
+`TEXT_BIND_KR` maps a TextBind key hash to its Korean variant 0 (PC) text in
+`textbind.dbss`. `_common/loc.py` fills a TextBind placeholder from it when LOC
+is not loaded or has no type 59 text for the name. The records follow the
+count back to back, so the spec reads `textbind.dbss` alone.
 
 `BUFF_ICON` maps a buff ID to its icon. It reads
 [buffsimply.bss](file-formats/buffsimply_bss.md), which stores the same icon

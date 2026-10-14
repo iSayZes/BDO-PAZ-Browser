@@ -9,10 +9,9 @@ from _common.character import character_name
 from _common.enum_name import enum_name
 from _common.html import Column, e, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import is_loc_loaded, loc_lookup
+from _common.loc import is_loc_loaded, loc_lookup, resolve_text_binds
 from _common.pa_text import pa_fields, pa_key, pa_line_cell, pa_list_cell, pa_list_fields, strip_pa_tags
 from _common.lease import lease_text_tagged
-from _common.text_bind import resolve_text_binds
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from _common.pabr_offset import PabrOffsetRow
 from .parser import (
@@ -39,7 +38,7 @@ def _dialog_text(record: DialogRecord, text_id: int, field: int, has_loc: bool) 
     """The user-language text of one dialog string with its PA tags, or "" without LOC."""
     if not has_loc:
         return ""
-    text = resolve_text_binds(loc_lookup(_LOC_DIALOG, record.key, text_id, 0, field).strip())
+    text = loc_lookup(_LOC_DIALOG, record.key, text_id, 0, field).strip()
     return text if strip_pa_tags(text).strip() else ""
 
 
@@ -52,7 +51,7 @@ def _record_dict(record: DialogRecord, has_loc: bool) -> dict:
     leases = [option.lease for option in record.options]
     found = [lease for lease in leases if lease is not None]
     option_titles = [
-        _dialog_text(record, option.text_id, _FIELD_OPTION_TITLE, has_loc) or option.title
+        _dialog_text(record, option.text_id, _FIELD_OPTION_TITLE, has_loc) or resolve_text_binds(option.title)
         for option in record.options
     ]
     return {
@@ -63,7 +62,10 @@ def _record_dict(record: DialogRecord, has_loc: bool) -> dict:
         "character": character_name(record.character_id) or record.internal_name,
         "internal_name": record.internal_name,
         # User language first, the Korean source as fallback.
-        **pa_fields("greeting", _dialog_text(record, record.text_id, _FIELD_GREETING, has_loc) or record.greeting),
+        **pa_fields(
+            "greeting",
+            _dialog_text(record, record.text_id, _FIELD_GREETING, has_loc) or resolve_text_binds(record.greeting),
+        ),
         "contents_types": _distinct_names(CONTENTS_TYPE_NAMES, [line.contents_type for line in record.lines]),
         "option_count": len(record.options),
         "dialog_button_types": _distinct_names(

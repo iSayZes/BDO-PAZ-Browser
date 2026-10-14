@@ -583,14 +583,25 @@ type 59 holds 4,784 rows over 1,203 names. Quest 4470 / 3 of the
 Growth Pass is `{StringTableBind(TextBind:GROWTHPASS_PC_CONSOLE_SEP1)}`,
 `str_id1 = 2946305045`, whose variants read `0` `[Menu] Quick Hotkey
 Settings`, `1` and `2` `[Menu] Ring Menu Setting` and `3` `[Menu] Quick
-Hotkey Settings`. `resolve_text_binds()` in `_common/text_bind.py` fills the
-`StringTableBind` form with variant `0` in quest titles and texts
-(`quest_text_tagged()`), journal page titles and `detail_dialog.dbss` text. The `{TextBind:NAME}`
-form is not filled yet.
+Hotkey Settings`. The Korean texts of 1,166 of these names are
+`textbind.dbss`, with the same key and the same four variants; variant `0` is
+the PC text and `1` the PlayStation text (`textbind_dbss.md`, Variants).
+
+`loc_lookup()`, `loc_lookup_prefix()` and `loc_type_entries()` in
+`_common/loc.py` fill both forms with variant `0`, so every LOC text a table
+shows has them filled, nested ones too (452 type 59 rows on client 3464 hold
+another placeholder). A name with no type 59 text takes its Korean
+`textbind.dbss` text through the `TEXT_BIND_KR` lookup index, and a name with
+neither keeps its placeholder. Inline Korean text, such as a `stringtable.bss`
+value or a `quest.dbss` objective shown without LOC, goes through
+`resolve_text_binds()` with the same rule. The LOC viewer shows the raw text.
 
 A type 59 text can hold `{KeyBind:NAME}` (`USING_CLICK_RMB` is `Press
 {KeyBind:Attack2}`), and type 18 holds `{StringTableBind(KeyBind:NAME)}` on
-866 rows. Both name a player key binding, not fixed text, and stay as written.
+866 rows. Both name a player action whose key the game takes from the
+player's settings, so the browser shows the action name instead of a key:
+`[Attack2]` in plain text (search, sort, CSV) and a key chip in table cells
+(`strip_pa_tags()` and `pa_html()` in `_common/pa_text.py`).
 
 ### Type 63, journal quest metadata (`journalquest.dbss`)
 
@@ -706,9 +717,9 @@ the message by group and index.
 
 ### Type 59 variants
 
-Which condition picks `str_id4` `1` to `3` of a TextBind text is not known.
-Variants `1` and `2` of the Growth Pass names read `Ring Menu`, a console
-control, so they may be console texts; the browser shows variant `0`.
+Type 59 `str_id4` follows the `textbind.dbss` variants: `0` PC, `1`
+PlayStation, `2` a console text. What `3` is for is open in
+`textbind_dbss.md`; the browser shows variant `0`.
 
 ### Type 123 key
 

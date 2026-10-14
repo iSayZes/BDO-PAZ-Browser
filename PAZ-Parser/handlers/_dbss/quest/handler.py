@@ -8,7 +8,7 @@ from bdo_preview import PreviewHandler
 from record_fields import record_matches
 from table_sort import TableSort, sort_order_by_values
 
-from _common.loc import is_loc_loaded
+from _common.loc import is_loc_loaded, resolve_text_binds
 from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 
 from _common.html import Column, e, icon_cell, sort_keys, table, truncate
@@ -111,7 +111,7 @@ class QuestDbssHandler(PreviewHandler):
             **parsed,
             "loc_texts_en": [strip_pa_tags(text).strip() for text in loc_texts],
             **pa_fields("title", _title(loc_texts)),
-            **pa_fields("objective", _objective(loc_texts) or parsed["objective_text_kr"]),
+            **pa_fields("objective", _objective(loc_texts) or resolve_text_binds(parsed["objective_text_kr"])),
             # Empty sorts last and exports as an empty cell.
             "family_stat_text": _family_stat_text(parsed["family_stats"]) or None,
             "accept_npc": dialog_speaker(parsed["accept_dialog_key"]),

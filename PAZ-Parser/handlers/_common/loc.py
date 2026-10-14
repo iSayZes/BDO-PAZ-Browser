@@ -9,6 +9,8 @@ from types import MappingProxyType
 from _common.data_deps import LOC, note_read
 # Re-exported: handlers import strip_pa_tags from here.
 from _common.pa_text import strip_pa_tags as strip_pa_tags
+from _common.string_hash import key_hash
+from _common.text_bind import LOC_TEXT_BIND, MARKER, TEXT_BIND_VARIANT, fill_text_binds, korean_text_bind
 
 # Some LOC keys store this literal instead of a text.
 LOC_NULL = "<null>"
@@ -157,11 +159,39 @@ def loc_lookup(
     str_id3: int = 0,
     str_id4: int = 0,
 ) -> str:
-    """Return matching string or '' on miss / not loaded."""
+    """Return matching string or '' on miss / not loaded, TextBinds filled."""
     note_read(LOC)
     if _LOC_INDEX is None:
         return ""
-    return _LOC_INDEX.get((str_type, str_id1, str_id2, str_id3, str_id4), "")
+    return _filled(_LOC_INDEX.get((str_type, str_id1, str_id2, str_id3, str_id4), ""))
+
+
+def text_bind_tagged(name: str) -> str:
+    """Text of one TextBind name with its PA tags: LOC type 59, else the Korean
+    `textbind.dbss` text, else ''. Placeholders inside it are filled too."""
+    return resolve_text_binds(_text_bind_raw(name))
+
+
+def resolve_text_binds(text: str) -> str:
+    """`text` with every TextBind placeholder that has a text replaced by it.
+
+    LOC reads are filled already; this is for inline (Korean) text.
+    """
+    return fill_text_binds(text, _text_bind_raw)
+
+
+def _text_bind_raw(name: str) -> str:
+    """One TextBind text as stored, its own placeholders not filled yet."""
+    if _LOC_INDEX is not None:
+        note_read(LOC)
+        text = _LOC_INDEX.get((LOC_TEXT_BIND, key_hash(name), 0, 0, TEXT_BIND_VARIANT), "").strip()
+        if text:
+            return text
+    return korean_text_bind(name).strip()
+
+
+def _filled(text: str) -> str:
+    return fill_text_binds(text, _text_bind_raw) if MARKER in text else text
 
 
 def loc_tagged(str_type: int, str_id1: int, str_id4: int = 0) -> str:
@@ -180,7 +210,7 @@ def loc_lookup_prefix(str_type: int, str_id1: int) -> list[str]:
     if _LOC_PREFIX is None:
         return []
 
-    return list(_LOC_PREFIX.get((str_type, str_id1), []))
+    return [_filled(text) for text in _LOC_PREFIX.get((str_type, str_id1), [])]
 
 
 def loc_type_entries(str_type: int) -> Mapping[tuple[int, int, int, int, int], str]:
@@ -188,7 +218,7 @@ def loc_type_entries(str_type: int) -> Mapping[tuple[int, int, int, int, int], s
 
     For types whose keys hold a part no caller knows up front, such as the
     service code in `str_id3` of type 50. The first call per type walks the
-    whole index once.
+    whole index once. Texts have their TextBinds filled, like `loc_lookup()`.
     """
     global _LOC_BY_TYPE_SOURCE
 
@@ -200,6 +230,6 @@ def loc_type_entries(str_type: int) -> Mapping[tuple[int, int, int, int, int], s
         _LOC_BY_TYPE_SOURCE = _LOC_INDEX
     entries = _LOC_BY_TYPE.get(str_type)
     if entries is None:
-        entries = MappingProxyType({key: text for key, text in _LOC_INDEX.items() if key[0] == str_type})
+        entries = MappingProxyType({key: _filled(text) for key, text in _LOC_INDEX.items() if key[0] == str_type})
         _LOC_BY_TYPE[str_type] = entries
     return entries

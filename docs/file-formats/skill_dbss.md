@@ -207,7 +207,8 @@ and starts with event skills.
 - 657 are guild skills (skill numbers 62000 to 65999). Their type 10
   `str_id4 = 1` is missing (614) or a usage hint such as
   `{TextBind:CASTING_CLICK_RMB} after learning the skill` (Healing Touch,
-  65209), while type 13 holds the effect (`- Effect: Recover 200 HP every
+  65209; the browser fills it as `Cast with [Attack2] after learning the
+  skill`), while type 13 holds the effect (`- Effect: Recover 200 HP every
   3 sec (only during Node/Conquest War)`). The Description column shows
   both, the hint first; which order the game tooltip uses is not checked.
   The effect text is close to the Korean `buff.dbss` description of the

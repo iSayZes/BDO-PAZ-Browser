@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "Ключ",
+    "offset": "Смещение",
+    "size": "Размер"
+  },
+  "columns": {
+    "key": "Ключ",
+    "text": "Текст",
+    "variant_1": "Вариант 1",
+    "variant_2": "Вариант 2",
+    "variant_3": "Вариант 3"
+  },
+  "meta": {
+    "count": "Текстов TextBind: {count}"
+  }
+}

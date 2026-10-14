@@ -126,8 +126,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `itemmaingroup.bss` | PABR item main groups: per group ID, 10-byte entries of `itemsubgroup.dbss` subgroup key and a condition script index into a trailing string table; the item lists of NPC shop Buy and Sell tabs and trade | [itemmaingroup](file-formats/itemmaingroup_bss.md) | 3 | 0 |
 | `itemmaxlevel.dbss` | PABR rows of (u32 item ID, u8 highest enhancement level) for every item with an `itemenchant.dbss` enchant key | [itemmaxlevel](file-formats/itemmaxlevel_dbss.md) | 0 | 0 |
 | `itemmaxleveloffset.dbss` | PABR index into `itemmaxlevel.dbss`, maps item ID → row offset; the size column is always 0 | [itemmaxlevel](file-formats/itemmaxlevel_dbss.md) | 0 | 0 |
-| `itemsubgroup.dbss` | Item subgroups: variable-length lists of 135-byte item entries used by worker production, trade goods and more | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 2 | 1 |
-| `itemsubgroupoffset.dbss` | PABR index into `itemsubgroup.dbss`, maps subgroup key → offset/size (10-byte rows) | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 2 | 1 |
+| `itemsubgroup.dbss` | Item subgroups: variable-length lists of 135-byte item entries used by worker production, trade goods and more | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 1 | 1 |
+| `itemsubgroupoffset.dbss` | PABR index into `itemsubgroup.dbss`, maps subgroup key → offset/size (10-byte rows) | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 1 | 1 |
 | `itemtrade.dbss` | Bare list of u16 character keys of the NPCs that buy trade goods (trade managers, node managers) | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |
 | `itemtradeetc.bss` | PABR table of the desert trade buff per pair of trade group types (distance and rate), then five unknown 12-byte rows | [itemtradeetc](file-formats/itemtradeetc_bss.md) | 3 | 2 |
 | `itemtradegroupfromnpc.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |

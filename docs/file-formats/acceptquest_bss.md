@@ -73,7 +73,7 @@ Client 3464, names from `languagedata_en.loc`:
 | Title       | text | LOC type 18 (`quest_chain_id`, `quest_id`, 0, 0), with its colours |
 | NPC ID      | num  | `npc_id`; a dash when `0` |
 | NPC Name    | text | LOC type 6 name of `npc_id` |
-| Dialog      | num  | `dialog_index`, also on rows without an NPC |
+| Dialog      | num  | `dialog_index`, also on rows without an NPC. Opens the `detail_dialog.dbss` row of `dialog_index << 16 \| npc_id`, plain text when that table has no such row (`DIALOG_KEYS` index) |
 | Dialog Name | text | LOC type 38 (`npc_id`, `dialog_index`, 0, 0): the name the NPC shows in that dialog |
 
 ## Notes

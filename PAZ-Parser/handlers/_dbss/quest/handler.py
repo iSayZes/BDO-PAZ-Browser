@@ -13,7 +13,7 @@ from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 
 from _common.html import Column, e, icon_cell, sort_keys, table, truncate
 from _common.lang import handler_text, load_handler_strings
-from _common.quest.dialog import dialog_speaker
+from _common.quest.dialog import dialog_cell, dialog_speaker
 from _bss.allquestlist.parser import parse_allquestlist_records
 from .model import FamilyStat
 from .parser import QuestIndex, build_quest_index, parse_quest_record
@@ -224,8 +224,8 @@ class QuestDbssHandler(PreviewHandler):
                 e(record["quest_category"]),
                 icon_cell(record["icon_path"]),
                 pa_cell(record, "title", _TEXT_PREVIEW_CHARS),
-                e(record["accept_npc"] or "-"),
-                e(record["complete_npc"] or "-"),
+                dialog_cell(record["accept_dialog_key"], record["accept_npc"] or "-"),
+                dialog_cell(record["complete_dialog_key"], record["complete_npc"] or "-"),
                 e(_truncate(record["condition_script"])),
                 e(_truncate(record["action_script"])),
                 pa_cell(record, "objective", _TEXT_PREVIEW_CHARS),

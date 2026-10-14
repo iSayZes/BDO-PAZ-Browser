@@ -1189,6 +1189,7 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
 | `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
+| `DIALOG_KEYS`    | `detail_dialogoffset.dbss`                 | character ID   |
 | `SKILL_ICON`     | `skilltype.dbss`, `skilltypeoffset.dbss`   | icon path      |
 | `SKILL_NAME_KR`  | `skilltype.dbss`, `skilltypeoffset.dbss`   | Korean name    |
 | `BUFF_ICON`      | `buffsimply.bss`                           | icon path      |
@@ -1248,6 +1249,15 @@ Read it through `dialog_leases(character_id)` in `_common/lease.py`, which
 unpacks the pairs with `lease_pairs()`. The `npcsimply.bss` Leases column
 reads it. Its source is 27 MB, which takes about 2 s to read and
 build once per client.
+
+`DIALOG_KEYS` holds every dialog key (`dialog_index << 16 | npc_id`) of
+`detail_dialog.dbss`, read from its offset file alone, with the character ID
+as value. `dialog_cell()` in `_common/quest/dialog.py` links a quest dialog
+key to its `detail_dialog.dbss` row only when the index holds it: on client
+3464, 71 of the 4,983 accept keys and 41 of the 5,288 complete keys of
+`quest.dbss` have no row and stay plain text. The `quest.dbss` Accept NPC and
+Complete NPC cells and the Dialog cell of the `acceptquest.bss` /
+`completequest.bss` view use it.
 
 `SKILL_ICON` maps a skill number to the icon its `skilltype.dbss` record
 stores; skills without one are left out. `skill.dbss`, `skillgroup.bss` (the

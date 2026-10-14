@@ -9,7 +9,7 @@ from _common.character import character_name
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.pa_text import pa_cell, pa_fields
-from _common.quest.dialog import dialog_name
+from _common.quest.dialog import dialog_cell, dialog_key, dialog_name
 from _common.quest.quest import quest_title_tagged
 from .parser import QuestNpcRecord, parse_quest_npc_records
 
@@ -32,6 +32,7 @@ def _display_record(record: QuestNpcRecord) -> dict:
         "npc_id": npc_id,
         "npc_name": character_name(npc_id) if npc_id else "",
         "dialog_name": dialog_name(record["npc_id"], record["dialog_index"]),
+        "dialog_key": dialog_key(record["npc_id"], record["dialog_index"]),
     }
 
 
@@ -83,7 +84,7 @@ class QuestNpcBssHandler(PreviewHandler):
                 pa_cell(r, "title"),
                 e(r["npc_id"] or _EMPTY),
                 e(r["npc_name"] or _EMPTY),
-                e(r["dialog_index"]),
+                dialog_cell(r["dialog_key"], str(r["dialog_index"])),
                 e(r["dialog_name"] or _EMPTY),
             ]
             for r in slice_

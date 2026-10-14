@@ -41,6 +41,8 @@ class IndexKind(Enum):
     CHARACTER_AI_SCRIPT = "character_ai_script"
     # Flat (item_id, cost, ...) pairs; read through _common/lease.py.
     CHARACTER_LEASES = "character_leases"
+    # Every detail_dialog.dbss key -> its character ID; read through _common/quest/dialog.py.
+    DIALOG_KEYS = "dialog_keys"
     SKILL_ICON = "skill_icon"
     # Korean skilltype.dbss names, the fallback when LOC type 10 has none.
     SKILL_NAME_KR = "skill_name_kr"

@@ -6,7 +6,10 @@ from typing import Any
 import pytest
 
 from _bss.allquestlist.parser import parse_allquestlist_records
+from _common.lookup_builders import DETAIL_DIALOG
+from _common.lookup_index import IndexKind, init_index
 from _common.pabr_offset import parse_pabr_offset_rows
+from _common.quest.dialog import dialog_cell
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -52,6 +55,7 @@ def _case(file_name: str, tests: list) -> HandlerCase:
                     "npc_name",
                     "dialog_index",
                     "dialog_name",
+                    "dialog_key",
                 ],
             ),
             # The u32 count after the PABR magic.
@@ -67,6 +71,7 @@ def _case(file_name: str, tests: list) -> HandlerCase:
                     "npc_id": 40066,
                     "npc_name": "Mariano",
                     "dialog_index": 1,
+                    "dialog_key": 1 << 16 | 40066,
                 },
             ),
             *tests,
@@ -147,3 +152,18 @@ def test_no_npc_dialog_0_is_the_black_spirit(case: HandlerCase) -> None:
 
     assert rows
     assert {r["dialog_name"] for r in rows} == {"Black Spirit"}
+
+
+def test_dialog_cell_links_only_keys_with_a_detail_dialog_row() -> None:
+    key = 1 << 16 | 40066
+    init_index(IndexKind.DIALOG_KEYS, {key: 40066})
+    try:
+        linked = dialog_cell(key, "1")
+        plain = dialog_cell(2 << 16 | 40066, "<2>")
+    finally:
+        init_index(IndexKind.DIALOG_KEYS, None)
+
+    assert 'data-action="open-record"' in linked
+    assert f'data-path="{DETAIL_DIALOG}"' in linked
+    assert f'data-field="key" data-value="{key}"' in linked
+    assert plain == "&lt;2&gt;"

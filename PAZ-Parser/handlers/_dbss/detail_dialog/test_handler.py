@@ -11,6 +11,7 @@ from _dbss.detail_dialog.parser import (
     CONTENTS_TYPE_NAMES,
     DIALOG_BUTTON_TYPE_NAMES,
     build_character_lease_index,
+    build_dialog_key_index,
     split_key,
 )
 from tests.framework import (
@@ -133,6 +134,13 @@ def test_lease_index_holds_every_leasing_character(dialog_result: HandlerResult)
         for character_id, value in index.items()
     } == {character_id: items for character_id, items in expected.items() if items}
     assert _SMALL_FENCE in {lease.item_id for lease in lease_pairs(index[40024])}
+
+
+def test_dialog_key_index_holds_every_record_key(dialog_result: HandlerResult) -> None:
+    index = build_dialog_key_index(dialog_result.source.file(_OFFSET_FILE))
+
+    assert index == {record["key"]: record["character_id"] for record in dialog_result.records}
+    assert index[_MARTINA_MAIN] == 40024
 
 
 @pytest.mark.parametrize(

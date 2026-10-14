@@ -184,6 +184,14 @@ def parse_detail_dialog_records(data: bytes, offset_data: bytes) -> list[DialogR
     return [parse_detail_dialog_record(data, row) for row in parse_detail_dialog_offset_rows(offset_data)]
 
 
+def build_dialog_key_index(offset_data: bytes) -> dict[int, int]:
+    """Map every dialog key in the table to its character ID.
+
+    The offset file alone lists the keys, so this skips the 27 MB data file.
+    """
+    return {row.entry_id: split_key(row.entry_id)[0] for row in parse_detail_dialog_offset_rows(offset_data)}
+
+
 def build_character_lease_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
     """Map character ID to its lease options as flat `(item_id, cost, ...)` pairs.
 

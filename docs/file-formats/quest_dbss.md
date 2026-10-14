@@ -186,7 +186,7 @@ titles/objectives.
 | Category     | num  | `quest_category`                                            |
 | Icon         | text | `icon_path` read from the record; thumbnail when available  |
 | Title / Name | text | LOC type 18 `str_id4=0` when available                      |
-| Accept NPC   | text | Speaker of `accept_dialog_key`: LOC type 38 (`npc_id`, `dialog_index`), else the LOC type 6 NPC name; `Black Spirit` for key `0`, a dash when neither names it |
+| Accept NPC   | text | Speaker of `accept_dialog_key`: LOC type 38 (`npc_id`, `dialog_index`), else the LOC type 6 NPC name; `Black Spirit` for key `0`, a dash when neither names it. Opens the `detail_dialog.dbss` row of the key, plain text when that table has no such row (`DIALOG_KEYS` index) |
 | Complete NPC | text | The same for `complete_dialog_key`                          |
 | Condition    | text | `condition_script`                                          |
 | Action       | text | `action_script`                                             |

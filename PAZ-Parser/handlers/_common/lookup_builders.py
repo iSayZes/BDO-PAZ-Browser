@@ -37,7 +37,7 @@ from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
 from _dbss.characterstatic.parser import build_character_ai_script_index, build_knowledge_character_index
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
-from _dbss.detail_dialog.parser import build_character_lease_index
+from _dbss.detail_dialog.parser import build_character_lease_index, build_dialog_key_index
 from _dbss.instancefield.parser import build_instance_field_name_index
 from _dbss.itemenchant.parser import (
     build_buff_item_index,
@@ -160,6 +160,8 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         (DETAIL_DIALOG, DETAIL_DIALOG_OFFSET),
         build_character_lease_index,
     ),
+    # Which quest dialog keys open a detail_dialog.dbss row.
+    IndexSpec(IndexKind.DIALOG_KEYS, (DETAIL_DIALOG_OFFSET,), build_dialog_key_index),
     IndexSpec(IndexKind.SKILL_ICON, (SKILLTYPE, SKILLTYPE_OFFSET), build_skill_icon_index),
     IndexSpec(IndexKind.SKILL_NAME_KR, (SKILLTYPE, SKILLTYPE_OFFSET), build_skill_name_index),
     # buffsimply.bss holds the buff.dbss icon paths in fixed rows, 1.4 MB against 12 MB.

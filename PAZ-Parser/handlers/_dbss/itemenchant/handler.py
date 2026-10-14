@@ -19,7 +19,9 @@ from .parser import (
     parse_itemenchant_records,
     parse_itemenchantoffset_records,
 )
+from .servant_slots import servant_slot_label
 from .slot_labels import NO_SLOT, slot_label
+from .weapon_types import weapon_type_names
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -47,10 +49,10 @@ def _item_name(record: dict) -> str:
     return loc_text(_LOC_TYPE_ITEM, record["item_id"]) or record["name_kr"]
 
 
-def _with_links(record: dict, values: dict[str, str], classes: str, slot: str) -> dict:
+def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, weapon_type: str) -> dict:
     """The parsed record plus its item name, placed character, buffs, Lightstone
-    sets and field labels; `classes` and `slot` are the labels of its class
-    mask and equipment slot."""
+    sets and field labels; `classes`, `slot` and `weapon_type` are the labels
+    of its class mask, equipment slot and equipment type."""
     buff_ids = skill_buff_ids(record["skill_keys"])
     set_ids = item_set_ids(record["item_id"])
     return {
@@ -61,6 +63,7 @@ def _with_links(record: dict, values: dict[str, str], classes: str, slot: str) -
         # 0 on items that are not equipment; None sorts last and exports empty.
         "equip_type": record["equip_type"] or None,
         "slot": slot,
+        "weapon_type": weapon_type,
         # 0 means "cannot be enhanced"; None sorts last and exports empty.
         "enhancement_type": record["enhancement_type"] or None,
         "binding": binding_label(record["vested_type"], record["family_bound"], values),
@@ -87,15 +90,15 @@ def _with_links(record: dict, values: dict[str, str], classes: str, slot: str) -
 
 
 def _slot_text(record: dict, slots: dict[int, str]) -> str:
-    """The slot's tooltip label; the bare number on mount and ship gear.
+    """The slot's tooltip label; servant gear's label for its servant.
 
-    Gear no class can wear (`class_mask` 0) is servant equipment, which stores
-    the character slot numbers with other meanings (a barding in "Armor"), so
-    it shows the number until those slots are mapped.
+    Servant gear stores the character slot numbers with other meanings (a
+    barding in Chest), so it is labelled by `servant_slots.py`, and shows the
+    bare number where no servant group labels its slot.
     """
     equip_slot = record["equip_slot"]
-    if record["class_mask"] == 0 and equip_slot != NO_SLOT:
-        return str(equip_slot)
+    if record["servant_kinds"] and equip_slot != NO_SLOT:
+        return servant_slot_label(record["servant_kinds"], equip_slot) or str(equip_slot)
     return slots[equip_slot]
 
 
@@ -128,6 +131,7 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["enchantKey"], "num", sort_key="enchant_key"),
             Column(cols["enhancementType"], "num", sort_key="enhancement_type"),
             Column(cols["slot"], sort_key="slot"),
+            Column(cols["weaponType"], sort_key="weapon_type"),
             Column(cols["requiredLevel"], "num", sort_key="required_level"),
             Column(cols["classes"], sort_key="classes"),
             Column(cols["binding"], sort_key="binding"),
@@ -167,8 +171,15 @@ class ItemEnchantHandler(PreviewHandler):
         # About 150 masks and 40 slots cover all items, so each label is built once.
         classes = {mask: classes_label(mask, values) for mask in {record["class_mask"] for record in records}}
         slots = {slot: slot_label(slot) for slot in {record["equip_slot"] for record in records}}
+        weapon_types = weapon_type_names(records)
         return [
-            _with_links(record, values, classes[record["class_mask"]], _slot_text(record, slots))
+            _with_links(
+                record,
+                values,
+                classes[record["class_mask"]],
+                _slot_text(record, slots),
+                weapon_types.get(record["equip_type"], ""),
+            )
             for record in records
         ]
 
@@ -197,6 +208,7 @@ class ItemEnchantHandler(PreviewHandler):
                 _optional_cell(record["enchant_key"]),
                 _optional_cell(record["enhancement_type"]),
                 e(record["slot"] or _EMPTY),
+                e(record["weapon_type"] or _EMPTY),
                 _optional_cell(record["required_level"]),
                 e(record["classes"] or _EMPTY),
                 e(record["binding"] or _EMPTY),

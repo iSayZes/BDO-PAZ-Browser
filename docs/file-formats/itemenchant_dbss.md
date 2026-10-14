@@ -140,7 +140,7 @@ level, dyeable and durability change with them.
 | `+0x08` | u8[6] | unknown     | Numeric fields                                               |
 | `+0x0E` | u8   | equip_slot   | Equipment slot, `__eEquipSlotNo`; `46` when the item goes in no slot. See below |
 | `+0x0F` | u8   | unknown      | `2` (60,289 base items), `0` (8,581) or `1` (1,343) on client 3464 |
-| `+0x10` | u8[46] | unknown    | `equip_slot` values, the rest filled with `46`; see `equip_slot` below |
+| `+0x10` | u8[46] | extended_slots | Further slots the item fills, the rest filled with `46`; see `equip_slot` below |
 | `+0x3E` | u8   | unknown_3e   |                                                              |
 | `+0x3F` | i32  | weight       | Divide by 10,000 for LT                                      |
 | `+0x43` | u8   | stackable    | `1` when copies of the item share one inventory slot; see below |
@@ -151,7 +151,8 @@ level, dyeable and durability change with them.
 | `+0x4B` | u8   | for_trade    | `1` on trade goods that Trade Managers buy; 2,007 base items |
 | `+0x4C` | u8   | trade_type   | Kind of trade good, only set with `for_trade`, see below     |
 | `+0x4D` | u64  | class_mask   | Classes that can use the item, bit `n` for class ID `n`. All-class items set most bits, so test single bits |
-| `+0x55` | u8[8] | unknown     | Numeric fields                                               |
+| `+0x55` | u32  | servant_kinds | Servants that can use the item, bit `n` for `CppEnums.ServantKind` `n`; `0` on everything but servant gear. See `equip_slot` below |
+| `+0x59` | u8[4] | unknown     | Numeric fields                                               |
 | `+0x5D` | u32  | unknown_5d   | Count, followed by that many bytes; `0` except on mount and ship gear, see above. The bytes are `1` to `4` on the Epheria Carrack parts, matching Advance, Balance, Volante and Valor, and `1, 4, 5, 10` on Ashen Crow Horse Gear |
 | `+0x61` | u8   | required_level | Character level needed to use the item; `0` or `1` when there is none, above `1` in 3,734 base items |
 | `+0x62` | u8[3] | unknown     | Numeric fields                                               |
@@ -170,7 +171,7 @@ level, dyeable and durability change with them.
 | `+0xC4` | u8   | personal_trade | `1` when the item can be traded between players; 330 base items |
 | `+0xC5` | u16  | max_durability | `32,767` for items without durability (51,959 base items); equipment mostly `100` or `120` |
 | `+0xC7` | u8   | unknown_c7   |                                                              |
-| `+0xC8` | u8   | market_category | Central Market category; `255` when the item is not listed (56,870 base items) |
+| `+0xC8` | u8   | market_category | Central Market category, LOC type 44 `str_id1`; `255` when the item is not listed (56,870 base items) |
 | `+0xC9` | u8   | market_sub_category | Subcategory, in the market's menu order; `255` when not listed |
 | `+0xCA` | u16  | unknown_ca   |                                                              |
 | `+0xCC` | u32  | skill_key_1  | Skill a consumable casts, a [`skill.dbss`](skill_dbss.md) key; its `buff_ids` are the item's buffs; `0` when none |
@@ -328,10 +329,28 @@ in slot 0.
 `PaGlobalFunc_Equipment_All_AccSlotNo` (`panel_window_equipment_all_3`)
 picks the first or second ring, earring or artifact slot for types `16`,
 `17` and `92`; the items store only the first (8, 10 and 32; no base item
-stores 9, 11 or 33 on client 3464). The client Lua has no name per value, so
-the table does not show it yet; it stays on the record and in the export. Equipment (`item_type` 1) always
+stores 9, 11 or 33 on client 3464). Equipment (`item_type` 1) always
 stores a non-zero type and a slot below `46`, and every other item stores
 `0` and `46` (29,918 and 40,295 base items on client 3464).
+
+The client Lua has no name per value. For main and sub-weapons the Central
+Market menu has one: on client 3464 every listed item of a weapon type stores
+the same `market_category` / `market_sub_category` pair, each type its own,
+and LOC type 44 names the pair under `str_id1` / `str_id2`. The in-game menu
+lists the same names in the same order (checked 2026-10-14), with no "All"
+entry. About 15 of the 90 to 180 items of a main weapon type are listed, so
+the browser takes the pair from the listed items of a type and names every
+item of that type with it. Sub-weapon type 118 (Hexround) is listed there but
+missing from the `PaGlobalFunc_Util_ClassEquipParts` values above.
+
+| Category | `equip_type` and subcategory (client 3464) |
+| -------- | ------------------------------------------ |
+| 1, Main Weapon | 1 Longsword (1), 31 Longbow (2), 28 Amulet (3), 29 Axe (4), 2 Shortsword (5), 3 Blade (6), 6 Staff (7), 63 Kriegsmesser (8), 65 Gauntlet (9), 67 Crescent Pendulum (10), 73 Crossbow (11), 78 Florang (12), 83 Battle Axe (13), 80 Shamshir (14), 86 Morning Star (15), 88 Kyve (16), 89 Serenaca (17), 93 Slayer (18), 97 Swallowtail Fan (19), 96 Foxspirit Charm (20), 100 Hammers (21), 109 Hwando (22), 112 Revolvers (23), 114 Power Pole (24), 116 Sacramentum (25) |
+| 5, Sub-weapon | 8 Shield (1), 32 Dagger (2), 33 Talisman (3), 34 Ornamental Knot (4), 37 Trinket (5), 36 Horn Bow (6), 55 Kunai (7), 56 Shuriken (8), 66 Vambrace (9), 70 Noble Sword (10), 74 Ra'ghon (11), 79 Vitclari (12), 81 Haladie (13), 87 Quoratum (14), 90 Mareca (15), 94 Shard (16), 99 Do Stave (17), 98 Binyeo Knife (18), 108 Gravity Cores (19), 110 Gombangdae (20), 113 Shotgun (21), 115 Gourd Bottle (22), 117 Clavis (23), 118 Hexround (24) |
+
+Other types add nothing to the slot: armour and accessory types sit in their
+slot's subcategory (Armor, Accessories), outfits spread over the Pearl Item
+menu, and all awakening weapons share type `57`.
 
 #### `equip_slot`
 
@@ -352,16 +371,57 @@ lists no number for them.
 
 The browser shows the `SlotNoIdToString` label in the app language (LOC type
 37, see [stringtable.bss](stringtable_bss.md)). Slots 24 to 26 are not in that
-table and use `CppEnums.EquipSlotNoString` instead. Mount and ship gear store the same numbers
-for their own parts (horse barding 3, saddle 4, stirrups 5, champron 6,
-horseshoe 12; ship sails 25 and 26), so their label is the character slot
-of that number.
+table and use `CppEnums.EquipSlotNoString` instead.
 
-The 46 bytes at `+0x10` hold more slot numbers, filled up with `46`. They are
-set in 3,770 base items on client 3464, always from the first byte, and name
-the slots next to `equip_slot`: outfits in slot 14 list 15, 16 and often 17,
-and the `[Agent]` armour sets in slot 3, such as [Agent] Shroud Knight Armor,
-list 4, 5 and 6. Whether these are the slots an item also covers is open.
+The 46 bytes at `+0x10` are the extended slots, filled up with `46`: the
+tooltip reads them with `getExtendedSlotCount()` and `getExtendedSlotIndex()`,
+skips entries equal to the count, and prints "Equipped on: {selfSlotNo}
+{extendedSlotString}" (`PANEL_TOOLTIP_EQUIP_EXTENDEDSLOT`). They are set in
+3,770 base items on client 3464, always from the first byte: outfits in slot
+14 list 15, 16 and often 17, the `[Agent]` armour sets in slot 3, such as
+[Agent] Shroud Knight Armor, list 4, 5 and 6, and Ashen Crow Horse Gear (14)
+lists 15, 16 and 17.
+
+Servant gear stores the same slot numbers with other meanings (a barding in
+3, a wagon wheel in 4). `servant_kinds` says which servants use the item; on
+client 3464 it is set on all 927 base items with `class_mask` `0` and an
+`equip_slot` below `46`, and `0` on all other equipment. The stable dialog
+(`panel_dialog_servantinfo_all_2`, `GetItemEquipServantType`) tests the kinds
+in the order of the table below and takes the first group that matches; its
+`_SERVANT_KIND_TYPESTRING` (`panel_dialog_servantinfo_all`) labels the slots
+per group. The labels below are its English LOC texts.
+
+| Group | `ServantKind` values | Slot labels |
+| ----- | -------------------- | ----------- |
+| Wagon | 4, 5, 12, 18 | 3 Frame, 4 Wheel, 5 Flag, 6 Emblem, 13 Lamp, 25 Cover, and Costume versions in 14, 15, 16, 17 and 26 |
+| Horse | 0, 1, 2, 9, 29 | 3 Barding, 4 Saddle, 5 Stirrups, 6 Champron, 12 Horseshoe, and Costume versions in 14 to 17 |
+| Elephant | 3, 13 | 3 Elephant Armor, 4 Saddle, 5 Stirrups, 6 Elephant Mask, 12 Horseshoe, the same in 14 to 17 (`LUA_VEHICLEINFO_ELEPHANT_SLOTNO*`) |
+| Ocean ship | 10, 14, 15, 20 to 28 | 3 Plating, 4 Figurehead, 5 Cannon, 6 Ornament, 7 Fishing Rod, 12 Sea Crystal, 25 Sail, and 14, 15, 16, 26 as 3, 4, 5, 25 |
+| Boat | 6, 11 | 3 Hull, 4 Prow, 5 Cargo Container, 6 Totem, 25 Ornament, and 14, 15, 16, 26 as 3, 4, 5, 25 |
+| Camping tent | 16 | 3 Container, 4 Anvil, 5 Shop, 6 Appearance, 7 Move to Residence (camp window, `RESOURCE` sheet) |
+
+The item names agree with every group's labels, with one exception: the
+client table has the horse costume saddle and stirrups the other way round
+(15 Stirrups, 16 Saddle), but all 28 horse items in slot 15 are saddles
+(Orzekel Saddle) and all 28 in 16 are stirrups. The browser follows the
+items. Two older client tables disagree with the items in more places and
+are not used: the tooltip's `servantKindTypeString` (`panel_tooltip_item`)
+calls wagon slot 25 Frame and Carrack slot 5 Sail, and the ship window
+(`panel_window_shipinfo_all`) labels ocean ship slot 25 Decor
+(`LUA_VEHICLEINFO_SHIP_OCEAN_INDEX4`, Korean `장식`). Ocean ship slot 12
+holds 333 items on client 3464: sea crystals, Ebenruth's Nol and 36 Sailor
+Contract items (Epheria, Frigate and Galley sailors). Both client tables call
+it Sea Crystal.
+
+Personal Battle Ship (17) is in no group, but every item that allows it also
+allows an ocean ship kind. `GetItemEquipServantType` has no camping tent
+group: the item tooltip handles the tent as its own servant type
+(`__eServantTypeCampingTent`), comparing an item with
+`isServantTypeUsable(servantKind)` and the tent's `getEquipItem(slot)`. The
+camp window (`panel_window_camp_all`, `_menuStr`) labels those slots, and
+the 15 kind 16 items on client 3464 fit them: containers and storage in 3,
+anvils in 4, shops in 5, tents in 6 and Star of Nostos, a teleport item, in
+7. The browser tests kind 16 after the dialog's groups.
 
 #### `stackable`
 
@@ -543,7 +603,8 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced. [itemmaxlevel.dbss](itemmaxlevel_dbss.md) stores the same value for every item with an `enchant_key` |
 | Enchant Key   | num  | `enchant_key`, the item's key in [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); dash when `0` |
 | Enhancement Type | num | `enhancement_type`, after the icon; the item's rows in [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md); dash when `0` |
-| Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Mount and ship gear (`class_mask` `0`, 927 base items on client 3464) show the bare number: they store the character slot numbers with other meanings, and their own slots are not mapped yet |
+| Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Servant gear (`servant_kinds` not `0`) shows its group's label from the table under `equip_slot`, or the bare number when no group labels its slot |
+| Weapon Type   | text | Main and sub-weapons: LOC type 44 name of the market subcategory their type's listed items share, see `equip_type`; dash for other items |
 | Req. Level    | num  | `required_level`; dash when `0` or `1` |
 | Classes       | text | `class_mask` as LOC type 21 class names; "All" when every playable class is set, "All except ..." when up to three are missing |
 | Binding       | text | `vested_type` and `family_bound`: "On obtain (Family)", "On equip (Character)" and so on; dash when the item never binds |
@@ -613,11 +674,8 @@ These fields have a known shape on client 3464 but no confirmed meaning:
   ties it to the offset.
 - `unknown_5d` lists bytes on mount and ship gear only. The Epheria Carrack
   and Oquilla parts store `1` to `4` in the order Advance, Balance, Volante,
-  Valor, so it may be the ship or horse kinds the part fits.
-- The slot numbers at `+0x10` may be the slots an outfit also covers.
-- Mount and ship gear store slot numbers whose tooltip labels name
-  character slots (a barding stores the chest slot `3`); the labels the
-  servant equipment window uses for them are not mapped.
+  Valor. It is not the servant kind, which is `servant_kinds`; the bytes may
+  pick a model or tier within one kind.
 - The entries of the lists before the name: the first holds a class type and
   a u32 per allowed class.
 

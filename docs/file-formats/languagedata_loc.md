@@ -497,6 +497,10 @@ and wagons, `+ 0` to `DEC (X)` for accessories, grades for Alchemy Stones, cryst
 Crystals, class names for Pearl Items and colours for Dyes. Materials, Enhancement,
 Consumables, Furniture and Lightstones have none.
 
+The Main Weapon (`1`) and Sub-weapon (`5`) subcategories have one weapon type
+each; the `itemenchant.dbss` Weapon Type column names the types with them
+(see [itemenchant.dbss](itemenchant_dbss.md), `equip_type`).
+
 ### Type 50, Pearl Shop products (`cashproduct.dbss`)
 
 Type 50 holds 105,534 rows over 29,130 IDs on client 3458. `str_id1` is the

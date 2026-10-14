@@ -8,6 +8,7 @@
     "enchantKey": "Verstärkungsschlüssel",
     "enhancementType": "Verstärkungstyp",
     "slot": "Ausrüstungsplatz",
+    "weaponType": "Waffentyp",
     "requiredLevel": "Erf. Stufe",
     "classes": "Klassen",
     "binding": "Bindung",

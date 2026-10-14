@@ -32,7 +32,16 @@ _EVENT_FENCE_CHARACTER = 2053
 _WEAPON = 697192
 # Balacs Lunchbox, a yellow (grade 3) item (itemenchant_dbss.md).
 _BALACS_LUNCHBOX = 9359
+# Servant gear (servant_slots.py): a horse barding in Chest (3), a horse
+# costume saddle in 15 (the client table says stirrups), a wagon cover in Body
+# (25), a Caravel sail in 25, a rowboat cargo container in Boots (5), and a
+# camping tent's look in 6, labelled from the camp window.
 _LIGHT_LEATHER_BARDING = 52602
+_ORZEKEL_SADDLE = 336046
+_SHABBY_WAGON_COVER = 53501
+_CARAVEL_WHITE_WIND_SAIL = 49652
+_ROWBOAT_CARGO_CONTAINER = 49201
+_NAPHART_CAMPING_TENT = 18881
 # Kzarka Gauntlet enhances +1 to +15, then PRI to PEN: levels 1-20.
 _KZARKA_GAUNTLET = 11210
 # Its enchantstaticstatus.dbss key (enchantstaticstatus_dbss.md).
@@ -71,6 +80,8 @@ _KHARAZAD = 21
 # longsword 1 (a main-hand type), necklace 15.
 _LONGSWORD = 1
 _NECKLACE = 15
+# A sub-weapon, named after its Central Market subcategory like main weapons.
+_SOVEREIGN_KUNAI = 930007
 _BLACK_STONE = 16001
 # Servant gear with a non-empty `unknown_5d`, so its later header fields move.
 _OQUILLA_SAIL_BALANCE = 607887
@@ -112,8 +123,12 @@ CASE = HandlerCase(
                 "enchant_key",
                 "enhancement_type",
                 "equip_type",
+                "weapon_type",
                 "equip_slot",
                 "slot",
+                "servant_kinds",
+                "market_category",
+                "market_sub_category",
                 "stackable",
                 "required_level",
                 "class_mask",
@@ -279,12 +294,16 @@ CASE = HandlerCase(
         TargetTest(
             col="item_id",
             value=_BASTEER_LONGSWORD,
-            expected={"slot": "Main Weapon", "equip_type": _LONGSWORD, "stackable": False},
+            expected={"slot": "Main Weapon", "equip_type": _LONGSWORD, "weapon_type": "Longsword", "stackable": False},
         ),
+        # Weapon types are named from their market subcategory, also when the
+        # item is not listed (Basteer Longsword); other gear has its slot only.
+        TargetTest(col="item_id", value=_KZARKA_GAUNTLET, expected={"weapon_type": "Gauntlet"}),
+        TargetTest(col="item_id", value=_SOVEREIGN_KUNAI, expected={"slot": "Sub-weapon", "weapon_type": "Kunai"}),
         TargetTest(
             col="item_id",
             value=_KHARAZAD_NECKLACE,
-            expected={"slot": "Necklace", "equip_type": _NECKLACE, "stackable": False},
+            expected={"slot": "Necklace", "equip_type": _NECKLACE, "weapon_type": "", "stackable": False},
         ),
         # Items that are not equipment have no slot and type; materials and food stack.
         TargetTest(
@@ -293,8 +312,13 @@ CASE = HandlerCase(
             expected={"slot": "", "equip_type": None, "stackable": True},
         ),
         TargetTest(col="item_id", value=_BALACS_LUNCHBOX, expected={"slot": "", "stackable": True}),
-        # Mount gear (no class can wear it) shows the bare slot number, not "Armor".
-        TargetTest(col="item_id", value=_LIGHT_LEATHER_BARDING, expected={"slot": "3"}),
+        # Servant gear names the slot of its servant, not the character slot.
+        TargetTest(col="item_id", value=_LIGHT_LEATHER_BARDING, expected={"slot": "Barding"}),
+        TargetTest(col="item_id", value=_ORZEKEL_SADDLE, expected={"slot": "Saddle (Costume)"}),
+        TargetTest(col="item_id", value=_SHABBY_WAGON_COVER, expected={"slot": "Cover"}),
+        TargetTest(col="item_id", value=_CARAVEL_WHITE_WIND_SAIL, expected={"slot": "Sail"}),
+        TargetTest(col="item_id", value=_ROWBOAT_CARGO_CONTAINER, expected={"slot": "Cargo Container"}),
+        TargetTest(col="item_id", value=_NAPHART_CAMPING_TENT, expected={"slot": "Appearance"}),
         # The fields after `unknown_5d` are read past its entries: a sail
         # places no character and casts no skill.
         TargetTest(
@@ -376,6 +400,47 @@ def test_slot_label_hashes_match_stringtable() -> None:
         if hashes.get(label.key) != label.key_hash
     }
     assert not wrong, f"slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+
+
+def test_servant_slot_label_hashes_match_stringtable() -> None:
+    from _bss.stringtable.parser import parse_sheet_key_hashes
+    from _dbss.itemenchant.servant_slots import SERVANT_SLOT_LABELS
+    from tests.fixtures import load_binary_fixture
+
+    labels = [label for group in SERVANT_SLOT_LABELS.values() for label in group.values()]
+    hashes = parse_sheet_key_hashes(load_binary_fixture("stringtable.bss"), {label.sheet for label in labels})
+    wrong = {
+        label.key: (label.key_hash, hashes.get(label.sheet, {}).get(label.key))
+        for label in labels
+        if hashes.get(label.sheet, {}).get(label.key) != label.key_hash
+    }
+    assert not wrong, f"servant slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+
+
+def test_servant_gear_slots_have_a_label_in_their_group(itemenchant_result: HandlerResult) -> None:
+    """A servant group's slot the client adds shows as a bare number until it gets a label."""
+    from _dbss.itemenchant.servant_slots import SERVANT_SLOT_LABELS, servant_group
+    from _dbss.itemenchant.slot_labels import NO_SLOT
+
+    unlabelled = {
+        (group, record["equip_slot"])
+        for record in itemenchant_result.records
+        if record["servant_kinds"] and record["equip_slot"] != NO_SLOT
+        and (group := servant_group(record["servant_kinds"])) is not None
+        and record["equip_slot"] not in SERVANT_SLOT_LABELS[group]
+    }
+    assert not unlabelled, f"servant (group, equip_slot) pairs without a label: {sorted(unlabelled)}"
+
+
+def test_only_servant_gear_has_servant_kinds(itemenchant_result: HandlerResult) -> None:
+    """Gear a class can wear never names a servant, and gear no class can wear always does."""
+    from _dbss.itemenchant.slot_labels import NO_SLOT
+
+    equipment = [r for r in itemenchant_result.records if r["equip_slot"] != NO_SLOT]
+    both = [r["item_id"] for r in equipment if r["class_mask"] and r["servant_kinds"]]
+    neither = [r["item_id"] for r in equipment if not r["class_mask"] and not r["servant_kinds"]]
+    assert not both, f"gear with classes and servant kinds: {both[:5]}"
+    assert not neither, f"gear with neither classes nor servant kinds: {neither[:5]}"
 
 
 def test_every_stored_slot_has_a_label(itemenchant_result: HandlerResult) -> None:

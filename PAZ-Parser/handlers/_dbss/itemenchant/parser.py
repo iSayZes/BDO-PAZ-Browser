@@ -20,8 +20,8 @@ ICON_ROOT = "ui_texture/icon/"
 
 # The item grade, 0 (white) to 5, which colours the item name (`_common/item_grade.py`).
 _GRADE = 0x06
-# The equipment type, which the tooltip names (`PaGlobalFunc_Util_ClassEquipParts`);
-# 0 on items that are not equipment.
+# The equipment type; 0 on items that are not equipment. Weapon types are
+# named after their Central Market subcategory (`weapon_types.py`).
 _EQUIP_TYPE = 0x07
 # The equipment slot, an `__eEquipSlotNo*` value (`slot_labels.py`).
 _EQUIP_SLOT = 0x0E
@@ -37,6 +37,9 @@ _FOR_TRADE = 0x4B
 _TRADE_TYPE = 0x4C
 # Bit n allows class type n (`_common/class_type.py`).
 _CLASS_MASK = 0x4D
+# Bit n allows `CppEnums.ServantKind` n; 0 on everything but servant gear
+# (`servant_slots.py`).
+_SERVANT_KINDS = 0x55
 
 # The fields below follow `unknown_5d` (`layout.py`): these offsets hold when
 # it is empty, and move by `header_shift` on servant gear.
@@ -54,6 +57,11 @@ _CHARACTER_ID = 0xAA
 # Stored for items without durability.
 _NO_DURABILITY = 32_767
 _MAX_DURABILITY = 0xC5
+
+# The Central Market category and subcategory, LOC type 44 `str_id1` and
+# `str_id2`; 255 when the item is not listed.
+_MARKET_CATEGORY = 0xC8
+_MARKET_SUB_CATEGORY = 0xC9
 
 # skill_key_1 and skill_key_2: the skills a consumable casts, `skill.dbss`
 # keys whose buff_ids are the item's buffs; 0 when unused. Every level of an
@@ -146,11 +154,14 @@ def _header_fields(data: bytes, start: int) -> dict:
         "family_bound": bool(data[start + _FAMILY_BOUND]),
         "trade_type": data[start + _TRADE_TYPE] if data[start + _FOR_TRADE] else None,
         "class_mask": u64(data, start + _CLASS_MASK),
+        "servant_kinds": u32(data, start + _SERVANT_KINDS),
         "required_level": data[late + _REQUIRED_LEVEL],
         "dyeable": bool(data[late + _DYEABLE]),
         "character_id": u16(data, late + _CHARACTER_ID),
         # None sorts last and exports empty.
         "max_durability": None if durability == _NO_DURABILITY else durability,
+        "market_category": data[late + _MARKET_CATEGORY],
+        "market_sub_category": data[late + _MARKET_SUB_CATEGORY],
         "skill_keys": list(_skill_keys(data, late)),
     }
 

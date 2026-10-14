@@ -27,11 +27,14 @@ GAME_SHEET = "GAME"
 # LOC type 37 str_id2 of the GAME sheet's keys.
 GAME_SHEET_LOC_ID2 = 1
 
+# The sheet of the UI panel resources (`PANEL_*` keys).
+RESOURCE_SHEET = "RESOURCE"
+
 # LOC type 37 str_id2 of every sheet's keys, by sheet name (stringtable_bss.md).
 SHEET_LOC_ID2 = {
     "CUTSCENE": 0,
-    "GAME": GAME_SHEET_LOC_ID2,
-    "RESOURCE": 2,
+    GAME_SHEET: GAME_SHEET_LOC_ID2,
+    RESOURCE_SHEET: 2,
     "ACTIONCHART": 3,
     "TOOL": 4,
     "WEB": 5,

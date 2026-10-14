@@ -8,6 +8,7 @@
     "enchantKey": "강화 키",
     "enhancementType": "강화 유형",
     "slot": "장착 부위",
+    "weaponType": "무기 종류",
     "requiredLevel": "요구 레벨",
     "classes": "적용 직업",
     "binding": "귀속",

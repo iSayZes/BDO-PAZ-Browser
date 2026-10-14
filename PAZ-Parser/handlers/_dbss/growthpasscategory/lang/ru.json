@@ -1,0 +1,16 @@
+{
+  "offsetColumns": {
+    "categoryKey": "Ключ категории",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "columns": {
+    "categoryKey": "Ключ категории",
+    "icon": "Значок",
+    "name": "Имя",
+    "questChain": "Основной ID"
+  },
+  "meta": {
+    "count": "Категорий Growth Pass: {count}"
+  }
+}

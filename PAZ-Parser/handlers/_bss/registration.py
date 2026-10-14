@@ -64,11 +64,20 @@ from .territoryinfo.handler import TerritoryInfoBssHandler
 from .titlecategory.handler import TitleCategoryBssHandler
 from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
+from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
 from .zodiacsignindex.handler import ZodiacSignIndexHandler
 
 
 def register_bss_handlers() -> None:
-    register_handler("allquestlist.bss", AllQuestListBssHandler())
+    # One layout: PABR, a count and packed quest IDs.
+    for name in (
+        "allquestlist.bss",
+        "growthpassquestlist.bss",
+        "seasonpassquestlist.bss",
+        "seasonpassquestlistforcash.bss",
+        "seasonpassquestlistfornormal.bss",
+    ):
+        register_handler(name, AllQuestListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
@@ -152,4 +161,5 @@ def register_bss_handlers() -> None:
     # One layout for the three skill windows.
     for window in ("combat", "awakening", "succession"):
         register_handler(f"ui_skillgroup_{window}.bss", UiSkillGroupBssHandler())
+    register_handler("uigrowthpasslayout.bss", UiGrowthPassLayoutBssHandler())
     register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "categoryKey": "Kategorieschlüssel",
+    "row": "Zeile",
+    "column": "Spalte",
+    "cellType": "Zellentyp",
+    "mainId": "Haupt-ID",
+    "subId": "Unter-ID",
+    "icon": "Symbol",
+    "title": "Titel"
+  },
+  "meta": {
+    "count": "{count} Rasterzellen · {layouts} Kategorien"
+  }
+}

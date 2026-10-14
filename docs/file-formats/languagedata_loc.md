@@ -89,6 +89,7 @@ are `str_id2 | str_id3 << 16`. Their `key0` is `str_type` and their `id` is
 | 58       | `newquest.bss` group names (`str_id1` = group key, `str_id4=0`) and quest condition lines (`str_id1` = packed quest ID, `str_id2` = group key, `str_id4=1`); see Type 58 below |
 | 63       | Journal quest adventure log metadata, `str_id1` = journal_key, `str_id2` = book_key         |
 | 71       | Employee names, `str_id1` = `employeename.dbss` employee_name_id, `str_id3` = 12           |
+| 107      | Growth Pass category names (`"Game Tips"`, `"HYPERBOOST"`), `str_id1` = `growthpasscategory.dbss` key 1 to 9, `str_id2=0`; siege object descriptions sit in the same type under `str_id1 = 59791` |
 | 113      | Lightstone combination names with their effects (`"[Imperial Chef] Cooking Mastery +30"`, name and effect split by a newline), `str_id1` = `lightstoneset.bss` set ID, 1 to 182 |
 | 115      | Monster Zone Info categories (`"Elvia Realm"`, `"Region Quests"`), `str_id1` = `dropuisubcategoryinfo.bss` key 1 to 8 |
 | 116      | Monster Zone Info zone names (`"Sherekhan Necropolis (Day)"`), `str_id1` = `dropuihuntinggroundinfo.bss` key; 113 IDs from 0 to 119, 49 has no row |

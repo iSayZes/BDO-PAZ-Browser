@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "categoryKey": "카테고리 키",
+    "row": "행",
+    "column": "열",
+    "cellType": "셀 유형",
+    "mainId": "메인 ID",
+    "subId": "서브 ID",
+    "icon": "아이콘",
+    "title": "제목"
+  },
+  "meta": {
+    "count": "격자 셀 {count}개 · 카테고리 {layouts}개"
+  }
+}

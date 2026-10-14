@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "categoryKey": "Category Key",
+    "row": "Row",
+    "column": "Column",
+    "cellType": "Cell Type",
+    "mainId": "Main ID",
+    "subId": "Sub ID",
+    "icon": "Icon",
+    "title": "Title"
+  },
+  "meta": {
+    "count": "{count} grid cells · {layouts} categories"
+  }
+}

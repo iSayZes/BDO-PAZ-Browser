@@ -91,8 +91,11 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `grenadedata.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `grenadedataoffset.dbss` | Empty offset companion for `grenadedata.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `groupcameradata.bss` | PABR cutscene skip summaries: scene ID, Korean title, recap and quote, and region symbol icon path (LOC type 97) | [groupcameradata](file-formats/groupcameradata_bss.md) | 0 | 0 |
+| `growthpasscategory.dbss` | Growth Pass window tabs: key, Korean name (English in LOC type 107), icon texture key and the quest chain of the tab's grid | [growthpasscategory](file-formats/growthpasscategory_dbss.md) | 1 | 0 |
+| `growthpasscategoryoffset.dbss` | Index into `growthpasscategory.dbss`: bare count, then (u32 category key, offset, size) | [growthpasscategory](file-formats/growthpasscategory_dbss.md) | 1 | 0 |
 | `growthpasspointshop.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `growthpasspointshopoffset.dbss` | Empty offset companion for `growthpasspointshop.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `growthpassquestlist.bss` | Growth Pass quests: nine quest chains as packed quest IDs, same layout as `allquestlist.bss` | [growthpassquestlist](file-formats/growthpassquestlist_bss.md) | 0 | 0 |
 | `guaranteeenchantss.dbss` | Ancient Anvil table: Agris Essences needed for a guaranteed success per enhancement group and current level; the group is `enhancement_type` in `itemenchant.dbss` | [guaranteeenchantss](file-formats/guaranteeenchantss_dbss.md) | 1 | 0 |
 | `guildskillexperience.dbss` | Guild point EXP table: EXP to the next guild point level, levels 0 to 1000 on client 3464 | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |
 | `guildskillexperiencemaxlevel.bss` | PABR max level of the guild point table, same format as `skillexperiencemaxlevel.bss` (1000 on client 3464) | [skillexperiencemaxlevel](file-formats/skillexperiencemaxlevel_bss.md) | 0 | 0 |
@@ -196,6 +199,9 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `regioninfo_linkandcheckvalid2.bss` | PABR region link lists: per region the town regions it links to, a copy of `regioninfo.bss` `unknown_d2_keys` | [regioninfo_linkandcheckvalid2](file-formats/regioninfo_linkandcheckvalid2_bss.md) | 2 | 0 |
 | `repetitionquest.bss` | PABR repeatable (daily, weekly, contribution) quest groups with quest references, condition scripts and a Korean string table; English text in LOC type 42; `newquest.bss` layout | [repetitionquest](file-formats/repetitionquest_bss.md) | 1 | 0 |
 | `sailstatdata.bss` | PABR Sailing Mastery table: per 50 mastery, ship acceleration, speed, turn and brake bonus by `ServantStatType` | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `seasonpassquestlist.bss` | Black Spirit Pass quests: every free and premium quest, same layout as `allquestlist.bss` | [seasonpassquestlist](file-formats/seasonpassquestlist_bss.md) | 1 | 0 |
+| `seasonpassquestlistforcash.bss` | Black Spirit Pass premium quest of each pass row, same layout | [seasonpassquestlist](file-formats/seasonpassquestlist_bss.md) | 1 | 0 |
+| `seasonpassquestlistfornormal.bss` | Black Spirit Pass free quest of each pass row, same layout | [seasonpassquestlist](file-formats/seasonpassquestlist_bss.md) | 1 | 0 |
 | `servantcategory.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `servantcategoryoffset.dbss` | Empty offset companion for `servantcategory.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `servantexperience.dbss` | Mount and ship level table keyed by `level << 16 \| character_id`: EXP to the next level, max HP, stamina and weight, the four movement stats by `ServantStatType` and six level-up bonus dice, around the `experience.bss` stat body | [servantexperience](file-formats/servantexperience_dbss.md) | 3 | 0 |
@@ -229,6 +235,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `ui_skillgroup_awakening.bss` | Awakening skill window grid per class, same format as `ui_skillgroup_combat.bss` | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `ui_skillgroup_combat.bss` | Combat skill window grid per class: placed skill groups, drawing cells and named tabs | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `ui_skillgroup_succession.bss` | Succession skill window grids, same format; empty on client 3458 | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
+| `uigrowthpasslayout.bss` | PABR Growth Pass quest grids: per category a column and row count and 6-byte cells (quest chain, quest ID, cell type, flag) | [uigrowthpasslayout](file-formats/uigrowthpasslayout_bss.md) | 2 | 0 |
 | `waititem.dbss` | Central Market Registration Queue items: 17-byte rows of item key, item ID, enhancement level and an unknown u32 (`900`) | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `waititemoffset.dbss` | Index into `waititem.dbss`, maps item key → offset/size | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `weatheractor.dbss` | Weather actors (Cloudy Day, Night, Typhoon, Sandstorm, Margoria storms, bosses and monsters): 75-byte rows of u16 character key, type byte, floats, small integers and a skill key on three rows | [weatheractor](file-formats/weatheractor_dbss.md) | 4 | 0 |

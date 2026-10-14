@@ -33,6 +33,13 @@ _NEW_ICON_ROOT = "ui_texture/icon/"
 # starts at the inner "Icon/" and drops a folder level.
 _ICON_RE = re.compile(rb"(?i)(?:new_)?icon/[ -~]{3,120}?\.(?:dds|png)")
 
+# gc::ObjectKind member names of the 2016 client (ObjectKind_ prefix dropped).
+# The file also stores kinds 10 to 37, which came later and have no name.
+OBJECT_KIND_NAMES: tuple[str, ...] = (
+    "PersonalTent", "FixedHouse", "Installation", "Barricade", "KingTent",
+    "InnRoom", "LordTent", "Trap", "VillageTent", "Villa",
+)
+
 _KIND = 0x02
 _MODEL_PATH = 0x06
 

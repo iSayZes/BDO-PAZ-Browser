@@ -21,7 +21,7 @@ from _common.offset_table import (
     offset_records,
     size_column,
 )
-from .parser import parse_characterobject_records
+from .parser import OBJECT_KIND_NAMES, parse_characterobject_records
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "characterobjectoffset.dbss"
@@ -40,6 +40,11 @@ def character_object_offset_handler() -> OffsetTableHandler:
     )
 
 
+
+def _object_kind_name(object_kind: int) -> str:
+    """The gc::ObjectKind name, or '' for the later kinds it does not have."""
+    return OBJECT_KIND_NAMES[object_kind] if object_kind < len(OBJECT_KIND_NAMES) else ""
+
 class CharacterObjectHandler(PreviewHandler):
     def _columns(self, has_loc: bool) -> list[Column]:
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
@@ -53,7 +58,8 @@ class CharacterObjectHandler(PreviewHandler):
         if has_loc:
             columns.append(Column(cols["itemName"], sort_key="item_name"))
         columns += [
-            Column(cols["objectKind"], "num", sort_key="object_kind"),
+            # Sorts by the number; the cell adds the 2016 name where there is one.
+            Column(cols["objectKind"], sort_key="object_kind"),
             Column(cols["modelPath"], sort_key="model_path"),
         ]
         return columns
@@ -94,6 +100,7 @@ class CharacterObjectHandler(PreviewHandler):
                 "item_id": item_id,
                 **pa_fields("item_name", item_name_tagged(item_id) if has_loc and item_id is not None else ""),
                 "object_kind": r.object_kind,
+                "object_kind_name": _object_kind_name(r.object_kind),
                 "model_path": r.model_path,
             })
         return records_out
@@ -124,7 +131,7 @@ class CharacterObjectHandler(PreviewHandler):
             row.append(e(r["item_id"] or _EMPTY))
             if has_loc:
                 row.append(pa_cell(r, "item_name"))
-            row.append(e(r["object_kind"]))
+            row.append(e(f'{r["object_kind"]} {r["object_kind_name"]}'.strip()))
             row.append(e(r["model_path"]))
             rows.append(row)
 

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "Clave de región",
+    "region": "Región",
+    "characterId": "ID del personaje",
+    "npc": "PNJ"
+  },
+  "meta": {
+    "count": "{count} PNJ de trueque"
+  }
+}

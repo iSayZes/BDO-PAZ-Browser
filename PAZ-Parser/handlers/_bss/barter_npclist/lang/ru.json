@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "Ключ региона",
+    "region": "Регион",
+    "characterId": "ID персонажа",
+    "npc": "НИП"
+  },
+  "meta": {
+    "count": "НИП бартера: {count}"
+  }
+}

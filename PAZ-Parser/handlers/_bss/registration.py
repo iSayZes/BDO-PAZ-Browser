@@ -3,6 +3,7 @@ from __future__ import annotations
 from bdo_preview import register_handler
 
 from .allquestlist.handler import AllQuestListBssHandler
+from .barter_npclist.handler import BarterNpcListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
@@ -79,6 +80,7 @@ def register_bss_handlers() -> None:
         "seasonpassquestlistfornormal.bss",
     ):
         register_handler(name, AllQuestListBssHandler())
+    register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())

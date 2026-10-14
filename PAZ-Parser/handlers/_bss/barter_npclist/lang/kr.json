@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "지역 키",
+    "region": "지역",
+    "characterId": "캐릭터 ID",
+    "npc": "NPC"
+  },
+  "meta": {
+    "count": "물물교환 NPC {count}명"
+  }
+}

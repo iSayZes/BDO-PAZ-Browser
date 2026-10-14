@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_name
+from _common.character import character_name, character_title
 from _common.html import Column, e, error, icon_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.item_key import item_name_tagged
@@ -49,6 +49,8 @@ class CharacterStaticHandler(PreviewHandler):
             Column(cols["characterId"], "num", sort_key="character_id"),
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["name"], sort_key="name"),
+            Column(cols["title"], sort_key="title"),
+            Column(cols["label"], sort_key="label_kr"),
             Column(cols["actionScript"], sort_key="action_script"),
             Column(cols["conditionScript"], sort_key="condition_script"),
             Column(cols["knowledgeId"], "num", sort_key="knowledge_id"),
@@ -112,6 +114,8 @@ class CharacterStaticHandler(PreviewHandler):
                 icon_cell(r["icon_path"]) if r["icon_path"] else _EMPTY,
             ]
             row.append(e(r["name"] or _EMPTY))
+            row.append(e(r["title"] or _EMPTY))
+            row.append(e(r["label_kr"] or _EMPTY))
             row.append(e(r["action_script"]))
             row.append(e(r["condition_script"]))
             row.append(_optional(r["knowledge_id"]))
@@ -142,6 +146,9 @@ def _record(raw: dict) -> dict:
         "icon_path": icon_path(IconKind.CHARACTER, character_id),
         # The LOC name in the user's language, else the Korean name the record stores.
         "name": character_name(character_id) or raw["name_kr"],
+        # The same for the title (`<Node Manager>`); most characters have none.
+        "title": character_title(character_id) or raw["title_kr"],
+        "label_kr": raw["label_kr"],
         "action_script": raw["action_script"],
         "condition_script": raw["condition_script"],
         "knowledge_id": raw["knowledge_id"],

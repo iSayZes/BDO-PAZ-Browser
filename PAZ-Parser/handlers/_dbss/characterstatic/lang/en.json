@@ -7,6 +7,8 @@
   "columns": {
     "characterId": "Character ID",
     "name": "Name",
+    "title": "Title",
+    "label": "Internal Label",
     "icon": "Icon",
     "actionScript": "Action Script",
     "conditionScript": "Condition",

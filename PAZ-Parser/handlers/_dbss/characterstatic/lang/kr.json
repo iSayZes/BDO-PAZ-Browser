@@ -7,6 +7,8 @@
   "columns": {
     "characterId": "캐릭터 ID",
     "name": "이름",
+    "title": "칭호",
+    "label": "내부 라벨",
     "icon": "아이콘",
     "actionScript": "행동 스크립트",
     "conditionScript": "조건",

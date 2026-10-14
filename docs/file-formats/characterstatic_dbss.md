@@ -199,8 +199,10 @@ Three UTF-16 strings follow the model path on all 24,551 records (client
 
 The LOC type 6 `str_id4=1` title is the translation of `title_kr`
 (`<Node Manager>` for `<거점 관리인>`): 6,178 records have both, 64 have only
-the Korean one and 3 only the LOC one. The parser reads
-`name_kr`, which the Name column shows when LOC has no name for the character.
+the Korean one and 3 only the LOC one. The parser reads all three: the Name
+column shows `name_kr` when LOC has no name for the character, the Title
+column `title_kr` when LOC has no title (`47481` `<여관 관리인>`, an unnamed
+inn keeper), and the Internal Label column `label_kr` as stored.
 
 ### Payload Tail
 
@@ -235,6 +237,13 @@ links; the other 234 are mounts, wagons and ships (178 under `riding/horse`)
 that store `0` here while a registration item names them: Horse Emblems (165),
 Ship Licenses (23), Donkey Emblems (12), Wagon Registrations (11), e.g. `9967`
 Horse from `50094` Horse Emblem: Tier 7-4 (Male).
+
+So `CHARACTER_ITEM` gains nothing from `source_item_id` on client 3464: every
+character that stores one already has that item in the index. The 4
+characters the index leaves out because several items name them are horses
+that store `0` here: `31533`, `31544`, `31590` and `31591`, named by 2 to 6
+Horse Emblems each. The index stays on `itemenchant.dbss` alone, and
+`test_source_item_matches_the_itemenchant_link` checks that the two agree.
 
 Observed `payload_size` ranges from `465` to `1042` bytes on client 3464 (earlier clients: `456` to `1033`; older fixture: `478` to `1055`).
 
@@ -302,6 +311,8 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 | Character ID | num  | `character_id`; right-aligned |
 | Icon         | text | Resolved from the character ID through the character icon index; covers about 20% of characters |
 | Name         | text | LOC lookup `str_type=6`, `str_id1=character_id`, else `name_kr` |
+| Title        | text | LOC lookup `str_type=6`, `str_id4=1`, else `title_kr`; dash when neither |
+| Internal Label | text | `label_kr`, Korean only |
 | Action Script | text | `action_script` |
 | Condition    | text | `condition_script` |
 | Knowledge ID | num  | Extract from `getknowledge(<id>);` (case-insensitive) when present; dash otherwise, stored as `None` so it sorts last |

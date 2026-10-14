@@ -6,21 +6,22 @@ The payload opens with two length-prefixed scripts, then the ID again:
     u8[8] header | u8 tag 0x15 | action_script | condition_script
     | u8 | u16 character_id | u16 | u8 npc_kind | u8 grade
     | i32 tendency_on_dead | i32 ocean_tendency | ... | u8 vehicle_type @ p+166
-    | ... ai_script model_path name_kr ...
+    | ... ai_script model_path name_kr label_kr title_kr ...
     | u8 class_type @ end-24 | ... | u32 source_item_id @ end-15 | ...
 
 Both scripts are an i64 UTF-16 code-unit count followed by UTF-16LE text. The
 model path is an i64 byte count plus ASCII at no fixed offset, so it is found by
 scanning; it is the only folder path among the record's ASCII strings. The
 string right before it names the character's AI script, the stem of an `.ai`
-file (`9999`, `Monsters_Main_Manager`), and the UTF-16 string right after it is
-the Korean name.
+file (`9999`, `Monsters_Main_Manager`), and the three UTF-16 strings right
+after it are the Korean name, internal label and title.
 Full layout in docs/file-formats/characterstatic_dbss.md.
 """
 
 from __future__ import annotations
 
 import struct
+from dataclasses import dataclass
 
 from _common.knowledge_script import knowledge_id_of
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
@@ -60,23 +61,42 @@ def _read_script(data: bytes, pos: int, end: int, character_id: int) -> tuple[st
     return data[pos + _I64.size:text_end].decode("utf-16-le"), text_end
 
 
-def _record_strings(data: bytes, start: int, end: int) -> tuple[str, str, str]:
-    """(ai_script, model_path, name_kr) from the strings in `[start, end)`.
+@dataclass(frozen=True)
+class RecordStrings:
+    """The strings after the fixed fields; '' for each when no model path is found."""
+
+    ai_script: str = ""
+    model_path: str = ""
+    name_kr: str = ""
+    label_kr: str = ""
+    title_kr: str = ""
+
+
+def _record_strings(data: bytes, start: int, end: int) -> RecordStrings:
+    """The AI script, model path and Korean strings in `[start, end)`.
 
     The model path is the longest folder path among the ASCII strings; the AI
     script is the string right before it, '' when the path comes first
-    (player characters). The Korean name is the UTF-16 string right after it.
+    (player characters). The Korean name, internal label and title are the
+    three UTF-16 strings right after it.
     """
     found = locate_prefixed_ascii(data, start, end)
     paths = [(prefix_at, text) for prefix_at, text in found if "/" in text]
     if not paths:
-        return "", "", ""
+        return RecordStrings()
     model_at, model_path = max(paths, key=lambda path: len(path[1]))
     model_index = found.index((model_at, model_path))
     before = found[model_index - 1][1] if model_index else ""
-    ai_script = "" if "/" in before else before
-    name_kr, _ = read_prefixed_at(data, model_at + STRING_PREFIX_SIZE + len(model_path), end, wide=True)
-    return ai_script, model_path, name_kr
+    name_kr, pos = read_prefixed_at(data, model_at + STRING_PREFIX_SIZE + len(model_path), end, wide=True)
+    label_kr, pos = read_prefixed_at(data, pos, end, wide=True)
+    title_kr, _ = read_prefixed_at(data, pos, end, wide=True)
+    return RecordStrings(
+        ai_script="" if "/" in before else before,
+        model_path=model_path,
+        name_kr=name_kr,
+        label_kr=label_kr,
+        title_kr=title_kr,
+    )
 
 
 def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
@@ -95,7 +115,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
     if struct.unpack_from("<H", data, pos + _CHARACTER_ID)[0] != character_id:
         raise ValueError(f"character {character_id} record does not repeat its own ID")
 
-    ai_script, model_path, name_kr = _record_strings(data, pos + _FIXED_SIZE, end)
+    strings = _record_strings(data, pos + _FIXED_SIZE, end)
     return {
         "character_id": character_id,
         "action_script": action_script,
@@ -108,9 +128,11 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
         "vehicle_type": data[pos + _VEHICLE_TYPE],
         "class_type": data[end - _CLASS_TYPE_FROM_END],
         "source_item_id": _U32.unpack_from(data, end - _SOURCE_ITEM_FROM_END)[0],
-        "ai_script": ai_script,
-        "model_path": model_path,
-        "name_kr": name_kr,
+        "ai_script": strings.ai_script,
+        "model_path": strings.model_path,
+        "name_kr": strings.name_kr,
+        "label_kr": strings.label_kr,
+        "title_kr": strings.title_kr,
         "payload_size": row.size,
     }
 

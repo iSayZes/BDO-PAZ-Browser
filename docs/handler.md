@@ -1233,6 +1233,9 @@ it (`character_id` at `+0xAA` in
 [itemenchant.dbss](file-formats/itemenchant_dbss.md), moved back by the
 `unknown_5d` byte count on mount and ship gear); characters named by zero
 or several items are left out. The `characterobject.dbss` Item column reads it.
+The `characterstatic.dbss` `source_item_id` holds the same link for 4,874 of
+its 5,108 characters and none it lacks (client 3464), so the index does not
+read it.
 
 `KNOWLEDGE_CHARACTERS` maps a knowledge card to every character whose
 `getknowledge(<id>);` action script grants it, in ascending ID order.

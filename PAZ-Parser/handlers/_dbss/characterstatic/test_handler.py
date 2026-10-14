@@ -32,7 +32,7 @@ STATIC_CASE = HandlerCase(
     tests=[
         SchemaTest(
             required_keys=[
-                "character_id", "name", "action_script", "condition_script",
+                "character_id", "name", "title", "label_kr", "action_script", "condition_script",
                 "knowledge_id", "npc_kind", "grade", "tendency_on_dead", "ocean_tendency",
                 "vehicle_type", "vehicle_type_name", "class_type", "ai_script", "model_path",
                 "source_item_id", "source_item_name", "payload_size",
@@ -65,6 +65,14 @@ STATIC_CASE = HandlerCase(
                 "npc_kind": 2,
             },
         ),
+        # The LOC title in the user's language; the internal label exists only in Korean.
+        TargetTest(
+            col="character_id",
+            value=47791,
+            expected={"title": "<Node Manager>", "label_kr": "에다니아2_아우리스 해안_거점관리인_idx53"},
+        ),
+        # Without a LOC title the Korean one stands in.
+        TargetTest(col="character_id", value=47481, expected={"title": "<여관 관리인>"}),
         # The getknowledge match ignores case.
         TargetTest(col="character_id", value=50613, expected={"knowledge_id": 933}),
         # class_type differs from character_id: Warrior is 1 / 0, Ranger 2 / 4.
@@ -158,13 +166,15 @@ def test_source_item_matches_the_itemenchant_link(static_result: HandlerResult) 
     assert {character_id: links.get(character_id) for character_id in stored} == stored
 
 
-def test_korean_name_follows_the_model_path(static_result: HandlerResult) -> None:
-    """The first UTF-16 string after the model path is the Korean name."""
+def test_korean_strings_follow_the_model_path(static_result: HandlerResult) -> None:
+    """The UTF-16 strings after the model path: Korean name, internal label, title."""
     source = static_result.source
     records = parse_characterstatic_records(
         source.data, parse_pabr_offset_rows(source.file("characterstaticoffset.dbss"))
     )
-    names = {record["character_id"]: record["name_kr"] for record in records}
+    by_id = {record["character_id"]: record for record in records}
 
-    assert names[29929] == "가모스"
-    assert names[1] == "워리어"
+    assert by_id[29929]["name_kr"] == "가모스"
+    assert by_id[1]["name_kr"] == "워리어"
+    assert by_id[47791]["title_kr"] == "<거점 관리인>"
+    assert all(record["name_kr"] and record["label_kr"] for record in records)

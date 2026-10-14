@@ -7,6 +7,8 @@
   "columns": {
     "characterId": "ID персонажа",
     "name": "Имя",
+    "title": "Титул",
+    "label": "Внутренняя метка",
     "icon": "Значок",
     "actionScript": "Скрипт действия",
     "conditionScript": "Условие",

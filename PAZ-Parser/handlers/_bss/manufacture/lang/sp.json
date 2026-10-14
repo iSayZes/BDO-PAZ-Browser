@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Índice",
+    "action": "Elaboración",
+    "materials": "Materiales",
+    "resultGroup": "Grupo de resultado",
+    "resultItems": "Objetos resultantes"
+  },
+  "meta": {
+    "count": "{count} recetas de elaboración · {materials} materiales"
+  }
+}

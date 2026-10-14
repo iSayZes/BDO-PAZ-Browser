@@ -13,6 +13,7 @@ Full layout in docs/file-formats/itemmaingroup_bss.md.
 from __future__ import annotations
 
 import struct
+from collections.abc import Mapping
 from dataclasses import dataclass
 
 from _common.binary import u32
@@ -22,6 +23,7 @@ from _common.pabr_strings import (
     checked_string_table_start,
     read_string_table,
 )
+from _dbss.itemsubgroup.parser import ItemSubgroup
 
 _FILE_NAME = "itemmaingroup.bss"
 # PAZ path for links from tables that store a group ID (`characterfunction.dbss`).
@@ -46,6 +48,19 @@ class ItemMainGroup:
     @property
     def subgroup_keys(self) -> tuple[int, ...]:
         return tuple(entry.subgroup_key for entry in self.entries)
+
+
+def group_item_keys(group: ItemMainGroup, subgroups: Mapping[int, ItemSubgroup]) -> list[int]:
+    """Items of each distinct subgroup in entry order; a group may list one subgroup twice.
+
+    Subgroups missing from `subgroups` add nothing.
+    """
+    keys: list[int] = []
+    for subgroup_key in dict.fromkeys(group.subgroup_keys):
+        subgroup = subgroups.get(subgroup_key)
+        if subgroup is not None:
+            keys.extend(subgroup.item_keys)
+    return keys
 
 
 def parse_itemmaingroup_records(data: bytes) -> list[ItemMainGroup]:

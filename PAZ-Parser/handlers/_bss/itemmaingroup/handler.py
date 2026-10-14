@@ -11,7 +11,7 @@ from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.lookup_builders import ITEMSUBGROUP
 from _dbss.itemsubgroup.parser import ItemSubgroup, parse_itemsubgroup_records
-from .parser import ItemMainGroup, parse_itemmaingroup_records
+from .parser import ItemMainGroup, group_item_keys, parse_itemmaingroup_records
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _SUBGROUP_FILE = "itemsubgroup.dbss"
@@ -86,7 +86,7 @@ class ItemMainGroupBssHandler(PreviewHandler):
 
 
 def _record_fields(group: ItemMainGroup, subgroups: dict[int, ItemSubgroup]) -> dict:
-    item_keys = _item_keys(group, subgroups)
+    item_keys = group_item_keys(group, subgroups)
     conditions = [entry.condition for entry in group.entries]
     return {
         "group_id": group.group_id,
@@ -100,16 +100,6 @@ def _record_fields(group: ItemMainGroup, subgroups: dict[int, ItemSubgroup]) -> 
         "item_keys": item_keys,
         "items": [item_key_text(key) for key in item_keys],
     }
-
-
-def _item_keys(group: ItemMainGroup, subgroups: dict[int, ItemSubgroup]) -> list[int]:
-    """Items of each distinct subgroup in entry order; a group may list one subgroup twice."""
-    keys: list[int] = []
-    for subgroup_key in dict.fromkeys(group.subgroup_keys):
-        subgroup = subgroups.get(subgroup_key)
-        if subgroup is not None:
-            keys.extend(subgroup.item_keys)
-    return keys
 
 
 def _subgroup_text(subgroup_key: int, condition: str) -> str:

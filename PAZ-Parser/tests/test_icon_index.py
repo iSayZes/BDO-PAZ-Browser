@@ -6,6 +6,7 @@ from _common.html import e, more_marker
 from _common.icon_index import (
     ITEM_ICON_DIR,
     IconKind,
+    clean_stored_icon_path,
     derive_icon_path,
     icon_path,
     icon_region,
@@ -22,6 +23,20 @@ _FURNITURE_ICON = (
     "ui_texture/icon/new_icon/03_etc/06_housing/"
     "inhouse_cultivate_sea_clam_01_wall.dds"
 )
+
+
+@pytest.mark.parametrize(
+    ("stored", "expected"),
+    [
+        # itemenchant.dbss Essence of Dawn Box and Alchemy Byproduct store backslashes.
+        (r"New_Icon\03_ETC\00757120.dds", "new_icon/03_etc/00757120.dds"),
+        (r"New_Icon/03_ETC\03_Quest_Item/00042393.dds", "new_icon/03_etc/03_quest_item/00042393.dds"),
+        ("New_Icon/04_PC_Skill//04_Debuff/a.dds", "new_icon/04_pc_skill/04_debuff/a.dds"),
+        (" Item_Icon/00724507.dds ", "item_icon/00724507.dds"),
+    ],
+)
+def test_clean_stored_icon_path(stored: str, expected: str) -> None:
+    assert clean_stored_icon_path(stored) == expected
 
 
 @pytest.fixture(autouse=True)

@@ -19,6 +19,7 @@ from .parser import (
     parse_itemenchant_records,
     parse_itemenchantoffset_records,
 )
+from .life_slots import NO_LIFE_EQUIP_TYPE, life_slot_label
 from .servant_slots import servant_slot_label
 from .slot_labels import NO_SLOT, slot_label
 from .weapon_types import weapon_type_names
@@ -90,15 +91,18 @@ def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, w
 
 
 def _slot_text(record: dict, slots: dict[int, str]) -> str:
-    """The slot's tooltip label; servant gear's label for its servant.
+    """The slot's tooltip label; servant and Life Skill gear's label for their slots.
 
     Servant gear stores the character slot numbers with other meanings (a
     barding in Chest), so it is labelled by `servant_slots.py`, and shows the
-    bare number where no servant group labels its slot.
+    bare number where no servant group labels its slot. Life Skill gear goes
+    in no character slot; `life_slots.py` labels its Life Skill tab slot.
     """
     equip_slot = record["equip_slot"]
     if record["servant_kinds"] and equip_slot != NO_SLOT:
         return servant_slot_label(record["servant_kinds"], equip_slot) or str(equip_slot)
+    if record["life_equip_type"] != NO_LIFE_EQUIP_TYPE:
+        return life_slot_label(record["life_equip_type"])
     return slots[equip_slot]
 
 

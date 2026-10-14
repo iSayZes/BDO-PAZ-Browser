@@ -287,24 +287,47 @@ base items on client 3458.
 
 #### `item_type`
 
-`EItemType`, which selects the tooltip label. Names from bdo-data-extractor;
-the counts are base items here.
+`EItemType`, which selects the tooltip label. The names are
+`CppEnums.ItemType` (`include/global_define_cpp_enum`), which ends at 11; the
+labels are the ones `panel_tooltip_item` picks per value, and every value
+without a branch shows General.
 
-| Value | Name         | Tooltip label       | Base items |
-| ----: | ------------ | ------------------- | ---------: |
-| 0     | Normal       | General             | 6,243      |
-| 1     | Equip        | Equipment           | 29,763     |
-| 2     | Skill        | Consumable          | 13,245     |
-| 3     | Tent         | Holding Tool        | 279        |
-| 4     | Installation | Installable Object  | 3,597      |
-| 5     | Jewel        | Socket Item         | 565        |
-| 6     | CannonBall   | Cannonball          | 22         |
-| 7     | Mapae        | License             | 246        |
-| 8     | Material     | Crafting Material   | 1,630      |
-| 10    | ContentsEvent | Special Items      | 13,272     |
+| Value | Name         | Tooltip label       | Base items (client 3464) | Examples |
+| ----: | ------------ | ------------------- | -----------------------: | -------- |
+| 0     | Normal       | General             | 6,233  | |
+| 1     | Equip        | Equipment           | 29,918 | |
+| 2     | Skill        | Consumable          | 13,289 | |
+| 3     | Tent         | Holding Tool        | 279    | |
+| 4     | Installation | Installable Object  | 3,603  | |
+| 5     | Jewel        | Socket Item         | 565    | |
+| 6     | CannonBall   | Cannonball          | 22     | |
+| 7     | Mapae        | License             | 246    | |
+| 8     | Material     | Crafting Material   | 1,622  | |
+| 9     | Interaction  | Enter Area          | 0      | |
+| 10    | ContentsEvent | Special Items      | 13,344 | |
+| 11    | ToVehicle    | General             | 28     | Ship Repair Kit, Wagon Repair Kit, Dried Briar |
+| 12    |              | General             | 11     | [Guild] Ship License: Galley |
+| 13    |              | General             | 4      | [Guild] Arrow for Hwacha |
+| 14    |              | General             | 4      | [Guild] Oil for Flame Tower |
+| 16    |              | General             | 12     | Bloodstorm Black Stone, [Event] Light Aura |
+| 17    |              | General             | 494    | Lyngbakr's Scale, Sunset Coral Essence |
+| 18    |              | General             | 224    | Viola, Reed, Radish |
+| 19    |              | General             | 32     | Wild Berry, Tomato, Olive |
+| 20    | LifeEquip    | Life Skill Gear     | 283    | Loggia Lumbering Axe, Loggia Cook's Clothes, Manos Ring, Venia Knot |
 
-Values 11 to 20 also occur (1,092 items) and are unnamed. Every one of the
-3,597 `Installation` items and the 279 `Tent` items names a placed character.
+General is the tooltip's fallback; a trade good (`isForJustTrade()`) shows
+General/Trade Item before the value 20 branch is reached. 20 is
+`__eItemType_LifeEquip`, a global the Lua uses without setting: the tooltip
+prefixes PRI to PEN to the name of an item above level 15 when its type is
+`__eItemType_Equip` or `__eItemType_LifeEquip`, and the search window
+(`panel_window_totalsearch_1`) makes the same check as `getItemType() == 1
+or getItemType() == 20`. The 283 type 20 items on client 3464 are the gear
+of the equipment window's Life Skill tab: gathering tools, life skill
+clothes and tools, accessories, Alchemy Stones of Life, artifacts, knots and
+orbs. They store `equip_type` `0` and `equip_slot` `46`; their slot comes
+from `life_equip_type` and `life_restrict_type` after the icon, see After
+the icon. Every one of the 3,603 `Installation` items and the 279 `Tent`
+items names a placed character.
 
 #### `equip_type`
 
@@ -519,7 +542,10 @@ On client 3464 every icon path ends in `.dds` and all but one begin with
 `New_Icon` in some case: item `66022` stores `Item_Icon/00724507.dds`, and
 `1000525` stores `New_icon/`. Seven base items (`9707`, `9708`, `9724`,
 `9725`, `720707`, `790810`, `810580`) separate some folders with
-backslashes, such as `New_Icon/03_ETC\03_Quest_Item/00042393.dds`.
+backslashes, such as `New_Icon/03_ETC\03_Quest_Item/00042393.dds`. The
+parser turns backslashes into slashes and collapses doubled slashes, as for
+buff icons, so all eight paths name shipped files
+(`ui_texture/icon/item_icon/00724507.dds` exists).
 
 ### After the icon
 
@@ -539,6 +565,9 @@ Layout from bdo-data-extractor; it reads cleanly in all 70,284 base blocks
 | varies  | u8        | unknown       |       |
 | varies  | u32       | enhancement_group | `enhancement_type × 1000` plus a family index in 70,268 base items, e.g. Kharazad necklace 21000 |
 | varies  | u32       | enhancement_type  | Enhancement system: `0` none, `1` ordinary weapons and armour, `13` ordinary accessories, `19` Sovereign weapons, `21` Kharazad, `23` Tuvala weapons and armour; the full list is in bdo-data-extractor. Also the `group` of the Ancient Anvil table, [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md) |
+| varies  | u8[24]    | unknown       |       |
+| varies  | u8        | life_equip_type | Kind of Life Skill gear, `0x29` after the end of the third string; `37` on every item that is not `item_type` 20. See below |
+| varies  | u8        | life_restrict_type | Life skill tab the gear is for (`__ePlayerLifeStatType`); `15` when any tab can use it, and on every item that is not `item_type` 20 |
 | varies  | ...       | unknown       | Undecoded remainder, holding `second_string` about 330 bytes in |
 | end-6   | u32       | key           | Repeats the packed key, like `+0x00` |
 | end-2   | u16       | unknown_crystal_group | `0xFFFF` except in 481 base items, e.g. Magic Crystal of Infinity - Valor `100`, which is no longer in the game; bdo-data-extractor: the crystal transfusion group |
@@ -565,6 +594,51 @@ Crow Earring. The bound text on those tooltips comes from `vested_type` and
 (2026-10-05) Arsha's Crossbow IV (`0`), [Event] Urugon's Shoes (`2`),
 Kansha Hexround (`1`) and Young Crow Earring (`3`) all say it, and none of
 them has enchant levels, which fits the line better. What it holds is open.
+
+`life_equip_type` and `life_restrict_type` are the two values the
+equipment window reads before it asks the client for a Life Skill slot:
+`panel_window_equipment_all_3` passes `getLifeEquipItemType()` and
+`getLifeItemRestrictType()` to `ToClient_getEquipableSlotLifeEquipItem`,
+and uses the current tab's life skill when the restrict type is
+`__ePlayerLifeStatType_Count`. The Lua never gives the values; I matched
+them to the 283 type 20 items on client 3464 by name. Restrict types `0`
+to `9` are the Life Skill tabs in the order `panel_window_equipment_all_4`
+lists them (`_lifeSlotPerType`): Collecting, Fishing, Hunting, Cooking,
+Alchemy, Manufacture, Training, Trade, Harvest, Sail. Loggia Hunter's
+Clothes store `2`, Cook's `3`, Alchemist's `4`, Trainer's `6`, Farmer's
+Clothes `8`, and the Sethra's Artifacts run from Gathering EXP (`0`) to
+Trading EXP (`7`), Farming EXP (`8`) and Sailing EXP (`9`); Barter EXP is
+`9` too, since Sailing and Barter share a tab ("Sailing/Barter"). The same
+numbers name the same life skills in `CppEnums.LifeExperienceType`. `15` is
+"any" (`__ePlayerLifeStatType_Count`, which makes the window use the open
+tab): accessories, Alchemy Stones of Life, knots, the orb, Margahan's
+Artifact and the two all-life Sethra's Artifacts. The four Trader's Clothes
+store `11`, which is not a tab.
+
+| `life_equip_type` | Gear | Restrict type |
+| ----------------- | ---- | ------------- |
+| 0 to 5 | Lumbering Axe, Fluid Collector, Hoe (and Tweezers), Butcher Knife, Tanning Knife, Pickaxe | 0 |
+| 6 | Artifacts (`__eLifeEquipItemType_Artifact`: two slots per life skill) | the artifact's life skill, or 15 |
+| 7, 8, 10, 12, 14, 16, 18, 20, 21, 24 | Clothes of Gathering, Fishing, Hunting, Cooking, Alchemy, Processing, Training, Trading, Sailing, Farming | that life skill; `11` on Trader's Clothes |
+| 9, 11, 13, 15, 17, 19, 22 | Fishing Chair, Hunting Bag, Ladle, Flask, Processing Stone, Riding Crop, Sailing Log | that life skill |
+| 25, 26, 27, 28 | Necklace, Belt, Ring, Earring (the Lua names Ring and Earring, two slots each) | 15 |
+| 29 | Alchemy Stone of Life, Life Spirit Stone | 15 |
+| 30 to 35 | Knots: Bear Necessities (Hunting), Agris (Farming), Venecil (Processing), Canape (Cooking), Pavilla (Alchemy), Venia (Training) | 15 |
+| 36 | Orb (Evergreen Orb, `__eLifeEquipSlotNo_JewelSlot`) | 15 |
+
+No item stores `23`. The knots answer which gear takes them: each knot has
+its own type, and the life skill in its description ("Activate the special
+effect for Training", Venia Knot) is one of the six knot slots the Lua
+defines (`__eLifeEquipSlotNo_*PearlAvatarJewelSlot`: Alchemy, Cooking,
+Harvest, Hunting, Training, Manufacture).
+
+The Life Skill tab's empty-slot tooltip (`panel_window_equipment_all_3`)
+labels clothes slots `PANEL_TOOLTIP_EQUIP_UPPERBODY` (Armor) and the others
+with `CppEnums.LifeEquipSlotString` (`global_define_cpp_enum`): Tool for the
+life skill tools, the six gathering tool names, Artifact, Necklace, Belt,
+Ring, Earring, Alchemy Stone, Knot and Orb. That table is keyed by
+`__eLifeEquipSlotNo_*` values the Lua never sets, so the browser labels the
+Slot column from `life_equip_type` instead, by the slot each type goes in.
 
 The third string is the tooltip's Exchange Info. Mutant Enhancer stores
 `<오염된 농장지> - 20개 교환: 마녀의 귀장식 1개`, twice more for Mark of Shadow
@@ -603,7 +677,7 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced. [itemmaxlevel.dbss](itemmaxlevel_dbss.md) stores the same value for every item with an `enchant_key` |
 | Enchant Key   | num  | `enchant_key`, the item's key in [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); dash when `0` |
 | Enhancement Type | num | `enhancement_type`, after the icon; the item's rows in [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md); dash when `0` |
-| Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Servant gear (`servant_kinds` not `0`) shows its group's label from the table under `equip_slot`, or the bare number when no group labels its slot |
+| Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Servant gear (`servant_kinds` not `0`) shows its group's label from the table under `equip_slot`, or the bare number when no group labels its slot. Life Skill gear (`life_equip_type` not `37`) shows its Life Skill tab slot: the type's `CppEnums.LifeEquipSlotString` label, or Armor for clothes (see After the icon) |
 | Weapon Type   | text | Main and sub-weapons: LOC type 44 name of the market subcategory their type's listed items share, see `equip_type`; dash for other items |
 | Req. Level    | num  | `required_level`; dash when `0` or `1` |
 | Classes       | text | `class_mask` as LOC type 21 class names; "All" when every playable class is set, "All except ..." when up to three are missing |
@@ -678,6 +752,11 @@ These fields have a known shape on client 3464 but no confirmed meaning:
   pick a model or tier within one kind.
 - The entries of the lists before the name: the first holds a class type and
   a u32 per allowed class.
+- `item_type` 12 to 19 have no name in the client Lua.
+- `life_equip_type` `23` is stored by no item; by its place between
+  Sailing (21, 22) and Farming (24) it may be Barter gear.
+- `life_restrict_type` `11` on the four Trader's Clothes is not a Life Skill
+  tab; how the window places them in the Trade tab's clothes slot is open.
 
 ### Items Without a Record
 

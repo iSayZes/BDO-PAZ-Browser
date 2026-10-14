@@ -14,6 +14,7 @@ it is a fallback, never the primary source.
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 from enum import Enum
 from pathlib import Path
@@ -45,6 +46,17 @@ class IconKind(Enum):
     # Sprite kinds: icon_path() gives the sheet, icon_region() the region.
     MENU = "menu"
     SUBMENU = "submenu"
+
+
+# A few stored paths double a separator (`04_pc_skill//04_debuff`).
+_REPEATED_SLASHES = re.compile(r"/{2,}")
+
+
+def clean_stored_icon_path(stored: str) -> str:
+    """A stored icon path as the PAZ index spells it: forward slashes, no
+    doubled separators, lowercase. Some tables store backslashes
+    (`New_Icon\\03_ETC\\00757120.dds` in itemenchant.dbss)."""
+    return _REPEATED_SLASHES.sub("/", stored.strip().replace("\\", "/")).lower()
 
 
 ITEM_ICON_DIR = "ui_texture/icon/new_icon/product_icon_png"

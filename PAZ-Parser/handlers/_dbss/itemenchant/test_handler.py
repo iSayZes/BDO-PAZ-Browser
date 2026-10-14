@@ -82,6 +82,14 @@ _LONGSWORD = 1
 _NECKLACE = 15
 # A sub-weapon, named after its Central Market subcategory like main weapons.
 _SOVEREIGN_KUNAI = 930007
+# Life Skill gear (life_slots.py): Cooking clothes (type 12, Cooking tab 3),
+# a gathering tool, a life tool, a ring, a knot and the orb (any tab, 15).
+_LOGGIA_COOKS_CLOTHES = 705119
+_LOGGIA_LUMBERING_AXE = 720520
+_LOGGIA_FISHING_CHAIR = 705537
+_LOGGIA_RING = 705503
+_VENIA_KNOT = 860363
+_EVERGREEN_ORB = 933601
 _BLACK_STONE = 16001
 # Servant gear with a non-empty `unknown_5d`, so its later header fields move.
 _OQUILLA_SAIL_BALANCE = 607887
@@ -127,6 +135,8 @@ CASE = HandlerCase(
                 "equip_slot",
                 "slot",
                 "servant_kinds",
+                "life_equip_type",
+                "life_restrict_type",
                 "market_category",
                 "market_sub_category",
                 "stackable",
@@ -319,6 +329,17 @@ CASE = HandlerCase(
         TargetTest(col="item_id", value=_CARAVEL_WHITE_WIND_SAIL, expected={"slot": "Sail"}),
         TargetTest(col="item_id", value=_ROWBOAT_CARGO_CONTAINER, expected={"slot": "Cargo Container"}),
         TargetTest(col="item_id", value=_NAPHART_CAMPING_TENT, expected={"slot": "Appearance"}),
+        # Life Skill gear names its Life Skill tab slot.
+        TargetTest(
+            col="item_id",
+            value=_LOGGIA_COOKS_CLOTHES,
+            expected={"slot": "Armor", "life_equip_type": 12, "life_restrict_type": 3},
+        ),
+        TargetTest(col="item_id", value=_LOGGIA_LUMBERING_AXE, expected={"slot": "Lumbering Axe"}),
+        TargetTest(col="item_id", value=_LOGGIA_FISHING_CHAIR, expected={"slot": "Tool"}),
+        TargetTest(col="item_id", value=_LOGGIA_RING, expected={"slot": "Ring", "life_restrict_type": 15}),
+        TargetTest(col="item_id", value=_VENIA_KNOT, expected={"slot": "Knot"}),
+        TargetTest(col="item_id", value=_EVERGREEN_ORB, expected={"slot": "Orb"}),
         # The fields after `unknown_5d` are read past its entries: a sail
         # places no character and casts no skill.
         TargetTest(
@@ -402,19 +423,43 @@ def test_slot_label_hashes_match_stringtable() -> None:
     assert not wrong, f"slot label hashes differ from stringtable.bss (stored, file): {wrong}"
 
 
-def test_servant_slot_label_hashes_match_stringtable() -> None:
+def test_servant_and_life_slot_label_hashes_match_stringtable() -> None:
     from _bss.stringtable.parser import parse_sheet_key_hashes
+    from _dbss.itemenchant.life_slots import LIFE_SLOT_LABELS
     from _dbss.itemenchant.servant_slots import SERVANT_SLOT_LABELS
     from tests.fixtures import load_binary_fixture
 
     labels = [label for group in SERVANT_SLOT_LABELS.values() for label in group.values()]
+    labels += LIFE_SLOT_LABELS.values()
     hashes = parse_sheet_key_hashes(load_binary_fixture("stringtable.bss"), {label.sheet for label in labels})
     wrong = {
         label.key: (label.key_hash, hashes.get(label.sheet, {}).get(label.key))
         for label in labels
         if hashes.get(label.sheet, {}).get(label.key) != label.key_hash
     }
-    assert not wrong, f"servant slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+    assert not wrong, f"slot label hashes differ from stringtable.bss (stored, file): {wrong}"
+
+
+def test_life_gear_types_have_a_label(itemenchant_result: HandlerResult) -> None:
+    """A Life Skill gear type the client adds shows no slot until it gets a label."""
+    from _dbss.itemenchant.life_slots import LIFE_SLOT_LABELS, NO_LIFE_EQUIP_TYPE
+
+    stored = {record["life_equip_type"] for record in itemenchant_result.records}
+    unlabelled = stored - set(LIFE_SLOT_LABELS) - {NO_LIFE_EQUIP_TYPE}
+    assert not unlabelled, f"life_equip_type values without a label: {sorted(unlabelled)}"
+
+
+def test_only_life_gear_has_a_life_skill_tab(itemenchant_result: HandlerResult) -> None:
+    """Items that are not Life Skill gear store the "any tab" restrict type."""
+    from _dbss.itemenchant.life_slots import NO_LIFE_EQUIP_TYPE
+
+    any_tab = 15
+    bad = [
+        record["item_id"]
+        for record in itemenchant_result.records
+        if record["life_equip_type"] == NO_LIFE_EQUIP_TYPE and record["life_restrict_type"] != any_tab
+    ]
+    assert not bad, f"items with no life gear type but a Life Skill tab: {bad[:5]}"
 
 
 def test_servant_gear_slots_have_a_label_in_their_group(itemenchant_result: HandlerResult) -> None:
@@ -441,6 +486,12 @@ def test_only_servant_gear_has_servant_kinds(itemenchant_result: HandlerResult) 
     neither = [r["item_id"] for r in equipment if not r["class_mask"] and not r["servant_kinds"]]
     assert not both, f"gear with classes and servant kinds: {both[:5]}"
     assert not neither, f"gear with neither classes nor servant kinds: {neither[:5]}"
+
+
+def test_icon_paths_use_forward_slashes(itemenchant_result: HandlerResult) -> None:
+    """A few blocks store backslashes (Essence of Dawn Box); the parser turns them into slashes."""
+    bad = [r["item_id"] for r in itemenchant_result.records if "\\" in r["icon_path"] or "//" in r["icon_path"]]
+    assert not bad, f"icon paths with a backslash or doubled slash: {bad[:5]}"
 
 
 def test_every_stored_slot_has_a_label(itemenchant_result: HandlerResult) -> None:

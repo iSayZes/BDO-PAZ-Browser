@@ -4,6 +4,7 @@ import struct
 from collections.abc import Iterator
 
 from _common.binary import u8, u16, u32, u64
+from _common.icon_index import clean_stored_icon_path
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import locate_prefixed_ascii, read_prefixed_at
@@ -81,6 +82,10 @@ _FAMILY_INVENTORY_ALLOWED = 2
 _MESSAGES = 0x12
 _MESSAGE_COUNT = 3
 _ENHANCEMENT_TYPE_AFTER_MESSAGES = 0x0D
+# The Life Skill gear kind and the Life Skill tab it is for (`life_slots.py`),
+# after the three strings; 37 and 15 on items that are not Life Skill gear.
+_LIFE_EQUIP_TYPE_AFTER_MESSAGES = 0x29
+_LIFE_RESTRICT_TYPE_AFTER_MESSAGES = 0x2A
 
 
 def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
@@ -123,7 +128,7 @@ def _block_strings(data: bytes, row: dict) -> BlockStrings:
 
 
 def _icon_path(icon: str) -> str:
-    return f"{ICON_ROOT}{icon.lower()}"
+    return f"{ICON_ROOT}{clean_stored_icon_path(icon)}"
 
 
 def _second_string(data: bytes, icon_end: int, end: int) -> str:
@@ -166,24 +171,32 @@ def _header_fields(data: bytes, start: int) -> dict:
     }
 
 
-def _enhancement_type(data: bytes, icon_end: int, end: int) -> int:
-    """The u32 13 bytes after the three strings that follow the icon.
+def _messages_end(data: bytes, icon_end: int, end: int) -> int:
+    """Where the three strings that follow the icon end.
 
-    Raises ValueError when a string runs past the block, since the field
-    would then be read from the wrong place.
+    Raises ValueError when a string runs past the block, since the fields
+    after them would then be read from the wrong place.
     """
     pos = icon_end + _MESSAGES
     for _ in range(_MESSAGE_COUNT):
         _, pos = read_prefixed_at(data, pos, end, wide=True)
-    return u32(data, pos + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
+    return pos
+
+
+def _enhancement_type(data: bytes, icon_end: int, end: int) -> int:
+    """The u32 13 bytes after the three strings that follow the icon."""
+    return u32(data, _messages_end(data, icon_end, end) + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
 
 
 def _after_icon_fields(data: bytes, icon_end: int, end: int) -> dict:
     """The confirmed fields that follow the icon text."""
+    messages_end = _messages_end(data, icon_end, end)
     return {
         "marketable": bool(u8(data, icon_end + _MARKETABLE)),
         "family_inventory": u8(data, icon_end + _FAMILY_INVENTORY) == _FAMILY_INVENTORY_ALLOWED,
-        "enhancement_type": _enhancement_type(data, icon_end, end),
+        "enhancement_type": u32(data, messages_end + _ENHANCEMENT_TYPE_AFTER_MESSAGES),
+        "life_equip_type": u8(data, messages_end + _LIFE_EQUIP_TYPE_AFTER_MESSAGES),
+        "life_restrict_type": u8(data, messages_end + _LIFE_RESTRICT_TYPE_AFTER_MESSAGES),
     }
 
 

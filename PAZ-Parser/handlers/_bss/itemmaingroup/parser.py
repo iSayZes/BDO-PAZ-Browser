@@ -2,8 +2,9 @@
 
     PABR | u32 count | count x group | string table | u32 string_table_start | u32 0
 
-    group: u32 group_id | u8 unknown_04 | 8 zero bytes | i32 unknown_0d
-           | 8 zero bytes | u32 entry_count | entry_count x 10-byte entry
+    group: u32 group_id | u8 do_select_only_one | 8 zero bytes
+           | i32 refresh_start_hour | 8 zero bytes | u32 entry_count
+           | entry_count x 10-byte entry
     entry: u32 unknown_00 (always 0) | u32 condition_ref | u16 subgroup_key
 
 `condition_ref` indexes the string table; string 0 is empty (no condition).
@@ -29,6 +30,7 @@ _FILE_NAME = "itemmaingroup.bss"
 # PAZ path for links from tables that store a group ID (`characterfunction.dbss`).
 ITEMMAINGROUP_PATH = f"gamecommondata/binary/{_FILE_NAME}"
 _GROUP_HEAD_SIZE = 29
+_DO_SELECT_ONLY_ONE = 0x04
 _ENTRY_COUNT = 0x19
 _ENTRY = struct.Struct("<4xIH")
 
@@ -43,6 +45,8 @@ class MainGroupEntry:
 @dataclass(frozen=True)
 class ItemMainGroup:
     group_id: int
+    # Set when the group hands out one of its subgroups instead of all of them.
+    do_select_only_one: bool
     entries: tuple[MainGroupEntry, ...]
 
     @property
@@ -78,12 +82,13 @@ def parse_itemmaingroup_records(data: bytes) -> list[ItemMainGroup]:
         if pos + _GROUP_HEAD_SIZE > end:
             raise ValueError(f"{_FILE_NAME} group at 0x{pos:X} runs into the string table")
         group_id = u32(data, pos)
+        do_select_only_one = data[pos + _DO_SELECT_ONLY_ONE] != 0
         entry_count = u32(data, pos + _ENTRY_COUNT)
         first = pos + _GROUP_HEAD_SIZE
         pos = first + entry_count * _ENTRY.size
         if pos > end:
             raise ValueError(f"{_FILE_NAME} group {group_id} holds {entry_count:,} entries, more than fit")
-        groups.append(ItemMainGroup(group_id, tuple(
+        groups.append(ItemMainGroup(group_id, do_select_only_one, tuple(
             _read_entry(data, offset, strings, group_id)
             for offset in range(first, pos, _ENTRY.size)
         )))

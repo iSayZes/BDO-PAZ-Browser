@@ -2,6 +2,7 @@
   "columns": {
     "groupId": "ID группы",
     "subgroups": "Подгруппы",
+    "selectOnlyOne": "Только одна",
     "itemCount": "Предметы",
     "items": "Названия предметов"
   },

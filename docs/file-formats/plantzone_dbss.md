@@ -110,7 +110,7 @@ plantexchangegroup.bss item_subgroup_key (+0x06) -> itemsubgroup.dbss subgroup_k
 itemsubgroup.dbss entries -> item_key & 0xFFFFFF -> item name (LOC type 0)
 ```
 
-Both tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md).
+Both tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md). The client goes one step further: `+0x06` is an item exchange key, and the items come from that exchange's drop group in [`itemmaingroup.bss`](itemmaingroup_bss.md) (chain and row counts in [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names)). The subgroup reading above matches the client on most zones because the three keys often share one number.
 
 Example: zone 2050 (Lumbering) -> production key 1928 -> subgroup 42356 -> Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap. On the 2026-09-27 client 403 of the 439 zones resolve to items; the other 36 reference subgroup keys that are absent from `itemsubgroupoffset.dbss` (358 of 394 in the older fixture, the same 36 unresolved).
 
@@ -166,7 +166,7 @@ The table meta line counts the zones that resolve to items (403 of 439 on client
 
 ### Unresolved Subgroups
 
-36 zones point at production keys whose subgroup key is missing from `itemsubgroupoffset.dbss`. They are not empty: in game zone 2051 `Fish Drying Yard` (production key 1929, subgroup 45018) produces 4 items plus 2 lucky drops. Where the client reads their items from is open.
+36 zones point at production keys whose subgroup key is missing from `itemsubgroupoffset.dbss`. They are not empty: in game zone 2051 `Fish Drying Yard` (production key 1929, subgroup 45018) produces 4 items plus 2 lucky drops. The key is an item exchange key, and on client 3464 all 36 resolve through the exchange's drop group in `itemmaingroup.bss` (1929: exchange 45018 drops group 44064). The handler resolves them once `itemexchangesource.bss` has a reader; see [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names).
 
 ### What `worker_species` Controls
 

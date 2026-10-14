@@ -36,7 +36,7 @@ CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "group_id", "subgroup_keys", "conditions", "subgroups_text",
-                "item_count", "item_keys", "items",
+                "do_select_only_one", "item_count", "item_keys", "items",
             ]
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
@@ -87,8 +87,8 @@ def _wide(text: str) -> bytes:
     return struct.pack("<BI", 1, len(payload)) + payload
 
 
-def _group(group_id: int, entries: list[tuple[int, int]]) -> bytes:
-    head = struct.pack("<IB8xi8xI", group_id, 1, -1, len(entries))
+def _group(group_id: int, entries: list[tuple[int, int]], do_select_only_one: bool = False) -> bytes:
+    head = struct.pack("<IB8xi8xI", group_id, do_select_only_one, -1, len(entries))
     return head + b"".join(struct.pack("<IIH", 0, ref, key) for ref, key in entries)
 
 
@@ -106,6 +106,14 @@ def test_parser_reads_entries_and_conditions() -> None:
     assert [group.group_id for group in groups] == [7, 8]
     assert groups[0].entries == (MainGroupEntry(40189, ""), MainGroupEntry(54001, "checkexplore(103, 1)"))
     assert groups[1].entries == ()
+
+
+def test_parser_reads_the_select_only_one_flag() -> None:
+    data = _file([_group(7, [(0, 1)], do_select_only_one=True), _group(8, [(0, 1)])], [""])
+
+    groups = parse_itemmaingroup_records(data)
+
+    assert [group.do_select_only_one for group in groups] == [True, False]
 
 
 def test_parser_rejects_a_condition_past_the_table() -> None:

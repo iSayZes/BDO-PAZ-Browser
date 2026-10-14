@@ -2,6 +2,7 @@
   "columns": {
     "groupId": "Gruppen-ID",
     "subgroups": "Untergruppen",
+    "selectOnlyOne": "Nur eine",
     "itemCount": "Gegenstände",
     "items": "Gegenstandsnamen"
   },

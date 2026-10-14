@@ -6,7 +6,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, error, html_list_cell, record_link, sort_keys, table
+from _common.html import Column, e, error, flag_cell, html_list_cell, record_link, sort_keys, table
 from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.lookup_builders import ITEMSUBGROUP
@@ -27,6 +27,7 @@ class ItemMainGroupBssHandler(PreviewHandler):
         return [
             Column(cols["groupId"], "num", sort_key="group_id"),
             Column(cols["subgroups"], sort_key="subgroups_text"),
+            Column(cols["selectOnlyOne"], sort_key="do_select_only_one"),
             Column(cols["itemCount"], "num", sort_key="item_count"),
             # A list column: it would only sort by its string form.
             Column(cols["items"]),
@@ -77,6 +78,7 @@ class ItemMainGroupBssHandler(PreviewHandler):
             [
                 e(record["group_id"]),
                 _subgroups_cell(record["subgroup_keys"], record["conditions"]),
+                flag_cell(record["do_select_only_one"]),
                 e(record["item_count"]),
                 item_key_list_cell(record["item_keys"], _LIST_PREVIEW_ITEMS) or _EMPTY,
             ]
@@ -96,6 +98,7 @@ def _record_fields(group: ItemMainGroup, subgroups: dict[int, ItemSubgroup]) -> 
         "subgroups_text": "; ".join(
             _subgroup_text(key, condition) for key, condition in zip(group.subgroup_keys, conditions)
         ),
+        "do_select_only_one": group.do_select_only_one,
         "item_count": len(item_keys),
         "item_keys": item_keys,
         "items": [item_key_text(key) for key in item_keys],

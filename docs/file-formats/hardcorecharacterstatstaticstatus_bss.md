@@ -53,8 +53,8 @@ Fields are unaligned.
 | `+0x00` | u8        | class_type | Equals the row index; the class type `getClassType()` returns |
 | `+0x01` | stat body | stats      | The [experience.bss](experience_bss.md) Stat Body            |
 
-The body fields (`max_hp`, `max_mp`, the `unknown_*` fields, `ap_bonus` and
-`dp_bonus`) keep the names and the body-relative offsets of the
+The body fields (`max_hp`, `max_mp`, the luck and speed limits, the
+`unknown_*` fields, `ap_bonus` and `dp_bonus`) keep the names and the body-relative offsets of the
 `experience.bss` Stat Body table; `max_hp` and `max_mp` hold the `1.0` and `1`
 placeholders here too.
 
@@ -76,10 +76,9 @@ placeholders here too.
   Ranger, Sorceress and Berserker. The class list comes from the server
   through `ToClient_getHardCorePossbieClassFromIndex()` in
   `panel_lobby_classselect_renew.lua`.
-- The two `5, 5, 5` triads (`unknown_3c`, `unknown_64`) are likely speed
-  ranks and their limits; the client Lua lead and the other files with this
-  body are in the [experience.bss](experience_bss.md#the-constant-fields)
-  Open Questions.
+- The two `5, 5, 5` triads are the drop item, fishing and collection luck
+  limits and `max_varied_speed`, named in the
+  [experience.bss](experience_bss.md#field-names) Field Names.
 - bdo-data-extractor describes the same 201-byte rows and the level 60
   match.
 - The parser is `_bss/hardcorecharacterstatstaticstatus/parser.py`; it reads

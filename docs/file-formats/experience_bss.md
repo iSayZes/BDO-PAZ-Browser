@@ -78,12 +78,15 @@ not in this table is 0 in every body on client 3464.
 | `+0x04` | f32    | max_hp     | Always `1.0` here; mount HP in `servantexperience.dbss` |
 | `+0x08` | u32    | max_mp     | Always `1` here; mount stamina in `servantexperience.dbss` |
 | `+0x20` | f32    | unknown_20 | Always `1.0`                                          |
-| `+0x3C` | u32[3] | unknown_3c | `0, 0, 0` at level 0, `5, 5, 5` from level 1          |
+| `+0x38` | u32    | max_critical_rate | Always `0`; `5` for mounts                      |
+| `+0x3C` | u32    | max_drop_item_luck | `0` at level 0, `5` from level 1               |
+| `+0x40` | u32    | max_fishing_luck | `0` at level 0, `5` from level 1                 |
+| `+0x44` | u32    | max_collection_luck | `0` at level 0, `5` from level 1              |
 | `+0x50` | f32    | unknown_50 | Always `1.0`                                          |
-| `+0x64` | u32[3] | unknown_64 | `0, 0, 0` at level 0, `5, 5, 5` from level 1          |
+| `+0x64` | u32[3] | max_varied_speed | Attack, movement and casting speed limits; `0, 0, 0` at level 0, `5, 5, 5` from level 1 |
 | `+0x70` | f32    | unknown_70 | Always `1.0`                                          |
-| `+0x74` | f32    | ap_bonus   | `0` below level 60, `1.0` from level 60               |
-| `+0x78` | f32    | dp_bonus   | `0` below level 56, `1.0` from level 56               |
+| `+0x74` | f32    | ap_bonus   | `LVDD`; `0` below level 60, `1.0` from level 60       |
+| `+0x78` | f32    | dp_bonus   | `LVPV`; `0` below level 56, `1.0` from level 56       |
 
 `ap_bonus` and `dp_bonus` are the `lvdd` and `lvpv` values of the level-up
 window. `PaGlobalFunc_Levelup_Info_All_SelfPlayerCurrentLevelInfo(...,
@@ -117,8 +120,9 @@ from 0 to 1.
   every record of [servantexperience.dbss](servantexperience_dbss.md), where
   the body starts at record `+0x0A` and holds the mount's max HP (`+0x04`),
   max stamina (`+0x08`) and max weight (`+0x48`, LT x 10,000), checked
-  against the stable window. Both hold `5, 5, 5` at `+0x3C` and
-  `10, 10, 10` at `+0x64`. `characterstatic.dbss` also sets the u32 at
+  against the stable window. Both hold `5, 5, 5` in the three luck limits
+  and `10, 10, 10` in `max_varied_speed`; `servantexperience.dbss` also
+  holds `5` in `max_critical_rate`. `characterstatic.dbss` also sets the u32 at
   `+0x48`, max weight, which is 0 here: `1` on 13,629 bodies, `100000` on 1,177, `0` on
   254 and `10000000` on 4. `servantexperience.dbss` keeps three inline `1D1`
   strings at body `+0xA0`, the place of this file's string fields (The `1D1`
@@ -134,27 +138,23 @@ from 0 to 1.
   level 0 placeholders of `servantexperience.dbss`, so player HP and MP come
   from another table.
 
+## Field Names
+
+The names of the luck and speed limits and of `ap_bonus` and `dp_bonus` follow the `Pc_Table` sheet of a private-server `DataSheets.bexcel`, which shares 4,192 (class, level) rows with client 3473. `LVDD` equals `ap_bonus` and `LVPV` equals `dp_bonus` on all 4,192. `MaxAttackSpeed`, `MaxMoveSpeed`, `MaxCastingSpeed`, `MaxDropItemLuck`, `MaxFishingLuck` and `MaxCollectionLuck` are `0` on level 0 and `5` from level 1, the pattern of `+0x3C` to `+0x44` and `+0x64` to `+0x6C` on all 4,192 rows, and `MaxCriticalRate` is `0` on every row, as is `+0x38`.
+
+Here all six limits hold `5`. [servantexperience.dbss](servantexperience_dbss.md#field-names) tells them apart: its `Servant_Table` holds `5` in the four critical and luck columns and `10` in the three speed columns, and its body holds `5` at `+0x38` to `+0x44` and `10` at `+0x64`. The 2016 client's `gc::CharacterStatStaticStatus` lists `_maxCriticalHitPoint`, `_maxDropItemPoint`, `_maxFishingPoint` and `_maxCollectionPoint` in that order, which splits the four, and `_maxVariedSpeedPoint` as one array of three.
+
+`StunGauge` and `Suspension` (`100` on level 1, rising with level) are not in this file, and `RequireEXP` is `0` on every sheet row, which fits a file with no EXP column.
+
 ## Open Questions
 
 ### The Constant Fields
 
-`unknown_20`, `unknown_50` and `unknown_70` hold
-the same value in every record, and `unknown_3c` and `unknown_64` only change
-between level 0 and level 1, so the data gives nothing to tell them apart.
-bdo-data-extractor links the two `5, 5, 5` triads to attack and defence growth
-without naming a stat.
+`unknown_20`, `unknown_50` and `unknown_70` hold `1.0` in every body, and no `Pc_Table` column holds `1.0`. `unknown_50` sits where the 2016 member order has `_productionHit`, but `ProductionHit` is `0` on every sheet row. [servantexperience.dbss](servantexperience_dbss.md#the-constant-fields) has the same three fields.
 
-The client Lua points to speed ranks. `FromClient_CharInfoBasic_All_PotentialUpdate`
-in `panel_characterinfo_basic_all_3.lua` reads three speed indexes, `0`
-movement, `1` attack and `1 + _battleSpeed` casting, caps
-`characterStatPointSpeed(i)` at `characterStatPointLimitedSpeed(i)` and shows
-the result minus 5. A character with no speed gear shows `0`, so its base rank
-is 5, the value of `unknown_3c` in every body of the four files that carry it
-(see Notes). `unknown_64` would then be the rank limit: `10` (base 5 plus the
-`+5` the window draws) in `characterstatic.dbss` and `servantexperience.dbss`,
-but `5` here, which would hold a player at `+0`. With all three values equal
-in every body, the data cannot confirm the reading or the movement, attack,
-casting order.
+### The `max_varied_speed` Order
+
+The three limits are equal in every body (`5` here, `10` for mounts), so the data does not tell which index is attack, movement or casting speed. The sheet lists `MaxAttackSpeed`, `MaxMoveSpeed` and `MaxCastingSpeed` in that order. `FromClient_CharInfoBasic_All_PotentialUpdate` in `panel_characterinfo_basic_all_3.lua` reads three speed indexes, `0` movement, `1` attack and `1 + _battleSpeed` casting, caps `characterStatPointSpeed(i)` at `characterStatPointLimitedSpeed(i)` and shows the result minus 5; a character with no speed gear shows `0`. If `characterStatPointLimitedSpeed` returns these limits, a player's limit of `5` would cap the shown value at `0`, so the player limit likely comes from elsewhere; which Lua index maps to which array index is open.
 
 ### The `1D1` String
 

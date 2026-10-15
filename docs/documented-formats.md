@@ -112,7 +112,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `instancedungeonskillstatic.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `instancedungeonskillstaticoffset.dbss` | Empty offset companion for `instancedungeonskillstatic.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
-| `instancefieldmapinfo.bss` | PABR map data per instance field key: GAME sheet name and description keys, map image and sprite region, centre point and radius, entry item, team spawn points | [instancefieldmapinfo](file-formats/instancefieldmapinfo_bss.md) | 3 | 0 |
+| `instancefieldmapinfo.bss` | PABR map data per instance field key: GAME sheet name and description keys, map image and sprite region, centre point and radius, participant and team limits, territory lock, entry item, team spawn points | [instancefieldmapinfo](file-formats/instancefieldmapinfo_bss.md) | 1 | 0 |
 | `instancefieldoffset.dbss` | Index into `instancefield.dbss`, maps key to offset/size (10-byte rows); no PABR magic | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
 | `itemcouponreward.dbss` | Empty item coupon reward table placeholder: a zero record count and 12 zero bytes | [itemcouponreward](file-formats/itemcouponreward_dbss.md) | 2 | 0 |
 | `itemcouponrewardoffset.dbss` | Offset companion for `itemcouponreward.dbss`: count 4 and four zero u32 words, shown as raw words | [itemcouponreward](file-formats/itemcouponreward_dbss.md) | 2 | 0 |

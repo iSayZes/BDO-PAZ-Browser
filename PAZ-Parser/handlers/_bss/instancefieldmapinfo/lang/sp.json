@@ -4,13 +4,19 @@
     "field": "Campo",
     "title": "Título",
     "description": "Descripción",
+    "teams": "Equipos",
+    "minUsers": "Participantes mín.",
+    "maxUsers": "Participantes máx.",
+    "territory": "Territorio",
     "x": "X",
     "y": "Y",
     "z": "Z",
     "radius": "Radio (m)",
     "image": "Imagen",
     "entryItem": "Objeto de entrada",
-    "spawns": "Puntos de aparición"
+    "spawns": "Puntos de aparición",
+    "seasonOnly": "Solo temporada",
+    "camouflageNames": "Nombres con camuflaje"
   },
   "meta": {
     "count": "{count} mapas de campo de instancia"

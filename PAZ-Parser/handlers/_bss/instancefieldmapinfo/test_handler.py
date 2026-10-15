@@ -39,6 +39,8 @@ CASE = HandlerCase(
             "key", "title_key", "description_key", "title", "description",
             "x", "y", "z", "radius", "image_path", "image_region",
             "entry_item_id", "entry_item", "spawns", "spawn_count", "field_name",
+            "max_user", "min_user", "max_team_count", "is_season_only",
+            "is_show_name_when_camouflage", "restrict_territory_key", "restrict_territory",
         ]),
         DeclaredCountTest(declared=header_count(offset=4)),
         UserLanguageTest(fields=["title", "description"]),
@@ -53,6 +55,11 @@ CASE = HandlerCase(
         TargetTest(col="key", value=101, expected={
             "title_key": "LUA_HORSERACING_MAP_STAGENAME00",
             "image_path": "ui_texture/combine/etc/combine_etc_horseracing.dds",
+        }),
+        # The Calpheon Oasis server is locked to territory 2, Calpheon.
+        TargetTest(col="key", value=131, expected={
+            "title_key": "LUA_PERSONAL_SERVER_CAL",
+            "restrict_territory_key": 2,
         }),
     ],
 )
@@ -80,6 +87,11 @@ def test_keys_are_unique(map_info_result: HandlerResult) -> None:
 def test_image_region_sits_with_an_image(map_info_result: HandlerResult) -> None:
     for r in map_info_result.records:
         assert any(r["image_region"]) == bool(r["image_path"]), r["key"]
+
+
+def test_min_participants_fit_under_the_max(map_info_result: HandlerResult) -> None:
+    for r in map_info_result.records:
+        assert 1 <= r["min_user"] <= r["max_user"], r["key"]
 
 
 def test_spawn_tail_follows_the_spawns(map_info_result: HandlerResult) -> None:

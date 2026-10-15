@@ -1061,7 +1061,9 @@ knowledge entry with `knowledge_name()` from `knowledge.py` (LOC type 34), a
 worldmap node with `node_name()` or `full_node_name()` from `node.py` (LOC
 type 29, see `NODE_PARENT` under Lookup Indexes) and a title with
 `title_name()` from `title.py` (LOC type 1, tags removed; `title.dbss` keeps
-its own tagged lookup for the colours) and the speaker of an NPC dialog with
+its own tagged lookup for the colours), a territory with `territory_name()`
+or its nation with `nation_name()` from `territory.py` (LOC type 12 keyed by
+the `territoryinfo.bss` territory key) and the speaker of an NPC dialog with
 `dialog_name()` or `dialog_speaker()` from `quest/dialog.py` (LOC type 38 keyed
 `npc_id`, `dialog_index`, else the LOC type 6 name). All return `''` when LOC is not
 loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types

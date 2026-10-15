@@ -7,10 +7,11 @@ from bdo_preview import PreviewHandler
 
 from _bss.stringtable.parser import GAME_SHEET
 from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes, ui_key_text
-from _common.html import Column, e, icon_cell, sort_keys, sprite_icon_cell, table
+from _common.html import Column, e, flag_cell, icon_cell, sort_keys, sprite_icon_cell, table
 from _common.instance_field import instance_field_name
 from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
+from _common.territory import territory_name
 from .parser import parse_instancefieldmapinfo_records
 
 
@@ -27,11 +28,19 @@ def _ui_text(hashes: KeyHashes, key: str) -> str:
     return ui_key_text(hashes, GAME_SHEET, key) if key else ""
 
 
+def _territory_text(territory_key: int | None) -> str | None:
+    """The territory's name, else its key; None when the map has no restriction."""
+    if territory_key is None:
+        return None
+    return territory_name(territory_key) or str(territory_key)
+
+
 def _display_fields(record: dict, hashes: KeyHashes) -> dict:
     """Fields the table shows, with None where the file stores no value."""
     has_position = any(record[axis] for axis in _AXES)
     item_id = record["entry_item_id"] or None
     return {
+        "restrict_territory": _territory_text(record["restrict_territory_key"]),
         "field_name": instance_field_name(record["key"]) or None,
         # The key itself when LOC has no text, as menu.bss does.
         "title": _ui_text(hashes, record["title_key"]) or record["title_key"] or None,
@@ -64,11 +73,17 @@ class InstanceFieldMapInfoBssHandler(PreviewHandler):
             Column(cols["field"], sort_key="field_name"),
             Column(cols["title"], sort_key="title"),
             Column(cols["description"], sort_key="description"),
+            Column(cols["teams"], "num", sort_key="max_team_count"),
+            Column(cols["minUsers"], "num", sort_key="min_user"),
+            Column(cols["maxUsers"], "num", sort_key="max_user"),
+            Column(cols["territory"], sort_key="restrict_territory"),
             *(Column(cols[axis], "num", sort_key=f"pos_{axis}") for axis in _AXES),
             Column(cols["radius"], "num", sort_key="radius_m"),
             Column(cols["image"], sort_key="image_path"),
             Column(cols["entryItem"], sort_key="entry_item"),
             Column(cols["spawns"], "num", sort_key="spawn_count"),
+            Column(cols["seasonOnly"], sort_key="is_season_only"),
+            Column(cols["camouflageNames"], sort_key="is_show_name_when_camouflage"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -104,11 +119,17 @@ class InstanceFieldMapInfoBssHandler(PreviewHandler):
                 e(r["field_name"] or _EMPTY),
                 e(r["title"] or _EMPTY),
                 e(r["description"] or _EMPTY),
+                e(r["max_team_count"]),
+                e(r["min_user"]),
+                e(r["max_user"]),
+                e(r["restrict_territory"] or _EMPTY),
                 *(_number_cell(r[f"pos_{axis}"]) for axis in _AXES),
                 _number_cell(r["radius_m"]),
                 _image_cell(r),
                 item_key_list_cell([r["entry_item_id"]], 1) if r["entry_item_id"] else _EMPTY,
                 e(r["spawn_count"]),
+                flag_cell(r["is_season_only"]),
+                flag_cell(r["is_show_name_when_camouflage"]),
             ]
             for r in records[start : start + page_size]
         ]

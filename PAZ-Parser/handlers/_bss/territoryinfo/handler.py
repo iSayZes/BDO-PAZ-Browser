@@ -9,18 +9,13 @@ from bdo_preview import PreviewHandler
 from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table, text_list_cell
 from _common.item_key import item_key_list_cell, item_name
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import loc_text
+from _common.territory import nation_name, territory_name
 from .parser import parse_territoryinfo_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 _POSITION_PREVIEW_ITEMS = 3
-
-# Keyed by territory key; str_id4 0 is the nation or realm, 1 the territory.
-_LOC_TERRITORY = 12
-_LOC_NATION = 0
-_LOC_NAME = 1
 
 
 def _position_text(position: list[float]) -> str:
@@ -68,8 +63,8 @@ class TerritoryInfoBssHandler(PreviewHandler):
             key = record["territory_key"]
             records.append({
                 **record,
-                "name": loc_text(_LOC_TERRITORY, key, _LOC_NAME) or record["name_kr"],
-                "nation": loc_text(_LOC_TERRITORY, key, _LOC_NATION) or record["nation_kr"],
+                "name": territory_name(key) or record["name_kr"],
+                "nation": nation_name(key) or record["nation_kr"],
                 "crown": _item_text(record["crown_item_id"]),
                 "armor": _item_text(record["armor_item_id"]),
                 "position_texts": [

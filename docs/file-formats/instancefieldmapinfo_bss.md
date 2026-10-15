@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Map data per instance field: a title and description as UI string keys, a map image, a centre point and radius, an entry item, team spawn
-points and several values without a name yet. The key is the
+Map data per instance field: a title and description as UI string keys, a map image, a centre point and radius, participant and team limits, a territory lock, an entry item, team spawn
+points and a few values without a name yet. The key is the
 [instancefield.dbss](instancefield_dbss.md) field key.
 
 Example:
@@ -51,22 +51,22 @@ String table entry 0 is the empty string; a string index of `0` means none.
 | Offset  | Type     | Field              | Notes |
 | ------- | -------- | ------------------ | ----- |
 | `+0x00` | u16      | key                | `instancefield.dbss` key |
-| `+0x02` | u32      | unknown_02         | `1`, `4`, `6`, `10`, `30`, `40` up to `3000`; see Open Questions |
-| `+0x06` | u32      | unknown_06         | `1`, or `2` on team battles (Solare arenas, guild matches, Crimson fields, `PAPUCRIO_ARENA`, `CrewBattle`, `Edania_Field_1vs1`) |
+| `+0x02` | u32      | max_user           | Most participants: `6` on Solare arenas, `30` on guild matches, `40` on most Crimson fields and Oasis servers, `3000` on the `MajorSiege_*` maps |
+| `+0x06` | u32      | max_team_count     | `1`, or `2` on team battles (Solare arenas, guild matches, Crimson fields, `PAPUCRIO_ARENA`, `CrewBattle`, `Edania_Field_1vs1`) |
 | `+0x0A` | f32[3]   | x, y, z            | World position (centimetres); all `0` when unset |
 | `+0x16` | f32      | radius             | Centimetres around that position (`9000` on `Solare_Arena_Reed`); `0` when unset |
 | `+0x1A` | u32      | title              | String index of a `GAME` sheet key (`LUA_LOCALWAR_SERVERNAME_MAP_1`, `INSTANCEDUNGEONDATA_A1_001_NAME`) |
 | `+0x1E` | u32      | description        | String index of a `GAME` sheet key (`INSTANCEDUNGEONDATA_A1_001_DESC`) |
-| `+0x22` | u8       | unknown_22         | `1` on six Crimson field records (keys 11, 12, 17, 18, 22, 24), else `0` |
-| `+0x23` | u32      | unknown_23         | Equals `unknown_06` except on `Edania_Field_1vs1` (`1`), horse races (`2`, `3`, `5`) and `Yonggung` (`7`) |
+| `+0x22` | u8       | is_season_only     | `1` on six Crimson field records (keys 11, 12, 17, 18, 22, 24), else `0` |
+| `+0x23` | u32      | min_user           | Fewest participants; equals `max_team_count` except on `Edania_Field_1vs1` (`1`), horse races (`2`, `3`, `5`) and `Yonggung` (`7`). Never above `max_user` |
 | `+0x27` | u32      | image              | String index of a `.dds` path (`Map_Nest.dds`, `Combine_Etc_horseracing.dds`) |
 | `+0x2B` | u16[4]   | image_region       | x1, y1, x2, y2 in pixels of `image`; `0, 0, 1, 1` on the Crimson field maps |
 | `+0x33` | u8[106]  | filler             | The same bytes in every record; the 8-byte groups hold `0x00007FFC...` and `0x00000293...` values, which read like memory addresses of the tool that wrote the file |
-| `+0x9D` | u8       | unknown_9d         | `1` on the Solare arenas, guild matches, `PAPUCRIO_ARENA` and 8 of the 16 Crimson field records |
-| `+0x9E` | u16      | unknown_9e         | `0xFFFF`, or `2`, `4`, `6`, `9` on four `Personal_Instance_*` (Oasis server) maps; see Open Questions |
+| `+0x9D` | u8       | is_show_name_when_camouflage | `1` on the Solare arenas, guild matches, `PAPUCRIO_ARENA` and 8 of the 16 Crimson field records: names stay visible under camouflage |
+| `+0x9E` | u16      | restrict_territory | `territoryinfo.bss` territory key the map is locked to, `0xFFFF` for none; see [Territory locks](#territory-locks-client-3464) |
 | `+0xA0` | u8[8]    | zero               | `0` |
 | `+0xA8` | u32      | entry_item_id      | Item ID, `0` for none; the "Access Granted" items of Atoraxion |
-| `+0xAC` | u32      | unknown_ac         | `1` where `entry_item_id` is set, else `0` |
+| `+0xAC` | u32      | unknown_ac         | `1` where `entry_item_id` is set, else `0`; possibly its count, see [Field Names](#field-names) |
 | `+0xB0` | u32      | zero               | `0` |
 | `+0xB4` | u32      | unknown_b4         | `0`, `3600` on the `A1_` fields, `10800` on the Atoraxion Single maps and key 210 |
 | `+0xB8` | u32      | zero               | `0` |
@@ -76,6 +76,23 @@ String table entry 0 is the empty string; a string index of `0` means none.
 | ...     | f32[3][n]| spawns             | World positions; `2` on every guild match map, one per side, both inside the map's box |
 | ...     | f32      | unknown_spawn_f32  | Only when `spawn_count` is not `0`; `200` on all |
 | ...     | u32      | unknown_spawn_u32  | Only when `spawn_count` is not `0`; `10` on all |
+
+### Field Names
+
+The names of `max_user`, `max_team_count`, `is_season_only`, `min_user`, `is_show_name_when_camouflage` and `restrict_territory` follow the `InstanceEnterPosition` sheet of a private-server `DataSheets.bexcel` (columns `MaxUser`, `MaxTeamCount`, `isSeasonOnly`, `MinUser`, `isShowNameWnehCamoflage`, `restrictTerritory`). Matched by value over the 77 keys the sheet shares with client 3464: five columns equal the file on all 77 keys, every non-zero value included. `MaxUser` equals `max_user` on 57; the other 20 are later rebalances (Crimson fields `30` to `40` and `2` to `4`, `CrewBattle` `10` to `20`, Atoraxion `5` to `1`).
+
+The same sheet has `exchangeItemForNormalFieldEnter` (`66012,0,1,65992,0,1` on key 150, item, enchant and count pairs) whose second item is that key's `entry_item_id`, so `unknown_ac` may be the count; the sheet has no column for `unknown_b4`, `unknown_hashes` or the spawn list, and its `Team_1` to `Team_4` positions are not the `spawns`.
+
+### Territory locks (client 3464)
+
+| Key | Field | restrict_territory | LOC name |
+| --- | ----- | -----------------: | -------- |
+| 131 | `Personal_Instance_Cal` | 2 | Calpheon |
+| 134 | `Personal_Instance_Val` | 4 | Valencia |
+| 135 | `Personal_Instance_Kama` | 6 | Kamasylvia |
+| 136 | `Personal_Instance_SnowMountain` | 9 | Mountain of Eternal Winter |
+
+`_Ser`, `_Bal` and `_Media` store `0xFFFF`.
 
 ### Entry items (client 3464)
 
@@ -95,11 +112,17 @@ String table entry 0 is the empty string; a string index of `0` means none.
 | Field       | text | Internal name from `instancefield.dbss` (`INSTANCE_FIELD_NAME`), dash when the key is not there |
 | Title       | text | LOC type 37 text of `title`, else the key string |
 | Description | text | LOC type 37 text of `description` |
+| Teams       | num  | `max_team_count` |
+| Min Participants | num | `min_user` |
+| Max Participants | num | `max_user` |
+| Territory   | text | LOC type 12 territory name of `restrict_territory`, else the key; dash for `0xFFFF` |
 | X / Y / Z   | num  | Position, rounded; dash when unset |
 | Radius (m)  | num  | `radius / 100`; dash when `0` |
 | Image       | icon | `image` with `image_region` as a sprite region; the whole image for `0, 0, 1, 1` |
 | Entry Item  | text | LOC type 0 name of `entry_item_id`, with icon |
 | Spawns      | num  | `spawn_count` |
+| Season Only | flag | `is_season_only` |
+| Names While Camouflaged | flag | `is_show_name_when_camouflage` |
 
 ## Notes
 
@@ -127,29 +150,11 @@ String table entry 0 is the empty string; a string index of `0` means none.
   each `title` key, so `instancefield.dbss` (Title column) and the
   `buff.dbss` type 176 Effect text (`Teleport to Instance Field The Magnus:
   The Great Single Path (A1_001)`) read the title without this file.
-- `unknown_02` matches no single game rule: Solare arenas (3 vs 3) store
-  `6`, but guild matches store `30`. The Lua function
-  `ToClient_GetInstanceFieldPlayerMaxCountByMapKey` takes this key, so a
-  player cap is a candidate.
+- The client Lua function `ToClient_GetInstanceFieldPlayerMaxCountByMapKey`
+  takes this key; `max_user` is the player cap it names (Solare arenas,
+  3 vs 3, store `6`).
 
 ## Open Questions
-
-### What do `unknown_02`, `unknown_06` and `unknown_23` hold?
-
-`unknown_02` is `6` on all Solare arenas, `30` on guild matches, `ABSO`
-and `CS_WorldBoss_Garmoth`, `40` on most Crimson fields, `PAPUCRIO_ARENA`
-and six Oasis servers, `50` on the seventh (`_SnowMountain`), `3000` on the
-`MajorSiege_*` maps and key 5000, `4` on `Edania_Field_1vs1` and four Crimson
-fields, `10` on horse races and `Edania_Field`. `unknown_06` is `2` on team
-battles. `unknown_23` mostly repeats `unknown_06` but stores `3` and `5` on
-horse races and `7` on `Yonggung`; `Edania_Field_1vs1` stores `2` and `1`.
-
-### What does `unknown_9e` hold?
-
-`0xFFFF` everywhere except `Personal_Instance_Cal` (`2`), `_Val` (`4`),
-`_Kama` (`6`) and `_SnowMountain` (`9`); `_Ser`, `_Bal` and `_Media` store
-`0xFFFF`. The values grow with the territory order, so a territory or
-server key is a candidate; no table checked so far uses these numbers.
 
 ### What are `unknown_b4` and the `A1_` hash list?
 

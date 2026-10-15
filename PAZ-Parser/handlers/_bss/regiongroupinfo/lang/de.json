@@ -3,6 +3,10 @@
     "regionGroupKey": "Regionsgruppe",
     "nodeKey": "Postenschlüssel",
     "nodeName": "Postenname",
+    "concurrentUsers": "Gleichzeitige Benutzer",
+    "corpProductivity": "Firmenproduktivität",
+    "fishingProductivity": "Angelproduktivität",
+    "loyalty": "Loyalität",
     "x": "X",
     "y": "Y",
     "z": "Z"

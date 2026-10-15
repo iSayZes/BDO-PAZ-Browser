@@ -3,6 +3,10 @@
     "regionGroupKey": "Groupe de régions",
     "nodeKey": "Clé du géopoint",
     "nodeName": "Nom de géopoint",
+    "concurrentUsers": "Utilisateurs simultanés",
+    "corpProductivity": "Productivité d'entreprise",
+    "fishingProductivity": "Productivité de pêche",
+    "loyalty": "Loyauté",
     "x": "X",
     "y": "Y",
     "z": "Z"

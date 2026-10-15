@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, sort_keys, table
+from _common.html import Column, e, flag_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.node import full_node_name
 from .parser import parse_regiongroupinfo_records
@@ -27,6 +27,10 @@ class RegionGroupInfoBssHandler(PreviewHandler):
             Column(cols["regionGroupKey"], "num", sort_key="region_group_key"),
             Column(cols["nodeKey"], "num", sort_key="node_key"),
             Column(cols["nodeName"], sort_key="node_name"),
+            Column(cols["concurrentUsers"], "num", sort_key="concurrent_playable_user_count"),
+            Column(cols["corpProductivity"], sort_key="enable_corp_productivity"),
+            Column(cols["fishingProductivity"], sort_key="enable_fishing_productivity"),
+            Column(cols["loyalty"], sort_key="enable_loyalty"),
             Column(cols["x"], "num", sort_key="pos_x"),
             Column(cols["y"], "num", sort_key="pos_y"),
             Column(cols["z"], "num", sort_key="pos_z"),
@@ -62,6 +66,10 @@ class RegionGroupInfoBssHandler(PreviewHandler):
                 e(r["region_group_key"]),
                 _EMPTY if r["node_key"] is None else e(r["node_key"]),
                 e(r["node_name"] or _EMPTY),
+                _number_cell(r["concurrent_playable_user_count"]),
+                flag_cell(r["enable_corp_productivity"]),
+                flag_cell(r["enable_fishing_productivity"]),
+                flag_cell(r["enable_loyalty"]),
                 _number_cell(r["pos_x"]),
                 _number_cell(r["pos_y"]),
                 _number_cell(r["pos_z"]),

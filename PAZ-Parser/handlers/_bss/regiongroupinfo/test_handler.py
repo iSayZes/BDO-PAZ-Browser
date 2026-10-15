@@ -9,7 +9,6 @@ from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
     HandlerResult,
-    RangeTest,
     SchemaTest,
     TargetTest,
     case_id,
@@ -37,22 +36,29 @@ CASE = HandlerCase(
                 "pos_x",
                 "pos_y",
                 "pos_z",
-                "unknown_03",
-                "unknown_09",
-                "unknown_0a",
-                "unknown_0b",
-                "unknown_19",
-                "unknown_1d",
-                "unknown_21",
+                "concurrent_playable_user_count",
+                "enable_corp_productivity",
+                "enable_fishing_productivity",
+                "enable_loyalty",
+                "corp_productivity",
+                "fishing_productivity",
+                "loyalty",
                 "unknown_31",
             ],
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
-        RangeTest(col="unknown_09", min_val=0, max_val=1),
-        RangeTest(col="unknown_0a", min_val=0, max_val=1),
-        RangeTest(col="unknown_0b", min_val=0, max_val=1),
-        # Each group names the node of its main town.
-        TargetTest(col="region_group_key", value=1, expected={"node_key": 1, "node_name": "Velia"}),
+        # Each group names the node of its main town; Velia enables all three.
+        TargetTest(
+            col="region_group_key",
+            value=1,
+            expected={
+                "node_key": 1,
+                "node_name": "Velia",
+                "enable_corp_productivity": True,
+                "enable_fishing_productivity": True,
+                "enable_loyalty": True,
+            },
+        ),
         TargetTest(col="region_group_key", value=31, expected={"node_key": 601, "node_name": "Calpheon"}),
         TargetTest(col="region_group_key", value=202, expected={"node_key": 1301, "node_name": "Valencia City"}),
     ],
@@ -90,3 +96,8 @@ def test_rows_that_miss_the_string_table_are_rejected() -> None:
     data += (8).to_bytes(4, "little") + bytes(4)
     with pytest.raises(ValueError, match="string table starts"):
         parse_regiongroupinfo_records(data)
+
+
+def test_productivity_flags_are_set_together(regiongroupinfo_result: HandlerResult) -> None:
+    records = regiongroupinfo_result.records
+    assert all(r["enable_corp_productivity"] == r["enable_fishing_productivity"] for r in records)

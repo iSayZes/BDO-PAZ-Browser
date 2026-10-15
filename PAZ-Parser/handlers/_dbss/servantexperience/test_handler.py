@@ -44,6 +44,8 @@ CASE = HandlerCase(
                 "max_hp", "max_mp", "max_weight",
                 "acceleration", "speed", "turn", "brake", "cannon_stats",
                 "growth_dice", "hp_dice", "stamina_dice", "move_dice",
+                "max_critical_rate", "max_drop_item_luck", "max_fishing_luck", "max_collection_luck",
+                "max_varied_speed",
             ]
         ),
         DeclaredCountTest(declared=header_count()),

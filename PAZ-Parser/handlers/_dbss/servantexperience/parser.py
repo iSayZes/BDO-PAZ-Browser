@@ -21,19 +21,20 @@ OFFSET_FILE = "servantexperienceoffset.dbss"
 
 _KEY_LEVEL_SHIFT = 16
 _KEY_ID_MASK = 0xFFFF
-# character_id, level, unknown_04, exp.
-_HEAD = struct.Struct("<HHHQ")
+# character_id, level (i32, as the 2016 _level), exp.
+_HEAD = struct.Struct("<HiQ")
 # The stat body fields, read in order from +0x0E. Every skipped byte is 0 on
 # client 3464.
 _F32 = struct.Struct("<f")
 _U32 = struct.Struct("<I")
+_I64 = struct.Struct("<q")  # +0x52 max_weight, the possessableWeight column
 _HP_MP = struct.Struct("<fI")  # +0x0E max_hp, +0x12 max_mp
-_SPEED_RANKS = struct.Struct("<4I")  # +0x42 unknown_42
-_RANK_LIMITS = struct.Struct("<3I")  # +0x6E unknown_6e
+# +0x42 MaxCriticalRate, MaxDropItemLuck, MaxFishingLuck, MaxCollectionLuck.
+_MAX_LUCKS = struct.Struct("<4I")
+_MAX_VARIED_SPEED = struct.Struct("<3I")  # +0x6E MaxAttackSpeed, MaxMoveSpeed, MaxCastingSpeed
 _STATS = struct.Struct("<8I")  # +0x8A stats, by ServantStatType
 _GAP_TO_2A = 20
 _GAP_TO_42 = 20
-_GAP_TO_5A = 4
 _GAP_TO_6E = 16
 _GAP_TO_8A = 12
 _BODY_STRING_COUNT = 3
@@ -83,7 +84,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
     character_id, level = split_servant_key(row.entry_id)
     label = f"servant {character_id} level {level}"
     reader = RecordReader(data, row.offset, row.offset + row.size, label)
-    head_id, head_level, unknown_04, exp = reader.unpack(_HEAD)
+    head_id, head_level, exp = reader.unpack(_HEAD)
     if (head_id, head_level) != (character_id, level):
         raise ValueError(f"{label} record starts with servant {head_id} level {head_level}")
 
@@ -91,12 +92,11 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
     reader.skip(_GAP_TO_2A)
     (unknown_2a,) = reader.unpack(_F32)
     reader.skip(_GAP_TO_42)
-    unknown_42 = list(reader.unpack(_SPEED_RANKS))
-    (max_weight,) = reader.unpack(_U32)
-    reader.skip(_GAP_TO_5A)
+    max_critical_rate, max_drop_item_luck, max_fishing_luck, max_collection_luck = reader.unpack(_MAX_LUCKS)
+    (max_weight,) = reader.unpack(_I64)
     (unknown_5a,) = reader.unpack(_F32)
     reader.skip(_GAP_TO_6E)
-    unknown_6e = list(reader.unpack(_RANK_LIMITS))
+    max_varied_speed = list(reader.unpack(_MAX_VARIED_SPEED))
     (unknown_7a,) = reader.unpack(_F32)
     reader.skip(_GAP_TO_8A)
     stats = list(reader.unpack(_STATS))
@@ -126,11 +126,13 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
         "brake": stats[3],
         "cannon_stats": stats[_MOVE_STAT_COUNT:],
         "growth_dice": growth_dice,
-        "unknown_04": unknown_04,
+        "max_critical_rate": max_critical_rate,
+        "max_drop_item_luck": max_drop_item_luck,
+        "max_fishing_luck": max_fishing_luck,
+        "max_collection_luck": max_collection_luck,
+        "max_varied_speed": max_varied_speed,
         "unknown_2a": whole_float(unknown_2a),
-        "unknown_42": unknown_42,
         "unknown_5a": whole_float(unknown_5a),
-        "unknown_6e": unknown_6e,
         "unknown_7a": whole_float(unknown_7a),
         "unknown_aa": body_strings,
         "unknown_aa_values": body_values,

@@ -74,21 +74,23 @@ Offsets after `+0x110` follow the strings.
 | Offset   | Type             | Field        | Notes                                                                 |
 | -------- | ---------------- | ------------ | --------------------------------------------------------------------- |
 | `+0x00`  | u16              | character_id | Servant character, as in `characterstatic.dbss`                       |
-| `+0x02`  | u16              | level        | 0 to the servant's top level                                          |
-| `+0x04`  | u16              | unknown_04   | Always 0                                                              |
+| `+0x02`  | i32              | level        | 0 to the servant's top level                                          |
 | `+0x06`  | u64              | exp          | EXP from `level` to `level + 1` (Notes)                               |
 | `+0x0E`  | f32              | max_hp       | Max HP, shown as is; `1.0` at level 0                                 |
 | `+0x12`  | u32              | max_mp       | Max stamina (`getMaxMp()`), shown as is; 0 on ships; `1` at level 0   |
 | `+0x2A`  | f32              | unknown_2a   | `1.0` at level 0, else 0                                              |
-| `+0x42`  | u32[4]           | unknown_42   | Always `5, 5, 5, 5`                                                   |
-| `+0x52`  | u32              | max_weight   | Max weight, LT x 10,000; 0 at level 0                                 |
+| `+0x42`  | u32              | max_critical_rate | Always `5`                                                       |
+| `+0x46`  | u32              | max_drop_item_luck | Always `5`                                                      |
+| `+0x4A`  | u32              | max_fishing_luck | Always `5`                                                        |
+| `+0x4E`  | u32              | max_collection_luck | Always `5`                                                     |
+| `+0x52`  | i64              | max_weight   | Max weight, LT x 10,000; 0 at level 0                                 |
 | `+0x5A`  | f32              | unknown_5a   | Always `1.0`                                                          |
-| `+0x6E`  | u32[3]           | unknown_6e   | Always `10, 10, 10`                                                   |
+| `+0x6E`  | u32[3]           | max_varied_speed | Always `10, 10, 10`: attack, movement and casting speed limits (Field Names) |
 | `+0x7A`  | f32              | unknown_7a   | `1.0` at level 0, else 0                                              |
 | `+0x8A`  | u32[8]           | stats        | By `ServantStatType` (Enum Values), percent x 10,000                  |
 | `+0xAA`  | (wstr, u32) x 3  | unknown_aa, unknown_aa_values | Always `1D1` and 0; the parser keeps the strings as `unknown_aa` and the u32s as `unknown_aa_values` |
 | `+0xE0`  | byte[48]         | reserved     | Always 0                                                              |
-| `+0x110` | wstr[6]          | growth_dice  | Level-up bonus dice: HP, stamina, then four movement stats (Notes)    |
+| `+0x110` | wstr[6]          | growth_dice  | Level-up bonus dice: HP, stamina, acceleration, speed, cornering, brake (Notes) |
 | after    | byte[32]         | reserved     | Always 0                                                              |
 
 Every byte from `+0x0E` to `+0xA9` that the table leaves out is 0 in every
@@ -137,8 +139,10 @@ record on client 3464.
   decimal and `%`, so `1375000` reads 137.5%. On every horse the first two
   values are equal and so are the last two; only eleven ships differ
   (Epheria Galleon, Improved Galley, Panokseon, the four Epheria Carracks and
-  four rowboats), so the data cannot check the acceleration and speed order,
-  which follows the enum.
+  four rowboats). The bexcel `Servant_Table` settles the acceleration and
+  speed order: on the 8 ships where its `AccelerationRate` and
+  `MaxMoveSpeedRate` differ, `+0x8A` holds the first and `+0x8E` the second
+  (see Field Names).
 - On client 3464, 401 of the 418 servants keep the same `stats` on every
   level from 1, and `max_hp`, `max_mp` and `max_weight` grow from level 1 to
   level 30 (312 servants grow all three, 4 keep `max_mp`). On 159 of the 161
@@ -218,14 +222,31 @@ record on client 3464.
 - The three `1D1` strings at `+0xAA` sit where the `experience.bss` body has
   three always-0 u32 pairs, and string index 0 of that file is `1D1`.
 
+## Field Names
+
+The names follow the `Servant_Table` sheet of a private-server `DataSheets.bexcel` (9,893 (character, level) rows shared with client 3473) and the BdoEmu server's `Servant_Table` (about 2021, 7,241 rows), matched value by value at every offset of the fixed part:
+
+| Column | Field | Equal (bexcel) | Equal (BdoEmu) |
+| ------ | ----- | -------------- | -------------- |
+| `RequireEXP` | `exp` | 9,887 | 7,235 |
+| `HP` | `max_hp` | 9,549 | 6,914 |
+| `MP` | `max_mp` | 9,181 | |
+| `possessableWeight` | `max_weight` (i64) | 9,879 | 7,225 |
+| `AccelerationRate` | `stats[0]` | 9,891 | 7,148 |
+| `MaxMoveSpeedRate` | `stats[1]` | 9,891 | 7,148 |
+| `CorneringSpeedRate`, `BrakeSpeedRate` | `stats[2]`, `stats[3]` | 9,891 | 7,148 |
+
+`AccelerationRate` equals `stats[1]` on 8 fewer rows than `stats[0]`, and `MaxMoveSpeedRate` the other way round: the 8 ships 9032, 9049, 9050 and 9075 (the four rowboats) and 31054 to 31057 (the four Epheria Carracks) have a lower acceleration than speed in both. `CorneringSpeedRate` and `BrakeSpeedRate` are equal on every row and keep the enum order.
+
+The constants are placed by value: the sheet's only columns that hold `5` on every row are `MaxCriticalRate`, `MaxDropItemLuck`, `MaxFishingLuck` and `MaxCollectionLuck`, the four u32 at `+0x42`, and its only `10` columns are `MaxAttackSpeed`, `MaxMoveSpeed` and `MaxCastingSpeed`, the three at `+0x6E`. The 2016 client (build of 2016-01-11) ships with debug symbols; its `gc::CharacterStatStaticStatus` holds `_maxCriticalHitPoint`, `_maxDropItemPoint`, `_maxFishingPoint` and `_maxCollectionPoint` in that order, which splits the four `5`s, and `_maxVariedSpeedPoint` as one array of three. Which index of `max_varied_speed` is attack, movement or casting is not settled by the data; the [experience.bss](experience_bss.md#the-constant-fields) Open Questions read index 0 as movement from the character window Lua.
+
+`growth_dice` follows the sheet columns `VariedMaxHP`, `VariedMaxMP`, `VariedAccelerationRate`, `VariedMaxMoveSpeedRate`, `VariedCorneringSpeedRate` and `VariedBrakeSpeedRate`, and the 2016 `_variedMaxHp`, `_variedMaxMp` and `_variedStat[4]`, which the 2016 `LoadServantExperienceStaticInformation` reads from those columns in that order. The bexcel holds `0` in all six columns and the private server's own file `1D1`, so only the order ties the four movement slots to their stats; client 3473 rolls the same die in all four on every servant.
+
+The private server's own `servantexperience.dbss` (client 1784, 10,869 records) stores the sheet's `StunGauge` (`100`) as an i16 at `+0x16`, after `max_mp` as in the 2016 `_stunGauge`, and every later field 2 bytes further on. Client 3473 has no such field: `+0x16` starts the zero bytes before `unknown_2a`.
+
+`level` is an i32, the 2016 `_level`; its high half (`+0x04`, earlier `unknown_04`) is 0 on every record.
+
 ## Open Questions
-
-### Which Dice Rolls Which Movement Stat
-
-`growth_dice` slots 2 to 5 roll the four movement stats, but the four are
-equal on every servant on client 3464, so the data cannot tie a slot to
-acceleration, speed, turn or brake. The `stats` order would put
-acceleration first.
 
 ### The Inherent HP and Stamina Offset
 
@@ -237,7 +258,4 @@ comes from is open.
 
 ### The Constant Fields
 
-`unknown_2a`, `unknown_42`, `unknown_5a`, `unknown_6e` and `unknown_7a` are
-the `experience.bss` constant fields. The `5` and `10` triads are likely
-speed ranks and their limits; the evidence is in the
-[experience.bss](experience_bss.md#the-constant-fields) Open Questions.
+`unknown_2a`, `unknown_5a` and `unknown_7a` are `experience.bss` constant fields with no sheet match. `unknown_5a` (`1.0` on every record) sits where the 2016 member order has `_productionHit`, but the bexcel and BdoEmu `ProductionHit` columns hold `0` on every row, and client 1784 stores `1.0` there too, so the value does not come from that column. `unknown_2a` and `unknown_7a` are `1.0` on level 0 and `0` otherwise; no sheet column has that pattern.

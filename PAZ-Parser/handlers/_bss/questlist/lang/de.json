@@ -9,9 +9,8 @@
     "subId": "Unter-ID",
     "icon": "Symbol",
     "title": "Titel",
-    "offeredWhen": "Angeboten, wenn*",
-    "ruledOutWhen": "Ausgeschlossen, wenn*",
-    "scriptGuess": "* Unsere Deutung des Skripts; im Spiel nicht bestätigt"
+    "shownWhen": "Sichtbar, wenn",
+    "hiddenWhen": "Verborgen, wenn"
   },
   "meta": {
     "count": "{count} Quest-Verweise · {group_count} Gruppen",

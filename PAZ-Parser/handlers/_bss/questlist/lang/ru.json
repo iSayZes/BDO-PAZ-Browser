@@ -9,9 +9,8 @@
     "subId": "Доп. ID",
     "icon": "Значок",
     "title": "Название",
-    "offeredWhen": "Выдаётся, если*",
-    "ruledOutWhen": "Исключается, если*",
-    "scriptGuess": "* Наше толкование скрипта; в игре не подтверждено"
+    "shownWhen": "Видна, если",
+    "hiddenWhen": "Скрыта, если"
   },
   "meta": {
     "count": "Ссылок на задания: {count} · групп: {group_count}",

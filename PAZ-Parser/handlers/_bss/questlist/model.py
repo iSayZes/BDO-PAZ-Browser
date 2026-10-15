@@ -7,17 +7,17 @@ class QuestListRecord(TypedDict):
     group: int
     group_key: int
     group_name_kr: str
-    unknown_06: int
+    group_type: int
     event_start: str
     event_end: str
     row: int
-    unknown_10: int
+    is_sub_quest: bool
     quest_chain_id: int
     quest_id: int
     packed_quest_id: int
     condition_index: int
     condition_kr: str
-    script_1_index: int
-    script_1: str
-    script_2_index: int
-    script_2: str
+    hide_conditions_index: int
+    hide_conditions: str
+    visible_conditions_index: int
+    visible_conditions: str

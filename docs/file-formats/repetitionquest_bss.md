@@ -18,11 +18,11 @@ Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byt
 | -------------------------------------- | ----------------------------------------------------- |
 | `group_count`                          | `48`                                                  |
 | First group                            | key `51`, `10` rows                                   |
-| Group header `unknown_06`              | `0` on every group                                    |
+| Group header `group_type`              | `0` on every group                                    |
 | Group trailer start / end index        | Index `31`, the empty string: no event period         |
-| Row `unknown_10`                       | `0` on every row                                      |
-| Row `script_1_index`                   | Empty string on 678 rows, a script on 128             |
-| Row `script_2_index`                   | Empty string on 517 rows, a script on 289             |
+| Row `is_sub_quest`                       | `0` on every row                                      |
+| Row `hide_conditions_index`                   | Empty string on 678 rows, a script on 128             |
+| Row `visible_conditions_index`                   | Empty string on 517 rows, a script on 289             |
 | String table                           | `633` strings; `string_count` at `0x000039DE`         |
 
 The empty string sits at index `31` here, so the script fields read `31` on most rows. The scripts check other quests of a weekly set (`clearquest(9108,2);<or>clearquest(9108,3);...`), life skill levels (`getLifeLevel(6)>80;`), content groups and random rolls (`checkRandom`); see String Table in the `newquest.bss` doc for the two script roles.
@@ -53,10 +53,10 @@ On client 3458 all 48 groups have a name (type 42 has 54, keys 1 to 54, so some 
 | Icon         | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
 | Title        | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
 | Condition    | text | LOC type 42 `(packed_quest_id, group_key)`, `str_id4 = 1`, in its game colours; else the Korean `condition_kr` |
-| Offered When* | text | `script_2` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
-| Ruled Out When* | text | `script_1` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
+| Shown When   | text | `visible_conditions` on one line; see the `newquest.bss` Field Names |
+| Hidden When  | text | `hide_conditions` on one line                                    |
 
-`group` (the index in file order), `unknown_10`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
+`group` (the index in file order), `is_sub_quest`, `group_type`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
 
 ## Notes
 
@@ -67,4 +67,4 @@ On client 3458 all 48 groups have a name (type 42 has 54, keys 1 to 54, so some 
 
 ### Shared Fields
 
-`unknown_06` and the roles of the two scripts are open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).
+What `group_type` selects is open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).

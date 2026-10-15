@@ -9,9 +9,8 @@
     "subId": "서브 ID",
     "icon": "아이콘",
     "title": "제목",
-    "offeredWhen": "수락 조건*",
-    "ruledOutWhen": "제외 조건*",
-    "scriptGuess": "* 스크립트에 대한 추정이며 게임에서 확인되지 않음"
+    "shownWhen": "표시 조건",
+    "hiddenWhen": "숨김 조건"
   },
   "meta": {
     "count": "의뢰 참조 {count}개 · 그룹 {group_count}개",

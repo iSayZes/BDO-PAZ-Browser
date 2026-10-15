@@ -27,7 +27,6 @@ QUEST_LIST_LOC_TYPES: dict[str, int] = {
 }
 # Only the event list stores an event period per group; the others leave it blank.
 EVENT_PERIOD_LISTS = frozenset({"newquest.bss"})
-_SCRIPT_GUESS_TOOLTIP = "* What we think this script does; not confirmed in game"
 _FIELD_GROUP_NAME = 0
 _FIELD_CONDITION = 1
 
@@ -48,8 +47,6 @@ class QuestListBssHandler(PreviewHandler):
             Column(cols["eventStart"], sort_key="event_start"),
             Column(cols["eventEnd"], sort_key="event_end"),
         ] if self._has_event_period else []
-        # The script roles are read from their calls, not confirmed in game.
-        guess = f'title="{e(cols.get("scriptGuess", _SCRIPT_GUESS_TOOLTIP))}"'
         return [
             Column(cols["mainId"], "num", sort_key="quest_chain_id"),
             Column(cols["subId"], "num", sort_key="quest_id"),
@@ -59,8 +56,10 @@ class QuestListBssHandler(PreviewHandler):
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["title"], sort_key="title"),
             Column(cols["condition"], sort_key="condition"),
-            Column(cols["offeredWhen"], extra_attrs=guess, sort_key="script_2"),
-            Column(cols["ruledOutWhen"], extra_attrs=guess, sort_key="script_1"),
+            # The quest window lists a quest while its visible conditions hold
+            # and its hide conditions do not.
+            Column(cols["shownWhen"], sort_key="visible_conditions"),
+            Column(cols["hiddenWhen"], sort_key="hide_conditions"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -121,6 +120,6 @@ class QuestListBssHandler(PreviewHandler):
             icon_cell(record["icon_path"]) if record["icon_path"] else _EMPTY,
             pa_cell(record, "title"),
             pa_cell(record, "condition"),
-            _script_cell(record["script_2"]),
-            _script_cell(record["script_1"]),
+            _script_cell(record["visible_conditions"]),
+            _script_cell(record["hide_conditions"]),
         ]

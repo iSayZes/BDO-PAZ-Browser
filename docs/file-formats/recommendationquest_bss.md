@@ -18,11 +18,11 @@ Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byt
 | -------------------------------------- | ----------------------------------------------------- |
 | `group_count`                          | `122`                                                 |
 | First group                            | key `165`, `9` rows                                   |
-| Group header `unknown_06`              | `0` to `8`, see Open Questions                        |
+| Group header `group_type`              | `0` to `8`, see Open Questions                        |
 | Group trailer start / end index        | Index `2`, the empty string: no event period          |
-| Row `unknown_10`                       | `0` on every row                                      |
-| Row `script_1_index`                   | Empty string on 1,149 rows, a script on 142           |
-| Row `script_2_index`                   | Empty string on 1,045 rows, a script on 246           |
+| Row `is_sub_quest`                       | `0` on every row                                      |
+| Row `hide_conditions_index`                   | Empty string on 1,149 rows, a script on 142           |
+| Row `visible_conditions_index`                   | Empty string on 1,045 rows, a script on 246           |
 | String table                           | `1,456` strings; `string_count` at `0x000060B9`       |
 
 The scripts check prerequisite quests, level, class, content groups, knowledge (`getknowledge(9917);`), items (`getItemCount`) and Olvia Academy enrolment (`checkOlviaAcademyStudent`); see String Table in the `newquest.bss` doc for the two script roles.
@@ -53,10 +53,10 @@ On client 3458 all 122 groups have a name (type 28 has 192, keys 1 to 200, so so
 | Icon         | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
 | Title        | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
 | Condition    | text | LOC type 28 `(packed_quest_id, group_key)`, `str_id4 = 1`, in its game colours; else the Korean `condition_kr` |
-| Offered When* | text | `script_2` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
-| Ruled Out When* | text | `script_1` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
+| Shown When   | text | `visible_conditions` on one line; see the `newquest.bss` Field Names |
+| Hidden When  | text | `hide_conditions` on one line                                    |
 
-`group` (the index in file order), `unknown_10`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
+`group` (the index in file order), `is_sub_quest`, `group_type`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
 
 ## Notes
 
@@ -65,10 +65,10 @@ On client 3458 all 122 groups have a name (type 28 has 192, keys 1 to 200, so so
 
 ## Open Questions
 
-### Group Header Byte `unknown_06`
+### Group Header Byte `group_type`
 
-`0` on 65 of 122 groups and `1` to `8` on the rest, grouped by theme: 1 holds Olvia Academy and `[ADV Support] [Lv. 53]` leveling groups, 2 mounts and outfits (`[Mount] Shai - Fwuzzy Alpaca`), 3 `[The Great Expedition]`, 4 to 7 the `[Life] [Leap]` gurus split by life skill (cooking and alchemy at 5, hunting at 7) and 8 a mix (`[ADV Support] Inventory Expansion!`, `[Music] ...`). It may be the category tab of the recommendation window; not confirmed.
+`0` on 65 of 122 groups and `1` to `8` on the rest, grouped by theme: 1 holds Olvia Academy and `[ADV Support] [Lv. 53]` leveling groups, 2 mounts and outfits (`[Mount] Shai - Fwuzzy Alpaca`), 3 `[The Great Expedition]`, 4 to 7 the `[Life] [Leap]` gurus split by life skill (cooking and alchemy at 5, hunting at 7) and 8 a mix (`[ADV Support] Inventory Expansion!`, `[Music] ...`). It may be the category tab of the recommendation window; the server calls it `RecommendationQuestType` and sets the same value on 17 of the 19 shared groups where it is not `0`, but no Lua getter reads it.
 
 ### Shared Fields
 
-`unknown_06` and the roles of the two scripts are open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).
+What `group_type` selects is open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).

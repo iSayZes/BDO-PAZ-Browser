@@ -9,9 +9,8 @@
     "subId": "Sub ID",
     "icon": "Icon",
     "title": "Title",
-    "offeredWhen": "Offered When*",
-    "ruledOutWhen": "Ruled Out When*",
-    "scriptGuess": "* What we think this script does; not confirmed in game"
+    "shownWhen": "Shown When",
+    "hiddenWhen": "Hidden When"
   },
   "meta": {
     "count": "{count} quest references · {group_count} groups",

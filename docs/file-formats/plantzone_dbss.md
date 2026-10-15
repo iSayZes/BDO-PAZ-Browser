@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines worker production zones. Each record belongs to one worldmap production sub-node (`record_id` is an `exploration.bss` node key, named through LOC type 29), carries several invariant control fields and one unknown byte that tracks the production type, links to a production key in `plantexchangegroup.bss`, and lists a set of worker species per zone (not a worker lock; its use is unknown, see Open Questions). `plantzoneoffset.dbss` is required to address the variable-length records.
+Defines worker production zones. Each record belongs to one worldmap production sub-node (`record_id` is an `exploration.bss` node key, named through LOC type 29), stores the worker's work animation type, links to a production key in `plantexchangegroup.bss` with a capacity level, and lists a set of worker species per zone (not a worker lock; its use is unknown, see Open Questions). `plantzoneoffset.dbss` is required to address the variable-length records.
 
 ```text
 Observed records: 394 in the pre-2026-09-27 fixture, 439 in the 2026-09-27 client (45 more 37-byte zones). Record payloads are 32, 34, or 37 bytes depending on the worker-species list length.
@@ -35,19 +35,19 @@ All multi-byte values are little-endian unless noted otherwise.
 | Offset  | Type | Field                | Notes                                                                    |
 | ------- | ---- | -------------------- | ------------------------------------------------------------------------ |
 | `+0x00` | u32  | record_id            | `exploration.bss` node key; matches `record_id` in `plantzoneoffset.dbss` |
-| `+0x04` | u32  | unknown_04           | Always observed as `2`                                                   |
-| `+0x08` | u32  | unknown_08           | Always observed as `0`                                                   |
-| `+0x0C` | u16  | unknown_0c           | Always observed as `2`                                                   |
-| `+0x0E` | u8   | unknown_0e           | Observed range `0`-`4`; correlates with node kind, see below             |
-| `+0x0F` | u16  | unknown_0f           | Always observed as `101`; note unaligned offset                          |
-| `+0x11` | u16  | unknown_11           | Always observed as `201`; note unaligned offset                          |
-| `+0x13` | u32  | unknown_13           | Always observed as `1`; note unaligned offset                            |
+| `+0x04` | u32  | unknown_04           | Always observed as `2`; see Open Questions                               |
+| `+0x08` | u32  | unknown_08           | Always observed as `0`; see Open Questions                               |
+| `+0x0C` | u16  | unknown_0c           | Always observed as `2`; see Open Questions                               |
+| `+0x0E` | u8   | work_ani_type        | `gc::EWorkAniType`, see below                                            |
+| `+0x0F` | u16  | productivity_upgrade_group_index | `PlantUpgradeParam_Table` index; always observed as `101`; note unaligned offset |
+| `+0x11` | u16  | luck_productivity_upgrade_group_index | `PlantUpgradeParam_Table` index; always observed as `201`; note unaligned offset |
+| `+0x13` | u32  | production_count     | Number of (`production_key`, `max_capacity_level`) pairs; always observed as `1`; note unaligned offset |
 | `+0x17` | u16  | production_key       | `plantexchangegroup.bss` key; note unaligned offset                      |
-| `+0x19` | u16  | unknown_19           | Usually `0`; counts up across Specialties nodes, see below               |
+| `+0x19` | u16  | max_capacity_level   | The sheet's `MaxCapacityLevel` minus 1; usually `0`, see below           |
 | `+0x1B` | u32  | worker_species_count | Number of trailing `worker_species`; observed `1`, `3`, or `6`           |
 | `+0x1F` | u8[] | worker_species       | Worker species values, `worker_species_count` bytes; not a worker lock   |
 
-Earlier versions of this doc read `+0x17` as one u32 `production_key` with an unexplained high word; that high word is `unknown_19`. Earlier versions also called `unknown_0e` `variant`.
+`+0x13` to `+0x1A` is a list: the 2016 client keeps `_productionList`, a map from the exchange group key to a `ProductionInfo` with `_maxCountLevel`. Every zone lists one pair, so the offsets after it are fixed; the parser raises an error on a zone with another count. Earlier versions of this doc read `+0x17` as one u32 `production_key` with an unexplained high word; that high word is `max_capacity_level`. Earlier versions also called `work_ani_type` `variant` and `unknown_0e`.
 
 Observed record-size distribution:
 
@@ -73,34 +73,40 @@ The same byte is the last byte (`+0x38F`) of every `plantworker.bss` record. Nam
 | 7     | Dolswe workers                                           |
 | 8     | Shellfolk workers                                        |
 
-### `unknown_0e` by Node Kind
+### `work_ani_type` Values
 
-`exploration.bss` `node_kind` of the zone's node, counted per `unknown_0e`:
+Names from `gc::EWorkAniType` of the 2016 client's debug symbols. On client 3473 the zones use `0` to `4`; the `exploration.bss` `node_kind` of each zone's node, counted per value:
 
-| `unknown_0e` | Dominant kinds                                              |
-| --------- | -------------------------------------------------------------- |
-| 0         | Quarry 66, MonopolyFarm 3, Logging 1, Excavation 1             |
-| 1         | Collect 48, Farm 15, Excavation 6, MonopolyFarm 4, Craft 1     |
-| 2         | Farm 35, Collect 13, MonopolyFarm 11                           |
-| 3         | Logging 62, Excavation 3, Quarry 1                             |
-| 4         | FishTrap 41, MonopolyFarm 25, Finance 24, Excavation 24, Craft 6, MinorFinance 2, Quarry 1, Logging 1 |
+| Value | Name         | Zones | Node kinds |
+| ----- | ------------ | ----- | ---------- |
+| 0     | Mining       | 84    | Quarry 79, MonopolyFarm 3, Excavation 1, Logging 1 |
+| 1     | Gather       | 80    | Collect 46, Farm 15, Excavation 12, MonopolyFarm 4, Logging 2, Craft 1 |
+| 2     | Cultivation  | 63    | Farm 35, Collect 13, MonopolyFarm 11, Quarry 2, Logging 2 |
+| 3     | Logging      | 77    | Logging 73, Excavation 3, Quarry 1 |
+| 4     | Making       | 135   | FishTrap 41, Excavation 34, MonopolyFarm 25, Finance 24, Craft 7, MinorFinance 2, Logging 1, Quarry 1 |
+| 5     | Architecture | 0     | |
+| 6     | Hide         | 0     | |
+| 7     | HouseParty   | 0     | |
+| 8     | Breeding     | 0     | |
 
-### `unknown_19` Values
+The value does not follow the node kind: Farm nodes split between Gather and Cultivation, and Excavation nodes fall under four of the five.
 
-`unknown_19` is `0` on 375 records. Nineteen records (15 Specialties, 2 Mining, 1 Gathering, 1 Excavation) have a non-zero value:
+### `max_capacity_level` Values
 
-| `unknown_19` | Count | `production_key` range |
-| ------------ | ----- | ---------------- |
-| `0`          | 375   | `1`-`2044`       |
-| `1`          | 3     | `960`-`1235`     |
-| `2`          | 6     | `23`-`1213`      |
-| `3`          | 2     | `962`-`970`      |
-| `4`          | 2     | `963`-`971`      |
-| `5`          | 2     | `972`-`975`      |
-| `6`          | 2     | `973`-`976`      |
-| `7`          | 2     | `974`-`977`      |
+On client 3473, `max_capacity_level` is `0` on 420 zones and `1` to `7` on 19 (`node_kind` MonopolyFarm 15, Quarry 2, Collect 1, Excavation 1):
 
-It counts up across consecutive Specialties node keys: 104-110 (Balenos farms such as Bartali, Finto and Wale Farm) carry `1`-`7`, and 613-619 (Calpheon farms such as Falres Dirt and Dias Farm) carry `1`-`7` again. All 394 `production_key` values are `plantexchangegroup.bss` keys; read together with `unknown_19` as a u32, only 375 are.
+| `max_capacity_level` | Zones |
+| -------------------- | ----- |
+| `0`                  | 420   |
+| `1`                  | 3     |
+| `2`                  | 6     |
+| `3`                  | 2     |
+| `4`                  | 2     |
+| `5`                  | 2     |
+| `6`                  | 2     |
+| `7`                  | 2     |
+
+It counts up across consecutive Specialties (MonopolyFarm) node keys: 104-110 (Balenos farms such as Bartali, Finto and Wale Farm) carry `1`-`7`, and 613-619 (Calpheon farms such as Falres Dirt and Dias Farm) carry `1`-`7` again. All `production_key` values are `plantexchangegroup.bss` keys; read together with `max_capacity_level` as a u32, the 19 non-zero ones are not.
 
 ### Production Item Chain
 
@@ -140,10 +146,25 @@ Offset rows are not sorted by `data_offset`, but sorted rows cover every byte fr
 | -------------- | ---- | --------------------------------------------------- |
 | Zone ID        | num  | `record_id`                                         |
 | Node Name      | text | LOC type 29, `str_id1=record_id`, `str_id4=0`       |
+| Work Animation | text | `work_ani_type` by its `gc::EWorkAniType` name      |
 | Production Key | num  | `production_key`                                    |
 | Produced Items | text | Icon and LOC type 0 name of each item in its grade colour (`ITEM_GRADE`) through the Production Item Chain, read from the `PRODUCTION_ITEMS` lookup index; a dash for the 36 unresolved zones |
 
 The table meta line counts the zones that resolve to items (403 of 439 on client 3458). The preview needs no `plantexchangegroup.bss` or `itemsubgroup.dbss` companion: `production_item_fields()` in `_common/production_items.py` gives the item keys and names, the same helper the `plantexchangegroup.bss` Items column uses, and `item_key_list_cell()` in `_common/item_key.py` draws both columns.
+
+## Field Names
+
+The names of `work_ani_type`, `productivity_upgrade_group_index`, `luck_productivity_upgrade_group_index`, `production_key` and `max_capacity_level` follow the `PlantZone_Table` and `PlantZoneWorking_Table` sheets of a private-server `DataSheets.bexcel` (columns `WorkAniType`, `ProductivityUpgradeGroupIndex`, `LuckProductivityUpgradeGroupIndex`, `ExchangeGroupIndex`, `MaxCapacityLevel`) and the same tables of the BdoEmu server (about 2021). Matched by value over the zone keys (`WaypointKey`) each shares with client 3473:
+
+| Column | Field | Equal (bexcel, 304 keys) | Equal (BdoEmu, 288 keys) |
+| ------ | ----- | ------------------------ | ------------------------ |
+| `WorkAniType` | `work_ani_type` | 303 | 273 |
+| `ExchangeGroupIndex` | `production_key` | 293 | 277 |
+| `MaxCapacityLevel` | `max_capacity_level` + 1 | 304 | 288 |
+
+Both sheets store `101` and `201` in the two upgrade-group columns on every row, and `PlantUpgradeParam_Table` has rows with index `101` and `201`. The client Lua enum `CppEnums.PlantZoneLevelType` (`global_define_cpp_enum.luac`) has the two matching levels, `ePlantZoneLevelType_GeneralEfficiency` (`0`) and `ePlantZoneLevelType_LuckEfficiency` (`1`); no other Lua file uses it. The 2016 client (build of 2016-01-11) ships with debug symbols: `gc::PlantZoneStaticStatus` holds `_productCategory`, `_workAniType`, `_productivityParamKey`, `_luckProductivityParamKey` and `_productionList` in this order, the order of `+0x0E` to `+0x1A` here; `GameCommonParameterLoaderFromExcel::LoadPlantZoneStaticInformation` reads `WorkAniType` into `_workAniType` and the two upgrade-group columns into the two param keys. `_productionList` maps the exchange group key to `_maxCountLevel`, filled from `PlantZoneWorking_Table`.
+
+The file has no field for `ContentsGroupKey` (10 distinct values in the bexcel). The private server's own `plantzone.dbss` (client 1784) has 309 zones of 27 bytes each: the same fields up to `max_capacity_level`, with no worker species list.
 
 ## Notes
 
@@ -156,13 +177,13 @@ The table meta line counts the zones that resolve to items (403 of 439 on client
 
 ## Open Questions
 
-### `unknown_0e` Meaning
+### The Constant Block at `+0x04`
 
-`unknown_0e` tracks the production type (Quarry is mostly `0`, Logging `3`, Fish Drying/Finance `4`) but Farm, Collect, MonopolyFarm and Excavation nodes are split across several values, so it is not simply the node kind. It may be a worker-stat or work-type class; the client enum was not identified.
+`unknown_04` (`2`), `unknown_08` (`0`) and `unknown_0c` (`2`) are constant on clients 1784 and 3473, and so are the sheet columns that have no field yet: `PlantObjectKind` (`2`, the 2016 `_productCategory`, where `2` is `ProductCategory_Farm`), `UpgradeResource` (`2`, `_upgradeResourceKey`), `MaxLevel` (`_maxLevel`), `WorkableCount` (`_workableCountMax`) and `isRandomRecipeLevel` (all `0`). The 10 bytes do not follow the 2016 member order, where `_productCategory` sits right before `_workAniType` (`+0x0D`, always `0` here), so neither value nor order tells which column each byte holds.
 
-### `unknown_19` Meaning
+### What `max_capacity_level` Controls
 
-`unknown_19` counts up across consecutive Specialties node keys on 19 records. Whether the client uses it (for example as a display order or unlock step) is not confirmed.
+It is `1` to `7` only on 19 zones, mostly consecutive Specialties nodes. The BdoEmu server loads `MaxCapacityLevel` into `PlantZoneWorkingT` but never reads it back, and the client Lua has no getter for it.
 
 ### Unresolved Subgroups
 

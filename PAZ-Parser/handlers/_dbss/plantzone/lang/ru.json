@@ -7,6 +7,7 @@
   "columns": {
     "zoneId": "ID зоны",
     "nodeName": "Название узла",
+    "workAnimation": "Анимация работы",
     "productionKey": "Ключ производства",
     "producedItems": "Производимые предметы"
   },

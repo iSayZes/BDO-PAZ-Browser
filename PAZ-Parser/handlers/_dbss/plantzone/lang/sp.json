@@ -7,6 +7,7 @@
   "columns": {
     "zoneId": "ID de zona",
     "nodeName": "Nombre del nodo",
+    "workAnimation": "Animación de trabajo",
     "productionKey": "Clave de producción",
     "producedItems": "Objetos producidos"
   },

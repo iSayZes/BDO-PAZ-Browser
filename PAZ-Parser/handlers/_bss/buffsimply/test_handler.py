@@ -21,6 +21,7 @@ from _bss.buffsimply.parser import build_buff_icon_index
 from _common.buff import buff_icon_path
 from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _dbss.buff.parser import parse_buff_records
+from _dbss.itemenchant.slot_labels import NO_SLOT
 
 
 _BUFF_FILE = "buff.dbss"
@@ -43,22 +44,22 @@ CASE = HandlerCase(
                 "icon_path",
                 "description",
                 "is_shown",
-                "unknown_str",
-                "unknown_04",
+                "is_debuff",
+                "remove_on_dead",
+                "effect_name",
+                "need_equip_type",
+                "need_equip_slot",
                 "unknown_07",
                 "unknown_08",
                 "unknown_09",
-                "unknown_0b",
                 "unknown_0c",
-                "unknown_11",
                 "unknown_12",
-                "unknown_16",
                 "unknown_18",
             ],
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
-        RangeTest(col="unknown_11", min_val=0, max_val=1),
-        RangeTest(col="unknown_16", min_val=0, max_val=1),
+        # An itemenchant.dbss equip_slot; the highest value is the one of no slot.
+        RangeTest(col="need_equip_slot", min_val=0, max_val=NO_SLOT),
         TargetTest(
             col="buff_id",
             value=48830,
@@ -91,10 +92,13 @@ def test_buffsimply_bss(spec: Any, buffsimply_result: HandlerResult) -> None:
 
 
 def test_rows_copy_their_buff_dbss_record(buffsimply_result: HandlerResult) -> None:
-    """Same buffs in buffoffset.dbss order, with the same icon, is_shown and unknown_str."""
+    """Same buffs in buffoffset.dbss order, with the same copied fields."""
     source = buffsimply_result.source
     offset_rows = parse_pabr_u32_offset_rows(source.file(_BUFF_OFFSET_FILE))
-    fields = ("buff_id", "icon_path", "is_shown", "unknown_str")
+    fields = (
+        "buff_id", "icon_path", "is_shown", "effect_name",
+        "is_debuff", "remove_on_dead", "need_equip_type", "need_equip_slot",
+    )
     expected = [
         {field: record[field] for field in fields}
         for record in parse_buff_records(source.file(_BUFF_FILE), offset_rows)

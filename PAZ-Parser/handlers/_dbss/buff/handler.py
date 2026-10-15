@@ -7,7 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.buff import buff_loc_description
 from _common.duration import format_duration
-from _common.html import Column, e, icon_cell, sort_keys, table, truncate
+from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table, truncate
 from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.lookup_index import IndexKind, index_entries, lookup
@@ -128,6 +128,8 @@ def _buff_row(r: dict) -> list[str]:
         e(r["level"]),
         e(effect_type_text(r["effect_type"])),
         e(r["duration"]) if r["duration"] else _EMPTY,
+        flag_cell(r["is_debuff"]),
+        flag_cell(r["remove_on_dead"]),
         *(_param_cell(r[f"param_{index}"], labels.get(index)) for index in range(1, _SHOWN_PARAMS + 1)),
     ]
 
@@ -147,6 +149,8 @@ class BuffHandler(PreviewHandler):
             # Sorts by the number; the cell adds the 2016 name where there is one.
             Column(cols["effectType"], sort_key="effect_type"),
             Column(cols["duration"], "num", sort_key="duration_ms"),
+            Column(cols["debuff"], sort_key="is_debuff"),
+            Column(cols["removeOnDead"], sort_key="remove_on_dead"),
             *(
                 Column(cols.get(f"param{index}", f"Param {index}"), "num", sort_key=f"param_{index}")
                 for index in range(1, _SHOWN_PARAMS + 1)

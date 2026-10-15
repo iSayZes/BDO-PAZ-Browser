@@ -28,7 +28,7 @@ buff_id 48830
 | `instancefield.dbss`, `instancefieldmapinfo.bss` | Optional | Field names and titles of type 176, through the `INSTANCE_FIELD_NAME` and `INSTANCE_FIELD_TITLE` lookup indexes |
 
 [`buffsimply.bss`](buffsimply_bss.md) holds the same buff IDs in fixed 32-byte
-rows with the icon path, `unknown_str`, `is_shown` and a few stats bytes. It is
+rows with the icon path, `effect_name`, `is_shown` and a few stats bytes. It is
 not needed to read this file.
 
 All multi-byte values are little-endian.
@@ -58,7 +58,7 @@ count characters, ASCII lengths count bytes.
 | 1     | u32                | buff_id     | Always equals the offset row's `buff_id`; a u16 before client 3464, see Notes |
 | 2     | prefixed UTF-16    | name        | Internal Korean label; no LOC counterpart                |
 | 3     | 133 bytes          | stats block | See Stats Block below                                    |
-| 4     | prefixed UTF-16    | unknown_str | Short digit text, `"0"` in 39,455 rows; 186 distinct     |
+| 4     | prefixed UTF-16    | effect_name | Short digit text, `"0"` in 39,455 rows; 186 distinct. The server's `BuffEffect`, see Field Names |
 | 5     | prefixed ASCII     | icon_path   | Relative to `ui_texture/icon/`; see Notes                |
 | 6     | u8                 | is_shown    | See Notes; `1` in 12,746 rows                            |
 | 7     | u32                | apply_rate  | `1000000` (100%) in 44,427 rows; per-million scale       |
@@ -78,25 +78,25 @@ Offsets are relative to the end of the name string.
 | `+0x04` | u16     | group           | `0` in 28,199 rows. Buffs of one group replace each other by level, see Stacking |
 | `+0x06` | i16     | condition_type  | `0` in 44,390 rows; the trigger of types 1 and 4, see `condition_type` |
 | `+0x08` | u8      | effect_type     | 173 distinct values; see Enum Values                                  |
-| `+0x09` | u8      | flag_09         | `1` in 44,489 rows                                                    |
-| `+0x0A` | u8      | flag_0a         | `1` in 31,950 rows                                                    |
-| `+0x0B` | u8      | flag_0b         | `1` in 14,707 rows                                                    |
-| `+0x0C` | u8[7]   | flag_0c..flag_12 | Each byte is `0` or `1`                                              |
+| `+0x09` | u8[10]  | param_1_set..param_10_set | `1` when the parameter of the same number is set. On client 3464 no parameter is non-zero while its flag is `0`, in all 44,683 rows; `param_1_set` is `1` in 44,563 rows |
 | `+0x13` | i64[10] | param_1..param_10 | Effect parameters; meaning depends on `effect_type`. Percentages use a per-million scale (`100000` = 10%) |
-| `+0x63` | u8      | flag_63         | `0` or `1`                                                            |
-| `+0x64` | u8      | flag_64         | `0` or `1`                                                            |
+| `+0x63` | u8      | is_debuff       | `1` on debuffs (14,432 rows on client 3464); the buff bar lists them apart (`HandleMOnAppliedBuff(buffIndex, isDebuff)`) |
+| `+0x64` | u8      | is_party_buff   | `1` in 407 rows, such as 57766 and 57767 (Evasion +8 and +12) and 57786 (All AP -5) |
 | `+0x65` | u16     | reserved        | Always `0`                                                            |
-| `+0x67` | u8      | flag_67         | `0` or `1`                                                            |
+| `+0x67` | u8      | is_overlapped   | `1` in 7,662 rows                                                     |
 | `+0x68` | u32     | duration_ms     | `0` in 30,016 rows; max `86400000` (24 h). `3600000` = 60 min        |
 | `+0x6C` | u32     | tick_ms         | Tick interval of periodic effects in milliseconds (`10000` = every 10 sec); see Notes |
-| `+0x70` | u8[14]  | reserved        | `0` in every row but one                                              |
-| `+0x7E` | u8      | flag_7e         | `1` in 44,514 rows                                                    |
-| `+0x7F` | u8      | unknown_7f      | Always `2`                                                            |
-| `+0x80` | u8      | reserved        | Always `0`                                                            |
-| `+0x81` | u8      | unknown_81      | `46` in every row but one                                             |
-| `+0x82` | u8      | unknown_82      | `2` in every row but one                                              |
-| `+0x83` | u8      | flag_83         | `0` or `1`                                                            |
-| `+0x84` | u8      | flag_84         | `0` or `1`                                                            |
+| `+0x70` | u64     | reserved        | Always `0`                                                            |
+| `+0x78` | u16     | reserved        | `0` in every row but buff 12605 (`1`)                                 |
+| `+0x7A` | u8      | need_equip_type | Equipment type the buff needs, an `itemenchant.dbss` `equip_type`; `0` in every row but buff 2078 (`13`), see Field Names |
+| `+0x7B` | u8[3]   | reserved        | Copies of `itemenchant.dbss` `+0x08` to `+0x0A`; `0` in every row but buff 2078 (`0, 0, 1`) |
+| `+0x7E` | u8      | flag_7e         | In the `itemenchant.dbss` `+0x0B` place; `1` in 44,588 rows (client 3464) |
+| `+0x7F` | u8      | unknown_7f      | `itemenchant.dbss` `+0x0C`; always `2`                                |
+| `+0x80` | u8      | reserved        | `itemenchant.dbss` `+0x0D`; always `0`                                |
+| `+0x81` | u8      | need_equip_slot | `itemenchant.dbss` `equip_slot`; `46` (no slot) in every row but buff 2078 (`6`) |
+| `+0x82` | u8      | unknown_82      | `itemenchant.dbss` `+0x0F`; `2` in every row but buff 2078 (`1`)      |
+| `+0x83` | u8      | remove_on_dead  | `1` when dying ends the buff; 33,944 rows                             |
+| `+0x84` | u8      | only_apply_to_character | `1` in 24,541 rows                                            |
 
 ### Tail Block (27 bytes)
 
@@ -107,8 +107,8 @@ Offsets are relative to the end of the description string. Mostly zero.
 | `+0x00` | u8   | flag_00     | `1` in 34 rows                               |
 | `+0x01` | u8   | flag_01     | `1` in 6 rows                                |
 | `+0x02` | u32  | unknown_02  | `0`, `1` or `2`                              |
-| `+0x06` | u8   | unknown_06  | `3` in 44,575 rows                           |
-| `+0x07` | i32  | unknown_07  | `0`, `1000000` or `-1000000`                 |
+| `+0x06` | u8   | amplification_type | `3` in 44,649 rows (client 3464), which set no `amplification_rate`; `1` or `0` in the 34 that do |
+| `+0x07` | i32  | amplification_rate | `0`, `1000000` or `-1000000`, per-million scale; set on 34 rows, such as the `구름막` and `비밀의 늪` debuffs (14360 to 14365) |
 | `+0x0B` | u8[12] | reserved  | Always `0`                                   |
 | `+0x17` | u8   | flag_17     | `1` in 221 rows                              |
 | `+0x18` | u8   | stacking_category | 61 distinct values; item type such as food, draught or perfume, see Stacking |
@@ -1012,6 +1012,8 @@ development items (233 to 250, 252). 248 to 251 are not exclusive.
 | Level       | num  | `buff_level`                                                        |
 | Effect Type | text | `effect_type` and its 2016 module name (`9 MoveSpeedVariationRate`, see 2016 Module Names); the bare number for the rest. Sorts by the number |
 | Duration    | text | `duration_ms` formatted as h/min/s; dash when `0`, stored as `None` so it sorts last                   |
+| Debuff      | flag | `is_debuff`; labelled with the client's word for debuff in each language |
+| Removed on Death | flag | `remove_on_dead` |
 | Param 1     | num  | `param_1`, then what it means for the effect type where confirmed: `3 (Kamasylvian Monsters)`, `25000 (2.5%)`, `10 (Monster AP)`, `250 (every 10 sec)`. Labels over 24 characters (character and quest names) are cut, in full on hover. Sorts by the raw value |
 | Param 2     | num  | `param_2`, labelled the same way                                    |
 | Param 3     | num  | `param_3`, labelled the same way                                    |
@@ -1132,13 +1134,45 @@ development items (233 to 250, 252). 248 to 251 are not exclusive.
   component buff carries the tick; the rest are drift such as 65209 ("every
   3 sec", `2000`) and 18056 ("every 1 sec", `3000`).
 
+## Field Names
+
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::BuffStaticStatus` holds `_key`, `_name`, `_level`, `_group`, `_conditionKey`, `_moduleType`, `_isModuleParamSetted[10]`, `_moduleParam[10]`, `_stringModuleParam`, `_isDebuff`, `_isPartyBuff`, `_isGuildBuff`, `_isOverlapped`, `_validityTime`, `_repeatTime`, `_repeatBoomerangTime`, `_maxConditionApplyingCount`, `_needEquipType` (a `gc::ItemEquipType`: `_value`, `_isWeapon`, `_isSubWeapon`, `_isExtractable`, `_isUseAvatarMesh`, `_rangeType`, `_isTwoHanded`, `_equipSlotNo`, `_enchantFailType`), `_doRemoveOnDead`, `_onlyApplyToCharacter`, `_effectName`, `_iconName`, `_isDisPlayBuff`, `_applyRate` and `_description`. The stats block stores the scalars from `_level` to `_onlyApplyToCharacter` in that order, and the record stores `_effectName` to `_description` in that order after it. The server-side `Buff_Table` of the BdoEmu server (about 2021) shares 33,172 buff IDs with client 3464:
+
+| Field | Offset | 2016 member | `Buff_Table` column | Matching non-zero rows |
+| ----- | ------ | ----------- | ------------------- | ---------------------: |
+| buff_level | stats `+0x00` | `_level` | `Level` | 29,489 of 33,172 |
+| group | stats `+0x04` | `_group` | `Group` | 10,572 of 12,081 |
+| condition_type | stats `+0x06` | `_conditionKey` | `ConditionType` | 108 of 115 |
+| effect_type | stats `+0x08` | `_moduleType` | `ModuleType` | 31,571 of 33,170 |
+| param_1_set..param_10_set | stats `+0x09` | `_isModuleParamSetted` | - | - |
+| is_debuff | stats `+0x63` | `_isDebuff` | `BuffType` | 13,225 of 13,916 |
+| is_party_buff | stats `+0x64` | `_isPartyBuff` | `ApplyToGroup` | 117 of 117 |
+| is_overlapped | stats `+0x67` | `_isOverlapped` | `IsOverlapped` | 7,203 of 7,998 |
+| duration_ms | stats `+0x68` | `_validityTime` | `ValidityTime` | 9,477 of 10,253 |
+| tick_ms | stats `+0x6C` | `_repeatTime` | `RepeatTime` | 914 of 6,911; see below |
+| need_equip_type | stats `+0x7A` | `_needEquipType._value` | `NeedEquipType` | - |
+| need_equip_slot | stats `+0x81` | `_needEquipType._equipSlotNo` | - | - |
+| remove_on_dead | stats `+0x83` | `_doRemoveOnDead` | `RemoveOnDead` | 28,166 of 28,294 |
+| only_apply_to_character | stats `+0x84` | `_onlyApplyToCharacter` | `OnlyApplyToCharacter` | 11,108 of 11,140 |
+| effect_name | string 4 | `_effectName` | `BuffEffect` | 4,261 of 4,337 |
+| is_shown | after the icon | `_isDisPlayBuff` | `IsDisplay` | 10,131 of 11,151 |
+| apply_rate | after `is_shown` | `_applyRate` | `ApplyRate` | 33,025 of 33,172 |
+| amplification_type | tail `+0x06` | - | `AmplificationType` | 11 of 12; server `0` is `3` |
+| amplification_rate | tail `+0x07` | - | `AmplificationRate` | 17 of 18 |
+| stacking_category | tail `+0x18` | - | `Category` | 803 of 842 |
+
+The `_needEquipType` names rest on the 2016 order and on items: the nine bytes at stats `+0x7A` are zero, `2`, `46` and `2` in the places of the `itemenchant.dbss` header bytes `+0x07` to `+0x0F` on non-equipment items (`equip_type` `0`, `equip_slot` `46`), and buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, a hood effect) stores `13, 0, 0, 1, 1, 2, 0, 6, 1`, the same bytes as all 229 items of `equip_type` `13` the server shares. The server's `NeedEquipType` is `0` on every row, buff 2078 included. `flag_7e` breaks the pattern: it is `1` on 44,588 buffs where non-equipment items store `0` in that place (`_isUseAvatarMesh`), so it keeps its name.
+
+`tick_ms` matches `RepeatTime` on 914 of 6,911 server rows because the server leaves 5,953 of them as `-`; on the 27,215 rows where it is a number, 27,073 agree. The server sets `only_apply_to_character` on 4,357 fewer buffs than the client; I read that as patches since the server data. `amplification_type`, `amplification_rate` and `stacking_category` are newer than the 2016 struct, so their names rest on the server column.
+
 ## Open Questions
 
-### What does `unknown_str` hold?
+### What does `effect_name` index?
 
-A short UTF-16 string of digits (`"0"`, `"90"`, `"158"`), and occasionally `*`.
-It could be a group or stacking key stored as text, but no table has been
-matched against it.
+A short UTF-16 string of digits (`"0"`, `"90"`, `"158"`), and occasionally
+`*`. The 2016 client calls it `_effectName` and the server `BuffEffect` (see
+Field Names), so it names an effect, but which table its numbers key is
+open.
 
 ### What do the ten parameters mean per effect type?
 

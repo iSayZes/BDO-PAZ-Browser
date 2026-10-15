@@ -33,6 +33,7 @@ from _bss.stringtable.text import LOC_UI_STRING
 
 from _dbss.buff.effect import EffectInput, effect_text, param_labels
 from _dbss.buff.title import extract_title, title_leaders
+from _dbss.itemenchant.slot_labels import NO_SLOT
 from _dbss.lifeexp.labels import LIFE_SKILLS
 
 
@@ -48,6 +49,12 @@ _BOON_TITLE = "[Blessing] Adventure's Boon"
 # eDeprecatedBuffModule slot that type 19 (Sailor EXP) reuses.
 _BUFF_MODULE_COUNT_2016 = 132
 _REUSED_DEPRECATED_TYPE = 19
+_ALL_AP_DOWN = 57786
+_ALL_DP_UP = 57785
+_HOOD_EFFECT = 2078
+# itemenchant.dbss equip_type and equip_slot of the hoods.
+_HOOD_EQUIP_TYPE = 13
+_HOOD_EQUIP_SLOT = 6
 
 
 BUFF_CASE = HandlerCase(
@@ -90,9 +97,26 @@ BUFF_CASE = HandlerCase(
                 "condition_type",
                 "stacking_category",
                 "is_exclusive",
+                "is_debuff",
+                "remove_on_dead",
+                "need_equip_type",
+                "need_equip_slot",
             ]
         ),
         DeclaredCountTest(declared=header_count()),
+        # All AP -5 is a debuff and All DP +13 a buff; both end on death, the
+        # equipped hood's effect does not.
+        TargetTest(col="buff_id", value=_ALL_AP_DOWN, expected={"is_debuff": True, "remove_on_dead": True}),
+        TargetTest(col="buff_id", value=_ALL_DP_UP, expected={"is_debuff": False, "remove_on_dead": True}),
+        TargetTest(col="buff_id", value=_HOOD_EFFECT, expected={"is_debuff": False, "remove_on_dead": False}),
+        # The hood effect needs the equipment type and slot of the hoods;
+        # other buffs need no equipment.
+        TargetTest(
+            col="buff_id",
+            value=_HOOD_EFFECT,
+            expected={"need_equip_type": _HOOD_EQUIP_TYPE, "need_equip_slot": _HOOD_EQUIP_SLOT},
+        ),
+        TargetTest(col="buff_id", value=_ALL_AP_DOWN, expected={"need_equip_type": 0, "need_equip_slot": NO_SLOT}),
         TargetTest(
             col="buff_id",
             value=48879,

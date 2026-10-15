@@ -3,8 +3,9 @@
 ## Purpose
 
 A compact copy of [`buff.dbss`](buff_dbss.md): one fixed 32-byte row per buff
-with the buff ID, the icon path and `unknown_str` as indices into a shared
-string table, `is_shown` and a few flag bytes. It holds no name, parameters,
+with the buff ID, the icon path and `effect_name` as indices into a shared
+string table, `is_shown`, `is_debuff`, `remove_on_dead` and the equipment the
+buff needs. It holds no name, parameters,
 duration or description, so it covers what the buff bar needs to draw a buff
 and nothing about its effect.
 
@@ -53,19 +54,19 @@ the same value in every row, when one does.
 | Offset  | Type  | Field           | Source (`buff.dbss`)   | Notes                                                        |
 | ------- | ----- | --------------- | ---------------------- | ------------------------------------------------------------ |
 | `+0x00` | u32   | buff_id         | `buff_id`              | Unique; 43 to 65,528 and five IDs from 700,000 to 4,100,000,000; a u16 before client 3464 |
-| `+0x04` | u8    | unknown_04      | stats `+0x7A`          | `0` in every row but buff 2078 (`13`)                        |
+| `+0x04` | u8    | need_equip_type | stats `need_equip_type` | `0` in every row but buff 2078 (`13`)                       |
 | `+0x05` | u8[2] | reserved        |                        | Always `0`                                                   |
 | `+0x07` | u8    | unknown_07      | stats `+0x7D`          | `0` in every row but buff 2078 (`1`)                         |
 | `+0x08` | u8    | unknown_08      | stats `+0x7D`          | Same values as `unknown_07`; not stats `+0x7E`, see Notes    |
 | `+0x09` | u8    | unknown_09      | stats `unknown_7f`     | Always `2`                                                   |
 | `+0x0A` | u8    | reserved        |                        | Always `0`                                                   |
-| `+0x0B` | u8    | unknown_0b      | stats `unknown_81`     | `46` in every row but buff 2078 (`6`)                        |
+| `+0x0B` | u8    | need_equip_slot | stats `need_equip_slot` | `46` (no slot) in every row but buff 2078 (`6`)             |
 | `+0x0C` | u8    | unknown_0c      | stats `unknown_82`     | `2` in every row but buff 2078 (`1`)                         |
-| `+0x0D` | u32   | unknown_str_ref | `unknown_str`          | String table index; 187 distinct, `0` (`"0"`) in 39,527 rows, `1` (`""`) in 52 |
-| `+0x11` | u8    | unknown_11      | stats `flag_63`        | `1` in 14,432 rows                                           |
+| `+0x0D` | u32   | effect_name_ref | `effect_name`          | String table index; 187 distinct, `0` (`"0"`) in 39,527 rows, `1` (`""`) in 52 |
+| `+0x11` | u8    | is_debuff       | stats `is_debuff`      | `1` in 14,432 rows                                           |
 | `+0x12` | u8    | unknown_12      |                        | Always `1`; no `buff.dbss` byte matches, see Open Questions  |
 | `+0x13` | u8[3] | reserved        |                        | Always `0`                                                   |
-| `+0x16` | u8    | unknown_16      | stats `flag_83`        | `1` in 33,944 rows                                           |
+| `+0x16` | u8    | remove_on_dead  | stats `remove_on_dead` | `1` in 33,944 rows                                           |
 | `+0x17` | u8    | is_shown        | `is_shown`             | `1` in 12,766 rows                                           |
 | `+0x18` | u32   | unknown_18      | tail `unknown_02`      | `0` in 25,701 rows, `1` in 14,420, `2` in 4,562               |
 | `+0x1C` | u32   | icon_ref        | `icon_path`            | String table index; `1` (the empty string) in 29,357 rows    |
@@ -75,9 +76,9 @@ earlier, in 30-byte rows. The parser reads only the 32-byte layout.
 
 ### String Table
 
-1,235 strings on client 3464, all distinct and all referenced. `unknown_str_ref`
+1,235 strings on client 3464, all distinct and all referenced. `effect_name_ref`
 and `icon_ref` index the same table and share only the empty string: index 0
-is `"0"`, index 1 is `""`, and every other entry is either an `unknown_str`
+is `"0"`, index 1 is `""`, and every other entry is either an `effect_name`
 value or an icon path.
 
 ## Suggested UI Layout
@@ -89,13 +90,12 @@ value or an icon path.
 | Description | text | LOC type 5, `str_id1` = `buff_id`, `<null>` counts as empty; dash without LOC, since the file holds no inline text |
 | Shown       | text | `is_shown` as Yes / No                                                       |
 
-The `unknown_*` fields and `unknown_str_ref` stay on the record but out of the
-table.
+The other fields stay on the record but out of the table.
 
 ## Notes
 
 - Checked against `buff.dbss` on client 3464: all 44,683 IDs have a record
-  there, and `unknown_str_ref`, `icon_ref`, `is_shown` and every field with a
+  there, and `effect_name_ref`, `icon_ref`, `is_shown` and every field with a
   Source match the record in all 44,683 rows.
 - The app builds its buff icon lookup index (`IndexKind.BUFF_ICON`, read
   through `IconKind.BUFF`) from this file: it gives the same paths as
@@ -115,9 +115,10 @@ table.
 - Buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, "equip: hood effect, hide
   identity") is the only row where `+0x04` to `+0x0C` differ from the
   constants, and its stats bytes `+0x7A` to `+0x82` read
-  `0d 00 00 01 01 02 00 06 01`, the same nine bytes as this row. That looks
-  like a straight copy, but on every other buff stats `+0x7E` (`flag_7e`) is
-  `1` in 44,550 rows while `+0x08` here stays `0`, so `+0x08` is not that
+  `0d 00 00 01 01 02 00 06 01`, the same nine bytes as this row: the
+  `_needEquipType` copy of an `itemenchant.dbss` equip type (see the
+  `buff.dbss` Field Names). On every other buff stats `+0x7E` (`flag_7e`) is
+  `1` in 44,588 rows while `+0x08` here stays `0`, so `+0x08` is not that
   byte. Only per-byte matches are claimed above.
 - `buff.dbss` fields with no copy here: `name`, `buff_level`, `group`,
   `condition_type`, `effect_type`, the parameters, `duration_ms`,
@@ -126,6 +127,10 @@ table.
   mentions the file only as a 30-byte PABR projection over the buff keys (the
   pre-3464 row size) with
   an icon string-table reference; it gives no row layout.
+
+## Field Names
+
+The named fields take the names of the `buff.dbss` fields they copy, which come from the 2016 `gc::BuffStaticStatus` and the BdoEmu server's `Buff_Table` ([buff.dbss Field Names](buff_dbss.md#field-names)). `unknown_07`, `unknown_08`, `unknown_09` and `unknown_0c` sit in the `_isExtractable`, `_isUseAvatarMesh`, `_rangeType` and `_enchantFailType` places of the `_needEquipType` copy; no server column holds them and the matching `itemenchant.dbss` header bytes have no name either. `unknown_18` copies `buff.dbss` tail `unknown_02`, which matches no server column.
 
 ## Open Questions
 

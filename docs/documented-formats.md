@@ -30,7 +30,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `buffcondition.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `buffconditionoffset.dbss` | Empty offset companion for `buffcondition.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 6 | 2 |
-| `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `unknown_str` string indices, `is_shown` and flags | [buffsimply](file-formats/buffsimply_bss.md) | 1 | 0 |
+| `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `effect_name` string indices, `is_shown`, `is_debuff`, `remove_on_dead` and the equipment the buff needs | [buffsimply](file-formats/buffsimply_bss.md) | 1 | 0 |
 | `cashforui.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashforuioffset.dbss` | Empty offset companion for `cashforui.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |

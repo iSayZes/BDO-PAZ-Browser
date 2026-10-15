@@ -37,16 +37,17 @@ def _level_rows() -> DeclaredCount:
 PETSKILL_CASE = HandlerCase(
     handler_name="petskill.dbss",
     data_file="petskill.dbss",
-    companion_files={"petskilloffset.dbss": "petskilloffset.dbss"},
-    loc_file=None,
-    uses_loc=False,
-    loc_fields=[],
+    companion_files={"petskilloffset.dbss": "petskilloffset.dbss", "stringtable.bss": "stringtable.bss"},
+    loc_file="languagedata_en.loc",
+    uses_loc=True,
+    loc_fields=["skill_type_name"],
     internal_path="gamecommondata/binary/petskill.dbss",
     tests=[
         SchemaTest(
             required_keys=[
                 "pet_skill_id",
-                "unknown_00",
+                "skill_type",
+                "skill_type_name",
                 "level",
                 "raw_value_a",
                 "raw_value_b",
@@ -66,6 +67,9 @@ PETSKILL_CASE = HandlerCase(
             expected=[{"level": level} for level in range(1, _LEVEL_ROWS + 1)],
         ),
         TargetTest(col="pet_skill_id", value=1, expected={"level": 1}),
+        # Type 1 is looting; the pet window fills the pickup time in, the browser shows "?".
+        TargetTest(col="pet_skill_id", value=1, expected={"skill_type": 1, "skill_type_name": "Loot (every ? sec)"}),
+        TargetTest(col="pet_skill_id", value=21, expected={"skill_type": 2, "skill_type_name": "Finds Resources"}),
     ],
 )
 

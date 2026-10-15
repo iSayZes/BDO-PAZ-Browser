@@ -1,6 +1,7 @@
 {
   "columns": {
     "petSkillId": "ID навыка питомца",
+    "skillType": "Тип навыка",
     "level": "Уровень",
     "valueA": "Значение A",
     "valueB": "Значение B"

@@ -165,6 +165,7 @@ Resolve display text with `loc-tool.py --type 10 --id <loc_id>`: `id4=0` is the 
 - Skill type 6 (Miraculous Cheer) holds 9 entries: four legacy "`N` Seconds" names (49121–49124) followed by the current `I`–`V` naming (49125–49129). Both sets are live records, not placeholders.
 - Icons live in the pet icon folder (`02_pet`) despite being fairy assets, prefixed `equipskill_fairy_`.
 - 34 of the 35 `loc_id`s have a matching icon; `49130` (`Gift`, type 7) has no `equipskill_fairy_00049130.dds` in the archive, so the UI must tolerate a missing icon.
+- The fairy definition file is [pet.dbss](pet_dbss.md): the Laila records (`pet_type` 1) carry `acquire_type_id` 501 to 504, which selects the grade's record in [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md).
 - `unknown_08` is `1` in every record, so it carries no information in the current data; `petequipskill.bss` has the same byte at the same position.
 - Observed rows: 35 in the pre-2026-09-27 fixture and 35 in the 2026-09-27 client; the file is byte-identical between the two.
 - The file in `files/` was verified byte-identical to a fresh extraction from the PAZ archive, so this spec reflects current game data.
@@ -176,10 +177,6 @@ Resolve display text with `loc-tool.py --type 10 --id <loc_id>`: `id4=0` is the 
 The reserved block holds exactly 200 slots and the null sentinel value is also `200`. This is most likely a coincidence of a round reserve capacity rather than a self-describing field, but nothing confirms whether the client reads the block length from anywhere or simply scans to the trailer.
 
 `petequipskill.bss` points the other way: its 16-byte table (null block plus Section 2) also holds exactly 200 slots up to `data_end`, and every live record there sits at the slot whose index equals its `equip_skill_id`. That reads like a 200-entry table indexed by skill ID, with `200` as the one-past-the-end "no skill" value, but the client code is not checked.
-
-### Link to `fairyequipskillaquire.dbss`
-
-The acquisition cost tables are keyed by `acquire_type_id` `501`–`504`, which do not appear anywhere in this catalog, and this catalog's IDs `0`–`34` do not appear in the acquire file. The join between a fairy skill and its acquisition cost is therefore still unresolved; a fairy definition file (not yet located) likely carries both keys.
 
 ### Which skills a fairy of a given grade can roll
 

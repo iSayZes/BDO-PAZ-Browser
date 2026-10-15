@@ -41,7 +41,7 @@ def _parse_effect_row(payload: bytes, row_index: int) -> dict:
     if pos + _EFFECT_ROW_SIZE > len(payload):
         raise ValueError(f"petskill effect row {row_index} exceeds payload size")
 
-    unknown_00 = payload[pos]
+    skill_type = payload[pos]
     row_level = payload[pos + 1]
     padding = struct.unpack_from("<H", payload, pos + 2)[0]
     raw_value_a = struct.unpack_from("<I", payload, pos + 4)[0]
@@ -51,7 +51,7 @@ def _parse_effect_row(payload: bytes, row_index: int) -> dict:
 
     return {
         "row_index": row_index,
-        "unknown_00": unknown_00,
+        "skill_type": skill_type,
         "level": row_level,
         "row_padding": row_padding,
         "padding": padding,
@@ -94,7 +94,7 @@ def parse_petskill_records(data: bytes, offset_data: bytes) -> list[dict]:
             records.append({
                 "source_index": source_index,
                 "pet_skill_id": pet_skill_id,
-                "unknown_00": effect["unknown_00"],
+                "skill_type": effect["skill_type"],
                 "level": effect["level"],
                 "raw_value_a": effect["raw_value_a"],
                 "raw_value_b": effect["raw_value_b"],

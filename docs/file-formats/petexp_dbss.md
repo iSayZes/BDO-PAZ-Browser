@@ -101,13 +101,7 @@ The rows are the same `[u16 id][u32 offset][u32 size]` rows as a PABR offset tab
 
 ## Notes
 
-- `pet.dbss` contains a `max_level` field with observed values 10, 20, 30, and 50; those values match the `max_level` values in `petexp.dbss`.
+- `pet.dbss` selects the table with `exp_key` (header `+0x0F`, the `Pet_Table` sheet's `RequireEXPType`): keys 1 to 4 for pets, 6 to 9 for Laila. Its `max_level` matches the table's `max_level` on every record.
 - Tables 6 to 9 are the fairy curves: 6 Faint, 7 Glimmering, 8 Brilliant, 9 Radiant, matching the grade level caps 10, 20, 30 and 50 in [fairyskillchange.dbss](fairyskillchange_dbss.md). The Ornette's Dark Honey Wine tooltip confirms the split: its `13,300` EXP from [fairyfeedingitem.dbss](fairyfeedingitem_dbss.md) lands on Lv. 5 98.84% on tables 6, 7 and 9 (the tooltip's Faint, Glimmering and Radiant line) and on Lv. 6 58.36% on table 8 (its Brilliant line).
 - Records are fixed-capacity, not variable length. `petexpoffset.dbss` still stores offsets and sizes, following the same keyed-index pattern as other DBSS companions.
 - The first bytes after the main count (`09 00`) are the first record key prefix, so the apparent 6-byte header should be treated as u32 count plus record 0 prefix.
-
-## Open Questions
-
-### Pet Record Join Key
-
-The exact field in `pet.dbss` that selects `exp_table_id` is not confirmed. `pet.dbss` exposes `max_level`, but many pets with `max_level=10` could map to any of EXP table IDs 1-6. A game-reference UI or another pet config field is needed to confirm the join rule.

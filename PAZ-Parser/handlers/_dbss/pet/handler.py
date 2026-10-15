@@ -5,10 +5,16 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _bss.petequipskill.parser import parse_petequipskill_records
+from _bss.stringtable.parser import GAME_SHEET
+from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes
 from _common.character import character_name
+from _common.equipskill_roll import equip_skill_name
 from _common.html import Column, e, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from _dbss.petskill.parser import parse_petskill_records
+from _dbss.petskill.skill_type import pet_skill_type_name, pet_skill_types
 from .parser import (
     parse_pet_records,
     parse_petgrade_records_with_offsets,
@@ -18,10 +24,39 @@ from .parser import (
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
+_SKILL_CATALOG_FILE = "petequipskill.bss"
+_PET_SKILL_FILE = "petskill.dbss"
+_PET_SKILL_OFFSET_FILE = "petskilloffset.dbss"
+# base_skill_id keys Section 2 of the catalog (Pet_BaseSkill_Table).
+_BASE_SKILL_SECTION = "S2"
 
 
 def _pet_key_text(value: int) -> str:
     return f"0x{value:04X} ({value})"
+
+
+def _pet_skill_names(companions: dict[str, bytes]) -> dict[int, str]:
+    """`pet_skill_id -> pet window text of its type`; empty without `petskill.dbss`."""
+    skill_raw = companions.get(_PET_SKILL_FILE)
+    offset_raw = companions.get(_PET_SKILL_OFFSET_FILE)
+    if skill_raw is None or offset_raw is None:
+        return {}
+
+    hashes: KeyHashes = ui_key_hashes(companions.get(STRINGTABLE_FILE), [GAME_SHEET])
+    types = pet_skill_types(parse_petskill_records(skill_raw, offset_raw))
+    return {skill_id: pet_skill_type_name(hashes, skill_type) for skill_id, skill_type in types.items()}
+
+
+def _base_skill_names(catalog: bytes | None) -> dict[int, str]:
+    """`base_skill_id -> skill name` from Section 2 of `petequipskill.bss`; empty without it."""
+    if catalog is None:
+        return {}
+
+    return {
+        record["equip_skill_id"]: equip_skill_name(record["loc_id"])
+        for record in parse_petequipskill_records(catalog)
+        if record["section"] == _BASE_SKILL_SECTION
+    }
 
 
 def pet_offset_handler() -> OffsetTableHandler:
@@ -119,10 +154,13 @@ class PetDbssHandler(PreviewHandler):
             Column(cols["name"], sort_key="display_name"),
             Column(cols["species"], "num", sort_key="species"),
             Column(cols["tier"], "num", sort_key="tier"),
-            Column(cols["skillSlots"], "num", sort_key="equip_skill_slots"),
+            Column(cols["expKey"], "num", sort_key="exp_key"),
             Column(cols["maxLevel"], "num", sort_key="max_level"),
             Column(cols["acquireType"], "num", sort_key="acquire_type_id"),
-            Column(cols["equipSkillId"], "num", sort_key="equip_skill_id"),
+            Column(cols["baseSkillId"], "num", sort_key="base_skill_id"),
+            Column(cols["baseSkill"], sort_key="base_skill_name"),
+            Column(cols["lootSkill"], sort_key="loot_skill_name"),
+            Column(cols["specialSkill"], sort_key="race_skill_name"),
             Column(cols["grade"], sort_key="grade"),
         ]
 
@@ -134,6 +172,10 @@ class PetDbssHandler(PreviewHandler):
         return [
             f"{folder}/petoffset.dbss",
             f"{folder}/petgrade.dbss",
+            f"{folder}/{_SKILL_CATALOG_FILE}",
+            f"{folder}/{_PET_SKILL_FILE}",
+            f"{folder}/{_PET_SKILL_OFFSET_FILE}",
+            f"{folder}/{STRINGTABLE_FILE}",
         ]
 
     def get_records(
@@ -147,12 +189,17 @@ class PetDbssHandler(PreviewHandler):
             raise ValueError("petoffset.dbss companion not found.")
         grade_raw = companions.get("petgrade.dbss")
         records = parse_pet_records(data, offset_raw, grade_raw)
+        base_skill_names = _base_skill_names(companions.get(_SKILL_CATALOG_FILE))
+        pet_skill_names = _pet_skill_names(companions)
         strings = load_handler_strings(self.lang, _LANG_DIR)
         grade_names = strings["grades"]
         for record in records:
             loc_name = character_name(record["pet_id"])
             record["pet_name"] = loc_name
             record["display_name"] = loc_name or str(record["species"])
+            record["base_skill_name"] = base_skill_names.get(record["base_skill_id"], "")
+            record["loot_skill_name"] = pet_skill_names.get(record["loot_skill_id"], "")
+            record["race_skill_name"] = pet_skill_names.get(record["race_skill_id"], "")
             grade = record.get("grade")
             record["grade_name"] = grade_names.get(str(grade), str(grade) if grade is not None else "")
         return records
@@ -177,10 +224,13 @@ class PetDbssHandler(PreviewHandler):
                 e(r["display_name"]),
                 e(r["species"]),
                 e(r["tier"]),
-                e(r["equip_skill_slots"]),
+                e(r["exp_key"]),
                 e(r["max_level"]),
                 e(r["acquire_type_id"]),
-                e(r["equip_skill_id"]),
+                e(r["base_skill_id"]),
+                e(r["base_skill_name"]),
+                e(r["loot_skill_name"]),
+                e(r["race_skill_name"]),
                 e(r["grade_name"] or "-"),
             ]
             for r in slice_

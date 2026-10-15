@@ -5,10 +5,9 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.equipskill_roll import flatten_roll_rows, read_skill_loc_ids
+from _common.equipskill_roll import equip_skill_name, flatten_roll_rows, read_skill_loc_ids
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from .parser import (
     FAIRY_GRADES,
@@ -20,14 +19,6 @@ from .parser import (
 _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "fairyequipskillaquireoffset.dbss"
 _CATALOG_FILE = "fairyequipskill.bss"
-_LOC_TYPE = 10
-
-
-def _skill_name(loc_id: int) -> str:
-    if not is_loc_loaded():
-        return ""
-
-    return strip_pa_tags(loc_lookup(_LOC_TYPE, loc_id, 0, 0, 0)).strip()
 
 
 def fairy_equip_skill_acquire_offset_handler() -> OffsetTableHandler:
@@ -75,7 +66,7 @@ class FairyEquipSkillAcquireHandler(PreviewHandler):
 
         catalog_raw = companions.get(_CATALOG_FILE)
         loc_ids = read_skill_loc_ids(catalog_raw) if catalog_raw else {}
-        rows = flatten_roll_rows(records, loc_ids, _skill_name)
+        rows = flatten_roll_rows(records, loc_ids, equip_skill_name)
 
         for row in rows:
             grade, grade_name = FAIRY_GRADES.get(row["acquire_type_id"], (0, ""))

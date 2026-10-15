@@ -11,6 +11,8 @@ from __future__ import annotations
 import struct
 from collections.abc import Callable
 
+from _common.loc import loc_text
+
 
 HEADER_SIZE = 4
 OFFSET_RECORD_SIZE = 10
@@ -29,6 +31,13 @@ PPM_SCALE = 1_000_000
 _CATALOG_START = 4
 _CATALOG_RECORD_SIZE = 12
 _CATALOG_NULL_ID = 200
+# Catalog skill names are LOC type 10, keyed by the record's loc_id.
+EQUIP_SKILL_LOC_TYPE = 10
+
+
+def equip_skill_name(loc_id: int) -> str:
+    """Name of an equip-skill catalog entry, or '' on a miss or without LOC."""
+    return loc_text(EQUIP_SKILL_LOC_TYPE, loc_id)
 
 
 def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:

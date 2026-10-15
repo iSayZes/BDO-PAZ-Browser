@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the equip-skill catalog for pets, keyed by `equip_skill_id` from `pet.dbss`. 116 skill entries span two sections: Section 1 (regular-pet catalog, IDs 0–42) and Section 2 (extended catalog, IDs 15–111). Each entry records the skill's type group, an unknown byte (`unknown_08`), and a localization ID that resolves to the in-game skill name and pet equip-skill icon number.
+Defines two pet skill catalogs, both keyed by `equip_skill_id`. 116 skill entries span two sections: Section 1 (the equip skills a pet rolls, IDs 0–42) and Section 2 (the base skills, IDs 15–111, keyed by `base_skill_id` in [pet.dbss](pet_dbss.md)). Each entry records the skill's type group, an unknown byte (`unknown_08`), and a localization ID that resolves to the in-game skill name and pet equip-skill icon number.
 
 Example:
 
@@ -28,7 +28,7 @@ All multi-byte values are little-endian.
 
 Records begin immediately at `+0x04`.
 
-### Section 1, Standard Pet Skills (43 × 12 bytes, offset `0x004`)
+### Section 1, Equip Skills (43 × 12 bytes, offset `0x004`)
 
 Covers `equip_skill_id` 0–42 (regular pets). Stride = 12 bytes. The file stores no count: record `n` holds `equip_skill_id = n`, so the section ends at the first record whose ID is not its index, which is the first null placeholder (ID 200) of the slot table below. The parser finds the end this way, so a patch that adds Section 1 skills moves the null block and Section 2 without breaking the walk.
 
@@ -44,9 +44,9 @@ Covers `equip_skill_id` 0–42 (regular pets). Stride = 12 bytes. The file store
 
 Fifteen placeholder records, the first 15 slots of the 200-slot table that continues as Section 2, so they are the slots for IDs 0–14 (see Section 2). Earlier versions of this doc read them as IDs 43–57. Each record = `[u32=200][u32=0][u32=0][u32=0]`. The value 200 signals a null/unused entry.
 
-### Section 2, Extended Pet Skills (variable stream, offset `0x2F8`)
+### Section 2, Base Skills (variable stream, offset `0x2F8`)
 
-Covers `equip_skill_id` 15–111 (Airiss and premium pets, plus overlap with Section 1). Base stride = 16 bytes. Records with `equip_skill_id = 200` are null placeholders. Records with `unknown_0c = 1` carry an additional u32 after the base record.
+Covers `equip_skill_id` 15–111, the base skills `pet.dbss` keys with `base_skill_id`; IDs 15–42 also exist in Section 1 as different skills. Base stride = 16 bytes. Records with `equip_skill_id = 200` are null placeholders. Records with `unknown_0c = 1` carry an additional u32 after the base record.
 
 | Offset  | Type | Field         | Notes                                              |
 | ------- | ---- | ------------- | -------------------------------------------------- |
@@ -134,7 +134,7 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 - Total file size: 3772 bytes = 4 (PABR) + 516 (S1) + 240 (null) + variable Section 2 stream + 12 (trailer). The trailer is `[u32 0][u32 data_end][u32 0]` with `data_end = 0x0EB0 = file_size - 12`, the same trailer as `fairyequipskill.bss`.
 - Observed rows: 116 (43 Section 1 + 73 live Section 2) in the pre-2026-09-27 fixture and 116 in the 2026-09-27 client; the file is byte-identical between the two.
 - Localization IDs are in the range 49001–49176 for confirmed skills; use `loc-tool.py --type 10 --id <loc_id>` to resolve.
-- This file defines which skills are available (the catalog). The per-pet slot costs are defined separately in `petequipskillaquire.dbss` via `acquire_type_id`. The two cross-references in `pet.dbss` are independent.
+- Section 1 is the `Pet_EquipSkill_Table` sheet of a private server on client 1784 (skill number equal on 43 of 43 IDs, `skill_type` equal to its `GroupNo`) and Section 2 its `Pet_BaseSkill_Table` (60 of 60 sheet rows). The roll weights in `petequipskillaquire.dbss` index Section 1; every `pet.dbss` `base_skill_id` is a Section 2 ID (2,009 of 2,009 records on client 3473), while only 1,536 of them also exist in Section 1.
 
 ## Suggested UI Layout
 
@@ -147,10 +147,6 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 | Section        | text | "S1" or "S2" (indicates which catalog entry is used)       |
 
 ## Open Questions
-
-### ID overlap (15–42) across sections
-
-Skills 15–42 appear in both Section 1 and Section 2 with different loc IDs (S1: 3-tier e.g. Fishing EXP +5%, S2: 4-tier e.g. Skill EXP +1%). The rule for which section to use for a given `equip_skill_id` is not confirmed. Hypothesis: Section 2 is for Airiss/premium pets; Section 1 for regular pets. Cross-referencing with which species use which IDs in `pet.dbss` would confirm.
 
 ### `unknown_0c` and `unknown_10` in Section 2
 

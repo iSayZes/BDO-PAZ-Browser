@@ -2,12 +2,12 @@
 
 ## Purpose
 
-Defines pet skill effect tables. Each record is keyed by `pet_skill_id` and contains one baseline row plus ten level rows. Companion `petskilloffset.dbss` provides keyed lookup into the variable-size record stream.
+Defines pet skill effect tables. Each record is keyed by `pet_skill_id`, has a skill type that names it in the pet window, and contains one baseline row plus ten level rows. Companion `petskilloffset.dbss` provides keyed lookup into the variable-size record stream.
 
 Example:
 
 ```text
-pet_skill_id: 47 -> unknown_00: 11
+pet_skill_id: 47 -> skill_type: 11 (Restore HP)
 level 1 raw_value_a: 3,584,000
 level 10 raw_value_a: 1,280,000
 ```
@@ -17,6 +17,7 @@ level 10 raw_value_a: 1,280,000
 | File                   | Required | Role                                                |
 | ---------------------- | -------- | --------------------------------------------------- |
 | `petskilloffset.dbss`  | Required | `pet_skill_id -> (data_offset, data_size)` lookup   |
+| `stringtable.bss`      | Optional | Key hashes of the skill type names, see Skill Types |
 
 All multi-byte values are little-endian.
 
@@ -55,7 +56,7 @@ Rows start at payload offset `+0x02 + row_index * 17`. Offsets below are relativ
 
 | Offset  | Type | Field        | Notes                                                                                   |
 | ------- | ---- | ------------ | --------------------------------------------------------------------------------------- |
-| `+0x00` | u8   | unknown_00   | Observed 1–11. Same value in all rows for a record; shared by several records           |
+| `+0x00` | u8   | skill_type   | 1–11 on client 3473; same value in all rows of a record, see Skill Types                |
 | `+0x01` | u8   | row_level    | Row 0 uses 1; rows 1–10 use 1–10                                                        |
 | `+0x02` | u16  | -            | Always 0                                                                                |
 | `+0x04` | u32  | raw_value_a  | Primary effect value. Row 0 is always 2560; rows 1–10 vary by `pet_skill_id`            |
@@ -63,7 +64,7 @@ Rows start at payload offset `+0x02 + row_index * 17`. Offsets below are relativ
 | `+0x0C` | u32  | unknown_0c   | Row 0 = 256; rows 1–9 = `(row_level + 1) * 256`; row 10 is 0 or 256                     |
 | `+0x10` | u8   | -            | Always 0                                                                                |
 
-Earlier versions of this doc called `unknown_00` `skill_group`, `unknown_0c` `row_marker` and the payload's `unknown_bd` `extra_marker`.
+Earlier versions of this doc called `skill_type` `unknown_00` and before that `skill_group`, `unknown_0c` `row_marker` and the payload's `unknown_bd` `extra_marker`.
 
 ## petskilloffset.dbss
 
@@ -89,14 +90,37 @@ Earlier versions of this doc called `unknown_00` `skill_group`, `unknown_0c` `ro
 | Field              | Observed values / range                                      |
 | ------------------ | ------------------------------------------------------------ |
 | `pet_skill_id`     | 1–6, 11–18, 21–23, 26–57 (49 records total)                  |
-| `unknown_00`       | 1–11                                                         |
+| `skill_type`       | 1–11                                                         |
 | `row_level`        | baseline row uses 1; level rows use 1–10                     |
 | `raw_value_a`      | row 0 always 2560; level rows 512,000–128,000,000            |
 | `raw_value_b`      | row 0 always 2560; level rows 0–76,800,000                   |
 | `unknown_0c`       | 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 0   |
 | `unknown_bd`       | 9 or 10 when present                                         |
 
-`unknown_00` is not unique: multiple `pet_skill_id` records share one value while carrying different effect values.
+`skill_type` is not unique: multiple `pet_skill_id` records share one value while carrying different effect values.
+
+## Skill Types
+
+`skill_type` is the 2016 `gc::PetSkillParam::PetSkillType`, which Lua reads as `skillParam._type`. It equals the `PetSkillType` column of the `Pet_Skill_Table` sheet of a private server on client 1784 on all 46 shared skills. The pet info window (`setPetSkillType` in `panel_window_petinfo_all_1.luac`) shows one GAME sheet string per type, prefixed `LUA_PETINFO_PETSKILLTYPE_`. Types 11 to 14 are newer than the 2016 enum. English text from client 3473:
+
+| Type | 2016 enum | Key suffix | English text |
+| ---: | --------- | ---------- | ------------ |
+| 1  | `ePetSkill_Looting` | `ITEMGETTIME` | Loot (every {itemGetTime} sec) |
+| 2  | `ePetSkill_AlertCollect` | `FINDGATHER` | Finds Resources |
+| 3  | `ePetSkill_AlertMurderer` | `FINDPK` | Hostility Detection |
+| 4  | `ePetSkill_DetectPosition` | `FINDPLACE` | Location Find |
+| 5  | `ePetSkill_Aggro` | `MOBAGGRO` | Taunt Monster |
+| 6  | `ePetSkill_FindNamedMonster` | `FINDRAREMONSTER` | Finds Rare Monsters |
+| 7  | `ePetSkill_ReduceAutoFishingTime` | `REDUCEAUTOFISHINGTIME` | Auto-fishing Time Reduction |
+| 8  | `ePetSkill_RegistForRegionSkill` | `REGISTILL` | Resistance to Desert Illnesses |
+| 9  | `ePetSkill_Collecting` | `AUTOGETHERING` | Auto Gathering |
+| 10 | `ePetSkill_CollectingBoost` | `GETHERINGINCREASE` | Gathering Quantity Increase |
+| 11 | - | `HPRECOVERY` | Restore HP |
+| 12 | - | `MPRECOVERY` | Endurance/MP Recovery |
+| 13 | - | `FINDLOSTNORMALITEM` | Find Normal Lost Item |
+| 14 | - | `FINDLOSTSPECIALITEM` | Find Special Lost Item |
+
+The client fills `{itemGetTime}` from `ToClient_getPetLootingCoolTime(param, lootingType)`, game code the browser cannot reproduce, so the handler shows `?` there. The window prints the first pet skill as "Basic: ..." and the second as "Special: ...".
 
 The parser yields ten level rows per record: 490 rows for the 49 records. Both files are byte-identical in the pre-2026-09-27 fixture and the 2026-09-27 client.
 
@@ -105,6 +129,7 @@ The parser yields ten level rows per record: 490 rows for the 49 records. Both f
 | Column        | Type | Notes                                               |
 | ------------- | ---- | --------------------------------------------------- |
 | Pet Skill ID  | num  | `pet_skill_id`, right-aligned                       |
+| Skill Type    | text | The type's pet window text, see Skill Types; `skill_type` without it |
 | Level         | num  | `row_level`; show level rows 1–10 under each record |
 | Value A       | num  | `raw_value_a`; display raw until scale is confirmed |
 | Value B       | num  | `raw_value_b`; display raw until scale is confirmed |
@@ -119,12 +144,9 @@ For compact browsing, show one expandable row per `pet_skill_id`, with the ten l
 - Offset rows are sorted descending for high IDs first, not ascending by key.
 - `raw_value_a` and `raw_value_b` are named as raw values because the display scale is not confirmed. Some values are multiples of 256, 256,000, or 25,600,000.
 - This file is distinct from `petequipskill.bss`, which stores localized equip-skill catalog entries.
+- [pet.dbss](pet_dbss.md) keys this file twice per pet: `loot_skill_id` and `race_skill_id`. Every value of both is a `pet_skill_id` here.
 
 ## Open Questions
-
-### `unknown_00` Meaning
-
-`unknown_00` values 1–11 may identify pet skill or effect categories, since several records share a value, but no mapping to UI names or another table is confirmed.
 
 ### Raw value scale
 
@@ -132,8 +154,8 @@ For compact browsing, show one expandable row per `pet_skill_id`, with the ten l
 
 ### Baseline row meaning
 
-Row 0 is identical across all records except `unknown_00`: `raw_value_a=2560`, `raw_value_b=2560`, `unknown_0c=256`. It may be a base display/effect row, but its exact role is not confirmed.
+Row 0 is identical across all records except `skill_type`: `raw_value_a=2560`, `raw_value_b=2560`, `unknown_0c=256`. It may be a base display/effect row, but its exact role is not confirmed.
 
 ### Extra marker byte
 
-Only 17 records have a trailing `unknown_bd` byte. Values are 9 or 10, but its relationship to `unknown_00`, max level, or UI display is unknown.
+Only 17 records have a trailing `unknown_bd` byte. Values are 9 or 10, but its relationship to `skill_type`, max level, or UI display is unknown.

@@ -1,6 +1,7 @@
 {
   "columns": {
     "petSkillId": "반려동물 기술 ID",
+    "skillType": "기술 유형",
     "level": "레벨",
     "valueA": "값 A",
     "valueB": "값 B"

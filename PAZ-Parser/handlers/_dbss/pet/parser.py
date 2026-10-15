@@ -114,62 +114,78 @@ def _read_icon_path(block: bytes, icon_len: int) -> str:
     return block[start:end].decode("ascii", errors="replace")
 
 
-def _parse_pet_payload(row: int, offset_record: dict, block: bytes, grade_map: dict[tuple[int, int], int]) -> dict:
-    if len(block) < _PET_HEADER_SIZE + _PET_FOOTER_SIZE:
-        raise ValueError(f"pet record {row} is too small")
-
-    pet_id, variant, species, reserved_04, tier, reserved_06, max_level = struct.unpack_from("<HBBBBBB", block, 0)
-    reserved_0c = block[0x0C]
-    reserved_0d = struct.unpack_from("<H", block, 0x0D)[0]
-    equip_skill_slots = block[0x0F]
-    unknown_10 = struct.unpack_from("<H", block, 0x10)[0]
-    unknown_12 = block[0x12]
-    reserved_13 = block[0x13]
-    unknown_14 = struct.unpack_from("<I", block, 0x14)[0]
-    icon_path_len = struct.unpack_from("<I", block, 0x18)[0]
-    reserved_1c = struct.unpack_from("<I", block, 0x1C)[0]
-
-    icon_path = _read_icon_path(block, icon_path_len)
-    footer_start = _PET_HEADER_SIZE + icon_path_len
-    footer_end = footer_start + _PET_FOOTER_SIZE
-    if footer_end > len(block):
-        raise ValueError(f"pet record {row} footer exceeds record size")
-
-    footer = block[footer_start:footer_end]
-    unknown_00 = list(struct.unpack_from("<9I", footer, 0x00))
-    acquire_type_id = struct.unpack_from("<H", footer, 0x24)[0]
-    equip_skill_id = struct.unpack_from("<H", footer, 0x26)[0]
-    unknown_2a = list(struct.unpack_from("<10I", footer, 0x2A))
-    unknown_53 = footer[0x53]
-
+def _parse_pet_header(block: bytes) -> dict:
+    """The 32 bytes before the icon path; names follow the Pet_Table sheet (see the doc)."""
+    pet_id, variant, species, reserved_04, tier, reserved_06 = struct.unpack_from("<HBBBBB", block, 0)
+    max_level, max_hunger, exp_key, is_indexed, default_action_index, change_look_key, icon_path_len = (
+        struct.unpack_from("<iiHBIHQ", block, 0x07)
+    )
     return {
-        "row": row,
         "pet_id": pet_id,
         "pet_id_hex": f"0x{pet_id:04X}",
         "variant": variant,
         "species": species,
         "tier": tier,
         "max_level": max_level,
-        "equip_skill_slots": equip_skill_slots,
-        "unknown_14": unknown_14,
+        "max_hunger": max_hunger,
+        "exp_key": exp_key,
+        "is_indexed": bool(is_indexed),
+        "default_action_index": default_action_index,
+        "change_look_key": change_look_key,
         "icon_path_len": icon_path_len,
-        "icon_path": icon_path,
-        "acquire_type_id": acquire_type_id,
-        "equip_skill_id": equip_skill_id,
-        "unknown_53": unknown_53,
-        "grade": grade_map.get((species, variant)),
-        "offset": offset_record["data_offset"],
-        "size": offset_record["data_size"],
-        "unknown_12": unknown_12,
-        "unknown_2a": unknown_2a,
-        "unknown_00": unknown_00,
         "reserved_04": reserved_04,
         "reserved_06": reserved_06,
-        "reserved_0c": reserved_0c,
-        "reserved_0d": reserved_0d,
-        "unknown_10": unknown_10,
-        "reserved_13": reserved_13,
-        "reserved_1c": reserved_1c,
+    }
+
+
+def _parse_pet_footer(footer: bytes) -> dict:
+    """The 94 bytes after the icon path; names follow the Pet_Table sheet (see the doc)."""
+    base_price, min_price, max_price, minest_percent, maxest_percent, skill_max_count = (
+        struct.unpack_from("<qqqiiI", footer, 0x00)
+    )
+    acquire_type_id, base_skill_id = struct.unpack_from("<HH", footer, 0x24)
+    pet_type, loot_skill_id, race_skill_id, unknown_57, is_joker_pet_use, pc_room_type = (
+        struct.unpack_from("<BHHBBB", footer, 0x52)
+    )
+    return {
+        "base_price_for_pet_market": base_price,
+        "min_price_for_pet_market": min_price,
+        "max_price_for_pet_market": max_price,
+        "minest_percent_for_pet_market": minest_percent,
+        "maxest_percent_for_pet_market": maxest_percent,
+        "skill_max_count": skill_max_count,
+        "acquire_type_id": acquire_type_id,
+        "base_skill_id": base_skill_id,
+        "action_rates": list(struct.unpack_from("<10i", footer, 0x2A)),
+        "pet_type": pet_type,
+        "loot_skill_id": loot_skill_id,
+        "race_skill_id": race_skill_id,
+        "unknown_57": unknown_57,
+        "is_joker_pet_use": bool(is_joker_pet_use),
+        "pc_room_type": pc_room_type,
+    }
+
+
+def _parse_pet_payload(row: int, offset_record: dict, block: bytes, grade_map: dict[tuple[int, int], int]) -> dict:
+    if len(block) < _PET_HEADER_SIZE + _PET_FOOTER_SIZE:
+        raise ValueError(f"pet record {row} is too small")
+
+    header = _parse_pet_header(block)
+    icon_path_len = header["icon_path_len"]
+    icon_path = _read_icon_path(block, icon_path_len)
+    footer_start = _PET_HEADER_SIZE + icon_path_len
+    footer_end = footer_start + _PET_FOOTER_SIZE
+    if footer_end > len(block):
+        raise ValueError(f"pet record {row} footer exceeds record size")
+
+    return {
+        "row": row,
+        **header,
+        "icon_path": icon_path,
+        **_parse_pet_footer(block[footer_start:footer_end]),
+        "grade": grade_map.get((header["species"], header["variant"])),
+        "offset": offset_record["data_offset"],
+        "size": offset_record["data_size"],
     }
 
 

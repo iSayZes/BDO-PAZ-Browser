@@ -45,8 +45,13 @@ _SERVANT_KINDS = 0x55
 # The fields below follow `unknown_5d` (`layout.py`): these offsets hold when
 # it is empty, and move by `header_shift` on servant gear.
 
-# Character level needed to use the item; 0 or 1 when there is none.
+# Character level needed to use the item (i32, 2016 `_minLevel`); 0 or 1 when
+# there is none.
 _REQUIRED_LEVEL = 0x61
+# Highest character level that can use the item (i32, 2016 `_maxLevel`); the
+# tooltip shows it when `isMaxLevelRestricted()`. 0x7FFFFFFF when there is none.
+_MAX_LEVEL = 0x65
+_NO_MAX_LEVEL = 0x7FFF_FFFF
 # 0 when the item can never be dyed. 1 allows it, but only an item whose
 # model has dye parts can be dyed, and this file does not hold those.
 _DYEABLE = 0xA8
@@ -54,6 +59,9 @@ _DYEABLE = 0xA8
 # The character this item places or summons (furniture, fences, pets), keyed
 # like characterstatic.dbss and characterobject.dbss; 0 when there is none.
 _CHARACTER_ID = 0xAA
+# Max durability one Memory Fragment restores (`_repairEnduranceCount` in the
+# repair window Lua); 0 on items it cannot repair.
+_REPAIR_ENDURANCE_COUNT = 0xAC
 
 # Stored for items without durability.
 _NO_DURABILITY = 32_767
@@ -150,6 +158,7 @@ def _header_fields(data: bytes, start: int) -> dict:
     """
     late = _late_fields_at(data, start)
     durability = u16(data, late + _MAX_DURABILITY)
+    max_level = u32(data, late + _MAX_LEVEL)
     return {
         "grade": data[start + _GRADE],
         "equip_type": data[start + _EQUIP_TYPE],
@@ -160,10 +169,12 @@ def _header_fields(data: bytes, start: int) -> dict:
         "trade_type": data[start + _TRADE_TYPE] if data[start + _FOR_TRADE] else None,
         "class_mask": u64(data, start + _CLASS_MASK),
         "servant_kinds": u32(data, start + _SERVANT_KINDS),
-        "required_level": data[late + _REQUIRED_LEVEL],
+        "required_level": u32(data, late + _REQUIRED_LEVEL),
         "dyeable": bool(data[late + _DYEABLE]),
         "character_id": u16(data, late + _CHARACTER_ID),
         # None sorts last and exports empty.
+        "max_level": None if max_level == _NO_MAX_LEVEL else max_level,
+        "repair_endurance_count": data[late + _REPAIR_ENDURANCE_COUNT] or None,
         "max_durability": None if durability == _NO_DURABILITY else durability,
         "market_category": data[late + _MARKET_CATEGORY],
         "market_sub_category": data[late + _MARKET_SUB_CATEGORY],

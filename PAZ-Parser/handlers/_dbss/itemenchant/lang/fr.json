@@ -13,6 +13,7 @@
     "classes": "Classes",
     "binding": "Liaison",
     "durability": "Durabilité",
+    "memoryFragment": "Fragment de mémoire",
     "stackable": "Cumulable",
     "marketable": "Vendable au marché",
     "familyInventory": "Inventaire de famille",

@@ -69,6 +69,9 @@ _DANDELION_KAMASYLVEN_SWORD = 14732
 _OBSIDIAN_BLACKSTAR_ARMOR = 732052
 _PUMPKIN_GHOST_SEED = 55725
 _APPRENTICES_MEDICINE_BOX = 9866
+# Usable only up to character level 20 (tooltip use limit).
+_HP_POTION_BEGINNER = 502
+_BEGINNER_MAX_LEVEL = 20
 _ARSHA_PURGATUM_180_DAYS = 830533
 # Enhancement types (itemenchant_dbss.md, After the Icon): ordinary weapons and
 # armour 1, Blackstar 2, Kharazad 21.
@@ -141,6 +144,8 @@ CASE = HandlerCase(
                 "market_sub_category",
                 "stackable",
                 "required_level",
+                "max_level",
+                "repair_endurance_count",
                 "class_mask",
                 "classes",
                 "vested_type",
@@ -270,6 +275,16 @@ CASE = HandlerCase(
             value=_DANDELION_KAMASYLVEN_SWORD,
             expected={"required_level": 56},
         ),
+        # A level cap is stored as such; items without one store None.
+        TargetTest(
+            col="item_id",
+            value=_HP_POTION_BEGINNER,
+            expected={"required_level": None, "max_level": _BEGINNER_MAX_LEVEL},
+        ),
+        TargetTest(col="item_id", value=_KZARKA_GAUNTLET, expected={"max_level": None}),
+        # Memory Fragments repair gear only; a material has no amount.
+        TargetTest(col="item_id", value=_BLACK_STONE, expected={"repair_endurance_count": None}),
+        RangeTest(col="repair_endurance_count", min_val=1, max_val=0xFF),
         TargetTest(
             col="item_id",
             value=_BASTEER_LONGSWORD,

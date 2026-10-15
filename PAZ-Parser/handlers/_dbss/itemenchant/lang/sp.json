@@ -13,6 +13,7 @@
     "classes": "Clases",
     "binding": "Vinculación",
     "durability": "Durabilidad",
+    "memoryFragment": "Recuerdo efímero",
     "stackable": "Acumulable",
     "marketable": "Vendible en el mercado",
     "familyInventory": "Inventario (familia)",

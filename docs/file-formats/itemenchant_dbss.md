@@ -141,10 +141,10 @@ level, dyeable and durability change with them.
 | `+0x0E` | u8   | equip_slot   | Equipment slot, `__eEquipSlotNo`; `46` when the item goes in no slot. See below |
 | `+0x0F` | u8   | unknown      | `2` (60,289 base items), `0` (8,581) or `1` (1,343) on client 3464 |
 | `+0x10` | u8[46] | extended_slots | Further slots the item fills, the rest filled with `46`; see `equip_slot` below |
-| `+0x3E` | u8   | unknown_3e   |                                                              |
+| `+0x3E` | u8   | item_material | Sound class: the drag script (`dragmanager`) plays `audioPostEvent_SystemItem(_itemMaterial)` when an item is picked up; `0` on 50,189 base items |
 | `+0x3F` | i32  | weight       | Divide by 10,000 for LT                                      |
 | `+0x43` | u8   | stackable    | `1` when copies of the item share one inventory slot; see below |
-| `+0x44` | u8   | unknown_44   | `1` in 10,027 base items on client 3464, see Open Questions  |
+| `+0x44` | u8   | do_apply_directly | `1` when the item takes effect on receipt instead of going into the inventory: the exchange dialog (`panel_dialog_simple_all`) skips the inventory space check when `isApplyDirectly()` is true. `1` in 10,027 base items on client 3464, among them 6,780 of the 6,862 items whose icon sits in `03_ETC/12_DoApplyDirectlyItem` |
 | `+0x45` | u32  | expiration_minutes | `0` when the item does not expire; set in 4,580 base items |
 | `+0x49` | u8   | vested_type  | When the item binds: `0` never (34,516 base items), `1` when obtained (17,372), `2` when equipped (18,396) |
 | `+0x4A` | u8   | family_bound | `1` binds to the family, `0` to the character; set in 5,942 base items |
@@ -152,28 +152,39 @@ level, dyeable and durability change with them.
 | `+0x4C` | u8   | trade_type   | Kind of trade good, only set with `for_trade`, see below     |
 | `+0x4D` | u64  | class_mask   | Classes that can use the item, bit `n` for class ID `n`. All-class items set most bits, so test single bits |
 | `+0x55` | u32  | servant_kinds | Servants that can use the item, bit `n` for `CppEnums.ServantKind` `n`; `0` on everything but servant gear. See `equip_slot` below |
-| `+0x59` | u8[4] | unknown     | Numeric fields                                               |
+| `+0x59` | u8[4] | unknown     | `0` on every base block (client 3464)                        |
 | `+0x5D` | u32  | unknown_5d   | Count, followed by that many bytes; `0` except on mount and ship gear, see above. The bytes are `1` to `4` on the Epheria Carrack parts, matching Advance, Balance, Volante and Valor, and `1, 4, 5, 10` on Ashen Crow Horse Gear |
-| `+0x61` | u8   | required_level | Character level needed to use the item; `0` or `1` when there is none, above `1` in 3,734 base items |
-| `+0x62` | u8[3] | unknown     | Numeric fields                                               |
-| `+0x65` | u32  | unknown_65   | bdo-data-extractor: max stack. See In-Game Checks            |
-| `+0x69` | ...  | unknown      | Numeric fields                                               |
+| `+0x61` | i32  | required_level | Character level needed to use the item; `0` or `1` when there is none, above `1` in 3,734 base items. The tooltip reads it as `_minLevel` |
+| `+0x65` | i32  | max_level    | Highest character level that can use the item; `0x7FFFFFFF` when there is none. The tooltip shows both levels (`PANEL_TOOLTIP_USEITEM_LIMIT`) when `isMaxLevelRestricted()` is true. Set on four base items on client 3464: HP and MP Potion (Beginner) `20`, Combat EXP Scroll (848) `61`, Deputy Token (65208) `99` |
+| `+0x69` | u8   | life_exp_type | Life skill of `life_min_level`, `CppEnums.LifeExperienceType` (`0` Gathering to `9` Sailing) |
+| `+0x6A` | i32  | life_min_level | Life skill level needed to use the item; `0` when there is none (70,072 base items). The tooltip shows it with `PANEL_TOOLTIP_USELIMIT_LEVEL_VALUE` |
 | `+0x6E` | i64  | buy_price    |                                                              |
 | `+0x76` | i64  | sell_price   |                                                              |
-| `+0x7E` | i32  | repair_price |                                                              |
-| `+0x82` | ...  | unknown      | Numeric fields                                               |
+| `+0x7E` | i64  | repair_price |                                                              |
+| `+0x86` | u16  | contents_event_type | What using the item does, `CppEnums.ContentsEventType` (`6` ItemBox on 9,266 base items, `12` PetRegister, `22` Roulette, `25` SummonCharacter, `35` ConvertEnchantFailItemToCount); `171` when it does nothing (55,476). The Lua enum ends at `86`, but items store values up to `170` |
+| `+0x88` | i64  | contents_event_param1 | First parameter of the contents event                  |
+| `+0x90` | i64  | contents_event_param2 | Second parameter                                       |
+| `+0x98` | u8[8] | unknown     | Set in 390 base items                                        |
+| `+0xA0` | u8   | commerce_type | Trade good category, `enCommerceType` in `panel_tooltip_item` (`1` Luxury Miscellaneous, `2` Luxury, `3` Grocery, `4` Medicine, `5` Military Supplies, `6` Object, `7` Cloth, `8` Seafood, `9` Raw Material): the trade market list opens on it and `getCalculateTradeItemPrice` takes it. `0` when none |
+| `+0xA1` | u16  | item_action_number | `65535` when unused; `1` to `3` on 1,471 base items |
+| `+0xA3` | u8   | hide_from_note | `1` drops the `UI_TOOLTIP_ITEM_SHIFTCLICK` line from the tooltip (`isHideFromNote()`) |
+| `+0xA4` | u8   | is_cash      | `1` in 10,061 base items; bdo-data-extractor calls it the Pearl Shop flag |
+| `+0xA5` | u8   | unknown_a5   | `1` in 9,339 base items                                      |
+| `+0xA6` | u8   | is_term      | `1` on three appearance change coupons with a time limit (17552, 18923, 18994) |
+| `+0xA7` | u8   | guild_stock_level | `0` keeps the item out of the guild share storage (`getGuildStockLevel()` in `PaGlobal_Warehouse_All_GuildItemShareWareHouseFilter`); `1` to `6` on 789 base items |
 | `+0xA8` | u8   | dyeable      | `0`: the item cannot be dyed (45,780 base items on client 3464). `1` (24,433): it can, if it also has dye parts, which this file does not hold, see below |
-| `+0xA9` | u8   | unknown_a9   |                                                              |
+| `+0xA9` | u8   | is_target_alive | `0` on the seven items used on a dead character: First Aid Kits and Tears of the Wind. The inventory filter tests `isItemTargetAlive()` |
 | `+0xAA` | u16  | character_id | Character the item places or summons; `0` when none. See below |
-| `+0xAC` | u8   | unknown_ac   | Not the number of dye slots, see below. `0` on all 3,960 object links; across base items `0` (61,650), `1` (4,786), `2` (2,165), `5` (1,052), `10` (218) |
-| `+0xAD` | u8   | unknown_ad   | `0` in 69,875 base items                                     |
+| `+0xAC` | u8   | repair_endurance_count | Max durability one Memory Fragment restores: the repair window (`panel_window_endurance_recovery_all`) reads `_repairEnduranceCount` for the Memory Fragment, five times as much when the window's cash item option is on (`_isUseCashItem`). `0` (61,900 base items), `1` (4,760), `2` (2,242), `5` (1,084), `10` (223), `50` (4) |
+| `+0xAD` | u8   | unknown_ad   | `0` on every base block (client 3464)                        |
 | `+0xAE` | ...  | unknown      | Numeric fields                                               |
 | `+0xC4` | u8   | personal_trade | `1` when the item can be traded between players; 330 base items |
 | `+0xC5` | u16  | max_durability | `32,767` for items without durability (51,959 base items); equipment mostly `100` or `120` |
-| `+0xC7` | u8   | unknown_c7   |                                                              |
+| `+0xC7` | u8   | is_client_use | `1` in 181 base items, among them the enhanced Azerian, Talis, Rephla and Calis weapon and armour boxes (45833 to 45839) |
 | `+0xC8` | u8   | market_category | Central Market category, LOC type 44 `str_id1`; `255` when the item is not listed (56,870 base items) |
 | `+0xC9` | u8   | market_sub_category | Subcategory, in the market's menu order; `255` when not listed |
-| `+0xCA` | u16  | unknown_ca   |                                                              |
+| `+0xCA` | u8   | node_free_trade | `1` on trade goods that need no node link: the tooltip names the production place without the link state and adds `PANEL_TOOLTIP_ITEM_NODEFREETRADE_DESC` to the description (`isNodeFreeTrade()`). 308 base items, among them fish 8358 to 8367 |
+| `+0xCB` | u8   | unknown_cb   | `1` on every base block (client 3464)                        |
 | `+0xCC` | u32  | skill_key_1  | Skill a consumable casts, a [`skill.dbss`](skill_dbss.md) key; its `buff_ids` are the item's buffs; `0` when none |
 | `+0xD0` | u32  | skill_key_2  | Second skill, used by composite meals; `0` when none          |
 | `+0xD4` | ...  | lists        | Counted lists up to the name, see below                      |
@@ -230,8 +241,8 @@ for (100 or 200).
   Gauntlet store `1`, and need no level.
 
 bdo-data-extractor also names a max stack at `+0x65` and a Pearl Shop flag
-at `+0xA4`. Neither bdocodex nor my own items could show those, so they stay
-unchecked here (see Open Questions and In-Game Checks).
+at `+0xA4`. `+0x65` is the max level instead (see Field Names); `+0xA4` is
+`is_cash`.
 
 The skill keys are fixed fields, read at `+0xCC` and `+0xD0` whatever the
 strings hold. Every enchant level of an item stores the same keys as its base
@@ -264,8 +275,8 @@ conditions. Checked in game (2026-10-05):
 
 The part count is not in this block: no header byte, and none of the 18
 bytes after the icon, holds 3 for the dagger and 1 for the briefs.
-bdo-data-extractor calls `unknown_ac` the dye parts, but the dagger and the
-briefs store `0` there and the staff `1`.
+bdo-data-extractor calls `+0xAC` the dye parts, but the dagger and the
+briefs store `0` there and the staff `1`; it is `repair_endurance_count`.
 
 #### `grade`
 
@@ -458,10 +469,9 @@ slot (`global_util_ui_slot`) draws an item's stack count when
   Stone, ores and logs, HP Potion (Beginner) and Balacs Lunchbox.
 - `0` on fish sold to Trade Managers, such as Requiem Shark and all 109
   trade goods of trade type 4; `1` on trade goods such as Coal Dust Pouch.
-- `1` on all four items whose `unknown_65` is not `0x7FFFFFFF` (the two
-  beginner potions, Deputy Token, Combat EXP Scroll).
-
-calpheonlabs names `+0x43` "isStackable" and `+0x44` "appliesDirectly".
+calpheonlabs names `+0x43` "isStackable" and `+0x44` "appliesDirectly"; the
+2016 client has `_isStackableXXX` and `_doApplyDirectly` there (see Field
+Names).
 
 ### Before the name
 
@@ -555,7 +565,8 @@ Layout from bdo-data-extractor; it reads cleanly in all 70,284 base blocks
 | Offset  | Type      | Field         | Notes |
 | ------- | --------- | ------------- | ----- |
 | `+0x00` | u8        | marketable    | `1` when the item can be listed on the Central Market; 13,071 base items |
-| `+0x01` | u8[12]    | unknown_01    |       |
+| `+0x01` | u8        | karma_type    | `1` in 2,455 base items, such as the 7-day Valks weapons and outfits and the Suppressed boss weapons; see Field Names |
+| `+0x02` | u8[11]    | unknown_02    |       |
 | `+0x0D` | u8        | family_inventory | `2` when the item can be stored in the Family Inventory (1,106 base items), `0` when not |
 | `+0x0E` | u8        | unknown_0e    |       |
 | `+0x0F` | u8        | unknown_0f    | bdo-data-extractor: bind type. Neither the bound text nor "Cannot be enhanced" comes from it, see below |
@@ -565,9 +576,22 @@ Layout from bdo-data-extractor; it reads cleanly in all 70,284 base blocks
 | varies  | u8        | unknown       |       |
 | varies  | u32       | enhancement_group | `enhancement_type × 1000` plus a family index in 70,268 base items, e.g. Kharazad necklace 21000 |
 | varies  | u32       | enhancement_type  | Enhancement system: `0` none, `1` ordinary weapons and armour, `13` ordinary accessories, `19` Sovereign weapons, `21` Kharazad, `23` Tuvala weapons and armour; the full list is in bdo-data-extractor. Also the `group` of the Ancient Anvil table, [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md) |
-| varies  | u8[24]    | unknown       |       |
+| varies  | u8        | is_removable  | `0x11` after the end of the third string; `1` in 14,639 base items |
+| varies  | u8[4]     | unknown       |       |
+| varies  | u8        | cron_enchant_control | `0x16` after the third string; `1` in 1,716 base items |
+| varies  | u8        | unknown       |       |
+| varies  | u8        | is_notice_world_market | `0x18` after the third string; `1` in 9,518 base items |
+| varies  | u8[2]     | unknown       |       |
+| varies  | u8        | barter_type   | `0x1B` after the third string; `1` in 123 base items |
+| varies  | u8[6]     | unknown       |       |
+| varies  | u8        | is_dropable   | `0x22` after the third string; `1` in 24,621 base items |
+| varies  | u8        | is_exchange_item | `0x23` after the third string; `1` in 108 base items |
+| varies  | u8        | is_navigation | `0x24` after the third string; `1` in 683 base items |
+| varies  | u8[4]     | unknown       |       |
 | varies  | u8        | life_equip_type | Kind of Life Skill gear, `0x29` after the end of the third string; `37` on every item that is not `item_type` 20. See below |
 | varies  | u8        | life_restrict_type | Life skill tab the gear is for (`__ePlayerLifeStatType`); `15` when any tab can use it, and on every item that is not `item_type` 20 |
+| varies  | u8[47]    | unknown       | `0x2B` to `0x59` after the third string; `0x2E` to `0x58` are `0x77` in every base block (client 3464) |
+| varies  | u8        | item_access_level | `0x5A` after the third string: `0` (31,531 base items), `1` (20,747), `10` (12,390) or `99` (3,204) |
 | varies  | ...       | unknown       | Undecoded remainder, holding `second_string` about 330 bytes in |
 | end-6   | u32       | key           | Repeats the packed key, like `+0x00` |
 | end-2   | u16       | unknown_crystal_group | `0xFFFF` except in 481 base items, e.g. Magic Crystal of Infinity - Valor `100`, which is no longer in the game; bdo-data-extractor: the crystal transfusion group |
@@ -679,10 +703,11 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 | Enhancement Type | num | `enhancement_type`, after the icon; the item's rows in [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md); dash when `0` |
 | Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Servant gear (`servant_kinds` not `0`) shows its group's label from the table under `equip_slot`, or the bare number when no group labels its slot. Life Skill gear (`life_equip_type` not `37`) shows its Life Skill tab slot: the type's `CppEnums.LifeEquipSlotString` label, or Armor for clothes (see After the icon) |
 | Weapon Type   | text | Main and sub-weapons: LOC type 44 name of the market subcategory their type's listed items share, see `equip_type`; dash for other items |
-| Req. Level    | num  | `required_level`; dash when `0` or `1` |
+| Req. Level    | num  | `required_level`; dash when `0` or `1`. Items with a `max_level` show both as the tooltip's use limit, such as `1-20` on HP Potion (Beginner); sorts by `required_level` |
 | Classes       | text | `class_mask` as LOC type 21 class names; "All" when every playable class is set, "All except ..." when up to three are missing |
 | Binding       | text | `vested_type` and `family_bound`: "On obtain (Family)", "On equip (Character)" and so on; dash when the item never binds |
 | Durability    | num  | `max_durability`; dash for `32,767` |
+| Memory Fragment | num | `repair_endurance_count`, the max durability one Memory Fragment restores; dash when `0`. Labelled with the item's LOC name in each language |
 | Stackable     | flag | `stackable` |
 | Marketable    | flag | `marketable`, after the icon |
 | Family Inventory | flag | `family_inventory` is `2`, after the icon |
@@ -712,6 +737,46 @@ One row per item, read from its level-0 block. Higher levels only feed Max Level
 - Blocks are contiguous and the companion is sorted by key, so a targeted lookup
   can read a single block by offset without parsing the whole file.
 
+## Field Names
+
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ItemEnchantStaticStatus` holds `_itemType`, `_itemClassify`, `_gradeType`, the equip type (`_value`, `_isWeapon`, `_isSubWeapon`, `_isExtractable`, `_isUseAvatarMesh`, `_rangeType`, `_isTwoHanded`, `_equipSlotNo`, `_enchantFailType`), `_occupiedEquipNos` (31 slots then, 46 now), `_isDualWield`, `_itemMaterial`, `_dropAudioIndex`, `_weight`, `_isStackableXXX`, `_doApplyDirectly`, `_expirationPeriod`, `_vestedType`, `_isUserVested`, `_isDropableByDead`, `_isForJustTrade`, `_tradeType`, the usable class and servant flags, `_minLevel`, `_maxLevel`, `_lifeExperienceType`, `_lifeMinLevel`, the prices up to `_repairPrice`, the jewel fields, `_contentsEventType`, `_contentsEventParam1`, `_contentsEventParam2`, `_commerceType`, `_collectToolType`, `_collectTime`, `_checkItemActionNum`, `_dropRateByKill`, `_isNavigation`, `_needExplorePoint`, `_isAbandon`, `_hideFromNote`, `_isCash`, `_itemProductCategory`, `_isTerm`, `_isSellFromNpc`, `_guildStockLevel`, `_isDyeable`, `_isNotifyWorld`, `_targetType`, `_isTargetAlive`, the skill keys and further on `_objectKey`. The header stores the members it keeps in that order and leaves out the others, such as `_isDualWield`, `_dropAudioIndex`, the price levels and the jewel fields. The server-side `Item_Table` of the BdoEmu server (about 2021) shares 31,057 base items with client 3464:
+
+| Field | Offset | 2016 member | `Item_Table` column | Matching non-zero rows |
+| ----- | ------ | ----------- | ------------------- | ---------------------: |
+| item_material | `+0x3E` | `_itemMaterial` | `ItemMaterial` | 9,371 of 9,376 |
+| do_apply_directly | `+0x44` | `_doApplyDirectly` | `DoApplyDirectly` | 7,235 of 7,240 |
+| required_level | `+0x61` | `_minLevel` | `MinLevel` | 10,340 of 10,350 |
+| max_level | `+0x65` | `_maxLevel` | `MaxLevel` | 4 of 4; server `0` is `0x7FFFFFFF` |
+| life_exp_type | `+0x69` | `_lifeExperienceType` | `LifeExpType` | 183 of 183 |
+| life_min_level | `+0x6A` | `_lifeMinLevel` | `LifeMinLevel` | 77 of 83 |
+| repair_price | `+0x7E` | `_repairPrice` (i64) | `RepairPrice` | 3,700 of 3,714 |
+| contents_event_type | `+0x86` | `_contentsEventType` | `ContentsEventType` | 4,833 of 4,888; server `0` is `171` |
+| contents_event_param1 | `+0x88` | `_contentsEventParam1` | `ContentsEventParam1` | 3,988 of 4,058 |
+| contents_event_param2 | `+0x90` | `_contentsEventParam2` | `ContentsEventParam2` | 289 of 340 |
+| commerce_type | `+0xA0` | `_commerceType` | `CommerceType` | 1,146 of 2,702; every value the client sets agrees |
+| item_action_number | `+0xA1` | `_checkItemActionNum` | `ItemActionNumber` | 753 of 759; server `0` is `65535` |
+| hide_from_note | `+0xA3` | `_hideFromNote` | `HideFromNote` | 25,635 of 25,664 |
+| is_cash | `+0xA4` | `_isCash` | `IsCash` | 9,268 of 9,808; the client sets 793 more |
+| is_term | `+0xA6` | `_isTerm` | `IsTerm` | 3 of 3 |
+| guild_stock_level | `+0xA7` | `_guildStockLevel` | `isGuildStockable` | 219 of 281 |
+| is_target_alive | `+0xA9` | `_isTargetAlive` | `IsTargetAlive` | 31,051 of 31,051, and the 6 zeros |
+| repair_endurance_count | `+0xAC` | - | `RepairEnduranceCount` | 3,043 of 3,043 |
+| is_client_use | `+0xC7` | - | `IsClientUse` | 31 of 31 |
+| node_free_trade | `+0xCA` | - | `NodeFreeTrade` | 206 of 206 |
+| karma_type | icon end `+0x01` | - | `KarmaType` | 117 of 117 |
+| is_removable | third string end `+0x11` | - | `IsRemovable` | 10,259 of 10,275 |
+| cron_enchant_control | third string end `+0x16` | - | `CronEnchantcontrol` | 135 of 135 |
+| is_notice_world_market | third string end `+0x18` | - | `isNoticeWorldMarket` | 4,670 of 4,688 |
+| barter_type | third string end `+0x1B` | - | `BartarType` | 75 of 75 |
+| is_dropable | third string end `+0x22` | - | `IsDropable` | 14,171 of 14,194 |
+| is_exchange_item | third string end `+0x23` | `_isExchangeItem` | `IsExchangeItem` | 97 of 101 |
+| is_navigation | third string end `+0x24` | `_isNavigation` | `IsNavigation` | 280 of 285 |
+| item_access_level | third string end `+0x5A` | `_itemAccessLevel` | `ItemAccessLevel` | 15,971 of 16,591 |
+
+The current client Lua reads several of these by name: `_minLevel`, `_maxLevel` and `isMaxLevelRestricted()` (tooltip use limit), `getLifeExperienceType()` and `getLifeMinLevel()`, `getCommerceType()`, `isHideFromNote()`, `getGuildStockLevel()`, `isItemTargetAlive()`, `_repairEnduranceCount`, `isNodeFreeTrade()` and `isApplyDirectly()`; the Block Structure rows say where. The server sets `do_apply_directly` and `is_cash` on fewer items than the client (505 and 793 client-only rows), and `commerce_type` on more (1,556 rows the client stores as `0`); I read those as patches since the server data. `karma_type`, `is_client_use`, `node_free_trade`, `repair_endurance_count` and the flags after the third string other than `is_exchange_item`, `is_navigation` and `item_access_level` are not in the 2016 struct, so their names rest on the server column.
+
+The header fields named before also match their columns: `ItemType`, `GradeType`, `EquipType`, `Weight`, `IsStack`, `ExpirationPeriod`, `VestedType`, `IsUserVested`, `IsForTrade`, `TradeType`, `OriginalPrice`, `SellPriceToNpc`, `IsDyeable`, `Character_Key`, `EnduranceLimit`, `MarketCategory1` and `MarketCategory2`; the class columns `0` to `31` are the `class_mask` bits and `Pet_0` to `Pet_28` the `servant_kinds` bits. `marketable` (icon end `+0x00`) matches `isDisplayWorldMarket`.
+
 ## Open Questions
 
 ### Enchant Data Fields
@@ -722,34 +787,41 @@ remainder after `enhancement_type`, are undecoded here and in
 bdo-data-extractor. The fields below have a name there that neither bdocodex
 nor my own items could confirm (2026-10-05):
 
-- **Pearl Shop flag** (`+0xA4`): `1` in 28,511 base items, which fits the
-  outfits, but no tooltip line shows it.
 - **Trade type `4`**: Redfin Anthias, Opah and 107 other fish. bdocodex says
   they sell to Trade Managers, like the `0` fish (Cano Toadfish); what sets
   them apart is open. The Trade column shows both as Trade Manager.
 - **`unknown_0f`** (after the icon, bind type there): neither the bound text
-  nor "Cannot be enhanced" comes from it, see After the icon.
+  nor "Cannot be enhanced" comes from it, see After the icon. No `Item_Table`
+  column matches it, `unknown_0e`, `unknown_10`, `unknown_limit` or
+  `unknown_crystal_group`.
 - **`unknown_limit`** (market registration limit there): neither the
   listing nor the pre-order limit.
 - **`unknown_crystal_group`** (crystal transfusion group there): the only
   example, Magic Crystal of Infinity, is no longer in the game.
-- **Dye parts**: `unknown_ac` is not the count, and no byte of the block
-  holds it; where the client gets it (likely the model) is open.
+- **Dye parts**: `+0xAC` is not the count (it is `repair_endurance_count`),
+  and no byte of the block holds it; where the client gets it (likely the
+  model) is open.
 
 ### Header Fields Without a Meaning
 
 These fields have a known shape on client 3464 but no confirmed meaning:
 
-- `unknown_44` is `1` in 10,027 base items, among them 6,780 of the 6,862
-  items whose icon sits in `03_ETC/12_DoApplyDirectlyItem`, the folder the
-  quest reward window (`panel_dialog_reward`) takes its EXP icons from.
-  Advice of Valks (+10) and copies of Silver, Milk and Beer that are type
-  `2` also store `1`. calpheonlabs calls it "appliesDirectly"; no Lua getter
-  ties it to the offset.
 - `unknown_5d` lists bytes on mount and ship gear only. The Epheria Carrack
   and Oquilla parts store `1` to `4` in the order Advance, Balance, Volante,
   Valor. It is not the servant kind, which is `servant_kinds`; the bytes may
-  pick a model or tier within one kind.
+  pick a model or tier within one kind. The server's `SubType` equals the
+  byte on the 24 Epheria Carrack and Galley parts it sets (`1` to `4`), but
+  is `0` on 41 other shared items that store `1`, and the 2016 struct has no
+  member here.
+- `+0x08` to `+0x0D` sit where the 2016 struct has `_isWeapon`,
+  `_isSubWeapon`, `_isExtractable`, `_isUseAvatarMesh`, `_rangeType` and
+  `_isTwoHanded`, and `+0x0F` where it has `_enchantFailType`. No
+  `Item_Table` column holds them, so they keep their offsets.
+- `unknown_a5` (`1` in 9,339 base items) sits in the `_itemProductCategory`
+  slot, but the server's `ProductCategory` is `0` on 2,192 shared items that
+  store `1`. `+0x98` (set in 390 base items) matches no column.
+  `unknown_ad`, `unknown_cb` and `+0x59` to `+0x5C` hold one value on every
+  base block.
 - The entries of the lists before the name: the first holds a class type and
   a u32 per allowed class.
 - `item_type` 12 to 19 have no name in the client Lua.
@@ -774,23 +846,3 @@ other tag families exist, is unconfirmed. Earlier versions called it
 `effect_tag` and showed it as an Effect Tag column; it stays on the record for
 search and CSV but is no longer shown.
 
-## In-Game Checks
-
-### Max Stack at `+0x65`
-
-Needs item (any one):
-
-- [HP Potion (Beginner)](https://bdocodex.com/us/item/502/), 21 or more
-- [MP Potion (Beginner)](https://bdocodex.com/us/item/503/), 21 or more
-
-bdo-data-extractor names `+0x65` (`unknown_65`) max stack. On client 3464
-it is `0x7FFFFFFF` on every base item, stackable or not, except four that
-store a small number: 20 for both potions, 99 for Deputy Token (65208) and
-61 for Combat EXP Scroll (848). All four have `stackable` set. An earlier
-version also listed `0xFFFFFF00` on 120 items and 1 on Ashen Crow Horse Gear
-(336064); those were mount and ship gear read without their `unknown_5d`
-entries. Deputy Token is a moderator item ("It is used to control abusers of
-the Megaphone item"), so the potions are the test items. Put more than 20 of
-one potion in the inventory and look at the slots. If it splits into a
-second stack at 20, `+0x65` is the max stack. If it stays in one stack, the
-field is something else.

@@ -1,7 +1,8 @@
 {
   "columns": {
     "nodeId": "거점 ID",
-    "nodeName": "거점명"
+    "nodeName": "거점명",
+    "maxLevel": "최대 레벨"
   },
   "meta": {
     "count": "마을 {count}개",

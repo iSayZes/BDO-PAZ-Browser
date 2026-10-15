@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "레벨 그룹",
+    "level": "레벨",
+    "needTime": "시간",
+    "needPoint": "공헌도",
+    "needMoney": "은화",
+    "needItems": "아이템"
+  },
+  "meta": {
+    "count": "업그레이드 레벨 {count}개 · 레벨 그룹 {groups}개"
+  }
+}

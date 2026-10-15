@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Grupo de niveles",
+    "level": "Nivel",
+    "needTime": "Tiempo",
+    "needPoint": "Puntos de contribución",
+    "needMoney": "Plata",
+    "needItems": "Objetos"
+  },
+  "meta": {
+    "count": "{count} niveles de mejora · {groups} grupos de niveles"
+  }
+}

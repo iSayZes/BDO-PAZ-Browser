@@ -1,7 +1,8 @@
 {
   "columns": {
     "nodeId": "ID du géopoint",
-    "nodeName": "Nom de géopoint"
+    "nodeName": "Nom de géopoint",
+    "maxLevel": "Niveau max."
   },
   "meta": {
     "count": "{count} villes",

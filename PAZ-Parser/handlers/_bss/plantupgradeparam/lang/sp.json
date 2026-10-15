@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "key": "Clave",
+    "maxLevel": "Nivel máx."
+  },
+  "meta": {
+    "count": "{count} grupos de parámetros de mejora"
+  }
+}

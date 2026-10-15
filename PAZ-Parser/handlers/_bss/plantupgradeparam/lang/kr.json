@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "key": "키",
+    "maxLevel": "최대 레벨"
+  },
+  "meta": {
+    "count": "업그레이드 파라미터 그룹 {count}개"
+  }
+}

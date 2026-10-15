@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Группа уровней",
+    "level": "Уровень",
+    "needTime": "Время",
+    "needPoint": "Очки влияния",
+    "needMoney": "Серебро",
+    "needItems": "Предметы"
+  },
+  "meta": {
+    "count": "Уровней улучшения: {count} · групп уровней: {groups}"
+  }
+}

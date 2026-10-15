@@ -7,18 +7,13 @@ from bdo_preview import PreviewHandler
 
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
+from _common.loc import loc_text
 from .parser import parse_planttown_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-
-
-def _node_name(node_id: int) -> str:
-    if not is_loc_loaded():
-        return ""
-
-    return strip_pa_tags(loc_lookup(29, node_id)).strip()
+# Node names are LOC type 29, keyed by node ID.
+_NODE_LOC_TYPE = 29
 
 
 class PlantTownBssHandler(PreviewHandler):
@@ -27,6 +22,7 @@ class PlantTownBssHandler(PreviewHandler):
         return [
             Column(cols["nodeId"], "num", sort_key="node_id"),
             Column(cols["nodeName"], sort_key="node_name"),
+            Column(cols["maxLevel"], "num", sort_key="max_level"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -42,7 +38,7 @@ class PlantTownBssHandler(PreviewHandler):
 
         for record in parse_planttown_records(data):
             row = dict(record)
-            row["node_name"] = _node_name(record["node_id"])
+            row["node_name"] = loc_text(_NODE_LOC_TYPE, record["node_id"])
             records.append(row)
 
         return records
@@ -64,6 +60,7 @@ class PlantTownBssHandler(PreviewHandler):
             [
                 e(record["node_id"]),
                 e(record.get("node_name") or record["node_id"]),
+                e(record["max_level"]),
             ]
             for record in slice_
         ]

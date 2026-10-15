@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "key": "Key",
+    "maxLevel": "Max Level"
+  },
+  "meta": {
+    "count": "{count} upgrade parameter groups"
+  }
+}

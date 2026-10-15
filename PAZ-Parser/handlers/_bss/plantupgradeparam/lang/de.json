@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "maxLevel": "Höchststufe"
+  },
+  "meta": {
+    "count": "{count} Ausbauparametergruppen"
+  }
+}

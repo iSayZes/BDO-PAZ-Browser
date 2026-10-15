@@ -50,6 +50,8 @@ from .plantworker.handler import PlantWorkerBssHandler
 from .plantworkerpassiveskill.handler import PlantWorkerPassiveSkillBssHandler
 from .plantworkerselect.handler import PlantWorkerSelectBssHandler
 from .planttown.handler import PlantTownBssHandler
+from .plantupgradeparam.handler import PlantUpgradeParamBssHandler
+from .plantupgraderesource.handler import PlantUpgradeResourceBssHandler
 from .questjournalvideoinfo.handler import QuestJournalVideoInfoBssHandler
 from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestListBssHandler
 from .questnpc.handler import QuestNpcBssHandler
@@ -142,6 +144,8 @@ def register_bss_handlers() -> None:
     )
     register_handler("plantworkerselect.bss", PlantWorkerSelectBssHandler())
     register_handler("planttown.bss", PlantTownBssHandler())
+    register_handler("plantupgradeparam.bss", PlantUpgradeParamBssHandler())
+    register_handler("plantupgraderesource.bss", PlantUpgradeResourceBssHandler())
     register_handler("questjournalvideoinfo.bss", QuestJournalVideoInfoBssHandler())
     # One layout for the four quest lists, each with its own LOC type.
     for name, loc_type in QUEST_LIST_LOC_TYPES.items():

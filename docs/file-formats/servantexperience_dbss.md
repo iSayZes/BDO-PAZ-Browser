@@ -224,9 +224,9 @@ record on client 3464.
 
 ## Field Names
 
-The names follow the `Servant_Table` sheet of a private-server `DataSheets.bexcel` (9,893 (character, level) rows shared with client 3473) and the BdoEmu server's `Servant_Table` (about 2021, 7,241 rows), matched value by value at every offset of the fixed part:
+The names follow the `Servant_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 (9,893 (character, level) rows shared with client 3473) and the `Servant_Table` of a second private server on client 519 (7,241 rows), matched value by value at every offset of the fixed part:
 
-| Column | Field | Equal (bexcel) | Equal (BdoEmu) |
+| Column | Field | Equal (client 1784) | Equal (client 519) |
 | ------ | ----- | -------------- | -------------- |
 | `RequireEXP` | `exp` | 9,887 | 7,235 |
 | `HP` | `max_hp` | 9,549 | 6,914 |
@@ -258,4 +258,4 @@ comes from is open.
 
 ### The Constant Fields
 
-`unknown_2a`, `unknown_5a` and `unknown_7a` are `experience.bss` constant fields with no sheet match. `unknown_5a` (`1.0` on every record) sits where the 2016 member order has `_productionHit`, but the bexcel and BdoEmu `ProductionHit` columns hold `0` on every row, and client 1784 stores `1.0` there too, so the value does not come from that column. `unknown_2a` and `unknown_7a` are `1.0` on level 0 and `0` otherwise; no sheet column has that pattern.
+`unknown_2a`, `unknown_5a` and `unknown_7a` are `experience.bss` constant fields with no sheet match. `unknown_5a` (`1.0` on every record) sits where the 2016 member order has `_productionHit`, but the `ProductionHit` columns of both private servers hold `0` on every row, and client 1784 stores `1.0` there too, so the value does not come from that column. `unknown_2a` and `unknown_7a` are `1.0` on level 0 and `0` otherwise; no sheet column has that pattern.

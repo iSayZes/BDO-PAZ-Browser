@@ -73,7 +73,7 @@ Counted on client 3464:
 
 | Variant | Platform     | Evidence |
 | ------- | ------------ | -------- |
-| 0       | PC           | Key hints name the mouse actions (`{KeyBind:Attack1}` 235 times, `{KeyBind:Attack2}` 173, `{KeyBind:Confirm}` once). BdoEmu's server table `TextBind_Table` has `Key`, `PC` and `Console` columns; its `PC` text equals variant 0 on 233 of the 258 names both hold, and the other 25 differ by later wording changes (`말` to `탑승물`) |
+| 0       | PC           | Key hints name the mouse actions (`{KeyBind:Attack1}` 235 times, `{KeyBind:Attack2}` 173, `{KeyBind:Confirm}` once). The `TextBind_Table` of a private server on client 519 has `Key`, `PC` and `Console` columns; its `PC` text equals variant 0 on 233 of the 258 names both hold, and the other 25 differ by later wording changes (`말` to `탑승물`) |
 | 1       | PlayStation  | The only variant with `컨트롤러` (12 records, the others say `게임 패드`), `DUALSHOCK` and PlayStation names (4 records), and never `xbox` (variants 0, 2 and 3 have it in 11 records each). Key hints use `{KeyBind:Confirm}` 106 times |
 | 2       | Console      | Differs from variant 1 in 82 records: it says `게임 패드` where variant 1 says `컨트롤러` or `DUALSHOCK™4`, and holds `xbox` in 11 records. Key hints use `{KeyBind:Confirm}` 104 times |
 | 3       | Not known    | Equal to variant 0 in 1,010 records and to variant 1 in 777; see Open Questions |

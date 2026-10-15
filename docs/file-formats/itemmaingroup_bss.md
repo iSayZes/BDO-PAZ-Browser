@@ -80,7 +80,7 @@ The conditions use the script calls of `characterfunction.dbss` conditions (`get
 
 ## Field Names
 
-The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ItemMainGroupStaticStatus` holds `_key`, the entry list, `_doSelectOnlyOne` (bool), `_pickCount` (i64), `_refreshStartHour` (i32) and `_refreshInterval` (u64); each entry (`value_type`) holds `_selectRate` (i32), `_conditionString`, a parsed condition list and `_itemSubGroupKey` (u16). The file stores the scalars in that order between `group_id` and `entry_count`, with the list moved to the end, and the entry stores `_selectRate`, the condition string index and `_itemSubGroupKey` in that order. The server-side `ItemMainGroup_Table` of the BdoEmu server (about 2021) shares 6,168 group IDs with client 3464:
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ItemMainGroupStaticStatus` holds `_key`, the entry list, `_doSelectOnlyOne` (bool), `_pickCount` (i64), `_refreshStartHour` (i32) and `_refreshInterval` (u64); each entry (`value_type`) holds `_selectRate` (i32), `_conditionString`, a parsed condition list and `_itemSubGroupKey` (u16). The file stores the scalars in that order between `group_id` and `entry_count`, with the list moved to the end, and the entry stores `_selectRate`, the condition string index and `_itemSubGroupKey` in that order. The server-side `ItemMainGroup_Table` of a private server on client 519 shares 6,168 group IDs with client 3464:
 
 | Field              | `ItemMainGroup_Table` column | Matching groups                                    |
 | ------------------ | ---------------------------- | -------------------------------------------------- |

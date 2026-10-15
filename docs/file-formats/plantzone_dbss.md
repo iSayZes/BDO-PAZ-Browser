@@ -154,9 +154,9 @@ The table meta line counts the zones that resolve to items (403 of 439 on client
 
 ## Field Names
 
-The names of `work_ani_type`, `productivity_upgrade_group_index`, `luck_productivity_upgrade_group_index`, `production_key` and `max_capacity_level` follow the `PlantZone_Table` and `PlantZoneWorking_Table` sheets of a private-server `DataSheets.bexcel` (columns `WorkAniType`, `ProductivityUpgradeGroupIndex`, `LuckProductivityUpgradeGroupIndex`, `ExchangeGroupIndex`, `MaxCapacityLevel`) and the same tables of the BdoEmu server (about 2021). Matched by value over the zone keys (`WaypointKey`) each shares with client 3473:
+The names of `work_ani_type`, `productivity_upgrade_group_index`, `luck_productivity_upgrade_group_index`, `production_key` and `max_capacity_level` follow the `PlantZone_Table` and `PlantZoneWorking_Table` sheets of a private server's `DataSheets.bexcel` on client 1784 (columns `WorkAniType`, `ProductivityUpgradeGroupIndex`, `LuckProductivityUpgradeGroupIndex`, `ExchangeGroupIndex`, `MaxCapacityLevel`) and the same tables of a second private server on client 519. Matched by value over the zone keys (`WaypointKey`) each shares with client 3473:
 
-| Column | Field | Equal (bexcel, 304 keys) | Equal (BdoEmu, 288 keys) |
+| Column | Field | Equal (client 1784, 304 keys) | Equal (client 519, 288 keys) |
 | ------ | ----- | ------------------------ | ------------------------ |
 | `WorkAniType` | `work_ani_type` | 303 | 273 |
 | `ExchangeGroupIndex` | `production_key` | 293 | 277 |
@@ -183,7 +183,7 @@ The file has no field for `ContentsGroupKey` (10 distinct values in the bexcel).
 
 ### What `max_capacity_level` Controls
 
-It is `1` to `7` only on 19 zones, mostly consecutive Specialties nodes. The BdoEmu server loads `MaxCapacityLevel` into `PlantZoneWorkingT` but never reads it back, and the client Lua has no getter for it.
+It is `1` to `7` only on 19 zones, mostly consecutive Specialties nodes. The client 519 private server loads `MaxCapacityLevel` into `PlantZoneWorkingT` but never reads it back, and the client Lua has no getter for it.
 
 ### Unresolved Subgroups
 

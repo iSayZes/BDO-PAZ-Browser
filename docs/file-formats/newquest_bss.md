@@ -160,7 +160,7 @@ Client 3458:
 
 ## Field Names
 
-The 2016 client has no struct or loader for these lists. The server-side tables of the BdoEmu server (about 2021) name every field: `<List>Quest_Table` (`<List>QuestGroupKey`, `QuestGroup`, `QuestID`, `AcceptConditionText`, `HideConditions`, `VisibleConditions`, `IsSubQuest`) and `Group_<List>Quest` (`<List>QuestGroupKey`, `<List>QuestType`, `<List>QuestGroupName`, `Desc`, and `StartDate` and `EndDate` for the event list), where `<List>` is `New`, `Main`, `Recommendation` or `Repetition`. Rows join on the group key and quest ID with client 3464:
+The 2016 client has no struct or loader for these lists. The server-side tables of a private server on client 519 name every field: `<List>Quest_Table` (`<List>QuestGroupKey`, `QuestGroup`, `QuestID`, `AcceptConditionText`, `HideConditions`, `VisibleConditions`, `IsSubQuest`) and `Group_<List>Quest` (`<List>QuestGroupKey`, `<List>QuestType`, `<List>QuestGroupName`, `Desc`, and `StartDate` and `EndDate` for the event list), where `<List>` is `New`, `Main`, `Recommendation` or `Repetition`. Rows join on the group key and quest ID with client 3464:
 
 | Field | Column | `newquest` | `mainquest` | `recommendationquest` | `repetitionquest` |
 | ----- | ------ | ---------: | ----------: | --------------------: | ----------------: |

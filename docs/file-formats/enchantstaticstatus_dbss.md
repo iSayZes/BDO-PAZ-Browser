@@ -330,7 +330,7 @@ split into Enchant Key and Level, then Data Offset and Data Size.
 
 ## Field Names
 
-The names follow the `Enchant_Weapon`, `Enchant_Armor`, `Enchant_Accessory`, `Enchant_Servant`, `Enchant_Cash`, `Enchant_LifeEquipment` and `Enchant_Equipment` sheets of a private-server `DataSheets.bexcel` (one layout of 105 columns, keyed by `Index` and `Enchant`), which share 27,761 (key, level) blocks with client 3473. Matched value by value at every offset of the fixed part and of the tail regions:
+The names follow the `Enchant_Weapon`, `Enchant_Armor`, `Enchant_Accessory`, `Enchant_Servant`, `Enchant_Cash`, `Enchant_LifeEquipment` and `Enchant_Equipment` sheets of a private server's `DataSheets.bexcel` on client 1784 (one layout of 105 columns, keyed by `Index` and `Enchant`), which share 27,761 (key, level) blocks with client 3473. Matched value by value at every offset of the fixed part and of the tail regions:
 
 | Column | Field | Equal (non-zero rows) |
 | ------ | ----- | --------------------- |

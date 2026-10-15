@@ -14,7 +14,7 @@ region_key=290 -> Longleaf Tree Sentry Post (Hunting, Calpheon, node war on Tues
 
 The layout follows [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, section 11). I walked it against the client 3458 file: every record tiles exactly up to the string table and every span it calls reserved is zero in all 1594 records. One tail field is split wrongly there (see Region Tail). Field meanings marked confirmed below were checked against LOC, the client's Lua enums and the linked tables; the extractor's other names stay `unknown_*` here.
 
-Most of the zone flags and keys are named from two more sources (see Field Names below): the 2016 client's debug symbols, whose `gc::RegionInfo` lists its members in the order this record stores them, and the server-side `Region_Table` of the BdoEmu server (about 2021), whose columns match these offsets value for value. Five more of the extractor's names turned out wrong that way (`+0x0E`, `+0x10`, `+0x11`, `+0x1B`, `+0x66`).
+Most of the zone flags and keys are named from two more sources (see Field Names below): the 2016 client's debug symbols, whose `gc::RegionInfo` lists its members in the order this record stores them, and the server-side `Region_Table` of a private server on client 519, whose columns match these offsets value for value. Five more of the extractor's names turned out wrong that way (`+0x0E`, `+0x10`, `+0x11`, `+0x1B`, `+0x66`).
 
 ## Companion Files
 
@@ -178,7 +178,7 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 Two sources name most of the head fields:
 
 - The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::RegionInfo` lists the members `_regionKey`, `_colorKey`, `_regionType`, `_isSafeZone`, `_isArenaZone`, `_isSea`, `_isDesert`, `_isPrison`, seven town and war flags, `_accessibleArea`, `_villageTaxLevel`, `_dropGroupRerollCountOfSieger`, `_isLocator`, `_villainRespawnExploreKey`, `_villainRespawnPosition`, `_isAncientDungeon`, `_isEscape`, the day and night region skills, `_territoryKey`, `_areaName`, `_returnRegionName`, `_tradeOriginRegionKey`, `_regionGroupKey`, `_waypointKey`, `_exploreKey`, `_regionAttributeType`, `_returnPosition`, `_explorationPoint` ... `_isFreeRevivalArea` in this order. Today's record stores them in the same order without padding or pointers, with newer fields in between. Its loader, `GameCommonParameterLoaderFromExcel::LoadRegionInformation`, reads them from the columns of `Region_Table`.
-- The BdoEmu server (about 2021) ships the developers' `Region_Table` with its original column names and values. I matched every column against every head and tail offset over the 896 region keys it shares with the client file.
+- A private server on client 519 ships the developers' `Region_Table` with its original column names and values. I matched every column against every head and tail offset over the 896 region keys it shares with the client file.
 
 Matches on client 3464 (896 shared region keys). The mismatches are regions changed since 2021:
 

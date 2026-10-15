@@ -140,7 +140,7 @@ from 0 to 1.
 
 ## Field Names
 
-The names of the luck and speed limits and of `ap_bonus` and `dp_bonus` follow the `Pc_Table` sheet of a private-server `DataSheets.bexcel`, which shares 4,192 (class, level) rows with client 3473. `LVDD` equals `ap_bonus` and `LVPV` equals `dp_bonus` on all 4,192. `MaxAttackSpeed`, `MaxMoveSpeed`, `MaxCastingSpeed`, `MaxDropItemLuck`, `MaxFishingLuck` and `MaxCollectionLuck` are `0` on level 0 and `5` from level 1, the pattern of `+0x3C` to `+0x44` and `+0x64` to `+0x6C` on all 4,192 rows, and `MaxCriticalRate` is `0` on every row, as is `+0x38`.
+The names of the luck and speed limits and of `ap_bonus` and `dp_bonus` follow the `Pc_Table` sheet of a private server's `DataSheets.bexcel` on client 1784, which shares 4,192 (class, level) rows with client 3473. `LVDD` equals `ap_bonus` and `LVPV` equals `dp_bonus` on all 4,192. `MaxAttackSpeed`, `MaxMoveSpeed`, `MaxCastingSpeed`, `MaxDropItemLuck`, `MaxFishingLuck` and `MaxCollectionLuck` are `0` on level 0 and `5` from level 1, the pattern of `+0x3C` to `+0x44` and `+0x64` to `+0x6C` on all 4,192 rows, and `MaxCriticalRate` is `0` on every row, as is `+0x38`.
 
 Here all six limits hold `5`. [servantexperience.dbss](servantexperience_dbss.md#field-names) tells them apart: its `Servant_Table` holds `5` in the four critical and luck columns and `10` in the three speed columns, and its body holds `5` at `+0x38` to `+0x44` and `10` at `+0x64`. The 2016 client's `gc::CharacterStatStaticStatus` lists `_maxCriticalHitPoint`, `_maxDropItemPoint`, `_maxFishingPoint` and `_maxCollectionPoint` in that order, which splits the four, and `_maxVariedSpeedPoint` as one array of three.
 

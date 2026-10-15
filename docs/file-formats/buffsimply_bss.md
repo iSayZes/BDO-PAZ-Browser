@@ -130,7 +130,7 @@ The other fields stay on the record but out of the table.
 
 ## Field Names
 
-The named fields take the names of the `buff.dbss` fields they copy, which come from the 2016 `gc::BuffStaticStatus` and the BdoEmu server's `Buff_Table` ([buff.dbss Field Names](buff_dbss.md#field-names)). `unknown_07`, `unknown_08`, `unknown_09` and `unknown_0c` sit in the `_isExtractable`, `_isUseAvatarMesh`, `_rangeType` and `_enchantFailType` places of the `_needEquipType` copy; no server column holds them and the matching `itemenchant.dbss` header bytes have no name either. `unknown_18` copies `buff.dbss` tail `unknown_02`, which matches no server column.
+The named fields take the names of the `buff.dbss` fields they copy, which come from the 2016 `gc::BuffStaticStatus` and the `Buff_Table` of a private server on client 519 ([buff.dbss Field Names](buff_dbss.md#field-names)). `unknown_07`, `unknown_08`, `unknown_09` and `unknown_0c` sit in the `_isExtractable`, `_isUseAvatarMesh`, `_rangeType` and `_enchantFailType` places of the `_needEquipType` copy; no server column holds them and the matching `itemenchant.dbss` header bytes have no name either. `unknown_18` copies `buff.dbss` tail `unknown_02`, which matches no server column.
 
 ## Open Questions
 

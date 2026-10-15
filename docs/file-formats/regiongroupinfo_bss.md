@@ -100,9 +100,9 @@ The parser stores `node_key` as `None` when it is `0`, and `display_graph_positi
 
 The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::RegionGroupInfo` holds `_key`, `_isBlockedManaging`, `_concurrentPlayableUserCount`, `_waypointKey` (i32), `_enableCorpProductivity`, `_enableFishingProductivity`, `_enableLoyalty`, `_regionPosition`, `_isProductivityChanged`, `_corpProductivity`, `_fishingProductivity`, `_loyalty`, `_variedCorpProductivity`, `_variedFishingProductivity` and `_variedLoyalty` (all i32), with pointers in between. The row stores them in this order without the pointers or padding, from `+0x00` to `+0x30`. `GameCommonParameterLoaderFromExcel::LoadRegionGroupInformation` reads `RegionGroupKey`, `WaypointKey`, `DisplayGraphPositionX` to `Z`, `CorpProductivity`, `FishingProductivity`, `Loyalty` (as bools) and `ConcurrentPlayableUserCount` from `RegionGroup_Table` into those members, and sets `_corpProductivity`, `_fishingProductivity` and `_loyalty` to `1000000` and the three varied values to `0` for every row: the values this file stores.
 
-The `RegionGroup_Table` sheet of a private-server `DataSheets.bexcel` and the same table of the BdoEmu server (about 2021) match the file by value over the group keys each shares with client 3473:
+The `RegionGroup_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 and the same table of a second private server on client 519 match the file by value over the group keys each shares with client 3473:
 
-| Column | Field | Equal (bexcel, 169 keys) | Equal (BdoEmu, 150 keys) |
+| Column | Field | Equal (client 1784, 169 keys) | Equal (client 519, 150 keys) |
 | ------ | ----- | ------------------------ | ------------------------ |
 | `WaypointKey` | `node_key` | 168 | 148 |
 | `CorpProductivity` | `enable_corp_productivity` | 168 | 149 |

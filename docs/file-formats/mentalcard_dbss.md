@@ -10,6 +10,18 @@ Field names `cardKey`, `themeKey`, `minFavor`, `maxFavor` and `interest` follow 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                    | Bytes     | Records          | Row bytes                    |
+| ------ | -------------- | ------- | ----------------------- | --------- | ---------------- | ---------------------------- |
+| 1      | 3473 and later | 3473    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
+| 1      | 3473 and later | 3473    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
+
+| Layout | File                    | Known               | Unknown          |
+| ------ | ----------------------- | ------------------- | ---------------- |
+| 1      | `mentalcard.dbss`       | 6,178,315 B (95.6%) | 283,608 B (4.4%) |
+| 1      | `mentalcardoffset.dbss` | 151,268 B (100.0%)  | 0 B (0.0%)       |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -11,6 +11,16 @@ values. A second table of five 12-byte rows follows, whose use is unknown.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File               | Bytes | Records                | Row bytes |
+| ------ | -------------- | ------- | ------------------ | ----- | ---------------------- | --------- |
+| 1      | 3473 and later | 3473    | `itemtradeetc.bss` | 184   | 8 Pair, 4 Group, 5 Row | 10        |
+
+| Layout | File               | Known         | Unknown      |
+| ------ | ------------------ | ------------- | ------------ |
+| 1      | `itemtradeetc.bss` | 124 B (67.4%) | 60 B (32.6%) |
+
 <!-- versions:end -->
 
 ## Companion Files

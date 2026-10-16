@@ -12,6 +12,18 @@ fish, trade crates and the old regional trade goods.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes |
+| ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127       |
+| 1      | 3473 and later | 3473    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10        |
+
+| Layout | File                             | Known            | Unknown           |
+| ------ | -------------------------------- | ---------------- | ----------------- |
+| 1      | `itemtradegrouptonpc.dbss`       | 13,768 B (6.6%)  | 193,494 B (93.4%) |
+| 1      | `itemtradegrouptonpcoffset.dbss` | 1,264 B (100.0%) | 0 B (0.0%)        |
+
 <!-- versions:end -->
 
 ## Companion Files

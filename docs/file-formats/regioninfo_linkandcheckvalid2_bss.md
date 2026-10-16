@@ -8,6 +8,16 @@ Lists, per world region, the town regions it is linked to. It has one record for
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                                | Bytes  | Records                  | Row bytes               |
+| ------ | -------------- | ------- | ----------------------------------- | ------ | ------------------------ | ----------------------- |
+| 1      | 3473 and later | 3473    | `regioninfo_linkandcheckvalid2.bss` | 19,574 | 1,595 Region Link Record | 10 to 98, 12 on average |
+
+| Layout | File                                | Known            | Unknown         |
+| ------ | ----------------------------------- | ---------------- | --------------- |
+| 1      | `regioninfo_linkandcheckvalid2.bss` | 13,194 B (67.4%) | 6,380 B (32.6%) |
+
 <!-- versions:end -->
 
 ## Companion Files

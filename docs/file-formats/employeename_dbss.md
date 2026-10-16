@@ -8,6 +8,18 @@ Employee name table. Maps small employee name IDs to inline Korean UTF-16LE sour
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records          | Row bytes               |
+| ------ | -------------- | ------- | ------------------------- | ----- | ---------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `employeename.dbss`       | 1,298 | 60 Name Record   | 18 to 26, 22 on average |
+| 1      | 3473 and later | 3473    | `employeenameoffset.dbss` | 724   | 60 Offset Record | 12                      |
+
+| Layout | File                      | Known           | Unknown       |
+| ------ | ------------------------- | --------------- | ------------- |
+| 1      | `employeename.dbss`       | 1,058 B (81.5%) | 240 B (18.5%) |
+| 1      | `employeenameoffset.dbss` | 724 B (100.0%)  | 0 B (0.0%)    |
+
 <!-- versions:end -->
 
 ## Companion Files

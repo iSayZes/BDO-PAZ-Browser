@@ -29,6 +29,30 @@ layout.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes  | Records                                | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ------ | -------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `alchemystatdata.bss`    | 2,460  | 61 Alchemy Row                         | 40        |
+| 1      | 3473 and later | 3473    | `collectingstatdata.bss` | 15,464 | 19 Gathering Group, 427 Gathering Row  | 36        |
+| 1      | 3473 and later | 3473    | `cookingstatdata.bss`    | 1,484  | 61 Cooking Row                         | 24        |
+| 1      | 3473 and later | 3473    | `fishingstatdata.bss`    | 508    | 61 Fishing Row                         | 8         |
+| 1      | 3473 and later | 3473    | `huntingstatdata.bss`    | 2,216  | 61 Hunting Row                         | 36        |
+| 1      | 3473 and later | 3473    | `manufacturingstat.bss`  | 7,340  | 7 Processing Group, 456 Processing Row | 16        |
+| 1      | 3473 and later | 3473    | `sailstatdata.bss`       | 2,704  | 61 Sailing Row                         | 44        |
+| 1      | 3473 and later | 3473    | `trainingstatdata.bss`   | 996    | 61 Training Row                        | 16        |
+
+| Layout | File                     | Known            | Unknown         |
+| ------ | ------------------------ | ---------------- | --------------- |
+| 1      | `alchemystatdata.bss`    | 1,728 B (70.2%)  | 732 B (29.8%)   |
+| 1      | `collectingstatdata.bss` | 12,048 B (77.9%) | 3,416 B (22.1%) |
+| 1      | `cookingstatdata.bss`    | 1,484 B (100.0%) | 0 B (0.0%)      |
+| 1      | `fishingstatdata.bss`    | 508 B (100.0%)   | 0 B (0.0%)      |
+| 1      | `huntingstatdata.bss`    | 508 B (22.9%)    | 1,708 B (77.1%) |
+| 1      | `manufacturingstat.bss`  | 3,692 B (50.3%)  | 3,648 B (49.7%) |
+| 1      | `sailstatdata.bss`       | 2,216 B (82.0%)  | 488 B (18.0%)   |
+| 1      | `trainingstatdata.bss`   | 996 B (100.0%)   | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

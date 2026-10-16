@@ -12,6 +12,16 @@ are named by their offset (`unknown_00`, `unknown_02`, `unknown_03`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes | Records           | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | ----- | ----------------- | --------- |
+| 1      | 3473 and later | 3473    | `fairyfeedenchantfailcount.bss` | 147   | 9 Entry, 7 Record | 11        |
+
+| Layout | File                            | Known        | Unknown      |
+| ------ | ------------------------------- | ------------ | ------------ |
+| 1      | `fairyfeedenchantfailcount.bss` | 48 B (32.7%) | 99 B (67.3%) |
+
 <!-- versions:end -->
 
 ## Companion Files

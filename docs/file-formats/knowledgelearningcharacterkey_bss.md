@@ -8,6 +8,16 @@ Lists, for each knowledge card that a character teaches, every character that te
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                                | Bytes  | Records          | Row bytes               |
+| ------ | -------------- | ------- | ----------------------------------- | ------ | ---------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `knowledgelearningcharacterkey.bss` | 16,860 | 1,458 Card Entry | 10 to 70, 12 on average |
+
+| Layout | File                                | Known             | Unknown    |
+| ------ | ----------------------------------- | ----------------- | ---------- |
+| 1      | `knowledgelearningcharacterkey.bss` | 16,860 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -8,6 +8,16 @@ Upgrade costs of the worker system: one entry per level group and level with the
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes | Records                 | Row bytes |
+| ------ | -------------- | ------- | -------------------------- | ----- | ----------------------- | --------- |
+| 1      | 3473 and later | 3473    | `plantupgraderesource.bss` | 4,428 | 228 Need Item, 76 Entry | 12        |
+
+| Layout | File                       | Known            | Unknown    |
+| ------ | -------------------------- | ---------------- | ---------- |
+| 1      | `plantupgraderesource.bss` | 4,428 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

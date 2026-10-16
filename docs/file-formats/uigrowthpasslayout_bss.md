@@ -8,6 +8,16 @@ The quest grid of each Growth Pass category: a column and row count per [`growth
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes | Records            | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ----- | ------------------ | --------- |
+| 1      | 3473 and later | 3473    | `uigrowthpasslayout.bss` | 1,724 | 280 Cell, 2 Layout | 6         |
+
+| Layout | File                     | Known           | Unknown       |
+| ------ | ------------------------ | --------------- | ------------- |
+| 1      | `uigrowthpasslayout.bss` | 1,444 B (83.8%) | 280 B (16.2%) |
+
 <!-- versions:end -->
 
 ## Companion Files

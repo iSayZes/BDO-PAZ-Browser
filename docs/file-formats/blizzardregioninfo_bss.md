@@ -10,6 +10,16 @@ The file is small (21 rows in client 3458) and has no strings. The client Lua ne
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `blizzardregioninfo.bss` | 566   | 21 Row  | 26        |
+
+| Layout | File                     | Known         | Unknown       |
+| ------ | ------------------------ | ------------- | ------------- |
+| 1      | `blizzardregioninfo.bss` | 146 B (25.8%) | 420 B (74.2%) |
+
 <!-- versions:end -->
 
 ## Companion Files

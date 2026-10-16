@@ -8,6 +8,18 @@ Defines how knowledge entries are obtained from characters and items. The file h
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes  | Records                                                       | Row bytes |
+| ------ | -------------- | ------- | ------------------------------ | ------ | ------------------------------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `knowledgelearning.dbss`       | 79,636 | 4,684 Learning Record, 4,684 Learning Entry, 2 Learning Table | 13        |
+| 1      | 3473 and later | 3473    | `knowledgelearningoffset.dbss` | 56,220 | 4,684 Index Row, 2 Index Table                                | 12        |
+
+| Layout | File                           | Known             | Unknown        |
+| ------ | ------------------------------ | ----------------- | -------------- |
+| 1      | `knowledgelearning.dbss`       | 74,952 B (94.1%)  | 4,684 B (5.9%) |
+| 1      | `knowledgelearningoffset.dbss` | 56,220 B (100.0%) | 0 B (0.0%)     |
+
 <!-- versions:end -->
 
 ## Companion Files

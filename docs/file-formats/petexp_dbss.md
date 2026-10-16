@@ -8,6 +8,18 @@ Defines pet experience curves keyed by EXP table ID. Each record stores a maximu
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | --------- |
+| 1      | 3473 and later | 3473    | `petexp.dbss`       | 3,676 | 9 Data Payload, 9 Record | 406       |
+| 1      | 3473 and later | 3473    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
+
+| Layout | File                | Known            | Unknown    |
+| ------ | ------------------- | ---------------- | ---------- |
+| 1      | `petexp.dbss`       | 3,676 B (100.0%) | 0 B (0.0%) |
+| 1      | `petexpoffset.dbss` | 94 B (100.0%)    | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

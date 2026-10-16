@@ -20,6 +20,18 @@ products, and the tile is marketing art for the offer.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes      | Records           | Row bytes                      |
+| ------ | -------------- | ------- | ------------------------ | ---------- | ----------------- | ------------------------------ |
+| 1      | 3473 and later | 3473    | `cashproduct.dbss`       | 30,636,397 | 29,779 Block      | 504 to 1,996, 1,029 on average |
+| 1      | 3473 and later | 3473    | `cashproductoffset.dbss` | 357,352    | 29,779 Offset Row | 12                             |
+
+| Layout | File                     | Known              | Unknown              |
+| ------ | ------------------------ | ------------------ | -------------------- |
+| 1      | `cashproduct.dbss`       | 1,326,822 B (4.3%) | 29,309,575 B (95.7%) |
+| 1      | `cashproductoffset.dbss` | 357,352 B (100.0%) | 0 B (0.0%)           |
+
 <!-- versions:end -->
 
 ## Companion Files

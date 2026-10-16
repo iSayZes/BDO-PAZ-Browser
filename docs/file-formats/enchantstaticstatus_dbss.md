@@ -17,6 +17,18 @@ on one).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                             | Bytes      | Records                         | Row bytes               |
+| ------ | -------------- | ------- | -------------------------------- | ---------- | ------------------------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `enchantstaticstatus.dbss`       | 23,776,392 | 100,512 Lane Dice, 33,504 Block | 18 to 28, 22 on average |
+| 1      | 3473 and later | 3473    | `enchantstaticstatusoffset.dbss` | 402,068    | 33,504 Offset Row               | 12                      |
+
+| Layout | File                             | Known                | Unknown             |
+| ------ | -------------------------------- | -------------------- | ------------------- |
+| 1      | `enchantstaticstatus.dbss`       | 19,621,896 B (82.5%) | 4,154,496 B (17.5%) |
+| 1      | `enchantstaticstatusoffset.dbss` | 402,068 B (100.0%)   | 0 B (0.0%)          |
+
 <!-- versions:end -->
 
 ## Companion Files

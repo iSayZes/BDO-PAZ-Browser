@@ -12,6 +12,18 @@ the skill names its buffs.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File               | Bytes     | Records                            | Row bytes                    |
+| ------ | -------------- | ------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
+| 2      | 3473 and later | 3473    | `skill.dbss`       | 9,767,040 | 30,487 Skill Record, 30,487 Record | 210 to 1,540, 316 on average |
+| 2      | 3473 and later | 3473    | `skilloffset.dbss` | 365,864   | 30,487 Index Row                   | 12                           |
+
+| Layout | File               | Known               | Unknown             |
+| ------ | ------------------ | ------------------- | ------------------- |
+| 2      | `skill.dbss`       | 6,169,574 B (63.2%) | 3,597,466 B (36.8%) |
+| 2      | `skilloffset.dbss` | 365,864 B (100.0%)  | 0 B (0.0%)          |
+
 <!-- versions:end -->
 
 ## Companion Files

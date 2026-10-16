@@ -10,6 +10,18 @@ Field names `npcKind` and `classType` follow the notes of [bdo-data-extractor](h
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes      | Records                             | Row bytes                    |
+| ------ | -------------- | ------- | ---------------------------- | ---------- | ----------------------------------- | ---------------------------- |
+| 2      | 3473 and later | 3473    | `characterstatic.dbss`       | 13,561,073 | 24,553 Payload, 24,553 Stream Entry | 465 to 1,042, 550 on average |
+| 2      | 3473 and later | 3473    | `characterstaticoffset.dbss` | 245,550    | 24,553 Index Row                    | 10                           |
+
+| Layout | File                         | Known              | Unknown              |
+| ------ | ---------------------------- | ------------------ | -------------------- |
+| 2      | `characterstatic.dbss`       | 1,154,625 B (8.5%) | 12,406,448 B (91.5%) |
+| 2      | `characterstaticoffset.dbss` | 245,550 B (100.0%) | 0 B (0.0%)           |
+
 <!-- versions:end -->
 
 ## Companion Files

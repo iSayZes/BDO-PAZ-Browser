@@ -12,6 +12,18 @@ This is the data behind the well-known rerolling advice: keep a fairy at a low l
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------- | ----------------------------- | ----- | ------------- | --------- |
+| 1      | 3473 and later | 3473    | `fairyskillchange.dbss`       | 604   | 50 Record     | 12        |
+| 1      | 3473 and later | 3473    | `fairyskillchangeoffset.dbss` | 604   | 50 Offset Row | 12        |
+
+| Layout | File                          | Known          | Unknown    |
+| ------ | ----------------------------- | -------------- | ---------- |
+| 1      | `fairyskillchange.dbss`       | 604 B (100.0%) | 0 B (0.0%) |
+| 1      | `fairyskillchangeoffset.dbss` | 604 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

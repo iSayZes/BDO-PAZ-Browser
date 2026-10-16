@@ -8,6 +8,18 @@ Stores a short base record for every NPC dialog in `detail_dialog.dbss`: the Kor
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes     | Records            | Row bytes                |
+| ------ | -------------- | ------- | ------------------------ | --------- | ------------------ | ------------------------ |
+| 1      | 3473 and later | 3473    | `base_dialog.dbss`       | 2,076,194 | 59,782 Base Record | 21 to 519, 35 on average |
+| 1      | 3473 and later | 3473    | `base_dialogoffset.dbss` | 717,404   | 59,782 Index Row   | 12                       |
+
+| Layout | File                     | Known               | Unknown           |
+| ------ | ------------------------ | ------------------- | ----------------- |
+| 1      | `base_dialog.dbss`       | 1,777,284 B (85.6%) | 298,910 B (14.4%) |
+| 1      | `base_dialogoffset.dbss` | 717,404 B (100.0%)  | 0 B (0.0%)        |
+
 <!-- versions:end -->
 
 ## Companion Files

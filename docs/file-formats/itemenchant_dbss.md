@@ -17,6 +17,18 @@ At roughly 194 MB it is the largest file in the game data.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
+| 1      | 3473 and later | 3473    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
+
+| Layout | File                     | Known                | Unknown               |
+| ------ | ------------------------ | -------------------- | --------------------- |
+| 1      | `itemenchant.dbss`       | 57,597,960 B (28.5%) | 144,747,006 B (71.5%) |
+| 1      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%) | 0 B (0.0%)            |
+
 <!-- versions:end -->
 
 ## Companion Files

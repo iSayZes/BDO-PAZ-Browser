@@ -14,6 +14,18 @@ bytes that are `1` on every row.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes |
+| ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
+| 1      | 3473 and later | 3473    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
+| 1      | 3473 and later | 3473    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+
+| Layout | File                   | Known            | Unknown          |
+| ------ | ---------------------- | ---------------- | ---------------- |
+| 1      | `fieldboss.dbss`       | 2,780 B (12.1%)  | 20,126 B (87.9%) |
+| 1      | `fieldbossoffset.dbss` | 6,944 B (100.0%) | 0 B (0.0%)       |
+
 <!-- versions:end -->
 
 ## Companion Files

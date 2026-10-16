@@ -10,6 +10,18 @@ the material item and the durability points that material counts for.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes | Records                     | Row bytes |
+| ------ | -------------- | ------- | -------------------------- | ----- | --------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `alchemycharge.dbss`       | 468   | 36 Row, 8 Group             | 12        |
+| 1      | 3473 and later | 3473    | `alchemychargeoffset.dbss` | 468   | 36 Index Row, 8 Index Group | 12        |
+
+| Layout | File                       | Known          | Unknown    |
+| ------ | -------------------------- | -------------- | ---------- |
+| 1      | `alchemycharge.dbss`       | 468 B (100.0%) | 0 B (0.0%) |
+| 1      | `alchemychargeoffset.dbss` | 468 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

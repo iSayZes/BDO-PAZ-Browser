@@ -8,6 +8,18 @@ Spawn positions of the hireable sailors (the client calls sailors "employees") i
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                               | Bytes | Records               | Row bytes |
+| ------ | -------------- | ------- | ---------------------------------- | ----- | --------------------- | --------- |
+| 1      | 3473 and later | 3473    | `employeespawnposition.dbss`       | 514   | 15 Spawn Position Row | 34        |
+| 1      | 3473 and later | 3473    | `employeespawnpositionoffset.dbss` | 184   | 15 Offset Row         | 12        |
+
+| Layout | File                               | Known          | Unknown      |
+| ------ | ---------------------------------- | -------------- | ------------ |
+| 1      | `employeespawnposition.dbss`       | 454 B (88.3%)  | 60 B (11.7%) |
+| 1      | `employeespawnpositionoffset.dbss` | 184 B (100.0%) | 0 B (0.0%)   |
+
 <!-- versions:end -->
 
 ## Companion Files

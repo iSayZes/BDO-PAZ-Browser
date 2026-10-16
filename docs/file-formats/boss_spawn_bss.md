@@ -14,6 +14,16 @@ range. The window reads a row through `ToClient_bossSpawnList()` and, by
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `boss_spawn.bss` | 278   | 6 Row   | 43        |
+
+| Layout | File             | Known         | Unknown       |
+| ------ | ---------------- | ------------- | ------------- |
+| 1      | `boss_spawn.bss` | 164 B (59.0%) | 114 B (41.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

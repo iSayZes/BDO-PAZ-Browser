@@ -11,6 +11,16 @@ quest's page and plays the video from it.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                        | Bytes | Records              | Row bytes |
+| ------ | -------------- | ------- | --------------------------- | ----- | -------------------- | --------- |
+| 1      | 3473 and later | 3473    | `questjournalvideoinfo.bss` | 7,687 | 80 Journal Video Row | 13        |
+
+| Layout | File                        | Known           | Unknown     |
+| ------ | --------------------------- | --------------- | ----------- |
+| 1      | `questjournalvideoinfo.bss` | 7,607 B (99.0%) | 80 B (1.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

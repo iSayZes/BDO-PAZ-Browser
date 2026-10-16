@@ -16,6 +16,20 @@ tabs the skills are sorted into. Three files share the format:
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes   | Records                                            | Row bytes             |
+| ------ | -------------- | ------- | ------------------------------ | ------- | -------------------------------------------------- | --------------------- |
+| 1      | 3473 and later | 3473    | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
+| 1      | 3473 and later | 3473    | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
+| 1      | 3473 and later | 3473    | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
+
+| Layout | File                           | Known             | Unknown          |
+| ------ | ------------------------------ | ----------------- | ---------------- |
+| 1      | `ui_skillgroup_awakening.bss`  | 61,498 B (88.6%)  | 7,882 B (11.4%)  |
+| 1      | `ui_skillgroup_combat.bss`     | 215,549 B (89.0%) | 26,554 B (11.0%) |
+| 1      | `ui_skillgroup_succession.bss` | 28 B (12.2%)      | 202 B (87.8%)    |
+
 <!-- versions:end -->
 
 ## Companion Files

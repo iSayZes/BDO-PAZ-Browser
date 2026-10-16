@@ -8,6 +8,16 @@ Lists zodiac sign IDs in display/index order. The file is a compact `PABR` looku
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records  | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | -------- | --------- |
+| 1      | 3473 and later | 3473    | `zodiacsignindex.bss` | 32    | 12 Entry | 1         |
+
+| Layout | File                  | Known         | Unknown    |
+| ------ | --------------------- | ------------- | ---------- |
+| 1      | `zodiacsignindex.bss` | 32 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

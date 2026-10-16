@@ -8,6 +8,16 @@ Defines the main-quest list: quest IDs grouped into main-quest chains, each grou
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File            | Bytes   | Records                              | Row bytes |
+| ------ | -------------- | ------- | --------------- | ------- | ------------------------------------ | --------- |
+| 1      | 3473 and later | 3473    | `mainquest.bss` | 447,458 | 3,270 Quest Reference Row, 120 Group | 17        |
+
+| Layout | File            | Known             | Unknown      |
+| ------ | --------------- | ----------------- | ------------ |
+| 1      | `mainquest.bss` | 446,978 B (99.9%) | 480 B (0.1%) |
+
 <!-- versions:end -->
 
 ## Observed Values

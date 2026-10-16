@@ -10,6 +10,16 @@ the file, so what is synced and how is not known from the client.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                                | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ----------------------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `bossmonsterhpsyncstaticstatus.bss` | 98    | 3 Row   | 26        |
+
+| Layout | File                                | Known        | Unknown      |
+| ------ | ----------------------------------- | ------------ | ------------ |
+| 1      | `bossmonsterhpsyncstaticstatus.bss` | 80 B (81.6%) | 18 B (18.4%) |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -13,6 +13,18 @@ the item exchange recipes the house unlocks at each level.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
+| ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 1      | 3473 and later | 3473    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+
+| Layout | File                          | Known            | Unknown        |
+| ------ | ----------------------------- | ---------------- | -------------- |
+| 1      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
+| 1      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
+
 <!-- versions:end -->
 
 ## Companion Files

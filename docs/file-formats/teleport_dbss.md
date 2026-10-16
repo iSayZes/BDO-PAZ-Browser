@@ -11,6 +11,18 @@ to that point. The file holds positions only, no names.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes  | Records                          | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ------ | -------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `teleport.dbss`       | 11,242 | 623 Record, 6 Section            | 18        |
+| 1      | 3473 and later | 3473    | `teleportoffset.dbss` | 7,500  | 623 Offset Row, 6 Offset Section | 12        |
+
+| Layout | File                  | Known            | Unknown      |
+| ------ | --------------------- | ---------------- | ------------ |
+| 1      | `teleport.dbss`       | 10,619 B (94.5%) | 623 B (5.5%) |
+| 1      | `teleportoffset.dbss` | 7,500 B (100.0%) | 0 B (0.0%)   |
+
 <!-- versions:end -->
 
 ## Companion Files

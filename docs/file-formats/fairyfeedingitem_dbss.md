@@ -10,6 +10,18 @@ item-keyed index into it.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes  | Records          | Row bytes |
+| ------ | -------------- | ------- | ----------------------------- | ------ | ---------------- | --------- |
+| 1      | 3473 and later | 3473    | `fairyfeedingitem.dbss`       | 62,892 | 2,246 Record     | 28        |
+| 1      | 3473 and later | 3473    | `fairyfeedingitemoffset.dbss` | 26,956 | 2,246 Offset Row | 12        |
+
+| Layout | File                          | Known             | Unknown          |
+| ------ | ----------------------------- | ----------------- | ---------------- |
+| 1      | `fairyfeedingitem.dbss`       | 26,956 B (42.9%)  | 35,936 B (57.1%) |
+| 1      | `fairyfeedingitemoffset.dbss` | 26,956 B (100.0%) | 0 B (0.0%)       |
+
 <!-- versions:end -->
 
 ## Companion Files

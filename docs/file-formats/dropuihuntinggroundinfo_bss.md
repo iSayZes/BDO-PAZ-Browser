@@ -15,6 +15,16 @@ Limit. LOC type 116 names the zones by key.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes  | Records                | Row bytes                  |
+| ------ | -------------- | ------- | ----------------------------- | ------ | ---------------------- | -------------------------- |
+| 1      | 3473 and later | 3473    | `dropuihuntinggroundinfo.bss` | 28,350 | 112 Hunting Ground Row | 103 to 325, 218 on average |
+
+| Layout | File                          | Known             | Unknown    |
+| ------ | ----------------------------- | ----------------- | ---------- |
+| 1      | `dropuihuntinggroundinfo.bss` | 28,350 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

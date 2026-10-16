@@ -8,6 +8,18 @@ Stores the NPC dialog trees: for each character and dialog index, the greeting t
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes      | Records                                                                                            | Row bytes                     |
+| ------ | -------------- | ------- | -------------------------- | ---------- | -------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 1      | 3473 and later | 3473    | `detail_dialog.dbss`       | 28,282,772 | 35,766 Option, 59,782 Dialog Record, 59,782 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
+| 1      | 3473 and later | 3473    | `detail_dialogoffset.dbss` | 717,404    | 59,782 Index Row                                                                                   | 12                            |
+
+| Layout | File                       | Known                | Unknown            |
+| ------ | -------------------------- | -------------------- | ------------------ |
+| 1      | `detail_dialog.dbss`       | 26,852,567 B (94.9%) | 1,430,205 B (5.1%) |
+| 1      | `detail_dialogoffset.dbss` | 717,404 B (100.0%)   | 0 B (0.0%)         |
+
 <!-- versions:end -->
 
 ## Companion Files

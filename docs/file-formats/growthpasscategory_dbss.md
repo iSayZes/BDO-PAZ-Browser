@@ -8,6 +8,18 @@ The tabs of the Growth Pass window (`panel_window_growthpass*.luac`): per catego
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes | Records                 | Row bytes                 |
+| ------ | -------------- | ------- | ------------------------------- | ----- | ----------------------- | ------------------------- |
+| 1      | 3473 and later | 3473    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average |
+| 1      | 3473 and later | 3473    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                        |
+
+| Layout | File                            | Known         | Unknown      |
+| ------ | ------------------------------- | ------------- | ------------ |
+| 1      | `growthpasscategory.dbss`       | 211 B (84.1%) | 40 B (15.9%) |
+| 1      | `growthpasscategoryoffset.dbss` | 28 B (100.0%) | 0 B (0.0%)   |
+
 <!-- versions:end -->
 
 ## Companion Files

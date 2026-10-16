@@ -8,6 +8,16 @@ ID-keyed index into `title.dbss`. Maps each title ID to the byte offset and bloc
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File               | Bytes  | Records             | Row bytes |
+| ------ | -------------- | ------- | ------------------ | ------ | ------------------- | --------- |
+| 1      | 3473 and later | 3473    | `titleoffset.dbss` | 38,128 | 3,177 Offset Record | 12        |
+
+| Layout | File               | Known             | Unknown    |
+| ------ | ------------------ | ----------------- | ---------- |
+| 1      | `titleoffset.dbss` | 38,128 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Layout 1

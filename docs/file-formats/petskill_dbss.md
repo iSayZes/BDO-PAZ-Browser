@@ -8,6 +8,18 @@ Defines pet skill effect tables. Each record is keyed by `pet_skill_id`, has a s
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records                               | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `petskill.dbss`       | 9,380 | 539 Effect Row, 49 Payload, 49 Record | 17        |
+| 1      | 3473 and later | 3473    | `petskilloffset.dbss` | 494   | 49 Offset Row                         | 10        |
+
+| Layout | File                  | Known           | Unknown         |
+| ------ | --------------------- | --------------- | --------------- |
+| 1      | `petskill.dbss`       | 5,590 B (59.6%) | 3,790 B (40.4%) |
+| 1      | `petskilloffset.dbss` | 396 B (80.2%)   | 98 B (19.8%)    |
+
 <!-- versions:end -->
 
 ## Companion Files

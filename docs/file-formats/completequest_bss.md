@@ -8,6 +8,16 @@ The NPC dialog that takes each quest (the turn-in): one 8-byte row per quest wit
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes   | Records                   | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ------- | ------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `completequest.bss` | 151,948 | 18,991 Complete Quest Row | 8         |
+
+| Layout | File                | Known              | Unknown    |
+| ------ | ------------------- | ------------------ | ---------- |
+| 1      | `completequest.bss` | 151,948 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

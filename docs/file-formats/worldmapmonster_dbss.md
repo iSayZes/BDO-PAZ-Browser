@@ -12,6 +12,18 @@ LOC type 40 holds the translations.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
+| ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
+| 1      | 3473 and later | 3473    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
+| 1      | 3473 and later | 3473    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+
+| Layout | File                         | Known            | Unknown        |
+| ------ | ---------------------------- | ---------------- | -------------- |
+| 1      | `worldmapmonster.dbss`       | 39,426 B (92.0%) | 3,450 B (8.0%) |
+| 1      | `worldmapmonsteroffset.dbss` | 2,304 B (100.0%) | 0 B (0.0%)     |
+
 <!-- versions:end -->
 
 ## Companion Files

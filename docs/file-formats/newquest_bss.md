@@ -10,6 +10,16 @@ Defines the new-quest (event) list: quest IDs grouped under events such as `[Eve
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File           | Bytes   | Records                              | Row bytes |
+| ------ | -------------- | ------- | -------------- | ------- | ------------------------------------ | --------- |
+| 1      | 3473 and later | 3473    | `newquest.bss` | 789,308 | 1,236 Quest Reference Row, 229 Group | 17        |
+
+| Layout | File           | Known             | Unknown      |
+| ------ | -------------- | ----------------- | ------------ |
+| 1      | `newquest.bss` | 788,392 B (99.9%) | 916 B (0.1%) |
+
 <!-- versions:end -->
 
 ## Companion Files

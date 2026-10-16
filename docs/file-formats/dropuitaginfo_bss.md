@@ -12,6 +12,16 @@ tag keys of each zone (`tag_keys`). LOC type 117 names the tags by key.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes  | Records    | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ------ | ---------- | --------- |
+| 1      | 3473 and later | 3473    | `dropuitaginfo.bss` | 13,190 | 45 Tag Row | 32        |
+
+| Layout | File                | Known             | Unknown    |
+| ------ | ------------------- | ----------------- | ---------- |
+| 1      | `dropuitaginfo.bss` | 13,190 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

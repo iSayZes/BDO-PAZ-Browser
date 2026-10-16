@@ -8,6 +8,16 @@ Defines a tiny global configuration block for the NPC gift/confession system. Th
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `npcgiftetc.bss` | 32    | -       | -         |
+
+| Layout | File             | Known       | Unknown      |
+| ------ | ---------------- | ----------- | ------------ |
+| 1      | `npcgiftetc.bss` | 4 B (12.5%) | 28 B (87.5%) |
+
 <!-- versions:end -->
 
 ## Companion Files

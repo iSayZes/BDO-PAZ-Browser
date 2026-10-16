@@ -8,6 +8,16 @@ Stores a compact identity table for service and story NPCs. Each row maps a char
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File            | Bytes   | Records          | Row bytes |
+| ------ | -------------- | ------- | --------------- | ------- | ---------------- | --------- |
+| 1      | 3473 and later | 3473    | `npcsimply.bss` | 210,479 | 2,239 NPC Record | 33        |
+
+| Layout | File            | Known             | Unknown         |
+| ------ | --------------- | ----------------- | --------------- |
+| 1      | `npcsimply.bss` | 192,567 B (91.5%) | 17,912 B (8.5%) |
+
 <!-- versions:end -->
 
 ## Companion Files

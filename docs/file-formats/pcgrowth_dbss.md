@@ -10,6 +10,18 @@ The class type is the number `getClassType()` returns and the bit of a class mas
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes  | Records                                                                                           | Row bytes               |
+| ------ | -------------- | ------- | --------------------- | ------ | ------------------------------------------------------------------------------------------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `pcgrowth.dbss`       | 55,280 | 47 Setup Block, 47 Presentation Block, 250 Model Entry, 94 Model List, 47 Class Record, 47 Record | 53 to 71, 58 on average |
+| 1      | 3473 and later | 3473    | `pcgrowthoffset.dbss` | 427    | 47 Offset Row                                                                                     | 9                       |
+
+| Layout | File                  | Known            | Unknown         |
+| ------ | --------------------- | ---------------- | --------------- |
+| 1      | `pcgrowth.dbss`       | 49,013 B (88.7%) | 6,267 B (11.3%) |
+| 1      | `pcgrowthoffset.dbss` | 427 B (100.0%)   | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -8,6 +8,16 @@ Defines the recommended-quest list: quest IDs grouped under recommendations such
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes   | Records                              | Row bytes |
+| ------ | -------------- | ------- | ------------------------- | ------- | ------------------------------------ | --------- |
+| 1      | 3473 and later | 3473    | `recommendationquest.bss` | 202,171 | 1,290 Quest Reference Row, 122 Group | 17        |
+
+| Layout | File                      | Known             | Unknown      |
+| ------ | ------------------------- | ----------------- | ------------ |
+| 1      | `recommendationquest.bss` | 201,683 B (99.8%) | 488 B (0.2%) |
+
 <!-- versions:end -->
 
 ## Observed Values

@@ -8,6 +8,18 @@ EXP table of the combat skill points: the Skill EXP a character needs to go from
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes  | Records          | Row bytes |
+| ------ | -------------- | ------- | ---------------------------- | ------ | ---------------- | --------- |
+| 1      | 3473 and later | 3473    | `skillexperience.dbss`       | 32,020 | 2,001 Level Row  | 16        |
+| 1      | 3473 and later | 3473    | `skillexperienceoffset.dbss` | 20,014 | 2,001 Offset Row | 10        |
+
+| Layout | File                         | Known             | Unknown         |
+| ------ | ---------------------------- | ----------------- | --------------- |
+| 1      | `skillexperience.dbss`       | 24,016 B (75.0%)  | 8,004 B (25.0%) |
+| 1      | `skillexperienceoffset.dbss` | 20,014 B (100.0%) | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

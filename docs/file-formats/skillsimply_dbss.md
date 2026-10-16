@@ -11,6 +11,18 @@ It has exactly the keys of [`skill.dbss`](skill_dbss.md).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes     | Records                    | Row bytes                  |
+| ------ | -------------- | ------- | ------------------------ | --------- | -------------------------- | -------------------------- |
+| 1      | 3473 and later | 3473    | `skillsimply.dbss`       | 3,499,846 | 30,487 Skill Simply Record | 114 to 134, 115 on average |
+| 1      | 3473 and later | 3473    | `skillsimplyoffset.dbss` | 365,848   | 30,487 Offset Row          | 12                         |
+
+| Layout | File                     | Known               | Unknown             |
+| ------ | ------------------------ | ------------------- | ------------------- |
+| 1      | `skillsimply.dbss`       | 2,033,978 B (58.1%) | 1,465,868 B (41.9%) |
+| 1      | `skillsimplyoffset.dbss` | 365,848 B (100.0%)  | 0 B (0.0%)          |
+
 <!-- versions:end -->
 
 ## Companion Files

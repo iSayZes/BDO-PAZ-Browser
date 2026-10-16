@@ -12,6 +12,18 @@ ties it to the stones of
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes   | Records         | Row bytes               |
+| ------ | -------------- | ------- | ---------------------------- | ------- | --------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
+| 1      | 3473 and later | 3473    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
+
+| Layout | File                         | Known             | Unknown          |
+| ------ | ---------------------------- | ----------------- | ---------------- |
+| 1      | `itemimprovement.dbss`       | 127,428 B (73.1%) | 46,848 B (26.9%) |
+| 1      | `itemimprovementoffset.dbss` | 46,852 B (100.0%) | 0 B (0.0%)       |
+
 <!-- versions:end -->
 
 ## Companion Files

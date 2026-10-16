@@ -11,6 +11,16 @@ client scripts use turns into the translated text in `languagedata_*.loc`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes     | Records                    | Row bytes |
+| ------ | -------------- | ------- | ----------------- | --------- | -------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `stringtable.bss` | 7,334,813 | 51,092 String Row, 8 Sheet | 16        |
+
+| Layout | File              | Known               | Unknown          |
+| ------ | ----------------- | ------------------- | ---------------- |
+| 1      | `stringtable.bss` | 7,130,445 B (97.2%) | 204,368 B (2.8%) |
+
 <!-- versions:end -->
 
 ## Companion Files

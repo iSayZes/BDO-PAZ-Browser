@@ -10,6 +10,16 @@ Field names `journal_key`, `book_key` and the "book" terminology follow the note
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes  | Records                   | Row bytes                  |
+| ------ | -------------- | ------- | ------------------- | ------ | ------------------------- | -------------------------- |
+| 1      | 3473 and later | 3473    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
+
+| Layout | File                | Known            | Unknown      |
+| ------ | ------------------- | ---------------- | ------------ |
+| 1      | `journalquest.dbss` | 48,414 B (99.0%) | 472 B (1.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

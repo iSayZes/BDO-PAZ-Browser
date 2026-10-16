@@ -12,6 +12,18 @@ description whose English form lives in LOC type 5.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes      | Records                                              | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ---------- | ---------------------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `buff.dbss`       | 12,550,791 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
+| 2      | 3473 and later | 3473    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
+
+| Layout | File              | Known                | Unknown             |
+| ------ | ----------------- | -------------------- | ------------------- |
+| 2      | `buff.dbss`       | 10,718,501 B (85.4%) | 1,832,290 B (14.6%) |
+| 2      | `buffoffset.dbss` | 536,300 B (100.0%)   | 0 B (0.0%)          |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -11,6 +11,18 @@ This is where a skill's icon comes from.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                   | Bytes     | Records                       | Row bytes                    |
+| ------ | -------------- | ------- | ---------------------- | --------- | ----------------------------- | ---------------------------- |
+| 1      | 3473 and later | 3473    | `skilltype.dbss`       | 8,669,986 | 30,415 Payload, 30,415 Record | 153 to 1,041, 281 on average |
+| 1      | 3473 and later | 3473    | `skilltypeoffset.dbss` | 365,000   | 30,415 Index Row              | 12                           |
+
+| Layout | File                   | Known                | Unknown    |
+| ------ | ---------------------- | -------------------- | ---------- |
+| 1      | `skilltype.dbss`       | 8,669,986 B (100.0%) | 0 B (0.0%) |
+| 1      | `skilltypeoffset.dbss` | 365,000 B (100.0%)   | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -8,6 +8,16 @@ Defines the repeatable-quest list: daily, weekly and contribution quests grouped
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes   | Records                           | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ------- | --------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `repetitionquest.bss` | 200,069 | 806 Quest Reference Row, 48 Group | 17        |
+
+| Layout | File                  | Known             | Unknown      |
+| ------ | --------------------- | ----------------- | ------------ |
+| 1      | `repetitionquest.bss` | 199,877 B (99.9%) | 192 B (0.1%) |
+
 <!-- versions:end -->
 
 ## Observed Values

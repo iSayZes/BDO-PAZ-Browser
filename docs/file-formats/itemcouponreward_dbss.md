@@ -9,6 +9,18 @@ records: a u32 count of `0` followed by 12 zero bytes.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `itemcouponreward.dbss`       | 16    | -       | -         |
+| 1      | 3473 and later | 3473    | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
+
+| Layout | File                          | Known       | Unknown      |
+| ------ | ----------------------------- | ----------- | ------------ |
+| 1      | `itemcouponreward.dbss`       | 4 B (25.0%) | 12 B (75.0%) |
+| 1      | `itemcouponrewardoffset.dbss` | 4 B (20.0%) | 16 B (80.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

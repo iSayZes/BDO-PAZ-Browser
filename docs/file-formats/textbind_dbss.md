@@ -13,6 +13,18 @@ and the fallback without LOC.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes     | Records          | Row bytes                      |
+| ------ | -------------- | ------- | --------------------- | --------- | ---------------- | ------------------------------ |
+| 1      | 3473 and later | 3473    | `textbind.dbss`       | 1,952,118 | 1,167 Record     | 64 to 12,716, 1,673 on average |
+| 1      | 3473 and later | 3473    | `textbindoffset.dbss` | 14,008    | 1,167 Offset Row | 12                             |
+
+| Layout | File                  | Known               | Unknown        |
+| ------ | --------------------- | ------------------- | -------------- |
+| 1      | `textbind.dbss`       | 1,947,450 B (99.8%) | 4,668 B (0.2%) |
+| 1      | `textbindoffset.dbss` | 14,008 B (100.0%)   | 0 B (0.0%)     |
+
 <!-- versions:end -->
 
 ## Companion Files

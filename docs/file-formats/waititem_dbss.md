@@ -11,6 +11,18 @@ of Fallen God's Armor.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ------------- | --------- |
+| 1      | 3473 and later | 3473    | `waititem.dbss`       | 5,580 | 328 Row       | 17        |
+| 1      | 3473 and later | 3473    | `waititemoffset.dbss` | 3,940 | 328 Index Row | 12        |
+
+| Layout | File                  | Known            | Unknown         |
+| ------ | --------------------- | ---------------- | --------------- |
+| 1      | `waititem.dbss`       | 4,268 B (76.5%)  | 1,312 B (23.5%) |
+| 1      | `waititemoffset.dbss` | 3,940 B (100.0%) | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

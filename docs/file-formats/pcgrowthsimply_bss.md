@@ -8,6 +8,16 @@ One fixed row per class type with its Korean class name and a playable flag. The
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `pcgrowthsimply.bss` | 1,038 | 47 Row  | 10        |
+
+| Layout | File                 | Known         | Unknown       |
+| ------ | -------------------- | ------------- | ------------- |
+| 1      | `pcgrowthsimply.bss` | 850 B (81.9%) | 188 B (18.1%) |
+
 <!-- versions:end -->
 
 ## Companion Files

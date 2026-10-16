@@ -10,6 +10,18 @@ This is the data behind the "% chance to obtain the new skill" the game shows on
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                               | Bytes | Records         | Row bytes |
+| ------ | -------------- | ------- | ---------------------------------- | ----- | --------------- | --------- |
+| 1      | 3473 and later | 3473    | `fairyequipskillaquire.dbss`       | 708   | 4 Record        | 176       |
+| 1      | 3473 and later | 3473    | `fairyequipskillaquireoffset.dbss` | 44    | 4 Offset Record | 10        |
+
+| Layout | File                               | Known          | Unknown     |
+| ------ | ---------------------------------- | -------------- | ----------- |
+| 1      | `fairyequipskillaquire.dbss`       | 708 B (100.0%) | 0 B (0.0%)  |
+| 1      | `fairyequipskillaquireoffset.dbss` | 36 B (81.8%)   | 8 B (18.2%) |
+
 <!-- versions:end -->
 
 ## Companion Files

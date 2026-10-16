@@ -13,6 +13,18 @@ the stat body of [experience.bss](experience_bss.md) in its middle. On client
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes     | Records                                 | Row bytes |
+| ------ | -------------- | ------- | ------------------------------ | --------- | --------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
+| 1      | 3473 and later | 3473    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
+
+| Layout | File                           | Known               | Unknown             |
+| ------ | ------------------------------ | ------------------- | ------------------- |
+| 1      | `servantexperience.dbss`       | 3,890,890 B (46.5%) | 4,469,390 B (53.5%) |
+| 1      | `servantexperienceoffset.dbss` | 250,624 B (100.0%)  | 0 B (0.0%)          |
+
 <!-- versions:end -->
 
 ## Companion Files

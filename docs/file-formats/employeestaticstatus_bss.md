@@ -8,6 +8,16 @@ Static stats of every hireable ship crew member: one row per sailor per level, t
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes  | Records                         | Row bytes |
+| ------ | -------------- | ------- | -------------------------- | ------ | ------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
+
+| Layout | File                       | Known            | Unknown        |
+| ------ | -------------------------- | ---------------- | -------------- |
+| 1      | `employeestaticstatus.bss` | 31,985 B (95.6%) | 1,480 B (4.4%) |
+
 <!-- versions:end -->
 
 ## Companion Files

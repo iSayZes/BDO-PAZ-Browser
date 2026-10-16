@@ -10,6 +10,16 @@ The row size and the join fields match [iDevelopThings/bdo-data-extractor](https
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes  | Records                  | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ------ | ------------------------ | --------- |
+| 1      | 3473 and later | 3473    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
+
+| Layout | File                     | Known            | Unknown          |
+| ------ | ------------------------ | ---------------- | ---------------- |
+| 1      | `plantexchangegroup.bss` | 11,779 B (25.8%) | 33,852 B (74.2%) |
+
 <!-- versions:end -->
 
 ## Companion Files

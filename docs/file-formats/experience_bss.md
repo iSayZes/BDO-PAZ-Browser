@@ -14,6 +14,16 @@ growth.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes     | Records                                             | Row bytes |
+| ------ | -------------- | ------- | ---------------- | --------- | --------------------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group | 200       |
+
+| Layout | File             | Known             | Unknown             |
+| ------ | ---------------- | ----------------- | ------------------- |
+| 1      | `experience.bss` | 320,379 B (22.0%) | 1,133,088 B (78.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

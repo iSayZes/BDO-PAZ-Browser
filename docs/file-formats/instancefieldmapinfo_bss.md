@@ -11,6 +11,16 @@ points and a few values without a name yet. The key is the
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes  | Records    | Row bytes                  |
+| ------ | -------------- | ------- | -------------------------- | ------ | ---------- | -------------------------- |
+| 1      | 3473 and later | 3473    | `instancefieldmapinfo.bss` | 44,266 | 193 Record | 196 to 228, 199 on average |
+
+| Layout | File                       | Known            | Unknown          |
+| ------ | -------------------------- | ---------------- | ---------------- |
+| 1      | `instancefieldmapinfo.bss` | 18,924 B (42.8%) | 25,342 B (57.2%) |
+
 <!-- versions:end -->
 
 ## Companion Files

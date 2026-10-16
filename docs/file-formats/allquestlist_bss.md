@@ -8,6 +8,16 @@ Quest order list. The file is a compact `PABR` table of packed quest IDs, one pe
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File               | Bytes  | Records      | Row bytes |
+| ------ | -------------- | ------- | ------------------ | ------ | ------------ | --------- |
+| 1      | 3473 and later | 3473    | `allquestlist.bss` | 75,984 | 18,991 Entry | 4         |
+
+| Layout | File               | Known             | Unknown    |
+| ------ | ------------------ | ----------------- | ---------- |
+| 1      | `allquestlist.bss` | 75,984 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

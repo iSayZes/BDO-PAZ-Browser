@@ -12,6 +12,18 @@ the threshold label and the bonus lines.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                    | Bytes  | Records              | Row bytes                 |
+| ------ | -------------- | ------- | ----------------------- | ------ | -------------------- | ------------------------- |
+| 1      | 3473 and later | 3473    | `skillpiece.dbss`       | 31,628 | 168 Tier, 100 Record | 30 to 534, 180 on average |
+| 1      | 3473 and later | 3473    | `skillpieceoffset.dbss` | 1,004  | 100 Index Row        | 10                        |
+
+| Layout | File                    | Known            | Unknown      |
+| ------ | ----------------------- | ---------------- | ------------ |
+| 1      | `skillpiece.dbss`       | 31,228 B (98.7%) | 400 B (1.3%) |
+| 1      | `skillpieceoffset.dbss` | 1,004 B (100.0%) | 0 B (0.0%)   |
+
 <!-- versions:end -->
 
 ## Companion Files

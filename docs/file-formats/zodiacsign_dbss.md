@@ -8,6 +8,18 @@ Defines the 12 BDO horoscope (zodiac) signs. Each record stores star-position co
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                    | Bytes | Records       | Row bytes                  |
+| ------ | -------------- | ------- | ----------------------- | ----- | ------------- | -------------------------- |
+| 1      | 3473 and later | 3473    | `zodiacsign.dbss`       | 4,810 | 12 Record     | 360 to 434, 400 on average |
+| 1      | 3473 and later | 3473    | `zodiacsignoffset.dbss` | 112   | 12 Offset Row | 9                          |
+
+| Layout | File                    | Known           | Unknown      |
+| ------ | ----------------------- | --------------- | ------------ |
+| 1      | `zodiacsign.dbss`       | 4,702 B (97.8%) | 108 B (2.2%) |
+| 1      | `zodiacsignoffset.dbss` | 112 B (100.0%)  | 0 B (0.0%)   |
+
 <!-- versions:end -->
 
 ## Companion Files

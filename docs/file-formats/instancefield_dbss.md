@@ -13,6 +13,18 @@ Path (A1_001)`).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes  | Records        | Row bytes               |
+| ------ | -------------- | ------- | -------------------------- | ------ | -------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `instancefield.dbss`       | 10,810 | 200 Record     | 41 to 74, 54 on average |
+| 1      | 3473 and later | 3473    | `instancefieldoffset.dbss` | 2,004  | 200 Offset Row | 10                      |
+
+| Layout | File                       | Known            | Unknown         |
+| ------ | -------------------------- | ---------------- | --------------- |
+| 1      | `instancefield.dbss`       | 9,610 B (88.9%)  | 1,200 B (11.1%) |
+| 1      | `instancefieldoffset.dbss` | 2,004 B (100.0%) | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -8,6 +8,18 @@ The dialog functions of every NPC: one record per character, holding the buttons
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes     | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Row bytes                |
+| ------ | -------------- | ------- | ------------------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 1      | 3473 and later | 3473    | `characterfunction.dbss`       | 1,804,650 | 2,146 Shop Slot, 2,146 Shop Sell Slot, 2,146 Guild Shop Slot, 2,146 Guild Shop Sell Slot, 2,146 Trade Slot, 2,146 Auction Slot, 2,146 Mating Slot, 2,146 Inn Slot, 2,146 Text Slot, 27,898 Button Slot, 2,146 Stable Slot, 2,146 Conversation Slot, 2,146 Node Management Slot, 2,146 Minor Lord Menu Slot, 4,292 Territory Slot, 2,146 Unknown 1aa Slot, 2,146 Crafting Delivery Slot, 2,146 Skill Addon Slot, 6,438 Condition First Slot, 2,146 Maritime Trade Slot, 2,146 Hire Sailor Slot, 2,146 Season Gift Slot, 2,146 Yar Slot, 2,146 Pet Training Slot, 2,146 Lightstone Slot, 2,146 Function Record, 2,146 Record | 17 to 637, 17 on average |
+| 1      | 3473 and later | 3473    | `characterfunctionoffset.dbss` | 21,480    | 2,146 Index Row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 10                       |
+
+| Layout | File                           | Known               | Unknown         |
+| ------ | ------------------------------ | ------------------- | --------------- |
+| 1      | `characterfunction.dbss`       | 1,772,460 B (98.2%) | 32,190 B (1.8%) |
+| 1      | `characterfunctionoffset.dbss` | 21,480 B (100.0%)   | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

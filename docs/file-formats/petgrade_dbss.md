@@ -8,6 +8,18 @@ Maps each (species, variant) pet combination to a grade value, one record per pa
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | -------------- | --------- |
+| 1      | 3473 and later | 3473    | `petgrade.dbss`       | 3,388 | 282 Record     | 12        |
+| 1      | 3473 and later | 3473    | `petgradeoffset.dbss` | 3,388 | 282 Offset Row | 12        |
+
+| Layout | File                  | Known           | Unknown         |
+| ------ | --------------------- | --------------- | --------------- |
+| 1      | `petgrade.dbss`       | 2,260 B (66.7%) | 1,128 B (33.3%) |
+| 1      | `petgradeoffset.dbss` | 2,824 B (83.4%) | 564 B (16.6%)   |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -13,6 +13,16 @@ and nothing about its effect.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes     | Records         | Row bytes |
+| ------ | -------------- | ------- | ---------------- | --------- | --------------- | --------- |
+| 2      | 3473 and later | 3473    | `buffsimply.bss` | 1,489,433 | 44,690 Buff Row | 32        |
+
+| Layout | File             | Known             | Unknown           |
+| ------ | ---------------- | ----------------- | ----------------- |
+| 2      | `buffsimply.bss` | 819,083 B (55.0%) | 670,350 B (45.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

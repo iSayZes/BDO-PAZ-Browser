@@ -11,6 +11,18 @@ items. LOC type 54 has the reply in the user's language, keyed by `npc_id`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes | Records            | Row bytes                 |
+| ------ | -------------- | ------- | ------------------------ | ----- | ------------------ | ------------------------- |
+| 1      | 3473 and later | 3473    | `npcgiftdata.dbss`       | 6,702 | 24 Dialogue Record | 32 to 462, 279 on average |
+| 1      | 3473 and later | 3473    | `npcgiftdataoffset.dbss` | 244   | 24 Offset Record   | 10                        |
+
+| Layout | File                     | Known           | Unknown      |
+| ------ | ------------------------ | --------------- | ------------ |
+| 1      | `npcgiftdata.dbss`       | 6,510 B (97.1%) | 192 B (2.9%) |
+| 1      | `npcgiftdataoffset.dbss` | 196 B (80.3%)   | 48 B (19.7%) |
+
 <!-- versions:end -->
 
 ## Companion Files

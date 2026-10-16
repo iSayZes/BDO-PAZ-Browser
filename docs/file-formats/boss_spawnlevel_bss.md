@@ -13,6 +13,16 @@ reads an entry through `ToClient_bossSpawnOptionWrapper(bossKey, level)`
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records           | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ----------------- | --------- |
+| 1      | 3473 and later | 3473    | `boss_spawnlevel.bss` | 1,070 | 24 Entry, 6 Group | 21        |
+
+| Layout | File                  | Known         | Unknown       |
+| ------ | --------------------- | ------------- | ------------- |
+| 1      | `boss_spawnlevel.bss` | 926 B (86.5%) | 144 B (13.5%) |
+
 <!-- versions:end -->
 
 ## Companion Files

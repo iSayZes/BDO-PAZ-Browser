@@ -12,6 +12,18 @@ skill condition as an inline script, and the item it grows into.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | --------- |
+| 1      | 3473 and later | 3473    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
+| 1      | 3473 and later | 3473    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
+
+| Layout | File                            | Known            | Unknown         |
+| ------ | ------------------------------- | ---------------- | --------------- |
+| 1      | `alchemystonechange.dbss`       | 8,782 B (70.2%)  | 3,724 B (29.8%) |
+| 1      | `alchemystonechangeoffset.dbss` | 1,600 B (100.0%) | 0 B (0.0%)      |
+
 <!-- versions:end -->
 
 ## Companion Files

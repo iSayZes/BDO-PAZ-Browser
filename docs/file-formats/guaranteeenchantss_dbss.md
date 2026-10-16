@@ -12,6 +12,16 @@ type is the item's `enhancement_type` in `itemenchant.dbss`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ------------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `guaranteeenchantss.dbss` | 2,307 | 329 Row | 7         |
+
+| Layout | File                      | Known            | Unknown    |
+| ------ | ------------------------- | ---------------- | ---------- |
+| 1      | `guaranteeenchantss.dbss` | 2,307 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

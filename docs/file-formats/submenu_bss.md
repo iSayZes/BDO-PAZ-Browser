@@ -11,6 +11,16 @@ shared sprite sheet.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File          | Bytes  | Records                  | Row bytes |
+| ------ | -------------- | ------- | ------------- | ------ | ------------------------ | --------- |
+| 1      | 3473 and later | 3473    | `submenu.bss` | 12,882 | 155 Menu Entry, 12 Group | 49        |
+
+| Layout | File          | Known            | Unknown         |
+| ------ | ------------- | ---------------- | --------------- |
+| 1      | `submenu.bss` | 11,487 B (89.2%) | 1,395 B (10.8%) |
+
 <!-- versions:end -->
 
 ## Companion Files

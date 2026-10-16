@@ -8,6 +8,18 @@ NPC role flags. Each record gives one character (NPC, monster, object) 46 indepe
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes     | Records             | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | --------- | ------------------- | --------- |
+| 1      | 3473 and later | 3473    | `characterspawntype.dbss`       | 1,178,548 | 24,553 Record       | 48        |
+| 1      | 3473 and later | 3473    | `characterspawntypeoffset.dbss` | 245,550   | 24,553 Index Record | 10        |
+
+| Layout | File                            | Known                | Unknown    |
+| ------ | ------------------------------- | -------------------- | ---------- |
+| 1      | `characterspawntype.dbss`       | 1,178,548 B (100.0%) | 0 B (0.0%) |
+| 1      | `characterspawntypeoffset.dbss` | 245,550 B (100.0%)   | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

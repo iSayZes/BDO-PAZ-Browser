@@ -11,6 +11,18 @@ item the extraction uses up, and the two items it returns.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes   | Records         | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ------- | --------------- | --------- |
+| 1      | 3473 and later | 3473    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
+| 1      | 3473 and later | 3473    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
+
+| Layout | File                     | Known             | Unknown          |
+| ------ | ------------------------ | ----------------- | ---------------- |
+| 1      | `extractitem.dbss`       | 37,380 B (33.3%)  | 74,752 B (66.7%) |
+| 1      | `extractitemoffset.dbss` | 28,036 B (100.0%) | 0 B (0.0%)       |
+
 <!-- versions:end -->
 
 ## Companion Files

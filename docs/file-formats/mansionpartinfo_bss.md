@@ -13,6 +13,16 @@ building's key in `characterstatic.dbss`, where houses are records like NPCs.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records          | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ---------------- | --------- |
+| 1      | 3473 and later | 3473    | `mansionpartinfo.bss` | 664   | 9 Manor Part Row | 12        |
+
+| Layout | File                  | Known         | Unknown     |
+| ------ | --------------------- | ------------- | ----------- |
+| 1      | `mansionpartinfo.bss` | 619 B (93.2%) | 45 B (6.8%) |
+
 <!-- versions:end -->
 
 ## Companion Files

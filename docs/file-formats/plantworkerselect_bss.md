@@ -8,6 +8,16 @@ Worker selection table keyed by town/node LOC IDs. Each group lists workers that
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                    | Bytes | Records                                 | Row bytes |
+| ------ | -------------- | ------- | ----------------------- | ----- | --------------------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `plantworkerselect.bss` | 6,288 | 385 Selection Entry, 31 Selection Group | 16        |
+
+| Layout | File                    | Known           | Unknown         |
+| ------ | ----------------------- | --------------- | --------------- |
+| 1      | `plantworkerselect.bss` | 3,208 B (51.0%) | 3,080 B (49.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

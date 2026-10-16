@@ -10,6 +10,18 @@ material item and the EXP one unit of that material adds to the stone.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                        | Bytes | Records                      | Row bytes |
+| ------ | -------------- | ------- | --------------------------- | ----- | ---------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `alchemyupgrade.dbss`       | 2,028 | 166 Row, 8 Group             | 12        |
+| 1      | 3473 and later | 3473    | `alchemyupgradeoffset.dbss` | 2,028 | 166 Index Row, 8 Index Group | 12        |
+
+| Layout | File                        | Known            | Unknown    |
+| ------ | --------------------------- | ---------------- | ---------- |
+| 1      | `alchemyupgrade.dbss`       | 2,028 B (100.0%) | 0 B (0.0%) |
+| 1      | `alchemyupgradeoffset.dbss` | 2,028 B (100.0%) | 0 B (0.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

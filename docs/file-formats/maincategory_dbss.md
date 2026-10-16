@@ -8,6 +8,18 @@ Defines Pearl Shop / cash shop main category records. Each record stores a categ
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records            | Row bytes |
+| ------ | -------------- | ------- | ------------------------- | ----- | ------------------ | --------- |
+| 1      | 3473 and later | 3473    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
+| 1      | 3473 and later | 3473    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
+
+| Layout | File                      | Known           | Unknown       |
+| ------ | ------------------------- | --------------- | ------------- |
+| 1      | `maincategory.dbss`       | 1,279 B (83.4%) | 255 B (16.6%) |
+| 1      | `maincategoryoffset.dbss` | 124 B (80.5%)   | 30 B (19.5%)  |
+
 <!-- versions:end -->
 
 ## Companion Files

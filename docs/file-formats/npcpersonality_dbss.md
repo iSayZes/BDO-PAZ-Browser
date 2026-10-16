@@ -8,6 +8,18 @@ Defines NPC personality entries used to parameterise AI behaviour. Each record m
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                        | Bytes  | Records             | Row bytes |
+| ------ | -------------- | ------- | --------------------------- | ------ | ------------------- | --------- |
+| 1      | 3473 and later | 3473    | `npcpersonality.dbss`       | 40,192 | 1,182 Record        | 34        |
+| 1      | 3473 and later | 3473    | `npcpersonalityoffset.dbss` | 11,824 | 1,182 Offset Record | 10        |
+
+| Layout | File                        | Known            | Unknown         |
+| ------ | --------------------------- | ---------------- | --------------- |
+| 1      | `npcpersonality.dbss`       | 33,100 B (82.4%) | 7,092 B (17.6%) |
+| 1      | `npcpersonalityoffset.dbss` | 9,460 B (80.0%)  | 2,364 B (20.0%) |
+
 <!-- versions:end -->
 
 ## Companion Files

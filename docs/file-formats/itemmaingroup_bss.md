@@ -8,6 +8,16 @@ Item main groups: each group lists one or more [`itemsubgroup.dbss`](itemsubgrou
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes   | Records                    | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ------- | -------------------------- | --------- |
+| 1      | 3473 and later | 3473    | `itemmaingroup.bss` | 680,658 | 18,960 Entry, 16,555 Group | 10        |
+
+| Layout | File                | Known             | Unknown           |
+| ------ | ------------------- | ----------------- | ----------------- |
+| 1      | `itemmaingroup.bss` | 339,938 B (49.9%) | 340,720 B (50.1%) |
+
 <!-- versions:end -->
 
 ## Companion Files

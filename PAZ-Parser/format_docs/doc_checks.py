@@ -1,6 +1,9 @@
 """Checks on a whole doc: section order, layouts and the Versions markers."""
 from __future__ import annotations
 
+import re
+from pathlib import Path
+
 from .markdown import numbered_lines, sections
 from .model import Layout, Problem, Section
 from .reader import FILE_LAYOUT, layout_number, read_layout
@@ -9,15 +12,35 @@ from .structure_checks import StructureSizes, check_structure
 VERSIONS_BEGIN = "<!-- versions:begin"
 VERSIONS_END = "<!-- versions:end -->"
 _DROPPED_SECTIONS = ("Suggested UI Layout",)
+# A line that opens with this sentence shares the whole layout of the linked doc.
+_SHARED_LAYOUT = re.compile(r"^Same layout as \[`[^`]+`\]\((?P<doc>[a-z0-9_]+\.md)\)")
 
 
 def is_converted(text: str) -> bool:
-    """True for a doc in the layout format, the docs the checks run on."""
-    return any(layout_number(section) is not None for section in sections(numbered_lines(text), 2))
+    """True for a doc in the layout format, the docs the checks run on: its own layouts, or a shared one."""
+    return bool(_own_layouts(text)[0]) or shared_layout_doc(text) is not None
 
 
-def read_layouts(text: str) -> tuple[tuple[Layout, ...], tuple[Problem, ...]]:
-    """The `## Layout N` sections of a doc, newest first as written, and the problems in them."""
+def shared_layout_doc(text: str) -> str | None:
+    """The file name of the doc whose layouts this doc shares, from its `Same layout as [...](x.md)` line."""
+    link = _shared_layout_link(text)
+    return link[1] if link else None
+
+
+def read_layouts(text: str, folder: Path | None = None) -> tuple[tuple[Layout, ...], tuple[Problem, ...]]:
+    """The `## Layout N` sections of a doc, newest first as written, and the problems in them.
+
+    A doc with no layouts of its own that shares another doc's gets that doc's layouts when `folder`
+    holds it; the problems are then the other doc's, which its own check reports.
+    """
+    layouts, problems = _own_layouts(text)
+    linked = shared_layout_doc(text)
+    if layouts or linked is None or folder is None or not (folder / linked).is_file():
+        return layouts, problems
+    return _own_layouts((folder / linked).read_text(encoding="utf-8"))
+
+
+def _own_layouts(text: str) -> tuple[tuple[Layout, ...], tuple[Problem, ...]]:
     layouts: list[Layout] = []
     problems: list[Problem] = []
     for section in sections(numbered_lines(text), 2):
@@ -29,11 +52,12 @@ def read_layouts(text: str) -> tuple[tuple[Layout, ...], tuple[Problem, ...]]:
     return tuple(layouts), tuple(problems)
 
 
-def check_doc(text: str) -> tuple[Problem, ...]:
-    """Every problem in a converted doc, in line order."""
+def check_doc(text: str, folder: Path | None = None) -> tuple[Problem, ...]:
+    """Every problem in a converted doc, in line order; with `folder`, a shared layout's doc is checked to exist."""
     top = sections(numbered_lines(text), 2)
-    layouts, layout_problems = read_layouts(text)
+    layouts, layout_problems = _own_layouts(text)
     problems: list[Problem] = list(_section_problems(top, text)) + list(layout_problems)
+    problems.extend(_shared_layout_problems(text, bool(layouts), folder))
     problems.extend(_layout_problems(list(layouts)))
     for index, layout in enumerate(layouts):
         sizes = structure_sizes(layouts[: index + 1])
@@ -72,6 +96,32 @@ def _versions_problems(versions: Section, text: str, first_layout: Section | Non
     if first_layout is not None and versions.line > first_layout.line:
         problems.append(Problem(versions.line, "`## Versions` goes above the layouts"))
     return problems
+
+
+def _shared_layout_link(text: str) -> tuple[int, str] | None:
+    for number, line in numbered_lines(text):
+        match = _SHARED_LAYOUT.match(line)
+        if match:
+            return number, match.group("doc")
+    return None
+
+
+def _shared_layout_problems(text: str, has_own_layouts: bool, folder: Path | None) -> list[Problem]:
+    """A shared layout replaces the doc's own, and the linked doc holds layouts of its own."""
+    link = _shared_layout_link(text)
+    if link is None:
+        return []
+    line, linked = link
+    if has_own_layouts:
+        return [Problem(line, "a doc with its own layouts does not also share another doc's")]
+    if folder is None:
+        return []
+    path = folder / linked
+    if not path.is_file():
+        return [Problem(line, f"`{linked}` does not exist")]
+    if not _own_layouts(path.read_text(encoding="utf-8"))[0]:
+        return [Problem(line, f"`{linked}` has no layouts of its own to share")]
+    return []
 
 
 def _layout_problems(layouts: list[Layout]) -> list[Problem]:

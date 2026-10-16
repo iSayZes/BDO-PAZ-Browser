@@ -4,13 +4,13 @@
 
 Defines the recommended-quest list: quest IDs grouped under recommendations such as `[ADV Support] Inventory Expansion!` or `[Life 101] The Adventurer That Does It All`, each group named by LOC type 28, with a condition line per quest. 122 groups and 1,291 quest references on client 3458. All text sits in a string table at the end of the file (Korean group names, Korean condition lines, scripts).
 
-Example:
+## Versions
 
-```text
-group 0 (key 165, "[Life 101] The Adventurer That Does It All") -> quest 40055 / 2 -> [Life 101] Weasel Season
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
+
+## Observed Values
 
 Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group an 11-byte header, 17-byte quest reference rows and a 12-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
 

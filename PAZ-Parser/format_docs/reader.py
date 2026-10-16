@@ -12,9 +12,9 @@ FILE_LAYOUT = "File Layout"
 _LAYOUT_HEADING = re.compile(r"^Layout (\d+)$")
 _COMPANION_HEADING = re.compile(r"^`[a-z0-9_.]+`$")
 _STRUCTURE_HEADING = re.compile(r"^(?P<name>[A-Z][A-Za-z0-9 ]*?) \((?P<size>.+)\)$")
-_FIXED_SIZE = re.compile(r"^(?P<bytes>\d[\d,]*) bytes$")
+_FIXED_SIZE = re.compile(r"^(?P<bytes>\d[\d,]*) bytes?$")
 _VARIABLE_SIZE = re.compile(
-    r"^variable: (?P<bytes>\d[\d,]*) bytes(?: \+ [^,]+)?(?:, size from `?(?P<file>[a-z0-9_.]+)`?)?$"
+    r"^variable: (?P<bytes>\d[\d,]*) bytes?(?: \+ (?:(?!, size from ).)+)?(?:, size from `?(?P<file>[a-z0-9_.]+)`?)?$"
 )
 
 

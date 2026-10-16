@@ -13,7 +13,7 @@ _PADDING_PROOF = re.compile(r"pdb|align", re.IGNORECASE)
 # Names that state a value or a guess in place of a meaning.
 _VALUE_NAMES = (
     (re.compile(r"^(reserved|pad|padding)(\d|_|$)"), "a `padding_<hex>` with its proof, or `unknown_<hex>`"),
-    (re.compile(r"^const"), "`unknown_<hex>`; the value goes in Notes"),
+    (re.compile(r"^const(\d|_|$)"), "`unknown_<hex>`; the value goes in Notes"),
     (re.compile(r"(^|_)zero(_|$)"), "`unknown_<hex>`; the value goes in Notes"),
     (re.compile(r"^flag_[0-9a-f]+$"), "`unknown_<hex>` until the flag's meaning is known"),
 )

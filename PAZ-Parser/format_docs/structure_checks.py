@@ -48,9 +48,13 @@ def _name_problems(structure: Structure) -> list[Problem]:
 
 
 def _reference_problems(structure: Structure, specs: Mapping[int, TypeSpec]) -> list[Problem]:
-    """Counts and conditions read earlier fields; `size` and `rest` need a size from outside."""
+    """Counts and conditions read earlier fields; `size` and `rest` need a size from outside.
+
+    In a top-level table, a field at `EOF-0xNN` is read before the body, so `[..field]` may name it.
+    """
     problems: list[Problem] = []
     earlier: set[str] = set()
+    from_eof = {field.name for field in structure.fields if structure.is_top_level and field.offset.strip("`").startswith("EOF-")}
     has_outside_size = structure.is_top_level or (structure.size is not None and structure.size.external is not None)
     for field in structure.fields:
         spec = specs.get(field.line)
@@ -58,12 +62,16 @@ def _reference_problems(structure: Structure, specs: Mapping[int, TypeSpec]) -> 
             problems.extend(
                 Problem(field.line, f"`{name}` is not an earlier field of `{structure.name}`")
                 for name in referenced_fields(spec)
-                if name not in earlier
+                if name not in earlier and not (name in from_eof and _is_until(spec, name))
             )
             if not has_outside_size and _needs_outside_size(spec):
                 problems.append(Problem(field.line, "`size` and `[rest]` need `size from <offset file>` in the heading"))
         earlier.add(field.name)
     return problems
+
+
+def _is_until(spec: TypeSpec, name: str) -> bool:
+    return spec.count is not None and spec.count.kind == "until" and spec.count.value == name
 
 
 def _needs_outside_size(spec: TypeSpec) -> bool:

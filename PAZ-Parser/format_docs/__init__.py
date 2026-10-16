@@ -7,16 +7,16 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .doc_checks import check_doc, is_converted, read_layouts, structure_sizes
+from .doc_checks import check_doc, is_converted, read_layouts, shared_layout_doc, structure_sizes
 from .model import Problem
 
-__all__ = ["Problem", "check_doc", "converted_docs", "is_converted", "read_layouts", "structure_sizes"]
+__all__ = ["Problem", "check_doc", "converted_docs", "is_converted", "read_layouts", "shared_layout_doc", "structure_sizes"]
 
 TEMPLATE_PREFIX = "_"
 
 
 def converted_docs(folder: Path) -> tuple[Path, ...]:
-    """The format docs in `folder` that use `## Layout N`, the template left out."""
+    """The format docs in `folder` that use `## Layout N` or share another doc's, the template left out."""
     return tuple(
         path
         for path in sorted(folder.glob("*.md"))

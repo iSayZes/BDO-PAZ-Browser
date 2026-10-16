@@ -34,7 +34,7 @@ def _tab(view: LayoutView, is_current: bool) -> str:
 
 def _panel(view: LayoutView, is_shown: bool, links: LinkMap) -> str:
     intro = f'<div class="layout-intro prose">{render_markdown(view.intro, links)}</div>' if view.intro else ""
-    cards = "".join(_structure_card(structure, view.number, links) for structure in view.structures)
+    cards = "".join(_structure_card(structure, view.number, is_shown, links) for structure in view.structures)
     hidden = "" if is_shown else " hidden"
     return (
         f'<div class="layout-panel" role="tabpanel" id="panel-l{view.number}" aria-labelledby="tab-l{view.number}" '
@@ -42,7 +42,7 @@ def _panel(view: LayoutView, is_shown: bool, links: LinkMap) -> str:
     )
 
 
-def _structure_card(view: StructureView, layout: int, links: LinkMap) -> str:
+def _structure_card(view: StructureView, layout: int, is_current: bool, links: LinkMap) -> str:
     size = view.heading[len(view.structure.name):].strip()
     size_html = f' <span class="struct-size">{escape(size)}</span>' if size else ""
     badge = ""
@@ -51,7 +51,7 @@ def _structure_card(view: StructureView, layout: int, links: LinkMap) -> str:
     elif view.origin == "changed":
         badge = f'<span class="badge changed">Differs from Layout {view.against}</span>'
     head = (
-        f'<div class="struct-head"><h3>{render_inline(view.structure.name, links)}{size_html}</h3>{badge}'
+        f'<div class="struct-head"><h3{_heading_id(view, is_current)}>{render_inline(view.structure.name, links)}{size_html}</h3>{badge}'
         f'<span class="struct-cov">{_coverage(view)}</span></div>'
     )
     desc = f'<div class="struct-desc prose">{render_markdown(view.desc, links)}</div>' if view.desc else ""
@@ -59,6 +59,11 @@ def _structure_card(view: StructureView, layout: int, links: LinkMap) -> str:
     readout = '<div class="readout" aria-live="polite">Point at a byte or a row to see its field.</div>'
     body = desc + readout + _byte_map(view.fields, layout) + _field_table(view.fields, layout, links) + extra
     return f'<article class="struct" id="{structure_id(layout, view.structure.name)}" data-struct>{head}{body}</article>'
+
+
+def _heading_id(view: StructureView, is_current: bool) -> str:
+    """The id GitHub gives the structure heading, on the current layout only, so `#row-24-bytes` links work."""
+    return f' id="{slug(view.heading)}"' if is_current and view.origin == "own" else ""
 
 
 def structure_id(layout: int, name: str) -> str:

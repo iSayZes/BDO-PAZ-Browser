@@ -10,13 +10,13 @@ import re
 from collections.abc import Mapping
 from dataclasses import dataclass
 
-from format_docs import read_layouts, structure_sizes
+from format_docs import read_layouts, shared_layout_doc, structure_sizes
 from format_docs.markdown import numbered_lines, sections
 from format_docs.model import Field, Layout, Structure
 from format_docs.names import UNKNOWN_PREFIX
 from format_docs.type_grammar import fixed_size, parse_type
 
-from .doc_source import DocSource
+from .doc_source import DocSource, read_doc
 
 _TABLE_START = "| Offset"
 
@@ -70,7 +70,11 @@ class LayoutView:
 
 
 def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
-    """Every layout of a converted doc, newest first, older ones filled in from newer ones."""
+    """Every layout of a converted doc, newest first, older ones filled in from newer ones.
+
+    A doc that shares another doc's layout shows that doc's layouts and their prose.
+    """
+    doc = layout_source(doc)
     layouts, _ = read_layouts(doc.text)
     views: list[LayoutView] = []
     for index, layout in enumerate(layouts):
@@ -91,6 +95,15 @@ def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
         )
         views.append(LayoutView(layout.number, intro, merged))
     return tuple(views)
+
+
+def layout_source(doc: DocSource) -> DocSource:
+    """The doc whose layout sections describe `doc`'s bytes: `doc` itself, or the doc it shares a layout with."""
+    linked = shared_layout_doc(doc.text)
+    if linked is None or read_layouts(doc.text)[0]:
+        return doc
+    path = doc.path.parent / linked
+    return read_doc(path) if path.is_file() else doc
 
 
 def _structure_view(

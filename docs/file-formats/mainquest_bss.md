@@ -4,14 +4,13 @@
 
 Defines the main-quest list: quest IDs grouped into main-quest chains, each group named by LOC type 43, with per quest a condition line (where and when it can be accepted) and two condition scripts. 120 groups and 3,268 quest references on client 3458. All text sits in a string table at the end of the file (Korean group names, Korean condition lines, scripts).
 
-Example:
+## Versions
 
-```text
-group 0 (key 104, "[Special Growth] Taking My Own Path") -> quest 40022 / 1 -> [Special Growth] Birth of a Prestigious Family
-quest 40022 / 2 -> offered after clearquest(40022,1);
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
+
+## Observed Values
 
 Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group an 11-byte header, 17-byte quest reference rows and a 12-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
 

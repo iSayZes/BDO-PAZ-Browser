@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from format_docs import check_doc, converted_docs
+from format_docs import check_doc, converted_docs, is_converted, read_layouts
 from format_docs.markdown import split_row
 from format_docs.model import Field
 from format_docs.names import name_problems
@@ -54,7 +54,7 @@ def test_the_repo_has_converted_docs() -> None:
 
 @pytest.mark.parametrize("path", converted_docs(DOCS_DIR), ids=lambda path: path.name)
 def test_every_converted_doc_passes(path: Path) -> None:
-    assert [str(problem) for problem in check_doc(path.read_text(encoding="utf-8"))] == []
+    assert [str(problem) for problem in check_doc(path.read_text(encoding="utf-8"), DOCS_DIR)] == []
 
 
 def test_a_fixed_size_must_equal_the_sum_of_the_fields() -> None:
@@ -208,3 +208,82 @@ def test_types_outside_the_grammar_are_rejected(text: str) -> None:
 
 def test_a_table_row_keeps_escaped_and_quoted_pipes_in_their_cell() -> None:
     assert split_row(r"| `a | b` | c \| d | e |") == ("`a | b`", r"c \| d", "e")
+
+
+SHARED = "Same layout as [`base.bss`](base_bss.md), with other rows.\n"
+
+
+def _shared_doc(tmp_path: Path, base: str) -> str:
+    (tmp_path / "base_bss.md").write_text(base, encoding="utf-8")
+    return _doc(layouts=SHARED)
+
+
+def test_a_doc_that_shares_a_layout_reads_the_linked_docs_layouts(tmp_path: Path) -> None:
+    text = _shared_doc(tmp_path, _doc(FILE_LAYOUT, ROW))
+    layouts, _ = read_layouts(text, tmp_path)
+
+    assert is_converted(text)
+    assert check_doc(text, tmp_path) == ()
+    assert [structure.name for structure in layouts[0].structures] == ["File Layout", "Row"]
+
+
+def test_a_shared_layout_needs_a_linked_doc_with_layouts_and_none_of_its_own(tmp_path: Path) -> None:
+    text = _shared_doc(tmp_path, "# `base.bss` Format\n")
+    both = _doc(FILE_LAYOUT, ROW, extra=SHARED)
+
+    assert _messages(text.replace("base_bss.md", "gone_bss.md")) == []
+    assert [problem.message for problem in check_doc(text.replace("base_bss.md", "gone_bss.md"), tmp_path)] == ["`gone_bss.md` does not exist"]
+    assert [problem.message for problem in check_doc(text, tmp_path)] == ["`base_bss.md` has no layouts of its own to share"]
+    assert _messages(both) == ["a doc with its own layouts does not also share another doc's"]
+
+
+def test_a_top_level_table_may_run_up_to_a_field_read_from_the_end() -> None:
+    layout = (
+        "### File Layout\n\n| Offset | Type | Field | Notes |\n| --- | --- | --- | --- |\n"
+        "| `+0x00` | u32[..table_start] | values |  |\n"
+        "| `EOF-0x08` | u32 | table_start |  |\n| `EOF-0x04` | u32 | zero |  |\n"
+    )
+    later = _structure("Row (variable: 0 bytes + values)", ("+0x00", "u32[..later]", "values"), ("values+0x00", "u32", "later"))
+
+    assert _messages(_doc(layout)) == []
+    assert "`later` is not an earlier field of `Row`" in _messages(_doc(FILE_LAYOUT, later))
+
+
+def test_a_while_count_reads_a_field_of_the_repeated_structure() -> None:
+    layout = FILE_LAYOUT.replace("Row[row_count]", "Row[while key != 0]")
+
+    assert _messages(_doc(layout, ROW)) == []
+
+
+def test_two_dimensional_arrays_take_a_field_as_either_count() -> None:
+    grid = _structure(
+        "Grid (variable: 8 bytes + cells)",
+        ("+0x00", "u32", "width"), ("+0x04", "u32", "height"), ("+0x08", "Row[height][width]", "cells"),
+    )
+
+    assert _messages(_doc(FILE_LAYOUT.replace("Row[row_count]", "Grid"), grid, ROW)) == []
+    assert parse_type("str16[2][3]") == "a two-dimensional array takes two counts, each a number or a field, e.g. `f32[m][3]`"
+
+
+def test_a_prefix_condition_and_its_opposite_form_a_union() -> None:
+    row = _structure(
+        "Row (variable: 8 bytes + name and tail)",
+        ("+0x00", "str8", "name"), ("name+0x00", "u32 if name ^= HH_", "unknown_house"), ("unknown_house+0x00", "u16 if name !^= HH_", "unknown_other"),
+    )
+
+    assert _messages(_doc(FILE_LAYOUT, row)) == []
+
+
+def test_headings_take_one_byte_and_commas_in_their_free_text() -> None:
+    one = _structure("Row (1 byte)", ("+0x00", "u8", "key"))
+    commas = _structure("Row (variable: 4 bytes + name, icon and text)", ("+0x00", "u32", "key"), ("+0x04", "bytes[key]", "unknown_04"))
+
+    assert _messages(_doc(FILE_LAYOUT, one)) == []
+    assert _messages(_doc(FILE_LAYOUT, commas)) == []
+
+
+def test_names_that_start_with_const_but_mean_something_pass() -> None:
+    assert _messages(_doc(FILE_LAYOUT, _structure("Row (4 bytes)", ("+0x00", "u32", "constellation_id")))) == []
+    assert _messages(_doc(FILE_LAYOUT, _structure("Row (4 bytes)", ("+0x00", "u32", "const1")))) == [
+        "`const1` states a value, not a meaning; use `unknown_<hex>`; the value goes in Notes"
+    ]

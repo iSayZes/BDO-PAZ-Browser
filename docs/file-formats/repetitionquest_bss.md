@@ -4,13 +4,13 @@
 
 Defines the repeatable-quest list: daily, weekly and contribution quests grouped under names such as `[Contribution] [Lv. 35] Calpheon City` or `[Throne of Edana] [Weekly] For the Throne`, each group named by LOC type 42, with a condition line per quest. 48 groups and 806 quest references on client 3458. All text sits in a string table at the end of the file (Korean group names, Korean condition lines, scripts).
 
-Example:
+## Versions
 
-```text
-group 0 (key 51, "[Throne of Edana] [Weekly] For the Throne") -> quest 9108 / 1 -> [Weekly] For the Throne: Aetherion
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
+
+## Observed Values
 
 Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group an 11-byte header, 17-byte quest reference rows and a 12-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
 

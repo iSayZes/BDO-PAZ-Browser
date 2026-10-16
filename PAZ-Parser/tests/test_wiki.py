@@ -140,6 +140,21 @@ def test_a_converted_page_shows_structures_and_links_docs_and_repo_files(docs_di
     assert "not in the layout format yet" in other_page
 
 
+def test_a_doc_that_shares_a_layout_shows_the_linked_docs_structures(docs_dir: Path, tmp_path: Path) -> None:
+    shared = CONVERTED_DOC.split("## Layout 1")[0].replace("test.bss", "shared.bss")
+    shared += "## Observed Values\n\nSame layout as [`test.bss`](test_bss.md), with other rows.\n"
+    (docs_dir / "file-formats" / "shared_bss.md").write_text(shared, encoding="utf-8")
+
+    build_site(docs_dir, tmp_path / "site")
+
+    page = (tmp_path / "site" / "shared_bss.html").read_text(encoding="utf-8")
+    assert 'id="l1-row"' in page
+    assert _formats(tmp_path / "site")["shared_bss.html"] | {"desc": ""} == {
+        "page": "shared_bss.html", "name": "shared.bss", "others": [], "desc": "", "ext": "bss",
+        "oq": 0, "ig": 0, "converted": True, "known": 8, "unknown": 4,
+    }
+
+
 def test_game_totals_come_from_the_readme_supported_formats_lines() -> None:
     readme = (
         "- Handler Supported 83/402 .bss formats.\n"

@@ -35,9 +35,12 @@ newest first, so the current layout is always the first one.
   layout. A structure it does not list is the same as there.
 - A field keeps one name in every layout. A name with an offset in it, like
   `unknown_04`, keeps the newest layout's offset.
-- A doc that shares another doc's layout says so in one sentence,
-  ``Same layout as [`newquest.bss`](newquest_bss.md)``, and has no layout
-  sections of its own.
+- A doc that shares another doc's layout says so in one sentence at the
+  start of a line, ``Same layout as [`newquest.bss`](newquest_bss.md)``,
+  and has no layout sections of its own. The check and the wiki read the
+  linked doc's layouts for it; the linked doc must have layouts of its own.
+  A link with a `#section` anchor (a companion only) does not count: such a
+  doc writes the companion table into its own layout.
 
 Nobody writes a client number into a layout heading: the doc check finds out
 which clients each layout fits and writes it into `## Versions`.
@@ -51,7 +54,7 @@ table. The heading names the structure and gives its size:
 | ---------------------------------------------- | ---------------------------------------------------- |
 | `### File Layout`                              | The top-level table of the main file                 |
 | ``### `companionoffset.dbss` ``                | The top-level table of a companion file              |
-| `### Row (24 bytes)`                           | A structure of fixed size                            |
+| `### Row (24 bytes)`, `### Entry (1 byte)`     | A structure of fixed size                            |
 | `### Row (variable: 56 bytes + condition text)`| A structure with strings, counted arrays or optional fields; the number is the fixed part, the text after `+` is free |
 | ``### Payload (variable: 189 bytes, size from `petskilloffset.dbss`)`` | A structure whose size only an offset file gives |
 
@@ -78,16 +81,19 @@ layout tables and the check leaves them alone.
 | `str16`                             | u64 count, then that many UTF-16LE code units              | 8 + 2 x count |
 | `pstr`                              | PABR string-table entry: u8 `is_wide`, u32 byte length, then UTF-16LE (`1`) or UTF-8 (`0`) bytes | 5 + length |
 | `T[N]`, `T[field]`                  | Several numbers of type T, e.g. `u32[3]`, `u16[list_count]` | count x size of T |
-| `T[N][M]`, `T[field][M]`            | Two-dimensional array, outer count first                   | N x M x size of T |
+| `T[N][M]`, `T[field][field]`        | Two-dimensional array, outer count first; each count a number or a field | N x M x size of T |
 | `Name`                              | One structure from a `### Name (...)` heading              | its size |
 | `Name[N]`, `Name[field]`            | Several of them                                            | count x its size |
-| `Name[..field]`, `Name[..end]`      | Repeated up to the offset a field holds, or to the end of the enclosing structure | the bytes up to there |
-| `Name[while field != V]`            | Repeated up to the first one whose `field` is `V`, that one excluded | count x its size |
+| `Name[..field]`, `Name[..end]`      | Repeated up to the offset a field holds, or to the end of the enclosing structure; in a top-level table `..end` stops at the first `EOF-` row | the bytes up to there |
+| `Name[while field != V]`            | Repeated up to the first one whose `field` is `V`, that one excluded; `field` is a field of `Name` | count x its size |
 | `bytes[rest]`                       | The bytes left in a structure whose size comes from an offset file | the rest |
 | `T if field = V`, `T if field != V` | Present only when the condition holds; `size` names the structure's size from its offset file | T's size, or 0 |
+| `T if field ^= V`, `T if field !^= V` | Present only when the string `field` starts (or does not start) with `V` | T's size, or 0 |
 
 A count field named in `[field]` or `if field` is an earlier field of the
-same structure. A u32 count followed by a u32 `0` is a u64 count: write
+same structure. In a top-level table, `[..field]` may also name a later
+field at `EOF-0xNN`: a reader takes it before the body, as for the PABR
+`table_start`. A u32 count followed by a u32 `0` is a u64 count: write
 `str8` or `str16`. A count that does not sit right before its text is two
 rows: the count as its own field, then `char[field]` or `char16[field]`. A
 conditional row with the opposite condition right after it is a union.
@@ -113,6 +119,7 @@ One snake_case name per Field cell, unique within its structure.
 | ------------------------------------- | --------- | ----------------------------------------------------------------- |
 | A name for the meaning                | Known     | Only once the meaning is confirmed                                |
 | `unknown_<hex>`                       | Unknown   | 2 or more lowercase hex digits, the offset in the structure; also for fields that are always zero |
+| `unknown_<field>_<hex>`               | Unknown   | A field at `field+0xNN` after a variable-size field, with that offset (`unknown_effects_06`) |
 | `unknown_<words>`                     | Unknown   | A field without a fixed offset (`unknown_end`, `unknown_after_<field>`, `unknown_tail_<hex>`) or a role the bytes show (`unknown_str_ref` indexes the string table), never a guessed meaning |
 | `padding_<hex>`                       | Known     | Proven filler; Notes cite the 2016 PDB struct or the alignment    |
 | `<field>_dup`, `<field>_dup2`         | Known     | A copy of `<field>`, which exists in the same structure           |

@@ -18,8 +18,8 @@ UNIT_SIZES: Mapping[str, int] = {"bytes": 1, "char": 1, "char16": 2}
 STRING_HEADS: Mapping[str, int] = {"str8": 8, "str16": 8, "pstr": 5}
 
 _FIELD = r"[a-z][a-z0-9_]*"
-_CONDITION = re.compile(rf"^(?P<base>.+?) if (?P<field>{_FIELD}) (?P<op>!?=) (?P<value>\S+)$")
-_BASE = re.compile(r"^(?P<name>[a-z][a-z0-9]*|[A-Z][A-Za-z0-9 ]*?)(?:\[(?P<count>[^\]]+)\])?(?:\[(?P<inner>\d+)\])?$")
+_CONDITION = re.compile(rf"^(?P<base>.+?) if (?P<field>{_FIELD}) (?P<op>!?\^?=) (?P<value>\S+)$")
+_BASE = re.compile(rf"^(?P<name>[a-z][a-z0-9]*|[A-Z][A-Za-z0-9 ]*?)(?:\[(?P<count>[^\]]+)\])?(?:\[(?P<inner>\d+|{_FIELD})\])?$")
 _UNTIL = re.compile(rf"^\.\.(?P<target>{_FIELD}|end)$")
 _WHILE = re.compile(rf"^while (?P<field>{_FIELD}) != (?P<value>\S+)$")
 
@@ -45,7 +45,8 @@ class TypeSpec:
 
     name: str
     count: Count | None
-    inner: int | None
+    # The inner count of a two-dimensional array: a number, or the name of an earlier field.
+    inner: int | str | None
     condition: Condition | None
 
     @property
@@ -69,7 +70,8 @@ def parse_type(text: str) -> TypeSpec | str:
     count = _parse_count(base.group("count")) if base.group("count") else None
     if isinstance(count, str):
         return count
-    inner = int(base.group("inner")) if base.group("inner") else None
+    inner_text = base.group("inner")
+    inner = (int(inner_text) if inner_text.isdigit() else inner_text) if inner_text else None
     return _validated(TypeSpec(name, count, inner, condition))
 
 
@@ -82,7 +84,7 @@ def fixed_size(spec: TypeSpec, structure_sizes: Mapping[str, int | None]) -> int
         return None
     if spec.count is None:
         return unit
-    if spec.count.kind != "fixed":
+    if spec.count.kind != "fixed" or isinstance(spec.inner, str):
         return None
     return unit * int(spec.count.value) * (spec.inner or 1)
 
@@ -98,10 +100,15 @@ def fixed_part(spec: TypeSpec, structure_sizes: Mapping[str, int | None]) -> int
 
 
 def referenced_fields(spec: TypeSpec) -> tuple[str, ...]:
-    """The field names a count or condition reads, `size` and `end` left out."""
+    """The fields of the enclosing structure a count or condition reads, `size` and `end` left out.
+
+    A `while` count reads a field of the repeated structure, so it is not listed.
+    """
     names: list[str] = []
-    if spec.count and spec.count.kind in ("field", "until", "while"):
+    if spec.count and spec.count.kind in ("field", "until"):
         names.append(str(spec.count.value).split(" ")[0])
+    if isinstance(spec.inner, str):
+        names.append(spec.inner)
     if spec.condition:
         names.append(spec.condition.field)
     return tuple(name for name in names if name not in ("size", "end"))
@@ -128,8 +135,8 @@ def _validated(spec: TypeSpec) -> TypeSpec | str:
         return f"`{spec.name}` needs a count, e.g. `{spec.name}[4]`"
     if spec.count is not None and spec.count.kind == "rest" and spec.name != "bytes":
         return "`[rest]` is only for `bytes`"
-    if spec.inner is not None and spec.name not in NUMBER_SIZES:
-        return "two-dimensional arrays are only for numbers"
+    if spec.inner is not None and (spec.name in STRING_HEADS or spec.count is None or spec.count.kind not in ("fixed", "field")):
+        return "a two-dimensional array takes two counts, each a number or a field, e.g. `f32[m][3]`"
     return spec
 
 

@@ -175,7 +175,7 @@ site into `_site/` for a local preview. The generator is
 
 | File                | Content                                                                 |
 | ------------------- | ----------------------------------------------------------------------- |
-| `index.html`        | Every doc with its description, known share, open questions and in-game checks, searchable and sortable |
+| `index.html`        | Every doc with its description, known share, open questions and in-game checks, searchable and sortable; grouped as the app's tree view: the LOC docs, the `.bss` / `.dbss` docs, then Others (the doc-page sidebar too) |
 | `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows its layouts as tabs, each structure with a byte map and its field table |
 | `formats.js`        | The doc list both page kinds read                                       |
 | `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`                   |

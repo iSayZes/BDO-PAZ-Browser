@@ -40,5 +40,16 @@ var PazWiki = (function () {
   // A to Z by the shown name, ignoring leading symbols: `{alchemy,...}statdata.bss` sorts under A.
   function sortName(f) { return f.name.toLowerCase().replace(/^[^a-z0-9]+/, ""); }
 
-  return { esc: esc, inline: inline, num: num, share: share, shareTip: shareTip, doneColor: doneColor, bar: bar, countChip: countChip, sortName: sortName };
+  // The app's tree view order: the LOC files, the .bss / .dbss tables, then every other format.
+  var GROUP_LABELS = ["", "", "Others"];
+  function groupOf(f) { return /_loc\.html$/.test(f.page) ? 0 : f.ext === "other" ? 2 : 1; }
+
+  // `sorted` split into the three groups, each keeping its order, with the label of its divider.
+  function groups(sorted) {
+    return GROUP_LABELS.map(function (label, index) {
+      return { index: index, label: label, items: sorted.filter(function (f) { return groupOf(f) === index; }) };
+    });
+  }
+
+  return { esc: esc, inline: inline, num: num, share: share, shareTip: shareTip, doneColor: doneColor, bar: bar, countChip: countChip, sortName: sortName, groups: groups };
 })();

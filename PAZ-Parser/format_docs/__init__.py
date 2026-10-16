@@ -7,10 +7,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .doc_checks import check_doc, is_converted
+from .doc_checks import check_doc, is_converted, read_layouts, structure_sizes
 from .model import Problem
 
-__all__ = ["Problem", "check_doc", "converted_docs", "is_converted"]
+__all__ = ["Problem", "check_doc", "converted_docs", "is_converted", "read_layouts", "structure_sizes"]
 
 TEMPLATE_PREFIX = "_"
 

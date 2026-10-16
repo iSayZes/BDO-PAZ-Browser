@@ -11,6 +11,7 @@ on:
       - browser.py
       - benchmark.py
       - build.py
+      - build_wiki.py
       - pytest.ini
       - pyrightconfig.json
       - .github/workflows/ci.yml

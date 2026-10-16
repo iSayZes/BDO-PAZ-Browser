@@ -73,10 +73,14 @@ def _header_problems(table: Table) -> tuple[Problem, ...]:
 
 
 def _fields(table: Table) -> tuple[Field, ...]:
+    extra_headers = table.header[len(LAYOUT_COLUMNS) : -1]
     return tuple(
-        Field(line, cells[0], cells[1].strip("`"), cells[2].strip("`"), cells[-1])
+        Field(
+            line, cells[0], cells[1].strip("`"), cells[2].strip("`"), cells[-1],
+            tuple(zip(extra_headers, cells[len(LAYOUT_COLUMNS) : -1])),
+        )
         for line, cells in table.rows
-        if len(cells) >= len(LAYOUT_COLUMNS) + 1
+        if len(cells) == len(table.header)
     )
 
 

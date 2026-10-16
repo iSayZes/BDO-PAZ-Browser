@@ -16,20 +16,27 @@ def is_converted(text: str) -> bool:
     return any(layout_number(section) is not None for section in sections(numbered_lines(text), 2))
 
 
-def check_doc(text: str) -> tuple[Problem, ...]:
-    """Every problem in a converted doc, in line order."""
-    top = sections(numbered_lines(text), 2)
+def read_layouts(text: str) -> tuple[tuple[Layout, ...], tuple[Problem, ...]]:
+    """The `## Layout N` sections of a doc, newest first as written, and the problems in them."""
     layouts: list[Layout] = []
-    problems: list[Problem] = list(_section_problems(top, text))
-    for section in top:
+    problems: list[Problem] = []
+    for section in sections(numbered_lines(text), 2):
         number = layout_number(section)
         if number is not None:
             layout, layout_problems = read_layout(section, number)
             layouts.append(layout)
             problems.extend(layout_problems)
-    problems.extend(_layout_problems(layouts))
+    return tuple(layouts), tuple(problems)
+
+
+def check_doc(text: str) -> tuple[Problem, ...]:
+    """Every problem in a converted doc, in line order."""
+    top = sections(numbered_lines(text), 2)
+    layouts, layout_problems = read_layouts(text)
+    problems: list[Problem] = list(_section_problems(top, text)) + list(layout_problems)
+    problems.extend(_layout_problems(list(layouts)))
     for index, layout in enumerate(layouts):
-        sizes = _structure_sizes(layouts[: index + 1])
+        sizes = structure_sizes(layouts[: index + 1])
         for structure in layout.structures:
             problems.extend(check_structure(structure, sizes))
     return tuple(sorted(problems, key=lambda problem: problem.line))
@@ -86,8 +93,8 @@ def _layout_problems(layouts: list[Layout]) -> list[Problem]:
     return problems
 
 
-def _structure_sizes(layouts: list[Layout]) -> StructureSizes:
-    """The structures a layout can name: its own, then those of newer layouts."""
+def structure_sizes(layouts: tuple[Layout, ...]) -> StructureSizes:
+    """The sizes of the structures the last of `layouts` can name: its own, then those of newer layouts."""
     sizes: dict[str, int | None] = {}
     for layout in layouts:
         for structure in layout.structures:

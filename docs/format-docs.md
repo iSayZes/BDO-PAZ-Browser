@@ -123,6 +123,32 @@ The check rejects a name that states a value in place of a meaning
 (`reserved`, `pad0`, `const1`, `zero_a`, `flag_17`), a bare `unknown`, an
 `_ko` suffix, upper-case hex, and a cell holding more than one name.
 
+## Format Docs Wiki
+
+The Wiki workflow (`.github/workflows/wiki.yml`) publishes the docs as a
+static site on GitHub Pages. It runs `build_wiki.py` on every push to `main`
+that changes `docs/`, `PAZ-Parser/wiki/` or `PAZ-Parser/format_docs/`, so
+the site shows the released docs. `python build_wiki.py` builds the same
+site into `_site/` for a local preview. The generator is
+`PAZ-Parser/wiki/`; the site holds:
+
+| File                | Content                                                                 |
+| ------------------- | ----------------------------------------------------------------------- |
+| `index.html`        | Every doc with its description, known share, open questions and in-game checks, searchable and sortable |
+| `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows its layouts as tabs, each structure with a byte map and its field table |
+| `formats.js`        | The doc list both page kinds read                                       |
+| `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`                   |
+
+The known share counts the fixed-size fields of the newest layout, each
+structure once, so a row type counts the same as the header. A doc not
+converted yet shows as written and has no share. Links between docs go to
+their pages, links to other repo files to GitHub, and `#section` links work
+as on GitHub. The descriptions and file lists come from
+[`documented-formats.md`](documented-formats.md). The index's Documented
+tile counts its `.bss` and `.dbss` rows against the game totals in the
+README's Supported Formats lines, which the pre-commit hook keeps current
+from a PAZ folder.
+
 ## Versions
 
 ```markdown

@@ -46,6 +46,8 @@ class Field:
     type_text: str
     name: str
     notes: str
+    # Columns between Field and Notes, such as `Source`: (header, cell) pairs.
+    extra: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass(frozen=True)

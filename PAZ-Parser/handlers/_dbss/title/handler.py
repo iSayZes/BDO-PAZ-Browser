@@ -84,7 +84,7 @@ class TitleDbssHandler(PreviewHandler):
             row["category"] = _category_label(rec["category_id"])
             row.update(pa_fields("title", row.get("en_name") or rec["title_text_kr"]))
             row.update(pa_fields("requirement", row.get("en_req") or rec["requirement_text_kr"]))
-            row["is_special"] = bool(rec["title_color_argb"] or rec["header_field_meaning"] != "style")
+            row["is_special"] = bool(rec["title_color_argb"] or rec["is_styled_title"])
             result.append(row)
 
         return result

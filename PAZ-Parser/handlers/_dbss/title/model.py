@@ -4,21 +4,16 @@ from typing import TypedDict
 
 
 class TitleRecord(TypedDict):
-    layout: str
     key_count: int
     key_values: list[int]
     title_id: int
-    style_value: int
-    style_offset: int
     title_text_kr: str
     requirement_text_kr: str
-    requirement_length: int
+    # The title names itself in PAColor tags ("MASTER ..." gradients).
+    is_styled_title: bool
     category_id: int
+    unknown_tail_1c: int
+    unknown_tail_24: int
     title_color_argb: str
     title_color_css: str
     title_effect_name: str
-    extra_payload_size: int
-    header_field_meaning: str
-    pa_colors: list[str]
-    debug_u32: dict[str, int]
-    first_pa_color_offset: int | None

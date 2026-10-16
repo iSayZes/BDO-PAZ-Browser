@@ -1,167 +1,81 @@
+"""`title.dbss` records, located through `titleoffset.dbss`.
+
+Each offset row points at a record's `key_count`; the record reads straight
+from its counts:
+
+    u32 key_count | u32[key_count] key_values | u32 title_id
+    | str16 title_text_kr | str16 requirement_text_kr
+    | u32 | u32 category_id | 20 bytes | u32 unknown_tail_1c | u32
+    | u32 unknown_tail_24 | u32 | str8 effect_name | str8 color_argb
+    | u32 color_value | 12 bytes
+
+`str16` / `str8` are a u64 count, then UTF-16LE / ASCII text. The count of
+`title_text_kr` is the title's length; earlier readings took it for a style
+value. Full layout in docs/file-formats/title_dbss.md.
+"""
+
 from __future__ import annotations
 
-import string
-
-from _common.binary import debug_u32_fields, u16 as _u16, u32
-from _common.pa_color import extract_pa_colors, first_pa_color_offset
+from _common.binary import u32
+from _common.prefixed_string import read_prefixed_at
 from .model import TitleRecord
 
-_PA_TAG_START = "<PA".encode("utf-16-le")
-_HEX_BYTES = set(bytes(string.hexdigits, "ascii"))
+_KEY_VALUES = 4
+_U32_SIZE = 4
+# From the end of requirement_text_kr.
+_CATEGORY = 0x04
+_UNKNOWN_TAIL_1C = 0x1C
+_UNKNOWN_TAIL_24 = 0x24
+_EFFECT_NAME = 0x2C
+# color_value, then 12 bytes that end the record.
+_AFTER_COLOR_ARGB = _U32_SIZE + 12
+# Styled titles ("MASTER ...") colour their own name with PAColor tags.
+_PA_TAG = "<PA"
 
 
-def detect_layout(block: bytes, title_id: int) -> str:
+def _color_fields(color_argb: str) -> tuple[str, str]:
+    """`0xAARRGGBB` and `#RRGGBB` for a stored colour, or two empty strings."""
+    if not color_argb:
+        return "", ""
+    argb = color_argb.upper()
+    return f"0x{argb}", f"#{argb[2:]}"
+
+
+def parse_title_record(block: bytes, title_id: int) -> TitleRecord:
+    """Read one record; `block` is exactly the bytes the offset row covers.
+
+    Raises ValueError when the record does not repeat `title_id` or its
+    fields do not end exactly at the end of the block.
+    """
+    end = len(block)
     key_count = u32(block, 0)
-    title_offset = title_offset_for_key_count(key_count)
-    if u32(block, title_offset) == title_id:
-        return {
-            1: "A",
-            2: "B",
-            3: "C",
-        }.get(key_count, f"K{key_count}")
+    title_id_at = _KEY_VALUES + key_count * _U32_SIZE
+    if title_id_at + _U32_SIZE > end or u32(block, title_id_at) != title_id:
+        raise ValueError(f"title {title_id} record does not repeat its own ID")
 
-    if u32(block, 8) == title_id:
-        return "A"
+    title_text_kr, pos = read_prefixed_at(block, title_id_at + _U32_SIZE, end, wide=True)
+    requirement_text_kr, tail = read_prefixed_at(block, pos, end, wide=True)
+    if tail + _EFFECT_NAME > end:
+        raise ValueError(f"title {title_id} ends inside its tail")
+    effect_name, pos = read_prefixed_at(block, tail + _EFFECT_NAME, end, wide=False)
+    color_argb, pos = read_prefixed_at(block, pos, end, wide=False)
+    if pos + _AFTER_COLOR_ARGB != end:
+        raise ValueError(f"title {title_id} record is {end} bytes, its fields end at {pos + _AFTER_COLOR_ARGB}")
 
-    if u32(block, 12) == title_id:
-        return "B"
-
-    if u32(block, 16) == title_id:
-        return "C"
-
-    return "?"
-
-
-def title_offset_for_key_count(key_count: int) -> int:
-    return 4 + key_count * 4
-
-
-def style_offset_for_layout(layout: str) -> int:
-    offsets: dict[str, int] = {
-        "A": 12,
-        "B": 16,
-        "C": 20,
-    }
-
-    if layout.startswith("K") and layout[1:].isdigit():
-        return title_offset_for_key_count(int(layout[1:])) + 4
-
-    return offsets.get(layout, 0)
-
-
-def _decode_utf16(data: bytes, start: int, end: int) -> str:
-    if end <= start:
-        return ""
-
-    return data[start:end].decode("utf-16-le", errors="replace")
-
-
-def _read_utf16z(data: bytes, start: int) -> tuple[str, int]:
-    end = start
-
-    while end + 1 < len(data):
-        if data[end] == 0 and data[end + 1] == 0:
-            break
-        end += 2
-
-    return _decode_utf16(data, start, end), end
-
-
-def _decode_ascii(data: bytes) -> str:
-    return data.decode("ascii", errors="ignore").rstrip("\x00")
-
-
-def _extract_title_color(extra_payload: bytes) -> tuple[str, str]:
-    payload = extra_payload.rstrip(b"\x00")
-
-    for offset in range(max(0, len(payload) - 64), max(0, len(payload) - 11)):
-        raw = payload[offset:offset + 8]
-        if len(raw) != 8 or any(byte not in _HEX_BYTES for byte in raw):
-            continue
-
-        packed = payload[offset + 8:offset + 12]
-        if len(packed) != 4:
-            continue
-
-        argb = raw.decode("ascii").upper()
-        if int.from_bytes(packed, "little") != int(argb, 16):
-            continue
-
-        return f"0x{argb}", f"#{argb[2:]}"
-
-    return "", ""
-
-
-def _extract_title_effect(extra_payload: bytes) -> str:
-    payload = extra_payload.rstrip(b"\x00")
-
-    for offset in range(0, max(0, len(payload) - 7)):
-        length = u32(payload, offset)
-        if not length or length <= 8 or length > 128:
-            continue
-
-        text_start = offset + 8
-        text_end = text_start + length
-        if text_end > len(payload):
-            continue
-
-        raw = payload[text_start:text_end]
-        if all(32 <= byte < 127 for byte in raw):
-            return _decode_ascii(raw)
-
-    return ""
-
-
-def _extract_text_fields(
-    block: bytes,
-    text_start: int,
-    style_value: int,
-) -> tuple[str, str, int, int, str, str, int, str, str]:
-    if text_start >= len(block):
-        return "", "", 0, 0, "", "", 0, "", "style"
-
-    is_styled_title = block.startswith(_PA_TAG_START, text_start)
-    if is_styled_title:
-        title_end = text_start + (style_value + 1) * 2
-        # Kept as stored: the colour tags draw gradient names (MASTER WARRIOR).
-        title_text = _decode_utf16(block, text_start, title_end - 2)
-        requirement_length = _u16(block, title_end - 2)
-        requirement_start = title_end + 6
-        header_field_meaning = "styled title length"
-    else:
-        requirement_start = block.find(_PA_TAG_START, text_start)
-        if requirement_start < 0:
-            return (
-                _decode_utf16(block, text_start, len(block)).rstrip("\x00"),
-                "",
-                0,
-                0,
-                "",
-                "",
-                0,
-                "",
-                "style",
-            )
-
-        title_text = _decode_utf16(block, text_start, requirement_start - 8)
-        requirement_length = _u16(block, requirement_start - 8)
-        header_field_meaning = "style"
-
-    requirement_text, requirement_end = _read_utf16z(block, requirement_start)
-    category_id = u32(block, requirement_end + 4)
-    extra_payload = block[requirement_end + 8:]
-    title_color_argb, title_color_css = _extract_title_color(extra_payload)
-
-    return (
-        title_text.rstrip("\x00"),
-        requirement_text,
-        requirement_length,
-        category_id,
-        title_color_argb,
-        title_color_css,
-        len(extra_payload.rstrip(b"\x00")),
-        _extract_title_effect(extra_payload),
-        header_field_meaning,
+    title_color_argb, title_color_css = _color_fields(color_argb)
+    return TitleRecord(
+        key_count=key_count,
+        key_values=[u32(block, _KEY_VALUES + index * _U32_SIZE) for index in range(key_count)],
+        title_id=title_id,
+        title_text_kr=title_text_kr,
+        requirement_text_kr=requirement_text_kr,
+        is_styled_title=title_text_kr.startswith(_PA_TAG),
+        category_id=u32(block, tail + _CATEGORY),
+        unknown_tail_1c=u32(block, tail + _UNKNOWN_TAIL_1C),
+        unknown_tail_24=u32(block, tail + _UNKNOWN_TAIL_24),
+        title_color_argb=title_color_argb,
+        title_color_css=title_color_css,
+        title_effect_name=effect_name,
     )
 
 
@@ -169,50 +83,14 @@ def extract_title_records(
     data: bytes,
     offset_map: dict[int, tuple[int, int]],
 ) -> list[TitleRecord]:
-    records: list[TitleRecord] = []
+    """Every record the offset table points at, in title ID order.
 
+    Raises ValueError on a block that runs past the file or does not read
+    to its size, since its fields would be misread.
+    """
+    records: list[TitleRecord] = []
     for title_id, (offset, size) in sorted(offset_map.items()):
         if offset + size > len(data):
-            continue
-
-        block = data[offset:offset + size]
-        layout = detect_layout(block, title_id)
-        key_count = u32(block, 0)
-        key_values = [u32(block, 4 + index * 4) for index in range(key_count)]
-        style_offset = style_offset_for_layout(layout)
-        style_value = u32(block, style_offset) if style_offset else 0
-        text_start = style_offset + 8 if style_offset else 0
-        (
-            title_text_kr,
-            requirement_text_kr,
-            requirement_length,
-            category_id,
-            title_color_argb,
-            title_color_css,
-            extra_payload_size,
-            title_effect_name,
-            header_field_meaning,
-        ) = _extract_text_fields(block, text_start, style_value)
-
-        records.append(TitleRecord(
-            layout=layout,
-            key_count=key_count,
-            key_values=key_values,
-            title_id=title_id,
-            style_value=style_value,
-            style_offset=style_offset,
-            title_text_kr=title_text_kr,
-            requirement_text_kr=requirement_text_kr,
-            requirement_length=requirement_length,
-            category_id=category_id,
-            title_color_argb=title_color_argb,
-            title_color_css=title_color_css,
-            title_effect_name=title_effect_name,
-            extra_payload_size=extra_payload_size,
-            header_field_meaning=header_field_meaning,
-            pa_colors=extract_pa_colors(block),
-            debug_u32=debug_u32_fields(block),
-            first_pa_color_offset=first_pa_color_offset(block),
-        ))
-
+            raise ValueError(f"title {title_id} block runs past the end of title.dbss")
+        records.append(parse_title_record(data[offset:offset + size], title_id))
     return records

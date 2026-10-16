@@ -1,89 +1,48 @@
+"""`zodiacsign.dbss`: the 12 zodiac signs, walked record by record from the counts.
+
+    u32 count | count x record
+
+    record: u8 zodiac_id | u32 float_count | f32[float_count][3] star_positions
+            | u32 pairs_count | u16[pairs_count][2] star_pairs
+            | str16 name_kr | str16 trait_text | str16 icon_small | str16 icon_large
+            | 13-byte tail (u8 x3, u16 next_zodiac_id, u8 x4, u32)
+
+Every string is a u64 UTF-16 code-unit count plus UTF-16LE text. The records
+run back to back and the last one ends at end of file. Full layout in
+docs/file-formats/zodiacsign_dbss.md.
+"""
 from __future__ import annotations
 
-from _common.binary import u8 as _u8, u16 as _u16, u32 as _u32, u64 as _u64
+import struct
+
+from _common.record_reader import RecordReader
 from .model import ZodiacSignRecord
 
-# UTF-16LE bytes for "자리" (U+C790 U+B9AC)
-_ZARI = b"\x90\xC7\xAC\xB9"
+_U8 = struct.Struct("<B")
+_U16 = struct.Struct("<H")
+_U32 = struct.Struct("<I")
+
+_STAR_POSITION_SIZE = 12  # f32 x, y and a constant 1.0
+_STAR_PAIR_SIZE = 4  # u16 a, u16 b
+# zodiac_id_dup, zodiac_id_dup2 and unknown_tail_02 before next_zodiac_id.
+_TAIL_HEAD_SIZE = 3
+# unknown_tail_05 to unknown_tail_08 and the u32 unknown_end after it.
+_TAIL_END_SIZE = 8
 
 
-def _read_utf16_block(data: bytes, offset: int) -> tuple[str, int]:
-    """Read u32 char_count + u32 pad + char16[char_count]. Returns (text, new_offset)."""
-    if offset + 8 > len(data):
-        return "", offset
-    char_count = _u32(data, offset)
-    offset += 8  # skip char_count (4B) + pad (4B)
-    byte_len = char_count * 2
-    if offset + byte_len > len(data):
-        return "", offset
-    text = data[offset : offset + byte_len].decode("utf-16-le", errors="replace")
-    return text, offset + byte_len
-
-
-def _read_text_block(data: bytes, offset: int) -> tuple[str, str, int]:
-    """Parse text_block. Returns (constellation_name, trait_text, new_offset).
-
-    Layout: u32 unknown_00 (4B) + u16 unknown_04 (2B) + char16[?] constellation_name
-    (scan for 자리) + u64 trait_len (8B) + char16[trait_len] trait_text.
-    """
-    name_start = offset + 6  # skip unknown_00 (4B) + unknown_04 (2B)
-
-    zari_pos = data.find(_ZARI, name_start)
-    if zari_pos == -1:
-        return "", "", name_start
-
-    name_end = zari_pos + 4  # inclusive of 자리
-    constellation_name = data[name_start:name_end].decode("utf-16-le", errors="replace")
-
-    pos = name_end
-    trait_len = _u64(data, pos)
-    pos += 8
-    byte_len = trait_len * 2
-    if pos + byte_len > len(data):
-        return constellation_name, "", pos
-    trait_text = data[pos : pos + byte_len].decode("utf-16-le", errors="replace")
-    return constellation_name, trait_text, pos + byte_len
-
-
-def _parse_one_zodiacsign(
-    data: bytes, offset: int, row: int
-) -> tuple[ZodiacSignRecord | None, int]:
-    pos = offset
-    if pos >= len(data):
-        return None, pos
-
-    zodiac_id = _u8(data, pos)
-    pos += 1
-    float_count = _u32(data, pos)
-    pos += 4
-
-    if float_count > 64:
-        return None, pos
-
-    pos += float_count * 12  # skip f32×3×float_count star_positions
-
-    pairs_count = _u32(data, pos)
-    pos += 4
-    pos += 2  # u16 unknown_after_pairs_count
-
-    if pairs_count > 64:
-        return None, pos
-
-    pos += pairs_count * 4  # skip u16×2×pairs_count star_pairs
-
-    constellation_name, trait_text, pos = _read_text_block(data, pos)
-    icon_small, pos = _read_utf16_block(data, pos)
-    icon_large, pos = _read_utf16_block(data, pos)
-
-    # tail: zodiac_id_tail (u8) + zodiac_id_dup2 (u8) + unknown_tail_02 (u8) + next_zodiac_id (u16)
-    #       + unknown_tail_05 (u8) + unknown_tail_06 (u8) + unknown_tail_07 (u8) + unknown_tail_08 (u8)
-    #       + unknown_end (u32)
-    pos += 3  # zodiac_id_tail + zodiac_id_dup2 + unknown_tail_02
-    next_zodiac_id = _u16(data, pos)
-    pos += 2
-    pos += 4  # unknown_tail_05..unknown_tail_08 (4 u8)
-    pos += 4  # unknown_end u32
-
+def _read_record(reader: RecordReader, row: int) -> ZodiacSignRecord:
+    (zodiac_id,) = reader.unpack(_U8)
+    (float_count,) = reader.unpack(_U32)
+    reader.skip(float_count * _STAR_POSITION_SIZE)
+    (pairs_count,) = reader.unpack(_U32)
+    reader.skip(pairs_count * _STAR_PAIR_SIZE)
+    constellation_name = reader.text(wide=True)
+    trait_text = reader.text(wide=True)
+    icon_small = reader.text(wide=True)
+    icon_large = reader.text(wide=True)
+    reader.skip(_TAIL_HEAD_SIZE)
+    (next_zodiac_id,) = reader.unpack(_U16)
+    reader.skip(_TAIL_END_SIZE)
     return ZodiacSignRecord(
         row=row,
         zodiac_id=zodiac_id,
@@ -94,23 +53,18 @@ def _parse_one_zodiacsign(
         icon_small=icon_small,
         icon_large=icon_large,
         next_zodiac_id=next_zodiac_id,
-    ), pos
+    )
 
 
 def parse_zodiacsign_records(data: bytes) -> list[ZodiacSignRecord]:
-    if len(data) < 4:
-        return []
+    """Every record in file order.
 
-    count = _u32(data, 0)
-    if count > 64:
-        count = 12  # always 12 zodiac signs
-
-    records: list[ZodiacSignRecord] = []
-    pos = 4
-    for i in range(count):
-        record, pos = _parse_one_zodiacsign(data, pos, row=i)
-        if record is None:
-            break
-        records.append(record)
-
+    Raises ValueError when a record runs past the file or bytes are left after
+    the last one, since the layout would then have changed.
+    """
+    reader = RecordReader(data, 0, len(data), "zodiacsign.dbss")
+    (count,) = reader.unpack(_U32)
+    records = [_read_record(reader, row) for row in range(count)]
+    if not reader.at_end():
+        raise ValueError(f"zodiacsign.dbss has {reader.remaining()} bytes after its {count} records")
     return records

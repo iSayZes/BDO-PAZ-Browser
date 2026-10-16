@@ -6,18 +6,12 @@ Map data per instance field: a title and description as UI string keys, a map im
 points and a few values without a name yet. The key is the
 [instancefield.dbss](instancefield_dbss.md) field key.
 
-Example:
 
-```text
-key 4001   A1_001
-  title INSTANCEDUNGEONDATA_A1_001_NAME  "The Magnus: The Great Single Path"
-  desc  INSTANCEDUNGEONDATA_A1_001_DESC  "Everything to one, one returns to everything."
-key 101    HorseRace_Glish_Main
-  title LUA_HORSERACING_MAP_STAGENAME00  "Mediah: Stonetail Horse Ranch"
-  image Combine/Etc/Combine_Etc_horseracing.dds  (1, 1005) to (501, 1165)
-key 150    Atoraxion_Desert
-  entry item 65992 "Fate Fulfilled: Atoraxxion"
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -29,61 +23,75 @@ key 150    Atoraxion_Desert
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A PABR file with variable-size records and the counted string table that
 `exploration.bss` and `npcsimply.bss` also end with (`_common/pabr_strings.py`).
 The records end exactly where the string table starts.
 
-| Offset              | Type   | Field              | Notes |
-| ------------------- | ------ | ------------------ | ----- |
-| `+0x00`             | char[4]| magic              | `PABR` |
-| `+0x04`             | u32    | count              | Number of records |
-| `+0x08`             | ...    | records            | `count` x record, not sorted by key |
-| string_table_start  | ...    | string table       | u32 count, then `count` x (u8 is_wide, u32 byte_length, payload) |
-| end - 8             | u32    | string_table_start | Offset of the string table |
-| end - 4             | u32    | zero               | `0` |
+| Offset              | Type          | Field              | Notes                               |
+| ------------------- | ------------- | ------------------ | ----------------------------------- |
+| `+0x00`             | char[4]       | magic              | `PABR`                              |
+| `+0x04`             | u32           | count              | Number of records                   |
+| `+0x08`             | Record[count] | records            | `count` x record, not sorted by key |
+| `records+0x00`      | String Table  | string_table       | See String Table                    |
+| `string_table+0x00` | u32           | string_table_start | Offset of the string table          |
+| `string_table+0x04` | u32           | zero               | `0`                                 |
+
+### String Table (variable: 4 bytes + strings)
 
 String table entry 0 is the empty string; a string index of `0` means none.
 
-### Record (196 bytes + lists)
+| Offset  | Type               | Field        | Notes                |
+| ------- | ------------------ | ------------ | -------------------- |
+| `+0x00` | u32                | string_count | Number of strings    |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries  |
 
-| Offset  | Type     | Field              | Notes |
-| ------- | -------- | ------------------ | ----- |
-| `+0x00` | u16      | key                | `instancefield.dbss` key |
-| `+0x02` | u32      | max_user           | Most participants: `6` on Solare arenas, `30` on guild matches, `40` on most Crimson fields and Oasis servers, `3000` on the `MajorSiege_*` maps |
-| `+0x06` | u32      | max_team_count     | `1`, or `2` on team battles (Solare arenas, guild matches, Crimson fields, `PAPUCRIO_ARENA`, `CrewBattle`, `Edania_Field_1vs1`) |
-| `+0x0A` | f32[3]   | x, y, z            | World position (centimetres); all `0` when unset |
-| `+0x16` | f32      | radius             | Centimetres around that position (`9000` on `Solare_Arena_Reed`); `0` when unset |
-| `+0x1A` | u32      | title              | String index of a `GAME` sheet key (`LUA_LOCALWAR_SERVERNAME_MAP_1`, `INSTANCEDUNGEONDATA_A1_001_NAME`) |
-| `+0x1E` | u32      | description        | String index of a `GAME` sheet key (`INSTANCEDUNGEONDATA_A1_001_DESC`) |
-| `+0x22` | u8       | is_season_only     | `1` on six Crimson field records (keys 11, 12, 17, 18, 22, 24), else `0` |
-| `+0x23` | u32      | min_user           | Fewest participants; equals `max_team_count` except on `Edania_Field_1vs1` (`1`), horse races (`2`, `3`, `5`) and `Yonggung` (`7`). Never above `max_user` |
-| `+0x27` | u32      | image              | String index of a `.dds` path (`Map_Nest.dds`, `Combine_Etc_horseracing.dds`) |
-| `+0x2B` | u16[4]   | image_region       | x1, y1, x2, y2 in pixels of `image`; `0, 0, 1, 1` on the Crimson field maps |
-| `+0x33` | u8[106]  | filler             | The same bytes in every record; the 8-byte groups hold `0x00007FFC...` and `0x00000293...` values, which read like memory addresses of the tool that wrote the file |
-| `+0x9D` | u8       | is_show_name_when_camouflage | `1` on the Solare arenas, guild matches, `PAPUCRIO_ARENA` and 8 of the 16 Crimson field records: names stay visible under camouflage |
-| `+0x9E` | u16      | restrict_territory | `territoryinfo.bss` territory key the map is locked to, `0xFFFF` for none; see [Territory locks](#territory-locks-client-3464) |
-| `+0xA0` | u8[8]    | zero               | `0` |
-| `+0xA8` | u32      | entry_item_id      | Item ID, `0` for none; the "Access Granted" items of Atoraxion |
-| `+0xAC` | u32      | unknown_ac         | `1` where `entry_item_id` is set, else `0`; possibly its count, see [Field Names](#field-names) |
-| `+0xB0` | u32      | zero               | `0` |
-| `+0xB4` | u32      | unknown_b4         | `0`, `3600` on the `A1_` fields, `10800` on the Atoraxion Single maps and key 210 |
-| `+0xB8` | u32      | zero               | `0` |
-| `+0xBC` | u32      | hash_count         | |
-| `+0xC0` | u32[n]   | unknown_hashes     | `hash_count` values; only on `A1_` fields (1 to 3 each); not a `stringtable.bss` key hash |
-| ...     | u32      | spawn_count        | |
-| ...     | f32[3][n]| spawns             | World positions; `2` on every guild match map, one per side, both inside the map's box |
-| ...     | f32      | unknown_spawn_f32  | Only when `spawn_count` is not `0`; `200` on all |
-| ...     | u32      | unknown_spawn_u32  | Only when `spawn_count` is not `0`; `10` on all |
+### Record (variable: 196 bytes + lists)
 
-### Field Names
+| Offset               | Type                     | Field              | Notes |
+| -------------------- | ------------------------ | ------------------ | ----- |
+| `+0x00`              | u16                      | key                | `instancefield.dbss` key |
+| `+0x02`              | u32                      | max_user           | Most participants: `6` on Solare arenas, `30` on guild matches, `40` on most Crimson fields and Oasis servers, `3000` on the `MajorSiege_*` maps |
+| `+0x06`              | u32                      | max_team_count     | `1`, or `2` on team battles (Solare arenas, guild matches, Crimson fields, `PAPUCRIO_ARENA`, `CrewBattle`, `Edania_Field_1vs1`) |
+| `+0x0A`              | f32                      | x                  | World position (centimetres); all `0` when unset |
+| `+0x0E`              | f32                      | y                  | |
+| `+0x12`              | f32                      | z                  | |
+| `+0x16`              | f32                      | radius             | Centimetres around that position (`9000` on `Solare_Arena_Reed`); `0` when unset |
+| `+0x1A`              | u32                      | title              | String index of a `GAME` sheet key (`LUA_LOCALWAR_SERVERNAME_MAP_1`, `INSTANCEDUNGEONDATA_A1_001_NAME`) |
+| `+0x1E`              | u32                      | description        | String index of a `GAME` sheet key (`INSTANCEDUNGEONDATA_A1_001_DESC`) |
+| `+0x22`              | u8                       | is_season_only     | `1` on six Crimson field records (keys 11, 12, 17, 18, 22, 24), else `0` |
+| `+0x23`              | u32                      | min_user           | Fewest participants; equals `max_team_count` except on `Edania_Field_1vs1` (`1`), horse races (`2`, `3`, `5`) and `Yonggung` (`7`). Never above `max_user` |
+| `+0x27`              | u32                      | image              | String index of a `.dds` path (`Map_Nest.dds`, `Combine_Etc_horseracing.dds`) |
+| `+0x2B`              | u16[4]                   | image_region       | x1, y1, x2, y2 in pixels of `image`; `0, 0, 1, 1` on the Crimson field maps |
+| `+0x33`              | bytes[106]               | unknown_33         | The same bytes in every record; the 8-byte groups hold `0x00007FFC...` and `0x00000293...` values, which read like memory addresses of the tool that wrote the file |
+| `+0x9D`              | u8                       | is_show_name_when_camouflage | `1` on the Solare arenas, guild matches, `PAPUCRIO_ARENA` and 8 of the 16 Crimson field records: names stay visible under camouflage |
+| `+0x9E`              | u16                      | restrict_territory | `territoryinfo.bss` territory key the map is locked to, `0xFFFF` for none; see [Territory locks](#territory-locks-client-3464) |
+| `+0xA0`              | bytes[8]                 | unknown_a0         | Always `0` |
+| `+0xA8`              | u32                      | entry_item_id      | Item ID, `0` for none; the "Access Granted" items of Atoraxion |
+| `+0xAC`              | u32                      | unknown_ac         | `1` where `entry_item_id` is set, else `0`; possibly its count, see [Field Names](#field-names) |
+| `+0xB0`              | u32                      | unknown_b0         | Always `0` |
+| `+0xB4`              | u32                      | unknown_b4         | `0`, `3600` on the `A1_` fields, `10800` on the Atoraxion Single maps and key 210 |
+| `+0xB8`              | u32                      | unknown_b8         | Always `0` |
+| `+0xBC`              | u32                      | hash_count         | |
+| `+0xC0`              | u32[hash_count]          | unknown_hashes     | `hash_count` values; only on `A1_` fields (1 to 3 each); not a `stringtable.bss` key hash |
+| `unknown_hashes+0x00` | u32                     | spawn_count        | |
+| `unknown_hashes+0x04` | f32[spawn_count][3]     | spawns             | World positions; `2` on every guild match map, one per side, both inside the map's box |
+| `spawns+0x00`        | f32 if spawn_count != 0  | unknown_spawn_f32  | Only when `spawn_count` is not `0`; `200` on all |
+| `unknown_spawn_f32+0x00` | u32 if spawn_count != 0 | unknown_spawn_u32 | Only when `spawn_count` is not `0`; `10` on all |
+
+Earlier versions of this doc called `unknown_33` `filler` and the three
+always-zero fields `unknown_a0`, `unknown_b0` and `unknown_b8` `zero`.
+
+## Field Names
 
 The names of `max_user`, `max_team_count`, `is_season_only`, `min_user`, `is_show_name_when_camouflage` and `restrict_territory` follow the `InstanceEnterPosition` sheet of a private server's `DataSheets.bexcel` on client 1784 (columns `MaxUser`, `MaxTeamCount`, `isSeasonOnly`, `MinUser`, `isShowNameWnehCamoflage`, `restrictTerritory`). Matched by value over the 77 keys the sheet shares with client 3464: five columns equal the file on all 77 keys, every non-zero value included. `MaxUser` equals `max_user` on 57; the other 20 are later rebalances (Crimson fields `30` to `40` and `2` to `4`, `CrewBattle` `10` to `20`, Atoraxion `5` to `1`).
 
 The same sheet has `exchangeItemForNormalFieldEnter` (`66012,0,1,65992,0,1` on key 150, item, enchant and count pairs) whose second item is that key's `entry_item_id`, so `unknown_ac` may be the count; the sheet has no column for `unknown_b4`, `unknown_hashes` or the spawn list, and its `Team_1` to `Team_4` positions are not the `spawns`.
 
-### Territory locks (client 3464)
+## Territory Locks (Client 3464)
 
 | Key | Field | restrict_territory | LOC name |
 | --- | ----- | -----------------: | -------- |
@@ -94,7 +102,7 @@ The same sheet has `exchangeItemForNormalFieldEnter` (`66012,0,1,65992,0,1` on k
 
 `_Ser`, `_Bal` and `_Media` store `0xFFFF`.
 
-### Entry items (client 3464)
+## Entry Items (Client 3464)
 
 | Key | Field                          | Item   | LOC name |
 | --- | ------------------------------ | -----: | -------- |

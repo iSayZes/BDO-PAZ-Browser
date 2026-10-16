@@ -4,12 +4,11 @@
 
 Lists zodiac sign IDs in display/index order. The file is a compact `PABR` lookup table for the 12 horoscope signs defined by `zodiacsign.dbss`.
 
-Example:
+## Versions
 
-```text
-slot 0 -> zodiac_id 1 -> Hammer
-slot 11 -> zodiac_id 12 -> Goblin
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,30 +19,25 @@ slot 11 -> zodiac_id 12 -> Goblin
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type  | Field | Notes                          |
-| ------- | ----- | ----- | ------------------------------ |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                 |
-| `+0x04` | u32   | count | Number of entries; observed 12 |
+| Offset              | Type         | Field          | Notes                                                  |
+| ------------------- | ------------ | -------------- | ------------------------------------------------------ |
+| `+0x00`             | char[4]      | magic          | ASCII `PABR`                                           |
+| `+0x04`             | u32          | count          | Number of entries; observed 12                         |
+| `+0x08`             | u8[count]    | zodiac_ids     | One byte per entry: the 1-based ID into `zodiacsign.dbss`; observed 1-12 |
+| `zodiac_ids+0x00`   | String Table | string_table   | The PABR string table, here with no strings            |
+| `string_table+0x00` | u32          | end_of_entries | Byte offset immediately after entries; observed `0x14` |
+| `string_table+0x04` | u32          | zero           | Always 0                                               |
 
-### Entry (1 byte, repeated `count` times)
+### String Table (variable: 4 bytes + strings)
 
-| Offset  | Type | Field     | Notes                                            |
-| ------- | ---- | --------- | ------------------------------------------------ |
-| `+0x00` | u8   | zodiac_id | 1-based ID into `zodiacsign.dbss`; observed 1-12 |
-
-### Trailer (12 bytes)
-
-Follows the last entry.
-
-| Offset  | Type | Field          | Notes                                                  |
-| ------- | ---- | -------------- | ------------------------------------------------------ |
-| `+0x00` | u32  | unknown_00     | Always 0                                               |
-| `+0x04` | u32  | end_of_entries | Byte offset immediately after entries; observed `0x14` |
-| `+0x08` | u32  | unknown_08     | Always 0                                               |
+| Offset  | Type               | Field        | Notes    |
+| ------- | ------------------ | ------------ | -------- |
+| `+0x00` | u32                | string_count | Always 0 |
+| `+0x04` | pstr[string_count] | strings      | Empty    |
 
 ## Reference Table
 

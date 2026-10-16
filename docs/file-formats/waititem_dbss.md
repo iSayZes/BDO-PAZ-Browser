@@ -7,11 +7,11 @@ its Registration Queue before they appear for sale: PEN Blackstar and boss
 gear, TRI to PEN Godr-Ayed weapons, TET and PEN accessories, and every level
 of Fallen God's Armor.
 
-```text
-0x140B371D  735005 Blackstar Trinket (20)
-0x05002F1D   12061 Tungrad Ring (5)
-0x000AFC1A  719898 Fallen God's Armor
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,15 +21,17 @@ icons from the `ITEM_KEY` and `ITEM_ICON` lookup indexes.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then 17-byte rows; the
 file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                     |
-| ------- | ----- | --------- | ------------------------- |
-| `+0x00` | u32   | row_count | `328` on client 3464      |
-| `+0x04` | row[] | rows      | `row_count` 17-byte rows  |
+| Offset  | Type           | Field     | Notes                |
+| ------- | -------------- | --------- | -------------------- |
+| `+0x00` | u32            | row_count | `328` on client 3464 |
+| `+0x04` | Row[row_count] | rows      | See Row              |
 
 ### Row (17 bytes)
 
@@ -51,9 +53,16 @@ On client 3464 the 328 rows hold 184 items:
 | `5`           | 21    | Accessories (11629 Tungrad Necklace, 12061 Tungrad Ring, 705509 Manos Necklace) |
 | `0` to `5`    | 1     | 719898 Fallen God's Armor                                                  |
 
-## `waititemoffset.dbss`
+### `waititemoffset.dbss`
 
-A u32 row count (equal to the main file's), then 12-byte rows:
+A row count equal to the main file's, then one index row per main row.
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+### Index Row (12 bytes)
 
 | Offset  | Type | Field    | Notes                                                        |
 | ------- | ---- | -------- | ------------------------------------------------------------ |

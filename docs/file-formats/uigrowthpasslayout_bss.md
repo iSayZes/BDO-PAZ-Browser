@@ -4,31 +4,39 @@
 
 The quest grid of each Growth Pass category: a column and row count per [`growthpasscategory.dbss`](growthpasscategory_dbss.md) key, then one cell per grid position that is blank, a quest, or a piece of the line that links the quests. `panel_window_growthpass_1.luac` builds the window from it through `ToClient_getGrowthPassLayoutWrapper(categoryKey)`, `getColCount()`, `getRowCount()` and `getCellObjectWrapper(row, col)`.
 
-Example (client 3464, category 9, top row):
+## Versions
 
-```text
-row 0: Blank | RB | quest 4472/2 | Horizon | quest 4472/3 | BL | Blank
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field        | Notes                                     |
-| ------- | ----- | ------------ | ----------------------------------------- |
-| `+0x00` | u8[4] | magic        | `PABR` (ASCII)                            |
-| `+0x04` | u32   | layout_count | `2` on client 3464                        |
-| `+0x08` | ...   | layouts      | `layout_count` layouts, back to back      |
-| end     | u8[12] | trailer     | u32 `0`, u32 offset of the trailer itself, u32 `0` |
+### File Layout
 
-### Layout (12-byte header, then cells)
+| Offset              | Type                 | Field        | Notes                                              |
+| ------------------- | -------------------- | ------------ | -------------------------------------------------- |
+| `+0x00`             | char[4]              | magic        | ASCII `PABR`                                       |
+| `+0x04`             | u32                  | layout_count | `2` on client 3464                                 |
+| `+0x08`             | Layout[layout_count] | layouts      | See Layout; back to back                           |
+| `layouts+0x00`      | String Table         | string_table | The PABR string table, here with no strings        |
+| `string_table+0x00` | u32                  | table_start  | Offset of the string table, where the grids end    |
+| `string_table+0x04` | u32                  | zero         | Always `0`                                         |
 
-| Offset  | Type | Field        | Notes                                                  |
-| ------- | ---- | ------------ | ------------------------------------------------------ |
-| `+0x00` | u32  | category_key | `growthpasscategory.dbss` key                          |
-| `+0x04` | u32  | col_count    | `7` on both layouts                                    |
-| `+0x08` | u32  | row_count    | `27` (category 7), `13` (category 9) on client 3464   |
-| `+0x0C` | cell[] | cells      | `row_count * col_count` cells, row by row              |
+### Layout (variable: 12 bytes + cells)
+
+| Offset  | Type        | Field        | Notes                                                  |
+| ------- | ----------- | ------------ | ------------------------------------------------------ |
+| `+0x00` | u32         | category_key | `growthpasscategory.dbss` key                          |
+| `+0x04` | u32         | col_count    | `7` on both layouts                                    |
+| `+0x08` | u32         | row_count    | `27` (category 7), `13` (category 9) on client 3464   |
+| `+0x0C` | Cell[..end] | cells        | `row_count * col_count` cells, row by row; the layout ends after the last cell |
 
 ### Cell (6 bytes)
 
@@ -38,6 +46,13 @@ All multi-byte values are little-endian.
 | `+0x02` | u16  | quest_id       | `getQuestId()`; `0` on every cell that is not a quest       |
 | `+0x04` | u8   | cell_type      | `getCellType()`, see Cell Types                             |
 | `+0x05` | u8   | unknown_05     | `1` on two cells, see Open Questions                        |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 The Lua draws even rows quest-tall and odd rows as thin line rows, even columns quest-wide and odd columns as thin line columns. Every quest cell sits on an even row and an even column.
 

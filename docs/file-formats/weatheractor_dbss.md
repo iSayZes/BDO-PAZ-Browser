@@ -9,11 +9,11 @@ Imp, 27517 Kzarka, 23085 Vell). A row is the character key, a type byte, a
 block of floats and small integers, and on three rows the skill the actor
 casts.
 
-```text
-27063 Sandstorm          type 1  skill 40337 Debuff Sandstorm (rank 1)
-27109 Margoria Typhoon   type 2  skill 40438 Typhoon Lightning (rank 1)
-45381 Cloudy Day         type 3
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,15 +24,17 @@ LOC type 6, skill names from LOC type 10 and skill icons from the
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then 75-byte rows; the
 file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                    |
-| ------- | ----- | --------- | ------------------------ |
-| `+0x00` | u32   | row_count | `101` on client 3464     |
-| `+0x04` | row[] | rows      | `row_count` 75-byte rows |
+| Offset  | Type           | Field     | Notes                |
+| ------- | -------------- | --------- | -------------------- |
+| `+0x00` | u32            | row_count | `101` on client 3464 |
+| `+0x04` | Row[row_count] | rows      | See Row              |
 
 ### Row (75 bytes)
 
@@ -55,11 +57,11 @@ Value spreads are from client 3464.
 | `+0x26` | u32     | skill_apply_rate | `5000`, `50000` or `1000000` on the skill rows, else `0`  |
 | `+0x2A` | u32     | unknown_2a    | `1000000` on 23400 Erebjork, else `0`                        |
 | `+0x2E` | f32     | unknown_2e    | `5.0` on 23400 Erebjork, else `0`                            |
-| `+0x32` | u8[12]  | unknown_32    | All zero                                                     |
+| `+0x32` | bytes[12] | unknown_32    | All zero                                                     |
 | `+0x3E` | u16     | unknown_3e    | `0` to `99`; `29` on 74 rows                                 |
 | `+0x40` | f32     | unknown_40    | `0` to `23.0`; `13.0` on 75 rows                             |
 | `+0x44` | u16     | unknown_44    | `99` on 89 rows; `0`, `2` or `10` on the others              |
-| `+0x46` | u8[4]   | unknown_46    | All zero                                                     |
+| `+0x46` | bytes[4] | unknown_46    | All zero                                                     |
 | `+0x4A` | u8      | unknown_4a    | `0` or `1` (78 rows)                                         |
 
 The skill rows on client 3464:
@@ -74,9 +76,16 @@ The skill rows on client 3464:
 `unknown_40` `13.0`, `unknown_44` `99`, `unknown_4a` `1`): monsters from
 24405 Red Orc to 24517 Small Altar Imp.
 
-## `weatheractoroffset.dbss`
+### `weatheractoroffset.dbss`
 
-A u32 row count (equal to the main file's), then 10-byte rows:
+A row count equal to the main file's, then one index row per main row.
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+### Index Row (10 bytes)
 
 | Offset  | Type | Field         | Notes                                                       |
 | ------- | ---- | ------------- | ----------------------------------------------------------- |

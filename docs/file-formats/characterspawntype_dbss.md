@@ -12,13 +12,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes     | Records             | Row bytes |
 | ------ | -------------- | ------- | ------------------------------- | --------- | ------------------- | --------- |
-| 1      | 3473 and later | 3473    | `characterspawntype.dbss`       | 1,178,548 | 24,553 Record       | 48        |
-| 1      | 3473 and later | 3473    | `characterspawntypeoffset.dbss` | 245,550   | 24,553 Index Record | 10        |
+| 2      | 3473 and later | 3473    | `characterspawntype.dbss`       | 1,178,548 | 24,553 Record       | 48        |
+| 2      | 3473 and later | 3473    | `characterspawntypeoffset.dbss` | 245,550   | 24,553 Index Record | 10        |
+| 1      | 1784           | 1784    | `characterspawntype.dbss`       | 725,344   | 16,485 Record       | 44        |
+| 1      | 1784           | 1784    | `characterspawntypeoffset.dbss` | 164,870   | 16,485 Index Record | 10        |
 
 | Layout | File                            | Known                | Unknown    |
 | ------ | ------------------------------- | -------------------- | ---------- |
-| 1      | `characterspawntype.dbss`       | 1,178,548 B (100.0%) | 0 B (0.0%) |
-| 1      | `characterspawntypeoffset.dbss` | 245,550 B (100.0%)   | 0 B (0.0%) |
+| 2      | `characterspawntype.dbss`       | 1,178,548 B (100.0%) | 0 B (0.0%) |
+| 2      | `characterspawntypeoffset.dbss` | 245,550 B (100.0%)   | 0 B (0.0%) |
+| 1      | `characterspawntype.dbss`       | 725,344 B (100.0%)   | 0 B (0.0%) |
+| 1      | `characterspawntypeoffset.dbss` | 164,870 B (100.0%)   | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -30,7 +34,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -73,6 +77,21 @@ A parallel lookup index with one entry per main-file record.
 | ------- | ------------------ | ------------ | ---------- |
 | `+0x00` | u32                | string_count | Always `0` |
 | `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Layout 1
+
+On client 1784 `roles` holds 42 bytes, `SpawnType` values `0` to `41`, and
+the record is 44 bytes; values `42` to `45` came later. On the 15,894
+characters both clients hold, each of the 42 bytes agrees with the same
+value on client 3473 for at least 15,852 of them. Only the Record differs
+from Layout 2; the index `size` is `44`.
+
+### Record (44 bytes)
+
+| Offset  | Type   | Field        | Notes                          |
+| ------- | ------ | ------------ | ------------------------------ |
+| `+0x00` | u16    | character_id |                                |
+| `+0x02` | u8[42] | roles        | `SpawnType` values `0` to `41` |
 
 ## Enum Values
 

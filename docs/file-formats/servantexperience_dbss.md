@@ -17,13 +17,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes     | Records                                 | Row bytes |
 | ------ | -------------- | ------- | ------------------------------ | --------- | --------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
-| 1      | 3473 and later | 3473    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
+| 2      | 3473 and later | 3473    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
+| 2      | 3473 and later | 3473    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
+| 1      | 1784           | 1784    | `servantexperience.dbss`       | 4,359,226 | 32,607 Body String, 10,869 Level Record | 18        |
+| 1      | 1784           | 1784    | `servantexperienceoffset.dbss` | 130,432   | 10,869 Index Row                        | 12        |
 
 | Layout | File                           | Known               | Unknown             |
 | ------ | ------------------------------ | ------------------- | ------------------- |
-| 1      | `servantexperience.dbss`       | 3,890,890 B (46.5%) | 4,469,390 B (53.5%) |
-| 1      | `servantexperienceoffset.dbss` | 250,624 B (100.0%)  | 0 B (0.0%)          |
+| 2      | `servantexperience.dbss`       | 3,890,890 B (46.5%) | 4,469,390 B (53.5%) |
+| 2      | `servantexperienceoffset.dbss` | 250,624 B (100.0%)  | 0 B (0.0%)          |
+| 1      | `servantexperience.dbss`       | 1,881,094 B (43.2%) | 2,478,132 B (56.8%) |
+| 1      | `servantexperienceoffset.dbss` | 130,432 B (100.0%)  | 0 B (0.0%)          |
 
 <!-- versions:end -->
 
@@ -40,7 +44,7 @@ same number.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -109,6 +113,47 @@ client 3464.
 
 The index is not in file order: the first entry is level 0 of character
 31017, whose record sits after its level 1 record.
+
+## Layout 1
+
+On client 1784 a record holds the sheet's `StunGauge` as an i16 at `+0x16`
+(Field Names), so every later field sits 2 bytes further on; `unknown_5e`
+is 12 bytes longer and `unknown_7e` 4 bytes shorter, and a u32 follows
+`unknown_e0`. A record is 14 bytes longer than in Layout 2.
+
+### Level Record (variable: 264 bytes + strings)
+
+| Offset              | Type            | Field             | Notes                                          |
+| ------------------- | --------------- | ----------------- | ---------------------------------------------- |
+| `+0x00`             | u16             | character_id      |                                                |
+| `+0x02`             | i32             | level             |                                                |
+| `+0x06`             | u64             | exp               |                                                |
+| `+0x0E`             | f32             | max_hp            |                                                |
+| `+0x12`             | u32             | max_mp            |                                                |
+| `+0x16`             | i16             | unknown_old_16    | `100` on every record on client 1784; the sheet's `StunGauge` |
+| `+0x18`             | bytes[20]       | unknown_16        | Always 0                                       |
+| `+0x2C`             | f32             | unknown_2a        | `1.0` at level 0, else 0                       |
+| `+0x30`             | bytes[20]       | unknown_2e        | Always 0                                       |
+| `+0x44`             | u32             | max_critical_rate | Always `5`                                     |
+| `+0x48`             | u32             | max_drop_item_luck | Always `5`                                    |
+| `+0x4C`             | u32             | max_fishing_luck  | Always `5`                                     |
+| `+0x50`             | u32             | max_collection_luck | Always `5`                                   |
+| `+0x54`             | i64             | max_weight        |                                                |
+| `+0x5C`             | f32             | unknown_5a        | Always `1.0`                                   |
+| `+0x60`             | bytes[28]       | unknown_5e        | Always 0                                       |
+| `+0x7C`             | u32[3]          | max_varied_speed  | Always `10, 10, 10`                            |
+| `+0x88`             | f32             | unknown_7a        | `1.0` at level 0, else 0                       |
+| `+0x8C`             | bytes[8]        | unknown_7e        | Always 0                                       |
+| `+0x94`             | u32[8]          | stats             |                                                |
+| `+0xB4`             | Body String[3]  | unknown_aa        | Always `1D1` and 0                             |
+| `unknown_aa+0x00`   | bytes[48]       | unknown_e0        | Always 0                                       |
+| `unknown_aa+0x30`   | u32             | unknown_after_unknown_e0 | `1000000` on every record on client 1784      |
+| `unknown_aa+0x34`   | str16[6]        | growth_dice       | `1D1` x 6 on client 1784, empty on 281 records |
+| `growth_dice+0x00`  | bytes[32]       | unknown_end       | Always 0                                       |
+
+On the 9,850 records client 1784 shares with client 3473 the fields from
+`max_critical_rate` to `max_weight`, `max_varied_speed` and `stats` hold
+the same bytes in both on all but 15 records.
 
 ## Enum Values
 

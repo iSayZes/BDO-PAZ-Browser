@@ -16,13 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records               | Row bytes               |
 | ------ | -------------- | ------- | ---------------------- | ------ | --------------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
-| 1      | 3473 and later | 3473    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
+| 2      | 3473 and later | 3473    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
+| 2      | 3473 and later | 3473    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
+| 1      | 1784           | 1784    | `plantzone.dbss`       | 8,347  | 309 Plant Zone Record | 27                      |
+| 1      | 1784           | 1784    | `plantzoneoffset.dbss` | 3,712  | 309 Offset Row        | 12                      |
 
 | Layout | File                   | Known            | Unknown         |
 | ------ | ---------------------- | ---------------- | --------------- |
-| 1      | `plantzone.dbss`       | 11,721 B (72.8%) | 4,390 B (27.2%) |
-| 1      | `plantzoneoffset.dbss` | 4,394 B (83.3%)  | 878 B (16.7%)   |
+| 2      | `plantzone.dbss`       | 11,721 B (72.8%) | 4,390 B (27.2%) |
+| 2      | `plantzoneoffset.dbss` | 4,394 B (83.3%)  | 878 B (16.7%)   |
+| 1      | `plantzone.dbss`       | 5,257 B (63.0%)  | 3,090 B (37.0%) |
+| 1      | `plantzoneoffset.dbss` | 3,094 B (83.4%)  | 618 B (16.6%)   |
 
 <!-- versions:end -->
 
@@ -34,7 +38,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -93,6 +97,28 @@ Provides the byte ranges for records in `plantzone.dbss`.
 | `+0x08` | u32  | data_size   | Record payload byte count: `32`, `34`, or `37`    |
 
 Offset rows are not sorted by `data_offset`, but sorted rows cover every byte from `plantzone.dbss +0x04` through EOF with no gaps or overlaps. The parser reads `record_id` and `unknown_02` as one u32 (`parse_bare_u32_offset_rows()`).
+
+## Layout 1
+
+On client 1784 a Plant Zone Record was 27 bytes: it ended after
+`max_capacity_level`, without `worker_species_count` and `worker_species`.
+Only the Plant Zone Record differs from Layout 2; every offset row's
+`data_size` is `27`. On client 1784 the file holds 309 records.
+
+### Plant Zone Record (27 bytes)
+
+| Offset  | Type | Field                                 | Notes |
+| ------- | ---- | ------------------------------------- | ----- |
+| `+0x00` | u32  | record_id                             |       |
+| `+0x04` | u32  | unknown_04                            |       |
+| `+0x08` | u32  | unknown_08                            |       |
+| `+0x0C` | u16  | unknown_0c                            |       |
+| `+0x0E` | u8   | work_ani_type                         |       |
+| `+0x0F` | u16  | productivity_upgrade_group_index      |       |
+| `+0x11` | u16  | luck_productivity_upgrade_group_index |       |
+| `+0x13` | u32  | production_count                      |       |
+| `+0x17` | u16  | production_key                        |       |
+| `+0x19` | u16  | max_capacity_level                    |       |
 
 ## `worker_species` Values
 

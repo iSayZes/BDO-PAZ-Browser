@@ -12,11 +12,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes  | Records                         | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ------ | ------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
+| 2      | 3473 and later | 3473    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
+| 1      | 1784           | 1784    | `employeestaticstatus.bss` | 29,799 | 3,910 Ability, 230 Employee Row | 5         |
 
 | Layout | File                       | Known            | Unknown        |
 | ------ | -------------------------- | ---------------- | -------------- |
-| 1      | `employeestaticstatus.bss` | 31,985 B (95.6%) | 1,480 B (4.4%) |
+| 2      | `employeestaticstatus.bss` | 31,985 B (95.6%) | 1,480 B (4.4%) |
+| 1      | `employeestaticstatus.bss` | 28,379 B (95.2%) | 1,420 B (4.8%) |
 
 <!-- versions:end -->
 
@@ -29,7 +31,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -82,6 +84,43 @@ Each of the 19 slots is `u8 type` followed by `u32 value`.
 | ------- | ---- | ----- | ------------------------ |
 | `+0x00` | u8   | type  | Ability type, see Abilities |
 | `+0x01` | u32  | value | The type's value         |
+
+## Layout 1
+
+On client 1784 a row holds 17 ability slots, so it is 120 bytes and every
+field after `abilities` sits 10 bytes earlier. The file has no First Mate
+list, and the block before the string table holds 10 u32 values in place of
+16. The File Layout and the Employee Row differ from Layout 2.
+
+### File Layout
+
+| Offset                 | Type                       | Field                         | Notes                                                       |
+| ---------------------- | -------------------------- | ----------------------------- | ----------------------------------------------------------- |
+| `+0x00`                | char[4]                    | magic                         | `PABR`                                                      |
+| `+0x04`                | u32                        | sailor_count                  | `230` on client 1784                                        |
+| `+0x08`                | Employee Row[sailor_count] | sailor_rows                   |                                                             |
+| `sailor_rows+0x00`     | u32[10]                    | unknown_after_first_mate_rows | `5, 0, 5, 0, 300000, 1, 0, 50, 0, 1000` on client 1784: the first 10 values of the Layout 2 block, with `50` in place of `59`; client 1784 has no `first_mate_rows`, the name follows Layout 2 |
+| `sailor_rows+0x28`     | String Table               | string_table                  |                                                             |
+| `string_table+0x00`    | u32                        | table_start                   |                                                             |
+| `string_table+0x04`    | u32                        | zero                          |                                                             |
+
+### Employee Row (120 bytes)
+
+| Offset  | Type        | Field            | Notes |
+| ------- | ----------- | ---------------- | ----- |
+| `+0x00` | u8          | job              |       |
+| `+0x01` | u16         | level            |       |
+| `+0x03` | u16         | employee_key     |       |
+| `+0x05` | Ability[17] | abilities        |       |
+| `+0x5A` | u32         | weight           |       |
+| `+0x5E` | u32         | cabin_cost       |       |
+| `+0x62` | u32         | appetite         |       |
+| `+0x66` | u32         | max_condition    |       |
+| `+0x6A` | u32         | unknown_74       |       |
+| `+0x6E` | u32         | icon_index       |       |
+| `+0x72` | u16         | character_id     |       |
+| `+0x74` | u16         | employee_key_dup |       |
+| `+0x76` | u16         | unknown_80       |       |
 
 ## Abilities
 

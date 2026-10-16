@@ -21,13 +21,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes      | Records                         | Row bytes               |
 | ------ | -------------- | ------- | -------------------------------- | ---------- | ------------------------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `enchantstaticstatus.dbss`       | 23,776,392 | 100,512 Lane Dice, 33,504 Block | 18 to 28, 22 on average |
-| 1      | 3473 and later | 3473    | `enchantstaticstatusoffset.dbss` | 402,068    | 33,504 Offset Row               | 12                      |
+| 2      | 3473 and later | 3473    | `enchantstaticstatus.dbss`       | 23,776,392 | 100,512 Lane Dice, 33,504 Block | 18 to 28, 22 on average |
+| 2      | 3473 and later | 3473    | `enchantstaticstatusoffset.dbss` | 402,068    | 33,504 Offset Row               | 12                      |
+| 1      | 1784           | 1784    | `enchantstaticstatus.dbss`       | 23,536,214 | 101,415 Lane Dice, 33,805 Block | 18 to 28, 22 on average |
+| 1      | 1784           | 1784    | `enchantstaticstatusoffset.dbss` | 405,680    | 33,805 Offset Row               | 12                      |
 
 | Layout | File                             | Known                | Unknown             |
 | ------ | -------------------------------- | -------------------- | ------------------- |
-| 1      | `enchantstaticstatus.dbss`       | 19,621,896 B (82.5%) | 4,154,496 B (17.5%) |
-| 1      | `enchantstaticstatusoffset.dbss` | 402,068 B (100.0%)   | 0 B (0.0%)          |
+| 2      | `enchantstaticstatus.dbss`       | 19,621,896 B (82.5%) | 4,154,496 B (17.5%) |
+| 2      | `enchantstaticstatusoffset.dbss` | 402,068 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `enchantstaticstatus.dbss`       | 19,344,394 B (82.2%) | 4,191,820 B (17.8%) |
+| 1      | `enchantstaticstatusoffset.dbss` | 405,680 B (100.0%)   | 0 B (0.0%)          |
 
 <!-- versions:end -->
 
@@ -40,7 +44,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -178,6 +182,75 @@ Levels run 0 to 25 with no gaps per key. There are 4,811 enchant keys
 | ------- | ------------------ | ------------ | ----- |
 | `+0x00` | u32                | string_count | `0` |
 | `+0x04` | pstr[string_count] | strings      | Empty |
+
+## Layout 1
+
+On client 1784 the block had 4 fewer zero bytes in `unknown_4e`, an
+extra u32 after the defense values, and one aid item with no count and no
+`is_cronable`. Only the Block differs from Layout 2. Field names keep
+Layout 2's offsets, so `skill_key` sits at `+0xF7` here. The parser reads
+only Layout 2.
+
+### Block (variable: 418 bytes + strings)
+
+| Offset                | Type         | Field                   | Notes |
+| --------------------- | ------------ | ----------------------- | ----- |
+| `+0x00`               | u32          | enchant_key             |       |
+| `+0x04`               | u8           | level                   |       |
+| `+0x05`               | u32          | material_item_id        |       |
+| `+0x09`               | u64          | material_count          |       |
+| `+0x11`               | u64          | perfect_count           |       |
+| `+0x19`               | u64          | black_count_for_item_market | |
+| `+0x21`               | bytes[8]     | unknown_21              |       |
+| `+0x29`               | u32          | success_rate            |       |
+| `+0x2D`               | u32          | downgrade_rate          |       |
+| `+0x31`               | bytes[4]     | unknown_31              |       |
+| `+0x35`               | u16          | max_durability          |       |
+| `+0x37`               | u16          | fail_durability_loss    |       |
+| `+0x39`               | u16          | recover_max_endurance   |       |
+| `+0x3B`               | u8           | unknown_3b              |       |
+| `+0x3C`               | u16          | perfect_durability_loss |       |
+| `+0x3E`               | f32          | max_hp                  |       |
+| `+0x42`               | i32          | varied_max_mp           |       |
+| `+0x46`               | f32          | varied_recov_hp         |       |
+| `+0x4A`               | i32          | varied_recov_mp         |       |
+| `+0x4E`               | bytes[68]    | unknown_4e              | Always `0` on client 1784 |
+| `+0x92`               | i64          | varied_possessable_weight | |
+| `+0x9A`               | bytes[8]     | unknown_9e              |       |
+| `+0xA2`               | u8           | socket_count            |       |
+| `+0xA3`               | f32[7][3]    | lane_stats              |       |
+| `+0xF7`               | u32          | skill_key               |       |
+| `+0xFB`               | str16        | description_kr          |       |
+| `description_kr+0x00` | str16        | effects                 |       |
+| `effects+0x00`        | u8           | is_notify_world         |       |
+| `effects+0x01`        | u8           | fail_result             |       |
+| `effects+0x02`        | u32          | item_market_added_price |       |
+| `effects+0x06`        | u32          | unknown_effects_06      |       |
+| `effects+0x0A`        | u8           | market_filter_1         |       |
+| `effects+0x0B`        | u8           | market_filter_2         |       |
+| `effects+0x0C`        | u8           | unknown_effects_0c      |       |
+| `effects+0x0D`        | Lane Dice[3] | dice_accuracy           |       |
+| `dice_accuracy+0x00`  | f32[3][4]    | defense                 |       |
+| `dice_accuracy+0x30`  | u32          | unknown_old_30          | 1,000,000 in all 33,805 blocks on client 1784 |
+| `dice_accuracy+0x34`  | i32[3]       | unknown_dice_accuracy_30 |      |
+| `dice_accuracy+0x40`  | u8           | life_main_type          |       |
+| `dice_accuracy+0x41`  | u8           | life_sub_type           |       |
+| `dice_accuracy+0x42`  | f32          | life_stat               |       |
+| `dice_accuracy+0x46`  | u8           | group_level             |       |
+| `dice_accuracy+0x47`  | u32          | new_perfect_enchant_item_id | |
+| `dice_accuracy+0x4B`  | i64          | new_perfect_enchant_item_count | |
+| `dice_accuracy+0x53`  | u16          | new_perfect_enchant_durability_loss | |
+| `dice_accuracy+0x55`  | i64          | prevent_cron_count      |       |
+| `dice_accuracy+0x5D`  | f32          | adjust_strength         |       |
+| `dice_accuracy+0x61`  | f32          | adjust_speed            |       |
+| `dice_accuracy+0x65`  | f32          | adjust_health           |       |
+| `dice_accuracy+0x69`  | i64          | varied_max_food         |       |
+| `dice_accuracy+0x71`  | i32          | varied_cannon_cool_time |       |
+| `dice_accuracy+0x75`  | i32[3]       | unknown_dice_accuracy_71 |      |
+| `dice_accuracy+0x81`  | u32[1]       | aid_item_ids            | One item or `0`; `45077` or `45078` on the 776 blocks that set it on client 1784 |
+| `dice_accuracy+0x85`  | u8           | is_guild_rental         | Matches Layout 2's `is_guild_rental` on every block both clients share |
+| `dice_accuracy+0x86`  | u16          | need_perfect_enchant_stack | |
+| `dice_accuracy+0x88`  | bytes[2]     | unknown_aid_item_ids_04 |       |
 
 ## The Link From Items
 

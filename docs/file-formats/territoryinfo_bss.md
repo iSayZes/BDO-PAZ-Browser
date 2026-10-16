@@ -14,13 +14,15 @@ that type.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records          | Row bytes               |
-| ------ | -------------- | ------- | ------------------- | ----- | ---------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `territoryinfo.bss` | 4,730 | 14 Territory Row | 88 to 92, 89 on average |
+| Layout | Clients        | Checked | File                | Bytes | Records          | Row bytes                  |
+| ------ | -------------- | ------- | ------------------- | ----- | ---------------- | -------------------------- |
+| 2      | 3473 and later | 3473    | `territoryinfo.bss` | 4,730 | 14 Territory Row | 88 to 92, 89 on average    |
+| 1      | 1784           | 1784    | `territoryinfo.bss` | 3,837 | 10 Territory Row | 120 to 140, 131 on average |
 
 | Layout | File                | Known           | Unknown      |
 | ------ | ------------------- | --------------- | ------------ |
-| 1      | `territoryinfo.bss` | 4,484 B (94.8%) | 246 B (5.2%) |
+| 2      | `territoryinfo.bss` | 4,484 B (94.8%) | 246 B (5.2%) |
+| 1      | `territoryinfo.bss` | 3,473 B (90.5%) | 364 B (9.5%) |
 
 <!-- versions:end -->
 
@@ -33,7 +35,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -98,6 +100,41 @@ territory realms) both refs point at one entry. The Great Ocean (territory 5) st
 | ------- | ------------------ | ------------ | ------------------- |
 | `+0x00` | u32                | string_count | 46 on client 3458   |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Layout 1
+
+On client 1784 a Territory Row held five positions instead of three, which
+moved `nation_hash` to `+0x40`, and two counted u16 lists in place of the one
+u32 list. The second list holds the `unknown_54` values of Layout 2 (`114`
+is in Serendia's list, `312` in Mediah's), so it keeps that name; the first
+list has no Layout 2 counterpart. Only the Territory Row differs from Layout
+2. On client 1784 the file holds 10 rows; the first list has 5 entries on
+Balenos to Mediah and none elsewhere, the second 0 to 5.
+
+### Territory Row (variable: 120 bytes + lists)
+
+| Offset            | Type                 | Field          | Notes                                                |
+| ----------------- | -------------------- | -------------- | ---------------------------------------------------- |
+| `+0x00`           | u16                  | territory_key  |                                                      |
+| `+0x02`           | u8                   | unknown_02     |                                                      |
+| `+0x03`           | u8                   | is_autonomous  |                                                      |
+| `+0x04`           | f32[5][3]            | positions      | Five world `x, y, z` positions; the first three match Layout 2's |
+| `+0x40`           | u32                  | nation_hash    |                                                      |
+| `+0x44`           | u32                  | nation_ref     |                                                      |
+| `+0x48`           | u32                  | name_ref       |                                                      |
+| `+0x4C`           | u32                  | icon_large_ref |                                                      |
+| `+0x50`           | u32                  | icon_small_ref |                                                      |
+| `+0x54`           | u32                  | unknown_3c     |                                                      |
+| `+0x58`           | u32                  | unknown_40     |                                                      |
+| `+0x5C`           | u32                  | crown_item_id  |                                                      |
+| `+0x60`           | u32                  | armor_item_id  |                                                      |
+| `+0x64`           | u32                  | unknown_64     | Entries in `unknown_6c`                              |
+| `+0x68`           | u32                  | unknown_68     | `0` on every row on client 1784                      |
+| `+0x6C`           | u16[unknown_64]      | unknown_6c     | Balenos holds `5` to `1`, Serendia `105` to `101`    |
+| `unknown_6c+0x00` | u32                  | list_count     | Entries in `unknown_54`                              |
+| `unknown_6c+0x04` | u32                  | unknown_50     | `0` on every row on client 1784                      |
+| `unknown_6c+0x08` | u16[list_count]      | unknown_54     | Balenos holds `11` to `15`, Serendia `111` to `115`  |
+| `unknown_54+0x00` | u32                  | unknown_tail   | `0` on every row on client 1784                      |
 
 ## Notes
 

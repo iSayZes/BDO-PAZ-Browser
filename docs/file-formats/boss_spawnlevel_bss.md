@@ -17,11 +17,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records           | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ----------------- | --------- |
-| 1      | 3473 and later | 3473    | `boss_spawnlevel.bss` | 1,070 | 24 Entry, 6 Group | 21        |
+| 2      | 3473 and later | 3473    | `boss_spawnlevel.bss` | 1,070 | 24 Entry, 6 Group | 21        |
+| 1      | 1784           | 1784    | `boss_spawnlevel.bss` | 618   | 16 Entry, 4 Group | 19        |
 
 | Layout | File                  | Known         | Unknown       |
 | ------ | --------------------- | ------------- | ------------- |
-| 1      | `boss_spawnlevel.bss` | 926 B (86.5%) | 144 B (13.5%) |
+| 2      | `boss_spawnlevel.bss` | 926 B (86.5%) | 144 B (13.5%) |
+| 1      | `boss_spawnlevel.bss` | 522 B (84.5%) | 96 B (15.5%)  |
 
 <!-- versions:end -->
 
@@ -31,7 +33,7 @@ None. Character names come from LOC type 6, reward names from LOC type 0.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -81,6 +83,25 @@ The groups on client 3464:
 | ------- | ------------------ | ------------ | -------------------------------------- |
 | `+0x00` | u32                | string_count | Number of strings                      |
 | `+0x04` | pstr[string_count] | strings      | Image paths; `image` indexes this list |
+
+## Layout 1
+
+On client 1784 the entry ends after `unknown_11`: it is 19 bytes and has no
+`character_id`. Only the Entry differs from Layout 2.
+
+### Entry (19 bytes)
+
+| Offset  | Type | Field          | Notes                                                              |
+| ------- | ---- | -------------- | ------------------------------------------------------------------ |
+| `+0x00` | u32  | boss_key       |                                                                    |
+| `+0x04` | u8   | level          |                                                                    |
+| `+0x05` | u16  | unknown_05     |                                                                    |
+| `+0x07` | u16  | unknown_07     |                                                                    |
+| `+0x09` | u32  | reward_item_id |                                                                    |
+| `+0x0D` | u32  | image          |                                                                    |
+| `+0x11` | u16  | unknown_11     | Key 4 holds 27198, 27197, 27196 and 27186, the Khan values of `unknown_11` on client 3473 |
+
+Client 1784 has 4 groups (keys 1 to 4) of 4 entries.
 
 ## Notes
 

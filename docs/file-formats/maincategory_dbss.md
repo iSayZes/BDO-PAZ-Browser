@@ -12,13 +12,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records            | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------------------ | --------- |
-| 1      | 3473 and later | 3473    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
-| 1      | 3473 and later | 3473    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
+| 2      | 3473 and later | 3473    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
+| 2      | 3473 and later | 3473    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
+| 1      | 1784           | 1784    | `maincategory.dbss`       | 1,216 | 12 Category Record | 101       |
+| 1      | 1784           | 1784    | `maincategoryoffset.dbss` | 124   | 12 Offset Record   | 10        |
 
 | Layout | File                      | Known           | Unknown       |
 | ------ | ------------------------- | --------------- | ------------- |
-| 1      | `maincategory.dbss`       | 1,279 B (83.4%) | 255 B (16.6%) |
-| 1      | `maincategoryoffset.dbss` | 124 B (80.5%)   | 30 B (19.5%)  |
+| 2      | `maincategory.dbss`       | 1,279 B (83.4%) | 255 B (16.6%) |
+| 2      | `maincategoryoffset.dbss` | 124 B (80.5%)   | 30 B (19.5%)  |
+| 1      | `maincategory.dbss`       | 1,024 B (84.2%) | 192 B (15.8%) |
+| 1      | `maincategoryoffset.dbss` | 100 B (80.6%)   | 24 B (19.4%)  |
 
 <!-- versions:end -->
 
@@ -30,7 +34,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -78,6 +82,23 @@ Provides keyed lookup into `maincategory.dbss` and supplies the record count.
 | `+0x08` | u16  | unknown_08    | Always 0                                    |
 
 Rows are stored in descending category ID order: 15 down to 1.
+
+## Layout 1
+
+On client 1784 a category record ends after `unknown_after_icon_path`: it
+has no `unknown_icon_path_04` byte, so `record_size` is 101. Only the
+Category Record differs from Layout 2.
+
+### Category Record (variable: 26 bytes + icon path)
+
+| Offset           | Type | Field                   | Notes                                 |
+| ---------------- | ---- | ----------------------- | ------------------------------------- |
+| `+0x00`          | u16  | category_id             | Primary key; matches offset-table key |
+| `+0x02`          | u32  | unknown_02              |                                       |
+| `+0x06`          | u32  | unknown_06              |                                       |
+| `+0x0A`          | u32  | unknown_0a              |                                       |
+| `+0x0E`          | str8 | icon_path               | ASCII DDS path                        |
+| `icon_path+0x00` | u32  | unknown_after_icon_path | 0, 3 or 4 on client 1784              |
 
 ## Observed Records
 

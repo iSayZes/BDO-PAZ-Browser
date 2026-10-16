@@ -15,11 +15,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes  | Records    | Row bytes                  |
 | ------ | -------------- | ------- | -------------------------- | ------ | ---------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `instancefieldmapinfo.bss` | 44,266 | 193 Record | 196 to 228, 199 on average |
+| 2      | 3473 and later | 3473    | `instancefieldmapinfo.bss` | 44,266 | 193 Record | 196 to 228, 199 on average |
+| 1      | 1784           | 1784    | `instancefieldmapinfo.bss` | 14,496 | 77 Record  | 180                        |
 
 | Layout | File                       | Known            | Unknown          |
 | ------ | -------------------------- | ---------------- | ---------------- |
-| 1      | `instancefieldmapinfo.bss` | 18,924 B (42.8%) | 25,342 B (57.2%) |
+| 2      | `instancefieldmapinfo.bss` | 18,924 B (42.8%) | 25,342 B (57.2%) |
+| 1      | `instancefieldmapinfo.bss` | 4,794 B (33.1%)  | 9,702 B (66.9%)  |
 
 <!-- versions:end -->
 
@@ -33,7 +35,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -94,6 +96,40 @@ String table entry 0 is the empty string; a string index of `0` means none.
 
 Earlier versions of this doc called `unknown_33` `filler` and the three
 always-zero fields `unknown_a0`, `unknown_b0` and `unknown_b8` `zero`.
+
+## Layout 1
+
+On client 1784 a record is 180 bytes with no lists: it has no
+`description`, so every later field sits 4 bytes earlier, and it ends after
+`unknown_b0`, without `unknown_b4`, `unknown_b8`, the hash list or the spawn
+list. `unknown_a0` is 12 bytes.
+
+### Record (180 bytes)
+
+| Offset  | Type       | Field                        | Notes |
+| ------- | ---------- | ---------------------------- | ----- |
+| `+0x00` | u16        | key                          | `instancefield.dbss` key |
+| `+0x02` | u32        | max_user                     | |
+| `+0x06` | u32        | max_team_count               | |
+| `+0x0A` | f32        | x                            | |
+| `+0x0E` | f32        | y                            | |
+| `+0x12` | f32        | z                            | |
+| `+0x16` | f32        | radius                       | |
+| `+0x1A` | u32        | title                        | String index of a `GAME` sheet key |
+| `+0x1E` | u8         | is_season_only               | |
+| `+0x1F` | u32        | min_user                     | |
+| `+0x23` | u32        | image                        | String index of a `.dds` path |
+| `+0x27` | u16[4]     | image_region                 | |
+| `+0x2F` | bytes[106] | unknown_33                   | |
+| `+0x99` | u8         | is_show_name_when_camouflage | |
+| `+0x9A` | u16        | restrict_territory           | `0xFFFF` for none |
+| `+0x9C` | bytes[12]  | unknown_a0                   | `0` except on keys 150 to 153, where it holds the u32s `66012, 1, 0`: the first item and count of the sheet's `exchangeItemForNormalFieldEnter` |
+| `+0xA8` | u32        | entry_item_id                | `65992` on keys 150 and 151, `757260` on 152 and 153 on client 1784 |
+| `+0xAC` | u32        | unknown_ac                   | `1` where `entry_item_id` is set, else `0` |
+| `+0xB0` | u32        | unknown_b0                   | Always `0` |
+
+On client 1784 the file holds 77 records and 17 strings, none of them a
+`_DESC` key.
 
 ## Field Names
 

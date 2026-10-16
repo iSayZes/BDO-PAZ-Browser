@@ -14,11 +14,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes   | Records                                                        | Row bytes              |
 | ------ | -------------- | ------- | ----------------- | ------- | -------------------------------------------------------------- | ---------------------- |
-| 1      | 3473 and later | 3473    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
+| 2      | 3473 and later | 3473    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
+| 1      | 1784           | 1784    | `exploration.bss` | 135,306 | 816 Node Head, 5,712 List, 816 Node Record                     | 4 to 196, 6 on average |
 
 | Layout | File              | Known             | Unknown          |
 | ------ | ----------------- | ----------------- | ---------------- |
-| 1      | `exploration.bss` | 120,984 B (66.6%) | 60,716 B (33.4%) |
+| 2      | `exploration.bss` | 120,984 B (66.6%) | 60,716 B (33.4%) |
+| 1      | `exploration.bss` | 86,346 B (63.8%)  | 48,960 B (36.2%) |
 
 <!-- versions:end -->
 
@@ -30,7 +32,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -133,6 +135,70 @@ terminator, and the payload is Korean text.
 | ------- | ------------------ | ------------ | ------------------- |
 | `+0x00` | u32                | string_count | Observed `622`      |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Layout 1
+
+On client 1784 the file had no Footer: the String Table followed the last
+Node Record. The Node Head was 115 bytes: it held one zone byte pair
+(`zone_index`, `zone_category`) without `grind_zone` and `grind_tier`,
+`sub_key` and `sub_key_copy` were u16, a u16 `unknown_29` followed
+`representative_id`, and `unknown_5f` was 11 bytes. The File Layout, the
+Node Record and the Node Head differ from Layout 2. Field names keep Layout
+2's offsets, so `radius` sits at `+0x19` here. On client 1784 the file holds
+816 records and 520 strings.
+
+### File Layout
+
+| Offset              | Type                      | Field              | Notes                                           |
+| ------------------- | ------------------------- | ------------------ | ----------------------------------------------- |
+| `+0x00`             | char[4]                   | magic              | `PABR` (ASCII)                                  |
+| `+0x04`             | u32                       | record_count       |                                                 |
+| `+0x08`             | Node Record[record_count] | records            | 115-byte head plus seven counted lists          |
+| `records+0x00`      | String Table              | string_table       | Directly after the records; there is no Footer  |
+| `string_table+0x00` | u32                       | string_table_start | Absolute file offset of `string_table.count`    |
+| `string_table+0x04` | u32                       | zero               |                                                 |
+
+### Node Record (variable: 115 bytes + lists)
+
+| Offset  | Type      | Field | Notes |
+| ------- | --------- | ----- | ----- |
+| `+0x00` | Node Head | head  |       |
+| `+0x73` | List[7]   | lists |       |
+
+### Node Head (115 bytes)
+
+| Offset  | Type      | Field                 | Notes                                                                     |
+| ------- | --------- | --------------------- | ------------------------------------------------------------------------- |
+| `+0x00` | u16       | node_key              |                                                                           |
+| `+0x02` | u16       | unknown_02            |                                                                           |
+| `+0x04` | u8        | enabled               |                                                                           |
+| `+0x05` | u8        | node_kind             |                                                                           |
+| `+0x06` | u16       | node_key_copy         |                                                                           |
+| `+0x08` | u16       | unknown_08            |                                                                           |
+| `+0x0A` | u16       | name_index            |                                                                           |
+| `+0x0C` | u16       | unknown_0c            |                                                                           |
+| `+0x0E` | u8        | unknown_0e            |                                                                           |
+| `+0x0F` | u8        | unknown_0f            |                                                                           |
+| `+0x10` | u8        | has_contribution_cost |                                                                           |
+| `+0x11` | u8        | is_main_alt           |                                                                           |
+| `+0x12` | u8        | is_main               |                                                                           |
+| `+0x13` | u8        | zone_index            | Same value range as Layout 2; a value here reappears in Layout 2 as `zone_index` or as `grind_zone` |
+| `+0x14` | u8        | zone_category         | `0` to `3`, paired with `zone_index` as in Layout 2                       |
+| `+0x15` | u16       | sub_key               |                                                                           |
+| `+0x17` | u16       | sub_key_copy          |                                                                           |
+| `+0x19` | f32       | radius                |                                                                           |
+| `+0x1D` | f32       | radius_squared        |                                                                           |
+| `+0x21` | u32       | description_index     |                                                                           |
+| `+0x25` | u16       | manager_family_id     |                                                                           |
+| `+0x27` | u16       | representative_id     |                                                                           |
+| `+0x29` | u16       | unknown_29            | A character ID on 21 records (`40001` on Velia 1, `41010` on Heidel 301), else `0` |
+| `+0x2B` | u32       | packed_index          |                                                                           |
+| `+0x2F` | u32       | packed_area           |                                                                           |
+| `+0x33` | bytes[39] | unknown_37            |                                                                           |
+| `+0x5A` | u8        | contribution          |                                                                           |
+| `+0x5B` | bytes[11] | unknown_5f            | Always `0` on client 1784                                                 |
+| `+0x66` | f32[3]    | position              |                                                                           |
+| `+0x72` | u8        | is_sub_node           |                                                                           |
 
 ## `node_kind` Values
 

@@ -16,13 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File               | Bytes     | Records                            | Row bytes                    |
 | ------ | -------------- | ------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
-| 2      | 3473 and later | 3473    | `skill.dbss`       | 9,767,040 | 30,487 Skill Record, 30,487 Record | 210 to 1,540, 316 on average |
-| 2      | 3473 and later | 3473    | `skilloffset.dbss` | 365,864   | 30,487 Index Row                   | 12                           |
+| 3      | 3473 and later | 3473    | `skill.dbss`       | 9,767,040 | 30,487 Skill Record, 30,487 Record | 210 to 1,540, 316 on average |
+| 3      | 3473 and later | 3473    | `skilloffset.dbss` | 365,864   | 30,487 Index Row                   | 12                           |
+| 1      | 1784           | 1784    | `skill.dbss`       | 8,290,437 | 27,580 Skill Record, 27,580 Record | 190 to 1,320, 297 on average |
+| 1      | 1784           | 1784    | `skilloffset.dbss` | 330,980   | 27,580 Index Row                   | 12                           |
 
 | Layout | File               | Known               | Unknown             |
 | ------ | ------------------ | ------------------- | ------------------- |
-| 2      | `skill.dbss`       | 6,169,574 B (63.2%) | 3,597,466 B (36.8%) |
-| 2      | `skilloffset.dbss` | 365,864 B (100.0%)  | 0 B (0.0%)          |
+| 3      | `skill.dbss`       | 6,169,574 B (63.2%) | 3,597,466 B (36.8%) |
+| 3      | `skilloffset.dbss` | 365,864 B (100.0%)  | 0 B (0.0%)          |
+| 1      | `skill.dbss`       | 5,035,997 B (60.7%) | 3,254,440 B (39.3%) |
+| 1      | `skilloffset.dbss` | 330,980 B (100.0%)  | 0 B (0.0%)          |
 
 <!-- versions:end -->
 
@@ -37,7 +41,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 2
+## Layout 3
 
 ### File Layout
 
@@ -120,11 +124,11 @@ Read it with `parse_pabr_u32_offset_rows()`.
 | `+0x00` | u32                | string_count | `0`   |
 | `+0x04` | pstr[string_count] | strings      | Empty |
 
-## Layout 1
+## Layout 2
 
 Before client 3464 the `buff_ids` slots were u16, so the Skill Record was 20
 bytes shorter and `description` started at `N+102`; see `buff_ids`. Only the
-Skill Record differs from Layout 2. The parser reads only Layout 2.
+Skill Record differs from Layout 3. The parser reads only Layout 3.
 
 ### Skill Record (variable: 190 bytes + text and key lists)
 
@@ -152,6 +156,41 @@ Skill Record differs from Layout 2. The parser reads only Layout 2.
 | `next_skill_keys+0x08` | u32[base_skill_count]  | base_skill_keys     |       |
 | `base_skill_keys+0x00` | f32                    | unknown_f32         |       |
 | `base_skill_keys+0x04` | bytes[3]               | unknown_end         |       |
+
+## Layout 1
+
+On client 1784 `unknown_n55` was 21 bytes, so `cooldown_ms`, `buff_ids`
+and everything after them sat 2 bytes earlier than in Layout 2. An extra
+u32 followed `base_skill_keys` and `unknown_end` was 1 byte. Only the Skill
+Record differs from Layout 2. Field names keep Layout 3's offsets.
+
+### Skill Record (variable: 190 bytes + text and key lists)
+
+| Offset                 | Type                   | Field               | Notes |
+| ---------------------- | ---------------------- | ------------------- | ----- |
+| `+0x00`                | u32                    | skill_key           |       |
+| `+0x04`                | u32                    | level_1_key         |       |
+| `+0x08`                | u8                     | unknown_08          |       |
+| `+0x09`                | str8                   | name                |       |
+| `name+0x00`            | u32                    | name_hash           |       |
+| `name+0x04`            | bytes[40]              | unknown_n04         |       |
+| `name+0x2C`            | u16                    | resource_cost       |       |
+| `name+0x2E`            | bytes[7]               | unknown_n46         |       |
+| `name+0x35`            | u16                    | stamina_cost        |       |
+| `name+0x37`            | bytes[21]              | unknown_n55         |       |
+| `name+0x4C`            | u32                    | cooldown_ms         | Equals Layout 3's value in 22,275 of the 23,635 records both clients share |
+| `name+0x50`            | u16[10]                | buff_ids            |       |
+| `name+0x64`            | str16                  | description         |       |
+| `description+0x00`     | str16                  | script              |       |
+| `script+0x00`          | bytes[36]              | unknown_tail        |       |
+| `script+0x24`          | u32                    | next_skill_count    |       |
+| `script+0x28`          | u32[next_skill_count]  | next_skill_keys     |       |
+| `next_skill_keys+0x00` | u32                    | unknown_after_next_skill_keys |  |
+| `next_skill_keys+0x04` | u32                    | base_skill_count    |       |
+| `next_skill_keys+0x08` | u32[base_skill_count]  | base_skill_keys     |       |
+| `base_skill_keys+0x00` | u32                    | unknown_base_skill_keys_00 | Always `0` on client 1784 |
+| `base_skill_keys+0x04` | f32                    | unknown_f32         |       |
+| `base_skill_keys+0x08` | bytes[1]               | unknown_end         | Equals the first byte of Layout 3's `unknown_end` in 23,634 of the 23,635 shared records |
 
 ## Skill Keys
 

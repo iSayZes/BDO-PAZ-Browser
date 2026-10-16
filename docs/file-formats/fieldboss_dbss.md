@@ -18,13 +18,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
-| 1      | 3473 and later | 3473    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
-| 1      | 3473 and later | 3473    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+| 2      | 3473 and later | 3473    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
+| 2      | 3473 and later | 3473    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+| 1      | 1784           | 1784    | `fieldboss.dbss`       | 22,789 | 735 Row       | 31        |
+| 1      | 1784           | 1784    | `fieldbossoffset.dbss` | 7,354  | 735 Index Row | 10        |
 
 | Layout | File                   | Known            | Unknown          |
 | ------ | ---------------------- | ---------------- | ---------------- |
-| 1      | `fieldboss.dbss`       | 2,780 B (12.1%)  | 20,126 B (87.9%) |
-| 1      | `fieldbossoffset.dbss` | 6,944 B (100.0%) | 0 B (0.0%)       |
+| 2      | `fieldboss.dbss`       | 2,780 B (12.1%)  | 20,126 B (87.9%) |
+| 2      | `fieldbossoffset.dbss` | 6,944 B (100.0%) | 0 B (0.0%)       |
+| 1      | `fieldboss.dbss`       | 2,944 B (12.9%)  | 19,845 B (87.1%) |
+| 1      | `fieldbossoffset.dbss` | 7,354 B (100.0%) | 0 B (0.0%)       |
 
 <!-- versions:end -->
 
@@ -36,7 +40,7 @@ None. The handler reads the rows in file order and does not need
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -85,6 +89,23 @@ at main row 596).
 | `+0x00` | u16  | character_id | Row key, the main row's `key`                              |
 | `+0x02` | u32  | offset       | Start of the row in `fieldboss.dbss` plus 2, at `unknown_02` |
 | `+0x06` | u32  | size         | Always `31`, the row size minus the 2-byte `key`           |
+
+## Layout 1
+
+On client 1784 the zero run at the end of the row is 13 bytes where Layout 2
+has 15, so the row is 31 bytes and the index `size` is `29`. Only the Row
+differs from Layout 2.
+
+### Row (31 bytes)
+
+| Offset  | Type      | Field        | Notes                          |
+| ------- | --------- | ------------ | ------------------------------ |
+| `+0x00` | u16       | key          |                                |
+| `+0x02` | u8        | unknown_02   | `1` on every row (client 1784) |
+| `+0x03` | u16       | character_id |                                |
+| `+0x05` | bytes[12] | unknown_05   | Zero on every row (client 1784) |
+| `+0x11` | u8        | unknown_11   | `1` on every row (client 1784) |
+| `+0x12` | bytes[13] | unknown_12   | Zero on every row (client 1784) |
 
 ## Notes
 

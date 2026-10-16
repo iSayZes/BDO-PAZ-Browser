@@ -19,15 +19,19 @@ At roughly 194 MB it is the largest file in the game data.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
-| 1      | 3473 and later | 3473    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
+| Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes                        |
+| ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | -------------------------------- |
+| 2      | 3473 and later | 3473    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5                                |
+| 2      | 3473 and later | 3473    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12                               |
+| 1      | 1784           | 1784    | `itemenchant.dbss`       | 218,241,044 | 127,893 Block                                                               | 1,274 to 5,307, 1,706 on average |
+| 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,534,736   | 127,893 Offset Row                                                          | 12                               |
 
 | Layout | File                     | Known                | Unknown               |
 | ------ | ------------------------ | -------------------- | --------------------- |
-| 1      | `itemenchant.dbss`       | 57,597,960 B (28.5%) | 144,747,006 B (71.5%) |
-| 1      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%) | 0 B (0.0%)            |
+| 2      | `itemenchant.dbss`       | 57,597,960 B (28.5%) | 144,747,006 B (71.5%) |
+| 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%) | 0 B (0.0%)            |
+| 1      | `itemenchant.dbss`       | 1,151,041 B (0.5%)   | 217,090,003 B (99.5%) |
+| 1      | `itemenchantoffset.dbss` | 1,534,736 B (100.0%) | 0 B (0.0%)            |
 
 <!-- versions:end -->
 
@@ -42,7 +46,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -328,6 +332,35 @@ Rows are contiguous: `data_offset + data_size` of one row equals the next row's
 | ------- | ------------------ | ------------ | ------------------------- |
 | `+0x00` | u32                | string_count | `0` in observed data      |
 | `+0x04` | pstr[string_count] | strings      | PABR string-table entries |
+
+## Layout 1
+
+On client 1784 only the first 16 bytes of a block read as in Layout 2. The
+rest is laid out differently and is not decoded: `extended_slots` and the
+fields after it sit at other offsets, `equip_slot` stores `32` for no slot,
+fixed arrays of 32 four-byte entries take the place of the counted class
+list, a second string follows `name_kr`, and the block does not end with
+`key_dup`. The file holds 127,893 blocks on client 1784, and
+`itemenchantoffset.dbss` has the Layout 2 shape.
+
+### Block (variable: 16 bytes, size from `itemenchantoffset.dbss`)
+
+| Offset  | Type        | Field          | Notes |
+| ------- | ----------- | -------------- | ----- |
+| `+0x00` | u32         | key            | Repeats the packed key of the offset row |
+| `+0x04` | u8          | item_type      | |
+| `+0x05` | u8          | category       | |
+| `+0x06` | u8          | grade          | |
+| `+0x07` | u8          | equip_type     | |
+| `+0x08` | bytes[6]    | unknown_08     | |
+| `+0x0E` | u8          | equip_slot     | `32` when the item goes in no slot |
+| `+0x0F` | u8          | unknown_0f     | |
+| `+0x10` | bytes[rest] | unknown_old_10 | Not decoded |
+
+On 2,000 sampled blocks whose keys client 1784 shares with client 3473,
+`category` matches on all, `item_type`, `grade`, `unknown_08` and
+`unknown_0f` on 1,968 or more, `equip_type` on 1,828 and `equip_slot` on
+1,494.
 
 ## Key Packing
 

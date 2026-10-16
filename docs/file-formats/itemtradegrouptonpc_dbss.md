@@ -14,15 +14,19 @@ fish, trade crates and the old regional trade goods.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes |
-| ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127       |
-| 1      | 3473 and later | 3473    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10        |
+| Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes                  |
+| ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | -------------------------- |
+| 2      | 3473 and later | 3473    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127                        |
+| 2      | 3473 and later | 3473    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10                         |
+| 1      | 1784           | 1784    | `itemtradegrouptonpc.dbss`       | 143,278 | 1,148 Item Entry, 130 Group | 123 to 163, 124 on average |
+| 1      | 1784           | 1784    | `itemtradegrouptonpcoffset.dbss` | 1,304   | 130 Index Row               | 10                         |
 
 | Layout | File                             | Known            | Unknown           |
 | ------ | -------------------------------- | ---------------- | ----------------- |
-| 1      | `itemtradegrouptonpc.dbss`       | 13,768 B (6.6%)  | 193,494 B (93.4%) |
-| 1      | `itemtradegrouptonpcoffset.dbss` | 1,264 B (100.0%) | 0 B (0.0%)        |
+| 2      | `itemtradegrouptonpc.dbss`       | 13,768 B (6.6%)  | 193,494 B (93.4%) |
+| 2      | `itemtradegrouptonpcoffset.dbss` | 1,264 B (100.0%) | 0 B (0.0%)        |
+| 1      | `itemtradegrouptonpc.dbss`       | 9,968 B (7.0%)   | 133,310 B (93.0%) |
+| 1      | `itemtradegrouptonpcoffset.dbss` | 1,304 B (100.0%) | 0 B (0.0%)        |
 
 <!-- versions:end -->
 
@@ -36,7 +40,7 @@ names from LOC type `37` under the `RESOURCE` sheet keys listed in
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -92,6 +96,32 @@ The bare u16 index layout of `petexpoffset.dbss`, read by
 
 The index rows are in neither key nor file order; each points at its own
 group (`test_every_offset_row_points_at_its_group`).
+
+## Layout 1
+
+Client 1784 item entries start their zero run at `+0x06` with a counted
+UTF-16LE string, and `unknown_6d` is 11 bytes where client 3473 has 15. On
+client 1784, 33 entries in 11 groups hold a string such as
+`!checkTerritory(229)`; the other 1,115 hold an empty one, the 8 zero bytes
+that also open `unknown_06` in Layout 2. Only the Item Entry differs from
+Layout 2.
+
+### Item Entry (variable: 123 bytes + condition text)
+
+| Offset                   | Type      | Field                | Notes                                                      |
+| ------------------------ | --------- | -------------------- | ---------------------------------------------------------- |
+| `+0x00`                  | u16       | character_id         |                                                            |
+| `+0x02`                  | u32       | item_id              |                                                            |
+| `+0x06`                  | str16     | unknown_condition    | Empty, or `!checkTerritory(N)` with a territory key        |
+| `unknown_condition+0x00` | bytes[40] | unknown_condition_00 | All `0` on client 1784                                     |
+| `unknown_condition+0x28` | u8        | trade_group_type     |                                                            |
+| `unknown_condition+0x29` | u8        | unknown_37           |                                                            |
+| `unknown_condition+0x2A` | bytes[51] | unknown_38           |                                                            |
+| `unknown_condition+0x5D` | u16       | unknown_6b           |                                                            |
+| `unknown_condition+0x5F` | bytes[11] | unknown_6d           | All `0` on client 1784                                     |
+| `unknown_condition+0x6A` | u8        | unknown_7c           |                                                            |
+| `unknown_condition+0x6B` | u8        | commerce_type        |                                                            |
+| `unknown_condition+0x6C` | u8        | unknown_7e           |                                                            |
 
 ## Commerce Types
 

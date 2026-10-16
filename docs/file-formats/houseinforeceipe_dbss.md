@@ -17,13 +17,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
-| 1      | 3473 and later | 3473    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 2      | 3473 and later | 3473    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 2      | 3473 and later | 3473    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,902 | 490 Level List, 98 Row  | 4 to 156, 16 on average |
+| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,180  | 98 Index Row            | 12                      |
 
 | Layout | File                          | Known            | Unknown        |
 | ------ | ----------------------------- | ---------------- | -------------- |
-| 1      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
-| 1      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
+| 2      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
+| 2      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
+| 1      | `houseinforeceipe.dbss`       | 10,510 B (96.4%) | 392 B (3.6%)   |
+| 1      | `houseinforeceipeoffset.dbss` | 1,180 B (100.0%) | 0 B (0.0%)     |
 
 <!-- versions:end -->
 
@@ -38,7 +42,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -104,6 +108,31 @@ the main file's order nor sorted by key: it opens 50009, 50008, 50007,
 | `+0x00` | u32  | receipe_key | The main row's `receipe_key`                       |
 | `+0x04` | u32  | offset      | Start of the row in `houseinforeceipe.dbss`, at its `receipe_key` |
 | `+0x08` | u32  | size        | Full row length, key included                      |
+
+## Layout 1
+
+Client 1784 rows hold `house_use_type` only, without `icon_type` and
+`unknown_tail_02`, list their exchange keys as u16, and end after
+`unknown_after_level_exchanges`, with no `unknown_end`. Only the Row and the
+Level List differ from Layout 2.
+
+### Row (variable: 19 bytes + name text and lists)
+
+| Offset                 | Type          | Field                         | Notes                         |
+| ---------------------- | ------------- | ----------------------------- | ----------------------------- |
+| `+0x00`                | u32           | receipe_key                   |                               |
+| `+0x04`                | u16           | need_item_key                 |                               |
+| `+0x06`                | str16         | name                          |                               |
+| `name+0x00`            | u8            | house_use_type                |                               |
+| `name+0x01`            | Level List[5] | level_exchanges               |                               |
+| `level_exchanges+0x00` | u32           | unknown_after_level_exchanges | `0` on every row (client 1784) |
+
+### Level List (variable: 4 bytes + keys)
+
+| Offset  | Type       | Field         | Notes                                    |
+| ------- | ---------- | ------------- | ---------------------------------------- |
+| `+0x00` | u32        | count         |                                          |
+| `+0x04` | u16[count] | exchange_keys | Item exchange keys, 35013 at most on client 1784 |
 
 ## House Use Type
 

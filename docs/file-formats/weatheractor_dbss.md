@@ -17,13 +17,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------------- | --------- |
-| 1      | 3473 and later | 3473    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
-| 1      | 3473 and later | 3473    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
+| 2      | 3473 and later | 3473    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
+| 2      | 3473 and later | 3473    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
+| 1      | 1784           | 1784    | `weatheractor.dbss`       | 4,960 | 84 Row        | 59        |
+| 1      | 1784           | 1784    | `weatheractoroffset.dbss` | 844   | 84 Index Row  | 10        |
 
 | Layout | File                      | Known            | Unknown         |
 | ------ | ------------------------- | ---------------- | --------------- |
-| 1      | `weatheractor.dbss`       | 4,145 B (54.7%)  | 3,434 B (45.3%) |
-| 1      | `weatheractoroffset.dbss` | 1,014 B (100.0%) | 0 B (0.0%)      |
+| 2      | `weatheractor.dbss`       | 4,145 B (54.7%)  | 3,434 B (45.3%) |
+| 2      | `weatheractoroffset.dbss` | 1,014 B (100.0%) | 0 B (0.0%)      |
+| 1      | `weatheractor.dbss`       | 3,448 B (69.5%)  | 1,512 B (30.5%) |
+| 1      | `weatheractoroffset.dbss` | 844 B (100.0%)   | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -36,7 +40,7 @@ LOC type 6, skill names from LOC type 10 and skill icons from the
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -107,6 +111,38 @@ A row count equal to the main file's, then one index row per main row.
 
 Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 21).
+
+## Layout 1
+
+On client 1784 a Row was 59 bytes: between `skill_apply_rate` and
+`unknown_3e` it held 4 bytes where Layout 2 holds 20 (`unknown_2a`,
+`unknown_2e`, `unknown_32`), so every later field sat 16 bytes earlier. Only
+the Row differs from Layout 2; the index rows' `size` is `57` on client 1784.
+Field names keep Layout 2's offsets, so `unknown_3e` sits at `+0x2E` here.
+
+### Row (59 bytes)
+
+| Offset  | Type     | Field              | Notes                                                         |
+| ------- | -------- | ------------------ | ------------------------------------------------------------- |
+| `+0x00` | u16      | key                |                                                               |
+| `+0x02` | u8       | unknown_02         |                                                               |
+| `+0x03` | u16      | character_key      |                                                               |
+| `+0x05` | u8       | weather_type       |                                                               |
+| `+0x06` | f32      | radius             |                                                               |
+| `+0x0A` | f32      | rain_amount        |                                                               |
+| `+0x0E` | f32      | cloud_rate         |                                                               |
+| `+0x12` | f32      | damage_max         |                                                               |
+| `+0x16` | f32      | damage_radius      |                                                               |
+| `+0x1A` | f32      | damage_radius_rate |                                                               |
+| `+0x1E` | f32      | push_pull_speed    |                                                               |
+| `+0x22` | u32      | skill_key          |                                                               |
+| `+0x26` | u32      | skill_apply_rate   |                                                               |
+| `+0x2A` | bytes[4] | unknown_old_2a     | All zero on client 1784; which Layout 2 field it became is not known |
+| `+0x2E` | u16      | unknown_3e         |                                                               |
+| `+0x30` | f32      | unknown_40         |                                                               |
+| `+0x34` | u16      | unknown_44         |                                                               |
+| `+0x36` | bytes[4] | unknown_46         |                                                               |
+| `+0x3A` | u8       | unknown_4a         |                                                               |
 
 ## Notes
 

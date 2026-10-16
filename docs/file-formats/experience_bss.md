@@ -16,13 +16,15 @@ growth.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes     | Records                                             | Row bytes |
-| ------ | -------------- | ------- | ---------------- | --------- | --------------------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group | 200       |
+| Layout | Clients        | Checked | File             | Bytes     | Records                                               | Row bytes |
+| ------ | -------------- | ------- | ---------------- | --------- | ----------------------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group   | 200       |
+| 1      | 1784           | 1784    | `experience.bss` | 3,201,480 | 10,742 Stat Body, 10,742 Level Record, 82 Class Group | 270       |
 
 | Layout | File             | Known             | Unknown             |
 | ------ | ---------------- | ----------------- | ------------------- |
-| 1      | `experience.bss` | 320,379 B (22.0%) | 1,133,088 B (78.0%) |
+| 2      | `experience.bss` | 320,379 B (22.0%) | 1,133,088 B (78.0%) |
+| 1      | `experience.bss` | 558,948 B (17.5%) | 2,642,532 B (82.5%) |
 
 <!-- versions:end -->
 
@@ -37,7 +39,7 @@ LOC lookup:
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -120,6 +122,67 @@ unluac) clears `lvpv` unless the player is level 56 and `lvdd` unless the
 player is level 60, then shows `lvdd` on the Attack line and `lvpv` on the
 Defense line. Those are the two levels where `dp_bonus` and `ap_bonus` change
 from 0 to 1.
+
+## Layout 1
+
+On client 1784 a level record is 298 bytes. The run after `level` is 20
+bytes, and the stat body is 270 bytes: an i16 after `max_mp` moves every
+later field 2 bytes on, `unknown_54` is 12 bytes longer and the tail after
+`dp_bonus` is 56 bytes longer. The groups run up to the string table with
+no 200 zero bytes between; client 1784 has 82 groups (class types 0 to 31
+and 51 to 100).
+
+### File Layout
+
+| Offset              | Type                     | Field        | Notes                                                |
+| ------------------- | ------------------------ | ------------ | ---------------------------------------------------- |
+| `+0x00`             | char[4]                  | magic        | ASCII `PABR`                                         |
+| `+0x04`             | Class Group[..table_start] | class_groups | Groups back to back until `table_start`            |
+| `class_groups+0x00` | String Table             | string_table | Two strings on client 1784, `82D32` and an empty one |
+| `EOF-0x08`          | u32                      | table_start  | Offset of the string table, where the groups end     |
+| `EOF-0x04`          | u32                      | zero         | Always 0                                             |
+
+### Level Record (298 bytes)
+
+| Offset  | Type      | Field      | Notes                       |
+| ------- | --------- | ---------- | --------------------------- |
+| `+0x00` | u32       | class_type | The class type of the group |
+| `+0x04` | u32       | level      | Equals the record index in the group |
+| `+0x08` | bytes[20] | unknown_08 | Always 0                    |
+| `+0x1C` | Stat Body | stats      | See Stat Body               |
+
+### Stat Body (270 bytes)
+
+Fields are unaligned. On the 4,192 (class, level) records client 1784
+shares with client 3473, every field named in Layout 2 holds the same value
+in both. Where the 12 extra bytes before `max_varied_speed` sit inside the
+zero run is not known; they are counted into `unknown_54`.
+
+| Offset  | Type      | Field               | Notes                                                 |
+| ------- | --------- | ------------------- | ----------------------------------------------------- |
+| `+0x00` | u32       | unknown_00          | Always `0`                                            |
+| `+0x04` | f32       | max_hp              | Always `1.0`                                          |
+| `+0x08` | u32       | max_mp              | Always `1`                                            |
+| `+0x0C` | i16       | unknown_old_0c      | `0` at level 0, `100` at level 1, then `+2` per level up to `298` at level 100; the `StunGauge` pattern of the sheet in Field Names, at the place of the i16 that [servantexperience.dbss](servantexperience_dbss.md) Layout 1 holds |
+| `+0x0E` | bytes[20] | unknown_0c          | Always `0`                                            |
+| `+0x22` | f32       | unknown_20          | Always `1.0`                                          |
+| `+0x26` | bytes[20] | unknown_24          | Always `0`                                            |
+| `+0x3A` | u32       | max_critical_rate   | Always `0`                                            |
+| `+0x3E` | u32       | max_drop_item_luck  | `0` at level 0, `5` from level 1                      |
+| `+0x42` | u32       | max_fishing_luck    | `0` at level 0, `5` from level 1                      |
+| `+0x46` | u32       | max_collection_luck | `0` at level 0, `5` from level 1                      |
+| `+0x4A` | bytes[8]  | unknown_48          | Always `0`                                            |
+| `+0x52` | f32       | unknown_50          | Always `1.0`                                          |
+| `+0x56` | bytes[28] | unknown_54          | Always `0`                                            |
+| `+0x72` | u32[3]    | max_varied_speed    | `0, 0, 0` at level 0, `5, 5, 5` from level 1          |
+| `+0x7E` | f32       | unknown_70          | Always `1.0`                                          |
+| `+0x82` | f32       | ap_bonus            | `0` below level 60, `1.0` from level 60               |
+| `+0x86` | f32       | dp_bonus            | `0` below level 56, `1.0` from level 56               |
+| `+0x8A` | bytes[72] | unknown_7c          | Always `0`                                            |
+| `+0xD2` | u32       | unknown_d2          | `1000000` in every body on client 1784                |
+| `+0xD6` | bytes[8]  | unknown_d6          | Always `0`                                            |
+| `+0xDE` | u32[9]    | unknown_de          | `1` in all nine, in every body on client 1784         |
+| `+0x102` | bytes[12] | unknown_102        | Always `0`                                            |
 
 ## Notes
 

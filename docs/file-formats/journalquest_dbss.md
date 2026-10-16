@@ -14,11 +14,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes  | Records                   | Row bytes                  |
 | ------ | -------------- | ------- | ------------------- | ------ | ------------------------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
+| 2      | 3473 and later | 3473    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
+| 1      | 1784           | 1784    | `journalquest.dbss` | 23,327 | 52 Book Record, 12 Group  | 205 to 639, 448 on average |
 
-| Layout | File                | Known            | Unknown      |
-| ------ | ------------------- | ---------------- | ------------ |
-| 1      | `journalquest.dbss` | 48,414 B (99.0%) | 472 B (1.0%) |
+| Layout | File                | Known            | Unknown         |
+| ------ | ------------------- | ---------------- | --------------- |
+| 2      | `journalquest.dbss` | 48,414 B (99.0%) | 472 B (1.0%)    |
+| 1      | `journalquest.dbss` | 20,580 B (88.2%) | 2,747 B (11.8%) |
 
 <!-- versions:end -->
 
@@ -32,7 +34,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -70,6 +72,28 @@ Strings are length-prefixed: a u64 character count followed by that many UTF-16L
 | `page_quest_ids+0x00`           | u32             | unknown_end            | `0` in 112 of 112 records; the record ends exactly here                                   |
 
 Earlier versions of this doc called `is_record_book` `flag_08` and then `unknown_08`. An even older reading of it as a u32 (`0x00000d00` etc.) was this byte plus the low bytes of the first string length. The "trailing `"` in `combine_model`" was the low byte of the next string's u64 length (`0x22` = 34 characters); it is not part of the stored value.
+
+## Layout 1
+
+Client 1784 book records have no `is_record_book`, `unlock_requirement_kr`,
+`bookshelf_scene` or `book_model`. After `book_name_kr` they hold a u32 and
+one ASCII icon path. The 12 groups hold 52 books on client 1784. Only the
+Book Record differs from Layout 2.
+
+### Book Record (variable: 52 bytes + strings and pages)
+
+| Offset                        | Type            | Field                   | Notes                                                                 |
+| ----------------------------- | --------------- | ----------------------- | --------------------------------------------------------------------- |
+| `+0x00`                       | u32             | journal_key             |                                                                       |
+| `+0x04`                       | u32             | book_key                |                                                                       |
+| `+0x08`                       | str16           | journal_name_kr         |                                                                       |
+| `journal_name_kr+0x00`        | str16           | journal_description_kr  |                                                                       |
+| `journal_description_kr+0x00` | str16           | book_name_kr            |                                                                       |
+| `book_name_kr+0x00`           | u32             | unknown_book_name_kr_00 | `1` to `6`, one value per journal on client 1784                      |
+| `book_name_kr+0x04`           | str8            | unknown_icon_path       | A `.dds` path such as `Icon/Quest/Journal_BlackSpirit.dds`            |
+| `unknown_icon_path+0x00`      | u32             | page_count              |                                                                       |
+| `unknown_icon_path+0x04`      | u32[page_count] | page_quest_ids          |                                                                       |
+| `page_quest_ids+0x00`         | u32             | unknown_end             | `0` in all 52 records (client 1784)                                   |
 
 ## Page Quest IDs
 

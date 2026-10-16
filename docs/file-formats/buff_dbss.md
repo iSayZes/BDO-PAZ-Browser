@@ -16,13 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes      | Records                                              | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ---------- | ---------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `buff.dbss`       | 12,550,791 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
-| 2      | 3473 and later | 3473    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
+| 3      | 3473 and later | 3473    | `buff.dbss`       | 12,550,791 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
+| 3      | 3473 and later | 3473    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
+| 1      | 1784           | 1784    | `buff.dbss`       | 9,955,320  | 37,892 Stats Block, 37,892 Tail Block, 37,892 Record | 133       |
+| 1      | 1784           | 1784    | `buffoffset.dbss` | 378,940    | 37,892 Index Row                                     | 10        |
 
 | Layout | File              | Known                | Unknown             |
 | ------ | ----------------- | -------------------- | ------------------- |
-| 2      | `buff.dbss`       | 10,718,501 B (85.4%) | 1,832,290 B (14.6%) |
-| 2      | `buffoffset.dbss` | 536,300 B (100.0%)   | 0 B (0.0%)          |
+| 3      | `buff.dbss`       | 10,718,501 B (85.4%) | 1,832,290 B (14.6%) |
+| 3      | `buffoffset.dbss` | 536,300 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `buff.dbss`       | 8,439,640 B (84.8%)  | 1,515,680 B (15.2%) |
+| 1      | `buffoffset.dbss` | 378,940 B (100.0%)   | 0 B (0.0%)          |
 
 <!-- versions:end -->
 
@@ -42,7 +46,7 @@ not needed to read this file.
 
 All multi-byte values are little-endian.
 
-## Layout 2
+## Layout 3
 
 ### File Layout
 
@@ -174,12 +178,12 @@ The block starts at the end of the description string. Mostly zero.
 | `+0x00` | u32                | string_count | `0`   |
 | `+0x04` | pstr[string_count] | strings      | Empty |
 
-## Layout 1
+## Layout 2
 
 Before client 3464 `buff_id` was a u16 in the record and in the
 `buffoffset.dbss` index rows, the layout of `characterstaticoffset.dbss`.
-Only the Record and the Index Row differ from Layout 2. The parser reads only
-Layout 2.
+Only the Record and the Index Row differ from Layout 3. The parser reads only
+Layout 3.
 
 ### Record (variable: 199 bytes + text)
 
@@ -202,6 +206,25 @@ Layout 2.
 | `+0x00` | u16  | buff_id     |       |
 | `+0x02` | u32  | data_offset |       |
 | `+0x06` | u32  | size        |       |
+
+## Layout 1
+
+On client 1784 the Tail Block was 3 bytes shorter: it ends after
+`unknown_17`, with no `stacking_category`, `is_exclusive` or `unknown_1a`.
+The 24 bytes it keeps match Layout 3's first 24 in 36,134 of the 37,053
+records both clients share. Only the Tail Block differs from Layout 2.
+
+### Tail Block (24 bytes)
+
+| Offset  | Type   | Field              | Notes |
+| ------- | ------ | ------------------ | ----- |
+| `+0x00` | u8     | unknown_00         |       |
+| `+0x01` | u8     | unknown_01         |       |
+| `+0x02` | u32    | unknown_02         |       |
+| `+0x06` | u8     | amplification_type |       |
+| `+0x07` | i32    | amplification_rate |       |
+| `+0x0B` | u8[12] | unknown_0b         |       |
+| `+0x17` | u8     | unknown_17         |       |
 
 ## Enum Values
 

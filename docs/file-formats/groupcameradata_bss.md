@@ -15,11 +15,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes  | Records         | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ------ | --------------- | --------- |
-| 1      | 3473 and later | 3473    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row | 28        |
+| 2      | 3473 and later | 3473    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row | 28        |
+| 1      | 1784           | 1784    | `groupcameradata.bss` | 12,760 | 6 Cutscene Row  | 20        |
 
-| Layout | File                  | Known            | Unknown      |
-| ------ | --------------------- | ---------------- | ------------ |
-| 1      | `groupcameradata.bss` | 24,411 B (97.1%) | 736 B (2.9%) |
+| Layout | File                  | Known            | Unknown         |
+| ------ | --------------------- | ---------------- | --------------- |
+| 2      | `groupcameradata.bss` | 24,411 B (97.1%) | 736 B (2.9%)    |
+| 1      | `groupcameradata.bss` | 9,988 B (78.3%)  | 2,772 B (21.7%) |
 
 <!-- versions:end -->
 
@@ -31,7 +33,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -71,6 +73,45 @@ title. The four icons are stored once each.
 | ------- | ------------------ | ------------ | ------------------- |
 | `+0x00` | u32                | string_count | 251 on client 3458  |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Layout 1
+
+Client 1784 rows are 20 bytes, without `unknown_14`, and a second table of
+timed voice lines follows the rows, before the string table. Only the File
+Layout and the Cutscene Row differ from Layout 2. The parser reads only
+Layout 2.
+
+### File Layout
+
+| Offset                 | Type                | Field           | Notes                                           |
+| ---------------------- | ------------------- | --------------- | ----------------------------------------------- |
+| `+0x00`                | char[4]             | magic           | ASCII `PABR`                                    |
+| `+0x04`                | u32                 | count           | Number of rows; 6 on client 1784                |
+| `+0x08`                | Cutscene Row[count] | rows            | See Cutscene Row                                |
+| `rows+0x00`            | u32[..table_start]  | unknown_rows_00 | The line groups, up to `table_start`; see below |
+| `unknown_rows_00+0x00` | String Table        | string_table    | See String Table                                |
+| `EOF-0x08`             | u32                 | table_start     | Offset of the string table, where the rows end  |
+| `EOF-0x04`             | u32                 | zero            | Always 0                                        |
+
+`unknown_rows_00` starts with a u32 group count (12 on client 1784). Each
+group is a u32 line count and that many 16-byte lines of four u32:
+
+| Line offset | Notes                                                                            |
+| ----------- | -------------------------------------------------------------------------------- |
+| `+0x00`     | 1 to 15 on client 1784; the same value in every line of a group                  |
+| `+0x04`     | Rises within a group in steps of thousands (0 to 165000), a time in milliseconds by its values |
+| `+0x08`     | String table index of a voice key (`QUEST_VCE_NEW_9027_43_1_Illezra`, `NPC_VCE_NEW_0_0_Mute_1`) |
+| `+0x0C`     | String table index of the Korean line spoken                                     |
+
+### Cutscene Row (20 bytes)
+
+| Offset  | Type | Field           | Notes |
+| ------- | ---- | --------------- | ----- |
+| `+0x00` | u32  | scene_id        |       |
+| `+0x04` | u32  | title_ref       |       |
+| `+0x08` | u32  | description_ref |       |
+| `+0x0C` | u32  | quote_ref       |       |
+| `+0x10` | u32  | icon_ref        | String table index of the icon path; on client 1784 also quest icons (`Icon/Quest/405_1.dds`) |
 
 ## Notes
 

@@ -21,7 +21,7 @@ Quest definition table. Each record stores the quest's accept and completion scr
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -96,6 +96,34 @@ Offsets relative to the union start `U = Q+0x80 + 178 × k`, for `k < reward_ent
 | `+0x2D` | i32  | stack_limit        | Type `11`, enhancement chance stack limit (not observed) |
 | `+0x31` | u16  | contribution       | Type `12`, only in test quests (chain `1627`); width unconfirmed |
 | `+0x33` | u16  | energy             | Type `13`, only in test quests (chain `1627`); width unconfirmed |
+
+## Layout 1
+
+On client 1784 a record opens with a Korean string after the two dialog
+keys, has no `unknown_objective_gap` (the objective follows `action_script`
+directly), and stores `packed_quest_id` once, near the end, after the
+reward and text data. A counted u32 list and 14 bytes end the record. A
+walk by this layout with the same `allquestlist[i]` search reads all
+16,877 records of client 1784 and ends at the last byte of the file.
+
+### Record (variable: 71 bytes + text and scanned parts)
+
+| Offset                       | Type                          | Field                | Notes |
+| ---------------------------- | ----------------------------- | -------------------- | ----- |
+| `+0x00`                      | u32                           | accept_dialog_key    | |
+| `+0x04`                      | u32                           | complete_dialog_key  | |
+| `+0x08`                      | str16                         | unknown_old_08       | Korean text, e.g. `노먼 레이트` in record 0 |
+| `unknown_old_08+0x00`        | u32                           | unknown_08           | |
+| `unknown_old_08+0x04`        | str16                         | condition_script     | |
+| `condition_script+0x00`      | str16                         | action_script        | |
+| `action_script+0x00`         | str16                         | objective_text_kr    | |
+| `objective_text_kr+0x00`     | bytes[scan]                   | unknown_payload      | Reward entries, rich text and the `.dds` icon path; ends at `packed_quest_id`, found by searching for `allquestlist[i]` after the objective, taking the first hit after which the next record parses |
+| `unknown_payload+0x00`       | u32                           | packed_quest_id      | Equals `allquestlist[i]` |
+| `unknown_payload+0x04`       | u32                           | unknown_payload_04   | `0` in 13,182 records, `1` in 3,576 |
+| `unknown_payload+0x08`       | u8                            | unknown_payload_08   | `0` or `1` |
+| `unknown_payload+0x09`       | u32                           | unknown_value_count  | `1` to `7` |
+| `unknown_payload+0x0D`       | u32[unknown_value_count]      | unknown_values       | Hash-like values; `0xFEED568F` in the list of 4,514 records |
+| `unknown_values+0x00`        | bytes[14]                     | unknown_end          | Zero in 16,062 of 16,877 records |
 
 ## Quest Category
 

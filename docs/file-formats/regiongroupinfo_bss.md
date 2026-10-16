@@ -14,11 +14,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes  | Records | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ------ | ------- | --------- |
-| 1      | 3473 and later | 3473    | `regiongroupinfo.bss` | 12,770 | 250 Row | 51        |
+| 2      | 3473 and later | 3473    | `regiongroupinfo.bss` | 12,770 | 250 Row | 51        |
+| 1      | 1784           | 1784    | `regiongroupinfo.bss` | 8,350  | 170 Row | 49        |
 
 | Layout | File                  | Known            | Unknown      |
 | ------ | --------------------- | ---------------- | ------------ |
-| 1      | `regiongroupinfo.bss` | 12,270 B (96.1%) | 500 B (3.9%) |
+| 2      | `regiongroupinfo.bss` | 12,270 B (96.1%) | 500 B (3.9%) |
+| 1      | `regiongroupinfo.bss` | 8,350 B (100.0%) | 0 B (0.0%)   |
 
 <!-- versions:end -->
 
@@ -30,7 +32,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -73,6 +75,30 @@ Earlier versions of this doc read `+0x05` as a u16 with two bytes of padding and
 | ------- | ------------------ | ------------ | ---------- |
 | `+0x00` | u32                | string_count | Always `0` |
 | `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Layout 1
+
+On client 1784 a Row was 49 bytes: it ended after `varied_productivity`,
+without `unknown_31` and `unknown_32`. Only the Row differs from Layout 2.
+The file holds `170` rows on client 1784.
+
+### Row (49 bytes)
+
+| Offset  | Type   | Field                          | Notes |
+| ------- | ------ | ------------------------------ | ----- |
+| `+0x00` | u16    | region_group_key               |       |
+| `+0x02` | u8     | is_blocked_managing            |       |
+| `+0x03` | u16    | concurrent_playable_user_count |       |
+| `+0x05` | u32    | node_key                       |       |
+| `+0x09` | u8     | enable_corp_productivity       |       |
+| `+0x0A` | u8     | enable_fishing_productivity    |       |
+| `+0x0B` | u8     | enable_loyalty                 |       |
+| `+0x0C` | f32[3] | display_graph_position         |       |
+| `+0x18` | u8     | is_productivity_changed        |       |
+| `+0x19` | i32    | corp_productivity              |       |
+| `+0x1D` | i32    | fishing_productivity           |       |
+| `+0x21` | i32    | loyalty                        |       |
+| `+0x25` | i32[3] | varied_productivity            |       |
 
 ## Row Values
 

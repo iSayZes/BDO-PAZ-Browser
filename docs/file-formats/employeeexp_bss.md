@@ -16,11 +16,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes  | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------ | ------- | --------- |
-| 1      | 3473 and later | 3473    | `employeeexp.bss` | 21,081 | 230 Row | 89        |
+| 2      | 3473 and later | 3473    | `employeeexp.bss` | 21,081 | 230 Row | 89        |
+| 1      | 1784           | 1784    | `employeeexp.bss` | 19,237 | 230 Row | 81        |
 
 | Layout | File              | Known            | Unknown        |
 | ------ | ----------------- | ---------------- | -------------- |
-| 1      | `employeeexp.bss` | 19,927 B (94.5%) | 1,154 B (5.5%) |
+| 2      | `employeeexp.bss` | 19,927 B (94.5%) | 1,154 B (5.5%) |
+| 1      | `employeeexp.bss` | 18,087 B (94.0%) | 1,150 B (6.0%) |
 
 <!-- versions:end -->
 
@@ -35,7 +37,7 @@ file's own string table.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -83,6 +85,34 @@ dice expression `<n>D<sides>` with an optional `+<bonus>` (`1D1`, `1D3+7`,
 | ------- | ------------------ | ------------ | ------------------- |
 | `+0x00` | u32                | string_count | 41 on client 3458   |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Layout 1
+
+On client 1784 `growth_ref` holds 17 slots (abilities 0 to 16), so the row
+is 81 bytes, and the string table follows the rows with no
+`unknown_after_rows`. The File Layout and the Row differ from Layout 2.
+
+### File Layout
+
+| Offset              | Type         | Field              | Notes                                                |
+| ------------------- | ------------ | ------------------ | ---------------------------------------------------- |
+| `+0x00`             | char[4]      | magic              | ASCII `PABR`                                         |
+| `+0x04`             | u32          | count              | 230 on client 1784                                   |
+| `+0x08`             | Row[count]   | rows               | See Row                                              |
+| `rows+0x00`         | String Table | string_table       |                                                      |
+| `string_table+0x00` | u32          | string_table_start | Offset of the string table; equals the end of `rows` |
+| `string_table+0x04` | u32          | zero               |                                                      |
+
+### Row (81 bytes)
+
+| Offset  | Type    | Field             | Notes                                                                 |
+| ------- | ------- | ----------------- | --------------------------------------------------------------------- |
+| `+0x00` | u8      | unknown_00        | `0` on every row (client 1784)                                        |
+| `+0x01` | u16     | level             |                                                                       |
+| `+0x03` | u16     | employee_key      |                                                                       |
+| `+0x05` | u32     | exp_to_next_level | The same on every row as on client 3473                               |
+| `+0x09` | u32     | unknown_09        | `0` on every row (client 1784)                                        |
+| `+0x0D` | u32[17] | growth_ref        | Slots 0 to 16; every slot but 15 holds the same strings as on client 3473 |
 
 ## Growth by Ability
 

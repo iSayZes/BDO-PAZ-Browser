@@ -15,13 +15,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | --------- |
-| 1      | 3473 and later | 3473    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
-| 1      | 3473 and later | 3473    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
+| 2      | 3473 and later | 3473    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
+| 2      | 3473 and later | 3473    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
+| 1      | 1784           | 1784    | `itemimprovementsource.dbss`       | 3,899 | 95 Record     | 41        |
+| 1      | 1784           | 1784    | `itemimprovementsourceoffset.dbss` | 1,144 | 95 Index Row  | 12        |
 
 | Layout | File                               | Known            | Unknown         |
 | ------ | ---------------------------------- | ---------------- | --------------- |
-| 1      | `itemimprovementsource.dbss`       | 2,226 B (52.4%)  | 2,020 B (47.6%) |
-| 1      | `itemimprovementsourceoffset.dbss` | 1,216 B (100.0%) | 0 B (0.0%)      |
+| 2      | `itemimprovementsource.dbss`       | 2,226 B (52.4%)  | 2,020 B (47.6%) |
+| 2      | `itemimprovementsourceoffset.dbss` | 1,216 B (100.0%) | 0 B (0.0%)      |
+| 1      | `itemimprovementsource.dbss`       | 1,999 B (51.3%)  | 1,900 B (48.7%) |
+| 1      | `itemimprovementsourceoffset.dbss` | 1,144 B (100.0%) | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -35,7 +39,7 @@ Item names come from LOC type 0 and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -82,6 +86,22 @@ Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 
 Read by `parse_bare_u32_offset_rows()` in `_common/pabr_offset.py`; on client
 3464 every row matches the record walked from the start of the file.
+
+## Layout 1
+
+Client 1784 stores `is_default_display` as a u8, so each record is one
+byte shorter. Only the Record differs from Layout 2.
+
+### Record (variable: 21 bytes + values)
+
+| Offset            | Type             | Field              | Notes                                       |
+| ----------------- | ---------------- | ------------------ | ------------------------------------------- |
+| `+0x00`           | u32              | item_id            |                                             |
+| `+0x04`           | u64              | value_count        |                                             |
+| `+0x0C`           | u32[value_count] | unknown_0c         |                                             |
+| `unknown_0c+0x00` | u32              | category           | `1` to `3` on client 1784                   |
+| `unknown_0c+0x04` | u32              | group              |                                             |
+| `unknown_0c+0x08` | u8               | is_default_display | `1` on 19 of the 95 records (client 1784)   |
 
 ## Notes
 

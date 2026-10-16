@@ -33,25 +33,41 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes  | Records                                | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ------ | -------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `alchemystatdata.bss`    | 2,460  | 61 Alchemy Row                         | 40        |
-| 1      | 3473 and later | 3473    | `collectingstatdata.bss` | 15,464 | 19 Gathering Group, 427 Gathering Row  | 36        |
-| 1      | 3473 and later | 3473    | `cookingstatdata.bss`    | 1,484  | 61 Cooking Row                         | 24        |
-| 1      | 3473 and later | 3473    | `fishingstatdata.bss`    | 508    | 61 Fishing Row                         | 8         |
-| 1      | 3473 and later | 3473    | `huntingstatdata.bss`    | 2,216  | 61 Hunting Row                         | 36        |
-| 1      | 3473 and later | 3473    | `manufacturingstat.bss`  | 7,340  | 7 Processing Group, 456 Processing Row | 16        |
-| 1      | 3473 and later | 3473    | `sailstatdata.bss`       | 2,704  | 61 Sailing Row                         | 44        |
-| 1      | 3473 and later | 3473    | `trainingstatdata.bss`   | 996    | 61 Training Row                        | 16        |
+| 2      | 3473 and later | 3473    | `alchemystatdata.bss`    | 2,460  | 61 Alchemy Row                         | 40        |
+| 2      | 3473 and later | 3473    | `collectingstatdata.bss` | 15,464 | 19 Gathering Group, 427 Gathering Row  | 36        |
+| 2      | 3473 and later | 3473    | `cookingstatdata.bss`    | 1,484  | 61 Cooking Row                         | 24        |
+| 2      | 3473 and later | 3473    | `fishingstatdata.bss`    | 508    | 61 Fishing Row                         | 8         |
+| 2      | 3473 and later | 3473    | `huntingstatdata.bss`    | 2,216  | 61 Hunting Row                         | 36        |
+| 2      | 3473 and later | 3473    | `manufacturingstat.bss`  | 7,340  | 7 Processing Group, 456 Processing Row | 16        |
+| 2      | 3473 and later | 3473    | `sailstatdata.bss`       | 2,704  | 61 Sailing Row                         | 44        |
+| 2      | 3473 and later | 3473    | `trainingstatdata.bss`   | 996    | 61 Training Row                        | 16        |
+| 1      | 1784           | 1784    | `alchemystatdata.bss`    | 1,414  | 41 Alchemy Row                         | 34        |
+| 1      | 1784           | 1784    | `collectingstatdata.bss` | 11,416 | 15 Gathering Group, 315 Gathering Row  | 36        |
+| 1      | 1784           | 1784    | `cookingstatdata.bss`    | 1,004  | 41 Cooking Row                         | 24        |
+| 1      | 1784           | 1784    | `fishingstatdata.bss`    | 348    | 41 Fishing Row                         | 8         |
+| 1      | 1784           | 1784    | `huntingstatdata.bss`    | 1,496  | 41 Hunting Row                         | 36        |
+| 1      | 1784           | 1784    | `manufacturingstat.bss`  | 6,380  | 7 Processing Group, 396 Processing Row | 16        |
+| 1      | 1784           | 1784    | `sailstatdata.bss`       | 1,824  | 41 Sailing Row                         | 44        |
+| 1      | 1784           | 1784    | `trainingstatdata.bss`   | 676    | 41 Training Row                        | 16        |
 
 | Layout | File                     | Known            | Unknown         |
 | ------ | ------------------------ | ---------------- | --------------- |
-| 1      | `alchemystatdata.bss`    | 1,728 B (70.2%)  | 732 B (29.8%)   |
-| 1      | `collectingstatdata.bss` | 12,048 B (77.9%) | 3,416 B (22.1%) |
-| 1      | `cookingstatdata.bss`    | 1,484 B (100.0%) | 0 B (0.0%)      |
-| 1      | `fishingstatdata.bss`    | 508 B (100.0%)   | 0 B (0.0%)      |
-| 1      | `huntingstatdata.bss`    | 508 B (22.9%)    | 1,708 B (77.1%) |
-| 1      | `manufacturingstat.bss`  | 3,692 B (50.3%)  | 3,648 B (49.7%) |
-| 1      | `sailstatdata.bss`       | 2,216 B (82.0%)  | 488 B (18.0%)   |
-| 1      | `trainingstatdata.bss`   | 996 B (100.0%)   | 0 B (0.0%)      |
+| 2      | `alchemystatdata.bss`    | 1,728 B (70.2%)  | 732 B (29.8%)   |
+| 2      | `collectingstatdata.bss` | 12,048 B (77.9%) | 3,416 B (22.1%) |
+| 2      | `cookingstatdata.bss`    | 1,484 B (100.0%) | 0 B (0.0%)      |
+| 2      | `fishingstatdata.bss`    | 508 B (100.0%)   | 0 B (0.0%)      |
+| 2      | `huntingstatdata.bss`    | 508 B (22.9%)    | 1,708 B (77.1%) |
+| 2      | `manufacturingstat.bss`  | 3,692 B (50.3%)  | 3,648 B (49.7%) |
+| 2      | `sailstatdata.bss`       | 2,216 B (82.0%)  | 488 B (18.0%)   |
+| 2      | `trainingstatdata.bss`   | 996 B (100.0%)   | 0 B (0.0%)      |
+| 1      | `alchemystatdata.bss`    | 1,168 B (82.6%)  | 246 B (17.4%)   |
+| 1      | `collectingstatdata.bss` | 8,896 B (77.9%)  | 2,520 B (22.1%) |
+| 1      | `cookingstatdata.bss`    | 1,004 B (100.0%) | 0 B (0.0%)      |
+| 1      | `fishingstatdata.bss`    | 348 B (100.0%)   | 0 B (0.0%)      |
+| 1      | `huntingstatdata.bss`    | 348 B (23.3%)    | 1,148 B (76.7%) |
+| 1      | `manufacturingstat.bss`  | 3,212 B (50.3%)  | 3,168 B (49.7%) |
+| 1      | `sailstatdata.bss`       | 1,496 B (82.0%)  | 328 B (18.0%)   |
+| 1      | `trainingstatdata.bss`   | 676 B (100.0%)   | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -59,7 +75,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 None. The files are self-contained. All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 Each of the eight files has its own top-level table: `### File Layout` is
 `fishingstatdata.bss`, and the other seven files have a table under their
@@ -425,6 +441,28 @@ index + 1:
 | 4     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_DRYING`       | Drying             |
 | 5     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_THINOUT`      | Filtering          |
 | 6     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_HEATING`      | Heating            |
+
+## Layout 1
+
+On client 1784 `unknown_0c`, `unknown_14` and `unknown_1c` of the Alchemy
+Row are u16, so the row is 34 bytes and each later field sits 2, 4 or 6 bytes
+earlier. Only the Alchemy Row differs from Layout 2. Field names keep Layout
+2's offsets, so `unknown_14` sits at `+0x0E` here.
+
+### Alchemy Row (34 bytes)
+
+| Offset  | Type | Field                 | Notes                                  |
+| ------- | ---- | --------------------- | -------------------------------------- |
+| `+0x00` | f32  | mastery               | Mastery threshold                      |
+| `+0x04` | u32  | basic_max_drop_rate   |                                        |
+| `+0x08` | u32  | add_royal_trade_bonus |                                        |
+| `+0x0C` | u16  | unknown_0c            | `15690` in every row on client 1784    |
+| `+0x0E` | u32  | event_drop_rate_0     |                                        |
+| `+0x12` | u16  | unknown_14            | `15691` in every row on client 1784    |
+| `+0x14` | u32  | event_drop_rate_1     |                                        |
+| `+0x18` | u16  | unknown_1c            | `15692` in every row on client 1784    |
+| `+0x1A` | u32  | event_drop_rate_2     |                                        |
+| `+0x1E` | u32  | event_drop_rate       |                                        |
 
 ## Notes
 

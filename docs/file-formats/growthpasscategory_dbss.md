@@ -10,15 +10,19 @@ The tabs of the Growth Pass window (`panel_window_growthpass*.luac`): per catego
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes | Records                 | Row bytes                 |
-| ------ | -------------- | ------- | ------------------------------- | ----- | ----------------------- | ------------------------- |
-| 1      | 3473 and later | 3473    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average |
-| 1      | 3473 and later | 3473    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                        |
+| Layout | Clients        | Checked | File                            | Bytes | Records                 | Row bytes                        |
+| ------ | -------------- | ------- | ------------------------------- | ----- | ----------------------- | -------------------------------- |
+| 2      | 3473 and later | 3473    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average        |
+| 2      | 3473 and later | 3473    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                               |
+| 1      | 1784           | 1784    | `growthpasscategory.dbss`       | 8,409 | 8 Record Body, 8 Record | 1,042 to 1,052, 1,047 on average |
+| 1      | 1784           | 1784    | `growthpasscategoryoffset.dbss` | 100   | 8 Offset Row            | 12                               |
 
-| Layout | File                            | Known         | Unknown      |
-| ------ | ------------------------------- | ------------- | ------------ |
-| 1      | `growthpasscategory.dbss`       | 211 B (84.1%) | 40 B (15.9%) |
-| 1      | `growthpasscategoryoffset.dbss` | 28 B (100.0%) | 0 B (0.0%)   |
+| Layout | File                            | Known          | Unknown         |
+| ------ | ------------------------------- | -------------- | --------------- |
+| 2      | `growthpasscategory.dbss`       | 211 B (84.1%)  | 40 B (15.9%)    |
+| 2      | `growthpasscategoryoffset.dbss` | 28 B (100.0%)  | 0 B (0.0%)      |
+| 1      | `growthpasscategory.dbss`       | 569 B (6.8%)   | 7,840 B (93.2%) |
+| 1      | `growthpasscategoryoffset.dbss` | 100 B (100.0%) | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -34,7 +38,7 @@ The grid of each category is in [`uigrowthpasslayout.bss`](uigrowthpasslayout_bs
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -80,6 +84,21 @@ No `PABR` magic and no trailer: a u32 row count, then rows of u32 `category_key`
 | `+0x00` | u32  | category_key | Record key                         |
 | `+0x04` | u32  | offset       | Absolute offset of the record body |
 | `+0x08` | u32  | size         | Size of the record body            |
+
+## Layout 1
+
+Client 1784 record bodies end in 980 bytes after `quest_chain_id`, where
+client 3473 has 20. Only the Record Body differs from Layout 2.
+
+### Record Body (variable: 1002 bytes + name and icon text)
+
+| Offset              | Type       | Field           | Notes                                                                 |
+| ------------------- | ---------- | --------------- | --------------------------------------------------------------------- |
+| `+0x00`             | u32        | category_key    |                                                                       |
+| `+0x04`             | str16      | name_kr         |                                                                       |
+| `name_kr+0x00`      | str8       | icon_texture    |                                                                       |
+| `icon_texture+0x00` | u16        | quest_chain_id  | 4464 to 4471 on the eight records of client 1784                      |
+| `icon_texture+0x02` | bytes[980] | unknown_tail_02 | Starts with u32 `5` on every record of client 1784; mostly zero after |
 
 ## Category Keys
 

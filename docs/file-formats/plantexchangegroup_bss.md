@@ -14,11 +14,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes  | Records                  | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ------ | ------------------------ | --------- |
-| 1      | 3473 and later | 3473    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
+| 2      | 3473 and later | 3473    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
+| 1      | 1784           | 1784    | `plantexchangegroup.bss` | 20,224 | 287 Production Group Row | 52        |
 
 | Layout | File                     | Known            | Unknown          |
 | ------ | ------------------------ | ---------------- | ---------------- |
-| 1      | `plantexchangegroup.bss` | 11,779 B (25.8%) | 33,852 B (74.2%) |
+| 2      | `plantexchangegroup.bss` | 11,779 B (25.8%) | 33,852 B (74.2%) |
+| 1      | `plantexchangegroup.bss` | 8,170 B (40.4%)  | 12,054 B (59.6%) |
 
 <!-- versions:end -->
 
@@ -34,7 +36,7 @@ Each zone's parent node comes from the `NODE_PARENT` lookup index (see `docs/han
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -70,6 +72,23 @@ Rows are not sorted by key; the file opens with key 1775 and ends with keys 1, 3
 | ------- | ------------------ | ------------ | ------------------------------------ |
 | `+0x00` | u32                | string_count | Number of strings                    |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries, Korean labels   |
+
+## Layout 1
+
+On client 1784 a row is 52 bytes: `unknown_0a` is 38 bytes instead of 80, so
+`name_ref` sits at `+0x30`. Only the Production Group Row differs from
+Layout 2.
+
+### Production Group Row (52 bytes)
+
+| Offset  | Type      | Field             | Notes                                   |
+| ------- | --------- | ----------------- | --------------------------------------- |
+| `+0x00` | u16       | production_key    |                                         |
+| `+0x02` | u16       | unknown_02        | Equals `production_key` on client 1784  |
+| `+0x04` | u16       | unknown_04        | Always `0` on client 1784               |
+| `+0x06` | u32       | item_subgroup_key |                                         |
+| `+0x0A` | bytes[38] | unknown_0a        | Always all zero on client 1784          |
+| `+0x30` | u32       | name_ref          | String table index of the Korean group label |
 
 ## `item_subgroup_key` Values
 

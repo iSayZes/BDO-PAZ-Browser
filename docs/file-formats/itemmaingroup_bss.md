@@ -12,11 +12,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes   | Records                    | Row bytes |
 | ------ | -------------- | ------- | ------------------- | ------- | -------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `itemmaingroup.bss` | 680,658 | 18,960 Entry, 16,555 Group | 10        |
+| 2      | 3473 and later | 3473    | `itemmaingroup.bss` | 680,658 | 18,960 Entry, 16,555 Group | 10        |
+| 1      | 1784           | 1784    | `itemmaingroup.bss` | 550,518 | 15,376 Entry, 14,305 Group | 10        |
 
 | Layout | File                | Known             | Unknown           |
 | ------ | ------------------- | ----------------- | ----------------- |
-| 1      | `itemmaingroup.bss` | 339,938 B (49.9%) | 340,720 B (50.1%) |
+| 2      | `itemmaingroup.bss` | 339,938 B (49.9%) | 340,720 B (50.1%) |
+| 1      | `itemmaingroup.bss` | 274,439 B (49.9%) | 276,079 B (50.1%) |
 
 <!-- versions:end -->
 
@@ -30,7 +32,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -75,6 +77,24 @@ The conditions use the script calls of `characterfunction.dbss` conditions (`get
 | ------- | ------------------ | ------------ | --------------------------------------- |
 | `+0x00` | u32                | string_count | Number of strings; `197` on client 3464 |
 | `+0x04` | pstr[string_count] | strings      | Every string here is wide (UTF-16LE)    |
+
+## Layout 1
+
+Client 1784 groups have 7 bytes between `group_id` and `refresh_start_hour`,
+where client 3473 has `do_select_only_one` and the 8-byte `unknown_05`. All 7
+are zero in every group of client 1784, so which two bytes the newer layout
+added is open. Only the Group differs from Layout 2.
+
+### Group (variable: 27 bytes + entries)
+
+| Offset  | Type               | Field              | Notes                                                     |
+| ------- | ------------------ | ------------------ | --------------------------------------------------------- |
+| `+0x00` | u32                | group_id           |                                                           |
+| `+0x04` | bytes[7]           | unknown_04         | Zero in all 14,305 groups (client 1784)                   |
+| `+0x0B` | i32                | refresh_start_hour |                                                           |
+| `+0x0F` | bytes[8]           | unknown_11         | Always zero                                               |
+| `+0x17` | u32                | entry_count        |                                                           |
+| `+0x1B` | Entry[entry_count] | entries            |                                                           |
 
 ## Notes
 

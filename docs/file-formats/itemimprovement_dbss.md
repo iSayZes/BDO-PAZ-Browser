@@ -16,13 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes   | Records         | Row bytes               |
 | ------ | -------------- | ------- | ---------------------------- | ------- | --------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
-| 1      | 3473 and later | 3473    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
+| 2      | 3473 and later | 3473    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
+| 2      | 3473 and later | 3473    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
+| 1      | 1784           | 1784    | `itemimprovement.dbss`       | 77,001  | 2,081 Record    | 37                      |
+| 1      | 1784           | 1784    | `itemimprovementoffset.dbss` | 24,976  | 2,081 Index Row | 12                      |
 
 | Layout | File                         | Known             | Unknown          |
 | ------ | ---------------------------- | ----------------- | ---------------- |
-| 1      | `itemimprovement.dbss`       | 127,428 B (73.1%) | 46,848 B (26.9%) |
-| 1      | `itemimprovementoffset.dbss` | 46,852 B (100.0%) | 0 B (0.0%)       |
+| 2      | `itemimprovement.dbss`       | 127,428 B (73.1%) | 46,848 B (26.9%) |
+| 2      | `itemimprovementoffset.dbss` | 46,852 B (100.0%) | 0 B (0.0%)       |
+| 1      | `itemimprovement.dbss`       | 68,677 B (89.2%)  | 8,324 B (10.8%)  |
+| 1      | `itemimprovementoffset.dbss` | 24,976 B (100.0%) | 0 B (0.0%)       |
 
 <!-- versions:end -->
 
@@ -37,7 +41,7 @@ Item names come from LOC type 0 and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -86,6 +90,22 @@ results; 1,528 items are a result in one record and an input in another.
 Read by `parse_bare_u32_offset_rows()` in `_common/pabr_offset.py`. The rows
 are not in file order; on client 3464 every row matches the record walked
 from the start of the file.
+
+## Layout 1
+
+Client 1784 records end in 3 bytes after `group`, where client 3473 has 11.
+Only the Record differs from Layout 2.
+
+### Record (variable: 17 bytes + item IDs)
+
+| Offset          | Type            | Field          | Notes                                       |
+| --------------- | --------------- | -------------- | ------------------------------------------- |
+| `+0x00`         | u32             | key            |                                             |
+| `+0x04`         | u64             | item_count     | `5` in all 2,081 records on client 1784     |
+| `+0x0C`         | u32[item_count] | item_ids       |                                             |
+| `item_ids+0x00` | u8              | unknown_tail_0 |                                             |
+| `item_ids+0x01` | u8              | group          |                                             |
+| `item_ids+0x02` | bytes[3]        | unknown_tail_2 | All `0` in every record (client 1784)       |
 
 ## Notes
 

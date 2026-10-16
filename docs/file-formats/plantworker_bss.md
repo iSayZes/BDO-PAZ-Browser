@@ -12,11 +12,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes  | Records           | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------ | ----------------- | --------- |
-| 1      | 3473 and later | 3473    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
+| 2      | 3473 and later | 3473    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
+| 1      | 1784           | 1784    | `plantworker.bss` | 65,380 | 89 Worker Record  | 707       |
 
 | Layout | File              | Known          | Unknown          |
 | ------ | ----------------- | -------------- | ---------------- |
-| 1      | `plantworker.bss` | 5,780 B (5.8%) | 93,704 B (94.2%) |
+| 2      | `plantworker.bss` | 5,780 B (5.8%) | 93,704 B (94.2%) |
+| 1      | `plantworker.bss` | 4,771 B (7.3%) | 60,609 B (92.7%) |
 
 <!-- versions:end -->
 
@@ -28,7 +30,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -67,7 +69,7 @@ trailing NUL.
 | -------- | ---------- | --------------- | -------------------------------------------------- |
 | `+0x00`  | u16        | worker_id       | Worker/NPC ID; LOC type `6` name key               |
 | `+0x02`  | u16        | next_worker_id  | Next-grade/linked worker ID, or `0`                |
-| `+0x04`  | u16        | unknown_04      | Observed `0`                                       |
+| `+0x04`  | u16        | unknown_04      | Non-zero on 34 of 106 records on client 3473 (1011, 2001 to 2018), `0` on the rest |
 | `+0x06`  | u32        | grade_class     | Grade the game colors the name by, see Grade Class |
 | `+0x0A`  | u32        | unknown_0a      | Always `grade_class + 5`; meaning unresolved       |
 | `+0x0E`  | u32        | move_speed      | Move speed × 100 (`200` is 2.00 in game)            |
@@ -82,6 +84,33 @@ trailing NUL.
 Records are fixed-size `0x390` byte structs. Remaining bytes contain many stat/progression values that are not fully named yet.
 
 Earlier versions of this doc called `grade_class` `unknown_06`, and before that `unknown_loc_a`; `unknown_0a` was `unknown_loc_b`.
+
+## Layout 1
+
+On client 1784 a Worker Record was 707 bytes: `grade_class` and
+`unknown_0a` were u16, which moved every later field 4 bytes earlier, and
+the two unknown blocks were shorter (`unknown_1f` 256 bytes instead of 336,
+`unknown_173` 420 instead of 541). Only the Worker Record differs from
+Layout 2. Field names keep Layout 2's offsets, so `icon_index` sits at
+`+0x17` here. On client 1784 the file holds 89 records.
+
+### Worker Record (707 bytes)
+
+| Offset   | Type       | Field           | Notes |
+| -------- | ---------- | --------------- | ----- |
+| `+0x00`  | u16        | worker_id       |       |
+| `+0x02`  | u16        | next_worker_id  |       |
+| `+0x04`  | u16        | unknown_04      |       |
+| `+0x06`  | u16        | grade_class     |       |
+| `+0x08`  | u16        | unknown_0a      |       |
+| `+0x0A`  | u32        | move_speed      |       |
+| `+0x0E`  | u32        | stamina         |       |
+| `+0x12`  | u32        | luck            |       |
+| `+0x16`  | u8         | unknown_1a      |       |
+| `+0x17`  | u32        | icon_index      |       |
+| `+0x1B`  | bytes[256] | unknown_1f      |       |
+| `+0x11B` | u32        | base_work_speed |       |
+| `+0x11F` | bytes[420] | unknown_173     |       |
 
 ## Grade Class
 

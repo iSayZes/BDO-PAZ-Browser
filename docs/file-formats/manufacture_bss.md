@@ -12,11 +12,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes   | Records                    | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------- | -------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `manufacture.bss` | 417,753 | 15,361 Material, 7,064 Row | 12        |
+| 2      | 3473 and later | 3473    | `manufacture.bss` | 417,753 | 15,361 Material, 7,064 Row | 12        |
+| 1      | 1784           | 1784    | `manufacture.bss` | 466,321 | 16,442 Material, 8,668 Row | 12        |
 
-| Layout | File              | Known             | Unknown          |
-| ------ | ----------------- | ----------------- | ---------------- |
-| 1      | `manufacture.bss` | 325,921 B (78.0%) | 91,832 B (22.0%) |
+| Layout | File              | Known             | Unknown           |
+| ------ | ----------------- | ----------------- | ----------------- |
+| 2      | `manufacture.bss` | 325,921 B (78.0%) | 91,832 B (22.0%)  |
+| 1      | `manufacture.bss` | 336,301 B (72.1%) | 130,020 B (27.9%) |
 
 <!-- versions:end -->
 
@@ -31,7 +33,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -77,6 +79,26 @@ The entries of a row are in ascending `item_key` order on every row, so `first_i
 | ------- | ------------------ | ------------ | ---------------------------------------------- |
 | `+0x00` | u32                | string_count | Number of strings; `12` on client 3464         |
 | `+0x04` | pstr[string_count] | strings      | `u8 is_wide`, `u32 byte_length`, then the text |
+
+## Layout 1
+
+On client 1784 the row holds a u16 `unknown_19`, always `0`, where Layout 2
+has the u32 `result_group`, so `material_count` sits at `+0x1B` and the
+fixed part is 31 bytes. Only the Row differs from Layout 2.
+
+### Row (variable: 31 bytes + materials)
+
+| Offset  | Type                     | Field          | Notes                                   |
+| ------- | ------------------------ | -------------- | --------------------------------------- |
+| `+0x00` | u32                      | first_item_key |                                         |
+| `+0x04` | bytes[8]                 | unknown_04     | Always zero on client 1784              |
+| `+0x0C` | u32                      | action_index   |                                         |
+| `+0x10` | u32                      | unknown_10     | Always `0` on client 1784               |
+| `+0x14` | u32                      | action_hash    |                                         |
+| `+0x18` | u8                       | unknown_18     | Always `39` on client 1784              |
+| `+0x19` | u16                      | unknown_19     | Always `0` on client 1784               |
+| `+0x1B` | u32                      | material_count | `1` to `5`                              |
+| `+0x1F` | Material[material_count] | materials      |                                         |
 
 ## `action_hash`
 

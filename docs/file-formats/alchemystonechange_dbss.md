@@ -14,15 +14,19 @@ skill condition as an inline script, and the item it grows into.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes |
-| ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | --------- |
-| 1      | 3473 and later | 3473    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
-| 1      | 3473 and later | 3473    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
+| Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes               |
+| ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | ----------------------- |
+| 2      | 3473 and later | 3473    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94                      |
+| 2      | 3473 and later | 3473    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12                      |
+| 1      | 1784           | 1784    | `alchemystonechange.dbss`       | 9,604  | 164 Row       | 40 to 78, 59 on average |
+| 1      | 1784           | 1784    | `alchemystonechangeoffset.dbss` | 1,972  | 164 Index Row | 12                      |
 
 | Layout | File                            | Known            | Unknown         |
 | ------ | ------------------------------- | ---------------- | --------------- |
-| 1      | `alchemystonechange.dbss`       | 8,782 B (70.2%)  | 3,724 B (29.8%) |
-| 1      | `alchemystonechangeoffset.dbss` | 1,600 B (100.0%) | 0 B (0.0%)      |
+| 2      | `alchemystonechange.dbss`       | 8,782 B (70.2%)  | 3,724 B (29.8%) |
+| 2      | `alchemystonechangeoffset.dbss` | 1,600 B (100.0%) | 0 B (0.0%)      |
+| 1      | `alchemystonechange.dbss`       | 6,980 B (72.7%)  | 2,624 B (27.3%) |
+| 1      | `alchemystonechangeoffset.dbss` | 1,972 B (100.0%) | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -34,7 +38,7 @@ and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -107,6 +111,29 @@ not in the main file's order (the first three keys are 768512, 54205,
 | `+0x00` | u32  | item_id | Row key, the main row's `key`                            |
 | `+0x04` | u32  | offset  | Start of the row in `alchemystonechange.dbss` plus 4, at its `item_id` |
 | `+0x08` | u32  | size    | Row length minus the 4-byte `key`; `90` on every row (client 3464) |
+
+## Layout 1
+
+On client 1784 the row has a u16 at `+0x08` where Layout 2 has a u32, 14
+bytes of unknown fields before `condition` where Layout 2 has 16, and no
+12-byte tail after `condition`. Only the Row differs from Layout 2.
+
+### Row (variable: 40 bytes + condition text)
+
+The index row `size` is `36` for a row with an empty `condition` and `74`
+for one with a 19-character condition (client 1784).
+
+| Offset  | Type     | Field            | Notes                                                            |
+| ------- | -------- | ---------------- | ---------------------------------------------------------------- |
+| `+0x00` | u32      | key              |                                                                  |
+| `+0x04` | u32      | item_id          |                                                                  |
+| `+0x08` | u16      | unknown_old_08   | `0` on Totem rows, an id near `item_id + 800` on alchemy stone rows |
+| `+0x0A` | u32      | material_item_id | `16001` Black Stone on every row (client 1784)                   |
+| `+0x0E` | u32      | material_count   | `1` or `50` (client 1784)                                        |
+| `+0x12` | bytes[8] | unknown_12       | All zero on every row (client 1784)                              |
+| `+0x1A` | u32      | unknown_1a       | `0`, `700000` or `850000` (client 1784)                          |
+| `+0x1E` | u16      | unknown_1e       | `0`, or an id near `item_id + 870` on 24 alchemy stone rows (client 1784) |
+| `+0x20` | str16    | condition        | Empty on every alchemy stone row (client 1784)                   |
 
 ## Conditions
 

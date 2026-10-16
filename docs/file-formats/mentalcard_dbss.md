@@ -14,13 +14,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes     | Records          | Row bytes                    |
 | ------ | -------------- | ------- | ----------------------- | --------- | ---------------- | ---------------------------- |
-| 1      | 3473 and later | 3473    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
-| 1      | 3473 and later | 3473    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
+| 2      | 3473 and later | 3473    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
+| 2      | 3473 and later | 3473    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
+| 1      | 1784           | 1784    | `mentalcard.dbss`       | 4,002,305 | 8,092 Card       | 161 to 2,258, 495 on average |
+| 1      | 1784           | 1784    | `mentalcardoffset.dbss` | 97,124    | 8,092 Index Row  | 12                           |
 
 | Layout | File                    | Known               | Unknown          |
 | ------ | ----------------------- | ------------------- | ---------------- |
-| 1      | `mentalcard.dbss`       | 6,178,315 B (95.6%) | 283,608 B (4.4%) |
-| 1      | `mentalcardoffset.dbss` | 151,268 B (100.0%)  | 0 B (0.0%)       |
+| 2      | `mentalcard.dbss`       | 6,178,315 B (95.6%) | 283,608 B (4.4%) |
+| 2      | `mentalcardoffset.dbss` | 151,268 B (100.0%)  | 0 B (0.0%)       |
+| 1      | `mentalcard.dbss`       | 3,827,629 B (95.6%) | 174,676 B (4.4%) |
+| 1      | `mentalcardoffset.dbss` | 97,124 B (100.0%)   | 0 B (0.0%)       |
 
 <!-- versions:end -->
 
@@ -32,7 +36,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -109,6 +113,40 @@ Rows tile `mentalcard.dbss` exactly: the first record starts at `4`, each next r
 | ------- | ------------------ | ------------ | ----- |
 | `+0x00` | u32                | string_count | `0`   |
 | `+0x04` | pstr[string_count] | strings      | Empty |
+
+## Layout 1
+
+On client 1784 `unknown_end` is 4 zero bytes, so each card is one byte
+shorter; every other field is as in Layout 2.
+
+### Card (variable: 96 bytes + strings and hashes)
+
+| Offset                | Type            | Field                     | Notes                    |
+| --------------------- | --------------- | ------------------------- | ------------------------ |
+| `+0x00`               | u32             | card_id                   |                          |
+| `+0x04`               | u16             | theme_id                  |                          |
+| `+0x06`               | u8              | unknown_06                |                          |
+| `+0x07`               | u8              | unknown_07                |                          |
+| `+0x08`               | f32             | min_favor                 |                          |
+| `+0x0C`               | f32             | max_favor                 |                          |
+| `+0x10`               | f32             | interest                  |                          |
+| `+0x14`               | u8              | buff_type                 |                          |
+| `+0x15`               | f32             | varied_value              |                          |
+| `+0x19`               | u32             | valid_turn                |                          |
+| `+0x1D`               | u32             | apply_turn                |                          |
+| `+0x21`               | str16           | name_kr                   |                          |
+| `name_kr+0x00`        | str16           | description_kr            |                          |
+| `description_kr+0x00` | u8              | unknown_description_kr_00 |                          |
+| `description_kr+0x01` | u8              | unknown_description_kr_01 |                          |
+| `description_kr+0x02` | u32             | unknown_description_kr_02 |                          |
+| `description_kr+0x06` | str8            | icon_path                 |                          |
+| `icon_path+0x00`      | str16           | acquisition_kr            |                          |
+| `acquisition_kr+0x00` | f32[3]          | position                  |                          |
+| `acquisition_kr+0x0C` | u8              | unknown_acquisition_kr_0c |                          |
+| `acquisition_kr+0x0D` | u32             | unknown_acquisition_kr_0d |                          |
+| `acquisition_kr+0x11` | u32             | hash_count                |                          |
+| `acquisition_kr+0x15` | u32[hash_count] | unknown_hashes            |                          |
+| `unknown_hashes+0x00` | bytes[4]        | unknown_end               | Always zero              |
 
 ## Confirmed Examples
 

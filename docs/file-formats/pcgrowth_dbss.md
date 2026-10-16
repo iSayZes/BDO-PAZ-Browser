@@ -12,15 +12,19 @@ The class type is the number `getClassType()` returns and the bit of a class mas
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes  | Records                                                                                           | Row bytes               |
-| ------ | -------------- | ------- | --------------------- | ------ | ------------------------------------------------------------------------------------------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `pcgrowth.dbss`       | 55,280 | 47 Setup Block, 47 Presentation Block, 250 Model Entry, 94 Model List, 47 Class Record, 47 Record | 53 to 71, 58 on average |
-| 1      | 3473 and later | 3473    | `pcgrowthoffset.dbss` | 427    | 47 Offset Row                                                                                     | 9                       |
+| Layout | Clients        | Checked | File                  | Bytes  | Records                                                                                            | Row bytes               |
+| ------ | -------------- | ------- | --------------------- | ------ | -------------------------------------------------------------------------------------------------- | ----------------------- |
+| 2      | 3473 and later | 3473    | `pcgrowth.dbss`       | 55,280 | 47 Setup Block, 47 Presentation Block, 250 Model Entry, 94 Model List, 47 Class Record, 47 Record  | 53 to 71, 58 on average |
+| 2      | 3473 and later | 3473    | `pcgrowthoffset.dbss` | 427    | 47 Offset Row                                                                                      | 9                       |
+| 1      | 1784           | 1784    | `pcgrowth.dbss`       | 64,866 | 82 Setup Block, 82 Presentation Block, 164 Model List, 82 Class Record, 82 Record, 162 Model Entry | 4 to 196, 62 on average |
+| 1      | 1784           | 1784    | `pcgrowthoffset.dbss` | 742    | 82 Offset Row                                                                                      | 9                       |
 
 | Layout | File                  | Known            | Unknown         |
 | ------ | --------------------- | ---------------- | --------------- |
-| 1      | `pcgrowth.dbss`       | 49,013 B (88.7%) | 6,267 B (11.3%) |
-| 1      | `pcgrowthoffset.dbss` | 427 B (100.0%)   | 0 B (0.0%)      |
+| 2      | `pcgrowth.dbss`       | 49,013 B (88.7%) | 6,267 B (11.3%) |
+| 2      | `pcgrowthoffset.dbss` | 427 B (100.0%)   | 0 B (0.0%)      |
+| 1      | `pcgrowth.dbss`       | 57,552 B (88.7%) | 7,314 B (11.3%) |
+| 1      | `pcgrowthoffset.dbss` | 742 B (100.0%)   | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -34,7 +38,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -149,6 +153,70 @@ Bare offset table into `pcgrowth.dbss` (no PABR magic, no trailer), read with `p
 | `+0x05` | u32  | data_size   | Body size in bytes, `437` to `1485` on client 3464            |
 
 The rows are in file order, which is not key order: 46 down to 32, 15 down to 0, then 31 down to 16. The parser checks the u8 copy before each body, that the body holds the same class type, and that it ends exactly at `data_offset + data_size`.
+
+## Layout 1
+
+On client 1784 the Class Record has no `unknown_09`, so `unknown_0d` follows
+`worker_character_key` and every later field sits 4 bytes earlier, and
+`unknown_20` of the Setup Block holds 3 floats instead of 12, so the block is
+63 bytes, and `unknown_27` of the Presentation Block holds 5 floats instead
+of 6. The Class Record, the Setup Block and the Presentation Block differ
+from Layout 2. Field
+names keep Layout 2's offsets, so `unknown_0d` sits at `+0x09` here.
+
+### Class Record (variable: 102 bytes + starter weapons and text)
+
+| Offset                 | Type               | Field                    | Notes |
+| ---------------------- | ------------------ | ------------------------ | ----- |
+| `+0x00`                | u8                 | class_type               |       |
+| `+0x01`                | u16                | character_key            |       |
+| `+0x03`                | u16                | background_character_key |       |
+| `+0x05`                | u16                | alterego_character_key   |       |
+| `+0x07`                | u16                | worker_character_key     |       |
+| `+0x09`                | u8                 | unknown_0d               |       |
+| `+0x0A`                | u32                | starter_count            |       |
+| `+0x0E`                | u32[starter_count] | starter_weapons          |       |
+| `starter_weapons+0x00` | Setup Block        | setup                    |       |
+| `starter_weapons+0x3F` | str16              | name_kr                  |       |
+| `name_kr+0x00`         | str16              | description_kr           |       |
+| `description_kr+0x00`  | str16              | select_movie             |       |
+| `select_movie+0x00`    | u8                 | gender                   |       |
+| `select_movie+0x01`    | str8[4]            | consume_actions          |       |
+| `consume_actions+0x00` | Presentation Block | presentation             |       |
+| `presentation+0x00`    | Model List         | weapon_models            |       |
+| `weapon_models+0x00`   | Model List         | unknown_model_list       |       |
+
+### Setup Block (63 bytes)
+
+| Offset  | Type   | Field                | Notes |
+| ------- | ------ | -------------------- | ----- |
+| `+0x00` | f32[3] | unknown_00           |       |
+| `+0x0C` | u32    | unknown_0c           |       |
+| `+0x10` | f32[3] | unknown_10           |       |
+| `+0x1C` | u32    | unknown_1c           |       |
+| `+0x20` | f32[3] | unknown_20           |       |
+| `+0x2C` | u32    | unknown_50           |       |
+| `+0x30` | u32    | unknown_54           |       |
+| `+0x34` | u32    | unknown_58           |       |
+| `+0x38` | u8     | unknown_5c           |       |
+| `+0x39` | u8     | unknown_5d           |       |
+| `+0x3A` | u8     | combat_resource_type |       |
+| `+0x3B` | u8     | unknown_5f           |       |
+| `+0x3C` | u8[3]  | unknown_60           |       |
+
+### Presentation Block (variable: 67 bytes + 8 per pair)
+
+| Offset               | Type               | Field              | Notes                                          |
+| -------------------- | ------------------ | ------------------ | ---------------------------------------------- |
+| `+0x00`              | f32[3]             | combo_color        |                                                |
+| `+0x0C`              | f32[3]             | awaken_combo_color |                                                |
+| `+0x18`              | u8                 | combat_type        |                                                |
+| `+0x19`              | u32[3]             | class_weapons      |                                                |
+| `+0x25`              | u16                | unknown_25         |                                                |
+| `+0x27`              | f32[5]             | unknown_27         | Shai (class type 17): `100.0`, `0.7`, `-0.3`, `-38.0`, `0.0` on client 1784 |
+| `+0x3B`              | u32                | pair_count         | `2` on Shai, else `0` on client 1784           |
+| `+0x3F`              | u32[pair_count][2] | unknown_pairs      |                                                |
+| `unknown_pairs+0x00` | u32                | unknown_end        |                                                |
 
 ## Localization
 

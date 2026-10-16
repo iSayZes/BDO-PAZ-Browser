@@ -16,13 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
 | ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
-| 1      | 3473 and later | 3473    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+| 2      | 3473 and later | 3473    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
+| 2      | 3473 and later | 3473    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+| 1      | 1784           | 1784    | `worldmapmonster.dbss`       | 20,586 | 127 Marker Record, 127 Record | 124 to 274, 160 on average |
+| 1      | 1784           | 1784    | `worldmapmonsteroffset.dbss` | 1,274  | 127 Offset Row                | 10                         |
 
 | Layout | File                         | Known            | Unknown        |
 | ------ | ---------------------------- | ---------------- | -------------- |
-| 1      | `worldmapmonster.dbss`       | 39,426 B (92.0%) | 3,450 B (8.0%) |
-| 1      | `worldmapmonsteroffset.dbss` | 2,304 B (100.0%) | 0 B (0.0%)     |
+| 2      | `worldmapmonster.dbss`       | 39,426 B (92.0%) | 3,450 B (8.0%) |
+| 2      | `worldmapmonsteroffset.dbss` | 2,304 B (100.0%) | 0 B (0.0%)     |
+| 1      | `worldmapmonster.dbss`       | 19,570 B (95.1%) | 1,016 B (4.9%) |
+| 1      | `worldmapmonsteroffset.dbss` | 1,274 B (100.0%) | 0 B (0.0%)     |
 
 <!-- versions:end -->
 
@@ -35,7 +39,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -93,6 +97,26 @@ with the 20 keys from 10001 to 10020, both counting down.
 | `+0x00` | u16  | key    | Marker key                                                  |
 | `+0x02` | u32  | offset | Start of the marker record in `worldmapmonster.dbss`, past the key copy |
 | `+0x06` | u32  | size   | Length of the marker record, the key copy left out          |
+
+## Layout 1
+
+On client 1784 a Marker Record held one label line: the zone or boss name
+followed `line1_kr` directly, without `line2_kr`, and the record ended after
+`unknown_str`, without `unknown_ref`, `unknown_kind`, `unknown_flag` and
+`unknown_end`. Only the Marker Record differs from Layout 2. On client 1784
+the file holds 127 records.
+
+### Marker Record (variable: 54 bytes + text)
+
+| Offset           | Type   | Field       | Notes                             |
+| ---------------- | ------ | ----------- | --------------------------------- |
+| `+0x00`          | u16    | key         |                                   |
+| `+0x02`          | str16  | line1_kr    |                                   |
+| `line1_kr+0x00`  | str16  | name_kr     |                                   |
+| `name_kr+0x00`   | f32[3] | position    |                                   |
+| `name_kr+0x0C`   | str8   | icon        |                                   |
+| `icon+0x00`      | str16  | condition   |                                   |
+| `condition+0x00` | str16  | unknown_str | Empty on every record on client 1784 |
 
 ## Notes
 

@@ -12,13 +12,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes     | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Row bytes                |
 | ------ | -------------- | ------- | ------------------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| 1      | 3473 and later | 3473    | `characterfunction.dbss`       | 1,804,650 | 2,146 Shop Slot, 2,146 Shop Sell Slot, 2,146 Guild Shop Slot, 2,146 Guild Shop Sell Slot, 2,146 Trade Slot, 2,146 Auction Slot, 2,146 Mating Slot, 2,146 Inn Slot, 2,146 Text Slot, 27,898 Button Slot, 2,146 Stable Slot, 2,146 Conversation Slot, 2,146 Node Management Slot, 2,146 Minor Lord Menu Slot, 4,292 Territory Slot, 2,146 Unknown 1aa Slot, 2,146 Crafting Delivery Slot, 2,146 Skill Addon Slot, 6,438 Condition First Slot, 2,146 Maritime Trade Slot, 2,146 Hire Sailor Slot, 2,146 Season Gift Slot, 2,146 Yar Slot, 2,146 Pet Training Slot, 2,146 Lightstone Slot, 2,146 Function Record, 2,146 Record | 17 to 637, 17 on average |
-| 1      | 3473 and later | 3473    | `characterfunctionoffset.dbss` | 21,480    | 2,146 Index Row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 10                       |
+| 2      | 3473 and later | 3473    | `characterfunction.dbss`       | 1,804,650 | 2,146 Shop Slot, 2,146 Shop Sell Slot, 2,146 Guild Shop Slot, 2,146 Guild Shop Sell Slot, 2,146 Trade Slot, 2,146 Auction Slot, 2,146 Mating Slot, 2,146 Inn Slot, 2,146 Text Slot, 27,898 Button Slot, 2,146 Stable Slot, 2,146 Conversation Slot, 2,146 Node Management Slot, 2,146 Minor Lord Menu Slot, 4,292 Territory Slot, 2,146 Unknown 1aa Slot, 2,146 Crafting Delivery Slot, 2,146 Skill Addon Slot, 6,438 Condition First Slot, 2,146 Maritime Trade Slot, 2,146 Hire Sailor Slot, 2,146 Season Gift Slot, 2,146 Yar Slot, 2,146 Pet Training Slot, 2,146 Lightstone Slot, 2,146 Function Record, 2,146 Record | 17 to 637, 17 on average |
+| 2      | 3473 and later | 3473    | `characterfunctionoffset.dbss` | 21,480    | 2,146 Index Row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 10                       |
+| 1      | 1784           | 1784    | `characterfunction.dbss`       | 1,360,968 | 1,561 Shop Slot, 1,561 Shop Sell Slot, 1,561 Guild Shop Slot, 1,561 Guild Shop Sell Slot, 1,561 Trade Slot, 1,561 Auction Slot, 1,561 Mating Slot, 1,561 Inn Slot, 1,561 Text Slot, 20,293 Button Slot, 1,561 Stable Slot, 1,561 Conversation Slot, 1,561 Node Management Slot, 1,561 Minor Lord Menu Slot, 3,122 Unknown 1aa Slot, 3,122 Territory Slot, 1,561 Crafting Delivery Slot, 1,561 Skill Addon Slot, 4,683 Condition First Slot, 1,561 Maritime Trade Slot, 1,561 Hire Sailor Slot, 1,561 Unknown 287 Slot, 1,561 Season Gift Slot, 1,561 Yar Slot, 1,561 Function Record, 1,561 Record                         | 17 to 289, 17 on average |
+| 1      | 1784           | 1784    | `characterfunctionoffset.dbss` | 15,630    | 1,561 Index Row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 10                       |
 
 | Layout | File                           | Known               | Unknown         |
 | ------ | ------------------------------ | ------------------- | --------------- |
-| 1      | `characterfunction.dbss`       | 1,772,460 B (98.2%) | 32,190 B (1.8%) |
-| 1      | `characterfunctionoffset.dbss` | 21,480 B (100.0%)   | 0 B (0.0%)      |
+| 2      | `characterfunction.dbss`       | 1,772,460 B (98.2%) | 32,190 B (1.8%) |
+| 2      | `characterfunctionoffset.dbss` | 21,480 B (100.0%)   | 0 B (0.0%)      |
+| 1      | `characterfunction.dbss`       | 1,334,431 B (98.1%) | 26,537 B (1.9%) |
+| 1      | `characterfunctionoffset.dbss` | 15,630 B (100.0%)   | 0 B (0.0%)      |
 
 <!-- versions:end -->
 
@@ -31,7 +35,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian. A string is a u64 length in UTF-16 code units followed by UTF-16LE text with no terminator.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -416,6 +420,122 @@ Earlier versions of this doc called `string_count` the trailer's `unknown_00` an
 | ------- | ------------------ | ------------ | ---------- |
 | `+0x00` | u32                | string_count | Always `0` |
 | `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Layout 1
+
+On client 1784 the five item group fields were u16, a slot with a u16
+`0xFFFF` sat before `imperial_delivery`, a slot with the `checkEdanPass();`
+condition sat after `hire_sailor`, the `pet_training` and `lightstone`
+slots did not exist, and the tail was 5 bytes. The all-empty record is 724
+bytes. Field names keep Layout 2's positions; the two slots that exist only
+here are named by their position in the all-empty record of this layout.
+The parser reads only Layout 2.
+
+### Function Record (variable: 9 bytes + slots)
+
+| Offset                            | Type                   | Field                      | Notes |
+| --------------------------------- | ---------------------- | -------------------------- | ----- |
+| `+0x00`                           | u8                     | shop_type                  | |
+| `+0x01`                           | u8                     | trade_group_type           | |
+| `+0x02`                           | u8                     | is_smuggle_shop            | |
+| `+0x03`                           | u8                     | servant_type               | |
+| `+0x04`                           | Shop Slot              | shop                       | |
+| `shop+0x00`                       | Shop Sell Slot         | shop_sell                  | |
+| `shop_sell+0x00`                  | Guild Shop Slot        | guild_shop                 | |
+| `guild_shop+0x00`                 | Guild Shop Sell Slot   | guild_shop_sell            | |
+| `guild_shop_sell+0x00`            | Trade Slot             | trade                      | |
+| `trade+0x00`                      | Auction Slot           | auction                    | |
+| `auction+0x00`                    | Mating Slot            | mating                     | |
+| `mating+0x00`                     | Inn Slot               | inn                        | |
+| `inn+0x00`                        | Text Slot              | reward_explore             | |
+| `reward_explore+0x00`             | Button Slot            | learn_skill                | |
+| `learn_skill+0x00`                | Button Slot            | repair                     | |
+| `repair+0x00`                     | Button Slot            | traces_of_blood            | |
+| `traces_of_blood+0x00`            | Button Slot            | storage                    | |
+| `storage+0x00`                    | Stable Slot            | stable                     | |
+| `stable+0x00`                     | Button Slot            | transport                  | |
+| `transport+0x00`                  | Button Slot            | transport_person           | |
+| `transport_person+0x00`           | Conversation Slot      | conversation               | |
+| `conversation+0x00`               | Button Slot            | create_guild               | |
+| `create_guild+0x00`               | Node Management Slot   | node_management            | |
+| `node_management+0x00`            | Button Slot            | lord_information           | |
+| `lord_information+0x00`           | Minor Lord Menu Slot   | minor_lord_menu            | |
+| `minor_lord_menu+0x00`            | Button Slot            | extraction                 | |
+| `extraction+0x00`                 | Unknown 1aa Slot       | unknown_18e                | Never set; its u16 is `0xFFFF` in all 1,561 records on client 1784 |
+| `unknown_18e+0x00`                | Territory Slot         | imperial_delivery          | |
+| `imperial_delivery+0x00`          | Unknown 1aa Slot       | unknown_1aa                | |
+| `unknown_1aa+0x00`                | Button Slot            | knowledge_management       | |
+| `knowledge_management+0x00`       | Crafting Delivery Slot | imperial_crafting_delivery | |
+| `imperial_crafting_delivery+0x00` | Button Slot            | imperial_fishing_delivery  | |
+| `imperial_fishing_delivery+0x00`  | Button Slot            | guild_supply_shop          | |
+| `guild_supply_shop+0x00`          | Skill Addon Slot       | skill_addon                | |
+| `skill_addon+0x00`                | Condition First Slot   | give_gift                  | |
+| `give_gift+0x00`                  | Condition First Slot   | cleanse_gear               | |
+| `cleanse_gear+0x00`               | Condition First Slot   | black_spirit_adventure     | |
+| `black_spirit_adventure+0x00`     | Territory Slot         | central_market             | |
+| `central_market+0x00`             | Maritime Trade Slot    | maritime_trade             | |
+| `maritime_trade+0x00`             | Hire Sailor Slot       | hire_sailor                | |
+| `hire_sailor+0x00`                | Unknown 287 Slot       | unknown_287                | See Unknown 287 Slot |
+| `unknown_287+0x00`                | Season Gift Slot       | season_special_gift        | |
+| `season_special_gift+0x00`        | Button Slot            | hall_of_honor              | |
+| `hall_of_honor+0x00`              | Yar Slot               | yar                        | |
+| `yar+0x00`                        | u32                    | unknown_2d7                | Always `0` on client 1784 |
+| `yar+0x04`                        | u8                     | unknown_2db                | `1`, or `0` on 7 records on client 1784 |
+
+The tail lines up with Layout 2's `unknown_2d7` and `unknown_2db` by value;
+the two u8 before them in Layout 2 have no counterpart here.
+
+### Shop Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field          | Notes |
+| ---------------- | ----- | -------------- | ----- |
+| `+0x00`          | str16 | name           | |
+| `name+0x00`      | str16 | condition      | |
+| `condition+0x00` | u16   | shop_buy_group | |
+
+### Shop Sell Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field           | Notes |
+| ---------------- | ----- | --------------- | ----- |
+| `+0x00`          | str16 | name            | |
+| `name+0x00`      | str16 | condition       | |
+| `condition+0x00` | u16   | shop_sell_group | |
+
+### Guild Shop Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field                | Notes |
+| ---------------- | ----- | -------------------- | ----- |
+| `+0x00`          | str16 | name                 | |
+| `name+0x00`      | str16 | condition            | |
+| `condition+0x00` | u16   | guild_shop_buy_group | |
+
+### Guild Shop Sell Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field                 | Notes |
+| ---------------- | ----- | --------------------- | ----- |
+| `+0x00`          | str16 | name                  | |
+| `name+0x00`      | str16 | condition             | |
+| `condition+0x00` | u16   | guild_shop_sell_group | |
+
+### Trade Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | |
+| `name+0x00`      | str16 | condition   | |
+| `condition+0x00` | u16   | trade_group | |
+
+The u16 equals Layout 2's u32 in 1,468 of the 1,557 records both clients
+share for `shop_buy_group` and 1,545 for `trade_group`.
+
+### Unknown 287 Slot (variable: 21 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | `임시` on 420 records on client 1784, empty on the rest |
+| `name+0x00`      | str16 | condition   | `checkEdanPass();` on the same 420 records |
+| `condition+0x00` | u8    | has_button  | `1` exactly when `name` is not empty |
+| `condition+0x01` | u32   | unknown_298 | `0`, or one of 21 values from `1` to `1,691` on 21 records |
 
 ## Item Groups
 

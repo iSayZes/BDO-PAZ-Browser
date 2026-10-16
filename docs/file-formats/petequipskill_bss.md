@@ -13,11 +13,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes               |
 | ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | ----------------------- |
-| 1      | 3473 and later | 3473    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
+| 2      | 3473 and later | 3473    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
+| 1      | 1784           | 1784    | `petequipskill.bss` | 1,732 | 43 Equip Skill, 100 Slot | 12                      |
 
 | Layout | File                | Known           | Unknown         |
 | ------ | ------------------- | --------------- | --------------- |
-| 1      | `petequipskill.bss` | 2,446 B (64.8%) | 1,326 B (35.2%) |
+| 2      | `petequipskill.bss` | 2,446 B (64.8%) | 1,326 B (35.2%) |
+| 1      | `petequipskill.bss` | 1,446 B (83.5%) | 286 B (16.5%)   |
 
 <!-- versions:end -->
 
@@ -27,7 +29,7 @@ None; `petequipskill.bss` is a standalone catalog with no offset index.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -75,3 +77,33 @@ Earlier versions of this doc called `unknown_08` `tier`, `unknown_0c` `extra_fla
 The null block and Section 2 together are exactly 200 slots, from `0x208` up to the trailer's `data_end`, and every live Section 2 record sits at the slot whose index equals its `equip_skill_id` (slots `0` to `14` are the null block). Reading one extra u32 after each `unknown_0c = 1` record is what keeps that alignment and lands the last slot exactly on `data_end`. The parser walks the null block and Section 2 as one table starting right after Section 1, and its `slot` field is the table index, so every record in both sections has `slot = equip_skill_id`.
 
 Within each section, skills of the same `skill_type` form a tier group (e.g., all Karma Recovery entries share type 1 in S1). The type numbering is section-local and the mapping from type ID to skill category name is derived empirically from loc IDs. No authoritative mapping table has been found. The grouping itself holds for all 116 records: every record of one `skill_type` in a section resolves to the same effect name through LOC, which is why the field keeps its name while only the type-to-name table is open.
+
+## Layout 1
+
+On client 1784 the null-entry sentinel was `100`, not `200`, and every Slot
+was 12 bytes: Section 2 records had no `unknown_0c` and no `unknown_10`. The
+File Layout and the Slot differ from Layout 2; the Equip Skill is the same.
+On client 1784 the file holds 43 Equip Skills and 100 Slots, and every live
+Section 2 record still sits at the slot whose index equals its
+`equip_skill_id`.
+
+### File Layout
+
+| Offset              | Type                                     | Field        | Notes                                                    |
+| ------------------- | ---------------------------------------- | ------------ | -------------------------------------------------------- |
+| `+0x00`             | char[4]                                  | magic        | `PABR` (ASCII)                                           |
+| `+0x04`             | Equip Skill[while equip_skill_id != 100] | equip_skills | Section 1, ends at the first record whose ID is `100`    |
+| `equip_skills+0x00` | Slot[..data_end]                         | slots        | Null block and Section 2, 12-byte slots up to `data_end` |
+| `EOF-0x0C`          | u32                                      | string_count | `0`: the PABR string table, here with no strings         |
+| `EOF-0x08`          | u32                                      | data_end     | `file_size - 12`, the offset of `string_count`           |
+| `EOF-0x04`          | u32                                      | zero         | Always `0`                                               |
+
+### Slot (12 bytes)
+
+| Offset  | Type | Field          | Notes                                          |
+| ------- | ---- | -------------- | ---------------------------------------------- |
+| `+0x00` | u32  | equip_skill_id | Skill record key, or `100` = null              |
+| `+0x04` | u32  | skill_type     | Skill group; `0` in a null slot                |
+| `+0x08` | u8   | unknown_08     | `1` in a live record, `0` in a null slot       |
+| `+0x09` | u8   | unknown_09     | Always 0                                       |
+| `+0x0A` | u16  | loc_id         | Localization key to skill name; `0` in a null slot |

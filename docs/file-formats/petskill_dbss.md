@@ -12,13 +12,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records                               | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `petskill.dbss`       | 9,380 | 539 Effect Row, 49 Payload, 49 Record | 17        |
-| 1      | 3473 and later | 3473    | `petskilloffset.dbss` | 494   | 49 Offset Row                         | 10        |
+| 2      | 3473 and later | 3473    | `petskill.dbss`       | 9,380 | 539 Effect Row, 49 Payload, 49 Record | 17        |
+| 2      | 3473 and later | 3473    | `petskilloffset.dbss` | 494   | 49 Offset Row                         | 10        |
+| 1      | 1784           | 1784    | `petskill.dbss`       | 8,606 | 460 Effect Row, 46 Payload, 46 Record | 17        |
+| 1      | 1784           | 1784    | `petskilloffset.dbss` | 464   | 46 Offset Row                         | 10        |
 
 | Layout | File                  | Known           | Unknown         |
 | ------ | --------------------- | --------------- | --------------- |
-| 1      | `petskill.dbss`       | 5,590 B (59.6%) | 3,790 B (40.4%) |
-| 1      | `petskilloffset.dbss` | 396 B (80.2%)   | 98 B (19.8%)    |
+| 2      | `petskill.dbss`       | 5,590 B (59.6%) | 3,790 B (40.4%) |
+| 2      | `petskilloffset.dbss` | 396 B (80.2%)   | 98 B (19.8%)    |
+| 1      | `petskill.dbss`       | 4,788 B (55.6%) | 3,818 B (44.4%) |
+| 1      | `petskilloffset.dbss` | 372 B (80.2%)   | 92 B (19.8%)    |
 
 <!-- versions:end -->
 
@@ -31,7 +35,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -91,6 +95,20 @@ Earlier versions of this doc called `skill_type` `unknown_00` and before that `s
 | `+0x08` | u16  | unknown_08   | Always 0                                                                     |
 
 `record_start = data_offset - 2` gives the position of the 2-byte key prefix.
+
+## Layout 1
+
+On client 1784 every payload is 185 bytes: the eleventh row stops after 13
+of its 17 bytes, and no payload has `unknown_bd`. Only the Payload differs
+from Layout 2.
+
+### Payload (185 bytes)
+
+| Offset  | Type           | Field        | Notes                                                                            |
+| ------- | -------------- | ------------ | -------------------------------------------------------------------------------- |
+| `+0x00` | u16            | pet_skill_id | Equals the key prefix and the offset-table key                                   |
+| `+0x02` | Effect Row[10] | effect_rows  | The baseline row plus level rows 1 to 9                                          |
+| `+0xAC` | bytes[13]      | unknown_ac   | Level row 10 up to `+0x0C` of an Effect Row: `skill_type` to `raw_value_b` and one more byte |
 
 ## Observed Values
 

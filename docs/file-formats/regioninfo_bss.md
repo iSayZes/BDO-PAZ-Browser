@@ -16,11 +16,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 2      | 3473 and later | 3473    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 1      | 1784           | 1784    | `regioninfo.bss` | 556,117 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |
 | ------ | ---------------- | ----------------- | ----------------- |
-| 1      | `regioninfo.bss` | 241,279 B (37.5%) | 402,390 B (62.5%) |
+| 2      | `regioninfo.bss` | 241,279 B (37.5%) | 402,390 B (62.5%) |
+| 1      | `regioninfo.bss` | 159,093 B (28.6%) | 397,024 B (71.4%) |
 
 <!-- versions:end -->
 
@@ -32,7 +34,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -197,6 +199,151 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | ------- | ------------------ | ------------ | ----- |
 | `+0x00` | u32                | string_count | Observed `1108` entries |
 | `+0x04` | pstr[string_count] | strings      | Korean strings |
+
+## Layout 1
+
+On client 1784 the head has no `unknown_16`, so the fields from
+`unknown_17` sit 1 byte earlier, and 152 bytes (`unknown_b8`) sit between
+`unknown_b5` and `unknown_b9`. In the tail, `unknown_tail_31` (always `0`
+in Layout 2) counts a list of u16 region keys that follows it, and the
+fields after the list have a u8 and an f32 more before `unknown_tail_45`
+and end after `unknown_tail_7a`, without the 37 bytes from
+`unknown_tail_86` to `guild_wharf_manager_key`.
+
+### Region (variable: 369 bytes + key and vector lists)
+
+| Offset                    | Type                 | Field              | Notes           |
+| ------------------------- | -------------------- | ------------------ | --------------- |
+| `+0x00`                   | Region Head          | head               | See Region Head |
+| `+0x169`                  | u32                  | key_count          |                 |
+| `+0x16D`                  | u16[key_count]       | unknown_d2_keys    |                 |
+| `unknown_d2_keys+0x00`    | u32                  | vector_count       |                 |
+| `unknown_d2_keys+0x04`    | f32[vector_count][3] | unknown_d2_vectors |                 |
+| `unknown_d2_vectors+0x00` | Region Tail          | tail               | See Region Tail |
+
+### Region Head (361 bytes)
+
+| Offset   | Type      | Field                    | Notes |
+| -------- | --------- | ------------------------ | ----- |
+| `+0x00`  | u16       | region_key               |  |
+| `+0x02`  | u8[3]     | color                    |  |
+| `+0x05`  | u8        | color_alpha              |  |
+| `+0x06`  | u8        | region_type              |  |
+| `+0x07`  | u8        | node_war_day             |  |
+| `+0x08`  | bytes[3]  | unknown_08               |  |
+| `+0x0B`  | u8        | unknown_0b               |  |
+| `+0x0C`  | u8        | is_safe_zone             |  |
+| `+0x0D`  | u8        | is_arena_zone            |  |
+| `+0x0E`  | u8        | is_sea                   |  |
+| `+0x0F`  | u8        | is_desert                |  |
+| `+0x10`  | u8        | is_not_dig               |  |
+| `+0x11`  | u8        | is_ocean                 |  |
+| `+0x12`  | u8        | is_prison                |  |
+| `+0x13`  | u8        | unknown_13               |  |
+| `+0x14`  | u8        | unknown_14               |  |
+| `+0x15`  | u8        | unknown_15               |  |
+| `+0x16`  | u8        | unknown_17               |  |
+| `+0x17`  | u8        | unknown_18               |  |
+| `+0x18`  | u8        | unknown_19               |  |
+| `+0x19`  | u8        | unknown_1a               |  |
+| `+0x1A`  | u8        | is_accessible_area       |  |
+| `+0x1B`  | u8        | is_node_access           |  |
+| `+0x1C`  | u16       | unknown_1d               |  |
+| `+0x1E`  | u8        | unknown_1f               |  |
+| `+0x1F`  | u32       | unknown_20               | `22130` in every record on client 1784 |
+| `+0x23`  | u8        | unknown_24               |  |
+| `+0x24`  | u8        | is_locator               |  |
+| `+0x25`  | u32       | villain_respawn_node_key |  |
+| `+0x29`  | f32[3]    | villain_respawn_position |  |
+| `+0x35`  | u8        | is_ancient_dungeon       |  |
+| `+0x36`  | u8        | is_escape                |  |
+| `+0x37`  | u8        | is_special_zone          |  |
+| `+0x38`  | u8        | is_vehicle_dead_zone     |  |
+| `+0x39`  | u8        | unknown_3a               |  |
+| `+0x3A`  | u8        | unknown_3b               |  |
+| `+0x3B`  | u16       | skill_no                 |  |
+| `+0x3D`  | u32       | skill_apply_rate         |  |
+| `+0x41`  | u8        | unknown_42               |  |
+| `+0x42`  | u8        | unknown_43               |  |
+| `+0x43`  | u16       | skill_no_2               |  |
+| `+0x45`  | u32       | skill_apply_rate_2       |  |
+| `+0x49`  | bytes[8]  | unknown_4a               |  |
+| `+0x51`  | u8        | unknown_52               |  |
+| `+0x52`  | u8        | unknown_53               |  |
+| `+0x53`  | u16       | night_skill_no           |  |
+| `+0x55`  | u32       | night_skill_apply_rate   |  |
+| `+0x59`  | u8        | territory_key            |  |
+| `+0x5A`  | u8        | unknown_5b               |  |
+| `+0x5B`  | u32       | name_index               |  |
+| `+0x5F`  | u32       | return_position_name     |  |
+| `+0x63`  | u16       | capital_region_key       |  |
+| `+0x65`  | u16       | trade_origin_region_key  |  |
+| `+0x67`  | u16       | region_group_key         |  |
+| `+0x69`  | u8        | unknown_6a               |  |
+| `+0x6A`  | u16       | waypoint_key             |  |
+| `+0x6C`  | bytes[2]  | unknown_6d               |  |
+| `+0x6E`  | u16       | node_key                 |  |
+| `+0x70`  | bytes[2]  | unknown_71               |  |
+| `+0x72`  | u8        | region_attribute_type    |  |
+| `+0x73`  | bytes[3]  | unknown_74               |  |
+| `+0x76`  | f32[3]    | unknown_77               |  |
+| `+0x82`  | f32[3]    | return_position          |  |
+| `+0x8E`  | bytes[4]  | unknown_8f               |  |
+| `+0x92`  | u8        | exploration_point        |  |
+| `+0x93`  | u8        | unknown_94               |  |
+| `+0x94`  | u32       | unknown_95               |  |
+| `+0x98`  | f32[5]    | unknown_99               |  |
+| `+0xAC`  | u32       | unknown_ad               |  |
+| `+0xB0`  | u32       | unknown_b1               |  |
+| `+0xB4`  | u32       | unknown_b5               |  |
+| `+0xB8`  | u32[38]   | unknown_b8               | Not in Layout 2; see below |
+| `+0x150` | u32[6]    | unknown_b9               |  |
+| `+0x168` | u8        | is_free_revival_area     |  |
+
+`unknown_b8` is 38 u32: one from `0` to `43`, 18 values of the form
+`1001`, `2001` ... `8001` (or `0`), 18 values from `0` to `265`, and `1` in
+every record on client 1784.
+
+### Region Tail (variable: 139 bytes + region keys)
+
+| Offset                   | Type                 | Field                   | Notes |
+| ------------------------ | -------------------- | ----------------------- | ----- |
+| `+0x00`                  | u8                   | unknown_tail_00         |  |
+| `+0x01`                  | u16                  | unknown_tail_01         |  |
+| `+0x03`                  | u16                  | max_participants        |  |
+| `+0x05`                  | f32                  | siege_ap_limit          |  |
+| `+0x09`                  | f32                  | siege_dr_limit          |  |
+| `+0x0D`                  | f32                  | siege_evasion_limit     |  |
+| `+0x11`                  | u32                  | unknown_tail_11         |  |
+| `+0x15`                  | u8                   | unknown_tail_15         |  |
+| `+0x16`                  | u8                   | unknown_tail_16         |  |
+| `+0x17`                  | u8                   | unknown_tail_17         |  |
+| `+0x18`                  | u8                   | is_world_boss_reward    |  |
+| `+0x19`                  | f32[6]               | unknown_tail_19         |  |
+| `+0x31`                  | u64                  | unknown_tail_31         | Count of `unknown_tail_list`; `0` to `7` on client 1784 |
+| `+0x39`                  | u16[unknown_tail_31] | unknown_tail_list       | Region keys, mostly neighbours: region 214 holds `211, 212, 213`; set on 77 regions |
+| `unknown_tail_list+0x00` | f32                  | unknown_tail_39         |  |
+| `unknown_tail_list+0x04` | f32                  | unknown_tail_3d         |  |
+| `unknown_tail_list+0x08` | u32                  | unknown_tail_41         |  |
+| `unknown_tail_list+0x0C` | u8                   | unknown_tail_list_0c    | Set on regions 78, 203 and 230 |
+| `unknown_tail_list+0x0D` | f32                  | unknown_tail_list_0d    | `1000.0` on 82 regions, all with `node_war_day` `7`, else `0` |
+| `unknown_tail_list+0x11` | u8                   | unknown_tail_45         | Set on regions 950 and 1070 |
+| `unknown_tail_list+0x12` | u8                   | unknown_tail_46         | Set on region 1072 |
+| `unknown_tail_list+0x13` | u32                  | unknown_tail_47         | `0`, `100`, `1001`, `10011` or `100111` |
+| `unknown_tail_list+0x17` | u16                  | unknown_tail_4b         |  |
+| `unknown_tail_list+0x19` | u32                  | siege_dr_rate_limit     |  |
+| `unknown_tail_list+0x1D` | f32                  | siege_accuracy_limit    |  |
+| `unknown_tail_list+0x21` | u32                  | unknown_tail_55         |  |
+| `unknown_tail_list+0x25` | u32[4]               | siege_resistance_limits |  |
+| `unknown_tail_list+0x35` | u32                  | unknown_tail_69         |  |
+| `unknown_tail_list+0x39` | u8                   | unknown_tail_6d         |  |
+| `unknown_tail_list+0x3A` | f32[3]               | unknown_tail_6e         |  |
+| `unknown_tail_list+0x46` | f32[3]               | unknown_tail_7a         |  |
+
+On client 1784 the file holds 1,062 records. Of the 1,056 region keys it
+shares with client 3473, at least 932 hold the same value in each field
+named here, apart from the string indices, `unknown_20`, `unknown_95` and
+`siege_dr_rate_limit`.
 
 ## Field Names
 

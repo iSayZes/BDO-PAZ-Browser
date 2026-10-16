@@ -15,11 +15,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records                   | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
+| 2      | 3473 and later | 3473    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
+| 1      | 1784           | 1784    | `fairyequipskill.bss` | 1,576 | 30 Skill Record, 100 Slot | 12        |
 
 | Layout | File                  | Known           | Unknown         |
 | ------ | --------------------- | --------------- | --------------- |
-| 1      | `fairyequipskill.bss` | 1,166 B (32.1%) | 2,470 B (67.9%) |
+| 2      | `fairyequipskill.bss` | 1,166 B (32.1%) | 2,470 B (67.9%) |
+| 1      | `fairyequipskill.bss` | 716 B (45.4%)   | 860 B (54.6%)   |
 
 <!-- versions:end -->
 
@@ -33,7 +35,7 @@ None. `fairyequipskill.bss` is a standalone catalog with no offset index.
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -76,3 +78,28 @@ The stride here is 16 bytes, not the 12 used by live records; it matches the wid
 | `+0x04` | bytes[12] | unknown_04     | Always `0`; the place of `skill_type`, `unknown_08`, `unknown_09`, `loc_id` and `unknown_0c` in the `petequipskill.bss` Slot |
 
 `unknown_08` is always `1`, matching `petequipskill.bss` where the same byte is also invariably `1`. Whether it distinguishes fairy grades, marks records as active, or is vestigial cannot be determined from the data alone.
+
+## Layout 1
+
+On client 1784 the null-entry sentinel was `100`, not `200`, and every
+Slot was 12 bytes, the size of a Skill Record. The File Layout and the Slot
+differ from Layout 2; the Skill Record is the same. On client 1784 the file
+holds 30 Skill Records and 100 Slots.
+
+### File Layout
+
+| Offset               | Type                                      | Field         | Notes                                                          |
+| -------------------- | ----------------------------------------- | ------------- | -------------------------------------------------------------- |
+| `+0x00`              | char[4]                                   | magic         | `PABR` (ASCII)                                                 |
+| `+0x04`              | Skill Record[while equip_skill_id != 100] | skill_records | Ends at the first record whose `equip_skill_id` is `100`       |
+| `skill_records+0x00` | Slot[..data_end]                          | slots         | 12-byte null placeholders up to `data_end`                     |
+| `EOF-0x0C`           | u32                                       | string_count  | `0`: the PABR string table, here with no strings               |
+| `EOF-0x08`           | u32                                       | data_end      | `file_size - 12`, the offset of `string_count`                 |
+| `EOF-0x04`           | u32                                       | zero          | Always `0`                                                     |
+
+### Slot (12 bytes)
+
+| Offset  | Type     | Field          | Notes                                 |
+| ------- | -------- | -------------- | ------------------------------------- |
+| `+0x00` | u32      | equip_skill_id | Always `100`, the null-entry sentinel |
+| `+0x04` | bytes[8] | unknown_04     | Always `0`                            |

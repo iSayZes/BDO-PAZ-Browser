@@ -12,12 +12,16 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes |
 | ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | --------- |
-| 1      | 3473 and later | 3473    | `petexp.dbss`       | 3,676 | 9 Data Payload, 9 Record | 406       |
-| 1      | 3473 and later | 3473    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
+| 2      | 3473 and later | 3473    | `petexp.dbss`       | 3,676 | 9 Data Payload, 9 Record | 406       |
+| 2      | 3473 and later | 3473    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
+| 1      | 1784           | 1784    | `petexp.dbss`       | 2,956 | 9 Data Payload, 9 Record | 326       |
+| 1      | 1784           | 1784    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
 
 | Layout | File                | Known            | Unknown    |
 | ------ | ------------------- | ---------------- | ---------- |
-| 1      | `petexp.dbss`       | 3,676 B (100.0%) | 0 B (0.0%) |
+| 2      | `petexp.dbss`       | 3,676 B (100.0%) | 0 B (0.0%) |
+| 2      | `petexpoffset.dbss` | 94 B (100.0%)    | 0 B (0.0%) |
+| 1      | `petexp.dbss`       | 2,956 B (100.0%) | 0 B (0.0%) |
 | 1      | `petexpoffset.dbss` | 94 B (100.0%)    | 0 B (0.0%) |
 
 <!-- versions:end -->
@@ -30,7 +34,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -84,6 +88,27 @@ Provides keyed lookup into `petexp.dbss`.
 Offset records are ordered by descending key: 9, 8, 7, 6, 5, 4, 3, 2, 1.
 
 The rows are the same `[u16 id][u32 offset][u32 size]` rows as a PABR offset table, but the file has no `PABR` magic and no 12-byte trailer (94 bytes = 4 + 9 x 10). The parser reads it with `parse_bare_offset_rows` from `_common/pabr_offset.py`.
+
+## Layout 1
+
+On client 1784 `level_exp` holds 40 slots, so every payload is 326 bytes
+(`2 + 4 + 40 * 8`) and `data_size` is 326. The Record and Data Payload
+differ from Layout 2.
+
+### Record (328 bytes)
+
+| Offset  | Type         | Field      | Notes                                               |
+| ------- | ------------ | ---------- | --------------------------------------------------- |
+| `+0x00` | u16          | key_prefix | Equals `exp_table_id` in the following data payload |
+| `+0x02` | Data Payload | data_bytes | 326-byte payload; see Data Payload                  |
+
+### Data Payload (326 bytes)
+
+| Offset  | Type    | Field        | Notes                                                    |
+| ------- | ------- | ------------ | -------------------------------------------------------- |
+| `+0x00` | u16     | exp_table_id | Matches the 2-byte key prefix and the companion offset key |
+| `+0x02` | u32     | max_level    | 10 to 40 on client 1784                                  |
+| `+0x06` | u64[40] | level_exp    | Only the first `max_level` values are populated          |
 
 ## Observed Records
 

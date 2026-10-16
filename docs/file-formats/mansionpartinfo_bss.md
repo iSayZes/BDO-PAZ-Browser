@@ -17,11 +17,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records          | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ---------------- | --------- |
-| 1      | 3473 and later | 3473    | `mansionpartinfo.bss` | 664   | 9 Manor Part Row | 12        |
+| 2      | 3473 and later | 3473    | `mansionpartinfo.bss` | 664   | 9 Manor Part Row | 12        |
+| 1      | 1784           | 1784    | `mansionpartinfo.bss` | 491   | 6 Manor Part Row | 16        |
 
-| Layout | File                  | Known         | Unknown     |
-| ------ | --------------------- | ------------- | ----------- |
-| 1      | `mansionpartinfo.bss` | 619 B (93.2%) | 45 B (6.8%) |
+| Layout | File                  | Known         | Unknown      |
+| ------ | --------------------- | ------------- | ------------ |
+| 2      | `mansionpartinfo.bss` | 619 B (93.2%) | 45 B (6.8%)  |
+| 1      | `mansionpartinfo.bss` | 437 B (89.0%) | 54 B (11.0%) |
 
 <!-- versions:end -->
 
@@ -33,7 +35,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 All multi-byte values are little-endian.
 
-## Layout 1
+## Layout 2
 
 ### File Layout
 
@@ -70,6 +72,23 @@ string that every `unknown_str_ref` points at.
 | ------- | ------------------ | ------------ | ------------------- |
 | `+0x00` | u32                | string_count | Number of strings   |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Layout 1
+
+On client 1784 each row starts with a u32 `unknown_00` and every later field
+sits 4 bytes later. Only the Manor Part Row differs from Layout 2. Field
+names keep Layout 2's offsets, so `unknown_02` sits at `+0x06` here.
+
+### Manor Part Row (16 bytes)
+
+| Offset  | Type | Field           | Notes                                                                       |
+| ------- | ---- | --------------- | --------------------------------------------------------------------------- |
+| `+0x00` | u32  | unknown_00      | 1, 2, 3, 4, 5, 5 in row order on client 1784                                |
+| `+0x04` | u16  | character_id    |                                                                             |
+| `+0x06` | u8   | unknown_02      | Always `1` on client 1784                                                   |
+| `+0x07` | u8   | part_index      |                                                                             |
+| `+0x08` | u32  | icon_ref        |                                                                             |
+| `+0x0C` | u32  | unknown_str_ref | String table index; on client 1784 a material name such as `Mansion_STR_border_01`, or the empty string |
 
 ## Notes
 

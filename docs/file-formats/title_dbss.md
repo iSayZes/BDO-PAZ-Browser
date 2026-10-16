@@ -8,13 +8,11 @@ category, and optional inline PAColor markup for special title names.
 `title.dbss` is block-addressed by `titleoffset.dbss`; it is not a flat fixed
 record table.
 
-Example:
+## Versions
 
-```text
-title_id: 44  →  "Stoneback Crab Artisan" (Combat)
-Korean: 돌멘게 공예가
-Requirement: Kill Stoneback Crabs
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,32 +20,43 @@ Requirement: Kill Stoneback Crabs
   lookup.
 - `languagedata_en.loc` - optional for English title/requirement display.
 
-## Offset File Format: titleoffset.dbss
+## Layout 1
 
-| Offset           | Type | Description              |
-| ---------------- | ---- | ------------------------ |
-| `+0x00`          | u32  | Entry count              |
-| `+0x04 + n*0x0C` | u32  | Title ID                 |
-| `+0x08 + n*0x0C` | u32  | Offset into `title.dbss` |
-| `+0x0C + n*0x0C` | u32  | Block size               |
+### File Layout
 
-Observed entries: 3,048 in the pre-2026-09-27 test fixture, 3,172 in the
-2026-09-27 client. The largest `offset + size` equals the `title.dbss` byte
-length, so the offset table accounts for the full file.
+A record count, then the records back to back; `titleoffset.dbss` addresses
+each one.
 
-## General Block Header
+| Offset  | Type          | Field   | Notes                                           |
+| ------- | ------------- | ------- | ----------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; equals the `titleoffset.dbss` count |
+| `+0x04` | Record[count] | records | See Record                                      |
+
+### Record (variable: 100 bytes + text)
 
 All inspected records fit one generalized header. The older A/B/C layouts are
-just `key_count` values 1, 2, and 3.
+just `key_count` values 1, 2, and 3. The tail after `requirement_text_kr`
+reads the same on all 3,177 records of client 3473; the tail names count from
+the end of `requirement_text_kr`.
 
-| Offset                | Type     | Name               | Description                                                       |
-| --------------------- | -------- | ------------------ | ----------------------------------------------------------------- |
-| `+0x00`               | u32      | key_count          | Number of 32-bit key/hash/group fields before `title_id`          |
-| `+0x04`               | u32[]    | key_values         | `key_count` values                                                |
-| `+0x04 + key_count*4` | u32      | title_id           | Matches offset entry and loc string ID                            |
-| `+0x08 + key_count*4` | u32      | style_or_title_len | Usually a style value; for styled title records, title length - 1 |
-| `+0x0C + key_count*4` | u32      | zero               | Observed `0`                                                      |
-| `+0x10 + key_count*4` | utf16-le | title/requirement  | Variable text payload                                             |
+| Offset                     | Type           | Field                     | Notes                                                             |
+| -------------------------- | -------------- | ------------------------- | ----------------------------------------------------------------- |
+| `+0x00`                    | u32            | key_count                 | Number of 32-bit key/hash/group fields before `title_id`          |
+| `+0x04`                    | u32[key_count] | key_values                | `key_count` values                                                |
+| `key_values+0x00`          | u32            | title_id                  | Matches offset entry and loc string ID                            |
+| `key_values+0x04`          | str16          | title_text_kr             | Korean title; PAColor-tagged on the styled title records, see Styled Title Records |
+| `title_text_kr+0x00`       | str16          | requirement_text_kr       | Korean requirement, usually with PAColor tags                     |
+| `requirement_text_kr+0x00` | u32            | unknown_tail_00           | Always `0` (client 3473)                                          |
+| `requirement_text_kr+0x04` | u32            | category_id               | See Category IDs; `0` on 1,321 records, `1` on 900, `2` on 197, `3` on 759 (client 3473) |
+| `requirement_text_kr+0x08` | bytes[20]      | unknown_tail_08           | Always `0` (client 3473)                                          |
+| `requirement_text_kr+0x1C` | u32            | unknown_tail_1c           | `0` on 3,102 records; else `3600` to `7776000`, all multiples of 3,600 (`2592000` on 37) (client 3473) |
+| `requirement_text_kr+0x20` | u32            | unknown_tail_20           | Always `0` (client 3473)                                          |
+| `requirement_text_kr+0x24` | u32            | unknown_tail_24           | `0` on 3,082 records; else `604800` to `15552000`, all multiples of 3,600 (`2592000` on 50) (client 3473) |
+| `requirement_text_kr+0x28` | u32            | unknown_tail_28           | Always `0` (client 3473)                                          |
+| `requirement_text_kr+0x2C` | str8           | effect_name               | Aura/effect name, e.g. `vCalsutain_Buff_Aura_02A`; empty on 3,105 records (client 3473) |
+| `effect_name+0x00`         | str8           | color_argb                | ASCII hex, e.g. `FFFF7124`; 8 characters on 365 records, else empty (client 3473) |
+| `color_argb+0x00`          | u32            | color_value               | Same value as little-endian integer; `0` when `color_argb` is empty |
+| `color_argb+0x04`          | bytes[12]      | unknown_after_color_value | Always `0` (client 3473)                                          |
 
 Observed `key_count` distribution:
 
@@ -59,37 +68,36 @@ Observed `key_count` distribution:
 | 4         | 1     | Previously `?` |
 | 6         | 13    | Previously `?` |
 
-This means title ID offset is:
+Earlier versions of this doc read the count of `title_text_kr` as a u32
+`style_or_title_len` and a u32 `zero`, and the count of
+`requirement_text_kr` as a u16 `requirement_text_length` and three u16 `0`.
+Both are the u64 count of a `str16`.
 
-```text
-0x04 + key_count * 4
-```
+### `titleoffset.dbss`
 
-and the style/length field offset is:
+| Offset  | Type              | Field | Notes       |
+| ------- | ----------------- | ----- | ----------- |
+| `+0x00` | u32               | count | Entry count |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row |
 
-```text
-title_id_offset + 0x04
-```
+Observed entries: 3,048 in the pre-2026-09-27 test fixture, 3,172 in the
+2026-09-27 client. The largest `offset + size` equals the `title.dbss` byte
+length, so the offset table accounts for the full file.
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field    | Notes                                                |
+| ------- | ---- | -------- | ---------------------------------------------------- |
+| `+0x00` | u32  | title_id | Title ID                                             |
+| `+0x04` | u32  | offset   | Offset into `title.dbss`, at the record's `key_count` |
+| `+0x08` | u32  | size     | Block size                                           |
 
 ## Text Payload
 
 Most records have a plain Korean title followed by the Korean requirement
 string.
 
-```text
-utf16 title text
-u16 requirement_text_length
-u16 0
-u16 0
-u16 0
-utf16 requirement text, usually with PAColor tags
-u16 0
-u16 0
-u32 category_id
-padding / optional extra payload
-```
-
-The `requirement_text_length` is the UTF-16 code-unit length of the tagged
+The count of `requirement_text_kr` is the UTF-16 code-unit length of the tagged
 requirement string, not the visible text length after stripping PA tags.
 
 Example, title ID `44`:
@@ -106,22 +114,23 @@ Example, title ID `44`:
 ## Styled Title Records
 
 Thirty records, title IDs `3645..3674`, begin their text payload with a PAColor
-tag. These are class "MASTER ..." titles. For these records, the header field
-after `title_id` is not a style enum; it is the styled title payload length
-minus one.
+tag. These are class "MASTER ..." titles. For these records, as for every
+other, the header field after `title_id` is the count of `title_text_kr`, here
+the length of the styled title payload.
 
 Example, title ID `3645`:
 
 | Field                            | Value                   |
 | -------------------------------- | ----------------------- |
 | Header field                     | `231`                   |
-| Styled title payload length      | `232` UTF-16 code units |
+| Styled title payload length      | `231` UTF-16 code units |
 | Plain title after stripping tags | `MASTER WARRIOR`        |
 | Requirement length marker        | `115`                   |
 | Category                         | `0` / World             |
 
-The final code unit of the styled title payload is still the requirement length
-marker, same as normal records.
+An earlier version of this doc read the styled title payload as 232 code units,
+the header field plus one, with the requirement length marker as its final code
+unit. That last unit is the low half of the `requirement_text_kr` count.
 
 ## Category IDs
 
@@ -141,13 +150,12 @@ Most non-default-color titles have a 64-byte or 88-byte extra payload. The title
 color is encoded near the end of that payload as both an ASCII `AARRGGBB`
 string and the same value as a little-endian u32.
 
-64-byte color payload tail:
-
-| Offset  | Type    | Name        | Description                         |
-| ------- | ------- | ----------- | ----------------------------------- |
-| `+0x2C` | u32     | color_len   | Observed `8`                        |
-| `+0x34` | char[8] | color_argb  | ASCII hex, e.g. `FFFF7124`          |
-| `+0x3C` | u32     | color_value | Same value as little-endian integer |
+The extra payload is the Record tail from `unknown_tail_08` to
+`unknown_after_color_value` with its trailing zeros cut: 64 bytes when
+`effect_name` is empty and `color_argb` holds 8 characters, 88 bytes when
+`effect_name` holds 24. `color_argb` is the `color_len` and `color_argb` of
+earlier versions of this doc, and `effect_name` their `effect_len` and
+`effect_name`.
 
 Example:
 
@@ -158,18 +166,9 @@ F  F  F  F  7  1  2  4  packed 0xFFFF7124
 
 This decodes to `0xFFFF7124`, displayed in CSS as `#FF7124`.
 
-88-byte payloads add an aura/effect string before the color:
-
-| Offset  | Type    | Name        | Description                         |
-| ------- | ------- | ----------- | ----------------------------------- |
-| `+0x24` | u32     | effect_len  | Observed `0x18`                     |
-| `+0x2C` | char[]  | effect_name | e.g. `vCalsutain_Buff_Aura_02A`     |
-| `+0x44` | u32     | color_len   | Observed `8`                        |
-| `+0x4C` | char[8] | color_argb  | ASCII hex                           |
-| `+0x54` | u32     | color_value | Same color as little-endian integer |
-
-The name is probably misspelled data (`Calsutain` instead of `Calustian` or
-similar), so parsers should preserve it exactly.
+88-byte payloads add an aura/effect string before the color. The name is
+probably misspelled data (`Calsutain` instead of `Calustian` or similar), so
+parsers should preserve it exactly.
 
 In the current extracted sample, 335 records decode a title color from this
 payload. For example, title ID `3451` (`Fisher`) has the same `0xFFAFEEEE`
@@ -211,12 +210,14 @@ colour (unchecked in game).
 
 ## Style Field
 
-For normal records, `style_or_title_len` is a style/category-like value. Common
-observed values include `2..17`, with rare values through `28`, `43`, and a few
-high values used only by styled title records.
+Earlier versions of this doc read the header field after `title_id`
+(`style_or_title_len`) as a style/category-like value for normal records, with
+common values `2..17`, rare values through `28` and `43`, and a few high values
+used only by styled title records. It is the count of `title_text_kr`: the
+title's length in UTF-16 code units.
 
-`style_or_title_len` is not enough by itself to identify the final visible title
-color. Counterexample:
+It does not identify the final visible title color. Counterexample: three
+titles of 7 code units each.
 
 | Title ID | Title                      | Header Field | Visual Result |
 | -------- | -------------------------- | ------------ | ------------- |
@@ -226,22 +227,20 @@ color. Counterexample:
 
 ## Optional Extra Payload
 
-Some color payloads also include small non-zero integers at offsets such as
-`+0x14` and `+0x1C`. These look like grouping/effect parameters, not the title
-color itself.
+Some color payloads also include small non-zero integers at `unknown_tail_1c`
+and `unknown_tail_24` (`+0x14` and `+0x1C` of the extra payload). These look
+like grouping/effect parameters, not the title color itself.
 
 ## Recommended Parser Behavior
 
 1. Use `titleoffset.dbss` to slice blocks.
-2. Read `key_count`, then derive `title_id_offset`.
-3. Read `key_values`, `title_id`, `style_or_title_len`, and the zero field.
-4. If text starts with a PAColor tag, treat `style_or_title_len` as styled title
-   payload length minus one.
-5. Otherwise treat `style_or_title_len` as the normal style field.
-6. Extract Korean title text, tagged Korean requirement text, requirement
-   length marker, and category.
-7. Strip PA tags only for readable display; keep raw PA tags for debugging.
-8. Look up English name/requirement from `languagedata_en.loc`:
+2. Read `key_count`, then `key_values` and `title_id`.
+3. Read `title_text_kr` and `requirement_text_kr` through their u64 counts.
+4. Read `category_id`, then `effect_name`, `color_argb` and `color_value` at
+   their Record offsets.
+5. A `title_text_kr` that starts with a PAColor tag is a styled title.
+6. Strip PA tags only for readable display; keep raw PA tags for debugging.
+7. Look up English name/requirement from `languagedata_en.loc`:
    - Name: `str_type=1, str_id1=title_id, str_id4=0`
    - Requirement: `str_type=1, str_id1=title_id, str_id4=1`
 
@@ -258,8 +257,9 @@ color itself.
 
 ### Extra Payload Parameters
 
-The color value and optional aura/effect name are now decoded, but several
-earlier integers in the extra payload are still unresolved.
+The color value and optional aura/effect name are now decoded, but
+`unknown_tail_1c` and `unknown_tail_24` in the extra payload are still
+unresolved.
 
 ### Normal Title Name Color
 
@@ -267,7 +267,7 @@ For titles without an extra color payload, the default visible color is still
 not stored as a per-record RGB value in `title.dbss`. Disproven candidates:
 
 - Requirement `_PA_COLOR_MARKER`
-- `style_or_title_len` alone
+- `style_or_title_len` alone (the count of `title_text_kr`)
 - A fixed early `u32` field after the title text
 
 Likely sources still to investigate:

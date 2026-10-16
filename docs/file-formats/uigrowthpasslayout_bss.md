@@ -36,7 +36,7 @@ All multi-byte values are little-endian.
 | `+0x00` | u32         | category_key | `growthpasscategory.dbss` key                          |
 | `+0x04` | u32         | col_count    | `7` on both layouts                                    |
 | `+0x08` | u32         | row_count    | `27` (category 7), `13` (category 9) on client 3464   |
-| `+0x0C` | Cell[..end] | cells        | `row_count * col_count` cells, row by row; the layout ends after the last cell |
+| `+0x0C` | Cell[row_count][col_count] | cells | `row_count * col_count` cells, row by row; the layout ends after the last cell |
 
 ### Cell (6 bytes)
 

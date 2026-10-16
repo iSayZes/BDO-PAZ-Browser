@@ -28,7 +28,7 @@ then one entry per level with no row count, the empty string table and the
 | Offset     | Type               | Field        | Notes                                                                    |
 | ---------- | ------------------ | ------------ | ------------------------------------------------------------------------ |
 | `+0x00`    | char[4]            | magic        | ASCII `PABR`                                                             |
-| `+0x04`    | Level Entry[..end] | entries      | One entry per level from level 1, up to `table_start`; 180 on client 3464 |
+| `+0x04`    | Level Entry[..table_start] | entries      | One entry per level from level 1, up to `table_start`; 180 on client 3464 |
 | `EOF-0x0C` | u32                | string_count | Always `0`                                                               |
 | `EOF-0x08` | u32                | table_start  | Offset of `string_count`, where the entries end                          |
 | `EOF-0x04` | u32                | zero         | Always `0`                                                               |

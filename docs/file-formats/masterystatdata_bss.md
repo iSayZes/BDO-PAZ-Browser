@@ -263,7 +263,7 @@ row's `+0x04`, `+0x0C` and `+0x08` (client 3464).
 | Offset     | Type                   | Field        | Notes                                           |
 | ---------- | ---------------------- | ------------ | ----------------------------------------------- |
 | `+0x00`    | char[4]                | magic        | ASCII `PABR`                                    |
-| `+0x04`    | Gathering Group[..end] | groups       | Groups back to back until `table_start`         |
+| `+0x04`    | Gathering Group[..table_start] | groups       | Groups back to back until `table_start`         |
 | `EOF-0x0C` | u32                    | string_count | Always `0`                                      |
 | `EOF-0x08` | u32                    | table_start  | Offset of `string_count`, where the groups end  |
 | `EOF-0x04` | u32                    | zero         | Always `0`                                      |
@@ -354,7 +354,7 @@ group 2).
 | Offset     | Type                    | Field        | Notes                                           |
 | ---------- | ----------------------- | ------------ | ----------------------------------------------- |
 | `+0x00`    | char[4]                 | magic        | ASCII `PABR`                                    |
-| `+0x04`    | Processing Group[..end] | groups       | Groups back to back until `table_start`         |
+| `+0x04`    | Processing Group[..table_start] | groups       | Groups back to back until `table_start`         |
 | `EOF-0x0C` | u32                     | string_count | Always `0`                                      |
 | `EOF-0x08` | u32                     | table_start  | Offset of `string_count`, where the groups end  |
 | `EOF-0x04` | u32                     | zero         | Always `0`                                      |

@@ -27,7 +27,7 @@ the empty string table. `table_start` gives where they end.
 | Offset     | Type               | Field        | Notes                                              |
 | ---------- | ------------------ | ------------ | -------------------------------------------------- |
 | `+0x00`    | char[4]            | magic        | ASCII `PABR`                                       |
-| `+0x04`    | Level Value[..end] | mastery      | One value per level from level 1, up to `table_start`; 180 on client 3464 |
+| `+0x04`    | Level Value[..table_start] | mastery      | One value per level from level 1, up to `table_start`; 180 on client 3464 |
 | `EOF-0x0C` | u32                | string_count | Always `0`; the empty PABR string table            |
 | `EOF-0x08` | u32                | table_start  | Offset of `string_count`, where the values end     |
 | `EOF-0x04` | u32                | zero         | Always `0`                                         |

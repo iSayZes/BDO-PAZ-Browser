@@ -25,7 +25,7 @@ All multi-byte values are little-endian.
 | Offset     | Type       | Field        | Notes                                        |
 | ---------- | ---------- | ------------ | -------------------------------------------- |
 | `+0x00`    | char[4]    | magic        | `PABR` (ASCII)                               |
-| `+0x04`    | u16[..end] | max_level    | One value on client 3464; runs up to the trailer |
+| `+0x04`    | u16[..end_of_data] | max_level | One value on client 3464; runs up to `end_of_data` |
 | `EOF-0x0C` | u32        | string_count | `0`: the PABR string table, here with no strings |
 | `EOF-0x08` | u32        | end_of_data  | `6`; byte offset right after the last `max_level` |
 | `EOF-0x04` | u32        | zero         | `0`                                          |

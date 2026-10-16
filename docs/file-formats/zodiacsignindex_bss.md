@@ -27,10 +27,16 @@ All multi-byte values are little-endian.
 | ------------------- | ------------ | -------------- | ------------------------------------------------------ |
 | `+0x00`             | char[4]      | magic          | ASCII `PABR`                                           |
 | `+0x04`             | u32          | count          | Number of entries; observed 12                         |
-| `+0x08`             | u8[count]    | zodiac_ids     | One byte per entry: the 1-based ID into `zodiacsign.dbss`; observed 1-12 |
-| `zodiac_ids+0x00`   | String Table | string_table   | The PABR string table, here with no strings            |
+| `+0x08`             | Entry[count] | entries        | See Entry                                              |
+| `entries+0x00`      | String Table | string_table   | The PABR string table, here with no strings            |
 | `string_table+0x00` | u32          | end_of_entries | Byte offset immediately after entries; observed `0x14` |
 | `string_table+0x04` | u32          | zero           | Always 0                                               |
+
+### Entry (1 byte)
+
+| Offset  | Type | Field     | Notes                                                       |
+| ------- | ---- | --------- | ----------------------------------------------------------- |
+| `+0x00` | u8   | zodiac_id | The 1-based ID into `zodiacsign.dbss`; observed 1-12        |
 
 ### String Table (variable: 4 bytes + strings)
 

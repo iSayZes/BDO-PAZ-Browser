@@ -7,13 +7,11 @@ variable-length record per NPC with the Korean text. The NPC IDs are the same
 24 as in [`npcgift.dbss`](npcgift_dbss.md), which holds the accepted gift
 items. LOC type 54 has the reply in the user's language, keyed by `npc_id`.
 
-Example:
+## Versions
 
-```text
-NPC 40012 Crio
-  Korean   고맙다, 끽.
-  LOC 54   Thanks. Queek!
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,33 +21,44 @@ NPC 40012 Crio
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### npcgiftdata.dbss
+### File Layout
 
-#### Header (4 bytes)
+| Offset  | Type                   | Field   | Notes                                     |
+| ------- | ---------------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32                    | count   | Number of dialogue records (observed: 24) |
+| `+0x04` | Dialogue Record[count] | records | See Dialogue Record                       |
 
-| Offset  | Type | Field | Notes                                     |
-| ------- | ---- | ----- | ----------------------------------------- |
-| `+0x00` | u32  | count | Number of dialogue records (observed: 24) |
+### Dialogue Record (variable: 18 bytes + text)
 
-#### Dialogue Record (variable length)
+| Offset      | Type   | Field           | Notes                                                                                                                        |
+| ----------- | ------ | --------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `+0x00`     | u16    | npc_id          | NPC key                                                                                                                      |
+| `+0x02`     | u32    | unknown_02      | Observed: 70 for 23 records, 35 for NPC 43408. Not the LOC type.                                                             |
+| `+0x06`     | str16  | text            | Korean confession reply; the count is the number of visible UTF-16 code units                                                |
+| `text+0x00` | u16[2] | unknown_tail_00 | Two trailing code units after `text`; observed values include `00 00 00 00`, `FF FF FF FF`, `00 00 41 DF`, and `00 00 3D E6` |
 
-| Offset  | Type              | Field         | Notes                                                                                                                        |
-| ------- | ----------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `+0x00` | u16               | npc_id        | NPC key                                                                                                                      |
-| `+0x02` | u32               | unknown_02    | Observed: 70 for 23 records, 35 for NPC 43408. Not the LOC type.                                                             |
-| `+0x06` | u32               | text_len      | Number of visible UTF-16 code units in `text`                                                                                |
-| `+0x0A` | u32               | zero          | Observed: 0                                                                                                                  |
-| `+0x0E` | utf16le[text_len] | text          | Korean confession reply                                                                                                      |
-| varies  | u16[2]            | tail          | Two trailing code units after `text`; observed values include `00 00 00 00`, `FF FF FF FF`, `00 00 41 DF`, and `00 00 3D E6` |
+### `npcgiftdataoffset.dbss`
 
-### npcgiftdataoffset.dbss
-
-Same 4-byte header and 10-byte offset record layout as
+The 10-byte offset record layout of
 [`npcgiftoffset.dbss`](npcgift_dbss.md#npcgiftoffsetdbss), but offsets point
-into `npcgiftdata.dbss`. The `data_size` equals `12 + text_len * 2 + 4`,
+into `npcgiftdata.dbss`. The `data_size` equals `12 + 2 x` the `text` count `+ 4`,
 excluding the leading `npc_id`.
+
+| Offset  | Type                 | Field   | Notes                                     |
+| ------- | -------------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32                  | count   | Number of dialogue records (observed: 24) |
+| `+0x04` | Offset Record[count] | records | See Offset Record                         |
+
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field       | Notes                                                                     |
+| ------- | ---- | ----------- | ------------------------------------------------------------------------- |
+| `+0x00` | u16  | npc_id      | NPC key; matches the record's leading `npc_id`                            |
+| `+0x02` | u32  | data_offset | Byte offset into `npcgiftdata.dbss`; points 2 bytes past the record start |
+| `+0x06` | u16  | data_size   | Byte count after the leading `npc_id`                                     |
+| `+0x08` | u16  | unknown_08  | Observed: 0                                                               |
 
 ## Notes
 
@@ -67,7 +76,7 @@ excluding the leading `npc_id`.
 
 ### Dialogue Tail Bytes
 
-The two trailing UTF-16 code units after dialogue text (`tail`) carry values including `FF FF FF FF` and non-zero pairs; their purpose is unknown.
+The two trailing UTF-16 code units after dialogue text (`unknown_tail_00`) carry values including `FF FF FF FF` and non-zero pairs; their purpose is unknown.
 
 ## In-Game Checks
 

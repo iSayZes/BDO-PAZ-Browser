@@ -7,14 +7,11 @@ with its hotkey, its title as a UI string key and its icon as a region of a
 shared sprite sheet. The entries of each category are in
 [`submenu.bss`](submenu_bss.md).
 
-Example:
+## Versions
 
-```text
-category 2, hotkey F1
-  title  GAME / LUA_MENU_REMAKE_CATEGORY_1 -> "Information"
-  icon   Combine/Icon/Combine_Title_Icon_00.dds, region (2, 457) to (57, 512)
-  18 entries in submenu.bss
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,23 +22,23 @@ category 2, hotkey F1
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The shared PABR string table layout of `buffsimply.bss` and
 `specialenchantitem.bss` (`_common/pabr_strings.py`).
 
-| Offset           | Type    | Field        | Notes                                                            |
-| ---------------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00`          | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04`          | u32     | count        | Number of rows; 12 on client 3458                                |
-| `+0x08`          | row[]   | rows         | 40-byte rows repeated `count` times                              |
-| `8 + count * 40` | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8          | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4          | u32     | zero         | Always 0                                                         |
+| Offset              | Type                | Field        | Notes                                          |
+| ------------------- | ------------------- | ------------ | ---------------------------------------------- |
+| `+0x00`             | char[4]             | magic        | ASCII `PABR`                                   |
+| `+0x04`             | u32                 | count        | Number of rows; 12 on client 3458              |
+| `+0x08`             | Category Row[count] | rows         | See Category Row                               |
+| `rows+0x00`         | String Table        | string_table | See String Table                               |
+| `string_table+0x00` | u32                 | table_start  | Offset of the string table, where the rows end |
+| `string_table+0x04` | u32                 | zero         | Always 0                                       |
 
-## Record Structure
-
-### Category Row (40 bytes, repeated `count` times)
+### Category Row (40 bytes)
 
 | Offset  | Type | Field         | Notes                                                                  |
 | ------- | ---- | ------------- | ---------------------------------------------------------------------- |
@@ -56,11 +53,16 @@ The shared PABR string table layout of `buffsimply.bss` and
 | `+0x20` | u32  | key_ref       | String table index of the title key (`LUA_MENU_REMAKE_CATEGORY_1`)     |
 | `+0x24` | u32  | submenu_count | Number of entries in the category's `submenu.bss` group                |
 
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 27 strings on client 3458: the two sprite sheets
 `Combine/Icon/Combine_Title_Icon_00.dds` and `_01.dds`, the twelve hotkeys,
 `GAME` and the twelve title keys.
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | 27 on client 3458   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

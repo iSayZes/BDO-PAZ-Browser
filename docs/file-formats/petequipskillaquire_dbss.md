@@ -6,13 +6,11 @@ Defines the skill roll table for pet equip skills, keyed by `acquire_type_id` fr
 
 Each acquire type is a themed pool: some favour life skills, others combat and gathering. 21 records cover 5 key groups (`0`–`4`, `101`–`104`, `201`–`204`, `301`–`304`, `401`–`404`), of which key `0` is an empty placeholder.
 
-Example:
+## Versions
 
-```text
-acquire_type_id 204 → Karma Recovery +5%: weight 160000 of 750000 = 21.3%
-acquire_type_id 401 → Combat EXP +5%:     weight 120000 of 700000 = 17.1%
-acquire_type_id 401 → Cooking EXP +5%:    weight  10000 of 700000 =  1.4%
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,15 +21,16 @@ acquire_type_id 401 → Cooking EXP +5%:    weight  10000 of 700000 =  1.4%
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                            |
-| ------- | ---- | ----- | -------------------------------- |
-| `+0x00` | u32  | count | Number of records; observed `21` |
+| Offset  | Type          | Field   | Notes                            |
+| ------- | ------------- | ------- | -------------------------------- |
+| `+0x00` | u32           | count   | Number of records; observed `21` |
+| `+0x04` | Record[count] | records | See Record                       |
 
-### Record (176 bytes, repeated `count` times)
+### Record (176 bytes)
 
 | Offset  | Type    | Field      | Notes                                          |
 | ------- | ------- | ---------- | ---------------------------------------------- |
@@ -41,6 +40,22 @@ All multi-byte values are little-endian.
 `4 + 43 × 4 = 176` bytes exactly. `weights[i]` is the weight of the skill whose `equip_skill_id` is `i` in Section 1 of the catalog; index `0` is the first weight, **not** a reserved field.
 
 The first 2 bytes of each record are the file key prefix. The offset companion points to `record_start + 2`, so use `record_start = data_offset - 2` to read the full u32-aligned record.
+
+### `petequipskillaquireoffset.dbss`
+
+| Offset  | Type                 | Field | Notes                                              |
+| ------- | -------------------- | ----- | -------------------------------------------------- |
+| `+0x00` | u32                  | count | Must equal `petequipskillaquire.dbss` count (`21`) |
+| `+0x04` | Offset Record[count] | rows  | See Offset Record                                  |
+
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field       | Notes                                                        |
+| ------- | ---- | ----------- | ------------------------------------------------------------ |
+| `+0x00` | u16  | key         | `acquire_type_id`                                            |
+| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
+| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
+| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
 
 ## Acquire Type IDs
 
@@ -116,23 +131,6 @@ Unlike the fairy table, pet weights are **not** normalised to `1,000,000`:
 | `0`          | `0` (placeholder)                      |
 
 Because `3` and `4` exceed `1,000,000`, these cannot be parts-per-million probabilities the way the fairy weights are. Treat them as relative weights and normalise by the record total.
-
-## `petequipskillaquireoffset.dbss`
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                              |
-| ------- | ---- | ----- | -------------------------------------------------- |
-| `+0x00` | u32  | count | Must equal `petequipskillaquire.dbss` count (`21`) |
-
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                        |
-| ------- | ---- | ----------- | ------------------------------------------------------------ |
-| `+0x00` | u16  | key         | `acquire_type_id`                                            |
-| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
-| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
-| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
 
 ## Notes
 

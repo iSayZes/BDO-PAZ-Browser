@@ -4,19 +4,38 @@
 
 An 18-byte PABR file holding one u16 character key, `47` on client 3464. It sits next to [pcgrowth](pcgrowth_dbss.md) and [pcgrowthsimply](pcgrowthsimply_bss.md). No browser handler reads it.
 
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
+
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field              | Notes               |
-| ------- | ------- | ------------------ | ------------------- |
-| `+0x00` | char[4] | magic              | `PABR`              |
-| `+0x04` | u16     | character_key      | `47` on client 3464 |
-| `+0x06` | u32     | string count       | `0`                 |
-| `+0x0A` | u32     | string_table_start | `6`                 |
-| `+0x0E` | u32     | zero               | `0`                 |
+### File Layout
+
+| Offset              | Type         | Field              | Notes               |
+| ------------------- | ------------ | ------------------ | ------------------- |
+| `+0x00`             | char[4]      | magic              | `PABR`              |
+| `+0x04`             | u16          | character_key      | `47` on client 3464 |
+| `+0x06`             | String Table | string_table       | See String Table    |
+| `string_table+0x00` | u32          | string_table_start | `6`                 |
+| `string_table+0x04` | u32          | zero               | `0`                 |
 
 The string table starts at `+0x06`, so the rows end after the single u16.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Notes
 

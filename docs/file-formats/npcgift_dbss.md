@@ -4,11 +4,11 @@
 
 The gift items of the in-game "Give Gift" interaction: per NPC, the accepted gift item IDs and the Amity gained for each. The NPC's reply to a confession is in [`npcgiftdata.dbss`](npcgiftdata_dbss.md), keyed by the same NPC IDs.
 
-Example:
+## Versions
 
-```text
-NPC: Crio (40012)  →  item: 7023 (Haystack)  →  amity: 40
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,17 +22,41 @@ NPC: Crio (40012)  →  item: 7023 (Haystack)  →  amity: 40
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### npcgiftoffset.dbss
+### File Layout
 
-#### Header (4 bytes)
+| Offset  | Type               | Field   | Notes                                     |
+| ------- | ------------------ | ------- | ----------------------------------------- |
+| `+0x00` | u32                | count   | Number of NPC gift records (observed: 24) |
+| `+0x04` | Gift Record[count] | records | See Gift Record                           |
 
-| Offset  | Type | Field | Notes                                     |
-| ------- | ---- | ----- | ----------------------------------------- |
-| `+0x00` | u32  | count | Number of NPC gift records (observed: 24) |
+### Gift Record (variable: 6 bytes + gift rows)
 
-#### Offset Record (10 bytes, repeated `count` times)
+| Offset  | Type                 | Field      | Notes                            |
+| ------- | -------------------- | ---------- | -------------------------------- |
+| `+0x00` | u16                  | npc_id     | NPC key                          |
+| `+0x02` | u32                  | gift_count | Number of gift rows              |
+| `+0x06` | Gift Row[gift_count] | gifts      | `gift_count` rows, 12 bytes each |
+
+Observed `gift_count` values: in the pre-2026-09-27 fixture 23 records have 5 rows and NPC 41002 has 4 (119 gift rows); in the 2026-09-27 client 22 have 5, NPC 43408 has 4 and NPC 41002 has 3 (117 gift rows). The companion `data_size` equals `4 + gift_count * 12`.
+
+### Gift Row (12 bytes)
+
+| Offset  | Type | Field   | Notes                                                              |
+| ------- | ---- | ------- | ------------------------------------------------------------------ |
+| `+0x00` | u32  | item_id | Gift item ID; matches item LOC type 0 names                        |
+| `+0x04` | u32  | amity_a | Amity gained by giving this item                                   |
+| `+0x08` | u32  | amity_b | Duplicate Amity value; equal to `amity_a` on every observed row (119 pre-2026-09-27, 117 in the 2026-09-27 client) |
+
+### `npcgiftoffset.dbss`
+
+| Offset  | Type                 | Field   | Notes                                     |
+| ------- | -------------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32                  | count   | Number of NPC gift records (observed: 24) |
+| `+0x04` | Offset Record[count] | records | See Offset Record                         |
+
+### Offset Record (10 bytes)
 
 | Offset  | Type | Field       | Notes                                                                 |
 | ------- | ---- | ----------- | --------------------------------------------------------------------- |
@@ -42,32 +66,6 @@ All multi-byte values are little-endian.
 | `+0x08` | u16  | unknown_08  | Observed: 0                                                           |
 
 `record_start = data_offset - 2`
-
-### npcgift.dbss
-
-#### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                     |
-| ------- | ---- | ----- | ----------------------------------------- |
-| `+0x00` | u32  | count | Number of NPC gift records (observed: 24) |
-
-#### Gift Record (variable length)
-
-| Offset  | Type       | Field      | Notes                            |
-| ------- | ---------- | ---------- | -------------------------------- |
-| `+0x00` | u16        | npc_id     | NPC key                          |
-| `+0x02` | u32        | gift_count | Number of gift rows              |
-| `+0x06` | Gift Row[] | gifts      | `gift_count` rows, 12 bytes each |
-
-Observed `gift_count` values: in the pre-2026-09-27 fixture 23 records have 5 rows and NPC 41002 has 4 (119 gift rows); in the 2026-09-27 client 22 have 5, NPC 43408 has 4 and NPC 41002 has 3 (117 gift rows). The companion `data_size` equals `4 + gift_count * 12`.
-
-#### Gift Row (12 bytes)
-
-| Offset  | Type | Field   | Notes                                                              |
-| ------- | ---- | ------- | ------------------------------------------------------------------ |
-| `+0x00` | u32  | item_id | Gift item ID; matches item LOC type 0 names                        |
-| `+0x04` | u32  | amity_a | Amity gained by giving this item                                   |
-| `+0x08` | u32  | amity_b | Duplicate Amity value; equal to `amity_a` on every observed row (119 pre-2026-09-27, 117 in the 2026-09-27 client) |
 
 ## Notes
 

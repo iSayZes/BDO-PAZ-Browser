@@ -3,16 +3,14 @@ name: Wiki
 # Builds the format docs wiki (build_wiki.py) and publishes it to GitHub Pages.
 # main only moves with a merged release PR, so the public wiki shows the
 # released docs. Repo setting needed once: Settings > Pages > Source:
-# GitHub Actions.
+# GitHub Actions. It runs when a format doc or the doc index changes; after a
+# change to the generator alone, start it by hand (Actions > Wiki > Run).
 on:
   push:
     branches: [main]
     paths:
-      - "docs/**"
-      - "PAZ-Parser/wiki/**"
-      - "PAZ-Parser/format_docs/**"
-      - build_wiki.py
-      - .github/workflows/wiki.yml
+      - "docs/file-formats/**"
+      - docs/documented-formats.md
   workflow_dispatch:
 
 permissions:
@@ -39,9 +37,9 @@ jobs:
       - name: Build
         run: python build_wiki.py --out _site
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
@@ -54,4 +52,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

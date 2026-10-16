@@ -48,8 +48,15 @@ def test_a_doc_in_the_layout_format_has_no_problems() -> None:
     assert _messages(_doc(FILE_LAYOUT, ROW)) == []
 
 
-def test_the_repo_has_converted_docs() -> None:
-    assert converted_docs(DOCS_DIR)
+# Text and graph formats; their layout form is still open (todo.md, Tier 7).
+NOT_BINARY_TABLES = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md", "waypoint_bwp.md"})
+
+
+def test_every_bss_and_dbss_doc_is_in_the_layout_format() -> None:
+    docs = {path.name for path in DOCS_DIR.glob("*.md") if not path.name.startswith("_")}
+    converted = {path.name for path in converted_docs(DOCS_DIR)}
+
+    assert sorted(docs - converted - NOT_BINARY_TABLES) == []
 
 
 @pytest.mark.parametrize("path", converted_docs(DOCS_DIR), ids=lambda path: path.name)

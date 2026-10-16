@@ -2,7 +2,10 @@
   "columns": {
     "key": "키",
     "regionKey": "지역 키",
-    "regionName": "지역"
+    "regionName": "지역",
+    "effectChanceMin": "효과 확률 최소",
+    "effectChanceMax": "효과 확률 최대",
+    "wind": "바람"
   },
   "meta": {
     "count": "눈보라 지역 {count}개"

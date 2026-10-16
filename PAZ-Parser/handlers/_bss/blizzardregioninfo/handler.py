@@ -13,6 +13,16 @@ from .parser import parse_blizzardregioninfo_records
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
+# The spawn chances are stored on the 1,000,000 = 100% scale.
+_RATE_PER_PERCENT = 10_000
+
+
+def _percent(value: int) -> str:
+    return f"{value / _RATE_PER_PERCENT:g}%"
+
+
+def _wind(record: dict) -> str:
+    return ", ".join(f"{record[axis]:g}" for axis in ("wind_x", "wind_y", "wind_z"))
 
 
 class BlizzardRegionInfoBssHandler(PreviewHandler):
@@ -22,6 +32,9 @@ class BlizzardRegionInfoBssHandler(PreviewHandler):
             Column(cols["key"], "num", sort_key="key"),
             Column(cols["regionKey"], "num", sort_key="region_key"),
             Column(cols["regionName"], sort_key="region_name"),
+            Column(cols["effectChanceMin"], "num", sort_key="effect_spawn_percent_min"),
+            Column(cols["effectChanceMax"], "num", sort_key="effect_spawn_percent_max"),
+            Column(cols["wind"], "num", sort_key="wind_x"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -52,6 +65,9 @@ class BlizzardRegionInfoBssHandler(PreviewHandler):
                 e(r["key"]),
                 e(r["region_key"]),
                 e(r["region_name"] or _EMPTY),
+                e(_percent(r["effect_spawn_percent_min"])),
+                e(_percent(r["effect_spawn_percent_max"])),
+                e(_wind(r)),
             ]
             for r in records[start : start + page_size]
         ]

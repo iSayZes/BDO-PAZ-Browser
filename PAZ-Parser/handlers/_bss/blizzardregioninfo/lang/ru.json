@@ -2,7 +2,10 @@
   "columns": {
     "key": "Ключ",
     "regionKey": "Ключ региона",
-    "regionName": "Регион"
+    "regionName": "Регион",
+    "effectChanceMin": "Шанс эффекта мин.",
+    "effectChanceMax": "Шанс эффекта макс.",
+    "wind": "Ветер"
   },
   "meta": {
     "count": "Регионов с метелью: {count}"

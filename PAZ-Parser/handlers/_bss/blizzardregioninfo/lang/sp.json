@@ -2,7 +2,10 @@
   "columns": {
     "key": "Clave",
     "regionKey": "Clave de región",
-    "regionName": "Región"
+    "regionName": "Región",
+    "effectChanceMin": "Probabilidad de efecto mín.",
+    "effectChanceMax": "Probabilidad de efecto máx.",
+    "wind": "Viento"
   },
   "meta": {
     "count": "{count} regiones de ventisca"

@@ -33,11 +33,11 @@ CASE = HandlerCase(
                 "key",
                 "region_key",
                 "region_name",
-                "unknown_06",
-                "unknown_0a",
-                "unknown_0e",
-                "unknown_12",
-                "unknown_16",
+                "effect_spawn_percent_min",
+                "effect_spawn_percent_max",
+                "wind_x",
+                "wind_y",
+                "wind_z",
             ],
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
@@ -70,6 +70,17 @@ def test_keys_are_unique(blizzardregioninfo_result: HandlerResult) -> None:
 def test_every_region_has_a_name(blizzardregioninfo_result: HandlerResult) -> None:
     unnamed = [r["region_key"] for r in blizzardregioninfo_result.records if not r["region_name"]]
     assert not unnamed, f"region keys without a LOC name: {unnamed}"
+
+
+def test_spawn_chances_are_ordered_rates(blizzardregioninfo_result: HandlerResult) -> None:
+    # The server loader of the Blizzard_Region_Table sheet rejects a chance
+    # outside 1 to 100% (1,000,000) and a minimum above the maximum.
+    bad = [
+        r["key"]
+        for r in blizzardregioninfo_result.records
+        if not 1 <= r["effect_spawn_percent_min"] <= r["effect_spawn_percent_max"] <= 1_000_000
+    ]
+    assert not bad, f"keys with an out-of-range or reversed spawn chance: {bad}"
 
 
 def test_rows_that_miss_the_string_table_are_rejected() -> None:

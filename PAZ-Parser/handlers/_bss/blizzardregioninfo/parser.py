@@ -3,8 +3,9 @@
     PABR | u32 count | count x 26-byte row | u32 0 (empty string table)
     | u32 string_table_start | u32 0
 
-Each row joins one `regioninfo.bss` region by its region key; the three values
-after it are not confirmed. Full layout in docs/file-formats/blizzardregioninfo_bss.md.
+Each row joins one `regioninfo.bss` region by its region key and holds the
+blizzard effect's spawn chance range (1,000,000 = 100%) and a wind vector.
+Full layout in docs/file-formats/blizzardregioninfo_bss.md.
 """
 
 from __future__ import annotations
@@ -18,22 +19,22 @@ ROW_SIZE = 26
 # Row field offsets.
 _KEY = 0x00
 _REGION_KEY = 0x04
-_UNKNOWN_06 = 0x06
-_UNKNOWN_0A = 0x0A
-_UNKNOWN_0E = 0x0E
-_UNKNOWN_12 = 0x12
-_UNKNOWN_16 = 0x16
+_EFFECT_SPAWN_PERCENT_MIN = 0x06
+_EFFECT_SPAWN_PERCENT_MAX = 0x0A
+_WIND_X = 0x0E
+_WIND_Y = 0x12
+_WIND_Z = 0x16
 
 
 def _parse_row(data: bytes, pos: int) -> dict:
     return {
         "key": u32(data, pos + _KEY),
         "region_key": u16(data, pos + _REGION_KEY),
-        "unknown_06": u32(data, pos + _UNKNOWN_06),
-        "unknown_0a": u32(data, pos + _UNKNOWN_0A),
-        "unknown_0e": f32(data, pos + _UNKNOWN_0E),
-        "unknown_12": u32(data, pos + _UNKNOWN_12),
-        "unknown_16": u32(data, pos + _UNKNOWN_16),
+        "effect_spawn_percent_min": u32(data, pos + _EFFECT_SPAWN_PERCENT_MIN),
+        "effect_spawn_percent_max": u32(data, pos + _EFFECT_SPAWN_PERCENT_MAX),
+        "wind_x": f32(data, pos + _WIND_X),
+        "wind_y": f32(data, pos + _WIND_Y),
+        "wind_z": f32(data, pos + _WIND_Z),
     }
 
 

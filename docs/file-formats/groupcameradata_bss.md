@@ -13,15 +13,15 @@ type 97 holds the translations.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes  | Records         | Row bytes |
-| ------ | -------------- | ------- | --------------------- | ------ | --------------- | --------- |
-| 2      | 3473 and later | 3473    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row | 28        |
-| 1      | 1784           | 1784    | `groupcameradata.bss` | 12,760 | 6 Cutscene Row  | 20        |
+| Layout | Clients        | Checked | File                  | Bytes  | Records                                 | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ------ | --------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row                         | 28        |
+| 1      | 1784           | 1784    | `groupcameradata.bss` | 12,760 | 6 Cutscene Row, 170 Line, 12 Line Group | 16        |
 
 | Layout | File                  | Known            | Unknown         |
 | ------ | --------------------- | ---------------- | --------------- |
 | 2      | `groupcameradata.bss` | 24,411 B (97.1%) | 736 B (2.9%)    |
-| 1      | `groupcameradata.bss` | 9,988 B (78.3%)  | 2,772 B (21.7%) |
+| 1      | `groupcameradata.bss` | 11,400 B (89.3%) | 1,360 B (10.7%) |
 
 <!-- versions:end -->
 
@@ -78,30 +78,39 @@ title. The four icons are stored once each.
 
 Client 1784 rows are 20 bytes, without `unknown_14`, and a second table of
 timed voice lines follows the rows, before the string table. Only the File
-Layout and the Cutscene Row differ from Layout 2. The parser reads only
-Layout 2.
+Layout and the Cutscene Row differ from Layout 2; Line Group and Line exist
+only here. The parser reads only Layout 2.
 
 ### File Layout
 
-| Offset                 | Type                | Field           | Notes                                           |
-| ---------------------- | ------------------- | --------------- | ----------------------------------------------- |
-| `+0x00`                | char[4]             | magic           | ASCII `PABR`                                    |
-| `+0x04`                | u32                 | count           | Number of rows; 6 on client 1784                |
-| `+0x08`                | Cutscene Row[count] | rows            | See Cutscene Row                                |
-| `rows+0x00`            | u32[..table_start]  | unknown_rows_00 | The line groups, up to `table_start`; see below |
-| `unknown_rows_00+0x00` | String Table        | string_table    | See String Table                                |
-| `EOF-0x08`             | u32                 | table_start     | Offset of the string table, where the rows end  |
-| `EOF-0x04`             | u32                 | zero            | Always 0                                        |
+| Offset             | Type                         | Field            | Notes                                                 |
+| ------------------ | ---------------------------- | ---------------- | ----------------------------------------------------- |
+| `+0x00`            | char[4]                      | magic            | ASCII `PABR`                                          |
+| `+0x04`            | u32                          | count            | Number of rows; 6 on client 1784                      |
+| `+0x08`            | Cutscene Row[count]          | rows             | See Cutscene Row                                      |
+| `rows+0x00`        | u32                          | line_group_count | 12 on client 1784                                     |
+| `rows+0x04`        | Line Group[line_group_count] | line_groups      | See Line Group                                        |
+| `line_groups+0x00` | String Table                 | string_table     | See String Table                                      |
+| `EOF-0x08`         | u32                          | table_start      | Offset of the string table, where the line groups end |
+| `EOF-0x04`         | u32                          | zero             | Always 0                                              |
 
-`unknown_rows_00` starts with a u32 group count (12 on client 1784). Each
-group is a u32 line count and that many 16-byte lines of four u32:
+### Line Group (variable: 4 bytes + lines)
 
-| Line offset | Notes                                                                            |
-| ----------- | -------------------------------------------------------------------------------- |
-| `+0x00`     | 1 to 15 on client 1784; the same value in every line of a group                  |
-| `+0x04`     | Rises within a group in steps of thousands (0 to 165000), a time in milliseconds by its values |
-| `+0x08`     | String table index of a voice key (`QUEST_VCE_NEW_9027_43_1_Illezra`, `NPC_VCE_NEW_0_0_Mute_1`) |
-| `+0x0C`     | String table index of the Korean line spoken                                     |
+2 to 36 lines per group on client 1784.
+
+| Offset  | Type             | Field      | Notes            |
+| ------- | ---------------- | ---------- | ---------------- |
+| `+0x00` | u32              | line_count | Number of lines  |
+| `+0x04` | Line[line_count] | lines      | See Line         |
+
+### Line (16 bytes)
+
+| Offset  | Type | Field      | Notes                                                                                           |
+| ------- | ---- | ---------- | ----------------------------------------------------------------------------------------------- |
+| `+0x00` | u32  | unknown_00 | 1 to 15 on client 1784, the same value in every line of a group and unique per group; 1 to 5 and 14 are also `scene_id` values of the rows |
+| `+0x04` | u32  | unknown_04 | Rises within a group in steps of thousands (0 to 165000), a time in milliseconds by its values  |
+| `+0x08` | u32  | voice_ref  | String table index of a voice key (`QUEST_VCE_NEW_9027_43_1_Illezra`, `NPC_VCE_NEW_0_0_Mute_1`) |
+| `+0x0C` | u32  | line_ref   | String table index of the Korean line spoken                                                    |
 
 ### Cutscene Row (20 bytes)
 

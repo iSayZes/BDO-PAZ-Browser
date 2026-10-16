@@ -3,11 +3,12 @@
 ## Purpose
 
 Character level rules per class and level: one 236-byte record for every
-class slot and every character level from 0 to 130. The only fields that
-change with level are the one-time AP and DP bonuses: DP `+1` from level 56
-and AP `+1` from level 60, which the level-up window shows on those two
-levels. The file holds no EXP-to-next-level values and no HP, MP or weight
-growth.
+class slot and every character level from 0 to 130. Two kinds of field
+change with level: the u64 `unknown_08`, which rises with level on client
+3473 and reads as the EXP to the next level (Open Questions), and the
+one-time AP and DP bonuses: DP `+1` from level 56 and AP `+1` from level 60,
+which the level-up window shows on those two levels. The file holds no HP, MP
+or weight growth.
 
 
 ## Versions
@@ -84,7 +85,8 @@ the stored `table_start` `0x162D84`. The string table holds one wide string,
 | ------- | --------- | ---------- | --------------------------------------------------------------- |
 | `+0x00` | u32       | class_type | Equals the group index; the class type `getClassType()` returns |
 | `+0x04` | u32       | level      | Equals the record index in the group                            |
-| `+0x08` | bytes[28] | unknown_08 | Always 0                                                        |
+| `+0x08` | u64       | unknown_08 | Rises with level, the same in every group (Open Questions)      |
+| `+0x10` | bytes[20] | unknown_10 | Always 0                                                        |
 | `+0x24` | Stat Body | stats      | See Stat Body                                                   |
 
 ### Stat Body (200 bytes)
@@ -148,7 +150,8 @@ and 51 to 100).
 | ------- | --------- | ---------- | --------------------------- |
 | `+0x00` | u32       | class_type | The class type of the group |
 | `+0x04` | u32       | level      | Equals the record index in the group |
-| `+0x08` | bytes[20] | unknown_08 | Always 0                    |
+| `+0x08` | u64       | unknown_08 | Always 0 on client 1784     |
+| `+0x10` | bytes[12] | unknown_10 | Always 0                    |
 | `+0x1C` | Stat Body | stats      | See Stat Body               |
 
 ### Stat Body (270 bytes)
@@ -206,7 +209,7 @@ zero run is not known; they are counted into `unknown_54`.
   strings at body `+0xA0`, the place of this file's string fields (The `1D1`
   String).
 - bdo-data-extractor describes 228-byte records with 20 reserved bytes and the
-  stat body at `+0x1C`. On client 3464 that run (`unknown_08`) is 28 bytes and the
+  stat body at `+0x1C`. On client 3464 that run (`unknown_08` and `unknown_10`) is 28 bytes and the
   records are 236 bytes; with 228 the groups do not end before the string
   table. Its stat-relative `apBonus` (+116, `+0x74`) and `dpBonus` (+120,
   `+0x78`) are `ap_bonus` and `dp_bonus` here.
@@ -222,9 +225,13 @@ The names of the luck and speed limits and of `ap_bonus` and `dp_bonus` follow t
 
 Here all six limits hold `5`. [servantexperience.dbss](servantexperience_dbss.md#field-names) tells them apart: its `Servant_Table` holds `5` in the four critical and luck columns and `10` in the three speed columns, and its body holds `5` at `+0x38` to `+0x44` and `10` at `+0x64`. The 2016 client's `gc::CharacterStatStaticStatus` lists `_maxCriticalHitPoint`, `_maxDropItemPoint`, `_maxFishingPoint` and `_maxCollectionPoint` in that order, which splits the four, and `_maxVariedSpeedPoint` as one array of three.
 
-`StunGauge` and `Suspension` (`100` on level 1, rising with level) are not in this file, and `RequireEXP` is `0` on every sheet row, which fits a file with no EXP column.
+`StunGauge` and `Suspension` (`100` on level 1, rising with level) are not in this file. `RequireEXP` is `0` on every sheet row, as is `unknown_08` in the private server's file on client 1784, so the sheet cannot name the u64 that client 3473 fills.
 
 ## Open Questions
+
+### The Level `unknown_08`
+
+On client 3473 the u64 at `+0x08` rises with level and is the same in all 47 groups: 20 on levels 0 and 1, then 24, 28, 33, 39, 58 up to 14,313,752,948,579 on level 99, which levels 100 to 130 repeat. It never falls from one level to the next. That fits the EXP from a level to the next, as `exp` in [servantexperience.dbss](servantexperience_dbss.md) reads. The bar in `panel_selfplayerexpgage.luac` reads the player's need through `getNeedExp_s64()` and no Lua function looks it up by level, so no client source ties the field to it yet. Client 1784 holds 0 there on every record.
 
 ### The Constant Fields
 

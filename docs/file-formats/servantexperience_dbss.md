@@ -282,7 +282,7 @@ The constants are placed by value: the sheet's only columns that hold `5` on eve
 
 `growth_dice` follows the sheet columns `VariedMaxHP`, `VariedMaxMP`, `VariedAccelerationRate`, `VariedMaxMoveSpeedRate`, `VariedCorneringSpeedRate` and `VariedBrakeSpeedRate`, and the 2016 `_variedMaxHp`, `_variedMaxMp` and `_variedStat[4]`, which the 2016 `LoadServantExperienceStaticInformation` reads from those columns in that order. The bexcel holds `0` in all six columns and the private server's own file `1D1`, so only the order ties the four movement slots to their stats; client 3473 rolls the same die in all four on every servant.
 
-The private server's own `servantexperience.dbss` (client 1784, 10,869 records) stores the sheet's `StunGauge` (`100`) as an i16 at `+0x16`, after `max_mp` as in the 2016 `_stunGauge`, and every later field 2 bytes further on. Client 3473 has no such field: `+0x16` starts the zero bytes before `unknown_2a`.
+The private server's own `servantexperience.dbss` (client 1784, 10,869 records) stores the sheet's `StunGauge` (`100`) as an i16 at `+0x16`, after `max_mp` as in the 2016 `_stunGauge`. The fields from there to `unknown_5a` sit 2 bytes further on; the longer `unknown_5e` and shorter `unknown_7e` (Layout 1) put `max_varied_speed` to `unknown_7e` 0xE bytes and `stats` and `unknown_aa` 0xA bytes further on. Client 3473 has no such field: `+0x16` starts the zero bytes before `unknown_2a`.
 
 `level` is an i32, the 2016 `_level`; its high half (`+0x04`, earlier `unknown_04`) is 0 on every record.
 

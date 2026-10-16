@@ -287,3 +287,15 @@ def test_names_that_start_with_const_but_mean_something_pass() -> None:
     assert _messages(_doc(FILE_LAYOUT, _structure("Row (4 bytes)", ("+0x00", "u32", "const1")))) == [
         "`const1` states a value, not a meaning; use `unknown_<hex>`; the value goes in Notes"
     ]
+
+
+def test_scanned_bytes_are_unknown_and_say_how_the_scan_ends() -> None:
+    def row(name: str, notes: str) -> str:
+        return (
+            "### Row (variable: 4 bytes + scanned part)\n\n| Offset | Type | Field | Notes |\n| --- | --- | --- | --- |\n"
+            f"| `+0x00` | bytes[scan] | {name} | {notes} |\n| `{name}+0x00` | u32 | key |  |\n"
+        )
+
+    assert _messages(_doc(FILE_LAYOUT, row("unknown_gap", "Up to the first `PA` marker"))) == []
+    assert _messages(_doc(FILE_LAYOUT, row("gap", "Up to the first `PA` marker"))) == ["`bytes[scan]` is a field named `unknown_*` with the scan in Notes"]
+    assert parse_type("u32[scan]") == "`[scan]` is only for `bytes`"

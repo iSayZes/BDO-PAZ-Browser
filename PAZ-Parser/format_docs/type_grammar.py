@@ -26,7 +26,7 @@ _WHILE = re.compile(rf"^while (?P<field>{_FIELD}) != (?P<value>\S+)$")
 
 @dataclass(frozen=True)
 class Count:
-    """How many elements: `kind` is fixed, field, until, while or rest."""
+    """How many elements: `kind` is fixed, field, until, while, rest or scan."""
 
     kind: str
     value: int | str
@@ -117,8 +117,8 @@ def referenced_fields(spec: TypeSpec) -> tuple[str, ...]:
 def _parse_count(text: str) -> Count | str:
     if text.isdigit():
         return Count("fixed", int(text))
-    if text == "rest":
-        return Count("rest", text)
+    if text in ("rest", "scan"):
+        return Count(text, text)
     until = _UNTIL.match(text)
     if until:
         return Count("until", until.group("target"))
@@ -135,6 +135,8 @@ def _validated(spec: TypeSpec) -> TypeSpec | str:
         return f"`{spec.name}` needs a count, e.g. `{spec.name}[4]`"
     if spec.count is not None and spec.count.kind == "rest" and spec.name != "bytes":
         return "`[rest]` is only for `bytes`"
+    if spec.count is not None and spec.count.kind == "scan" and spec.name != "bytes":
+        return "`[scan]` is only for `bytes`"
     if spec.inner is not None and (spec.name in STRING_HEADS or spec.count is None or spec.count.kind not in ("fixed", "field")):
         return "a two-dimensional array takes two counts, each a number or a field, e.g. `f32[m][3]`"
     return spec

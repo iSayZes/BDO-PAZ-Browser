@@ -87,6 +87,7 @@ layout tables and the check leaves them alone.
 | `Name[..field]`, `Name[..end]`      | Repeated up to the offset a field holds, or to the end of the enclosing structure; in a top-level table `..end` stops at the first `EOF-` row | the bytes up to there |
 | `Name[while field != V]`            | Repeated up to the first one whose `field` is `V`, that one excluded; `field` is a field of `Name` | count x its size |
 | `bytes[rest]`                       | The bytes left in a structure whose size comes from an offset file | the rest |
+| `bytes[scan]`                       | Bytes whose end only a scan finds, in a structure with no size from outside; named `unknown_*`, the scan in Notes, later rows count from it | what the scan finds |
 | `T if field = V`, `T if field != V` | Present only when the condition holds; `size` names the structure's size from its offset file | T's size, or 0 |
 | `T if field ^= V`, `T if field !^= V` | Present only when the string `field` starts (or does not start) with `V` | T's size, or 0 |
 

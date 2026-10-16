@@ -32,6 +32,8 @@ def _parse_types(structure: Structure, sizes: StructureSizes) -> tuple[dict[int,
             problems.append(Problem(field.line, f"`{spec.name}` has no `### {spec.name} (...)` heading in this layout or a newer one"))
         else:
             specs[field.line] = spec
+            if spec.count is not None and spec.count.kind == "scan" and (not field.name.startswith("unknown_") or not field.notes):
+                problems.append(Problem(field.line, "`bytes[scan]` is a field named `unknown_*` with the scan in Notes"))
     return specs, problems
 
 

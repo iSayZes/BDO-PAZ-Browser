@@ -4,13 +4,11 @@
 
 Stores named pools of NPC lines. A dialog greeting in `detail_dialog.dbss` can be the tag `{GetRandomText(<name>)}`, and the client then shows a random line from the pool with that name each time the dialog opens. Most lines start with an `{AudioVoice(...)}` tag that names the voice file.
 
-Example (pool `PEDU_47759_1`, three lines):
+## Versions
 
-```text
-1: {AudioVoice(NPC_VCE_47759_1_1_Jamalko)}물고기를 황실에 납품하시겠습니까?\n납품 가능 항목인지 상세히 살펴보십시오.
-2: {AudioVoice(NPC_VCE_47759_1_2_Jamalko)}이곳에서 황실까지 납품하는 게 쉽진 않습니다.\n물고기는 금방 상해버리니까요.
-3: {AudioVoice(NPC_VCE_47759_1_3_Jamalko)}여기에서도 황실에 납품해 주신다니,\n황실을 대신해 감사드립니다.
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,48 +19,61 @@ Example (pool `PEDU_47759_1`, three lines):
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### dialogtextoffset.dbss
+### File Layout
 
-No `PABR` magic and no trailer.
-
-| Offset  | Type | Field | Notes                                   |
-| ------- | ---- | ----- | --------------------------------------- |
-| `+0x00` | u32  | count | Number of index rows; `1043` in client 3458 |
-| `+0x04` | ...  | rows  | `count` 12-byte rows: `u32 key`, `u32 offset`, `u32 size` |
-
-The key is a u32 unique per pool with no visible structure (`0x24E52C6C` for `PEDU_47759_1`); it is not a plain CRC-32 of the name (ASCII, lowercase or UTF-16).
-
-### dialogtext.dbss
-
-| Offset  | Type | Field   | Notes                                                        |
-| ------- | ---- | ------- | ------------------------------------------------------------ |
-| `+0x00` | u32  | count   | Number of records; matches the offset file                   |
-| `+0x04` | ...  | records | Each record is preceded by a repeated copy of its `u32` key |
+| Offset  | Type          | Field   | Notes                                                        |
+| ------- | ------------- | ------- | ------------------------------------------------------------ |
+| `+0x00` | u32           | count   | Number of records; matches the offset file                   |
+| `+0x04` | Record[count] | records | Each record is preceded by a repeated copy of its `u32` key; see Record |
 
 As in `detail_dialog.dbss`, the first record starts at `8`, every record starts 4 bytes after the previous one ends, and the last ends at end of file.
 
-## Record Structure
+### Record (variable: 4 bytes + pool record)
 
-### Pool Record (variable, `size` bytes from `offset`)
+| Offset  | Type        | Field      | Notes                                                       |
+| ------- | ----------- | ---------- | ----------------------------------------------------------- |
+| `+0x00` | u32         | key_prefix | Repeated copy of the record's `key`                         |
+| `+0x04` | Pool Record | pool       | `size` bytes; the index row's `offset` points at this field |
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1 | u32 | key | Same as the index key |
-| 2 | u64 + utf16 | name | Pool name, unique; e.g. `PEDU_47759_1`, `Morning_47295`, `SnowyMountain_50953` |
-| 3 | u32 | line_count | `3` on 527 of 1,043 pools, `2` on 222, `4` on 170, up to `30` |
-| 4 | line_count × Line | lines | |
-| 5 | u32 | end | Always `0`; the record ends exactly here |
+### Pool Record (variable: 20 bytes + name and lines)
 
-### Line
+| Offset      | Type             | Field       | Notes |
+| ----------- | ---------------- | ----------- | ----- |
+| `+0x00`     | u32              | key         | Same as the index key |
+| `+0x04`     | str16            | name        | Pool name, unique; e.g. `PEDU_47759_1`, `Morning_47295`, `SnowyMountain_50953` |
+| `name+0x00` | u32              | line_count  | `3` on 527 of 1,043 pools, `2` on 222, `4` on 170, up to `30` |
+| `name+0x04` | Line[line_count] | lines       | See Line |
+| `lines+0x00` | u32              | unknown_end | Always `0`; the record ends exactly here |
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1 | u16 | text_id | LOC text ID of the line: LOC type `36`, `str_id1 = key`, `str_id2 = text_id`; counts up by one inside a pool, from `1` in 260 pools and from a larger number elsewhere (`379` in `Morning_47295`) |
-| 2 | u64 + utf16 | text | Korean, usually with a leading `{AudioVoice(...)}` tag; line breaks are the two characters `\n`, not a newline |
+### Line (variable: 10 bytes + text)
+
+| Offset  | Type  | Field   | Notes |
+| ------- | ----- | ------- | ----- |
+| `+0x00` | u16   | text_id | LOC text ID of the line: LOC type `36`, `str_id1 = key`, `str_id2 = text_id`; counts up by one inside a pool, from `1` in 260 pools and from a larger number elsewhere (`379` in `Morning_47295`) |
+| `+0x02` | str16 | text    | Korean, usually with a leading `{AudioVoice(...)}` tag; line breaks are the two characters `\n`, not a newline |
 
 All 1,043 records of client 3458 walk with this layout and end exactly at their index size.
+
+### `dialogtextoffset.dbss`
+
+No `PABR` magic and no trailer.
+
+| Offset  | Type             | Field | Notes                                       |
+| ------- | ---------------- | ----- | ------------------------------------------- |
+| `+0x00` | u32              | count | Number of index rows; `1043` in client 3458 |
+| `+0x04` | Index Row[count] | rows  | See Index Row                               |
+
+The key is a u32 unique per pool with no visible structure (`0x24E52C6C` for `PEDU_47759_1`); it is not a plain CRC-32 of the name (ASCII, lowercase or UTF-16).
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field  | Notes                                          |
+| ------- | ---- | ------ | ---------------------------------------------- |
+| `+0x00` | u32  | key    | Pool key                                       |
+| `+0x04` | u32  | offset | Byte offset of the record in `dialogtext.dbss` |
+| `+0x08` | u32  | size   | Record size in bytes                           |
 
 ## Notes
 

@@ -4,15 +4,11 @@
 
 Stores the NPC dialog trees: for each character and dialog index, the greeting text and the list of dialog options the player can pick (quest turn-ins, knowledge, exchanges, cutscenes, leases and more). Each option carries a condition script, a Korean title, the NPC's answer text and an action script that the client runs when the option is chosen.
 
-Example (Martina Finto, character `40024`, dialog index `1`):
+## Versions
 
-```text
-key 0x00019C58 -> internal name "Martina", 46 options, one of them:
-  condition: !iscontentsgroupopen(0,4017);<or>...;clearquest(21125,64);clearquest(21125,74);
-  title:     [대여] 작은 울타리            ("[Lease] Small Fence")
-  text:      작물을 가꾸시겠다고요? 여기 남는 울타리가 있으니 사용하셔도 좋아요.
-  action:    buyItemByPoint(58010,0,1,5,3)   ([CP] Small Fence for 3 CP)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,84 +19,100 @@ key 0x00019C58 -> internal name "Martina", 46 options, one of them:
 
 All multi-byte values are little-endian. [base_dialog.dbss](base_dialog_dbss.md) holds the same 59,776 keys in the same order with a short base record each (display name and short lines).
 
-## File Layout
+## Layout 1
 
-### detail_dialogoffset.dbss
+### File Layout
 
-| Offset  | Type | Field   | Notes                                              |
-| ------- | ---- | ------- | -------------------------------------------------- |
-| `+0x00` | u8[4] | magic  | `PABR`                                             |
-| `+0x04` | u32  | count   | Number of index rows; `59776` in client 3458       |
-| `+0x08` | ...  | rows    | `count` index rows                                 |
-| end     | 12 bytes | trailer | `u32 0`, `u32` end offset of the rows (`8 + 12 * count`), `u32 0` |
-
-#### Index Row (12 bytes)
-
-| Offset  | Type | Field  | Notes                                            |
-| ------- | ---- | ------ | ------------------------------------------------ |
-| `+0x00` | u32  | key    | `dialog_index << 16 \| character_id`             |
-| `+0x04` | u32  | offset | Byte offset of the record in `detail_dialog.dbss` |
-| `+0x08` | u32  | size   | Record size in bytes                             |
-
-### detail_dialog.dbss
-
-| Offset  | Type | Field   | Notes                                                        |
-| ------- | ---- | ------- | ------------------------------------------------------------ |
-| `+0x00` | u32  | count   | Number of records; matches the offset file                   |
-| `+0x04` | ...  | records | Each record is preceded by a repeated copy of its `u32` key |
+| Offset  | Type          | Field   | Notes                                                        |
+| ------- | ------------- | ------- | ------------------------------------------------------------ |
+| `+0x00` | u32           | count   | Number of records; matches the offset file                   |
+| `+0x04` | Record[count] | records | Each record is preceded by a repeated copy of its `u32` key; see Record |
 
 The records tile the file: every record starts 4 bytes after the previous one ends (the repeated key), the first at `8`, and the last ends at end of file.
 
 Strings are a `u64` count followed by that many units: UTF-16LE for text and scripts, single-byte ASCII for the two internal names. There is no terminator.
 
-## Record Structure
+### Record (variable: 4 bytes + dialog record)
 
-### Dialog Record (variable, `size` bytes from `offset`)
+| Offset  | Type          | Field      | Notes                                                       |
+| ------- | ------------- | ---------- | ----------------------------------------------------------- |
+| `+0x00` | u32           | key_prefix | Repeated copy of the record's `key`                         |
+| `+0x04` | Dialog Record | dialog     | `size` bytes; the index row's `offset` points at this field |
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1  | u32 | key | Same as the index key |
-| 2  | u16 | text_id | LOC text ID of the greeting and its lines, see Localization; `1` on 3,193 records. Increases with the dialog index inside a character (`1233`, `1235`, `1238`, ...) |
-| 3  | u64 + ascii | internal_name | E.g. `Martina`, `IgorBartali1`, `Social_Low_Front_01`; empty on 7,071 records |
-| 4  | u64 + ascii | unknown_name_2 | Empty on all but 325 records (`2,0` on 101, `Social_*` names on the rest) |
-| 5  | u64 + utf16 | greeting | The NPC's opening line, Korean |
-| 6  | u32 | line_count | Extra greeting lines that follow; `0` on all but 136 records |
-| 7  | line_count × Greeting Line | lines | |
-| 8  | u32 | option_count | `0` on 49,710 records; up to 1,522 (`0x0001AE99`, Dorin Morgrim) |
-| 9  | option_count × Option | options | 36,276 options in all |
-| 10 | u32 | conditional_count | Conditional greetings that follow; `0` on 55,202 records |
-| 11 | conditional_count × Conditional Greeting | conditionals | |
-| 12 | u64 | unknown_list_count | `2` on 57,387 records, `0` on 2,389 |
-| 13 | u16 × unknown_list_count | unknown_list | `[2, 0]` on 57,383 records |
-| 14 | u32 | end | Always `0`; the record ends exactly here |
+### Dialog Record (variable: 54 bytes + text and lists)
+
+| Offset                | Type                                    | Field              | Notes |
+| --------------------- | --------------------------------------- | ------------------ | ----- |
+| `+0x00`               | u32                                     | key                | Same as the index key |
+| `+0x04`               | u16                                     | text_id            | LOC text ID of the greeting and its lines, see Localization; `1` on 3,193 records. Increases with the dialog index inside a character (`1233`, `1235`, `1238`, ...) |
+| `+0x06`               | str8                                    | internal_name      | E.g. `Martina`, `IgorBartali1`, `Social_Low_Front_01`; empty on 7,071 records |
+| `internal_name+0x00`  | str8                                    | unknown_name_2     | Empty on all but 325 records (`2,0` on 101, `Social_*` names on the rest) |
+| `unknown_name_2+0x00` | str16                                   | greeting           | The NPC's opening line, Korean |
+| `greeting+0x00`       | u32                                     | line_count         | Extra greeting lines that follow; `0` on all but 136 records |
+| `greeting+0x04`       | Greeting Line[line_count]               | lines              | See Greeting Line |
+| `lines+0x00`          | u32                                     | option_count       | `0` on 49,710 records; up to 1,522 (`0x0001AE99`, Dorin Morgrim) |
+| `lines+0x04`          | Option[option_count]                    | options            | 36,276 options in all |
+| `options+0x00`        | u32                                     | conditional_count  | Conditional greetings that follow; `0` on 55,202 records |
+| `options+0x04`        | Conditional Greeting[conditional_count] | conditionals       | See Conditional Greeting |
+| `conditionals+0x00`   | u64                                     | unknown_list_count | `2` on 57,387 records, `0` on 2,389 |
+| `conditionals+0x08`   | u16[unknown_list_count]                 | unknown_list       | `[2, 0]` on 57,383 records |
+| `unknown_list+0x00`   | u32                                     | unknown_end        | Always `0`; the record ends exactly here |
 
 Every one of the 59,776 records in client 3458 walks with this layout and ends exactly at its index size.
 
-### Greeting Line
+### Greeting Line (variable: 9 bytes + text)
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1 | u8          | contents_type     | The NPC function the line belongs to, a client `CppEnums.ContentsType` value (see Notes); `2` (`Contents_Shop`) on 120 of 197 lines (client 3458), otherwise `3` to `39` |
-| 2 | u64 + utf16 | text              | Korean |
+| Offset  | Type  | Field         | Notes |
+| ------- | ----- | ------------- | ----- |
+| `+0x00` | u8    | contents_type | The NPC function the line belongs to, a client `CppEnums.ContentsType` value (see Notes); `2` (`Contents_Shop`) on 120 of 197 lines (client 3458), otherwise `3` to `39` |
+| `+0x01` | str16 | text          | Korean |
 
-### Option
+### Option (variable: 38 bytes + text)
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1 | u64 + utf16 | condition | Client script that must hold for the option to show, e.g. `!getitemcount(3001,0)>0;`; may be empty |
-| 2 | u64 + utf16 | title | Korean option label; many start with a bracketed category such as `[교환]` (exchange) or `[대여]` (lease) |
-| 3 | u32         | dialog_button_type  | A client `CppEnums.DialogButtonType` value, `0` to `7`, or `99`; see Notes |
-| 4 | u64 + utf16 | text | The NPC's answer, Korean |
-| 5 | u64 + utf16 | action | Client script run when the option is picked, e.g. `buyItemByPoint(58010,0,1,5,3)`; may be empty |
-| 6 | u16         | text_id | LOC text ID of the title and text, see Localization |
+| Offset           | Type  | Field              | Notes |
+| ---------------- | ----- | ------------------ | ----- |
+| `+0x00`          | str16 | condition          | Client script that must hold for the option to show, e.g. `!getitemcount(3001,0)>0;`; may be empty |
+| `condition+0x00` | str16 | title              | Korean option label; many start with a bracketed category such as `[교환]` (exchange) or `[대여]` (lease) |
+| `title+0x00`     | u32   | dialog_button_type | A client `CppEnums.DialogButtonType` value, `0` to `7`, or `99`; see Notes |
+| `title+0x04`     | str16 | text               | The NPC's answer, Korean |
+| `text+0x00`      | str16 | action             | Client script run when the option is picked, e.g. `buyItemByPoint(58010,0,1,5,3)`; may be empty |
+| `action+0x00`    | u16   | text_id            | LOC text ID of the title and text, see Localization |
 
-### Conditional Greeting
+### Conditional Greeting (variable: 18 bytes + text)
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1 | u64 + utf16 | condition | E.g. `clearquest(8541,3);` or `checkclass(20);` |
-| 2 | u64 + utf16 | text | Korean |
-| 3 | u16         | text_id | LOC text ID of the text, see Localization |
+| Offset           | Type  | Field     | Notes |
+| ---------------- | ----- | --------- | ----- |
+| `+0x00`          | str16 | condition | E.g. `clearquest(8541,3);` or `checkclass(20);` |
+| `condition+0x00` | str16 | text      | Korean |
+| `text+0x00`      | u16   | text_id   | LOC text ID of the text, see Localization |
+
+### `detail_dialogoffset.dbss`
+
+| Offset              | Type             | Field        | Notes                                        |
+| ------------------- | ---------------- | ------------ | -------------------------------------------- |
+| `+0x00`             | char[4]          | magic        | `PABR`                                       |
+| `+0x04`             | u32              | count        | Number of index rows; `59776` in client 3458 |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                                |
+| `rows+0x00`         | String Table     | string_table | See String Table                             |
+| `string_table+0x00` | u32              | rows_end     | End offset of the rows (`8 + 12 * count`)    |
+| `string_table+0x04` | u32              | zero         | Always `0`                                   |
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field  | Notes                                             |
+| ------- | ---- | ------ | ------------------------------------------------- |
+| `+0x00` | u32  | key    | `dialog_index << 16 \| character_id`              |
+| `+0x04` | u32  | offset | Byte offset of the record in `detail_dialog.dbss` |
+| `+0x08` | u32  | size   | Record size in bytes                              |
+
+### String Table (variable: 4 bytes + strings)
+
+The 12-byte trailer of the offset file is an empty PABR string table, the end offset of the rows and `zero`.
+
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
 
 ## Localization
 

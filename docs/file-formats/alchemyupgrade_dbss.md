@@ -6,11 +6,11 @@ The materials that polish an alchemy stone in the Polishing tab of the
 alchemy stone window, per alchemy stone type. A row is the stone type, the
 material item and the EXP one unit of that material adds to the stone.
 
-```text
-Destruction  4052 Iron Ingot           2.0408%
-Destruction  4053 Pure Iron Crystal    7.1429%
-Protection   4652 Ash Plywood          1.8182%
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,23 +20,25 @@ icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The grouped layout of [`alchemycharge.dbss`](alchemycharge_dbss.md): a u32
 group count, then per group a u32 row count and that many 12-byte rows. No
 `PABR` magic and no string table; the file ends after the last group.
 
-| Offset  | Type    | Field       | Notes                                                |
-| ------- | ------- | ----------- | ---------------------------------------------------- |
-| `+0x00` | u32     | group_count | One group per alchemy stone type; `8` on client 3464 |
-| `+0x04` | group[] | groups      | `group_count` groups; group `i` holds stone type `i` |
+| Offset  | Type               | Field       | Notes                                                |
+| ------- | ------------------ | ----------- | ---------------------------------------------------- |
+| `+0x00` | u32                | group_count | One group per alchemy stone type; `8` on client 3464 |
+| `+0x04` | Group[group_count] | groups      | Group `i` holds stone type `i`; see Group            |
 
-### Group
+### Group (variable: 4 bytes + rows)
 
-| Offset  | Type  | Field     | Notes                           |
-| ------- | ----- | --------- | ------------------------------- |
-| `+0x00` | u32   | row_count | `0` for a type with no material |
-| `+0x04` | row[] | rows      | `row_count` 12-byte rows        |
+| Offset  | Type           | Field     | Notes                           |
+| ------- | -------------- | --------- | ------------------------------- |
+| `+0x00` | u32            | row_count | `0` for a type with no material |
+| `+0x04` | Row[row_count] | rows      | See Row                         |
 
 ### Row (12 bytes)
 
@@ -59,6 +61,37 @@ Every `experience` value on client 3464 is `1,000,000 / N` rounded, with `N`
 a whole number: Iron Ingot `20408` is 1/49 of 100% EXP, Ash Plywood `18182`
 1/55, High-quality Wheat `730` 1/1370.
 
+### `alchemyupgradeoffset.dbss`
+
+The grouped walk of `alchemychargeoffset.dbss`: a u32 group count (equal to
+the main file's), then per group a u32 row count and 12-byte rows. A row
+leaves out the stone type; its group index stands for it.
+
+| Offset  | Type                     | Field       | Notes                                           |
+| ------- | ------------------------ | ----------- | ----------------------------------------------- |
+| `+0x00` | u32                      | group_count | Equals the main file's `group_count`            |
+| `+0x04` | Index Group[group_count] | groups      | Group `i` holds stone type `i`; see Index Group |
+
+### Index Group (variable: 4 bytes + rows)
+
+| Offset  | Type                 | Field     | Notes                               |
+| ------- | -------------------- | --------- | ----------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main group's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                       |
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field   | Notes                                                          |
+| ------- | ---- | ------- | -------------------------------------------------------------- |
+| `+0x00` | u32  | item_id | Row key together with the group index                          |
+| `+0x04` | u32  | offset  | Start of the row in `alchemyupgrade.dbss`, at its `stone_type` |
+| `+0x08` | u32  | size    | Always `12`, the main row size                                 |
+
+Every index row points at the main row with the same stone type and item.
+Unlike `alchemychargeoffset.dbss`, the rows inside a group are not in the
+main file's order (group 0 lists 4052, 4061, 4253 where the main file has
+4052, 4253, 4061). Both files are 2,028 bytes on client 3464.
+
 ## Stone Types
 
 The group index and `stone_type` are the alchemy stone's `_contentsEventParam1`,
@@ -72,23 +105,6 @@ names each type's material from the same number (`panel_window_alchemystone_all`
 | `0`        | Destruction | `LUA_ALCHEMYSTONE_PURESTONE` "Pure Metals", `LUA_ALCHEMYSTONE_PURESTONE2` "Metal Ingot" |
 | `1`        | Protection  | `LUA_ALCHEMYSTONE_HARDWOOD` "Sturdy Plywood", `LUA_ALCHEMYSTONE_HARDWOOD2` "Plywood" |
 | `2`        | Life        | `LUA_ALCHEMYSTONE_CHOICEGOOD` "Special Crop", `LUA_ALCHEMYSTONE_CHOICEGOOD2` "High-quality Crop" |
-
-## `alchemyupgradeoffset.dbss`
-
-The grouped walk of `alchemychargeoffset.dbss`: a u32 group count (equal to
-the main file's), then per group a u32 row count and 12-byte rows. A row
-leaves out the stone type; its group index stands for it.
-
-| Offset  | Type | Field   | Notes                                                          |
-| ------- | ---- | ------- | -------------------------------------------------------------- |
-| `+0x00` | u32  | item_id | Row key together with the group index                          |
-| `+0x04` | u32  | offset  | Start of the row in `alchemyupgrade.dbss`, at its `stone_type` |
-| `+0x08` | u32  | size    | Always `12`, the main row size                                 |
-
-Every index row points at the main row with the same stone type and item.
-Unlike `alchemychargeoffset.dbss`, the rows inside a group are not in the
-main file's order (group 0 lists 4052, 4061, 4253 where the main file has
-4052, 4253, 4061). Both files are 2,028 bytes on client 3464.
 
 ## Notes
 

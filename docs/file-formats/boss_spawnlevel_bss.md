@@ -9,11 +9,11 @@ reads an entry through `ToClient_bossSpawnOptionWrapper(bossKey, level)`
 (`getImagePath()`, `getItemEnchantKey()`). The boss key is the key of
 [`boss_spawn.bss`](boss_spawn_bss.md).
 
-```text
-key 1  level 0  Ferrid   756210 Ferrid Small Reward        Icon/Quest/GuildBoss_Renewal_Ferrid.dds
-key 1  level 3  Ferrid   756213 Ferrid Extra Large Reward
-key 5  level 0  Khan     756218 Khan Small Reward          (unknown_11 27198, character_id 23843)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,23 +21,25 @@ None. Character names come from LOC type 6, reward names from LOC type 0.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset    | Type     | Field        | Notes                                                   |
-| --------- | -------- | ------------ | ------------------------------------------------------- |
-| `+0x00`   | char[4]  | magic        | `PABR`                                                  |
-| `+0x04`   | u32      | group_count  | `6` on client 3464, one group per boss                  |
-| `+0x08`   | group[]  | groups       | Variable size; the last ends where the string table starts |
-| ...       | ...      | strings      | Counted string table (`_common/pabr_strings.py`), UTF-16 image paths |
-| end - 8   | u32      | table_start  | Offset of the string table                              |
-| end - 4   | u32      | zero         |                                                         |
+### File Layout
 
-### Group
+| Offset              | Type               | Field        | Notes                                                      |
+| ------------------- | ------------------ | ------------ | ---------------------------------------------------------- |
+| `+0x00`             | char[4]            | magic        | `PABR`                                                     |
+| `+0x04`             | u32                | group_count  | `6` on client 3464, one group per boss                     |
+| `+0x08`             | Group[group_count] | groups       | Variable size; the last ends where the string table starts |
+| `groups+0x00`       | String Table       | string_table | Counted string table (`_common/pabr_strings.py`), UTF-16 image paths |
+| `string_table+0x00` | u32                | table_start  | Offset of the string table                                 |
+| `string_table+0x04` | u32                | zero         |                                                            |
 
-| Type    | Field       | Notes                       |
-| ------- | ----------- | --------------------------- |
-| u32     | entry_count | `4` on every group          |
-| entry[] | entries     | `entry_count` 21-byte entries |
+### Group (variable: 4 bytes + entries)
+
+| Offset  | Type                 | Field       | Notes              |
+| ------- | -------------------- | ----------- | ------------------ |
+| `+0x00` | u32                  | entry_count | `4` on every group |
+| `+0x04` | Entry[entry_count]   | entries     | See Entry          |
 
 ### Entry (21 bytes)
 
@@ -62,6 +64,13 @@ The groups on client 3464:
 | 4   | Org               | 29696 to 29693               | 756275 to 756278 |
 | 5   | Khan              | 23843 to 23840               | 756218 to 756221 |
 | 8   | Gumiho & Duoksini | 27897, 27895, 27894, 29539   | 790880, 790877, 790878, 790879 |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                                  |
+| ------- | ------------------ | ------------ | -------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings                      |
+| `+0x04` | pstr[string_count] | strings      | Image paths; `image` indexes this list |
 
 ## Notes
 

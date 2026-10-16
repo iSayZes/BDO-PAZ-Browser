@@ -4,14 +4,11 @@
 
 Stores a short base record for every NPC dialog in `detail_dialog.dbss`: the Korean display name the dialog shows for the character, and a list of short Korean lines. The lines are ambient chatter that the client shows in a speech bubble over the NPC's head (a pilgrim saying `아이고. 배야.` ("Ouch, my stomach.")).
 
-Example (Martina Finto, character `40024`, dialog index `1`):
+## Versions
 
-```text
-key 0x00019C58 -> name "마티나 핀토" (Martina Finto), 3 lines:
-  "다비드.. \n차라리 농장에 음식점을 만들까?"
-  "시집오면 손에 물도 \n안 묻히게 해준대 놓고.. "
-  "진작에 언니 말을 듣는 건데.. "
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,34 +19,58 @@ key 0x00019C58 -> name "마티나 핀토" (Martina Finto), 3 lines:
 
 All multi-byte values are little-endian. The keys are the same 59,776 keys as `detail_dialog.dbss`, in the same order (`dialog_index << 16 | character_id`, see [detail_dialog.dbss](detail_dialog_dbss.md)).
 
-## File Layout
+## Layout 1
 
-### base_dialogoffset.dbss
+### File Layout
 
-The same layout as `detail_dialogoffset.dbss`: `PABR`, a u32 count, 12-byte rows (`u32 key`, `u32 offset`, `u32 size`) and a 12-byte trailer (`u32 0`, the end offset of the rows, `u32 0`).
-
-### base_dialog.dbss
-
-| Offset  | Type | Field   | Notes                                        |
-| ------- | ---- | ------- | -------------------------------------------- |
-| `+0x00` | u32  | count   | Number of records; matches the offset file   |
-| `+0x04` | ...  | records | Back to back; the first starts at `4`        |
+| Offset  | Type               | Field   | Notes                                      |
+| ------- | ------------------ | ------- | ------------------------------------------ |
+| `+0x00` | u32                | count   | Number of records; matches the offset file |
+| `+0x04` | Base Record[count] | records | Back to back; the first starts at `4`      |
 
 Unlike `detail_dialog.dbss`, records are not preceded by a copy of their key: they tile the file from byte `4` to its end with no gap.
 
-## Record Structure
+### Base Record (variable: 21 bytes + name and line text)
 
-### Base Record (variable, `size` bytes from `offset`)
+Each record sits at `offset` and is `size` bytes long, from its index row.
 
-| Order | Type | Field | Notes |
-| ----- | ---- | ----- | ----- |
-| 1 | u32 | key | Same as the index key |
-| 2 | u64 + utf16 | name_kr | Korean display name, e.g. `마티나 핀토`, `순례자` (pilgrim) |
-| 3 | u32 | line_count | `0` on 55,850 of 59,776 records, up to `10` |
-| 4 | line_count × (u64 + utf16) | lines | Short Korean lines |
-| 5 | u8[5] | unknown_end | Always zero |
+| Offset           | Type               | Field       | Notes                                                        |
+| ---------------- | ------------------ | ----------- | ------------------------------------------------------------ |
+| `+0x00`          | u32                | key         | Same as the index key                                        |
+| `+0x04`          | str16              | name_kr     | Korean display name, e.g. `마티나 핀토`, `순례자` (pilgrim) |
+| `name_kr+0x00`   | u32                | line_count  | `0` on 55,850 of 59,776 records, up to `10`                  |
+| `name_kr+0x04`   | str16[line_count]  | lines       | Short Korean lines                                           |
+| `lines+0x00`     | bytes[5]           | unknown_end | Always zero                                                  |
 
 Every record of client 3458 walks with this layout and ends exactly at its index size.
+
+### `base_dialogoffset.dbss`
+
+The same layout as `detail_dialogoffset.dbss`: `PABR`, a u32 count, 12-byte rows and a 12-byte trailer (an empty PABR string table, the end offset of the rows, `u32 0`).
+
+| Offset              | Type             | Field        | Notes                                    |
+| ------------------- | ---------------- | ------------ | ---------------------------------------- |
+| `+0x00`             | char[4]          | magic        | `PABR`                                   |
+| `+0x04`             | u32              | count        | Number of index rows                     |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                            |
+| `rows+0x00`         | String Table     | string_table | See String Table                         |
+| `string_table+0x00` | u32              | rows_end     | End offset of the rows (`8 + 12 * count`) |
+| `string_table+0x04` | u32              | zero         | Always `0`                               |
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field  | Notes                                            |
+| ------- | ---- | ------ | ------------------------------------------------ |
+| `+0x00` | u32  | key    | `dialog_index << 16 \| character_id`             |
+| `+0x04` | u32  | offset | Byte offset of the record in `base_dialog.dbss`  |
+| `+0x08` | u32  | size   | Record size in bytes                             |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes       |
+| ------- | ------------------ | ------------ | ----------- |
+| `+0x00` | u32                | string_count | Always `0`  |
+| `+0x04` | pstr[string_count] | strings      | Empty       |
 
 ## Notes
 

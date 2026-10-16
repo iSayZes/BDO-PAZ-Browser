@@ -11,12 +11,11 @@ client 3464 the 28 records are 14 World bosses, the 5 Field bosses, 6 Dark
 Rift bosses and 3 Hunting/Sniper bosses. The file name spells "staic" for
 "static".
 
-```text
-23069  Dastard Bheg  Field  rewards 11015 Bheg's Gloves, 8904 Concentrated Boss Crystal, ... (12)
-                            spawn times: none ("Random Spawn")
-23001  Kzarka        World  reinforced 23172 Nightmarish Kzarka
-                            spawn times: group 0 [1860, 4320, ...], group 1 [600, 2655, ...] (7 each)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -28,55 +27,78 @@ Rift bosses and 3 Hunting/Sniper bosses. The file name spells "staic" for
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset             | Type     | Field        | Notes                                                         |
-| ------------------ | -------- | ------------ | ------------------------------------------------------------- |
-| `+0x00`            | char[4]  | magic        | `PABR`                                                        |
-| `+0x04`            | u32      | record_count | `28` on client 3464                                           |
-| `+0x08`            | record[] | records      | Variable size; the last one ends where the string table starts |
-| table start        | ...      | strings      | Counted string table (`_common/pabr_strings.py`)              |
-| end - 8            | u32      | table_start  | Offset of the string table                                    |
-| end - 4            | u32      | zero         |                                                               |
+### File Layout
+
+| Offset              | Type                      | Field        | Notes                                                          |
+| ------------------- | ------------------------- | ------------ | -------------------------------------------------------------- |
+| `+0x00`             | char[4]                   | magic        | `PABR`                                                         |
+| `+0x04`             | u32                       | record_count | `28` on client 3464                                            |
+| `+0x08`             | Boss Record[record_count] | records      | Variable size; the last one ends where the string table starts |
+| `records+0x00`      | String Table              | string_table | Counted string table (`_common/pabr_strings.py`)               |
+| `string_table+0x00` | u32                       | table_start  | Offset of the string table                                     |
+| `string_table+0x04` | u32                       | zero         |                                                                |
+
+### Boss Record (variable: 30 bytes + lists and reinforced form)
+
+| Offset               | Type                               | Field             | Notes                                                                 |
+| -------------------- | ---------------------------------- | ----------------- | --------------------------------------------------------------------- |
+| `+0x00`              | Group List                         | spawn_times       | See Group List; empty on every non-World record                       |
+| `spawn_times+0x00`   | Group List                         | unknown_ids       | Same groups and lengths as `spawn_times`, one ID per time; see Open Questions |
+| `unknown_ids+0x00`   | u32                                | reward_item_count | Number of `reward_items`                                              |
+| `unknown_ids+0x04`   | u32[reward_item_count]             | reward_items      | Item IDs: the "Main Rewards" row of the window                        |
+| `reward_items+0x00`  | u32                                | main_texture      | String index of the large boss image (`Img_` key)                     |
+| `reward_items+0x04`  | u32                                | list_texture      | String index of the list entry image; always `main_texture + 1`       |
+| `reward_items+0x08`  | u16                                | character_id      | `characterstatic.dbss` character ID, LOC type 6                       |
+| `reward_items+0x0A`  | u8                                 | has_reinforced    | `0` or `1`; when `1`, the Reinforced Form follows                     |
+| `reward_items+0x0B`  | Reinforced Form if has_reinforced = 1 | reinforced     | See Reinforced Form                                                   |
+| `reinforced+0x00`    | f32[3]                             | position          | World position; the second value is the height                       |
+| `reinforced+0x0C`    | u8                                 | boss_info_type    | Window tab, see [Boss Info Types](#boss-info-types)                   |
+| `reinforced+0x0D`    | u8                                 | unknown_flag      | `1` on the 14 World records, `0` on the rest                          |
+| `reinforced+0x0E`    | u8                                 | is_event_boss     | `1` only on 21878 Gift Box; see Notes                                 |
+
+### Reinforced Form (variable: 14 bytes + rewards)
+
+| Offset                          | Type                              | Field                        | Notes                                                           |
+| ------------------------------- | --------------------------------- | ---------------------------- | --------------------------------------------------------------- |
+| `+0x00`                         | u16                               | reinforced_character_id      | The reinforced form (23172 Nightmarish Kzarka for 23001 Kzarka) |
+| `+0x02`                         | u32                               | reinforced_main_texture      | String index                                                    |
+| `+0x06`                         | u32                               | reinforced_list_texture      | String index                                                    |
+| `+0x0A`                         | u32                               | reinforced_reward_item_count | Number of `reinforced_reward_items`                             |
+| `+0x0E`                         | u32[reinforced_reward_item_count] | reinforced_reward_items      | Item IDs                                                        |
+
+The reinforced form stores its textures before its rewards, the reverse of
+the Boss Record's `reward_items`, `main_texture` and `list_texture`.
+
+### Group List (variable: 4 bytes + groups)
+
+| Offset  | Type               | Field       | Notes                        |
+| ------- | ------------------ | ----------- | ---------------------------- |
+| `+0x00` | u32                | group_count | `0`, or `2` on World records |
+| `+0x04` | Group[group_count] | groups      | See Group                    |
+
+The group keys are `0` then `1` on every record that has groups.
+
+### Group (variable: 5 bytes + values)
+
+| Offset  | Type             | Field       | Notes                 |
+| ------- | ---------------- | ----------- | --------------------- |
+| `+0x00` | u8               | group_key   | `0` or `1`            |
+| `+0x01` | u32              | value_count | Number of `values`    |
+| `+0x05` | u32[value_count] | values      | The group's values    |
+
+### String Table (variable: 4 bytes + strings)
 
 The string table holds the texture keys, an `Img_` key followed by the list
 key for each image set (`Combine_Etc_WorldMap_BossList_Img_Begg`,
 `Combine_Etc_WorldMap_BossList_Begg`): 60 strings for 30 sets on client
 3464.
 
-## Record Structure
-
-### Boss Record (variable size)
-
-| Order | Type           | Field                   | Notes                                                                 |
-| ----- | -------------- | ----------------------- | --------------------------------------------------------------------- |
-| 1     | group list     | spawn_times             | See [Group List](#group-list); empty on every non-World record        |
-| 2     | group list     | unknown_ids             | Same groups and lengths as `spawn_times`, one ID per time; see Open Questions |
-| 3     | u32 + u32[]    | reward_items            | Count, then item IDs: the "Main Rewards" row of the window            |
-| 4     | u32            | main_texture            | String index of the large boss image (`Img_` key)                     |
-| 5     | u32            | list_texture            | String index of the list entry image; always `main_texture + 1`       |
-| 6     | u16            | character_id            | `characterstatic.dbss` character ID, LOC type 6                       |
-| 7     | u8             | has_reinforced          | `0` or `1`; when `1`, fields 8 to 11 follow                           |
-| 8     | u16            | reinforced_character_id | The reinforced form (23172 Nightmarish Kzarka for 23001 Kzarka)       |
-| 9     | u32            | reinforced_main_texture | String index                                                          |
-| 10    | u32            | reinforced_list_texture | String index                                                          |
-| 11    | u32 + u32[]    | reinforced_reward_items | Count, then item IDs                                                  |
-| 12    | f32 x 3        | position                | World position; the second value is the height                       |
-| 13    | u8             | boss_info_type          | Window tab, see [Boss Info Types](#boss-info-types)                   |
-| 14    | u8             | unknown_flag            | `1` on the 14 World records, `0` on the rest                          |
-| 15    | u8             | is_event_boss           | `1` only on 21878 Gift Box; see Notes                                 |
-
-The reinforced form stores its textures before its rewards, the reverse of
-fields 3 to 5.
-
-### Group List
-
-| Type    | Field       | Notes                                              |
-| ------- | ----------- | -------------------------------------------------- |
-| u32     | group_count | `0`, or `2` on World records                       |
-| group[] | groups      | `group_count` times: u8 group key, u32 count, u32[count] values |
-
-The group keys are `0` then `1` on every record that has groups.
+| Offset  | Type               | Field        | Notes                                    |
+| ------- | ------------------ | ------------ | ---------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings                        |
+| `+0x04` | pstr[string_count] | strings      | Texture keys; the texture fields index this list |
 
 ## Boss Info Types
 

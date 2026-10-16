@@ -4,13 +4,11 @@
 
 Spawn positions of the hireable sailors (the client calls sailors "employees") in the three port towns where they wait to be hired: Velia, Port Epheria and Iliya Island. Each row is a world position, a facing direction and the region the spot lies in. `employeespawninfo.dbss` lists, per sailor character, the spawn position keys that sailor can appear on. Companion `employeespawnpositionoffset.dbss` lists where every row sits.
 
-Example:
+## Versions
 
-```text
-spawn position 1    Velia          ( 14,090, -6,567,  75,950)  facing (-0.71, 0, -0.71)
-spawn position 41   Port Epheria   (-361,473, -8,000,  31,106)  facing (-0.71, 0,  0.71)
-spawn position 46   Iliya Island   (162,702, -4,856, 301,174)   facing ( 0.17, 0,  0.98)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,50 +21,49 @@ spawn position 46   Iliya Island   (162,702, -4,856, 301,174)   facing ( 0.17, 0
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type      | Field | Notes                                         |
-| ------- | --------- | ----- | --------------------------------------------- |
-| `+0x00` | u32       | count | Number of spawn positions (observed: 15)      |
-| `+0x04` | row[]     | rows  | `count` rows of 34 bytes                      |
+### File Layout
+
+| Offset  | Type                      | Field | Notes                                    |
+| ------- | ------------------------- | ----- | ---------------------------------------- |
+| `+0x00` | u32                       | count | Number of spawn positions (observed: 15) |
+| `+0x04` | Spawn Position Row[count] | rows  | See Spawn Position Row                   |
 
 The rows fill the file exactly: 4 + 15 x 34 = 514 bytes on client 3458.
 
-## Record Structure
-
 ### Spawn Position Row (34 bytes)
 
-| Offset  | Type | Field              | Notes                                                                                           |
-| ------- | ---- | ------------------ | ----------------------------------------------------------------------------------------------- |
-| `+0x00` | u32  | spawn_position_key | Row key; `1` to `5` in Velia, `41` to `45` in Port Epheria, `46` to `50` in Iliya Island         |
-| `+0x04` | f32  | pos_x              | World X                                                                                         |
-| `+0x08` | f32  | pos_y              | World Y (height)                                                                                |
-| `+0x0C` | f32  | pos_z              | World Z                                                                                         |
-| `+0x10` | f32  | dir_x              | Facing direction, X part                                                                        |
-| `+0x14` | f32  | dir_y              | Facing direction, Y part; always `0`                                                            |
-| `+0x18` | f32  | dir_z              | Facing direction, Z part                                                                        |
-| `+0x1C` | f32  | unknown_1c         | Always `5000.0`; see Open Questions                                                             |
-| `+0x20` | u16  | region_key         | Region the spot lies in, LOC type 17: `5` Velia, `120` Port Epheria, `182` Iliya Island         |
+| Offset  | Type | Field              | Notes                                                                                    |
+| ------- | ---- | ------------------ | ---------------------------------------------------------------------------------------- |
+| `+0x00` | u32  | spawn_position_key | Row key; `1` to `5` in Velia, `41` to `45` in Port Epheria, `46` to `50` in Iliya Island |
+| `+0x04` | f32  | pos_x              | World X                                                                                  |
+| `+0x08` | f32  | pos_y              | World Y (height)                                                                         |
+| `+0x0C` | f32  | pos_z              | World Z                                                                                  |
+| `+0x10` | f32  | dir_x              | Facing direction, X part                                                                 |
+| `+0x14` | f32  | dir_y              | Facing direction, Y part; always `0`                                                     |
+| `+0x18` | f32  | dir_z              | Facing direction, Z part                                                                 |
+| `+0x1C` | f32  | unknown_1c         | Always `5000.0`; see Open Questions                                                      |
+| `+0x20` | u16  | region_key         | Region the spot lies in, LOC type 17: `5` Velia, `120` Port Epheria, `182` Iliya Island  |
 
 `(dir_x, dir_y, dir_z)` is a unit vector in the horizontal plane on every row (`dir_x² + dir_z² = 1`, every angle a multiple of 5 degrees, such as `(-0.7071, 0, 0.7071)` and `(0.1736, 0, 0.9848)`), so it reads as the way the sailor faces. The positions are world coordinates in centimetres, like `teleport.dbss` and the waypoint files. Velia's five spots lie within 12 m of each other, Port Epheria's within 28 m and Iliya Island's within 106 m.
 
-## employeespawnpositionoffset.dbss
+### `employeespawnpositionoffset.dbss`
 
 Bare offset table into `employeespawnposition.dbss` (no PABR magic, no trailer).
 
-### Header (4 bytes)
+| Offset  | Type              | Field | Notes                                             |
+| ------- | ----------------- | ----- | ------------------------------------------------- |
+| `+0x00` | u32               | count | Number of offset rows; equals the main file count |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                                    |
 
-| Offset  | Type | Field | Notes                                              |
-| ------- | ---- | ----- | -------------------------------------------------- |
-| `+0x00` | u32  | count | Number of offset rows; equals the main file count  |
+### Offset Row (12 bytes)
 
-### Offset Row (12 bytes, repeated `count` times)
-
-| Offset  | Type | Field              | Notes                                                           |
-| ------- | ---- | ------------------ | --------------------------------------------------------------- |
-| `+0x00` | u32  | spawn_position_key | Key of the row it points at                                     |
-| `+0x04` | u32  | data_offset        | Absolute byte offset in `employeespawnposition.dbss`            |
-| `+0x08` | u32  | data_size          | Always 34                                                       |
+| Offset  | Type | Field              | Notes                                                |
+| ------- | ---- | ------------------ | ---------------------------------------------------- |
+| `+0x00` | u32  | spawn_position_key | Key of the row it points at                          |
+| `+0x04` | u32  | data_offset        | Absolute byte offset in `employeespawnposition.dbss` |
+| `+0x08` | u32  | data_size          | Always 34                                            |
 
 The rows are in file order, which is not key order (41, 1, 42, 2, 43, 3, 4, 5, 44, 45, 46 to 50). The parser reads the main file through these rows and checks that every row holds the key of the offset row that points at it.
 

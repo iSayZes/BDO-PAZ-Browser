@@ -6,13 +6,11 @@ Defines the skill roll table used when a fairy's skills are changed. Each record
 
 This is the data behind the "% chance to obtain the new skill" the game shows on the Change Skill window.
 
-Example:
+## Versions
 
-```text
-Radiant (504) → Miraculous Cheer V: weight 100000 = 10.0%
-Faint   (501) → Morning Star:       weight 250000 = 25.0%
-Faint   (501) → Tingling Breath II: weight 0      = cannot roll
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,24 +21,43 @@ Faint   (501) → Tingling Breath II: weight 0      = cannot roll
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                           |
-| ------- | ---- | ----- | ------------------------------- |
-| `+0x00` | u32  | count | Number of records; observed `4` |
+| Offset  | Type          | Field   | Notes                           |
+| ------- | ------------- | ------- | ------------------------------- |
+| `+0x00` | u32           | count   | Number of records; observed `4` |
+| `+0x04` | Record[count] | records | See Record                      |
 
-### Record (176 bytes, repeated `count` times)
+### Record (176 bytes)
 
-| Offset  | Type    | Field      | Notes                                                 |
-| ------- | ------- | ---------- | ----------------------------------------------------- |
-| `+0x00` | u32     | packed_key | `(acquire_type_id << 16) \| acquire_type_id`          |
+| Offset  | Type    | Field      | Notes                                                  |
+| ------- | ------- | ---------- | ------------------------------------------------------ |
+| `+0x00` | u32     | packed_key | `(acquire_type_id << 16) \| acquire_type_id`           |
 | `+0x04` | u32[43] | weights    | Roll weight per `equip_skill_id`, in parts-per-million |
 
 `4 + 43 × 4 = 176` bytes exactly. `weights[i]` is the chance of rolling the skill whose `equip_skill_id` is `i`; index `0` is the first weight, **not** a reserved field.
 
 The first 2 bytes of each record are the file key prefix. The offset companion points to `record_start + 2`, so use `record_start = data_offset - 2` to read the full u32-aligned record.
+
+### `fairyequipskillaquireoffset.dbss`
+
+| Offset  | Type                 | Field | Notes                                               |
+| ------- | -------------------- | ----- | --------------------------------------------------- |
+| `+0x00` | u32                  | count | Must equal `fairyequipskillaquire.dbss` count (`4`) |
+| `+0x04` | Offset Record[count] | rows  | See Offset Record                                   |
+
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field       | Notes                                                        |
+| ------- | ---- | ----------- | ------------------------------------------------------------ |
+| `+0x00` | u16  | key         | `acquire_type_id`; observed `504`, `503`, `502`, `501`       |
+| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
+| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
+| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
+
+Rows are ordered descending by key and ascending by `data_offset`.
 
 ## Acquire Type IDs, Fairy Grades
 
@@ -104,25 +121,6 @@ Five catalog entries carry a weight of `0` in every grade and are therefore unre
 | 22             | Miraculous Cheer 8 Seconds  | Legacy naming                           |
 | 23             | Miraculous Cheer 7 Seconds  | Legacy naming                           |
 | 29             | Gift                        | Every fairy starts with it; never rolled |
-
-## `fairyequipskillaquireoffset.dbss`
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                               |
-| ------- | ---- | ----- | --------------------------------------------------- |
-| `+0x00` | u32  | count | Must equal `fairyequipskillaquire.dbss` count (`4`) |
-
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                        |
-| ------- | ---- | ----------- | ------------------------------------------------------------ |
-| `+0x00` | u16  | key         | `acquire_type_id`; observed `504`, `503`, `502`, `501`       |
-| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
-| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
-| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
-
-Rows are ordered descending by key and ascending by `data_offset`.
 
 ## Lookup Recipe
 

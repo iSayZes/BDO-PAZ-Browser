@@ -190,8 +190,9 @@ ours. The labels live in `_common/lang/` (`tradeGroups`).
   `Trade Managers would buy this for a high price.`, fish such as 8201
   Mudskipper, the Imperial cooking and alchemy boxes (9801 to 9871) and the
   six `[Guild]` trade crates (9921 to 9925 and 9943).
-- `itemtradegroupfromnpc.dbss` and its offset table ship empty (see
-  [empty](empty_dbss.md)).
+- `itemtradegroupfromnpc.dbss` and its offset table are empty on client
+  3473 and hold groups of this file's Layout 1 shape on client 1784 (see
+  [itemtradegroupfromnpc](itemtradegroupfromnpc_dbss.md)).
 
 ## Open Questions
 

@@ -96,8 +96,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `groupcameradata.bss` | PABR cutscene skip summaries: scene ID, Korean title, recap and quote, and region symbol icon path (LOC type 97) | [groupcameradata](file-formats/groupcameradata_bss.md) | 0 | 0 |
 | `growthpasscategory.dbss` | Growth Pass window tabs: key, Korean name (English in LOC type 107), icon texture key and the quest chain of the tab's grid | [growthpasscategory](file-formats/growthpasscategory_dbss.md) | 1 | 0 |
 | `growthpasscategoryoffset.dbss` | Index into `growthpasscategory.dbss`: bare count, then (u32 category key, offset, size) | [growthpasscategory](file-formats/growthpasscategory_dbss.md) | 1 | 0 |
-| `growthpasspointshop.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
-| `growthpasspointshopoffset.dbss` | Empty offset companion for `growthpasspointshop.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `growthpasspointshop.dbss` | Growth Pass point shop table by name: a u32 count of 0 on client 3473; on client 1784, 15 records of 28 bytes (key and five unknown u32) | [growthpasspointshop](file-formats/growthpasspointshop_dbss.md) | 2 | 0 |
+| `growthpasspointshopoffset.dbss` | Index into `growthpasspointshop.dbss`: a u32 count of 0 on client 3473; on client 1784, (u32 key, offset, size) rows | [growthpasspointshop](file-formats/growthpasspointshop_dbss.md) | 2 | 0 |
 | `growthpassquestlist.bss` | Growth Pass quests: nine quest chains as packed quest IDs, same layout as `allquestlist.bss` | [growthpassquestlist](file-formats/growthpassquestlist_bss.md) | 0 | 0 |
 | `guaranteeenchantss.dbss` | Ancient Anvil table: Agris Essences needed for a guaranteed success per enhancement group and current level; the group is `enhancement_type` in `itemenchant.dbss` | [guaranteeenchantss](file-formats/guaranteeenchantss_dbss.md) | 1 | 0 |
 | `guildskillexperience.dbss` | Guild point EXP table: EXP to the next guild point level, levels 0 to 1000 on client 3464 | [guildskillexperience](file-formats/guildskillexperience_dbss.md) | 1 | 0 |
@@ -109,8 +109,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `huntingstatdata.bss` | PABR Hunting Mastery table: chance of butchering more items per 50 mastery; the other seven fields are 0 on client 3464 | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `installation.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `installationoffset.dbss` | Empty offset companion for `installation.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
-| `instancedungeonskillstatic.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
-| `instancedungeonskillstaticoffset.dbss` | Empty offset companion for `instancedungeonskillstatic.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `instancedungeonskillstatic.dbss` | Instance dungeon skill table by name: a u32 count of 0 on client 3473; on client 1784, 157 records of a key and a Korean `<PAColor>` text | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
+| `instancedungeonskillstaticoffset.dbss` | Index into `instancedungeonskillstatic.dbss`: a u32 count of 0 on client 3473; on client 1784, (u32 key, offset, size) rows | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
 | `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
 | `instancefieldmapinfo.bss` | PABR map data per instance field key: GAME sheet name and description keys, map image and sprite region, centre point and radius, participant and team limits, territory lock, entry item, team spawn points | [instancefieldmapinfo](file-formats/instancefieldmapinfo_bss.md) | 1 | 0 |
 | `instancefieldoffset.dbss` | Index into `instancefield.dbss`, maps key to offset/size (10-byte rows); no PABR magic | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
@@ -130,8 +130,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `itemsubgroupoffset.dbss` | PABR index into `itemsubgroup.dbss`, maps subgroup key → offset/size (10-byte rows) | [itemsubgroup](file-formats/itemsubgroup_dbss.md) | 1 | 1 |
 | `itemtrade.dbss` | Bare list of u16 character keys of the NPCs that buy trade goods (trade managers, node managers) | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |
 | `itemtradeetc.bss` | PABR table of the desert trade buff per pair of trade group types (distance and rate), then five unknown 12-byte rows | [itemtradeetc](file-formats/itemtradeetc_bss.md) | 3 | 2 |
-| `itemtradegroupfromnpc.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
-| `itemtradegroupfromnpcoffset.dbss` | Empty offset companion for `itemtradegroupfromnpc.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `itemtradegroupfromnpc.dbss` | Item groups per NPC, the `itemtradegrouptonpc.dbss` layout of client 1784: a u32 count of 0 on client 3473; on client 1784, 129 groups of item entries with a condition string and trade category | [itemtradegroupfromnpc](file-formats/itemtradegroupfromnpc_dbss.md) | 1 | 0 |
+| `itemtradegroupfromnpcoffset.dbss` | Bare u16 index into `itemtradegroupfromnpc.dbss`: a u32 count of 0 on client 3473; on client 1784, character ID → group offset and size | [itemtradegroupfromnpc](file-formats/itemtradegroupfromnpc_dbss.md) | 1 | 0 |
 | `itemtradegrouptonpc.dbss` | Trade goods per trade NPC: one group per `itemtrade.dbss` character key, 127-byte item entries with the item ID, its trade category and its trade group type | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 3 | 0 |
 | `itemtradegrouptonpcoffset.dbss` | Bare u16 index into `itemtradegrouptonpc.dbss`, maps character ID → group offset and size | [itemtradegrouptonpc](file-formats/itemtradegrouptonpc_dbss.md) | 3 | 0 |
 | `itemtradeoffset.dbss` | Bare u16 index into `itemtrade.dbss`, maps character key → key offset; the size column is always 2 | [itemtrade](file-formats/itemtrade_dbss.md) | 0 | 0 |

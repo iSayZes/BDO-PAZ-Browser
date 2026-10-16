@@ -36,8 +36,8 @@ class PetSkillHandler(PreviewHandler):
             Column(cols["petSkillId"], "num", sort_key="pet_skill_id"),
             Column(cols["skillType"], sort_key="skill_type_name"),
             Column(cols["level"], "num", sort_key="level"),
-            Column(cols["valueA"], "num", sort_key="raw_value_a"),
-            Column(cols["valueB"], "num", sort_key="raw_value_b"),
+            Column(cols["valueA"], "num", sort_key="param_0"),
+            Column(cols["valueB"], "num", sort_key="param_1"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -77,8 +77,8 @@ class PetSkillHandler(PreviewHandler):
                 e(r["pet_skill_id"]),
                 e(r["skill_type_name"] or r["skill_type"]),
                 e(r["level"]),
-                e(r["raw_value_a"]),
-                e(r["raw_value_b"]),
+                e(r["param_0"]),
+                e(r["param_1"]),
             ]
             for r in slice_
         ]

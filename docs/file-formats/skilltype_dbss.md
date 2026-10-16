@@ -7,11 +7,11 @@ name, whether it is active or passive, the skill icon, and a long action
 configuration (animation, targeting and combat behaviour) that is not decoded.
 This is where a skill's icon comes from.
 
-```text
-skill 62380  칼페온 - 낚시 경험치 획득량 +20%  (LOC 10: "Calpheon - Fishing EXP +20%")
-  kind 2 (passive)
-  icon New_Icon/04_PC_Skill/07_Guild_Skill/00062366.dds
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,21 +24,9 @@ The skill key is the one shared by the whole skill cluster; see
 [`skill.dbss` Skill Keys](skill_dbss.md#skill-keys). All multi-byte values are
 little-endian.
 
-## File Layout
+## Layout 1
 
-### skilltypeoffset.dbss
-
-Same layout as [`skilloffset.dbss`](skill_dbss.md#skilloffsetdbss): `PABR`,
-u32 count (`30352` on client 3458), 12-byte rows of u32 `skill_key`, u32
-`offset`, u32 `size`, and the 12-byte empty string table trailer. Read it with
-`parse_pabr_u32_offset_rows()`.
-
-### skilltype.dbss
-
-| Offset  | Type | Field   | Notes                                                    |
-| ------- | ---- | ------- | -------------------------------------------------------- |
-| `+0x00` | u32  | count   | Number of records; matches the offset file               |
-| `+0x04` | ...  | records | Each record is preceded by a repeated copy of its key   |
+### File Layout
 
 The records tile the file like `skill.dbss`: each starts 4 bytes after the
 previous one ends, the first at `8`, and the last ends at end of file. Strings
@@ -47,26 +35,65 @@ are a `u64` count followed by UTF-16LE units (text) or ASCII bytes (paths).
 Every key is level `1`. 30,342 of the 30,352 keys are also in `skill.dbss`;
 the 82 `skill.dbss` keys above level 1 have no record here.
 
-## Record Structure
+| Offset  | Type          | Field   | Notes                                      |
+| ------- | ------------- | ------- | ------------------------------------------ |
+| `+0x00` | u32           | count   | Number of records; matches the offset file |
+| `+0x04` | Record[count] | records | See Record                                 |
 
-### Skill Type Record (variable, `size` bytes from `offset`)
+### Record (variable: 4 bytes + payload)
 
-| Order | Type   | Field       | Notes                                                                 |
-| ----- | ------ | ----------- | --------------------------------------------------------------------- |
-| 1     | u32    | skill_key   | Equals the index key                                                  |
-| 2     | string | name        | Korean skill name, UTF-16, e.g. `거대한 진노 III`                      |
-| 3     | string | group_name  | Korean family name, see below                                         |
-| 4     | u32    | kind        | `0` other, `1` active, `2` passive; see below                         |
-| 5     | bytes  | config      | Action configuration, not decoded; holds `icon_path`                  |
+| Offset  | Type    | Field      | Notes                                                       |
+| ------- | ------- | ---------- | ----------------------------------------------------------- |
+| `+0x00` | u32     | key_prefix | Each record is preceded by a repeated copy of its key       |
+| `+0x04` | Payload | payload    | `size` bytes; the index row's `offset` points at this field |
 
-### `group_name`
+### Payload (variable: 24 bytes + names and config, size from `skilltypeoffset.dbss`)
+
+| Offset            | Type        | Field      | Notes                                                    |
+| ----------------- | ----------- | ---------- | -------------------------------------------------------- |
+| `+0x00`           | u32         | skill_key  | Equals the index key                                     |
+| `+0x04`           | str16       | name       | Korean skill name, e.g. `거대한 진노 III`                 |
+| `name+0x00`       | str16       | group_name | Korean family name, see [`group_name`](#group_name)      |
+| `group_name+0x00` | u32         | kind       | `0` other, `1` active, `2` passive; see [`kind`](#kind)  |
+| `group_name+0x04` | bytes[rest] | config     | Action configuration, not decoded; holds `icon_path`, see [`icon_path`](#icon_path) |
+
+### `skilltypeoffset.dbss`
+
+The layout of [`skilloffset.dbss`](skill_dbss.md#skilloffsetdbss). Read it with
+`parse_pabr_u32_offset_rows()`.
+
+| Offset              | Type             | Field        | Notes                                    |
+| ------------------- | ---------------- | ------------ | ---------------------------------------- |
+| `+0x00`             | char[4]          | magic        | ASCII `PABR`                             |
+| `+0x04`             | u32              | count        | Number of index rows; `30352` on client 3458 |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                            |
+| `rows+0x00`         | String Table     | string_table | Empty: `string_count` is `0`             |
+| `string_table+0x00` | u32              | table_start  | End of the rows, `8 + 12 * count`        |
+| `string_table+0x04` | u32              | zero         | Always 0                                 |
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field     | Notes                                                  |
+| ------- | ---- | --------- | ------------------------------------------------------ |
+| `+0x00` | u32  | skill_key | `skill_no << 16 \| level`                              |
+| `+0x04` | u32  | offset    | Byte offset of the record's `payload` in `skilltype.dbss` |
+| `+0x08` | u32  | size      | Payload size in bytes                                  |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes            |
+| ------- | ------------------ | ------------ | ---------------- |
+| `+0x00` | u32                | string_count | `0`              |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries; none here |
+
+## `group_name`
 
 Equal to `name` on 16,847 records. On the other 13,505 it is the name without
 the rank or a qualifier: `거대한 진노 III` -> `거대한 진노`, `탈것 속도 증가 1.0%`
 -> `속도 +1.0%`. Some are cut mid-phrase (`극 : 매화의 정신` -> `극 : 매화의`), so it
 reads like a short label rather than a clean family name.
 
-### `kind`
+## `kind`
 
 | Value | Meaning | Records | Example                                  |
 | ----- | ------- | ------- | ---------------------------------------- |
@@ -74,7 +101,7 @@ reads like a short label rather than a clean family name.
 | 1     | Active  | 10,219  | "Seismic Strike", "Fist Fury I"          |
 | 2     | Passive | 5,751   | "Mountain Aura IX" to "XVI"              |
 
-### `icon_path`
+## `icon_path`
 
 The skill icon is the first length-prefixed ASCII string in `config`, a `.dds`
 path relative to `ui_texture/icon/`. `find_prefixed_ascii()` finds it, as for

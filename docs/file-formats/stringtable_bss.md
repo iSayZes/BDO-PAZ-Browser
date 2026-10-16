@@ -26,7 +26,7 @@ All multi-byte values are little-endian unless noted otherwise.
 ### File Layout
 
 A PABR file of eight sheets, followed by the same counted string table and
-8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool). Every
+8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4-bytes--strings). Every
 string in the table is UTF-16LE (`is_wide=1`).
 
 | Offset              | Type               | Field              | Notes                                                |

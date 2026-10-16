@@ -35,7 +35,7 @@ PABR block with fixed 94-byte rows followed by the same counted string table and
 | `+0x00`             | char[4]                     | magic              | ASCII `PABR`                                          |
 | `+0x04`             | u32                         | count              | Number of rows; `403` on the 2026-09-27 client        |
 | `+0x08`             | Production Group Row[count] | rows               | 94-byte rows repeated `count` times                   |
-| `rows+0x00`         | String Table                | string_table       | Counted string table, see [`npcsimply.bss` String Pool](npcsimply_bss.md#string-pool) |
+| `rows+0x00`         | String Table                | string_table       | Counted string table, see [`npcsimply.bss` String Table](npcsimply_bss.md#string-table-variable-4-bytes--strings) |
 | `string_table+0x00` | u32                         | string_table_start | Equals `8 + count * 94` (`37,890`)                    |
 | `string_table+0x04` | u32                         | zero               | Always `0`                                            |
 

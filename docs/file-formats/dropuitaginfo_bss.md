@@ -28,7 +28,7 @@ All multi-byte values are little-endian.
 ### File Layout
 
 PABR block of 45 fixed 32-byte rows, followed by the same counted string
-table and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
+table and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4-bytes--strings)
 (`_common/pabr_strings.py`). The string table holds 118 strings: the Korean
 names and tooltips, the guide image names and the colours as hex text.
 

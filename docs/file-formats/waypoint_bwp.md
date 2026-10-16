@@ -31,7 +31,7 @@ Sections follow each other with no padding.
 |                    | group[]    | groups             | 8-byte rows repeated `group_count` times                     |
 |                    | u32        | route_count        | `0` in every file but `mapdata_realnpc_route.bwp` (899)      |
 |                    | route[]    | routes             | Variable-length, repeated `route_count` times                |
-| `string_table_start` | table    | string_table       | Counted string table, see [`npcsimply.bss` String Pool](npcsimply_bss.md#string-pool); each string stored once |
+| `string_table_start` | table    | string_table       | Counted string table, see [`npcsimply.bss` String Table](npcsimply_bss.md#string-table-variable-4-bytes--strings); each string stored once |
 | EOF - 8            | u32        | string_table_start | Equals the offset where the routes end, on all 1,287 files   |
 | EOF - 4            | u32        | zero               | Always `0`                                                   |
 

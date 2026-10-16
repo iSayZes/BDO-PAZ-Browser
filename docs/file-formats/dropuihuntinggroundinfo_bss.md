@@ -39,7 +39,7 @@ All multi-byte values are little-endian.
 ### File Layout
 
 PABR block with variable-length rows, followed by the same counted string
-table and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
+table and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4-bytes--strings)
 (`_common/pabr_strings.py`).
 
 | Offset              | Type                      | Field              | Notes                                        |

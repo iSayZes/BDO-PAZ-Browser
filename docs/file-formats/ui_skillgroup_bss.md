@@ -34,7 +34,7 @@ All multi-byte values are little-endian.
 
 A PABR file of class grids, then a tab directory and a class table, then the
 shared counted string table and 8-byte trailer (see
-[`npcsimply.bss` String Pool](npcsimply_bss.md#string-pool)).
+[`npcsimply.bss` String Table](npcsimply_bss.md#string-table-variable-4-bytes--strings)).
 
 | Offset                     | Type                         | Field               | Notes                                           |
 | -------------------------- | ---------------------------- | ------------------- | ----------------------------------------------- |

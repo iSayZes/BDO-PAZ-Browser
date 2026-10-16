@@ -20,16 +20,16 @@ All multi-byte values are little-endian unless noted otherwise.
 
 ### File Layout
 
-Top-level PABR block with a fixed-width record table followed by an inline string pool.
+Top-level PABR block with a fixed-width record table followed by an inline string table.
 
 | Offset             | Type              | Field              | Notes                                      |
 | ------------------ | ----------------- | ------------------ | ------------------------------------------ |
 | `+0x00`            | char[4]           | magic              | ASCII `PABR`                               |
 | `+0x04`            | u32               | count              | Number of NPC records (observed: 2,169 in an older extraction, 2,237 in the pre-2026-09-27 fixture, 2,238 in the 2026-09-27 client) |
 | `+0x08`            | NPC Record[count] | records            | See NPC Record                             |
-| `records+0x00`     | String Pool       | string_pool        | Counted string table referenced by records |
-| `string_pool+0x00` | u32               | string_pool_offset | Equals `0x08 + count * 33` (`0x12065`)     |
-| `string_pool+0x04` | u32               | zero               | Always 0                                   |
+| `records+0x00`     | String Table      | string_table       | Counted string table referenced by records |
+| `string_table+0x00` | u32               | string_pool_offset | Equals `0x08 + count * 33` (`0x12065`)     |
+| `string_table+0x04` | u32               | zero               | Always 0                                   |
 
 The last two fields are the 8-byte trailer. This is the same `[string table][u32 rows_end][u32 0]` tail that `playercharacterstatic.bss` and `characterstaticoffset.dbss` carry after their rows.
 
@@ -56,32 +56,21 @@ An earlier version of this doc read `+0x00` as a u32 `npc_id`. The high half is 
 
 The `script_ref` string equals the `characterstatic.dbss` action script of the same character on all 2237 rows.
 
-### String Pool (variable: 4 bytes + strings)
+### String Table (variable: 4 bytes + strings)
 
-The string pool begins immediately after the fixed record table:
+The string table begins immediately after the fixed record table, at
+`string_pool_offset = 0x08 + count * 33`. Observed `string_pool_offset` is
+`0x12065` (older extraction: `0x117A1`).
 
-```text
-string_pool_offset = 0x08 + count * 33
-```
+| Offset  | Type               | Field        | Notes                           |
+| ------- | ------------------ | ------------ | ------------------------------- |
+| `+0x00` | u32                | string_count | Observed: 4746                  |
+| `+0x04` | pstr[string_count] | strings      | Counted entries, indexed from 0 |
 
-Observed `string_pool_offset` is `0x12065` (older extraction: `0x117A1`).
-
-| Offset  | Type                       | Field        | Notes                           |
-| ------- | -------------------------- | ------------ | ------------------------------- |
-| `+0x00` | u32                        | string_count | Observed: 4746                  |
-| `+0x04` | String Entry[string_count] | strings      | Counted entries, indexed from 0 |
-
-### String Entry (variable: 5 bytes + payload)
-
-Every entry has a one-byte encoding flag and a u32 byte length. There is no
-terminator: the next entry starts right after the payload, and the last one ends
-exactly at the trailer.
-
-| Offset  | Type               | Field       | Notes                                   |
-| ------- | ------------------ | ----------- | --------------------------------------- |
-| `+0x00` | u8                 | is_wide     | `1` for UTF-16LE, `0` for UTF-8         |
-| `+0x01` | u32                | byte_length | Payload length in bytes                 |
-| `+0x05` | bytes[byte_length] | payload     | UTF-16LE when `is_wide=1`, else UTF-8   |
+Every `pstr` entry has a one-byte encoding flag `is_wide` (`1` for UTF-16LE,
+`0` for UTF-8) and a u32 byte length, then the payload. There is no
+terminator: the next entry starts right after the payload, and the last one
+ends exactly at the trailer.
 
 An earlier version of this doc read the flag as an optional marker and the
 next entry's `0` flag as a terminator; both readings split the pool the same
@@ -109,7 +98,7 @@ Observed pool contents: 2636 UTF-8 strings and 2110 UTF-16LE strings. The pool i
 
 ## Notes
 
-- The record table size is exactly `count * 33` bytes; fixed records end at `0x12065` (`0x12086` in the 2026-09-27 client), and the string pool parses exactly up to the 8-byte trailer.
+- The record table size is exactly `count * 33` bytes; fixed records end at `0x12065` (`0x12086` in the 2026-09-27 client), and the string table parses exactly up to the 8-byte trailer.
 - `script_ref` points to a `getknowledge(<id>);` UTF-16LE string for 2161 of 2237 records.
 - `name_ref` and `role_ref` point to Korean UTF-8 strings in the same pool. Role strings are often bracketed labels such as `<과일상인>` or `<거점관리인>`. LOC type `6` `str_id4=1` holds the same role in the user's language on all 1998 rows with a role (`<과일상인>` is `<Fruit Vendor>`), and `<null>` on the 240 rows whose `role_ref` is empty (client 3458).
 - Every row's character has `npc_kind` `2` (NPC) in `characterstatic.dbss`.

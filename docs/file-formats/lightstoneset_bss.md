@@ -9,21 +9,21 @@ Korean name and effect text. A table after the rows lists which Lightstone
 items count as which member, so an Amplified Lightstone completes a set like
 its base Lightstone.
 
-Example:
+## Versions
 
-```text
-set 2, skill 55078 ("Set 2 - [Well-prepared]")
-  members: Lightstone of Fire: Predation x2, Lightstone of Wind: Alert (Combat),
-           Lightstone of Wind: Alert (Skill)
-  LOC type 113, str_id1 2:
-    [Well-prepared]
-    Combat EXP +50%
-    Skill EXP +10%
-    Extra AP Against Monsters +2
-  skill 55078 level 1 buffs: 55631 Combat EXP +50%, 55635 Skill EXP +10%,
-    55640 Extra AP Against Monsters +2
-substitute 758203 Amplified Lightstone of Fire: Predation -> 758003
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes  | Records                         | Row bytes               |
+| ------ | -------------- | ------- | ------------------- | ------ | ------------------------------- | ----------------------- |
+| 1      | 3473 and later | 3473    | `lightstoneset.bss` | 30,209 | 165 Set Row, 105 Substitute Row | 26 to 30, 29 on average |
+
+| Layout | File                | Known             | Unknown    |
+| ------ | ------------------- | ----------------- | ---------- |
+| 1      | `lightstoneset.bss` | 30,209 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -36,37 +36,37 @@ The file is self-contained. The handler reads these through shared lookups:
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The PABR string table layout of `buffsimply.bss` (`_common/pabr_strings.py`),
 with variable-size rows and a second table between the rows and the strings.
 
-| Offset   | Type    | Field              | Notes                                                            |
-| -------- | ------- | ------------------ | ---------------------------------------------------------------- |
-| `+0x00`  | char[4] | magic              | ASCII `PABR`                                                     |
-| `+0x04`  | u32     | count              | Number of sets; 165 on client 3464                               |
-| `+0x08`  | row[]   | sets               | Variable-size set rows, repeated `count` times                   |
-| after    | table   | substitutes        | u32 count, then `count` x 8-byte substitute rows                 |
-| after    | table   | string_table       | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8  | u32     | table_start        | Offset of the string table, where the substitute table ends      |
-| EOF - 4  | u32     | zero               | Always 0                                                         |
+| Offset              | Type                 | Field        | Notes                                                       |
+| ------------------- | -------------------- | ------------ | ----------------------------------------------------------- |
+| `+0x00`             | char[4]              | magic        | ASCII `PABR`                                                |
+| `+0x04`             | u32                  | count        | Number of sets; 165 on client 3464                          |
+| `+0x08`             | Set Row[count]       | sets         | See Set Row                                                 |
+| `sets+0x00`         | Substitute Table     | substitutes  | See Substitute Table                                        |
+| `substitutes+0x00`  | String Table         | string_table | See String Table                                            |
+| `string_table+0x00` | u32                  | table_start  | Offset of the string table, where the substitute table ends |
+| `string_table+0x04` | u32                  | zero         | Always 0                                                    |
 
 On client 3464 the walk over 165 sets and 105 substitute rows ends at
 `0x162A`, the stored `table_start`.
 
-## Record Structure
-
-### Set Row (14 + 4 x `member_count` bytes)
+### Set Row (variable: 14 bytes + member IDs)
 
 Fields are unaligned.
 
-| Offset          | Type     | Field        | Notes                                                                  |
-| --------------- | -------- | ------------ | ---------------------------------------------------------------------- |
-| `+0x00`         | u32      | set_id       | Unique; LOC type 113 `str_id1`, and the number in the skill name       |
-| `+0x04`         | u16      | skill_no     | Passive skill of the set effect; unique                                |
-| `+0x06`         | u32      | member_count | `3` or `4` on client 3464                                              |
-| `+0x0A`         | u32[]    | member_ids   | `member_count` Lightstone item IDs, ascending; a stone may repeat      |
-| `+0x0A + 4 * n` | u32      | text_ref     | String table index of the Korean name and effect; equals the row index |
+| Offset            | Type              | Field        | Notes                                                                  |
+| ----------------- | ----------------- | ------------ | ---------------------------------------------------------------------- |
+| `+0x00`           | u32               | set_id       | Unique; LOC type 113 `str_id1`, and the number in the skill name       |
+| `+0x04`           | u16               | skill_no     | Passive skill of the set effect; unique                                |
+| `+0x06`           | u32               | member_count | `3` or `4` on client 3464                                              |
+| `+0x0A`           | u32[member_count] | member_ids   | Lightstone item IDs, ascending; a stone may repeat                     |
+| `member_ids+0x00` | u32               | text_ref     | String table index of the Korean name and effect; equals the row index |
 
 The skill confirms the set ID: LOC type 10 names skill `55078` "Set 2 -
 [Well-prepared]" and skill `47521` "Set 182 - [The Wild: Edania]", and
@@ -80,7 +80,14 @@ The first line is the name in brackets and colour, each further line one
 effect. Line breaks are stored as the two characters `\` and `n`
 (`_common/inline_text.py`).
 
-### Substitute Row (8 bytes, repeated `count` times)
+### Substitute Table (variable: 4 bytes + rows)
+
+| Offset  | Type                  | Field | Notes                         |
+| ------- | --------------------- | ----- | ----------------------------- |
+| `+0x00` | u32                   | count | Number of substitute rows     |
+| `+0x04` | Substitute Row[count] | rows  | See Substitute Row            |
+
+### Substitute Row (8 bytes)
 
 | Offset  | Type | Field     | Notes                                                       |
 | ------- | ---- | --------- | ----------------------------------------------------------- |
@@ -93,17 +100,12 @@ Amplified Lightstone of Fire: Predation) to its base Lightstone. The rows are
 in no sorted order. Garmoth's Lightstone sets page lists each member as "Any
 of" the base and the Amplified Lightstone, which matches these rows.
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column      | Type | Notes                                                                  |
-| ----------- | ---- | ---------------------------------------------------------------------- |
-| Set ID      | num  | `set_id`                                                               |
-| Name        | text | LOC type 113 first line in its colour, else the Korean first line      |
-| Lightstones | list | `member_ids` with item icons and names                                 |
-| Substitutes | list | Items of the substitute table that count as a member, other than itself |
-| Effect      | list | The lines after the name                                               |
-| Skill ID    | num  | `skill_no`                                                             |
-| Buffs       | list | Buffs of skill `skill_no` level 1                                      |
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

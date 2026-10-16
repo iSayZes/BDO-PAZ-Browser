@@ -4,13 +4,21 @@
 
 The NPC dialog that takes each quest (the turn-in): one 8-byte row per quest with the quest key, the NPC's character key and the dialog index. `dialog_index << 16 | npc_id` is the `detail_dialog.dbss` key of the dialog, and the same value is `complete_dialog_key` at `+0x04` of the quest's `quest.dbss` record. The layout is that of [acceptquest_bss.md](acceptquest_bss.md), which holds the dialog that gives the quest.
 
-Example:
+## Versions
 
-```text
-quest 8500 / 4 ([LoML] Emma's Invitation)
-  npc_id 59875 (Quest NPC), dialog_index 73
-  detail_dialog key 73 << 16 | 59875 = 0x0049E9E3, which LOC type 38 names "Igor Bartali"
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes   | Records                   | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ------- | ------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `completequest.bss` | 151,948 | 18,991 Complete Quest Row | 8         |
+
+| Layout | File                | Known              | Unknown    |
+| ------ | ------------------- | ------------------ | ---------- |
+| 1      | `completequest.bss` | 151,948 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,15 +28,24 @@ quest 8500 / 4 ([LoML] Emma's Invitation)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-The header, row stream and trailer of `acceptquest.bss`: ASCII `PABR`, a u32 `count` (`19,267` on client 3464), `count` 8-byte rows, then `u32 0` (an empty PABR string table), `u32 rows_end` (`8 + count * 8`) and `u32 0`. The file is `8 + count * 8 + 12` bytes (`154,156` on client 3464).
+### File Layout
+
+| Offset              | Type                   | Field        | Notes |
+| ------------------- | ---------------------- | ------------ | ----- |
+| `+0x00`             | char[4]                | magic        | ASCII `PABR` |
+| `+0x04`             | u32                    | count        | Number of rows; `19,267` on client 3464, the count of `allquestlist.bss` |
+| `+0x08`             | Complete Quest Row[count] | rows         | See Complete Quest Row |
+| `rows+0x00`         | String Table           | string_table | The PABR string table of `exploration.bss`, here with no strings |
+| `string_table+0x00` | u32                    | rows_end     | `8 + count * 8`, where the rows end (`154,144` on client 3464) |
+| `string_table+0x04` | u32                    | zero         | Always `0` |
+
+The file is `8 + count * 8 + 12` bytes (`154,156` on client 3464).
 
 The rows are grouped by NPC: every NPC's rows form one run, and the rows without an NPC form one more. On client 3464 that is 2,024 runs for 2,023 NPCs plus the no-NPC run.
 
-## Record Structure
-
-### Complete Quest Row (8 bytes, repeated `count` times)
+### Complete Quest Row (8 bytes)
 
 | Offset  | Type | Field          | Notes |
 | ------- | ---- | -------------- | ----- |
@@ -43,6 +60,13 @@ Derived packed quest ID, as in `allquestlist.bss`:
 packed_quest_id = (quest_id << 16) | quest_chain_id
 ```
 
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty |
+
 ## Reference Rows
 
 Client 3464, names from `languagedata_en.loc`:
@@ -52,10 +76,6 @@ Client 3464, names from `languagedata_en.loc`:
 | 1001 / 4              | Cat on the Roof               | 40066  | Mariano           | 1            | Mariano               |
 | 1001 / 49             | Dins, Spoiling for a Fight    | 544    | Villager          | 326          | Vigilante             |
 | 8500 / 4              | [LoML] Emma's Invitation      | 59875  | Quest NPC         | 73           | Igor Bartali          |
-
-## Suggested UI Layout
-
-The columns of `acceptquest.bss`: Quest ID, Main ID, Sub ID, Title, NPC ID, NPC Name, Dialog and Dialog Name, with a dash in the NPC cells of rows without an NPC; their dialog stays.
 
 ## Notes
 

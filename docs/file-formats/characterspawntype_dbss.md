@@ -4,12 +4,27 @@
 
 NPC role flags. Each record gives one character (NPC, monster, object) 46 independent 0/1 bytes, one per value of the client's `CppEnums.SpawnType`: skill trainer, warehouse, stable, node manager (`Explorer`), shop merchant and so on. The client uses them for NPC services and town navigation.
 
-Example:
+## Versions
 
-```text
-character 47659 Alper
-  -> ItemRepairer, ImportantNpc, Stable, Intimacy, Mating, Grocery
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes     | Records             | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | --------- | ------------------- | --------- |
+| 2      | 3473 and later | 3473    | `characterspawntype.dbss`       | 1,178,548 | 24,553 Record       | 48        |
+| 2      | 3473 and later | 3473    | `characterspawntypeoffset.dbss` | 245,550   | 24,553 Index Record | 10        |
+| 1      | 1784           | 1784    | `characterspawntype.dbss`       | 725,344   | 16,485 Record       | 44        |
+| 1      | 1784           | 1784    | `characterspawntypeoffset.dbss` | 164,870   | 16,485 Index Record | 10        |
+
+| Layout | File                            | Known                | Unknown    |
+| ------ | ------------------------------- | -------------------- | ---------- |
+| 2      | `characterspawntype.dbss`       | 1,178,548 B (100.0%) | 0 B (0.0%) |
+| 2      | `characterspawntypeoffset.dbss` | 245,550 B (100.0%)   | 0 B (0.0%) |
+| 1      | `characterspawntype.dbss`       | 725,344 B (100.0%)   | 0 B (0.0%) |
+| 1      | `characterspawntypeoffset.dbss` | 164,870 B (100.0%)   | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -19,20 +34,64 @@ character 47659 Alper
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                                  |
-| ------- | ---- | ----- | -------------------------------------- |
-| `+0x00` | u32  | count | Number of records; observed `24,017` in the pre-2026-09-27 fixture, `24,551` in the 2026-09-27 client |
+| Offset  | Type          | Field   | Notes                                  |
+| ------- | ------------- | ------- | -------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; observed `24,017` in the pre-2026-09-27 fixture, `24,551` in the 2026-09-27 client |
+| `+0x04` | Record[count] | records | See Record                             |
 
-### Record (48 bytes, repeated `count` times)
+### Record (48 bytes)
 
 | Offset  | Type   | Field        | Notes                                                        |
 | ------- | ------ | ------------ | ------------------------------------------------------------ |
 | `+0x00` | u16    | character_id | Unique; equals the offset-table key                          |
-| `+0x02` | u8[46] | roles        | One byte per `SpawnType` value, each `0` or `1`; see below   |
+| `+0x02` | u8[46] | roles        | One byte per `SpawnType` value, each `0` or `1`; see Enum Values |
+
+### `characterspawntypeoffset.dbss`
+
+A parallel lookup index with one entry per main-file record.
+
+| Offset              | Type                | Field          | Notes                                            |
+| ------------------- | ------------------- | -------------- | ------------------------------------------------ |
+| `+0x00`             | char[4]             | magic          | `PABR` (ASCII)                                   |
+| `+0x04`             | u32                 | count          | Number of index records; matches main file count |
+| `+0x08`             | Index Record[count] | records        | See Index Record                                 |
+| `records+0x00`      | String Table        | string_table   | The 12-byte trailer starts here; see String Table |
+| `string_table+0x00` | u32                 | end_of_records | Byte offset of end-of-records in this file       |
+| `string_table+0x04` | u32                 | zero           | Always `0`                                       |
+
+### Index Record (10 bytes)
+
+| Offset  | Type | Field        | Notes                                      |
+| ------- | ---- | ------------ | ------------------------------------------ |
+| `+0x00` | u16  | character_id | Equals the record's own `character_id`     |
+| `+0x02` | u32  | offset       | Byte offset into `characterspawntype.dbss` |
+| `+0x06` | u32  | size         | Record byte count; always 48               |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Layout 1
+
+On client 1784 `roles` holds 42 bytes, `SpawnType` values `0` to `41`, and
+the record is 44 bytes; values `42` to `45` came later. On the 15,894
+characters both clients hold, each of the 42 bytes agrees with the same
+value on client 3473 for at least 15,852 of them. Only the Record differs
+from Layout 2; the index `size` is `44`.
+
+### Record (44 bytes)
+
+| Offset  | Type   | Field        | Notes                          |
+| ------- | ------ | ------------ | ------------------------------ |
+| `+0x00` | u16    | character_id |                                |
+| `+0x02` | u8[42] | roles        | `SpawnType` values `0` to `41` |
 
 ## Enum Values
 
@@ -94,41 +153,6 @@ The Navi label is the text the town NPC navigation widget shows for the role: `l
 Checked in game: Wacky Toshi (`ChangeMarniStone`) exchanges Marni stones, and Miles (value `41`) hands out the Grand Prix quests, `[Daily] Grand Prix, Become the Best` (4549/11) and `[Weekly] Old Moon Grand Prix, Rider of Honor` (4549/10).
 
 The roles fit the NPCs they are set on: stable keepers carry `Stable` and `Mating`, arms dealers `ItemRepairer` and `Weapon`, node managers `Explorer`, and the Magnus entrance wells `AbyssOneEnterPosGuide`.
-
-## characterspawntypeoffset.dbss
-
-A parallel lookup index with one entry per main-file record.
-
-### Header (8 bytes)
-
-| Offset  | Type  | Field | Notes                                            |
-| ------- | ----- | ----- | ------------------------------------------------ |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                                   |
-| `+0x04` | u32   | count | Number of index records; matches main file count |
-
-### Index Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field        | Notes                                      |
-| ------- | ---- | ------------ | ------------------------------------------ |
-| `+0x00` | u16  | character_id | Equals the record's own `character_id`     |
-| `+0x02` | u32  | offset       | Byte offset into `characterspawntype.dbss` |
-| `+0x06` | u32  | size         | Record byte count; always 48               |
-
-### Trailer (12 bytes)
-
-| Offset  | Type | Value  | Notes                                      |
-| ------- | ---- | ------ | ------------------------------------------ |
-| `+0x00` | u32  | 0      |                                            |
-| `+0x04` | u32  | varies | Byte offset of end-of-records in this file |
-| `+0x08` | u32  | 0      |                                            |
-
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                        |
-| ------------ | ---- | ------------------------------------------------------------ |
-| Character ID | num  | `character_id`, right-aligned                                |
-| Name         | text | LOC `str_type=6`, `str_id1=character_id`; shown only when LOC is loaded |
-| One per role | num  | a green ✓ when set, else a red ✗; header is the handler's `roleLabels` name (see Notes), else the English Navi label, else the `SpawnType` name; the name and value are in the tooltip; only roles set on some row are shown |
 
 ## Notes
 

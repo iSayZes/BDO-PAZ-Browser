@@ -4,7 +4,7 @@
 record. A record, in order:
 
     u32 skill_key | u32 level_1_key | u32 kind | u8 branch | u8
-    | u32 n + n x u32 hashes
+    | u32 n + n x u32 unknown_hashes
     | u8 | u32 need_level | u16 previous_rank_no
     | u32 n + n x u32 next_rank_keys
     | u8 weapon_type | u8 uses_main_weapon | u8 uses_sub_weapon | u8[15]
@@ -86,7 +86,7 @@ def parse_skillsimply_record(data: bytes, row: PabrOffsetRow) -> SkillSimplyReco
     if key != row.entry_id:
         raise ValueError(f"record at 0x{row.offset:X} holds key 0x{key:08X}, index says 0x{row.entry_id:08X}")
 
-    _list(reader, _U32, "I")  # hashes
+    _list(reader, _U32, "I")  # unknown_hashes
     _unknown_h00, need_level, previous_rank_no = reader.unpack(_RANK)
     next_rank_keys = _list(reader, _U32, "I")
     weapon_type, uses_main_weapon, uses_sub_weapon = reader.unpack(_WEAPON)

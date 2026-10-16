@@ -1,6 +1,7 @@
 {
   "columns": {
     "petSkillId": "ID de habilidad de mascota",
+    "skillType": "Tipo de habilidad",
     "level": "Nivel",
     "valueA": "Valor A",
     "valueB": "Valor B"

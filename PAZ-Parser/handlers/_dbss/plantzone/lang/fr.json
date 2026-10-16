@@ -7,6 +7,7 @@
   "columns": {
     "zoneId": "ID de zone",
     "nodeName": "Nom de géopoint",
+    "workAnimation": "Animation de travail",
     "productionKey": "Clé de production",
     "producedItems": "Objets produits"
   },

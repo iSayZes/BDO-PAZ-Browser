@@ -2,12 +2,29 @@
 
 ## Purpose
 
-The tabs of the Growth Pass window (`panel_window_growthpass*.luac`): per category a key, a Korean name, an icon texture key and the quest chain its grid holds. Two categories on client 3464:
+The tabs of the Growth Pass window (`panel_window_growthpass*.luac`): per category a key, a Korean name, an icon texture key and the quest chain its grid holds.
 
-```text
-category 7 -> Game Tips  -> Combine_Etc_GrowthSupport_Icon_Growth -> quest chain 4470
-category 9 -> HYPERBOOST -> Combine_Etc_GrowthSupport_Icon_Quest  -> quest chain 4472
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes | Records                 | Row bytes                        |
+| ------ | -------------- | ------- | ------------------------------- | ----- | ----------------------- | -------------------------------- |
+| 2      | 3473 and later | 3473    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average        |
+| 2      | 3473 and later | 3473    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                               |
+| 1      | 1784           | 1784    | `growthpasscategory.dbss`       | 8,409 | 8 Record Body, 8 Record | 1,042 to 1,052, 1,047 on average |
+| 1      | 1784           | 1784    | `growthpasscategoryoffset.dbss` | 100   | 8 Offset Row            | 12                               |
+
+| Layout | File                            | Known          | Unknown         |
+| ------ | ------------------------------- | -------------- | --------------- |
+| 2      | `growthpasscategory.dbss`       | 211 B (84.1%)  | 40 B (15.9%)    |
+| 2      | `growthpasscategoryoffset.dbss` | 28 B (100.0%)  | 0 B (0.0%)      |
+| 1      | `growthpasscategory.dbss`       | 569 B (6.8%)   | 7,840 B (93.2%) |
+| 1      | `growthpasscategoryoffset.dbss` | 100 B (100.0%) | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,49 +38,73 @@ The grid of each category is in [`uigrowthpasslayout.bss`](uigrowthpasslayout_bs
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset  | Type | Field        | Notes                                                    |
-| ------- | ---- | ------------ | -------------------------------------------------------- |
-| `+0x00` | u32  | record_count | `2` on client 3464                                       |
-| `+0x04` | ...  | records      | Each record is a u32 copy of its key, then the record body |
+### File Layout
 
-## Record Structure
+| Offset  | Type                 | Field        | Notes              |
+| ------- | -------------------- | ------------ | ------------------ |
+| `+0x00` | u32                  | record_count | `2` on client 3464 |
+| `+0x04` | Record[record_count] | records      | See Record         |
 
-### Record Body (variable)
+### Record (variable: 4 bytes + body)
+
+| Offset  | Type        | Field | Notes                               |
+| ------- | ----------- | ----- | ----------------------------------- |
+| `+0x00` | u32         | key   | Copy of the record's key            |
+| `+0x04` | Record Body | body  | The offset row points at this field |
+
+### Record Body (variable: 42 bytes + name and icon text)
 
 The offset table points at the body, past the key copy.
 
-| Offset         | Type        | Field          | Notes                                                                |
-| -------------- | ----------- | -------------- | -------------------------------------------------------------------- |
-| `+0x00`        | u32         | category_key   | Same as the key copy before it and the offset row key                |
-| `+0x04`        | u64 + UTF-16 | name_kr       | Length in characters, then the text; keeps `<PAColor>` tags          |
-| after name     | u64 + ASCII | icon_texture   | Length in bytes, then a `texturestring_combine.xml` texture ID       |
-| after icon     | u16         | quest_chain_id | The quest chain of this category's grid                              |
-| `+0x02`        | u8[20]      | unknown tail   | Zero on both records                                                 |
+| Offset              | Type      | Field           | Notes                                                                |
+| ------------------- | --------- | --------------- | -------------------------------------------------------------------- |
+| `+0x00`             | u32       | category_key    | Same as the key copy before it and the offset row key                |
+| `+0x04`             | str16     | name_kr         | Length in characters, then the text; keeps `<PAColor>` tags          |
+| `name_kr+0x00`      | str8      | icon_texture    | Length in bytes, then a `texturestring_combine.xml` texture ID       |
+| `icon_texture+0x00` | u16       | quest_chain_id  | The quest chain of this category's grid                              |
+| `icon_texture+0x02` | bytes[20] | unknown_tail_02 | Zero on both records                                                 |
 
 Both strings carry a u64 length prefix, read with `RecordReader.text`.
 
-### Offset Companion: `growthpasscategoryoffset.dbss`
+### `growthpasscategoryoffset.dbss`
 
 No `PABR` magic and no trailer: a u32 row count, then rows of u32 `category_key`, u32 `offset`, u32 `size`, read by `parse_bare_u32_offset_rows`. On client 3464: key 7 at `8`, 87 bytes; key 9 at `99`, 152 bytes. Sorted by offset, the key copies and bodies fill the file after the count.
+
+| Offset  | Type                  | Field     | Notes                 |
+| ------- | --------------------- | --------- | --------------------- |
+| `+0x00` | u32                   | row_count | Number of offset rows |
+| `+0x04` | Offset Row[row_count] | rows      | See Offset Row        |
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field        | Notes                              |
+| ------- | ---- | ------------ | ---------------------------------- |
+| `+0x00` | u32  | category_key | Record key                         |
+| `+0x04` | u32  | offset       | Absolute offset of the record body |
+| `+0x08` | u32  | size         | Size of the record body            |
+
+## Layout 1
+
+Client 1784 record bodies end in 980 bytes after `quest_chain_id`, where
+client 3473 has 20. Only the Record Body differs from Layout 2.
+
+### Record Body (variable: 1002 bytes + name and icon text)
+
+| Offset              | Type       | Field           | Notes                                                                 |
+| ------------------- | ---------- | --------------- | --------------------------------------------------------------------- |
+| `+0x00`             | u32        | category_key    |                                                                       |
+| `+0x04`             | str16      | name_kr         |                                                                       |
+| `name_kr+0x00`      | str8       | icon_texture    |                                                                       |
+| `icon_texture+0x00` | u16        | quest_chain_id  | 4464 to 4471 on the eight records of client 1784                      |
+| `icon_texture+0x02` | bytes[980] | unknown_tail_02 | Starts with u32 `5` on every record of client 1784; mostly zero after |
 
 ## Category Keys
 
 `panel_window_growthpass.luac` sets `_hyperBoostCategoryKeyList = {9}`: the window sorts Hyper Boost categories first, then the rest in file order. It reads the name through `categoryWrapper:getCategoryName()` and the icon through `getIconTextureId()`.
 
 LOC type 107 names keys 1 to 9 (`Quest/`, `PvE`, `Gathering`, `Farming/`, `Hunting/`, `Training`, `Game Tips`, `Guaranteed`, `HYPERBOOST`), but only 7 and 9 have a record on client 3464. `growthpassquestlist.bss` holds nine quest chains, 4464 to 4472; on client 3464 only 4470 and 4472 belong to a category.
-
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                                          |
-| ------------ | ---- | ------------------------------------------------------------------------------ |
-| Category Key | num  | `category_key`                                                                 |
-| Icon         | text | `icon_texture` resolved through `texturestring_combine.xml`                    |
-| Name         | text | LOC type 107 `str_id1 = category_key` in its game colours; else `name_kr`      |
-| Main ID      | num  | `quest_chain_id`, LOC type 18 `str_id1` of the grid's quests                    |
-
-The offset companion view lists Category Key, Data Offset and Size.
 
 ## Notes
 

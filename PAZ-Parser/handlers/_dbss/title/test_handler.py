@@ -22,14 +22,14 @@ from .handler import _category_label, _title_cell
 
 
 def _title_record(record: dict) -> dict:
-    requirement = strip_pa_tags(record.get("en_req") or record["requirement_text_ko"])
+    requirement = strip_pa_tags(record.get("en_req") or record["requirement_text_kr"])
 
     return {
         "TitleId": record["title_id"],
         "Category": _category_label(record["category_id"]),
-        "Title": strip_pa_tags(record.get("en_name") or record["title_text_ko"]),
+        "Title": strip_pa_tags(record.get("en_name") or record["title_text_kr"]),
         "TitleRequirements": " ".join(requirement.split()),
-        "Special": bool(record["title_color_argb"] or record["header_field_meaning"] != "style"),
+        "Special": bool(record["title_color_argb"] or record["is_styled_title"]),
         "Effect": record["title_effect_name"] or "-",
         "TitleHtml": _title_cell(record),
         "RequirementHtml": pa_cell(record, "requirement"),
@@ -149,3 +149,9 @@ def test_requirement_label_keeps_its_colour(title_result: HandlerResult) -> None
 
     assert html.startswith('<span class="pa-color" style="color: rgba(')
     assert "PAColor" not in html
+
+def test_styled_title_counts_as_special(title_result: HandlerResult) -> None:
+    """MASTER WARRIOR names itself in tags, so the Special column marks it."""
+    record = next(r for r in title_result.records if r["Title"] == "MASTER WARRIOR")
+
+    assert record["Special"] is True

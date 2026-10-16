@@ -7,6 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
+from _common.loc import resolve_text_binds
 from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 from .parser import StringRow, parse_rows
 from .text import ui_hash_tagged
@@ -16,14 +17,17 @@ _LANG_DIR = Path(__file__).parent / "lang"
 
 
 def _record(row: StringRow) -> dict:
-    """One table row; the text is the loaded LOC language, else the stored Korean."""
+    """One table row; the text is the loaded LOC language, else the stored Korean.
+
+    The `korean` column keeps the stored value as written, TextBind placeholders included.
+    """
     localized = ui_hash_tagged(row.sheet, row.key_hash)
     return {
         "key_hash": row.key_hash,
         "sheet": row.sheet,
         "key": row.key,
         "korean": strip_pa_tags(row.value).strip(),
-        **pa_fields("text", localized if strip_pa_tags(localized).strip() else row.value),
+        **pa_fields("text", localized if strip_pa_tags(localized).strip() else resolve_text_binds(row.value)),
     }
 
 

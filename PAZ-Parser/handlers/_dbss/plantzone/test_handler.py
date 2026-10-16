@@ -37,9 +37,10 @@ PLANTZONE_CASE = HandlerCase(
             required_keys=[
                 "record_id",
                 "node_name",
-                "unknown_0e",
+                "work_ani_type",
+                "work_animation",
                 "production_key",
-                "unknown_19",
+                "max_capacity_level",
                 "worker_species",
                 "worker_species_text",
                 "item_keys",
@@ -66,16 +67,17 @@ PLANTZONE_CASE = HandlerCase(
             value=1807,
             expected={"worker_species": [6], "worker_species_text": "Dokkebi", "data_size": 32},
         ),
-        # Balenos Specialties farms count unknown_19 up from 1 to 7.
+        # Balenos Specialties farms count max_capacity_level up from 1 to 7.
         TargetTest(
             col="record_id",
             value=110,
-            expected={"production_key": 977, "unknown_19": 7},
+            expected={"production_key": 977, "max_capacity_level": 7},
         ),
         TargetTest(
             col="record_id",
             value=2050,
             expected={
+                "work_animation": "Logging",
                 "production_key": _LUMBERING_KEY,
                 "item_keys": list(_LUMBERING_ITEMS),
                 "items": ["Elder Tree Timber", "Bloody Tree Knot", "Elder Tree Sap"],

@@ -4,31 +4,49 @@
 
 The quest grid of each Growth Pass category: a column and row count per [`growthpasscategory.dbss`](growthpasscategory_dbss.md) key, then one cell per grid position that is blank, a quest, or a piece of the line that links the quests. `panel_window_growthpass_1.luac` builds the window from it through `ToClient_getGrowthPassLayoutWrapper(categoryKey)`, `getColCount()`, `getRowCount()` and `getCellObjectWrapper(row, col)`.
 
-Example (client 3464, category 9, top row):
+## Versions
 
-```text
-row 0: Blank | RB | quest 4472/2 | Horizon | quest 4472/3 | BL | Blank
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes | Records            | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ----- | ------------------ | --------- |
+| 1      | 1784 and later | 3473    | `uigrowthpasslayout.bss` | 1,724 | 280 Cell, 2 Layout | 6         |
+
+| Layout | File                     | Known           | Unknown       |
+| ------ | ------------------------ | --------------- | ------------- |
+| 1      | `uigrowthpasslayout.bss` | 1,444 B (83.8%) | 280 B (16.2%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field        | Notes                                     |
-| ------- | ----- | ------------ | ----------------------------------------- |
-| `+0x00` | u8[4] | magic        | `PABR` (ASCII)                            |
-| `+0x04` | u32   | layout_count | `2` on client 3464                        |
-| `+0x08` | ...   | layouts      | `layout_count` layouts, back to back      |
-| end     | u8[12] | trailer     | u32 `0`, u32 offset of the trailer itself, u32 `0` |
+### File Layout
 
-### Layout (12-byte header, then cells)
+| Offset              | Type                 | Field        | Notes                                              |
+| ------------------- | -------------------- | ------------ | -------------------------------------------------- |
+| `+0x00`             | char[4]              | magic        | ASCII `PABR`                                       |
+| `+0x04`             | u32                  | layout_count | `2` on client 3464                                 |
+| `+0x08`             | Layout[layout_count] | layouts      | See Layout; back to back                           |
+| `layouts+0x00`      | String Table         | string_table | The PABR string table, here with no strings        |
+| `string_table+0x00` | u32                  | table_start  | Offset of the string table, where the grids end    |
+| `string_table+0x04` | u32                  | zero         | Always `0`                                         |
 
-| Offset  | Type | Field        | Notes                                                  |
-| ------- | ---- | ------------ | ------------------------------------------------------ |
-| `+0x00` | u32  | category_key | `growthpasscategory.dbss` key                          |
-| `+0x04` | u32  | col_count    | `7` on both layouts                                    |
-| `+0x08` | u32  | row_count    | `27` (category 7), `13` (category 9) on client 3464   |
-| `+0x0C` | cell[] | cells      | `row_count * col_count` cells, row by row              |
+### Layout (variable: 12 bytes + cells)
+
+| Offset  | Type        | Field        | Notes                                                  |
+| ------- | ----------- | ------------ | ------------------------------------------------------ |
+| `+0x00` | u32         | category_key | `growthpasscategory.dbss` key                          |
+| `+0x04` | u32         | col_count    | `7` on both layouts                                    |
+| `+0x08` | u32         | row_count    | `27` (category 7), `13` (category 9) on client 3464   |
+| `+0x0C` | Cell[row_count][col_count] | cells | `row_count * col_count` cells, row by row; the layout ends after the last cell |
 
 ### Cell (6 bytes)
 
@@ -38,6 +56,13 @@ All multi-byte values are little-endian.
 | `+0x02` | u16  | quest_id       | `getQuestId()`; `0` on every cell that is not a quest       |
 | `+0x04` | u8   | cell_type      | `getCellType()`, see Cell Types                             |
 | `+0x05` | u8   | unknown_05     | `1` on two cells, see Open Questions                        |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 The Lua draws even rows quest-tall and odd rows as thin line rows, even columns quest-wide and odd columns as thin line columns. Every quest cell sits on an even row and an even column.
 
@@ -62,28 +87,11 @@ The Lua draws even rows quest-tall and odd rows as thin line rows, even columns 
 
 `InvalidValue`, `LTR` and `LRB` do not occur. The Lua has a branch for `InvalidValue` (it draws a quest button) and asserts on any value outside the list.
 
-## Suggested UI Layout
-
-One row per cell that is not `Blank`:
-
-| Column       | Type | Notes                                                                |
-| ------------ | ---- | -------------------------------------------------------------------- |
-| Category Key | num  | `category_key`                                                       |
-| Row          | num  | 0-based                                                              |
-| Column       | num  | 0-based                                                              |
-| Cell Type    | text | Name from Cell Types, else the number                                 |
-| Main ID      | num  | `quest_chain_id`, quest cells only                                   |
-| Sub ID       | num  | `quest_id`, quest cells only                                         |
-| Icon         | text | Quest icon resolved from the packed quest ID                          |
-| Title        | text | LOC type 18 quest title in its game colours                           |
-
-`col_count`, `row_count` and `unknown_05` stay on the record for export.
-
 ## Notes
 
 - Decompressed size on client 3464: `1,724` bytes; the grids end at `0x6B0`, the offset in the trailer.
 - On client 3464 category 7 holds quests 4470 / 1 to 40 in rows of four with no linking lines between rows, and category 9 holds quests 4472 / 1 to 13 between two vertical lines that branch into each row.
-- Some titles are unresolved `{StringTableBind(TextBind:...)}` placeholders (4470 / 3), the same as in `allquestlist.bss`.
+- Some LOC titles are `{StringTableBind(TextBind:...)}` placeholders (4470 / 3); the Title column shows the LOC type 59 text they name (`languagedata_loc.md`, Type 59).
 - calpheonlabs has no page for this table.
 
 ## Open Questions

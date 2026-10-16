@@ -5,22 +5,24 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.enum_name import enum_name
 from _common.html import Column, e, sort_keys, table
 from _common.item_key import item_key_list_cell
 from _common.lang import handler_text, load_handler_strings
 from _common.node import node_name
 from _common.production_items import production_item_fields
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
-from .parser import WORKER_SPECIES_NAMES, parse_offset_records, parse_plantzone_records
+from .parser import (
+    WORK_ANI_TYPE_NAMES,
+    WORKER_SPECIES_NAMES,
+    parse_offset_records,
+    parse_plantzone_records,
+)
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 8
-
-
-def _species_name(species: int) -> str:
-    return WORKER_SPECIES_NAMES[species] if species < len(WORKER_SPECIES_NAMES) else str(species)
 
 
 def plant_zone_offset_handler() -> OffsetTableHandler:
@@ -41,6 +43,7 @@ class PlantZoneHandler(PreviewHandler):
         return [
             Column(cols["zoneId"], "num", sort_key="record_id"),
             Column(cols["nodeName"], sort_key="node_name"),
+            Column(cols["workAnimation"], sort_key="work_animation"),
             Column(cols["productionKey"], "num", sort_key="production_key"),
             # A list column: it would only sort by its string form.
             Column(cols["producedItems"]),
@@ -68,10 +71,11 @@ class PlantZoneHandler(PreviewHandler):
                 **record,
                 **production_item_fields(record["production_key"]),
                 "node_name": node_name(record["record_id"]),
+                "work_animation": enum_name(WORK_ANI_TYPE_NAMES, record["work_ani_type"]),
                 # Not shown: the list is not a worker lock and its use is
                 # unknown. Kept for search and export.
                 "worker_species_text": ", ".join(
-                    _species_name(species) for species in record["worker_species"]
+                    enum_name(WORKER_SPECIES_NAMES, species) for species in record["worker_species"]
                 ),
             }
             for record in parse_plantzone_records(data, offset_raw)
@@ -91,6 +95,7 @@ class PlantZoneHandler(PreviewHandler):
             [
                 e(r["record_id"]),
                 e(r["node_name"] or _EMPTY),
+                e(r["work_animation"]),
                 e(r["production_key"]),
                 item_key_list_cell(r["item_keys"] or [], _LIST_PREVIEW_ITEMS) or _EMPTY,
             ]

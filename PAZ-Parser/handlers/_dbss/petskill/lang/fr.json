@@ -1,6 +1,7 @@
 {
   "columns": {
     "petSkillId": "ID de compétence de familier",
+    "skillType": "Type de compétence",
     "level": "Niveau",
     "valueA": "Valeur A",
     "valueB": "Valeur B"

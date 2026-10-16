@@ -34,7 +34,7 @@ def _offset_gift_rows(companion: str) -> DeclaredCount:
         raw = source.file(companion)
         count = int.from_bytes(raw[:4], "little")
         total = 0
-        for _npc_id, _offset, size, _padding in _OFFSET_ROW.iter_unpack(raw[4 : 4 + count * _OFFSET_ROW.size]):
+        for _npc_id, _offset, size, _unknown_08 in _OFFSET_ROW.iter_unpack(raw[4 : 4 + count * _OFFSET_ROW.size]):
             gift_bytes = size - _GIFT_COUNT_SIZE
             if gift_bytes < 0 or gift_bytes % _GIFT_ROW_SIZE:
                 raise AssertionError(f"data_size {size} is not a gift count plus 12-byte gift rows")
@@ -126,9 +126,9 @@ OFFSET_CASES = [
         loc_fields=[],
         internal_path="gamecommondata/binary/npcgiftoffset.dbss",
         tests=[
-            SchemaTest(required_keys=["npc_id", "data_offset", "data_size", "padding"]),
+            SchemaTest(required_keys=["npc_id", "data_offset", "data_size", "unknown_08"]),
             DeclaredCountTest(declared=header_count()),
-            RangeTest(col="padding", min_val=0, max_val=0),
+            RangeTest(col="unknown_08", min_val=0, max_val=0),
             # The first record follows the 4-byte count; its offset skips the npc_id.
             TargetTest(col="npc_id", value=40012, expected={"data_offset": 6}),
         ],
@@ -142,9 +142,9 @@ OFFSET_CASES = [
         loc_fields=[],
         internal_path="gamecommondata/binary/npcgiftdataoffset.dbss",
         tests=[
-            SchemaTest(required_keys=["npc_id", "data_offset", "data_size", "padding"]),
+            SchemaTest(required_keys=["npc_id", "data_offset", "data_size", "unknown_08"]),
             DeclaredCountTest(declared=header_count()),
-            RangeTest(col="padding", min_val=0, max_val=0),
+            RangeTest(col="unknown_08", min_val=0, max_val=0),
             TargetTest(col="npc_id", value=40012, expected={"data_offset": 6}),
         ],
     ),

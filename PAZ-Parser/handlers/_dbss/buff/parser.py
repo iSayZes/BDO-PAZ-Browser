@@ -2,7 +2,7 @@
 
 Each record chains fixed blocks and length-prefixed strings:
 
-    u32 buff_id | name | 133-byte stats block | unknown_str | icon_path
+    u32 buff_id | name | 133-byte stats block | effect_name | icon_path
     | u8 is_shown | u32 apply_rate | description | 27-byte tail block
 
 Full layout in docs/file-formats/buff_dbss.md.
@@ -33,6 +33,15 @@ _EFFECT_TYPE = 0x08
 _PARAMS = 0x13
 _DURATION_MS = 0x68
 _TICK_MS = 0x6C
+# 1 on debuffs, which the buff bar lists apart (2016 `_isDebuff`).
+_IS_DEBUFF = 0x63
+# 1 when dying ends the buff (2016 `_doRemoveOnDead`).
+_REMOVE_ON_DEAD = 0x83
+# The equipment the buff needs, from its `_needEquipType` copy of an
+# itemenchant.dbss equip type: the `equip_type` (0 for none) and the
+# `equip_slot` (46 for none).
+_NEED_EQUIP_TYPE = 0x7A
+_NEED_EQUIP_SLOT = 0x81
 
 # Tail block offset of the broad family byte (food, elixir, perfume, ...).
 _STACKING_CATEGORY = 0x18
@@ -52,7 +61,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
         raise ValueError(f"buff {row.entry_id} record does not start with its own ID")
 
     name, stats = read_prefixed_at(data, start + _ID_SIZE, end, wide=True)
-    unknown_str, pos = read_prefixed_at(data, stats + STATS_BLOCK_SIZE, end, wide=True)
+    effect_name, pos = read_prefixed_at(data, stats + STATS_BLOCK_SIZE, end, wide=True)
     icon, pos = read_prefixed_at(data, pos, end, wide=False)
 
     is_shown = data[pos]
@@ -76,7 +85,11 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
         "duration_ms": u32(data, stats + _DURATION_MS),
         # Tick interval of a periodic effect; 0 on everything else.
         "tick_ms": u32(data, stats + _TICK_MS),
-        "unknown_str": unknown_str,
+        "is_debuff": bool(data[stats + _IS_DEBUFF]),
+        "remove_on_dead": bool(data[stats + _REMOVE_ON_DEAD]),
+        "need_equip_type": data[stats + _NEED_EQUIP_TYPE],
+        "need_equip_slot": data[stats + _NEED_EQUIP_SLOT],
+        "effect_name": effect_name,
         "icon_path": buff_icon_path(icon),
         "is_shown": bool(is_shown),
         "apply_rate": apply_rate,

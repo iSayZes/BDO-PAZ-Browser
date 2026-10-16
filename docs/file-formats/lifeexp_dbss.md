@@ -4,14 +4,23 @@
 
 EXP tables of the life skills (Gathering, Fishing, Hunting, Cooking, Alchemy, Processing, Training, Trading, Farming, Sailing, Barter and four spare slots). Each row gives the EXP one life skill needs to go from one level to the next, from level 0 to the max level. Companion `lifeexpoffset.dbss` lists where every row sits, and [lifeexpmaxlevel](lifeexpmaxlevel_bss.md) holds the max level per life skill. The client shows a level as a rank and a number (`Guru 12` is level 92), see Rank Groups.
 
-Example:
+## Versions
 
-```text
-Gathering  Lv 1    Beginner 1    EXP 400
-Fishing    Lv 1    Beginner 1    EXP 200
-Gathering  Lv 81   Guru 1        EXP 41,166,000
-Gathering  Lv 180  Guru 100      EXP 1,165,424,299,500
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                 | Bytes  | Records                           | Row bytes |
+| ------ | -------------- | ------- | -------------------- | ------ | --------------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
+| 1      | 1784 and later | 3473    | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
+
+| Layout | File                 | Known             | Unknown    |
+| ------ | -------------------- | ----------------- | ---------- |
+| 1      | `lifeexp.dbss`       | 35,359 B (100.0%) | 0 B (0.0%) |
+| 1      | `lifeexpoffset.dbss` | 32,644 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,23 +32,23 @@ Gathering  Lv 180  Guru 100      EXP 1,165,424,299,500
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field       | Notes                                                    |
-| ------- | ------- | ----------- | -------------------------------------------------------- |
-| `+0x00` | u32     | skill_count | Number of life skill blocks; 15 on client 3464, the client's `Type_Count` |
-| `+0x04` | block[] | blocks      | `skill_count` blocks, one per life skill in ID order     |
+### File Layout
 
-### Block (repeated `skill_count` times)
+| Offset  | Type               | Field       | Notes                                                    |
+| ------- | ------------------ | ----------- | -------------------------------------------------------- |
+| `+0x00` | u32                | skill_count | Number of life skill blocks; 15 on client 3464, the client's `Type_Count` |
+| `+0x04` | Block[skill_count] | blocks      | One per life skill in ID order; see Block                |
 
-| Offset  | Type  | Field       | Notes                                                        |
-| ------- | ----- | ----------- | ------------------------------------------------------------ |
-| `+0x00` | u32   | level_count | Rows in this block; 181 (levels 0 to 180) on client 3464     |
-| `+0x04` | row[] | rows        | `level_count` rows of 13 bytes                               |
+### Block (variable: 4 bytes + rows)
+
+| Offset  | Type                   | Field       | Notes                                                        |
+| ------- | ---------------------- | ----------- | ------------------------------------------------------------ |
+| `+0x00` | u32                    | level_count | Rows in this block; 181 (levels 0 to 180) on client 3464     |
+| `+0x04` | Level Row[level_count] | rows        | See Level Row                                                |
 
 The blocks fill the file exactly: 4 + 15 x (4 + 181 x 13) = 35,359 bytes on client 3464.
-
-## Record Structure
 
 ### Level Row (13 bytes)
 
@@ -48,6 +57,34 @@ The blocks fill the file exactly: 4 + 15 x (4 + 181 x 13) = 35,359 bytes on clie
 | `+0x00` | u8   | life_skill | Life skill ID, see Life Skills; equals the block index      |
 | `+0x01` | u32  | level      | `0` to the max level, ascending inside a block               |
 | `+0x05` | u64  | exp        | EXP to go from `level` to `level + 1`, the demand the client's EXP bar divides by (Notes) |
+
+### `lifeexpoffset.dbss`
+
+Index into `lifeexp.dbss`, with the same block shape as the main file, including the leading skill count.
+
+| Offset  | Type                      | Field       | Notes                                 |
+| ------- | ------------------------- | ----------- | ------------------------------------- |
+| `+0x00` | u32                       | skill_count | Equals the `lifeexp.dbss` skill count |
+| `+0x04` | Offset Block[skill_count] | blocks      | See Offset Block                      |
+
+### Offset Block (variable: 4 bytes + rows)
+
+| Offset  | Type                    | Field       | Notes                                   |
+| ------- | ----------------------- | ----------- | --------------------------------------- |
+| `+0x00` | u32                     | level_count | Rows in this block (181 on client 3464) |
+| `+0x04` | Offset Row[level_count] | rows        | See Offset Row                          |
+
+The block index is the life skill; the file stores no life skill field. 4 + 15 x (4 + 181 x 12) = 32,644 bytes on client 3464.
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field       | Notes                                                           |
+| ------- | ---- | ----------- | --------------------------------------------------------------- |
+| `+0x00` | u32  | level       | Level of the row it points at                                   |
+| `+0x04` | u32  | data_offset | Absolute byte offset of the 13-byte row in `lifeexp.dbss`       |
+| `+0x08` | u32  | data_size   | Always 13                                                       |
+
+The first Gathering row sits at `0x08`, after the skill count and Gathering's level count; each later block starts 4 bytes past the previous block's last row. The parser reads the main file through these rows and checks that each row's `life_skill` and `level` match the offset row's block and key.
 
 ## Enum Values
 
@@ -90,55 +127,6 @@ The handlers show the spare slots by their enum name.
 | 81 to 180 | `LUA_CHARACTERINFO_CRAFTLEVEL_GROUP_7` | Guru         | Guru 1 to 100               |
 
 Level 0 has no rank; the Lua function falls through and returns the bare level.
-
-## lifeexpoffset.dbss
-
-Index into `lifeexp.dbss`, with the same block shape as the main file, including the leading skill count.
-
-| Offset  | Type    | Field       | Notes                                          |
-| ------- | ------- | ----------- | ---------------------------------------------- |
-| `+0x00` | u32     | skill_count | Equals the `lifeexp.dbss` skill count           |
-| `+0x04` | block[] | blocks      | `skill_count` blocks                           |
-
-### Block (repeated `skill_count` times)
-
-| Offset  | Type  | Field       | Notes                              |
-| ------- | ----- | ----------- | ---------------------------------- |
-| `+0x00` | u32   | level_count | Rows in this block (181 on client 3464) |
-| `+0x04` | row[] | rows        | `level_count` rows of 12 bytes     |
-
-The block index is the life skill; the file stores no life skill field. 4 + 15 x (4 + 181 x 12) = 32,644 bytes on client 3464.
-
-### Offset Row (12 bytes)
-
-| Offset  | Type | Field       | Notes                                                           |
-| ------- | ---- | ----------- | --------------------------------------------------------------- |
-| `+0x00` | u32  | level       | Level of the row it points at                                   |
-| `+0x04` | u32  | data_offset | Absolute byte offset of the 13-byte row in `lifeexp.dbss`       |
-| `+0x08` | u32  | data_size   | Always 13                                                       |
-
-The first Gathering row sits at `0x08`, after the skill count and Gathering's level count; each later block starts 4 bytes past the previous block's last row. The parser reads the main file through these rows and checks that each row's `life_skill` and `level` match the offset row's block and key.
-
-## Suggested UI Layout
-
-### lifeexp.dbss
-
-| Column        | Type | Notes                                                      |
-| ------------- | ---- | ---------------------------------------------------------- |
-| Life Skill ID | num  | `life_skill`                                               |
-| Life Skill    | text | Name from the Life Skills table, the enum name for spares  |
-| Level         | num  | `level`                                                    |
-| Rank          | text | `Guru 12`, from Rank Groups; a dash on level 0; not sortable, Level sorts the same way |
-| EXP to Next Level | num | `exp`                                                    |
-
-### lifeexpoffset.dbss
-
-| Column        | Type | Notes                          |
-| ------------- | ---- | ------------------------------ |
-| Life Skill ID | num  | Block index (`life_skill`)     |
-| Level         | num  | `level`                        |
-| Data Offset   | num  | `data_offset`, as hex          |
-| Data Size     | num  | `data_size`                    |
 
 ## Notes
 

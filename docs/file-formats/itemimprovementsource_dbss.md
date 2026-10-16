@@ -7,10 +7,27 @@ The reform stones of Gear Reform, see
 with a stone category and a reform group; the gear records of the same group
 are what the stone reforms.
 
-```text
-stone 820974 Cup of Destined Dawn  category 3  group 13  shown by default
-stone 9793   Heart of Kutum        category 1  group 33  shown by default
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | --------- |
+| 2      | 3473 and later | 3473    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
+| 2      | 3473 and later | 3473    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
+| 1      | 1784           | 1784    | `itemimprovementsource.dbss`       | 3,899 | 95 Record     | 41        |
+| 1      | 1784           | 1784    | `itemimprovementsourceoffset.dbss` | 1,144 | 95 Index Row  | 12        |
+
+| Layout | File                               | Known            | Unknown         |
+| ------ | ---------------------------------- | ---------------- | --------------- |
+| 2      | `itemimprovementsource.dbss`       | 2,226 B (52.4%)  | 2,020 B (47.6%) |
+| 2      | `itemimprovementsourceoffset.dbss` | 1,216 B (100.0%) | 0 B (0.0%)      |
+| 1      | `itemimprovementsource.dbss`       | 1,999 B (51.3%)  | 1,900 B (48.7%) |
+| 1      | `itemimprovementsourceoffset.dbss` | 1,144 B (100.0%) | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,25 +39,25 @@ Item names come from LOC type 0 and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset  | Type     | Field   | Notes                                                |
-| ------- | -------- | ------- | ---------------------------------------------------- |
-| `+0x00` | u32      | count   | Number of records; `101` on client 3464              |
-| `+0x04` | record[] | records | `count` records, back to back to the end of the file |
+### File Layout
 
-## Record Structure
+| Offset  | Type          | Field   | Notes                                                |
+| ------- | ------------- | ------- | ---------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; `101` on client 3464              |
+| `+0x04` | Record[count] | records | Back to back to the end of the file; see Record      |
 
-### Record (`22 + 4 * value_count` bytes)
+### Record (variable: 22 bytes + values)
 
-| Offset       | Type   | Field              | Notes                                                    |
-| ------------ | ------ | ------------------ | -------------------------------------------------------- |
-| `+0x00`      | u32    | item_id            | The stone; the index's `data_offset` points past it      |
-| `+0x04`      | u64    | value_count        | `5` in every record                                      |
-| `+0x0C`      | u32[n] | unknown_0c         | `1,000,000` in every slot of every record (client 3464)  |
-| `+0x0C + 4n` | u32    | category           | Gear the stone takes, see below                          |
-| `+0x10 + 4n` | u32    | group              | Reform group, `1` to `48`; matches `group` of the gear records |
-| `+0x14 + 4n` | u16    | is_default_display | `1` for the 24 stones of [`itemimprovementdefaultdisplaylist.bss`](itemimprovementdefaultdisplaylist_bss.md), else `0` |
+| Offset            | Type             | Field              | Notes                                                    |
+| ----------------- | ---------------- | ------------------ | -------------------------------------------------------- |
+| `+0x00`           | u32              | item_id            | The stone; the index's `data_offset` points past it      |
+| `+0x04`           | u64              | value_count        | `5` in every record                                      |
+| `+0x0C`           | u32[value_count] | unknown_0c         | `1,000,000` in every slot of every record (client 3464)  |
+| `unknown_0c+0x00` | u32              | category           | Gear the stone takes, see below                          |
+| `unknown_0c+0x04` | u32              | group              | Reform group, `1` to `48`; matches `group` of the gear records |
+| `unknown_0c+0x08` | u16              | is_default_display | `1` for the 24 stones of [`itemimprovementdefaultdisplaylist.bss`](itemimprovementdefaultdisplaylist_bss.md), else `0` |
 
 Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 
@@ -52,12 +69,12 @@ Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 | `4`      | Blessed Soul Fragment, Exalted Soul Fragment, Crimson Behelit Alchemy Stone Appearance |
 | `5`      | Flawless Herald's Crystal                                                        |
 
-## `itemimprovementsourceoffset.dbss`
+### `itemimprovementsourceoffset.dbss`
 
-| Offset  | Type  | Field | Notes                                            |
-| ------- | ----- | ----- | ------------------------------------------------ |
-| `+0x00` | u32   | count | Equals the `itemimprovementsource.dbss` count    |
-| `+0x04` | row[] | rows  | `count` 12-byte rows; no magic, no trailer       |
+| Offset  | Type             | Field | Notes                                            |
+| ------- | ---------------- | ----- | ------------------------------------------------ |
+| `+0x00` | u32              | count | Equals the `itemimprovementsource.dbss` count    |
+| `+0x04` | Index Row[count] | rows  | No magic, no trailer; see Index Row              |
 
 ### Index Row (12 bytes)
 
@@ -70,16 +87,21 @@ Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 Read by `parse_bare_u32_offset_rows()` in `_common/pabr_offset.py`; on client
 3464 every row matches the record walked from the start of the file.
 
-## Suggested UI Layout
+## Layout 1
 
-| Column          | Type | Notes                                              |
-| --------------- | ---- | -------------------------------------------------- |
-| Item ID         | num  | `item_id`                                          |
-| Icon            | icon | Item icon                                          |
-| Stone           | text | LOC type 0 name in its grade colour, else the ID   |
-| Category        | num  | `category`                                         |
-| Group           | num  | `group`                                            |
-| Default Display | flag | `is_default_display`                               |
+Client 1784 stores `is_default_display` as a u8, so each record is one
+byte shorter. Only the Record differs from Layout 2.
+
+### Record (variable: 21 bytes + values)
+
+| Offset            | Type             | Field              | Notes                                       |
+| ----------------- | ---------------- | ------------------ | ------------------------------------------- |
+| `+0x00`           | u32              | item_id            |                                             |
+| `+0x04`           | u64              | value_count        |                                             |
+| `+0x0C`           | u32[value_count] | unknown_0c         |                                             |
+| `unknown_0c+0x00` | u32              | category           | `1` to `3` on client 1784                   |
+| `unknown_0c+0x04` | u32              | group              |                                             |
+| `unknown_0c+0x08` | u8               | is_default_display | `1` on 19 of the 95 records (client 1784)   |
 
 ## Notes
 

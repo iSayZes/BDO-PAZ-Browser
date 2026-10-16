@@ -5,21 +5,14 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.equipskill_roll import equip_skill_name
 from _common.html import Column, e, icon_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import is_loc_loaded, loc_lookup, strip_pa_tags
 from .parser import parse_petequipskill_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-
-
-def _skill_name(loc_id: int) -> str:
-    if not is_loc_loaded():
-        return ""
-
-    return strip_pa_tags(loc_lookup(10, loc_id)).strip()
 
 
 class PetEquipSkillBssHandler(PreviewHandler):
@@ -46,7 +39,7 @@ class PetEquipSkillBssHandler(PreviewHandler):
 
         for record in parse_petequipskill_records(data):
             row = dict(record)
-            row["skill_name"] = _skill_name(row["loc_id"])
+            row["skill_name"] = equip_skill_name(row["loc_id"])
             row["icon_path"] = icon_path(IconKind.PET_EQUIP_SKILL, row["loc_id"])
             records.append(row)
 

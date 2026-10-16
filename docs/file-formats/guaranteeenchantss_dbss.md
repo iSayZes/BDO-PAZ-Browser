@@ -8,13 +8,21 @@ attempt at that level is guaranteed. The enhancement window shows this count
 as the hammer gauge (`getSSEnchantCount()` in the client Lua). The enhancement
 type is the item's `enhancement_type` in `itemenchant.dbss`.
 
-Example (enhancement type, current level -> Agris Essences needed):
+## Versions
 
-```text
-type  1 (Kzarka Longsword),    level 19 (TET -> PEN): 35
-type  2 (Blackstar Longsword), level 19 (TET -> PEN): 15
-type 13 (Deboreka Necklace),   level  4 (TET -> PEN): 20
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ------------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `guaranteeenchantss.dbss` | 2,307 | 329 Row | 7         |
+
+| Layout | File                      | Known            | Unknown    |
+| ------ | ------------------------- | ---------------- | ---------- |
+| 1      | `guaranteeenchantss.dbss` | 2,307 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,25 +34,25 @@ There is no `guaranteeenchantssoffset.dbss`.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field | Notes                                  |
-| ------- | ---- | ----- | -------------------------------------- |
-| `+0x00` | u32  | count | Number of rows; 329 on client 3464     |
-| `+0x04` | -    | rows  | `count` 7-byte rows, back to back      |
+### File Layout
+
+| Offset  | Type       | Field | Notes                              |
+| ------- | ---------- | ----- | ---------------------------------- |
+| `+0x00` | u32        | count | Number of rows; 329 on client 3464 |
+| `+0x04` | Row[count] | rows  | See Row                            |
 
 There is no `PABR` magic and no trailer: the file is `4 + count × 7` bytes
 (2,307 on client 3464).
 
-## Record Structure
+### Row (7 bytes)
 
-### Row (7 bytes, repeated `count` times)
-
-| Offset  | Type | Field         | Notes                                                       |
-| ------- | ---- | ------------- | ----------------------------------------------------------- |
-| `+0x00` | u32  | enhancement_type | `enhancement_type` of the item in `itemenchant.dbss`      |
-| `+0x04` | u8   | enchant_level | The item's current level; the attempt goes to the next level |
-| `+0x05` | u16  | agris_count   | Agris Essences needed for a guaranteed success; `0` means no gauge at that level |
+| Offset  | Type | Field            | Notes                                                       |
+| ------- | ---- | ---------------- | ----------------------------------------------------------- |
+| `+0x00` | u32  | enhancement_type | `enhancement_type` of the item in `itemenchant.dbss`        |
+| `+0x04` | u8   | enchant_level    | The item's current level; the attempt goes to the next level |
+| `+0x05` | u16  | agris_count      | Agris Essences needed for a guaranteed success; `0` means no gauge at that level |
 
 The row is unaligned: `agris_count` starts at an odd offset. `(enhancement_type,
 enchant_level)` is unique. Rows are not sorted by either field (the first rows
@@ -100,19 +108,6 @@ Type 0 (65,174 base items) has no rows. Types 25 to 29 are alchemy stones
 with one level; the LOC note on alchemy stone growth (type 37, id1
 1288266772) reads "A full Ancient Anvil and 80%+ EXP guarantees a higher
 grade".
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                        |
-| ------------- | ---- | ------------------------------------------------------------ |
-| Enhancement Type | num | `enhancement_type`                                       |
-| Level         | num  | `enchant_level`, the level the attempt starts from           |
-| Agris Essence | num  | `agris_count`; dash when `0`                                 |
-| Items         | text | Base items of the type, from the `ENHANCEMENT_TYPE_ITEMS` lookup index; dash when none |
-
-Rows sort by type, then level. A row's level reads differently per type
-(level 19 is TET on Kzarka, a five-level accessory ends at level 4), so the
-table shows the raw level.
 
 ## Notes
 

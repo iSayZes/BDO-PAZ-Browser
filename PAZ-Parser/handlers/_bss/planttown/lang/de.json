@@ -1,7 +1,8 @@
 {
   "columns": {
     "nodeId": "Posten-ID",
-    "nodeName": "Postenname"
+    "nodeName": "Postenname",
+    "maxLevel": "Höchststufe"
   },
   "meta": {
     "count": "{count} Stadteinträge",

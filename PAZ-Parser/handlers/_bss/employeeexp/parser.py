@@ -18,8 +18,8 @@ from _common.pabr_strings import TRAILER_SIZE, read_string_table, string_at, str
 
 _MAGIC = b"PABR"
 _HEADER_SIZE = 8
-# The u32 between the rows and the string table; 0 in every client seen so far.
-_FOOTER_SIZE = 4
+# unknown_after_rows: the u32 between the rows and the string table; 0 in every client seen so far.
+_UNKNOWN_AFTER_ROWS_SIZE = 4
 
 ABILITY_COUNT = 19
 
@@ -33,9 +33,9 @@ assert _RECORD.size == _RECORD_SIZE
 def parse_employeeexp_records(data: bytes) -> list[dict]:
     """Every row in file order, with its growth dice resolved.
 
-    Raises ValueError on a bad magic, or when the rows and the empty footer do
-    not end where the string table starts: then the row size has changed and
-    every field is suspect.
+    Raises ValueError on a bad magic, or when the rows and the zero
+    unknown_after_rows do not end where the string table starts: then the
+    row size has changed and every field is suspect.
     """
     if len(data) < _HEADER_SIZE + TRAILER_SIZE or data[:4] != _MAGIC:
         raise ValueError("employeeexp.bss has invalid magic.")
@@ -43,10 +43,10 @@ def parse_employeeexp_records(data: bytes) -> list[dict]:
     count = u32(data, 4)
     rows_end = _HEADER_SIZE + count * _RECORD_SIZE
     table_start = string_table_start(data)
-    if rows_end + _FOOTER_SIZE != table_start or u32(data, rows_end) != 0:
+    if rows_end + _UNKNOWN_AFTER_ROWS_SIZE != table_start or u32(data, rows_end) != 0:
         raise ValueError(
             f"employeeexp.bss rows end at 0x{rows_end:X}, which does not leave the "
-            f"empty 4-byte footer before its string table at 0x{table_start:X}"
+            f"4-byte unknown_after_rows (0) before its string table at 0x{table_start:X}"
         )
 
     strings = read_string_table(data)

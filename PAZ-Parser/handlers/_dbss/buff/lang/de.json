@@ -15,6 +15,8 @@
     "level": "Stufe",
     "effectType": "Effekttyp",
     "duration": "Dauer",
+    "debuff": "Debuff",
+    "removeOnDead": "Endet beim Tod",
     "param1": "Param. 1",
     "param2": "Param. 2",
     "param3": "Param. 3"

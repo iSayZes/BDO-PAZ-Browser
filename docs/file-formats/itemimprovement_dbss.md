@@ -8,12 +8,27 @@ record names the result and the gear it is made from, and a reform group that
 ties it to the stones of
 [`itemimprovementsource.dbss`](itemimprovementsource_dbss.md).
 
-```text
-key 4233  group 13
-  result 11698 Dawnbound Kharazad Necklace
-  input  11697 Kharazad Necklace
-  stone  820974 Cup of Destined Dawn (category 3, group 13)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes   | Records         | Row bytes               |
+| ------ | -------------- | ------- | ---------------------------- | ------- | --------------- | ----------------------- |
+| 2      | 3473 and later | 3473    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
+| 2      | 3473 and later | 3473    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
+| 1      | 1784           | 1784    | `itemimprovement.dbss`       | 77,001  | 2,081 Record    | 37                      |
+| 1      | 1784           | 1784    | `itemimprovementoffset.dbss` | 24,976  | 2,081 Index Row | 12                      |
+
+| Layout | File                         | Known             | Unknown          |
+| ------ | ---------------------------- | ----------------- | ---------------- |
+| 2      | `itemimprovement.dbss`       | 127,428 B (73.1%) | 46,848 B (26.9%) |
+| 2      | `itemimprovementoffset.dbss` | 46,852 B (100.0%) | 0 B (0.0%)       |
+| 1      | `itemimprovement.dbss`       | 68,677 B (89.2%)  | 8,324 B (10.8%)  |
+| 1      | `itemimprovementoffset.dbss` | 24,976 B (100.0%) | 0 B (0.0%)       |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,25 +41,25 @@ Item names come from LOC type 0 and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset  | Type     | Field   | Notes                                                       |
-| ------- | -------- | ------- | ----------------------------------------------------------- |
-| `+0x00` | u32      | count   | Number of records; `3,904` on client 3464                   |
-| `+0x04` | record[] | records | `count` records, back to back to the end of the file        |
+### File Layout
 
-## Record Structure
+| Offset  | Type           | Field   | Notes                                                       |
+| ------- | -------------- | ------- | ----------------------------------------------------------- |
+| `+0x00` | u32            | count   | Number of records; `3,904` on client 3464                   |
+| `+0x04` | Record[count]  | records | Back to back to the end of the file; see Record             |
 
-### Record (`25 + 4 * item_count` bytes)
+### Record (variable: 25 bytes + item IDs)
 
-| Offset           | Type          | Field       | Notes                                                    |
-| ---------------- | ------------- | ----------- | -------------------------------------------------------- |
-| `+0x00`          | u32           | key         | Record key, `1` to `4,949` with gaps; the index's `data_offset` points past it |
-| `+0x04`          | u64           | item_count  | `5` or `1`                                               |
-| `+0x0C`          | u32[n]        | item_ids    | `item_count` item IDs, see below                         |
-| `+0x0C + 4n`     | u8            | unknown_tail_0 | `0` in every record                                   |
-| `+0x0D + 4n`     | u8            | group       | Reform group, `1` to `37`; matches `group` of the stones |
-| `+0x0E + 4n`     | u8[11]        | unknown_tail_2 | All `0` in every record                               |
+| Offset           | Type             | Field          | Notes                                                    |
+| ---------------- | ---------------- | -------------- | -------------------------------------------------------- |
+| `+0x00`          | u32              | key            | Record key, `1` to `4,949` with gaps; the index's `data_offset` points past it |
+| `+0x04`          | u64              | item_count     | `5` or `1`                                               |
+| `+0x0C`          | u32[item_count]  | item_ids       | `item_count` item IDs, see below                         |
+| `item_ids+0x00`  | u8               | unknown_tail_0 | `0` in every record                                      |
+| `item_ids+0x01`  | u8               | group          | Reform group, `1` to `37`; matches `group` of the stones |
+| `item_ids+0x02`  | bytes[11]        | unknown_tail_2 | All `0` in every record                                  |
 
 With 5 items, `item_ids[0]` is the result and `item_ids[1]` to `[4]` the input
 gear, the same ID four times in all 3,816 such records (client 3464).
@@ -57,12 +72,12 @@ Clavis `695190` in groups 4 and 5); see Open Questions.
 An item can be the input of several records with different groups and
 results; 1,528 items are a result in one record and an input in another.
 
-## `itemimprovementoffset.dbss`
+### `itemimprovementoffset.dbss`
 
-| Offset  | Type  | Field | Notes                                      |
-| ------- | ----- | ----- | ------------------------------------------ |
-| `+0x00` | u32   | count | Equals the `itemimprovement.dbss` count    |
-| `+0x04` | row[] | rows  | `count` 12-byte rows; no magic, no trailer |
+| Offset  | Type             | Field | Notes                                      |
+| ------- | ---------------- | ----- | ------------------------------------------ |
+| `+0x00` | u32              | count | Equals the `itemimprovement.dbss` count    |
+| `+0x04` | Index Row[count] | rows  | No magic, no trailer; see Index Row        |
 
 ### Index Row (12 bytes)
 
@@ -76,15 +91,21 @@ Read by `parse_bare_u32_offset_rows()` in `_common/pabr_offset.py`. The rows
 are not in file order; on client 3464 every row matches the record walked
 from the start of the file.
 
-## Suggested UI Layout
+## Layout 1
 
-| Column | Type | Notes                                                    |
-| ------ | ---- | -------------------------------------------------------- |
-| Key    | num  | `key`                                                    |
-| Result | text | `item_ids[0]` with icon and grade colour; dash for a 1-item record |
-| Input  | text | `item_ids[1]`, or the only item of a 1-item record       |
-| Group  | num  | `group`                                                  |
-| Stones | list | Stones of `itemimprovementsource.dbss` with this `group` |
+Client 1784 records end in 3 bytes after `group`, where client 3473 has 11.
+Only the Record differs from Layout 2.
+
+### Record (variable: 17 bytes + item IDs)
+
+| Offset          | Type            | Field          | Notes                                       |
+| --------------- | --------------- | -------------- | ------------------------------------------- |
+| `+0x00`         | u32             | key            |                                             |
+| `+0x04`         | u64             | item_count     | `5` in all 2,081 records on client 1784     |
+| `+0x0C`         | u32[item_count] | item_ids       |                                             |
+| `item_ids+0x00` | u8              | unknown_tail_0 |                                             |
+| `item_ids+0x01` | u8              | group          |                                             |
+| `item_ids+0x02` | bytes[3]        | unknown_tail_2 | All `0` in every record (client 1784)       |
 
 ## Notes
 

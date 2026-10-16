@@ -8,14 +8,27 @@ variable-length record per marker with two Korean label lines and a name, the
 world position, the marker illustration and an optional condition script.
 LOC type 40 holds the translations.
 
-Example:
+## Versions
 
-```text
-marker 36, WorldmapMonster_36.dds
-  line 1  추천 공격력 180 (3인 파티 권장) -> "Recommended AP: 180 (Party of 3 Recommended)"
-  line 2  최종 공격력 300 (3인 파티 권장) -> "AP (Total Stat): 300 (Party of 3)"
-  name    바실리스크 소굴                -> "Basilisk Den"
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
+| ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
+| 2      | 3473 and later | 3473    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
+| 2      | 3473 and later | 3473    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+| 1      | 1784           | 1784    | `worldmapmonster.dbss`       | 20,586 | 127 Marker Record, 127 Record | 124 to 274, 160 on average |
+| 1      | 1784           | 1784    | `worldmapmonsteroffset.dbss` | 1,274  | 127 Offset Row                | 10                         |
+
+| Layout | File                         | Known            | Unknown        |
+| ------ | ---------------------------- | ---------------- | -------------- |
+| 2      | `worldmapmonster.dbss`       | 39,426 B (92.0%) | 3,450 B (8.0%) |
+| 2      | `worldmapmonsteroffset.dbss` | 2,304 B (100.0%) | 0 B (0.0%)     |
+| 1      | `worldmapmonster.dbss`       | 19,570 B (95.1%) | 1,016 B (4.9%) |
+| 1      | `worldmapmonsteroffset.dbss` | 1,274 B (100.0%) | 0 B (0.0%)     |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,67 +39,84 @@ marker 36, WorldmapMonster_36.dds
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
+
+| Offset  | Type          | Field   | Notes                          |
+| ------- | ------------- | ------- | ------------------------------ |
+| `+0x00` | u32           | count   | Same count as the offset table |
+| `+0x04` | Record[count] | records | See Record                     |
+
+### Record (variable: 2 bytes + marker text)
+
+Each record is preceded by a copy of its u16 key. The offset of a row points
+past that preceding copy, at the record's own key.
+
+| Offset  | Type          | Field      | Notes                                                    |
+| ------- | ------------- | ---------- | -------------------------------------------------------- |
+| `+0x00` | u16           | key_prefix | Copy of the marker's `key`                               |
+| `+0x02` | Marker Record | marker     | `size` bytes of the offset row; the offset row points here |
+
+### Marker Record (variable: 69 bytes + text)
+
+Strings are a u64 unit count followed by the text, with no terminator: UTF-16LE
+for the wide ones, ASCII for the icon path (`RecordReader`).
+
+| Offset             | Type   | Field        | Notes                                                                 |
+| ------------------ | ------ | ------------ | --------------------------------------------------------------------- |
+| `+0x00`            | u16    | key          | Same as the offset row                                                |
+| `+0x02`            | str16  | line1_kr     | First label line: a level range (`Lv 12~15`), a recommended AP, or a category (`월드 우두머리`, world boss) |
+| `line1_kr+0x00`    | str16  | line2_kr     | Second label line: the final AP, or the same text as line 1 (142 records) |
+| `line2_kr+0x00`    | str16  | name_kr      | Zone or boss name                                                     |
+| `name_kr+0x00`     | f32[3] | position     | World position; the second value is the height                        |
+| `name_kr+0x0C`     | str8   | icon         | Marker illustration relative to `ui_texture/`; empty on the 16 Abyssal Wells |
+| `icon+0x00`        | str16  | condition    | Condition script, empty on 165 records (`getknowledge(10497);`, `!checkFieldType(hadumField);`, `getlevel()>59;`) |
+| `condition+0x00`   | str16  | unknown_str  | Always empty                                                          |
+| `unknown_str+0x00` | i32    | unknown_ref  | `-1` on 120 records; on hunting zones the drop window hunting ground ID, see Notes |
+| `unknown_str+0x04` | u8     | unknown_kind | 0 to 4, groups the markers; see Open Questions                        |
+| `unknown_str+0x05` | u8     | unknown_flag | Always `1`                                                            |
+| `unknown_str+0x06` | u8     | unknown_end  | Always `0`                                                            |
 
 ### `worldmapmonsteroffset.dbss`
 
 No magic and no trailer (`parse_bare_offset_rows()`).
 
-| Offset  | Type  | Field | Notes                                         |
-| ------- | ----- | ----- | --------------------------------------------- |
-| `+0x00` | u32   | count | Number of rows; 229 on client 3458            |
-| `+0x04` | row[] | rows  | 10-byte rows: u16 key, u32 offset, u32 size   |
+| Offset  | Type              | Field | Notes                              |
+| ------- | ----------------- | ----- | ---------------------------------- |
+| `+0x00` | u32               | count | Number of rows; 229 on client 3458 |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                     |
 
 The rows are not in file order: they interleave the regular keys (1 to 249)
 with the 20 keys from 10001 to 10020, both counting down.
 
-### `worldmapmonster.dbss`
+### Offset Row (10 bytes)
 
-| Offset  | Type  | Field   | Notes                                                     |
-| ------- | ----- | ------- | --------------------------------------------------------- |
-| `+0x00` | u32   | count   | Same count as the offset table                            |
-| `+0x04` | ...   | records | Each record is preceded by a copy of its u16 key          |
+| Offset  | Type | Field  | Notes                                                       |
+| ------- | ---- | ------ | ----------------------------------------------------------- |
+| `+0x00` | u16  | key    | Marker key                                                  |
+| `+0x02` | u32  | offset | Start of the marker record in `worldmapmonster.dbss`, past the key copy |
+| `+0x06` | u32  | size   | Length of the marker record, the key copy left out          |
 
-The offset of a row points past that preceding copy, at the record's own key.
+## Layout 1
 
-## Record Structure
+On client 1784 a Marker Record held one label line: the zone or boss name
+followed `line1_kr` directly, without `line2_kr`, and the record ended after
+`unknown_str`, without `unknown_ref`, `unknown_kind`, `unknown_flag` and
+`unknown_end`. Only the Marker Record differs from Layout 2. On client 1784
+the file holds 127 records.
 
-### Marker Record (variable size)
+### Marker Record (variable: 54 bytes + text)
 
-Strings are a u64 unit count followed by the text, with no terminator: UTF-16LE
-for the wide ones, ASCII for the icon path (`RecordReader`).
-
-| Order | Type        | Field        | Notes                                                                 |
-| ----- | ----------- | ------------ | --------------------------------------------------------------------- |
-| 1     | u16         | key          | Same as the offset row                                                |
-| 2     | wide string | line1_kr     | First label line: a level range (`Lv 12~15`), a recommended AP, or a category (`월드 우두머리`, world boss) |
-| 3     | wide string | line2_kr     | Second label line: the final AP, or the same text as line 1 (142 records) |
-| 4     | wide string | name_kr      | Zone or boss name                                                     |
-| 5     | f32 x 3     | position     | World position; the second value is the height                        |
-| 6     | string      | icon         | Marker illustration relative to `ui_texture/`; empty on the 16 Abyssal Wells |
-| 7     | wide string | condition    | Condition script, empty on 165 records (`getknowledge(10497);`, `!checkFieldType(hadumField);`, `getlevel()>59;`) |
-| 8     | wide string | unknown_str  | Always empty                                                          |
-| 9     | i32         | unknown_ref  | `-1` on 120 records; on hunting zones the drop window hunting ground ID, see Notes |
-| 10    | u8          | unknown_kind | 0 to 4, groups the markers; see Open Questions                        |
-| 11    | u8          | unknown_flag | Always `1`                                                            |
-| 12    | u8          | reserved     | Always `0`                                                            |
-
-## Suggested UI Layout
-
-| Column    | Type | Notes                                                                              |
-| --------- | ---- | ---------------------------------------------------------------------------------- |
-| Key       | num  | `key`; right-aligned                                                               |
-| Icon      | text | `icon`, lowercased under `ui_texture/`; dash when empty                            |
-| Name      | text | LOC type 40 `str_id4` 0, falling back to `name_kr`                                  |
-| Label     | text | LOC type 40 `str_id4` 1, falling back to `line1_kr`                                 |
-| Detail    | text | LOC type 40 `str_id4` 2, falling back to `line2_kr`; dash when it repeats the label |
-| Hunting Ground | text | On hunting zones (`unknown_kind` 0) with `unknown_ref` set, that drop window hunting ground's name (LOC type 116), falling back to the key; dash elsewhere |
-| Condition | text | `condition`; dash when empty                                                       |
-
-The position, `unknown_str`, `unknown_ref`, `unknown_kind` and `unknown_flag`
-stay on the record but out of the table. The Hunting Ground column reads
-`unknown_ref` only on hunting zones: the Black Shrine markers store `0` to `9`
-there, which would otherwise name hunting grounds 0 to 9 (Mansha Forest, ...).
+| Offset           | Type   | Field       | Notes                             |
+| ---------------- | ------ | ----------- | --------------------------------- |
+| `+0x00`          | u16    | key         |                                   |
+| `+0x02`          | str16  | line1_kr    |                                   |
+| `line1_kr+0x00`  | str16  | name_kr     |                                   |
+| `name_kr+0x00`   | f32[3] | position    |                                   |
+| `name_kr+0x0C`   | str8   | icon        |                                   |
+| `icon+0x00`      | str16  | condition   |                                   |
+| `condition+0x00` | str16  | unknown_str | Empty on every record on client 1784 |
 
 ## Notes
 

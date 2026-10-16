@@ -1,7 +1,8 @@
 {
   "columns": {
     "nodeId": "ID узла",
-    "nodeName": "Название узла"
+    "nodeName": "Название узла",
+    "maxLevel": "Макс. ур."
   },
   "meta": {
     "count": "Городов: {count}",

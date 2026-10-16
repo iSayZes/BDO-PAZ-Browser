@@ -60,7 +60,7 @@ class EmployeeNameHandler(PreviewHandler):
                 row["name_en"] = strip_pa_tags(
                     loc_lookup(71, record["employee_name_id"], 0, 12)
                 )
-            row["name"] = row.get("name_en") or record["name_ko"]
+            row["name"] = row.get("name_en") or record["name_kr"]
             result.append(row)
 
         return result

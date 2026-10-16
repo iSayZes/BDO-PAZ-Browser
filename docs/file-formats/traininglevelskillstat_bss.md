@@ -7,28 +7,41 @@ Two Training bonuses per Training level, from level 1 (Beginner 1) to 180
 and the chance for a higher minimum movement speed gain on a mount level up.
 The Training tooltip in the Character Info Basic tab shows both.
 
-```text
-traininglevelskillstat.bss, Artisan 7 (level 47), client 3464:
-  add_vehicle_skill_owner_rate 217,000 (21.7%), add_servant_stat_rate 214,000 (21.4%)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes | Records         | Row bytes |
+| ------ | -------------- | ------- | ---------------------------- | ----- | --------------- | --------- |
+| 1      | 1784 and later | 3473    | `traininglevelskillstat.bss` | 1,456 | 180 Level Entry | 8         |
+
+| Layout | File                         | Known            | Unknown    |
+| ------ | ---------------------------- | ---------------- | ---------- |
+| 1      | `traininglevelskillstat.bss` | 1,456 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
 
 The file is self-contained. All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The layout of [`commonlifestatdata.bss`](commonlifestatdata_bss.md): PABR,
 then one entry per level with no row count, the empty string table and the
 8-byte trailer.
 
-| Offset   | Type    | Field        | Notes                                              |
-| -------- | ------- | ------------ | -------------------------------------------------- |
-| `+0x00`  | char[4] | magic        | ASCII `PABR`                                       |
-| `+0x04`  | entry[] | entries      | One entry per level from level 1; 180 on client 3464 |
-| after    | u32     | string_count | Always `0`                                         |
-| EOF - 8  | u32     | table_start  | Offset of `string_count`, where the entries end    |
-| EOF - 4  | u32     | zero         | Always `0`                                         |
-
-## Record Structure
+| Offset     | Type               | Field        | Notes                                                                    |
+| ---------- | ------------------ | ------------ | ------------------------------------------------------------------------ |
+| `+0x00`    | char[4]            | magic        | ASCII `PABR`                                                             |
+| `+0x04`    | Level Entry[..table_start] | entries      | One entry per level from level 1, up to `table_start`; 180 on client 3464 |
+| `EOF-0x0C` | u32                | string_count | Always `0`                                                               |
+| `EOF-0x08` | u32                | table_start  | Offset of `string_count`, where the entries end                          |
+| `EOF-0x04` | u32                | zero         | Always `0`                                                               |
 
 ### Level Entry (8 bytes)
 
@@ -82,15 +95,6 @@ at Training Artisan 7 (level 47) it shows +21.7% skill learn chance and
 +21.4% higher minimum speed chance, entry 46's `+0x00` and `+0x04` (client
 3464). Level 46 holds 21.0% for both, so the same tooltip also confirms the
 entry `n` = level `n + 1` reading.
-
-## Suggested UI Layout
-
-| Column                            | Type | Notes                                                |
-| --------------------------------- | ---- | ---------------------------------------------------- |
-| Level                             | num  | `level`, the raw Training level                      |
-| Rank                              | text | `Guru 12` for level 92, from the client rank names   |
-| Mount Skill Learn Chance          | num  | `add_vehicle_skill_owner_rate`, one decimal like the tooltip |
-| Higher Min. Movement Speed Chance | num  | `add_servant_stat_rate`, one decimal like the tooltip |
 
 ## Notes
 

@@ -4,12 +4,21 @@
 
 Lists zodiac sign IDs in display/index order. The file is a compact `PABR` lookup table for the 12 horoscope signs defined by `zodiacsign.dbss`.
 
-Example:
+## Versions
 
-```text
-slot 0 -> zodiac_id 1 -> Hammer
-slot 11 -> zodiac_id 12 -> Goblin
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records  | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | -------- | --------- |
+| 1      | 1784 and later | 3473    | `zodiacsignindex.bss` | 32    | 12 Entry | 1         |
+
+| Layout | File                  | Known         | Unknown    |
+| ------ | --------------------- | ------------- | ---------- |
+| 1      | `zodiacsignindex.bss` | 32 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,30 +29,31 @@ slot 11 -> zodiac_id 12 -> Goblin
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type  | Field | Notes                          |
-| ------- | ----- | ----- | ------------------------------ |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                 |
-| `+0x04` | u32   | count | Number of entries; observed 12 |
+| Offset              | Type         | Field          | Notes                                                  |
+| ------------------- | ------------ | -------------- | ------------------------------------------------------ |
+| `+0x00`             | char[4]      | magic          | ASCII `PABR`                                           |
+| `+0x04`             | u32          | count          | Number of entries; observed 12                         |
+| `+0x08`             | Entry[count] | entries        | See Entry                                              |
+| `entries+0x00`      | String Table | string_table   | The PABR string table, here with no strings            |
+| `string_table+0x00` | u32          | end_of_entries | Byte offset immediately after entries; observed `0x14` |
+| `string_table+0x04` | u32          | zero           | Always 0                                               |
 
-### Entry (1 byte, repeated `count` times)
+### Entry (1 byte)
 
-| Offset  | Type | Field     | Notes                                            |
-| ------- | ---- | --------- | ------------------------------------------------ |
-| `+0x00` | u8   | zodiac_id | 1-based ID into `zodiacsign.dbss`; observed 1-12 |
+| Offset  | Type | Field     | Notes                                                       |
+| ------- | ---- | --------- | ----------------------------------------------------------- |
+| `+0x00` | u8   | zodiac_id | The 1-based ID into `zodiacsign.dbss`; observed 1-12        |
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-Follows the last entry.
-
-| Offset  | Type | Field          | Notes                                                  |
-| ------- | ---- | -------------- | ------------------------------------------------------ |
-| `+0x00` | u32  | reserved_a     | Always 0                                               |
-| `+0x04` | u32  | end_of_entries | Byte offset immediately after entries; observed `0x14` |
-| `+0x08` | u32  | reserved_b     | Always 0                                               |
+| Offset  | Type               | Field        | Notes    |
+| ------- | ------------------ | ------------ | -------- |
+| `+0x00` | u32                | string_count | Always 0 |
+| `+0x04` | pstr[string_count] | strings      | Empty    |
 
 ## Reference Table
 
@@ -61,13 +71,6 @@ Follows the last entry.
 | 9    | 10        | Wagon         |
 | 10   | 11        | Sealing Stone |
 | 11   | 12        | Goblin        |
-
-## Suggested UI Layout
-
-| Column    | Type | Notes                                               |
-| --------- | ---- | --------------------------------------------------- |
-| Zodiac ID | num  | `zodiac_id`                                         |
-| Name      | text | LOC `str_type=7`, `str_id1=zodiac_id`, `str_id4=0`; the Korean `constellation_name` from `zodiacsign.dbss` without LOC |
 
 ## Notes
 

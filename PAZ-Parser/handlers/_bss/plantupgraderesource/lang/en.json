@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Level Group",
+    "level": "Level",
+    "needTime": "Time",
+    "needPoint": "Contribution Points",
+    "needMoney": "Silver",
+    "needItems": "Items"
+  },
+  "meta": {
+    "count": "{count} upgrade levels · {groups} level groups"
+  }
+}

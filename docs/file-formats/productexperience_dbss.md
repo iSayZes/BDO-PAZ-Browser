@@ -4,12 +4,23 @@
 
 Level table of the life skill points (skill point pool `2`, the client's "product" skill points): one row per level from 0 to 2000. On client 3464 every row holds only its level, a u16 `0` and a u8 `1`; no row stores an EXP value, and the client's life skill point gauge is never updated (Notes). Companion `productexperienceoffset.dbss` lists where every row sits. The container and offset table are the ones of [skillexperience](skillexperience_dbss.md); only the row differs. No `productexperiencemaxlevel.bss` exists.
 
-Example (client 3464):
+## Versions
 
-```text
-Lv 0     unknown_04 0   unknown_06 1
-Lv 2000  unknown_04 0   unknown_06 1
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes  | Records          | Row bytes |
+| ------ | -------------- | ------- | ------------------------------ | ------ | ---------------- | --------- |
+| 1      | 1784 and later | 3473    | `productexperience.dbss`       | 14,011 | 2,001 Level Row  | 7         |
+| 1      | 1784 and later | 3473    | `productexperienceoffset.dbss` | 20,014 | 2,001 Offset Row | 10        |
+
+| Layout | File                           | Known             | Unknown         |
+| ------ | ------------------------------ | ----------------- | --------------- |
+| 1      | `productexperience.dbss`       | 8,008 B (57.2%)   | 6,003 B (42.8%) |
+| 1      | `productexperienceoffset.dbss` | 20,014 B (100.0%) | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -19,16 +30,16 @@ Lv 2000  unknown_04 0   unknown_06 1
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field     | Notes                                                   |
-| ------- | ----- | --------- | ------------------------------------------------------- |
-| `+0x00` | u32   | row_count | Number of rows; 2,001 (levels 0 to 2000) on client 3464 |
-| `+0x04` | row[] | rows      | `row_count` rows of 7 bytes, not in level order         |
+### File Layout
+
+| Offset  | Type                 | Field     | Notes                                                   |
+| ------- | -------------------- | --------- | ------------------------------------------------------- |
+| `+0x00` | u32                  | row_count | Number of rows; 2,001 (levels 0 to 2000) on client 3464 |
+| `+0x04` | Level Row[row_count] | rows      | `row_count` rows of 7 bytes, not in level order         |
 
 The rows fill the file exactly: 4 + 2,001 x 7 = 14,011 bytes on client 3464.
-
-## Record Structure
 
 ### Level Row (7 bytes)
 
@@ -38,27 +49,22 @@ The rows fill the file exactly: 4 + 2,001 x 7 = 14,011 bytes on client 3464.
 | `+0x04` | u16  | unknown_04 | `0` on every row (client 3464)                     |
 | `+0x06` | u8   | unknown_06 | `1` on every row (client 3464)                     |
 
-## productexperienceoffset.dbss
+### `productexperienceoffset.dbss`
 
-Same layout as `skillexperienceoffset.dbss` (see [skillexperience](skillexperience_dbss.md)): a u32 row count equal to the main file's, then 10-byte [u16 level][u32 data_offset][u32 data_size] rows with no magic and no trailer. `data_size` is always 7, and `data_offset` points at the row's `level`. The rows are not in level order (399, 1052, 0, ...); the parser returns the main rows sorted by level.
+The layout of `skillexperienceoffset.dbss` (see [skillexperience](skillexperience_dbss.md)): a u32 row count equal to the main file's, then 10-byte [u16 level][u32 data_offset][u32 data_size] rows with no magic and no trailer. `data_size` is always 7, and `data_offset` points at the row's `level`. The rows are not in level order (399, 1052, 0, ...); the parser returns the main rows sorted by level.
 
-## Suggested UI Layout
+| Offset  | Type                  | Field     | Notes                                         |
+| ------- | --------------------- | --------- | --------------------------------------------- |
+| `+0x00` | u32                   | row_count | Equals the `productexperience.dbss` row count |
+| `+0x04` | Offset Row[row_count] | rows      | `row_count` rows of 10 bytes                  |
 
-### productexperience.dbss
+### Offset Row (10 bytes)
 
-| Column | Type | Notes   |
-| ------ | ---- | ------- |
-| Level  | num  | `level` |
-
-`unknown_04` and `unknown_06` stay on the record for search and CSV export.
-
-### productexperienceoffset.dbss
-
-| Column      | Type | Notes                 |
-| ----------- | ---- | --------------------- |
-| Level       | num  | `level`               |
-| Data Offset | num  | `data_offset`, as hex |
-| Data Size   | num  | `data_size`           |
+| Offset  | Type | Field       | Notes                                                                 |
+| ------- | ---- | ----------- | --------------------------------------------------------------------- |
+| `+0x00` | u16  | level       | Level of the row it points at                                         |
+| `+0x02` | u32  | data_offset | Absolute byte offset of the row's `level` in `productexperience.dbss` |
+| `+0x06` | u32  | data_size   | Always 7                                                              |
 
 ## Notes
 

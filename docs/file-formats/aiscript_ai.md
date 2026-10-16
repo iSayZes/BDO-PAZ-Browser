@@ -98,21 +98,6 @@ Other children are actions: `compute dest="_HP" expr="getHpRate()"`, `variable n
 
 Most states have a Korean developer comment on the line above (`<!-- 대기 -->`). Comments with `■` or a run of three `-`, `=`, `*`, `#` or `~` title a section (`<!-- ■■■ 비전투 상태 ■■■ -->`, `<!-- 비 전투 상태 ------ -->`); the handler strips the decoration and shows the title on the first state under it. A comment on the same line after an element belongs to that element and is not used.
 
-## Suggested UI Layout
-
-The `.ai` handler (`handlers/_ai/aiscript/`) names the Parsed tab AI Script and shows one row per state and handler under a summary and a behavior filter. It opens in file order and sorts by State, Behavior and Cycle:
-
-- Summary: counts of states, handlers and transitions; HP gates (transitions behind a condition on an HP variable, with the states they start from); the variables `InitialState` declares. When the script has them: Used by (the characters whose `characterstatic.dbss` record names the file, `Name (ID)`, the first 40 then a count; each opens its `characterstatic.dbss` row), the macros (name and the start of the expression, all of it on hover) and the imports.
-- Behavior filter: one chip per behavior with its row count in the whole script (`handler` for handlers, `-` for a state without one); a script with one behavior has none. Picked chips show only those rows of the shown page; the pick holds while paging and sorting, and a state link or a Ctrl+F match on a hidden row clears it. On client 3464, 15 of the 7,070 files have more than 500 rows, the size of a page.
-- State: section title, name, developer comment.
-- Behavior: `behavior` (`handler` for handlers), `action`, other attributes.
-- Cycle (ms): `CallCycleTime`.
-- Runs: `start` children, every-cycle actions, `end` children.
-- Transitions: every-cycle transitions with their conditions as chips, then the event attributes (`exit → Wait`).
-- Reached from: states and handlers that lead here.
-
-State names are links to their row; a name the file has no state for shows in the warning colour. A variable filled by `compute expr="getHpRate()"` reads as percent of max HP, so `variable name="_HP" cmp="<=" value="70"` shows as `HP ≤ 70%`; a bound held in another variable (`value="AI_MoveWarp_HP"`) gets no `%`. A subject with exactly two conditions on a transition, a lower and an upper bound with nothing besides `cmp` and `value`, shows as one range chip: `distance cmp=">" value="300"` and `distance cmp="<=" value="500"` read `300 < distance ≤ 500`. Character IDs show with their LOC type 6 name: `target_characterKey = 27134 (Forest Sacrament) | 27135 (Sky Sacrament)`. The Text tab next to the table shows the XML with colours.
-
 ## Notes
 
 - 5,420 of 271,686 transitions on client 3464 name a state that is not in the file. The three `<import>` elements pull states from other scripts, which covers some of them.

@@ -6,11 +6,21 @@ Three boss characters, each with a key, a box of world sectors and two
 unknown numbers. The name says "boss monster HP sync"; no client Lua names
 the file, so what is synced and how is not known from the client.
 
-```text
-key 1  23120 Garmoth    sectors (-3, -27) to (-1, -25)  unknown 30, 300000
-key 3  21878 Gift Box   sectors (2, 6) to (3, 7)        unknown 10, 1000000
-key 2  21060 Baby Vell  sectors (-72, 82) to (-70, 84)  unknown 10, 800000
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                                | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ----------------------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `bossmonsterhpsyncstaticstatus.bss` | 98    | 3 Row   | 26        |
+
+| Layout | File                                | Known        | Unknown      |
+| ------ | ----------------------------------- | ------------ | ------------ |
+| 1      | `bossmonsterhpsyncstaticstatus.bss` | 80 B (81.6%) | 18 B (18.4%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -18,16 +28,18 @@ None. Names come from LOC type 6.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset     | Type    | Field        | Notes                                 |
-| ---------- | ------- | ------------ | ------------------------------------- |
-| `+0x00`    | char[4] | magic        | `PABR`                                |
-| `+0x04`    | u32     | row_count    | `3` on client 3464                    |
-| `+0x08`    | row[]   | rows         | `row_count` 26-byte rows              |
-| rows end   | u32     | string_count | `0`; the string table is empty        |
-| end - 8    | u32     | table_start  | Where the rows end                    |
-| end - 4    | u32     | zero         |                                       |
+### File Layout
+
+| Offset              | Type           | Field        | Notes                                 |
+| ------------------- | -------------- | ------------ | ------------------------------------- |
+| `+0x00`             | char[4]        | magic        | `PABR`                                |
+| `+0x04`             | u32            | row_count    | `3` on client 3464                    |
+| `+0x08`             | Row[row_count] | rows         | See Row                               |
+| `rows+0x00`         | String Table   | string_table | The string table is empty             |
+| `string_table+0x00` | u32            | table_start  | Where the rows end                    |
+| `string_table+0x04` | u32            | zero         |                                       |
 
 ### Row (26 bytes)
 
@@ -42,17 +54,12 @@ All multi-byte values are little-endian.
 | `+0x14` | u16  | unknown_14   | `30` (Garmoth) or `10`                                            |
 | `+0x16` | u32  | unknown_16   | `300000`, `1000000` or `800000`                                   |
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column       | Type | Notes                       |
-| ------------ | ---- | --------------------------- |
-| Key          | num  | `key`                       |
-| Character ID | num  | `character_id`              |
-| Name         | text | LOC type 6 name             |
-| Sector X     | num  | `min_x..max_x`              |
-| Sector Z     | num  | `min_z..max_z`              |
-
-The table opens in file order. `unknown_14` and `unknown_16` stay hidden.
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Notes
 

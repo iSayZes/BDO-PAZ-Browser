@@ -7,13 +7,21 @@ the highest level of its [servantexperience.dbss](servantexperience_dbss.md)
 records. On client 3464 the file has 418 rows, the same servants as
 `servantexperience.dbss`.
 
-Example (client 3464):
+## Versions
 
-```text
-9989 Arduanatt:             100
-9808 Horse:                  30
-31041 Carrack:                1
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                            | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | ----- | ------- | --------- |
+| 1      | 1784 and later | 3473    | `servantexperiencemaxlevel.bss` | 1,676 | 418 Row | 4         |
+
+| Layout | File                            | Known            | Unknown    |
+| ------ | ------------------------------- | ---------------- | ---------- |
+| 1      | `servantexperiencemaxlevel.bss` | 1,676 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,16 +31,16 @@ Example (client 3464):
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No magic and no trailer: a count, then the rows to the end of the file.
 
-| Offset  | Type  | Field | Notes                                  |
-| ------- | ----- | ----- | -------------------------------------- |
-| `+0x00` | u32   | count | 418 on client 3464                     |
-| `+0x04` | row[] | rows  | `count` rows of 4 bytes, ending at EOF |
-
-## Record Structure
+| Offset  | Type       | Field | Notes                                  |
+| ------- | ---------- | ----- | -------------------------------------- |
+| `+0x00` | u32        | count | 418 on client 3464                     |
+| `+0x04` | Row[count] | rows  | `count` rows of 4 bytes, ending at EOF |
 
 ### Row (4 bytes)
 
@@ -40,14 +48,6 @@ No magic and no trailer: a count, then the rows to the end of the file.
 | ------- | ---- | ------------ | ----------------------------------------------- |
 | `+0x00` | u16  | character_id | Servant character, as in `characterstatic.dbss` |
 | `+0x02` | u16  | max_level    | Highest level                                   |
-
-## Suggested UI Layout
-
-| Column       | Type | Notes                            |
-| ------------ | ---- | -------------------------------- |
-| Character ID | num  | `character_id`                   |
-| Name         | text | `name`: LOC type 6 name, else the number |
-| Max Level    | num  | `max_level`                      |
 
 ## Notes
 

@@ -6,11 +6,23 @@ The materials that recharge an alchemy stone's durability in the Recharge tab
 of the alchemy stone window, per alchemy stone type. A row is the stone type,
 the material item and the durability points that material counts for.
 
-```text
-Destruction  6601 Oil of Regeneration    10
-Destruction  6353 Clown's Blood           4
-Destruction  5301 Clear Liquid Reagent    1
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes | Records                     | Row bytes |
+| ------ | -------------- | ------- | -------------------------- | ----- | --------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `alchemycharge.dbss`       | 468   | 36 Row, 8 Group             | 12        |
+| 1      | 1784 and later | 3473    | `alchemychargeoffset.dbss` | 468   | 36 Index Row, 8 Index Group | 12        |
+
+| Layout | File                       | Known          | Unknown    |
+| ------ | -------------------------- | -------------- | ---------- |
+| 1      | `alchemycharge.dbss`       | 468 B (100.0%) | 0 B (0.0%) |
+| 1      | `alchemychargeoffset.dbss` | 468 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,22 +32,24 @@ icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. A group count, then the groups back to
 back; the file ends after the last group.
 
-| Offset  | Type    | Field       | Notes                                             |
-| ------- | ------- | ----------- | ------------------------------------------------- |
-| `+0x00` | u32     | group_count | One group per alchemy stone type; `8` on client 3464 |
-| `+0x04` | group[] | groups      | `group_count` groups; group `i` holds stone type `i` |
+| Offset  | Type               | Field       | Notes                                                |
+| ------- | ------------------ | ----------- | ---------------------------------------------------- |
+| `+0x00` | u32                | group_count | One group per alchemy stone type; `8` on client 3464 |
+| `+0x04` | Group[group_count] | groups      | Group `i` holds stone type `i`; see Group            |
 
-### Group
+### Group (variable: 4 bytes + rows)
 
-| Offset  | Type  | Field     | Notes                         |
-| ------- | ----- | --------- | ----------------------------- |
-| `+0x00` | u32   | row_count | `0` for a type with no material |
-| `+0x04` | row[] | rows      | `row_count` 12-byte rows       |
+| Offset  | Type           | Field     | Notes                           |
+| ------- | -------------- | --------- | ------------------------------- |
+| `+0x00` | u32            | row_count | `0` for a type with no material |
+| `+0x04` | Row[row_count] | rows      | See Row                         |
 
 ### Row (12 bytes)
 
@@ -53,6 +67,36 @@ groups 3 to 7 are empty:
 | Oils 6601 to 6605 (Regeneration, Storms, Fortitude, Corruption, Tranquility) | `10` |
 | Bloods 6351 to 6355 (Legendary Beast's, Tyrant's, Clown's, Sinner's, Wise Man's) | `4` |
 | Reagents 5301 Clear Liquid Reagent, 5302 Pure Powder Reagent       | `1`          |
+
+### `alchemychargeoffset.dbss`
+
+The same grouped walk: a u32 group count (equal to the main file's), then per
+group a u32 row count and 12-byte rows. A row leaves out the stone type; its
+group index stands for it.
+
+| Offset  | Type                     | Field       | Notes                                  |
+| ------- | ------------------------ | ----------- | -------------------------------------- |
+| `+0x00` | u32                      | group_count | Equals the main file's `group_count`   |
+| `+0x04` | Index Group[group_count] | groups      | Group `i` holds stone type `i`; see Index Group |
+
+### Index Group (variable: 4 bytes + rows)
+
+| Offset  | Type                 | Field     | Notes                                |
+| ------- | -------------------- | --------- | ------------------------------------ |
+| `+0x00` | u32                  | row_count | Equals the main group's `row_count`  |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                        |
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field   | Notes                                                        |
+| ------- | ---- | ------- | ------------------------------------------------------------ |
+| `+0x00` | u32  | item_id | Row key together with the group index                        |
+| `+0x04` | u32  | offset  | Start of the row in `alchemycharge.dbss`, at its `stone_type` |
+| `+0x08` | u32  | size    | Always `12`, the main row size                               |
+
+Every index row points at the main row with the same stone type and item, in
+the same order. Both files are 468 bytes on client 3464, since every row is
+12 bytes in both.
 
 ## Stone Types
 
@@ -72,38 +116,6 @@ The sibling [`alchemyupgrade.dbss`](alchemyupgrade_dbss.md) (the Polishing
 materials) has the same grouped layout with 8 groups: group 0 holds ingots and
 pure metal crystals, group 1 plywood and group 2 crops, which agrees with the
 table above.
-
-## `alchemychargeoffset.dbss`
-
-The same grouped walk: a u32 group count (equal to the main file's), then per
-group a u32 row count and 12-byte rows. A row leaves out the stone type; its
-group index stands for it.
-
-| Offset  | Type | Field   | Notes                                                        |
-| ------- | ---- | ------- | ------------------------------------------------------------ |
-| `+0x00` | u32  | item_id | Row key together with the group index                        |
-| `+0x04` | u32  | offset  | Start of the row in `alchemycharge.dbss`, at its `stone_type` |
-| `+0x08` | u32  | size    | Always `12`, the main row size                               |
-
-Every index row points at the main row with the same stone type and item, in
-the same order. Both files are 468 bytes on client 3464, since every row is
-12 bytes in both.
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                    |
-| ------------- | ---- | -------------------------------------------------------- |
-| Alchemy Stone | text | Stone type name from the table above, else the number; sorts by `stone_type` |
-| Item ID       | num  | `item_id`                                                |
-| Icon          | icon | Item icon                                                |
-| Item          | text | LOC type 0 name in its grade colour, else the ID         |
-| Durability    | num  | `charge_point`                                           |
-
-The table opens sorted by `stone_type` ascending, which keeps the file's
-material order inside each type.
-
-The offset table shows Stone Type (the group index), Item ID, Data Offset and
-Size.
 
 ## Notes
 

@@ -8,14 +8,27 @@ debuffs. Each record carries an internal Korean name, a level, an effect type,
 ten numeric parameters, a duration, an optional icon and an optional Korean
 description whose English form lives in LOC type 5.
 
-Example:
+## Versions
 
-```text
-buff_id 48830
-  name         수렵 숙련도 +70 3시간   (internal label, "Hunting Mastery +70 3 hours")
-  icon         New_Icon/04_PC_Skill/03_Buff/HuntingBuff.dds
-  description  Hunting Mastery +70      (LOC str_type=5, str_id1=48830)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes      | Records                                              | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ---------- | ---------------------------------------------------- | --------- |
+| 3      | 3473 and later | 3473    | `buff.dbss`       | 12,550,791 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
+| 3      | 3473 and later | 3473    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
+| 1      | 1784           | 1784    | `buff.dbss`       | 9,955,320  | 37,892 Stats Block, 37,892 Tail Block, 37,892 Record | 133       |
+| 1      | 1784           | 1784    | `buffoffset.dbss` | 378,940    | 37,892 Index Row                                     | 10        |
+
+| Layout | File              | Known                | Unknown             |
+| ------ | ----------------- | -------------------- | ------------------- |
+| 3      | `buff.dbss`       | 10,718,501 B (85.4%) | 1,832,290 B (14.6%) |
+| 3      | `buffoffset.dbss` | 536,300 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `buff.dbss`       | 8,439,640 B (84.8%)  | 1,515,680 B (15.2%) |
+| 1      | `buffoffset.dbss` | 378,940 B (100.0%)   | 0 B (0.0%)          |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -28,17 +41,19 @@ buff_id 48830
 | `instancefield.dbss`, `instancefieldmapinfo.bss` | Optional | Field names and titles of type 176, through the `INSTANCE_FIELD_NAME` and `INSTANCE_FIELD_TITLE` lookup indexes |
 
 [`buffsimply.bss`](buffsimply_bss.md) holds the same buff IDs in fixed 32-byte
-rows with the icon path, `unknown_str`, `is_shown` and a few stats bytes. It is
+rows with the icon path, `effect_name`, `is_shown` and a few stats bytes. It is
 not needed to read this file.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 3
 
-| Offset  | Type | Field   | Notes                                              |
-| ------- | ---- | ------- | -------------------------------------------------- |
-| `+0x00` | u32  | count   | Number of records; see below                       |
-| `+0x04` | ...  | records | Variable-length records, located via the offset file |
+### File Layout
+
+| Offset  | Type          | Field   | Notes                                                |
+| ------- | ------------- | ------- | ---------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; see below                         |
+| `+0x04` | Record[count] | records | Variable-length records, located via the offset file |
 
 The records tile the file exactly: sorted by offset, each ends where the next
 begins, and the last ends at EOF.
@@ -47,88 +62,108 @@ Observed records: 44,609 in the pre-2026-09-27 test fixture, 44,645 in the
 2026-09-27 client (3458), 44,683 on client 3464. The row counts elsewhere in
 this doc are from the pre-2026-09-27 fixture.
 
-## Record Structure
+### Record (variable: 201 bytes + text)
 
 A record is a chain of fixed blocks and length-prefixed strings. The strings use
 the shared 8-byte prefix (u32 length, u32 zero, no terminator); UTF-16 lengths
 count characters, ASCII lengths count bytes.
 
-| Order | Type               | Field       | Notes                                                    |
-| ----- | ------------------ | ----------- | -------------------------------------------------------- |
-| 1     | u32                | buff_id     | Always equals the offset row's `buff_id`; a u16 before client 3464, see Notes |
-| 2     | prefixed UTF-16    | name        | Internal Korean label; no LOC counterpart                |
-| 3     | 133 bytes          | stats block | See Stats Block below                                    |
-| 4     | prefixed UTF-16    | unknown_str | Short digit text, `"0"` in 39,455 rows; 186 distinct     |
-| 5     | prefixed ASCII     | icon_path   | Relative to `ui_texture/icon/`; see Notes                |
-| 6     | u8                 | is_shown    | See Notes; `1` in 12,746 rows                            |
-| 7     | u32                | apply_rate  | `1000000` (100%) in 44,427 rows; per-million scale       |
-| 8     | prefixed UTF-16    | description | Korean, with `<PAColor>` tags; empty in 30,290 rows      |
-| 9     | 27 bytes           | tail block  | See Tail Block below                                     |
+| Offset             | Type        | Field       | Notes                                                    |
+| ------------------ | ----------- | ----------- | -------------------------------------------------------- |
+| `+0x00`            | u32         | buff_id     | Always equals the offset row's `buff_id`; a u16 before client 3464, see Notes |
+| `+0x04`            | str16       | name        | Internal Korean label; no LOC counterpart                |
+| `name+0x00`        | Stats Block | stats       | See Stats Block                                          |
+| `name+0x85`        | str16       | effect_name | Short digit text, `"0"` in 39,455 rows; 186 distinct. The server's `BuffEffect`, see Field Names |
+| `effect_name+0x00` | str8        | icon_path   | Relative to `ui_texture/icon/`; see Notes                |
+| `icon_path+0x00`   | u8          | is_shown    | See Notes; `1` in 12,746 rows                            |
+| `icon_path+0x01`   | u32         | apply_rate  | `1000000` (100%) in 44,427 rows; per-million scale       |
+| `icon_path+0x05`   | str16       | description | Korean, with `<PAColor>` tags; empty in 30,290 rows      |
+| `description+0x00` | Tail Block  | tail        | See Tail Block                                           |
 
 Record sizes range from 205 to 2,200 bytes, median 239, on client 3464.
 
 ### Stats Block (133 bytes)
 
-Offsets are relative to the end of the name string.
+The block starts at the end of the name string.
 
 | Offset  | Type    | Field           | Notes                                                                 |
 | ------- | ------- | --------------- | --------------------------------------------------------------------- |
 | `+0x00` | i16     | buff_level      | 1 to 999; `1` in 32,071 rows. Ranks buffs within a `group`; staged buffs count up, e.g. boss stages 1 to 10 |
-| `+0x02` | u8[2]   | reserved        | Always `0`                                                            |
+| `+0x02` | u8[2]   | unknown_02      | Always `0`                                                            |
 | `+0x04` | u16     | group           | `0` in 28,199 rows. Buffs of one group replace each other by level, see Stacking |
 | `+0x06` | i16     | condition_type  | `0` in 44,390 rows; the trigger of types 1 and 4, see `condition_type` |
 | `+0x08` | u8      | effect_type     | 173 distinct values; see Enum Values                                  |
-| `+0x09` | u8      | flag_09         | `1` in 44,489 rows                                                    |
-| `+0x0A` | u8      | flag_0a         | `1` in 31,950 rows                                                    |
-| `+0x0B` | u8      | flag_0b         | `1` in 14,707 rows                                                    |
-| `+0x0C` | u8[7]   | flag_0c..flag_12 | Each byte is `0` or `1`                                              |
-| `+0x13` | i64[10] | param_1..param_10 | Effect parameters; meaning depends on `effect_type`. Percentages use a per-million scale (`100000` = 10%) |
-| `+0x63` | u8      | flag_63         | `0` or `1`                                                            |
-| `+0x64` | u8      | flag_64         | `0` or `1`                                                            |
-| `+0x65` | u16     | reserved        | Always `0`                                                            |
-| `+0x67` | u8      | flag_67         | `0` or `1`                                                            |
+| `+0x09` | u8      | param_1_set     | `1` when the parameter of the same number is set. On client 3464 no parameter is non-zero while its flag is `0`, in all 44,683 rows; `param_1_set` is `1` in 44,563 rows |
+| `+0x0A` | u8      | param_2_set     | As `param_1_set`, for `param_2`                                       |
+| `+0x0B` | u8      | param_3_set     | As `param_1_set`, for `param_3`                                       |
+| `+0x0C` | u8      | param_4_set     | As `param_1_set`, for `param_4`                                       |
+| `+0x0D` | u8      | param_5_set     | As `param_1_set`, for `param_5`                                       |
+| `+0x0E` | u8      | param_6_set     | As `param_1_set`, for `param_6`                                       |
+| `+0x0F` | u8      | param_7_set     | As `param_1_set`, for `param_7`                                       |
+| `+0x10` | u8      | param_8_set     | As `param_1_set`, for `param_8`                                       |
+| `+0x11` | u8      | param_9_set     | As `param_1_set`, for `param_9`                                       |
+| `+0x12` | u8      | param_10_set    | As `param_1_set`, for `param_10`                                      |
+| `+0x13` | i64     | param_1         | Effect parameters `param_1` to `param_10`; meaning depends on `effect_type`. Percentages use a per-million scale (`100000` = 10%) |
+| `+0x1B` | i64     | param_2         | See `param_1`                                                         |
+| `+0x23` | i64     | param_3         | See `param_1`                                                         |
+| `+0x2B` | i64     | param_4         | See `param_1`                                                         |
+| `+0x33` | i64     | param_5         | See `param_1`                                                         |
+| `+0x3B` | i64     | param_6         | See `param_1`                                                         |
+| `+0x43` | i64     | param_7         | See `param_1`                                                         |
+| `+0x4B` | i64     | param_8         | See `param_1`                                                         |
+| `+0x53` | i64     | param_9         | See `param_1`                                                         |
+| `+0x5B` | i64     | param_10        | See `param_1`                                                         |
+| `+0x63` | u8      | is_debuff       | `1` on debuffs (14,432 rows on client 3464); the buff bar lists them apart (`HandleMOnAppliedBuff(buffIndex, isDebuff)`) |
+| `+0x64` | u8      | is_party_buff   | `1` in 407 rows, such as 57766 and 57767 (Evasion +8 and +12) and 57786 (All AP -5) |
+| `+0x65` | u16     | unknown_65      | Always `0`                                                            |
+| `+0x67` | u8      | is_overlapped   | `1` in 7,662 rows                                                     |
 | `+0x68` | u32     | duration_ms     | `0` in 30,016 rows; max `86400000` (24 h). `3600000` = 60 min        |
 | `+0x6C` | u32     | tick_ms         | Tick interval of periodic effects in milliseconds (`10000` = every 10 sec); see Notes |
-| `+0x70` | u8[14]  | reserved        | `0` in every row but one                                              |
-| `+0x7E` | u8      | flag_7e         | `1` in 44,514 rows                                                    |
-| `+0x7F` | u8      | unknown_7f      | Always `2`                                                            |
-| `+0x80` | u8      | reserved        | Always `0`                                                            |
-| `+0x81` | u8      | unknown_81      | `46` in every row but one                                             |
-| `+0x82` | u8      | unknown_82      | `2` in every row but one                                              |
-| `+0x83` | u8      | flag_83         | `0` or `1`                                                            |
-| `+0x84` | u8      | flag_84         | `0` or `1`                                                            |
+| `+0x70` | u64     | unknown_70      | Always `0`                                                            |
+| `+0x78` | u16     | unknown_78      | `0` in every row but buff 12605 (`1`)                                 |
+| `+0x7A` | u8      | need_equip_type | Equipment type the buff needs, an `itemenchant.dbss` `equip_type`; `0` in every row but buff 2078 (`13`), see Field Names |
+| `+0x7B` | u8[3]   | unknown_7b      | Copies of `itemenchant.dbss` `+0x08` to `+0x0A`; `0` in every row but buff 2078 (`0, 0, 1`) |
+| `+0x7E` | u8      | unknown_7e      | In the `itemenchant.dbss` `+0x0B` place; `1` in 44,588 rows (client 3464) |
+| `+0x7F` | u8      | unknown_7f      | `itemenchant.dbss` `+0x0C`; always `2`                                |
+| `+0x80` | u8      | unknown_80      | `itemenchant.dbss` `+0x0D`; always `0`                                |
+| `+0x81` | u8      | need_equip_slot | `itemenchant.dbss` `equip_slot`; `46` (no slot) in every row but buff 2078 (`6`) |
+| `+0x82` | u8      | unknown_82      | `itemenchant.dbss` `+0x0F`; `2` in every row but buff 2078 (`1`)      |
+| `+0x83` | u8      | remove_on_dead  | `1` when dying ends the buff; 33,944 rows                             |
+| `+0x84` | u8      | only_apply_to_character | `1` in 24,541 rows                                            |
 
 ### Tail Block (27 bytes)
 
-Offsets are relative to the end of the description string. Mostly zero.
+The block starts at the end of the description string. Mostly zero.
 
 | Offset  | Type | Field       | Notes                                        |
 | ------- | ---- | ----------- | -------------------------------------------- |
-| `+0x00` | u8   | flag_00     | `1` in 34 rows                               |
-| `+0x01` | u8   | flag_01     | `1` in 6 rows                                |
+| `+0x00` | u8   | unknown_00  | `1` in 34 rows                               |
+| `+0x01` | u8   | unknown_01  | `1` in 6 rows                                |
 | `+0x02` | u32  | unknown_02  | `0`, `1` or `2`                              |
-| `+0x06` | u8   | unknown_06  | `3` in 44,575 rows                           |
-| `+0x07` | i32  | unknown_07  | `0`, `1000000` or `-1000000`                 |
-| `+0x0B` | u8[12] | reserved  | Always `0`                                   |
-| `+0x17` | u8   | flag_17     | `1` in 221 rows                              |
+| `+0x06` | u8   | amplification_type | `3` in 44,649 rows (client 3464), which set no `amplification_rate`; `1` or `0` in the 34 that do |
+| `+0x07` | i32  | amplification_rate | `0`, `1000000` or `-1000000`, per-million scale; set on 34 rows, such as the `구름막` and `비밀의 늪` debuffs (14360 to 14365) |
+| `+0x0B` | u8[12] | unknown_0b | Always `0`                                   |
+| `+0x17` | u8   | unknown_17  | `1` in 221 rows                              |
 | `+0x18` | u8   | stacking_category | 61 distinct values; item type such as food, draught or perfume, see Stacking |
 | `+0x19` | u8   | is_exclusive | `1` in 2,069 rows on client 3458, never with category `0`; applying the buff ends the other buffs of its category, see Stacking |
 | `+0x1A` | u8   | unknown_1a  | `6` in 18,895 rows, else `0` or `1`          |
 
-## `buffoffset.dbss`
+### `buffoffset.dbss`
 
 `PABR` index into `buff.dbss` with u32 IDs, the layout of
 `mentalcardoffset.dbss` (`parse_pabr_u32_offset_rows`). `data_offset` points
 *at* the inline `buff_id` and `size` includes it.
 
-### Header (8 bytes)
+| Offset              | Type             | Field        | Notes                                      |
+| ------------------- | ---------------- | ------------ | ------------------------------------------ |
+| `+0x00`             | char[4]          | magic        | ASCII `PABR`                               |
+| `+0x04`             | u32              | count        | Always equals the `buff.dbss` count        |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                              |
+| `rows+0x00`         | String Table     | string_table | An empty PABR string table                 |
+| `string_table+0x00` | u32              | rows_end     | End offset of the index rows (`536204` on client 3464) |
+| `string_table+0x04` | u32              | zero         | Always `0`                                 |
 
-| Offset  | Type  | Field | Notes                                      |
-| ------- | ----- | ----- | ------------------------------------------ |
-| `+0x00` | u8[4] | magic | ASCII `PABR`                               |
-| `+0x04` | u32   | count | Always equals the `buff.dbss` count        |
-
-### Index Row (12 bytes, repeated `count` times)
+### Index Row (12 bytes)
 
 | Offset  | Type | Field       | Notes                                           |
 | ------- | ---- | ----------- | ----------------------------------------------- |
@@ -136,16 +171,60 @@ Offsets are relative to the end of the description string. Mostly zero.
 | `+0x04` | u32  | data_offset | Absolute offset of the record in `buff.dbss`    |
 | `+0x08` | u32  | size        | Record size in bytes, including the `buff_id`   |
 
-Before client 3464 the row was 10 bytes with a u16 `buff_id`, the layout of
-`characterstaticoffset.dbss`. The parser reads only the u32 layout.
+### String Table (variable: 4 bytes + strings)
 
-### Trailer (12 bytes)
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
-| Offset  | Type | Value  | Notes                                         |
-| ------- | ---- | ------ | --------------------------------------------- |
-| `+0x00` | u32  | `0`    |                                               |
-| `+0x04` | u32  | varies | End offset of the index rows (`536204` on client 3464) |
-| `+0x08` | u32  | `0`    |                                               |
+## Layout 2
+
+Before client 3464 `buff_id` was a u16 in the record and in the
+`buffoffset.dbss` index rows, the layout of `characterstaticoffset.dbss`.
+Only the Record and the Index Row differ from Layout 3. The parser reads only
+Layout 3.
+
+### Record (variable: 199 bytes + text)
+
+| Offset             | Type        | Field       | Notes |
+| ------------------ | ----------- | ----------- | ----- |
+| `+0x00`            | u16         | buff_id     |       |
+| `+0x02`            | str16       | name        |       |
+| `name+0x00`        | Stats Block | stats       |       |
+| `name+0x85`        | str16       | effect_name |       |
+| `effect_name+0x00` | str8        | icon_path   |       |
+| `icon_path+0x00`   | u8          | is_shown    |       |
+| `icon_path+0x01`   | u32         | apply_rate  |       |
+| `icon_path+0x05`   | str16       | description |       |
+| `description+0x00` | Tail Block  | tail        |       |
+
+### Index Row (10 bytes)
+
+| Offset  | Type | Field       | Notes |
+| ------- | ---- | ----------- | ----- |
+| `+0x00` | u16  | buff_id     |       |
+| `+0x02` | u32  | data_offset |       |
+| `+0x06` | u32  | size        |       |
+
+## Layout 1
+
+On client 1784 the Tail Block was 3 bytes shorter: it ends after
+`unknown_17`, with no `stacking_category`, `is_exclusive` or `unknown_1a`.
+The 24 bytes it keeps match Layout 3's first 24 in 36,134 of the 37,053
+records both clients share. Only the Tail Block differs from Layout 2.
+
+### Tail Block (24 bytes)
+
+| Offset  | Type   | Field              | Notes |
+| ------- | ------ | ------------------ | ----- |
+| `+0x00` | u8     | unknown_00         |       |
+| `+0x01` | u8     | unknown_01         |       |
+| `+0x02` | u32    | unknown_02         |       |
+| `+0x06` | u8     | amplification_type |       |
+| `+0x07` | i32    | amplification_rate |       |
+| `+0x0B` | u8[12] | unknown_0b         |       |
+| `+0x17` | u8     | unknown_17         |       |
 
 ## Enum Values
 
@@ -998,24 +1077,6 @@ The other values each hold one item family, all exclusive: GM's Blessing
 holiday feasts (28 to 32), Token of Desert Trading (20), test and
 development items (233 to 250, 252). 248 to 251 are not exclusive.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                               |
-| ----------- | ---- | ------------------------------------------------------------------- |
-| Buff ID     | num  | `buff_id`; right-aligned                                            |
-| Icon        | text | `icon_path`, resolved under `ui_texture/icon/`; dash when empty     |
-| Title       | text | Coloured first line of the description when more lines follow; else the title of the headline buff it is applied with, dimmed (see Notes); dash otherwise |
-| Internal Name | text | Korean `name`; labelled internal because LOC has no form of it in any language. Kept as its own column next to Title by choice (2026-10-04): it is the only text on many untitled buffs |
-| Description | text | LOC `str_type=5`, `str_id1=buff_id`; falls back to the inline Korean description, `<null>` counts as empty |
-| Effect      | text | The parameters as text for the confirmed effect types (see Effect text); dash otherwise |
-| Applied By  | list | Base items whose skills apply the buff (`BUFF_ITEMS` lookup index), with item icons and grade colours; sorts by count |
-| Level       | num  | `buff_level`                                                        |
-| Effect Type | text | `effect_type` and its 2016 module name (`9 MoveSpeedVariationRate`, see 2016 Module Names); the bare number for the rest. Sorts by the number |
-| Duration    | text | `duration_ms` formatted as h/min/s; dash when `0`, stored as `None` so it sorts last                   |
-| Param 1     | num  | `param_1`, then what it means for the effect type where confirmed: `3 (Kamasylvian Monsters)`, `25000 (2.5%)`, `10 (Monster AP)`, `250 (every 10 sec)`. Labels over 24 characters (character and quest names) are cut, in full on hover. Sorts by the raw value |
-| Param 2     | num  | `param_2`, labelled the same way                                    |
-| Param 3     | num  | `param_3`, labelled the same way                                    |
-
 ## Notes
 
 - Client 3464 widened `buff_id` from u16 to u32 in this file, in
@@ -1132,13 +1193,45 @@ development items (233 to 250, 252). 248 to 251 are not exclusive.
   component buff carries the tick; the rest are drift such as 65209 ("every
   3 sec", `2000`) and 18056 ("every 1 sec", `3000`).
 
+## Field Names
+
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::BuffStaticStatus` holds `_key`, `_name`, `_level`, `_group`, `_conditionKey`, `_moduleType`, `_isModuleParamSetted[10]`, `_moduleParam[10]`, `_stringModuleParam`, `_isDebuff`, `_isPartyBuff`, `_isGuildBuff`, `_isOverlapped`, `_validityTime`, `_repeatTime`, `_repeatBoomerangTime`, `_maxConditionApplyingCount`, `_needEquipType` (a `gc::ItemEquipType`: `_value`, `_isWeapon`, `_isSubWeapon`, `_isExtractable`, `_isUseAvatarMesh`, `_rangeType`, `_isTwoHanded`, `_equipSlotNo`, `_enchantFailType`), `_doRemoveOnDead`, `_onlyApplyToCharacter`, `_effectName`, `_iconName`, `_isDisPlayBuff`, `_applyRate` and `_description`. The stats block stores the scalars from `_level` to `_onlyApplyToCharacter` in that order, and the record stores `_effectName` to `_description` in that order after it. The server-side `Buff_Table` of a private server on client 519 shares 33,172 buff IDs with client 3464:
+
+| Field | Offset | 2016 member | `Buff_Table` column | Matching non-zero rows |
+| ----- | ------ | ----------- | ------------------- | ---------------------: |
+| buff_level | stats `+0x00` | `_level` | `Level` | 29,489 of 33,172 |
+| group | stats `+0x04` | `_group` | `Group` | 10,572 of 12,081 |
+| condition_type | stats `+0x06` | `_conditionKey` | `ConditionType` | 108 of 115 |
+| effect_type | stats `+0x08` | `_moduleType` | `ModuleType` | 31,571 of 33,170 |
+| param_1_set..param_10_set | stats `+0x09` | `_isModuleParamSetted` | - | - |
+| is_debuff | stats `+0x63` | `_isDebuff` | `BuffType` | 13,225 of 13,916 |
+| is_party_buff | stats `+0x64` | `_isPartyBuff` | `ApplyToGroup` | 117 of 117 |
+| is_overlapped | stats `+0x67` | `_isOverlapped` | `IsOverlapped` | 7,203 of 7,998 |
+| duration_ms | stats `+0x68` | `_validityTime` | `ValidityTime` | 9,477 of 10,253 |
+| tick_ms | stats `+0x6C` | `_repeatTime` | `RepeatTime` | 914 of 6,911; see below |
+| need_equip_type | stats `+0x7A` | `_needEquipType._value` | `NeedEquipType` | - |
+| need_equip_slot | stats `+0x81` | `_needEquipType._equipSlotNo` | - | - |
+| remove_on_dead | stats `+0x83` | `_doRemoveOnDead` | `RemoveOnDead` | 28,166 of 28,294 |
+| only_apply_to_character | stats `+0x84` | `_onlyApplyToCharacter` | `OnlyApplyToCharacter` | 11,108 of 11,140 |
+| effect_name | string 4 | `_effectName` | `BuffEffect` | 4,261 of 4,337 |
+| is_shown | after the icon | `_isDisPlayBuff` | `IsDisplay` | 10,131 of 11,151 |
+| apply_rate | after `is_shown` | `_applyRate` | `ApplyRate` | 33,025 of 33,172 |
+| amplification_type | tail `+0x06` | - | `AmplificationType` | 11 of 12; server `0` is `3` |
+| amplification_rate | tail `+0x07` | - | `AmplificationRate` | 17 of 18 |
+| stacking_category | tail `+0x18` | - | `Category` | 803 of 842 |
+
+The `_needEquipType` names rest on the 2016 order and on items: the nine bytes at stats `+0x7A` are zero, `2`, `46` and `2` in the places of the `itemenchant.dbss` header bytes `+0x07` to `+0x0F` on non-equipment items (`equip_type` `0`, `equip_slot` `46`), and buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, a hood effect) stores `13, 0, 0, 1, 1, 2, 0, 6, 1`, the same bytes as all 229 items of `equip_type` `13` the server shares. The server's `NeedEquipType` is `0` on every row, buff 2078 included. `unknown_7e` breaks the pattern: it is `1` on 44,588 buffs where non-equipment items store `0` in that place (`_isUseAvatarMesh`), so it keeps its name.
+
+`tick_ms` matches `RepeatTime` on 914 of 6,911 server rows because the server leaves 5,953 of them as `-`; on the 27,215 rows where it is a number, 27,073 agree. The server sets `only_apply_to_character` on 4,357 fewer buffs than the client; I read that as patches since the server data. `amplification_type`, `amplification_rate` and `stacking_category` are newer than the 2016 struct, so their names rest on the server column.
+
 ## Open Questions
 
-### What does `unknown_str` hold?
+### What does `effect_name` index?
 
-A short UTF-16 string of digits (`"0"`, `"90"`, `"158"`), and occasionally `*`.
-It could be a group or stacking key stored as text, but no table has been
-matched against it.
+A short UTF-16 string of digits (`"0"`, `"90"`, `"158"`), and occasionally
+`*`. The 2016 client calls it `_effectName` and the server `BuffEffect` (see
+Field Names), so it names an effect, but which table its numbers key is
+open.
 
 ### What do the ten parameters mean per effect type?
 

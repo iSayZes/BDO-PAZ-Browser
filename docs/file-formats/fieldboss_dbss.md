@@ -10,11 +10,27 @@ Knight, `8997` Ogre, `8998` Muraka) and `59670` Military Supply Wagon. Every
 ID exists in `characterstatic.dbss`. Besides the ID, a row holds only two
 bytes that are `1` on every row.
 
-```text
-23120  Garmoth                <Boss>
-23974  Garmoth                <Guild Boss>
-59670  Military Supply Wagon  <Ancient Chariot Loaded>
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes |
+| ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
+| 2      | 3473 and later | 3473    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
+| 2      | 3473 and later | 3473    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+| 1      | 1784           | 1784    | `fieldboss.dbss`       | 22,789 | 735 Row       | 31        |
+| 1      | 1784           | 1784    | `fieldbossoffset.dbss` | 7,354  | 735 Index Row | 10        |
+
+| Layout | File                   | Known            | Unknown          |
+| ------ | ---------------------- | ---------------- | ---------------- |
+| 2      | `fieldboss.dbss`       | 2,780 B (12.1%)  | 20,126 B (87.9%) |
+| 2      | `fieldbossoffset.dbss` | 6,944 B (100.0%) | 0 B (0.0%)       |
+| 1      | `fieldboss.dbss`       | 2,944 B (12.9%)  | 19,845 B (87.1%) |
+| 1      | `fieldbossoffset.dbss` | 7,354 B (100.0%) | 0 B (0.0%)       |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,36 +40,49 @@ None. The handler reads the rows in file order and does not need
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then 33-byte rows; the
 file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                    |
-| ------- | ----- | --------- | ------------------------ |
-| `+0x00` | u32   | row_count | `694` on client 3464     |
-| `+0x04` | row[] | rows      | `row_count` 33-byte rows |
+| Offset  | Type           | Field     | Notes                    |
+| ------- | -------------- | --------- | ------------------------ |
+| `+0x00` | u32            | row_count | `694` on client 3464     |
+| `+0x04` | Row[row_count] | rows      | See Row                  |
 
 ### Row (33 bytes)
 
-| Offset  | Type    | Field        | Notes                                              |
-| ------- | ------- | ------------ | -------------------------------------------------- |
-| `+0x00` | u16     | key          | Row key; equals `character_id` on every row        |
-| `+0x02` | u8      | unknown_02   | `1` on every row                                   |
-| `+0x03` | u16     | character_id | `characterstatic.dbss` character ID, LOC type 6    |
-| `+0x05` | u8[12]  | reserved_05  | Zero on every row                                  |
-| `+0x11` | u8      | unknown_11   | `1` on every row                                   |
-| `+0x12` | u8[15]  | reserved_12  | Zero on every row                                  |
+| Offset  | Type      | Field        | Notes                                              |
+| ------- | --------- | ------------ | -------------------------------------------------- |
+| `+0x00` | u16       | key          | Row key; equals `character_id` on every row        |
+| `+0x02` | u8        | unknown_02   | `1` on every row                                   |
+| `+0x03` | u16       | character_id | `characterstatic.dbss` character ID, LOC type 6    |
+| `+0x05` | bytes[12] | unknown_05   | Zero on every row                                  |
+| `+0x11` | u8        | unknown_11   | `1` on every row                                   |
+| `+0x12` | bytes[15] | unknown_12   | Zero on every row                                  |
 
 The `u8, u16 character_id, u16` head has the shape of the block after the
 scripts in a `characterstatic.dbss` record (`unknown_p`, `character_id`,
 `unknown_p3`), but the values differ: none of the 694 characters has
 `unknown_p` set to `1` there.
 
-## `fieldbossoffset.dbss`
+### `fieldbossoffset.dbss`
 
 A u32 row count (equal to the main file's), then 10-byte rows
-(`parse_bare_offset_rows()`):
+(`parse_bare_offset_rows()`).
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+Every index row points at the main row with the same key. The index rows are
+not in the main file's order (the first one points at main row 0, the second
+at main row 596).
+
+### Index Row (10 bytes)
 
 | Offset  | Type | Field        | Notes                                                      |
 | ------- | ---- | ------------ | ---------------------------------------------------------- |
@@ -61,23 +90,22 @@ A u32 row count (equal to the main file's), then 10-byte rows
 | `+0x02` | u32  | offset       | Start of the row in `fieldboss.dbss` plus 2, at `unknown_02` |
 | `+0x06` | u32  | size         | Always `31`, the row size minus the 2-byte `key`           |
 
-Every index row points at the main row with the same key. The index rows are
-not in the main file's order (the first one points at main row 0, the second
-at main row 596).
+## Layout 1
 
-## Suggested UI Layout
+On client 1784 the zero run at the end of the row is 13 bytes where Layout 2
+has 15, so the row is 31 bytes and the index `size` is `29`. Only the Row
+differs from Layout 2.
 
-| Column       | Type | Notes                                                     |
-| ------------ | ---- | --------------------------------------------------------- |
-| Character ID | num  | `character_id`                                            |
-| Name         | text | LOC type 6 `str_id4` 0                                    |
-| Title        | text | LOC type 6 `str_id4` 1, with its colour tags; dash when none |
+### Row (31 bytes)
 
-The table opens in file order. `unknown_02` and `unknown_11` stay hidden
-while they are `1` on every row. None of the 694 characters is in the
-`character_icon` index, so there is no icon column.
-
-The offset table shows Character ID, Byte Offset and Size.
+| Offset  | Type      | Field        | Notes                          |
+| ------- | --------- | ------------ | ------------------------------ |
+| `+0x00` | u16       | key          |                                |
+| `+0x02` | u8        | unknown_02   | `1` on every row (client 1784) |
+| `+0x03` | u16       | character_id |                                |
+| `+0x05` | bytes[12] | unknown_05   | Zero on every row (client 1784) |
+| `+0x11` | u8        | unknown_11   | `1` on every row (client 1784) |
+| `+0x12` | bytes[13] | unknown_12   | Zero on every row (client 1784) |
 
 ## Notes
 

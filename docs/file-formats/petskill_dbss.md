@@ -2,129 +2,164 @@
 
 ## Purpose
 
-Defines pet skill effect tables. Each record is keyed by `pet_skill_id` and contains one baseline row plus ten level rows. Companion `petskilloffset.dbss` provides keyed lookup into the variable-size record stream.
+Defines pet skill effect tables. Each record is keyed by `pet_skill_id`, has a skill type that names it in the pet window, and contains one baseline row plus ten level rows. Companion `petskilloffset.dbss` provides keyed lookup into the variable-size record stream.
 
-Example:
+## Versions
 
-```text
-pet_skill_id: 47 -> unknown_00: 11
-level 1 raw_value_a: 3,584,000
-level 10 raw_value_a: 1,280,000
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records                               | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `petskill.dbss`       | 9,380 | 539 Effect Row, 49 Payload, 49 Record | 17        |
+| 2      | 3473 and later | 3473    | `petskilloffset.dbss` | 494   | 49 Offset Row                         | 10        |
+| 1      | 1784           | 1784    | `petskill.dbss`       | 8,606 | 460 Effect Row, 46 Payload, 46 Record | 17        |
+| 1      | 1784           | 1784    | `petskilloffset.dbss` | 464   | 46 Offset Row                         | 10        |
+
+| Layout | File                  | Known           | Unknown         |
+| ------ | --------------------- | --------------- | --------------- |
+| 2      | `petskill.dbss`       | 5,590 B (59.6%) | 3,790 B (40.4%) |
+| 2      | `petskilloffset.dbss` | 396 B (80.2%)   | 98 B (19.8%)    |
+| 1      | `petskill.dbss`       | 4,788 B (55.6%) | 3,818 B (44.4%) |
+| 1      | `petskilloffset.dbss` | 372 B (80.2%)   | 92 B (19.8%)    |
+
+<!-- versions:end -->
 
 ## Companion Files
 
 | File                   | Required | Role                                                |
 | ---------------------- | -------- | --------------------------------------------------- |
 | `petskilloffset.dbss`  | Required | `pet_skill_id -> (data_offset, data_size)` lookup   |
+| `stringtable.bss`      | Optional | Key hashes of the skill type names, see Skill Types |
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                         |
-| ------- | ---- | ----- | ----------------------------- |
-| `+0x00` | u32  | count | Number of records; observed 49 |
+A record count, then the records back to back. Each record is a 2-byte key
+prefix and the payload that `petskilloffset.dbss` addresses.
 
-Records begin immediately at `+0x04`. Each record is stored as a 2-byte key prefix followed by the data payload addressed by `petskilloffset.dbss`.
+| Offset  | Type          | Field   | Notes                          |
+| ------- | ------------- | ------- | ------------------------------ |
+| `+0x00` | u32           | count   | Number of records; observed 49 |
+| `+0x04` | Record[count] | records | See Record                     |
 
-## Record Structure
+### Record (variable: 2 bytes + payload)
 
-### Record Wrapper
+| Offset  | Type    | Field      | Notes                                                  |
+| ------- | ------- | ---------- | ------------------------------------------------------ |
+| `+0x00` | u16     | key_prefix | Equals `pet_skill_id`                                  |
+| `+0x02` | Payload | payload    | `data_size` bytes; the offset row points at this field |
 
-| Offset  | Type | Field        | Notes                                                |
-| ------- | ---- | ------------ | ---------------------------------------------------- |
-| `+0x00` | u16  | key_prefix   | Equals `pet_skill_id`                                |
-| `+0x02` | ...  | data_payload | `data_size` bytes; offset table points to this field |
+### Payload (variable: 189 bytes, size from `petskilloffset.dbss`)
 
-### Data Payload (189 or 190 bytes)
-
-| Offset  | Type      | Field           | Notes                                                                 |
-| ------- | --------- | --------------- | --------------------------------------------------------------------- |
-| `+0x00` | u16       | pet_skill_id    | Equals the 2-byte key prefix and offset-table key                     |
-| `+0x02` | row[11]   | effect_rows     | One baseline row (`row_index=0`) plus ten level rows (`1..10`)        |
-| `+0xBD` | u8        | unknown_bd      | Present only when `data_size=190`; observed values 9 and 10           |
+| Offset  | Type             | Field        | Notes                                                          |
+| ------- | ---------------- | ------------ | -------------------------------------------------------------- |
+| `+0x00` | u16              | pet_skill_id | Equals the key prefix and the offset-table key                 |
+| `+0x02` | Effect Row[11]   | effect_rows  | One baseline row (`row_index=0`) plus ten level rows (`1..10`) |
+| `+0xBD` | u8 if size = 190 | unknown_bd   | Observed values 9 and 10                                       |
 
 The 32 records with `data_size=189` end after the eleven 17-byte rows. The 17 records with `data_size=190` have one trailing `unknown_bd` byte.
 
-### Effect Row (17 bytes × 11)
-
-Rows start at payload offset `+0x02 + row_index * 17`. Offsets below are relative to the row start.
+### Effect Row (17 bytes)
 
 | Offset  | Type | Field        | Notes                                                                                   |
 | ------- | ---- | ------------ | --------------------------------------------------------------------------------------- |
-| `+0x00` | u8   | unknown_00   | Observed 1–11. Same value in all rows for a record; shared by several records           |
+| `+0x00` | u8   | skill_type   | 1–11 on client 3473; same value in all rows of a record, see Skill Types                |
 | `+0x01` | u8   | row_level    | Row 0 uses 1; rows 1–10 use 1–10                                                        |
-| `+0x02` | u16  | -            | Always 0                                                                                |
+| `+0x02` | u16  | unknown_02   | Always 0                                                                                |
 | `+0x04` | u32  | raw_value_a  | Primary effect value. Row 0 is always 2560; rows 1–10 vary by `pet_skill_id`            |
 | `+0x08` | u32  | raw_value_b  | Secondary effect value. Row 0 is always 2560; rows 1–10 are 0 or a skill-specific value |
 | `+0x0C` | u32  | unknown_0c   | Row 0 = 256; rows 1–9 = `(row_level + 1) * 256`; row 10 is 0 or 256                     |
-| `+0x10` | u8   | -            | Always 0                                                                                |
+| `+0x10` | u8   | unknown_10   | Always 0                                                                                |
 
-Earlier versions of this doc called `unknown_00` `skill_group`, `unknown_0c` `row_marker` and the payload's `unknown_bd` `extra_marker`.
+Earlier versions of this doc called `skill_type` `unknown_00` and before that `skill_group`, `unknown_0c` `row_marker` and the payload's `unknown_bd` `extra_marker`.
 
-## petskilloffset.dbss
+### `petskilloffset.dbss`
 
-### Header (4 bytes)
+| Offset  | Type              | Field | Notes                                 |
+| ------- | ----------------- | ----- | ------------------------------------- |
+| `+0x00` | u32               | count | Must equal `petskill.dbss` count (49) |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                        |
 
-| Offset  | Type | Field | Notes                                  |
-| ------- | ---- | ----- | -------------------------------------- |
-| `+0x00` | u32  | count | Must equal `petskill.dbss` count (49)  |
+### Offset Row (10 bytes)
 
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                                       |
-| ------- | ---- | ----------- | --------------------------------------------------------------------------- |
-| `+0x00` | u16  | pet_skill_id| Matches `pet_skill_id` in the main record                                   |
-| `+0x02` | u32  | data_offset | Absolute byte offset in `petskill.dbss` to the payload, after key prefix    |
-| `+0x06` | u16  | data_size   | 189 or 190 bytes                                                            |
-| `+0x08` | u16  | -           | Always 0                                                                    |
+| Offset  | Type | Field        | Notes                                                                        |
+| ------- | ---- | ------------ | ---------------------------------------------------------------------------- |
+| `+0x00` | u16  | pet_skill_id | Matches `pet_skill_id` in the main record                                    |
+| `+0x02` | u32  | data_offset  | Absolute byte offset in `petskill.dbss` to the payload, after the key prefix |
+| `+0x06` | u16  | data_size    | 189 or 190 bytes                                                             |
+| `+0x08` | u16  | unknown_08   | Always 0                                                                     |
 
 `record_start = data_offset - 2` gives the position of the 2-byte key prefix.
+
+## Layout 1
+
+On client 1784 every payload is 185 bytes: the eleventh row stops after 13
+of its 17 bytes, and no payload has `unknown_bd`. Only the Payload differs
+from Layout 2.
+
+### Payload (185 bytes)
+
+| Offset  | Type           | Field        | Notes                                                                            |
+| ------- | -------------- | ------------ | -------------------------------------------------------------------------------- |
+| `+0x00` | u16            | pet_skill_id | Equals the key prefix and the offset-table key                                   |
+| `+0x02` | Effect Row[10] | effect_rows  | The baseline row plus level rows 1 to 9                                          |
+| `+0xAC` | bytes[13]      | unknown_ac   | Level row 10 up to `+0x0C` of an Effect Row: `skill_type` to `raw_value_b` and one more byte |
 
 ## Observed Values
 
 | Field              | Observed values / range                                      |
 | ------------------ | ------------------------------------------------------------ |
 | `pet_skill_id`     | 1–6, 11–18, 21–23, 26–57 (49 records total)                  |
-| `unknown_00`       | 1–11                                                         |
+| `skill_type`       | 1–11                                                         |
 | `row_level`        | baseline row uses 1; level rows use 1–10                     |
 | `raw_value_a`      | row 0 always 2560; level rows 512,000–128,000,000            |
 | `raw_value_b`      | row 0 always 2560; level rows 0–76,800,000                   |
 | `unknown_0c`       | 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2304, 2560, 0   |
 | `unknown_bd`       | 9 or 10 when present                                         |
 
-`unknown_00` is not unique: multiple `pet_skill_id` records share one value while carrying different effect values.
+`skill_type` is not unique: multiple `pet_skill_id` records share one value while carrying different effect values.
+
+## Skill Types
+
+`skill_type` is the 2016 `gc::PetSkillParam::PetSkillType`, which Lua reads as `skillParam._type`. It equals the `PetSkillType` column of the `Pet_Skill_Table` sheet of a private server on client 1784 on all 46 shared skills. The pet info window (`setPetSkillType` in `panel_window_petinfo_all_1.luac`) shows one GAME sheet string per type, prefixed `LUA_PETINFO_PETSKILLTYPE_`. Types 11 to 14 are newer than the 2016 enum. English text from client 3473:
+
+| Type | 2016 enum | Key suffix | English text |
+| ---: | --------- | ---------- | ------------ |
+| 1  | `ePetSkill_Looting` | `ITEMGETTIME` | Loot (every {itemGetTime} sec) |
+| 2  | `ePetSkill_AlertCollect` | `FINDGATHER` | Finds Resources |
+| 3  | `ePetSkill_AlertMurderer` | `FINDPK` | Hostility Detection |
+| 4  | `ePetSkill_DetectPosition` | `FINDPLACE` | Location Find |
+| 5  | `ePetSkill_Aggro` | `MOBAGGRO` | Taunt Monster |
+| 6  | `ePetSkill_FindNamedMonster` | `FINDRAREMONSTER` | Finds Rare Monsters |
+| 7  | `ePetSkill_ReduceAutoFishingTime` | `REDUCEAUTOFISHINGTIME` | Auto-fishing Time Reduction |
+| 8  | `ePetSkill_RegistForRegionSkill` | `REGISTILL` | Resistance to Desert Illnesses |
+| 9  | `ePetSkill_Collecting` | `AUTOGETHERING` | Auto Gathering |
+| 10 | `ePetSkill_CollectingBoost` | `GETHERINGINCREASE` | Gathering Quantity Increase |
+| 11 | - | `HPRECOVERY` | Restore HP |
+| 12 | - | `MPRECOVERY` | Endurance/MP Recovery |
+| 13 | - | `FINDLOSTNORMALITEM` | Find Normal Lost Item |
+| 14 | - | `FINDLOSTSPECIALITEM` | Find Special Lost Item |
+
+The client fills `{itemGetTime}` from `ToClient_getPetLootingCoolTime(param, lootingType)`, game code the browser cannot reproduce, so the handler shows `?` there. The window prints the first pet skill as "Basic: ..." and the second as "Special: ...".
 
 The parser yields ten level rows per record: 490 rows for the 49 records. Both files are byte-identical in the pre-2026-09-27 fixture and the 2026-09-27 client.
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                               |
-| ------------- | ---- | --------------------------------------------------- |
-| Pet Skill ID  | num  | `pet_skill_id`, right-aligned                       |
-| Level         | num  | `row_level`; show level rows 1–10 under each record |
-| Value A       | num  | `raw_value_a`; display raw until scale is confirmed |
-| Value B       | num  | `raw_value_b`; display raw until scale is confirmed |
-
-For compact browsing, show one expandable row per `pet_skill_id`, with the ten level rows nested beneath it.
 
 ## Notes
 
 - File size is 9380 bytes: 4-byte count plus 49 wrapper records.
 - `petskilloffset.dbss` size is 494 bytes: 4-byte count plus 49 × 10-byte offset rows.
-- All offset-table padding fields are 0.
+- `unknown_08` of the offset table is 0 in every record.
 - Offset rows are sorted descending for high IDs first, not ascending by key.
 - `raw_value_a` and `raw_value_b` are named as raw values because the display scale is not confirmed. Some values are multiples of 256, 256,000, or 25,600,000.
 - This file is distinct from `petequipskill.bss`, which stores localized equip-skill catalog entries.
+- [pet.dbss](pet_dbss.md) keys this file twice per pet: `loot_skill_id` and `race_skill_id`. Every value of both is a `pet_skill_id` here.
 
 ## Open Questions
-
-### `unknown_00` Meaning
-
-`unknown_00` values 1–11 may identify pet skill or effect categories, since several records share a value, but no mapping to UI names or another table is confirmed.
 
 ### Raw value scale
 
@@ -132,8 +167,8 @@ For compact browsing, show one expandable row per `pet_skill_id`, with the ten l
 
 ### Baseline row meaning
 
-Row 0 is identical across all records except `unknown_00`: `raw_value_a=2560`, `raw_value_b=2560`, `unknown_0c=256`. It may be a base display/effect row, but its exact role is not confirmed.
+Row 0 is identical across all records except `skill_type`: `raw_value_a=2560`, `raw_value_b=2560`, `unknown_0c=256`. It may be a base display/effect row, but its exact role is not confirmed.
 
 ### Extra marker byte
 
-Only 17 records have a trailing `unknown_bd` byte. Values are 9 or 10, but its relationship to `unknown_00`, max level, or UI display is unknown.
+Only 17 records have a trailing `unknown_bd` byte. Values are 9 or 10, but its relationship to `skill_type`, max level, or UI display is unknown.

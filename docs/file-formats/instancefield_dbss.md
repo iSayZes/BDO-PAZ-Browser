@@ -9,13 +9,23 @@ sectors, and an internal ASCII name. `buff.dbss` effect type 176 stores the
 key in `param_3` (`Teleport to Instance Field The Magnus: The Great Single
 Path (A1_001)`).
 
-Example:
+## Versions
 
-```text
-key 150   Atoraxion_Desert   x 46..52  y -2..5  z -33..-28
-  sector 56, 2, -35 holds the teleport.dbss point of buff 42791
-  "아토락시온 포탈 : 사막 : 2구역 입장" ("Atoraxion portal: desert: enter zone 2")
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes  | Records        | Row bytes               |
+| ------ | -------------- | ------- | -------------------------- | ------ | -------------- | ----------------------- |
+| 1      | 1784 and later | 3473    | `instancefield.dbss`       | 10,810 | 200 Record     | 41 to 74, 54 on average |
+| 1      | 1784 and later | 3473    | `instancefieldoffset.dbss` | 2,004  | 200 Offset Row | 10                      |
+
+| Layout | File                       | Known            | Unknown         |
+| ------ | -------------------------- | ---------------- | --------------- |
+| 1      | `instancefield.dbss`       | 9,610 B (88.9%)  | 1,200 B (11.1%) |
+| 1      | `instancefieldoffset.dbss` | 2,004 B (100.0%) | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,17 +35,19 @@ key 150   Atoraxion_Desert   x 46..52  y -2..5  z -33..-28
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A count followed by variable-size records. No PABR magic and no trailer; the
 records fill the file exactly (199 records, 10,736 bytes on client 3464).
 
-| Offset  | Type | Field   | Notes                         |
-| ------- | ---- | ------- | ----------------------------- |
-| `+0x00` | u32  | count   | Number of records             |
-| `+0x04` | ...  | records | `count` x record, not sorted by key |
+| Offset  | Type           | Field   | Notes                                     |
+| ------- | -------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32            | count   | Number of records                         |
+| `+0x04` | Record[count]  | records | See Record; not sorted by key             |
 
-### Record (40 bytes + name)
+### Record (variable: 40 bytes + name text)
 
 | Offset      | Type    | Field         | Notes |
 | ----------- | ------- | ------------- | ----- |
@@ -47,40 +59,35 @@ records fill the file exactly (199 records, 10,736 bytes on client 3464).
 | `+0x12`     | i32     | max_y         | |
 | `+0x16`     | i32     | max_z         | |
 | `+0x1A`     | u32     | unknown_1a    | `1`, `2` or `3`; see Open Questions |
-| `+0x1E`     | u64     | name_length   | Byte length of `name` |
-| `+0x26`     | char[n] | name          | ASCII, not null-terminated |
-| `+0x26 + n` | u16     | unknown_tail  | `1`, or the record's own key on the `A1_` fields; see Open Questions |
+| `+0x1E`     | str8    | name          | ASCII, not null-terminated |
+| `name+0x00` | u16     | unknown_tail  | `1`, or the record's own key on the `A1_` fields; see Open Questions |
 
 Names are not unique: on client 3464 the 199 records carry 163 names, and
 `Edania_Field` / `Edania_Field_1vs1` (10 each), `CrimsonField` (6),
 `CrimsonField2` (6), `CrimsonField3` (4), `Solare_Arena_Common` (4) and `ABSO`
 (3) repeat with different keys.
 
-## `instancefieldoffset.dbss`
+### `instancefieldoffset.dbss`
 
 A u32 count followed by `count` 10-byte rows, no header or trailer (1,994
 bytes on client 3464).
 
-| Offset  | Type | Field  | Notes |
-| ------- | ---- | ------ | ----- |
-| `+0x00` | u16  | key    | Record key |
-| `+0x02` | u32  | offset | `instancefield.dbss` offset of the record with this key |
-| `+0x06` | u32  | size   | Byte size of that record, `40 + name_length` |
+| Offset  | Type              | Field | Notes                              |
+| ------- | ----------------- | ----- | ---------------------------------- |
+| `+0x00` | u32               | count | Equals the main file's `count`     |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                     |
 
 The rows are in a hash order (`80, 16, 4053, 0, 4035, ...`), not file
 order. Every row points at the start of the record with the same key and
 gives its exact size, so the index adds nothing to a sequential read.
 
-## Suggested UI Layout
+### Offset Row (10 bytes)
 
-| Column    | Type | Notes                                             |
-| --------- | ---- | ------------------------------------------------- |
-| Key       | num  | `key`; right-aligned; what buff type 176 stores  |
-| Name      | text | `name`                                            |
-| Title     | text | The `instancefieldmapinfo.bss` title in the loaded language (`INSTANCE_FIELD_TITLE`); dash without one |
-| Sector X  | num  | `min_x..max_x` (`46..52`); sorts by `min_x`       |
-| Sector Y  | num  | `min_y..max_y`; sorts by `min_y`                  |
-| Sector Z  | num  | `min_z..max_z`; sorts by `min_z`                  |
+| Offset  | Type | Field  | Notes |
+| ------- | ---- | ------ | ----- |
+| `+0x00` | u16  | key    | Record key |
+| `+0x02` | u32  | offset | `instancefield.dbss` offset of the record with this key |
+| `+0x06` | u32  | size   | Byte size of that record, 40 plus the length of `name` |
 
 ## Notes
 

@@ -4,36 +4,52 @@
 
 Stores a compact identity table for service and story NPCs. Each row maps a character ID to its primary NPC service role, inline Korean display strings and, for most rows, a `getknowledge(<id>);` action script that links the NPC to a knowledge ID. Names and roles in the user's language come from LOC type `6`, keyed by the same character ID: `str_id4` 0 is the name and 1 the role.
 
-Example:
+## Versions
 
-```text
-character_id: 47727 -> "Jackson"  -> kind: 3 (ShopMerchant) -> name: 잭슨  -> role: <과일상인>
-character_id: 47647 -> "Neoksam"  -> kind: 25 (ItemMarket)  -> role: <거래소장> -> script: getknowledge(2387);
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-Top-level PABR block with a fixed-width record table followed by an inline string pool.
+| Layout | Clients        | Checked | File            | Bytes   | Records          | Row bytes |
+| ------ | -------------- | ------- | --------------- | ------- | ---------------- | --------- |
+| 1      | 1784 and later | 3473    | `npcsimply.bss` | 210,479 | 2,239 NPC Record | 33        |
 
-| Offset  | Type     | Field       | Notes                                      |
-| ------- | -------- | ----------- | ------------------------------------------ |
-| `+0x00` | char[4]  | magic       | ASCII `PABR`                               |
-| `+0x04` | u32      | count       | Number of NPC records (observed: 2,169 in an older extraction, 2,237 in the pre-2026-09-27 fixture, 2,238 in the 2026-09-27 client) |
-| `+0x08` | record[] | records     | 33-byte records repeated `count` times     |
-| varies  | pool     | string_pool | Counted string table referenced by records |
-| EOF - 8 | trailer  | trailer     | Offset of the string pool, see below       |
+| Layout | File            | Known             | Unknown         |
+| ------ | --------------- | ----------------- | --------------- |
+| 1      | `npcsimply.bss` | 192,567 B (91.5%) | 17,912 B (8.5%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None. Names and roles in the user's language come from LOC type `6` (see Purpose).
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## Record Structure
+## Layout 1
 
-### NPC Record (33 bytes, repeated `count` times)
+### File Layout
+
+Top-level PABR block with a fixed-width record table followed by an inline string table.
+
+| Offset             | Type              | Field              | Notes                                      |
+| ------------------ | ----------------- | ------------------ | ------------------------------------------ |
+| `+0x00`            | char[4]           | magic              | ASCII `PABR`                               |
+| `+0x04`            | u32               | count              | Number of NPC records (observed: 2,169 in an older extraction, 2,237 in the pre-2026-09-27 fixture, 2,238 in the 2026-09-27 client) |
+| `+0x08`            | NPC Record[count] | records            | See NPC Record                             |
+| `records+0x00`     | String Table      | string_table       | Counted string table referenced by records |
+| `string_table+0x00` | u32               | string_pool_offset | Equals `0x08 + count * 33` (`0x12065`)     |
+| `string_table+0x04` | u32               | zero               | Always 0                                   |
+
+The last two fields are the 8-byte trailer. This is the same `[string table][u32 rows_end][u32 0]` tail that `playercharacterstatic.bss` and `characterstaticoffset.dbss` carry after their rows.
+
+### NPC Record (33 bytes)
 
 | Offset  | Type | Field             | Notes                                                                 |
 | ------- | ---- | ----------------- | --------------------------------------------------------------------- |
 | `+0x00` | u16  | character_id      | Character-template key; all 2237 exist in `characterstatic.dbss`; all 2238 have a LOC type `6` name in client 3458, see Notes |
 | `+0x02` | u8   | unknown_02        | `1` on 2074 rows; runs of sequential values on related NPCs, see Open Questions |
-| `+0x03` | u8   | zero              | Always 0                                                              |
+| `+0x03` | u8   | unknown_03        | Always `0`                                                            |
 | `+0x04` | u32  | kind              | Primary `SpawnType` role; 23 observed values in the range 1-40         |
 | `+0x08` | u32  | script_ref        | String-pool index of the action script; `getknowledge(...)` on 2161 rows (one spelled `getKnowledge`), the empty string on 76 |
 | `+0x0C` | u32  | lease_item_id     | Usually 0; on 58 rows the item key (LOC type `0`) of the `[CP]` item the NPC leases, see Notes |
@@ -42,7 +58,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x14` | u8   | has_lease_condition | `1` when the NPC's lease dialog option has a condition script (32 of the 58 lease rows), see Notes |
 | `+0x15` | u32  | name_ref          | String-pool index for the Korean display name                          |
 | `+0x19` | u32  | role_ref          | String-pool index for Korean role/title text; points at the empty string when absent |
-| `+0x1D` | u32  | padding           | Always 0                                                              |
+| `+0x1D` | u32  | unknown_1d        | Always 0                                                              |
 
 An earlier version of this doc read `+0x00` as a u32 `npc_id`. The high half is `unknown_02`: as a u32 only 20 of 2237 values resolve through LOC, as a u16 all of them do. Earlier versions of this doc also called `lease_item_id` `unknown_id` and then `unknown_0c`, `lease_cost` `unknown_value` and then `unknown_10`, `unknown_12` `sentinel` and `has_lease_condition` `unknown_flag` and then `unknown_14`.
 
@@ -50,7 +66,30 @@ An earlier version of this doc read `+0x00` as a u32 `npc_id`. The high half is 
 
 The `script_ref` string equals the `characterstatic.dbss` action script of the same character on all 2237 rows.
 
-### `kind` Values
+### String Table (variable: 4 bytes + strings)
+
+The string table begins immediately after the fixed record table, at
+`string_pool_offset = 0x08 + count * 33`. Observed `string_pool_offset` is
+`0x12065` (older extraction: `0x117A1`).
+
+| Offset  | Type               | Field        | Notes                           |
+| ------- | ------------------ | ------------ | ------------------------------- |
+| `+0x00` | u32                | string_count | Observed: 4746                  |
+| `+0x04` | pstr[string_count] | strings      | Counted entries, indexed from 0 |
+
+Every `pstr` entry has a one-byte encoding flag `is_wide` (`1` for UTF-16LE,
+`0` for UTF-8) and a u32 byte length, then the payload. There is no
+terminator: the next entry starts right after the payload, and the last one
+ends exactly at the trailer.
+
+An earlier version of this doc read the flag as an optional marker and the
+next entry's `0` flag as a terminator; both readings split the pool the same
+way. `exploration.bss` uses the same entry layout, and the parser shares one
+reader for both (`handlers/_common/pabr_strings.py`).
+
+Observed pool contents: 2636 UTF-8 strings and 2110 UTF-16LE strings. The pool is not purely 8-bit: every script entry is UTF-16LE. One entry is the empty string (index 34 in the current file, index 0 in the older extraction); absent scripts and roles point at it.
+
+## `kind` Values
 
 `kind` is a `CppEnums.SpawnType` value, the same enum as the 46 role flags in `characterspawntype.dbss`. For all 2237 rows, the `characterspawntype.dbss` flag at index `kind` is set for the same character, so `kind` picks one primary role from that character's flags. Most common values:
 
@@ -67,64 +106,9 @@ The `script_ref` string equals the `characterstatic.dbss` action script of the s
 | 8     | 38   | `Wharf` | `<나루터지기>` |
 | 25    | 22   | `ItemMarket` | `<거래소장>` |
 
-### String Pool
-
-The string pool begins immediately after the fixed record table:
-
-```text
-string_pool_offset = 0x08 + count * 33
-```
-
-Observed `string_pool_offset` is `0x12065` (older extraction: `0x117A1`).
-
-| Offset  | Type        | Field        | Notes                                      |
-| ------- | ----------- | ------------ | ------------------------------------------ |
-| `+0x00` | u32         | string_count | Observed: 4746                             |
-| `+0x04` | string[]    | strings      | Counted entries, indexed from 0            |
-
-### String Entry
-
-Every entry has a one-byte encoding flag and a u32 byte length. There is no
-terminator: the next entry starts right after the payload, and the last one ends
-exactly at the trailer.
-
-| Offset  | Type  | Field       | Notes                                   |
-| ------- | ----- | ----------- | --------------------------------------- |
-| `+0x00` | u8    | is_wide     | `1` for UTF-16LE, `0` for UTF-8         |
-| `+0x01` | u32   | byte_length | Payload length in bytes                 |
-| `+0x05` | bytes | payload     | UTF-16LE when `is_wide=1`, else UTF-8   |
-
-An earlier version of this doc read the flag as an optional marker and the
-next entry's `0` flag as a terminator; both readings split the pool the same
-way. `exploration.bss` uses the same entry layout, and the parser shares one
-reader for both (`handlers/_common/pabr_strings.py`).
-
-Observed pool contents: 2636 UTF-8 strings and 2110 UTF-16LE strings. The pool is not purely 8-bit: every script entry is UTF-16LE. One entry is the empty string (index 34 in the current file, index 0 in the older extraction); absent scripts and roles point at it.
-
-### Trailer (8 bytes)
-
-| Offset  | Type | Field              | Notes                                      |
-| ------- | ---- | ------------------ | ------------------------------------------ |
-| `+0x00` | u32  | string_pool_offset | Equals `0x08 + count * 33` (`0x12065`)     |
-| `+0x04` | u32  | zero               | Always 0                                   |
-
-This is the same `[string table][u32 rows_end][u32 0]` tail that `playercharacterstatic.bss` and `characterstaticoffset.dbss` carry after their rows.
-
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                     |
-| ------------ | ---- | --------------------------------------------------------- |
-| Character ID | num  | `character_id`                                            |
-| Name         | text | LOC `str_type=6`, `str_id1=character_id`, `str_id4=0`; the Korean `name_ref` without LOC |
-| Kind         | text | `kind` shown as its role's display name, the same as the `characterspawntype.dbss` role headers (`role_labels.py`); the `SpawnType` name and value are in the tooltip |
-| Role         | text | LOC `str_type=6`, `str_id1=character_id`, `str_id4=1` (`<Fruit Vendor>`); the Korean `role_ref` without LOC; blank when LOC holds `<null>` |
-| Knowledge ID | num  | Parsed from `getknowledge(<id>);` in `script_ref`         |
-| Leases       | list | Every lease of the character: the `CHARACTER_LEASES` index (all lease options in `detail_dialog.dbss`), as LOC `str_type=0` item name (in its grade colour) and cost, e.g. `[CP] Container (10 CP)`; the lease stored here keeps its own cost, and is the only one without the index; sorts by count |
-| Script       | text | Raw script string for debugging/export                    |
-
 ## Notes
 
-- The record table size is exactly `count * 33` bytes; fixed records end at `0x12065` (`0x12086` in the 2026-09-27 client), and the string pool parses exactly up to the 8-byte trailer.
+- The record table size is exactly `count * 33` bytes; fixed records end at `0x12065` (`0x12086` in the 2026-09-27 client), and the string table parses exactly up to the 8-byte trailer.
 - `script_ref` points to a `getknowledge(<id>);` UTF-16LE string for 2161 of 2237 records.
 - `name_ref` and `role_ref` point to Korean UTF-8 strings in the same pool. Role strings are often bracketed labels such as `<과일상인>` or `<거점관리인>`. LOC type `6` `str_id4=1` holds the same role in the user's language on all 1998 rows with a role (`<과일상인>` is `<Fruit Vendor>`), and `<null>` on the 240 rows whose `role_ref` is empty (client 3458).
 - Every row's character has `npc_kind` `2` (NPC) in `characterstatic.dbss`.

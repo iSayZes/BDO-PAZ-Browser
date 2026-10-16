@@ -21,11 +21,11 @@ from tests.framework import (
 def _employee_name_record(record: dict) -> dict:
     return {
         "EmployeeNameId": record["employee_name_id"],
-        "Name": record.get("name_en") or record["name_ko"],
-        "KoreanName": record["name_ko"],
+        "Name": record.get("name_en") or record["name_kr"],
+        "KoreanName": record["name_kr"],
         "CharCount": record["char_count"],
         "Unknown08": record["unknown_08"],
-        "Terminator": record["terminator"],
+        "UnknownAfterName": record["unknown_after_name"],
         "DataSize": record["data_size"],
     }
 
@@ -40,10 +40,10 @@ EMPLOYEENAME_CASE = HandlerCase(
     internal_path="gamecommondata/binary/employeename.dbss",
     record_mapper=_employee_name_record,
     tests=[
-        SchemaTest(required_keys=["EmployeeNameId", "Name", "KoreanName", "CharCount", "Unknown08", "Terminator", "DataSize"]),
+        SchemaTest(required_keys=["EmployeeNameId", "Name", "KoreanName", "CharCount", "Unknown08", "UnknownAfterName", "DataSize"]),
         DeclaredCountTest(declared=header_count()),
         RangeTest(col="Unknown08", min_val=0, max_val=0),
-        RangeTest(col="Terminator", min_val=0, max_val=0),
+        RangeTest(col="UnknownAfterName", min_val=0, max_val=0),
         TargetTest(col="EmployeeNameId", value=47, expected={"Name": "Guile", "KoreanName": "가일", "CharCount": 2}),
         TargetTest(col="EmployeeNameId", value=34, expected={"Name": "Pilgrave", "KoreanName": "필그레이브"}),
         TargetTest(col="EmployeeNameId", value=60, expected={"Name": "Tails"}),

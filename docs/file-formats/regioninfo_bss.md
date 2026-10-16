@@ -4,17 +4,27 @@
 
 Stores every world region: towns, hunting grounds, castles, arenas, caves and sea areas. The primary key is a region key that resolves through LOC `str_type=17` (the region name). Each record also carries the region type, the node war day, the territory and its capital, the region group, the worldmap node the region belongs to, the zone flags (safe zone, sea, desert, prison and others), the region buff skills by day and night, the return point and, for 20 port regions, the Guild Wharf Manager NPC.
 
-Example:
-
-```text
-region_key=5   -> Velia (MainTown, Balenos, capital Velia, node 1 Velia, Guild Wharf Manager 40145 Robert)
-region_key=724 -> Kamasylvia Castle (CastleInSiege, Kamasylvia, capital Grána, Guild Wharf Manager 50989 Syluna)
-region_key=290 -> Longleaf Tree Sentry Post (Hunting, Calpheon, node war on Tuesday)
-```
-
 The layout follows [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, section 11). I walked it against the client 3458 file: every record tiles exactly up to the string table and every span it calls reserved is zero in all 1594 records. One tail field is split wrongly there (see Region Tail). Field meanings marked confirmed below were checked against LOC, the client's Lua enums and the linked tables; the extractor's other names stay `unknown_*` here.
 
-Most of the zone flags and keys are named from two more sources (see Field Names below): the 2016 client's debug symbols, whose `gc::RegionInfo` lists its members in the order this record stores them, and the server-side `Region_Table` of the BdoEmu server (about 2021), whose columns match these offsets value for value. Five more of the extractor's names turned out wrong that way (`+0x0E`, `+0x10`, `+0x11`, `+0x1B`, `+0x66`).
+Most of the zone flags and keys are named from two more sources (see Field Names below): the 2016 client's debug symbols, whose `gc::RegionInfo` lists its members in the order this record stores them, and the server-side `Region_Table` of a private server on client 519, whose columns match these offsets value for value. Five more of the extractor's names turned out wrong that way (`+0x0E`, `+0x10`, `+0x11`, `+0x1B`, `+0x66`).
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
+| ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 1      | 1784           | 1784    | `regioninfo.bss` | 556,117 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
+
+| Layout | File             | Known             | Unknown           |
+| ------ | ---------------- | ----------------- | ----------------- |
+| 2      | `regioninfo.bss` | 241,279 B (37.5%) | 402,390 B (62.5%) |
+| 1      | `regioninfo.bss` | 159,093 B (28.6%) | 397,024 B (71.4%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,20 +34,31 @@ Most of the zone flags and keys are named from two more sources (see Field Names
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 2
 
-| Offset  | Type    | Field              | Notes                                                          |
-| ------- | ------- | ------------------ | -------------------------------------------------------------- |
-| `+0x00` | char[4] | magic              | `PABR` (ASCII)                                                 |
-| `+0x04` | u32     | record_count       | Observed `1594` (client 3458; the extractor documents `1572`)  |
-| `+0x08` | record  | records            | Variable records packed back-to-back with no alignment         |
-| varies  | pool    | string_table       | `u32 count` plus Korean strings (shared `pabr_strings` layout); observed `1108` entries |
-| EOF-8   | u32     | string_table_start | Absolute file offset of `string_table.count`; observed `623714` |
-| EOF-4   | u32     | zero_trailer       | Observed `0`                                                   |
+### File Layout
+
+| Offset              | Type                 | Field              | Notes                                                          |
+| ------------------- | -------------------- | ------------------ | -------------------------------------------------------------- |
+| `+0x00`             | char[4]              | magic              | `PABR` (ASCII)                                                 |
+| `+0x04`             | u32                  | record_count       | Observed `1594` (client 3458; the extractor documents `1572`)  |
+| `+0x08`             | Region[record_count] | records            | Variable records packed back-to-back with no alignment; see Region |
+| `records+0x00`      | String Table         | string_table       | Korean strings (shared `pabr_strings` layout); see String Table |
+| `string_table+0x00` | u32                  | string_table_start | Absolute file offset of `string_table.count`; observed `623714` |
+| `string_table+0x04` | u32                  | zero               | Observed `0`                                                   |
 
 A record is a 210-byte head, two counted lists and a 171-byte tail, so its size is `389 + 2 * key_count + 12 * vector_count`. The walk ends exactly at `string_table_start`; the parser raises an error when it does not.
 
-## Record Structure
+### Region (variable: 389 bytes + key and vector lists)
+
+| Offset                    | Type                     | Field              | Notes |
+| ------------------------- | ------------------------ | ------------------ | ----- |
+| `+0x00`                   | Region Head              | head               | See Region Head |
+| `+0xD2`                   | u32                      | key_count          | |
+| `+0xD6`                   | u16[key_count]           | unknown_d2_keys    | Region keys; set on 58 town regions and always includes the region itself. Extractor: warehouse group. Velia's list holds the mainland towns from Velia to Muzgar; Hakinza Sanctuary's holds Altinova, Asparkan, Shakatu, Sand Grain Bazaar, Muzgar, Velandir, Aal's Revelation and Angavu Outpost |
+| `unknown_d2_keys+0x00`    | u32                      | vector_count       | |
+| `unknown_d2_keys+0x04`    | f32[vector_count][3]     | unknown_d2_vectors | World positions; only The Great Desert of Valencia (region 230) has any (3) |
+| `unknown_d2_vectors+0x00` | Region Tail              | tail               | See Region Tail |
 
 ### Region Head (210 bytes)
 
@@ -47,82 +68,80 @@ Offsets are hex; the extractor's decimal offset is in the notes where it named t
 | ------- | --------- | ------------------ | ----- |
 | `+0x00` | u16       | region_key         | LOC `str_type=17`, `str_id1=region_key`; unique; all 1594 resolve |
 | `+0x02` | u8[3]     | color              | Region colour stored blue, green, red; the parser returns `rrggbb` (Velia `820000`). `edaniaregioninfo.bss` stores the same value for the five first-group Edania castles |
-| `+0x05` | u8        | reserved           | Always `0`; the alpha byte of the colour (a 4-byte `pa::Color` in the 2016 client) |
+| `+0x05` | u8        | color_alpha        | Always `0`; the alpha byte of `color`, which the 2016 PDB types as a 4-byte `pa::Color` (`_colorKey`) |
 | `+0x06` | u8        | region_type        | `CppEnums.RegionType`; see Enum Values |
 | `+0x07` | u8        | node_war_day       | `CppEnums.VillageSiegeType`, Sunday `0` to Saturday `6`; `7` (the enum's `_Count`) for no node war |
-| `+0x08` | u8[3]     | reserved           | Always `0` |
+| `+0x08` | bytes[3]  | unknown_08         | Always `0` |
 | `+0x0B` | u8        | unknown_0b         | Values `0`, `1`, `3`, `4`; `3` on Velia, Heidel, Altinova and Valencia City, `4` on the Margoria islands |
-| `+0x0C` | bool      | is_safe_zone       | Set on 318 regions, among them Velia, Glish, Ossuary, Heidel Castle and Lake Flondor |
-| `+0x0D` | bool      | is_arena_zone      | Set on the 9 arena regions. Named from the 2016 member order (`_isArenaZone` between `_isSafeZone` and `_isSea`); the client Lua reads `isArenaZone` |
-| `+0x0E` | bool      | is_sea             | Set on 199 regions, mostly islands and sea. The extractor calls it `ocean` |
-| `+0x0F` | bool      | is_desert          | Set on 43 regions, all in Valencia (territory 4): the Great Desert, the sand dunes, Pilgrim's Sanctums, Cantusa, Aakman |
-| `+0x10` | bool      | is_not_dig         | Set on 8 desert regions: Aakman Temple, Scarlet Sand Chamber, Ibellab Oasis, Hystria Ruins, Roud Sulfur Mine, Pila Ku Jail, Muiquun, Jail. The extractor calls it `prison`. Likely turns off Shabby Shovel digging, see Notes |
-| `+0x11` | bool      | is_ocean           | Set on 62 regions: Sea, Margoria, Oquilla's Eye, Crow Merchants' Vessel. The extractor calls it `sea`; the client Lua has `isOceanZone` next to the sea checks |
-| `+0x12` | bool      | is_prison          | Set on Jail (697) only |
-| `+0x13` | bool[8]   | unknown_13 .. unknown_1a | Several mirror `region_type` (`0x13` = Siege or CastleInSiege, `0x14` = Fortress, `0x18` = MainTown, `0x19` = MinorTown, `0x1A` = either town); see Open Questions |
-| `+0x1B` | bool      | is_accessible_area | Set on 1514 regions. The extractor calls it `locator`; the client Lua reads `isAccessibleArea` |
-| `+0x1C` | bool      | is_node_access     | Set on 118 regions |
+| `+0x0C` | u8        | is_safe_zone       | Set on 318 regions, among them Velia, Glish, Ossuary, Heidel Castle and Lake Flondor |
+| `+0x0D` | u8        | is_arena_zone      | Set on the 9 arena regions. Named from the 2016 member order (`_isArenaZone` between `_isSafeZone` and `_isSea`); the client Lua reads `isArenaZone` |
+| `+0x0E` | u8        | is_sea             | Set on 199 regions, mostly islands and sea. The extractor calls it `ocean` |
+| `+0x0F` | u8        | is_desert          | Set on 43 regions, all in Valencia (territory 4): the Great Desert, the sand dunes, Pilgrim's Sanctums, Cantusa, Aakman |
+| `+0x10` | u8        | is_not_dig         | Set on 8 desert regions: Aakman Temple, Scarlet Sand Chamber, Ibellab Oasis, Hystria Ruins, Roud Sulfur Mine, Pila Ku Jail, Muiquun, Jail. The extractor calls it `prison`. Likely turns off Shabby Shovel digging, see Notes |
+| `+0x11` | u8        | is_ocean           | Set on 62 regions: Sea, Margoria, Oquilla's Eye, Crow Merchants' Vessel. The extractor calls it `sea`; the client Lua has `isOceanZone` next to the sea checks |
+| `+0x12` | u8        | is_prison          | Set on Jail (697) only |
+| `+0x13` | u8        | unknown_13         | Several mirror `region_type` (`0x13` = Siege or CastleInSiege, `0x14` = Fortress, `0x18` = MainTown, `0x19` = MinorTown, `0x1A` = either town); see Open Questions |
+| `+0x14` | u8        | unknown_14         | Mirrors `region_type` Fortress; see `unknown_13` |
+| `+0x15` | u8        | unknown_15         | See `unknown_13` |
+| `+0x16` | u8        | unknown_16         | See `unknown_13` |
+| `+0x17` | u8        | unknown_17         | See `unknown_13` |
+| `+0x18` | u8        | unknown_18         | Mirrors `region_type` MainTown; see `unknown_13` |
+| `+0x19` | u8        | unknown_19         | Mirrors `region_type` MinorTown; see `unknown_13` |
+| `+0x1A` | u8        | unknown_1a         | Set on either town type; see `unknown_13` |
+| `+0x1B` | u8        | is_accessible_area | Set on 1514 regions. The extractor calls it `locator`; the client Lua reads `isAccessibleArea` |
+| `+0x1C` | u8        | is_node_access     | Set on 118 regions |
 | `+0x1D` | u16       | unknown_1d         | |
-| `+0x1F` | bool      | unknown_1f         | Set on 54 regions (Rameda Island, Altar of Agris, Western Guard Camp) |
+| `+0x1F` | u8        | unknown_1f         | Set on 54 regions (Rameda Island, Altar of Agris, Western Guard Camp) |
 | `+0x20` | u32       | unknown_20         | `22950` in every record (the extractor saw `19950`), so it changes between patches |
-| `+0x24` | u8        | reserved           | Always `0` |
-| `+0x25` | bool      | is_locator         | |
+| `+0x24` | u8        | unknown_24         | Always `0` |
+| `+0x25` | u8        | is_locator         | |
 | `+0x26` | u32       | villain_respawn_node_key | Exploration node key where an outlaw respawns. Set on 204 records, all exploration node keys (Muiquun for several desert regions) |
 | `+0x2A` | f32[3]    | villain_respawn_position | The position paired with `villain_respawn_node_key`. Named from the 2016 member order (`_villainRespawnPosition` follows the key); no server column to check it against |
-| `+0x36` | bool      | is_ancient_dungeon | Set on Aakman Temple (688) and Hystria Ruins (689) |
-| `+0x37` | bool      | is_escape          | Set on most regions; clear on Atoraxion, the arenas and battlefields, Oquilla's Eye, Kamasylvia, Duvencrune, Muiquun and a few caves |
-| `+0x38` | bool      | is_special_zone    | Set on Atoraxion, the arenas and battlefields, Sea Palace, Mountain of Eternal Winter, Pit of the Undying, Aakman Temple, Hystria Ruins, Ruins of Tzol |
-| `+0x39` | bool      | is_vehicle_dead_zone | Set only on `is_special_zone` regions |
-| `+0x3A` | bool      | unknown_3a         | |
-| `+0x3B` | u8        | reserved           | Always `0` |
+| `+0x36` | u8        | is_ancient_dungeon | Set on Aakman Temple (688) and Hystria Ruins (689) |
+| `+0x37` | u8        | is_escape          | Set on most regions; clear on Atoraxion, the arenas and battlefields, Oquilla's Eye, Kamasylvia, Duvencrune, Muiquun and a few caves |
+| `+0x38` | u8        | is_special_zone    | Set on Atoraxion, the arenas and battlefields, Sea Palace, Mountain of Eternal Winter, Pit of the Undying, Aakman Temple, Hystria Ruins, Ruins of Tzol |
+| `+0x39` | u8        | is_vehicle_dead_zone | Set only on `is_special_zone` regions |
+| `+0x3A` | u8        | unknown_3a         | |
+| `+0x3B` | u8        | unknown_3b         | Always `0` |
 | `+0x3C` | u16       | skill_no           | Region buff skill by day; see Notes |
 | `+0x3E` | u32       | skill_apply_rate   | Apply rate of `skill_no` |
-| `+0x42` | bool      | unknown_42         | |
-| `+0x43` | u8        | reserved           | Always `0` |
+| `+0x42` | u8        | unknown_42         | |
+| `+0x43` | u8        | unknown_43         | Always `0` |
 | `+0x44` | u16       | skill_no_2         | A second region skill; set on the Margoria regions only |
 | `+0x46` | u32       | skill_apply_rate_2 | Apply rate of `skill_no_2` |
-| `+0x4A` | u8[8]     | reserved           | Always `0` |
-| `+0x52` | bool      | unknown_52         | |
-| `+0x53` | u8        | reserved           | Always `0` |
+| `+0x4A` | bytes[8]  | unknown_4a         | Always `0` |
+| `+0x52` | u8        | unknown_52         | |
+| `+0x53` | u8        | unknown_53         | Always `0` |
 | `+0x54` | u16       | night_skill_no     | Region buff skill at night; see Notes |
 | `+0x56` | u32       | night_skill_apply_rate | Apply rate of `night_skill_no` |
 | `+0x5A` | u8        | territory_key      | Territory 0 to 13; LOC `str_type=12`, `str_id4=1` names it (Balenos, Serendia ... Inner Edania). The key of `territoryinfo.bss` |
-| `+0x5B` | u8        | reserved           | Always `0` |
+| `+0x5B` | u8        | unknown_5b         | Always `0` |
 | `+0x5C` | u32       | name_index         | Index into `string_table`; the region's Korean name (`벨리아 마을` for Velia) |
 | `+0x60` | u32       | return_position_name | Index into `string_table`; the Korean name of the region's return point, see Notes. The extractor calls it the capital's name, which it is not |
 | `+0x64` | u16       | capital_region_key | Region key of the territory capital: the same in every region of a territory and always that territory's `MainTown` (Velia, Heidel, Calpheon City ... Angavu Outpost) |
 | `+0x66` | u16       | trade_origin_region_key | A region key: the trade origin (`getTradeOriginRegion` in the client Lua). The extractor calls it the affiliated town. Often the region itself or a nearby town, but also non-town regions (Evergart Falls points to 417) |
 | `+0x68` | u16       | region_group_key   | Key of `regiongroupinfo.bss`: the file has 250 records and this field 250 distinct values (`0` on 32 regions) |
-| `+0x6A` | u8        | reserved           | Always `0` |
+| `+0x6A` | u8        | unknown_6a         | Always `0` |
 | `+0x6B` | u16       | waypoint_key       | Non-zero on 628 records; equals `node_key` on 873 (zero included) |
-| `+0x6D` | u8[2]     | reserved           | Always `0` |
+| `+0x6D` | bytes[2]  | unknown_6d         | Always `0` |
 | `+0x6F` | u16       | node_key           | `exploration.bss` node key; non-zero on 1331 records and every one is a node. The node that covers the region (Lumbering 1 -> Trent) |
-| `+0x71` | u8[2]     | reserved           | Always `0` |
+| `+0x71` | bytes[2]  | unknown_71         | Always `0` |
 | `+0x73` | u8        | region_attribute_type | `1` on Velia (5) and Velia Beach (444), `0` elsewhere (client 3464) |
-| `+0x74` | u8[3]     | reserved           | Always `0` |
+| `+0x74` | bytes[3]  | unknown_74         | Always `0` |
 | `+0x77` | f32[3]    | unknown_77         | Extractor: waypoint position. Zero on 1580 records |
 | `+0x83` | f32[3]    | return_position    | The return point's world position, shared by many regions; pairs with `return_position_name`, see Notes. The extractor calls it the region position, which it is not |
-| `+0x8F` | u8[4]     | reserved           | Always `0` |
+| `+0x8F` | bytes[4]  | unknown_8f         | Always `0` |
 | `+0x93` | u8        | exploration_point  | `1` except on Velia (1), Sea (2), Deep Sea (175) and Valencia City (229) (client 3464) |
-| `+0x94` | u8        | reserved           | Always `0` |
+| `+0x94` | u8        | unknown_94         | Always `0` |
 | `+0x95` | u32       | unknown_95         | |
 | `+0x99` | f32[5]    | unknown_99         | Velia: `45, 38, 0, 55, 0.6` |
 | `+0xAD` | u32       | unknown_ad         | |
 | `+0xB1` | u32       | unknown_b1         | |
 | `+0xB5` | u32       | unknown_b5         | `0xFFFFFFFF` in every record |
 | `+0xB9` | u32[6]    | unknown_b9         | Set mainly on towns; Velia `105580, 105554, 105551, 105607, 105547, 105580` |
-| `+0xD1` | bool      | is_free_revival_area | The client Lua reads `isFreeRevivalArea` |
+| `+0xD1` | u8        | is_free_revival_area | The client Lua reads `isFreeRevivalArea` |
 
-### Counted Lists (after the head)
-
-| Offset             | Type        | Field              | Notes |
-| ------------------ | ----------- | ------------------ | ----- |
-| `+0xD2`            | u32         | key_count          | |
-| `+0xD6`            | u16[n]      | unknown_d2_keys    | Region keys; set on 58 town regions and always includes the region itself. Extractor: warehouse group. Velia's list holds the mainland towns from Velia to Muzgar; Hakinza Sanctuary's holds Altinova, Asparkan, Shakatu, Sand Grain Bazaar, Muzgar, Velandir, Aal's Revelation and Angavu Outpost |
-| `+0xD6 + 2n`       | u32         | vector_count       | |
-| `+0xDA + 2n`       | f32[3][m]   | unknown_d2_vectors | World positions; only The Great Desert of Valencia (region 230) has any (3) |
-
-### Region Tail (171 bytes, after the lists)
+### Region Tail (171 bytes)
 
 Offsets are relative to the start of the tail. The parser keeps every field that is not zero in all records; the unconfirmed ones are `unknown_tail_<offset>`, kept on the record for search and CSV export but not shown in the table.
 
@@ -132,7 +151,7 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 
 | Offset  | Type      | Field                   | Notes |
 | ------- | --------- | ----------------------- | ----- |
-| `+0x00` | u8        | reserved                | Always `0` |
+| `+0x00` | u8        | unknown_tail_00         | Always `0` |
 | `+0x01` | u16       | unknown_tail_01         | `0xFFFF` in every record |
 | `+0x03` | u16       | max_participants        | Node war participant cap: `0` except on the siege regions, `30` to `80` on node war regions, `100` on the four capitals. Matches the published per-node participant table on all 24 Calpheon, Ulukita, Valencia and Edania nodes; the game can override it (City of the Dead: `35` here and in that table, `40` in its tooltip) |
 | `+0x05` | f32       | siege_ap_limit          | Node war AP limit; `FLT_MAX` (no limit) except on the siege regions. See Notes for the five sets |
@@ -140,16 +159,16 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | `+0x0D` | f32       | siege_evasion_limit     | Node war evasion limit |
 | `+0x11` | u32       | unknown_tail_11         | `0x7FFFFFFF` except on the siege regions: `150000`, `200000` or `1000000`, `0` on Velia and Heidel. The accuracy rate or the evasion rate limit; always equal to `unknown_tail_55`, so which is which is open |
 | `+0x15` | u8        | unknown_tail_15         | `3` on the 63 node war regions, `5` elsewhere. Possibly the max war heroes, which the node tooltip shows as 3 |
-| `+0x16` | u8        | reserved                | Always `0` |
+| `+0x16` | u8        | unknown_tail_16         | Always `0` |
 | `+0x17` | u8        | unknown_tail_17         | `3` in every record |
-| `+0x18` | bool      | is_world_boss_reward    | Set on Margoria (Vell's Realm) (871) only |
+| `+0x18` | u8        | is_world_boss_reward    | Set on Margoria (Vell's Realm) (871) only |
 | `+0x19` | f32[6]    | unknown_tail_19         | Two world positions, set on 117 regions; on 84 both are the same point, on 31 the second is zero (Pit of the Undying among them), on 2 they differ |
-| `+0x31` | u64       | reserved                | Always `0` |
+| `+0x31` | u64       | unknown_tail_31         | Always `0` |
 | `+0x39` | f32       | unknown_tail_39         | `FLT_MAX`, or on the siege regions the same value as `siege_ap_limit` |
 | `+0x3D` | f32       | unknown_tail_3d         | `FLT_MAX`, or `100000000` on the siege regions |
-| `+0x41` | u32       | reserved                | Always `0` |
-| `+0x45` | bool      | unknown_tail_45         | Set on exactly the region type 7 records (Pit of the Undying 950 and 1070) |
-| `+0x46` | bool      | unknown_tail_46         | Set on exactly the region type 8 record (Battle Arena 1072) |
+| `+0x41` | u32       | unknown_tail_41         | Always `0` |
+| `+0x45` | u8        | unknown_tail_45         | Set on exactly the region type 7 records (Pit of the Undying 950 and 1070) |
+| `+0x46` | u8        | unknown_tail_46         | Set on exactly the region type 8 record (Battle Arena 1072) |
 | `+0x47` | u32       | unknown_tail_47         | `10011` on the 63 node war regions, `0` elsewhere |
 | `+0x4B` | u16       | unknown_tail_4b         | `0xFFFF` except on the 40 Atoraxion regions: `151` on Vaha's areas, `153` on Syca's, `155` on Yolu's, `157` on Orze's; two dungeon regions break the pattern (Sycrakea `151`, Orzekea `153`) |
 | `+0x4D` | u32       | siege_dr_rate_limit     | Node war damage reduction rate limit, `1000000` = 100%. `658` on every other region |
@@ -157,28 +176,181 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | `+0x55` | u32       | unknown_tail_55         | The other one of the accuracy rate and evasion rate limits, see `unknown_tail_11` |
 | `+0x59` | u32[4]    | siege_resistance_limits | Node war resistance limits, `1000000` = 100%; the four values are equal in every record (likely stun, grapple, knockdown and knockback, order unconfirmed) |
 | `+0x69` | u32       | unknown_tail_69         | `0x7FFFFFFF`, or `0` on the siege regions |
-| `+0x6D` | bool      | unknown_tail_6d         | Set on 7 separated PvP areas: both Battle Arenas of type 6 (436, 437), Battle Arena 1072, Arena of Arsha, Battlefield of Honor, The Red Battlefield, Undiscovered Area (435) |
+| `+0x6D` | u8        | unknown_tail_6d         | Set on 7 separated PvP areas: both Battle Arenas of type 6 (436, 437), Battle Arena 1072, Arena of Arsha, Battlefield of Honor, The Red Battlefield, Undiscovered Area (435) |
 | `+0x6E` | f32[3]    | unknown_tail_6e         | A world position on 49 instance regions: all Atoraxion regions point to Velia's `(-1226, -7012, 81647)`, the Oquilla's Eye regions and the Land of the Morning Light houses to their own town |
 | `+0x7A` | f32[3]    | unknown_tail_7a         | A distinct world position on 36 node war regions, Altinova and Valencia City |
 | `+0x86` | u8        | unknown_tail_86         | On the siege regions only: `100` on the capitals; on node war regions `0`, `5` or `15` |
-| `+0x87` | u8        | reserved                | Always `0` |
-| `+0x88` | bool      | unknown_tail_88         | Set on the 63 node war regions |
+| `+0x87` | u8        | unknown_tail_87         | Always `0` |
+| `+0x88` | u8        | unknown_tail_88         | Set on the 63 node war regions |
 | `+0x89` | u8        | unknown_tail_89         | `10` on the 63 node war regions |
-| `+0x8A` | u8[7]     | reserved                | Always `0` |
+| `+0x8A` | bytes[7]  | unknown_tail_8a         | Always `0` |
 | `+0x91` | u8        | unknown_tail_91         | `49` on the 63 node war regions |
-| `+0x92` | u8[8]     | reserved                | Always `0` |
+| `+0x92` | bytes[8]  | unknown_tail_92         | Always `0` |
 | `+0x9A` | u32       | unknown_tail_9a         | On the siege regions only; node war regions `15625000` to `39062500`, the capitals `117187500` to `234375000`. Multiples of `1953125` (`10^9 / 512`) |
-| `+0x9E` | u32       | reserved                | Always `0` |
+| `+0x9E` | u32       | unknown_tail_9e         | Always `0` |
 | `+0xA2` | u32       | unknown_tail_a2         | On the siege regions only; always `unknown_tail_9a + 7812500` on node war regions, `+39062500` on the capitals |
-| `+0xA6` | u8[3]     | reserved                | Always `0` |
+| `+0xA6` | bytes[3]  | unknown_tail_a6         | Always `0` |
 | `+0xA9` | u16       | guild_wharf_manager_key | NPC character key; set on 20 regions and every NPC is titled `<Guild Wharf Manager>` in LOC (Robert in Velia, Sebastian in Port Epheria, Elro in Oquilla's Eye) |
+
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | Observed `1108` entries |
+| `+0x04` | pstr[string_count] | strings      | Korean strings |
+
+## Layout 1
+
+On client 1784 the head has no `unknown_16`, so the fields from
+`unknown_17` sit 1 byte earlier, and 152 bytes (`unknown_b8`) sit between
+`unknown_b5` and `unknown_b9`. In the tail, `unknown_tail_31` (always `0`
+in Layout 2) counts a list of u16 region keys that follows it, and the
+fields after the list have a u8 and an f32 more before `unknown_tail_45`
+and end after `unknown_tail_7a`, without the 37 bytes from
+`unknown_tail_86` to `guild_wharf_manager_key`.
+
+### Region (variable: 369 bytes + key and vector lists)
+
+| Offset                    | Type                 | Field              | Notes           |
+| ------------------------- | -------------------- | ------------------ | --------------- |
+| `+0x00`                   | Region Head          | head               | See Region Head |
+| `+0x169`                  | u32                  | key_count          |                 |
+| `+0x16D`                  | u16[key_count]       | unknown_d2_keys    |                 |
+| `unknown_d2_keys+0x00`    | u32                  | vector_count       |                 |
+| `unknown_d2_keys+0x04`    | f32[vector_count][3] | unknown_d2_vectors |                 |
+| `unknown_d2_vectors+0x00` | Region Tail          | tail               | See Region Tail |
+
+### Region Head (361 bytes)
+
+| Offset   | Type      | Field                    | Notes |
+| -------- | --------- | ------------------------ | ----- |
+| `+0x00`  | u16       | region_key               |  |
+| `+0x02`  | u8[3]     | color                    |  |
+| `+0x05`  | u8        | color_alpha              |  |
+| `+0x06`  | u8        | region_type              |  |
+| `+0x07`  | u8        | node_war_day             |  |
+| `+0x08`  | bytes[3]  | unknown_08               |  |
+| `+0x0B`  | u8        | unknown_0b               |  |
+| `+0x0C`  | u8        | is_safe_zone             |  |
+| `+0x0D`  | u8        | is_arena_zone            |  |
+| `+0x0E`  | u8        | is_sea                   |  |
+| `+0x0F`  | u8        | is_desert                |  |
+| `+0x10`  | u8        | is_not_dig               |  |
+| `+0x11`  | u8        | is_ocean                 |  |
+| `+0x12`  | u8        | is_prison                |  |
+| `+0x13`  | u8        | unknown_13               |  |
+| `+0x14`  | u8        | unknown_14               |  |
+| `+0x15`  | u8        | unknown_15               |  |
+| `+0x16`  | u8        | unknown_17               |  |
+| `+0x17`  | u8        | unknown_18               |  |
+| `+0x18`  | u8        | unknown_19               |  |
+| `+0x19`  | u8        | unknown_1a               |  |
+| `+0x1A`  | u8        | is_accessible_area       |  |
+| `+0x1B`  | u8        | is_node_access           |  |
+| `+0x1C`  | u16       | unknown_1d               |  |
+| `+0x1E`  | u8        | unknown_1f               |  |
+| `+0x1F`  | u32       | unknown_20               | `22130` in every record on client 1784 |
+| `+0x23`  | u8        | unknown_24               |  |
+| `+0x24`  | u8        | is_locator               |  |
+| `+0x25`  | u32       | villain_respawn_node_key |  |
+| `+0x29`  | f32[3]    | villain_respawn_position |  |
+| `+0x35`  | u8        | is_ancient_dungeon       |  |
+| `+0x36`  | u8        | is_escape                |  |
+| `+0x37`  | u8        | is_special_zone          |  |
+| `+0x38`  | u8        | is_vehicle_dead_zone     |  |
+| `+0x39`  | u8        | unknown_3a               |  |
+| `+0x3A`  | u8        | unknown_3b               |  |
+| `+0x3B`  | u16       | skill_no                 |  |
+| `+0x3D`  | u32       | skill_apply_rate         |  |
+| `+0x41`  | u8        | unknown_42               |  |
+| `+0x42`  | u8        | unknown_43               |  |
+| `+0x43`  | u16       | skill_no_2               |  |
+| `+0x45`  | u32       | skill_apply_rate_2       |  |
+| `+0x49`  | bytes[8]  | unknown_4a               |  |
+| `+0x51`  | u8        | unknown_52               |  |
+| `+0x52`  | u8        | unknown_53               |  |
+| `+0x53`  | u16       | night_skill_no           |  |
+| `+0x55`  | u32       | night_skill_apply_rate   |  |
+| `+0x59`  | u8        | territory_key            |  |
+| `+0x5A`  | u8        | unknown_5b               |  |
+| `+0x5B`  | u32       | name_index               |  |
+| `+0x5F`  | u32       | return_position_name     |  |
+| `+0x63`  | u16       | capital_region_key       |  |
+| `+0x65`  | u16       | trade_origin_region_key  |  |
+| `+0x67`  | u16       | region_group_key         |  |
+| `+0x69`  | u8        | unknown_6a               |  |
+| `+0x6A`  | u16       | waypoint_key             |  |
+| `+0x6C`  | bytes[2]  | unknown_6d               |  |
+| `+0x6E`  | u16       | node_key                 |  |
+| `+0x70`  | bytes[2]  | unknown_71               |  |
+| `+0x72`  | u8        | region_attribute_type    |  |
+| `+0x73`  | bytes[3]  | unknown_74               |  |
+| `+0x76`  | f32[3]    | unknown_77               |  |
+| `+0x82`  | f32[3]    | return_position          |  |
+| `+0x8E`  | bytes[4]  | unknown_8f               |  |
+| `+0x92`  | u8        | exploration_point        |  |
+| `+0x93`  | u8        | unknown_94               |  |
+| `+0x94`  | u32       | unknown_95               |  |
+| `+0x98`  | f32[5]    | unknown_99               |  |
+| `+0xAC`  | u32       | unknown_ad               |  |
+| `+0xB0`  | u32       | unknown_b1               |  |
+| `+0xB4`  | u32       | unknown_b5               |  |
+| `+0xB8`  | u32[38]   | unknown_b8               | Not in Layout 2; see below |
+| `+0x150` | u32[6]    | unknown_b9               |  |
+| `+0x168` | u8        | is_free_revival_area     |  |
+
+`unknown_b8` is 38 u32: one from `0` to `43`, 18 values of the form
+`1001`, `2001` ... `8001` (or `0`), 18 values from `0` to `265`, and `1` in
+every record on client 1784.
+
+### Region Tail (variable: 139 bytes + region keys)
+
+| Offset                   | Type                 | Field                   | Notes |
+| ------------------------ | -------------------- | ----------------------- | ----- |
+| `+0x00`                  | u8                   | unknown_tail_00         |  |
+| `+0x01`                  | u16                  | unknown_tail_01         |  |
+| `+0x03`                  | u16                  | max_participants        |  |
+| `+0x05`                  | f32                  | siege_ap_limit          |  |
+| `+0x09`                  | f32                  | siege_dr_limit          |  |
+| `+0x0D`                  | f32                  | siege_evasion_limit     |  |
+| `+0x11`                  | u32                  | unknown_tail_11         |  |
+| `+0x15`                  | u8                   | unknown_tail_15         |  |
+| `+0x16`                  | u8                   | unknown_tail_16         |  |
+| `+0x17`                  | u8                   | unknown_tail_17         |  |
+| `+0x18`                  | u8                   | is_world_boss_reward    |  |
+| `+0x19`                  | f32[6]               | unknown_tail_19         |  |
+| `+0x31`                  | u64                  | unknown_tail_31         | Count of `unknown_tail_list`; `0` to `7` on client 1784 |
+| `+0x39`                  | u16[unknown_tail_31] | unknown_tail_list       | Region keys, mostly neighbours: region 214 holds `211, 212, 213`; set on 77 regions |
+| `unknown_tail_list+0x00` | f32                  | unknown_tail_39         |  |
+| `unknown_tail_list+0x04` | f32                  | unknown_tail_3d         |  |
+| `unknown_tail_list+0x08` | u32                  | unknown_tail_41         |  |
+| `unknown_tail_list+0x0C` | u8                   | unknown_tail_list_0c    | Set on regions 78, 203 and 230 |
+| `unknown_tail_list+0x0D` | f32                  | unknown_tail_list_0d    | `1000.0` on 82 regions, all with `node_war_day` `7`, else `0` |
+| `unknown_tail_list+0x11` | u8                   | unknown_tail_45         | Set on regions 950 and 1070 |
+| `unknown_tail_list+0x12` | u8                   | unknown_tail_46         | Set on region 1072 |
+| `unknown_tail_list+0x13` | u32                  | unknown_tail_47         | `0`, `100`, `1001`, `10011` or `100111` |
+| `unknown_tail_list+0x17` | u16                  | unknown_tail_4b         |  |
+| `unknown_tail_list+0x19` | u32                  | siege_dr_rate_limit     |  |
+| `unknown_tail_list+0x1D` | f32                  | siege_accuracy_limit    |  |
+| `unknown_tail_list+0x21` | u32                  | unknown_tail_55         |  |
+| `unknown_tail_list+0x25` | u32[4]               | siege_resistance_limits |  |
+| `unknown_tail_list+0x35` | u32                  | unknown_tail_69         |  |
+| `unknown_tail_list+0x39` | u8                   | unknown_tail_6d         |  |
+| `unknown_tail_list+0x3A` | f32[3]               | unknown_tail_6e         |  |
+| `unknown_tail_list+0x46` | f32[3]               | unknown_tail_7a         |  |
+
+On client 1784 the file holds 1,062 records. Of the 1,056 region keys it
+shares with client 3473, at least 932 hold the same value in each field
+named here, apart from the string indices, `unknown_20`, `unknown_95` and
+`siege_dr_rate_limit`.
 
 ## Field Names
 
 Two sources name most of the head fields:
 
 - The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::RegionInfo` lists the members `_regionKey`, `_colorKey`, `_regionType`, `_isSafeZone`, `_isArenaZone`, `_isSea`, `_isDesert`, `_isPrison`, seven town and war flags, `_accessibleArea`, `_villageTaxLevel`, `_dropGroupRerollCountOfSieger`, `_isLocator`, `_villainRespawnExploreKey`, `_villainRespawnPosition`, `_isAncientDungeon`, `_isEscape`, the day and night region skills, `_territoryKey`, `_areaName`, `_returnRegionName`, `_tradeOriginRegionKey`, `_regionGroupKey`, `_waypointKey`, `_exploreKey`, `_regionAttributeType`, `_returnPosition`, `_explorationPoint` ... `_isFreeRevivalArea` in this order. Today's record stores them in the same order without padding or pointers, with newer fields in between. Its loader, `GameCommonParameterLoaderFromExcel::LoadRegionInformation`, reads them from the columns of `Region_Table`.
-- The BdoEmu server (about 2021) ships the developers' `Region_Table` with its original column names and values. I matched every column against every head and tail offset over the 896 region keys it shares with the client file.
+- A private server on client 519 ships the developers' `Region_Table` with its original column names and values. I matched every column against every head and tail offset over the 896 region keys it shares with the client file.
 
 Matches on client 3464 (896 shared region keys). The mismatches are regions changed since 2021:
 
@@ -243,32 +415,6 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 ### `node_war_day` (`CppEnums.VillageSiegeType`)
 
 `0` Sunday, `1` Monday, `2` Tuesday, `3` Wednesday, `4` Thursday, `5` Friday, `6` Saturday, `7` none. Client 3458 has 6 regions on each day from Sunday to Thursday, 33 on Friday (most of them Margoria islands) and none on Saturday, the conquest war day.
-
-## Suggested UI Layout
-
-| Column              | Type | Notes |
-| ------------------- | ---- | ----- |
-| Region Key          | num  | `region_key` |
-| Region              | text | LOC type 17 name, falling back to the Korean `name_index` string |
-| Type                | text | `region_type` enum name |
-| Territory           | text | LOC type 12 (`str_id4=1`) name of `territory_key`; sorts by key |
-| Capital             | text | LOC type 17 name of `capital_region_key` |
-| Node                | text | `node_key` with its LOC type 29 name; `-` when 0 |
-| Region Group        | num  | `region_group_key` |
-| Node War Day        | text | Day name; `-` for none; sorts in week order, none last |
-| Desert              | flag | `is_desert` |
-| Safe Zone           | flag | `is_safe_zone` |
-| Day Skill           | text | `skill_no` and `skill_no_2` with their LOC type 10 names, joined by ` / `; `-` when neither is set |
-| Night Skill         | text | `night_skill_no` with its LOC type 10 name |
-| Return Point        | text | `return_position_name` as the LOC type 17 name of the first region with that Korean name, else the Korean name |
-| Guild Wharf Manager | text | `guild_wharf_manager_key` with its NPC name; `-` when 0 |
-| Max Participants    | num  | `max_participants`; `-` when 0 |
-| AP Limit            | num  | `siege_ap_limit`; `-` when there is no limit |
-| DR Limit            | num  | `siege_dr_limit` |
-| Accuracy Limit      | num  | `siege_accuracy_limit` |
-| Evasion Limit       | num  | `siege_evasion_limit` |
-| DR Rate Limit       | num  | `siege_dr_rate_limit` as a percentage |
-| Resistance Limit    | num  | `siege_resistance_limits` as one percentage when all four match |
 
 ## Notes
 

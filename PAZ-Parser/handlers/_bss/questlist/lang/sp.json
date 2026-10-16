@@ -9,9 +9,8 @@
     "subId": "ID secundario",
     "icon": "Icono",
     "title": "Título",
-    "offeredWhen": "Se ofrece si*",
-    "ruledOutWhen": "Se descarta si*",
-    "scriptGuess": "* Nuestra lectura del script; no confirmada en el juego"
+    "shownWhen": "Visible si",
+    "hiddenWhen": "Oculta si"
   },
   "meta": {
     "count": "{count} referencias de misiones · {group_count} grupos",

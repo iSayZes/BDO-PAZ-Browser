@@ -7,13 +7,23 @@ character level and skill points it needs, the skills that must be learned
 first, the rank chain it belongs to, and the skills it cannot be held with.
 It has exactly the keys of [`skill.dbss`](skill_dbss.md).
 
-```text
-skill 1761 "Grave Digging III"
-  classes     Warrior                         (class_mask 0x1)
-  need_level  58, need_skill_point 33
-  need_skill  1760 "Grave Digging II", 1712 "Awakening: Goyen's Greatsword"
-  rank chain  1759 I -> 1760 II -> 1761 III -> 1762 IV
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes     | Records                    | Row bytes                  |
+| ------ | -------------- | ------- | ------------------------ | --------- | -------------------------- | -------------------------- |
+| 1      | 1784 and later | 3473    | `skillsimply.dbss`       | 3,499,846 | 30,487 Skill Simply Record | 114 to 134, 115 on average |
+| 1      | 1784 and later | 3473    | `skillsimplyoffset.dbss` | 365,848   | 30,487 Offset Row          | 12                         |
+
+| Layout | File                     | Known               | Unknown             |
+| ------ | ------------------------ | ------------------- | ------------------- |
+| 1      | `skillsimply.dbss`       | 2,033,978 B (58.1%) | 1,465,868 B (41.9%) |
+| 1      | `skillsimplyoffset.dbss` | 365,848 B (100.0%)  | 0 B (0.0%)          |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,87 +36,110 @@ The skill key is the one shared by the whole skill cluster; see
 [`skill.dbss` Skill Keys](skill_dbss.md#skill-keys). All multi-byte values are
 little-endian.
 
-## File Layout
+## Layout 1
 
-### skillsimplyoffset.dbss
+### File Layout
+
+| Offset              | Type                       | Field        | Notes                                                        |
+| ------------------- | -------------------------- | ------------ | ------------------------------------------------------------ |
+| `+0x00`             | char[4]                    | magic        | `PABR`                                                       |
+| `+0x04`             | u32                        | count        | Number of records; `30424`, the `skill.dbss` key set exactly |
+| `+0x08`             | Skill Simply Record[count] | records      | Back to back, no repeated key between them                   |
+| `records+0x00`      | String Table               | string_table | Empty string table: `u32 0`                                  |
+| `string_table+0x00` | u32                        | table_start  | End of the records                                           |
+| `string_table+0x04` | u32                        | zero         | Always `0`                                                   |
+
+The last 12 bytes are the empty string table and its trailer: `u32 0`, `u32` end of the records, `u32 0`.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                          |
+| ------- | ------------------ | ------------ | ------------------------------ |
+| `+0x00` | u32                | string_count | `0`; the table is always empty |
+| `+0x04` | pstr[string_count] | strings      | None                           |
+
+### Skill Simply Record (variable: 110 bytes + lists)
+
+`size` bytes from `offset` in `skillsimplyoffset.dbss`. Four lists make the
+record variable; offsets after a list count from the end of `unknown_hashes`,
+`next_rank_keys`, `exclusive_skill_nos` or `base_skill_keys`. Record counts
+in the table are from client 3458, and fields noted "Always `0`" are `0` on
+every record of it.
+
+| Offset                     | Type                  | Field               | Notes                                                              |
+| -------------------------- | --------------------- | ------------------- | ------------------------------------------------------------------ |
+| `+0x00`                    | u32                   | skill_key           | Equals the index key                                               |
+| `+0x04`                    | u32                   | level_1_key         | `skill_no << 16 \| 1`, as in `skill.dbss`                           |
+| `+0x08`                    | u32                   | kind                | `0` other, `1` active, `2` passive; equals `skilltype.dbss` `kind` on all 30,342 shared keys |
+| `+0x0C`                    | u8                    | branch              | `1` Awakening (1,985 records), `2` Succession (1,122), `0` neither; see below |
+| `+0x0D`                    | u8                    | unknown_0d          | `0` with `branch` `0`, else the other branch                       |
+| `+0x0E`                    | u32                   | hash_count          | `1` on 29,916 records, up to `4`                                   |
+| `+0x12`                    | u32[hash_count]       | unknown_hashes      | Hash-like values; `0x6016CFF7` is the first on 18,784 records, 444 distinct |
+| `unknown_hashes+0x00`      | u8                    | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see In-Game Checks  |
+| `unknown_hashes+0x01`      | u32                   | need_level          | Character level needed to learn it; see below                      |
+| `unknown_hashes+0x05`      | u16                   | previous_rank_no    | Skill number of the rank before it, `0` on the first rank          |
+| `unknown_hashes+0x07`      | u32                   | next_rank_count     | `0` on 26,056 records, `1` on 4,099, up to `5`                     |
+| `unknown_hashes+0x0B`      | u32[next_rank_count]  | next_rank_keys      | Skill keys of the ranks after it, see below                        |
+| `next_rank_keys+0x00`      | u8                    | weapon_type         | The weapon the skill is used with; `0` none, `57` Awakening weapon; see below |
+| `next_rank_keys+0x01`      | u8                    | uses_main_weapon    | `1` when the skill is used with the main weapon (4,768 records); see below |
+| `next_rank_keys+0x02`      | u8                    | uses_sub_weapon     | `1` when the skill is used with the sub-weapon (451 records); see below |
+| `next_rank_keys+0x03`      | bytes[2]              | unknown_n03         | Both `1` on every skill with a weapon, else `0`                     |
+| `next_rank_keys+0x05`      | u8                    | unknown_n05         | `2` on 25,513 records, else `0` or `1`                             |
+| `next_rank_keys+0x06`      | u8                    | unknown_n06         | `1` on one record                                                  |
+| `next_rank_keys+0x07`      | u16                   | unknown_n07         | 21 values; `558` on 22,285 records                                 |
+| `next_rank_keys+0x09`      | bytes[4]              | unknown_n09         | Always `0`                                                         |
+| `next_rank_keys+0x0D`      | u8                    | unknown_n0d         | `1` on 766 records                                                 |
+| `next_rank_keys+0x0E`      | bytes[3]              | unknown_n0e         | Always `0`                                                         |
+| `next_rank_keys+0x11`      | u8                    | unknown_n11         | `1` on 3,665 records                                               |
+| `next_rank_keys+0x12`      | u32                   | first_rank_key      | Level 1 key of the first rank of its chain; its own `level_1_key` on a first rank |
+| `next_rank_keys+0x16`      | u8                    | is_fusion           | `1` on the 205 fusion skills, see below                            |
+| `next_rank_keys+0x17`      | u8                    | unknown_n17         | `1` on 847 records                                                 |
+| `next_rank_keys+0x18`      | u8                    | unknown_n18         | Always `0`                                                         |
+| `next_rank_keys+0x19`      | u8                    | can_quick_slot      | `1` when the skill can be put on a quick slot (3,592 records); see below |
+| `next_rank_keys+0x1A`      | u8                    | unknown_n1a         | `1` on 30,288 records, else `2`, `3` or `13`                       |
+| `next_rank_keys+0x1B`      | u8                    | unknown_n1b         | Always `0`                                                         |
+| `next_rank_keys+0x1C`      | u64                   | class_mask          | Bit `n` set: class `n` (LOC type `21`) can learn it; see below     |
+| `next_rank_keys+0x24`      | u16                   | has_need_skill_1    | `1` when `need_skill_no_1` is set, else `0`                        |
+| `next_rank_keys+0x26`      | u16                   | need_skill_no_1     | Skill number that must be learned first, `0` when none             |
+| `next_rank_keys+0x28`      | u16                   | has_need_skill_2    | `1` when `need_skill_no_2` is set, else `0`                        |
+| `next_rank_keys+0x2A`      | u16                   | need_skill_no_2     | A second required skill, `0` when none                             |
+| `next_rank_keys+0x2C`      | bytes[8]              | unknown_n2c         | Always `0`                                                         |
+| `next_rank_keys+0x34`      | u16                   | need_skill_point    | Skill points it costs; `0` on 9,304 records, `1` on 17,512, up to `999` |
+| `next_rank_keys+0x36`      | bytes[4]              | unknown_n36         | Always `0`                                                         |
+| `next_rank_keys+0x3A`      | u64                   | exclusive_count     | `0` on 29,716 records, up to `5`                                   |
+| `next_rank_keys+0x42`      | u16[exclusive_count]  | exclusive_skill_nos | Skill numbers it cannot be held with, see below                    |
+| `exclusive_skill_nos+0x00` | bytes[8]              | unknown_e00         | Always `0`                                                         |
+| `exclusive_skill_nos+0x08` | u8                    | unknown_e08         | Equals `skill.dbss` `unknown_08` on every record; see Notes        |
+| `exclusive_skill_nos+0x09` | u8                    | unknown_e09         | `1` on 255 records, all active                                     |
+| `exclusive_skill_nos+0x0A` | u32                   | base_skill_count    | `1` on 155 records, else `0`                                       |
+| `exclusive_skill_nos+0x0E` | u32[base_skill_count] | base_skill_keys     | Equals `skill.dbss` `base_skill_keys` on every record              |
+| `base_skill_keys+0x00`     | u8                    | unknown_end         | `0xCA` on 30,397 records; `0xB3` on exactly the 27 "Elvia:" skills |
+
+Every one of the 30,424 records on client 3458 walks to exactly its `size`
+with this layout. The shortest record (114 bytes) has one hash and empty
+lists. Earlier versions of this doc called `unknown_hashes` `hashes`.
+
+### `skillsimplyoffset.dbss`
 
 Unlike `skilloffset.dbss` this index has no magic and no trailer: a u32 count
 (`30424` on client 3458) and then 12-byte rows of u32 `skill_key`, u32
 `offset`, u32 `size`, ending exactly at end of file. Read it with
 `parse_bare_u32_offset_rows()`.
 
-### skillsimply.dbss
+| Offset  | Type              | Field | Notes                  |
+| ------- | ----------------- | ----- | ---------------------- |
+| `+0x00` | u32               | count | `30424` on client 3458 |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row         |
 
-| Offset  | Type     | Field   | Notes                                                           |
-| ------- | -------- | ------- | --------------------------------------------------------------- |
-| `+0x00` | u8[4]    | magic   | `PABR`                                                          |
-| `+0x04` | u32      | count   | Number of records; `30424`, the `skill.dbss` key set exactly    |
-| `+0x08` | ...      | records | Back to back, no repeated key between them                      |
-| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the records, `u32 0`  |
+### Offset Row (12 bytes)
 
-## Record Structure
+| Offset  | Type | Field     | Notes                                            |
+| ------- | ---- | --------- | ------------------------------------------------ |
+| `+0x00` | u32  | skill_key | Record key                                       |
+| `+0x04` | u32  | offset    | Absolute byte offset of the record's `skill_key` |
+| `+0x08` | u32  | size      | Record size in bytes                             |
 
-### Skill Simply Record (variable, `size` bytes from `offset`)
-
-Four lists make the record variable. Offsets marked `H+`, `N+` and `E+` count
-from the end of `hashes`, `next_rank_keys` and `exclusive_skill_nos`. Record
-counts in the table are from client 3458, and fields called "zero" are `0` on
-every record of it.
-
-| Offset  | Type    | Field               | Notes                                                              |
-| ------- | ------- | ------------------- | ------------------------------------------------------------------ |
-| `+0x00` | u32     | skill_key           | Equals the index key                                               |
-| `+0x04` | u32     | level_1_key         | `skill_no << 16 \| 1`, as in `skill.dbss`                           |
-| `+0x08` | u32     | kind                | `0` other, `1` active, `2` passive; equals `skilltype.dbss` `kind` on all 30,342 shared keys |
-| `+0x0C` | u8      | branch              | `1` Awakening (1,985 records), `2` Succession (1,122), `0` neither; see below |
-| `+0x0D` | u8      | unknown_0d          | `0` with `branch` `0`, else the other branch                       |
-| `+0x0E` | u32     | hash_count          | `1` on 29,916 records, up to `4`                                   |
-| `+0x12` | u32[]   | hashes              | Hash-like values; `0x6016CFF7` is the first on 18,784 records, 444 distinct |
-| `H+0`   | u8      | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see In-Game Checks  |
-| `H+1`   | u32     | need_level          | Character level needed to learn it; see below                      |
-| `H+5`   | u16     | previous_rank_no    | Skill number of the rank before it, `0` on the first rank          |
-| `H+7`   | u32     | next_rank_count     | `0` on 26,056 records, `1` on 4,099, up to `5`                     |
-| `H+11`  | u32[]   | next_rank_keys      | Skill keys of the ranks after it, see below                        |
-| `N+0`   | u8      | weapon_type         | The weapon the skill is used with; `0` none, `57` Awakening weapon; see below |
-| `N+1`   | u8      | uses_main_weapon    | `1` when the skill is used with the main weapon (4,768 records); see below |
-| `N+2`   | u8      | uses_sub_weapon     | `1` when the skill is used with the sub-weapon (451 records); see below |
-| `N+3`   | u8[2]   | unknown_n03         | Both `1` on every skill with a weapon, else `0`                     |
-| `N+5`   | u8      | unknown_n05         | `2` on 25,513 records, else `0` or `1`                             |
-| `N+6`   | u8      | unknown_n06         | `1` on one record                                                  |
-| `N+7`   | u16     | unknown_n07         | 21 values; `558` on 22,285 records                                 |
-| `N+9`   | u8[4]   | zero                |                                                                    |
-| `N+13`  | u8      | unknown_n0d         | `1` on 766 records                                                 |
-| `N+14`  | u8[3]   | zero                |                                                                    |
-| `N+17`  | u8      | unknown_n11         | `1` on 3,665 records                                               |
-| `N+18`  | u32     | first_rank_key      | Level 1 key of the first rank of its chain; its own `level_1_key` on a first rank |
-| `N+22`  | u8      | is_fusion           | `1` on the 205 fusion skills, see below                            |
-| `N+23`  | u8      | unknown_n17         | `1` on 847 records                                                 |
-| `N+24`  | u8      | zero                |                                                                    |
-| `N+25`  | u8      | can_quick_slot      | `1` when the skill can be put on a quick slot (3,592 records); see below |
-| `N+26`  | u8      | unknown_n1a         | `1` on 30,288 records, else `2`, `3` or `13`                       |
-| `N+27`  | u8      | zero                |                                                                    |
-| `N+28`  | u64     | class_mask          | Bit `n` set: class `n` (LOC type `21`) can learn it; see below     |
-| `N+36`  | u16     | has_need_skill_1    | `1` when `need_skill_no_1` is set, else `0`                        |
-| `N+38`  | u16     | need_skill_no_1     | Skill number that must be learned first, `0` when none             |
-| `N+40`  | u16     | has_need_skill_2    | `1` when `need_skill_no_2` is set, else `0`                        |
-| `N+42`  | u16     | need_skill_no_2     | A second required skill, `0` when none                             |
-| `N+44`  | u8[8]   | zero                |                                                                    |
-| `N+52`  | u16     | need_skill_point    | Skill points it costs; `0` on 9,304 records, `1` on 17,512, up to `999` |
-| `N+54`  | u8[4]   | zero                |                                                                    |
-| `N+58`  | u64     | exclusive_count     | `0` on 29,716 records, up to `5`                                   |
-| `N+66`  | u16[]   | exclusive_skill_nos | Skill numbers it cannot be held with, see below                    |
-| `E+0`   | u8[8]   | zero                |                                                                    |
-| `E+8`   | u8      | unknown_e08         | Equals `skill.dbss` `unknown_08` on every record; see Notes        |
-| `E+9`   | u8      | unknown_e09         | `1` on 255 records, all active                                     |
-| `E+10`  | u32     | base_skill_count    | `1` on 155 records, else `0`                                       |
-| `E+14`  | u32[]   | base_skill_keys     | Equals `skill.dbss` `base_skill_keys` on every record              |
-| last    | u8      | unknown_end         | `0xCA` on 30,397 records; `0xB3` on exactly the 27 "Elvia:" skills |
-
-Every one of the 30,424 records on client 3458 walks to exactly its `size`
-with this layout. The shortest record (114 bytes) has one hash and empty
-lists.
-
-### `need_level` and `need_skill_point`
+## `need_level` and `need_skill_point`
 
 Checked on bdocodex: "Grave Digging III" (1761) needs level 58 and 33 skill
 points and stores `58` and `33`; "Imminent Doom" (1209) needs level 50 and 1
@@ -126,14 +159,14 @@ October 2026, and active players sit around 61 to 63. 152 of them also store
 both values lock out skills that are retired or not learned from the skill
 window.
 
-### `need_skill_no_1` and `need_skill_no_2`
+## `need_skill_no_1` and `need_skill_no_2`
 
 The skill tooltip Lua reads them as `_needSkillNo1` and `_needSkillNo2`.
 "Grave Digging III" needs `1760` "Grave Digging II" and `1712` "Awakening:
 Goyen's Greatsword", the two prerequisites bdocodex lists. 6,391 records set
 the first and 1,486 the second; every value is a skill number of this table.
 
-### `previous_rank_no`, `next_rank_keys` and `first_rank_key`
+## `previous_rank_no`, `next_rank_keys` and `first_rank_key`
 
 The three fields link the ranks of a skill line ("Grave Digging I" to "IV",
 "Hammer Mastery I" to "IV"). On all 30,424 records `next_rank_keys` holds
@@ -146,7 +179,7 @@ Decapitation IV" lists no next rank here, `skill.dbss` lists "Core: Sudden
 Decapitation") and the guild skill chains ("Ample Storage Lv. 26" to "Lv.
 27").
 
-### `class_mask`
+## `class_mask`
 
 | Value              | Records | Meaning                                          |
 | ------------------ | ------- | ------------------------------------------------ |
@@ -160,7 +193,7 @@ Ranger, `8` Sorceress, `32` Seraph). Every single-bit skill sampled belongs
 to the class of its bit. Musa and Maehwa skills share a bit with class `22`
 ("Temp Maehwa"): `0x500000` and `0x600000`.
 
-### `exclusive_skill_nos`
+## `exclusive_skill_nos`
 
 Set on 708 records, in two patterns. The "Core:" skills of a class list every
 other Core of that class ("Core: Soul Shower" lists the five other Woosa
@@ -171,7 +204,7 @@ entries are mutual. bdocodex shows the list on "Prime: Fireball I" (4941) as
 game (Wizard) only one Core can be selected at a time, and only on the
 Awakening branch.
 
-### `branch`
+## `branch`
 
 `1` on every "Awakening:" and "Core:" skill and on the Awakening weapon
 skills ("Water Sphere I" to "III"), `2` on 972 of the 1,051 "Prime:" skills
@@ -179,7 +212,7 @@ and on 99 "Succession:" skills, `0` on the rest, which both branches use.
 Cores are Awakening-only in game, matching their `1`. The client Lua reads a
 skill's branch with `getSkillAwakenBranchType`.
 
-### `is_fusion`
+## `is_fusion`
 
 Fusion skills are learned by combining two skills at levels 56, 57 and 58,
 cost no skill points, and each class picks three of its six (one per level
@@ -191,7 +224,7 @@ stored here (the Lua reads them with `ToClient_getFusionMainSkillNoByClassType`
 and `ToClient_getFusionSubSkillNoByClassType`), and neither is the one-per-row
 choice: `exclusive_skill_nos` is empty on them.
 
-### `can_quick_slot`
+## `can_quick_slot`
 
 Checked in game (2026-10-01) on 15 Wizard skills: the tooltip line "Can be
 added to a Quick Slot" appears exactly where the byte is `1` ("Teleport III",
@@ -203,12 +236,12 @@ Arrow V", "Magical Evasion V", "Ultimate: Teleport", "Flow: Magical Evasion",
 "Ultimate: Teleport" `0`. Every flagged record is an active skill on Wizard;
 basic attacks, Flow follow-ups, Cores and passives are `0`.
 
-### `weapon_type`, `uses_main_weapon` and `uses_sub_weapon`
+## `weapon_type`, `uses_main_weapon` and `uses_sub_weapon`
 
 Checked in game (2026-10-01) on Wizard tooltips. On class skills the four
-bytes from `N+1` take only four patterns:
+bytes from `next_rank_keys+0x01` take only four patterns:
 
-| `N+1` to `N+4` | Class skills | Wizard example and tooltip                                       |
+| `+0x01` to `+0x04` | Class skills | Wizard example and tooltip                                       |
 | -------------- | ------------ | ---------------------------------------------------------------- |
 | `01 00 01 01`  | 4,488        | "Fireball IV", a staff skill: "Can be used via a Quick Slot with your sphera" |
 | `00 00 01 01`  | 1,966        | "Water Sphere III", a sphera skill: "Can be used via a Quick Slot with your staff" |
@@ -236,39 +269,17 @@ skills the sub-weapon itself, shared where classes share one:
 The other sub-weapon values belong to one class each (Dosa `110`, Hashashin
 `81`, Corsair `90`, Lahn `70`, Deadeye `113`, Woosa `99`).
 
-### `unknown_end`
+## `unknown_end`
 
 `0xB3` marks exactly the 27 "Elvia:" skills. Those only work
 while an Elvia weapon buff is active: the buff comes from orbs that drop in
 Elvia, lasts 10 minutes, and enables the class's Elvia skill. Every other
 record ends in `0xCA`, so the byte is not a plain end marker.
 
-## Suggested UI Layout
-
-Opens sorted by `skill_key` (Skill No, then Level); the index order is
-arbitrary.
-
-| Column           | Type | Notes                                                              |
-| ---------------- | ---- | ------------------------------------------------------------------ |
-| Skill No         | num  | `skill_key >> 16`                                                  |
-| Level            | num  | `skill_key & 0xFFFF`                                               |
-| Icon             | icon | `IconKind.SKILL` icon of `skill_no`                                |
-| Name             | text | LOC type `10`, `str_id1 = skill_no`, `str_id4 = 0`; else the `skilltype.dbss` Korean name |
-| Classes          | text | `class_mask` as LOC type `21` names; "All" for `0x7FFFFFFFFFFF`, empty for `0` |
-| Kind             | text | `kind` as Other / Active / Passive                                 |
-| Branch           | text | `branch` as Awakening / Succession; empty when `0`                 |
-| Weapon           | text | Main (`uses_main_weapon`), Sub (`uses_sub_weapon`) or Awakening (`weapon_type` `57`); empty otherwise |
-| Quick Slot       | flag | `can_quick_slot` as a check mark or a cross                        |
-| Required Level   | num  | `need_level`; empty when `0`                                       |
-| Skill Points     | num  | `need_skill_point`; empty when `0`                                 |
-| Required Skills  | list | `need_skill_no_1` and `need_skill_no_2` as skill names             |
-| Previous Rank    | text | `previous_rank_no` as skill name                                   |
-| Exclusive Skills | list | `exclusive_skill_nos` as skill names                               |
-
 ## Notes
 
 - `0x6016CFF7` also sits in the `skilltype.dbss` configuration of 18,744
-  records, close to the 18,784 here, so `hashes` likely repeats something
+  records, close to the 18,784 here, so `unknown_hashes` likely repeats something
   from that configuration.
 - The `need_*` field names follow the skill tooltip Lua
   (`panel_tooltip_skill.luac`); `class_mask`, `branch`, `is_fusion`, `can_quick_slot`, the weapon fields, the rank
@@ -292,12 +303,12 @@ arbitrary.
 
 ## Open Questions
 
-### What do the remaining flags and `hashes` hold?
+### What do the remaining flags and `unknown_hashes` hold?
 
 The other `unknown_` bytes are small flags and enums (`unknown_n07` is `558`
 on most records). `unknown_e08` marks damage skills on Wizard except
 "Elementalization" (see Notes); what else it tracks is not known.
-`hashes` is up to four hash-like values that also split by weapon on Wizard
+`unknown_hashes` is up to four hash-like values that also split by weapon on Wizard
 (`0x6016CFF7` on the staff skills, `0xD6CCB471` on "Water Sphere II"). The skill
 tooltip Lua also reads an HP cost and a learning item, which are candidates;
 the MP and stamina costs turned out to live in `skill.dbss`. Matching them

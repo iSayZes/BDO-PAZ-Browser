@@ -4,11 +4,23 @@
 
 The gift items of the in-game "Give Gift" interaction: per NPC, the accepted gift item IDs and the Amity gained for each. The NPC's reply to a confession is in [`npcgiftdata.dbss`](npcgiftdata_dbss.md), keyed by the same NPC IDs.
 
-Example:
+## Versions
 
-```text
-NPC: Crio (40012)  →  item: 7023 (Haystack)  →  amity: 40
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                 | Bytes | Records                      | Row bytes |
+| ------ | -------------- | ------- | -------------------- | ----- | ---------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `npcgift.dbss`       | 1,552 | 117 Gift Row, 24 Gift Record | 12        |
+| 1      | 1784 and later | 3473    | `npcgiftoffset.dbss` | 244   | 24 Offset Record             | 10        |
+
+| Layout | File                 | Known            | Unknown      |
+| ------ | -------------------- | ---------------- | ------------ |
+| 1      | `npcgift.dbss`       | 1,552 B (100.0%) | 0 B (0.0%)   |
+| 1      | `npcgiftoffset.dbss` | 196 B (80.3%)    | 48 B (19.7%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,46 +34,26 @@ NPC: Crio (40012)  →  item: 7023 (Haystack)  →  amity: 40
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### npcgiftoffset.dbss
+### File Layout
 
-#### Header (4 bytes)
+| Offset  | Type               | Field   | Notes                                     |
+| ------- | ------------------ | ------- | ----------------------------------------- |
+| `+0x00` | u32                | count   | Number of NPC gift records (observed: 24) |
+| `+0x04` | Gift Record[count] | records | See Gift Record                           |
 
-| Offset  | Type | Field | Notes                                     |
-| ------- | ---- | ----- | ----------------------------------------- |
-| `+0x00` | u32  | count | Number of NPC gift records (observed: 24) |
+### Gift Record (variable: 6 bytes + gift rows)
 
-#### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                                 |
-| ------- | ---- | ----------- | --------------------------------------------------------------------- |
-| `+0x00` | u16  | npc_id      | NPC key; matches the record's leading `npc_id`                        |
-| `+0x02` | u32  | data_offset | Byte offset into `npcgift.dbss`; points 2 bytes past the record start |
-| `+0x06` | u16  | data_size   | Byte count after the leading `npc_id`                                 |
-| `+0x08` | u16  | padding     | Observed: 0                                                           |
-
-`record_start = data_offset - 2`
-
-### npcgift.dbss
-
-#### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                     |
-| ------- | ---- | ----- | ----------------------------------------- |
-| `+0x00` | u32  | count | Number of NPC gift records (observed: 24) |
-
-#### Gift Record (variable length)
-
-| Offset  | Type       | Field      | Notes                            |
-| ------- | ---------- | ---------- | -------------------------------- |
-| `+0x00` | u16        | npc_id     | NPC key                          |
-| `+0x02` | u32        | gift_count | Number of gift rows              |
-| `+0x06` | Gift Row[] | gifts      | `gift_count` rows, 12 bytes each |
+| Offset  | Type                 | Field      | Notes                            |
+| ------- | -------------------- | ---------- | -------------------------------- |
+| `+0x00` | u16                  | npc_id     | NPC key                          |
+| `+0x02` | u32                  | gift_count | Number of gift rows              |
+| `+0x06` | Gift Row[gift_count] | gifts      | `gift_count` rows, 12 bytes each |
 
 Observed `gift_count` values: in the pre-2026-09-27 fixture 23 records have 5 rows and NPC 41002 has 4 (119 gift rows); in the 2026-09-27 client 22 have 5, NPC 43408 has 4 and NPC 41002 has 3 (117 gift rows). The companion `data_size` equals `4 + gift_count * 12`.
 
-#### Gift Row (12 bytes)
+### Gift Row (12 bytes)
 
 | Offset  | Type | Field   | Notes                                                              |
 | ------- | ---- | ------- | ------------------------------------------------------------------ |
@@ -69,21 +61,23 @@ Observed `gift_count` values: in the pre-2026-09-27 fixture 23 records have 5 ro
 | `+0x04` | u32  | amity_a | Amity gained by giving this item                                   |
 | `+0x08` | u32  | amity_b | Duplicate Amity value; equal to `amity_a` on every observed row (119 pre-2026-09-27, 117 in the 2026-09-27 client) |
 
-## Suggested UI Layout
+### `npcgiftoffset.dbss`
 
-| Column    | Type | Notes                                                |
-| --------- | ---- | ---------------------------------------------------- |
-| NPC ID    | num  | `npc_id`                                              |
-| NPC Name  | text | LOC str_type=6, str_id1=npc_id                        |
-| Item ID   | num  | `item_id`                                             |
-| Icon      | text | Item icon from the item icon index                    |
-| Item Name | text | LOC str_type=0, str_id1=item_id, in its grade colour (`ITEM_GRADE`) |
-| Amity     | num  | `amity_a`; `amity_b` is a duplicate in observed data  |
+| Offset  | Type                 | Field   | Notes                                     |
+| ------- | -------------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32                  | count   | Number of NPC gift records (observed: 24) |
+| `+0x04` | Offset Record[count] | records | See Offset Record                         |
 
-All 110 distinct gift items resolve an icon through the item icon index
-(`_common/icon_index.py`), including those whose icon file is named after the
-asset, not the ID (item 24626 is
-`ui_texture/icon/new_icon/03_etc/06_housing/inhouse_cultivate_sea_clam_01_wall.dds`).
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field       | Notes                                                                 |
+| ------- | ---- | ----------- | --------------------------------------------------------------------- |
+| `+0x00` | u16  | npc_id      | NPC key; matches the record's leading `npc_id`                        |
+| `+0x02` | u32  | data_offset | Byte offset into `npcgift.dbss`; points 2 bytes past the record start |
+| `+0x06` | u16  | data_size   | Byte count after the leading `npc_id`                                 |
+| `+0x08` | u16  | unknown_08  | Observed: 0                                                           |
+
+`record_start = data_offset - 2`
 
 ## Notes
 

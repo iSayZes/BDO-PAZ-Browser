@@ -4,13 +4,23 @@
 
 Defines NPC personality entries used to parameterise AI behaviour. Each record maps a personality ID to three knowledge group references (each with an unknown u16 beside it) and four floating-point amity threshold parameters. Used to drive the in-game amity mini-game.
 
-Example:
+## Versions
 
-```text
-personality_id: 0x2875  →  personality_type: 101 (Hammer)
-interest_groups: Vendors of Serendia, Serendia Log II, Plants
-interest: 11–37, favor: 10–35
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                        | Bytes  | Records             | Row bytes |
+| ------ | -------------- | ------- | --------------------------- | ------ | ------------------- | --------- |
+| 1      | 1784 and later | 3473    | `npcpersonality.dbss`       | 40,192 | 1,182 Record        | 34        |
+| 1      | 1784 and later | 3473    | `npcpersonalityoffset.dbss` | 11,824 | 1,182 Offset Record | 10        |
+
+| Layout | File                        | Known            | Unknown         |
+| ------ | --------------------------- | ---------------- | --------------- |
+| 1      | `npcpersonality.dbss`       | 33,100 B (82.4%) | 7,092 B (17.6%) |
+| 1      | `npcpersonalityoffset.dbss` | 9,460 B (80.0%)  | 2,364 B (20.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,15 +30,16 @@ interest: 11–37, favor: 10–35
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                                          |
-| ------- | ---- | ----- | ---------------------------------------------- |
-| `+0x00` | u32  | count | Number of personality records (observed: 1,182 in the pre-2026-09-27 fixture and in the 2026-09-27 client) |
+| Offset  | Type          | Field   | Notes                                          |
+| ------- | ------------- | ------- | ---------------------------------------------- |
+| `+0x00` | u32           | count   | Number of personality records (observed: 1,182 in the pre-2026-09-27 fixture and in the 2026-09-27 client) |
+| `+0x04` | Record[count] | records | See Record                                     |
 
-### Record (34 bytes, repeated `count` times)
+### Record (34 bytes)
 
 | Offset  | Type | Field              | Notes                                                         |
 | ------- | ---- | ------------------ | ------------------------------------------------------------- |
@@ -52,6 +63,28 @@ Each group is a u16 knowledge group ID (matches `node_id` in `mentalcard.dbss`) 
 
 The same numbers appear on the BDO wiki next to each NPC's interest groups, but the game does not show them: the conversation window lists only the topics you can use, with no per-group count or maximum (I checked in game, 2026-09-27). It is not the number of topics offered either: with Oliviero (`6` for Serendia Adventure Log II) the topic list showed 7 cards of that group. What the number controls is open. Observed values: 0, 1, 2, 4, 5, 6, 7, 8, 10. All three fields in a record typically share the same value (1121 of 1182 records).
 
+### `npcpersonalityoffset.dbss`
+
+An index file with one entry per personality record.
+
+| Offset  | Type                 | Field   | Notes                                  |
+| ------- | -------------------- | ------- | -------------------------------------- |
+| `+0x00` | u32                  | count   | Must equal `npcpersonality.dbss` count |
+| `+0x04` | Offset Record[count] | records | See Offset Record                      |
+
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field          | Notes                                                                          |
+| ------- | ---- | -------------- | ------------------------------------------------------------------------------ |
+| `+0x00` | u16  | personality_id | Matches `personality_id` in the main record                                    |
+| `+0x02` | u32  | data_offset    | Byte offset into main file; 2 bytes past record start (skips `personality_id`) |
+| `+0x06` | u16  | data_size      | Always 32 (= record size minus the 2-byte personality_id header)               |
+| `+0x08` | u16  | unknown_08     | Not parsed                                                                     |
+
+`record_start = data_offset - 2`
+
+Every offset row points at a record that repeats its `personality_id`, and every record is indexed exactly once, but the rows are not in main-file order: only the first 53 step by the 34-byte stride, the rest are ordered differently (pre-2026-09-27 fixture and 2026-09-27 client alike). An earlier version of this doc called it a sequential index in main-file order.
+
 ## Enum Values
 
 ### personality_type Codes
@@ -74,44 +107,6 @@ The same numbers appear on the BDO wiki next to each NPC's interest groups, but 
 | 12    | 1201      | 1202      | Goblin        |
 
 [`zodiacsignorder.dbss`](zodiacsignorder_dbss.md) stores the sign of every `personality_type` as `zodiac_id`, and it equals the major in all 24 records (client 3464). The names are LOC type 7 sign names from [`zodiacsign.dbss`](zodiacsign_dbss.md). Majors 1 and 9 have only variant 1 here.
-
-## npcpersonalityoffset.dbss
-
-An index file with one entry per personality record.
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                  |
-| ------- | ---- | ----- | -------------------------------------- |
-| `+0x00` | u32  | count | Must equal `npcpersonality.dbss` count |
-
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field          | Notes                                                                          |
-| ------- | ---- | -------------- | ------------------------------------------------------------------------------ |
-| `+0x00` | u16  | personality_id | Matches `personality_id` in the main record                                    |
-| `+0x02` | u32  | data_offset    | Byte offset into main file; 2 bytes past record start (skips `personality_id`) |
-| `+0x06` | u16  | data_size      | Always 32 (= record size minus the 2-byte personality_id header)               |
-| `+0x08` | u16  | -              | Not parsed; assumed padding                                                    |
-
-`record_start = data_offset - 2`
-
-Every offset row points at a record that repeats its `personality_id`, and every record is indexed exactly once, but the rows are not in main-file order: only the first 53 step by the 34-byte stride, the rest are ordered differently (pre-2026-09-27 fixture and 2026-09-27 client alike). An earlier version of this doc called it a sequential index in main-file order.
-
-## Suggested UI Layout
-
-| Column            | Type | Notes                                            |
-| ----------------- | ---- | ------------------------------------------------ |
-| ID                | num  | `personality_id`                                 |
-| Row               | num  | Record index within the file                     |
-| Group A           | num  | `group_a_id`                                     |
-| Group B           | num  | `group_b_id`                                     |
-| Group C           | num  | `group_c_id`                                     |
-| Int Min           | num  | Interest range lower bound                       |
-| Int Max           | num  | Interest range upper bound                       |
-| Fav Min           | num  | Favor range lower bound                          |
-| Fav Max           | num  | Favor range upper bound                          |
-| Horoscope         | text | Zodiac sign resolved from the personality type   |
 
 ## Notes
 

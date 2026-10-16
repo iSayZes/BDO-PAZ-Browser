@@ -24,13 +24,13 @@ def parse_petskilloffset_records(data: bytes) -> list[dict]:
         if pos + _OFFSET_RECORD_SIZE > len(data):
             break
 
-        pet_skill_id, data_offset, data_size, padding = struct.unpack_from("<HIHH", data, pos)
+        pet_skill_id, data_offset, data_size, unknown_08 = struct.unpack_from("<HIHH", data, pos)
         records.append({
             "pet_skill_id": pet_skill_id,
             "data_offset": data_offset,
             "data_size": data_size,
             "record_start": data_offset - _KEY_PREFIX_SIZE,
-            "padding": padding,
+            "unknown_08": unknown_08,
         })
 
     return records
@@ -41,20 +41,20 @@ def _parse_effect_row(payload: bytes, row_index: int) -> dict:
     if pos + _EFFECT_ROW_SIZE > len(payload):
         raise ValueError(f"petskill effect row {row_index} exceeds payload size")
 
-    unknown_00 = payload[pos]
+    skill_type = payload[pos]
     row_level = payload[pos + 1]
-    padding = struct.unpack_from("<H", payload, pos + 2)[0]
+    unknown_02 = struct.unpack_from("<H", payload, pos + 2)[0]
     raw_value_a = struct.unpack_from("<I", payload, pos + 4)[0]
     raw_value_b = struct.unpack_from("<I", payload, pos + 8)[0]
     unknown_0c = struct.unpack_from("<I", payload, pos + 12)[0]
-    row_padding = payload[pos + 16]
+    unknown_10 = payload[pos + 16]
 
     return {
         "row_index": row_index,
-        "unknown_00": unknown_00,
+        "skill_type": skill_type,
         "level": row_level,
-        "row_padding": row_padding,
-        "padding": padding,
+        "unknown_10": unknown_10,
+        "unknown_02": unknown_02,
         "raw_value_a": raw_value_a,
         "raw_value_b": raw_value_b,
         "unknown_0c": unknown_0c,
@@ -94,7 +94,7 @@ def parse_petskill_records(data: bytes, offset_data: bytes) -> list[dict]:
             records.append({
                 "source_index": source_index,
                 "pet_skill_id": pet_skill_id,
-                "unknown_00": effect["unknown_00"],
+                "skill_type": effect["skill_type"],
                 "level": effect["level"],
                 "raw_value_a": effect["raw_value_a"],
                 "raw_value_b": effect["raw_value_b"],

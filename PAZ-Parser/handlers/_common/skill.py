@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from _common.loc import LOC_NULL, loc_lookup, loc_tagged
+from _common.loc import LOC_NULL, loc_lookup, loc_tagged, resolve_text_binds
 from _common.pa_text import strip_pa_tags
 from _common.lookup_index import IndexKind, lookup
 
@@ -88,7 +88,7 @@ def skill_description_tagged(skill_no: int, level: int, description_kr: str) -> 
         parts = parts[:1]
     if parts:
         return _PART_SEPARATOR.join(parts)
-    korean = description_kr.strip()
+    korean = resolve_text_binds(description_kr.strip())
     return korean if _is_text(korean) else ""
 
 

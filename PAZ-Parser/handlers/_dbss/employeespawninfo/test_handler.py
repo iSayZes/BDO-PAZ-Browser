@@ -38,7 +38,7 @@ SPAWN_INFO_CASE = HandlerCase(
     tests=[
         SchemaTest(required_keys=[
             "character_key", "employee_key", "name", "title", "towns", "spawn_position_keys",
-            "respawn_time_s", "hire_item_key", "hire_item_count", "hire_item", "accept_text_ko", "refuse_text_ko",
+            "respawn_time_s", "hire_item_key", "hire_item_count", "hire_item", "accept_text_kr", "refuse_text_kr",
             "accept_text", "refuse_text",
         ]),
         DeclaredCountTest(declared=header_count()),

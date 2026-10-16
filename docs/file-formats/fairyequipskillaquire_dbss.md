@@ -6,13 +6,23 @@ Defines the skill roll table used when a fairy's skills are changed. Each record
 
 This is the data behind the "% chance to obtain the new skill" the game shows on the Change Skill window.
 
-Example:
+## Versions
 
-```text
-Radiant (504) → Miraculous Cheer V: weight 100000 = 10.0%
-Faint   (501) → Morning Star:       weight 250000 = 25.0%
-Faint   (501) → Tingling Breath II: weight 0      = cannot roll
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                               | Bytes | Records         | Row bytes |
+| ------ | -------------- | ------- | ---------------------------------- | ----- | --------------- | --------- |
+| 1      | 1784 and later | 3473    | `fairyequipskillaquire.dbss`       | 708   | 4 Record        | 176       |
+| 1      | 1784 and later | 3473    | `fairyequipskillaquireoffset.dbss` | 44    | 4 Offset Record | 10        |
+
+| Layout | File                               | Known          | Unknown     |
+| ------ | ---------------------------------- | -------------- | ----------- |
+| 1      | `fairyequipskillaquire.dbss`       | 708 B (100.0%) | 0 B (0.0%)  |
+| 1      | `fairyequipskillaquireoffset.dbss` | 36 B (81.8%)   | 8 B (18.2%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,24 +33,43 @@ Faint   (501) → Tingling Breath II: weight 0      = cannot roll
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                           |
-| ------- | ---- | ----- | ------------------------------- |
-| `+0x00` | u32  | count | Number of records; observed `4` |
+| Offset  | Type          | Field   | Notes                           |
+| ------- | ------------- | ------- | ------------------------------- |
+| `+0x00` | u32           | count   | Number of records; observed `4` |
+| `+0x04` | Record[count] | records | See Record                      |
 
-### Record (176 bytes, repeated `count` times)
+### Record (176 bytes)
 
-| Offset  | Type    | Field      | Notes                                                 |
-| ------- | ------- | ---------- | ----------------------------------------------------- |
-| `+0x00` | u32     | packed_key | `(acquire_type_id << 16) \| acquire_type_id`          |
+| Offset  | Type    | Field      | Notes                                                  |
+| ------- | ------- | ---------- | ------------------------------------------------------ |
+| `+0x00` | u32     | packed_key | `(acquire_type_id << 16) \| acquire_type_id`           |
 | `+0x04` | u32[43] | weights    | Roll weight per `equip_skill_id`, in parts-per-million |
 
 `4 + 43 × 4 = 176` bytes exactly. `weights[i]` is the chance of rolling the skill whose `equip_skill_id` is `i`; index `0` is the first weight, **not** a reserved field.
 
 The first 2 bytes of each record are the file key prefix. The offset companion points to `record_start + 2`, so use `record_start = data_offset - 2` to read the full u32-aligned record.
+
+### `fairyequipskillaquireoffset.dbss`
+
+| Offset  | Type                 | Field | Notes                                               |
+| ------- | -------------------- | ----- | --------------------------------------------------- |
+| `+0x00` | u32                  | count | Must equal `fairyequipskillaquire.dbss` count (`4`) |
+| `+0x04` | Offset Record[count] | rows  | See Offset Record                                   |
+
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field       | Notes                                                        |
+| ------- | ---- | ----------- | ------------------------------------------------------------ |
+| `+0x00` | u16  | key         | `acquire_type_id`; observed `504`, `503`, `502`, `501`       |
+| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
+| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
+| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
+
+Rows are ordered descending by key and ascending by `data_offset`.
 
 ## Acquire Type IDs, Fairy Grades
 
@@ -105,25 +134,6 @@ Five catalog entries carry a weight of `0` in every grade and are therefore unre
 | 23             | Miraculous Cheer 7 Seconds  | Legacy naming                           |
 | 29             | Gift                        | Every fairy starts with it; never rolled |
 
-## `fairyequipskillaquireoffset.dbss`
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                               |
-| ------- | ---- | ----- | --------------------------------------------------- |
-| `+0x00` | u32  | count | Must equal `fairyequipskillaquire.dbss` count (`4`) |
-
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                        |
-| ------- | ---- | ----------- | ------------------------------------------------------------ |
-| `+0x00` | u16  | key         | `acquire_type_id`; observed `504`, `503`, `502`, `501`       |
-| `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
-| `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
-| `+0x08` | u16  | padding     | Always `0`                                                   |
-
-Rows are ordered descending by key and ascending by `data_offset`.
-
 ## Lookup Recipe
 
 ```python
@@ -131,18 +141,6 @@ def roll_chance(record, equip_skill_id):
     weight = record["weights"][equip_skill_id]
     return weight / record["total_weight"]  # total is 1,000,000 for fairies
 ```
-
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                |
-| ----------- | ---- | ---------------------------------------------------- |
-| Skill ID    | num  | `equip_skill_id` the weight indexes (right-aligned)  |
-| Fairy Grade | text | Grade name from `acquire_type_id`; falls back to ID  |
-| Skill Name  | text | Resolved via the catalog's `loc_id` (LOC type 10)    |
-| Chance      | num  | `weight / total_weight` as a percentage              |
-| Weight      | num  | Raw parts-per-million value                          |
-
-Show one row per `(acquire_type_id, equip_skill_id)` and omit zero weights, since a zero means the skill is not rollable at all.
 
 ## Notes
 

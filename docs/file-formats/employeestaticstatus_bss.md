@@ -4,13 +4,23 @@
 
 Static stats of every hireable ship crew member: one row per sailor per level, then one row per First Mate. Each row names the character whose name, title and portrait the sailor uses, and carries up to 19 ability values such as the ship stat bonuses shown in the Manage Sailors window.
 
-Example rows:
+## Versions
 
-```text
-sailor 1  level 1 -> character 59053 "Sailor" <Ambitious>, abilities 6: 16000, 7: 2000, 8: 2000, 9: 2000
-sailor 23 level 1 -> character 59228 "Pacuna" <Always Happy>, Employee_59228.dds
-first mate 24     -> character 62167 "Cleia" <First Mate>, ability 17: 100000 (-10% Parley for bartering)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                       | Bytes  | Records                         | Row bytes |
+| ------ | -------------- | ------- | -------------------------- | ------ | ------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
+| 1      | 1784           | 1784    | `employeestaticstatus.bss` | 29,799 | 3,910 Ability, 230 Employee Row | 5         |
+
+| Layout | File                       | Known            | Unknown        |
+| ------ | -------------------------- | ---------------- | -------------- |
+| 2      | `employeestaticstatus.bss` | 31,985 B (95.6%) | 1,480 B (4.4%) |
+| 1      | `employeestaticstatus.bss` | 28,379 B (95.2%) | 1,420 B (4.8%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,22 +31,30 @@ first mate 24     -> character 62167 "Cleia" <First Mate>, ability 17: 100000 (-
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Section           | Size                       | Notes                                                        |
-| ----------------- | -------------------------- | ------------------------------------------------------------ |
-| magic             | 4                          | `PABR`                                                       |
-| sailor_count      | u32                        | Rows in the sailor list; observed `230` (23 sailors x 10 levels) |
-| sailor rows       | `sailor_count` x 130       | Employee Row, `job` `0`                                      |
-| first_mate_count  | u32                        | Rows in the First Mate list; observed `6`                     |
-| first mate rows   | `first_mate_count` x 130   | Employee Row, `job` `1`, level `1` only                       |
-| unknown block     | 64                         | Sixteen u32 values, see Open Questions                        |
-| string table      | variable                   | Counted icon paths, the shared PABR tail                      |
-| trailer           | 8                          | u32 string table offset, u32 `0`                              |
+### File Layout
+
+| Offset                 | Type                             | Field                         | Notes                                                            |
+| ---------------------- | -------------------------------- | ----------------------------- | ---------------------------------------------------------------- |
+| `+0x00`                | char[4]                          | magic                         | `PABR`                                                           |
+| `+0x04`                | u32                              | sailor_count                  | Rows in the sailor list; observed `230` (23 sailors x 10 levels) |
+| `+0x08`                | Employee Row[sailor_count]       | sailor_rows                   | Employee Row, `job` `0`                                          |
+| `sailor_rows+0x00`     | u32                              | first_mate_count              | Rows in the First Mate list; observed `6`                        |
+| `sailor_rows+0x04`     | Employee Row[first_mate_count]   | first_mate_rows               | Employee Row, `job` `1`, level `1` only                          |
+| `first_mate_rows+0x00` | u32[16]                          | unknown_after_first_mate_rows | Sixteen u32 values, see Open Questions                           |
+| `first_mate_rows+0x40` | String Table                     | string_table                  | Counted icon paths, the shared PABR tail                         |
+| `string_table+0x00`    | u32                              | table_start                   | String table offset                                              |
+| `string_table+0x04`    | u32                              | zero                          | `0`                                                              |
 
 The string table is the same tail as in `npcsimply.bss` and `exploration.bss`: `u32 count`, then per entry `u8 is_wide`, `u32 byte_length` and the text (UTF-16LE when wide). All 29 observed entries are wide icon paths such as `Icon/New_Icon/11_Employee/Employee_59228.dds`. The parser checks that the two lists plus the 64-byte block end exactly where the trailer says the string table starts.
 
-## Record Structure
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of entries   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ### Employee Row (130 bytes)
 
@@ -45,7 +63,7 @@ The string table is the same tail as in `npcsimply.bss` and `exploration.bss`: `
 | `+0x00` | u8            | job            | `0` Sailor, `1` First Mate, see Job                                   |
 | `+0x01` | u16           | level          | `1` to `10` for sailors, `1` for First Mates                          |
 | `+0x03` | u16           | employee_key   | Sailor type, `1` to `29`; with `level` the row key                    |
-| `+0x05` | 19 x (u8, u32) | abilities     | Ability slots: type, value. See Abilities                             |
+| `+0x05` | Ability[19]   | abilities      | Ability slots: type, value. See Abilities                             |
 | `+0x64` | u32           | weight         | Weight in 1/10,000 LT (`2,000,000` = 200 LT), same at every level     |
 | `+0x68` | u32           | cabin_cost     | Cabin Cost, `3` to `13` for sailors, `0` for First Mates              |
 | `+0x6C` | u32           | appetite       | Appetite, `80`, `100`, `120` or `150`, same at every level            |
@@ -53,14 +71,60 @@ The string table is the same tail as in `npcsimply.bss` and `exploration.bss`: `
 | `+0x74` | u32           | unknown_74     | Always `5`                                                            |
 | `+0x78` | u32           | icon_index     | Zero-based index into the string table                                |
 | `+0x7C` | u16           | character_id   | Character key: LOC type 6 name/title, and the portrait file name      |
-| `+0x7E` | u16           | employee_key   | Repeats `+0x03`; the parser rejects a row where it differs            |
-| `+0x80` | u16           | padding        | Always `0`                                                            |
+| `+0x7E` | u16           | employee_key_dup | Repeats `+0x03`; the parser rejects a row where it differs          |
+| `+0x80` | u16           | unknown_80     | Always `0`                                                            |
 
 The client Lua reads a sailor's key through `getEmployeeKey()`, and that key object answers `getLevel()`, so `employee_key` and `level` together are the client's employee key.
 
-### Abilities
+### Ability (5 bytes)
 
-Each of the 19 slots is `u8 type` followed by `u32 value`. Every observed row has the same types in the same slots:
+Each of the 19 slots is `u8 type` followed by `u32 value`.
+
+| Offset  | Type | Field | Notes                    |
+| ------- | ---- | ----- | ------------------------ |
+| `+0x00` | u8   | type  | Ability type, see Abilities |
+| `+0x01` | u32  | value | The type's value         |
+
+## Layout 1
+
+On client 1784 a row holds 17 ability slots, so it is 120 bytes and every
+field after `abilities` sits 10 bytes earlier. The file has no First Mate
+list, and the block before the string table holds 10 u32 values in place of
+16. The File Layout and the Employee Row differ from Layout 2.
+
+### File Layout
+
+| Offset                 | Type                       | Field                         | Notes                                                       |
+| ---------------------- | -------------------------- | ----------------------------- | ----------------------------------------------------------- |
+| `+0x00`                | char[4]                    | magic                         | `PABR`                                                      |
+| `+0x04`                | u32                        | sailor_count                  | `230` on client 1784                                        |
+| `+0x08`                | Employee Row[sailor_count] | sailor_rows                   |                                                             |
+| `sailor_rows+0x00`     | u32[10]                    | unknown_after_first_mate_rows | `5, 0, 5, 0, 300000, 1, 0, 50, 0, 1000` on client 1784: the first 10 values of the Layout 2 block, with `50` in place of `59`; client 1784 has no `first_mate_rows`, the name follows Layout 2 |
+| `sailor_rows+0x28`     | String Table               | string_table                  |                                                             |
+| `string_table+0x00`    | u32                        | table_start                   |                                                             |
+| `string_table+0x04`    | u32                        | zero                          |                                                             |
+
+### Employee Row (120 bytes)
+
+| Offset  | Type        | Field            | Notes |
+| ------- | ----------- | ---------------- | ----- |
+| `+0x00` | u8          | job              |       |
+| `+0x01` | u16         | level            |       |
+| `+0x03` | u16         | employee_key     |       |
+| `+0x05` | Ability[17] | abilities        |       |
+| `+0x5A` | u32         | weight           |       |
+| `+0x5E` | u32         | cabin_cost       |       |
+| `+0x62` | u32         | appetite         |       |
+| `+0x66` | u32         | max_condition    |       |
+| `+0x6A` | u32         | unknown_74       |       |
+| `+0x6E` | u32         | icon_index       |       |
+| `+0x72` | u16         | character_id     |       |
+| `+0x74` | u16         | employee_key_dup |       |
+| `+0x76` | u16         | unknown_80       |       |
+
+## Abilities
+
+Every observed row has the same types in the same slots:
 
 ```text
 slot: 0 1 2 3 4  5 6 7 8 9 10 11 12 13 14 15 16 17 18
@@ -91,7 +155,7 @@ The sailor Lua (`panel_window_sailorpresetmanager_all`) picks the First Mate ski
 
 The same Lua shows each ship stat as `value x 0.0001` with one decimal and a `%` sign (`string.format("%.1f", _speed * 0.0001) .. "%"`), so a `16000` speed value reads `1.6%`.
 
-### Job
+## Job
 
 `job` is `0` on all 230 rows of the first list and `1` on all 6 rows of the second. The second list holds exactly the characters whose LOC title is `<First Mate>` (`62167` to `62169`; `62170` to `62172` have no LOC name yet), and the Lua compares `getJob()` with `__eEmployeeJob_ViceCaptain` to mark First Mates. The labels follow the client's `PANEL_SAILORMANAGER_VICECAPTAIN` ("First Mate").
 
@@ -106,26 +170,6 @@ The same Lua shows each ship stat as `value x 0.0001` with one decimal and a `%`
 | `25`      | 1     | `62168`      | Tranan Underfoe | `<First Mate>`   | First Mate | `Employee_62168.dds`  |
 
 Sailors `1` to `20` share the LOC name "Sailor"; their title is the sailor type the Sailor Preset filter lists (`LUA_SAILOR_PRESET_CATEGORY_FILTER_01` "Ambitious" and on).
-
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                         |
-| ------------ | ---- | ------------------------------------------------------------- |
-| Sailor ID    | num  | `employee_key`                                                |
-| Level        | num  | `level`                                                       |
-| Icon         | text | `icon_path` with icon-cell preview                            |
-| Name         | text | LOC type 6 name of `character_id`; dash without one           |
-| Title        | text | LOC type 6 title of `character_id`; dash without one          |
-| Role         | text | `job` label: Sailor or First Mate                             |
-| Character ID | num  | `character_id`                                                |
-| Endurance to Vision | num | One column per named ability type (`6`-`9`, `13`-`16`), stored value x 0.0001 with one decimal and `%`, `0.0%` when unset |
-| Condition    | num  | `max_condition`                                               |
-| Appetite     | num  | `appetite`                                                    |
-| Cabin Cost   | num  | `cabin_cost`                                                  |
-| Weight       | num  | `weight` / 10,000 with ` LT`                                  |
-| First Mate Skill | text | `first_mate_skill`: the LOC text of the `LUA_CAPTAIN_SAILOR_PRESET_SKILL_DESC_*` key the sailor Lua picks for `62167` to `62169`; dash for everyone else |
-
-The labels are the client's `PANEL_SAILORMANAGER_*` strings in each language (`_SPEED`, `_ACCELATION`, `_CORNERING`, `_BRAKING`, `_PATIENCE`, `_FOCUS`, `_POWER`, `_SIGHT`, `_LOYALTY`, `_CONSUMPTION`, `_COST`, `_BODYWEIGHT`). Each stat is also a record field of the same name (`endurance` to `vision`, raw). `abilities` keeps every non-zero pair as text for export, `other_abilities` the pairs without a stat column (today the First Mate types `17` and `18`), and `unknown_74` stays in the record but out of the table. The stat labels also name the growth columns of `employeeexp.bss`, so both tables share one set of client strings.
 
 ## Notes
 

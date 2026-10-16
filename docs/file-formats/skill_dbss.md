@@ -8,11 +8,27 @@ buffs it applies, an effect script, and the skills it leads to. This is the
 middle link of the item effect chain: a consumable names a skill key, and
 the skill names its buffs.
 
-```text
-item 761880  skill_key_1 = 0xBA430001  (itemenchant.dbss +0xCC)
-  -> skill 47683 level 1
-       buff_ids 48723, 48724, 48725, 48726, 48727, 48728  (buff.dbss)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File               | Bytes     | Records                            | Row bytes                    |
+| ------ | -------------- | ------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
+| 3      | 3473 and later | 3473    | `skill.dbss`       | 9,767,040 | 30,487 Skill Record, 30,487 Record | 210 to 1,540, 316 on average |
+| 3      | 3473 and later | 3473    | `skilloffset.dbss` | 365,864   | 30,487 Index Row                   | 12                           |
+| 1      | 1784           | 1784    | `skill.dbss`       | 8,290,437 | 27,580 Skill Record, 27,580 Record | 190 to 1,320, 297 on average |
+| 1      | 1784           | 1784    | `skilloffset.dbss` | 330,980   | 27,580 Index Row                   | 12                           |
+
+| Layout | File               | Known               | Unknown             |
+| ------ | ------------------ | ------------------- | ------------------- |
+| 3      | `skill.dbss`       | 6,169,574 B (63.2%) | 3,597,466 B (36.8%) |
+| 3      | `skilloffset.dbss` | 365,864 B (100.0%)  | 0 B (0.0%)          |
+| 1      | `skill.dbss`       | 5,035,997 B (60.7%) | 3,254,440 B (39.3%) |
+| 1      | `skilloffset.dbss` | 330,980 B (100.0%)  | 0 B (0.0%)          |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,6 +40,157 @@ item 761880  skill_key_1 = 0xBA430001  (itemenchant.dbss +0xCC)
 | `languagedata_en.loc` | Optional | Skill names and descriptions, LOC type `10`, `str_id1 = skill_no`; each rank's own text, LOC type `13`, `str_id1 = skill_no`, `str_id2 = level` |
 
 All multi-byte values are little-endian.
+
+## Layout 3
+
+### File Layout
+
+| Offset  | Type          | Field   | Notes                                                    |
+| ------- | ------------- | ------- | -------------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; matches the offset file               |
+| `+0x04` | Record[count] | records | Each record is preceded by a repeated copy of its key   |
+
+The records tile the file: each starts 4 bytes after the previous one ends
+(the repeated key), the first at `8`, and the last ends at end of file.
+
+Strings are a `u64` count followed by that many units: UTF-16LE for text and
+scripts, single-byte ASCII for `name`. There is no terminator.
+
+### Record (variable: 4 bytes + record)
+
+| Offset  | Type         | Field      | Notes                                                       |
+| ------- | ------------ | ---------- | ----------------------------------------------------------- |
+| `+0x00` | u32          | key_prefix | Repeated copy of the record's `skill_key`                   |
+| `+0x04` | Skill Record | record     | `size` bytes; the index row's `offset` points at this field |
+
+### Skill Record (variable: 210 bytes + text and key lists)
+
+Offsets `name+0xNN` count from the end of `name`, called `N` in the notes
+below; with an empty name `N` is `17`.
+
+| Offset                 | Type                   | Field               | Notes                                                           |
+| ---------------------- | ---------------------- | ------------------- | --------------------------------------------------------------- |
+| `+0x00`                | u32                    | skill_key           | Equals the index key                                            |
+| `+0x04`                | u32                    | level_1_key         | `skill_no << 16 \| 1`; equals `skill_key` except on the 82 keys above level 1 |
+| `+0x08`                | u8                     | unknown_08          | Non-zero on 8,842 records; equals `skillsimply.dbss` `unknown_e08`, which follows damage tooltips on Wizard |
+| `+0x09`                | str8                   | name                | ASCII internal name such as `SUMMON_BOSS`, `SETUP_QUESTITEM`; empty on 24,794 records |
+| `name+0x00`            | u32                    | name_hash           | `0` when `name` is empty; one value per name (4,461 names)      |
+| `name+0x04`            | bytes[40]              | unknown_n04         | Not decoded                                                     |
+| `name+0x2C`            | u16                    | resource_cost       | MP or WP the skill costs, by class; `0` on 26,837 records, up to `660`; see below |
+| `name+0x2E`            | bytes[7]               | unknown_n46         | Not decoded                                                     |
+| `name+0x35`            | u16                    | stamina_cost        | Stamina the skill costs; `0` on 26,635 records, `1` on 2,825, up to `600`; see below |
+| `name+0x37`            | bytes[23]              | unknown_n55         | Not decoded                                                     |
+| `name+0x4E`            | u32                    | cooldown_ms         | Cooldown in milliseconds; `0` on 22,798 records, see Notes      |
+| `name+0x52`            | u32[10]                | buff_ids            | `buff.dbss` IDs, zero-padded; see below                          |
+| `name+0x7A`            | str16                  | description         | Korean description, UTF-16; empty on 21,114 records, `UNKNOWN` on 1,284, `<null>` on 43. The Korean source of LOC type `13` for the same `(skill_no, level)`, and often the same text as LOC type `10` `str_id4 = 1`, see Notes. Line breaks are stored as the two characters `\n` (873 on client 3458) and decoded by the parser |
+| `description+0x00`     | str16                  | script              | UTF-16 effect script such as `DAM_ATT_2(...)`, `AWAKEN();`, `BATH();`; empty on 21,594 records |
+| `script+0x00`          | bytes[36]              | unknown_tail        | Not decoded                                                     |
+| `script+0x24`          | u32                    | next_skill_count    | `0` on 25,209 records, `1` on 4,560; up to `75`, see below       |
+| `script+0x28`          | u32[next_skill_count]  | next_skill_keys     | Skill keys this rank leads to, see below                        |
+| `next_skill_keys+0x00` | u32                    | unknown_after_next_skill_keys | Always `0`                                            |
+| `next_skill_keys+0x04` | u32                    | base_skill_count    | `1` on 155 records, else `0`                                    |
+| `next_skill_keys+0x08` | u32[base_skill_count]  | base_skill_keys     | The skill a Core skill enhances, see below                      |
+| `base_skill_keys+0x00` | f32                    | unknown_f32         | `-1.0` on 29,722 records, else `0.0`                            |
+| `base_skill_keys+0x04` | bytes[3]               | unknown_end         | Usually zero                                                    |
+
+Every one of the 30,481 records on client 3464 walks to exactly its `size`
+with this layout.
+
+### `skilloffset.dbss`
+
+| Offset              | Type             | Field        | Notes                                                 |
+| ------------------- | ---------------- | ------------ | ----------------------------------------------------- |
+| `+0x00`             | char[4]          | magic        | `PABR`                                                |
+| `+0x04`             | u32              | count        | Number of index rows; `30424` on client 3458          |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                                         |
+| `rows+0x00`         | String Table     | string_table | An empty PABR string table                            |
+| `string_table+0x00` | u32              | rows_end     | End of the rows (`8 + 12 * count`)                    |
+| `string_table+0x04` | u32              | zero         | Always `0`                                            |
+
+Read it with `parse_pabr_u32_offset_rows()`.
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field     | Notes                                        |
+| ------- | ---- | --------- | -------------------------------------------- |
+| `+0x00` | u32  | skill_key | `skill_no << 16 \| level`                    |
+| `+0x04` | u32  | offset    | Byte offset of the record in `skill.dbss`     |
+| `+0x08` | u32  | size      | Record size in bytes                          |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
+
+## Layout 2
+
+Before client 3464 the `buff_ids` slots were u16, so the Skill Record was 20
+bytes shorter and `description` started at `N+102`; see `buff_ids`. Only the
+Skill Record differs from Layout 3. The parser reads only Layout 3.
+
+### Skill Record (variable: 190 bytes + text and key lists)
+
+| Offset                 | Type                   | Field               | Notes |
+| ---------------------- | ---------------------- | ------------------- | ----- |
+| `+0x00`                | u32                    | skill_key           |       |
+| `+0x04`                | u32                    | level_1_key         |       |
+| `+0x08`                | u8                     | unknown_08          |       |
+| `+0x09`                | str8                   | name                |       |
+| `name+0x00`            | u32                    | name_hash           |       |
+| `name+0x04`            | bytes[40]              | unknown_n04         |       |
+| `name+0x2C`            | u16                    | resource_cost       |       |
+| `name+0x2E`            | bytes[7]               | unknown_n46         |       |
+| `name+0x35`            | u16                    | stamina_cost        |       |
+| `name+0x37`            | bytes[23]              | unknown_n55         |       |
+| `name+0x4E`            | u32                    | cooldown_ms         |       |
+| `name+0x52`            | u16[10]                | buff_ids            |       |
+| `name+0x66`            | str16                  | description         |       |
+| `description+0x00`     | str16                  | script              |       |
+| `script+0x00`          | bytes[36]              | unknown_tail        |       |
+| `script+0x24`          | u32                    | next_skill_count    |       |
+| `script+0x28`          | u32[next_skill_count]  | next_skill_keys     |       |
+| `next_skill_keys+0x00` | u32                    | unknown_after_next_skill_keys |  |
+| `next_skill_keys+0x04` | u32                    | base_skill_count    |       |
+| `next_skill_keys+0x08` | u32[base_skill_count]  | base_skill_keys     |       |
+| `base_skill_keys+0x00` | f32                    | unknown_f32         |       |
+| `base_skill_keys+0x04` | bytes[3]               | unknown_end         |       |
+
+## Layout 1
+
+On client 1784 `unknown_n55` was 21 bytes, so `cooldown_ms`, `buff_ids`
+and everything after them sat 2 bytes earlier than in Layout 2. An extra
+u32 followed `base_skill_keys` and `unknown_end` was 1 byte. Only the Skill
+Record differs from Layout 2. Field names keep Layout 3's offsets.
+
+### Skill Record (variable: 190 bytes + text and key lists)
+
+| Offset                 | Type                   | Field               | Notes |
+| ---------------------- | ---------------------- | ------------------- | ----- |
+| `+0x00`                | u32                    | skill_key           |       |
+| `+0x04`                | u32                    | level_1_key         |       |
+| `+0x08`                | u8                     | unknown_08          |       |
+| `+0x09`                | str8                   | name                |       |
+| `name+0x00`            | u32                    | name_hash           |       |
+| `name+0x04`            | bytes[40]              | unknown_n04         |       |
+| `name+0x2C`            | u16                    | resource_cost       |       |
+| `name+0x2E`            | bytes[7]               | unknown_n46         |       |
+| `name+0x35`            | u16                    | stamina_cost        |       |
+| `name+0x37`            | bytes[21]              | unknown_n55         |       |
+| `name+0x4C`            | u32                    | cooldown_ms         | Equals Layout 3's value in 22,275 of the 23,635 records both clients share |
+| `name+0x50`            | u16[10]                | buff_ids            |       |
+| `name+0x64`            | str16                  | description         |       |
+| `description+0x00`     | str16                  | script              |       |
+| `script+0x00`          | bytes[36]              | unknown_tail        |       |
+| `script+0x24`          | u32                    | next_skill_count    |       |
+| `script+0x28`          | u32[next_skill_count]  | next_skill_keys     |       |
+| `next_skill_keys+0x00` | u32                    | unknown_after_next_skill_keys |  |
+| `next_skill_keys+0x04` | u32                    | base_skill_count    |       |
+| `next_skill_keys+0x08` | u32[base_skill_count]  | base_skill_keys     |       |
+| `base_skill_keys+0x00` | u32                    | unknown_base_skill_keys_00 | Always `0` on client 1784 |
+| `base_skill_keys+0x04` | f32                    | unknown_f32         |       |
+| `base_skill_keys+0x08` | bytes[1]               | unknown_end         | Equals the first byte of Layout 3's `unknown_end` in 23,634 of the 23,635 shared records |
 
 ## Skill Keys
 
@@ -42,76 +209,7 @@ The first key in the index, `0xDEAD0001`, is skill `57005` level 1,
 "[Event] Energy of Happiness". It looks like a sentinel but is an ordinary
 skill; `0xDEAC0001` next to it is skill `57004`, "Grim Reaper's Fury".
 
-## File Layout
-
-### skilloffset.dbss
-
-| Offset  | Type     | Field   | Notes                                                           |
-| ------- | -------- | ------- | --------------------------------------------------------------- |
-| `+0x00` | u8[4]    | magic   | `PABR`                                                          |
-| `+0x04` | u32      | count   | Number of index rows; `30424` on client 3458                    |
-| `+0x08` | ...      | rows    | `count` index rows                                              |
-| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 12 * count`), `u32 0` |
-
-#### Index Row (12 bytes)
-
-| Offset  | Type | Field     | Notes                                        |
-| ------- | ---- | --------- | -------------------------------------------- |
-| `+0x00` | u32  | skill_key | `skill_no << 16 \| level`                    |
-| `+0x04` | u32  | offset    | Byte offset of the record in `skill.dbss`     |
-| `+0x08` | u32  | size      | Record size in bytes                          |
-
-Read it with `parse_pabr_u32_offset_rows()`.
-
-### skill.dbss
-
-| Offset  | Type | Field   | Notes                                                    |
-| ------- | ---- | ------- | -------------------------------------------------------- |
-| `+0x00` | u32  | count   | Number of records; matches the offset file               |
-| `+0x04` | ...  | records | Each record is preceded by a repeated copy of its key   |
-
-The records tile the file: each starts 4 bytes after the previous one ends
-(the repeated key), the first at `8`, and the last ends at end of file.
-
-Strings are a `u64` count followed by that many units: UTF-16LE for text and
-scripts, single-byte ASCII for `name`. There is no terminator.
-
-## Record Structure
-
-### Skill Record (variable, `size` bytes from `offset`)
-
-Fields in order. Offsets marked `N+` count from the end of `name`; with an
-empty name `N` is `17`.
-
-| Offset  | Type       | Field               | Notes                                                           |
-| ------- | ---------- | ------------------- | --------------------------------------------------------------- |
-| `+0x00` | u32        | skill_key           | Equals the index key                                            |
-| `+0x04` | u32        | level_1_key         | `skill_no << 16 \| 1`; equals `skill_key` except on the 82 keys above level 1 |
-| `+0x08` | u8         | unknown_08          | Non-zero on 8,842 records; equals `skillsimply.dbss` `unknown_e08`, which follows damage tooltips on Wizard |
-| `+0x09` | string     | name                | ASCII internal name such as `SUMMON_BOSS`, `SETUP_QUESTITEM`; empty on 24,794 records |
-| `N+0`   | u32        | name_hash           | `0` when `name` is empty; one value per name (4,461 names)      |
-| `N+4`   | u8[40]     | unknown_n04         | Not decoded                                                     |
-| `N+44`  | u16        | resource_cost       | MP or WP the skill costs, by class; `0` on 26,837 records, up to `660`; see below |
-| `N+46`  | u8[7]      | unknown_n46         | Not decoded                                                     |
-| `N+53`  | u16        | stamina_cost        | Stamina the skill costs; `0` on 26,635 records, `1` on 2,825, up to `600`; see below |
-| `N+55`  | u8[23]     | unknown_n55         | Not decoded                                                     |
-| `N+78`  | u32        | cooldown_ms         | Cooldown in milliseconds; `0` on 22,798 records, see Notes      |
-| `N+82`  | u32[10]    | buff_ids            | `buff.dbss` IDs, zero-padded; see below                          |
-| `N+122` | string     | description         | Korean description, UTF-16; empty on 21,114 records, `UNKNOWN` on 1,284, `<null>` on 43. The Korean source of LOC type `13` for the same `(skill_no, level)`, and often the same text as LOC type `10` `str_id4 = 1`, see Notes. Line breaks are stored as the two characters `\n` (873 on client 3458) and decoded by the parser |
-| next    | string     | script              | UTF-16 effect script such as `DAM_ATT_2(...)`, `AWAKEN();`, `BATH();`; empty on 21,594 records |
-| next    | u8[36]     | unknown_tail        | Not decoded                                                     |
-| next    | u32        | next_skill_count    | `0` on 25,209 records, `1` on 4,560; up to `75`, see below       |
-| next    | u32[]      | next_skill_keys     | Skill keys this rank leads to, see below                        |
-| next    | u32        | unknown_zero        | Always `0`                                                      |
-| next    | u32        | base_skill_count    | `1` on 155 records, else `0`                                    |
-| next    | u32[]      | base_skill_keys     | The skill a Core skill enhances, see below                      |
-| next    | f32        | unknown_f32         | `-1.0` on 29,722 records, else `0.0`                            |
-| next    | u8[3]      | unknown_end         | Usually zero                                                    |
-
-Every one of the 30,481 records on client 3464 walks to exactly its `size`
-with this layout.
-
-### `buff_ids`
+## `buff_ids`
 
 Ten u32 slots. The IDs fill the front and the rest are `0`; no record has a
 non-zero ID after a zero. On client 3464, 20,418 records name one buff, 507
@@ -130,7 +228,7 @@ indexes from it (see "Lookup Indexes" in docs/handler.md): the
 `itemenchant.dbss` Buffs column and the `buff.dbss` Applied By column read
 them.
 
-### `resource_cost` and `stamina_cost`
+## `resource_cost` and `stamina_cost`
 
 `resource_cost` is the class's own resource, so the tooltip names it by
 class: MP on Wizard, WP on Mystic. Checked in game (2026-10-01): "Fireball IV"
@@ -144,7 +242,7 @@ cost for "Imminent Doom" (`0`). The skill tooltip Lua reads them as
 training ranks ("Staff Attack I" to "X", "Magic Arrow I" to "V"); whether the
 tooltip shows that is not checked.
 
-### `next_skill_keys` and `base_skill_keys`
+## `next_skill_keys` and `base_skill_keys`
 
 Every key in both lists is a `skill.dbss` key (7,877 and 155 entries).
 
@@ -159,26 +257,6 @@ rank `i` listing rank `i + 1`.
 `base_skill_keys` is set only on the 155 "Core:" skills and names the skill
 the Core enhances ("Core: Soul Shower" -> "Soul Shower III"). In 154 of the
 155 cases that base skill lists the Core in its `next_skill_keys`.
-
-## Suggested UI Layout
-
-Opens sorted by `skill_key` (Skill No, then Level); the index order is arbitrary
-and starts with event skills.
-
-| Column      | Type | Notes                                                                 |
-| ----------- | ---- | --------------------------------------------------------------------- |
-| Skill No    | num  | `skill_key >> 16`                                                     |
-| Level       | num  | `skill_key & 0xFFFF`                                                  |
-| Icon        | icon | `IconKind.SKILL` icon of `skill_no` (the `skilltype.dbss` icon path)  |
-| Name        | text | LOC type `10`, `str_id1 = skill_no`, `str_id4 = 0`; else the `skilltype.dbss` Korean name, else `name` |
-| Description | text | LOC type `10` `str_id4 = 1`, then the rank's LOC type `13` text when it says something else (blank line between), in their game colours; without either, `description`. `<null>`, `UNKNOWN` and type 13's `0` count as empty |
-| Cooldown    | num  | `cooldown_ms` as a duration (`8s`, `13.5s`, `30m`); empty when `0`; sorts by `cooldown_ms` |
-| Resource    | num  | `resource_cost` (MP or WP, by class); empty when `0`                  |
-| Stamina     | num  | `stamina_cost`; empty when `0`                                        |
-| Buffs       | list | `buff_ids` as the buff icon (`IconKind.BUFF`), buff ID and the first line of its LOC type `5` text in its game colours; sorts by count |
-| Next Skills | list | `next_skill_keys` as skill names, in their game colours (Prime skills orange) |
-| Base Skill  | text | `base_skill_keys` as skill name, in its game colours                  |
-| Script      | text | `script`                                                              |
 
 ## Notes
 
@@ -207,7 +285,8 @@ and starts with event skills.
 - 657 are guild skills (skill numbers 62000 to 65999). Their type 10
   `str_id4 = 1` is missing (614) or a usage hint such as
   `{TextBind:CASTING_CLICK_RMB} after learning the skill` (Healing Touch,
-  65209), while type 13 holds the effect (`- Effect: Recover 200 HP every
+  65209; the browser fills it as `Cast with [Attack2] after learning the
+  skill`), while type 13 holds the effect (`- Effect: Recover 200 HP every
   3 sec (only during Node/Conquest War)`). The Description column shows
   both, the hint first; which order the game tooltip uses is not checked.
   The effect text is close to the Korean `buff.dbss` description of the

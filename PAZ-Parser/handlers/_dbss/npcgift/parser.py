@@ -7,7 +7,7 @@ from _common.loc import is_loc_loaded, loc_lookup_prefix, strip_pa_tags
 
 from .model import NpcGiftDataRecord, NpcGiftFlatRecord, NpcGiftOffsetRecord
 
-_OFFSET_RECORD_SIZE = 10  # u16 npc_id + u32 data_offset + u16 data_size + u16 padding
+_OFFSET_RECORD_SIZE = 10  # u16 npc_id + u32 data_offset + u16 data_size + u16 unknown_08
 _GIFT_ROW_SIZE = 12       # u32 item_id + u32 amity_a + u32 amity_b
 
 
@@ -35,7 +35,7 @@ def parse_gift_offset_records(data: bytes) -> list[NpcGiftOffsetRecord]:
             npc_id=_u16(data, pos),
             data_offset=_u32(data, pos + 2),
             data_size=_u16(data, pos + 6),
-            padding=_u16(data, pos + 8),
+            unknown_08=_u16(data, pos + 8),
         ))
         pos += _OFFSET_RECORD_SIZE
 

@@ -4,12 +4,23 @@
 
 Processing recipes: each row is one material set for one processing action (Heating, Grinding, Simple Alchemy, Imperial Cuisine, Manufacture and the rest) and the [`itemmaingroup.bss`](itemmaingroup_bss.md) group the action hands out. The plain PABR file holds the rows, then a string table of the action names the processing window passes to the client (`actionName` in `panel_window_manufacture_all.luac`).
 
-```text
-row 0    MANUFACTURE_HEAT  Melted Copper Shard x10                    -> group 12006 (not in the client's itemmaingroup.bss)
-row 500  MANUFACTURE_HEAT  Steel Taritas Helmet x1                    -> group 9978 -> Melted Iron Shard, Mud Crystal
-row 4971 MANUFACTURE_CRAFT [Pavilla] Merv's Tailoring Tool x1, [Warrior] Pavilla Hat x1, [Warrior] Pavilla Clothes x1
-                                                                      -> group 64918 -> [Pavilla] Merv's Costume Set
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes   | Records                    | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ------- | -------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `manufacture.bss` | 417,753 | 15,361 Material, 7,064 Row | 12        |
+| 1      | 1784           | 1784    | `manufacture.bss` | 466,321 | 16,442 Material, 8,668 Row | 12        |
+
+| Layout | File              | Known             | Unknown           |
+| ------ | ----------------- | ----------------- | ----------------- |
+| 2      | `manufacture.bss` | 325,921 B (78.0%) | 91,832 B (22.0%)  |
+| 1      | `manufacture.bss` | 336,301 B (72.1%) | 130,020 B (27.9%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,35 +33,34 @@ row 4971 MANUFACTURE_CRAFT [Pavilla] Merv's Tailoring Tool x1, [Warrior] Pavilla
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset  | Type    | Field              | Notes                                                         |
-| ------- | ------- | ------------------ | ------------------------------------------------------------- |
-| `+0x00` | char[4] | magic              | ASCII `PABR`                                                  |
-| `+0x04` | u32     | count              | Number of rows; `7,064` on client 3464                        |
-| `+0x08` | row[]   | rows               | Variable-size rows, back to back                              |
-| ...     | u32     | string_count       | Number of strings; `12` on client 3464                        |
-| ...     | entry[] | strings            | `u8 is_wide`, `u32 byte_length`, then the text                |
-| EOF - 8 | u32     | string_table_start | Offset of `string_count`, where the rows end                  |
-| EOF - 4 | u32     | reserved           | Always `0`                                                    |
+### File Layout
+
+| Offset              | Type         | Field              | Notes                                         |
+| ------------------- | ------------ | ------------------ | --------------------------------------------- |
+| `+0x00`             | char[4]      | magic              | ASCII `PABR`                                  |
+| `+0x04`             | u32          | count              | Number of rows; `7,064` on client 3464        |
+| `+0x08`             | Row[count]   | rows               | See Row                                       |
+| `rows+0x00`         | String Table | string_table       | See String Table                              |
+| `string_table+0x00` | u32          | string_table_start | Offset of `string_count`, where the rows end  |
+| `string_table+0x04` | u32          | zero               | Always `0`                                    |
 
 The string table has the shape `itemmaingroup.bss`, `exploration.bss` and `npcsimply.bss` use (`_common/pabr_strings.py`). Every string here is narrow (`is_wide = 0`, ASCII). Walking `count` rows ends exactly at `string_table_start`, and the string table ends exactly at the trailer.
 
-## Record Structure
+### Row (variable: 33 bytes + materials)
 
-### Row (`33 + 12 * material_count` bytes)
-
-| Offset  | Type       | Field          | Notes                                                                                   |
-| ------- | ---------- | -------------- | --------------------------------------------------------------------------------------- |
-| `+0x00` | u32        | first_item_key | Packed item key, equal to `materials[0].item_key` on every row                          |
-| `+0x04` | u8[8]      | unknown_04     | Always zero                                                                             |
-| `+0x0C` | u32        | action_index   | Index into the string table, see [Actions](#actions)                                    |
-| `+0x10` | u32        | unknown_10     | `1,000,000`, `700,000`, `900,000` or `850,000`, see In-Game Checks                      |
-| `+0x14` | u32        | action_hash    | Hash of the action name, see below; matches `action_index` on every row                 |
-| `+0x18` | u8         | unknown_18     | Always `40`                                                                             |
-| `+0x19` | u32        | result_group   | `itemmaingroup.bss` group ID; unaligned                                                 |
-| `+0x1D` | u32        | material_count | `1` to `5`; unaligned                                                                   |
-| `+0x21` | material[] | materials      | 12-byte entries repeated `material_count` times                                         |
+| Offset  | Type                     | Field          | Notes                                                                                   |
+| ------- | ------------------------ | -------------- | --------------------------------------------------------------------------------------- |
+| `+0x00` | u32                      | first_item_key | Packed item key, equal to `materials[0].item_key` on every row                          |
+| `+0x04` | bytes[8]                 | unknown_04     | Always zero                                                                             |
+| `+0x0C` | u32                      | action_index   | Index into the string table, see [Actions](#actions)                                    |
+| `+0x10` | u32                      | unknown_10     | `1,000,000`, `700,000`, `900,000` or `850,000`, see In-Game Checks                      |
+| `+0x14` | u32                      | action_hash    | Hash of the action name, see below; matches `action_index` on every row                 |
+| `+0x18` | u8                       | unknown_18     | Always `40`                                                                             |
+| `+0x19` | u32                      | result_group   | `itemmaingroup.bss` group ID; unaligned                                                 |
+| `+0x1D` | u32                      | material_count | `1` to `5`; unaligned                                                                   |
+| `+0x21` | Material[material_count] | materials      | See Material                                                                            |
 
 ### Material (12 bytes)
 
@@ -63,7 +73,34 @@ On client 3464 the 7,064 rows hold 15,361 material entries: 3,072 rows have one,
 
 The entries of a row are in ascending `item_key` order on every row, so `first_item_key` is the row's lowest key. The same key can fill more than one entry: 17 rows (client 3464) list one key two or three times with count `1`, such as row 162 (Simple Alchemy) with three entries of Bonghwang's Fragment.
 
-### `action_hash`
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                                          |
+| ------- | ------------------ | ------------ | ---------------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings; `12` on client 3464         |
+| `+0x04` | pstr[string_count] | strings      | `u8 is_wide`, `u32 byte_length`, then the text |
+
+## Layout 1
+
+On client 1784 the row holds a u16 `unknown_19`, always `0`, where Layout 2
+has the u32 `result_group`, so `material_count` sits at `+0x1B` and the
+fixed part is 31 bytes. Only the Row differs from Layout 2.
+
+### Row (variable: 31 bytes + materials)
+
+| Offset  | Type                     | Field          | Notes                                   |
+| ------- | ------------------------ | -------------- | --------------------------------------- |
+| `+0x00` | u32                      | first_item_key |                                         |
+| `+0x04` | bytes[8]                 | unknown_04     | Always zero on client 1784              |
+| `+0x0C` | u32                      | action_index   |                                         |
+| `+0x10` | u32                      | unknown_10     | Always `0` on client 1784               |
+| `+0x14` | u32                      | action_hash    |                                         |
+| `+0x18` | u8                       | unknown_18     | Always `39` on client 1784              |
+| `+0x19` | u16                      | unknown_19     | Always `0` on client 1784               |
+| `+0x1B` | u32                      | material_count | `1` to `5`                              |
+| `+0x1F` | Material[material_count] | materials      |                                         |
+
+## `action_hash`
 
 `action_hash` is Bob Jenkins' lookup3 `hashlittle` over the action name's ASCII bytes with seed `0xC5EDE`, the function and seed of `_common/string_hash.py`. That module's `key_hash` runs over UTF-16LE text instead, so the stored value is `hashlittle(name.encode("ascii"), 0xC5EDE)`. It reproduces the hash for all 12 names, and on every row it is the hash of the string at `action_index`.
 
@@ -87,16 +124,6 @@ The display name is the `PAGetString(Defines.StringSheet_GAME, key)` text the pr
 | 11    | `MANUFACTURE_FIREWOOD`          | `0x68721E0B`  | Chopping         | 52                 |
 
 The display keys are `ALCHEMY_MANUFACTURE_HEATING`, `LUA_ALCHEMY_MANUFACTURE_ALCHEMY`, `ALCHEMY_MANUFACTURE_DRY`, `ALCHEMY_MANUFACTURE_GRIND`, `LUA_MANUFACTURE_CRAFT_NAME`, `LUA_ALCHEMY_MANUFACTURE_COOK`, `ALCHEMY_MANUFACTURE_SHAKE`, `LUA_ALCHEMY_MANUFACTURE_ROYALGIFT_ALCHEMY`, `LUA_MANUFACTURE_GUILDMANURACTURE_NAME` (the client's spelling), `LUA_ALCHEMY_MANUFACTURE_ROYALGIFT_COOK`, `ALCHEMY_MANUFACTURE_THINNING` and `ALCHEMY_MANUFACTURE_WOODSPLITTING`. The window also lists `MANUFACTURE_RAINWATER` (Collect rainwater) and `REPAIR_ITEM` (Repair), which have no rows here.
-
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                                                          |
-| ------------ | ---- | ---------------------------------------------------------------------------------------------- |
-| Index        | num  | Position in the file; no field is unique (3,744 rows share their `first_item_key` with another row on client 3464), so the table opens in file order |
-| Action       | text | Display name from [Actions](#actions), falling back to the action name                         |
-| Materials    | text | Each `item_key` with its icon and grade colour (the level's own name, else `Name (level)` when the level is set) and `x count`, in entry order |
-| Result Group | num  | `result_group`, linked to its `itemmaingroup.bss` row when the group exists                    |
-| Result Items | text | Items of the group's subgroups, as in `itemmaingroup.bss`; empty when the group is missing     |
 
 ## Notes
 

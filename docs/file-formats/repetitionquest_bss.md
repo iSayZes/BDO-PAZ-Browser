@@ -4,13 +4,23 @@
 
 Defines the repeatable-quest list: daily, weekly and contribution quests grouped under names such as `[Contribution] [Lv. 35] Calpheon City` or `[Throne of Edana] [Weekly] For the Throne`, each group named by LOC type 42, with a condition line per quest. 48 groups and 806 quest references on client 3458. All text sits in a string table at the end of the file (Korean group names, Korean condition lines, scripts).
 
-Example:
+## Versions
 
-```text
-group 0 (key 51, "[Throne of Edana] [Weekly] For the Throne") -> quest 9108 / 1 -> [Weekly] For the Throne: Aetherion
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes   | Records                           | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ------- | --------------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `repetitionquest.bss` | 200,069 | 806 Quest Reference Row, 48 Group | 17        |
+
+| Layout | File                  | Known             | Unknown      |
+| ------ | --------------------- | ----------------- | ------------ |
+| 1      | `repetitionquest.bss` | 199,877 B (99.9%) | 192 B (0.1%) |
+
+<!-- versions:end -->
+
+## Observed Values
 
 Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byte `PABR` header with a group count; per group an 11-byte header, 17-byte quest reference rows and a 12-byte trailer; a string table; an 8-byte file trailer. One handler reads all four quest lists. Values seen on client 3458:
 
@@ -18,11 +28,11 @@ Same layout as [`newquest.bss`](newquest_bss.md), the layout reference: an 8-byt
 | -------------------------------------- | ----------------------------------------------------- |
 | `group_count`                          | `48`                                                  |
 | First group                            | key `51`, `10` rows                                   |
-| Group header `unknown_06`              | `0` on every group                                    |
+| Group header `group_type`              | `0` on every group                                    |
 | Group trailer start / end index        | Index `31`, the empty string: no event period         |
-| Row `unknown_10`                       | `0` on every row                                      |
-| Row `script_1_index`                   | Empty string on 678 rows, a script on 128             |
-| Row `script_2_index`                   | Empty string on 517 rows, a script on 289             |
+| Row `is_sub_quest`                       | `0` on every row                                      |
+| Row `hide_conditions_index`                   | Empty string on 678 rows, a script on 128             |
+| Row `visible_conditions_index`                   | Empty string on 517 rows, a script on 289             |
 | String table                           | `633` strings; `string_count` at `0x000039DE`         |
 
 The empty string sits at index `31` here, so the script fields read `31` on most rows. The scripts check other quests of a weekly set (`clearquest(9108,2);<or>clearquest(9108,3);...`), life skill levels (`getLifeLevel(6)>80;`), content groups and random rolls (`checkRandom`); see String Table in the `newquest.bss` doc for the two script roles.
@@ -42,22 +52,6 @@ LOC type `42` holds the English text of this list, keyed by the group's `group_k
 
 On client 3458 all 48 groups have a name (type 42 has 54, keys 1 to 54, so some belong to groups no longer in the file) and all 806 rows have a condition line. Condition lines carry `<PAColor>` tags (all but 1); group names do not. The string table holds the Korean source of both, which the handler shows where LOC has no row.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                            |
-| ------------ | ---- | ---------------------------------------------------------------- |
-| Main ID      | num  | `quest_chain_id`; LOC type 18 `str_id1`                          |
-| Sub ID       | num  | `quest_id`; LOC type 18 `str_id2`                                |
-| Group Key    | num  | `group_key` of the row's group                                   |
-| Group Name   | text | LOC type 42 `str_id1 = group_key`, `str_id4 = 0`; else the Korean `group_name_kr` |
-| Icon         | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
-| Title        | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-| Condition    | text | LOC type 42 `(packed_quest_id, group_key)`, `str_id4 = 1`, in its game colours; else the Korean `condition_kr` |
-| Offered When* | text | `script_2` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
-| Ruled Out When* | text | `script_1` on one line; the `*` marks the role as our reading, not confirmed (see the `newquest.bss` doc) |
-
-`group` (the index in file order), `unknown_10`, `unknown_06`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
-
 ## Notes
 
 - Decompressed size is `200,069` bytes on client 3458.
@@ -67,4 +61,4 @@ On client 3458 all 48 groups have a name (type 42 has 54, keys 1 to 54, so some 
 
 ### Shared Fields
 
-`unknown_06` and the roles of the two scripts are open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).
+What `group_type` selects is open for all four lists; see the Open Questions of [`newquest.bss`](newquest_bss.md).

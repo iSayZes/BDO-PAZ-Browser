@@ -3,6 +3,10 @@
     "regionGroupKey": "Группа регионов",
     "nodeKey": "Ключ узла",
     "nodeName": "Название узла",
+    "concurrentUsers": "Одновременных пользователей",
+    "corpProductivity": "Производительность компании",
+    "fishingProductivity": "Производительность рыбалки",
+    "loyalty": "Лояльность",
     "x": "X",
     "y": "Y",
     "z": "Z"

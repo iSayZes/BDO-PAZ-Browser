@@ -85,16 +85,6 @@ On client 3464, 22,745 of the 23,464 skill steps have a `<skill_command>` of the
 
 `warrior_auto.cl` and `prsa_auto.cl` (one content) use capitalized names and no `<skill_command_list>`: `<Combo Name StartWeaponType InitCombo DelayTime>` and `<Skill Name SkillNo="349 350 351 705" Command="1"/>`. Per its comment, `SkillNo` lists the skills to try, the first usable one runs, `Command` is `1` to `4`, `InitCombo="True"` marks the combo used outside a combo (one per weapon type) and `DelayTime` is the key input window.
 
-## Suggested UI Layout
-
-The `.cl` handler (`handlers/_ai/combolist/`) names the Parsed tab Combo List and shows one row per combo under a summary (counts of combos by weapon type, steps and skill commands). It opens in file order and sorts by Combo, Weapon and Pad only. A Text tab shows the XML.
-
-- Combo: section title, name, developer note.
-- Weapon: `start_weapon_type` as its label, in the client's words: Common, Main Weapon, Awakening, Mount.
-- Pad only: `is_only_console`.
-- Checks: the learned and cooldown skills, each as `349 Forward Slash I`; one line when both lists are the same. A skill number opens its first `skill.dbss` row, here and in Steps.
-- Steps: per step its action name, skills with their names, `console_key` (or `Command`), timing and distance requirements, and the keys of every `<skill_command>` of its name (`Shift 0-300 + W 100-300`), with its `awakening_type` when the name has more than one.
-
 ## Notes
 
 - On client 3464, 1,261 `<skill_command>` names (counted per file) have no combo step of that name. They show in the Text tab only.

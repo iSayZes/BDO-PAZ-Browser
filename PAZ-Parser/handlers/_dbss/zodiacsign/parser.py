@@ -57,7 +57,7 @@ def parse_zodiacsignorder_records(
 
         pos = rec_start + 2  # skip personality_type already known
         trigger_count = _u32(data, pos)
-        pos += 8  # trigger_count (u32) + reserved (u32)
+        pos += 8  # trigger_count (u32) + unknown_06 (u32)
 
         trigger_order: list[int] = []
         for _ in range(trigger_count):
@@ -99,7 +99,7 @@ def parse_zodiacsignorderoffset_records(data: bytes) -> list[ZodiacSignOrderOffs
                 personality_type=_u16(data, base),
                 data_offset=_u32(data, base + 2),
                 data_size=_u16(data, base + 6),
-                padding=_u16(data, base + 8),
+                unknown_08=_u16(data, base + 8),
             )
         )
 

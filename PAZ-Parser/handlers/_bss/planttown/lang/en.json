@@ -1,7 +1,8 @@
 {
   "columns": {
     "nodeId": "Node ID",
-    "nodeName": "Node Name"
+    "nodeName": "Node Name",
+    "maxLevel": "Max Level"
   },
   "meta": {
     "count": "{count} plant town records",

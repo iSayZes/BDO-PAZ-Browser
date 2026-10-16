@@ -4,13 +4,21 @@
 
 Quest grouping table. Each record names a quest chain/group in Korean and lists the `quest.dbss` quest IDs that belong to that group.
 
-Example:
+## Versions
 
-```text
-group_id: 1022
-name: 소서러, 여정의 시작
-quests: 66558, 132094, 197630
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes | Records                                | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ----- | -------------------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `questgroup.dbss` | 5,918 | 110 Quest Group Record, 474 Quest Link | 4         |
+
+| Layout | File              | Known           | Unknown         |
+| ------ | ----------------- | --------------- | --------------- |
+| 1      | `questgroup.dbss` | 4,818 B (81.4%) | 1,100 B (18.6%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,32 +28,29 @@ quests: 66558, 132094, 197630
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                                       |
-| ------- | ---- | ----- | ------------------------------------------- |
-| `+0x00` | u32  | count | Number of quest group records; `110` in the pre-2026-09-27 fixture and in the 2026-09-27 client |
-
-### Record Stream
+| Offset  | Type                      | Field   | Notes                                       |
+| ------- | ------------------------- | ------- | ------------------------------------------- |
+| `+0x00` | u32                       | count   | Number of quest group records; `110` in the pre-2026-09-27 fixture and in the 2026-09-27 client |
+| `+0x04` | Quest Group Record[count] | records | See Quest Group Record                      |
 
 Records start immediately after the header at `+0x04`. Records are variable length because each group name and child quest list can have different sizes.
 
-## Record Structure
+### Quest Group Record (variable: 18 bytes + name and quest links)
 
-### Quest Group Record (variable length)
-
-| Offset  | Type              | Field       | Notes                                                              |
-| ------- | ----------------- | ----------- | ------------------------------------------------------------------ |
-| `+0x00` | u16               | group_id    | Quest group identifier; also appears in child quest IDs            |
-| `+0x02` | u16               | name_len    | UTF-16 code unit count for `name_kr`                               |
-| `+0x04` | u32               | unknown_04  | Observed `0` in all 110 records                                    |
-| `+0x08` | u16               | unknown_08  | Observed `0` in all 110 records                                    |
-| `+0x0A` | utf16le[name_len] | name_kr     | Korean quest group title, not NUL-terminated                       |
-| varies  | u32               | quest_count | Number of child quest IDs                                          |
-| varies  | Quest Link[]      | quests      | `quest_count` child quest references                               |
-| varies  | u32               | tail_zero   | Observed `0` in all 110 records; record terminator/padding sentinel |
+| Offset         | Type                    | Field       | Notes                                                              |
+| -------------- | ----------------------- | ----------- | ------------------------------------------------------------------ |
+| `+0x00`        | u16                     | group_id    | Quest group identifier; also appears in child quest IDs            |
+| `+0x02`        | u16                     | name_len    | UTF-16 code unit count for `name_kr`                               |
+| `+0x04`        | u32                     | unknown_04  | Observed `0` in all 110 records                                    |
+| `+0x08`        | u16                     | unknown_08  | Observed `0` in all 110 records                                    |
+| `+0x0A`        | char16[name_len]        | name_kr     | Korean quest group title, not NUL-terminated                       |
+| `name_kr+0x00` | u32                     | quest_count | Number of child quest IDs                                          |
+| `name_kr+0x04` | Quest Link[quest_count] | quests      | `quest_count` child quest references                               |
+| `quests+0x00`  | u32                     | unknown_end | Observed `0` in all 110 records; record terminator/padding sentinel |
 
 ### Quest Link (4 bytes)
 
@@ -71,15 +76,6 @@ Pre-2026-09-27 fixture:
 | `0x00006C`  | `1055`   | `해적이 숨겨 놓은 보물`  | `6`         | `66591` .. `394271`               |
 | `0x0000AE`  | `503`    | `소서러의 기술`          | `4`         | `66039`, `131575`, `197111`, `262647` |
 | `0x0000DE`  | `3100`   | `칼페온의 레이트 가문`   | `4`         | `68636`, `134172`, `199708`, `265244` |
-
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                       |
-| ----------- | ---- | ----------------------------------------------------------- |
-| Group ID    | num  | `group_id`; right-aligned                                   |
-| Name        | text | LOC type 25 `str_id1=group_id`, falling back to `name_kr` |
-| Quests      | num  | Number of linked child quests                               |
-| Quest Titles | text | LOC titles for the child quests, falling back to their IDs |
 
 ## Notes
 

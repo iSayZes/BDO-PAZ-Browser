@@ -7,7 +7,7 @@ class NpcGiftOffsetRecord(TypedDict):
     npc_id: int
     data_offset: int
     data_size: int
-    padding: int
+    unknown_08: int
 
 
 class NpcGiftFlatRecord(TypedDict):

@@ -1,7 +1,8 @@
 {
   "columns": {
     "nodeId": "ID del nodo",
-    "nodeName": "Nombre del nodo"
+    "nodeName": "Nombre del nodo",
+    "maxLevel": "Nivel máx."
   },
   "meta": {
     "count": "{count} ciudades",

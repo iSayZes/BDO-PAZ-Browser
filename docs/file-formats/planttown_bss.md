@@ -2,16 +2,23 @@
 
 ## Purpose
 
-Town/node lookup table for worker and plant systems. The file stores a compact ordered list of node IDs that resolve through LOC type `29`; most rows are towns, villages, guard posts, islands, or trade-zone nodes.
+Town table of the worker system: one row per town node where workers can be hired, with the keys of its warehouse and worker capacity upgrades, its max upgrade level and its upgrade cost group. Node IDs resolve through LOC type `29`; most rows are towns, villages, guard posts, islands, or trade-zone nodes.
 
-Example rows:
+## Versions
 
-```text
-row 0  -> node 1785 -> Nampo's Moodle Village
-row 8  -> node 1623 -> Grána
-row 25 -> node 1301 -> Valencia City
-row 42 -> node 1    -> Velia
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File            | Bytes | Records           | Row bytes |
+| ------ | -------------- | ------- | --------------- | ----- | ----------------- | --------- |
+| 1      | 1784 and later | 3473    | `planttown.bss` | 572   | 46 Plant Town Row | 12        |
+
+| Layout | File            | Known          | Unknown    |
+| ------ | --------------- | -------------- | ---------- |
+| 1      | `planttown.bss` | 572 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,16 +28,9 @@ row 42 -> node 1    -> Velia
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
-
-| Offset  | Type  | Field | Notes                         |
-| ------- | ----- | ----- | ----------------------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                |
-| `+0x04` | u32   | count | Number of rows; observed `45` in the pre-2026-09-27 fixture, `46` in the 2026-09-27 client |
-
-### Row Stream
+### File Layout
 
 Rows start immediately after the header at `+0x08`. The observed file is fully described by:
 
@@ -40,29 +40,26 @@ Rows start immediately after the header at `+0x08`. The observed file is fully d
 
 The 2026-09-27 client holds 46 rows in 572 bytes.
 
-### Trailer (12 bytes)
+| Offset              | Type                   | Field        | Notes                                                |
+| ------------------- | ---------------------- | ------------ | ---------------------------------------------------- |
+| `+0x00`             | char[4]                | magic        | `PABR` (ASCII)                                       |
+| `+0x04`             | u32                    | count        | Number of rows; observed `45` in the pre-2026-09-27 fixture, `46` in the 2026-09-27 client |
+| `+0x08`             | Plant Town Row[count]  | rows         | See Plant Town Row                                   |
+| `rows+0x00`         | String Table           | string_table | The 12-byte trailer starts here; see String Table    |
+| `string_table+0x00` | u32                    | end_of_rows  | Byte offset immediately after rows; `8 + count * 12`; observed `548` |
+| `string_table+0x04` | u32                    | zero         | Observed zero                                        |
 
-Follows the last row.
+### Plant Town Row (12 bytes)
 
-| Offset  | Type | Field       | Observed | Notes                                                |
-| ------- | ---- | ----------- | -------- | ---------------------------------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      | Observed zero                                        |
-| `+0x04` | u32  | end_of_rows | `548`    | Byte offset immediately after rows; `8 + count * 12` |
-| `+0x08` | u32  | reserved_b  | `0`      | Observed zero                                        |
+| Offset  | Type | Field                               | Notes                                         |
+| ------- | ---- | ----------------------------------- | --------------------------------------------- |
+| `+0x00` | u32  | node_id                             | LOC type `29`, `str_id1=node_id`, `str_id4=0` |
+| `+0x04` | u16  | warehouse_upgrade_group_index       | Key into [plantupgradeparam.bss](plantupgradeparam_bss.md); `1` in every row |
+| `+0x06` | u16  | worker_capacity_upgrade_group_index | Key into [plantupgradeparam.bss](plantupgradeparam_bss.md); `2` in every row |
+| `+0x08` | i16  | max_level                           | Highest upgrade level; `10` in every row      |
+| `+0x0A` | u16  | upgrade_resource_key                | Level group in [plantupgraderesource.bss](plantupgraderesource_bss.md); `1` in every row |
 
-## Record Structure
-
-### Plant Town Row (12 bytes, repeated `count` times)
-
-| Offset  | Type | Field      | Notes                                         |
-| ------- | ---- | ---------- | --------------------------------------------- |
-| `+0x00` | u32  | node_id    | LOC type `29`, `str_id1=node_id`, `str_id4=0` |
-| `+0x04` | u16  | unknown_04 | Always observed as `1`                        |
-| `+0x06` | u16  | unknown_06 | Always observed as `2`                        |
-| `+0x08` | u16  | unknown_08 | Always observed as `10`                       |
-| `+0x0A` | u16  | unknown_0a | Always observed as `1`                        |
-
-Earlier versions of this doc called `unknown_04` to `unknown_0a` `unknown_a` to `unknown_d`.
+The constants hold on all 46 rows of client 3473. Earlier versions of this doc called the four fields `unknown_04` to `unknown_0a`, and before that `unknown_a` to `unknown_d`.
 
 Derived field:
 
@@ -70,10 +67,19 @@ Derived field:
 node_name = LOC type 29, str_id1=node_id, str_id4=0
 ```
 
+### String Table (variable: 4 bytes + strings)
+
+The PABR string table, here with no strings.
+
+| Offset  | Type               | Field        | Notes                   |
+| ------- | ------------------ | ------------ | ----------------------- |
+| `+0x00` | u32                | string_count | Observed zero           |
+| `+0x04` | pstr[string_count] | strings      | Empty                   |
+
 ## Reference Rows
 
-| Row | Node ID | Node Name              | unknown_04 | unknown_06 | unknown_08 | unknown_0a |
-| --: | ------: | ---------------------- | ---------: | ---------: | ---------: | ---------: |
+| Row | Node ID | Node Name              | Warehouse | Worker Capacity | Max Level | Upgrade Resource |
+| --: | ------: | ---------------------- | --------: | --------------: | --------: | ---------------: |
 |   0 |  `1785` | Nampo's Moodle Village |        `1` |        `2` |       `10` |        `1` |
 |   1 |  `1781` | Dalbeol Village        |        `1` |        `2` |       `10` |        `1` |
 |   8 |  `1623` | Grána                  |        `1` |        `2` |       `10` |        `1` |
@@ -85,27 +91,23 @@ node_name = LOC type 29, str_id1=node_id, str_id4=0
 
 Row numbers are from the pre-2026-09-27 fixture. The 2026-09-27 client inserts Angavu Outpost (`2057`) as row 0, so every row above moves down by one.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                            |
-| --------- | ---- | ------------------------------------------------ |
-| Node ID   | num  | `node_id`, right-aligned                         |
-| Node Name | text | Prefer LOC type `29`; fall back to raw `node_id` |
-
 ## Notes
 
 - Observed decompressed size is `560` bytes.
 - `planttown.bss` has no same-stem companion file in the PAZ listing.
 - All 45 `node_id` values resolve through LOC type `29` with `str_id4=0`.
-- The row order is not numeric. It appears to be a curated display or processing order grouped roughly by newer/high-ID regions first and older towns later.
+- The row order follows neither the node IDs nor the sheet's row order, see Open Questions.
 - `plantworkerselect.bss` uses related town selection data, but its IDs are not a direct match for this file; for example `planttown.bss` uses node `601` for Calpheon, while `plantworkerselect.bss` uses selection ID `77` for Calpheon City.
+
+## Field Names
+
+The names follow the `PlantTown_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 (columns `WaypointKey`, `WarehouseUpgradeGroupIndex`, `WorkerCapacityUpgradeGroupIndex`, `MaxLevel`, `UpgradeResource`) and the 2016 `gc::PlantTownStaticStatus` member order (`_key`, `_isBlockedNpcWork`, `_warehouseParamKey`, `_workerCapacityParamKey`, `_maxLevel` as a short, `_upgradeResourceKey`). The sheet's 35 towns hold `1`, `2`, `10`, `1`, the values of the file's 34 shared rows, so the names rest on the column order and the 2016 member order, not on a value match. The 2016 `_isBlockedNpcWork` bool has no byte in the record. The client Lua enum `CppEnums.PlantTownLevelType` (`global_define_cpp_enum.luac`) lists the two town level types in the same order: `ePlantTownLevelType_Warehouse` (`0`) and `ePlantTownLevelType_WorkerCapacity` (`1`).
+
+- `warehouse_upgrade_group_index` and `worker_capacity_upgrade_group_index` are keys of [plantupgradeparam.bss](plantupgradeparam_bss.md) (1 warehouse, 2 worker capacity).
+- `upgrade_resource_key` is a level group of [plantupgraderesource.bss](plantupgraderesource_bss.md) (1, town, levels 1 to 16).
 
 ## Open Questions
 
-### Constant Field Semantics (`unknown_04` to `unknown_0a`)
-
-The four side fields are invariant across all observed rows (`1`, `2`, `10`, `1`). Their byte layout is confirmed, but their exact gameplay meaning is not identifiable from local cross-references.
-
 ### Row Order Meaning
 
-The row order is stable and curated, but the exact consumer behavior is unknown. It may be a UI order, worker-system processing order, or region-order list.
+The rows follow neither the node IDs nor the `PlantTown_Table` row order (the sheet starts Velia, Western Guard Camp, Olvia, Heidel, Glish; the file ends Olvia, Western Guard Camp, Velia, Glish, Heidel). The 2016 client loads the table into a `pa::BinaryUnorderedMap<gc::PlantKey, ...>`, a hash map keyed by node, so the order may only be that container's storage order. Whether any client code reads the rows in file order is not checked.

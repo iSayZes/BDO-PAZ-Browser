@@ -5,7 +5,7 @@ Each book record is self-describing:
     u32 journal_key | u32 book_key | u8 is_record_book
     | journal_name | journal_description | book_name | unlock_requirement
     | bookshelf_scene | book_model
-    | u32 page_count | u32[page_count] page_quest_ids | u32 reserved_end
+    | u32 page_count | u32[page_count] page_quest_ids | u32 unknown_end
 
 Strings are a u64 code-unit count followed by the text with no terminator: the
 first four are UTF-16LE, the two model names ASCII. Page quest IDs pack

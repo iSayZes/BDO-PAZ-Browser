@@ -3,8 +3,9 @@
     PABR | u32 count | count x 32-byte row | string table | u32 string_table_start | u32 0
 
 Each row holds the buff ID, string-table indices for the icon path and
-`unknown_str`, `is_shown` and a few bytes copied from the `buff.dbss` stats and
-tail blocks. Full layout in docs/file-formats/buffsimply_bss.md.
+`effect_name`, `is_shown` and a few bytes copied from the `buff.dbss` stats and
+tail blocks, among them `is_debuff`, `remove_on_dead` and the equipment type and
+slot the buff needs. Full layout in docs/file-formats/buffsimply_bss.md.
 """
 
 from __future__ import annotations
@@ -16,10 +17,12 @@ from _common.buff import buff_icon_path
 from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at, string_table_start
 
 
-# u32 buff_id | u8 unknown_04 | 2x | u8 unknown_07 | u8 unknown_08
-# | u8 unknown_09 | x | u8 unknown_0b | u8 unknown_0c | u32 unknown_str_ref
-# | u8 unknown_11 | u8 unknown_12 | 3x | u8 unknown_16 | u8 is_shown
+# u32 buff_id | u8 need_equip_type | 2x | u8 unknown_07 | u8 unknown_08
+# | u8 unknown_09 | x | u8 need_equip_slot | u8 unknown_0c | u32 effect_name_ref
+# | u8 is_debuff | u8 unknown_12 | 3x | u8 remove_on_dead | u8 is_shown
 # | u32 unknown_18 | u32 icon_ref
+# Bytes +0x04 to +0x0C copy the buff.dbss `_needEquipType`, an itemenchant.dbss
+# equip type; 46 is the `equip_slot` of no slot.
 _ROW = struct.Struct("<IB2xBBBxBBIBB3xBBII")
 _ROW_SIZE = 32
 assert _ROW.size == _ROW_SIZE
@@ -41,24 +44,24 @@ def parse_buffsimply_records(data: bytes) -> list[dict]:
     records: list[dict] = []
     for offset in offsets:
         (
-            buff_id, unknown_04, unknown_07, unknown_08, unknown_09,
-            unknown_0b, unknown_0c, unknown_str_ref, unknown_11, unknown_12,
-            unknown_16, is_shown, unknown_18, icon_ref,
+            buff_id, need_equip_type, unknown_07, unknown_08, unknown_09,
+            need_equip_slot, unknown_0c, effect_name_ref, is_debuff, unknown_12,
+            remove_on_dead, is_shown, unknown_18, icon_ref,
         ) = _ROW.unpack_from(data, offset)
         records.append({
             "buff_id": buff_id,
             "icon_path": buff_icon_path(string_at(strings, icon_ref)),
             "is_shown": bool(is_shown),
-            "unknown_str": string_at(strings, unknown_str_ref),
-            "unknown_04": unknown_04,
+            "is_debuff": bool(is_debuff),
+            "remove_on_dead": bool(remove_on_dead),
+            "effect_name": string_at(strings, effect_name_ref),
+            "need_equip_type": need_equip_type,
+            "need_equip_slot": need_equip_slot,
             "unknown_07": unknown_07,
             "unknown_08": unknown_08,
             "unknown_09": unknown_09,
-            "unknown_0b": unknown_0b,
             "unknown_0c": unknown_0c,
-            "unknown_11": unknown_11,
             "unknown_12": unknown_12,
-            "unknown_16": unknown_16,
             "unknown_18": unknown_18,
         })
     return records

@@ -110,6 +110,13 @@ def _optional_cell(value: int | None) -> str:
     return _EMPTY if value is None else e(value)
 
 
+def _level_cell(record: dict) -> str:
+    """The required level, or `min-max` when the item also has a max level, as the tooltip's use limit."""
+    if record["max_level"] is None:
+        return _optional_cell(record["required_level"])
+    return e(f"{record['required_level'] or _NO_LEVEL_LIMIT}-{record['max_level']}")
+
+
 def item_enchant_offset_handler() -> OffsetTableHandler:
     return OffsetTableHandler(
         _LANG_DIR,
@@ -140,6 +147,7 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["classes"], sort_key="classes"),
             Column(cols["binding"], sort_key="binding"),
             Column(cols["durability"], "num", sort_key="max_durability"),
+            Column(cols["memoryFragment"], "num", sort_key="repair_endurance_count"),
             Column(cols["stackable"], sort_key="stackable"),
             Column(cols["marketable"], sort_key="marketable"),
             Column(cols["familyInventory"], sort_key="family_inventory"),
@@ -213,10 +221,11 @@ class ItemEnchantHandler(PreviewHandler):
                 _optional_cell(record["enhancement_type"]),
                 e(record["slot"] or _EMPTY),
                 e(record["weapon_type"] or _EMPTY),
-                _optional_cell(record["required_level"]),
+                _level_cell(record),
                 e(record["classes"] or _EMPTY),
                 e(record["binding"] or _EMPTY),
                 _optional_cell(record["max_durability"]),
+                _optional_cell(record["repair_endurance_count"]),
                 flag_cell(record["stackable"]),
                 flag_cell(record["marketable"]),
                 flag_cell(record["family_inventory"]),

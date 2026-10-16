@@ -8,14 +8,21 @@ background and text colours.
 [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md) lists the
 tag keys of each zone (`tag_keys`). LOC type 117 names the tags by key.
 
-Example:
+## Versions
 
-```text
-tag 20 #FixedLanternSpot
-  colours  0xFF5384D5 / 0xFFA6C0EA
-  guide    Combine_Etc_DekiaLanterns_GroundTooltip_01
-  zones    Lv. 63 Thornwood Forest [Dehkia's Lantern]
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes  | Records    | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ------ | ---------- | --------- |
+| 1      | 3473 and later | 3473    | `dropuitaginfo.bss` | 13,190 | 45 Tag Row | 32        |
+
+| Layout | File                | Known             | Unknown    |
+| ------ | ------------------- | ----------------- | ---------- |
+| 1      | `dropuitaginfo.bss` | 13,190 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,38 +33,38 @@ tag 20 #FixedLanternSpot
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 PABR block of 45 fixed 32-byte rows, followed by the same counted string
-table and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
+table and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4-bytes--strings)
 (`_common/pabr_strings.py`). The string table holds 118 strings: the Korean
 names and tooltips, the guide image names and the colours as hex text.
 
-| Offset  | Type    | Field              | Notes                                   |
-| ------- | ------- | ------------------ | --------------------------------------- |
-| `+0x00` | char[4] | magic              | ASCII `PABR`                            |
-| `+0x04` | u32     | count              | Number of rows; 45 on client 3458       |
-| `+0x08` | row[]   | rows               | 32 bytes each                           |
-| ...     | table   | string_table       | 118 wide strings                        |
-| EOF - 8 | u32     | string_table_start | Where the rows end                      |
-| EOF - 4 | u32     | zero               | Always `0`                              |
+| Offset              | Type           | Field              | Notes                             |
+| ------------------- | -------------- | ------------------ | --------------------------------- |
+| `+0x00`             | char[4]        | magic              | ASCII `PABR`                      |
+| `+0x04`             | u32            | count              | Number of rows; 45 on client 3458 |
+| `+0x08`             | Tag Row[count] | rows               | See Tag Row                       |
+| `rows+0x00`         | String Table   | string_table       | 118 wide strings                  |
+| `string_table+0x00` | u32            | string_table_start | Where the rows end                |
+| `string_table+0x04` | u32            | zero               | Always `0`                        |
 
 Rows are sorted by key, 1 to 45 with no gaps.
 
-## Record Structure
-
 ### Tag Row (32 bytes)
 
-| Offset  | Type | Field                 | Notes                                                                    |
-| ------- | ---- | --------------------- | ------------------------------------------------------------------------ |
-| `+0x00` | u32  | key                   | Tag key, as in `tag_keys`; LOC type 117 `str_id1`                         |
-| `+0x04` | u32  | name_ref              | String table index of the Korean name (`#다수의 몬스터와 전투`); LOC `str_id4` 0 is the English one (`#LotsOfMobs`) |
-| `+0x08` | u32  | guide_texture_ref     | String table index of the guide image name; the empty string on 32 rows   |
-| `+0x0C` | u32  | desc_ref              | String table index of the Korean tooltip, with `<PAColor>` tags; LOC `str_id4` 1 is the English one |
-| `+0x10` | u32  | texture_color_ref     | String table index of `texture_color` as hex text (`ffe1ba65`)           |
-| `+0x14` | u32  | font_color_ref        | String table index of `font_color` as hex text                           |
-| `+0x18` | u32  | texture_color         | Tag background colour, ARGB (`0xFFE1BA65`)                                |
-| `+0x1C` | u32  | font_color            | Tag text colour, ARGB                                                     |
+| Offset  | Type | Field             | Notes                                                                                                               |
+| ------- | ---- | ----------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `+0x00` | u32  | key               | Tag key, as in `tag_keys`; LOC type 117 `str_id1`                                                                   |
+| `+0x04` | u32  | name_ref          | String table index of the Korean name (`#다수의 몬스터와 전투`); LOC `str_id4` 0 is the English one (`#LotsOfMobs`) |
+| `+0x08` | u32  | guide_texture_ref | String table index of the guide image name; the empty string on 32 rows                                             |
+| `+0x0C` | u32  | desc_ref          | String table index of the Korean tooltip, with `<PAColor>` tags; LOC `str_id4` 1 is the English one                 |
+| `+0x10` | u32  | texture_color_ref | String table index of `texture_color` as hex text (`ffe1ba65`)                                                      |
+| `+0x14` | u32  | font_color_ref    | String table index of `font_color` as hex text                                                                      |
+| `+0x18` | u32  | texture_color     | Tag background colour, ARGB (`0xFFE1BA65`)                                                                          |
+| `+0x1C` | u32  | font_color        | Tag text colour, ARGB                                                                                               |
 
 The two hex strings always equal the two ARGB values (case aside: `ffD2691E`,
 `ff3CB371`), so the strings carry nothing extra. The colours are the same on
@@ -73,7 +80,14 @@ Some colours are shared: `0xFF63B6E6` on `#NoItemCollectGauge`,
 `#NoAgrisFever`, both Golden Pig Caves, Atoraxxion and Orzekea, and
 `0xFFCB6768` on `#TreasurePieces`, `#RedArtifacts` and `#HighestTier`.
 
-### Guide Images
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Guide Images
 
 `guide_texture_ref` is set only on the 13 `#FixedLanternSpot` rows, one image
 per zone (`Combine_Etc_DekiaLanterns_GroundTooltip_01` to `_13`): a map of
@@ -81,20 +95,6 @@ where the Dehkia's Lantern can be summoned, shown when the tag is clicked.
 Each name is a whole texture of the same name, lower-cased, in the folder its
 first two parts name: `ui_texture/combine/etc/combine_etc_dekialanterns_groundtooltip_01.dds`.
 All 13 exist on client 3458 (717.8 KB each).
-
-## Suggested UI Layout
-
-| Column          | Type  | Notes                                                                      |
-| --------------- | ----- | -------------------------------------------------------------------------- |
-| Key             | num   | `key`; right-aligned                                                       |
-| Name            | text  | LOC type 117 `str_id4` 0, falling back to the Korean name; drawn as the tag pill in its two colours, as on the hunting grounds |
-| Guide Image     | image | The guide image texture; dash on rows without one; sorts by the texture name |
-| Colours         | text  | `texture_color / font_color` as `0xFF5384D5 / 0xFFA6C0EA`; sorts by `texture_color` |
-| Description     | text  | LOC type 117 `str_id4` 1 in its `<PAColor>` colours (`pa_fields`), falling back to the Korean tooltip; one line, cut after 120 characters |
-| Hunting Grounds | text  | Names (LOC type 116, falling back to the Korean name) of the `dropuihuntinggroundinfo.bss` rows whose `tag_keys` hold the tag, in file order; dash without that file |
-
-The two hex colour strings stay out of the record, since they repeat the ARGB
-values.
 
 ## Notes
 

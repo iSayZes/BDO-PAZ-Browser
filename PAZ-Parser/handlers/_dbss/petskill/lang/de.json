@@ -1,6 +1,7 @@
 {
   "columns": {
     "petSkillId": "Begleitertalent-ID",
+    "skillType": "Talenttyp",
     "level": "Stufe",
     "valueA": "Wert A",
     "valueB": "Wert B"

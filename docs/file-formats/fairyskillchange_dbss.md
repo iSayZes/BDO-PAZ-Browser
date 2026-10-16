@@ -8,13 +8,23 @@ This is the data behind the well-known rerolling advice: keep a fairy at a low l
 
 `fairyskillchangeoffset.dbss` provides a level-keyed index into the main file, which is needed because the records are **not** stored in level order.
 
-Example:
+## Versions
 
-```text
-level 10  → 1 Theiah's Orb
-level 25  → 2 Theiah's Orbs
-level 50  → 5 Theiah's Orbs
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------- | ----------------------------- | ----- | ------------- | --------- |
+| 1      | 1784 and later | 3473    | `fairyskillchange.dbss`       | 604   | 50 Record     | 12        |
+| 1      | 1784 and later | 3473    | `fairyskillchangeoffset.dbss` | 604   | 50 Offset Row | 12        |
+
+| Layout | File                          | Known          | Unknown    |
+| ------ | ----------------------------- | -------------- | ---------- |
+| 1      | `fairyskillchange.dbss`       | 604 B (100.0%) | 0 B (0.0%) |
+| 1      | `fairyskillchangeoffset.dbss` | 604 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,17 +36,18 @@ The main file has a fixed record stride and a count in its header, so it can be 
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 Total file size: 604 bytes = 4 (count) + 50 × 12 (records).
 
-### Header (4 bytes)
+| Offset  | Type          | Field   | Notes                            |
+| ------- | ------------- | ------- | -------------------------------- |
+| `+0x00` | u32           | count   | Number of records; observed `50` |
+| `+0x04` | Record[count] | records | See Record                       |
 
-| Offset  | Type | Field | Notes                            |
-| ------- | ---- | ----- | -------------------------------- |
-| `+0x00` | u32  | count | Number of records; observed `50` |
-
-### Record (12 bytes, repeated `count` times, offset `0x04`)
+### Record (12 bytes)
 
 | Offset  | Type | Field    | Notes                                              |
 | ------- | ---- | -------- | -------------------------------------------------- |
@@ -45,6 +56,25 @@ Total file size: 604 bytes = 4 (count) + 50 × 12 (records).
 | `+0x08` | u32  | orb_cost | Theiah's Orbs required to reroll skills, `1`–`5`   |
 
 The leading `key` is the file key prefix and is identical to `level` in all 50 observed records. The offset companion points at `record_start + 4`, so the addressable payload is the trailing 8 bytes (`level`, `orb_cost`).
+
+### `fairyskillchangeoffset.dbss`
+
+Total file size: 604 bytes = 4 (count) + 50 × 12 (rows).
+
+| Offset  | Type              | Field | Notes                                           |
+| ------- | ----------------- | ----- | ----------------------------------------------- |
+| `+0x00` | u32               | count | Must equal `fairyskillchange.dbss` count (`50`) |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                                  |
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field       | Notes                                                 |
+| ------- | ---- | ----------- | ----------------------------------------------------- |
+| `+0x00` | u32  | level       | Fairy level key, `1`–`50`                             |
+| `+0x04` | u32  | data_offset | Absolute offset in the main file, past the 4-byte key |
+| `+0x08` | u32  | data_size   | Always `8` (`12 - 4-byte key prefix`)                 |
+
+Rows appear in the same order as the main file's records, so `data_offset` runs `8, 20, 32, …` while the keys do not ascend. Recover the full record with `record_start = data_offset - 4`.
 
 ## Level → Orb Cost
 
@@ -64,25 +94,6 @@ The in-game cost table is usually quoted as starting at level 10 (`10`–`19` �
 
 Records are stored out of level order. The first stored keys are `47, 46, 45, 44, 43, 42, 41, 40`, and the file continues in descending runs that jump between bands. This is why the offset companion exists: a reader seeking a specific level must use the index rather than computing `4 + (level - 1) * 12`.
 
-## `fairyskillchangeoffset.dbss`
-
-Total file size: 604 bytes = 4 (count) + 50 × 12 (rows).
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                           |
-| ------- | ---- | ----- | ----------------------------------------------- |
-| `+0x00` | u32  | count | Must equal `fairyskillchange.dbss` count (`50`) |
-
-### Offset Row (12 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                 |
-| ------- | ---- | ----------- | ----------------------------------------------------- |
-| `+0x00` | u32  | level       | Fairy level key, `1`–`50`                             |
-| `+0x04` | u32  | data_offset | Absolute offset in the main file, past the 4-byte key |
-| `+0x08` | u32  | data_size   | Always `8` (`12 - 4-byte key prefix`)                 |
-
-Rows appear in the same order as the main file's records, so `data_offset` runs `8, 20, 32, …` while the keys do not ascend. Recover the full record with `record_start = data_offset - 4`.
 
 ## Lookup Recipe
 
@@ -95,22 +106,6 @@ def orb_cost_for_level(main: bytes, level: int) -> int | None:
             return u32(main, pos + 8)
     return None
 ```
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                   |
-| ------------- | ---- | --------------------------------------- |
-| Level         | num  | `level` (right-aligned)                 |
-| Theiah's Orbs | num  | `orb_cost` for a reroll at that level   |
-
-For `fairyskillchangeoffset.dbss`:
-
-| Column       | Type | Notes                       |
-| ------------ | ---- | --------------------------- |
-| Level        | num  | `level` key (right-aligned) |
-| Data Offset  | num  | `data_offset` as hex        |
-| Data Size    | num  | `data_size`; always `8`     |
-| Record Start | num  | `data_offset - 4` as hex    |
 
 ## Fairy Background
 

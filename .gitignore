@@ -24,6 +24,9 @@ PAZ-Parser/tests/fixtures/*
 # Local benchmark results (machine-specific)
 bench-results/
 
+# Format docs wiki (build_wiki.py)
+/_site/
+
 # PyInstaller output (browser.spec)
 /build/
 /dist/

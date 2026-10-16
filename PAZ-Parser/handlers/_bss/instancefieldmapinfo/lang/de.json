@@ -4,13 +4,19 @@
     "field": "Feld",
     "title": "Titel",
     "description": "Beschreibung",
+    "teams": "Teams",
+    "minUsers": "Min. Teilnehmer",
+    "maxUsers": "Max. Teilnehmer",
+    "territory": "Territorium",
     "x": "X",
     "y": "Y",
     "z": "Z",
     "radius": "Radius (m)",
     "image": "Bild",
     "entryItem": "Eintrittsgegenstand",
-    "spawns": "Startpunkte"
+    "spawns": "Startpunkte",
+    "seasonOnly": "Nur Saison",
+    "camouflageNames": "Namen bei Tarnung"
   },
   "meta": {
     "count": "{count} Instanzfeld-Karten"

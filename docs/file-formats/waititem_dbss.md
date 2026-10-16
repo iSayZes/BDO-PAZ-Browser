@@ -7,11 +7,23 @@ its Registration Queue before they appear for sale: PEN Blackstar and boss
 gear, TRI to PEN Godr-Ayed weapons, TET and PEN accessories, and every level
 of Fallen God's Armor.
 
-```text
-0x140B371D  735005 Blackstar Trinket (20)
-0x05002F1D   12061 Tungrad Ring (5)
-0x000AFC1A  719898 Fallen God's Armor
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ------------- | --------- |
+| 1      | 1784 and later | 3473    | `waititem.dbss`       | 5,580 | 328 Row       | 17        |
+| 1      | 1784 and later | 3473    | `waititemoffset.dbss` | 3,940 | 328 Index Row | 12        |
+
+| Layout | File                  | Known            | Unknown         |
+| ------ | --------------------- | ---------------- | --------------- |
+| 1      | `waititem.dbss`       | 4,268 B (76.5%)  | 1,312 B (23.5%) |
+| 1      | `waititemoffset.dbss` | 3,940 B (100.0%) | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,15 +33,17 @@ icons from the `ITEM_KEY` and `ITEM_ICON` lookup indexes.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then 17-byte rows; the
 file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                     |
-| ------- | ----- | --------- | ------------------------- |
-| `+0x00` | u32   | row_count | `328` on client 3464      |
-| `+0x04` | row[] | rows      | `row_count` 17-byte rows  |
+| Offset  | Type           | Field     | Notes                |
+| ------- | -------------- | --------- | -------------------- |
+| `+0x00` | u32            | row_count | `328` on client 3464 |
+| `+0x04` | Row[row_count] | rows      | See Row              |
 
 ### Row (17 bytes)
 
@@ -51,9 +65,16 @@ On client 3464 the 328 rows hold 184 items:
 | `5`           | 21    | Accessories (11629 Tungrad Necklace, 12061 Tungrad Ring, 705509 Manos Necklace) |
 | `0` to `5`    | 1     | 719898 Fallen God's Armor                                                  |
 
-## `waititemoffset.dbss`
+### `waititemoffset.dbss`
 
-A u32 row count (equal to the main file's), then 12-byte rows:
+A row count equal to the main file's, then one index row per main row.
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+### Index Row (12 bytes)
 
 | Offset  | Type | Field    | Notes                                                        |
 | ------- | ---- | -------- | ------------------------------------------------------------ |
@@ -63,19 +84,6 @@ A u32 row count (equal to the main file's), then 12-byte rows:
 
 Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 4).
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                         |
-| ------------- | ---- | ------------------------------------------------------------- |
-| Item ID       | num  | `item_id`                                                     |
-| Enchant Level | num  | `enchant_level`                                               |
-| Icon          | icon | The icon of the item at its level, else the item's icon       |
-| Item          | text | LOC type 79 level name when it differs from the item name, else the LOC type 0 name with the level in brackets, in the item's grade colour |
-
-The table opens in file order.
-
-The offset table shows Item Key, Data Offset and Size.
 
 ## Notes
 

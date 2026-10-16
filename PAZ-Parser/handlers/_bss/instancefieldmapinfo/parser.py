@@ -6,7 +6,9 @@
 
 The key is the `instancefield.dbss` field key. Title and description are
 `GAME` sheet keys, the image a `ui_texture` path with a pixel region.
-Full layout in docs/file-formats/instancefieldmapinfo_bss.md.
+Field names follow the `InstanceEnterPosition` sheet columns (MaxUser,
+MaxTeamCount, isSeasonOnly, MinUser, isShowNameWnehCamoflage,
+restrictTerritory). Full layout in docs/file-formats/instancefieldmapinfo_bss.md.
 """
 
 from __future__ import annotations
@@ -36,15 +38,17 @@ _TAIL = struct.Struct("<II4xI4x")
 _COUNT = struct.Struct("<I")
 _VEC3 = struct.Struct("<3f")
 _SPAWN_TAIL = struct.Struct("<fI")
+# restrict_territory value for "no territory".
+_NO_TERRITORY = 0xFFFF
 
 
 def _read_record(reader: RecordReader, strings: list[str]) -> dict:
     (
-        key, unknown_02, unknown_06, x, y, z, radius,
-        title_ref, description_ref, unknown_22, unknown_23, image_ref, *region,
+        key, max_user, max_team_count, x, y, z, radius,
+        title_ref, description_ref, is_season_only, min_user, image_ref, *region,
     ) = reader.unpack(_HEAD)
     reader.skip(_FILLER_SIZE)
-    unknown_9d, unknown_9e = reader.unpack(_MIDDLE)
+    is_show_name_when_camouflage, restrict_territory = reader.unpack(_MIDDLE)
     entry_item_id, unknown_ac, unknown_b4 = reader.unpack(_TAIL)
     (hash_count,) = reader.unpack(_COUNT)
     hashes = [reader.unpack(_COUNT)[0] for _ in range(hash_count)]
@@ -63,12 +67,12 @@ def _read_record(reader: RecordReader, strings: list[str]) -> dict:
         "image_region": region,
         "entry_item_id": entry_item_id,
         "spawns": spawns,
-        "unknown_02": unknown_02,
-        "unknown_06": unknown_06,
-        "unknown_22": unknown_22,
-        "unknown_23": unknown_23,
-        "unknown_9d": unknown_9d,
-        "unknown_9e": unknown_9e,
+        "max_user": max_user,
+        "min_user": min_user,
+        "max_team_count": max_team_count,
+        "is_season_only": bool(is_season_only),
+        "is_show_name_when_camouflage": bool(is_show_name_when_camouflage),
+        "restrict_territory_key": None if restrict_territory == _NO_TERRITORY else restrict_territory,
         "unknown_ac": unknown_ac,
         "unknown_b4": unknown_b4,
         "unknown_hashes": hashes,

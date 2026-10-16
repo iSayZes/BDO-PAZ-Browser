@@ -3,6 +3,10 @@
     "regionGroupKey": "Region Group",
     "nodeKey": "Node Key",
     "nodeName": "Node Name",
+    "concurrentUsers": "Concurrent Users",
+    "corpProductivity": "Corp Productivity",
+    "fishingProductivity": "Fishing Productivity",
+    "loyalty": "Loyalty",
     "x": "X",
     "y": "Y",
     "z": "Z"

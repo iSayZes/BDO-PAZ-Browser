@@ -19,34 +19,42 @@ _LEVEL_SHIFT = 24
 _ENCHANT_KEY_MASK = 0x00FFFFFF
 
 # +0x00 to +0x42: key, level, material and count, perfect enhancement count,
-# unknown_19, 8 zero bytes, success rate, downgrade rate, 4 zero bytes,
-# durability, durability lost on failure, unknown_39, unknown_3b, durability
-# lost by a perfect enhancement, max HP.
+# black_count_for_item_market, 8 zero bytes, success rate, downgrade rate,
+# 4 zero bytes, durability, durability lost on failure,
+# recover_max_endurance, unknown_3b, durability lost by a perfect
+# enhancement, max HP.
 _HEADER = struct.Struct("<IBIQQQ8xII4xHHHBHf")
-# 25 f32 values bdo-data-extractor calls per-species AP; all unconfirmed.
-_SPECIES_VALUES_SIZE = 25 * 4
-_U8 = struct.Struct("<B")
+# +0x42 to +0xA7: max MP, HP and MP regen, 72 zero bytes, weight, 8 zero
+# bytes, socket count. The names follow the Enchant_* sheet columns.
+_VARIED = struct.Struct("<ifi72xq8xB")
 _U32 = struct.Struct("<I")
 _F32 = struct.Struct("<f")
-# Seven stats, three f32 each (melee, ranged, magic): two unknown, AP min,
-# AP max, AP display, damage reduction, evasion.
+# Seven stats, three f32 each (melee, ranged, magic): added damage, one
+# unknown, AP min, AP max, AP display, damage reduction, evasion.
 _LANE_STATS = struct.Struct("<21f")
-_AP_MIN, _AP_MAX, _EVASION = 2, 3, 6
+_ADDED_DAMAGE, _AP_MIN, _AP_MAX, _EVASION = 0, 2, 3, 6
 _LANES = 3
-# After the effect script, 13 bytes; only byte 1, what a failed attempt
-# does, is decoded.
-_AFTER_SCRIPT = struct.Struct("<xB11x")
+# +0xFB: skill_key, `skill_no << 16 | level` as in skill.dbss; the SkillNo
+# column is the high half.
+_SKILL_NO_SHIFT = 16
+# After the effect script, 13 bytes: is_notify_world, what a failed attempt
+# does (the EnchantType column), item_market_added_price, an unknown u32,
+# the two market filters and a zero byte.
+_AFTER_SCRIPT = struct.Struct("<BBII2Bx")
 # Fail results: the client's danger types (Safe, Broken, Gradedown); 0 is
 # stored on attempts that cannot fail.
 FAIL_CANNOT_FAIL, FAIL_SAFE, FAIL_DESTROYED, FAIL_DOWNGRADE = 0, 1, 2, 3
 # Per lane: evasion, hidden evasion, damage reduction, hidden damage reduction.
 _DEFENSE = struct.Struct("<4f")
 _HIDDEN_EVASION, _DAMAGE_REDUCTION, _HIDDEN_DAMAGE_REDUCTION = 1, 2, 3
-# Three i32 -1 sentinels, then 65 unknown bytes.
-_SENTINELS = b"\xff" * 12
-_SENTINELS_FIELD = struct.Struct(f"{len(_SENTINELS)}s")
-_UNKNOWN_BLOCK_SIZE = 65
-_FOOTER_SIZE = 6
+# unknown_dice_accuracy_30 (three i32, always -1), then 65 bytes: life main and sub type, life stat,
+# group level, the new perfect enhancement item, count and durability loss,
+# prevent cron count, three adjust values, max food, four cannon values.
+_UNKNOWN_DICE_ACCURACY_30 = b"\xff" * 12
+_UNKNOWN_DICE_ACCURACY_30_FIELD = struct.Struct(f"{len(_UNKNOWN_DICE_ACCURACY_30)}s")
+_LATE_FIELDS = struct.Struct("<BBfBIqHq3fq4i")
+# cronable, guild_rental, need_perfect_enchant_stack, 2 zero bytes.
+_FOOTER = struct.Struct("<BBH2x")
 
 # Rates are stored in millionths; shown as a percentage.
 _RATE_PER_PERCENT = 10_000
@@ -84,15 +92,26 @@ def parse_enchantstaticstatusoffset_records(data: bytes) -> list[dict]:
     return records
 
 
-def _read_header(reader: RecordReader, enchant_key: int, level: int) -> _Header:
-    (stored_key, stored_level, material, count, perfect_count, _unknown_19,
-     rate, downgrade_rate, durability, fail_loss, _unknown_39, _unknown_3b,
+def _read_header(reader: RecordReader, enchant_key: int, level: int) -> tuple[_Header, dict]:
+    """The cost and durability fields, and the fields kept as they are stored."""
+    (stored_key, stored_level, material, count, perfect_count, black_count_for_item_market,
+     rate, downgrade_rate, durability, fail_loss, recover_max_endurance, _unknown_3b,
      perfect_loss, max_hp) = reader.unpack(_HEADER)
     if (stored_key, stored_level) != (enchant_key, level):
         raise ValueError(
             f"enchantstaticstatus block {enchant_key}/{level} stores {stored_key}/{stored_level}"
         )
-    return _Header(material, count, perfect_count, rate, downgrade_rate, durability, fail_loss, perfect_loss, max_hp)
+    max_mp, recov_hp, recov_mp, weight, socket_count = reader.unpack(_VARIED)
+    header = _Header(material, count, perfect_count, rate, downgrade_rate, durability, fail_loss, perfect_loss, max_hp)
+    return header, {
+        "black_count_for_item_market": black_count_for_item_market,
+        "recover_max_endurance": recover_max_endurance,
+        "varied_max_mp": max_mp,
+        "varied_recov_hp": recov_hp,
+        "varied_recov_mp": recov_mp,
+        "varied_possessable_weight": weight,
+        "socket_count": socket_count,
+    }
 
 
 def _lane_max(values: tuple[float, ...], stat: int) -> int:
@@ -115,16 +134,38 @@ def _defense_max(defense: list[tuple[float, ...]], stat: int) -> int:
     return round(max(lane[stat] for lane in defense))
 
 
-def _read_aid_items(reader: RecordReader, label: str) -> list[int]:
-    if reader.unpack(_SENTINELS_FIELD)[0] != _SENTINELS:
-        raise ValueError(f"{label}: missing the -1 sentinels")
-    reader.skip(_UNKNOWN_BLOCK_SIZE)
+def _read_late_fields(reader: RecordReader, label: str) -> dict:
+    """The 65 bytes after unknown_dice_accuracy_30, the aid items and the footer."""
+    if reader.unpack(_UNKNOWN_DICE_ACCURACY_30_FIELD)[0] != _UNKNOWN_DICE_ACCURACY_30:
+        raise ValueError(f"{label}: unknown_dice_accuracy_30 is not three -1 values")
+    (life_main_type, life_sub_type, life_stat, group_level, new_perfect_item, new_perfect_count,
+     new_perfect_loss, prevent_cron_count, adjust_strength, adjust_speed, adjust_health,
+     max_food, cannon_cool_time, _cannon_accuracy, _cannon_max_length, _cannon_max_angle,
+     ) = reader.unpack(_LATE_FIELDS)
     (count,) = reader.unpack(_U32)
     aids = list(reader.unpack(struct.Struct(f"<{count}I")))
-    reader.skip(_FOOTER_SIZE)
+    cronable, guild_rental, need_perfect_enchant_stack = reader.unpack(_FOOTER)
     if not reader.at_end():
         raise ValueError(f"{label}: {reader.remaining()} bytes left after the footer")
-    return aids
+    return {
+        "aid_item_ids": aids,
+        "life_main_type": life_main_type,
+        "life_sub_type": life_sub_type,
+        "life_stat": life_stat,
+        "group_level": group_level,
+        "new_perfect_enchant_item_id": new_perfect_item,
+        "new_perfect_enchant_item_count": new_perfect_count,
+        "new_perfect_enchant_durability_loss": new_perfect_loss,
+        "prevent_cron_count": prevent_cron_count,
+        "adjust_strength": adjust_strength,
+        "adjust_speed": adjust_speed,
+        "adjust_health": adjust_health,
+        "varied_max_food": max_food,
+        "varied_cannon_cool_time": cannon_cool_time,
+        "is_cronable": bool(cronable),
+        "is_guild_rental": bool(guild_rental),
+        "need_perfect_enchant_stack": need_perfect_enchant_stack,
+    }
 
 
 def _enhancement_fields(header: _Header, level: int, fail_result: int) -> dict:
@@ -158,17 +199,16 @@ def _enhancement_fields(header: _Header, level: int, fail_result: int) -> dict:
 def _parse_block(data: bytes, start: int, size: int, enchant_key: int, level: int) -> dict:
     label = f"enchantstaticstatus block {enchant_key}/{level}"
     reader = RecordReader(data, start, start + size, label)
-    header = _read_header(reader, enchant_key, level)
-    reader.skip(_SPECIES_VALUES_SIZE)
-    reader.unpack(_U8)
+    header, stored = _read_header(reader, enchant_key, level)
     lane_stats = reader.unpack(_LANE_STATS)
-    reader.unpack(_U32)
+    (skill_key,) = reader.unpack(_U32)
     description_kr = reader.text(wide=True)
     effects = reader.text(wide=True)
-    (fail_result,) = reader.unpack(_AFTER_SCRIPT)
+    (is_notify_world, fail_result, item_market_added_price, _unknown_after_script,
+     market_filter_1, market_filter_2) = reader.unpack(_AFTER_SCRIPT)
     accuracy = _read_accuracy(reader)
     defense = [reader.unpack(_DEFENSE) for _ in range(_LANES)]
-    aid_item_ids = _read_aid_items(reader, label)
+    late = _read_late_fields(reader, label)
     return {
         # The offset key, which names one level of one enchant key.
         "status_key": level << _LEVEL_SHIFT | enchant_key,
@@ -185,9 +225,17 @@ def _parse_block(data: bytes, start: int, size: int, enchant_key: int, level: in
         "hidden_damage_reduction": _defense_max(defense, _HIDDEN_DAMAGE_REDUCTION),
         # Ships and wagons show it as Max Durability, their HP.
         "max_hp": round(header.max_hp),
-        "aid_item_ids": aid_item_ids,
+        "added_damage": _lane_max(lane_stats, _ADDED_DAMAGE),
         "effects": effects,
         "description_kr": description_kr,
+        "skill_key": skill_key,
+        "skill_no": skill_key >> _SKILL_NO_SHIFT,
+        "is_notify_world": bool(is_notify_world),
+        "item_market_added_price": item_market_added_price,
+        "market_filter_1": market_filter_1,
+        "market_filter_2": market_filter_2,
+        **stored,
+        **late,
     }
 
 

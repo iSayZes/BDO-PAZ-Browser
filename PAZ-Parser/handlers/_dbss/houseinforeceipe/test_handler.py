@@ -43,7 +43,7 @@ CASE = HandlerCase(
         SchemaTest(required_keys=[
             "receipe_key", "need_item_key", "name_kr", "name", "house_use_type", "house_use_type_name",
             "icon_type", "icon_type_name", "level_exchanges", "level_count", "exchange_count",
-            "unknown_tail_02", "unknown_after_lists", "unknown_end",
+            "unknown_tail_02", "unknown_after_level_exchanges", "unknown_end",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         RangeTest(col="house_use_type", min_val=0, max_val=len(HOUSE_USE_TYPE_NAMES) - 1),

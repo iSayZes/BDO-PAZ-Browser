@@ -31,7 +31,7 @@ Sections follow each other with no padding.
 |                    | group[]    | groups             | 8-byte rows repeated `group_count` times                     |
 |                    | u32        | route_count        | `0` in every file but `mapdata_realnpc_route.bwp` (899)      |
 |                    | route[]    | routes             | Variable-length, repeated `route_count` times                |
-| `string_table_start` | table    | string_table       | Counted string table, see [`npcsimply.bss` String Pool](npcsimply_bss.md#string-pool); each string stored once |
+| `string_table_start` | table    | string_table       | Counted string table, see [`npcsimply.bss` String Table](npcsimply_bss.md#string-table-variable-4-bytes--strings); each string stored once |
 | EOF - 8            | u32        | string_table_start | Equals the offset where the routes end, on all 1,287 files   |
 | EOF - 4            | u32        | zero               | Always `0`                                                   |
 
@@ -92,21 +92,6 @@ Named after the XML `Property` attribute; they read as bit flags, with `all` set
 | `0x10` | ground | 287,278               |
 | `0x40` | water  | 7,023                 |
 | `0xFF` | all    | 9,327                 |
-
-## Suggested UI Layout
-
-One row per waypoint.
-
-| Column       | Type | Notes                                                    |
-| ------------ | ---- | -------------------------------------------------------- |
-| Key          | num  | `key`                                                    |
-| Name         | text | Waypoint name from the string table                      |
-| X            | num  | `x`, one decimal                                         |
-| Y            | num  | `y`, one decimal                                         |
-| Z            | num  | `z`, one decimal                                         |
-| Property     | text | Property name, the hex value when unknown                |
-| Sub Waypoint | text | `is_sub_waypoint` as Yes/No                              |
-| Links        | text | Keys linked in either direction, ascending               |
 
 ## Notes
 

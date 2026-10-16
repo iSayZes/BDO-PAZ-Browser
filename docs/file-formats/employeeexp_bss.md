@@ -8,12 +8,23 @@ expression from the trailing string table (`1D2`, `1D5+30`) rolled for that
 ability on level-up. The top level of each sailor has no growth and a
 placeholder EXP value.
 
-Example:
+## Versions
 
-```text
-employee_key 20, level 1:  exp_to_next_level 1300  growth 6: 1D2, 7: 1D2, 8: 1D1, 9: 1D5, 14: 1D4, 15: 1D1, 16: 1D1
-employee_key 20, level 10: exp_to_next_level 1000  (top level: no growth)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes  | Records | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ------ | ------- | --------- |
+| 2      | 3473 and later | 3473    | `employeeexp.bss` | 21,081 | 230 Row | 89        |
+| 1      | 1784           | 1784    | `employeeexp.bss` | 19,237 | 230 Row | 81        |
+
+| Layout | File              | Known            | Unknown        |
+| ------ | ----------------- | ---------------- | -------------- |
+| 2      | `employeeexp.bss` | 19,927 B (94.5%) | 1,154 B (5.5%) |
+| 1      | `employeeexp.bss` | 18,087 B (94.0%) | 1,150 B (6.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,50 +37,84 @@ file's own string table.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
 
 The shared PABR string table tail of `npcsimply.bss` and `plantexchangegroup.bss`
 (`_common/pabr_strings.py`), with one empty u32 between the rows and the table.
 
-| Offset           | Type    | Field              | Notes                                                              |
-| ---------------- | ------- | ------------------ | ------------------------------------------------------------------ |
-| `+0x00`          | char[4] | magic              | ASCII `PABR`                                                       |
-| `+0x04`          | u32     | count              | Number of rows; 230 on client 3458 (23 sailors x 10 levels)        |
-| `+0x08`          | row[]   | rows               | 89-byte rows repeated `count` times                                |
-| `8 + count * 89` | u32     | footer             | Always `0`; read as an empty counted table, like the `exploration.bss` footer |
-| footer + 4       | table   | string_table       | u32 count, then `count` x (u8 is_wide, u32 byte length, payload)   |
-| EOF - 8          | u32     | string_table_start | Offset of the string table; equals the end of the footer          |
-| EOF - 4          | u32     | zero               | Always 0                                                           |
+| Offset              | Type         | Field              | Notes                                                                         |
+| ------------------- | ------------ | ------------------ | ----------------------------------------------------------------------------- |
+| `+0x00`             | char[4]      | magic              | ASCII `PABR`                                                                  |
+| `+0x04`             | u32          | count              | Number of rows; 230 on client 3458 (23 sailors x 10 levels)                   |
+| `+0x08`             | Row[count]   | rows               | See Row                                                                       |
+| `rows+0x00`         | u32          | unknown_after_rows | Always `0`; read as an empty counted table, like the `exploration.bss` footer |
+| `rows+0x04`         | String Table | string_table       | See String Table                                                              |
+| `string_table+0x00` | u32          | string_table_start | Offset of the string table; equals the end of `unknown_after_rows`            |
+| `string_table+0x04` | u32          | zero               | Always 0                                                                      |
 
 The file tiles with no gaps: the rows end 4 bytes before `string_table_start`,
 and the string table ends exactly at EOF - 8. The parser rejects a file where
-this does not hold, since every field would then be suspect.
+this does not hold, since every field would then be suspect. Earlier versions
+of this doc called `unknown_after_rows` `footer`.
 
 Rows run level by level (all level 1 rows, then level 2, ...); inside a level
 the `employee_key` order is 23 down to 8, then 1 up to 7.
 
-## Record Structure
-
-### Row (89 bytes, repeated `count` times)
+### Row (89 bytes)
 
 Fields are unaligned.
 
-| Offset  | Type      | Field             | Notes                                                                                 |
-| ------- | --------- | ----------------- | ------------------------------------------------------------------------------------- |
-| `+0x00` | u8        | unknown_00        | Always `0`; the same lead byte as `fairyupgraderate.bss` rows                          |
-| `+0x01` | u16       | level             | 1 to 10                                                                                |
-| `+0x03` | u16       | employee_key      | Sailor key, 1 to 23; together with `level` unique per row                              |
-| `+0x05` | u32       | exp_to_next_level | EXP from this level to the next; `1000` on level 10, see Notes                         |
-| `+0x09` | u32       | unknown_09        | Always `0`                                                                             |
-| `+0x0D` | u32[19]   | growth_ref        | String table index per employee ability (slot = ability index 0 to 18); `0` is the empty string, the ability does not grow |
+| Offset  | Type    | Field             | Notes                                                                                                                      |
+| ------- | ------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `+0x00` | u8      | unknown_00        | Always `0`; the same lead byte as `fairyupgraderate.bss` rows                                                              |
+| `+0x01` | u16     | level             | 1 to 10                                                                                                                    |
+| `+0x03` | u16     | employee_key      | Sailor key, 1 to 23; together with `level` unique per row                                                                  |
+| `+0x05` | u32     | exp_to_next_level | EXP from this level to the next; `1000` on level 10, see Notes                                                             |
+| `+0x09` | u32     | unknown_09        | Always `0`                                                                                                                 |
+| `+0x0D` | u32[19] | growth_ref        | String table index per employee ability (slot = ability index 0 to 18); `0` is the empty string, the ability does not grow |
 
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 41 strings on client 3458. Index 0 is the empty string, every other entry is a
 dice expression `<n>D<sides>` with an optional `+<bonus>` (`1D1`, `1D3+7`,
 `1D15+25`). All are stored wide (UTF-16LE).
 
-### Growth by Ability
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | 41 on client 3458   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Layout 1
+
+On client 1784 `growth_ref` holds 17 slots (abilities 0 to 16), so the row
+is 81 bytes, and the string table follows the rows with no
+`unknown_after_rows`. The File Layout and the Row differ from Layout 2.
+
+### File Layout
+
+| Offset              | Type         | Field              | Notes                                                |
+| ------------------- | ------------ | ------------------ | ---------------------------------------------------- |
+| `+0x00`             | char[4]      | magic              | ASCII `PABR`                                         |
+| `+0x04`             | u32          | count              | 230 on client 1784                                   |
+| `+0x08`             | Row[count]   | rows               | See Row                                              |
+| `rows+0x00`         | String Table | string_table       |                                                      |
+| `string_table+0x00` | u32          | string_table_start | Offset of the string table; equals the end of `rows` |
+| `string_table+0x04` | u32          | zero               |                                                      |
+
+### Row (81 bytes)
+
+| Offset  | Type    | Field             | Notes                                                                 |
+| ------- | ------- | ----------------- | --------------------------------------------------------------------- |
+| `+0x00` | u8      | unknown_00        | `0` on every row (client 1784)                                        |
+| `+0x01` | u16     | level             |                                                                       |
+| `+0x03` | u16     | employee_key      |                                                                       |
+| `+0x05` | u32     | exp_to_next_level | The same on every row as on client 3473                               |
+| `+0x09` | u32     | unknown_09        | `0` on every row (client 1784)                                        |
+| `+0x0D` | u32[17] | growth_ref        | Slots 0 to 16; every slot but 15 holds the same strings as on client 3473 |
+
+## Growth by Ability
 
 Only seven ability slots are used on client 3458:
 
@@ -100,21 +145,6 @@ level 10 placeholder):
 | 1300        | 1300, 1950, 2925, 5850, 11700, 23400, 70200, 210600, 631800           | 3, 5, 6, 8, 9, 12, 14, 15, 16, 18, 20     |
 
 Each curve steps x1.5, x1.5, x2, x2, x2, x3, x3, x3 from level 1.
-
-## Suggested UI Layout
-
-| Column            | Type | Notes                                                                                  |
-| ----------------- | ---- | -------------------------------------------------------------------------------------- |
-| Sailor Key        | num  | `employee_key`                                                                         |
-| Level             | num  | `level`                                                                                |
-| EXP to Next Level | num  | `exp_to_next_level` with thousands separators; dash on the sailor's top level          |
-| Level-Up Growth   | text | Used abilities as `<stat>: <dice>` (`Awareness: 1D2+2`), comma separated, with the `employeestaticstatus.bss` stat labels; an unnamed type keeps its number; dash when none |
-
-Rows are grouped by sailor (`employee_key`, then `level`). On a sailor's top
-level the handler sets `exp_to_next_level` to `None`, so it sorts last, and
-keeps the stored value in `exp_raw`. It also keeps `growth_refs`,
-`growth_dice` (19 entries, empty where unused), `is_max_level` and the
-`unknown_*` fields on the record but out of the table.
 
 ## Notes
 

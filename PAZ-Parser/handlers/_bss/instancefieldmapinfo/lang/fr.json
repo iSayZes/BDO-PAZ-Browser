@@ -4,13 +4,19 @@
     "field": "Champ",
     "title": "Titre",
     "description": "Description",
+    "teams": "Équipes",
+    "minUsers": "Participants min.",
+    "maxUsers": "Participants max.",
+    "territory": "Territoire",
     "x": "X",
     "y": "Y",
     "z": "Z",
     "radius": "Rayon (m)",
     "image": "Image",
     "entryItem": "Objet d'entrée",
-    "spawns": "Points d'apparition"
+    "spawns": "Points d'apparition",
+    "seasonOnly": "Saison uniquement",
+    "camouflageNames": "Noms sous camouflage"
   },
   "meta": {
     "count": "{count} cartes de champ d'instance"

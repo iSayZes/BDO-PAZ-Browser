@@ -23,10 +23,10 @@ from .model import QuestListRecord
 _MAGIC = b"PABR"
 _HEADER_SIZE = 8
 
-# u16 group_key | u32 name_index | u8 unknown_06 | u32 row_count
+# u16 group_key | u32 name_index | u8 group_type | u32 row_count
 _GROUP_HEADER = struct.Struct("<HIBI")
-# u16 quest_chain_id | u16 quest_id | u32 condition_index | u32 script_1_index
-# | u32 script_2_index | u8 unknown_10
+# u16 quest_chain_id | u16 quest_id | u32 condition_index | u32 hide_conditions_index
+# | u32 visible_conditions_index | u8 is_sub_quest
 _ROW = struct.Struct("<HHIIIB")
 # u32 event_start_index | u32 event_end_index | u32 zero
 _GROUP_TRAILER = struct.Struct("<II4x")
@@ -40,7 +40,7 @@ class _Group:
     index: int
     key: int
     name_kr: str
-    unknown_06: int
+    group_type: int
     event_start: str
     event_end: str
 
@@ -94,7 +94,7 @@ def _read_group(
     if offset + _GROUP_HEADER.size > groups_end:
         raise ValueError(f"Quest list group {group_index} header runs past 0x{groups_end:X}")
 
-    key, name_index, unknown_06, row_count = _GROUP_HEADER.unpack_from(data, offset)
+    key, name_index, group_type, row_count = _GROUP_HEADER.unpack_from(data, offset)
     rows_at = offset + _GROUP_HEADER.size
     trailer_at = rows_at + row_count * _ROW.size
     if trailer_at + _GROUP_TRAILER.size > groups_end:
@@ -105,7 +105,7 @@ def _read_group(
         index=group_index,
         key=key,
         name_kr=string_at(strings, name_index),
-        unknown_06=unknown_06,
+        group_type=group_type,
         event_start=_event_time(string_at(strings, start_index)),
         event_end=_event_time(string_at(strings, end_index)),
     )
@@ -122,24 +122,24 @@ def _row_record(
     strings: list[str],
 ) -> QuestListRecord:
     (
-        quest_chain_id, quest_id, condition_index, script_1_index, script_2_index, unknown_10,
+        quest_chain_id, quest_id, condition_index, hide_conditions_index, visible_conditions_index, is_sub_quest,
     ) = _ROW.unpack_from(data, offset)
     return {
         "group": group.index,
         "group_key": group.key,
         "group_name_kr": group.name_kr,
-        "unknown_06": group.unknown_06,
+        "group_type": group.group_type,
         "event_start": group.event_start,
         "event_end": group.event_end,
         "row": row,
-        "unknown_10": unknown_10,
+        "is_sub_quest": bool(is_sub_quest),
         "quest_chain_id": quest_chain_id,
         "quest_id": quest_id,
         "packed_quest_id": (quest_id << 16) | quest_chain_id,
         "condition_index": condition_index,
         "condition_kr": string_at(strings, condition_index),
-        "script_1_index": script_1_index,
-        "script_1": string_at(strings, script_1_index),
-        "script_2_index": script_2_index,
-        "script_2": string_at(strings, script_2_index),
+        "hide_conditions_index": hide_conditions_index,
+        "hide_conditions": string_at(strings, hide_conditions_index),
+        "visible_conditions_index": visible_conditions_index,
+        "visible_conditions": string_at(strings, visible_conditions_index),
     }

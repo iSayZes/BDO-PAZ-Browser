@@ -4,12 +4,23 @@
 
 Defines how knowledge entries are obtained from characters and items. The file holds two tables: table 0 maps a character ID (a monster, NPC, gathering node or other `characterstatic.dbss` entry) to the knowledge card it teaches, and table 1 maps an item ID to the card it teaches. Parsing is driven by `knowledgelearningoffset.dbss`, which gives each record's source ID, byte offset and size.
 
-Example:
+## Versions
 
-```text
-table 0: character 21207 "Valencian Lion"  →  card 4893 "Valencian Lion"
-table 1: item 8279 "Gurnard"               →  card 8579 "Gurnard"
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes  | Records                                                       | Row bytes |
+| ------ | -------------- | ------- | ------------------------------ | ------ | ------------------------------------------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `knowledgelearning.dbss`       | 79,636 | 4,684 Learning Record, 4,684 Learning Entry, 2 Learning Table | 13        |
+| 1      | 1784 and later | 3473    | `knowledgelearningoffset.dbss` | 56,220 | 4,684 Index Row, 2 Index Table                                | 12        |
+
+| Layout | File                           | Known             | Unknown        |
+| ------ | ------------------------------ | ----------------- | -------------- |
+| 1      | `knowledgelearning.dbss`       | 74,952 B (94.1%)  | 4,684 B (5.9%) |
+| 1      | `knowledgelearningoffset.dbss` | 56,220 B (100.0%) | 0 B (0.0%)     |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,53 +31,64 @@ table 1: item 8279 "Gurnard"               →  card 8579 "Gurnard"
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### knowledgelearningoffset.dbss
+### File Layout
+
+The two tables follow each other; the file holds no table count of its own.
+
+| Offset  | Type              | Field  | Notes                                                   |
+| ------- | ----------------- | ------ | ------------------------------------------------------- |
+| `+0x00` | Learning Table[2] | tables | Table 0 (characters), then table 1 (items); the offset file's `table_count` is `2` |
+
+The index `data_offset` points past the lead, at the record itself. Table 0 starts at `0` and its records end at `44136` (`43065` in the pre-2026-09-27 fixture); table 1 starts there with its own count.
+
+### Learning Table (variable: 4 bytes + entries)
+
+| Offset  | Type                  | Field   | Notes                             |
+| ------- | --------------------- | ------- | --------------------------------- |
+| `+0x00` | u32                   | count   | Matches the index table's `count` |
+| `+0x04` | Learning Entry[count] | entries | See Learning Entry                |
+
+### Learning Entry (17 bytes)
+
+| Offset  | Type            | Field      | Notes                                                          |
+| ------- | --------------- | ---------- | -------------------------------------------------------------- |
+| `+0x00` | u32             | key_prefix | Lead `source_id`, equal to the record's `source_id`            |
+| `+0x04` | Learning Record | record     | See Learning Record; the index `data_offset` points here       |
+
+### Learning Record (13 bytes)
+
+| Offset  | Type | Field       | Notes                                                                  |
+| ------- | ---- | ----------- | ---------------------------------------------------------------------- |
+| `+0x00` | u32  | source_id   | Character ID (table 0, LOC `str_type=6`) or item ID (table 1, LOC `str_type=0`) |
+| `+0x04` | u32  | source_type | `0` in table 0, `1` in table 1                                         |
+| `+0x08` | u8   | unknown_08  | Always `0`                                                             |
+| `+0x09` | u32  | card_id     | Knowledge card taught; LOC `str_type=34`, key of `mentalcard.dbss`     |
+
+### `knowledgelearningoffset.dbss`
 
 No `PABR` magic and no trailer; the file ends exactly after the last table.
 
-| Offset  | Type  | Name        | Description                               |
-| ------- | ----- | ----------- | ----------------------------------------- |
-| `+0x00` | u32   | table_count | Observed `2`                              |
-| `+0x04` | ...   | tables      | `table_count` index tables, back to back  |
+| Offset  | Type                     | Field       | Notes                                    |
+| ------- | ------------------------ | ----------- | ---------------------------------------- |
+| `+0x00` | u32                      | table_count | Observed `2`                             |
+| `+0x04` | Index Table[table_count] | tables      | See Index Table                          |
 
-Each index table:
+### Index Table (variable: 4 bytes + rows)
 
-| Offset  | Type | Name  | Description                                   |
-| ------- | ---- | ----- | --------------------------------------------- |
-| `+0x00` | u32  | count | Rows in this table: `2596` and `2088` in the 2026-09-27 client, `2533` and `2070` in the pre-2026-09-27 fixture |
-| `+0x04` | ...  | rows  | `count` 12-byte rows                          |
+| Offset  | Type             | Field | Notes                                         |
+| ------- | ---------------- | ----- | --------------------------------------------- |
+| `+0x00` | u32              | count | Rows in this table: `2596` and `2088` in the 2026-09-27 client, `2533` and `2070` in the pre-2026-09-27 fixture |
+| `+0x04` | Index Row[count] | rows  | See Index Row                                 |
 
-Index row (12 bytes):
+### Index Row (12 bytes)
 
-| Offset  | Type | Name        | Description                                              |
+| Offset  | Type | Field       | Notes                                                    |
 | ------- | ---- | ----------- | -------------------------------------------------------- |
 | `+0x00` | u32  | source_id   | Equals `source_id` at the start of the record            |
 | `+0x04` | u32  | data_offset | Absolute offset of the record in `knowledgelearning.dbss` |
 | `+0x08` | u32  | size        | Record size in bytes; always `13`                        |
-
-### knowledgelearning.dbss
-
-The two tables follow each other. Each table is:
-
-| Offset  | Type | Name    | Description                                             |
-| ------- | ---- | ------- | ------------------------------------------------------- |
-| `+0x00` | u32  | count   | Matches the index table's `count`                       |
-| `+0x04` | ...  | records | `count` entries of a 4-byte lead `source_id` plus a record |
-
-The index `data_offset` points past the lead, at the record itself. Table 0 starts at `0` and its records end at `44136` (`43065` in the pre-2026-09-27 fixture); table 1 starts there with its own count.
-
-## Record Structure
-
-### Learning Record (13 bytes)
-
-| Offset  | Type | Name        | Description                                                            |
-| ------- | ---- | ----------- | ---------------------------------------------------------------------- |
-| `+0x00` | u32  | source_id   | Character ID (table 0, LOC `str_type=6`) or item ID (table 1, LOC `str_type=0`) |
-| `+0x04` | u32  | source_type | `0` in table 0, `1` in table 1                                         |
-| `+0x08` | u8   | reserved    | Always `0`                                                             |
-| `+0x09` | u32  | card_id     | Knowledge card taught; LOC `str_type=34`, key of `mentalcard.dbss`     |
 
 ## Enum Values
 

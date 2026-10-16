@@ -4,14 +4,23 @@
 
 EXP table of the guild points (skill point pool `3`, the points guild skills cost): the EXP a guild needs to go from one guild point level to the next, from level 0 to the max level in [skillexperiencemaxlevel](skillexperiencemaxlevel_bss.md) (`guildskillexperiencemaxlevel.bss`). Companion `guildskillexperienceoffset.dbss` lists where every row sits. The container and offset table are the ones of [skillexperience](skillexperience_dbss.md); only the row differs.
 
-Example (client 3464):
+## Versions
 
-```text
-Lv 0     EXP 700
-Lv 14    EXP 8,400
-Lv 15    EXP 11,635
-Lv 1000  EXP 1,652,100
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                              | Bytes  | Records          | Row bytes |
+| ------ | -------------- | ------- | --------------------------------- | ------ | ---------------- | --------- |
+| 1      | 1784 and later | 3473    | `guildskillexperience.dbss`       | 13,017 | 1,001 Level Row  | 13        |
+| 1      | 1784 and later | 3473    | `guildskillexperienceoffset.dbss` | 10,014 | 1,001 Offset Row | 10        |
+
+| Layout | File                              | Known             | Unknown        |
+| ------ | --------------------------------- | ----------------- | -------------- |
+| 1      | `guildskillexperience.dbss`       | 12,016 B (92.3%)  | 1,001 B (7.7%) |
+| 1      | `guildskillexperienceoffset.dbss` | 10,014 B (100.0%) | 0 B (0.0%)     |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,16 +31,16 @@ Lv 1000  EXP 1,652,100
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field     | Notes                                                   |
-| ------- | ----- | --------- | ------------------------------------------------------- |
-| `+0x00` | u32   | row_count | Number of rows; 1,001 (levels 0 to 1000) on client 3464 |
-| `+0x04` | row[] | rows      | `row_count` rows of 13 bytes, not in level order        |
+### File Layout
+
+| Offset  | Type                 | Field     | Notes                                                   |
+| ------- | -------------------- | --------- | ------------------------------------------------------- |
+| `+0x00` | u32                  | row_count | Number of rows; 1,001 (levels 0 to 1000) on client 3464 |
+| `+0x04` | Level Row[row_count] | rows      | See Level Row; not in level order                       |
 
 The rows fill the file exactly: 4 + 1,001 x 13 = 13,017 bytes on client 3464.
-
-## Record Structure
 
 ### Level Row (13 bytes)
 
@@ -41,26 +50,24 @@ The rows fill the file exactly: 4 + 1,001 x 13 = 13,017 bytes on client 3464.
 | `+0x04` | u64  | exp        | EXP to go from `level` to `level + 1`, as in [skillexperience](skillexperience_dbss.md) |
 | `+0x0C` | u8   | unknown_0c | `1` on every row (client 3464)                           |
 
-## guildskillexperienceoffset.dbss
+### `guildskillexperienceoffset.dbss`
 
-Same layout as `skillexperienceoffset.dbss` (see [skillexperience](skillexperience_dbss.md)): a u32 row count equal to the main file's, then 10-byte [u16 level][u32 data_offset][u32 data_size] rows with no magic and no trailer. `data_size` is always 13, and `data_offset` points at the row's `level`. The rows are not in level order (0, 399, 944, ...); the parser returns the main rows sorted by level.
+The layout of `skillexperienceoffset.dbss` (see [skillexperience](skillexperience_dbss.md)), with no magic and no trailer.
 
-## Suggested UI Layout
+| Offset  | Type                  | Field     | Notes                              |
+| ------- | --------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                   | row_count | Equals the main file's `row_count` |
+| `+0x04` | Offset Row[row_count] | rows      | See Offset Row                     |
 
-### guildskillexperience.dbss
+### Offset Row (10 bytes)
 
-| Column            | Type | Notes   |
-| ----------------- | ---- | ------- |
-| Level             | num  | `level` |
-| EXP to Next Level | num  | `exp`   |
+| Offset  | Type | Field       | Notes                                                                          |
+| ------- | ---- | ----------- | ------------------------------------------------------------------------------ |
+| `+0x00` | u16  | level       | Level of the row it points at                                                  |
+| `+0x02` | u32  | data_offset | Absolute byte offset of the row's `level` in `guildskillexperience.dbss`       |
+| `+0x06` | u32  | data_size   | Always 13                                                                      |
 
-### guildskillexperienceoffset.dbss
-
-| Column      | Type | Notes                 |
-| ----------- | ---- | --------------------- |
-| Level       | num  | `level`               |
-| Data Offset | num  | `data_offset`, as hex |
-| Data Size   | num  | `data_size`           |
+The rows are not in level order (0, 399, 944, ...); the parser returns the main rows sorted by level.
 
 ## Notes
 

@@ -4,16 +4,27 @@
 
 The dialog functions of every NPC: one record per character, holding the buttons its dialog window offers (Shop, Repair, Stable, Conversation, Node Management and so on), each with its Korean button text and an optional condition script that hides it. The Node Management slot also lists the nodes the NPC manages and the town it represents, the shop, guild shop and trade slots point at the [`itemmaingroup.bss`](itemmaingroup_bss.md) item lists of their Buy and Sell tabs, and the stable slot lists the vehicle types it keeps.
 
-Example:
+## Versions
 
-```text
-character 40025 Emma Bartali  -> Trade, Conversation, Node Management
-                                 manages Bartali Farm (21), Potato Farming (131), ... Specialties (104)
-character 40017 Igor Bartali  -> represents Velia (node 1)
-character 24646 Cradle - Sol Magia -> Shop, Repair
-character 47459 Benyamin      -> Shop: buy group 50503 (potions), sell group 52001
-character 59279 Miles         -> Stable: 53 RaceHorse
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                           | Bytes     | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Row bytes                |
+| ------ | -------------- | ------- | ------------------------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 2      | 3473 and later | 3473    | `characterfunction.dbss`       | 1,804,650 | 2,146 Shop Slot, 2,146 Shop Sell Slot, 2,146 Guild Shop Slot, 2,146 Guild Shop Sell Slot, 2,146 Trade Slot, 2,146 Auction Slot, 2,146 Mating Slot, 2,146 Inn Slot, 2,146 Text Slot, 27,898 Button Slot, 2,146 Stable Slot, 2,146 Conversation Slot, 2,146 Node Management Slot, 2,146 Minor Lord Menu Slot, 4,292 Territory Slot, 2,146 Unknown 1aa Slot, 2,146 Crafting Delivery Slot, 2,146 Skill Addon Slot, 6,438 Condition First Slot, 2,146 Maritime Trade Slot, 2,146 Hire Sailor Slot, 2,146 Season Gift Slot, 2,146 Yar Slot, 2,146 Pet Training Slot, 2,146 Lightstone Slot, 2,146 Function Record, 2,146 Record | 17 to 637, 17 on average |
+| 2      | 3473 and later | 3473    | `characterfunctionoffset.dbss` | 21,480    | 2,146 Index Row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 10                       |
+| 1      | 1784           | 1784    | `characterfunction.dbss`       | 1,360,968 | 1,561 Shop Slot, 1,561 Shop Sell Slot, 1,561 Guild Shop Slot, 1,561 Guild Shop Sell Slot, 1,561 Trade Slot, 1,561 Auction Slot, 1,561 Mating Slot, 1,561 Inn Slot, 1,561 Text Slot, 20,293 Button Slot, 1,561 Stable Slot, 1,561 Conversation Slot, 1,561 Node Management Slot, 1,561 Minor Lord Menu Slot, 3,122 Unknown 1aa Slot, 3,122 Territory Slot, 1,561 Crafting Delivery Slot, 1,561 Skill Addon Slot, 4,683 Condition First Slot, 1,561 Maritime Trade Slot, 1,561 Hire Sailor Slot, 1,561 Unknown 287 Slot, 1,561 Season Gift Slot, 1,561 Yar Slot, 1,561 Function Record, 1,561 Record                         | 17 to 289, 17 on average |
+| 1      | 1784           | 1784    | `characterfunctionoffset.dbss` | 15,630    | 1,561 Index Row                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | 10                       |
+
+| Layout | File                           | Known               | Unknown         |
+| ------ | ------------------------------ | ------------------- | --------------- |
+| 2      | `characterfunction.dbss`       | 1,772,460 B (98.2%) | 32,190 B (1.8%) |
+| 2      | `characterfunctionoffset.dbss` | 21,480 B (100.0%)   | 0 B (0.0%)      |
+| 1      | `characterfunction.dbss`       | 1,334,431 B (98.1%) | 26,537 B (1.9%) |
+| 1      | `characterfunctionoffset.dbss` | 15,630 B (100.0%)   | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,74 +35,84 @@ character 59279 Miles         -> Stable: 53 RaceHorse
 
 All multi-byte values are little-endian. A string is a u64 length in UTF-16 code units followed by UTF-16LE text with no terminator.
 
-## File Layout
+## Layout 2
 
-### `characterfunction.dbss`
+### File Layout
 
-| Offset  | Type | Field   | Notes                                                            |
-| ------- | ---- | ------- | ---------------------------------------------------------------- |
-| `+0x00` | u32  | count   | Record count; `2,146` on client 3458, equal to the offset count  |
-| `+0x04` | ...  | records | Back to back: a u16 `character_id`, then the record it keys      |
+| Offset  | Type          | Field   | Notes                                                            |
+| ------- | ------------- | ------- | ---------------------------------------------------------------- |
+| `+0x00` | u32           | count   | Record count; `2,146` on client 3458, equal to the offset count  |
+| `+0x04` | Record[count] | records | Back to back: a u16 `character_id`, then the record it keys      |
 
 Each record is preceded by a u16 inline copy of its `character_id`; `data_offset` points just past it, as in `characterstatic.dbss`. The first record's ID sits at `+0x04` and its data at `+0x06`, every gap between records is exactly those 2 bytes, and the last record ends at end of file. Records are not stored in key order.
 
-### `characterfunctionoffset.dbss`
+### Record (variable: 2 bytes + function record)
 
-PABR index with 10-byte rows.
+| Offset  | Type            | Field           | Notes                                                        |
+| ------- | --------------- | --------------- | ------------------------------------------------------------ |
+| `+0x00` | u16             | character_id    | Inline copy of the index row's `character_id`                |
+| `+0x02` | Function Record | function_record | `data_size` bytes; the index row's `data_offset` points here |
 
-| Offset  | Type  | Field | Notes                          |
-| ------- | ----- | ----- | ------------------------------ |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                 |
-| `+0x04` | u32   | count | Number of rows; `2,146`        |
+### Function Record (variable: 11 bytes + slots)
 
-#### Index Row (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field        | Notes                                                   |
-| ------- | ---- | ------------ | ------------------------------------------------------- |
-| `+0x00` | u16  | character_id | Unique; observed `9,999` to `64,780`, unsorted          |
-| `+0x02` | u32  | data_offset  | Absolute offset of the record, just past its inline ID  |
-| `+0x06` | u32  | data_size    | Record size; observed `740` to `3,102`                  |
-
-#### Trailer (12 bytes)
-
-| Offset  | Type | Field       | Observed | Notes                       |
-| ------- | ---- | ----------- | -------- | --------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      |                             |
-| `+0x04` | u32  | end_of_rows | `21,468` | `8 + count * 10`            |
-| `+0x08` | u32  | reserved_b  | `0`      |                             |
-
-## Record Structure
-
-A record is a 4-byte head, 40 function slots in a fixed order, then a 7-byte tail. Nothing is optional: a slot the NPC does not use still stores its two strings (empty) and its fields. With every string and list empty a record is 732 bytes; 1,434 of 2,146 records are exactly that plus their string text. The offsets below are positions in such an all-empty record and name the `unknown_<hex>` fields; in a real record every string and list moves what follows it.
+A record is a 4-byte head, 40 function slots in a fixed order, then a 7-byte tail. Nothing is optional: a slot the NPC does not use still stores its two strings (empty) and its fields. With every string and list empty a record is 732 bytes; 1,434 of 2,146 records are exactly that plus their string text. The positions in such an all-empty record name the `unknown_<hex>` fields (see the Slots table); in a real record every string and list moves what follows it.
 
 Walking head, slots and tail ends exactly at `data_size` in all 2,146 records.
 
-### Head (4 bytes)
+| Offset                        | Type                       | Field                      | Notes |
+| ----------------------------- | -------------------------- | -------------------------- | ----- |
+| `+0x00`                       | u8                         | shop_type                  | `eShopType`, see Shop Types; `0` (1,521) to `16`, `14` (ItemMarket) exactly on the 22 Central Market NPCs |
+| `+0x01`                       | u8                         | trade_group_type           | `ETradeGroupType`: `1` Normal, or `2` Desert on the desert traders 45011, 45012 and 45209 |
+| `+0x02`                       | u8                         | is_smuggle_shop            | Always `0` |
+| `+0x03`                       | u8                         | servant_type               | `eServantType`: `0` Vehicle (111, the stable, guild mount and siege stable NPCs), `1` Ship (60, the wharves), `6` on the 1,975 records without a stable |
+| `+0x04`                       | Shop Slot                  | shop                       | See Shop Slot |
+| `shop+0x00`                   | Shop Sell Slot             | shop_sell                  | See Shop Sell Slot |
+| `shop_sell+0x00`              | Guild Shop Slot            | guild_shop                 | See Guild Shop Slot |
+| `guild_shop+0x00`             | Guild Shop Sell Slot       | guild_shop_sell            | See Guild Shop Sell Slot |
+| `guild_shop_sell+0x00`        | Trade Slot                 | trade                      | See Trade Slot |
+| `trade+0x00`                  | Auction Slot               | auction                    | See Auction Slot |
+| `auction+0x00`                | Mating Slot                | mating                     | See Mating Slot |
+| `mating+0x00`                 | Inn Slot                   | inn                        | See Inn Slot |
+| `inn+0x00`                    | Text Slot                  | reward_explore             | See Text Slot |
+| `reward_explore+0x00`         | Button Slot                | learn_skill                | See Button Slot |
+| `learn_skill+0x00`            | Button Slot                | repair                     | See Button Slot |
+| `repair+0x00`                 | Button Slot                | traces_of_blood            | See Button Slot |
+| `traces_of_blood+0x00`        | Button Slot                | storage                    | See Button Slot |
+| `storage+0x00`                | Stable Slot                | stable                     | See Stable Slot |
+| `stable+0x00`                 | Button Slot                | transport                  | See Button Slot |
+| `transport+0x00`              | Button Slot                | transport_person           | See Button Slot |
+| `transport_person+0x00`       | Conversation Slot          | conversation               | See Conversation Slot |
+| `conversation+0x00`           | Button Slot                | create_guild               | See Button Slot |
+| `create_guild+0x00`           | Node Management Slot       | node_management            | See Node Management Slot |
+| `node_management+0x00`        | Button Slot                | lord_information           | See Button Slot |
+| `lord_information+0x00`       | Minor Lord Menu Slot       | minor_lord_menu            | See Minor Lord Menu Slot |
+| `minor_lord_menu+0x00`        | Button Slot                | extraction                 | See Button Slot |
+| `extraction+0x00`             | Territory Slot             | imperial_delivery          | See Territory Slot |
+| `imperial_delivery+0x00`      | Unknown 1aa Slot           | unknown_1aa                | See Unknown 1aa Slot |
+| `unknown_1aa+0x00`            | Button Slot                | knowledge_management       | See Button Slot |
+| `knowledge_management+0x00`   | Crafting Delivery Slot     | imperial_crafting_delivery | See Crafting Delivery Slot |
+| `imperial_crafting_delivery+0x00` | Button Slot            | imperial_fishing_delivery  | See Button Slot |
+| `imperial_fishing_delivery+0x00`  | Button Slot            | guild_supply_shop          | See Button Slot |
+| `guild_supply_shop+0x00`      | Skill Addon Slot           | skill_addon                | See Skill Addon Slot |
+| `skill_addon+0x00`            | Condition First Slot       | give_gift                  | See Condition First Slot |
+| `give_gift+0x00`              | Condition First Slot       | cleanse_gear               | See Condition First Slot |
+| `cleanse_gear+0x00`           | Condition First Slot       | black_spirit_adventure     | See Condition First Slot |
+| `black_spirit_adventure+0x00` | Territory Slot             | central_market             | See Territory Slot |
+| `central_market+0x00`         | Maritime Trade Slot        | maritime_trade             | See Maritime Trade Slot |
+| `maritime_trade+0x00`         | Hire Sailor Slot           | hire_sailor                | See Hire Sailor Slot |
+| `hire_sailor+0x00`            | Season Gift Slot           | season_special_gift        | See Season Gift Slot |
+| `season_special_gift+0x00`    | Button Slot                | hall_of_honor              | See Button Slot |
+| `hall_of_honor+0x00`          | Yar Slot                   | yar                        | See Yar Slot |
+| `yar+0x00`                    | Pet Training Slot          | pet_training               | See Pet Training Slot |
+| `pet_training+0x00`           | Lightstone Slot            | lightstone                 | See Lightstone Slot |
+| `lightstone+0x00`             | u8                         | unknown_2d5                | `2`, or `1` on the 125 records with a Trade button |
+| `lightstone+0x01`             | u8                         | unknown_2d6                | `0`, or `1` on character 62327 only |
+| `lightstone+0x02`             | u32                        | unknown_2d7                | Always `0` |
+| `lightstone+0x06`             | u8                         | unknown_2db                | Always `1` |
 
-| Offset   | Type | Field       | Observed                                                            |
-| -------- | ---- | ----------- | ------------------------------------------------------------------- |
-| `+0x000` | u8   | shop_type        | `eShopType`, see Shop Types; `0` (1,521) to `16`, `14` (ItemMarket) exactly on the 22 Central Market NPCs |
-| `+0x001` | u8   | trade_group_type | `ETradeGroupType`: `1` Normal, or `2` Desert on the desert traders 45011, 45012 and 45209 |
-| `+0x002` | u8   | is_smuggle_shop  | Always `0`                                                          |
-| `+0x003` | u8   | servant_type     | `eServantType`: `0` Vehicle (111, the stable, guild mount and siege stable NPCs), `1` Ship (60, the wharves), `6` on the 1,975 records without a stable |
+`LOC` is the `str_id4` of the slot's button in LOC type `32`, whose `str_id1` is the character ID. Its English text for each Korean `name` is listed alongside; slots with `-` have no LOC text. Counts are records with button text on client 3458. The second column is the slot's position in the all-empty record.
 
-### Function Slot
-
-| Order | Type   | Field       | Notes                                                                                   |
-| ----- | ------ | ----------- | --------------------------------------------------------------------------------------- |
-| 1     | string | name        | Korean button text, empty when the NPC lacks the function                               |
-| 2     | string | condition   | Script that must pass for the button to show, e.g. `isContentsGroupOpen(0,4004);`       |
-| 3     | ...    | slot fields | Per slot, see below                                                                     |
-
-`give_gift`, `cleanse_gear` and `black_spirit_adventure` store `condition` before `name`. Conditions use the client's script calls (`isContentsGroupOpen`, `checkexplore`, `clearquest`, `getlevel`, `getIntimacy`), joined with `;` and alternatives split by `<or>`.
-
-On the slots with a `has_button` field, that u8 is `1` exactly when `name` is not empty, in every record.
-
-### Slots
-
-`LOC` is the `str_id4` of the slot's button in LOC type `32`, whose `str_id1` is the character ID. Its English text for each Korean `name` is listed alongside; slots with `-` have no LOC text. Counts are records with button text on client 3458.
-
-| #  | Offset   | Slot                         | LOC | Records | Korean names                                                       | LOC text                                                        | Slot fields |
+| #  | Position | Slot                         | LOC | Records | Korean names                                                       | LOC text                                                        | Slot fields |
 | -- | -------- | ---------------------------- | --- | ------: | ------------------------------------------------------------------ | --------------------------------------------------------------- | ----------- |
 | 1  | `+0x004` | `shop`                       | 0   | 893     | 상점, 환전소, 비밀 상점, 일꾼 계약, 그믐달 상점, ... (25 names)      | Shop, Currency Exchange, Secret Shop, Contract Workers, Old Moon Shop, War Shop (Tier 1) ... | u32 `shop_buy_group` |
 | 2  | `+0x018` | `shop_sell`                  | -   | 0       | | | u32 `shop_sell_group` |
@@ -134,55 +155,389 @@ On the slots with a `has_button` field, that u8 is `1` exactly when `name` is no
 | 39 | `+0x2B2` | `pet_training` | 38 | 6 | 반려동물 5세대 훈련 | Tier 5 Pet Training | u8 `has_button`, u8 `unknown_2c3` |
 | 40 | `+0x2C4` | `lightstone` | 39 | 1 | 광명석 교환/정화 | Lightstone | u8 `unknown_2d4` |
 
-A list is a u32 count followed by that many items. The slot keys are the parser's names, after the button text; `shop_sell` and `guild_shop_sell` are named after their item group (see Slot Fields). They and the slots `mating`, `inn`, `reward_explore`, `transport_person`, `minor_lord_menu`, `unknown_1aa` and `guild_supply_shop` never have button text.
+A list is a u32 count followed by that many items. The slot keys are the parser's names, after the button text; `shop_sell` and `guild_shop_sell` are named after their item group (see Item Groups). They and the slots `mating`, `inn`, `reward_explore`, `transport_person`, `minor_lord_menu`, `unknown_1aa` and `guild_supply_shop` never have button text.
 
-### Tail (7 bytes)
+Every slot opens with two strings: `name`, the Korean button text, empty when the NPC lacks the function, and `condition`, a script that must pass for the button to show, e.g. `isContentsGroupOpen(0,4004);`. The slot's own fields follow. `give_gift`, `cleanse_gear` and `black_spirit_adventure` store `condition` before `name`. Conditions use the client's script calls (`isContentsGroupOpen`, `checkexplore`, `clearquest`, `getlevel`, `getIntimacy`), joined with `;` and alternatives split by `<or>`.
 
-| Offset   | Type | Field       | Observed                                         |
-| -------- | ---- | ----------- | ------------------------------------------------ |
-| `+0x2D5` | u8   | unknown_2d5 | `2`, or `1` on the 125 records with a Trade button |
-| `+0x2D6` | u8   | unknown_2d6 | `0`, or `1` on character 62327 only             |
-| `+0x2D7` | u32  | unknown_2d7 | Always `0`                                       |
-| `+0x2DB` | u8   | unknown_2db | Always `1`                                       |
+On the slots with a `has_button` field, that u8 is `1` exactly when `name` is not empty, in every record.
 
-### Slot Fields
+The `unknown_<hex>` names of the slot fields are positions in the all-empty record, like the Slots table: a field sits `0x10` past its slot, after the two empty strings. A list counts as its 4-byte count.
 
-Offsets are positions in the all-empty record, like the Slots table: a field sits `0x10` past its slot, after the two empty strings. A list counts as its 4-byte count. `has_button` is left out; see Function Slot.
+### Text Slot (variable: 16 bytes + text)
 
-| Offset   | Type       | Field                      | Slot                         | Observed |
-| -------- | ---------- | -------------------------- | ---------------------------- | -------- |
-| `+0x014` | u32        | shop_buy_group             | `shop`                       | `itemmaingroup.bss` group of the Shop window's Buy tab; non-zero on 884 of the 893 shop records and nowhere else; 491 values in `32,002` to `55,053` |
-| `+0x028` | u32        | shop_sell_group            | `shop_sell`                  | Group of the Sell tab: `52001` (683), `52002` (41), `32001` (16), `52004` (3), else `0`; the slot never has a button |
-| `+0x03C` | u32        | guild_shop_buy_group       | `guild_shop`                 | Group of the guild shop's Buy tab; non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908` |
-| `+0x050` | u32        | guild_shop_sell_group      | `guild_shop_sell`            | Group of the guild shop's Sell tab: `52003` on 61 of the 63 guild shop records, else `0` |
-| `+0x064` | u32        | trade_group                | `trade`                      | `itemmaingroup.bss` group; non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146` |
-| `+0x078` | u16        | auction_key                | `auction`                    | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
-| `+0x08A` | u16        | mating_key                 | `mating`                     | `104` on 46 shop NPCs without an auction button, 44 of them with `auction_key` = `105` |
-| `+0x09C` | u16        | inn_key                    | `inn`                        | Always `0` |
-| `+0x102` | u8         | servant_where_type         | `stable`                     | `CppEnums.ServantWhereType`, see Vehicle Types; `9` without a stable |
-| `+0x103` | u8 list    | vehicle_types              | `stable`                     | `CppEnums.VehicleType` values, see Vehicle Types; empty without a stable |
-| `+0x13A` | u8         | is_greet                   | `conversation`               | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0` |
-| `+0x15C` | u32 list   | managed_node_keys          | `node_management`            | `exploration.bss` node keys whose `manager_family_id` is this character, in all 957 entries |
-| `+0x160` | u32 list   | town_node_keys             | `node_management`            | One node on 21 records, each a town whose `exploration.bss` `representative_id` is this character (Velia `1` -> 40017) |
-| `+0x186` | u8         | unknown_186                | `minor_lord_menu`            | Always `0` |
-| `+0x1A8` | u16        | territory_key              | `imperial_delivery`          | Territory key, `0` to `7` on the seven Imperial Delivery NPCs (one value each), else `0xFFFF` (none) |
-| `+0x1AA` | string x 2 | unknown_1aa                | `unknown_1aa`                | The slot's own `name` and `condition`; no record has button text in it |
-| `+0x1BA` | u16        | unknown_1ba                | `unknown_1aa`                | Always `0xFFFF` |
-| `+0x1DE` | u8         | supply_shop_key            | `imperial_crafting_delivery` | `1` exactly on the 13 Imperial Crafting Delivery records |
-| `+0x212` | u8         | is_stallion_skill_training | `skill_addon`                | `1` on 3 records |
-| `+0x256` | u16        | territory_key              | `central_market`             | Territory key, `0` to `6` on Central Market NPCs (`0` on 16), else `0xFFFF` (none) |
-| `+0x268` | u16        | barter_region_key          | `maritime_trade`             | `regioninfo.bss` region key of the island, port or ship where this NPC barters; a different one on each of the 91 records, else `0`. [`barter_npclist.bss`](barter_npclist_bss.md) lists the same 91 keys, each with this character's ID (all 91 match, client 3464) |
-| `+0x27A` | u8         | employee_job               | `hire_sailor`                | `employeestaticstatus.bss` `job`: `0` (Sailor) on the 23 Hire Sailor records, `2` on all others |
-| `+0x27C` | u8         | unknown_27c                | `hire_sailor`                | Always `0` |
-| `+0x27D` | u16        | employee_key               | `hire_sailor`                | `1` to `23`, a different one per Hire Sailor record. With `employee_job` and `has_button` (`1`, the level) it names the `employeestaticstatus.bss` row of the sailor for hire: all 23 records resolve (client 3464) |
-| `+0x28F` | u8         | unknown_28f                | `season_special_gift`        | `1` only on the record with button text |
-| `+0x2B1` | u8         | unknown_2b1                | `yar`                        | `1` on the 8 Yar records and two more |
-| `+0x2C3` | u8         | unknown_2c3                | `pet_training`               | `1` on 23 records, all with Shop, Repair and Stable buttons |
-| `+0x2D4` | u8         | unknown_2d4                | `lightstone`                 | `1` on the Lightstone record and on 32 stable NPCs |
+The `reward_explore` slot.
+
+| Offset      | Type  | Field     | Notes                                                                             |
+| ----------- | ----- | --------- | --------------------------------------------------------------------------------- |
+| `+0x00`     | str16 | name      | Korean button text, empty when the NPC lacks the function                         |
+| `name+0x00` | str16 | condition | Script that must pass for the button to show, e.g. `isContentsGroupOpen(0,4004);` |
+
+### Button Slot (variable: 17 bytes + text)
+
+The `learn_skill`, `repair`, `traces_of_blood`, `storage`, `transport`, `transport_person`, `create_guild`, `lord_information`, `extraction`, `knowledge_management`, `imperial_fishing_delivery`, `guild_supply_shop` and `hall_of_honor` slots.
+
+| Offset           | Type  | Field      | Notes                                         |
+| ---------------- | ----- | ---------- | --------------------------------------------- |
+| `+0x00`          | str16 | name       | Korean button text                            |
+| `name+0x00`      | str16 | condition  | Script that must pass for the button to show  |
+| `condition+0x00` | u8    | has_button | `1` exactly when `name` is not empty          |
+
+### Condition First Slot (variable: 17 bytes + text)
+
+The `give_gift`, `cleanse_gear` and `black_spirit_adventure` slots, which store `condition` before `name`.
+
+| Offset           | Type  | Field      | Notes                                         |
+| ---------------- | ----- | ---------- | --------------------------------------------- |
+| `+0x00`          | str16 | condition  | Script that must pass for the button to show  |
+| `condition+0x00` | str16 | name       | Korean button text                            |
+| `name+0x00`      | u8    | has_button | `1` exactly when `name` is not empty          |
+
+### Shop Slot (variable: 20 bytes + text)
+
+| Offset           | Type  | Field          | Notes |
+| ---------------- | ----- | -------------- | ----- |
+| `+0x00`          | str16 | name           | Korean button text |
+| `name+0x00`      | str16 | condition      | Script that must pass for the button to show |
+| `condition+0x00` | u32   | shop_buy_group | `itemmaingroup.bss` group of the Shop window's Buy tab; non-zero on 884 of the 893 shop records and nowhere else; 491 values in `32,002` to `55,053` |
+
+### Shop Sell Slot (variable: 20 bytes + text)
+
+| Offset           | Type  | Field           | Notes |
+| ---------------- | ----- | --------------- | ----- |
+| `+0x00`          | str16 | name            | Never set |
+| `name+0x00`      | str16 | condition       | Script that must pass for the button to show |
+| `condition+0x00` | u32   | shop_sell_group | Group of the Sell tab: `52001` (683), `52002` (41), `32001` (16), `52004` (3), else `0`; the slot never has a button |
+
+### Guild Shop Slot (variable: 20 bytes + text)
+
+| Offset           | Type  | Field                | Notes |
+| ---------------- | ----- | -------------------- | ----- |
+| `+0x00`          | str16 | name                 | Korean button text |
+| `name+0x00`      | str16 | condition            | Script that must pass for the button to show |
+| `condition+0x00` | u32   | guild_shop_buy_group | Group of the guild shop's Buy tab; non-zero exactly on the 63 guild shop records; 11 values in `51,100` to `51,908` |
+
+### Guild Shop Sell Slot (variable: 20 bytes + text)
+
+| Offset           | Type  | Field                 | Notes |
+| ---------------- | ----- | --------------------- | ----- |
+| `+0x00`          | str16 | name                  | Never set |
+| `name+0x00`      | str16 | condition             | Script that must pass for the button to show |
+| `condition+0x00` | u32   | guild_shop_sell_group | Group of the guild shop's Sell tab: `52003` on 61 of the 63 guild shop records, else `0` |
+
+### Trade Slot (variable: 20 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Korean button text |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u32   | trade_group | `itemmaingroup.bss` group; non-zero exactly on the 125 trade records; 62 values in `54,002` to `54,146` |
+
+### Auction Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Korean button text |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u16   | auction_key | `140` Worker Exchange, `1001` Imperial Auction, `101` to `143` Guild House Auction, `1002`/`1003` Thousand Years Masterpiece; also `105` on 46 records without an auction button, 44 of them shop NPCs |
+
+### Mating Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field      | Notes |
+| ---------------- | ----- | ---------- | ----- |
+| `+0x00`          | str16 | name       | Never set |
+| `name+0x00`      | str16 | condition  | Script that must pass for the button to show |
+| `condition+0x00` | u16   | mating_key | `104` on 46 shop NPCs without an auction button, 44 of them with `auction_key` = `105` |
+
+### Inn Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field     | Notes |
+| ---------------- | ----- | --------- | ----- |
+| `+0x00`          | str16 | name      | Never set |
+| `name+0x00`      | str16 | condition | Script that must pass for the button to show |
+| `condition+0x00` | u16   | inn_key   | Always `0` |
+
+### Stable Slot (variable: 21 bytes + text and vehicle types)
+
+| Offset                    | Type                     | Field              | Notes |
+| ------------------------- | ------------------------ | ------------------ | ----- |
+| `+0x00`                   | str16                    | name               | Korean button text |
+| `name+0x00`               | str16                    | condition          | Script that must pass for the button to show |
+| `condition+0x00`          | u8                       | servant_where_type | `CppEnums.ServantWhereType`, see Vehicle Types; `9` without a stable |
+| `condition+0x01`          | u32                      | vehicle_type_count | Number of `vehicle_types` |
+| `condition+0x05`          | u8[vehicle_type_count]   | vehicle_types      | `CppEnums.VehicleType` values, see Vehicle Types; empty without a stable |
+
+### Conversation Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field      | Notes |
+| ---------------- | ----- | ---------- | ----- |
+| `+0x00`          | str16 | name       | Korean button text |
+| `name+0x00`      | str16 | condition  | Script that must pass for the button to show |
+| `condition+0x00` | u8    | has_button | `1` exactly when `name` is not empty |
+| `condition+0x01` | u8    | is_greet   | `1` on 1,127 of the 1,133 Conversation records and on 16 others, else `0` |
+
+### Node Management Slot (variable: 24 bytes + text and node lists)
+
+| Offset                   | Type                         | Field                  | Notes |
+| ------------------------ | ---------------------------- | ---------------------- | ----- |
+| `+0x00`                  | str16                        | name                   | Korean button text |
+| `name+0x00`              | str16                        | condition              | Script that must pass for the button to show |
+| `condition+0x00`         | u32                          | managed_node_key_count | Number of `managed_node_keys` |
+| `condition+0x04`         | u32[managed_node_key_count]  | managed_node_keys      | `exploration.bss` node keys whose `manager_family_id` is this character, in all 957 entries |
+| `managed_node_keys+0x00` | u32                          | town_node_key_count    | Number of `town_node_keys` |
+| `managed_node_keys+0x04` | u32[town_node_key_count]     | town_node_keys         | One node on 21 records, each a town whose `exploration.bss` `representative_id` is this character (Velia `1` -> 40017) |
+
+### Minor Lord Menu Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Never set |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u8    | has_button  | `1` exactly when `name` is not empty |
+| `condition+0x01` | u8    | unknown_186 | Always `0` |
+
+### Territory Slot (variable: 18 bytes + text)
+
+The `imperial_delivery` and `central_market` slots.
+
+| Offset           | Type  | Field         | Notes |
+| ---------------- | ----- | ------------- | ----- |
+| `+0x00`          | str16 | name          | Korean button text |
+| `name+0x00`      | str16 | condition     | Script that must pass for the button to show |
+| `condition+0x00` | u16   | territory_key | Territory key: `0` to `7` on the seven Imperial Delivery NPCs (one value each), `0` to `6` on Central Market NPCs (`0` on 16), else `0xFFFF` (none) |
+
+### Unknown 1aa Slot (variable: 18 bytes + text)
+
+The `unknown_1aa` slot: its own `name` and `condition`; no record has button text in it.
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Never set |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u16   | unknown_1ba | Always `0xFFFF` |
+
+### Crafting Delivery Slot (variable: 18 bytes + text)
+
+The `imperial_crafting_delivery` slot.
+
+| Offset           | Type  | Field           | Notes |
+| ---------------- | ----- | --------------- | ----- |
+| `+0x00`          | str16 | name            | Korean button text |
+| `name+0x00`      | str16 | condition       | Script that must pass for the button to show |
+| `condition+0x00` | u8    | has_button      | `1` exactly when `name` is not empty |
+| `condition+0x01` | u8    | supply_shop_key | `1` exactly on the 13 Imperial Crafting Delivery records |
+
+### Skill Addon Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field                      | Notes |
+| ---------------- | ----- | -------------------------- | ----- |
+| `+0x00`          | str16 | name                       | Korean button text |
+| `name+0x00`      | str16 | condition                  | Script that must pass for the button to show |
+| `condition+0x00` | u8    | has_button                 | `1` exactly when `name` is not empty |
+| `condition+0x01` | u8    | is_stallion_skill_training | `1` on 3 records |
+
+### Maritime Trade Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field             | Notes |
+| ---------------- | ----- | ----------------- | ----- |
+| `+0x00`          | str16 | name              | Korean button text |
+| `name+0x00`      | str16 | condition         | Script that must pass for the button to show |
+| `condition+0x00` | u16   | barter_region_key | `regioninfo.bss` region key of the island, port or ship where this NPC barters; a different one on each of the 91 records, else `0`. [`barter_npclist.bss`](barter_npclist_bss.md) lists the same 91 keys, each with this character's ID (all 91 match, client 3464) |
+
+### Hire Sailor Slot (variable: 21 bytes + text)
+
+| Offset           | Type  | Field        | Notes |
+| ---------------- | ----- | ------------ | ----- |
+| `+0x00`          | str16 | name         | Korean button text |
+| `name+0x00`      | str16 | condition    | Script that must pass for the button to show |
+| `condition+0x00` | u8    | employee_job | `employeestaticstatus.bss` `job`: `0` (Sailor) on the 23 Hire Sailor records, `2` on all others |
+| `condition+0x01` | u8    | has_button   | `1` exactly when `name` is not empty |
+| `condition+0x02` | u8    | unknown_27c  | Always `0` |
+| `condition+0x03` | u16   | employee_key | `1` to `23`, a different one per Hire Sailor record. With `employee_job` and `has_button` (`1`, the level) it names the `employeestaticstatus.bss` row of the sailor for hire: all 23 records resolve (client 3464) |
+
+### Season Gift Slot (variable: 17 bytes + text)
+
+The `season_special_gift` slot.
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Korean button text; `<Null>` in 2,139 records |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u8    | unknown_28f | `1` only on the record with button text |
 
 The `<Null>` text is a placeholder: `season_special_gift` stores it as `name` in 2,139 records, and LOC type `32` index `34` holds `<Null>` for 138 of them. It is not a button.
 
-### Item Groups
+### Yar Slot (variable: 17 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Korean button text |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u8    | unknown_2b1 | `1` on the 8 Yar records and two more |
+
+### Pet Training Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Korean button text |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u8    | has_button  | `1` exactly when `name` is not empty |
+| `condition+0x01` | u8    | unknown_2c3 | `1` on 23 records, all with Shop, Repair and Stable buttons |
+
+### Lightstone Slot (variable: 17 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | Korean button text |
+| `name+0x00`      | str16 | condition   | Script that must pass for the button to show |
+| `condition+0x00` | u8    | unknown_2d4 | `1` on the Lightstone record and on 32 stable NPCs |
+
+### `characterfunctionoffset.dbss`
+
+PABR index with 10-byte rows.
+
+| Offset              | Type             | Field        | Observed | Notes                       |
+| ------------------- | ---------------- | ------------ | -------- | --------------------------- |
+| `+0x00`             | char[4]          | magic        |          | `PABR` (ASCII)              |
+| `+0x04`             | u32              | count        | `2,146`  | Number of rows              |
+| `+0x08`             | Index Row[count] | rows         |          | See Index Row               |
+| `rows+0x00`         | String Table     | string_table |          | The 12-byte trailer starts here; see String Table |
+| `string_table+0x00` | u32              | end_of_rows  | `21,468` | `8 + count * 10`            |
+| `string_table+0x04` | u32              | zero         | `0`      |                             |
+
+Earlier versions of this doc called `string_count` the trailer's `unknown_00` and `zero` its `unknown_08`.
+
+### Index Row (10 bytes)
+
+| Offset  | Type | Field        | Notes                                                   |
+| ------- | ---- | ------------ | ------------------------------------------------------- |
+| `+0x00` | u16  | character_id | Unique; observed `9,999` to `64,780`, unsorted          |
+| `+0x02` | u32  | data_offset  | Absolute offset of the record, just past its inline ID  |
+| `+0x06` | u32  | data_size    | Record size; observed `740` to `3,102`                  |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Layout 1
+
+On client 1784 the five item group fields were u16, a slot with a u16
+`0xFFFF` sat before `imperial_delivery`, a slot with the `checkEdanPass();`
+condition sat after `hire_sailor`, the `pet_training` and `lightstone`
+slots did not exist, and the tail was 5 bytes. The all-empty record is 724
+bytes. Field names keep Layout 2's positions; the two slots that exist only
+here are named by their position in the all-empty record of this layout.
+The parser reads only Layout 2.
+
+### Function Record (variable: 9 bytes + slots)
+
+| Offset                            | Type                   | Field                      | Notes |
+| --------------------------------- | ---------------------- | -------------------------- | ----- |
+| `+0x00`                           | u8                     | shop_type                  | |
+| `+0x01`                           | u8                     | trade_group_type           | |
+| `+0x02`                           | u8                     | is_smuggle_shop            | |
+| `+0x03`                           | u8                     | servant_type               | |
+| `+0x04`                           | Shop Slot              | shop                       | |
+| `shop+0x00`                       | Shop Sell Slot         | shop_sell                  | |
+| `shop_sell+0x00`                  | Guild Shop Slot        | guild_shop                 | |
+| `guild_shop+0x00`                 | Guild Shop Sell Slot   | guild_shop_sell            | |
+| `guild_shop_sell+0x00`            | Trade Slot             | trade                      | |
+| `trade+0x00`                      | Auction Slot           | auction                    | |
+| `auction+0x00`                    | Mating Slot            | mating                     | |
+| `mating+0x00`                     | Inn Slot               | inn                        | |
+| `inn+0x00`                        | Text Slot              | reward_explore             | |
+| `reward_explore+0x00`             | Button Slot            | learn_skill                | |
+| `learn_skill+0x00`                | Button Slot            | repair                     | |
+| `repair+0x00`                     | Button Slot            | traces_of_blood            | |
+| `traces_of_blood+0x00`            | Button Slot            | storage                    | |
+| `storage+0x00`                    | Stable Slot            | stable                     | |
+| `stable+0x00`                     | Button Slot            | transport                  | |
+| `transport+0x00`                  | Button Slot            | transport_person           | |
+| `transport_person+0x00`           | Conversation Slot      | conversation               | |
+| `conversation+0x00`               | Button Slot            | create_guild               | |
+| `create_guild+0x00`               | Node Management Slot   | node_management            | |
+| `node_management+0x00`            | Button Slot            | lord_information           | |
+| `lord_information+0x00`           | Minor Lord Menu Slot   | minor_lord_menu            | |
+| `minor_lord_menu+0x00`            | Button Slot            | extraction                 | |
+| `extraction+0x00`                 | Unknown 1aa Slot       | unknown_18e                | Never set; its u16 is `0xFFFF` in all 1,561 records on client 1784 |
+| `unknown_18e+0x00`                | Territory Slot         | imperial_delivery          | |
+| `imperial_delivery+0x00`          | Unknown 1aa Slot       | unknown_1aa                | |
+| `unknown_1aa+0x00`                | Button Slot            | knowledge_management       | |
+| `knowledge_management+0x00`       | Crafting Delivery Slot | imperial_crafting_delivery | |
+| `imperial_crafting_delivery+0x00` | Button Slot            | imperial_fishing_delivery  | |
+| `imperial_fishing_delivery+0x00`  | Button Slot            | guild_supply_shop          | |
+| `guild_supply_shop+0x00`          | Skill Addon Slot       | skill_addon                | |
+| `skill_addon+0x00`                | Condition First Slot   | give_gift                  | |
+| `give_gift+0x00`                  | Condition First Slot   | cleanse_gear               | |
+| `cleanse_gear+0x00`               | Condition First Slot   | black_spirit_adventure     | |
+| `black_spirit_adventure+0x00`     | Territory Slot         | central_market             | |
+| `central_market+0x00`             | Maritime Trade Slot    | maritime_trade             | |
+| `maritime_trade+0x00`             | Hire Sailor Slot       | hire_sailor                | |
+| `hire_sailor+0x00`                | Unknown 287 Slot       | unknown_287                | See Unknown 287 Slot |
+| `unknown_287+0x00`                | Season Gift Slot       | season_special_gift        | |
+| `season_special_gift+0x00`        | Button Slot            | hall_of_honor              | |
+| `hall_of_honor+0x00`              | Yar Slot               | yar                        | |
+| `yar+0x00`                        | u32                    | unknown_2d7                | Always `0` on client 1784 |
+| `yar+0x04`                        | u8                     | unknown_2db                | `1`, or `0` on 7 records on client 1784 |
+
+The tail lines up with Layout 2's `unknown_2d7` and `unknown_2db` by value;
+the two u8 before them in Layout 2 have no counterpart here.
+
+### Shop Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field          | Notes |
+| ---------------- | ----- | -------------- | ----- |
+| `+0x00`          | str16 | name           | |
+| `name+0x00`      | str16 | condition      | |
+| `condition+0x00` | u16   | shop_buy_group | |
+
+### Shop Sell Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field           | Notes |
+| ---------------- | ----- | --------------- | ----- |
+| `+0x00`          | str16 | name            | |
+| `name+0x00`      | str16 | condition       | |
+| `condition+0x00` | u16   | shop_sell_group | |
+
+### Guild Shop Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field                | Notes |
+| ---------------- | ----- | -------------------- | ----- |
+| `+0x00`          | str16 | name                 | |
+| `name+0x00`      | str16 | condition            | |
+| `condition+0x00` | u16   | guild_shop_buy_group | |
+
+### Guild Shop Sell Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field                 | Notes |
+| ---------------- | ----- | --------------------- | ----- |
+| `+0x00`          | str16 | name                  | |
+| `name+0x00`      | str16 | condition             | |
+| `condition+0x00` | u16   | guild_shop_sell_group | |
+
+### Trade Slot (variable: 18 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | |
+| `name+0x00`      | str16 | condition   | |
+| `condition+0x00` | u16   | trade_group | |
+
+The u16 equals Layout 2's u32 in 1,468 of the 1,557 records both clients
+share for `shop_buy_group` and 1,545 for `trade_group`.
+
+### Unknown 287 Slot (variable: 21 bytes + text)
+
+| Offset           | Type  | Field       | Notes |
+| ---------------- | ----- | ----------- | ----- |
+| `+0x00`          | str16 | name        | `임시` on 420 records on client 1784, empty on the rest |
+| `name+0x00`      | str16 | condition   | `checkEdanPass();` on the same 420 records |
+| `condition+0x00` | u8    | has_button  | `1` exactly when `name` is not empty |
+| `condition+0x01` | u32   | unknown_298 | `0`, or one of 21 values from `1` to `1,691` on 21 records |
+
+## Item Groups
 
 The five `*_group` fields are [`itemmaingroup.bss`](itemmaingroup_bss.md) group IDs; all 884, 743, 63, 61 and 125 non-zero values are in its ID set (client 3464). The client's shop window (`panel_dialog_npcshop_all_1.luac`) has a Buy and a Sell tab, filled from `npcShop_getBuyCount()` / `npcShop_getItemBuy()` and `npcShop_getSellCount()` / `npcShop_getItemSell()`, and opens for `npcShop_isShopContents()` or `npcShop_isGuildShopContents()`. Each shop and guild shop NPC stores two groups, and their items tell them apart:
 
@@ -198,7 +553,7 @@ The five `*_group` fields are [`itemmaingroup.bss`](itemmaingroup_bss.md) group 
 
 Checked in game (2026-10-14, client 3464): Benyamin's Shop Sell tab lists 14 items from a full inventory, Black Stone among them, and every one of them is in group `52001`, his `shop_sell_group`. The Memory Fragment in the same inventory, which `52001` does not hold, is not listed. His Purchase tab lists exactly the 18 items of his `shop_buy_group`, `50503` (HP and MP potions, Medical Kit, the two Alchemy Tools, Empty Crystal and the two Atanis Fireflies), in the order the subgroup stores them.
 
-### Vehicle Types
+## Vehicle Types
 
 `vehicle_types` is a u32 count and that many u8 `CppEnums.VehicleType` values (`global_define_cpp_enum.luac`). Every stored value is an enum member. The list is in stored order and can repeat a value: 8 stables store `53` twice.
 
@@ -213,7 +568,7 @@ Checked in game (2026-10-14, client 3464): Benyamin's Shop Sell tab lists 14 ite
 
 `servant_where_type` follows `CppEnums.ServantWhereType` (`ServantWhereTypeUser` 0, `Guild` 1, `Siege` 2, `RaceHorse` 5); the enum gives `5` to both `Camping` and `RaceHorse`, and the one stable with `5` takes only race horses. The `9` on the 1,975 records without a stable is past `ServantWhereTypeCount` (8).
 
-### Shop Types
+## Shop Types
 
 `shop_type` follows the `_shopType` table of `panel_dialog_main_all.luac` (the `eShopType_` members of the 2016 client's `gc::ShopType` stop at `DayRandomShop`; `ItemMarket` and `Instrument` came later). Records per value on client 3464:
 
@@ -241,7 +596,7 @@ The 9 records with `16` (47022, 46041, 50973, 49525 to 49529, 49548) store the e
 
 ## Field Names
 
-Most names above come from two sources. The 2016 client (build of 2016-01-11) ships with debug symbols: its `gc::CharacterFunctionStaticStatus` starts with `_shopType`, `_tradeGroupType`, `_isSmuggleShop` and `_servantType`, then holds a name, a condition and the slot fields for each function in this order: BuyingFromNpc, SellingToNpc, BuyingFromGuildShopNpc, SellingToGuildShopNpc, Trading, Auction (`_auctionKey`), Mating (`_matingKey`), Inn (`_innKey`), RewardExplore, TrainSkill, Repair, Warehouse, Stable, Transfer, TransferPerson, IntimacyGame (`_isIntimacyGame`, `_isGreet`), Guild, Explore (`_exploreWaypoints`, `_guideWaypoints`), LordMenu, MinorLordMenu (`_minorLordRegionKey`), Extract, TerritoryTrade, TerritorySupply, ItemMarket, Knowledge, SupplyShop, FishSupplyShop and GuildSupplyShop. The server-side `CharacterFunction_Table` of the BdoEmu server (about 2021) has a column for each, and I matched every column against every field over the 1,318 characters it shares with the client file.
+Most names above come from two sources. The 2016 client (build of 2016-01-11) ships with debug symbols: its `gc::CharacterFunctionStaticStatus` starts with `_shopType`, `_tradeGroupType`, `_isSmuggleShop` and `_servantType`, then holds a name, a condition and the slot fields for each function in this order: BuyingFromNpc, SellingToNpc, BuyingFromGuildShopNpc, SellingToGuildShopNpc, Trading, Auction (`_auctionKey`), Mating (`_matingKey`), Inn (`_innKey`), RewardExplore, TrainSkill, Repair, Warehouse, Stable, Transfer, TransferPerson, IntimacyGame (`_isIntimacyGame`, `_isGreet`), Guild, Explore (`_exploreWaypoints`, `_guideWaypoints`), LordMenu, MinorLordMenu (`_minorLordRegionKey`), Extract, TerritoryTrade, TerritorySupply, ItemMarket, Knowledge, SupplyShop, FishSupplyShop and GuildSupplyShop. The server-side `CharacterFunction_Table` of a private server on client 519 has a column for each, and I matched every column against every field over the 1,318 characters it shares with the client file.
 
 The LOC index of a button is the function's place in that column order: `0` BuyingFromNpc, `2` Trading, `4` BuyingFromGuildShopNpc, `6` Auction, `10` TrainSkill ... `23` TerritorySupply, `27` GuildSupplyShop, `31` NewItemMarket, `32` Employee.
 
@@ -266,22 +621,7 @@ Matches on client 3464 (1,318 shared characters):
 | name, barter_region_key             | `maritime_trade`             | `BarterName`, `isBarter`         | 1,318    |
 | employee_job, employee_key   | `hire_sailor`                | `EmployeeJob`, `EmployeeType`    | 1,318    |
 
-The `territory_key` fields hold `0xFFFF` where the server column is empty, and `employee_job` holds `2`. `is_smuggle_shop`, `servant_type`, `inn_key` and the slots `reward_explore`, `transport_person`, `minor_lord_menu` and `guild_supply_shop` have no server column with values; they are named from their place in the 2016 member order between matched fields. `servant_type` follows `gc::ServantType` (`0` Vehicle, `1` Ship, `2` Pet), which the stable records bear out (see Head). The old `auction` slot fields (`unknown_078` u32, 14 skipped bytes, `unknown_08a` u32, 32 skipped bytes) were the auction key and the empty Mating, Inn and RewardExplore slots read across.
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                                                   |
-| ------------- | ---- | --------------------------------------------------------------------------------------- |
-| Character ID  | num  | `character_id`                                                                          |
-| Name          | text | LOC type `6`; shown only when LOC is loaded                                             |
-| Functions     | text | Button of each slot with button text, in slot order: LOC type `32` (`str_id1` = character ID, `str_id4` = the slot's LOC index), else the Korean `name` |
-| Shop Type     | text | `shop_type` member name; `-` for `None`                                                 |
-| Managed Nodes | text | `managed_node_keys` by LOC type `29` name (`Bambu Valley - Mining` for sub-nodes), else the key |
-| Town          | text | `town_node_keys` the same way                                                           |
-| Item Groups   | text | Each non-zero `*_group` field as a label (Shop, Shop (Sell), Guild Shop, Guild Shop (Sell), Trade) and the group ID linking to its `itemmaingroup.bss` row, one per line |
-| Mounts        | text | `vehicle_types` as `value EnumName` (`0 Horse`), each value once, in stored order        |
-
-Conditions, `servant_where_type` and the `unknown_*` fields stay out of the table.
+The `territory_key` fields hold `0xFFFF` where the server column is empty, and `employee_job` holds `2`. `is_smuggle_shop`, `servant_type`, `inn_key` and the slots `reward_explore`, `transport_person`, `minor_lord_menu` and `guild_supply_shop` have no server column with values; they are named from their place in the 2016 member order between matched fields. `servant_type` follows `gc::ServantType` (`0` Vehicle, `1` Ship, `2` Pet), which the stable records bear out (see Function Record). The old `auction` slot fields (`unknown_078` u32, 14 skipped bytes, `unknown_08a` u32, 32 skipped bytes) were the auction key and the empty Mating, Inn and RewardExplore slots read across.
 
 ## Notes
 

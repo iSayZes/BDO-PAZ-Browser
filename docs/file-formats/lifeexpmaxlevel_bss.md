@@ -4,12 +4,21 @@
 
 Max level of every life skill. Value N is the max level of life skill N, numbered as in the Life Skills table of [lifeexp](lifeexp_dbss.md). On client 3464 all 15 values are `180` (Guru 100), and each `lifeexp.dbss` block ends on that level (181 rows for levels 0 to 180).
 
-Example:
+## Versions
 
-```text
-Gathering  Max Level 180  Guru 100
-Trading    Max Level 180  Guru 100
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ------- | --------- |
+| 1      | 1784 and later | 3473    | `lifeexpmaxlevel.bss` | 60    | -       | -         |
+
+| Layout | File                  | Known         | Unknown    |
+| ------ | --------------------- | ------------- | ---------- |
+| 1      | `lifeexpmaxlevel.bss` | 60 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,22 +30,15 @@ The life skill names and rank groups are the ones in [lifeexp](lifeexp_dbss.md);
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A bare array of u32 values with no header and no `PABR` magic. 60 bytes on client 3464, one value per `lifeexp.dbss` block.
 
-| Offset   | Type | Field     | Notes                     |
-| -------- | ---- | --------- | ------------------------- |
-| `+N x 4` | u32  | max_level | Max level of life skill N |
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                       |
-| ------------- | ---- | ------------------------------------------- |
-| Life Skill ID | num  | Array index (`life_skill`)                  |
-| Life Skill    | text | As in `lifeexp.dbss`                        |
-| Max Level     | num  | `max_level`                                 |
-| Max Rank      | text | Rank of `max_level` (`Guru 100`)            |
+| Offset  | Type       | Field     | Notes                                                        |
+| ------- | ---------- | --------- | ------------------------------------------------------------ |
+| `+0x00` | u32[..end] | max_level | Max level of life skill N at `+N x 4`; runs to the end of the file |
 
 ## Notes
 

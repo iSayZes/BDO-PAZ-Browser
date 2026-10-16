@@ -9,14 +9,21 @@ copy of the per-level blocks of [`itemenchant.dbss`](itemenchant_dbss.md) for
 these 551 items, so the per-level icon of a Sovereign weapon or a Fallen God
 armor is reachable without walking the 194 MB file.
 
-Example:
+## Versions
 
-```text
-item_key 0x0A0B66C1 (item 747201, level 10)
-  display_level 25 (DEC)
-  icon_ref -> New_Icon/06_PC_EquipItem/00_Common/01_Weapon/00747201_02.dds
-  name_ref -> the Korean name; LOC type 79 gives "DEC: Sovereign Longsword"
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes   | Records              | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ------- | -------------------- | --------- |
+| 1      | 1784 and later | 3473    | `specialenchantitem.bss` | 174,941 | 3,081 Item Level Row | 19        |
+
+| Layout | File                     | Known             | Unknown          |
+| ------ | ------------------------ | ----------------- | ---------------- |
+| 1      | `specialenchantitem.bss` | 156,455 B (89.4%) | 18,486 B (10.6%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -27,40 +34,52 @@ item_key 0x0A0B66C1 (item 747201, level 10)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The shared PABR string table layout of `buffsimply.bss`, `npcsimply.bss` and
 `plantexchangegroup.bss` (`_common/pabr_strings.py`).
 
-| Offset           | Type    | Field        | Notes                                                            |
-| ---------------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00`          | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04`          | u32     | count        | Number of rows; 3,081 on client 3458                             |
-| `+0x08`          | row[]   | rows         | 19-byte rows repeated `count` times                              |
-| `8 + count * 19` | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8          | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4          | u32     | zero         | Always 0                                                         |
+| Offset              | Type                  | Field        | Notes                                          |
+| ------------------- | --------------------- | ------------ | ---------------------------------------------- |
+| `+0x00`             | char[4]               | magic        | ASCII `PABR`                                   |
+| `+0x04`             | u32                   | count        | Number of rows; 3,081 on client 3458           |
+| `+0x08`             | Item Level Row[count] | rows         | See Item Level Row                             |
+| `rows+0x00`         | String Table          | string_table | See String Table                               |
+| `string_table+0x00` | u32                   | table_start  | Offset of the string table, where the rows end |
+| `string_table+0x04` | u32                   | zero         | Always 0                                       |
 
 The rows follow `itemenchantoffset.dbss` key order exactly, which is neither
 ascending nor descending (the first row is item 736815 at level 20).
 
-## Record Structure
-
-### Item Level Row (19 bytes, repeated `count` times)
+### Item Level Row (19 bytes)
 
 Fields are unaligned.
 
-| Offset  | Type  | Field         | Notes                                                                    |
-| ------- | ----- | ------------- | ------------------------------------------------------------------------ |
-| `+0x00` | u32   | item_key      | `enchant_level << 24 \| item_id` (`_common/item_key.py`); unique          |
-| `+0x04` | u8    | display_level | The level the client shows, on the weapon scale; see Display Level below |
-| `+0x05` | u32   | icon_ref      | String table index of the icon path; never empty                         |
-| `+0x09` | u32   | name_ref      | String table index of the Korean name; never empty                       |
-| `+0x0D` | u8[4] | reserved      | Always `0`                                                               |
-| `+0x11` | u8    | unknown_11    | `1` in 2,481 rows; the same in every row of one item, see Open Questions |
-| `+0x12` | u8    | unknown_12    | `1` in 2,409 rows; the same in every row of one item, see Open Questions |
+| Offset  | Type     | Field         | Notes                                                                    |
+| ------- | -------- | ------------- | ------------------------------------------------------------------------ |
+| `+0x00` | u32      | item_key      | `enchant_level << 24 \| item_id` (`_common/item_key.py`); unique          |
+| `+0x04` | u8       | display_level | The level the client shows, on the weapon scale; see Display Level below |
+| `+0x05` | u32      | icon_ref      | String table index of the icon path; never empty                         |
+| `+0x09` | u32      | name_ref      | String table index of the Korean name; never empty                       |
+| `+0x0D` | bytes[4] | unknown_0d    | Always `0`                                                               |
+| `+0x11` | u8       | unknown_11    | `1` in 2,481 rows; the same in every row of one item, see Open Questions |
+| `+0x12` | u8       | unknown_12    | `1` in 2,409 rows; the same in every row of one item, see Open Questions |
 
-### Display Level
+### String Table (variable: 4 bytes + strings)
+
+3,253 strings on client 3458, all referenced. `icon_ref` and `name_ref` index
+the same table but never share an entry: 500 are icon paths, the other 2,753
+names. Unlike `buffsimply.bss` there is no `"0"` or empty entry. Repeated
+values are stored once, so levels that keep an icon point at the same entry.
+
+| Offset  | Type               | Field        | Notes                |
+| ------- | ------------------ | ------------ | -------------------- |
+| `+0x00` | u32                | string_count | 3,253 on client 3458 |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries  |
+
+## Display Level
 
 The client reads this byte through `ToClient_getSpecialEnchantDisplayLevel`
 (`include/global_util_ui_slot.luac`, the item tooltips, the enhancement window) and
@@ -83,25 +102,6 @@ Mareca`), 219 rows each on client 3458.
 | 23    | OCT   |
 | 24    | NOV   |
 | 25    | DEC   |
-
-### String Table
-
-3,253 strings on client 3458, all referenced. `icon_ref` and `name_ref` index
-the same table but never share an entry: 500 are icon paths, the other 2,753
-names. Unlike `buffsimply.bss` there is no `"0"` or empty entry. Repeated
-values are stored once, so levels that keep an icon point at the same entry.
-
-## Suggested UI Layout
-
-| Column   | Type | Notes                                                                                  |
-| -------- | ---- | -------------------------------------------------------------------------------------- |
-| Item ID  | num  | `item_key` low 24 bits; right-aligned                                                  |
-| Max Level | num | `item_key` high byte, the stored enhancement level of the row                          |
-| Shown As | text | `display_level`: `+N` for 1 to 15, the grade name for 16 to 25, a dash for 0, where `display_level` is stored as `None` so it sorts last; sorts by the number |
-| Icon     | text | `icon_ref`, lowercased under `ui_texture/icon/`                                        |
-| Name     | text | LOC type 79 (`str_id1` = item ID, `str_id2` = level), falling back to the Korean `name_ref` text |
-
-`unknown_11` and `unknown_12` stay on the record but out of the table.
 
 ## Notes
 

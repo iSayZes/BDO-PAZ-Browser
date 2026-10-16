@@ -2,39 +2,31 @@
 
 ## Purpose
 
-Quest list of the Growth Pass window (`panel_window_growthpass*.luac`). Same layout and handler as [`allquestlist.bss`](allquestlist_bss.md): a `PABR` list of packed quest IDs.
+Quest list of the Growth Pass window (`panel_window_growthpass*.luac`).
 
-Example (client 3464):
+Same layout as [`allquestlist.bss`](allquestlist_bss.md), read by the same handler: a `PABR` list of packed quest IDs. Each `packed_quest_id` is `(quest_id << 16) | quest_chain_id`, the LOC type 18 title key. The trailer's `end_of_entries` is `8 + count * 4`, where the trailer starts.
 
-```text
-quest 4464 / 1 -> [Main] Complete Embarking on an Adventure
-quest 4472 / 1 -> [Olvia Academy] Academy Enrollment
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records   | Row bytes |
+| ------ | -------------- | ------- | ------------------------- | ----- | --------- | --------- |
+| 1      | 1784 and later | 3473    | `growthpassquestlist.bss` | 916   | 224 Entry | 4         |
+
+| Layout | File                      | Known          | Unknown    |
+| ------ | ------------------------- | -------------- | ---------- |
+| 1      | `growthpassquestlist.bss` | 916 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+The same as [`allquestlist.bss`](allquestlist_bss.md).
 
 All multi-byte values are little-endian.
-
-## File Layout
-
-### Header (8 bytes)
-
-| Offset  | Type  | Field | Notes             |
-| ------- | ----- | ----- | ----------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)    |
-| `+0x04` | u32   | count | Number of entries |
-
-### Entry (4 bytes, repeated `count` times)
-
-| Offset  | Type | Field           | Notes                                                       |
-| ------- | ---- | --------------- | ----------------------------------------------------------- |
-| `+0x00` | u32  | packed_quest_id | `(quest_id << 16) \| quest_chain_id`; LOC type 18 title key |
-
-### Trailer (12 bytes)
-
-| Offset  | Type | Field          | Notes                                     |
-| ------- | ---- | -------------- | ----------------------------------------- |
-| `+0x00` | u32  | reserved_a     | `0`                                       |
-| `+0x04` | u32  | end_of_entries | `8 + count * 4`, where the trailer starts |
-| `+0x08` | u32  | reserved_b     | `0`                                       |
 
 ## Quest Chains
 
@@ -53,17 +45,6 @@ On client 3464 the list holds 224 quests in nine chains, 4464 to 4472, and every
 | 4472                | 13     | [Olvia Academy] Academy Enrollment                      |
 
 The window does not read this list by index. It walks the categories of [`growthpasscategory.dbss`](growthpasscategory_dbss.md) and places each quest in a grid cell of the category's layout in [`uigrowthpasslayout.bss`](uigrowthpasslayout_bss.md). Each category names one quest chain, and its grid holds that chain's quests. On client 3464 only two chains have a category: 4470 (category 7, Game Tips, quests 1 to 40) and 4472 (category 9, HYPERBOOST, quests 1 to 13). The other seven chains are in this list with no category or grid. LOC type 107 still names categories 1 to 9.
-
-## Suggested UI Layout
-
-Same as [`allquestlist.bss`](allquestlist_bss.md):
-
-| Column  | Type | Notes                                                                    |
-| ------- | ---- | ------------------------------------------------------------------------ |
-| Main ID | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`                         |
-| Sub ID  | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`                            |
-| Icon    | text | Quest icon resolved from `packed_quest_id` through the quest icon index  |
-| Title   | text | LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
 
 ## Notes
 

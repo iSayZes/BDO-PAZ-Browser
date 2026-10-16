@@ -1,6 +1,7 @@
 {
   "columns": {
     "petSkillId": "Pet Skill ID",
+    "skillType": "Skill Type",
     "level": "Level",
     "valueA": "Value A",
     "valueB": "Value B"

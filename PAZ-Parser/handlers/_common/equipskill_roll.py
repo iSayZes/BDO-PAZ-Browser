@@ -11,6 +11,8 @@ from __future__ import annotations
 import struct
 from collections.abc import Callable
 
+from _common.loc import loc_text
+
 
 HEADER_SIZE = 4
 OFFSET_RECORD_SIZE = 10
@@ -25,10 +27,17 @@ WEIGHT_COUNT = 43
 # Fairy tables normalise to this total; pet tables do not (see format docs).
 PPM_SCALE = 1_000_000
 
-# Catalog records are 12 bytes from +0x04: [u32 id][u32 type][u8 unknown_08][u8 pad][u16 loc_id].
+# Catalog records are 12 bytes from +0x04: [u32 id][u32 type][u8 unknown_08][u8 unknown_09][u16 loc_id].
 _CATALOG_START = 4
 _CATALOG_RECORD_SIZE = 12
 _CATALOG_NULL_ID = 200
+# Catalog skill names are LOC type 10, keyed by the record's loc_id.
+EQUIP_SKILL_LOC_TYPE = 10
+
+
+def equip_skill_name(loc_id: int) -> str:
+    """Name of an equip-skill catalog entry, or '' on a miss or without LOC."""
+    return loc_text(EQUIP_SKILL_LOC_TYPE, loc_id)
 
 
 def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:
@@ -44,7 +53,7 @@ def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:
         if pos + OFFSET_RECORD_SIZE > len(data):
             break
 
-        acquire_type_id, data_offset, data_size, padding = struct.unpack_from(
+        acquire_type_id, data_offset, data_size, unknown_08 = struct.unpack_from(
             "<HIHH", data, pos
         )
         records.append({
@@ -53,7 +62,7 @@ def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:
             "data_offset": data_offset,
             "data_size": data_size,
             "record_start": data_offset - KEY_PREFIX_SIZE,
-            "padding": padding,
+            "unknown_08": unknown_08,
         })
 
     return records

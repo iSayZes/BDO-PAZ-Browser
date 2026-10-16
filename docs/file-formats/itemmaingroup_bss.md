@@ -4,11 +4,23 @@
 
 Item main groups: each group lists one or more [`itemsubgroup.dbss`](itemsubgroup_dbss.md) subgroups, each with an optional condition script. [`characterfunction.dbss`](characterfunction_dbss.md) points its shop, sell, guild shop and trade fields here, so a group is the item list an NPC window shows. The plain PABR file holds the groups, then a string table of the condition scripts.
 
-```text
-group 50503 -> subgroup 50503 -> HP Potion (Medium), HP Potion (Large), ...   Benyamin's Shop
-group 52001 -> subgroup 52001 -> 11,556 items                                   Shop (Sell) of 683 NPCs
-group 54146 -> subgroup 54001 if checkexplore(103, 1)                           Isobelle Encarotia's Trade
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes   | Records                    | Row bytes |
+| ------ | -------------- | ------- | ------------------- | ------- | -------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `itemmaingroup.bss` | 680,658 | 18,960 Entry, 16,555 Group | 10        |
+| 1      | 1784           | 1784    | `itemmaingroup.bss` | 550,518 | 15,376 Entry, 14,305 Group | 10        |
+
+| Layout | File                | Known             | Unknown           |
+| ------ | ------------------- | ----------------- | ----------------- |
+| 2      | `itemmaingroup.bss` | 339,938 B (49.9%) | 340,720 B (50.1%) |
+| 1      | `itemmaingroup.bss` | 274,439 B (49.9%) | 276,079 B (50.1%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,33 +32,32 @@ group 54146 -> subgroup 54001 if checkexplore(103, 1)                           
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset   | Type    | Field              | Notes                                                        |
-| -------- | ------- | ------------------ | ------------------------------------------------------------ |
-| `+0x00`  | char[4] | magic              | ASCII `PABR`                                                 |
-| `+0x04`  | u32     | count              | Number of groups; `16,501` on client 3464                    |
-| `+0x08`  | group[] | groups             | Variable-size groups, back to back                           |
-| ...      | u32     | string_count       | Number of strings; `197` on client 3464                      |
-| ...      | entry[] | strings            | `u8 is_wide`, `u32 byte_length`, then the text               |
-| EOF - 8  | u32     | string_table_start | Offset of `string_count`, where the groups end               |
-| EOF - 4  | u32     | reserved           | Always `0`                                                   |
+### File Layout
+
+| Offset              | Type          | Field              | Notes                                                        |
+| ------------------- | ------------- | ------------------ | ------------------------------------------------------------ |
+| `+0x00`             | char[4]       | magic              | ASCII `PABR`                                                 |
+| `+0x04`             | u32           | count              | Number of groups; `16,501` on client 3464                    |
+| `+0x08`             | Group[count]  | groups             | Variable-size groups, back to back; see Group                |
+| `groups+0x00`       | String Table  | string_table       | See String Table                                             |
+| `string_table+0x00` | u32           | string_table_start | Offset of `string_count`, where the groups end               |
+| `string_table+0x04` | u32           | zero               | Always `0`                                                   |
 
 The string table has the shape `exploration.bss` and `npcsimply.bss` use (`_common/pabr_strings.py`). Every string here is wide (UTF-16LE). Walking `count` groups ends exactly at `string_table_start`, and the string table ends exactly at the trailer.
 
-## Record Structure
+### Group (variable: 29 bytes + entries)
 
-### Group (`29 + 10 * entry_count` bytes)
-
-| Offset  | Type    | Field       | Notes                                                                      |
-| ------- | ------- | ----------- | -------------------------------------------------------------------------- |
-| `+0x00` | u32     | group_id    | Unique; `1,309` to `65,535`, not in key order                              |
-| `+0x04` | u8      | do_select_only_one | `1` when the group hands out one of its subgroups; `0` on 11,926 groups, `1` on 4,575 (client 3464) |
-| `+0x05` | u8[8]   | unknown_05  | Always zero; the 2016 `_pickCount` (i64) slot, see Field Names             |
-| `+0x0D` | i32     | refresh_start_hour | `-1`, or `0` on group 50452 only (client 3464)                      |
-| `+0x11` | u8[8]   | unknown_11  | Always zero; the 2016 `_refreshInterval` (u64) slot, see Field Names       |
-| `+0x19` | u32     | entry_count | `1` to `4`; never `0` on client 3464                                       |
-| `+0x1D` | entry[] | entries     | 10-byte entries repeated `entry_count` times                               |
+| Offset  | Type               | Field              | Notes                                                                      |
+| ------- | ------------------ | ------------------ | -------------------------------------------------------------------------- |
+| `+0x00` | u32                | group_id           | Unique; `1,309` to `65,535`, not in key order                              |
+| `+0x04` | u8                 | do_select_only_one | `1` when the group hands out one of its subgroups; `0` on 11,926 groups, `1` on 4,575 (client 3464) |
+| `+0x05` | bytes[8]           | unknown_05         | Always zero; the 2016 `_pickCount` (i64) slot, see Field Names             |
+| `+0x0D` | i32                | refresh_start_hour | `-1`, or `0` on group 50452 only (client 3464)                             |
+| `+0x11` | bytes[8]           | unknown_11         | Always zero; the 2016 `_refreshInterval` (u64) slot, see Field Names       |
+| `+0x19` | u32                | entry_count        | `1` to `4`; never `0` on client 3464                                       |
+| `+0x1D` | Entry[entry_count] | entries            | See Entry                                                                  |
 
 ### Entry (10 bytes)
 
@@ -60,15 +71,30 @@ On client 3464 the 16,501 groups hold 18,906 entries: 15,608 groups have one ent
 
 The conditions use the script calls of `characterfunction.dbss` conditions (`getIntimacy`, `getLevel`, `clearQuest`, `checkexplore`, `isContentsGroupOpen`), joined with `;` and alternatives split by `<or>`. On client 3464, 16,422 entries have no condition, 2,140 have the text `0`, and 118 have `checkexplore(103, 1)`, node 103 being Bahar Investment Bank.
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column     | Type | Notes                                                                                      |
-| ---------- | ---- | ------------------------------------------------------------------------------------------ |
-| Group ID   | num  | `group_id`                                                                                 |
-| Subgroups  | text | Each `subgroup_key` as a link to its `itemsubgroup.dbss` row, then `: condition` when set   |
-| Pick One   | flag | `do_select_only_one`                                                                        |
-| Items      | num  | Number of items over the group's distinct subgroups                                         |
-| Item Names | text | Items of the distinct subgroups in entry order, the first eight shown, as in `itemsubgroup.dbss` |
+| Offset  | Type               | Field        | Notes                                   |
+| ------- | ------------------ | ------------ | --------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings; `197` on client 3464 |
+| `+0x04` | pstr[string_count] | strings      | Every string here is wide (UTF-16LE)    |
+
+## Layout 1
+
+Client 1784 groups have 7 bytes between `group_id` and `refresh_start_hour`,
+where client 3473 has `do_select_only_one` and the 8-byte `unknown_05`. All 7
+are zero in every group of client 1784, so which two bytes the newer layout
+added is open. Only the Group differs from Layout 2.
+
+### Group (variable: 27 bytes + entries)
+
+| Offset  | Type               | Field              | Notes                                                     |
+| ------- | ------------------ | ------------------ | --------------------------------------------------------- |
+| `+0x00` | u32                | group_id           |                                                           |
+| `+0x04` | bytes[7]           | unknown_04         | Zero in all 14,305 groups (client 1784)                   |
+| `+0x0B` | i32                | refresh_start_hour |                                                           |
+| `+0x0F` | bytes[8]           | unknown_11         | Always zero                                               |
+| `+0x17` | u32                | entry_count        |                                                           |
+| `+0x1B` | Entry[entry_count] | entries            |                                                           |
 
 ## Notes
 
@@ -80,7 +106,7 @@ The conditions use the script calls of `characterfunction.dbss` conditions (`get
 
 ## Field Names
 
-The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ItemMainGroupStaticStatus` holds `_key`, the entry list, `_doSelectOnlyOne` (bool), `_pickCount` (i64), `_refreshStartHour` (i32) and `_refreshInterval` (u64); each entry (`value_type`) holds `_selectRate` (i32), `_conditionString`, a parsed condition list and `_itemSubGroupKey` (u16). The file stores the scalars in that order between `group_id` and `entry_count`, with the list moved to the end, and the entry stores `_selectRate`, the condition string index and `_itemSubGroupKey` in that order. The server-side `ItemMainGroup_Table` of the BdoEmu server (about 2021) shares 6,168 group IDs with client 3464:
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ItemMainGroupStaticStatus` holds `_key`, the entry list, `_doSelectOnlyOne` (bool), `_pickCount` (i64), `_refreshStartHour` (i32) and `_refreshInterval` (u64); each entry (`value_type`) holds `_selectRate` (i32), `_conditionString`, a parsed condition list and `_itemSubGroupKey` (u16). The file stores the scalars in that order between `group_id` and `entry_count`, with the list moved to the end, and the entry stores `_selectRate`, the condition string index and `_itemSubGroupKey` in that order. The server-side `ItemMainGroup_Table` of a private server on client 519 shares 6,168 group IDs with client 3464:
 
 | Field              | `ItemMainGroup_Table` column | Matching groups                                    |
 | ------------------ | ---------------------------- | -------------------------------------------------- |

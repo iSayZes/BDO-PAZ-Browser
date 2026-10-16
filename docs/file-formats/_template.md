@@ -2,51 +2,48 @@
 
 ## Purpose
 
-Describe what this file stores and what part of the game/tool it affects.
+Describe what this file stores and what part of the game it affects. The
+layout tables below show every field, so no example block.
 
-Example:
+## Versions
 
-```text
-Short example of the in-game meaning, UI display, or decoded output.
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
-List every file that must be read alongside this one. Omit this section if the
-format is fully self-contained.
+List every file the handler reads alongside this one, or say there are none.
 
 | File                  | Required | Role                                        |
 | --------------------- | -------- | ------------------------------------------- |
-| `companion.dbss`      | Required | Provides `id → (offset, size)` block lookup |
+| `companion.dbss`      | Required | Provides `id -> (offset, size)` block lookup |
 | `languagedata_en.loc` | Optional | English display strings                     |
 
-All multi-byte values are little-endian unless noted otherwise.
+All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-Top-level structure of the file (compression, magic bytes, header).
+The types, offset forms and field names follow
+[Writing Format Docs](../format-docs.md). A second layout for an older
+client goes below this one as `## Layout 1`, after this one is renumbered
+`## Layout 2`, and lists only the structures that differ.
 
-| Offset  | Type | Field | Notes             |
-| ------- | ---- | ----- | ----------------- |
-| `+0x00` | u32  | count | Number of records |
-| `+0x04` | ...  | data  | Record stream     |
+### File Layout
 
-## Record Structure
+| Offset  | Type           | Field     | Notes             |
+| ------- | -------------- | --------- | ----------------- |
+| `+0x00` | u32            | row_count | Number of rows    |
+| `+0x04` | Row[row_count] | rows      | See Row           |
 
-Repeat this sub-section once per logical record type. Use H3 headings.
+### Row (variable: 20 bytes + name text)
 
-### Header (N bytes)
-
-| Offset  | Type | Field | Notes |
-| ------- | ---- | ----- | ----- |
-| `+0x00` | u32  | id    |       |
-
-### Row / Entry (N bytes, repeated `count` times)
-
-| Offset  | Type | Field   | Notes |
-| ------- | ---- | ------- | ----- |
-| `+0x00` | u32  | field_a |       |
-| `+0x04` | u32  | field_b |       |
+| Offset         | Type  | Field      | Notes                          |
+| -------------- | ----- | ---------- | ------------------------------ |
+| `+0x00`        | u32   | key        | Row key                        |
+| `+0x04`        | u32   | unknown_04 | `0` on every row (client NNNN) |
+| `+0x08`        | str16 | name_kr    | Korean name                    |
+| `name_kr+0x00` | u32   | item_id    | Item the row points at         |
 
 Include observed value ranges or invariants inline as Notes cells.
 
@@ -58,13 +55,6 @@ Document enumerations inline here or inside the section where they first appear.
 | --- | ---- |
 | 0   | Name |
 | 1   | Name |
-
-## Suggested UI Layout
-
-| Column | Type | Notes                            |
-| ------ | ---- | -------------------------------- |
-| ID     | num  | Primary key                      |
-| Name   | text | LOC lookup fallback to raw value |
 
 ## Notes
 

@@ -89,7 +89,7 @@ def parse_skill_record(data: bytes, row: PabrOffsetRow) -> SkillRecord:
     script = reader.text(wide=True)
     reader.skip(_UNKNOWN_TAIL_SIZE)
     next_skill_keys = _key_list(reader)
-    reader.unpack(_U32)  # unknown_zero
+    reader.unpack(_U32)  # unknown_after_next_skill_keys
     base_skill_keys = _key_list(reader)
     reader.skip(_END_SIZE)
     if not reader.at_end():

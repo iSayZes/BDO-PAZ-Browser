@@ -29,7 +29,7 @@ def _derive_action_name(icon_path: str) -> str:
 
 def _parse_petaction_payload(row: int, offset_record: dict, block: bytes) -> dict:
     reader = RecordReader(block, 0, len(block), f"pet action record {row}")
-    action_id, reserved_04, reserved_08, magic = reader.unpack(_HEADER)
+    action_id, unknown_04, unknown_08, magic = reader.unpack(_HEADER)
     if magic != _MAGIC:
         raise ValueError(f"pet action record {row} has unexpected magic 0x{magic:08X}")
 
@@ -52,8 +52,8 @@ def _parse_petaction_payload(row: int, offset_record: dict, block: bytes) -> dic
         "magic_hex": f"0x{magic:08X}",
         "record_offset": offset_record["record_offset"],
         "record_size": offset_record["record_size"],
-        "reserved_04": reserved_04,
-        "reserved_08": reserved_08,
+        "unknown_04": unknown_04,
+        "unknown_08": unknown_08,
         "trailing_zeroes": trailer == b"\x00" * _TRAILER_SIZE,
         "action_id_match": action_id == offset_record["action_id"],
     }

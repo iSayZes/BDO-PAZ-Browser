@@ -10,18 +10,15 @@ from _common.character import character_name
 from _common.enum_name import enum_name
 from _common.html import Column, e, flag_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import loc_text
 from _common.node import node_name
 from _common.skill import skill_name
+from _common.territory import territory_name
 from _common.town import town_name
 from .parser import NODE_WAR_DAY_NAMES, REGION_TYPE_NAMES, parse_regioninfo_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-# Territory names; str_id4 1 is the territory, 0 the nation.
-_LOC_TERRITORY = 12
-_LOC_TERRITORY_NAME = 1
 # Siege rate limits are stored on the 1,000,000 = 100% scale.
 _RATE_PER_PERCENT = 10_000
 
@@ -32,7 +29,7 @@ def _region_name(region_key: int) -> str:
 
 
 def _territory(territory_key: int) -> str:
-    return loc_text(_LOC_TERRITORY, territory_key, _LOC_TERRITORY_NAME) or str(territory_key)
+    return territory_name(territory_key) or str(territory_key)
 
 
 def _named_key(key: int, name_of: Callable[[int], str]) -> str | None:

@@ -27,11 +27,11 @@ _REQUIRED_KEYS = [
     "group_key",
     "group_name",
     "group_name_kr",
-    "unknown_06",
+    "group_type",
     "event_start",
     "event_end",
     "row",
-    "unknown_10",
+    "is_sub_quest",
     "quest_chain_id",
     "quest_id",
     "packed_quest_id",
@@ -39,10 +39,10 @@ _REQUIRED_KEYS = [
     "condition",
     "condition_index",
     "condition_kr",
-    "script_1_index",
-    "script_1",
-    "script_2_index",
-    "script_2",
+    "hide_conditions_index",
+    "hide_conditions",
+    "visible_conditions_index",
+    "visible_conditions",
 ]
 # Event times as the parser pads them.
 _EVENT_TIME_RE = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}")
@@ -71,7 +71,7 @@ def _list_case(name: str, tests: list) -> HandlerCase:
 
 NEWQUEST_CASE = _list_case("newquest", [
     # Zero in every row; a row read off its 17-byte stride would not be.
-    RangeTest(col="unknown_10", min_val=0, max_val=0),
+    RangeTest(col="is_sub_quest", min_val=0, max_val=0),
     TargetTest(
         col="packed_quest_id",
         value=600883,
@@ -94,7 +94,7 @@ NEWQUEST_CASE = _list_case("newquest", [
 
 MAINQUEST_CASE = _list_case("mainquest", [
     # `1` on a few rows, `0` on the rest.
-    RangeTest(col="unknown_10", min_val=0, max_val=1),
+    RangeTest(col="is_sub_quest", min_val=0, max_val=1),
     TargetTest(
         col="packed_quest_id",
         value=105558,
@@ -109,12 +109,12 @@ MAINQUEST_CASE = _list_case("mainquest", [
     TargetTest(
         col="packed_quest_id",
         value=171094,
-        expected={"quest_chain_id": 40022, "quest_id": 2, "script_2": "clearquest(40022,1);"},
+        expected={"quest_chain_id": 40022, "quest_id": 2, "visible_conditions": "clearquest(40022,1);"},
     ),
 ])
 
 RECOMMENDATIONQUEST_CASE = _list_case("recommendationquest", [
-    RangeTest(col="unknown_10", min_val=0, max_val=0),
+    RangeTest(col="is_sub_quest", min_val=0, max_val=0),
     TargetTest(
         col="packed_quest_id",
         value=171127,
@@ -128,7 +128,7 @@ RECOMMENDATIONQUEST_CASE = _list_case("recommendationquest", [
 ])
 
 REPETITIONQUEST_CASE = _list_case("repetitionquest", [
-    RangeTest(col="unknown_10", min_val=0, max_val=0),
+    RangeTest(col="is_sub_quest", min_val=0, max_val=0),
     TargetTest(
         col="packed_quest_id",
         value=74644,
@@ -201,14 +201,14 @@ def test_event_period_only_in_the_event_list(case: HandlerCase) -> None:
         assert start < end, record["group"]
 
 
-def test_flagged_mainquest_rows_share_one_script_1() -> None:
-    """The rows with `unknown_10` set are one run that shares its `script_1`.
+def test_sub_quest_mainquest_rows_share_one_hide_condition() -> None:
+    """The rows with `is_sub_quest` set are one run that shares its `hide_conditions`.
 
     With the flag read as the first byte of the row, each flag lands one row
     late: the run loses its first row and gains a row with another script.
     """
-    flagged = [record for record in _result(MAINQUEST_CASE).records if record["unknown_10"]]
+    flagged = [record for record in _result(MAINQUEST_CASE).records if record["is_sub_quest"]]
 
-    assert len({record["script_1"] for record in flagged}) <= 1, [
-        (record["packed_quest_id"], record["script_1"]) for record in flagged
+    assert len({record["hide_conditions"] for record in flagged}) <= 1, [
+        (record["packed_quest_id"], record["hide_conditions"]) for record in flagged
     ]

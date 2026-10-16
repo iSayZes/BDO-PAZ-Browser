@@ -9,11 +9,27 @@ Imp, 27517 Kzarka, 23085 Vell). A row is the character key, a type byte, a
 block of floats and small integers, and on three rows the skill the actor
 casts.
 
-```text
-27063 Sandstorm          type 1  skill 40337 Debuff Sandstorm (rank 1)
-27109 Margoria Typhoon   type 2  skill 40438 Typhoon Lightning (rank 1)
-45381 Cloudy Day         type 3
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------- | ------------------------- | ----- | ------------- | --------- |
+| 2      | 3473 and later | 3473    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
+| 2      | 3473 and later | 3473    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
+| 1      | 1784           | 1784    | `weatheractor.dbss`       | 4,960 | 84 Row        | 59        |
+| 1      | 1784           | 1784    | `weatheractoroffset.dbss` | 844   | 84 Index Row  | 10        |
+
+| Layout | File                      | Known            | Unknown         |
+| ------ | ------------------------- | ---------------- | --------------- |
+| 2      | `weatheractor.dbss`       | 4,145 B (54.7%)  | 3,434 B (45.3%) |
+| 2      | `weatheractoroffset.dbss` | 1,014 B (100.0%) | 0 B (0.0%)      |
+| 1      | `weatheractor.dbss`       | 3,448 B (69.5%)  | 1,512 B (30.5%) |
+| 1      | `weatheractoroffset.dbss` | 844 B (100.0%)   | 0 B (0.0%)      |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,15 +40,17 @@ LOC type 6, skill names from LOC type 10 and skill icons from the
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then 75-byte rows; the
 file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                    |
-| ------- | ----- | --------- | ------------------------ |
-| `+0x00` | u32   | row_count | `101` on client 3464     |
-| `+0x04` | row[] | rows      | `row_count` 75-byte rows |
+| Offset  | Type           | Field     | Notes                |
+| ------- | -------------- | --------- | -------------------- |
+| `+0x00` | u32            | row_count | `101` on client 3464 |
+| `+0x04` | Row[row_count] | rows      | See Row              |
 
 ### Row (75 bytes)
 
@@ -55,11 +73,11 @@ Value spreads are from client 3464.
 | `+0x26` | u32     | skill_apply_rate | `5000`, `50000` or `1000000` on the skill rows, else `0`  |
 | `+0x2A` | u32     | unknown_2a    | `1000000` on 23400 Erebjork, else `0`                        |
 | `+0x2E` | f32     | unknown_2e    | `5.0` on 23400 Erebjork, else `0`                            |
-| `+0x32` | u8[12]  | unknown_32    | All zero                                                     |
+| `+0x32` | bytes[12] | unknown_32    | All zero                                                     |
 | `+0x3E` | u16     | unknown_3e    | `0` to `99`; `29` on 74 rows                                 |
 | `+0x40` | f32     | unknown_40    | `0` to `23.0`; `13.0` on 75 rows                             |
 | `+0x44` | u16     | unknown_44    | `99` on 89 rows; `0`, `2` or `10` on the others              |
-| `+0x46` | u8[4]   | unknown_46    | All zero                                                     |
+| `+0x46` | bytes[4] | unknown_46    | All zero                                                     |
 | `+0x4A` | u8      | unknown_4a    | `0` or `1` (78 rows)                                         |
 
 The skill rows on client 3464:
@@ -74,9 +92,16 @@ The skill rows on client 3464:
 `unknown_40` `13.0`, `unknown_44` `99`, `unknown_4a` `1`): monsters from
 24405 Red Orc to 24517 Small Altar Imp.
 
-## `weatheractoroffset.dbss`
+### `weatheractoroffset.dbss`
 
-A u32 row count (equal to the main file's), then 10-byte rows:
+A row count equal to the main file's, then one index row per main row.
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+### Index Row (10 bytes)
 
 | Offset  | Type | Field         | Notes                                                       |
 | ------- | ---- | ------------- | ----------------------------------------------------------- |
@@ -87,21 +112,37 @@ A u32 row count (equal to the main file's), then 10-byte rows:
 Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 21).
 
-## Suggested UI Layout
+## Layout 1
 
-| Column       | Type | Notes                                                      |
-| ------------ | ---- | ---------------------------------------------------------- |
-| Character ID | num  | `character_key`                                            |
-| Name         | text | LOC type 6 name, else the ID                               |
-| Title        | text | LOC type 6 title (`str_id4` 1); a dash when there is none  |
-| Weather Type | text | `weather_type` as its `gc::EWeatherType` name, else the number |
-| Radius       | num  | `radius`                                                   |
-| Skill ID     | num  | The skill number of `skill_key`; a dash when `0`           |
-| Skill        | text | Skill icon and LOC type 10 name; a dash when `0`           |
+On client 1784 a Row was 59 bytes: between `skill_apply_rate` and
+`unknown_3e` it held 4 bytes where Layout 2 holds 20 (`unknown_2a`,
+`unknown_2e`, `unknown_32`), so every later field sat 16 bytes earlier. Only
+the Row differs from Layout 2; the index rows' `size` is `57` on client 1784.
+Field names keep Layout 2's offsets, so `unknown_3e` sits at `+0x2E` here.
 
-The table opens in file order.
+### Row (59 bytes)
 
-The offset table shows Character ID, Data Offset and Size.
+| Offset  | Type     | Field              | Notes                                                         |
+| ------- | -------- | ------------------ | ------------------------------------------------------------- |
+| `+0x00` | u16      | key                |                                                               |
+| `+0x02` | u8       | unknown_02         |                                                               |
+| `+0x03` | u16      | character_key      |                                                               |
+| `+0x05` | u8       | weather_type       |                                                               |
+| `+0x06` | f32      | radius             |                                                               |
+| `+0x0A` | f32      | rain_amount        |                                                               |
+| `+0x0E` | f32      | cloud_rate         |                                                               |
+| `+0x12` | f32      | damage_max         |                                                               |
+| `+0x16` | f32      | damage_radius      |                                                               |
+| `+0x1A` | f32      | damage_radius_rate |                                                               |
+| `+0x1E` | f32      | push_pull_speed    |                                                               |
+| `+0x22` | u32      | skill_key          |                                                               |
+| `+0x26` | u32      | skill_apply_rate   |                                                               |
+| `+0x2A` | bytes[4] | unknown_old_2a     | All zero on client 1784; which Layout 2 field it became is not known |
+| `+0x2E` | u16      | unknown_3e         |                                                               |
+| `+0x30` | f32      | unknown_40         |                                                               |
+| `+0x34` | u16      | unknown_44         |                                                               |
+| `+0x36` | bytes[4] | unknown_46         |                                                               |
+| `+0x3A` | u8       | unknown_4a         |                                                               |
 
 ## Notes
 
@@ -128,7 +169,7 @@ The offset table shows Character ID, Data Offset and Size.
 
 ## Field Names
 
-The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::WeatherActorStaticStatus` lists `_key`, `_weatherApplyType`, `_weatherApplyRadius`, `_weatherRainAmount`, `_weatherCloudRate`, `_weatherDamageMax`, `_weatherDamageRadiusMax`, `_weatherDamageRadiusRate`, `_weatherPushPullSpeed`, `_weatherSkillKey` and `_weatherSkillApplyRate` in the order this row stores them from `+0x03`. The server-side `WeatherActor_Table` of the BdoEmu server (about 2021) holds 11 of the 101 actors (the storms, Sandstorm, Vell, Kzarka and the Margoria actors), and on all 11 its columns `Type`, `Radius`, `DamageMax`, `DamageRadius`, `DamageRadiusRate`, `SkillNo` and `SkillApplyRate` equal the fields named after them. Its `RainAmount` and `CloudRate` are the same values in millionths (`800000` for `0.8`), and `PushPullSpeed` is `0` like `push_pull_speed`.
+The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::WeatherActorStaticStatus` lists `_key`, `_weatherApplyType`, `_weatherApplyRadius`, `_weatherRainAmount`, `_weatherCloudRate`, `_weatherDamageMax`, `_weatherDamageRadiusMax`, `_weatherDamageRadiusRate`, `_weatherPushPullSpeed`, `_weatherSkillKey` and `_weatherSkillApplyRate` in the order this row stores them from `+0x03`. The server-side `WeatherActor_Table` of a private server on client 519 holds 11 of the 101 actors (the storms, Sandstorm, Vell, Kzarka and the Margoria actors), and on all 11 its columns `Type`, `Radius`, `DamageMax`, `DamageRadius`, `DamageRadiusRate`, `SkillNo` and `SkillApplyRate` equal the fields named after them. Its `RainAmount` and `CloudRate` are the same values in millionths (`800000` for `0.8`), and `PushPullSpeed` is `0` like `push_pull_speed`.
 
 ## Open Questions
 

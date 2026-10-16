@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "offset": "Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "key": "Schlüssel",
+    "text": "Text",
+    "variant_1": "Variante 1",
+    "variant_2": "Variante 2",
+    "variant_3": "Variante 3"
+  },
+  "meta": {
+    "count": "{count} TextBind-Texte"
+  }
+}

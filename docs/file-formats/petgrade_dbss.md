@@ -4,13 +4,23 @@
 
 Maps each (species, variant) pet combination to a grade value, one record per pair. 21 `pet.dbss` records have a pair with no grade record. Values 1–5 map to known grade labels; value 6 remains unconfirmed.
 
-Example:
+## Versions
 
-```text
-species=1 (Cat), variant=6  →  grade=3 (Premium)
-species=2 (Dog), variant=6  →  grade=1 (Classic)
-species=25 (Airiss), ...    →  grade varies
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | -------------- | --------- |
+| 1      | 1784 and later | 3473    | `petgrade.dbss`       | 3,388 | 282 Record     | 12        |
+| 1      | 1784 and later | 3473    | `petgradeoffset.dbss` | 3,388 | 282 Offset Row | 12        |
+
+| Layout | File                  | Known           | Unknown         |
+| ------ | --------------------- | --------------- | --------------- |
+| 1      | `petgrade.dbss`       | 2,260 B (66.7%) | 1,128 B (33.3%) |
+| 1      | `petgradeoffset.dbss` | 2,824 B (83.4%) | 564 B (16.6%)   |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,47 +30,47 @@ species=25 (Airiss), ...    →  grade varies
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                              |
-| ------- | ---- | ----- | ---------------------------------- |
-| `+0x00` | u32  | count | Number of records (observed: 203 before 2026-09-27, 282 after) |
+| Offset  | Type          | Field   | Notes                                                          |
+| ------- | ------------- | ------- | -------------------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records (observed: 203 before 2026-09-27, 282 after) |
+| `+0x04` | Record[count] | records | See Record                                                     |
 
-### Record (12 bytes, repeated `count` times)
+### Record (12 bytes)
 
 | Offset  | Type | Field       | Notes                                                              |
 | ------- | ---- | ----------- | ------------------------------------------------------------------ |
 | `+0x00` | u16  | key         | `(species << 8) \| variant`; low byte = variant, high byte = species |
-| `+0x02` | u16  | -           | Always 0; padding                                                  |
+| `+0x02` | u16  | unknown_02  | Always 0                                                           |
 | `+0x04` | u16  | key_dup     | Duplicate of `key`                                                 |
-| `+0x06` | u16  | -           | Always 0; padding                                                  |
+| `+0x06` | u16  | unknown_06  | Always 0                                                           |
 | `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Event, 5 Special, see In-Game Checks |
 
 > The combined key is `(species << 8) | variant`, stored as a u16 followed by a zero u16. This matches the key format used in `petgradeoffset.dbss`.
 
-## petgradeoffset.dbss
+### `petgradeoffset.dbss`
 
 Provides O(1) lookup by (species, variant) key, one entry per main-file record.
 
-### Header (4 bytes)
+| Offset  | Type              | Field | Notes                            |
+| ------- | ----------------- | ----- | -------------------------------- |
+| `+0x00` | u32               | count | Must equal `petgrade.dbss` count |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                   |
 
-| Offset  | Type | Field | Notes                                   |
-| ------- | ---- | ----- | --------------------------------------- |
-| `+0x00` | u32  | count | Must equal `petgrade.dbss` count        |
-
-### Offset Record (12 bytes, repeated `count` times)
+### Offset Row (12 bytes)
 
 | Offset  | Type | Field       | Notes                                                                    |
 | ------- | ---- | ----------- | ------------------------------------------------------------------------ |
 | `+0x00` | u16  | key         | `(species << 8) \| variant`; low byte = variant, high byte = species     |
-| `+0x02` | u16  | -           | Always 0; padding                                                        |
+| `+0x02` | u16  | unknown_02  | Always 0                                                                 |
 | `+0x04` | u32  | data_offset | Absolute byte offset in `petgrade.dbss` past the 4-byte key prefix      |
 | `+0x08` | u32  | data_size   | Always 8 (= record size minus the 4-byte key prefix)                    |
 
 `record_start = data_offset - 4` gives the position of the full 12-byte record in the main file.
-The parser reads `key` and the padding as one u32 (`parse_bare_u32_offset_rows()`).
+The parser reads `key` and `unknown_02` as one u32 (`parse_bare_u32_offset_rows()`).
 
 ## Joining with pet.dbss
 

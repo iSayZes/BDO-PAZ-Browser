@@ -33,9 +33,9 @@ def parse_plantworkerselect_records(data: bytes) -> list[dict]:
                 "entry_count": entry_count,
                 "selection_id": u16(data, pos),
                 "worker_id": u16(data, pos + 0x02),
-                "zero_a": u32(data, pos + 0x04),
+                "unknown_04": u32(data, pos + 0x04),
                 "hire_cost": u32(data, pos + 0x08),
-                "zero_b": u32(data, pos + 0x0C),
+                "unknown_0c": u32(data, pos + 0x0C),
             })
             pos += _ENTRY_SIZE
 

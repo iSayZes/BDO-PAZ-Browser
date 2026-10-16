@@ -4,15 +4,31 @@
 
 Defines a tiny global configuration block for the NPC gift/confession system. The file is stored as one fixed-size `PABR` block and has no row count or companion offset table.
 
-Example:
+## Versions
 
-```text
-PABR config: unknown_04 / 06 / 08 / 0c / 18 = 5 / 5 / 1000 / 50000000 / 20
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
+| 1      | 1784 and later | 3473    | `npcgiftetc.bss` | 32    | -       | -         |
+
+| Layout | File             | Known       | Unknown      |
+| ------ | ---------------- | ----------- | ------------ |
+| 1      | `npcgiftetc.bss` | 4 B (12.5%) | 28 B (87.5%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
+
+## Layout 1
+
+### File Layout
 
 The file is exactly 32 bytes in the observed client data. Unlike DBSS records, it does not start with a record count; the first four bytes are the ASCII magic `PABR`.
 
@@ -23,18 +39,10 @@ The file is exactly 32 bytes in the observed client data. Unlike DBSS records, i
 | `+0x06` | u16     | unknown_06 | 5          | Global gift-system value               |
 | `+0x08` | u32     | unknown_08 | 1000       | Global gift-system value               |
 | `+0x0C` | u32     | unknown_0c | 50000000   | Global gift-system value               |
-| `+0x10` | u32     | reserved0  | 0          | Observed zero                          |
-| `+0x14` | u32     | reserved1  | 0          | Observed zero                          |
+| `+0x10` | u32     | unknown_10 | 0          | Observed zero                          |
+| `+0x14` | u32     | unknown_14 | 0          | Observed zero                          |
 | `+0x18` | u32     | unknown_18 | 20         | Global gift-system value               |
-| `+0x1C` | u32     | reserved2  | 0          | Observed zero                          |
-
-## Suggested UI Layout
-
-| Column | Type | Notes                                      |
-| ------ | ---- | ------------------------------------------ |
-| Field  | text | `unknown_*` and `reserved*` field names    |
-| Value  | num  | Raw decoded integer value                  |
-| Notes  | text | Observed role or unresolved status         |
+| `+0x1C` | u32     | unknown_1c | 0          | Observed zero                          |
 
 ## Notes
 

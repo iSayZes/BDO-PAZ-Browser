@@ -203,6 +203,16 @@ th.sort-pending::after {
   color: var(--color-text-3);
 }
 
+/* A {KeyBind:NAME} in game text, drawn as a key with the action name (pa_html) */
+.key-bind {
+  padding: 0 4px;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius-inner);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
 /* A hunting ground tag as the drop item window draws it: a pill tinted with
    the tag colour, inline styles from dropuitaginfo.bss */
 .tag-chip {

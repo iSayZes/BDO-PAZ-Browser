@@ -7,12 +7,23 @@ Stone"): the blacksmith window that splits reformed gear back into the gear
 it was made from and the reform stone. A row names the reformed item, the
 item the extraction uses up, and the two items it returns.
 
-```text
-item     731222 Storm Devoured Dandelion Iron Buster
-need     320060 Mirror of Equilibrium
-result   694273 Dandelion Iron Buster
-material 9787   Heart of Karanda
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes   | Records         | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ------- | --------------- | --------- |
+| 1      | 1784 and later | 3473    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
+| 1      | 1784 and later | 3473    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
+
+| Layout | File                     | Known             | Unknown          |
+| ------ | ------------------------ | ----------------- | ---------------- |
+| 1      | `extractitem.dbss`       | 37,380 B (33.3%)  | 74,752 B (66.7%) |
+| 1      | `extractitemoffset.dbss` | 28,036 B (100.0%) | 0 B (0.0%)       |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,29 +37,29 @@ Item names come from LOC type 0.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field | Notes                                               |
-| ------- | ----- | ----- | --------------------------------------------------- |
-| `+0x00` | u32   | count | Number of rows; `2,336` on client 3464              |
-| `+0x04` | row[] | rows  | `count` 48-byte rows, back to back to the end of the file |
+### File Layout
 
-## Record Structure
+| Offset  | Type       | Field | Notes                                                     |
+| ------- | ---------- | ----- | --------------------------------------------------------- |
+| `+0x00` | u32        | count | Number of rows; `2,336` on client 3464                    |
+| `+0x04` | Row[count] | rows  | `count` 48-byte rows, back to back to the end of the file |
 
 ### Row (48 bytes)
 
 The row is four 12-byte slots of a u32 item ID and a u64.
 
-| Offset  | Type | Field              | Notes                                                          |
-| ------- | ---- | ------------------ | -------------------------------------------------------------- |
-| `+0x00` | u32  | item_id            | Reformed gear the window takes; unique per row, the index key  |
-| `+0x04` | u64  | unknown_04         | `1` on every row (client 3464)                                 |
-| `+0x0C` | u32  | need_item_id       | Item the extraction uses up, see below                         |
-| `+0x10` | u64  | unknown_10         | `1` on every row (client 3464)                                 |
-| `+0x18` | u32  | result_item_id     | Gear returned; never equal to `item_id`                        |
-| `+0x1C` | u64  | unknown_1c         | `1` on every row (client 3464)                                 |
-| `+0x24` | u32  | result_material_id | Reform stone (or other material) returned                      |
-| `+0x28` | u64  | unknown_28         | `1` on every row (client 3464)                                 |
+| Offset  | Type | Field              | Notes                                                         |
+| ------- | ---- | ------------------ | ------------------------------------------------------------- |
+| `+0x00` | u32  | item_id            | Reformed gear the window takes; unique per row, the index key |
+| `+0x04` | u64  | unknown_04         | `1` on every row (client 3464)                                |
+| `+0x0C` | u32  | need_item_id       | Item the extraction uses up, see below                        |
+| `+0x10` | u64  | unknown_10         | `1` on every row (client 3464)                                |
+| `+0x18` | u32  | result_item_id     | Gear returned; never equal to `item_id`                       |
+| `+0x1C` | u64  | unknown_1c         | `1` on every row (client 3464)                                |
+| `+0x24` | u32  | result_material_id | Reform stone (or other material) returned                     |
+| `+0x28` | u64  | unknown_28         | `1` on every row (client 3464)                                |
 
 Byte `+0x03` of each item ID is `0` on every row, so no ID carries an
 enchant level in its top byte. The rows are not sorted by `item_id`.
@@ -79,36 +90,25 @@ and so on; Restoration Stone (`4929`) names the two Ultimate Reform Stones
 and Sunset Glow Crystal; Combatant's Restoration Stone (`8172`) names the
 two Combatant's Stones.
 
-## `extractitemoffset.dbss`
+### `extractitemoffset.dbss`
 
-| Offset  | Type  | Field | Notes                                       |
-| ------- | ----- | ----- | ------------------------------------------- |
-| `+0x00` | u32   | count | Equals the `extractitem.dbss` count         |
-| `+0x04` | row[] | rows  | `count` 12-byte rows; no magic, no trailer  |
+| Offset  | Type             | Field | Notes                                      |
+| ------- | ---------------- | ----- | ------------------------------------------ |
+| `+0x00` | u32              | count | Equals the `extractitem.dbss` count        |
+| `+0x04` | Index Row[count] | rows  | `count` 12-byte rows; no magic, no trailer |
 
 ### Index Row (12 bytes)
 
-| Offset  | Type | Field       | Notes                                          |
-| ------- | ---- | ----------- | ---------------------------------------------- |
-| `+0x00` | u32  | item_id     | Row key, the `item_id` at `data_offset`        |
-| `+0x04` | u32  | data_offset | Row start, the `item_id` itself (not past it)  |
-| `+0x08` | u32  | data_size   | `48`, the whole row                            |
+| Offset  | Type | Field       | Notes                                         |
+| ------- | ---- | ----------- | --------------------------------------------- |
+| `+0x00` | u32  | item_id     | Row key, the `item_id` at `data_offset`       |
+| `+0x04` | u32  | data_offset | Row start, the `item_id` itself (not past it) |
+| `+0x08` | u32  | data_size   | `48`, the whole row                           |
 
 Unlike the `itemimprovementoffset.dbss` index, `data_offset` points at the
 key and `data_size` covers it. The index rows are not in file order; on
 client 3464 the 2,336 offsets are exactly the 2,336 row starts, and the key
 at each offset equals the index `item_id`.
-
-## Suggested UI Layout
-
-| Column          | Type | Notes                                         |
-| --------------- | ---- | --------------------------------------------- |
-| Item ID         | num  | `item_id`                                     |
-| Item            | text | `item_id` name with icon and grade colour     |
-| Need Item       | text | `need_item_id` name with icon                 |
-| Result Item     | text | `result_item_id` name with icon               |
-| Result Material | text | `result_material_id` name with icon           |
-| Reform Group    | num  | Reform group the row undoes, `-` without one  |
 
 ## Notes
 

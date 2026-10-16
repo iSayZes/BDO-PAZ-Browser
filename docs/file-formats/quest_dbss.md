@@ -4,14 +4,11 @@
 
 Quest definition table. Each record stores the quest's accept and completion scripts, Korean objective text, a quest category, the packed quest ID, a counted list of 178-byte reward entries (including permanent Family-stat rewards), rich text payloads, the quest icon path, and a trailing ID echo.
 
-Example:
+## Versions
 
-```text
-record 0 (fixture), packed_quest_id 1050655 (chain 2079, quest 16)
-condition: checkFieldType(hadumField);getLevel()>59;clearquest(2080,10);
-objective: <악몽의 그림자> 기가고드 처치하기;
-icon: Icon/Quest/Hadum08.dds
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,61 +21,111 @@ icon: Icon/Quest/Hadum08.dds
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                                                        |
-| ------- | ---- | ----- | ------------------------------------------------------------ |
-| `+0x00` | u32  | count | Number of quest records; `19,327` after the 2026-09-27 client update, `18,988` before it, `19,599` fixture |
-
-### Record Stream
+| Offset  | Type          | Field   | Notes                                                        |
+| ------- | ------------- | ------- | ------------------------------------------------------------ |
+| `+0x00` | u32           | count   | Number of quest records; `19,327` after the 2026-09-27 client update, `18,988` before it, `19,599` fixture |
+| `+0x04` | Record[count] | records | See Record                                                   |
 
 Records are stored back to back with no offset table and no padding. Record 0 starts at `+0x04`; every later record starts immediately after the previous record's 13-byte trailer. Record `i` belongs to packed quest ID `allquestlist[i]`.
 
 A sequential walk (read the strings, find the packed ID of `allquestlist[i]` right after the objective, then the ID echo and trailer) consumes every byte of the file: `19,327` of `19,327` records after the 2026-09-27 update, `18,988` of `18,988` before it and `19,599` of `19,599` fixture records, with the last record ending exactly at end of file. Record sizes, from the lead to the end of the trailer, range from `512` to `9,464` bytes (current file), `512` to `11,649` after the 2026-09-27 update and `512` to `8,818` (fixture). The first three fixture records start at `0x00000004`, `0x000005F8` and `0x00000936`.
 
-## Record Structure
+### Record (variable: 90 bytes + text and scanned parts)
 
-### Quest Record (variable length)
+Strings are a u64 character count (equivalently a u32 count plus a u32 zero) followed by UTF-16LE (`str16`) or ASCII (`str8`) code units, with no terminator. The Q-relative names (`unknown_q04`) count from `packed_quest_id`, the position the doc calls `Q`.
 
-Strings are a u64 character count (equivalently a u32 count plus a u32 zero) followed by UTF-16LE or ASCII code units, with no terminator.
+| Offset                       | Type                                              | Field                 | Notes |
+| ---------------------------- | ------------------------------------------------- | --------------------- | ----- |
+| `+0x00`                      | u32                                               | accept_dialog_key     | `dialog_index << 16 \| npc_id` of the NPC dialog that gives the quest (`detail_dialog.dbss` key); `acceptquest.bss` row of the quest. `0` or `0x10000` without an NPC |
+| `+0x04`                      | u32                                               | complete_dialog_key   | The same for the dialog that takes the quest; `completequest.bss` row of the quest |
+| `+0x08`                      | u32                                               | unknown_08            | `0` in 18,920 of 18,988 |
+| `+0x0C`                      | str16                                             | condition_script      | Accept/prerequisite expression, e.g. `getLevel()>30;<or>clearquest(654,4);` |
+| `condition_script+0x00`      | str16                                             | action_script         | Completion expression, e.g. `killmonster(20007,10);`, `meet(npc_id,dialog_index)` |
+| `action_script+0x00`         | bytes[scan]                                       | unknown_objective_gap | 24 zero bytes in 18,209 records; 26 to 100+ bytes in the rest (content not decoded). The parser finds its end as the lowest u64 count whose UTF-16 text ends exactly at `quest_category`, after finding `packed_quest_id` by searching for `allquestlist[i]`; see Notes |
+| `unknown_objective_gap+0x00` | str16                                             | objective_text_kr     | Korean objective text shown in the quest UI; line breaks are stored as `\n` (28 on client 3458) and decoded by the parser |
+| `objective_text_kr+0x00`     | u32                                               | quest_category        | Formerly `link_type`; see [Quest Category](#quest-category) |
+| `objective_text_kr+0x04`     | u32                                               | packed_quest_id       | `(quest_id << 16) \| quest_chain_id`; equals `allquestlist[i]` for every record |
+| `objective_text_kr+0x08`     | u32                                               | unknown_q04           | `0x00010000` in 11,303 records; also `0x00010101`, `0x00010001`, `0x00010100`, `0` |
+| `objective_text_kr+0x0C`     | bytes[8]                                          | unknown_q08           | Zero in 18,798 records (all with `block_kind` 7 or 4) |
+| `objective_text_kr+0x14`     | u32                                               | unknown_q10           | `0` in 15,784 kind-7 blocks; also `24`, `9999`, `22`, `168` |
+| `objective_text_kr+0x18`     | u8                                                | block_kind            | `7` in 18,152 records, `4` in 646, `0` in 190 (shifted layout, see Open Questions); after the 2026-09-27 update `7` in 18,434, `4` in 702, `0` in 191 |
+| `objective_text_kr+0x19`     | u32                                               | reward_entry_count    | `0` to `12`; number of 178-byte reward entries |
+| `objective_text_kr+0x1D`     | Reward Entry[reward_entry_count] if block_kind != 0 | reward_entries      | See Reward Entry. With `block_kind` `0` the block is shifted and its entries are not read |
+| `reward_entries+0x00`        | bytes[scan]                                       | unknown_payload       | Rich text (PAColor markup), more length-prefixed Korean strings, numeric config. Ends at the u64 count of `icon_path`, which the parser finds by scanning back from 16, then 8, bytes before the echo for the highest count whose ASCII text ends there in `.dds` |
+| `unknown_payload+0x00`       | str8                                              | icon_path             | Quest icon path such as `Icon/Quest/Hadum08.dds`; ends 16 or 8 bytes before the echo. 18,985 of 18,988 records have one; the other three store zero bytes here. See Notes |
+| `icon_path+0x00`             | bytes[scan]                                       | unknown_post_icon     | 16 bytes in 18,655 records, 8 in 211. Ends at the echo, the next occurrence of `packed_quest_id` after which the next record parses |
+| `unknown_post_icon+0x00`     | u32                                               | packed_quest_id_echo  | Repeats `packed_quest_id` |
+| `unknown_post_icon+0x04`     | bytes[13]                                         | unknown_trailer       | Most common: `00 × 9, 01 00 00 00` (5,075) and all zero (2,882); record ends here |
 
-**Part 1: scripts and objective**
+Earlier versions of this doc called `accept_dialog_key` and `complete_dialog_key` `unknown_00` and `unknown_04`, and before that, with `unknown_08`, `lead_a`, `lead_b` and `lead_zero` (and `packed_quest_id_a` and `packed_quest_id_b`); `unknown_q08` was `reserved_q08`. `unknown_objective_gap` was `objective_gap` and `unknown_trailer` was `trailer`.
 
-| Offset  | Type             | Field             | Notes                                                                                   |
-| ------- | ---------------- | ----------------- | --------------------------------------------------------------------------------------- |
-| `+0x00` | u32              | accept_dialog_key | `dialog_index << 16 \| npc_id` of the NPC dialog that gives the quest (`detail_dialog.dbss` key); `acceptquest.bss` row of the quest. `0` or `0x10000` without an NPC |
-| `+0x04` | u32              | complete_dialog_key | The same for the dialog that takes the quest; `completequest.bss` row of the quest       |
-| `+0x08` | u32              | unknown_08        | `0` in 18,920 of 18,988                                                                 |
-| `+0x0C` | u64 + utf16le[n] | condition_script  | Accept/prerequisite expression, e.g. `getLevel()>30;<or>clearquest(654,4);`             |
-| varies  | u64 + utf16le[n] | action_script     | Completion expression, e.g. `killmonster(20007,10);`, `meet(npc_id,dialog_index)`       |
-| varies  | u8[]             | objective_gap     | 24 zero bytes in 18,209 records; 26 to 100+ bytes in the rest (content not decoded)     |
-| varies  | u64 + utf16le[n] | objective_text_kr | Korean objective text shown in the quest UI; line breaks are stored as `\n` (28 on client 3458) and decoded by the parser |
-| varies  | u32              | quest_category    | Formerly `link_type`; see Quest Category below                                          |
+The split between the 13-byte `unknown_trailer` and the next record's 12-byte lead is inferred from record 0 (12 bytes before its first string at `+0x0C`) and from the last record (13 bytes after its echo to end of file). [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) groups `packed_quest_id_echo`, the trailer and the next record's lead, scripts and objective into one "condition tail" of the earlier quest; our data shows those scripts belong to the next quest: in 8,066 of 11,672 such blocks with a `clearquest` call it names the previous step of the next quest, versus 170 for the earlier quest.
 
-**Part 2: fixed block** (offsets relative to `Q`, the position of `packed_quest_id`):
+### Reward Entry (178 bytes)
 
-| Offset     | Type          | Field              | Notes                                                                              |
-| ---------- | ------------- | ------------------ | ---------------------------------------------------------------------------------- |
-| `Q+0x00`   | u32           | packed_quest_id    | `(quest_id << 16) \| quest_chain_id`; equals `allquestlist[i]` for every record    |
-| `Q+0x04`   | u32           | unknown_q04        | `0x00010000` in 11,303 records; also `0x00010101`, `0x00010001`, `0x00010100`, `0` |
-| `Q+0x08`   | u8[8]         | unknown_q08        | Zero in 18,798 records (all with `block_kind` 7 or 4)                              |
-| `Q+0x10`   | u32           | unknown_q10        | `0` in 15,784 kind-7 blocks; also `24`, `9999`, `22`, `168`                        |
-| `Q+0x14`   | u8            | block_kind         | `7` in 18,152 records, `4` in 646, `0` in 190 (shifted layout, see Open Questions); after the 2026-09-27 update `7` in 18,434, `4` in 702, `0` in 191 |
-| `Q+0x15`   | u32           | reward_entry_count | `0` to `12`; number of 178-byte reward entries                                     |
-| `Q+0x19`   | u8[178 × n]   | reward_entries     | Entry `k` holds a Family-stat union at `Q+0x80 + 178 × k`                          |
-| varies     | u8[]          | unknown_payload    | Rich text (PAColor markup), more length-prefixed Korean strings, numeric config    |
-| varies     | u64 + ascii[n] | icon_path         | Quest icon path such as `Icon/Quest/Hadum08.dds`; ends 16 or 8 bytes before the echo. 18,985 of 18,988 records have one; see Notes |
-| varies     | u8[16]        | unknown_post_icon  | 16 bytes in 18,655 records, 8 in 211                                               |
-| varies     | u32           | packed_quest_id_echo | Repeats `packed_quest_id`                                                        |
-| varies     | u8[13]        | trailer            | Most common: `00 × 9, 01 00 00 00` (5,075) and all zero (2,882); record ends here  |
+Only the Family-stat union is decoded. Entry `k` starts at `Q+0x19 + 178 × k` and holds its union at `Q+0x80 + 178 × k`.
 
-Earlier versions of this doc called `accept_dialog_key` and `complete_dialog_key` `unknown_00` and `unknown_04`, and before that, with `unknown_08`, `lead_a`, `lead_b` and `lead_zero` (and `packed_quest_id_a` and `packed_quest_id_b`); `unknown_q08` was `reserved_q08`.
+| Offset  | Type              | Field       | Notes |
+| ------- | ----------------- | ----------- | ----- |
+| `+0x00` | bytes[103]        | unknown_00  | Not decoded; see Open Questions |
+| `+0x67` | Family Stat Union | family_stat | See Family Stat Union |
+| `+0x9C` | bytes[22]         | unknown_9c  | Not decoded |
 
-The split between the 13-byte `trailer` and the next record's 12-byte lead is inferred from record 0 (12 bytes before its first string at `+0x0C`) and from the last record (13 bytes after its echo to end of file). [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) groups `packed_quest_id_echo`, the trailer and the next record's lead, scripts and objective into one "condition tail" of the earlier quest; our data shows those scripts belong to the next quest: in 8,066 of 11,672 such blocks with a `clearquest` call it names the previous step of the next quest, versus 170 for the earlier quest.
+### Family Stat Union (53 bytes)
 
-### Quest Category
+Offsets relative to the union start `U = Q+0x80 + 178 × k`, for `k < reward_entry_count`. Field names from [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor). The union is byte-packed (`inventory` is one byte), so later fields are unaligned.
+
+| Offset  | Type | Field              | Notes                                           |
+| ------- | ---- | ------------------ | ----------------------------------------------- |
+| `+0x00` | u32  | family_stat_type   | Selects the populated field; `16` = no reward   |
+| `+0x04` | f32  | offence            | Type `0`, All AP                                |
+| `+0x08` | f32  | defence            | Type `1`; the Garmoth gear planner shows each +1 as +1 DP and +1 DR |
+| `+0x0C` | f32  | hp                 | Type `2`, Max HP                                |
+| `+0x10` | f32  | mp                 | Type `3`, Max MP (not observed)                 |
+| `+0x14` | i32  | stamina            | Type `4`, Max Stamina                           |
+| `+0x18` | i32  | weight             | Type `5`, divide by 10,000 for LT               |
+| `+0x1C` | u8   | inventory          | Type `6`, inventory slots                       |
+| `+0x1D` | f32  | accuracy           | Type `7`                                        |
+| `+0x21` | f32  | evasion            | Type `8`                                        |
+| `+0x25` | i32  | enhancement_chance | Type `9`                                        |
+| `+0x29` | i32  | valks_limit        | Type `10`, additional enhancement chance limit  |
+| `+0x2D` | i32  | stack_limit        | Type `11`, enhancement chance stack limit (not observed) |
+| `+0x31` | u16  | contribution       | Type `12`, only in test quests (chain `1627`); width unconfirmed |
+| `+0x33` | u16  | energy             | Type `13`, only in test quests (chain `1627`); width unconfirmed |
+
+## Layout 1
+
+On client 1784 a record opens with a Korean string after the two dialog
+keys, has no `unknown_objective_gap` (the objective follows `action_script`
+directly), and stores `packed_quest_id` once, near the end, after the
+reward and text data. A counted u32 list and 14 bytes end the record. A
+walk by this layout with the same `allquestlist[i]` search reads all
+16,877 records of client 1784 and ends at the last byte of the file.
+
+### Record (variable: 71 bytes + text and scanned parts)
+
+| Offset                       | Type                          | Field                | Notes |
+| ---------------------------- | ----------------------------- | -------------------- | ----- |
+| `+0x00`                      | u32                           | accept_dialog_key    | |
+| `+0x04`                      | u32                           | complete_dialog_key  | |
+| `+0x08`                      | str16                         | unknown_old_08       | Korean text, e.g. `노먼 레이트` in record 0 |
+| `unknown_old_08+0x00`        | u32                           | unknown_08           | |
+| `unknown_old_08+0x04`        | str16                         | condition_script     | |
+| `condition_script+0x00`      | str16                         | action_script        | |
+| `action_script+0x00`         | str16                         | objective_text_kr    | |
+| `objective_text_kr+0x00`     | bytes[scan]                   | unknown_payload      | Reward entries, rich text and the `.dds` icon path; ends at `packed_quest_id`, found by searching for `allquestlist[i]` after the objective, taking the first hit after which the next record parses |
+| `unknown_payload+0x00`       | u32                           | packed_quest_id      | Equals `allquestlist[i]` |
+| `unknown_payload+0x04`       | u32                           | unknown_payload_04   | `0` in 13,182 records, `1` in 3,576 |
+| `unknown_payload+0x08`       | u8                            | unknown_payload_08   | `0` or `1` |
+| `unknown_payload+0x09`       | u32                           | unknown_value_count  | `1` to `7` |
+| `unknown_payload+0x0D`       | u32[unknown_value_count]      | unknown_values       | Hash-like values; `0xFEED568F` in the list of 4,514 records |
+| `unknown_values+0x00`        | bytes[14]                     | unknown_end          | Zero in 16,062 of 16,877 records |
+
+## Quest Category
 
 The u32 immediately before `packed_quest_id`. Current file counts (fixture counts differ slightly):
 
@@ -106,31 +153,13 @@ The u32 immediately before `packed_quest_id`. Current file counts (fixture count
 
 Only value `11` is confirmed exactly (in the fixture 814 of 815 pages have `11`; the exception is the one-page placeholder `66432` with `0`). The other labels are inferred from English titles.
 
-### Former "Canonical Link" Sub-record
+## Former "Canonical Link" Sub-record
 
 The earlier "magic marker `0x003BAE30`" is not a marker: `30 AE 3B 00` is the UTF-16LE text `기;` (U+AE30, `;`), the usual ending of a Korean objective such as `…처치하기;`. The following `link_type` and `canonical_quest_id` are `quest_category` and `packed_quest_id` of the same record. 16,469 of 18,988 current objectives end in `기;`, which is why the scan finds only about 87% of records.
 
-### Family-Stat Union
+## Family-Stat Union
 
-Offsets relative to the union start `U = Q+0x80 + 178 × k`, for `k < reward_entry_count`. Field names from [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor). The union is byte-packed (`inventory` is one byte), so later fields are unaligned.
-
-| Offset    | Type | Field             | Notes                                           |
-| --------- | ---- | ----------------- | ----------------------------------------------- |
-| `U+0x00`  | u32  | family_stat_type  | Selects the populated field; `16` = no reward   |
-| `U+0x04`  | f32  | offence           | Type `0`, All AP                                |
-| `U+0x08`  | f32  | defence           | Type `1`; the Garmoth gear planner shows each +1 as +1 DP and +1 DR |
-| `U+0x0C`  | f32  | hp                | Type `2`, Max HP                                |
-| `U+0x10`  | f32  | mp                | Type `3`, Max MP (not observed)                 |
-| `U+0x14`  | i32  | stamina           | Type `4`, Max Stamina                           |
-| `U+0x18`  | i32  | weight            | Type `5`, divide by 10,000 for LT               |
-| `U+0x1C`  | u8   | inventory         | Type `6`, inventory slots                       |
-| `U+0x1D`  | f32  | accuracy          | Type `7`                                        |
-| `U+0x21`  | f32  | evasion           | Type `8`                                        |
-| `U+0x25`  | i32  | enhancement_chance | Type `9`                                       |
-| `U+0x29`  | i32  | valks_limit       | Type `10`, additional enhancement chance limit  |
-| `U+0x2D`  | i32  | stack_limit       | Type `11`, enhancement chance stack limit (not observed) |
-| `U+0x31`  | u16? | contribution      | Type `12`, only in test quests (chain `1627`)   |
-| `U+0x33`  | u16? | energy            | Type `13`, only in test quests (chain `1627`)   |
+The layout is in [Family Stat Union](#family-stat-union-53-bytes).
 
 Current file, counted entries only: type `16` in 39,517 entries; 98 entries in 98 quests carry a real Family stat, each with only the selected field non-zero. 91 are journal pages (all in entry 0) and 7 are ordinary quests in entries 1 to 4, for example `72350` "A Gift for Papu" (DP +1, entry 1) and `329740` "[Elvia] Kzarka: Barrier of Infestation IV" (HP +20, entry 4). Summed: AP +10, DP +10, HP +1,000, Stamina +438, Weight +50 LT, Inventory +6, Accuracy +29, Evasion +8, Enhancement Chance +5, Valks limit +3. The game shows no total; the same sums hold after the 2026-09-27 update.
 
@@ -176,23 +205,6 @@ item LOC `str_type=0`. Previous research also matched `str_type=39`, but that
 type appears to be voice/dialogue text and can produce misleading preview
 titles/objectives.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                       |
-| ------------ | ---- | ----------------------------------------------------------- |
-| Display ID   | num  | `packed_quest_id` (equals `allquestlist[i]`)                |
-| Chain ID     | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`           |
-| Quest ID     | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`              |
-| Category     | num  | `quest_category`                                            |
-| Icon         | text | `icon_path` read from the record; thumbnail when available  |
-| Title / Name | text | LOC type 18 `str_id4=0` when available                      |
-| Accept NPC   | text | Speaker of `accept_dialog_key`: LOC type 38 (`npc_id`, `dialog_index`), else the LOC type 6 NPC name; `Black Spirit` for key `0`, a dash when neither names it. Opens the `detail_dialog.dbss` row of the key, plain text when that table has no such row (`DIALOG_KEYS` index) |
-| Complete NPC | text | The same for `complete_dialog_key`                          |
-| Condition    | text | `condition_script`                                          |
-| Action       | text | `action_script`                                             |
-| Objective    | text | Prefer LOC type 18 `str_id4=3`; fall back to inline Korean objective text |
-| Family Stat  | text | Non-`16` Family-stat unions of the counted reward entries   |
-
 ## Notes
 
 - "Current" counts in this doc are from the client before the 2026-09-27 update (`34,970,852` bytes, `18,988` records) unless marked. After it: `35,622,613` bytes, `19,327` records, 901 journal pages, 3 records without an icon; the walk still reads every record. Fixture: `36,525,439` bytes, `19,599` records.
@@ -213,7 +225,7 @@ titles/objectives.
 
 ### Shifted Fixed Block (`block_kind = 0`)
 
-190 records have `0` at `Q+0x14`; in 123 of them the `07` and count bytes appear two bytes later (`Q+0x16`/`Q+0x17`). Whether these records have extra bytes before the block or a different layout is not decoded, and their reward entries are not read.
+190 records have `0` at `Q+0x14`; in 123 of them the `07` and count bytes appear two bytes later (`Q+0x16`/`Q+0x17`). Whether these records have extra bytes before the block or a different layout is not decoded, and their reward entries are not read. The layout marks this with `if block_kind != 0` on `reward_entries`; the bytes of these records' entries fall in `unknown_payload`.
 
 ### Reward Entry Layout
 
@@ -227,9 +239,11 @@ Types `12` and `13` occur only in chain `1627` "Contribution Point Reward Test" 
 
 The bytes between the reward entries and `icon_path` contain rich text, further length-prefixed Korean strings (e.g. `아이템`) and numeric config. Field boundaries are not yet decoded.
 
-### `objective_gap` Content
+### `unknown_objective_gap` Content
 
 The gap between `action_script` and `objective_text_kr` is 24 zero bytes in most records but longer (up to 100+ bytes) in about 780. bdo-data-extractor mentions a "short counted section" here; it is not decoded.
+
+On client 3473, 18,603 of 18,991 gaps read as three u64-counted UTF-16 strings, which are empty in the 24-zero-byte case. Other gaps hold u32-counted lists of such strings (`01 00 00 00`, then a count and `checkclass(1);`), and one holds a count of `2` followed by two values that read as Unix timestamps. Whether the gap is a fixed series of string lists is not checked.
 
 ### LOC Row Semantics
 

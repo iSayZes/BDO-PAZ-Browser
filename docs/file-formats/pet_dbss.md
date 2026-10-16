@@ -2,15 +2,25 @@
 
 ## Purpose
 
-Defines one record per pet type/tier combination, covering icon path, species, tier, equip-skill slots, and several numeric parameters. Each record is a specific pet at a specific tier (e.g. "Dog variant #40 at Tier 4"). Companion `petoffset.dbss` enables O(1) lookup by pet ID.
+Defines one record per pet: species, tier, level cap, EXP table, look, icon path, market price fields, the loot, race and base skills, the equip-skill roll pool and the ten action rates. Each record is a specific pet at a specific tier (e.g. "Dog variant #40 at Tier 4"); fairies are pet records too (`pet_type` 1). Companion `petoffset.dbss` enables O(1) lookup by pet ID.
 
-Example:
+## Versions
 
-```text
-pet_id: 0xFC05  →  species: 105 (GoldStar)  tier: 4
-equip_skill_slots: 4   unknown_12: 4
-icon: New_UI_Common_forLua\Window\Stable\Pet\GoldStar_Pet_0004.dds
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes   | Records                     | Row bytes                  |
+| ------ | -------------- | ------- | ---------------- | ------- | --------------------------- | -------------------------- |
+| 1      | 1784 and later | 3473    | `pet.dbss`       | 376,078 | 2,009 Payload, 2,009 Record | 180 to 194, 185 on average |
+| 1      | 1784 and later | 3473    | `petoffset.dbss` | 20,094  | 2,009 Offset Row            | 10                         |
+
+| Layout | File             | Known             | Unknown         |
+| ------ | ---------------- | ----------------- | --------------- |
+| 1      | `pet.dbss`       | 357,997 B (95.2%) | 18,081 B (4.8%) |
+| 1      | `petoffset.dbss` | 16,076 B (80.0%)  | 4,018 B (20.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -18,115 +28,114 @@ icon: New_UI_Common_forLua\Window\Stable\Pet\GoldStar_Pet_0004.dds
 | ---------------- | -------- | -------------------------------------------------------- |
 | `petoffset.dbss` | Required | `pet_id → (data_offset, data_size)` for variable records |
 | `petgrade.dbss`  | Optional | `(species, variant) → grade` per pet type                |
+| `petequipskill.bss` | Optional | `base_skill_id` → base skill name (Section 2, LOC type 10) |
+| `petskill.dbss`, `petskilloffset.dbss` | Optional | `loot_skill_id` and `race_skill_id` → skill type |
+| `stringtable.bss` | Optional | Key hashes of the skill type names, see [petskill.dbss](petskill_dbss.md#skill-types) |
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (6 bytes)
+### File Layout
 
-| Offset  | Type | Field            | Notes                                                                        |
-| ------- | ---- | ---------------- | ---------------------------------------------------------------------------- |
-| `+0x00` | u32  | count            | Number of pet records (observed: 1,782 before 2026-09-27, 2,009 after)       |
-| `+0x04` | u16  | first_record_key | `pet_id` of the first record, part of record 0, not a separate header field |
+A record count, then the records back to back. Each record is a 2-byte key
+prefix and the payload that `petoffset.dbss` addresses.
 
-> `+0x04` is the key prefix of the first record, not a standalone header field. Records begin immediately at `+0x04`.
+| Offset  | Type          | Field   | Notes                                                                  |
+| ------- | ------------- | ------- | ---------------------------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of pet records (observed: 1,782 before 2026-09-27, 2,009 after) |
+| `+0x04` | Record[count] | records | See Record                                                             |
 
-### Record (variable size, typically 181–194 bytes)
+`+0x04` is the key prefix of the first record (`first_record_key` in earlier
+versions of this doc), not a standalone header field. Records begin
+immediately at `+0x04`.
 
-Each record is stored as `[u16 key_prefix][data_bytes]`. The `key_prefix` (2 bytes) equals `pet_id` and is also the first 2 bytes of `data_bytes`.
+### Record (variable: 2 bytes + payload)
 
-#### Fixed Header (32 bytes)
+Typically 181 to 194 bytes. Each record is stored as
+`[u16 key_prefix][data_bytes]`. The `key_prefix` (2 bytes) equals `pet_id`
+and is also the first 2 bytes of `data_bytes`.
 
-| Offset  | Type | Field             | Notes                                                                                   |
-| ------- | ---- | ----------------- | --------------------------------------------------------------------------------------- |
-| `+0x00` | u16  | pet_id            | Unique record key; equal to the preceding 2-byte file prefix                            |
-| `+0x02` | u8   | variant           | Sub-variant within the species (1–57 observed)                                          |
-| `+0x03` | u8   | species           | Pet family/model code                                                                   |
-| `+0x04` | u8   | -                 | Always 0; reserved                                                                      |
-| `+0x05` | u8   | tier              | Tier (0 = lowest, 4 = highest for regular pets)                                         |
-| `+0x06` | u8   | -                 | Always 1; reserved                                                                      |
-| `+0x07` | u8   | max_level         | Usually 10; Airiss variants have 20, 30, or 50                                          |
-| `+0x08` | u32  | -                 | Always `0x90000000`; purpose unknown                                                    |
-| `+0x0C` | u8   | -                 | Always 1; reserved                                                                      |
-| `+0x0D` | u16  | -                 | Always 0; reserved                                                                      |
-| `+0x0F` | u8   | equip_skill_slots | Number of equip skill slots; = `tier + 1` for regular pets (max 4); Airiss have up to 9 |
-| `+0x10` | u16  | unknown_10        | `0` or `256` (355 records, mostly species 1); not padding                               |
-| `+0x12` | u8   | unknown_12        | 97 distinct values; not reliably equal to the icon filename number                      |
-| `+0x13` | u8   | -                 | Always 0; reserved                                                                      |
-| `+0x14` | u32  | unknown_14        | 0 for many species, non-zero for others; about 140 distinct values                      |
-| `+0x18` | u32  | icon_path_len     | Byte length of the icon path string (no null terminator)                                |
-| `+0x1C` | u32  | -                 | Always 0; reserved                                                                      |
+| Offset  | Type    | Field      | Notes                                                  |
+| ------- | ------- | ---------- | ------------------------------------------------------ |
+| `+0x00` | u16     | key_prefix | Equals `pet_id`                                        |
+| `+0x02` | Payload | payload    | `data_size` bytes; the offset row points at this field |
 
-Earlier versions of this doc called `unknown_14` `type_param`, and first labeled `unknown_12` `dds_variant`. In the footer below, `unknown_00` was six `const_*` fields (`constants` in the parser), `unknown_2a` was `upgrade_table` and `unknown_53` was `tier_score` (`grade_score` in the parser). The parser called `unknown_10` `reserved_10`.
+### Payload (variable: 126 bytes + icon path text)
 
-#### Icon Path (variable, `icon_path_len` bytes)
+The 32-byte fixed header, the icon path, then the 94-byte fixed footer.
+Counts are records on client 3473.
 
-Stored immediately after the fixed header, in ASCII. **Not** null-terminated. Length is given by `icon_path_len`.
+| Offset           | Type     | Field                         | Notes                                                                                   |
+| ---------------- | -------- | ----------------------------- | --------------------------------------------------------------------------------------- |
+| `+0x00`          | u16      | pet_id                        | Unique record key; equal to the preceding 2-byte file prefix                            |
+| `+0x02`          | u8       | variant                       | Sub-variant within the species (1–57 observed)                                          |
+| `+0x03`          | u8       | species                       | Pet family/model code                                                                   |
+| `+0x04`          | u8       | unknown_04                    | `0` in every record                                                                     |
+| `+0x05`          | u8       | tier                          | Tier (0 = lowest, 4 = highest for regular pets)                                         |
+| `+0x06`          | u8       | unknown_06                    | `1` in every record                                                                     |
+| `+0x07`          | i32      | max_level                     | 10 on 1,994 records; Laila has 10, 20, 30 or 50 by `exp_key`                            |
+| `+0x0B`          | i32      | max_hunger                    | `400` in every record                                                                   |
+| `+0x0F`          | u16      | exp_key                       | Key into [petexp.dbss](petexp_dbss.md): 1 to 4 for pets, 6 to 9 for the Laila grades    |
+| `+0x11`          | u8       | is_indexed                    | `1` on 355 records                                                                      |
+| `+0x12`          | u32      | default_action_index          | Default look within the `change_look_key` group                                         |
+| `+0x16`          | u16      | change_look_key               | Key into `petchangelook.dbss`; `0` on 614 records                                       |
+| `+0x18`          | str8     | icon_path                     | u64 byte length (`icon_path_len`), then the ASCII path with no null terminator          |
+| `icon_path+0x00` | i64      | base_price_for_pet_market     | `30000` in every record                                                                 |
+| `icon_path+0x08` | i64      | min_price_for_pet_market      | `base_price_for_pet_market × minest_percent_for_pet_market / 1,000,000`                  |
+| `icon_path+0x10` | i64      | max_price_for_pet_market      | `base_price_for_pet_market × maxest_percent_for_pet_market / 1,000,000`                  |
+| `icon_path+0x18` | i32      | minest_percent_for_pet_market | Millionths; `500000` in every record                                                    |
+| `icon_path+0x1C` | i32      | maxest_percent_for_pet_market | Millionths; `1000000` in every record                                                   |
+| `icon_path+0x20` | u32      | skill_max_count               | `2` in every record: `loot_skill_id` and `race_skill_id`                                 |
+| `icon_path+0x24` | u16      | acquire_type_id               | Equip-skill roll pool; 0 = none. Pets key into [petequipskillaquire.dbss](petequipskillaquire_dbss.md), fairies (501 to 504) into [fairyequipskillaquire.dbss](fairyequipskillaquire_dbss.md) |
+| `icon_path+0x26` | u16      | base_skill_id                 | The pet's base skill, a Section 2 `equip_skill_id` of [petequipskill.bss](petequipskill_bss.md) on all 2,009 records |
+| `icon_path+0x28` | u16      | unknown_tail_28               | `0` in every record                                                                     |
+| `icon_path+0x2A` | i32[10]  | action_rates                  | One millionths rate per pet action, see below                                           |
+| `icon_path+0x52` | u8       | pet_type                      | `1` on the 21 fairy records, else `0`                                                   |
+| `icon_path+0x53` | u16      | loot_skill_id                 | Key into [petskill.dbss](petskill_dbss.md): 11, 16 or 17 on 1,908 records; the pet window's "Basic" skill |
+| `icon_path+0x55` | u16      | race_skill_id                 | Key into [petskill.dbss](petskill_dbss.md); the pet window's "Special" skill            |
+| `icon_path+0x57` | u8       | unknown_57                    | `0` on 85 records, see Open Questions                                                   |
+| `icon_path+0x58` | u8       | is_joker_pet_use              | `1` on 1,974 records                                                                    |
+| `icon_path+0x59` | u8       | pc_room_type                  | `1` on 20 records, two each of ten species                                              |
+| `icon_path+0x5A` | bytes[4] | unknown_tail_5a               | `0` in every record                                                                     |
+
+The icon path is stored immediately after the fixed header, in ASCII.
+**Not** null-terminated. Footer offsets are relative to the byte immediately
+following the icon path. `unknown_57` keeps the name of its footer offset.
 
 ```text
 New_UI_Common_forLua\Window\Stable\Pet\GoldStar_Pet_0004.dds
 ```
 
-#### Fixed Footer (94 bytes, immediately after the icon path)
+`exp_key` follows the tier on most pets (tier 0 has key 1, tier 1 key 2, tier 2 key 3, tiers 3 and 4 key 4). 138 records do not: key 4 on 55 tier-2 and 18 tier-1 records, key 2 on 54 tier-0 and 4 tier-2 records, key 3 on 7 tier-1 records.
 
-| Offset  | Type     | Field           | Notes                                                         |
-| ------- | -------- | --------------- | ------------------------------------------------------------- |
-| `+0x00` | u32 × 9  | unknown_00      | Always 30000, 0, 15000, 0, 30000, 0, 500000, 1000000, 2       |
-| `+0x24` | u16      | acquire_type_id | Key into `petequipskillaquire.dbss`; 0 = none; varies by tier |
-| `+0x26` | u16      | equip_skill_id  | Pet equip-skill identifier; varies by pet type and tier       |
-| `+0x28` | u16      | -               | Always 0; padding                                             |
-| `+0x2A` | u32 × 10 | unknown_2a      | Usually ten times 1,000,000; see Open Questions               |
-| `+0x52` | u8       | -               | Always 0                                                      |
-| `+0x53` | u8       | unknown_53      | Mostly 11, 16 or 17, loosely by tier; see Open Questions      |
-| `+0x54` | u8       | -               | Always 0                                                      |
-| `+0x55` | u8       | -               | Always 26; purpose unknown                                    |
-| `+0x56` | u8       | -               | Always 0                                                      |
-| `+0x57` | u8       | -               | Always 1; purpose unknown                                     |
-| `+0x58` | u8       | -               | Always 1; purpose unknown                                     |
-| `+0x59` | u8 × 5   | -               | Always 0; padding                                             |
+Earlier versions of this doc read `exp_key` as `equip_skill_slots`, `is_indexed` as `unknown_10` (a u16 at `+0x10` that was `256` when set), `default_action_index` as `unknown_12` and `change_look_key` as `unknown_14` (a u32 at `+0x14`, `change_look_key << 16`). `max_level` was a u8, and the bytes of `max_hunger` read as `0x90000000` at `+0x08` and a constant `1` at `+0x0C`.
 
-> Footer offsets are relative to the byte immediately following the icon path.
+The ten `action_rates` follow the sheet's `Action_0` to `Action_9`, whose Korean comments name the actions: joy, feed, angry, sleepy, run, sit, play, crouch, cry and sulk. 1,642 of the 1,782 records before the 2026-09-27 update store ten times 1,000,000 and 96 store ten zeros; the rest mix 0 and 1,000,000 or carry smaller values such as 220,000, 100,000 and 40,000.
 
-## petoffset.dbss
+Earlier versions of this doc called the market fields and `skill_max_count` `unknown_00` (six `const_*` fields before that), `action_rates` `unknown_2a` (`upgrade_table` before that), `loot_skill_id` `unknown_53` (`tier_score`) and `base_skill_id` `equip_skill_id`. `pet_type`, `race_skill_id` and the two flags after `unknown_57` were listed as constant bytes.
+
+### `petoffset.dbss`
 
 Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored in file order; use the offset to locate any record.
 
-### Header (4 bytes)
+| Offset  | Type              | Field | Notes                       |
+| ------- | ----------------- | ----- | --------------------------- |
+| `+0x00` | u32               | count | Must equal `pet.dbss` count |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row              |
 
-| Offset  | Type | Field | Notes                       |
-| ------- | ---- | ----- | --------------------------- |
-| `+0x00` | u32  | count | Must equal `pet.dbss` count |
-
-### Offset Record (10 bytes, repeated `count` times)
+### Offset Row (10 bytes)
 
 | Offset  | Type | Field       | Notes                                                                           |
 | ------- | ---- | ----------- | ------------------------------------------------------------------------------- |
 | `+0x00` | u16  | pet_id      | Matches `pet_id` in the main record                                             |
 | `+0x02` | u32  | data_offset | Absolute byte offset in `pet.dbss` to the **data** (past the 2-byte key prefix) |
 | `+0x06` | u16  | data_size   | Size of data in bytes (excluding the 2-byte key prefix)                         |
-| `+0x08` | u16  | -           | Always 0; padding                                                               |
+| `+0x08` | u16  | unknown_08  | Always 0                                                                        |
 
 `record_start = data_offset - 2` gives the position of the 2-byte key prefix in the file.  
 `total_record_size = data_size + 2`.  
-The parser reads `data_size` and the padding as one u32 (`parse_bare_offset_rows()`).
-
-## Suggested UI Layout
-
-| Column         | Type | Notes                                                                                                  |
-| -------------- | ---- | ------------------------------------------------------------------------------------------------------ |
-| Pet ID         | num  | `pet_id` as decimal only                                                                               |
-| Icon           | Icon | Rendered from `icon_path`; shown immediately after Pet ID                                              |
-| Name           | text | LOC type 6 lookup with `str_id1 = pet_id`; fallback to raw species ID                                  |
-| Species ID     | num  | Raw `species` code                                                                                     |
-| Tier           | num  | `tier` (0–4)                                                                                           |
-| Skill Slots    | num  | `equip_skill_slots`                                                                                    |
-| Max Level      | num  | `max_level` (10 for normal, 20/30/50 for Airiss)                                                       |
-| Acquire Type   | num  | `acquire_type_id` → `petequipskillaquire.dbss`                                                         |
-| Equip Skill ID | num  | `equip_skill_id`                                                                                       |
-| Grade          | text | Optional `petgrade.dbss` join on `(species, variant)`: 1 Classic, 2 Rare, 3 Premium, 4 Event, 5 Special |
-
-Rows are sorted by `pet_id` ascending for stable browsing.
+The parser reads `data_size` and `unknown_08` as one u32 (`parse_bare_offset_rows()`).
 
 ## Notes
 
@@ -134,39 +143,39 @@ Rows are sorted by `pet_id` ascending for stable browsing.
 - Record size varies because `icon_path_len` differs per pet (observed: 55–68 bytes). The 32-byte header and 94-byte footer are fixed; only the path varies.
 - `pet_id` appears three times per record: as the 2-byte key prefix in the file, as field `+0x00` in the data header, and as the `pet_id` field in the `petoffset.dbss` index.
 - English pet display names resolve from `languagedata_en.loc` with `str_type = 6` and `str_id1 = pet_id`.
-- `equip_skill_slots` = `tier + 1` for all regular pets (values 1–4). Airiss pets break this rule, reaching values of 7, 8, or 9.
-- `max_level` is 10 for all regular pets. Airiss variants: tier 1 = 20, tier 2 = 30, tier 3 = 50.
-- `unknown_12` does NOT reliably match the icon filename's 4-digit number (e.g. Cat_0991 → 0, Cat_0000 → 45).
-- The footer's `unknown_00` block (30000, 15000, 30000, 500000, 1000000, 2 and three zeros) is identical in every record.
-- `acquire_type_id` values 301–304 appear for regular pets and correspond to tiers 0–4 (tier 0 → 301, tier 4 → 304); lower values (1, 2, 3, 4) and mid-range values (101–104, 201–204, 401–404, 501–504) appear for specific sub-groups. 501–504 (21 pets, in both the pre-2026-09-27 and the 2026-09-27 files) have no row in `petequipskillaquire.dbss`.
+- The fairy records are species 25 (Laila, 20 records, `exp_key` 6 to 9 by grade) and one "Fairy's Energy" record of species 100. They are the 21 records with `pet_type` 1 and the 21 with `acquire_type_id` 501 to 504, which have no row in `petequipskillaquire.dbss`.
+- `acquire_type_id` values 301–304 appear for regular pets and correspond to tiers 0–4 (tier 0 → 301, tier 4 → 304); lower values (1, 2, 3, 4) and mid-range values (101–104, 201–204, 401–404) appear for specific sub-groups.
 - 21 records have no `petgrade.dbss` row for their `(species, variant)` and show no grade.
+
+## Field Names
+
+The names follow the `Pet_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 (keyed by `CharacterKey`), which shares 1,264 records with client 3473, and the 2016 `gc::PetStaticStatus` member order: `_maxLevel`, `_maxHungry`, `_petExpKey`, `_isIndexed`, `_defaultActionIndex`, `_changeLookKey`, `_iconPath`, `_basePriceForPetMarket`, `_minPriceForPetMarket`, `_maxPriceForPetMarket`, `_minestPricePercent`, `_maxestPricePercent`, `_skillMaxCount`, `_skillList[2]`, `_learnAttractList[10]`, `_petEquipSkillAquireKey`. In the 2016 struct the four bytes at `+0x02` are one u32 `_fusionKey`: `variant`, `species`, a zero byte and `tier`.
+
+| Column | Field | Equal (non-zero rows) |
+| ------ | ----- | --------------------- |
+| `Kind` (Korean comment "body type") | `variant` | 1,264 of 1,264 |
+| `Race` ("race") | `species` | 1,262 of 1,264 |
+| `Tier` ("grade") | `tier` | 1,023 of 1,023 |
+| `Level` | `max_level` | 1,259 of 1,264 |
+| `Hunger` | `max_hunger` | `400` on every sheet row and record |
+| `RequireEXPType` | `exp_key` | 1,264 of 1,264 |
+| `IsIndexed` | `is_indexed` | 285 of 285 |
+| `DefaultActionIndex` ("appearance") | `default_action_index` | 1,249 of 1,249 |
+| `PetChangeLookKey` | `change_look_key` | 956 of 956 |
+| `basePriceForPetMarket`, `minestPercentForPetMarket`, `maxestPercentForPetMarket` | the market fields | `30000`, `500000` and `1000000` on every sheet row and record |
+| `EquipSkillAquireKey` ("skill group") | `acquire_type_id` | 986 of 986 |
+| `BaseSkill` ("base skill") | `base_skill_id` | 1,264 of 1,264 |
+| `Action_0` to `Action_9` | `action_rates` | 1,168 of 1,168 to 1,187 of 1,187 per column |
+| `PetType` | `pet_type` | 21 of 21 |
+| `Skill_0` ("looting") | `loot_skill_id` | 1,221 of 1,264 |
+| `Skill_1` ("race skill") | `race_skill_id` | 1,264 of 1,264 |
+| `IsJokerPetUse` | `is_joker_pet_use` | 1,236 of 1,236 |
+| `PcRoomType` | `pc_room_type` | 10 of 10 |
+
+`BaseSkill` keys the `Pet_BaseSkill_Table` sheet, whose 60 rows match Section 2 of `petequipskill.bss` by skill number (60 of 60); `Pet_EquipSkill_Table` matches Section 1 (43 of 43). The sheet's `EquipSkill_0` to `EquipSkill_14` and `BoneScale` columns have no field in the record. The derived min and max prices are not sheet columns; the 2016 member order places them.
 
 ## Open Questions
 
-### `unknown_10` Meaning
+### `unknown_57` Meaning
 
-The u16 at `+0x10` is `0` in most records and `256` (byte `+0x11` = 1) in 355, 248 of them species 1. What it switches is unknown.
-
-### `unknown_12` Meaning
-
-It does not match the 4-digit icon filename number: Cats 0991–0993 all store 0, Cat_0000 stores 45, and Dogs show values like 79, 68, 51 that match neither path numbers nor tier. Its meaning is unknown.
-
-### Footer `unknown_00`
-
-The six non-zero u32 values in `unknown_00` (30000, 15000, 30000, 500000, 1000000, 2) are identical in every record. They may be global pet system parameters duplicated per record, or references to shared game tables. Their in-game meaning (satiety, exchange cost, breeding cost?) is unconfirmed.
-
-### `unknown_2a` Meaning
-
-Ten u32 values. 1,642 of the 1,782 records before the 2026-09-27 update store ten times 1,000,000 and 96 store ten zeros; the rest mix 0 and 1,000,000 or carry smaller values such as 220,000, 100,000 and 40,000. BDO rates often use 1,000,000 as 100%, so this may be ten per-slot rates, but what the slots are is unknown.
-
-### `acquire_type_id` pools 501–504
-
-`acquire_type_id` keys into the `petequipskillaquire.dbss` skill roll table. Values 501–504 occur on 21 pets but have no row there, so where those pets roll their equip skills from is unknown.
-
-### `unknown_14` Meaning
-
-Varies by pet type (0 for many; non-zero values like 0x00BF7A00 for others) and is consistent within a species group. Purpose unknown; it could be a bitfield of capabilities, a hash, or a sub-type attribute.
-
-### `unknown_53` Meaning
-
-Most records store 11 at tier 0-1, 16 at tier 2 and 17 at tier 3-4, but other values occur (1, 12-14, 47-50, 53-57), and pets added in the 2026-09-27 client store 16 or 17 at tier 1 and 17 at tier 2. It follows tier loosely without being a function of it. Possibly a UI display tier, a difficulty tier or a capacity index.
+The u8 at footer `+0x57` is `0` on every record of species 4 (Penguin), 21 (Kuku), 39 (Young Crimson Dragon), 40 (Young Fogan), 46 (Arctic Fox, Black Leopard, Prankkebi, Tarkhes) and 49 (Jojo, Putrakium), 85 records on client 3473, and `1` on the rest. It sits between `race_skill_id` and `is_joker_pet_use`, where the sheet has no column. The private server's own `pet.dbss` (client 1784) stores the same byte with the same split by species, so it is filled from a source outside `Pet_Table`.

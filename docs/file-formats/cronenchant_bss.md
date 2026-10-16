@@ -19,43 +19,56 @@ hold their counts; the client reads those through
 `ToClient_GetCronStoneStaticStatus`, from a table I have not found yet (see
 [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md), Notes).
 
-Example, category 1 (boss main weapon) at PEN:
+## Versions
 
-```text
-Caphras level 1    297 stones total    AP +1
-Caphras level 20   29,403 stones total AP +10, accuracy +12
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Offset  | Type       | Field              | Notes                                                    |
-| ------- | ---------- | ------------------ | -------------------------------------------------------- |
-| `+0x00` | char[4]    | magic              | `PABR` (ASCII)                                           |
-| `+0x04` | u32        | category_count     | `10` on client 3464                                      |
-| `+0x08` | category[] | categories         | `category_count` category blocks, below                  |
-| varies  | u32        | string_count       | Always `0`: the PABR string table is present but empty   |
-| EOF-8   | u32        | string_table_start | Absolute offset of `string_count`, where the categories end |
-| EOF-4   | u32        | zero_trailer       | Always `0`                                               |
+| Layout | Clients        | Checked | File              | Bytes  | Records                                     | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ------ | ------------------------------------------- | --------- |
+| 1      | 1784 and later | 3473    | `cronenchant.bss` | 23,580 | 600 Step, 30 Grade Block, 10 Category Block | 39        |
+
+| Layout | File              | Known             | Unknown    |
+| ------ | ----------------- | ----------------- | ---------- |
+| 1      | `cronenchant.bss` | 23,580 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None. All multi-byte values are little-endian.
+
+## Layout 1
+
+### File Layout
+
+| Offset              | Type                            | Field              | Notes                                                    |
+| ------------------- | ------------------------------- | ------------------ | -------------------------------------------------------- |
+| `+0x00`             | char[4]                         | magic              | `PABR` (ASCII)                                           |
+| `+0x04`             | u32                             | category_count     | `10` on client 3464                                      |
+| `+0x08`             | Category Block[category_count]  | categories         | See Category Block                                       |
+| `categories+0x00`   | String Table                    | string_table       | The PABR string table, present but empty                 |
+| `string_table+0x00` | u32                             | string_table_start | Absolute offset of `string_count`, where the categories end |
+| `string_table+0x04` | u32                             | zero               | Always `0`                                               |
 
 On client 3464 the file is `8 + 10 × (4 + 3 × (4 + 20 × 39)) + 12 = 23,580`
 bytes. The parser rejects a file whose categories do not end exactly at
 `string_table_start`.
 
-## Record Structure
+### Category Block (variable: 4 bytes + grade blocks)
 
-### Category Block
+| Offset  | Type                     | Field       | Notes                                     |
+| ------- | ------------------------ | ----------- | ----------------------------------------- |
+| `+0x00` | u32                      | grade_count | `3` in every category (TRI, TET and PEN)  |
+| `+0x04` | Grade Block[grade_count] | grades      | See Grade Block                           |
 
-| Offset  | Type    | Field       | Notes                                     |
-| ------- | ------- | ----------- | ----------------------------------------- |
-| `+0x00` | u32     | grade_count | `3` in every category (TRI, TET and PEN)  |
-| `+0x04` | grade[] | grades      | `grade_count` grade blocks                |
+### Grade Block (variable: 4 bytes + steps)
 
-### Grade Block
-
-| Offset  | Type    | Field      | Notes                                    |
-| ------- | ------- | ---------- | ---------------------------------------- |
-| `+0x00` | u32     | step_count | `20` in every grade, one per Caphras level |
-| `+0x04` | step[]  | steps      | `step_count` steps of 39 bytes, byte-packed |
+| Offset  | Type             | Field      | Notes                                    |
+| ------- | ---------------- | ---------- | ---------------------------------------- |
+| `+0x00` | u32              | step_count | `20` in every grade, one per Caphras level |
+| `+0x04` | Step[step_count] | steps      | See Step; byte-packed                    |
 
 ### Step (39 bytes)
 
@@ -82,6 +95,13 @@ The eight stats follow the order of the tooltip keys in
 `panel_tooltip_item.luac`: `LUA_TOOLTIP_CRONENCHANT_ATTACK`, `_HIT`,
 `_DODGE`, `_DODGEB`, `_REDUCE`, `_REDUCEB`, `_HP`, `_MP`. Every f32 holds a
 whole number on client 3464, and `mp` is `0` to `30` in steps of 5.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
 
 ## Categories
 
@@ -128,28 +148,6 @@ Stats at Caphras level 20 per stat group (client 3464):
 | 7 to 10    | TRI, TET | 0  | 0        | 3       | 8              | 1  | 3         | 80  | 30 |
 | 7, 8       | PEN      | 0  | 0        | 8       | 8              | 8  | 8         | 160 | 0  |
 | 9, 10      | PEN      | 0  | 0        | 5       | 5              | 5  | 5         | 100 | 0  |
-
-## Suggested UI Layout
-
-One row per step, 600 on client 3464, in file order.
-
-| Column         | Type | Notes |
-| -------------- | ---- | ----- |
-| Category       | num  | `category` |
-| Gear           | text | Category name from the table above |
-| Grade          | text | `enchant_level` as TRI, TET or PEN |
-| Caphras Level  | num  | Position in the grade block, 1 to 20 |
-| Stones         | num  | Stones for this level: `total_stones` minus the previous step's |
-| Total Stones   | num  | `total_stones` |
-| AP             | num  | |
-| DP             | num  | `evasion + damage_reduction`, as the game and bdocodex show DP |
-| Accuracy       | num  | |
-| Evasion        | num  | |
-| Hidden Evasion | num  | |
-| DR             | num  | |
-| Hidden DR      | num  | |
-| Max HP         | num  | `hp` |
-| Max MP         | num  | `mp` |
 
 ## Notes
 

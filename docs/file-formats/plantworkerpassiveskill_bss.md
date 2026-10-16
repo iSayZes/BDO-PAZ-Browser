@@ -4,13 +4,22 @@
 
 Worker passive skill table. The file stores passive skill IDs, inline Korean fallback strings, DDS icon paths, and effect parameter fields used by worker skill UI rows. User-facing names and descriptions should prefer LOC type `22` when available.
 
-Example rows:
 
-```text
-1603 -> 날개C, /New_UI_Common_forLua/Skill/WorkerSkill/1303.dds, 기본 이동속도의 6% 증가
-1923 -> 숙련 공성 무기 제작 기술, /New_UI_Common_forLua/Skill/WorkerSkill/1923.dds, 공성 무기 제작 시 3회 추가 작업
-1012 -> 타고난 일꾼, /New_UI_Common_forLua/Skill/WorkerSkill/1012_N.dds, 작업속도 +2, 기본 이동속도의 7% 증가
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes  | Records         | Row bytes               |
+| ------ | -------------- | ------- | ----------------------------- | ------ | --------------- | ----------------------- |
+| 1      | 1784 and later | 3473    | `plantworkerpassiveskill.bss` | 13,294 | 72 Skill Record | 56 to 72, 56 on average |
+
+| Layout | File                          | Known            | Unknown      |
+| ------ | ----------------------------- | ---------------- | ------------ |
+| 1      | `plantworkerpassiveskill.bss` | 12,702 B (95.5%) | 592 B (4.5%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,50 +31,61 @@ No companion file is required to parse the file. Names and descriptions are stor
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field              | Notes                                                   |
-| ------- | ----- | ------------------ | ------------------------------------------------------- |
-| `+0x00` | u8[4] | magic              | `PABR` (ASCII)                                          |
-| `+0x04` | u32   | skill_record_count | Number of skill records; observed `72` (also in the 2026-09-27 client) |
-| `+0x08` | ...   | skill_records      | Usually `0x38` bytes each; one observed extended record |
-| varies  | u32   | string_count       | Number of string entries; observed `174`                |
-| varies  | ...   | string_table       | Length-prefixed UTF-16LE strings                        |
-| EOF-8   | u32   | string_table_start | Absolute file offset of `string_count`; observed `0xFD8` |
-| EOF-4   | u32   | zero_trailer       | Observed `0`                                            |
+### File Layout
+
+| Offset              | Type                             | Field              | Notes                                                   |
+| ------------------- | -------------------------------- | ------------------ | ------------------------------------------------------- |
+| `+0x00`             | char[4]                          | magic              | `PABR` (ASCII)                                          |
+| `+0x04`             | u32                              | skill_record_count | Number of skill records; observed `72` (also in the 2026-09-27 client) |
+| `+0x08`             | Skill Record[skill_record_count] | skill_records      | Usually `0x38` bytes each; one observed extended record |
+| `skill_records+0x00` | String Table                    | string_table       | Length-prefixed UTF-16LE strings                        |
+| `string_table+0x00` | u32                              | string_table_start | Absolute file offset of `string_count`; observed `0xFD8` |
+| `string_table+0x04` | u32                              | zero               | Observed `0`                                            |
 
 The fixed/extended skill-record block begins at `0x08` and the string table starts at `0xFD8` in the observed file. Skill records reference string table entries by zero-based index.
 
-## Record Structure
+### Skill Record (variable: 56 bytes + extension)
 
-### Skill Record (`0x38` bytes, usually)
+| Offset  | Type                         | Field              | Notes                                                   |
+| ------- | ---------------------------- | ------------------ | ------------------------------------------------------- |
+| `+0x00` | u16                          | skill_id           | Passive worker skill ID                                 |
+| `+0x02` | u16                          | duplicate_skill_id | Always matches `skill_id` in observed records           |
+| `+0x04` | u32                          | name_index         | Index into `string_table`; Korean skill name            |
+| `+0x08` | u32                          | icon_index         | Index into `string_table`; DDS path                     |
+| `+0x0C` | u32                          | description_index  | Index into `string_table`; Korean effect description    |
+| `+0x10` | u32                          | acquisition_weight | Observed values: `1000`, `1050`, `1400`, `2100`, `2500`, `2800` |
+| `+0x14` | u32                          | unknown_14         | Always observed as `0`                                  |
+| `+0x18` | u32                          | effect_type        | `0` flat stats, `1` full refund, `2` stats per level up, `6` extra work; see Effect Types |
+| `+0x1C` | u32                          | apply_mode         | Usually `7`; observed `0` for `skill_id=1012`           |
+| `+0x20` | u32                          | apply_scope        | Always observed as `7`                                  |
+| `+0x24` | u32                          | effect_type_copy   | Mirrors `effect_type` in many rows                      |
+| `+0x28` | u32                          | effect_target      | Stat/category/chance target, depending on `effect_type` |
+| `+0x2C` | u32                          | effect_value_a     | Primary scaled effect value                             |
+| `+0x30` | u32                          | effect_value_b     | Secondary scaled effect value for some rows             |
+| `+0x34` | u32                          | unknown_34         | Always observed as `0`                                  |
+| `+0x38` | Extension if skill_id = 1012 | extension          | Only on `skill_id=1012`; the rule is open, see [Extended `1012` Record](#extended-1012-record) |
 
-| Offset  | Type | Field              | Notes                                                   |
-| ------- | ---- | ------------------ | ------------------------------------------------------- |
-| `+0x00` | u16  | skill_id           | Passive worker skill ID                                 |
-| `+0x02` | u16  | duplicate_skill_id | Always matches `skill_id` in observed records           |
-| `+0x04` | u32  | name_index         | Index into `string_table`; Korean skill name            |
-| `+0x08` | u32  | icon_index         | Index into `string_table`; DDS path                     |
-| `+0x0C` | u32  | description_index  | Index into `string_table`; Korean effect description    |
-| `+0x10` | u32  | acquisition_weight | Observed values: `1000`, `1050`, `1400`, `2100`, `2500`, `2800` |
-| `+0x14` | u32  | zero_a             | Always observed as `0`                                  |
-| `+0x18` | u32  | effect_type        | `0` flat stats, `1` full refund, `2` stats per level up, `6` extra work; see Effect Types |
-| `+0x1C` | u32  | apply_mode         | Usually `7`; observed `0` for `skill_id=1012`           |
-| `+0x20` | u32  | apply_scope        | Always observed as `7`                                  |
-| `+0x24` | u32  | effect_type_copy   | Mirrors `effect_type` in many rows                      |
-| `+0x28` | u32  | effect_target      | Stat/category/chance target, depending on `effect_type` |
-| `+0x2C` | u32  | effect_value_a     | Primary scaled effect value                             |
-| `+0x30` | u32  | effect_value_b     | Secondary scaled effect value for some rows             |
-| `+0x34` | u32  | zero_b             | Always observed as `0`                                  |
+### Extension (16 bytes)
 
-One observed record, `skill_id=1012` (`타고난 일꾼`), is followed by an extra 16-byte parameter block before the next record:
+One observed record, `skill_id=1012` (`타고난 일꾼`), is followed by an extra 16-byte parameter block before the next record. The parser reads it on `skill_id=1012` when the bytes left before the string table hold it. The field names keep their offsets in the record, so `unknown_38` sits at `+0x00` here. Earlier versions of this doc called `unknown_3c` `extra_effect_value_a` and `unknown_40` `extra_effect_value_b`.
 
-| Offset  | Type | Field                | Notes                             |
-| ------- | ---- | -------------------- | --------------------------------- |
-| `+0x38` | u32  | extra_zero_a         | Observed `0`                      |
-| `+0x3C` | u32  | extra_effect_value_a | Observed `2000000`                |
-| `+0x40` | u32  | extra_effect_value_b | Observed `1`                      |
-| `+0x44` | u32  | extra_zero_b         | Observed `0`                      |
+| Offset  | Type | Field      | Notes              |
+| ------- | ---- | ---------- | ------------------ |
+| `+0x00` | u32  | unknown_38 | Observed `0`       |
+| `+0x04` | u32  | unknown_3c | Observed `2000000` |
+| `+0x08` | u32  | unknown_40 | Observed `1`       |
+| `+0x0C` | u32  | unknown_44 | Observed `0`       |
+
+### String Table (variable: 4 bytes + strings)
+
+The string table is a flat pool, not grouped records. Skill records choose any string indices; several records reuse icon/name/description entries. Each entry is a `pstr`: the `is_wide` byte (earlier versions of this doc called it `present`) is always observed as `1`, then the UTF-16LE byte length with no alignment, then the UTF-16LE text.
+
+| Offset  | Type               | Field        | Notes                                    |
+| ------- | ------------------ | ------------ | ---------------------------------------- |
+| `+0x00` | u32                | string_count | Number of string entries; observed `174` |
+| `+0x04` | pstr[string_count] | strings      | Repeated `string_count` times            |
 
 Derived fields:
 
@@ -169,23 +189,6 @@ Extra-work effects. `effect_target` identifies the production category and `effe
 | `9005` | Timber packing | `1908` [Timber Packing](https://bdocodex.com/us/sskill/1908/) |
 | `9006` | Ore packing | `1909` [Ore Packing](https://bdocodex.com/us/sskill/1909/) |
 
-### String Table
-
-| Offset  | Type              | Field   | Notes                                           |
-| ------- | ----------------- | ------- | ----------------------------------------------- |
-| `+0x00` | u32               | count   | Number of string entries; observed `174`        |
-| `+0x04` | string_entry[...] | entries | Repeated `count` times                          |
-
-### String Entry
-
-| Offset  | Type       | Field       | Notes                              |
-| ------- | ---------- | ----------- | ---------------------------------- |
-| `+0x00` | u8         | present     | Always observed as `1`             |
-| `+0x01` | u32        | byte_length | UTF-16LE byte length, no alignment |
-| `+0x05` | u8[length] | text        | UTF-16LE text                      |
-
-The string table is a flat pool, not grouped records. Skill records choose any string indices; several records reuse icon/name/description entries.
-
 ## Reference Rows
 
 | Skill ID | Name | Icon | Description | Weight | Effect Values |
@@ -197,27 +200,11 @@ The string table is a flat pool, not grouped records. Skill records choose any s
 | `1203` | [Thrifty C](https://bdocodex.com/us/sskill/1203/) | `1203.dds` | 5% Chance to Return 10% of 1 Crafting Material | `1000` | `100000`, `100000` |
 | `1012` | [Adept Worker](https://bdocodex.com/us/sskill/1012/) | `1012_N.dds` | Work Speed +2, Movement Speed +7% | `1050` | `70000`, `0`; extra `2000000`, `1` |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                      |
-| ----------- | ---- | ------------------------------------------ |
-| Skill ID    | num  | `skill_id`, right-aligned                  |
-| Icon        | text | Render `icon_path` with icon-cell preview  |
-| Name        | text | Prefer LOC type `22`; fall back to `inline_name` |
-| Description | text | Prefer LOC type `22`; fall back to `inline_description` |
-| Weight      | num  | `acquisition_weight`, right-aligned        |
-| Effect Type | text | `effect_type` by name: Flat Stats, Full Refund, Stats per Level Up, Extra Work; sorts by the number |
-| Target      | text | What the skill affects: the stat (`Work Speed`, `Move Speed`, `Luck`), with the work category for targets `1` to `13` (`Cannon/Siege Weapon Work Speed`); the production category for extra work (`Siege Weapons`); a dash for refunds, whose `effect_target` is the chance. Sorts by `target_sort_value`: `effect_target`, or `None` for refunds |
-| Effect A    | num  | How much: `+2` work speed, `+7%` movement speed, `+0.7` luck, `+0.2` per level, `+3` extra work; for refunds the chance (`effect_target`, `7000` is `0.7%`). Sorts by `effect_a_sort_value`, the raw number shown |
-| Effect B    | num  | For refunds the share refunded (`effect_value_a`, `1000000` is `100%`); a dash for every other type. Sorts by `effect_b_sort_value`: `effect_value_a` for refunds, `None` for the dashes |
-
-The shown values are scaled from the raw fields, which stay on the record unchanged for export. Each column sorts by the raw number its cell shows, so a dash sorts last (see "Store none as None" in `docs/handler.md`). The stat names follow the `0`/`1`/`2` codes, which match every description. The category names are not stored anywhere found so far: they are the wording the skills' own English descriptions use for each target value (each value has exactly one wording), so a value not seen yet shows as its number. The targets are not keys of another table found so far: the workshop types in `houseinforeceipe.dbss` number the same work differently (jewelry `8`, tool `9`, refinery `10`, costume `18`), and its processing sub-types `30` to `34` come in a different order than the packing targets `9001` to `9006`.
-
 ## Notes
 
 - Observed file size is `13,090` bytes (2026-09-27 client: `13,294`).
 - The 2026-09-27 client retunes the Thrifty skills: `effect_target` `50000`/`70000`/`100000` became `7000`/`10000`/`15000` for C/B/A, both effect values `100000` became `1000000`, and Thrifty C now reads "0.7% Chance to Fully Refund One Material, Selected with Equal Probability". The tables above show the pre-2026-09-27 values.
-- BDO Codex lists every worker skill with Level `Naive` and Class `Warrior`. These look like the defaults for zero values (class `0` is Warrior), not data: no field in this record varies that way, and `zero_a` / `zero_b` are `0` on every skill.
+- BDO Codex lists every worker skill with Level `Naive` and Class `Warrior`. These look like the defaults for zero values (class `0` is Warrior), not data: no field in this record varies that way, and `unknown_14` / `unknown_34` are `0` on every skill.
 - `acquisition_weight` is most likely the weight for rolling the skill when a worker learns one; the game does not show it, so it cannot be checked in game.
 - The string table starts at `0xFD8`; the EOF trailer repeats this offset as `string_table_start`.
 - The string table contains `174` entries: names, icon paths, and descriptions in one shared pool.

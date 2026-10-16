@@ -4,12 +4,21 @@
 
 Lists, for each knowledge card that a character teaches, every character that teaches it. It is the reverse of `knowledgelearning.dbss` table 0 (character → card), grouped by card: same pairs, no extra data.
 
-Example:
+## Versions
 
-```text
-card 4174 "Demibeast Bandit Warrior"  ←  characters 24444, 20170 (both "Demibeast Bandit Warrior")
-card 7364 "Wild Herb"                 ←  31 gathering nodes, 10263 "Wild Herb" first
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                                | Bytes  | Records          | Row bytes               |
+| ------ | -------------- | ------- | ----------------------------------- | ------ | ---------------- | ----------------------- |
+| 1      | 1784 and later | 3473    | `knowledgelearningcharacterkey.bss` | 16,860 | 1,458 Card Entry | 10 to 70, 12 on average |
+
+| Layout | File                                | Known             | Unknown    |
+| ------ | ----------------------------------- | ----------------- | ---------- |
+| 1      | `knowledgelearningcharacterkey.bss` | 16,860 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,24 +29,24 @@ card 7364 "Wild Herb"                 ←  31 gathering nodes, 10263 "Wild Herb"
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 Plain binary: no `PABR` magic, no index file and no trailer. The file ends exactly after the last entry.
 
-| Offset  | Type | Field   | Notes                                               |
-| ------- | ---- | ------- | --------------------------------------------------- |
-| `+0x00` | u32  | count   | Number of cards; `1458` on client 3458              |
-| `+0x04` | ...  | entries | `count` variable-length entries, back to back       |
+| Offset  | Type              | Field   | Notes                                  |
+| ------- | ----------------- | ------- | -------------------------------------- |
+| `+0x00` | u32               | count   | Number of cards; `1458` on client 3458 |
+| `+0x04` | Card Entry[count] | entries | See Card Entry                         |
 
-## Record Structure
+### Card Entry (variable: 8 bytes + character IDs)
 
-### Card Entry (8 + 2 × `character_count` bytes, repeated `count` times)
-
-| Offset  | Type                       | Field           | Notes                                                       |
-| ------- | -------------------------- | --------------- | ----------------------------------------------------------- |
-| `+0x00` | u32                        | character_count | Characters that teach this card; `1` to `31` observed       |
-| `+0x04` | u32                        | card_id         | Knowledge card; LOC `str_type=34`, key of `mentalcard.dbss` |
-| `+0x08` | u16 × `character_count`    | character_ids   | Character IDs; LOC `str_type=6`, keys of `characterstatic.dbss` |
+| Offset  | Type                 | Field           | Notes                                                       |
+| ------- | -------------------- | --------------- | ----------------------------------------------------------- |
+| `+0x00` | u32                  | character_count | Characters that teach this card; `1` to `31` observed       |
+| `+0x04` | u32                  | card_id         | Knowledge card; LOC `str_type=34`, key of `mentalcard.dbss` |
+| `+0x08` | u16[character_count] | character_ids   | Character IDs; LOC `str_type=6`, keys of `characterstatic.dbss` |
 
 ## Confirmed Examples
 
@@ -47,15 +56,6 @@ Plain binary: no `PABR` magic, no index file and no trailer. The file ends exact
 | `4174`  | Demibeast Bandit Warrior | `24444`, `20170`                  | Demibeast Bandit Warrior (both)      |
 | `4750`  | Lightning Trumpeter      | `20733`                           | Lightning Trumpeter                  |
 | `7364`  | Wild Herb                | `10263`, `10273`, ... (31 IDs)    | Wild Herb                            |
-
-## Suggested UI Layout
-
-| Column         | Type | Notes                                                                        |
-| -------------- | ---- | ---------------------------------------------------------------------------- |
-| Knowledge ID   | num  | `card_id`                                                                    |
-| Knowledge Name | text | LOC type 34 name; dash without one                                           |
-| Count          | num  | `character_count`                                                            |
-| Characters     | list | `10263 Wild Herb`: ID and LOC type 6 name, in stored order, first three then a count; unsortable |
 
 ## Notes
 

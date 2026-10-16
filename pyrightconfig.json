@@ -1,5 +1,5 @@
 {
-  "include": ["PAZ-Parser", "browser.py", "benchmark.py", "build.py"],
+  "include": ["PAZ-Parser", "browser.py", "benchmark.py", "build.py", "build_wiki.py", "check_docs.py"],
   "extraPaths": ["PAZ-Parser", "PAZ-Parser/handlers", "PAZ-Parser/native"],
   "venvPath": ".",
   "venv": ".venv"

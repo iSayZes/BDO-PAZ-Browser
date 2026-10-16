@@ -5,10 +5,13 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _bss.stringtable.parser import GAME_SHEET
+from _bss.stringtable.text import STRINGTABLE_FILE, ui_key_hashes
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from .parser import parse_petskill_records, parse_petskilloffset_records
+from .skill_type import pet_skill_type_name
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -31,6 +34,7 @@ class PetSkillHandler(PreviewHandler):
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
         return [
             Column(cols["petSkillId"], "num", sort_key="pet_skill_id"),
+            Column(cols["skillType"], sort_key="skill_type_name"),
             Column(cols["level"], "num", sort_key="level"),
             Column(cols["valueA"], "num", sort_key="raw_value_a"),
             Column(cols["valueB"], "num", sort_key="raw_value_b"),
@@ -41,7 +45,7 @@ class PetSkillHandler(PreviewHandler):
 
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/petskilloffset.dbss"]
+        return [f"{folder}/petskilloffset.dbss", f"{folder}/{STRINGTABLE_FILE}"]
 
     def get_records(
         self,
@@ -52,7 +56,11 @@ class PetSkillHandler(PreviewHandler):
         offset_raw = companions.get("petskilloffset.dbss")
         if offset_raw is None:
             raise ValueError("petskilloffset.dbss companion not found.")
-        return parse_petskill_records(data, offset_raw)
+        records = parse_petskill_records(data, offset_raw)
+        hashes = ui_key_hashes(companions.get(STRINGTABLE_FILE), [GAME_SHEET])
+        for record in records:
+            record["skill_type_name"] = pet_skill_type_name(hashes, record["skill_type"])
+        return records
 
     def render_records_page(
         self,
@@ -67,6 +75,7 @@ class PetSkillHandler(PreviewHandler):
         rows = [
             [
                 e(r["pet_skill_id"]),
+                e(r["skill_type_name"] or r["skill_type"]),
                 e(r["level"]),
                 e(r["raw_value_a"]),
                 e(r["raw_value_b"]),

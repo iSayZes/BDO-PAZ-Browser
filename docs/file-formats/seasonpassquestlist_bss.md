@@ -10,37 +10,59 @@ Quest lists of the Black Spirit Pass (season pass) window. Three files share one
 | `seasonpassquestlistforcash.bss`   | The Black Spirit Pass (premium) quest of each pass row        |
 | `seasonpassquestlist.bss`          | Both: every quest of the two files above, in another order    |
 
-Example (client 3464):
+## Versions
 
-```text
-fornormal: quest 50000 / 1 -> [Summer Season] Leveling Up, One Step at a Time! 1
-forcash:   quest 50000 / 2 -> [Summer Season] Leveling Up, One Step at a Time! 1 (Black Spirit Pass)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                               | Bytes | Records   | Row bytes |
+| ------ | -------------- | ------- | ---------------------------------- | ----- | --------- | --------- |
+| 1      | 1784 and later | 3473    | `seasonpassquestlist.bss`          | 1,660 | 410 Entry | 4         |
+| 1      | 1784 and later | 3473    | `seasonpassquestlistforcash.bss`   | 840   | 205 Entry | 4         |
+| 1      | 1784 and later | 3473    | `seasonpassquestlistfornormal.bss` | 840   | 205 Entry | 4         |
+
+| Layout | File                               | Known            | Unknown    |
+| ------ | ---------------------------------- | ---------------- | ---------- |
+| 1      | `seasonpassquestlist.bss`          | 1,660 B (100.0%) | 0 B (0.0%) |
+| 1      | `seasonpassquestlistforcash.bss`   | 840 B (100.0%)   | 0 B (0.0%) |
+| 1      | `seasonpassquestlistfornormal.bss` | 840 B (100.0%)   | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type  | Field | Notes                                   |
-| ------- | ----- | ----- | --------------------------------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                          |
-| `+0x04` | u32   | count | Number of entries                       |
+| Offset              | Type         | Field          | Notes                                     |
+| ------------------- | ------------ | -------------- | ----------------------------------------- |
+| `+0x00`             | char[4]      | magic          | `PABR` (ASCII)                            |
+| `+0x04`             | u32          | count          | Number of entries                         |
+| `+0x08`             | Entry[count] | entries        | See Entry                                 |
+| `entries+0x00`      | String Table | string_table   | The 12-byte trailer starts here; see String Table |
+| `string_table+0x00` | u32          | end_of_entries | `8 + count * 4`, where the trailer starts |
+| `string_table+0x04` | u32          | zero           | `0`                                       |
 
-### Entry (4 bytes, repeated `count` times)
+### Entry (4 bytes)
 
 | Offset  | Type | Field           | Notes                                                       |
 | ------- | ---- | --------------- | ----------------------------------------------------------- |
 | `+0x00` | u32  | packed_quest_id | `(quest_id << 16) \| quest_chain_id`; LOC type 18 title key |
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-| Offset  | Type | Field          | Notes                                  |
-| ------- | ---- | -------------- | -------------------------------------- |
-| `+0x00` | u32  | reserved_a     | `0`                                    |
-| `+0x04` | u32  | end_of_entries | `8 + count * 4`, where the trailer starts |
-| `+0x08` | u32  | reserved_b     | `0`                                    |
+The PABR string table, here with no strings.
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Pass Rows
 
@@ -53,19 +75,6 @@ All multi-byte values are little-endian.
 The file order is not the row order: index `i` of `fornormal` and index `i` of `forcash` belong to the same row on only 6 of 205 indexes (client 3464).
 
 On client 3464 both side files hold 205 quests and the full list 410, all with a LOC type 18 title. The quest chains fall in three blocks: 50000 to 50057 (titles start `[Summer Season]`), 50100 to 50146, and 50150 to 50152 (74, 74 and 52 quests in the full list).
-
-## Suggested UI Layout
-
-Same as [`allquestlist.bss`](allquestlist_bss.md):
-
-| Column  | Type | Notes                                                                    |
-| ------- | ---- | ------------------------------------------------------------------------ |
-| Main ID | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`                         |
-| Sub ID  | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`                            |
-| Icon    | text | Quest icon resolved from `packed_quest_id` through the quest icon index  |
-| Title   | text | LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-
-The title already names the track (`(Black Spirit Pass)`), so there is no separate Free / Premium column.
 
 ## Notes
 

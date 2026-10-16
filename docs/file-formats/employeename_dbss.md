@@ -4,13 +4,23 @@
 
 Employee name table. Maps small employee name IDs to inline Korean UTF-16LE source names used by employee-related records. English display names are available through LOC `str_type=71`, `str_id1=employee_name_id`, `str_id3=12`.
 
-Example:
+## Versions
 
-```text
-employee_name_id: 47 -> name: 가일
-employee_name_id: 34 -> name: 필그레이브
-LOC type=71 id1=47 id3=12 -> Guile
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                      | Bytes | Records          | Row bytes               |
+| ------ | -------------- | ------- | ------------------------- | ----- | ---------------- | ----------------------- |
+| 1      | 1784 and later | 3473    | `employeename.dbss`       | 1,298 | 60 Name Record   | 18 to 26, 22 on average |
+| 1      | 1784 and later | 3473    | `employeenameoffset.dbss` | 724   | 60 Offset Record | 12                      |
+
+| Layout | File                      | Known           | Unknown       |
+| ------ | ------------------------- | --------------- | ------------- |
+| 1      | `employeename.dbss`       | 1,058 B (81.5%) | 240 B (18.5%) |
+| 1      | `employeenameoffset.dbss` | 724 B (100.0%)  | 0 B (0.0%)    |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,47 +33,39 @@ Other extracted `employee*` files may reference the same employee ID/name namesp
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                 |
-| ------- | ---- | ----- | ------------------------------------- |
-| `+0x00` | u32  | count | Number of name records; observed `60` in the pre-2026-09-27 fixture and in the 2026-09-27 client |
-
-### Record Stream
+### File Layout
 
 The first record starts immediately at `+0x04`. Records are variable length and should be read through `employeenameoffset.dbss`.
 
-| Offset  | Type               | Field   | Notes                     |
-| ------- | ------------------ | ------- | ------------------------- |
-| `+0x04` | Name Record[count] | records | Variable-length name rows |
+| Offset  | Type               | Field   | Notes                                                                                            |
+| ------- | ------------------ | ------- | ------------------------------------------------------------------------------------------------ |
+| `+0x00` | u32                | count   | Number of name records; observed `60` in the pre-2026-09-27 fixture and in the 2026-09-27 client |
+| `+0x04` | Name Record[count] | records | Variable-length name rows                                                                        |
 
-## Record Structure
+### Name Record (variable: 16 bytes + name text)
 
-### Name Record (variable, `16 + char_count * 2` bytes)
+A record is `16 + char_count * 2` bytes.
 
-| Offset  | Type                      | Field            | Notes                                               |
-| ------- | ------------------------- | ---------------- | --------------------------------------------------- |
-| `+0x00` | u32                       | employee_name_id | Matches ID in `employeenameoffset.dbss`             |
-| `+0x04` | u32                       | char_count       | Number of UTF-16 code units in `name`               |
-| `+0x08` | u32                       | unknown_08       | Always `0` in observed data                         |
-| `+0x0C` | utf16le[`char_count` * 2] | name             | Inline Korean source name                            |
-| varies  | u32                       | terminator       | Always `0` after the name text in observed data     |
+| Offset      | Type  | Field              | Notes                                                                                                                           |
+| ----------- | ----- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| `+0x00`     | u32   | employee_name_id   | Matches ID in `employeenameoffset.dbss`                                                                                         |
+| `+0x04`     | str16 | name               | Inline Korean source name; the parser reads the u64 count as u32 `char_count` and u32 `unknown_08`, always `0` in observed data |
+| `name+0x00` | u32   | unknown_after_name | Always `0` after the name text in observed data                                                                                 |
 
 Observed record sizes are `18`, `20`, `22`, `24`, and `26` bytes, matching names from 1 to 5 UTF-16 code units.
 
-### employeenameoffset.dbss
+### `employeenameoffset.dbss`
 
 Required offset index for `employeename.dbss`.
 
-#### Header (4 bytes)
+| Offset  | Type                 | Field | Notes                                                    |
+| ------- | -------------------- | ----- | -------------------------------------------------------- |
+| `+0x00` | u32                  | count | Number of offset rows; observed `60`, matching main file |
+| `+0x04` | Offset Record[count] | rows  | See Offset Record                                        |
 
-| Offset  | Type | Field | Notes                                                      |
-| ------- | ---- | ----- | ---------------------------------------------------------- |
-| `+0x00` | u32  | count | Number of offset rows; observed `60`, matching main file   |
-
-#### Offset Record (12 bytes, repeated `count` times)
+### Offset Record (12 bytes)
 
 | Offset  | Type | Field            | Notes                                |
 | ------- | ---- | ---------------- | ------------------------------------ |
@@ -73,18 +75,11 @@ Required offset index for `employeename.dbss`.
 
 To read a name record: seek to `offset` in `employeename.dbss`, read `size` bytes, and parse the Name Record structure above.
 
-## Suggested UI Layout
-
-| Column            | Type | Notes                                          |
-| ----------------- | ---- | ---------------------------------------------- |
-| Employee Name ID  | num  | `employee_name_id`                             |
-| Name              | text | LOC name, falling back to the inline Korean    |
-
 ## Notes
 
 - Record order is not numeric: observed order starts `47` down to `32`, then `60` down to `48`, then `15` down to `1`, then `31` down to `16`.
 - Every offset-row ID matches the `employee_name_id` stored at the beginning of its target record.
-- Every observed `unknown_08` and trailing `terminator` is zero. Earlier versions of this doc called `unknown_08` `unknown_0`.
+- Every observed `unknown_08` and trailing `unknown_after_name` is zero. Earlier versions of this doc called `unknown_08` `unknown_0`, and `unknown_after_name` `terminator`.
 - English LOC matches were confirmed for sampled IDs: `47` -> Guile, `34` -> Pilgrave, `15` -> Neil Moss, `1` -> Philav, `60` -> Tails.
 - Earlier versions of this doc read the `employeespawnposition.dbss` keys `1`-`5` and `41`-`50` as IDs from this table. They are spawn position keys that `employeespawninfo.dbss` lists per sailor character; the overlap is by value only.
 

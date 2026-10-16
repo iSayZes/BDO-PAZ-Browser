@@ -59,7 +59,7 @@ def parse_mentaltheme_records(
         theme_id = _u16(dbss_data, payload_offset)
         name_len = _u16(dbss_data, payload_offset + 0x02)
         name_offset = payload_offset + 0x0A
-        name_ko = _decode_utf16le(dbss_data, name_offset, name_len)
+        name_kr = _decode_utf16le(dbss_data, name_offset, name_len)
 
         stats_offset = name_offset + name_len * 2
         if stats_offset + _STATS_SIZE > len(dbss_data):
@@ -102,8 +102,8 @@ def parse_mentaltheme_records(
             offset_theme_id=offset_record["theme_id"],
             payload_offset=payload_offset,
             payload_size=payload_size,
-            name_ko=name_ko,
-            name=theme_name or name_ko,
+            name_kr=name_kr,
+            name=theme_name or name_kr,
             parent_id=parent_id,
             parent_name=parent_name,
             increase_wp=_u16(dbss_data, stats_offset + 0x02),
@@ -117,7 +117,7 @@ def parse_mentaltheme_records(
             entry_names=" | ".join(entry_names),
             child_count=child_count,
             child_ids=", ".join(str(child_id) for child_id in child_ids),
-            terminator=_u32(dbss_data, children_end),
+            unknown_after_child_ids=_u32(dbss_data, children_end),
         ))
 
     return records

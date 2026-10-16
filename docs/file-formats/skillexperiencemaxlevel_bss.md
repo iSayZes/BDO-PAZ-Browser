@@ -4,42 +4,47 @@
 
 Max level of a skill point EXP table. `skillexperiencemaxlevel.bss` holds the top level of [skillexperience](skillexperience_dbss.md) (combat skill points) and `guildskillexperiencemaxlevel.bss` the top level of [guildskillexperience](guildskillexperience_dbss.md) (guild points). Both files share this layout and one handler class. On client 3464 they hold `2000` and `1000`, the last row of each EXP table.
 
-Example:
+## Versions
 
-```text
-skillexperiencemaxlevel.bss       Max Level 2000
-guildskillexperiencemaxlevel.bss  Max Level 1000
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                               | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ---------------------------------- | ----- | ------- | --------- |
+| 1      | 1784 and later | 3473    | `guildskillexperiencemaxlevel.bss` | 18    | -       | -         |
+| 1      | 1784 and later | 3473    | `skillexperiencemaxlevel.bss`      | 18    | -       | -         |
+
+| Layout | File                               | Known         | Unknown    |
+| ------ | ---------------------------------- | ------------- | ---------- |
+| 1      | `guildskillexperiencemaxlevel.bss` | 18 B (100.0%) | 0 B (0.0%) |
+| 1      | `skillexperiencemaxlevel.bss`      | 18 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 `PABR` magic, a bare u16 array with no count, then the 12-byte PABR trailer. 18 bytes on client 3464 (one value).
 
-| Offset  | Type    | Field     | Notes                               |
-| ------- | ------- | --------- | ----------------------------------- |
-| `+0x00` | char[4] | magic     | `PABR` (ASCII)                      |
-| `+0x04` | u16[]   | max_level | One value on client 3464            |
-| varies  | trailer | trailer   | 12 bytes                            |
+| Offset     | Type       | Field        | Notes                                        |
+| ---------- | ---------- | ------------ | -------------------------------------------- |
+| `+0x00`    | char[4]    | magic        | `PABR` (ASCII)                               |
+| `+0x04`    | u16[..end_of_data] | max_level | One value on client 3464; runs up to `end_of_data` |
+| `EOF-0x0C` | u32        | string_count | `0`: the PABR string table, here with no strings |
+| `EOF-0x08` | u32        | end_of_data  | `6`; byte offset right after the last `max_level` |
+| `EOF-0x04` | u32        | zero         | `0`                                          |
 
 The array length is not stored; the parser takes it from the trailer's `end_of_data`: `(end_of_data - 4) / 2` values.
 
-### Trailer (12 bytes)
-
-| Offset  | Type | Field       | Observed | Notes                                        |
-| ------- | ---- | ----------- | -------- | -------------------------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      |                                              |
-| `+0x04` | u32  | end_of_data | `6`      | Byte offset right after the last `max_level` |
-| `+0x08` | u32  | reserved_b  | `0`      |                                              |
-
 The same trailer closes [fitnessmaxlevel](fitnessmaxlevel_bss.md), which stores u32 values instead.
-
-## Suggested UI Layout
-
-| Column    | Type | Notes       |
-| --------- | ---- | ----------- |
-| Max Level | num  | `max_level` |
 
 ## Notes
 

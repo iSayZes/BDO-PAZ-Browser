@@ -3,6 +3,10 @@
     "regionGroupKey": "Grupo de regiones",
     "nodeKey": "Clave del nodo",
     "nodeName": "Nombre del nodo",
+    "concurrentUsers": "Usuarios simultáneos",
+    "corpProductivity": "Productividad corporativa",
+    "fishingProductivity": "Productividad de pesca",
+    "loyalty": "Lealtad",
     "x": "X",
     "y": "Y",
     "z": "Z"

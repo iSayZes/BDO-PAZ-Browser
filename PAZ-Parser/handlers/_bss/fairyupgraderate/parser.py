@@ -72,7 +72,7 @@ def parse_fairyupgraderate_records(data: bytes) -> list[dict]:
                 "item_id": u32(data, pos),
                 "rate_ppm": rate_ppm,
                 "items_for_max": u32(data, pos + 0x08),
-                "reserved": u32(data, pos + 0x0C),
+                "unknown_0c": u32(data, pos + 0x0C),
                 "chance_pct": _chance_pct(rate_ppm, success_cap_ppm),
             })
             pos += _ENTRY_SIZE

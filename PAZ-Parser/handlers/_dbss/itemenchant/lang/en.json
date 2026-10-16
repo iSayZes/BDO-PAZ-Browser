@@ -13,6 +13,7 @@
     "classes": "Classes",
     "binding": "Binding",
     "durability": "Durability",
+    "memoryFragment": "Memory Fragment",
     "stackable": "Stackable",
     "marketable": "Marketable",
     "familyInventory": "Family Inventory",

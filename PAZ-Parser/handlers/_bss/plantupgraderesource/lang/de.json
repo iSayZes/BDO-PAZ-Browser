@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Stufengruppe",
+    "level": "Stufe",
+    "needTime": "Zeit",
+    "needPoint": "Beitragspunkte",
+    "needMoney": "Silber",
+    "needItems": "Gegenstände"
+  },
+  "meta": {
+    "count": "{count} Ausbaustufen · {groups} Stufengruppen"
+  }
+}

@@ -6,17 +6,23 @@ Adventure Log (bookshelf) data. Defines the journal groups shown in the in-game 
 
 Field names `journal_key`, `book_key` and the "book" terminology follow the notes of [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor); every field below was re-verified against our extracted files.
 
-Example:
+## Versions
 
-```text
-Journal 1 / Book 1, Igor Bartali's Adventures Vol. I
-  unlock (LOC 63, id4=2) = "Reach Lv. 51, complete [Calpheon] main ..."
-  pages: 3 packed quest IDs 66284, 131820, 197356 (chain 748, quests 1..3)
-    "Hey There Big Fellow!" | "Irresistible Lure" | "The Divine Entity inside the Cave"
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Journal 8 / Book 1, Olvia Academy Journal / Emma Bartali's Journal
-  pages: 13 packed quest IDs (chain 2326, quests 1..13)
-```
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                | Bytes  | Records                   | Row bytes                  |
+| ------ | -------------- | ------- | ------------------- | ------ | ------------------------- | -------------------------- |
+| 2      | 3473 and later | 3473    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
+| 1      | 1784           | 1784    | `journalquest.dbss` | 23,327 | 52 Book Record, 12 Group  | 205 to 639, 448 on average |
+
+| Layout | File                | Known            | Unknown         |
+| ------ | ------------------- | ---------------- | --------------- |
+| 2      | `journalquest.dbss` | 48,414 B (99.0%) | 472 B (1.0%)    |
+| 1      | `journalquest.dbss` | 20,580 B (88.2%) | 2,747 B (11.8%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -28,47 +34,68 @@ Journal 8 / Book 1, Olvia Academy Journal / Emma Bartali's Journal
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-### Main File Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field         | Notes                                          |
-| ------- | ---- | ------------- | ---------------------------------------------- |
-| `+0x00` | u32  | group_count   | Number of journal groups; `13` since the 2026-09-27 client update, `12` before |
+| Offset  | Type               | Field       | Notes                                          |
+| ------- | ------------------ | ----------- | ---------------------------------------------- |
+| `+0x00` | u32                | group_count | Number of journal groups; `13` since the 2026-09-27 client update, `12` before |
+| `+0x04` | Group[group_count] | groups      | See Group                                      |
 
-### Group Block (variable length, repeated `group_count` times)
+### Group (variable: 4 bytes + book records)
 
-| Field        | Type                | Notes                                                              |
-| ------------ | ------------------- | ------------------------------------------------------------------ |
-| `book_count` | u32                 | Number of book records in this group; equals the offset-file count |
-| books        | book_count × Book   | Variable-length book records (see Record Structure)                |
+| Offset  | Type                    | Field      | Notes                                                              |
+| ------- | ----------------------- | ---------- | ------------------------------------------------------------------ |
+| `+0x00` | u32                     | book_count | Number of book records in this group; equals the offset-file count |
+| `+0x04` | Book Record[book_count] | books      | See Book Record                                                    |
 
 The value previously documented as header `unknown_1` (`15` at `+0x04`) is the `book_count` of the first group (journal 1 has 15 books). The 4-byte header, the `book_count` words and the indexed records tile the file exactly, with no gaps or overlaps (verified on the `49,206`-byte file after the 2026-09-27 update with 13 groups and 119 records, the `46,620`-byte file before it with 12 and 112, and the `46,476`-byte fixture). Groups are stored physically in offset-file order; inside group 6 the offset-file order of books differs from their physical order (see [journalquestoffset.dbss](journalquestoffset_dbss.md)).
 
-## Record Structure
+### Book Record (variable: 65 bytes + strings and pages)
 
-### Book Record (variable length)
+Strings are length-prefixed: a u64 character count followed by that many UTF-16LE (`str16`) or single-byte ASCII (`str8`) code units, with no terminator.
 
-Strings are length-prefixed: a u64 character count followed by that many UTF-16LE (or single-byte ASCII) code units, with no terminator.
-
-| Offset  | Type                  | Field                  | Notes                                                                                      |
-| ------- | --------------------- | ---------------------- | ------------------------------------------------------------------------------------------ |
-| `+0x00` | u32                   | journal_key            | Journal group key; equals the containing group in 112 of 112 records                       |
-| `+0x04` | u32                   | book_key               | Book key within the group; equals the offset-file key in 112 of 112 records                |
-| `+0x08` | u8                    | is_record_book         | `1` on record books, whose pages fill in from what the player has already done; 43 records (all books of journals 7, 10, 12 and 13, plus journal 6 book 8), see Notes |
-| `+0x09` | u64 + utf16le[n]      | journal_name_kr        | Korean journal name; identical for every book in a group except journal 6                  |
-| varies  | u64 + utf16le[n]      | journal_description_kr | Korean journal description                                                                 |
-| varies  | u64 + utf16le[n]      | book_name_kr           | Korean book (volume) name; may contain a `\n` and a second line                            |
-| varies  | u64 + utf16le[n]      | unlock_requirement_kr  | Korean unlock text with `<PAColor0x........>` markup; empty (`n=0`) in 51 of 112 books      |
-| varies  | u64 + ascii[n]        | bookshelf_scene        | E.g. `Combine_Etc_Adventure_Bookshelf01`; 31 distinct values                               |
-| varies  | u64 + ascii[n]        | book_model             | `Adventure_Bookshelf_Static_book_00` to `_06`                                              |
-| varies  | u32                   | page_count             | Number of page quest IDs                                                                   |
-| varies  | u32[page_count]       | page_quest_ids         | Packed quest IDs `(quest_id << 16) \| quest_chain_id`                                      |
-| varies  | u32                   | reserved_end           | `0` in 112 of 112 records; the record ends exactly here                                   |
+| Offset                          | Type            | Field                  | Notes                                                                                      |
+| ------------------------------- | --------------- | ---------------------- | ------------------------------------------------------------------------------------------ |
+| `+0x00`                         | u32             | journal_key            | Journal group key; equals the containing group in 112 of 112 records                       |
+| `+0x04`                         | u32             | book_key               | Book key within the group; equals the offset-file key in 112 of 112 records                |
+| `+0x08`                         | u8              | is_record_book         | `1` on record books, whose pages fill in from what the player has already done; 43 records (all books of journals 7, 10, 12 and 13, plus journal 6 book 8), see Notes |
+| `+0x09`                         | str16           | journal_name_kr        | Korean journal name; identical for every book in a group except journal 6                  |
+| `journal_name_kr+0x00`          | str16           | journal_description_kr | Korean journal description                                                                 |
+| `journal_description_kr+0x00`   | str16           | book_name_kr           | Korean book (volume) name; may contain a `\n` and a second line                            |
+| `book_name_kr+0x00`             | str16           | unlock_requirement_kr  | Korean unlock text with `<PAColor0x........>` markup; empty (`n=0`) in 51 of 112 books      |
+| `unlock_requirement_kr+0x00`    | str8            | bookshelf_scene        | E.g. `Combine_Etc_Adventure_Bookshelf01`; 31 distinct values                               |
+| `bookshelf_scene+0x00`          | str8            | book_model             | `Adventure_Bookshelf_Static_book_00` to `_06`                                              |
+| `book_model+0x00`               | u32             | page_count             | Number of page quest IDs                                                                   |
+| `book_model+0x04`               | u32[page_count] | page_quest_ids         | Packed quest IDs `(quest_id << 16) \| quest_chain_id`                                      |
+| `page_quest_ids+0x00`           | u32             | unknown_end            | `0` in 112 of 112 records; the record ends exactly here                                   |
 
 Earlier versions of this doc called `is_record_book` `flag_08` and then `unknown_08`. An even older reading of it as a u32 (`0x00000d00` etc.) was this byte plus the low bytes of the first string length. The "trailing `"` in `combine_model`" was the low byte of the next string's u64 length (`0x22` = 34 characters); it is not part of the stored value.
 
-### Page Quest IDs
+## Layout 1
+
+Client 1784 book records have no `is_record_book`, `unlock_requirement_kr`,
+`bookshelf_scene` or `book_model`. After `book_name_kr` they hold a u32 and
+one ASCII icon path. The 12 groups hold 52 books on client 1784. Only the
+Book Record differs from Layout 2.
+
+### Book Record (variable: 52 bytes + strings and pages)
+
+| Offset                        | Type            | Field                   | Notes                                                                 |
+| ----------------------------- | --------------- | ----------------------- | --------------------------------------------------------------------- |
+| `+0x00`                       | u32             | journal_key             |                                                                       |
+| `+0x04`                       | u32             | book_key                |                                                                       |
+| `+0x08`                       | str16           | journal_name_kr         |                                                                       |
+| `journal_name_kr+0x00`        | str16           | journal_description_kr  |                                                                       |
+| `journal_description_kr+0x00` | str16           | book_name_kr            |                                                                       |
+| `book_name_kr+0x00`           | u32             | unknown_book_name_kr_00 | `1` to `6`, one value per journal on client 1784                      |
+| `book_name_kr+0x04`           | str8            | unknown_icon_path       | A `.dds` path such as `Icon/Quest/Journal_BlackSpirit.dds`            |
+| `unknown_icon_path+0x00`      | u32             | page_count              |                                                                       |
+| `unknown_icon_path+0x04`      | u32[page_count] | page_quest_ids          |                                                                       |
+| `page_quest_ids+0x00`         | u32             | unknown_end             | `0` in all 52 records (client 1784)                                   |
+
+## Page Quest IDs
 
 Every page is a single packed quest ID `(quest_id << 16) | quest_chain_id`, the same scheme as [quest.dbss](quest_dbss.md) and [allquestlist.bss](allquestlist_bss.md). There is only one encoding: the old "Type A / Type B" split does not occur in either file version (all 827 current pages decode with `lo16 = quest_chain_id`). All pages of one book belong to a single quest chain (112 of 112 books), and 110 books start at `quest_id = 1`.
 
@@ -119,22 +146,6 @@ Page text is LOC `str_type=18` keyed by the page's packed quest ID, like any que
 | `str_id1`  | `page_quest_id & 0xFFFF`           | Quest chain ID                                |
 | `str_id2`  | `page_quest_id >> 16`              | Quest ID within the chain; no off-by-one      |
 | `str_id4`  | `0` = title, `1` = story text      | See [quest.dbss](quest_dbss.md) for `2`/`3`   |
-
-## Suggested UI Layout
-
-| Column              | Type | Notes                                                                 |
-| ------------------- | ---- | --------------------------------------------------------------------- |
-| Journal             | num  | `journal_key`                                                         |
-| Book                | num  | `book_key`                                                            |
-| Journal Name        | text | LOC type=63 `id4=0`, falling back to `journal_name_kr`                |
-| Description         | text | LOC type=63 `id4=1`, falling back to `journal_description_kr`         |
-| Book Name           | text | LOC type=63 `id4=3`, falling back to `book_name_kr`                   |
-| Unlock Requirement  | text | LOC type=63 `id4=2`, falling back to `unlock_requirement_kr`; drawn in its PAColor game colours |
-| Pages               | num  | `page_count`                                                          |
-| Record Book         | text | `is_record_book` as Yes or No                                         |
-| Page Titles         | text | LOC type=18 `id4=0` for each page quest ID                            |
-| Bookshelf Scene     | text | `bookshelf_scene`                                                     |
-| Book Model          | text | `book_model`                                                          |
 
 ## Notes
 

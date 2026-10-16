@@ -7,11 +7,21 @@ trade goods' group and the buying trade NPC's group, a distance and a buff
 rate. The trade sell list shows the `Desert Buff Applied` icon from these two
 values. A second table of five 12-byte rows follows, whose use is unknown.
 
-```text
-From  To  Distance   Desert Buff Rate
-1     2   700,000    1,000,000
-2     99  700,000      500,000
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File               | Bytes | Records                | Row bytes |
+| ------ | -------------- | ------- | ------------------ | ----- | ---------------------- | --------- |
+| 1      | 1784 and later | 3473    | `itemtradeetc.bss` | 184   | 8 Pair, 4 Group, 5 Row | 10        |
+
+| Layout | File               | Known         | Unknown      |
+| ------ | ------------------ | ------------- | ------------ |
+| 1      | `itemtradeetc.bss` | 124 B (67.4%) | 60 B (32.6%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,34 +30,43 @@ None. The trade group type codes are the `trade_group_type` codes of
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A PABR file with variable-size groups and an empty string table. 184 bytes on
 client 3464.
 
-| Offset  | Type    | Field       | Notes                                                  |
-| ------- | ------- | ----------- | ------------------------------------------------------ |
-| `+0x00` | char[4] | magic       | `PABR`                                                 |
-| `+0x04` | u32     | group_count | Number of groups; `4` on client 3464                   |
-| `+0x08` | group[] | groups      | `group_count` groups, one per from group               |
-| ...     | u32     | row_count   | Number of 12-byte rows; `5` on client 3464             |
-| ...     | row[]   | rows        | `row_count` rows                                       |
-| ...     | u32     | string_count | `0`: the string table holds no strings                |
-| ...     | u32     | table_start | Offset of `string_count`; `0xAC` on client 3464        |
-| ...     | u32     | zero        | `0`                                                    |
+| Offset              | Type               | Field        | Notes                                                  |
+| ------------------- | ------------------ | ------------ | ------------------------------------------------------ |
+| `+0x00`             | char[4]            | magic        | `PABR`                                                 |
+| `+0x04`             | u32                | group_count  | Number of groups; `4` on client 3464                   |
+| `+0x08`             | Group[group_count] | groups       | `group_count` groups, one per from group               |
+| `groups+0x00`       | u32                | row_count    | Number of 12-byte rows; `5` on client 3464             |
+| `groups+0x04`       | Row[row_count]     | rows         | `row_count` rows                                       |
+| `rows+0x00`         | String Table       | string_table | See String Table                                       |
+| `string_table+0x00` | u32                | table_start  | Offset of `string_count`; `0xAC` on client 3464        |
+| `string_table+0x04` | u32                | zero         | `0`                                                    |
 
 The last eight bytes are the PABR trailer that `_common/pabr_strings.py`
 reads. The rows end where `table_start` points.
 
-## Record Structure
+### String Table (variable: 4 bytes + strings)
 
-### Group (5 + 10 * `pair_count` bytes)
+| Offset  | Type               | Field        | Notes                                    |
+| ------- | ------------------ | ------------ | ---------------------------------------- |
+| `+0x00` | u32                | string_count | `0`: the string table holds no strings   |
+| `+0x04` | pstr[string_count] | strings      | Empty                                    |
 
-| Offset  | Type   | Field      | Notes                                  |
-| ------- | ------ | ---------- | -------------------------------------- |
-| `+0x00` | u8     | from_group | Trade group type of the goods          |
-| `+0x01` | u32    | pair_count | Number of pairs                        |
-| `+0x05` | pair[] | pairs      | `pair_count` pairs of 10 bytes         |
+### Group (variable: 5 bytes + pairs)
+
+A group is `5 + 10 * pair_count` bytes.
+
+| Offset  | Type             | Field      | Notes                                  |
+| ------- | ---------------- | ---------- | -------------------------------------- |
+| `+0x00` | u8               | from_group | Trade group type of the goods          |
+| `+0x01` | u32              | pair_count | Number of pairs                        |
+| `+0x05` | Pair[pair_count] | pairs      | `pair_count` pairs of 10 bytes         |
 
 ### Pair (10 bytes)
 
@@ -110,17 +129,6 @@ Every pair links Valencia City or Ibellab Oasis with the rest of the world;
 no pair links 2 and 3, and none links 1 and 99. The matrix is symmetric, so
 this client's data cannot tell which of the two bytes is the goods' group;
 I follow the Lua's argument order (goods first, NPC second) in the names.
-
-## Suggested UI Layout
-
-One row per pair, in file order. The 12-byte rows stay out of the table.
-
-| Column           | Type | Notes                       |
-| ---------------- | ---- | --------------------------- |
-| From Group*      | text | `from_group`, as in Trade Group of `itemtradegrouptonpc.dbss` |
-| To Group*        | text | `to_group`, the same        |
-| Distance         | num  | `distance`, no decimals     |
-| Desert Buff Rate | num  | `add_rate`, raw value       |
 
 ## Notes
 

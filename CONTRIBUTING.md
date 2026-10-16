@@ -7,7 +7,7 @@ Thanks for helping out. BDO has hundreds of undocumented binary formats, so rese
 - **Research a new format.** Open an issue with the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`). Hex observations and layout guesses are welcome, even if incomplete.
 - **Answer an open question.** Every doc in [`docs/file-formats/`](docs/file-formats/) ends with an **Open Questions** section. If you can answer one, edit the doc directly and open a pull request.
 - **Run an in-game check.** Some docs end with an **In-Game Checks** section after Open Questions: a test that needs a character with a given item, quest, NPC, class or zone, and what each result means. You don't need to read the binary layout to answer one; post the result in an issue or edit the doc.
-- **Document a format.** Start from [`docs/file-formats/_template.md`](docs/file-formats/_template.md) and add the format to [`docs/documented-formats.md`](docs/documented-formats.md).
+- **Document a format.** Start from [`docs/file-formats/_template.md`](docs/file-formats/_template.md), write the layout tables as [Writing Format Docs](docs/format-docs.md) describes, and add the format to [`docs/documented-formats.md`](docs/documented-formats.md).
 - **Write a preview handler.** Follow [`docs/handler.md`](docs/handler.md), including the [checklist for a new handler](docs/handler.md#checklist-for-a-new-handler).
 - **Translate the UI.** See [`PAZ-Parser/ui/lang/TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md). Partial translations are fine, since missing keys fall back to English.
 - **Report a bug or suggest a feature.** Use the [issue templates](../../issues/new/choose).
@@ -52,8 +52,8 @@ Also check that:
 
 ## Conventions
 
-- **Unknown fields** are named `unknown_<offset>` (e.g. `unknown_10`) until their meaning is confirmed. Don't guess a name; describe the observation in the doc's Open Questions instead.
-- **One doc per record layout.** Every `.bss` / `.dbss` gets its own doc in `docs/file-formats/`, named after the file (`dropuitaginfo_bss.md`). Only an `*offset.dbss` index, which goes in its main file's doc, and files that share one layout and one handler class (`ui_skillgroup_{awakening,combat,succession}.bss` in `ui_skillgroup_bss.md`, every `*.bwp` in `waypoint_bwp.md`, every `languagedata_*.loc` in `languagedata_loc.md`) share a doc. The Companion Files table lists the files a handler loads and links each one to its own doc.
+- **Format docs follow [Writing Format Docs](docs/format-docs.md).** It holds every doc rule: which files get a doc, section order, layouts, types and field names. Unconfirmed fields are `unknown_<offset>`; don't guess a name, describe the observation in the doc's Open Questions.
+- **Format docs pass `pytest` and fit the game files.** `PAZ-Parser/tests/test_format_docs.py` checks every doc's layout tables (types, sizes, offsets, field names), and every `.bss` / `.dbss` doc must have them. `python check_docs.py <doc>.md` walks the doc's files from your PAZ folder by its layouts and writes its `## Versions` section; don't edit that section by hand.
 - **Tests survive game patches.** Assert structure and stable identity (schemas, ranges, known IDs), never row counts, positions or balance values that change with an update.
 - **Counts in docs name their client.** A figure counted from game data carries the client it came from, e.g. "`1` on 4,643 records (client 3458)", and stays as written after a patch. The client number is the `.meta` header version that `pytest` prints at the start of a run.
 - **Text columns** use the loaded LOC language first, then fall back to the inline Korean text.

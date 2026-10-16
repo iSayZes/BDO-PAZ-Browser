@@ -23,4 +23,4 @@ class ZodiacSignOrderOffsetRecord(TypedDict):
     personality_type: int
     data_offset: int
     data_size: int
-    padding: int
+    unknown_08: int

@@ -9,13 +9,23 @@ the whole building, an overhead cutaway render with that part highlighted in
 magenta. The rows name buildings, not characters, although the manor ID is the
 building's key in `characterstatic.dbss`, where houses are records like NPCs.
 
-Example:
+## Versions
 
-```text
-manor 3842 (Shimhyangje), part 0
-  icon_ref -> Icon/New_Icon/03_ETC/06_Housing/Mantion_Morning1_Wall.dds
-              (the building with its walls highlighted)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records          | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ---------------- | --------- |
+| 2      | 3473 and later | 3473    | `mansionpartinfo.bss` | 664   | 9 Manor Part Row | 12        |
+| 1      | 1784           | 1784    | `mansionpartinfo.bss` | 491   | 6 Manor Part Row | 16        |
+
+| Layout | File                  | Known         | Unknown      |
+| ------ | --------------------- | ------------- | ------------ |
+| 2      | `mansionpartinfo.bss` | 619 B (93.2%) | 45 B (6.8%)  |
+| 1      | `mansionpartinfo.bss` | 437 B (89.0%) | 54 B (11.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,25 +35,25 @@ manor 3842 (Shimhyangje), part 0
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
 
 The shared PABR string table layout of `buffsimply.bss` and
 `specialenchantitem.bss` (`_common/pabr_strings.py`).
 
-| Offset           | Type    | Field        | Notes                                                            |
-| ---------------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00`          | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04`          | u32     | count        | Number of rows; 9 on client 3458                                 |
-| `+0x08`          | row[]   | rows         | 12-byte rows repeated `count` times                              |
-| `8 + count * 12` | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8          | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4          | u32     | zero         | Always 0                                                         |
+| Offset              | Type                  | Field        | Notes                                          |
+| ------------------- | --------------------- | ------------ | ---------------------------------------------- |
+| `+0x00`             | char[4]               | magic        | ASCII `PABR`                                   |
+| `+0x04`             | u32                   | count        | Number of rows; 9 on client 3458               |
+| `+0x08`             | Manor Part Row[count] | rows         | See Manor Part Row                             |
+| `rows+0x00`         | String Table          | string_table | See String Table                               |
+| `string_table+0x00` | u32                   | table_start  | Offset of the string table, where the rows end |
+| `string_table+0x04` | u32                   | zero         | Always 0                                       |
 
 Rows are sorted by `character_id`, then `part_index`.
 
-## Record Structure
-
-### Manor Part Row (12 bytes, repeated `count` times)
+### Manor Part Row (12 bytes)
 
 | Offset  | Type | Field           | Notes                                                                 |
 | ------- | ---- | --------------- | --------------------------------------------------------------------- |
@@ -53,21 +63,32 @@ Rows are sorted by `character_id`, then `part_index`.
 | `+0x04` | u32  | icon_ref        | String table index of the part icon, relative to `ui_texture/`        |
 | `+0x08` | u32  | unknown_str_ref | String table index; always `1`, the empty string                      |
 
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 10 strings on client 3458: the nine icon paths and, at index 1, an empty
 string that every `unknown_str_ref` points at.
 
-## Suggested UI Layout
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
-| Column       | Type | Notes                                                          |
-| ------------ | ---- | -------------------------------------------------------------- |
-| Manor ID     | num  | `character_id`; right-aligned                                  |
-| Manor        | text | LOC type 6 name of that record; dash without LOC               |
-| Part         | num  | `part_index`                                                   |
-| Icon         | text | `icon_ref`, lowercased under `ui_texture/`                     |
+## Layout 1
 
-`unknown_02` and `unknown_str` stay on the record but out of the table.
+On client 1784 each row starts with a u32 `unknown_00` and every later field
+sits 4 bytes later. Only the Manor Part Row differs from Layout 2. Field
+names keep Layout 2's offsets, so `unknown_02` sits at `+0x06` here.
+
+### Manor Part Row (16 bytes)
+
+| Offset  | Type | Field           | Notes                                                                       |
+| ------- | ---- | --------------- | --------------------------------------------------------------------------- |
+| `+0x00` | u32  | unknown_00      | 1, 2, 3, 4, 5, 5 in row order on client 1784                                |
+| `+0x04` | u16  | character_id    |                                                                             |
+| `+0x06` | u8   | unknown_02      | Always `1` on client 1784                                                   |
+| `+0x07` | u8   | part_index      |                                                                             |
+| `+0x08` | u32  | icon_ref        |                                                                             |
+| `+0x0C` | u32  | unknown_str_ref | String table index; on client 1784 a material name such as `Mansion_STR_border_01`, or the empty string |
 
 ## Notes
 

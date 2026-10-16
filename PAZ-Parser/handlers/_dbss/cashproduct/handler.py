@@ -8,6 +8,7 @@ from bdo_preview import PreviewHandler
 from _common.html import Column, e, icon_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.lang import handler_text, load_handler_strings
+from _common.loc import resolve_text_binds
 from _common.item_key import item_name_tagged
 from _common.pa_text import pa_cell, pa_fields, pa_line_cell
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
@@ -77,7 +78,7 @@ class CashProductHandler(PreviewHandler):
             record.update(pa_fields("item_name", item_name_tagged(item_id) if item_id else ""))
             # User language first; the block's Korean name stands in without LOC.
             text = texts.get(record["product_id"])
-            record.update(pa_fields("product", (text.name if text else "") or record["product_name"]))
+            record.update(pa_fields("product", (text.name if text else "") or resolve_text_binds(record["product_name"])))
             record.update(pa_fields("description", text.description if text else ""))
 
         return records

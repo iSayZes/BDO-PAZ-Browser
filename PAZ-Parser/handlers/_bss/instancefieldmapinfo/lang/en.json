@@ -4,13 +4,19 @@
     "field": "Field",
     "title": "Title",
     "description": "Description",
+    "teams": "Teams",
+    "minUsers": "Min Participants",
+    "maxUsers": "Max Participants",
+    "territory": "Territory",
     "x": "X",
     "y": "Y",
     "z": "Z",
     "radius": "Radius (m)",
     "image": "Image",
     "entryItem": "Entry Item",
-    "spawns": "Spawns"
+    "spawns": "Spawns",
+    "seasonOnly": "Season Only",
+    "camouflageNames": "Names While Camouflaged"
   },
   "meta": {
     "count": "{count} instance field maps"

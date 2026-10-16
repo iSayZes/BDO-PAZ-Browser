@@ -4,15 +4,23 @@
 
 Lists the snow regions that the client ties to blizzards: every row names one `regioninfo.bss` region of the Mountain of Eternal Winter (territory 9) or Ulukita (territory 11) and carries two integers and a float whose meaning is not confirmed.
 
-Example:
-
-```text
-key=1  -> region 1126 Mountain of Eternal Winter  (400000, 800000, 3.0)
-key=11 -> region 1123 Bronte's Bolt                (50000, 120000, 1.0)
-key=17 -> region 1382 Velandir                     (500000, 800000, 3.0)
-```
-
 The file is small (21 rows in client 3458) and has no strings. The client Lua never mentions it or a blizzard, so the layout below is my own reading of the file.
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `blizzardregioninfo.bss` | 566   | 21 Row  | 26        |
+
+| Layout | File                     | Known         | Unknown       |
+| ------ | ------------------------ | ------------- | ------------- |
+| 1      | `blizzardregioninfo.bss` | 146 B (25.8%) | 420 B (74.2%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,22 +30,22 @@ The file is small (21 rows in client 3458) and has no strings. The client Lua ne
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field              | Notes                                                    |
-| ------- | ------- | ------------------ | -------------------------------------------------------- |
-| `+0x00` | char[4] | magic              | `PABR` (ASCII)                                           |
-| `+0x04` | u32     | record_count       | Observed `21`                                            |
-| `+0x08` | row[]   | records            | `record_count` rows of 26 bytes, byte-packed             |
-| varies  | u32     | string_count       | Always `0`: the PABR string table is present but empty   |
-| EOF-8   | u32     | string_table_start | Absolute offset of `string_count`; equals `8 + 26 × count` |
-| EOF-4   | u32     | zero_trailer       | Always `0`                                               |
+### File Layout
+
+| Offset              | Type              | Field              | Notes                                                    |
+| ------------------- | ----------------- | ------------------ | -------------------------------------------------------- |
+| `+0x00`             | char[4]           | magic              | `PABR` (ASCII)                                           |
+| `+0x04`             | u32               | record_count       | Observed `21`                                            |
+| `+0x08`             | Row[record_count] | records            | See Row; byte-packed                                     |
+| `records+0x00`      | String Table      | string_table       | The PABR string table, present but empty                 |
+| `string_table+0x00` | u32               | string_table_start | Absolute offset of `string_count`; equals `8 + 26 × count` |
+| `string_table+0x04` | u32               | zero               | Always `0`                                               |
 
 The file is `8 + 26 × 21 + 12 = 566` bytes. The parser rejects a file whose rows do not end exactly at `string_table_start`.
 
-## Record Structure
-
-### Row (26 bytes, repeated `record_count` times)
+### Row (26 bytes)
 
 | Offset  | Type | Field      | Notes                                                                                           |
 | ------- | ---- | ---------- | ----------------------------------------------------------------------------------------------- |
@@ -60,15 +68,12 @@ The file is `8 + 26 × 21 + 12 = 566` bytes. The parser rejects a file whose row
 | `50000`    | `120000`   | `1.0`      | Bronte's Bolt (1123, 1143, 1160)                                             |
 | `500000`   | `800000`   | `3.0`      | 1382 Velandir                                                                |
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column     | Type | Notes                                         |
-| ---------- | ---- | --------------------------------------------- |
-| Key        | num  | `key`                                         |
-| Region Key | num  | `region_key`                                  |
-| Region     | text | LOC type 17 name of `region_key`, else a dash |
-
-The `unknown_*` fields stay on the record for search and CSV but out of the table.
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
 
 ## Notes
 

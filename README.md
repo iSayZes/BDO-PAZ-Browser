@@ -118,13 +118,16 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Supported Formats
 
-- Handler Supported 81/401 .bss formats.
-- Handler Supported 160/374 .dbss formats.
+- Handler Supported 83/402 .bss formats.
+- Handler Supported 162/374 .dbss formats.
 - Handler Supported 31 other formats.
 
 ## Documented Formats
 
 See [docs/documented-formats.md](docs/documented-formats.md) for the full table.
+The same docs are a browsable site on GitHub Pages, with each converted doc's
+layouts, byte maps and known share: the Wiki workflow builds it with
+`build_wiki.py` whenever a release changes the docs.
 
 ## Requirements
 
@@ -562,6 +565,9 @@ PAZ-Parser/
 │   ├── src/lib.rs          # PyO3 module: unpack(), ice_crypt(), both without holding the GIL
 │   └── _bdo_native.pyi     # Type stub, shipped in the wheel and read by pyright
 │
+├── format_docs/            # Checks the format docs against docs/format-docs.md
+├── wiki/                   # The format docs as a static site, built by build_wiki.py (static/ holds its CSS and JS)
+│
 ├── tests/                  # Unit test framework and gitignored fixtures
 │   ├── framework.py        # Public re-export for test helpers
 │   ├── specs.py            # DeclaredCountTest, TargetTest, SchemaTest, RangeTest
@@ -603,12 +609,14 @@ PAZ-Parser/
 
 docs/
 ├── handler.md              # Guide for writing preview handlers
+├── format-docs.md          # How a format doc is written; format_docs/ checks it
 ├── style-guide.md          # UI color palette and component reference
 └── file-formats/           # Per-format binary layout documentation
 
 browser.py                  # Starts the app: GUI, or a CLI command
 benchmark.py                # Decode benchmarks (see Benchmarking)
 build.py                    # Windows build (see Building the Windows Exe)
+build_wiki.py               # Format docs wiki into _site/ (see docs/format-docs.md)
 browser.spec                # PyInstaller spec that build.py runs
 ```
 

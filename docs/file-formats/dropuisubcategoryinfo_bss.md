@@ -8,12 +8,21 @@ row per filter button with its Korean name and button icon.
 categories of each hunting ground in `sub_category_keys`. LOC type 115 names
 the categories by key.
 
-Example:
+## Versions
 
-```text
-category 3  마르니의 밀실 -> "Marni's Realm" (LOC 115)
-  icon     Combine_Etc_DropItem_Icon_Filter_Btn_08_Over
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                        | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------- | --------------------------- | ----- | -------------- | --------- |
+| 1      | 3473 and later | 3473    | `dropuisubcategoryinfo.bss` | 609   | 8 Category Row | 12        |
+
+| Layout | File                        | Known          | Unknown    |
+| ------ | --------------------------- | -------------- | ---------- |
+| 1      | `dropuisubcategoryinfo.bss` | 609 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,29 +32,29 @@ category 3  마르니의 밀실 -> "Marni's Realm" (LOC 115)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 PABR block of fixed 12-byte rows, followed by the same counted string table
-and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
+and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4-bytes--strings)
 (`_common/pabr_strings.py`). The string table holds 15 strings: the Korean
 names and the button icon names.
 
-| Offset  | Type    | Field              | Notes                             |
-| ------- | ------- | ------------------ | --------------------------------- |
-| `+0x00` | char[4] | magic              | ASCII `PABR`                      |
-| `+0x04` | u32     | count              | Number of rows; 8 on client 3464  |
-| `+0x08` | row[]   | rows               | 12 bytes each                     |
-| ...     | table   | string_table       | 15 wide strings                   |
-| EOF - 8 | u32     | string_table_start | Where the rows end                |
-| EOF - 4 | u32     | zero               | Always `0`                        |
-
-## Record Structure
+| Offset              | Type                | Field              | Notes                            |
+| ------------------- | ------------------- | ------------------ | -------------------------------- |
+| `+0x00`             | char[4]             | magic              | ASCII `PABR`                     |
+| `+0x04`             | u32                 | count              | Number of rows; 8 on client 3464 |
+| `+0x08`             | Category Row[count] | rows               | See Category Row                 |
+| `rows+0x00`         | String Table        | string_table       | 15 wide strings                  |
+| `string_table+0x00` | u32                 | string_table_start | Where the rows end               |
+| `string_table+0x04` | u32                 | zero               | Always `0`                       |
 
 ### Category Row (12 bytes)
 
 | Offset  | Type | Field    | Notes                                                    |
 | ------- | ---- | -------- | -------------------------------------------------------- |
-| `+0x00` | u32  | key      | Category, 1 to 8; LOC type 115 `str_id1`                  |
+| `+0x00` | u32  | key      | Category, 1 to 8; LOC type 115 `str_id1`                 |
 | `+0x04` | u32  | name_ref | String table index of the Korean name                    |
 | `+0x08` | u32  | icon_ref | String table index of the button icon; 6 and 7 share one |
 
@@ -60,13 +69,12 @@ names and the button icon names.
 | 7   | 데키아의 등불 II     | Dehkia's Lantern II       | `Combine_Etc_DropItem_Icon_Filter_Btn_04_Over` |
 | 8   | 엘라 세르빈의 풍경화 | Allan Serbin's Landscape  | `Combine_Etc_DropItem_Icon_Filter_Btn_07_Over` |
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column | Type | Notes                                                                 |
-| ------ | ---- | --------------------------------------------------------------------- |
-| Key    | num  | `key`; right-aligned                                                  |
-| Name   | text | LOC type 115, falling back to the Korean name                         |
-| Icon   | text | Button icon name                                                      |
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

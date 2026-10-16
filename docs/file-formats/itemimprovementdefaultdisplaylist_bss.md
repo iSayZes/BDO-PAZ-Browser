@@ -9,34 +9,50 @@ loads them through `ToClient_GetImprovementSourceItemCount()` and
 `ToClient_GetDefaultDisplayImprovementSourceItemByIndex(index)`
 (`panel_improvement_all_1`).
 
-```text
-4912 Ultimate Weapon Reform Stone
-4913 Ultimate Armor Reform Stone
-8141 Cup of Arid Moonlight
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                                    | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------- | --------------------------------------- | ----- | -------------- | --------- |
+| 1      | 1784 and later | 3473    | `itemimprovementdefaultdisplaylist.bss` | 116   | 1 String Table | 4         |
+
+| Layout | File                                    | Known          | Unknown    |
+| ------ | --------------------------------------- | -------------- | ---------- |
+| 1      | `itemimprovementdefaultdisplaylist.bss` | 116 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None. The stone records are in [`itemimprovementsource.dbss`](itemimprovementsource_dbss.md).
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A `PABR` table of u32 rows with an empty string table, read by
 `fixed_row_offsets()` in `_common/pabr_strings.py`.
 
-| Offset  | Type     | Field   | Notes                                                       |
-| ------- | -------- | ------- | ----------------------------------------------------------- |
-| `+0x00` | u8[4]    | magic   | `PABR`                                                      |
-| `+0x04` | u32      | count   | Number of stones; `24` on client 3464                       |
-| `+0x08` | u32[]    | item_ids | `count` stone item IDs                                     |
-| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 4 * count`), `u32 0` |
+| Offset              | Type         | Field        | Notes                                                       |
+| ------------------- | ------------ | ------------ | ----------------------------------------------------------- |
+| `+0x00`             | char[4]      | magic        | `PABR`                                                      |
+| `+0x04`             | u32          | count        | Number of stones; `24` on client 3464                       |
+| `+0x08`             | u32[count]   | item_ids     | `count` stone item IDs                                      |
+| `item_ids+0x00`     | String Table | string_table | Empty string table                                          |
+| `string_table+0x00` | u32          | table_start  | End of the rows (`8 + 4 * count`)                           |
+| `string_table+0x04` | u32          | zero         | `0`                                                         |
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column  | Type | Notes                                            |
-| ------- | ---- | ------------------------------------------------ |
-| Order   | num  | Position in the list, from `1`                   |
-| Item ID | num  | `item_id`                                        |
-| Icon    | icon | Item icon                                        |
-| Stone   | text | LOC type 0 name in its grade colour, else the ID |
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Notes
 

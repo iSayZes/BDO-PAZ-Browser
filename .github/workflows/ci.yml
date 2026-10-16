@@ -3,14 +3,19 @@ name: CI
 on:
   # Work is committed straight onto staging; releases are PRs into main.
   # A push runs only when something that can change a result changed: the
-  # files pyright and the tests read (pyrightconfig.json "include").
+  # files pyright and the tests read (pyrightconfig.json "include", and the
+  # docs and README the doc and wiki tests read).
   push:
     branches: [staging]
     paths:
       - "PAZ-Parser/**"
+      - "docs/**"
+      - README.md
       - browser.py
       - benchmark.py
       - build.py
+      - build_wiki.py
+      - check_docs.py
       - pytest.ini
       - pyrightconfig.json
       - .github/workflows/ci.yml
@@ -30,6 +35,9 @@ jobs:
   checks:
     # Required by the main ruleset under this name.
     name: Tests and pyright
+    # A release PR (staging into main) carries a commit the staging push
+    # already ran; skipped here, the push run's result is the one that counts.
+    if: github.event_name != 'pull_request' || github.head_ref != 'staging'
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v7

@@ -4,13 +4,21 @@
 
 The NPC dialog that gives each quest: one 8-byte row per quest with the quest key, the NPC's character key and the dialog index. `dialog_index << 16 | npc_id` is the `detail_dialog.dbss` key of the dialog, and the same value is `accept_dialog_key` at `+0x00` of the quest's `quest.dbss` record. [completequest_bss.md](completequest_bss.md) has the same layout for the dialog that takes the quest.
 
-Example:
+## Versions
 
-```text
-quest 1001 / 49 (Dins, Spoiling for a Fight)
-  npc_id 544 (Villager), dialog_index 430
-  detail_dialog key 430 << 16 | 544 = 0x01AE0220, which LOC type 38 names "Dins"
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File              | Bytes   | Records                 | Row bytes |
+| ------ | -------------- | ------- | ----------------- | ------- | ----------------------- | --------- |
+| 1      | 1784 and later | 3473    | `acceptquest.bss` | 151,948 | 18,991 Accept Quest Row | 8         |
+
+| Layout | File              | Known              | Unknown    |
+| ------ | ----------------- | ------------------ | ---------- |
+| 1      | `acceptquest.bss` | 151,948 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,24 +28,24 @@ quest 1001 / 49 (Dins, Spoiling for a Fight)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset             | Type    | Field       | Notes |
-| ------------------ | ------- | ----------- | ----- |
-| `+0x00`            | char[4] | magic       | ASCII `PABR` |
-| `+0x04`            | u32     | count       | Number of rows; `19,267` on client 3464, the count of `allquestlist.bss` |
-| `+0x08`            | row[]   | rows        | 8-byte rows repeated `count` times |
-| `8 + count * 8`    | u32     | string_count | `0`: the PABR string table of `exploration.bss`, here with no strings |
-| EOF - 8            | u32     | rows_end    | `8 + count * 8`, where the rows end (`154,144` on client 3464) |
-| EOF - 4            | u32     | zero        | Always `0` |
+### File Layout
+
+| Offset              | Type                   | Field        | Notes |
+| ------------------- | ---------------------- | ------------ | ----- |
+| `+0x00`             | char[4]                | magic        | ASCII `PABR` |
+| `+0x04`             | u32                    | count        | Number of rows; `19,267` on client 3464, the count of `allquestlist.bss` |
+| `+0x08`             | Accept Quest Row[count] | rows         | See Accept Quest Row |
+| `rows+0x00`         | String Table           | string_table | The PABR string table of `exploration.bss`, here with no strings |
+| `string_table+0x00` | u32                    | rows_end     | `8 + count * 8`, where the rows end (`154,144` on client 3464) |
+| `string_table+0x04` | u32                    | zero         | Always `0` |
 
 The file is `8 + count * 8 + 12` bytes (`154,156` on client 3464).
 
 The rows are grouped by NPC: every NPC's rows form one run, and the rows without an NPC form one more. On client 3464 that is 1,986 runs for 1,985 NPCs plus the no-NPC run. The runs follow no sorted order of NPC or quest key.
 
-## Record Structure
-
-### Accept Quest Row (8 bytes, repeated `count` times)
+### Accept Quest Row (8 bytes)
 
 | Offset  | Type | Field          | Notes |
 | ------- | ---- | -------------- | ----- |
@@ -52,6 +60,13 @@ Derived packed quest ID, as in `allquestlist.bss`:
 packed_quest_id = (quest_id << 16) | quest_chain_id
 ```
 
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty |
+
 ## Reference Rows
 
 Client 3464, names from `languagedata_en.loc`:
@@ -62,19 +77,6 @@ Client 3464, names from `languagedata_en.loc`:
 | 1001 / 49             | Dins, Spoiling for a Fight    | 544    | Villager          | 430          | Dins                  |
 | 1001 / 55             | Meutt's Sand Castle           | 544    | Villager          | 417          | Neutt                 |
 | 8500 / 4              | [LoML] Emma's Invitation      | 0      | -                 | 0            | -                     |
-
-## Suggested UI Layout
-
-| Column      | Type | Notes |
-| ----------- | ---- | ----- |
-| Quest ID    | num  | `packed_quest_id` |
-| Main ID     | num  | `quest_chain_id` |
-| Sub ID      | num  | `quest_id` |
-| Title       | text | LOC type 18 (`quest_chain_id`, `quest_id`, 0, 0), with its colours |
-| NPC ID      | num  | `npc_id`; a dash when `0` |
-| NPC Name    | text | LOC type 6 name of `npc_id` |
-| Dialog      | num  | `dialog_index`, also on rows without an NPC. Opens the `detail_dialog.dbss` row of `dialog_index << 16 \| npc_id`, plain text when that table has no such row (`DIALOG_KEYS` index) |
-| Dialog Name | text | LOC type 38 (`npc_id`, `dialog_index`, 0, 0): the name the NPC shows in that dialog |
 
 ## Notes
 

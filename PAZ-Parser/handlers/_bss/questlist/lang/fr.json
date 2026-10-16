@@ -9,9 +9,8 @@
     "subId": "ID secondaire",
     "icon": "Icône",
     "title": "Titre",
-    "offeredWhen": "Proposée si*",
-    "ruledOutWhen": "Exclue si*",
-    "scriptGuess": "* Notre lecture du script ; non confirmée en jeu"
+    "shownWhen": "Visible si",
+    "hiddenWhen": "Masquée si"
   },
   "meta": {
     "count": "{count} références de quêtes · {group_count} groupes",

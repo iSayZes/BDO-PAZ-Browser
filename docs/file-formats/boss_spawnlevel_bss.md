@@ -9,11 +9,23 @@ reads an entry through `ToClient_bossSpawnOptionWrapper(bossKey, level)`
 (`getImagePath()`, `getItemEnchantKey()`). The boss key is the key of
 [`boss_spawn.bss`](boss_spawn_bss.md).
 
-```text
-key 1  level 0  Ferrid   756210 Ferrid Small Reward        Icon/Quest/GuildBoss_Renewal_Ferrid.dds
-key 1  level 3  Ferrid   756213 Ferrid Extra Large Reward
-key 5  level 0  Khan     756218 Khan Small Reward          (unknown_11 27198, character_id 23843)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                  | Bytes | Records           | Row bytes |
+| ------ | -------------- | ------- | --------------------- | ----- | ----------------- | --------- |
+| 2      | 3473 and later | 3473    | `boss_spawnlevel.bss` | 1,070 | 24 Entry, 6 Group | 21        |
+| 1      | 1784           | 1784    | `boss_spawnlevel.bss` | 618   | 16 Entry, 4 Group | 19        |
+
+| Layout | File                  | Known         | Unknown       |
+| ------ | --------------------- | ------------- | ------------- |
+| 2      | `boss_spawnlevel.bss` | 926 B (86.5%) | 144 B (13.5%) |
+| 1      | `boss_spawnlevel.bss` | 522 B (84.5%) | 96 B (15.5%)  |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,23 +33,25 @@ None. Character names come from LOC type 6, reward names from LOC type 0.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset    | Type     | Field        | Notes                                                   |
-| --------- | -------- | ------------ | ------------------------------------------------------- |
-| `+0x00`   | char[4]  | magic        | `PABR`                                                  |
-| `+0x04`   | u32      | group_count  | `6` on client 3464, one group per boss                  |
-| `+0x08`   | group[]  | groups       | Variable size; the last ends where the string table starts |
-| ...       | ...      | strings      | Counted string table (`_common/pabr_strings.py`), UTF-16 image paths |
-| end - 8   | u32      | table_start  | Offset of the string table                              |
-| end - 4   | u32      | zero         |                                                         |
+### File Layout
 
-### Group
+| Offset              | Type               | Field        | Notes                                                      |
+| ------------------- | ------------------ | ------------ | ---------------------------------------------------------- |
+| `+0x00`             | char[4]            | magic        | `PABR`                                                     |
+| `+0x04`             | u32                | group_count  | `6` on client 3464, one group per boss                     |
+| `+0x08`             | Group[group_count] | groups       | Variable size; the last ends where the string table starts |
+| `groups+0x00`       | String Table       | string_table | Counted string table (`_common/pabr_strings.py`), UTF-16 image paths |
+| `string_table+0x00` | u32                | table_start  | Offset of the string table                                 |
+| `string_table+0x04` | u32                | zero         |                                                            |
 
-| Type    | Field       | Notes                       |
-| ------- | ----------- | --------------------------- |
-| u32     | entry_count | `4` on every group          |
-| entry[] | entries     | `entry_count` 21-byte entries |
+### Group (variable: 4 bytes + entries)
+
+| Offset  | Type                 | Field       | Notes              |
+| ------- | -------------------- | ----------- | ------------------ |
+| `+0x00` | u32                  | entry_count | `4` on every group |
+| `+0x04` | Entry[entry_count]   | entries     | See Entry          |
 
 ### Entry (21 bytes)
 
@@ -63,18 +77,31 @@ The groups on client 3464:
 | 5   | Khan              | 23843 to 23840               | 756218 to 756221 |
 | 8   | Gumiho & Duoksini | 27897, 27895, 27894, 29539   | 790880, 790877, 790878, 790879 |
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column     | Type | Notes                                                        |
-| ---------- | ---- | ------------------------------------------------------------ |
-| Boss Key   | num  | `boss_key`                                                   |
-| Level      | num  | `level`                                                      |
-| Image      | icon | `image` under `ui_texture/`, lowercased                      |
-| Boss       | text | LOC type 6 name of `character_id`                            |
-| Reward     | text | LOC type 0 name of `reward_item_id`, with its icon           |
+| Offset  | Type               | Field        | Notes                                  |
+| ------- | ------------------ | ------------ | -------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings                      |
+| `+0x04` | pstr[string_count] | strings      | Image paths; `image` indexes this list |
 
-The table opens in file order, one row per entry. `unknown_05`, `unknown_07`
-and `unknown_11` stay hidden.
+## Layout 1
+
+On client 1784 the entry ends after `unknown_11`: it is 19 bytes and has no
+`character_id`. Only the Entry differs from Layout 2.
+
+### Entry (19 bytes)
+
+| Offset  | Type | Field          | Notes                                                              |
+| ------- | ---- | -------------- | ------------------------------------------------------------------ |
+| `+0x00` | u32  | boss_key       |                                                                    |
+| `+0x04` | u8   | level          |                                                                    |
+| `+0x05` | u16  | unknown_05     |                                                                    |
+| `+0x07` | u16  | unknown_07     |                                                                    |
+| `+0x09` | u32  | reward_item_id |                                                                    |
+| `+0x0D` | u32  | image          |                                                                    |
+| `+0x11` | u16  | unknown_11     | Key 4 holds 27198, 27197, 27196 and 27186, the Khan values of `unknown_11` on client 3473 |
+
+Client 1784 has 4 groups (keys 1 to 4) of 4 entries.
 
 ## Notes
 

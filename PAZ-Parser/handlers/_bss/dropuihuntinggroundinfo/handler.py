@@ -14,6 +14,7 @@ from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_text
 from _common.node import node_name
 from _common.quest.quest import quest_title
+from _common.territory import territory_name
 from _common.title import title_name
 from _bss.dropuitaginfo.parser import TagColors, parse_tag_colors
 from _bss.dropuitaginfo.tag_chips import tag_chips_cell
@@ -28,9 +29,6 @@ _TAG_INFO_FILE = "dropuitaginfo.bss"
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 8
 
-# Territory names; str_id4 1 is the territory, 0 the nation.
-_LOC_TERRITORY = 12
-_LOC_TERRITORY_NAME = 1
 _LOC_CATEGORY = 115
 
 # Packed quest key: low u16 quest chain, high u16 quest, as in allquestlist.bss.
@@ -57,7 +55,7 @@ def _max_ap_text(limited_ap: int, apply_percent: int) -> str:
 def _region_text(tab_key: int, territories: dict[int, int]) -> str:
     """The tab's territory name, else the tab key."""
     territory = territories.get(tab_key)
-    name = loc_text(_LOC_TERRITORY, territory, _LOC_TERRITORY_NAME) if territory is not None else ""
+    name = territory_name(territory) if territory is not None else ""
     return name or str(tab_key)
 
 

@@ -9,12 +9,27 @@ receipe key, its Korean name, the house use type and icon type the client
 enums name, the `houseinfoneeditem.dbss` group that prices each level, and
 the item exchange recipes the house unlocks at each level.
 
-```text
-11  Weapon Workshop   use type 4 (WeaponForgingWorkshop)  need item 2
-    level 1: 19 exchanges (5026, 5027, 5048, ...)  level 2: 51  level 3: 49  level 4: 83
-2010  Fish Workshop   use type 17 (LocalSpecailtiesWorkshop)  icon 30 (Workshop_Fish)  need item 5
-    level 1: 17 exchanges  level 2: 17
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
+| ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
+| 2      | 3473 and later | 3473    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 2      | 3473 and later | 3473    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,902 | 490 Level List, 98 Row  | 4 to 156, 16 on average |
+| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,180  | 98 Index Row            | 12                      |
+
+| Layout | File                          | Known            | Unknown        |
+| ------ | ----------------------------- | ---------------- | -------------- |
+| 2      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
+| 2      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
+| 1      | `houseinforeceipe.dbss`       | 10,510 B (96.4%) | 392 B (3.6%)   |
+| 1      | `houseinforeceipeoffset.dbss` | 1,180 B (100.0%) | 0 B (0.0%)     |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -27,46 +42,97 @@ the item exchange recipes the house unlocks at each level.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then the rows back to
 back; the file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                     |
-| ------- | ----- | --------- | ------------------------- |
-| `+0x00` | u32   | row_count | `132` on client 3464      |
-| `+0x04` | row[] | rows      | `row_count` rows, see Row |
+| Offset  | Type           | Field     | Notes                |
+| ------- | -------------- | --------- | -------------------- |
+| `+0x00` | u32            | row_count | `132` on client 3464 |
+| `+0x04` | Row[row_count] | rows      | See Row              |
 
 Rows are not sorted by key. On client 3464 the file opens with the Guild
 Storage keys 50009 down to 50001 and ends with 28 down to 16.
 
-## Record Structure
-
-### Row
+### Row (variable: 25 bytes + name text and lists)
 
 A fixed head, the inline UTF-16LE name, three bytes, five counted level
 lists, a u32 and a counted byte list. Rows differ in length; a reader takes
 every length from its count.
 
-| Offset          | Type        | Field             | Notes                                                                 |
-| --------------- | ----------- | ----------------- | --------------------------------------------------------------------- |
-| `+0x00`         | u32         | receipe_key       | Unique row key; LOC type 16 `str_id1`                                 |
-| `+0x04`         | u16         | need_item_key     | `houseinfoneeditem.dbss` key, see Need Item Join                     |
-| `+0x06`         | u64         | name_len          | UTF-16 code units in `name`                                           |
-| `+0x0E`         | utf16le[]   | name              | Korean receipe name, such as `무기 단조 공방`                          |
-| after name      | u8          | house_use_type    | `CppEnums.eHouseUseType`, see House Use Type                          |
-| `+0x01` after   | u8          | icon_type         | `CppEnums.eHouseIconType`, see Icon Type                              |
-| `+0x02` after   | u8          | unknown_tail_02   | `0` on every row (client 3464)                                        |
-| `+0x03` after   | level_list[5] | level_exchanges | Levels 1 to 5, each a u32 count then `count` u32 item exchange keys   |
-| after lists     | u32         | unknown_after_lists | `0` on every row (client 3464)                                      |
-| then            | u32         | unknown_end_count | Bytes in `unknown_end`                                                |
-| then            | u8[]        | unknown_end       | See Open Questions                                                    |
+| Offset                  | Type                   | Field               | Notes                                                                 |
+| ----------------------- | ---------------------- | ------------------- | --------------------------------------------------------------------- |
+| `+0x00`                 | u32                    | receipe_key         | Unique row key; LOC type 16 `str_id1`                                 |
+| `+0x04`                 | u16                    | need_item_key       | `houseinfoneeditem.dbss` key, see Need Item Join                     |
+| `+0x06`                 | str16                  | name                | Korean receipe name, such as `무기 단조 공방`                          |
+| `name+0x00`             | u8                     | house_use_type      | `CppEnums.eHouseUseType`, see House Use Type                          |
+| `name+0x01`             | u8                     | icon_type           | `CppEnums.eHouseIconType`, see Icon Type                              |
+| `name+0x02`             | u8                     | unknown_tail_02     | `0` on every row (client 3464)                                        |
+| `name+0x03`             | Level List[5]          | level_exchanges     | Levels 1 to 5, see Level List                                         |
+| `level_exchanges+0x00`  | u32                    | unknown_after_level_exchanges | `0` on every row (client 3464)                                        |
+| `level_exchanges+0x04`  | u32                    | unknown_end_count   | Bytes in `unknown_end`                                                |
+| `level_exchanges+0x08`  | u8[unknown_end_count]  | unknown_end         | See Open Questions                                                    |
 
 A level list is empty when the house does nothing at that level (Residence,
 Lodging, Storage, Horse Ranch and the Guild Storage rows have five empty
 lists). The lists fill from level 1 up with no gap: on client 3464, 13 rows
 fill no list, and the others fill 1 to 5 levels. The longest list holds 93
 keys.
+
+### Level List (variable: 4 bytes + keys)
+
+| Offset  | Type         | Field          | Notes                       |
+| ------- | ------------ | -------------- | --------------------------- |
+| `+0x00` | u32          | count          | Number of keys              |
+| `+0x04` | u32[count]   | exchange_keys  | Item exchange keys          |
+
+### `houseinforeceipeoffset.dbss`
+
+| Offset  | Type                 | Field     | Notes                                               |
+| ------- | -------------------- | --------- | --------------------------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count`; `132` on client 3464 |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                                       |
+
+Every index row points at the main row with the same key, and the rows tile
+the main file from `0x04` to the end with no gap. The index order is neither
+the main file's order nor sorted by key: it opens 50009, 50008, 50007,
+50006, 50005, 50004, 50003, 1106, 50002, 1105.
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field       | Notes                                              |
+| ------- | ---- | ----------- | -------------------------------------------------- |
+| `+0x00` | u32  | receipe_key | The main row's `receipe_key`                       |
+| `+0x04` | u32  | offset      | Start of the row in `houseinforeceipe.dbss`, at its `receipe_key` |
+| `+0x08` | u32  | size        | Full row length, key included                      |
+
+## Layout 1
+
+Client 1784 rows hold `house_use_type` only, without `icon_type` and
+`unknown_tail_02`, list their exchange keys as u16, and end after
+`unknown_after_level_exchanges`, with no `unknown_end`. Only the Row and the
+Level List differ from Layout 2.
+
+### Row (variable: 19 bytes + name text and lists)
+
+| Offset                 | Type          | Field                         | Notes                         |
+| ---------------------- | ------------- | ----------------------------- | ----------------------------- |
+| `+0x00`                | u32           | receipe_key                   |                               |
+| `+0x04`                | u16           | need_item_key                 |                               |
+| `+0x06`                | str16         | name                          |                               |
+| `name+0x00`            | u8            | house_use_type                |                               |
+| `name+0x01`            | Level List[5] | level_exchanges               |                               |
+| `level_exchanges+0x00` | u32           | unknown_after_level_exchanges | `0` on every row (client 1784) |
+
+### Level List (variable: 4 bytes + keys)
+
+| Offset  | Type       | Field         | Notes                                    |
+| ------- | ---------- | ------------- | ---------------------------------------- |
+| `+0x00` | u32        | count         |                                          |
+| `+0x04` | u16[count] | exchange_keys | Item exchange keys, 35013 at most on client 1784 |
 
 ## House Use Type
 
@@ -153,41 +219,6 @@ the need items by receipe key and level
 needs a receipe-to-group link, and `need_item_key` is the field whose
 groups line up with the level lists.
 
-## `houseinforeceipeoffset.dbss`
-
-A u32 row count (equal to the main file's, `132` on client 3464), then
-12-byte rows:
-
-| Offset  | Type | Field       | Notes                                              |
-| ------- | ---- | ----------- | -------------------------------------------------- |
-| `+0x00` | u32  | receipe_key | The main row's `receipe_key`                       |
-| `+0x04` | u32  | offset      | Start of the row in `houseinforeceipe.dbss`, at its `receipe_key` |
-| `+0x08` | u32  | size        | Full row length, key included                      |
-
-Every index row points at the main row with the same key, and the rows tile
-the main file from `0x04` to the end with no gap. The index order is neither
-the main file's order nor sorted by key: it opens 50009, 50008, 50007,
-50006, 50005, 50004, 50003, 1106, 50002, 1105.
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                              |
-| ------------- | ---- | ------------------------------------------------------------------ |
-| Key           | num  | `receipe_key`                                                      |
-| Name          | text | LOC type 16 name, else the inline Korean `name`                    |
-| Use Type      | text | `house_use_type` as its `eHouseUseType` name                       |
-| Icon Type     | text | `icon_type` as its `eHouseIconType` name                           |
-| Need Item Key | num  | `need_item_key`                                                    |
-| Levels        | num  | Number of filled level lists                                       |
-| Exchanges     | text | One line per filled level, `Lv 1: 5026, 5027, ...`; sorts by the total key count |
-
-Each level line shows its first 8 exchange keys and a hoverable count of the
-rest. The keys stay raw numbers until `itemexchangesource.bss` has a reader.
-The count line gives the rows and the number of distinct exchange keys. The
-table opens sorted by Key, highest first.
-
-The offset table shows Key, Data Offset and Size.
-
 ## Notes
 
 - The house window builds its work list per level: it calls
@@ -229,7 +260,7 @@ list as accepted `eHouseUseGroupType` codes and cites `getGroupTypeByIndex`;
 that call returns one value per receipe, which `house_use_type` already
 holds, so it is only a lead.
 
-### unknown_after_lists
+### unknown_after_level_exchanges
 
 The u32 after the five level lists is `0` on every row. It reads the same as
 the count of a sixth, empty level list; `houseinfoneeditem.dbss` prices five

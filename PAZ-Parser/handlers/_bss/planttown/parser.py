@@ -1,12 +1,25 @@
 from __future__ import annotations
 
-from _common.binary import u16, u32
+import struct
+
+from _common.binary import u32
 
 
 _MAGIC = b"PABR"
 _HEADER_SIZE = 8
 _RECORD_SIZE = 12
 _TRAILER_SIZE = 12
+
+
+def _parse_town_fields(data: bytes, pos: int) -> dict:
+    """The four fields after the node; names follow the PlantTown_Table sheet (see the doc)."""
+    warehouse, worker_capacity, max_level, upgrade_resource = struct.unpack_from("<HHhH", data, pos)
+    return {
+        "warehouse_upgrade_group_index": warehouse,
+        "worker_capacity_upgrade_group_index": worker_capacity,
+        "max_level": max_level,
+        "upgrade_resource_key": upgrade_resource,
+    }
 
 
 def parse_planttown_records(data: bytes) -> list[dict]:
@@ -27,10 +40,7 @@ def parse_planttown_records(data: bytes) -> list[dict]:
         records.append({
             "slot": slot,
             "node_id": u32(data, pos),
-            "unknown_04": u16(data, pos + 0x04),
-            "unknown_06": u16(data, pos + 0x06),
-            "unknown_08": u16(data, pos + 0x08),
-            "unknown_0a": u16(data, pos + 0x0A),
+            **_parse_town_fields(data, pos + 0x04),
         })
 
     return records

@@ -58,9 +58,9 @@ def parse_questgroup_records(data: bytes) -> list[QuestGroupRecord]:
             )
             offset += 4
 
-        tail_zero = _u32(data, offset)
+        unknown_end = _u32(data, offset)
         offset += 4
-        if unknown_04 != 0 or unknown_08 != 0 or tail_zero != 0:
+        if unknown_04 != 0 or unknown_08 != 0 or unknown_end != 0:
             raise ValueError(f"questgroup record {row} has unexpected non-zero padding")
 
         records.append(

@@ -7,10 +7,21 @@ window, such as "Grave Digging", and lists the skill key of every rank in
 order. The skill window grids in [`ui_skillgroup_*.bss`](ui_skillgroup_bss.md)
 place groups, not single skills.
 
-```text
-group 578  skill_keys 0, 1759/1, 1760/1, 1761/1, 1762/1
-           "Grave Digging I" to "Grave Digging IV"
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File             | Bytes  | Records           | Row bytes               |
+| ------ | -------------- | ------- | ---------------- | ------ | ----------------- | ----------------------- |
+| 1      | 1784 and later | 3473    | `skillgroup.bss` | 65,078 | 3,517 Skill Group | 14 to 90, 19 on average |
+
+| Layout | File             | Known             | Unknown    |
+| ------ | ---------------- | ----------------- | ---------- |
+| 1      | `skillgroup.bss` | 65,078 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,38 +32,28 @@ group 578  skill_keys 0, 1759/1, 1760/1, 1761/1, 1762/1
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No magic and no trailer: a u32 group count, then the groups back to back up
 to the end of the file.
 
-| Offset  | Type    | Field       | Notes                                    |
-| ------- | ------- | ----------- | ---------------------------------------- |
-| `+0x00` | u32     | group_count | `3514` on client 3458                    |
-| `+0x04` | group[] | groups      | Variable-size groups, see below          |
+| Offset  | Type                     | Field       | Notes                                    |
+| ------- | ------------------------ | ----------- | ---------------------------------------- |
+| `+0x00` | u32                      | group_count | `3514` on client 3458                    |
+| `+0x04` | Skill Group[group_count] | groups      | Variable-size groups, see Skill Group    |
 
-## Record Structure
+### Skill Group (variable: 6 bytes + skill keys)
 
-### Skill Group (variable)
-
-| Offset  | Type    | Field      | Notes                                                                    |
-| ------- | ------- | ---------- | ------------------------------------------------------------------------ |
-| `+0x00` | u16     | group_no   | Unique; `142` to `15162`, not sorted                                     |
-| `+0x02` | u32     | rank_count | Number of keys that follow, including the unlearned entry; up to `21`    |
-| `+0x06` | u32[]   | skill_keys | Rank 0 is always `0` (not learned); the rest are `skill.dbss` keys in rank order |
+| Offset  | Type             | Field      | Notes                                                                    |
+| ------- | ---------------- | ---------- | ------------------------------------------------------------------------ |
+| `+0x00` | u16              | group_no   | Unique; `142` to `15162`, not sorted                                     |
+| `+0x02` | u32              | rank_count | Number of keys that follow, including the unlearned entry; up to `21`    |
+| `+0x06` | u32[rank_count]  | skill_keys | Rank 0 is always `0` (not learned); the rest are `skill.dbss` keys in rank order |
 
 2,271 groups have a single rank (`rank_count` 2); the longest chains have 20
 ranks. Every rank key is a `skill.dbss` key.
-
-## Suggested UI Layout
-
-| Column   | Type | Notes                                                                 |
-| -------- | ---- | --------------------------------------------------------------------- |
-| Group    | num  | `group_no`                                                            |
-| Icon     | icon | `IconKind.SKILL` icon of the first rank (from `skilltype.dbss`)       |
-| Name     | text | LOC type `10` name of the first rank                                  |
-| Ranks    | num  | `rank_count - 1`                                                      |
-| Skills   | list | Rank keys as `skill_no` and LOC type `10` name; not sortable (Ranks sorts by count) |
 
 ## Notes
 

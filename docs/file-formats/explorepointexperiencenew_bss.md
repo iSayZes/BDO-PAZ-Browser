@@ -7,17 +7,31 @@ contribution point, stepped by the contribution points it already holds. The
 client shows this EXP as the bar next to the contribution points (`remained /
 acquired`) on the main status and EXP gauge widgets.
 
-Example (client 3464):
+## Versions
 
-```text
-0 points    95 EXP per point
-300 points  5,057 EXP per point
-600 points  3,745,996 EXP per point
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-The file is self-contained. All multi-byte values are little-endian.
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-## File Layout
+| Layout | Clients        | Checked | File                            | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `explorepointexperiencenew.bss` | 244   | 24 Row  | 10        |
+
+| Layout | File                            | Known          | Unknown    |
+| ------ | ------------------------------- | -------------- | ---------- |
+| 1      | `explorepointexperiencenew.bss` | 244 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
+
+## Companion Files
+
+None. The file is self-contained.
+
+All multi-byte values are little-endian.
+
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no trailer: a row count, then the rows, which fill the
 file exactly (4 + 24 x 10 = 244 bytes on client 3464).
@@ -25,9 +39,7 @@ file exactly (4 + 24 x 10 = 244 bytes on client 3464).
 | Offset  | Type  | Field     | Notes                                       |
 | ------- | ----- | --------- | ------------------------------------------- |
 | `+0x00` | u32   | row_count | Number of rows; 24 on client 3464           |
-| `+0x04` | row[] | rows      | `row_count` rows of 10 bytes, ascending `contribution_points` |
-
-## Record Structure
+| `+0x04` | Row[row_count] | rows | `row_count` rows of 10 bytes, ascending `contribution_points` |
 
 ### Row (10 bytes)
 
@@ -38,13 +50,6 @@ file exactly (4 + 24 x 10 = 244 bytes on client 3464).
 
 On client 3464 the keys are 0, then 50 to 600 in steps of 25, and the high
 four bytes of `exp` are 0 in every row.
-
-## Suggested UI Layout
-
-| Column                         | Type | Notes                          |
-| ------------------------------ | ---- | ------------------------------ |
-| Contribution Points            | num  | `contribution_points`          |
-| Contribution EXP to Next Point | num  | `exp`, with thousands separators |
 
 ## Notes
 

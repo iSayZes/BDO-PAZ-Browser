@@ -1,0 +1,17 @@
+{
+  "offsetColumns": {
+    "key": "키",
+    "offset": "오프셋",
+    "size": "크기"
+  },
+  "columns": {
+    "key": "키",
+    "text": "텍스트",
+    "variant_1": "변형 1",
+    "variant_2": "변형 2",
+    "variant_3": "변형 3"
+  },
+  "meta": {
+    "count": "TextBind 텍스트 {count}개"
+  }
+}

@@ -4,14 +4,21 @@
 
 Holds one row per Edania region, the ten castle domains that guilds hold in Edania (Aetherion to Voidekaia), plus a row for the "no region" value. Each row stores the client's `__eEdaniaRegion` value and two 3-byte values that equal the `regioninfo.bss` `color` of the region's castle where that castle has a region of its own.
 
-Example:
+## Versions
 
-```text
-edania_region=0  -> Aetherion Castle   (0a1cf5, the color of region 1581 Aetherion Castle)
-edania_region=2  -> Orbita Castle      (905037, the color of region 1571 Orbita Castle)
-edania_region=9  -> Event Horizon      (770868, no matching region)
-edania_region=10 -> none (_Count)      (100d10)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ---------------------- | ----- | ------- | --------- |
+| 1      | 3473 and later | 3473    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
+
+| Layout | File                   | Known        | Unknown      |
+| ------ | ---------------------- | ------------ | ------------ |
+| 1      | `edaniaregioninfo.bss` | 31 B (26.1%) | 88 B (73.9%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,32 +29,39 @@ edania_region=10 -> none (_Count)      (100d10)
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field              | Notes                                                   |
-| ------- | ------- | ------------------ | ------------------------------------------------------- |
-| `+0x00` | char[4] | magic              | `PABR` (ASCII)                                          |
-| `+0x04` | u32     | record_count       | Observed `11`                                           |
-| `+0x08` | row[]   | records            | `record_count` rows of 9 bytes, byte-packed             |
-| varies  | u32     | string_count       | Always `0`: the PABR string table is present but empty  |
-| EOF-8   | u32     | string_table_start | Absolute offset of `string_count`; equals `8 + 9 × count` |
-| EOF-4   | u32     | zero_trailer       | Always `0`                                              |
+### File Layout
+
+| Offset              | Type              | Field              | Notes                                                   |
+| ------------------- | ----------------- | ------------------ | ------------------------------------------------------- |
+| `+0x00`             | char[4]           | magic              | `PABR` (ASCII)                                          |
+| `+0x04`             | u32               | record_count       | Observed `11`                                           |
+| `+0x08`             | Row[record_count] | records            | See Row; byte-packed                                    |
+| `records+0x00`      | String Table      | string_table       | The PABR string table, present but empty                |
+| `string_table+0x00` | u32               | string_table_start | Absolute offset of `string_count`; equals `8 + 9 × count` |
+| `string_table+0x04` | u32               | zero               | Always `0`                                              |
 
 The file is `8 + 9 × 11 + 12 = 119` bytes. The parser rejects a file whose rows do not end exactly at `string_table_start`.
 
-## Record Structure
+### Row (9 bytes)
 
-### Row (9 bytes, repeated `record_count` times)
+| Offset  | Type     | Field         | Notes                                                                                                   |
+| ------- | -------- | ------------- | ------------------------------------------------------------------------------------------------------- |
+| `+0x00` | bytes[3] | unknown_00    | Stored blue, green, red like the `regioninfo.bss` `color`; the parser returns `rrggbb`. See Notes        |
+| `+0x03` | u8       | unknown_03    | Always `0`                                                                                              |
+| `+0x04` | bytes[3] | unknown_04    | Equals `unknown_00` on every row                                                                        |
+| `+0x07` | u8       | unknown_07    | Always `0`                                                                                              |
+| `+0x08` | u8       | edania_region | `__eEdaniaRegion` value, unique; `0` to `9` for the regions, `10` for `__eEdaniaRegion_Count`. Rows are not in key order |
 
-| Offset  | Type  | Field         | Notes                                                                                                   |
-| ------- | ----- | ------------- | ------------------------------------------------------------------------------------------------------- |
-| `+0x00` | u8[3] | unknown_00    | Stored blue, green, red like the `regioninfo.bss` `color`; the parser returns `rrggbb`. See Notes        |
-| `+0x03` | u8    | reserved      | Always `0`                                                                                              |
-| `+0x04` | u8[3] | unknown_04    | Equals `unknown_00` on every row                                                                        |
-| `+0x07` | u8    | reserved      | Always `0`                                                                                              |
-| `+0x08` | u8    | edania_region | `__eEdaniaRegion` value, unique; `0` to `9` for the regions, `10` for `__eEdaniaRegion_Count`. Rows are not in key order |
+### String Table (variable: 4 bytes + strings)
 
-### Enum Values
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Enum Values
 
 `edania_region` is the client's `__eEdaniaRegion` enum. The Lua lists the names in this order (`panel_characternametag.luac`, `panel_widget_chatmain_2.luac`, `panel_window_edania_contents_all.luac`) and loops `0` to `Zephyros` for the first Edana group and `Aphrodon` to `Count - 1` for the second (`panel_characterinfo_cashbuff_all_1.luac`). The castle name key is the one the Edania window gives each region.
 
@@ -66,15 +80,6 @@ The file is `8 + 9 × 11 + 12 = 119` bytes. The parser rejects a file whose rows
 | `10`  | _Count      |                                   | none                |
 
 Orbita and Tenebraum swap key numbers 3 and 4. The file confirms the values of the first five: their `unknown_00` matches the `regioninfo.bss` `color` of exactly one region each, and that region is the castle of the same name (1581 Aetherion Castle, 1621 Nymphamaré Castle, 1571 Orbita Castle, 1611 Tenebraum Castle, 1596 Zephyros Castle).
-
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                                                     |
-| ------------- | ---- | ----------------------------------------------------------------------------------------- |
-| Edania Region | num  | `edania_region`                                                                           |
-| Castle        | text | `castle_name`: the castle name key's LOC text, else the enum name; a dash for `_Count`    |
-
-The `unknown_*` fields stay on the record for search and CSV but out of the table.
 
 ## Notes
 

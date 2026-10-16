@@ -3,6 +3,10 @@
     "regionGroupKey": "지역 그룹",
     "nodeKey": "거점 키",
     "nodeName": "거점명",
+    "concurrentUsers": "동시 접속자",
+    "corpProductivity": "기업 생산성",
+    "fishingProductivity": "낚시 생산성",
+    "loyalty": "충성도",
     "x": "X",
     "y": "Y",
     "z": "Z"

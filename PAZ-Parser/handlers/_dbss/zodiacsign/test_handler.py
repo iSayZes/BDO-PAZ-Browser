@@ -6,7 +6,9 @@ from typing import Any
 
 import pytest
 
+from _common.zodiacsign.parser import parse_zodiacsign_records
 from handlers._dbss.zodiacsign.parser import parse_zodiacsignorderoffset_records
+from tests.fixtures import load_binary_fixture
 
 from tests.framework import (
     DeclaredCountTest,
@@ -124,3 +126,22 @@ def test_zodiacsignorder_every_trigger_is_stored(order_result: HandlerResult) ->
         if not framed or parsed.get(entry["personality_type"]) != stored:
             bad.append(entry["personality_type"])
     assert not bad, f"records not framed as count + zero + orders: {bad}"
+
+
+def test_zodiacsign_records_walk_from_their_counts_to_the_end() -> None:
+    # The parser raises when a record runs past the file or bytes are left
+    # over, so a clean parse means every count and string length framed it.
+    records = parse_zodiacsign_records(load_binary_fixture("zodiacsign.dbss"))
+
+    ids = {rec["zodiac_id"] for rec in records}
+    assert all(rec["next_zodiac_id"] in ids for rec in records)
+    assert all(rec["constellation_name"] and rec["icon_small"] and rec["icon_large"] for rec in records)
+
+
+def test_zodiacsign_rejects_bytes_after_the_last_record() -> None:
+    data = load_binary_fixture("zodiacsign.dbss")
+
+    with pytest.raises(ValueError):
+        parse_zodiacsign_records(data + b"\x00")
+    with pytest.raises(ValueError):
+        parse_zodiacsign_records(data[:-1])

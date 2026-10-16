@@ -8,12 +8,21 @@ per tab with its territory and tab icon.
 hunting ground on a tab through `main_category_key`, and its handler reads
 this file for the Region column.
 
-Example:
+## Versions
 
-```text
-tab 10  territory 11 Ulukita        icon Combine_Etc_DropItem_Icon_Tab_11
-tab 11  territory 10 Land of the Morning Light  icon Combine_Etc_DropItem_Icon_Tab_10
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                         | Bytes | Records    | Row bytes |
+| ------ | -------------- | ------- | ---------------------------- | ----- | ---------- | --------- |
+| 1      | 3473 and later | 3473    | `dropuimaincategoryinfo.bss` | 631   | 13 Tab Row | 10        |
+
+| Layout | File                         | Known          | Unknown    |
+| ------ | ---------------------------- | -------------- | ---------- |
+| 1      | `dropuimaincategoryinfo.bss` | 631 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,30 +32,30 @@ tab 11  territory 10 Land of the Morning Light  icon Combine_Etc_DropItem_Icon_T
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 PABR block of fixed 10-byte rows, followed by the same counted string table
-and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
+and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4-bytes--strings)
 (`_common/pabr_strings.py`). The string table holds only the tab icon names.
 
-| Offset  | Type    | Field              | Notes                              |
-| ------- | ------- | ------------------ | ---------------------------------- |
-| `+0x00` | char[4] | magic              | ASCII `PABR`                       |
-| `+0x04` | u32     | count              | Number of rows; 13 on client 3464  |
-| `+0x08` | row[]   | rows               | 10 bytes each                      |
-| ...     | table   | string_table       | 13 wide strings, one icon per row  |
-| EOF - 8 | u32     | string_table_start | Where the rows end                 |
-| EOF - 4 | u32     | zero               | Always `0`                         |
-
-## Record Structure
+| Offset              | Type           | Field              | Notes                             |
+| ------------------- | -------------- | ------------------ | --------------------------------- |
+| `+0x00`             | char[4]        | magic              | ASCII `PABR`                      |
+| `+0x04`             | u32            | count              | Number of rows; 13 on client 3464 |
+| `+0x08`             | Tab Row[count] | rows               | See Tab Row                       |
+| `rows+0x00`         | String Table   | string_table       | 13 wide strings, one icon per row |
+| `string_table+0x00` | u32            | string_table_start | Where the rows end                |
+| `string_table+0x04` | u32            | zero               | Always `0`                        |
 
 ### Tab Row (10 bytes)
 
-| Offset  | Type | Field         | Notes                                                       |
-| ------- | ---- | ------------- | ----------------------------------------------------------- |
+| Offset  | Type | Field         | Notes                                                           |
+| ------- | ---- | ------------- | --------------------------------------------------------------- |
 | `+0x00` | u32  | key           | Region tab, 1 to 13; `main_category_key` in the hunting grounds |
-| `+0x04` | u16  | territory_key | LOC type 12 `str_id1`; `str_id4` 1 is the tab name           |
-| `+0x06` | u32  | icon_ref      | String table index of the tab icon                          |
+| `+0x04` | u16  | territory_key | LOC type 12 `str_id1`; `str_id4` 1 is the tab name              |
+| `+0x06` | u32  | icon_ref      | String table index of the tab icon                              |
 
 | Key | Territory | Name                       | Icon                               |
 | --- | --------- | -------------------------- | ---------------------------------- |
@@ -67,13 +76,12 @@ and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
 The Great Ocean (territory 5) has no tab, and tabs 10 and 11 swap the
 territory order.
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column    | Type | Notes                                                              |
-| --------- | ---- | ------------------------------------------------------------------ |
-| Key       | num  | `key`; right-aligned                                               |
-| Territory | text | LOC type 12 `str_id4` 1, falling back to `territory_key`           |
-| Icon      | text | Tab icon name                                                      |
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

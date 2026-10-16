@@ -4,13 +4,21 @@
 
 Lists the barter NPCs of the Great Ocean: one row per barter region (the island, port or ship where the barter happens) with the NPC who trades there. The barter windows key everything by that region key (`ToClient_barterWrapper(RegionKey(regionKey))` in `panel_window_barterinfosearch_2.luac`), so this table is what ties a barter region to its NPC.
 
-Example:
+## Versions
 
-```text
-region 572  Portanen Island     -> NPC 58947 Supio
-region 181  Lema Island         -> NPC 58954 Chikao
-region 998  Crow Merchants' Vessel -> NPC 50818 Olcia Viano
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
+| 1      | 1784 and later | 3473    | `barter_npclist.bss` | 384   | 91 Row  | 4         |
+
+| Layout | File                 | Known          | Unknown    |
+| ------ | -------------------- | -------------- | ---------- |
+| 1      | `barter_npclist.bss` | 384 B (100.0%) | 0 B (0.0%) |
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,22 +28,22 @@ region 998  Crow Merchants' Vessel -> NPC 50818 Olcia Viano
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field              | Notes                                                    |
-| ------- | ------- | ------------------ | -------------------------------------------------------- |
-| `+0x00` | char[4] | magic              | `PABR` (ASCII)                                           |
-| `+0x04` | u32     | record_count       | `91` on client 3464                                      |
-| `+0x08` | row[]   | records            | `record_count` rows of 4 bytes                           |
-| varies  | u32     | string_count       | Always `0`: the PABR string table is present but empty   |
-| EOF-8   | u32     | string_table_start | Absolute offset of `string_count`; equals `8 + 4 × count` |
-| EOF-4   | u32     | zero_trailer       | Always `0`                                               |
+### File Layout
+
+| Offset              | Type              | Field              | Notes                                                    |
+| ------------------- | ----------------- | ------------------ | -------------------------------------------------------- |
+| `+0x00`             | char[4]           | magic              | `PABR` (ASCII)                                           |
+| `+0x04`             | u32               | record_count       | `91` on client 3464                                      |
+| `+0x08`             | Row[record_count] | records            | See Row                                                  |
+| `records+0x00`      | String Table      | string_table       | The PABR string table, present but empty                 |
+| `string_table+0x00` | u32               | string_table_start | Absolute offset of `string_count`; equals `8 + 4 × count` |
+| `string_table+0x04` | u32               | zero               | Always `0`                                               |
 
 The file is `8 + 4 × 91 + 12 = 384` bytes on client 3464. The parser rejects a file whose rows do not end exactly at `string_table_start`.
 
-## Record Structure
-
-### Row (4 bytes, repeated `record_count` times)
+### Row (4 bytes)
 
 | Offset  | Type | Field             | Notes                                                                 |
 | ------- | ---- | ----------------- | --------------------------------------------------------------------- |
@@ -44,14 +52,12 @@ The file is `8 + 4 × 91 + 12 = 384` bytes on client 3464. The parser rejects a 
 
 Rows are in neither key nor character order.
 
-## Suggested UI Layout
+### String Table (variable: 4 bytes + strings)
 
-| Column        | Type | Notes                                                        |
-| ------------- | ---- | ------------------------------------------------------------ |
-| Region Key    | num  | `barter_region_key`                                          |
-| Region        | text | LOC type 17 name of `barter_region_key`                      |
-| Character ID  | num  | `character_id`                                               |
-| NPC           | text | LOC type 6 name of `character_id`                            |
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
 
 ## Notes
 

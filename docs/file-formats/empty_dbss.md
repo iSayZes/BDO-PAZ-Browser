@@ -24,26 +24,29 @@ of `0` and nothing else, on client 3464:
 `itemcouponreward.dbss` also declares zero records but has 12 bytes after the
 count; see [itemcouponreward](itemcouponreward_dbss.md).
 
-Example:
+## Versions
 
-```text
-count: 0
-records: none
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None. Each offset companion in the table above is a file of its own with
+the same layout as its main file.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-Main files and offset companions share one layout.
+### File Layout
+
+Main files and offset companions share one layout. No record structure can
+be inferred because the files hold no records.
 
 | Offset  | Type | Field | Notes                                  |
 | ------- | ---- | ----- | -------------------------------------- |
 | `+0x00` | u32  | count | Number of records; `0` in every file   |
-
-## Record Structure
-
-No record structure can be inferred because the files hold no records.
 
 ## Notes
 

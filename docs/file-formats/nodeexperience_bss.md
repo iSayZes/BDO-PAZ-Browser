@@ -4,40 +4,34 @@
 
 EXP table of the node levels: the EXP a node needs to go from one node level to the next. Players raise a node's level on the world map by investing Energy ("Energy can be consumed to increase a Node's level."). One 15-byte row per level, levels 0 to 20 on client 3464.
 
-Example (client 3464):
+## Versions
 
-```text
-Lv 0   EXP 1
-Lv 1   EXP 10,000
-Lv 2   EXP 20,000
-Lv 3   EXP 40,000
-Lv 19  EXP 200,000
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 `PABR` magic, a u32 row count, the rows, then the 12-byte PABR trailer. 335 bytes on client 3464 (21 rows).
 
-| Offset  | Type    | Field     | Notes                                  |
-| ------- | ------- | --------- | -------------------------------------- |
-| `+0x00` | char[4] | magic     | `PABR` (ASCII)                         |
-| `+0x04` | u32     | row_count | 21 on client 3464                      |
-| `+0x08` | row[]   | rows      | `row_count` rows of 15 bytes, level 0 first |
-| varies  | trailer | trailer   | 12 bytes                               |
-
-### Trailer (12 bytes)
-
-| Offset  | Type | Field       | Notes                                   |
-| ------- | ---- | ----------- | --------------------------------------- |
-| `+0x00` | u32  | unknown_00  | `0`                                     |
-| `+0x04` | u32  | end_of_data | Byte offset right after the last row (`0x143` on client 3464) |
-| `+0x08` | u32  | unknown_08  | `0`                                     |
+| Offset     | Type                 | Field        | Notes                                  |
+| ---------- | -------------------- | ------------ | -------------------------------------- |
+| `+0x00`    | char[4]              | magic        | `PABR` (ASCII)                         |
+| `+0x04`    | u32                  | row_count    | 21 on client 3464                      |
+| `+0x08`    | Level Row[row_count] | rows         | `row_count` rows of 15 bytes, level 0 first |
+| `EOF-0x0C` | u32                  | string_count | `0`: the empty PABR string table       |
+| `EOF-0x08` | u32                  | end_of_data  | Byte offset right after the last row (`0x143` on client 3464) |
+| `EOF-0x04` | u32                  | zero         | `0`                                    |
 
 The parser checks that `8 + row_count x 15` equals `end_of_data` and that the trailer closes the file.
-
-## Record Structure
 
 ### Level Row (15 bytes)
 

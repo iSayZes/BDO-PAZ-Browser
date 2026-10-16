@@ -6,46 +6,53 @@ Defines the new-quest (event) list: quest IDs grouped under events such as `[Eve
 
 [`mainquest.bss`](mainquest_bss.md), [`recommendationquest.bss`](recommendationquest_bss.md) and [`repetitionquest.bss`](repetitionquest_bss.md) share this layout, each with its own LOC type; one handler reads all four. This doc is the layout reference for all four.
 
-Example:
+## Versions
 
-```text
-group 0 (key 1, "[Event] Mastering Life Skills", 2018-10-3 10:00 to 2018-11-7 09:59)
-  -> quest 11059 / 9 -> [Event] Love for Pets
-quest 11101 / 11 -> shown while checkperiodbyGmt(0, 2019/9/4-00:00, 2019/9/25-09:00);
-                    hidden by clearQuest(11101,9);<or>clearQuest(11101,10);<or>...
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
 
-All multi-byte values are little-endian unless noted otherwise.
+## Companion Files
 
-```text
-header (8)
-group[group_count]:
-    group header (11)
-    quest reference row (17) x quest_ref_count
-    group trailer (12)
-string table: u32 string_count, string entry x string_count
-file trailer (8)
-```
+None. LOC type 58 holds the English group names and condition lines (see Localization).
 
-### Header (8 bytes)
+All multi-byte values are little-endian.
 
-| Offset  | Type    | Field       | Notes                                      |
-| ------- | ------- | ----------- | ------------------------------------------ |
-| `+0x00` | char[4] | magic       | `PABR` (ASCII)                             |
-| `+0x04` | u32     | group_count | Number of quest groups; `232` on client 3458 |
+## Layout 1
 
-### Group Header (11 bytes)
+### File Layout
 
-| Offset  | Type | Field           | Notes                                                                   |
-| ------- | ---- | --------------- | ----------------------------------------------------------------------- |
-| `+0x00` | u16  | group_key       | The group's key, see Localization; unique per group                     |
-| `+0x02` | u32  | name_index      | String table index of the Korean group name (`group_name_kr`); `0` for the first group |
-| `+0x06` | u8   | group_type      | `0` on most groups; the server's `NewQuestType`, see Field Names and Open Questions |
-| `+0x07` | u32  | quest_ref_count | Number of following rows                                                |
+A header, the groups back to back, the PABR string table and the file trailer.
 
-### Quest Reference Row (17 bytes, repeated `quest_ref_count` times)
+| Offset              | Type                | Field        | Notes                                                    |
+| ------------------- | ------------------- | ------------ | -------------------------------------------------------- |
+| `+0x00`             | char[4]             | magic        | `PABR` (ASCII)                                           |
+| `+0x04`             | u32                 | group_count  | Number of quest groups; `232` on client 3458             |
+| `+0x08`             | Group[group_count]  | groups       | See Group                                                |
+| `groups+0x00`       | String Table        | string_table | See String Table                                         |
+| `string_table+0x00` | u32                 | table_start  | File offset of the string table's `string_count` (`0x69F1` here) |
+| `string_table+0x04` | u32                 | zero         | Observed `0`                                             |
+
+### Group (variable: 23 bytes + quest rows)
+
+An 11-byte group header, `quest_ref_count` quest rows and a 12-byte group trailer.
+
+| Offset      | Type                        | Field             | Notes                                                                   |
+| ----------- | --------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| `+0x00`     | u16                         | group_key         | The group's key, see Localization; unique per group                     |
+| `+0x02`     | u32                         | name_index        | String table index of the Korean group name (`group_name_kr`); `0` for the first group |
+| `+0x06`     | u8                          | group_type        | `0` on most groups; the server's `NewQuestType`, see Field Names and Open Questions |
+| `+0x07`     | u32                         | quest_ref_count   | Number of following rows                                                |
+| `+0x0B`     | Quest Reference Row[quest_ref_count] | rows | See Quest Reference Row                                                      |
+| `rows+0x00` | u32                         | event_start_index | String table index of the event start (`event_start`), e.g. `2019-10-16 04:00`; the empty string in the other three lists |
+| `rows+0x04` | u32                         | event_end_index   | String table index of the event end (`event_end`), e.g. `2019-11-13 05:59`; always after the start |
+| `rows+0x08` | u32                         | unknown_tail_08   | Observed `0` in every group of the four files                          |
+
+The start of group 1 `[Event] Black Desert 2019 Halloween` is `2019-10-16 04:00`, and its English condition lines read `Oct 16 (after maintenance) - ...`.
+
+The times are stored without zero padding (`2018-10-3 10:00`, `2019-7-24 9:00`). The parser pads month, day and hour (`2018-10-03 10:00`) so they sort as text, and keeps text in any other form as stored. All 464 times on client 3458 have the `YYYY-M-D H:MM` form.
+
+### Quest Reference Row (17 bytes)
 
 | Offset  | Type | Field          | Notes                                                                   |
 | ------- | ---- | -------------- | ----------------------------------------------------------------------- |
@@ -56,27 +63,21 @@ file trailer (8)
 | `+0x0C` | u32  | visible_conditions_index | String table index of the visible condition script (`visible_conditions`), often the empty string; see String Table |
 | `+0x10` | u8   | is_sub_quest   | `0` on every row here; `1` on 7 `mainquest.bss` rows                    |
 
-### Group Trailer (12 bytes)
+Derived packed quest ID:
 
-| Offset  | Type | Field        | Notes                                                                  |
-| ------- | ---- | ------------ | ---------------------------------------------------------------------- |
-| `+0x00` | u32  | event_start_index | String table index of the event start (`event_start`), e.g. `2019-10-16 04:00`; the empty string in the other three lists |
-| `+0x04` | u32  | event_end_index   | String table index of the event end (`event_end`), e.g. `2019-11-13 05:59`; always after the start |
-| `+0x08` | u32  | unknown_08   | Observed `0` in every group of the four files                          |
+```text
+packed_quest_id = (quest_id << 16) | quest_chain_id
+```
 
-The start of group 1 `[Event] Black Desert 2019 Halloween` is `2019-10-16 04:00`, and its English condition lines read `Oct 16 (after maintenance) - ...`.
+### String Table (variable: 4 bytes + strings)
 
-The times are stored without zero padding (`2018-10-3 10:00`, `2019-7-24 9:00`). The parser pads month, day and hour (`2018-10-03 10:00`) so they sort as text, and keeps text in any other form as stored. All 464 times on client 3458 have the `YYYY-M-D H:MM` form.
+Follows the last group: a u32 `string_count`, then `string_count` entries, indexed from `0`. It is the counted string table other PABR `.bss` files end with (`exploration.bss`, `npcsimply.bss`, `menu.bss`), read by `_common/pabr_strings.py`.
 
-### String Table
+| Offset  | Type               | Field        | Notes                                     |
+| ------- | ------------------ | ------------ | ----------------------------------------- |
+| `+0x00` | u32                | string_count | Number of entries                         |
+| `+0x04` | pstr[string_count] | strings      | `is_wide` is `1` on every entry here: UTF-16-LE (`0` would be UTF-8); `length` is the text length in bytes, no terminator |
 
-Follows the last group trailer: a u32 `string_count`, then `string_count` entries, indexed from `0`. It is the counted string table other PABR `.bss` files end with (`exploration.bss`, `npcsimply.bss`, `menu.bss`), read by `_common/pabr_strings.py`.
-
-| Offset  | Type      | Field  | Notes                                     |
-| ------- | --------- | ------ | ----------------------------------------- |
-| `+0x00` | u8        | is_wide | `1` on every entry here: UTF-16-LE (`0` would be UTF-8) |
-| `+0x01` | u32       | length  | Text length in bytes                      |
-| `+0x05` | u8[]      | text    | `length` bytes, no terminator             |
 
 The table holds each distinct string once, in first-use order: the group name, then each row's condition line, hide condition and visible condition, then the trailer's dates. On client 3458 every entry is used (1,840 here). Index `0` is the first group's name, and the empty string sits where it is first used: index `2` here and in `mainquest.bss` and `recommendationquest.bss`, `31` in `repetitionquest.bss`. That is why the condition indexes repeat one value on so many rows.
 
@@ -90,19 +91,6 @@ The quest window (`panel_window_quest_all`) lists a quest of these groups only w
 Calls across the four files on client 3458: `hide_conditions` holds `clearquest` 2,846 times and `progressquest` 1,990 times against 336 negated calls, and never `getLevel` or `checkperiodbyGmt`. `visible_conditions` holds `isContentsGroupOpen` 6,833 times, `checkperiodbyGmt` 5,494, `getLevel` 1,410 and a negated `clearquest` / `progressquest` 4,577 times.
 
 Neither condition holds every check its LOC line names: of 496 `repetitionquest.bss` lines that start `from Lv. N`, 75 have the level check in a script. The rest is likely checked by the quest itself.
-
-### File Trailer (8 bytes)
-
-| Offset  | Type | Field         | Notes                                                    |
-| ------- | ---- | ------------- | -------------------------------------------------------- |
-| `+0x00` | u32  | table offset  | File offset of the string table's `string_count` (`0x69F1` here) |
-| `+0x04` | u32  | unknown_04    | Observed `0`                                             |
-
-Derived packed quest ID:
-
-```text
-packed_quest_id = (quest_id << 16) | quest_chain_id
-```
 
 ## Localization
 

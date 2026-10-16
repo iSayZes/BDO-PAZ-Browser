@@ -4,35 +4,33 @@
 
 Max level of every fitness stat. Value N is the max level of fitness type N, numbered as in the Fitness Type table of [fitnesslevel](fitnesslevel_dbss.md) (`0` Breath, `1` Strength, `2` Health). On client 3464 all three values are `50`, and each `fitnesslevel.dbss` block ends on that level (51 rows for levels 0 to 50).
 
-Example:
+## Versions
 
-```text
-Breath    Max Level 50
-Strength  Max Level 50
-Health    Max Level 50
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None. The fitness type names come from `_dbss/fitnesslevel/labels.py` (see Notes).
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-`PABR` magic, a bare u32 array with no count, then the 12-byte PABR trailer. 28 bytes on client 3464.
+### File Layout
 
-| Offset   | Type    | Field     | Notes                                                    |
-| -------- | ------- | --------- | -------------------------------------------------------- |
-| `+0x00`  | char[4] | magic     | `PABR` (ASCII)                                           |
-| `+0x04`  | u32[]   | max_level | One per fitness type; value N is the max level of type N |
-| varies   | trailer | trailer   | 12 bytes                                                 |
+`PABR` magic, a bare u32 array with no count, then the 12-byte PABR trailer (the last three rows). 28 bytes on client 3464.
+
+| Offset     | Type       | Field     | Notes                                                    |
+| ---------- | ---------- | --------- | -------------------------------------------------------- |
+| `+0x00`    | char[4]    | magic     | `PABR` (ASCII)                                           |
+| `+0x04`    | u32[..end] | max_level | One per fitness type; value N is the max level of type N; runs up to the trailer |
+| `EOF-0x0C` | u32        | string_count | `0`: the empty PABR string table                      |
+| `EOF-0x08` | u32        | end_of_data | `16`; byte offset right after the last `max_level`     |
+| `EOF-0x04` | u32        | zero      | `0`                                                      |
 
 The array length is not stored; the parser takes it from the trailer's `end_of_data`: `(end_of_data - 4) / 4` values.
-
-### Trailer (12 bytes)
-
-| Offset  | Type | Field       | Observed | Notes                                          |
-| ------- | ---- | ----------- | -------- | ---------------------------------------------- |
-| `+0x00` | u32  | unknown_00  | `0`      |                                                |
-| `+0x04` | u32  | end_of_data | `16`     | Byte offset right after the last `max_level`   |
-| `+0x08` | u32  | unknown_08  | `0`      |                                                |
 
 The same trailer closes `acceptquest.bss` and the PABR offset files.
 

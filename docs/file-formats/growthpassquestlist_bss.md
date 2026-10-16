@@ -2,39 +2,21 @@
 
 ## Purpose
 
-Quest list of the Growth Pass window (`panel_window_growthpass*.luac`). Same layout and handler as [`allquestlist.bss`](allquestlist_bss.md): a `PABR` list of packed quest IDs.
+Quest list of the Growth Pass window (`panel_window_growthpass*.luac`).
 
-Example (client 3464):
+Same layout as [`allquestlist.bss`](allquestlist_bss.md), read by the same handler: a `PABR` list of packed quest IDs. Each `packed_quest_id` is `(quest_id << 16) | quest_chain_id`, the LOC type 18 title key. The trailer's `end_of_entries` is `8 + count * 4`, where the trailer starts.
 
-```text
-quest 4464 / 1 -> [Main] Complete Embarking on an Adventure
-quest 4472 / 1 -> [Olvia Academy] Academy Enrollment
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+The same as [`allquestlist.bss`](allquestlist_bss.md).
 
 All multi-byte values are little-endian.
-
-## File Layout
-
-### Header (8 bytes)
-
-| Offset  | Type  | Field | Notes             |
-| ------- | ----- | ----- | ----------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)    |
-| `+0x04` | u32   | count | Number of entries |
-
-### Entry (4 bytes, repeated `count` times)
-
-| Offset  | Type | Field           | Notes                                                       |
-| ------- | ---- | --------------- | ----------------------------------------------------------- |
-| `+0x00` | u32  | packed_quest_id | `(quest_id << 16) \| quest_chain_id`; LOC type 18 title key |
-
-### Trailer (12 bytes)
-
-| Offset  | Type | Field          | Notes                                     |
-| ------- | ---- | -------------- | ----------------------------------------- |
-| `+0x00` | u32  | unknown_00     | `0`                                       |
-| `+0x04` | u32  | end_of_entries | `8 + count * 4`, where the trailer starts |
-| `+0x08` | u32  | unknown_08     | `0`                                       |
 
 ## Quest Chains
 

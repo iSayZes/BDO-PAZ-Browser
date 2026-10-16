@@ -10,10 +10,11 @@ range. The window reads a row through `ToClient_bossSpawnList()` and, by
 `ToClient_bossSpawnMaxLevel`. The per-level reward and image are in
 [`boss_spawnlevel.bss`](boss_spawnlevel_bss.md), which uses the same keys.
 
-```text
-key 3  Giant Mudster  levels 4  position (32,259, 379, -112,131)  range 2,000
-key 5  Khan           levels 4  position (-101,306, -7,274, 598,938)  range 500
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,35 +25,37 @@ key 5  Khan           levels 4  position (-101,306, -7,274, 598,938)  range 500
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset             | Type    | Field       | Notes                                              |
-| ------------------ | ------- | ----------- | -------------------------------------------------- |
-| `+0x00`            | char[4] | magic       | `PABR`                                             |
-| `+0x04`            | u32     | row_count   | `6` on client 3464                                 |
-| `+0x08`            | row[]   | rows        | `row_count` 43-byte rows                           |
-| rows end           | u32     | string_count | `0`; the string table is empty                    |
-| end - 8            | u32     | table_start | Where the rows end                                 |
-| end - 4            | u32     | zero        |                                                    |
+### File Layout
+
+| Offset              | Type           | Field        | Notes                                              |
+| ------------------- | -------------- | ------------ | -------------------------------------------------- |
+| `+0x00`             | char[4]        | magic        | `PABR`                                             |
+| `+0x04`             | u32            | row_count    | `6` on client 3464                                 |
+| `+0x08`             | Row[row_count] | rows         | See Row                                            |
+| `rows+0x00`         | String Table   | string_table | The string table is empty                          |
+| `string_table+0x00` | u32            | table_start  | Where the rows end                                 |
+| `string_table+0x04` | u32            | zero         |                                                    |
 
 ### Row (43 bytes)
 
-| Offset  | Type    | Field       | Notes                                                                  |
-| ------- | ------- | ----------- | ---------------------------------------------------------------------- |
-| `+0x00` | u32     | key         | `BossSpawnKey`; `8, 5, 4, 3, 2, 1` in file order on client 3464        |
-| `+0x04` | u32     | max_level   | `4` on every row; `boss_spawnlevel.bss` has 4 levels for every key     |
-| `+0x08` | u32     | unknown_08  | `1` on every row                                                       |
-| `+0x0C` | f32 x 3 | position    | World position; the second value is the height                         |
-| `+0x18` | u32     | range       | `ToClient_bossSpawnRange`; `500` (keys 5, 8) or `2000`                 |
-| `+0x1C` | u32     | unknown_1c  | `11` on every row                                                      |
-| `+0x20` | u8      | unknown_20  | `1` on every row                                                       |
-| `+0x21` | u8      | unknown_21  | `0` on keys 5 and 8, `1` on the rest                                    |
-| `+0x22` | u8[4]   | unknown_22  | Zero on every row                                                      |
-| `+0x26` | u8      | unknown_26  | `1` on every row                                                       |
-| `+0x27` | u8      | unknown_27  | Zero on every row                                                      |
-| `+0x28` | u8      | unknown_28  | Same as `unknown_21` on every row                                      |
-| `+0x29` | u8      | unknown_29  | `1` on every row                                                       |
-| `+0x2A` | u8      | unknown_2a  | Zero on every row                                                      |
+| Offset  | Type     | Field       | Notes                                                                  |
+| ------- | -------- | ----------- | ---------------------------------------------------------------------- |
+| `+0x00` | u32      | key         | `BossSpawnKey`; `8, 5, 4, 3, 2, 1` in file order on client 3464        |
+| `+0x04` | u32      | max_level   | `4` on every row; `boss_spawnlevel.bss` has 4 levels for every key     |
+| `+0x08` | u32      | unknown_08  | `1` on every row                                                       |
+| `+0x0C` | f32[3]   | position    | World position; the second value is the height                         |
+| `+0x18` | u32      | range       | `ToClient_bossSpawnRange`; `500` (keys 5, 8) or `2000`                 |
+| `+0x1C` | u32      | unknown_1c  | `11` on every row                                                      |
+| `+0x20` | u8       | unknown_20  | `1` on every row                                                       |
+| `+0x21` | u8       | unknown_21  | `0` on keys 5 and 8, `1` on the rest                                    |
+| `+0x22` | bytes[4] | unknown_22  | Zero on every row                                                      |
+| `+0x26` | u8       | unknown_26  | `1` on every row                                                       |
+| `+0x27` | u8       | unknown_27  | Zero on every row                                                      |
+| `+0x28` | u8       | unknown_28  | Same as `unknown_21` on every row                                      |
+| `+0x29` | u8       | unknown_29  | `1` on every row                                                       |
+| `+0x2A` | u8       | unknown_2a  | Zero on every row                                                      |
 
 Keys, with the boss from `boss_spawnlevel.bss` (client 3464):
 
@@ -64,6 +67,13 @@ Keys, with the boss from `boss_spawnlevel.bss` (client 3464):
 | 4   | Org               | 2000  |
 | 5   | Khan              | 500   |
 | 8   | Gumiho & Duoksini | 500   |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Notes
 

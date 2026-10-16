@@ -4,13 +4,11 @@
 
 Quest order list. The file is a compact `PABR` table of packed quest IDs, one per `quest.dbss` record and in the same physical order as the records in `quest.dbss`. The IDs line up with LOC quest title keys and use the packed ID scheme of `quest.dbss`.
 
-Example:
+## Versions
 
-```text
-slot 0 -> packed_quest_id 795132 -> chain 8700, quest 12 -> quest.dbss record 0
-slot 1 -> packed_quest_id 138172 -> chain 7100, quest 2  -> quest.dbss record 1
-slot 2 -> packed_quest_id 196891 -> chain 283, quest 3   -> quest.dbss record 2
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,38 +23,24 @@ slot 2 -> packed_quest_id 196891 -> chain 283, quest 3   -> quest.dbss record 2
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type  | Field | Notes                                           |
-| ------- | ----- | ----- | ----------------------------------------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                                  |
-| `+0x04` | u32   | count | Number of entries; `19,327` after the 2026-09-27 client update, `18,988` before it, `19,599` fixture |
+| Offset              | Type           | Field          | Notes                                           |
+| ------------------- | -------------- | -------------- | ----------------------------------------------- |
+| `+0x00`             | char[4]        | magic          | `PABR` (ASCII)                                  |
+| `+0x04`             | u32            | count          | Number of entries; `19,327` after the 2026-09-27 client update, `18,988` before it, `19,599` fixture |
+| `+0x08`             | Entry[count]   | entries        | See Entry                                       |
+| `entries+0x00`      | String Table   | string_table   | The 12-byte trailer starts here; see String Table |
+| `string_table+0x00` | u32            | end_of_entries | Byte offset immediately after entries, `8 + count × 4` |
+| `string_table+0x04` | u32            | zero           | Observed `0`                                    |
 
-### Entry (4 bytes, repeated `count` times)
+### Entry (4 bytes)
 
 | Offset  | Type | Field           | Notes                                                     |
 | ------- | ---- | --------------- | --------------------------------------------------------- |
-| `+0x00` | u32  | packed_quest_id | Packed as `(quest_id << 16) \| quest_chain_id`            |
-
-### Trailer (12 bytes)
-
-Follows the last entry.
-
-| Offset  | Type | Field          | Notes                                                              |
-| ------- | ---- | -------------- | ------------------------------------------------------------------ |
-| `+0x00` | u32  | unknown_00     | Observed `0`                                                       |
-| `+0x04` | u32  | end_of_entries | Byte offset immediately after entries, `8 + count × 4`             |
-| `+0x08` | u32  | unknown_08     | Observed `0`                                                       |
-
-## Record Structure
-
-### Quest List Entry (4 bytes)
-
-| Offset  | Type | Field           | Notes                                          |
-| ------- | ---- | --------------- | ---------------------------------------------- |
-| `+0x00` | u32  | packed_quest_id | Split into `quest_chain_id` and `quest_id`     |
+| `+0x00` | u32  | packed_quest_id | Packed as `(quest_id << 16) \| quest_chain_id`; split into `quest_chain_id` and `quest_id` |
 
 Derived fields:
 
@@ -64,6 +48,15 @@ Derived fields:
 quest_chain_id = packed_quest_id & 0xFFFF
 quest_id       = packed_quest_id >> 16
 ```
+
+### String Table (variable: 4 bytes + strings)
+
+The PABR string table of `acceptquest.bss`, here with no strings.
+
+| Offset  | Type               | Field        | Notes        |
+| ------- | ------------------ | ------------ | ------------ |
+| `+0x00` | u32                | string_count | Observed `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty        |
 
 ## Reference Rows
 

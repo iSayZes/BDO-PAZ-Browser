@@ -4,13 +4,11 @@
 
 The NPC dialog that gives each quest: one 8-byte row per quest with the quest key, the NPC's character key and the dialog index. `dialog_index << 16 | npc_id` is the `detail_dialog.dbss` key of the dialog, and the same value is `accept_dialog_key` at `+0x00` of the quest's `quest.dbss` record. [completequest_bss.md](completequest_bss.md) has the same layout for the dialog that takes the quest.
 
-Example:
+## Versions
 
-```text
-quest 1001 / 49 (Dins, Spoiling for a Fight)
-  npc_id 544 (Villager), dialog_index 430
-  detail_dialog key 430 << 16 | 544 = 0x01AE0220, which LOC type 38 names "Dins"
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,24 +18,24 @@ quest 1001 / 49 (Dins, Spoiling for a Fight)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset             | Type    | Field       | Notes |
-| ------------------ | ------- | ----------- | ----- |
-| `+0x00`            | char[4] | magic       | ASCII `PABR` |
-| `+0x04`            | u32     | count       | Number of rows; `19,267` on client 3464, the count of `allquestlist.bss` |
-| `+0x08`            | row[]   | rows        | 8-byte rows repeated `count` times |
-| `8 + count * 8`    | u32     | string_count | `0`: the PABR string table of `exploration.bss`, here with no strings |
-| EOF - 8            | u32     | rows_end    | `8 + count * 8`, where the rows end (`154,144` on client 3464) |
-| EOF - 4            | u32     | zero        | Always `0` |
+### File Layout
+
+| Offset              | Type                   | Field        | Notes |
+| ------------------- | ---------------------- | ------------ | ----- |
+| `+0x00`             | char[4]                | magic        | ASCII `PABR` |
+| `+0x04`             | u32                    | count        | Number of rows; `19,267` on client 3464, the count of `allquestlist.bss` |
+| `+0x08`             | Accept Quest Row[count] | rows         | See Accept Quest Row |
+| `rows+0x00`         | String Table           | string_table | The PABR string table of `exploration.bss`, here with no strings |
+| `string_table+0x00` | u32                    | rows_end     | `8 + count * 8`, where the rows end (`154,144` on client 3464) |
+| `string_table+0x04` | u32                    | zero         | Always `0` |
 
 The file is `8 + count * 8 + 12` bytes (`154,156` on client 3464).
 
 The rows are grouped by NPC: every NPC's rows form one run, and the rows without an NPC form one more. On client 3464 that is 1,986 runs for 1,985 NPCs plus the no-NPC run. The runs follow no sorted order of NPC or quest key.
 
-## Record Structure
-
-### Accept Quest Row (8 bytes, repeated `count` times)
+### Accept Quest Row (8 bytes)
 
 | Offset  | Type | Field          | Notes |
 | ------- | ---- | -------------- | ----- |
@@ -51,6 +49,13 @@ Derived packed quest ID, as in `allquestlist.bss`:
 ```text
 packed_quest_id = (quest_id << 16) | quest_chain_id
 ```
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Reference Rows
 

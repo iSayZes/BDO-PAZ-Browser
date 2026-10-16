@@ -6,13 +6,21 @@ from collections.abc import Mapping, Sequence
 
 from .markdown import numbered_lines, tables
 from .model import Layout
+from .reader import COMPANION_HEADING
+
+# What `index_rows` returns, as the readers of it take it.
+IndexRows = Mapping[str, list[tuple[str, str]]]
 
 _FIRST_CODE = re.compile(r"`([^`]+)`")
 _DOC_LINK = re.compile(r"\(file-formats/([^)#]+)")
 _INDEX_COLUMNS = ("File", "Description", "Docs")
-_COMPANION_HEADING = re.compile(r"^`(?P<file>[a-z0-9_.]+)`$")
 # Index rows such as `*.ai` or `{a,b}stat.bss` name a family, not one file.
 _PATTERN_CHARS = "*{"
+
+
+def is_file_pattern(name: str) -> bool:
+    """True for an index row that names a family of files, such as `*.ai` or `{a,b}stat.bss`."""
+    return any(char in name for char in _PATTERN_CHARS)
 
 
 def index_rows(documented_formats: str) -> dict[str, list[tuple[str, str]]]:
@@ -32,12 +40,12 @@ def index_rows(documented_formats: str) -> dict[str, list[tuple[str, str]]]:
     return rows
 
 
-def doc_files(doc_name: str, layouts: Sequence[Layout], rows: Mapping[str, list[tuple[str, str]]]) -> tuple[str, ...]:
+def doc_files(doc_name: str, layouts: Sequence[Layout], rows: IndexRows) -> tuple[str, ...]:
     """The game files a doc covers: its index rows, and every file a ``### `file` `` heading names."""
-    files = {file for file, _ in rows.get(doc_name, []) if not any(char in file for char in _PATTERN_CHARS)}
+    files = {file for file, _ in rows.get(doc_name, []) if not is_file_pattern(file)}
     for layout in layouts:
         for structure in layout.structures:
-            match = _COMPANION_HEADING.match(structure.name)
+            match = COMPANION_HEADING.match(structure.name)
             if match:
                 files.add(match.group("file"))
     return tuple(sorted(files))

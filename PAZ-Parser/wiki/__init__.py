@@ -11,6 +11,7 @@ import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+from format_docs import TEMPLATE_PREFIX
 from format_docs.doc_index import index_rows
 
 from .doc_page import doc_page
@@ -24,7 +25,6 @@ __all__ = ["BuildResult", "build_site"]
 FORMATS_DIR = "file-formats"
 DOCUMENTED_FORMATS = "documented-formats.md"
 README = "README.md"
-TEMPLATE_PREFIX = "_"
 _STATIC_SOURCE = Path(__file__).parent / "static"
 
 

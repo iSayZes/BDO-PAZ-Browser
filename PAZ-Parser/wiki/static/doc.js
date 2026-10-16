@@ -8,8 +8,7 @@
     var sorted = FORMATS.slice().sort(function (a, b) { return W.sortName(a).localeCompare(W.sortName(b)); });
     var items = [];
     W.groups(sorted).forEach(function (group) {
-      if (!group.items.length) return;
-      if (items.length) items.push('<li class="side-group' + (group.label ? "" : " blank") + '" data-group="' + group.index + '">' + W.esc(group.label) + "</li>");
+      if (group.divider) items.push('<li class="side-group' + (group.label ? "" : " blank") + '" data-group="' + group.index + '">' + W.esc(group.label) + "</li>");
       group.items.forEach(function (f) { items.push(item(f, group.index)); });
     });
     var list = document.getElementById("fmtList");
@@ -26,11 +25,10 @@
         if (match) { shown++; visible[li.dataset.group] = true; }
       });
       // A divider shows when its group and an earlier group both have a match.
-      var before = false;
       document.querySelectorAll("#fmtList li.side-group").forEach(function (divider) {
         var group = Number(divider.dataset.group);
-        before = before || Object.keys(visible).some(function (g) { return Number(g) < group; });
-        divider.hidden = !(before && visible[group]);
+        var earlier = Object.keys(visible).some(function (g) { return Number(g) < group; });
+        divider.hidden = !(earlier && visible[group]);
       });
       document.getElementById("fmtEmpty").hidden = shown > 0;
     });

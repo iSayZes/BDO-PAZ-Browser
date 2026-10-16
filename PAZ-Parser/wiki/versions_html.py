@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from html import escape
 
 from format_docs.versions import VersionRow, clients_text, read_rows
@@ -26,9 +26,11 @@ def layout_versions(text: str, newest_layout: int) -> tuple[LayoutVersions, ...]
     found: list[LayoutVersions] = []
     for layout in sorted({row.layout for row in rows}, reverse=True):
         own = tuple(row for row in rows if row.layout == layout)
-        first = own[0]
+        checked = max(row.checked for row in own)
+        # The range over every file of the layout, so a file added later does not narrow it.
+        span = replace(own[0], first=min(row.first for row in own), checked=checked)
         found.append(LayoutVersions(
-            layout, clients_text(first, newest_layout), max(row.checked for row in own),
+            layout, clients_text(span, newest_layout), checked,
             sum(row.known for row in own), sum(row.unknown for row in own), own,
         ))
     return tuple(found)

@@ -18,8 +18,6 @@ from .walk_model import FieldBytes, FileFit, RowStats, Unwalkable, WalkError
 
 _FORMATS = {"u8": "B", "i8": "b", "u16": "H", "i16": "h", "u32": "I", "i32": "i", "u64": "Q", "i64": "q", "f32": "f", "f64": "d"}
 _STRING_UNITS = {"str8": 1, "str16": 2}
-_PSTR_HEAD = 5
-_COUNT_HEAD = 8
 
 
 @dataclass(frozen=True)
@@ -50,13 +48,13 @@ class _Walker:
         self.data = data
         self.structures = structures
         self.sizes_by_file = sizes_by_file
-        self.rows: dict[str, list[int]] = {}
+        self.rows: dict[str, RowStats] = {}
         self.covered: dict[tuple[str, str], int] = {}
         self.found_sizes: dict[int, int] = {}
         self._plans: dict[str, tuple[_Row, ...]] = {}
 
     def result(self, name: str) -> FileFit:
-        rows = {key: RowStats(count, low, high, total) for key, (count, low, high, total) in self.rows.items()}
+        rows = dict(self.rows)
         fields = tuple(
             FieldBytes(structure, field, not field.startswith(UNKNOWN_PREFIX), size)
             for (structure, field), size in self.covered.items()
@@ -179,22 +177,22 @@ class _Walker:
         return pos
 
     def _string(self, structure: Structure, row: _Row, pos: int, end: int | None) -> tuple[int, str]:
+        head = STRING_HEADS[row.spec.name]
+        self._need(structure, row, pos, head, end)
         if row.spec.name == "pstr":
-            self._need(structure, row, pos, _PSTR_HEAD, end)
             is_wide, length = struct.unpack_from("<BI", self.data, pos)
             if is_wide > 1:
                 raise WalkError(structure.name, row.field.name, pos, f"`is_wide` is {is_wide}, not 0 or 1")
-            self._need(structure, row, pos + _PSTR_HEAD, length, end)
-            text = self.data[pos + _PSTR_HEAD : pos + _PSTR_HEAD + length]
-            return pos + _PSTR_HEAD + length, text.decode("utf-16-le" if is_wide else "utf-8", errors="replace")
-        self._need(structure, row, pos, _COUNT_HEAD, end)
+            self._need(structure, row, pos + head, length, end)
+            text = self.data[pos + head : pos + head + length]
+            return pos + head + length, text.decode("utf-16-le" if is_wide else "utf-8", errors="replace")
         count = struct.unpack_from("<Q", self.data, pos)[0]
         if count >> 32:
             raise WalkError(structure.name, row.field.name, pos, f"the string count 0x{count:X} has a high word that is not 0")
         unit = _STRING_UNITS[row.spec.name]
-        self._need(structure, row, pos + _COUNT_HEAD, count * unit, end)
-        text = self.data[pos + _COUNT_HEAD : pos + _COUNT_HEAD + count * unit]
-        return pos + _COUNT_HEAD + count * unit, text.decode("ascii" if unit == 1 else "utf-16-le", errors="replace")
+        self._need(structure, row, pos + head, count * unit, end)
+        text = self.data[pos + head : pos + head + count * unit]
+        return pos + head + count * unit, text.decode("ascii" if unit == 1 else "utf-16-le", errors="replace")
 
     def _read_structures(self, structure: Structure, row: _Row, pos: int, end: int | None, values: Values) -> int:
         spec = row.spec
@@ -216,25 +214,36 @@ class _Walker:
         if target is None:
             raise Unwalkable(f"{structure.name} `{row.field.name}` runs to an end nothing gives")
         while pos < target:
-            pos = self._structure(element, pos, target)[0]
+            pos = self._next_structure(element, row, pos, target)
         if pos != target:
             raise WalkError(structure.name, row.field.name, pos, f"the last {element.name} ends at 0x{pos:X}, past 0x{target:X}")
         return pos
 
     def _read_while(self, element: Structure, row: _Row, pos: int, end: int | None) -> int:
         """Repeat `element` up to the first one whose stop field holds the stop value, that one left out."""
-        assert row.spec.count is not None
-        field_name, stop = str(row.spec.count.value).split(" ", 1)
+        count = row.spec.count
+        assert count is not None and count.stop is not None
+        field_name = str(count.value)
         peek = next((r for r in self._plan(element) if r.field.name == field_name), None)
-        if peek is None or peek.offset.anchor is not None or peek.spec.name not in NUMBER_SIZES or peek.spec.count is not None:
-            raise Unwalkable(f"`{field_name}` of {element.name} does not sit at a fixed offset")
-        stop_value = _literal(stop)
+        if (
+            peek is None or peek.offset.anchor is not None or peek.spec.name not in NUMBER_SIZES
+            or peek.spec.count is not None or peek.spec.condition is not None
+        ):
+            raise Unwalkable(f"`{field_name}` of {element.name} is not an unconditional number at a fixed offset")
+        stop_value = _literal(count.stop)
         while True:
             at = pos + peek.offset.value
             self._need(element, peek, at, NUMBER_SIZES[peek.spec.name], end)
             if struct.unpack_from("<" + _FORMATS[peek.spec.name], self.data, at)[0] == stop_value:
                 return pos
-            pos = self._structure(element, pos, end)[0]
+            pos = self._next_structure(element, row, pos, end)
+
+    def _next_structure(self, element: Structure, row: _Row, pos: int, end: int | None) -> int:
+        """Walk one `element` of a repeat that runs to an end; one that takes no bytes would repeat forever."""
+        after = self._structure(element, pos, end)[0]
+        if after == pos:
+            raise WalkError(element.name, row.field.name, pos, f"a {element.name} takes no bytes, so the repeat never ends")
+        return after
 
     def _holds(self, structure: Structure, row: _Row, condition: Condition, pos: int, values: Values) -> bool:
         return any(
@@ -246,7 +255,7 @@ class _Walker:
             raise WalkError(structure.name, row.field.name, pos, f"`{clause.field}` was not read before this condition")
         actual = values[clause.field]
         if clause.op in ("^=", "!^="):
-            holds = isinstance(actual, str) and actual.startswith(clause.value)
+            holds = isinstance(actual, str) and actual.startswith(_unquoted(clause.value))
         else:
             holds = actual == _literal(clause.value)
         return not holds if clause.op.startswith("!") else holds
@@ -269,13 +278,11 @@ class _Walker:
 
     def _count_row(self, name: str, size: int) -> None:
         stats = self.rows.get(name)
-        if stats is None:
-            self.rows[name] = [1, size, size, size]
-            return
-        stats[0] += 1
-        stats[1] = min(stats[1], size)
-        stats[2] = max(stats[2], size)
-        stats[3] += size
+        self.rows[name] = (
+            RowStats(1, size, size, size)
+            if stats is None
+            else RowStats(stats.count + 1, min(stats.smallest, size), max(stats.largest, size), stats.total + size)
+        )
 
     def _note_sizes(self, values: Values) -> None:
         offsets = [value for key, value in values.items() if OFFSET_FIELD.match(key) and isinstance(value, int)]
@@ -299,8 +306,12 @@ def _row(structure: Structure, field: Field) -> _Row:
     return _Row(field, spec, offset)
 
 
+def _unquoted(text: str) -> str:
+    return text.strip("`\"'")
+
+
 def _literal(text: str) -> int | float | str:
-    text = text.strip("`\"'")
+    text = _unquoted(text)
     try:
         return int(text, 0)
     except ValueError:

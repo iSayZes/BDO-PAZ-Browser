@@ -10,7 +10,7 @@ import re
 from collections.abc import Mapping
 from dataclasses import dataclass
 
-from format_docs import read_layouts, shared_layout_doc, structure_sizes
+from format_docs import read_layouts, shared_layout_path, structure_sizes
 from format_docs.markdown import numbered_lines, sections
 from format_docs.model import Field, Layout, Structure
 from format_docs.names import UNKNOWN_PREFIX
@@ -78,7 +78,7 @@ def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
     layouts, _ = read_layouts(doc.text)
     views: list[LayoutView] = []
     for index, layout in enumerate(layouts):
-        sizes = structure_sizes(layouts[: index + 1])
+        sizes = structure_sizes(layouts, index)
         intro, prose = _layout_prose(doc, layout)
         own = {
             structure.name: _structure_view(structure, sizes, prose.get(structure.name, ("", "", structure.name)), "own", None)
@@ -101,11 +101,8 @@ def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
 
 def layout_source(doc: DocSource) -> DocSource:
     """The doc whose layout sections describe `doc`'s bytes: `doc` itself, or the doc it shares a layout with."""
-    linked = shared_layout_doc(doc.text)
-    if linked is None or read_layouts(doc.text)[0]:
-        return doc
-    path = doc.path.parent / linked
-    return read_doc(path) if path.is_file() else doc
+    path = shared_layout_path(doc.text, doc.path.parent)
+    return doc if path is None else read_doc(path)
 
 
 def _structure_view(

@@ -5,14 +5,14 @@ from collections.abc import Mapping, Sequence
 
 from .doc_checks import resolved_structures
 from .model import Layout, Structure
-from .reader import FILE_LAYOUT
+from .reader import FILE_LAYOUT, companion_key
 from .walk_model import FileFit, LayoutFit, LayoutMiss, WalkError
 from .walker import walk_file
 
 
-def top_structure(structures: Mapping[str, Structure], file: str) -> Structure | None:
+def _top_structure(structures: Mapping[str, Structure], file: str) -> Structure | None:
     """The table a file starts with: its own ``### `file` `` heading, else `### File Layout`."""
-    return structures.get(f"`{file}`") or structures.get(FILE_LAYOUT)
+    return structures.get(companion_key(file)) or structures.get(FILE_LAYOUT)
 
 
 def fit_layouts(layouts: Sequence[Layout], files: Mapping[str, bytes]) -> LayoutFit | tuple[LayoutMiss, ...]:
@@ -31,11 +31,11 @@ def fit_layouts(layouts: Sequence[Layout], files: Mapping[str, bytes]) -> Layout
 
 def _fit_layout(number: int, structures: Mapping[str, Structure], files: Mapping[str, bytes]) -> LayoutFit | LayoutMiss:
     # Files with a table of their own are offset files; walk them first so their sizes are known.
-    order = sorted(files, key=lambda name: f"`{name}`" not in structures)
+    order = sorted(files, key=lambda name: companion_key(name) not in structures)
     sizes_by_file: dict[str, dict[int, int]] = {}
     fits: dict[str, FileFit] = {}
     for name in order:
-        top = top_structure(structures, name)
+        top = _top_structure(structures, name)
         if top is None:
             return LayoutMiss(number, name, WalkError(FILE_LAYOUT, "(none)", 0, "the layout has no table for this file"))
         try:

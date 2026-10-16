@@ -5,7 +5,7 @@
   var state = { q: "", ext: "", onlyQ: false, onlyIg: false, sort: "name", dir: 1 };
 
   function renderSummary() {
-    var known = 0, unknown = 0, oq = 0, ig = 0, withQ = 0, withIg = 0, full = 0, client = 0;
+    var known = 0, unknown = 0, oq = 0, ig = 0, withQ = 0, withIg = 0, full = 0, clients = [];
     FORMATS.forEach(function (f) {
       oq += f.oq; ig += f.ig;
       if (f.oq) withQ++;
@@ -14,13 +14,13 @@
       if (!f.unknown) full++;
       if (!f.client) return;
       known += f.known; unknown += f.unknown;
-      client = Math.max(client, f.client);
+      if (clients.indexOf(f.client) === -1) clients.push(f.client);
     });
     var s = W.share({ known: known, unknown: unknown });
     document.getElementById("summary").innerHTML =
       '<div class="sum overall"><span class="sum-label">Known</span>' +
       '<span class="sum-value" style="color:' + W.doneColor(s) + '">' + (s * 100).toFixed(1) + "%</span>" + W.bar(known, unknown) +
-      '<span class="sum-sub">' + W.num(known) + " of " + W.num(known + unknown) + " bytes of the game files the docs cover, client " + client + "</span></div>" +
+      '<span class="sum-sub">' + coveredText(known, unknown, clients) + "</span></div>" +
       documentedTile() +
       '<div class="sum"><span class="sum-label">Fully known</span><span class="sum-value">' + full + "</span>" +
       '<span class="sum-sub">no <code>unknown_*</code> field</span></div>' +
@@ -31,6 +31,14 @@
   }
 
   // How many of the game's .bss and .dbss files have a doc, by type.
+  // Docs can be checked on different clients; the line names every one the sum spans.
+  function coveredText(known, unknown, clients) {
+    if (!clients.length) return "No game files checked yet";
+    clients.sort(function (a, b) { return a - b; });
+    var named = clients.length === 1 ? "client " + clients[0] : "clients " + clients[0] + " to " + clients[clients.length - 1];
+    return W.num(known) + " of " + W.num(known + unknown) + " bytes of the game files the docs cover, " + named;
+  }
+
   function documentedTile() {
     var documented = 0, total = 0, parts = [];
     ["bss", "dbss"].forEach(function (ext) {
@@ -91,8 +99,7 @@
     var body = document.querySelector("#index tbody");
     var parts = [];
     W.groups(shown).forEach(function (group) {
-      if (!group.items.length) return;
-      if (parts.length) parts.push('<tr class="group-row' + (group.label ? "" : " blank") + '"><td colspan="5">' + W.esc(group.label) + "</td></tr>");
+      if (group.divider) parts.push('<tr class="group-row' + (group.label ? "" : " blank") + '"><td colspan="5">' + W.esc(group.label) + "</td></tr>");
       parts.push(group.items.map(row).join(""));
     });
     body.innerHTML = shown.length

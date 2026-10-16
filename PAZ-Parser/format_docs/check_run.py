@@ -5,14 +5,14 @@ PAZ folder (check_docs.py) and on bytes a test builds.
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-from .doc_checks import check_doc, read_layouts
+from .doc_checks import check_doc, is_converted, read_layouts
 from .doc_fit import fit_layouts
-from .doc_index import doc_files
+from .doc_index import IndexRows, doc_files
 from .versions import merge_rows, read_rows, rows_from_fit, write_rows
 from .walk_model import LayoutFit, Unwalkable
 
@@ -25,6 +25,7 @@ class Status(Enum):
     PROBLEMS = "doc problems"
     NO_FIT = "fits no layout"
     SKIPPED = "game check skipped"
+    NOT_CONVERTED = "skipped (not converted)"
 
     @property
     def stops_commit(self) -> bool:
@@ -47,10 +48,15 @@ class Client:
 
 
 def check_doc_file(
-    path: Path, rows: Mapping[str, list[tuple[str, str]]], client: Client | None, *, write: bool = True
+    path: Path, rows: IndexRows, client: Client | None, *, write: bool = True
 ) -> DocOutcome:
-    """Check `path`; with a client, walk its files and rewrite Versions in place when they change (unless `write` is off)."""
+    """Check `path`; with a client, walk its files and rewrite Versions in place when they change (unless `write` is off).
+
+    A doc not in the layout format yet is skipped: the doc rules do not apply to it.
+    """
     text = path.read_text(encoding="utf-8")
+    if not is_converted(text):
+        return DocOutcome(path, Status.NOT_CONVERTED)
     folder = path.parent
     problems = check_doc(text, folder)
     if problems:

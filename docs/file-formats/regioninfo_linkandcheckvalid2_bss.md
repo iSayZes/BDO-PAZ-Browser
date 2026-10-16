@@ -4,14 +4,11 @@
 
 Lists, per world region, the town regions it is linked to. It has one record for every [`regioninfo.bss`](regioninfo_bss.md) region, and each list is the same list that `regioninfo.bss` stores as `unknown_d2_keys`, so this file is a stand-alone copy of those link lists. 58 regions (all of them `MainTown` or `MinorTown`) have a list; the other 1536 have none.
 
-Example (client 3458):
+## Versions
 
-```text
-region_key=229  -> Valencia City: Valencia City, Ancado Inner Harbor
-region_key=1733 -> Angavu Outpost: Shakatu, Hakinza Sanctuary, Aal's Revelation, Angavu Outpost
-region_key=181  -> Lema Island: Lema Island
-region_key=1    -> (no list)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,20 +18,22 @@ region_key=1    -> (no list)
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field              | Notes |
-| ------- | ------- | ------------------ | ----- |
-| `+0x00` | char[4] | magic              | `PABR` (ASCII) |
-| `+0x04` | u32     | record_count       | Observed `1594`, the same as `regioninfo.bss` |
-| `+0x08` | record  | records            | Variable records packed back-to-back with no alignment |
-| varies  | pool    | string_table       | Shared `pabr_strings` layout; always empty here (`u32 count = 0`) |
-| EOF-8   | u32     | string_table_start | Absolute file offset of `string_table.count`; the record walk ends exactly there |
-| EOF-4   | u32     | zero               | Observed `0` |
+### File Layout
 
-## Record Structure
+| Offset              | Type                             | Field              | Notes |
+| ------------------- | -------------------------------- | ------------------ | ----- |
+| `+0x00`             | char[4]                          | magic              | `PABR` (ASCII) |
+| `+0x04`             | u32                              | record_count       | Observed `1594`, the same as `regioninfo.bss` |
+| `+0x08`             | Region Link Record[record_count] | records            | Variable records packed back-to-back with no alignment |
+| `records+0x00`      | String Table                     | string_table       | Shared `pabr_strings` layout; always empty here (`u32 count = 0`) |
+| `string_table+0x00` | u32                              | string_table_start | Absolute file offset of `string_table.count`; the record walk ends exactly there |
+| `string_table+0x04` | u32                              | zero               | Observed `0` |
 
-### Region Link Record (`10 + 2 * link_count` bytes)
+### Region Link Record (variable: 10 bytes + links)
+
+A record is `10 + 2 * link_count` bytes.
 
 | Offset  | Type                | Field              | Notes |
 | ------- | ------------------- | ------------------ | ----- |
@@ -44,6 +43,13 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x0A` | u16[link_count]     | linked_region_keys | Region keys, in the same order as `regioninfo.bss` `unknown_d2_keys` for this region |
 
 The records are not sorted by key. The file starts with regions 513, 1025, 1 (all `1 mod 512`), then 514, 1026, 2 and so on, which looks like a hash map written out in iteration order. The handler keeps file order.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                       |
+| ------- | ------------------ | ------------ | --------------------------- |
+| `+0x00` | u32                | string_count | `0`; the table is always empty |
+| `+0x04` | pstr[string_count] | strings      | None                        |
 
 ## Notes
 

@@ -4,14 +4,11 @@
 
 EXP table of the combat skill points: the Skill EXP a character needs to go from one skill point level to the next, from level 0 to the max level in [skillexperiencemaxlevel](skillexperiencemaxlevel_bss.md). Companion `skillexperienceoffset.dbss` lists where every row sits. [guildskillexperience](guildskillexperience_dbss.md) (guild points) and [productexperience](productexperience_dbss.md) (life skill points) use the same container with other rows.
 
-Example (client 3464):
+## Versions
 
-```text
-Lv 0     EXP 430
-Lv 1     EXP 2,670
-Lv 500   EXP 209,718,190
-Lv 2000  EXP 2,097,181,900
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,16 +19,16 @@ Lv 2000  EXP 2,097,181,900
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field     | Notes                                                |
-| ------- | ----- | --------- | ---------------------------------------------------- |
-| `+0x00` | u32   | row_count | Number of rows; 2,001 (levels 0 to 2000) on client 3464 |
-| `+0x04` | row[] | rows      | `row_count` rows of 16 bytes, not in level order     |
+### File Layout
+
+| Offset  | Type                 | Field     | Notes                                                |
+| ------- | -------------------- | --------- | ---------------------------------------------------- |
+| `+0x00` | u32                  | row_count | Number of rows; 2,001 (levels 0 to 2000) on client 3464 |
+| `+0x04` | Level Row[row_count] | rows      | `row_count` rows of 16 bytes, not in level order     |
 
 The rows fill the file exactly: 4 + 2,001 x 16 = 32,020 bytes on client 3464.
-
-## Record Structure
 
 ### Level Row (16 bytes)
 
@@ -41,14 +38,14 @@ The rows fill the file exactly: 4 + 2,001 x 16 = 32,020 bytes on client 3464.
 | `+0x04` | u64  | exp        | EXP to go from `level` to `level + 1` (Notes)                        |
 | `+0x0C` | u32  | unknown_0c | `0` on every row (client 3464)                                       |
 
-## skillexperienceoffset.dbss
+### `skillexperienceoffset.dbss`
 
 Index into `skillexperience.dbss`: the bare u16 offset table of `_common/pabr_offset.py` (`parse_bare_offset_rows`), with no `PABR` magic and no trailer.
 
-| Offset  | Type  | Field     | Notes                                         |
-| ------- | ----- | --------- | --------------------------------------------- |
-| `+0x00` | u32   | row_count | Equals the `skillexperience.dbss` row count   |
-| `+0x04` | row[] | rows      | `row_count` rows of 10 bytes                  |
+| Offset  | Type                  | Field     | Notes                                         |
+| ------- | --------------------- | --------- | --------------------------------------------- |
+| `+0x00` | u32                   | row_count | Equals the `skillexperience.dbss` row count   |
+| `+0x04` | Offset Row[row_count] | rows      | `row_count` rows of 10 bytes                  |
 
 ### Offset Row (10 bytes)
 

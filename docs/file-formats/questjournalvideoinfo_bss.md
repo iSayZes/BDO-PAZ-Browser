@@ -7,14 +7,11 @@ row per quest with a Bink video name and a full-size artwork image, both as
 indices into a shared string table. The journal book shows the artwork on the
 quest's page and plays the video from it.
 
-Example:
+## Versions
 
-```text
-quest 8700 / 11 ([Storybook] Tale of the Mudang Wraith)
-  video_ref   -> MorningLand/MorningLand_Boss_03_02
-                 ui_movie/pc/morningland/morningland_boss_03_02.bk2
-  artwork_ref -> Icon/Quest/MorningLand_Boss_03_02_Full.dds
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,27 +21,27 @@ quest 8700 / 11 ([Storybook] Tale of the Mudang Wraith)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The shared PABR string table layout of `buffsimply.bss` and
 `specialenchantitem.bss` (`_common/pabr_strings.py`).
 
-| Offset           | Type    | Field        | Notes                                                            |
-| ---------------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00`          | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04`          | u32     | count        | Number of rows; 80 on client 3458                                |
-| `+0x08`          | row[]   | rows         | 13-byte rows repeated `count` times                              |
-| `8 + count * 13` | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8          | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4          | u32     | zero         | Always 0                                                         |
+| Offset              | Type                     | Field        | Notes                                          |
+| ------------------- | ------------------------ | ------------ | ---------------------------------------------- |
+| `+0x00`             | char[4]                  | magic        | ASCII `PABR`                                   |
+| `+0x04`             | u32                      | count        | Number of rows; 80 on client 3458              |
+| `+0x08`             | Journal Video Row[count] | rows         | 13-byte rows repeated `count` times            |
+| `rows+0x00`         | String Table             | string_table | See String Table                               |
+| `string_table+0x00` | u32                      | table_start  | Offset of the string table, where the rows end |
+| `string_table+0x04` | u32                      | zero         | Always 0                                       |
 
 The rows are grouped by quest chain but in no sorted order: chains 8700 to
 8714 come first, then 8542 to 8554, and sub IDs run up in some chains and down
 in others.
 
-## Record Structure
-
-### Journal Video Row (13 bytes, repeated `count` times)
+### Journal Video Row (13 bytes)
 
 | Offset  | Type | Field          | Notes                                                                  |
 | ------- | ---- | -------------- | ---------------------------------------------------------------------- |
@@ -54,13 +51,18 @@ in others.
 | `+0x08` | u32  | artwork_ref    | String table index of the artwork path, relative to `ui_texture/`       |
 | `+0x0C` | u8   | unknown_0c     | Always `1`                                                             |
 
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 158 strings on client 3458, all referenced, never shared between a video and
 an artwork entry. Two videos are used by two quests each
 (`MorningLandPT2_Sub_8527_8_01` by 8550/4 and 8550/5,
 `MorningLandPT2_Sub_8541_1_01` by 8554/2 and 8554/3); every artwork path is
 used once.
+
+| Offset  | Type               | Field        | Notes                                     |
+| ------- | ------------------ | ------------ | ----------------------------------------- |
+| `+0x00` | u32                | string_count | 158 on client 3458                        |
+| `+0x04` | pstr[string_count] | strings      | u8 is_wide, u32 byte length, then payload |
 
 ## Notes
 

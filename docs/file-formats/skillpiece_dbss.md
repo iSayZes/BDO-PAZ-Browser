@@ -8,11 +8,11 @@ to that skill, and once the points reach a tier's threshold the skill runs at
 the tier's level. A tier also carries the Korean tooltip text: the set title,
 the threshold label and the bonus lines.
 
-```text
-skill 56050  Combined Magic Crystal - Gervish (Skill Activation)
-  points 2  level 1  "x2"  Weight Limit +75 LT, Critical Hit +1, Movement Speed +1
-  points 4  level 2  "x4"  ... + Combat EXP +5%, Skill EXP +3%
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,34 +26,34 @@ The handler walks the records from the start of the file and does not read
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type     | Field   | Notes                                     |
-| ------- | -------- | ------- | ----------------------------------------- |
-| `+0x00` | u32      | count   | Number of records; `100` on client 3464   |
-| `+0x04` | record[] | records | `count` variable-size records, back to back to the end of the file |
+### File Layout
 
-## Record Structure
+| Offset  | Type          | Field   | Notes                                     |
+| ------- | ------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; `100` on client 3464   |
+| `+0x04` | Record[count] | records | `count` variable-size records, back to back to the end of the file |
 
-### Record (variable size, repeated `count` times)
+### Record (variable: 14 bytes + tiers)
 
-| Offset  | Type     | Field       | Notes                                                        |
-| ------- | -------- | ----------- | ------------------------------------------------------------ |
-| `+0x00` | u16      | key_prefix  | Equals `skill_no`; the index's `data_offset` points past it   |
-| `+0x02` | u32      | skill_no    | The set skill, a `skill.dbss` skill number                    |
-| `+0x06` | u32      | tier_count  | Number of tiers; `1` to `13`                                 |
-| `+0x0A` | tier[]   | tiers       | `tier_count` tiers                                           |
-| varies  | u32      | unknown_end | `0` in every record                                          |
+| Offset       | Type             | Field       | Notes                                                        |
+| ------------ | ---------------- | ----------- | ------------------------------------------------------------ |
+| `+0x00`      | u16              | key_prefix  | Equals `skill_no`; the index's `data_offset` points past it   |
+| `+0x02`      | u32              | skill_no    | The set skill, a `skill.dbss` skill number                    |
+| `+0x06`      | u32              | tier_count  | Number of tiers; `1` to `13`                                 |
+| `+0x0A`      | Tier[tier_count] | tiers       | `tier_count` tiers                                           |
+| `tiers+0x00` | u32              | unknown_end | `0` in every record                                          |
 
-### Tier (variable size)
+### Tier (variable: 30 bytes + text)
 
-| Offset  | Type    | Field           | Notes                                                       |
-| ------- | ------- | --------------- | ----------------------------------------------------------- |
-| `+0x00` | u32     | point           | Set points needed; rises from tier to tier; Lua `getPoint()` |
-| `+0x04` | u16     | level           | `skill.dbss` rank of the set skill; `1` to `tier_count` in order |
-| `+0x06` | string  | group_title_kr  | Set title, `아그리스 세트 효과` ("Agris Set Effect"); the same in every tier of a record; Lua `getGroupTitle()` |
-| varies  | string  | desc_title_kr   | Threshold label: `2부위` ("2 Parts"), `2개` ("x2"), `세트`, `6 포인트`, `목걸이, 허리띠 부위`; Lua `getDescTitle()` |
-| varies  | string  | desc_kr         | Bonus lines, values in `<PAColor0xffe9bd23>` tags; Lua `getDesc()` |
+| Offset                | Type  | Field           | Notes                                                       |
+| --------------------- | ----- | --------------- | ----------------------------------------------------------- |
+| `+0x00`               | u32   | point           | Set points needed; rises from tier to tier; Lua `getPoint()` |
+| `+0x04`               | u16   | level           | `skill.dbss` rank of the set skill; `1` to `tier_count` in order |
+| `+0x06`               | str16 | group_title_kr  | Set title, `아그리스 세트 효과` ("Agris Set Effect"); the same in every tier of a record; Lua `getGroupTitle()` |
+| `group_title_kr+0x00` | str16 | desc_title_kr   | Threshold label: `2부위` ("2 Parts"), `2개` ("x2"), `세트`, `6 포인트`, `목걸이, 허리띠 부위`; Lua `getDescTitle()` |
+| `desc_title_kr+0x00`  | str16 | desc_kr         | Bonus lines, values in `<PAColor0xffe9bd23>` tags; Lua `getDesc()` |
 
 A string is a u32 character count, a u32 `0` and that many UTF-16LE code
 units with no terminator (`_common/record_reader.py` reads it with a u64
@@ -64,12 +64,12 @@ the Ancient Magic Crystal activation conditions `50047` to `50055`, the
 matching boss weapons `50060` to `50068`, Serenity `50198`, and the Pearl Shop
 outfits `44953` and `44954`.
 
-## `skillpieceoffset.dbss`
+### `skillpieceoffset.dbss`
 
-| Offset  | Type  | Field | Notes                                     |
-| ------- | ----- | ----- | ----------------------------------------- |
-| `+0x00` | u32   | count | Equals the `skillpiece.dbss` count        |
-| `+0x04` | row[] | rows  | `count` 10-byte rows; no magic, no trailer |
+| Offset  | Type             | Field | Notes                                     |
+| ------- | ---------------- | ----- | ----------------------------------------- |
+| `+0x00` | u32              | count | Equals the `skillpiece.dbss` count        |
+| `+0x04` | Index Row[count] | rows  | `count` 10-byte rows; no magic, no trailer |
 
 ### Index Row (10 bytes)
 

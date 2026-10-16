@@ -4,14 +4,11 @@
 
 Worker selection table keyed by town/node LOC IDs. Each group lists workers that can appear for one town/node, each with the silver price to hire that worker there (`hire_cost`).
 
-Example rows:
+## Versions
 
-```text
-Calpheon City -> Naive Worker, 1500
-Velia -> Giant Worker, 3500
-Grana -> Papu Worker, 3500
-Bukpo -> Dokkebi Worker, 3500
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,23 +19,23 @@ Bukpo -> Dokkebi Worker, 3500
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field        | Notes                              |
-| ------- | ---- | ------------ | ---------------------------------- |
-| `+0x00` | u32  | group_count  | Number of selection groups; observed `30` in the pre-2026-09-27 fixture, `31` in the 2026-09-27 client |
-| `+0x04` | ...  | group_stream | `group_count` groups packed in row |
+### File Layout
+
+| Offset  | Type                         | Field        | Notes                              |
+| ------- | ---------------------------- | ------------ | ---------------------------------- |
+| `+0x00` | u32                          | group_count  | Number of selection groups; observed `30` in the pre-2026-09-27 fixture, `31` in the 2026-09-27 client |
+| `+0x04` | Selection Group[group_count] | group_stream | `group_count` groups packed in row |
 
 The file is fully consumed by `4 + sum(4 + entry_count * 0x10)`.
 
-## Record Structure
+### Selection Group (variable: 4 bytes + entries)
 
-### Selection Group
-
-| Offset  | Type | Field       | Notes                                           |
-| ------- | ---- | ----------- | ----------------------------------------------- |
-| `+0x00` | u32  | entry_count | Number of entries in this group: 8, 12, or 13   |
-| `+0x04` | ...  | entries     | `entry_count` 16-byte selection entries         |
+| Offset  | Type                          | Field       | Notes                                           |
+| ------- | ----------------------------- | ----------- | ----------------------------------------------- |
+| `+0x00` | u32                           | entry_count | Number of entries in this group: 8, 12, or 13   |
+| `+0x04` | Selection Entry[entry_count]  | entries     | `entry_count` 16-byte selection entries         |
 
 Each group repeats one `selection_id` across all entries. Observed group sizes:
 
@@ -50,7 +47,7 @@ Each group repeats one `selection_id` across all entries. Observed group sizes:
 
 These are the pre-2026-09-27 fixture's 30 groups and 372 entries. The 2026-09-27 client adds Angavu Outpost (`1733`, 13 entries) as group 1, for 31 groups and 385 entries.
 
-### Selection Entry (`0x10` bytes)
+### Selection Entry (16 bytes)
 
 | Offset  | Type | Field        | Notes                                                 |
 | ------- | ---- | ------------ | ----------------------------------------------------- |

@@ -4,12 +4,15 @@
 
 Defines worker production zones. Each record belongs to one worldmap production sub-node (`record_id` is an `exploration.bss` node key, named through LOC type 29), stores the worker's work animation type, links to a production key in `plantexchangegroup.bss` with a capacity level, and lists a set of worker species per zone (not a worker lock; its use is unknown, see Open Questions). `plantzoneoffset.dbss` is required to address the variable-length records.
 
-```text
 Observed records: 394 in the pre-2026-09-27 fixture, 439 in the 2026-09-27 client (45 more 37-byte zones). Record payloads are 32, 34, or 37 bytes depending on the worker-species list length.
-record_id=1539 -> Teff, production key 1539 -> item subgroup 40189 -> Teff
-```
 
 The production-key reading and the worker-species field boundaries follow [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, "Worker-production item tables"), checked against the current client files below.
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -19,18 +22,20 @@ The production-key reading and the worker-species field boundaries follow [iDeve
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field         | Notes                                      |
-| ------- | ---- | ------------- | ------------------------------------------ |
-| `+0x00` | u32  | record_count  | Number of records; observed `394` (2026-09-27 client: `439`) |
-| `+0x04` | ...  | record_stream | Variable-length records, packed back-to-back |
+### File Layout
+
+| Offset  | Type                             | Field         | Notes                                      |
+| ------- | -------------------------------- | ------------- | ------------------------------------------ |
+| `+0x00` | u32                              | record_count  | Number of records; observed `394` (2026-09-27 client: `439`) |
+| `+0x04` | Plant Zone Record[record_count]  | record_stream | Variable-length records, packed back-to-back |
 
 `(file_size - 4) / record_count` is not integral, so records must be sliced with `plantzoneoffset.dbss`.
 
-## Record Structure
+### Plant Zone Record (variable: 31 bytes + species)
 
-### Plant Zone Record (32, 34, or 37 bytes)
+32, 34, or 37 bytes on the observed clients.
 
 | Offset  | Type | Field                | Notes                                                                    |
 | ------- | ---- | -------------------- | ------------------------------------------------------------------------ |
@@ -45,7 +50,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x17` | u16  | production_key       | `plantexchangegroup.bss` key; note unaligned offset                      |
 | `+0x19` | u16  | max_capacity_level   | The sheet's `MaxCapacityLevel` minus 1; usually `0`, see below           |
 | `+0x1B` | u32  | worker_species_count | Number of trailing `worker_species`; observed `1`, `3`, or `6`           |
-| `+0x1F` | u8[] | worker_species       | Worker species values, `worker_species_count` bytes; not a worker lock   |
+| `+0x1F` | u8[worker_species_count] | worker_species | Worker species values, `worker_species_count` bytes; not a worker lock   |
 
 `+0x13` to `+0x1A` is a list: the 2016 client keeps `_productionList`, a map from the exchange group key to a `ProductionInfo` with `_maxCountLevel`. Every zone lists one pair, so the offsets after it are fixed; the parser raises an error on a zone with another count. Earlier versions of this doc read `+0x17` as one u32 `production_key` with an unexplained high word; that high word is `max_capacity_level`. Earlier versions also called `work_ani_type` `variant` and `unknown_0e`.
 
@@ -57,7 +62,27 @@ Observed record-size distribution:
 | 34   | 42    | 3                      | `06 07 08`          | Land of the Morning Light production nodes |
 | 37   | 350   | 6                      | `00 01 02 03 04 05` | All other zones                           |
 
-### `worker_species` Values
+### `plantzoneoffset.dbss`
+
+Provides the byte ranges for records in `plantzone.dbss`.
+
+| Offset  | Type                     | Field        | Notes                             |
+| ------- | ------------------------ | ------------ | --------------------------------- |
+| `+0x00` | u32                      | record_count | Must equal `plantzone.dbss` count |
+| `+0x04` | Offset Row[record_count] | rows         | 12-byte rows repeated `count` times |
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field       | Notes                                             |
+| ------- | ---- | ----------- | ------------------------------------------------- |
+| `+0x00` | u16  | record_id   | Matches `plantzone.dbss` record `+0x00`           |
+| `+0x02` | u16  | unknown_02  | Always `0`                                        |
+| `+0x04` | u32  | data_offset | Absolute byte offset into `plantzone.dbss`        |
+| `+0x08` | u32  | data_size   | Record payload byte count: `32`, `34`, or `37`    |
+
+Offset rows are not sorted by `data_offset`, but sorted rows cover every byte from `plantzone.dbss +0x04` through EOF with no gaps or overlaps. The parser reads `record_id` and `unknown_02` as one u32 (`parse_bare_u32_offset_rows()`).
+
+## `worker_species` Values
 
 The same byte is the last byte (`+0x38F`) of every `plantworker.bss` record. Names below come from the LOC type 6 names of the workers carrying each value; the client enum for this byte was not found in `global_define_cpp_enum.luac`.
 
@@ -73,7 +98,7 @@ The same byte is the last byte (`+0x38F`) of every `plantworker.bss` record. Nam
 | 7     | Dolswe workers                                           |
 | 8     | Shellfolk workers                                        |
 
-### `work_ani_type` Values
+## `work_ani_type` Values
 
 Names from `gc::EWorkAniType` of the 2016 client's debug symbols. On client 3473 the zones use `0` to `4`; the `exploration.bss` `node_kind` of each zone's node, counted per value:
 
@@ -91,7 +116,7 @@ Names from `gc::EWorkAniType` of the 2016 client's debug symbols. On client 3473
 
 The value does not follow the node kind: Farm nodes split between Gather and Cultivation, and Excavation nodes fall under four of the five.
 
-### `max_capacity_level` Values
+## `max_capacity_level` Values
 
 On client 3473, `max_capacity_level` is `0` on 420 zones and `1` to `7` on 19 (`node_kind` MonopolyFarm 15, Quarry 2, Collect 1, Excavation 1):
 
@@ -108,7 +133,7 @@ On client 3473, `max_capacity_level` is `0` on 420 zones and `1` to `7` on 19 (`
 
 It counts up across consecutive Specialties (MonopolyFarm) node keys: 104-110 (Balenos farms such as Bartali, Finto and Wale Farm) carry `1`-`7`, and 613-619 (Calpheon farms such as Falres Dirt and Dias Farm) carry `1`-`7` again. All `production_key` values are `plantexchangegroup.bss` keys; read together with `max_capacity_level` as a u32, the 19 non-zero ones are not.
 
-### Production Item Chain
+## Production Item Chain
 
 ```text
 production_key -> plantexchangegroup.bss production_key (+0x00)
@@ -119,26 +144,6 @@ itemsubgroup.dbss entries -> item_key & 0xFFFFFF -> item name (LOC type 0)
 Both tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md). The client goes one step further: `+0x06` is an item exchange key, and the items come from that exchange's drop group in [`itemmaingroup.bss`](itemmaingroup_bss.md) (chain and row counts in [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names)). The subgroup reading above matches the client on most zones because the three keys often share one number.
 
 Example: zone 2050 (Lumbering) -> production key 1928 -> subgroup 42356 -> Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap. On the 2026-09-27 client 403 of the 439 zones resolve to items; the other 36 reference subgroup keys that are absent from `itemsubgroupoffset.dbss` (358 of 394 in the older fixture, the same 36 unresolved).
-
-## `plantzoneoffset.dbss`
-
-Provides the byte ranges for records in `plantzone.dbss`.
-
-| Offset  | Type | Field        | Notes                             |
-| ------- | ---- | ------------ | --------------------------------- |
-| `+0x00` | u32  | record_count | Must equal `plantzone.dbss` count |
-| `+0x04` | ...  | rows         | 12-byte rows repeated `count` times |
-
-### Offset Row (12 bytes)
-
-| Offset  | Type | Field       | Notes                                             |
-| ------- | ---- | ----------- | ------------------------------------------------- |
-| `+0x00` | u16  | record_id   | Matches `plantzone.dbss` record `+0x00`           |
-| `+0x02` | u16  | zero        | Always observed as `0`                            |
-| `+0x04` | u32  | data_offset | Absolute byte offset into `plantzone.dbss`        |
-| `+0x08` | u32  | data_size   | Record payload byte count: `32`, `34`, or `37`    |
-
-Offset rows are not sorted by `data_offset`, but sorted rows cover every byte from `plantzone.dbss +0x04` through EOF with no gaps or overlaps. The parser reads `record_id` and `zero` as one u32 (`parse_bare_u32_offset_rows()`).
 
 ## Field Names
 

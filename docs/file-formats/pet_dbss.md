@@ -124,26 +124,6 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 `total_record_size = data_size + 2`.  
 The parser reads `data_size` and the padding as one u32 (`parse_bare_offset_rows()`).
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                                                                  |
-| ------------- | ---- | ------------------------------------------------------------------------------------------------------ |
-| Pet ID        | num  | `pet_id` as decimal only                                                                               |
-| Icon          | Icon | Rendered from `icon_path`; shown immediately after Pet ID                                              |
-| Name          | text | LOC type 6 lookup with `str_id1 = pet_id`; fallback to raw species ID                                  |
-| Species ID    | num  | Raw `species` code                                                                                     |
-| Tier          | num  | `tier` (0–4)                                                                                           |
-| EXP Table ID  | num  | `exp_key` → `petexp.dbss`                                                                              |
-| Max Level     | num  | `max_level` (10 for pets, 10/20/30/50 for Laila)                                                       |
-| Acquire Type  | num  | `acquire_type_id` → `petequipskillaquire.dbss` or `fairyequipskillaquire.dbss`                         |
-| Base Skill ID | num  | `base_skill_id`                                                                                        |
-| Base Skill    | text | Name of the `petequipskill.bss` Section 2 record with that ID, e.g. Life EXP +2%; blank without the catalog |
-| Loot Skill    | text | Type text of `loot_skill_id` in `petskill.dbss`: "Loot (every ? sec)" on 1,989 records, "Restore HP" on Laila (client 3473) |
-| Special Skill | text | Type text of `race_skill_id`, e.g. Hostility Detection, Taunt Monster |
-| Grade         | text | Optional `petgrade.dbss` join on `(species, variant)`: 1 Classic, 2 Rare, 3 Premium, 4 Event, 5 Special |
-
-Rows are sorted by `pet_id` ascending for stable browsing.
-
 ## Notes
 
 - Total file size = 4 + Σ(2 + `data_size`) over all records: 332,420 bytes for the 1,782 records before the 2026-09-27 client update, 376,078 bytes for 2,009 records after it.

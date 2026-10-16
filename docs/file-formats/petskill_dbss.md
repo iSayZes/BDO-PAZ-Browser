@@ -124,18 +124,6 @@ The client fills `{itemGetTime}` from `ToClient_getPetLootingCoolTime(param, loo
 
 The parser yields ten level rows per record: 490 rows for the 49 records. Both files are byte-identical in the pre-2026-09-27 fixture and the 2026-09-27 client.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                               |
-| ------------- | ---- | --------------------------------------------------- |
-| Pet Skill ID  | num  | `pet_skill_id`, right-aligned                       |
-| Skill Type    | text | The type's pet window text, see Skill Types; `skill_type` without it |
-| Level         | num  | `row_level`; show level rows 1–10 under each record |
-| Value A       | num  | `raw_value_a`; display raw until scale is confirmed |
-| Value B       | num  | `raw_value_b`; display raw until scale is confirmed |
-
-For compact browsing, show one expandable row per `pet_skill_id`, with the ten level rows nested beneath it.
-
 ## Notes
 
 - File size is 9380 bytes: 4-byte count plus 49 wrapper records.

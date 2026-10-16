@@ -54,19 +54,6 @@ The file order is not the row order: index `i` of `fornormal` and index `i` of `
 
 On client 3464 both side files hold 205 quests and the full list 410, all with a LOC type 18 title. The quest chains fall in three blocks: 50000 to 50057 (titles start `[Summer Season]`), 50100 to 50146, and 50150 to 50152 (74, 74 and 52 quests in the full list).
 
-## Suggested UI Layout
-
-Same as [`allquestlist.bss`](allquestlist_bss.md):
-
-| Column  | Type | Notes                                                                    |
-| ------- | ---- | ------------------------------------------------------------------------ |
-| Main ID | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`                         |
-| Sub ID  | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`                            |
-| Icon    | text | Quest icon resolved from `packed_quest_id` through the quest icon index  |
-| Title   | text | LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-
-The title already names the track (`(Black Spirit Pass)`), so there is no separate Free / Premium column.
-
 ## Notes
 
 - Decompressed sizes on client 3464: `1,660` bytes for `seasonpassquestlist.bss`, `840` bytes for each side file; all match `8 + count * 4 + 12`.

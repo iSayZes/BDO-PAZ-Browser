@@ -63,17 +63,6 @@ client 3464, 7 of the 24 records start elsewhere (902, 102, 1002, 202, 302,
 
 `record_start = data_offset - 2`
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                            |
-| ----------- | ---- | ---------------------------------------------------------------- |
-| Personality | num  | `personality_type`                                               |
-| Row         | num  | Record index in the offset file                                  |
-| Zodiac      | text | Sign name of `personality_type // 100` (LOC str_type=7, str_id4=0) |
-| Variant     | num  | `personality_type % 100`                                         |
-| Triggers    | num  | `trigger_count`                                                  |
-| Sequence    | text | `trigger_order` joined with arrows (`0→1→2→3→1→2`)               |
-
 ## Notes
 
 - Variant 2 is a second drawing order for the same stars. It can reverse variant 1 (1001 is `0,1,2,3,4`, 1002 is `4,3,2,1,0`) or reorder it (902 is `2,1,0,3,2,1`).

@@ -60,16 +60,6 @@ The file is `8 + 26 × 21 + 12 = 566` bytes. The parser rejects a file whose row
 | `50000`    | `120000`   | `1.0`      | Bronte's Bolt (1123, 1143, 1160)                                             |
 | `500000`   | `800000`   | `3.0`      | 1382 Velandir                                                                |
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                                         |
-| ---------- | ---- | --------------------------------------------- |
-| Key        | num  | `key`                                         |
-| Region Key | num  | `region_key`                                  |
-| Region     | text | LOC type 17 name of `region_key`, else a dash |
-
-The `unknown_*` fields stay on the record for search and CSV but out of the table.
-
 ## Notes
 
 - A region name can appear on several rows: LOC gives the same name to several region keys (1126, 1146, 1163 and 1175 are all Mountain of Eternal Winter).

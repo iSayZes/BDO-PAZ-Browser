@@ -148,16 +148,6 @@ Index file, one entry per zodiac record, stored in the same order as the main fi
 
 `record_start = data_offset - 1`
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                             |
-| ------------- | ---- | ------------------------------------------------- |
-| ID            | num  | `zodiac_id`                                       |
-| Name          | text | LOC `str_type=7`, `str_id1=zodiac_id`, `str_id4=0`; the inline Korean `constellation_name` without LOC |
-| Stars         | num  | Number of stars in the constellation              |
-| Pairs         | num  | Number of connecting line pairs                   |
-| Traits        | text | LOC `str_id4=1` trait text; the inline Korean `trait_text` without LOC |
-
 ## Notes
 
 - `star_positions` (x, y) pairs are 2D coordinates on the zodiac constellation display (range roughly ±250). The third float of each triple is always 1.0 and can be ignored.

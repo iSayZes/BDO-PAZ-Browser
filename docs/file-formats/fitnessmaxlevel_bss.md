@@ -36,14 +36,6 @@ The array length is not stored; the parser takes it from the trailer's `end_of_d
 
 The same trailer closes `acceptquest.bss` and the PABR offset files.
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                                         |
-| ---------- | ---- | --------------------------------------------- |
-| Fitness ID | num  | Array index (`fitness_type`)                  |
-| Fitness    | text | Breath, Strength or Health                    |
-| Max Level  | num  | `max_level`                                   |
-
 ## Notes
 
 - The fitness type names are the ones in [fitnesslevel](fitnesslevel_dbss.md); both handlers read them through `_dbss/fitnesslevel/labels.py`.

@@ -29,15 +29,6 @@ A bare array of u32 values with no header and no `PABR` magic. 60 bytes on clien
 | -------- | ---- | --------- | ------------------------- |
 | `+N x 4` | u32  | max_level | Max level of life skill N |
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                       |
-| ------------- | ---- | ------------------------------------------- |
-| Life Skill ID | num  | Array index (`life_skill`)                  |
-| Life Skill    | text | As in `lifeexp.dbss`                        |
-| Max Level     | num  | `max_level`                                 |
-| Max Rank      | text | Rank of `max_level` (`Guru 100`)            |
-
 ## Notes
 
 - Trading (7) gets `180` here although `lifeexp.dbss` holds finite EXP for it only up to level 60; see the [lifeexp](lifeexp_dbss.md) Notes.

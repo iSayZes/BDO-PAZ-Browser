@@ -97,17 +97,6 @@ Read as a key, the section 0 rows point 14.5 km (median) away from the places
 the buff texts name, against 73 m through the inline keys, so readers look
 records up by the inline `key` and do not need this file.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                 |
-| ------------- | ---- | ----------------------------------------------------- |
-| Key           | num  | `key`; right-aligned; with Section, what buffs store  |
-| Section       | num  | `section`; right-aligned                              |
-| X / Y / Z     | num  | World position, rounded                               |
-| Nearest Node  | text | Closest worldmap node by X / Z (LOC type 29 name)     |
-| Distance      | num  | Metres to that node; large on points inside instances |
-| Used By       | text | The buffs that teleport here, each as the item that applies it, else its English text, else its Korean name; with icons, item names in their grade colour, buff IDs on hover |
-
 ## Notes
 
 - Positions were checked against the type 23 buffs whose English text names

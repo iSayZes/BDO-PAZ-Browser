@@ -65,20 +65,6 @@ Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 0, the second
 at main row 596).
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                     |
-| ------------ | ---- | --------------------------------------------------------- |
-| Character ID | num  | `character_id`                                            |
-| Name         | text | LOC type 6 `str_id4` 0                                    |
-| Title        | text | LOC type 6 `str_id4` 1, with its colour tags; dash when none |
-
-The table opens in file order. `unknown_02` and `unknown_11` stay hidden
-while they are `1` on every row. None of the 694 characters is in the
-`character_icon` index, so there is no icon column.
-
-The offset table shows Character ID, Byte Offset and Size.
-
 ## Notes
 
 - The client Lua never names this file. Its only field boss reference is the

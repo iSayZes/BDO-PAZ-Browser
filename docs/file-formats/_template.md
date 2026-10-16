@@ -59,13 +59,6 @@ Document enumerations inline here or inside the section where they first appear.
 | 0   | Name |
 | 1   | Name |
 
-## Suggested UI Layout
-
-| Column | Type | Notes                            |
-| ------ | ---- | -------------------------------- |
-| ID     | num  | Primary key                      |
-| Name   | text | LOC lookup fallback to raw value |
-
 ## Notes
 
 - Bullet-point facts that don't fit neatly into a table.

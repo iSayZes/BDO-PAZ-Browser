@@ -73,13 +73,6 @@ Required offset index for `employeename.dbss`.
 
 To read a name record: seek to `offset` in `employeename.dbss`, read `size` bytes, and parse the Name Record structure above.
 
-## Suggested UI Layout
-
-| Column            | Type | Notes                                          |
-| ----------------- | ---- | ---------------------------------------------- |
-| Employee Name ID  | num  | `employee_name_id`                             |
-| Name              | text | LOC name, falling back to the inline Korean    |
-
 ## Notes
 
 - Record order is not numeric: observed order starts `47` down to `32`, then `60` down to `48`, then `15` down to `1`, then `31` down to `16`.

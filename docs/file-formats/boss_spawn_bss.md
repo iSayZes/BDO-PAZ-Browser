@@ -65,20 +65,6 @@ Keys, with the boss from `boss_spawnlevel.bss` (client 3464):
 | 5   | Khan              | 500   |
 | 8   | Gumiho & Duoksini | 500   |
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                          |
-| --------- | ---- | ------------------------------ |
-| Key       | num  | `key`                          |
-| Boss      | text | LOC type 6 name of the key's level 0 `character_id` in `boss_spawnlevel.bss`; dash without it |
-| Levels    | num  | `max_level`                    |
-| X         | num  | `position` x, rounded          |
-| Y         | num  | `position` y (height), rounded |
-| Z         | num  | `position` z, rounded          |
-| Range     | num  | `range`                        |
-
-The table opens in file order.
-
 ## Notes
 
 - Key 3's position lies 621 units from the Field boss Giant Mudster's

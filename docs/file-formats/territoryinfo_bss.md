@@ -86,21 +86,6 @@ territory realms) both refs point at one entry. The Great Ocean (territory 5) st
 `New_UI_Common_forLua/Widget/WorldMap/territory/`; every other icon is under
 `Renewal/ETC/WordMap/`. Paths keep mixed case, so the handler lowercases them.
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                                                                    |
-| ---------- | ---- | ------------------------------------------------------------------------ |
-| Key        | num  | `territory_key`; right-aligned                                           |
-| Icon       | text | `icon_small_ref`, lowercased under `ui_texture/`                         |
-| Territory  | text | LOC type 12 `str_id4` 1, falling back to the Korean territory name       |
-| Nation     | text | LOC type 12 `str_id4` 0, falling back to the Korean nation name          |
-| Autonomous | flag | `is_autonomous`                                                          |
-| Crown      | text | `crown_item_id` with its item icon and LOC type 0 name                   |
-| Armor      | text | `armor_item_id` with its item icon and LOC type 0 name                   |
-| Positions  | text | Non-zero positions as whole-number `x, y, z`, separated by `;`           |
-
-`unknown_*` fields, `nation_hash` and the large icon stay out of the table.
-
 ## Notes
 
 - iDevelopThings' [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor)

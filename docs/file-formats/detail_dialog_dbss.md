@@ -120,22 +120,6 @@ For Martina Finto (`0x00019C58`), field `0` of text ID `689` reads "It's so lone
 
 A lease is an option whose `action` is `buyItemByPoint(item, 0, 1, 5, cost)`: the item key, `0`, `1`, `5` and the contribution point cost. Client 3458 has 184 lease options on 63 characters, all with `dialog_button_type` `0` (Normal) and titled `[대여] <item>` ("[Lease]"). `npcsimply.bss` repeats the first lease option of 58 of these characters (`lease_item_id`, `lease_cost`, `has_lease_condition`); the file lists all of them, such as the 84 Nesser gear leases of Sahazad Nesser (`45006`), the 25 Kaia weapons of Kanobas (`42152`) and the Small Fence of Wale (`40605`), who has no lease in `npcsimply.bss`. See `npcsimply_bss.md` for the cost check in game.
 
-## Suggested UI Layout
-
-One row per record:
-
-| Column         | Type | Notes |
-| -------------- | ---- | ----- |
-| Character ID   | num  | `key & 0xFFFF` |
-| Dialog         | num  | `key >> 16` |
-| Character      | text | LOC `str_type=6` for the character ID; fallback to `internal_name`, then a dash |
-| Greeting       | text | LOC type `39` field `0`, fallback to `greeting`; truncated |
-| Functions      | list | `contents_type` of each greeting line as its `ContentsType` name without `Contents_` (`Shop`, `Repair`), each once in line order; a dash without lines |
-| Options        | num  | `option_count` |
-| Option Types   | list | `dialog_button_type` of each option as its `DialogButtonType` name without `eDialogButton_` (`Normal`, `Exchange`), each once in option order; `99` stays a number |
-| Option Titles  | list | LOC type `39` field `2` of each option, fallback to `title`; first few then a count |
-| Leases         | list | For each lease option: LOC `str_type=0` name of the item (in its grade colour) and the cost, e.g. `[CP] Small Fence (3 CP)` |
-
 ## Notes
 
 - The key's low 16 bits are a character ID: 49,252 of the 59,776 records resolve to a LOC type `6` name, and 10,153 of the other 10,524 are shared social dialogs (`Social_Low_Front_01` and similar), many on low IDs such as `817` to `864`. The high 16 bits number the dialogs of one character from `0` up; the main NPC dialog is usually index `1` (`0x00019C58` Martina Finto, `0x00019C51` Igor Bartali). 3,788 of 4,569 characters have one record.

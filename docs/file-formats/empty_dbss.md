@@ -45,13 +45,6 @@ Main files and offset companions share one layout.
 
 No record structure can be inferred because the files hold no records.
 
-## Suggested UI Layout
-
-| Column | Type | Notes                         |
-| ------ | ---- | ----------------------------- |
-| Count  | num  | Header `count`                |
-| Status | text | `No records` in the UI language |
-
 ## Notes
 
 - Raw bytes of every file: `00 00 00 00`.

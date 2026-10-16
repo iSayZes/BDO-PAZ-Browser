@@ -141,34 +141,6 @@ The rows are in file order, which is not key order: 46 down to 32, 15 down to 0,
 
 LOC type 21 has a name and a description for all 47 class types on client 3464, including the unused slots (`Ain (No Use)`, `PYFW5`). The English text matches the inline Korean (class type 0: `Warrior` for `워리어`). The handler shows the LOC name and falls back to the inline Korean, as does the [pcgrowthsimply](pcgrowthsimply_bss.md) handler.
 
-## Suggested UI Layout
-
-### pcgrowth.dbss
-
-| Column          | Type | Notes                                                                 |
-| --------------- | ---- | --------------------------------------------------------------------- |
-| Class Type      | num  | `class_type`                                                          |
-| Class           | text | LOC type 21 name via `class_name()`, else `name_kr`                   |
-| Character ID    | num  | `character_key`                                                       |
-| Gender          | text | `gender` as Male or Female                                            |
-| Playable        | flag | `is_playable` from `pcgrowthsimply.bss`; a dash without that file      |
-| Combat Type     | text | `combat_type` as its LOC label, else the enum name                     |
-| Resource        | text | `combat_resource_type` as its LOC label (MP, WP, SP), else the enum name |
-| Starter Weapons | text | `starter_weapons` with item icons and names                           |
-| Class Weapons   | text | Non-zero `class_weapons`, main, sub and awakening                     |
-| Selection Video | text | `select_movie`                                                        |
-| Description     | text | LOC type 21 `str_id4` 1, else `description_kr`, on one line           |
-
-The `unknown_*` fields, `consume_actions` and `weapon_models` stay on the record but out of the table.
-
-### pcgrowthoffset.dbss
-
-| Column      | Type | Notes                 |
-| ----------- | ---- | --------------------- |
-| Class Type  | num  | `class_type`          |
-| Data Offset | num  | `data_offset`, as hex |
-| Data Size   | num  | `data_size`           |
-
 ## Notes
 
 - iDevelopThings/bdo-data-extractor `FORMATS.md` lists this record layout. Checked against client 3464: the offset table and the record walk match, and all 47 records end at their recorded size. It reads the presentation block as seven f32 and a u32 at `+0x43`, with four extra u32 only on Shai; this doc reads `+0x3F` as a pair count, which gives the same byte total.

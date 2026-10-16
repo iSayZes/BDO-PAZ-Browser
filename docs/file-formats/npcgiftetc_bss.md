@@ -28,14 +28,6 @@ The file is exactly 32 bytes in the observed client data. Unlike DBSS records, i
 | `+0x18` | u32     | unknown_18 | 20         | Global gift-system value               |
 | `+0x1C` | u32     | reserved2  | 0          | Observed zero                          |
 
-## Suggested UI Layout
-
-| Column | Type | Notes                                      |
-| ------ | ---- | ------------------------------------------ |
-| Field  | text | `unknown_*` and `reserved*` field names    |
-| Value  | num  | Raw decoded integer value                  |
-| Notes  | text | Observed role or unresolved status         |
-
 ## Notes
 
 - `npcgiftetc.bss` is self-contained; no offset companion has been observed.

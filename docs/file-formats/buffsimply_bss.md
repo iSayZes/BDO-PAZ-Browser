@@ -81,17 +81,6 @@ and `icon_ref` index the same table and share only the empty string: index 0
 is `"0"`, index 1 is `""`, and every other entry is either an `effect_name`
 value or an icon path.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                                        |
-| ----------- | ---- | ---------------------------------------------------------------------------- |
-| Buff ID     | num  | `buff_id`; right-aligned                                                     |
-| Icon        | text | `icon_ref`, resolved like `buff.dbss` `icon_path`; dash when empty or `UNKNOWN` |
-| Description | text | LOC type 5, `str_id1` = `buff_id`, `<null>` counts as empty; dash without LOC, since the file holds no inline text |
-| Shown       | text | `is_shown` as Yes / No                                                       |
-
-The other fields stay on the record but out of the table.
-
 ## Notes
 
 - Checked against `buff.dbss` on client 3464: all 44,683 IDs have a record

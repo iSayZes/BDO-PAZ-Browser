@@ -51,14 +51,6 @@ Same 4-byte header and 10-byte offset record layout as
 into `npcgiftdata.dbss`. The `data_size` equals `12 + text_len * 2 + 4`,
 excluding the leading `npc_id`.
 
-## Suggested UI Layout
-
-| Column   | Type | Notes                                                                  |
-| -------- | ---- | ---------------------------------------------------------------------- |
-| NPC ID   | num  | `npc_id`                                                               |
-| NPC Name | text | LOC str_type=6, str_id1=npc_id                                         |
-| Dialogue | text | LOC str_type=54 when available; Korean inline text as fallback         |
-
 ## Notes
 
 - `npcgift.dbss` and `npcgiftdata.dbss` share the same 24 NPC IDs and offset

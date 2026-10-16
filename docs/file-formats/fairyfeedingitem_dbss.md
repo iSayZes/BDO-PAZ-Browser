@@ -98,27 +98,6 @@ Claw 1,500 and Fiery Kutum / Nouver 375,000 (Garmoth calls them "Blazing").
 It gives Ornette's Dark Honey Wine as 13,000; this file and the client
 tooltip above give `13,300`.
 
-## Suggested UI Layout
-
-| Column  | Type | Notes                                            |
-| ------- | ---- | ------------------------------------------------ |
-| Item ID | num  | `item_id`                                        |
-| Icon    | icon | Item icon from the item ID                       |
-| Item    | text | LOC item name in grade colour, else the item ID  |
-| EXP     | num  | `exp`, with thousands separators                 |
-
-`key` duplicates `item_id`; `unknown_08` and `unknown_10` stay on each row for
-search and export but are not shown.
-
-For `fairyfeedingitemoffset.dbss`:
-
-| Column       | Type | Notes                    |
-| ------------ | ---- | ------------------------ |
-| Item ID      | num  | `item_id` key            |
-| Data Offset  | num  | `data_offset` as hex     |
-| Data Size    | num  | `data_size`; always `24` |
-| Record Start | num  | `data_offset - 4` as hex |
-
 ## Notes
 
 - The Growth window (`panel_window_fairy_all_3.luac`,

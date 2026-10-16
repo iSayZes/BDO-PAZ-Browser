@@ -299,33 +299,6 @@ index + 1:
 | 5     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_THINOUT`      | Filtering          |
 | 6     | `PANEL_CHARACTERINFO_LIFEINFO_CRAFTTYPE_HEATING`      | Heating            |
 
-## Suggested UI Layout
-
-Every table opens with the mastery column; the rest depends on the file.
-Rate columns are right-aligned percents, rounded like the tooltip. The
-gathering and processing tables put the type ID and type name in front of
-Mastery.
-
-| File                   | Columns after Mastery                                                    |
-| ---------------------- | ------------------------------------------------------------------------ |
-| `fishingstatdata.bss`  | Prize Catch Fish Rate (`rate`)                                           |
-| `cookingstatdata.bss`  | Mass Cooking, Max Dishes, Higher Grade Dish, Max Higher Grade Dishes, Imperial Delivery Extra Profit |
-| `huntingstatdata.bss`  | Chance of Butchering More Items (`hunting_rate`)                         |
-| `alchemystatdata.bss`  | Max Products, Extra Basic Items, Extra Special Items, Extra Rare Items (3 decimals), Imperial Delivery Extra Profit |
-| `sailstatdata.bss`     | Accel., Speed, Turn, Brake                                               |
-| `trainingstatdata.bss` | Horse Capture Rate, Mount EXP, Higher Tier Horse Chance                  |
-| `collectingstatdata.bss` | Basic, Special and Rare Resources Drop Rate and Quantity, in tier order |
-| `manufacturingstat.bss` | Mass Process Batches (`count_rate`, a plain number)                     |
-
-| Column  | Type | Notes                                                                 |
-| ------- | ---- | --------------------------------------------------------------------- |
-| Type ID | num  | `sub_type`, the group index; gathering and processing only            |
-| Type    | text | LOC text of the group's `RESOURCE` key; gathering and processing only |
-| Mastery | num  | `mastery`, shown as `3000`                                            |
-
-The sailing cannon fields stay in the records but out of the table, since no
-UI shows them.
-
 ## Notes
 
 - The handler is one class, `_bss/masterystatdata/handler.py`; the fields and

@@ -90,22 +90,6 @@ Unlike `alchemychargeoffset.dbss`, the rows inside a group are not in the
 main file's order (group 0 lists 4052, 4061, 4253 where the main file has
 4052, 4253, 4061). Both files are 2,028 bytes on client 3464.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                                    |
-| ------------- | ---- | ------------------------------------------------------------------------ |
-| Alchemy Stone | text | Stone type name from the table above, else the number; sorts by `stone_type` |
-| Item ID       | num  | `item_id`                                                                |
-| Icon          | icon | Item icon                                                                |
-| Item          | text | LOC type 0 name in its grade colour, else the ID                         |
-| EXP           | num  | `experience / 10000` with a `%` sign, as the window shows a stone's EXP; sorts by the raw value |
-
-The table opens sorted by `stone_type` ascending, which keeps the file's
-material order inside each type.
-
-The offset table shows Stone Type (the group index), Item ID, Data Offset and
-Size.
-
 ## Notes
 
 - `experience` is named after the Polishing tab. Its guide text

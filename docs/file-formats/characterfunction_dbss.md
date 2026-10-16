@@ -268,21 +268,6 @@ Matches on client 3464 (1,318 shared characters):
 
 The `territory_key` fields hold `0xFFFF` where the server column is empty, and `employee_job` holds `2`. `is_smuggle_shop`, `servant_type`, `inn_key` and the slots `reward_explore`, `transport_person`, `minor_lord_menu` and `guild_supply_shop` have no server column with values; they are named from their place in the 2016 member order between matched fields. `servant_type` follows `gc::ServantType` (`0` Vehicle, `1` Ship, `2` Pet), which the stable records bear out (see Head). The old `auction` slot fields (`unknown_078` u32, 14 skipped bytes, `unknown_08a` u32, 32 skipped bytes) were the auction key and the empty Mating, Inn and RewardExplore slots read across.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                                                   |
-| ------------- | ---- | --------------------------------------------------------------------------------------- |
-| Character ID  | num  | `character_id`                                                                          |
-| Name          | text | LOC type `6`; shown only when LOC is loaded                                             |
-| Functions     | text | Button of each slot with button text, in slot order: LOC type `32` (`str_id1` = character ID, `str_id4` = the slot's LOC index), else the Korean `name` |
-| Shop Type     | text | `shop_type` member name; `-` for `None`                                                 |
-| Managed Nodes | text | `managed_node_keys` by LOC type `29` name (`Bambu Valley - Mining` for sub-nodes), else the key |
-| Town          | text | `town_node_keys` the same way                                                           |
-| Item Groups   | text | Each non-zero `*_group` field as a label (Shop, Shop (Sell), Guild Shop, Guild Shop (Sell), Trade) and the group ID linking to its `itemmaingroup.bss` row, one per line |
-| Mounts        | text | `vehicle_types` as `value EnumName` (`0 Horse`), each value once, in stored order        |
-
-Conditions, `servant_where_type` and the `unknown_*` fields stay out of the table.
-
 ## Notes
 
 - 97 records have no button text in any slot.

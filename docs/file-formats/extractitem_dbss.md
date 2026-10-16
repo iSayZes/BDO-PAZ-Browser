@@ -99,17 +99,6 @@ key and `data_size` covers it. The index rows are not in file order; on
 client 3464 the 2,336 offsets are exactly the 2,336 row starts, and the key
 at each offset equals the index `item_id`.
 
-## Suggested UI Layout
-
-| Column          | Type | Notes                                         |
-| --------------- | ---- | --------------------------------------------- |
-| Item ID         | num  | `item_id`                                     |
-| Item            | text | `item_id` name with icon and grade colour     |
-| Need Item       | text | `need_item_id` name with icon                 |
-| Result Item     | text | `result_item_id` name with icon               |
-| Result Material | text | `result_material_id` name with icon           |
-| Reform Group    | num  | Reform group the row undoes, `-` without one  |
-
 ## Notes
 
 - The window is `panel_window_extraction_system_all`

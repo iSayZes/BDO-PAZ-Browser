@@ -76,16 +76,6 @@ Read by `parse_bare_u32_offset_rows()` in `_common/pabr_offset.py`. The rows
 are not in file order; on client 3464 every row matches the record walked
 from the start of the file.
 
-## Suggested UI Layout
-
-| Column | Type | Notes                                                    |
-| ------ | ---- | -------------------------------------------------------- |
-| Key    | num  | `key`                                                    |
-| Result | text | `item_ids[0]` with icon and grade colour; dash for a 1-item record |
-| Input  | text | `item_ids[1]`, or the only item of a 1-item record       |
-| Group  | num  | `group`                                                  |
-| Stones | list | Stones of `itemimprovementsource.dbss` with this `group` |
-
 ## Notes
 
 - The window is `panel_improvement_all` (`Panel_Window_Improvement_All`). It

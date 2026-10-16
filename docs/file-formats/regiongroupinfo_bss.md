@@ -79,23 +79,6 @@ Set on 14 groups: Velia, Heidel, Glish, Calpheon, Trent, Keplan, Altinova, Olvia
 
 The parser stores `node_key` as `None` when it is `0`, and `display_graph_position` as `pos_x`, `pos_y`, `pos_z`, each `None` when all three are `0`. It keeps the fields with a value other than `0` and leaves out `is_blocked_managing`, `is_productivity_changed` and `varied_productivity`.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                                      |
-| ------------ | ---- | -------------------------------------------------------------------------- |
-| Region Group | num  | `region_group_key`                                                         |
-| Node Key     | num  | `node_key`; dash when the group has none                                   |
-| Node Name    | text | LOC type 29 name of `node_key` (with its parent for a sub-node), else dash |
-| Concurrent Users | num | `concurrent_playable_user_count`                                     |
-| Corp Productivity | flag | `enable_corp_productivity`                                         |
-| Fishing Productivity | flag | `enable_fishing_productivity`                                   |
-| Loyalty      | flag | `enable_loyalty`                                                           |
-| X            | num  | `pos_x`, whole number; dash when the position is unset                     |
-| Y            | num  | `pos_y`, whole number                                                      |
-| Z            | num  | `pos_z`, whole number                                                      |
-
-`corp_productivity`, `fishing_productivity`, `loyalty` and `unknown_31` stay on the record for search and CSV but out of the table.
-
 ## Field Names
 
 The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::RegionGroupInfo` holds `_key`, `_isBlockedManaging`, `_concurrentPlayableUserCount`, `_waypointKey` (i32), `_enableCorpProductivity`, `_enableFishingProductivity`, `_enableLoyalty`, `_regionPosition`, `_isProductivityChanged`, `_corpProductivity`, `_fishingProductivity`, `_loyalty`, `_variedCorpProductivity`, `_variedFishingProductivity` and `_variedLoyalty` (all i32), with pointers in between. The row stores them in this order without the pointers or padding, from `+0x00` to `+0x30`. `GameCommonParameterLoaderFromExcel::LoadRegionGroupInformation` reads `RegionGroupKey`, `WaypointKey`, `DisplayGraphPositionX` to `Z`, `CorpProductivity`, `FishingProductivity`, `Loyalty` (as bools) and `ConcurrentPlayableUserCount` from `RegionGroup_Table` into those members, and sets `_corpProductivity`, `_fishingProductivity` and `_loyalty` to `1000000` and the three varied values to `0` for every row: the values this file stores.

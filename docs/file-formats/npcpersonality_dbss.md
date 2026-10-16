@@ -98,21 +98,6 @@ An index file with one entry per personality record.
 
 Every offset row points at a record that repeats its `personality_id`, and every record is indexed exactly once, but the rows are not in main-file order: only the first 53 step by the 34-byte stride, the rest are ordered differently (pre-2026-09-27 fixture and 2026-09-27 client alike). An earlier version of this doc called it a sequential index in main-file order.
 
-## Suggested UI Layout
-
-| Column            | Type | Notes                                            |
-| ----------------- | ---- | ------------------------------------------------ |
-| ID                | num  | `personality_id`                                 |
-| Row               | num  | Record index within the file                     |
-| Group A           | num  | `group_a_id`                                     |
-| Group B           | num  | `group_b_id`                                     |
-| Group C           | num  | `group_c_id`                                     |
-| Int Min           | num  | Interest range lower bound                       |
-| Int Max           | num  | Interest range upper bound                       |
-| Fav Min           | num  | Favor range lower bound                          |
-| Fav Max           | num  | Favor range upper bound                          |
-| Horoscope         | text | Zodiac sign resolved from the personality type   |
-
 ## Notes
 
 - All 1182 `personality_id` values are unique; it is a true record key.

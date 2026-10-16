@@ -93,18 +93,6 @@ Amplified Lightstone of Fire: Predation) to its base Lightstone. The rows are
 in no sorted order. Garmoth's Lightstone sets page lists each member as "Any
 of" the base and the Amplified Lightstone, which matches these rows.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                                  |
-| ----------- | ---- | ---------------------------------------------------------------------- |
-| Set ID      | num  | `set_id`                                                               |
-| Name        | text | LOC type 113 first line in its colour, else the Korean first line      |
-| Lightstones | list | `member_ids` with item icons and names                                 |
-| Substitutes | list | Items of the substitute table that count as a member, other than itself |
-| Effect      | list | The lines after the name                                               |
-| Skill ID    | num  | `skill_no`                                                             |
-| Buffs       | list | Buffs of skill `skill_no` level 1                                      |
-
 ## Notes
 
 - The sets with four members come first, then the sets with three, each

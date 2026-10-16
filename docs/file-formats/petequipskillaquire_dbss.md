@@ -134,18 +134,6 @@ Because `3` and `4` exceed `1,000,000`, these cannot be parts-per-million probab
 | `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
 | `+0x08` | u16  | padding     | Always `0`                                                   |
 
-## Suggested UI Layout
-
-| Column          | Type | Notes                                               |
-| --------------- | ---- | --------------------------------------------------- |
-| Acquire Type ID | num  | `acquire_type_id` (right-aligned)                   |
-| Skill ID        | num  | `equip_skill_id` the weight indexes                 |
-| Skill Name      | text | Resolved via the catalog's `loc_id` (LOC type 10)   |
-| Chance          | num  | `weight / total_weight` as a percentage             |
-| Weight          | num  | Raw weight value                                    |
-
-Show one row per `(acquire_type_id, equip_skill_id)` and omit zero weights, since a zero means the skill is not rollable.
-
 ## Notes
 
 - Weights are roll weights, not costs. Earlier revisions of this document described the record as a cost table with `cost_a`/`cost_b`/`cost_c` triples and a `reserved` field; that reading was wrong. The record is a flat 43-element weight array and the "reserved" u32 is `weights[0]`.

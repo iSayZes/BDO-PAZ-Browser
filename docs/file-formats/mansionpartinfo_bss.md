@@ -58,17 +58,6 @@ Rows are sorted by `character_id`, then `part_index`.
 10 strings on client 3458: the nine icon paths and, at index 1, an empty
 string that every `unknown_str_ref` points at.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                          |
-| ------------ | ---- | -------------------------------------------------------------- |
-| Manor ID     | num  | `character_id`; right-aligned                                  |
-| Manor        | text | LOC type 6 name of that record; dash without LOC               |
-| Part         | num  | `part_index`                                                   |
-| Icon         | text | `icon_ref`, lowercased under `ui_texture/`                     |
-
-`unknown_02` and `unknown_str` stay on the record but out of the table.
-
 ## Notes
 
 - The installation mode list (`window/housing/panel_house_installationmode_list_all_1`)

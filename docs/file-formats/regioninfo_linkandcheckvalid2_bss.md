@@ -45,15 +45,6 @@ All multi-byte values are little-endian unless noted otherwise.
 
 The records are not sorted by key. The file starts with regions 513, 1025, 1 (all `1 mod 512`), then 514, 1026, 2 and so on, which looks like a hash map written out in iteration order. The handler keeps file order.
 
-## Suggested UI Layout
-
-| Column         | Type | Notes |
-| -------------- | ---- | ----- |
-| Region Key     | num  | `region_key` |
-| Region         | text | LOC type 17 name of `region_key`; `-` when LOC has none |
-| Links          | num  | Length of `linked_region_keys` |
-| Linked Regions | text | LOC type 17 name of each linked key (the key when LOC has none); first six, the rest behind a hover count; not sortable |
-
 ## Notes
 
 - **The lists form groups.** Every list holds its own region, and the links are mutual: when A lists B, B lists A. There are 12 distinct lists in client 3458. 27 regions share Velia's 41-key list (the mainland towns from Velia to Muzgar and Velandir, plus town sub-regions such as Ossuary, Velia Beach and the three Calpheon trade zones); the seven Land of the Morning Light towns share one list; Valencia City and Ancado Inner Harbor list each other; Lema Island, Iliya Island, Arehaza and Oquilla's Eye list only themselves.

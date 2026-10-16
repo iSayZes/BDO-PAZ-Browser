@@ -128,22 +128,6 @@ The bare u16 index layout of `petexpoffset.dbss`, read by
 The index rows are in neither key nor file order; each points at its own
 group (`test_every_offset_row_points_at_its_group`).
 
-## Suggested UI Layout
-
-One row per item entry.
-
-| Column       | Type | Notes                                         |
-| ------------ | ---- | --------------------------------------------- |
-| Character ID | num  | `character_id`                                |
-| NPC          | text | LOC type `6`, `str_id4` `0`                   |
-| Item ID      | num  | `item_id`                                     |
-| Icon         | icon | Item icon                                     |
-| Item         | text | LOC type `0` in the item's grade colour       |
-| Category     | text | `commerce_type` name, LOC type `37`           |
-| Trade Group* | text | `trade_group_type` with our label: `1 Other Regions`, `2 Valencia City`, `3 Ibellab Oasis`, `99 Shared Goods`. The `*` in the header (tooltip) marks the labels as ours: they come from the NPCs and goods that hold each code, not from a client name |
-
-The offset table shows Character ID, Data Offset and Size.
-
 ## Notes
 
 - On client 3464 the 125 one-item groups hold items from 810442 to 810559,

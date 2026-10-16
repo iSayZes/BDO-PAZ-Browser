@@ -192,23 +192,6 @@ and the section did not show on my Wizard, so it most likely appears only
 while one of the items is equipped. Taebaek's Belt: see the GrumpyG guide
 (grumpygreen.cricket/taebaeks-belt).
 
-## Suggested UI Layout
-
-One row per skill cell, across all classes. The default order follows the
-game: class, then `subgroup` (the section order), then Card Column, then
-cell index.
-
-| Column      | Type | Notes                                                               |
-| ----------- | ---- | ------------------------------------------------------------------- |
-| Class       | text | LOC type `21` name of `class_type`, else the number                 |
-| Tab         | text | English tab name, else the key; sorts by `subgroup`                 |
-| Card Column | text | `Left`, `Middle` or `Right` for `row * 3 // height` = `0`, `1`, `2` |
-| Row         | num  | Cell index `// width`                                               |
-| Column      | num  | Cell index `% width`                                                |
-| Group       | num  | `group_no`                                                          |
-| Icon        | icon | `IconKind.SKILL` icon of the group's first rank (from `skilltype.dbss`) |
-| Skill       | text | LOC type `10` name of the group's first rank                        |
-
 ## Notes
 
 - The grid and cell layout comes from bdo-data-extractor, which keeps the

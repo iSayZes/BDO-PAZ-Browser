@@ -70,30 +70,6 @@ Bare offset table into `employeespawnposition.dbss` (no PABR magic, no trailer).
 
 The rows are in file order, which is not key order (41, 1, 42, 2, 43, 3, 4, 5, 44, 45, 46 to 50). The parser reads the main file through these rows and checks that every row holds the key of the offset row that points at it.
 
-## Suggested UI Layout
-
-### employeespawnposition.dbss
-
-| Column         | Type | Notes                                                        |
-| -------------- | ---- | ------------------------------------------------------------ |
-| Spawn Position | num  | `spawn_position_key`                                         |
-| Region         | text | LOC type 17 name of `region_key`, falling back to the key    |
-| Sailors        | text | `Sailor <Ambitious>` for every `employeespawninfo.dbss` row whose `spawn_position_keys` hold this key, in that file's order; dash without both sailor files |
-| X              | num  | `pos_x`, whole number                                        |
-| Y              | num  | `pos_y`, whole number                                        |
-| Z              | num  | `pos_z`, whole number                                        |
-| Direction      | text | `dir_x, dir_y, dir_z` rounded to two decimals                |
-
-`unknown_1c` stays on the record but out of the table.
-
-### employeespawnpositionoffset.dbss
-
-| Column         | Type | Notes                          |
-| -------------- | ---- | ------------------------------ |
-| Spawn Position | num  | `spawn_position_key`           |
-| Data Offset    | num  | `data_offset`, as hex          |
-| Data Size      | num  | `data_size`                    |
-
 ## Notes
 
 - "Employee" in these file names means sailor: the client's sailor windows (`panel_window_sailormanager_all_*.luac`) work on `ToClient_getEmployeeWrapperByIndex`, `getEmployeeKey` and the `__eEmployeeAbility_*` ship stats, and the characters `employeespawninfo.dbss` places here (`59053` to `59072`) are all named Sailor in `characterstatic.dbss` with model `npc/employee_sailor`.

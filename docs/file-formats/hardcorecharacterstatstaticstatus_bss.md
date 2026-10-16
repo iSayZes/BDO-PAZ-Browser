@@ -58,15 +58,6 @@ The body fields (`max_hp`, `max_mp`, the luck and speed limits, the
 `experience.bss` Stat Body table; `max_hp` and `max_mp` hold the `1.0` and `1`
 placeholders here too.
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                             |
-| ---------- | ---- | --------------------------------- |
-| Class Type | num  | `class_type`                      |
-| Class      | text | LOC type 21 name, else the number |
-| AP         | num  | `ap_bonus`                        |
-| DP         | num  | `dp_bonus`                        |
-
 ## Notes
 
 - On client 3464 all 47 bodies are byte-identical and equal the

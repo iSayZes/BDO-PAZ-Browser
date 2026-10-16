@@ -245,17 +245,6 @@ color itself.
    - Name: `str_type=1, str_id1=title_id, str_id4=0`
    - Requirement: `str_type=1, str_id1=title_id, str_id4=1`
 
-## Suggested UI Layout
-
-| Column             | Align | Notes                                                                         |
-| ------------------ | ----- | ----------------------------------------------------------------------------- |
-| Title ID           | num   | Loc lookup key                                                                |
-| Category           |       | Decoded category name, falling back to the numeric value                      |
-| Title              |       | English loc text, falling back to Korean; drawn in the payload color when one exists, with the name's own PAColor tags on top |
-| Title Requirements |       | English loc text, falling back to Korean; in the colours of its PAColor tags  |
-| Special            |       | `True` when the title has a non-default payload color or inline title PAColor |
-| Effect             |       | Extra payload effect/aura string, if present                                  |
-
 ## Notes
 
 - The previously unknown `?` layouts are now explained by `key_count` values 4

@@ -63,19 +63,6 @@ The groups on client 3464:
 | 5   | Khan              | 23843 to 23840               | 756218 to 756221 |
 | 8   | Gumiho & Duoksini | 27897, 27895, 27894, 29539   | 790880, 790877, 790878, 790879 |
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                                                        |
-| ---------- | ---- | ------------------------------------------------------------ |
-| Boss Key   | num  | `boss_key`                                                   |
-| Level      | num  | `level`                                                      |
-| Image      | icon | `image` under `ui_texture/`, lowercased                      |
-| Boss       | text | LOC type 6 name of `character_id`                            |
-| Reward     | text | LOC type 0 name of `reward_item_id`, with its icon           |
-
-The table opens in file order, one row per entry. `unknown_05`, `unknown_07`
-and `unknown_11` stay hidden.
-
 ## Notes
 
 - `unknown_11` on Khan is 27198, 27197, 27196 and 27186, a "Khan" with the model

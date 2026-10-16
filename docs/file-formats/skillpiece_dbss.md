@@ -85,20 +85,6 @@ them, and on client 3464 every row matches the record walked from the start
 of the file. `test_every_offset_row_points_past_its_records_key_prefix` in the
 handler tests checks this against the installed client.
 
-## Suggested UI Layout
-
-One row per tier.
-
-| Column    | Type | Notes                                                          |
-| --------- | ---- | -------------------------------------------------------------- |
-| Skill ID  | num  | `skill_no`                                                     |
-| Set       | text | LOC type 52 `str_id4 = 2`, else `group_title_kr`, else the LOC type 10 skill name |
-| Points    | num  | `point`                                                        |
-| Level     | num  | `level`                                                        |
-| Requires  | text | LOC type 52 `str_id4 = 1`, else `desc_title_kr`                |
-| Effect    | text | LOC type 52 `str_id4 = 0`, else `desc_kr`; one line per bonus  |
-| Buffs     | list | Buffs of the `skill.dbss` rank `skill_no << 16 \| level`        |
-
 ## Notes
 
 - The set effect tooltip Lua (`panel_equiment_seteffecttooltip`) reads one

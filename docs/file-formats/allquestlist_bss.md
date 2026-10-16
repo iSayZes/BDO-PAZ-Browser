@@ -78,15 +78,6 @@ Current client data (`files/allquestlist.bss`):
 
 The older fixture starts with `1050655` (chain `2079`, quest `16`, `[Elvia Weekly] Gigagord`) and also ends with `181218`.
 
-## Suggested UI Layout
-
-| Column  | Type | Notes                                                                 |
-| ------- | ---- | --------------------------------------------------------------------- |
-| Main ID | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`                     |
-| Sub ID  | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`                        |
-| Icon    | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
-| Title   | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-
 ## Notes
 
 - Current file: `75,972` bytes, `18,988` entries, `end_of_entries = 75,960`. After the 2026-09-27 update: `77,328` bytes, `19,327` entries, `end_of_entries = 77,316`. Fixture: `78,416` bytes, `19,599` entries, `end_of_entries = 78,404` (`0x13244`). All three match `8 + count × 4 + 12`.

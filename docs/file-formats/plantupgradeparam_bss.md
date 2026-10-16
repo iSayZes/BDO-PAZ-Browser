@@ -49,15 +49,6 @@ The entries on client 3473, in file order. The use column follows the developer 
 | 2   | 5 | Worker capacity, levels 0 to 5: 4/6/8/10/12/14 workers | `planttown.bss` `worker_capacity_upgrade_group_index` |
 | 1   | 5 | Warehouse, levels 0 to 5: 40/50/60/70/80/90 slots | `planttown.bss` `warehouse_upgrade_group_index` |
 
-## Suggested UI Layout
-
-| Column    | Type | Notes |
-| --------- | ---- | ----- |
-| Key       | num  | `key` |
-| Max Level | num  | `max_level` |
-
-Rows are sorted by key; the file order is the hash map's.
-
 ## Notes
 
 - Total size is `8 + count × 6 + 12`: 44 bytes on client 3473.

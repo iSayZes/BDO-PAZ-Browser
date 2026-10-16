@@ -85,14 +85,6 @@ node_name = LOC type 29, str_id1=node_id, str_id4=0
 
 Row numbers are from the pre-2026-09-27 fixture. The 2026-09-27 client inserts Angavu Outpost (`2057`) as row 0, so every row above moves down by one.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                            |
-| --------- | ---- | ------------------------------------------------ |
-| Node ID   | num  | `node_id`, right-aligned                         |
-| Node Name | text | Prefer LOC type `29`; fall back to raw `node_id` |
-| Max Level | num  | `max_level`                                      |
-
 ## Notes
 
 - Observed decompressed size is `560` bytes.

@@ -89,22 +89,6 @@ Every index row points at the main row with the same stone type and item, in
 the same order. Both files are 468 bytes on client 3464, since every row is
 12 bytes in both.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                    |
-| ------------- | ---- | -------------------------------------------------------- |
-| Alchemy Stone | text | Stone type name from the table above, else the number; sorts by `stone_type` |
-| Item ID       | num  | `item_id`                                                |
-| Icon          | icon | Item icon                                                |
-| Item          | text | LOC type 0 name in its grade colour, else the ID         |
-| Durability    | num  | `charge_point`                                           |
-
-The table opens sorted by `stone_type` ascending, which keeps the file's
-material order inside each type.
-
-The offset table shows Stone Type (the group index), Item ID, Data Offset and
-Size.
-
 ## Notes
 
 - The Recharge tab asks the client for the points of one stone and material

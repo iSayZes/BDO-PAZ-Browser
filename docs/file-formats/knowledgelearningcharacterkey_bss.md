@@ -48,15 +48,6 @@ Plain binary: no `PABR` magic, no index file and no trailer. The file ends exact
 | `4750`  | Lightning Trumpeter      | `20733`                           | Lightning Trumpeter                  |
 | `7364`  | Wild Herb                | `10263`, `10273`, ... (31 IDs)    | Wild Herb                            |
 
-## Suggested UI Layout
-
-| Column         | Type | Notes                                                                        |
-| -------------- | ---- | ---------------------------------------------------------------------------- |
-| Knowledge ID   | num  | `card_id`                                                                    |
-| Knowledge Name | text | LOC type 34 name; dash without one                                           |
-| Count          | num  | `character_count`                                                            |
-| Characters     | list | `10263 Wild Herb`: ID and LOC type 6 name, in stored order, first three then a count; unsortable |
-
 ## Notes
 
 - Checked against `knowledgelearning.dbss` on client 3458: the 1,458 cards are exactly the distinct `card_id` values of table 0, the 2,596 character IDs are exactly its `source_id` values, and every card lists its characters in table 0 row order. No character appears twice.

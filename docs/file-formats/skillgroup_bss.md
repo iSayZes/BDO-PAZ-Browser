@@ -44,16 +44,6 @@ to the end of the file.
 2,271 groups have a single rank (`rank_count` 2); the longest chains have 20
 ranks. Every rank key is a `skill.dbss` key.
 
-## Suggested UI Layout
-
-| Column   | Type | Notes                                                                 |
-| -------- | ---- | --------------------------------------------------------------------- |
-| Group    | num  | `group_no`                                                            |
-| Icon     | icon | `IconKind.SKILL` icon of the first rank (from `skilltype.dbss`)       |
-| Name     | text | LOC type `10` name of the first rank                                  |
-| Ranks    | num  | `rank_count - 1`                                                      |
-| Skills   | list | Rank keys as `skill_no` and LOC type `10` name; not sortable (Ranks sorts by count) |
-
 ## Notes
 
 - The layout comes from bdo-data-extractor and walks exactly to the end of

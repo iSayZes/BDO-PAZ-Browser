@@ -197,22 +197,6 @@ The string table is a flat pool, not grouped records. Skill records choose any s
 | `1203` | [Thrifty C](https://bdocodex.com/us/sskill/1203/) | `1203.dds` | 5% Chance to Return 10% of 1 Crafting Material | `1000` | `100000`, `100000` |
 | `1012` | [Adept Worker](https://bdocodex.com/us/sskill/1012/) | `1012_N.dds` | Work Speed +2, Movement Speed +7% | `1050` | `70000`, `0`; extra `2000000`, `1` |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                      |
-| ----------- | ---- | ------------------------------------------ |
-| Skill ID    | num  | `skill_id`, right-aligned                  |
-| Icon        | text | Render `icon_path` with icon-cell preview  |
-| Name        | text | Prefer LOC type `22`; fall back to `inline_name` |
-| Description | text | Prefer LOC type `22`; fall back to `inline_description` |
-| Weight      | num  | `acquisition_weight`, right-aligned        |
-| Effect Type | text | `effect_type` by name: Flat Stats, Full Refund, Stats per Level Up, Extra Work; sorts by the number |
-| Target      | text | What the skill affects: the stat (`Work Speed`, `Move Speed`, `Luck`), with the work category for targets `1` to `13` (`Cannon/Siege Weapon Work Speed`); the production category for extra work (`Siege Weapons`); a dash for refunds, whose `effect_target` is the chance. Sorts by `target_sort_value`: `effect_target`, or `None` for refunds |
-| Effect A    | num  | How much: `+2` work speed, `+7%` movement speed, `+0.7` luck, `+0.2` per level, `+3` extra work; for refunds the chance (`effect_target`, `7000` is `0.7%`). Sorts by `effect_a_sort_value`, the raw number shown |
-| Effect B    | num  | For refunds the share refunded (`effect_value_a`, `1000000` is `100%`); a dash for every other type. Sorts by `effect_b_sort_value`: `effect_value_a` for refunds, `None` for the dashes |
-
-The shown values are scaled from the raw fields, which stay on the record unchanged for export. Each column sorts by the raw number its cell shows, so a dash sorts last (see "Store none as None" in `docs/handler.md`). The stat names follow the `0`/`1`/`2` codes, which match every description. The category names are not stored anywhere found so far: they are the wording the skills' own English descriptions use for each target value (each value has exactly one wording), so a value not seen yet shows as its number. The targets are not keys of another table found so far: the workshop types in `houseinforeceipe.dbss` number the same work differently (jewelry `8`, tool `9`, refinery `10`, costume `18`), and its processing sub-types `30` to `34` come in a different order than the packing targets `9001` to `9006`.
-
 ## Notes
 
 - Observed file size is `13,090` bytes (2026-09-27 client: `13,294`).

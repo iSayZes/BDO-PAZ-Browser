@@ -72,15 +72,6 @@ Pre-2026-09-27 fixture:
 | `0x0000AE`  | `503`    | `소서러의 기술`          | `4`         | `66039`, `131575`, `197111`, `262647` |
 | `0x0000DE`  | `3100`   | `칼페온의 레이트 가문`   | `4`         | `68636`, `134172`, `199708`, `265244` |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                       |
-| ----------- | ---- | ----------------------------------------------------------- |
-| Group ID    | num  | `group_id`; right-aligned                                   |
-| Name        | text | LOC type 25 `str_id1=group_id`, falling back to `name_kr` |
-| Quests      | num  | Number of linked child quests                               |
-| Quest Titles | text | LOC titles for the child quests, falling back to their IDs |
-
 ## Notes
 
 - Observed decompressed size is `6,038` bytes in the pre-2026-09-27 fixture and `5,918` in the 2026-09-27 client.

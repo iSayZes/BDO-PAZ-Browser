@@ -92,15 +92,6 @@ The table splits cleanly in two. Records 0–1 carry two entries each, told apar
 by `unknown_02` 19 and 20, with `unknown_03` zero. Records 2–6 carry one entry
 with `unknown_02` zero and a non-zero `unknown_03`.
 
-## Suggested UI Layout
-
-| Column | Type | Notes                                   |
-| ------ | ---- | --------------------------------------- |
-| Record | num  | Record index, 0-based                   |
-
-The four `unknown_*` entry fields stay on each row for search and export but
-are not shown.
-
 ## Notes
 
 - The record stream lands exactly on `end_of_records`: `7 × 4 + 9 × 11 = 127`

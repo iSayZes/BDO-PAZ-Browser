@@ -64,19 +64,6 @@ A u32 row count (equal to the main file's), then 12-byte rows:
 Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 4).
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                         |
-| ------------- | ---- | ------------------------------------------------------------- |
-| Item ID       | num  | `item_id`                                                     |
-| Enchant Level | num  | `enchant_level`                                               |
-| Icon          | icon | The icon of the item at its level, else the item's icon       |
-| Item          | text | LOC type 79 level name when it differs from the item name, else the LOC type 0 name with the level in brackets, in the item's grade colour |
-
-The table opens in file order.
-
-The offset table shows Item Key, Data Offset and Size.
-
 ## Notes
 
 - The Central Market sell window asks

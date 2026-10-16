@@ -62,18 +62,6 @@ an artwork entry. Two videos are used by two quests each
 `MorningLandPT2_Sub_8541_1_01` by 8554/2 and 8554/3); every artwork path is
 used once.
 
-## Suggested UI Layout
-
-| Column  | Type | Notes                                                                     |
-| ------- | ---- | ------------------------------------------------------------------------- |
-| Main ID | num  | `quest_chain_id`; right-aligned                                           |
-| Sub ID  | num  | `quest_id`; right-aligned                                                 |
-| Artwork | text | `artwork_ref`, lowercased under `ui_texture/`                             |
-| Title   | text | LOC type 18 quest title; dash without LOC, since the file holds no text   |
-| Video   | text | `ui_movie/pc/<video>.bk2`, lowercased                                     |
-
-`unknown_0c` stays on the record but out of the table.
-
 ## Notes
 
 - The journal book scripts (`window/achievement/panel_window_journal_book_all`

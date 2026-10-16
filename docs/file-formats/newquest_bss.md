@@ -131,24 +131,6 @@ Client 3458:
 | 0     | 0   | `1`       | `11059`        | `9`      | `1`        | `2`        | `2`        | `[Event] Love for Pets` |
 | 0     | 1   | `1`       | `11059`        | `10`     | `1`        | `2`        | `2`        | `[Event] Savory Good Feed` |
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                            |
-| ------------ | ---- | ---------------------------------------------------------------- |
-| Main ID      | num  | `quest_chain_id`; LOC type 18 `str_id1`                          |
-| Sub ID       | num  | `quest_id`; LOC type 18 `str_id2`                                |
-| Group Key    | num  | `group_key` of the row's group                                   |
-| Group Name   | text | LOC type 58 `str_id1 = group_key`, `str_id4 = 0`; else the Korean `group_name_kr` |
-| Event Start  | text | `event_start`; `newquest.bss` only                               |
-| Event End    | text | `event_end`; `newquest.bss` only                                 |
-| Icon         | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
-| Title        | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-| Condition    | text | LOC type 58 `(packed_quest_id, group_key)`, `str_id4 = 1`, in its game colours; else the Korean `condition_kr` |
-| Shown When   | text | `visible_conditions` on one line                                 |
-| Hidden When  | text | `hide_conditions` on one line                                    |
-
-`group` (the index in file order), `is_sub_quest`, `group_type`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The other three lists show the same columns without Event Start and Event End.
-
 ## Notes
 
 - Decompressed size is `820,905` bytes on client 3458 (`816,761` with 224 groups and 1,255 rows before 2026-09-27).

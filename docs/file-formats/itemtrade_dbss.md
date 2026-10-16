@@ -57,16 +57,6 @@ The bare u16 index layout of `petexpoffset.dbss`, read by
 The index rows are in neither key nor file order; each points at its own key
 in `itemtrade.dbss` (`test_every_offset_row_points_at_its_key`).
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                          |
-| ------------ | ---- | ---------------------------------------------- |
-| Character ID | num  | `character_id`                                 |
-| Name         | text | LOC type `6`, `str_id4` `0`                    |
-| Title        | text | LOC type `6`, `str_id4` `1`; `-` when it has none |
-
-The offset table shows Character ID, Data Offset and Size.
-
 ## Notes
 
 - Titles on client 3464: 57 `<Trade Manager>`, 54 `<Node Management>`, 2

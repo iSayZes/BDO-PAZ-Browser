@@ -136,16 +136,6 @@ When an `equip_skill_id` appears in both sections, Section 2 provides the finer-
 - Localization IDs are in the range 49001–49176 for confirmed skills; use `loc-tool.py --type 10 --id <loc_id>` to resolve.
 - Section 1 is the `Pet_EquipSkill_Table` sheet of a private server on client 1784 (skill number equal on 43 of 43 IDs, `skill_type` equal to its `GroupNo`) and Section 2 its `Pet_BaseSkill_Table` (60 of 60 sheet rows). The roll weights in `petequipskillaquire.dbss` index Section 1; every `pet.dbss` `base_skill_id` is a Section 2 ID (2,009 of 2,009 records on client 3473), while only 1,536 of them also exist in Section 1.
 
-## Suggested UI Layout
-
-| Column         | Type | Notes                                                       |
-| -------------- | ---- | ----------------------------------------------------------- |
-| Equip Skill ID | num  | `equip_skill_id` (right-aligned)                           |
-| Skill Name     | text | Resolved from `loc_id` (type 10 string); fall back to raw  |
-| Icon           | Icon | `equipskill_<loc_id:08d>.dds`                              |
-| Skill Type     | num  | `skill_type` (group code)                                  |
-| Section        | text | "S1" or "S2" (indicates which catalog entry is used)       |
-
 ## Open Questions
 
 ### `unknown_0c` and `unknown_10` in Section 2

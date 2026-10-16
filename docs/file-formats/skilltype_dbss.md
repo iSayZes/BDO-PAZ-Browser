@@ -96,17 +96,6 @@ client's PAZ files on client 3458; the other 78 point at missing files
 `Real_ETC/Scroll/Icon_ETC_Scroll_00000000.png`; what they are for is not
 known.
 
-## Suggested UI Layout
-
-Opens sorted by `skill_key` (Skill No); the index order is arbitrary.
-
-| Column   | Type | Notes                                                                  |
-| -------- | ---- | ---------------------------------------------------------------------- |
-| Skill No | num  | `skill_key >> 16`                                                      |
-| Icon     | icon | `icon_path` under `ui_texture/icon/`                                   |
-| Name     | text | LOC type `10`, `str_id1 = skill_no`, `str_id4 = 0`; else `name`        |
-| Kind     | text | `kind` as Other / Active / Passive                                     |
-
 ## Notes
 
 - The first keys (`0xDEAD0001`, `0xDEAC0001`) look like sentinels but are

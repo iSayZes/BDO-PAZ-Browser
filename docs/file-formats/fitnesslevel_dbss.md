@@ -89,29 +89,6 @@ The block index is the fitness type; the file stores no type field. 3 x (4 + 51 
 
 The first Breath row sits at `0x08`, after the type count and Breath's level count; each later block starts 4 bytes past the previous block's last row, skipping that block's level count. The parser reads the main file through these rows and checks that each row's `fitness_type` and `level` match the offset row's block and key.
 
-## Suggested UI Layout
-
-### fitnesslevel.dbss
-
-| Column        | Type | Notes                                                          |
-| ------------- | ---- | -------------------------------------------------------------- |
-| Fitness       | text | Breath, Strength or Health; sorts by `fitness_type`            |
-| Level         | num  | `level`                                                        |
-| EXP to Next Level | num | `exp`                                                        |
-| Max Stamina   | num  | `max_stamina`                                                  |
-| Weight Limit  | num  | `weight_limit` / 10,000, shown as `40 LT`                      |
-| Max HP        | num  | `max_hp`                                                       |
-| Max MP/WP/SP  | num  | `max_mp`                                                       |
-
-### fitnessleveloffset.dbss
-
-| Column      | Type | Notes                          |
-| ----------- | ---- | ------------------------------ |
-| Fitness     | num  | Block index (`fitness_type`)   |
-| Level       | num  | `level`                        |
-| Data Offset | num  | `data_offset`, as hex          |
-| Data Size   | num  | `data_size`                    |
-
 ## Notes
 
 - `fitnessmaxlevel.bss` stores the max level of each fitness type, `50` for all three on client 3464, the top row of every block here; see [fitnessmaxlevel](fitnessmaxlevel_bss.md).

@@ -93,23 +93,6 @@ The window tab, named by `stringtable.bss` key
 
 `TOOLTIP_5` is "Hunting", the console name of tab 3.
 
-## Suggested UI Layout
-
-| Column          | Type | Notes                                                                    |
-| --------------- | ---- | ------------------------------------------------------------------------ |
-| Character ID    | num  | `character_id`                                                           |
-| Icon            | icon | `list_texture` sprite, through `texturestring_combine.xml`               |
-| Name            | text | LOC type 6 name                                                          |
-| Tab             | text | `boss_info_type` tab name                                                |
-| Reinforced ID   | num  | `reinforced_character_id`; dash without one                              |
-| Reinforced Name | text | LOC type 6 name; dash without one                                        |
-| Main Rewards    | text | Item names of `reward_items`, a short preview list                       |
-| Spawn Times     | num  | Number of values in group 0 of `spawn_times`; dash when empty            |
-| Position        | text | `x, y, z`, rounded                                                       |
-
-The table opens in file order, which groups the records by tab.
-`unknown_ids` and `unknown_flag` stay hidden.
-
 ## Notes
 
 - The Lua calls on a record are `getBossInfoType()`,

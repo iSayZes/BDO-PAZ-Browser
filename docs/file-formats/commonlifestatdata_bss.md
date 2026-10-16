@@ -55,14 +55,6 @@ matches the file name. The per-type masteries next to it
 (`getLifeStat(idx, subType)`) select the rows of
 [`collectingstatdata.bss` and `manufacturingstat.bss`](masterystatdata_bss.md).
 
-## Suggested UI Layout
-
-| Column  | Type | Notes                                                           |
-| ------- | ---- | --------------------------------------------------------------- |
-| Level   | num  | `level`, the raw life level                                     |
-| Rank    | text | `Guru 12` for level 92, from the client rank names (see [`lifeexp.dbss`](lifeexp_dbss.md)) |
-| Mastery | num  | `mastery`, shown as `355`                                       |
-
 ## Notes
 
 - The handler is `_bss/commonlifestatdata/`; the rank text comes from

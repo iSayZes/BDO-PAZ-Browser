@@ -42,24 +42,6 @@ The rows fill the file exactly: 4 + 2,001 x 7 = 14,011 bytes on client 3464.
 
 Same layout as `skillexperienceoffset.dbss` (see [skillexperience](skillexperience_dbss.md)): a u32 row count equal to the main file's, then 10-byte [u16 level][u32 data_offset][u32 data_size] rows with no magic and no trailer. `data_size` is always 7, and `data_offset` points at the row's `level`. The rows are not in level order (399, 1052, 0, ...); the parser returns the main rows sorted by level.
 
-## Suggested UI Layout
-
-### productexperience.dbss
-
-| Column | Type | Notes   |
-| ------ | ---- | ------- |
-| Level  | num  | `level` |
-
-`unknown_04` and `unknown_06` stay on the record for search and CSV export.
-
-### productexperienceoffset.dbss
-
-| Column      | Type | Notes                 |
-| ----------- | ---- | --------------------- |
-| Level       | num  | `level`               |
-| Data Offset | num  | `data_offset`, as hex |
-| Data Size   | num  | `data_size`           |
-
 ## Notes
 
 - "Product" is the client's word for the life skill point pool. `panel_selfplayerexpgage.luac` defines `Panel_User_ProductSkillPoint_Update`, which reads `ToClient_getSkillPointInfo(2)` into the `StaticText_SkillPoint_p` / `CircularProgress_SkillExp_p` gauge, and `acquire.luac` announces a new point as `GainProductSkillPoint` with `ACQUIRE_OBJECTMESSAGE_1` ("Life Skill Points Obtained"). No client Lua script calls `Panel_User_ProductSkillPoint_Update` or registers it for an event on client 3464.

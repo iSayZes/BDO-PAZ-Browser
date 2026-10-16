@@ -70,17 +70,6 @@ Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 Read by `parse_bare_u32_offset_rows()` in `_common/pabr_offset.py`; on client
 3464 every row matches the record walked from the start of the file.
 
-## Suggested UI Layout
-
-| Column          | Type | Notes                                              |
-| --------------- | ---- | -------------------------------------------------- |
-| Item ID         | num  | `item_id`                                          |
-| Icon            | icon | Item icon                                          |
-| Stone           | text | LOC type 0 name in its grade colour, else the ID   |
-| Category        | num  | `category`                                         |
-| Group           | num  | `group`                                            |
-| Default Display | flag | `is_default_display`                               |
-
 ## Notes
 
 - `category` follows from the stone names; the gear side of the match is an

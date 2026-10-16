@@ -101,16 +101,6 @@ The 12-byte trailer is the same shape as the `itemenchantoffset.dbss` one.
 
 Subgroup keys are u16 in the index, so no key above `65535` exists.
 
-## Suggested UI Layout
-
-One row per subgroup; the item list is the useful part.
-
-| Column        | Type | Notes                                                          |
-| ------------- | ---- | -------------------------------------------------------------- |
-| Subgroup Key  | num  | `subgroup_key`                                                 |
-| Items         | num  | `entry_count`                                                  |
-| Item Names    | text | Icon and LOC type 0 name of each entry in its grade colour (`ITEM_GRADE`), comma-separated, the first eight shown; the item ID when no name exists. An entry with `enchant_level > 0` shows that level's own LOC type 79 name where it differs from the item name (`DEC: Sovereign Longsword`), else adds the level as a number, e.g. `Blackstar Helmet (19)`; it also shows that level's own icon where `specialenchantitem.bss` has one (Ator's Shoes `00719900_1.dds` to `_5.dds`) |
-
 ## Notes
 
 - Worker production subgroups use one entry shape only: `enchant_level=0`, `select_rate=1,000,000`, every other field zero (815 entries in 364 subgroups). 278 of their 281 distinct item IDs have an English LOC type 0 name; 4016, 4017 and 4415 have none.

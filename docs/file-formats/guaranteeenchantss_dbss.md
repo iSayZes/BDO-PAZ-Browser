@@ -101,19 +101,6 @@ with one level; the LOC note on alchemy stone growth (type 37, id1
 1288266772) reads "A full Ancient Anvil and 80%+ EXP guarantees a higher
 grade".
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                        |
-| ------------- | ---- | ------------------------------------------------------------ |
-| Enhancement Type | num | `enhancement_type`                                       |
-| Level         | num  | `enchant_level`, the level the attempt starts from           |
-| Agris Essence | num  | `agris_count`; dash when `0`                                 |
-| Items         | text | Base items of the type, from the `ENHANCEMENT_TYPE_ITEMS` lookup index; dash when none |
-
-Rows sort by type, then level. A row's level reads differently per type
-(level 19 is TET on Kzarka, a five-level accessory ends at level 4), so the
-table shows the raw level.
-
 ## Notes
 
 - How the client uses the count (`panel_widget_enchant_main_all`,

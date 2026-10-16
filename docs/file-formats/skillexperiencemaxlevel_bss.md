@@ -35,12 +35,6 @@ The array length is not stored; the parser takes it from the trailer's `end_of_d
 
 The same trailer closes [fitnessmaxlevel](fitnessmaxlevel_bss.md), which stores u32 values instead.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes       |
-| --------- | ---- | ----------- |
-| Max Level | num  | `max_level` |
-
 ## Notes
 
 - `end_of_data` is `6` in both files, so the value is a u16, not the u32 that the first 8 bytes suggest (`d0 07 00 00`): the next two zero bytes start the trailer.

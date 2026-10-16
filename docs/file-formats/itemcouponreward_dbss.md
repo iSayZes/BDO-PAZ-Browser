@@ -50,23 +50,6 @@ Every other bare offset companion has rows of key, u32 offset and u32 size
 `itemcollectionscrolloffset.dbss`). Four such rows need at least 36 bytes, so
 the 16 bytes after the count are not four offset rows.
 
-## Suggested UI Layout
-
-`itemcouponreward.dbss`:
-
-| Column | Type | Notes                           |
-| ------ | ---- | ------------------------------- |
-| Count  | num  | Header `count`                  |
-| Status | text | `No records` in the UI language |
-
-`itemcouponrewardoffset.dbss`, one row per u32 word of the file:
-
-| Column | Type | Notes                                        |
-| ------ | ---- | -------------------------------------------- |
-| Offset | num  | Word position, `+0x00` to `+0x10`            |
-| Field  | text | `count` at `+0x00`, else `unknown_<offset>`  |
-| Value  | num  | The u32 at that position                     |
-
 ## Notes
 
 - `python browser.py --list *coupon*` shows `coupon.dbss` and

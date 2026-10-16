@@ -249,35 +249,6 @@ max HP:
   Lancia, Yuria Longsword and Dim Tree Spirit's Armor read 6.25%, 2% and
   0.3% at DUO, TRI and TET, the `success_rate` of blocks 18, 19 and 20.
 
-## Suggested UI Layout
-
-| Column                  | Type | Notes |
-| ----------------------- | ---- | ----- |
-| Enchant Key             | num  | `enchant_key` |
-| Level                   | num  | `level` |
-| Items                   | list | Base items whose `itemenchant.dbss` block stores this enchant key (`ENCHANT_KEY_ITEMS` lookup index), with icons and names; the same on every level of a key; sorts by count |
-| Material                | text | `material_item_id` with its icon and LOC type 0 name; dash on level 0 |
-| Count                   | num  | `material_count` |
-| Chance                  | num  | `success_rate / 10,000` as a percentage |
-| On Failure              | text | `fail_result` as Safe, Destroyed or Downgrade, with `downgrade_rate` in brackets when it is not 100%; dash on level 0 and on attempts that cannot fail |
-| Fail Durability Loss    | num  | `fail_durability_loss` |
-| Perfect Count           | num  | `perfect_count`; dash when `0` |
-| Perfect Durability Loss | num  | `perfect_durability_loss`; dash without a perfect enhancement |
-| Durability              | num  | `max_durability` |
-| AP                      | num  | `ap_min ~ ap_max`, highest lane; dash when both are 0; sorts by `ap_max` |
-| Accuracy                | num  | Highest lane |
-| Evasion                 | num  | Highest lane |
-| Hidden Evasion          | num  | Highest lane |
-| DR                      | num  | `damage_reduction`, highest lane |
-| Hidden DR               | num  | `hidden_damage_reduction`, highest lane |
-| Max HP                  | num  | `max_hp` |
-| Aid Items               | text | `aid_item_ids` with icons and names |
-| Effects                 | text | The effect script on one line, cut |
-| Description             | text | `description_kr` in its game colours, on one line |
-
-Rows are sorted by enchant key, then level. The offset table shows the key
-split into Enchant Key and Level, then Data Offset and Data Size.
-
 ## Notes
 
 - The aid items are the enhancement hammers and crystals: J's Hammer of

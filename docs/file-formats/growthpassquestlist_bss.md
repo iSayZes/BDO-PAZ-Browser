@@ -54,17 +54,6 @@ On client 3464 the list holds 224 quests in nine chains, 4464 to 4472, and every
 
 The window does not read this list by index. It walks the categories of [`growthpasscategory.dbss`](growthpasscategory_dbss.md) and places each quest in a grid cell of the category's layout in [`uigrowthpasslayout.bss`](uigrowthpasslayout_bss.md). Each category names one quest chain, and its grid holds that chain's quests. On client 3464 only two chains have a category: 4470 (category 7, Game Tips, quests 1 to 40) and 4472 (category 9, HYPERBOOST, quests 1 to 13). The other seven chains are in this list with no category or grid. LOC type 107 still names categories 1 to 9.
 
-## Suggested UI Layout
-
-Same as [`allquestlist.bss`](allquestlist_bss.md):
-
-| Column  | Type | Notes                                                                    |
-| ------- | ---- | ------------------------------------------------------------------------ |
-| Main ID | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`                         |
-| Sub ID  | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`                            |
-| Icon    | text | Quest icon resolved from `packed_quest_id` through the quest icon index  |
-| Title   | text | LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-
 ## Notes
 
 - Decompressed size on client 3464: `916` bytes, `8 + 224 * 4 + 12`.

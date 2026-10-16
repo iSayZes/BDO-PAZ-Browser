@@ -42,18 +42,6 @@ All multi-byte values are little-endian.
 | `+0x14` | u16  | unknown_14   | `30` (Garmoth) or `10`                                            |
 | `+0x16` | u32  | unknown_16   | `300000`, `1000000` or `800000`                                   |
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                       |
-| ------------ | ---- | --------------------------- |
-| Key          | num  | `key`                       |
-| Character ID | num  | `character_id`              |
-| Name         | text | LOC type 6 name             |
-| Sector X     | num  | `min_x..max_x`              |
-| Sector Z     | num  | `min_z..max_z`              |
-
-The table opens in file order. `unknown_14` and `unknown_16` stay hidden.
-
 ## Notes
 
 - Garmoth's Boss Info position in

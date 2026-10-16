@@ -83,15 +83,6 @@ at Training Artisan 7 (level 47) it shows +21.7% skill learn chance and
 3464). Level 46 holds 21.0% for both, so the same tooltip also confirms the
 entry `n` = level `n + 1` reading.
 
-## Suggested UI Layout
-
-| Column                            | Type | Notes                                                |
-| --------------------------------- | ---- | ---------------------------------------------------- |
-| Level                             | num  | `level`, the raw Training level                      |
-| Rank                              | text | `Guru 12` for level 92, from the client rank names   |
-| Mount Skill Learn Chance          | num  | `add_vehicle_skill_owner_rate`, one decimal like the tooltip |
-| Higher Min. Movement Speed Chance | num  | `add_servant_stat_rate`, one decimal like the tooltip |
-
 ## Notes
 
 - The handler is `_bss/traininglevelskillstat/`. It reads the entries with

@@ -107,14 +107,6 @@ Acquire x70: Luck <PAColor0xff00baff>+2<PAOldColor> / Max Energy <PAColor0xff00b
 
 Pick the line by `internal_id`, not by matching the `Acquire x50:` prefix, since other languages word the prefix differently.
 
-## Suggested UI Layout
-
-| Column          | Source                                                    |
-| --------------- | --------------------------------------------------------- |
-| Level           | `internal_id + 1`                                         |
-| Required Titles | `required_titles`                                         |
-| Text            | Line `internal_id` of the LOC tooltip, values in their game colours; `label_kr` + `effect_kr` without LOC or `stringtable.bss`, or when the line count differs from the tier count |
-
 ## Reference Data
 
 ### Known Effect Progression

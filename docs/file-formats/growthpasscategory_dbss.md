@@ -54,17 +54,6 @@ No `PABR` magic and no trailer: a u32 row count, then rows of u32 `category_key`
 
 LOC type 107 names keys 1 to 9 (`Quest/`, `PvE`, `Gathering`, `Farming/`, `Hunting/`, `Training`, `Game Tips`, `Guaranteed`, `HYPERBOOST`), but only 7 and 9 have a record on client 3464. `growthpassquestlist.bss` holds nine quest chains, 4464 to 4472; on client 3464 only 4470 and 4472 belong to a category.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                                          |
-| ------------ | ---- | ------------------------------------------------------------------------------ |
-| Category Key | num  | `category_key`                                                                 |
-| Icon         | text | `icon_texture` resolved through `texturestring_combine.xml`                    |
-| Name         | text | LOC type 107 `str_id1 = category_key` in its game colours; else `name_kr`      |
-| Main ID      | num  | `quest_chain_id`, LOC type 18 `str_id1` of the grid's quests                    |
-
-The offset companion view lists Category Key, Data Offset and Size.
-
 ## Notes
 
 - Decompressed sizes on client 3464: `251` bytes, offset companion `28` bytes.

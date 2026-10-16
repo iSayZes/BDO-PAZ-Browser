@@ -89,15 +89,6 @@ Provides keyed lookup into `maincategory.dbss` and supplies the record count.
 
 Rows are stored in descending category ID order: 15 down to 1.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                                       |
-| ----------- | ---- | --------------------------------------------------------------------------- |
-| Category ID | num  | Primary key; right-aligned                                                  |
-| Icon        | Icon | Render from `icon_path`                                                     |
-| Enabled     | bool | From `enabled_flag`                                                         |
-| Sort / Link | text | Show `unknown_02`, `unknown_06`, `unknown_0A` until semantics are confirmed |
-
 ## Notes
 
 - `maincategoryoffset.dbss` is required because it gives the authoritative category IDs and record sizes.

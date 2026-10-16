@@ -96,22 +96,6 @@ def orb_cost_for_level(main: bytes, level: int) -> int | None:
     return None
 ```
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                   |
-| ------------- | ---- | --------------------------------------- |
-| Level         | num  | `level` (right-aligned)                 |
-| Theiah's Orbs | num  | `orb_cost` for a reroll at that level   |
-
-For `fairyskillchangeoffset.dbss`:
-
-| Column       | Type | Notes                       |
-| ------------ | ---- | --------------------------- |
-| Level        | num  | `level` key (right-aligned) |
-| Data Offset  | num  | `data_offset` as hex        |
-| Data Size    | num  | `data_size`; always `8`     |
-| Record Start | num  | `data_offset - 4` as hex    |
-
 ## Fairy Background
 
 Context for reading this file and [fairyequipskill.bss](fairyequipskill_bss.md) together. These

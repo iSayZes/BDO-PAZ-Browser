@@ -39,13 +39,6 @@ file exactly (4 + 24 x 10 = 244 bytes on client 3464).
 On client 3464 the keys are 0, then 50 to 600 in steps of 25, and the high
 four bytes of `exp` are 0 in every row.
 
-## Suggested UI Layout
-
-| Column                         | Type | Notes                          |
-| ------------------------------ | ---- | ------------------------------ |
-| Contribution Points            | num  | `contribution_points`          |
-| Contribution EXP to Next Point | num  | `exp`, with thousands separators |
-
 ## Notes
 
 - Field names follow the client Lua (decompiled with unluac).

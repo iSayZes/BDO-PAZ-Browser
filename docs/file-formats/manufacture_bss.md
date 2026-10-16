@@ -88,16 +88,6 @@ The display name is the `PAGetString(Defines.StringSheet_GAME, key)` text the pr
 
 The display keys are `ALCHEMY_MANUFACTURE_HEATING`, `LUA_ALCHEMY_MANUFACTURE_ALCHEMY`, `ALCHEMY_MANUFACTURE_DRY`, `ALCHEMY_MANUFACTURE_GRIND`, `LUA_MANUFACTURE_CRAFT_NAME`, `LUA_ALCHEMY_MANUFACTURE_COOK`, `ALCHEMY_MANUFACTURE_SHAKE`, `LUA_ALCHEMY_MANUFACTURE_ROYALGIFT_ALCHEMY`, `LUA_MANUFACTURE_GUILDMANURACTURE_NAME` (the client's spelling), `LUA_ALCHEMY_MANUFACTURE_ROYALGIFT_COOK`, `ALCHEMY_MANUFACTURE_THINNING` and `ALCHEMY_MANUFACTURE_WOODSPLITTING`. The window also lists `MANUFACTURE_RAINWATER` (Collect rainwater) and `REPAIR_ITEM` (Repair), which have no rows here.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                                                          |
-| ------------ | ---- | ---------------------------------------------------------------------------------------------- |
-| Index        | num  | Position in the file; no field is unique (3,744 rows share their `first_item_key` with another row on client 3464), so the table opens in file order |
-| Action       | text | Display name from [Actions](#actions), falling back to the action name                         |
-| Materials    | text | Each `item_key` with its icon and grade colour (the level's own name, else `Name (level)` when the level is set) and `x count`, in entry order |
-| Result Group | num  | `result_group`, linked to its `itemmaingroup.bss` row when the group exists                    |
-| Result Items | text | Items of the group's subgroups, as in `itemmaingroup.bss`; empty when the group is missing     |
-
 ## Notes
 
 - No two rows share both the action and the full material list (client 3464), so (action, materials) identifies a row. `first_item_key` alone does not: Elixir of Demihuman Hunt starts eleven rows over Simple and Imperial Alchemy.

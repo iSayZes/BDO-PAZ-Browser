@@ -243,28 +243,6 @@ while an Elvia weapon buff is active: the buff comes from orbs that drop in
 Elvia, lasts 10 minutes, and enables the class's Elvia skill. Every other
 record ends in `0xCA`, so the byte is not a plain end marker.
 
-## Suggested UI Layout
-
-Opens sorted by `skill_key` (Skill No, then Level); the index order is
-arbitrary.
-
-| Column           | Type | Notes                                                              |
-| ---------------- | ---- | ------------------------------------------------------------------ |
-| Skill No         | num  | `skill_key >> 16`                                                  |
-| Level            | num  | `skill_key & 0xFFFF`                                               |
-| Icon             | icon | `IconKind.SKILL` icon of `skill_no`                                |
-| Name             | text | LOC type `10`, `str_id1 = skill_no`, `str_id4 = 0`; else the `skilltype.dbss` Korean name |
-| Classes          | text | `class_mask` as LOC type `21` names; "All" for `0x7FFFFFFFFFFF`, empty for `0` |
-| Kind             | text | `kind` as Other / Active / Passive                                 |
-| Branch           | text | `branch` as Awakening / Succession; empty when `0`                 |
-| Weapon           | text | Main (`uses_main_weapon`), Sub (`uses_sub_weapon`) or Awakening (`weapon_type` `57`); empty otherwise |
-| Quick Slot       | flag | `can_quick_slot` as a check mark or a cross                        |
-| Required Level   | num  | `need_level`; empty when `0`                                       |
-| Skill Points     | num  | `need_skill_point`; empty when `0`                                 |
-| Required Skills  | list | `need_skill_no_1` and `need_skill_no_2` as skill names             |
-| Previous Rank    | text | `previous_rank_no` as skill name                                   |
-| Exclusive Skills | list | `exclusive_skill_nos` as skill names                               |
-
 ## Notes
 
 - `0x6016CFF7` also sits in the `skilltype.dbss` configuration of 18,744

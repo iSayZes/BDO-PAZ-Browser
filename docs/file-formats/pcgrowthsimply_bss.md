@@ -45,11 +45,3 @@ The `is_playable` rows are exactly the class types of `PLAYABLE_CLASSES_MASK` in
 ## Localization
 
 The class name is LOC type 21, `str_id1` = `class_type`, `str_id4` 0, as in [pcgrowth](pcgrowth_dbss.md). The handler shows the LOC name and falls back to the Korean name of the string table.
-
-## Suggested UI Layout
-
-| Column     | Type | Notes                                        |
-| ---------- | ---- | -------------------------------------------- |
-| Class Type | num  | `class_type`                                 |
-| Class      | text | LOC type 21 name, else the string table name |
-| Playable   | flag | `is_playable`                                |

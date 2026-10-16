@@ -653,18 +653,6 @@ most groups (`"Viper"`, `"Max HP"`), `4` for `"Ultimate Hoom"`, `6` for
 `"Dawn"`, and `1000` for `"No Group"`, `"Hoom"`, `"Macalod"` and `"Gervish"`.
 Group `26` (`"Dim Magic"`) has rows at both `2` and `6`.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                       |
-| ------------- | ---- | ----------------------------------------------------------- |
-| Id1           | num  | `str_id1`                                                   |
-| Id2           | num  | `str_id2`                                                   |
-| Id3           | num  | `str_id3`                                                   |
-| Id4           | num  | `str_id4`                                                   |
-| Type (number) | num  | `str_type`                                                  |
-| Type (text)   | text | Human-readable label for confirmed types, otherwise Unknown |
-| Text          | text | Localized string                                            |
-
 ## Notes
 
 - All four ID fields together form a compound identifier; `str_id1` is the primary lookup key.

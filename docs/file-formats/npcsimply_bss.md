@@ -110,18 +110,6 @@ Observed pool contents: 2636 UTF-8 strings and 2110 UTF-16LE strings. The pool i
 
 This is the same `[string table][u32 rows_end][u32 0]` tail that `playercharacterstatic.bss` and `characterstaticoffset.dbss` carry after their rows.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                     |
-| ------------ | ---- | --------------------------------------------------------- |
-| Character ID | num  | `character_id`                                            |
-| Name         | text | LOC `str_type=6`, `str_id1=character_id`, `str_id4=0`; the Korean `name_ref` without LOC |
-| Kind         | text | `kind` shown as its role's display name, the same as the `characterspawntype.dbss` role headers (`role_labels.py`); the `SpawnType` name and value are in the tooltip |
-| Role         | text | LOC `str_type=6`, `str_id1=character_id`, `str_id4=1` (`<Fruit Vendor>`); the Korean `role_ref` without LOC; blank when LOC holds `<null>` |
-| Knowledge ID | num  | Parsed from `getknowledge(<id>);` in `script_ref`         |
-| Leases       | list | Every lease of the character: the `CHARACTER_LEASES` index (all lease options in `detail_dialog.dbss`), as LOC `str_type=0` item name (in its grade colour) and cost, e.g. `[CP] Container (10 CP)`; the lease stored here keeps its own cost, and is the only one without the index; sorts by count |
-| Script       | text | Raw script string for debugging/export                    |
-
 ## Notes
 
 - The record table size is exactly `count * 33` bytes; fixed records end at `0x12065` (`0x12086` in the 2026-09-27 client), and the string pool parses exactly up to the 8-byte trailer.

@@ -104,26 +104,6 @@ The same sheet has `exchangeItemForNormalFieldEnter` (`66012,0,1,65992,0,1` on k
 | 156, 157, 177 | `Atoraxion_Thorn`, `_EZ`, `_Single_Boss` | 66948 | Access Granted: Orze's Root |
 | 210 | not in `instancefield.dbss`    | 66942  | Access Granted: The Final Gladios |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes |
-| ----------- | ---- | ----- |
-| Key         | num  | `key`; right-aligned |
-| Field       | text | Internal name from `instancefield.dbss` (`INSTANCE_FIELD_NAME`), dash when the key is not there |
-| Title       | text | LOC type 37 text of `title`, else the key string |
-| Description | text | LOC type 37 text of `description` |
-| Teams       | num  | `max_team_count` |
-| Min Participants | num | `min_user` |
-| Max Participants | num | `max_user` |
-| Territory   | text | LOC type 12 territory name of `restrict_territory`, else the key; dash for `0xFFFF` |
-| X / Y / Z   | num  | Position, rounded; dash when unset |
-| Radius (m)  | num  | `radius / 100`; dash when `0` |
-| Image       | icon | `image` with `image_region` as a sprite region; the whole image for `0, 0, 1, 1` |
-| Entry Item  | text | LOC type 0 name of `entry_item_id`, with icon |
-| Spawns      | num  | `spawn_count` |
-| Season Only | flag | `is_season_only` |
-| Names While Camouflaged | flag | `is_show_name_when_camouflage` |
-
 ## Notes
 
 - On client 3464 the file holds 192 records and 164 strings (5 `.dds`

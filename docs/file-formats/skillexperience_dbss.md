@@ -60,23 +60,6 @@ Index into `skillexperience.dbss`: the bare u16 offset table of `_common/pabr_of
 
 Neither file keeps level order: the offset rows start with levels 0, 399, 1052, and the first data row (`0x04`) is level 1052. The parser reads every row through the offset table, checks that the row's `level` matches the offset row's key, and returns the rows sorted by level.
 
-## Suggested UI Layout
-
-### skillexperience.dbss
-
-| Column            | Type | Notes                                   |
-| ----------------- | ---- | --------------------------------------- |
-| Level             | num  | `level`                                 |
-| EXP to Next Level | num  | `exp`                                   |
-
-### skillexperienceoffset.dbss
-
-| Column      | Type | Notes                    |
-| ----------- | ---- | ------------------------ |
-| Level       | num  | `level`                  |
-| Data Offset | num  | `data_offset`, as hex    |
-| Data Size   | num  | `data_size`              |
-
 ## Notes
 
 - The client has three skill point pools, numbered by `ToClient_getSkillPointInfo(type)`: `0` combat skill points (`panel_window_skillgroup_all_1.luac`), `2` life skill points (`panel_selfplayerexpgage.luac`) and `3` guild points (`panel_guildskill_all_1.luac`). `acquire.luac` names the matching level-up notices `GainCombatSkillPoint`, `GainProductSkillPoint` and `GainGuildSkillPoint`, shown with the `GAME` keys `ACQUIRE_OBJECTMESSAGE_2` ("Combat Skill Points Obtained"), `_1` ("Life Skill Points Obtained") and `_3` ("Guild Points Obtained"). The file stems follow the same names: `skillexperience`, `productexperience`, `guildskillexperience`.

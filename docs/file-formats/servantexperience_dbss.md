@@ -112,25 +112,6 @@ record on client 3464.
 | 6     | `+0xA2` | `Type_MaxLength`      | Always 0                               |
 | 7     | `+0xA6` | `Type_MaxAngle`       | Always 0                               |
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                         |
-| ------------ | ---- | --------------------------------------------- |
-| Character ID | num  | `character_id`                                |
-| Name         | text | `name`: LOC type 6 name, else the number      |
-| Level        | num  | `level`                                       |
-| EXP          | num  | `exp`                                         |
-| HP           | num  | `max_hp`                                      |
-| Stamina      | num  | `max_mp`                                      |
-| Weight       | num  | `max_weight / 10000`, `LT`                    |
-| Accel.       | num  | `acceleration` (`stats[0]`) / 10000, one decimal, `%` |
-| Speed        | num  | `speed` (`stats[1]`) / 10000, one decimal, `%` |
-| Turn         | num  | `turn` (`stats[2]`) / 10000, one decimal, `%`  |
-| Brake        | num  | `brake` (`stats[3]`) / 10000, one decimal, `%` |
-| HP Dice      | text | `hp_dice`: `growth_dice[0]`, `-` when empty   |
-| Stamina Dice | text | `stamina_dice`: `growth_dice[1]`, `-` when empty |
-| Movement Dice | text | `move_dice`: `growth_dice[2]`, or slots 2 to 5 joined when they differ |
-
 ## Notes
 
 - The stable window (`panel_dialog_servantinfo_all_1.luac`, decompiled with

@@ -51,15 +51,6 @@ Unlike `detail_dialog.dbss`, records are not preceded by a copy of their key: th
 
 Every record of client 3458 walks with this layout and ends exactly at its index size.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes |
-| ------------ | ---- | ----- |
-| Character ID | num  | `key & 0xFFFF` |
-| Dialog       | num  | `key >> 16` |
-| Character    | text | LOC type `38` field `0`, then LOC type `6` for the character ID, then `name_kr` |
-| Bubble Lines | list | LOC type `38` field `1`, `2`, ... for each line, fallback to the Korean line; first few then a count |
-
 ## Notes
 
 - The name and lines are localized in LOC type `38`: `str_id1 = character_id`, `str_id2 = dialog_index`, `str_id3 = 0`, and `str_id4` `0` for the name and `1`, `2`, ... for the lines in order. In client 3458 all 10,165 lines and 59,686 of the 59,776 names have a row; Martina Finto's first line reads "Oh David... Maybe I should open up a restaurant here at the farm...".

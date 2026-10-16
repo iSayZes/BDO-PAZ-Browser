@@ -107,26 +107,6 @@ The same Lua shows each ship stat as `value x 0.0001` with one decimal and a `%`
 
 Sailors `1` to `20` share the LOC name "Sailor"; their title is the sailor type the Sailor Preset filter lists (`LUA_SAILOR_PRESET_CATEGORY_FILTER_01` "Ambitious" and on).
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                         |
-| ------------ | ---- | ------------------------------------------------------------- |
-| Sailor ID    | num  | `employee_key`                                                |
-| Level        | num  | `level`                                                       |
-| Icon         | text | `icon_path` with icon-cell preview                            |
-| Name         | text | LOC type 6 name of `character_id`; dash without one           |
-| Title        | text | LOC type 6 title of `character_id`; dash without one          |
-| Role         | text | `job` label: Sailor or First Mate                             |
-| Character ID | num  | `character_id`                                                |
-| Endurance to Vision | num | One column per named ability type (`6`-`9`, `13`-`16`), stored value x 0.0001 with one decimal and `%`, `0.0%` when unset |
-| Condition    | num  | `max_condition`                                               |
-| Appetite     | num  | `appetite`                                                    |
-| Cabin Cost   | num  | `cabin_cost`                                                  |
-| Weight       | num  | `weight` / 10,000 with ` LT`                                  |
-| First Mate Skill | text | `first_mate_skill`: the LOC text of the `LUA_CAPTAIN_SAILOR_PRESET_SKILL_DESC_*` key the sailor Lua picks for `62167` to `62169`; dash for everyone else |
-
-The labels are the client's `PANEL_SAILORMANAGER_*` strings in each language (`_SPEED`, `_ACCELATION`, `_CORNERING`, `_BRAKING`, `_PATIENCE`, `_FOCUS`, `_POWER`, `_SIGHT`, `_LOYALTY`, `_CONSUMPTION`, `_COST`, `_BODYWEIGHT`). Each stat is also a record field of the same name (`endurance` to `vision`, raw). `abilities` keeps every non-zero pair as text for export, `other_abilities` the pairs without a stat column (today the First Mate types `17` and `18`), and `unknown_74` stays in the record but out of the table. The stat labels also name the growth columns of `employeeexp.bss`, so both tables share one set of client strings.
-
 ## Notes
 
 - Observed decompressed size is `33,465` bytes (client 3458).

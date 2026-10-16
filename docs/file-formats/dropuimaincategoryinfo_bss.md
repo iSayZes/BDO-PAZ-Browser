@@ -67,14 +67,6 @@ and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool)
 The Great Ocean (territory 5) has no tab, and tabs 10 and 11 swap the
 territory order.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                                              |
-| --------- | ---- | ------------------------------------------------------------------ |
-| Key       | num  | `key`; right-aligned                                               |
-| Territory | text | LOC type 12 `str_id4` 1, falling back to `territory_key`           |
-| Icon      | text | Tab icon name                                                      |
-
 ## Notes
 
 - LOC type 12 `str_id4` 0 is the territory's own name and can differ from the

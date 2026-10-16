@@ -93,21 +93,6 @@ Named after the XML `Property` attribute; they read as bit flags, with `all` set
 | `0x40` | water  | 7,023                 |
 | `0xFF` | all    | 9,327                 |
 
-## Suggested UI Layout
-
-One row per waypoint.
-
-| Column       | Type | Notes                                                    |
-| ------------ | ---- | -------------------------------------------------------- |
-| Key          | num  | `key`                                                    |
-| Name         | text | Waypoint name from the string table                      |
-| X            | num  | `x`, one decimal                                         |
-| Y            | num  | `y`, one decimal                                         |
-| Z            | num  | `z`, one decimal                                         |
-| Property     | text | Property name, the hex value when unknown                |
-| Sub Waypoint | text | `is_sub_waypoint` as Yes/No                              |
-| Links        | text | Keys linked in either direction, ascending               |
-
 ## Notes
 
 - Checked against the XML exports: in `mapdata_realexplore2`, every waypoint (key, name, position, property, both flags) and all 2,498 links match in file order; all 899 routes of `mapdata_realnpc_route` match (key, name, waypoint keys). The two one-waypoint graphs `mapdata_realexplore2___town(hausher)` and `mapdata_realexplore2___blazing_battlefield` each hold one group and match too.

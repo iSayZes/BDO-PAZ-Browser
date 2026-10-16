@@ -61,19 +61,6 @@ The groups on client 3473. The names translate the developer comments of the pri
 | 3 | 1 to 20 | Farm, medium | - |
 | 4 | 1 to 30 | Farm, large | - |
 
-## Suggested UI Layout
-
-| Column              | Type | Notes |
-| ------------------- | ---- | ----- |
-| Level Group         | num  | `group` |
-| Level               | num  | `level` |
-| Time                | num  | `need_time` |
-| Contribution Points | num  | `need_point` |
-| Silver              | num  | `need_money` |
-| Items               | text | Filled `need_items` slots as item name × count, blank when none |
-
-Rows are sorted by group, then level; the file order is the hash map's.
-
 ## Notes
 
 - Total size is `8 + count × 58 + 12`: 4,428 bytes on client 3473.

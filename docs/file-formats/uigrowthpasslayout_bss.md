@@ -62,23 +62,6 @@ The Lua draws even rows quest-tall and odd rows as thin line rows, even columns 
 
 `InvalidValue`, `LTR` and `LRB` do not occur. The Lua has a branch for `InvalidValue` (it draws a quest button) and asserts on any value outside the list.
 
-## Suggested UI Layout
-
-One row per cell that is not `Blank`:
-
-| Column       | Type | Notes                                                                |
-| ------------ | ---- | -------------------------------------------------------------------- |
-| Category Key | num  | `category_key`                                                       |
-| Row          | num  | 0-based                                                              |
-| Column       | num  | 0-based                                                              |
-| Cell Type    | text | Name from Cell Types, else the number                                 |
-| Main ID      | num  | `quest_chain_id`, quest cells only                                   |
-| Sub ID       | num  | `quest_id`, quest cells only                                         |
-| Icon         | text | Quest icon resolved from the packed quest ID                          |
-| Title        | text | LOC type 18 quest title in its game colours                           |
-
-`col_count`, `row_count` and `unknown_05` stay on the record for export.
-
 ## Notes
 
 - Decompressed size on client 3464: `1,724` bytes; the grids end at `0x6B0`, the offset in the trailer.

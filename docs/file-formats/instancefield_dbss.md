@@ -71,17 +71,6 @@ The rows are in a hash order (`80, 16, 4053, 0, 4035, ...`), not file
 order. Every row points at the start of the record with the same key and
 gives its exact size, so the index adds nothing to a sequential read.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                             |
-| --------- | ---- | ------------------------------------------------- |
-| Key       | num  | `key`; right-aligned; what buff type 176 stores  |
-| Name      | text | `name`                                            |
-| Title     | text | The `instancefieldmapinfo.bss` title in the loaded language (`INSTANCE_FIELD_TITLE`); dash without one |
-| Sector X  | num  | `min_x..max_x` (`46..52`); sorts by `min_x`       |
-| Sector Y  | num  | `min_y..max_y`; sorts by `min_y`                  |
-| Sector Z  | num  | `min_z..max_z`; sorts by `min_z`                  |
-
 ## Notes
 
 - The box unit is a 12,800-unit sector of the world frame that

@@ -132,18 +132,6 @@ The client reads these through `PAGetString(Defines.StringSheet_GAME, key)`,
 so a script's `StringSheet_<name>` picks the sheet and with it the LOC
 `str_id2`.
 
-## Suggested UI Layout
-
-One table over all sheets, one row per string row, in `key_hash` order (the
-file does not sort its rows).
-
-| Column | Type | Notes                                                                          |
-| ------ | ---- | ------------------------------------------------------------------------------ |
-| Hash   | num  | `key_hash` as hex (`0x4D282741`), the LOC type `37` `str_id1`                   |
-| Sheet  | text | Sheet name from `name_ref`                                                     |
-| Key    | text | `key_ref`                                                                      |
-| Text   | text | LOC type `37` with the sheet's `str_id2` (`str_id3` 0, then 1), else the Korean `value_ref`; in its game colours |
-
 ## Notes
 
 - Seven `GAME` values are a single space (`LUA_JOIN_LOCALWAR_RULE7`,

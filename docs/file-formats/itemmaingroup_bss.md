@@ -60,16 +60,6 @@ On client 3464 the 16,501 groups hold 18,906 entries: 15,608 groups have one ent
 
 The conditions use the script calls of `characterfunction.dbss` conditions (`getIntimacy`, `getLevel`, `clearQuest`, `checkexplore`, `isContentsGroupOpen`), joined with `;` and alternatives split by `<or>`. On client 3464, 16,422 entries have no condition, 2,140 have the text `0`, and 118 have `checkexplore(103, 1)`, node 103 being Bahar Investment Bank.
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                                                                                      |
-| ---------- | ---- | ------------------------------------------------------------------------------------------ |
-| Group ID   | num  | `group_id`                                                                                 |
-| Subgroups  | text | Each `subgroup_key` as a link to its `itemsubgroup.dbss` row, then `: condition` when set   |
-| Pick One   | flag | `do_select_only_one`                                                                        |
-| Items      | num  | Number of items over the group's distinct subgroups                                         |
-| Item Names | text | Items of the distinct subgroups in entry order, the first eight shown, as in `itemsubgroup.dbss` |
-
 ## Notes
 
 - `characterfunction.dbss` stores five group IDs per NPC: `shop_buy_group`, `shop_sell_group`, `guild_shop_buy_group`, `guild_shop_sell_group` and `trade_group`. All 884, 743, 63, 61 and 125 non-zero values on client 3464 are group IDs here; that doc names the fields.

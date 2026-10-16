@@ -122,20 +122,6 @@ start at `New_Icon/` and take the prefix `ui_texture/icon/`.
 | Length prefix matching the string length     | 1,435 / 1,435    |
 | Blocks with an item ID 16 bytes after the icon | 96.8%          |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                        |
-| ----------- | ---- | ------------------------------------------------------------ |
-| Product ID  | num  | `product_id`                                                 |
-| Icon        | text | The item's own icon, resolved from `item_id`, not the tile   |
-| Product     | text | LOC type 50 field 0 in its game colours; falls back to the Korean `name` |
-| Item ID     | num  | Linked `item_id`; dash when absent, stored as `None` so it sorts last |
-| Item        | text | LOC name of the linked item in its grade colour (`ITEM_GRADE`); dash without a linked item |
-| Description | text | LOC type 50 field 3 in its game colours, on one line and cut |
-
-`product_icon_path` is parsed but not shown: the tile is marketing art for the
-offer rather than an item icon.
-
 ## Notes
 
 - Product IDs and item IDs are separate ID spaces. Product 117722 grants item

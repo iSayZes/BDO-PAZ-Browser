@@ -169,25 +169,6 @@ the main file from `0x04` to the end with no gap. The index order is neither
 the main file's order nor sorted by key: it opens 50009, 50008, 50007,
 50006, 50005, 50004, 50003, 1106, 50002, 1105.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                              |
-| ------------- | ---- | ------------------------------------------------------------------ |
-| Key           | num  | `receipe_key`                                                      |
-| Name          | text | LOC type 16 name, else the inline Korean `name`                    |
-| Use Type      | text | `house_use_type` as its `eHouseUseType` name                       |
-| Icon Type     | text | `icon_type` as its `eHouseIconType` name                           |
-| Need Item Key | num  | `need_item_key`                                                    |
-| Levels        | num  | Number of filled level lists                                       |
-| Exchanges     | text | One line per filled level, `Lv 1: 5026, 5027, ...`; sorts by the total key count |
-
-Each level line shows its first 8 exchange keys and a hoverable count of the
-rest. The keys stay raw numbers until `itemexchangesource.bss` has a reader.
-The count line gives the rows and the number of distinct exchange keys. The
-table opens sorted by Key, highest first.
-
-The offset table shows Key, Data Offset and Size.
-
 ## Notes
 
 - The house window builds its work list per level: it calls

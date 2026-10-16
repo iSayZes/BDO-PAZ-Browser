@@ -129,28 +129,6 @@ Stats at Caphras level 20 per stat group (client 3464):
 | 7, 8       | PEN      | 0  | 0        | 8       | 8              | 8  | 8         | 160 | 0  |
 | 9, 10      | PEN      | 0  | 0        | 5       | 5              | 5  | 5         | 100 | 0  |
 
-## Suggested UI Layout
-
-One row per step, 600 on client 3464, in file order.
-
-| Column         | Type | Notes |
-| -------------- | ---- | ----- |
-| Category       | num  | `category` |
-| Gear           | text | Category name from the table above |
-| Grade          | text | `enchant_level` as TRI, TET or PEN |
-| Caphras Level  | num  | Position in the grade block, 1 to 20 |
-| Stones         | num  | Stones for this level: `total_stones` minus the previous step's |
-| Total Stones   | num  | `total_stones` |
-| AP             | num  | |
-| DP             | num  | `evasion + damage_reduction`, as the game and bdocodex show DP |
-| Accuracy       | num  | |
-| Evasion        | num  | |
-| Hidden Evasion | num  | |
-| DR             | num  | |
-| Hidden DR      | num  | |
-| Max HP         | num  | `hp` |
-| Max MP         | num  | `mp` |
-
 ## Notes
 
 - How the client reads the file (`panel_tooltip_item.luac`, decompiled with

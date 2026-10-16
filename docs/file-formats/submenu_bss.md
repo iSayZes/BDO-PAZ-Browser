@@ -69,18 +69,6 @@ Fields are unaligned.
 159 strings on client 3458: the two sprite sheets of `menu.bss`, the sheet
 names `GAME` (91 entries) and `RESOURCE` (64), and one title key per entry.
 
-## Suggested UI Layout
-
-| Column   | Type | Notes                                                                           |
-| -------- | ---- | ------------------------------------------------------------------------------- |
-| Entry ID | num  | `entry_id`; right-aligned                                                       |
-| Category | text | The `menu.bss` title of `menu_id`, else the ID                                  |
-| Position | num  | `position`                                                                      |
-| Icon     | text | The `icon_x1`/`icon_y1`/`icon_x2`/`icon_y2` region of the sheet                 |
-| Title    | text | LOC type 37 of the title key (see [stringtable.bss](stringtable_bss.md)), else the key |
-
-`unknown_0c` and `unknown_14` stay on the record but out of the table.
-
 ## Notes
 
 - The groups end exactly where the string table starts, and each group's

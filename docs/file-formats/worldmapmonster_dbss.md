@@ -71,23 +71,6 @@ for the wide ones, ASCII for the icon path (`RecordReader`).
 | 11    | u8          | unknown_flag | Always `1`                                                            |
 | 12    | u8          | reserved     | Always `0`                                                            |
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                                                              |
-| --------- | ---- | ---------------------------------------------------------------------------------- |
-| Key       | num  | `key`; right-aligned                                                               |
-| Icon      | text | `icon`, lowercased under `ui_texture/`; dash when empty                            |
-| Name      | text | LOC type 40 `str_id4` 0, falling back to `name_kr`                                  |
-| Label     | text | LOC type 40 `str_id4` 1, falling back to `line1_kr`                                 |
-| Detail    | text | LOC type 40 `str_id4` 2, falling back to `line2_kr`; dash when it repeats the label |
-| Hunting Ground | text | On hunting zones (`unknown_kind` 0) with `unknown_ref` set, that drop window hunting ground's name (LOC type 116), falling back to the key; dash elsewhere |
-| Condition | text | `condition`; dash when empty                                                       |
-
-The position, `unknown_str`, `unknown_ref`, `unknown_kind` and `unknown_flag`
-stay on the record but out of the table. The Hunting Ground column reads
-`unknown_ref` only on hunting zones: the Black Shrine markers store `0` to `9`
-there, which would otherwise name hunting grounds 0 to 9 (Mansha Forest, ...).
-
 ## Notes
 
 - All 229 records walk to exactly their offset-table size with the layout

@@ -60,14 +60,6 @@ names and the button icon names.
 | 7   | 데키아의 등불 II     | Dehkia's Lantern II       | `Combine_Etc_DropItem_Icon_Filter_Btn_04_Over` |
 | 8   | 엘라 세르빈의 풍경화 | Allan Serbin's Landscape  | `Combine_Etc_DropItem_Icon_Filter_Btn_07_Over` |
 
-## Suggested UI Layout
-
-| Column | Type | Notes                                                                 |
-| ------ | ---- | --------------------------------------------------------------------- |
-| Key    | num  | `key`; right-aligned                                                  |
-| Name   | text | LOC type 115, falling back to the Korean name                         |
-| Icon   | text | Button icon name                                                      |
-
 ## Notes
 
 - No hunting ground stores 5 or 7 on client 3464.

@@ -99,21 +99,6 @@ icon_path = icon_paths[icon_index]
 | 100  | `7502`    | Giant Worker   | `7551`    | 200  | 25      | 50000 | 10         | 30000000        |
 | 105  | `7504`    | Goblin Worker  | `7552`    | 350  | 8       | 50000 | 2          | 60000000        |
 
-## Suggested UI Layout
-
-| Column     | Type | Notes                                     |
-| ---------- | ---- | ----------------------------------------- |
-| Worker ID  | num  | `worker_id`                               |
-| Icon       | text | Render `icon_path` with icon-cell preview |
-| Name       | text | Prefer LOC type `6`; fall back to blank; colored by `grade_class` |
-| Next Tier  | num  | `next_worker_id`; dash when zero, stored as `None` so it sorts last         |
-| Move       | num  | `move_speed / 100`, two decimals          |
-| Stamina    | num  | `stamina`                                 |
-| Luck       | num  | `luck / 10000`, two decimals              |
-| Work Speed | num  | `base_work_speed / 1000000`, two decimals |
-
-The three scaled stats are shown as the game's worker window shows them; the record keeps the raw integers for sorting and export. A base Giant Worker reads 2.00 move speed, 5.00 luck and 30.00 work speed, and an Artisan Goblin Worker 115.00 work speed before any level-ups. The name is colored by grade (see Grade Class and the color table in [plantworkerselect](plantworkerselect_bss.md), Suggested UI Layout); `worker_grade` is on the record.
-
 ## Notes
 
 - Observed decompressed size is `99,484` bytes, byte-identical in the pre-2026-09-27 fixture and the 2026-09-27 client.

@@ -140,23 +140,6 @@ Some nodes appear twice (Castle Ruins 324 with index 21 and 153, Bloody Monaster
 
 Two main nodes have `contribution > 0` but no family: Duvencrune 1651 (1 CP, the live city is 1649) and `UnKnown` 1706 (3 CP).
 
-## Suggested UI Layout
-
-| Column         | Type | Notes                                        |
-| -------------- | ---- | -------------------------------------------- |
-| Node Key       | num  | Primary LOC key                              |
-| Node Name      | text | LOC type 29, `str_id4=0`; Korean fallback    |
-| Kind           | text | `node_kind` enum name                        |
-| Main/Sub       | text | From `is_sub_node`                           |
-| Contribution   | num  | `contribution`                               |
-| Manager        | text | `manager_family_id` with LOC type 6 name     |
-| Representative | text | `representative_id` with LOC type 6 name     |
-| Radius         | num  | Formatted float                              |
-| Knowledge      | num  | Number of knowledge IDs in lists 1-5         |
-| Knowledge Entries | text | LOC type 34 card names, first six then `... (+N)`; bare ID when unnamed |
-| Connections    | num  | Number of worldmap links in `mapdata_realexplore2.bwp` |
-| Connected Nodes | text | Linked node names as in Node Name, first six then `... (+N)`; LOC type 29 or the bare key for a waypoint with no record here |
-
 ## Notes
 
 - Cross-checked against an independent node dataset (849 nodes, keyed by the same `node_key`): `contribution` matches the node's CP cost on all 849, `is_sub_node` matches on 847, and every node that dataset marks as a city has `node_kind` `1` or `2`. The exceptions are Mining site 156 and Fish Drying Yard 2 (1044), which the file flags as sub-nodes, and Oquilla's Eye 1727, which is kind `City` there but not a city in the dataset.

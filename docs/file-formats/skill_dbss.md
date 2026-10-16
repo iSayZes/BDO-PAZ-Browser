@@ -160,26 +160,6 @@ rank `i` listing rank `i + 1`.
 the Core enhances ("Core: Soul Shower" -> "Soul Shower III"). In 154 of the
 155 cases that base skill lists the Core in its `next_skill_keys`.
 
-## Suggested UI Layout
-
-Opens sorted by `skill_key` (Skill No, then Level); the index order is arbitrary
-and starts with event skills.
-
-| Column      | Type | Notes                                                                 |
-| ----------- | ---- | --------------------------------------------------------------------- |
-| Skill No    | num  | `skill_key >> 16`                                                     |
-| Level       | num  | `skill_key & 0xFFFF`                                                  |
-| Icon        | icon | `IconKind.SKILL` icon of `skill_no` (the `skilltype.dbss` icon path)  |
-| Name        | text | LOC type `10`, `str_id1 = skill_no`, `str_id4 = 0`; else the `skilltype.dbss` Korean name, else `name` |
-| Description | text | LOC type `10` `str_id4 = 1`, then the rank's LOC type `13` text when it says something else (blank line between), in their game colours; without either, `description`. `<null>`, `UNKNOWN` and type 13's `0` count as empty |
-| Cooldown    | num  | `cooldown_ms` as a duration (`8s`, `13.5s`, `30m`); empty when `0`; sorts by `cooldown_ms` |
-| Resource    | num  | `resource_cost` (MP or WP, by class); empty when `0`                  |
-| Stamina     | num  | `stamina_cost`; empty when `0`                                        |
-| Buffs       | list | `buff_ids` as the buff icon (`IconKind.BUFF`), buff ID and the first line of its LOC type `5` text in its game colours; sorts by count |
-| Next Skills | list | `next_skill_keys` as skill names, in their game colours (Prime skills orange) |
-| Base Skill  | text | `base_skill_keys` as skill name, in its game colours                  |
-| Script      | text | `script`                                                              |
-
 ## Notes
 
 - `cooldown_ms` is checked on the wiki (2026-09-28) on three skill lines:

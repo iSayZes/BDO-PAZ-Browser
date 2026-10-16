@@ -90,15 +90,6 @@ Offset records are ordered by descending key: 9, 8, 7, 6, 5, 4, 3, 2, 1.
 
 The rows are the same `[u16 id][u32 offset][u32 size]` rows as a PABR offset table, but the file has no `PABR` magic and no 12-byte trailer (94 bytes = 4 + 9 x 10). The parser reads it with `parse_bare_offset_rows` from `_common/pabr_offset.py`.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                    |
-| ------------ | ---- | -------------------------------------------------------- |
-| EXP Table ID | num  | `exp_table_id`, right-aligned                            |
-| Max Level    | num  | Number of populated level thresholds                     |
-| Level        | num  | 1-based index into `level_exp`; render as expandable row |
-| Required EXP | num  | u64 threshold for the level                              |
-
 ## Notes
 
 - `pet.dbss` selects the table with `exp_key` (header `+0x0F`, the `Pet_Table` sheet's `RequireEXPType`): keys 1 to 4 for pets, 6 to 9 for Laila. Its `max_level` matches the table's `max_level` on every record.

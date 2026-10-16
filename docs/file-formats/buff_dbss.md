@@ -998,26 +998,6 @@ The other values each hold one item family, all exclusive: GM's Blessing
 holiday feasts (28 to 32), Token of Desert Trading (20), test and
 development items (233 to 250, 252). 248 to 251 are not exclusive.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                               |
-| ----------- | ---- | ------------------------------------------------------------------- |
-| Buff ID     | num  | `buff_id`; right-aligned                                            |
-| Icon        | text | `icon_path`, resolved under `ui_texture/icon/`; dash when empty     |
-| Title       | text | Coloured first line of the description when more lines follow; else the title of the headline buff it is applied with, dimmed (see Notes); dash otherwise |
-| Internal Name | text | Korean `name`; labelled internal because LOC has no form of it in any language. Kept as its own column next to Title by choice (2026-10-04): it is the only text on many untitled buffs |
-| Description | text | LOC `str_type=5`, `str_id1=buff_id`; falls back to the inline Korean description, `<null>` counts as empty |
-| Effect      | text | The parameters as text for the confirmed effect types (see Effect text); dash otherwise |
-| Applied By  | list | Base items whose skills apply the buff (`BUFF_ITEMS` lookup index), with item icons and grade colours; sorts by count |
-| Level       | num  | `buff_level`                                                        |
-| Effect Type | text | `effect_type` and its 2016 module name (`9 MoveSpeedVariationRate`, see 2016 Module Names); the bare number for the rest. Sorts by the number |
-| Duration    | text | `duration_ms` formatted as h/min/s; dash when `0`, stored as `None` so it sorts last                   |
-| Debuff      | flag | `is_debuff`; labelled with the client's word for debuff in each language |
-| Removed on Death | flag | `remove_on_dead` |
-| Param 1     | num  | `param_1`, then what it means for the effect type where confirmed: `3 (Kamasylvian Monsters)`, `25000 (2.5%)`, `10 (Monster AP)`, `250 (every 10 sec)`. Labels over 24 characters (character and quest names) are cut, in full on hover. Sorts by the raw value |
-| Param 2     | num  | `param_2`, labelled the same way                                    |
-| Param 3     | num  | `param_3`, labelled the same way                                    |
-
 ## Notes
 
 - Client 3464 widened `buff_id` from u16 to u32 in this file, in

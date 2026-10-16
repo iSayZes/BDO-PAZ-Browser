@@ -253,20 +253,6 @@ Grouped by model folder. Kinds `0` to `9` are the members of `gc::ObjectKind` in
 | `10` to `15`, `17` to `19`, `22` to `26`, `29`, `35` | 1 to 23 each | One guild tower or siege structure type each |
 | `4` KingTent, `6` LordTent, `7` Trap, `20`, `21`, `27`, `28`, `34`, `36`, `37` | 4 to 16 each | Citadel sets, mines, barricade doors, mixed siege objects, mansion bases |
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                      |
-| ------------ | ---- | ---------------------------------------------------------- |
-| Character ID | num  | `character_id`, right-aligned                              |
-| Icon         | icon | `IconKind.CHARACTER` lookup, so overrides apply; dash when none |
-| Name         | text | LOC type `6`; shown only when LOC is loaded                |
-| Item ID      | num  | `lookup(IndexKind.CHARACTER_ITEM, character_id)`; dash for characters named by zero or several items |
-| Item         | text | LOC type `0` for the item ID, in its grade colour (`ITEM_GRADE`); shown only when LOC is loaded |
-| Kind         | text | `object_kind` and its `gc::ObjectKind` name (`2 Installation`); sorts by the number |
-| Model        | text | `model_path`                                               |
-
-The handler parses only the record prefix. It does not fall back to `name_kr` when LOC type `6` has no name: on client 3464 the only houses a LOC leaves unnamed are 3874 to 3878 in `languagedata_ru.loc` (the en, de, fr and sp files name all 865), and all five store the placeholder `풋내기 대장장이의 집`.
-
 ## Notes
 
 - This file stores icon paths for 4,817 of the 24,418 character IDs in `characterstaticoffset.dbss`; 4,608 of them exist in the PAZ. The rest of the IDs are NPCs, monsters and similar entries with no world-object record.

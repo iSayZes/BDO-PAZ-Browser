@@ -111,17 +111,6 @@ no pair links 2 and 3, and none links 1 and 99. The matrix is symmetric, so
 this client's data cannot tell which of the two bytes is the goods' group;
 I follow the Lua's argument order (goods first, NPC second) in the names.
 
-## Suggested UI Layout
-
-One row per pair, in file order. The 12-byte rows stay out of the table.
-
-| Column           | Type | Notes                       |
-| ---------------- | ---- | --------------------------- |
-| From Group*      | text | `from_group`, as in Trade Group of `itemtradegrouptonpc.dbss` |
-| To Group*        | text | `to_group`, the same        |
-| Distance         | num  | `distance`, no decimals     |
-| Desert Buff Rate | num  | `add_rate`, raw value       |
-
 ## Notes
 
 - `panel_dialog_trade_mybasket_all_1.luac` (the trade sell list) is the only

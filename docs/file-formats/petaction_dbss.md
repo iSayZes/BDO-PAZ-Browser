@@ -84,14 +84,6 @@ Provides keyed lookup into `petaction.dbss` and supplies the record count.
 | `+0x04` | u32  | record_offset | Absolute byte offset in `petaction.dbss` |
 | `+0x08` | u32  | record_size   | Size of the record in bytes              |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                             |
-| ----------- | ---- | --------------------------------- |
-| Action ID   | num  | Primary key; right-aligned        |
-| Icon        | Icon | Rendered from `icon_path`         |
-| Action Name | text | LOC type 19 name; without LOC the Korean `name_kr`, then the icon filename suffix |
-
 ## Notes
 
 - `petaction.dbss` itself starts with action ID 0, not a count. Always use `petactionoffset.dbss` to enumerate records.

@@ -53,6 +53,7 @@ Also check that:
 ## Conventions
 
 - **Unknown fields** are named `unknown_<offset>` (e.g. `unknown_10`) until their meaning is confirmed. Don't guess a name; describe the observation in the doc's Open Questions instead.
+- **Format docs describe the bytes only.** Which fields a handler shows as columns is decided in the handler, not in the doc.
 - **One doc per record layout.** Every `.bss` / `.dbss` gets its own doc in `docs/file-formats/`, named after the file (`dropuitaginfo_bss.md`). Only an `*offset.dbss` index, which goes in its main file's doc, and files that share one layout and one handler class (`ui_skillgroup_{awakening,combat,succession}.bss` in `ui_skillgroup_bss.md`, every `*.bwp` in `waypoint_bwp.md`, every `languagedata_*.loc` in `languagedata_loc.md`) share a doc. The Companion Files table lists the files a handler loads and links each one to its own doc.
 - **Tests survive game patches.** Assert structure and stable identity (schemas, ranges, known IDs), never row counts, positions or balance values that change with an update.
 - **Counts in docs name their client.** A figure counted from game data carries the client it came from, e.g. "`1` on 4,643 records (client 3458)", and stays as written after a patch. The client number is the `.meta` header version that `pytest` prints at the start of a run.

@@ -87,22 +87,6 @@ A u32 row count (equal to the main file's), then 10-byte rows:
 Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 21).
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                      |
-| ------------ | ---- | ---------------------------------------------------------- |
-| Character ID | num  | `character_key`                                            |
-| Name         | text | LOC type 6 name, else the ID                               |
-| Title        | text | LOC type 6 title (`str_id4` 1); a dash when there is none  |
-| Weather Type | text | `weather_type` as its `gc::EWeatherType` name, else the number |
-| Radius       | num  | `radius`                                                   |
-| Skill ID     | num  | The skill number of `skill_key`; a dash when `0`           |
-| Skill        | text | Skill icon and LOC type 10 name; a dash when `0`           |
-
-The table opens in file order.
-
-The offset table shows Character ID, Data Offset and Size.
-
 ## Notes
 
 - `skill_key` reads as a skill key because both of its skills name the

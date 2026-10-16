@@ -132,18 +132,6 @@ def roll_chance(record, equip_skill_id):
     return weight / record["total_weight"]  # total is 1,000,000 for fairies
 ```
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                |
-| ----------- | ---- | ---------------------------------------------------- |
-| Skill ID    | num  | `equip_skill_id` the weight indexes (right-aligned)  |
-| Fairy Grade | text | Grade name from `acquire_type_id`; falls back to ID  |
-| Skill Name  | text | Resolved via the catalog's `loc_id` (LOC type 10)    |
-| Chance      | num  | `weight / total_weight` as a percentage              |
-| Weight      | num  | Raw parts-per-million value                          |
-
-Show one row per `(acquire_type_id, equip_skill_id)` and omit zero weights, since a zero means the skill is not rollable at all.
-
 ## Notes
 
 - Weights are probabilities, not costs. Earlier revisions of this document described the record as an acquisition cost table with `cost_a`/`cost_b`/`cost_c` triples and a `reserved` field; that reading was wrong. The values are parts-per-million and the "reserved" u32 is simply `weights[0]`.

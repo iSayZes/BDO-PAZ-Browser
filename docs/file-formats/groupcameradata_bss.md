@@ -60,16 +60,6 @@ share its entries: 43 to 47, 197 and 198, and 253 to 256 share their title,
 recap and quote, 248 and 249 their title and quote, and 257 to 260 their
 title. The four icons are stored once each.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                                        |
-| ----------- | ---- | ---------------------------------------------------------------------------- |
-| Scene ID    | num  | `scene_id`; right-aligned                                                    |
-| Icon        | text | `icon_ref`, lowercased under `ui_texture/`                                   |
-| Title       | text | LOC type 97 `str_id4` 0, falling back to the Korean title                     |
-| Description | text | LOC type 97 `str_id4` 1, falling back to the Korean recap; line breaks collapsed and cut to a preview |
-| Quote       | text | LOC type 97 `str_id4` 2, falling back to the Korean quote                     |
-
 ## Notes
 
 - The cutscene skip panel (`window/cutscene/panel_window_cutsceneskip_1`)

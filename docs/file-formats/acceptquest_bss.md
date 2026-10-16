@@ -63,19 +63,6 @@ Client 3464, names from `languagedata_en.loc`:
 | 1001 / 55             | Meutt's Sand Castle           | 544    | Villager          | 417          | Neutt                 |
 | 8500 / 4              | [LoML] Emma's Invitation      | 0      | -                 | 0            | -                     |
 
-## Suggested UI Layout
-
-| Column      | Type | Notes |
-| ----------- | ---- | ----- |
-| Quest ID    | num  | `packed_quest_id` |
-| Main ID     | num  | `quest_chain_id` |
-| Sub ID      | num  | `quest_id` |
-| Title       | text | LOC type 18 (`quest_chain_id`, `quest_id`, 0, 0), with its colours |
-| NPC ID      | num  | `npc_id`; a dash when `0` |
-| NPC Name    | text | LOC type 6 name of `npc_id` |
-| Dialog      | num  | `dialog_index`, also on rows without an NPC. Opens the `detail_dialog.dbss` row of `dialog_index << 16 \| npc_id`, plain text when that table has no such row (`DIALOG_KEYS` index) |
-| Dialog Name | text | LOC type 38 (`npc_id`, `dialog_index`, 0, 0): the name the NPC shows in that dialog |
-
 ## Notes
 
 Figures from client 3464.

@@ -91,18 +91,6 @@ the same table but never share an entry: 500 are icon paths, the other 2,753
 names. Unlike `buffsimply.bss` there is no `"0"` or empty entry. Repeated
 values are stored once, so levels that keep an icon point at the same entry.
 
-## Suggested UI Layout
-
-| Column   | Type | Notes                                                                                  |
-| -------- | ---- | -------------------------------------------------------------------------------------- |
-| Item ID  | num  | `item_key` low 24 bits; right-aligned                                                  |
-| Max Level | num | `item_key` high byte, the stored enhancement level of the row                          |
-| Shown As | text | `display_level`: `+N` for 1 to 15, the grade name for 16 to 25, a dash for 0, where `display_level` is stored as `None` so it sorts last; sorts by the number |
-| Icon     | text | `icon_ref`, lowercased under `ui_texture/icon/`                                        |
-| Name     | text | LOC type 79 (`str_id1` = item ID, `str_id2` = level), falling back to the Korean `name_ref` text |
-
-`unknown_11` and `unknown_12` stay on the record but out of the table.
-
 ## Notes
 
 - Checked against `itemenchant.dbss` on client 3458: every row's key has a

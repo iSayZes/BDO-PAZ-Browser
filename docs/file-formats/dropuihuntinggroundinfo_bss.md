@@ -109,29 +109,6 @@ zones; `1` Mansha Forest, Catfishman Camp, Rhutum Outstation; `2` Hexe
 Sanctuary, Soldier's Grave, Cyclops Land; `3` Polly's Forest, Navarn Steppe,
 Ash Forest, Olun's Valley; `4` Aetherion Castle to Scales of Judgment.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                                       |
-| ----------- | ---- | --------------------------------------------------------------------------- |
-| Key         | num  | `key`; right-aligned                                                        |
-| Name        | text | LOC type 116, falling back to the Korean name                               |
-| Region      | text | Tab territory name (LOC type 12 `str_id4` 1), falling back to the tab key; sorts in tab order (`main_category_key`) |
-| Categories  | text | LOC type 115 names, falling back to the keys                                |
-| AP          | num  | `recommended_ap`                                                            |
-| DP          | num  | `recommended_dp`                                                            |
-| Total AP    | num  | `total_ap`                                                                  |
-| Total DP    | num  | `total_dp`                                                                  |
-| Max AP      | text | `limited_ap`, with `(n%)` when `limited_ap_apply_percent` is not 0           |
-| Node        | text | `node_key` name (LOC type 29); dash when 0                                  |
-| Monsters    | text | Monster names (LOC type 6)                                                  |
-| Items       | text | Icon and name (LOC type 0) of each item in its grade colour (`ITEM_GRADE`), through `item_key_list_cell()` |
-| Quests      | text | Repeat and sudden quest titles (LOC type 18)                                |
-| Tags        | text | Tag names (LOC type 117), each a pill in its `dropuitaginfo.bss` colours as in game; plain names without that file |
-| Titles      | text | Title names (LOC type 1)                                                    |
-| Species     | text | `tribe_type` as `{value} {label}` (`1 Demihumans`); the label from LOC type 37, falling back to the enum name (`1 NonHuman`) |
-
-The position and region keys stay on the record but out of the table.
-
 ## Notes
 
 - Since client 3464 every one of the 112 names opens with a level, in the

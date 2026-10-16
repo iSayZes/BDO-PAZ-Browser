@@ -117,19 +117,6 @@ order and the meaning of `items_for_max`.
 Ornette's Dark Honey Wine is worth exactly 15× Sweet Honey Wine at the first two
 steps and 16× at the last.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                    |
-| ------------- | ---- | -------------------------------------------------------- |
-| Step          | num  | Record index, 0-based                                    |
-| Upgrade       | text | Grade transition label derived from the record index     |
-| Icon          | text | Item icon, `product_icon_png/{item_id:08d}.png`          |
-| Item          | text | LOC name for `item_id`, in its grade colour (`ITEM_GRADE`), falls back to the raw ID |
-| Item ID       | num  | Raw `item_id`                                            |
-| Chance / Item | num  | `rate_ppm / success_cap_ppm` as a percentage             |
-| Rate (ppm)    | num  | Raw `rate_ppm`                                           |
-| Items for Max | num  | Raw `items_for_max`                                      |
-
 ## Notes
 
 - Sprouting may only be attempted once per fairy unless a rebirth is used, and a

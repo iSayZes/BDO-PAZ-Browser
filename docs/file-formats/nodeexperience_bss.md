@@ -48,14 +48,6 @@ The parser checks that `8 + row_count x 15` equals `end_of_data` and that the tr
 | `+0x05` | u16  | level      | Node level; equals the row index                             |
 | `+0x07` | u64  | exp        | EXP to go from `level` to `level + 1` (Notes)                |
 
-## Suggested UI Layout
-
-| Column               | Type | Notes                                       |
-| -------------------- | ---- | ------------------------------------------- |
-| Node Level           | num  | `level`                                     |
-| EXP to Next Level    | num  | `exp`                                       |
-| Energy to Next Level | num  | `exp / 100` (Notes); `-` on the level 0 row |
-
 ## Notes
 
 - The world map node menu (`grand_worldmap_nodemenu.luac`, decompiled with unluac) draws the node level bar as `ToClient_GetNodeExperience_s64(nodeKey) / ToClient_GetNeedExperienceToNextNodeLevel_s64(nodeKey)` and shows `Lv. <level>/<ToClient_GetNodeMaxLevel()>`, so the EXP restarts at 0 on every level, as in [skillexperience](skillexperience_dbss.md). Both getters return s64, which matches the u64 `exp`.

@@ -176,23 +176,6 @@ item LOC `str_type=0`. Previous research also matched `str_type=39`, but that
 type appears to be voice/dialogue text and can produce misleading preview
 titles/objectives.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                       |
-| ------------ | ---- | ----------------------------------------------------------- |
-| Display ID   | num  | `packed_quest_id` (equals `allquestlist[i]`)                |
-| Chain ID     | num  | `packed_quest_id & 0xFFFF`; LOC type 18 `str_id1`           |
-| Quest ID     | num  | `packed_quest_id >> 16`; LOC type 18 `str_id2`              |
-| Category     | num  | `quest_category`                                            |
-| Icon         | text | `icon_path` read from the record; thumbnail when available  |
-| Title / Name | text | LOC type 18 `str_id4=0` when available                      |
-| Accept NPC   | text | Speaker of `accept_dialog_key`: LOC type 38 (`npc_id`, `dialog_index`), else the LOC type 6 NPC name; `Black Spirit` for key `0`, a dash when neither names it. Opens the `detail_dialog.dbss` row of the key, plain text when that table has no such row (`DIALOG_KEYS` index) |
-| Complete NPC | text | The same for `complete_dialog_key`                          |
-| Condition    | text | `condition_script`                                          |
-| Action       | text | `action_script`                                             |
-| Objective    | text | Prefer LOC type 18 `str_id4=3`; fall back to inline Korean objective text |
-| Family Stat  | text | Non-`16` Family-stat unions of the counted reward entries   |
-
 ## Notes
 
 - "Current" counts in this doc are from the client before the 2026-09-27 update (`34,970,852` bytes, `18,988` records) unless marked. After it: `35,622,613` bytes, `19,327` records, 901 journal pages, 3 records without an icon; the walk still reads every record. Fixture: `36,525,439` bytes, `19,599` records.

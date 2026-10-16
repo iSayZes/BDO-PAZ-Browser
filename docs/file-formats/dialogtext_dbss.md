@@ -64,15 +64,6 @@ As in `detail_dialog.dbss`, the first record starts at `8`, every record starts 
 
 All 1,043 records of client 3458 walk with this layout and end exactly at their index size.
 
-## Suggested UI Layout
-
-| Column | Type | Notes |
-| ------ | ---- | ----- |
-| Name   | text | `name` |
-| Lines  | num  | `line_count` |
-| Text   | list | LOC type `36` of each line, fallback to `text`, with the `{...}` tags removed; first few then a count |
-| Voice  | list | The `AudioVoice(...)` argument of each line that has one |
-
 ## Notes
 
 - Checked in game 2026-09-29: Ganin Arth (`47744`) has the greeting `{GetRandomText(PEDU_47744_1)}`, and talking to her three times showed all three pool lines: `1` ("It has been some time, Adventurer..."), `2` ("If you seek to hone your skills, say the word...") and `3` ("I am here to oversee the Hashashin..."). A random line is picked each time the dialog opens, not only on the first talk.

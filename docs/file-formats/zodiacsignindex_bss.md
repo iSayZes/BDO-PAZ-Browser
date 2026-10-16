@@ -62,13 +62,6 @@ Follows the last entry.
 | 10   | 11        | Sealing Stone |
 | 11   | 12        | Goblin        |
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                               |
-| --------- | ---- | --------------------------------------------------- |
-| Zodiac ID | num  | `zodiac_id`                                         |
-| Name      | text | LOC `str_type=7`, `str_id1=zodiac_id`, `str_id4=0`; the Korean `constellation_name` from `zodiacsign.dbss` without LOC |
-
 ## Notes
 
 - File size is 32 bytes: 8-byte header, 12 one-byte entries, and 12-byte trailer.

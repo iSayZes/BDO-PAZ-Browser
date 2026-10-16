@@ -82,20 +82,6 @@ Each name is a whole texture of the same name, lower-cased, in the folder its
 first two parts name: `ui_texture/combine/etc/combine_etc_dekialanterns_groundtooltip_01.dds`.
 All 13 exist on client 3458 (717.8 KB each).
 
-## Suggested UI Layout
-
-| Column          | Type  | Notes                                                                      |
-| --------------- | ----- | -------------------------------------------------------------------------- |
-| Key             | num   | `key`; right-aligned                                                       |
-| Name            | text  | LOC type 117 `str_id4` 0, falling back to the Korean name; drawn as the tag pill in its two colours, as on the hunting grounds |
-| Guide Image     | image | The guide image texture; dash on rows without one; sorts by the texture name |
-| Colours         | text  | `texture_color / font_color` as `0xFF5384D5 / 0xFFA6C0EA`; sorts by `texture_color` |
-| Description     | text  | LOC type 117 `str_id4` 1 in its `<PAColor>` colours (`pa_fields`), falling back to the Korean tooltip; one line, cut after 120 characters |
-| Hunting Grounds | text  | Names (LOC type 116, falling back to the Korean name) of the `dropuihuntinggroundinfo.bss` rows whose `tag_keys` hold the tag, in file order; dash without that file |
-
-The two hex colour strings stay out of the record, since they repeat the ARGB
-values.
-
 ## Notes
 
 - The Korean tooltips store a line break as the two characters `\n`, where

@@ -44,15 +44,6 @@ The file is `8 + 4 × 91 + 12 = 384` bytes on client 3464. The parser rejects a 
 
 Rows are in neither key nor character order.
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                        |
-| ------------- | ---- | ------------------------------------------------------------ |
-| Region Key    | num  | `barter_region_key`                                          |
-| Region        | text | LOC type 17 name of `barter_region_key`                      |
-| Character ID  | num  | `character_id`                                               |
-| NPC           | text | LOC type 6 name of `character_id`                            |
-
 ## Notes
 
 - On client 3464 the `maritime_trade` slot of [`characterfunction.dbss`](characterfunction_dbss.md) stores the same key as `barter_region_key` for all 91 characters, and those 91 are the only characters with a non-zero `barter_region_key`.

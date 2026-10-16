@@ -101,21 +101,6 @@ level 10 placeholder):
 
 Each curve steps x1.5, x1.5, x2, x2, x2, x3, x3, x3 from level 1.
 
-## Suggested UI Layout
-
-| Column            | Type | Notes                                                                                  |
-| ----------------- | ---- | -------------------------------------------------------------------------------------- |
-| Sailor Key        | num  | `employee_key`                                                                         |
-| Level             | num  | `level`                                                                                |
-| EXP to Next Level | num  | `exp_to_next_level` with thousands separators; dash on the sailor's top level          |
-| Level-Up Growth   | text | Used abilities as `<stat>: <dice>` (`Awareness: 1D2+2`), comma separated, with the `employeestaticstatus.bss` stat labels; an unnamed type keeps its number; dash when none |
-
-Rows are grouped by sailor (`employee_key`, then `level`). On a sailor's top
-level the handler sets `exp_to_next_level` to `None`, so it sorts last, and
-keeps the stored value in `exp_raw`. It also keeps `growth_refs`,
-`growth_dice` (19 entries, empty where unused), `is_max_level` and the
-`unknown_*` fields on the record but out of the table.
-
 ## Notes
 
 - The game calls employees sailors: `employeename.dbss` holds sailor names

@@ -42,22 +42,6 @@ LOC type `42` holds the English text of this list, keyed by the group's `group_k
 
 On client 3458 all 48 groups have a name (type 42 has 54, keys 1 to 54, so some belong to groups no longer in the file) and all 806 rows have a condition line. Condition lines carry `<PAColor>` tags (all but 1); group names do not. The string table holds the Korean source of both, which the handler shows where LOC has no row.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                            |
-| ------------ | ---- | ---------------------------------------------------------------- |
-| Main ID      | num  | `quest_chain_id`; LOC type 18 `str_id1`                          |
-| Sub ID       | num  | `quest_id`; LOC type 18 `str_id2`                                |
-| Group Key    | num  | `group_key` of the row's group                                   |
-| Group Name   | text | LOC type 42 `str_id1 = group_key`, `str_id4 = 0`; else the Korean `group_name_kr` |
-| Icon         | text | Quest icon resolved from `packed_quest_id` through the quest icon index |
-| Title        | text | Prefer LOC type 18 row with matching main/sub ID and `str_id4=0`, in its game colours |
-| Condition    | text | LOC type 42 `(packed_quest_id, group_key)`, `str_id4 = 1`, in its game colours; else the Korean `condition_kr` |
-| Shown When   | text | `visible_conditions` on one line; see the `newquest.bss` Field Names |
-| Hidden When  | text | `hide_conditions` on one line                                    |
-
-`group` (the index in file order), `is_sub_quest`, `group_type`, the string table indexes and the Korean `group_name_kr` / `condition_kr` stay on the record for search and export but are not shown. The event period is blank in this list, so it has no Event Start or Event End column.
-
 ## Notes
 
 - Decompressed size is `200,069` bytes on client 3458.

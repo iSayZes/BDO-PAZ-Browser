@@ -62,16 +62,6 @@ The shared PABR string table layout of `buffsimply.bss` and
 `Combine/Icon/Combine_Title_Icon_00.dds` and `_01.dds`, the twelve hotkeys,
 `GAME` and the twelve title keys.
 
-## Suggested UI Layout
-
-| Column  | Type | Notes                                                                        |
-| ------- | ---- | ---------------------------------------------------------------------------- |
-| Menu ID | num  | `menu_id`; right-aligned                                                     |
-| Icon    | text | The `icon_x1`/`icon_y1`/`icon_x2`/`icon_y2` region of the sheet              |
-| Title   | text | LOC type 37 of the title key (see [stringtable.bss](stringtable_bss.md)), else the key |
-| Hotkey  | text | `hotkey_ref`                                                                 |
-| Entries | num  | `submenu_count`                                                              |
-
 ## Notes
 
 - On client 3458 the categories are Recently Used (F12, no entries: the

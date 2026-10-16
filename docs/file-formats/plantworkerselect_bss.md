@@ -116,29 +116,6 @@ worker_name = LOC type 6, str_id1=worker_id, str_id4=0
 
 Group numbers are from the pre-2026-09-27 fixture; in the 2026-09-27 client every group after `0` moves down by one.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                                                 |
-| ----------- | ---- | --------------------------------------------------------------------- |
-| Worker ID   | num  | `worker_id`, right-aligned                                            |
-| Worker Name | text | Prefer LOC type `6`; fall back to blank; colored by grade, see below  |
-| City ID     | num  | `selection_id`, right-aligned                                         |
-| City Name   | text | Prefer LOC type `17`; fall back to `selection_id`                     |
-| Hire Cost   | num  | `hire_cost`, right-aligned                                            |
-
-The worker name is shown in its in-game grade color, from the `plantworker.bss` companion's `grade_class` (see [plantworker](plantworker_bss.md), Grade Class; `worker_grade` on the record). All 385 entries of the 2026-09-27 client get a grade, and outside Old Wisdom Tree every grade matches its hire price.
-
-| Grade        | Color  | CSS value |
-| ------------ | ------ | --------- |
-| Naive        | white  | `#ffffff` |
-| Base         | green  | `#8db543` |
-| Skilled      | blue   | `#04b3f1` |
-| Professional | yellow | `#f6c232` |
-| Artisan      | red    | `#ac510b` |
-| Named        | yellow | `#f6c232` |
-
-Green is taken from an in-game screenshot of a base Goblin Worker.
-
 ## Notes
 
 - Observed file size is `6,076` bytes in the pre-2026-09-27 fixture, `6,288` in the 2026-09-27 client.

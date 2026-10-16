@@ -96,16 +96,6 @@ player is level 60, then shows `lvdd` on the Attack line and `lvpv` on the
 Defense line. Those are the two levels where `dp_bonus` and `ap_bonus` change
 from 0 to 1.
 
-## Suggested UI Layout
-
-| Column   | Type | Notes                                     |
-| -------- | ---- | ----------------------------------------- |
-| Class Type | num | `class_type`                             |
-| Class    | text | LOC type 21 name, else the number         |
-| Level    | num  | `level`                                   |
-| AP       | num  | `ap_bonus`                                |
-| DP       | num  | `dp_bonus`                                |
-
 ## Notes
 
 - On client 3464 the 47 groups are byte-identical apart from `class_type`,

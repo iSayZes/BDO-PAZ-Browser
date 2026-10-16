@@ -53,10 +53,6 @@ Client 3464, names from `languagedata_en.loc`:
 | 1001 / 49             | Dins, Spoiling for a Fight    | 544    | Villager          | 326          | Vigilante             |
 | 8500 / 4              | [LoML] Emma's Invitation      | 59875  | Quest NPC         | 73           | Igor Bartali          |
 
-## Suggested UI Layout
-
-The columns of `acceptquest.bss`: Quest ID, Main ID, Sub ID, Title, NPC ID, NPC Name, Dialog and Dialog Name, with a dash in the NPC cells of rows without an NPC; their dialog stays.
-
 ## Notes
 
 Figures from client 3464.

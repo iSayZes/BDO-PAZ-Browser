@@ -103,32 +103,6 @@ The rows are in file order, which is not key order (59061, 59053, 59055, 59064, 
 
 LOC type 70 holds exactly these 40 lines on client 3458, `str_id4` 0 and 1 for each of the 20 characters. The English line matches the inline Korean one (59053: "I will get rid of all the prejudice you have on Goblins." for "고블린에 대한 편견을 다 없애드리지요."). The handler shows the LOC text and falls back to the inline Korean.
 
-## Suggested UI Layout
-
-### employeespawninfo.dbss
-
-| Column          | Type | Notes                                                                 |
-| --------------- | ---- | --------------------------------------------------------------------- |
-| Character ID    | num  | `character_key`                                                       |
-| Sailor ID       | num  | `employee_key`                                                        |
-| Name            | text | LOC type 6 name and title as the name plate reads (`Sailor <Ambitious>`); sorts by title, since every name is `Sailor` |
-| Towns           | text | Distinct region names of the spawn positions, in spawn position order |
-| Spawn Positions | text | `spawn_position_keys`, comma separated                                |
-| Hire Item       | text | Item icon and name with ` x<count>`                                   |
-| Respawn         | num  | `respawn_time_s` as a duration (`1h`)                                 |
-| Accept Line     | text | LOC type 70 `str_id4` 0, else `accept_text_ko`, on one line           |
-| Refuse Line     | text | LOC type 70 `str_id4` 1, else `refuse_text_ko`, on one line           |
-
-The `unknown_*` fields and `terminator` stay on the record but out of the table.
-
-### employeespawninfooffset.dbss
-
-| Column       | Type | Notes                 |
-| ------------ | ---- | --------------------- |
-| Character ID | num  | `character_key`       |
-| Data Offset  | num  | `data_offset`, as hex |
-| Data Size    | num  | `data_size`           |
-
 ## Notes
 
 - `employee_key` is the sailor ID of `employeestaticstatus.bss`: all 20 rows match its level 1 row for the same character (`1` = `59053` to `20` = `59072`). Sailors `21` to `23` of that table (`59101`, `59227`, `59228`) and the First Mates have no row here; they are not hired in a port town.

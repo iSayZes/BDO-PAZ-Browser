@@ -77,15 +77,6 @@ The `PABR` index layout of `skilloffset.dbss`, read by
 The index rows are in neither ID nor file order; on client 3464 each points
 at the row of its own item.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                             |
-| --------- | ---- | ------------------------------------------------- |
-| Item ID   | num  | `item_id`                                         |
-| Icon      | icon | Item icon                                         |
-| Item      | text | LOC type 0 name in its grade colour, else the ID  |
-| Max Level | num  | `max_enchant_level`                               |
-
 ## Notes
 
 - The file is a copy of what [`itemenchant.dbss`](itemenchant_dbss.md)

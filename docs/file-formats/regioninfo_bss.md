@@ -244,32 +244,6 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 
 `0` Sunday, `1` Monday, `2` Tuesday, `3` Wednesday, `4` Thursday, `5` Friday, `6` Saturday, `7` none. Client 3458 has 6 regions on each day from Sunday to Thursday, 33 on Friday (most of them Margoria islands) and none on Saturday, the conquest war day.
 
-## Suggested UI Layout
-
-| Column              | Type | Notes |
-| ------------------- | ---- | ----- |
-| Region Key          | num  | `region_key` |
-| Region              | text | LOC type 17 name, falling back to the Korean `name_index` string |
-| Type                | text | `region_type` enum name |
-| Territory           | text | LOC type 12 (`str_id4=1`) name of `territory_key`; sorts by key |
-| Capital             | text | LOC type 17 name of `capital_region_key` |
-| Node                | text | `node_key` with its LOC type 29 name; `-` when 0 |
-| Region Group        | num  | `region_group_key` |
-| Node War Day        | text | Day name; `-` for none; sorts in week order, none last |
-| Desert              | flag | `is_desert` |
-| Safe Zone           | flag | `is_safe_zone` |
-| Day Skill           | text | `skill_no` and `skill_no_2` with their LOC type 10 names, joined by ` / `; `-` when neither is set |
-| Night Skill         | text | `night_skill_no` with its LOC type 10 name |
-| Return Point        | text | `return_position_name` as the LOC type 17 name of the first region with that Korean name, else the Korean name |
-| Guild Wharf Manager | text | `guild_wharf_manager_key` with its NPC name; `-` when 0 |
-| Max Participants    | num  | `max_participants`; `-` when 0 |
-| AP Limit            | num  | `siege_ap_limit`; `-` when there is no limit |
-| DR Limit            | num  | `siege_dr_limit` |
-| Accuracy Limit      | num  | `siege_accuracy_limit` |
-| Evasion Limit       | num  | `siege_evasion_limit` |
-| DR Rate Limit       | num  | `siege_dr_rate_limit` as a percentage |
-| Resistance Limit    | num  | `siege_resistance_limits` as one percentage when all four match |
-
 ## Notes
 
 - **LOC type 17 is the region name.** All 1594 region keys resolve in LOC type 17, which has 1658 IDs; the other 64 (750, 807 to 809, 821, 1177, 1178, 1417 ...) have no region in this client and look like retired regions. The `plantworkerselect.bss` selection IDs are region keys too: all 31 are towns of type `MainTown` or `MinorTown`. So both readings hold: type 17 names regions, and the worker-selection towns are regions; the `buff.dbss` town keys name towns through the same type. [`languagedata_loc.md`](languagedata_loc.md) says so.

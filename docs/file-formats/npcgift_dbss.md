@@ -69,22 +69,6 @@ Observed `gift_count` values: in the pre-2026-09-27 fixture 23 records have 5 ro
 | `+0x04` | u32  | amity_a | Amity gained by giving this item                                   |
 | `+0x08` | u32  | amity_b | Duplicate Amity value; equal to `amity_a` on every observed row (119 pre-2026-09-27, 117 in the 2026-09-27 client) |
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                                |
-| --------- | ---- | ---------------------------------------------------- |
-| NPC ID    | num  | `npc_id`                                              |
-| NPC Name  | text | LOC str_type=6, str_id1=npc_id                        |
-| Item ID   | num  | `item_id`                                             |
-| Icon      | text | Item icon from the item icon index                    |
-| Item Name | text | LOC str_type=0, str_id1=item_id, in its grade colour (`ITEM_GRADE`) |
-| Amity     | num  | `amity_a`; `amity_b` is a duplicate in observed data  |
-
-All 110 distinct gift items resolve an icon through the item icon index
-(`_common/icon_index.py`), including those whose icon file is named after the
-asset, not the ID (item 24626 is
-`ui_texture/icon/new_icon/03_etc/06_housing/inhouse_cultivate_sea_clam_01_wall.dds`).
-
 ## Notes
 
 - `npcgift.dbss` and [`npcgiftdata.dbss`](npcgiftdata_dbss.md) share the same 24 NPC IDs and offset record order, but the main records are not stored in ID-sorted order.

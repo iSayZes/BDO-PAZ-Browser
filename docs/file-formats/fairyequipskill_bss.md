@@ -141,19 +141,6 @@ def parse_fairy_equip_skills(data):
 
 Resolve display text with `loc-tool.py --type 10 --id <loc_id>`: `id4=0` is the skill name, `id4=1` is the effect description.
 
-## Suggested UI Layout
-
-| Column         | Type | Notes                                                        |
-| -------------- | ---- | ------------------------------------------------------------ |
-| Equip Skill ID | num  | `equip_skill_id` (right-aligned)                             |
-| Icon           | Icon | `equipskill_fairy_<loc_id:08d>.dds`                          |
-| Skill Name     | text | LOC type 10, `id4=0`; falls back to `loc_id` when unresolved |
-| Description    | text | LOC type 10, `id4=1`; the skill's effect text                |
-| Skill Type     | num  | `skill_type` group code (`1`–`8`)                            |
-| Loc ID         | num  | `loc_id` (right-aligned)                                     |
-
-`unknown_08` and the padding byte stay on the record for search and export but are not shown.
-
 ## Notes
 
 - No offset companion file; the file is small enough to scan linearly.

@@ -688,36 +688,6 @@ reaches only 14.9% of items, and indexing every ID-named icon under
 only approach that covers items whose icon is named after a 3D asset
 (furniture) or keyed by a cash-product ID rather than the item ID.
 
-## Suggested UI Layout
-
-One row per item, read from its level-0 block. Higher levels only feed Max Level: most repeat the base icon, and nothing else in them is decoded yet. The 551 items of [specialenchantitem.bss](specialenchantitem_bss.md) are the exception: their level blocks store the icon of that level, which differs from the base icon in 1,356 of their 3,081 keys on client 3458, and that file holds the same paths in fixed rows. The offset table keeps one row per key, with an Enchant Level column.
-
-| Column        | Type | Notes                                             |
-| ------------- | ---- | ------------------------------------------------- |
-| Item ID       | num  | `item_id` from the key                            |
-| Icon          | text | First block string, prefixed `ui_texture/icon/`   |
-| Item          | text | LOC `str_type=0`, `str_id1=item_id`, else `name_kr` (483 items on client 3458, mostly dev and Hardcore server items), in its `grade` colour |
-| Description   | text | LOC `str_type=0`, `str_id4=1`, in its game colours, on one line and cut; the file stores no description. 61,837 of 70,284 items have one on client 3458 |
-| Max Level     | num  | Highest `enchant_level` among the item's keys; `0` when it cannot be enhanced. [itemmaxlevel.dbss](itemmaxlevel_dbss.md) stores the same value for every item with an `enchant_key` |
-| Enchant Key   | num  | `enchant_key`, the item's key in [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); dash when `0` |
-| Enhancement Type | num | `enhancement_type`, after the icon; the item's rows in [guaranteeenchantss.dbss](guaranteeenchantss_dbss.md); dash when `0` |
-| Slot          | text | `equip_slot` as the tooltip's slot label, LOC type 37; dash for `46`. Servant gear (`servant_kinds` not `0`) shows its group's label from the table under `equip_slot`, or the bare number when no group labels its slot. Life Skill gear (`life_equip_type` not `37`) shows its Life Skill tab slot: the type's `CppEnums.LifeEquipSlotString` label, or Armor for clothes (see After the icon) |
-| Weapon Type   | text | Main and sub-weapons: LOC type 44 name of the market subcategory their type's listed items share, see `equip_type`; dash for other items |
-| Req. Level    | num  | `required_level`; dash when `0` or `1`. Items with a `max_level` show both as the tooltip's use limit, such as `1-20` on HP Potion (Beginner); sorts by `required_level` |
-| Classes       | text | `class_mask` as LOC type 21 class names; "All" when every playable class is set, "All except ..." when up to three are missing |
-| Binding       | text | `vested_type` and `family_bound`: "On obtain (Family)", "On equip (Character)" and so on; dash when the item never binds |
-| Durability    | num  | `max_durability`; dash for `32,767` |
-| Memory Fragment | num | `repair_endurance_count`, the max durability one Memory Fragment restores; dash when `0`. Labelled with the item's LOC name in each language |
-| Stackable     | flag | `stackable` |
-| Marketable    | flag | `marketable`, after the icon |
-| Family Inventory | flag | `family_inventory` is `2`, after the icon |
-| Trade         | text | `trade_type` of trade goods: Trade Manager (`0` and `4`), Trade Manager (Karma loss) (`1`), Imperial Crafting Delivery (`3`), Guild trade (`5`); dash for other items |
-| Dyeable       | flag | `dyeable`; a tick still needs dye parts on the model, so PEN: Sovereign Staff shows one and cannot be dyed |
-| Object ID     | num  | `character_id` of the placed object or summoned pet; dash when `0` |
-| Object        | text | LOC `str_type=6`, `str_id1=character_id`          |
-| Buffs         | list | Buffs of `skill_key_1`, then `skill_key_2` (`SKILL_BUFFS` lookup index), each once, with buff icon and the first line of its LOC type `5` text in its game colours; sorts by count |
-| Lightstone Sets | list | Sets of [lightstoneset.bss](lightstoneset_bss.md) that list the item as a member or substitute (`LIGHTSTONE_SETS` lookup index), as set ID and LOC type `113` name in its colour; sorts by count |
-
 ## Notes
 
 - `itemenchantbackendtest.dbss` (73 MB) contains the identical set of 169,962

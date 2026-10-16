@@ -310,30 +310,6 @@ Rows sorted by `data_offset` cover the whole main file from `+0x04` through EOF 
 
 Every member has a `characterstatic.dbss` record with `class_type` other than `101`, and no other record does. The members are `1`-`47`, `201`-`214`, the mercenaries `521`, `523`-`528` and `536`, and the unnamed `39831`-`39867`, whose `class_type` values run `0`-`36`.
 
-## Suggested UI Layout
-
-| Column       | Type | Notes |
-| ------------ | ---- | ----- |
-| Character ID | num  | `character_id`; right-aligned |
-| Icon         | text | Resolved from the character ID through the character icon index; covers about 20% of characters |
-| Name         | text | LOC lookup `str_type=6`, `str_id1=character_id`, else `name_kr` |
-| Title        | text | LOC lookup `str_type=6`, `str_id4=1`, else `title_kr`; dash when neither |
-| Internal Label | text | `label_kr`, Korean only |
-| Action Script | text | `action_script` |
-| Condition    | text | `condition_script` |
-| Knowledge ID | num  | Extract from `getknowledge(<id>);` (case-insensitive) when present; dash otherwise, stored as `None` so it sorts last |
-| NPC Kind     | text | `npc_kind` and its `gc::CharacterKind` name (`4 Collect`); the bare number for `12`, `15` and `17`. Sorts by the number |
-| Grade        | num  | `grade` as the bare number: the `CppEnums.CharacterGradeType` names do not fit workers, see [Grade](#grade) |
-| Karma        | num  | `tendency_on_dead` |
-| Naval Fame   | num  | `ocean_tendency`; the client's word for naval fame |
-| Vehicle Type | text | `vehicle_type` and its enum name (`30 Cat`); dash when `65`, stored as `None` so it sorts last |
-| Class Type   | num  | `class_type`; dash when `101` (not a player character), stored as `None` so it sorts last |
-| AI Script    | text | `ai_script`; dash when empty |
-| Model        | text | `model_path` |
-| Source Item ID | num | `source_item_id`; dash when `0`, stored as `None` |
-| Source Item  | text | LOC `str_type=0` name of `source_item_id` in its grade colour, else the Korean name `itemenchant.dbss` stores; dash when `0` |
-| Payload Size | num  | Useful for debugging variable layouts |
-
 ## Notes
 
 - Observed files contain `24418` records (older fixture: `24017`; 2026-09-27 client and client 3464: `24551`).

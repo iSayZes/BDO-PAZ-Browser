@@ -41,14 +41,6 @@ No magic and no trailer: a count, then the rows to the end of the file.
 | `+0x00` | u16  | character_id | Servant character, as in `characterstatic.dbss` |
 | `+0x02` | u16  | max_level    | Highest level                                   |
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                            |
-| ------------ | ---- | -------------------------------- |
-| Character ID | num  | `character_id`                   |
-| Name         | text | `name`: LOC type 6 name, else the number |
-| Max Level    | num  | `max_level`                      |
-
 ## Notes
 
 - On client 3464 every `max_level` equals the highest `level` that

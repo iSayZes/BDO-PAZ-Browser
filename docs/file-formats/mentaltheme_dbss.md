@@ -113,20 +113,6 @@ Sample records confirmed from `mentaltheme.dbss`, `mentalthemeoffset.dbss`, `men
 | `10318`  | Quarry                | `10030` | `+1 at 6 entries` | `+2 at 15 entries` | `15`     |
 | `15000`  | Fish Species          | `10001` | `+2 at 3 entries` | `+2 at 13 entries` | `3`      |
 
-## Suggested UI Layout
-
-| Column          | Type | Notes                                                     |
-| --------------- | ---- | --------------------------------------------------------- |
-| Theme ID        | num  | Primary key                                               |
-| Name            | text | LOC `str_type=9`; fallback to `name_ko`                   |
-| Parent ID       | num  | Link to parent theme; dash for a root theme, stored as `None` so it sorts last |
-| Parent Name     | text | LOC `str_type=9` for `parent_id`                          |
-| Energy Reward 1 | text | Render as `+{increase_wp} at {need_count} entries`, or `-` when both are `0`; sorts by `energy_reward_1_amount`, `None` for a dash |
-| Energy Reward 2 | text | Render as `-` when it duplicates reward 1 or both values are `0`; otherwise `+{increase_wp_2} at {need_count_2} entries`. Sorts by `energy_reward_2_amount`, `None` for a dash |
-| Entries         | num  | `entry_count`                                             |
-| Children Groups | num  | `child_count`                                             |
-| Bookshelf       | text | Item icon and LOC type 0 name of `bookshelf_item` in its grade colour; dash for `0`, stored as `None` so it sorts last |
-
 ## Notes
 
 - `mentaltheme.dbss` and `mentalthemeoffset.dbss` both start with the same count: `939` after the 2026-09-27 client update, `931` before it, `902` in the test fixture.

@@ -45,23 +45,6 @@ The rows fill the file exactly: 4 + 1,001 x 13 = 13,017 bytes on client 3464.
 
 Same layout as `skillexperienceoffset.dbss` (see [skillexperience](skillexperience_dbss.md)): a u32 row count equal to the main file's, then 10-byte [u16 level][u32 data_offset][u32 data_size] rows with no magic and no trailer. `data_size` is always 13, and `data_offset` points at the row's `level`. The rows are not in level order (0, 399, 944, ...); the parser returns the main rows sorted by level.
 
-## Suggested UI Layout
-
-### guildskillexperience.dbss
-
-| Column            | Type | Notes   |
-| ----------------- | ---- | ------- |
-| Level             | num  | `level` |
-| EXP to Next Level | num  | `exp`   |
-
-### guildskillexperienceoffset.dbss
-
-| Column      | Type | Notes                 |
-| ----------- | ---- | --------------------- |
-| Level       | num  | `level`               |
-| Data Offset | num  | `data_offset`, as hex |
-| Data Size   | num  | `data_size`           |
-
 ## Notes
 
 - The guild window (`panel_guildskill_all_1.luac`, `panel_guildinfo_all_1.luac`) reads `ToClient_getSkillPointInfo(3)` and shows `_remainPoint` / `_acquirePoint - 1` with the bar `_currentExp / _nextLevelExp`; `acquire.luac` announces a new point as `GainGuildSkillPoint` with `ACQUIRE_OBJECTMESSAGE_3` ("Guild Points Obtained"). See the [skillexperience](skillexperience_dbss.md) Notes for the three pools and the row direction, which follows `lifeexp.dbss`.

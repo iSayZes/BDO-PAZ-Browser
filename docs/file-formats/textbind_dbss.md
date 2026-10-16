@@ -81,20 +81,6 @@ Counted on client 3464:
 All four variants are equal in 635 records. Every record has a non-empty
 variant 0. 452 variants hold another TextBind placeholder.
 
-## Suggested UI Layout
-
-| Column    | Type | Notes                                                     |
-| --------- | ---- | --------------------------------------------------------- |
-| Key       | num  | `key`, the LOC type 59 `str_id1`                          |
-| Text      | text | Variant 0: LOC type 59 `str_id4 = 0`, else the Korean text |
-| Variant 1 | text | Same order of sources, `str_id4 = 1`                       |
-| Variant 2 | text | `str_id4 = 2`                                             |
-| Variant 3 | text | `str_id4 = 3`                                             |
-
-TextBind placeholders inside a text are filled, and `{KeyBind:NAME}` shows as
-a key chip with the action name. `unknown_pre_variant_3` stays on the record
-for search and CSV and is not a column.
-
 ## Notes
 
 - The TextBind name is not stored; only its hash is. Names appear in the

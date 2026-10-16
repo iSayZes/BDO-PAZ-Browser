@@ -67,15 +67,6 @@ The file is `8 + 9 × 11 + 12 = 119` bytes. The parser rejects a file whose rows
 
 Orbita and Tenebraum swap key numbers 3 and 4. The file confirms the values of the first five: their `unknown_00` matches the `regioninfo.bss` `color` of exactly one region each, and that region is the castle of the same name (1581 Aetherion Castle, 1621 Nymphamaré Castle, 1571 Orbita Castle, 1611 Tenebraum Castle, 1596 Zephyros Castle).
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                                                     |
-| ------------- | ---- | ----------------------------------------------------------------------------------------- |
-| Edania Region | num  | `edania_region`                                                                           |
-| Castle        | text | `castle_name`: the castle name key's LOC text, else the enum name; a dash for `_Count`    |
-
-The `unknown_*` fields stay on the record for search and CSV but out of the table.
-
 ## Notes
 
 - The client reads a player's Edania region with `ToClient_GetEdaniaRegion(userNo)` and picks the faction icon on the name tag and in chat from it (`Combine_Etc_EdaniaIcon_Jordain_Normal` for Aetherion ... `Combine_Etc_EdaniaIcon_Hadum_Normal` for Voidekaia). `_Count` is the "no Edania region" answer.

@@ -119,27 +119,6 @@ The block index is the life skill; the file stores no life skill field. 4 + 15 x
 
 The first Gathering row sits at `0x08`, after the skill count and Gathering's level count; each later block starts 4 bytes past the previous block's last row. The parser reads the main file through these rows and checks that each row's `life_skill` and `level` match the offset row's block and key.
 
-## Suggested UI Layout
-
-### lifeexp.dbss
-
-| Column        | Type | Notes                                                      |
-| ------------- | ---- | ---------------------------------------------------------- |
-| Life Skill ID | num  | `life_skill`                                               |
-| Life Skill    | text | Name from the Life Skills table, the enum name for spares  |
-| Level         | num  | `level`                                                    |
-| Rank          | text | `Guru 12`, from Rank Groups; a dash on level 0; not sortable, Level sorts the same way |
-| EXP to Next Level | num | `exp`                                                    |
-
-### lifeexpoffset.dbss
-
-| Column        | Type | Notes                          |
-| ------------- | ---- | ------------------------------ |
-| Life Skill ID | num  | Block index (`life_skill`)     |
-| Level         | num  | `level`                        |
-| Data Offset   | num  | `data_offset`, as hex          |
-| Data Size     | num  | `data_size`                    |
-
 ## Notes
 
 - Observed on client 3464: twelve of the fifteen blocks hold the same EXP on every level (IDs 0, 2 to 6, 8 to 10 and 12 to 14). Fishing (1) needs less on levels 1 to 128 (level 1: 200 against 400) and matches them from level 129 up. Barter (11) has its own curve on every level but 0.

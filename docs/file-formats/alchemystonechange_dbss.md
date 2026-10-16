@@ -104,23 +104,6 @@ Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first three keys are 768512, 54205,
 768189 where the main file has 768512, 768189, 768188).
 
-## Suggested UI Layout
-
-| Column        | Type | Notes                                                         |
-| ------------- | ---- | ------------------------------------------------------------- |
-| Item ID       | num  | `item_id`                                                     |
-| Icon          | icon | Item icon                                                     |
-| Item          | text | LOC type 0 name in its grade colour, else the ID              |
-| Material      | text | Material icon and name with ` x{material_count}`; sorts by name |
-| Condition     | text | `condition` as stored                                         |
-| Result ID     | num  | `result_item_id`, a dash when `0`                             |
-| Result        | text | Result item icon and name in its grade colour; a dash when `0` |
-
-The table opens in file order. The count line gives the rows and the number
-of distinct materials.
-
-The offset table shows Item ID, Data Offset and Size.
-
 ## Notes
 
 - The Growth window reads its material from the stone's item key

@@ -122,14 +122,6 @@ A parallel lookup index with one entry per main-file record.
 | `+0x04` | u32  | varies | Byte offset of end-of-records in this file |
 | `+0x08` | u32  | 0      |                                            |
 
-## Suggested UI Layout
-
-| Column       | Type | Notes                                                        |
-| ------------ | ---- | ------------------------------------------------------------ |
-| Character ID | num  | `character_id`, right-aligned                                |
-| Name         | text | LOC `str_type=6`, `str_id1=character_id`; shown only when LOC is loaded |
-| One per role | num  | a green ✓ when set, else a red ✗; header is the handler's `roleLabels` name (see Notes), else the English Navi label, else the `SpawnType` name; the name and value are in the tooltip; only roles set on some row are shown |
-
 ## Notes
 
 - Every record sets at least one role. 21,561 records set only `NormalNpc` (22,055 in the 2026-09-27 client), and no record sets `NormalNpc` together with another role; the other 2,456 (2,496) are service NPCs.

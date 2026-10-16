@@ -86,26 +86,6 @@ There is no `PABR` magic and no trailer (`parse_bare_offset_rows`). Rows are
 in the same order as the lists. Unlike most offset tables, `data_offset`
 points at the start of the list, since the key sits at its end.
 
-## Suggested UI Layout
-
-| Column      | Type | Notes                                           |
-| ----------- | ---- | ----------------------------------------------- |
-| Potion Type | num  | `potion_type`                                   |
-| Resource    | text | HP, MP, WP or SP in the UI language             |
-| Item ID     | num  | `item_id`                                       |
-| Icon        | icon | Item icon from the item ID                      |
-| Item        | text | LOC item name in grade colour, else the item ID |
-
-One row per listed item, opening sorted by potion type, then list order.
-
-For `fairypotionoffset.dbss`:
-
-| Column      | Type | Notes                         |
-| ----------- | ---- | ----------------------------- |
-| Potion Type | num  | `potion_type` key             |
-| Data Offset | num  | `data_offset` as hex          |
-| Data Size   | num  | `data_size` with separators   |
-
 ## Notes
 
 - The Fairy Settings window (`panel_window_fairy_all_4.luac`,

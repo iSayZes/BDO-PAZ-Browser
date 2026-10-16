@@ -29,15 +29,6 @@ A `PABR` table of u32 rows with an empty string table, read by
 | `+0x08` | u32[]    | item_ids | `count` stone item IDs                                     |
 | end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 4 * count`), `u32 0` |
 
-## Suggested UI Layout
-
-| Column  | Type | Notes                                            |
-| ------- | ---- | ------------------------------------------------ |
-| Order   | num  | Position in the list, from `1`                   |
-| Item ID | num  | `item_id`                                        |
-| Icon    | icon | Item icon                                        |
-| Stone   | text | LOC type 0 name in its grade colour, else the ID |
-
 ## Notes
 
 - On client 3464 the 24 stones are exactly the `itemimprovementsource.dbss`

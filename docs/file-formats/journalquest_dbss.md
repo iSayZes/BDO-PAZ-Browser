@@ -120,22 +120,6 @@ Page text is LOC `str_type=18` keyed by the page's packed quest ID, like any que
 | `str_id2`  | `page_quest_id >> 16`              | Quest ID within the chain; no off-by-one      |
 | `str_id4`  | `0` = title, `1` = story text      | See [quest.dbss](quest_dbss.md) for `2`/`3`   |
 
-## Suggested UI Layout
-
-| Column              | Type | Notes                                                                 |
-| ------------------- | ---- | --------------------------------------------------------------------- |
-| Journal             | num  | `journal_key`                                                         |
-| Book                | num  | `book_key`                                                            |
-| Journal Name        | text | LOC type=63 `id4=0`, falling back to `journal_name_kr`                |
-| Description         | text | LOC type=63 `id4=1`, falling back to `journal_description_kr`         |
-| Book Name           | text | LOC type=63 `id4=3`, falling back to `book_name_kr`                   |
-| Unlock Requirement  | text | LOC type=63 `id4=2`, falling back to `unlock_requirement_kr`; drawn in its PAColor game colours |
-| Pages               | num  | `page_count`                                                          |
-| Record Book         | text | `is_record_book` as Yes or No                                         |
-| Page Titles         | text | LOC type=18 `id4=0` for each page quest ID                            |
-| Bookshelf Scene     | text | `bookshelf_scene`                                                     |
-| Book Model          | text | `book_model`                                                          |
-
 ## Notes
 
 - All records are located through `journalquestoffset.dbss`; the book records are self-describing (length-prefixed strings, counted page list), so the file can also be walked sequentially using the per-group `book_count` words.

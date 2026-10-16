@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes   | Records         | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ------- | --------------- | --------- |
-| 1      | 3473 and later | 3473    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
-| 1      | 3473 and later | 3473    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
+| 1      | 1784 and later | 3473    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
+| 1      | 1784 and later | 3473    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
 
 | Layout | File                     | Known             | Unknown          |
 | ------ | ------------------------ | ----------------- | ---------------- |

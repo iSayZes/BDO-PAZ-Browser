@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes     | Records                    | Row bytes                  |
 | ------ | -------------- | ------- | ------------------------ | --------- | -------------------------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `skillsimply.dbss`       | 3,499,846 | 30,487 Skill Simply Record | 114 to 134, 115 on average |
-| 1      | 3473 and later | 3473    | `skillsimplyoffset.dbss` | 365,848   | 30,487 Offset Row          | 12                         |
+| 1      | 1784 and later | 3473    | `skillsimply.dbss`       | 3,499,846 | 30,487 Skill Simply Record | 114 to 134, 115 on average |
+| 1      | 1784 and later | 3473    | `skillsimplyoffset.dbss` | 365,848   | 30,487 Offset Row          | 12                         |
 
 | Layout | File                     | Known               | Unknown             |
 | ------ | ------------------------ | ------------------- | ------------------- |

@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                | Bytes  | Records                  | Row bytes               |
 | ------ | -------------- | ------- | ----------------------------------- | ------ | ------------------------ | ----------------------- |
-| 1      | 3473 and later | 3473    | `regioninfo_linkandcheckvalid2.bss` | 19,574 | 1,595 Region Link Record | 10 to 98, 12 on average |
+| 1      | 1784 and later | 3473    | `regioninfo_linkandcheckvalid2.bss` | 19,574 | 1,595 Region Link Record | 10 to 98, 12 on average |
 
 | Layout | File                                | Known            | Unknown         |
 | ------ | ----------------------------------- | ---------------- | --------------- |

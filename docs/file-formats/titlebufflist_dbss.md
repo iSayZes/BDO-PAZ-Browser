@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes | Records       | Row bytes                  |
 | ------ | -------------- | ------- | -------------------------- | ----- | ------------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `titlebufflist.dbss`       | 5,972 | 18 Block      | 140 to 410, 332 on average |
-| 1      | 3473 and later | 3473    | `titlebufflistoffset.dbss` | 220   | 18 Offset Row | 12                         |
+| 1      | 1784 and later | 3473    | `titlebufflist.dbss`       | 5,972 | 18 Block      | 140 to 410, 332 on average |
+| 1      | 1784 and later | 3473    | `titlebufflistoffset.dbss` | 220   | 18 Offset Row | 12                         |
 
 | Layout | File                       | Known           | Unknown      |
 | ------ | -------------------------- | --------------- | ------------ |

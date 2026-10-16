@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes      | Records                             | Row bytes                    |
 | ------ | -------------- | ------- | ---------------------------- | ---------- | ----------------------------------- | ---------------------------- |
-| 2      | 3473 and later | 3473    | `characterstatic.dbss`       | 13,561,073 | 24,553 Payload, 24,553 Stream Entry | 465 to 1,042, 550 on average |
-| 2      | 3473 and later | 3473    | `characterstaticoffset.dbss` | 245,550    | 24,553 Index Row                    | 10                           |
+| 2      | 1784 and later | 3473    | `characterstatic.dbss`       | 13,561,073 | 24,553 Payload, 24,553 Stream Entry | 465 to 1,042, 550 on average |
+| 2      | 1784 and later | 3473    | `characterstaticoffset.dbss` | 245,550    | 24,553 Index Row                    | 10                           |
 
 | Layout | File                         | Known              | Unknown              |
 | ------ | ---------------------------- | ------------------ | -------------------- |

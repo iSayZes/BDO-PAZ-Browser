@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records         | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | --------------- | --------- |
-| 1      | 3473 and later | 3473    | `fairyequipskillaquire.dbss`       | 708   | 4 Record        | 176       |
-| 1      | 3473 and later | 3473    | `fairyequipskillaquireoffset.dbss` | 44    | 4 Offset Record | 10        |
+| 1      | 1784 and later | 3473    | `fairyequipskillaquire.dbss`       | 708   | 4 Record        | 176       |
+| 1      | 1784 and later | 3473    | `fairyequipskillaquireoffset.dbss` | 44    | 4 Offset Record | 10        |
 
 | Layout | File                               | Known          | Unknown     |
 | ------ | ---------------------------------- | -------------- | ----------- |

@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File           | Bytes   | Records                              | Row bytes |
 | ------ | -------------- | ------- | -------------- | ------- | ------------------------------------ | --------- |
-| 1      | 3473 and later | 3473    | `newquest.bss` | 789,308 | 1,236 Quest Reference Row, 229 Group | 17        |
+| 1      | 1784 and later | 3473    | `newquest.bss` | 789,308 | 1,236 Quest Reference Row, 229 Group | 17        |
 
 | Layout | File           | Known             | Unknown      |
 | ------ | -------------- | ----------------- | ------------ |

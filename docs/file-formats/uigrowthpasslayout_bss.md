@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records            | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----- | ------------------ | --------- |
-| 1      | 3473 and later | 3473    | `uigrowthpasslayout.bss` | 1,724 | 280 Cell, 2 Layout | 6         |
+| 1      | 1784 and later | 3473    | `uigrowthpasslayout.bss` | 1,724 | 280 Cell, 2 Layout | 6         |
 
 | Layout | File                     | Known           | Unknown       |
 | ------ | ------------------------ | --------------- | ------------- |

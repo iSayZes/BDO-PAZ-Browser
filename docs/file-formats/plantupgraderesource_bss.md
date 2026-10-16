@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes | Records                 | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ----- | ----------------------- | --------- |
-| 1      | 3473 and later | 3473    | `plantupgraderesource.bss` | 4,428 | 228 Need Item, 76 Entry | 12        |
+| 1      | 1784 and later | 3473    | `plantupgraderesource.bss` | 4,428 | 228 Need Item, 76 Entry | 12        |
 
 | Layout | File                       | Known            | Unknown    |
 | ------ | -------------------------- | ---------------- | ---------- |

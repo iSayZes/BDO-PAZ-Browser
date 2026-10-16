@@ -18,9 +18,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records   | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | --------- | --------- |
-| 1      | 3473 and later | 3473    | `seasonpassquestlist.bss`          | 1,660 | 410 Entry | 4         |
-| 1      | 3473 and later | 3473    | `seasonpassquestlistforcash.bss`   | 840   | 205 Entry | 4         |
-| 1      | 3473 and later | 3473    | `seasonpassquestlistfornormal.bss` | 840   | 205 Entry | 4         |
+| 1      | 1784 and later | 3473    | `seasonpassquestlist.bss`          | 1,660 | 410 Entry | 4         |
+| 1      | 1784 and later | 3473    | `seasonpassquestlistforcash.bss`   | 840   | 205 Entry | 4         |
+| 1      | 1784 and later | 3473    | `seasonpassquestlistfornormal.bss` | 840   | 205 Entry | 4         |
 
 | Layout | File                               | Known            | Unknown    |
 | ------ | ---------------------------------- | ---------------- | ---------- |

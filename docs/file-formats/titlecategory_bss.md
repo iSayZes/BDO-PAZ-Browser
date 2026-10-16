@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes  | Records         | Row bytes                      |
 | ------ | -------------- | ------- | ------------------- | ------ | --------------- | ------------------------------ |
-| 1      | 3473 and later | 3473    | `titlecategory.bss` | 12,744 | 4 Category List | 792 to 5,288, 3,181 on average |
+| 1      | 1784 and later | 3473    | `titlecategory.bss` | 12,744 | 4 Category List | 792 to 5,288, 3,181 on average |
 
 | Layout | File                | Known             | Unknown    |
 | ------ | ------------------- | ----------------- | ---------- |

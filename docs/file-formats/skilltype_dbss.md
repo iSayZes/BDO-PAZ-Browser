@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes     | Records                       | Row bytes                    |
 | ------ | -------------- | ------- | ---------------------- | --------- | ----------------------------- | ---------------------------- |
-| 1      | 3473 and later | 3473    | `skilltype.dbss`       | 8,669,986 | 30,415 Payload, 30,415 Record | 153 to 1,041, 281 on average |
-| 1      | 3473 and later | 3473    | `skilltypeoffset.dbss` | 365,000   | 30,415 Index Row              | 12                           |
+| 1      | 1784 and later | 3473    | `skilltype.dbss`       | 8,669,986 | 30,415 Payload, 30,415 Record | 153 to 1,041, 281 on average |
+| 1      | 1784 and later | 3473    | `skilltypeoffset.dbss` | 365,000   | 30,415 Index Row              | 12                           |
 
 | Layout | File                   | Known                | Unknown    |
 | ------ | ---------------------- | -------------------- | ---------- |

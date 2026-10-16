@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                              | Bytes  | Records          | Row bytes |
 | ------ | -------------- | ------- | --------------------------------- | ------ | ---------------- | --------- |
-| 1      | 3473 and later | 3473    | `guildskillexperience.dbss`       | 13,017 | 1,001 Level Row  | 13        |
-| 1      | 3473 and later | 3473    | `guildskillexperienceoffset.dbss` | 10,014 | 1,001 Offset Row | 10        |
+| 1      | 1784 and later | 3473    | `guildskillexperience.dbss`       | 13,017 | 1,001 Level Row  | 13        |
+| 1      | 1784 and later | 3473    | `guildskillexperienceoffset.dbss` | 10,014 | 1,001 Offset Row | 10        |
 
 | Layout | File                              | Known             | Unknown        |
 | ------ | --------------------------------- | ----------------- | -------------- |

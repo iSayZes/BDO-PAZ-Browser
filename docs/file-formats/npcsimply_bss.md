@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File            | Bytes   | Records          | Row bytes |
 | ------ | -------------- | ------- | --------------- | ------- | ---------------- | --------- |
-| 1      | 3473 and later | 3473    | `npcsimply.bss` | 210,479 | 2,239 NPC Record | 33        |
+| 1      | 1784 and later | 3473    | `npcsimply.bss` | 210,479 | 2,239 NPC Record | 33        |
 
 | Layout | File            | Known             | Unknown         |
 | ------ | --------------- | ----------------- | --------------- |

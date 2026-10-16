@@ -27,7 +27,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes  | Records                                     | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------ | ------------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `cronenchant.bss` | 23,580 | 600 Step, 30 Grade Block, 10 Category Block | 39        |
+| 1      | 1784 and later | 3473    | `cronenchant.bss` | 23,580 | 600 Step, 30 Grade Block, 10 Category Block | 39        |
 
 | Layout | File              | Known             | Unknown    |
 | ------ | ----------------- | ----------------- | ---------- |

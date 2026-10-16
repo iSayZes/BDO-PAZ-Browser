@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes  | Records              | Row bytes                 |
 | ------ | -------------- | ------- | ----------------------- | ------ | -------------------- | ------------------------- |
-| 1      | 3473 and later | 3473    | `skillpiece.dbss`       | 31,628 | 168 Tier, 100 Record | 30 to 534, 180 on average |
-| 1      | 3473 and later | 3473    | `skillpieceoffset.dbss` | 1,004  | 100 Index Row        | 10                        |
+| 1      | 1784 and later | 3473    | `skillpiece.dbss`       | 31,628 | 168 Tier, 100 Record | 30 to 534, 180 on average |
+| 1      | 1784 and later | 3473    | `skillpieceoffset.dbss` | 1,004  | 100 Index Row        | 10                        |
 
 | Layout | File                    | Known            | Unknown      |
 | ------ | ----------------------- | ---------------- | ------------ |

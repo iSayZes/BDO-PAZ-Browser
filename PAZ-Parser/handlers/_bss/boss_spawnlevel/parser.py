@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import struct
 
-from _bss.menu.parser import sprite_sheet_path
 from _common.binary import u32
 from _common.pabr_strings import (
     HEADER_SIZE,
@@ -23,6 +22,7 @@ from _common.pabr_strings import (
     string_at,
 )
 from _common.record_reader import RecordReader
+from _common.ui_texture import ui_texture_path
 
 
 FILE_NAME = "boss_spawnlevel.bss"
@@ -41,7 +41,7 @@ def _read_entry(reader: RecordReader, strings: list[str]) -> dict:
         "level": level,
         "character_id": character_id,
         "reward_item_id": reward_item_id,
-        "image_path": sprite_sheet_path(string_at(strings, image)),
+        "image_path": ui_texture_path(string_at(strings, image)),
         "unknown_05": unknown_05,
         "unknown_07": unknown_07,
         "unknown_11": unknown_11,

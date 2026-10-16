@@ -32,7 +32,7 @@ _DEAD_KEY = 0xDEAD0001
 # Ample Storage Lv. 8, a guild skill whose effect text is only in LOC type 13.
 _AMPLE_STORAGE_KEY = 65069 << 16 | 1
 _HANGUL = re.compile("[가-힣]")
-_GRAVE_DIGGING_ICON = "ui_texture/icon/New_Icon/04_PC_Skill/01_PC_Skill/01_PHM_Skill/PHM_Skill_1759.dds"
+_GRAVE_DIGGING_ICON = "ui_texture/icon/new_icon/04_pc_skill/01_pc_skill/01_phm_skill/phm_skill_1759.dds"
 
 SKILL_CASE = HandlerCase(
     handler_name="skill.dbss",

@@ -9,7 +9,7 @@ from bdo_preview import PreviewHandler
 from _common.html import Column, e, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
-from _bss.menu.parser import sprite_sheet_path
+from _common.ui_texture import ui_texture_path
 from .parser import OFFSET_FILE, parse_maincategory_records, parse_maincategoryoffset_records
 
 
@@ -54,7 +54,7 @@ class MainCategoryHandler(PreviewHandler):
             raise ValueError(f"{OFFSET_FILE} companion not found.")
         return [
             # The stored path hangs off ui_texture/; the cell loads the image from there.
-            {**record, "_icon_file": sprite_sheet_path(record["icon_path"])}
+            {**record, "_icon_file": ui_texture_path(record["icon_path"])}
             for record in parse_maincategory_records(data, offset_raw)
         ]
 

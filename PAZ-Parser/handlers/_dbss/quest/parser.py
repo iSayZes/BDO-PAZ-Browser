@@ -26,6 +26,7 @@ from _bss.allquestlist.parser import parse_allquestlist_records
 from _common.binary import u32
 from _common.inline_text import decode_inline_text
 from _common.prefixed_string import prefixes_ending_at
+from _common.ui_texture import ui_texture_path
 from .model import FamilyStat, QuestRecord
 
 
@@ -287,11 +288,6 @@ def parse_quest_record(data: bytes, index: QuestIndex, row: int) -> QuestRecord:
     )
 
 
-# Stored quest icon paths start at "Icon/", "New_Icon/" or "UI_Artwork/",
-# which all hang off ui_texture.
-QUEST_ICON_ROOT = "ui_texture/"
-
-
 def build_quest_icon_index(data: bytes, allquestlist_data: bytes) -> dict[int, str]:
     """Map packed quest ID to icon path.
 
@@ -305,5 +301,5 @@ def build_quest_icon_index(data: bytes, allquestlist_data: bytes) -> dict[int, s
         if icon:
             # A few stored paths carry a doubled separator, such as
             # "Icon/Quest//lost_wagon.dds", which can never match a PAZ entry.
-            icons[packed_quest_id] = f"{QUEST_ICON_ROOT}{icon.lower().replace('//', '/')}"
+            icons[packed_quest_id] = ui_texture_path(icon.replace("//", "/"))
     return icons

@@ -8,6 +8,7 @@ from _common.icon_index import clean_stored_icon_path
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import locate_prefixed_ascii, read_prefixed_at
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 from _dbss.skill.parser import build_skill_buff_index
 from .layout import BlockStrings, header_shift, read_block_strings
 
@@ -15,9 +16,6 @@ from .layout import BlockStrings, header_shift, read_block_strings
 # Keys are packed item keys (`_common/item_key.py`). Level 0 is the base item
 # and there is exactly one per item ID; an item has one record per level up to
 # its maximum.
-
-# Stored icon paths are relative to this folder.
-ICON_ROOT = "ui_texture/icon/"
 
 # The item grade, 0 (white) to 5, which colours the item name (`_common/item_grade.py`).
 _GRADE = 0x06
@@ -136,7 +134,8 @@ def _block_strings(data: bytes, row: dict) -> BlockStrings:
 
 
 def _icon_path(icon: str) -> str:
-    return f"{ICON_ROOT}{clean_stored_icon_path(icon)}"
+    # Stored icon paths are relative to ui_texture/icon/.
+    return f"{UI_TEXTURE_ICON_ROOT}{clean_stored_icon_path(icon)}"
 
 
 def _second_string(data: bytes, icon_end: int, end: int) -> str:

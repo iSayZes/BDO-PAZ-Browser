@@ -60,7 +60,7 @@ def test_skilltype_dbss(spec: Any, skilltype_result: HandlerResult) -> None:
 def test_icons_are_dds_under_the_icon_root(skilltype_result: HandlerResult) -> None:
     icons = [r["icon_path"] for r in skilltype_result.records if r["icon_path"]]
     assert icons
-    assert all(path.startswith(_ICON_ROOT) and path.lower().endswith(".dds") for path in icons)
+    assert all(path.startswith(_ICON_ROOT) and path == path.lower() and path.endswith(".dds") for path in icons)
 
 
 @pytest.mark.parametrize(
@@ -69,7 +69,7 @@ def test_icons_are_dds_under_the_icon_root(skilltype_result: HandlerResult) -> N
 )
 def test_icon_folder(skill_key: int, folder: str, skilltype_result: HandlerResult) -> None:
     record = next(r for r in skilltype_result.records if r["skill_key"] == skill_key)
-    assert folder in record["icon_path"].lower()
+    assert folder in record["icon_path"]
 
 
 def test_skill_icon_index_matches_the_icon_column(skilltype_result: HandlerResult) -> None:

@@ -3,6 +3,7 @@ from __future__ import annotations
 from _common.binary import u32
 from _common.pabr_offset import parse_bare_u32_offset_rows
 from _common.prefixed_string import find_prefixed_ascii, read_prefixed_utf16
+from _common.ui_texture import ui_texture_path
 
 
 _BLOCK_HEADER_SIZE = 4
@@ -11,9 +12,6 @@ _NAME_PREFIX_OFFSET = 0x04
 # A u32 item ID follows the icon string, this many bytes past its end.
 _ITEM_ID_GAP = 16
 _MAX_ITEM_ID = 0x00FFFFFF
-
-# Stored icon paths already start at "Icon/", so they hang off ui_texture.
-ICON_ROOT = "ui_texture/"
 
 
 def parse_cashproductoffset_records(data: bytes) -> list[dict]:
@@ -61,7 +59,7 @@ def parse_cashproduct_records(data: bytes, offset_data: bytes) -> list[dict]:
         records.append({
             "product_id": row["product_id"],
             "product_name": read_prefixed_utf16(data, start + _NAME_PREFIX_OFFSET),
-            "product_icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
+            "product_icon_path": ui_texture_path(icon),
             "item_id": _linked_item_id(data, icon_end, end) if icon else 0,
             "block_size": row["data_size"],
         })

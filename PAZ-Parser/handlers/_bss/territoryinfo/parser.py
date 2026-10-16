@@ -15,12 +15,10 @@ import struct
 from _common.binary import u32
 from _common.pabr_strings import checked_string_table_start, read_string_table, string_at, string_table_start
 from _common.record_reader import RecordReader
+from _common.ui_texture import ui_texture_path
 
 
 _HEADER_SIZE = 8
-
-# Stored icon paths start at "Renewal/" or "New_UI_Common_forLua/", under ui_texture.
-ICON_ROOT = "ui_texture/"
 
 # u16 territory_key | u8 unknown_02 | u8 is_autonomous | 3 x f32 vec3 position
 _HEAD = struct.Struct("<HBB9f")
@@ -42,10 +40,6 @@ def _positions(coords: list[float]) -> list[list[float]]:
     return [coords[i : i + _AXES] for i in range(0, len(coords), _AXES)]
 
 
-def _icon_path(stored: str) -> str:
-    return f"{ICON_ROOT}{stored.lower()}" if stored else ""
-
-
 def _read_row(reader: RecordReader, strings: list[str]) -> dict:
     key, unknown_02, is_autonomous, *coords = reader.unpack(_HEAD)
     (
@@ -61,8 +55,8 @@ def _read_row(reader: RecordReader, strings: list[str]) -> dict:
         "is_autonomous": bool(is_autonomous),
         "positions": _positions(coords),
         "nation_hash": nation_hash,
-        "icon_large_path": _icon_path(string_at(strings, icon_large_ref)),
-        "icon_small_path": _icon_path(string_at(strings, icon_small_ref)),
+        "icon_large_path": ui_texture_path(string_at(strings, icon_large_ref)),
+        "icon_small_path": ui_texture_path(string_at(strings, icon_small_ref)),
         "crown_item_id": crown_item_id,
         "armor_item_id": armor_item_id,
         "unknown_02": unknown_02,

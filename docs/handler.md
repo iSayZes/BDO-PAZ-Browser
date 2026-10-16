@@ -1032,6 +1032,7 @@ _common/
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
+├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 
@@ -1493,6 +1494,16 @@ column uses the title alone.
 `icon_cell(path)` renders an icon cell. The path is not fetched at parse time;
 the UI lazily resolves it against the PAZ entry map when the cell scrolls into
 view, so a handler only has to emit a correct path string.
+
+Tables store texture paths relative to `ui_texture/` (`Combine/Icon/...`,
+`UI_Artwork/...`) in the client's mixed case. Turn one into its PAZ path with
+`ui_texture_path(stored)` from `_common/ui_texture.py`, which lowercases it
+and returns `""` for an empty string; pass `UI_TEXTURE_ICON_ROOT` as the
+second argument for a path stored relative to `ui_texture/icon/`
+(`specialenchantitem.bss`, `skilltype.dbss`). Tables that clean the stored
+path first build it from the same root constants: `clean_stored_icon_path()`
+for the backslashes of `itemenchant.dbss` and the buff tables, the root picked
+by prefix for `characterobject.dbss`.
 
 A list of entities with an icon each (the items of a subgroup) goes in one cell
 with `icon_list_cell(entries, hidden_count)`: each `(icon_path, label)` entry

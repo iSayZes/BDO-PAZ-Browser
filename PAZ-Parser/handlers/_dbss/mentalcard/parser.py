@@ -19,6 +19,7 @@ from dataclasses import dataclass
 
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.record_reader import RecordReader
+from _common.ui_texture import ui_texture_path
 
 _HEADER = struct.Struct("<IHBBfffBfII")
 # u8 unknown_description_kr_00, u8 unknown_description_kr_01, u32 unknown_description_kr_02
@@ -27,9 +28,6 @@ _POSITION = struct.Struct("<fff")
 # u8 unknown_acquisition_kr_0c, u32 unknown_acquisition_kr_0d, u32 hash_count
 _TAIL_HEAD = struct.Struct("<BII")
 _PADDING_SIZE = 5
-
-# Stored icon paths start at "UI_Artwork/", which hangs off ui_texture.
-ICON_ROOT = "ui_texture/"
 
 
 @dataclass(frozen=True)
@@ -89,7 +87,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> MentalCardRecord:
         apply_turn=apply_turn,
         name_kr=name_kr,
         description_kr=description_kr,
-        icon_path=f"{ICON_ROOT}{icon_path.lower()}" if icon_path else "",
+        icon_path=ui_texture_path(icon_path),
         acquisition_kr=acquisition_kr,
         position=position,
     )

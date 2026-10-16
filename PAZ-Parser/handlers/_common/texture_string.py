@@ -15,11 +15,11 @@ import re
 from collections.abc import Iterable
 from dataclasses import dataclass
 
-from _bss.menu.parser import sprite_sheet_path
+from _common.ui_texture import UI_TEXTURE_ROOT, ui_texture_path
 
 
 TEXTURE_STRING_COMBINE = "texturestring_combine.xml"
-TEXTURE_STRING_COMBINE_PATH = f"ui_texture/texturestringkey/{TEXTURE_STRING_COMBINE}"
+TEXTURE_STRING_COMBINE_PATH = f"{UI_TEXTURE_ROOT}texturestringkey/{TEXTURE_STRING_COMBINE}"
 
 _TEXTURE_RE = re.compile(r"<Texture\b([^>]*)>")
 _ATTR_RE = re.compile(r'(\w+)="([^"]*)"')
@@ -59,7 +59,7 @@ def parse_texture_regions(xml: bytes | None, keys: Iterable[str]) -> dict[str, T
             continue
         attrs = dict(_ATTR_RE.findall(tag))
         region = _region(attrs.get("UV", ""))
-        path = sprite_sheet_path(attrs.get("Path", ""))
+        path = ui_texture_path(attrs.get("Path", ""))
         if region is not None and path:
             regions[key_match.group(1)] = TextureRegion(path, region)
     return regions

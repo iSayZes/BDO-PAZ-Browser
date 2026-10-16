@@ -12,7 +12,7 @@ import struct
 
 from _common.binary import u32
 from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at, string_table_start
-from _dbss.quest.parser import QUEST_ICON_ROOT
+from _common.ui_texture import ui_texture_path
 
 
 # Stored video names are relative to this folder and carry no extension.
@@ -34,10 +34,6 @@ def _video_path(stored: str) -> str:
     return f"{VIDEO_ROOT}{stored.lower()}{VIDEO_EXTENSION}" if stored else ""
 
 
-def _artwork_path(stored: str) -> str:
-    return f"{QUEST_ICON_ROOT}{stored.lower()}" if stored else ""
-
-
 def parse_questjournalvideoinfo_records(data: bytes) -> list[dict]:
     """Every journal video row in file order, with its paths resolved.
 
@@ -54,7 +50,7 @@ def parse_questjournalvideoinfo_records(data: bytes) -> list[dict]:
             "quest_id": quest_id,
             "packed_quest_id": quest_id << 16 | quest_chain_id,
             "video_path": _video_path(string_at(strings, video_ref)),
-            "artwork_path": _artwork_path(string_at(strings, artwork_ref)),
+            "artwork_path": ui_texture_path(string_at(strings, artwork_ref)),
             "unknown_0c": unknown_0c,
         })
     return records

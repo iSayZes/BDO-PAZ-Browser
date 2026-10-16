@@ -15,7 +15,6 @@ from __future__ import annotations
 
 import struct
 
-from _bss.menu.parser import sprite_sheet_path
 from _bss.stringtable.parser import GAME_SHEET, parse_sheet_key_hashes
 from _common.binary import u32
 from _common.pabr_strings import (
@@ -26,6 +25,7 @@ from _common.pabr_strings import (
     string_at,
 )
 from _common.record_reader import RecordReader
+from _common.ui_texture import ui_texture_path
 
 
 _FILE = "instancefieldmapinfo.bss"
@@ -63,7 +63,7 @@ def _read_record(reader: RecordReader, strings: list[str]) -> dict:
         "y": y,
         "z": z,
         "radius": radius,
-        "image_path": sprite_sheet_path(string_at(strings, image_ref)),
+        "image_path": ui_texture_path(string_at(strings, image_ref)),
         "image_region": region,
         "entry_item_id": entry_item_id,
         "spawns": spawns,

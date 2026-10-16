@@ -19,7 +19,8 @@ from tests.framework import (
 
 from _bss.specialenchantitem.parser import build_item_key_icon_index
 from _common.prefixed_string import find_prefixed_ascii
-from _dbss.itemenchant.parser import ICON_ROOT, parse_itemenchantoffset_records
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT
+from _dbss.itemenchant.parser import parse_itemenchantoffset_records
 
 
 _ITEMENCHANT_FILE = "itemenchant.dbss"
@@ -118,7 +119,7 @@ def test_rows_follow_itemenchant_keys_and_icons(specialenchantitem_result: Handl
         row = by_key[record["item_key"]]
         start = row["data_offset"]
         strings = find_prefixed_ascii(data, start, start + row["data_size"])
-        assert f"{ICON_ROOT}{strings[0].lower()}" == record["icon_path"], record["item_key"]
+        assert f"{UI_TEXTURE_ICON_ROOT}{strings[0].lower()}" == record["icon_path"], record["item_key"]
 
 
 def test_item_key_icon_index_matches_the_icon_column(

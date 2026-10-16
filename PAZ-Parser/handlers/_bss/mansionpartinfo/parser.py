@@ -13,10 +13,8 @@ import struct
 
 from _common.binary import u32
 from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at, string_table_start
+from _common.ui_texture import ui_texture_path
 
-
-# Stored icon paths start at "Icon/", which hangs off ui_texture.
-ICON_ROOT = "ui_texture/"
 
 # u16 character_id | u8 unknown_02 | u8 part_index | u32 icon_ref | u32 unknown_str_ref
 _ROW = struct.Struct("<HBBII")
@@ -44,7 +42,7 @@ def parse_mansionpartinfo_records(data: bytes) -> list[dict]:
         records.append({
             "character_id": character_id,
             "part_index": part_index,
-            "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
+            "icon_path": ui_texture_path(icon),
             "unknown_02": unknown_02,
             "unknown_str": string_at(strings, unknown_str_ref),
         })

@@ -168,7 +168,8 @@ The Wiki workflow (`.github/workflows/wiki.yml`) publishes the docs as a
 static site on GitHub Pages. It runs `build_wiki.py` on every push to `main`
 that adds, changes or deletes a doc in `docs/file-formats/`, or changes
 `docs/documented-formats.md` or the generator (`PAZ-Parser/wiki/`,
-`PAZ-Parser/format_docs/`, `build_wiki.py`), so the site shows the released
+`PAZ-Parser/format_docs/`, `build_wiki.py`) or the app icon
+(`PAZ-Parser/ui/favicon.ico`), so the site shows the released
 docs. `python build_wiki.py` builds the same
 site into `_site/` for a local preview. The generator is
 `PAZ-Parser/wiki/`; the site holds:
@@ -178,7 +179,7 @@ site into `_site/` for a local preview. The generator is
 | `index.html`        | Every doc with its description, known share, open questions and in-game checks, searchable and sortable; grouped as the app's tree view: the LOC docs, the `.bss` / `.dbss` docs, then Others (the doc-page sidebar too) |
 | `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows its layouts as tabs, each structure with a byte map and its field table |
 | `formats.js`        | The doc list both page kinds read                                       |
-| `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`                   |
+| `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`, and the app's `favicon.ico` from `PAZ-Parser/ui/` |
 
 A doc page's Versions card shows each layout's clients and a known/unknown
 bar from its Versions tables, and the layout tabs name the clients. The

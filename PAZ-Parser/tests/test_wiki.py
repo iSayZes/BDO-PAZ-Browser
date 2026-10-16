@@ -104,7 +104,9 @@ def test_the_site_has_an_index_a_page_per_doc_and_the_static_files(docs_dir: Pat
     assert {"index.html", "formats.js", "static", "test_bss.html", "other_dbss.html"} <= names
     assert "_template.html" not in names
     assert (result.pages, result.converted) == (2, 1)
-    assert {path.name for path in (tmp_path / "site" / "static").iterdir()} == {"wiki.css", "common.js", "index.js", "doc.js", "fonts"}
+    assert {path.name for path in (tmp_path / "site" / "static").iterdir()} == {"wiki.css", "common.js", "index.js", "doc.js", "fonts", "favicon.ico"}
+    for page_name in ("index.html", "test_bss.html"):
+        assert '<link rel="icon" href="static/favicon.ico">' in (tmp_path / "site" / page_name).read_text(encoding="utf-8")
 
 
 def test_pages_load_nothing_from_other_sites(docs_dir: Path, tmp_path: Path) -> None:

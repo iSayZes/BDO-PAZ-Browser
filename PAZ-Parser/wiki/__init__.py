@@ -1,8 +1,8 @@
 """Builds the format docs wiki: a static site from docs/file-formats/.
 
 `build_site` writes an index page, one page per doc, `formats.js` with the
-list both page kinds show, and the static CSS and JS. See "Format Docs Wiki"
-in docs/format-docs.md.
+list both page kinds show, the static CSS and JS, and the app's favicon. See
+"Format Docs Wiki" in docs/format-docs.md.
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from .doc_page import doc_page
 from .doc_source import read_doc
 from .format_list import documented_counts, format_entry, formats_script, game_totals
 from .index_page import index_page
-from .page_shell import FORMATS_SCRIPT, INDEX_PAGE, REPO_URL, STATIC_DIR
+from .page_shell import FAVICON, FORMATS_SCRIPT, INDEX_PAGE, REPO_URL, STATIC_DIR
 
 __all__ = ["BuildResult", "build_site"]
 
@@ -26,6 +26,7 @@ FORMATS_DIR = "file-formats"
 DOCUMENTED_FORMATS = "documented-formats.md"
 README = "README.md"
 _STATIC_SOURCE = Path(__file__).parent / "static"
+_FAVICON_SOURCE = Path(__file__).parent.parent / "ui" / FAVICON
 
 
 @dataclass(frozen=True)
@@ -45,6 +46,7 @@ def build_site(docs_dir: Path, out_dir: Path) -> BuildResult:
     totals = game_totals(readme.read_text(encoding="utf-8")) if readme.exists() else {}
     out_dir.mkdir(parents=True, exist_ok=True)
     shutil.copytree(_STATIC_SOURCE, out_dir / STATIC_DIR, dirs_exist_ok=True)
+    shutil.copy2(_FAVICON_SOURCE, out_dir / STATIC_DIR / FAVICON)
     (out_dir / FORMATS_SCRIPT).write_text(formats_script(entries, documented_counts(rows), totals), encoding="utf-8")
     (out_dir / INDEX_PAGE).write_text(index_page(), encoding="utf-8")
     pages = {doc.path.name: doc.page for doc in docs}

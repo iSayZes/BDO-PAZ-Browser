@@ -135,10 +135,10 @@ The check rejects a name that states a value in place of a meaning
 
 The Wiki workflow (`.github/workflows/wiki.yml`) publishes the docs as a
 static site on GitHub Pages. It runs `build_wiki.py` on every push to `main`
-that adds, changes or deletes a doc in `docs/file-formats/` or changes
-`docs/documented-formats.md`, so the site shows the released docs. After a
-change to the generator alone, run the workflow by hand (Actions > Wiki >
-Run workflow). `python build_wiki.py` builds the same
+that adds, changes or deletes a doc in `docs/file-formats/`, or changes
+`docs/documented-formats.md` or the generator (`PAZ-Parser/wiki/`,
+`PAZ-Parser/format_docs/`, `build_wiki.py`), so the site shows the released
+docs. `python build_wiki.py` builds the same
 site into `_site/` for a local preview. The generator is
 `PAZ-Parser/wiki/`; the site holds:
 

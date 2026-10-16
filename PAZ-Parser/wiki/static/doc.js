@@ -6,16 +6,11 @@
 
   function renderFormats() {
     var sorted = FORMATS.slice().sort(function (a, b) { return W.sortName(a).localeCompare(W.sortName(b)); });
-    var items = sorted.map(function (f) {
-      var active = f.page === CURRENT_PAGE;
-      var search = (f.name + " " + f.others.join(" ")).toLowerCase();
-      var meter = f.converted
-        ? '<span class="fmt-pct" title="' + W.esc(W.shareTip(f)) + '" style="color:' + W.doneColor(W.share(f)) + '">' + Math.round(W.share(f) * 100) + "%</span>" + W.bar(f.known, f.unknown)
-        : '<span class="fmt-pct muted">-</span>';
-      return '<li data-name="' + W.esc(search) + '"><a class="fmt' + (active ? " active" : "") + '" href="' + W.esc(f.page) + '"' +
-        (active ? ' aria-current="page"' : "") + '><span class="fmt-name">' + W.esc(f.name) + "</span>" + meter +
-        '<span class="fmt-counts">' + W.countChip(f.oq, "q", "?", "open question", "open questions") +
-        W.countChip(f.ig, "ig", "⌖", "in-game check", "in-game checks") + "</span></a></li>";
+    var items = [];
+    W.groups(sorted).forEach(function (group) {
+      if (!group.items.length) return;
+      if (items.length) items.push('<li class="side-group' + (group.label ? "" : " blank") + '" data-group="' + group.index + '">' + W.esc(group.label) + "</li>");
+      group.items.forEach(function (f) { items.push(item(f, group.index)); });
     });
     var list = document.getElementById("fmtList");
     list.innerHTML = items.join("");
@@ -24,13 +19,33 @@
     document.getElementById("fmtFilter").addEventListener("input", function (ev) {
       var q = ev.target.value.trim().toLowerCase();
       var shown = 0;
-      document.querySelectorAll("#fmtList li").forEach(function (li) {
+      var visible = {};
+      document.querySelectorAll("#fmtList li[data-name]").forEach(function (li) {
         var match = li.dataset.name.indexOf(q) !== -1;
         li.hidden = !match;
-        if (match) shown++;
+        if (match) { shown++; visible[li.dataset.group] = true; }
+      });
+      // A divider shows when its group and an earlier group both have a match.
+      var before = false;
+      document.querySelectorAll("#fmtList li.side-group").forEach(function (divider) {
+        var group = Number(divider.dataset.group);
+        before = before || Object.keys(visible).some(function (g) { return Number(g) < group; });
+        divider.hidden = !(before && visible[group]);
       });
       document.getElementById("fmtEmpty").hidden = shown > 0;
     });
+  }
+
+  function item(f, group) {
+    var active = f.page === CURRENT_PAGE;
+    var search = (f.name + " " + f.others.join(" ")).toLowerCase();
+    var meter = f.converted
+      ? '<span class="fmt-pct" title="' + W.esc(W.shareTip(f)) + '" style="color:' + W.doneColor(W.share(f)) + '">' + Math.round(W.share(f) * 100) + "%</span>" + W.bar(f.known, f.unknown)
+      : '<span class="fmt-pct muted">-</span>';
+    return '<li data-name="' + W.esc(search) + '" data-group="' + group + '"><a class="fmt' + (active ? " active" : "") + '" href="' + W.esc(f.page) + '"' +
+      (active ? ' aria-current="page"' : "") + '><span class="fmt-name">' + W.esc(f.name) + "</span>" + meter +
+      '<span class="fmt-counts">' + W.countChip(f.oq, "q", "?", "open question", "open questions") +
+      W.countChip(f.ig, "ig", "⌖", "in-game check", "in-game checks") + "</span></a></li>";
   }
 
   function showLayout(n) {

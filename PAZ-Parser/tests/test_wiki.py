@@ -208,6 +208,17 @@ def test_the_repo_wiki_has_a_page_for_every_doc_and_no_dead_page_links(tmp_path:
         assert all(f'id="{anchor}"' in text for anchor in anchors), page.name
 
 
+def test_the_format_list_groups_read_the_loc_page_and_the_extension(tmp_path: Path) -> None:
+    # common.js groups the list as the app's tree view: LOC pages, then .bss / .dbss, then Others.
+    build_site(REPO_DOCS, tmp_path / "site")
+
+    formats = _formats(tmp_path / "site")
+    assert formats["languagedata_loc.html"]["ext"] == "other"
+    assert {formats[page]["ext"] for page in ("buff_dbss.html", "buffsimply_bss.html")} == {"dbss", "bss"}
+    assert formats["aiscript_ai.html"]["ext"] == "other"
+    assert 'GROUP_LABELS = ["", "", "Others"]' in (REPO_ROOT / "PAZ-Parser" / "wiki" / "static" / "common.js").read_text(encoding="utf-8")
+
+
 def test_build_wiki_script_writes_the_site(tmp_path: Path) -> None:
     script = REPO_ROOT / "build_wiki.py"
 

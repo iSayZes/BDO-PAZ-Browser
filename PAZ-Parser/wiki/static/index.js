@@ -89,8 +89,14 @@
   function render() {
     var shown = FORMATS.filter(matches).sort(compare);
     var body = document.querySelector("#index tbody");
+    var parts = [];
+    W.groups(shown).forEach(function (group) {
+      if (!group.items.length) return;
+      if (parts.length) parts.push('<tr class="group-row' + (group.label ? "" : " blank") + '"><td colspan="5">' + W.esc(group.label) + "</td></tr>");
+      parts.push(group.items.map(row).join(""));
+    });
     body.innerHTML = shown.length
-      ? shown.map(row).join("")
+      ? parts.join("")
       : '<tr class="empty-row"><td colspan="5">No format matches these filters. Clear the search or a filter to see more.</td></tr>';
     document.getElementById("resultCount").textContent = shown.length === FORMATS.length
       ? FORMATS.length + " docs"

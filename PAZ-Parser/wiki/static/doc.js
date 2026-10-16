@@ -10,7 +10,7 @@
       var active = f.page === CURRENT_PAGE;
       var search = (f.name + " " + f.others.join(" ")).toLowerCase();
       var meter = f.converted
-        ? '<span class="fmt-pct" style="color:' + W.doneColor(W.share(f)) + '">' + Math.round(W.share(f) * 100) + "%</span>" + W.bar(f.known, f.unknown)
+        ? '<span class="fmt-pct" title="' + W.esc(W.shareTip(f)) + '" style="color:' + W.doneColor(W.share(f)) + '">' + Math.round(W.share(f) * 100) + "%</span>" + W.bar(f.known, f.unknown)
         : '<span class="fmt-pct muted">-</span>';
       return '<li data-name="' + W.esc(search) + '"><a class="fmt' + (active ? " active" : "") + '" href="' + W.esc(f.page) + '"' +
         (active ? ' aria-current="page"' : "") + '><span class="fmt-name">' + W.esc(f.name) + "</span>" + meter +

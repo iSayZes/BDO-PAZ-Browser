@@ -1,6 +1,7 @@
 """HTML for the Layouts card of a converted doc: tabs, structure cards, byte maps and field tables."""
 from __future__ import annotations
 
+from collections.abc import Mapping
 from html import escape
 
 from .layout_view import FieldView, LayoutView, StructureView
@@ -10,8 +11,9 @@ _STATE_LABEL = {"known": "Known", "unknown": "Unknown", "ref": "Structure"}
 _EMPTY_CELL = '<span class="muted">-</span>'
 
 
-def layouts_card(views: tuple[LayoutView, ...], links: LinkMap) -> str:
-    tabs = "".join(_tab(view, index == 0) for index, view in enumerate(views))
+def layouts_card(views: tuple[LayoutView, ...], links: LinkMap, clients: Mapping[int, str] | None = None) -> str:
+    """The Layouts card; `clients` names each layout's clients on its tab, from Versions, where known."""
+    tabs = "".join(_tab(view, index == 0, (clients or {}).get(view.number)) for index, view in enumerate(views))
     panels = "".join(_panel(view, index == 0, links) for index, view in enumerate(views))
     tab_bar = f'<div class="segmented" role="tablist" aria-label="Layout" id="layoutTabs">{tabs}</div>' if len(views) > 1 else ""
     return (
@@ -23,9 +25,9 @@ def layouts_card(views: tuple[LayoutView, ...], links: LinkMap) -> str:
     )
 
 
-def _tab(view: LayoutView, is_current: bool) -> str:
+def _tab(view: LayoutView, is_current: bool, clients: str | None) -> str:
     active = ' class="active"' if is_current else ""
-    label = "current" if is_current else "older"
+    label = escape(clients) if clients else "current" if is_current else "older"
     return (
         f'<button type="button" role="tab" id="tab-l{view.number}" aria-controls="panel-l{view.number}" '
         f'data-layout="{view.number}"{active}>Layout {view.number}<span class="seg-sub">{label}</span></button>'

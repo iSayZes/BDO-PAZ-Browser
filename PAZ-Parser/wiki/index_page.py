@@ -35,7 +35,7 @@ _BODY = """<main class="page">
       <tbody></tbody>
     </table>
   </div>
-  <p class="foot">Built from <code>docs/documented-formats.md</code> and <code>docs/file-formats/</code>. Known counts the fixed-size fields of each converted doc's newest layout, each structure once.</p>
+  <p class="foot">Built from <code>docs/documented-formats.md</code> and <code>docs/file-formats/</code>. Known counts the bytes of a doc's newest layout in the game files its Versions section names, every record included; a doc without Versions counts its fixed-size fields, each structure once. Each share's tooltip says which.</p>
 </main>"""
 
 

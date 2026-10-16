@@ -14,6 +14,7 @@ from .layout_html import layouts_card
 from .layout_view import layout_views
 from .markdown_html import LinkMap, render_markdown, slug
 from .page_shell import FORMATS_SCRIPT, STATIC_DIR, page
+from .versions_html import layout_versions, versions_card
 
 _HEAD_SECTIONS = ("Purpose",)
 _CONVERTED_CARDS = ("Versions", "Companion Files")
@@ -38,8 +39,13 @@ def doc_page(doc: DocSource, links: LinkMap) -> str:
     views = layout_views(doc) if doc.is_converted else ()
     cards: list[str] = []
     if views:
-        cards.append(f'<div class="row-2 cv">{_versions_card(doc, links)}{_section_card(doc.section("Companion Files"), links)}</div>')
-        cards.append(layouts_card(views, links))
+        versions = layout_versions(doc.text, views[0].number)
+        companions = _section_card(doc.section("Companion Files"), links)
+        if versions:
+            cards.append(versions_card(versions, views[0].number) + companions)
+        else:
+            cards.append(f'<div class="row-2 cv">{_versions_card(doc, links)}{companions}</div>')
+        cards.append(layouts_card(views, links, {version.layout: version.clients for version in versions}))
     else:
         cards.append(
             '<section class="card"><div class="card-body"><p class="muted">This doc is not in the layout format yet, '

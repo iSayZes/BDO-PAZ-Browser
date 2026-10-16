@@ -121,7 +121,7 @@ def test_formats_js_counts_known_bytes_of_converted_docs_only(docs_dir: Path, tm
     formats = _formats(tmp_path / "site")
     assert formats["test_bss.html"] | {"desc": ""} == {
         "page": "test_bss.html", "name": "test.bss", "others": [], "desc": "", "ext": "bss",
-        "oq": 1, "ig": 0, "converted": True, "known": 8, "unknown": 4,
+        "oq": 1, "ig": 0, "converted": True, "known": 8, "unknown": 4, "client": 0,
     }
     assert formats["other_dbss.html"]["converted"] is False
     summary = (tmp_path / "site" / "formats.js").read_text(encoding="utf-8").splitlines()[1]
@@ -151,8 +151,37 @@ def test_a_doc_that_shares_a_layout_shows_the_linked_docs_structures(docs_dir: P
     assert 'id="l1-row"' in page
     assert _formats(tmp_path / "site")["shared_bss.html"] | {"desc": ""} == {
         "page": "shared_bss.html", "name": "shared.bss", "others": [], "desc": "", "ext": "bss",
-        "oq": 0, "ig": 0, "converted": True, "known": 8, "unknown": 4,
+        "oq": 0, "ig": 0, "converted": True, "known": 8, "unknown": 4, "client": 0,
     }
+
+
+VERSIONS_BLOCK = """<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+
+| Layout | Clients        | Checked | File       | Bytes | Records | Row bytes |
+| ------ | -------------- | ------- | ---------- | ----- | ------- | --------- |
+| 1      | 3464 and later | 3473    | `test.bss` | 804   | 100 Row | 8         |
+
+| Layout | File       | Known         | Unknown       |
+| ------ | ---------- | ------------- | ------------- |
+| 1      | `test.bss` | 404 B (50.2%) | 400 B (49.8%) |
+
+<!-- versions:end -->"""
+
+
+def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir: Path, tmp_path: Path) -> None:
+    doc = docs_dir / "file-formats" / "test_bss.md"
+    marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"
+    empty = f"{marker}\n\n<!-- versions:end -->"
+    doc.write_text(CONVERTED_DOC.replace(empty, VERSIONS_BLOCK), encoding="utf-8")
+
+    build_site(docs_dir, tmp_path / "site")
+
+    page = (tmp_path / "site" / "test_bss.html").read_text(encoding="utf-8")
+    entry = _formats(tmp_path / "site")["test_bss.html"]
+    assert "client 3464 and later, sizes from client 3473" in page
+    assert (entry["known"], entry["unknown"], entry["client"]) == (404, 400, 3473)
 
 
 def test_game_totals_come_from_the_readme_supported_formats_lines() -> None:

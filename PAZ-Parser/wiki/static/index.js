@@ -5,20 +5,22 @@
   var state = { q: "", ext: "", onlyQ: false, onlyIg: false, sort: "name", dir: 1 };
 
   function renderSummary() {
-    var known = 0, unknown = 0, oq = 0, ig = 0, withQ = 0, withIg = 0, full = 0;
+    var known = 0, unknown = 0, oq = 0, ig = 0, withQ = 0, withIg = 0, full = 0, client = 0;
     FORMATS.forEach(function (f) {
       oq += f.oq; ig += f.ig;
       if (f.oq) withQ++;
       if (f.ig) withIg++;
       if (!f.converted) return;
-      known += f.known; unknown += f.unknown;
       if (!f.unknown) full++;
+      if (!f.client) return;
+      known += f.known; unknown += f.unknown;
+      client = Math.max(client, f.client);
     });
     var s = W.share({ known: known, unknown: unknown });
     document.getElementById("summary").innerHTML =
       '<div class="sum overall"><span class="sum-label">Known</span>' +
       '<span class="sum-value" style="color:' + W.doneColor(s) + '">' + (s * 100).toFixed(1) + "%</span>" + W.bar(known, unknown) +
-      '<span class="sum-sub">' + W.num(known) + " of " + W.num(known + unknown) + " documented bytes, converted docs only</span></div>" +
+      '<span class="sum-sub">' + W.num(known) + " of " + W.num(known + unknown) + " bytes of the game files the docs cover, client " + client + "</span></div>" +
       documentedTile() +
       '<div class="sum"><span class="sum-label">Fully known</span><span class="sum-value">' + full + "</span>" +
       '<span class="sum-sub">no <code>unknown_*</code> field</span></div>' +
@@ -69,7 +71,7 @@
   function knownCell(f) {
     if (!f.converted) return '<span class="muted" title="Not in the layout format yet">not converted</span>';
     var s = W.share(f);
-    var tip = W.num(f.known) + " B known, " + W.num(f.unknown) + " B unknown";
+    var tip = W.shareTip(f);
     return '<div class="known-cell" title="' + tip + '">' + W.bar(f.known, f.unknown) +
       '<span class="known-pct" style="color:' + W.doneColor(s) + '">' + Math.round(s * 100) + "%</span></div>";
   }

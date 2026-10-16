@@ -658,3 +658,7 @@ a.fmt-name { color: var(--color-data); }
 .struct-desc > :last-child, .struct-extra > :last-child, .layout-intro > :last-child, .lead > :last-child { margin-bottom: 0; }
 .struct-extra { margin-top: var(--space-4); }
 .sum-of { font-size: 13px; font-weight: 400; color: var(--color-text-3); }
+
+/* ── Versions card: one summary per layout above the sizes table ── */
+.ver-list { display: flex; flex-direction: column; gap: var(--space-3); }
+.row-pill { margin-left: var(--space-2); }

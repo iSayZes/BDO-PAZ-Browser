@@ -10,6 +10,7 @@ from format_docs.doc_index import index_rows
 
 from .doc_source import DocSource, first_sentence
 from .layout_view import layout_views
+from .versions_html import layout_versions
 
 _COUNTED_EXTS = ("bss", "dbss")
 # README's Supported Formats lines, kept current from the game files by the pre-commit hook.
@@ -28,6 +29,8 @@ class FormatEntry:
     converted: bool
     known: int
     unknown: int
+    # The client whose files `known` and `unknown` count, from Versions; 0 when they count the doc's fields.
+    client: int
 
 
 def format_entry(doc: DocSource, rows: list[tuple[str, str]]) -> FormatEntry:
@@ -36,10 +39,13 @@ def format_entry(doc: DocSource, rows: list[tuple[str, str]]) -> FormatEntry:
     purpose = doc.section("Purpose")
     if not desc and purpose is not None:
         desc = first_sentence(purpose.markdown)
-    known = unknown = 0
+    known = unknown = client = 0
     if doc.is_converted:
         newest = layout_views(doc)[0]
         known, unknown = newest.known, newest.unknown
+        measured = next((version for version in layout_versions(doc.text, newest.number) if version.layout == newest.number), None)
+        if measured is not None:
+            known, unknown, client = measured.known, measured.unknown, measured.checked
     return FormatEntry(
         page=doc.page,
         name=doc.name,
@@ -51,6 +57,7 @@ def format_entry(doc: DocSource, rows: list[tuple[str, str]]) -> FormatEntry:
         converted=doc.is_converted,
         known=known,
         unknown=unknown,
+        client=client,
     )
 
 

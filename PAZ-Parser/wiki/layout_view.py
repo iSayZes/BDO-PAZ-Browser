@@ -93,7 +93,9 @@ def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
             else _with_origin(view, "inherited", view.against if view.origin == "inherited" else newer.number)
             for view in newer.structures
         )
-        views.append(LayoutView(layout.number, intro, merged))
+        newer_names = {view.structure.name for view in newer.structures}
+        only_here = tuple(view for name, view in own.items() if name not in newer_names)
+        views.append(LayoutView(layout.number, intro, merged + only_here))
     return tuple(views)
 
 

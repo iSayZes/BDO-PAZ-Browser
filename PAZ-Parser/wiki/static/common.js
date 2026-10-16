@@ -11,6 +11,12 @@ var PazWiki = (function () {
   function num(n) { return n.toLocaleString("en-US"); }
   function share(f) { var total = f.known + f.unknown; return total ? f.known / total : 0; }
 
+  // Where a known share comes from: the game files of one client, or the doc's fields alone.
+  function shareTip(f) {
+    var bytes = num(f.known) + " B known, " + num(f.unknown) + " B unknown";
+    return f.client ? bytes + " in the client " + f.client + " files" : bytes + " over the doc's fixed-size fields, each structure once";
+  }
+
   // The known share as a colour: red at 0%, amber at 50%, green at 100%.
   function doneColor(s) {
     var p = Math.max(0, Math.min(100, Math.round(s * 100)));
@@ -34,5 +40,5 @@ var PazWiki = (function () {
   // A to Z by the shown name, ignoring leading symbols: `{alchemy,...}statdata.bss` sorts under A.
   function sortName(f) { return f.name.toLowerCase().replace(/^[^a-z0-9]+/, ""); }
 
-  return { esc: esc, inline: inline, num: num, share: share, doneColor: doneColor, bar: bar, countChip: countChip, sortName: sortName };
+  return { esc: esc, inline: inline, num: num, share: share, shareTip: shareTip, doneColor: doneColor, bar: bar, countChip: countChip, sortName: sortName };
 })();

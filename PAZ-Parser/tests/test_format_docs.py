@@ -99,12 +99,16 @@ def test_a_count_reads_an_earlier_field() -> None:
     assert "`later` is not an earlier field of `Row`" in _messages(_doc(FILE_LAYOUT, row))
 
 
+OFFSET_FILE = _structure("`testoffset.dbss`", ("+0x00", "u32", "count"), ("+0x04", "Offset Row[count]", "rows"))
+OFFSET_ROW = _structure("Offset Row (8 bytes)", ("+0x00", "u32", "data_offset"), ("+0x04", "u32", "data_size"))
+
+
 def test_a_size_condition_needs_a_size_from_an_offset_file() -> None:
     plain = _structure("Row (variable: 4 bytes + tail)", ("+0x00", "u32", "key"), ("+0x04", "u8 if size = 5", "unknown_04"))
     sized = plain.replace("(variable: 4 bytes + tail)", "(variable: 4 bytes, size from `testoffset.dbss`)")
 
     assert "`size` and `[rest]` need `size from <offset file>` in the heading" in _messages(_doc(FILE_LAYOUT, plain))
-    assert _messages(_doc(FILE_LAYOUT, sized)) == []
+    assert _messages(_doc(FILE_LAYOUT, sized, OFFSET_FILE, OFFSET_ROW)) == []
 
 
 def test_offsets_from_the_end_must_meet_at_the_end() -> None:
@@ -114,8 +118,18 @@ def test_offsets_from_the_end_must_meet_at_the_end() -> None:
     )
     bad = good.replace("end-0x04", "end-0x08")
 
-    assert _messages(_doc(FILE_LAYOUT, good)) == []
-    assert "`end-0x08` minus its 4 bytes does not reach the next row" in _messages(_doc(FILE_LAYOUT, bad))
+    assert _messages(_doc(FILE_LAYOUT, good, OFFSET_FILE, OFFSET_ROW)) == []
+    assert "`end-0x08` minus its 4 bytes does not reach the next row" in _messages(_doc(FILE_LAYOUT, bad, OFFSET_FILE, OFFSET_ROW))
+
+
+def test_a_structure_sized_by_an_offset_file_needs_its_table_and_a_row_that_places_it() -> None:
+    sized = _structure("Row (variable: 4 bytes, size from `testoffset.dbss`)", ("+0x00", "u32", "key"), ("+0x04", "bytes[rest]", "unknown_04"))
+    no_size = OFFSET_ROW.replace("data_size", "unknown_04")
+
+    assert _messages(_doc(FILE_LAYOUT, sized)) == ["`Row` is sized by `testoffset.dbss`, which has no ``### `testoffset.dbss` `` table"]
+    assert _messages(_doc(FILE_LAYOUT, sized, OFFSET_FILE, no_size)) == [
+        "no row of `testoffset.dbss` holds one `offset` or `*_offset` field and one `size` or `*_size` field"
+    ]
 
 
 def test_dropped_sections_and_example_blocks_are_reported() -> None:

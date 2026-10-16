@@ -64,6 +64,13 @@ counted array, a conditional field and a variable structure count 0:
 `alchemystonechange.dbss` Row is 36 bytes of head, the 8-byte count of
 `condition` and a 12-byte tail, so `(variable: 56 bytes + condition text)`.
 
+A structure sized by an offset file needs that file's ``### `x.dbss` ``
+table in its layout or a newer one, and a row structure there with one field
+named `offset` or `*_offset` (where the structure starts in the main file)
+and one named `size` or `*_size` (its length): `petskilloffset.dbss` Offset
+Row has `data_offset` and `data_size`. The check reads each structure's size
+from the row whose offset is its start.
+
 Structure names are unique within a layout. A layout table starts with the
 columns `Offset | Type | Field` and ends with `Notes`; columns in between
 (`Source`) are allowed. Tables whose first column is not `Offset` are not
@@ -169,4 +176,38 @@ from a PAZ folder.
 <!-- versions:end -->
 ```
 
-Until the doc check reads game files, the section holds only the markers.
+`check_docs.py` writes the section. It reads the doc's files from a PAZ
+folder: the rows of [`documented-formats.md`](documented-formats.md) that
+link to the doc, and every file a ``### `x.dbss` `` heading names. It walks
+them by each layout, newest first, and takes the first layout every file
+walks to its last byte by. Two tables follow, one row per layout per file:
+
+| Table    | Columns                                                                 |
+| -------- | ----------------------------------------------------------------------- |
+| Sizes    | Layout, Clients, Checked (the client the numbers come from), File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
+| Coverage | Layout, File, Known and Unknown bytes over the whole file, every instance of every field counted |
+
+- A client range only widens: each check adds its client to the layout it
+  fits, and a layout's row stays once a client has fit it. The newest layout
+  reads `<first client> and later`, an older one `<first> to <last>`.
+- Sizes and coverage come from the newest client checked for that layout;
+  an older client never overwrites them.
+- A doc whose layout holds `bytes[scan]` cannot be walked and keeps its
+  markers only.
+
+| Command                                              | Checks                                                      |
+| ---------------------------------------------------- | ----------------------------------------------------------- |
+| `python check_docs.py --staged`                      | The docs in the commit; the pre-commit hook runs this       |
+| `python check_docs.py --all`                         | Every doc in the layout format                              |
+| `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
+| `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
+| `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
+
+Without `--paz-folder` the check reads the PAZ folder last opened in the
+app, the live client, and names it by the number its `.meta` holds. A
+`.meta` that says `1` (a private server or a leaked client) needs
+`--client`. The command exits 1 when a doc breaks a rule, when a client's
+files fit no layout (it names the layout, structure, field and offset where
+the walk broke), or when it rewrote a Versions section; the hook then stops
+the commit for a review and `git add`. A staged handler `parser.py` whose
+doc is not staged gets a warning, not a stop.

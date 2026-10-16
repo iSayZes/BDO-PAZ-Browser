@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 from .markdown import numbered_lines, sections
-from .model import Layout, Problem, Section
+from .model import Layout, Problem, Section, Structure
+from .names import OFFSET_FIELD, SIZE_FIELD
 from .reader import FILE_LAYOUT, layout_number, read_layout
 from .structure_checks import StructureSizes, check_structure
+from .type_grammar import parse_type
 
 VERSIONS_BEGIN = "<!-- versions:begin"
 VERSIONS_END = "<!-- versions:end -->"
@@ -61,8 +64,10 @@ def check_doc(text: str, folder: Path | None = None) -> tuple[Problem, ...]:
     problems.extend(_layout_problems(list(layouts)))
     for index, layout in enumerate(layouts):
         sizes = structure_sizes(layouts[: index + 1])
+        resolved = resolved_structures(layouts, index)
         for structure in layout.structures:
             problems.extend(check_structure(structure, sizes))
+            problems.extend(_offset_file_problems(structure, resolved))
     return tuple(sorted(problems, key=lambda problem: problem.line))
 
 
@@ -141,6 +146,33 @@ def _layout_problems(layouts: list[Layout]) -> list[Problem]:
             if structure.name not in newer_names
         )
     return problems
+
+
+def resolved_structures(layouts: Sequence[Layout], index: int) -> dict[str, Structure]:
+    """Every structure layout `index` uses: its own, the rest from the newer layouts above it."""
+    structures: dict[str, Structure] = {}
+    for layout in layouts[: index + 1]:
+        structures.update((structure.name, structure) for structure in layout.structures)
+    return structures
+
+
+def _offset_file_problems(structure: Structure, resolved: Mapping[str, Structure]) -> list[Problem]:
+    """A structure sized by an offset file needs that file's table and a row with one offset and one size field."""
+    external = structure.size.external if structure.size else None
+    if external is None:
+        return []
+    table = resolved.get(f"`{external}`")
+    if table is None:
+        return [Problem(structure.line, f"`{structure.name}` is sized by `{external}`, which has no ``### `{external}` `` table")]
+    for field in table.fields:
+        spec = parse_type(field.type_text)
+        row = resolved.get(spec.name) if not isinstance(spec, str) and spec.is_structure else None
+        if row is None:
+            continue
+        names = [row_field.name for row_field in row.fields]
+        if sum(map(bool, map(OFFSET_FIELD.match, names))) == 1 and sum(map(bool, map(SIZE_FIELD.match, names))) == 1:
+            return []
+    return [Problem(structure.line, f"no row of `{external}` holds one `offset` or `*_offset` field and one `size` or `*_size` field")]
 
 
 def structure_sizes(layouts: tuple[Layout, ...]) -> StructureSizes:

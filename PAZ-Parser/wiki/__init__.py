@@ -11,9 +11,11 @@ import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
+from format_docs.doc_index import index_rows
+
 from .doc_page import doc_page
 from .doc_source import read_doc
-from .format_list import documented_counts, format_entry, formats_script, game_totals, index_rows
+from .format_list import documented_counts, format_entry, formats_script, game_totals
 from .index_page import index_page
 from .page_shell import FORMATS_SCRIPT, INDEX_PAGE, REPO_URL, STATIC_DIR
 

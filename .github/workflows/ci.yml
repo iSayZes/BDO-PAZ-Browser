@@ -12,6 +12,7 @@ on:
       - benchmark.py
       - build.py
       - build_wiki.py
+      - check_docs.py
       - pytest.ini
       - pyrightconfig.json
       - .github/workflows/ci.yml

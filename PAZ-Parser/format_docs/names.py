@@ -6,6 +6,9 @@ import re
 from .model import Field
 
 UNKNOWN_PREFIX = "unknown_"
+# The offset-file row fields that place and size a structure sized by that file.
+OFFSET_FIELD = re.compile(r"^(?:[a-z0-9_]+_)?offset$")
+SIZE_FIELD = re.compile(r"^(?:[a-z0-9_]+_)?size$")
 PABR_TRAILER_ZERO = "zero"
 _SNAKE = re.compile(r"^[a-z][a-z0-9_]*$")
 _PADDING = re.compile(r"^padding_[0-9a-f]{2,}$")

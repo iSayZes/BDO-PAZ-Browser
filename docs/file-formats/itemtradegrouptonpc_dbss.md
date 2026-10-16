@@ -8,11 +8,11 @@ each group lists items with their trade category. On client 3464 every group
 holds one item except 40075 Fish Dad, whose group holds 1,501: trash loot,
 fish, trade crates and the old regional trade goods.
 
-```text
-40010  Bahar     810442  Fragrant Grape Wine   Luxury
-40075  Fish Dad    8201  Mudskipper            Seafood
-40075  Fish Dad   55001  Ancient Gold Coin     Relic
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,41 +24,64 @@ names from LOC type `37` under the `RESOURCE` sheet keys listed in
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. The groups fill the file to its last
 byte.
 
-| Offset  | Type    | Field  | Notes                                     |
-| ------- | ------- | ------ | ----------------------------------------- |
-| `+0x00` | u32     | count  | Number of groups; `126` on client 3464    |
-| `+0x04` | group[] | groups | `count` groups of variable size           |
+| Offset  | Type         | Field  | Notes                                  |
+| ------- | ------------ | ------ | -------------------------------------- |
+| `+0x00` | u32          | count  | Number of groups; `126` on client 3464 |
+| `+0x04` | Group[count] | groups | See Group                              |
 
-### Group (6 + 127 * `item_count` bytes)
+### Group (variable: 6 bytes + item entries)
 
-| Offset  | Type    | Field        | Notes                                  |
-| ------- | ------- | ------------ | -------------------------------------- |
-| `+0x00` | u16     | character_id | Character key, LOC type `6`            |
-| `+0x02` | u32     | item_count   | Number of item entries                 |
-| `+0x06` | entry[] | entries      | `item_count` entries of 127 bytes      |
+| Offset  | Type                   | Field        | Notes                                  |
+| ------- | ---------------------- | ------------ | -------------------------------------- |
+| `+0x00` | u16                    | character_id | Character key, LOC type `6`            |
+| `+0x02` | u32                    | item_count   | Number of item entries                 |
+| `+0x06` | Item Entry[item_count] | entries      | See Item Entry                         |
 
 ### Item Entry (127 bytes)
 
-| Offset  | Type | Field         | Notes                                                        |
-| ------- | ---- | ------------- | ------------------------------------------------------------ |
-| `+0x00` | u16  | character_id  | Repeats the group key                                        |
-| `+0x02` | u32  | item_id       | Item key, LOC type `0`; the top byte is `0` in every entry   |
-| `+0x06` | u8[] | unknown_06    | 48 bytes, all `0` on client 3464                             |
-| `+0x36` | u8   | trade_group_type | `1`, `2`, `3` or `99`, see [Trade Group Types](#trade-group-types) |
-| `+0x37` | u8   | unknown_37    | `1` in every entry on client 3464                            |
-| `+0x38` | u8[] | unknown_38    | 51 bytes, all `0` on client 3464                             |
-| `+0x6B` | u16  | unknown_6b    | `0` or a three-digit code, see Open Questions                |
-| `+0x6D` | u8[] | unknown_6d    | 15 bytes, all `0` on client 3464                             |
-| `+0x7C` | u8   | unknown_7c    | `0`, `3`, `4` or `5`, see Open Questions                     |
-| `+0x7D` | u8   | commerce_type | Trade category, see [Commerce Types](#commerce-types)        |
-| `+0x7E` | u8   | unknown_7e    | `0`                                                          |
+| Offset  | Type      | Field            | Notes                                                        |
+| ------- | --------- | ---------------- | ------------------------------------------------------------ |
+| `+0x00` | u16       | character_id     | Repeats the group key                                        |
+| `+0x02` | u32       | item_id          | Item key, LOC type `0`; the top byte is `0` in every entry   |
+| `+0x06` | bytes[48] | unknown_06       | All `0` on client 3464                                       |
+| `+0x36` | u8        | trade_group_type | `1`, `2`, `3` or `99`, see [Trade Group Types](#trade-group-types) |
+| `+0x37` | u8        | unknown_37       | `1` in every entry on client 3464                            |
+| `+0x38` | bytes[51] | unknown_38       | All `0` on client 3464                                       |
+| `+0x6B` | u16       | unknown_6b       | `0` or a three-digit code, see Open Questions                |
+| `+0x6D` | bytes[15] | unknown_6d       | All `0` on client 3464                                       |
+| `+0x7C` | u8        | unknown_7c       | `0`, `3`, `4` or `5`, see Open Questions                     |
+| `+0x7D` | u8        | commerce_type    | Trade category, see [Commerce Types](#commerce-types)        |
+| `+0x7E` | u8        | unknown_7e       | `0`                                                          |
 
-### Commerce Types
+### `itemtradegrouptonpcoffset.dbss`
+
+The bare u16 index layout of `petexpoffset.dbss`, read by
+`parse_bare_offset_rows()` in `_common/pabr_offset.py`.
+
+| Offset  | Type             | Field | Notes                                       |
+| ------- | ---------------- | ----- | ------------------------------------------- |
+| `+0x00` | u32              | count | Equals the `itemtradegrouptonpc.dbss` count |
+| `+0x04` | Index Row[count] | rows  | See Index Row; no trailer                   |
+
+### Index Row (10 bytes)
+
+| Offset  | Type | Field        | Notes                                               |
+| ------- | ---- | ------------ | --------------------------------------------------- |
+| `+0x00` | u16  | character_id | Group key                                           |
+| `+0x02` | u32  | offset       | Start of the group header in the data file          |
+| `+0x06` | u32  | size         | Whole group: `6 + 127 * item_count`                 |
+
+The index rows are in neither key nor file order; each points at its own
+group (`test_every_offset_row_points_at_its_group`).
+
+## Commerce Types
 
 `panel_tooltip_item.luac` defines `enCommerceType` and names each value with a
 `RESOURCE` sheet key of `stringtable.bss`; the item tooltip adds that name
@@ -81,7 +104,7 @@ after `Trade Item`, and the trade market tabs use the same keys. Every
 `commerce_types.py`, and `test_commerce_type_hashes_match_stringtable` checks
 them against `stringtable.bss`.
 
-### Trade Group Types
+## Trade Group Types
 
 `trade_group_type` is the code that
 [`itemtradeetc.bss`](itemtradeetc_bss.md) pairs for the desert trade buff:
@@ -106,27 +129,6 @@ The labels the tables show with each code (`1 Other Regions`,
 the game's: the client has no name for any code. The place names use the
 client's words for the two places; `Other Regions` and `Shared Goods` are
 ours. The labels live in `_common/lang/` (`tradeGroups`).
-
-## `itemtradegrouptonpcoffset.dbss`
-
-The bare u16 index layout of `petexpoffset.dbss`, read by
-`parse_bare_offset_rows()` in `_common/pabr_offset.py`.
-
-| Offset  | Type  | Field | Notes                                        |
-| ------- | ----- | ----- | -------------------------------------------- |
-| `+0x00` | u32   | count | Equals the `itemtradegrouptonpc.dbss` count  |
-| `+0x04` | row[] | rows  | `count` 10-byte rows, no trailer             |
-
-### Index Row (10 bytes)
-
-| Offset  | Type | Field        | Notes                                               |
-| ------- | ---- | ------------ | --------------------------------------------------- |
-| `+0x00` | u16  | character_id | Group key                                           |
-| `+0x02` | u32  | offset       | Start of the group header in the data file          |
-| `+0x06` | u32  | size         | Whole group: `6 + 127 * item_count`                 |
-
-The index rows are in neither key nor file order; each points at its own
-group (`test_every_offset_row_points_at_its_group`).
 
 ## Notes
 

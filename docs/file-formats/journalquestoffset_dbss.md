@@ -4,6 +4,12 @@
 
 Index file for `journalquest.dbss`. Maps each `(journal_key, book_key)` pair to a `(byte_offset, byte_size)` location within the main file. Field names follow [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor), re-verified against our files.
 
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
 ## Companion Files
 
 | File                  | Required | Role                                          |
@@ -12,15 +18,14 @@ Index file for `journalquest.dbss`. Maps each `(journal_key, book_key)` pair to 
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field       | Notes                                   |
-| ------- | ---- | ----------- | --------------------------------------- |
-| `+0x00` | u32  | group_count | Number of journal groups; observed `12` |
-
-### Data Stream
+| Offset  | Type                     | Field       | Notes                                   |
+| ------- | ------------------------ | ----------- | --------------------------------------- |
+| `+0x00` | u32                      | group_count | Number of journal groups; observed `12` |
+| `+0x04` | Group Block[group_count] | groups      | See Group Block                         |
 
 Immediately after the header, `group_count` variable-length group blocks follow back to back:
 
@@ -34,13 +39,13 @@ for i in range(group_count):
         byte_size   = read_u32()
 ```
 
-### Group Block (variable length)
+### Group Block (variable: 8 bytes + book entries)
 
-| Field          | Type               | Notes                                                        |
-| -------------- | ------------------ | ------------------------------------------------------------ |
-| `journal_key`  | u32                | Journal group key (1 to 12; not in numeric order in file)    |
-| `book_count`   | u32                | Number of books; equals the `book_count` word in the data file |
-| books          | book_count × 12B   | Book index entries follow immediately                        |
+| Offset  | Type                         | Field        | Notes                                                          |
+| ------- | ---------------------------- | ------------ | -------------------------------------------------------------- |
+| `+0x00` | u32                          | journal_key  | Journal group key (1 to 12; not in numeric order in file)      |
+| `+0x04` | u32                          | book_count   | Number of books; equals the `book_count` word in the data file |
+| `+0x08` | Book Index Entry[book_count] | books        | See Book Index Entry                                           |
 
 ### Book Index Entry (12 bytes)
 

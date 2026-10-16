@@ -4,12 +4,11 @@
 
 Defines Pearl Shop / cash shop main category records. Each record stores a category ID, small ordering/link fields, an ASCII DDS icon path, and an observed enabled flag. Companion `maincategoryoffset.dbss` provides the keyed record offsets.
 
-Example:
+## Versions
 
-```text
-category_id: 1
-icon_path: new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_02.dds
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -19,34 +18,52 @@ icon_path: new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 `maincategory.dbss` begins with a count and then stores fixed-size category records. The count matches `maincategoryoffset.dbss`, and the offset table points to the first record at `0x0004`.
 
-| Offset  | Type | Field   | Notes                                   |
-| ------- | ---- | ------- | --------------------------------------- |
-| `+0x00` | u32  | count   | Number of category records; observed 15 |
-| `+0x04` | row  | records | 102-byte records                        |
+| Offset  | Type                   | Field   | Notes                                   |
+| ------- | ---------------------- | ------- | --------------------------------------- |
+| `+0x00` | u32                    | count   | Number of category records; observed 15 |
+| `+0x04` | Category Record[count] | records | See Category Record                     |
 
-## Record Structure
-
-### Category Record (102 bytes)
+### Category Record (variable: 27 bytes + icon path)
 
 Offsets are relative to `record_offset` from `maincategoryoffset.dbss`.
 
-| Offset  | Type   | Field               | Notes                                                     |
-| ------- | ------ | ------------------- | --------------------------------------------------------- |
-| `+0x00` | u16    | category_id         | Primary key; matches offset-table key                     |
-| `+0x02` | u32    | unknown_02          | Small category/order reference; observed 1-14             |
-| `+0x06` | u32    | unknown_06          | Small category/order reference; observed 0, 1, 2, 3, 5, 6 |
-| `+0x0A` | u32    | unknown_0a          | Usually mirrors `category_id`; 0 for some records         |
-| `+0x0E` | u32    | icon_path_len       | Byte length of `icon_path`; observed 75                   |
-| `+0x12` | u32    | unknown_12          | Always 0                                                  |
-| `+0x16` | char[] | icon_path           | ASCII DDS path; no null terminator                        |
-| varies  | u32    | unknown_after_path  | Always 0                                                  |
-| varies  | u8     | enabled_flag        | Observed 1 for IDs 1-13, 0 for IDs 14-15                  |
+| Offset           | Type | Field                   | Notes                                                     |
+| ---------------- | ---- | ----------------------- | --------------------------------------------------------- |
+| `+0x00`          | u16  | category_id             | Primary key; matches offset-table key                     |
+| `+0x02`          | u32  | unknown_02              | Small category/order reference; observed 1-14             |
+| `+0x06`          | u32  | unknown_06              | Small category/order reference; observed 0, 1, 2, 3, 5, 6 |
+| `+0x0A`          | u32  | unknown_0a              | Usually mirrors `category_id`; 0 for some records         |
+| `+0x0E`          | str8 | icon_path               | ASCII DDS path; no null terminator; u64 byte length, observed 75 |
+| `icon_path+0x00` | u32  | unknown_after_icon_path | Always 0                                                  |
+| `icon_path+0x04` | u8   | enabled_flag            | Observed 1 for IDs 1-13, 0 for IDs 14-15                  |
 
-The observed record size is 102 bytes: `0x16 + icon_path_len + 5` for the current data.
+The observed record size is 102 bytes: `0x16 + icon_path length + 5` for the current data.
+
+### `maincategoryoffset.dbss`
+
+Provides keyed lookup into `maincategory.dbss` and supplies the record count.
+
+| Offset  | Type                 | Field | Notes                                   |
+| ------- | -------------------- | ----- | --------------------------------------- |
+| `+0x00` | u32                  | count | Number of category records; observed 15 |
+| `+0x04` | Offset Record[count] | rows  | See Offset Record; no trailer           |
+
+### Offset Record (10 bytes)
+
+| Offset  | Type | Field         | Notes                                       |
+| ------- | ---- | ------------- | ------------------------------------------- |
+| `+0x00` | u16  | category_id   | Key for the category record                 |
+| `+0x02` | u32  | record_offset | Absolute byte offset in `maincategory.dbss` |
+| `+0x06` | u16  | record_size   | Size of the record in bytes; observed 102   |
+| `+0x08` | u16  | unknown_08    | Always 0                                    |
+
+Rows are stored in descending category ID order: 15 down to 1.
 
 ## Observed Records
 
@@ -67,27 +84,6 @@ The observed record size is 102 bytes: `0x16 + icon_path_len + 5` for the curren
 | 13          | 13         | 6          | 0          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_17.dds` |
 | 14          | 14         | 0          | 0          | 0       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_18.dds` |
 | 15          | 5          | 6          | 15         | 0       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_19.dds` |
-
-## maincategoryoffset.dbss
-
-Provides keyed lookup into `maincategory.dbss` and supplies the record count.
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                   |
-| ------- | ---- | ----- | --------------------------------------- |
-| `+0x00` | u32  | count | Number of category records; observed 15 |
-
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field         | Notes                                       |
-| ------- | ---- | ------------- | ------------------------------------------- |
-| `+0x00` | u16  | category_id   | Key for the category record                 |
-| `+0x02` | u32  | record_offset | Absolute byte offset in `maincategory.dbss` |
-| `+0x06` | u16  | record_size   | Size of the record in bytes; observed 102   |
-| `+0x08` | u16  | unknown_08    | Always 0                                    |
-
-Rows are stored in descending category ID order: 15 down to 1.
 
 ## Notes
 

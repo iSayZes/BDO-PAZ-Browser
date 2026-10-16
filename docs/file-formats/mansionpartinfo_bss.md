@@ -9,13 +9,11 @@ the whole building, an overhead cutaway render with that part highlighted in
 magenta. The rows name buildings, not characters, although the manor ID is the
 building's key in `characterstatic.dbss`, where houses are records like NPCs.
 
-Example:
+## Versions
 
-```text
-manor 3842 (Shimhyangje), part 0
-  icon_ref -> Icon/New_Icon/03_ETC/06_Housing/Mantion_Morning1_Wall.dds
-              (the building with its walls highlighted)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,25 +23,25 @@ manor 3842 (Shimhyangje), part 0
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The shared PABR string table layout of `buffsimply.bss` and
 `specialenchantitem.bss` (`_common/pabr_strings.py`).
 
-| Offset           | Type    | Field        | Notes                                                            |
-| ---------------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00`          | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04`          | u32     | count        | Number of rows; 9 on client 3458                                 |
-| `+0x08`          | row[]   | rows         | 12-byte rows repeated `count` times                              |
-| `8 + count * 12` | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8          | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4          | u32     | zero         | Always 0                                                         |
+| Offset              | Type                  | Field        | Notes                                          |
+| ------------------- | --------------------- | ------------ | ---------------------------------------------- |
+| `+0x00`             | char[4]               | magic        | ASCII `PABR`                                   |
+| `+0x04`             | u32                   | count        | Number of rows; 9 on client 3458               |
+| `+0x08`             | Manor Part Row[count] | rows         | See Manor Part Row                             |
+| `rows+0x00`         | String Table          | string_table | See String Table                               |
+| `string_table+0x00` | u32                   | table_start  | Offset of the string table, where the rows end |
+| `string_table+0x04` | u32                   | zero         | Always 0                                       |
 
 Rows are sorted by `character_id`, then `part_index`.
 
-## Record Structure
-
-### Manor Part Row (12 bytes, repeated `count` times)
+### Manor Part Row (12 bytes)
 
 | Offset  | Type | Field           | Notes                                                                 |
 | ------- | ---- | --------------- | --------------------------------------------------------------------- |
@@ -53,10 +51,15 @@ Rows are sorted by `character_id`, then `part_index`.
 | `+0x04` | u32  | icon_ref        | String table index of the part icon, relative to `ui_texture/`        |
 | `+0x08` | u32  | unknown_str_ref | String table index; always `1`, the empty string                      |
 
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 10 strings on client 3458: the nine icon paths and, at index 1, an empty
 string that every `unknown_str_ref` points at.
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

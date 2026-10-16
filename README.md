@@ -562,6 +562,8 @@ PAZ-Parser/
 │   ├── src/lib.rs          # PyO3 module: unpack(), ice_crypt(), both without holding the GIL
 │   └── _bdo_native.pyi     # Type stub, shipped in the wheel and read by pyright
 │
+├── format_docs/            # Checks the format docs against docs/format-docs.md
+│
 ├── tests/                  # Unit test framework and gitignored fixtures
 │   ├── framework.py        # Public re-export for test helpers
 │   ├── specs.py            # DeclaredCountTest, TargetTest, SchemaTest, RangeTest
@@ -603,6 +605,7 @@ PAZ-Parser/
 
 docs/
 ├── handler.md              # Guide for writing preview handlers
+├── format-docs.md          # How a format doc is written; format_docs/ checks it
 ├── style-guide.md          # UI color palette and component reference
 └── file-formats/           # Per-format binary layout documentation
 

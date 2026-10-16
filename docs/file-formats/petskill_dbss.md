@@ -4,13 +4,11 @@
 
 Defines pet skill effect tables. Each record is keyed by `pet_skill_id`, has a skill type that names it in the pet window, and contains one baseline row plus ten level rows. Companion `petskilloffset.dbss` provides keyed lookup into the variable-size record stream.
 
-Example:
+## Versions
 
-```text
-pet_skill_id: 47 -> skill_type: 11 (Restore HP)
-level 1 raw_value_a: 3,584,000
-level 10 raw_value_a: 1,280,000
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,38 +19,36 @@ level 10 raw_value_a: 1,280,000
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                         |
-| ------- | ---- | ----- | ----------------------------- |
-| `+0x00` | u32  | count | Number of records; observed 49 |
+A record count, then the records back to back. Each record is a 2-byte key
+prefix and the payload that `petskilloffset.dbss` addresses.
 
-Records begin immediately at `+0x04`. Each record is stored as a 2-byte key prefix followed by the data payload addressed by `petskilloffset.dbss`.
+| Offset  | Type          | Field   | Notes                          |
+| ------- | ------------- | ------- | ------------------------------ |
+| `+0x00` | u32           | count   | Number of records; observed 49 |
+| `+0x04` | Record[count] | records | See Record                     |
 
-## Record Structure
+### Record (variable: 2 bytes + payload)
 
-### Record Wrapper
+| Offset  | Type    | Field      | Notes                                                  |
+| ------- | ------- | ---------- | ------------------------------------------------------ |
+| `+0x00` | u16     | key_prefix | Equals `pet_skill_id`                                  |
+| `+0x02` | Payload | payload    | `data_size` bytes; the offset row points at this field |
 
-| Offset  | Type | Field        | Notes                                                |
-| ------- | ---- | ------------ | ---------------------------------------------------- |
-| `+0x00` | u16  | key_prefix   | Equals `pet_skill_id`                                |
-| `+0x02` | ...  | data_payload | `data_size` bytes; offset table points to this field |
+### Payload (variable: 189 bytes, size from `petskilloffset.dbss`)
 
-### Data Payload (189 or 190 bytes)
-
-| Offset  | Type      | Field           | Notes                                                                 |
-| ------- | --------- | --------------- | --------------------------------------------------------------------- |
-| `+0x00` | u16       | pet_skill_id    | Equals the 2-byte key prefix and offset-table key                     |
-| `+0x02` | row[11]   | effect_rows     | One baseline row (`row_index=0`) plus ten level rows (`1..10`)        |
-| `+0xBD` | u8        | unknown_bd      | Present only when `data_size=190`; observed values 9 and 10           |
+| Offset  | Type             | Field        | Notes                                                          |
+| ------- | ---------------- | ------------ | -------------------------------------------------------------- |
+| `+0x00` | u16              | pet_skill_id | Equals the key prefix and the offset-table key                 |
+| `+0x02` | Effect Row[11]   | effect_rows  | One baseline row (`row_index=0`) plus ten level rows (`1..10`) |
+| `+0xBD` | u8 if size = 190 | unknown_bd   | Observed values 9 and 10                                       |
 
 The 32 records with `data_size=189` end after the eleven 17-byte rows. The 17 records with `data_size=190` have one trailing `unknown_bd` byte.
 
-### Effect Row (17 bytes × 11)
-
-Rows start at payload offset `+0x02 + row_index * 17`. Offsets below are relative to the row start.
+### Effect Row (17 bytes)
 
 | Offset  | Type | Field        | Notes                                                                                   |
 | ------- | ---- | ------------ | --------------------------------------------------------------------------------------- |
@@ -66,22 +62,21 @@ Rows start at payload offset `+0x02 + row_index * 17`. Offsets below are relativ
 
 Earlier versions of this doc called `skill_type` `unknown_00` and before that `skill_group`, `unknown_0c` `row_marker` and the payload's `unknown_bd` `extra_marker`.
 
-## petskilloffset.dbss
+### `petskilloffset.dbss`
 
-### Header (4 bytes)
+| Offset  | Type              | Field | Notes                                 |
+| ------- | ----------------- | ----- | ------------------------------------- |
+| `+0x00` | u32               | count | Must equal `petskill.dbss` count (49) |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                        |
 
-| Offset  | Type | Field | Notes                                  |
-| ------- | ---- | ----- | -------------------------------------- |
-| `+0x00` | u32  | count | Must equal `petskill.dbss` count (49)  |
+### Offset Row (10 bytes)
 
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                                                       |
-| ------- | ---- | ----------- | --------------------------------------------------------------------------- |
-| `+0x00` | u16  | pet_skill_id| Matches `pet_skill_id` in the main record                                   |
-| `+0x02` | u32  | data_offset | Absolute byte offset in `petskill.dbss` to the payload, after key prefix    |
-| `+0x06` | u16  | data_size   | 189 or 190 bytes                                                            |
-| `+0x08` | u16  | unknown_08  | Always 0                                                                    |
+| Offset  | Type | Field        | Notes                                                                        |
+| ------- | ---- | ------------ | ---------------------------------------------------------------------------- |
+| `+0x00` | u16  | pet_skill_id | Matches `pet_skill_id` in the main record                                    |
+| `+0x02` | u32  | data_offset  | Absolute byte offset in `petskill.dbss` to the payload, after the key prefix |
+| `+0x06` | u16  | data_size    | 189 or 190 bytes                                                             |
+| `+0x08` | u16  | unknown_08   | Always 0                                                                     |
 
 `record_start = data_offset - 2` gives the position of the 2-byte key prefix.
 

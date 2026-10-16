@@ -8,10 +8,11 @@ at Alchemy Apprentice 1, and Totems of the Sea with a Black Stone at a
 Fishing level. A row is the item, its Growth material and count, the life
 skill condition as an inline script, and the item it grows into.
 
-```text
-45228 Splendid Alchemy Stone of Destruction   821322 Brimming Essence of Aether x30  getLifeLevel(4)>10;  45232 Shining Alchemy Stone of Destruction
-54287 Refined Totem of the Sea [Amberjack]    16001 Black Stone x1                   getLifeLevel(1)>50;  0
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,35 +22,36 @@ and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then the rows back to
 back; the file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                     |
-| ------- | ----- | --------- | ------------------------- |
-| `+0x00` | u32   | row_count | `133` on client 3464      |
-| `+0x04` | row[] | rows      | `row_count` rows, see Row |
+| Offset  | Type           | Field     | Notes                |
+| ------- | -------------- | --------- | -------------------- |
+| `+0x00` | u32            | row_count | `133` on client 3464 |
+| `+0x04` | Row[row_count] | rows      | See Row              |
 
-### Row
+### Row (variable: 56 bytes + condition text)
 
-A fixed head, an inline UTF-16LE condition script and a 12-byte tail. Every
+A fixed head, an inline condition script and a 12-byte tail. Every
 condition on client 3464 is 19 characters long, so every row is 94 bytes
-there; a reader takes the length from `condition_len`.
+there; a reader takes the length from the count of `condition`.
 
-| Offset        | Type      | Field            | Notes                                                    |
-| ------------- | --------- | ---------------- | -------------------------------------------------------- |
-| `+0x00`       | u32       | key              | Row key; equals `item_id` on every row                   |
-| `+0x04`       | u32       | item_id          | The item that grows; unique per row                      |
-| `+0x08`       | u32       | unknown_08       | `0` on every row (client 3464)                           |
-| `+0x0C`       | u32       | material_item_id | Growth material                                          |
-| `+0x10`       | u32       | material_count   | Material units one Growth attempt takes                  |
-| `+0x14`       | u8[16]    | unknown_14       | All zero on every row (client 3464)                      |
-| `+0x24`       | u64       | condition_len    | UTF-16 code units in `condition`                         |
-| `+0x2C`       | utf16le[] | condition        | Client condition script, see Conditions                  |
-| after string  | u32       | result_item_id   | The item a successful Growth gives; `0` on Totem rows    |
-| `+0x04` after | u32       | unknown_tail_04  | Falls with the stone tier; see Open Questions            |
-| `+0x08` after | u32       | unknown_tail_08  | `0` on every row (client 3464)                           |
+| Offset           | Type      | Field            | Notes                                                    |
+| ---------------- | --------- | ---------------- | -------------------------------------------------------- |
+| `+0x00`          | u32       | key              | Row key; equals `item_id` on every row                   |
+| `+0x04`          | u32       | item_id          | The item that grows; unique per row                      |
+| `+0x08`          | u32       | unknown_08       | `0` on every row (client 3464)                           |
+| `+0x0C`          | u32       | material_item_id | Growth material                                          |
+| `+0x10`          | u32       | material_count   | Material units one Growth attempt takes                  |
+| `+0x14`          | bytes[16] | unknown_14       | All zero on every row (client 3464)                      |
+| `+0x24`          | str16     | condition        | Client condition script, see Conditions                  |
+| `condition+0x00` | u32       | result_item_id   | The item a successful Growth gives; `0` on Totem rows    |
+| `condition+0x04` | u32       | unknown_tail_04  | Falls with the stone tier; see Open Questions            |
+| `condition+0x08` | u32       | unknown_tail_08  | `0` on every row (client 3464)                           |
 
 On client 3464 the rows fall into two families:
 
@@ -73,6 +75,27 @@ The Blessed, Exalted and Heart chains use the same pairs for the same tier
 step. Imperfect stones grow straight to Sturdy (45201 to 45216, 45233 to
 45248, 45265 to 45280); no row starts at a Rough stone.
 
+### `alchemystonechangeoffset.dbss`
+
+A row count equal to the main file's, then one index row per main row.
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+Every index row points at the main row with the same key. The index rows are
+not in the main file's order (the first three keys are 768512, 54205,
+768189 where the main file has 768512, 768189, 768188).
+
+### Index Row (12 bytes)
+
+| Offset  | Type | Field   | Notes                                                    |
+| ------- | ---- | ------- | -------------------------------------------------------- |
+| `+0x00` | u32  | item_id | Row key, the main row's `key`                            |
+| `+0x04` | u32  | offset  | Start of the row in `alchemystonechange.dbss` plus 4, at its `item_id` |
+| `+0x08` | u32  | size    | Row length minus the 4-byte `key`; `90` on every row (client 3464) |
+
 ## Conditions
 
 The condition is a client condition script, as in the quest tables
@@ -89,20 +112,6 @@ condition stands for:
 
 So life skill `4` is Alchemy, `1` is Fishing, and level `10` is Beginner 10
 (the condition asks for level 11, Apprentice 1).
-
-## `alchemystonechangeoffset.dbss`
-
-A u32 row count (equal to the main file's), then 12-byte rows:
-
-| Offset  | Type | Field   | Notes                                                    |
-| ------- | ---- | ------- | -------------------------------------------------------- |
-| `+0x00` | u32  | item_id | Row key, the main row's `key`                            |
-| `+0x04` | u32  | offset  | Start of the row in `alchemystonechange.dbss` plus 4, at its `item_id` |
-| `+0x08` | u32  | size    | Row length minus the 4-byte `key`; `90` on every row (client 3464) |
-
-Every index row points at the main row with the same key. The index rows are
-not in the main file's order (the first three keys are 768512, 54205,
-768189 where the main file has 768512, 768189, 768188).
 
 ## Notes
 

@@ -9,13 +9,11 @@ buff needs. It holds no name, parameters,
 duration or description, so it covers what the buff bar needs to draw a buff
 and nothing about its effect.
 
-Example:
+## Versions
 
-```text
-buff_id 48830
-  icon_ref -> New_Icon/04_PC_Skill/03_Buff/HuntingBuff.dds
-  is_shown 1
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,60 +24,91 @@ buff_id 48830
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
+
+### File Layout
 
 The shared PABR string table layout of `npcsimply.bss` and
 `plantexchangegroup.bss` (`_common/pabr_strings.py`).
 
-| Offset             | Type     | Field        | Notes                                                  |
-| ------------------ | -------- | ------------ | ------------------------------------------------------ |
-| `+0x00`            | char[4]  | magic        | ASCII `PABR`                                           |
-| `+0x04`            | u32      | count        | Number of rows; 44,683 on client 3464, equal to the `buff.dbss` count |
-| `+0x08`            | row[]    | rows         | 32-byte rows repeated `count` times                    |
-| `8 + count * 32`   | table    | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8            | u32      | table_start  | Offset of the string table, where the rows end         |
-| EOF - 4            | u32      | zero         | Always 0                                               |
+| Offset              | Type            | Field        | Notes                                                  |
+| ------------------- | --------------- | ------------ | ------------------------------------------------------ |
+| `+0x00`             | char[4]         | magic        | ASCII `PABR`                                           |
+| `+0x04`             | u32             | count        | Number of rows; 44,683 on client 3464, equal to the `buff.dbss` count |
+| `+0x08`             | Buff Row[count] | rows         | See Buff Row                                           |
+| `rows+0x00`         | String Table    | string_table | See String Table                                       |
+| `string_table+0x00` | u32             | table_start  | Offset of the string table, where the rows end         |
+| `string_table+0x04` | u32             | zero         | Always 0                                               |
 
 The rows follow `buffoffset.dbss` order exactly, which is neither ascending nor
 descending by ID (the first row is buff 4100000000 on client 3464, 48879 on
 3458).
 
-## Record Structure
-
-### Buff Row (32 bytes, repeated `count` times)
+### Buff Row (32 bytes)
 
 Fields are unaligned. The Source column names the `buff.dbss` field that holds
 the same value in every row, when one does.
 
-| Offset  | Type  | Field           | Source (`buff.dbss`)   | Notes                                                        |
-| ------- | ----- | --------------- | ---------------------- | ------------------------------------------------------------ |
-| `+0x00` | u32   | buff_id         | `buff_id`              | Unique; 43 to 65,528 and five IDs from 700,000 to 4,100,000,000; a u16 before client 3464 |
-| `+0x04` | u8    | need_equip_type | stats `need_equip_type` | `0` in every row but buff 2078 (`13`)                       |
-| `+0x05` | u8[2] | unknown_05      |                        | Always `0`                                                   |
-| `+0x07` | u8    | unknown_07      | stats `+0x7D`          | `0` in every row but buff 2078 (`1`)                         |
-| `+0x08` | u8    | unknown_08      | stats `+0x7D`          | Same values as `unknown_07`; not stats `+0x7E`, see Notes    |
-| `+0x09` | u8    | unknown_09      | stats `unknown_7f`     | Always `2`                                                   |
-| `+0x0A` | u8    | unknown_0a      |                        | Always `0`                                                   |
-| `+0x0B` | u8    | need_equip_slot | stats `need_equip_slot` | `46` (no slot) in every row but buff 2078 (`6`)             |
-| `+0x0C` | u8    | unknown_0c      | stats `unknown_82`     | `2` in every row but buff 2078 (`1`)                         |
-| `+0x0D` | u32   | effect_name_ref | `effect_name`          | String table index; 187 distinct, `0` (`"0"`) in 39,527 rows, `1` (`""`) in 52 |
-| `+0x11` | u8    | is_debuff       | stats `is_debuff`      | `1` in 14,432 rows                                           |
-| `+0x12` | u8    | unknown_12      |                        | Always `1`; no `buff.dbss` byte matches, see Open Questions  |
-| `+0x13` | u8[3] | unknown_13      |                        | Always `0`                                                   |
-| `+0x16` | u8    | remove_on_dead  | stats `remove_on_dead` | `1` in 33,944 rows                                           |
-| `+0x17` | u8    | is_shown        | `is_shown`             | `1` in 12,766 rows                                           |
-| `+0x18` | u32   | unknown_18      | tail `unknown_02`      | `0` in 25,701 rows, `1` in 14,420, `2` in 4,562               |
-| `+0x1C` | u32   | icon_ref        | `icon_path`            | String table index; `1` (the empty string) in 29,357 rows    |
+| Offset  | Type     | Field           | Source (`buff.dbss`)    | Notes                                                                          |
+| ------- | -------- | --------------- | ----------------------- | ------------------------------------------------------------------------------ |
+| `+0x00` | u32      | buff_id         | `buff_id`               | Unique; 43 to 65,528 and five IDs from 700,000 to 4,100,000,000                |
+| `+0x04` | u8       | need_equip_type | stats `need_equip_type` | `0` in every row but buff 2078 (`13`)                                          |
+| `+0x05` | bytes[2] | unknown_05      |                         | Always `0`                                                                     |
+| `+0x07` | u8       | unknown_07      | stats `+0x7D`           | `0` in every row but buff 2078 (`1`)                                           |
+| `+0x08` | u8       | unknown_08      | stats `+0x7D`           | Same values as `unknown_07`; not stats `+0x7E`, see Notes                      |
+| `+0x09` | u8       | unknown_09      | stats `unknown_7f`      | Always `2`                                                                     |
+| `+0x0A` | u8       | unknown_0a      |                         | Always `0`                                                                     |
+| `+0x0B` | u8       | need_equip_slot | stats `need_equip_slot` | `46` (no slot) in every row but buff 2078 (`6`)                                |
+| `+0x0C` | u8       | unknown_0c      | stats `unknown_82`      | `2` in every row but buff 2078 (`1`)                                           |
+| `+0x0D` | u32      | effect_name_ref | `effect_name`           | String table index; 187 distinct, `0` (`"0"`) in 39,527 rows, `1` (`""`) in 52 |
+| `+0x11` | u8       | is_debuff       | stats `is_debuff`       | `1` in 14,432 rows                                                             |
+| `+0x12` | u8       | unknown_12      |                         | Always `1`; no `buff.dbss` byte matches, see Open Questions                    |
+| `+0x13` | bytes[3] | unknown_13      |                         | Always `0`                                                                     |
+| `+0x16` | u8       | remove_on_dead  | stats `remove_on_dead`  | `1` in 33,944 rows                                                             |
+| `+0x17` | u8       | is_shown        | `is_shown`              | `1` in 12,766 rows                                                             |
+| `+0x18` | u32      | unknown_18      | tail `unknown_02`       | `0` in 25,701 rows, `1` in 14,420, `2` in 4,562                                |
+| `+0x1C` | u32      | icon_ref        | `icon_path`             | String table index; `1` (the empty string) in 29,357 rows                      |
 
-Before client 3464 `buff_id` was a u16 and every later field sat 2 bytes
-earlier, in 30-byte rows. The parser reads only the 32-byte layout.
-
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 1,235 strings on client 3464, all distinct and all referenced. `effect_name_ref`
 and `icon_ref` index the same table and share only the empty string: index 0
 is `"0"`, index 1 is `""`, and every other entry is either an `effect_name`
 value or an icon path.
+
+| Offset  | Type               | Field        | Notes                |
+| ------- | ------------------ | ------------ | -------------------- |
+| `+0x00` | u32                | string_count | 1,235 on client 3464 |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries  |
+
+## Layout 1
+
+Before client 3464 `buff_id` was a u16 and every later field sat 2 bytes
+earlier. Only the Buff Row differs from Layout 2. Field names keep Layout
+2's offsets, so `unknown_05` sits at `+0x03` here. The parser reads only
+Layout 2.
+
+### Buff Row (30 bytes)
+
+| Offset  | Type     | Field           | Notes |
+| ------- | -------- | --------------- | ----- |
+| `+0x00` | u16      | buff_id         |       |
+| `+0x02` | u8       | need_equip_type |       |
+| `+0x03` | bytes[2] | unknown_05      |       |
+| `+0x05` | u8       | unknown_07      |       |
+| `+0x06` | u8       | unknown_08      |       |
+| `+0x07` | u8       | unknown_09      |       |
+| `+0x08` | u8       | unknown_0a      |       |
+| `+0x09` | u8       | need_equip_slot |       |
+| `+0x0A` | u8       | unknown_0c      |       |
+| `+0x0B` | u32      | effect_name_ref |       |
+| `+0x0F` | u8       | is_debuff       |       |
+| `+0x10` | u8       | unknown_12      |       |
+| `+0x11` | bytes[3] | unknown_13      |       |
+| `+0x14` | u8       | remove_on_dead  |       |
+| `+0x15` | u8       | is_shown        |       |
+| `+0x16` | u32      | unknown_18      |       |
+| `+0x1A` | u32      | icon_ref        |       |
 
 ## Notes
 

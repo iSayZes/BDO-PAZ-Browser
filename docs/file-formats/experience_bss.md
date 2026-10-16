@@ -9,13 +9,12 @@ and AP `+1` from level 60, which the level-up window shows on those two
 levels. The file holds no EXP-to-next-level values and no HP, MP or weight
 growth.
 
-Example:
 
-```text
-class 0 Warrior, level 55: AP 0, DP 0
-class 0 Warrior, level 56: AP 0, DP 1
-class 0 Warrior, level 60: AP 1, DP 1
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -28,34 +27,44 @@ LOC lookup:
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A PABR file with no row count after the magic: the class groups start at
 `+0x04`, and each group opens with its own level count. After the groups come
 200 zero bytes, then a PABR string table with the layout of
 `employeeexp.bss`.
 
-| Offset   | Type    | Field        | Notes                                                             |
-| -------- | ------- | ------------ | ----------------------------------------------------------------- |
-| `+0x00`  | char[4] | magic        | ASCII `PABR`                                                      |
-| `+0x04`  | group[] | class_groups | One group per class slot, 47 groups (class types 0 to 46) on client 3464 |
-| after    | byte[200] | unknown_after_groups | Always 0; the size of one stat body                               |
-| after    | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload)  |
-| EOF - 8  | u32     | table_start  | Offset of the string table                                        |
-| EOF - 4  | u32     | zero         | Always 0                                                          |
+| Offset                      | Type                                  | Field                | Notes                                                             |
+| --------------------------- | ------------------------------------- | -------------------- | ----------------------------------------------------------------- |
+| `+0x00`                     | char[4]                               | magic                | ASCII `PABR`                                                      |
+| `+0x04`                     | Class Group[while level_count != 0]   | class_groups         | One group per class slot, 47 groups (class types 0 to 46) on client 3464; they end at the first `level_count` of `0`, the start of `unknown_after_class_groups` |
+| `class_groups+0x00`         | bytes[200]                            | unknown_after_class_groups | Always 0; the size of one stat body                               |
+| `class_groups+0xC8`         | String Table                          | string_table         | See String Table                                                  |
+| `string_table+0x00`         | u32                                   | table_start          | Offset of the string table                                        |
+| `string_table+0x04`         | u32                                   | zero                 | Always 0                                                          |
 
 On client 3464 the walk over 47 groups ends at `0x162CBC`, 200 bytes before
 the stored `table_start` `0x162D84`. The string table holds one wide string,
-`1D1`.
+`1D1`. The parser ends the groups at `table_start` minus 200 instead of at a
+`level_count` of `0`; both give `0x162CBC` there.
 
-## Record Structure
+### String Table (variable: 4 bytes + strings)
 
-### Class Group (4 + 236 x `level_count` bytes)
+| Offset  | Type               | Field        | Notes                                |
+| ------- | ------------------ | ------------ | ------------------------------------ |
+| `+0x00` | u32                | string_count | `1` on client 3464                   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries                  |
 
-| Offset  | Type     | Field       | Notes                                          |
-| ------- | -------- | ----------- | ---------------------------------------------- |
-| `+0x00` | u32      | level_count | `131` in every group on client 3464 (levels 0 to 130) |
-| `+0x04` | record[] | levels      | `level_count` level records, level 0 first     |
+### Class Group (variable: 4 bytes + levels)
+
+`4 + 236 x level_count` bytes.
+
+| Offset  | Type                      | Field       | Notes                                          |
+| ------- | ------------------------- | ----------- | ---------------------------------------------- |
+| `+0x00` | u32                       | level_count | `131` in every group on client 3464 (levels 0 to 130) |
+| `+0x04` | Level Record[level_count] | levels      | `level_count` level records, level 0 first     |
 
 ### Level Record (236 bytes)
 
@@ -63,30 +72,36 @@ the stored `table_start` `0x162D84`. The string table holds one wide string,
 | ------- | --------- | ---------- | --------------------------------------------------------------- |
 | `+0x00` | u32       | class_type | Equals the group index; the class type `getClassType()` returns |
 | `+0x04` | u32       | level      | Equals the record index in the group                            |
-| `+0x08` | byte[28]  | unknown_08 | Always 0                                                        |
-| `+0x24` | stat body | stats      | See Stat Body                                                   |
+| `+0x08` | bytes[28] | unknown_08 | Always 0                                                        |
+| `+0x24` | Stat Body | stats      | See Stat Body                                                   |
 
 ### Stat Body (200 bytes)
 
 Offsets are from the start of the body, `+0x24` in a level record and `+0x01`
 in a [hardcorecharacterstatstaticstatus.bss](hardcorecharacterstatstaticstatus_bss.md)
 row; the `unknown_*` names follow these offsets in both files. Every offset
-not in this table is 0 in every body on client 3464.
+not named below is 0 in every body on client 3464.
 
-| Offset  | Type   | Field      | Notes                                                 |
-| ------- | ------ | ---------- | ----------------------------------------------------- |
-| `+0x04` | f32    | max_hp     | Always `1.0` here; mount HP in `servantexperience.dbss` |
-| `+0x08` | u32    | max_mp     | Always `1` here; mount stamina in `servantexperience.dbss` |
-| `+0x20` | f32    | unknown_20 | Always `1.0`                                          |
-| `+0x38` | u32    | max_critical_rate | Always `0`; `5` for mounts                      |
-| `+0x3C` | u32    | max_drop_item_luck | `0` at level 0, `5` from level 1               |
-| `+0x40` | u32    | max_fishing_luck | `0` at level 0, `5` from level 1                 |
-| `+0x44` | u32    | max_collection_luck | `0` at level 0, `5` from level 1              |
-| `+0x50` | f32    | unknown_50 | Always `1.0`                                          |
-| `+0x64` | u32[3] | max_varied_speed | Attack, movement and casting speed limits; `0, 0, 0` at level 0, `5, 5, 5` from level 1 |
-| `+0x70` | f32    | unknown_70 | Always `1.0`                                          |
-| `+0x74` | f32    | ap_bonus   | `LVDD`; `0` below level 60, `1.0` from level 60       |
-| `+0x78` | f32    | dp_bonus   | `LVPV`; `0` below level 56, `1.0` from level 56       |
+| Offset  | Type      | Field               | Notes                                                 |
+| ------- | --------- | ------------------- | ----------------------------------------------------- |
+| `+0x00` | u32       | unknown_00          | Always `0`                                            |
+| `+0x04` | f32       | max_hp              | Always `1.0` here; mount HP in `servantexperience.dbss` |
+| `+0x08` | u32       | max_mp              | Always `1` here; mount stamina in `servantexperience.dbss` |
+| `+0x0C` | bytes[20] | unknown_0c          | Always `0`                                            |
+| `+0x20` | f32       | unknown_20          | Always `1.0`                                          |
+| `+0x24` | bytes[20] | unknown_24          | Always `0`                                            |
+| `+0x38` | u32       | max_critical_rate   | Always `0`; `5` for mounts                            |
+| `+0x3C` | u32       | max_drop_item_luck  | `0` at level 0, `5` from level 1                      |
+| `+0x40` | u32       | max_fishing_luck    | `0` at level 0, `5` from level 1                      |
+| `+0x44` | u32       | max_collection_luck | `0` at level 0, `5` from level 1                      |
+| `+0x48` | bytes[8]  | unknown_48          | Always `0`; `characterstatic.dbss` and `servantexperience.dbss` set the u32 at `+0x48`, see Notes |
+| `+0x50` | f32       | unknown_50          | Always `1.0`                                          |
+| `+0x54` | bytes[16] | unknown_54          | Always `0`                                            |
+| `+0x64` | u32[3]    | max_varied_speed    | Attack, movement and casting speed limits; `0, 0, 0` at level 0, `5, 5, 5` from level 1 |
+| `+0x70` | f32       | unknown_70          | Always `1.0`                                          |
+| `+0x74` | f32       | ap_bonus            | `LVDD`; `0` below level 60, `1.0` from level 60       |
+| `+0x78` | f32       | dp_bonus            | `LVPV`; `0` below level 56, `1.0` from level 56       |
+| `+0x7C` | bytes[76] | unknown_7c          | Always `0`                                            |
 
 `ap_bonus` and `dp_bonus` are the `lvdd` and `lvpv` values of the level-up
 window. `PaGlobalFunc_Levelup_Info_All_SelfPlayerCurrentLevelInfo(...,

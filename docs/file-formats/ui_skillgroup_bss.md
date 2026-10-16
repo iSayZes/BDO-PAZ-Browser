@@ -12,10 +12,11 @@ tabs the skills are sorted into. Three files share the format:
 | `ui_skillgroup_awakening.bss`  | Awakening skills | 32                     |
 | `ui_skillgroup_succession.bss` | Succession       | 0 (empty)              |
 
-```text
-combat, class 0 (Warrior), 8 x 106 cells
-  tabs: Main Skills, Secondary Skills, Passives, Ascension Skill
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -27,50 +28,73 @@ combat, class 0 (Warrior), 8 x 106 cells
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A PABR file of class grids, then a tab directory and a class table, then the
 shared counted string table and 8-byte trailer (see
 [`npcsimply.bss` String Pool](npcsimply_bss.md#string-pool)).
 
-| Offset  | Type      | Field         | Notes                                             |
-| ------- | --------- | ------------- | ------------------------------------------------- |
-| `+0x00` | u8[4]     | magic         | `PABR`                                            |
-| `+0x04` | u32       | class_count   | Number of class grids                             |
-| `+0x08` | grid[]    | grids         | One per class, see below                          |
-| next    | u32       | tab_class_count | Number of tab entries, equal to `class_count`   |
-| next    | tabs[]    | tabs          | One per class, see below                          |
-| next    | u32       | class_slots   | Always `101`                                      |
-| next    | u16[101]  | unknown_class_table | Indexed by class type, see Open Questions   |
-| varies  | table     | string_table  | Tab name keys, e.g. `LUA_SKILLTREE_PANEL_NAME0`   |
-| EOF - 8 | u32       | string_table_start | Where `unknown_class_table` ends             |
-| EOF - 4 | u32       | zero          | Always `0`                                        |
+| Offset                     | Type                         | Field               | Notes                                           |
+| -------------------------- | ---------------------------- | ------------------- | ----------------------------------------------- |
+| `+0x00`                    | char[4]                      | magic               | `PABR`                                          |
+| `+0x04`                    | u32                          | class_count         | Number of class grids                           |
+| `+0x08`                    | Class Grid[class_count]      | grids               | One per class, see Class Grid                   |
+| `grids+0x00`               | u32                          | tab_class_count     | Number of tab entries, equal to `class_count`   |
+| `grids+0x04`               | Class Tabs[tab_class_count]  | tabs                | One per class, see Class Tabs                   |
+| `tabs+0x00`                | u32                          | class_slots         | Always `101`                                    |
+| `tabs+0x04`                | u16[class_slots]             | unknown_class_table | Indexed by class type, see Open Questions       |
+| `unknown_class_table+0x00` | String Table                 | string_table        | Tab name keys, e.g. `LUA_SKILLTREE_PANEL_NAME0` |
+| `string_table+0x00`        | u32                          | string_table_start  | Where `unknown_class_table` ends                |
+| `string_table+0x04`        | u32                          | zero                | Always `0`                                      |
 
 `ui_skillgroup_succession.bss` has `class_count` `0`, no tabs, the class
 table and an empty string table.
 
-## Record Structure
+### Class Grid (variable: 9 bytes + cells)
 
-### Class Grid (variable)
+| Offset  | Type                | Field      | Notes                                                                    |
+| ------- | ------------------- | ---------- | ------------------------------------------------------------------------ |
+| `+0x00` | u8                  | class_type | Class, LOC type `21` (`0` Warrior, `4` Ranger, `32` Seraph)              |
+| `+0x01` | u32                 | width      | Grid columns; `8` on every class                                         |
+| `+0x05` | u32                 | height     | Grid rows; `42` to `123` in the combat window, `21` to `38` in awakening |
+| `+0x09` | Cell[height][width] | cells      | `width * height` cells, row by row                                       |
 
-| Offset  | Type    | Field      | Notes                                                        |
-| ------- | ------- | ---------- | ------------------------------------------------------------ |
-| `+0x00` | u8      | class_type | Class, LOC type `21` (`0` Warrior, `4` Ranger, `32` Seraph)   |
-| `+0x01` | u32     | width      | Grid columns; `8` on every class                             |
-| `+0x05` | u32     | height     | Grid rows; `42` to `123` in the combat window, `21` to `38` in awakening |
-| `+0x09` | cell[]  | cells      | `width * height` cells, row by row                           |
+### Cell (variable: 8 bytes + types)
 
-### Cell (variable)
+| Offset        | Type           | Field                  | Notes                                                         |
+| ------------- | -------------- | ---------------------- | ------------------------------------------------------------- |
+| `+0x00`       | u32            | type_count             | Number of drawing types                                       |
+| `+0x04`       | u8[type_count] | types                  | Cell types, see Cell Types; `2` means the cell holds a skill group |
+| `types+0x00`  | u16            | group_no               | `skillgroup.bss` group when `types` holds `2`                 |
+| `types+0x02`  | u8             | unknown_after_group_no | `0` on every skill cell                                       |
+| `types+0x03`  | u8             | subgroup               | The tab the skill is listed under, see Tabs                   |
 
-| Offset  | Type    | Field      | Notes                                                        |
-| ------- | ------- | ---------- | ------------------------------------------------------------ |
-| `+0x00` | u32     | type_count | Number of drawing types                                      |
-| `+0x04` | u8[]    | types      | Cell types, see below; `2` means the cell holds a skill group |
-| next    | u16     | group_no   | `skillgroup.bss` group when `types` holds `2`                |
-| next    | u8      | unknown    | `0` on every skill cell                                      |
-| next    | u8      | subgroup   | The tab the skill is listed under, see Tabs                  |
+### Class Tabs (variable: 9 bytes + tabs)
 
-### Cell Types
+| Offset  | Type           | Field      | Notes                                |
+| ------- | -------------- | ---------- | ------------------------------------ |
+| `+0x00` | u8             | class_type | Same classes as the grids            |
+| `+0x01` | u32            | tab_count  | `4` for every combat class; `1` to `4` in awakening |
+| `+0x05` | u32            | unknown_05 | Always `0`                           |
+| `+0x09` | Tab[tab_count] | tabs       | See Tab                              |
+
+### Tab (5 bytes)
+
+| Offset  | Type | Field        | Notes                                      |
+| ------- | ---- | ------------ | ------------------------------------------ |
+| `+0x00` | u32  | string_index | String table index of the tab name key     |
+| `+0x04` | u8   | subgroup     | The `subgroup` the tab names               |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | Number of strings   |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
+
+## Cell Types
 
 The client enum is `__eSkillGroupCellType_*`. Its values are not in any Lua
 file (the client defines them), but the skill window script
@@ -105,14 +129,7 @@ top edge of the cell. `TypeCount` (14) ends the enum.
 All 2,091 combat and 788 awakening groups placed on a grid are in
 `skillgroup.bss`.
 
-### Tabs (variable, one per class)
-
-| Offset  | Type    | Field      | Notes                                                        |
-| ------- | ------- | ---------- | ------------------------------------------------------------ |
-| `+0x00` | u8      | class_type | Same classes as the grids                                    |
-| `+0x01` | u32     | tab_count  | `4` for every combat class; `1` to `4` in awakening          |
-| `+0x05` | u32     | zero       | Always `0`                                                   |
-| `+0x09` | tab[]   | tabs       | `tab_count` entries of `u32 string_index`, `u8 subgroup`     |
+## Tabs
 
 Each tab names a `subgroup` by a string table index. Every `subgroup` a
 class's cells use is one of its tabs. The string is a `GAME` sheet key, so

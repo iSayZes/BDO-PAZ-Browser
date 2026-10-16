@@ -4,13 +4,12 @@
 
 Defines two pet skill catalogs, both keyed by `equip_skill_id`. 116 skill entries span two sections: Section 1 (the equip skills a pet rolls, IDs 0–42) and Section 2 (the base skills, IDs 15–111, keyed by `base_skill_id` in [pet.dbss](pet_dbss.md)). Each entry records the skill's type group, an unknown byte (`unknown_08`), and a localization ID that resolves to the in-game skill name and pet equip-skill icon number.
 
-Example:
 
-```text
-equip_skill_id: 15  →  S2 type=4  loc=49061  "Skill EXP +1%"
-equip_skill_id: 91  →  S2 type=18 loc=49162  "Barter EXP +1%"
-equip_skill_id: 42  →  S1 type=20 loc=49089  "Knowledge Gain Chance Lv. 4"
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -18,130 +17,51 @@ None; `petequipskill.bss` is a standalone catalog with no offset index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
-
-| Offset  | Type   | Field | Notes                |
-| ------- | ------ | ----- | -------------------- |
-| `+0x00` | char×4 | magic | `PABR` (ASCII)       |
+### File Layout
 
 Records begin immediately at `+0x04`.
 
-### Section 1, Equip Skills (43 × 12 bytes, offset `0x004`)
+| Offset              | Type                                     | Field         | Notes                                                           |
+| ------------------- | ---------------------------------------- | ------------- | --------------------------------------------------------------- |
+| `+0x00`             | char[4]                                  | magic         | `PABR` (ASCII)                                                  |
+| `+0x04`             | Equip Skill[while equip_skill_id != 200] | equip_skills  | Section 1, 43 x 12 bytes, `+0x004` to `+0x208`                  |
+| `equip_skills+0x00` | Slot[..data_end]                         | slots         | Null block and Section 2, 200 slots from `+0x208` to `data_end` |
+| `EOF-0x0C` | u32 | string_count | `0`: the PABR string table, here with no strings; `data_end` points at it |
+| `EOF-0x08` | u32 | data_end | `0x0EB0` = `file_size - 12`, the offset of `string_count` |
+| `EOF-0x04` | u32 | zero | Always `0` |
 
-Covers `equip_skill_id` 0–42 (regular pets). Stride = 12 bytes. The file stores no count: record `n` holds `equip_skill_id = n`, so the section ends at the first record whose ID is not its index, which is the first null placeholder (ID 200) of the slot table below. The parser finds the end this way, so a patch that adds Section 1 skills moves the null block and Section 2 without breaking the walk.
+### Equip Skill (12 bytes)
 
-| Offset  | Type | Field         | Notes                                          |
-| ------- | ---- | ------------- | ---------------------------------------------- |
-| `+0x00` | u32  | equip_skill_id| Unique skill record key (0–42)                |
-| `+0x04` | u32  | skill_type    | Skill group (1–20; see Skill Types table)      |
-| `+0x08` | u8   | unknown_08    | Always 1 in Section 1                         |
-| `+0x09` | u8   | unknown_09    | Always 0                                      |
-| `+0x0A` | u16  | loc_id        | Localization key → skill name (type 10 string)|
+Section 1, Equip Skills. Covers `equip_skill_id` 0 to 42 (regular pets). Stride = 12 bytes. The file stores no count: record `n` holds `equip_skill_id = n`, so the section ends at the first record whose ID is not its index, which is the first null placeholder (ID 200) of the slot table below. The parser finds the end this way, so a patch that adds Section 1 skills moves the null block and Section 2 without breaking the walk.
 
-### Null Block (15 × 16 bytes, offset `0x208`)
+| Offset  | Type | Field          | Notes                                    |
+| ------- | ---- | -------------- | ---------------------------------------- |
+| `+0x00` | u32  | equip_skill_id | Unique skill record key (0 to 42)        |
+| `+0x04` | u32  | skill_type     | Skill group (1 to 20; see Skill Types table) |
+| `+0x08` | u8   | unknown_08     | Always 1 in Section 1                    |
+| `+0x09` | u8   | unknown_09     | Always 0                                 |
+| `+0x0A` | u16  | loc_id         | Localization key to skill name (type 10 string) |
 
-Fifteen placeholder records, the first 15 slots of the 200-slot table that continues as Section 2, so they are the slots for IDs 0–14 (see Section 2). Earlier versions of this doc read them as IDs 43–57. Each record = `[u32=200][u32=0][u32=0][u32=0]`. The value 200 signals a null/unused entry.
+### Slot (variable: 16 bytes + unknown_10)
 
-### Section 2, Base Skills (variable stream, offset `0x2F8`)
+Null Block (15 x 16 bytes, offset `0x208`): fifteen placeholder records, the first 15 slots of the 200-slot table that continues as Section 2, so they are the slots for IDs 0 to 14 (see Section 2). Earlier versions of this doc read them as IDs 43 to 57. Each record = `[u32=200][u32=0][u32=0][u32=0]`. The value 200 signals a null/unused entry.
 
-Covers `equip_skill_id` 15–111, the base skills `pet.dbss` keys with `base_skill_id`; IDs 15–42 also exist in Section 1 as different skills. Base stride = 16 bytes. Records with `equip_skill_id = 200` are null placeholders. Records with `unknown_0c = 1` carry an additional u32 after the base record.
+Section 2, Base Skills (variable stream, offset `0x2F8`): covers `equip_skill_id` 15 to 111, the base skills `pet.dbss` keys with `base_skill_id`; IDs 15 to 42 also exist in Section 1 as different skills. Base stride = 16 bytes. Records with `equip_skill_id = 200` are null placeholders. Records with `unknown_0c = 1` carry an additional u32 after the base record.
 
-| Offset  | Type | Field         | Notes                                              |
-| ------- | ---- | ------------- | -------------------------------------------------- |
-| `+0x00` | u32  | equip_skill_id| Unique skill record key (15–111, or 200 = null)   |
-| `+0x04` | u32  | skill_type    | Skill group (different numbering from Section 1)   |
-| `+0x08` | u8   | unknown_08    | Always 1                                          |
-| `+0x09` | u8   | unknown_09    | Always 0                                          |
-| `+0x0A` | u16  | loc_id        | Localization key → skill name (type 10 string)    |
-| `+0x0C` | u32  | unknown_0c    | `0` or `1`; `1` means an extra u32 follows        |
-| `+0x10` | u32  | unknown_10    | Present only when `unknown_0c = 1`                |
+| Offset  | Type              | Field          | Notes                                            |
+| ------- | ----------------- | -------------- | ------------------------------------------------ |
+| `+0x00` | u32               | equip_skill_id | Unique skill record key (15 to 111, or 200 = null) |
+| `+0x04` | u32               | skill_type     | Skill group (different numbering from Section 1) |
+| `+0x08` | u8                | unknown_08     | Always 1                                         |
+| `+0x09` | u8                | unknown_09     | Always 0                                         |
+| `+0x0A` | u16               | loc_id         | Localization key to skill name (type 10 string)  |
+| `+0x0C` | u32               | unknown_0c     | `0` or `1`; `1` means an extra u32 follows       |
+| `+0x10` | u32 if unknown_0c = 1 | unknown_10 | Present only when `unknown_0c = 1`               |
 
 Earlier versions of this doc called `unknown_08` `tier`, `unknown_0c` `extra_flag` and `unknown_10` `extra_value`.
 
-The null block and Section 2 together are exactly 200 slots, from `0x208` up to the trailer's `data_end`, and every live Section 2 record sits at the slot whose index equals its `equip_skill_id` (slots `0`–`14` are the null block). Reading one extra u32 after each `unknown_0c = 1` record is what keeps that alignment and lands the last slot exactly on `data_end`. The parser walks the null block and Section 2 as one table starting right after Section 1, and its `slot` field is the table index, so every record in both sections has `slot = equip_skill_id`.
-
-## Skill Types (Section 1)
-
-| skill_type | Skill group           | Equip skill IDs | Example names                        |
-| ---------- | --------------------- | --------------- | ------------------------------------ |
-| 1          | Karma Recovery        | 0–2             | +7%, +5%, +3%                        |
-| 2          | Combat EXP            | 3–5             | +7%, +5%, +5%                        |
-| 3          | Gathering EXP         | 6–8             | +7%, +5%, +5%                        |
-| 4          | Luck                  | 9               | +1                                   |
-| 5          | Fishing Speed         | 10              | +1                                   |
-| 6          | Gathering Speed       | 11              | +1                                   |
-| 7          | Death Penalty Resist  | 12–13           | +7%, +4%                             |
-| 8          | Fishing EXP           | 14–16           | +7%, +5%, +5%                        |
-| 9          | Hunting EXP           | 17–19           | +7%, +5%, +5%                        |
-| 10         | Cooking EXP           | 20–22           | +7%, +5%, +5%                        |
-| 11         | Alchemy EXP           | 23–25           | +7%, +5%, +5%                        |
-| 12         | Processing EXP        | 26–28           | +7%, +5%, +5%                        |
-| 13         | Training EXP          | 29–31           | +7%, +5%, +5%                        |
-| 14         | Trading EXP           | 32–34           | +7%, +5%, +5%                        |
-| 15         | Farming EXP           | 35–37           | +7%, +5%, +5%                        |
-| 16         | Life EXP              | 38              | +5%                                  |
-| 17         | Weight Limit          | 39              | +50 LT                               |
-| 18         | Durability Resistance | 40              | +5%                                  |
-| 19         | Skill EXP             | 41              | +5%                                  |
-| 20         | Knowledge Gain Chance | 42              | Lv. 4                                |
-
-## Selected Section 2 Skill Groups
-
-| Equip skill IDs | Skill name (loc resolution)                      |
-| --------------- | ------------------------------------------------ |
-| 15–18           | Skill EXP +1%, +2%, +3%, +4%                    |
-| 20–23           | Life EXP +1%, +2%, +3%, +4%                     |
-| 35–38           | Durability Reduction Resistance +1%–+4%         |
-| 40–43           | Normal and Higher Grade Knowledge Gain Chance   |
-| 51–54           | Tingling Breath II / II+ / II++ / II+++          |
-| 55–57           | Weight Limit +20/+30/+40 LT                     |
-| 60–62           | Feathery Steps I / II / III                     |
-| 65              | Max HP +25  *(unknown_0c = 1)*                  |
-| 70–74           | Combat EXP +1%, +2%, +3%, +4%, +5%              |
-| 75–78           | Death Penalty Resistance +1%, +3%, +5%, +4%     |
-| 79              | Item Drop Rate +1%  *(unknown_0c = 1)*          |
-| 83–86           | Mount EXP +1%, +2%, +3%, +4%                    |
-| 87–90           | Sailing EXP +1%, +2%, +3%, +5%                  |
-| 91–94           | Barter EXP +1%, +2%, +3%, +5%                   |
-| 95–98           | Big Ship Inventory Weight +50/+75/+100/+150 LT  |
-| 99–111          | Single-tier extras (Skill EXP, Life EXP, etc.)  |
-
-## Lookup Recipe
-
-```python
-def get_equip_skill(data, equip_skill_id):
-    # Section 2 preferred for IDs 15–111 (extended catalog)
-    s2 = parse_section2(data)
-    if equip_skill_id in s2:
-        return s2[equip_skill_id]
-    # Fall back to Section 1 for IDs 0–42
-    s1 = parse_section1(data)
-    return s1.get(equip_skill_id)
-```
-
-When an `equip_skill_id` appears in both sections, Section 2 provides the finer-grained tier (4 tiers vs Section 1's 3) and should be preferred.
-
-## Notes
-
-- No offset companion file; the file is small enough to scan linearly.
-- `equip_skill_id = 200` in Section 2 records is a null placeholder; ignore these.
-- Section 1 types hold up to 3 entries, ordered descending by value (Combat EXP +7%, +5%, +5% at IDs 3-5).
-- Section 2 types run ascending by value: four consecutive IDs for the `+1` to `+4` tiers (Mount EXP +1% to +4% at IDs 83-86), and the top tier sits in IDs 99-111 (Mount EXP +5% at 108).
-- `unknown_0c = 1` in Section 2 marks 10 records (IDs 65–68, 79–82, 104 and 107) and adds one trailing u32 `unknown_10`; see Open Questions.
-- `skill_type` numbering is independent between sections: type 4 in S1 (Luck) ≠ type 4 in S2 (Skill EXP).
-- Total file size: 3772 bytes = 4 (PABR) + 516 (S1) + 240 (null) + variable Section 2 stream + 12 (trailer). The trailer is `[u32 0][u32 data_end][u32 0]` with `data_end = 0x0EB0 = file_size - 12`, the same trailer as `fairyequipskill.bss`.
-- Observed rows: 116 (43 Section 1 + 73 live Section 2) in the pre-2026-09-27 fixture and 116 in the 2026-09-27 client; the file is byte-identical between the two.
-- Localization IDs are in the range 49001–49176 for confirmed skills; use `loc-tool.py --type 10 --id <loc_id>` to resolve.
-- Section 1 is the `Pet_EquipSkill_Table` sheet of a private server on client 1784 (skill number equal on 43 of 43 IDs, `skill_type` equal to its `GroupNo`) and Section 2 its `Pet_BaseSkill_Table` (60 of 60 sheet rows). The roll weights in `petequipskillaquire.dbss` index Section 1; every `pet.dbss` `base_skill_id` is a Section 2 ID (2,009 of 2,009 records on client 3473), while only 1,536 of them also exist in Section 1.
-
-## Open Questions
-
-### `unknown_0c` and `unknown_10` in Section 2
-
-Ten Section 2 records have `unknown_0c = 1` and a trailing `unknown_10`: IDs 65–68 and 104 (every Section 2 `skill_type` 1, Max HP) and 79–82 and 107 (every `skill_type` 15, Item Drop Rate). In all ten, `unknown_10` equals the record's own `skill_type`. `unknown_0c` may be the length of a trailing u32 list rather than a flag, but only `0` and `1` occur, so the two readings cannot be told apart. The semantic is unknown. Candidates: Airiss-exclusive flag, skill incompatibility marker, alternate skill group, or unlock requirement.
-
-### `skill_type` semantic
+The null block and Section 2 together are exactly 200 slots, from `0x208` up to the trailer's `data_end`, and every live Section 2 record sits at the slot whose index equals its `equip_skill_id` (slots `0` to `14` are the null block). Reading one extra u32 after each `unknown_0c = 1` record is what keeps that alignment and lands the last slot exactly on `data_end`. The parser walks the null block and Section 2 as one table starting right after Section 1, and its `slot` field is the table index, so every record in both sections has `slot = equip_skill_id`.
 
 Within each section, skills of the same `skill_type` form a tier group (e.g., all Karma Recovery entries share type 1 in S1). The type numbering is section-local and the mapping from type ID to skill category name is derived empirically from loc IDs. No authoritative mapping table has been found. The grouping itself holds for all 116 records: every record of one `skill_type` in a section resolves to the same effect name through LOC, which is why the field keeps its name while only the type-to-name table is open.

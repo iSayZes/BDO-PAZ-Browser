@@ -159,8 +159,24 @@ def test_layouts_run_newest_first_and_older_ones_list_known_structures() -> None
 
     assert _messages(_doc(layouts=layouts)) == [
         "layouts should be numbered 2, 1 from the top",
-        "`Old Row` is not in a newer layout; an older layout lists only what changed",
+        "`Old Row` is not in a newer layout and nothing in this layout uses it",
     ]
+
+
+def test_an_older_layout_may_add_a_file_table_and_name_fields_after_newer_ones() -> None:
+    companion = _structure("`old.dbss`", ("+0x00", "u32", "count"))
+    old_file = _structure("File Layout", ("+0x00", "u32", "row_count"), ("+0x04", "u32", "unknown_after_rows"))
+    layouts = f"## Layout 2\n\n{FILE_LAYOUT}\n{ROW}\n## Layout 1\n\n{old_file}\n{companion}"
+
+    assert _messages(_doc(layouts=layouts)) == []
+
+
+def test_an_older_layout_may_add_a_structure_it_uses() -> None:
+    old_row = _structure("Row (6 bytes)", ("+0x00", "u16", "key"), ("+0x02", "Old Part", "unknown_04"))
+    old_part = _structure("Old Part (4 bytes)", ("+0x00", "u32", "unknown_00"))
+    layouts = f"## Layout 2\n\n{FILE_LAYOUT}\n{ROW}\n## Layout 1\n\n{old_row}\n{old_part}"
+
+    assert _messages(_doc(layouts=layouts)) == []
 
 
 def test_an_older_layout_uses_the_newer_layouts_structures() -> None:

@@ -95,7 +95,7 @@ def render_rows(rows: Sequence[VersionRow], newest_layout: int) -> str:
     if not rows:
         return ""
     sizes = [
-        (str(row.layout), _clients(row, newest_layout), str(row.checked), f"`{row.file}`", f"{row.size:,}", row.records, row.row_bytes)
+        (str(row.layout), clients_text(row, newest_layout), str(row.checked), f"`{row.file}`", f"{row.size:,}", row.records, row.row_bytes)
         for row in rows
     ]
     coverage = [
@@ -118,7 +118,8 @@ def _row(layout: int, client: int, file: FileFit) -> VersionRow:
     return VersionRow(layout, client, client, file.file, file.size, records or "-", row_bytes, file.known, file.unknown)
 
 
-def _clients(row: VersionRow, newest_layout: int) -> str:
+def clients_text(row: VersionRow, newest_layout: int) -> str:
+    """`3464 and later` for the newest layout, `3401 to 3458` or one client for an older one."""
     if row.layout == newest_layout:
         return f"{row.first} and later"
     return str(row.first) if row.first == row.checked else f"{row.first} to {row.checked}"

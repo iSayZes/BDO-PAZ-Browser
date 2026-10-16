@@ -220,4 +220,5 @@ def test_check_doc_file_names_the_client_and_place_when_no_layout_fits(tmp_path:
     outcome = check_doc_file(doc, {"test_bss.md": [("test.bss", "Rows")]}, client)
 
     assert outcome.status is Status.NO_FIT
-    assert outcome.messages[0].startswith("client 3480 fits no layout of test.bss; Layout 1: ")
+    assert outcome.messages[0] == "client 3480 fits no layout of test.bss"
+    assert outcome.messages[1].startswith("Layout 1 breaks in test.bss: ")

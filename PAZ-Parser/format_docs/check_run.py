@@ -73,9 +73,9 @@ def check_doc_file(
     except Unwalkable as reason:
         return DocOutcome(path, Status.SKIPPED, (f"a walk cannot follow it: {reason}",))
     if not isinstance(result, LayoutFit):
-        newest = result[0]
-        message = f"client {client.number} fits no layout of {newest.file}; Layout {newest.layout}: {newest.error}"
-        return DocOutcome(path, Status.NO_FIT, (message,))
+        broken = ", ".join(dict.fromkeys(miss.file for miss in result))
+        breaks = tuple(f"Layout {miss.layout} breaks in {miss.file}: {miss.error}" for miss in result)
+        return DocOutcome(path, Status.NO_FIT, (f"client {client.number} fits no layout of {broken}", *breaks))
     notes = tuple(f"not in the PAZ folder: {name}" for name in missing)
     if not write:
         return DocOutcome(path, Status.OK, notes + (f"fits Layout {result.layout}",))

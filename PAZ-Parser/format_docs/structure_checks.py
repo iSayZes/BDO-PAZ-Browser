@@ -11,10 +11,14 @@ from .type_grammar import TypeSpec, fixed_part, fixed_size, parse_type, referenc
 StructureSizes = Mapping[str, int | None]
 
 
-def check_structure(structure: Structure, sizes: StructureSizes) -> tuple[Problem, ...]:
-    """Every problem in one structure; `sizes` holds the structures its types may name."""
+def check_structure(structure: Structure, sizes: StructureSizes, newer_names: frozenset[str] = frozenset()) -> tuple[Problem, ...]:
+    """Every problem in one structure.
+
+    `sizes` holds the structures its types may name; `newer_names` the field names the same structure has
+    in newer layouts, which an older layout's `unknown_after_` and `_dup` names may also point at.
+    """
     specs, problems = _parse_types(structure, sizes)
-    problems += _name_problems(structure)
+    problems += _name_problems(structure, newer_names)
     problems += _reference_problems(structure, specs)
     problems += _offset_problems(structure, specs, sizes)
     problems += _size_problems(structure, specs, sizes)
@@ -37,8 +41,8 @@ def _parse_types(structure: Structure, sizes: StructureSizes) -> tuple[dict[int,
     return specs, problems
 
 
-def _name_problems(structure: Structure) -> list[Problem]:
-    names = frozenset(field.name for field in structure.fields)
+def _name_problems(structure: Structure, newer_names: frozenset[str]) -> list[Problem]:
+    names = frozenset(field.name for field in structure.fields) | newer_names
     problems: list[Problem] = []
     seen: set[str] = set()
     for field in structure.fields:

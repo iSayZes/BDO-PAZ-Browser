@@ -66,7 +66,7 @@ def check_doc(text: str, folder: Path | None = None) -> tuple[Problem, ...]:
         sizes = structure_sizes(layouts[: index + 1])
         resolved = resolved_structures(layouts, index)
         for structure in layout.structures:
-            problems.extend(check_structure(structure, sizes))
+            problems.extend(check_structure(structure, sizes, _newer_field_names(layouts[:index], structure.name)))
             problems.extend(_offset_file_problems(structure, resolved))
     return tuple(sorted(problems, key=lambda problem: problem.line))
 
@@ -140,12 +140,25 @@ def _layout_problems(layouts: list[Layout]) -> list[Problem]:
         problems.append(Problem(layouts[0].line, f"the newest layout needs a `### {FILE_LAYOUT}`"))
     for index, layout in enumerate(layouts[1:], start=1):
         newer_names = {structure.name for newer in layouts[:index] for structure in newer.structures}
+        # A structure only this older layout has is fine when one of its own structures uses it.
+        used_here = {name for structure in layout.structures for name in _structure_types(structure)}
         problems.extend(
-            Problem(structure.line, f"`{structure.name}` is not in a newer layout; an older layout lists only what changed")
+            Problem(structure.line, f"`{structure.name}` is not in a newer layout and nothing in this layout uses it")
             for structure in layout.structures
-            if structure.name not in newer_names
+            if structure.name not in newer_names and structure.name not in used_here and not structure.is_top_level
         )
     return problems
+
+
+def _newer_field_names(newer: Sequence[Layout], name: str) -> frozenset[str]:
+    """The field names structure `name` has in the newer layouts."""
+    return frozenset(field.name for layout in newer if (found := layout.find(name)) for field in found.fields)
+
+
+def _structure_types(structure: Structure) -> tuple[str, ...]:
+    """The structure names the Type cells of `structure` use."""
+    specs = (parse_type(field.type_text) for field in structure.fields)
+    return tuple(spec.name for spec in specs if not isinstance(spec, str) and spec.is_structure)
 
 
 def resolved_structures(layouts: Sequence[Layout], index: int) -> dict[str, Structure]:

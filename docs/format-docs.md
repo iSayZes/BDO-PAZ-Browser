@@ -28,11 +28,19 @@ columns is decided in the handler.
 
 A file whose layout changed between clients keeps every known layout. Layout
 1 is the oldest; a new layout takes the next number, and the sections go
-newest first, so the current layout is always the first one.
+newest first, so the current layout is always the first one. A layout
+older than Layout 1, found later in an older client, becomes Layout 1 and
+the others move up by one; the doc check then rewrites Versions for them.
 
 - The newest layout is written in full and has a `### File Layout`.
 - An older layout lists only the structures that differ from the next newer
-  layout. A structure it does not list is the same as there.
+  layout. A structure it does not list is the same as there. A structure
+  only the older layout has is allowed when one of its own structures uses
+  it, and a ``### `x.dbss` `` table for a file only that client fills is
+  always allowed.
+- In an older layout, `unknown_after_<field>` and `<field>_dup` may name a
+  field the same structure has in a newer layout, so a block keeps its name
+  when the field it follows did not exist yet.
 - A field keeps one name in every layout. A name with an offset in it, like
   `unknown_04`, keeps the newest layout's offset.
 - A doc that shares another doc's layout says so in one sentence at the
@@ -156,8 +164,12 @@ site into `_site/` for a local preview. The generator is
 | `formats.js`        | The doc list both page kinds read                                       |
 | `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`                   |
 
-The known share counts the fixed-size fields of the newest layout, each
-structure once, so a row type counts the same as the header. A doc not
+A doc page's Versions card shows each layout's clients and a known/unknown
+bar from its Versions tables, and the layout tabs name the clients. The
+known share in the index and the sidebar counts the newest layout's bytes in
+the game files of the client Versions names, every record included. A doc
+without Versions counts the fixed-size fields of its newest layout, each
+structure once; the share's tooltip says which of the two it is. A doc not
 converted yet shows as written and has no share. Links between docs go to
 their pages, links to other repo files to GitHub, and `#section` links work
 as on GitHub. The descriptions and file lists come from

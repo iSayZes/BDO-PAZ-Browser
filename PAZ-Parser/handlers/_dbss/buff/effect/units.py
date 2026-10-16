@@ -75,3 +75,17 @@ def format_amount(value: int, unit: Unit, *, signed: bool) -> str:
 def seconds_text(milliseconds: int) -> str:
     """`10`, `1.5`."""
     return f"{milliseconds / 1_000:.3f}".rstrip("0").rstrip(".")
+
+
+_MS_PER_MINUTE = 60_000
+
+
+def cooldown_text(milliseconds: int) -> str:
+    """`2 sec`, `3 min`, `12 hours`, as the fairy skill texts word cooldowns."""
+    if milliseconds and milliseconds % _MS_PER_MINUTE == 0:
+        return minutes_text(milliseconds // _MS_PER_MINUTE)
+    return f"{seconds_text(milliseconds)} sec"
+
+
+# Cooldowns are stored in milliseconds and worded by size: 180000 is 3 min.
+COOLDOWN = Unit(formatter=cooldown_text)

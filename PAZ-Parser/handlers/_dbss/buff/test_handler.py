@@ -558,6 +558,16 @@ def test_korean_title_survives_without_loc() -> None:
         (180, [67], ""),
         # Life skill 10 is the spare slot `temp1`: no name, no line.
         (80, [10, 100], ""),
+        # Shares of max HP: `피격자 총 HP 3% 피해`, and siege buildings healed.
+        (70, [2, -30000], "HP -3% of Max HP"),
+        (70, [2, 1500], "HP +0.15% of Max HP"),
+        (83, [1000, 2, 150000], "Crop Growth: Temperature +15%"),
+        (83, [1000, 0, 800000], "Crop Growth: Fertilizer +80%"),
+        (148, [3, 2000], "Auto-use HP/Resource potions. Cooldown: 2 sec"),
+        (148, [2, 43200000], "Fairy's Tear. Cooldown: 12 hours"),
+        (148, [4, 6000, 30], "Auto-use from 30 selected items"),
+        # Morning Star stores no parameters.
+        (148, [], ""),
         # An effect type that is not decoded.
         (45, [1, 2], ""),
     ],
@@ -638,6 +648,9 @@ def test_over_time_text(
         (EffectInput(53, [1000]), {1: "10m"}),
         (EffectInput(97, [15, 21600]), {1: "Secret Book of Old Moon", 2: "15 days"}),
         (EffectInput(14, [4, 5000]), {1: "Stun", 2: "5 sec"}),
+        (EffectInput(70, [2, -30000]), {1: "Max HP", 2: "-3%"}),
+        (EffectInput(148, [1, 180000]), {1: "Purified Water/Star Anise Tea", 2: "3 min"}),
+        (EffectInput(148, [4, 6000, 30]), {1: "Auto-use Items"}),
         # A named effect without a name labels nothing.
         (EffectInput(23, [0, 340]), {}),
         (EffectInput(176, [17, 0, 4001]), {}),

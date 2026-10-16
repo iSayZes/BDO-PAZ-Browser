@@ -295,11 +295,13 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 67    | 660  | Stat ranks                    | `param_1` = stat: `0` Movement Speed, `1` Attack Speed, `2` Casting Speed, `3` Critical Hit, `4` Luck, `5` Fishing Speed, `6` Gathering Speed; `param_2` = ranks, can be negative |
 | 68    | 16   | Stat limits                   | `param_1` = stat as in type 67, worded `0` Movement Speed, `1` Attack Speed, `2` Casting Speed, `3` Critical Hit Rate, `4` Luck, `5` Fishing, `6` Gathering; `param_2` = steps (`Attack Speed Limit +1`) |
 | 69    | 670  | Accept quest                  | `param_1` = quest chain, `param_2` = quest (LOC type 18 title); see Effect text |
+| 70    | 32   | Shares of max HP              | `param_1` = `2` on all; `param_2` per million, signed: negative damages, positive heals siege buildings (`HP -3% of Max HP`); see Effect text |
 | 71    | 31   | Inventory slots               | `param_1` = slots (`Inventory +8 Expansion`); `param_2` `1` on time-limited variants, which store no duration |
 | 72    | 214  | Storage, stable, wharf and lodging slots | `param_1` = town (LOC type 17), `0` all towns; `param_2` = slots; `param_4` = `0` Storage, `1` Stable, `2` Wharf, `3` Worker's Lodging; `param_3` `1` on time-limited variants |
 | 73    | 66   | Trade refresh                 | `param_1` = `0` territory, `1` trade manager; `param_2` = territory (`0` Balenos, `1` Serendia, `5` Southwestern Calpheon, `6` Southeastern Calpheon; `2` to `4` open) or NPC (LOC type 6) |
 | 76    | 39   | Karma and fame                | `param_1` = amount, signed; `param_2` = `0` Karma, `1` Guild Karma, `2` Naval Fame |
 | 79    | 44   | Energy recovery               | `param_1` = amount, one-off (`Recover 10 Energy`); every buff has no duration |
+| 83    | 9    | Crop growth                   | `param_1` = `1000` on all; `param_2` = `0` Fertilizer, `1` Precipitation, `2` Temperature; `param_3` per million; see Effect text |
 | 84    | 50   | Reveal hidden names           | No amount; `param_1` `10`, `3` or `300` on 4 buffs, meaning unknown |
 | 89    | 62   | Breath/Strength/Health EXP    | `param_1` = `0` Breath, `1` Strength, `2` Health; `param_2` = amount |
 | 90    | 42   | Death Penalty Resistance      | `param_1` per million (`30000` = +3%)                             |
@@ -324,6 +326,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 134   | 9    | Swimming Speed                | `param_1` per million                                             |
 | 136   | 219  | Extra AP Against Monsters / Adventurers | `param_1` = against monsters, `param_2` = against adventurers; no buff sets both |
 | 142   | 673  | Obtain title                  | `param_1` = title ID (LOC type 1 name, `title.dbss` key)         |
+| 148   | 24   | Fairy skills                  | `param_1` = `1` Purified Water/Star Anise Tea, `2` Fairy's Tear, `3` HP/Resource potions, each with `param_2` = cooldown in ms; `4` Continuous Care, `param_3` = selected items; see Effect text |
 | 149   | 246  | Life skill mastery            | `param_1` = life skill (type 80 numbering), `15` all; `param_3` = amount; `param_2` see below |
 | 160   | 29   | Movement, attack and casting speed rates | `param_1` Movement Speed, `param_2` Attack Speed, `param_3` Casting Speed, each per million and signed |
 | 168   | 16   | No Guard Gauge recovery       | No parameters                                                     |
@@ -385,7 +388,7 @@ The module names also fit most types without an Effect text, on client 3464:
 | 75    | StopRegen                             | `Nullify Regeneration` |
 | 77    | VaryMorale                            | `Guild Morale +1` |
 | 81    | EfficiencyOfFishing                   | Bite time buffs (`Greatly reduces time required to catch fish.`) |
-| 83    | TentHavestGrowCorrection              | Crop growth by temperature and humidity |
+| 83    | TentHavestGrowCorrection              | Crop growth by fertilizer, precipitation and temperature |
 | 85-88 | Current, Max, Regen, ActiveRegen SubResourcePointVariationAmount | Class sub-resource points (`[수렵] 전용 총 서브리소스 포인트+1`) |
 | 99    | VaryPermanentWeight                   | `영구 무게 증가 - 50LT` |
 | 102   | TamingServant                         | `Buff for checking Taming.` |
@@ -623,11 +626,7 @@ and bdocodex tooltips, since most of these buffs have no text:
   names` (Archer's Shadebound Beam and Arrow Explosion). All 16 type 168
   buffs read `No Guard Gauge recovery` (Corsair's Flow: Raging Torrent and
   Mareca: Spiral Soak).
-- Read but left as a dash: **83** crop growth (`param_2` `0` fertilizer,
-  `1` water, `2` temperature; the windbreaks read `Crop Growth Buff:
-  Temperature 15` in game while storing `150000` in `param_3`, and the
-  waters named 15 store `350000`, so the amount scale is open), **125**
-  idle training (Book of Training, `1000000` on all), **153** light
+- Read but left as a dash: **125** idle training (Book of Training, `1000000` on all), **153** light
   radius (Light of Illezra, Atanis Firefly; `5` on all), **164** Central
   Market Silver Collection +5% (`param_1` `1` on Old Moon Trade Pass, "for
   one transaction", `-1` on Rich Merchant's Ring; the 5% is not stored),
@@ -779,6 +778,46 @@ English text that states an amount.
   consumables, and none of the fixed bytes before `+0xF2` is shared by the
   15 and rare elsewhere. The flag is likely on the hidden drop, not on
   these buff items.
+
+The batch of 2026-10-17 took three types without a LOC type 5 text. The
+client 519 private server has one buff effect class per type, and its
+`ModuleBuffType` enum gives each type a name; where its classes read the
+parameters the same way as the client data below, that is noted. Counts
+are from client 3473.
+
+- **70** shares of max HP, 32 buffs: `param_1` is `2` on all and `param_2`
+  is per million, signed. The Korean names give the share (`피격자 총 HP 3%
+  피해`, "3% of the target's total HP as damage", stores `-30000`), and the
+  siege building buffs heal (`공성건물 - 건설중 HP 증가(0.15%)`, "siege
+  building, HP up while building (0.15%)", stores `1500`). The server's
+  `HPAddPercentageEffect` reads kind `2` as a share of max HP, on the same
+  scale. Six buffs named `현재 HP` ("current HP") store the same kind, and
+  two names state a share the buff does not store (40328 reads 48%, 40566
+  reads 5%; both store 99%). The column writes `HP -3% of Max HP`.
+- **83** crop growth, 9 buffs: `param_2` `0` Fertilizer, `1`
+  Precipitation, `2` Temperature, in the words of the skills that apply
+  them (LOC type 10 `Crop Growth Buff: Temperature 15`, skills 50645 to
+  50653 with the same keys as their buffs). `param_3` is per million: the
+  three temperature skills 5, 10 and 15 store `50000`, `100000` and
+  `150000`, and the server's `TentHavestGrowCorrectionEffect` adds kind
+  `0` to a garden's fertilizer, which it caps at `1000000`. The
+  precipitation and fertilizer skills 5, 10 and 15 store 5%, 20%, 35% and
+  15%, 55%, 80%, so their number is a tier. `param_1` is `1000` on all.
+  The column writes `Crop Growth: Temperature +15%`.
+- **148** fairy skills, 24 buffs: the fairy skills share their buffs'
+  keys, and their LOC type 10 texts give the kinds. `param_1` `3` reads
+  `Auto-use HP/Resource potions. Cooldown: 2 sec` (49121 to 49129,
+  `param_2` `2000` to `10000` ms), `1` `Auto-use Purified Water/Star Anise
+  Tea during Heatstroke/Hypothermia. Cooldown: 3 min` (49115 to 49119) and
+  `2` Fairy's Tear I to IV (49114 to 49111), whose cooldown only the Korean
+  names state (`엘리언의 은총(쿨타임 : 12시간)`, "Elion's grace (cooldown: 12
+  hours)", stores `43200000`). Kind `4` is Continuous Care: `Auto-use from
+  30 selected items.` stores `30` in `param_3` (49177 to 49181, 7 to 30);
+  the Korean names say 5 to 25 slots, the stale side. Its `param_2` is
+  `6000` on all five, meaning unknown. The server's `FairySkillEffect`
+  reads `param_2` as the interval too, but numbers its kinds differently
+  from the skill texts. Morning Star (49120) stores no parameters and shows
+  a dash.
 
 Type 142 renders as `Obtain Title: Back Home Again`, from LOC type 1; the
 items that apply it read `Using this item will grant you the Olvium Frontia!

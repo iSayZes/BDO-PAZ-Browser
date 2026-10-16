@@ -55,8 +55,8 @@ To run from source or write handlers, see [Requirements](#requirements).
 - Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. Pins can carry one of 29 game world map icons, built with the map tiles from the client's files (the node and position icons of `worldmap_grand_base.xml`, and the radar's own-character pointer for `player`). A marker placed with `save` comes back after a restart, and a click on a pin opens a Remove button. See [Map API](docs/map-api.md).
 - Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row. Each file type opens on the tab last picked for it (Parsed, Text or Hex) when the file has that tab, else on its first tab; the tab is saved per extension in `paz_config.json`, with `.bss` and `.dbss` as one type and `.dds`, `.dds1` and `.dds11` as another.
 - Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. XML files (`.xml`, `.ai`, `.cl`, `.mxml`, `.weathercolortablexml`, `.xmp`, `.svg`) colour tags, attributes, values and comments. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
-- NPC and monster AI scripts (`.ai`) get an AI Script tab: a summary of states, HP gates, variables, the characters that run the script (from `characterstatic.dbss`), macros and imports, behavior filter chips, then one row per state with its developer comment, behavior, cycle time, actions, transitions with their conditions (`300 < distance ≤ 500`, character IDs with names), and the states that lead to it. State names jump to their row; a Text tab keeps the XML. See [aiscript](docs/file-formats/aiscript_ai.md).
-- Class combo lists (`.cl`) get a Combo List tab: one row per combo with its weapon type, the skills it checks as learned and off cooldown (named from LOC), and its steps with skill names, pad keys and the keyboard and mouse input of each action. A Text tab keeps the XML. See [combolist](docs/file-formats/combolist_cl.md).
+- NPC and monster AI scripts (`.ai`) get an AI Script tab: a summary of states, HP gates, variables, the characters that run the script (from `characterstatic.dbss`), macros and imports, behavior filter chips, then one row per state with its developer comment, behavior, cycle time, actions, transitions with their conditions (`300 < distance ≤ 500`, character IDs with names), and the states that lead to it. State names jump to their row; a Text tab keeps the XML. See [aiscript](https://isayzes.github.io/BDO-PAZ-Browser/aiscript_ai.html).
+- Class combo lists (`.cl`) get a Combo List tab: one row per combo with its weapon type, the skills it checks as learned and off cooldown (named from LOC), and its steps with skill names, pad keys and the keyboard and mouse input of each action. A Text tab keeps the XML. See [combolist](https://isayzes.github.io/BDO-PAZ-Browser/combolist_cl.html).
 - Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
 - Ctrl+F inside the hex tab (byte offset, string or hex pattern), the table tab (records) and the Text tab (lines).
 - Export of the open file as raw binary, or its parsed table as CSV, from the Export menu next to the entry details. The CSV file name holds the client and handler versions, `buffsimply_3464_2026.10.12.csv`.
@@ -73,7 +73,7 @@ BDO has hundreds of undocumented binary formats. Contributions and corrections a
 
 **Reverse engineer a new format**: open a new issue using the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`).
 
-**Improve existing docs**: the format docs in [`docs/file-formats/`](docs/file-formats/) are not all complete. Each doc has an **Open Questions** section listing specific unknowns. If you can answer any of them, update the doc directly. Some docs also end with an **In-Game Checks** section: a test that needs a given item, quest, NPC, class or zone. A player who has it can answer the check without reading the binary layout.
+**Improve existing docs**: the [format docs](https://isayzes.github.io/BDO-PAZ-Browser/) are not all complete; their sources are in `docs/file-formats/`. Each doc has an **Open Questions** section listing specific unknowns. If you can answer any of them, update the doc directly. Some docs also end with an **In-Game Checks** section: a test that needs a given item, quest, NPC, class or zone. A player who has it can answer the check without reading the binary layout.
 
 **Translate the UI**: UI strings live in [`PAZ-Parser/ui/lang/`](PAZ-Parser/ui/lang/) as small JSON files, one per language. Missing keys fall back to English automatically, so partial translations are fine. See [`TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md) for instructions.
 
@@ -124,10 +124,10 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 ## Documented Formats
 
-See [docs/documented-formats.md](docs/documented-formats.md) for the full table.
-The same docs are a browsable site on GitHub Pages, with each converted doc's
-layouts, byte maps and known share: the Wiki workflow builds it with
-`build_wiki.py` whenever a release changes the docs.
+The [format docs wiki](https://isayzes.github.io/BDO-PAZ-Browser/) lists every documented file with its known
+share, open questions and in-game checks, and has one page per doc with its
+layouts, byte maps and the clients each layout fits. The Wiki workflow
+rebuilds it from `docs/file-formats/` whenever a release changes the docs.
 
 ## Requirements
 

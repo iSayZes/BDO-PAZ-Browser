@@ -4,51 +4,61 @@
 
 Upgrade costs of the worker system: one entry per level group and level with the time, contribution points, silver and up to three items the upgrade to that level takes. Towns in [planttown.bss](planttown_bss.md) use level group 1.
 
-Example:
+## Versions
 
-```text
-group 1 level 13  need_time 600  need_point 10  need_money 0  no items
-group 4 level 13  need_time 600  need_point 50  need_money 0  no items
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type    | Field | Notes |
-| ------- | ------- | ----- | ----- |
-| `+0x00` | char[4] | magic | `PABR` |
-| `+0x04` | u32     | count | Number of entries; `76` on client 3473 |
+| Offset              | Type         | Field        | Notes |
+| ------------------- | ------------ | ------------ | ----- |
+| `+0x00`             | char[4]      | magic        | `PABR` |
+| `+0x04`             | u32          | count        | Number of entries; `76` on client 3473 |
+| `+0x08`             | Entry[count] | entries      | See Entry |
+| `entries+0x00`      | String Table | string_table | See String Table |
+| `string_table+0x00` | u32          | data_end     | `8 + count × 58`, the offset of the trailer |
+| `string_table+0x04` | u32          | zero         | `0` |
 
-### Entry (58 bytes, repeated `count` times)
+### Entry (58 bytes)
 
-| Offset  | Type      | Field       | Notes |
-| ------- | --------- | ----------- | ----- |
-| `+0x00` | u16       | group       | Map key: level group, see Level Groups |
-| `+0x02` | i16       | level       | Map key: level, from 1 |
-| `+0x04` | u16       | key_group   | Equals `group` in every entry |
-| `+0x06` | i16       | key_level   | Equals `level` in every entry |
-| `+0x08` | i32       | need_time   | `600` in every entry; the unit is not confirmed |
-| `+0x0C` | 3 × item  | need_items  | Three slots of a u32 item ID and an i64 count, below |
-| `+0x30` | i16       | need_point  | Contribution points: `10` in group 1, `5` in group 2, `50` in groups 3 and 4 |
-| `+0x32` | i64       | need_money  | `0` in every entry |
+| Offset  | Type         | Field       | Notes |
+| ------- | ------------ | ----------- | ----- |
+| `+0x00` | u16          | group       | Map key: level group, see Level Groups |
+| `+0x02` | i16          | level       | Map key: level, from 1 |
+| `+0x04` | u16          | key_group   | Equals `group` in every entry |
+| `+0x06` | i16          | key_level   | Equals `level` in every entry |
+| `+0x08` | i32          | need_time   | `600` in every entry; the unit is not confirmed |
+| `+0x0C` | Need Item[3] | need_items  | Three slots of a u32 item ID and an i64 count, see Need Item |
+| `+0x30` | i16          | need_point  | Contribution points: `10` in group 1, `5` in group 2, `50` in groups 3 and 4 |
+| `+0x32` | i64          | need_money  | `0` in every entry |
 
-Each `need_items` slot (12 bytes):
+### Need Item (12 bytes)
+
+Each `need_items` slot.
 
 | Offset  | Type | Field   | Notes |
 | ------- | ---- | ------- | ----- |
 | `+0x00` | u32  | item_id | `0` in every slot on client 3473 |
 | `+0x04` | i64  | count   | `0` in every slot on client 3473 |
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-| Offset  | Type | Field    | Notes |
-| ------- | ---- | -------- | ----- |
-| `+0x00` | u32  | -        | `0` |
-| `+0x04` | u32  | data_end | `8 + count × 58`, the offset of the trailer |
-| `+0x08` | u32  | -        | `0` |
+The PABR string table, here with no strings.
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Level Groups
 

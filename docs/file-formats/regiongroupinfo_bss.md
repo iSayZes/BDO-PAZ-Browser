@@ -4,15 +4,13 @@
 
 Lists the region groups that map regions belong to. Every region in `regioninfo.bss` carries a `regionGroupKey` (`+104` of its record head) that joins one row here, and each row here is used by at least one region. A row names the worldmap node of the group's main town or area, a concurrent user limit, three enable flags and a display position near the node.
 
-Example:
-
-```text
-region_group_key=1   -> node 1 Velia          (regions 5 Velia, 4, 16, 17, 18, 23 ...)
-region_group_key=31  -> node 601 Calpheon     (regions 77 Calpheon, 131, 257, 258 ...)
-region_group_key=202 -> node 1301 Valencia City
-```
-
 The region group key is the value the client reads with `getRegionGroupKey()` on a region (`panel_lobby_characterselect_all_2.luac`, where it picks the login queue of the character's region). bdo-data-extractor ([iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor), `FORMATS.md`, section 11) documents only the `regionGroupKey` join on the `regioninfo.bss` side; the layout below is my own reading of this file, with field names from the sources in Field Names.
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,34 +20,34 @@ The region group key is the value the client reads with `getRegionGroupKey()` on
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field              | Notes                                                          |
-| ------- | ------- | ------------------ | -------------------------------------------------------------- |
-| `+0x00` | char[4] | magic              | `PABR` (ASCII)                                                 |
-| `+0x04` | u32     | record_count       | Observed `250`                                                 |
-| `+0x08` | row[]   | records            | `record_count` rows of 51 bytes, byte-packed                   |
-| varies  | u32     | string_count       | Always `0`: the PABR string table is present but empty         |
-| EOF-8   | u32     | string_table_start | Absolute offset of `string_count`; equals `8 + 51 × count`     |
-| EOF-4   | u32     | zero               | Always `0`                                                     |
+### File Layout
+
+| Offset              | Type              | Field              | Notes                                                          |
+| ------------------- | ----------------- | ------------------ | -------------------------------------------------------------- |
+| `+0x00`             | char[4]           | magic              | `PABR` (ASCII)                                                 |
+| `+0x04`             | u32               | record_count       | Observed `250`                                                 |
+| `+0x08`             | Row[record_count] | records            | `record_count` rows of 51 bytes, byte-packed                   |
+| `records+0x00`      | String Table      | string_table       | Always empty: the PABR string table is present but empty       |
+| `string_table+0x00` | u32               | string_table_start | Absolute offset of `string_count`; equals `8 + 51 × count`     |
+| `string_table+0x04` | u32               | zero               | Always `0`                                                     |
 
 The file is `8 + 51 × 250 + 12 = 12770` bytes. The parser rejects a file whose rows do not end exactly at `string_table_start`.
 
-## Record Structure
-
-### Row (51 bytes, repeated `record_count` times)
+### Row (51 bytes)
 
 | Offset  | Type   | Field            | Notes                                                                                              |
 | ------- | ------ | ---------------- | -------------------------------------------------------------------------------------------------- |
 | `+0x00` | u16    | region_group_key | Unique; joins `regionGroupKey` of `regioninfo.bss`; `0` to `302`, with gaps, not in key order      |
-| `+0x02` | bool   | is_blocked_managing | Always `0`                                                                                      |
+| `+0x02` | u8     | is_blocked_managing | Always `0`                                                                                      |
 | `+0x03` | u16    | concurrent_playable_user_count | `500`, `999`, `1000`, `1300`, `2000`, `3000` (Velia) or `10000` (key 0), see below |
 | `+0x05` | u32    | node_key         | Worldmap node (`exploration.bss` key, LOC type 29); `0` on 19 rows                                 |
-| `+0x09` | bool   | enable_corp_productivity | `0` on 20 rows, nearly all without a node or position                                      |
-| `+0x0A` | bool   | enable_fishing_productivity | Equals `enable_corp_productivity` on every row                                          |
-| `+0x0B` | bool   | enable_loyalty   | `1` on 14 rows, all main towns, see below                                                          |
+| `+0x09` | u8     | enable_corp_productivity | `0` on 20 rows, nearly all without a node or position                                      |
+| `+0x0A` | u8     | enable_fishing_productivity | Equals `enable_corp_productivity` on every row                                          |
+| `+0x0B` | u8     | enable_loyalty   | `1` on 14 rows, all main towns, see below                                                          |
 | `+0x0C` | f32[3] | display_graph_position | World `x, y, z`; all zero on 19 rows                                                         |
-| `+0x18` | bool   | is_productivity_changed | Always `0`                                                                                  |
+| `+0x18` | u8     | is_productivity_changed | Always `0`                                                                                  |
 | `+0x19` | i32    | corp_productivity | Always `1000000`, the 2016 loader's default                                                       |
 | `+0x1D` | i32    | fishing_productivity | Always `1000000`, the 2016 loader's default                                                    |
 | `+0x21` | i32    | loyalty          | Always `1000000`, the 2016 loader's default                                                        |
@@ -58,6 +56,15 @@ The file is `8 + 51 × 250 + 12 = 12770` bytes. The parser rejects a file whose 
 | `+0x32` | u8     | unknown_32       | Always `0`                                                                                         |
 
 Earlier versions of this doc read `+0x05` as a u16 with two bytes of padding and called the fields from `+0x03` to `+0x21` `unknown_03` to `unknown_21`.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes      |
+| ------- | ------------------ | ------------ | ---------- |
+| `+0x00` | u32                | string_count | Always `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty      |
+
+## Row Values
 
 ### `concurrent_playable_user_count` Values (client 3473)
 

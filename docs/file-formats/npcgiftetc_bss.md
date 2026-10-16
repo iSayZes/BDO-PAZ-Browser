@@ -4,15 +4,21 @@
 
 Defines a tiny global configuration block for the NPC gift/confession system. The file is stored as one fixed-size `PABR` block and has no row count or companion offset table.
 
-Example:
+## Versions
 
-```text
-PABR config: unknown_04 / 06 / 08 / 0c / 18 = 5 / 5 / 1000 / 50000000 / 20
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
+
+## Layout 1
+
+### File Layout
 
 The file is exactly 32 bytes in the observed client data. Unlike DBSS records, it does not start with a record count; the first four bytes are the ASCII magic `PABR`.
 

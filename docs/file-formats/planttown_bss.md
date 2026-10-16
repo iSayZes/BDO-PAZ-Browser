@@ -4,14 +4,11 @@
 
 Town table of the worker system: one row per town node where workers can be hired, with the keys of its warehouse and worker capacity upgrades, its max upgrade level and its upgrade cost group. Node IDs resolve through LOC type `29`; most rows are towns, villages, guard posts, islands, or trade-zone nodes.
 
-Example rows:
+## Versions
 
-```text
-row 0  -> node 1785 -> Nampo's Moodle Village
-row 8  -> node 1623 -> Grána
-row 25 -> node 1301 -> Valencia City
-row 42 -> node 1    -> Velia
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,16 +18,9 @@ row 42 -> node 1    -> Velia
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
-
-| Offset  | Type  | Field | Notes                         |
-| ------- | ----- | ----- | ----------------------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                |
-| `+0x04` | u32   | count | Number of rows; observed `45` in the pre-2026-09-27 fixture, `46` in the 2026-09-27 client |
-
-### Row Stream
+### File Layout
 
 Rows start immediately after the header at `+0x08`. The observed file is fully described by:
 
@@ -40,19 +30,16 @@ Rows start immediately after the header at `+0x08`. The observed file is fully d
 
 The 2026-09-27 client holds 46 rows in 572 bytes.
 
-### Trailer (12 bytes)
+| Offset              | Type                   | Field        | Notes                                                |
+| ------------------- | ---------------------- | ------------ | ---------------------------------------------------- |
+| `+0x00`             | char[4]                | magic        | `PABR` (ASCII)                                       |
+| `+0x04`             | u32                    | count        | Number of rows; observed `45` in the pre-2026-09-27 fixture, `46` in the 2026-09-27 client |
+| `+0x08`             | Plant Town Row[count]  | rows         | See Plant Town Row                                   |
+| `rows+0x00`         | String Table           | string_table | The 12-byte trailer starts here; see String Table    |
+| `string_table+0x00` | u32                    | end_of_rows  | Byte offset immediately after rows; `8 + count * 12`; observed `548` |
+| `string_table+0x04` | u32                    | zero         | Observed zero                                        |
 
-Follows the last row.
-
-| Offset  | Type | Field       | Observed | Notes                                                |
-| ------- | ---- | ----------- | -------- | ---------------------------------------------------- |
-| `+0x00` | u32  | unknown_00  | `0`      | Observed zero                                        |
-| `+0x04` | u32  | end_of_rows | `548`    | Byte offset immediately after rows; `8 + count * 12` |
-| `+0x08` | u32  | unknown_08  | `0`      | Observed zero                                        |
-
-## Record Structure
-
-### Plant Town Row (12 bytes, repeated `count` times)
+### Plant Town Row (12 bytes)
 
 | Offset  | Type | Field                               | Notes                                         |
 | ------- | ---- | ----------------------------------- | --------------------------------------------- |
@@ -69,6 +56,15 @@ Derived field:
 ```text
 node_name = LOC type 29, str_id1=node_id, str_id4=0
 ```
+
+### String Table (variable: 4 bytes + strings)
+
+The PABR string table, here with no strings.
+
+| Offset  | Type               | Field        | Notes                   |
+| ------- | ------------------ | ------------ | ----------------------- |
+| `+0x00` | u32                | string_count | Observed zero           |
+| `+0x04` | pstr[string_count] | strings      | Empty                   |
 
 ## Reference Rows
 

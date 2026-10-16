@@ -4,25 +4,32 @@
 
 Upgrade parameter groups of the worker system: one entry per group with its highest upgrade level. Towns in [planttown.bss](planttown_bss.md) point at groups 1 (warehouse) and 2 (worker capacity), plant zones in [plantzone.dbss](plantzone_dbss.md) at 101 (base efficiency) and 201 (luck efficiency). The per-level values the groups stand for are not in the client file.
 
-Example:
+## Versions
 
-```text
-key 1    max_level 5   (warehouse, planttown.bss)
-key 101  max_level 0   (base efficiency, plantzone.dbss)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type    | Field | Notes                     |
-| ------- | ------- | ----- | ------------------------- |
-| `+0x00` | char[4] | magic | `PABR`                    |
-| `+0x04` | u32     | count | Number of entries; `4` on client 3473 |
+| Offset              | Type         | Field        | Notes                     |
+| ------------------- | ------------ | ------------ | ------------------------- |
+| `+0x00`             | char[4]      | magic        | `PABR`                    |
+| `+0x04`             | u32          | count        | Number of entries; `4` on client 3473 |
+| `+0x08`             | Entry[count] | entries      | See Entry                 |
+| `entries+0x00`      | String Table | string_table | See String Table          |
+| `string_table+0x00` | u32          | data_end     | `8 + count × 6`, the offset of the trailer |
+| `string_table+0x04` | u32          | zero         | `0` |
 
-### Entry (6 bytes, repeated `count` times)
+### Entry (6 bytes)
 
 | Offset  | Type | Field     | Notes |
 | ------- | ---- | --------- | ----- |
@@ -30,13 +37,14 @@ All multi-byte values are little-endian.
 | `+0x02` | u16  | param_key | Equals `key` in every entry |
 | `+0x04` | i16  | max_level | Highest upgrade level |
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-| Offset  | Type | Field    | Notes |
-| ------- | ---- | -------- | ----- |
-| `+0x00` | u32  | -        | `0` |
-| `+0x04` | u32  | data_end | `8 + count × 6`, the offset of the trailer |
-| `+0x08` | u32  | -        | `0` |
+The PABR string table, here with no strings.
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Entries
 

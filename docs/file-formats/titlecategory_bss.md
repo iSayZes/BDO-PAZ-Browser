@@ -4,42 +4,50 @@
 
 Lists the title IDs of each title category. A `PABR` file holding one counted list of `title.dbss` title IDs per category, in category order, followed by the usual `PABR` trailer.
 
-Example:
+## Versions
 
-```text
-category 0 (World)  -> title_id 211, 212, 213, ...
-category 1 (Combat) -> title_id 1, 2, 3, ...
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-### Header (8 bytes)
+## Layout 1
 
-| Offset  | Type    | Field          | Notes                                  |
-| ------- | ------- | -------------- | -------------------------------------- |
-| `+0x00` | char[4] | magic          | `PABR` (ASCII)                         |
-| `+0x04` | u32     | category_count | Number of category lists; observed `4` |
+### File Layout
 
-### Category List (repeated `category_count` times)
+| Offset              | Type                          | Field          | Notes                                  |
+| ------------------- | ----------------------------- | -------------- | -------------------------------------- |
+| `+0x00`             | char[4]                       | magic          | `PABR` (ASCII)                         |
+| `+0x04`             | u32                           | category_count | Number of category lists; observed `4` |
+| `+0x08`             | Category List[category_count] | lists          | See Category List                      |
+| `lists+0x00`        | String Table                  | string_table   | The 12-byte trailer starts here; see String Table |
+| `string_table+0x00` | u32                           | end_of_entries | Byte offset right after the last list; `file_size - 12`  |
+| `string_table+0x04` | u32                           | zero           | Observed `0`                           |
+
+The number of listed titles follows from the header and trailer alone: `(end_of_entries - 8) / 4 - category_count`.
+
+### Category List (variable: 4 bytes + title IDs)
 
 The list's position is its `category_id`, starting at `0`.
 
-| Offset  | Type       | Field       | Notes                                   |
-| ------- | ---------- | ----------- | --------------------------------------- |
-| `+0x00` | u32        | title_count | Number of title IDs in this category    |
-| `+0x04` | u32[count] | title_ids   | `title.dbss` title IDs                  |
+| Offset  | Type             | Field       | Notes                                   |
+| ------- | ---------------- | ----------- | --------------------------------------- |
+| `+0x00` | u32              | title_count | Number of title IDs in this category    |
+| `+0x04` | u32[title_count] | title_ids   | `title.dbss` title IDs                  |
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-| Offset  | Type | Field          | Notes                                                    |
-| ------- | ---- | -------------- | -------------------------------------------------------- |
-| `+0x00` | u32  | unknown_00     | Observed `0`                                             |
-| `+0x04` | u32  | end_of_entries | Byte offset right after the last list; `file_size - 12`  |
-| `+0x08` | u32  | unknown_08     | Observed `0`                                             |
+The PABR string table, here with no strings.
 
-The number of listed titles follows from the header and trailer alone: `(end_of_entries - 8) / 4 - category_count`.
+| Offset  | Type               | Field        | Notes        |
+| ------- | ------------------ | ------------ | ------------ |
+| `+0x00` | u32                | string_count | Observed `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty        |
 
 ## Enum Values
 

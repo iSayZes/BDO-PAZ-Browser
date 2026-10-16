@@ -7,13 +7,11 @@ the highest level of its [servantexperience.dbss](servantexperience_dbss.md)
 records. On client 3464 the file has 418 rows, the same servants as
 `servantexperience.dbss`.
 
-Example (client 3464):
+## Versions
 
-```text
-9989 Arduanatt:             100
-9808 Horse:                  30
-31041 Carrack:                1
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -23,16 +21,16 @@ Example (client 3464):
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No magic and no trailer: a count, then the rows to the end of the file.
 
-| Offset  | Type  | Field | Notes                                  |
-| ------- | ----- | ----- | -------------------------------------- |
-| `+0x00` | u32   | count | 418 on client 3464                     |
-| `+0x04` | row[] | rows  | `count` rows of 4 bytes, ending at EOF |
-
-## Record Structure
+| Offset  | Type       | Field | Notes                                  |
+| ------- | ---------- | ----- | -------------------------------------- |
+| `+0x00` | u32        | count | 418 on client 3464                     |
+| `+0x04` | Row[count] | rows  | `count` rows of 4 bytes, ending at EOF |
 
 ### Row (4 bytes)
 

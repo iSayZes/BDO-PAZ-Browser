@@ -10,37 +10,45 @@ Quest lists of the Black Spirit Pass (season pass) window. Three files share one
 | `seasonpassquestlistforcash.bss`   | The Black Spirit Pass (premium) quest of each pass row        |
 | `seasonpassquestlist.bss`          | Both: every quest of the two files above, in another order    |
 
-Example (client 3464):
+## Versions
 
-```text
-fornormal: quest 50000 / 1 -> [Summer Season] Leveling Up, One Step at a Time! 1
-forcash:   quest 50000 / 2 -> [Summer Season] Leveling Up, One Step at a Time! 1 (Black Spirit Pass)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
+
+None.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (8 bytes)
+### File Layout
 
-| Offset  | Type  | Field | Notes                                   |
-| ------- | ----- | ----- | --------------------------------------- |
-| `+0x00` | u8[4] | magic | `PABR` (ASCII)                          |
-| `+0x04` | u32   | count | Number of entries                       |
+| Offset              | Type         | Field          | Notes                                     |
+| ------------------- | ------------ | -------------- | ----------------------------------------- |
+| `+0x00`             | char[4]      | magic          | `PABR` (ASCII)                            |
+| `+0x04`             | u32          | count          | Number of entries                         |
+| `+0x08`             | Entry[count] | entries        | See Entry                                 |
+| `entries+0x00`      | String Table | string_table   | The 12-byte trailer starts here; see String Table |
+| `string_table+0x00` | u32          | end_of_entries | `8 + count * 4`, where the trailer starts |
+| `string_table+0x04` | u32          | zero           | `0`                                       |
 
-### Entry (4 bytes, repeated `count` times)
+### Entry (4 bytes)
 
 | Offset  | Type | Field           | Notes                                                       |
 | ------- | ---- | --------------- | ----------------------------------------------------------- |
 | `+0x00` | u32  | packed_quest_id | `(quest_id << 16) \| quest_chain_id`; LOC type 18 title key |
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-| Offset  | Type | Field          | Notes                                  |
-| ------- | ---- | -------------- | -------------------------------------- |
-| `+0x00` | u32  | unknown_00     | `0`                                    |
-| `+0x04` | u32  | end_of_entries | `8 + count * 4`, where the trailer starts |
-| `+0x08` | u32  | unknown_08     | `0`                                    |
+The PABR string table, here with no strings.
+
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Pass Rows
 

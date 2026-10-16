@@ -9,13 +9,11 @@ level-up. Each record holds
 the stat body of [experience.bss](experience_bss.md) in its middle. On client
 3464 the file has 20,885 records for 418 servants.
 
-Example (client 3464):
+## Versions
 
-```text
-9989 Arduanatt, level 1:   EXP 22,625     HP 2,140   stamina 3,540   weight 180 LT  accel 137.5%  speed 137.5%  turn 122.5%  brake 122.5%  dice 1D13
-9989 Arduanatt, level 30:  EXP 1,282,600  HP 35,200  stamina 19,200  weight 209 LT  accel 137.5%  speed 137.5%  turn 122.5%  brake 122.5%  dice 1D13
-31521 Doom, level 1:       EXP 22,625     HP 2,272   stamina 3,496   weight 180 LT  accel 130.0%  speed 130.0%  turn 139.0%  brake 139.0%  dice 1D13
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -30,23 +28,66 @@ same number.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### `servantexperience.dbss`
+### File Layout
 
-| Offset  | Type     | Field   | Notes                                         |
-| ------- | -------- | ------- | --------------------------------------------- |
-| `+0x00` | u32      | count   | 20,885 on client 3464; equals the index count |
-| `+0x04` | record[] | records | Back to back, variable size                   |
+| Offset  | Type                | Field   | Notes                                         |
+| ------- | ------------------- | ------- | --------------------------------------------- |
+| `+0x00` | u32                 | count   | 20,885 on client 3464; equals the index count |
+| `+0x04` | Level Record[count] | records | Back to back, variable size                   |
 
 The record sizes sum to the file size minus 4.
 
+### Level Record (variable: 250 bytes + strings)
+
+352 to 412 bytes on client 3464. The record size is 352 plus twice the
+characters of the six dice strings. Offsets after `+0xAA` follow the strings.
+
+| Offset              | Type            | Field        | Notes                                                                 |
+| ------------------- | --------------- | ------------ | --------------------------------------------------------------------- |
+| `+0x00`             | u16             | character_id | Servant character, as in `characterstatic.dbss`                       |
+| `+0x02`             | i32             | level        | 0 to the servant's top level                                          |
+| `+0x06`             | u64             | exp          | EXP from `level` to `level + 1` (Notes)                               |
+| `+0x0E`             | f32             | max_hp       | Max HP, shown as is; `1.0` at level 0                                 |
+| `+0x12`             | u32             | max_mp       | Max stamina (`getMaxMp()`), shown as is; 0 on ships; `1` at level 0   |
+| `+0x16`             | bytes[20]       | unknown_16   | Always 0                                                              |
+| `+0x2A`             | f32             | unknown_2a   | `1.0` at level 0, else 0                                              |
+| `+0x2E`             | bytes[20]       | unknown_2e   | Always 0                                                              |
+| `+0x42`             | u32             | max_critical_rate | Always `5`                                                       |
+| `+0x46`             | u32             | max_drop_item_luck | Always `5`                                                      |
+| `+0x4A`             | u32             | max_fishing_luck | Always `5`                                                        |
+| `+0x4E`             | u32             | max_collection_luck | Always `5`                                                     |
+| `+0x52`             | i64             | max_weight   | Max weight, LT x 10,000; 0 at level 0                                 |
+| `+0x5A`             | f32             | unknown_5a   | Always `1.0`                                                          |
+| `+0x5E`             | bytes[16]       | unknown_5e   | Always 0                                                              |
+| `+0x6E`             | u32[3]          | max_varied_speed | Always `10, 10, 10`: attack, movement and casting speed limits (Field Names) |
+| `+0x7A`             | f32             | unknown_7a   | `1.0` at level 0, else 0                                              |
+| `+0x7E`             | bytes[12]       | unknown_7e   | Always 0                                                              |
+| `+0x8A`             | u32[8]          | stats        | By `ServantStatType` (Enum Values), percent x 10,000                  |
+| `+0xAA`             | Body String[3]  | unknown_aa   | Always `1D1` and 0; the parser keeps the strings as `unknown_aa` and the u32s as `unknown_aa_values` |
+| `unknown_aa+0x00`   | bytes[48]       | unknown_e0   | Always 0                                                              |
+| `unknown_aa+0x30`   | str16[6]        | growth_dice  | Level-up bonus dice: HP, stamina, acceleration, speed, cornering, brake (Notes) |
+| `growth_dice+0x00`  | bytes[32]       | unknown_end  | Always 0                                                              |
+
+Every byte from `+0x0E` to `+0xA9` that has no name is 0 in every record on
+client 3464.
+
+### Body String (variable: 12 bytes + text)
+
+| Offset            | Type  | Field           | Notes                     |
+| ----------------- | ----- | --------------- | ------------------------- |
+| `+0x00`           | str16 | unknown_00      | Always `1D1`              |
+| `unknown_00+0x00` | u32   | unknown_tail_00 | Always 0                  |
+
 ### `servantexperienceoffset.dbss`
 
-| Offset  | Type    | Field   | Notes                                |
-| ------- | ------- | ------- | ------------------------------------ |
-| `+0x00` | u32     | count   | Number of entries                    |
-| `+0x04` | entry[] | entries | `count` entries of 12 bytes          |
+| Offset  | Type             | Field   | Notes                                |
+| ------- | ---------------- | ------- | ------------------------------------ |
+| `+0x00` | u32              | count   | Number of entries                    |
+| `+0x04` | Index Row[count] | entries | `count` entries of 12 bytes          |
+
+### Index Row (12 bytes)
 
 | Offset  | Type | Field  | Notes                                                      |
 | ------- | ---- | ------ | ---------------------------------------------------------- |
@@ -56,45 +97,6 @@ The record sizes sum to the file size minus 4.
 
 The index is not in file order: the first entry is level 0 of character
 31017, whose record sits after its level 1 record.
-
-## Record Structure
-
-### Wide String
-
-| Offset  | Type      | Field  | Notes                                 |
-| ------- | --------- | ------ | ------------------------------------- |
-| `+0x00` | u64       | length | Character count                       |
-| `+0x08` | utf16le[] | text   | `length` characters, no terminator    |
-
-### Level Record (352 to 412 bytes on client 3464)
-
-The record size is 352 plus twice the characters of the six dice strings.
-Offsets after `+0x110` follow the strings.
-
-| Offset   | Type             | Field        | Notes                                                                 |
-| -------- | ---------------- | ------------ | --------------------------------------------------------------------- |
-| `+0x00`  | u16              | character_id | Servant character, as in `characterstatic.dbss`                       |
-| `+0x02`  | i32              | level        | 0 to the servant's top level                                          |
-| `+0x06`  | u64              | exp          | EXP from `level` to `level + 1` (Notes)                               |
-| `+0x0E`  | f32              | max_hp       | Max HP, shown as is; `1.0` at level 0                                 |
-| `+0x12`  | u32              | max_mp       | Max stamina (`getMaxMp()`), shown as is; 0 on ships; `1` at level 0   |
-| `+0x2A`  | f32              | unknown_2a   | `1.0` at level 0, else 0                                              |
-| `+0x42`  | u32              | max_critical_rate | Always `5`                                                       |
-| `+0x46`  | u32              | max_drop_item_luck | Always `5`                                                      |
-| `+0x4A`  | u32              | max_fishing_luck | Always `5`                                                        |
-| `+0x4E`  | u32              | max_collection_luck | Always `5`                                                     |
-| `+0x52`  | i64              | max_weight   | Max weight, LT x 10,000; 0 at level 0                                 |
-| `+0x5A`  | f32              | unknown_5a   | Always `1.0`                                                          |
-| `+0x6E`  | u32[3]           | max_varied_speed | Always `10, 10, 10`: attack, movement and casting speed limits (Field Names) |
-| `+0x7A`  | f32              | unknown_7a   | `1.0` at level 0, else 0                                              |
-| `+0x8A`  | u32[8]           | stats        | By `ServantStatType` (Enum Values), percent x 10,000                  |
-| `+0xAA`  | (wstr, u32) x 3  | unknown_aa, unknown_aa_values | Always `1D1` and 0; the parser keeps the strings as `unknown_aa` and the u32s as `unknown_aa_values` |
-| `+0xE0`  | byte[48]         | unknown_e0   | Always 0                                                              |
-| `+0x110` | wstr[6]          | growth_dice  | Level-up bonus dice: HP, stamina, acceleration, speed, cornering, brake (Notes) |
-| after    | byte[32]         | unknown_end  | Always 0                                                              |
-
-Every byte from `+0x0E` to `+0xA9` that the table leaves out is 0 in every
-record on client 3464.
 
 ## Enum Values
 

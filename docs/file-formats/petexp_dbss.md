@@ -4,13 +4,11 @@
 
 Defines pet experience curves keyed by EXP table ID. Each record stores a maximum pet level and per-level u64 EXP thresholds. Companion `petexpoffset.dbss` provides keyed lookup into this fixed-size record stream.
 
-Example:
+## Versions
 
-```text
-exp_table_id: 9
-max_level: 50
-level_exp[1..5]: 2055, 2260, 2599, 2989, 3437
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,37 +18,60 @@ level_exp[1..5]: 2055, 2260, 2599, 2989, 3437
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (6 bytes)
+### File Layout
 
-| Offset  | Type | Field            | Notes                                                                                 |
-| ------- | ---- | ---------------- | ------------------------------------------------------------------------------------- |
-| `+0x00` | u32  | count            | Number of EXP table records (observed: 9)                                             |
-| `+0x04` | u16  | first_record_key | `exp_table_id` of the first record; this is record 0's key prefix, not header payload |
+| Offset  | Type          | Field   | Notes                                     |
+| ------- | ------------- | ------- | ----------------------------------------- |
+| `+0x00` | u32           | count   | Number of EXP table records (observed: 9) |
+| `+0x04` | Record[count] | records | See Record                                |
 
-> Records begin immediately after the u32 count. The two bytes at `+0x04` are the first record's key prefix.
+Records begin immediately after the u32 count. The two bytes at `+0x04` are
+the first record's key prefix (`first_record_key` in earlier versions of this
+doc), not header payload.
 
-### Record (408 bytes in stream, repeated `count` times)
+### Record (408 bytes)
 
 Each record is stored as `[u16 key_prefix][data_bytes]`. The companion offset points to `data_bytes`, so `record_start = data_offset - 2`.
 
-| Offset  | Type | Field      | Notes                                               |
-| ------- | ---- | ---------- | --------------------------------------------------- |
-| `+0x00` | u16  | key_prefix | Equals `exp_table_id` in the following data payload |
-| `+0x02` | u8[] | data_bytes | 406-byte payload; see below                         |
+| Offset  | Type         | Field      | Notes                                               |
+| ------- | ------------ | ---------- | --------------------------------------------------- |
+| `+0x00` | u16          | key_prefix | Equals `exp_table_id` in the following data payload |
+| `+0x02` | Data Payload | data_bytes | 406-byte payload; see Data Payload                  |
 
 ### Data Payload (406 bytes)
 
 Offsets are relative to `data_offset` from `petexpoffset.dbss`.
 
-| Offset  | Type     | Field        | Notes                                                                                  |
-| ------- | -------- | ------------ | -------------------------------------------------------------------------------------- |
-| `+0x00` | u16      | exp_table_id | Matches the 2-byte key prefix and the companion offset key                              |
-| `+0x02` | u32      | max_level    | Number of valid EXP thresholds in `level_exp` (observed: 10, 20, 30, 50)               |
-| `+0x06` | u64 x 50 | level_exp    | Fixed-capacity threshold array; only first `max_level` values are populated            |
+| Offset  | Type    | Field        | Notes                                                                                  |
+| ------- | ------- | ------------ | -------------------------------------------------------------------------------------- |
+| `+0x00` | u16     | exp_table_id | Matches the 2-byte key prefix and the companion offset key                              |
+| `+0x02` | u32     | max_level    | Number of valid EXP thresholds in `level_exp` (observed: 10, 20, 30, 50)               |
+| `+0x06` | u64[50] | level_exp    | Fixed-capacity threshold array; only first `max_level` values are populated            |
 
 Unused `level_exp` slots after `max_level` are zero-filled. Data size is always 406 bytes (`2 + 4 + 50 * 8`) even when `max_level` is less than 50.
+
+### `petexpoffset.dbss`
+
+Provides keyed lookup into `petexp.dbss`.
+
+| Offset  | Type              | Field | Notes                          |
+| ------- | ----------------- | ----- | ------------------------------ |
+| `+0x00` | u32               | count | Must equal `petexp.dbss` count |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                 |
+
+### Offset Row (10 bytes)
+
+| Offset  | Type | Field        | Notes                                                                               |
+| ------- | ---- | ------------ | ----------------------------------------------------------------------------------- |
+| `+0x00` | u16  | exp_table_id | Matches `key_prefix` and data payload `exp_table_id`                                |
+| `+0x02` | u32  | data_offset  | Absolute byte offset in `petexp.dbss` to the data payload, after the 2-byte prefix  |
+| `+0x06` | u32  | data_size    | Size of data payload in bytes (observed: 406 for every record)                      |
+
+Offset records are ordered by descending key: 9, 8, 7, 6, 5, 4, 3, 2, 1.
+
+The rows are the same `[u16 id][u32 offset][u32 size]` rows as a PABR offset table, but the file has no `PABR` magic and no 12-byte trailer (94 bytes = 4 + 9 x 10). The parser reads it with `parse_bare_offset_rows` from `_common/pabr_offset.py`.
 
 ## Observed Records
 
@@ -67,28 +88,6 @@ Unused `level_exp` slots after `max_level` are zero-filled. Data size is always 
 | 1            | 10        | 120, 180, 260, 340, 420               | 700, 800, 1200            |
 
 Together the nine tables hold 160 level thresholds. Both files are byte-identical in the pre-2026-09-27 fixture and the 2026-09-27 client.
-
-## petexpoffset.dbss
-
-Provides keyed lookup into `petexp.dbss`.
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                         |
-| ------- | ---- | ----- | ----------------------------- |
-| `+0x00` | u32  | count | Must equal `petexp.dbss` count |
-
-### Offset Record (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field        | Notes                                                                               |
-| ------- | ---- | ------------ | ----------------------------------------------------------------------------------- |
-| `+0x00` | u16  | exp_table_id | Matches `key_prefix` and data payload `exp_table_id`                                |
-| `+0x02` | u32  | data_offset  | Absolute byte offset in `petexp.dbss` to the data payload, after the 2-byte prefix  |
-| `+0x06` | u32  | data_size    | Size of data payload in bytes (observed: 406 for every record)                      |
-
-Offset records are ordered by descending key: 9, 8, 7, 6, 5, 4, 3, 2, 1.
-
-The rows are the same `[u16 id][u32 offset][u32 size]` rows as a PABR offset table, but the file has no `PABR` magic and no 12-byte trailer (94 bytes = 4 + 9 x 10). The parser reads it with `parse_bare_offset_rows` from `_common/pabr_offset.py`.
 
 ## Notes
 

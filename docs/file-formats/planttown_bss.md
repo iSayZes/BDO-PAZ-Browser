@@ -46,9 +46,9 @@ Follows the last row.
 
 | Offset  | Type | Field       | Observed | Notes                                                |
 | ------- | ---- | ----------- | -------- | ---------------------------------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      | Observed zero                                        |
+| `+0x00` | u32  | unknown_00  | `0`      | Observed zero                                        |
 | `+0x04` | u32  | end_of_rows | `548`    | Byte offset immediately after rows; `8 + count * 12` |
-| `+0x08` | u32  | reserved_b  | `0`      | Observed zero                                        |
+| `+0x08` | u32  | unknown_08  | `0`      | Observed zero                                        |
 
 ## Record Structure
 

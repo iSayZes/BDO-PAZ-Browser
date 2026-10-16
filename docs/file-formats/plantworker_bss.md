@@ -57,7 +57,7 @@ Each icon entry has one leading zero byte before the length:
 | -------- | ---- | --------------- | -------------------------------------------------- |
 | `+0x00`  | u16  | worker_id       | Worker/NPC ID; LOC type `6` name key               |
 | `+0x02`  | u16  | next_worker_id  | Next-grade/linked worker ID, or `0`                |
-| `+0x04`  | u16  | reserved_a      | Observed `0`                                       |
+| `+0x04`  | u16  | unknown_04      | Observed `0`                                       |
 | `+0x06`  | u32  | grade_class     | Grade the game colors the name by, see Grade Class |
 | `+0x0A`  | u32  | unknown_0a      | Always `grade_class + 5`; meaning unresolved       |
 | `+0x0E`  | u32  | move_speed      | Move speed × 100 (`200` is 2.00 in game)            |

@@ -92,7 +92,7 @@ An index file with one entry per personality record.
 | `+0x00` | u16  | personality_id | Matches `personality_id` in the main record                                    |
 | `+0x02` | u32  | data_offset    | Byte offset into main file; 2 bytes past record start (skips `personality_id`) |
 | `+0x06` | u16  | data_size      | Always 32 (= record size minus the 2-byte personality_id header)               |
-| `+0x08` | u16  | -              | Not parsed; assumed padding                                                    |
+| `+0x08` | u16  | unknown_08     | Not parsed                                                                     |
 
 `record_start = data_offset - 2`
 

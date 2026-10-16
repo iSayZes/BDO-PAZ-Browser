@@ -56,7 +56,7 @@ Fields are unaligned.
 | `+0x04` | u8    | display_level | The level the client shows, on the weapon scale; see Display Level below |
 | `+0x05` | u32   | icon_ref      | String table index of the icon path; never empty                         |
 | `+0x09` | u32   | name_ref      | String table index of the Korean name; never empty                       |
-| `+0x0D` | u8[4] | reserved      | Always `0`                                                               |
+| `+0x0D` | u8[4] | unknown_0d    | Always `0`                                                               |
 | `+0x11` | u8    | unknown_11    | `1` in 2,481 rows; the same in every row of one item, see Open Questions |
 | `+0x12` | u8    | unknown_12    | `1` in 2,409 rows; the same in every row of one item, see Open Questions |
 

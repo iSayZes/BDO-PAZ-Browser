@@ -31,7 +31,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x08` | row[]   | records            | `record_count` rows of 51 bytes, byte-packed                   |
 | varies  | u32     | string_count       | Always `0`: the PABR string table is present but empty         |
 | EOF-8   | u32     | string_table_start | Absolute offset of `string_count`; equals `8 + 51 × count`     |
-| EOF-4   | u32     | zero_trailer       | Always `0`                                                     |
+| EOF-4   | u32     | zero               | Always `0`                                                     |
 
 The file is `8 + 51 × 250 + 12 = 12770` bytes. The parser rejects a file whose rows do not end exactly at `string_table_start`.
 
@@ -55,7 +55,7 @@ The file is `8 + 51 × 250 + 12 = 12770` bytes. The parser rejects a file whose 
 | `+0x21` | i32    | loyalty          | Always `1000000`, the 2016 loader's default                                                        |
 | `+0x25` | i32[3] | varied_productivity | Always `0`: `_variedCorpProductivity`, `_variedFishingProductivity`, `_variedLoyalty`           |
 | `+0x31` | u8     | unknown_31       | Always `1`; after the 2016 members, see Open Questions                                             |
-| `+0x32` | u8     | padding          | Always `0`                                                                                         |
+| `+0x32` | u8     | unknown_32       | Always `0`                                                                                         |
 
 Earlier versions of this doc read `+0x05` as a u16 with two bytes of padding and called the fields from `+0x03` to `+0x21` `unknown_03` to `unknown_21`.
 

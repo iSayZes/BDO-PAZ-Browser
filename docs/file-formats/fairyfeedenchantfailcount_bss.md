@@ -68,9 +68,9 @@ and [zodiacsignindex.bss](zodiacsignindex_bss.md).
 
 | Offset  | Type | Field          | Observed | Notes                                 |
 | ------- | ---- | -------------- | -------- | ------------------------------------- |
-| `+0x00` | u32  | reserved_a     | 0        | Always zero                           |
+| `+0x00` | u32  | unknown_00     | 0        | Always zero                           |
 | `+0x04` | u32  | end_of_records | 135      | Byte offset just past the last record |
-| `+0x08` | u32  | reserved_b     | 0        | Always zero                           |
+| `+0x08` | u32  | unknown_08     | 0        | Always zero                           |
 
 ## Decoded Table
 

@@ -33,9 +33,9 @@ All multi-byte values are little-endian.
 | Offset  | Type | Field       | Notes                                                              |
 | ------- | ---- | ----------- | ------------------------------------------------------------------ |
 | `+0x00` | u16  | key         | `(species << 8) \| variant`; low byte = variant, high byte = species |
-| `+0x02` | u16  | -           | Always 0; padding                                                  |
+| `+0x02` | u16  | unknown_02  | Always 0                                                           |
 | `+0x04` | u16  | key_dup     | Duplicate of `key`                                                 |
-| `+0x06` | u16  | -           | Always 0; padding                                                  |
+| `+0x06` | u16  | unknown_06  | Always 0                                                           |
 | `+0x08` | u32  | grade       | Pet grade for this (species, variant): 1 Classic, 2 Rare, 3 Premium, 4 Event, 5 Special, see In-Game Checks |
 
 > The combined key is `(species << 8) | variant`, stored as a u16 followed by a zero u16. This matches the key format used in `petgradeoffset.dbss`.
@@ -55,12 +55,12 @@ Provides O(1) lookup by (species, variant) key, one entry per main-file record.
 | Offset  | Type | Field       | Notes                                                                    |
 | ------- | ---- | ----------- | ------------------------------------------------------------------------ |
 | `+0x00` | u16  | key         | `(species << 8) \| variant`; low byte = variant, high byte = species     |
-| `+0x02` | u16  | -           | Always 0; padding                                                        |
+| `+0x02` | u16  | unknown_02  | Always 0                                                                 |
 | `+0x04` | u32  | data_offset | Absolute byte offset in `petgrade.dbss` past the 4-byte key prefix      |
 | `+0x08` | u32  | data_size   | Always 8 (= record size minus the 4-byte key prefix)                    |
 
 `record_start = data_offset - 4` gives the position of the full 12-byte record in the main file.
-The parser reads `key` and the padding as one u32 (`parse_bare_u32_offset_rows()`).
+The parser reads `key` and `unknown_02` as one u32 (`parse_bare_u32_offset_rows()`).
 
 ## Joining with pet.dbss
 

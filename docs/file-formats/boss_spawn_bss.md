@@ -47,12 +47,12 @@ All multi-byte values are little-endian.
 | `+0x1C` | u32     | unknown_1c  | `11` on every row                                                      |
 | `+0x20` | u8      | unknown_20  | `1` on every row                                                       |
 | `+0x21` | u8      | unknown_21  | `0` on keys 5 and 8, `1` on the rest                                    |
-| `+0x22` | u8[4]   | reserved_22 | Zero on every row                                                      |
+| `+0x22` | u8[4]   | unknown_22  | Zero on every row                                                      |
 | `+0x26` | u8      | unknown_26  | `1` on every row                                                       |
-| `+0x27` | u8      | reserved_27 | Zero on every row                                                      |
+| `+0x27` | u8      | unknown_27  | Zero on every row                                                      |
 | `+0x28` | u8      | unknown_28  | Same as `unknown_21` on every row                                      |
 | `+0x29` | u8      | unknown_29  | `1` on every row                                                       |
-| `+0x2A` | u8      | reserved_2a | Zero on every row                                                      |
+| `+0x2A` | u8      | unknown_2a  | Zero on every row                                                      |
 
 Keys, with the boss from `boss_spawnlevel.bss` (client 3464):
 

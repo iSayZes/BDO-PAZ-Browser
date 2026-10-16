@@ -30,7 +30,7 @@ All multi-byte values are little-endian.
 | ...      | u32     | string_count       | Number of strings; `197` on client 3464                      |
 | ...      | entry[] | strings            | `u8 is_wide`, `u32 byte_length`, then the text               |
 | EOF - 8  | u32     | string_table_start | Offset of `string_count`, where the groups end               |
-| EOF - 4  | u32     | reserved           | Always `0`                                                   |
+| EOF - 4  | u32     | zero               | Always `0`                                                   |
 
 The string table has the shape `exploration.bss` and `npcsimply.bss` use (`_common/pabr_strings.py`). Every string here is wide (UTF-16LE). Walking `count` groups ends exactly at `string_table_start`, and the string table ends exactly at the trailer.
 

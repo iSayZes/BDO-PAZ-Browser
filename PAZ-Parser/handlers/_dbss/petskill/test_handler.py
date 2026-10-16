@@ -85,7 +85,7 @@ PETSKILL_OFFSET_CASE = HandlerCase(
         SchemaTest(required_keys=["pet_skill_id", "data_offset", "data_size", "record_start"]),
         DeclaredCountTest(declared=header_count()),
         RangeTest(col="data_size", min_val=189, max_val=190),
-        RangeTest(col="padding", min_val=0, max_val=0),
+        RangeTest(col="unknown_08", min_val=0, max_val=0),
     ],
 )
 

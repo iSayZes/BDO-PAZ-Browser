@@ -40,7 +40,7 @@ def parse_employeename_records(data: bytes, offset_data: bytes) -> list[dict]:
 
         records.append({
             "employee_name_id": employee_name_id,
-            "name_ko": name,
+            "name_kr": name,
             "char_count": char_count,
             "unknown_08": unknown_08,
             "terminator": terminator,

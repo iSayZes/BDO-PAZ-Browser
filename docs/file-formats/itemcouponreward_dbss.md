@@ -42,7 +42,7 @@ No record structure can be inferred because the file holds no records.
 | `+0x00` | u32  | count      | `4` on client 3464      |
 | `+0x04` | u32  | unknown_04 | `0` on client 3464      |
 | `+0x08` | u32  | unknown_08 | `0` on client 3464      |
-| `+0x0C` | u32  | unknown_0C | `0` on client 3464      |
+| `+0x0C` | u32  | unknown_0c | `0` on client 3464      |
 | `+0x10` | u32  | unknown_10 | `0` on client 3464      |
 
 Every other bare offset companion has rows of key, u32 offset and u32 size

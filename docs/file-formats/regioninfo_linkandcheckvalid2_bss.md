@@ -30,7 +30,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x08` | record  | records            | Variable records packed back-to-back with no alignment |
 | varies  | pool    | string_table       | Shared `pabr_strings` layout; always empty here (`u32 count = 0`) |
 | EOF-8   | u32     | string_table_start | Absolute file offset of `string_table.count`; the record walk ends exactly there |
-| EOF-4   | u32     | zero_trailer       | Observed `0` |
+| EOF-4   | u32     | zero               | Observed `0` |
 
 ## Record Structure
 

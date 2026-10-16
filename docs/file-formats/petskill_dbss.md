@@ -58,11 +58,11 @@ Rows start at payload offset `+0x02 + row_index * 17`. Offsets below are relativ
 | ------- | ---- | ------------ | --------------------------------------------------------------------------------------- |
 | `+0x00` | u8   | skill_type   | 1–11 on client 3473; same value in all rows of a record, see Skill Types                |
 | `+0x01` | u8   | row_level    | Row 0 uses 1; rows 1–10 use 1–10                                                        |
-| `+0x02` | u16  | -            | Always 0                                                                                |
+| `+0x02` | u16  | unknown_02   | Always 0                                                                                |
 | `+0x04` | u32  | raw_value_a  | Primary effect value. Row 0 is always 2560; rows 1–10 vary by `pet_skill_id`            |
 | `+0x08` | u32  | raw_value_b  | Secondary effect value. Row 0 is always 2560; rows 1–10 are 0 or a skill-specific value |
 | `+0x0C` | u32  | unknown_0c   | Row 0 = 256; rows 1–9 = `(row_level + 1) * 256`; row 10 is 0 or 256                     |
-| `+0x10` | u8   | -            | Always 0                                                                                |
+| `+0x10` | u8   | unknown_10   | Always 0                                                                                |
 
 Earlier versions of this doc called `skill_type` `unknown_00` and before that `skill_group`, `unknown_0c` `row_marker` and the payload's `unknown_bd` `extra_marker`.
 
@@ -81,7 +81,7 @@ Earlier versions of this doc called `skill_type` `unknown_00` and before that `s
 | `+0x00` | u16  | pet_skill_id| Matches `pet_skill_id` in the main record                                   |
 | `+0x02` | u32  | data_offset | Absolute byte offset in `petskill.dbss` to the payload, after key prefix    |
 | `+0x06` | u16  | data_size   | 189 or 190 bytes                                                            |
-| `+0x08` | u16  | -           | Always 0                                                                    |
+| `+0x08` | u16  | unknown_08  | Always 0                                                                    |
 
 `record_start = data_offset - 2` gives the position of the 2-byte key prefix.
 
@@ -128,7 +128,7 @@ The parser yields ten level rows per record: 490 rows for the 49 records. Both f
 
 - File size is 9380 bytes: 4-byte count plus 49 wrapper records.
 - `petskilloffset.dbss` size is 494 bytes: 4-byte count plus 49 × 10-byte offset rows.
-- All offset-table padding fields are 0.
+- `unknown_08` of the offset table is 0 in every record.
 - Offset rows are sorted descending for high IDs first, not ascending by key.
 - `raw_value_a` and `raw_value_b` are named as raw values because the display scale is not confirmed. Some values are multiples of 256, 256,000, or 25,600,000.
 - This file is distinct from `petequipskill.bss`, which stores localized equip-skill catalog entries.

@@ -90,7 +90,7 @@ def _theme_record(record: MentalThemeRecord) -> dict:
         "entry_count": record["entry_count"],
         "child_count": record["child_count"],
         **_bookshelf_fields(record["bookshelf_item"]),
-        "name_ko": record["name_ko"],
+        "name_kr": record["name_kr"],
         "entry_ids": record["entry_ids"],
         "entry_names": record["entry_names"],
         "child_ids": record["child_ids"],

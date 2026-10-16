@@ -65,7 +65,7 @@ The index `data_offset` points past the lead, at the record itself. Table 0 star
 | ------- | ---- | ----------- | ---------------------------------------------------------------------- |
 | `+0x00` | u32  | source_id   | Character ID (table 0, LOC `str_type=6`) or item ID (table 1, LOC `str_type=0`) |
 | `+0x04` | u32  | source_type | `0` in table 0, `1` in table 1                                         |
-| `+0x08` | u8   | reserved    | Always `0`                                                             |
+| `+0x08` | u8   | unknown_08  | Always `0`                                                             |
 | `+0x09` | u32  | card_id     | Knowledge card taught; LOC `str_type=34`, key of `mentalcard.dbss`     |
 
 ## Enum Values

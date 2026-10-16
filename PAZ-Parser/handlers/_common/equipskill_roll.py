@@ -27,7 +27,7 @@ WEIGHT_COUNT = 43
 # Fairy tables normalise to this total; pet tables do not (see format docs).
 PPM_SCALE = 1_000_000
 
-# Catalog records are 12 bytes from +0x04: [u32 id][u32 type][u8 unknown_08][u8 pad][u16 loc_id].
+# Catalog records are 12 bytes from +0x04: [u32 id][u32 type][u8 unknown_08][u8 unknown_09][u16 loc_id].
 _CATALOG_START = 4
 _CATALOG_RECORD_SIZE = 12
 _CATALOG_NULL_ID = 200
@@ -53,7 +53,7 @@ def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:
         if pos + OFFSET_RECORD_SIZE > len(data):
             break
 
-        acquire_type_id, data_offset, data_size, padding = struct.unpack_from(
+        acquire_type_id, data_offset, data_size, unknown_08 = struct.unpack_from(
             "<HIHH", data, pos
         )
         records.append({
@@ -62,7 +62,7 @@ def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:
             "data_offset": data_offset,
             "data_size": data_size,
             "record_start": data_offset - KEY_PREFIX_SIZE,
-            "padding": padding,
+            "unknown_08": unknown_08,
         })
 
     return records

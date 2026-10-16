@@ -22,12 +22,12 @@ from .handler import _category_label, _title_cell
 
 
 def _title_record(record: dict) -> dict:
-    requirement = strip_pa_tags(record.get("en_req") or record["requirement_text_ko"])
+    requirement = strip_pa_tags(record.get("en_req") or record["requirement_text_kr"])
 
     return {
         "TitleId": record["title_id"],
         "Category": _category_label(record["category_id"]),
-        "Title": strip_pa_tags(record.get("en_name") or record["title_text_ko"]),
+        "Title": strip_pa_tags(record.get("en_name") or record["title_text_kr"]),
         "TitleRequirements": " ".join(requirement.split()),
         "Special": bool(record["title_color_argb"] or record["header_field_meaning"] != "style"),
         "Effect": record["title_effect_name"] or "-",

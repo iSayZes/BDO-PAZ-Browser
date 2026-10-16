@@ -73,9 +73,9 @@ The same trailer shape used by
 
 | Offset  | Type | Field          | Observed  | Notes                              |
 | ------- | ---- | -------------- | --------- | ---------------------------------- |
-| `+0x00` | u32  | reserved_a     | 0         | Always zero                        |
+| `+0x00` | u32  | unknown_00     | 0         | Always zero                        |
 | `+0x04` | u32  | end_of_rows    | 2,039,588 | Equals `8 + count × 12` (2,043,872 after 2026-09-27) |
-| `+0x08` | u32  | reserved_b     | 0         | Always zero                        |
+| `+0x08` | u32  | unknown_08     | 0         | Always zero                        |
 
 ## Key Packing
 

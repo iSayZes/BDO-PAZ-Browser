@@ -36,8 +36,8 @@ Records are variable size because both strings are. Observed records are 146-154
 | Offset  | Type             | Field           | Notes                                                               |
 | ------- | ---------------- | --------------- | ------------------------------------------------------------------- |
 | `+0x00` | u32              | action_id       | Primary key; matches offset-table key                               |
-| `+0x04` | u32              | reserved_04     | Always 0                                                            |
-| `+0x08` | u32              | reserved_08     | Always 0                                                            |
+| `+0x04` | u32              | unknown_04      | Always 0                                                            |
+| `+0x08` | u32              | unknown_08      | Always 0                                                            |
 | `+0x0C` | u32              | magic           | Always `0xDEBA1DCD`                                                 |
 | `+0x10` | u64 + utf16le[n] | name_kr         | Korean action name; the u64 counts UTF-16 code units                |
 | varies  | u64 + utf16le[n] | icon_path       | Icon path; no null terminator                                       |

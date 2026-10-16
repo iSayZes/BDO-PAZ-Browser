@@ -39,18 +39,18 @@ Offsets are relative to `record_offset` from `maincategoryoffset.dbss`.
 | `+0x00` | u16    | category_id         | Primary key; matches offset-table key                     |
 | `+0x02` | u32    | unknown_02          | Small category/order reference; observed 1-14             |
 | `+0x06` | u32    | unknown_06          | Small category/order reference; observed 0, 1, 2, 3, 5, 6 |
-| `+0x0A` | u32    | unknown_0A          | Usually mirrors `category_id`; 0 for some records         |
+| `+0x0A` | u32    | unknown_0a          | Usually mirrors `category_id`; 0 for some records         |
 | `+0x0E` | u32    | icon_path_len       | Byte length of `icon_path`; observed 75                   |
-| `+0x12` | u32    | reserved_12         | Always 0                                                  |
+| `+0x12` | u32    | unknown_12          | Always 0                                                  |
 | `+0x16` | char[] | icon_path           | ASCII DDS path; no null terminator                        |
-| varies  | u32    | reserved_after_path | Always 0                                                  |
+| varies  | u32    | unknown_after_path  | Always 0                                                  |
 | varies  | u8     | enabled_flag        | Observed 1 for IDs 1-13, 0 for IDs 14-15                  |
 
 The observed record size is 102 bytes: `0x16 + icon_path_len + 5` for the current data.
 
 ## Observed Records
 
-| Category ID | unknown_02 | unknown_06 | unknown_0A | Enabled | Icon Path                                                                     |
+| Category ID | unknown_02 | unknown_06 | unknown_0a | Enabled | Icon Path                                                                     |
 | ----------- | ---------- | ---------- | ---------- | ------- | ----------------------------------------------------------------------------- |
 | 1           | 3          | 2          | 1          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_02.dds` |
 | 2           | 5          | 0          | 2          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_03.dds` |
@@ -85,7 +85,7 @@ Provides keyed lookup into `maincategory.dbss` and supplies the record count.
 | `+0x00` | u16  | category_id   | Key for the category record                 |
 | `+0x02` | u32  | record_offset | Absolute byte offset in `maincategory.dbss` |
 | `+0x06` | u16  | record_size   | Size of the record in bytes; observed 102   |
-| `+0x08` | u16  | reserved_08   | Always 0                                    |
+| `+0x08` | u16  | unknown_08    | Always 0                                    |
 
 Rows are stored in descending category ID order: 15 down to 1.
 
@@ -99,7 +99,7 @@ Rows are stored in descending category ID order: 15 down to 1.
 
 ### Category Link Fields
 
-`unknown_02`, `unknown_06`, and `unknown_0A` look like small category IDs, order slots, or UI parent/child links. Their in-game labels and behavior are not confirmed.
+`unknown_02`, `unknown_06`, and `unknown_0a` look like small category IDs, order slots, or UI parent/child links. Their in-game labels and behavior are not confirmed.
 
 ### Category Names
 

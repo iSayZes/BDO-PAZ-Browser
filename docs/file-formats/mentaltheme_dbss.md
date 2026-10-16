@@ -57,8 +57,8 @@ Each payload is preceded by a 2-byte `theme_id` lead in the main stream. The off
 | Offset        | Type             | Name            | Description                                                |
 | ------------- | ---------------- | --------------- | ---------------------------------------------------------- |
 | `+0x00`       | u16              | theme_id        | Knowledge group/category ID; matches offset row            |
-| `+0x02`       | i64              | name_len        | Number of UTF-16LE code units in `name_ko`                 |
-| `+0x0A`       | utf16le[]        | name_ko         | Inline Korean theme name, `name_len * 2` bytes             |
+| `+0x02`       | i64              | name_len        | Number of UTF-16LE code units in `name_kr`                 |
+| `+0x0A`       | utf16le[]        | name_kr         | Inline Korean theme name, `name_len * 2` bytes             |
 | after name    | Theme Stats      | stats           | Parent, energy reward thresholds and bookshelf item        |
 | after stats   | u32[]            | entries         | Direct knowledge entry IDs                                 |
 | after entries | Child Theme List | children        | Direct child theme IDs                                     |

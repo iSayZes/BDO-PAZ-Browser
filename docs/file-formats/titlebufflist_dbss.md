@@ -51,9 +51,9 @@ Observed entries: 18 in the pre-2026-09-27 test fixture and in the 2026-09-27 cl
 | `+0x0A`  | u16    | unknown_0a      | `58501 + internal_id` on all 18 tiers, see Open Questions        | High       |
 | `+0x0C`  | u64 + utf16le[n] | label_kr | Korean tier label, `칭호 50개 습득 : ` ("50 titles acquired: "); the u64 counts UTF-16 code units | High |
 | varies   | u64 + utf16le[n] | effect_kr | Korean effects with PAColor markup, `행운 잠재력 <PAColor0xFF00BAFF>+1단계<PAOldColor>` | High |
-| varies   | u32    | reserved        | `0` on all 18 tiers; the block ends here                         | High       |
+| varies   | u32    | unknown_end     | `0` on all 18 tiers; the block ends here                         | High       |
 
-Checked on all 18 blocks of client 3458: each one ends exactly after `reserved`. An earlier version of this doc left everything after `required_titles` as one text payload, and the parser read only from the first PAColor tag, so the Korean fallback showed just `+1단계`.
+Checked on all 18 blocks of client 3458: each one ends exactly after `unknown_end`. An earlier version of this doc left everything after `required_titles` as one text payload, and the parser read only from the first PAColor tag, so the Korean fallback showed just `+1단계`.
 
 #### internal_id / Display Level
 

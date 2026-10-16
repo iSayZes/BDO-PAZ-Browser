@@ -54,7 +54,7 @@ The string table is the same tail as in `npcsimply.bss` and `exploration.bss`: `
 | `+0x78` | u32           | icon_index     | Zero-based index into the string table                                |
 | `+0x7C` | u16           | character_id   | Character key: LOC type 6 name/title, and the portrait file name      |
 | `+0x7E` | u16           | employee_key   | Repeats `+0x03`; the parser rejects a row where it differs            |
-| `+0x80` | u16           | padding        | Always `0`                                                            |
+| `+0x80` | u16           | unknown_80     | Always `0`                                                            |
 
 The client Lua reads a sailor's key through `getEmployeeKey()`, and that key object answers `getLevel()`, so `employee_key` and `level` together are the client's employee key.
 

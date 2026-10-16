@@ -62,7 +62,7 @@ type may be used per attempt; the entries are alternatives, not a combined pool.
 | `+0x00` | u32  | item_id       | Fairy-growth item consumed; LOC `str_type=0`, `str_id1=item_id`    |
 | `+0x04` | u32  | rate_ppm      | Success chance added by **one** item, out of `success_cap_ppm`     |
 | `+0x08` | u32  | items_for_max | Item count that reaches the 100% cap; also the per-attempt maximum |
-| `+0x0C` | u32  | reserved      | Zero in all observed entries                                       |
+| `+0x0C` | u32  | unknown_0c    | Zero in all observed entries                                       |
 
 Success chance for `n` items is `min(n × rate_ppm, success_cap_ppm)`, with `n`
 capped at `items_for_max`.
@@ -74,9 +74,9 @@ Follows the last record, the same trailer shape used by
 
 | Offset  | Type | Field          | Observed | Notes                                 |
 | ------- | ---- | -------------- | -------- | ------------------------------------- |
-| `+0x00` | u32  | reserved_a     | 0        | Always zero                           |
+| `+0x00` | u32  | unknown_00     | 0        | Always zero                           |
 | `+0x04` | u32  | end_of_records | 131      | Byte offset just past the last record |
-| `+0x08` | u32  | reserved_b     | 0        | Always zero                           |
+| `+0x08` | u32  | unknown_08     | 0        | Always zero                           |
 
 `end_of_records` is authoritative for where the record stream stops; parse
 records until that offset rather than assuming a fixed record size.

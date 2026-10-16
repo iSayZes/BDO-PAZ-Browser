@@ -1,7 +1,8 @@
 """`fieldboss.dbss`: the character IDs listed as field bosses.
 
 A u32 row count, then 33-byte rows with no `PABR` magic and no string
-table: the key, a byte, the character ID, a byte, and zero padding.
+table: the key, a byte, the character ID, 12 zero bytes, a byte and 15 zero
+bytes.
 `fieldbossoffset.dbss` points at each row's first byte after the key.
 Layout in docs/file-formats/fieldboss_dbss.md.
 """
@@ -17,7 +18,7 @@ FILE_NAME = "fieldboss.dbss"
 OFFSET_FILE = "fieldbossoffset.dbss"
 
 _COUNT_SIZE = 4
-# key, unknown_02, character_id, reserved_05, unknown_11, reserved_12
+# key, unknown_02, character_id, unknown_05, unknown_11, unknown_12
 _ROW = struct.Struct("<HBH12xB15x")
 
 

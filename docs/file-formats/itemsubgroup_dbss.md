@@ -85,9 +85,9 @@ Standard PABR offset companion with 10-byte rows, read by `parse_pabr_offset_row
 | `+0x00`            | char[4] | magic        | ASCII `PABR`                           |
 | `+0x04`            | u32     | record_count | Equals `itemsubgroup.dbss` `record_count` |
 | `+0x08`            | row[]   | rows         | 10-byte rows repeated `record_count` times |
-| EOF - 12           | u32     | reserved_a   | Always `0`                             |
+| EOF - 12           | u32     | unknown_trailer_00 | Always `0`                             |
 | EOF - 8            | u32     | end_of_rows  | Equals `8 + count * 10` (`166,908`)    |
-| EOF - 4            | u32     | reserved_b   | Always `0`                             |
+| EOF - 4            | u32     | unknown_trailer_08 | Always `0`                             |
 
 The 12-byte trailer is the same shape as the `itemenchantoffset.dbss` one.
 

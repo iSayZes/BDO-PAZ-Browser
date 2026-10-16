@@ -16,7 +16,7 @@ class MentalThemeRecord(TypedDict):
     offset_theme_id: int
     payload_offset: int
     payload_size: int
-    name_ko: str
+    name_kr: str
     name: str
     parent_id: int
     parent_name: str

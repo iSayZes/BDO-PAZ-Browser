@@ -31,9 +31,9 @@ All multi-byte values are little-endian.
 
 | Offset  | Type | Field       | Notes                                   |
 | ------- | ---- | ----------- | --------------------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`                                     |
+| `+0x00` | u32  | unknown_00  | `0`                                     |
 | `+0x04` | u32  | end_of_data | Byte offset right after the last row (`0x143` on client 3464) |
-| `+0x08` | u32  | reserved_b  | `0`                                     |
+| `+0x08` | u32  | unknown_08  | `0`                                     |
 
 The parser checks that `8 + row_count x 15` equals `end_of_data` and that the trailer closes the file.
 

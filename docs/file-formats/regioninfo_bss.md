@@ -33,7 +33,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x08` | record  | records            | Variable records packed back-to-back with no alignment         |
 | varies  | pool    | string_table       | `u32 count` plus Korean strings (shared `pabr_strings` layout); observed `1108` entries |
 | EOF-8   | u32     | string_table_start | Absolute file offset of `string_table.count`; observed `623714` |
-| EOF-4   | u32     | zero_trailer       | Observed `0`                                                   |
+| EOF-4   | u32     | zero               | Observed `0`                                                   |
 
 A record is a 210-byte head, two counted lists and a 171-byte tail, so its size is `389 + 2 * key_count + 12 * vector_count`. The walk ends exactly at `string_table_start`; the parser raises an error when it does not.
 
@@ -47,10 +47,10 @@ Offsets are hex; the extractor's decimal offset is in the notes where it named t
 | ------- | --------- | ------------------ | ----- |
 | `+0x00` | u16       | region_key         | LOC `str_type=17`, `str_id1=region_key`; unique; all 1594 resolve |
 | `+0x02` | u8[3]     | color              | Region colour stored blue, green, red; the parser returns `rrggbb` (Velia `820000`). `edaniaregioninfo.bss` stores the same value for the five first-group Edania castles |
-| `+0x05` | u8        | reserved           | Always `0`; the alpha byte of the colour (a 4-byte `pa::Color` in the 2016 client) |
+| `+0x05` | u8        | color_alpha        | Always `0`; the alpha byte of `color`, which the 2016 PDB types as a 4-byte `pa::Color` (`_colorKey`) |
 | `+0x06` | u8        | region_type        | `CppEnums.RegionType`; see Enum Values |
 | `+0x07` | u8        | node_war_day       | `CppEnums.VillageSiegeType`, Sunday `0` to Saturday `6`; `7` (the enum's `_Count`) for no node war |
-| `+0x08` | u8[3]     | reserved           | Always `0` |
+| `+0x08` | u8[3]     | unknown_08         | Always `0` |
 | `+0x0B` | u8        | unknown_0b         | Values `0`, `1`, `3`, `4`; `3` on Velia, Heidel, Altinova and Valencia City, `4` on the Margoria islands |
 | `+0x0C` | bool      | is_safe_zone       | Set on 318 regions, among them Velia, Glish, Ossuary, Heidel Castle and Lake Flondor |
 | `+0x0D` | bool      | is_arena_zone      | Set on the 9 arena regions. Named from the 2016 member order (`_isArenaZone` between `_isSafeZone` and `_isSea`); the client Lua reads `isArenaZone` |
@@ -65,7 +65,7 @@ Offsets are hex; the extractor's decimal offset is in the notes where it named t
 | `+0x1D` | u16       | unknown_1d         | |
 | `+0x1F` | bool      | unknown_1f         | Set on 54 regions (Rameda Island, Altar of Agris, Western Guard Camp) |
 | `+0x20` | u32       | unknown_20         | `22950` in every record (the extractor saw `19950`), so it changes between patches |
-| `+0x24` | u8        | reserved           | Always `0` |
+| `+0x24` | u8        | unknown_24         | Always `0` |
 | `+0x25` | bool      | is_locator         | |
 | `+0x26` | u32       | villain_respawn_node_key | Exploration node key where an outlaw respawns. Set on 204 records, all exploration node keys (Muiquun for several desert regions) |
 | `+0x2A` | f32[3]    | villain_respawn_position | The position paired with `villain_respawn_node_key`. Named from the 2016 member order (`_villainRespawnPosition` follows the key); no server column to check it against |
@@ -74,37 +74,37 @@ Offsets are hex; the extractor's decimal offset is in the notes where it named t
 | `+0x38` | bool      | is_special_zone    | Set on Atoraxion, the arenas and battlefields, Sea Palace, Mountain of Eternal Winter, Pit of the Undying, Aakman Temple, Hystria Ruins, Ruins of Tzol |
 | `+0x39` | bool      | is_vehicle_dead_zone | Set only on `is_special_zone` regions |
 | `+0x3A` | bool      | unknown_3a         | |
-| `+0x3B` | u8        | reserved           | Always `0` |
+| `+0x3B` | u8        | unknown_3b         | Always `0` |
 | `+0x3C` | u16       | skill_no           | Region buff skill by day; see Notes |
 | `+0x3E` | u32       | skill_apply_rate   | Apply rate of `skill_no` |
 | `+0x42` | bool      | unknown_42         | |
-| `+0x43` | u8        | reserved           | Always `0` |
+| `+0x43` | u8        | unknown_43         | Always `0` |
 | `+0x44` | u16       | skill_no_2         | A second region skill; set on the Margoria regions only |
 | `+0x46` | u32       | skill_apply_rate_2 | Apply rate of `skill_no_2` |
-| `+0x4A` | u8[8]     | reserved           | Always `0` |
+| `+0x4A` | u8[8]     | unknown_4a         | Always `0` |
 | `+0x52` | bool      | unknown_52         | |
-| `+0x53` | u8        | reserved           | Always `0` |
+| `+0x53` | u8        | unknown_53         | Always `0` |
 | `+0x54` | u16       | night_skill_no     | Region buff skill at night; see Notes |
 | `+0x56` | u32       | night_skill_apply_rate | Apply rate of `night_skill_no` |
 | `+0x5A` | u8        | territory_key      | Territory 0 to 13; LOC `str_type=12`, `str_id4=1` names it (Balenos, Serendia ... Inner Edania). The key of `territoryinfo.bss` |
-| `+0x5B` | u8        | reserved           | Always `0` |
+| `+0x5B` | u8        | unknown_5b         | Always `0` |
 | `+0x5C` | u32       | name_index         | Index into `string_table`; the region's Korean name (`벨리아 마을` for Velia) |
 | `+0x60` | u32       | return_position_name | Index into `string_table`; the Korean name of the region's return point, see Notes. The extractor calls it the capital's name, which it is not |
 | `+0x64` | u16       | capital_region_key | Region key of the territory capital: the same in every region of a territory and always that territory's `MainTown` (Velia, Heidel, Calpheon City ... Angavu Outpost) |
 | `+0x66` | u16       | trade_origin_region_key | A region key: the trade origin (`getTradeOriginRegion` in the client Lua). The extractor calls it the affiliated town. Often the region itself or a nearby town, but also non-town regions (Evergart Falls points to 417) |
 | `+0x68` | u16       | region_group_key   | Key of `regiongroupinfo.bss`: the file has 250 records and this field 250 distinct values (`0` on 32 regions) |
-| `+0x6A` | u8        | reserved           | Always `0` |
+| `+0x6A` | u8        | unknown_6a         | Always `0` |
 | `+0x6B` | u16       | waypoint_key       | Non-zero on 628 records; equals `node_key` on 873 (zero included) |
-| `+0x6D` | u8[2]     | reserved           | Always `0` |
+| `+0x6D` | u8[2]     | unknown_6d         | Always `0` |
 | `+0x6F` | u16       | node_key           | `exploration.bss` node key; non-zero on 1331 records and every one is a node. The node that covers the region (Lumbering 1 -> Trent) |
-| `+0x71` | u8[2]     | reserved           | Always `0` |
+| `+0x71` | u8[2]     | unknown_71         | Always `0` |
 | `+0x73` | u8        | region_attribute_type | `1` on Velia (5) and Velia Beach (444), `0` elsewhere (client 3464) |
-| `+0x74` | u8[3]     | reserved           | Always `0` |
+| `+0x74` | u8[3]     | unknown_74         | Always `0` |
 | `+0x77` | f32[3]    | unknown_77         | Extractor: waypoint position. Zero on 1580 records |
 | `+0x83` | f32[3]    | return_position    | The return point's world position, shared by many regions; pairs with `return_position_name`, see Notes. The extractor calls it the region position, which it is not |
-| `+0x8F` | u8[4]     | reserved           | Always `0` |
+| `+0x8F` | u8[4]     | unknown_8f         | Always `0` |
 | `+0x93` | u8        | exploration_point  | `1` except on Velia (1), Sea (2), Deep Sea (175) and Valencia City (229) (client 3464) |
-| `+0x94` | u8        | reserved           | Always `0` |
+| `+0x94` | u8        | unknown_94         | Always `0` |
 | `+0x95` | u32       | unknown_95         | |
 | `+0x99` | f32[5]    | unknown_99         | Velia: `45, 38, 0, 55, 0.6` |
 | `+0xAD` | u32       | unknown_ad         | |
@@ -132,7 +132,7 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 
 | Offset  | Type      | Field                   | Notes |
 | ------- | --------- | ----------------------- | ----- |
-| `+0x00` | u8        | reserved                | Always `0` |
+| `+0x00` | u8        | unknown_tail_00         | Always `0` |
 | `+0x01` | u16       | unknown_tail_01         | `0xFFFF` in every record |
 | `+0x03` | u16       | max_participants        | Node war participant cap: `0` except on the siege regions, `30` to `80` on node war regions, `100` on the four capitals. Matches the published per-node participant table on all 24 Calpheon, Ulukita, Valencia and Edania nodes; the game can override it (City of the Dead: `35` here and in that table, `40` in its tooltip) |
 | `+0x05` | f32       | siege_ap_limit          | Node war AP limit; `FLT_MAX` (no limit) except on the siege regions. See Notes for the five sets |
@@ -140,14 +140,14 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | `+0x0D` | f32       | siege_evasion_limit     | Node war evasion limit |
 | `+0x11` | u32       | unknown_tail_11         | `0x7FFFFFFF` except on the siege regions: `150000`, `200000` or `1000000`, `0` on Velia and Heidel. The accuracy rate or the evasion rate limit; always equal to `unknown_tail_55`, so which is which is open |
 | `+0x15` | u8        | unknown_tail_15         | `3` on the 63 node war regions, `5` elsewhere. Possibly the max war heroes, which the node tooltip shows as 3 |
-| `+0x16` | u8        | reserved                | Always `0` |
+| `+0x16` | u8        | unknown_tail_16         | Always `0` |
 | `+0x17` | u8        | unknown_tail_17         | `3` in every record |
 | `+0x18` | bool      | is_world_boss_reward    | Set on Margoria (Vell's Realm) (871) only |
 | `+0x19` | f32[6]    | unknown_tail_19         | Two world positions, set on 117 regions; on 84 both are the same point, on 31 the second is zero (Pit of the Undying among them), on 2 they differ |
-| `+0x31` | u64       | reserved                | Always `0` |
+| `+0x31` | u64       | unknown_tail_31         | Always `0` |
 | `+0x39` | f32       | unknown_tail_39         | `FLT_MAX`, or on the siege regions the same value as `siege_ap_limit` |
 | `+0x3D` | f32       | unknown_tail_3d         | `FLT_MAX`, or `100000000` on the siege regions |
-| `+0x41` | u32       | reserved                | Always `0` |
+| `+0x41` | u32       | unknown_tail_41         | Always `0` |
 | `+0x45` | bool      | unknown_tail_45         | Set on exactly the region type 7 records (Pit of the Undying 950 and 1070) |
 | `+0x46` | bool      | unknown_tail_46         | Set on exactly the region type 8 record (Battle Arena 1072) |
 | `+0x47` | u32       | unknown_tail_47         | `10011` on the 63 node war regions, `0` elsewhere |
@@ -161,16 +161,16 @@ I walked the extractor's tail list (`unknownTail1` to `unknownTail162`, 46 value
 | `+0x6E` | f32[3]    | unknown_tail_6e         | A world position on 49 instance regions: all Atoraxion regions point to Velia's `(-1226, -7012, 81647)`, the Oquilla's Eye regions and the Land of the Morning Light houses to their own town |
 | `+0x7A` | f32[3]    | unknown_tail_7a         | A distinct world position on 36 node war regions, Altinova and Valencia City |
 | `+0x86` | u8        | unknown_tail_86         | On the siege regions only: `100` on the capitals; on node war regions `0`, `5` or `15` |
-| `+0x87` | u8        | reserved                | Always `0` |
+| `+0x87` | u8        | unknown_tail_87         | Always `0` |
 | `+0x88` | bool      | unknown_tail_88         | Set on the 63 node war regions |
 | `+0x89` | u8        | unknown_tail_89         | `10` on the 63 node war regions |
-| `+0x8A` | u8[7]     | reserved                | Always `0` |
+| `+0x8A` | u8[7]     | unknown_tail_8a         | Always `0` |
 | `+0x91` | u8        | unknown_tail_91         | `49` on the 63 node war regions |
-| `+0x92` | u8[8]     | reserved                | Always `0` |
+| `+0x92` | u8[8]     | unknown_tail_92         | Always `0` |
 | `+0x9A` | u32       | unknown_tail_9a         | On the siege regions only; node war regions `15625000` to `39062500`, the capitals `117187500` to `234375000`. Multiples of `1953125` (`10^9 / 512`) |
-| `+0x9E` | u32       | reserved                | Always `0` |
+| `+0x9E` | u32       | unknown_tail_9e         | Always `0` |
 | `+0xA2` | u32       | unknown_tail_a2         | On the siege regions only; always `unknown_tail_9a + 7812500` on node war regions, `+39062500` on the capitals |
-| `+0xA6` | u8[3]     | reserved                | Always `0` |
+| `+0xA6` | u8[3]     | unknown_tail_a6         | Always `0` |
 | `+0xA9` | u16       | guild_wharf_manager_key | NPC character key; set on 20 regions and every NPC is titled `<Guild Wharf Manager>` in LOC (Robert in Velia, Sebastian in Port Epheria, Elro in Oquilla's Eye) |
 
 ## Field Names

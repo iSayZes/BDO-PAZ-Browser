@@ -86,7 +86,7 @@ def parse_plantworkerpassiveskill_records(data: bytes) -> list[dict]:
             "icon_path": _string_at(strings, icon_index),
             "inline_description": _string_at(strings, description_index),
             "acquisition_weight": u32(data, pos + 0x10),
-            "zero_a": u32(data, pos + 0x14),
+            "unknown_14": u32(data, pos + 0x14),
             "effect_type": u32(data, pos + 0x18),
             "apply_mode": u32(data, pos + 0x1C),
             "apply_scope": u32(data, pos + 0x20),
@@ -94,11 +94,11 @@ def parse_plantworkerpassiveskill_records(data: bytes) -> list[dict]:
             "effect_target": u32(data, pos + 0x28),
             "effect_value_a": u32(data, pos + 0x2C),
             "effect_value_b": u32(data, pos + 0x30),
-            "zero_b": u32(data, pos + 0x34),
-            "extra_zero_a": None,
+            "unknown_34": u32(data, pos + 0x34),
+            "unknown_38": None,
             "extra_effect_value_a": None,
             "extra_effect_value_b": None,
-            "extra_zero_b": None,
+            "unknown_44": None,
         }
 
         pos += _RECORD_SIZE
@@ -111,10 +111,10 @@ def parse_plantworkerpassiveskill_records(data: bytes) -> list[dict]:
             and extra_remaining >= _EXTRA_SIZE
             and pos + _EXTRA_SIZE <= string_table_start
         ):
-            record["extra_zero_a"] = u32(data, pos)
+            record["unknown_38"] = u32(data, pos)
             record["extra_effect_value_a"] = u32(data, pos + 0x04)
             record["extra_effect_value_b"] = u32(data, pos + 0x08)
-            record["extra_zero_b"] = u32(data, pos + 0x0C)
+            record["unknown_44"] = u32(data, pos + 0x0C)
             pos += _EXTRA_SIZE
 
         records.append(record)

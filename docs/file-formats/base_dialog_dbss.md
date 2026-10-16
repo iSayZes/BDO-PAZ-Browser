@@ -47,7 +47,7 @@ Unlike `detail_dialog.dbss`, records are not preceded by a copy of their key: th
 | 2 | u64 + utf16 | name_kr | Korean display name, e.g. `마티나 핀토`, `순례자` (pilgrim) |
 | 3 | u32 | line_count | `0` on 55,850 of 59,776 records, up to `10` |
 | 4 | line_count × (u64 + utf16) | lines | Short Korean lines |
-| 5 | u8[5] | reserved | Always zero |
+| 5 | u8[5] | unknown_end | Always zero |
 
 Every record of client 3458 walks with this layout and ends exactly at its index size.
 

@@ -26,7 +26,7 @@ CASE = HandlerCase(
         ),
         TargetTest(
             col="field",
-            value=("reserved0", "reserved1", "reserved2"),
+            value=("unknown_10", "unknown_14", "unknown_1c"),
             expected=[{"value": 0}, {"value": 0}, {"value": 0}],
         ),
     ],

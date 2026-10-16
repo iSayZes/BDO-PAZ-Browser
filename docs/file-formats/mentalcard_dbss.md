@@ -86,19 +86,19 @@ The combo fields build the tooltip's "Next combo effect" line: "After `{apply_tu
 
 | Order | Type          | Name            | Description                                                                 |
 | ----- | ------------- | --------------- | --------------------------------------------------------------------------- |
-| 1     | i64 + utf16le | name_ko         | Korean card name; English form is LOC `str_type=34`, `str_id4=0`            |
-| 2     | i64 + utf16le | description_ko  | Korean description; English form is LOC `str_type=34`, `str_id4=1`          |
+| 1     | i64 + utf16le | name_kr         | Korean card name; English form is LOC `str_type=34`, `str_id4=0`            |
+| 2     | i64 + utf16le | description_kr  | Korean description; English form is LOC `str_type=34`, `str_id4=1`          |
 | 3     | u8            | body_flag       | `0` or `1`; `1` on 474 cards, mostly adventure-log themes                   |
-| 4     | u8            | body_reserved   | Always `0`                                                                  |
+| 4     | u8            | unknown_after_body_flag | Always `0`                                                                  |
 | 5     | u32           | body_value      | `5` on 10,455 cards, `0` on 1,893, `1` to `4` on the rest                   |
 | 6     | i64 + ascii   | icon_path       | Always under `UI_Artwork/`, e.g. `UI_Artwork/IC_015879.dds`                 |
-| 7     | i64 + utf16le | acquisition_ko  | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2` |
+| 7     | i64 + utf16le | acquisition_kr  | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2` |
 | 8     | f32 × 3       | position        | World `x`, `y` (height), `z`; all zero on 9,356 cards                       |
 | 9     | u8            | tail_kind       | `17` on 10,388 cards, otherwise `0` to `16`                                 |
 | 10    | u32           | tail_value      | `0`, `1` or `3`                                                             |
 | 11    | u32           | hash_count      | `1` to `7`                                                                  |
 | 12    | u32 × hash_count | hashes       | Hash-like values; 271 distinct, lists share prefixes between cards          |
-| 13    | u8[5]         | padding         | Always zero                                                                 |
+| 13    | u8[5]         | unknown_end     | Always zero                                                                 |
 
 Every one of the 12,502 records parses with this layout and ends exactly at its index `size`. The same layout holds for the older test fixture (12,087 records) and for the 12,604 records after the 2026-09-27 update, which still tile the file from byte `4` to its end.
 
@@ -134,7 +134,7 @@ Stored as no combo and shown as "None": `4024` Lost Lamb, `6066` Heidel Church B
 - `card_id` → LOC `str_type=34`, `str_id1=card_id`; `str_id4` selects name (0), description (1) and acquisition text (2). 12,485 of 12,502 cards have an English name.
 - `theme_id` → LOC `str_type=9`, `str_id1=theme_id` → knowledge category name. Read it as a u16: 524 cards have a non-zero byte at `+0x06` or `+0x07`, and reading `+0x04` as a u32 gives values such as `86040` (`0x15018`) that match no theme. With the u16 read, every card's theme lists that card in its `mentaltheme.dbss` entries.
 - The three floats are whole numbers. `min_favor <= max_favor` on 12,484 of 12,604 cards in client 3458. In client 3458 the median favor range is 34 to 39 with interest 22 on cards without a combo, and 20 to 26 with interest 30 on the 2,642 cards with one.
-- `acquisition_ko` is empty on 651 cards. Whenever LOC has `str_id4=2` for a card, the card also has a non-empty `acquisition_ko` (11,766 cards).
+- `acquisition_kr` is empty on 651 cards. Whenever LOC has `str_id4=2` for a card, the card also has a non-empty `acquisition_kr` (11,766 cards).
 - `characterstatic.dbss` `getknowledge(<id>)` scripts grant 3,556 of the 12,604 cards on client 3458 (`npcsimply.bss` adds none). Most are granted by one NPC or by copies of one NPC with the same name; card `19` "NPC Pathfind Preventive Knowledge" is granted by 352 characters.
 - The monsters, NPCs and gathering nodes in [knowledgelearning.dbss](knowledgelearning_dbss.md) table 0 add 506 character links on client 3458, 177 of them for cards no script grants (card `1643` "Rhyolite" from the Rhyolite node `11982`). Learned From merges both indexes, so card `4678` "Helm Tribe Chief Steel Nux" reads `Helm Tribe Chief, Steel Nux`. Its table 1 items fill Learned From Items (card `8579` "Gurnard" from the Gurnard fish `8279`).
 - Non-zero positions are on 3,147 cards in client 3458, mostly NPC, barterer and node-manager entries. They use the same world frame as the `exploration.bss` node positions: town cards sit exactly on their node (Olvia `3032`, Calpheon `3177`, Keplan `3176`), and NPC cards sit where the NPC stands (Igor Bartali `18`, Islin Bartali `1` and Marsella `6` are all within about 35 m of the Velia node at `18588, 76647`).

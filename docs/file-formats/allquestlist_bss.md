@@ -46,9 +46,9 @@ Follows the last entry.
 
 | Offset  | Type | Field          | Notes                                                              |
 | ------- | ---- | -------------- | ------------------------------------------------------------------ |
-| `+0x00` | u32  | reserved_a     | Observed `0`                                                       |
+| `+0x00` | u32  | unknown_00     | Observed `0`                                                       |
 | `+0x04` | u32  | end_of_entries | Byte offset immediately after entries, `8 + count × 4`             |
-| `+0x08` | u32  | reserved_b     | Observed `0`                                                       |
+| `+0x08` | u32  | unknown_08     | Observed `0`                                                       |
 
 ## Record Structure
 

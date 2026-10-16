@@ -50,7 +50,7 @@ Records begin immediately at `+0x04`. There is **no** record count field; the ca
 | `+0x00` | u32  | equip_skill_id | Sequential record key, `0`–`34`; `200` marks the end   |
 | `+0x04` | u32  | skill_type     | Skill group, `1`–`8` (see Skill Types)                 |
 | `+0x08` | u8   | unknown_08     | Always `1` in all 35 observed records                  |
-| `+0x09` | u8   | -              | Always `0`; padding                                    |
+| `+0x09` | u8   | unknown_09     | Always `0`                                             |
 | `+0x0A` | u16  | loc_id         | Localization key → skill name/description, icon number |
 
 Earlier versions of this doc called `unknown_08` `tier`.

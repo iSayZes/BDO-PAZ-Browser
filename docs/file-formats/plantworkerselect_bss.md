@@ -56,9 +56,9 @@ These are the pre-2026-09-27 fixture's 30 groups and 372 entries. The 2026-09-27
 | ------- | ---- | ------------ | ----------------------------------------------------- |
 | `+0x00` | u16  | selection_id | Town region key (`regioninfo.bss`), LOC type `17`; same value within group |
 | `+0x02` | u16  | worker_id    | Worker ID; matches `plantworker.bss` and LOC type `6` |
-| `+0x04` | u32  | zero_a       | Always observed as `0`                                |
+| `+0x04` | u32  | unknown_04   | Always observed as `0`                                |
 | `+0x08` | u32  | hire_cost    | Hire price in silver; observed `1500`, `3500`, `10000`, `30000`, `90000` |
-| `+0x0C` | u32  | zero_b       | Always observed as `0`                                |
+| `+0x0C` | u32  | unknown_0c   | Always observed as `0`                                |
 
 Derived fields:
 
@@ -121,7 +121,7 @@ Group numbers are from the pre-2026-09-27 fixture; in the 2026-09-27 client ever
 - Observed file size is `6,076` bytes in the pre-2026-09-27 fixture, `6,288` in the 2026-09-27 client.
 - There is no `PABR` magic; the file starts with the top-level group count.
 - All `worker_id` values in this file exist in `plantworker.bss`.
-- `zero_a` and `zero_b` are invariant zero fields across all observed entries.
+- `unknown_04` and `unknown_0c` are invariant zero fields across all observed entries.
 - Hire costs map to a small fixed set: `1500`, `3500`, `10000`, `30000`, and `90000`. In most towns the price rises with grade (Naive `1500`, base `3500`, Skilled `10000`, Professional `30000`, Artisan `90000`).
 - In game the five grades are colored white (Naive), green (base, e.g. `Papu Worker`), blue (Skilled), yellow (Professional) and red (Artisan); this file stores only the worker ID, the grade comes from `plantworker.bss`.
 - Old Wisdom Tree (`706`) prices its Papu and Fadus grades in reverse: Artisan `3500`, Professional `10000`, Skilled `30000`, base `90000`.

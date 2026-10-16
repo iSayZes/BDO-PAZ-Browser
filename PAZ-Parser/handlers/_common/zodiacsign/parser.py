@@ -23,10 +23,10 @@ def _read_utf16_block(data: bytes, offset: int) -> tuple[str, int]:
 def _read_text_block(data: bytes, offset: int) -> tuple[str, str, int]:
     """Parse text_block. Returns (constellation_name, trait_text, new_offset).
 
-    Layout: u32 reserved_a (4B) + u16 reserved_b (2B) + char16[?] constellation_name
+    Layout: u32 unknown_00 (4B) + u16 unknown_04 (2B) + char16[?] constellation_name
     (scan for 자리) + u64 trait_len (8B) + char16[trait_len] trait_text.
     """
-    name_start = offset + 6  # skip reserved_a (4B) + reserved_b (2B)
+    name_start = offset + 6  # skip unknown_00 (4B) + unknown_04 (2B)
 
     zari_pos = data.find(_ZARI, name_start)
     if zari_pos == -1:
@@ -64,7 +64,7 @@ def _parse_one_zodiacsign(
 
     pairs_count = _u32(data, pos)
     pos += 4
-    pos += 2  # u16 padding
+    pos += 2  # u16 unknown_after_pairs_count
 
     if pairs_count > 64:
         return None, pos
@@ -75,13 +75,14 @@ def _parse_one_zodiacsign(
     icon_small, pos = _read_utf16_block(data, pos)
     icon_large, pos = _read_utf16_block(data, pos)
 
-    # tail: zodiac_id_tail (u8) + zodiac_id_dup2 (u8) + pad0 (u8) + next_zodiac_id (u16)
-    #       + const1 (u8) + const0a (u8) + const1b (u8) + const0b (u8) + reserved (u32)
-    pos += 3  # zodiac_id_tail + zodiac_id_dup2 + pad0
+    # tail: zodiac_id_tail (u8) + zodiac_id_dup2 (u8) + unknown_tail_02 (u8) + next_zodiac_id (u16)
+    #       + unknown_tail_05 (u8) + unknown_tail_06 (u8) + unknown_tail_07 (u8) + unknown_tail_08 (u8)
+    #       + unknown_end (u32)
+    pos += 3  # zodiac_id_tail + zodiac_id_dup2 + unknown_tail_02
     next_zodiac_id = _u16(data, pos)
     pos += 2
-    pos += 4  # 4 constant u8 bytes
-    pos += 4  # reserved u32
+    pos += 4  # unknown_tail_05..unknown_tail_08 (4 u8)
+    pos += 4  # unknown_end u32
 
     return ZodiacSignRecord(
         row=row,

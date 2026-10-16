@@ -29,9 +29,9 @@ The array length is not stored; the parser takes it from the trailer's `end_of_d
 
 | Offset  | Type | Field       | Observed | Notes                                        |
 | ------- | ---- | ----------- | -------- | -------------------------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      |                                              |
+| `+0x00` | u32  | unknown_00  | `0`      |                                              |
 | `+0x04` | u32  | end_of_data | `6`      | Byte offset right after the last `max_level` |
-| `+0x08` | u32  | reserved_b  | `0`      |                                              |
+| `+0x08` | u32  | unknown_08  | `0`      |                                              |
 
 The same trailer closes [fitnessmaxlevel](fitnessmaxlevel_bss.md), which stores u32 values instead.
 

@@ -31,7 +31,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | varies  | table   | footer             | `u32 count` plus `count` 6-byte rows; observed `111` rows          |
 | varies  | pool    | string_table       | `u32 count` plus Korean strings; observed `622` entries            |
 | EOF-8   | u32     | string_table_start | Absolute file offset of `string_table.count`; observed `157953`    |
-| EOF-4   | u32     | zero_trailer       | Observed `0`                                                       |
+| EOF-4   | u32     | zero               | Observed `0`                                                       |
 
 Walking the records with this layout ends at `157283`, the footer ends at `157953` (equal to `string_table_start`) and the string table ends exactly at `EOF-8`, so the file tiles with no gaps.
 
@@ -49,7 +49,7 @@ Walking the records with this layout ends at `157283`, the footer ends at `15795
 | `+0x08` | u16    | zero                  | Always `0`                                                                                               |
 | `+0x0A` | u16    | name_index            | Index into `string_table`; Korean node name (608 distinct)                                               |
 | `+0x0C` | u16    | zero                  | Always `0`                                                                                               |
-| `+0x0E` | u8     | const_one             | Always `1`                                                                                               |
+| `+0x0E` | u8     | unknown_0e            | Always `1`                                                                                               |
 | `+0x0F` | u8     | zero                  | Always `0`                                                                                               |
 | `+0x10` | u8     | has_contribution_cost | `1` exactly when `contribution > 0` (1003/1003); `0` on cities, towns, banks and some sea nodes          |
 | `+0x11` | u8     | is_main_alt           | Equals `is_main` except on Ossuary 133, Ossuary 134 and Velia Beach 1898                                 |

@@ -51,7 +51,7 @@ Rows are not sorted by ID (the first three are 65, 66 and 2).
 | `+0x08` | u32   | description_ref | String table index of the Korean recap, with stored line breaks   |
 | `+0x0C` | u32   | quote_ref       | String table index of the Korean quoted line                      |
 | `+0x10` | u32   | icon_ref        | String table index of the region symbol, relative to `ui_texture/` |
-| `+0x14` | u8[8] | reserved        | Always `0`                                                        |
+| `+0x14` | u8[8] | unknown_14      | Always `0`                                                        |
 
 ### String Table
 

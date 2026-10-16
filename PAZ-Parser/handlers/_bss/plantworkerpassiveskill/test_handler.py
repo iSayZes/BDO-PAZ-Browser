@@ -56,8 +56,8 @@ CASE = HandlerCase(
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
         # Zero words inside each 0x38-byte record; a stride slip lands data on them.
-        RangeTest(col="zero_a", min_val=0, max_val=0),
-        RangeTest(col="zero_b", min_val=0, max_val=0),
+        RangeTest(col="unknown_14", min_val=0, max_val=0),
+        RangeTest(col="unknown_34", min_val=0, max_val=0),
         TargetTest(
             col="skill_id",
             value=1603,
@@ -93,8 +93,8 @@ CASE = HandlerCase(
                 "display_name": "Adept Worker",
                 "icon_path": f"{_ICON_FOLDER}1012_N.dds",
                 "effect_type": 0,
-                "extra_zero_a": 0,
-                "extra_zero_b": 0,
+                "unknown_38": 0,
+                "unknown_44": 0,
             },
         ),
     ],

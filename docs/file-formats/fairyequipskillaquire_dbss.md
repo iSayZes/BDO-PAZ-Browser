@@ -120,7 +120,7 @@ Five catalog entries carry a weight of `0` in every grade and are therefore unre
 | `+0x00` | u16  | key         | `acquire_type_id`; observed `504`, `503`, `502`, `501`       |
 | `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
 | `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
-| `+0x08` | u16  | padding     | Always `0`                                                   |
+| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
 
 Rows are ordered descending by key and ascending by `data_offset`.
 

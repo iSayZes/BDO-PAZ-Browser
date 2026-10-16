@@ -21,8 +21,8 @@ from tests.framework import (
 def _employee_name_record(record: dict) -> dict:
     return {
         "EmployeeNameId": record["employee_name_id"],
-        "Name": record.get("name_en") or record["name_ko"],
-        "KoreanName": record["name_ko"],
+        "Name": record.get("name_en") or record["name_kr"],
+        "KoreanName": record["name_kr"],
         "CharCount": record["char_count"],
         "Unknown08": record["unknown_08"],
         "Terminator": record["terminator"],

@@ -35,9 +35,9 @@ The list's position is its `category_id`, starting at `0`.
 
 | Offset  | Type | Field          | Notes                                                    |
 | ------- | ---- | -------------- | -------------------------------------------------------- |
-| `+0x00` | u32  | reserved_a     | Observed `0`                                             |
+| `+0x00` | u32  | unknown_00     | Observed `0`                                             |
 | `+0x04` | u32  | end_of_entries | Byte offset right after the last list; `file_size - 12`  |
-| `+0x08` | u32  | reserved_b     | Observed `0`                                             |
+| `+0x08` | u32  | unknown_08     | Observed `0`                                             |
 
 The number of listed titles follows from the header and trailer alone: `(end_of_entries - 8) / 4 - category_count`.
 

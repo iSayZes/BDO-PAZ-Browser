@@ -60,7 +60,7 @@ CASE = HandlerCase(
                 "equip_skill_id",
                 "skill_type",
                 "unknown_08",
-                "padding",
+                "unknown_09",
                 "loc_id",
                 "skill_name",
                 "skill_description",
@@ -69,7 +69,7 @@ CASE = HandlerCase(
         ),
         # The 200 null reserved slots must be skipped.
         DeclaredCountTest(declared=_catalog_rows()),
-        RangeTest(col="padding", min_val=0, max_val=0),
+        RangeTest(col="unknown_09", min_val=0, max_val=0),
         TargetTest(
             col="equip_skill_id",
             value=0,

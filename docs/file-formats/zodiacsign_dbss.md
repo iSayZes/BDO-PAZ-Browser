@@ -42,7 +42,7 @@ All multi-byte values are little-endian.
 | `+0x01` | u32        | float_count    | Number of constellation star positions (slots); range 4–8      |
 | `+0x05` | f32×3 × n  | star_positions | `float_count` triples (x, y, 1.0); third element is always 1.0 |
 | -       | u32        | pairs_count    | Number of star-connection pairs; usually equals `float_count`  |
-| -       | u16        | padding        | Always 0                                                       |
+| -       | u16        | unknown_after_pairs_count | Always 0                                                       |
 | -       | u16×2 × n  | star_pairs     | `pairs_count` pairs of (u16 a, u16 b); star connectivity data  |
 | -       | _variable_ | text_block     | Korean text block (see below)                                  |
 | -       | u32        | icon_small_len | Char count of `icon_small` string                              |
@@ -53,20 +53,22 @@ All multi-byte values are little-endian.
 | -       | char16 × n | icon_large     | Path to large icon DDS                                         |
 | -       | u8         | zodiac_id_tail | Duplicate of `zodiac_id`                                       |
 | -       | u8         | zodiac_id_dup2 | Duplicate of `zodiac_id` again                                 |
-| -       | u8         | pad0           | Always 0                                                       |
+| -       | u8         | unknown_tail_02              | Always 0                                                       |
 | -       | u16        | next_zodiac_id | ID of the next zodiac in cycle (12 → 1)                        |
-| -       | u8         | const1         | Always 1                                                       |
-| -       | u8         | const0a        | Always 0                                                       |
-| -       | u8         | const1b        | Always 1                                                       |
-| -       | u8         | const0b        | Always 0                                                       |
-| -       | u32        | reserved       | Always 0                                                       |
+| -       | u8         | unknown_tail_05 | Always 1                                                       |
+| -       | u8         | unknown_tail_06 | Always 0                                                       |
+| -       | u8         | unknown_tail_07 | Always 1                                                       |
+| -       | u8         | unknown_tail_08 | Always 0                                                       |
+| -       | u32        | unknown_end    | Always 0                                                       |
+
+The `unknown_tail_<hex>` offsets count from `zodiac_id_tail`.
 
 #### text_block Layout
 
 | Sub-offset | Type       | Field              | Notes                                                           |
 | ---------- | ---------- | ------------------ | --------------------------------------------------------------- |
-| `+0x00`    | u32        | reserved_a         | Always 0                                                        |
-| `+0x04`    | u16        | reserved_b         | Always 0                                                        |
+| `+0x00`    | u32        | unknown_00         | Always 0                                                        |
+| `+0x04`    | u16        | unknown_04         | Always 0                                                        |
 | `+0x06`    | char16 × n | constellation_name | Korean name ending in 자리; scan for `U+C790 U+B9AC` (= "자리") |
 | -          | u64        | trait_text_len     | Char count of trait text                                        |
 | -          | char16 × n | trait_text         | Korean personality traits                                       |

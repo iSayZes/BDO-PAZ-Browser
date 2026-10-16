@@ -45,8 +45,8 @@ The rows follow each other with no gap and end at the end of the file (3,702 byt
 | `+0x06`             | u32                   | spawn_count          | Number of spawn positions, `1` or `2`                                              |
 | `+0x0A`             | u32[spawn_count]      | spawn_position_keys  | Keys of `employeespawnposition.dbss` rows                                          |
 | `+0x0A + 4n`        | Hire Block (44 bytes) | hire                 | See below; `n` is `spawn_count`                                                    |
-| `+0x36 + 4n`        | u64 + utf16le         | accept_text_ko       | Korean line when the sailor agrees to be hired; u64 length in UTF-16 units          |
-| varies              | u64 + utf16le         | refuse_text_ko       | Korean line when the sailor turns the player down                                  |
+| `+0x36 + 4n`        | u64 + utf16le         | accept_text_kr       | Korean line when the sailor agrees to be hired; u64 length in UTF-16 units          |
+| varies              | u64 + utf16le         | refuse_text_kr       | Korean line when the sailor turns the player down                                  |
 | varies              | u32                   | terminator           | Always `0`; the row ends after it                                                  |
 
 The inline text holds real line breaks (`0x0A`), not the `\n` escape of `buff.dbss` and `skill.dbss`.

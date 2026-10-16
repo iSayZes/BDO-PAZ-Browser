@@ -45,7 +45,7 @@ Records start immediately after the header at `+0x04`. Records are variable leng
 | `+0x0A` | utf16le[name_len] | name_kr     | Korean quest group title, not NUL-terminated                       |
 | varies  | u32               | quest_count | Number of child quest IDs                                          |
 | varies  | Quest Link[]      | quests      | `quest_count` child quest references                               |
-| varies  | u32               | tail_zero   | Observed `0` in all 110 records; record terminator/padding sentinel |
+| varies  | u32               | unknown_end | Observed `0` in all 110 records; record terminator/padding sentinel |
 
 ### Quest Link (4 bytes)
 

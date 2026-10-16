@@ -132,7 +132,7 @@ Because `3` and `4` exceed `1,000,000`, these cannot be parts-per-million probab
 | `+0x00` | u16  | key         | `acquire_type_id`                                            |
 | `+0x02` | u32  | data_offset | Absolute byte offset in the main file past the 2-byte prefix |
 | `+0x06` | u16  | data_size   | Always `174` (`176 - 2-byte key prefix`)                     |
-| `+0x08` | u16  | padding     | Always `0`                                                   |
+| `+0x08` | u16  | unknown_08  | Always `0`                                                   |
 
 ## Notes
 

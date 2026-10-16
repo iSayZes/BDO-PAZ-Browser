@@ -89,9 +89,9 @@ Offsets after `+0x110` follow the strings.
 | `+0x7A`  | f32              | unknown_7a   | `1.0` at level 0, else 0                                              |
 | `+0x8A`  | u32[8]           | stats        | By `ServantStatType` (Enum Values), percent x 10,000                  |
 | `+0xAA`  | (wstr, u32) x 3  | unknown_aa, unknown_aa_values | Always `1D1` and 0; the parser keeps the strings as `unknown_aa` and the u32s as `unknown_aa_values` |
-| `+0xE0`  | byte[48]         | reserved     | Always 0                                                              |
+| `+0xE0`  | byte[48]         | unknown_e0   | Always 0                                                              |
 | `+0x110` | wstr[6]          | growth_dice  | Level-up bonus dice: HP, stamina, acceleration, speed, cornering, brake (Notes) |
-| after    | byte[32]         | reserved     | Always 0                                                              |
+| after    | byte[32]         | unknown_end  | Always 0                                                              |
 
 Every byte from `+0x0E` to `+0xA9` that the table leaves out is 0 in every
 record on client 3464.

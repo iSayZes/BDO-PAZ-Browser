@@ -41,9 +41,9 @@ Follows the last entry.
 
 | Offset  | Type | Field          | Notes                                                  |
 | ------- | ---- | -------------- | ------------------------------------------------------ |
-| `+0x00` | u32  | reserved_a     | Always 0                                               |
+| `+0x00` | u32  | unknown_00     | Always 0                                               |
 | `+0x04` | u32  | end_of_entries | Byte offset immediately after entries; observed `0x14` |
-| `+0x08` | u32  | reserved_b     | Always 0                                               |
+| `+0x08` | u32  | unknown_08     | Always 0                                               |
 
 ## Reference Table
 

@@ -39,7 +39,7 @@ Records are **not** stored sequentially; use the offset file to locate them.
 | ------- | ------------------- | -------------------- | ------------------------------------------ |
 | `+0x00` | u16                 | personality_type     | `major × 100 + variant`; range 101 to 1202 |
 | `+0x02` | u32                 | trigger_count        | Number of `trigger_order` values           |
-| `+0x06` | u32                 | reserved             | Always 0                                   |
+| `+0x06` | u32                 | unknown_06           | Always 0                                   |
 | `+0x0A` | u16 × trigger_count | trigger_order        | 0-indexed star slots, in lighting order    |
 | -       | u8                  | zodiac_id            | Which zodiac sign (1 to 12)                |
 | -       | u16                 | personality_type_dup | Duplicate of `personality_type` at `+0x00` |
@@ -59,7 +59,7 @@ client 3464, 7 of the 24 records start elsewhere (902, 102, 1002, 202, 302,
 | `+0x00` | u16  | personality_type | Matches `personality_type` in the main record                      |
 | `+0x02` | u32  | data_offset      | Byte offset into `zodiacsignorder.dbss`; 2 bytes past record start |
 | `+0x06` | u16  | data_size        | Size of record data (excluding leading `personality_type` u16)     |
-| `+0x08` | u16  | padding          | Always 0                                                           |
+| `+0x08` | u16  | unknown_08       | Always 0                                                           |
 
 `record_start = data_offset - 2`
 

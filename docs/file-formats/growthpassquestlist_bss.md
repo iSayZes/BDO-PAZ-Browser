@@ -32,9 +32,9 @@ All multi-byte values are little-endian.
 
 | Offset  | Type | Field          | Notes                                     |
 | ------- | ---- | -------------- | ----------------------------------------- |
-| `+0x00` | u32  | reserved_a     | `0`                                       |
+| `+0x00` | u32  | unknown_00     | `0`                                       |
 | `+0x04` | u32  | end_of_entries | `8 + count * 4`, where the trailer starts |
-| `+0x08` | u32  | reserved_b     | `0`                                       |
+| `+0x08` | u32  | unknown_08     | `0`                                       |
 
 ## Quest Chains
 

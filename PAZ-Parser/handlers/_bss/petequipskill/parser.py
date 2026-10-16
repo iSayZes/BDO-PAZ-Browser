@@ -35,7 +35,7 @@ def _parse_section1(data: bytes) -> tuple[list[dict], int]:
             "equip_skill_id": equip_skill_id,
             "skill_type": u32(data, pos + 0x04),
             "unknown_08": u8(data, pos + 0x08),
-            "padding": u8(data, pos + 0x09),
+            "unknown_09": u8(data, pos + 0x09),
             "loc_id": u16(data, pos + 0x0A),
             "unknown_0c": None,
             "unknown_10": None,
@@ -56,7 +56,7 @@ def _parse_section2(data: bytes, start: int) -> list[dict]:
         equip_skill_id = u32(data, pos)
         skill_type = u32(data, pos + 0x04)
         unknown_08 = u8(data, pos + 0x08)
-        padding = u8(data, pos + 0x09)
+        unknown_09 = u8(data, pos + 0x09)
         loc_id = u16(data, pos + 0x0A)
         # 0 or 1; each record with 1 carries one more u32 after the 16 bytes.
         unknown_0c = u32(data, pos + 0x0C)
@@ -77,7 +77,7 @@ def _parse_section2(data: bytes, start: int) -> list[dict]:
             "equip_skill_id": equip_skill_id,
             "skill_type": skill_type,
             "unknown_08": unknown_08,
-            "padding": padding,
+            "unknown_09": unknown_09,
             "loc_id": loc_id,
             "unknown_0c": unknown_0c,
             "unknown_10": unknown_10,

@@ -10,8 +10,8 @@ class TitleRecord(TypedDict):
     title_id: int
     style_value: int
     style_offset: int
-    title_text_ko: str
-    requirement_text_ko: str
+    title_text_kr: str
+    requirement_text_kr: str
     requirement_length: int
     category_id: int
     title_color_argb: str

@@ -39,7 +39,7 @@ A PABR file with no row count after the magic: the class groups start at
 | -------- | ------- | ------------ | ----------------------------------------------------------------- |
 | `+0x00`  | char[4] | magic        | ASCII `PABR`                                                      |
 | `+0x04`  | group[] | class_groups | One group per class slot, 47 groups (class types 0 to 46) on client 3464 |
-| after    | byte[200] | padding    | Always 0; the size of one stat body                               |
+| after    | byte[200] | unknown_after_groups | Always 0; the size of one stat body                               |
 | after    | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload)  |
 | EOF - 8  | u32     | table_start  | Offset of the string table                                        |
 | EOF - 4  | u32     | zero         | Always 0                                                          |
@@ -63,7 +63,7 @@ the stored `table_start` `0x162D84`. The string table holds one wide string,
 | ------- | --------- | ---------- | --------------------------------------------------------------- |
 | `+0x00` | u32       | class_type | Equals the group index; the class type `getClassType()` returns |
 | `+0x04` | u32       | level      | Equals the record index in the group                            |
-| `+0x08` | byte[28]  | reserved   | Always 0                                                        |
+| `+0x08` | byte[28]  | unknown_08 | Always 0                                                        |
 | `+0x24` | stat body | stats      | See Stat Body                                                   |
 
 ### Stat Body (200 bytes)
@@ -118,7 +118,7 @@ from 0 to 1.
   strings at body `+0xA0`, the place of this file's string fields (The `1D1`
   String).
 - bdo-data-extractor describes 228-byte records with 20 reserved bytes and the
-  stat body at `+0x1C`. On client 3464 the reserved run is 28 bytes and the
+  stat body at `+0x1C`. On client 3464 that run (`unknown_08`) is 28 bytes and the
   records are 236 bytes; with 228 the groups do not end before the string
   table. Its stat-relative `apBonus` (+116, `+0x74`) and `dpBonus` (+120,
   `+0x78`) are `ap_bonus` and `dp_bonus` here.

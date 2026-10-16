@@ -197,13 +197,13 @@ Requirement text commonly starts with:
 This default requirement label color is not the visible title-name color.
 The English requirement (LOC type 1, `str_id4` 1) carries the same tag on its
 `Title Requirement` label in all 3,322 rows on client 3458. The parser keeps the
-tags in `requirement_text_ko`, and the table draws them.
+tags in `requirement_text_kr`, and the table draws them.
 
 Special "MASTER ..." title names are different: their title payload itself is
 PAColor-tagged, so those PAColor tags are part of the displayed title name. The
 tags draw a gradient, one colour per letter pair: `MASTER WARRIOR` goes from
 `0xffffffff` on `MA` down to `0xff424242` on `R`, as in game. The parser keeps
-the tags in `title_text_ko`, and the English LOC name (type 1) carries the same
+the tags in `title_text_kr`, and the English LOC name (type 1) carries the same
 tags. Two more LOC names are tagged without a styled payload (`Seasonal
 Sensation!`, `Rise Above the Disorder`); 1348 `Lights, Camera, Action!` has a
 stored payload colour and a different LOC tag colour; the table draws the tag

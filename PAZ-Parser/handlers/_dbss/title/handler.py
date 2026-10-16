@@ -82,8 +82,8 @@ class TitleDbssHandler(PreviewHandler):
                 row["en_name"] = loc_lookup(1, rec["title_id"])
                 row["en_req"] = loc_lookup(1, rec["title_id"], 0, 0, 1)
             row["category"] = _category_label(rec["category_id"])
-            row.update(pa_fields("title", row.get("en_name") or rec["title_text_ko"]))
-            row.update(pa_fields("requirement", row.get("en_req") or rec["requirement_text_ko"]))
+            row.update(pa_fields("title", row.get("en_name") or rec["title_text_kr"]))
+            row.update(pa_fields("requirement", row.get("en_req") or rec["requirement_text_kr"]))
             row["is_special"] = bool(rec["title_color_argb"] or rec["header_field_meaning"] != "style")
             result.append(row)
 

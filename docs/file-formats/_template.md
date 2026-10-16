@@ -48,7 +48,9 @@ Repeat this sub-section once per logical record type. Use H3 headings.
 | `+0x00` | u32  | field_a |       |
 | `+0x04` | u32  | field_b |       |
 
-Include observed value ranges or invariants inline as Notes cells.
+Include observed value ranges or invariants inline as Notes cells. Name a
+field `unknown_<offset>` until its meaning is confirmed, also when it is always
+zero, and `padding_<offset>` only for proven filler (see `CONTRIBUTING.md`).
 
 ## Enum Values
 

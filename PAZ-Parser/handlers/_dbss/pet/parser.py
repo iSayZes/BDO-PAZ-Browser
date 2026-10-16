@@ -33,7 +33,7 @@ def parse_petgrade_records(data: bytes) -> list[dict]:
         if pos + _PETGRADE_RECORD_SIZE > len(data):
             break
 
-        key, padding, key_dup, padding_dup, grade = struct.unpack_from("<HHHHI", data, pos)
+        key, unknown_02, key_dup, unknown_06, grade = struct.unpack_from("<HHHHI", data, pos)
         variant = key & 0xFF
         species = key >> 8
         records.append({
@@ -42,8 +42,8 @@ def parse_petgrade_records(data: bytes) -> list[dict]:
             "species": species,
             "key_dup": key_dup,
             "grade": grade,
-            "padding": padding,
-            "padding_dup": padding_dup,
+            "unknown_02": unknown_02,
+            "unknown_06": unknown_06,
         })
 
     return records
@@ -75,7 +75,7 @@ def parse_petgrade_records_with_offsets(data: bytes, offset_data: bytes) -> list
         if record_start < _PETGRADE_HEADER_SIZE or data_offset + data_size > len(data):
             raise ValueError(f"pet grade record {row} exceeds file size")
 
-        key, padding, key_dup, padding_dup, grade = struct.unpack_from("<HHHHI", data, record_start)
+        key, unknown_02, key_dup, unknown_06, grade = struct.unpack_from("<HHHHI", data, record_start)
         variant = key & 0xFF
         species = key >> 8
         records.append({
@@ -89,8 +89,8 @@ def parse_petgrade_records_with_offsets(data: bytes, offset_data: bytes) -> list
             "record_start": record_start,
             "offset_key": offset_record["key"],
             "key_match": key == key_dup == offset_record["key"],
-            "padding": padding,
-            "padding_dup": padding_dup,
+            "unknown_02": unknown_02,
+            "unknown_06": unknown_06,
         })
 
     return records
@@ -116,7 +116,7 @@ def _read_icon_path(block: bytes, icon_len: int) -> str:
 
 def _parse_pet_header(block: bytes) -> dict:
     """The 32 bytes before the icon path; names follow the Pet_Table sheet (see the doc)."""
-    pet_id, variant, species, reserved_04, tier, reserved_06 = struct.unpack_from("<HBBBBB", block, 0)
+    pet_id, variant, species, unknown_04, tier, unknown_06 = struct.unpack_from("<HBBBBB", block, 0)
     max_level, max_hunger, exp_key, is_indexed, default_action_index, change_look_key, icon_path_len = (
         struct.unpack_from("<iiHBIHQ", block, 0x07)
     )
@@ -133,8 +133,8 @@ def _parse_pet_header(block: bytes) -> dict:
         "default_action_index": default_action_index,
         "change_look_key": change_look_key,
         "icon_path_len": icon_path_len,
-        "reserved_04": reserved_04,
-        "reserved_06": reserved_06,
+        "unknown_04": unknown_04,
+        "unknown_06": unknown_06,
     }
 
 

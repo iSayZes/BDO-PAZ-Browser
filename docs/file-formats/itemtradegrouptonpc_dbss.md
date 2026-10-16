@@ -48,15 +48,15 @@ byte.
 | ------- | ---- | ------------- | ------------------------------------------------------------ |
 | `+0x00` | u16  | character_id  | Repeats the group key                                        |
 | `+0x02` | u32  | item_id       | Item key, LOC type `0`; the top byte is `0` in every entry   |
-| `+0x06` | u8[] | padding       | 48 bytes, all `0` on client 3464                             |
+| `+0x06` | u8[] | unknown_06    | 48 bytes, all `0` on client 3464                             |
 | `+0x36` | u8   | trade_group_type | `1`, `2`, `3` or `99`, see [Trade Group Types](#trade-group-types) |
 | `+0x37` | u8   | unknown_37    | `1` in every entry on client 3464                            |
-| `+0x38` | u8[] | padding       | 51 bytes, all `0` on client 3464                             |
+| `+0x38` | u8[] | unknown_38    | 51 bytes, all `0` on client 3464                             |
 | `+0x6B` | u16  | unknown_6b    | `0` or a three-digit code, see Open Questions                |
-| `+0x6D` | u8[] | padding       | 15 bytes, all `0` on client 3464                             |
+| `+0x6D` | u8[] | unknown_6d    | 15 bytes, all `0` on client 3464                             |
 | `+0x7C` | u8   | unknown_7c    | `0`, `3`, `4` or `5`, see Open Questions                     |
 | `+0x7D` | u8   | commerce_type | Trade category, see [Commerce Types](#commerce-types)        |
-| `+0x7E` | u8   | padding       | `0`                                                          |
+| `+0x7E` | u8   | unknown_7e    | `0`                                                          |
 
 ### Commerce Types
 

@@ -102,7 +102,7 @@ empty name `N` is `17`.
 | next    | u8[36]     | unknown_tail        | Not decoded                                                     |
 | next    | u32        | next_skill_count    | `0` on 25,209 records, `1` on 4,560; up to `75`, see below       |
 | next    | u32[]      | next_skill_keys     | Skill keys this rank leads to, see below                        |
-| next    | u32        | unknown_zero        | Always `0`                                                      |
+| next    | u32        | unknown_after_next_skill_keys | Always `0`                                                      |
 | next    | u32        | base_skill_count    | `1` on 155 records, else `0`                                    |
 | next    | u32[]      | base_skill_keys     | The skill a Core skill enhances, see below                      |
 | next    | f32        | unknown_f32         | `-1.0` on 29,722 records, else `0.0`                            |

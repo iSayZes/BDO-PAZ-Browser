@@ -74,7 +74,7 @@ Offsets are relative to the end of the name string.
 | Offset  | Type    | Field           | Notes                                                                 |
 | ------- | ------- | --------------- | --------------------------------------------------------------------- |
 | `+0x00` | i16     | buff_level      | 1 to 999; `1` in 32,071 rows. Ranks buffs within a `group`; staged buffs count up, e.g. boss stages 1 to 10 |
-| `+0x02` | u8[2]   | reserved        | Always `0`                                                            |
+| `+0x02` | u8[2]   | unknown_02      | Always `0`                                                            |
 | `+0x04` | u16     | group           | `0` in 28,199 rows. Buffs of one group replace each other by level, see Stacking |
 | `+0x06` | i16     | condition_type  | `0` in 44,390 rows; the trigger of types 1 and 4, see `condition_type` |
 | `+0x08` | u8      | effect_type     | 173 distinct values; see Enum Values                                  |
@@ -82,17 +82,17 @@ Offsets are relative to the end of the name string.
 | `+0x13` | i64[10] | param_1..param_10 | Effect parameters; meaning depends on `effect_type`. Percentages use a per-million scale (`100000` = 10%) |
 | `+0x63` | u8      | is_debuff       | `1` on debuffs (14,432 rows on client 3464); the buff bar lists them apart (`HandleMOnAppliedBuff(buffIndex, isDebuff)`) |
 | `+0x64` | u8      | is_party_buff   | `1` in 407 rows, such as 57766 and 57767 (Evasion +8 and +12) and 57786 (All AP -5) |
-| `+0x65` | u16     | reserved        | Always `0`                                                            |
+| `+0x65` | u16     | unknown_65      | Always `0`                                                            |
 | `+0x67` | u8      | is_overlapped   | `1` in 7,662 rows                                                     |
 | `+0x68` | u32     | duration_ms     | `0` in 30,016 rows; max `86400000` (24 h). `3600000` = 60 min        |
 | `+0x6C` | u32     | tick_ms         | Tick interval of periodic effects in milliseconds (`10000` = every 10 sec); see Notes |
-| `+0x70` | u64     | reserved        | Always `0`                                                            |
-| `+0x78` | u16     | reserved        | `0` in every row but buff 12605 (`1`)                                 |
+| `+0x70` | u64     | unknown_70      | Always `0`                                                            |
+| `+0x78` | u16     | unknown_78      | `0` in every row but buff 12605 (`1`)                                 |
 | `+0x7A` | u8      | need_equip_type | Equipment type the buff needs, an `itemenchant.dbss` `equip_type`; `0` in every row but buff 2078 (`13`), see Field Names |
-| `+0x7B` | u8[3]   | reserved        | Copies of `itemenchant.dbss` `+0x08` to `+0x0A`; `0` in every row but buff 2078 (`0, 0, 1`) |
-| `+0x7E` | u8      | flag_7e         | In the `itemenchant.dbss` `+0x0B` place; `1` in 44,588 rows (client 3464) |
+| `+0x7B` | u8[3]   | unknown_7b      | Copies of `itemenchant.dbss` `+0x08` to `+0x0A`; `0` in every row but buff 2078 (`0, 0, 1`) |
+| `+0x7E` | u8      | unknown_7e      | In the `itemenchant.dbss` `+0x0B` place; `1` in 44,588 rows (client 3464) |
 | `+0x7F` | u8      | unknown_7f      | `itemenchant.dbss` `+0x0C`; always `2`                                |
-| `+0x80` | u8      | reserved        | `itemenchant.dbss` `+0x0D`; always `0`                                |
+| `+0x80` | u8      | unknown_80      | `itemenchant.dbss` `+0x0D`; always `0`                                |
 | `+0x81` | u8      | need_equip_slot | `itemenchant.dbss` `equip_slot`; `46` (no slot) in every row but buff 2078 (`6`) |
 | `+0x82` | u8      | unknown_82      | `itemenchant.dbss` `+0x0F`; `2` in every row but buff 2078 (`1`)      |
 | `+0x83` | u8      | remove_on_dead  | `1` when dying ends the buff; 33,944 rows                             |
@@ -104,13 +104,13 @@ Offsets are relative to the end of the description string. Mostly zero.
 
 | Offset  | Type | Field       | Notes                                        |
 | ------- | ---- | ----------- | -------------------------------------------- |
-| `+0x00` | u8   | flag_00     | `1` in 34 rows                               |
-| `+0x01` | u8   | flag_01     | `1` in 6 rows                                |
+| `+0x00` | u8   | unknown_00  | `1` in 34 rows                               |
+| `+0x01` | u8   | unknown_01  | `1` in 6 rows                                |
 | `+0x02` | u32  | unknown_02  | `0`, `1` or `2`                              |
 | `+0x06` | u8   | amplification_type | `3` in 44,649 rows (client 3464), which set no `amplification_rate`; `1` or `0` in the 34 that do |
 | `+0x07` | i32  | amplification_rate | `0`, `1000000` or `-1000000`, per-million scale; set on 34 rows, such as the `구름막` and `비밀의 늪` debuffs (14360 to 14365) |
-| `+0x0B` | u8[12] | reserved  | Always `0`                                   |
-| `+0x17` | u8   | flag_17     | `1` in 221 rows                              |
+| `+0x0B` | u8[12] | unknown_0b | Always `0`                                   |
+| `+0x17` | u8   | unknown_17  | `1` in 221 rows                              |
 | `+0x18` | u8   | stacking_category | 61 distinct values; item type such as food, draught or perfume, see Stacking |
 | `+0x19` | u8   | is_exclusive | `1` in 2,069 rows on client 3458, never with category `0`; applying the buff ends the other buffs of its category, see Stacking |
 | `+0x1A` | u8   | unknown_1a  | `6` in 18,895 rows, else `0` or `1`          |
@@ -1141,7 +1141,7 @@ The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::BuffSta
 | amplification_rate | tail `+0x07` | - | `AmplificationRate` | 17 of 18 |
 | stacking_category | tail `+0x18` | - | `Category` | 803 of 842 |
 
-The `_needEquipType` names rest on the 2016 order and on items: the nine bytes at stats `+0x7A` are zero, `2`, `46` and `2` in the places of the `itemenchant.dbss` header bytes `+0x07` to `+0x0F` on non-equipment items (`equip_type` `0`, `equip_slot` `46`), and buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, a hood effect) stores `13, 0, 0, 1, 1, 2, 0, 6, 1`, the same bytes as all 229 items of `equip_type` `13` the server shares. The server's `NeedEquipType` is `0` on every row, buff 2078 included. `flag_7e` breaks the pattern: it is `1` on 44,588 buffs where non-equipment items store `0` in that place (`_isUseAvatarMesh`), so it keeps its name.
+The `_needEquipType` names rest on the 2016 order and on items: the nine bytes at stats `+0x7A` are zero, `2`, `46` and `2` in the places of the `itemenchant.dbss` header bytes `+0x07` to `+0x0F` on non-equipment items (`equip_type` `0`, `equip_slot` `46`), and buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, a hood effect) stores `13, 0, 0, 1, 1, 2, 0, 6, 1`, the same bytes as all 229 items of `equip_type` `13` the server shares. The server's `NeedEquipType` is `0` on every row, buff 2078 included. `unknown_7e` breaks the pattern: it is `1` on 44,588 buffs where non-equipment items store `0` in that place (`_isUseAvatarMesh`), so it keeps its name.
 
 `tick_ms` matches `RepeatTime` on 914 of 6,911 server rows because the server leaves 5,953 of them as `-`; on the 27,215 rows where it is a number, 27,073 agree. The server sets `only_apply_to_character` on 4,357 fewer buffs than the client; I read that as patches since the server data. `amplification_type`, `amplification_rate` and `stacking_category` are newer than the 2016 struct, so their names rest on the server column.
 

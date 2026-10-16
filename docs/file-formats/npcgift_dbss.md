@@ -39,7 +39,7 @@ All multi-byte values are little-endian.
 | `+0x00` | u16  | npc_id      | NPC key; matches the record's leading `npc_id`                        |
 | `+0x02` | u32  | data_offset | Byte offset into `npcgift.dbss`; points 2 bytes past the record start |
 | `+0x06` | u16  | data_size   | Byte count after the leading `npc_id`                                 |
-| `+0x08` | u16  | padding     | Observed: 0                                                           |
+| `+0x08` | u16  | unknown_08  | Observed: 0                                                           |
 
 `record_start = data_offset - 2`
 

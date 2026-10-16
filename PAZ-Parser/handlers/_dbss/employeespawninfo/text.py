@@ -44,8 +44,8 @@ def sailors_by_spawn_position(info_data: bytes, info_offset_data: bytes) -> dict
 def sailor_text_fields(record: dict) -> dict[str, str]:
     """`accept_text` and `refuse_text` in the loaded LOC language, else the inline Korean, with tagged copies."""
     character_key = record["character_key"]
-    accept = loc_tagged(_LOC_SAILOR_LINE, character_key, _ACCEPT_ID4) or record["accept_text_ko"]
-    refuse = loc_tagged(_LOC_SAILOR_LINE, character_key, _REFUSE_ID4) or record["refuse_text_ko"]
+    accept = loc_tagged(_LOC_SAILOR_LINE, character_key, _ACCEPT_ID4) or record["accept_text_kr"]
+    refuse = loc_tagged(_LOC_SAILOR_LINE, character_key, _REFUSE_ID4) or record["refuse_text_kr"]
     return {**pa_fields("accept_text", accept), **pa_fields("refuse_text", refuse)}
 
 

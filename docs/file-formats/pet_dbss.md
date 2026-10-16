@@ -48,9 +48,9 @@ Counts are records on client 3473.
 | `+0x00` | u16  | pet_id               | Unique record key; equal to the preceding 2-byte file prefix                            |
 | `+0x02` | u8   | variant              | Sub-variant within the species (1–57 observed)                                          |
 | `+0x03` | u8   | species              | Pet family/model code                                                                   |
-| `+0x04` | u8   | -                    | `0` in every record                                                                     |
+| `+0x04` | u8   | unknown_04           | `0` in every record                                                                     |
 | `+0x05` | u8   | tier                 | Tier (0 = lowest, 4 = highest for regular pets)                                         |
-| `+0x06` | u8   | -                    | `1` in every record                                                                     |
+| `+0x06` | u8   | unknown_06           | `1` in every record                                                                     |
 | `+0x07` | i32  | max_level            | 10 on 1,994 records; Laila has 10, 20, 30 or 50 by `exp_key`                            |
 | `+0x0B` | i32  | max_hunger           | `400` in every record                                                                   |
 | `+0x0F` | u16  | exp_key              | Key into [petexp.dbss](petexp_dbss.md): 1 to 4 for pets, 6 to 9 for the Laila grades    |
@@ -118,11 +118,11 @@ Provides O(1) lookup of any pet record by `pet_id`. Records are **not** stored i
 | `+0x00` | u16  | pet_id      | Matches `pet_id` in the main record                                             |
 | `+0x02` | u32  | data_offset | Absolute byte offset in `pet.dbss` to the **data** (past the 2-byte key prefix) |
 | `+0x06` | u16  | data_size   | Size of data in bytes (excluding the 2-byte key prefix)                         |
-| `+0x08` | u16  | -           | Always 0; padding                                                               |
+| `+0x08` | u16  | unknown_08  | Always 0                                                                        |
 
 `record_start = data_offset - 2` gives the position of the 2-byte key prefix in the file.  
 `total_record_size = data_size + 2`.  
-The parser reads `data_size` and the padding as one u32 (`parse_bare_offset_rows()`).
+The parser reads `data_size` and `unknown_08` as one u32 (`parse_bare_offset_rows()`).
 
 ## Notes
 

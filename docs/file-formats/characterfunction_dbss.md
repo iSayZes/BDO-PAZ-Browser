@@ -56,9 +56,9 @@ PABR index with 10-byte rows.
 
 | Offset  | Type | Field       | Observed | Notes                       |
 | ------- | ---- | ----------- | -------- | --------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      |                             |
+| `+0x00` | u32  | unknown_00  | `0`      |                             |
 | `+0x04` | u32  | end_of_rows | `21,468` | `8 + count * 10`            |
-| `+0x08` | u32  | reserved_b  | `0`      |                             |
+| `+0x08` | u32  | unknown_08  | `0`      |                             |
 
 ## Record Structure
 

@@ -41,9 +41,9 @@ file ends after the last row.
 | `+0x00` | u16     | key          | Row key; equals `character_id` on every row        |
 | `+0x02` | u8      | unknown_02   | `1` on every row                                   |
 | `+0x03` | u16     | character_id | `characterstatic.dbss` character ID, LOC type 6    |
-| `+0x05` | u8[12]  | reserved_05  | Zero on every row                                  |
+| `+0x05` | u8[12]  | unknown_05   | Zero on every row                                  |
 | `+0x11` | u8      | unknown_11   | `1` on every row                                   |
-| `+0x12` | u8[15]  | reserved_12  | Zero on every row                                  |
+| `+0x12` | u8[15]  | unknown_12   | Zero on every row                                  |
 
 The `u8, u16 character_id, u16` head has the shape of the block after the
 scripts in a `characterstatic.dbss` record (`unknown_p`, `character_id`,

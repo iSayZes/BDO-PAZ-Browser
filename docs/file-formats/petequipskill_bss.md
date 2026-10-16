@@ -37,7 +37,7 @@ Covers `equip_skill_id` 0–42 (regular pets). Stride = 12 bytes. The file store
 | `+0x00` | u32  | equip_skill_id| Unique skill record key (0–42)                |
 | `+0x04` | u32  | skill_type    | Skill group (1–20; see Skill Types table)      |
 | `+0x08` | u8   | unknown_08    | Always 1 in Section 1                         |
-| `+0x09` | u8   | -             | Always 0; padding                             |
+| `+0x09` | u8   | unknown_09    | Always 0                                      |
 | `+0x0A` | u16  | loc_id        | Localization key → skill name (type 10 string)|
 
 ### Null Block (15 × 16 bytes, offset `0x208`)
@@ -53,7 +53,7 @@ Covers `equip_skill_id` 15–111, the base skills `pet.dbss` keys with `base_ski
 | `+0x00` | u32  | equip_skill_id| Unique skill record key (15–111, or 200 = null)   |
 | `+0x04` | u32  | skill_type    | Skill group (different numbering from Section 1)   |
 | `+0x08` | u8   | unknown_08    | Always 1                                          |
-| `+0x09` | u8   | -             | Always 0; padding                                 |
+| `+0x09` | u8   | unknown_09    | Always 0                                          |
 | `+0x0A` | u16  | loc_id        | Localization key → skill name (type 10 string)    |
 | `+0x0C` | u32  | unknown_0c    | `0` or `1`; `1` means an extra u32 follows        |
 | `+0x10` | u32  | unknown_10    | Present only when `unknown_0c = 1`                |

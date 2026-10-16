@@ -35,7 +35,7 @@ Caphras level 20   29,403 stones total AP +10, accuracy +12
 | `+0x08` | category[] | categories         | `category_count` category blocks, below                  |
 | varies  | u32        | string_count       | Always `0`: the PABR string table is present but empty   |
 | EOF-8   | u32        | string_table_start | Absolute offset of `string_count`, where the categories end |
-| EOF-4   | u32        | zero_trailer       | Always `0`                                               |
+| EOF-4   | u32        | zero               | Always `0`                                               |
 
 On client 3464 the file is `8 + 10 × (4 + 3 × (4 + 20 × 39)) + 12 = 23,580`
 bytes. The parser rejects a file whose categories do not end exactly at

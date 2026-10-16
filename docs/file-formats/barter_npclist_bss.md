@@ -29,7 +29,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x08` | row[]   | records            | `record_count` rows of 4 bytes                           |
 | varies  | u32     | string_count       | Always `0`: the PABR string table is present but empty   |
 | EOF-8   | u32     | string_table_start | Absolute offset of `string_count`; equals `8 + 4 × count` |
-| EOF-4   | u32     | zero_trailer       | Always `0`                                               |
+| EOF-4   | u32     | zero               | Always `0`                                               |
 
 The file is `8 + 4 × 91 + 12 = 384` bytes on client 3464. The parser rejects a file whose rows do not end exactly at `string_table_start`.
 

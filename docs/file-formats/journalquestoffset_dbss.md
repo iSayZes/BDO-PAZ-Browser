@@ -54,7 +54,7 @@ for i in range(group_count):
 
 - File size is `4 + 8 × group_count + 12 × total_books`: `4 + 96 + 1,344 = 1,444` bytes for 12 groups and 112 books. The earlier reading of "120-byte physical chunks" was a coincidence (`1,440 = 12 × 120`); there is no chunking.
 - Groups are stored in the order 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 10 (journal 10 last). This is also the physical group order in `journalquest.dbss`.
-- `byte_offset` values are absolute offsets into `journalquest.dbss`. Every `byte_size` is exact: each record ends precisely on its `reserved_end` word, and the indexed records plus the 4-byte header and one 4-byte `book_count` per group tile the data file with no gaps (112 of 112 records, current file and fixture).
+- `byte_offset` values are absolute offsets into `journalquest.dbss`. Every `byte_size` is exact: each record ends precisely on its `unknown_end` word, and the indexed records plus the 4-byte header and one 4-byte `book_count` per group tile the data file with no gaps (112 of 112 records, current file and fixture).
 - Within a group, index order equals physical order except in journal 6, where books 2 and 10 are swapped physically.
 - The current file and the older fixture are both `1,444` bytes with the same keys; only offsets and sizes differ.
 

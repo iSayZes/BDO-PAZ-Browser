@@ -64,7 +64,7 @@ Strings are length-prefixed: a u64 character count followed by that many UTF-16L
 | varies  | u64 + ascii[n]        | book_model             | `Adventure_Bookshelf_Static_book_00` to `_06`                                              |
 | varies  | u32                   | page_count             | Number of page quest IDs                                                                   |
 | varies  | u32[page_count]       | page_quest_ids         | Packed quest IDs `(quest_id << 16) \| quest_chain_id`                                      |
-| varies  | u32                   | reserved_end           | `0` in 112 of 112 records; the record ends exactly here                                   |
+| varies  | u32                   | unknown_end            | `0` in 112 of 112 records; the record ends exactly here                                   |
 
 Earlier versions of this doc called `is_record_book` `flag_08` and then `unknown_08`. An even older reading of it as a u32 (`0x00000d00` etc.) was this byte plus the low bytes of the first string length. The "trailing `"` in `combine_model`" was the low byte of the next string's u64 length (`0x22` = 34 characters); it is not part of the stored value.
 

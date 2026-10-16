@@ -55,17 +55,17 @@ the same value in every row, when one does.
 | ------- | ----- | --------------- | ---------------------- | ------------------------------------------------------------ |
 | `+0x00` | u32   | buff_id         | `buff_id`              | Unique; 43 to 65,528 and five IDs from 700,000 to 4,100,000,000; a u16 before client 3464 |
 | `+0x04` | u8    | need_equip_type | stats `need_equip_type` | `0` in every row but buff 2078 (`13`)                       |
-| `+0x05` | u8[2] | reserved        |                        | Always `0`                                                   |
+| `+0x05` | u8[2] | unknown_05      |                        | Always `0`                                                   |
 | `+0x07` | u8    | unknown_07      | stats `+0x7D`          | `0` in every row but buff 2078 (`1`)                         |
 | `+0x08` | u8    | unknown_08      | stats `+0x7D`          | Same values as `unknown_07`; not stats `+0x7E`, see Notes    |
 | `+0x09` | u8    | unknown_09      | stats `unknown_7f`     | Always `2`                                                   |
-| `+0x0A` | u8    | reserved        |                        | Always `0`                                                   |
+| `+0x0A` | u8    | unknown_0a      |                        | Always `0`                                                   |
 | `+0x0B` | u8    | need_equip_slot | stats `need_equip_slot` | `46` (no slot) in every row but buff 2078 (`6`)             |
 | `+0x0C` | u8    | unknown_0c      | stats `unknown_82`     | `2` in every row but buff 2078 (`1`)                         |
 | `+0x0D` | u32   | effect_name_ref | `effect_name`          | String table index; 187 distinct, `0` (`"0"`) in 39,527 rows, `1` (`""`) in 52 |
 | `+0x11` | u8    | is_debuff       | stats `is_debuff`      | `1` in 14,432 rows                                           |
 | `+0x12` | u8    | unknown_12      |                        | Always `1`; no `buff.dbss` byte matches, see Open Questions  |
-| `+0x13` | u8[3] | reserved        |                        | Always `0`                                                   |
+| `+0x13` | u8[3] | unknown_13      |                        | Always `0`                                                   |
 | `+0x16` | u8    | remove_on_dead  | stats `remove_on_dead` | `1` in 33,944 rows                                           |
 | `+0x17` | u8    | is_shown        | `is_shown`             | `1` in 12,766 rows                                           |
 | `+0x18` | u32   | unknown_18      | tail `unknown_02`      | `0` in 25,701 rows, `1` in 14,420, `2` in 4,562               |
@@ -106,7 +106,7 @@ value or an icon path.
   constants, and its stats bytes `+0x7A` to `+0x82` read
   `0d 00 00 01 01 02 00 06 01`, the same nine bytes as this row: the
   `_needEquipType` copy of an `itemenchant.dbss` equip type (see the
-  `buff.dbss` Field Names). On every other buff stats `+0x7E` (`flag_7e`) is
+  `buff.dbss` Field Names). On every other buff stats `+0x7E` (`unknown_7e`) is
   `1` in 44,588 rows while `+0x08` here stays `0`, so `+0x08` is not that
   byte. Only per-byte matches are claimed above.
 - `buff.dbss` fields with no copy here: `name`, `buff_level`, `group`,
@@ -126,6 +126,6 @@ The named fields take the names of the `buff.dbss` fields they copy, which come 
 ### What does `unknown_12` hold?
 
 It is `1` in every row and matches no `buff.dbss` byte in all rows. The
-closest are stats `flag_09` (`1` in 44,525 rows) and `flag_7e` (`1` in 44,550),
+closest are stats `param_1_set` (`1` in 44,525 rows) and `unknown_7e` (`1` in 44,550),
 so it may be one of those with the exceptions dropped, or a constant of the
 compact format.

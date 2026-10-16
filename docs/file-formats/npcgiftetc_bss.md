@@ -23,10 +23,10 @@ The file is exactly 32 bytes in the observed client data. Unlike DBSS records, i
 | `+0x06` | u16     | unknown_06 | 5          | Global gift-system value               |
 | `+0x08` | u32     | unknown_08 | 1000       | Global gift-system value               |
 | `+0x0C` | u32     | unknown_0c | 50000000   | Global gift-system value               |
-| `+0x10` | u32     | reserved0  | 0          | Observed zero                          |
-| `+0x14` | u32     | reserved1  | 0          | Observed zero                          |
+| `+0x10` | u32     | unknown_10 | 0          | Observed zero                          |
+| `+0x14` | u32     | unknown_14 | 0          | Observed zero                          |
 | `+0x18` | u32     | unknown_18 | 20         | Global gift-system value               |
-| `+0x1C` | u32     | reserved2  | 0          | Observed zero                          |
+| `+0x1C` | u32     | unknown_1c | 0          | Observed zero                          |
 
 ## Notes
 

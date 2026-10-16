@@ -183,8 +183,8 @@ def extract_title_records(
         style_value = u32(block, style_offset) if style_offset else 0
         text_start = style_offset + 8 if style_offset else 0
         (
-            title_text_ko,
-            requirement_text_ko,
+            title_text_kr,
+            requirement_text_kr,
             requirement_length,
             category_id,
             title_color_argb,
@@ -201,8 +201,8 @@ def extract_title_records(
             title_id=title_id,
             style_value=style_value,
             style_offset=style_offset,
-            title_text_ko=title_text_ko,
-            requirement_text_ko=requirement_text_ko,
+            title_text_kr=title_text_kr,
+            requirement_text_kr=requirement_text_kr,
             requirement_length=requirement_length,
             category_id=category_id,
             title_color_argb=title_color_argb,

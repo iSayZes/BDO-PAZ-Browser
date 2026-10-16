@@ -56,9 +56,9 @@ PABR index with a 10-byte row, because the key is a u16.
 
 | Offset  | Type | Field       | Observed | Notes                                    |
 | ------- | ---- | ----------- | -------- | ---------------------------------------- |
-| `+0x00` | u32  | reserved_a  | `0`      | Observed zero                            |
+| `+0x00` | u32  | unknown_00  | `0`      | Observed zero                            |
 | `+0x04` | u32  | end_of_rows | `51,238` | Byte offset after rows; `8 + count * 10` |
-| `+0x08` | u32  | reserved_b  | `0`      | Observed zero                            |
+| `+0x08` | u32  | unknown_08  | `0`      | Observed zero                            |
 
 ## Record Structure
 
@@ -124,7 +124,7 @@ version of this doc read `+0x21B` as a u32, which merged this ID into it.
 
 | Offset | Type    | Field       | Observed (client 3464, 3,969 kind-2 records)                    |
 | ------ | ------- | ----------- | --------------------------------------------------------------- |
-| `+0`   | u8[40]  | reserved    | Always zero                                                     |
+| `+0`   | u8[40]  | unknown_00  | Always zero                                                     |
 | `+40`  | u32     | unknown_28  | Always `0xFFFFFFFF`                                             |
 | `+44`  | u32     | repair_item | Item ID of the tool's repair item; `0` except in 6 records      |
 

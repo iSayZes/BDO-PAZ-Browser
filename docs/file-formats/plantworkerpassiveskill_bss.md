@@ -32,7 +32,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | varies  | u32   | string_count       | Number of string entries; observed `174`                |
 | varies  | ...   | string_table       | Length-prefixed UTF-16LE strings                        |
 | EOF-8   | u32   | string_table_start | Absolute file offset of `string_count`; observed `0xFD8` |
-| EOF-4   | u32   | zero_trailer       | Observed `0`                                            |
+| EOF-4   | u32   | zero               | Observed `0`                                            |
 
 The fixed/extended skill-record block begins at `0x08` and the string table starts at `0xFD8` in the observed file. Skill records reference string table entries by zero-based index.
 
@@ -48,7 +48,7 @@ The fixed/extended skill-record block begins at `0x08` and the string table star
 | `+0x08` | u32  | icon_index         | Index into `string_table`; DDS path                     |
 | `+0x0C` | u32  | description_index  | Index into `string_table`; Korean effect description    |
 | `+0x10` | u32  | acquisition_weight | Observed values: `1000`, `1050`, `1400`, `2100`, `2500`, `2800` |
-| `+0x14` | u32  | zero_a             | Always observed as `0`                                  |
+| `+0x14` | u32  | unknown_14         | Always observed as `0`                                  |
 | `+0x18` | u32  | effect_type        | `0` flat stats, `1` full refund, `2` stats per level up, `6` extra work; see Effect Types |
 | `+0x1C` | u32  | apply_mode         | Usually `7`; observed `0` for `skill_id=1012`           |
 | `+0x20` | u32  | apply_scope        | Always observed as `7`                                  |
@@ -56,16 +56,16 @@ The fixed/extended skill-record block begins at `0x08` and the string table star
 | `+0x28` | u32  | effect_target      | Stat/category/chance target, depending on `effect_type` |
 | `+0x2C` | u32  | effect_value_a     | Primary scaled effect value                             |
 | `+0x30` | u32  | effect_value_b     | Secondary scaled effect value for some rows             |
-| `+0x34` | u32  | zero_b             | Always observed as `0`                                  |
+| `+0x34` | u32  | unknown_34         | Always observed as `0`                                  |
 
 One observed record, `skill_id=1012` (`타고난 일꾼`), is followed by an extra 16-byte parameter block before the next record:
 
 | Offset  | Type | Field                | Notes                             |
 | ------- | ---- | -------------------- | --------------------------------- |
-| `+0x38` | u32  | extra_zero_a         | Observed `0`                      |
+| `+0x38` | u32  | unknown_38           | Observed `0`                      |
 | `+0x3C` | u32  | extra_effect_value_a | Observed `2000000`                |
 | `+0x40` | u32  | extra_effect_value_b | Observed `1`                      |
-| `+0x44` | u32  | extra_zero_b         | Observed `0`                      |
+| `+0x44` | u32  | unknown_44           | Observed `0`                      |
 
 Derived fields:
 
@@ -201,7 +201,7 @@ The string table is a flat pool, not grouped records. Skill records choose any s
 
 - Observed file size is `13,090` bytes (2026-09-27 client: `13,294`).
 - The 2026-09-27 client retunes the Thrifty skills: `effect_target` `50000`/`70000`/`100000` became `7000`/`10000`/`15000` for C/B/A, both effect values `100000` became `1000000`, and Thrifty C now reads "0.7% Chance to Fully Refund One Material, Selected with Equal Probability". The tables above show the pre-2026-09-27 values.
-- BDO Codex lists every worker skill with Level `Naive` and Class `Warrior`. These look like the defaults for zero values (class `0` is Warrior), not data: no field in this record varies that way, and `zero_a` / `zero_b` are `0` on every skill.
+- BDO Codex lists every worker skill with Level `Naive` and Class `Warrior`. These look like the defaults for zero values (class `0` is Warrior), not data: no field in this record varies that way, and `unknown_14` / `unknown_34` are `0` on every skill.
 - `acquisition_weight` is most likely the weight for rolling the skill when a worker learns one; the game does not show it, so it cannot be checked in game.
 - The string table starts at `0xFD8`; the EOF trailer repeats this offset as `string_table_start`.
 - The string table contains `174` entries: names, icon paths, and descriptions in one shared pool.

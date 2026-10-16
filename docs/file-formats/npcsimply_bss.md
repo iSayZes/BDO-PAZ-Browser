@@ -42,7 +42,7 @@ All multi-byte values are little-endian unless noted otherwise.
 | `+0x14` | u8   | has_lease_condition | `1` when the NPC's lease dialog option has a condition script (32 of the 58 lease rows), see Notes |
 | `+0x15` | u32  | name_ref          | String-pool index for the Korean display name                          |
 | `+0x19` | u32  | role_ref          | String-pool index for Korean role/title text; points at the empty string when absent |
-| `+0x1D` | u32  | padding           | Always 0                                                              |
+| `+0x1D` | u32  | unknown_1d        | Always 0                                                              |
 
 An earlier version of this doc read `+0x00` as a u32 `npc_id`. The high half is `unknown_02`: as a u32 only 20 of 2237 values resolve through LOC, as a u16 all of them do. Earlier versions of this doc also called `lease_item_id` `unknown_id` and then `unknown_0c`, `lease_cost` `unknown_value` and then `unknown_10`, `unknown_12` `sentinel` and `has_lease_condition` `unknown_flag` and then `unknown_14`.
 

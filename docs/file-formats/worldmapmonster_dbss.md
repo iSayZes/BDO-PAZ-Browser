@@ -69,7 +69,7 @@ for the wide ones, ASCII for the icon path (`RecordReader`).
 | 9     | i32         | unknown_ref  | `-1` on 120 records; on hunting zones the drop window hunting ground ID, see Notes |
 | 10    | u8          | unknown_kind | 0 to 4, groups the markers; see Open Questions                        |
 | 11    | u8          | unknown_flag | Always `1`                                                            |
-| 12    | u8          | reserved     | Always `0`                                                            |
+| 12    | u8          | unknown_end  | Always `0`                                                            |
 
 ## Notes
 

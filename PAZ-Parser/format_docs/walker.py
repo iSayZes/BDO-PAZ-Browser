@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from .model import Field, Structure
 from .names import OFFSET_FIELD, SIZE_FIELD, UNKNOWN_PREFIX
 from .offsets import Offset, parse_offset
-from .type_grammar import NUMBER_SIZES, STRING_HEADS, UNIT_SIZES, Condition, TypeSpec, parse_type
+from .type_grammar import NUMBER_SIZES, STRING_HEADS, UNIT_SIZES, Clause, Condition, TypeSpec, parse_type
 from .walk_model import FieldBytes, FileFit, RowStats, Unwalkable, WalkError
 
 _FORMATS = {"u8": "B", "i8": "b", "u16": "H", "i16": "h", "u32": "I", "i32": "i", "u64": "Q", "i64": "q", "f32": "f", "f64": "d"}
@@ -237,14 +237,17 @@ class _Walker:
             pos = self._structure(element, pos, end)[0]
 
     def _holds(self, structure: Structure, row: _Row, condition: Condition, pos: int, values: Values) -> bool:
-        if condition.field not in values:
-            raise WalkError(structure.name, row.field.name, pos, f"`{condition.field}` was not read before this condition")
-        actual = values[condition.field]
-        if condition.op in ("^=", "!^="):
-            holds = isinstance(actual, str) and actual.startswith(condition.value)
+        return any(self._clause_holds(structure, row, clause, pos, values) for clause in condition.clauses)
+
+    def _clause_holds(self, structure: Structure, row: _Row, clause: Clause, pos: int, values: Values) -> bool:
+        if clause.field not in values:
+            raise WalkError(structure.name, row.field.name, pos, f"`{clause.field}` was not read before this condition")
+        actual = values[clause.field]
+        if clause.op in ("^=", "!^="):
+            holds = isinstance(actual, str) and actual.startswith(clause.value)
         else:
-            holds = actual == _literal(condition.value)
-        return not holds if condition.op.startswith("!") else holds
+            holds = actual == _literal(clause.value)
+        return not holds if clause.op.startswith("!") else holds
 
     def _value(self, structure: Structure, row: _Row, name: str, pos: int, values: Values) -> int:
         value = values.get(name)

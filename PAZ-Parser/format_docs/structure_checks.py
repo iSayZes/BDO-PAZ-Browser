@@ -82,7 +82,7 @@ def _is_until(spec: TypeSpec, name: str) -> bool:
 
 def _needs_outside_size(spec: TypeSpec) -> bool:
     is_rest = spec.count is not None and spec.count.kind == "rest"
-    return is_rest or (spec.condition is not None and spec.condition.field == "size")
+    return is_rest or (spec.condition is not None and "size" in spec.condition.fields)
 
 
 def _offset_problems(structure: Structure, specs: Mapping[int, TypeSpec], sizes: StructureSizes) -> list[Problem]:

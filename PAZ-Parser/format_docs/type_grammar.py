@@ -18,7 +18,8 @@ UNIT_SIZES: Mapping[str, int] = {"bytes": 1, "char": 1, "char16": 2}
 STRING_HEADS: Mapping[str, int] = {"str8": 8, "str16": 8, "pstr": 5}
 
 _FIELD = r"[a-z][a-z0-9_]*"
-_CONDITION = re.compile(rf"^(?P<base>.+?) if (?P<field>{_FIELD}) (?P<op>!?\^?=) (?P<value>\S+)$")
+_CONDITION = re.compile(r"^(?P<base>.+?) if (?P<clauses>.+)$")
+_CLAUSE = re.compile(rf"^(?P<field>{_FIELD}) (?P<op>!?\^?=) (?P<value>\S+)$")
 _BASE = re.compile(rf"^(?P<name>[a-z][a-z0-9]*|[A-Z][A-Za-z0-9 ]*?)(?:\[(?P<count>[^\]]+)\])?(?:\[(?P<inner>\d+|{_FIELD})\])?$")
 _UNTIL = re.compile(rf"^\.\.(?P<target>{_FIELD}|end)$")
 _WHILE = re.compile(rf"^while (?P<field>{_FIELD}) != (?P<value>\S+)$")
@@ -33,10 +34,23 @@ class Count:
 
 
 @dataclass(frozen=True)
-class Condition:
+class Clause:
+    """`field op value`: `=` and `!=` compare, `^=` and `!^=` test a string prefix."""
+
     field: str
     op: str
     value: str
+
+
+@dataclass(frozen=True)
+class Condition:
+    """One clause, or several joined by `or`: the field is present when any of them holds."""
+
+    clauses: tuple[Clause, ...]
+
+    @property
+    def fields(self) -> tuple[str, ...]:
+        return tuple(clause.field for clause in self.clauses)
 
 
 @dataclass(frozen=True)
@@ -59,7 +73,10 @@ def parse_type(text: str) -> TypeSpec | str:
     condition = None
     match = _CONDITION.match(text)
     if match:
-        condition = Condition(match.group("field"), match.group("op"), match.group("value"))
+        clauses = [_CLAUSE.match(part) for part in match.group("clauses").split(" or ")]
+        if not all(clauses):
+            return f"`{match.group('clauses')}` is not `field = value`, `!=`, `^=` or `!^=`, joined by `or`"
+        condition = Condition(tuple(Clause(c.group("field"), c.group("op"), c.group("value")) for c in clauses if c))
         text = match.group("base")
     base = _BASE.match(text)
     if not base:
@@ -110,7 +127,7 @@ def referenced_fields(spec: TypeSpec) -> tuple[str, ...]:
     if isinstance(spec.inner, str):
         names.append(spec.inner)
     if spec.condition:
-        names.append(spec.condition.field)
+        names.extend(spec.condition.fields)
     return tuple(name for name in names if name not in ("size", "end"))
 
 

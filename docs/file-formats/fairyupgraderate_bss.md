@@ -8,12 +8,11 @@ Each wine consumed adds a fixed slice of success chance, so the file stores, per
 grade transition and per usable item, the chance contributed by **one** item and
 the item count that reaches a guaranteed 100%.
 
-Example:
+## Versions
 
-```text
-step 2 (Brilliant -> Radiant): Sweet Honey Wine          0.2500% per item, 400 for 100%
-                               Ornette's Dark Honey Wine 4.0000% per item,  25 for 100%
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,33 +25,44 @@ The format is self-contained; there is no `fairyupgraderateoffset.dbss`.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field   | Notes                                         |
-| ------- | ----- | ------- | --------------------------------------------- |
-| `+0x00` | u8[4] | magic   | `PABR` (ASCII)                                |
-| `+0x04` | u32   | count   | Number of records; observed 3                 |
-| `+0x08` | -     | records | `count` variable-length records, back to back |
-| end-12  | -     | trailer | 12-byte file trailer                          |
+### File Layout
+
+| Offset              | Type          | Field          | Notes                                         |
+| ------------------- | ------------- | -------------- | --------------------------------------------- |
+| `+0x00`             | char[4]       | magic          | `PABR` (ASCII)                                |
+| `+0x04`             | u32           | count          | Number of records; observed 3                 |
+| `+0x08`             | Record[count] | records        | Variable-length records, back to back         |
+| `records+0x00`      | String Table  | string_table   | The PABR string table, here with no strings   |
+| `string_table+0x00` | u32           | end_of_records | Byte offset just past the last record; observed 131 |
+| `string_table+0x04` | u32           | zero           | Always `0`                                    |
 
 Observed file size is 143 bytes: 8-byte header, 3 × 41-byte records, 12-byte trailer.
 
-### Record (9 bytes + `entry_count` × 16)
+The 12-byte trailer (`string_table`, `end_of_records`, `zero`) follows the
+last record, the same trailer shape used by
+[zodiacsignindex.bss](zodiacsignindex_bss.md).
+
+`end_of_records` is authoritative for where the record stream stops; parse
+records until that offset rather than assuming a fixed record size.
+
+### Record (variable: 9 bytes + entries)
 
 One record per grade transition, in ascending grade order.
 
-| Offset  | Type | Field            | Observed | Notes                                        |
-| ------- | ---- | ---------------- | -------- | -------------------------------------------- |
-| `+0x00` | u8   | unknown_00       | 0        | Zero in all three records                    |
-| `+0x01` | u32  | success_cap_ppm  | 1000000  | 100% success, and the cap on accumulated rate |
-| `+0x05` | u32  | entry_count      | 2        | Number of item entries that follow           |
-| `+0x09` | -    | entries          |          | `entry_count` × 16-byte entries              |
+| Offset  | Type               | Field            | Observed | Notes                                        |
+| ------- | ------------------ | ---------------- | -------- | -------------------------------------------- |
+| `+0x00` | u8                 | unknown_00       | 0        | Zero in all three records                    |
+| `+0x01` | u32                | success_cap_ppm  | 1000000  | 100% success, and the cap on accumulated rate |
+| `+0x05` | u32                | entry_count      | 2        | Number of item entries that follow           |
+| `+0x09` | Entry[entry_count] | entries          |          | `entry_count` × 16-byte entries              |
 
 Records carry no explicit key; the upgrade step is the record index.
 
 Earlier versions of this doc called `unknown_00` `unknown_lead`.
 
-### Entry (16 bytes, repeated `entry_count` times)
+### Entry (16 bytes)
 
 One entry per item type that can be used for this Sprouting step. Only one item
 type may be used per attempt; the entries are alternatives, not a combined pool.
@@ -67,19 +77,15 @@ type may be used per attempt; the entries are alternatives, not a combined pool.
 Success chance for `n` items is `min(n × rate_ppm, success_cap_ppm)`, with `n`
 capped at `items_for_max`.
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-Follows the last record, the same trailer shape used by
-[zodiacsignindex.bss](zodiacsignindex_bss.md).
+| Offset  | Type               | Field        | Observed | Notes       |
+| ------- | ------------------ | ------------ | -------- | ----------- |
+| `+0x00` | u32                | string_count | 0        | Always zero |
+| `+0x04` | pstr[string_count] | strings      |          | Empty       |
 
-| Offset  | Type | Field          | Observed | Notes                                 |
-| ------- | ---- | -------------- | -------- | ------------------------------------- |
-| `+0x00` | u32  | unknown_00     | 0        | Always zero                           |
-| `+0x04` | u32  | end_of_records | 131      | Byte offset just past the last record |
-| `+0x08` | u32  | unknown_08     | 0        | Always zero                           |
-
-`end_of_records` is authoritative for where the record stream stops; parse
-records until that offset rather than assuming a fixed record size.
+Earlier versions of this doc called `string_count` the trailer's `unknown_00`
+and `zero` its `unknown_08`.
 
 ## Item IDs
 

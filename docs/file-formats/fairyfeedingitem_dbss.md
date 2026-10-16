@@ -6,13 +6,11 @@ The list of items a fairy accepts in the Growth window, with the fairy EXP one
 item grants. Each record keys one item ID. `fairyfeedingitemoffset.dbss` is the
 item-keyed index into it.
 
-Example (client 3464):
+## Versions
 
-```text
-item 54030  Sweet Honey Wine            2,000 EXP
-item 18448  Ornette's Dark Honey Wine  13,300 EXP
-item 10022  Azwell Longsword of Temptation  176 EXP
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,25 +24,26 @@ handler reads it without the offset companion.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes             |
-| ------- | ---- | ----- | ----------------- |
-| `+0x00` | u32  | count | Number of records |
+| Offset  | Type          | Field   | Notes                             |
+| ------- | ------------- | ------- | --------------------------------- |
+| `+0x00` | u32           | count   | Number of records                 |
+| `+0x04` | Record[count] | records | See Record                        |
 
 On client 3464 the file is 62,892 bytes: 4 + 2,246 records of 28 bytes.
 
-### Record (28 bytes, repeated `count` times, offset `0x04`)
+### Record (28 bytes)
 
-| Offset  | Type   | Field      | Notes                                                      |
-| ------- | ------ | ---------- | ---------------------------------------------------------- |
-| `+0x00` | u32    | key        | Record key; equals `item_id` in every record               |
-| `+0x04` | u32    | item_id    | Item fed to the fairy                                      |
-| `+0x08` | u32    | unknown_08 | `576` on all but one record (see Open Questions)           |
-| `+0x0C` | u32    | exp        | Fairy EXP granted per item                                 |
-| `+0x10` | u8[12] | unknown_10 | Zero in every record                                       |
+| Offset  | Type      | Field      | Notes                                                      |
+| ------- | --------- | ---------- | ---------------------------------------------------------- |
+| `+0x00` | u32       | key        | Record key; equals `item_id` in every record               |
+| `+0x04` | u32       | item_id    | Item fed to the fairy                                      |
+| `+0x08` | u32       | unknown_08 | `576` on all but one record (see Open Questions)           |
+| `+0x0C` | u32       | exp        | Fairy EXP granted per item                                 |
+| `+0x10` | bytes[12] | unknown_10 | Zero in every record                                       |
 
 The offset companion points at `record_start + 4`, so the addressable payload
 is the 24 bytes after the key.
@@ -53,15 +52,14 @@ is the 24 bytes after the key.
 key with enhancement level 0 (`item_key = enchant_level << 24 | item_id`, see
 `_common/item_key.py`).
 
-## `fairyfeedingitemoffset.dbss`
+### `fairyfeedingitemoffset.dbss`
 
-### Header (4 bytes)
+| Offset  | Type              | Field | Notes                                        |
+| ------- | ----------------- | ----- | -------------------------------------------- |
+| `+0x00` | u32               | count | Equals the `fairyfeedingitem.dbss` count     |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                               |
 
-| Offset  | Type | Field | Notes                                        |
-| ------- | ---- | ----- | -------------------------------------------- |
-| `+0x00` | u32  | count | Equals the `fairyfeedingitem.dbss` count     |
-
-### Offset Row (12 bytes, repeated `count` times)
+### Offset Row (12 bytes)
 
 | Offset  | Type | Field       | Notes                                                 |
 | ------- | ---- | ----------- | ----------------------------------------------------- |

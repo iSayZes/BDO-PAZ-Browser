@@ -8,12 +8,11 @@ fully resolved; the meaning of every entry field is not confirmed, so all four
 are named by their offset (`unknown_00`, `unknown_02`, `unknown_03`,
 `unknown_07`).
 
-Example (`unknown_00`: `unknown_02` -> (`unknown_03`, `unknown_07`)):
+## Versions
 
-```text
-record 0: 1: 19 -> (0, 200), 1: 20 -> (0, 300)
-record 6: 7: 0  -> (300, 350)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,30 +21,38 @@ and no companion is needed to parse it.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type  | Field   | Notes                                         |
-| ------- | ----- | ------- | --------------------------------------------- |
-| `+0x00` | u8[4] | magic   | `PABR` (ASCII)                                |
-| `+0x04` | u32   | count   | Number of records; observed 7 (see Notes)     |
-| `+0x08` | -     | records | `count` variable-length records, back to back |
-| end-12  | -     | trailer | 12-byte file trailer                          |
+### File Layout
+
+| Offset              | Type          | Field          | Notes                                        |
+| ------------------- | ------------- | -------------- | -------------------------------------------- |
+| `+0x00`             | char[4]       | magic          | `PABR` (ASCII)                               |
+| `+0x04`             | u32           | count          | Number of records; observed 7 (see Notes)    |
+| `+0x08`             | Record[count] | records        | Variable-length records, back to back        |
+| `records+0x00`      | String Table  | string_table   | The PABR string table, here with no strings  |
+| `string_table+0x00` | u32           | end_of_records | Byte offset just past the last record; observed 135 |
+| `string_table+0x04` | u32           | zero           | Always `0`                                   |
 
 Observed file size is 147 bytes: 8-byte header, 127 bytes of records, 12-byte
 trailer.
 
-### Record (4 bytes + `entry_count` × 11)
+The 12-byte trailer (`string_table`, `end_of_records`, `zero`) is the same
+trailer shape used by [fairyupgraderate.bss](fairyupgraderate_bss.md) and
+[zodiacsignindex.bss](zodiacsignindex_bss.md).
 
-| Offset  | Type | Field       | Observed | Notes                              |
-| ------- | ---- | ----------- | -------- | ---------------------------------- |
-| `+0x00` | u32  | entry_count | 1 or 2   | Number of entries that follow      |
-| `+0x04` | -    | entries     |          | `entry_count` × 11-byte entries    |
+### Record (variable: 4 bytes + entries)
+
+| Offset  | Type               | Field       | Observed | Notes                              |
+| ------- | ------------------ | ----------- | -------- | ---------------------------------- |
+| `+0x00` | u32                | entry_count | 1 or 2   | Number of entries that follow      |
+| `+0x04` | Entry[entry_count] | entries     |          | `entry_count` × 11-byte entries    |
 
 Records have no key of their own. Every entry in a record repeats the same
 `unknown_00`, and that value equals the record index plus one across all seven
 records.
 
-### Entry (11 bytes, repeated `entry_count` times)
+### Entry (11 bytes)
 
 | Offset  | Type | Field      | Notes                                                   |
 | ------- | ---- | ---------- | ------------------------------------------------------- |
@@ -61,16 +68,15 @@ The 11-byte entry is unaligned: `unknown_03` starts at an odd offset, so a parse
 must read the two u32 fields at `+0x03` and `+0x07` rather than assume 4-byte
 alignment.
 
-### Trailer (12 bytes)
+### String Table (variable: 4 bytes + strings)
 
-The same trailer shape used by [fairyupgraderate.bss](fairyupgraderate_bss.md)
-and [zodiacsignindex.bss](zodiacsignindex_bss.md).
+| Offset  | Type               | Field        | Observed | Notes                       |
+| ------- | ------------------ | ------------ | -------- | --------------------------- |
+| `+0x00` | u32                | string_count | 0        | Always zero                 |
+| `+0x04` | pstr[string_count] | strings      |          | Empty                       |
 
-| Offset  | Type | Field          | Observed | Notes                                 |
-| ------- | ---- | -------------- | -------- | ------------------------------------- |
-| `+0x00` | u32  | unknown_00     | 0        | Always zero                           |
-| `+0x04` | u32  | end_of_records | 135      | Byte offset just past the last record |
-| `+0x08` | u32  | unknown_08     | 0        | Always zero                           |
+Earlier versions of this doc called `string_count` the trailer's `unknown_00`
+and `zero` its `unknown_08`.
 
 ## Decoded Table
 

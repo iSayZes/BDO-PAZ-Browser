@@ -10,11 +10,11 @@ Knight, `8997` Ogre, `8998` Muraka) and `59670` Military Supply Wagon. Every
 ID exists in `characterstatic.dbss`. Besides the ID, a row holds only two
 bytes that are `1` on every row.
 
-```text
-23120  Garmoth                <Boss>
-23974  Garmoth                <Guild Boss>
-59670  Military Supply Wagon  <Ancient Chariot Loaded>
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,46 +24,55 @@ None. The handler reads the rows in file order and does not need
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 No `PABR` magic and no string table. A row count, then 33-byte rows; the
 file ends after the last row.
 
-| Offset  | Type  | Field     | Notes                    |
-| ------- | ----- | --------- | ------------------------ |
-| `+0x00` | u32   | row_count | `694` on client 3464     |
-| `+0x04` | row[] | rows      | `row_count` 33-byte rows |
+| Offset  | Type           | Field     | Notes                    |
+| ------- | -------------- | --------- | ------------------------ |
+| `+0x00` | u32            | row_count | `694` on client 3464     |
+| `+0x04` | Row[row_count] | rows      | See Row                  |
 
 ### Row (33 bytes)
 
-| Offset  | Type    | Field        | Notes                                              |
-| ------- | ------- | ------------ | -------------------------------------------------- |
-| `+0x00` | u16     | key          | Row key; equals `character_id` on every row        |
-| `+0x02` | u8      | unknown_02   | `1` on every row                                   |
-| `+0x03` | u16     | character_id | `characterstatic.dbss` character ID, LOC type 6    |
-| `+0x05` | u8[12]  | unknown_05   | Zero on every row                                  |
-| `+0x11` | u8      | unknown_11   | `1` on every row                                   |
-| `+0x12` | u8[15]  | unknown_12   | Zero on every row                                  |
+| Offset  | Type      | Field        | Notes                                              |
+| ------- | --------- | ------------ | -------------------------------------------------- |
+| `+0x00` | u16       | key          | Row key; equals `character_id` on every row        |
+| `+0x02` | u8        | unknown_02   | `1` on every row                                   |
+| `+0x03` | u16       | character_id | `characterstatic.dbss` character ID, LOC type 6    |
+| `+0x05` | bytes[12] | unknown_05   | Zero on every row                                  |
+| `+0x11` | u8        | unknown_11   | `1` on every row                                   |
+| `+0x12` | bytes[15] | unknown_12   | Zero on every row                                  |
 
 The `u8, u16 character_id, u16` head has the shape of the block after the
 scripts in a `characterstatic.dbss` record (`unknown_p`, `character_id`,
 `unknown_p3`), but the values differ: none of the 694 characters has
 `unknown_p` set to `1` there.
 
-## `fieldbossoffset.dbss`
+### `fieldbossoffset.dbss`
 
 A u32 row count (equal to the main file's), then 10-byte rows
-(`parse_bare_offset_rows()`):
+(`parse_bare_offset_rows()`).
+
+| Offset  | Type                 | Field     | Notes                              |
+| ------- | -------------------- | --------- | ---------------------------------- |
+| `+0x00` | u32                  | row_count | Equals the main file's `row_count` |
+| `+0x04` | Index Row[row_count] | rows      | See Index Row                      |
+
+Every index row points at the main row with the same key. The index rows are
+not in the main file's order (the first one points at main row 0, the second
+at main row 596).
+
+### Index Row (10 bytes)
 
 | Offset  | Type | Field        | Notes                                                      |
 | ------- | ---- | ------------ | ---------------------------------------------------------- |
 | `+0x00` | u16  | character_id | Row key, the main row's `key`                              |
 | `+0x02` | u32  | offset       | Start of the row in `fieldboss.dbss` plus 2, at `unknown_02` |
 | `+0x06` | u32  | size         | Always `31`, the row size minus the 2-byte `key`           |
-
-Every index row points at the main row with the same key. The index rows are
-not in the main file's order (the first one points at main row 0, the second
-at main row 596).
 
 ## Notes
 

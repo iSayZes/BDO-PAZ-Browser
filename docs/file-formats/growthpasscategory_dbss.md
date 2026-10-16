@@ -2,12 +2,13 @@
 
 ## Purpose
 
-The tabs of the Growth Pass window (`panel_window_growthpass*.luac`): per category a key, a Korean name, an icon texture key and the quest chain its grid holds. Two categories on client 3464:
+The tabs of the Growth Pass window (`panel_window_growthpass*.luac`): per category a key, a Korean name, an icon texture key and the quest chain its grid holds.
 
-```text
-category 7 -> Game Tips  -> Combine_Etc_GrowthSupport_Icon_Growth -> quest chain 4470
-category 9 -> HYPERBOOST -> Combine_Etc_GrowthSupport_Icon_Quest  -> quest chain 4472
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,32 +22,52 @@ The grid of each category is in [`uigrowthpasslayout.bss`](uigrowthpasslayout_bs
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field        | Notes                                                    |
-| ------- | ---- | ------------ | -------------------------------------------------------- |
-| `+0x00` | u32  | record_count | `2` on client 3464                                       |
-| `+0x04` | ...  | records      | Each record is a u32 copy of its key, then the record body |
+### File Layout
 
-## Record Structure
+| Offset  | Type                 | Field        | Notes              |
+| ------- | -------------------- | ------------ | ------------------ |
+| `+0x00` | u32                  | record_count | `2` on client 3464 |
+| `+0x04` | Record[record_count] | records      | See Record         |
 
-### Record Body (variable)
+### Record (variable: 4 bytes + body)
+
+| Offset  | Type        | Field | Notes                               |
+| ------- | ----------- | ----- | ----------------------------------- |
+| `+0x00` | u32         | key   | Copy of the record's key            |
+| `+0x04` | Record Body | body  | The offset row points at this field |
+
+### Record Body (variable: 42 bytes + name and icon text)
 
 The offset table points at the body, past the key copy.
 
-| Offset         | Type        | Field          | Notes                                                                |
-| -------------- | ----------- | -------------- | -------------------------------------------------------------------- |
-| `+0x00`        | u32         | category_key   | Same as the key copy before it and the offset row key                |
-| `+0x04`        | u64 + UTF-16 | name_kr       | Length in characters, then the text; keeps `<PAColor>` tags          |
-| after name     | u64 + ASCII | icon_texture   | Length in bytes, then a `texturestring_combine.xml` texture ID       |
-| after icon     | u16         | quest_chain_id | The quest chain of this category's grid                              |
-| `+0x02`        | u8[20]      | unknown tail   | Zero on both records                                                 |
+| Offset              | Type      | Field           | Notes                                                                |
+| ------------------- | --------- | --------------- | -------------------------------------------------------------------- |
+| `+0x00`             | u32       | category_key    | Same as the key copy before it and the offset row key                |
+| `+0x04`             | str16     | name_kr         | Length in characters, then the text; keeps `<PAColor>` tags          |
+| `name_kr+0x00`      | str8      | icon_texture    | Length in bytes, then a `texturestring_combine.xml` texture ID       |
+| `icon_texture+0x00` | u16       | quest_chain_id  | The quest chain of this category's grid                              |
+| `icon_texture+0x02` | bytes[20] | unknown_tail_02 | Zero on both records                                                 |
 
 Both strings carry a u64 length prefix, read with `RecordReader.text`.
 
-### Offset Companion: `growthpasscategoryoffset.dbss`
+### `growthpasscategoryoffset.dbss`
 
 No `PABR` magic and no trailer: a u32 row count, then rows of u32 `category_key`, u32 `offset`, u32 `size`, read by `parse_bare_u32_offset_rows`. On client 3464: key 7 at `8`, 87 bytes; key 9 at `99`, 152 bytes. Sorted by offset, the key copies and bodies fill the file after the count.
+
+| Offset  | Type                  | Field     | Notes                 |
+| ------- | --------------------- | --------- | --------------------- |
+| `+0x00` | u32                   | row_count | Number of offset rows |
+| `+0x04` | Offset Row[row_count] | rows      | See Offset Row        |
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field        | Notes                              |
+| ------- | ---- | ------------ | ---------------------------------- |
+| `+0x00` | u32  | category_key | Record key                         |
+| `+0x04` | u32  | offset       | Absolute offset of the record body |
+| `+0x08` | u32  | size         | Size of the record body            |
 
 ## Category Keys
 

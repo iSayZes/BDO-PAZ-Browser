@@ -4,13 +4,11 @@
 
 Level tables of the three fitness stats in the character window: Breath, Strength and Health. Each row gives the EXP to the next level and the total bonus the fitness stat grants at that level (max Stamina for Breath, weight limit for Strength, max HP and max MP/WP/SP for Health). Companion `fitnessleveloffset.dbss` lists where every row sits.
 
-Example:
+## Versions
 
-```text
-Breath    Lv 30   EXP 20,000   Max Stamina +500
-Strength  Lv 30   EXP 10,000   Weight Limit +40 LT
-Health    Lv 30   EXP 5,000    Max HP +290, Max MP/WP/SP +200
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,23 +18,23 @@ Health    Lv 30   EXP 5,000    Max HP +290, Max MP/WP/SP +200
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type    | Field      | Notes                                       |
-| ------- | ------- | ---------- | ------------------------------------------- |
-| `+0x00` | u32     | type_count | Number of fitness blocks (observed: 3)      |
-| `+0x04` | block[] | blocks     | `type_count` blocks, one per fitness type   |
+### File Layout
 
-### Block (repeated `type_count` times)
-
-| Offset  | Type      | Field       | Notes                                |
-| ------- | --------- | ----------- | ------------------------------------ |
-| `+0x00` | u32       | level_count | Rows in this block (observed: 51)    |
-| `+0x04` | row[]     | rows        | `level_count` rows of 29 bytes       |
+| Offset  | Type              | Field      | Notes                                       |
+| ------- | ----------------- | ---------- | ------------------------------------------- |
+| `+0x00` | u32               | type_count | Number of fitness blocks (observed: 3)      |
+| `+0x04` | Block[type_count] | blocks     | One block per fitness type                  |
 
 The blocks fill the file exactly: 4 + 3 x (4 + 51 x 29) = 4,453 bytes on client 3458.
 
-## Record Structure
+### Block (variable: 4 bytes + rows)
+
+| Offset  | Type                   | Field       | Notes                                |
+| ------- | ---------------------- | ----------- | ------------------------------------ |
+| `+0x00` | u32                    | level_count | Rows in this block (observed: 51)    |
+| `+0x04` | Level Row[level_count] | rows        | See Level Row                        |
 
 ### Level Row (29 bytes)
 
@@ -54,6 +52,33 @@ Every row carries all four stat floats; only the ones of its own fitness type ar
 
 A row's totals are the bonus at that row's own level, confirmed in game on 2026-10-06: the tooltips at Breath Lv.37, Strength Lv.31 and Health Lv.33 read `Max Stamina +570`, `Weight Limit +42 LT` and `Max HP +320`, the values of rows 37, 31 and 33.
 
+### `fitnessleveloffset.dbss`
+
+Index into `fitnesslevel.dbss`, with the same block shape as the main file but no leading type count.
+
+| Offset  | Type                | Field  | Notes                                     |
+| ------- | ------------------- | ------ | ----------------------------------------- |
+| `+0x00` | Offset Block[..end] | blocks | Blocks repeated until the end of the file |
+
+The block index is the fitness type; the file stores no type field. 3 x (4 + 51 x 12) = 1,848 bytes on client 3458.
+
+### Offset Block (variable: 4 bytes + rows)
+
+| Offset  | Type                    | Field       | Notes                                 |
+| ------- | ----------------------- | ----------- | ------------------------------------- |
+| `+0x00` | u32                     | level_count | Rows in this block (observed: 51)     |
+| `+0x04` | Offset Row[level_count] | rows        | See Offset Row                        |
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field       | Notes                                                                    |
+| ------- | ---- | ----------- | ------------------------------------------------------------------------ |
+| `+0x00` | u32  | level       | Level of the row it points at                                            |
+| `+0x04` | u32  | data_offset | Absolute byte offset of the 29-byte row in `fitnesslevel.dbss`           |
+| `+0x08` | u32  | data_size   | Always 29                                                                |
+
+The first Breath row sits at `0x08`, after the type count and Breath's level count; each later block starts 4 bytes past the previous block's last row, skipping that block's level count. The parser reads the main file through these rows and checks that each row's `fitness_type` and `level` match the offset row's block and key.
+
 ## Enum Values
 
 ### Fitness Type
@@ -65,29 +90,6 @@ A row's totals are the bonus at that row's own level, confirmed in game on 2026-
 | 2   | Health   | `max_hp`, `max_mp`                  |
 
 The order matches the client's `_ENUM_FITNESS` in `panel_characterinfo_basic_all.luac` (`BREATH`, `POWER`, then Health), whose hover handlers pass `0`, `1` and `2` for the Breath, Strength and Health texts. The stat per type matches the client's tooltip strings `Breath: Max Stamina +`, `Strength: Weight Limit +` and `Health: Max HP +{hpIncrease}, Max {mpTypeName} +{mpIncrease}`.
-
-## fitnessleveloffset.dbss
-
-Index into `fitnesslevel.dbss`, with the same block shape as the main file but no leading type count.
-
-### Block (repeated until the end of the file)
-
-| Offset  | Type  | Field       | Notes                                 |
-| ------- | ----- | ----------- | ------------------------------------- |
-| `+0x00` | u32   | level_count | Rows in this block (observed: 51)     |
-| `+0x04` | row[] | rows        | `level_count` rows of 12 bytes        |
-
-The block index is the fitness type; the file stores no type field. 3 x (4 + 51 x 12) = 1,848 bytes on client 3458.
-
-### Offset Row (12 bytes)
-
-| Offset  | Type | Field       | Notes                                                                    |
-| ------- | ---- | ----------- | ------------------------------------------------------------------------ |
-| `+0x00` | u32  | level       | Level of the row it points at                                            |
-| `+0x04` | u32  | data_offset | Absolute byte offset of the 29-byte row in `fitnesslevel.dbss`           |
-| `+0x08` | u32  | data_size   | Always 29                                                                |
-
-The first Breath row sits at `0x08`, after the type count and Breath's level count; each later block starts 4 bytes past the previous block's last row, skipping that block's level count. The parser reads the main file through these rows and checks that each row's `fitness_type` and `level` match the offset row's block and key.
 
 ## Notes
 

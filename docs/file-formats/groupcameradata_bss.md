@@ -7,14 +7,11 @@ cutscene with its title, a short recap, a quoted line and a region symbol icon,
 all as indices into a shared string table. The Korean text is the source; LOC
 type 97 holds the translations.
 
-Example:
+## Versions
 
-```text
-scene 65, SymbolIcon_Valenos.dds
-  title        환송                -> "Send Off"
-  description  엠마는 벨리아 ...    -> "Emma stood by the old wharf in Velia ..."
-  quote        "저... 모험가님 ..." -> "\"Adventurer... if it's alright with you, ...\""
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -24,41 +21,46 @@ scene 65, SymbolIcon_Valenos.dds
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The shared PABR string table layout of `buffsimply.bss` and
 `specialenchantitem.bss` (`_common/pabr_strings.py`).
 
-| Offset           | Type    | Field        | Notes                                                            |
-| ---------------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00`          | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04`          | u32     | count        | Number of rows; 92 on client 3458                                |
-| `+0x08`          | row[]   | rows         | 28-byte rows repeated `count` times                              |
-| `8 + count * 28` | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8          | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4          | u32     | zero         | Always 0                                                         |
+| Offset              | Type                | Field        | Notes                                          |
+| ------------------- | ------------------- | ------------ | ---------------------------------------------- |
+| `+0x00`             | char[4]             | magic        | ASCII `PABR`                                   |
+| `+0x04`             | u32                 | count        | Number of rows; 92 on client 3458              |
+| `+0x08`             | Cutscene Row[count] | rows         | See Cutscene Row                               |
+| `rows+0x00`         | String Table        | string_table | See String Table                               |
+| `string_table+0x00` | u32                 | table_start  | Offset of the string table, where the rows end |
+| `string_table+0x04` | u32                 | zero         | Always 0                                       |
 
 Rows are not sorted by ID (the first three are 65, 66 and 2).
 
-## Record Structure
+### Cutscene Row (28 bytes)
 
-### Cutscene Row (28 bytes, repeated `count` times)
+| Offset  | Type     | Field           | Notes                                                             |
+| ------- | -------- | --------------- | ----------------------------------------------------------------- |
+| `+0x00` | u32      | scene_id        | Unique; 2 to 260 on client 3458, with gaps                        |
+| `+0x04` | u32      | title_ref       | String table index of the Korean title                            |
+| `+0x08` | u32      | description_ref | String table index of the Korean recap, with stored line breaks   |
+| `+0x0C` | u32      | quote_ref       | String table index of the Korean quoted line                      |
+| `+0x10` | u32      | icon_ref        | String table index of the region symbol, relative to `ui_texture/` |
+| `+0x14` | bytes[8] | unknown_14      | Always `0`                                                        |
 
-| Offset  | Type  | Field           | Notes                                                             |
-| ------- | ----- | --------------- | ----------------------------------------------------------------- |
-| `+0x00` | u32   | scene_id        | Unique; 2 to 260 on client 3458, with gaps                        |
-| `+0x04` | u32   | title_ref       | String table index of the Korean title                            |
-| `+0x08` | u32   | description_ref | String table index of the Korean recap, with stored line breaks   |
-| `+0x0C` | u32   | quote_ref       | String table index of the Korean quoted line                      |
-| `+0x10` | u32   | icon_ref        | String table index of the region symbol, relative to `ui_texture/` |
-| `+0x14` | u8[8] | unknown_14      | Always `0`                                                        |
-
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 251 strings on client 3458, all referenced. Scenes that repeat a summary
 share its entries: 43 to 47, 197 and 198, and 253 to 256 share their title,
 recap and quote, 248 and 249 their title and quote, and 257 to 260 their
 title. The four icons are stored once each.
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | 251 on client 3458  |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

@@ -7,14 +7,11 @@ potion type: list `0` is the HP potions for the fairy's HP slot, lists `1`,
 `2` and `3` the potions for the MP slot of classes that use MP, WP and SP.
 `fairypotionoffset.dbss` is the type-keyed index into it.
 
-Example (client 3464):
+## Versions
 
-```text
-type 0  HP  item   502  HP Potion (Beginner)
-type 1  MP  item   503  MP Potion (Beginner)
-type 2  WP  item   591  WP Potion (Small)
-type 3  SP  item   595  SP Potion (Small)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -28,21 +25,22 @@ without the offset companion.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes           |
-| ------- | ---- | ----- | --------------- |
-| `+0x00` | u32  | count | Number of lists |
+| Offset  | Type               | Field | Notes                |
+| ------- | ------------------ | ----- | -------------------- |
+| `+0x00` | u32                | count | Number of lists      |
+| `+0x04` | Potion List[count] | lists | See Potion List      |
 
-### Potion List (variable, repeated `count` times, offset `0x04`)
+### Potion List (variable: 5 bytes + items)
 
-| Offset              | Type          | Field       | Notes                                   |
-| ------------------- | ------------- | ----------- | --------------------------------------- |
-| `+0x00`             | u32           | item_count  | Number of item IDs that follow          |
-| `+0x04`             | u32[n]        | item_ids    | Items the fairy may use for this type   |
-| `+0x04 + 4n`        | u8            | potion_type | List key, see Potion Types              |
+| Offset          | Type             | Field       | Notes                                   |
+| --------------- | ---------------- | ----------- | --------------------------------------- |
+| `+0x00`         | u32              | item_count  | Number of item IDs that follow          |
+| `+0x04`         | u32[item_count]  | item_ids    | Items the fairy may use for this type   |
+| `item_ids+0x00` | u8               | potion_type | List key, see Potion Types              |
 
 A list is `4 + 4 * item_count + 1` bytes. The key is the last byte of the
 list, not the first, and the last list ends at the end of the file.
@@ -52,6 +50,25 @@ On client 3464 the file is 1,200 bytes: 4 lists stored in key order `3`, `2`,
 
 Every `item_id` has a zero top byte, so it reads the same as an item key with
 enhancement level 0 (`_common/item_key.py`).
+
+### `fairypotionoffset.dbss`
+
+| Offset  | Type              | Field | Notes                                |
+| ------- | ----------------- | ----- | ------------------------------------ |
+| `+0x00` | u32               | count | Equals the `fairypotion.dbss` count  |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                       |
+
+### Offset Row (10 bytes)
+
+| Offset  | Type | Field       | Notes                                              |
+| ------- | ---- | ----------- | -------------------------------------------------- |
+| `+0x00` | u16  | potion_type | List key                                           |
+| `+0x02` | u32  | data_offset | Absolute offset of the list's `item_count`         |
+| `+0x06` | u32  | data_size   | Whole list, trailing `potion_type` byte included   |
+
+There is no `PABR` magic and no trailer (`parse_bare_offset_rows`). Rows are
+in the same order as the lists. Unlike most offset tables, `data_offset`
+points at the start of the list, since the key sits at its end.
 
 ## Potion Types
 
@@ -65,26 +82,6 @@ enhancement level 0 (`_common/item_key.py`).
 Type `0` is HP: on client 3464 every named item in it is an HP item by its
 English LOC name or description. The names of types `1` to `3` come from the
 client Lua (see Notes); the lists themselves no longer tell them apart.
-
-## `fairypotionoffset.dbss`
-
-### Header (4 bytes)
-
-| Offset  | Type | Field | Notes                                |
-| ------- | ---- | ----- | ------------------------------------ |
-| `+0x00` | u32  | count | Equals the `fairypotion.dbss` count  |
-
-### Offset Row (10 bytes, repeated `count` times)
-
-| Offset  | Type | Field       | Notes                                              |
-| ------- | ---- | ----------- | -------------------------------------------------- |
-| `+0x00` | u16  | potion_type | List key                                           |
-| `+0x02` | u32  | data_offset | Absolute offset of the list's `item_count`         |
-| `+0x06` | u32  | data_size   | Whole list, trailing `potion_type` byte included   |
-
-There is no `PABR` magic and no trailer (`parse_bare_offset_rows`). Rows are
-in the same order as the lists. Unlike most offset tables, `data_offset`
-points at the start of the list, since the key sits at its end.
 
 ## Notes
 

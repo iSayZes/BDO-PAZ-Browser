@@ -48,7 +48,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if args.staged:
         _warn_parser_without_doc()
     rows = index_rows(DOCUMENTED.read_text(encoding="utf-8"))
-    outcomes = [check_doc_file(doc, rows, client) for doc in docs]
+    outcomes = [check_doc_file(doc, rows, client, write=not args.no_write) for doc in docs]
     for outcome in outcomes:
         _report(outcome)
     stopped = [outcome for outcome in outcomes if outcome.status.stops_commit]
@@ -68,6 +68,7 @@ def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
     parser.add_argument("--paz-folder", help="A PAZ folder other than the one last opened in the app")
     parser.add_argument("--client", type=int, help="The client number of --paz-folder, when its .meta does not hold it")
     parser.add_argument("--docs-only", action="store_true", help="Skip the game files")
+    parser.add_argument("--no-write", action="store_true", help="Report which layout fits; leave Versions as they are")
     args = parser.parse_args(argv)
     if args.client is not None and not args.paz_folder:
         parser.error("--client needs --paz-folder")

@@ -46,8 +46,10 @@ class Client:
     read_file: FileReader
 
 
-def check_doc_file(path: Path, rows: Mapping[str, list[tuple[str, str]]], client: Client | None) -> DocOutcome:
-    """Check `path`; with a client, walk its files and rewrite Versions in place when they change."""
+def check_doc_file(
+    path: Path, rows: Mapping[str, list[tuple[str, str]]], client: Client | None, *, write: bool = True
+) -> DocOutcome:
+    """Check `path`; with a client, walk its files and rewrite Versions in place when they change (unless `write` is off)."""
     text = path.read_text(encoding="utf-8")
     folder = path.parent
     problems = check_doc(text, folder)
@@ -75,6 +77,8 @@ def check_doc_file(path: Path, rows: Mapping[str, list[tuple[str, str]]], client
         message = f"client {client.number} fits no layout of {newest.file}; Layout {newest.layout}: {newest.error}"
         return DocOutcome(path, Status.NO_FIT, (message,))
     notes = tuple(f"not in the PAZ folder: {name}" for name in missing)
+    if not write:
+        return DocOutcome(path, Status.OK, notes + (f"fits Layout {result.layout}",))
     updated = write_rows(text, merge_rows(read_rows(text), rows_from_fit(result, client.number)), layouts[0].number)
     if updated == text:
         return DocOutcome(path, Status.OK, notes)

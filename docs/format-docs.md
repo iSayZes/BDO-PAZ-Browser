@@ -202,6 +202,7 @@ walks to its last byte by. Two tables follow, one row per layout per file:
 | `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
 | `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
+| `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |
 
 Without `--paz-folder` the check reads the PAZ folder last opened in the
 app, the live client, and names it by the number its `.meta` holds. A

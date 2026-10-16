@@ -117,7 +117,7 @@ def parse_mentaltheme_records(
             entry_names=" | ".join(entry_names),
             child_count=child_count,
             child_ids=", ".join(str(child_id) for child_id in child_ids),
-            terminator=_u32(dbss_data, children_end),
+            unknown_after_child_ids=_u32(dbss_data, children_end),
         ))
 
     return records

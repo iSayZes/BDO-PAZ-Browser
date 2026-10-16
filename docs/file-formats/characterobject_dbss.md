@@ -176,16 +176,16 @@ per layer, so a walk that read it once ended short on every multi-layer house.
 The 865 records whose `hull_name` starts with `HH_` (client 3464: kinds `5`
 (815), `1` (25), `9` (17) and `36` (8)).
 
-| Offset                | Type       | Field          | Notes                                                             |
-| --------------------- | ---------- | -------------- | ----------------------------------------------------------------- |
-| `+0x00`               | str16      | name_kr        | UTF-16-LE Korean text; see below                                  |
-| `name_kr+0x00`        | str16      | description_kr | UTF-16-LE Korean text; see below                                  |
-| `description_kr+0x00` | bytes[162] | house_block    | Fixed block, not decoded                                          |
-| `description_kr+0xA2` | str8       | icon_path      | Set in all 865; e.g. `Icon/New_Icon/03_ETC/06_Housing/2101-1.dds` |
-| `icon_path+0x00`      | str8       | icon_path_2    | Set in 17 records, as `<id>-2.dds` or `<id>_2.dds` next to slot 1 |
-| `icon_path_2+0x00`    | str8       | unknown_path_3 | Empty in all 865                                                  |
-| `unknown_path_3+0x00` | str8       | unknown_path_4 | Empty in all 865                                                  |
-| `unknown_path_4+0x00` | bytes[24]  | house_tail     | Not decoded                                                       |
+| Offset                | Type       | Field                     | Notes                                                             |
+| --------------------- | ---------- | ------------------------- | ----------------------------------------------------------------- |
+| `+0x00`               | str16      | name_kr                   | UTF-16-LE Korean text; see below                                  |
+| `name_kr+0x00`        | str16      | description_kr            | UTF-16-LE Korean text; see below                                  |
+| `description_kr+0x00` | bytes[162] | unknown_description_kr_00 | Fixed block, not decoded                                          |
+| `description_kr+0xA2` | str8       | icon_path                 | Set in all 865; e.g. `Icon/New_Icon/03_ETC/06_Housing/2101-1.dds` |
+| `icon_path+0x00`      | str8       | icon_path_2               | Set in 17 records, as `<id>-2.dds` or `<id>_2.dds` next to slot 1 |
+| `icon_path_2+0x00`    | str8       | unknown_path_3            | Empty in all 865                                                  |
+| `unknown_path_3+0x00` | str8       | unknown_path_4            | Empty in all 865                                                  |
+| `unknown_path_4+0x00` | bytes[24]  | unknown_unknown_path_4_00 | Not decoded                                                       |
 
 `name_kr` is not the house name. On client 3464, 817 of the 865 records store
 the same placeholder pair: `풋내기 대장장이의 집` ("Novice Blacksmith's House")
@@ -200,6 +200,8 @@ and a description of that house. Only these records carry their own text:
 `icon_path` names the record's own ID (`2101-1.dds`, `3823.dds`) in 686
 records; the rest share one, such as the five Radiant Lands, Angavu and
 Cheongsa Island houses 3874 to 3878 on `3873.dds`.
+
+Earlier versions of this doc called `unknown_description_kr_00` `house_block` and `unknown_unknown_path_4_00` `house_tail`.
 
 ### Structure Suffix (234 bytes)
 
@@ -333,7 +335,7 @@ Most varying bytes now have names (see Field Names). `unknown_010`, `unknown_091
 
 ### Structure Body Blocks
 
-The walk crosses `unknown_block` (333 bytes), `unknown_after_material_path` (16), `house_block` (162), `house_tail` (24) and the 234-byte structure suffix without decoding them. Also open: whether a hull layer is a house floor (only houses have two or more), what `unknown_flag` and `unknown_b` select, and what the 21 `unknown_digits` values of the kind `1` records (`60` to `900`) measure.
+The walk crosses `unknown_block` (333 bytes), `unknown_after_material_path` (16), `unknown_description_kr_00` (162), `unknown_unknown_path_4_00` (24) and the 234-byte structure suffix without decoding them. Also open: whether a hull layer is a house floor (only houses have two or more), what `unknown_flag` and `unknown_b` select, and what the 21 `unknown_digits` values of the kind `1` records (`60` to `900`) measure.
 
 ### Later Kind Names
 

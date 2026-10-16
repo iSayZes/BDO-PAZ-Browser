@@ -21,10 +21,10 @@ from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.record_reader import RecordReader
 
 _HEADER = struct.Struct("<IHBBfffBfII")
-# u8 body_flag, u8 reserved, u32 body_value
+# u8 unknown_description_kr_00, u8 unknown_description_kr_01, u32 unknown_description_kr_02
 _BODY_FLAGS_SIZE = 6
 _POSITION = struct.Struct("<fff")
-# u8 tail_kind, u32 tail_value, u32 hash_count
+# u8 unknown_acquisition_kr_0c, u32 unknown_acquisition_kr_0d, u32 hash_count
 _TAIL_HEAD = struct.Struct("<BII")
 _PADDING_SIZE = 5
 

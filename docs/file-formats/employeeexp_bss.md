@@ -37,14 +37,15 @@ The shared PABR string table tail of `npcsimply.bss` and `plantexchangegroup.bss
 | `+0x00`             | char[4]      | magic              | ASCII `PABR`                                                                  |
 | `+0x04`             | u32          | count              | Number of rows; 230 on client 3458 (23 sailors x 10 levels)                   |
 | `+0x08`             | Row[count]   | rows               | See Row                                                                       |
-| `rows+0x00`         | u32          | footer             | Always `0`; read as an empty counted table, like the `exploration.bss` footer |
+| `rows+0x00`         | u32          | unknown_after_rows | Always `0`; read as an empty counted table, like the `exploration.bss` footer |
 | `rows+0x04`         | String Table | string_table       | See String Table                                                              |
-| `string_table+0x00` | u32          | string_table_start | Offset of the string table; equals the end of the footer                      |
+| `string_table+0x00` | u32          | string_table_start | Offset of the string table; equals the end of `unknown_after_rows`            |
 | `string_table+0x04` | u32          | zero               | Always 0                                                                      |
 
 The file tiles with no gaps: the rows end 4 bytes before `string_table_start`,
 and the string table ends exactly at EOF - 8. The parser rejects a file where
-this does not hold, since every field would then be suspect.
+this does not hold, since every field would then be suspect. Earlier versions
+of this doc called `unknown_after_rows` `footer`.
 
 Rows run level by level (all level 1 rows, then level 2, ...); inside a level
 the `employee_key` order is 23 down to 8, then 1 up to 7.

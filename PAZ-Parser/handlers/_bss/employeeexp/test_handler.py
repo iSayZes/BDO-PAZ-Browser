@@ -122,9 +122,9 @@ def test_every_rolled_ability_has_a_stat_name(employeeexp_result: HandlerResult)
 
 def test_rows_that_miss_the_string_table_raise(employeeexp_result: HandlerResult) -> None:
     data = bytearray(employeeexp_result.source.data)
-    # One row more than the file holds: the rows now run into the footer.
+    # One row more than the file holds: the rows now run into unknown_after_rows.
     struct.pack_into("<I", data, 4, struct.unpack_from("<I", data, 4)[0] + 1)
-    with pytest.raises(ValueError, match="footer"):
+    with pytest.raises(ValueError, match="unknown_after_rows"):
         parse_employeeexp_records(bytes(data))
 
 

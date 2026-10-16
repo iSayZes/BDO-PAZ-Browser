@@ -84,7 +84,7 @@ end with this layout.
 | `effects+0x0C`        | u8                    | unknown_effects_0c      | Always `0` |
 | `effects+0x0D`        | Lane Dice[3]          | dice_accuracy           | Per lane: the AP roll as dice text (`1D5+85` is 86 to 90, `1D1-1` is none), then the accuracy; see Lane Dice |
 | `dice_accuracy+0x00`  | f32[3][4]             | defense                 | Per lane: evasion, hidden evasion, damage reduction, hidden damage reduction |
-| `dice_accuracy+0x30`  | i32[3]                | sentinels               | Three i32 `-1`, in every block |
+| `dice_accuracy+0x30`  | i32[3]                | unknown_dice_accuracy_30 | Always `-1` |
 | `dice_accuracy+0x3C`  | u8                    | life_main_type          | `15` on 31,056 blocks |
 | `dice_accuracy+0x3D`  | u8                    | life_sub_type           | |
 | `dice_accuracy+0x3E`  | f32                   | life_stat               | Set on life skill gear rows of the sheet |
@@ -108,6 +108,8 @@ end with this layout.
 
 Strings are a u64 UTF-16 code-unit count, then the text with no terminator.
 Counts in the rows from `is_notify_world` on are blocks on client 3473.
+
+Earlier versions of this doc called `unknown_dice_accuracy_30` `sentinels`.
 
 The seven lane stats, in order:
 

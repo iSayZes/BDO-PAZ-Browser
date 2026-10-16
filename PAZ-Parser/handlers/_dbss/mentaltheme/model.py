@@ -31,4 +31,4 @@ class MentalThemeRecord(TypedDict):
     entry_names: str
     child_count: int
     child_ids: str
-    terminator: int
+    unknown_after_child_ids: int

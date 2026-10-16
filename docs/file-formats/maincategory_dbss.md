@@ -33,15 +33,17 @@ All multi-byte values are little-endian.
 
 Offsets are relative to `record_offset` from `maincategoryoffset.dbss`.
 
-| Offset           | Type | Field                   | Notes                                                     |
-| ---------------- | ---- | ----------------------- | --------------------------------------------------------- |
-| `+0x00`          | u16  | category_id             | Primary key; matches offset-table key                     |
-| `+0x02`          | u32  | unknown_02              | Small category/order reference; observed 1-14             |
-| `+0x06`          | u32  | unknown_06              | Small category/order reference; observed 0, 1, 2, 3, 5, 6 |
-| `+0x0A`          | u32  | unknown_0a              | Usually mirrors `category_id`; 0 for some records         |
+| Offset           | Type | Field                   | Notes                                                            |
+| ---------------- | ---- | ----------------------- | ---------------------------------------------------------------- |
+| `+0x00`          | u16  | category_id             | Primary key; matches offset-table key                            |
+| `+0x02`          | u32  | unknown_02              | Small category/order reference; observed 1-14                    |
+| `+0x06`          | u32  | unknown_06              | Small category/order reference; observed 0, 1, 2, 3, 5, 6        |
+| `+0x0A`          | u32  | unknown_0a              | Usually mirrors `category_id`; 0 for some records                |
 | `+0x0E`          | str8 | icon_path               | ASCII DDS path; no null terminator; u64 byte length, observed 75 |
-| `icon_path+0x00` | u32  | unknown_after_icon_path | Always 0                                                  |
-| `icon_path+0x04` | u8   | enabled_flag            | Observed 1 for IDs 1-13, 0 for IDs 14-15                  |
+| `icon_path+0x00` | u32  | unknown_after_icon_path | Always 0                                                         |
+| `icon_path+0x04` | u8   | unknown_icon_path_04    | Observed 1 for IDs 1-13, 0 for IDs 14-15                         |
+
+Earlier versions of this doc called `unknown_icon_path_04` `enabled_flag`.
 
 The observed record size is 102 bytes: `0x16 + icon_path length + 5` for the current data.
 
@@ -67,29 +69,29 @@ Rows are stored in descending category ID order: 15 down to 1.
 
 ## Observed Records
 
-| Category ID | unknown_02 | unknown_06 | unknown_0a | Enabled | Icon Path                                                                     |
-| ----------- | ---------- | ---------- | ---------- | ------- | ----------------------------------------------------------------------------- |
-| 1           | 3          | 2          | 1          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_02.dds` |
-| 2           | 5          | 0          | 2          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_03.dds` |
-| 3           | 6          | 0          | 3          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_04.dds` |
-| 4           | 8          | 0          | 4          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_05.dds` |
-| 5           | 9          | 0          | 5          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_08.dds` |
-| 6           | 10         | 0          | 6          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_07.dds` |
-| 7           | 11         | 0          | 7          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_06.dds` |
-| 8           | 12         | 0          | 8          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_09.dds` |
-| 9           | 1          | 1          | 9          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_14.dds` |
-| 10          | 4          | 3          | 0          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_12.dds` |
-| 11          | 7          | 0          | 0          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_01.dds` |
-| 12          | 2          | 5          | 0          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_01.dds` |
-| 13          | 13         | 6          | 0          | 1       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_17.dds` |
-| 14          | 14         | 0          | 0          | 0       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_18.dds` |
-| 15          | 5          | 6          | 15         | 0       | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_19.dds` |
+| Category ID | unknown_02 | unknown_06 | unknown_0a | unknown_icon_path_04 | Icon Path                                                                     |
+| ----------- | ---------- | ---------- | ---------- | -------------------- | ----------------------------------------------------------------------------- |
+| 1           | 3          | 2          | 1          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_02.dds` |
+| 2           | 5          | 0          | 2          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_03.dds` |
+| 3           | 6          | 0          | 3          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_04.dds` |
+| 4           | 8          | 0          | 4          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_05.dds` |
+| 5           | 9          | 0          | 5          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_08.dds` |
+| 6           | 10         | 0          | 6          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_07.dds` |
+| 7           | 11         | 0          | 7          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_06.dds` |
+| 8           | 12         | 0          | 8          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_09.dds` |
+| 9           | 1          | 1          | 9          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_14.dds` |
+| 10          | 4          | 3          | 0          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_12.dds` |
+| 11          | 7          | 0          | 0          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_01.dds` |
+| 12          | 2          | 5          | 0          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_01.dds` |
+| 13          | 13         | 6          | 0          | 1                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_17.dds` |
+| 14          | 14         | 0          | 0          | 0                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_18.dds` |
+| 15          | 5          | 6          | 15         | 0                    | `new_ui_common_forlua/window/ingamecashshop/cashshopmenu/CashShopMenu_19.dds` |
 
 ## Notes
 
 - `maincategoryoffset.dbss` is required because it gives the authoritative category IDs and record sizes.
 - Records are currently fixed-size because all observed `icon_path` values are 75 ASCII bytes, but the string is length-prefixed and should be parsed as variable-length.
-- Category IDs 14 and 15 are present but have `enabled_flag = 0`.
+- Category IDs 14 and 15 are present but have `unknown_icon_path_04 = 0`.
 
 ## Open Questions
 

@@ -44,24 +44,24 @@ Each payload is preceded by a 2-byte `theme_id` lead in the main stream. The off
 
 The fields from `parent_id` to `entry_count` are the 23-byte theme stats; their offsets count from the end of `name_kr`.
 
-| Offset           | Type             | Field          | Notes                                                      |
-| ---------------- | ---------------- | -------------- | ---------------------------------------------------------- |
-| `+0x00`          | u16              | theme_id       | Knowledge group/category ID; matches offset row            |
-| `+0x02`          | str16            | name_kr        | Inline Korean theme name; the i64 count is `name_len`, the number of UTF-16LE code units |
-| `name_kr+0x00`   | u16              | parent_id      | Parent theme ID, or `0` for root themes                    |
-| `name_kr+0x02`   | u16              | increase_wp    | First energy reward amount                                 |
-| `name_kr+0x04`   | u32              | need_count     | Entries needed for first reward                            |
-| `name_kr+0x08`   | u16              | increase_wp_2  | Second energy reward amount                                |
-| `name_kr+0x0A`   | u32              | need_count_2   | Entries needed for second reward                           |
-| `name_kr+0x0E`   | u8               | unknown_0e     | Observed `0` or `1`; see Open Questions                    |
-| `name_kr+0x0F`   | u32              | bookshelf_item | Item ID of the theme's bookshelf (LOC type 0), or `0`      |
-| `name_kr+0x13`   | u32              | entry_count    | Number of direct `entries` that follow                     |
-| `name_kr+0x17`   | u32[entry_count] | entries        | Direct knowledge entry IDs; LOC `str_type=34`, `str_id1`   |
-| `entries+0x00`   | u32              | child_count    | Number of direct child theme IDs                           |
-| `entries+0x04`   | u16[child_count] | child_ids      | Child theme IDs in binary/UI order                         |
-| `child_ids+0x00` | u32              | terminator     | Always observed as `0`                                     |
+| Offset           | Type             | Field                   | Notes                                                                                    |
+| ---------------- | ---------------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| `+0x00`          | u16              | theme_id                | Knowledge group/category ID; matches offset row                                          |
+| `+0x02`          | str16            | name_kr                 | Inline Korean theme name; the i64 count is `name_len`, the number of UTF-16LE code units |
+| `name_kr+0x00`   | u16              | parent_id               | Parent theme ID, or `0` for root themes                                                  |
+| `name_kr+0x02`   | u16              | increase_wp             | First energy reward amount                                                               |
+| `name_kr+0x04`   | u32              | need_count              | Entries needed for first reward                                                          |
+| `name_kr+0x08`   | u16              | increase_wp_2           | Second energy reward amount                                                              |
+| `name_kr+0x0A`   | u32              | need_count_2            | Entries needed for second reward                                                         |
+| `name_kr+0x0E`   | u8               | unknown_0e              | Observed `0` or `1`; see Open Questions                                                  |
+| `name_kr+0x0F`   | u32              | bookshelf_item          | Item ID of the theme's bookshelf (LOC type 0), or `0`                                    |
+| `name_kr+0x13`   | u32              | entry_count             | Number of direct `entries` that follow                                                   |
+| `name_kr+0x17`   | u32[entry_count] | entries                 | Direct knowledge entry IDs; LOC `str_type=34`, `str_id1`                                 |
+| `entries+0x00`   | u32              | child_count             | Number of direct child theme IDs                                                         |
+| `entries+0x04`   | u16[child_count] | child_ids               | Child theme IDs in binary/UI order                                                       |
+| `child_ids+0x00` | u32              | unknown_after_child_ids | Always observed as `0`                                                                   |
 
-Earlier versions of this doc called `unknown_0e` `unknown_flag`, and `bookshelf_item` `unknown_value`, then `unknown_0f`.
+Earlier versions of this doc called `unknown_0e` `unknown_flag`, `bookshelf_item` `unknown_value`, then `unknown_0f`, and `unknown_after_child_ids` `terminator`.
 
 The entries are stored in the order the Knowledge window lists them. Checked in game (2026-09-28) on People of Olvia Academy (`145`): all 20 entries show in stored order, from Cedrio to Gray Biants, which is not card ID order (Merv `14703` second, Justin Bartali `14675` second to last).
 
@@ -116,4 +116,4 @@ Sample records confirmed from `mentaltheme.dbss`, `mentalthemeoffset.dbss`, `men
 
 ### `unknown_0e` Meaning
 
-`unknown_0e` is a u8 at stats offset `+0x0E`, `0` or `1`. On client 3464 it is `1` on 232 themes (94 of them under Trade), the 33 themes with a `bookshelf_item` among them. calpheonlabs reads it as a switch for the C/B/A/A+/S knowledge grades; that reading is not confirmed here. The Knowledge window Lua (`panel_knowledge_main`, `panel_window_knowledge_renew`) has no theme getter for it: its only grade switch is the per-user display option `__eKnowledgeGrade`. The value also shows no link to the cards' `body_value` in `mentalcard.dbss`.
+`unknown_0e` is a u8 at stats offset `+0x0E`, `0` or `1`. On client 3464 it is `1` on 232 themes (94 of them under Trade), the 33 themes with a `bookshelf_item` among them. calpheonlabs reads it as a switch for the C/B/A/A+/S knowledge grades; that reading is not confirmed here. The Knowledge window Lua (`panel_knowledge_main`, `panel_window_knowledge_renew`) has no theme getter for it: its only grade switch is the per-user display option `__eKnowledgeGrade`. The value also shows no link to the cards' `unknown_description_kr_02` in `mentalcard.dbss`.

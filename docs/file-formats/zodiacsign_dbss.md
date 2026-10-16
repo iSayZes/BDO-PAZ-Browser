@@ -49,7 +49,7 @@ and a u32 `0`), then UTF-16LE text with no terminator.
 | `name_kr+0x00` | str16                  | trait_text         | Korean personality traits                                      |
 | `trait_text+0x00`       | str16                    | icon_small         | Path to small icon DDS                                         |
 | `icon_small+0x00`       | str16                    | icon_large         | Path to large icon DDS                                         |
-| `icon_large+0x00`       | u8                       | zodiac_id_tail     | Duplicate of `zodiac_id`                                       |
+| `icon_large+0x00`       | u8                       | zodiac_id_dup      | Duplicate of `zodiac_id`                                       |
 | `icon_large+0x01`       | u8                       | zodiac_id_dup2     | Duplicate of `zodiac_id` again                                 |
 | `icon_large+0x02`       | u8                       | unknown_tail_02    | Always 0                                                       |
 | `icon_large+0x03`       | u16                      | next_zodiac_id     | ID of the next zodiac in cycle (12 → 1)                        |
@@ -59,10 +59,10 @@ and a u32 `0`), then UTF-16LE text with no terminator.
 | `icon_large+0x08`       | u8                       | unknown_tail_08    | Always 0                                                       |
 | `icon_large+0x09`       | u32                      | unknown_end        | Always 0                                                       |
 
-The `unknown_tail_<hex>` offsets count from `zodiac_id_tail`.
+The `unknown_tail_<hex>` offsets count from `zodiac_id_dup`.
 
-Earlier versions of this doc read a u16 `unknown_after_pairs_count` after
-`pairs_count`, a `text_block` opening with a u32 `unknown_00` and a u16
+Earlier versions of this doc called `zodiac_id_dup` `zodiac_id_tail`, and
+read a u16 `unknown_after_pairs_count` after `pairs_count`, a `text_block` opening with a u32 `unknown_00` and a u16
 `unknown_04`, and a `constellation_name` (now `name_kr`) with no length that
 a reader found by scanning for the UTF-16LE bytes `90 C7 AC B9` ("자리").
 Those 8 bytes are the first star index of `star_pairs` (always `0`) and the

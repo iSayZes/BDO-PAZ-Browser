@@ -34,18 +34,20 @@ The rows follow each other with no gap and end at the end of the file (3,702 byt
 
 ### Sailor Row (variable: 74 bytes + spawn keys and text)
 
-| Offset                     | Type             | Field               | Notes                                                                           |
-| -------------------------- | ---------------- | ------------------- | ------------------------------------------------------------------------------- |
-| `+0x00`                    | u16              | character_key       | Row key; the sailor character, `59053` to `59072`                               |
-| `+0x02`                    | u32              | employee_key        | Sailor ID in `employeestaticstatus.bss` (`1` to `20`, the same character there) |
-| `+0x06`                    | u32              | spawn_count         | Number of spawn positions, `1` or `2`                                           |
-| `+0x0A`                    | u32[spawn_count] | spawn_position_keys | Keys of `employeespawnposition.dbss` rows                                       |
-| `spawn_position_keys+0x00` | Hire Block       | hire                | See Hire Block                                                                  |
-| `spawn_position_keys+0x2C` | str16            | accept_text_kr      | Korean line when the sailor agrees to be hired; u64 length in UTF-16 units      |
-| `accept_text_kr+0x00`      | str16            | refuse_text_kr      | Korean line when the sailor turns the player down                               |
-| `refuse_text_kr+0x00`      | u32              | terminator          | Always `0`; the row ends after it                                               |
+| Offset                     | Type             | Field                        | Notes                                                                           |
+| -------------------------- | ---------------- | ---------------------------- | ------------------------------------------------------------------------------- |
+| `+0x00`                    | u16              | character_key                | Row key; the sailor character, `59053` to `59072`                               |
+| `+0x02`                    | u32              | employee_key                 | Sailor ID in `employeestaticstatus.bss` (`1` to `20`, the same character there) |
+| `+0x06`                    | u32              | spawn_count                  | Number of spawn positions, `1` or `2`                                           |
+| `+0x0A`                    | u32[spawn_count] | spawn_position_keys          | Keys of `employeespawnposition.dbss` rows                                       |
+| `spawn_position_keys+0x00` | Hire Block       | hire                         | See Hire Block                                                                  |
+| `spawn_position_keys+0x2C` | str16            | accept_text_kr               | Korean line when the sailor agrees to be hired; u64 length in UTF-16 units      |
+| `accept_text_kr+0x00`      | str16            | refuse_text_kr               | Korean line when the sailor turns the player down                               |
+| `refuse_text_kr+0x00`      | u32              | unknown_after_refuse_text_kr | Always `0`; the row ends after it                                               |
 
 The inline text holds real line breaks (`0x0A`), not the `\n` escape of `buff.dbss` and `skill.dbss`.
+
+Earlier versions of this doc called `unknown_after_refuse_text_kr` `terminator`.
 
 ### Hire Block (44 bytes)
 

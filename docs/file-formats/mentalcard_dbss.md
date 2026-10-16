@@ -35,32 +35,34 @@ Strings are `i64` UTF-16 code-unit counts followed by that many UTF-16LE units, 
 
 A 33-byte header (`+0x00` to `+0x20`), then the body.
 
-| Offset                | Type             | Field          | Notes                                                                          |
-| --------------------- | ---------------- | -------------- | ------------------------------------------------------------------------------ |
-| `+0x00`               | u32              | card_id        | Knowledge entry ID; equals the index key; LOC `str_type=34`, `str_id1`         |
-| `+0x04`               | u16              | theme_id       | Owning category in `mentaltheme.dbss`; LOC `str_type=9`                        |
-| `+0x06`               | u8               | theme_flag_a   | Observed `0` or `1`; `1` on 172 cards, mostly story and adventure-log entries |
-| `+0x07`               | u8               | theme_flag_b   | Observed `0` or `1`; `1` on 373 cards, almost all under theme `10399` (None)  |
-| `+0x08`               | f32              | min_favor      | Amity conversation favor, lower bound; whole numbers `0` to `72`              |
-| `+0x0C`               | f32              | max_favor      | Amity conversation favor, upper bound; whole numbers `0` to `100`             |
-| `+0x10`               | f32              | interest       | Amity conversation interest; whole numbers `0` to `100`                       |
-| `+0x14`               | u8               | buff_type      | Combo effect stat: `0` Favor, `1` Interest Level, `4` no combo (9,962 cards)  |
-| `+0x15`               | f32              | varied_value   | Combo amount, unaligned; whole numbers `1` to `10` (one card `19`); `0` without a combo |
-| `+0x19`               | u32              | valid_turn     | Combo duration in turns, `1` to `4`; `0` without a combo                      |
-| `+0x1D`               | u32              | apply_turn     | Combo delay, `1` to `4`; the tooltip shows it plus one; `0` without a combo   |
-| `+0x21`               | str16            | name_kr        | Korean card name; English form is LOC `str_type=34`, `str_id4=0`            |
-| `name_kr+0x00`        | str16            | description_kr | Korean description; English form is LOC `str_type=34`, `str_id4=1`          |
-| `description_kr+0x00` | u8               | body_flag      | `0` or `1`; `1` on 474 cards, mostly adventure-log themes                   |
-| `description_kr+0x01` | u8               | unknown_after_body_flag | Always `0`                                                         |
-| `description_kr+0x02` | u32              | body_value     | `5` on 10,455 cards, `0` on 1,893, `1` to `4` on the rest                   |
-| `description_kr+0x06` | str8             | icon_path      | Always under `UI_Artwork/`, e.g. `UI_Artwork/IC_015879.dds`                 |
-| `icon_path+0x00`      | str16            | acquisition_kr | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2` |
-| `acquisition_kr+0x00` | f32[3]           | position       | World `x`, `y` (height), `z`; all zero on 9,356 cards                       |
-| `acquisition_kr+0x0C` | u8               | tail_kind      | `17` on 10,388 cards, otherwise `0` to `16`                                 |
-| `acquisition_kr+0x0D` | u32              | tail_value     | `0`, `1` or `3`                                                             |
-| `acquisition_kr+0x11` | u32              | hash_count     | `1` to `7`                                                                  |
-| `acquisition_kr+0x15` | u32[hash_count]  | hashes         | Hash-like values; 271 distinct, lists share prefixes between cards          |
-| `hashes+0x00`         | bytes[5]         | unknown_end    | Always zero                                                                 |
+| Offset                | Type            | Field                     | Notes                                                                                   |
+| --------------------- | --------------- | ------------------------- | --------------------------------------------------------------------------------------- |
+| `+0x00`               | u32             | card_id                   | Knowledge entry ID; equals the index key; LOC `str_type=34`, `str_id1`                  |
+| `+0x04`               | u16             | theme_id                  | Owning category in `mentaltheme.dbss`; LOC `str_type=9`                                 |
+| `+0x06`               | u8              | unknown_06                | Observed `0` or `1`; `1` on 172 cards, mostly story and adventure-log entries           |
+| `+0x07`               | u8              | unknown_07                | Observed `0` or `1`; `1` on 373 cards, almost all under theme `10399` (None)            |
+| `+0x08`               | f32             | min_favor                 | Amity conversation favor, lower bound; whole numbers `0` to `72`                        |
+| `+0x0C`               | f32             | max_favor                 | Amity conversation favor, upper bound; whole numbers `0` to `100`                       |
+| `+0x10`               | f32             | interest                  | Amity conversation interest; whole numbers `0` to `100`                                 |
+| `+0x14`               | u8              | buff_type                 | Combo effect stat: `0` Favor, `1` Interest Level, `4` no combo (9,962 cards)            |
+| `+0x15`               | f32             | varied_value              | Combo amount, unaligned; whole numbers `1` to `10` (one card `19`); `0` without a combo |
+| `+0x19`               | u32             | valid_turn                | Combo duration in turns, `1` to `4`; `0` without a combo                                |
+| `+0x1D`               | u32             | apply_turn                | Combo delay, `1` to `4`; the tooltip shows it plus one; `0` without a combo             |
+| `+0x21`               | str16           | name_kr                   | Korean card name; English form is LOC `str_type=34`, `str_id4=0`                        |
+| `name_kr+0x00`        | str16           | description_kr            | Korean description; English form is LOC `str_type=34`, `str_id4=1`                      |
+| `description_kr+0x00` | u8              | unknown_description_kr_00 | `0` or `1`; `1` on 474 cards, mostly adventure-log themes                               |
+| `description_kr+0x01` | u8              | unknown_description_kr_01 | Always `0`                                                                              |
+| `description_kr+0x02` | u32             | unknown_description_kr_02 | `5` on 10,455 cards, `0` on 1,893, `1` to `4` on the rest                               |
+| `description_kr+0x06` | str8            | icon_path                 | Always under `UI_Artwork/`, e.g. `UI_Artwork/IC_015879.dds`                             |
+| `icon_path+0x00`      | str16           | acquisition_kr            | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2`             |
+| `acquisition_kr+0x00` | f32[3]          | position                  | World `x`, `y` (height), `z`; all zero on 9,356 cards                                   |
+| `acquisition_kr+0x0C` | u8              | unknown_acquisition_kr_0c | `17` on 10,388 cards, otherwise `0` to `16`                                             |
+| `acquisition_kr+0x0D` | u32             | unknown_acquisition_kr_0d | `0`, `1` or `3`                                                                         |
+| `acquisition_kr+0x11` | u32             | hash_count                | `1` to `7`                                                                              |
+| `acquisition_kr+0x15` | u32[hash_count] | unknown_hashes            | Hash-like values; 271 distinct, lists share prefixes between cards                      |
+| `unknown_hashes+0x00` | bytes[5]        | unknown_end               | Always zero                                                                             |
+
+Earlier versions of this doc called `unknown_06` `theme_flag_a`, `unknown_07` `theme_flag_b`, `unknown_description_kr_00` `body_flag`, `unknown_description_kr_01` `unknown_after_body_flag`, `unknown_description_kr_02` `body_value`, `unknown_acquisition_kr_0c` `tail_kind`, `unknown_acquisition_kr_0d` `tail_value` and `unknown_hashes` `hashes`.
 
 The combo fields build the tooltip's "Next combo effect" line: "After `{apply_turn + 1}` turns, `{Favor | Interest Level}` will increase by `{varied_value}` for `{valid_turn}` turns", or "None" when `buff_type` is `4`. Confirmed in game on 2026-09-27 and 2026-09-28 against 19 cards, 10 with a combo and 9 without; see Confirmed Examples. No card stores a decrease or a `buff_type` other than `0`, `1` and `4`.
 
@@ -142,9 +144,9 @@ Stored as no combo and shown as "None": `4024` Lost Lamb, `6066` Heidel Church B
 
 ## Open Questions
 
-### Body Value And Tail Fields
+### Unknown Body And Tail Fields
 
-`body_flag`, `body_value`, `tail_kind`, `tail_value` and the hash list are not decoded. `body_value` 1 to 4 appears on single NPC cards such as the Sausan Scout, Sniper and Assassin, which suggests a small enum.
+`unknown_06`, `unknown_07`, `unknown_description_kr_00`, `unknown_description_kr_02`, `unknown_acquisition_kr_0c`, `unknown_acquisition_kr_0d` and `unknown_hashes` are not decoded. `unknown_description_kr_02` 1 to 4 appears on single NPC cards such as the Sausan Scout, Sniper and Assassin, which suggests a small enum.
 
 ### Position Meaning
 

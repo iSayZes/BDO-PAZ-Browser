@@ -96,8 +96,8 @@ def parse_plantworkerpassiveskill_records(data: bytes) -> list[dict]:
             "effect_value_b": u32(data, pos + 0x30),
             "unknown_34": u32(data, pos + 0x34),
             "unknown_38": None,
-            "extra_effect_value_a": None,
-            "extra_effect_value_b": None,
+            "unknown_3c": None,
+            "unknown_40": None,
             "unknown_44": None,
         }
 
@@ -112,8 +112,8 @@ def parse_plantworkerpassiveskill_records(data: bytes) -> list[dict]:
             and pos + _EXTRA_SIZE <= string_table_start
         ):
             record["unknown_38"] = u32(data, pos)
-            record["extra_effect_value_a"] = u32(data, pos + 0x04)
-            record["extra_effect_value_b"] = u32(data, pos + 0x08)
+            record["unknown_3c"] = u32(data, pos + 0x04)
+            record["unknown_40"] = u32(data, pos + 0x08)
             record["unknown_44"] = u32(data, pos + 0x0C)
             pos += _EXTRA_SIZE
 

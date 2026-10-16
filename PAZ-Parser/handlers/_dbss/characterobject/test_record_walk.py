@@ -30,9 +30,9 @@ _FACE = 140
 _PROPERTIES = 333
 _AFTER_MATERIAL = 16
 _SUFFIX = 234
-_HOUSE_BLOCK = 162
+_AFTER_DESCRIPTION_KR = 162
 _HOUSE_IMAGE_SLOTS = 4
-_HOUSE_TAIL = 24
+_AFTER_PATH_4 = 24
 _HOUSE_HULL_NAME = "HH_"
 
 _ICON_FILE = re.compile(r"(?i)(?:new_)?icon/[ -~]+\.(?:dds|png)")
@@ -104,9 +104,9 @@ def _walk_structure(cursor: _Cursor) -> _Walked:
 
     name_kr = cursor.wide()
     cursor.wide()  # description_kr
-    cursor.skip(_HOUSE_BLOCK)
+    cursor.skip(_AFTER_DESCRIPTION_KR)  # unknown_description_kr_00
     images = [cursor.ascii() for _ in range(_HOUSE_IMAGE_SLOTS)]
-    cursor.skip(_HOUSE_TAIL)
+    cursor.skip(_AFTER_PATH_4)  # unknown_unknown_path_4_00
     return _Walked(cursor.at, images[0], name_kr)
 
 

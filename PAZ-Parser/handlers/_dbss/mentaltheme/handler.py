@@ -97,7 +97,7 @@ def _theme_record(record: MentalThemeRecord) -> dict:
         "payload_offset": record["payload_offset"],
         "payload_size": record["payload_size"],
         "unknown_0e": record["unknown_0e"],
-        "terminator": record["terminator"],
+        "unknown_after_child_ids": record["unknown_after_child_ids"],
     }
 
 

@@ -22,7 +22,7 @@ _HEADER_SIZE = 8
 # Stored icon paths start at "Renewal/" or "New_UI_Common_forLua/", under ui_texture.
 ICON_ROOT = "ui_texture/"
 
-# u16 territory_key | u8 unknown_2 | u8 is_autonomous | 3 x f32 vec3 position
+# u16 territory_key | u8 unknown_02 | u8 is_autonomous | 3 x f32 vec3 position
 _HEAD = struct.Struct("<HBB9f")
 # u32 nation_hash | nation_ref | name_ref | icon_large_ref | icon_small_ref
 # | unknown_3c | unknown_40 | crown_item_id | armor_item_id | list_count | unknown_50
@@ -47,7 +47,7 @@ def _icon_path(stored: str) -> str:
 
 
 def _read_row(reader: RecordReader, strings: list[str]) -> dict:
-    key, unknown_2, is_autonomous, *coords = reader.unpack(_HEAD)
+    key, unknown_02, is_autonomous, *coords = reader.unpack(_HEAD)
     (
         nation_hash, nation_ref, name_ref, icon_large_ref, icon_small_ref,
         unknown_3c, unknown_40, crown_item_id, armor_item_id, list_count, unknown_50,
@@ -65,7 +65,7 @@ def _read_row(reader: RecordReader, strings: list[str]) -> dict:
         "icon_small_path": _icon_path(string_at(strings, icon_small_ref)),
         "crown_item_id": crown_item_id,
         "armor_item_id": armor_item_id,
-        "unknown_2": unknown_2,
+        "unknown_02": unknown_02,
         "unknown_3c": unknown_3c,
         "unknown_40": unknown_40,
         "unknown_50": unknown_50,

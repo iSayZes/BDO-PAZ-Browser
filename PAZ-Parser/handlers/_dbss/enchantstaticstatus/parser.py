@@ -47,11 +47,11 @@ FAIL_CANNOT_FAIL, FAIL_SAFE, FAIL_DESTROYED, FAIL_DOWNGRADE = 0, 1, 2, 3
 # Per lane: evasion, hidden evasion, damage reduction, hidden damage reduction.
 _DEFENSE = struct.Struct("<4f")
 _HIDDEN_EVASION, _DAMAGE_REDUCTION, _HIDDEN_DAMAGE_REDUCTION = 1, 2, 3
-# Three i32 -1 sentinels, then 65 bytes: life main and sub type, life stat,
+# unknown_dice_accuracy_30 (three i32, always -1), then 65 bytes: life main and sub type, life stat,
 # group level, the new perfect enhancement item, count and durability loss,
 # prevent cron count, three adjust values, max food, four cannon values.
-_SENTINELS = b"\xff" * 12
-_SENTINELS_FIELD = struct.Struct(f"{len(_SENTINELS)}s")
+_UNKNOWN_DICE_ACCURACY_30 = b"\xff" * 12
+_UNKNOWN_DICE_ACCURACY_30_FIELD = struct.Struct(f"{len(_UNKNOWN_DICE_ACCURACY_30)}s")
 _LATE_FIELDS = struct.Struct("<BBfBIqHq3fq4i")
 # cronable, guild_rental, need_perfect_enchant_stack, 2 zero bytes.
 _FOOTER = struct.Struct("<BBH2x")
@@ -135,9 +135,9 @@ def _defense_max(defense: list[tuple[float, ...]], stat: int) -> int:
 
 
 def _read_late_fields(reader: RecordReader, label: str) -> dict:
-    """The 65 bytes after the sentinels, the aid items and the footer."""
-    if reader.unpack(_SENTINELS_FIELD)[0] != _SENTINELS:
-        raise ValueError(f"{label}: missing the -1 sentinels")
+    """The 65 bytes after unknown_dice_accuracy_30, the aid items and the footer."""
+    if reader.unpack(_UNKNOWN_DICE_ACCURACY_30_FIELD)[0] != _UNKNOWN_DICE_ACCURACY_30:
+        raise ValueError(f"{label}: unknown_dice_accuracy_30 is not three -1 values")
     (life_main_type, life_sub_type, life_stat, group_level, new_perfect_item, new_perfect_count,
      new_perfect_loss, prevent_cron_count, adjust_strength, adjust_speed, adjust_health,
      max_food, cannon_cool_time, _cannon_accuracy, _cannon_max_length, _cannon_max_angle,

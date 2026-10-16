@@ -49,7 +49,7 @@ The last 12 bytes are the empty string table and its trailer: `u32 0`, `u32` end
 ### Skill Simply Record (variable: 110 bytes + lists)
 
 `size` bytes from `offset` in `skillsimplyoffset.dbss`. Four lists make the
-record variable; offsets after a list count from the end of `hashes`,
+record variable; offsets after a list count from the end of `unknown_hashes`,
 `next_rank_keys`, `exclusive_skill_nos` or `base_skill_keys`. Record counts
 in the table are from client 3458, and fields noted "Always `0`" are `0` on
 every record of it.
@@ -62,12 +62,12 @@ every record of it.
 | `+0x0C`                    | u8                    | branch              | `1` Awakening (1,985 records), `2` Succession (1,122), `0` neither; see below |
 | `+0x0D`                    | u8                    | unknown_0d          | `0` with `branch` `0`, else the other branch                       |
 | `+0x0E`                    | u32                   | hash_count          | `1` on 29,916 records, up to `4`                                   |
-| `+0x12`                    | u32[hash_count]       | hashes              | Hash-like values; `0x6016CFF7` is the first on 18,784 records, 444 distinct |
-| `hashes+0x00`              | u8                    | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see In-Game Checks  |
-| `hashes+0x01`              | u32                   | need_level          | Character level needed to learn it; see below                      |
-| `hashes+0x05`              | u16                   | previous_rank_no    | Skill number of the rank before it, `0` on the first rank          |
-| `hashes+0x07`              | u32                   | next_rank_count     | `0` on 26,056 records, `1` on 4,099, up to `5`                     |
-| `hashes+0x0B`              | u32[next_rank_count]  | next_rank_keys      | Skill keys of the ranks after it, see below                        |
+| `+0x12`                    | u32[hash_count]       | unknown_hashes      | Hash-like values; `0x6016CFF7` is the first on 18,784 records, 444 distinct |
+| `unknown_hashes+0x00`      | u8                    | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see In-Game Checks  |
+| `unknown_hashes+0x01`      | u32                   | need_level          | Character level needed to learn it; see below                      |
+| `unknown_hashes+0x05`      | u16                   | previous_rank_no    | Skill number of the rank before it, `0` on the first rank          |
+| `unknown_hashes+0x07`      | u32                   | next_rank_count     | `0` on 26,056 records, `1` on 4,099, up to `5`                     |
+| `unknown_hashes+0x0B`      | u32[next_rank_count]  | next_rank_keys      | Skill keys of the ranks after it, see below                        |
 | `next_rank_keys+0x00`      | u8                    | weapon_type         | The weapon the skill is used with; `0` none, `57` Awakening weapon; see below |
 | `next_rank_keys+0x01`      | u8                    | uses_main_weapon    | `1` when the skill is used with the main weapon (4,768 records); see below |
 | `next_rank_keys+0x02`      | u8                    | uses_sub_weapon     | `1` when the skill is used with the sub-weapon (451 records); see below |
@@ -105,7 +105,7 @@ every record of it.
 
 Every one of the 30,424 records on client 3458 walks to exactly its `size`
 with this layout. The shortest record (114 bytes) has one hash and empty
-lists.
+lists. Earlier versions of this doc called `unknown_hashes` `hashes`.
 
 ### `skillsimplyoffset.dbss`
 
@@ -267,7 +267,7 @@ record ends in `0xCA`, so the byte is not a plain end marker.
 ## Notes
 
 - `0x6016CFF7` also sits in the `skilltype.dbss` configuration of 18,744
-  records, close to the 18,784 here, so `hashes` likely repeats something
+  records, close to the 18,784 here, so `unknown_hashes` likely repeats something
   from that configuration.
 - The `need_*` field names follow the skill tooltip Lua
   (`panel_tooltip_skill.luac`); `class_mask`, `branch`, `is_fusion`, `can_quick_slot`, the weapon fields, the rank
@@ -291,12 +291,12 @@ record ends in `0xCA`, so the byte is not a plain end marker.
 
 ## Open Questions
 
-### What do the remaining flags and `hashes` hold?
+### What do the remaining flags and `unknown_hashes` hold?
 
 The other `unknown_` bytes are small flags and enums (`unknown_n07` is `558`
 on most records). `unknown_e08` marks damage skills on Wizard except
 "Elementalization" (see Notes); what else it tracks is not known.
-`hashes` is up to four hash-like values that also split by weapon on Wizard
+`unknown_hashes` is up to four hash-like values that also split by weapon on Wizard
 (`0x6016CFF7` on the staff skills, `0xD6CCB471` on "Water Sphere II"). The skill
 tooltip Lua also reads an HP cost and a learning item, which are candidates;
 the MP and stamina costs turned out to live in `skill.dbss`. Matching them

@@ -7,7 +7,7 @@ The main file is a u32 count and one variable-length row per sailor character:
     | 44-byte hire block (unknown u32s, u32 respawn_time_s, u32 hire_item_key,
       u64 hire_item_count)
     | u64-prefixed UTF-16 accept_text_kr | u64-prefixed UTF-16 refuse_text_kr
-    | u32 terminator
+    | u32 unknown_after_refuse_text_kr
 
 `employeespawninfooffset.dbss` is a bare offset table of 10-byte
 [u16 character_key][u32 offset][u32 size] rows. Full layout in
@@ -52,7 +52,7 @@ def _sailor_record(data: bytes, offset_row: dict) -> dict:
     hire = dict(zip(_HIRE_FIELDS, reader.unpack(_HIRE_BLOCK)))
     accept_text_kr = reader.text(wide=True)
     refuse_text_kr = reader.text(wide=True)
-    (terminator,) = reader.unpack(_U32)
+    (unknown_after_refuse_text_kr,) = reader.unpack(_U32)
     if not reader.at_end():
         raise ValueError(f"{label}: {reader.remaining()} bytes left after the row")
 
@@ -63,7 +63,7 @@ def _sailor_record(data: bytes, offset_row: dict) -> dict:
         **hire,
         "accept_text_kr": accept_text_kr,
         "refuse_text_kr": refuse_text_kr,
-        "terminator": terminator,
+        "unknown_after_refuse_text_kr": unknown_after_refuse_text_kr,
     }
 
 

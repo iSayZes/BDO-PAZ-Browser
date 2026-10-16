@@ -55,7 +55,7 @@ def _read_row(data: bytes, start: int, label: str) -> tuple[dict, int]:
     name_kr = reader.text(wide=True)
     house_use_type, icon_type, unknown_tail_02 = reader.unpack(_TYPES)
     level_exchanges = [_read_list(reader, _KEY_SIZE, "I") for _ in range(LEVEL_COUNT)]
-    (unknown_after_lists,) = reader.unpack(_U32)
+    (unknown_after_level_exchanges,) = reader.unpack(_U32)
     unknown_end = _read_list(reader, 1, "B")
     record = {
         "receipe_key": receipe_key,
@@ -65,7 +65,7 @@ def _read_row(data: bytes, start: int, label: str) -> tuple[dict, int]:
         "icon_type": icon_type,
         "unknown_tail_02": unknown_tail_02,
         "level_exchanges": level_exchanges,
-        "unknown_after_lists": unknown_after_lists,
+        "unknown_after_level_exchanges": unknown_after_level_exchanges,
         "unknown_end": unknown_end,
     }
     return record, reader.pos

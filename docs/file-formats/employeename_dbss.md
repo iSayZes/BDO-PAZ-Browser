@@ -36,11 +36,11 @@ The first record starts immediately at `+0x04`. Records are variable length and 
 
 A record is `16 + char_count * 2` bytes.
 
-| Offset      | Type  | Field            | Notes                                                                                                                           |
-| ----------- | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `+0x00`     | u32   | employee_name_id | Matches ID in `employeenameoffset.dbss`                                                                                         |
-| `+0x04`     | str16 | name             | Inline Korean source name; the parser reads the u64 count as u32 `char_count` and u32 `unknown_08`, always `0` in observed data |
-| `name+0x00` | u32   | terminator       | Always `0` after the name text in observed data                                                                                 |
+| Offset      | Type  | Field              | Notes                                                                                                                           |
+| ----------- | ----- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| `+0x00`     | u32   | employee_name_id   | Matches ID in `employeenameoffset.dbss`                                                                                         |
+| `+0x04`     | str16 | name               | Inline Korean source name; the parser reads the u64 count as u32 `char_count` and u32 `unknown_08`, always `0` in observed data |
+| `name+0x00` | u32   | unknown_after_name | Always `0` after the name text in observed data                                                                                 |
 
 Observed record sizes are `18`, `20`, `22`, `24`, and `26` bytes, matching names from 1 to 5 UTF-16 code units.
 
@@ -67,7 +67,7 @@ To read a name record: seek to `offset` in `employeename.dbss`, read `size` byte
 
 - Record order is not numeric: observed order starts `47` down to `32`, then `60` down to `48`, then `15` down to `1`, then `31` down to `16`.
 - Every offset-row ID matches the `employee_name_id` stored at the beginning of its target record.
-- Every observed `unknown_08` and trailing `terminator` is zero. Earlier versions of this doc called `unknown_08` `unknown_0`.
+- Every observed `unknown_08` and trailing `unknown_after_name` is zero. Earlier versions of this doc called `unknown_08` `unknown_0`, and `unknown_after_name` `terminator`.
 - English LOC matches were confirmed for sampled IDs: `47` -> Guile, `34` -> Pilgrave, `15` -> Neil Moss, `1` -> Philav, `60` -> Tails.
 - Earlier versions of this doc read the `employeespawnposition.dbss` keys `1`-`5` and `41`-`50` as IDs from this table. They are spawn position keys that `employeespawninfo.dbss` lists per sailor character; the overlap is by value only.
 

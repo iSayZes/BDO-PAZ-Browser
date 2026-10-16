@@ -30,20 +30,20 @@ def parse_employeename_records(data: bytes, offset_data: bytes) -> list[dict]:
         block = data[start:end]
         employee_name_id, char_count, unknown_08 = struct.unpack_from("<III", block, 0)
         name_end = 12 + char_count * 2
-        terminator_offset = name_end
+        unknown_after_name_offset = name_end
 
-        if terminator_offset + 4 > len(block):
+        if unknown_after_name_offset + 4 > len(block):
             continue
 
         name = block[12:name_end].decode("utf-16-le", errors="replace")
-        terminator = u32(block, terminator_offset)
+        unknown_after_name = u32(block, unknown_after_name_offset)
 
         records.append({
             "employee_name_id": employee_name_id,
             "name_kr": name,
             "char_count": char_count,
             "unknown_08": unknown_08,
-            "terminator": terminator,
+            "unknown_after_name": unknown_after_name,
             "data_offset": start,
             "data_size": size,
             "offset_employee_name_id": expected_id,

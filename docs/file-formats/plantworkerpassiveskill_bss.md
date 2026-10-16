@@ -59,14 +59,14 @@ The fixed/extended skill-record block begins at `0x08` and the string table star
 
 ### Extension (16 bytes)
 
-One observed record, `skill_id=1012` (`타고난 일꾼`), is followed by an extra 16-byte parameter block before the next record. The parser reads it on `skill_id=1012` when the bytes left before the string table hold it. The field names keep their offsets in the record, so `unknown_38` sits at `+0x00` here.
+One observed record, `skill_id=1012` (`타고난 일꾼`), is followed by an extra 16-byte parameter block before the next record. The parser reads it on `skill_id=1012` when the bytes left before the string table hold it. The field names keep their offsets in the record, so `unknown_38` sits at `+0x00` here. Earlier versions of this doc called `unknown_3c` `extra_effect_value_a` and `unknown_40` `extra_effect_value_b`.
 
-| Offset  | Type | Field                | Notes                             |
-| ------- | ---- | -------------------- | --------------------------------- |
-| `+0x00` | u32  | unknown_38           | Observed `0`                      |
-| `+0x04` | u32  | extra_effect_value_a | Observed `2000000`                |
-| `+0x08` | u32  | extra_effect_value_b | Observed `1`                      |
-| `+0x0C` | u32  | unknown_44           | Observed `0`                      |
+| Offset  | Type | Field      | Notes              |
+| ------- | ---- | ---------- | ------------------ |
+| `+0x00` | u32  | unknown_38 | Observed `0`       |
+| `+0x04` | u32  | unknown_3c | Observed `2000000` |
+| `+0x08` | u32  | unknown_40 | Observed `1`       |
+| `+0x0C` | u32  | unknown_44 | Observed `0`       |
 
 ### String Table (variable: 4 bytes + strings)
 

@@ -186,9 +186,9 @@ def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir:
 
 def test_game_totals_come_from_the_readme_supported_formats_lines() -> None:
     readme = (
-        "- Handler Supported 83/402 .bss formats.\n"
-        "- Handler Supported 162/374 .dbss formats.\n"
-        "- Handler Supported 31 other formats.\n"
+        "- `.bss`: 83 of 402 files with a handler.\n"
+        "- `.dbss`: 162 of 374 files with a handler.\n"
+        "- Other formats: 31 with a handler.\n"
     )
 
     assert game_totals(readme) == {"bss": 402, "dbss": 374}

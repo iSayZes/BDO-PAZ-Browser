@@ -14,7 +14,7 @@ from .versions_html import layout_versions
 
 _COUNTED_EXTS = ("bss", "dbss")
 # README's Supported Formats lines, kept current from the game files by the pre-commit hook.
-_GAME_TOTAL = re.compile(r"Handler Supported \d+/(?P<total>\d+) \.(?P<ext>bss|dbss) formats")
+_GAME_TOTAL = re.compile(r"`\.(?P<ext>bss|dbss)`: \d+ of (?P<total>\d+) files with a handler")
 
 
 @dataclass(frozen=True)

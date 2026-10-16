@@ -8,14 +8,11 @@ debuffs. Each record carries an internal Korean name, a level, an effect type,
 ten numeric parameters, a duration, an optional icon and an optional Korean
 description whose English form lives in LOC type 5.
 
-Example:
+## Versions
 
-```text
-buff_id 48830
-  name         수렵 숙련도 +70 3시간   (internal label, "Hunting Mastery +70 3 hours")
-  icon         New_Icon/04_PC_Skill/03_Buff/HuntingBuff.dds
-  description  Hunting Mastery +70      (LOC str_type=5, str_id1=48830)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -33,12 +30,14 @@ not needed to read this file.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 2
 
-| Offset  | Type | Field   | Notes                                              |
-| ------- | ---- | ------- | -------------------------------------------------- |
-| `+0x00` | u32  | count   | Number of records; see below                       |
-| `+0x04` | ...  | records | Variable-length records, located via the offset file |
+### File Layout
+
+| Offset  | Type          | Field   | Notes                                                |
+| ------- | ------------- | ------- | ---------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; see below                         |
+| `+0x04` | Record[count] | records | Variable-length records, located via the offset file |
 
 The records tile the file exactly: sorted by offset, each ends where the next
 begins, and the last ends at EOF.
@@ -47,29 +46,29 @@ Observed records: 44,609 in the pre-2026-09-27 test fixture, 44,645 in the
 2026-09-27 client (3458), 44,683 on client 3464. The row counts elsewhere in
 this doc are from the pre-2026-09-27 fixture.
 
-## Record Structure
+### Record (variable: 201 bytes + text)
 
 A record is a chain of fixed blocks and length-prefixed strings. The strings use
 the shared 8-byte prefix (u32 length, u32 zero, no terminator); UTF-16 lengths
 count characters, ASCII lengths count bytes.
 
-| Order | Type               | Field       | Notes                                                    |
-| ----- | ------------------ | ----------- | -------------------------------------------------------- |
-| 1     | u32                | buff_id     | Always equals the offset row's `buff_id`; a u16 before client 3464, see Notes |
-| 2     | prefixed UTF-16    | name        | Internal Korean label; no LOC counterpart                |
-| 3     | 133 bytes          | stats block | See Stats Block below                                    |
-| 4     | prefixed UTF-16    | effect_name | Short digit text, `"0"` in 39,455 rows; 186 distinct. The server's `BuffEffect`, see Field Names |
-| 5     | prefixed ASCII     | icon_path   | Relative to `ui_texture/icon/`; see Notes                |
-| 6     | u8                 | is_shown    | See Notes; `1` in 12,746 rows                            |
-| 7     | u32                | apply_rate  | `1000000` (100%) in 44,427 rows; per-million scale       |
-| 8     | prefixed UTF-16    | description | Korean, with `<PAColor>` tags; empty in 30,290 rows      |
-| 9     | 27 bytes           | tail block  | See Tail Block below                                     |
+| Offset             | Type        | Field       | Notes                                                    |
+| ------------------ | ----------- | ----------- | -------------------------------------------------------- |
+| `+0x00`            | u32         | buff_id     | Always equals the offset row's `buff_id`; a u16 before client 3464, see Notes |
+| `+0x04`            | str16       | name        | Internal Korean label; no LOC counterpart                |
+| `name+0x00`        | Stats Block | stats       | See Stats Block                                          |
+| `name+0x85`        | str16       | effect_name | Short digit text, `"0"` in 39,455 rows; 186 distinct. The server's `BuffEffect`, see Field Names |
+| `effect_name+0x00` | str8        | icon_path   | Relative to `ui_texture/icon/`; see Notes                |
+| `icon_path+0x00`   | u8          | is_shown    | See Notes; `1` in 12,746 rows                            |
+| `icon_path+0x01`   | u32         | apply_rate  | `1000000` (100%) in 44,427 rows; per-million scale       |
+| `icon_path+0x05`   | str16       | description | Korean, with `<PAColor>` tags; empty in 30,290 rows      |
+| `description+0x00` | Tail Block  | tail        | See Tail Block                                           |
 
 Record sizes range from 205 to 2,200 bytes, median 239, on client 3464.
 
 ### Stats Block (133 bytes)
 
-Offsets are relative to the end of the name string.
+The block starts at the end of the name string.
 
 | Offset  | Type    | Field           | Notes                                                                 |
 | ------- | ------- | --------------- | --------------------------------------------------------------------- |
@@ -78,8 +77,26 @@ Offsets are relative to the end of the name string.
 | `+0x04` | u16     | group           | `0` in 28,199 rows. Buffs of one group replace each other by level, see Stacking |
 | `+0x06` | i16     | condition_type  | `0` in 44,390 rows; the trigger of types 1 and 4, see `condition_type` |
 | `+0x08` | u8      | effect_type     | 173 distinct values; see Enum Values                                  |
-| `+0x09` | u8[10]  | param_1_set..param_10_set | `1` when the parameter of the same number is set. On client 3464 no parameter is non-zero while its flag is `0`, in all 44,683 rows; `param_1_set` is `1` in 44,563 rows |
-| `+0x13` | i64[10] | param_1..param_10 | Effect parameters; meaning depends on `effect_type`. Percentages use a per-million scale (`100000` = 10%) |
+| `+0x09` | u8      | param_1_set     | `1` when the parameter of the same number is set. On client 3464 no parameter is non-zero while its flag is `0`, in all 44,683 rows; `param_1_set` is `1` in 44,563 rows |
+| `+0x0A` | u8      | param_2_set     | As `param_1_set`, for `param_2`                                       |
+| `+0x0B` | u8      | param_3_set     | As `param_1_set`, for `param_3`                                       |
+| `+0x0C` | u8      | param_4_set     | As `param_1_set`, for `param_4`                                       |
+| `+0x0D` | u8      | param_5_set     | As `param_1_set`, for `param_5`                                       |
+| `+0x0E` | u8      | param_6_set     | As `param_1_set`, for `param_6`                                       |
+| `+0x0F` | u8      | param_7_set     | As `param_1_set`, for `param_7`                                       |
+| `+0x10` | u8      | param_8_set     | As `param_1_set`, for `param_8`                                       |
+| `+0x11` | u8      | param_9_set     | As `param_1_set`, for `param_9`                                       |
+| `+0x12` | u8      | param_10_set    | As `param_1_set`, for `param_10`                                      |
+| `+0x13` | i64     | param_1         | Effect parameters `param_1` to `param_10`; meaning depends on `effect_type`. Percentages use a per-million scale (`100000` = 10%) |
+| `+0x1B` | i64     | param_2         | See `param_1`                                                         |
+| `+0x23` | i64     | param_3         | See `param_1`                                                         |
+| `+0x2B` | i64     | param_4         | See `param_1`                                                         |
+| `+0x33` | i64     | param_5         | See `param_1`                                                         |
+| `+0x3B` | i64     | param_6         | See `param_1`                                                         |
+| `+0x43` | i64     | param_7         | See `param_1`                                                         |
+| `+0x4B` | i64     | param_8         | See `param_1`                                                         |
+| `+0x53` | i64     | param_9         | See `param_1`                                                         |
+| `+0x5B` | i64     | param_10        | See `param_1`                                                         |
 | `+0x63` | u8      | is_debuff       | `1` on debuffs (14,432 rows on client 3464); the buff bar lists them apart (`HandleMOnAppliedBuff(buffIndex, isDebuff)`) |
 | `+0x64` | u8      | is_party_buff   | `1` in 407 rows, such as 57766 and 57767 (Evasion +8 and +12) and 57786 (All AP -5) |
 | `+0x65` | u16     | unknown_65      | Always `0`                                                            |
@@ -100,7 +117,7 @@ Offsets are relative to the end of the name string.
 
 ### Tail Block (27 bytes)
 
-Offsets are relative to the end of the description string. Mostly zero.
+The block starts at the end of the description string. Mostly zero.
 
 | Offset  | Type | Field       | Notes                                        |
 | ------- | ---- | ----------- | -------------------------------------------- |
@@ -115,20 +132,22 @@ Offsets are relative to the end of the description string. Mostly zero.
 | `+0x19` | u8   | is_exclusive | `1` in 2,069 rows on client 3458, never with category `0`; applying the buff ends the other buffs of its category, see Stacking |
 | `+0x1A` | u8   | unknown_1a  | `6` in 18,895 rows, else `0` or `1`          |
 
-## `buffoffset.dbss`
+### `buffoffset.dbss`
 
 `PABR` index into `buff.dbss` with u32 IDs, the layout of
 `mentalcardoffset.dbss` (`parse_pabr_u32_offset_rows`). `data_offset` points
 *at* the inline `buff_id` and `size` includes it.
 
-### Header (8 bytes)
+| Offset              | Type             | Field        | Notes                                      |
+| ------------------- | ---------------- | ------------ | ------------------------------------------ |
+| `+0x00`             | char[4]          | magic        | ASCII `PABR`                               |
+| `+0x04`             | u32              | count        | Always equals the `buff.dbss` count        |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                              |
+| `rows+0x00`         | String Table     | string_table | An empty PABR string table                 |
+| `string_table+0x00` | u32              | rows_end     | End offset of the index rows (`536204` on client 3464) |
+| `string_table+0x04` | u32              | zero         | Always `0`                                 |
 
-| Offset  | Type  | Field | Notes                                      |
-| ------- | ----- | ----- | ------------------------------------------ |
-| `+0x00` | u8[4] | magic | ASCII `PABR`                               |
-| `+0x04` | u32   | count | Always equals the `buff.dbss` count        |
-
-### Index Row (12 bytes, repeated `count` times)
+### Index Row (12 bytes)
 
 | Offset  | Type | Field       | Notes                                           |
 | ------- | ---- | ----------- | ----------------------------------------------- |
@@ -136,16 +155,41 @@ Offsets are relative to the end of the description string. Mostly zero.
 | `+0x04` | u32  | data_offset | Absolute offset of the record in `buff.dbss`    |
 | `+0x08` | u32  | size        | Record size in bytes, including the `buff_id`   |
 
-Before client 3464 the row was 10 bytes with a u16 `buff_id`, the layout of
-`characterstaticoffset.dbss`. The parser reads only the u32 layout.
+### String Table (variable: 4 bytes + strings)
 
-### Trailer (12 bytes)
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
-| Offset  | Type | Value  | Notes                                         |
-| ------- | ---- | ------ | --------------------------------------------- |
-| `+0x00` | u32  | `0`    |                                               |
-| `+0x04` | u32  | varies | End offset of the index rows (`536204` on client 3464) |
-| `+0x08` | u32  | `0`    |                                               |
+## Layout 1
+
+Before client 3464 `buff_id` was a u16 in the record and in the
+`buffoffset.dbss` index rows, the layout of `characterstaticoffset.dbss`.
+Only the Record and the Index Row differ from Layout 2. The parser reads only
+Layout 2.
+
+### Record (variable: 199 bytes + text)
+
+| Offset             | Type        | Field       | Notes |
+| ------------------ | ----------- | ----------- | ----- |
+| `+0x00`            | u16         | buff_id     |       |
+| `+0x02`            | str16       | name        |       |
+| `name+0x00`        | Stats Block | stats       |       |
+| `name+0x85`        | str16       | effect_name |       |
+| `effect_name+0x00` | str8        | icon_path   |       |
+| `icon_path+0x00`   | u8          | is_shown    |       |
+| `icon_path+0x01`   | u32         | apply_rate  |       |
+| `icon_path+0x05`   | str16       | description |       |
+| `description+0x00` | Tail Block  | tail        |       |
+
+### Index Row (10 bytes)
+
+| Offset  | Type | Field       | Notes |
+| ------- | ---- | ----------- | ----- |
+| `+0x00` | u16  | buff_id     |       |
+| `+0x02` | u32  | data_offset |       |
+| `+0x06` | u32  | size        |       |
 
 ## Enum Values
 

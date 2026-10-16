@@ -28,9 +28,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                     | Known                 | Unknown               |
 | ------ | ------------------------ | --------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 57,597,960 B (28.5%)  | 144,747,006 B (71.5%) |
+| 2      | `itemenchant.dbss`       | 57,766,929 B (28.5%)  | 144,578,037 B (71.5%) |
 | 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%)  | 0 B (0.0%)            |
-| 1      | `itemenchant.dbss`       | 127,057,601 B (58.2%) | 91,183,443 B (41.8%)  |
+| 1      | `itemenchant.dbss`       | 127,185,494 B (58.3%) | 91,055,550 B (41.7%)  |
 | 1      | `itemenchantoffset.dbss` | 1,534,736 B (100.0%)  | 0 B (0.0%)            |
 
 <!-- versions:end -->
@@ -268,7 +268,7 @@ Layout from bdo-data-extractor; it reads cleanly in all 70,284 base blocks
 | `+0x02` | bytes[11] | unknown_02       |       |
 | `+0x0D` | u8        | family_inventory | `2` when the item can be stored in the Family Inventory (1,106 base items), `0` when not |
 | `+0x0E` | u8        | unknown_0e       |       |
-| `+0x0F` | u8        | unknown_0f       | bdo-data-extractor: bind type. Neither the bound text nor "Cannot be enhanced" comes from it, see After the Icon |
+| `+0x0F` | u8        | season_item_type | Which characters may use the item: `0` normal characters, `1` season characters, `2` every character, `3` hardcore characters; see After the Icon |
 | `+0x10` | bytes[2]  | unknown_10       |       |
 
 ### Message Tail (91 bytes)
@@ -523,7 +523,7 @@ block.
 | `+0x0F` | u8       | unknown_0f       | `3` in every block |
 | `+0x10` | u8       | family_inventory | Icon Tail `+0x0D` in Layout 2 |
 | `+0x11` | u8       | unknown_11       | `0` or `1`; `Item_Table` `RestoreType` on every base item |
-| `+0x12` | u8       | unknown_12       | Equals Layout 2's Icon Tail `unknown_0f` on 40,645 of the 45,896 shared base items; `Item_Table` `SeasonItemType` on every base item |
+| `+0x12` | u8       | season_item_type | `Item_Table` `SeasonItemType` on every base item; the client 3473 value on 40,645 of the 45,896 shared base items |
 | `+0x13` | u8       | unknown_13       | `0` or `1`; `Item_Table` `ImpossibleCopy` on every base item |
 | `+0x14` | u8       | unknown_14       | `0` to `2`; `Item_Table` `OlympicItemType` on every base item |
 | `+0x15` | u32      | unknown_15       | `501` in all but 171 blocks; `Item_Table` `SpecialWeaponHitEffect` wherever that column is set |
@@ -561,10 +561,8 @@ The private server's `DataSheets.bexcel` on client 1784 holds `Item_Table`,
 the sheet its `itemenchant.dbss` was built from. Its 50,116 base items match
 the Layout 1 fields column by column; the Notes of Block and Tail name the
 column of each `unknown_old_*` field that equals one. These stay unnamed,
-since only the private server's own file matches them. Tail `unknown_12`
-equals `SeasonItemType` on every base item there and Layout 2's Icon Tail
-`unknown_0f` on 40,645 of the 45,896 shared ones, a lead for that field
-(Enchant Data Fields).
+since only the private server's own file matches them. Tail
+`season_item_type` is the `SeasonItemType` column (After the Icon).
 
 ## Key Packing
 
@@ -888,13 +886,42 @@ Cheap Feed), mount feed (Carrot, Dried Briar) and event coins and seals
 as White Truffle Mushroom and Millennial Wild Ginseng store `0`. The tooltip
 script shows a family bag mark when `checkPushFamilyInventory()` is true.
 
-`unknown_0f` is `0` on Kzarka Gauntlet (which I can move freely), `1` on
-Kansha Hexround, `2` on Basteer Longsword and Tuvala Helmet, `3` on Young
-Crow Earring. The bound text on those tooltips comes from `vested_type` and
-`family_bound`. "Cannot be enhanced" does not come from it either: in game
-(2026-10-05) Arsha's Crossbow IV (`0`), [Event] Urugon's Shoes (`2`),
-Kansha Hexround (`1`) and Young Crow Earring (`3`) all say it, and none of
-them has enchant levels, which fits the line better. What it holds is open.
+`season_item_type` decides which characters may use the item.
+`PaGlobalFunc_Util_CheckSeasonEquip` in `global_util.luac` (decompiled with
+unluac) compares `itemStaticWrapper:getSeasonItemType()` with four values:
+`__eSeasonItemTypeUseAll` allows every character,
+`__eSeasonItemTypeUseNormalCharacter` a character that is not a season
+character, `__eSeasonItemTypeUseSeasonCharacter` a season character, and a
+hardcore character may use only `__eSeasonItemTypeUseHardCoreCharacter`
+items, which no other character may use. `global_util_ui_slot.luac` marks
+the slot of a non-cash `UseSeasonCharacter` or `UseAll` item for a season
+character. The Lua does not give the numbers. The English item descriptions
+(LOC type 0, `str_id4` 1) place `1` and `0`: "Only equippable by Season
+Characters." ends the description of 152 items and "Only Season Characters
+may equip this gear." of 6 more, all `1`, while "Season Characters cannot
+equip the obtained Blackstar weapon." and "Season Characters cannot equip the
+Marni's Pocket Watch." stand on 12 items, all `0`. `2` and `3` are placed by
+the items that hold them. Client 3473, base items:
+
+| Value | Lua value | Base items | Examples |
+| ----: | --------- | ---------: | -------- |
+| 0 | `__eSeasonItemTypeUseNormalCharacter` | 47,888 | Kzarka weapons, food, quest items, node permits |
+| 1 | `__eSeasonItemTypeUseSeasonCharacter` | 171 | `[Season]` Azwell, Militia and Elsh weapons, Kansha gear, Fughar's Memorandum and Riding Crop |
+| 2 | `__eSeasonItemTypeUseAll` | 21,512 | Pearl Shop items (18,874), Tuvala gear, Basteer Longsword |
+| 3 | `__eSeasonItemTypeUseHardCoreCharacter` | 879 | Crow gear (Sand Crow, Blood Crow), Pure Black Stone |
+
+The name is the `SeasonItemType` column of the private server's
+`Item_Table` on client 1784 (Layout 1 Field Matches); that private server's
+server build reads the column as a number and stores it unchanged. On client
+1784 the Kzarka weapons and Combatant's Tuvala gear store `2`, on client 3473
+`0`; Tuvala gear stores `2` on both (Open Questions, Tuvala Conversion
+Stones).
+
+It is not the bind type bdo-data-extractor calls it. The bound text on the
+tooltips comes from `vested_type` and `family_bound`, and "Cannot be
+enhanced" shows on items with every value: in game (2026-10-05) Arsha's
+Crossbow IV (`0`), Kansha Hexround (`1`), [Event] Urugon's Shoes (`2`) and
+Young Crow Earring (`3`) all say it, and none of them has enchant levels.
 
 `life_equip_type` and `life_restrict_type` are the two values the
 equipment window reads before it asks the client for a Life Skill slot:
@@ -1037,10 +1064,8 @@ nor my own items could confirm (2026-10-05):
 - **Trade type `4`**: Redfin Anthias, Opah and 107 other fish. bdocodex says
   they sell to Trade Managers, like the `0` fish (Cano Toadfish); what sets
   them apart is open. The Trade column shows both as Trade Manager.
-- **`unknown_0f`** (after the icon, bind type there): neither the bound text
-  nor "Cannot be enhanced" comes from it, see After the icon. No `Item_Table`
-  column matches it, `unknown_0e`, `unknown_10`, `unknown_limit` or
-  `unknown_crystal_group`.
+- No `Item_Table` column of the client 519 server matches Icon Tail
+  `unknown_0e` and `unknown_10`, `unknown_limit` or `unknown_crystal_group`.
 - **`unknown_limit`** (market registration limit there): neither the
   listing nor the pre-order limit.
 - **`unknown_crystal_group`** (crystal transfusion group there): the only
@@ -1076,6 +1101,13 @@ These fields have a known shape on client 3464 but no confirmed meaning:
   Sailing (21, 22) and Farming (24) it may be Barter gear.
 - `life_restrict_type` `11` on the four Trader's Clothes is not a Life Skill
   tab; how the window places them in the Trade tab's clothes slot is open.
+
+### Tuvala Conversion Stones
+
+The 11 `[Season] Tuvala ... Conversion Stone` items (8043 to 8053,
+`season_item_type` `0`) say one stone turns Tuvala gear into gear "that can
+be equipped by non-Season Characters", but Tuvala gear stores `2`
+(`UseAll`) on clients 1784 and 3473. What the conversion changes is open.
 
 ### Items Without a Record
 

@@ -24,6 +24,21 @@ every doc that has a `## Layout` section. Start a new doc from
 A format doc describes the bytes only. Which fields a handler shows as
 columns is decided in the handler.
 
+- One doc per record layout: every `.bss` / `.dbss` has its own doc named
+  after the file (`dropuitaginfo_bss.md`). Only an `*offset.dbss` index (in
+  its main file's doc) and files that share one layout and one handler class
+  (`ui_skillgroup_{awakening,combat,succession}.bss`, every `*.bwp`, every
+  `languagedata_*.loc`) share a doc. A companion with its own layout gets its
+  own doc, linked from Companion Files.
+- An Open Question is a `###` heading and a short paragraph, no bullets. It
+  moves to In-Game Checks once it has a guess a player can test (after Lua,
+  UI XML and data are checked), in the check format of
+  [`_template.md`](file-formats/_template.md); an answered check goes into
+  Notes. A question lives in one of these places only.
+- Every documented file has a row in
+  [`documented-formats.md`](documented-formats.md); the pre-commit hook sorts
+  the table and fills in its question and check counts.
+
 ## Layouts
 
 A file whose layout changed between clients keeps every known layout. Layout

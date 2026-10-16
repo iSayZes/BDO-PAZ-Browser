@@ -52,10 +52,8 @@ Also check that:
 
 ## Conventions
 
-- **Field names** follow [Writing Format Docs](docs/format-docs.md#field-names): `unknown_<offset>` (e.g. `unknown_10`) until the meaning is confirmed, also for bytes that are always zero; `padding_<offset>` only for proven filler; never a name that states a value (`reserved`, `const1`, `zero_a`); `_kr` for Korean text. Don't guess a name; describe the observation in the doc's Open Questions instead.
+- **Format docs follow [Writing Format Docs](docs/format-docs.md).** It holds every doc rule: which files get a doc, section order, layouts, types and field names. Unconfirmed fields are `unknown_<offset>`; don't guess a name, describe the observation in the doc's Open Questions.
 - **Format docs pass `pytest` and fit the game files.** `PAZ-Parser/tests/test_format_docs.py` checks every doc's layout tables (types, sizes, offsets, field names), and every `.bss` / `.dbss` doc must have them. `python check_docs.py <doc>.md` walks the doc's files from your PAZ folder by its layouts and writes its `## Versions` section; don't edit that section by hand.
-- **Format docs describe the bytes only.** Which fields a handler shows as columns is decided in the handler, not in the doc.
-- **One doc per record layout.** Every `.bss` / `.dbss` gets its own doc in `docs/file-formats/`, named after the file (`dropuitaginfo_bss.md`). Only an `*offset.dbss` index, which goes in its main file's doc, and files that share one layout and one handler class (`ui_skillgroup_{awakening,combat,succession}.bss` in `ui_skillgroup_bss.md`, every `*.bwp` in `waypoint_bwp.md`, every `languagedata_*.loc` in `languagedata_loc.md`) share a doc. The Companion Files table lists the files a handler loads and links each one to its own doc.
 - **Tests survive game patches.** Assert structure and stable identity (schemas, ranges, known IDs), never row counts, positions or balance values that change with an update.
 - **Counts in docs name their client.** A figure counted from game data carries the client it came from, e.g. "`1` on 4,643 records (client 3458)", and stays as written after a patch. The client number is the `.meta` header version that `pytest` prints at the start of a run.
 - **Text columns** use the loaded LOC language first, then fall back to the inline Korean text.

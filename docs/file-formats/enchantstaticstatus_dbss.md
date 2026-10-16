@@ -13,12 +13,11 @@ The enchant key is not an item ID. It is the u32 that
 name, and many items share one key (Pearl Shop outfits put up to 3,498 items
 on one).
 
-Example, Kzarka Gauntlet (item `11210`, enchant key `662`):
+## Versions
 
-```text
-level 8   Black Stone x1                     90%       fail -5 durability   perfect: 2 stones, -10 durability   AP 43 ~ 47, accuracy 90
-level 16  Concentrated Magical Black Stone x1  11.7647%  fail -10 durability  AP 86 ~ 90, accuracy 168
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -29,21 +28,129 @@ level 16  Concentrated Magical Black Stone x1  11.7647%  fail -10 durability  AP
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field  | Notes                                                    |
-| ------- | ---- | ------ | -------------------------------------------------------- |
-| `+0x00` | u32  | count  | Block count, matching the companion; 33,503 on client 3458 |
-| `+0x04` | ...  | blocks | Variable-length blocks, contiguous                       |
+### File Layout
+
+| Offset  | Type         | Field  | Notes                                                      |
+| ------- | ------------ | ------ | ---------------------------------------------------------- |
+| `+0x00` | u32          | count  | Block count, matching the companion; 33,503 on client 3458 |
+| `+0x04` | Block[count] | blocks | Variable-length blocks, contiguous; see Block              |
 
 The first block starts at byte `4` and the last ends at end of file
 (23,775,679 bytes on client 3458), with no gaps. Blocks are not in key order.
 
-## `enchantstaticstatusoffset.dbss`
+### Block (variable: 419 bytes + strings and aid items)
+
+A block is one sequential stream: fixed fields to `+0xFF`, two u64-prefixed
+UTF-16LE strings, then a variable tail. All 33,503 blocks read to their exact
+end with this layout.
+
+| Offset                | Type                  | Field                   | Notes |
+| --------------------- | --------------------- | ----------------------- | ----- |
+| `+0x00`               | u32                   | enchant_key             | Repeats the key's low 24 bits, in every block |
+| `+0x04`               | u8                    | level                   | Repeats the key's level, in every block |
+| `+0x05`               | u32                   | material_item_id        | Item consumed by the attempt to reach this level; `0` on every level-0 block |
+| `+0x09`               | u64                   | material_count          | How many |
+| `+0x11`               | u64                   | perfect_count           | Materials a perfect enhancement (100% chance) takes; `0` when it is not offered |
+| `+0x19`               | u64                   | black_count_for_item_market | Grows with the level, see Field Names |
+| `+0x21`               | bytes[8]              | unknown_21              | Always `0` |
+| `+0x29`               | u32                   | success_rate            | Base chance of the attempt in millionths: 1,000,000 is 100% |
+| `+0x2D`               | u32                   | downgrade_rate          | Chance that a failed attempt drops a level, in millionths: 1,000,000 (4,782 blocks on client 3464), 500,000 or 100,000 (22 each), `0` on the rest. Goes with `fail_result` 3, see Failure results |
+| `+0x31`               | bytes[4]              | unknown_31              | Always `0` |
+| `+0x35`               | u16                   | max_durability          | Durability at this level |
+| `+0x37`               | u16                   | fail_durability_loss    | Durability lost when the attempt fails |
+| `+0x39`               | u16                   | recover_max_endurance   | `10` (28,823 blocks on client 3473), `0` (4,660) or `1` (21) |
+| `+0x3B`               | u8                    | unknown_3b              | `0` in every block |
+| `+0x3C`               | u16                   | perfect_durability_loss | Durability a perfect enhancement costs; only meaningful when `perfect_count` is set |
+| `+0x3E`               | f32                   | max_hp                  | Max HP the item adds; ships and wagons show it as Max Durability, their HP. See Checked on bdocodex |
+| `+0x42`               | i32                   | varied_max_mp           | Max MP the item adds; set on 1,540 blocks |
+| `+0x46`               | f32                   | varied_recov_hp         | HP recovery the item adds |
+| `+0x4A`               | i32                   | varied_recov_mp         | MP recovery the item adds |
+| `+0x4E`               | bytes[72]             | unknown_4e              | Always `0`, see Field Names |
+| `+0x96`               | i64                   | varied_possessable_weight | Weight limit the item adds, LT x 10,000; set on 1,764 blocks |
+| `+0x9E`               | bytes[8]              | unknown_9e              | Always `0` |
+| `+0xA6`               | u8                    | socket_count            | Crystal sockets: `2` (14,804 blocks), `0` (14,468) or `1` (4,232) |
+| `+0xA7`               | f32[7][3]             | lane_stats              | Seven stats, each for the melee, ranged and magic lanes, below |
+| `+0xFB`               | u32                   | skill_key               | `skill_no << 16 \| level` as in [skill.dbss](skill_dbss.md); `0` when the item has no skill, level `1` on all 23,303 others |
+| `+0xFF`               | str16                 | description_kr          | Korean text with `<PAColor>` tags; empty in most blocks, set on ship equipment |
+| `description_kr+0x00` | str16                 | effects                 | The effect script, one `NAME(args);` per line: `ITEM_EFFECT();`, `PLAYER_DAM_ADD(10);`, `ALL_AP_INCRE();` |
+| `effects+0x00`        | u8                    | is_notify_world         | `1` on 4,363 blocks |
+| `effects+0x01`        | u8                    | fail_result             | The sheet's `EnchantType`, see Failure Results |
+| `effects+0x02`        | u32                   | item_market_added_price | Millionths: 1,000,000, or 1,150,000 on 395 blocks |
+| `effects+0x06`        | u32                   | unknown_effects_06      | 700,000 on 32,646 blocks, else 200,000 to 500,000 |
+| `effects+0x0A`        | u8                    | market_filter_1         | 22 values |
+| `effects+0x0B`        | u8                    | market_filter_2         | `0`, `2`, `3` or `4` |
+| `effects+0x0C`        | u8                    | unknown_effects_0c      | Always `0` |
+| `effects+0x0D`        | Lane Dice[3]          | dice_accuracy           | Per lane: the AP roll as dice text (`1D5+85` is 86 to 90, `1D1-1` is none), then the accuracy; see Lane Dice |
+| `dice_accuracy+0x00`  | f32[3][4]             | defense                 | Per lane: evasion, hidden evasion, damage reduction, hidden damage reduction |
+| `dice_accuracy+0x30`  | i32[3]                | sentinels               | Three i32 `-1`, in every block |
+| `dice_accuracy+0x3C`  | u8                    | life_main_type          | `15` on 31,056 blocks |
+| `dice_accuracy+0x3D`  | u8                    | life_sub_type           | |
+| `dice_accuracy+0x3E`  | f32                   | life_stat               | Set on life skill gear rows of the sheet |
+| `dice_accuracy+0x42`  | u8                    | group_level             | 20 values |
+| `dice_accuracy+0x43`  | u32                   | new_perfect_enchant_item_id | Item of the newer perfect enhancement; `0` on most blocks |
+| `dice_accuracy+0x47`  | i64                   | new_perfect_enchant_item_count | How many |
+| `dice_accuracy+0x4F`  | u16                   | new_perfect_enchant_durability_loss | `10`, `20` or `30` |
+| `dice_accuracy+0x51`  | i64                   | prevent_cron_count      | Set on 4,620 blocks |
+| `dice_accuracy+0x59`  | f32                   | adjust_strength         | Equals `adjust_speed` in every block |
+| `dice_accuracy+0x5D`  | f32                   | adjust_speed            | |
+| `dice_accuracy+0x61`  | f32                   | adjust_health           | `0` in every block |
+| `dice_accuracy+0x65`  | i64                   | varied_max_food         | Set on 548 blocks |
+| `dice_accuracy+0x6D`  | i32                   | varied_cannon_cool_time | `10000` (44 blocks) or `20000` (22) |
+| `dice_accuracy+0x71`  | i32[3]                | unknown_dice_accuracy_71 | Always `0`; the sheet's `VariedCannonAccuracy`, `VariedCannonMaxLength` and `VariedCannonMaxAngle` by column order |
+| `dice_accuracy+0x7D`  | u32                   | aid_item_count          | 0 to 3 |
+| `dice_accuracy+0x81`  | u32[aid_item_count]   | aid_item_ids            | Hammers and crystals, see Notes |
+| `aid_item_ids+0x00`   | u8                    | is_cronable             | `1` on 610 blocks |
+| `aid_item_ids+0x01`   | u8                    | is_guild_rental         | `1` on 1,197 blocks |
+| `aid_item_ids+0x02`   | u16                   | need_perfect_enchant_stack | `300` on 7 blocks, else `0` |
+| `aid_item_ids+0x04`   | bytes[2]              | unknown_aid_item_ids_04 | Always `0` |
+
+Strings are a u64 UTF-16 code-unit count, then the text with no terminator.
+Counts in the rows from `is_notify_world` on are blocks on client 3473.
+
+The seven lane stats, in order:
+
+| Index | Field         | Notes |
+| ----: | ------------- | ----- |
+| 0     | added_damage  | `AddedDDD`, `AddedRDD`, `AddedMDD`, see Field Names |
+| 1     | unknown       | `0` in every block |
+| 2     | ap_min        | Lowest AP |
+| 3     | ap_max        | Highest AP |
+| 4     | ap_display    | `round((ap_min + ap_max) / 2)` in every lane of every block |
+| 5     | damage_reduction | Equals the tail's lane value 2 in every block |
+| 6     | evasion       | Equals the tail's lane value 0 in every block |
+
+A weapon fills the lanes it attacks with (Kzarka Gauntlet melee and magic, a
+bow ranged); accessories fill all three alike. The browser shows the highest
+lane.
+
+### Lane Dice (variable: 12 bytes + dice text)
+
+| Offset         | Type  | Field    | Notes |
+| -------------- | ----- | -------- | ----- |
+| `+0x00`        | str16 | dice     | The AP roll as dice text |
+| `dice+0x00`    | f32   | accuracy | The lane's accuracy |
+
+### `enchantstaticstatusoffset.dbss`
 
 The shared PABR layout with u32 keys (`parse_pabr_u32_offset_rows`): `PABR`, a
 u32 row count, `count` 12-byte rows, then the 12-byte trailer
 `(0, 8 + count × 12, 0)`.
+
+| Offset              | Type              | Field        | Notes |
+| ------------------- | ----------------- | ------------ | ----- |
+| `+0x00`             | char[4]           | magic        | ASCII `PABR` |
+| `+0x04`             | u32               | count        | Number of rows |
+| `+0x08`             | Offset Row[count] | rows         | See Offset Row |
+| `rows+0x00`         | String Table      | string_table | See String Table |
+| `string_table+0x00` | u32               | table_start  | `8 + count × 12`, where the rows end |
+| `string_table+0x04` | u32               | zero         | Always `0` |
+
+Levels run 0 to 25 with no gaps per key. There are 4,811 enchant keys
+(1 to 62,304) on client 3458.
+
+### Offset Row (12 bytes)
 
 | Offset  | Type | Field       | Notes                                      |
 | ------- | ---- | ----------- | ------------------------------------------ |
@@ -51,10 +158,14 @@ u32 row count, `count` 12-byte rows, then the 12-byte trailer
 | `+0x04` | u32  | data_offset | Byte offset of the block                   |
 | `+0x08` | u32  | data_size   | Block length in bytes                      |
 
-Levels run 0 to 25 with no gaps per key. There are 4,811 enchant keys
-(1 to 62,304) on client 3458.
+### String Table (variable: 4 bytes + strings)
 
-### The link from items
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0` |
+| `+0x04` | pstr[string_count] | strings      | Empty |
+
+## The Link From Items
 
 `itemenchant.dbss` stores the enchant key in the u32 just before the u64
 length of the Korean name. Combining an item block's level with that key
@@ -74,117 +185,7 @@ outfits).
 | Kharazad Necklace        | 11697   | 12336       |
 | Tuvala Helmet            | 695105  | 6130        |
 
-## Block Structure
-
-A block is one sequential stream: fixed fields to `+0xFF`, two u64-prefixed
-UTF-16LE strings, then a variable tail. All 33,503 blocks read to their exact
-end with this layout.
-
-### Fixed part
-
-| Offset  | Type      | Field                   | Notes |
-| ------- | --------- | ----------------------- | ----- |
-| `+0x00` | u32       | enchant_key             | Repeats the key's low 24 bits, in every block |
-| `+0x04` | u8        | level                   | Repeats the key's level, in every block |
-| `+0x05` | u32       | material_item_id        | Item consumed by the attempt to reach this level; `0` on every level-0 block |
-| `+0x09` | u64       | material_count          | How many |
-| `+0x11` | u64       | perfect_count           | Materials a perfect enhancement (100% chance) takes; `0` when it is not offered |
-| `+0x19` | u64       | black_count_for_item_market | Grows with the level, see Field Names |
-| `+0x21` | u8[8]     | zero                    | `0` in every block |
-| `+0x29` | u32       | success_rate            | Base chance of the attempt in millionths: 1,000,000 is 100% |
-| `+0x2D` | u32       | downgrade_rate          | Chance that a failed attempt drops a level, in millionths: 1,000,000 (4,782 blocks on client 3464), 500,000 or 100,000 (22 each), `0` on the rest. Goes with `fail_result` 3, see Failure results |
-| `+0x31` | u8[4]     | zero                    | `0` in every block |
-| `+0x35` | u16       | max_durability          | Durability at this level |
-| `+0x37` | u16       | fail_durability_loss    | Durability lost when the attempt fails |
-| `+0x39` | u16       | recover_max_endurance   | `10` (28,823 blocks on client 3473), `0` (4,660) or `1` (21) |
-| `+0x3B` | u8        | unknown_3b              | `0` in every block |
-| `+0x3C` | u16       | perfect_durability_loss | Durability a perfect enhancement costs; only meaningful when `perfect_count` is set |
-| `+0x3E` | f32       | max_hp                  | Max HP the item adds; ships and wagons show it as Max Durability, their HP. See Checked on bdocodex |
-| `+0x42` | i32       | varied_max_mp           | Max MP the item adds; set on 1,540 blocks |
-| `+0x46` | f32       | varied_recov_hp         | HP recovery the item adds |
-| `+0x4A` | i32       | varied_recov_mp         | MP recovery the item adds |
-| `+0x4E` | u8[72]    | zero                    | `0` in every block, see Field Names |
-| `+0x96` | i64       | varied_possessable_weight | Weight limit the item adds, LT x 10,000; set on 1,764 blocks |
-| `+0x9E` | u8[8]     | zero                    | `0` in every block |
-| `+0xA6` | u8        | socket_count            | Crystal sockets: `2` (14,804 blocks), `0` (14,468) or `1` (4,232) |
-| `+0xA7` | f32[7][3] | lane stats              | Seven stats, each for the melee, ranged and magic lanes, below |
-| `+0xFB` | u32       | skill_key               | `skill_no << 16 \| level` as in [skill.dbss](skill_dbss.md); `0` when the item has no skill, level `1` on all 23,303 others |
-| `+0xFF` | string    | description_kr          | Korean text with `<PAColor>` tags; empty in most blocks, set on ship equipment |
-| varies  | string    | effects                 | The effect script, one `NAME(args);` per line: `ITEM_EFFECT();`, `PLAYER_DAM_ADD(10);`, `ALL_AP_INCRE();` |
-
-Strings are a u64 UTF-16 code-unit count, then the text with no terminator.
-
-The seven lane stats, in order:
-
-| Index | Field         | Notes |
-| ----: | ------------- | ----- |
-| 0     | added_damage  | `AddedDDD`, `AddedRDD`, `AddedMDD`, see Field Names |
-| 1     | unknown       | `0` in every block |
-| 2     | ap_min        | Lowest AP |
-| 3     | ap_max        | Highest AP |
-| 4     | ap_display    | `round((ap_min + ap_max) / 2)` in every lane of every block |
-| 5     | damage_reduction | Equals the tail's lane value 2 in every block |
-| 6     | evasion       | Equals the tail's lane value 0 in every block |
-
-A weapon fills the lanes it attacks with (Kzarka Gauntlet melee and magic, a
-bow ranged); accessories fill all three alike. The browser shows the highest
-lane.
-
-### Tail
-
-| Order | Type                     | Field       | Notes |
-| ----: | ------------------------ | ----------- | ----- |
-| 1     | u8[13]                   | after script | Below |
-| 2     | 3 × (string, f32)        | dice, accuracy | Per lane: the AP roll as dice text (`1D5+85` is 86 to 90, `1D1-1` is none), then the accuracy |
-| 3     | 3 × f32[4]               | defense     | Per lane: evasion, hidden evasion, damage reduction, hidden damage reduction |
-| 4     | u8[12]                   | sentinels   | Three i32 `-1`, in every block |
-| 5     | u8[65]                   | late fields | Below |
-| 6     | u32 + u32 × count        | aid_item_ids | 0 to 3 item IDs: hammers and crystals, see Notes |
-| 7     | u8[6]                    | footer      | Below |
-
-The 13 bytes after the script:
-
-| Offset | Type | Field | Notes |
-| -----: | ---- | ----- | ----- |
-| 0  | u8  | is_notify_world | `1` on 4,363 blocks |
-| 1  | u8  | fail_result | The sheet's `EnchantType`, see Failure Results |
-| 2  | u32 | item_market_added_price | Millionths: 1,000,000, or 1,150,000 on 395 blocks |
-| 6  | u32 | unknown | 700,000 on 32,646 blocks, else 200,000 to 500,000 |
-| 10 | u8  | market_filter_1 | 22 values |
-| 11 | u8  | market_filter_2 | `0`, `2`, `3` or `4` |
-| 12 | u8  | zero | `0` in every block |
-
-The 65 late fields after the sentinels:
-
-| Offset | Type | Field | Notes |
-| -----: | ---- | ----- | ----- |
-| 0  | u8   | life_main_type | `15` on 31,056 blocks |
-| 1  | u8   | life_sub_type | |
-| 2  | f32  | life_stat | Set on life skill gear rows of the sheet |
-| 6  | u8   | group_level | 20 values |
-| 7  | u32  | new_perfect_enchant_item_id | Item of the newer perfect enhancement; `0` on most blocks |
-| 11 | i64  | new_perfect_enchant_item_count | How many |
-| 19 | u16  | new_perfect_enchant_durability_loss | `10`, `20` or `30` |
-| 21 | i64  | prevent_cron_count | Set on 4,620 blocks |
-| 29 | f32  | adjust_strength | Equals `adjust_speed` in every block |
-| 33 | f32  | adjust_speed | |
-| 37 | f32  | adjust_health | `0` in every block |
-| 41 | i64  | varied_max_food | Set on 548 blocks |
-| 49 | i32  | varied_cannon_cool_time | `10000` (44 blocks) or `20000` (22) |
-| 53 | i32[3] | zero | `0` in every block; the sheet's `VariedCannonAccuracy`, `VariedCannonMaxLength` and `VariedCannonMaxAngle` by column order |
-
-The 6-byte footer after the aid items:
-
-| Offset | Type | Field | Notes |
-| -----: | ---- | ----- | ----- |
-| 0 | u8  | is_cronable | `1` on 610 blocks |
-| 1 | u8  | is_guild_rental | `1` on 1,197 blocks |
-| 2 | u16 | need_perfect_enchant_stack | `300` on 7 blocks, else `0` |
-| 4 | u8[2] | zero | `0` in every block |
-
-Counts are blocks on client 3473.
-
-### Failure Results
+## Failure Results
 
 `fail_result`, byte 1 after the effect script and the sheet's `EnchantType`
 column, says what a failed attempt does to the item. The client knows four danger types (`Safe`, `Gradedown`,
@@ -207,7 +208,7 @@ always drops a level, as it does in game. [Hunting] Gauche Marni Sniper
 Rifle (`56520`, enchant key 28303) is the exception with 10% for +8 and 50%
 for +9. 61 downgrade blocks store `0` and 4 safe blocks a rate.
 
-### Checked on bdocodex
+## Checked on bdocodex
 
 bdocodex (2026-10-06, client 3458) embeds its per-level enhancement table in
 the item page. Every field the browser shows matched on all 38 levels of

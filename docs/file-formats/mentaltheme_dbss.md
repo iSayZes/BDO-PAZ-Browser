@@ -4,13 +4,11 @@
 
 Defines the knowledge group/category tree. Each theme record stores a group ID, Korean inline group name, parent group, energy reward thresholds, the theme's bookshelf item, direct knowledge entries, and child theme IDs.
 
-Example:
+## Versions
 
-```text
-theme_id: 10319 -> parent: 10030 -> "Refugee Camp"
-bookshelf_item: 2532 -> "Bookshelf with Knowledge on Monsters of the Refugee Camp"
-entries: 4327, 4325, 4324, ... -> knowledge entries in that group
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,84 +20,71 @@ entries: 4327, 4325, 4324, ... -> knowledge entries in that group
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### mentalthemeoffset.dbss
+### File Layout
 
-| Offset  | Type | Name  | Description       |
-| ------- | ---- | ----- | ----------------- |
-| `+0x00` | u32  | count | Number of records |
-| `+0x04` | ...  | rows  | 10-byte rows      |
-
-### Offset Row (10 bytes, repeated `count` times)
-
-| Offset  | Type | Name           | Description                                                       |
-| ------- | ---- | -------------- | ----------------------------------------------------------------- |
-| `+0x00` | u16  | theme_id       | Knowledge group/category ID                                       |
-| `+0x02` | u32  | payload_offset | Byte offset into `mentaltheme.dbss`; points to the duplicate ID    |
-| `+0x06` | u32  | payload_size   | Size of the payload at `payload_offset`, excluding the 2-byte lead |
-
-### mentaltheme.dbss
-
-| Offset  | Type | Name  | Description                                      |
-| ------- | ---- | ----- | ------------------------------------------------ |
-| `+0x00` | u32  | count | Number of records; matches `mentalthemeoffset`   |
-| `+0x04` | ...  | data  | Record stream: 2-byte lead ID, then the payloads |
+| Offset  | Type          | Field   | Notes                                            |
+| ------- | ------------- | ------- | ------------------------------------------------ |
+| `+0x00` | u32           | count   | Number of records; matches `mentalthemeoffset`   |
+| `+0x04` | Record[count] | data    | Record stream: 2-byte lead ID, then the payloads; see Record |
 
 Each payload is preceded by a 2-byte `theme_id` lead in the main stream. The offset file points two bytes later, to a payload that begins with the same `theme_id` again.
 
 `name_len` is an `i64` code-unit count, the same string prefix used by `mentalcard.dbss`. The field was earlier read as a u16 followed by six reserved zero bytes; bytes `+0x04..+0x09` are zero on all 931 records, so both reads give the same length. The `i64` reading matches the notes of [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor), which call `theme_id` and `parent_id` `themeKey` and `parentTheme`.
 
-## Record Structure
+### Record (variable: 2 bytes + payload)
 
-### Theme Payload (variable size)
+| Offset  | Type          | Field   | Notes                                                    |
+| ------- | ------------- | ------- | -------------------------------------------------------- |
+| `+0x00` | u16           | lead_id | Equals the payload's `theme_id`                          |
+| `+0x02` | Theme Payload | payload | `payload_size` bytes; the offset row points at this field |
 
-| Offset        | Type             | Name            | Description                                                |
-| ------------- | ---------------- | --------------- | ---------------------------------------------------------- |
-| `+0x00`       | u16              | theme_id        | Knowledge group/category ID; matches offset row            |
-| `+0x02`       | i64              | name_len        | Number of UTF-16LE code units in `name_kr`                 |
-| `+0x0A`       | utf16le[]        | name_kr         | Inline Korean theme name, `name_len * 2` bytes             |
-| after name    | Theme Stats      | stats           | Parent, energy reward thresholds and bookshelf item        |
-| after stats   | u32[]            | entries         | Direct knowledge entry IDs                                 |
-| after entries | Child Theme List | children        | Direct child theme IDs                                     |
+### Theme Payload (variable: 41 bytes + name and lists)
 
-### Theme Stats (23 bytes)
+The fields from `parent_id` to `entry_count` are the 23-byte theme stats; their offsets count from the end of `name_kr`.
 
-| Offset  | Type | Name            | Description                                           |
-| ------- | ---- | --------------- | ----------------------------------------------------- |
-| `+0x00` | u16  | parent_id       | Parent theme ID, or `0` for root themes               |
-| `+0x02` | u16  | increase_wp     | First energy reward amount                            |
-| `+0x04` | u32  | need_count      | Entries needed for first reward                       |
-| `+0x08` | u16  | increase_wp_2   | Second energy reward amount                           |
-| `+0x0A` | u32  | need_count_2    | Entries needed for second reward                      |
-| `+0x0E` | u8   | unknown_0e      | Observed `0` or `1`; see Open Questions               |
-| `+0x0F` | u32  | bookshelf_item  | Item ID of the theme's bookshelf (LOC type 0), or `0` |
-| `+0x13` | u32  | entry_count     | Number of direct `entries` that follow                 |
+| Offset           | Type             | Field          | Notes                                                      |
+| ---------------- | ---------------- | -------------- | ---------------------------------------------------------- |
+| `+0x00`          | u16              | theme_id       | Knowledge group/category ID; matches offset row            |
+| `+0x02`          | str16            | name_kr        | Inline Korean theme name; the i64 count is `name_len`, the number of UTF-16LE code units |
+| `name_kr+0x00`   | u16              | parent_id      | Parent theme ID, or `0` for root themes                    |
+| `name_kr+0x02`   | u16              | increase_wp    | First energy reward amount                                 |
+| `name_kr+0x04`   | u32              | need_count     | Entries needed for first reward                            |
+| `name_kr+0x08`   | u16              | increase_wp_2  | Second energy reward amount                                |
+| `name_kr+0x0A`   | u32              | need_count_2   | Entries needed for second reward                           |
+| `name_kr+0x0E`   | u8               | unknown_0e     | Observed `0` or `1`; see Open Questions                    |
+| `name_kr+0x0F`   | u32              | bookshelf_item | Item ID of the theme's bookshelf (LOC type 0), or `0`      |
+| `name_kr+0x13`   | u32              | entry_count    | Number of direct `entries` that follow                     |
+| `name_kr+0x17`   | u32[entry_count] | entries        | Direct knowledge entry IDs; LOC `str_type=34`, `str_id1`   |
+| `entries+0x00`   | u32              | child_count    | Number of direct child theme IDs                           |
+| `entries+0x04`   | u16[child_count] | child_ids      | Child theme IDs in binary/UI order                         |
+| `child_ids+0x00` | u32              | terminator     | Always observed as `0`                                     |
 
 Earlier versions of this doc called `unknown_0e` `unknown_flag`, and `bookshelf_item` `unknown_value`, then `unknown_0f`.
 
-### Bookshelf Item
+The entries are stored in the order the Knowledge window lists them. Checked in game (2026-09-28) on People of Olvia Academy (`145`): all 20 entries show in stored order, from Cedrio to Gray Biants, which is not card ID order (Merv `14703` second, Justin Bartali `14675` second to last).
+
+### `mentalthemeoffset.dbss`
+
+| Offset  | Type              | Field | Notes             |
+| ------- | ----------------- | ----- | ----------------- |
+| `+0x00` | u32               | count | Number of records |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row    |
+
+### Offset Row (10 bytes)
+
+| Offset  | Type | Field          | Notes                                                             |
+| ------- | ---- | -------------- | ----------------------------------------------------------------- |
+| `+0x00` | u16  | theme_id       | Knowledge group/category ID                                       |
+| `+0x02` | u32  | payload_offset | Byte offset into `mentaltheme.dbss`; points to the duplicate ID    |
+| `+0x06` | u32  | payload_size   | Size of the payload at `payload_offset`, excluding the 2-byte lead |
+
+## Bookshelf Item
 
 `bookshelf_item` names an item whose LOC type 0 name is "Bookshelf with Knowledge on" plus the theme's subject: Refugee Camp (`10319`) holds `2532` "Bookshelf with Knowledge on Monsters of the Refugee Camp", Quarry (`10318`) holds `2531`, Beasts (Balenos) (`10101`) holds `2501` "Bookshelf with Knowledge on Beast Monsters (Balenos)". The item's description (LOC type 0 `str_id4=1`) reads "A bookshelf filled with knowledge on monsters in the Refugee Camp."
 
 On client 3464, 33 themes carry a bookshelf item and the rest store `0`. The items are `2501` to `2533`, one per theme, in theme ID order: 4 themes under Ecology of Eastern Balenos (`10010`), 11 under Ecology of Serendia (`10020`), 17 under Ecology of Calpheon (`10030`) and Steppe (Kamasylvia) (`10601`) under Ecology of Kamasylvia (`10065`). All 33 have `unknown_0e = 1`. calpheonlabs reads the field the same way (`bookshelfItemId`).
-
-
-### Entries (`entry_count * 4` bytes)
-
-| Offset  | Type | Name     | Description                                      |
-| ------- | ---- | -------- | ------------------------------------------------ |
-| `+0x00` | u32  | entry_id | Knowledge entry ID; LOC `str_type=34`, `str_id1` |
-
-The entries are stored in the order the Knowledge window lists them. Checked in game (2026-09-28) on People of Olvia Academy (`145`): all 20 entries show in stored order, from Cedrio to Gray Biants, which is not card ID order (Merv `14703` second, Justin Bartali `14675` second to last).
-
-### Child Theme List (variable size)
-
-| Offset                 | Type  | Name        | Description                                      |
-| ---------------------- | ----- | ----------- | ------------------------------------------------ |
-| `+0x00`                | u32   | child_count | Number of direct child theme IDs                 |
-| `+0x04`                | u16[] | child_ids   | Child theme IDs in binary/UI order               |
-| `+0x04 + child_count*2` | u32   | terminator  | Always observed as `0`                           |
 
 ## Confirmed Examples
 

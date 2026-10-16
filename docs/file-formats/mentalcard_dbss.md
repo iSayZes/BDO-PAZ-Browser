@@ -6,13 +6,11 @@ Defines every knowledge entry (card). Each record holds the card ID, its owning 
 
 Field names `cardKey`, `themeKey`, `minFavor`, `maxFavor` and `interest` follow the notes of [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor); the layout below was re-checked against our files. The combo field names follow the client Lua getters (`getBuffType`, `getVariedValue`, `getValidTurn`, `getApplyTurn`).
 
-Example (client 3458):
+## Versions
 
-```text
-card_id: 15879  →  theme_id: 10087 "Ecology of Voidekaia"  →  "Despair-Consumed Blader"
-favor 1 to 8, interest 45, combo "After 4 turns, Favor will increase by 6 for 1 turns",
-icon UI_Artwork/IC_015879.dds
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,85 +20,81 @@ icon UI_Artwork/IC_015879.dds
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### mentalcardoffset.dbss
+### File Layout
+
+| Offset  | Type        | Field   | Notes                                           |
+| ------- | ----------- | ------- | ----------------------------------------------- |
+| `+0x00` | u32         | count   | Number of records; matches `mentalcardoffset`   |
+| `+0x04` | Card[count] | records | Variable-size card records, back to back; see Card |
+
+Strings are `i64` UTF-16 code-unit counts followed by that many UTF-16LE units, except the icon path, which is an `i64` byte count followed by ASCII.
+
+### Card (variable: 97 bytes + strings and hashes)
+
+A 33-byte header (`+0x00` to `+0x20`), then the body.
+
+| Offset                | Type             | Field          | Notes                                                                          |
+| --------------------- | ---------------- | -------------- | ------------------------------------------------------------------------------ |
+| `+0x00`               | u32              | card_id        | Knowledge entry ID; equals the index key; LOC `str_type=34`, `str_id1`         |
+| `+0x04`               | u16              | theme_id       | Owning category in `mentaltheme.dbss`; LOC `str_type=9`                        |
+| `+0x06`               | u8               | theme_flag_a   | Observed `0` or `1`; `1` on 172 cards, mostly story and adventure-log entries |
+| `+0x07`               | u8               | theme_flag_b   | Observed `0` or `1`; `1` on 373 cards, almost all under theme `10399` (None)  |
+| `+0x08`               | f32              | min_favor      | Amity conversation favor, lower bound; whole numbers `0` to `72`              |
+| `+0x0C`               | f32              | max_favor      | Amity conversation favor, upper bound; whole numbers `0` to `100`             |
+| `+0x10`               | f32              | interest       | Amity conversation interest; whole numbers `0` to `100`                       |
+| `+0x14`               | u8               | buff_type      | Combo effect stat: `0` Favor, `1` Interest Level, `4` no combo (9,962 cards)  |
+| `+0x15`               | f32              | varied_value   | Combo amount, unaligned; whole numbers `1` to `10` (one card `19`); `0` without a combo |
+| `+0x19`               | u32              | valid_turn     | Combo duration in turns, `1` to `4`; `0` without a combo                      |
+| `+0x1D`               | u32              | apply_turn     | Combo delay, `1` to `4`; the tooltip shows it plus one; `0` without a combo   |
+| `+0x21`               | str16            | name_kr        | Korean card name; English form is LOC `str_type=34`, `str_id4=0`            |
+| `name_kr+0x00`        | str16            | description_kr | Korean description; English form is LOC `str_type=34`, `str_id4=1`          |
+| `description_kr+0x00` | u8               | body_flag      | `0` or `1`; `1` on 474 cards, mostly adventure-log themes                   |
+| `description_kr+0x01` | u8               | unknown_after_body_flag | Always `0`                                                         |
+| `description_kr+0x02` | u32              | body_value     | `5` on 10,455 cards, `0` on 1,893, `1` to `4` on the rest                   |
+| `description_kr+0x06` | str8             | icon_path      | Always under `UI_Artwork/`, e.g. `UI_Artwork/IC_015879.dds`                 |
+| `icon_path+0x00`      | str16            | acquisition_kr | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2` |
+| `acquisition_kr+0x00` | f32[3]           | position       | World `x`, `y` (height), `z`; all zero on 9,356 cards                       |
+| `acquisition_kr+0x0C` | u8               | tail_kind      | `17` on 10,388 cards, otherwise `0` to `16`                                 |
+| `acquisition_kr+0x0D` | u32              | tail_value     | `0`, `1` or `3`                                                             |
+| `acquisition_kr+0x11` | u32              | hash_count     | `1` to `7`                                                                  |
+| `acquisition_kr+0x15` | u32[hash_count]  | hashes         | Hash-like values; 271 distinct, lists share prefixes between cards          |
+| `hashes+0x00`         | bytes[5]         | unknown_end    | Always zero                                                                 |
+
+The combo fields build the tooltip's "Next combo effect" line: "After `{apply_turn + 1}` turns, `{Favor | Interest Level}` will increase by `{varied_value}` for `{valid_turn}` turns", or "None" when `buff_type` is `4`. Confirmed in game on 2026-09-27 and 2026-09-28 against 19 cards, 10 with a combo and 9 without; see Confirmed Examples. No card stores a decrease or a `buff_type` other than `0`, `1` and `4`.
+
+Every one of the 12,502 records parses with this layout and ends exactly at its index `size`. The same layout holds for the older test fixture (12,087 records) and for the 12,604 records after the 2026-09-27 update, which still tile the file from byte `4` to its end.
+
+### `mentalcardoffset.dbss`
 
 `PABR` index with 12-byte rows, the same shape as other `PABR` offset companions but with a u32 key.
 
-#### Header (8 bytes)
+| Offset              | Type             | Field        | Notes                                           |
+| ------------------- | ---------------- | ------------ | ----------------------------------------------- |
+| `+0x00`             | char[4]          | magic        | ASCII `PABR`                                    |
+| `+0x04`             | u32              | count        | Number of rows; `12,604` after the 2026-09-27 client update, `12,502` before it, `12,087` in the test fixture |
+| `+0x08`             | Index Row[count] | rows         | See Index Row                                   |
+| `rows+0x00`         | String Table     | string_table | See String Table                                |
+| `string_table+0x00` | u32              | rows_end     | End offset of the index rows (`150032`)         |
+| `string_table+0x04` | u32              | zero         | Always `0`                                      |
 
-| Offset  | Type  | Name  | Description                                     |
-| ------- | ----- | ----- | ----------------------------------------------- |
-| `+0x00` | u8[4] | magic | ASCII `PABR`                                    |
-| `+0x04` | u32   | count | Number of rows; `12,604` after the 2026-09-27 client update, `12,502` before it, `12,087` in the test fixture |
+Rows tile `mentalcard.dbss` exactly: the first record starts at `4`, each next record starts where the previous one ends, and the last ends at the file size.
 
-#### Index Row (12 bytes, repeated `count` times)
+### Index Row (12 bytes)
 
-| Offset  | Type | Name        | Description                                              |
+| Offset  | Type | Field       | Notes                                                    |
 | ------- | ---- | ----------- | -------------------------------------------------------- |
 | `+0x00` | u32  | card_id     | Equals the `card_id` at the start of the record          |
 | `+0x04` | u32  | data_offset | Absolute offset of the record in `mentalcard.dbss`       |
 | `+0x08` | u32  | size        | Record size in bytes                                     |
 
-Rows tile `mentalcard.dbss` exactly: the first record starts at `4`, each next record starts where the previous one ends, and the last ends at the file size.
+### String Table (variable: 4 bytes + strings)
 
-#### Trailer (12 bytes)
-
-| Offset  | Type | Value  | Notes                                         |
-| ------- | ---- | ------ | --------------------------------------------- |
-| `+0x00` | u32  | `0`    |                                               |
-| `+0x04` | u32  | varies | End offset of the index rows (`150032`)       |
-| `+0x08` | u32  | `0`    |                                               |
-
-### mentalcard.dbss
-
-| Offset  | Type | Name    | Description                                     |
-| ------- | ---- | ------- | ----------------------------------------------- |
-| `+0x00` | u32  | count   | Number of records; matches `mentalcardoffset`   |
-| `+0x04` | ...  | records | Variable-size card records, back to back        |
-
-Strings are `i64` UTF-16 code-unit counts followed by that many UTF-16LE units, except the icon path, which is an `i64` byte count followed by ASCII.
-
-## Record Structure
-
-### Card Header (33 bytes)
-
-| Offset  | Type | Name       | Description                                                                    |
-| ------- | ---- | ---------- | ------------------------------------------------------------------------------ |
-| `+0x00` | u32  | card_id    | Knowledge entry ID; equals the index key; LOC `str_type=34`, `str_id1`         |
-| `+0x04` | u16  | theme_id   | Owning category in `mentaltheme.dbss`; LOC `str_type=9`                        |
-| `+0x06` | u8   | theme_flag_a | Observed `0` or `1`; `1` on 172 cards, mostly story and adventure-log entries |
-| `+0x07` | u8   | theme_flag_b | Observed `0` or `1`; `1` on 373 cards, almost all under theme `10399` (None)  |
-| `+0x08` | f32  | min_favor  | Amity conversation favor, lower bound; whole numbers `0` to `72`              |
-| `+0x0C` | f32  | max_favor  | Amity conversation favor, upper bound; whole numbers `0` to `100`             |
-| `+0x10` | f32  | interest   | Amity conversation interest; whole numbers `0` to `100`                       |
-| `+0x14` | u8   | buff_type  | Combo effect stat: `0` Favor, `1` Interest Level, `4` no combo (9,962 cards)  |
-| `+0x15` | f32  | varied_value | Combo amount, unaligned; whole numbers `1` to `10` (one card `19`); `0` without a combo |
-| `+0x19` | u32  | valid_turn | Combo duration in turns, `1` to `4`; `0` without a combo                      |
-| `+0x1D` | u32  | apply_turn | Combo delay, `1` to `4`; the tooltip shows it plus one; `0` without a combo   |
-
-The combo fields build the tooltip's "Next combo effect" line: "After `{apply_turn + 1}` turns, `{Favor | Interest Level}` will increase by `{varied_value}` for `{valid_turn}` turns", or "None" when `buff_type` is `4`. Confirmed in game on 2026-09-27 and 2026-09-28 against 19 cards, 10 with a combo and 9 without; see Confirmed Examples. No card stores a decrease or a `buff_type` other than `0`, `1` and `4`.
-
-### Card Body (variable, follows the header)
-
-| Order | Type          | Name            | Description                                                                 |
-| ----- | ------------- | --------------- | --------------------------------------------------------------------------- |
-| 1     | i64 + utf16le | name_kr         | Korean card name; English form is LOC `str_type=34`, `str_id4=0`            |
-| 2     | i64 + utf16le | description_kr  | Korean description; English form is LOC `str_type=34`, `str_id4=1`          |
-| 3     | u8            | body_flag       | `0` or `1`; `1` on 474 cards, mostly adventure-log themes                   |
-| 4     | u8            | unknown_after_body_flag | Always `0`                                                                  |
-| 5     | u32           | body_value      | `5` on 10,455 cards, `0` on 1,893, `1` to `4` on the rest                   |
-| 6     | i64 + ascii   | icon_path       | Always under `UI_Artwork/`, e.g. `UI_Artwork/IC_015879.dds`                 |
-| 7     | i64 + utf16le | acquisition_kr  | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2` |
-| 8     | f32 × 3       | position        | World `x`, `y` (height), `z`; all zero on 9,356 cards                       |
-| 9     | u8            | tail_kind       | `17` on 10,388 cards, otherwise `0` to `16`                                 |
-| 10    | u32           | tail_value      | `0`, `1` or `3`                                                             |
-| 11    | u32           | hash_count      | `1` to `7`                                                                  |
-| 12    | u32 × hash_count | hashes       | Hash-like values; 271 distinct, lists share prefixes between cards          |
-| 13    | u8[5]         | unknown_end     | Always zero                                                                 |
-
-Every one of the 12,502 records parses with this layout and ends exactly at its index `size`. The same layout holds for the older test fixture (12,087 records) and for the 12,604 records after the 2026-09-27 update, which still tile the file from byte `4` to its end.
+| Offset  | Type               | Field        | Notes |
+| ------- | ------------------ | ------------ | ----- |
+| `+0x00` | u32                | string_count | `0`   |
+| `+0x04` | pstr[string_count] | strings      | Empty |
 
 ## Confirmed Examples
 

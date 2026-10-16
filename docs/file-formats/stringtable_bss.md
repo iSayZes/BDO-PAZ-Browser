@@ -7,10 +7,11 @@ The Korean source of the client's keyed UI strings. Each row pairs a string key
 hash. The hash is the LOC type `37` `str_id1`, so this file is how a key the
 client scripts use turns into the translated text in `languagedata_*.loc`.
 
-```text
-GAME  0x4D282741  LUA_WIDGET_TOWNNPCNAVI_NPCTYPETEXT_6  "창고"
-      -> LOC type 37, str_id1=0x4D282741, str_id2=1  "Storage"
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,46 +21,56 @@ GAME  0x4D282741  LUA_WIDGET_TOWNNPCNAVI_NPCTYPETEXT_6  "창고"
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A PABR file of eight sheets, followed by the same counted string table and
 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-pool). Every
 string in the table is UTF-16LE (`is_wide=1`).
 
-| Offset  | Type    | Field              | Notes                                                        |
-| ------- | ------- | ------------------ | ------------------------------------------------------------ |
-| `+0x00` | char[4] | magic              | ASCII `PABR`                                                 |
-| `+0x04` | u32     | sheet_count        | `8` on client 3458                                           |
-| `+0x08` | sheet[] | sheets             | Sheets back to back, see below                               |
-| varies  | table   | string_table       | Counted string table; `95,195` strings on client 3458        |
-| EOF - 8 | u32     | string_table_start | Where the last sheet ends (`0xC6DD8` on client 3458)         |
-| EOF - 4 | u32     | zero               | Always `0`                                                   |
+| Offset              | Type               | Field              | Notes                                                |
+| ------------------- | ------------------ | ------------------ | ---------------------------------------------------- |
+| `+0x00`             | char[4]            | magic              | ASCII `PABR`                                         |
+| `+0x04`             | u32                | sheet_count        | `8` on client 3458                                   |
+| `+0x08`             | Sheet[sheet_count] | sheets             | Sheets back to back, see Sheet                       |
+| `sheets+0x00`       | String Table       | string_table       | See String Table                                     |
+| `string_table+0x00` | u32                | string_table_start | Where the last sheet ends (`0xC6DD8` on client 3458) |
+| `string_table+0x04` | u32                | zero               | Always `0`                                           |
 
-## Record Structure
+### Sheet (variable: 12 bytes + rows)
 
-### Sheet Header (12 bytes)
+A 12-byte sheet header, then the sheet's rows.
 
-| Offset  | Type | Field      | Notes                                                        |
-| ------- | ---- | ---------- | ------------------------------------------------------------ |
-| `+0x00` | u32  | sheet_hash | Key hash of the sheet name (see Key Hash)                    |
-| `+0x04` | u32  | name_ref   | String table index of the sheet name (`GAME`, `RESOURCE`, ...) |
-| `+0x08` | u32  | row_count  | Number of 16-byte rows that follow                           |
+| Offset  | Type                  | Field      | Notes                                                          |
+| ------- | --------------------- | ---------- | -------------------------------------------------------------- |
+| `+0x00` | u32                   | sheet_hash | Key hash of the sheet name (see Key Hash)                      |
+| `+0x04` | u32                   | name_ref   | String table index of the sheet name (`GAME`, `RESOURCE`, ...) |
+| `+0x08` | u32                   | row_count  | Number of 16-byte rows that follow                             |
+| `+0x0C` | String Row[row_count] | rows       | See String Row                                                 |
 
-### String Row (16 bytes, repeated `row_count` times)
+### String Row (16 bytes)
 
-| Offset  | Type | Field     | Notes                                                              |
-| ------- | ---- | --------- | ------------------------------------------------------------------ |
-| `+0x00` | u32  | key_hash  | Key hash of the key string (see Key Hash); the LOC type `37` `str_id1` |
-| `+0x04` | u32  | key_ref   | String table index of the key, e.g. `NPCSHOP_BUY`                  |
-| `+0x08` | u32  | value_ref | String table index of the Korean text; never empty, 7 are one space |
-| `+0x0C` | u32  | zero      | Always `0`                                                         |
+| Offset  | Type | Field      | Notes                                                                  |
+| ------- | ---- | ---------- | ---------------------------------------------------------------------- |
+| `+0x00` | u32  | key_hash   | Key hash of the key string (see Key Hash); the LOC type `37` `str_id1` |
+| `+0x04` | u32  | key_ref    | String table index of the key, e.g. `NPCSHOP_BUY`                      |
+| `+0x08` | u32  | value_ref  | String table index of the Korean text; never empty, 7 are one space    |
+| `+0x0C` | u32  | unknown_0c | Always `0`                                                             |
 
 Rows are not sorted by hash or key. The string table is interned: each string
 is stored once, in the order the sheets first use it (sheet name, then key
 and value of each row), and later uses point back. No key repeats within a
 sheet; 6,553 values reuse an earlier text such as `"확인"`.
 
-### Key Hash
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                                 |
+| ------- | ------------------ | ------------ | ------------------------------------- |
+| `+0x00` | u32                | string_count | `95,195` strings on client 3458       |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries, all UTF-16LE     |
+
+## Key Hash
 
 `key_hash` and `sheet_hash` are Bob Jenkins' lookup3 `hashlittle()` over the
 UTF-16LE string without a terminator, seed `0xC5EDE`:

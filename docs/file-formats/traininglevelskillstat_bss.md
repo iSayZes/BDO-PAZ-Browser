@@ -7,28 +7,31 @@ Two Training bonuses per Training level, from level 1 (Beginner 1) to 180
 and the chance for a higher minimum movement speed gain on a mount level up.
 The Training tooltip in the Character Info Basic tab shows both.
 
-```text
-traininglevelskillstat.bss, Artisan 7 (level 47), client 3464:
-  add_vehicle_skill_owner_rate 217,000 (21.7%), add_servant_stat_rate 214,000 (21.4%)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
+
+## Companion Files
 
 The file is self-contained. All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The layout of [`commonlifestatdata.bss`](commonlifestatdata_bss.md): PABR,
 then one entry per level with no row count, the empty string table and the
 8-byte trailer.
 
-| Offset   | Type    | Field        | Notes                                              |
-| -------- | ------- | ------------ | -------------------------------------------------- |
-| `+0x00`  | char[4] | magic        | ASCII `PABR`                                       |
-| `+0x04`  | entry[] | entries      | One entry per level from level 1; 180 on client 3464 |
-| after    | u32     | string_count | Always `0`                                         |
-| EOF - 8  | u32     | table_start  | Offset of `string_count`, where the entries end    |
-| EOF - 4  | u32     | zero         | Always `0`                                         |
-
-## Record Structure
+| Offset     | Type               | Field        | Notes                                                                    |
+| ---------- | ------------------ | ------------ | ------------------------------------------------------------------------ |
+| `+0x00`    | char[4]            | magic        | ASCII `PABR`                                                             |
+| `+0x04`    | Level Entry[..end] | entries      | One entry per level from level 1, up to `table_start`; 180 on client 3464 |
+| `EOF-0x0C` | u32                | string_count | Always `0`                                                               |
+| `EOF-0x08` | u32                | table_start  | Offset of `string_count`, where the entries end                          |
+| `EOF-0x04` | u32                | zero         | Always `0`                                                               |
 
 ### Level Entry (8 bytes)
 

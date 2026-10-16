@@ -4,23 +4,24 @@
 
 ID-keyed index into `title.dbss`. Maps each title ID to the byte offset and block size of the corresponding record in the main data file.
 
-Example:
+## Versions
 
-```text
-title_id: 44  →  offset: 0x1A3C, size: 0x98
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-## File Layout
+<!-- versions:end -->
+
+## Layout 1
 
 All multi-byte values are little-endian.
 
-### Header (4 bytes)
+### File Layout
 
-| Offset  | Type | Field | Notes                    |
-| ------- | ---- | ----- | ------------------------ |
-| `+0x00` | u32  | count | Number of offset records; `3,048` in the pre-2026-09-27 fixture, `3,172` in the 2026-09-27 client |
+| Offset  | Type                 | Field   | Notes                    |
+| ------- | -------------------- | ------- | ------------------------ |
+| `+0x00` | u32                  | count   | Number of offset records; `3,048` in the pre-2026-09-27 fixture, `3,172` in the 2026-09-27 client |
+| `+0x04` | Offset Record[count] | records | See Offset Record        |
 
-### Offset Record (12 bytes, repeated `count` times)
+### Offset Record (12 bytes)
 
 | Offset  | Type | Field    | Notes                                          |
 | ------- | ---- | -------- | ---------------------------------------------- |

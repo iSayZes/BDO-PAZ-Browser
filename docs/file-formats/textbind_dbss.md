@@ -9,13 +9,11 @@ record holds the text of one name in four variants. The English and other
 translations are LOC type 59 with the same key; this file is the Korean source
 and the fallback without LOC.
 
-```text
-key 2946305045 (GROWTHPASS_PC_CONSOLE_SEP1)
-  variant 0  <PAColor0xfff5ba3a>[메뉴]<PAOldColor> 간편 단축키 설정
-  variant 1  <PAColor0xfff5ba3a>[메뉴]<PAOldColor> 링메뉴 설정
-  variant 2  <PAColor0xfff5ba3a>[메뉴]<PAOldColor> 링메뉴 설정
-  variant 3  <PAColor0xfff5ba3a>[메뉴]<PAOldColor> 간편 단축키 설정
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,46 +24,52 @@ key 2946305045 (GROWTHPASS_PC_CONSOLE_SEP1)
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field   | Notes                                    |
-| ------- | ---- | ------- | ---------------------------------------- |
-| `+0x00` | u32  | count   | `1,166` on client 3464                    |
-| `+0x04` | ...  | records | `count` records back to back, no padding |
+### File Layout
+
+| Offset  | Type          | Field   | Notes                                |
+| ------- | ------------- | ------- | ------------------------------------ |
+| `+0x00` | u32           | count   | `1,166` on client 3464               |
+| `+0x04` | Record[count] | records | Back to back, no padding; see Record |
 
 The records tile the file: the first starts at `0x04` and the last ends at
 the end of the file (1,951,374 bytes on client 3464).
 
-## Record Structure
+### Record (variable: 40 bytes + texts)
 
-### Record (variable size)
-
-| Field                   | Type   | Notes |
-| ----------------------- | ------ | ----- |
-| `key`                   | u32    | `key_hash()` of the TextBind name: lookup3 `hashlittle` over the UTF-16LE name, seed `0xC5EDE`, the `stringtable.bss` key hash. LOC type 59 `str_id1` |
-| `variant_0`             | string | PC text, see Variants |
-| `variant_1`             | string | PlayStation text, see Variants |
-| `variant_2`             | string | Console text, see Variants |
-| `unknown_pre_variant_3` | u32    | `0` on all 1,166 records (client 3464) |
-| `variant_3`             | string | See Variants |
+| Offset           | Type  | Field                 | Notes |
+| ---------------- | ----- | --------------------- | ----- |
+| `+0x00`          | u32   | key                   | `key_hash()` of the TextBind name: lookup3 `hashlittle` over the UTF-16LE name, seed `0xC5EDE`, the `stringtable.bss` key hash. LOC type 59 `str_id1` |
+| `+0x04`          | str16 | variant_0             | PC text, see Variants |
+| `variant_0+0x00` | str16 | variant_1             | PlayStation text, see Variants |
+| `variant_1+0x00` | str16 | variant_2             | Console text, see Variants |
+| `variant_2+0x00` | u32   | unknown_pre_variant_3 | `0` on all 1,166 records (client 3464) |
+| `variant_2+0x04` | str16 | variant_3             | See Variants |
 
 Each string is a u64 length in UTF-16 code units followed by that many
 UTF-16LE units, no terminator (`RecordReader.text(wide=True)`). The
 `unknown_pre_variant_3` u32 has no fixed offset; it follows the end of
 `variant_2`.
 
-### `textbindoffset.dbss` (4 + 12 x count bytes)
+### `textbindoffset.dbss`
 
-| Offset  | Type | Field  | Notes                                |
-| ------- | ---- | ------ | ------------------------------------ |
-| `+0x00` | u32  | count  | Same count as `textbind.dbss`         |
-| `+0x04` | u32  | key    | Record key, repeated per row          |
-| `+0x08` | u32  | offset | Byte offset of the record in `textbind.dbss` |
-| `+0x0C` | u32  | size   | Byte size of the record               |
+| Offset  | Type              | Field | Notes                         |
+| ------- | ----------------- | ----- | ----------------------------- |
+| `+0x00` | u32               | count | Same count as `textbind.dbss` |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                |
 
 No PABR magic. The rows are not in file order or key order; sorted by
 `offset` they tile `textbind.dbss` from `0x04` to its end. Read with
 `parse_bare_u32_offset_rows()`.
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field  | Notes                                        |
+| ------- | ---- | ------ | -------------------------------------------- |
+| `+0x00` | u32  | key    | Record key, repeated per row                 |
+| `+0x04` | u32  | offset | Byte offset of the record in `textbind.dbss` |
+| `+0x08` | u32  | size   | Byte size of the record                      |
 
 ## Variants
 

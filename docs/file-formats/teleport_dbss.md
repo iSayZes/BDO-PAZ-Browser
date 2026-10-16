@@ -7,13 +7,11 @@ keyed within each section. A `buff.dbss` effect type 23 buff stores the
 section in `param_1` and the key in `param_2`; using the item moves the player
 to that point. The file holds positions only, no names.
 
-Example:
+## Versions
 
-```text
-section 0, key 277   x -1460010  y -6936  z 1419360
-  buff 47341 (type 23, param_1 0, param_2 277)  "Footprints: Flower-sunken Swamp"
-  worldmap node Flower-sunken Swamp lies within 1 m
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,22 +23,24 @@ section 0, key 277   x -1460010  y -6936  z 1419360
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 The file is a list of sections, each a counted run of fixed 18-byte records.
 It walks exactly to its last byte on client 3458 (11,206 bytes).
 
-| Offset  | Type | Field         | Notes                                   |
-| ------- | ---- | ------------- | --------------------------------------- |
-| `+0x00` | u32  | section_count | `6` on client 3458                      |
-| `+0x04` | ...  | sections      | `section_count` x section, in order 0, 1, 2, ... |
+| Offset  | Type                   | Field         | Notes                                       |
+| ------- | ---------------------- | ------------- | ------------------------------------------- |
+| `+0x00` | u32                    | section_count | `6` on client 3458                          |
+| `+0x04` | Section[section_count] | sections      | Sections in order 0, 1, 2, ...; see Section |
 
-### Section
+### Section (variable: 4 bytes + records)
 
-| Offset  | Type | Field   | Notes                                |
-| ------- | ---- | ------- | ------------------------------------ |
-| `+0x00` | u32  | count   | Number of records; `0` is allowed    |
-| `+0x04` | ...  | records | `count` x 18-byte record             |
+| Offset  | Type          | Field   | Notes                             |
+| ------- | ------------- | ------- | --------------------------------- |
+| `+0x00` | u32           | count   | Number of records; `0` is allowed |
+| `+0x04` | Record[count] | records | See Record                        |
 
 ### Record (18 bytes)
 
@@ -53,36 +53,25 @@ It walks exactly to its last byte on client 3458 (11,206 bytes).
 | `+0x0D` | f32  | z           | |
 | `+0x11` | u8   | unknown_11  | `0` on 612 of 621 records; see Open Questions |
 
-### Sections on client 3458
-
-| Section | Records | Used by (buff type 23, Korean names) |
-| ------- | ------: | ------------------------------------ |
-| 0       | 426     | 470 buffs: travel items and quest moves, `발자국 : 잔해의 해안` ("footprints: Shore of Ruins", `Move to Shore of Ruins`), `출입 통과 : 오르의 요람` ("entry pass: Orze's Cradle") |
-| 1       | 9       | 1 buff, `발렌시아 파트2 던전 무작위 순간이동` ("Valencia part 2 dungeon random teleport") |
-| 2       | 3       | No buff                              |
-| 3       | 0       | 1 buff, `단방향(마을) 귀환석` ("one-way (town) return stone"), key 0 |
-| 4       | 0       | 1 buff, `벨리아 마을 귀환석` ("Velia town return stone"), key 5 |
-| 5       | 183     | 181 buffs: boss rooms, event gimmicks and unstuck moves, `하둠 보스용 블랙홀 1번` ("Hadum boss black hole 1"), `이벤트 선물상자 끼이는 현상 방지 텔레포트` ("teleport against getting stuck in the event gift box") |
-
-652 of the 654 type 23 buffs name a record that exists; the other two are the
-return stones on the empty sections 3 and 4, whose destination is resolved
-elsewhere. 22 of the 621 records are used by no buff.
-
-## `teleportoffset.dbss`
+### `teleportoffset.dbss`
 
 The same sections as `teleport.dbss`, in the same order, each a counted list
 of 12-byte rows. Unlike `teleport.dbss` it has no section count: the first
 section starts at `+0x00` and the sections run to the end of the file, which
 they fill exactly (7,476 bytes).
 
-### Section
+| Offset  | Type                  | Field    | Notes                                         |
+| ------- | --------------------- | -------- | --------------------------------------------- |
+| `+0x00` | Offset Section[..end] | sections | Up to the end of the file; see Offset Section |
 
-| Offset  | Type | Field | Notes                               |
-| ------- | ---- | ----- | ----------------------------------- |
-| `+0x00` | u32  | count | Equals the record count of the same section |
-| `+0x04` | ...  | rows  | `count` x 12-byte row               |
+### Offset Section (variable: 4 bytes + rows)
 
-### Row (12 bytes)
+| Offset  | Type              | Field | Notes                                       |
+| ------- | ----------------- | ----- | ------------------------------------------- |
+| `+0x00` | u32               | count | Equals the record count of the same section |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row                              |
+
+### Offset Row (12 bytes)
 
 | Offset  | Type | Field  | Notes |
 | ------- | ---- | ------ | ----- |
@@ -96,6 +85,21 @@ where a section's keys run `0` to `count - 1` in order (sections 1 and 2).
 Read as a key, the section 0 rows point 14.5 km (median) away from the places
 the buff texts name, against 73 m through the inline keys, so readers look
 records up by the inline `key` and do not need this file.
+
+## Sections on Client 3458
+
+| Section | Records | Used by (buff type 23, Korean names) |
+| ------- | ------: | ------------------------------------ |
+| 0       | 426     | 470 buffs: travel items and quest moves, `발자국 : 잔해의 해안` ("footprints: Shore of Ruins", `Move to Shore of Ruins`), `출입 통과 : 오르의 요람` ("entry pass: Orze's Cradle") |
+| 1       | 9       | 1 buff, `발렌시아 파트2 던전 무작위 순간이동` ("Valencia part 2 dungeon random teleport") |
+| 2       | 3       | No buff                              |
+| 3       | 0       | 1 buff, `단방향(마을) 귀환석` ("one-way (town) return stone"), key 0 |
+| 4       | 0       | 1 buff, `벨리아 마을 귀환석` ("Velia town return stone"), key 5 |
+| 5       | 183     | 181 buffs: boss rooms, event gimmicks and unstuck moves, `하둠 보스용 블랙홀 1번` ("Hadum boss black hole 1"), `이벤트 선물상자 끼이는 현상 방지 텔레포트` ("teleport against getting stuck in the event gift box") |
+
+652 of the 654 type 23 buffs name a record that exists; the other two are the
+return stones on the empty sections 3 and 4, whose destination is resolved
+elsewhere. 22 of the 621 records are used by no buff.
 
 ## Notes
 

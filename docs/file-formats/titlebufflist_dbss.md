@@ -4,13 +4,11 @@
 
 Stores the title collection bonus/effect list shown in-game under **Title Effects**. Each record maps a required title count threshold to the bonus effects unlocked at that tier. This file is **not** responsible for individual title name colors.
 
-Example:
+## Versions
 
-```text
-Acquire x50: Luck +1
-Acquire x60: Luck +2
-Acquire x70: Luck +2 / Max Energy +1
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -21,37 +19,29 @@ Acquire x70: Luck +2 / Max Energy +1
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-### titlebufflistoffset.dbss
+### File Layout
 
-- 4-byte header: u32 entry count
-- Repeating 12-byte records:
+A block count, then the blocks back to back.
 
-| Offset  | Type | Name     | Description                           |
-| ------- | ---- | -------- | ------------------------------------- |
-| `+0x00` | u32  | entry_id | Zero-based buff/effect row ID         |
-| `+0x04` | u32  | offset   | Byte offset into `titlebufflist.dbss` |
-| `+0x08` | u32  | size     | Block size in bytes                   |
+| Offset  | Type         | Field  | Notes                                |
+| ------- | ------------ | ------ | ------------------------------------ |
+| `+0x00` | u32          | count  | Number of blocks, 18 on client 3458  |
+| `+0x04` | Block[count] | blocks | See Block                            |
 
-Observed entry IDs are zero-based and align with `internal_id` inside each block.
+### Block (variable: 32 bytes + texts)
 
-Observed entries: 18 in the pre-2026-09-27 test fixture and in the 2026-09-27 client.
-
-## Record Structure
-
-### Block Layout
-
-| Offset   | Type   | Name            | Description                                                      | Confidence |
-| -------- | ------ | --------------- | ---------------------------------------------------------------- | ---------- |
-| `+0x00`  | u32    | internal_id     | Zero-based buff/effect row ID, same as the offset file entry_id | High       |
-| `+0x04`  | u32    | required_titles | Title count to unlock this tier                                  | High       |
-| `+0x08`  | u8     | unknown_08      | `1` on all 18 tiers                                              | High       |
-| `+0x09`  | u8     | unknown_09      | `0` on all 18 tiers                                              | High       |
-| `+0x0A`  | u16    | unknown_0a      | `58501 + internal_id` on all 18 tiers, see Open Questions        | High       |
-| `+0x0C`  | u64 + utf16le[n] | label_kr | Korean tier label, `칭호 50개 습득 : ` ("50 titles acquired: "); the u64 counts UTF-16 code units | High |
-| varies   | u64 + utf16le[n] | effect_kr | Korean effects with PAColor markup, `행운 잠재력 <PAColor0xFF00BAFF>+1단계<PAOldColor>` | High |
-| varies   | u32    | unknown_end     | `0` on all 18 tiers; the block ends here                         | High       |
+| Offset             | Type  | Field           | Confidence | Notes                                                                                             |
+| ------------------ | ----- | --------------- | ---------- | ------------------------------------------------------------------------------------------------- |
+| `+0x00`            | u32   | internal_id     | High       | Zero-based buff/effect row ID, same as the offset file entry_id                                   |
+| `+0x04`            | u32   | required_titles | High       | Title count to unlock this tier                                                                   |
+| `+0x08`            | u8    | unknown_08      | High       | `1` on all 18 tiers                                                                               |
+| `+0x09`            | u8    | unknown_09      | High       | `0` on all 18 tiers                                                                               |
+| `+0x0A`            | u16   | unknown_0a      | High       | `58501 + internal_id` on all 18 tiers, see Open Questions                                         |
+| `+0x0C`            | str16 | label_kr        | High       | Korean tier label, `칭호 50개 습득 : ` ("50 titles acquired: "); the u64 counts UTF-16 code units |
+| `label_kr+0x00`    | str16 | effect_kr       | High       | Korean effects with PAColor markup, `행운 잠재력 <PAColor0xFF00BAFF>+1단계<PAOldColor>`           |
+| `effect_kr+0x00`   | u32   | unknown_end     | High       | `0` on all 18 tiers; the block ends here                                                          |
 
 Checked on all 18 blocks of client 3458: each one ends exactly after `unknown_end`. An earlier version of this doc left everything after `required_titles` as one text payload, and the parser read only from the first PAColor tag, so the Korean fallback showed just `+1단계`.
 
@@ -72,6 +62,25 @@ The offset file's `entry_id` and block `internal_id` identify the same row. Disp
 | 0           | 50              | Acquire x50 titles |
 | 1           | 60              | Acquire x60 titles |
 | 2           | 70              | Acquire x70 titles |
+
+### `titlebufflistoffset.dbss`
+
+| Offset  | Type              | Field | Notes          |
+| ------- | ----------------- | ----- | -------------- |
+| `+0x00` | u32               | count | Entry count    |
+| `+0x04` | Offset Row[count] | rows  | See Offset Row |
+
+Observed entry IDs are zero-based and align with `internal_id` inside each block.
+
+Observed entries: 18 in the pre-2026-09-27 test fixture and in the 2026-09-27 client.
+
+### Offset Row (12 bytes)
+
+| Offset  | Type | Field    | Notes                                 |
+| ------- | ---- | -------- | ------------------------------------- |
+| `+0x00` | u32  | entry_id | Zero-based buff/effect row ID         |
+| `+0x04` | u32  | offset   | Byte offset into `titlebufflist.dbss` |
+| `+0x08` | u32  | size     | Block size in bytes                   |
 
 ## Embedded Korean Text
 

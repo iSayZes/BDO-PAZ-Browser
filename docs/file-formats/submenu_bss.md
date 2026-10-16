@@ -7,13 +7,11 @@ The entries of the main menu (Esc menu) categories in
 category, with its title as a UI string key and its icon as a region of a
 shared sprite sheet.
 
-Example:
+## Versions
 
-```text
-entry 2, category 2 (Information), position 2
-  title  GAME / LUA_MENU_REMAKE_MENU_HELP -> "Adventurer's Guide (Help)"
-  icon   Combine/Icon/Combine_Title_Icon_00.dds, region (2, 457) to (57, 512)
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -25,25 +23,32 @@ entry 2, category 2 (Information), position 2
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 Groups of entries instead of fixed rows, then the shared PABR string table
 (`_common/pabr_strings.py`).
 
-| Offset  | Type    | Field        | Notes                                                            |
-| ------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00` | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04` | u32     | group_count  | Number of groups; 12 on client 3458, the same as `menu.bss` rows |
-| `+0x08` | group[] | groups       | Each is a u32 entry count, then that many 49-byte entries        |
-| ...     | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8 | u32     | table_start  | Offset of the string table, where the groups end                 |
-| EOF - 4 | u32     | zero         | Always 0                                                         |
+| Offset              | Type               | Field        | Notes                                                            |
+| ------------------- | ------------------ | ------------ | ---------------------------------------------------------------- |
+| `+0x00`             | char[4]            | magic        | ASCII `PABR`                                                     |
+| `+0x04`             | u32                | group_count  | Number of groups; 12 on client 3458, the same as `menu.bss` rows |
+| `+0x08`             | Group[group_count] | groups       | See Group                                                        |
+| `groups+0x00`       | String Table       | string_table | See String Table                                                 |
+| `string_table+0x00` | u32                | table_start  | Offset of the string table, where the groups end                 |
+| `string_table+0x04` | u32                | zero         | Always 0                                                         |
 
 The groups follow the `menu.bss` categories from Information (menu 2) on;
 the last group is empty. Recently Used (menu 1) has no group of its own, so
 group `i` holds the entries of menu `i + 2`.
 
-## Record Structure
+### Group (variable: 4 bytes + entries)
+
+| Offset  | Type                    | Field       | Notes                         |
+| ------- | ----------------------- | ----------- | ----------------------------- |
+| `+0x00` | u32                     | entry_count | Number of entries that follow |
+| `+0x04` | Menu Entry[entry_count] | entries     | See Menu Entry                |
 
 ### Menu Entry (49 bytes)
 
@@ -64,10 +69,15 @@ Fields are unaligned.
 | `+0x29` | u32  | sheet_ref   | String table index of the title key's sheet (`GAME` or `RESOURCE`)   |
 | `+0x2D` | u32  | key_ref     | String table index of the title key (`LUA_MENU_REMAKE_MENU_HELP`)    |
 
-### String Table
+### String Table (variable: 4 bytes + strings)
 
 159 strings on client 3458: the two sprite sheets of `menu.bss`, the sheet
 names `GAME` (91 entries) and `RESOURCE` (64), and one title key per entry.
+
+| Offset  | Type               | Field        | Notes               |
+| ------- | ------------------ | ------------ | ------------------- |
+| `+0x00` | u32                | string_count | 159 on client 3458  |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries |
 
 ## Notes
 

@@ -7,10 +7,11 @@ The reform stones of Gear Reform, see
 with a stone category and a reform group; the gear records of the same group
 are what the stone reforms.
 
-```text
-stone 820974 Cup of Destined Dawn  category 3  group 13  shown by default
-stone 9793   Heart of Kutum        category 1  group 33  shown by default
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -22,25 +23,25 @@ Item names come from LOC type 0 and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type     | Field   | Notes                                                |
-| ------- | -------- | ------- | ---------------------------------------------------- |
-| `+0x00` | u32      | count   | Number of records; `101` on client 3464              |
-| `+0x04` | record[] | records | `count` records, back to back to the end of the file |
+### File Layout
 
-## Record Structure
+| Offset  | Type          | Field   | Notes                                                |
+| ------- | ------------- | ------- | ---------------------------------------------------- |
+| `+0x00` | u32           | count   | Number of records; `101` on client 3464              |
+| `+0x04` | Record[count] | records | Back to back to the end of the file; see Record      |
 
-### Record (`22 + 4 * value_count` bytes)
+### Record (variable: 22 bytes + values)
 
-| Offset       | Type   | Field              | Notes                                                    |
-| ------------ | ------ | ------------------ | -------------------------------------------------------- |
-| `+0x00`      | u32    | item_id            | The stone; the index's `data_offset` points past it      |
-| `+0x04`      | u64    | value_count        | `5` in every record                                      |
-| `+0x0C`      | u32[n] | unknown_0c         | `1,000,000` in every slot of every record (client 3464)  |
-| `+0x0C + 4n` | u32    | category           | Gear the stone takes, see below                          |
-| `+0x10 + 4n` | u32    | group              | Reform group, `1` to `48`; matches `group` of the gear records |
-| `+0x14 + 4n` | u16    | is_default_display | `1` for the 24 stones of [`itemimprovementdefaultdisplaylist.bss`](itemimprovementdefaultdisplaylist_bss.md), else `0` |
+| Offset            | Type             | Field              | Notes                                                    |
+| ----------------- | ---------------- | ------------------ | -------------------------------------------------------- |
+| `+0x00`           | u32              | item_id            | The stone; the index's `data_offset` points past it      |
+| `+0x04`           | u64              | value_count        | `5` in every record                                      |
+| `+0x0C`           | u32[value_count] | unknown_0c         | `1,000,000` in every slot of every record (client 3464)  |
+| `unknown_0c+0x00` | u32              | category           | Gear the stone takes, see below                          |
+| `unknown_0c+0x04` | u32              | group              | Reform group, `1` to `48`; matches `group` of the gear records |
+| `unknown_0c+0x08` | u16              | is_default_display | `1` for the 24 stones of [`itemimprovementdefaultdisplaylist.bss`](itemimprovementdefaultdisplaylist_bss.md), else `0` |
 
 Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 
@@ -52,12 +53,12 @@ Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 | `4`      | Blessed Soul Fragment, Exalted Soul Fragment, Crimson Behelit Alchemy Stone Appearance |
 | `5`      | Flawless Herald's Crystal                                                        |
 
-## `itemimprovementsourceoffset.dbss`
+### `itemimprovementsourceoffset.dbss`
 
-| Offset  | Type  | Field | Notes                                            |
-| ------- | ----- | ----- | ------------------------------------------------ |
-| `+0x00` | u32   | count | Equals the `itemimprovementsource.dbss` count    |
-| `+0x04` | row[] | rows  | `count` 12-byte rows; no magic, no trailer       |
+| Offset  | Type             | Field | Notes                                            |
+| ------- | ---------------- | ----- | ------------------------------------------------ |
+| `+0x00` | u32              | count | Equals the `itemimprovementsource.dbss` count    |
+| `+0x04` | Index Row[count] | rows  | No magic, no trailer; see Index Row              |
 
 ### Index Row (12 bytes)
 

@@ -8,12 +8,11 @@ record names the result and the gear it is made from, and a reform group that
 ties it to the stones of
 [`itemimprovementsource.dbss`](itemimprovementsource_dbss.md).
 
-```text
-key 4233  group 13
-  result 11698 Dawnbound Kharazad Necklace
-  input  11697 Kharazad Necklace
-  stone  820974 Cup of Destined Dawn (category 3, group 13)
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,25 +25,25 @@ Item names come from LOC type 0 and icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type     | Field   | Notes                                                       |
-| ------- | -------- | ------- | ----------------------------------------------------------- |
-| `+0x00` | u32      | count   | Number of records; `3,904` on client 3464                   |
-| `+0x04` | record[] | records | `count` records, back to back to the end of the file        |
+### File Layout
 
-## Record Structure
+| Offset  | Type           | Field   | Notes                                                       |
+| ------- | -------------- | ------- | ----------------------------------------------------------- |
+| `+0x00` | u32            | count   | Number of records; `3,904` on client 3464                   |
+| `+0x04` | Record[count]  | records | Back to back to the end of the file; see Record             |
 
-### Record (`25 + 4 * item_count` bytes)
+### Record (variable: 25 bytes + item IDs)
 
-| Offset           | Type          | Field       | Notes                                                    |
-| ---------------- | ------------- | ----------- | -------------------------------------------------------- |
-| `+0x00`          | u32           | key         | Record key, `1` to `4,949` with gaps; the index's `data_offset` points past it |
-| `+0x04`          | u64           | item_count  | `5` or `1`                                               |
-| `+0x0C`          | u32[n]        | item_ids    | `item_count` item IDs, see below                         |
-| `+0x0C + 4n`     | u8            | unknown_tail_0 | `0` in every record                                   |
-| `+0x0D + 4n`     | u8            | group       | Reform group, `1` to `37`; matches `group` of the stones |
-| `+0x0E + 4n`     | u8[11]        | unknown_tail_2 | All `0` in every record                               |
+| Offset           | Type             | Field          | Notes                                                    |
+| ---------------- | ---------------- | -------------- | -------------------------------------------------------- |
+| `+0x00`          | u32              | key            | Record key, `1` to `4,949` with gaps; the index's `data_offset` points past it |
+| `+0x04`          | u64              | item_count     | `5` or `1`                                               |
+| `+0x0C`          | u32[item_count]  | item_ids       | `item_count` item IDs, see below                         |
+| `item_ids+0x00`  | u8               | unknown_tail_0 | `0` in every record                                      |
+| `item_ids+0x01`  | u8               | group          | Reform group, `1` to `37`; matches `group` of the stones |
+| `item_ids+0x02`  | bytes[11]        | unknown_tail_2 | All `0` in every record                                  |
 
 With 5 items, `item_ids[0]` is the result and `item_ids[1]` to `[4]` the input
 gear, the same ID four times in all 3,816 such records (client 3464).
@@ -57,12 +56,12 @@ Clavis `695190` in groups 4 and 5); see Open Questions.
 An item can be the input of several records with different groups and
 results; 1,528 items are a result in one record and an input in another.
 
-## `itemimprovementoffset.dbss`
+### `itemimprovementoffset.dbss`
 
-| Offset  | Type  | Field | Notes                                      |
-| ------- | ----- | ----- | ------------------------------------------ |
-| `+0x00` | u32   | count | Equals the `itemimprovement.dbss` count    |
-| `+0x04` | row[] | rows  | `count` 12-byte rows; no magic, no trailer |
+| Offset  | Type             | Field | Notes                                      |
+| ------- | ---------------- | ----- | ------------------------------------------ |
+| `+0x00` | u32              | count | Equals the `itemimprovement.dbss` count    |
+| `+0x04` | Index Row[count] | rows  | No magic, no trailer; see Index Row        |
 
 ### Index Row (12 bytes)
 

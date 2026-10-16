@@ -7,10 +7,11 @@ row is the item ID and one byte: `20` for gear that goes to PEN, `5` for an
 accessory (PRI to PEN), `0` for an item that has an `enchant_key` but cannot
 be enhanced.
 
-```text
-item 10010 (Kzarka Longsword)  max level 20
-item 11607 (Ogre Ring)         max level 5
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,17 +21,21 @@ icons from the `ITEM_ICON` lookup index.
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A `PABR` table of fixed rows with an empty string table, read by
 `fixed_row_offsets()` in `_common/pabr_strings.py`.
 
-| Offset  | Type     | Field   | Notes                                                       |
-| ------- | -------- | ------- | ----------------------------------------------------------- |
-| `+0x00` | u8[4]    | magic   | `PABR`                                                      |
-| `+0x04` | u32      | count   | Number of rows; `30,201` on client 3464                     |
-| `+0x08` | row[]    | rows    | `count` 5-byte rows                                         |
-| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 5 * count`), `u32 0` |
+| Offset      | Type       | Field        | Notes                                                       |
+| ----------- | ---------- | ------------ | ----------------------------------------------------------- |
+| `+0x00`     | char[4]    | magic        | `PABR`                                                      |
+| `+0x04`     | u32        | count        | Number of rows; `30,201` on client 3464                     |
+| `+0x08`     | Row[count] | rows         | See Row                                                     |
+| `rows+0x00` | u32        | string_count | `0`: the empty PABR string table                            |
+| `rows+0x04` | u32        | table_start  | End of the rows (`8 + 5 * count`)                           |
+| `rows+0x08` | u32        | zero         | Always `0`                                                  |
 
 ### Row (5 bytes)
 
@@ -54,17 +59,19 @@ Values on client 3464:
 | `20`              | 4,088  |
 | `25`              | 167    |
 
-## `itemmaxleveloffset.dbss`
+### `itemmaxleveloffset.dbss`
 
 The `PABR` index layout of `skilloffset.dbss`, read by
 `parse_pabr_u32_offset_rows()` in `_common/pabr_offset.py`.
 
-| Offset  | Type     | Field   | Notes                                                       |
-| ------- | -------- | ------- | ----------------------------------------------------------- |
-| `+0x00` | u8[4]    | magic   | `PABR`                                                      |
-| `+0x04` | u32      | count   | Equals the `itemmaxlevel.dbss` count                        |
-| `+0x08` | row[]    | rows    | `count` 12-byte rows                                        |
-| end     | 12 bytes | trailer | Empty string table: `u32 0`, `u32` end of the rows (`8 + 12 * count`), `u32 0` |
+| Offset      | Type             | Field        | Notes                                                       |
+| ----------- | ---------------- | ------------ | ----------------------------------------------------------- |
+| `+0x00`     | char[4]          | magic        | `PABR`                                                      |
+| `+0x04`     | u32              | count        | Equals the `itemmaxlevel.dbss` count                        |
+| `+0x08`     | Index Row[count] | rows         | See Index Row                                               |
+| `rows+0x00` | u32              | string_count | `0`: the empty PABR string table                            |
+| `rows+0x04` | u32              | table_start  | End of the rows (`8 + 12 * count`)                          |
+| `rows+0x08` | u32              | zero         | Always `0`                                                  |
 
 ### Index Row (12 bytes)
 

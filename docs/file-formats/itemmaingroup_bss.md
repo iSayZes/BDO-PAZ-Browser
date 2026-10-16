@@ -4,11 +4,11 @@
 
 Item main groups: each group lists one or more [`itemsubgroup.dbss`](itemsubgroup_dbss.md) subgroups, each with an optional condition script. [`characterfunction.dbss`](characterfunction_dbss.md) points its shop, sell, guild shop and trade fields here, so a group is the item list an NPC window shows. The plain PABR file holds the groups, then a string table of the condition scripts.
 
-```text
-group 50503 -> subgroup 50503 -> HP Potion (Medium), HP Potion (Large), ...   Benyamin's Shop
-group 52001 -> subgroup 52001 -> 11,556 items                                   Shop (Sell) of 683 NPCs
-group 54146 -> subgroup 54001 if checkexplore(103, 1)                           Isobelle Encarotia's Trade
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,33 +20,32 @@ group 54146 -> subgroup 54001 if checkexplore(103, 1)                           
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
 
-| Offset   | Type    | Field              | Notes                                                        |
-| -------- | ------- | ------------------ | ------------------------------------------------------------ |
-| `+0x00`  | char[4] | magic              | ASCII `PABR`                                                 |
-| `+0x04`  | u32     | count              | Number of groups; `16,501` on client 3464                    |
-| `+0x08`  | group[] | groups             | Variable-size groups, back to back                           |
-| ...      | u32     | string_count       | Number of strings; `197` on client 3464                      |
-| ...      | entry[] | strings            | `u8 is_wide`, `u32 byte_length`, then the text               |
-| EOF - 8  | u32     | string_table_start | Offset of `string_count`, where the groups end               |
-| EOF - 4  | u32     | zero               | Always `0`                                                   |
+### File Layout
+
+| Offset              | Type          | Field              | Notes                                                        |
+| ------------------- | ------------- | ------------------ | ------------------------------------------------------------ |
+| `+0x00`             | char[4]       | magic              | ASCII `PABR`                                                 |
+| `+0x04`             | u32           | count              | Number of groups; `16,501` on client 3464                    |
+| `+0x08`             | Group[count]  | groups             | Variable-size groups, back to back; see Group                |
+| `groups+0x00`       | String Table  | string_table       | See String Table                                             |
+| `string_table+0x00` | u32           | string_table_start | Offset of `string_count`, where the groups end               |
+| `string_table+0x04` | u32           | zero               | Always `0`                                                   |
 
 The string table has the shape `exploration.bss` and `npcsimply.bss` use (`_common/pabr_strings.py`). Every string here is wide (UTF-16LE). Walking `count` groups ends exactly at `string_table_start`, and the string table ends exactly at the trailer.
 
-## Record Structure
+### Group (variable: 29 bytes + entries)
 
-### Group (`29 + 10 * entry_count` bytes)
-
-| Offset  | Type    | Field       | Notes                                                                      |
-| ------- | ------- | ----------- | -------------------------------------------------------------------------- |
-| `+0x00` | u32     | group_id    | Unique; `1,309` to `65,535`, not in key order                              |
-| `+0x04` | u8      | do_select_only_one | `1` when the group hands out one of its subgroups; `0` on 11,926 groups, `1` on 4,575 (client 3464) |
-| `+0x05` | u8[8]   | unknown_05  | Always zero; the 2016 `_pickCount` (i64) slot, see Field Names             |
-| `+0x0D` | i32     | refresh_start_hour | `-1`, or `0` on group 50452 only (client 3464)                      |
-| `+0x11` | u8[8]   | unknown_11  | Always zero; the 2016 `_refreshInterval` (u64) slot, see Field Names       |
-| `+0x19` | u32     | entry_count | `1` to `4`; never `0` on client 3464                                       |
-| `+0x1D` | entry[] | entries     | 10-byte entries repeated `entry_count` times                               |
+| Offset  | Type               | Field              | Notes                                                                      |
+| ------- | ------------------ | ------------------ | -------------------------------------------------------------------------- |
+| `+0x00` | u32                | group_id           | Unique; `1,309` to `65,535`, not in key order                              |
+| `+0x04` | u8                 | do_select_only_one | `1` when the group hands out one of its subgroups; `0` on 11,926 groups, `1` on 4,575 (client 3464) |
+| `+0x05` | bytes[8]           | unknown_05         | Always zero; the 2016 `_pickCount` (i64) slot, see Field Names             |
+| `+0x0D` | i32                | refresh_start_hour | `-1`, or `0` on group 50452 only (client 3464)                             |
+| `+0x11` | bytes[8]           | unknown_11         | Always zero; the 2016 `_refreshInterval` (u64) slot, see Field Names       |
+| `+0x19` | u32                | entry_count        | `1` to `4`; never `0` on client 3464                                       |
+| `+0x1D` | Entry[entry_count] | entries            | See Entry                                                                  |
 
 ### Entry (10 bytes)
 
@@ -59,6 +58,13 @@ The string table has the shape `exploration.bss` and `npcsimply.bss` use (`_comm
 On client 3464 the 16,501 groups hold 18,906 entries: 15,608 groups have one entry, 121 two, 32 three and 740 four. 15,072 of the one-entry groups list the subgroup with their own key (group 50503 lists subgroup 50503).
 
 The conditions use the script calls of `characterfunction.dbss` conditions (`getIntimacy`, `getLevel`, `clearQuest`, `checkexplore`, `isContentsGroupOpen`), joined with `;` and alternatives split by `<or>`. On client 3464, 16,422 entries have no condition, 2,140 have the text `0`, and 118 have `checkexplore(103, 1)`, node 103 being Bahar Investment Bank.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                                   |
+| ------- | ------------------ | ------------ | --------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings; `197` on client 3464 |
+| `+0x04` | pstr[string_count] | strings      | Every string here is wide (UTF-16LE)    |
 
 ## Notes
 

@@ -4,12 +4,13 @@
 
 Item subgroups: named lists of items that other tables hand out as a group. Each record is one subgroup key followed by its item entries. Worker production uses it through [`plantexchangegroup.bss`](plantexchangegroup_bss.md) (`item_subgroup_key`); NPC shops and trade managers reach theirs through [`itemmaingroup.bss`](itemmaingroup_bss.md) groups; the other subgroups belong to tables not decoded yet (drops, boxes, trade goods). `itemsubgroupoffset.dbss` is required to address the variable-length records.
 
-```text
-subgroup 42356 -> Elder Tree Timber (4611), Bloody Tree Knot (5005), Elder Tree Sap (5014)
-subgroup 40189 -> Teff (7022)
-```
-
 The record header and the item ID position match [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, "Worker-production item tables"), which leaves the rest of each 135-byte entry unmapped. Their "0-100 items" range does not hold: subgroup 52001 has 11,560 entries.
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,74 +21,70 @@ The record header and the item ID position match [iDevelopThings/bdo-data-extrac
 
 All multi-byte values are little-endian unless noted otherwise.
 
-## File Layout
+## Layout 1
 
-| Offset  | Type | Field         | Notes                                                  |
-| ------- | ---- | ------------- | ------------------------------------------------------ |
-| `+0x00` | u32  | record_count  | Number of subgroups; `16,690` on the 2026-09-27 client |
-| `+0x04` | ...  | record_stream | Variable-length records, packed back-to-back           |
+### File Layout
+
+| Offset  | Type                           | Field         | Notes                                                  |
+| ------- | ------------------------------ | ------------- | ------------------------------------------------------ |
+| `+0x00` | u32                            | record_count  | Number of subgroups; `16,690` on the 2026-09-27 client |
+| `+0x04` | Subgroup Record[record_count]  | record_stream | Variable-length records, packed back-to-back           |
 
 Sorted by `data_offset`, the offset rows cover every byte from `+0x04` to EOF with no gaps or overlaps.
 
-## Record Structure
+### Subgroup Record (variable: 18 bytes + entries)
 
-### Subgroup Record (`18 + 135 * entry_count` bytes)
-
-| Offset  | Type    | Field       | Notes                                                          |
-| ------- | ------- | ----------- | -------------------------------------------------------------- |
-| `+0x00` | u32     | subgroup_key | Equals the offset row `record_id` on every record; observed `1309`-`65535` |
-| `+0x04` | u8[10]  | unknown_04  | Always all zero                                                |
-| `+0x0E` | u32     | entry_count | Number of entries; `1`-`11,560`, never `0`; unaligned           |
-| `+0x12` | entry[] | entries     | 135-byte entries repeated `entry_count` times                  |
+| Offset  | Type                    | Field        | Notes                                                          |
+| ------- | ----------------------- | ------------ | -------------------------------------------------------------- |
+| `+0x00` | u32                     | subgroup_key | Equals the offset row `record_id` on every record; observed `1309`-`65535` |
+| `+0x04` | bytes[10]               | unknown_04   | Always all zero                                                |
+| `+0x0E` | u32                     | entry_count  | Number of entries; `1`-`11,560`, never `0`; unaligned           |
+| `+0x12` | Item Entry[entry_count] | entries      | See Item Entry                                                 |
 
 `18 + 135 * entry_count` equals the offset row `data_size` on all 16,690 records.
 
 ### Item Entry (135 bytes)
 
-97,808 entries in total. Most set only `item_key` and `select_rate`; every offset not listed is zero on every entry.
+97,808 entries in total. Most set only `item_key` and `select_rate`; every offset not named is zero on every entry.
 
-| Offset  | Type    | Field      | Notes                                                                  |
-| ------- | ------- | ---------- | ---------------------------------------------------------------------- |
-| `+0x00` | u32     | item_key   | `(enchant_level << 24) \| item_id`, the same packing as the `itemenchant.dbss` key; see below |
-| `+0x10` | u8      | unknown_10 | `1` on one entry, else `0`                                             |
-| `+0x11` | u8      | unknown_11 | `1` on the 247 entries of subgroups 54001 and 55000, else `0`          |
-| `+0x12` | i64     | min_count  | `-1` on 21,168 entries (subgroup bands 32xxx, 50xxx-52xxx, 55xxx), else `0`; see Field Names |
-| `+0x1A` | i64     | max_count  | Same as `min_count` on every entry                                     |
-| `+0x22` | i32     | intimacy_variation | `0` on 96,887 entries; negative on 921 (`-200` on 426, then `-370`, `-470`, `-50`, `-25`, `-100`, `-500`, `-300` and a few others) |
-| `+0x26` | u8      | unknown_26 | `2` or `4` on the 247 entries of subgroups 54001 and 55000, else `0`; in 55000 `4` is every packaged dried fish, `2` everything else |
-| `+0x2E` | u8      | is_apply_random_price | `1` on 794 entries, else `0`                                |
-| `+0x2F` | u8      | rent_time  | `1`, `2` or `3` on three entries, else `0`                             |
-| `+0x33` | u32     | select_rate | Selection weight; `1,000,000` on 96,952 entries; `0` on the 247 entries that set `unknown_83`; 226 below and 383 above one million (up to `9,000,000`); unaligned |
-| `+0x37` | u8      | unknown_37 | `1` on the 247 entries of subgroups 54001 and 55000, else `0`          |
-| `+0x38` | u8      | unknown_38 | Same as `unknown_37`                                                   |
-| `+0x3B` | i64     | unknown_3b | Set on the same 247 entries, e.g. `1800` for Pepper Crate; the other price-like fields are fixed shares of it |
-| `+0x43` | i64     | unknown_43 | Same entries; exactly 30%, 65%, 75%, 85% or 95% of `unknown_3b` (`1350` for Pepper Crate) |
-| `+0x4B` | i64     | unknown_4b | Same entries; exactly 130% of `unknown_3b` on all of them (`2340` for Pepper Crate) |
-| `+0x53` | i64     | unknown_53 | Same entries; its size is a fixed share of `unknown_3b` per floor group (65% floor: 6%, 75%: 6.5%, 85%: 7.5%, 95%: 5.8%; the 30% group mixes 6%-9%); the sign alternates +, - down the entries sorted by item ID |
-| `+0x5B` | u8      | unknown_5b | Same entries; exactly 1% of `unknown_3b` (`18` for `1800`)             |
-| `+0x83` | u32     | unknown_83 | Same entries; roughly inverse to `unknown_3b` (`unknown_3b x unknown_83` mostly 900-1,200 million), capped at `1,000,000` on all 119 entries with `unknown_3b = 900`; unaligned |
+| Offset  | Type      | Field      | Notes                                                                  |
+| ------- | --------- | ---------- | ---------------------------------------------------------------------- |
+| `+0x00` | u32       | item_key   | `(enchant_level << 24) \| item_id`, the same packing as the `itemenchant.dbss` key; see `item_key` Packing |
+| `+0x04` | bytes[12] | unknown_04 | Always `0`                                                             |
+| `+0x10` | u8        | unknown_10 | `1` on one entry, else `0`                                             |
+| `+0x11` | u8        | unknown_11 | `1` on the 247 entries of subgroups 54001 and 55000, else `0`          |
+| `+0x12` | i64       | min_count  | `-1` on 21,168 entries (subgroup bands 32xxx, 50xxx-52xxx, 55xxx), else `0`; see Field Names |
+| `+0x1A` | i64       | max_count  | Same as `min_count` on every entry                                     |
+| `+0x22` | i32       | intimacy_variation | `0` on 96,887 entries; negative on 921 (`-200` on 426, then `-370`, `-470`, `-50`, `-25`, `-100`, `-500`, `-300` and a few others) |
+| `+0x26` | u8        | unknown_26 | `2` or `4` on the 247 entries of subgroups 54001 and 55000, else `0`; in 55000 `4` is every packaged dried fish, `2` everything else |
+| `+0x27` | bytes[7]  | unknown_27 | Always `0`                                                             |
+| `+0x2E` | u8        | is_apply_random_price | `1` on 794 entries, else `0`                                |
+| `+0x2F` | u8        | rent_time  | `1`, `2` or `3` on three entries, else `0`                             |
+| `+0x30` | bytes[3]  | unknown_30 | Always `0`                                                             |
+| `+0x33` | u32       | select_rate | Selection weight; `1,000,000` on 96,952 entries; `0` on the 247 entries that set `unknown_83`; 226 below and 383 above one million (up to `9,000,000`); unaligned |
+| `+0x37` | u8        | unknown_37 | `1` on the 247 entries of subgroups 54001 and 55000, else `0`          |
+| `+0x38` | u8        | unknown_38 | Same as `unknown_37`                                                   |
+| `+0x39` | bytes[2]  | unknown_39 | Always `0`                                                             |
+| `+0x3B` | i64       | unknown_3b | Set on the same 247 entries, e.g. `1800` for Pepper Crate; the other price-like fields are fixed shares of it |
+| `+0x43` | i64       | unknown_43 | Same entries; exactly 30%, 65%, 75%, 85% or 95% of `unknown_3b` (`1350` for Pepper Crate) |
+| `+0x4B` | i64       | unknown_4b | Same entries; exactly 130% of `unknown_3b` on all of them (`2340` for Pepper Crate) |
+| `+0x53` | i64       | unknown_53 | Same entries; its size is a fixed share of `unknown_3b` per floor group (65% floor: 6%, 75%: 6.5%, 85%: 7.5%, 95%: 5.8%; the 30% group mixes 6%-9%); the sign alternates +, - down the entries sorted by item ID |
+| `+0x5B` | u8        | unknown_5b | Same entries; exactly 1% of `unknown_3b` (`18` for `1800`)             |
+| `+0x5C` | bytes[39] | unknown_5c | Always `0`                                                             |
+| `+0x83` | u32       | unknown_83 | Same entries; roughly inverse to `unknown_3b` (`unknown_3b x unknown_83` mostly 900-1,200 million), capped at `1,000,000` on all 119 entries with `unknown_3b = 900`; unaligned |
 
-### `item_key` Packing
-
-```text
-item_id = item_key & 0xFFFFFF
-enchant_level = item_key >> 24
-```
-
-`enchant_level` is `0` on 95,166 entries and `1`-`20` on the other 2,642: the entry hands out the item at that enhancement level. All 2,642 non-zero keys exist as `itemenchant.dbss` keys, and the levels fit the items: Manos Necklace at `1`-`5` (PRI to PEN), Kzarka Longsword at `15`, Blackstar Helmet at `19` (TET), Dim Tree Spirit's Armor at `20` (PEN).
-
-## `itemsubgroupoffset.dbss`
+### `itemsubgroupoffset.dbss`
 
 Standard PABR offset companion with 10-byte rows, read by `parse_pabr_offset_rows` (`handlers/_common/pabr_offset.py`).
 
-| Offset             | Type    | Field        | Notes                                  |
-| ------------------ | ------- | ------------ | -------------------------------------- |
-| `+0x00`            | char[4] | magic        | ASCII `PABR`                           |
-| `+0x04`            | u32     | record_count | Equals `itemsubgroup.dbss` `record_count` |
-| `+0x08`            | row[]   | rows         | 10-byte rows repeated `record_count` times |
-| EOF - 12           | u32     | unknown_trailer_00 | Always `0`                             |
-| EOF - 8            | u32     | end_of_rows  | Equals `8 + count * 10` (`166,908`)    |
-| EOF - 4            | u32     | unknown_trailer_08 | Always `0`                             |
+| Offset      | Type                     | Field              | Notes                                      |
+| ----------- | ------------------------ | ------------------ | ------------------------------------------ |
+| `+0x00`     | char[4]                  | magic              | ASCII `PABR`                               |
+| `+0x04`     | u32                      | record_count       | Equals `itemsubgroup.dbss` `record_count`  |
+| `+0x08`     | Offset Row[record_count] | rows               | See Offset Row                             |
+| `rows+0x00` | u32                      | unknown_trailer_00 | Always `0`                                 |
+| `rows+0x04` | u32                      | end_of_rows        | Equals `8 + count * 10` (`166,908`)        |
+| `rows+0x08` | u32                      | unknown_trailer_08 | Always `0`                                 |
 
 The 12-byte trailer is the same shape as the `itemenchantoffset.dbss` one.
 
@@ -100,6 +97,15 @@ The 12-byte trailer is the same shape as the `itemenchantoffset.dbss` one.
 | `+0x06` | u32  | data_size   | Record byte count, `18 + 135 * entry_count`         |
 
 Subgroup keys are u16 in the index, so no key above `65535` exists.
+
+## `item_key` Packing
+
+```text
+item_id = item_key & 0xFFFFFF
+enchant_level = item_key >> 24
+```
+
+`enchant_level` is `0` on 95,166 entries and `1`-`20` on the other 2,642: the entry hands out the item at that enhancement level. All 2,642 non-zero keys exist as `itemenchant.dbss` keys, and the levels fit the items: Manos Necklace at `1`-`5` (PRI to PEN), Kzarka Longsword at `15`, Blackstar Helmet at `19` (TET), Dim Tree Spirit's Armor at `20` (PEN).
 
 ## Notes
 

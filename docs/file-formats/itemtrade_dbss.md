@@ -6,11 +6,11 @@ The character keys of the NPCs that buy trade goods: trade managers, node
 managers with a trade counter and a few quest-area traders. A row is the u16
 character key and nothing else.
 
-```text
-40010  Bahar               <Trade Manager>
-40026  Severo Loggia       <Node Management>
-47747  Isobelle Encarotia  <Acher Trade Manager>
-```
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -20,15 +20,17 @@ None. The handler reads the keys in file order and does not need
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A bare table: no `PABR` magic and no string table. The file is exactly
 `4 + 2 * count` bytes.
 
-| Offset  | Type  | Field | Notes                                        |
-| ------- | ----- | ----- | -------------------------------------------- |
-| `+0x00` | u32   | count | Number of keys; `126` on client 3464         |
-| `+0x04` | u16[] | keys  | `count` character keys, unique, not sorted   |
+| Offset  | Type       | Field | Notes                                        |
+| ------- | ---------- | ----- | -------------------------------------------- |
+| `+0x00` | u32        | count | Number of keys; `126` on client 3464         |
+| `+0x04` | Row[count] | keys  | Character keys, unique, not sorted; see Row  |
 
 ### Row (2 bytes)
 
@@ -36,15 +38,15 @@ A bare table: no `PABR` magic and no string table. The file is exactly
 | ------- | ---- | ------------ | ------------------------------------------ |
 | `+0x00` | u16  | character_id | Character key, LOC type `6`                |
 
-## `itemtradeoffset.dbss`
+### `itemtradeoffset.dbss`
 
 The bare u16 index layout of `petexpoffset.dbss`, read by
 `parse_bare_offset_rows()` in `_common/pabr_offset.py`.
 
-| Offset  | Type  | Field | Notes                                 |
-| ------- | ----- | ----- | ------------------------------------- |
-| `+0x00` | u32   | count | Equals the `itemtrade.dbss` count     |
-| `+0x04` | row[] | rows  | `count` 10-byte rows, no trailer      |
+| Offset  | Type             | Field | Notes                                 |
+| ------- | ---------------- | ----- | ------------------------------------- |
+| `+0x00` | u32              | count | Equals the `itemtrade.dbss` count     |
+| `+0x04` | Index Row[count] | rows  | No trailer; see Index Row             |
 
 ### Index Row (10 bytes)
 

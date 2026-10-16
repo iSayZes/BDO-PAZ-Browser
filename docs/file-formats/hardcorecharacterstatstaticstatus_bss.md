@@ -8,12 +8,11 @@ Hardcore server (`ToClient_isHardCoreCharacter` in the client Lua), which LOC
 type 37 says needs a level 60+ character on a normal server. On client 3464
 every row equals the `experience.bss` level 60 body: AP `+1` and DP `+1`.
 
-Example:
+## Versions
 
-```text
-class 0 Warrior: AP 1, DP 1
-class 25 Kunoichi: AP 1, DP 1
-```
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+<!-- versions:end -->
 
 ## Companion Files
 
@@ -26,23 +25,23 @@ LOC lookup:
 
 All multi-byte values are little-endian.
 
-## File Layout
+## Layout 1
+
+### File Layout
 
 A PABR file with no row count after the magic: the rows start at `+0x04`
 and fill the space up to the string table.
 
-| Offset  | Type    | Field        | Notes                                                            |
-| ------- | ------- | ------------ | ---------------------------------------------------------------- |
-| `+0x00` | char[4] | magic        | ASCII `PABR`                                                     |
-| `+0x04` | row[]   | rows         | 201-byte rows, 47 (class types 0 to 46) on client 3464           |
-| after   | table   | string_table | u32 count, then `count` x (u8 is_wide, u32 byte length, payload) |
-| EOF - 8 | u32     | table_start  | Offset of the string table, where the rows end                   |
-| EOF - 4 | u32     | zero         | Always 0                                                         |
+| Offset              | Type               | Field        | Notes                                                  |
+| ------------------- | ------------------ | ------------ | ------------------------------------------------------ |
+| `+0x00`             | char[4]            | magic        | ASCII `PABR`                                           |
+| `+0x04`             | Row[..table_start] | rows         | 47 rows (class types 0 to 46) on client 3464; see Row  |
+| `rows+0x00`         | String Table       | string_table | See String Table                                       |
+| `EOF-0x08`          | u32                | table_start  | Offset of the string table, where the rows end         |
+| `EOF-0x04`          | u32                | zero         | Always 0                                               |
 
 On client 3464 the 47 rows end at `0x24EB`, the stored `table_start`. The
 string table holds one wide string, `1D1`, as in `experience.bss`.
-
-## Record Structure
 
 ### Row (201 bytes)
 
@@ -51,12 +50,46 @@ Fields are unaligned.
 | Offset  | Type      | Field      | Notes                                                        |
 | ------- | --------- | ---------- | ------------------------------------------------------------ |
 | `+0x00` | u8        | class_type | Equals the row index; the class type `getClassType()` returns |
-| `+0x01` | stat body | stats      | The [experience.bss](experience_bss.md) Stat Body            |
+| `+0x01` | Stat Body | stats      | The [experience.bss](experience_bss.md) Stat Body            |
 
 The body fields (`max_hp`, `max_mp`, the luck and speed limits, the
 `unknown_*` fields, `ap_bonus` and `dp_bonus`) keep the names and the body-relative offsets of the
 `experience.bss` Stat Body table; `max_hp` and `max_mp` hold the `1.0` and `1`
 placeholders here too.
+
+### Stat Body (200 bytes)
+
+The [experience.bss](experience_bss.md) Stat Body, read by
+`_bss/experience/stat_body.py`. Offsets are from the start of the body, `+0x01`
+in a row.
+
+| Offset  | Type      | Field               | Notes                                     |
+| ------- | --------- | ------------------- | ----------------------------------------- |
+| `+0x00` | bytes[4]  | unknown_00          | Always `0` (client 3464)                  |
+| `+0x04` | f32       | max_hp              | `1.0` placeholder                         |
+| `+0x08` | u32       | max_mp              | `1` placeholder                           |
+| `+0x0C` | bytes[20] | unknown_0c          | Always `0` (client 3464)                  |
+| `+0x20` | f32       | unknown_20          | `1.0` on every row (client 3464)          |
+| `+0x24` | bytes[20] | unknown_24          | Always `0` (client 3464)                  |
+| `+0x38` | u32       | max_critical_rate   | `0` on every row (client 3464)            |
+| `+0x3C` | u32       | max_drop_item_luck  | `5` on every row (client 3464)            |
+| `+0x40` | u32       | max_fishing_luck    | `5` on every row (client 3464)            |
+| `+0x44` | u32       | max_collection_luck | `5` on every row (client 3464)            |
+| `+0x48` | bytes[8]  | unknown_48          | Always `0` (client 3464)                  |
+| `+0x50` | f32       | unknown_50          | `1.0` on every row (client 3464)          |
+| `+0x54` | bytes[16] | unknown_54          | Always `0` (client 3464)                  |
+| `+0x64` | u32[3]    | max_varied_speed    | Attack, movement and casting speed limits; `5, 5, 5` on every row (client 3464) |
+| `+0x70` | f32       | unknown_70          | `1.0` on every row (client 3464)          |
+| `+0x74` | f32       | ap_bonus            | AP `+1` on every row (client 3464)        |
+| `+0x78` | f32       | dp_bonus            | DP `+1` on every row (client 3464)        |
+| `+0x7C` | bytes[76] | unknown_7c          | Always `0` (client 3464)                  |
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                                  |
+| ------- | ------------------ | ------------ | -------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings                      |
+| `+0x04` | pstr[string_count] | strings      | Shared PABR entries                    |
 
 ## Notes
 

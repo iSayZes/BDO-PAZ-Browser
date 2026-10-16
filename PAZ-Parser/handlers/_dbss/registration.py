@@ -114,11 +114,14 @@ from .skillpiece.handler import SkillPieceHandler, skill_piece_offset_handler
 from .itemmaxlevel.handler import ItemMaxLevelHandler, item_max_level_offset_handler
 from .itemtrade.handler import ItemTradeHandler, item_trade_offset_handler
 from .alchemycharge.handler import AlchemyChargeHandler, alchemy_charge_offset_handler
-from .maincategory.handler import MainCategoryHandler, main_category_offset_handler
-from .itemtradegrouptonpc.handler import (
-    ItemTradeGroupToNpcHandler,
-    item_trade_group_to_npc_offset_handler,
+from .itemtradegrouptonpc.handler import ItemTradeGroupHandler, item_trade_group_offset_handler
+from .itemtradegroupfromnpc.parser import parse_itemtradegroupfromnpc_records
+from .growthpasspointshop.handler import GrowthPassPointShopHandler, growth_pass_point_shop_offset_handler
+from .instancedungeonskillstatic.handler import (
+    InstanceDungeonSkillStaticHandler,
+    instance_dungeon_skill_static_offset_handler,
 )
+from .maincategory.handler import MainCategoryHandler, main_category_offset_handler
 from .alchemyupgrade.handler import AlchemyUpgradeHandler, alchemy_upgrade_offset_handler
 from .alchemystonechange.handler import AlchemyStoneChangeHandler, alchemy_stone_change_offset_handler
 from .waititem.handler import WaitItemHandler, wait_item_offset_handler
@@ -163,8 +166,11 @@ def register_dbss_handlers() -> None:
     register_handler("itemtrade.dbss", ItemTradeHandler())
     register_handler("alchemychargeoffset.dbss", alchemy_charge_offset_handler())
     register_handler("alchemycharge.dbss", AlchemyChargeHandler())
-    register_handler("itemtradegrouptonpcoffset.dbss", item_trade_group_to_npc_offset_handler())
-    register_handler("itemtradegrouptonpc.dbss", ItemTradeGroupToNpcHandler())
+    # itemtradegroupfromnpc.dbss holds the same columns in the client 1784 entry shape.
+    for name in ("itemtradegrouptonpcoffset.dbss", "itemtradegroupfromnpcoffset.dbss"):
+        register_handler(name, item_trade_group_offset_handler())
+    register_handler("itemtradegrouptonpc.dbss", ItemTradeGroupHandler())
+    register_handler("itemtradegroupfromnpc.dbss", ItemTradeGroupHandler(parse_itemtradegroupfromnpc_records))
     register_handler("alchemyupgradeoffset.dbss", alchemy_upgrade_offset_handler())
     register_handler("alchemyupgrade.dbss", AlchemyUpgradeHandler())
     register_handler("alchemystonechangeoffset.dbss", alchemy_stone_change_offset_handler())
@@ -205,6 +211,10 @@ def register_dbss_handlers() -> None:
     register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())
     register_handler("growthpasscategoryoffset.dbss", growth_pass_category_offset_handler())
     register_handler("growthpasscategory.dbss", GrowthPassCategoryHandler())
+    register_handler("growthpasspointshopoffset.dbss", growth_pass_point_shop_offset_handler())
+    register_handler("growthpasspointshop.dbss", GrowthPassPointShopHandler())
+    register_handler("instancedungeonskillstaticoffset.dbss", instance_dungeon_skill_static_offset_handler())
+    register_handler("instancedungeonskillstatic.dbss", InstanceDungeonSkillStaticHandler())
     register_handler("maincategoryoffset.dbss", main_category_offset_handler())
     register_handler("maincategory.dbss", MainCategoryHandler())
     register_handler("itemsubgroupoffset.dbss", item_subgroup_offset_handler())

@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "key": "Schlüssel",
+    "keyDup": "Schlüssel-Kopie"
+  },
+  "meta": {
+    "count": "{count} Growth-Pass-Punkteshop-Einträge"
+  }
+}

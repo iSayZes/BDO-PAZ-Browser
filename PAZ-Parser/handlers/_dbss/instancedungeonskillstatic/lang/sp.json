@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "key": "Clave"
+  },
+  "meta": {
+    "count": "{count} entradas de habilidad"
+  }
+}

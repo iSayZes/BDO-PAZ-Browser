@@ -32,8 +32,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 ## Companion Files
 
 None. `growthpasspointshopoffset.dbss` is the offset file of this table; the
-PAZ Browser previews both with `EmptyTableHandler` (see
-[empty](empty_dbss.md)), which shows the count of `0`.
+PAZ Browser reads both with the Layout 1 records, so client 3473 shows an
+empty table and client 1784 its 15 records.
 
 All multi-byte values are little-endian.
 
@@ -95,9 +95,8 @@ On client 1784 the table holds 15 records, each with an index row in
 ### Current Record Layout
 
 Client 3473 ships no records, so whether a filled table would still read
-as the client 1784 Point Shop Record is unknown. A client that ships
-`count > 0` needs its own handler; until then `EmptyTableHandler` raises an
-error on a count that is not `0`.
+as the client 1784 Point Shop Record is unknown. The handler reads
+a filled table as Layout 1 and raises an error when the bytes do not fit it.
 
 ### What the Point Shop Record Fields Hold
 

@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "key": "Clave",
+    "keyDup": "Copia de la clave"
+  },
+  "meta": {
+    "count": "{count} entradas de la tienda de puntos del Growth Pass"
+  }
+}

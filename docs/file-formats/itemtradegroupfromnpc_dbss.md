@@ -33,8 +33,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 ## Companion Files
 
 None. `itemtradegroupfromnpcoffset.dbss` is the offset file of this table;
-the PAZ Browser previews both with `EmptyTableHandler` (see
-[empty](empty_dbss.md)), which shows the count of `0`.
+the PAZ Browser reads both with the Layout 1 groups and the
+`itemtradegrouptonpc.dbss` columns, so client 3473 shows an empty table and
+client 1784 its 459 item entries.
 
 All multi-byte values are little-endian.
 
@@ -111,6 +112,5 @@ of item entries that open with a counted condition string.
 
 Client 3473 ships no records, so whether a filled table would read as
 the client 1784 groups or as the 127-byte Item Entry of
-`itemtradegrouptonpc.dbss` Layout 2 is unknown. A client that ships
-`count > 0` needs its own handler; until then `EmptyTableHandler` raises an
-error on a count that is not `0`.
+`itemtradegrouptonpc.dbss` Layout 2 is unknown. The handler reads
+a filled table as Layout 1 and raises an error when the bytes do not fit it.

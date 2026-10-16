@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "key": "Schlüssel"
+  },
+  "meta": {
+    "count": "{count} Talent-Einträge"
+  }
+}

@@ -103,7 +103,7 @@ be inferred because the files hold no records.
 - `worldquest.dbss` had the same 4 bytes before the 2026-09-27 client update.
 - `growthpasspointshop.dbss`, `instancedungeonskillstatic.dbss` and
   `itemtradegroupfromnpc.dbss` are a count of `0` on client 3473 but hold
-  records on client 1784, so each has a doc of its own:
+  records on client 1784, so each has a doc and a handler of its own:
   [growthpasspointshop](growthpasspointshop_dbss.md),
   [instancedungeonskillstatic](instancedungeonskillstatic_dbss.md) and
   [itemtradegroupfromnpc](itemtradegroupfromnpc_dbss.md).

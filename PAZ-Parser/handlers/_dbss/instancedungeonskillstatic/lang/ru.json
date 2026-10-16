@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "columns": {
+    "key": "Ключ"
+  },
+  "meta": {
+    "count": "Записей навыков: {count}"
+  }
+}

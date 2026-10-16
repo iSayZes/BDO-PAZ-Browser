@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "키",
+    "territoryKey": "영지 키",
+    "name": "이름",
+    "icon": "아이콘"
+  },
+  "meta": {
+    "count": "지역 탭 {count}개"
+  }
+}

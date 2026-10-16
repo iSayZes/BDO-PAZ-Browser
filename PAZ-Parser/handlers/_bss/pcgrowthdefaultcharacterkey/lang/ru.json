@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "Ключ персонажа",
+    "name": "Имя"
+  },
+  "meta": {
+    "count": "Ключей персонажа: {count}"
+  }
+}

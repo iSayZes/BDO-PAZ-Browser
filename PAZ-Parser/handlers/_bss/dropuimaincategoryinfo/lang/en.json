@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Key",
+    "territoryKey": "Territory Key",
+    "name": "Name",
+    "icon": "Icon"
+  },
+  "meta": {
+    "count": "{count} region tabs"
+  }
+}

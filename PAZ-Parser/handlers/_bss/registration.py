@@ -9,6 +9,8 @@ from .buffsimply.handler import BuffSimplyBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
+from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
+from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
 from .employeeexp.handler import EmployeeExpBssHandler
@@ -43,6 +45,7 @@ from .menu.handler import MenuBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
+from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
@@ -91,6 +94,8 @@ def register_bss_handlers() -> None:
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),
     )
+    register_handler("dropuimaincategoryinfo.bss", DropUiMainCategoryInfoBssHandler())
+    register_handler("dropuisubcategoryinfo.bss", DropUiSubCategoryInfoBssHandler())
     register_handler("dropuitaginfo.bss", DropUiTagInfoBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
@@ -134,6 +139,7 @@ def register_bss_handlers() -> None:
     register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
+    register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())

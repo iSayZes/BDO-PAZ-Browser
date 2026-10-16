@@ -2,7 +2,7 @@
 
 ## Purpose
 
-An 18-byte PABR file holding one u16 character key, `47` on client 3464. It sits next to [pcgrowth](pcgrowth_dbss.md) and [pcgrowthsimply](pcgrowthsimply_bss.md). No browser handler reads it.
+An 18-byte PABR file holding one u16 character key, `47` on client 3464. It sits next to [pcgrowth](pcgrowth_dbss.md) and [pcgrowthsimply](pcgrowthsimply_bss.md).
 
 ## Versions
 
@@ -50,9 +50,4 @@ The string table starts at `+0x06`, so the rows end after the single u16.
 ## Notes
 
 - `47` is the character key of class type 46 (`PYFW5`, LOC type 6 `PYFW5`) in `pcgrowth.dbss`, and also the row count of `pcgrowth.dbss`, `pcgrowthoffset.dbss` and `pcgrowthsimply.bss`.
-
-## Open Questions
-
-### Character Key or Class Count
-
-The stored `47` is both the character key of the last class slot and the class count. A client where the class count changes would show which one the file tracks.
+- On client 1784 the file holds `65050`, a key of that client's `characterstaticoffset.dbss`, while its `pcgrowthoffset.dbss` declares 82 rows. The value is a character key on both clients; the match with the class count on client 3464 does not hold on client 1784.

@@ -12,7 +12,7 @@ from _common.loc import loc_tagged
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pa_text import pa_cell, pa_fields
 from _common.pabr_offset import parse_bare_u32_offset_rows
-from _common.texture_string import TEXTURE_STRING_COMBINE, TEXTURE_STRING_COMBINE_PATH, parse_texture_regions
+from _common.texture_string import TEXTURE_STRING_COMBINE, TEXTURE_STRING_COMBINE_PATH, icon_fields, parse_texture_regions
 from .parser import parse_growthpasscategory_records
 
 
@@ -68,15 +68,13 @@ class GrowthPassCategoryHandler(PreviewHandler):
         )
         records: list[dict] = []
         for category in categories:
-            icon = textures.get(category.icon_texture)
             name = loc_tagged(_NAME_LOC_TYPE, category.category_key) or category.name_kr
             records.append({
                 "category_key": category.category_key,
                 "name_kr": category.name_kr,
                 **pa_fields("name", name),
                 "icon_texture": category.icon_texture,
-                "icon_path": icon.path if icon else "",
-                "icon_region": list(icon.region) if icon else None,
+                **icon_fields(textures, category.icon_texture),
                 "quest_chain_id": category.quest_chain_id,
             })
         return records

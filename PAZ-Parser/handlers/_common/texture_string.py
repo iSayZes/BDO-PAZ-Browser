@@ -63,3 +63,12 @@ def parse_texture_regions(xml: bytes | None, keys: Iterable[str]) -> dict[str, T
         if region is not None and path:
             regions[key_match.group(1)] = TextureRegion(path, region)
     return regions
+
+
+def icon_fields(regions: dict[str, TextureRegion], key: str) -> dict:
+    """`icon_path` and `icon_region` of a texture key for `sprite_icon_cell`; empty when unresolved."""
+    region = regions.get(key)
+    return {
+        "icon_path": region.path if region else "",
+        "icon_region": list(region.region) if region else None,
+    }

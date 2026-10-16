@@ -114,6 +114,7 @@ from .skillpiece.handler import SkillPieceHandler, skill_piece_offset_handler
 from .itemmaxlevel.handler import ItemMaxLevelHandler, item_max_level_offset_handler
 from .itemtrade.handler import ItemTradeHandler, item_trade_offset_handler
 from .alchemycharge.handler import AlchemyChargeHandler, alchemy_charge_offset_handler
+from .maincategory.handler import MainCategoryHandler, main_category_offset_handler
 from .itemtradegrouptonpc.handler import (
     ItemTradeGroupToNpcHandler,
     item_trade_group_to_npc_offset_handler,
@@ -204,6 +205,8 @@ def register_dbss_handlers() -> None:
     register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())
     register_handler("growthpasscategoryoffset.dbss", growth_pass_category_offset_handler())
     register_handler("growthpasscategory.dbss", GrowthPassCategoryHandler())
+    register_handler("maincategoryoffset.dbss", main_category_offset_handler())
+    register_handler("maincategory.dbss", MainCategoryHandler())
     register_handler("itemsubgroupoffset.dbss", item_subgroup_offset_handler())
     register_handler("itemsubgroup.dbss", ItemSubgroupHandler())
     register_handler("journalquestoffset.dbss", journal_quest_offset_handler())

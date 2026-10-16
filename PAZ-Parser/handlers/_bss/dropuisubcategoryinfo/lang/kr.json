@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "key": "키",
+    "name": "이름",
+    "icon": "아이콘"
+  },
+  "meta": {
+    "count": "필터 카테고리 {count}개"
+  }
+}

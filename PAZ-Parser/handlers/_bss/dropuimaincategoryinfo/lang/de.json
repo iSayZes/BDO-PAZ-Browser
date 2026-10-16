@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "territoryKey": "Territorium-Schlüssel",
+    "name": "Name",
+    "icon": "Symbol"
+  },
+  "meta": {
+    "count": "{count} Regionsreiter"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "categoryId": "Kategorie-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "categoryId": "Kategorie-ID",
+    "icon": "Symbol"
+  },
+  "meta": {
+    "count": "{count} Perlenladen-Kategorien"
+  }
+}

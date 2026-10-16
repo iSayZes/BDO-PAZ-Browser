@@ -1581,8 +1581,13 @@ A table that stores a UI texture key (`Combine_Etc_WorldMap_BossList_Begg`)
 instead of a path gets the sheet and region from
 `parse_texture_regions(xml, keys)` in `_common/texture_string.py`, which reads
 the `<Texture ID UV Path>` entries of a `ui_texture/texturestringkey/*.xml`
-companion; `bossinfostaicstatusmanager.bss` and `growthpasscategory.dbss` read
-`texturestring_combine.xml`.
+companion; `icon_fields(regions, key)` turns one key into the `icon_path` and
+`icon_region` record fields that `sprite_icon_cell()` draws.
+`bossinfostaicstatusmanager.bss`, `dropuimaincategoryinfo.bss`,
+`dropuisubcategoryinfo.bss` and `growthpasscategory.dbss` read
+`texturestring_combine.xml`. A button key can lack its state: the drop window
+adds `_Normal`, `_Over` or `_Click` to the `dropuimaincategoryinfo.bss` key,
+so its handler looks up `<key>_Normal`.
 
 ### Icon Popup
 

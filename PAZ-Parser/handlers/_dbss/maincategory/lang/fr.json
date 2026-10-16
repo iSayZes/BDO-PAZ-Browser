@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "categoryId": "ID de catégorie",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "columns": {
+    "categoryId": "ID de catégorie",
+    "icon": "Icône"
+  },
+  "meta": {
+    "count": "{count} catégories de la Boutique de perles"
+  }
+}

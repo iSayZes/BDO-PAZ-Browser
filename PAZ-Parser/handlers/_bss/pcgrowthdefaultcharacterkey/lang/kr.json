@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 키",
+    "name": "이름"
+  },
+  "meta": {
+    "count": "캐릭터 키 {count}개"
+  }
+}

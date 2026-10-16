@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "Clé de personnage",
+    "name": "Nom"
+  },
+  "meta": {
+    "count": "{count} clé de personnage"
+  }
+}

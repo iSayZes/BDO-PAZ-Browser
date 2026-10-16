@@ -20,7 +20,7 @@ from tests.framework import (
 from tests.runner import load_case
 
 from _bss.dropuihuntinggroundinfo import tribe_labels
-from _bss.dropuihuntinggroundinfo.parser import parse_territory_keys
+from _bss.dropuimaincategoryinfo.parser import parse_territory_keys
 from _bss.dropuihuntinggroundinfo.tribe_labels import TRIBE_LABELS, tribe_label, tribe_text
 from _bss.stringtable.parser import GAME_SHEET, parse_key_hashes
 from _common.html import e

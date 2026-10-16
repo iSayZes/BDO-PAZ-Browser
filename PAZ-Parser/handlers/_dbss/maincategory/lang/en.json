@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "categoryId": "Category ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "categoryId": "Category ID",
+    "icon": "Icon"
+  },
+  "meta": {
+    "count": "{count} Pearl Shop categories"
+  }
+}

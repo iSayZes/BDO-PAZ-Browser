@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Clave",
+    "territoryKey": "Clave de territorio",
+    "name": "Nombre",
+    "icon": "Icono"
+  },
+  "meta": {
+    "count": "{count} pestañas de región"
+  }
+}

@@ -16,6 +16,7 @@ from _common.texture_string import (
     TEXTURE_STRING_COMBINE,
     TEXTURE_STRING_COMBINE_PATH,
     TextureRegion,
+    icon_fields,
     parse_texture_regions,
 )
 from .parser import FILE_NAME, parse_bossinfo_records
@@ -44,7 +45,6 @@ def _spawn_count(spawn_times: list[dict]) -> int | None:
 
 def _display_fields(record: dict, hashes: KeyHashes, textures: dict[str, TextureRegion]) -> dict:
     reinforced_id = record["reinforced_character_id"]
-    icon = textures.get(record["list_texture"])
     return {
         "name": character_name(record["character_id"]),
         "tab": _tab_name(hashes, record["boss_info_type"]),
@@ -53,8 +53,7 @@ def _display_fields(record: dict, hashes: KeyHashes, textures: dict[str, Texture
         "reward_names": [item_key_text(item_id) for item_id in record["reward_items"]],
         "spawn_count": _spawn_count(record["spawn_times"]),
         "position": f"{record['x']:,.0f}, {record['y']:,.0f}, {record['z']:,.0f}",
-        "icon_path": icon.path if icon else "",
-        "icon_region": list(icon.region) if icon else None,
+        **icon_fields(textures, record["list_texture"]),
     }
 
 

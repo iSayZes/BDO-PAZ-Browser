@@ -44,13 +44,13 @@ class Clause:
 
 @dataclass(frozen=True)
 class Condition:
-    """One clause, or several joined by `or`: the field is present when any of them holds."""
+    """Clauses joined by `and` into groups, groups joined by `or`: present when every clause of any group holds."""
 
-    clauses: tuple[Clause, ...]
+    groups: tuple[tuple[Clause, ...], ...]
 
     @property
     def fields(self) -> tuple[str, ...]:
-        return tuple(clause.field for clause in self.clauses)
+        return tuple(clause.field for group in self.groups for clause in group)
 
 
 @dataclass(frozen=True)
@@ -73,10 +73,12 @@ def parse_type(text: str) -> TypeSpec | str:
     condition = None
     match = _CONDITION.match(text)
     if match:
-        clauses = [_CLAUSE.match(part) for part in match.group("clauses").split(" or ")]
-        if not all(clauses):
-            return f"`{match.group('clauses')}` is not `field = value`, `!=`, `^=` or `!^=`, joined by `or`"
-        condition = Condition(tuple(Clause(c.group("field"), c.group("op"), c.group("value")) for c in clauses if c))
+        groups = [[_CLAUSE.match(part) for part in group.split(" and ")] for group in match.group("clauses").split(" or ")]
+        if not all(clause for group in groups for clause in group):
+            return f"`{match.group('clauses')}` is not `field = value`, `!=`, `^=` or `!^=`, joined by `and` and `or`"
+        condition = Condition(tuple(
+            tuple(Clause(c.group("field"), c.group("op"), c.group("value")) for c in group if c) for group in groups
+        ))
         text = match.group("base")
     base = _BASE.match(text)
     if not base:

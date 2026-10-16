@@ -105,7 +105,7 @@ layout tables and the check leaves them alone.
 | `bytes[scan]`                       | Bytes whose end only a scan finds, in a structure with no size from outside; named `unknown_*`, the scan in Notes, later rows count from it | what the scan finds |
 | `T if field = V`, `T if field != V` | Present only when the condition holds; `size` names the structure's size from its offset file | T's size, or 0 |
 | `T if field ^= V`, `T if field !^= V` | Present only when the string `field` starts (or does not start) with `V` | T's size, or 0 |
-| `T if a ^= V or b = ""`             | Clauses joined by `or`: present when any of them holds; `""` is the empty string | T's size, or 0 |
+| `T if a ^= V or b = ""`, `T if a !^= V and b != ""` | Clauses joined by `and` and `or`, `and` first: present when every clause of any `or` group holds; `""` is the empty string | T's size, or 0 |
 
 A count field named in `[field]` or `if field` is an earlier field of the
 same structure. In a top-level table, `[..field]` may also name a later

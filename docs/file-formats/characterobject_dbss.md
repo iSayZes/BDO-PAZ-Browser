@@ -10,12 +10,12 @@ Per-character world-object records for placeable objects: house furniture and cr
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes     | Records                                                                                                                                                                                                              | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `characterobject.dbss`       | 8,182,196 | 28,202 Face, 2,321 Hull, 1,079 Hull Layer, 295 Structure Suffix, 1,160 Structure Body, 5,129 Record, 3,969 Furniture Block, 3,969 Furniture Tail, 3,969 Furniture Body, 865 House Tail                               | 140       |
-| 2      | 3473 and later | 3473    | `characterobjectoffset.dbss` | 51,310    | 5,129 Index Row                                                                                                                                                                                                      | 10        |
-| 1      | 1784           | 1784    | `characterobject.dbss`       | 6,323,392 | 2,566 Furniture Block, 2,566 Furniture Tail, 2,566 Furniture Body, 3,523 Record, 25,262 Face, 2,078 Hull, 985 Hull Layer, 149 Structure Suffix, 955 Hull Body, 957 Structure Body, 808 House Tail, 2 Bare House Body | 140       |
-| 1      | 1784           | 1784    | `characterobjectoffset.dbss` | 35,250    | 3,523 Index Row                                                                                                                                                                                                      | 10        |
+| Layout | Clients        | Checked | File                         | Bytes     | Records                                                                                                                                                                                | Row bytes |
+| ------ | -------------- | ------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `characterobject.dbss`       | 8,182,196 | 28,202 Face, 2,321 Hull, 1,079 Hull Layer, 295 Structure Suffix, 1,160 Structure Body, 5,129 Record, 3,969 Furniture Block, 3,969 Furniture Tail, 3,969 Furniture Body, 865 House Tail | 140       |
+| 2      | 3473 and later | 3473    | `characterobjectoffset.dbss` | 51,310    | 5,129 Index Row                                                                                                                                                                        | 10        |
+| 1      | 1784           | 1784    | `characterobject.dbss`       | 6,323,392 | 2,566 Furniture Block, 2,566 Furniture Tail, 2,566 Furniture Body, 3,523 Record, 25,262 Face, 2,078 Hull, 985 Hull Layer, 149 Structure Suffix, 957 Structure Body, 808 House Tail     | 140       |
+| 1      | 1784           | 1784    | `characterobjectoffset.dbss` | 35,250    | 3,523 Index Row                                                                                                                                                                        | 10        |
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
@@ -272,8 +272,7 @@ On client 1784 the Furniture Block was 50 bytes shorter: `unknown_092` 4
 bytes, `unknown_0be` 40 and `unknown_15f` 2, and the two recipe keys were
 u16. In the Structure Body `unknown_block` was 285 bytes and
 `unknown_after_material_path` 14. Two kind-5 records (3821 and 3822) have an
-empty `hull_model_path` and `hull_name` and still end in a House Tail, so
-this layout splits the Structure Body on `hull_model_path`. Field names keep
+empty `hull_model_path` and `hull_name` and still end in a House Tail. Field names keep
 Layout 2's offsets, so `installation_type` sits at `+0x109` here. The parser
 reads only Layout 2.
 
@@ -329,47 +328,26 @@ Which of the constant bytes inside `unknown_092` and `unknown_0be` the
 newer client added cannot be told from the data; the varying fields on both
 sides of each run line up in all 2,542 shared kind-2 records.
 
-### Structure Body (variable: 8 bytes + paths, hulls and tail)
+### Structure Body (variable: 340 bytes + paths, hulls and tail)
 
-| Offset                 | Type                                     | Field     | Notes |
-| ---------------------- | ---------------------------------------- | --------- | ----- |
-| `+0x00`                | str8                                     | hull_model_path |  |
-| `hull_model_path+0x00` | Hull Body if hull_model_path != ""       | hull_body | Every record with a hull model path |
-| `hull_body+0x00`       | Bare House Body if hull_model_path = ""  | bare_house_body | Records 3821 and 3822 on client 1784 |
+The tail is a House Tail when `hull_name` starts with `HH_` or
+`hull_model_path` is empty (records 3821 and 3822 on client 1784), else a
+Structure Suffix.
 
-### Hull Body (variable: 332 bytes + paths, hulls and tail)
-
-The tail is a House Tail when `hull_name` starts with `HH_`, else a
-Structure Suffix, as in Layout 2.
-
-| Offset                 | Type                    | Field                       | Notes |
-| ---------------------- | ----------------------- | --------------------------- | ----- |
-| `+0x00`                | str8                    | hull_name                   |       |
-| `hull_name+0x00`       | u8                      | unknown_flag                |       |
-| `hull_name+0x01`       | u32                     | layer_count                 |       |
-| `hull_name+0x05`       | u32                     | unknown_b                   |       |
-| `hull_name+0x09`       | Hull Layer[layer_count] | layers                      |       |
-| `layers+0x00`          | bytes[285]              | unknown_block               |       |
-| `layers+0x11D`         | str8                    | material_path               |       |
-| `material_path+0x00`   | bytes[14]               | unknown_after_material_path |       |
-| `material_path+0x0E`   | str8                    | unknown_digits              |       |
-| `unknown_digits+0x00`  | House Tail if hull_name ^= HH_          | house                       |       |
-| `house+0x00`           | Structure Suffix if hull_name !^= HH_   | suffix                      |       |
-
-### Bare House Body (variable: 332 bytes + paths, hulls and house tail)
-
-| Offset                 | Type                    | Field                       | Notes |
-| ---------------------- | ----------------------- | --------------------------- | ----- |
-| `+0x00`                | str8                    | hull_name                   |       |
-| `hull_name+0x00`       | u8                      | unknown_flag                |       |
-| `hull_name+0x01`       | u32                     | layer_count                 |       |
-| `hull_name+0x05`       | u32                     | unknown_b                   |       |
-| `hull_name+0x09`       | Hull Layer[layer_count] | layers                      |       |
-| `layers+0x00`          | bytes[285]              | unknown_block               |       |
-| `layers+0x11D`         | str8                    | material_path               |       |
-| `material_path+0x00`   | bytes[14]               | unknown_after_material_path |       |
-| `material_path+0x0E`   | str8                    | unknown_digits              |       |
-| `unknown_digits+0x00`  | House Tail                              | house                       |       |
+| Offset                 | Type                                                         | Field                       | Notes |
+| ---------------------- | ------------------------------------------------------------ | --------------------------- | ----- |
+| `+0x00`                | str8                                                         | hull_model_path             |       |
+| `hull_model_path+0x00` | str8                                                         | hull_name                   |       |
+| `hull_name+0x00`       | u8                                                           | unknown_flag                |       |
+| `hull_name+0x01`       | u32                                                          | layer_count                 |       |
+| `hull_name+0x05`       | u32                                                          | unknown_b                   |       |
+| `hull_name+0x09`       | Hull Layer[layer_count]                                      | layers                      |       |
+| `layers+0x00`          | bytes[285]                                                   | unknown_block               |       |
+| `layers+0x11D`         | str8                                                         | material_path               |       |
+| `material_path+0x00`   | bytes[14]                                                    | unknown_after_material_path |       |
+| `material_path+0x0E`   | str8                                                         | unknown_digits              |       |
+| `unknown_digits+0x00`  | House Tail if hull_name ^= HH_ or hull_model_path = ""        | house                       |       |
+| `house+0x00`           | Structure Suffix if hull_name !^= HH_ and hull_model_path != "" | suffix                    |       |
 
 ## Icon Path
 

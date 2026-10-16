@@ -129,11 +129,11 @@ def test_conditions_and_a_union_pick_one_branch() -> None:
     assert isinstance(fit, LayoutFit) and fit.files[0].rows["Row"].smallest == 3
 
 
-def test_clauses_join_with_or_only() -> None:
+def test_a_clause_outside_the_grammar_is_reported() -> None:
     row = _table(
         "Row (variable: 9 bytes + name and tail)",
         ("+0x00", "u8", "kind"), ("+0x01", "str8", "name"),
-        ("name+0x00", "u16 if name !^= HH_ and kind != 5", "unknown_other"),
+        ("name+0x00", "u16 if name !^= HH_ and kind > 5", "unknown_other"),
     )
 
     messages = [problem.message for problem in check_doc(_doc(COUNTED, row))]
@@ -145,16 +145,17 @@ def test_or_conditions_pick_the_branch_for_each_row() -> None:
         "Row (variable: 9 bytes + name and tail)",
         ("+0x00", "u8", "kind"), ("+0x01", "str8", "name"),
         ("name+0x00", "u32 if name ^= HH_ or kind = 5", "unknown_house"),
+        ("unknown_house+0x00", "u16 if name !^= HH_ and kind != 5", "unknown_other"),
     )
     house = struct.pack("<B", 1) + struct.pack("<Q", 4) + b"HH_a" + struct.pack("<I", 7)
     empty = struct.pack("<B", 5) + struct.pack("<Q", 0) + struct.pack("<I", 7)
-    other = struct.pack("<B", 1) + struct.pack("<Q", 1) + b"x"
+    other = struct.pack("<B", 1) + struct.pack("<Q", 1) + b"x" + struct.pack("<H", 7)
     data = struct.pack("<I", 3) + house + empty + other
 
     fit = _fit(_doc(COUNTED, row), {"test.bss": data})
 
     assert isinstance(fit, LayoutFit)
-    assert (fit.files[0].rows["Row"].smallest, fit.files[0].rows["Row"].largest) == (10, 17)
+    assert (fit.files[0].rows["Row"].smallest, fit.files[0].rows["Row"].largest) == (12, 17)
 
 
 def test_a_two_dimensional_array_takes_both_counts_from_fields() -> None:

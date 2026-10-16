@@ -237,7 +237,9 @@ class _Walker:
             pos = self._structure(element, pos, end)[0]
 
     def _holds(self, structure: Structure, row: _Row, condition: Condition, pos: int, values: Values) -> bool:
-        return any(self._clause_holds(structure, row, clause, pos, values) for clause in condition.clauses)
+        return any(
+            all(self._clause_holds(structure, row, clause, pos, values) for clause in group) for group in condition.groups
+        )
 
     def _clause_holds(self, structure: Structure, row: _Row, clause: Clause, pos: int, values: Values) -> bool:
         if clause.field not in values:

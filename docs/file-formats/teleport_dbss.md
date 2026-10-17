@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes  | Records                          | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ------ | -------------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `teleport.dbss`       | 11,242 | 623 Record, 6 Section            | 18        |
-| 1      | 1784 and later | 3473    | `teleportoffset.dbss` | 7,500  | 623 Offset Row, 6 Offset Section | 12        |
+| 1      | 1784 and later | 3474    | `teleport.dbss`       | 11,242 | 623 Record, 6 Section            | 18        |
+| 1      | 1784 and later | 3474    | `teleportoffset.dbss` | 7,500  | 623 Offset Row, 6 Offset Section | 12        |
 
 | Layout | File                  | Known            | Unknown      |
 | ------ | --------------------- | ---------------- | ------------ |

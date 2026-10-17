@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------- | --------- |
-| 1      | 3473 and later | 3473    | `guaranteeenchantss.dbss` | 2,307 | 329 Row | 7         |
+| 1      | 3473 and later | 3474    | `guaranteeenchantss.dbss` | 2,307 | 329 Row | 7         |
 
 | Layout | File                      | Known            | Unknown    |
 | ------ | ------------------------- | ---------------- | ---------- |

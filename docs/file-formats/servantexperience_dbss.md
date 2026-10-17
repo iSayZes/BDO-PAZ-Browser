@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes     | Records                                 | Row bytes |
 | ------ | -------------- | ------- | ------------------------------ | --------- | --------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
-| 2      | 3473 and later | 3473    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
+| 2      | 3473 and later | 3474    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
+| 2      | 3473 and later | 3474    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
 | 1      | 1784           | 1784    | `servantexperience.dbss`       | 4,359,226 | 32,607 Body String, 10,869 Level Record | 18        |
 | 1      | 1784           | 1784    | `servantexperienceoffset.dbss` | 130,432   | 10,869 Index Row                        | 12        |
 

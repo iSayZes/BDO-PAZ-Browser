@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records                                | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | -------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `petskill.dbss`       | 9,380 | 490 Level Entry, 49 Payload, 49 Record | 17        |
-| 2      | 3473 and later | 3473    | `petskilloffset.dbss` | 494   | 49 Offset Row                          | 10        |
+| 2      | 3473 and later | 3474    | `petskill.dbss`       | 9,380 | 490 Level Entry, 49 Payload, 49 Record | 17        |
+| 2      | 3473 and later | 3474    | `petskilloffset.dbss` | 494   | 49 Offset Row                          | 10        |
 | 1      | 1784           | 1784    | `petskill.dbss`       | 8,606 | 460 Level Entry, 46 Payload, 46 Record | 17        |
 | 1      | 1784           | 1784    | `petskilloffset.dbss` | 464   | 46 Offset Row                          | 10        |
 

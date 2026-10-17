@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes   | Records                       | Row bytes                   |
 | ------ | -------------- | ------- | ------------------------ | ------- | ----------------------------- | --------------------------- |
-| 1      | 1784 and later | 3473    | `mentaltheme.dbss`       | 108,785 | 939 Theme Payload, 939 Record | 45 to 1,587, 114 on average |
-| 1      | 1784 and later | 3473    | `mentalthemeoffset.dbss` | 9,394   | 939 Offset Row                | 10                          |
+| 1      | 1784 and later | 3474    | `mentaltheme.dbss`       | 108,785 | 939 Theme Payload, 939 Record | 45 to 1,587, 114 on average |
+| 1      | 1784 and later | 3474    | `mentalthemeoffset.dbss` | 9,394   | 939 Offset Row                | 10                          |
 
 | Layout | File                     | Known             | Unknown        |
 | ------ | ------------------------ | ----------------- | -------------- |

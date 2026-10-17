@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes               |
 | ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | ----------------------- |
-| 2      | 3473 and later | 3473    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94                      |
-| 2      | 3473 and later | 3473    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12                      |
+| 2      | 3473 and later | 3474    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94                      |
+| 2      | 3473 and later | 3474    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12                      |
 | 1      | 1784           | 1784    | `alchemystonechange.dbss`       | 9,604  | 164 Row       | 40 to 78, 59 on average |
 | 1      | 1784           | 1784    | `alchemystonechangeoffset.dbss` | 1,972  | 164 Index Row | 12                      |
 

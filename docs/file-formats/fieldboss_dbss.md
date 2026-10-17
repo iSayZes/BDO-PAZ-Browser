@@ -18,8 +18,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
-| 2      | 3473 and later | 3473    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
-| 2      | 3473 and later | 3473    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+| 2      | 3473 and later | 3474    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
+| 2      | 3473 and later | 3474    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
 | 1      | 1784           | 1784    | `fieldboss.dbss`       | 22,789 | 735 Row       | 31        |
 | 1      | 1784           | 1784    | `fieldbossoffset.dbss` | 7,354  | 735 Index Row | 10        |
 

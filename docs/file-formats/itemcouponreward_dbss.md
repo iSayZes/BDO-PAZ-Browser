@@ -13,8 +13,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3473    | `itemcouponreward.dbss`       | 16    | -       | -         |
-| 1      | 1784 and later | 3473    | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
+| 1      | 1784 and later | 3474    | `itemcouponreward.dbss`       | 16    | -       | -         |
+| 1      | 1784 and later | 3474    | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
 
 | Layout | File                          | Known       | Unknown      |
 | ------ | ----------------------------- | ----------- | ------------ |

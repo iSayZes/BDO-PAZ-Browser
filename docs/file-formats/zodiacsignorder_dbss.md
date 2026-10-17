@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes | Records          | Row bytes               |
 | ------ | -------------- | ------- | ---------------------------- | ----- | ---------------- | ----------------------- |
-| 1      | 1784 and later | 3473    | `zodiacsignorder.dbss`       | 604   | 24 Record        | 23 to 29, 25 on average |
-| 1      | 1784 and later | 3473    | `zodiacsignorderoffset.dbss` | 244   | 24 Offset Record | 10                      |
+| 1      | 1784 and later | 3474    | `zodiacsignorder.dbss`       | 604   | 24 Record        | 23 to 29, 25 on average |
+| 1      | 1784 and later | 3474    | `zodiacsignorderoffset.dbss` | 244   | 24 Offset Record | 10                      |
 
 | Layout | File                         | Known         | Unknown      |
 | ------ | ---------------------------- | ------------- | ------------ |

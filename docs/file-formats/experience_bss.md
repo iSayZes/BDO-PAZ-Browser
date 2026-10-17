@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes     | Records                                               | Row bytes |
 | ------ | -------------- | ------- | ---------------- | --------- | ----------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group   | 200       |
+| 2      | 3473 and later | 3474    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group   | 200       |
 | 1      | 1784           | 1784    | `experience.bss` | 3,201,480 | 10,742 Stat Body, 10,742 Level Record, 82 Class Group | 270       |
 
 | Layout | File             | Known             | Unknown             |

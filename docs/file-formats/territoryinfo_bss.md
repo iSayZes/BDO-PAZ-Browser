@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records          | Row bytes                  |
 | ------ | -------------- | ------- | ------------------- | ----- | ---------------- | -------------------------- |
-| 2      | 3473 and later | 3473    | `territoryinfo.bss` | 4,730 | 14 Territory Row | 88 to 92, 89 on average    |
+| 2      | 3473 and later | 3474    | `territoryinfo.bss` | 4,730 | 14 Territory Row | 88 to 92, 89 on average    |
 | 1      | 1784           | 1784    | `territoryinfo.bss` | 3,837 | 10 Territory Row | 120 to 140, 131 on average |
 
 | Layout | File                | Known           | Unknown     |

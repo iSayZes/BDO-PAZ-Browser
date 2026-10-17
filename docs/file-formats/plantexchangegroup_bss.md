@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes  | Records                  | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ------ | ------------------------ | --------- |
-| 2      | 3473 and later | 3473    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
+| 2      | 3473 and later | 3474    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
 | 1      | 1784           | 1784    | `plantexchangegroup.bss` | 20,224 | 287 Production Group Row | 52        |
 
 | Layout | File                     | Known            | Unknown          |

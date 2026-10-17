@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes      | Records                                   | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ---------- | ----------------------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `itemsubgroup.dbss`       | 13,546,174 | 98,108 Item Entry, 16,755 Subgroup Record | 135       |
-| 1      | 1784 and later | 3473    | `itemsubgroupoffset.dbss` | 167,570    | 16,755 Offset Row                         | 10        |
+| 1      | 1784 and later | 3474    | `itemsubgroup.dbss`       | 13,546,174 | 98,108 Item Entry, 16,755 Subgroup Record | 135       |
+| 1      | 1784 and later | 3474    | `itemsubgroupoffset.dbss` | 167,570    | 16,755 Offset Row                         | 10        |
 
 | Layout | File                      | Known               | Unknown              |
 | ------ | ------------------------- | ------------------- | -------------------- |

@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes | Records           | Row bytes |
 | ------ | -------------- | ------- | ------------------------------- | ----- | ----------------- | --------- |
-| 1      | 3473 and later | 3473    | `fairyfeedenchantfailcount.bss` | 147   | 9 Entry, 7 Record | 11        |
+| 1      | 3473 and later | 3474    | `fairyfeedenchantfailcount.bss` | 147   | 9 Entry, 7 Record | 11        |
 
 | Layout | File                            | Known        | Unknown      |
 | ------ | ------------------------------- | ------------ | ------------ |

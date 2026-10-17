@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes  | Records          | Row bytes |
 | ------ | -------------- | ------- | ---------------------------- | ------ | ---------------- | --------- |
-| 1      | 1784 and later | 3473    | `skillexperience.dbss`       | 32,020 | 2,001 Level Row  | 16        |
-| 1      | 1784 and later | 3473    | `skillexperienceoffset.dbss` | 20,014 | 2,001 Offset Row | 10        |
+| 1      | 1784 and later | 3474    | `skillexperience.dbss`       | 32,020 | 2,001 Level Row  | 16        |
+| 1      | 1784 and later | 3474    | `skillexperienceoffset.dbss` | 20,014 | 2,001 Offset Row | 10        |
 
 | Layout | File                         | Known             | Unknown         |
 | ------ | ---------------------------- | ----------------- | --------------- |

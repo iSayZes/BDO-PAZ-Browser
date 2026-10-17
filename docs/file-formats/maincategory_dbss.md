@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records            | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------------------ | --------- |
-| 2      | 3473 and later | 3473    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
-| 2      | 3473 and later | 3473    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
+| 2      | 3473 and later | 3474    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
+| 2      | 3473 and later | 3474    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
 | 1      | 1784           | 1784    | `maincategory.dbss`       | 1,216 | 12 Category Record | 101       |
 | 1      | 1784           | 1784    | `maincategoryoffset.dbss` | 124   | 12 Offset Record   | 10        |
 

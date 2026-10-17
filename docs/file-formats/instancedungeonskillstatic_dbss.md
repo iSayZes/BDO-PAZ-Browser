@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                    | Bytes  | Records                 | Row bytes                |
 | ------ | -------------- | ------- | --------------------------------------- | ------ | ----------------------- | ------------------------ |
-| 2      | 3473 and later | 3473    | `instancedungeonskillstatic.dbss`       | 4      | -                       | -                        |
-| 2      | 3473 and later | 3473    | `instancedungeonskillstaticoffset.dbss` | 4      | -                       | -                        |
+| 2      | 3473 and later | 3474    | `instancedungeonskillstatic.dbss`       | 4      | -                       | -                        |
+| 2      | 3473 and later | 3474    | `instancedungeonskillstaticoffset.dbss` | 4      | -                       | -                        |
 | 1      | 1784           | 1784    | `instancedungeonskillstatic.dbss`       | 13,984 | 157 Skill Static Record | 20 to 166, 89 on average |
 | 1      | 1784           | 1784    | `instancedungeonskillstaticoffset.dbss` | 1,888  | 157 Index Row           | 12                       |
 

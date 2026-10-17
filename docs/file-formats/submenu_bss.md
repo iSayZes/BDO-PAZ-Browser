@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File          | Bytes  | Records                  | Row bytes |
 | ------ | -------------- | ------- | ------------- | ------ | ------------------------ | --------- |
-| 1      | 1784 and later | 3473    | `submenu.bss` | 12,882 | 155 Menu Entry, 12 Group | 49        |
+| 1      | 1784 and later | 3474    | `submenu.bss` | 12,882 | 155 Menu Entry, 12 Group | 49        |
 
 | Layout | File          | Known            | Unknown         |
 | ------ | ------------- | ---------------- | --------------- |

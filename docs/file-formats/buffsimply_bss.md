@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes     | Records         | Row bytes |
 | ------ | -------------- | ------- | ---------------- | --------- | --------------- | --------- |
-| 2      | 3473 and later | 3473    | `buffsimply.bss` | 1,489,433 | 44,690 Buff Row | 32        |
+| 2      | 3473 and later | 3474    | `buffsimply.bss` | 1,489,433 | 44,690 Buff Row | 32        |
 | 1      | 1784           | 1784    | `buffsimply.bss` | 1,169,677 | 37,892 Buff Row | 30        |
 
 | Layout | File             | Known             | Unknown           |

@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes                  |
 | ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | -------------------------- |
-| 2      | 3473 and later | 3473    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127                        |
-| 2      | 3473 and later | 3473    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10                         |
+| 2      | 3473 and later | 3474    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127                        |
+| 2      | 3473 and later | 3474    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10                         |
 | 1      | 1784           | 1784    | `itemtradegrouptonpc.dbss`       | 143,278 | 1,148 Item Entry, 130 Group | 123 to 163, 124 on average |
 | 1      | 1784           | 1784    | `itemtradegrouptonpcoffset.dbss` | 1,304   | 130 Index Row               | 10                         |
 

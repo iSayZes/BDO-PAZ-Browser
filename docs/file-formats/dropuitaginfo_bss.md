@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes  | Records    | Row bytes |
 | ------ | -------------- | ------- | ------------------- | ------ | ---------- | --------- |
-| 1      | 3473 and later | 3473    | `dropuitaginfo.bss` | 13,190 | 45 Tag Row | 32        |
+| 1      | 3473 and later | 3474    | `dropuitaginfo.bss` | 13,190 | 45 Tag Row | 32        |
 
 | Layout | File                | Known             | Unknown    |
 | ------ | ------------------- | ----------------- | ---------- |

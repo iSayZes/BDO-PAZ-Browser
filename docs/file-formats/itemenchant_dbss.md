@@ -21,8 +21,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
-| 2      | 3473 and later | 3473    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
+| 2      | 3473 and later | 3474    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
+| 2      | 3473 and later | 3474    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
 | 1      | 1784           | 1784    | `itemenchant.dbss`       | 218,241,044 | 127,893 Tail, 127,893 Block                                                 | 25        |
 | 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,534,736   | 127,893 Offset Row                                                          | 12        |
 

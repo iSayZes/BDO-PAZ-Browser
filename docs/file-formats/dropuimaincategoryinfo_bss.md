@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes | Records    | Row bytes |
 | ------ | -------------- | ------- | ---------------------------- | ----- | ---------- | --------- |
-| 1      | 3473 and later | 3473    | `dropuimaincategoryinfo.bss` | 631   | 13 Tab Row | 10        |
+| 1      | 3473 and later | 3474    | `dropuimaincategoryinfo.bss` | 631   | 13 Tab Row | 10        |
 
 | Layout | File                         | Known          | Unknown    |
 | ------ | ---------------------------- | -------------- | ---------- |

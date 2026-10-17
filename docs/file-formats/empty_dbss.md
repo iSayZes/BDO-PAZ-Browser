@@ -29,25 +29,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3473    | `alchemystatus.dbss`          | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `alchemystatusoffset.dbss`    | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `buffcondition.dbss`          | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `buffconditionoffset.dbss`    | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `cashforui.dbss`              | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `cashforuioffset.dbss`        | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `chinaspawnoption.dbss`       | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `chinaspawnoptionoffset.dbss` | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `grenadedata.dbss`            | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `grenadedataoffset.dbss`      | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `installation.dbss`           | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `installationoffset.dbss`     | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `petmarketsetting.dbss`       | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `petmarketsettingoffset.dbss` | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `petset.dbss`                 | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `petsetoffset.dbss`           | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `servantcategory.dbss`        | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `servantcategoryoffset.dbss`  | 4     | -       | -         |
-| 1      | 1784 and later | 3473    | `worldquest.dbss`             | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `alchemystatus.dbss`          | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `alchemystatusoffset.dbss`    | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `buffcondition.dbss`          | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `buffconditionoffset.dbss`    | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `cashforui.dbss`              | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `cashforuioffset.dbss`        | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `chinaspawnoption.dbss`       | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `chinaspawnoptionoffset.dbss` | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `grenadedata.dbss`            | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `grenadedataoffset.dbss`      | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `installation.dbss`           | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `installationoffset.dbss`     | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `petmarketsetting.dbss`       | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `petmarketsettingoffset.dbss` | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `petset.dbss`                 | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `petsetoffset.dbss`           | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `servantcategory.dbss`        | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `servantcategoryoffset.dbss`  | 4     | -       | -         |
+| 1      | 1784 and later | 3474    | `worldquest.dbss`             | 4     | -       | -         |
 
 | Layout | File                          | Known        | Unknown    |
 | ------ | ----------------------------- | ------------ | ---------- |

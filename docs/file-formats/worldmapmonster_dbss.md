@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
 | ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
-| 2      | 3473 and later | 3473    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
-| 2      | 3473 and later | 3473    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+| 2      | 3473 and later | 3474    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
+| 2      | 3473 and later | 3474    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
 | 1      | 1784           | 1784    | `worldmapmonster.dbss`       | 20,586 | 127 Marker Record, 127 Record | 124 to 274, 160 on average |
 | 1      | 1784           | 1784    | `worldmapmonsteroffset.dbss` | 1,274  | 127 Offset Row                | 10                         |
 

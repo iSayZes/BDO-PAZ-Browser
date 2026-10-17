@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records           | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ----------------- | --------- |
-| 1      | 1784 and later | 3473    | `fairyupgraderate.bss` | 143   | 6 Entry, 3 Record | 16        |
+| 1      | 1784 and later | 3474    | `fairyupgraderate.bss` | 143   | 6 Entry, 3 Record | 16        |
 
 | Layout | File                   | Known         | Unknown      |
 | ------ | ---------------------- | ------------- | ------------ |

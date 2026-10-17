@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes  | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------ | ------- | --------- |
-| 2      | 3473 and later | 3473    | `employeeexp.bss` | 21,081 | 230 Row | 89        |
+| 2      | 3473 and later | 3474    | `employeeexp.bss` | 21,081 | 230 Row | 89        |
 | 1      | 1784           | 1784    | `employeeexp.bss` | 19,237 | 230 Row | 81        |
 
 | Layout | File              | Known            | Unknown        |

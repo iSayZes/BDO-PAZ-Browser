@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes      | Records                                                                                            | Row bytes                     |
 | ------ | -------------- | ------- | -------------------------- | ---------- | -------------------------------------------------------------------------------------------------- | ----------------------------- |
-| 1      | 1784 and later | 3473    | `detail_dialog.dbss`       | 28,282,772 | 35,766 Option, 59,782 Dialog Record, 59,782 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
-| 1      | 1784 and later | 3473    | `detail_dialogoffset.dbss` | 717,404    | 59,782 Index Row                                                                                   | 12                            |
+| 1      | 1784 and later | 3474    | `detail_dialog.dbss`       | 28,282,772 | 35,766 Option, 59,782 Dialog Record, 59,782 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
+| 1      | 1784 and later | 3474    | `detail_dialogoffset.dbss` | 717,404    | 59,782 Index Row                                                                                   | 12                            |
 
 | Layout | File                       | Known                | Unknown            |
 | ------ | -------------------------- | -------------------- | ------------------ |

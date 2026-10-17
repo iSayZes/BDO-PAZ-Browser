@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records                   | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
+| 2      | 3473 and later | 3474    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
 | 1      | 1784           | 1784    | `fairyequipskill.bss` | 1,576 | 30 Skill Record, 100 Slot | 12        |
 
 | Layout | File                  | Known           | Unknown         |

@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes     | Records                    | Row bytes |
 | ------ | -------------- | ------- | ----------------- | --------- | -------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `stringtable.bss` | 7,334,813 | 51,092 String Row, 8 Sheet | 16        |
+| 1      | 1784 and later | 3474    | `stringtable.bss` | 7,334,813 | 51,092 String Row, 8 Sheet | 16        |
 
 | Layout | File              | Known               | Unknown          |
 | ------ | ----------------- | ------------------- | ---------------- |

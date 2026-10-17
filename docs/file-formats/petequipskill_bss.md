@@ -13,7 +13,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes               |
 | ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | ----------------------- |
-| 2      | 3473 and later | 3473    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
+| 2      | 3473 and later | 3474    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
 | 1      | 1784           | 1784    | `petequipskill.bss` | 1,732 | 43 Equip Skill, 100 Slot | 12                      |
 
 | Layout | File                | Known           | Unknown         |

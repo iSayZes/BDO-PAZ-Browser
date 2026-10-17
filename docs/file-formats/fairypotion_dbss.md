@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records       | Row bytes                  |
 | ------ | -------------- | ------- | ------------------------ | ----- | ------------- | -------------------------- |
-| 1      | 1784 and later | 3473    | `fairypotion.dbss`       | 1,200 | 4 Potion List | 257 to 313, 299 on average |
-| 1      | 1784 and later | 3473    | `fairypotionoffset.dbss` | 44    | 4 Offset Row  | 10                         |
+| 1      | 1784 and later | 3474    | `fairypotion.dbss`       | 1,200 | 4 Potion List | 257 to 313, 299 on average |
+| 1      | 1784 and later | 3474    | `fairypotionoffset.dbss` | 44    | 4 Offset Row  | 10                         |
 
 | Layout | File                     | Known            | Unknown    |
 | ------ | ------------------------ | ---------------- | ---------- |

@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes   | Records          | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ------- | ---------------- | --------- |
-| 1      | 1784 and later | 3473    | `itemmaxlevel.dbss`       | 151,880 | 30,372 Row       | 5         |
-| 1      | 1784 and later | 3473    | `itemmaxleveloffset.dbss` | 364,484 | 30,372 Index Row | 12        |
+| 1      | 1784 and later | 3474    | `itemmaxlevel.dbss`       | 151,880 | 30,372 Row       | 5         |
+| 1      | 1784 and later | 3474    | `itemmaxleveloffset.dbss` | 364,484 | 30,372 Index Row | 12        |
 
 | Layout | File                      | Known              | Unknown    |
 | ------ | ------------------------- | ------------------ | ---------- |

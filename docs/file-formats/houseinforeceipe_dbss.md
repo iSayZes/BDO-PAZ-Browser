@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
-| 2      | 3473 and later | 3473    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
-| 2      | 3473 and later | 3473    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 2      | 3473 and later | 3474    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 2      | 3473 and later | 3474    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
 | 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,902 | 490 Level List, 98 Row  | 4 to 156, 16 on average |
 | 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,180  | 98 Index Row            | 12                      |
 

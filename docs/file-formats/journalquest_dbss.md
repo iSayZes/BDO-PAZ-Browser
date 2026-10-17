@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes  | Records                   | Row bytes                  |
 | ------ | -------------- | ------- | ------------------- | ------ | ------------------------- | -------------------------- |
-| 2      | 3473 and later | 3473    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
+| 2      | 3473 and later | 3474    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
 | 1      | 1784           | 1784    | `journalquest.dbss` | 23,327 | 52 Book Record, 12 Group  | 205 to 639, 448 on average |
 
 | Layout | File                | Known            | Unknown         |

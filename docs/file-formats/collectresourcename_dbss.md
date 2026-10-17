@@ -18,8 +18,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes  | Records         | Row bytes               |
 | ------ | -------------- | ------- | -------------------------------- | ------ | --------------- | ----------------------- |
-| 1      | 1784 and later | 3473    | `collectresourcename.dbss`       | 52,109 | 1,112 Record    | 30 to 84, 47 on average |
-| 1      | 1784 and later | 3473    | `collectresourcenameoffset.dbss` | 13,348 | 1,112 Index Row | 12                      |
+| 1      | 1784 and later | 3474    | `collectresourcename.dbss`       | 52,109 | 1,112 Record    | 30 to 84, 47 on average |
+| 1      | 1784 and later | 3474    | `collectresourcenameoffset.dbss` | 13,348 | 1,112 Index Row | 12                      |
 
 | Layout | File                             | Known             | Unknown    |
 | ------ | -------------------------------- | ----------------- | ---------- |

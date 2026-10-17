@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | --------- |
-| 2      | 3473 and later | 3473    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
-| 2      | 3473 and later | 3473    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
+| 2      | 3473 and later | 3474    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
+| 2      | 3473 and later | 3474    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
 | 1      | 1784           | 1784    | `itemimprovementsource.dbss`       | 3,899 | 95 Record     | 41        |
 | 1      | 1784           | 1784    | `itemimprovementsourceoffset.dbss` | 1,144 | 95 Index Row  | 12        |
 

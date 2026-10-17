@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes     | Records          | Row bytes                    |
 | ------ | -------------- | ------- | ----------------------- | --------- | ---------------- | ---------------------------- |
-| 2      | 3473 and later | 3473    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
-| 2      | 3473 and later | 3473    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
+| 2      | 3473 and later | 3474    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
+| 2      | 3473 and later | 3474    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
 | 1      | 1784           | 1784    | `mentalcard.dbss`       | 4,002,305 | 8,092 Card       | 161 to 2,258, 495 on average |
 | 1      | 1784           | 1784    | `mentalcardoffset.dbss` | 97,124    | 8,092 Index Row  | 12                           |
 

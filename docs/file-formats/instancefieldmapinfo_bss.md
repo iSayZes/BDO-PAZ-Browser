@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes  | Records    | Row bytes                  |
 | ------ | -------------- | ------- | -------------------------- | ------ | ---------- | -------------------------- |
-| 2      | 3473 and later | 3473    | `instancefieldmapinfo.bss` | 44,266 | 193 Record | 196 to 228, 199 on average |
+| 2      | 3473 and later | 3474    | `instancefieldmapinfo.bss` | 44,266 | 193 Record | 196 to 228, 199 on average |
 | 1      | 1784           | 1784    | `instancefieldmapinfo.bss` | 14,496 | 77 Record  | 180                        |
 
 | Layout | File                       | Known            | Unknown          |

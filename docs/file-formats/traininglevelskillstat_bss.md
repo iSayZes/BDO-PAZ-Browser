@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes | Records         | Row bytes |
 | ------ | -------------- | ------- | ---------------------------- | ----- | --------------- | --------- |
-| 1      | 1784 and later | 3473    | `traininglevelskillstat.bss` | 1,456 | 180 Level Entry | 8         |
+| 1      | 1784 and later | 3474    | `traininglevelskillstat.bss` | 1,456 | 180 Level Entry | 8         |
 
 | Layout | File                         | Known            | Unknown    |
 | ------ | ---------------------------- | ---------------- | ---------- |

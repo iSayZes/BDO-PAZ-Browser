@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes  | Records           | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------ | ----------------- | --------- |
-| 2      | 3473 and later | 3473    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
+| 2      | 3473 and later | 3474    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
 | 1      | 1784           | 1784    | `plantworker.bss` | 65,380 | 89 Worker Record  | 707       |
 
 | Layout | File              | Known          | Unknown          |

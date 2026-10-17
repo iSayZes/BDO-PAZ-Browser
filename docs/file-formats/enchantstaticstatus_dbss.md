@@ -21,8 +21,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes      | Records                         | Row bytes               |
 | ------ | -------------- | ------- | -------------------------------- | ---------- | ------------------------------- | ----------------------- |
-| 2      | 3473 and later | 3473    | `enchantstaticstatus.dbss`       | 23,776,392 | 100,512 Lane Dice, 33,504 Block | 18 to 28, 22 on average |
-| 2      | 3473 and later | 3473    | `enchantstaticstatusoffset.dbss` | 402,068    | 33,504 Offset Row               | 12                      |
+| 2      | 3473 and later | 3474    | `enchantstaticstatus.dbss`       | 23,776,392 | 100,512 Lane Dice, 33,504 Block | 18 to 28, 22 on average |
+| 2      | 3473 and later | 3474    | `enchantstaticstatusoffset.dbss` | 402,068    | 33,504 Offset Row               | 12                      |
 | 1      | 1784           | 1784    | `enchantstaticstatus.dbss`       | 23,536,214 | 101,415 Lane Dice, 33,805 Block | 18 to 28, 22 on average |
 | 1      | 1784           | 1784    | `enchantstaticstatusoffset.dbss` | 405,680    | 33,805 Offset Row               | 12                      |
 

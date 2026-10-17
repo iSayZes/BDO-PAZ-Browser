@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes   | Records                                                        | Row bytes              |
 | ------ | -------------- | ------- | ----------------- | ------- | -------------------------------------------------------------- | ---------------------- |
-| 2      | 3473 and later | 3473    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
+| 2      | 3473 and later | 3474    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
 | 1      | 1784           | 1784    | `exploration.bss` | 135,306 | 816 Node Head, 5,712 List, 816 Node Record                     | 4 to 196, 6 on average |
 
 | Layout | File              | Known             | Unknown          |

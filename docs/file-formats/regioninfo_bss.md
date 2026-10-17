@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 2      | 3473 and later | 3474    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
 | 1      | 1784           | 1784    | `regioninfo.bss` | 556,117 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |

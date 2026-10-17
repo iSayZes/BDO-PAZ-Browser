@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records               | Row bytes               |
 | ------ | -------------- | ------- | ---------------------- | ------ | --------------------- | ----------------------- |
-| 2      | 3473 and later | 3473    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
-| 2      | 3473 and later | 3473    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
+| 2      | 3473 and later | 3474    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
+| 2      | 3473 and later | 3474    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
 | 1      | 1784           | 1784    | `plantzone.dbss`       | 8,347  | 309 Plant Zone Record | 27                      |
 | 1      | 1784           | 1784    | `plantzoneoffset.dbss` | 3,712  | 309 Offset Row        | 12                      |
 

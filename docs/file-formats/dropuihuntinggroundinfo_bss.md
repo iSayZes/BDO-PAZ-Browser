@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records                | Row bytes                  |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ---------------------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `dropuihuntinggroundinfo.bss` | 28,350 | 112 Hunting Ground Row | 103 to 325, 218 on average |
+| 1      | 3473 and later | 3474    | `dropuihuntinggroundinfo.bss` | 28,350 | 112 Hunting Ground Row | 103 to 325, 218 on average |
 
 | Layout | File                          | Known             | Unknown    |
 | ------ | ----------------------------- | ----------------- | ---------- |

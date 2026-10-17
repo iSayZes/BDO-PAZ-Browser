@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes   | Records                    | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------- | -------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `manufacture.bss` | 417,753 | 15,361 Material, 7,064 Row | 12        |
+| 2      | 3473 and later | 3474    | `manufacture.bss` | 417,753 | 15,361 Material, 7,064 Row | 12        |
 | 1      | 1784           | 1784    | `manufacture.bss` | 466,321 | 16,442 Material, 8,668 Row | 12        |
 
 | Layout | File              | Known             | Unknown           |

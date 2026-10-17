@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nameHash": "Хеш имени",
+    "model": "Модель",
+    "characterId": "ID персонажа",
+    "name": "Имя"
+  },
+  "offsetColumns": {
+    "nameHash": "Хеш имени",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Моделей для сбора: {count}"
+  }
+}

@@ -46,6 +46,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `chinaspawnoption.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `chinaspawnoptionoffset.dbss` | Empty offset companion for `chinaspawnoption.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `collectingstatdata.bss` | PABR Gathering Mastery table, one row group per gathering type (Water Scooping to Mining): per 50 mastery, drop rate and quantity of basic, special and rare resources | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `collectresourcename.dbss` | Gathering models: a rock, tree or plant model name (hash, lower-case name) and the Collect character it stands for | [collectresourcename](file-formats/collectresourcename_dbss.md) | 0 | 0 |
+| `collectresourcenameoffset.dbss` | Index into `collectresourcename.dbss`, maps the model name hash → offset/size, 4 bytes past the record start; no PABR magic | [collectresourcename](file-formats/collectresourcename_dbss.md) | 0 | 0 |
 | `commonlifestatdata.bss` | PABR list of the Gathering and Processing mastery each life level gives, one f32 per level 1 to 180 | [commonlifestatdata](file-formats/commonlifestatdata_bss.md) | 0 | 0 |
 | `completequest.bss`                | PABR list of the NPC and dialog index (`detail_dialog.dbss` key) that take each quest, grouped by NPC            | [completequest](file-formats/completequest_bss.md)                  | 1              | 0 |
 | `cookingstatdata.bss` | PABR Cooking Mastery table: per 50 mastery, mass cooking, max dishes, higher grade dish chances and Imperial Delivery extra profit | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nameHash": "이름 해시",
+    "model": "모델",
+    "characterId": "캐릭터 ID",
+    "name": "이름"
+  },
+  "offsetColumns": {
+    "nameHash": "이름 해시",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "채집 모델 {count}개"
+  }
+}

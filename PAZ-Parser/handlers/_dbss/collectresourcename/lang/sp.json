@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nameHash": "Hash del nombre",
+    "model": "Modelo",
+    "characterId": "ID del personaje",
+    "name": "Nombre"
+  },
+  "offsetColumns": {
+    "nameHash": "Hash del nombre",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} modelos de recolección"
+  }
+}

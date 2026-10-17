@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nameHash": "Namens-Hash",
+    "model": "Modell",
+    "characterId": "Charakter-ID",
+    "name": "Name"
+  },
+  "offsetColumns": {
+    "nameHash": "Namens-Hash",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Sammel-Modelle"
+  }
+}

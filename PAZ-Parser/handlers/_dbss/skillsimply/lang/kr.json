@@ -2,6 +2,7 @@
   "columns": {
     "skillNo": "기술 번호",
     "level": "레벨",
+    "maxLevel": "최대 레벨",
     "icon": "아이콘",
     "name": "이름",
     "classes": "적용 직업",

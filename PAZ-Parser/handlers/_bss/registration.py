@@ -40,6 +40,7 @@ from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatus
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
 from .itemtradeetc.handler import ItemTradeEtcBssHandler
+from .itemviewstackenchantgroupss.handler import ItemViewStackEnchantGroupSsBssHandler
 from .jewelgroupstaticstatus.handler import JewelGroupStaticStatusBssHandler
 from .jewelspecialslotsgroupstaticstatus.handler import JewelSpecialSlotsGroupStaticStatusBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
@@ -135,6 +136,7 @@ def register_bss_handlers() -> None:
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())
+    register_handler("itemviewstackenchantgroupss.bss", ItemViewStackEnchantGroupSsBssHandler())
     register_handler("jewelgroupstaticstatus.bss", JewelGroupStaticStatusBssHandler())
     register_handler(
         "jewelspecialslotsgroupstaticstatus.bss",

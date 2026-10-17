@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "enchantKey": "Enchant Key",
+    "items": "Items",
+    "groupSize": "Group Size",
+    "groupKeys": "Group Keys",
+    "groupItems": "Group Items"
+  },
+  "meta": {
+    "count": "{count} enchant keys · {groups} groups"
+  }
+}

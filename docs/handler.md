@@ -1414,8 +1414,10 @@ key to the base items whose `itemenchant.dbss` block stores it, in ascending
 ID order; keys no item uses and items with key `0` are left out. It is built
 by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same key. The
-`enchantstaticstatus.dbss` Items column reads it; `itemenchant.dbss` shows
-each item's own key as its Enchant Key column.
+`enchantstaticstatus.dbss` Items column and the
+[itemviewstackenchantgroupss.bss](file-formats/itemviewstackenchantgroupss_bss.md)
+Items and Group Items columns read it; `itemenchant.dbss` shows each item's
+own key as its Enchant Key column.
 
 `ENHANCEMENT_TYPE_ITEMS` maps an enhancement type (`enhancement_type` after
 the icon in [itemenchant.dbss](file-formats/itemenchant_dbss.md)) to its base

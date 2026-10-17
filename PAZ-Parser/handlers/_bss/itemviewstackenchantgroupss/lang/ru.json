@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "enchantKey": "Ключ усиления",
+    "items": "Предметы",
+    "groupSize": "Размер группы",
+    "groupKeys": "Ключи группы",
+    "groupItems": "Предметы группы"
+  },
+  "meta": {
+    "count": "{count} ключей усиления · {groups} групп"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "enchantKey": "Clave de refuerzo",
+    "items": "Objetos",
+    "groupSize": "Tamaño del grupo",
+    "groupKeys": "Claves del grupo",
+    "groupItems": "Objetos del grupo"
+  },
+  "meta": {
+    "count": "{count} claves de refuerzo · {groups} grupos"
+  }
+}

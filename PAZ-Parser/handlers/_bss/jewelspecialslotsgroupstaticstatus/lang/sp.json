@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "slot": "Casilla",
+    "equipment": "Equipamiento",
+    "groups": "Grupo"
+  },
+  "meta": {
+    "count": "{count} casillas de cristal especiales"
+  }
+}

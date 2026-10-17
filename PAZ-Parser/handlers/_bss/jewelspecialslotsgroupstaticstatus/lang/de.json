@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "slot": "Platz",
+    "equipment": "Ausrüstung",
+    "groups": "Kristall-Gruppe"
+  },
+  "meta": {
+    "count": "{count} besondere Kristallplätze"
+  }
+}

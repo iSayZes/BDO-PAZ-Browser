@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Crystal Group",
+    "name": "Name",
+    "maxCount": "Max Transfusable by Group"
+  },
+  "values": {
+    "noLimit": "No Limit"
+  },
+  "meta": {
+    "count": "{count} crystal groups"
+  }
+}

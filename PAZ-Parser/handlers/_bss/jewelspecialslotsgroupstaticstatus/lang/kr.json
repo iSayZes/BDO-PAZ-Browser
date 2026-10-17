@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "slot": "칸",
+    "equipment": "장비",
+    "groups": "수정 그룹"
+  },
+  "meta": {
+    "count": "특수 수정 칸 {count}개"
+  }
+}

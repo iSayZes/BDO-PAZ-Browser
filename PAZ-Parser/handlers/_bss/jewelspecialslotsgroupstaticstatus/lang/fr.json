@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "slot": "Emplacement",
+    "equipment": "Équipement",
+    "groups": "Groupe de cristaux"
+  },
+  "meta": {
+    "count": "{count} emplacements de cristal spéciaux"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Groupe de cristaux",
+    "name": "Nom",
+    "maxCount": "Quantité max de cristaux pouvant être placés dans le groupe"
+  },
+  "values": {
+    "noLimit": "Illimité"
+  },
+  "meta": {
+    "count": "{count} groupes de cristaux"
+  }
+}

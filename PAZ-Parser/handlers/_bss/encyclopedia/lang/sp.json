@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "key": "Clave",
+    "itemId": "ID del objeto",
+    "item": "Objeto",
+    "image": "Imagen",
+    "category": "Categoría",
+    "rareness": "Rareza",
+    "baseSize": "Tamaño base (cm)",
+    "averageSize": "Tamaño promedio (cm)",
+    "description": "Descripción"
+  },
+  "categories": {
+    "0": "Otros",
+    "1": "Agua dulce",
+    "2": "Agua salada",
+    "3": "Crustáceo"
+  },
+  "meta": {
+    "count": "{count} entradas"
+  }
+}

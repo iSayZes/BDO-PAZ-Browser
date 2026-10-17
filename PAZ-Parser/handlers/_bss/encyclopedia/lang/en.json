@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "key": "Key",
+    "itemId": "Item ID",
+    "item": "Item",
+    "image": "Image",
+    "category": "Category",
+    "rareness": "Rarity",
+    "baseSize": "Base Size (cm)",
+    "averageSize": "Average Size (cm)",
+    "description": "Description"
+  },
+  "categories": {
+    "0": "Others",
+    "1": "Freshwater Fish",
+    "2": "Saltwater Fish",
+    "3": "Crustacean"
+  },
+  "meta": {
+    "count": "{count} entries"
+  }
+}

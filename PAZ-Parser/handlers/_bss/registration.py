@@ -14,6 +14,7 @@ from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
 from .employeeexp.handler import EmployeeExpBssHandler
+from .encyclopedia.handler import EncyclopediaBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
 from .experience.handler import ExperienceBssHandler
 from .exploration.handler import ExplorationBssHandler
@@ -102,6 +103,7 @@ def register_bss_handlers() -> None:
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
+    register_handler("encyclopedia.bss", EncyclopediaBssHandler())
     register_handler("experience.bss", ExperienceBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
     register_handler("explorepointexperiencenew.bss", ExplorePointExperienceBssHandler())

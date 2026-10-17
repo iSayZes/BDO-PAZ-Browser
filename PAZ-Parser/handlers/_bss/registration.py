@@ -40,6 +40,7 @@ from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
 from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
+from .itemmarketcategory.handler import ItemMarketCategoryBssHandler
 from .itemtradeetc.handler import ItemTradeEtcBssHandler
 from .itemviewstackenchantgroupss.handler import ItemViewStackEnchantGroupSsBssHandler
 from .jewelgroupstaticstatus.handler import JewelGroupStaticStatusBssHandler
@@ -137,6 +138,7 @@ def register_bss_handlers() -> None:
     register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
+    register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())
     register_handler("itemviewstackenchantgroupss.bss", ItemViewStackEnchantGroupSsBssHandler())
     register_handler("jewelgroupstaticstatus.bss", JewelGroupStaticStatusBssHandler())

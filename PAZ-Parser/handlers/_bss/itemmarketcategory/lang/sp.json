@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "key": "Clave",
+    "name": "Categoría",
+    "subCategories": "Subcategorías",
+    "filter1": "Filtro 1",
+    "filter2": "Filtro 2"
+  },
+  "meta": {
+    "count": "{count} categorías"
+  }
+}

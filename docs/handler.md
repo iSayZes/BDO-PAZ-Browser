@@ -1031,6 +1031,7 @@ _common/
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
 ├── character.py         # character names and titles (LOC type 6)
+├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
@@ -1095,6 +1096,13 @@ the `territoryinfo.bss` territory key) and the speaker of an NPC dialog with
 `npc_id`, `dialog_index`, else the LOC type 6 name). All return `''` when LOC is not
 loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
+
+Link a character key with `character_key_cell()` from `character_link.py`. A
+table keyed by character can hold keys with no `characterstatic.dbss` row
+(149 of the 713 `collect.dbss` keys on client 3474): list
+`characterstatic_offset_companion()` in `companions()`, store
+`has_character_row(character_row_ids(companions), key)` on each record, and
+the cell shows those keys as plain text instead of a link that opens nothing.
 
 Tables in the skill cluster build a skill key with `skill_key(skill_no, level)`,
 split one with `split_skill_key()` and name

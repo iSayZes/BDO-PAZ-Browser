@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "characterId": "ID de personaje",
+    "name": "Nombre",
+    "productType": "Tipo de recolección",
+    "tools": "Herramientas y grupos de botín",
+    "productDrop": "Grupo de botín del producto",
+    "productTime": "Tiempo de producción",
+    "productHp": "PV",
+    "productDecreaseHp": "Pérdida de PV",
+    "actionPoint": "Puntos de acción",
+    "spawnDelay": "Retraso de aparición",
+    "spawnVariable": "Variación de aparición"
+  },
+  "productTypes": {
+    "0": "Predeterminado",
+    "1": "Base",
+    "2": "Recolección",
+    "3": "Cultivo",
+    "4": "Extracción",
+    "5": "Purificación",
+    "6": "Tala",
+    "7": "Curtidería"
+  },
+  "offsetColumns": {
+    "characterId": "ID de personaje",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} personajes de recolección"
+  }
+}

@@ -106,8 +106,8 @@ Client 3473 has 101 names the sheet lacks, and 6 of the sheet's names
 
 - On client 3473 the 1,112 records name 561 distinct characters. Every one
   is a `characterstatic.dbss` character with `npc_kind` Collect, and every
-  one is also the u16 key that starts a row of `collect.dbss` (713 rows,
-  not documented yet). The character's `label_kr` is often one of its
+  one is also the u16 key that starts a row of [`collect.dbss`](collect_dbss.md) (713 rows on
+  client 3474). The character's `label_kr` is often one of its
   model names in another case (`Weed_Seasphere_01` for Agar `10369`, whose
   four models are `weed_seasphere_01`, `_02`, `_b_01` and `_c_01`).
 - The name has two forms (client 3473). 423 names hold a folder and are a

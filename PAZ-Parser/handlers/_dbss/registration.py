@@ -135,6 +135,7 @@ from .itemimprovement.handler import (
     item_improvement_source_offset_handler,
 )
 from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
+from .collect.handler import CollectHandler, collect_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
@@ -191,6 +192,8 @@ def register_dbss_handlers() -> None:
     register_handler("extractitem.dbss", ExtractItemHandler())
     register_handler("collectresourcenameoffset.dbss", collect_resource_name_offset_handler())
     register_handler("collectresourcename.dbss", CollectResourceNameHandler())
+    register_handler("collectoffset.dbss", collect_offset_handler())
+    register_handler("collect.dbss", CollectHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
     register_handler("textbindoffset.dbss", text_bind_offset_handler())

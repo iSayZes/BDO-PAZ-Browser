@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "productType": "Gathering Type",
+    "tools": "Tools and Drop Groups",
+    "productDrop": "Product Drop Group",
+    "productTime": "Product Time",
+    "productHp": "HP",
+    "productDecreaseHp": "HP Decrease",
+    "actionPoint": "Action Point",
+    "spawnDelay": "Spawn Delay Time",
+    "spawnVariable": "Spawn Variable Time"
+  },
+  "productTypes": {
+    "0": "Default",
+    "1": "Base",
+    "2": "Gathering",
+    "3": "Farming",
+    "4": "Mining",
+    "5": "Purification",
+    "6": "Lumbering",
+    "7": "Tanning"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} gathering characters"
+  }
+}

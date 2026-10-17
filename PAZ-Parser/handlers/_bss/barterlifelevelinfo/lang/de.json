@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Stufe",
+    "rank": "Rang",
+    "discountPoint": "Rabattpunkte",
+    "discount": "Überzeugungskraft-Rabatt"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

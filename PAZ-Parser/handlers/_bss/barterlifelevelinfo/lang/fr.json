@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Niveau",
+    "rank": "Rang",
+    "discountPoint": "Points de remise",
+    "discount": "Remise de tractations"
+  },
+  "meta": {
+    "count": "{count} niveaux"
+  }
+}

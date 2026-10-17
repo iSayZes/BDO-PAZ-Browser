@@ -6,6 +6,7 @@ from _common.empty_table import EmptyTableHandler
 
 from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
+from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
@@ -95,6 +96,7 @@ def register_bss_handlers() -> None:
     ):
         register_handler(name, AllQuestListBssHandler())
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
+    register_handler("barterlifelevelinfo.bss", BarterLifeLevelInfoBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("classskilllist.bss", ClassSkillListBssHandler())

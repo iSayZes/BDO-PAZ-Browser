@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "레벨",
+    "rank": "등급",
+    "discountPoint": "할인 포인트",
+    "discount": "교섭력 할인"
+  },
+  "meta": {
+    "count": "레벨 {count}개"
+  }
+}

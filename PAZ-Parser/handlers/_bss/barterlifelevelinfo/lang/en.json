@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Level",
+    "rank": "Rank",
+    "discountPoint": "Discount Points",
+    "discount": "Parley Discount"
+  },
+  "meta": {
+    "count": "{count} levels"
+  }
+}

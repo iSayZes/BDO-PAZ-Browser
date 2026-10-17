@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Уровень",
+    "rank": "Ранг",
+    "discountPoint": "Очки скидки",
+    "discount": "Скидка убеждения"
+  },
+  "meta": {
+    "count": "Уровней: {count}"
+  }
+}

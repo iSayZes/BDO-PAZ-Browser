@@ -278,6 +278,14 @@ OFFSET_CASE = HandlerCase(
 )
 
 
+@pytest.fixture(autouse=True)
+def _no_leftover_loc() -> None:
+    # The effect texts expect no LOC unless a test loads one (`life_skill_loc`).
+    # A handler case run before them, in this module or on the same xdist
+    # worker, leaves the client LOC loaded, which names keys like town 126.
+    reset_loc()
+
+
 @pytest.fixture(scope="module")
 def buff_result(request: Any) -> HandlerResult:
     result = getattr(request.module, "_BUFF_RESULT", None)
@@ -703,7 +711,6 @@ def test_life_skill_param_labels(buff: EffectInput, expected: dict[int, str]) ->
 
 
 def test_life_skill_without_loc_shows_its_enum_name() -> None:
-    reset_loc()
     assert effect_text(EffectInput(25, [100000, 2, 2])) == "hunting EXP +10%"
 
 

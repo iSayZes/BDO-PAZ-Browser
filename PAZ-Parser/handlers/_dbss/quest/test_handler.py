@@ -7,9 +7,7 @@ from typing import Any
 import pytest
 
 from bdo_models import PazEntry
-from bdo_preview import get_handler
 from table_sort import SORT_DESC, TableSort, sort_order_by_values
-from tests.fixtures import ensure_fixtures
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -21,6 +19,7 @@ from tests.framework import (
     header_count,
     run_case,
 )
+from tests.runner import load_case
 
 
 def _quest_record(record: dict) -> dict:
@@ -138,25 +137,9 @@ def quest_result(request: Any) -> HandlerResult:
 
 @pytest.fixture(scope="module")
 def quest_lazy_context() -> tuple[Any, bytes, PazEntry, dict[str, bytes]]:
-    fixture_paths = ensure_fixtures(CASE)
-
-    from _common.loc import init_loc
-
-    init_loc(fixture_paths[str(CASE.loc_file)].read_bytes())
-    entry = PazEntry(
-        archive_name="",
-        internal_path=CASE.internal_path,
-        offset=0,
-        compressed_size=0,
-        uncompressed_size=0,
-        compression_type=0,
-        encryption_type=0,
-    )
-    handler = get_handler("quest.dbss", ".dbss")
-    companions = {
-        name: fixture_paths[name].read_bytes() for name in CASE.companion_files
-    }
-    return handler, fixture_paths[str(CASE.data_file)].read_bytes(), entry, companions
+    # load_case restores the LOC parse the other cases already made.
+    loaded = load_case(CASE)
+    return loaded.handler, loaded.data, loaded.entry, loaded.companions
 
 
 @pytest.mark.parametrize("spec", CASE.tests, ids=case_id)

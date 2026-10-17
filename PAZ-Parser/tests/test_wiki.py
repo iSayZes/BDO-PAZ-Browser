@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from wiki import build_site
+from wiki import build_site, render_site
 from wiki.format_list import game_totals
 from wiki.markdown_html import render_inline, render_markdown
 
@@ -196,18 +196,19 @@ def test_game_totals_come_from_the_readme_supported_formats_lines() -> None:
     assert game_totals(readme) == {"bss": 402, "dbss": 374}
 
 
-def test_the_repo_wiki_has_a_page_for_every_doc_and_no_dead_page_links(tmp_path: Path) -> None:
-    build_site(REPO_DOCS, tmp_path / "site")
+def test_the_repo_wiki_has_a_page_for_every_doc_and_no_dead_page_links() -> None:
+    # Rendered in memory: reading ~300 freshly written pages back took 2.3 s,
+    # spent in the virus scanner on first open.
+    html_pages = {name: text for name, text in render_site(REPO_DOCS).files.items() if name.endswith(".html")}
 
     docs = {path.stem for path in (REPO_DOCS / "file-formats").glob("*.md") if not path.name.startswith("_")}
-    pages = {path.stem for path in (tmp_path / "site").glob("*.html")} - {"index"}
+    pages = {Path(name).stem for name in html_pages} - {"index"}
     assert pages == docs
-    for page in (tmp_path / "site").glob("*.html"):
-        text = page.read_text(encoding="utf-8")
+    for name, text in html_pages.items():
         targets = set(re.findall(r'href="([a-z0-9_]+\.html)', text))
-        assert targets <= {f"{name}.html" for name in pages | {"index"}}, page.name
+        assert targets <= {f"{page}.html" for page in pages | {"index"}}, name
         anchors = set(re.findall(r'href="#([a-z0-9-]+)"', text))
-        assert all(f'id="{anchor}"' in text for anchor in anchors), page.name
+        assert all(f'id="{anchor}"' in text for anchor in anchors), name
 
 
 def test_the_format_list_groups_read_the_loc_page_and_the_extension(tmp_path: Path) -> None:

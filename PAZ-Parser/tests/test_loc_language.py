@@ -3,7 +3,6 @@ tables parsed in the old one."""
 from __future__ import annotations
 
 import re
-from collections.abc import Iterator
 
 import pytest
 
@@ -19,12 +18,6 @@ _ROWS: list[LocRow] = [
     (_KNOWN_TYPE, 100, 0, 0, 0, "Alpha"),
     (_UNKNOWN_TYPE, 200, 0, 0, 0, "Beta"),
 ]
-
-
-@pytest.fixture(autouse=True)
-def _english_after_each_test() -> Iterator[None]:
-    yield
-    set_handler_lang("en")
 
 
 @pytest.fixture

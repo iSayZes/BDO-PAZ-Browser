@@ -314,7 +314,7 @@ Picking the field behind a column:
   or the field means different things per row, add a sort field that holds
   the shown number or `None`, and keep the raw field for export:
   `energy_reward_2_amount` in `mentaltheme.dbss`, `effect_sort_values()` in
-  `plantworkerpassiveskill.bss`. `tests/test_empty_cells.py` enforces both rules.
+  `plantworkerpassiveskill.bss`. `tests/test_handler_sort.py` enforces both rules.
 
 Ordering rules (`table_sort.py`):
 
@@ -365,10 +365,12 @@ each page renders in a few milliseconds. If a table renders its own HTML instead
 
 `handlers/_dbss/quest/handler.py` does the same over its record index.
 Its records carry scripts thousands of characters long, so `_build_sort_order`
-parses one row at a time and keeps only the sorted field. Every column sorts in
-about 0.5 s on the 19,599-quest fixture, on top of the 0.35 s walk that builds
-the index on open. The default sort on `packed_quest_id` reads the IDs straight
-from the index instead, so opening the table parses only the first page.
+parses one row at a time and keeps only the sortable fields, all of them in one
+pass on the first sort (`_sort_columns`). On client 3474 (18,991 quests) that
+first sort takes about 0.65 s and every later column or direction only sorts the
+kept values, on top of the 0.35 s walk that builds the index on open. The
+default sort on `packed_quest_id` reads the IDs straight from the index instead,
+so opening the table parses only the first page.
 
 ## Unit Tests
 
@@ -502,18 +504,21 @@ user-facing table contract, add a `record_mapper` to `HandlerCase`. The mapper
 receives one raw record and returns the normalized dictionary used by test specs.
 
 `tests/test_handler_sort.py` needs no per-handler code. It collects every
-`HandlerCase` in the handler-local test modules (`tests/handler_cases.py`),
-renders page 1 and checks that
-each `data-sort-key` header is in `sortable_fields()`, then sorts by every
-declared field in both directions. A handler that renders no sortable headers,
-or crashes while rendering or sorting, fails there. Parsed LOC is kept per
-fixture and restored between cases, so the whole sweep takes about 25 s.
+`HandlerCase` in the handler-local test modules (`tests/handler_cases.py`) and
+runs one test per case that parses the fixture once through `all_records()`:
 
-`tests/test_empty_cells.py` runs over the same cases. It renders every record
-and fails when a sortable cell shows a dash or nothing while its record holds a
-value that is not empty, which would sort that row among the real values (see
-"Store none as None" above). A text value that is itself `-`, such as a name in
-the game data, passes; image cells are skipped. It takes about 25 s too.
+- The empty-cell check (`tests/empty_cells.py`) renders every record and fails
+  when a sortable cell shows a dash or nothing while its record holds a value
+  that is not empty, which would sort that row among the real values (see
+  "Store none as None" above). A text value that is itself `-`, such as a name
+  in the game data, passes; image cells are skipped.
+- The sort check renders page 1, checks that each `data-sort-key` header is in
+  `sortable_fields()`, then sorts by every declared field in both directions. A
+  handler that renders no sortable headers, or crashes while rendering or
+  sorting, fails there.
+
+Parsed LOC is kept per fixture and restored between cases, so the whole sweep
+takes about 35 s.
 
 Fixtures are input files required by tests. Do not commit extracted game files.
 `PAZ-Parser/tests/fixtures/` is gitignored except for `.gitkeep`. Missing fixtures
@@ -590,6 +595,19 @@ PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[TitleId = 3] PA
 
 `pytest --clean` leaves out the per-handler blocks and prints only failed tests
 and a pass/total line; run without it to see them.
+
+With pytest-xdist (in `requirements-dev.txt`) the suite runs in parallel:
+
+```bash
+python -m pytest --clean -n 12 --dist loadgroup
+```
+
+`--dist loadgroup` keeps each handler's `test_handler.py` on one worker, so its
+case is parsed once; the sweep in `tests/test_handler_sort.py` spreads one case
+per test. On a 32-thread machine that takes about 25 s instead of 72 s. Workers
+skip the up-front handler runs and the per-handler blocks, and their test IDs
+keep the module path. A test that passes alone but fails here depends on state
+another test left behind, such as a loaded LOC.
 
 ## Checking a Handler from the Command Line
 

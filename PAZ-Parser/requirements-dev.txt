@@ -3,4 +3,6 @@
 pillow>=10.0
 # Exact versions, so a new pytest or pyright release can't change a CI result.
 pytest==9.0.3
+# Parallel local runs (`-n 12 --dist loadgroup`); CI runs serially.
+pytest-xdist==3.8.0
 pyright==1.1.414

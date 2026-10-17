@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from dataclasses import replace
+import gc
 import os
 import sys
 import time
@@ -22,7 +24,36 @@ for path in (PAZ_PARSER_DIR, HANDLERS_DIR):
         sys.path.insert(0, path_str)
 
 
+@pytest.fixture(autouse=True)
+def _english_after_each_test() -> Iterator[None]:
+    # set_handler_lang() is process-wide, and BdoApi applies the saved
+    # language when it is built or saves settings; tests expect English.
+    yield
+    from bdo_preview import set_handler_lang
+
+    set_handler_lang("en")
+
+
+def _is_xdist_worker(config: pytest.Config) -> bool:
+    return hasattr(config, "workerinput")
+
+
 def pytest_collection_finish(session: pytest.Session) -> None:
+    # An xdist worker runs only the cases of the handler modules it is sent
+    # (see pytest_collection_modifyitems), through each module's own result
+    # fixture, instead of every case up front.
+    if not _is_xdist_worker(session.config):
+        _run_handler_cases(session)
+
+    # The handler results stay alive for the whole session. Freezing them
+    # keeps every later collection (bench.timing calls gc.collect() per run)
+    # from walking millions of record objects.
+    gc.collect()
+    gc.freeze()
+
+
+def _run_handler_cases(session: pytest.Session) -> None:
+    """Run each collected module's CASE once and keep the result on the module."""
     # --clean keeps the output to failures and the pass/total line.
     reporter = None
     if not session.config.getoption("--clean"):
@@ -61,10 +92,27 @@ def pytest_collection_finish(session: pytest.Session) -> None:
             reporter.write_line(f"loc:    {loc}")
 
 
-def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
+# Before xdist's own hook, which reads the xdist_group marks.
+@pytest.hookimpl(tryfirst=True)
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
     items.sort(key=lambda item: (item.path.name if item.path else "", item.name))
+    if _is_xdist_worker(config):
+        _group_handler_modules(items)
+        return
     for item in items:
         item._nodeid = item.name
+
+
+def _group_handler_modules(items: list[pytest.Item]) -> None:
+    """Keep each handler test module on one xdist worker under `--dist loadgroup`.
+
+    Its module fixtures then parse the case once, not once per worker that
+    gets one of its tests. Node IDs keep their paths: the short names repeat
+    across handler modules, and xdist matches the workers' collections by ID.
+    """
+    for item in items:
+        if item.path is not None and item.path.is_relative_to(HANDLERS_DIR):
+            item.add_marker(pytest.mark.xdist_group(item.path.relative_to(HANDLERS_DIR).as_posix()))
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -102,7 +150,9 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     bdo_preview.load_plugins(bdo_preview.BUNDLED_HANDLERS_DIR)
 
     config = session.config
-    if config.getoption("--frozen-fixtures"):
+    # Under pytest-xdist the controller syncs before it starts the workers,
+    # which then only read the fixtures.
+    if config.getoption("--frozen-fixtures") or hasattr(config, "workerinput"):
         return
 
     from tests.fixture_sync import sync_fixtures

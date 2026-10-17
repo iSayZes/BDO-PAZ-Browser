@@ -4,10 +4,12 @@
     "icon": "Значок",
     "territory": "Территория",
     "nation": "Государство",
-    "autonomous": "Автономия",
-    "crown": "Корона",
-    "armor": "Доспехи",
-    "positions": "Позиции"
+    "lordTerritory": "Территория правителя",
+    "kingTerritory": "Королевская территория",
+    "booty": "Награды",
+    "occupyingTent": "Палатка захвата",
+    "militiaAttack": "Атака ополчения",
+    "militiaDefense": "Защита ополчения"
   },
   "meta": {
     "count": "Территорий: {count}"

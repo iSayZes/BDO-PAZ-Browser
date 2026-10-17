@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "classType": "Тип класса",
+    "className": "Класс",
+    "level": "Уровень"
+  },
+  "offsetColumns": {
+    "classType": "Тип класса",
+    "level": "Уровень",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "meta": {
+    "count": "Записей уровней: {count} · типов класса: {classes}",
+    "offsetCount": "Записей смещения: {count} · типов класса: {classes}"
+  }
+}

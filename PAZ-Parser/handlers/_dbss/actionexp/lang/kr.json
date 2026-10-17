@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "level": "레벨"
+  },
+  "offsetColumns": {
+    "classType": "직업 유형",
+    "level": "레벨",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "meta": {
+    "count": "레벨 기록 {count}개 · 직업 유형 {classes}개",
+    "offsetCount": "오프셋 레코드 {count}개 · 직업 유형 {classes}개"
+  }
+}

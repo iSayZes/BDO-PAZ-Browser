@@ -1,14 +1,17 @@
 """One preview handler for tables the client ships empty: a u32 count of 0 and no records.
 
-The tables are listed in `_dbss/empty_tables/tables.py`. The preview is one
-status row with the header count. A file that declares records raises
-ValueError, so a patch that fills the table shows as a parse error instead of
-an empty preview. Labels come from `_common/lang/` (`emptyColumns`).
+The tables are listed in `_dbss/empty_tables/tables.py` (a bare count) and
+`_bss/empty_tables/tables.py` (PABR, the count after the magic, read by that
+package's parser). The preview is one status row with the header count. A
+file that declares records raises ValueError, so a patch that fills the table
+shows as a parse error instead of an empty preview. Labels come from
+`_common/lang/` (`emptyColumns`).
 """
 
 from __future__ import annotations
 
 import struct
+from collections.abc import Callable
 from pathlib import Path
 
 from bdo_models import PazEntry
@@ -19,6 +22,9 @@ from _common.lang import handler_text, load_handler_strings
 
 _COMMON_LANG_DIR = Path(__file__).parent / "lang"
 _COUNT_SIZE = 4
+
+# (data, file name, status text) -> the one status row.
+EmptyTableParser = Callable[[bytes, str, str], list[dict]]
 
 
 def parse_empty_table(data: bytes, file_name: str, status: str) -> list[dict]:
@@ -37,8 +43,9 @@ def parse_empty_table(data: bytes, file_name: str, status: str) -> list[dict]:
 class EmptyTableHandler(PreviewHandler):
     """Renders a zero-count table; see the module docstring."""
 
-    def __init__(self, file_name: str) -> None:
+    def __init__(self, file_name: str, parse: EmptyTableParser = parse_empty_table) -> None:
         self._file_name = file_name
+        self._parse = parse
 
     def _columns(self) -> list[Column]:
         labels = load_handler_strings(self.lang, _COMMON_LANG_DIR)["emptyColumns"]
@@ -57,7 +64,7 @@ class EmptyTableHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> list[dict]:
         status = handler_text(self.lang, _COMMON_LANG_DIR, "meta.noRecords")
-        return parse_empty_table(data, self._file_name, status)
+        return self._parse(data, self._file_name, status)
 
     def render_records_page(
         self,

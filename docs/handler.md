@@ -1054,7 +1054,11 @@ A table the client ships with a u32 count of `0` gets no package of its
 own: add its file name to `EMPTY_TABLES` in `_dbss/empty_tables/tables.py`,
 and the registration gives it an `EmptyTableHandler(file_name)`. The preview
 is one status row with the count, and a file that declares records raises
-ValueError; the table then needs its own handler. A table that is empty on
+ValueError; the table then needs its own handler. A PABR `.bss` with a
+count of `0` and no strings goes into `EMPTY_PABR_TABLES` in
+`_bss/empty_tables/tables.py` instead, which registers
+`EmptyTableHandler(file_name, parse_empty_pabr_table)` with the PABR reader
+of `_bss/empty_tables/parser.py`. A table that is empty on
 the live client but holds records on an older one gets its own package that
 reads the older records and returns no rows for the count of `0`
 (`growthpasspointshop.dbss`, `instancedungeonskillstatic.dbss`,

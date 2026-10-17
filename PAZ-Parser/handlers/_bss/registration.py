@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from bdo_preview import register_handler
 
+from _common.empty_table import EmptyTableHandler
+
 from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
@@ -13,6 +15,8 @@ from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
 from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
+from .empty_tables.parser import parse_empty_pabr_table
+from .empty_tables.tables import EMPTY_PABR_TABLES
 from .employeeexp.handler import EmployeeExpBssHandler
 from .encyclopedia.handler import EncyclopediaBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
@@ -103,6 +107,8 @@ def register_bss_handlers() -> None:
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
+    for name in EMPTY_PABR_TABLES:
+        register_handler(name, EmptyTableHandler(name, parse_empty_pabr_table))
     register_handler("encyclopedia.bss", EncyclopediaBssHandler())
     register_handler("experience.bss", ExperienceBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())

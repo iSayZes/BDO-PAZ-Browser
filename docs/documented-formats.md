@@ -153,6 +153,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `knowledgelearningcharacterkey.bss` | Knowledge table 0 grouped by card: each card ID with the u16 IDs of the characters that teach it | [knowledgelearningcharacterkey](file-formats/knowledgelearningcharacterkey_bss.md) | 0 | 0 |
 | `knowledgelearningoffset.dbss` | Index into `knowledgelearning.dbss`, maps source ID → offset/size per table | [knowledgelearning](file-formats/knowledgelearning_dbss.md) | 1 | 0 |
 | `languagedata_en.loc`              | Localization string table (zlib-compressed, UTF-16-LE)                                                         | [loc](file-formats/languagedata_loc.md)                             | 5              | 0 |
+| `lifeactionexperience.dbss` | Life skill EXP per item: an item key and two life skill and EXP slots; every EXP is 0 on clients 1784 and 3474 | [lifeactionexperience](file-formats/lifeactionexperience_dbss.md) | 1 | 0 |
+| `lifeactionexperienceoffset.dbss` | Index into `lifeactionexperience.dbss`, maps the item key → offset/size, 4 bytes past the row start; no PABR magic | [lifeactionexperience](file-formats/lifeactionexperience_dbss.md) | 1 | 0 |
 | `lifeexp.dbss` | Life skill EXP tables: EXP per level (0 to 180) for each of the 15 life skill slots, with the client's rank names (Beginner to Guru) | [lifeexp](file-formats/lifeexp_dbss.md) | 0 | 0 |
 | `lifeexpmaxlevel.bss` | Max level per life skill, a bare u32 array (180 for every life skill on client 3464) | [lifeexpmaxlevel](file-formats/lifeexpmaxlevel_bss.md) | 0 | 0 |
 | `lifeexpoffset.dbss` | Index into `lifeexp.dbss`, one block per life skill, maps level → offset/size | [lifeexp](file-formats/lifeexp_dbss.md) | 0 | 0 |

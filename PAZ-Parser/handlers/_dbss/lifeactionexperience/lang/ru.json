@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemKey": "Ключ предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "lifeSkill1": "Ремесло 1",
+    "exp1": "Опыт 1",
+    "lifeSkill2": "Ремесло 2",
+    "exp2": "Опыт 2"
+  },
+  "offsetColumns": {
+    "itemKey": "Ключ предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Предметов: {count}"
+  }
+}

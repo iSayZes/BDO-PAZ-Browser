@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "lifeSkill1": "Profesión 1",
+    "exp1": "EXP 1",
+    "lifeSkill2": "Profesión 2",
+    "exp2": "EXP 2"
+  },
+  "offsetColumns": {
+    "itemKey": "Clave de objeto",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} objetos"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "icon": "Icon",
+    "item": "Item",
+    "lifeSkill1": "Life Skill 1",
+    "exp1": "EXP 1",
+    "lifeSkill2": "Life Skill 2",
+    "exp2": "EXP 2"
+  },
+  "offsetColumns": {
+    "itemKey": "Item Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} items"
+  }
+}

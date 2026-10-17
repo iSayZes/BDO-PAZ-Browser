@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "icon": "아이콘",
+    "item": "아이템",
+    "lifeSkill1": "생활 1",
+    "exp1": "경험치 1",
+    "lifeSkill2": "생활 2",
+    "exp2": "경험치 2"
+  },
+  "offsetColumns": {
+    "itemKey": "아이템 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "아이템 {count}개"
+  }
+}

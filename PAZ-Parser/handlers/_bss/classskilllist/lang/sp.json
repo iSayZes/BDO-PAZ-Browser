@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "skillCount": "Cantidad",
+    "skills": "Habilidades"
+  },
+  "meta": {
+    "count": "{count} clases"
+  }
+}

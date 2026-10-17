@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "skillCount": "개수",
+    "skills": "기술"
+  },
+  "meta": {
+    "count": "직업 {count}개"
+  }
+}

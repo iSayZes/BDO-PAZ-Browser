@@ -8,6 +8,7 @@ from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
@@ -95,6 +96,7 @@ def register_bss_handlers() -> None:
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
     register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler(

@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "columns": {
+    "key": "키"
+  },
+  "meta": {
+    "count": "기술 항목 {count}개"
+  }
+}

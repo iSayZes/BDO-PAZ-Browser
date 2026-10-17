@@ -13,21 +13,14 @@ import struct
 
 from _common.binary import u32
 from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at, string_table_start
+from _common.ui_texture import ui_texture_path
 
-
-# Stored sprite sheets start at "Combine/", which hangs off ui_texture.
-ICON_ROOT = "ui_texture/"
 
 # u32 menu_id | u32 x1 | u32 y1 | u32 x2 | u32 y2 | u32 icon_ref | u32 hotkey_ref
 # | u32 sheet_ref | u32 key_ref | u32 submenu_count
 _ROW = struct.Struct("<10I")
 _ROW_SIZE = 40
 assert _ROW.size == _ROW_SIZE
-
-
-def sprite_sheet_path(stored: str) -> str:
-    """PAZ path of a stored menu sprite sheet, or '' when there is none."""
-    return f"{ICON_ROOT}{stored.lower()}" if stored else ""
 
 
 def _row_offsets(data: bytes) -> range:
@@ -50,7 +43,7 @@ def parse_menu_records(data: bytes) -> list[dict]:
         ) = _ROW.unpack_from(data, offset)
         records.append({
             "menu_id": menu_id,
-            "icon_path": sprite_sheet_path(string_at(strings, icon_ref)),
+            "icon_path": ui_texture_path(string_at(strings, icon_ref)),
             "icon_region": (x1, y1, x2, y2),
             "hotkey": string_at(strings, hotkey_ref),
             "sheet": string_at(strings, sheet_ref),

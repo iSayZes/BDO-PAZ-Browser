@@ -1,9 +1,9 @@
 """`extractitem.dbss`: Extract Reform Stone, reformed gear split back apart.
 
 A u32 row count, then 48-byte rows back to back to the end of the file. A row
-is four slots of a u32 item ID and a u64 that is `1` on every row: the
-reformed item, the item the extraction uses up, the gear returned and the
-reform stone returned. `extractitemoffset.dbss` points at each row's
+is four slots of a u32 item ID and its u64 count: the reformed item, the
+item the extraction uses up, the gear returned and the reform stone
+returned. `extractitemoffset.dbss` points at each row's
 `item_id`, so the walk from the start needs no index. Layout in
 docs/file-formats/extractitem_dbss.md.
 """
@@ -46,18 +46,18 @@ def parse_extractitem_records(data: bytes) -> list[dict]:
 
 def _record(row: tuple[int, ...]) -> dict:
     (
-        item_id, unknown_04,
-        need_item_id, unknown_10,
-        result_item_id, unknown_1c,
-        result_material_id, unknown_28,
+        item_id, item_count,
+        need_item_id, need_item_count,
+        result_item_id, result_item_count,
+        result_material_id, result_material_count,
     ) = row
     return {
         "item_id": item_id,
         "need_item_id": need_item_id,
         "result_item_id": result_item_id,
         "result_material_id": result_material_id,
-        "unknown_04": unknown_04,
-        "unknown_10": unknown_10,
-        "unknown_1c": unknown_1c,
-        "unknown_28": unknown_28,
+        "item_count": item_count,
+        "need_item_count": need_item_count,
+        "result_item_count": result_item_count,
+        "result_material_count": result_material_count,
     }

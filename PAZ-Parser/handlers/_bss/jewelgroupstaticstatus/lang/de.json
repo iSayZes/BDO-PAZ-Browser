@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "Kristall-Gruppe",
+    "name": "Name",
+    "maxCount": "Max. einzufassende Anzahl in der Gruppe"
+  },
+  "values": {
+    "noLimit": "unbegrenzt"
+  },
+  "meta": {
+    "count": "{count} Kristall-Gruppen"
+  }
+}

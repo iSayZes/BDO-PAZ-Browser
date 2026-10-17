@@ -6,10 +6,9 @@
 Each row lists the zone's region tab, filter categories, monsters, quests,
 drop items, tags, regions and titles (each a u32 count and its values), then
 its position, recommended and Total Stat AP / DP, node, Max AP Limit and
-monster species. `dropuimaincategoryinfo.bss` maps the region tab to a
-territory; `_bss/dropuitaginfo/parser.py` reads the tag colours. Layouts in
-docs/file-formats/dropuihuntinggroundinfo_bss.md and
-docs/file-formats/dropuimaincategoryinfo_bss.md.
+monster species. `_bss/dropuimaincategoryinfo/parser.py` maps the region
+tab to a territory; `_bss/dropuitaginfo/parser.py` reads the tag colours.
+Layout in docs/file-formats/dropuihuntinggroundinfo_bss.md.
 """
 
 from __future__ import annotations
@@ -17,7 +16,7 @@ from __future__ import annotations
 import struct
 
 from _common.binary import u32
-from _common.pabr_strings import check_pabr, fixed_row_offsets, read_string_table, string_at, string_table_start
+from _common.pabr_strings import check_pabr, read_string_table, string_at, string_table_start
 from _common.record_reader import RecordReader
 
 
@@ -30,9 +29,6 @@ _HEAD = struct.Struct("<II")
 # | f32 total_ap | f32 total_dp | u32 limited_ap | u32 limited_ap_apply_percent
 # | u8 tribe_type
 _TAIL = struct.Struct("<3fffIffIIB")
-
-# u32 key | u16 territory_key | u32 icon_ref
-_MAIN_CATEGORY = struct.Struct("<IHI")
 
 
 def _row_count(data: bytes, name: str) -> int:
@@ -114,15 +110,3 @@ def parse_hunting_ground_records(data: bytes) -> list[dict]:
         )
     return records
 
-
-def parse_territory_keys(data: bytes) -> dict[int, int]:
-    """Region tab key -> territory key, from `dropuimaincategoryinfo.bss`.
-
-    Raises ValueError on a bad magic or when the rows do not end where the
-    string table starts.
-    """
-    territories: dict[int, int] = {}
-    for offset in fixed_row_offsets(data, _MAIN_CATEGORY.size, "dropuimaincategoryinfo.bss"):
-        key, territory_key, _icon_ref = _MAIN_CATEGORY.unpack_from(data, offset)
-        territories[key] = territory_key
-    return territories

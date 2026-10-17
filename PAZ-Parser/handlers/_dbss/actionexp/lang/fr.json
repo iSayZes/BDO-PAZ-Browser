@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "classType": "Type de classe",
+    "className": "Classe",
+    "level": "Niveau"
+  },
+  "offsetColumns": {
+    "classType": "Type de classe",
+    "level": "Niveau",
+    "dataOffset": "Décalage des données",
+    "dataSize": "Taille des données"
+  },
+  "meta": {
+    "count": "{count} entrées de niveau · {classes} types de classe",
+    "offsetCount": "{count} entrées de décalage · {classes} types de classe"
+  }
+}

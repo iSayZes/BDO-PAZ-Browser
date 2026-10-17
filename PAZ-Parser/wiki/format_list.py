@@ -6,7 +6,7 @@ import re
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 
-from format_docs.doc_index import index_rows
+from format_docs.doc_index import IndexRows, is_file_pattern
 
 from .doc_source import DocSource, first_sentence
 from .layout_view import layout_views
@@ -14,7 +14,7 @@ from .versions_html import layout_versions
 
 _COUNTED_EXTS = ("bss", "dbss")
 # README's Supported Formats lines, kept current from the game files by the pre-commit hook.
-_GAME_TOTAL = re.compile(r"Handler Supported \d+/(?P<total>\d+) \.(?P<ext>bss|dbss) formats")
+_GAME_TOTAL = re.compile(r"`\.(?P<ext>bss|dbss)`: \d+ of (?P<total>\d+) files with a handler")
 
 
 @dataclass(frozen=True)
@@ -61,9 +61,9 @@ def format_entry(doc: DocSource, rows: list[tuple[str, str]]) -> FormatEntry:
     )
 
 
-def documented_counts(rows: dict[str, list[tuple[str, str]]]) -> dict[str, int]:
+def documented_counts(rows: IndexRows) -> dict[str, int]:
     """How many `.bss` and `.dbss` files the index rows document; patterns like `*.ai` are left out."""
-    files = {file for doc_rows in rows.values() for file, _ in doc_rows if not any(char in file for char in "*{")}
+    files = {file for doc_rows in rows.values() for file, _ in doc_rows if not is_file_pattern(file)}
     return {ext: sum(1 for file in files if file.endswith(f".{ext}")) for ext in _COUNTED_EXTS}
 
 
@@ -81,4 +81,4 @@ def formats_script(entries: Iterable[FormatEntry], documented: dict[str, int], t
 def _ext(doc_stem: str) -> str:
     """`bss` or `dbss` from the doc's file name (`buff_dbss`), else `other`."""
     suffix = doc_stem.rsplit("_", 1)[-1]
-    return suffix if suffix in ("bss", "dbss") else "other"
+    return suffix if suffix in _COUNTED_EXTS else "other"

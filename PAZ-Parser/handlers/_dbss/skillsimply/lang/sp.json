@@ -2,6 +2,7 @@
   "columns": {
     "skillNo": "N.º de habilidad",
     "level": "Nivel",
+    "maxLevel": "Nivel máx.",
     "icon": "Icono",
     "name": "Nombre",
     "classes": "Clases",

@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "key": "Key"
+  },
+  "meta": {
+    "count": "{count} skill records"
+  }
+}

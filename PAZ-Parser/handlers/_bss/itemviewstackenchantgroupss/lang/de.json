@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "enchantKey": "Verstärkungsschlüssel",
+    "items": "Gegenstände",
+    "groupSize": "Gruppengröße",
+    "groupKeys": "Gruppenschlüssel",
+    "groupItems": "Gruppengegenstände"
+  },
+  "meta": {
+    "count": "{count} Verstärkungsschlüssel · {groups} Gruppen"
+  }
+}

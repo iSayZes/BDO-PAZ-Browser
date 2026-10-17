@@ -2,16 +2,24 @@ from __future__ import annotations
 
 from bdo_preview import register_handler
 
+from _common.empty_table import EmptyTableHandler
+
 from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
+from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
+from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
+from .empty_tables.parser import parse_empty_pabr_table
+from .empty_tables.tables import EMPTY_PABR_TABLES
 from .employeeexp.handler import EmployeeExpBssHandler
+from .encyclopedia.handler import EncyclopediaBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
 from .experience.handler import ExperienceBssHandler
 from .exploration.handler import ExplorationBssHandler
@@ -32,6 +40,9 @@ from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatus
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
 from .itemtradeetc.handler import ItemTradeEtcBssHandler
+from .itemviewstackenchantgroupss.handler import ItemViewStackEnchantGroupSsBssHandler
+from .jewelgroupstaticstatus.handler import JewelGroupStaticStatusBssHandler
+from .jewelspecialslotsgroupstaticstatus.handler import JewelSpecialSlotsGroupStaticStatusBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
@@ -43,6 +54,7 @@ from .menu.handler import MenuBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
+from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
@@ -85,16 +97,22 @@ def register_bss_handlers() -> None:
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
     register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler(
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),
     )
+    register_handler("dropuimaincategoryinfo.bss", DropUiMainCategoryInfoBssHandler())
+    register_handler("dropuisubcategoryinfo.bss", DropUiSubCategoryInfoBssHandler())
     register_handler("dropuitaginfo.bss", DropUiTagInfoBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
+    for name in EMPTY_PABR_TABLES:
+        register_handler(name, EmptyTableHandler(name, parse_empty_pabr_table))
+    register_handler("encyclopedia.bss", EncyclopediaBssHandler())
     register_handler("experience.bss", ExperienceBssHandler())
     register_handler("exploration.bss", ExplorationBssHandler())
     register_handler("explorepointexperiencenew.bss", ExplorePointExperienceBssHandler())
@@ -118,6 +136,12 @@ def register_bss_handlers() -> None:
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())
+    register_handler("itemviewstackenchantgroupss.bss", ItemViewStackEnchantGroupSsBssHandler())
+    register_handler("jewelgroupstaticstatus.bss", JewelGroupStaticStatusBssHandler())
+    register_handler(
+        "jewelspecialslotsgroupstaticstatus.bss",
+        JewelSpecialSlotsGroupStaticStatusBssHandler(),
+    )
     register_handler(
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),
@@ -134,6 +158,7 @@ def register_bss_handlers() -> None:
     register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
+    register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())

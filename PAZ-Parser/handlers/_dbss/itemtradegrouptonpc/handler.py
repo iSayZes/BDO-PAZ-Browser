@@ -1,6 +1,7 @@
-"""itemtradegrouptonpc.dbss preview handler."""
+"""Preview handlers for itemtradegrouptonpc.dbss and itemtradegroupfromnpc.dbss: trade goods per NPC."""
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 from bdo_models import PazEntry
@@ -23,7 +24,7 @@ _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 
 
-def item_trade_group_to_npc_offset_handler() -> OffsetTableHandler:
+def item_trade_group_offset_handler() -> OffsetTableHandler:
     return OffsetTableHandler(
         _LANG_DIR,
         [
@@ -35,7 +36,12 @@ def item_trade_group_to_npc_offset_handler() -> OffsetTableHandler:
     )
 
 
-class ItemTradeGroupToNpcHandler(PreviewHandler):
+class ItemTradeGroupHandler(PreviewHandler):
+    """One table row per item entry; `parse_records` reads the file's layout into those entries."""
+
+    def __init__(self, parse_records: Callable[[bytes], list[dict]] = parse_itemtradegrouptonpc_records) -> None:
+        self._parse_records = parse_records
+
     def _columns(self) -> list[Column]:
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
         return [
@@ -70,7 +76,7 @@ class ItemTradeGroupToNpcHandler(PreviewHandler):
                 "commerce_type_name": commerce_type_name(record["commerce_type"]),
                 "trade_group_text": trade_group_text(self.lang, record["trade_group_type"]),
             }
-            for record in parse_itemtradegrouptonpc_records(data)
+            for record in self._parse_records(data)
         ]
 
     def render_records_page(

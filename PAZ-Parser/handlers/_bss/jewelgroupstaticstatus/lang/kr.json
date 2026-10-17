@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "group": "수정 그룹",
+    "name": "이름",
+    "maxCount": "그룹 내 최대 장착 가능 개수"
+  },
+  "values": {
+    "noLimit": "제한 없음"
+  },
+  "meta": {
+    "count": "수정 그룹 {count}개"
+  }
+}

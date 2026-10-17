@@ -18,10 +18,9 @@ from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import find_prefixed_ascii
 from _common.record_reader import RecordReader
 from _common.skill import split_skill_key
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT, ui_texture_path
 
 _U32 = struct.Struct("<I")
-# Stored paths start at "New_Icon/", which lives under ui_texture/icon/.
-ICON_ROOT = "ui_texture/icon/"
 _ICON_SUFFIX = ".dds"
 
 
@@ -54,7 +53,8 @@ def _read_head(data: bytes, row: PabrOffsetRow) -> tuple[RecordReader, str, str,
 def _icon_path(data: bytes, start: int, end: int) -> str:
     for path in find_prefixed_ascii(data, start, end):
         if path.lower().endswith(_ICON_SUFFIX):
-            return f"{ICON_ROOT}{path}"
+            # Stored paths start at "New_Icon/", which lives under ui_texture/icon/.
+            return ui_texture_path(path, UI_TEXTURE_ICON_ROOT)
     return ""
 
 

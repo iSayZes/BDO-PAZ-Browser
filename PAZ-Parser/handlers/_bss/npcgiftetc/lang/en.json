@@ -5,6 +5,10 @@
     "notes": "Notes"
   },
   "notes": {
+    "Energy cost of a gift": "Energy cost of a gift",
+    "Energy cost of a confession": "Energy cost of a confession",
+    "Lowest amity for a confession": "Lowest amity for a confession",
+    "Highest item price for a gift": "Highest item price for a gift",
     "Global gift-system value": "Global gift-system value",
     "Observed zero": "Observed zero"
   },

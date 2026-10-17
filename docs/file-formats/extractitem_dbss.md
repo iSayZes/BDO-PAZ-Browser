@@ -18,10 +18,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | 1784 and later | 3473    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
 | 1      | 1784 and later | 3473    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
 
-| Layout | File                     | Known             | Unknown          |
-| ------ | ------------------------ | ----------------- | ---------------- |
-| 1      | `extractitem.dbss`       | 37,380 B (33.3%)  | 74,752 B (66.7%) |
-| 1      | `extractitemoffset.dbss` | 28,036 B (100.0%) | 0 B (0.0%)       |
+| Layout | File                     | Known              | Unknown    |
+| ------ | ------------------------ | ------------------ | ---------- |
+| 1      | `extractitem.dbss`       | 112,132 B (100.0%) | 0 B (0.0%) |
+| 1      | `extractitemoffset.dbss` | 28,036 B (100.0%)  | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -48,18 +48,19 @@ All multi-byte values are little-endian.
 
 ### Row (48 bytes)
 
-The row is four 12-byte slots of a u32 item ID and a u64.
+The row is four 12-byte slots of a u32 item ID and its u64 count. Every
+count is `1` on all 2,336 rows (client 3473).
 
-| Offset  | Type | Field              | Notes                                                         |
-| ------- | ---- | ------------------ | ------------------------------------------------------------- |
-| `+0x00` | u32  | item_id            | Reformed gear the window takes; unique per row, the index key |
-| `+0x04` | u64  | unknown_04         | `1` on every row (client 3464)                                |
-| `+0x0C` | u32  | need_item_id       | Item the extraction uses up, see below                        |
-| `+0x10` | u64  | unknown_10         | `1` on every row (client 3464)                                |
-| `+0x18` | u32  | result_item_id     | Gear returned; never equal to `item_id`                       |
-| `+0x1C` | u64  | unknown_1c         | `1` on every row (client 3464)                                |
-| `+0x24` | u32  | result_material_id | Reform stone (or other material) returned                     |
-| `+0x28` | u64  | unknown_28         | `1` on every row (client 3464)                                |
+| Offset  | Type | Field                 | Notes                                                         |
+| ------- | ---- | --------------------- | ------------------------------------------------------------- |
+| `+0x00` | u32  | item_id               | Reformed gear the window takes; unique per row, the index key |
+| `+0x04` | u64  | item_count            | Fixed `1`, see Field Names                                    |
+| `+0x0C` | u32  | need_item_id          | Item the extraction uses up, see below                        |
+| `+0x10` | u64  | need_item_count       | How many `need_item_id` the extraction uses up                |
+| `+0x18` | u32  | result_item_id        | Gear returned; never equal to `item_id`                       |
+| `+0x1C` | u64  | result_item_count     | Fixed `1`, see Field Names                                    |
+| `+0x24` | u32  | result_material_id    | Reform stone (or other material) returned                     |
+| `+0x28` | u64  | result_material_count | Fixed `1`, see Field Names                                    |
 
 Byte `+0x03` of each item ID is `0` on every row, so no ID carries an
 enchant level in its top byte. The rows are not sorted by `item_id`.
@@ -110,6 +111,42 @@ key and `data_size` covers it. The index rows are not in file order; on
 client 3464 the 2,336 offsets are exactly the 2,336 row starts, and the key
 at each offset equals the index `item_id`.
 
+## Field Names
+
+The row is the `Item_ImprovementExtract_Table` sheet that a private server
+on client 1784 ships in its `DataSheets.bexcel`. Its columns are
+`ExtractionItem`, `NeedExtractMaterialKey`, `NeedExtractMaterialCount`,
+`ExtractDropItem1`, `ExtractDropItem2` and `ContentsGroupKey`; the last one
+is not in the row.
+
+| Field                 | Column                     |
+| --------------------- | -------------------------- |
+| `item_id`             | `ExtractionItem`           |
+| `need_item_id`        | `NeedExtractMaterialKey`   |
+| `need_item_count`     | `NeedExtractMaterialCount` |
+| `result_item_id`      | `ExtractDropItem1`         |
+| `result_material_id`  | `ExtractDropItem2`         |
+
+Matched by `ExtractionItem` against client 3473, the sheet and the client
+file share 1,127 keys. `need_item_id` and `result_item_id` match on all
+1,127 and `result_material_id` on 1,086; the other 41 are Cups whose key
+changed (sheet `8135`, `8146` and `8147`, client `8141`, `8148`, `8149`,
+`8181` and `8182`). That private server's own `extractitem.dbss`, built from
+the sheet, holds 1,196 rows; all three item columns match on every one.
+
+`NeedExtractMaterialCount` is `1` on every sheet row, so the values do not
+place it. The server dump of that private server does. Its
+`Item_ImprovementExtract_Table` loader builds four (item key, 8-byte count)
+pairs per row, in row order: `ExtractionItem` with a literal count of `1`,
+`NeedExtractMaterialKey` with `NeedExtractMaterialCount`, then
+`ExtractDropItem1` and `ExtractDropItem2` (one `ExtractDropItem%#` string,
+read for 1 and 2), each with a literal `1`. It rejects a row when any key is
+`0` or any count is not above `0`. So `need_item_count` is the only count
+the sheet sets, and the other three are `1` by the loader.
+
+Neither the 2016 client with debug symbols nor the BdoEmu tables of client
+519 have an extraction type or table.
+
 ## Notes
 
 - The window is `panel_window_extraction_system_all`
@@ -123,7 +160,9 @@ at each offset equals the index `item_id`.
   for which `ToClient_isExtractFromItem(key)` is true, and the request is
   `ToClient_requestExtractItem(extractableSlotNo, materialSlotNo)`. The
   result line is `LUA_EXTRACTIONSYSTEM_RESULTMSG` "{item1} and {itme2} were
-  separated.", and the two result icons hide their count.
+  separated.", and the two result icons hide their count. The need item is
+  drawn with a literal `1` (or `0` when the inventory has none), not with
+  `need_item_count`.
 - The window refuses gear with Caphras EXP (`LUA_EXTRACTIONSYSTEM_FAIL_DESC_1`)
   or transfused crystals (`LUA_EXTRACTIONSYSTEM_FAIL_DESC_2`); the table has no
   field for either.
@@ -156,16 +195,6 @@ at each offset equals the index `item_id`.
   says for Storm Devoured gear; its capture has 2,328 rows.
 
 ## Open Questions
-
-### The Four u64 Fields
-
-`unknown_04`, `unknown_10`, `unknown_1c` and `unknown_28` follow each item ID
-and are `1` on every row (client 3464), so they read like item counts, the
-(item, u64 count) shape of `enchantstaticstatus.dbss`. calpheonlabs reads
-them as counts. The extraction Lua hides the count on both result icons and
-draws the need item with a literal `1` (or `0` when the inventory has none)
-instead of a value from the table, so no client text shows these fields;
-with only `1` stored, counts and a constant are not told apart.
 
 ### Enchant Level on the Key
 

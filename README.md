@@ -116,18 +116,18 @@ See [docs/handler.md](docs/handler.md) for the full guide, including companion f
 
 > **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. If you have a file open on the Parsed tab, the preview re-renders automatically with the updated handler.
 
-## Supported Formats
-
-- Handler Supported 83/402 .bss formats.
-- Handler Supported 162/374 .dbss formats.
-- Handler Supported 31 other formats.
-
 ## Documented Formats
 
 The [format docs wiki](https://isayzes.github.io/BDO-PAZ-Browser/) lists every documented file with its known
 share, open questions and in-game checks, and has one page per doc with its
 layouts, byte maps and the clients each layout fits. The Wiki workflow
 rebuilds it from `docs/file-formats/` whenever a release changes the docs.
+
+## Supported Formats
+
+- `.bss`: 93 of 402 files with a handler.
+- `.dbss`: 168 of 374 files with a handler.
+- Other formats: 31 with a handler.
 
 ## Requirements
 
@@ -192,6 +192,9 @@ Or print only failed tests and a pass/total line:
 ```bash
 python -m pytest --clean
 ```
+
+Add `-n 12 --dist loadgroup` to run in parallel with pytest-xdist (see
+`docs/handler.md`).
 
 Open a PAZ folder once in the GUI if fixture fetching has no saved game path yet. Without one, the tests that need game files are skipped and the rest still run, which is what CI does.
 

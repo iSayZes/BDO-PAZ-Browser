@@ -9,6 +9,7 @@
     "enhancementType": "Type d'optimisation",
     "slot": "Emplacement",
     "weaponType": "Type d'arme",
+    "crystalGroup": "Groupe de cristaux",
     "requiredLevel": "Niv. requis",
     "classes": "Classes",
     "binding": "Liaison",
@@ -41,7 +42,9 @@
     "tradeKarma": "Chef de commerce (perte de karma)",
     "tradeImperialCrafting": "Livraison impériale d'artisanat",
     "tradeGuild": "Commerce de guilde",
-    "tradeType": "Type {type}"
+    "tradeType": "Type {type}",
+    "crystalGroup": "{name} (max {max_count})",
+    "crystalGroupNoLimit": "{name} (illimité)"
   },
   "meta": {
     "count": "{count} objets · {enhanceable} optimisables",

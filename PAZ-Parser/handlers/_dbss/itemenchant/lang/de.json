@@ -9,6 +9,7 @@
     "enhancementType": "Verstärkungstyp",
     "slot": "Ausrüstungsplatz",
     "weaponType": "Waffentyp",
+    "crystalGroup": "Kristall-Gruppe",
     "requiredLevel": "Erf. Stufe",
     "classes": "Klassen",
     "binding": "Bindung",
@@ -41,7 +42,9 @@
     "tradeKarma": "Handelsaufsicht (Karmaverlust)",
     "tradeImperialCrafting": "Kaiserliche Herstellungslieferung",
     "tradeGuild": "Gildenhandel",
-    "tradeType": "Typ {type}"
+    "tradeType": "Typ {type}",
+    "crystalGroup": "{name} (max. {max_count})",
+    "crystalGroupNoLimit": "{name} (unbegrenzt)"
   },
   "meta": {
     "count": "{count} Gegenstände · {enhanceable} verstärkbar",

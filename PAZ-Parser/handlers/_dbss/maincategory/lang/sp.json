@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "categoryId": "ID de categoría",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "categoryId": "ID de categoría",
+    "icon": "Icono"
+  },
+  "meta": {
+    "count": "{count} categorías del Bazar Perla"
+  }
+}

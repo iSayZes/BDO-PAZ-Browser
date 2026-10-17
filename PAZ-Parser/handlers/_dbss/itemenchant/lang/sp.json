@@ -9,6 +9,7 @@
     "enhancementType": "Tipo de refuerzo",
     "slot": "Casilla",
     "weaponType": "Tipo de arma",
+    "crystalGroup": "Grupo",
     "requiredLevel": "Nivel req.",
     "classes": "Clases",
     "binding": "Vinculación",
@@ -41,7 +42,9 @@
     "tradeKarma": "Intendente (pérdida de alineamiento)",
     "tradeImperialCrafting": "Artesanía imperial",
     "tradeGuild": "Comercio de la hermandad",
-    "tradeType": "Tipo {type}"
+    "tradeType": "Tipo {type}",
+    "crystalGroup": "{name} (máx. {max_count})",
+    "crystalGroupNoLimit": "{name} (ilimitada)"
   },
   "meta": {
     "count": "{count} objetos · {enhanceable} reforzables",

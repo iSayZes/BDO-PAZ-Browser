@@ -2,6 +2,7 @@
   "columns": {
     "skillNo": "N° de compétence",
     "level": "Niveau",
+    "maxLevel": "Niveau max.",
     "icon": "Icône",
     "name": "Nom",
     "classes": "Classes",

@@ -2,7 +2,10 @@
   "columns": {
     "key": "Key",
     "regionKey": "Region Key",
-    "regionName": "Region"
+    "regionName": "Region",
+    "effectChanceMin": "Effect Chance Min",
+    "effectChanceMax": "Effect Chance Max",
+    "wind": "Wind"
   },
   "meta": {
     "count": "{count} blizzard regions"

@@ -4,10 +4,12 @@
     "icon": "아이콘",
     "territory": "영지",
     "nation": "국가",
-    "autonomous": "자치령",
-    "crown": "왕관",
-    "armor": "갑옷",
-    "positions": "위치"
+    "lordTerritory": "영주 영지",
+    "kingTerritory": "국왕 영지",
+    "booty": "보상",
+    "occupyingTent": "점령 천막",
+    "militiaAttack": "민병대 공격",
+    "militiaDefense": "민병대 방어"
   },
   "meta": {
     "count": "영지 {count}개"

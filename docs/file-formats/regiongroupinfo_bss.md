@@ -147,6 +147,7 @@ The two productivity flags hold the same value on every row in all three sources
 - `display_graph_position` is near the node but is not the node's position from `mapdata_realexplore2.bwp`: the distance is usually 5,000 to 50,000 units (Velia: group `7542, -6548, 72626`, node `13800, -6715, 76996`). Groups 160 to 176 and 194 to 198 share one position (`-127640, 8789, -446513`) although their nodes lie far apart, and groups 215 to 220 share another. The sheet column is `DisplayGraphPosition` and the 2016 member `_regionPosition`.
 - The file has no strings of its own and the client has no LOC type for region group names, so a group is shown by its node.
 - The client Lua uses the group key in only three places: the login queue (`getRegionGroupKey`, `getTicketCountByRegion`), the NPC navigator filter (`regionGroup`) and a worker `RegionWork` result (`regionGroupInfo`). None of them reads a field of this file by name.
+- The client 519 private server loads `CorpProductivity`, `FishingProductivity` and `Loyalty` but never reads them back. Every 15 minutes its `RegionProductivityService` picks a random value from 500,000 to 1,000,000 per group for each of `Loyalty`, `Farming` and `Fishing` and sends all groups in one packet, as fishing, farming, loyalty per group. It calls corp productivity "Farming", which is its own name and no client source confirms it.
 
 ## Open Questions
 

@@ -9,6 +9,7 @@
     "enhancementType": "Тип усиления",
     "slot": "Слот",
     "weaponType": "Тип оружия",
+    "crystalGroup": "Категория",
     "requiredLevel": "Треб. ур.",
     "classes": "Классы",
     "binding": "Привязка",
@@ -41,7 +42,9 @@
     "tradeKarma": "Управляющий торговлей (потеря кармы)",
     "tradeImperialCrafting": "Имперский караван",
     "tradeGuild": "Торговля гильдии",
-    "tradeType": "Тип {type}"
+    "tradeType": "Тип {type}",
+    "crystalGroup": "{name} (макс. {max_count})",
+    "crystalGroupNoLimit": "{name} (неограниченно)"
   },
   "meta": {
     "count": "Предметов: {count} · можно усилить: {enhanceable}",

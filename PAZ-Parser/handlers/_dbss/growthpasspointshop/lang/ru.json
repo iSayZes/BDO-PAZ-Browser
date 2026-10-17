@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "columns": {
+    "key": "Ключ",
+    "keyDup": "Копия ключа"
+  },
+  "meta": {
+    "count": "Записей магазина очков Growth Pass: {count}"
+  }
+}

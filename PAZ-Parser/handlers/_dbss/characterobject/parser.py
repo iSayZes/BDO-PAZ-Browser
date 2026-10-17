@@ -21,13 +21,12 @@ from dataclasses import dataclass
 from _common.binary import u16
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
 from _common.prefixed_string import read_prefixed_at
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT, UI_TEXTURE_ROOT
 
 
 # Most stored paths start at "Icon/", so they hang off ui_texture. About 200
 # start one level lower at "New_Icon/", which lives under ui_texture/icon/.
-CHARACTER_ICON_ROOT = "ui_texture/"
 _NEW_ICON_PREFIX = "new_icon/"
-_NEW_ICON_ROOT = "ui_texture/icon/"
 
 # The optional "New_" keeps a "New_Icon/..." path whole; without it the match
 # starts at the inner "Icon/" and drops a folder level.
@@ -106,5 +105,5 @@ def build_character_icon_index(data: bytes, offset_data: bytes) -> dict[int, str
 def _icon_paz_path(stored: bytes) -> str:
     """PAZ path for a stored icon path."""
     path = stored.decode("ascii").lower()
-    root = _NEW_ICON_ROOT if path.startswith(_NEW_ICON_PREFIX) else CHARACTER_ICON_ROOT
+    root = UI_TEXTURE_ICON_ROOT if path.startswith(_NEW_ICON_PREFIX) else UI_TEXTURE_ROOT
     return f"{root}{path}"

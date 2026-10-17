@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.binary import u16, u32
+from _common.binary import u16, u32, u64
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 
@@ -14,21 +14,22 @@ _SIZE = 32
 _MAGIC = b"PABR"
 _LANG_DIR = Path(__file__).parent / "lang"
 
+# The named fields are the NpcGift_Option sheet columns, in sheet order.
 _FIELDS = [
-    ("unknown_04", 0x04, "u16", "Global gift-system value"),
-    ("unknown_06", 0x06, "u16", "Global gift-system value"),
-    ("unknown_08", 0x08, "u32", "Global gift-system value"),
-    ("unknown_0c", 0x0C, "u32", "Global gift-system value"),
-    ("unknown_10", 0x10, "u32", "Observed zero"),
+    ("use_gift_wp", 0x04, "u16", "Energy cost of a gift"),
+    ("use_propose_wp", 0x06, "u16", "Energy cost of a confession"),
+    ("min_propose_intimacy", 0x08, "u32", "Lowest amity for a confession"),
+    ("limit_gift_price", 0x0C, "u64", "Highest item price for a gift"),
     ("unknown_14", 0x14, "u32", "Observed zero"),
     ("unknown_18", 0x18, "u32", "Global gift-system value"),
     ("unknown_1c", 0x1C, "u32", "Observed zero"),
 ]
 
+_READERS = {"u16": u16, "u32": u32, "u64": u64}
+
+
 def _parse_value(data: bytes, offset: int, type_name: str) -> int:
-    if type_name == "u16":
-        return u16(data, offset)
-    return u32(data, offset)
+    return _READERS[type_name](data, offset)
 
 
 class NpcGiftEtcBssHandler(PreviewHandler):

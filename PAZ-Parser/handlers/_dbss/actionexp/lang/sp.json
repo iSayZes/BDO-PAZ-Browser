@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "level": "Nivel"
+  },
+  "offsetColumns": {
+    "classType": "Tipo de clase",
+    "level": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos"
+  },
+  "meta": {
+    "count": "{count} registros de nivel · {classes} tipos de clase",
+    "offsetCount": "{count} entradas de desplazamiento · {classes} tipos de clase"
+  }
+}

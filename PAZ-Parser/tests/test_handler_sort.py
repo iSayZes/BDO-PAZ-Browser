@@ -1,5 +1,5 @@
 """Every handler with a fixture case renders sortable headers, opens in its
-default sort and sorts by each of them."""
+default sort, sorts by each of them and sorts its empty cells last."""
 from __future__ import annotations
 
 import re
@@ -7,6 +7,7 @@ import re
 import pytest
 
 from table_sort import SORT_ASC, SORT_DESC, TableSort
+from tests.empty_cells import assert_empty_cells_sort_last
 from tests.handler_cases import case_file_name, handler_cases
 from tests.models import HandlerCase
 from tests.runner import LoadedCase, load_case
@@ -56,8 +57,13 @@ def _assert_sorts_every_field(loaded: LoadedCase) -> None:
 
 
 @pytest.mark.parametrize("case", handler_cases(), ids=case_file_name)
-def test_handler_sorts_by_every_rendered_column(case: HandlerCase) -> None:
+def test_handler_sorts_every_column_with_empty_cells_last(case: HandlerCase) -> None:
     loaded = load_case(case)
+    # all_records() caches the parse on the data object, so the sort checks
+    # below reuse it instead of parsing the fixture a second time.
+    records = loaded.handler.all_records(loaded.data, loaded.entry, loaded.companions)
+    if records and "_error" not in records[0]:
+        assert_empty_cells_sort_last(loaded.handler, records)
 
     _assert_headers_are_declared(loaded)
     _assert_default_sort_is_shown(loaded)

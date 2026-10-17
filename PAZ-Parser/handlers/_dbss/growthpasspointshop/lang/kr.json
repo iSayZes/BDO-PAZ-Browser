@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "columns": {
+    "key": "키",
+    "keyDup": "키 사본"
+  },
+  "meta": {
+    "count": "성장 패스 포인트 상점 항목 {count}개"
+  }
+}

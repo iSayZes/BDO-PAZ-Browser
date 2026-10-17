@@ -26,9 +26,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-| File                  | Required | Role                     |
-| --------------------- | -------- | ------------------------ |
-| `languagedata_en.loc` | Optional | Category names (115)     |
+| File                        | Required | Role                                          |
+| --------------------------- | -------- | --------------------------------------------- |
+| `languagedata_en.loc`       | Optional | Category names (115)                          |
+| `texturestring_combine.xml` | Optional | Sprite sheet and rectangle of the button icon |
 
 All multi-byte values are little-endian.
 
@@ -79,6 +80,8 @@ names and the button icon names.
 ## Notes
 
 - No hunting ground stores 5 or 7 on client 3464.
-- No handler reads this file; the
-  [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md) handler
-  names the categories from LOC type 115 alone.
+- The [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md)
+  handler names the categories from LOC type 115 alone and does not read
+  this file.
+- The icon key is the texture key as stored; the drop window uses it without
+  a state suffix (`panel_window_renewdropitem_all_1.luac`).

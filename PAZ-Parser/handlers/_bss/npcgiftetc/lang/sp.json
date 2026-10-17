@@ -5,6 +5,10 @@
     "notes": "Notas"
   },
   "notes": {
+    "Energy cost of a gift": "Coste de energía de un regalo",
+    "Energy cost of a confession": "Coste de energía de una declaración",
+    "Lowest amity for a confession": "Afinidad mínima para declararse",
+    "Highest item price for a gift": "Precio máximo de un objeto para regalar",
     "Global gift-system value": "Valor global del sistema de regalos",
     "Observed zero": "Siempre cero hasta ahora"
   },

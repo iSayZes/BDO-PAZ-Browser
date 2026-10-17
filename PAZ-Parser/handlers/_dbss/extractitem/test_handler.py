@@ -53,7 +53,7 @@ CASE = HandlerCase(
         SchemaTest(required_keys=[
             "item_id", "item_name", "need_item_id", "need_item_name",
             "result_item_id", "result_item_name", "result_material_id", "result_material_name",
-            "reform_group", "unknown_04", "unknown_10", "unknown_1c", "unknown_28",
+            "reform_group", "item_count", "need_item_count", "result_item_count", "result_material_count",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         # The Mirror of Equilibrium text: "Extract Heart of Karanda from Storm Devoured gear".
@@ -100,8 +100,8 @@ OFFSET_CASE = HandlerCase(
 )
 
 
-def _row(item_id: int, need: int, result: int, material: int) -> bytes:
-    return ROW.pack(item_id, 1, need, 1, result, 1, material, 1)
+def _row(item_id: int, need: int, result: int, material: int, need_count: int = 1) -> bytes:
+    return ROW.pack(item_id, 1, need, need_count, result, 1, material, 1)
 
 
 @pytest.fixture(scope="module")
@@ -208,12 +208,15 @@ def test_offset_rows_point_at_every_row_key() -> None:
 
 
 def test_a_small_table_reads_back() -> None:
-    data = struct.pack("<I", 2) + _row(731222, 320060, 694273, 9787) + _row(10431, 4929, 10407, 4912)
+    data = struct.pack("<I", 2) + _row(731222, 320060, 694273, 9787, need_count=3) + _row(10431, 4929, 10407, 4912)
     records = parse_extractitem_records(data)
     assert [
         (r["item_id"], r["need_item_id"], r["result_item_id"], r["result_material_id"]) for r in records
     ] == [(731222, 320060, 694273, 9787), (10431, 4929, 10407, 4912)]
-    assert records[0]["unknown_28"] == 1
+    # Each count follows its own item ID: only the need item's count is 3.
+    assert [
+        (r["item_count"], r["need_item_count"], r["result_item_count"], r["result_material_count"]) for r in records
+    ] == [(1, 3, 1, 1), (1, 1, 1, 1)]
 
 
 def test_a_cut_row_raises() -> None:

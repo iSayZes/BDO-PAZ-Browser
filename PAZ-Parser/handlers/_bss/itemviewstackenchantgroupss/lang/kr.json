@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "enchantKey": "강화 키",
+    "items": "아이템",
+    "groupSize": "그룹 크기",
+    "groupKeys": "그룹 강화 키",
+    "groupItems": "그룹 아이템"
+  },
+  "meta": {
+    "count": "강화 키 {count}개 · 그룹 {groups}개"
+  }
+}

@@ -2,7 +2,10 @@
   "columns": {
     "key": "Schlüssel",
     "regionKey": "Regionsschlüssel",
-    "regionName": "Region"
+    "regionName": "Region",
+    "effectChanceMin": "Effektchance Min.",
+    "effectChanceMax": "Effektchance Max.",
+    "wind": "Wind"
   },
   "meta": {
     "count": "{count} Schneesturmregionen"

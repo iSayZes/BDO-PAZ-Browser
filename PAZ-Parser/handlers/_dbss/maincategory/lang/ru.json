@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "categoryId": "ID категории",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "columns": {
+    "categoryId": "ID категории",
+    "icon": "Значок"
+  },
+  "meta": {
+    "count": "Категорий премиум-магазина: {count}"
+  }
+}

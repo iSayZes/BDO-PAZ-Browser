@@ -6,6 +6,8 @@ from typing import Any
 import pytest
 
 from _common.class_type import ALL_CLASSES_MASK, class_types_in_mask
+from _common.string_hash import key_hash
+from _dbss.skillsimply.parser import contents_group_key
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -33,6 +35,12 @@ _ABSOLUTE_DAGGER_STAB = 3144 << 16 | 1
 _WATER_SPHERE_III = 2238 << 16 | 1
 # Looks like a sentinel, but is the ordinary skill 57005.
 _DEAD_KEY = 0xDEAD0001
+# 2016 gc::SkillTypeStaticStatus::SkillOwnerType: 0 actor, 1 guild.
+_ACTOR_OWNER = 0
+_GUILD_OWNER = 1
+_AMPLE_STORAGE_LV_26 = 65229 << 16 | 1
+# buff.dbss effect_type of the Elvia weapon blessings, the buff an "Elvia:" skill needs.
+_ELVIA_BLESSING_EFFECT_TYPE = 179
 
 CASE = HandlerCase(
     handler_name="skillsimply.dbss",
@@ -44,8 +52,10 @@ CASE = HandlerCase(
     internal_path="gamecommondata/binary/skillsimply.dbss",
     tests=[
         SchemaTest(required_keys=[
-            "skill_key", "skill_no", "level", "icon_path", "name", "class_mask", "classes", "kind", "kind_label",
-            "branch", "weapon_type", "weapon", "is_fusion", "can_quick_slot",
+            "skill_key", "skill_no", "level", "max_level", "icon_path", "name", "class_mask", "classes",
+            "kind", "kind_label", "branch", "require_equip_type", "require_equip_slot", "weapon",
+            "skill_owner_type", "is_fusion", "can_quick_slot", "condition", "is_except_cool_time",
+            "need_buff_module_type", "contents_group_keys",
             "need_level", "need_skill_point", "need_skill_nos", "need_skills", "previous_rank_no",
             "previous_rank", "next_rank_keys", "first_rank_key", "exclusive_skill_nos", "base_skill_keys",
         ]),
@@ -70,6 +80,8 @@ CASE = HandlerCase(
         TargetTest(col="skill_key", value=_FIREBALL_IV, expected={"weapon": "Main"}),
         TargetTest(col="skill_key", value=_ABSOLUTE_DAGGER_STAB, expected={"weapon": "Sub"}),
         TargetTest(col="skill_key", value=_WATER_SPHERE_III, expected={"weapon": "Awakening"}),
+        TargetTest(col="skill_key", value=_AMPLE_STORAGE_LV_26, expected={"skill_owner_type": _GUILD_OWNER}),
+        TargetTest(col="skill_key", value=_FIREBALL_IV, expected={"skill_owner_type": _ACTOR_OWNER}),
     ],
 )
 
@@ -157,6 +169,41 @@ def test_all_class_skills_show_one_label(skillsimply_result: HandlerResult) -> N
     all_class = [r for r in skillsimply_result.records if r["class_mask"] == ALL_CLASSES_MASK]
     assert all_class
     assert {r["classes"] for r in all_class} == {"All"}
+
+
+def test_max_level_is_the_highest_level_of_its_skill_number(skillsimply_result: HandlerResult) -> None:
+    top_levels: dict[int, int] = {}
+    for record in skillsimply_result.records:
+        top_levels[record["skill_no"]] = max(top_levels.get(record["skill_no"], 0), record["level"])
+    for record in skillsimply_result.records:
+        assert record["max_level"] == top_levels[record["skill_no"]], record["skill_key"]
+
+
+def test_every_contents_group_hash_decodes_to_a_key(skillsimply_result: HandlerResult) -> None:
+    for record in skillsimply_result.records:
+        assert record["contents_group_keys"], record["skill_key"]
+        assert None not in record["contents_group_keys"], record["skill_key"]
+
+
+def test_contents_group_key_reads_the_hash_of_the_decimal_key() -> None:
+    assert contents_group_key(key_hash("0")) == 0
+    assert contents_group_key(key_hash("1642")) == 1642
+    assert contents_group_key(key_hash("not a key")) is None
+
+
+def test_only_elvia_skills_need_the_elvia_blessing(skillsimply_result: HandlerResult) -> None:
+    elvia = [r for r in skillsimply_result.records if r["name"].startswith("Elvia:")]
+    assert elvia
+    for record in skillsimply_result.records:
+        needs_blessing = record["need_buff_module_type"] == _ELVIA_BLESSING_EFFECT_TYPE
+        assert needs_blessing == record["name"].startswith("Elvia:"), record["skill_key"]
+
+
+def test_cooldown_exempt_skills_are_black_spirit_skills(skillsimply_result: HandlerResult) -> None:
+    exempt = [r for r in skillsimply_result.records if r["is_except_cool_time"]]
+    assert exempt
+    for record in exempt:
+        assert record["name"].startswith("Black Spirit:"), record["skill_key"]
 
 
 def test_records_open_in_skill_key_order(skillsimply_result: HandlerResult) -> None:

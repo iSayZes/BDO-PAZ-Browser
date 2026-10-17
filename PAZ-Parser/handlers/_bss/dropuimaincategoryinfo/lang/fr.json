@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Clé",
+    "territoryKey": "Clé de territoire",
+    "name": "Nom",
+    "icon": "Icône"
+  },
+  "meta": {
+    "count": "{count} onglets de région"
+  }
+}

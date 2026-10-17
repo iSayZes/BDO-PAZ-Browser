@@ -20,6 +20,7 @@ from enum import Enum
 from pathlib import Path
 
 from _common.lookup_index import IndexKind, lookup
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 
 
 class IconKind(Enum):
@@ -59,10 +60,10 @@ def clean_stored_icon_path(stored: str) -> str:
     return _REPEATED_SLASHES.sub("/", stored.strip().replace("\\", "/")).lower()
 
 
-ITEM_ICON_DIR = "ui_texture/icon/new_icon/product_icon_png"
+ITEM_ICON_DIR = f"{UI_TEXTURE_ICON_ROOT}new_icon/product_icon_png"
 
 
-SERVANT_SKILL_ICON_DIR = "ui_texture/icon/new_icon/08_servant_skill/02_pet"
+SERVANT_SKILL_ICON_DIR = f"{UI_TEXTURE_ICON_ROOT}new_icon/08_servant_skill/02_pet"
 
 
 def _derive_item_icon(item_id: int) -> str:

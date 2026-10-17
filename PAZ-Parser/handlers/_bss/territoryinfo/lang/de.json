@@ -4,10 +4,12 @@
     "icon": "Symbol",
     "territory": "Territorium",
     "nation": "Nation",
-    "autonomous": "Autonom",
-    "crown": "Krone",
-    "armor": "Rüstung",
-    "positions": "Positionen"
+    "lordTerritory": "Fürstenterritorium",
+    "kingTerritory": "Königsterritorium",
+    "booty": "Belohnungen",
+    "occupyingTent": "Besatzungszelt",
+    "militiaAttack": "Miliz-Angriff",
+    "militiaDefense": "Miliz-Verteidigung"
   },
   "meta": {
     "count": "{count} Territorien"

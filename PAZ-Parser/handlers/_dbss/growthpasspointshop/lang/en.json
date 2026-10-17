@@ -1,0 +1,14 @@
+{
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "key": "Key",
+    "keyDup": "Key Copy"
+  },
+  "meta": {
+    "count": "{count} point shop records"
+  }
+}

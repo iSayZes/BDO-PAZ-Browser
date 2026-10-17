@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "name": "Name",
+    "icon": "Symbol"
+  },
+  "meta": {
+    "count": "{count} Filterkategorien"
+  }
+}

@@ -19,7 +19,7 @@ from tests.framework import (
 
 # Grave Digging I to IV, one skill number per rank.
 _GRAVE_DIGGING_GROUP = 578
-_GRAVE_DIGGING_ICON = "ui_texture/icon/New_Icon/04_PC_Skill/01_PC_Skill/01_PHM_Skill/PHM_Skill_1759.dds"
+_GRAVE_DIGGING_ICON = "ui_texture/icon/new_icon/04_pc_skill/01_pc_skill/01_phm_skill/phm_skill_1759.dds"
 
 CASE = HandlerCase(
     handler_name="skillgroup.bss",

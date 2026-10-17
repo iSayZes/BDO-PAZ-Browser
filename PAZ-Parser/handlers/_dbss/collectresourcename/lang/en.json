@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nameHash": "Name Hash",
+    "model": "Model",
+    "characterId": "Character ID",
+    "name": "Name"
+  },
+  "offsetColumns": {
+    "nameHash": "Name Hash",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} gathering models"
+  }
+}

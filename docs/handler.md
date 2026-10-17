@@ -314,7 +314,7 @@ Picking the field behind a column:
   or the field means different things per row, add a sort field that holds
   the shown number or `None`, and keep the raw field for export:
   `energy_reward_2_amount` in `mentaltheme.dbss`, `effect_sort_values()` in
-  `plantworkerpassiveskill.bss`. `tests/test_empty_cells.py` enforces both rules.
+  `plantworkerpassiveskill.bss`. `tests/test_handler_sort.py` enforces both rules.
 
 Ordering rules (`table_sort.py`):
 
@@ -365,10 +365,12 @@ each page renders in a few milliseconds. If a table renders its own HTML instead
 
 `handlers/_dbss/quest/handler.py` does the same over its record index.
 Its records carry scripts thousands of characters long, so `_build_sort_order`
-parses one row at a time and keeps only the sorted field. Every column sorts in
-about 0.5 s on the 19,599-quest fixture, on top of the 0.35 s walk that builds
-the index on open. The default sort on `packed_quest_id` reads the IDs straight
-from the index instead, so opening the table parses only the first page.
+parses one row at a time and keeps only the sortable fields, all of them in one
+pass on the first sort (`_sort_columns`). On client 3474 (18,991 quests) that
+first sort takes about 0.65 s and every later column or direction only sorts the
+kept values, on top of the 0.35 s walk that builds the index on open. The
+default sort on `packed_quest_id` reads the IDs straight from the index instead,
+so opening the table parses only the first page.
 
 ## Unit Tests
 
@@ -502,18 +504,21 @@ user-facing table contract, add a `record_mapper` to `HandlerCase`. The mapper
 receives one raw record and returns the normalized dictionary used by test specs.
 
 `tests/test_handler_sort.py` needs no per-handler code. It collects every
-`HandlerCase` in the handler-local test modules (`tests/handler_cases.py`),
-renders page 1 and checks that
-each `data-sort-key` header is in `sortable_fields()`, then sorts by every
-declared field in both directions. A handler that renders no sortable headers,
-or crashes while rendering or sorting, fails there. Parsed LOC is kept per
-fixture and restored between cases, so the whole sweep takes about 25 s.
+`HandlerCase` in the handler-local test modules (`tests/handler_cases.py`) and
+runs one test per case that parses the fixture once through `all_records()`:
 
-`tests/test_empty_cells.py` runs over the same cases. It renders every record
-and fails when a sortable cell shows a dash or nothing while its record holds a
-value that is not empty, which would sort that row among the real values (see
-"Store none as None" above). A text value that is itself `-`, such as a name in
-the game data, passes; image cells are skipped. It takes about 25 s too.
+- The empty-cell check (`tests/empty_cells.py`) renders every record and fails
+  when a sortable cell shows a dash or nothing while its record holds a value
+  that is not empty, which would sort that row among the real values (see
+  "Store none as None" above). A text value that is itself `-`, such as a name
+  in the game data, passes; image cells are skipped.
+- The sort check renders page 1, checks that each `data-sort-key` header is in
+  `sortable_fields()`, then sorts by every declared field in both directions. A
+  handler that renders no sortable headers, or crashes while rendering or
+  sorting, fails there.
+
+Parsed LOC is kept per fixture and restored between cases, so the whole sweep
+takes about 35 s.
 
 Fixtures are input files required by tests. Do not commit extracted game files.
 `PAZ-Parser/tests/fixtures/` is gitignored except for `.gitkeep`. Missing fixtures
@@ -590,6 +595,19 @@ PAZ-Parser/handlers/_dbss/title/test_handler.py::test_title_dbss[TitleId = 3] PA
 
 `pytest --clean` leaves out the per-handler blocks and prints only failed tests
 and a pass/total line; run without it to see them.
+
+With pytest-xdist (in `requirements-dev.txt`) the suite runs in parallel:
+
+```bash
+python -m pytest --clean -n 12 --dist loadgroup
+```
+
+`--dist loadgroup` keeps each handler's `test_handler.py` on one worker, so its
+case is parsed once; the sweep in `tests/test_handler_sort.py` spreads one case
+per test. On a 32-thread machine that takes about 25 s instead of 72 s. Workers
+skip the up-front handler runs and the per-handler blocks, and their test IDs
+keep the module path. A test that passes alone but fails here depends on state
+another test left behind, such as a loaded LOC.
 
 ## Checking a Handler from the Command Line
 
@@ -1032,6 +1050,7 @@ _common/
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
+├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 
@@ -1053,7 +1072,15 @@ A table the client ships with a u32 count of `0` gets no package of its
 own: add its file name to `EMPTY_TABLES` in `_dbss/empty_tables/tables.py`,
 and the registration gives it an `EmptyTableHandler(file_name)`. The preview
 is one status row with the count, and a file that declares records raises
-ValueError; the table then needs its own handler.
+ValueError; the table then needs its own handler. A PABR `.bss` with a
+count of `0` and no strings goes into `EMPTY_PABR_TABLES` in
+`_bss/empty_tables/tables.py` instead, which registers
+`EmptyTableHandler(file_name, parse_empty_pabr_table)` with the PABR reader
+of `_bss/empty_tables/parser.py`. A table that is empty on
+the live client but holds records on an older one gets its own package that
+reads the older records and returns no rows for the count of `0`
+(`growthpasspointshop.dbss`, `instancedungeonskillstatic.dbss`,
+`itemtradegroupfromnpc.dbss`, client 1784).
 
 Name a character with `character_name()` from `character.py` (LOC type 6; its
 title, `<Storage Keeper>`, with `character_title()`), a
@@ -1405,8 +1432,10 @@ key to the base items whose `itemenchant.dbss` block stores it, in ascending
 ID order; keys no item uses and items with key `0` are left out. It is built
 by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same key. The
-`enchantstaticstatus.dbss` Items column reads it; `itemenchant.dbss` shows
-each item's own key as its Enchant Key column.
+`enchantstaticstatus.dbss` Items column and the
+[itemviewstackenchantgroupss.bss](file-formats/itemviewstackenchantgroupss_bss.md)
+Items and Group Items columns read it; `itemenchant.dbss` shows each item's
+own key as its Enchant Key column.
 
 `ENHANCEMENT_TYPE_ITEMS` maps an enhancement type (`enhancement_type` after
 the icon in [itemenchant.dbss](file-formats/itemenchant_dbss.md)) to its base
@@ -1489,6 +1518,16 @@ column uses the title alone.
 `icon_cell(path)` renders an icon cell. The path is not fetched at parse time;
 the UI lazily resolves it against the PAZ entry map when the cell scrolls into
 view, so a handler only has to emit a correct path string.
+
+Tables store texture paths relative to `ui_texture/` (`Combine/Icon/...`,
+`UI_Artwork/...`) in the client's mixed case. Turn one into its PAZ path with
+`ui_texture_path(stored)` from `_common/ui_texture.py`, which lowercases it
+and returns `""` for an empty string; pass `UI_TEXTURE_ICON_ROOT` as the
+second argument for a path stored relative to `ui_texture/icon/`
+(`specialenchantitem.bss`, `skilltype.dbss`). Tables that clean the stored
+path first build it from the same root constants: `clean_stored_icon_path()`
+for the backslashes of `itemenchant.dbss` and the buff tables, the root picked
+by prefix for `characterobject.dbss`.
 
 A list of entities with an icon each (the items of a subgroup) goes in one cell
 with `icon_list_cell(entries, hidden_count)`: each `(icon_path, label)` entry
@@ -1581,8 +1620,13 @@ A table that stores a UI texture key (`Combine_Etc_WorldMap_BossList_Begg`)
 instead of a path gets the sheet and region from
 `parse_texture_regions(xml, keys)` in `_common/texture_string.py`, which reads
 the `<Texture ID UV Path>` entries of a `ui_texture/texturestringkey/*.xml`
-companion; `bossinfostaicstatusmanager.bss` and `growthpasscategory.dbss` read
-`texturestring_combine.xml`.
+companion; `icon_fields(regions, key)` turns one key into the `icon_path` and
+`icon_region` record fields that `sprite_icon_cell()` draws.
+`bossinfostaicstatusmanager.bss`, `dropuimaincategoryinfo.bss`,
+`dropuisubcategoryinfo.bss` and `growthpasscategory.dbss` read
+`texturestring_combine.xml`. A button key can lack its state: the drop window
+adds `_Normal`, `_Over` or `_Click` to the `dropuimaincategoryinfo.bss` key,
+so its handler looks up `<key>_Normal`.
 
 ### Icon Popup
 

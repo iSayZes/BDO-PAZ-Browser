@@ -27,10 +27,14 @@ _WHILE = re.compile(rf"^while (?P<field>{_FIELD}) != (?P<value>\S+)$")
 
 @dataclass(frozen=True)
 class Count:
-    """How many elements: `kind` is fixed, field, until, while, rest or scan."""
+    """How many elements: `kind` is fixed, field, until, while, rest or scan.
+
+    A `while` count holds the field it reads in `value` and the value that ends it in `stop`.
+    """
 
     kind: str
     value: int | str
+    stop: str | None = None
 
 
 @dataclass(frozen=True)
@@ -94,6 +98,12 @@ def parse_type(text: str) -> TypeSpec | str:
     return _validated(TypeSpec(name, count, inner, condition))
 
 
+def structure_type(type_text: str) -> str | None:
+    """The structure a Type cell names, or None for a number, string or unit type and a cell outside the grammar."""
+    spec = parse_type(type_text)
+    return spec.name if not isinstance(spec, str) and spec.is_structure else None
+
+
 def fixed_size(spec: TypeSpec, structure_sizes: Mapping[str, int | None]) -> int | None:
     """The size in bytes when it does not depend on the data, else None."""
     if spec.condition is not None or spec.name in STRING_HEADS:
@@ -125,7 +135,7 @@ def referenced_fields(spec: TypeSpec) -> tuple[str, ...]:
     """
     names: list[str] = []
     if spec.count and spec.count.kind in ("field", "until"):
-        names.append(str(spec.count.value).split(" ")[0])
+        names.append(str(spec.count.value))
     if isinstance(spec.inner, str):
         names.append(spec.inner)
     if spec.condition:
@@ -143,7 +153,7 @@ def _parse_count(text: str) -> Count | str:
         return Count("until", until.group("target"))
     loop = _WHILE.match(text)
     if loop:
-        return Count("while", f"{loop.group('field')} {loop.group('value')}")
+        return Count("while", loop.group("field"), loop.group("value"))
     if re.fullmatch(_FIELD, text):
         return Count("field", text)
     return f"`[{text}]` is not a count"

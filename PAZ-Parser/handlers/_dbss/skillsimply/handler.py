@@ -18,8 +18,8 @@ _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "skillsimplyoffset.dbss"
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 3
-# weapon_type of every Awakening weapon skill, whatever the class.
-_AWAKENING_WEAPON_TYPE = 57
+# require_equip_type of every Awakening weapon skill, whatever the class.
+_AWAKENING_EQUIP_TYPE = 57
 
 
 def _skill_label(skill_no: int) -> str:
@@ -38,7 +38,7 @@ def _weapon(record: SkillSimplyRecord, labels: dict[str, str]) -> str:
         return labels["main"]
     if record.uses_sub_weapon:
         return labels["sub"]
-    if record.weapon_type == _AWAKENING_WEAPON_TYPE:
+    if record.require_equip_type == _AWAKENING_EQUIP_TYPE:
         return labels["awakening"]
     return ""
 
@@ -50,6 +50,7 @@ def _record_dict(record: SkillSimplyRecord, strings: dict) -> dict:
         "skill_key": record.skill_key,
         "skill_no": record.skill_no,
         "level": record.level,
+        "max_level": record.max_level,
         "icon_path": icon_path(IconKind.SKILL, record.skill_no),
         **pa_fields("name", skill_name_tagged(record.skill_no)),
         "class_mask": record.class_mask,
@@ -59,10 +60,16 @@ def _record_dict(record: SkillSimplyRecord, strings: dict) -> dict:
         # Zero means neither branch; None sorts last.
         "branch": record.branch or None,
         "branch_label": branch_labels.get(str(record.branch), str(record.branch)) if record.branch else "",
-        "weapon_type": record.weapon_type,
+        "require_equip_type": record.require_equip_type,
+        "require_equip_slot": record.require_equip_slot,
         "weapon": _weapon(record, strings["weapon"]),
+        "skill_owner_type": record.skill_owner_type,
         "is_fusion": record.is_fusion,
         "can_quick_slot": record.can_quick_slot,
+        "condition": record.condition,
+        "is_except_cool_time": record.is_except_cool_time,
+        "need_buff_module_type": record.need_buff_module_type,
+        "contents_group_keys": list(record.contents_group_keys),
         # Zero means no requirement; None sorts last.
         "need_level": record.need_level or None,
         "need_skill_point": record.need_skill_point or None,
@@ -84,6 +91,7 @@ class SkillSimplyHandler(PreviewHandler):
         return [
             Column(cols["skillNo"], "num", sort_key="skill_no"),
             Column(cols["level"], "num", sort_key="level"),
+            Column(cols["maxLevel"], "num", sort_key="max_level"),
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["name"], sort_key="name"),
             Column(cols["classes"], sort_key="classes"),
@@ -135,6 +143,7 @@ class SkillSimplyHandler(PreviewHandler):
             [
                 e(r["skill_no"]),
                 e(r["level"]),
+                e(r["max_level"]),
                 icon_cell(r["icon_path"]),
                 pa_cell(r, "name"),
                 e(r["classes"] or _EMPTY),

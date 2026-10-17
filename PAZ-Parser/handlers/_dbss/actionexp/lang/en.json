@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class",
+    "level": "Level"
+  },
+  "offsetColumns": {
+    "classType": "Class Type",
+    "level": "Level",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "meta": {
+    "count": "{count} level records · {classes} class types",
+    "offsetCount": "{count} offset records · {classes} class types"
+  }
+}

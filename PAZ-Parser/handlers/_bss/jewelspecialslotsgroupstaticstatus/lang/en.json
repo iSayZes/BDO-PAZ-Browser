@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "slot": "Slot",
+    "equipment": "Equipment",
+    "groups": "Crystal Group"
+  },
+  "meta": {
+    "count": "{count} special crystal slots"
+  }
+}

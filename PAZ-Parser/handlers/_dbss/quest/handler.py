@@ -151,6 +151,25 @@ class QuestDbssHandler(PreviewHandler):
         rows = range(start_row, min(total, start_row + page_size))
         return self._render_table(self._records_at(data, companions, rows), total)
 
+    def _sort_columns(self, data: bytes, companions: dict[str, bytes]) -> dict[str, tuple]:
+        """Every sortable field's value per row, built in one pass on the first sort.
+
+        Keeps the sort values (about 4 million characters on client 3474) instead of
+        every parsed record through get_records(). One pass costs as much as
+        sorting by a single field, so later fields and directions are free.
+        """
+        def build() -> dict[str, tuple]:
+            index = self._get_index(data, companions)
+            fields = self.sortable_fields()
+            rows = [
+                tuple(record.get(field) for field in fields)
+                for record in (self._record_at(data, index, row) for row in range(len(index)))
+            ]
+            columns = list(zip(*rows)) if rows else [() for _ in fields]
+            return dict(zip(fields, columns))
+
+        return self._data_cache(data, "sort_columns", build)
+
     def _build_sort_order(
         self,
         data: bytes,
@@ -158,14 +177,12 @@ class QuestDbssHandler(PreviewHandler):
         companions: dict[str, bytes],
         sort: TableSort,
     ) -> list[int]:
-        # Keeps one value per row rather than caching every parsed record
-        # (scripts run to thousands of characters) through get_records().
-        index = self._get_index(data, companions)
         if sort.field == "packed_quest_id":
             # The default sort: the index already holds the IDs, so the table
             # opens without parsing every quest.
+            index = self._get_index(data, companions)
             return sort_order_by_values(index.packed_quest_ids, sort.descending)
-        values = [self._record_at(data, index, row).get(sort.field) for row in range(len(index))]
+        values = self._sort_columns(data, companions)[sort.field]
         return sort_order_by_values(values, sort.descending)
 
     def render_sorted_page(

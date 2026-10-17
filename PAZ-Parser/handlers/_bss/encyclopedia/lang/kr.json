@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "key": "키",
+    "itemId": "아이템 ID",
+    "item": "아이템",
+    "image": "이미지",
+    "category": "카테고리",
+    "rareness": "희귀도",
+    "baseSize": "기준 크기 (cm)",
+    "averageSize": "평균 크기 (cm)",
+    "description": "설명"
+  },
+  "categories": {
+    "0": "기타",
+    "1": "민물고기",
+    "2": "바다물고기",
+    "3": "갑각류"
+  },
+  "meta": {
+    "count": "항목 {count}개"
+  }
+}

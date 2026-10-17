@@ -2,6 +2,7 @@
   "columns": {
     "skillNo": "Talent-Nr.",
     "level": "Stufe",
+    "maxLevel": "Höchststufe",
     "icon": "Symbol",
     "name": "Name",
     "classes": "Klassen",

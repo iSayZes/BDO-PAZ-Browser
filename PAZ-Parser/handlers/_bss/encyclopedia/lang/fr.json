@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "key": "Clé",
+    "itemId": "ID d'objet",
+    "item": "Objet",
+    "image": "Image",
+    "category": "Catégorie",
+    "rareness": "Rareté",
+    "baseSize": "Taille de base (cm)",
+    "averageSize": "Taille moyenne (cm)",
+    "description": "Description"
+  },
+  "categories": {
+    "0": "Autres",
+    "1": "Eau douce",
+    "2": "Mer",
+    "3": "Crustacés"
+  },
+  "meta": {
+    "count": "{count} entrées"
+  }
+}

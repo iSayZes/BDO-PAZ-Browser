@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "classType": "Klassentyp",
+    "className": "Klasse",
+    "level": "Stufe"
+  },
+  "offsetColumns": {
+    "classType": "Klassentyp",
+    "level": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "meta": {
+    "count": "{count} Stufeneinträge · {classes} Klassentypen",
+    "offsetCount": "{count} Offset-Einträge · {classes} Klassentypen"
+  }
+}

@@ -241,6 +241,16 @@ def test_check_doc_file_writes_versions_once_and_then_reports_ok(tmp_path: Path)
     assert "| 1      | 3473 and later | 3473" in doc.read_text(encoding="utf-8")
 
 
+def test_a_doc_not_in_the_layout_format_is_skipped_not_reported(tmp_path: Path) -> None:
+    doc = tmp_path / "test_ai.md"
+    doc.write_text("# `*.ai` Format\n\n## Purpose\n\nScripts.\n\n```text\n<state/>\n```\n", encoding="utf-8")
+
+    outcome = check_doc_file(doc, {}, None)
+
+    assert outcome.status is Status.NOT_CONVERTED
+    assert not outcome.status.stops_commit
+
+
 def test_check_doc_file_names_the_client_and_place_when_no_layout_fits(tmp_path: Path) -> None:
     doc = tmp_path / "test_bss.md"
     doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")

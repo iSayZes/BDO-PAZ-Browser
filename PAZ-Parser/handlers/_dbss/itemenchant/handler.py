@@ -13,8 +13,10 @@ from _common.loc import LOC_NULL, loc_tagged, loc_text
 from _common.pa_text import pa_cell, pa_fields, pa_key, pa_line_cell, pa_list_cell, pa_list_fields
 from _common.skill import skill_buff_ids
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from _bss.jewelgroupstaticstatus.names import jewel_groups
+from _bss.jewelgroupstaticstatus.parser import FILE_NAME as JEWEL_GROUP_FILE
 from _bss.lightstoneset.item_sets import item_set_ids, set_label_tagged
-from .labels import binding_label, classes_label, trade_label
+from .labels import binding_label, classes_label, crystal_group_label, trade_label
 from .parser import (
     parse_itemenchant_records,
     parse_itemenchantoffset_records,
@@ -143,6 +145,7 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["enhancementType"], "num", sort_key="enhancement_type"),
             Column(cols["slot"], sort_key="slot"),
             Column(cols["weaponType"], sort_key="weapon_type"),
+            Column(cols["crystalGroup"], sort_key="crystal_group_label"),
             Column(cols["requiredLevel"], "num", sort_key="required_level"),
             Column(cols["classes"], sort_key="classes"),
             Column(cols["binding"], sort_key="binding"),
@@ -163,10 +166,11 @@ class ItemEnchantHandler(PreviewHandler):
         return sort_keys(self._columns())
 
     def companions(self, entry: PazEntry) -> list[str]:
+        # The jewel group table is optional: without it crystal groups show as numbers.
         folder = entry.internal_path.rsplit("/", 1)[0]
         if folder == entry.internal_path:
-            return [_OFFSET_FILE]
-        return [f"{folder}/{_OFFSET_FILE}"]
+            return [_OFFSET_FILE, JEWEL_GROUP_FILE]
+        return [f"{folder}/{_OFFSET_FILE}", f"{folder}/{JEWEL_GROUP_FILE}"]
 
     def get_records(
         self,
@@ -184,14 +188,18 @@ class ItemEnchantHandler(PreviewHandler):
         classes = {mask: classes_label(mask, values) for mask in {record["class_mask"] for record in records}}
         slots = {slot: slot_label(slot) for slot in {record["equip_slot"] for record in records}}
         weapon_types = weapon_type_names(records)
+        groups = jewel_groups(companions.get(JEWEL_GROUP_FILE))
         return [
-            _with_links(
-                record,
-                values,
-                classes[record["class_mask"]],
-                _slot_text(record, slots),
-                weapon_types.get(record["equip_type"], ""),
-            )
+            {
+                **_with_links(
+                    record,
+                    values,
+                    classes[record["class_mask"]],
+                    _slot_text(record, slots),
+                    weapon_types.get(record["equip_type"], ""),
+                ),
+                "crystal_group_label": crystal_group_label(record["crystal_group"], groups, values),
+            }
             for record in records
         ]
 
@@ -221,6 +229,7 @@ class ItemEnchantHandler(PreviewHandler):
                 _optional_cell(record["enhancement_type"]),
                 e(record["slot"] or _EMPTY),
                 e(record["weapon_type"] or _EMPTY),
+                e(record["crystal_group_label"] or _EMPTY),
                 _level_cell(record),
                 e(record["classes"] or _EMPTY),
                 e(record["binding"] or _EMPTY),

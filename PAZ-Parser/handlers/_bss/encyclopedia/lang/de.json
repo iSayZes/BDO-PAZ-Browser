@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "itemId": "Gegenstands-ID",
+    "item": "Gegenstand",
+    "image": "Bild",
+    "category": "Kategorie",
+    "rareness": "Seltenheitsgrad",
+    "baseSize": "Grundgröße (cm)",
+    "averageSize": "Durchschn. Größe (cm)",
+    "description": "Beschreibung"
+  },
+  "categories": {
+    "0": "Sonstiges",
+    "1": "Süßwasserfisch",
+    "2": "Meeresfisch",
+    "3": "Krustentier"
+  },
+  "meta": {
+    "count": "{count} Einträge"
+  }
+}

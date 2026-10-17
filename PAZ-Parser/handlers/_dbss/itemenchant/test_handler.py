@@ -96,6 +96,10 @@ _EVERGREEN_ORB = 933601
 _BLACK_STONE = 16001
 # Servant gear with a non-empty `unknown_5d`, so its later header fields move.
 _OQUILLA_SAIL_BALANCE = 607887
+# Ancient Spirit's Crystal - Viper, in jewelgroupstaticstatus.bss group 101.
+_ANCIENT_SPIRIT_VIPER = 15653
+_ANCIENT_SPIRIT_GROUP = 101
+_JEWEL_GROUP_FILE = "jewelgroupstaticstatus.bss"
 
 
 def _base_item_count(offsets: bytes) -> int:
@@ -116,7 +120,10 @@ def _declared_items(source: CaseInput) -> int:
 CASE = HandlerCase(
     handler_name="itemenchant.dbss",
     data_file="itemenchant.dbss",
-    companion_files={"itemenchantoffset.dbss": "itemenchantoffset.dbss"},
+    companion_files={
+        "itemenchantoffset.dbss": "itemenchantoffset.dbss",
+        _JEWEL_GROUP_FILE: _JEWEL_GROUP_FILE,
+    },
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["Item"],
@@ -171,6 +178,8 @@ CASE = HandlerCase(
                 "lightstone_set_ids",
                 "lightstone_sets",
                 "lightstone_set_count",
+                "crystal_group",
+                "crystal_group_label",
             ],
         ),
         DeclaredCountTest(declared=_declared_items),
@@ -270,6 +279,9 @@ CASE = HandlerCase(
         TargetTest(col="item_id", value=_BLACKSTAR_LONGSWORD, expected={"enhancement_type": _BLACKSTAR}),
         TargetTest(col="item_id", value=_KHARAZAD_NECKLACE, expected={"enhancement_type": _KHARAZAD}),
         TargetTest(col="item_id", value=_BALACS_LUNCHBOX, expected={"enhancement_type": None}),
+        # A crystal stores its jewelgroupstaticstatus.bss group; other items None.
+        TargetTest(col="item_id", value=_ANCIENT_SPIRIT_VIPER, expected={"crystal_group": _ANCIENT_SPIRIT_GROUP}),
+        TargetTest(col="item_id", value=_WEAPON, expected={"crystal_group": None, "crystal_group_label": ""}),
         TargetTest(
             col="item_id",
             value=_DANDELION_KAMASYLVEN_SWORD,
@@ -422,6 +434,35 @@ def test_every_block_walks_to_its_name_and_icon(itemenchant_result: HandlerResul
             bad.append(row["key"])
 
     assert not bad, f"blocks whose walk ends on no name or icon: {bad[:5]}"
+
+
+def test_every_crystal_group_is_a_named_jewel_group(itemenchant_result: HandlerResult) -> None:
+    """The crystal footer holds jewelgroupstaticstatus.bss group numbers, so
+    every crystal's label names its group instead of showing the number."""
+    from _bss.jewelgroupstaticstatus.parser import parse_jewel_group_records
+    from tests.fixtures import load_binary_fixture
+
+    groups = {row["group"] for row in parse_jewel_group_records(load_binary_fixture(_JEWEL_GROUP_FILE))}
+    crystals = [r for r in itemenchant_result.records if r["crystal_group"] is not None]
+    assert crystals, "no item stores a crystal group"
+    unknown = sorted({r["crystal_group"] for r in crystals} - groups)
+    assert not unknown, f"crystal groups missing from {_JEWEL_GROUP_FILE}: {unknown}"
+    unnamed = [r["item_id"] for r in crystals if r["crystal_group_label"] == str(r["crystal_group"])]
+    assert not unnamed, f"crystals whose label is the bare group number: {unnamed[:5]}"
+
+
+def test_crystal_group_label_shows_the_limit_as_the_tooltip_does() -> None:
+    from _bss.jewelgroupstaticstatus.names import NO_LIMIT, JewelGroup
+    from _dbss.itemenchant.labels import crystal_group_label
+
+    values = {"crystalGroup": "{name} (max {max_count})", "crystalGroupNoLimit": "{name} (No Limit)"}
+    groups = {1: JewelGroup("Dawn", 2), 2: JewelGroup("No Group", NO_LIMIT), 3: JewelGroup("", 4)}
+    assert crystal_group_label(1, groups, values) == "Dawn (max 2)"
+    assert crystal_group_label(2, groups, values) == "No Group (No Limit)"
+    # Unnamed, or without jewelgroupstaticstatus.bss: the number; not a crystal: ''.
+    assert crystal_group_label(3, groups, values) == "3"
+    assert crystal_group_label(4, {}, values) == "4"
+    assert crystal_group_label(None, groups, values) == ""
 
 
 def test_slot_label_hashes_match_stringtable() -> None:

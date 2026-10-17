@@ -10,12 +10,18 @@ LAYOUT_COLUMNS = ("Offset", "Type", "Field")
 NOTES_COLUMN = "Notes"
 FILE_LAYOUT = "File Layout"
 _LAYOUT_HEADING = re.compile(r"^Layout (\d+)$")
-_COMPANION_HEADING = re.compile(r"^`[a-z0-9_.]+`$")
+# The ``### `file` `` heading of a table a companion or offset file starts with.
+COMPANION_HEADING = re.compile(r"^`(?P<file>[a-z0-9_.]+)`$")
 _STRUCTURE_HEADING = re.compile(r"^(?P<name>[A-Z][A-Za-z0-9 ]*?) \((?P<size>.+)\)$")
 _FIXED_SIZE = re.compile(r"^(?P<bytes>\d[\d,]*) bytes?$")
 _VARIABLE_SIZE = re.compile(
     r"^variable: (?P<bytes>\d[\d,]*) bytes?(?: \+ (?:(?!, size from ).)+)?(?:, size from `?(?P<file>[a-z0-9_.]+)`?)?$"
 )
+
+
+def companion_key(file: str) -> str:
+    """The structure name of the ``### `file` `` table, as `COMPANION_HEADING` matches it."""
+    return f"`{file}`"
 
 
 def layout_number(section: Section) -> int | None:
@@ -49,7 +55,7 @@ def read_layout(section: Section, number: int) -> tuple[Layout, tuple[Problem, .
 
 def _parse_heading(heading: Section) -> tuple[str, SizeSpec | None, Problem | None]:
     title = heading.title
-    if title == FILE_LAYOUT or _COMPANION_HEADING.match(title):
+    if title == FILE_LAYOUT or COMPANION_HEADING.match(title):
         return title, None, None
     match = _STRUCTURE_HEADING.match(title)
     if not match:

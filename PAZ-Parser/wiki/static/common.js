@@ -44,10 +44,12 @@ var PazWiki = (function () {
   var GROUP_LABELS = ["", "", "Others"];
   function groupOf(f) { return /_loc\.html$/.test(f.page) ? 0 : f.ext === "other" ? 2 : 1; }
 
-  // `sorted` split into the three groups, each keeping its order, with the label of its divider.
+  // The groups of `sorted` that hold a doc, each keeping its order; every group after the first gets a divider.
   function groups(sorted) {
     return GROUP_LABELS.map(function (label, index) {
       return { index: index, label: label, items: sorted.filter(function (f) { return groupOf(f) === index; }) };
+    }).filter(function (group) { return group.items.length; }).map(function (group, position) {
+      return { index: group.index, label: group.label, items: group.items, divider: position > 0 };
     });
   }
 

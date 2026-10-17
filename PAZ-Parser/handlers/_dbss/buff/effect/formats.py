@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 from _dbss.lifeexp.labels import LIFE_SKILLS, life_skill_name
 
-from .units import CRAFT_SECONDS, FLAT, KEY, METRES, MINUTES, PERCENT, SECONDS, WEIGHT, Unit
+from .units import COOLDOWN, CRAFT_SECONDS, FLAT, KEY, METRES, MINUTES, PERCENT, SECONDS, WEIGHT, Unit
 
 
 @dataclass(frozen=True)
@@ -201,6 +201,19 @@ _RESISTANCES = {
 # single passive (`단련 경험치`, "training EXP") and stays unlabelled.
 _BREATH_STRENGTH_HEALTH = {0: "Breath", 1: "Strength", 2: "Health"}
 
+# Type 83 `param_2`, in the words of the skills that apply the buffs; the
+# Korean names agree (비료, 강수량, 온도).
+_CROP_GROWTH = {0: "Fertilizer", 1: "Precipitation", 2: "Temperature"}
+
+# Type 148 `param_1` with a cooldown in param_2: the Param label, then the
+# skill text. Kind 2 is Fairy's Tear (`엘리언의 은총`), whose cooldown only
+# the Korean buff names give (`쿨타임 : 12시간` on 43200000).
+_FAIRY_AUTO_USE = {
+    1: ("Purified Water/Star Anise Tea", "Auto-use Purified Water/Star Anise Tea during Heatstroke/Hypothermia"),
+    2: ("Fairy's Tear", "Fairy's Tear"),
+    3: ("HP/Resource Potions", "Auto-use HP/Resource potions"),
+}
+
 EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     2: (EffectLine("Max HP", 1),),
     # Removes the buffs of group param_1: "Remove Group 44812".
@@ -298,6 +311,20 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
         },
         2,
     ),
+    # Damage, or healing on siege buildings, in shares of max HP: the Korean
+    # names read `피격자 총 HP 3% 피해` ("3% of the target's total HP as
+    # damage") for -30000. param_1 is 2 on all, the max HP base in the
+    # client 519 private server's HPAddPercentageEffect.
+    70: (
+        EffectLine(
+            "HP",
+            2,
+            PERCENT,
+            when={1: 2},
+            kind_labels={1: "Max HP"},
+            template="{label} {amount} of Max HP",
+        ),
+    ),
     # Inventory slots, like `Inventory +8 Expansion`. param_2 is 1 on the
     # time-limited variants (`- 기간`), which store no duration.
     71: (EffectLine("Inventory", 1),),
@@ -321,6 +348,12 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     79: (recovery("Energy", 1),),
     80: life_skill_lines(1, "{kind} EXP", 2),
     89: kinds(1, "{kind} EXP", _BREATH_STRENGTH_HEALTH, 2),
+    # Garden crop growth, named as the skills that apply it read (`Crop
+    # Growth Buff: Temperature 15`). The temperature skills 5, 10 and 15
+    # store 50000, 100000 and 150000, and the client 519 private server caps
+    # a garden's fertilizer at 1000000, so every kind is per million.
+    # param_1 is 1000 on all.
+    83: kinds(2, "Crop Growth: {kind}", _CROP_GROWTH, 3, PERCENT),
     90: (EffectLine("Death Penalty Resistance", 1, PERCENT),),
     91: (EffectLine("Durability Reduction Resistance", 1, PERCENT),),
     93: kinds(
@@ -418,6 +451,31 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     136: (
         EffectLine("Extra AP Against Monsters", 1, value_label="Monster AP"),
         EffectLine("Extra AP Against Adventurers", 2, value_label="Adventurer AP"),
+    ),
+    # Fairy skills, worded as the skills of the same key read in LOC type 10:
+    # `Auto-use HP/Resource potions. Cooldown: 2 sec` stores 2000.
+    148: (
+        *(
+            EffectLine(
+                text,
+                2,
+                COOLDOWN,
+                when={1: kind},
+                kind_labels={1: label},
+                template="{label}. Cooldown: {amount}",
+            )
+            for kind, (label, text) in _FAIRY_AUTO_USE.items()
+        ),
+        # Continuous Care: `Auto-use from 30 selected items.` stores 30 in
+        # param_3. param_2 is 6000 on all five and stays unlabelled.
+        EffectLine(
+            "Selected Items",
+            3,
+            when={1: 4},
+            kind_labels={1: "Auto-use Items"},
+            is_signed=False,
+            template="Auto-use from {amount} selected items",
+        ),
     ),
     149: (
         *life_skill_lines(1, "{kind} Mastery", 3, skills=_MASTERY_SKILLS),

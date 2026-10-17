@@ -19,19 +19,19 @@ At roughly 194 MB it is the largest file in the game data.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes                        |
-| ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | -------------------------------- |
-| 2      | 3473 and later | 3473    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5                                |
-| 2      | 3473 and later | 3473    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12                               |
-| 1      | 1784           | 1784    | `itemenchant.dbss`       | 218,241,044 | 127,893 Block                                                               | 1,274 to 5,307, 1,706 on average |
-| 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,534,736   | 127,893 Offset Row                                                          | 12                               |
+| Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
+| ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
+| 2      | 3473 and later | 3473    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
+| 2      | 3473 and later | 3473    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
+| 1      | 1784           | 1784    | `itemenchant.dbss`       | 218,241,044 | 127,893 Tail, 127,893 Block                                                 | 25        |
+| 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,534,736   | 127,893 Offset Row                                                          | 12        |
 
-| Layout | File                     | Known                | Unknown               |
-| ------ | ------------------------ | -------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 57,597,960 B (28.5%) | 144,747,006 B (71.5%) |
-| 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%) | 0 B (0.0%)            |
-| 1      | `itemenchant.dbss`       | 1,151,041 B (0.5%)   | 217,090,003 B (99.5%) |
-| 1      | `itemenchantoffset.dbss` | 1,534,736 B (100.0%) | 0 B (0.0%)            |
+| Layout | File                     | Known                 | Unknown               |
+| ------ | ------------------------ | --------------------- | --------------------- |
+| 2      | `itemenchant.dbss`       | 58,104,867 B (28.7%)  | 144,240,099 B (71.3%) |
+| 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%)  | 0 B (0.0%)            |
+| 1      | `itemenchant.dbss`       | 127,185,494 B (58.3%) | 91,055,550 B (41.7%)  |
+| 1      | `itemenchantoffset.dbss` | 1,534,736 B (100.0%)  | 0 B (0.0%)            |
 
 <!-- versions:end -->
 
@@ -43,6 +43,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | `languagedata_en.loc`     | Optional | Item name and description for the item ID (`str_type=0`, `str_id4` 0 and 1) |
 | `skill.dbss`              | Optional | The buffs of `skill_key_1` and `skill_key_2`, through the `SKILL_BUFFS` lookup index |
 | `lightstoneset.bss`       | Optional | The Lightstone sets an item counts toward, through the `LIGHTSTONE_SETS` lookup index |
+| `jewelgroupstaticstatus.bss` | Optional | Crystal group name and preset limit for `crystal_group`; without it the column shows the number |
 
 All multi-byte values are little-endian.
 
@@ -160,7 +161,7 @@ decoded.
 | `messages_kr+0x00`        | Message Tail                  | message_tail                | See Message Tail |
 | `messages_kr+0x5B`        | bytes[rest]                   | unknown_after_message_tail  | Undecoded remainder, holding `second_string` about 330 bytes in. The browser finds `second_string` by scanning for the first `(length, 0, ascii × length)` shape after the icon, see Block Strings |
 | `end-0x06`                | u32                           | key_dup                     | Repeats the packed key, like `key` at `+0x00` |
-| `end-0x02`                | u16                           | unknown_crystal_group       | `0xFFFF` except in 481 base items, e.g. Magic Crystal of Infinity - Valor `100`, which is no longer in the game; bdo-data-extractor: the crystal transfusion group |
+| `end-0x02`                | u16                           | crystal_group               | The crystal's [jewelgroupstaticstatus.bss](jewelgroupstaticstatus_bss.md) group; `0xFFFF` on everything else and on every higher level. 481 base items hold a group on client 3473 (Ancient Spirit's Crystal - Viper `101`), each one a group of that file. The tooltip's Crystal Group line (`getJewelGroupNumber`, panel_tooltip_item.luac) |
 
 Checked on Balacs Lunchbox (`9359`): `item_type` 2, `grade` 3, `weight`
 1,000 (0.1 LT), `buy_price` 38,775, `sell_price` 1,551, and a non-zero
@@ -268,7 +269,7 @@ Layout from bdo-data-extractor; it reads cleanly in all 70,284 base blocks
 | `+0x02` | bytes[11] | unknown_02       |       |
 | `+0x0D` | u8        | family_inventory | `2` when the item can be stored in the Family Inventory (1,106 base items), `0` when not |
 | `+0x0E` | u8        | unknown_0e       |       |
-| `+0x0F` | u8        | unknown_0f       | bdo-data-extractor: bind type. Neither the bound text nor "Cannot be enhanced" comes from it, see After the Icon |
+| `+0x0F` | u8        | season_item_type | Which characters may use the item: `0` normal characters, `1` season characters, `2` every character, `3` hardcore characters; see After the Icon |
 | `+0x10` | bytes[2]  | unknown_10       |       |
 
 ### Message Tail (91 bytes)
@@ -335,32 +336,234 @@ Rows are contiguous: `data_offset + data_size` of one row equals the next row's
 
 ## Layout 1
 
-On client 1784 only the first 16 bytes of a block read as in Layout 2. The
-rest is laid out differently and is not decoded: `extended_slots` and the
-fields after it sit at other offsets, `equip_slot` stores `32` for no slot,
-fixed arrays of 32 four-byte entries take the place of the counted class
-list, a second string follows `name_kr`, and the block does not end with
-`key_dup`. The file holds 127,893 blocks on client 1784, and
-`itemenchantoffset.dbss` has the Layout 2 shape.
+On client 1784 a block keeps the Layout 2 fields up to `unknown_0f` and is
+laid out differently after them. The header follows the 2016 member order
+(Field Names) more closely: `extended_slots` holds 32 slots and stores `32`
+for no slot, the price fields carry six level values and four market prices
+the newer header dropped, and the skill keys are one u32 per class type in
+place of `skill_key_1`, `skill_key_2` and the counted class list. Six counted
+lists sit in the header, and seven strings follow it: the Korean name, a
+condition script, the icon, the Korean description and three more texts.
+Fields from Layout 2's Icon Tail and Message Tail sit in the header or in a
+25-byte Tail at the end; the block does not end with `key_dup`. The file
+holds 127,893 blocks on client 1784, and every one walks to its last byte by
+this layout. `itemenchantoffset.dbss` has the Layout 2 shape.
 
-### Block (variable: 16 bytes, size from `itemenchantoffset.dbss`)
+As in Layout 2, the hex in a name after a counted list is the offset in a
+block whose lists are empty. On client 1784 the lists hold entries in few
+blocks: `unknown_old_ee` in 516, `unknown_old_13d` in 12 (items 4 to 8 and
+44168 to 45199), `unknown_old_14d` in 880, `unknown_old_440` in 31,841,
+`unknown_old_444` in 232, `unknown_tail_count` in 8,604 and
+`unknown_end_count` in 727. `unknown_old_43a` holds 1 to 6 entries in every
+block.
 
-| Offset  | Type        | Field          | Notes |
-| ------- | ----------- | -------------- | ----- |
-| `+0x00` | u32         | key            | Repeats the packed key of the offset row |
-| `+0x04` | u8          | item_type      | |
-| `+0x05` | u8          | category       | |
-| `+0x06` | u8          | grade          | |
-| `+0x07` | u8          | equip_type     | |
-| `+0x08` | bytes[6]    | unknown_08     | |
-| `+0x0E` | u8          | equip_slot     | `32` when the item goes in no slot |
-| `+0x0F` | u8          | unknown_0f     | |
-| `+0x10` | bytes[rest] | unknown_old_10 | Not decoded |
+### Block (variable: 1,226 bytes + lists and strings, size from `itemenchantoffset.dbss`)
 
-On 2,000 sampled blocks whose keys client 1784 shares with client 3473,
-`category` matches on all, `item_type`, `grade`, `unknown_08` and
-`unknown_0f` on 1,968 or more, `equip_type` on 1,828 and `equip_slot` on
-1,494.
+| Offset                                  | Type                             | Field                               | Notes |
+| --------------------------------------- | -------------------------------- | ----------------------------------- | ----- |
+| `+0x00`                                 | u32                              | key                                 | Repeats the packed key of the offset row |
+| `+0x04`                                 | u8                               | item_type                           | |
+| `+0x05`                                 | u8                               | category                            | |
+| `+0x06`                                 | u8                               | grade                               | |
+| `+0x07`                                 | u8                               | equip_type                          | |
+| `+0x08`                                 | bytes[6]                         | unknown_08                          | |
+| `+0x0E`                                 | u8                               | equip_slot                          | `32` when the item goes in no slot |
+| `+0x0F`                                 | u8                               | unknown_0f                          | |
+| `+0x10`                                 | u8[32]                           | extended_slots                      | The rest filled with `32` |
+| `+0x30`                                 | u8[32]                           | unknown_old_30                      | The rest filled with `92`; up to three set entries (`11` to `59`) |
+| `+0x50`                                 | u8                               | unknown_old_50                      | Always 0 |
+| `+0x51`                                 | u8                               | unknown_old_51                      | `0` except on 10 base items (`1` to `3`); `Item_Table` `AwakenEquipType` on every base item |
+| `+0x52`                                 | u8                               | item_material                       | |
+| `+0x53`                                 | i32                              | weight                              | Divide by 10,000 for LT, as in Layout 2 (Layout 1 Field Matches) |
+| `+0x57`                                 | u8                               | stackable                           | |
+| `+0x58`                                 | u8                               | do_apply_directly                   | |
+| `+0x59`                                 | u32                              | expiration_minutes                  | |
+| `+0x5D`                                 | u8                               | vested_type                         | |
+| `+0x5E`                                 | u8                               | family_bound                        | |
+| `+0x5F`                                 | u8                               | is_dropable                         | Message Tail `+0x22` in Layout 2; the place of the 2016 `_isDropableByDead` |
+| `+0x60`                                 | u8                               | for_trade                           | |
+| `+0x61`                                 | u8                               | trade_type                          | |
+| `+0x62`                                 | u8                               | unknown_old_62                      | Always 0; the place of the 2016 `_canBuyFromTradeNpc` |
+| `+0x63`                                 | u64                              | class_mask                          | All 64 bits set on items for every class |
+| `+0x6B`                                 | u32                              | servant_kinds                       | |
+| `+0x6F`                                 | bytes[4]                         | unknown_59                          | Always 0 |
+| `+0x73`                                 | u8                               | unknown_old_73                      | `1` to `4` on 86 base items, `0` on the others; one value where Layout 2 has the counted `unknown_5d` bytes; `Item_Table` `SubType` on every base item |
+| `+0x74`                                 | i32                              | required_level                      | |
+| `+0x78`                                 | i32                              | max_level                           | |
+| `+0x7C`                                 | u8                               | life_exp_type                       | |
+| `+0x7D`                                 | i32                              | life_min_level                      | |
+| `+0x81`                                 | u8                               | is_removable                        | Message Tail `+0x11` in Layout 2; the place of the 2016 `_doRemoveWhenUse` |
+| `+0x82`                                 | u8                               | item_access_level                   | Message Tail `+0x5A` in Layout 2; the place of the 2016 `_itemAccessLevel` |
+| `+0x83`                                 | i64                              | buy_price                           | |
+| `+0x8B`                                 | i64                              | sell_price                          | |
+| `+0x93`                                 | i32[6]                           | unknown_old_93                      | `1000000` in most blocks; the place of the 2016 `_originalPriceLevel[3]` and `_priceLevel[3]`; `Item_Table` `OriginalPriceRate_0` to `_2` and `PriceRate_0` to `_2` in that order |
+| `+0xAB`                                 | i64                              | unknown_old_ab                      | `0` or `1000000` in most blocks; not `repair_price`, which it equals on 289 of the 6,987 shared base items with a repair price |
+| `+0xB3`                                 | i64                              | unknown_old_b3                      | `0`, `100000000` or `14000000000` |
+| `+0xBB`                                 | i64[4]                           | unknown_old_bb                      | Four prices, `0` in 34,861 of the 51,882 base blocks with empty lists; the place of the 2016 `_maxPrice`, `_minPrice`, `_maxestPrice` and `_minestPrice` |
+| `+0xDB`                                 | i32                              | unknown_old_db                      | |
+| `+0xDF`                                 | i32                              | unknown_old_df                      | |
+| `+0xE3`                                 | i64                              | unknown_old_e3                      | A price; the place of the 2016 `_basePriceForItemMarket` |
+| `+0xEB`                                 | i16                              | unknown_old_eb                      | `0`, `1`, `10`, `100` or `500` in most blocks; `Item_Table` `maxRegisterCountForItemMarket` on 98.3% of base items |
+| `+0xED`                                 | u8                               | unknown_old_ed                      | `0` or `1`; `Item_Table` `doLogging` on every base item |
+| `+0xEE`                                 | u64                              | unknown_old_ee                      | Entry count, `0` to `2`; the place of the 2016 `_needItemListToPopJewel` |
+| `+0xF6`                                 | u8[unknown_old_ee][16]           | unknown_old_ee_entries              | 16-byte entries |
+| `unknown_old_ee_entries+0x00`           | u8                               | unknown_old_f6                      | `18` in every base block but five; `Item_Table` `JewelEquipType` wherever that column is set |
+| `unknown_old_ee_entries+0x01`           | u8                               | unknown_old_f7                      | `6` in every base block but five |
+| `unknown_old_ee_entries+0x02`           | i32                              | unknown_old_f8                      | Always 0; `Item_Table` `JewelDemolitionRate` on every base item |
+| `unknown_old_ee_entries+0x06`           | i32                              | unknown_old_fc                      | Always 0 |
+| `unknown_old_ee_entries+0x0A`           | u16                              | contents_event_type                 | `125` when using the item does nothing (Layout 2: `171`) |
+| `unknown_old_ee_entries+0x0C`           | i32                              | contents_event_param1               | An i32 here, an i64 in Layout 2 |
+| `unknown_old_ee_entries+0x10`           | i32                              | contents_event_param2               | An i32 here, an i64 in Layout 2 |
+| `unknown_old_ee_entries+0x14`           | i32                              | unknown_98                          | An i32 here, 8 bytes in Layout 2; `Item_Table` `ContentsEventParam3` on every base item |
+| `unknown_old_ee_entries+0x18`           | u8                               | commerce_type                       | |
+| `unknown_old_ee_entries+0x19`           | u8                               | unknown_old_10f                     | `15` in all but 169 base blocks; the place of the 2016 `_collectToolType`; `Item_Table` `CollectToolType` wherever that column is set |
+| `unknown_old_ee_entries+0x1A`           | i64                              | unknown_old_110                     | `0` in all but 169 base blocks; the place of the 2016 `_collectTime`; `Item_Table` `CollectTime` on every base item |
+| `unknown_old_ee_entries+0x22`           | u16                              | item_action_number                  | |
+| `unknown_old_ee_entries+0x24`           | i32                              | unknown_old_11a                     | Always 0 |
+| `unknown_old_ee_entries+0x28`           | u8                               | is_navigation                       | Message Tail `+0x24` in Layout 2 |
+| `unknown_old_ee_entries+0x29`           | i16                              | unknown_old_11f                     | `0` in most blocks, else `2` to `50`; the place of the 2016 `_needExplorePoint`; `Item_Table` `NeedContribute` on every base item |
+| `unknown_old_ee_entries+0x2B`           | u8                               | unknown_old_121                     | `1` in 16 base blocks; `Item_Table` `IsAbandon` on every base item |
+| `unknown_old_ee_entries+0x2C`           | u8                               | hide_from_note                      | |
+| `unknown_old_ee_entries+0x2D`           | u8                               | is_cash                             | |
+| `unknown_old_ee_entries+0x2E`           | u8                               | unknown_a5                          | |
+| `unknown_old_ee_entries+0x2F`           | u8                               | unknown_old_125                     | `1` or `2` in 13 base blocks; `Item_Table` `ProductCategory` on every base item |
+| `unknown_old_ee_entries+0x30`           | u8                               | is_term                             | |
+| `unknown_old_ee_entries+0x31`           | u8                               | unknown_old_127                     | `1` in 1,531 base blocks |
+| `unknown_old_ee_entries+0x32`           | u8                               | guild_stock_level                   | |
+| `unknown_old_ee_entries+0x33`           | u8                               | dyeable                             | |
+| `unknown_old_ee_entries+0x34`           | u8                               | unknown_old_12a                     | `1` in 496 base blocks; `Item_Table` `IsNotifyWorld` on every base item |
+| `unknown_old_ee_entries+0x35`           | u8                               | unknown_old_12b                     | `1` in all but 76 base blocks |
+| `unknown_old_ee_entries+0x36`           | u8                               | unknown_old_12c                     | `1` in 26 base blocks; `Item_Table` `TargetType` on every base item |
+| `unknown_old_ee_entries+0x37`           | u8                               | is_target_alive                     | |
+| `unknown_old_ee_entries+0x38`           | u16                              | character_id                        | |
+| `unknown_old_ee_entries+0x3A`           | bytes[8]                         | unknown_old_130                     | Always 0 |
+| `unknown_old_ee_entries+0x42`           | u8                               | repair_endurance_count              | |
+| `unknown_old_ee_entries+0x43`           | bytes[3]                         | unknown_old_139                     | Always 0 |
+| `unknown_old_ee_entries+0x46`           | u8                               | is_exchange_item                    | Message Tail `+0x23` in Layout 2 |
+| `unknown_old_ee_entries+0x47`           | u64                              | unknown_old_13d                     | Entry count, `0` or `1` |
+| `unknown_old_ee_entries+0x4F`           | u8[unknown_old_13d][16]          | unknown_old_13d_entries             | 16-byte entries; all 12 hold an i64 `1000000` and an i64 `1` |
+| `unknown_old_13d_entries+0x00`          | bytes[8]                         | unknown_old_145                     | Always 0 |
+| `unknown_old_13d_entries+0x08`          | u64                              | unknown_old_14d                     | Entry count, `0` to `19` |
+| `unknown_old_13d_entries+0x10`          | u32[unknown_old_14d]             | unknown_old_14d_entries             | Values from `0x19C42` to `0x1E8C7` |
+| `unknown_old_14d_entries+0x00`          | u8                               | unknown_old_155                     | Always 0 |
+| `unknown_old_14d_entries+0x01`          | u8                               | unknown_old_156                     | `0` in all but 511 base blocks |
+| `unknown_old_14d_entries+0x02`          | bytes[7]                         | unknown_old_157                     | Always 0 |
+| `unknown_old_14d_entries+0x09`          | u16                              | unknown_old_15e                     | Equals the two bytes at Layout 2 `+0xB0` (inside `unknown_ae`) on every shared base item but one |
+| `unknown_old_14d_entries+0x0B`          | bytes[5]                         | unknown_old_160                     | Always 0 |
+| `unknown_old_14d_entries+0x10`          | u8                               | unknown_old_165                     | `0` to `4`; `Item_Table` `EnchantDifficulty` on every base item |
+| `unknown_old_14d_entries+0x11`          | u8                               | unknown_old_166                     | `0` in most blocks, else `13` to `60` |
+| `unknown_old_14d_entries+0x12`          | bytes[7]                         | unknown_old_167                     | Always 0 |
+| `unknown_old_14d_entries+0x19`          | u8                               | unknown_old_16e                     | Three times `unknown_old_166` in every base block |
+| `unknown_old_14d_entries+0x1A`          | bytes[7]                         | unknown_old_16f                     | Always 0 |
+| `unknown_old_14d_entries+0x21`          | u8                               | unknown_old_176                     | `0` or `1`; `Item_Table` `ExtractionCount` and `CronCount`, which hold the same values |
+| `unknown_old_14d_entries+0x22`          | u8                               | personal_trade                      | |
+| `unknown_old_14d_entries+0x23`          | u8                               | unknown_old_178                     | `0` or `1` |
+| `unknown_old_14d_entries+0x24`          | u8                               | unknown_old_179                     | `2` in all but 37 base blocks |
+| `unknown_old_14d_entries+0x25`          | i32                              | unknown_old_17a                     | `-1` in all but 37 base blocks; `Item_Table` `ExpirationPeriod Param1` wherever that column is set |
+| `unknown_old_14d_entries+0x29`          | i64                              | unknown_old_17e                     | `0` in all but 7 base blocks; `Item_Table` `ExpirationPeriod Param2` on every base item |
+| `unknown_old_14d_entries+0x31`          | u16                              | max_durability                      | |
+| `unknown_old_14d_entries+0x33`          | u8                               | is_client_use                       | |
+| `unknown_old_14d_entries+0x34`          | i32                              | unknown_old_189                     | `-1` in most blocks, else `0` to `27`; `Item_Table` `ConnectUi` wherever that column is set |
+| `unknown_old_14d_entries+0x38`          | u8                               | market_category                     | |
+| `unknown_old_14d_entries+0x39`          | u8                               | market_sub_category                 | |
+| `unknown_old_14d_entries+0x3A`          | u8                               | unknown_old_18f                     | `Item_Table` `MarketFilter1` on every base item |
+| `unknown_old_14d_entries+0x3B`          | u8                               | unknown_old_190                     | `0` to `4`; `Item_Table` `MarketFilter2` on every base item |
+| `unknown_old_14d_entries+0x3C`          | u8                               | unknown_old_191                     | `1` in every base block with empty lists |
+| `unknown_old_14d_entries+0x3D`          | bytes[3]                         | unknown_old_192                     | Always 0 |
+| `unknown_old_14d_entries+0x40`          | u8                               | unknown_old_195                     | `0` in all but 217 base blocks; `Item_Table` `ItemProperties` on every base item |
+| `unknown_old_14d_entries+0x41`          | bytes[4]                         | unknown_old_196                     | Always 0 |
+| `unknown_old_14d_entries+0x45`          | u8                               | node_free_trade                     | |
+| `unknown_old_14d_entries+0x46`          | u8                               | unknown_cb                          | `1` in every base block, as in Layout 2 |
+| `unknown_old_14d_entries+0x47`          | u32[101]                         | skill_keys                          | One skill key per class type 0 to 100 (Layout 1 Field Matches); `0` when none; 32 to 50 are always 0 |
+| `unknown_old_14d_entries+0x1DB`         | u16[101]                         | unknown_old_330                     | One value per class type, set only for class types 0 to 31: Basteer Longsword (10011) holds `1011` at index 0 (Warrior) and `7005` at index 24 (Valkyrie); the place of the 2016 `_itemMeshKeyList` |
+| `unknown_old_14d_entries+0x2A5`         | u16[31]                          | unknown_old_3fa                     | Set in 490 base blocks |
+| `unknown_old_14d_entries+0x2E3`         | u16                              | unknown_old_438                     | `0` in all but 73 base blocks; `Item_Table` `SpecialEventType` on every base item |
+| `unknown_old_14d_entries+0x2E5`         | u32                              | unknown_old_43a                     | Entry count, `1` to `6` |
+| `unknown_old_14d_entries+0x2E9`         | u32[unknown_old_43a]             | unknown_old_43a_entries             | 32-bit values with no pattern, such as `0x6016CFF7` |
+| `unknown_old_43a_entries+0x00`          | u16                              | unknown_old_43e                     | `0` to `10` |
+| `unknown_old_43a_entries+0x02`          | u32                              | unknown_old_440                     | Entry count, `0` to `3` |
+| `unknown_old_43a_entries+0x06`          | u32[unknown_old_440]             | unknown_old_440_entries             | |
+| `unknown_old_440_entries+0x00`          | u64                              | unknown_old_444                     | Entry count, `0` to `14` |
+| `unknown_old_440_entries+0x08`          | u16[unknown_old_444]             | unknown_old_444_entries             | |
+| `unknown_old_444_entries+0x00`          | u8                               | unknown_old_44c                     | `0` or `1` |
+| `unknown_old_444_entries+0x01`          | u32[2]                           | unknown_old_44d                     | `9, 0` in most blocks |
+| `unknown_old_444_entries+0x09`          | i64                              | unknown_old_455                     | |
+| `unknown_old_444_entries+0x11`          | i64                              | unknown_old_45d                     | `0x7FFFFFFFFFFFFFFF` in most blocks |
+| `unknown_old_444_entries+0x19`          | u16                              | unknown_old_465                     | |
+| `unknown_old_444_entries+0x1B`          | str16                            | name_kr                             | Korean item name |
+| `name_kr+0x00`                          | str16                            | unknown_condition                   | A condition script such as `!checkcompetition()` or `getlevel()>55;`; empty in 101,930 blocks; the place of the 2016 `_useConditionString` |
+| `unknown_condition+0x00`                | str8                             | icon                                | Icon path, as in Layout 2 |
+| `icon+0x00`                             | str16                            | description_kr                      | Korean item description; empty in 5,294 blocks |
+| `description_kr+0x00`                   | str16                            | unknown_after_description_kr        | Holds the text of Layout 2's first `messages_kr` string, such as the pet script |
+| `unknown_after_description_kr+0x00`     | str8                             | unknown_second_string               | The ASCII string of Block Strings, such as `ITEM_BIC_HIT_1` |
+| `unknown_second_string+0x00`            | str16                            | unknown_after_unknown_second_string | Holds the text of Layout 2's second `messages_kr` string, the box prompt |
+| `unknown_after_unknown_second_string+0x00` | str16                         | exchange_info_kr                    | The Exchange Info text of Layout 2's third `messages_kr` string; set in 109 blocks |
+| `exchange_info_kr+0x00`                 | u8                               | marketable                          | Icon Tail `+0x00` in Layout 2 |
+| `exchange_info_kr+0x01`                 | u32                              | unknown_tail_count                  | Entry count, `0` to `11` |
+| `exchange_info_kr+0x05`                 | u32[unknown_tail_count]          | unknown_tail_entries                | |
+| `unknown_tail_entries+0x00`             | Tail                             | tail                                | See Tail |
+| `unknown_tail_entries+0x19`             | u32                              | unknown_end_count                   | Entry count, `0` to `2` |
+| `unknown_tail_entries+0x1D`             | u16[unknown_end_count]           | unknown_end_entries                 | |
+| `unknown_end_entries+0x00`              | u8                               | unknown_end                         | |
+
+### Tail (25 bytes)
+
+| Offset  | Type     | Field            | Notes |
+| ------- | -------- | ---------------- | ----- |
+| `+0x00` | u8       | unknown_00       | `0` or `1` |
+| `+0x01` | u8       | karma_type       | Icon Tail `+0x01` in Layout 2 |
+| `+0x02` | u8       | unknown_02       | `7` in all but four blocks |
+| `+0x03` | u8       | unknown_03       | `0` or `6` |
+| `+0x04` | bytes[4] | unknown_04       | Always 0 |
+| `+0x08` | u8       | unknown_08       | `2` in all but 251 blocks |
+| `+0x09` | u8       | unknown_09       | `0`, `80`, `100`, `160` or `240` |
+| `+0x0A` | u8       | unknown_0a       | |
+| `+0x0B` | bytes[2] | unknown_0b       | Always 0 |
+| `+0x0D` | u8       | barter_type      | Message Tail `+0x1B` in Layout 2 |
+| `+0x0E` | u8       | unknown_0e       | `0` or `1`; `Item_Table` `SellAtOnce` on every base item |
+| `+0x0F` | u8       | unknown_0f       | `3` in every block |
+| `+0x10` | u8       | family_inventory | Icon Tail `+0x0D` in Layout 2 |
+| `+0x11` | u8       | unknown_11       | `0` or `1`; `Item_Table` `RestoreType` on every base item |
+| `+0x12` | u8       | season_item_type | `Item_Table` `SeasonItemType` on every base item; the client 3473 value on 40,645 of the 45,896 shared base items |
+| `+0x13` | u8       | unknown_13       | `0` or `1`; `Item_Table` `ImpossibleCopy` on every base item |
+| `+0x14` | u8       | unknown_14       | `0` to `2`; `Item_Table` `OlympicItemType` on every base item |
+| `+0x15` | u32      | unknown_15       | `501` in all but 171 blocks; `Item_Table` `SpecialWeaponHitEffect` wherever that column is set |
+
+## Layout 1 Field Matches
+
+Client 1784 and client 3473 share 45,896 base items. The fields named in
+Layout 1 hold the client 3473 value on that many of them:
+
+| Field | Equal | Notes |
+| ----- | ----: | ----- |
+| `item_type`, `category`, `grade`, `equip_type`, `unknown_08`, `unknown_0f` | 98.1% to 99.8% | |
+| `equip_slot` | 99.3% | Counting `32` (no slot) as equal to `46` |
+| `item_material`, `stackable`, `do_apply_directly`, `expiration_minutes`, `vested_type`, `family_bound`, `for_trade`, `trade_type`, `servant_kinds` | 98.6% to 100% | |
+| `weight` | 59.7% | 12,703 more store a tenth of the client 3473 value and 2,389 a thousandth; the field sits where 2016 order puts `_weight` |
+| `class_mask` | 42.4% | 23,703 store all 64 bits where client 3473 sets one bit per class it knows |
+| `required_level`, `max_level`, `life_exp_type`, `life_min_level` | 99.9% to 100% | |
+| `is_removable`, `item_access_level`, `is_dropable`, `is_navigation`, `is_exchange_item` | 98.2% to 100% | Message Tail fields in Layout 2 |
+| `buy_price`, `sell_price` | 96.3%, 99.4% | |
+| `contents_event_type` | 7,908 of the 7,986 items with an event | `125` for none, `171` on client 3473 |
+| `contents_event_param1`, `contents_event_param2`, `unknown_98` | 97.7% to 99.5% | |
+| `commerce_type`, `item_action_number`, `hide_from_note`, `is_cash`, `unknown_a5`, `is_term`, `guild_stock_level`, `dyeable`, `is_target_alive`, `character_id`, `repair_endurance_count` | 96.2% to 100% | |
+| `personal_trade`, `is_client_use`, `node_free_trade`, `unknown_cb` | 100% | |
+| `max_durability` | 85.8% | |
+| `market_category`, `market_sub_category` | 95.3%, 94.3% | |
+| `skill_keys` | 11,166 of the 11,297 items with a `skill_key_1` | The key sits at every class type the item allows |
+| `name_kr`, `icon` | 87.2%, 92.1% | |
+| `marketable`, `karma_type`, `barter_type`, `family_inventory` | 96.1% to 100% | Icon Tail and Message Tail fields in Layout 2 |
+
+`enhancement_group`, `enhancement_type`, `cron_enchant_control`,
+`is_notice_world_market`, `life_equip_type`, `life_restrict_type`,
+`unknown_limit` and `repair_price` match no Layout 1 offset.
+
+The private server's `DataSheets.bexcel` on client 1784 holds `Item_Table`,
+the sheet its `itemenchant.dbss` was built from. Its 50,116 base items match
+the Layout 1 fields column by column; the Notes of Block and Tail name the
+column of each `unknown_old_*` field that equals one. These stay unnamed,
+since only the private server's own file matches them. Tail
+`season_item_type` is the `SeasonItemType` column (After the Icon).
 
 ## Key Packing
 
@@ -684,13 +887,42 @@ Cheap Feed), mount feed (Carrot, Dried Briar) and event coins and seals
 as White Truffle Mushroom and Millennial Wild Ginseng store `0`. The tooltip
 script shows a family bag mark when `checkPushFamilyInventory()` is true.
 
-`unknown_0f` is `0` on Kzarka Gauntlet (which I can move freely), `1` on
-Kansha Hexround, `2` on Basteer Longsword and Tuvala Helmet, `3` on Young
-Crow Earring. The bound text on those tooltips comes from `vested_type` and
-`family_bound`. "Cannot be enhanced" does not come from it either: in game
-(2026-10-05) Arsha's Crossbow IV (`0`), [Event] Urugon's Shoes (`2`),
-Kansha Hexround (`1`) and Young Crow Earring (`3`) all say it, and none of
-them has enchant levels, which fits the line better. What it holds is open.
+`season_item_type` decides which characters may use the item.
+`PaGlobalFunc_Util_CheckSeasonEquip` in `global_util.luac` (decompiled with
+unluac) compares `itemStaticWrapper:getSeasonItemType()` with four values:
+`__eSeasonItemTypeUseAll` allows every character,
+`__eSeasonItemTypeUseNormalCharacter` a character that is not a season
+character, `__eSeasonItemTypeUseSeasonCharacter` a season character, and a
+hardcore character may use only `__eSeasonItemTypeUseHardCoreCharacter`
+items, which no other character may use. `global_util_ui_slot.luac` marks
+the slot of a non-cash `UseSeasonCharacter` or `UseAll` item for a season
+character. The Lua does not give the numbers. The English item descriptions
+(LOC type 0, `str_id4` 1) place `1` and `0`: "Only equippable by Season
+Characters." ends the description of 152 items and "Only Season Characters
+may equip this gear." of 6 more, all `1`, while "Season Characters cannot
+equip the obtained Blackstar weapon." and "Season Characters cannot equip the
+Marni's Pocket Watch." stand on 12 items, all `0`. `2` and `3` are placed by
+the items that hold them. Client 3473, base items:
+
+| Value | Lua value | Base items | Examples |
+| ----: | --------- | ---------: | -------- |
+| 0 | `__eSeasonItemTypeUseNormalCharacter` | 47,888 | Kzarka weapons, food, quest items, node permits |
+| 1 | `__eSeasonItemTypeUseSeasonCharacter` | 171 | `[Season]` Azwell, Militia and Elsh weapons, Kansha gear, Fughar's Memorandum and Riding Crop |
+| 2 | `__eSeasonItemTypeUseAll` | 21,512 | Pearl Shop items (18,874), Tuvala gear, Basteer Longsword |
+| 3 | `__eSeasonItemTypeUseHardCoreCharacter` | 879 | Crow gear (Sand Crow, Blood Crow), Pure Black Stone |
+
+The name is the `SeasonItemType` column of the private server's
+`Item_Table` on client 1784 (Layout 1 Field Matches); that private server's
+server build reads the column as a number and stores it unchanged. On client
+1784 the Kzarka weapons and Combatant's Tuvala gear store `2`, on client 3473
+`0`; Tuvala gear stores `2` on both (Open Questions, Tuvala Conversion
+Stones).
+
+It is not the bind type bdo-data-extractor calls it. The bound text on the
+tooltips comes from `vested_type` and `family_bound`, and "Cannot be
+enhanced" shows on items with every value: in game (2026-10-05) Arsha's
+Crossbow IV (`0`), Kansha Hexround (`1`), [Event] Urugon's Shoes (`2`) and
+Young Crow Earring (`3`) all say it, and none of them has enchant levels.
 
 `life_equip_type` and `life_restrict_type` are the two values the
 equipment window reads before it asks the client for a Life Skill slot:
@@ -833,14 +1065,10 @@ nor my own items could confirm (2026-10-05):
 - **Trade type `4`**: Redfin Anthias, Opah and 107 other fish. bdocodex says
   they sell to Trade Managers, like the `0` fish (Cano Toadfish); what sets
   them apart is open. The Trade column shows both as Trade Manager.
-- **`unknown_0f`** (after the icon, bind type there): neither the bound text
-  nor "Cannot be enhanced" comes from it, see After the icon. No `Item_Table`
-  column matches it, `unknown_0e`, `unknown_10`, `unknown_limit` or
-  `unknown_crystal_group`.
+- No `Item_Table` column of the client 519 server matches Icon Tail
+  `unknown_0e` and `unknown_10` or `unknown_limit`.
 - **`unknown_limit`** (market registration limit there): neither the
   listing nor the pre-order limit.
-- **`unknown_crystal_group`** (crystal transfusion group there): the only
-  example, Magic Crystal of Infinity, is no longer in the game.
 - **Dye parts**: `+0xAC` is not the count (it is `repair_endurance_count`),
   and no byte of the block holds it; where the client gets it (likely the
   model) is open.
@@ -872,6 +1100,13 @@ These fields have a known shape on client 3464 but no confirmed meaning:
   Sailing (21, 22) and Farming (24) it may be Barter gear.
 - `life_restrict_type` `11` on the four Trader's Clothes is not a Life Skill
   tab; how the window places them in the Trade tab's clothes slot is open.
+
+### Tuvala Conversion Stones
+
+The 11 `[Season] Tuvala ... Conversion Stone` items (8043 to 8053,
+`season_item_type` `0`) say one stone turns Tuvala gear into gear "that can
+be equipped by non-Season Characters", but Tuvala gear stores `2`
+(`UseAll`) on clients 1784 and 3473. What the conversion changes is open.
 
 ### Items Without a Record
 

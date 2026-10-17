@@ -2,6 +2,7 @@
   "columns": {
     "skillNo": "№ навыка",
     "level": "Уровень",
+    "maxLevel": "Макс. ур.",
     "icon": "Значок",
     "name": "Название",
     "classes": "Классы",

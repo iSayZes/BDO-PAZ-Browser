@@ -8,6 +8,7 @@ from _common.icon_index import clean_stored_icon_path
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import locate_prefixed_ascii, read_prefixed_at
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 from _dbss.skill.parser import build_skill_buff_index
 from .layout import BlockStrings, header_shift, read_block_strings
 
@@ -15,9 +16,6 @@ from .layout import BlockStrings, header_shift, read_block_strings
 # Keys are packed item keys (`_common/item_key.py`). Level 0 is the base item
 # and there is exactly one per item ID; an item has one record per level up to
 # its maximum.
-
-# Stored icon paths are relative to this folder.
-ICON_ROOT = "ui_texture/icon/"
 
 # The item grade, 0 (white) to 5, which colours the item name (`_common/item_grade.py`).
 _GRADE = 0x06
@@ -95,6 +93,11 @@ _ENHANCEMENT_TYPE_AFTER_MESSAGES = 0x0D
 _LIFE_EQUIP_TYPE_AFTER_MESSAGES = 0x29
 _LIFE_RESTRICT_TYPE_AFTER_MESSAGES = 0x2A
 
+# The last u16 of a base block: the crystal's jewelgroupstaticstatus.bss group,
+# 0xFFFF on everything that is not a crystal. Higher levels always store 0xFFFF.
+_CRYSTAL_GROUP_FROM_END = 0x02
+_NO_CRYSTAL_GROUP = 0xFFFF
+
 
 def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
     """Parse the key/offset index into plain dicts."""
@@ -136,7 +139,8 @@ def _block_strings(data: bytes, row: dict) -> BlockStrings:
 
 
 def _icon_path(icon: str) -> str:
-    return f"{ICON_ROOT}{clean_stored_icon_path(icon)}"
+    # Stored icon paths are relative to ui_texture/icon/.
+    return f"{UI_TEXTURE_ICON_ROOT}{clean_stored_icon_path(icon)}"
 
 
 def _second_string(data: bytes, icon_end: int, end: int) -> str:
@@ -211,6 +215,12 @@ def _after_icon_fields(data: bytes, icon_end: int, end: int) -> dict:
     }
 
 
+def _crystal_group(data: bytes, end: int) -> int | None:
+    """The crystal group of the block ending at `end`, or None when it is not a crystal."""
+    group = u16(data, end - _CRYSTAL_GROUP_FROM_END)
+    return None if group == _NO_CRYSTAL_GROUP else group
+
+
 def _skill_keys(data: bytes, late: int) -> tuple[int, ...]:
     """The non-zero skill keys of a block, in slot order; `late` is from `_late_fields_at`."""
     return tuple(key for key in _SKILL_KEYS_STRUCT.unpack_from(data, late + _SKILL_KEYS) if key)
@@ -248,6 +258,8 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
             "icon_path": _icon_path(strings.icon),
             **_header_fields(data, start),
             **_after_icon_fields(data, strings.icon_end, end),
+            # None sorts last and exports empty.
+            "crystal_group": _crystal_group(data, end),
             "second_string": _second_string(data, strings.icon_end, end),
             "block_size": row["data_size"],
         })

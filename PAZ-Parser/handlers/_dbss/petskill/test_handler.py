@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import struct
 from dataclasses import replace
 from typing import Any
 
@@ -18,9 +19,10 @@ from tests.framework import (
     header_count,
     run_case,
 )
+from .parser import parse_petskill_records
 
 
-# Every record holds a baseline row plus ten level rows; the parser keeps the level rows.
+# Every pet skill has ten levels; the parser yields one record per level.
 _LEVEL_ROWS = 10
 
 
@@ -49,17 +51,20 @@ PETSKILL_CASE = HandlerCase(
                 "skill_type",
                 "skill_type_name",
                 "level",
-                "raw_value_a",
-                "raw_value_b",
-                "unknown_0c",
+                "param_0",
+                "param_1",
+                "unknown_list",
                 "pet_skill_id_match",
+                "skill_type_match",
             ]
         ),
         DeclaredCountTest(declared=_level_rows()),
         # The key prefix, the payload key and the offset row key agree.
         RangeTest(col="pet_skill_id_match", min_val=True, max_val=True),
+        # Each level entry repeats the payload's skill type.
+        RangeTest(col="skill_type_match", min_val=True, max_val=True),
         RangeTest(col="level", min_val=1, max_val=_LEVEL_ROWS),
-        # The two record sizes: eleven 17-byte rows after the key, plus an optional trailing byte.
+        # The two payload sizes: an empty trailing list, or one with a single byte.
         RangeTest(col="data_size", min_val=189, max_val=190),
         TargetTest(
             col="pet_skill_id",
@@ -116,3 +121,34 @@ def test_petskill_dbss(spec: Any, petskill_result: HandlerResult) -> None:
 @pytest.mark.parametrize("spec", PETSKILL_OFFSET_CASE.tests, ids=case_id)
 def test_petskilloffset_dbss(spec: Any, petskill_offset_result: HandlerResult) -> None:
     petskill_offset_result.check(spec)
+
+
+def _payload(pet_skill_id: int, levels: int, tail: bytes) -> bytes:
+    head = struct.pack("<HBiII", pet_skill_id, 1, 1, levels, levels)
+    rows = b"".join(struct.pack("<iBiii", level, 1, level, 5000, 0) for level in range(1, levels + 1))
+    return head + rows + tail
+
+
+def _files(payload: bytes, pet_skill_id: int) -> tuple[bytes, bytes]:
+    data = struct.pack("<IH", 1, pet_skill_id) + payload
+    offsets = struct.pack("<IHIHH", 1, pet_skill_id, 6, len(payload), 0)
+    return data, offsets
+
+
+def test_payload_without_trailing_list_parses() -> None:
+    # Older clients (1784) end the payload after the last level entry.
+    data, offsets = _files(_payload(7, 3, b""), 7)
+    records = parse_petskill_records(data, offsets)
+    assert [r["level"] for r in records] == [1, 2, 3]
+    assert all(r["unknown_list"] == () for r in records)
+
+
+def test_payload_with_trailing_list_parses() -> None:
+    data, offsets = _files(_payload(7, 2, struct.pack("<IB", 1, 9)), 7)
+    assert [r["unknown_list"] for r in parse_petskill_records(data, offsets)] == [(9,), (9,)]
+
+
+def test_payload_with_leftover_bytes_is_rejected() -> None:
+    data, offsets = _files(_payload(7, 2, struct.pack("<IBB", 1, 9, 0)), 7)
+    with pytest.raises(ValueError, match="after its levels"):
+        parse_petskill_records(data, offsets)

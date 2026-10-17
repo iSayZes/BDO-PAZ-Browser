@@ -14,10 +14,8 @@ import struct
 
 from _common.pabr_offset import PabrOffsetRow, parse_bare_offset_rows
 from _common.record_reader import RecordReader
+from _common.ui_texture import ui_texture_path
 
-
-# Stored icon paths start at "Combine/", which hangs off ui_texture.
-ICON_ROOT = "ui_texture/"
 
 _KEY = struct.Struct("<H")
 _POSITION = struct.Struct("<3f")
@@ -54,7 +52,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
         "pos_x": pos_x,
         "pos_y": pos_y,
         "pos_z": pos_z,
-        "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
+        "icon_path": ui_texture_path(icon),
         "condition": condition,
         "unknown_str": unknown_str,
         "unknown_ref": unknown_ref,

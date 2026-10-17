@@ -16,10 +16,11 @@ from _common.node import node_name
 from _common.quest.quest import quest_title
 from _common.territory import territory_name
 from _common.title import title_name
+from _bss.dropuimaincategoryinfo.parser import parse_territory_keys
 from _bss.dropuitaginfo.parser import TagColors, parse_tag_colors
 from _bss.dropuitaginfo.tag_chips import tag_chips_cell
 from _bss.dropuitaginfo.text import tag_name
-from .parser import parse_hunting_ground_records, parse_territory_keys
+from .parser import parse_hunting_ground_records
 from .tribe_labels import tribe_text
 
 

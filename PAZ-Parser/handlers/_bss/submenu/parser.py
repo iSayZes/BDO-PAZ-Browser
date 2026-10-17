@@ -14,7 +14,7 @@ import struct
 
 from _common.binary import u32
 from _common.pabr_strings import TRAILER_SIZE, read_string_table, string_at, string_table_start
-from _bss.menu.parser import sprite_sheet_path
+from _common.ui_texture import ui_texture_path
 
 
 _MAGIC = b"PABR"
@@ -70,7 +70,7 @@ def parse_submenu_records(data: bytes) -> list[dict]:
             "entry_id": entry_id,
             "menu_id": menu_id,
             "position": position,
-            "icon_path": sprite_sheet_path(string_at(strings, icon_ref)),
+            "icon_path": ui_texture_path(string_at(strings, icon_ref)),
             "icon_region": (x1, y1, x2, y2),
             "sheet": string_at(strings, sheet_ref),
             "title_key": string_at(strings, key_ref),

@@ -7,6 +7,7 @@ REPO_URL = "https://github.com/iSayZes/BDO-PAZ-Browser"
 INDEX_PAGE = "index.html"
 STATIC_DIR = "static"
 FORMATS_SCRIPT = "formats.js"
+FAVICON = "favicon.ico"
 
 
 def page(title: str, crumb: str, body_class: str, body: str, scripts: tuple[str, ...], inline_script: str = "") -> str:
@@ -17,6 +18,7 @@ def page(title: str, crumb: str, body_class: str, body: str, scripts: tuple[str,
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
         f"<title>{escape(title)}</title>"
+        f'<link rel="icon" href="{STATIC_DIR}/{FAVICON}">'
         f'<link rel="stylesheet" href="{STATIC_DIR}/wiki.css"></head>'
         f'<body class="{body_class}">{_top_bar(crumb)}{body}{inline}{script_tags}</body></html>\n'
     )

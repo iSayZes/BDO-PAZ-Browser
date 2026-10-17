@@ -1,0 +1,13 @@
+{
+  "offsetColumns": {
+    "key": "Clé",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "columns": {
+    "key": "Clé"
+  },
+  "meta": {
+    "count": "{count} entrées de compétence"
+  }
+}

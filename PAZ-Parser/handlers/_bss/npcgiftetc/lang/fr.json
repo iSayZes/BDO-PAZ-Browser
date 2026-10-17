@@ -5,6 +5,10 @@
     "notes": "Remarques"
   },
   "notes": {
+    "Energy cost of a gift": "Coût en énergie d'un cadeau",
+    "Energy cost of a confession": "Coût en énergie d'une déclaration d'amour",
+    "Lowest amity for a confession": "Amitié minimale pour une déclaration d'amour",
+    "Highest item price for a gift": "Prix maximal d'un objet offert",
     "Global gift-system value": "Valeur globale du système de cadeaux",
     "Observed zero": "Toujours zéro jusqu'ici"
   },

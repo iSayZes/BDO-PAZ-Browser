@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from wiki import build_site
+from wiki import build_site, render_site
 from wiki.format_list import game_totals
 from wiki.markdown_html import render_inline, render_markdown
 
@@ -104,7 +104,9 @@ def test_the_site_has_an_index_a_page_per_doc_and_the_static_files(docs_dir: Pat
     assert {"index.html", "formats.js", "static", "test_bss.html", "other_dbss.html"} <= names
     assert "_template.html" not in names
     assert (result.pages, result.converted) == (2, 1)
-    assert {path.name for path in (tmp_path / "site" / "static").iterdir()} == {"wiki.css", "common.js", "index.js", "doc.js", "fonts"}
+    assert {path.name for path in (tmp_path / "site" / "static").iterdir()} == {"wiki.css", "common.js", "index.js", "doc.js", "fonts", "favicon.ico"}
+    for page_name in ("index.html", "test_bss.html"):
+        assert '<link rel="icon" href="static/favicon.ico">' in (tmp_path / "site" / page_name).read_text(encoding="utf-8")
 
 
 def test_pages_load_nothing_from_other_sites(docs_dir: Path, tmp_path: Path) -> None:
@@ -186,26 +188,27 @@ def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir:
 
 def test_game_totals_come_from_the_readme_supported_formats_lines() -> None:
     readme = (
-        "- Handler Supported 83/402 .bss formats.\n"
-        "- Handler Supported 162/374 .dbss formats.\n"
-        "- Handler Supported 31 other formats.\n"
+        "- `.bss`: 83 of 402 files with a handler.\n"
+        "- `.dbss`: 162 of 374 files with a handler.\n"
+        "- Other formats: 31 with a handler.\n"
     )
 
     assert game_totals(readme) == {"bss": 402, "dbss": 374}
 
 
-def test_the_repo_wiki_has_a_page_for_every_doc_and_no_dead_page_links(tmp_path: Path) -> None:
-    build_site(REPO_DOCS, tmp_path / "site")
+def test_the_repo_wiki_has_a_page_for_every_doc_and_no_dead_page_links() -> None:
+    # Rendered in memory: reading ~300 freshly written pages back took 2.3 s,
+    # spent in the virus scanner on first open.
+    html_pages = {name: text for name, text in render_site(REPO_DOCS).files.items() if name.endswith(".html")}
 
     docs = {path.stem for path in (REPO_DOCS / "file-formats").glob("*.md") if not path.name.startswith("_")}
-    pages = {path.stem for path in (tmp_path / "site").glob("*.html")} - {"index"}
+    pages = {Path(name).stem for name in html_pages} - {"index"}
     assert pages == docs
-    for page in (tmp_path / "site").glob("*.html"):
-        text = page.read_text(encoding="utf-8")
+    for name, text in html_pages.items():
         targets = set(re.findall(r'href="([a-z0-9_]+\.html)', text))
-        assert targets <= {f"{name}.html" for name in pages | {"index"}}, page.name
+        assert targets <= {f"{page}.html" for page in pages | {"index"}}, name
         anchors = set(re.findall(r'href="#([a-z0-9-]+)"', text))
-        assert all(f'id="{anchor}"' in text for anchor in anchors), page.name
+        assert all(f'id="{anchor}"' in text for anchor in anchors), name
 
 
 def test_the_format_list_groups_read_the_loc_page_and_the_extension(tmp_path: Path) -> None:

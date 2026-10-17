@@ -26,9 +26,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-| File                  | Required | Role                     |
-| --------------------- | -------- | ------------------------ |
-| `languagedata_en.loc` | Optional | Territory names (12)     |
+| File                        | Required | Role                                                    |
+| --------------------------- | -------- | ------------------------------------------------------- |
+| `languagedata_en.loc`       | Optional | Territory names (12)                                    |
+| `texturestring_combine.xml` | Optional | Sprite sheet and rectangle of the tab icon, `<key>_Normal` |
 
 All multi-byte values are little-endian.
 
@@ -55,7 +56,7 @@ and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4
 | ------- | ---- | ------------- | --------------------------------------------------------------- |
 | `+0x00` | u32  | key           | Region tab, 1 to 13; `main_category_key` in the hunting grounds |
 | `+0x04` | u16  | territory_key | LOC type 12 `str_id1`; `str_id4` 1 is the tab name              |
-| `+0x06` | u32  | icon_ref      | String table index of the tab icon                              |
+| `+0x06` | u32  | icon_ref      | String table index of the tab icon's texture key                |
 
 | Key | Territory | Name                       | Icon                               |
 | --- | --------- | -------------------------- | ---------------------------------- |
@@ -76,6 +77,10 @@ and 8-byte trailer as [`npcsimply.bss`](npcsimply_bss.md#string-table-variable-4
 The Great Ocean (territory 5) has no tab, and tabs 10 and 11 swap the
 territory order.
 
+The icon is a texture key without the button state: the drop window adds
+`_Normal`, `_Over` or `_Click` to it (`panel_window_renewdropitem_all_1.luac`),
+and only those three keys are in `texturestring_combine.xml`.
+
 ### String Table (variable: 4 bytes + strings)
 
 | Offset  | Type               | Field        | Notes               |
@@ -88,6 +93,6 @@ territory order.
 - LOC type 12 `str_id4` 0 is the territory's own name and can differ from the
   tab name: territories 12 and 13 are both `Alyaelli` there, and `Outer
   Edania` / `Inner Edania` only in `str_id4` 1.
-- No handler reads this file on its own; the
-  [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md) handler
-  loads it as an optional companion and keeps only key -> territory.
+- The [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md)
+  handler loads this file as an optional companion and keeps only key ->
+  territory.

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "enchantKey": "Clé d'optimisation",
+    "items": "Objets",
+    "groupSize": "Taille du groupe",
+    "groupKeys": "Clés du groupe",
+    "groupItems": "Objets du groupe"
+  },
+  "meta": {
+    "count": "{count} clés d'optimisation · {groups} groupes"
+  }
+}

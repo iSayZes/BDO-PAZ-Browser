@@ -7,8 +7,9 @@
 
 Without --paz-folder the check reads the PAZ folder last opened in the app,
 the live client. It writes each doc's `## Versions` section and exits 1 when
-it changed one, so the hook stops the commit for a review. See "Versions" in
-docs/format-docs.md.
+it changed one, so the hook stops the commit for a review. A staged or named
+doc not in the layout format yet is listed as skipped and never stops it.
+See "Versions" in docs/format-docs.md.
 """
 
 from __future__ import annotations
@@ -22,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path[:0] = [str(ROOT / "PAZ-Parser"), str(ROOT / "PAZ-Parser" / "handlers")]
 
-from format_docs import converted_docs  # noqa: E402
+from format_docs import TEMPLATE_PREFIX, converted_docs  # noqa: E402
 from format_docs.check_run import Client, DocOutcome, Status, check_doc_file  # noqa: E402
 from format_docs.doc_index import index_rows  # noqa: E402
 
@@ -80,7 +81,7 @@ def _docs(args: argparse.Namespace) -> list[Path]:
         return list(converted_docs(DOCS_DIR))
     if args.staged:
         staged = _git("diff", "--cached", "--name-only", "--diff-filter=ACMR", "--", "docs/file-formats/*.md")
-        return [ROOT / name for name in staged if not Path(name).name.startswith("_")]
+        return [ROOT / name for name in staged if not Path(name).name.startswith(TEMPLATE_PREFIX)]
     paths = [DOCS_DIR / Path(name).name for name in args.docs]
     missing = [path.name for path in paths if not path.is_file()]
     if missing:

@@ -16,13 +16,17 @@ from tests.framework import (
     run_case,
 )
 
+from .parser import POSITION_FIELDS
+
 
 _ICON_DIR = "ui_texture/renewal/etc/wordmap"
 _BALENOS = 0
 _CALPHEON = 2
-# Silver Mane Horse Crown and Golden Eagle Crown, the conquest crowns.
-_SILVER_MANE_CROWN = 23381
-_GOLDEN_EAGLE_CROWN = 23383
+# The Silver Mane and Golden Eagle crown and armor, the conquest booty.
+_SILVER_MANE_BOOTY = [23381, 23386]
+_GOLDEN_EAGLE_BOOTY = [23383, 23388]
+# A territory supply key is the territory key times 100 plus a small index.
+_SUPPLY_KEYS_PER_TERRITORY = 100
 
 CASE = HandlerCase(
     handler_name="territoryinfo.bss",
@@ -40,15 +44,17 @@ CASE = HandlerCase(
                 "nation_kr",
                 "name",
                 "nation",
-                "is_autonomous",
-                "positions",
-                "nation_hash",
+                "is_king_territory_only",
+                "is_lord_territory_only",
+                "occupying_tent_position",
+                "volunteer_attack_position",
+                "volunteer_defense_position",
+                "national_key",
                 "icon_large_path",
                 "icon_small_path",
-                "crown_item_id",
-                "armor_item_id",
-                "crown",
-                "armor",
+                "booty_item_ids",
+                "booty",
+                "territory_supply_keys",
             ],
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
@@ -60,9 +66,10 @@ CASE = HandlerCase(
                 "nation_kr": "칼페온 공화국",
                 "name": "Balenos",
                 "nation": "Republic of Calpheon",
-                "is_autonomous": True,
+                "is_king_territory_only": False,
+                "is_lord_territory_only": True,
                 "icon_small_path": f"{_ICON_DIR}/territorymark_valenos_small.dds",
-                "crown_item_id": _SILVER_MANE_CROWN,
+                "booty_item_ids": _SILVER_MANE_BOOTY,
             },
         ),
         TargetTest(
@@ -71,8 +78,9 @@ CASE = HandlerCase(
             expected={
                 "name_kr": "칼페온 직할령",
                 "name": "Calpheon",
-                "is_autonomous": False,
-                "crown_item_id": _GOLDEN_EAGLE_CROWN,
+                "is_king_territory_only": True,
+                "is_lord_territory_only": False,
+                "booty_item_ids": _GOLDEN_EAGLE_BOOTY,
             },
         ),
     ],
@@ -104,12 +112,24 @@ def test_every_territory_has_names_and_icons(territoryinfo_result: HandlerResult
         assert record["name_kr"] and record["nation_kr"], record["territory_key"]
         assert record["icon_large_path"].startswith("ui_texture/"), record["territory_key"]
         assert record["icon_small_path"].startswith("ui_texture/"), record["territory_key"]
-        assert len(record["positions"]) == 3 and all(len(p) == 3 for p in record["positions"])
+        assert all(len(record[field]) == 3 for field in POSITION_FIELDS), record["territory_key"]
 
 
-def test_nation_hash_matches_the_nation_name(territoryinfo_result: HandlerResult) -> None:
-    """Territories of one nation share its hash, and no two nations do."""
-    nation_by_hash: dict[int, str] = {}
+def test_national_key_matches_the_nation_name(territoryinfo_result: HandlerResult) -> None:
+    """Territories of one nation share its key, and no two nations do."""
+    nation_by_key: dict[int, str] = {}
     for record in territoryinfo_result.records:
-        assert nation_by_hash.setdefault(record["nation_hash"], record["nation_kr"]) == record["nation_kr"]
-    assert len(set(nation_by_hash.values())) == len(nation_by_hash)
+        assert nation_by_key.setdefault(record["national_key"], record["nation_kr"]) == record["nation_kr"]
+    assert len(set(nation_by_key.values())) == len(nation_by_key)
+
+
+def test_lord_territories_are_not_king_territories(territoryinfo_result: HandlerResult) -> None:
+    for record in territoryinfo_result.records:
+        assert not (record["is_lord_territory_only"] and record["is_king_territory_only"]), record["territory_key"]
+
+
+def test_supply_keys_belong_to_their_territory(territoryinfo_result: HandlerResult) -> None:
+    """`TerritoryTradeItemList_Table` numbers a territory's supply groups from its key times 100."""
+    for record in territoryinfo_result.records:
+        for supply_key in record["territory_supply_keys"]:
+            assert supply_key // _SUPPLY_KEYS_PER_TERRITORY == record["territory_key"], supply_key

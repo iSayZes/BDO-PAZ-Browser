@@ -15,10 +15,8 @@ import struct
 from _common.binary import u32
 from _common.item_key import split_item_key
 from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at, string_table_start
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT, ui_texture_path
 
-
-# Stored icon paths are relative to this folder, as in itemenchant.dbss.
-ICON_ROOT = "ui_texture/icon/"
 
 # u32 item_key | u8 display_level | u32 icon_ref | u32 name_ref | 4x
 # | u8 unknown_11 | u8 unknown_12
@@ -30,10 +28,6 @@ assert _ROW.size == _ROW_SIZE
 def _row_offsets(data: bytes) -> range:
     """Start of every row. Raises ValueError when the rows do not fill the file."""
     return fixed_row_offsets(data, _ROW_SIZE, "specialenchantitem.bss")
-
-
-def _icon_path(stored: str) -> str:
-    return f"{ICON_ROOT}{stored.lower()}" if stored else ""
 
 
 def parse_specialenchantitem_records(data: bytes) -> list[dict]:
@@ -55,7 +49,8 @@ def parse_specialenchantitem_records(data: bytes) -> list[dict]:
             "item_id": item_id,
             "enchant_level": enchant_level,
             "display_level": display_level,
-            "icon_path": _icon_path(string_at(strings, icon_ref)),
+            # Stored relative to ui_texture/icon/, as in itemenchant.dbss.
+            "icon_path": ui_texture_path(string_at(strings, icon_ref), UI_TEXTURE_ICON_ROOT),
             "name_kr": string_at(strings, name_ref),
             "unknown_11": unknown_11,
             "unknown_12": unknown_12,

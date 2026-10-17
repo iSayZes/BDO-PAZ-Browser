@@ -13,10 +13,8 @@ import struct
 
 from _common.binary import u32
 from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at, string_table_start
+from _common.ui_texture import ui_texture_path
 
-
-# Stored icon paths start at "Combine/", which hangs off ui_texture.
-ICON_ROOT = "ui_texture/"
 
 # u32 scene_id | u32 title_ref | u32 description_ref | u32 quote_ref | u32 icon_ref | 8x
 _ROW = struct.Struct("<5I8x")
@@ -43,7 +41,7 @@ def parse_groupcameradata_records(data: bytes) -> list[dict]:
         icon = string_at(strings, icon_ref)
         records.append({
             "scene_id": scene_id,
-            "icon_path": f"{ICON_ROOT}{icon.lower()}" if icon else "",
+            "icon_path": ui_texture_path(icon),
             "title_kr": string_at(strings, title_ref),
             "description_kr": string_at(strings, description_ref),
             "quote_kr": string_at(strings, quote_ref),

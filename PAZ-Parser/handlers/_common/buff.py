@@ -14,9 +14,8 @@ from _common.html import hidden_slice, icon_html_list_cell
 from _common.icon_index import IconKind, clean_stored_icon_path, icon_path
 from _common.loc import LOC_NULL, loc_lookup
 from _common.pa_text import pa_html, strip_pa_tags
+from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 
-# Stored paths start at "New_Icon/", which lives under ui_texture/icon/.
-BUFF_ICON_ROOT = "ui_texture/icon/"
 LOC_BUFF_DESCRIPTION = 5
 
 # Some records store this literal instead of leaving the path empty.
@@ -28,7 +27,8 @@ def buff_icon_path(stored: str) -> str:
     path = clean_stored_icon_path(stored)
     if not path or path == _ICON_PLACEHOLDER:
         return ""
-    return f"{BUFF_ICON_ROOT}{path}"
+    # Stored paths start at "New_Icon/", which lives under ui_texture/icon/.
+    return f"{UI_TEXTURE_ICON_ROOT}{path}"
 
 
 def buff_loc_description(buff_id: int) -> str:

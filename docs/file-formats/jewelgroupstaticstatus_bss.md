@@ -132,7 +132,7 @@ On client 3473:
   Magic next to `(26, 6)`, and `(29, 2)` Dark Red Armor, a group with no row
   here.
 - The u16 at `end-0x02` of each [`itemenchant.dbss`](itemenchant_dbss.md)
-  base block (`unknown_crystal_group` there) is this group number. On client
+  base block (`crystal_group` there) is this group number. On client
   3473 it is `0xFFFF` except in 481 crystals, and every value they store is
   a group here: Crystal of Frozen Bitterness (`15255`, 얼어붙은 혹한의
   수정) stores 36 혹한, the 21 Dawn crystals 103 새벽, and 187 crystals 100

@@ -7,9 +7,8 @@ from bdo_preview import PreviewHandler
 
 from _common.html import Column, e, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
-from _bss.jewelgroupstaticstatus.names import jewel_group_name
+from _bss.jewelgroupstaticstatus.names import JewelGroup, jewel_groups
 from _bss.jewelgroupstaticstatus.parser import FILE_NAME as GROUP_FILE
-from _bss.jewelgroupstaticstatus.parser import parse_jewel_group_records
 from .parser import parse_special_slot_records
 from .slots import special_slot_label
 
@@ -19,20 +18,10 @@ _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 8
 
 
-def _group_names(group_data: bytes | None) -> dict[int, str]:
-    """Group number -> its name; empty without `jewelgroupstaticstatus.bss`."""
-    if group_data is None:
-        return {}
-    return {
-        group["group"]: jewel_group_name(group["group"], group["max_count"], group["name_kr"])
-        for group in parse_jewel_group_records(group_data)
-    }
-
-
-def _group_label(group: int, names: dict[int, str]) -> str:
+def _group_label(group: int, groups: dict[int, JewelGroup]) -> str:
     """`103 Dawn`, or the number alone when the group has no name."""
-    name = names.get(group, "")
-    return f"{group} {name}" if name else str(group)
+    known = groups.get(group)
+    return f"{group} {known.name}" if known and known.name else str(group)
 
 
 class JewelSpecialSlotsGroupStaticStatusBssHandler(PreviewHandler):
@@ -59,12 +48,12 @@ class JewelSpecialSlotsGroupStaticStatusBssHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> list[dict]:
         # Without the group table the groups show as numbers.
-        names = _group_names(companions.get(GROUP_FILE))
+        groups = jewel_groups(companions.get(GROUP_FILE))
         return [
             {
                 **row,
                 "equipment": special_slot_label(row["slot"]),
-                "group_labels": [_group_label(group, names) for group in row["groups"]],
+                "group_labels": [_group_label(group, groups) for group in row["groups"]],
             }
             for row in parse_special_slot_records(data)
         ]

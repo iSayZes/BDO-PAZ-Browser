@@ -9,6 +9,7 @@
     "enhancementType": "Enhancement Type",
     "slot": "Slot",
     "weaponType": "Weapon Type",
+    "crystalGroup": "Crystal Group",
     "requiredLevel": "Req. Level",
     "classes": "Classes",
     "binding": "Binding",
@@ -41,7 +42,9 @@
     "tradeKarma": "Trade Manager (Karma loss)",
     "tradeImperialCrafting": "Imperial Crafting Delivery",
     "tradeGuild": "Guild trade",
-    "tradeType": "Type {type}"
+    "tradeType": "Type {type}",
+    "crystalGroup": "{name} (max {max_count})",
+    "crystalGroupNoLimit": "{name} (No Limit)"
   },
   "meta": {
     "count": "{count} items · {enhanceable} enhanceable",

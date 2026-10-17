@@ -28,7 +28,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                     | Known                 | Unknown               |
 | ------ | ------------------------ | --------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 57,766,929 B (28.5%)  | 144,578,037 B (71.5%) |
+| 2      | `itemenchant.dbss`       | 58,104,867 B (28.7%)  | 144,240,099 B (71.3%) |
 | 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%)  | 0 B (0.0%)            |
 | 1      | `itemenchant.dbss`       | 127,185,494 B (58.3%) | 91,055,550 B (41.7%)  |
 | 1      | `itemenchantoffset.dbss` | 1,534,736 B (100.0%)  | 0 B (0.0%)            |
@@ -43,6 +43,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | `languagedata_en.loc`     | Optional | Item name and description for the item ID (`str_type=0`, `str_id4` 0 and 1) |
 | `skill.dbss`              | Optional | The buffs of `skill_key_1` and `skill_key_2`, through the `SKILL_BUFFS` lookup index |
 | `lightstoneset.bss`       | Optional | The Lightstone sets an item counts toward, through the `LIGHTSTONE_SETS` lookup index |
+| `jewelgroupstaticstatus.bss` | Optional | Crystal group name and preset limit for `crystal_group`; without it the column shows the number |
 
 All multi-byte values are little-endian.
 
@@ -160,7 +161,7 @@ decoded.
 | `messages_kr+0x00`        | Message Tail                  | message_tail                | See Message Tail |
 | `messages_kr+0x5B`        | bytes[rest]                   | unknown_after_message_tail  | Undecoded remainder, holding `second_string` about 330 bytes in. The browser finds `second_string` by scanning for the first `(length, 0, ascii × length)` shape after the icon, see Block Strings |
 | `end-0x06`                | u32                           | key_dup                     | Repeats the packed key, like `key` at `+0x00` |
-| `end-0x02`                | u16                           | unknown_crystal_group       | `0xFFFF` except in 481 base items, e.g. Magic Crystal of Infinity - Valor `100`, which is no longer in the game; bdo-data-extractor: the crystal transfusion group |
+| `end-0x02`                | u16                           | crystal_group               | The crystal's [jewelgroupstaticstatus.bss](jewelgroupstaticstatus_bss.md) group; `0xFFFF` on everything else and on every higher level. 481 base items hold a group on client 3473 (Ancient Spirit's Crystal - Viper `101`), each one a group of that file. The tooltip's Crystal Group line (`getJewelGroupNumber`, panel_tooltip_item.luac) |
 
 Checked on Balacs Lunchbox (`9359`): `item_type` 2, `grade` 3, `weight`
 1,000 (0.1 LT), `buy_price` 38,775, `sell_price` 1,551, and a non-zero
@@ -1065,11 +1066,9 @@ nor my own items could confirm (2026-10-05):
   they sell to Trade Managers, like the `0` fish (Cano Toadfish); what sets
   them apart is open. The Trade column shows both as Trade Manager.
 - No `Item_Table` column of the client 519 server matches Icon Tail
-  `unknown_0e` and `unknown_10`, `unknown_limit` or `unknown_crystal_group`.
+  `unknown_0e` and `unknown_10` or `unknown_limit`.
 - **`unknown_limit`** (market registration limit there): neither the
   listing nor the pre-order limit.
-- **`unknown_crystal_group`** (crystal transfusion group there): the only
-  example, Magic Crystal of Infinity, is no longer in the game.
 - **Dye parts**: `+0xAC` is not the count (it is `repair_endurance_count`),
   and no byte of the block holds it; where the client gets it (likely the
   model) is open.

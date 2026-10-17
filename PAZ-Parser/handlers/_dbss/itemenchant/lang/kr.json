@@ -9,6 +9,7 @@
     "enhancementType": "강화 유형",
     "slot": "장착 부위",
     "weaponType": "무기 종류",
+    "crystalGroup": "수정 그룹",
     "requiredLevel": "요구 레벨",
     "classes": "적용 직업",
     "binding": "귀속",
@@ -41,7 +42,9 @@
     "tradeKarma": "무역관리인 (성향 감소)",
     "tradeImperialCrafting": "황실제작 납품",
     "tradeGuild": "길드 거래",
-    "tradeType": "종류 {type}"
+    "tradeType": "종류 {type}",
+    "crystalGroup": "{name} (최대 {max_count})",
+    "crystalGroupNoLimit": "{name} (제한 없음)"
   },
   "meta": {
     "count": "아이템 {count}개 · 강화 가능 {enhanceable}개",

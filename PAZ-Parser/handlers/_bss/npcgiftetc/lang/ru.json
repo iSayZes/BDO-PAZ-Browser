@@ -5,6 +5,10 @@
     "notes": "Примечания"
   },
   "notes": {
+    "Energy cost of a gift": "Затраты энергии на подарок",
+    "Energy cost of a confession": "Затраты энергии на признание",
+    "Lowest amity for a confession": "Минимальная дружба для признания",
+    "Highest item price for a gift": "Максимальная цена предмета для подарка",
     "Global gift-system value": "Общее значение системы подарков",
     "Observed zero": "Пока всегда ноль"
   },

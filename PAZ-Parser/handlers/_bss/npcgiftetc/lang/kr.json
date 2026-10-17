@@ -5,6 +5,10 @@
     "notes": "비고"
   },
   "notes": {
+    "Energy cost of a gift": "선물 줄 때 기운 소모",
+    "Energy cost of a confession": "고백 할 때 기운 소모",
+    "Lowest amity for a confession": "고백 가능 최소 친밀도",
+    "Highest item price for a gift": "선물할 수 있는 아이템 가격 한계값",
     "Global gift-system value": "선물 시스템 전역 값",
     "Observed zero": "지금까지 항상 0"
   },

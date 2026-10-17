@@ -21,13 +21,18 @@ CASE = HandlerCase(
         SchemaTest(required_keys=["field", "value", "notes"]),
         TargetTest(
             col="field",
-            value="unknown_04",
-            expected={"notes": "Global gift-system value"},
+            value=("use_gift_wp", "use_propose_wp", "min_propose_intimacy", "limit_gift_price"),
+            expected=[
+                {"notes": "Energy cost of a gift"},
+                {"notes": "Energy cost of a confession"},
+                {"notes": "Lowest amity for a confession"},
+                {"notes": "Highest item price for a gift"},
+            ],
         ),
         TargetTest(
             col="field",
-            value=("unknown_10", "unknown_14", "unknown_1c"),
-            expected=[{"value": 0}, {"value": 0}, {"value": 0}],
+            value=("unknown_14", "unknown_1c"),
+            expected=[{"value": 0}, {"value": 0}],
         ),
     ],
 )

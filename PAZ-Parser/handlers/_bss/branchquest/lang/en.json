@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "groupKey": "Group Key",
+    "mainId": "Main ID",
+    "subId": "Sub ID",
+    "icon": "Icon",
+    "title": "Title",
+    "role": "Role"
+  },
+  "roles": {
+    "0": "Opens the crossroad",
+    "1": "Crossroad choice",
+    "2": "Later quest"
+  },
+  "meta": {
+    "count": "{count} quest references · {group_count} groups",
+    "withTitles": " · {with_titles} with LOC titles"
+  }
+}

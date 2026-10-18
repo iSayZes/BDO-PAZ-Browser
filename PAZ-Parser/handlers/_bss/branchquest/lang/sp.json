@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "groupKey": "Clave de grupo",
+    "mainId": "ID principal",
+    "subId": "ID secundario",
+    "icon": "Icono",
+    "title": "Título",
+    "role": "Rol"
+  },
+  "roles": {
+    "0": "Abre la encrucijada",
+    "1": "Opción de la encrucijada",
+    "2": "Misión posterior"
+  },
+  "meta": {
+    "count": "{count} referencias de misiones · {group_count} grupos",
+    "withTitles": " · {with_titles} con título LOC"
+  }
+}

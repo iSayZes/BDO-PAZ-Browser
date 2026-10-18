@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "groupKey": "Clé de groupe",
+    "mainId": "ID principal",
+    "subId": "ID secondaire",
+    "icon": "Icône",
+    "title": "Titre",
+    "role": "Rôle"
+  },
+  "roles": {
+    "0": "Ouvre le carrefour",
+    "1": "Choix du carrefour",
+    "2": "Quête ultérieure"
+  },
+  "meta": {
+    "count": "{count} références de quêtes · {group_count} groupes",
+    "withTitles": " · {with_titles} avec titre LOC"
+  }
+}

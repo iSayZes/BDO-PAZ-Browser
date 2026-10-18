@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "groupKey": "Gruppenschlüssel",
+    "mainId": "Haupt-ID",
+    "subId": "Unter-ID",
+    "icon": "Symbol",
+    "title": "Titel",
+    "role": "Rolle"
+  },
+  "roles": {
+    "0": "Öffnet die Entscheidung",
+    "1": "Entscheidungsoption",
+    "2": "Spätere Quest"
+  },
+  "meta": {
+    "count": "{count} Quest-Verweise · {group_count} Gruppen",
+    "withTitles": " · {with_titles} mit LOC-Titeln"
+  }
+}

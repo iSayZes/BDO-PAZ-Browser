@@ -8,22 +8,14 @@ from bdo_preview import PreviewHandler
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _bss.stringtable.parser import GAME_SHEET
-from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes, ui_key_text
+from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes
+from .names import value_name
 from .parser import parse_quest_counts
 from .tables import QuestCountTable
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-
-
-def _value_name(quest_table: QuestCountTable, hashes: KeyHashes, value: int) -> str:
-    """The name the quest window shows, else the enum name, else ''."""
-    key = quest_table.name_keys.get(value)
-    text = ui_key_text(hashes, GAME_SHEET, key) if key else ""
-    if text:
-        return text
-    return quest_table.enum_names[value] if value < len(quest_table.enum_names) else ""
 
 
 def quest_count_records(quest_table: QuestCountTable, data: bytes, hashes: KeyHashes) -> list[dict]:
@@ -37,7 +29,7 @@ def quest_count_records(quest_table: QuestCountTable, data: bytes, hashes: KeyHa
     return [
         {
             quest_table.key_field: value,
-            quest_table.name_field: _value_name(quest_table, hashes, value) if has_names else "",
+            quest_table.name_field: value_name(quest_table, hashes, value) if has_names else "",
             "quest_count": count,
         }
         for value, count in enumerate(counts)

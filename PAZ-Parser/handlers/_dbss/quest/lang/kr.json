@@ -4,6 +4,7 @@
     "chainId": "연계 ID",
     "questId": "의뢰 ID",
     "category": "카테고리",
+    "questType": "의뢰 타입",
     "icon": "아이콘",
     "titleName": "제목 / 이름",
     "acceptNpc": "NPC (수락)",

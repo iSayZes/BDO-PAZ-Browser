@@ -4,6 +4,7 @@
     "chainId": "Ketten-ID",
     "questId": "Quest-ID",
     "category": "Kategorie",
+    "questType": "Questtyp",
     "icon": "Symbol",
     "titleName": "Titel / Name",
     "acceptNpc": "NPC (Annehmen)",

@@ -18,6 +18,7 @@ Quest definition table. Each record stores the quest's accept and completion scr
 | `languagedata_en.loc` | Optional | English quest strings; raw `quest.dbss` stores Korean objective text |
 | `questgroup.dbss`     | Optional | Quest chain/group metadata; links group names to child quest IDs     |
 | `journalquest.dbss`   | Optional | Adventure-journal books whose pages are quest IDs of this file       |
+| `stringtable.bss`     | Optional | GAME sheet key hashes of the Quest Type names (see [Quest Category](#quest-category)) |
 
 All multi-byte values are little-endian.
 
@@ -212,6 +213,7 @@ titles/objectives.
 - Parsed preview is a lazy handler: the walk builds a small index on open and each page parses only its own rows.
 - The parser walks the records in `allquestlist.bss` order, so that file is a required companion (and the second source of the `QUEST_ICON` lookup index). For each record it reads the two scripts, finds the record's own packed ID after them (the objective string must end at the `quest_category` right before it), then takes the next occurrence of that ID as the echo; the next record must parse right after the 13-byte trailer, or end the file. The walk takes about 0.35 s and reads every script: 18,991 of 18,991 records on client 3474. The earlier scan anchored rows on icon paths and on the `기;` pattern and decoded only 8,085 script rows.
 - The icon path is read through its u64 prefix, not a pattern match. That recovers paths the old `Icon/[A-Za-z0-9_./ -]+` pattern cut short or missed: `Icon/Quest/O'dylilta_820115.dds`, `UI_Artwork/IC_01245.dds`, and `New_Icon/03_ETC/...`, which the pattern read as `Icon/03_ETC/...`. Three records store no icon at all: `69183`, `69175` and `8456145`. The old scan-based icon index had given them, and about a hundred other quests (mostly O'dyllita and Sherekhan ones), a neighbouring record's icon or a truncated path.
+- The Quest Type column names `quest_category` with the quest window's label for that type (GAME sheet key via `stringtable.bss` and LOC type 37), else the enum name (the three Olvia Academy types), else nothing for a value past `19`. The names follow the client 3474 enum; the handler reads Layout 2.
 - The Family Stat column lists the non-`16` unions of the counted reward entries (skipped when `block_kind` is `0`). On client 3474 that is 104 entries: the 98 real Family stats plus six type `12`/`13` entries in the chain `1627` test quests, shown by type number only.
 - `(file_size - 4) / count` is not integral, confirming variable-length records.
 - There is no step/canonical record split: `accept_dialog_key`/`complete_dialog_key` are not quest IDs, and the record's own ID is `packed_quest_id` in the fixed block.

@@ -16,6 +16,10 @@ from _common.lang import handler_text, load_handler_strings
 from _common.quest.dialog import dialog_cell, dialog_speaker
 from _common.quest.quest import quest_text_tagged
 from _bss.allquestlist.parser import parse_allquestlist_records
+from _bss.stringtable.parser import GAME_SHEET
+from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes
+from _bss.totalquestcount.names import value_name
+from _bss.totalquestcount.tables import QUEST_TYPE_TABLE
 from .model import FamilyStat
 from .parser import QuestIndex, build_quest_index, parse_quest_record
 
@@ -77,6 +81,7 @@ class QuestDbssHandler(PreviewHandler):
             Column(cols["chainId"], "num", sort_key="quest_chain_id"),
             Column(cols["questId"], "num", sort_key="quest_id"),
             Column(cols["category"], "num", sort_key="quest_category"),
+            Column(cols["questType"], sort_key="quest_type_name"),
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["titleName"], sort_key="title"),
             Column(cols["acceptNpc"], sort_key="accept_npc"),
@@ -92,7 +97,7 @@ class QuestDbssHandler(PreviewHandler):
 
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/{_ORDER_FILE}"]
+        return [f"{folder}/{_ORDER_FILE}", f"{folder}/{STRINGTABLE_FILE}"]
 
     def _get_index(self, data: bytes, companions: dict[str, bytes]) -> QuestIndex:
         def build() -> QuestIndex:
@@ -104,7 +109,13 @@ class QuestDbssHandler(PreviewHandler):
 
         return self._data_cache(data, "index", build)
 
-    def _record_at(self, data: bytes, index: QuestIndex, row: int) -> dict:
+    def _key_hashes(self, data: bytes, companions: dict[str, bytes]) -> KeyHashes:
+        """GAME sheet key hashes for the quest type names; none without `stringtable.bss`."""
+        return self._data_cache(
+            data, "key_hashes", lambda: ui_key_hashes(companions.get(STRINGTABLE_FILE), [GAME_SHEET])
+        )
+
+    def _record_at(self, data: bytes, index: QuestIndex, hashes: KeyHashes, row: int) -> dict:
         parsed = parse_quest_record(data, index, row)
         loc_texts = _quest_loc_texts(parsed["quest_chain_id"], parsed["quest_id"])
         return {
@@ -116,11 +127,14 @@ class QuestDbssHandler(PreviewHandler):
             "family_stat_text": _family_stat_text(parsed["family_stats"]) or None,
             "accept_npc": dialog_speaker(parsed["accept_dialog_key"]),
             "complete_npc": dialog_speaker(parsed["complete_dialog_key"]),
+            # quest_category is the quest type (__eQuestType); see quest_dbss.md.
+            "quest_type_name": value_name(QUEST_TYPE_TABLE, hashes, parsed["quest_category"]),
         }
 
     def _records_at(self, data: bytes, companions: dict[str, bytes], rows: Iterable[int]) -> list[dict]:
         index = self._get_index(data, companions)
-        return [self._record_at(data, index, row) for row in rows]
+        hashes = self._key_hashes(data, companions)
+        return [self._record_at(data, index, hashes, row) for row in rows]
 
     def get_record_count(
         self,
@@ -160,10 +174,11 @@ class QuestDbssHandler(PreviewHandler):
         """
         def build() -> dict[str, tuple]:
             index = self._get_index(data, companions)
+            hashes = self._key_hashes(data, companions)
             fields = self.sortable_fields()
             rows = [
                 tuple(record.get(field) for field in fields)
-                for record in (self._record_at(data, index, row) for row in range(len(index)))
+                for record in (self._record_at(data, index, hashes, row) for row in range(len(index)))
             ]
             columns = list(zip(*rows)) if rows else [() for _ in fields]
             return dict(zip(fields, columns))
@@ -212,8 +227,9 @@ class QuestDbssHandler(PreviewHandler):
 
         matches: list[int] = []
         index = self._get_index(data, companions)
+        hashes = self._key_hashes(data, companions)
         for row in range(len(index)):
-            record = self._record_at(data, index, row)
+            record = self._record_at(data, index, hashes, row)
             if record_matches(record, q):
                 matches.append(row)
 
@@ -240,6 +256,7 @@ class QuestDbssHandler(PreviewHandler):
                 e(record["quest_chain_id"]),
                 e(record["quest_id"]),
                 e(record["quest_category"]),
+                e(record["quest_type_name"] or "-"),
                 icon_cell(record["icon_path"]),
                 pa_cell(record, "title", _TEXT_PREVIEW_CHARS),
                 dialog_cell(record["accept_dialog_key"], record["accept_npc"] or "-"),

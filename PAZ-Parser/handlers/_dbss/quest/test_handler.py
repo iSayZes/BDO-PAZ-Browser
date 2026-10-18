@@ -35,7 +35,7 @@ def _quest_record(record: dict) -> dict:
 CASE = HandlerCase(
     handler_name="quest.dbss",
     data_file="quest.dbss",
-    companion_files={"allquestlist.bss": "allquestlist.bss"},
+    companion_files={"allquestlist.bss": "allquestlist.bss", "stringtable.bss": "stringtable.bss"},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["Title", "Objective"],
@@ -55,6 +55,7 @@ CASE = HandlerCase(
                 "quest_chain_id",
                 "quest_id",
                 "quest_category",
+                "quest_type_name",
                 "block_kind",
                 "condition_script",
                 "action_script",
@@ -101,7 +102,17 @@ CASE = HandlerCase(
         TargetTest(
             col="packed_quest_id",
             value=197406,
-            expected={"quest_category": 11, "family_stat_labels": ["Stamina"]},
+            expected={
+                "quest_category": 11,
+                "quest_type_name": "Adventurer's Tome",
+                "family_stat_labels": ["Stamina"],
+            },
+        ),
+        # An Olvia Academy Pass quest: the quest window has no name for the type, so the enum name shows.
+        TargetTest(
+            col="packed_quest_id",
+            value=101 << 16 | 2324,
+            expected={"quest_category": 17, "quest_type_name": "OlviaAcademyPass"},
         ),
         # A Growth Pass quest whose LOC title is a TextBind placeholder (LOC type 59).
         TargetTest(

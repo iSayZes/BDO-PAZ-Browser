@@ -4,6 +4,7 @@
     "chainId": "ID de chaîne",
     "questId": "ID de quête",
     "category": "Catégorie",
+    "questType": "Type de quête",
     "icon": "Icône",
     "titleName": "Titre / nom",
     "acceptNpc": "PNJ (Accepter)",

@@ -4,6 +4,7 @@
     "chainId": "Chain ID",
     "questId": "Quest ID",
     "category": "Category",
+    "questType": "Quest Type",
     "icon": "Icon",
     "titleName": "Title / Name",
     "acceptNpc": "Accept NPC",

@@ -150,6 +150,7 @@ from .instancefield.handler import InstanceFieldHandler, instance_field_offset_h
 from .houseinforeceipe.handler import HouseInfoReceipeHandler, house_info_receipe_offset_handler
 from .guildhousecraftskill.handler import GuildHouseCraftSkillHandler, guild_house_craft_skill_offset_handler
 from .guildhousecraftstorage.handler import GuildHouseCraftStorageHandler, guild_house_craft_storage_offset_handler
+from .characteraudioradius.handler import CharacterAudioRadiusHandler, character_audio_radius_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -334,3 +335,5 @@ def register_dbss_handlers() -> None:
     register_handler("guildhousecraftskill.dbss", GuildHouseCraftSkillHandler())
     register_handler("guildhousecraftstorageoffset.dbss", guild_house_craft_storage_offset_handler())
     register_handler("guildhousecraftstorage.dbss", GuildHouseCraftStorageHandler())
+    register_handler("characteraudioradiusoffset.dbss", character_audio_radius_offset_handler())
+    register_handler("characteraudioradius.dbss", CharacterAudioRadiusHandler())

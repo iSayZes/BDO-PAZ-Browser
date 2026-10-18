@@ -9,18 +9,15 @@ from bdo_preview import PreviewHandler
 from _common.html import Column, e, error, icon_html_list_cell, record_link, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.lang import handler_text, load_handler_strings
-from _common.loc import loc_text
 from _common.lookup_builders import SKILL
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pabr_offset import parse_bare_u32_offset_rows
-from _common.skill import skill_name
+from .labels import house_use_name, skill_label
 from .parser import FILE_NAME, parse_guildhousecraftskill_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _HOUSEINFORECEIPE = "gamecommondata/binary/houseinforeceipe.dbss"
-# LOC type 16, str_id1 = receipe key: the house use name (houseinforeceipe_dbss.md).
-_LOC_TYPE_RECEIPE = 16
 _EMPTY = "-"
 _LINK_CLASS = "record-link"
 
@@ -37,20 +34,15 @@ def guild_house_craft_skill_offset_handler() -> OffsetTableHandler:
     )
 
 
-def _skill_label(skill_no: int) -> str:
-    """`65042 Building Boat Lv. 1`, or the bare number without a name."""
-    return f"{skill_no} {skill_name(skill_no)}".strip()
-
-
 def _with_display_fields(record: dict) -> dict:
     """The record with its house use name and its filled skill slots."""
     skills = [skill_no for skill_no in record["skill_nos"] if skill_no]
     return {
         **record,
-        "name": loc_text(_LOC_TYPE_RECEIPE, record["receipe_key"]) or None,
+        "name": house_use_name(record["receipe_key"]) or None,
         "skills": skills,
         "skill_count": len(skills),
-        "skills_text": ", ".join(_skill_label(skill_no) for skill_no in skills) or None,
+        "skills_text": ", ".join(skill_label(skill_no) for skill_no in skills) or None,
     }
 
 
@@ -59,7 +51,7 @@ def _skills_cell(skills: list[int]) -> str:
     if not skills:
         return _EMPTY
     entries = [
-        (icon_path(IconKind.SKILL, skill_no), record_link(_skill_label(skill_no), SKILL, "skill_no", skill_no, _LINK_CLASS))
+        (icon_path(IconKind.SKILL, skill_no), record_link(skill_label(skill_no), SKILL, "skill_no", skill_no, _LINK_CLASS))
         for skill_no in skills
     ]
     return icon_html_list_cell(entries)

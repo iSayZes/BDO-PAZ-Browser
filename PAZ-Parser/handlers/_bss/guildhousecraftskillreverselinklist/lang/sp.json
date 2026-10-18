@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad de hermandad",
+    "linkCount": "Usos",
+    "houseUses": "Usos de casa",
+    "slots": "Casillas"
+  },
+  "meta": {
+    "count": "{count} habilidades de hermandad · {links} usos de casa"
+  }
+}

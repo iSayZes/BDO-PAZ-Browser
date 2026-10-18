@@ -124,7 +124,7 @@ where the sheet and client 1784 have none. Client 3474 also adds the rows
 
 ## Notes
 
-- `guildhousecraftskillreverselinklist.bss` (PABR, not documented yet)
+- [`guildhousecraftskillreverselinklist.bss`](guildhousecraftskillreverselinklist_bss.md)
   holds the reverse of this table: per skill number, the rows that list it as
   (`receipe_key`, slot) pairs, the slot counted from `1` for `skill_nos[0]`.
   Skill `65058` lists `1605` to `1609`, each at slot `1`.

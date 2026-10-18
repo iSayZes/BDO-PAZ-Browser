@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "길드 기술",
+    "linkCount": "용도",
+    "houseUses": "집 용도",
+    "slots": "칸"
+  },
+  "meta": {
+    "count": "길드 기술 {count}개 · 집 용도 {links}개"
+  }
+}

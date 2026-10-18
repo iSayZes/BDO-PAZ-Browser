@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "groupKey": "Clave del grupo",
+    "mainId": "ID principal",
+    "subId": "ID secundario",
+    "title": "Título",
+    "finalSubId": "Último ID secundario",
+    "finalTitle": "Última misión"
+  },
+  "meta": {
+    "count": "{count} cadenas de misiones en {groups} grupos"
+  }
+}

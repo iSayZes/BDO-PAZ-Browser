@@ -72,6 +72,7 @@ from .plantupgraderesource.handler import PlantUpgradeResourceBssHandler
 from .questjournalvideoinfo.handler import QuestJournalVideoInfoBssHandler
 from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestListBssHandler
 from .questnpc.handler import QuestNpcBssHandler
+from .questprogressgroup.handler import QuestProgressGroupBssHandler
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
@@ -188,6 +189,7 @@ def register_bss_handlers() -> None:
     register_handler("plantupgradeparam.bss", PlantUpgradeParamBssHandler())
     register_handler("plantupgraderesource.bss", PlantUpgradeResourceBssHandler())
     register_handler("questjournalvideoinfo.bss", QuestJournalVideoInfoBssHandler())
+    register_handler("questprogressgroup.bss", QuestProgressGroupBssHandler())
     # One layout for the four quest lists, each with its own LOC type.
     for name, loc_type in QUEST_LIST_LOC_TYPES.items():
         register_handler(name, QuestListBssHandler(loc_type, has_event_period=name in EVENT_PERIOD_LISTS))

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "groupKey": "Ключ группы",
+    "mainId": "Основной ID",
+    "subId": "Доп. ID",
+    "title": "Название",
+    "finalSubId": "Последний доп. ID",
+    "finalTitle": "Последнее задание"
+  },
+  "meta": {
+    "count": "Цепочек заданий: {count} · групп: {groups}"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "employeeMax": "Seefahrer-Limit",
+    "employeeSpawnCount": "Seefahrer-Positionen",
+    "foodMax": "Max. Rationen",
+    "cannonSetup": "Kanonen-Setup",
+    "foodRecovery": "Rationen-Wiederherstellung",
+    "cannonRecovery": "Kanonenkugel-Wiederherstellung",
+    "restorationCost": "Wiederherstellungskosten",
+    "summonFull": "Voll beschwören",
+    "newCannonShipUi": "Neue Kanonen-UI",
+    "newCannonCount": "Kanonen",
+    "newCannonSpeed": "Kanonen-Tempo",
+    "shipSkillUi": "Schiffsfertigkeiten-UI",
+    "manualCannonFire": "Manuelles Kanonenfeuer",
+    "manualMinLength": "Feuer Min.-Distanz",
+    "manualMaxLength": "Feuer Max.-Distanz",
+    "manualRandomDist": "Feuer Zufallsdistanz",
+    "manualRandomPos": "Feuer Zufallsposition",
+    "manualMaxAngle": "Feuer Max.-Winkel",
+    "decreaseCoolTime": "Abklingzeit-Verringerung",
+    "condition": "Abklingzeit-Bedingung"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Schiffe"
+  }
+}

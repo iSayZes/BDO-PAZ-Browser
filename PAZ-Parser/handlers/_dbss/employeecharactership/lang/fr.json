@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "employeeMax": "Limite de marins",
+    "employeeSpawnCount": "Positions des marins",
+    "foodMax": "Rations max.",
+    "cannonSetup": "Configuration des canons",
+    "foodRecovery": "Récupération des rations",
+    "cannonRecovery": "Récupération des boulets de canon",
+    "restorationCost": "Coût de récupération",
+    "summonFull": "Invocation complète",
+    "newCannonShipUi": "Nouvelle UI des canons",
+    "newCannonCount": "Canons",
+    "newCannonSpeed": "Vitesse des canons",
+    "shipSkillUi": "UI des compétences du navire",
+    "manualCannonFire": "Tir de canon manuel",
+    "manualMinLength": "Distance min. de tir",
+    "manualMaxLength": "Distance max. de tir",
+    "manualRandomDist": "Distance aléatoire de tir",
+    "manualRandomPos": "Position aléatoire de tir",
+    "manualMaxAngle": "Angle max. de tir",
+    "decreaseCoolTime": "Réduction du temps de recharge",
+    "condition": "Condition du temps de recharge"
+  },
+  "offsetColumns": {
+    "characterId": "ID du personnage",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} navires"
+  }
+}

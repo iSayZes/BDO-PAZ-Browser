@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Название",
+    "employeeMax": "Лимит матросов",
+    "employeeSpawnCount": "Места матросов",
+    "foodMax": "Макс. провизия",
+    "cannonSetup": "Настройка пушек",
+    "foodRecovery": "Восстановление провизии",
+    "cannonRecovery": "Восстановление ядер",
+    "restorationCost": "Стоимость восстановления",
+    "summonFull": "Полный призыв",
+    "newCannonShipUi": "Новый интерфейс пушек",
+    "newCannonCount": "Пушки",
+    "newCannonSpeed": "Скорость пушек",
+    "shipSkillUi": "Интерфейс навыков судна",
+    "manualCannonFire": "Ручная стрельба из пушек",
+    "manualMinLength": "Мин. дальность стрельбы",
+    "manualMaxLength": "Макс. дальность стрельбы",
+    "manualRandomDist": "Случайная дальность стрельбы",
+    "manualRandomPos": "Случайная позиция стрельбы",
+    "manualMaxAngle": "Макс. угол стрельбы",
+    "decreaseCoolTime": "Сокращение перезарядки",
+    "condition": "Условие перезарядки"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Судов: {count}"
+  }
+}

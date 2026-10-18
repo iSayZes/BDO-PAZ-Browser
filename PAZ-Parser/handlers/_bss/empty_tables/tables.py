@@ -5,4 +5,5 @@ from __future__ import annotations
 EMPTY_PABR_TABLES: tuple[str, ...] = (
     "enchantlightstone.bss",
     "lightstoneenchantgroup.bss",
+    "normalgroupquest.bss",
 )

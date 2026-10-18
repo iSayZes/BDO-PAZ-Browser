@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "npcKey": "NPC-Schlüssel",
+    "npc": "NPC",
+    "dicePreset": "Würfelvorlage",
+    "handRanks": "Hände",
+    "knowledgeKey": "Wissens-ID",
+    "knowledge": "Wissen",
+    "deckLimit": "Decklimit",
+    "rollCountMax": "Max. Würfe"
+  },
+  "meta": {
+    "count": "{count} Yar-Gegner"
+  }
+}

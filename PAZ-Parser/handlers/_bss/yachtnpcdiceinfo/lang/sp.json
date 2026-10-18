@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clave",
+    "npcKey": "Clave del PNJ",
+    "npc": "PNJ",
+    "dicePreset": "Ajuste de dados",
+    "handRanks": "Manos",
+    "knowledgeKey": "ID de conocimiento",
+    "knowledge": "Conocimiento",
+    "deckLimit": "Límite del mazo",
+    "rollCountMax": "Tiradas máx."
+  },
+  "meta": {
+    "count": "{count} rivales de Yar"
+  }
+}

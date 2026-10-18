@@ -92,6 +92,7 @@ def register_bss_handlers() -> None:
     for name in (
         "allquestlist.bss",
         "growthpassquestlist.bss",
+        "regionmonsterkillquestlist.bss",
         "seasonpassquestlist.bss",
         "seasonpassquestlistforcash.bss",
         "seasonpassquestlistfornormal.bss",

@@ -143,7 +143,7 @@ The u32 immediately before `packed_quest_id`. Counts from client 3474:
 | `9`  | 1,977 | Event quests (`[Event]` prefix) |
 | `10` | 1     | Guild quests (single observed) |
 | `11` | 896   | Adventure-journal page: exactly the 896 page quests of the 118 books in `journalquest.dbss`, nothing else |
-| `12` | 180   | Season / weekly quests |
+| `12` | 180   | Region monster kill quests: exactly the 180 quests of [`regionmonsterkillquestlist.bss`](regionmonsterkillquestlist_bss.md), in the same order |
 | `13` | 410   | Black Spirit Pass progression quests |
 | `14` | 224   | Tutorial / beginner guide quests |
 | `15` | 219   | The Magnus / endgame zone quests |
@@ -151,7 +151,7 @@ The u32 immediately before `packed_quest_id`. Counts from client 3474:
 | `18` | 85    | Olvia Academy family reward quests |
 | `19` | 168   | Not yet labelled |
 
-Only value `11` is confirmed exactly: the category `11` records and the journal pages are the same 896 quests. The other labels are inferred from English titles.
+Values `11` and `12` are confirmed exactly: the category `11` records and the journal pages are the same 896 quests, and the category `12` records are the 180 quests of `regionmonsterkillquestlist.bss`. The other labels are inferred from English titles.
 
 ## Former "Canonical Link" Sub-record
 
@@ -260,4 +260,4 @@ title/objective source.
 
 ### `quest_category` Semantics
 
-Value `11` is confirmed as the adventure-journal page category. The other values are mapped from English titles only, some categories overlap (types 2 and 3 both appear on repeatables), and values `17` and `19` are unlabelled.
+Value `11` is confirmed as the adventure-journal page category and `12` as the region monster kill quests. The other values are mapped from English titles only, some categories overlap (types 2 and 3 both appear on repeatables), and values `17` and `19` are unlabelled.

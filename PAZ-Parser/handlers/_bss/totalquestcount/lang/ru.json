@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "questRegionId": "ID региона",
+    "questRegion": "Регион",
+    "questTypeId": "ID типа заданий",
+    "questType": "Тип заданий",
+    "questCount": "Задания"
+  },
+  "meta": {
+    "regionCount": "Регионов: {count}",
+    "typeCount": "Типов заданий: {count}"
+  }
+}

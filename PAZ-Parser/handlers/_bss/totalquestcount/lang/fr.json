@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "questRegionId": "ID de région",
+    "questRegion": "Région",
+    "questTypeId": "ID de type de quête",
+    "questType": "Type de quête",
+    "questCount": "Quêtes"
+  },
+  "meta": {
+    "regionCount": "{count} régions",
+    "typeCount": "{count} types de quête"
+  }
+}

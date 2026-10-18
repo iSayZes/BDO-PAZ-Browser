@@ -57,6 +57,7 @@ from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
+from .multiplequest.handler import MultipleQuestBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
@@ -174,6 +175,7 @@ def register_bss_handlers() -> None:
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
+    register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())

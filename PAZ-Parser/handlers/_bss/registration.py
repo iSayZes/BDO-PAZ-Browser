@@ -79,6 +79,7 @@ from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandl
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
+from .specialquestinfo.handler import SpecialQuestInfoBssHandler
 from .stringtable.handler import StringTableBssHandler
 from .submenu.handler import SubmenuBssHandler
 from .territoryinfo.handler import TerritoryInfoBssHandler
@@ -201,6 +202,7 @@ def register_bss_handlers() -> None:
         register_handler(name, SkillExperienceMaxLevelBssHandler())
     register_handler("skillgroup.bss", SkillGroupBssHandler())
     register_handler("specialenchantitem.bss", SpecialEnchantItemBssHandler())
+    register_handler("specialquestinfo.bss", SpecialQuestInfoBssHandler())
     register_handler("stringtable.bss", StringTableBssHandler())
     register_handler("submenu.bss", SubmenuBssHandler())
     register_handler("territoryinfo.bss", TerritoryInfoBssHandler())

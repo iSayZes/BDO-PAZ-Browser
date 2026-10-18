@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Group Key",
+    "questCount": "Quests",
+    "quests": "Quest Names"
+  },
+  "meta": {
+    "count": "{count} special quest groups · {quests} quests"
+  }
+}

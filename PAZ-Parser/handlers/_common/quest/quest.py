@@ -5,6 +5,15 @@ from _common.pa_text import strip_pa_tags
 
 LOC_QUEST = 18
 
+# Packed quest ID: low u16 quest chain, high u16 quest, as in allquestlist.bss.
+_QUEST_CHAIN_MASK = 0xFFFF
+_QUEST_ID_SHIFT = 16
+
+
+def split_packed_quest_id(packed_quest_id: int) -> tuple[int, int]:
+    """`(quest_chain_id, quest_id)` of a packed quest ID."""
+    return packed_quest_id & _QUEST_CHAIN_MASK, packed_quest_id >> _QUEST_ID_SHIFT
+
 
 def quest_text_tagged(str_id1: int, str_id2: int, str_id4: int = 0) -> str:
     """One LOC type 18 text with its PA tags and TextBind placeholders filled

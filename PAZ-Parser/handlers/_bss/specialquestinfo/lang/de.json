@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Gruppenschlüssel",
+    "questCount": "Quests",
+    "quests": "Questnamen"
+  },
+  "meta": {
+    "count": "{count} Spezialquestgruppen · {quests} Quests"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "그룹 키",
+    "questCount": "의뢰",
+    "quests": "의뢰명"
+  },
+  "meta": {
+    "count": "특수 의뢰 그룹 {count}개 · 의뢰 {quests}개"
+  }
+}

@@ -7,10 +7,15 @@ with the pointer dropped:
     | i32 product_experience | u8 life_experience_type | i32 life_experience
     | u32 item_key | i64 item_count | u16 intimacy_character | i32 intimacy_value
 
-then 135 bytes the 2016 struct has no member for. `reward_type` picks the
-member that holds the reward. Both files store a list as a u32 count and the
-entries back to back. "Reward Entry" in docs/file-formats/quest_dbss.md and
-guildquest_dbss.md.
+then 135 bytes for the reward types the 2016 enum does not have:
+
+    i32 mental_card_key | u8[2] | u8 exp_grade | u8[4] | u8[49]
+    | u8[53] family_stat | u8[4] | u32 max_fever_point | u32 add_fever_point
+    | u8 | u8 season_no | i64 explore_exp
+
+`reward_type` picks the member that holds the reward. Both files store a list
+as a u32 count and the entries back to back. "Reward Entry" in
+docs/file-formats/quest_dbss.md and guildquest_dbss.md.
 """
 
 from __future__ import annotations
@@ -23,26 +28,44 @@ from _common.record_reader import RecordReader
 
 REWARD_ENTRY_SIZE = 178
 
-# gc::RewardType of the 2016 client. Later clients add more types (5 to 18),
-# whose values sit in the tail.
+# gc::RewardType of the 2016 client.
 REWARD_EXP = 0
 REWARD_SKILL_EXP = 1
 REWARD_LIFE_EXP = 2
 REWARD_ITEM = 3
 REWARD_INTIMACY = 4
+# Later types: the client Lua enum names, matched to their values by the
+# Quest_Table script calls of client 1784 (Reward Types in quest_dbss.md).
+REWARD_KNOWLEDGE = 5
+REWARD_EXP_GRADE = 7
+REWARD_SKILL_EXP_GRADE = 8
+REWARD_EXPLORE_EXP = 9
+REWARD_FAMILY_STAT = 12
+REWARD_FEVER_POINT = 17
+REWARD_SEASON_REWARD = 18
 REWARD_TYPE_NAMES = {
     REWARD_EXP: "eRewardExp",
     REWARD_SKILL_EXP: "eRewardSkillExp",
     REWARD_LIFE_EXP: "eRewardLifeExp",
     REWARD_ITEM: "eRewardItem",
     REWARD_INTIMACY: "eRewardIntimacy",
+    REWARD_KNOWLEDGE: "eRewardKnowledge",
+    REWARD_EXP_GRADE: "eRewardExpGrade",
+    REWARD_SKILL_EXP_GRADE: "eRewardSkillExpGrade",
+    REWARD_EXPLORE_EXP: "eRewardExploreExp",
+    REWARD_FAMILY_STAT: "eRewardFamilyStat",
+    # The client Lua spells this one `__eeRewardFeverPoint`.
+    REWARD_FEVER_POINT: "eeRewardFeverPoint",
+    REWARD_SEASON_REWARD: "eRewardSeasonReward",
 }
 
-# Start of the Family Stat Union inside the tail (`quest.dbss`).
+# Start of the Family Stat Union (`quest.dbss`).
 FAMILY_STAT_OFFSET = 0x67
 
 _HEAD = struct.Struct("<IqiiBiIqHi")
-_TAIL = struct.Struct(f"<{REWARD_ENTRY_SIZE - _HEAD.size}s")
+# mental_card_key, unknown_2f, exp_grade, unknown_32, unknown_36, family_stat,
+# unknown_9c, max_fever_point, add_fever_point, unknown_a8, season_no, explore_exp
+_TAIL = struct.Struct("<i2sB4s49s53s4sIIBBq")
 _U32 = struct.Struct("<I")
 
 
@@ -57,8 +80,24 @@ class RewardEntry(TypedDict):
     item_count: int
     intimacy_character: int
     intimacy_value: int
-    # The 135 bytes after intimacy_value, as hex.
-    unknown_2b: str
+    # Knowledge (mentalcard.dbss card) of type 5.
+    mental_card_key: int
+    unknown_2f: str
+    # expgrade() argument of type 7.
+    exp_grade: int
+    unknown_32: str
+    unknown_36: str
+    # The Family Stat Union as hex; quest.dbss decodes it.
+    family_stat: str
+    unknown_9c: str
+    # Agris Fever points of type 17.
+    max_fever_point: int
+    add_fever_point: int
+    unknown_a8: int
+    # Season of type 18.
+    season_no: int
+    # Contribution EXP of type 9.
+    explore_exp: int
 
 
 def read_reward_entry(reader: RecordReader) -> RewardEntry:
@@ -75,7 +114,20 @@ def read_reward_entry(reader: RecordReader) -> RewardEntry:
         intimacy_character,
         intimacy_value,
     ) = reader.unpack(_HEAD)
-    (tail,) = reader.unpack(_TAIL)
+    (
+        mental_card_key,
+        unknown_2f,
+        exp_grade,
+        unknown_32,
+        unknown_36,
+        family_stat,
+        unknown_9c,
+        max_fever_point,
+        add_fever_point,
+        unknown_a8,
+        season_no,
+        explore_exp,
+    ) = reader.unpack(_TAIL)
     return RewardEntry(
         reward_type=reward_type,
         experience=experience,
@@ -87,7 +139,18 @@ def read_reward_entry(reader: RecordReader) -> RewardEntry:
         item_count=item_count,
         intimacy_character=intimacy_character,
         intimacy_value=intimacy_value,
-        unknown_2b=tail.hex(),
+        mental_card_key=mental_card_key,
+        unknown_2f=unknown_2f.hex(),
+        exp_grade=exp_grade,
+        unknown_32=unknown_32.hex(),
+        unknown_36=unknown_36.hex(),
+        family_stat=family_stat.hex(),
+        unknown_9c=unknown_9c.hex(),
+        max_fever_point=max_fever_point,
+        add_fever_point=add_fever_point,
+        unknown_a8=unknown_a8,
+        season_no=season_no,
+        explore_exp=explore_exp,
     )
 
 

@@ -74,7 +74,7 @@ The split between the 13-byte `unknown_trailer` and the next record's 12-byte le
 
 ### Reward Entry (178 bytes)
 
-The same entry as in [`guildquest.dbss`](guildquest_dbss.md#reward-entry-178-bytes): the `gc::QuestRewardElement` members of the 2016 client in their order, byte-packed with the `_item` pointer dropped, then the Family Stat Union and bytes the 2016 struct has no member for. `reward_type` picks the members that hold the reward; see [Reward Types](#reward-types). Counts from client 3474, base and select rewards together (43,342 entries).
+The same entry as in [`guildquest.dbss`](guildquest_dbss.md#reward-entry-178-bytes): the `gc::QuestRewardElement` members of the 2016 client in their order, byte-packed with the `_item` pointer dropped, then the members of the reward types the 2016 enum does not have, among them the Family Stat Union. `reward_type` picks the members that hold the reward; see [Reward Types](#reward-types) for how the later members were placed. Counts from client 3474, base and select rewards together (43,342 entries).
 
 | Offset  | Type              | Field                | Notes |
 | ------- | ----------------- | -------------------- | ----- |
@@ -88,9 +88,18 @@ The same entry as in [`guildquest.dbss`](guildquest_dbss.md#reward-entry-178-byt
 | `+0x1D` | i64               | item_count           | Amount of `item_key` |
 | `+0x25` | u16               | intimacy_character   | NPC character key of type `4` (Amity) |
 | `+0x27` | i32               | intimacy_value       | Amity points of type `4` |
-| `+0x2B` | bytes[60]         | unknown_2b           | Zero apart from `16` at `+0x36` in every entry and values of the types after `4`; see Open Questions |
+| `+0x2B` | i32               | mental_card_key      | Knowledge of type `5`, a [`mentalcard.dbss`](mentalcard_dbss.md) card ID (all 1,660); `0` in every other entry |
+| `+0x2F` | bytes[2]          | unknown_2f           | Zero in every entry |
+| `+0x31` | u8                | exp_grade            | `expgrade()` argument of type `7`; `0` in every other entry |
+| `+0x32` | bytes[4]          | unknown_32           | Zero in every entry |
+| `+0x36` | bytes[49]         | unknown_36           | u32 `16`, then 45 zero bytes, in every entry; see Open Questions |
 | `+0x67` | Family Stat Union | family_stat          | See Family Stat Union |
-| `+0x9C` | bytes[22]         | unknown_9c           | Values of types `9`, `17` and `18`; see Open Questions |
+| `+0x9C` | bytes[4]          | unknown_9c           | Zero in every entry |
+| `+0xA0` | u32               | max_fever_point      | Agris Fever max points of type `17`; `0` in every other entry; see Open Questions |
+| `+0xA4` | u32               | add_fever_point      | Agris Fever daily recovery points of type `17`; `0` in every other entry |
+| `+0xA8` | u8                | unknown_a8           | `1` in the type `17` entry of `328514` ("Book of Margahan Chapter 5"), `0` in every other entry; see Open Questions |
+| `+0xA9` | u8                | season_no            | Season of type `18`; `0` in every other entry |
+| `+0xAA` | i64               | explore_exp          | Contribution EXP of type `9`; `0` in every other entry; ends the entry |
 
 ### Family Stat Union (53 bytes)
 
@@ -127,11 +136,14 @@ The reward lists sit at the start of `unknown_payload`. In 16,515 of the
 16,877 records, 9 bytes after the objective (zero in 16,463 records) come
 `base_reward_count`, `base_rewards`, `select_reward_count` and
 `select_rewards` as in Layout 2, with entries of 188 bytes. Their members
-`+0x00` to `+0x2A` are those of Layout 2, and `+0x36` and `+0x67` hold `16`
-as there; the 10 extra bytes lie in the tail, where the `exploreexp` value
-of type `9` sits at `+0xB4` in place of `+0xAA`. In the other 362 records
-the count comes later. The layout keeps these bytes in `unknown_payload`,
-as the parser reads Layout 2 only.
+`+0x00` to `+0x9B` are those of Layout 2. The 10 extra bytes lie after the
+Family Stat Union: `unknown_9c` is 10 bytes long, which moves
+`max_fever_point`, `add_fever_point`, `unknown_a8` and `season_no` 6 bytes
+later (`+0xA6` to `+0xAF`), and 4 zero bytes follow `season_no`, which puts
+`explore_exp` at `+0xB4` (the [`guildquest.dbss`](guildquest_dbss.md#reward-entry-188-bytes)
+Layout 1 table). In the other 362 records the count comes later. The
+layout keeps these bytes in `unknown_payload`, as the parser reads Layout 2
+only.
 
 ### Record (variable: 71 bytes + text and scanned parts)
 
@@ -156,25 +168,29 @@ as the parser reads Layout 2 only.
 
 `reward_type` values `0` to `4` are the 2016 `gc::RewardType` (`eRewardCount` = `5`). On clients 1784 and 3474 each of these types holds its value in its own members of the Reward Entry and leaves every other member unset, so the member sizes of the 2016 struct place every offset of `+0x00` to `+0x2A`.
 
-The later types are not in the 2016 enum. Their names in the table are the script calls of the `Quest_Table` `BaseReward` and `SelectReward` columns of a private server's `DataSheets.bexcel` on client 1784: there, on the 15,825 records whose `BaseReward` lists as many calls as the file has base entries and the 15,849 whose `SelectReward` does the same for the select entries, each entry type pairs with one call name, and the item, EXP, Skill EXP, Life EXP and Amity members equal the call arguments in every entry but one item. Entries from client 3474, base and select rewards together:
+The later types are not in the 2016 enum, and the 2016 `gc::QuestRewardElement` ends at `_intimacyValue`. Their script calls in the table are those of the `Quest_Table` `BaseReward` and `SelectReward` columns of a private server's `DataSheets.bexcel` on client 1784: there, on the 15,825 records whose `BaseReward` lists as many calls as the file has base entries and the 15,849 whose `SelectReward` does the same for the select entries, each entry type pairs with one call name, and the item, EXP, Skill EXP, Life EXP and Amity members equal the call arguments in every entry but one item. Entries from client 3474, base and select rewards together:
 
-| Value | `gc::RewardType`  | Script call     | Entries (client 3474) |
-| ----: | ----------------- | --------------- | --------------------: |
-| `0`   | `eRewardExp`      | `exp`           | 936    |
-| `1`   | `eRewardSkillExp` | `skillexp`      | 432    |
-| `2`   | `eRewardLifeExp`  | `lifeexp`       | 121    |
-| `3`   | `eRewardItem`     | `item`          | 21,716 |
-| `4`   | `eRewardIntimacy` | `intimacy`      | 1,599  |
-| `5`   |                   | `knowledge`     | 1,660  |
-| `7`   |                   | `expgrade`      | 3,016  |
-| `8`   |                   | `skillexpgrade` | 360    |
-| `9`   |                   | `exploreexp`    | 13,383 |
-| `12`  |                   | `familystat`    | 104    |
-| `14`  |                   | `growstep`      | 0      |
-| `17`  |                   | `feverpoint`    | 10     |
-| `18`  |                   | `seasonreward`  | 5      |
+| Value | `gc::RewardType`  | Client Lua               | Script call     | Members                            | Entries (client 3474) |
+| ----: | ----------------- | ------------------------ | --------------- | ---------------------------------- | --------------------: |
+| `0`   | `eRewardExp`      | `__eRewardExp`           | `exp`           | `experience`                       | 936    |
+| `1`   | `eRewardSkillExp` | `__eRewardSkillExp`      | `skillexp`      | `skill_experience`                 | 432    |
+| `2`   | `eRewardLifeExp`  | `__eRewardLifeExp`       | `lifeexp`       | `life_experience_type`, `life_experience` | 121 |
+| `3`   | `eRewardItem`     | `__eRewardItem`          | `item`          | `item_key`, `item_count`           | 21,716 |
+| `4`   | `eRewardIntimacy` | `__eRewardIntimacy`      | `intimacy`      | `intimacy_character`, `intimacy_value` | 1,599 |
+| `5`   |                   | `__eRewardKnowledge`     | `knowledge`     | `mental_card_key`                  | 1,660  |
+| `7`   |                   | `__eRewardExpGrade`      | `expgrade`      | `exp_grade`                        | 3,016  |
+| `8`   |                   | `__eRewardSkillExpGrade` | `skillexpgrade` | none                               | 360    |
+| `9`   |                   | `__eRewardExploreExp`    | `exploreexp`    | `explore_exp`                      | 13,383 |
+| `12`  |                   | `__eRewardFamilyStat`    | `familystat`    | `family_stat`                      | 104    |
+| `14`  |                   |                          | `growstep`      | none                               | 0      |
+| `17`  |                   | `__eeRewardFeverPoint`   | `feverpoint`    | `max_fever_point`, `add_fever_point`, `unknown_a8` | 10 |
+| `18`  |                   | `__eRewardSeasonReward`  | `seasonreward`  | `season_no`                        | 5      |
 
-Type `14` occurs on client 1784 only. The type `12` entries are exactly the entries whose Family Stat Union holds a stat (`family_stat_type` other than `16`). `panel_widget_questrewarditem.luac` branches on `__eRewardExp`, `__eRewardSkillExp`, `__eRewardLifeExp`, `__eRewardExpGrade`, `__eRewardSkillExpGrade`, `__eRewardItem`, `__eRewardIntimacy`, `__eRewardKnowledge`, `__eRewardSeasonReward`, `__eRewardExploreExp`, `__eRewardFamilyStat` and `__eRewardCharacterStat`, which reads `getMaxFeverPoint()`; the Lua does not hold their values.
+Type `14` occurs on client 1784 only. The type `12` entries are exactly the entries whose Family Stat Union holds a stat (`family_stat_type` other than `16`). Each type sets only its own members; every other member holds `0` (`15` for `life_experience_type`, `16` for `family_stat_type`) in every entry of client 3474 and in the 38,878 entries of client 1784 that pair with a sheet call.
+
+The tail members were placed on client 1784, where each equals the call argument of its entry: `knowledge(key)` at `+0x2B` in 711 of 711 entries, `expgrade(n)` at `+0x31` in 2,832 of 2,832, `exploreexp(n)` at `+0xB4` in 9,132 of 9,132, `feverpoint(a,b,c)` at `+0xA6`, `+0xAA` and `+0xAE` in 22 of 22 and `seasonreward(n)` at `+0xAF` in 7 of 7. On client 3474 the same types fill `+0x2B` and `+0x31`, the fever and season members 6 bytes earlier and `explore_exp` 10 bytes earlier (the last 8 bytes of both entry sizes). `skillexpgrade(n)` and `growstep(n)` leave all 188 bytes at their unset values. The widths follow the spacing: `explore_exp` is the last 8 bytes, `season_no` sits between `unknown_a8` and `explore_exp`, and the 2016 `gc::MentalCard` key is a `KeyType<int>`.
+
+The member names come from the client Lua. `panel_widget_questrewarditem.luac`, `panel_window_questinfo_all_1.luac` and `panel_dialog_quest_all_1.luac` branch on the `__eReward*` globals of the table and read `getMentalCardKey()` for `__eRewardKnowledge` (passed to `ToClinet_getMentalCardStaticStatus()`; every type `5` key of client 3474 is a `mentalcard.dbss` card), `_exploreExp` and `getExploreExperience()` (an int64) for `__eRewardExploreExp`, `_season` and `getSeasonNo()` for `__eRewardSeasonReward`, and `getMaxFeverPoint()`, `getAddFeverPoint()` and `getAddFeverDropRate()` for `__eeRewardFeverPoint`. They read no value for `__eRewardExpGrade` and `__eRewardSkillExpGrade`. The getters do not say which fever member is which; the Agris Fever tooltip does. It starts a family at 3,000 recovery points a day up to 10,000 (`TEXTBIND_PANEL_FEVERPOINT_ICON`, client 3474), and the ten "Book of Margahan" entries of client 3474 add 50,000 at `+0xA0` and 5,000 at `+0xA4`. Read the other way round, a family would recover 53,000 points a day toward a cap of 15,000. The Lua holds no numbers for the globals; the values pair with them through the call names and the members their getters read.
 
 ## Quest Category
 
@@ -265,7 +281,7 @@ titles/objectives.
 - The icon path is read through its u64 prefix, not a pattern match. That recovers paths the old `Icon/[A-Za-z0-9_./ -]+` pattern cut short or missed: `Icon/Quest/O'dylilta_820115.dds`, `UI_Artwork/IC_01245.dds`, and `New_Icon/03_ETC/...`, which the pattern read as `Icon/03_ETC/...`. Three records store no icon at all: `69183`, `69175` and `8456145`. The old scan-based icon index had given them, and about a hundred other quests (mostly O'dyllita and Sherekhan ones), a neighbouring record's icon or a truncated path.
 - The Quest Type column names `quest_category` with the quest window's label for that type (GAME sheet key via `stringtable.bss` and LOC type 37), else the enum name (the three Olvia Academy types), else nothing for a value past `19`. The names follow the client 3474 enum; the handler reads Layout 2.
 - The Family Stat column lists the non-`16` unions of the base reward entries. On client 3474 that is 104 entries: the 98 real Family stats plus six entries of Family stat type `12` or `13` in the chain `1627` test quests, shown by type number only.
-- The Rewards and Selectable Rewards columns show `base_rewards` and `select_rewards` of reward types `0` to `4` the way `panel_widget_questrewarditem.luac` names them: the `GAME` sheet texts of `LUA_QUESTREWARD_SIMPLE_TOOLTIP_EXP`, `_SKILLEXP`, `_PRODUCTEXP` (with the life skill) and `_INTIMACY` (after the NPC name), and items with their icon, name and count. Entries of the later types are left out, as their values sit in undecoded tail bytes; the Family Stat column covers type `12`. The parser keeps the 135 bytes after `intimacy_value` of each entry as one hex field `unknown_2b`, shared with `guildquest.dbss` in `_common/quest/reward_entry.py`.
+- The Rewards and Selectable Rewards columns show `base_rewards` and `select_rewards` the way `panel_widget_questrewarditem.luac` names them, with the `GAME` sheet texts of its keys: `LUA_QUESTREWARD_SIMPLE_TOOLTIP_EXP`, `_SKILLEXP`, `_PRODUCTEXP` (with the life skill) and `_INTIMACY` (after the NPC name), items with their icon, name and count, a knowledge reward as `LUA_REWARDITEM_KNOWLEDGE` with the card's LOC type 34 name (`[Knowledge] Pet - Dog`), `LUA_QUESTREWARD_EXPLOREEXP` with `explore_exp`, `LUA_ACHIEVEMENT_REWARD_TYPE_MAXFEVERPOINT` or, without max points, `_ADDFEVERPOINT` for type `17`, and the labels `LUA_QUESTREWARD_SIMPLE_TOOLTIP_EXP_GRADE` ("Combat EXP"), `_SKILLEXP_GRADE` and `_COMPLETE_SEASON` alone, as the widget shows them; `exp_grade` and `season_no` stay on the record. A type `17` entry with neither fever member set and the Family stat type `12` have no text; the Family Stat column covers type `12`. The entry is read in `_common/quest/reward_entry.py`, shared with `guildquest.dbss`, and its text in `_common/quest/reward_text.py`.
 - `(file_size - 4) / count` is not integral, confirming variable-length records.
 - There is no step/canonical record split: `accept_dialog_key`/`complete_dialog_key` are not quest IDs, and the record's own ID is `packed_quest_id` in the fixed block.
 - `accept_dialog_key` and `complete_dialog_key` equal `dialog_index << 16 | npc_id` of the quest's `acceptquest.bss` and `completequest.bss` rows in all 19,267 quests of client 3464; those two files index the same values grouped by NPC. The two are equal in 11,519 quests. Quest `795132` (record 1 on client 3474) holds `65536` (`0x10000`): no NPC, dialog index `1`.
@@ -289,7 +305,21 @@ The values `24`, `168`, `72`, `22`, `1`, `25` and `9999` read as hours. On clien
 
 ### Reward Entry Tail
 
-The reward types after `4` hold their values in `unknown_2b` and `unknown_9c`. On client 1784, where the sheet gives the call arguments, type `5` holds its `knowledge()` key at `+0x2B` (`0x24D8` for `knowledge(9432)`), type `7` its `expgrade()` argument at `+0x31`, type `9` its `exploreexp()` argument at `+0xB4`, and types `17` and `18` theirs after `+0xA6`; type `8` stores its `skillexpgrade()` argument in none of the 188 bytes. On client 3474 the same types fill `+0x2B`, `+0x31`, `+0xAA` and `+0xA0` to `+0xA9`. The widths and the live-client meaning are not checked, and the `16` at `+0x36` (every entry of both files) has no known role.
+Four parts of the tail hold nothing a reward type fills. `unknown_36` is a u32 `16` and 45 zero bytes in every entry of both files on clients 1784 and 3474. It is 49 bytes, 4 fewer than the Family Stat Union, and it ends where that union starts, with `16` where the union keeps its "no stat" type; the client Lua reads a Character stat reward (`__eRewardCharacterStat`) through `getCharacterStatType()` and the same stat getters as a Family stat (`getCharacterStatHp()`), but no entry of either client has that type, so the reading is not checked. `unknown_2f`, `unknown_32` and `unknown_9c` (10 bytes on client 1784) are zero in every entry; `exp_grade` may be wider than one byte. The `skillexpgrade()` and `growstep()` arguments are stored in none of the 188 bytes of client 1784.
+
+### Agris Fever Max and Recovery Order
+
+The getters `getMaxFeverPoint()` and `getAddFeverPoint()` name the two
+type `17` members but not their order. `+0xA0` is read as
+`max_fever_point` and `+0xA4` as `add_fever_point` only from the sizes:
+the Book of Margahan entries of client 3474 add 50,000 at `+0xA0` and
+5,000 at `+0xA4`, and the client 3474 Agris Fever tooltip starts a family
+at 3,000 recovery points a day up to 10,000. Which of the two the reward
+window shows for a Book of Margahan chapter is not checked.
+
+### Third Agris Fever Argument
+
+`unknown_a8` holds the third `feverpoint()` argument: `1` in "Book of Margahan Chapter 5" (`328514`) on client 3474 and the same quest on client 1784, `0` in the other type `17` entries. The reward widgets read a third value through `getAddFeverDropRate()` and show it divided by 10,000 as `LUA_ACHIEVEMENT_REWARD_TYPE_FEVERDROPRATE` (`Item Drop Amount +{feverDropRate}%`), which makes `1` a 0.0001% bonus, while the Agris Fever tooltip of client 3474 states a 50% bonus. The same tooltip says Agris Fever activates on completing "Adventure Log: Agris, the Ancient Secret"; whether the byte is that unlock is not checked.
 
 ### Fields After the Select Rewards
 

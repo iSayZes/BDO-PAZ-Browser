@@ -23,9 +23,15 @@ from tests.runner import load_case
 
 from _common.quest.reward_entry import (
     REWARD_EXP,
+    REWARD_EXP_GRADE,
+    REWARD_EXPLORE_EXP,
+    REWARD_FAMILY_STAT,
+    REWARD_FEVER_POINT,
     REWARD_INTIMACY,
     REWARD_ITEM,
+    REWARD_KNOWLEDGE,
     REWARD_LIFE_EXP,
+    REWARD_SEASON_REWARD,
     REWARD_SKILL_EXP,
 )
 
@@ -40,14 +46,28 @@ _UNSET_MEMBERS = {
     "item_count": 0,
     "intimacy_character": 0,
     "intimacy_value": 0,
+    "mental_card_key": 0,
+    "exp_grade": 0,
+    "max_fever_point": 0,
+    "add_fever_point": 0,
+    "season_no": 0,
+    "explore_exp": 0,
 }
 # gc::RewardType -> the members that hold its reward.
-_TYPE_MEMBERS = {
+_TYPE_MEMBERS_2016 = {
     REWARD_EXP: {"experience"},
     REWARD_SKILL_EXP: {"skill_experience"},
     REWARD_LIFE_EXP: {"life_experience_type", "life_experience"},
     REWARD_ITEM: {"item_key", "item_count"},
     REWARD_INTIMACY: {"intimacy_character", "intimacy_value"},
+}
+_TYPE_MEMBERS = {
+    **_TYPE_MEMBERS_2016,
+    REWARD_KNOWLEDGE: {"mental_card_key"},
+    REWARD_EXP_GRADE: {"exp_grade"},
+    REWARD_EXPLORE_EXP: {"explore_exp"},
+    REWARD_FEVER_POINT: {"max_fever_point", "add_fever_point"},
+    REWARD_SEASON_REWARD: {"season_no"},
 }
 
 
@@ -210,7 +230,7 @@ def test_quest_dbss_rewards_fill_only_their_own_members(quest_result: HandlerRes
 
 def test_quest_dbss_uses_every_2016_reward_type(quest_result: HandlerResult) -> None:
     used = {reward["reward_type"] for record in quest_result.records for reward in record["base_rewards"]}
-    assert set(_TYPE_MEMBERS) <= used
+    assert set(_TYPE_MEMBERS_2016) <= used
 
 
 def test_quest_dbss_family_stats_sit_in_one_reward_type(quest_result: HandlerResult) -> None:
@@ -219,7 +239,7 @@ def test_quest_dbss_family_stats_sit_in_one_reward_type(quest_result: HandlerRes
         for record in quest_result.records
         for stat in record["family_stats"]
     }
-    assert len(types) == 1, types
+    assert types == {REWARD_FAMILY_STAT}, types
 
 
 def test_quest_dbss_select_rewards_follow_the_base_rewards(quest_result: HandlerResult) -> None:
@@ -234,6 +254,43 @@ def test_quest_dbss_amity_reward_names_its_npc(quest_result: HandlerResult) -> N
     amity = [reward for reward in record["base_rewards"] if reward["reward_type"] == REWARD_INTIMACY]
     assert [reward["intimacy_character"] for reward in amity] == [41011]
     assert any(text.startswith("Melissa Brady ") for text in record["base_rewards_text"])
+
+
+def test_quest_dbss_knowledge_rewards_name_a_knowledge_card(quest_result: HandlerResult) -> None:
+    """Every knowledge reward keys a `mentalcard.dbss` card; the text names it."""
+    from _dbss.mentalcard.parser import parse_mentalcard_records
+    from tests.fixtures import load_binary_fixture
+
+    cards = {
+        card.card_id
+        for card in parse_mentalcard_records(
+            load_binary_fixture("mentalcard.dbss"), load_binary_fixture("mentalcardoffset.dbss")
+        )
+    }
+    keys = [
+        reward["mental_card_key"]
+        for record in quest_result.records
+        for reward in _all_rewards(record)
+        if reward["reward_type"] == REWARD_KNOWLEDGE
+    ]
+    assert keys
+    assert set(keys) <= cards
+    # "Food for Hungry Pets" teaches the Pet - Dog and Pet - Cat entries.
+    assert {"[Knowledge] Pet - Dog", "[Knowledge] Pet - Cat"} <= set(_record(quest_result, 788483)["base_rewards_text"])
+
+
+def _is_silent(reward: dict) -> bool:
+    """A Family stat shows in its own column; a fever entry without points has no widget text."""
+    if reward["reward_type"] == REWARD_FAMILY_STAT:
+        return True
+    return reward["reward_type"] == REWARD_FEVER_POINT and not (reward["max_fever_point"] or reward["add_fever_point"])
+
+
+def test_quest_dbss_every_other_reward_has_text(quest_result: HandlerResult) -> None:
+    for record in quest_result.records:
+        for kind in ("base_rewards", "select_rewards"):
+            shown = [reward for reward in record[kind] if not _is_silent(reward)]
+            assert len(record[f"{kind}_text"]) == len(shown), (record["packed_quest_id"], kind)
 
 
 def test_quest_dbss_family_stats_are_gains(quest_result: HandlerResult) -> None:

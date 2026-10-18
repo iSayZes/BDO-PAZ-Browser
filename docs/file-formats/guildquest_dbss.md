@@ -25,9 +25,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                    | Known             | Unknown           |
 | ------ | ----------------------- | ----------------- | ----------------- |
-| 2      | `guildquest.dbss`       | 105,801 B (43.3%) | 138,737 B (56.7%) |
+| 2      | `guildquest.dbss`       | 180,726 B (73.9%) | 63,812 B (26.1%)  |
 | 2      | `guildquestoffset.dbss` | 1,684 B (100.0%)  | 0 B (0.0%)        |
-| 1      | `guildquest.dbss`       | 265,433 B (46.8%) | 302,145 B (53.2%) |
+| 1      | `guildquest.dbss`       | 419,564 B (73.9%) | 148,014 B (26.1%) |
 | 1      | `guildquestoffset.dbss` | 4,072 B (100.0%)  | 0 B (0.0%)        |
 
 <!-- versions:end -->
@@ -85,8 +85,11 @@ terminator. Counts in the Notes column are from client 3474.
 ### Reward Entry (178 bytes)
 
 The `gc::QuestRewardElement` members of the 2016 client, byte-packed, then
-135 bytes this file leaves zero apart from two `16` bytes. See [Field
-Names](#field-names) for how the offsets were placed.
+the members of the later reward types, as in the
+[`quest.dbss` Reward Entry](quest_dbss.md#reward-entry-178-bytes). Every
+guild mission entry is an item; the tail holds no value apart from two
+`16` bytes. See [Field Names](#field-names) for how the offsets were
+placed.
 
 | Offset  | Type       | Field                | Notes |
 | ------- | ---------- | -------------------- | ----- |
@@ -100,7 +103,18 @@ Names](#field-names) for how the offsets were placed.
 | `+0x1D` | i64        | item_count           | Amount of `item_key` |
 | `+0x25` | u16        | intimacy_character   | `0` on every entry |
 | `+0x27` | i32        | intimacy_value       | `0` on every entry |
-| `+0x2B` | bytes[135] | unknown_2b           | Zero apart from `16` at `+0x36` and `+0x67` on every entry; see Open Questions |
+| `+0x2B` | i32        | mental_card_key      | Knowledge of a type `5` reward; `0` on every entry |
+| `+0x2F` | bytes[2]   | unknown_2f           | Zero on every entry |
+| `+0x31` | u8         | exp_grade            | `expgrade()` argument of a type `7` reward; `0` on every entry |
+| `+0x32` | bytes[4]   | unknown_32           | Zero on every entry |
+| `+0x36` | bytes[49]  | unknown_36           | u32 `16`, then 45 zero bytes, on every entry; see Open Questions |
+| `+0x67` | bytes[53]  | family_stat          | The `quest.dbss` [Family Stat Union](quest_dbss.md#family-stat-union-53-bytes); `family_stat_type` `16` (no stat) on every entry |
+| `+0x9C` | bytes[4]   | unknown_9c           | Zero on every entry |
+| `+0xA0` | u32        | max_fever_point      | Agris Fever max points of a type `17` reward; `0` on every entry |
+| `+0xA4` | u32        | add_fever_point      | Agris Fever recovery points of a type `17` reward; `0` on every entry |
+| `+0xA8` | u8         | unknown_a8           | Third `feverpoint()` argument; `0` on every entry |
+| `+0xA9` | u8         | season_no            | Season of a type `18` reward; `0` on every entry |
+| `+0xAA` | i64        | explore_exp          | Contribution EXP of a type `9` reward; `0` on every entry |
 
 ### `guildquestoffset.dbss`
 
@@ -158,19 +172,36 @@ boss fields of the source sheet in place of `unknown_values`.
 
 ### Reward Entry (188 bytes)
 
-| Offset  | Type       | Field                | Notes |
-| ------- | ---------- | -------------------- | ----- |
-| `+0x00` | u32        | reward_type          | `3` on every entry |
-| `+0x04` | i64        | experience           | |
-| `+0x0C` | i32        | skill_experience     | |
-| `+0x10` | i32        | product_experience   | |
-| `+0x14` | u8         | life_experience_type | `15` on every entry |
-| `+0x15` | i32        | life_experience      | |
-| `+0x19` | u32        | item_key             | |
-| `+0x1D` | i64        | item_count           | |
-| `+0x25` | u16        | intimacy_character   | |
-| `+0x27` | i32        | intimacy_value       | |
-| `+0x2B` | bytes[145] | unknown_2b           | Zero apart from `16` at `+0x36` and `+0x67` on every entry |
+The 10 extra bytes lie after `family_stat`: `unknown_9c` is 10 bytes long,
+and 4 zero bytes follow `season_no`. The `quest.dbss` entries of client
+1784 place the fever, season and Contribution EXP members at these offsets
+([Reward Types](quest_dbss.md#reward-types)).
+
+| Offset  | Type       | Field                   | Notes |
+| ------- | ---------- | ----------------------- | ----- |
+| `+0x00` | u32        | reward_type             | `3` on every entry |
+| `+0x04` | i64        | experience              | |
+| `+0x0C` | i32        | skill_experience        | |
+| `+0x10` | i32        | product_experience      | |
+| `+0x14` | u8         | life_experience_type    | `15` on every entry |
+| `+0x15` | i32        | life_experience         | |
+| `+0x19` | u32        | item_key                | |
+| `+0x1D` | i64        | item_count              | |
+| `+0x25` | u16        | intimacy_character      | |
+| `+0x27` | i32        | intimacy_value          | |
+| `+0x2B` | i32        | mental_card_key         | |
+| `+0x2F` | bytes[2]   | unknown_2f              | |
+| `+0x31` | u8         | exp_grade               | |
+| `+0x32` | bytes[4]   | unknown_32              | |
+| `+0x36` | bytes[49]  | unknown_36              | u32 `16`, then 45 zero bytes, on every entry |
+| `+0x67` | bytes[53]  | family_stat             | `family_stat_type` `16` on every entry |
+| `+0x9C` | bytes[10]  | unknown_9c              | Zero on every entry |
+| `+0xA6` | u32        | max_fever_point         | |
+| `+0xAA` | u32        | add_fever_point         | |
+| `+0xAE` | u8         | unknown_a8              | |
+| `+0xAF` | u8         | season_no               | |
+| `+0xB0` | bytes[4]   | unknown_after_season_no | Zero on every entry |
+| `+0xB4` | i64        | explore_exp             | |
 
 ## Mission Types
 
@@ -323,7 +354,8 @@ The last u32 is `0` on every row of both clients. The sheet's last column,
 
 ### Reward Entry Tail
 
-After `intimacy_value` the entry holds 135 bytes (145 on client 1784) that
-the 2016 struct has no member for. Every guild mission entry has `16` at
-`+0x36` and `+0x67`; [`quest.dbss`](quest_dbss.md) reads `+0x67` as its
-Family stat type, where `16` is no stat.
+Every guild mission entry has `16` at `+0x36` and `+0x67`. The
+[`quest.dbss`](quest_dbss.md) entries name the tail members of the later
+reward types and read `+0x67` as the Family stat type, where `16` is no
+stat; `unknown_36` and the zero parts are open there too
+([Reward Entry Tail](quest_dbss.md#reward-entry-tail)).

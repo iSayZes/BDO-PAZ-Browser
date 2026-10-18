@@ -6,8 +6,6 @@ from typing import Any
 import pytest
 
 from _common.class_type import ALL_CLASSES_MASK, class_types_in_mask
-from _common.string_hash import key_hash
-from _dbss.skillsimply.parser import contents_group_key
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -183,12 +181,6 @@ def test_every_contents_group_hash_decodes_to_a_key(skillsimply_result: HandlerR
     for record in skillsimply_result.records:
         assert record["contents_group_keys"], record["skill_key"]
         assert None not in record["contents_group_keys"], record["skill_key"]
-
-
-def test_contents_group_key_reads_the_hash_of_the_decimal_key() -> None:
-    assert contents_group_key(key_hash("0")) == 0
-    assert contents_group_key(key_hash("1642")) == 1642
-    assert contents_group_key(key_hash("not a key")) is None
 
 
 def test_only_elvia_skills_need_the_elvia_blessing(skillsimply_result: HandlerResult) -> None:

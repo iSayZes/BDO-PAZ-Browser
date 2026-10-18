@@ -24,12 +24,11 @@ from __future__ import annotations
 
 import struct
 from dataclasses import dataclass
-from functools import cache
 
 from _common.pabr_offset import PabrOffsetRow, parse_bare_u32_offset_rows
 from _common.record_reader import RecordReader
 from _common.skill import split_skill_key
-from _common.string_hash import key_hash
+from _common.contents_group import contents_group_key
 
 _U16 = struct.Struct("<H")
 _U32 = struct.Struct("<I")
@@ -49,21 +48,6 @@ _NEEDS = struct.Struct("<2xH2xH8xH4x")
 # Eight zero bytes and unknown_e08, then is_except_cool_time.
 _COOL_TIME = struct.Struct("<9xB")
 _NEED_BUFF_MODULE = struct.Struct("<B")
-
-# Contents group keys are 16-bit (2016 `KeyType<short>`); the record stores
-# key_hash() of each key's decimal text.
-_CONTENTS_GROUP_KEY_COUNT = 0x8000
-
-
-@cache
-def _contents_group_keys_by_hash() -> dict[int, int]:
-    return {key_hash(str(key)): key for key in range(_CONTENTS_GROUP_KEY_COUNT)}
-
-
-def contents_group_key(stored_hash: int) -> int | None:
-    """The contents group key whose decimal text hashes to `stored_hash`, or None."""
-    return _contents_group_keys_by_hash().get(stored_hash)
-
 
 @dataclass(frozen=True)
 class SkillSimplyRecord:

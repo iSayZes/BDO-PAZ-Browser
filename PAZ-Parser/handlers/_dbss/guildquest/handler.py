@@ -6,13 +6,13 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.contents_group import contents_groups_text
 from _common.html import Column, e, error, flag_cell, html_list_cell, icon_cell, icon_html_label_cell, sort_keys, table
 from _common.item_key import item_key_icon_path, item_key_text, item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pa_text import pa_cell, pa_fields, pa_html, pa_line_cell
 from _common.pabr_offset import parse_bare_u32_offset_rows
-from _dbss.characterstatic.parser import contents_group_key
 from .parser import FILE_NAME, parse_guildquest_records
 from .text import LOC_DESCRIPTION, LOC_OBJECTIVE, LOC_TITLE, guild_quest_tagged, guild_quest_type_name
 
@@ -33,12 +33,6 @@ def guild_quest_offset_handler() -> OffsetTableHandler:
         ],
         offset_records(parse_bare_u32_offset_rows, "quest_no", "data_offset", "data_size"),
     )
-
-
-def _contents_groups_text(group_hashes: list[int]) -> str:
-    """`1307, 1981`: the keys behind the hashes, a hash in hex where no key fits."""
-    keys = [contents_group_key(group_hash) for group_hash in group_hashes]
-    return ", ".join(f"0x{group_hash:08X}" if key is None else str(key) for key, group_hash in zip(keys, group_hashes))
 
 
 class GuildQuestHandler(PreviewHandler):
@@ -96,7 +90,7 @@ class GuildQuestHandler(PreviewHandler):
             "need_item": f"{item_key_text(record['need_item_key'])} x{record['need_item_count']:,}",
             # Text forms, so tab search and CSV export see them.
             "rewards": [self._reward_text(reward) for reward in record["base_rewards"]],
-            "contents_groups": _contents_groups_text(record["contents_group_hashes"]),
+            "contents_groups": contents_groups_text(record["contents_group_hashes"]),
         }
 
     def _reward_cell(self, reward: dict, text: str) -> str:

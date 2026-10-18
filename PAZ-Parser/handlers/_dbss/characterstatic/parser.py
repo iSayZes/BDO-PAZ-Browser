@@ -15,20 +15,18 @@ Every string is a u64 count and its text: UTF-16LE for the scripts and the
 three Korean strings, ASCII for the AI script (the stem of an `.ai` file,
 `9999`, `PC`), the model path and the voice bank. Each contents group is
 stored as the client's string hash of its decimal key, which
-`contents_group_key` turns back into the key. Full layout in
+`_common/contents_group.py` turns back into the key. Full layout in
 docs/file-formats/characterstatic_dbss.md.
 """
 
 from __future__ import annotations
 
 import struct
-from functools import cache
 
 from _common.binary import whole_float
 from _common.knowledge_script import knowledge_id_of
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
 from _common.prefixed_string import read_prefixed_at
-from _common.string_hash import KEY_HASH_SEED, hashlittle
 
 _TAG = 0x08
 _TAG_VALUE = 0x15
@@ -53,8 +51,6 @@ _CONTENTS_GROUP_COUNT = 0x18
 _CLASS_TYPE = 0x00
 _SOURCE_ITEM = 0x09
 _TAIL_SIZE = 0x18
-# Contents group keys are searched up to this value; client 3474 uses up to 8,122.
-_CONTENTS_GROUP_KEY_LIMIT = 0x10000
 # class_type on every row that is not a player character.
 NO_CLASS_TYPE = 101
 # vehicle_type on every row that is not a vehicle: the sheet's -1 written as
@@ -71,20 +67,6 @@ _I16 = struct.Struct("<h")
 _I32 = struct.Struct("<i")
 _U32 = struct.Struct("<I")
 _F32 = struct.Struct("<f")
-
-
-@cache
-def _contents_group_keys_by_hash() -> dict[int, int]:
-    # hashlittle, not the cached key_hash: 65,536 keys would flush its cache.
-    return {
-        hashlittle(str(key).encode("utf-16-le"), KEY_HASH_SEED): key
-        for key in range(_CONTENTS_GROUP_KEY_LIMIT)
-    }
-
-
-def contents_group_key(group_hash: int) -> int | None:
-    """The contents group key whose decimal text hashes to `group_hash`, or None."""
-    return _contents_group_keys_by_hash().get(group_hash)
 
 
 def _read_u32_list(data: bytes, count_at: int, end: int) -> tuple[tuple[int, ...], int]:

@@ -278,7 +278,7 @@ type has 1,097 missions on client 3474, more than the file holds.
   `isGuildHonorBenefitQuest()` only when `_ContentsGroup_GuildHonorSystem`
   is on and the guild's honor points unlock it.
 - Every contents group hash decodes to a key below `0x10000` on clients
-  1784 and 3474 (`contents_group_key()` in `_dbss/characterstatic/parser.py`).
+  1784 and 3474 (`contents_group_key()` in `_common/contents_group.py`).
 - Client 1784 has 339 rows, client 3474 140; no `quest_no` is in both.
 - The mission list Lua names the guild size of a mission with
   `getGuildQuestGrade()` (`1` Small to `4` Extra Large, `GAME` keys

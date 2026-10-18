@@ -6,6 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_name, character_title
+from _common.contents_group import contents_group_key, contents_groups_text
 from _common.html import Column, e, error, icon_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.item_key import item_name_tagged
@@ -24,7 +25,6 @@ from .parser import (
     NO_CLASS_TYPE,
     NO_VEHICLE_TYPE,
     NPC_KIND_NAMES,
-    contents_group_key,
     parse_characterstatic_records,
 )
 from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
@@ -46,10 +46,9 @@ def _npc_kind_name(npc_kind: int) -> str:
 
 def _contents_groups_text(group_hashes: tuple[int, ...]) -> str:
     """`6, 1448`: the keys behind the hashes, a hash in hex where no key fits; '' for key 0 alone (no group)."""
-    keys = [contents_group_key(group_hash) for group_hash in group_hashes]
-    if keys == [_NO_CONTENTS_GROUP]:
+    if [contents_group_key(group_hash) for group_hash in group_hashes] == [_NO_CONTENTS_GROUP]:
         return ""
-    return ", ".join(f"0x{group_hash:08X}" if key is None else str(key) for key, group_hash in zip(keys, group_hashes))
+    return contents_groups_text(group_hashes)
 
 
 def _npc_kind_text(record: dict) -> str:

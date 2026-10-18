@@ -21,7 +21,7 @@ from tests.framework import (
     run_case,
 )
 
-from _dbss.characterstatic.parser import contents_group_key
+from _common.contents_group import contents_group_key
 from .parser import FILE_NAME, OFFSET_FILE, REWARD_ENTRY_SIZE, parse_guildquest_records
 
 

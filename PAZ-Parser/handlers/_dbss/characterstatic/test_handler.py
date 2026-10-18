@@ -6,10 +6,8 @@ from typing import Any
 import pytest
 
 from _common.pabr_offset import parse_pabr_offset_rows
-from _common.string_hash import key_hash
 from _dbss.characterstatic.parser import (
     build_knowledge_character_index,
-    contents_group_key,
     parse_characterstatic_records,
 )
 from _dbss.itemenchant.parser import build_character_item_index
@@ -204,12 +202,6 @@ def test_korean_strings_follow_the_model_path(static_result: HandlerResult) -> N
     assert by_id[1]["name_kr"] == "워리어"
     assert by_id[47791]["title_kr"] == "<거점 관리인>"
     assert all(record["name_kr"] and record["label_kr"] for record in records)
-
-
-def test_contents_group_key_reverses_the_key_hash() -> None:
-    assert contents_group_key(key_hash("0")) == 0
-    assert contents_group_key(key_hash("1448")) == 1448
-    assert contents_group_key(key_hash("not a key")) is None
 
 
 def test_every_contents_group_hash_names_a_key(static_result: HandlerResult) -> None:

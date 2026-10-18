@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "npcId": "NPC ID",
+    "npcName": "NPC Name",
+    "dialog": "Dialog",
+    "dialogName": "Dialog Name",
+    "exchangeCount": "Exchanges",
+    "exchangeKeys": "Item Exchange Keys"
+  },
+  "offsetColumns": {
+    "dialogKey": "Dialog Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} dialogs · {npc_count} NPCs"
+  }
+}

@@ -137,6 +137,7 @@ from .itemimprovement.handler import (
 from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
 from .collect.handler import CollectHandler, collect_offset_handler
 from .lifeactionexperience.handler import LifeActionExperienceHandler, life_action_experience_offset_handler
+from .displayexchangeitemnpc.handler import DisplayExchangeItemNpcHandler, display_exchange_item_npc_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
 from .teleport.handler import TeleportHandler, teleport_offset_handler
@@ -200,6 +201,8 @@ def register_dbss_handlers() -> None:
     register_handler("collect.dbss", CollectHandler())
     register_handler("lifeactionexperienceoffset.dbss", life_action_experience_offset_handler())
     register_handler("lifeactionexperience.dbss", LifeActionExperienceHandler())
+    register_handler("displayexchangeitemnpcoffset.dbss", display_exchange_item_npc_offset_handler())
+    register_handler("displayexchangeitemnpc.dbss", DisplayExchangeItemNpcHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
     register_handler("textbindoffset.dbss", text_bind_offset_handler())

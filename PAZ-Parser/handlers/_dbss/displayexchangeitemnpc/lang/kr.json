@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "npcId": "NPC ID",
+    "npcName": "NPC 이름",
+    "dialog": "대화",
+    "dialogName": "대화 이름",
+    "exchangeCount": "교환 수",
+    "exchangeKeys": "아이템 교환 키"
+  },
+  "offsetColumns": {
+    "dialogKey": "대화 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "대화 {count}개 · NPC {npc_count}명"
+  }
+}

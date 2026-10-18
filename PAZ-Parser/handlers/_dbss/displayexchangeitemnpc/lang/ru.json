@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "npcId": "ID НИП",
+    "npcName": "Имя НИП",
+    "dialog": "Диалог",
+    "dialogName": "Имя в диалоге",
+    "exchangeCount": "Обмены",
+    "exchangeKeys": "Ключи обмена предметов"
+  },
+  "offsetColumns": {
+    "dialogKey": "Ключ диалога",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Диалогов: {count} · НИП: {npc_count}"
+  }
+}

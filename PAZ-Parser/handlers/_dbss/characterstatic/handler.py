@@ -12,6 +12,7 @@ from _common.item_key import item_name_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.pabr_offset import parse_pabr_offset_rows
 from _common.pa_text import pa_cell, pa_fields
+from _common.tribe_labels import tribe_text
 from _common.offset_table import (
     OffsetColumn,
     OffsetTableHandler,
@@ -19,11 +20,19 @@ from _common.offset_table import (
     offset_records,
     size_column,
 )
-from .parser import NO_CLASS_TYPE, NO_VEHICLE_TYPE, NPC_KIND_NAMES, parse_characterstatic_records
+from .parser import (
+    NO_CLASS_TYPE,
+    NO_VEHICLE_TYPE,
+    NPC_KIND_NAMES,
+    contents_group_key,
+    parse_characterstatic_records,
+)
 from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
+# The contents group key of a character in no group.
+_NO_CONTENTS_GROUP = 0
 
 
 def _optional(value: int | None) -> str:
@@ -33,6 +42,14 @@ def _optional(value: int | None) -> str:
 def _npc_kind_name(npc_kind: int) -> str:
     """The gc::CharacterKind name, or '' for the later kinds it does not have."""
     return NPC_KIND_NAMES[npc_kind] if npc_kind < len(NPC_KIND_NAMES) else ""
+
+
+def _contents_groups_text(group_hashes: tuple[int, ...]) -> str:
+    """`6, 1448`: the keys behind the hashes, a hash in hex where no key fits; '' for key 0 alone (no group)."""
+    keys = [contents_group_key(group_hash) for group_hash in group_hashes]
+    if keys == [_NO_CONTENTS_GROUP]:
+        return ""
+    return ", ".join(f"0x{group_hash:08X}" if key is None else str(key) for key, group_hash in zip(keys, group_hashes))
 
 
 def _npc_kind_text(record: dict) -> str:
@@ -68,12 +85,18 @@ class CharacterStaticHandler(PreviewHandler):
             # Sorts by the number; the cell adds the 2016 name where there is one.
             Column(cols["npcKind"], sort_key="npc_kind"),
             Column(cols["grade"], "num", sort_key="grade"),
+            Column(cols["level"], "num", sort_key="level"),
+            # Sorts by the number; the cell adds the species label where there is one.
+            Column(cols["tribe"], sort_key="tribe_type"),
+            Column(cols["characterGroup"], "num", sort_key="character_group"),
             Column(cols["karma"], "num", sort_key="tendency_on_dead"),
             Column(cols["navalFame"], "num", sort_key="ocean_tendency"),
             Column(cols["vehicleType"], sort_key="vehicle_type"),
             Column(cols["classType"], "num", sort_key="class_type"),
+            Column(cols["bodySize"], "num", sort_key="body_size"),
             Column(cols["aiScript"], sort_key="ai_script"),
             Column(cols["model"], sort_key="model_path"),
+            Column(cols["contentsGroups"], sort_key="contents_groups"),
             Column(cols["sourceItemId"], "num", sort_key="source_item_id"),
             Column(cols["sourceItem"], sort_key="source_item_name"),
             Column(cols["payloadSize"], "num", sort_key="payload_size"),
@@ -133,13 +156,18 @@ class CharacterStaticHandler(PreviewHandler):
             row.append(_optional(r["knowledge_id"]))
             row.append(e(_npc_kind_text(r)))
             row.append(e(r["grade"]))
+            row.append(e(r["level"]))
+            row.append(e(tribe_text(r["tribe_type"])))
+            row.append(_optional(r["character_group"]))
             row.append(e(r["tendency_on_dead"]))
             row.append(e(r["ocean_tendency"]))
             vehicle_type = r["vehicle_type"]
             row.append(_EMPTY if vehicle_type is None else e(vehicle_type_text(vehicle_type)))
             row.append(_optional(r["class_type"]))
+            row.append(e(r["body_size"]))
             row.append(e(r["ai_script"] or _EMPTY))
             row.append(e(r["model_path"] or _EMPTY))
+            row.append(e(r["contents_groups"] or _EMPTY))
             row.append(_optional(r["source_item_id"]))
             row.append(pa_cell(r, "source_item_name") if r["source_item_name"] else _EMPTY)
             row.append(e(r["payload_size"]))
@@ -167,6 +195,10 @@ def _record(raw: dict) -> dict:
         "npc_kind": raw["npc_kind"],
         "npc_kind_name": _npc_kind_name(raw["npc_kind"]),
         "grade": raw["grade"],
+        "level": raw["level"],
+        "tribe_type": raw["tribe_type"],
+        # 0 means "in no group".
+        "character_group": raw["character_group"] or None,
         "tendency_on_dead": raw["tendency_on_dead"],
         "ocean_tendency": raw["ocean_tendency"],
         # 65 means "not a vehicle".
@@ -174,8 +206,10 @@ def _record(raw: dict) -> dict:
         "vehicle_type_name": VEHICLE_TYPE_NAMES.get(vehicle_type, ""),
         # 101 means "not a player character".
         "class_type": None if raw["class_type"] == NO_CLASS_TYPE else raw["class_type"],
+        "body_size": raw["body_size"],
         "ai_script": raw["ai_script"],
         "model_path": raw["model_path"],
+        "contents_groups": _contents_groups_text(raw["contents_group_hashes"]),
         "source_item_id": source_item_id,
         # The LOC name in the user's language, else the Korean name itemenchant.dbss stores.
         **pa_fields("source_item_name", item_name_tagged(source_item_id) if source_item_id else ""),

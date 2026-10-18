@@ -21,7 +21,7 @@ from _bss.dropuitaginfo.parser import TagColors, parse_tag_colors
 from _bss.dropuitaginfo.tag_chips import tag_chips_cell
 from _bss.dropuitaginfo.text import tag_name
 from .parser import parse_hunting_ground_records
-from .tribe_labels import tribe_text
+from _common.tribe_labels import tribe_text
 
 
 _LANG_DIR = Path(__file__).parent / "lang"

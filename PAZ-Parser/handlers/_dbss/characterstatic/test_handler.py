@@ -6,7 +6,12 @@ from typing import Any
 import pytest
 
 from _common.pabr_offset import parse_pabr_offset_rows
-from _dbss.characterstatic.parser import build_knowledge_character_index, parse_characterstatic_records
+from _common.string_hash import key_hash
+from _dbss.characterstatic.parser import (
+    build_knowledge_character_index,
+    contents_group_key,
+    parse_characterstatic_records,
+)
 from _dbss.itemenchant.parser import build_character_item_index
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
@@ -33,8 +38,9 @@ STATIC_CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "character_id", "name", "title", "label_kr", "action_script", "condition_script",
-                "knowledge_id", "npc_kind", "npc_kind_name", "grade", "tendency_on_dead", "ocean_tendency",
-                "vehicle_type", "vehicle_type_name", "class_type", "ai_script", "model_path",
+                "knowledge_id", "npc_kind", "npc_kind_name", "grade", "level", "tribe_type", "character_group",
+                "tendency_on_dead", "ocean_tendency", "vehicle_type", "vehicle_type_name", "class_type",
+                "body_size", "ai_script", "model_path", "contents_groups",
                 "source_item_id", "source_item_name", "payload_size",
             ]
         ),
@@ -82,10 +88,22 @@ STATIC_CASE = HandlerCase(
         TargetTest(
             col="character_id",
             value=1,
-            # Player characters store their model path first and name no script.
-            expected={"class_type": 0, "ai_script": "", "model_path": "pc/1_phm/fighteraction_noweapon"},
+            # Player characters name the two-letter script PC (character/aiscript/pc.ai),
+            # which a string scan with a three-letter minimum used to miss.
+            expected={"class_type": 0, "ai_script": "PC", "model_path": "pc/1_phm/fighteraction_noweapon"},
         ),
         TargetTest(col="character_id", value=2, expected={"class_type": 4}),
+        # A player character: tribe Human, no character group, contents group 0 alone shows empty.
+        TargetTest(
+            col="character_id",
+            value=1,
+            expected={"level": 1, "tribe_type": 0, "character_group": None, "contents_groups": ""},
+        ),
+        # Garmoth sits in the world boss character group and two contents groups,
+        # stored as the hashes of "6" and "1448".
+        TargetTest(col="character_id", value=29929, expected={"character_group": 95, "contents_groups": "6, 1448"}),
+        # Aal is tribe 4, __eNewTribeType_Edania.
+        TargetTest(col="character_id", value=29304, expected={"tribe_type": 4}),
         # Grade 4 is CppEnums.CharacterGradeType_Boss, the grade the Lua boss gauge checks.
         TargetTest(col="character_id", value=29929, expected={"name": "Garmoth", "grade": 4, "vehicle_type": None}),
         # Gathering nodes are gc::CharacterKind Collect, gates SiegeGate.
@@ -186,3 +204,17 @@ def test_korean_strings_follow_the_model_path(static_result: HandlerResult) -> N
     assert by_id[1]["name_kr"] == "워리어"
     assert by_id[47791]["title_kr"] == "<거점 관리인>"
     assert all(record["name_kr"] and record["label_kr"] for record in records)
+
+
+def test_contents_group_key_reverses_the_key_hash() -> None:
+    assert contents_group_key(key_hash("0")) == 0
+    assert contents_group_key(key_hash("1448")) == 1448
+    assert contents_group_key(key_hash("not a key")) is None
+
+
+def test_every_contents_group_hash_names_a_key(static_result: HandlerResult) -> None:
+    """A hash with no key shows as hex; none should, or the key range is too small."""
+    unresolved = [
+        record["character_id"] for record in static_result.records if "0x" in record["contents_groups"]
+    ]
+    assert not unresolved

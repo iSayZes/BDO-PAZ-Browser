@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "receipeKey": "Clé",
+    "name": "Utilisation",
+    "storageCount": "Nombre de dépôts"
+  },
+  "offsetColumns": {
+    "receipeKey": "Clé",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} utilisations de dépôt de guilde"
+  }
+}

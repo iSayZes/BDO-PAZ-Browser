@@ -128,10 +128,9 @@ where the sheet and client 1784 have none. Client 3474 also adds the rows
   holds the reverse of this table: per skill number, the rows that list it as
   (`receipe_key`, slot) pairs, the slot counted from `1` for `skill_nos[0]`.
   Skill `65058` lists `1605` to `1609`, each at slot `1`.
-- `guildhousecraftstorage.dbss` (not documented yet) is keyed by the same
-  receipe keys, Storage and Guild Storage only; the private server sheet
-  `GuildHouseCraftStorageCount` behind it has the columns `HouseInfoSkillNo`
-  and `StorageCount`.
+- [`guildhousecraftstorage.dbss`](guildhousecraftstorage_dbss.md) is keyed
+  by the same receipe keys, Storage and Guild Storage only, and holds one
+  storage count per row.
 - The guild house Lua (`worldmap_grand_guildhousecontrol.luac`,
   `panel_worldmap_guildhousemanagement_renew.luac`) reads the house uses
   through `getGuildHouseCraftInfoManager()` and `getHouseCraftWrapperByIndex()`

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "receipeKey": "Clave",
+    "name": "Uso",
+    "storageCount": "Número de almacenes"
+  },
+  "offsetColumns": {
+    "receipeKey": "Clave",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} usos de almacén de hermandad"
+  }
+}

@@ -152,6 +152,7 @@ from .guildhousecraftskill.handler import GuildHouseCraftSkillHandler, guild_hou
 from .guildhousecraftstorage.handler import GuildHouseCraftStorageHandler, guild_house_craft_storage_offset_handler
 from .characteraudioradius.handler import CharacterAudioRadiusHandler, character_audio_radius_offset_handler
 from .itemexchangetoclass.handler import ItemExchangeToClassHandler, item_exchange_to_class_offset_handler
+from .repairmaxendurance.handler import RepairMaxEnduranceHandler, repair_max_endurance_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -340,3 +341,5 @@ def register_dbss_handlers() -> None:
     register_handler("characteraudioradius.dbss", CharacterAudioRadiusHandler())
     register_handler("itemexchangetoclassoffset.dbss", item_exchange_to_class_offset_handler())
     register_handler("itemexchangetoclass.dbss", ItemExchangeToClassHandler())
+    register_handler("repairmaxenduranceoffset.dbss", repair_max_endurance_offset_handler())
+    register_handler("repairmaxendurance.dbss", RepairMaxEnduranceHandler())

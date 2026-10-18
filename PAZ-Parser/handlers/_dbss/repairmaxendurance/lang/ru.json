@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "itemKey": "ID предмета",
+    "item": "Предмет",
+    "materials": "Материалы (макс. прочность)",
+    "onlyNeedMoney": "Стоимость только серебром",
+    "onlyMoneyRepairCount": "Восстановление только серебром"
+  },
+  "offsetColumns": {
+    "itemKey": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "material": {
+    "withMoney": "+{count}, {money} серебра"
+  },
+  "meta": {
+    "count": "Предметов с восстановлением макс. прочности: {count}"
+  }
+}

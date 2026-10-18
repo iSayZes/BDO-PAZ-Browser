@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "itemKey": "ID del objeto",
+    "item": "Objeto",
+    "materials": "Materiales (durabilidad máx.)",
+    "onlyNeedMoney": "Coste solo en plata",
+    "onlyMoneyRepairCount": "Recuperación solo con plata"
+  },
+  "offsetColumns": {
+    "itemKey": "ID del objeto",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "material": {
+    "withMoney": "+{count}, {money} plata"
+  },
+  "meta": {
+    "count": "{count} objetos con durabilidad máx. recuperable"
+  }
+}

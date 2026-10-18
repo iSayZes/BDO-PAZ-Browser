@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "itemKey": "Gegenstands-ID",
+    "item": "Gegenstand",
+    "materials": "Materialien (max. Haltbarkeit)",
+    "onlyNeedMoney": "Kosten nur Silber",
+    "onlyMoneyRepairCount": "Wiederherstellung nur Silber"
+  },
+  "offsetColumns": {
+    "itemKey": "Gegenstands-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "material": {
+    "withMoney": "+{count}, {money} Silber"
+  },
+  "meta": {
+    "count": "{count} Gegenstände mit Max. Haltbarkeitswiederherstellung"
+  }
+}

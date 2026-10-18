@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "itemKey": "아이템 ID",
+    "item": "아이템",
+    "materials": "재료 (최대 내구도)",
+    "onlyNeedMoney": "은화 전용 비용",
+    "onlyMoneyRepairCount": "은화 전용 복구량"
+  },
+  "offsetColumns": {
+    "itemKey": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "material": {
+    "withMoney": "+{count}, 은화 {money}"
+  },
+  "meta": {
+    "count": "최대 내구도 복구 아이템 {count}개"
+  }
+}

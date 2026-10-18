@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "itemKey": "Item ID",
+    "item": "Item",
+    "materials": "Materials (Max Durability)",
+    "onlyNeedMoney": "Silver-Only Cost",
+    "onlyMoneyRepairCount": "Silver-Only Recovery"
+  },
+  "offsetColumns": {
+    "itemKey": "Item ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "material": {
+    "withMoney": "+{count}, {money} silver"
+  },
+  "meta": {
+    "count": "{count} items with max durability recovery"
+  }
+}

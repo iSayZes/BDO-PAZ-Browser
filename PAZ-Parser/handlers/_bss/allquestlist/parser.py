@@ -2,8 +2,8 @@
 
 `allquestlist.bss`, `doguildquestlist.bss`, `growthpassquestlist.bss`, the
 three `olviaacademy*questlist.bss` files, `regionmonsterkillquestlist.bss`,
-`specialquestlist.bss` and the three `seasonpassquestlist*.bss` files
-share it.
+`specialquestlist.bss`, `supplyservantquestlist.bss` and the three
+`seasonpassquestlist*.bss` files share it.
 """
 
 from __future__ import annotations

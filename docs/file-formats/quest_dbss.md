@@ -142,7 +142,7 @@ The u32 immediately before `packed_quest_id`. Counts from client 3474:
 | `8`  | 627   | Crafting / equipment quests (e.g. Blackstar) |
 | `9`  | 1,977 | Event quests (`[Event]` prefix) |
 | `10` | 1     | Guild quests (single observed) |
-| `11` | 896   | Adventure-journal page: exactly the 896 page quests of the 118 books in `journalquest.dbss`, nothing else |
+| `11` | 896   | Adventure-journal page: exactly the 896 page quests of the 118 books in `journalquest.dbss`, nothing else, and the 896 quests of [`specialquestlist.bss`](specialquestlist_bss.md) in the same order |
 | `12` | 180   | Region monster kill quests: exactly the 180 quests of [`regionmonsterkillquestlist.bss`](regionmonsterkillquestlist_bss.md), in the same order |
 | `13` | 410   | Black Spirit Pass progression quests |
 | `14` | 224   | Tutorial / beginner guide quests |

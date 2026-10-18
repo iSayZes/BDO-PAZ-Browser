@@ -96,6 +96,7 @@ def register_bss_handlers() -> None:
         "seasonpassquestlist.bss",
         "seasonpassquestlistforcash.bss",
         "seasonpassquestlistfornormal.bss",
+        "specialquestlist.bss",
     ):
         register_handler(name, AllQuestListBssHandler())
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())

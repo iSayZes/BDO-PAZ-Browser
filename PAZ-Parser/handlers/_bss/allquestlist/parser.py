@@ -1,8 +1,8 @@
 """PABR list of packed quest IDs: a u32 count, the IDs, a 12-byte trailer.
 
 `allquestlist.bss`, `growthpassquestlist.bss`,
-`regionmonsterkillquestlist.bss` and the three `seasonpassquestlist*.bss`
-files share it.
+`regionmonsterkillquestlist.bss`, `specialquestlist.bss` and the three
+`seasonpassquestlist*.bss` files share it.
 """
 
 from __future__ import annotations

@@ -13,6 +13,7 @@ from .buffsimply.handler import BuffSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
+from .cutscenecharacterdata.handler import CutsceneCharacterDataBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
 from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
 from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
@@ -112,6 +113,7 @@ def register_bss_handlers() -> None:
     register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
     register_handler("cronenchant.bss", CronEnchantBssHandler())
+    register_handler("cutscenecharacterdata.bss", CutsceneCharacterDataBssHandler())
     register_handler(
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),

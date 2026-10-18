@@ -147,6 +147,7 @@ from .manufacturecondition.handler import ManufactureConditionHandler, manufactu
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
 from .houseinforeceipe.handler import HouseInfoReceipeHandler, house_info_receipe_offset_handler
+from .guildhousecraftskill.handler import GuildHouseCraftSkillHandler, guild_house_craft_skill_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -325,3 +326,5 @@ def register_dbss_handlers() -> None:
     register_handler("instancefield.dbss", InstanceFieldHandler())
     register_handler("houseinforeceipeoffset.dbss", house_info_receipe_offset_handler())
     register_handler("houseinforeceipe.dbss", HouseInfoReceipeHandler())
+    register_handler("guildhousecraftskilloffset.dbss", guild_house_craft_skill_offset_handler())
+    register_handler("guildhousecraftskill.dbss", GuildHouseCraftSkillHandler())

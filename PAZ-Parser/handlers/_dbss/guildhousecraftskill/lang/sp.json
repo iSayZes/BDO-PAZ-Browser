@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "receipeKey": "Clave",
+    "name": "Uso",
+    "skillCount": "Habilidades",
+    "skills": "Habilidades de hermandad"
+  },
+  "offsetColumns": {
+    "receipeKey": "Clave",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} usos de Casa de Hermandad · {skills} habilidades de hermandad"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "receipeKey": "Ключ",
+    "name": "Применение",
+    "skillCount": "Навыки",
+    "skills": "Навыки гильдии"
+  },
+  "offsetColumns": {
+    "receipeKey": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Применений дома гильдии: {count} · навыков гильдии: {skills}"
+  }
+}

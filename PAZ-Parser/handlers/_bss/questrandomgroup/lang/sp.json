@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupKey": "Clave del grupo",
+    "questCount": "Misiones",
+    "drawCount": "Sorteadas",
+    "mainId": "ID principal"
+  },
+  "meta": {
+    "count": "{count} grupos de misiones aleatorias"
+  }
+}

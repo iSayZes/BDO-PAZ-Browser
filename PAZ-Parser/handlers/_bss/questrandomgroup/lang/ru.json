@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupKey": "Ключ группы",
+    "questCount": "Задания",
+    "drawCount": "Выдаётся",
+    "mainId": "Основной ID"
+  },
+  "meta": {
+    "count": "Групп случайных заданий: {count}"
+  }
+}

@@ -1,6 +1,6 @@
 """PABR list of packed quest IDs: a u32 count, the IDs, a 12-byte trailer.
 
-`allquestlist.bss`, `growthpassquestlist.bss`,
+`allquestlist.bss`, `doguildquestlist.bss`, `growthpassquestlist.bss`,
 `regionmonsterkillquestlist.bss`, `specialquestlist.bss` and the three
 `seasonpassquestlist*.bss` files share it.
 """

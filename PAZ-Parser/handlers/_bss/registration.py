@@ -98,6 +98,7 @@ def register_bss_handlers() -> None:
     # One layout: PABR, a count and packed quest IDs.
     for name in (
         "allquestlist.bss",
+        "doguildquestlist.bss",
         "growthpassquestlist.bss",
         "regionmonsterkillquestlist.bss",
         "seasonpassquestlist.bss",

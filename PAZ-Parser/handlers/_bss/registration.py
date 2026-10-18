@@ -12,6 +12,7 @@ from .branchquest.handler import BranchQuestBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
+from .contentsgroupoptionstaticstatusmanager.handler import ContentsGroupOptionBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
 from .cutscenecharacterdata.handler import CutsceneCharacterDataBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
@@ -119,6 +120,10 @@ def register_bss_handlers() -> None:
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
+    register_handler(
+        "contentsgroupoptionstaticstatusmanager.bss",
+        ContentsGroupOptionBssHandler(),
+    )
     register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler("cutscenecharacterdata.bss", CutsceneCharacterDataBssHandler())
     register_handler(

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "contentsGroup": "콘텐츠 그룹",
+    "isOpen": "오픈",
+    "keyHash": "해시"
+  },
+  "meta": {
+    "count": "콘텐츠 그룹 {count}개, 오픈 {open}개"
+  }
+}

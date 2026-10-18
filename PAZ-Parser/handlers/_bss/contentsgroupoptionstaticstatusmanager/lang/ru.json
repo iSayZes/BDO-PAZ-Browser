@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "contentsGroup": "Группа контента",
+    "isOpen": "Открыта",
+    "keyHash": "Хеш"
+  },
+  "meta": {
+    "count": "Групп контента: {count}, открыто: {open}"
+  }
+}

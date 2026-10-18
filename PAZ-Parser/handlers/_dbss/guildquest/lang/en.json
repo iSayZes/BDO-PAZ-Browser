@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "questNo": "Mission No.",
+    "title": "Guild Mission",
+    "type": "Type",
+    "objective": "Objective",
+    "condition": "Condition Script",
+    "questLevel": "Mission Level",
+    "description": "Description",
+    "icon": "Icon",
+    "limitMinute": "Time Limit (min)",
+    "needItem": "Acceptance Cost",
+    "isPreoccupancy": "Preoccupancy",
+    "rewards": "Rewards",
+    "contentsGroups": "Contents Groups"
+  },
+  "offsetColumns": {
+    "questNo": "Mission No.",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "reward": {
+    "type": "Reward type {type}"
+  },
+  "meta": {
+    "count": "{count} guild missions"
+  }
+}

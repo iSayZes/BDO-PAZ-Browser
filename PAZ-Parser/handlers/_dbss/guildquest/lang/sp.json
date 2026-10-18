@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "questNo": "N.º de misión",
+    "title": "Misión de hermandad",
+    "type": "Tipo",
+    "objective": "Objetivo",
+    "condition": "Script de condición",
+    "questLevel": "Nivel de misión",
+    "description": "Descripción",
+    "icon": "Icono",
+    "limitMinute": "Límite de tiempo (min)",
+    "needItem": "Coste de aceptación",
+    "isPreoccupancy": "Preocupación",
+    "rewards": "Recompensas",
+    "contentsGroups": "Grupos de contenido"
+  },
+  "offsetColumns": {
+    "questNo": "N.º de misión",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "reward": {
+    "type": "Tipo de recompensa {type}"
+  },
+  "meta": {
+    "count": "{count} misiones de hermandad"
+  }
+}

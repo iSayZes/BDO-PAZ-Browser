@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "questNo": "N° de mission",
+    "title": "Mission de guilde",
+    "type": "Type",
+    "objective": "Objectif",
+    "condition": "Script de condition",
+    "questLevel": "Niveau de mission",
+    "description": "Description",
+    "icon": "Icône",
+    "limitMinute": "Limite de temps (min)",
+    "needItem": "Coût d'acceptation",
+    "isPreoccupancy": "Préoccupation",
+    "rewards": "Récompenses",
+    "contentsGroups": "Groupes de contenu"
+  },
+  "offsetColumns": {
+    "questNo": "N° de mission",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "reward": {
+    "type": "Type de récompense {type}"
+  },
+  "meta": {
+    "count": "{count} missions de guilde"
+  }
+}

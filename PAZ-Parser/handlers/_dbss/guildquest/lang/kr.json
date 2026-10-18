@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "questNo": "임무 번호",
+    "title": "길드 임무",
+    "type": "종류",
+    "objective": "목표",
+    "condition": "조건 스크립트",
+    "questLevel": "임무 레벨",
+    "description": "설명",
+    "icon": "아이콘",
+    "limitMinute": "제한 시간 (분)",
+    "needItem": "수락 비용",
+    "isPreoccupancy": "선점",
+    "rewards": "보상",
+    "contentsGroups": "콘텐츠 그룹"
+  },
+  "offsetColumns": {
+    "questNo": "임무 번호",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "reward": {
+    "type": "보상 종류 {type}"
+  },
+  "meta": {
+    "count": "길드 임무 {count}개"
+  }
+}

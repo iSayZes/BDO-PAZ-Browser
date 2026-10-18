@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Clé du groupe",
+    "itemCount": "Objets",
+    "items": "Noms des objets"
+  },
+  "meta": {
+    "count": "{count} groupes d'équipement · {items} objets"
+  }
+}

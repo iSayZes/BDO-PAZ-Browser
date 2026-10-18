@@ -39,6 +39,7 @@ from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHan
 from .boss_spawn.handler import BossSpawnBssHandler
 from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
 from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
+from .itemequipgroup.handler import ItemEquipGroupBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
 from .itemmarketcategory.handler import ItemMarketCategoryBssHandler
@@ -140,6 +141,7 @@ def register_bss_handlers() -> None:
     register_handler("boss_spawn.bss", BossSpawnBssHandler())
     register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
     register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
+    register_handler("itemequipgroup.bss", ItemEquipGroupBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "그룹 키",
+    "itemCount": "아이템",
+    "items": "아이템명"
+  },
+  "meta": {
+    "count": "장비 그룹 {count}개 · 아이템 {items}개"
+  }
+}

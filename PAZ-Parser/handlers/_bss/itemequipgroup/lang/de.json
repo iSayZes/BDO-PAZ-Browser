@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Gruppenschlüssel",
+    "itemCount": "Gegenstände",
+    "items": "Gegenstandsnamen"
+  },
+  "meta": {
+    "count": "{count} Ausrüstungsgruppen · {items} Gegenstände"
+  }
+}

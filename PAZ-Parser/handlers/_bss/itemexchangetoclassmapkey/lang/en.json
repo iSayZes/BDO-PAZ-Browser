@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "Item",
+    "key": "Exchange Group"
+  },
+  "meta": {
+    "count": "{count} exchangeable items"
+  }
+}

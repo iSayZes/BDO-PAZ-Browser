@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Clé d'objet",
+    "item": "Objet",
+    "key": "Groupe d'échange"
+  },
+  "meta": {
+    "count": "{count} objets échangeables"
+  }
+}

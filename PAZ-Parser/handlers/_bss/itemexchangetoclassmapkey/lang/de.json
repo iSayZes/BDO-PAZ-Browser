@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "key": "Tauschgruppe"
+  },
+  "meta": {
+    "count": "{count} tauschbare Gegenstände"
+  }
+}

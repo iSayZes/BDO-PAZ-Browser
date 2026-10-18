@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "exchangeType": "Тип",
+    "classCount": "Классы",
+    "items": "Предметы"
+  },
+  "exchangeTypes": {
+    "0": "Обычный",
+    "1": "Сезонный"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Групп обмена оружия: {count}"
+  }
+}

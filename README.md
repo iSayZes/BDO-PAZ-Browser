@@ -125,8 +125,8 @@ rebuilds it from `docs/file-formats/` whenever a release changes the docs.
 
 ## Supported Formats
 
-- `.bss`: 112 of 402 files with a handler.
-- `.dbss`: 186 of 374 files with a handler.
+- `.bss`: 113 of 402 files with a handler.
+- `.dbss`: 188 of 374 files with a handler.
 - Other formats: 31 with a handler.
 
 ## Requirements

@@ -5,17 +5,8 @@ from typing import Any
 
 import pytest
 
-from tests.framework import (
-    DeclaredCountTest,
-    HandlerCase,
-    HandlerResult,
-    SchemaTest,
-    TargetTest,
-    TestSpec as Spec,
-    case_id,
-    header_count,
-    run_case,
-)
+from tests.framework import HandlerResult, TargetTest, case_id, run_case
+from tests.quest_list_cases import QUEST_CASE, quest_list_case
 
 
 _CURRICULUM = "olviaacademycurriculumquestlist.bss"
@@ -26,52 +17,23 @@ _REWARD = "olviaacademyrewardquestlist.bss"
 _CATEGORY = {_PASS: 17, _REWARD: 18, _CURRICULUM: 19}
 
 
-def _case(name: str, *extra: Spec) -> HandlerCase:
-    return HandlerCase(
-        handler_name=name,
-        data_file=name,
-        companion_files={},
-        loc_file="languagedata_en.loc",
-        uses_loc=True,
-        loc_fields=["Title"],
-        internal_path=f"gamecommondata/binary/{name}",
-        tests=[
-            SchemaTest(required_keys=["slot", "packed_quest_id", "quest_chain_id", "quest_id", "title"]),
-            # The u32 count after the PABR magic.
-            DeclaredCountTest(declared=header_count(offset=4)),
-            *extra,
-        ],
-    )
-
-
 CASES = {
     # Your First Steps In: (1 << 16) | 2308.
-    _CURRICULUM: _case(
+    _CURRICULUM: quest_list_case(
         _CURRICULUM,
         TargetTest(col="packed_quest_id", value=67844, expected={"quest_chain_id": 2308, "quest_id": 1}),
     ),
     # Gathering Time! 1.: (101 << 16) | 2324.
-    _PASS: _case(
+    _PASS: quest_list_case(
         _PASS,
         TargetTest(col="packed_quest_id", value=6621460, expected={"quest_chain_id": 2324, "quest_id": 101}),
     ),
     # Combat Family Reward: (1 << 16) | 2323.
-    _REWARD: _case(
+    _REWARD: quest_list_case(
         _REWARD,
         TargetTest(col="packed_quest_id", value=67859, expected={"quest_chain_id": 2323, "quest_id": 1}),
     ),
 }
-
-QUEST_CASE = HandlerCase(
-    handler_name="quest.dbss",
-    data_file="quest.dbss",
-    companion_files={"allquestlist.bss": "allquestlist.bss"},
-    loc_file=None,
-    uses_loc=False,
-    loc_fields=[],
-    internal_path="gamecommondata/binary/quest.dbss",
-    tests=[],
-)
 
 
 @pytest.fixture(scope="module")

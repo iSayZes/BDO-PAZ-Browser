@@ -5,48 +5,18 @@ from typing import Any
 
 import pytest
 
-from tests.framework import (
-    DeclaredCountTest,
-    HandlerCase,
-    HandlerResult,
-    SchemaTest,
-    TargetTest,
-    case_id,
-    header_count,
-    run_case,
-)
+from tests.framework import HandlerResult, TargetTest, case_id, run_case
+from tests.quest_list_cases import QUEST_CASE, quest_list_case
 
 
 _NAME = "regionmonsterkillquestlist.bss"
 # The quest.dbss category whose records are exactly this list.
 _KILL_QUEST_CATEGORY = 12
 
-CASE = HandlerCase(
-    handler_name=_NAME,
-    data_file=_NAME,
-    companion_files={},
-    loc_file="languagedata_en.loc",
-    uses_loc=True,
-    loc_fields=["Title"],
-    internal_path=f"gamecommondata/binary/{_NAME}",
-    tests=[
-        SchemaTest(required_keys=["slot", "packed_quest_id", "quest_chain_id", "quest_id", "title"]),
-        # The u32 count after the PABR magic.
-        DeclaredCountTest(declared=header_count(offset=4)),
-        # Magaia Subjugation I: (1 << 16) | 9324.
-        TargetTest(col="packed_quest_id", value=74860, expected={"quest_chain_id": 9324, "quest_id": 1}),
-    ],
-)
-
-QUEST_CASE = HandlerCase(
-    handler_name="quest.dbss",
-    data_file="quest.dbss",
-    companion_files={"allquestlist.bss": "allquestlist.bss"},
-    loc_file=None,
-    uses_loc=False,
-    loc_fields=[],
-    internal_path="gamecommondata/binary/quest.dbss",
-    tests=[],
+CASE = quest_list_case(
+    _NAME,
+    # Magaia Subjugation I: (1 << 16) | 9324.
+    TargetTest(col="packed_quest_id", value=74860, expected={"quest_chain_id": 9324, "quest_id": 1}),
 )
 
 

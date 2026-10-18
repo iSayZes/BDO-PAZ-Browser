@@ -43,6 +43,19 @@ ALL_QUESTS_CASE = HandlerCase(
 )
 
 
+# quest.dbss, for the lists that are exactly one quest category.
+QUEST_CASE = HandlerCase(
+    handler_name="quest.dbss",
+    data_file="quest.dbss",
+    companion_files={"allquestlist.bss": "allquestlist.bss"},
+    loc_file=None,
+    uses_loc=False,
+    loc_fields=[],
+    internal_path="gamecommondata/binary/quest.dbss",
+    tests=[],
+)
+
+
 def assert_distinct_listed_quests(result: HandlerResult) -> None:
     """Every entry is a different quest of `allquestlist.bss`."""
     listed = [record["packed_quest_id"] for record in result.records]

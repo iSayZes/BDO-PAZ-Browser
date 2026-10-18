@@ -5,49 +5,20 @@ from typing import Any
 
 import pytest
 
-from tests.framework import (
-    DeclaredCountTest,
-    HandlerCase,
-    HandlerResult,
-    SchemaTest,
-    TargetTest,
-    case_id,
-    header_count,
-    run_case,
-)
+from tests.framework import HandlerCase, HandlerResult, TargetTest, case_id, run_case
+from tests.quest_list_cases import QUEST_CASE, quest_list_case
 
 
 _NAME = "specialquestlist.bss"
 # The quest.dbss category whose records are exactly this list.
 _JOURNAL_PAGE_CATEGORY = 11
 
-CASE = HandlerCase(
-    handler_name=_NAME,
-    data_file=_NAME,
-    companion_files={},
-    loc_file="languagedata_en.loc",
-    uses_loc=True,
-    loc_fields=["Title"],
-    internal_path=f"gamecommondata/binary/{_NAME}",
-    tests=[
-        SchemaTest(required_keys=["slot", "packed_quest_id", "quest_chain_id", "quest_id", "title"]),
-        # The u32 count after the PABR magic.
-        DeclaredCountTest(declared=header_count(offset=4)),
-        # Page 1 of Igor Bartali's Adventures Vol. 1: (1 << 16) | 748.
-        TargetTest(col="packed_quest_id", value=66284, expected={"quest_chain_id": 748, "quest_id": 1}),
-    ],
+CASE = quest_list_case(
+    _NAME,
+    # Page 1 of Igor Bartali's Adventures Vol. 1: (1 << 16) | 748.
+    TargetTest(col="packed_quest_id", value=66284, expected={"quest_chain_id": 748, "quest_id": 1}),
 )
 
-QUEST_CASE = HandlerCase(
-    handler_name="quest.dbss",
-    data_file="quest.dbss",
-    companion_files={"allquestlist.bss": "allquestlist.bss"},
-    loc_file=None,
-    uses_loc=False,
-    loc_fields=[],
-    internal_path="gamecommondata/binary/quest.dbss",
-    tests=[],
-)
 
 JOURNAL_CASE = HandlerCase(
     handler_name="journalquest.dbss",

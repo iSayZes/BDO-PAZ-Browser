@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "mainId": "Haupt-ID",
+    "subId": "Unter-ID",
+    "title": "Titel",
+    "feverPoint": "Agrisfieber-Kosten"
+  },
+  "meta": {
+    "count": "{count} Agrisfieber-Quests"
+  }
+}

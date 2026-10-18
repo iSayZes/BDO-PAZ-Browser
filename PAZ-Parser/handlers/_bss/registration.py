@@ -33,6 +33,7 @@ from .fairyfeedenchantfailcount.handler import (
     FairyFeedEnchantFailCountBssHandler,
 )
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
+from .feverquestdatatable.handler import FeverQuestDataTableBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
@@ -149,6 +150,7 @@ def register_bss_handlers() -> None:
         FairyFeedEnchantFailCountBssHandler(),
     )
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
+    register_handler("feverquestdatatable.bss", FeverQuestDataTableBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
     register_handler(

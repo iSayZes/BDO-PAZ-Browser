@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "mainId": "ID principal",
+    "subId": "ID secundario",
+    "title": "Título",
+    "feverPoint": "Coste de Fiebre de Agris"
+  },
+  "meta": {
+    "count": "{count} misiones de Fiebre de Agris"
+  }
+}

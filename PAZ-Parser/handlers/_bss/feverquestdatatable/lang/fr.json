@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "mainId": "ID principal",
+    "subId": "ID secondaire",
+    "title": "Titre",
+    "feverPoint": "Coût en Fièvre d'Agris"
+  },
+  "meta": {
+    "count": "{count} quêtes de Fièvre d'Agris"
+  }
+}

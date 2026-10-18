@@ -147,11 +147,11 @@ The u32 immediately before `packed_quest_id`. Counts from client 3474:
 | `13` | 410   | Black Spirit Pass progression quests |
 | `14` | 224   | Tutorial / beginner guide quests |
 | `15` | 219   | The Magnus / endgame zone quests |
-| `17` | 180   | Not yet labelled |
-| `18` | 85    | Olvia Academy family reward quests |
-| `19` | 168   | Not yet labelled |
+| `17` | 180   | Olvia Academy Pass quests: exactly the 180 quests of [`olviaacademypassquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
+| `18` | 85    | Olvia Academy family reward quests: exactly the 85 quests of [`olviaacademyrewardquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
+| `19` | 168   | Olvia Academy curriculum quests: exactly the 168 quests of [`olviaacademycurriculumquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
 
-Values `11` and `12` are confirmed exactly: the category `11` records and the journal pages are the same 896 quests, and the category `12` records are the 180 quests of `regionmonsterkillquestlist.bss`. The other labels are inferred from English titles.
+Values `11`, `12` and `17` to `19` are confirmed exactly: the category `11` records and the journal pages are the same 896 quests, and the records of categories `12`, `17`, `18` and `19` are the quests of their lists. The other labels are inferred from English titles.
 
 ## Former "Canonical Link" Sub-record
 

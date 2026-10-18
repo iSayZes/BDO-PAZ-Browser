@@ -1,8 +1,9 @@
 """PABR list of packed quest IDs: a u32 count, the IDs, a 12-byte trailer.
 
-`allquestlist.bss`, `doguildquestlist.bss`, `growthpassquestlist.bss`,
-`regionmonsterkillquestlist.bss`, `specialquestlist.bss` and the three
-`seasonpassquestlist*.bss` files share it.
+`allquestlist.bss`, `doguildquestlist.bss`, `growthpassquestlist.bss`, the
+three `olviaacademy*questlist.bss` files, `regionmonsterkillquestlist.bss`,
+`specialquestlist.bss` and the three `seasonpassquestlist*.bss` files
+share it.
 """
 
 from __future__ import annotations

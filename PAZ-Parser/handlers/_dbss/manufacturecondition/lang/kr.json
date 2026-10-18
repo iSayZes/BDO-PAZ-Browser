@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "actionHash": "가공 해시",
+    "action": "가공",
+    "name": "이름",
+    "visibleCondition": "표시 조건",
+    "enableCondition": "사용 조건"
+  },
+  "offsetColumns": {
+    "actionHash": "가공 해시",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "가공 종류 {count}개"
+  }
+}

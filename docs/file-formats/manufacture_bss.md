@@ -132,7 +132,7 @@ The display keys are `ALCHEMY_MANUFACTURE_HEATING`, `LUA_ALCHEMY_MANUFACTURE_ALC
 - The other 2,590 values (6,163 rows) fall between 10129 and 19994. The client's `itemmaingroup.bss` holds one group from 10000 to 29999 (group 10000), so the groups for most processing results are absent from the client files, not a different ID space.
 - 439 of the 2,791 groups are shared by more than one row (client 3464). Group 12537 is the result of all 25 Heating rows of Black Alloy with a Black Abyssal weapon or the Black Abyssal Amulet. Only one group serves two actions (Simple Alchemy and Manufacture).
 - The processing window has five material slots (`_slotMaxCount = 5`), the largest `material_count` in the file.
-- `manufacturecondition.dbss` (14 rows) is keyed by the same `action_hash` values: it holds the 12 action names of this file plus `REPAIR_ITEM` and `MANUFACTURE_RAINWATER`, each with a condition script such as `getlevel()>0` or `getWeatherFactor(WindForce,0)>300;`. That table is not documented here.
+- [`manufacturecondition.dbss`](manufacturecondition_dbss.md) (14 records) is keyed by the same `action_hash` values: it holds the 12 action names of this file plus `REPAIR_ITEM` and `MANUFACTURE_RAINWATER`, each with the condition scripts that show and enable the action's tab, such as `getlevel()>0` or `getWeatherFactor(WindForce,0)>300;`.
 
 ## Open Questions
 

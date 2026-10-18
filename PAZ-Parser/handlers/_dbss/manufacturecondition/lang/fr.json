@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "actionHash": "Hash de transformation",
+    "action": "Transformation",
+    "name": "Nom",
+    "visibleCondition": "Condition d'affichage",
+    "enableCondition": "Condition(s) d'utilisation"
+  },
+  "offsetColumns": {
+    "actionHash": "Hash de transformation",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} types de transformation"
+  }
+}

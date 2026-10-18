@@ -138,6 +138,7 @@ from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
 from .collect.handler import CollectHandler, collect_offset_handler
 from .lifeactionexperience.handler import LifeActionExperienceHandler, life_action_experience_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
+from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
 from .houseinforeceipe.handler import HouseInfoReceipeHandler, house_info_receipe_offset_handler
@@ -193,6 +194,8 @@ def register_dbss_handlers() -> None:
     register_handler("extractitem.dbss", ExtractItemHandler())
     register_handler("collectresourcenameoffset.dbss", collect_resource_name_offset_handler())
     register_handler("collectresourcename.dbss", CollectResourceNameHandler())
+    register_handler("manufactureconditionoffset.dbss", manufacture_condition_offset_handler())
+    register_handler("manufacturecondition.dbss", ManufactureConditionHandler())
     register_handler("collectoffset.dbss", collect_offset_handler())
     register_handler("collect.dbss", CollectHandler())
     register_handler("lifeactionexperienceoffset.dbss", life_action_experience_offset_handler())

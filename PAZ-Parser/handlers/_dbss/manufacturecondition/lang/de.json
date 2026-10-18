@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "actionHash": "Verarbeitungs-Hash",
+    "action": "Verarbeitung",
+    "name": "Name",
+    "visibleCondition": "Anzeigebedingung",
+    "enableCondition": "Verwendungsbedingung"
+  },
+  "offsetColumns": {
+    "actionHash": "Verarbeitungs-Hash",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Verarbeitungsarten"
+  }
+}

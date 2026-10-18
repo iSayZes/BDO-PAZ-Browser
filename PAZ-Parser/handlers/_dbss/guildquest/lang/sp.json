@@ -19,9 +19,6 @@
     "dataOffset": "Offset de datos",
     "size": "Tamaño"
   },
-  "reward": {
-    "type": "Tipo de recompensa {type}"
-  },
   "meta": {
     "count": "{count} misiones de hermandad"
   }

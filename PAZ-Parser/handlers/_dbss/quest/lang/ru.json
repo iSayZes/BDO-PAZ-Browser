@@ -12,6 +12,8 @@
     "condition": "Условие",
     "action": "Действие",
     "objective": "Цель",
+    "rewards": "Награды",
+    "selectRewards": "Награды на выбор",
     "familyStat": "Характеристика семьи"
   },
   "meta": {

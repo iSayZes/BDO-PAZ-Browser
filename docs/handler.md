@@ -1047,6 +1047,7 @@ _common/
 ├── knowledge.py         # knowledge entry names (LOC type 34)
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
+├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)

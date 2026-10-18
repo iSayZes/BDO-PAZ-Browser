@@ -12,6 +12,8 @@
     "condition": "Condición",
     "action": "Acción",
     "objective": "Objetivo",
+    "rewards": "Recompensas",
+    "selectRewards": "Recompensas a elegir",
     "familyStat": "Estadística de familia"
   },
   "meta": {

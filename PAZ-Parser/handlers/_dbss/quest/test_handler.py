@@ -21,6 +21,35 @@ from tests.framework import (
 )
 from tests.runner import load_case
 
+from _common.quest.reward_entry import (
+    REWARD_EXP,
+    REWARD_INTIMACY,
+    REWARD_ITEM,
+    REWARD_LIFE_EXP,
+    REWARD_SKILL_EXP,
+)
+
+# The head members a reward leaves at these values unless its type uses them.
+_UNSET_MEMBERS = {
+    "experience": 0,
+    "skill_experience": 0,
+    "product_experience": 0,
+    "life_experience_type": 15,
+    "life_experience": 0,
+    "item_key": 0,
+    "item_count": 0,
+    "intimacy_character": 0,
+    "intimacy_value": 0,
+}
+# gc::RewardType -> the members that hold its reward.
+_TYPE_MEMBERS = {
+    REWARD_EXP: {"experience"},
+    REWARD_SKILL_EXP: {"skill_experience"},
+    REWARD_LIFE_EXP: {"life_experience_type", "life_experience"},
+    REWARD_ITEM: {"item_key", "item_count"},
+    REWARD_INTIMACY: {"intimacy_character", "intimacy_value"},
+}
+
 
 def _quest_record(record: dict) -> dict:
     loc_texts = record.get("loc_texts_en", [])
@@ -62,6 +91,10 @@ CASE = HandlerCase(
                 "objective_text_kr",
                 "title_en",
                 "icon_path",
+                "base_rewards",
+                "select_rewards",
+                "base_rewards_text",
+                "select_rewards_text",
                 "family_stats",
                 "family_stat_text",
             ]
@@ -160,6 +193,47 @@ def test_quest_dbss(spec: Any, quest_result: HandlerResult) -> None:
 
 def _record(result: HandlerResult, packed_quest_id: int) -> dict:
     return next(record for record in result.records if record["packed_quest_id"] == packed_quest_id)
+
+
+def _all_rewards(record: dict) -> list[dict]:
+    return [*record["base_rewards"], *record["select_rewards"]]
+
+
+def test_quest_dbss_rewards_fill_only_their_own_members(quest_result: HandlerResult) -> None:
+    # A wrong member offset shows as a value in a member of another reward type.
+    for record in quest_result.records:
+        for reward in _all_rewards(record):
+            own = _TYPE_MEMBERS.get(reward["reward_type"], set())
+            stray = {name for name, unset in _UNSET_MEMBERS.items() if name not in own and reward[name] != unset}
+            assert not stray, (record["packed_quest_id"], reward["reward_type"], stray)
+
+
+def test_quest_dbss_uses_every_2016_reward_type(quest_result: HandlerResult) -> None:
+    used = {reward["reward_type"] for record in quest_result.records for reward in record["base_rewards"]}
+    assert set(_TYPE_MEMBERS) <= used
+
+
+def test_quest_dbss_family_stats_sit_in_one_reward_type(quest_result: HandlerResult) -> None:
+    types = {
+        record["base_rewards"][stat["entry"]]["reward_type"]
+        for record in quest_result.records
+        for stat in record["family_stats"]
+    }
+    assert len(types) == 1, types
+
+
+def test_quest_dbss_select_rewards_follow_the_base_rewards(quest_result: HandlerResult) -> None:
+    # "[Processing] The Beauty of Planks": pick Pine Sap or the Pine Plank its script gathers.
+    record = _record(quest_result, 138172)
+    assert [reward["item_key"] for reward in record["select_rewards"]] == [5003, 4657]
+    assert "gatheritem(4657," in record["action_script"]
+
+
+def test_quest_dbss_amity_reward_names_its_npc(quest_result: HandlerResult) -> None:
+    record = _record(quest_result, 788483)
+    amity = [reward for reward in record["base_rewards"] if reward["reward_type"] == REWARD_INTIMACY]
+    assert [reward["intimacy_character"] for reward in amity] == [41011]
+    assert any(text.startswith("Melissa Brady ") for text in record["base_rewards_text"])
 
 
 def test_quest_dbss_family_stats_are_gains(quest_result: HandlerResult) -> None:

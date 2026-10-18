@@ -12,6 +12,8 @@
     "condition": "Bedingung",
     "action": "Aktion",
     "objective": "Ziel",
+    "rewards": "Belohnungen",
+    "selectRewards": "Wählbare Belohnungen",
     "familyStat": "Familienstatistik"
   },
   "meta": {

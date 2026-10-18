@@ -19,9 +19,6 @@
     "dataOffset": "Daten-Offset",
     "size": "Größe"
   },
-  "reward": {
-    "type": "Belohnungstyp {type}"
-  },
   "meta": {
     "count": "{count} Gildenmissionen"
   }

@@ -202,6 +202,7 @@ def _row(quest_no: int, rewards: list[tuple[int, int]], groups: list[int], value
             struct.pack("<IIqB", 120, _SILVER, 50_000, 0),
             struct.pack("<I", len(rewards)),
             *(_reward(key, count) for key, count in rewards),
+            # An empty select reward list, then unknown_select_rewards_00 and _04.
             struct.pack("<IIq", 0, 0, 6_800_000),
             struct.pack(f"<I{len(groups)}I", len(groups), *groups),
             struct.pack("<B", _SUBJUGATION),

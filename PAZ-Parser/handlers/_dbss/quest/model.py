@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TypedDict
 
+from _common.quest.reward_entry import RewardEntry
+
 
 class FamilyStat(TypedDict):
     """One permanent Family-stat reward from a counted reward entry."""
@@ -27,5 +29,7 @@ class QuestRecord(TypedDict):
     action_script: str
     objective_text_kr: str
     icon_path: str
+    base_rewards: list[RewardEntry]
+    select_rewards: list[RewardEntry]
     family_stats: list[FamilyStat]
     loc_texts_en: list[str]

@@ -19,9 +19,6 @@
     "dataOffset": "데이터 오프셋",
     "size": "크기"
   },
-  "reward": {
-    "type": "보상 종류 {type}"
-  },
   "meta": {
     "count": "길드 임무 {count}개"
   }

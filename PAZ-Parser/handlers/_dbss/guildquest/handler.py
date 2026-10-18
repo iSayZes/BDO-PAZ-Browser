@@ -7,20 +7,19 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.contents_group import contents_groups_text
-from _common.html import Column, e, error, flag_cell, html_list_cell, icon_cell, icon_html_label_cell, sort_keys, table
+from _common.html import Column, e, error, flag_cell, icon_cell, icon_html_label_cell, sort_keys, table
 from _common.item_key import item_key_icon_path, item_key_text, item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pa_text import pa_cell, pa_fields, pa_html, pa_line_cell
 from _common.pabr_offset import parse_bare_u32_offset_rows
+from _common.quest.reward_text import reward_texts, rewards_cell
 from .parser import FILE_NAME, parse_guildquest_records
 from .text import LOC_DESCRIPTION, LOC_OBJECTIVE, LOC_TITLE, guild_quest_tagged, guild_quest_type_name
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-# gc::RewardType eRewardItem: the only reward type the guild missions use.
-_REWARD_ITEM = 3
 
 
 def guild_quest_offset_handler() -> OffsetTableHandler:
@@ -73,12 +72,6 @@ class GuildQuestHandler(PreviewHandler):
             return [{"_error": f"{FILE_NAME} could not be parsed: {ex}"}]
         return [self._record_fields(record) for record in records]
 
-    def _reward_text(self, reward: dict) -> str:
-        """`Silver x220,000,000`, or the reward type for a reward that is no item."""
-        if reward["reward_type"] != _REWARD_ITEM:
-            return handler_text(self.lang, _LANG_DIR, "reward.type", type=reward["reward_type"])
-        return f"{item_key_text(reward['item_key'])} x{reward['item_count']:,}"
-
     def _record_fields(self, record: dict) -> dict:
         quest_no = record["quest_no"]
         return {
@@ -89,20 +82,9 @@ class GuildQuestHandler(PreviewHandler):
             "guild_quest_type_name": guild_quest_type_name(record["guild_quest_type"]),
             "need_item": f"{item_key_text(record['need_item_key'])} x{record['need_item_count']:,}",
             # Text forms, so tab search and CSV export see them.
-            "rewards": [self._reward_text(reward) for reward in record["base_rewards"]],
+            "rewards": reward_texts(record["base_rewards"]),
             "contents_groups": contents_groups_text(record["contents_group_hashes"]),
         }
-
-    def _reward_cell(self, reward: dict, text: str) -> str:
-        """An item reward with its icon and grade colour, then its count."""
-        if reward["reward_type"] != _REWARD_ITEM:
-            return e(text)
-        label = f"{pa_html(item_key_text_tagged(reward['item_key']))} x{reward['item_count']:,}"
-        return icon_html_label_cell(item_key_icon_path(reward["item_key"]), label)
-
-    def _rewards_cell(self, record: dict) -> str:
-        cells = [self._reward_cell(reward, text) for reward, text in zip(record["base_rewards"], record["rewards"])]
-        return html_list_cell(cells) or _EMPTY
 
     def _row(self, r: dict) -> list[str]:
         need_item = f"{pa_html(item_key_text_tagged(r['need_item_key']))} x{r['need_item_count']:,}"
@@ -118,7 +100,7 @@ class GuildQuestHandler(PreviewHandler):
             e(f"{r['limit_minute']:,}"),
             icon_html_label_cell(item_key_icon_path(r["need_item_key"]), need_item),
             flag_cell(bool(r["is_preoccupancy"])),
-            self._rewards_cell(r),
+            rewards_cell(r["base_rewards"]) or _EMPTY,
             e(r["contents_groups"]) or _EMPTY,
         ]
 

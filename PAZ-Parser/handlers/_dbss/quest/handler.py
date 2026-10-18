@@ -15,6 +15,7 @@ from _common.html import Column, e, icon_cell, sort_keys, table, truncate
 from _common.lang import handler_text, load_handler_strings
 from _common.quest.dialog import dialog_cell, dialog_speaker
 from _common.quest.quest import quest_text_tagged
+from _common.quest.reward_text import reward_texts, rewards_cell
 from _bss.allquestlist.parser import parse_allquestlist_records
 from _bss.stringtable.parser import GAME_SHEET
 from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes
@@ -89,6 +90,9 @@ class QuestDbssHandler(PreviewHandler):
             Column(cols["condition"], sort_key="condition_script"),
             Column(cols["action"], sort_key="action_script"),
             Column(cols["objective"], sort_key="objective"),
+            # List columns: they would only sort by their string form.
+            Column(cols["rewards"]),
+            Column(cols["selectRewards"]),
             Column(cols["familyStat"], sort_key="family_stat_text"),
         ]
 
@@ -125,6 +129,9 @@ class QuestDbssHandler(PreviewHandler):
             **pa_fields("objective", _objective(loc_texts) or resolve_text_binds(parsed["objective_text_kr"])),
             # Empty sorts last and exports as an empty cell.
             "family_stat_text": _family_stat_text(parsed["family_stats"]) or None,
+            # Text forms, so tab search and CSV export see them.
+            "base_rewards_text": reward_texts(parsed["base_rewards"]),
+            "select_rewards_text": reward_texts(parsed["select_rewards"]),
             "accept_npc": dialog_speaker(parsed["accept_dialog_key"]),
             "complete_npc": dialog_speaker(parsed["complete_dialog_key"]),
             # quest_category is the quest type (__eQuestType); see quest_dbss.md.
@@ -264,6 +271,8 @@ class QuestDbssHandler(PreviewHandler):
                 e(_truncate(record["condition_script"])),
                 e(_truncate(record["action_script"])),
                 pa_cell(record, "objective", _TEXT_PREVIEW_CHARS),
+                rewards_cell(record["base_rewards"]) or "-",
+                rewards_cell(record["select_rewards"]) or "-",
                 e(record["family_stat_text"] or "-"),
             ])
 

@@ -19,9 +19,6 @@
     "dataOffset": "Offset des données",
     "size": "Taille"
   },
-  "reward": {
-    "type": "Type de récompense {type}"
-  },
   "meta": {
     "count": "{count} missions de guilde"
   }

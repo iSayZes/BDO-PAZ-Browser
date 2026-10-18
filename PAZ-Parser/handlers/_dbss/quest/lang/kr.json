@@ -12,6 +12,8 @@
     "condition": "조건",
     "action": "행동",
     "objective": "목표",
+    "rewards": "보상",
+    "selectRewards": "선택 보상",
     "familyStat": "가문 능력치"
   },
   "meta": {

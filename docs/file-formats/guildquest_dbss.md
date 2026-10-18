@@ -25,7 +25,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                    | Known             | Unknown           |
 | ------ | ----------------------- | ----------------- | ----------------- |
-| 2      | `guildquest.dbss`       | 105,241 B (43.0%) | 139,297 B (57.0%) |
+| 2      | `guildquest.dbss`       | 105,801 B (43.3%) | 138,737 B (56.7%) |
 | 2      | `guildquestoffset.dbss` | 1,684 B (100.0%)  | 0 B (0.0%)        |
 | 1      | `guildquest.dbss`       | 265,433 B (46.8%) | 302,145 B (53.2%) |
 | 1      | `guildquestoffset.dbss` | 4,072 B (100.0%)  | 0 B (0.0%)        |
@@ -70,11 +70,12 @@ terminator. Counts in the Notes column are from client 3474.
 | `icon_path+0x10`                    | u8                                  | is_preoccupancy            | `0` on every row |
 | `icon_path+0x11`                    | u32                                 | base_reward_count          | `6` to `9` |
 | `icon_path+0x15`                    | Reward Entry[base_reward_count]     | base_rewards               | See Reward Entry |
-| `base_rewards+0x00`                 | u32                                 | unknown_base_rewards_00    | `0` on every row; see Open Questions |
-| `base_rewards+0x04`                 | u32                                 | unknown_base_rewards_04    | `0` on every row |
-| `base_rewards+0x08`                 | i64                                 | unknown_base_rewards_08    | `6,300,000` to `7,300,000`; see Open Questions |
-| `base_rewards+0x10`                 | u32                                 | contents_group_count       | `1` to `8` |
-| `base_rewards+0x14`                 | u32[contents_group_count]           | contents_group_hashes      | `key_hash()` of each contents group key in decimal, as in [`skillsimply.dbss`](skillsimply_dbss.md); see Notes |
+| `base_rewards+0x00`                 | u32                                 | select_reward_count        | `0` on every row; see Field Names |
+| `base_rewards+0x04`                 | Reward Entry[select_reward_count]   | select_rewards             | Empty on every row |
+| `select_rewards+0x00`               | u32                                 | unknown_select_rewards_00  | `0` on every row |
+| `select_rewards+0x04`               | i64                                 | unknown_select_rewards_04  | `6,300,000` to `7,300,000`; see Open Questions |
+| `select_rewards+0x0C`               | u32                                 | contents_group_count       | `1` to `8` |
+| `select_rewards+0x10`               | u32[contents_group_count]           | contents_group_hashes      | `key_hash()` of each contents group key in decimal, as in [`skillsimply.dbss`](skillsimply_dbss.md); see Notes |
 | `contents_group_hashes+0x00`        | u8                                  | guild_quest_type           | See [Mission Types](#mission-types) |
 | `contents_group_hashes+0x01`        | u32                                 | unknown_value_count        | `0` on 76 rows, `1` on 48, `5` on 16 |
 | `contents_group_hashes+0x05`        | u32[unknown_value_count]            | unknown_values             | `5` alone, or `1, 2, 3, 4, 6`; see Open Questions |
@@ -144,11 +145,12 @@ boss fields of the source sheet in place of `unknown_values`.
 | `icon_path+0x10`                    | u8                                  | is_preoccupancy            | |
 | `icon_path+0x11`                    | u32                                 | base_reward_count          | |
 | `icon_path+0x15`                    | Reward Entry[base_reward_count]     | base_rewards               | |
-| `base_rewards+0x00`                 | u32                                 | unknown_base_rewards_00    | `0` on every row |
-| `base_rewards+0x04`                 | u32                                 | unknown_base_rewards_04    | `0` on every row |
-| `base_rewards+0x08`                 | i64                                 | unknown_base_rewards_08    | `0` to `500,000` |
-| `base_rewards+0x10`                 | u32                                 | contents_group_count       | |
-| `base_rewards+0x14`                 | u32[contents_group_count]           | contents_group_hashes      | |
+| `base_rewards+0x00`                 | u32                                 | select_reward_count        | `0` on every row |
+| `base_rewards+0x04`                 | Reward Entry[select_reward_count]   | select_rewards             | Empty on every row |
+| `select_rewards+0x00`               | u32                                 | unknown_select_rewards_00  | `0` on every row |
+| `select_rewards+0x04`               | i64                                 | unknown_select_rewards_04  | `0` to `500,000` |
+| `select_rewards+0x0C`               | u32                                 | contents_group_count       | |
+| `select_rewards+0x10`               | u32[contents_group_count]           | contents_group_hashes      | |
 | `contents_group_hashes+0x00`        | u8                                  | guild_quest_type           | `0`, `1` or `2` |
 | `contents_group_hashes+0x01`        | u32                                 | boss_spawn_type            | `0` on 273 rows, `1` to `5` on the other 66 |
 | `contents_group_hashes+0x05`        | u32                                 | boss_spawn_cost            | `1` on the rows with a `boss_spawn_type`, else `0` |
@@ -241,6 +243,13 @@ per reward: on all 339 rows every file reward is in the script, which lists
 `ActivityPerDemand` (`200` on row 1) and `ExpectedPrice` (empty on every
 row) match no field.
 
+`select_reward_count` and `select_rewards` follow the 2016
+`gc::QuestRewardGroup` order (`_baseReward`, `_selectReward`) and the
+shape of [`quest.dbss`](quest_dbss.md), where the same slot holds a
+filled select list on client 3474. The guild missions leave it empty on
+every row of both clients; the Lua reads it through
+`ToClient_getCurrentGuildQuestSelectRewardCount()`.
+
 The Reward Entry fields are the `gc::QuestRewardElement` members in order,
 pointers dropped and no padding: `_type`, `_experience` (`__int64`),
 `_skillExperience`, `_productExperience`, `_lifeExperienceType` (one
@@ -287,17 +296,15 @@ type has 1,097 missions on client 3474, more than the file holds.
 
 ## Open Questions
 
-### Fields After the Rewards
+### Fields After the Select Rewards
 
-In the 2016 `gc::QuestRewardGroup`, `_baseReward` is followed by
-`_selectReward` (a second reward list) and `_expectedPrice` (`__int64`).
-`unknown_base_rewards_00` would be the select reward count if the file
-followed that order, but it is `0` on every row of both clients, and the
-Lua's `ToClient_getCurrentGuildQuestSelectRewardCount()` cannot be checked
-against a filled list. `unknown_base_rewards_08` holds `100,000` to
-`500,000` on client 1784 where the sheet's `ExpectedPrice` is empty, so
-the name does not carry over from the sheet; it does not follow
-`need_item_count` or the silver reward either.
+In the 2016 `gc::QuestRewardGroup`, `_selectReward` is followed by
+`_expectedPrice` (`__int64`). `unknown_select_rewards_04` holds `100,000`
+to `500,000` on client 1784 where the sheet's `ExpectedPrice` is empty,
+so the name does not carry over from the sheet; it does not follow
+`need_item_count` or the silver reward either. What
+`unknown_select_rewards_00` (`0` on every row) holds is open too; the same
+two fields follow the select rewards of [`quest.dbss`](quest_dbss.md).
 
 ### `unknown_values`
 

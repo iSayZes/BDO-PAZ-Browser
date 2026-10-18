@@ -127,31 +127,32 @@ walk by this layout with the same `allquestlist[i]` search reads all
 
 ## Quest Category
 
-The u32 immediately before `packed_quest_id`. Counts from client 3474:
+The u32 immediately before `packed_quest_id`. It is the quest type, `__eQuestType` of the client Lua: on client 3474 the per-category record counts below equal, value for value, the 20 totals of [`totalquestcounttype.bss`](totalquestcountregion_bss.md#quest-types), whose value N is quest type N. The enum names follow the `__eQuestType_*` order of `panel_window_quest_all.luac`, and the quest window names are the English LOC of its `_typeString` keys (none for the three Olvia Academy types). Counts from client 3474:
 
-| quest_category | Count | Apparent category |
-| -------------: | ----: | ----------------- |
-| `0`  | 458   | Character progression / world knowledge |
-| `1`  | 3,872 | Main story / zone quests |
-| `2`  | 5,890 | Regular repeatable / item quests |
-| `3`  | 2,229 | Daily / weekly / repeat quests |
-| `4`  | 473   | Dungeon / instance quests (e.g. Atoraxxion) |
-| `5`  | 609   | Side story / life content |
-| `6`  | 162   | Fishing quests |
-| `7`  | 331   | Cooking quests |
-| `8`  | 627   | Crafting / equipment quests (e.g. Blackstar) |
-| `9`  | 1,977 | Event quests (`[Event]` prefix) |
-| `10` | 1     | Guild quests (single observed) |
-| `11` | 896   | Adventure-journal page: exactly the 896 page quests of the 118 books in `journalquest.dbss`, nothing else, and the 896 quests of [`specialquestlist.bss`](specialquestlist_bss.md) in the same order |
-| `12` | 180   | Region monster kill quests: exactly the 180 quests of [`regionmonsterkillquestlist.bss`](regionmonsterkillquestlist_bss.md), in the same order |
-| `13` | 410   | Black Spirit Pass progression quests |
-| `14` | 224   | Tutorial / beginner guide quests |
-| `15` | 219   | The Magnus / endgame zone quests |
-| `17` | 180   | Olvia Academy Pass quests: exactly the 180 quests of [`olviaacademypassquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
-| `18` | 85    | Olvia Academy family reward quests: exactly the 85 quests of [`olviaacademyrewardquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
-| `19` | 168   | Olvia Academy curriculum quests: exactly the 168 quests of [`olviaacademycurriculumquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
+| quest_category | Count | Quest type | Quest window name | Same quests as |
+| -------------: | ----: | ---------- | ----------------- | -------------- |
+| `0` | 458 | `BlackSpirit` | Black Spirit |  |
+| `1` | 3,872 | `Main` | Main |  |
+| `2` | 5,890 | `Sub` | General |  |
+| `3` | 2,229 | `Repeat` | Recurring |  |
+| `4` | 473 | `Adventure` | Adventure |  |
+| `5` | 609 | `BaseLife` | Life |  |
+| `6` | 162 | `OceanLife` | Sailing |  |
+| `7` | 331 | `CraftLife` | Production |  |
+| `8` | 627 | `Contents` | Content |  |
+| `9` | 1,977 | `Event` | Event |  |
+| `10` | 1 | `Guild` | Guild |  |
+| `11` | 896 | `DirectAccept` | Adventurer's Tome | The 896 page quests of the 118 books in `journalquest.dbss`, and the 896 quests of [`specialquestlist.bss`](specialquestlist_bss.md) in the same order |
+| `12` | 180 | `Sudden` | Region Bonus | The 180 quests of [`regionmonsterkillquestlist.bss`](regionmonsterkillquestlist_bss.md), in the same order |
+| `13` | 410 | `SeasonPass` | Season Pass |  |
+| `14` | 224 | `GrowthPass` | Progression Pass |  |
+| `15` | 219 | `DirectClear` | Etc. |  |
+| `16` | 0 | `Journal` | Journal | No record on client 3474 |
+| `17` | 180 | `OlviaAcademyPass` | none | The 180 quests of [`olviaacademypassquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
+| `18` | 85 | `OlviaAcademyReward` | none | The 85 quests of [`olviaacademyrewardquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
+| `19` | 168 | `OlviaAcademyCurriculum` | none | The 168 quests of [`olviaacademycurriculumquestlist.bss`](olviaacademyquestlist_bss.md), in the same order |
 
-Values `11`, `12` and `17` to `19` are confirmed exactly: the category `11` records and the journal pages are the same 896 quests, and the records of categories `12`, `17`, `18` and `19` are the quests of their lists. The other labels are inferred from English titles.
+The category `11`, `12` and `17` to `19` records are also exactly the quests of the lists in the last column.
 
 ## Former "Canonical Link" Sub-record
 
@@ -259,7 +260,3 @@ title/objective source.
 ### `questgroup.dbss` Coverage
 
 `questgroup.dbss` confirms one relationship to this file: each child link is a `(group_id, quest_no)` pair whose raw 4 bytes equal a `quest.dbss` packed quest ID. It does not explain the remaining variable-length payload fields in `quest.dbss`.
-
-### `quest_category` Semantics
-
-Value `11` is confirmed as the adventure-journal page category and `12` as the region monster kill quests. The other values are mapped from English titles only, some categories overlap (types 2 and 3 both appear on repeatables), and values `17` and `19` are unlabelled.

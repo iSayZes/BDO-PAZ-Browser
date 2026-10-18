@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "productItemKey": "Ergebnis-ID",
+    "product": "Ergebnis",
+    "category": "Kategorie",
+    "exchangeItemKey": "Tauschschlüssel",
+    "requiredItems": "Materialien",
+    "time": "Zeit",
+    "price": "Preis",
+    "productItemLimit": "Tägliches Herstellungslimit",
+    "guildSkill": "Gildentalent",
+    "guildHouses": "Gildenhaus"
+  },
+  "offsetColumns": {
+    "productItemKey": "Ergebnis-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Rezepte der Gildenherstellung"
+  }
+}

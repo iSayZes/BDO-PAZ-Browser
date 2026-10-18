@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "productItemKey": "Product ID",
+    "product": "Product",
+    "category": "Category",
+    "exchangeItemKey": "Exchange Key",
+    "requiredItems": "Materials",
+    "time": "Time",
+    "price": "Price",
+    "productItemLimit": "Daily Crafting Limit",
+    "guildSkill": "Guild Skill",
+    "guildHouses": "Guild House"
+  },
+  "offsetColumns": {
+    "productItemKey": "Product ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Guild Crafting recipes"
+  }
+}

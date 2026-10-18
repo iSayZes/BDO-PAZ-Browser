@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "productItemKey": "결과물 ID",
+    "product": "결과물",
+    "category": "구분",
+    "exchangeItemKey": "교환 키",
+    "requiredItems": "재료",
+    "time": "시간",
+    "price": "금액",
+    "productItemLimit": "일일 제작 가능 수량",
+    "guildSkill": "길드 기술",
+    "guildHouses": "길드 하우스"
+  },
+  "offsetColumns": {
+    "productItemKey": "결과물 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "길드 제작 {count}개"
+  }
+}

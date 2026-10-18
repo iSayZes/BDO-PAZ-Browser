@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "productItemKey": "ID del resultado",
+    "product": "Resultado",
+    "category": "Categoría",
+    "exchangeItemKey": "Clave de intercambio",
+    "requiredItems": "Materiales",
+    "time": "Tiempo",
+    "price": "Precio",
+    "productItemLimit": "Límite diario",
+    "guildSkill": "Habilidades de hermandad",
+    "guildHouses": "Casa de Hermandad"
+  },
+  "offsetColumns": {
+    "productItemKey": "ID del resultado",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} recetas de manufactura de hermandad"
+  }
+}

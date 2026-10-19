@@ -5,7 +5,7 @@
     | string table (count 0) | u32 table_start | u32 0
     group: u8 from_group | u32 pair_count | pair_count x 10-byte pair
     pair:  u8 from_group | u8 to_group | f32 distance | u32 add_rate
-    row:   u64 unknown_00 | u32 unknown_08
+    row:   i64 accumulated_advantage | u32 discount_rate
 
 The trade group types are the codes of `itemtradegrouptonpc.dbss`
 `trade_group_type`. Full layout in docs/file-formats/itemtradeetc_bss.md.
@@ -26,7 +26,7 @@ FILE_NAME = "itemtradeetc.bss"
 GROUP_HEADER = struct.Struct("<BI")
 PAIR = struct.Struct("<BBfI")
 COUNT = struct.Struct("<I")
-ROW = struct.Struct("<QI")
+ROW = struct.Struct("<qI")
 
 
 class ItemTradeEtc(NamedTuple):
@@ -71,5 +71,5 @@ def _read_pair(reader: RecordReader, group_from: int) -> dict:
 
 
 def _read_row(reader: RecordReader) -> dict:
-    unknown_00, unknown_08 = reader.unpack(ROW)
-    return {"unknown_00": unknown_00, "unknown_08": unknown_08}
+    accumulated_advantage, discount_rate = reader.unpack(ROW)
+    return {"accumulated_advantage": accumulated_advantage, "discount_rate": discount_rate}

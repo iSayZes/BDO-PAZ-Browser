@@ -5,7 +5,8 @@
 The desert trade buff per pair of trade group types: for each pair of the
 trade goods' group and the buying trade NPC's group, a distance and a buff
 rate. The trade sell list shows the `Desert Buff Applied` icon from these two
-values. A second table of five 12-byte rows follows, whose use is unknown.
+values. A second table of five 12-byte rows follows: the trade stock limit
+threshold and rate (Field Names).
 
 ## Versions
 
@@ -17,9 +18,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------ | ----- | ---------------------- | --------- |
 | 1      | 1784 and later | 3474    | `itemtradeetc.bss` | 184   | 8 Pair, 4 Group, 5 Row | 10        |
 
-| Layout | File               | Known         | Unknown      |
-| ------ | ------------------ | ------------- | ------------ |
-| 1      | `itemtradeetc.bss` | 124 B (67.4%) | 60 B (32.6%) |
+| Layout | File               | Known          | Unknown    |
+| ------ | ------------------ | -------------- | ---------- |
+| 1      | `itemtradeetc.bss` | 184 B (100.0%) | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -80,24 +81,21 @@ A group is `5 + 10 * pair_count` bytes.
 The bytes at `+0x02` are `00 E6 2A 49` on every pair, which is exactly
 `700000.0` as an f32.
 
-The names `distance` and `add_rate` are our reading. The Lua reads the pair
-only through `ToClient_TradeGroupFromToDistance` and
-`ToClient_TradeGroupFromToAddPercent`, which name no byte. A pair holds
-exactly two values, and the names follow their types: the f32 for the
-distance the Lua compares against `getFromToDistanceTradeShop()`, and the
-u32 on the 1,000,000 scale the same Lua uses for trade rates. An in-game
-check (In-Game Checks) can confirm the rate.
+`distance` and `add_rate` are the sheet columns `MinDistance` and
+`PriceRate` (Field Names). The Lua reads them through
+`ToClient_TradeGroupFromToDistance` and
+`ToClient_TradeGroupFromToAddPercent`.
 
 ### Row (12 bytes)
 
-| Offset  | Type | Field      | Notes                                  |
-| ------- | ---- | ---------- | -------------------------------------- |
-| `+0x00` | u64  | unknown_00 | Rises from `0`; upper four bytes `0`   |
-| `+0x08` | u32  | unknown_08 | Falls from `1,000,000`                 |
+| Offset  | Type | Field                 | Notes                                       |
+| ------- | ---- | --------------------- | ------------------------------------------- |
+| `+0x00` | i64  | accumulated_advantage | Trade stock limit threshold; rises from `0` |
+| `+0x08` | u32  | discount_rate         | Trade stock limit rate; falls from `1,000,000` |
 
 On client 3464 the five rows are (`0`, `1,000,000`), (`4,500,000`,
 `750,000`), (`9,000,000`, `500,000`), (`13,500,000`, `250,000`) and
-(`18,000,000`, `180,000`). See Open Questions.
+(`18,000,000`, `180,000`). See Field Names.
 
 ## Trade Group Types
 
@@ -130,6 +128,38 @@ no pair links 2 and 3, and none links 1 and 99. The matrix is symmetric, so
 this client's data cannot tell which of the two bytes is the goods' group;
 I follow the Lua's argument order (goods first, NPC second) in the names.
 
+## Field Names
+
+The file is two sheets of a private server on client 1784,
+`TradeGroupPriceTable` (the pairs) and `TradeAdvantageTable` (the rows).
+That server's dump (`Instance_dumpFull.exe`) loads both into one manager and
+has no reader for the client file, so the names rest on the struct order of
+its two sheet loaders and on the data.
+
+| Field                   | Struct member | Sheet column           |
+| ----------------------- | ------------- | ---------------------- |
+| Pair `from_group`       | u8 `+0`       | `FromTradeGroup`       |
+| Pair `to_group`         | u8 `+1`       | `ToTradeGroup`         |
+| Pair `distance`         | f32 `+4`      | `MinDistance`          |
+| Pair `add_rate`         | u32 `+8`      | `PriceRate`            |
+| `accumulated_advantage` | i64 `+0`      | `AccumulatedAdvantage` |
+| `discount_rate`         | u32 `+8`      | `DiscountRate`         |
+
+The pair loader (from VA `0x1408b80d6`) reads `MinDistance` as an integer
+and converts it to f32, and keys the pairs by `FromTradeGroup`, which is why
+the file groups them by `from_group`. It logs "무역 그룹 인덱스틑 1부터
+사용해야합니다" ("trade group indices must start from 1") for a group of `0`.
+The row loader (from VA `0x1408b8b66`) reads `AccumulatedAdvantage` as a
+signed value into an 8-byte member, and its check (VA `0x140b82bd0`) rejects
+a `DiscountRate` above 1,000,000 with "무역 재고량 제한 비율이 잘못
+되었습니다" ("the trade stock quantity limit rate is wrong") and a negative
+`AccumulatedAdvantage` with "무역 재고량 제한 기준이 음수가 될 수는
+없습니다" ("the trade stock quantity limit threshold cannot be negative").
+
+That private server's own `itemtradeetc.bss` holds the 8 sheet pairs and
+the 5 sheet rows with equal values, and it is byte-identical to the client
+3474 file.
+
 ## Notes
 
 - `panel_dialog_trade_mybasket_all_1.luac` (the trade sell list) is the only
@@ -142,10 +172,6 @@ I follow the Lua's argument order (goods first, NPC second) in the names.
   `getSellTradeItemPricePercent()` is above `0`, the add percent is above
   `100` and the item's travel distance (`getFromToDistanceTradeShop()`) is at
   least the pair's distance.
-- The file holds two values per pair, one f32 and one u32 in the 1,000,000
-  scale the same Lua uses for trade rates (`getlTradeItemCountRate()` is
-  `1000000` when no limit applies), so I read the f32 as the distance and the
-  u32 as the add percent.
 - The client's own text matches the pairs: knowledge 9239 (Token of Desert
   Trading) says validated trade goods trade "exclusively at Valencia City"
   and only for goods carried a long distance through the desert, and a
@@ -168,16 +194,6 @@ makes `1,000,000` read as 100% and `500,000` as 50%; whether that is the
 price added to the sale or something else is open. The unit of the `700,000`
 distance against `getFromToDistanceTradeShop()` is open too.
 
-### What the 12-byte Rows Hold
-
-A rising u64 (`0` to `18,000,000` on client 3464) paired with a falling u32
-that starts at `1,000,000`. No client Lua reads them. One guess: the Big Hand
-rule of `panel_dialog_trade_function_all.xml` (`PANEL_TRADEMARKETBUYLIST_DESC`),
-under which a player who buys limited trade goods past a set amount in a day
-gets less stock offered; `getlTradeItemCountRate()` is `1000000` until that
-happens. The u64 would then be the day's purchase total in silver and the u32
-the stock rate. Nothing in the data confirms it.
-
 ### Where the NPC's Trade Group Type Comes From
 
 The Lua reads the NPC's code from `characterStaticStatus:getTradeGroupType()`.
@@ -191,11 +207,19 @@ takes it from there or from a field of `characterstatic.dbss` is open.
 
 Needs zone: Valencia City or Port Ratt (limited trade goods)
 
-Buy limited trade goods for more than 4,500,000 silver in one day and watch
-the stock the trade manager offers. If it drops to three quarters as the
-total passes 4,500,000 (and to half past 9,000,000), the 12-byte rows are the
-Big Hand table: `unknown_00` the purchase total and `unknown_08` the stock
-rate.
+The server calls the rows the trade stock quantity limit (Field Names),
+which fits the Big Hand rule of `panel_dialog_trade_function_all.xml`
+(`PANEL_TRADEMARKETBUYLIST_DESC`): a player who buys limited trade goods
+past a set amount in a day is offered less stock. This checks that
+`accumulated_advantage` is that day's purchase total in silver and
+`discount_rate` the stock rate.
+
+1. Buy limited trade goods for more than 4,500,000 silver in one day.
+2. Watch the stock the trade manager offers as the total passes 4,500,000
+   and 9,000,000.
+
+Expected: the stock drops to three quarters past 4,500,000 and to half past
+9,000,000.
 
 ### Desert Buff Rate
 

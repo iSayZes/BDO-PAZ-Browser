@@ -109,8 +109,8 @@ def test_a_small_file_reads_back() -> None:
         (2, 99, 700_000.0, 500_000),
     ]
     assert parsed.rows == [
-        {"unknown_00": 0, "unknown_08": 1_000_000},
-        {"unknown_00": 4_500_000, "unknown_08": 750_000},
+        {"accumulated_advantage": 0, "discount_rate": 1_000_000},
+        {"accumulated_advantage": 4_500_000, "discount_rate": 750_000},
     ]
 
 

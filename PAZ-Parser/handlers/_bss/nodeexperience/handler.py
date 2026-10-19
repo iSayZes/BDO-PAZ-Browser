@@ -13,7 +13,8 @@ from .parser import parse_nodeexperience_records
 _LANG_DIR = Path(__file__).parent / "lang"
 
 # The server turns invested Energy into node EXP at this rate; no client file
-# holds it. Measured in game on levels 1 to 4 (nodeexperience_bss.md Notes).
+# holds it. Measured in game on levels 1 to 4, and the client 1784 server
+# dump sets the manager's `_increasePerWP` to it (nodeexperience_bss.md Notes).
 EXP_PER_ENERGY = 100
 
 # Level 0 is a node with no investment; its 1 EXP is no Energy cost.

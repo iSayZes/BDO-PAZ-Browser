@@ -29,10 +29,10 @@ CASE = HandlerCase(
     loc_fields=[],
     internal_path="gamecommondata/binary/nodeexperience.bss",
     tests=[
-        SchemaTest(required_keys=["level", "exp", "energy", "unknown_00", "unknown_01"]),
+        SchemaTest(required_keys=["level", "exp", "energy", "is_integrity", "node_exp_type"]),
         # The u32 row count after the PABR magic.
         DeclaredCountTest(declared=header_count(offset=4)),
-        RangeTest(col="exp", min_val=0, max_val=2**64 - 1),
+        RangeTest(col="exp", min_val=0, max_val=2**63 - 1),
     ],
 )
 
@@ -62,7 +62,7 @@ def _file(row_count: int, rows: bytes, end_of_data: int) -> bytes:
 
 def test_a_row_reads_level_and_exp() -> None:
     data = _file(1, ROW.pack(1, 0, 3, 40_000), ROWS_START + ROW.size)
-    assert parse_nodeexperience_records(data) == [{"level": 3, "exp": 40_000, "unknown_00": 1, "unknown_01": 0}]
+    assert parse_nodeexperience_records(data) == [{"level": 3, "exp": 40_000, "is_integrity": 1, "node_exp_type": 0}]
 
 
 def test_energy_is_exp_over_100() -> None:

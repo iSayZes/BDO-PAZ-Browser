@@ -2,7 +2,7 @@
 
 A u32 row count, then 17-byte rows with no `PABR` magic and no string
 table: the key, the packed item key, the item ID and level split out, and
-one unknown u32. `waititemoffset.dbss` points at each row's `item_key`, 4
+the u32 `wait_second` (the client 1784 sheet's `WaitSecond`). `waititemoffset.dbss` points at each row's `item_key`, 4
 bytes past its key. Layout in docs/file-formats/waititem_dbss.md.
 """
 
@@ -41,7 +41,7 @@ def parse_waititem_records(data: bytes) -> list[dict]:
             "item_key": item_key,
             "item_id": item_id,
             "enchant_level": enchant_level,
-            "unknown_0d": unknown_0d,
+            "wait_second": wait_second,
         }
-        for key, item_key, item_id, enchant_level, unknown_0d in _ROW.iter_unpack(data[_COUNT_SIZE:])
+        for key, item_key, item_id, enchant_level, wait_second in _ROW.iter_unpack(data[_COUNT_SIZE:])
     ]

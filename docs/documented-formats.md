@@ -325,7 +325,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `ui_skillgroup_succession.bss` | Succession skill window grids, same format; empty on client 3458 | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `uigrowthpasslayout.bss` | PABR Growth Pass quest grids: per category a column and row count and 6-byte cells (quest chain, quest ID, cell type, flag) | [uigrowthpasslayout](file-formats/uigrowthpasslayout_bss.md) | 2 | 0 |
 | `usernpc.bss` | PABR Fishing God NPCs that take a player character's look: character number, world position, facing angle, action name and class type | [usernpc](file-formats/usernpc_bss.md) | 1 | 0 |
-| `waititem.dbss` | Central Market Registration Queue items: 17-byte rows of item key, item ID, enhancement level and an unknown u32 (`900`) | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
+| `waititem.dbss` | Central Market Registration Queue items: 17-byte rows of item key, item ID, enhancement level and the wait in seconds (`900`) | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `waititemoffset.dbss` | Index into `waititem.dbss`, maps item key → offset/size | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `weatheractor.dbss` | Weather actors (Cloudy Day, Night, Typhoon, Sandstorm, Margoria storms, bosses and monsters): 75-byte rows of u16 character key, type byte, floats, small integers and a skill key on three rows | [weatheractor](file-formats/weatheractor_dbss.md) | 2 | 0 |
 | `weatheractoroffset.dbss` | Index into `weatheractor.dbss`, maps u16 character key → offset/size | [weatheractor](file-formats/weatheractor_dbss.md) | 2 | 0 |

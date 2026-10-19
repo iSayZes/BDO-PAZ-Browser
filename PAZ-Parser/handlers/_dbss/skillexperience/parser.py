@@ -3,7 +3,13 @@
 `skillexperience.dbss`, `guildskillexperience.dbss` and `productexperience.dbss`
 share one container and differ only in the row tail:
 
-    u32 row_count | row_count x row, every row opening with its u32 level
+    u32 row_count | row_count x row, every row opening with its u16 level
+
+The row fields follow the client 1784 server dump, which reads each row into
+its static status and fills the same members from the developer sheets
+(`SkillPointEXP_Table_New`, `GuildSkillPointEXP_Table`, `ProductExp_Table`).
+`is_exp_defined` is the flag the server sets once every EXP field of the row
+is at least 0.
 
 Each `*offset.dbss` companion is the bare u16 offset table of
 `_common/pabr_offset.py` (`parse_bare_offset_rows`): a u32 count, then
@@ -27,7 +33,7 @@ _U32 = struct.Struct("<I")
 
 @dataclass(frozen=True)
 class LevelTable:
-    """One skill point EXP table: its files and the fields after the row's u32 level."""
+    """One skill point EXP table: its files and the fields after the row's u16 level."""
 
     file_name: str
     offset_file: str
@@ -35,26 +41,28 @@ class LevelTable:
     fields: tuple[str, ...]
 
 
-# Combat skill points: u32 level | u64 exp | u32 unknown_0c (16 bytes).
+# Combat skill points (16 bytes): u16 level | u16 acquired_point | u32 exp |
+# u32 require_exp_limit | u32 quest_require_exp_limit.
 SKILL_EXPERIENCE = LevelTable(
     "skillexperience.dbss",
     "skillexperienceoffset.dbss",
-    struct.Struct("<IQI"),
-    ("exp", "unknown_0c"),
+    struct.Struct("<HHIII"),
+    ("acquired_point", "exp", "require_exp_limit", "quest_require_exp_limit"),
 )
-# Guild points: u32 level | u64 exp | u8 unknown_0c (13 bytes).
+# Guild points (13 bytes): u16 level | u16 acquired_point | u32 exp |
+# u32 require_exp_limit | u8 is_exp_defined.
 GUILD_SKILL_EXPERIENCE = LevelTable(
     "guildskillexperience.dbss",
     "guildskillexperienceoffset.dbss",
-    struct.Struct("<IQB"),
-    ("exp", "unknown_0c"),
+    struct.Struct("<HHIIB"),
+    ("acquired_point", "exp", "require_exp_limit", "is_exp_defined"),
 )
-# Life skill points: u32 level | u16 unknown_04 | u8 unknown_06 (7 bytes).
+# Life skill points (7 bytes): u16 level | u32 exp | u8 is_exp_defined.
 PRODUCT_EXPERIENCE = LevelTable(
     "productexperience.dbss",
     "productexperienceoffset.dbss",
-    struct.Struct("<IHB"),
-    ("unknown_04", "unknown_06"),
+    struct.Struct("<HIB"),
+    ("exp", "is_exp_defined"),
 )
 
 LEVEL_TABLES: tuple[LevelTable, ...] = (SKILL_EXPERIENCE, GUILD_SKILL_EXPERIENCE, PRODUCT_EXPERIENCE)

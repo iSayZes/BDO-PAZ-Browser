@@ -33,14 +33,13 @@ class LevelExpHandler(PreviewHandler):
 
     def __init__(self, table: LevelTable) -> None:
         self._table = table
-        self._has_exp = _EXP_FIELD in table.fields
 
     def _columns(self) -> list[Column]:
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
-        columns = [Column(cols["level"], "num", sort_key="level")]
-        if self._has_exp:
-            columns.append(Column(cols["exp"], "num", sort_key=_EXP_FIELD))
-        return columns
+        return [
+            Column(cols["level"], "num", sort_key="level"),
+            Column(cols["exp"], "num", sort_key=_EXP_FIELD),
+        ]
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
@@ -61,10 +60,7 @@ class LevelExpHandler(PreviewHandler):
         return parse_level_records(self._table, data, offset_raw)
 
     def _row(self, record: dict) -> list[str]:
-        cells = [e(record["level"])]
-        if self._has_exp:
-            cells.append(e(f"{record[_EXP_FIELD]:,}"))
-        return cells
+        return [e(record["level"]), e(f"{record[_EXP_FIELD]:,}")]
 
     def render_records_page(
         self,

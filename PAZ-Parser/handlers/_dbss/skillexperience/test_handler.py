@@ -28,11 +28,14 @@ from _dbss.skillexperience.parser import (
 )
 
 
+_U16 = struct.Struct("<H")
 _U32 = struct.Struct("<I")
+# The server rejects a row with an EXP field below 0, so every EXP fits an i32.
+_MAX_EXP = 2**31 - 1
 
 
 def _table_case(table: LevelTable) -> HandlerCase:
-    exp_tests = [RangeTest(col="exp", min_val=0, max_val=2**64 - 1)] if "exp" in table.fields else []
+    flag_tests = [RangeTest(col="is_exp_defined", min_val=0, max_val=1)] if "is_exp_defined" in table.fields else []
     return HandlerCase(
         handler_name=table.file_name,
         data_file=table.file_name,
@@ -45,7 +48,8 @@ def _table_case(table: LevelTable) -> HandlerCase:
             SchemaTest(required_keys=["level", *table.fields]),
             DeclaredCountTest(declared=header_count(offset=0)),
             DeclaredCountTest(declared=header_count(offset=0, companion=table.offset_file)),
-            *exp_tests,
+            RangeTest(col="exp", min_val=0, max_val=_MAX_EXP),
+            *flag_tests,
         ],
     )
 
@@ -110,7 +114,7 @@ def test_a_row_of_another_level_raises() -> None:
     offset_data = source.file(SKILL_EXPERIENCE.offset_file)
     first_row = parse_level_offset_records(offset_data)[0]
     data = bytearray(source.data)
-    _U32.pack_into(data, first_row["data_offset"], first_row["level"] + 1)
+    _U16.pack_into(data, first_row["data_offset"], first_row["level"] + 1)
     with pytest.raises(ValueError, match="row holds level"):
         parse_level_records(SKILL_EXPERIENCE, bytes(data), offset_data)
 

@@ -5,7 +5,7 @@
     "skillName": "Nombre de habilidad",
     "description": "Descripción",
     "skillType": "Tipo de habilidad",
-    "locId": "ID LOC"
+    "skillNo": "ID de habilidad"
   },
   "meta": {
     "count": "{count} habilidades de hada",

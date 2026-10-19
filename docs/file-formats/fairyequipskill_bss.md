@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines the fairy skill catalog, the 35 skills a fairy can hold, grouped into 8 skill types with tier progressions (e.g. `Tingling Breath I`–`V`). Each record stores its skill type group, an unknown byte (`unknown_08`), and a localization ID that resolves to both the skill name and its effect description, and that doubles as the icon filename number.
+Defines the fairy skill catalog, the 35 skills a fairy can hold, grouped into 8 skill types with tier progressions (e.g. `Tingling Breath I`–`V`). Each record stores its skill type group and a `gc::SkillKey` (skill level and skill number); the skill number resolves to both the skill name and its effect description, and doubles as the icon filename number.
 
 The remainder of the file is a 200-slot reserved block of null placeholders, so the catalog can grow without changing the layout.
 
@@ -18,10 +18,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | 3473 and later | 3474    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
 | 1      | 1784           | 1784    | `fairyequipskill.bss` | 1,576 | 30 Skill Record, 100 Slot | 12        |
 
-| Layout | File                  | Known           | Unknown         |
-| ------ | --------------------- | --------------- | --------------- |
-| 2      | `fairyequipskill.bss` | 1,166 B (32.1%) | 2,470 B (67.9%) |
-| 1      | `fairyequipskill.bss` | 716 B (45.4%)   | 860 B (54.6%)   |
+| Layout | File                  | Known           | Unknown       |
+| ------ | --------------------- | --------------- | ------------- |
+| 2      | `fairyequipskill.bss` | 2,836 B (78.0%) | 800 B (22.0%) |
+| 1      | `fairyequipskill.bss` | 716 B (45.4%)   | 860 B (54.6%) |
 
 <!-- versions:end -->
 
@@ -60,11 +60,10 @@ Records begin immediately at `+0x04`. There is **no** record count field; the ca
 | ------- | ---- | -------------- | ------------------------------------------------------ |
 | `+0x00` | u32  | equip_skill_id | Sequential record key, `0` to `34`; `200` marks the end |
 | `+0x04` | u32  | skill_type     | Skill group, `1` to `8` (see Skill Types)              |
-| `+0x08` | u8   | unknown_08     | Always `1` in all 35 observed records                  |
-| `+0x09` | u8   | unknown_09     | Always `0`                                             |
-| `+0x0A` | u16  | loc_id         | Localization key to skill name/description, icon number |
+| `+0x08` | u16  | skill_level    | Skill level of the `gc::SkillKey`; always `1`          |
+| `+0x0A` | u16  | skill_no       | Skill number (`SkillNo`); keys the name, description and icon |
 
-Earlier versions of this doc called `unknown_08` `tier`.
+Earlier versions of this doc called `skill_level` `tier`.
 
 ### Slot (16 bytes)
 
@@ -75,9 +74,37 @@ The stride here is 16 bytes, not the 12 used by live records; it matches the wid
 | Offset  | Type      | Field          | Notes                                                                                                   |
 | ------- | --------- | -------------- | ------------------------------------------------------------------------------------------------------- |
 | `+0x00` | u32       | equip_skill_id | Always `200`, the null-entry sentinel                                                                   |
-| `+0x04` | bytes[12] | unknown_04     | Always `0`; the place of `skill_type`, `unknown_08`, `unknown_09`, `loc_id` and `unknown_0c` in the `petequipskill.bss` Slot |
+| `+0x04` | u32       | skill_type     | Always `0`                                                                                              |
+| `+0x08` | u16       | skill_level    | Always `0`                                                                                              |
+| `+0x0A` | u16       | skill_no       | Always `0`                                                                                              |
+| `+0x0C` | u32       | unknown_0c     | Always `0`; the `petequipskill.bss` Slot's `unknown_0c`, and no extra u32 follows                       |
 
-`unknown_08` is always `1`, matching `petequipskill.bss` where the same byte is also invariably `1`. Whether it distinguishes fairy grades, marks records as active, or is vestigial cannot be determined from the data alone.
+
+## Field Names
+
+The client 1784 private server loads `Fairy_EquipSkill_Table` into one 24-byte entry per
+record: `Index` (`equip_skill_id`) at `+0x00`, `GroupNo` (`skill_type`) at
+`+0x04`, a runtime skill pointer at `+0x08` and a `gc::SkillKey` at `+0x10`.
+The loader (VA `0x1409c8f13` to `0x1409c8f19`) writes the key as `(SkillNo << 16) | 1`, so its low u16
+is the skill level (always `1`) and its high u16 the sheet's `SkillNo`. The
+2016 client's `gc::SkillKey` is one `unsigned int _value` whose `getLevel()`
+reads the low u16 and `getSkillNo()` the high u16, which places
+`skill_level` at `+0x08` and `skill_no` at `+0x0A`. The server has no reader
+for this file; the record is that entry in loader order without the pointer
+and the padding. After loading, it looks up every key in the skill table and
+logs "펫 착용 스킬에 알수 없는 스킬(%#)의 데이터가 있습니다!" ("pet equip
+skill has data for an unknown skill (%#)!") for a missing one.
+`petequipskill.bss` and `fairyequipskill.bss` share the entry, the loader
+shape and the per-entry checks, which is why the fairy check logs the pet message.
+
+The client 1784 build's own file matches `Fairy_EquipSkill_Table` on all
+30 records (Index, GroupNo, level `1`, SkillNo); client 3474 has level `1`
+on all 35. The null slots are the same struct with every field `0`.
+
+LOC type 10 keys the skill name by `skill_no`
+([`languagedata_loc.md`](languagedata_loc.md)). Earlier versions of this doc
+read `+0x08` as two u8 fields (`unknown_08`, `unknown_09`) and named `+0x0A`
+`loc_id`.
 
 ## Layout 1
 
@@ -102,4 +129,6 @@ holds 30 Skill Records and 100 Slots.
 | Offset  | Type     | Field          | Notes                                 |
 | ------- | -------- | -------------- | ------------------------------------- |
 | `+0x00` | u32      | equip_skill_id | Always `100`, the null-entry sentinel |
-| `+0x04` | bytes[8] | unknown_04     | Always `0`                            |
+| `+0x04` | u32      | skill_type     | Always `0`                            |
+| `+0x08` | u16      | skill_level    | Always `0`                            |
+| `+0x0A` | u16      | skill_no       | Always `0`                            |

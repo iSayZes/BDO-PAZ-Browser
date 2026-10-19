@@ -53,7 +53,7 @@ def _base_skill_names(catalog: bytes | None) -> dict[int, str]:
         return {}
 
     return {
-        record["equip_skill_id"]: equip_skill_name(record["loc_id"])
+        record["equip_skill_id"]: equip_skill_name(record["skill_no"])
         for record in parse_petequipskill_records(catalog)
         if record["section"] == _BASE_SKILL_SECTION
     }

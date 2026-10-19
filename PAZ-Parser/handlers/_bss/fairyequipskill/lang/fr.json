@@ -5,7 +5,7 @@
     "skillName": "Nom de compétence",
     "description": "Description",
     "skillType": "Type de compétence",
-    "locId": "ID LOC"
+    "skillNo": "ID de compétence"
   },
   "meta": {
     "count": "{count} compétences de fée",

@@ -28,7 +28,7 @@ class FairyEquipSkillBssHandler(PreviewHandler):
             Column(cols["skillName"], sort_key="skill_name"),
             Column(cols["description"], sort_key="skill_description"),
             Column(cols["skillType"], "num", sort_key="skill_type"),
-            Column(cols["locId"], "num", sort_key="loc_id"),
+            Column(cols["skillNo"], "num", sort_key="skill_no"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -44,10 +44,10 @@ class FairyEquipSkillBssHandler(PreviewHandler):
 
         for record in parse_fairyequipskill_records(data):
             row = dict(record)
-            loc_id = row["loc_id"]
-            row["skill_name"] = loc_text(_LOC_TYPE, loc_id, _LOC_ID4_NAME)
-            row["skill_description"] = loc_text(_LOC_TYPE, loc_id, _LOC_ID4_DESCRIPTION)
-            row["icon_path"] = icon_path(IconKind.FAIRY_EQUIP_SKILL, loc_id)
+            skill_no = row["skill_no"]
+            row["skill_name"] = loc_text(_LOC_TYPE, skill_no, _LOC_ID4_NAME)
+            row["skill_description"] = loc_text(_LOC_TYPE, skill_no, _LOC_ID4_DESCRIPTION)
+            row["icon_path"] = icon_path(IconKind.FAIRY_EQUIP_SKILL, skill_no)
             records.append(row)
 
         return records
@@ -69,10 +69,10 @@ class FairyEquipSkillBssHandler(PreviewHandler):
             [
                 e(record["equip_skill_id"]),
                 icon_cell(record["icon_path"]),
-                e(record.get("skill_name") or record["loc_id"]),
+                e(record.get("skill_name") or record["skill_no"]),
                 e(record.get("skill_description") or ""),
                 e(record["skill_type"]),
-                e(record["loc_id"]),
+                e(record["skill_no"]),
             ]
             for record in slice_
         ]

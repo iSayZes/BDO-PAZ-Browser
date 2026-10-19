@@ -164,7 +164,7 @@ dimension: every row has `str_id2 = str_id3 = 0`, so all ranks of one
 type 10 IDs (for example `16626` to `16635`) have no skill record.
 
 `petequipskill.bss` and `fairyequipskill.bss` resolve their pet and fairy
-passive skills here through their `loc_id`, which is therefore a skill number.
+passive skills here through their `skill_no`, the high half of a `gc::SkillKey`.
 The same table covers every skill-like entry: class skills (`"Flow: Water Slice"`, described as
 `"Preceding Skill: [Soaring Kick I] ..."`), pet and fairy skills
 (`"Inexhaustible Well V"`), consumables (`"[Scroll] Blessing (60 min)"`), title

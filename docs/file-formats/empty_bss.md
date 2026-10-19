@@ -2,12 +2,31 @@
 
 ## Purpose
 
-PABR `.bss` tables the client ships with no records:
-`enchantlightstone.bss`, `lightstoneenchantgroup.bss` and
-`normalgroupquest.bss`. Each is 20 bytes: the `PABR` magic, a record count
-of `0`, a string table with no strings and the 8-byte PABR trailer. Client
-1784 has `normalgroupquest.bss`, with the same 20 bytes, and neither
-Lightstone file.
+PABR `.bss` tables the client ships with no records. Each is 20 bytes: the
+`PABR` magic, a record count of `0`, a string table with no strings and the
+8-byte PABR trailer. Every file below is that on client 3474; on the two
+older clients checked it is the same 20 bytes or not in the archive:
+
+| File                                  | Client 1784 | Client 1485 |
+| ------------------------------------- | ----------- | ----------- |
+| `audiorenewal.bss`                    | empty       | empty       |
+| `beginnerroadmaplinkurldata.bss`      | absent      | absent      |
+| `cashproduct_discountperiodcheck.bss` | empty       | empty       |
+| `commonskill.bss`                     | empty       | empty       |
+| `dropuiurlinfo.bss`                   | absent      | absent      |
+| `enchantlightstone.bss`               | absent      | absent      |
+| `fishinginfo.bss`                     | empty       | empty       |
+| `instancefieldenteroption.bss`        | empty       | absent      |
+| `instancefieldmanagement.bss`         | empty       | empty       |
+| `itembundle.bss`                      | empty       | empty       |
+| `lightstoneenchantgroup.bss`          | absent      | absent      |
+| `normalgroupquest.bss`                | empty       | empty       |
+| `openuiwhennak.bss`                   | absent      | absent      |
+| `preloadpcactioncharacter.bss`        | empty       | empty       |
+| `shadowarenalist.bss`                 | empty       | empty       |
+| `skillselectuiinfo.bss`               | absent      | absent      |
+| `spawngroup.bss`                      | empty       | empty       |
+| `tempcashstaticstatus.bss`            | absent      | absent      |
 
 The Lightstone names point at Lightstone enhancement and Lightstone
 enhancement groups, but no record, Lua function or reference source shows
@@ -21,17 +40,47 @@ quest widget's group quest line, a feature the live client keeps off; see
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | ----- | -------------- | --------- |
-| 1      | 3473 and later | 3474    | `enchantlightstone.bss`      | 20    | 1 String Table | 4         |
-| 1      | 3473 and later | 3474    | `lightstoneenchantgroup.bss` | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3474    | `normalgroupquest.bss`       | 20    | 1 String Table | 4         |
+| Layout | Clients        | Checked | File                                  | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------- | ------------------------------------- | ----- | -------------- | --------- |
+| 1      | 1784 and later | 3474    | `audiorenewal.bss`                    | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `beginnerroadmaplinkurldata.bss`      | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `cashproduct_discountperiodcheck.bss` | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `commonskill.bss`                     | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `dropuiurlinfo.bss`                   | 20    | 1 String Table | 4         |
+| 1      | 3473 and later | 3474    | `enchantlightstone.bss`               | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `fishinginfo.bss`                     | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `instancefieldenteroption.bss`        | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `instancefieldmanagement.bss`         | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `itembundle.bss`                      | 20    | 1 String Table | 4         |
+| 1      | 3473 and later | 3474    | `lightstoneenchantgroup.bss`          | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `normalgroupquest.bss`                | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `openuiwhennak.bss`                   | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `preloadpcactioncharacter.bss`        | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `shadowarenalist.bss`                 | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `skillselectuiinfo.bss`               | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `spawngroup.bss`                      | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `tempcashstaticstatus.bss`            | 20    | 1 String Table | 4         |
 
-| Layout | File                         | Known         | Unknown    |
-| ------ | ---------------------------- | ------------- | ---------- |
-| 1      | `enchantlightstone.bss`      | 20 B (100.0%) | 0 B (0.0%) |
-| 1      | `lightstoneenchantgroup.bss` | 20 B (100.0%) | 0 B (0.0%) |
-| 1      | `normalgroupquest.bss`       | 20 B (100.0%) | 0 B (0.0%) |
+| Layout | File                                  | Known         | Unknown    |
+| ------ | ------------------------------------- | ------------- | ---------- |
+| 1      | `audiorenewal.bss`                    | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `beginnerroadmaplinkurldata.bss`      | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `cashproduct_discountperiodcheck.bss` | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `commonskill.bss`                     | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `dropuiurlinfo.bss`                   | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `enchantlightstone.bss`               | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `fishinginfo.bss`                     | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `instancefieldenteroption.bss`        | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `instancefieldmanagement.bss`         | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `itembundle.bss`                      | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `lightstoneenchantgroup.bss`          | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `normalgroupquest.bss`                | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `openuiwhennak.bss`                   | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `preloadpcactioncharacter.bss`        | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `shadowarenalist.bss`                 | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `skillselectuiinfo.bss`               | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `spawngroup.bss`                      | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `tempcashstaticstatus.bss`            | 20 B (100.0%) | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -110,8 +159,21 @@ On client 1784 the source sheet and the struct name agree with that:
 
 ## Notes
 
-- Raw bytes of every file on client 3474, and of `normalgroupquest.bss` on
-  client 1784: `50 41 42 52 00 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00`.
+- Raw bytes of every file on client 3474, and of every file marked empty on
+  clients 1784 and 1485:
+  `50 41 42 52 00 00 00 00 00 00 00 00 08 00 00 00 00 00 00 00`.
+- The list comes from a scan of every `.bss` under `gamecommondata/binary/`
+  on client 3474 for files of at most 40 bytes. The spawn grid files under
+  `mapdata_*/spawnplacementfieldgrid/` are left out.
+- Four files with these 20 bytes on client 3474 hold records on an older
+  client, so each needs a doc and a handler of its own:
+  `cashproductcachedata.bss` (1,509,235 bytes on client 1784),
+  `charactertrigger.bss` (307 bytes, count 9, on clients 1784 and 1485),
+  `equipitemchanage.bss` (464 bytes, count 37, on client 1784) and
+  `naktype.bss` (empty on client 1784, 455 bytes and count 4 on client 1485).
+- Two 20-byte PABR files are not empty tables: `cashproduct_newbieproduct.bss`
+  holds `0x18CAD` at `+0x04` and `petfeedcount.bss` holds `10` there, each
+  with no row bytes before the string table, so the u32 is a single value.
 - Neither Lightstone file is in the client 1784 archive. The 2016 PDB, a
   private server's `DataSheets.bexcel`, `.xlsm` sheets, compiled `binary/`
   folder and server dump on client 1784 hold no table, file, struct or
@@ -143,7 +205,7 @@ On client 1784 the source sheet and the struct name agree with that:
 
 ### Record Layout
 
-No client checked has a record in any of the three files, so the row layout
+No client checked has a record in any of these files, so every row layout
 is unknown. When a client ships `count > 0`, the file moves to its own doc
 and handler, with rows starting at `+0x08` and ending at `table_start`. For
 `normalgroupquest.bss` the five compiled `New_Group_Quest` columns are the

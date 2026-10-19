@@ -39,8 +39,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 categories of `sub_category_keys`; the handler names them from LOC type 115
 alone.
 
-`dropuiurlinfo.bss` (20 bytes) is an empty PABR block on client 3458 (count
-0).
+`dropuiurlinfo.bss` (20 bytes) is an empty PABR table on client 3458 (count
+0); see [empty](empty_bss.md).
 
 All multi-byte values are little-endian.
 

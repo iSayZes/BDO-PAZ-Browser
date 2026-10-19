@@ -24,7 +24,8 @@ from _common.offset_table import (
 from .parser import (
     NO_CLASS_TYPE,
     NO_VEHICLE_TYPE,
-    NPC_KIND_NAMES,
+    npc_kind_name,
+    npc_kind_text,
     parse_characterstatic_records,
 )
 from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
@@ -39,22 +40,11 @@ def _optional(value: int | None) -> str:
     return _EMPTY if value is None else e(value)
 
 
-def _npc_kind_name(npc_kind: int) -> str:
-    """The gc::CharacterKind name, or '' for the later kinds it does not have."""
-    return NPC_KIND_NAMES[npc_kind] if npc_kind < len(NPC_KIND_NAMES) else ""
-
-
 def _contents_groups_text(group_hashes: tuple[int, ...]) -> str:
     """`6, 1448`: the keys behind the hashes, a hash in hex where no key fits; '' for key 0 alone (no group)."""
     if [contents_group_key(group_hash) for group_hash in group_hashes] == [_NO_CONTENTS_GROUP]:
         return ""
     return contents_groups_text(group_hashes)
-
-
-def _npc_kind_text(record: dict) -> str:
-    """`4 Collect`, or the bare kind without a name."""
-    name = record["npc_kind_name"]
-    return f"{record['npc_kind']} {name}" if name else str(record["npc_kind"])
 
 
 def character_static_offset_handler() -> OffsetTableHandler:
@@ -153,7 +143,7 @@ class CharacterStaticHandler(PreviewHandler):
             row.append(e(r["action_script"]))
             row.append(e(r["condition_script"]))
             row.append(_optional(r["knowledge_id"]))
-            row.append(e(_npc_kind_text(r)))
+            row.append(e(npc_kind_text(r["npc_kind"])))
             row.append(e(r["grade"]))
             row.append(e(r["level"]))
             row.append(e(tribe_text(r["tribe_type"])))
@@ -192,7 +182,7 @@ def _record(raw: dict) -> dict:
         "condition_script": raw["condition_script"],
         "knowledge_id": raw["knowledge_id"],
         "npc_kind": raw["npc_kind"],
-        "npc_kind_name": _npc_kind_name(raw["npc_kind"]),
+        "npc_kind_name": npc_kind_name(raw["npc_kind"]),
         "grade": raw["grade"],
         "level": raw["level"],
         "tribe_type": raw["tribe_type"],

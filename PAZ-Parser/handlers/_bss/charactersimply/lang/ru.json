@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "title": "Титул",
+    "npcKind": "Вид НИП",
+    "grade": "Ранг",
+    "level": "Уровень",
+    "characterGroup": "Группа персонажа",
+    "maxHp": "Макс. HP",
+    "bodySize": "Размер тела",
+    "vehicleType": "Тип транспорта",
+    "classType": "Тип класса",
+    "model": "Модель",
+    "voice": "Голос",
+    "actionScript": "Скрипт действия",
+    "knowledgeId": "ID знания",
+    "conditionScript": "Условие"
+  },
+  "meta": {
+    "count": "Записей: {count}"
+  }
+}

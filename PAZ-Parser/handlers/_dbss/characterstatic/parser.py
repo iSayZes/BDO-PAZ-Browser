@@ -63,6 +63,18 @@ NPC_KIND_NAMES: tuple[str, ...] = (
     "SiegeGate", "SiegeSymbol", "Household", "Installation", "InstanceObject",
 )
 
+
+def npc_kind_name(npc_kind: int) -> str:
+    """The gc::CharacterKind name, or '' for the later kinds it does not have."""
+    return NPC_KIND_NAMES[npc_kind] if npc_kind < len(NPC_KIND_NAMES) else ""
+
+
+def npc_kind_text(npc_kind: int) -> str:
+    """`4 Collect`, or the bare kind without a name."""
+    name = npc_kind_name(npc_kind)
+    return f"{npc_kind} {name}" if name else str(npc_kind)
+
+
 _I16 = struct.Struct("<h")
 _I32 = struct.Struct("<i")
 _U32 = struct.Struct("<I")

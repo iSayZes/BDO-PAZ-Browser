@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "name": "이름",
+    "title": "칭호",
+    "npcKind": "NPC 종류",
+    "grade": "등급",
+    "level": "레벨",
+    "characterGroup": "캐릭터 그룹",
+    "maxHp": "최대 생명력",
+    "bodySize": "몸 크기",
+    "vehicleType": "탑승물 종류",
+    "classType": "직업 유형",
+    "model": "모델",
+    "voice": "음성",
+    "actionScript": "행동 스크립트",
+    "knowledgeId": "지식 ID",
+    "conditionScript": "조건"
+  },
+  "meta": {
+    "count": "레코드 {count}개"
+  }
+}

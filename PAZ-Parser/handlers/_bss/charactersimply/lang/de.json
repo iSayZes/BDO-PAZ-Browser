@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "title": "Titel",
+    "npcKind": "NPC-Art",
+    "grade": "Rang",
+    "level": "Stufe",
+    "characterGroup": "Charaktergruppe",
+    "maxHp": "Max. LP",
+    "bodySize": "Körpergröße",
+    "vehicleType": "Fahrzeugtyp",
+    "classType": "Klassentyp",
+    "model": "Modell",
+    "voice": "Stimme",
+    "actionScript": "Aktionsskript",
+    "knowledgeId": "Wissens-ID",
+    "conditionScript": "Bedingung"
+  },
+  "meta": {
+    "count": "{count} Einträge"
+  }
+}

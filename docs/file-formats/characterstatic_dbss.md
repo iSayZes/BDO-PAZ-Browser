@@ -21,7 +21,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
-| 3      | `characterstatic.dbss`       | 9,608,040 B (70.9%) | 3,953,033 B (29.1%) |
+| 3      | `characterstatic.dbss`       | 9,706,252 B (71.6%) | 3,854,821 B (28.4%) |
 | 3      | `characterstaticoffset.dbss` | 245,550 B (100.0%)  | 0 B (0.0%)          |
 | 1      | `characterstatic.dbss`       | 6,398,574 B (66.4%) | 3,231,060 B (33.6%) |
 | 1      | `characterstaticoffset.dbss` | 164,870 B (100.0%)  | 0 B (0.0%)          |
@@ -187,7 +187,7 @@ The fixed block between `condition_script` and `ai_script`. Earlier versions of 
 | `+0xC2`  | u8        | unknown_c2                      | `10` on 24,112 rows; other values (`3`, `1`, `8`, `2`) only on `npc_kind` `3` |
 | `+0xC3`  | u32       | level                           | `1` on 9,628 rows, `99` on 5,531, `60` on Garmoth (`29929`); see [Level](#level) |
 | `+0xC7`  | bytes[8]  | unknown_c7                      | New in client 3464; non-zero on 3,630 rows: bytes `+0xC7` and `+0xC8` vary, `+0xC9` is `1` to `5` on 210 rows, the rest `0` |
-| `+0xCF`  | u32       | unknown_cf                      | `-1` on 4 rows, `1` on 3, else `0` |
+| `+0xCF`  | u32       | is_live_collect                 | `-1` on 4 rows, `1` on 3, else `0`; see [Field Names](#field-names) |
 | `+0xD3`  | i64       | vanish_time                     | `30000` on Garmoth |
 | `+0xDB`  | f32       | body_size                       | |
 | `+0xDF`  | f32       | body_height                     | |
@@ -252,7 +252,7 @@ Before client 3464 the 8 bytes of `unknown_c7` and the last byte,
 bytes, so `ai_script` started at `condition_script+0x117` and the model path
 sat most often at `condition_script+291` (decimal) instead of `+299`. That
 the 8 bytes sit right after `level` comes from the client 1784 file, where
-`unknown_cf` follows `level` directly; the client before 3464 is not on hand
+`is_live_collect` follows `level` directly; the client before 3464 is not on hand
 to check it. Only Payload and Character Fields differ from Layout 3. The
 parser reads only Layout 3.
 
@@ -368,7 +368,7 @@ parser reads only Layout 3.
 | `+0xC1`  | u8        | unknown_c1                      |       |
 | `+0xC2`  | u8        | unknown_c2                      |       |
 | `+0xC3`  | u32       | level                           |       |
-| `+0xC7`  | u32       | unknown_cf                      |       |
+| `+0xC7`  | u32       | is_live_collect                 |       |
 | `+0xCB`  | i64       | vanish_time                     |       |
 | `+0xD3`  | f32       | body_size                       |       |
 | `+0xD7`  | f32       | body_height                     |       |
@@ -527,7 +527,7 @@ Names](#field-names).
 | `+0xD3`  | u8        | unknown_c1                      | |
 | `+0xD4`  | u8        | unknown_c2                      | |
 | `+0xD5`  | u32       | level                           | |
-| `+0xD9`  | u32       | unknown_cf                      | |
+| `+0xD9`  | u32       | is_live_collect                 | |
 | `+0xDD`  | i64       | vanish_time                     | |
 | `+0xE5`  | f32       | body_size                       | |
 | `+0xE9`  | f32       | body_height                     | |
@@ -606,6 +606,7 @@ nearly every row; client 3474 differs where characters were changed since.
 | `is_carrier` | `isCarrier` | 16,396 of 16,396 | 16,050 of 16,058 |
 | `level` | `Level` | 16,395 of 16,396 | 14,785 of 16,058 |
 | `vanish_time` | `VanishTime` | 16,384 of 16,396 | 15,573 of 16,058 |
+| `is_live_collect` | `IsLiveCollect` | - | 16,058 of 16,058 |
 | `body_size` | `BodySize` | 16,396 of 16,396 | 15,497 of 16,058 |
 | `body_height` | `BodyHeight` | 16,396 of 16,396 | 15,416 of 16,058 |
 | `body_weight` | `Weight` | 16,396 of 16,396 | 15,573 of 16,058 |
@@ -669,10 +670,14 @@ and `unknown_bf` holds `isSiegeVehicle` on all but 57; with that many
 exceptions in a file compiled from the sheet, the byte likely holds a value
 derived from more than one column, and both stay unnamed. `unknown_1b` holds
 `FusionGroupKey` on its one non-zero row (`530`, value `1` in both), which is
-too little to name it.
+too little to name it here; [`charactersimply.bss`](charactersimply_bss.md)
+names the same field `fusion_group_key`. `is_live_collect` was matched through
+`charactersimply.bss`, which holds the same value for every character: it
+agrees with `IsLiveCollect` on 16,058 of 16,058 client 3474 rows and on all
+15,704 rows of the client 1784 `charactersimply.bss`.
 
 Sheet columns with no match in the file, such as `DropID`, `ExpectedPrice`,
-`TalkAble`, `AttackRange`, `ReSpawnType`, `IsEventSpawn` and the combat stat
+`AttackRange`, `ReSpawnType`, `IsEventSpawn` and the combat stat
 columns (`DDD`, `DPV`), are server data: they stay on zero bytes or match no
 offset at all.
 
@@ -925,7 +930,7 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 
 ### What do the remaining flag bytes hold?
 
-Character Fields `+0x9F` to `+0xC2` and the tail bytes `unknown_voice_bank_07`, `unknown_holdable_item_keys_08`, `unknown_contents_group_hashes_11` and `_17` match no `Character_Table` column. Most split by `npc_kind` (`unknown_be` is `1` on exactly the player characters; `unknown_a1`, `unknown_a5`, `unknown_bd` and `unknown_c1` are set only on kind `3`), which points to values the compiler derives from other tables, such as `Servant_Table` for mounts. `unknown_b5` (`1` on 5,725 rows, mostly NPCs) is the byte third-party notes call talkable, but the sheet's `TalkAble` stays on zero bytes.
+Character Fields `+0x9F` to `+0xC2` and the tail bytes `unknown_voice_bank_07`, `unknown_holdable_item_keys_08`, `unknown_contents_group_hashes_11` and `_17` match no `Character_Table` column. Most split by `npc_kind` (`unknown_be` is `1` on exactly the player characters; `unknown_a1`, `unknown_a5`, `unknown_bd` and `unknown_c1` are set only on kind `3`), which points to values the compiler derives from other tables, such as `Servant_Table` for mounts. `unknown_b5` (`1` on 5,725 rows, mostly NPCs) is `1` exactly where the sheet's `TalkAble` is non-zero (15,704 of 15,704 client 1784 rows of `charactersimply.bss`, 16,051 of 16,058 on client 3474), but `TalkAble` holds a talk type (`1` to `3`), so the byte stays unnamed.
 
 ### What is `unknown_c7`?
 

@@ -4,7 +4,8 @@
     | u32 string_table_start | u32 0
 
 Wide entries are UTF-16LE, the rest UTF-8. Records point into the table by
-index. `exploration.bss` and `npcsimply.bss` share this tail.
+index. `exploration.bss`, `npcsimply.bss` and `charactersimply.bss` share
+this tail.
 """
 
 from __future__ import annotations

@@ -10,6 +10,7 @@ from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .branchquest.handler import BranchQuestBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .charactersimply.handler import CharacterSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .contentsgroupoptionstaticstatusmanager.handler import ContentsGroupOptionBssHandler
@@ -123,6 +124,7 @@ def register_bss_handlers() -> None:
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("branchquest.bss", BranchQuestBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("charactersimply.bss", CharacterSimplyBssHandler())
     register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
     register_handler(

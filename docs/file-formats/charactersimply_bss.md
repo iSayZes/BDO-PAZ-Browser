@@ -215,6 +215,17 @@ Both fields sit where `characterstatic.dbss` has `is_live_collect` and `unknown_
 
 `unknown_0a` is `1` on 45 rows, all `npc_kind` `7`: the node forts, the Field HQ (`12821`) and the Command Post (`12820`). On every row that shares a key with the private server's `Character_Table` it is `1` exactly where `MoraleValue` is non-zero (`500000`): 19 of 16,058 rows on client 3474, 21 of 15,704 on client 1784. It looks like a "has morale" flag for siege structures, but the sheet column holds the amount, not a flag, so the field stays `unknown_0a`. `unknown_0b` is `1` on 193 rows, all `npc_kind` `9` (`12842` Flimsy Wooden Fence, `12841` Flimsy Barricade, `12839` Indomitable Flag Factory), and matches no sheet column.
 
+Checked on client 3474, without a name for either byte:
+
+| Source | Result |
+| ------ | ------ |
+| `characterstatic.dbss` | No byte is non-zero on exactly the same rows. The closest is `repair_resources`: `3` on 42 of the 45 `unknown_0a` rows, but also on 23 rows without it |
+| `Character_Table` of a private server on client 519 | `unknown_0a` agrees with `MoraleValue` non-zero on all 12,008 shared rows (9 flagged). `unknown_0b` matches none of its 171 columns |
+| 2016 `gc::CharacterStaticStatus` | No morale member. Its `gc::ObjectStaticStatus` holds two adjacent bools, `_isSiegeTent` and `_isSiegeOrFortressTent`, but `unknown_0b` sits on fences and barricades, which are not tents |
+| Client Lua | `isBarricade()`, `isSiegeTower()` and the other siege checks are called on `getObjectStaticStatus()`, the installation type, not on a character flag; no Lua reads a morale value from the character |
+
+The client 1784 server binary has a `CharacterSimplyStaticStatusManager` (`link` and `relinkAndCheckValid` error strings); the code that fills it would name both bytes.
+
 ### What is `unknown_2c`?
 
 It equals `characterstatic.dbss` `unknown_b5` on every row. On client 1784 it is `1` exactly where `Character_Table` `TalkAble` is non-zero (`1`, `2` or `3`) on all 15,704 rows; on client 3474 the same holds on 16,051 of 16,058 rows. The column holds a talk type rather than a flag, so the field stays unknown until the client is shown to read it as "can talk".

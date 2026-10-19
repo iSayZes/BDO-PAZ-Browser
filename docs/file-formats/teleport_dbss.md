@@ -18,10 +18,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | 1784 and later | 3474    | `teleport.dbss`       | 11,242 | 623 Record, 6 Section            | 18        |
 | 1      | 1784 and later | 3474    | `teleportoffset.dbss` | 7,500  | 623 Offset Row, 6 Offset Section | 12        |
 
-| Layout | File                  | Known            | Unknown      |
-| ------ | --------------------- | ---------------- | ------------ |
-| 1      | `teleport.dbss`       | 10,619 B (94.5%) | 623 B (5.5%) |
-| 1      | `teleportoffset.dbss` | 7,500 B (100.0%) | 0 B (0.0%)   |
+| Layout | File                  | Known             | Unknown    |
+| ------ | --------------------- | ----------------- | ---------- |
+| 1      | `teleport.dbss`       | 11,242 B (100.0%) | 0 B (0.0%) |
+| 1      | `teleportoffset.dbss` | 7,500 B (100.0%)  | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -63,7 +63,7 @@ It walks exactly to its last byte on client 3458 (11,206 bytes).
 | `+0x05` | f32  | x           | World position, the frame of `exploration.bss` and `mapdata_realexplore2.bwp` (centimetres) |
 | `+0x09` | f32  | y           | Height |
 | `+0x0D` | f32  | z           | |
-| `+0x11` | u8   | unknown_11  | `0` on 612 of 621 records; see Open Questions |
+| `+0x11` | u8   | destination | `0` on 612 of 621 records (client 3474); see Field Names |
 
 ### `teleportoffset.dbss`
 
@@ -113,6 +113,33 @@ records up by the inline `key` and do not need this file.
 return stones on the empty sections 3 and 4, whose destination is resolved
 elsewhere. 22 of the 621 records are used by no buff.
 
+## Field Names
+
+The record is the `Teleport_Table` sheet of a private server on client
+1784, with the columns `Type`, `Index`, `PositionX`, `PositionY`,
+`PositionZ` and `Destination`. That server's dump (`Instance_dumpFull.exe`)
+loads the sheet into an 18-byte struct in record order (VA `0x1409b8f83` to
+`0x1409b912e`): `Type` as a u8 at `+4` (the `section` byte), the three
+positions as f32 at `+8` to `+0x10` and `Destination` as a u8 at `+0x14`,
+which packs to `+0x11` in the file. On the 167 sheet rows, matched on
+section and position in the section, the private server's own
+`teleport.dbss` has the same position and the same `destination` on all 167;
+the four non-zero values (keys 1, 2, 23 and 24 store `1`, `2`, `1`, `2`)
+match client 3474 too.
+
+The teleport buff effect of that server (VA `0x140dbcf20`) reads
+`destination` only for section 0. On `1` it stores the point's position as
+the player's saved position and sets a flag; on `2` it clears the flag and
+the position. Any other value is a plain move. The keys that set `1` are
+buffs to the Ancient Stone Chamber, the ones that set `2` lead back to
+Valencia and the Gyfin Rhasia Temple.
+
+On client 1784 the server writes `0xFFFFFFFF` for `key` and drops the
+sheet's `Index`: all 170 records of that build store `0xFFFFFFFF`, so a
+1784 record is found by its position in the section. On client 3474 `key`
+equals the sheet's `Index` on the 148 shared rows whose position did not
+move.
+
 ## Notes
 
 - Positions were checked against the type 23 buffs whose English text names
@@ -129,14 +156,14 @@ elsewhere. 22 of the 621 records are used by no buff.
 
 ## Open Questions
 
-### What does `unknown_11` mark?
+### What do `destination` values above 2 do?
 
-Nine section 0 records set it: keys 1 and 23 store `1` (buffs to the Ancient
-Stone Chamber), 2 and 24 store `2` (Valencia, Gyfin Rhasia Temple), and 260,
-231, 253, 257 and 259 store `85`, `90`, `99`, `32` and `96` (an indoor point
-after a street battle, Muzgar Village, a watchtower, the Northern Wheat
-Plantation and a troll defence base). No
-other field or buff parameter follows it.
+Five section 0 records of client 3474 store `85`, `90`, `99`, `32` and `96`
+(keys 260, 231, 253, 257 and 259: an indoor point after a street battle,
+Muzgar Village, a watchtower, the Northern Wheat Plantation and a troll
+defence base). None of these keys exists on client 1784, whose server reads
+only `1` and `2` (Field Names) and moves the player normally for any other
+value. What the newer server does with them is open.
 
 ### What do sections 1 and 2 serve?
 

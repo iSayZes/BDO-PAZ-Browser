@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterNo": "Character No.",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Direction",
+    "action": "Action",
+    "class": "Class"
+  },
+  "meta": {
+    "count": "{count} user NPCs"
+  }
+}

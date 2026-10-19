@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterNo": "Номер персонажа",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Направление",
+    "action": "Действие",
+    "class": "Класс"
+  },
+  "meta": {
+    "count": "NPC игроков: {count}"
+  }
+}

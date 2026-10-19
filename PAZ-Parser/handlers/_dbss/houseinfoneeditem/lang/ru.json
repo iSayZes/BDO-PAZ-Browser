@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "needItemKey": "Ключ",
+    "houseUses": "Применения",
+    "levels": "Уровни",
+    "needItems": "Оплата"
+  },
+  "offsetColumns": {
+    "needItemKey": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "cells": {
+    "level": "Ур. {level}:"
+  },
+  "meta": {
+    "count": "Групп требований: {count}"
+  }
+}

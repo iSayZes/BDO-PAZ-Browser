@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "needItemKey": "Clave",
+    "houseUses": "Usos",
+    "levels": "Niveles",
+    "needItems": "Coste"
+  },
+  "offsetColumns": {
+    "needItemKey": "Clave",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "cells": {
+    "level": "Nivel {level}:"
+  },
+  "meta": {
+    "count": "{count} grupos de requisitos"
+  }
+}

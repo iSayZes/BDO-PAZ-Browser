@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "needItemKey": "키",
+    "houseUses": "집 용도",
+    "levels": "단계",
+    "needItems": "비용"
+  },
+  "offsetColumns": {
+    "needItemKey": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "cells": {
+    "level": "{level}단계:"
+  },
+  "meta": {
+    "count": "필요 아이템 그룹 {count}개"
+  }
+}

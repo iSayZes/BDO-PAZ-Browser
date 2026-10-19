@@ -37,7 +37,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ----------------------------- | -------- | ---------------------------------------------------------------------------------- |
 | `houseinforeceipeoffset.dbss` | Optional | Index `receipe_key -> (offset, size)`, see below; the handler walks the rows in order and does not load it |
 | `languagedata_en.loc`         | Optional | LOC type 16, `str_id1` = `receipe_key`: the English receipe name                   |
-| `houseinfoneeditem.dbss`      | Optional | Per-level need items, joined by `need_item_key`; not documented yet                 |
+| `houseinfoneeditem.dbss`      | Optional | Per-level need items, joined by `need_item_key`; see [`houseinfoneeditem.dbss`](houseinfoneeditem_dbss.md) |
 | `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; not documented yet             |
 
 All multi-byte values are little-endian.
@@ -191,9 +191,10 @@ name the same uses as `eHouseUseType`, and on those rows `icon_type` equals
 
 ## Need Item Join
 
-`need_item_key` is a key of `houseinfoneeditem.dbss`, whose index holds the
-u16 keys 1 to 11. Each of its rows holds five levels, and each level a list
-of (item key, count) pairs; every item key there is 1 (Silver, LOC type 0).
+`need_item_key` is a key of [`houseinfoneeditem.dbss`](houseinfoneeditem_dbss.md),
+whose index holds the u16 keys 1 to 11. Each of its rows holds level slots 0
+to 5, and each level a transfer time and a list of (item key, count) pairs;
+every item key there is 1 (Silver, LOC type 0).
 On client 3464 the receipes use every key except 9, and no row's filled
 level lists reach past the last level its group prices:
 

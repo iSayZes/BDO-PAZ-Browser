@@ -7,7 +7,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.enum_name import enum_name
-from _common.html import Column, e, html_list_cell, sort_keys, table, text_list_cell
+from _common.html import Column, e, html_list_cell, record_link, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_text
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
@@ -19,6 +19,8 @@ from .parser import parse_houseinforeceipe_records
 _LANG_DIR = Path(__file__).parent / "lang"
 _LOC_TYPE_RECEIPE = 16
 _EMPTY = "-"
+_HOUSEINFONEEDITEM = "gamecommondata/binary/houseinfoneeditem.dbss"
+_LINK_CLASS = "record-link"
 # Exchange keys shown per level line; the rest go behind a hoverable count.
 _KEYS_PER_LEVEL = 8
 
@@ -98,7 +100,7 @@ class HouseInfoReceipeHandler(PreviewHandler):
                 e(r["name"]),
                 e(r["house_use_type_name"]),
                 e(r["icon_type_name"]),
-                e(r["need_item_key"]),
+                record_link(str(r["need_item_key"]), _HOUSEINFONEEDITEM, "need_item_key", r["need_item_key"], _LINK_CLASS),
                 e(r["level_count"]),
                 self._exchanges_cell(r["level_exchanges"]),
             ]

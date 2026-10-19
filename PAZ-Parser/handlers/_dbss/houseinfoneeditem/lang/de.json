@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "needItemKey": "Schlüssel",
+    "houseUses": "Hausverwendungen",
+    "levels": "Stufen",
+    "needItems": "Kosten"
+  },
+  "offsetColumns": {
+    "needItemKey": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "cells": {
+    "level": "Stufe {level}:"
+  },
+  "meta": {
+    "count": "{count} Bedarfsgruppen"
+  }
+}

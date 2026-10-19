@@ -74,7 +74,7 @@ CASE = HandlerCase(
                 "waypoint_key",
                 "is_free_revival_area",
                 "is_world_boss_reward",
-                "unknown_d2_keys",
+                "pc_delivery_region_keys",
                 "unknown_d2_vectors",
                 "max_participants",
                 "siege_ap_limit",

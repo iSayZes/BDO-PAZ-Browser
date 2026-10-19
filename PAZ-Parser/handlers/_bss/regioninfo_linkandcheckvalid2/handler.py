@@ -22,7 +22,7 @@ def _region_label(region_key: int) -> str:
 
 
 def _display_fields(record: dict) -> dict:
-    keys = record["linked_region_keys"]
+    keys = record["pc_delivery_region_keys"]
     return {
         "region_name": town_name(record["region_key"]) or None,
         "link_count": len(keys),

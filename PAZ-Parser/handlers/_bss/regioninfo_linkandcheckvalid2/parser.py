@@ -1,11 +1,11 @@
 """`regioninfo_linkandcheckvalid2.bss`: the region link lists.
 
     PABR | u32 count | count x (u16 region_key | u32 link_count | u32 unknown_06
-    | u16[link_count] linked_region_keys) | empty string table
+    | u16[link_count] pc_delivery_region_keys) | empty string table
     | u32 string_table_start | u32 0
 
 One record per `regioninfo.bss` region, in hash order rather than key order.
-Each list matches that region's `unknown_d2_keys` in `regioninfo.bss`. Full
+Each list matches that region's `pc_delivery_region_keys` in `regioninfo.bss`. Full
 layout in docs/file-formats/regioninfo_linkandcheckvalid2_bss.md.
 """
 
@@ -35,7 +35,7 @@ def _read_record(reader: RecordReader) -> dict:
     keys = reader.unpack(struct.Struct(f"<{link_count}H"))
     return {
         "region_key": region_key,
-        "linked_region_keys": list(keys),
+        "pc_delivery_region_keys": list(keys),
         "unknown_06": unknown_06,
     }
 

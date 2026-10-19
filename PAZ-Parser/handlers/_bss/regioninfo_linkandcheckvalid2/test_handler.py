@@ -33,7 +33,7 @@ CASE = HandlerCase(
                 "region_key",
                 "region_name",
                 "link_count",
-                "linked_region_keys",
+                "pc_delivery_region_keys",
                 "linked_regions",
                 "unknown_06",
             ],
@@ -60,7 +60,7 @@ def test_region_link(spec: Any, region_link_result: HandlerResult) -> None:
 
 
 def _links(result: HandlerResult) -> dict[int, list[int]]:
-    return {record["region_key"]: record["linked_region_keys"] for record in result.records}
+    return {record["region_key"]: record["pc_delivery_region_keys"] for record in result.records}
 
 
 def test_one_record_per_region(region_link_result: HandlerResult) -> None:
@@ -72,11 +72,11 @@ def test_one_record_per_region(region_link_result: HandlerResult) -> None:
 
 
 def test_lists_match_regioninfo(region_link_result: HandlerResult) -> None:
-    """Each list repeats the region's unknown_d2_keys in regioninfo.bss, in order."""
+    """Each list repeats the region's pc_delivery_region_keys in regioninfo.bss, in order."""
     regions = parse_regioninfo_records(load_binary_fixture("regioninfo.bss"))
     links = _links(region_link_result)
     for region in regions:
-        assert links[region["region_key"]] == region["unknown_d2_keys"], region["region_key"]
+        assert links[region["region_key"]] == region["pc_delivery_region_keys"], region["region_key"]
 
 
 def test_links_include_self_and_are_mutual(region_link_result: HandlerResult) -> None:

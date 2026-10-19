@@ -20,10 +20,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | 1784 and later | 3474    | `instancefield.dbss`       | 10,810 | 200 Record     | 41 to 74, 54 on average |
 | 1      | 1784 and later | 3474    | `instancefieldoffset.dbss` | 2,004  | 200 Offset Row | 10                      |
 
-| Layout | File                       | Known            | Unknown         |
-| ------ | -------------------------- | ---------------- | --------------- |
-| 1      | `instancefield.dbss`       | 9,610 B (88.9%)  | 1,200 B (11.1%) |
-| 1      | `instancefieldoffset.dbss` | 2,004 B (100.0%) | 0 B (0.0%)      |
+| Layout | File                       | Known             | Unknown    |
+| ------ | -------------------------- | ----------------- | ---------- |
+| 1      | `instancefield.dbss`       | 10,810 B (100.0%) | 0 B (0.0%) |
+| 1      | `instancefieldoffset.dbss` | 2,004 B (100.0%)  | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -58,9 +58,9 @@ records fill the file exactly (199 records, 10,736 bytes on client 3464).
 | `+0x0E`     | i32     | max_x         | Sector box, upper corner; never below the matching `min_*` |
 | `+0x12`     | i32     | max_y         | |
 | `+0x16`     | i32     | max_z         | |
-| `+0x1A`     | u32     | unknown_1a    | `1`, `2` or `3`; see Open Questions |
+| `+0x1A`     | i32     | field_grid_sector_count | `1`, `2` or `3`; see Field Names |
 | `+0x1E`     | str8    | name          | ASCII, not null-terminated |
-| `name+0x00` | u16     | unknown_tail  | `1`, or the record's own key on the `A1_` fields; see Open Questions |
+| `name+0x00` | u16     | field_no      | Key of the field the instance runs in: `1` (the world) or the record's own key on the `A1_` fields; see Field Names |
 
 Names are not unique: on client 3464 the 199 records carry 163 names, and
 `Edania_Field` / `Edania_Field_1vs1` (10 each), `CrimsonField` (6),
@@ -88,6 +88,38 @@ gives its exact size, so the index adds nothing to a sequential read.
 | `+0x00` | u16  | key    | Record key |
 | `+0x02` | u32  | offset | `instancefield.dbss` offset of the record with this key |
 | `+0x06` | u32  | size   | Byte size of that record, 40 plus the length of `name` |
+
+## Field Names
+
+The record is the `InstanceField_Table` sheet of a private server on client
+1784. That server's dump (`Instance_dumpFull.exe`) reads the client record
+with the row reader at VA `0x140b056e0`: the u16 key into `+0x00`, the two
+12-byte boxes into `+0x04` and `+0x10`, a u32 into `+0x20`, the name into
+`+0x30` and a u16 into `+0x50`. Its sheet loader (VA `0x1409e18f0`) fills
+the same members:
+
+| Field                     | Struct member | Sheet column                           |
+| ------------------------- | ------------- | -------------------------------------- |
+| `key`                     | `+0x00`       | `InstanceFieldMapKey`                  |
+| `min_x` to `max_z`        | `+0x04` to `+0x18` | `StartSectorX/Y/Z`, `EndSectorX/Y/Z` |
+| `field_grid_sector_count` | `+0x20`       | `FieldGridSectorCount`                 |
+| `name`                    | `+0x30`       | `ScriptFileName`                       |
+| `field_no`                | `+0x50`       | `FieldNo`                              |
+
+The check at VA `0x140b05090` compares `FieldGridSectorCount` signed and
+logs "인스턴스 필드의 FieldGridSectorCount는 1 이상의 정수를 입력해야 합니다"
+("an instance field's FieldGridSectorCount must be an integer of 1 or
+more"), so the field is an i32. After loading, the server sets a `FieldNo`
+of `0` or `0xFFFF` to `1` and looks it up among its field infos, logging
+"InstanceFieldMap의 필드번호가 비정상입니다" ("the instance field map's field
+number is invalid") when it is missing. `FieldNo` is the key of the
+`Field_Table` sheet, where `1` is `월드` ("World") and `4001` to `4066` are
+`A1_001` to `A1_066`; the client copy of that table is `fieldinfo.bss`,
+which has no doc yet.
+
+The sheet and the private server's own file hold the same 92 fields; every
+column above matches on all 92, and client 3474 has the same
+`field_grid_sector_count` and `field_no` on all 92 keys it shares.
 
 ## Notes
 
@@ -122,25 +154,12 @@ gives its exact size, so the index adds nothing to a sequential read.
 
 ## Open Questions
 
-### What does `unknown_1a` mark?
+### What do the `field_grid_sector_count` values select?
 
 On client 3464 it is `1` on 189 records, `3` on `Shadow_Ser_Main` (key 1)
 and `2` on nine: keys 2 to 8 (`1`, `3_Ser_CentralGuardCamp`,
 `4_Bal_Ehwaz`, `5_Cal_CalpheonCastle`, `6_Cal_SounilFortress`,
 `7_Val_Desert`, `8_Kam_Naban`) and 98 / 99 (`Practice1`, `Practice`). None
-of these ten has an `instancefieldmapinfo.bss` record, while every field with
-`1` has one except `PlayGround` (9), `InfinityDefence_Sub_Main` (888),
-`InfinityDefence_Main` (999) and `SiegeofThornCastle` (9876). The `2` names
-read like node war maps per territory, which suggests a field kind, but no
-client enum names the values. The Lua calls
-`ToClient_GetInstanceFieldMapKeyInfoByTypeAndIndex` and
-`ToClient_InstanceFieldRoomInfoWrapperWithType` take a type, which may be
-this field.
-
-### What does `unknown_tail` hold?
-
-It is `1` on the 133 named fields and equals the record's own key on all 66
-`A1_` fields (4001 to 4066). The Lua function `getInstanceFieldMapKey` hints
-at a map key separate from the field key, but `instancefieldmapinfo.bss` is
-keyed by the field key itself and has no record 1, so it is not that map
-key.
+of these ten has an `instancefieldmapinfo.bss` record. The client 1784
+server multiplies it by 3,700 and stores the result as a float next to the
+box; what a count of 2 or 3 changes in game is open.

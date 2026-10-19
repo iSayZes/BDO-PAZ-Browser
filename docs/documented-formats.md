@@ -150,11 +150,11 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `installationoffset.dbss` | Empty offset companion for `installation.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `instancedungeonskillstatic.dbss` | Instance dungeon skill table by name: a u32 count of 0 on client 3473; on client 1784, 157 records of a key and a Korean `<PAColor>` text | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
 | `instancedungeonskillstaticoffset.dbss` | Index into `instancedungeonskillstatic.dbss`: a u32 count of 0 on client 3473; on client 1784, (u32 key, offset, size) rows | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
-| `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
+| `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 1 | 0 |
 | `instancefieldenteroption.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `instancefieldmanagement.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `instancefieldmapinfo.bss` | PABR map data per instance field key: GAME sheet name and description keys, map image and sprite region, centre point and radius, participant and team limits, territory lock, entry item, team spawn points | [instancefieldmapinfo](file-formats/instancefieldmapinfo_bss.md) | 1 | 0 |
-| `instancefieldoffset.dbss` | Index into `instancefield.dbss`, maps key to offset/size (10-byte rows); no PABR magic | [instancefield](file-formats/instancefield_dbss.md) | 2 | 0 |
+| `instancefieldoffset.dbss` | Index into `instancefield.dbss`, maps key to offset/size (10-byte rows); no PABR magic | [instancefield](file-formats/instancefield_dbss.md) | 1 | 0 |
 | `itembundle.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `itemcouponreward.dbss` | Empty item coupon reward table placeholder: a zero record count and 12 zero bytes | [itemcouponreward](file-formats/itemcouponreward_dbss.md) | 2 | 0 |
 | `itemcouponrewardoffset.dbss` | Offset companion for `itemcouponreward.dbss`: count 4 and four zero u32 words, shown as raw words | [itemcouponreward](file-formats/itemcouponreward_dbss.md) | 2 | 0 |

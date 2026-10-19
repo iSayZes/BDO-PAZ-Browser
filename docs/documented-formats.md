@@ -104,8 +104,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `fairyequipskillaquire.dbss`       | Fairy skill roll chances per fairy grade, ppm weights indexed by `equip_skill_id`, summing to 100%             | [fairyequipskillaquire](file-formats/fairyequipskillaquire_dbss.md) | 2              | 0 |
 | `fairyequipskillaquireoffset.dbss` | Keyed offset index into `fairyequipskillaquire.dbss`, maps fairy grade → offset/size                                                           | [fairyequipskillaquire](file-formats/fairyequipskillaquire_dbss.md) | 2              | 0 |
 | `fairyfeedenchantfailcount.bss` | Small fairy feed/enchant lookup table, 7 records of fixed entries whose fields are all unknown | [fairyfeedenchantfailcount](file-formats/fairyfeedenchantfailcount_bss.md) | 3 | 0 |
-| `fairyfeedingitem.dbss` | Fairy Growth items, the fairy EXP one item grants per item ID | [fairyfeedingitem](file-formats/fairyfeedingitem_dbss.md) | 1 | 0 |
-| `fairyfeedingitemoffset.dbss` | Item-keyed offset index into `fairyfeedingitem.dbss`, maps item ID → offset/size | [fairyfeedingitem](file-formats/fairyfeedingitem_dbss.md) | 1 | 0 |
+| `fairyfeedingitem.dbss` | Fairy Growth items, the fairy EXP one item grants per item ID | [fairyfeedingitem](file-formats/fairyfeedingitem_dbss.md) | 0 | 0 |
+| `fairyfeedingitemoffset.dbss` | Item-keyed offset index into `fairyfeedingitem.dbss`, maps item ID → offset/size | [fairyfeedingitem](file-formats/fairyfeedingitem_dbss.md) | 0 | 0 |
 | `fairypotion.dbss` | Potions a fairy can be set to use: one item ID list per potion type (HP, MP, WP, SP) | [fairypotion](file-formats/fairypotion_dbss.md) | 1 | 1 |
 | `fairypotionoffset.dbss` | Type-keyed offset index into `fairypotion.dbss`, maps potion type → offset/size (10-byte rows, no PABR magic) | [fairypotion](file-formats/fairypotion_dbss.md) | 1 | 1 |
 | `fairyskillchange.dbss`            | Fairy skill reroll cost, maps fairy level 1–50 to the Theiah's Orbs required (1–5)                            | [fairyskillchange](file-formats/fairyskillchange_dbss.md)           | 2              | 0 |

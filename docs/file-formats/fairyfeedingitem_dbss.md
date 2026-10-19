@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                          | Known             | Unknown          |
 | ------ | ----------------------------- | ----------------- | ---------------- |
-| 1      | `fairyfeedingitem.dbss`       | 26,956 B (42.9%)  | 35,936 B (57.1%) |
+| 1      | `fairyfeedingitem.dbss`       | 44,924 B (71.4%)  | 17,968 B (28.6%) |
 | 1      | `fairyfeedingitemoffset.dbss` | 26,956 B (100.0%) | 0 B (0.0%)       |
 
 <!-- versions:end -->
@@ -49,13 +49,13 @@ On client 3464 the file is 62,892 bytes: 4 + 2,246 records of 28 bytes.
 
 ### Record (28 bytes)
 
-| Offset  | Type      | Field      | Notes                                                      |
-| ------- | --------- | ---------- | ---------------------------------------------------------- |
-| `+0x00` | u32       | key        | Record key; equals `item_id` in every record               |
-| `+0x04` | u32       | item_id    | Item fed to the fairy                                      |
-| `+0x08` | u32       | unknown_08 | `576` on all but one record (see Open Questions)           |
-| `+0x0C` | u32       | exp        | Fairy EXP granted per item                                 |
-| `+0x10` | bytes[12] | unknown_10 | Zero in every record                                       |
+| Offset  | Type     | Field      | Notes                                                      |
+| ------- | -------- | ---------- | ---------------------------------------------------------- |
+| `+0x00` | u32      | key        | Record key; equals `item_id` in every record               |
+| `+0x04` | u32      | item_id    | Item fed to the fairy                                      |
+| `+0x08` | bytes[4] | padding_08 | Aligns `exp` to 8 bytes, never written; see Notes          |
+| `+0x0C` | u64      | exp        | Fairy EXP granted per item                                 |
+| `+0x14` | u64      | unknown_14 | `0` in every record (clients 1784 and 3474)                |
 
 The offset companion points at `record_start + 4`, so the addressable payload
 is the 24 bytes after the key.
@@ -108,8 +108,44 @@ Claw 1,500 and Fiery Kutum / Nouver 375,000 (Garmoth calls them "Blazing").
 It gives Ornette's Dark Honey Wine as 13,000; this file and the client
 tooltip above give `13,300`.
 
+## Field Names
+
+The record is the `Fairy_FeedingItem_Table` sheet of a private server on
+client 1784, with the columns `ItemKey` and `Exp`. That server's dump
+(`Instance_dumpFull.exe`) reads the client file by copying the 24 bytes
+after the key into a `FairyItemInfo` in one block (VA `0x140bd35b3`), so the
+payload is that struct's memory image. Its sheet loader builds the same
+struct in `set()` (VA `0x140bd3810`): a u32 `ItemKey` at `+0`, an 8-byte
+`Exp` at `+8` and a literal 8-byte `0` at `+0x10`. Nothing writes `+4` to
+`+7`.
+
+| Field        | Struct member | Sheet column |
+| ------------ | ------------- | ------------ |
+| `item_id`    | u32 `+0x00`   | `ItemKey`    |
+| `padding_08` | `+0x04`       | none         |
+| `exp`        | u64 `+0x08`   | `Exp`        |
+| `unknown_14` | u64 `+0x10`   | none         |
+
+`padding_08` is the gap the compiler leaves before the 8-byte `exp`. Its
+bytes are what the builder's stack held: `576` (`0x240`) on all but one
+record of client 3464, `0x200` or `0x201` on client 3474 and `2` on client
+1784, with the Agerian Helmet (item 10809), the sheet's first row, as the
+odd one out on all three. `unknown_14` has no sheet column, `set()` writes
+`0`, and no code in the dump names it.
+
+The sheet and the private server's own file hold the same 1,864 items. On
+all of them `item_id` equals `ItemKey` and `exp` equals `Exp` with its
+fraction dropped (`176.75` becomes `176`); client 3474 has the same `exp` on
+the 1,864 items it shares. Earlier versions of this doc read `exp` as a u32
+and the 12 bytes after it as one zero field; the upper half of `exp` is `0`
+on every record, so every EXP reads as before.
+
 ## Notes
 
+- `padding_08` is alignment filler: in the client 1784 server dump the
+  record is a `FairyItemInfo` with a u32 item key at `+0` and an 8-byte
+  `exp` at `+8`, so `+4` to `+7` align `exp` to 8 bytes, and the struct's
+  builder `set()` (VA `0x140bd3810`) never writes them (Field Names).
 - The Growth window (`panel_window_fairy_all_3.luac`,
   `PaGlobal_FairyGrowth_All`) lists inventory items for which
   `itemWrapper:isFairyFeedItem()` is true, skips item 54030, and shows Sweet
@@ -125,15 +161,3 @@ tooltip above give `13,300`.
   says the Growth window takes unenhanced equipment only; the Growth window Lua
   checks no enhancement level itself (it asks the client's
   `isFairyFeedItem()`), and no English LOC string states the rule.
-- The value `576` appears in no fairy Lua script as a constant; the only client
-  Lua files holding a `576` constant are a minigame, the fishing widget and a
-  QA script.
-
-## Open Questions
-
-### `unknown_08` Meaning
-
-On client 3464, 2,245 of the 2,246 records hold `576` (`0x240`) and one holds
-`0`: Agerian Helmet (item 10809, 168 EXP). Nothing in the fairy Lua or the
-other fairy tables uses `576`, so it is not known whether it is a flag set, a
-count limit or an ID, or why the Agerian Helmet differs.

@@ -56,6 +56,7 @@ from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKey
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
 from .manufacture.handler import ManufactureBssHandler
+from .manufactureitemnaminginfo.handler import ManufactureItemNamingInfoBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
@@ -187,6 +188,7 @@ def register_bss_handlers() -> None:
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("manufacture.bss", ManufactureBssHandler())
+    register_handler("manufactureitemnaminginfo.bss", ManufactureItemNamingInfoBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
     # One layout for the eight life skill mastery tables, each with its own columns.
     for mastery_table in MASTERY_TABLES:

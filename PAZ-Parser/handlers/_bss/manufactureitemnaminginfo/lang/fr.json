@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet"
+  },
+  "meta": {
+    "count": "{count} objets portant le nom de leur fabricant"
+  }
+}

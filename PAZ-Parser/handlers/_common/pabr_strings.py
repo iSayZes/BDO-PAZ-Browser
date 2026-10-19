@@ -16,6 +16,7 @@ from _common.pabr_offset import PABR_MAGIC
 TRAILER_SIZE = 8
 # ASCII PABR and a u32 row count.
 HEADER_SIZE = 8
+U32_SIZE = 4
 
 _ENTRY_HEADER_SIZE = 5
 
@@ -53,6 +54,14 @@ def fixed_row_offsets(data: bytes, row_size: int, file_name: str) -> range:
     rows_end = HEADER_SIZE + u32(data, 4) * row_size
     check_rows_end(data, rows_end, f"{file_name} rows")
     return range(HEADER_SIZE, rows_end, row_size)
+
+
+def u32_rows(data: bytes, file_name: str) -> list[int]:
+    """Every row of a PABR file whose rows are one u32 each, in file order.
+
+    Raises ValueError like `fixed_row_offsets()`.
+    """
+    return [u32(data, start) for start in fixed_row_offsets(data, U32_SIZE, file_name)]
 
 
 def checked_string_table_start(data: bytes, file_name: str) -> int:

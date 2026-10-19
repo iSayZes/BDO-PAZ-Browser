@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item"
+  },
+  "meta": {
+    "count": "{count} items that carry their maker's name"
+  }
+}

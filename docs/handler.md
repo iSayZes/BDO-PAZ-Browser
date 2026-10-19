@@ -796,7 +796,8 @@ layout change fails loudly instead of yielding shifted fields:
 `fixed_row_offsets(data, row_size, file_name)` checks the magic and returns the
 start of every fixed-size row, raising when the rows do not end where the string
 table starts; `check_rows_end(data, rows_end, what)` does that last check for
-records walked by hand; `checked_string_table_start(data, file_name)` returns the
+records walked by hand; `u32_rows(data, file_name)` returns the values of a file
+whose rows are one u32 each; `checked_string_table_start(data, file_name)` returns the
 bound for a variable-size walk; `check_pabr(data, file_name)` checks the magic only.
 
 Example:

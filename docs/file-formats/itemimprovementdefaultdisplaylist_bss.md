@@ -36,7 +36,7 @@ All multi-byte values are little-endian.
 ### File Layout
 
 A `PABR` table of u32 rows with an empty string table, read by
-`fixed_row_offsets()` in `_common/pabr_strings.py`.
+`u32_rows()` in `_common/pabr_strings.py`.
 
 | Offset              | Type         | Field        | Notes                                                       |
 | ------------------- | ------------ | ------------ | ----------------------------------------------------------- |

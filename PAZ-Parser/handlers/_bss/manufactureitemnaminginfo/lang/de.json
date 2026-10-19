@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand"
+  },
+  "meta": {
+    "count": "{count} Gegenstände mit dem Namen ihres Herstellers"
+  }
+}

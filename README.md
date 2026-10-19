@@ -438,6 +438,11 @@ python browser.py --index
 python browser.py --index knowledge_characters --limit 20
 python browser.py --index buff_icon --id 48724
 
+# Parse every file that has a parsed view (or only the ones matching a pattern)
+# and list the ones that fail; --json / --csv hold every file's result
+python browser.py --paz-folder "D:/Old Client/Paz" --coverage
+python browser.py --coverage "quest*" --json > quest_coverage.json
+
 # The Map view's world map as files; --dir is required. Tiles go to
 # <dir>/world_map_tiles (every zoom, or only --zoom), the image to
 # <dir>/world_map_z<zoom>.jpg (zoom 5 by default; zoom 7 is 31,872 x 27,648 px on client 3464)
@@ -468,6 +473,16 @@ file name, or a pattern that matches one file. Options:
 
 Several `--where` options must all match. `--index` takes `--json`, `--csv`
 and `--limit` too, and prints JSON as a bare list.
+
+`--coverage [pattern]` runs every handler that builds records over every file
+it reads in the loaded client, the way `--records` would, without LOC or
+lookup indexes. A file passes when its records build, and an error ends only
+that file. The text output lists the failing files with their handler key and
+error, and the pass count goes to stderr. `--json` writes an object with
+`client_version`, `files`, `passed`, `failed` and `results` (every file:
+`file`, `handler`, `ok`, `records`, `error`, `seconds`); `--csv` writes the
+same rows. Run on an older client, the failures are the tables whose layout
+changed, and the reports of two clients can be diffed.
 
 The CLI always shows game text tags, whatever the GUI setting: `--render`
 draws them next to the colours, and `--records` lists the tagged text in the
@@ -507,6 +522,7 @@ PAZ-Parser/
 │   ├── records.py          # --records (record_filter.py, record_output.py)
 │   ├── render.py           # --render
 │   ├── index.py            # --index
+│   ├── coverage.py         # --coverage
 │   └── update.py           # --check-app-update, --update-app, --update-handlers
 │
 ├── updates/                # App and handler updates for the Windows exe

@@ -38,7 +38,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | `houseinforeceipeoffset.dbss` | Optional | Index `receipe_key -> (offset, size)`, see below; the handler walks the rows in order and does not load it |
 | `languagedata_en.loc`         | Optional | LOC type 16, `str_id1` = `receipe_key`: the English receipe name                   |
 | `houseinfoneeditem.dbss`      | Optional | Per-level need items, joined by `need_item_key`; see [`houseinfoneeditem.dbss`](houseinfoneeditem_dbss.md) |
-| `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; not documented yet             |
+| `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; see [`itemexchangesource.bss`](itemexchangesource_bss.md) |
 
 All multi-byte values are little-endian.
 

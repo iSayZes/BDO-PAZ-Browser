@@ -143,6 +143,6 @@ The handler reads `+0x06` as a subgroup key. That gives the right items on most 
 | 37                 | Resolve where the subgroup reading finds nothing: all 36 unresolved zones and key 1931 |
 | 18                 | Get other items: 1899 "Neruda Plain - Lumbering" shows Coal today and drops Acacia Timber; 12, 22 and 23 (Excavation) drop group 44013, 44023 and 44025 instead of subgroup 44012, 44022 and 44023 |
 | 335                | Gain a luck drop group                                                     |
-| 25                 | Stay open: the Investment Bank rows (keys 901 to 936, 1689, 1690) hold no group key at `+0x55`, so their row layout differs |
+| 25                 | Resolve as well: the Investment Bank rows (keys 901 to 936, 1689, 1690) looked different to the row-head search, but the [`itemexchangesource.bss`](itemexchangesource_bss.md) reader reads them with the same layout, and on client 3474 all 403 exchange keys have a product drop group |
 
 `+0x02` (equal to `production_key`) and `+0x04` keep their offsets: `+0x04` is `0` on every row while the server's `ContentsGroupKey` is set on 194 of the shared rows. Switching the handler to the full chain needs a reader for `itemexchangesource.bss` first.

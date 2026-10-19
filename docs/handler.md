@@ -1361,7 +1361,15 @@ lists show it through `item_key_list_cell(item_keys, max_items)` in the same
 module: the `itemsubgroup.dbss` Item Names column, the `plantexchangegroup.bss`
 Items column, the `plantzone.dbss` Produced Items column and the
 `dropuihuntinggroundinfo.bss` Items column. A plain item ID is its level 0
-key, so lists of item IDs use it too.
+key, so lists of item IDs use it too. Lists of `(item_key, count)` pairs, such
+as recipe materials, use `item_count_list_cell(items)`, with
+`item_count_text(item_key, count)` for the searchable text field.
+
+A table that stores an `itemmaingroup.bss` group ID (`manufacture.bss`,
+`itemexchangesource.bss`) lists `DROP_GROUP_FILES` from
+`_bss/itemmaingroup/drop_groups.py` as companions, loads the groups it names
+with `load_drop_groups(companions, group_ids)`, reads each group's items with
+`DropGroups.item_keys()` and links the ID with `drop_group_cell()`.
 
 Those lists name each key with `item_key_text()` from the same module. A level
 with its own LOC type 79 name (`str_id1` item ID, `str_id2` level, read with

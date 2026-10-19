@@ -19,9 +19,9 @@ its grade colour (`_common/item_grade.py`).
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 
-from _common.html import hidden_slice, icon_html_list_cell
+from _common.html import hidden_slice, html_list_cell, icon_html_label_cell, icon_html_list_cell
 from _common.icon_index import IconKind, icon_path
 from _common.item_grade import item_grade, item_grade_tagged
 from _common.loc import loc_lookup, loc_text, strip_pa_tags
@@ -99,3 +99,20 @@ def item_key_list_cell(item_keys: Sequence[int], max_items: int) -> str:
     entries = [(item_key_icon_path(key), pa_html(item_key_text_tagged(key))) for key in shown]
     hidden = [item_key_text(key) for key in hidden_slice(item_keys, max_items)]
     return icon_html_list_cell(entries, len(item_keys) - len(shown), hidden_names=hidden)
+
+
+def item_count_text(item_key: int, count: int) -> str:
+    """`Steel x5`: an item and its count as plain text, for tab search and CSV export."""
+    return f"{item_key_text(item_key)} x{count:,}"
+
+
+def item_count_list_cell(items: Iterable[tuple[int, int]]) -> str:
+    """Each `(item_key, count)` with its per-level icon and grade colour, then its count.
+
+    Empty when there are no items.
+    """
+    entries = [
+        icon_html_label_cell(item_key_icon_path(key), f"{pa_html(item_key_text_tagged(key))} x{count:,}")
+        for key, count in items
+    ]
+    return html_list_cell(entries)

@@ -9,8 +9,8 @@ from bdo_preview import PreviewHandler
 from _bss.stringtable.parser import GAME_SHEET
 from _bss.stringtable.text import ui_hash_text
 from _common.character import character_name
-from _common.html import Column, e, error, html_list_cell, icon_html_label_cell, sort_keys, table, text_list_cell
-from _common.item_key import item_key_icon_path, item_key_text, item_key_text_tagged
+from _common.html import Column, e, error, icon_html_label_cell, sort_keys, table, text_list_cell
+from _common.item_key import item_count_list_cell, item_count_text, item_key_icon_path, item_key_text, item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pa_text import pa_html
@@ -64,16 +64,12 @@ def _required_items(keys: list[int], counts: list[int]) -> list[tuple[int, int]]
 
 
 def _required_items_text(items: list[tuple[int, int]]) -> list[str]:
-    return [f"{item_key_text(key)} x{count:,}" for key, count in items]
+    return [item_count_text(key, count) for key, count in items]
 
 
 def _required_items_cell(items: list[tuple[int, int]]) -> str:
     """Each required item with its icon and grade colour, then its count."""
-    entries = [
-        icon_html_label_cell(item_key_icon_path(key), f"{pa_html(item_key_text_tagged(key))} x{count:,}")
-        for key, count in items
-    ]
-    return html_list_cell(entries) or _EMPTY
+    return item_count_list_cell(items) or _EMPTY
 
 
 def _product_cell(item_key: int) -> str:

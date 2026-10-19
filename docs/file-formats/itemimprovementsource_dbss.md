@@ -22,7 +22,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                               | Known            | Unknown         |
 | ------ | ---------------------------------- | ---------------- | --------------- |
-| 2      | `itemimprovementsource.dbss`       | 2,226 B (52.4%)  | 2,020 B (47.6%) |
+| 2      | `itemimprovementsource.dbss`       | 4,246 B (100.0%) | 0 B (0.0%)      |
 | 2      | `itemimprovementsourceoffset.dbss` | 1,216 B (100.0%) | 0 B (0.0%)      |
 | 1      | `itemimprovementsource.dbss`       | 1,999 B (51.3%)  | 1,900 B (48.7%) |
 | 1      | `itemimprovementsourceoffset.dbss` | 1,144 B (100.0%) | 0 B (0.0%)      |
@@ -54,10 +54,10 @@ All multi-byte values are little-endian.
 | ----------------- | ---------------- | ------------------ | -------------------------------------------------------- |
 | `+0x00`           | u32              | item_id            | The stone; the index's `data_offset` points past it      |
 | `+0x04`           | u64              | value_count        | `5` in every record                                      |
-| `+0x0C`           | u32[value_count] | unknown_0c         | `1,000,000` in every slot of every record (client 3464)  |
-| `unknown_0c+0x00` | u32              | category           | Gear the stone takes, see below                          |
-| `unknown_0c+0x04` | u32              | group              | Reform group, `1` to `48`; matches `group` of the gear records |
-| `unknown_0c+0x08` | u16              | is_default_display | `1` for the 24 stones of [`itemimprovementdefaultdisplaylist.bss`](itemimprovementdefaultdisplaylist_bss.md), else `0` |
+| `+0x0C`           | u32[value_count] | results            | `1,000,000` in every slot of every record (client 3474); see Field Names |
+| `results+0x00`    | u32              | category           | Gear the stone takes, see below                          |
+| `results+0x04`    | u32              | group              | Reform group, `1` to `48`; matches `group` of the gear records |
+| `results+0x08`    | u16              | is_default_display | `1` for the 24 stones of [`itemimprovementdefaultdisplaylist.bss`](itemimprovementdefaultdisplaylist_bss.md), else `0` |
 
 Each `(category, group)` pair belongs to one stone (101 pairs, client 3464).
 
@@ -98,10 +98,37 @@ byte shorter. Only the Record differs from Layout 2.
 | ----------------- | ---------------- | ------------------ | ------------------------------------------- |
 | `+0x00`           | u32              | item_id            |                                             |
 | `+0x04`           | u64              | value_count        |                                             |
-| `+0x0C`           | u32[value_count] | unknown_0c         |                                             |
-| `unknown_0c+0x00` | u32              | category           | `1` to `3` on client 1784                   |
-| `unknown_0c+0x04` | u32              | group              |                                             |
-| `unknown_0c+0x08` | u8               | is_default_display | `1` on 19 of the 95 records (client 1784)   |
+| `+0x0C`           | u32[value_count] | results            |                                             |
+| `results+0x00`    | u32              | category           | `1` to `3` on client 1784                   |
+| `results+0x04`    | u32              | group              |                                             |
+| `results+0x08`    | u8               | is_default_display | `1` on 19 of the 95 records (client 1784)   |
+
+## Field Names
+
+The record is the `Item_ImprovementSource_Table` sheet of a private server
+on client 1784. That server's dump (`Instance_dumpFull.exe`) reads the
+client file with the row reader at VA `0x140b365e0`: a u64 count and that
+many u32 values into a list, then `category`, `group` and
+`is_default_display`. Its sheet loader fills the same members:
+
+| Field                | Sheet column                    |
+| -------------------- | ------------------------------- |
+| `item_id`            | `SourceItemKey`                 |
+| `results`            | `result0` to `result4`          |
+| `category`           | `equipType`                     |
+| `group`              | `Grade`                         |
+| `is_default_display` | `SourceItemDisplay`             |
+
+The loader formats the column name `result%d` for `0` to `4` (VA
+`0x1408c02f3`), reads each as a u32, skips a value above 1,000,000 (VA
+`0x1408c034d`) and appends the rest, so `value_count` is the number of
+`result` columns at or under 1,000,000. It accepts `equipType` `1` to `3`
+only and a `Grade` above 0.
+
+The private server's own file holds 95 of the sheet's 98 stones; on all 95
+the five `results`, `category`, `group` and `is_default_display` equal the
+sheet. On that build six stones (`4906` to `4911`) have a `result0` of
+10,000, 20,000 or 50,000; client 3474 has `1,000,000` in all 505 slots.
 
 ## Notes
 
@@ -117,9 +144,11 @@ byte shorter. Only the Record differs from Layout 2.
 
 ## Open Questions
 
-### `unknown_0c`
+### What the Five `results` Do
 
-Five u32 values of `1,000,000` in every record. A million is the scale of
-rates elsewhere (`buff.dbss` `apply_rate`), and the window text says a
-higher-grade stone gives a higher chance of higher-grade gear, but no record
-holds a value other than 100%.
+The server caps each value at 1,000,000, the scale of rates elsewhere
+(`buff.dbss` `apply_rate`), and the window text says a higher-grade stone
+gives a higher chance of higher-grade gear, but no code in the client 1784
+server dump reads the list after loading it. Whether slot `i` pairs with
+the `i`-th result item of [`itemimprovement.dbss`](itemimprovement_dbss.md)
+is open.

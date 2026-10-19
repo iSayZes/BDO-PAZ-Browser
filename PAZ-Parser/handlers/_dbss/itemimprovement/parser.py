@@ -108,5 +108,5 @@ def _source_record(record: _KeyedList) -> dict:
         "group": group,
         "is_default_display": bool(is_default_display),
         "offset": record.start,
-        "unknown_0c": list(record.values),
+        "results": list(record.values),
     }

@@ -14,9 +14,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ----------------- | ----- | -------------------------------------- | --------- |
 | 1      | 1784 and later | 3474    | `questgroup.dbss` | 5,918 | 110 Quest Group Record, 474 Quest Link | 4         |
 
-| Layout | File              | Known           | Unknown         |
-| ------ | ----------------- | --------------- | --------------- |
-| 1      | `questgroup.dbss` | 4,818 B (81.4%) | 1,100 B (18.6%) |
+| Layout | File              | Known           | Unknown      |
+| ------ | ----------------- | --------------- | ------------ |
+| 1      | `questgroup.dbss` | 5,478 B (92.6%) | 440 B (7.4%) |
 
 <!-- versions:end -->
 
@@ -44,13 +44,10 @@ Records start immediately after the header at `+0x04`. Records are variable leng
 | Offset         | Type                    | Field       | Notes                                                              |
 | -------------- | ----------------------- | ----------- | ------------------------------------------------------------------ |
 | `+0x00`        | u16                     | group_id    | Quest group identifier; also appears in child quest IDs            |
-| `+0x02`        | u16                     | name_len    | UTF-16 code unit count for `name_kr`                               |
-| `+0x04`        | u32                     | unknown_04  | Observed `0` in all 110 records                                    |
-| `+0x08`        | u16                     | unknown_08  | Observed `0` in all 110 records                                    |
-| `+0x0A`        | char16[name_len]        | name_kr     | Korean quest group title, not NUL-terminated                       |
+| `+0x02`        | str16                   | name_kr     | Korean quest group title, not NUL-terminated; see Field Names      |
 | `name_kr+0x00` | u32                     | quest_count | Number of child quest IDs                                          |
 | `name_kr+0x04` | Quest Link[quest_count] | quests      | `quest_count` child quest references                               |
-| `quests+0x00`  | u32                     | unknown_end | Observed `0` in all 110 records; record terminator/padding sentinel |
+| `quests+0x00`  | u32                     | unknown_end | Observed `0` in all 110 records; see Field Names                   |
 
 ### Quest Link (4 bytes)
 
@@ -77,6 +74,30 @@ Pre-2026-09-27 fixture:
 | `0x0000AE`  | `503`    | `소서러의 기술`          | `4`         | `66039`, `131575`, `197111`, `262647` |
 | `0x0000DE`  | `3100`   | `칼페온의 레이트 가문`   | `4`         | `68636`, `134172`, `199708`, `265244` |
 
+## Field Names
+
+The record is the `Group_Quest` sheet of a private server on client 1784
+(`QuestGroup`, `GroupName`). That server's dump (`Instance_dumpFull.exe`)
+reads the client record (row reader at VA `0x140c18560`) as a u16 group key,
+a wide string, a u32 count with that many u32 quest links, and a closing u32,
+and rejects a record whose bytes it does not consume exactly. Its string
+reader takes a u64 code unit count (VA `0x140510d78`), so `+0x02` to `+0x09`
+is one count and the text starts at `+0x0A`. Earlier versions of this doc
+read those 8 bytes as a u16 `name_len`, a u32 `unknown_04` and a u16
+`unknown_08`; the upper six bytes are `0` because no title has 65,536 code
+units. The sheet loader builds each quest list as `(group, 1)`, `(group,
+2)`, ... for as long as the quest exists.
+
+`unknown_end` has no sheet column and no member in the 2016 PDB's
+`gc::QuestGroupStaticStatus`. The loader sets it to `0`; the only code that
+reads it passes it with LOC type 25 to a lookup that skips `0` and otherwise
+reads an 8-byte entry at `value * 8` of a `Head_LanguageData_` file, the
+same use as the `newquest.bss` group trailer ([`newquest_bss.md`](newquest_bss.md)
+Open Questions). Nothing names it.
+
+The sheet and the private server's own file hold the same 114 groups with
+the same names; client 3474 shares 110 of them, all with the same name.
+
 ## Notes
 
 - Observed decompressed size is `6,038` bytes in the pre-2026-09-27 fixture and `5,918` in the 2026-09-27 client.
@@ -84,7 +105,7 @@ Pre-2026-09-27 fixture:
 - All 504 child quest IDs were found as little-endian `u32` values in the extracted `quest.dbss` sample. All are `allquestlist.bss` entries: 504 of 504 in the pre-2026-09-27 fixture, 474 of 474 in the 2026-09-27 client.
 - Child links are stored as `(group_id, quest_no)` pairs, not as standalone `u32` fields, but the byte representation is identical to the derived `quest_id`.
 - `quest_count` ranges from `0` to `21` in both files. Two groups are empty in the fixture and nine in the 2026-09-27 client, which emptied group `1022` (Sorceress, Beginning of the Journey) among others.
-- `name_len` ranges from `3` to `15` UTF-16 code units.
+- The `name_kr` count ranges from `3` to `15` UTF-16 code units.
 
 ## Open Questions
 

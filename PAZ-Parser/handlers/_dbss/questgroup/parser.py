@@ -15,6 +15,12 @@ def _u32(data: bytes, offset: int) -> int:
     return int.from_bytes(data[offset:offset + 4], "little")
 
 
+def _u64(data: bytes, offset: int) -> int:
+    if offset < 0 or offset + 8 > len(data):
+        raise ValueError(f"u64 read out of bounds at 0x{offset:X}")
+    return int.from_bytes(data[offset:offset + 8], "little")
+
+
 def parse_questgroup_records(data: bytes) -> list[QuestGroupRecord]:
     if len(data) < 4:
         return []
@@ -29,9 +35,8 @@ def parse_questgroup_records(data: bytes) -> list[QuestGroupRecord]:
             raise ValueError(f"questgroup record {row} header exceeds file size")
 
         group_id = _u16(data, offset)
-        name_len = _u16(data, offset + 2)
-        unknown_04 = _u32(data, offset + 4)
-        unknown_08 = _u16(data, offset + 8)
+        # `name_kr` is a str16: a u64 code unit count, then the UTF-16 text.
+        name_len = _u64(data, offset + 2)
         offset += 10
 
         name_end = offset + name_len * 2
@@ -60,8 +65,6 @@ def parse_questgroup_records(data: bytes) -> list[QuestGroupRecord]:
 
         unknown_end = _u32(data, offset)
         offset += 4
-        if unknown_04 != 0 or unknown_08 != 0 or unknown_end != 0:
-            raise ValueError(f"questgroup record {row} has unexpected non-zero padding")
 
         records.append(
             QuestGroupRecord(
@@ -72,6 +75,7 @@ def parse_questgroup_records(data: bytes) -> list[QuestGroupRecord]:
                 name_kr=name_kr,
                 quest_count=quest_count,
                 quests=quests,
+                unknown_end=unknown_end,
             )
         )
 

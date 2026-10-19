@@ -10,6 +10,7 @@ from _bss.stringtable.parser import GAME_SHEET
 from _bss.stringtable.text import ui_hash_text
 from _common.character import character_name
 from _common.html import Column, e, error, icon_html_label_cell, sort_keys, table, text_list_cell
+from _common.item_exchange import exchange_cell, exchange_text
 from _common.item_key import item_count_list_cell, item_count_text, item_key_icon_path, item_key_text, item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
@@ -81,6 +82,7 @@ def _record_fields(record: dict) -> dict:
     return {
         **record,
         "product_name": item_key_text(record["product_item_key"]),
+        "exchange": exchange_text(record["exchange_item_key"]),
         "category_name": _category_name(record["category"]),
         "skill_name": _skill_text(record["skill_key"]),
         # Text forms of the lists, so tab search and CSV export see them.
@@ -136,7 +138,7 @@ class GuildManufactureHandler(PreviewHandler):
                 e(r["product_item_key"]),
                 _product_cell(r["product_item_key"]),
                 e(r["category_name"]),
-                e(r["exchange_item_key"]),
+                exchange_cell(r["exchange_item_key"]),
                 _required_items_cell(_required_items(r["required_item_keys"], r["required_item_counts"])),
                 e(f"{r['time']:,}"),
                 e(f"{r['price']:,}"),

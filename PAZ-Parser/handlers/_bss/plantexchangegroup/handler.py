@@ -6,10 +6,11 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.html import Column, e, sort_keys, table
+from _common.item_exchange import exchange_cell, exchange_text
 from _common.item_key import item_key_list_cell
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import is_loc_loaded
-from _common.production_items import production_item_fields
+from _common.production_items import production_item_fields, production_luck_item_fields
 from _dbss.plantzone.parser import parse_plantzone_records
 from .node_names import english_group_names
 from .parser import parse_plantexchangegroup_records
@@ -38,9 +39,10 @@ class PlantExchangeGroupBssHandler(PreviewHandler):
         return [
             Column(cols["productionKey"], "num", sort_key="production_key"),
             Column(cols["name"], sort_key="name"),
-            Column(cols["itemSubgroup"], "num", sort_key="item_subgroup_key"),
-            # A list column: it would only sort by its string form.
+            Column(cols["exchange"], "num", sort_key="exchange_key"),
+            # List columns: they would only sort by their string form.
             Column(cols["items"]),
+            Column(cols["luckItems"]),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -66,6 +68,9 @@ class PlantExchangeGroupBssHandler(PreviewHandler):
             records.append({
                 **record,
                 **production_item_fields(record["production_key"]),
+                **production_luck_item_fields(record["production_key"]),
+                # The exchange name and key as text, so tab search and CSV export see them.
+                "exchange": exchange_text(record["exchange_key"]),
                 "name_en": name_en,
                 # The Korean label stands in where no English name is unique.
                 "name": name_en or record["name_kr"],
@@ -81,13 +86,17 @@ class PlantExchangeGroupBssHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         resolved = sum(1 for record in records if record["item_keys"] is not None)
-        meta = handler_text(self.lang, _LANG_DIR, "meta.count", count=len(records), resolved=resolved)
+        luck = sum(1 for record in records if record["luck_item_keys"] is not None)
+        meta = handler_text(
+            self.lang, _LANG_DIR, "meta.count", count=len(records), resolved=resolved, luck=luck,
+        )
         rows = [
             [
                 e(record["production_key"]),
                 e(record["name"] or _EMPTY),
-                e(record["item_subgroup_key"]),
+                exchange_cell(record["exchange_key"]),
                 item_key_list_cell(record["item_keys"] or [], _LIST_PREVIEW_ITEMS) or _EMPTY,
+                item_key_list_cell(record["luck_item_keys"] or [], _LIST_PREVIEW_ITEMS) or _EMPTY,
             ]
             for record in slice_
         ]

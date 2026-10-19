@@ -38,7 +38,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | `houseinforeceipeoffset.dbss` | Optional | Index `receipe_key -> (offset, size)`, see below; the handler walks the rows in order and does not load it |
 | `languagedata_en.loc`         | Optional | LOC type 16, `str_id1` = `receipe_key`: the English receipe name                   |
 | `houseinfoneeditem.dbss`      | Optional | Per-level need items, joined by `need_item_key`; see [`houseinfoneeditem.dbss`](houseinfoneeditem_dbss.md) |
-| `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; see [`itemexchangesource.bss`](itemexchangesource_bss.md) |
+| `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; see [`itemexchangesource.bss`](itemexchangesource_bss.md). The handler reads their names from the `EXCHANGE_NAME_KR` lookup index and LOC type 24 (see `docs/handler.md`) and does not open the file |
 
 All multi-byte values are little-endian.
 
@@ -236,11 +236,17 @@ groups line up with the level lists.
   `eHouseUseType` values: the tutorial compares the group type with
   `CppEnums.eHouseUseType.Empty` (`tutorial_phase11_worldmapbuyhouse.lua`).
   `getIconType()` feeds `CppEnums.HouseIconType_*Texture[iconType]`.
-- All 2,405 distinct exchange keys (5002 to 35015, client 3464) appear in
-  `itemexchangesource.bss` as a doubled u32 (`key, key`), the way that file's
-  rows start. The bytes after the doubled key hold material item IDs: 5026
-  (Weapon Workshop level 1) lists 4077 Steel x5, and 8801 (Shipyard level
-  1) lists 4669 Usable Scantling x10 and 4652 Ash Plywood x20.
+- On client 3474 all 2,405 distinct exchange keys (5002 to 35015) are
+  `itemexchangesource.bss` rows: 2,364 NonRecipeCraft, 19 LargeCraft and 22
+  GuildHouseLargeCraft. 5026 (Weapon Workshop level 1) is Azwell Longsword:
+  Steel x5, Pure Copper Crystal x1, Fine Tough Hide x1 and Black Stone
+  Powder x5. 8801 (Shipyard level 1) is Ship License: Rowboat, starting with
+  Usable Scantling x10 and Ash Plywood x20.
+- The Exchanges column shows one line per filled level, each exchange as its
+  name and key (`Azwell Longsword (5026)`) linked to its
+  `itemexchangesource.bss` row; past four per level the rest sit behind a
+  hoverable count. The `exchanges` record field holds the same texts for
+  search and export.
 - LOC type 16 also names 1603 "Chariot Workshop", which has no row on
   client 3464.
 - Rows 50006 and 50007 both carry the Korean name `길드 창고 7단계` and the

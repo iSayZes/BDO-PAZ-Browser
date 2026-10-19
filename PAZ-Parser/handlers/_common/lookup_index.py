@@ -66,8 +66,13 @@ class IndexKind(Enum):
     MENU_ICON_REGION = "menu_icon_region"
     SUBMENU_ICON = "submenu_icon"
     SUBMENU_ICON_REGION = "submenu_icon_region"
-    # Packed item keys a worker production key produces.
+    # Packed item keys a worker production key produces (its exchange's product drop group).
     PRODUCTION_ITEMS = "production_items"
+    # Packed item keys of the luck drop group of a worker production key's exchange.
+    PRODUCTION_LUCK_ITEMS = "production_luck_items"
+    # Korean itemexchangesource.bss name of every exchange key ('' for none), the
+    # fallback for LOC type 24; read through _common/item_exchange.py.
+    EXCHANGE_NAME_KR = "exchange_name_kr"
     # Buff IDs a skill key applies, in slot order (skill.dbss buff_ids).
     SKILL_BUFFS = "skill_buffs"
     # Base item IDs whose skills apply a buff (itemenchant.dbss -> skill.dbss).

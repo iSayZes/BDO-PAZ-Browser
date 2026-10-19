@@ -2,10 +2,11 @@
   "columns": {
     "productionKey": "Clé de production",
     "name": "Nom",
-    "itemSubgroup": "Sous-groupe d'objets",
-    "items": "Objets"
+    "exchange": "Échange",
+    "items": "Objets",
+    "luckItems": "Butin de chance"
   },
   "meta": {
-    "count": "{count} groupes de production · {resolved} avec objets"
+    "count": "{count} groupes de production · {resolved} avec objets · {luck} avec butin de chance"
   }
 }

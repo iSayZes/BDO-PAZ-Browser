@@ -175,13 +175,16 @@ It counts up across consecutive Specialties (MonopolyFarm) node keys: 104-110 (B
 
 ```text
 production_key -> plantexchangegroup.bss production_key (+0x00)
-plantexchangegroup.bss item_subgroup_key (+0x06) -> itemsubgroup.dbss subgroup_key
-itemsubgroup.dbss entries -> item_key & 0xFFFFFF -> item name (LOC type 0)
+plantexchangegroup.bss exchange_key (+0x06) -> itemexchangesource.bss key
+itemexchangesource.bss product_drop_key, luck_drop_key -> itemmaingroup.bss group_id
+itemmaingroup.bss subgroup keys -> itemsubgroup.dbss entries -> item_key & 0xFFFFFF -> item name (LOC type 0)
 ```
 
-Both tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md). The client goes one step further: `+0x06` is an item exchange key, and the items come from that exchange's drop group in [`itemmaingroup.bss`](itemmaingroup_bss.md) (chain and row counts in [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names)). The subgroup reading above matches the client on most zones because the three keys often share one number.
+The tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md), [itemexchangesource_bss.md](itemexchangesource_bss.md), [itemmaingroup_bss.md](itemmaingroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md); row counts for the chain are in [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names). The Produced Items column shows the product drop group, read from the `PRODUCTION_ITEMS` lookup index (see `docs/handler.md`); the `plantexchangegroup.bss` view also shows the luck drops.
 
-Example: zone 2050 (Lumbering) -> production key 1928 -> subgroup 42356 -> Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap. On the 2026-09-27 client 403 of the 439 zones resolve to items; the other 36 reference subgroup keys that are absent from `itemsubgroupoffset.dbss` (358 of 394 in the older fixture, the same 36 unresolved).
+Example: zone 2050 (Lumbering) -> production key 1928 -> exchange 42356 -> product group 42356 -> subgroup 42356 -> Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap. On client 3474 all 439 zones resolve to items, and 370 of them also have a luck drop group with items.
+
+Earlier versions of the handler read `+0x06` as an `itemsubgroup.dbss` key, which left 36 zones without items: their exchange key has no subgroup of the same number. All 36 resolve through the exchange. Zone 2051 `Fish Drying Yard` (production key 1929, exchange 45018) is one of them: the exchange drops group 44064 (4 items) with luck group 41165 (2 items), the 4 items plus 2 lucky drops the zone produces in game.
 
 ## Field Names
 
@@ -203,8 +206,8 @@ The file has no field for `ContentsGroupKey` (10 distinct values in the bexcel).
 - The offset table's `record_id` equals the record payload's first u32 for all records.
 - `worker_species_count` always equals the number of trailing bytes.
 - Every `record_id` is an `exploration.bss` sub-node (`is_sub_node=1`) of a production kind; only three production sub-nodes have no plant zone (1564 Specialties and the disabled `UnKnown` records 1831 and 1839).
-- The reference project reports 425 plant zones with 389 resolving to items; the current client file has 394 zones with 358 resolving, and the same 36 unresolved.
-- Worker output quantities and luck bonus drops are not identified in these tables.
+- The reference project reports 425 plant zones with 389 resolving to items; reading `+0x06` of `plantexchangegroup.bss` as a subgroup key, the client file had 394 zones with 358 resolving, and the same 36 unresolved. The exchange chain resolves all of them (see Production Item Chain).
+- Worker output quantities are not identified in these tables. The luck bonus drops are the luck drop group of the production key's exchange (see Production Item Chain).
 
 ## Open Questions
 
@@ -215,10 +218,6 @@ The file has no field for `ContentsGroupKey` (10 distinct values in the bexcel).
 ### What `max_capacity_level` Controls
 
 It is `1` to `7` only on 19 zones, mostly consecutive Specialties nodes. The client 519 private server loads `MaxCapacityLevel` into `PlantZoneWorkingT` but never reads it back, and the client Lua has no getter for it.
-
-### Unresolved Subgroups
-
-36 zones point at production keys whose subgroup key is missing from `itemsubgroupoffset.dbss`. They are not empty: in game zone 2051 `Fish Drying Yard` (production key 1929, subgroup 45018) produces 4 items plus 2 lucky drops. The key is an item exchange key, and on client 3464 all 36 resolve through the exchange's drop group in `itemmaingroup.bss` (1929: exchange 45018 drops group 44064). The handler resolves them once `itemexchangesource.bss` has a reader; see [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names).
 
 ### What `worker_species` Controls
 

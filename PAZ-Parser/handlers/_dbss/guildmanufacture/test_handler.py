@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import struct
 from dataclasses import replace
+from functools import cache
 from typing import Any
 
 import pytest
@@ -20,6 +21,8 @@ from tests.framework import (
     run_case,
 )
 
+from _bss.itemexchangesource.parser import build_exchange_name_kr_index, parse_itemexchangesource_records
+from _common.lookup_index import IndexKind
 from _common.pabr_offset import parse_bare_u32_offset_rows
 from _common.skill import skill_key, split_skill_key
 from .parser import FILE_NAME, OFFSET_FILE, REQUIRED_ITEM_SLOTS, parse_guildmanufacture_records
@@ -40,6 +43,14 @@ _MAX_CATEGORY = 3
 _GALLEY_LICENSE = 49008
 _BUILDING_BOAT_1 = skill_key(65042, 1)
 _VELIA_GUILD_HOUSE = 2110
+# Guild Crafting exchanges are itemexchangesource.bss rows of this type (GuildHouseLargeCraft).
+_GUILD_HOUSE_LARGE_CRAFT = 8
+
+
+@cache
+def _exchange_names() -> dict[int, str]:
+    """`EXCHANGE_NAME_KR` built from the installed table, the way the app builds it."""
+    return build_exchange_name_kr_index(load_binary_fixture("itemexchangesource.bss"))
 
 
 CASE = HandlerCase(
@@ -50,9 +61,10 @@ CASE = HandlerCase(
     uses_loc=True,
     loc_fields=["product_name"],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
+    lookup_indexes={IndexKind.EXCHANGE_NAME_KR: _exchange_names},
     tests=[
         SchemaTest(required_keys=[
-            "product_item_key", "exchange_item_key", "product_item_key_dup", "time", "price",
+            "product_item_key", "exchange_item_key", "exchange", "product_item_key_dup", "time", "price",
             "product_item_limit", "required_item_keys", "required_item_counts", "category",
             "guild_house_count", "guild_house_keys", "skill_key", "product_name", "category_name",
             "skill_name", "required_items", "guild_house_names",
@@ -140,6 +152,22 @@ def test_guild_houses_are_sorted_and_skill_is_level_one(guild_manufacture_result
 def test_galley_license_needs_a_velia_guild_house(guild_manufacture_result: HandlerResult) -> None:
     galley = next(r for r in guild_manufacture_result.records if r["product_item_key"] == _GALLEY_LICENSE)
     assert _VELIA_GUILD_HOUSE in galley["guild_house_keys"]
+
+
+def test_every_exchange_key_is_a_guild_house_large_craft_row(guild_manufacture_result: HandlerResult) -> None:
+    exchange_types = {
+        exchange.key: exchange.exchange_type
+        for exchange in parse_itemexchangesource_records(load_binary_fixture("itemexchangesource.bss"))
+    }
+    for r in guild_manufacture_result.records:
+        assert exchange_types.get(r["exchange_item_key"]) == _GUILD_HOUSE_LARGE_CRAFT, r["product_item_key"]
+
+
+def test_exchange_text_names_the_exchange(guild_manufacture_result: HandlerResult) -> None:
+    """With LOC loaded every exchange shows a name before its key."""
+    for r in guild_manufacture_result.records:
+        key_suffix = f" ({r['exchange_item_key']})"
+        assert r["exchange"].endswith(key_suffix) and len(r["exchange"]) > len(key_suffix), r["product_item_key"]
 
 
 def test_offset_rows_point_past_the_product_key() -> None:

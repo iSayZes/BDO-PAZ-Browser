@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Worker production groups. Each row is one production key: `plantzone.dbss` points at it from `production_key`, and the row links to the `itemsubgroup.dbss` subgroup that lists the items the node produces. Each row also carries a Korean label of the form "node - work type".
+Worker production groups. Each row is one production key: `plantzone.dbss` points at it from `production_key`, and the row names the [`itemexchangesource.bss`](itemexchangesource_bss.md) exchange the node works, whose product and luck drop groups list the items it produces. Each row also carries a Korean label of the form "node - work type".
 
 The row size and the join fields match [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, "Worker-production item tables"), which leaves the `+0x5A` tail unmapped; it is the label's string table index.
 
@@ -32,7 +32,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | `plantzoneoffset.dbss` | Optional | Index into `plantzone.dbss`                                       |
 | `languagedata_en.loc`  | Optional | Node names (LOC type 29) and item names (LOC type 0)              |
 
-Each zone's parent node comes from the `NODE_PARENT` lookup index (see `docs/handler.md`), built from `exploration.bss` and the worldmap links, so the preview opens no worldmap companion. The subgroup key is resolved through [`itemsubgroup.dbss`](itemsubgroup_dbss.md); the preview reads those items from the `PRODUCTION_ITEMS` lookup index (see `docs/handler.md`) instead of opening the 13 MB table as a companion.
+Each zone's parent node comes from the `NODE_PARENT` lookup index (see `docs/handler.md`), built from `exploration.bss` and the worldmap links, so the preview opens no worldmap companion. The exchange key is resolved through [`itemexchangesource.bss`](itemexchangesource_bss.md), [`itemmaingroup.bss`](itemmaingroup_bss.md) and [`itemsubgroup.dbss`](itemsubgroup_dbss.md) (see Field Names); the preview reads the items from the `PRODUCTION_ITEMS` and `PRODUCTION_LUCK_ITEMS` lookup indexes and the exchange name from `EXCHANGE_NAME_KR` (see `docs/handler.md`) instead of opening the 3 MB and 13 MB tables as companions.
 
 All multi-byte values are little-endian unless noted otherwise.
 
@@ -60,7 +60,7 @@ Rows are not sorted by key; the file opens with key 1775 and ends with keys 1, 3
 | `+0x00` | u16       | production_key     | Join from `plantzone.dbss` `production_key`; unique, observed `1`-`2044` |
 | `+0x02` | u16       | unknown_02         | Equals `production_key` on all 403 rows                                  |
 | `+0x04` | u16       | unknown_04         | Always `0`                                                              |
-| `+0x06` | u32       | item_subgroup_key  | First `itemexchangesource.bss` key, read as an `itemsubgroup.dbss` key; observed `40001`-`45019`, see Field Names |
+| `+0x06` | u32       | exchange_key       | First item exchange key, an `itemexchangesource.bss` row; observed `40001`-`45019`, see Field Names |
 | `+0x0A` | bytes[80] | unknown_0a         | Always all zero; exchange key slots 2 to 21, see Field Names            |
 | `+0x5A` | u32       | name_ref           | String table index of the Korean group label; unaligned                 |
 
@@ -86,13 +86,13 @@ Layout 2.
 | `+0x00` | u16       | production_key    |                                         |
 | `+0x02` | u16       | unknown_02        | Equals `production_key` on client 1784  |
 | `+0x04` | u16       | unknown_04        | Always `0` on client 1784               |
-| `+0x06` | u32       | item_subgroup_key |                                         |
+| `+0x06` | u32       | exchange_key      |                                         |
 | `+0x0A` | bytes[38] | unknown_0a        | Always all zero on client 1784          |
 | `+0x30` | u32       | name_ref          | String table index of the Korean group label |
 
-## `item_subgroup_key` Values
+## `exchange_key` Values
 
-401 of the 403 subgroup keys are distinct; 42170 is shared by keys 1541 and 1542, 43165 by 1505 and 1930. The thousands band loosely follows the work type of the label, but every band holds exceptions, so it is not a rule:
+On client 3474, 401 of the 403 exchange keys are distinct; 42170 is shared by keys 1541 and 1542, 43165 by 1505 and 1930. Every one is an `itemexchangesource.bss` row of `exchange_type` 4 (Plant). The thousands band loosely follows the work type of the label, but every band holds exceptions, so it is not a rule:
 
 | Band    | Mostly                                      |
 | ------- | ------------------------------------------- |
@@ -101,9 +101,9 @@ Layout 2.
 | `42xxx` | Lumbering (벌목)                            |
 | `43xxx` | Gathering (채집)                            |
 | `44xxx` | Excavation, drying yards, finance, specialties |
-| `45xxx` | Keys 1929 (통발) and 1931 (발굴), both missing from the index |
+| `45xxx` | Keys 1929 (통발) and 1931 (발굴)               |
 
-37 subgroup keys are absent from `itemsubgroupoffset.dbss`. 36 of them are the unresolved `plantzone.dbss` zones (see its Open Questions); the 37th is subgroup 45019 of key 1931, which no zone uses.
+The exchange key, its product drop group and that group's subgroup often share one number, but not always: 37 exchange keys have no `itemsubgroup.dbss` subgroup of the same number (client 3474). 36 of them are the exchanges of the 36 `plantzone.dbss` zones that showed no items while the handler read `+0x06` as a subgroup key; the 37th is exchange 45019 of key 1931, which no zone uses. All 37 have a product drop group.
 
 ## English Names
 
@@ -128,21 +128,24 @@ Every one of the 439 zones is an `exploration.bss` sub-node with exactly one wor
 
 The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::PlantExchangeGroupStaticStatus` holds `_key`, `_isBlockedNpcWork`, `_name` and `_exchangeKeyGroup`, an array of 21 item exchange keys. The server-side `PlantExchangeGroup_Table` of a private server on client 519 has the columns `Index`, `ExchangeGroupName`, `ExchangeKey_0` to `ExchangeKey_20` and `ContentsGroupKey`. It shares 273 production keys with client 3464; on 265 of them `ExchangeKey_0` equals `+0x06`, no other exchange key is set, and `ExchangeGroupName` equals the Korean label. `+0x06` and the 80 zero bytes after it are 21 u32 slots, so `+0x06` is the first exchange key.
 
-The exchange key is the key of an `itemexchangesource.bss` row (`gc::ItemExchangeSourceStaticStatus`, server `ItemExchangeSource`), not an item subgroup. That struct holds `_productItemDropKey` and `_npcWorkerDropKeyForLuck`, both keys of [`itemmaingroup.bss`](itemmaingroup_bss.md) groups, and each group lists the subgroups. The client chain is:
+The exchange key is the key of an [`itemexchangesource.bss`](itemexchangesource_bss.md) row (`gc::ItemExchangeSourceStaticStatus`, server `ItemExchangeSource`), not an item subgroup. That struct holds `_productItemDropKey` and `_npcWorkerDropKeyForLuck` (`product_drop_key` and `luck_drop_key` in the reader), both keys of [`itemmaingroup.bss`](itemmaingroup_bss.md) groups, and each group lists the subgroups. The client chain, which the handler follows, is:
 
 ```text
-production_key -> exchange key (+0x06)
-  -> itemexchangesource.bss row -> product drop key, luck drop key
+production_key -> exchange_key (+0x06)
+  -> itemexchangesource.bss row -> product_drop_key, luck_drop_key
   -> itemmaingroup.bss group -> itemsubgroup.dbss subgroups -> items
+1928 -> exchange 42356 -> product group 42356 (Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap), luck group 44961
 ```
 
-The handler reads `+0x06` as a subgroup key. That gives the right items on most rows because the exchange key, its drop group and the group's subgroup often share one number (exchange 1928's key 42356 drops group 42356, which lists subgroup 42356). In client 3464's `itemexchangesource.bss` the product drop key of a worker row is the u32 at row `+0x55` and the luck drop key the u32 at `+0x59` (42356: `42356`, `44961`). Reading those two (found by the doubled-key row head, not by a full reader) gives:
+Earlier versions of the handler read `+0x06` as an `itemsubgroup.dbss` key. That gave the right items on most rows because the exchange key, its drop group and the group's subgroup often share one number, as for 1928 above. On client 3474 the chain changes this against the subgroup reading:
 
-| Rows (client 3464) | Effect of the full chain                                                   |
+| Rows (client 3474) | Effect of the chain                                                        |
 | ------------------ | -------------------------------------------------------------------------- |
-| 37                 | Resolve where the subgroup reading finds nothing: all 36 unresolved zones and key 1931 |
-| 18                 | Get other items: 1899 "Neruda Plain - Lumbering" shows Coal today and drops Acacia Timber; 12, 22 and 23 (Excavation) drop group 44013, 44023 and 44025 instead of subgroup 44012, 44022 and 44023 |
-| 335                | Gain a luck drop group                                                     |
-| 25                 | Resolve as well: the Investment Bank rows (keys 901 to 936, 1689, 1690) looked different to the row-head search, but the [`itemexchangesource.bss`](itemexchangesource_bss.md) reader reads them with the same layout, and on client 3474 all 403 exchange keys have a product drop group |
+| 37                 | Gain items where the subgroup reading found none: the 36 zones of `plantzone.dbss` Open Questions and key 1931 |
+| 18                 | Get other items: 1899 "Neruda Plain - Lumbering" (exchange 42194) showed Coal and drops Acacia Timber; 12, 22 and 23 (Excavation) drop group 44013, 44023 and 44025 instead of subgroup 44012, 44022 and 44023 |
+| 348                | Keep the same items                                                        |
+| 335                | Gain a luck drop group with items                                          |
 
-`+0x02` (equal to `production_key`) and `+0x04` keep their offsets: `+0x04` is `0` on every row while the server's `ContentsGroupKey` is set on 194 of the shared rows. Switching the handler to the full chain needs a reader for `itemexchangesource.bss` first.
+All 403 exchange keys have a product drop group with items, the Investment Bank rows (keys 901 to 936, 1689, 1690) included. The preview shows the exchange name and links it to its `itemexchangesource.bss` row, then the product items and the luck items.
+
+`+0x02` (equal to `production_key`) and `+0x04` keep their offsets: `+0x04` is `0` on every row while the server's `ContentsGroupKey` is set on 194 of the shared rows.

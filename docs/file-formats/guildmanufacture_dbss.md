@@ -37,7 +37,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | File                          | Required | Role                                                                 |
 | ----------------------------- | -------- | -------------------------------------------------------------------- |
 | `guildmanufactureoffset.dbss` | Optional | `product_item_key -> (data_offset, data_size)` index; the rows carry their own counts and can be walked without it |
-| `languagedata_en.loc`         | Optional | Item names (type `0`), guild skill names (type `10`), guild house names (type `6`) and the category titles (type `37`, `GAME` sheet) |
+| `languagedata_en.loc`         | Optional | Item names (type `0`), guild skill names (type `10`), guild house names (type `6`), exchange names (type `24`) and the category titles (type `37`, `GAME` sheet) |
+| `itemexchangesource.bss`      | Optional | The exchange each row names. The handler reads the exchange name from the `EXCHANGE_NAME_KR` lookup index (see `docs/handler.md`), shows `[Guild] Ship License: Galley (7901)` in the Exchange Key column and links it to the exchange's row; it does not open the file |
 
 All multi-byte values are little-endian.
 
@@ -55,7 +56,7 @@ All multi-byte values are little-endian.
 | Offset                  | Type                   | Field                | Notes                                                        |
 | ----------------------- | ---------------------- | -------------------- | ------------------------------------------------------------ |
 | `+0x00`                 | u32                    | product_item_key     | Item key (`enchant_level << 24 \| item_id`) of the product; the index key, unique per row |
-| `+0x04`                 | u32                    | exchange_item_key    | `itemexchangesource.bss` key the product slot's tooltip reads (`getExchangeKey()`); `7901` to `7932` and `9773` to `9776` on client 3474 |
+| `+0x04`                 | u32                    | exchange_item_key    | [`itemexchangesource.bss`](itemexchangesource_bss.md) key the product slot's tooltip reads (`getExchangeKey()`); `7901` to `7932` and `9773` to `9776` on client 3474, all 16 `exchange_type` 8 (GuildHouseLargeCraft) rows |
 | `+0x08`                 | u32                    | product_item_key_dup | Equal to `product_item_key` in every row                     |
 | `+0x0C`                 | u64                    | time                 | `43200`, `72000` or `86400` on client 3474; the unit is an In-Game Check |
 | `+0x14`                 | u64                    | price                | `10000` in every row of clients 1784 and 3474; see Open Questions |

@@ -1044,6 +1044,7 @@ _common/
 ├── pabr_offset.py       # offset companions: u8, u16 or u32 keys, with or without PABR magic
 ├── prefixed_string.py   # length-prefixed strings: strict and lenient readers
 ├── inline_text.py       # decode_inline_text(): the stored \n escape of inline text
+├── item_exchange.py     # itemexchangesource.bss keys: LOC type 24 names, links to the row (EXCHANGE_NAME_KR)
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
 ├── knowledge.py         # knowledge entry names (LOC type 34)
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
@@ -1265,7 +1266,8 @@ IDs (`LookupValue`).
 | `WORLDMAP_MARKER_ICON` | `worldmapmonster.dbss`, `worldmapmonsteroffset.dbss` | icon path |
 | `MENU_ICON`, `SUBMENU_ICON` | `menu.bss`, `submenu.bss`       | sprite sheet path |
 | `MENU_ICON_REGION`, `SUBMENU_ICON_REGION` | `menu.bss`, `submenu.bss` | `(x1, y1, x2, y2)` |
-| `PRODUCTION_ITEMS` | `plantexchangegroup.bss`, `itemsubgroup.dbss`, `itemsubgroupoffset.dbss` | item keys (tuple) |
+| `PRODUCTION_ITEMS`, `PRODUCTION_LUCK_ITEMS` | `plantexchangegroup.bss`, `itemexchangesource.bss`, `itemmaingroup.bss`, `itemsubgroup.dbss`, `itemsubgroupoffset.dbss` | item keys (tuple) |
+| `EXCHANGE_NAME_KR` | `itemexchangesource.bss`                 | Korean name, `''` for none |
 | `SKILL_BUFFS`    | `skill.dbss`, `skilloffset.dbss`           | buff IDs (tuple) |
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
@@ -1417,19 +1419,43 @@ of them changes an icon an existing table shows:
   The `menu.bss` and `submenu.bss` tables show them with `sprite_icon_cell()`.
 
 `PRODUCTION_ITEMS` maps a worker production key to the packed item keys
-(`enchant_level << 24 | item_id`) of its
-[itemsubgroup.dbss](file-formats/itemsubgroup_dbss.md) subgroup, through the
-subgroup key in [plantexchangegroup.bss](file-formats/plantexchangegroup_bss.md).
-Only the few hundred production subgroups are read, so no table needs the
-13 MB `itemsubgroup.dbss` as a companion to show production items. Production
-keys whose subgroup is missing from `itemsubgroupoffset.dbss` are left out.
-It is built by `build_production_item_index()` in
-`_bss/plantexchangegroup/parser.py`. Read it through `production_item_keys()`
-in `_common/production_items.py`, or through `production_item_fields()`
-there, which adds the `item_keys` and `items`
-record fields (names from `item_key_text()` in `_common/item_key.py`). The
-`plantexchangegroup.bss` Items column and the `plantzone.dbss` Produced Items
-column read it that way.
+(`enchant_level << 24 | item_id`) of its exchange's product drop group:
+the `exchange_key` in
+[plantexchangegroup.bss](file-formats/plantexchangegroup_bss.md) is an
+[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) row, whose
+`product_drop_key` is an [itemmaingroup.bss](file-formats/itemmaingroup_bss.md)
+group, whose subgroups list the items in
+[itemsubgroup.dbss](file-formats/itemsubgroup_dbss.md).
+`PRODUCTION_LUCK_ITEMS` does the same for the exchange's `luck_drop_key`.
+Only the few hundred production exchanges and their groups are kept, so no
+table needs the 3 MB `itemexchangesource.bss` or the 13 MB
+`itemsubgroup.dbss` as a companion to show production items. Production keys
+whose exchange or group has no items are left out: on client 3474 that leaves
+403 of the 403 keys in `PRODUCTION_ITEMS` and 335 in `PRODUCTION_LUCK_ITEMS`.
+They are built by `build_production_item_index()` and
+`build_production_luck_item_index()` in `_bss/plantexchangegroup/parser.py`,
+which load the groups with `load_drop_groups()` from
+`_bss/itemmaingroup/drop_groups.py`. Read them through
+`production_item_keys()` and `production_luck_item_keys()` in
+`_common/production_items.py`, or through `production_item_fields()` and
+`production_luck_item_fields()` there, which add the `item_keys` and `items`
+(or `luck_item_keys` and `luck_items`) record fields (names from
+`item_key_text()` in `_common/item_key.py`). The `plantexchangegroup.bss`
+Items and Luck Drops columns and the `plantzone.dbss` Produced Items column
+read them that way.
+
+`EXCHANGE_NAME_KR` maps every
+[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) key to its
+Korean name, `''` for the rows without one, so it also tells which keys have
+a row. It is built by `build_exchange_name_kr_index()` in
+`_bss/itemexchangesource/parser.py`. Read it through `_common/item_exchange.py`:
+`exchange_name(key)` gives the LOC type 24 name, else the Korean name;
+`exchange_text(key)` gives `Azwell Longsword (5026)`, or the bare key without
+a name; `exchange_cell(key)` links that text to the exchange's row when the
+index holds the key; `exchange_list_cell(keys, max_items)` draws a list of
+them with a hoverable count. The `plantexchangegroup.bss` Exchange column,
+the `houseinforeceipe.dbss` Exchanges column and the `guildmanufacture.dbss`
+Exchange Key column use them.
 
 `SKILL_BUFFS` and `BUFF_ITEMS` are the item to buff link. An item's
 `itemenchant.dbss` skill keys name [skill.dbss](file-formats/skill_dbss.md)

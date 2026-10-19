@@ -1,4 +1,4 @@
-"""houseinforeceipe.dbss preview handler: house uses with their per-level exchange keys."""
+"""houseinforeceipe.dbss preview handler: house uses with their per-level item exchanges."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -7,7 +7,8 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.enum_name import enum_name
-from _common.html import Column, e, html_list_cell, record_link, sort_keys, table, text_list_cell
+from _common.html import Column, e, html_list_cell, record_link, sort_keys, table
+from _common.item_exchange import exchange_list_cell, exchange_text
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_text
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
@@ -21,8 +22,8 @@ _LOC_TYPE_RECEIPE = 16
 _EMPTY = "-"
 _HOUSEINFONEEDITEM = "gamecommondata/binary/houseinfoneeditem.dbss"
 _LINK_CLASS = "record-link"
-# Exchange keys shown per level line; the rest go behind a hoverable count.
-_KEYS_PER_LEVEL = 8
+# Exchanges shown per level line; the rest go behind a hoverable count.
+_KEYS_PER_LEVEL = 4
 
 
 def house_info_receipe_offset_handler() -> OffsetTableHandler:
@@ -39,7 +40,7 @@ def house_info_receipe_offset_handler() -> OffsetTableHandler:
 
 def _with_display_fields(record: dict) -> dict:
     """The record with its name in the user language (else Korean), its enum
-    names, its filled level count and its exchange key count."""
+    names, its filled level count, its exchange key count and its exchange names."""
     levels = record["level_exchanges"]
     exchange_count = sum(len(keys) for keys in levels)
     return {
@@ -50,6 +51,8 @@ def _with_display_fields(record: dict) -> dict:
         "level_count": sum(1 for keys in levels if keys),
         # None on a use with no exchanges, so its "-" cell sorts last.
         "exchange_count": exchange_count or None,
+        # `Azwell Longsword (5026)` per key, level by level, so tab search and CSV export see them.
+        "exchanges": [exchange_text(key) for keys in levels for key in keys],
     }
 
 
@@ -78,10 +81,10 @@ class HouseInfoReceipeHandler(PreviewHandler):
         return [_with_display_fields(record) for record in parse_houseinforeceipe_records(data)]
 
     def _exchanges_cell(self, levels: list[list[int]]) -> str:
-        """One line per filled level: its label and its exchange keys."""
+        """One line per filled level: its label and its exchanges, each linked to its row."""
         lines = [
             f"{e(handler_text(self.lang, _LANG_DIR, 'cells.level', level=level))} "
-            f"{text_list_cell(keys, _KEYS_PER_LEVEL)}"
+            f"{exchange_list_cell(keys, _KEYS_PER_LEVEL)}"
             for level, keys in enumerate(levels, start=1)
             if keys
         ]

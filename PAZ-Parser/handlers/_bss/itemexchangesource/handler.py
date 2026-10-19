@@ -11,6 +11,7 @@ from _common.character import character_name
 from _common.contents_group import contents_group_key, contents_groups_text
 from _common.enum_name import enum_name
 from _common.html import Column, e, error, icon_label_cell, sort_keys, table
+from _common.item_exchange import LOC_EXCHANGE, LOC_EXCHANGE_DESCRIPTION, LOC_EXCHANGE_NAME
 from _common.item_key import item_count_list_cell, item_count_text, item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_tagged, loc_text
@@ -21,10 +22,6 @@ from .enums import EXCHANGE_TYPE_NAMES, NO_WORK_ANI_TYPE, PRODUCT_CATEGORY_NAMES
 from .parser import FILE_NAME, ItemExchange, parse_itemexchangesource_records
 
 _LANG_DIR = Path(__file__).parent / "lang"
-# LOC type 24: exchange name (str_id4 0) and description (1), keyed by the exchange key.
-_LOC_EXCHANGE = 24
-_LOC_NAME = 0
-_LOC_DESCRIPTION = 1
 _MS_PER_WORKLOAD = 1000
 _NO_FIRST_WORKING_INDEX = -1
 _EMPTY = "-"
@@ -101,12 +98,12 @@ def _record_fields(exchange: ItemExchange, groups: DropGroups) -> dict:
     luck = _drop_fields("luck", exchange.luck_drop_key, groups)
     return {
         "key": exchange.key,
-        "name": loc_text(_LOC_EXCHANGE, exchange.key, _LOC_NAME) or exchange.description_kr or None,
+        "name": loc_text(LOC_EXCHANGE, exchange.key, LOC_EXCHANGE_NAME) or exchange.description_kr or None,
         "icon_path": ui_texture_path(exchange.icon_path, UI_TEXTURE_ICON_ROOT),
         "description_kr": exchange.description_kr,
         **pa_fields(
             "detail_description",
-            loc_tagged(_LOC_EXCHANGE, exchange.key, _LOC_DESCRIPTION) or exchange.detail_description_kr,
+            loc_tagged(LOC_EXCHANGE, exchange.key, LOC_EXCHANGE_DESCRIPTION) or exchange.detail_description_kr,
         ),
         "detail_description_kr": exchange.detail_description_kr,
         "exchange_type": exchange.exchange_type,

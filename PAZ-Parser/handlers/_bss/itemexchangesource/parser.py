@@ -95,6 +95,15 @@ def parse_itemexchangesource_records(data: bytes) -> list[ItemExchange]:
     return rows
 
 
+def build_exchange_name_kr_index(data: bytes) -> dict[int, str]:
+    """The `EXCHANGE_NAME_KR` index: every exchange key to its Korean name, '' when it has none.
+
+    Every row is kept, so the index also tells which keys have a row to link to.
+    Read it through `_common/item_exchange.py`.
+    """
+    return {exchange.key: exchange.description_kr for exchange in parse_itemexchangesource_records(data)}
+
+
 def _read_row(reader: RecordReader, strings: list[str]) -> ItemExchange:
     key, key_dup, unknown_08, exchange_type, material_count = reader.unpack(_HEAD)
     if key_dup != key:

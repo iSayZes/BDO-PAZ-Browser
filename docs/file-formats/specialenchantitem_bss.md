@@ -19,9 +19,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------------ | ------- | -------------------- | --------- |
 | 1      | 1784 and later | 3474    | `specialenchantitem.bss` | 174,941 | 3,081 Item Level Row | 19        |
 
-| Layout | File                     | Known             | Unknown          |
-| ------ | ------------------------ | ----------------- | ---------------- |
-| 1      | `specialenchantitem.bss` | 156,455 B (89.4%) | 18,486 B (10.6%) |
+| Layout | File                     | Known             | Unknown         |
+| ------ | ------------------------ | ----------------- | --------------- |
+| 1      | `specialenchantitem.bss` | 159,536 B (91.2%) | 15,405 B (8.8%) |
 
 <!-- versions:end -->
 
@@ -63,9 +63,9 @@ Fields are unaligned.
 | `+0x04` | u8       | display_level | The level the client shows, on the weapon scale; see Display Level below |
 | `+0x05` | u32      | icon_ref      | String table index of the icon path; never empty                         |
 | `+0x09` | u32      | name_ref      | String table index of the Korean name; never empty                       |
-| `+0x0D` | bytes[4] | unknown_0d    | Always `0`                                                               |
+| `+0x0D` | u32      | unknown_0d    | Always `0`; see Field Names                                              |
 | `+0x11` | u8       | unknown_11    | `1` in 2,481 rows; the same in every row of one item, see Open Questions |
-| `+0x12` | u8       | unknown_12    | `1` in 2,409 rows; the same in every row of one item, see Open Questions |
+| `+0x12` | u8       | family_name_exception | `1` in 2,409 rows; the same in every row of one item, see Field Names |
 
 ### String Table (variable: 4 bytes + strings)
 
@@ -78,6 +78,33 @@ values are stored once, so levels that keep an icon point at the same entry.
 | ------- | ------------------ | ------------ | -------------------- |
 | `+0x00` | u32                | string_count | 3,253 on client 3458 |
 | `+0x04` | pstr[string_count] | strings      | Shared PABR entries  |
+
+## Field Names
+
+The rows are the `Enchant_Special` sheet of a private server on client
+1784 (`datasheet_enchantdatatable_new.xlsm`: `ItemKey`, `Enchant`,
+`EnchantImage`, `ItemName`, `ItemIcon`, `FamilyNameException`). That
+server's dump (`Instance_dumpFull.exe`) loads the sheet (loader at VA
+`0x140a397e0`) into a struct holding the packed `Enchant << 24 | ItemKey`, a
+u32 with no column set to `0`, `EnchantImage` as a u8, `FamilyNameException`
+as a u8 and a u8 with no column set to `0`. The server has no reader for the
+client file, and the row does not keep that member order (`display_level` is
+`EnchantImage` at `+0x04`), so the names below rest on the data.
+
+`+0x12` is `family_name_exception`. Between client 1485 and 1784 the row
+grew by exactly that byte, together with the new sheet column: the 1485
+server loads no `FamilyNameException` and its rows are 18 bytes. On client
+1784 the byte equals the column on all 1,020 rows (852 `1`, 168 `0`). The
+column's Korean comment says that enhancing gear to V (PEN) engraves the
+crafter's family name when the item is not bound (`VestedType` `0`), and
+that `1` turns the engraving off even on success; it was added so Fallen
+God's Armor, which reaches V at +5 like an accessory, does not take the
+buyer's name after a sale. The 1784 server reads it after looking up the
+item (VA `0x1414e7e54`) and skips the following block when it is set.
+
+`unknown_0d` and `unknown_11` match the struct's two members with no column
+by width. Both loaders (1485 and 1784) set them to `0` and no read of either
+was found, so nothing names them.
 
 ## Display Level
 
@@ -128,7 +155,7 @@ Mareca`), 219 rows each on client 3458.
   `ui_texture/icon/` and lowercased, as for `itemenchant.dbss`.
 - The 551 items fall into four shapes on client 3458:
 
-  | Rows per item | Items | `enchant_level` | `display_level`             | `unknown_11`, `unknown_12` | Example                        |
+  | Rows per item | Items | `enchant_level` | `display_level`             | `unknown_11`, `family_name_exception` | Example             |
   | ------------- | ----- | --------------- | --------------------------- | -------------------------- | ------------------------------ |
   | 1             | 292   | 20              | 20                          | 0, 0                       | Earthshaking Nouver Shuriken   |
   | 6             | 12    | 0 to 5          | 20 at every level           | 1, 0                       | Dahn's Gloves (930905)         |
@@ -141,12 +168,17 @@ Mareca`), 219 rows each on client 3458.
 
 ## Open Questions
 
-### What do `unknown_11` and `unknown_12` mark?
+### What does `unknown_11` mark, and why do Fallen God's Armor rows differ?
 
-Both are per-item flags. On client 3458 `unknown_11` is `1` on exactly the
-items whose name changes between their levels (231 items; the 28 Preonne-style
-items keep one name and store `0`, and the 292 single-row items cannot vary),
-and `unknown_12` is `1` on exactly the items whose display level jumps to the
-grade scale (0, then 16 to 25). The client Lua names `isSpecialEnchantItem` and
-`isSpecialAccessory` next to the display level call, but neither is shown to
-read this file, so the correlations are not yet a meaning.
+Both bytes are per-item flags. On client 3458 `unknown_11` is `1` on exactly
+the items whose name changes between their levels (231 items; the 28
+Preonne-style items keep one name and store `0`, and the 292 single-row
+items cannot vary), and `family_name_exception` is `1` on exactly the items
+whose display level jumps to the grade scale (0, then 16 to 25). On client
+1784 `unknown_11` is `0` on every row, and the four Fallen God's Armor items
+(719897, 719898, 719899, 719955) store `family_name_exception` `1`; on
+client 3474 they store `unknown_11` `1` and `family_name_exception` `0`. The
+1784 sheet comment names Fallen God's Armor as the reason for the column, so
+either the rule for those items changed or `unknown_11` took over part of
+it. The client Lua names `isSpecialEnchantItem` and `isSpecialAccessory`
+next to the display level call, but neither is shown to read this file.

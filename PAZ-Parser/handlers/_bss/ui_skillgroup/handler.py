@@ -44,7 +44,7 @@ def _cell_dict(
     keys = group_keys.get(cell.group_no, ())
     # The group's first rank names the skill window entry.
     skill_no = split_skill_key(keys[0])[0] if keys else None
-    column_index = card_column(cell.row, grid.height)
+    column_index = card_column(cell.column, grid.width)
     return {
         "class_type": grid.class_type,
         "class": grid_class_name,

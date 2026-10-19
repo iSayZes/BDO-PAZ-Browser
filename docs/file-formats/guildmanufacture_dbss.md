@@ -38,7 +38,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ----------------------------- | -------- | -------------------------------------------------------------------- |
 | `guildmanufactureoffset.dbss` | Optional | `product_item_key -> (data_offset, data_size)` index; the rows carry their own counts and can be walked without it |
 | `languagedata_en.loc`         | Optional | Item names (type `0`), guild skill names (type `10`), guild house names (type `6`), exchange names (type `24`) and the category titles (type `37`, `GAME` sheet) |
-| `itemexchangesource.bss`      | Optional | The exchange each row names. The handler reads the exchange name from the `EXCHANGE_NAME_KR` lookup index (see `docs/handler.md`), shows `[Guild] Ship License: Galley (7901)` in the Exchange Key column and links it to the exchange's row; it does not open the file |
+| `itemexchangesource.bss`      | Optional | The exchange each row names. The handler reads the exchange name from the `EXCHANGE_NAME_KR` lookup index (see `docs/handler.md`), shows `[Guild] Ship License: Galley (7901)` in the Exchange column and links it to the exchange's row; it does not open the file |
 
 All multi-byte values are little-endian.
 

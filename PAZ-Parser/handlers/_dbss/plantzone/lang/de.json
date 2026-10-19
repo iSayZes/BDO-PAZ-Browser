@@ -9,9 +9,10 @@
     "nodeName": "Postenname",
     "workAnimation": "Arbeitsanimation",
     "productionKey": "Produktionsschlüssel",
-    "producedItems": "Erzeugte Gegenstände"
+    "producedItems": "Erzeugte Gegenstände",
+    "luckItems": "Glücksfunde"
   },
   "meta": {
-    "count": "{count} Produktionsposten · {resolved} mit Gegenständen"
+    "count": "{count} Produktionsposten · {resolved} mit Gegenständen · {luck} mit Glücksfunden"
   }
 }

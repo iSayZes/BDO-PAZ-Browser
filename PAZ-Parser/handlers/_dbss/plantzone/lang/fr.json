@@ -9,9 +9,10 @@
     "nodeName": "Nom de géopoint",
     "workAnimation": "Animation de travail",
     "productionKey": "Clé de production",
-    "producedItems": "Objets produits"
+    "producedItems": "Objets produits",
+    "luckItems": "Butin de chance"
   },
   "meta": {
-    "count": "{count} géopoints de production · {resolved} avec objets"
+    "count": "{count} géopoints de production · {resolved} avec objets · {luck} avec butin de chance"
   }
 }

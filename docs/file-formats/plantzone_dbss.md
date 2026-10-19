@@ -180,7 +180,7 @@ itemexchangesource.bss product_drop_key, luck_drop_key -> itemmaingroup.bss grou
 itemmaingroup.bss subgroup keys -> itemsubgroup.dbss entries -> item_key & 0xFFFFFF -> item name (LOC type 0)
 ```
 
-The tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md), [itemexchangesource_bss.md](itemexchangesource_bss.md), [itemmaingroup_bss.md](itemmaingroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md); row counts for the chain are in [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names). The Produced Items column shows the product drop group, read from the `PRODUCTION_ITEMS` lookup index (see `docs/handler.md`); the `plantexchangegroup.bss` view also shows the luck drops.
+The tables are documented in [plantexchangegroup_bss.md](plantexchangegroup_bss.md), [itemexchangesource_bss.md](itemexchangesource_bss.md), [itemmaingroup_bss.md](itemmaingroup_bss.md) and [itemsubgroup_dbss.md](itemsubgroup_dbss.md); row counts for the chain are in [`plantexchangegroup.bss` Field Names](plantexchangegroup_bss.md#field-names). The Produced Items column shows the product drop group, read from the `PRODUCTION_ITEMS` lookup index (see `docs/handler.md`), and the Luck Drops column the luck drop group, read from `PRODUCTION_LUCK_ITEMS`.
 
 Example: zone 2050 (Lumbering) -> production key 1928 -> exchange 42356 -> product group 42356 -> subgroup 42356 -> Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap. On client 3474 all 439 zones resolve to items, and 370 of them also have a luck drop group with items.
 

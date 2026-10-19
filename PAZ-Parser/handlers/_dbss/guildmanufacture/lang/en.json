@@ -3,7 +3,7 @@
     "productItemKey": "Product ID",
     "product": "Product",
     "category": "Category",
-    "exchangeItemKey": "Exchange Key",
+    "exchange": "Exchange",
     "requiredItems": "Materials",
     "time": "Time",
     "price": "Price",

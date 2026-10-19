@@ -1441,8 +1441,8 @@ which load the groups with `load_drop_groups()` from
 `production_luck_item_fields()` there, which add the `item_keys` and `items`
 (or `luck_item_keys` and `luck_items`) record fields (names from
 `item_key_text()` in `_common/item_key.py`). The `plantexchangegroup.bss`
-Items and Luck Drops columns and the `plantzone.dbss` Produced Items column
-read them that way.
+Items and Luck Drops columns and the `plantzone.dbss` Produced Items and Luck
+Drops columns read them that way.
 
 `EXCHANGE_NAME_KR` maps every
 [itemexchangesource.bss](file-formats/itemexchangesource_bss.md) key to its
@@ -1455,7 +1455,7 @@ a name; `exchange_cell(key)` links that text to the exchange's row when the
 index holds the key; `exchange_list_cell(keys, max_items)` draws a list of
 them with a hoverable count. The `plantexchangegroup.bss` Exchange column,
 the `houseinforeceipe.dbss` Exchanges column and the `guildmanufacture.dbss`
-Exchange Key column use them.
+Exchange column use them.
 
 `SKILL_BUFFS` and `BUFF_ITEMS` are the item to buff link. An item's
 `itemenchant.dbss` skill keys name [skill.dbss](file-formats/skill_dbss.md)

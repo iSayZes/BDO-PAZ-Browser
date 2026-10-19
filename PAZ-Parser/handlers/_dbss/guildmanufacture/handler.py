@@ -98,7 +98,7 @@ class GuildManufactureHandler(PreviewHandler):
             Column(cols["productItemKey"], "num", sort_key="product_item_key"),
             Column(cols["product"], sort_key="product_name"),
             Column(cols["category"], sort_key="category_name"),
-            Column(cols["exchangeItemKey"], "num", sort_key="exchange_item_key"),
+            Column(cols["exchange"], sort_key="exchange"),
             # List columns: they would only sort by their string form.
             Column(cols["requiredItems"]),
             Column(cols["time"], "num", sort_key="time"),

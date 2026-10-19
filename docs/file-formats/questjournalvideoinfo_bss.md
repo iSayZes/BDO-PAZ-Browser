@@ -102,4 +102,8 @@ used once.
 
 It is `1` in all 80 rows. It may be an "enabled" flag or a page kind for
 the journal book, but with a single value on the current client nothing in
-the file tells them apart.
+the file tells them apart. The client 1784 private server sources name
+nothing here: its `binary/` folder has no `questjournalvideoinfo.bss`, its
+server dump has no `Video` string, and its sheets have no video or artwork
+sheet (`Quest_Journal` is the [`journalquest.dbss`](journalquest_dbss.md)
+source).

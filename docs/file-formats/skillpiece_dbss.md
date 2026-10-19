@@ -49,13 +49,14 @@ All multi-byte values are little-endian.
 
 ### Record (variable: 14 bytes + tiers)
 
-| Offset       | Type             | Field       | Notes                                                        |
-| ------------ | ---------------- | ----------- | ------------------------------------------------------------ |
-| `+0x00`      | u16              | key_prefix  | Equals `skill_no`; the index's `data_offset` points past it   |
-| `+0x02`      | u32              | skill_no    | The set skill, a `skill.dbss` skill number                    |
-| `+0x06`      | u32              | tier_count  | Number of tiers; `1` to `13`                                 |
-| `+0x0A`      | Tier[tier_count] | tiers       | `tier_count` tiers                                           |
-| `tiers+0x00` | u32              | unknown_end | `0` in every record                                          |
+| Offset       | Type             | Field          | Notes                                                        |
+| ------------ | ---------------- | -------------- | ------------------------------------------------------------ |
+| `+0x00`      | u16              | key_prefix     | Equals `skill_no`; the index's `data_offset` points past it  |
+| `+0x02`      | u16              | skill_no       | The set skill, a `skill.dbss` skill number                   |
+| `+0x04`      | u16              | skill_property | `0` in every record (client 3474); see Field Names           |
+| `+0x06`      | u32              | tier_count     | Number of tiers; `1` to `13`                                 |
+| `+0x0A`      | Tier[tier_count] | tiers          | `tier_count` tiers                                           |
+| `tiers+0x00` | u32              | unknown_end    | `0` in every record                                          |
 
 ### Tier (variable: 30 bytes + text)
 
@@ -97,6 +98,30 @@ them, and on client 3464 every row matches the record walked from the start
 of the file. `test_every_offset_row_points_past_its_records_key_prefix` in the
 handler tests checks this against the installed client.
 
+## Field Names
+
+The record is the `PointSkill_Table` sheet of a private server on client
+1784 (`SkillNo`, `SkillProperty`, `Point`, `SkillLevel`, `GroupNo`,
+`GroupTitle`, `Title`, `Description`). That server's dump
+(`Instance_dumpFull.exe`) reads the client record from `+0x02` (row reader
+at VA `0x140c85c00`) as a u16 into `SkillPieceStaticStatus` `+0x00`, a u16
+into `+0x02`, the tier count and tiers, then a u32 into `+0x28`. The sheet
+loader writes `SkillNo` to `+0x00` and `SkillProperty` to `+0x02` (VA
+`0x140c866f6` and `0x140c866fa`), so `skill_no` is a u16 and the next u16 is
+`skill_property`. Each tier's `Point` and `SkillLevel` are `point` and
+`level`, and its three texts are `GroupTitle`, `Title` and `Description`.
+
+The private server's own file holds 269 of the sheet's 270 set skills; a
+sheet `SkillNo` above 65,535 (79223 to 79403) is stored as its low 16
+bits (13687 to 13867). `SkillProperty` is `0` on all 315 sheet rows and
+`skill_property` on every record of that file and of client 3474. The
+struct starts it at `5` before the sheet sets it, and one dump function
+uses it as an index into a u32 array; what the values mean is open.
+
+`unknown_end` has no sheet column. The sheet loader sets `+0x28` to `0`,
+the reader loads it from the file, and none of the five callers of the
+record getter reads it. It is `0` on every record of both clients.
+
 ## Notes
 
 - The set effect tooltip Lua (`panel_equiment_seteffecttooltip`) reads one
@@ -135,8 +160,9 @@ handler tests checks this against the installed client.
 
 ### `unknown_end`
 
-The u32 after the tiers is `0` in all 100 records (client 3464). No field
-elsewhere points at it.
+The u32 after the tiers is `0` in all 100 records (client 3474) and in all
+269 of client 1784. No sheet column fills it and no code in the client 1784
+server dump reads it (Field Names). No field elsewhere points at it.
 
 ### Black Eye set points
 

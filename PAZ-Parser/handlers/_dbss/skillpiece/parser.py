@@ -1,8 +1,8 @@
 """`skillpiece.dbss`: the set effect tiers of each set skill.
 
 A u32 count, then the records back to back to the end of the file. A record is
-a u16 key prefix, the u32 set skill number, a u32 tier count, the tiers and a
-zero u32. A tier is a u32 point threshold, the u16 `skill.dbss` level and three
+a u16 key prefix, the u16 set skill number, a u16 skill property, a u32 tier
+count, the tiers and a zero u32. A tier is a u32 point threshold, the u16 `skill.dbss` level and three
 u64-prefixed UTF-16 strings: set title, threshold label and bonus lines.
 `skillpieceoffset.dbss` points 2 bytes into each record, past the key prefix,
 so the walk from the start needs no index. Layout in
@@ -23,7 +23,7 @@ OFFSET_FILE = "skillpieceoffset.dbss"
 
 _COUNT = struct.Struct("<I")
 _KEY_PREFIX = struct.Struct("<H")
-_HEAD = struct.Struct("<II")  # skill_no, tier_count
+_HEAD = struct.Struct("<HHI")  # skill_no, skill_property, tier_count
 _TIER_HEAD = struct.Struct("<IH")  # point, level
 _END = struct.Struct("<I")
 
@@ -51,7 +51,7 @@ def parse_skillpiece_records(data: bytes) -> list[dict]:
 def _parse_record(data: bytes, start: int) -> tuple[dict, int]:
     reader = RecordReader(data, start, len(data), f"{FILE_NAME} record at 0x{start:X}")
     (key_prefix,) = reader.unpack(_KEY_PREFIX)
-    skill_no, tier_count = reader.unpack(_HEAD)
+    skill_no, skill_property, tier_count = reader.unpack(_HEAD)
     if key_prefix != skill_no:
         raise ValueError(f"{FILE_NAME} record at 0x{start:X} has key {key_prefix} for skill {skill_no}")
 
@@ -59,6 +59,7 @@ def _parse_record(data: bytes, start: int) -> tuple[dict, int]:
     (unknown_end,) = reader.unpack(_END)
     record = {
         "skill_no": skill_no,
+        "skill_property": skill_property,
         "offset": start,
         "size": reader.pos - start,
         "tiers": tiers,

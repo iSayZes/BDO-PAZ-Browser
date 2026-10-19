@@ -45,6 +45,7 @@ def _tier_record(record: dict, tier: dict) -> dict:
     return {
         "skill_key": key,
         "skill_no": skill_no,
+        "skill_property": record["skill_property"],
         **tier,
         # Records without tier text are named after their skill.
         **pa_fields("set_name", text.group_title or skill_name_tagged(skill_no)),

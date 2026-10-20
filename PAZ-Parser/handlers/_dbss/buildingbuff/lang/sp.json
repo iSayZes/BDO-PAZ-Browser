@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "villaCount": "Número de alquerías",
+    "buffIndex": "Índice",
+    "skillNo": "ID de habilidad",
+    "skill": "Habilidad",
+    "cost": "Coste (plata)"
+  },
+  "offsetColumns": {
+    "villaCount": "Número de alquerías",
+    "buffIndex": "Índice",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} bonificadores de alquería"
+  }
+}

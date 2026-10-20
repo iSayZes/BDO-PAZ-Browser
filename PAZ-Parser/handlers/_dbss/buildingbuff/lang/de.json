@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "villaCount": "Villa-Anzahl",
+    "buffIndex": "Index",
+    "skillNo": "Talent-ID",
+    "skill": "Talent",
+    "cost": "Kosten (Silber)"
+  },
+  "offsetColumns": {
+    "villaCount": "Villa-Anzahl",
+    "buffIndex": "Index",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Villa-Buffs"
+  }
+}

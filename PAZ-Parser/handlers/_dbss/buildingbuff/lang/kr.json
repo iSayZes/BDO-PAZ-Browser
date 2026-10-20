@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "villaCount": "별채 수",
+    "buffIndex": "인덱스",
+    "skillNo": "기술 ID",
+    "skill": "기술",
+    "cost": "비용 (은화)"
+  },
+  "offsetColumns": {
+    "villaCount": "별채 수",
+    "buffIndex": "인덱스",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "별채 버프 {count}개"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "villaCount": "Число вилл",
+    "buffIndex": "Индекс",
+    "skillNo": "ID навыка",
+    "skill": "Навык",
+    "cost": "Стоимость (серебро)"
+  },
+  "offsetColumns": {
+    "villaCount": "Число вилл",
+    "buffIndex": "Индекс",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Эффектов виллы: {count}"
+  }
+}

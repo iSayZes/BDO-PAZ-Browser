@@ -4,7 +4,8 @@
 share one layout: a u32 group count, then per group a u32 row count and that
 many rows of three u32 values. The group index is the alchemy stone type.
 An index row is `(item_id, offset, size)`. Layout in
-docs/file-formats/alchemycharge_dbss.md.
+docs/file-formats/alchemycharge_dbss.md. `buildingbuff.dbss` and its index
+walk the same way with rows of their own (`row`).
 """
 
 from __future__ import annotations
@@ -14,11 +15,11 @@ import struct
 _U32 = struct.Struct("<I")
 _ROW = struct.Struct("<III")
 
-GroupedRow = tuple[int, tuple[int, int, int]]
+GroupedRow = tuple[int, tuple[int, ...]]
 
 
-def parse_grouped_rows(data: bytes, file_name: str) -> list[GroupedRow]:
-    """`(group index, row)` for every row, in file order.
+def parse_grouped_rows(data: bytes, file_name: str, row: struct.Struct = _ROW) -> list[GroupedRow]:
+    """`(group index, row)` for every row, in file order; `row` unpacks one row.
 
     Raises ValueError when a group runs past the end of the file or bytes are
     left after the last group.
@@ -29,10 +30,10 @@ def parse_grouped_rows(data: bytes, file_name: str) -> list[GroupedRow]:
     for group in range(group_count):
         row_count = _read_u32(data, cursor, file_name)
         cursor += _U32.size
-        end = cursor + row_count * _ROW.size
+        end = cursor + row_count * row.size
         if end > len(data):
             raise ValueError(f"{file_name}: group {group} runs past the end of the file")
-        rows.extend((group, _ROW.unpack_from(data, start)) for start in range(cursor, end, _ROW.size))
+        rows.extend((group, row.unpack_from(data, start)) for start in range(cursor, end, row.size))
         cursor = end
     if cursor != len(data):
         raise ValueError(f"{file_name}: {len(data) - cursor} bytes left after group {group_count - 1}")

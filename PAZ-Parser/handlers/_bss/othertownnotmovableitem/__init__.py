@@ -1,1 +1,0 @@
-"""othertownnotmovableitem.bss preview handler."""

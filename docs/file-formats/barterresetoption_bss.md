@@ -110,9 +110,10 @@ The ship material buttons show only with `_ContentsGroup_BarterMaterialReset`.
   Refresh and 40 on Instant Ship Material Refresh. Both instant buttons
   say they refresh "immediately by consuming 30 points": the first entry
   of each list plus 30 (see Open Questions).
-- The PABR option table handler (`_bss/pabr_values/`) does not preview this
-  file: its row modes read one value set, one counted list or rows up to
-  the string table, not two counted lists.
+- The handler for the PABR option tables (`_bss/pabr_values/`) previews this
+  file with the shared layout table in `_bss/pabr_values/tables.py` as one
+  record: `general_barter` and `material_barter` are `is_counted_list`
+  fields, each the list of point costs in file order.
 
 ## Open Questions
 

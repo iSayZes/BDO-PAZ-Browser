@@ -83,6 +83,10 @@ up by; see Open Questions.
 - In game on client 3474, the Tier 5 Pet Training window shows "Pack
   Leader: Loot cooldown -15% for active pets" under Tier 5 Pet Effects,
   which is `150000` on the 1,000,000 = 100% scale.
+- The handler for the option tables (`_bss/pabr_values/`) previews this
+  file with the shared layout table in `_bss/pabr_values/tables.py`, framed
+  `Framing.BARE`. The Loot Cooldown cell shows `leader_buff_rate` as that
+  cut (`-15%`); the record keeps the stored value.
 
 ## Open Questions
 

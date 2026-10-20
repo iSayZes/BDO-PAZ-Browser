@@ -24,7 +24,6 @@ from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
 from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
-from .elementalstat.handler import ElementalStatBssHandler
 from .empty_tables.parser import parse_empty_pabr_table
 from .empty_tables.tables import EMPTY_PABR_TABLES
 from .employeeexp.handler import EmployeeExpBssHandler
@@ -70,19 +69,16 @@ from .masterlessservantstaticstatus.handler import MasterlessServantStaticStatus
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
-from .morninglandoption.handler import MorningLandOptionBssHandler
 from .multiplequest.handler import MultipleQuestBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
-from .othertownnotmovableitem.handler import OtherTownNotMovableItemBssHandler
 from .pabr_values.handler import PabrValuesBssHandler
 from .pabr_values.tables import VALUE_TABLES
 from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .pcroommaid.handler import PcRoomMaidBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
-from .petleaderbuff.handler import PetLeaderBuffBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
 from .plantworker.handler import PlantWorkerBssHandler
 from .plantworkerpassiveskill.handler import PlantWorkerPassiveSkillBssHandler
@@ -103,7 +99,6 @@ from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandl
 from .servantmating.handler import ServantMatingBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
-from .solareetcoptionstaticstatus.handler import SolareEtcOptionBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
 from .specialquestinfo.handler import SpecialQuestInfoBssHandler
 from .stringtable.handler import StringTableBssHandler
@@ -162,7 +157,6 @@ def register_bss_handlers() -> None:
     register_handler("dropuisubcategoryinfo.bss", DropUiSubCategoryInfoBssHandler())
     register_handler("dropuitaginfo.bss", DropUiTagInfoBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
-    register_handler("elementalstat.bss", ElementalStatBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
     for name in EMPTY_PABR_TABLES:
@@ -222,7 +216,6 @@ def register_bss_handlers() -> None:
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
-    register_handler("morninglandoption.bss", MorningLandOptionBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("servant.bss", ServantBssHandler())
@@ -230,15 +223,13 @@ def register_bss_handlers() -> None:
     register_handler("servantmating.bss", ServantMatingBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
-    register_handler("othertownnotmovableitem.bss", OtherTownNotMovableItemBssHandler())
-    # One handler for the small PABR option tables, each with its own layout.
+    # One handler for the small option tables (PABR and bare), each with its own layout.
     for value_table in VALUE_TABLES:
         register_handler(value_table.file_name, PabrValuesBssHandler(value_table))
     register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("pcroommaid.bss", PcRoomMaidBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
-    register_handler("petleaderbuff.bss", PetLeaderBuffBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())
     register_handler("plantworker.bss", PlantWorkerBssHandler())
     register_handler(
@@ -265,7 +256,6 @@ def register_bss_handlers() -> None:
     for name in ("skillexperiencemaxlevel.bss", "guildskillexperiencemaxlevel.bss"):
         register_handler(name, SkillExperienceMaxLevelBssHandler())
     register_handler("skillgroup.bss", SkillGroupBssHandler())
-    register_handler("solareetcoptionstaticstatus.bss", SolareEtcOptionBssHandler())
     register_handler("specialenchantitem.bss", SpecialEnchantItemBssHandler())
     register_handler("specialquestinfo.bss", SpecialQuestInfoBssHandler())
     register_handler("stringtable.bss", StringTableBssHandler())

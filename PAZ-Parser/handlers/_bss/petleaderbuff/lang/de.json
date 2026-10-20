@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "petTier": "Rang",
-    "lootCooldown": "Sammel-Abklingzeit"
-  },
-  "meta": {
-    "count": "{count} Ränge"
-  }
-}

@@ -24,9 +24,24 @@
     "character": "Character",
     "titleId": "Title ID",
     "title": "Title",
+    "elementType": "Aura Type",
+    "aura": "Aura",
+    "apPerOrb": "AP per Light Orb",
+    "dpPerOrb": "DP per Light Orb",
+    "statPointsPerOrb": "Additional Stats per Light Orb",
+    "petTier": "Tier",
+    "lootCooldown": "Loot Cooldown",
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "generalBarter": "Trade Item Barter Refresh",
+    "materialBarter": "Ship Material Refresh",
     "valueBytes": "Value Bytes"
   },
   "meta": {
-    "count": "{count} entries"
+    "count": "{count} entries",
+    "blackShrineAuras": "{count} Black Shrine auras",
+    "petTiers": "{count} tiers",
+    "notMovableItems": "{count} items that cannot go into another town's storage"
   }
 }

@@ -24,9 +24,24 @@
     "character": "Personnage",
     "titleId": "ID du titre",
     "title": "Titre",
+    "elementType": "Type d'énergie",
+    "aura": "Énergie",
+    "apPerOrb": "PA par joyau de lumière",
+    "dpPerOrb": "PD par joyau de lumière",
+    "statPointsPerOrb": "Stats supplémentaires par joyau de lumière",
+    "petTier": "Tier",
+    "lootCooldown": "Temps de recharge de ramassage",
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "generalBarter": "Actualisation des marchandises",
+    "materialBarter": "Actualisation matériaux de navire",
     "valueBytes": "Octets de valeur"
   },
   "meta": {
-    "count": "{count} entrées"
+    "count": "{count} entrées",
+    "blackShrineAuras": "{count} énergies du Sanctuaire noir",
+    "petTiers": "{count} tiers",
+    "notMovableItems": "{count} objets impossibles à déplacer vers le dépôt d'un autre village"
   }
 }

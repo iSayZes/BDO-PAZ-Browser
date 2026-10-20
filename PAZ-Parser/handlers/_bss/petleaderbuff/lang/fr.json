@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "petTier": "Tier",
-    "lootCooldown": "Temps de recharge de ramassage"
-  },
-  "meta": {
-    "count": "{count} tiers"
-  }
-}

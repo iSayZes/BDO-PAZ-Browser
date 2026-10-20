@@ -1,9 +1,11 @@
-"""Layouts of the small PABR option tables, one entry per file.
+"""Layouts of the small option tables, one entry per file.
 
-Each file is the PABR magic, a few values where a table keeps its record
-count, then an empty string table. The values are one set of fields, a u32
-count and that many rows, or rows up to the string table. Each file's doc
-is `docs/file-formats/<stem>_bss.md`; field names follow the doc, and
+A PABR file is the PABR magic, the values, then an empty string table and
+the trailer. A bare file is the values alone, with no magic, string table or
+trailer. The values are one set of fields, a u32 count and that many rows,
+or rows up to the string table or the end of a bare file. A field can be a
+counted list: a u32 count, then that many values. Each file's doc is
+`docs/file-formats/<stem>_bss.md`; field names follow the doc, and
 `unknown_*` fields get no column.
 """
 
@@ -14,53 +16,93 @@ from dataclasses import dataclass
 from enum import Enum
 
 from _common.character import character_name
-from _common.loc import loc_text
-from _common.skill import skill_name, split_skill_key
+from _common.item_key import item_name_tagged
 from _common.title import title_name
 from _common.town import town_name
-from _common.vehicle_skill import LOC_VEHICLE_SKILL
+from .names import aura_name, cooldown_cut, item_icon_path, skill_key_name, vehicle_skill_name
+
+
+class Framing(Enum):
+    """What surrounds the values."""
+
+    # PABR magic at +0x00, the values from +0x04, then the string table and the trailer.
+    PABR = "pabr"
+    # The values alone, from +0x00 to the end of the file.
+    BARE = "bare"
 
 
 class RowCount(Enum):
-    """How many times the fields repeat between the magic and the string table."""
+    """How many times the fields repeat in the values."""
 
     ONE = "one"
-    # A u32 count at +0x04, then that many rows.
+    # A u32 count where the values start, then that many rows.
     COUNTED = "counted"
-    # Rows from +0x04 up to the string table, no count.
+    # Rows from where the values start up to the string table (PABR) or the
+    # end of the file (BARE), no count.
     TO_TABLE_START = "to_table_start"
 
 
 @dataclass(frozen=True)
 class NameLookup:
-    """A display name for a key field, stored on the record next to it."""
+    """A display name for a key field, stored on the record next to it.
+
+    With `is_tagged`, `name_of` returns game text with `<PAColor>` tags: the
+    record keeps the plain text under `field` and the tagged copy under
+    `pa_key(field)`, and the cell draws the colours.
+    """
 
     field: str
     column: str
     name_of: Callable[[int], str]
+    is_tagged: bool = False
+
+
+@dataclass(frozen=True)
+class IconLookup:
+    """An icon path for a key field, stored on the record; its column sits after the key."""
+
+    field: str
+    column: str
+    path_of: Callable[[int], str]
 
 
 @dataclass(frozen=True)
 class ValueField:
     """One field: record key, `struct` format and its lang column key.
 
-    `column` is None for an `unknown_*` field. An `s` format (`8s`) is a
-    byte run, stored as hex text.
+    `column` is None for a field with no column (`unknown_*`, or a copy of
+    another field). An `s` format (`8s`) is a byte run, stored as hex text.
+    `display` turns the value into its cell text; the record keeps the value.
+    With `is_counted_list` the field is a u32 count, then that many values,
+    stored as a list.
     """
 
     name: str
     fmt: str
     column: str | None = None
     lookup: NameLookup | None = None
+    icon: IconLookup | None = None
+    display: Callable[[int], str] | None = None
+    is_counted_list: bool = False
+
+    def __post_init__(self) -> None:
+        if self.is_counted_list and (self.lookup is not None or self.icon is not None):
+            raise ValueError(f"{self.name}: a counted list takes no name or icon lookup")
 
 
 @dataclass(frozen=True)
 class ValueTable:
-    """The layout of one file."""
+    """The layout of one file; `count_key` is the lang `meta` key of its count line."""
 
     file_name: str
     fields: tuple[ValueField, ...]
     rows: RowCount = RowCount.ONE
+    framing: Framing = Framing.PABR
+    count_key: str = "count"
+
+    def __post_init__(self) -> None:
+        if self.rows is RowCount.TO_TABLE_START and any(field.is_counted_list for field in self.fields):
+            raise ValueError(f"{self.file_name}: rows up to the string table need a fixed row size")
 
     @property
     def has_named_field(self) -> bool:
@@ -69,15 +111,6 @@ class ValueTable:
 
 # The SiegeStage_0 to SiegeStage_6 columns of siegemercenarylimitcount.bss.
 SIEGE_STAGE_COUNT = 7
-
-
-def _vehicle_skill_name(key: int) -> str:
-    return loc_text(LOC_VEHICLE_SKILL, key)
-
-
-def _skill_key_name(key: int) -> str:
-    skill_no, _level = split_skill_key(key)
-    return skill_name(skill_no)
 
 
 def _unknown_fields(*layout: tuple[int, str]) -> tuple[ValueField, ...]:
@@ -90,11 +123,31 @@ _CHARACTER_KEY = ValueField("character_key", "H", "characterId", _CHARACTER_NAME
 
 
 VALUE_TABLES: tuple[ValueTable, ...] = (
+    ValueTable(
+        "barterresetoption.bss",
+        (
+            ValueField("general_barter", "I", "generalBarter", is_counted_list=True),
+            ValueField("material_barter", "I", "materialBarter", is_counted_list=True),
+        ),
+    ),
     ValueTable("cashproduct_newbieproduct.bss", (ValueField("product_id", "I", "productId"),)),
     ValueTable(
         "cultivationevent.bss",
         (ValueField("cultivation_event_type", "h", "cultivationEventType"),),
         RowCount.COUNTED,
+    ),
+    ValueTable(
+        "elementalstat.bss",
+        (
+            ValueField("element_type", "B", "elementType", NameLookup("aura", "aura", aura_name)),
+            ValueField("ap_per_orb", "I", "apPerOrb"),
+            ValueField("dp_per_orb", "I", "dpPerOrb"),
+            ValueField("stat_points_per_orb", "I", "statPointsPerOrb"),
+            ValueField("element_type_dup", "B"),
+        ),
+        RowCount.COUNTED,
+        Framing.BARE,
+        "blackShrineAuras",
     ),
     ValueTable("employeeloyalismitemetc.bss", _unknown_fields((0x04, "I"), (0x08, "I"), (0x0C, "I"), (0x10, "I"))),
     ValueTable(
@@ -118,10 +171,45 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     ),
     ValueTable("maidactoroption.bss", (ValueField("unknown_04", "B"), ValueField("unknown_05", "B"))),
     ValueTable(
+        "morninglandoption.bss",
+        (
+            ValueField("stat_reset_cost", "Q", "statResetCost"),
+            ValueField("light_orb_reset_cost", "Q", "lightOrbResetCost"),
+            ValueField("unknown_10", "B"),
+        ),
+        framing=Framing.BARE,
+    ),
+    ValueTable(
         "musicoption.bss",
         (ValueField("playable_distance", "f", "playableDistance"), ValueField("unknown_08", "8s")),
     ),
+    ValueTable(
+        "othertownnotmovableitem.bss",
+        (
+            ValueField(
+                "item_id",
+                "I",
+                "itemId",
+                NameLookup("item_name", "item", item_name_tagged, is_tagged=True),
+                IconLookup("icon_path", "icon", item_icon_path),
+            ),
+        ),
+        RowCount.COUNTED,
+        Framing.BARE,
+        "notMovableItems",
+    ),
     ValueTable("petfeedcount.bss", (ValueField("feed_item_count", "I", "feedItemCount"),)),
+    ValueTable(
+        "petleaderbuff.bss",
+        (
+            ValueField("pet_tier", "B", "petTier"),
+            ValueField("unknown_01", "B"),
+            ValueField("leader_buff_rate", "I", "lootCooldown", display=cooldown_cut),
+        ),
+        RowCount.COUNTED,
+        Framing.BARE,
+        "petTiers",
+    ),
     ValueTable(
         "rosewarinfo.bss",
         _unknown_fields((0x00, "3s"), (0x03, "B"), (0x04, "3s"), (0x07, "B"), (0x08, "B")),
@@ -145,17 +233,22 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         _unknown_fields((0x00, "3s"), (0x03, "B"), (0x04, "B"), (0x05, "3s"), (0x08, "B")),
         RowCount.COUNTED,
     ),
+    ValueTable(
+        "solareetcoptionstaticstatus.bss",
+        _unknown_fields((0x00, "f"), (0x04, "f"), (0x08, "f"), (0x0C, "f"), (0x10, "f")),
+        framing=Framing.BARE,
+    ),
     ValueTable("timeattackranking.bss", (_CHARACTER_KEY,), RowCount.COUNTED),
     ValueTable(
         "vehicletrainingskill.bss",
-        (ValueField("skill_key", "B", "skillId", NameLookup("skill_name", "skill", _vehicle_skill_name)),),
+        (ValueField("skill_key", "B", "skillId", NameLookup("skill_name", "skill", vehicle_skill_name)),),
         RowCount.COUNTED,
     ),
     ValueTable(
         "voxelregionskillstaticstatusmanager.bss",
         (
             ValueField("unknown_00", "B"),
-            ValueField("skill_key", "I", "skillId", NameLookup("skill_name", "skill", _skill_key_name)),
+            ValueField("skill_key", "I", "skillId", NameLookup("skill_name", "skill", skill_key_name)),
         ),
         RowCount.COUNTED,
     ),

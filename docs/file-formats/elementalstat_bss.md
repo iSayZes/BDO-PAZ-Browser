@@ -106,5 +106,8 @@ and sit in that order in every row, so `ap_per_orb`, `dp_per_orb` and
 - The Light Orb is item `66667`. The tooltip `LUA_MORNING_ATTRBOSS_TOOLTIP_9`
   says "Gain additional AP and DP stats depending on the number of activated
   auras".
+- The handler for the option tables (`_bss/pabr_values/`) previews this
+  file with the shared layout table in `_bss/pabr_values/tables.py`, framed
+  `Framing.BARE`, one row per aura.
 - Siblings without a doc yet: `elementalmonsterstat.bss`,
   `elementalmonsterreward.bss` and `elementalserverbuff.bss`.

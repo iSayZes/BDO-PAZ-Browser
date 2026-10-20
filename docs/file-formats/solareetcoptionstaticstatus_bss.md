@@ -66,9 +66,9 @@ All multi-byte values are little-endian.
   data: all three changed from `200` between clients 3002 and 3251.
 - The other `*etcoptionstaticstatus.bss` files (`edania`,
   `hardcorechannel`) start with the PABR magic; this file does not.
-- The handler (`_bss/solareetcoptionstaticstatus/`) reads Layout 2 with a
-  layout table of the PABR option tables handler (`_bss/pabr_values/`) and
-  its preview, and raises on a file of any other size. With no confirmed
+- The handler for the option tables (`_bss/pabr_values/`) previews Layout 2
+  with the shared layout table in `_bss/pabr_values/tables.py`, framed
+  `Framing.BARE`, and raises on a file of any other size. With no confirmed
   field, the preview shows the raw value bytes.
 
 ## Open Questions

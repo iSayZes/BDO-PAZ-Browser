@@ -64,9 +64,10 @@ The other cost, `2000000` at `+0x08`, is then the Light Orb reset.
 - The installed `BlackDesert64.exe` (client 3474) holds neither the file
   name nor `MorningLandOption` as ASCII or UTF-16 text, so it does not show
   the loader or its struct.
-- The handler (`_bss/morninglandoption/`) reads the file with a layout
-  table of the PABR option tables handler (`_bss/pabr_values/`) and its
-  preview.
+- The handler for the option tables (`_bss/pabr_values/`) previews this
+  file with the shared layout table in `_bss/pabr_values/tables.py`, framed
+  `Framing.BARE`: the values alone, with no magic, string table or trailer.
+  A file of any other size raises.
 
 ## Open Questions
 

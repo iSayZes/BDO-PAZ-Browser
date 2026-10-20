@@ -24,9 +24,24 @@
     "character": "Charakter",
     "titleId": "Titel-ID",
     "title": "Titel",
+    "elementType": "Energietyp",
+    "aura": "Energie",
+    "apPerOrb": "AK je Lichtjuwel",
+    "dpPerOrb": "VK je Lichtjuwel",
+    "statPointsPerOrb": "Zusätzliche Werte je Lichtjuwel",
+    "petTier": "Rang",
+    "lootCooldown": "Sammel-Abklingzeit",
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "generalBarter": "Handelswaren",
+    "materialBarter": "Schiffsmaterialien",
     "valueBytes": "Wertbytes"
   },
   "meta": {
-    "count": "{count} Einträge"
+    "count": "{count} Einträge",
+    "blackShrineAuras": "{count} Energien des Finsteren Schreins",
+    "petTiers": "{count} Ränge",
+    "notMovableItems": "{count} Gegenstände, die nicht ins Lager einer anderen Stadt gebracht werden können"
   }
 }

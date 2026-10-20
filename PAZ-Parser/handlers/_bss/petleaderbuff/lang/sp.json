@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "petTier": "Grado",
-    "lootCooldown": "Tiempo de recogida"
-  },
-  "meta": {
-    "count": "{count} grados"
-  }
-}

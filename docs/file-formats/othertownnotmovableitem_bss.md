@@ -77,8 +77,10 @@ The five entries on client 3474, in file order:
 - `movableOtherTown()` is a method of the item instance, not of its static
   status, and the same filter also greys out duel copies, guild stock, trade
   goods and barter items through other checks.
-- The parser is `_bss/othertownnotmovableitem/parser.py`; its test asserts
-  that every entry names an item.
+- The handler for the option tables (`_bss/pabr_values/`) previews this
+  file with the shared layout table in `_bss/pabr_values/tables.py`, framed
+  `Framing.BARE`, one row per item. `test_every_key_has_a_loc_name` in its
+  `test_handler.py` asserts that every entry names an item.
 - Two other Lua paths in `panel_window_warehouse_all_1.luac` move items to
   or from another town's storage through `ToClient_ablePushOrPopOtherWareHouse`
   and run on the PC client: the auto-move button for an NPC, installation or

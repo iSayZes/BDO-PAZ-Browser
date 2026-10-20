@@ -24,9 +24,24 @@
     "character": "캐릭터",
     "titleId": "칭호 ID",
     "title": "칭호",
+    "elementType": "기운 종류",
+    "aura": "기운",
+    "apPerOrb": "빛의 보옥당 공격력",
+    "dpPerOrb": "빛의 보옥당 방어력",
+    "statPointsPerOrb": "빛의 보옥당 추가 능력치",
+    "petTier": "세대",
+    "lootCooldown": "줍기 재사용 대기시간",
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "generalBarter": "교역품 교환 갱신",
+    "materialBarter": "재료 교환 갱신",
     "valueBytes": "값 바이트"
   },
   "meta": {
-    "count": "{count}개 항목"
+    "count": "{count}개 항목",
+    "blackShrineAuras": "검은 사당 기운 {count}개",
+    "petTiers": "세대 {count}개",
+    "notMovableItems": "다른 마을 창고로 이동할 수 없는 아이템 {count}개"
   }
 }

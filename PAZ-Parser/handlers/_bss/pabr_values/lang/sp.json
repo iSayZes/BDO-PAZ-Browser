@@ -24,9 +24,24 @@
     "character": "Personaje",
     "titleId": "ID del título",
     "title": "Título",
+    "elementType": "Tipo de energía",
+    "aura": "Energía",
+    "apPerOrb": "Ataque por gema luminosa",
+    "dpPerOrb": "Defensa por gema luminosa",
+    "statPointsPerOrb": "Estadísticas adicionales por gema luminosa",
+    "petTier": "Grado",
+    "lootCooldown": "Tiempo de recogida",
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "generalBarter": "Reinicio de mercancías",
+    "materialBarter": "Reinicio de componentes",
     "valueBytes": "Bytes de valor"
   },
   "meta": {
-    "count": "{count} entradas"
+    "count": "{count} entradas",
+    "blackShrineAuras": "{count} energías del Santuario Oscuro",
+    "petTiers": "{count} grados",
+    "notMovableItems": "{count} objetos que no se pueden trasladar al almacén de otra ciudad"
   }
 }

@@ -1,9 +1,0 @@
-{
-  "columns": {
-    "petTier": "세대",
-    "lootCooldown": "줍기 재사용 대기시간"
-  },
-  "meta": {
-    "count": "세대 {count}개"
-  }
-}

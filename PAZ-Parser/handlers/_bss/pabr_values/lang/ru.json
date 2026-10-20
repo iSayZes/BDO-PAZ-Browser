@@ -24,9 +24,24 @@
     "character": "Персонаж",
     "titleId": "ID титула",
     "title": "Титул",
+    "elementType": "Тип энергии",
+    "aura": "Энергия",
+    "apPerOrb": "Атака за сокровище света",
+    "dpPerOrb": "Защита за сокровище света",
+    "statPointsPerOrb": "Доп. характеристики за сокровище света",
+    "petTier": "Ранг",
+    "lootCooldown": "Перезарядка сбора",
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "generalBarter": "Обновление: предметы торговли",
+    "materialBarter": "Обновление: материалы",
     "valueBytes": "Байты значения"
   },
   "meta": {
-    "count": "Записей: {count}"
+    "count": "Записей: {count}",
+    "blackShrineAuras": "Энергий Черного храма: {count}",
+    "petTiers": "Рангов: {count}",
+    "notMovableItems": "Предметов, которые нельзя переместить на склад другой деревни: {count}"
   }
 }

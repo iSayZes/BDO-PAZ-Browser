@@ -1,60 +1,111 @@
-"""Preview of the small PABR option tables; one instance per file of `tables.py`.
+"""Preview of the small option tables; one instance per file of `tables.py`.
 
-Named fields get a column, with a resolved name next to a key that has one.
-A file with no named field shows each row's raw bytes instead.
+Named fields get a column, with an icon and a resolved name next to a key
+that has them. A file with no named field shows each row's raw bytes instead.
 """
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
+from typing import NamedTuple
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.binary import whole_float
-from _common.html import Column, e, sort_keys, table
+from _common.html import Column, e, html_list_cell, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
+from _common.pa_text import pa_cell, pa_fields
 from .parser import parse_value_table, row_value_bytes
-from .tables import ValueTable
+from .tables import IconLookup, NameLookup, ValueField, ValueTable
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 VALUE_BYTES_FIELD = "value_bytes"
 
+Cell = Callable[[dict], str]
 
-def _cell(value: object) -> str:
+
+class _Shown(NamedTuple):
+    """One column and how a record's cell reads."""
+
+    column: Column
+    cell: Cell
+
+
+def _cell(value: object, display: Callable[[int], str] | None = None) -> str:
+    """The cell text of a value: `display` of a number when the field has one."""
+    if display is not None and isinstance(value, int):
+        return e(display(value))
     if value == "":
         return _EMPTY
     return e(whole_float(value) if isinstance(value, float) else value)
 
 
+def _value_cell(field: ValueField) -> Cell:
+    if field.is_counted_list:
+        return lambda r: html_list_cell([_cell(value, field.display) for value in r[field.name]]) or _EMPTY
+    return lambda r: _cell(r[field.name], field.display)
+
+
+def _name_cell(lookup: NameLookup) -> Cell:
+    if lookup.is_tagged:
+        return lambda r: pa_cell(r, lookup.field)
+    return lambda r: _cell(r[lookup.field])
+
+
+def _icon_cell(icon: IconLookup) -> Cell:
+    return lambda r: icon_cell(r[icon.field])
+
+
+def _field_columns(field: ValueField, cols: dict[str, str]) -> list[_Shown]:
+    """The key column, then its icon and name columns when it has them."""
+    if field.column is None:
+        return []
+    # A list column stays unsortable: it would sort by its string form.
+    sort_key = None if field.is_counted_list else field.name
+    shown = [_Shown(Column(cols[field.column], "num", sort_key=sort_key), _value_cell(field))]
+    if field.icon is not None:
+        shown.append(_Shown(Column(cols[field.icon.column], sort_key=field.icon.field), _icon_cell(field.icon)))
+    if field.lookup is not None:
+        shown.append(_Shown(Column(cols[field.lookup.column], sort_key=field.lookup.field), _name_cell(field.lookup)))
+    return shown
+
+
+def _name_fields(lookup: NameLookup, key: int) -> dict[str, str]:
+    name = lookup.name_of(key)
+    return pa_fields(lookup.field, name) if lookup.is_tagged else {lookup.field: name}
+
+
+def _derived_fields(fields: tuple[ValueField, ...], record: dict) -> dict[str, str]:
+    """Each key field's resolved name, then its icon path, in field order."""
+    derived: dict[str, str] = {}
+    for field in fields:
+        if field.lookup is not None:
+            derived |= _name_fields(field.lookup, record[field.name])
+        if field.icon is not None:
+            derived[field.icon.field] = field.icon.path_of(record[field.name])
+    return derived
+
+
 class PabrValuesBssHandler(PreviewHandler):
-    """One small PABR option table; the layout comes from its `ValueTable`."""
+    """One small option table; the layout comes from its `ValueTable`."""
 
     def __init__(self, value_table: ValueTable) -> None:
         self._table = value_table
 
-    def _shown_fields(self) -> list[tuple[str, Column]]:
-        """Each shown record key with its column, in column order."""
+    def _shown(self) -> list[_Shown]:
+        """Each shown column with its cell, in column order."""
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
         if not self._table.has_named_field:
-            return [(VALUE_BYTES_FIELD, Column(cols["valueBytes"], sort_key=VALUE_BYTES_FIELD))]
-        shown: list[tuple[str, Column]] = []
-        for field in self._table.fields:
-            if field.column is None:
-                continue
-            shown.append((field.name, Column(cols[field.column], "num", sort_key=field.name)))
-            if field.lookup is not None:
-                name_key = field.lookup.field
-                shown.append((name_key, Column(cols[field.lookup.column], sort_key=name_key)))
-        return shown
-
-    def _columns(self) -> list[Column]:
-        return [column for _, column in self._shown_fields()]
+            column = Column(cols["valueBytes"], sort_key=VALUE_BYTES_FIELD)
+            return [_Shown(column, lambda r: _cell(r[VALUE_BYTES_FIELD]))]
+        return [shown for field in self._table.fields for shown in _field_columns(field, cols)]
 
     def sortable_fields(self) -> tuple[str, ...]:
-        return sort_keys(self._columns())
+        return sort_keys([shown.column for shown in self._shown()])
 
     def get_records(
         self,
@@ -66,11 +117,7 @@ class PabrValuesBssHandler(PreviewHandler):
         if not self._table.has_named_field:
             raws = row_value_bytes(data, self._table)
             return [{**record, VALUE_BYTES_FIELD: raw} for record, raw in zip(records, raws, strict=True)]
-        lookups = [(field.name, field.lookup) for field in self._table.fields if field.lookup is not None]
-        return [
-            {**record, **{lookup.field: lookup.name_of(record[key]) for key, lookup in lookups}}
-            for record in records
-        ]
+        return [{**record, **_derived_fields(self._table.fields, record)} for record in records]
 
     def render_records_page(
         self,
@@ -79,7 +126,7 @@ class PabrValuesBssHandler(PreviewHandler):
         page_size: int,
     ) -> str:
         start = page * page_size
-        meta = handler_text(self.lang, _LANG_DIR, "meta.count", count=len(records))
-        shown = self._shown_fields()
-        rows = [[_cell(r[name]) for name, _ in shown] for r in records[start : start + page_size]]
-        return table(meta, [column for _, column in shown], rows)
+        meta = handler_text(self.lang, _LANG_DIR, f"meta.{self._table.count_key}", count=len(records))
+        shown = self._shown()
+        rows = [[item.cell(r) for item in shown] for r in records[start : start + page_size]]
+        return table(meta, [item.column for item in shown], rows)

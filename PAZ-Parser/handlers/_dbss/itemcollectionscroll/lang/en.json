@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "grade": "Level",
+    "dropRate": "Item Drop Rate",
+    "countRate": "Item Drop Amount",
+    "costPercent": "Time Use"
+  },
+  "offsetColumns": {
+    "grade": "Level",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} gauge levels"
+  }
+}

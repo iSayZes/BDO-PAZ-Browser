@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "grade": "Nivel",
+    "dropRate": "Obtención de objetos",
+    "countRate": "Obtención de objetos (cantidad)",
+    "costPercent": "Consumo de tiempo"
+  },
+  "offsetColumns": {
+    "grade": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

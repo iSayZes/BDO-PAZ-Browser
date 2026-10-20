@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "grade": "Stufe",
+    "dropRate": "Beuterate",
+    "countRate": "Beutemenge",
+    "costPercent": "Zeitverbrauch"
+  },
+  "offsetColumns": {
+    "grade": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

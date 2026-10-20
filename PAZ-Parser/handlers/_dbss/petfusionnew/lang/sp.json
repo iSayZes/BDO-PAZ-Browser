@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "mainTier": "Mascota principal",
+    "result1": "Resultado 1",
+    "chance1": "Probabilidad 1",
+    "result2": "Resultado 2",
+    "chance2": "Probabilidad 2",
+    "subTier": "+ Grado {tier}",
+    "gosphy": "+ Fantasmita mago"
+  },
+  "offsetColumns": {
+    "tier": "Grado",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "tier": "Grado {tier}",
+  "meta": {
+    "mainTiers": "{count} grados de la mascota principal"
+  }
+}

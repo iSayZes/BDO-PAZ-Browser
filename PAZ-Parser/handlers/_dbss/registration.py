@@ -184,6 +184,11 @@ from .exceptionskillcooltimewidget.handler import (
     exception_skill_cool_time_widget_offset_handler,
 )
 from .petpcroom.handler import PetPcRoomHandler, pet_pc_room_offset_handler
+from .petfusionnew.handler import (
+    PetFusionNewAddRateInfoHandler,
+    PetFusionNewHandler,
+    pet_fusion_new_offset_handler,
+)
 from .maid.handler import MaidHandler, maid_offset_handler
 
 
@@ -418,5 +423,8 @@ def register_dbss_handlers() -> None:
     register_handler("exceptionskillcooltimewidget.dbss", ExceptionSkillCoolTimeWidgetHandler())
     register_handler("petpcroomoffset.dbss", pet_pc_room_offset_handler())
     register_handler("petpcroom.dbss", PetPcRoomHandler())
+    register_handler("petfusionnewoffset.dbss", pet_fusion_new_offset_handler())
+    register_handler("petfusionnew.dbss", PetFusionNewHandler())
+    register_handler("petfusionnewaddrateinfo.dbss", PetFusionNewAddRateInfoHandler())
     register_handler("maidoffset.dbss", maid_offset_handler())
     register_handler("maid.dbss", MaidHandler())

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "mainTier": "대표 반려동물",
+    "result1": "결과 1",
+    "chance1": "확률 1",
+    "result2": "결과 2",
+    "chance2": "확률 2",
+    "subTier": "+ {tier}세대",
+    "gosphy": "+ 마법사 고스피"
+  },
+  "offsetColumns": {
+    "tier": "세대",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "tier": "{tier}세대",
+  "meta": {
+    "mainTiers": "대표 반려동물 세대 {count}개"
+  }
+}

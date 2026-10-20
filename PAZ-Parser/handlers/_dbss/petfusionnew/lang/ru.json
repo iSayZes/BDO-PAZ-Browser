@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "mainTier": "Главный питомец",
+    "result1": "Итоги 1",
+    "chance1": "Шанс 1",
+    "result2": "Итоги 2",
+    "chance2": "Шанс 2",
+    "subTier": "+ Ранг {tier}",
+    "gosphy": "+ Привидение"
+  },
+  "offsetColumns": {
+    "tier": "Ранг",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "tier": "Ранг {tier}",
+  "meta": {
+    "mainTiers": "Рангов главного питомца: {count}"
+  }
+}

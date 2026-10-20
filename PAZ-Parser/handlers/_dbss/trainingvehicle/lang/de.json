@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "name": "Name",
+    "grade": "Rang"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Charaktere"
+  }
+}

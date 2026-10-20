@@ -334,6 +334,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `totalquestcounttype.bss` | PABR quest totals, one u32 per quest type (`__eQuestType`, the `quest.dbss` `quest_category`), same format as `totalquestcountregion.bss` | [totalquestcountregion](file-formats/totalquestcountregion_bss.md) | 3 | 0 |
 | `traininglevelskillstat.bss` | PABR list of two Training level bonuses per level: mount skill learn chance and higher minimum movement speed chance | [traininglevelskillstat](file-formats/traininglevelskillstat_bss.md) | 0 | 0 |
 | `trainingstatdata.bss` | PABR Training Mastery table: per 50 mastery, horse capture rate, mount EXP and higher tier horse chance | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `trainingvehicle.dbss` | Grade per training dummy character (Scarecrow, Advanced Scarecrow, Sandbag): u16 character key, its copy and an i32 grade | [trainingvehicle](file-formats/trainingvehicle_dbss.md) | 1 | 0 |
+| `trainingvehicleoffset.dbss` | Index into `trainingvehicle.dbss` with no magic: u16 character key, offset and size (10-byte rows) | [trainingvehicle](file-formats/trainingvehicle_dbss.md) | 1 | 0 |
 | `ui_skillgroup_awakening.bss` | Awakening skill window grid per class, same format as `ui_skillgroup_combat.bss` | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `ui_skillgroup_combat.bss` | Combat skill window grid per class: placed skill groups, drawing cells and named tabs | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |
 | `ui_skillgroup_succession.bss` | Succession skill window grids, same format; empty on client 3458 | [ui_skillgroup](file-formats/ui_skillgroup_bss.md) | 1 | 0 |

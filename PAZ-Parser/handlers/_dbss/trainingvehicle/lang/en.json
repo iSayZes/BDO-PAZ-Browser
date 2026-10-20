@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "name": "Name",
+    "grade": "Grade"
+  },
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} characters"
+  }
+}

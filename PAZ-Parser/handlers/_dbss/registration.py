@@ -104,6 +104,10 @@ from .employeecharactership.handler import (
     EmployeeCharacterShipHandler,
     employee_character_ship_offset_handler,
 )
+from .employeeloyalismitem.handler import (
+    EmployeeLoyalismItemHandler,
+    employee_loyalism_item_offset_handler,
+)
 from .employeename.handler import EmployeeNameHandler, employee_name_offset_handler
 from .employeespawninfo.handler import EmployeeSpawnInfoHandler, employee_spawn_info_offset_handler
 from .employeespawnposition.handler import (
@@ -322,6 +326,8 @@ def register_dbss_handlers() -> None:
     register_handler("fairyskillchange.dbss", FairySkillChangeHandler())
     register_handler("employeecharactershipoffset.dbss", employee_character_ship_offset_handler())
     register_handler("employeecharactership.dbss", EmployeeCharacterShipHandler())
+    register_handler("employeeloyalismitemoffset.dbss", employee_loyalism_item_offset_handler())
+    register_handler("employeeloyalismitem.dbss", EmployeeLoyalismItemHandler())
     register_handler("employeenameoffset.dbss", employee_name_offset_handler())
     register_handler("employeename.dbss", EmployeeNameHandler())
     register_handler(

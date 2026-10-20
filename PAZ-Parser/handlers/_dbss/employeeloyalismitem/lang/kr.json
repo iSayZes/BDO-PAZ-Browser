@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "loyalismType": "종류",
+    "recovery": "회복"
+  },
+  "loyalismTypes": {
+    "0": "건강",
+    "1": "병에 걸린 선원"
+  },
+  "offsetColumns": {
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "dataSize": "데이터 크기"
+  },
+  "meta": {
+    "count": "선원 건강 회복 아이템 {count}개"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "loyalismType": "Tipo",
+    "recovery": "Regeneración"
+  },
+  "loyalismTypes": {
+    "0": "Salud",
+    "1": "Marinero enfermo"
+  },
+  "offsetColumns": {
+    "itemId": "ID del objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "dataSize": "Tamaño de datos"
+  },
+  "meta": {
+    "count": "{count} objetos de salud de marineros"
+  }
+}

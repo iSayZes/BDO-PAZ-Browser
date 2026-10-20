@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "loyalismType": "Typ",
+    "recovery": "Regeneration"
+  },
+  "loyalismTypes": {
+    "0": "Kondition",
+    "1": "Kranker Seefahrer"
+  },
+  "offsetColumns": {
+    "itemId": "Gegenstands-ID",
+    "dataOffset": "Daten-Offset",
+    "dataSize": "Datengröße"
+  },
+  "meta": {
+    "count": "{count} Gegenstände für die Kondition der Seefahrer"
+  }
+}

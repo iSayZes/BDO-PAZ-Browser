@@ -167,6 +167,7 @@ from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offse
 from .minigamereward.handler import MiniGameRewardHandler, minigame_reward_offset_handler
 from .purchaselimitgroup.handler import PurchaseLimitGroupHandler, purchase_limit_group_offset_handler
 from .trainingvehicle.handler import TrainingVehicleHandler, training_vehicle_offset_handler
+from .guildboss.handler import GuildBossHandler, guild_boss_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -379,3 +380,5 @@ def register_dbss_handlers() -> None:
     register_handler("purchaselimitgroup.dbss", PurchaseLimitGroupHandler())
     register_handler("trainingvehicleoffset.dbss", training_vehicle_offset_handler())
     register_handler("trainingvehicle.dbss", TrainingVehicleHandler())
+    register_handler("guildbossoffset.dbss", guild_boss_offset_handler())
+    register_handler("guildboss.dbss", GuildBossHandler())

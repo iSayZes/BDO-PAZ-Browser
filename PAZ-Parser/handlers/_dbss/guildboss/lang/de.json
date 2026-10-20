@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "name": "Name",
+    "skillPointExp": "Talent-EP",
+    "guildMoney": "Gildenvermögen"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Charaktere"
+  }
+}

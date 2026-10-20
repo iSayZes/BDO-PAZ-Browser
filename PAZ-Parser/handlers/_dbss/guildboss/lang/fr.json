@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "name": "Nom",
+    "skillPointExp": "EXP de compétence",
+    "guildMoney": "Fonds de la guilde"
+  },
+  "offsetColumns": {
+    "characterKey": "ID du personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} personnages"
+  }
+}

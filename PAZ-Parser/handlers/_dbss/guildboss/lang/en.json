@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "name": "Name",
+    "skillPointExp": "Skill EXP",
+    "guildMoney": "Guild Funds"
+  },
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} characters"
+  }
+}

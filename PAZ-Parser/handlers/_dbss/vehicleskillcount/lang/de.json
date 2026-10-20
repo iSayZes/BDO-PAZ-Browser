@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "count": "Anzahl",
+    "highestKey": "Höchste Talent-ID"
+  },
+  "meta": {
+    "summary": "Höchste ID der Reittier- und Schiffstalente + 1"
+  }
+}

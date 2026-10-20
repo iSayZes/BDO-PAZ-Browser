@@ -4,6 +4,7 @@ from __future__ import annotations
 from html import escape
 
 REPO_URL = "https://github.com/iSayZes/BDO-PAZ-Browser"
+DISCORD_NAME = "sayzes"
 INDEX_PAGE = "index.html"
 STATIC_DIR = "static"
 FORMATS_SCRIPT = "formats.js"
@@ -30,6 +31,8 @@ def _top_bar(crumb: str) -> str:
         f'<a class="tb-brand" href="{INDEX_PAGE}">BDO PAZ Browser</a>'
         f'<span class="tb-crumb"><a href="{INDEX_PAGE}">Format docs</a>{crumb}</span>'
         '<span class="tb-gap"></span>'
+        # Discord has no profile URL for a username, so the name is plain text
+        f'<span class="tb-link tb-contact" title="Add me on Discord">Discord: <b>{DISCORD_NAME}</b></span>'
         f'<a class="tb-link" href="{REPO_URL}">GitHub ↗</a>'
         "</div></header>"
     )

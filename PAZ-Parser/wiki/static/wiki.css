@@ -140,6 +140,8 @@ code {
 }
 .pill.accent { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent); background: var(--color-accent-soft); color: var(--color-accent); }
 .tb-link { font-size: 12px; }
+.tb-contact { color: var(--color-text-3); }
+.tb-contact b { color: var(--color-text-2); font-weight: 500; user-select: all; }
 
 /* ── Shell ── */
 .shell {

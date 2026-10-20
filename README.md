@@ -639,6 +639,10 @@ build_wiki.py               # Format docs wiki into _site/ (see docs/format-docs
 browser.spec                # PyInstaller spec that build.py runs
 ```
 
+## Contact
+
+To get in touch with me, add me on Discord: `sayzes`.
+
 ## Disclaimer
 
 This project is for research purposes only. BDO game data is copyright Pearl Abyss. Do not redistribute extracted game assets.

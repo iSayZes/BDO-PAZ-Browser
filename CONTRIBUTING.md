@@ -60,6 +60,10 @@ Also check that:
 - **Small, focused files.** Split code by responsibility and reuse the shared helpers in `handlers/_common/` and `handlers/_dbss/common/` rather than copying them.
 - **Commit messages** follow [Conventional Commits](https://www.conventionalcommits.org/): `feat:`, `fix:`, `perf:`, `docs:`, `refactor:`, `test:`, `ci:`, `style:`. Release notes list `feat`, `fix`, `perf` and `refactor` commits that change the app or a handler. Keep the subject short and say what it adds or changes, e.g. `feat: add the buffsimply.bss handler and buff icons` or `feat: blizzardregioninfo and edaniaregioninfo tables`.
 
+## Contact
+
+For questions about a format, a handler or a pull request, add me on Discord: `sayzes`.
+
 ## Code of Conduct
 
 By taking part you agree to follow the [Code of Conduct](CODE_OF_CONDUCT.md).

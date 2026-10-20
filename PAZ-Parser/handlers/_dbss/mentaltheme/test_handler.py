@@ -30,11 +30,11 @@ CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "theme_id", "name", "parent_id", "parent_name", "entry_count", "child_count", "bookshelf_item",
-                "bookshelf",
+                "bookshelf", "is_copy_right_able",
             ],
         ),
         DeclaredCountTest(declared=header_count()),
-        RangeTest(col="unknown_0e", min_val=0, max_val=1),
+        RangeTest(col="is_copy_right_able", min_val=0, max_val=1),
         TargetTest(
             col="theme_id",
             value=20120,

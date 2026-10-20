@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, icon_html_label_cell, sort_keys, table
+from _common.html import Column, e, flag_cell, icon_html_label_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.item_key import item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
@@ -90,13 +90,13 @@ def _theme_record(record: MentalThemeRecord) -> dict:
         "entry_count": record["entry_count"],
         "child_count": record["child_count"],
         **_bookshelf_fields(record["bookshelf_item"]),
+        "is_copy_right_able": record["is_copy_right_able"],
         "name_kr": record["name_kr"],
         "entry_ids": record["entry_ids"],
         "entry_names": record["entry_names"],
         "child_ids": record["child_ids"],
         "payload_offset": record["payload_offset"],
         "payload_size": record["payload_size"],
-        "unknown_0e": record["unknown_0e"],
         "unknown_after_child_ids": record["unknown_after_child_ids"],
     }
 
@@ -126,6 +126,8 @@ class MentalThemeHandler(PreviewHandler):
             Column(cols["entries"], "num", sort_key="entry_count"),
             Column(cols["childrenGroups"], "num", sort_key="child_count"),
             Column(cols["bookshelf"], sort_key="bookshelf"),
+            # is_copy_right_able: the theme gets knowledge grades and can be compiled into a book.
+            Column(cols["knowledgeGrade"], sort_key="is_copy_right_able"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -178,6 +180,7 @@ class MentalThemeHandler(PreviewHandler):
                 e(r["entry_count"]),
                 e(r["child_count"]),
                 _bookshelf_cell(r),
+                flag_cell(r["is_copy_right_able"]),
             ]
             for r in slice_
         ]

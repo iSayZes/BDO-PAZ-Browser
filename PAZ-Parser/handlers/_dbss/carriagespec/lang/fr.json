@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carriageKey": "ID du wagon",
+    "distancePerMinute": "Distance par minute",
+    "loadage": "Chargement",
+    "transportMaxWeight": "Poids max.",
+    "camasilbAddTransportMaxWeight": "Poids suppl. Kamasylve",
+    "baseFee": "Frais de base",
+    "overloadWeight": "Poids de surcharge",
+    "feePerWeight": "Frais par poids",
+    "nonStackTrade": "Objets de commerce non empilables",
+    "stackTrade": "Objets de commerce empilables",
+    "expirationPeriodTrade": "Objets de commerce à expiration"
+  },
+  "offsetColumns": {
+    "carriageKey": "ID du wagon",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} types de wagon"
+  }
+}

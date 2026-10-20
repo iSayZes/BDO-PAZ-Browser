@@ -172,6 +172,7 @@ from .trainingvehicle.handler import TrainingVehicleHandler, training_vehicle_of
 from .guildboss.handler import GuildBossHandler, guild_boss_offset_handler
 from .itemcollectionscroll.handler import ItemCollectionScrollHandler, item_collection_scroll_offset_handler
 from .servanttransformdata.handler import ServantTransformDataHandler, servant_transform_data_offset_handler
+from .carriagespec.handler import CarriageSpecHandler, carriage_spec_offset_handler
 from .petdetectposition.handler import PetDetectPositionHandler, pet_detect_position_offset_handler
 
 
@@ -394,5 +395,7 @@ def register_dbss_handlers() -> None:
     register_handler("itemcollectionscroll.dbss", ItemCollectionScrollHandler())
     register_handler("servanttransformdataoffset.dbss", servant_transform_data_offset_handler())
     register_handler("servanttransformdata.dbss", ServantTransformDataHandler())
+    register_handler("carriagespecoffset.dbss", carriage_spec_offset_handler())
+    register_handler("carriagespec.dbss", CarriageSpecHandler())
     register_handler("petdetectpositionoffset.dbss", pet_detect_position_offset_handler())
     register_handler("petdetectposition.dbss", PetDetectPositionHandler())

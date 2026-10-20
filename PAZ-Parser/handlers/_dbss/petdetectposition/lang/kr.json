@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionKey": "위치 ID",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "type": "종류"
+  },
+  "offsetColumns": {
+    "positionKey": "위치 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "위치 발견 지점 {count}개"
+  }
+}

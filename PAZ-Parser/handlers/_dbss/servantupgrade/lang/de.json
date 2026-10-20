@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "ship": "Schiff",
+    "upgradeCharacterId": "Ausbau-ID",
+    "upgradeShip": "Ausbau zu",
+    "mainItems": "Ausgerüstete Teile",
+    "subItems": "Materialien"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "upgradeCharacterId": "Ausbau-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Ausbauten · {ships} Schiffe"
+  }
+}

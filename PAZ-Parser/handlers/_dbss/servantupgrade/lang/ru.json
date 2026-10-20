@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "ship": "Корабль",
+    "upgradeCharacterId": "ID улучшения",
+    "upgradeShip": "Улучшение до",
+    "mainItems": "Снаряжение",
+    "subItems": "Материалы"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "upgradeCharacterId": "ID улучшения",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "{count} улучшений · {ships} кораблей"
+  }
+}

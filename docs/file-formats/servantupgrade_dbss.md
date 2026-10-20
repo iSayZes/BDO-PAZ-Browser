@@ -33,6 +33,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ----------------------------- | -------- | ------------------------------------------------------- |
 | `servantupgradeoffset.dbss`   | Optional | Index: per ship, per target ship, the upgrade's offset and size |
 | `languagedata_en.loc`         | Optional | Ship names (LOC type 6) and item names (LOC type 0)     |
+| `characterstaticoffset.dbss`  | Optional | Every `characterstatic.dbss` key, so a ship ID without a row shows as plain text instead of a link |
 
 All multi-byte values are little-endian.
 

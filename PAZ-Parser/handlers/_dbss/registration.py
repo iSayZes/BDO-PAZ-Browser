@@ -159,6 +159,7 @@ from .vehicleskill.handler import VehicleSkillHandler, vehicle_skill_offset_hand
 from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_owner_offset_handler
 from .servantbuff.handler import ServantBuffHandler, servant_buff_offset_handler
 from .servantinteraction.handler import ServantInteractionHandler, servant_interaction_offset_handler
+from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -361,3 +362,5 @@ def register_dbss_handlers() -> None:
     register_handler("servantbuff.dbss", ServantBuffHandler())
     register_handler("servantinteractionoffset.dbss", servant_interaction_offset_handler())
     register_handler("servantinteraction.dbss", ServantInteractionHandler())
+    register_handler("servantupgradeoffset.dbss", servant_upgrade_offset_handler())
+    register_handler("servantupgrade.dbss", ServantUpgradeHandler())

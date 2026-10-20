@@ -31,10 +31,11 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-| File                  | Required | Role                                                      |
-| --------------------- | -------- | --------------------------------------------------------- |
-| `vehicleskill.dbss`   | Optional | Skill names for `basic_learn_skill_keys` and `stallion_skill_keys` |
-| `languagedata_en.loc` | Optional | Servant names (LOC type 6, `str_id1` = `character_id`)    |
+| File                         | Required | Role                                                                 |
+| ---------------------------- | -------- | -------------------------------------------------------------------- |
+| `vehicleskill.dbss`          | Optional | Korean skill names for `basic_learn_skill_keys` and `stallion_skill_keys` when LOC has none |
+| `characterstaticoffset.dbss` | Optional | Every `characterstatic.dbss` key, so a `character_id` without a row shows as plain text instead of a link |
+| `languagedata_en.loc`        | Optional | Servant names (LOC type 6, `str_id1` = `character_id`) and skill names (LOC type 8, `str_id1` = skill key) |
 
 Client 1784 ships the same records as `servant.dbss` with the index
 `servantoffset.dbss` (Layout 1).

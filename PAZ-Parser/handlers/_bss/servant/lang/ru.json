@@ -1,0 +1,35 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "servantKind": "Тип",
+    "servantKindSub": "Подтип",
+    "tier": "Ранг",
+    "grade": "Рейтинг",
+    "color1": "Цвет 1",
+    "color2": "Цвет 2",
+    "color3": "Цвет 3",
+    "matingCount": "Скрещивания",
+    "lifespan": "Срок жизни",
+    "basePrice": "Нач. цена",
+    "pricePerLevel": "Цена за уровень",
+    "isMale": "Конь",
+    "isDisplayGender": "Пол виден",
+    "servantMainModel": "Основная модель",
+    "isMatingResult": "Потомство",
+    "isTrade": "Можно продать",
+    "linkCount": "Связи",
+    "experiencePerOne": "Опыт за единицу",
+    "formIndex": "Индекс формы",
+    "basicLearnSkillMaxCount": "Макс. навыков",
+    "basicLearnSkills": "Изученные навыки",
+    "rewardMoneyPercent": "Серебро награды",
+    "isOnlyPcroom": "Только PC-бан",
+    "stallionSkills": "Навыки жеребца",
+    "canMix": "Можно смешать",
+    "canMating": "Можно скрестить"
+  },
+  "meta": {
+    "count": "{count} транспорта и кораблей"
+  }
+}

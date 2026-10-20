@@ -1,0 +1,35 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "servantKind": "Type",
+    "servantKindSub": "Sous-type",
+    "tier": "Tier",
+    "grade": "Niveau",
+    "color1": "Couleur 1",
+    "color2": "Couleur 2",
+    "color3": "Couleur 3",
+    "matingCount": "Reproduction",
+    "lifespan": "Durée de vie",
+    "basePrice": "Prix de base",
+    "pricePerLevel": "Prix par niveau",
+    "isMale": "Mâle",
+    "isDisplayGender": "Genre affiché",
+    "servantMainModel": "Modèle principal",
+    "isMatingResult": "Issu d'élevage",
+    "isTrade": "Échangeable",
+    "linkCount": "Liens",
+    "experiencePerOne": "EXP par unité",
+    "formIndex": "Index de forme",
+    "basicLearnSkillMaxCount": "Compétences max.",
+    "basicLearnSkills": "Compétences apprises",
+    "rewardMoneyPercent": "Argent de récompense",
+    "isOnlyPcroom": "PC Bang uniquement",
+    "stallionSkills": "Compétences d'étalon",
+    "canMix": "Mélange possible",
+    "canMating": "Élevage possible"
+  },
+  "meta": {
+    "count": "{count} montures et navires"
+  }
+}

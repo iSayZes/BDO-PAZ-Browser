@@ -1,0 +1,35 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "servantKind": "Tipo",
+    "servantKindSub": "Subtipo",
+    "tier": "Grado",
+    "grade": "Rango",
+    "color1": "Color 1",
+    "color2": "Color 2",
+    "color3": "Color 3",
+    "matingCount": "Crianzas",
+    "lifespan": "Vida útil",
+    "basePrice": "Precio base",
+    "pricePerLevel": "Precio por nivel",
+    "isMale": "Macho",
+    "isDisplayGender": "Sexo visible",
+    "servantMainModel": "Modelo principal",
+    "isMatingResult": "De cría",
+    "isTrade": "Comerciable",
+    "linkCount": "Enlaces",
+    "experiencePerOne": "Exp. por unidad",
+    "formIndex": "Índice de forma",
+    "basicLearnSkillMaxCount": "Habilidades máx.",
+    "basicLearnSkills": "Habilidades aprendidas",
+    "rewardMoneyPercent": "Plata de recompensa",
+    "isOnlyPcroom": "Solo PC Bang",
+    "stallionSkills": "Habilidades de semental",
+    "canMix": "Mezclable",
+    "canMating": "Criable"
+  },
+  "meta": {
+    "count": "{count} monturas y barcos"
+  }
+}

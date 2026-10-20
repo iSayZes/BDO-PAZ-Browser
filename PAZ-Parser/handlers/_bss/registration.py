@@ -85,6 +85,7 @@ from .questrandomgroup.handler import QuestRandomGroupBssHandler
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
+from .servant.handler import ServantBssHandler
 from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
@@ -201,6 +202,7 @@ def register_bss_handlers() -> None:
     register_handler("menu.bss", MenuBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
+    register_handler("servant.bss", ServantBssHandler())
     register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())

@@ -1,0 +1,35 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "servantKind": "Art",
+    "servantKindSub": "Unterart",
+    "tier": "Rang",
+    "grade": "Grad",
+    "color1": "Farbe 1",
+    "color2": "Farbe 2",
+    "color3": "Farbe 3",
+    "matingCount": "Züchtungszähler",
+    "lifespan": "Lebensdauer",
+    "basePrice": "Standardpreis",
+    "pricePerLevel": "Preis pro Stufe",
+    "isMale": "Hengst",
+    "isDisplayGender": "Geschlecht sichtbar",
+    "servantMainModel": "Hauptmodell",
+    "isMatingResult": "Gezüchtet",
+    "isTrade": "Handelbar",
+    "linkCount": "Verbindungen",
+    "experiencePerOne": "EP pro Einheit",
+    "formIndex": "Form-Index",
+    "basicLearnSkillMaxCount": "Max. Talente",
+    "basicLearnSkills": "Erlernte Talente",
+    "rewardMoneyPercent": "Belohnungssilber",
+    "isOnlyPcroom": "Nur PC-Bang",
+    "stallionSkills": "Hengsttalente",
+    "canMix": "Mischbar",
+    "canMating": "Züchtbar"
+  },
+  "meta": {
+    "count": "{count} Reittiere und Schiffe"
+  }
+}

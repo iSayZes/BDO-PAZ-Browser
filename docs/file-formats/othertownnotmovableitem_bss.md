@@ -79,6 +79,13 @@ The five entries on client 3474, in file order:
   goods and barter items through other checks.
 - The parser is `_bss/othertownnotmovableitem/parser.py`; its test asserts
   that every entry names an item.
+- Two other Lua paths in `panel_window_warehouse_all_1.luac` move items to
+  or from another town's storage through `ToClient_ablePushOrPopOtherWareHouse`
+  and run on the PC client: the auto-move button for an NPC, installation or
+  maid storage (`_ContentsGroup_ItemMove`), and the market-register and
+  cargo-sell buttons for an NPC storage (`_ContentsGroup_SellItemInOtherWarehouse`).
+  Neither calls `movableOtherTown()`. They are the paths the In-Game Check
+  below tests.
 
 ## Open Questions
 
@@ -86,7 +93,9 @@ The five entries on client 3474, in file order:
 
 The Lua shows only the result of `movableOtherTown()`. Whether the client
 decides it from this list alone, or also from instance state such as bound or
-expiring items, needs the executable.
+expiring items, needs the executable of client 2519 or later. The 2016
+client, the client 1485 client and server and the client 1784 server have no
+other-town storage code, and their names hold no `OtherTown` string.
 
 ## In-Game Checks
 

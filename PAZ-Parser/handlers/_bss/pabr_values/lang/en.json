@@ -8,6 +8,13 @@
     "miniGameGroup": "Minigame Group",
     "skillId": "Skill ID",
     "skill": "Skill",
+    "siegeStage0": "Tier 1 Beginner",
+    "siegeStage1": "Tier 1 Intermediate",
+    "siegeStage2": "Tier 1 Advanced",
+    "siegeStage3": "Tier 2",
+    "siegeStage4": "Tier 3",
+    "siegeStage5": "Tier 4",
+    "siegeStage6": "Conquest War",
     "valueBytes": "Value Bytes"
   },
   "meta": {

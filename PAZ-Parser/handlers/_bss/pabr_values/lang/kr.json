@@ -8,6 +8,13 @@
     "miniGameGroup": "미니게임 그룹",
     "skillId": "기술 ID",
     "skill": "기술",
+    "siegeStage0": "1단계 초급",
+    "siegeStage1": "1단계 중급",
+    "siegeStage2": "1단계 상급",
+    "siegeStage3": "2단계",
+    "siegeStage4": "3단계",
+    "siegeStage5": "4단계",
+    "siegeStage6": "점령전",
     "valueBytes": "값 바이트"
   },
   "meta": {

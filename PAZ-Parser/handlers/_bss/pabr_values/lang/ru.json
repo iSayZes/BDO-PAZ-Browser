@@ -8,6 +8,13 @@
     "miniGameGroup": "Группа мини-игры",
     "skillId": "ID навыка",
     "skill": "Навык",
+    "siegeStage0": "Ранг 1 Новичок",
+    "siegeStage1": "Ранг 1 Средний",
+    "siegeStage2": "Ранг 1 Продвинутый",
+    "siegeStage3": "Ранг 2",
+    "siegeStage4": "Ранг 3",
+    "siegeStage5": "Ранг 4",
+    "siegeStage6": "Захват территории",
     "valueBytes": "Байты значения"
   },
   "meta": {

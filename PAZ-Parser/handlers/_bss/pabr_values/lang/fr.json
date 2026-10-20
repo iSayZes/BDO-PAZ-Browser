@@ -8,6 +8,13 @@
     "miniGameGroup": "Groupe de mini-jeu",
     "skillId": "ID de compétence",
     "skill": "Compétence",
+    "siegeStage0": "Tier 1 Néophyte",
+    "siegeStage1": "Tier 1 Intermédiaire",
+    "siegeStage2": "Tier 1 Avancé",
+    "siegeStage3": "Tier 2",
+    "siegeStage4": "Tier 3",
+    "siegeStage5": "Tier 4",
+    "siegeStage6": "Guerre de conquête",
     "valueBytes": "Octets de valeur"
   },
   "meta": {

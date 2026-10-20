@@ -8,6 +8,13 @@
     "miniGameGroup": "Minispielgruppe",
     "skillId": "Talent-ID",
     "skill": "Talent",
+    "siegeStage0": "Rang 1 Anfänger",
+    "siegeStage1": "Rang 1 Mittel",
+    "siegeStage2": "Rang 1 Fortgeschritten",
+    "siegeStage3": "Rang 2",
+    "siegeStage4": "Rang 3",
+    "siegeStage5": "Rang 4",
+    "siegeStage6": "Eroberungskrieg",
     "valueBytes": "Wertbytes"
   },
   "meta": {

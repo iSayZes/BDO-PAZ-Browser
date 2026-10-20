@@ -64,6 +64,10 @@ class ValueTable:
         return any(field.column is not None for field in self.fields)
 
 
+# The SiegeStage_0 to SiegeStage_6 columns of siegemercenarylimitcount.bss.
+SIEGE_STAGE_COUNT = 7
+
+
 def _vehicle_skill_name(key: int) -> str:
     return loc_text(LOC_VEHICLE_SKILL, key)
 
@@ -86,6 +90,10 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     ),
     ValueTable("petfeedcount.bss", (ValueField("feed_item_count", "I", "feedItemCount"),)),
     ValueTable("servantwhistledistance.bss", (ValueField("unknown_04", "2s"),)),
+    ValueTable(
+        "siegemercenarylimitcount.bss",
+        tuple(ValueField(f"siege_stage_{stage}", "I", f"siegeStage{stage}") for stage in range(SIEGE_STAGE_COUNT)),
+    ),
     ValueTable(
         "vehicletrainingskill.bss",
         (ValueField("skill_key", "B", "skillId", NameLookup("skill_name", "skill", _vehicle_skill_name)),),

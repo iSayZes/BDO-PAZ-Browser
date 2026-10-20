@@ -337,6 +337,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `servantupgradeoffset.dbss` | Index into `servantupgrade.dbss`: per source ship, per target ship, offset and size | [servantupgrade](file-formats/servantupgrade_dbss.md) | 0 | 0 |
 | `servantwhistledistance.bss` | PABR with two unnamed bytes in the count slot, `0` on every client checked | [servantwhistledistance](file-formats/servantwhistledistance_bss.md) | 1 | 0 |
 | `shadowarenalist.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `siegemercenarylimitcount.bss` | PABR with seven u32 War Hero limits in the count slot, one per Node War stage and the Conquest War (`0, 0, 0, 3, 3, 3, 5` on client 3474) | [siegemercenarylimitcount](file-formats/siegemercenarylimitcount_bss.md) | 1 | 0 |
 | `skill.dbss` | Rule record of every skill rank: cooldown, applied buff IDs, effect script, next ranks and Core base skill | [skill](file-formats/skill_dbss.md) | 1 | 0 |
 | `skillexperience.dbss` | Combat skill point EXP table: EXP to the next skill point level, levels 0 to 2000 on client 3464 | [skillexperience](file-formats/skillexperience_dbss.md) | 1 | 0 |
 | `skillexperiencemaxlevel.bss` | PABR max level of the combat skill point table, a u16 (2000 on client 3464) | [skillexperiencemaxlevel](file-formats/skillexperiencemaxlevel_bss.md) | 0 | 0 |

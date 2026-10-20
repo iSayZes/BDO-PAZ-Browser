@@ -8,6 +8,13 @@
     "miniGameGroup": "Grupo de minijuego",
     "skillId": "ID de habilidad",
     "skill": "Habilidad",
+    "siegeStage0": "Grado 1 Principiante",
+    "siegeStage1": "Grado 1 Intermedio",
+    "siegeStage2": "Grado 1 Avanzado",
+    "siegeStage3": "Grado 2",
+    "siegeStage4": "Grado 3",
+    "siegeStage5": "Grado 4",
+    "siegeStage6": "Conquista",
     "valueBytes": "Bytes de valor"
   },
   "meta": {

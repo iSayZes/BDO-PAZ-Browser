@@ -282,6 +282,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `petfeedcount.bss` | PABR with one u32 in the count slot: the number of pet feed items (`ContentsEventType` 13) | [petfeedcount](file-formats/petfeedcount_bss.md) | 1 | 0 |
 | `petgrade.dbss`                    | Pet species/variant grade table                                                                                | [petgrade](file-formats/petgrade_dbss.md)                           | 0              | 1 |
 | `petgradeoffset.dbss`              | Keyed offset index into `petgrade.dbss`, maps `(species << 8) \| variant` → offset/size                        | [petgrade](file-formats/petgrade_dbss.md)                           | 0              | 1 |
+| `petleaderbuff.bss` | Alpha pet bonus per pet tier with no PABR magic: u8 tier and the loot cooldown cut for active pets (`150000` for Tier 5 on client 3474) | [petleaderbuff](file-formats/petleaderbuff_bss.md) | 1 | 0 |
 | `petmarketsetting.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petmarketsettingoffset.dbss` | Empty offset companion for `petmarketsetting.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petoffset.dbss`                   | Keyed offset index into `pet.dbss`, maps pet ID → offset/size                                                 | [pet](file-formats/pet_dbss.md)                                     | 1              | 0 |

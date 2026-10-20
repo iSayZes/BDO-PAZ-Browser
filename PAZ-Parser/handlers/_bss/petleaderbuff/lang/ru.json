@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "petTier": "Ранг",
+    "lootCooldown": "Перезарядка сбора"
+  },
+  "meta": {
+    "count": "Рангов: {count}"
+  }
+}

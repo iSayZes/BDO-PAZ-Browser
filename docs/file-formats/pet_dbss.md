@@ -146,6 +146,7 @@ The parser reads `data_size` and `unknown_08` as one u32 (`parse_bare_offset_row
 - The fairy records are species 25 (Laila, 20 records, `exp_key` 6 to 9 by grade) and one "Fairy's Energy" record of species 100. They are the 21 records with `pet_type` 1 and the 21 with `acquire_type_id` 501 to 504, which have no row in `petequipskillaquire.dbss`.
 - `acquire_type_id` values 301–304 appear for regular pets and correspond to tiers 0–4 (tier 0 → 301, tier 4 → 304); lower values (1, 2, 3, 4) and mid-range values (101–104, 201–204, 401–404) appear for specific sub-groups.
 - 21 records have no `petgrade.dbss` row for their `(species, variant)` and show no grade.
+- [`petleaderbuff.bss`](petleaderbuff_bss.md) is keyed by `tier`: tier `4` (Tier 5 in the game) holds the alpha pet's loot cooldown cut.
 
 ## Field Names
 

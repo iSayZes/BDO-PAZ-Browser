@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "petTier": "Tier",
+    "lootCooldown": "Loot Cooldown"
+  },
+  "meta": {
+    "count": "{count} tiers"
+  }
+}

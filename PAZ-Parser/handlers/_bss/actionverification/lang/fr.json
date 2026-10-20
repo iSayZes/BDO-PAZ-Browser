@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterKey": "Clé de personnage",
+    "name": "Nom",
+    "actionName": "Action",
+    "actionHash": "Hash de l'action",
+    "ableCallTime": "Délai d'appel"
+  },
+  "meta": {
+    "count": "{count} actions de {characters} personnages"
+  }
+}

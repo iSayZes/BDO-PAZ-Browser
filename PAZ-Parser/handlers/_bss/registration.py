@@ -4,6 +4,7 @@ from bdo_preview import register_handler
 
 from _common.empty_table import EmptyTableHandler
 
+from .actionverification.handler import ActionVerificationBssHandler
 from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
@@ -118,6 +119,7 @@ from .zodiacsignindex.handler import ZodiacSignIndexHandler
 
 
 def register_bss_handlers() -> None:
+    register_handler("actionverification.bss", ActionVerificationBssHandler())
     # One layout: PABR, a count and packed quest IDs.
     for name in (
         "allquestlist.bss",

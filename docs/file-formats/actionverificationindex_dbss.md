@@ -108,8 +108,9 @@ file (12 of 12, client 3474). The file stores no `Index`.
 The same workbook has one sheet per class type, named after it (`52` to
 `87`), each with the columns `ClassType`, `Index` and `ActionName` and no
 rows, and the `ActionVerification_Table` sheet (`CharacterKey`,
-`ActionName`, `AbleCallTime`) that `actionverification.bss` is compiled
-from. Its character keys `65002` and up are the same heroes in LOC type 6
+`ActionName`, `AbleCallTime`) that
+[`actionverification.bss`](actionverification_bss.md) is compiled from.
+Its character keys `65002` and up are the same heroes in LOC type 6
 (`65002` Jordine, `65003` Peony).
 
 The client 1784 server dump of the same private server names the type
@@ -135,6 +136,9 @@ such table, and no client Lua file (client 3474) names it.
   main file and the offset file.
 - LOC type 21 gives every one of the 12 class types a name with `str_id4`
   `0`; `[PH] 12`, `[PH] 22` and `[PH] 28` are placeholders.
+- Nine of the 12 class types plus `64950` are the hero character keys of
+  [`actionverification.bss`](actionverification_bss.md) (`52` and
+  `65002` Jordine); `61`, `65` and `71` have no character there.
 
 ## Open Questions
 
@@ -144,7 +148,7 @@ The 7 bytes after `class_type` are `0` in every record of clients 1784 and
 3474. The server loader gives each record a map of `ActionName` hash ->
 `Index` from the class type's own sheet, and every such sheet is empty on
 client 1784, so a u32 entry count of `0` would fit, as in
-`actionverification.bss`, which stores each action map as a u32 count and
-(hash, value) pairs. With no record that has actions, the split of the 7
+[`actionverification.bss`](actionverification_bss.md), which stores each
+action map as a u32 count and (hash, value) pairs. With no record that has actions, the split of the 7
 bytes (a count, its width, padding) and the shape of a list entry stay
 unknown.

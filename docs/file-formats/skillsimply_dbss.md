@@ -109,10 +109,10 @@ behind the names are in Field Names.
 | `next_rank_keys+0x3A`      | u64                   | exclusive_count     | `0` on 29,716 records, up to `5`                                   |
 | `next_rank_keys+0x42`      | u16[exclusive_count]  | exclusive_skill_nos | Skill numbers it cannot be held with, see below                    |
 | `exclusive_skill_nos+0x00` | bytes[8]              | unknown_e00         | Always `0`                                                         |
-| `exclusive_skill_nos+0x08` | u8                    | unknown_e08         | Equals `skill.dbss` `unknown_08` on every record; see Notes        |
+| `exclusive_skill_nos+0x08` | u8                    | unknown_e08         | Equals `skill.dbss` `is_attack_skill` on every record; see Notes  |
 | `exclusive_skill_nos+0x09` | u8                    | is_except_cool_time | `1` on 255 records, all "Black Spirit:" skills; see Field Names    |
 | `exclusive_skill_nos+0x0A` | u32                   | base_skill_count    | `1` on 155 records, else `0`                                       |
-| `exclusive_skill_nos+0x0E` | u32[base_skill_count] | base_skill_keys     | Equals `skill.dbss` `base_skill_keys` on every record              |
+| `exclusive_skill_nos+0x0E` | u32[base_skill_count] | base_skill_keys     | Equals `skill.dbss` `related_cool_time_skill_keys` on every record |
 | `base_skill_keys+0x00`     | u8                    | need_buff_module_type | `buff.dbss` `effect_type` that must be active: `179` (`0xB3`) on exactly the 27 "Elvia:" skills, `202` (`0xCA`, none) on the rest; see below |
 
 Every one of the 30,424 records on client 3458 walks to exactly its `size`
@@ -410,19 +410,18 @@ of `SkillType_Table_New` or `Skill_Table_New`. `unknown_h00` sits where the
 2016 `gc::SkillStaticStatus` has `_isPromptForLearning`, before the learning
 level and points, but it is not `IsPrompt_ForLearning`: on client 3473, 4,715
 shared ranks have the column at `1` and the byte at `0`. `unknown_e08` marks
-damage skills on Wizard except "Elementalization" (see Notes); the 2016
-`gc::SkillStaticStatus` has `_dontUse` and `_isAttackSkill` between `_key`
-and `_actionName`, where `skill.dbss` stores the same byte, so it is likely
-one of them, but the order does not pick which. `unknown_n03` to
+damage skills on Wizard except "Elementalization" (see Notes); `skill.dbss`
+stores the same byte as `is_attack_skill`, named there from the server's
+file reader and the 2016 member order. `unknown_n03` to
 `unknown_n06` and `unknown_n08` are item equip type bytes (see above) with
 no column. `unknown_n09` sits where the 2016 struct has `_equippedItemKey`,
 right after `_requireEquipType`, but its four bytes are `0` on every record
 and the sheet's `EquipedItemID` is empty on every row, so the values cannot
 confirm it. The HP cost and learning item the skill tooltip Lua reads are
-the `RequireHP` and `NeedItemID_ForLearning` columns, which are empty or `0`
-on all but 10 of the 26,811 bexcel rows; the always-zero blocks
-(`unknown_n2c`, `unknown_n36`, `unknown_e00`) may hold them, and the values
-cannot tell.
+the `RequireHP` and `NeedItemID_ForLearning` columns, which `skill.dbss`
+holds (`require_hp`, `need_item_key_for_learning`); whether the always-zero
+blocks here (`unknown_n2c`, `unknown_n36`, `unknown_e00`) copy them, the
+values cannot tell.
 
 ## In-Game Checks
 

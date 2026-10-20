@@ -3,14 +3,18 @@
 `skilloffset.dbss` maps each skill key (`skill_no << 16 | level`) to its
 record. A record, in order:
 
-    u32 skill_key | u32 level_1_key | u8 | ascii name | u32 name_hash
-    | u8[40] | u16 resource_cost | u8[7] | u16 stamina_cost | u8[23]
-    | u32 cooldown_ms | u32[10] buff_ids | utf16 description
-    | utf16 script | u8[36] | u32 n + n x u32 next_skill_keys | u32 0
-    | u32 m + m x u32 base_skill_keys | f32 | u8[3]
+    u32 skill_key | u32 level_1_key | u8 is_attack_skill
+    | ascii action_name | u32 action_hash | u8[35] learning requirements
+    | u8 do_require_point_need | f32 require_hp | u32 resource_cost
+    | u32 require_sub_resource_point | u8 sub_resource_type | u32 stamina_cost
+    | u8[21] item cost and reuse rules | u32 cooldown_ms | u32[10] buff_ids
+    | utf16 description | utf16 script | u8[36] flags and linked skills
+    | u32 n + n x u32 next_skill_keys | u32 0
+    | u32 m + m x u32 related_cool_time_skill_keys | f32 target_search_angle
+    | u8 is_except_cool_time | u8[2]
 
-Strings are a u64 unit count plus UTF-16LE (text) or ASCII (name). Full
-layout in docs/file-formats/skill_dbss.md.
+Strings are a u64 unit count plus UTF-16LE (text) or ASCII (action_name).
+Full layout in docs/file-formats/skill_dbss.md.
 """
 
 from __future__ import annotations
@@ -24,25 +28,29 @@ from _common.record_reader import RecordReader
 from _common.skill import split_skill_key
 
 _U8 = struct.Struct("<B")
-_U16 = struct.Struct("<H")
 _U32 = struct.Struct("<I")
 _KEY_PAIR = struct.Struct("<II")
 _BUFF_SLOTS = 10
 _BUFF_IDS = struct.Struct(f"<{_BUFF_SLOTS}I")
-# The 74 bytes between name_hash and cooldown_ms: unknown_n04, resource_cost
-# (MP or WP, by class), unknown_n46, stamina_cost, unknown_n55.
-_UNKNOWN_N04_SIZE = 40
-_UNKNOWN_N46_SIZE = 7
-_UNKNOWN_N55_SIZE = 23
-_UNKNOWN_TAIL_SIZE = 36
-# f32 unknown_f32 and u8[3] unknown_end.
+# is_prompt_for_learning to need_skill_no_2: the learning rules, which
+# skillsimply.dbss also holds.
+_LEARNING_SIZE = 35
+# do_require_point_need and require_hp.
+_HP_COST_SIZE = 5
+# require_sub_resource_point and sub_resource_type.
+_SUB_RESOURCE_SIZE = 5
+# need_item_key to unknown_n4c: the item cost and the reuse rules.
+_USE_RULES_SIZE = 21
+# is_usable_while_in_cool_time to link_tooltip_skill_key.
+_SCRIPT_TAIL_SIZE = 36
+# f32 target_search_angle, u8 is_except_cool_time and u8[2] unknown_end.
 _END_SIZE = 7
 
 
 @dataclass(frozen=True)
 class SkillRecord:
     skill_key: int
-    name: str
+    action_name: str
     resource_cost: int
     stamina_cost: int
     cooldown_ms: int
@@ -50,7 +58,7 @@ class SkillRecord:
     description_kr: str
     script: str
     next_skill_keys: tuple[int, ...]
-    base_skill_keys: tuple[int, ...]
+    related_cool_time_skill_keys: tuple[int, ...]
 
     @property
     def skill_no(self) -> int:
@@ -74,30 +82,31 @@ def parse_skill_record(data: bytes, row: PabrOffsetRow) -> SkillRecord:
     if key != row.entry_id:
         raise ValueError(f"record at 0x{row.offset:X} holds key 0x{key:08X}, index says 0x{row.entry_id:08X}")
 
-    reader.unpack(_U8)
-    name = reader.text(wide=False)
-    reader.unpack(_U32)  # name_hash
-    reader.skip(_UNKNOWN_N04_SIZE)
-    (resource_cost,) = reader.unpack(_U16)
-    reader.skip(_UNKNOWN_N46_SIZE)
-    (stamina_cost,) = reader.unpack(_U16)
-    reader.skip(_UNKNOWN_N55_SIZE)
+    reader.unpack(_U8)  # is_attack_skill
+    action_name = reader.text(wide=False)
+    reader.unpack(_U32)  # action_hash
+    reader.skip(_LEARNING_SIZE)
+    reader.skip(_HP_COST_SIZE)
+    (resource_cost,) = reader.unpack(_U32)
+    reader.skip(_SUB_RESOURCE_SIZE)
+    (stamina_cost,) = reader.unpack(_U32)
+    reader.skip(_USE_RULES_SIZE)
     (cooldown_ms,) = reader.unpack(_U32)
     # The IDs fill the front slots; the rest are zero.
     buff_ids = tuple(buff_id for buff_id in reader.unpack(_BUFF_IDS) if buff_id)
     description_kr = reader.text(wide=True)
     script = reader.text(wide=True)
-    reader.skip(_UNKNOWN_TAIL_SIZE)
+    reader.skip(_SCRIPT_TAIL_SIZE)
     next_skill_keys = _key_list(reader)
     reader.unpack(_U32)  # unknown_after_next_skill_keys
-    base_skill_keys = _key_list(reader)
+    related_cool_time_skill_keys = _key_list(reader)
     reader.skip(_END_SIZE)
     if not reader.at_end():
         raise ValueError(f"{label} ends {reader.remaining()} bytes before its index size")
 
     return SkillRecord(
         skill_key=key,
-        name=name,
+        action_name=action_name,
         resource_cost=resource_cost,
         stamina_cost=stamina_cost,
         cooldown_ms=cooldown_ms,
@@ -105,7 +114,7 @@ def parse_skill_record(data: bytes, row: PabrOffsetRow) -> SkillRecord:
         description_kr=decode_inline_text(description_kr),
         script=script,
         next_skill_keys=next_skill_keys,
-        base_skill_keys=base_skill_keys,
+        related_cool_time_skill_keys=related_cool_time_skill_keys,
     )
 
 

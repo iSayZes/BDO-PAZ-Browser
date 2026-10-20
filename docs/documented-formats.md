@@ -285,12 +285,12 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `servantexperiencemaxlevel.bss` | u32 count, then (u16 character ID, u16 top level) per servant; matches the levels of `servantexperience.dbss` | [servantexperiencemaxlevel](file-formats/servantexperiencemaxlevel_bss.md) | 0 | 0 |
 | `servantexperienceoffset.dbss` | Index into `servantexperience.dbss`, maps `level << 16 \| character_id` → offset/size | [servantexperience](file-formats/servantexperience_dbss.md) | 2 | 0 |
 | `shadowarenalist.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
-| `skill.dbss` | Rule record of every skill rank: cooldown, applied buff IDs, effect script, next ranks and Core base skill | [skill](file-formats/skill_dbss.md) | 2 | 0 |
+| `skill.dbss` | Rule record of every skill rank: cooldown, applied buff IDs, effect script, next ranks and Core base skill | [skill](file-formats/skill_dbss.md) | 1 | 0 |
 | `skillexperience.dbss` | Combat skill point EXP table: EXP to the next skill point level, levels 0 to 2000 on client 3464 | [skillexperience](file-formats/skillexperience_dbss.md) | 1 | 0 |
 | `skillexperiencemaxlevel.bss` | PABR max level of the combat skill point table, a u16 (2000 on client 3464) | [skillexperiencemaxlevel](file-formats/skillexperiencemaxlevel_bss.md) | 0 | 0 |
 | `skillexperienceoffset.dbss` | Index into `skillexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [skillexperience](file-formats/skillexperience_dbss.md) | 1 | 0 |
 | `skillgroup.bss` | Skill window groups, each listing the skill keys of its ranks in order | [skillgroup](file-formats/skillgroup_bss.md) | 0 | 0 |
-| `skilloffset.dbss` | PABR index into `skill.dbss`, maps skill_key (skill_no << 16 \| level) → offset/size | [skill](file-formats/skill_dbss.md) | 2 | 0 |
+| `skilloffset.dbss` | PABR index into `skill.dbss`, maps skill_key (skill_no << 16 \| level) → offset/size | [skill](file-formats/skill_dbss.md) | 1 | 0 |
 | `skillpiece.dbss` | Set effect tiers per set skill: points threshold, `skill.dbss` rank and the Korean set title, threshold label and bonus text; English text in LOC type 52 | [skillpiece](file-formats/skillpiece_dbss.md) | 2 | 0 |
 | `skillpieceoffset.dbss` | Index into `skillpiece.dbss`, maps the set skill number to offset/size (10-byte rows, offset past the u16 key prefix) | [skillpiece](file-formats/skillpiece_dbss.md) | 2 | 0 |
 | `skillselectuiinfo.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/empty_bss.md) | 2 | 0 |

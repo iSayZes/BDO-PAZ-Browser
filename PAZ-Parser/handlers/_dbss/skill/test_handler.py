@@ -47,7 +47,7 @@ SKILL_CASE = HandlerCase(
         SchemaTest(required_keys=[
             "skill_key", "skill_no", "level", "icon_path", "name", "description", "cooldown_ms", "resource_cost",
             "stamina_cost", "buff_ids", "buffs",
-            "next_skill_keys", "base_skill_keys", "script",
+            "next_skill_keys", "related_cool_time_skill_keys", "script",
         ]),
         DeclaredCountTest(declared=header_count(offset=0)),
         DeclaredCountTest(declared=header_count(offset=4, companion=_OFFSET_FILE)),
@@ -133,7 +133,9 @@ def test_skill_rank_leads_to_next_rank(skill_result: HandlerResult) -> None:
 
 def test_every_linked_skill_is_a_skill_key(skill_result: HandlerResult) -> None:
     keys = {r["skill_key"] for r in skill_result.records}
-    linked = {key for r in skill_result.records for key in r["next_skill_keys"] + r["base_skill_keys"]}
+    linked = {
+        key for r in skill_result.records for key in r["next_skill_keys"] + r["related_cool_time_skill_keys"]
+    }
     assert linked <= keys
 
 

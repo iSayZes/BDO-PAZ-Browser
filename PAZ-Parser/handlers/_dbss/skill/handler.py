@@ -37,9 +37,9 @@ def _record_dict(record: SkillRecord) -> dict:
         "skill_no": record.skill_no,
         "level": record.level,
         "icon_path": icon_path(IconKind.SKILL, record.skill_no),
-        # English, then the Korean skilltype.dbss name, then the internal name.
-        **pa_fields("name", skill_name_tagged(record.skill_no) or record.name),
-        "internal_name": record.name,
+        # English, then the Korean skilltype.dbss name, then the action name.
+        **pa_fields("name", skill_name_tagged(record.skill_no) or record.action_name),
+        "action_name": record.action_name,
         **pa_fields("description", skill_description_tagged(record.skill_no, record.level, record.description_kr)),
         # Zero means no cooldown; None sorts last.
         "cooldown_ms": record.cooldown_ms or None,
@@ -51,8 +51,12 @@ def _record_dict(record: SkillRecord) -> dict:
         "buff_count": len(record.buff_ids) or None,
         "next_skill_keys": list(record.next_skill_keys),
         **pa_list_fields("next_skills", [_skill_label_tagged(key) for key in record.next_skill_keys]),
-        "base_skill_keys": list(record.base_skill_keys),
-        **pa_fields("base_skill", ", ".join(_skill_label_tagged(key) for key in record.base_skill_keys)),
+        # Set only on Core skills, where it names the skill the Core enhances.
+        "related_cool_time_skill_keys": list(record.related_cool_time_skill_keys),
+        **pa_fields(
+            "related_cool_time_skill",
+            ", ".join(_skill_label_tagged(key) for key in record.related_cool_time_skill_keys),
+        ),
         "description_kr": record.description_kr,
         "script": record.script,
     }
@@ -107,7 +111,7 @@ class SkillHandler(PreviewHandler):
             Column(cols["staminaCost"], "num", sort_key="stamina_cost"),
             Column(cols["buffs"], sort_key="buff_count"),
             Column(cols["nextSkills"]),
-            Column(cols["baseSkill"], sort_key="base_skill"),
+            Column(cols["baseSkill"], sort_key="related_cool_time_skill"),
             Column(cols["script"], sort_key="script"),
         ]
 
@@ -156,7 +160,7 @@ class SkillHandler(PreviewHandler):
                 e(r["stamina_cost"] or _EMPTY),
                 buff_list_cell(r["buff_ids"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 pa_list_cell(r[pa_key("next_skills")], _LIST_PREVIEW_ITEMS),
-                pa_cell(r, "base_skill"),
+                pa_cell(r, "related_cool_time_skill"),
                 e(truncate(r["script"], _SCRIPT_PREVIEW_CHARS) or _EMPTY),
             ]
             for r in slice_

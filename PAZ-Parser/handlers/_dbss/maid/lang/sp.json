@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "characterKey": "Clave de personaje",
+    "name": "Sirvientes",
+    "maxActionIndex": "Índice de acción máx.",
+    "coolTime": "Tiempo de reutilización",
+    "warehouseIn": "Almacén: depositar",
+    "warehouseOut": "Almacén: retirar",
+    "marketSubmit": "Mercado: registrar",
+    "marketBuy": "Mercado: comprar",
+    "repair": "Reparar",
+    "pcRoom": "PC Bang",
+    "skill1": "Habilidad 1",
+    "skill2": "Habilidad 2",
+    "actionIndex": "Índice de acción",
+    "icon": "Icono",
+    "headMaid": "Sirviente jefe (almacén)",
+    "headMaidMarket": "Sirviente jefe (mercado)"
+  },
+  "offsetColumns": {
+    "characterKey": "Clave de personaje",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} sirvientes"
+  }
+}

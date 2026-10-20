@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "characterKey": "Charakter-Schlüssel",
+    "name": "Magd/Butler",
+    "maxActionIndex": "Max. Aktionsindex",
+    "coolTime": "Abklingzeit",
+    "warehouseIn": "Lager: Einlagern",
+    "warehouseOut": "Lager: Entnehmen",
+    "marketSubmit": "Markt: Registrieren",
+    "marketBuy": "Markt: Kaufen",
+    "repair": "Reparatur",
+    "pcRoom": "PC-Bang",
+    "skill1": "Talent 1",
+    "skill2": "Talent 2",
+    "actionIndex": "Aktionsindex",
+    "icon": "Symbol",
+    "headMaid": "Obermagd (Lager)",
+    "headMaidMarket": "Obermagd (Markt)"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Mägde und Butler"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "characterKey": "Character Key",
+    "name": "Maid/Butler",
+    "maxActionIndex": "Max Action Index",
+    "coolTime": "Cooldown",
+    "warehouseIn": "Storage Deposit",
+    "warehouseOut": "Storage Withdraw",
+    "marketSubmit": "Market Register",
+    "marketBuy": "Market Buy",
+    "repair": "Repair",
+    "pcRoom": "PC Room",
+    "skill1": "Skill 1",
+    "skill2": "Skill 2",
+    "actionIndex": "Action Index",
+    "icon": "Icon",
+    "headMaid": "Head Maid (Storage)",
+    "headMaidMarket": "Head Maid (Market)"
+  },
+  "offsetColumns": {
+    "characterKey": "Character Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} maids and butlers"
+  }
+}

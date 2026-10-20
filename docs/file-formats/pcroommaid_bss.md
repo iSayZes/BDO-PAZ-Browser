@@ -3,7 +3,8 @@
 ## Purpose
 
 The PC room maids and butlers: a u32 count and the u16 character key of
-every `maid.dbss` row whose PC room byte is set, in `maid.dbss` row order.
+every [`maid.dbss`](maid_dbss.md) row whose `pc_room_type` is set, in
+`maid.dbss` row order.
 On client 3474 these are the eight keys `18964` to `18967` and `18974` to
 `18977`, each a Fairy Chiara or Ethan the Butler with the `[Oasis]` name
 prefix (LOC type 6).

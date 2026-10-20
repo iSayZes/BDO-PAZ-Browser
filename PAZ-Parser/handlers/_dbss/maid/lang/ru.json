@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "characterKey": "Ключ персонажа",
+    "name": "Горничные",
+    "maxActionIndex": "Макс. индекс действия",
+    "coolTime": "Перезарядка",
+    "warehouseIn": "Склад: внести",
+    "warehouseOut": "Склад: забрать",
+    "marketSubmit": "Аукцион: регистрация",
+    "marketBuy": "Аукцион: купить",
+    "repair": "Ремонт",
+    "pcRoom": "PC-бан",
+    "skill1": "Навык 1",
+    "skill2": "Навык 2",
+    "actionIndex": "Индекс действия",
+    "icon": "Значок",
+    "headMaid": "Старшая горничная (склад)",
+    "headMaidMarket": "Старшая горничная (аукцион)"
+  },
+  "offsetColumns": {
+    "characterKey": "Ключ персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Горничных: {count}"
+  }
+}

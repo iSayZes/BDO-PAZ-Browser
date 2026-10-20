@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "characterKey": "Clé de personnage",
+    "name": "Domestique",
+    "maxActionIndex": "Index d'action max.",
+    "coolTime": "Temps de recharge",
+    "warehouseIn": "Dépôt : déposer",
+    "warehouseOut": "Dépôt : retirer",
+    "marketSubmit": "Marché : inscrire",
+    "marketBuy": "Marché : acheter",
+    "repair": "Réparer",
+    "pcRoom": "PC Bang",
+    "skill1": "Compétence 1",
+    "skill2": "Compétence 2",
+    "actionIndex": "Index d'action",
+    "icon": "Icône",
+    "headMaid": "Domestique en chef (dépôt)",
+    "headMaidMarket": "Domestique en chef (marché)"
+  },
+  "offsetColumns": {
+    "characterKey": "Clé de personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} domestiques"
+  }
+}

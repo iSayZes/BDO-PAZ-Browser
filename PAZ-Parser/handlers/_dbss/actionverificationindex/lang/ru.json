@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "classType": "Тип класса",
+    "className": "Класс"
+  },
+  "offsetColumns": {
+    "classType": "Тип класса",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "meta": {
+    "count": "Типов класса: {count}"
+  }
+}

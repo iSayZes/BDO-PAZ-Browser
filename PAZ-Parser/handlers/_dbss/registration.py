@@ -175,6 +175,10 @@ from .servanttransformdata.handler import ServantTransformDataHandler, servant_t
 from .buildingbuff.handler import BuildingBuffHandler, building_buff_offset_handler
 from .carriagespec.handler import CarriageSpecHandler, carriage_spec_offset_handler
 from .petdetectposition.handler import PetDetectPositionHandler, pet_detect_position_offset_handler
+from .actionverificationindex.handler import (
+    ActionVerificationIndexHandler,
+    action_verification_index_offset_handler,
+)
 from .exceptionskillcooltimewidget.handler import (
     ExceptionSkillCoolTimeWidgetHandler,
     exception_skill_cool_time_widget_offset_handler,
@@ -407,6 +411,8 @@ def register_dbss_handlers() -> None:
     register_handler("carriagespec.dbss", CarriageSpecHandler())
     register_handler("petdetectpositionoffset.dbss", pet_detect_position_offset_handler())
     register_handler("petdetectposition.dbss", PetDetectPositionHandler())
+    register_handler("actionverificationindexoffset.dbss", action_verification_index_offset_handler())
+    register_handler("actionverificationindex.dbss", ActionVerificationIndexHandler())
     register_handler("exceptionskillcooltimewidgetoffset.dbss", exception_skill_cool_time_widget_offset_handler())
     register_handler("exceptionskillcooltimewidget.dbss", ExceptionSkillCoolTimeWidgetHandler())
     register_handler("petpcroomoffset.dbss", pet_pc_room_offset_handler())

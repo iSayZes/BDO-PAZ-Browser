@@ -42,8 +42,11 @@ class NpcPersonalityHandler(PreviewHandler):
             Column(cols["id"], "num", sort_key="personality_id"),
             Column(cols["row"], "num", sort_key="row"),
             Column(cols["groupA"], "num", sort_key="group_a_id"),
+            Column(cols["needA"], "num", sort_key="group_a_need_count"),
             Column(cols["groupB"], "num", sort_key="group_b_id"),
+            Column(cols["needB"], "num", sort_key="group_b_need_count"),
             Column(cols["groupC"], "num", sort_key="group_c_id"),
+            Column(cols["needC"], "num", sort_key="group_c_need_count"),
             Column(cols["intMin"], "num", sort_key="interest_min"),
             Column(cols["intMax"], "num", sort_key="interest_max"),
             Column(cols["favMin"], "num", sort_key="favor_min"),
@@ -60,25 +63,7 @@ class NpcPersonalityHandler(PreviewHandler):
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
-        records = parse_npcpersonality_records(data)
-        return [
-            {
-                "row":                rec["row"],
-                "personality_id":     rec["personality_id"],
-                "group_a_id":         rec["group_a_id"],
-                "unknown_04":         rec["unknown_04"],
-                "group_b_id":         rec["group_b_id"],
-                "unknown_08":         rec["unknown_08"],
-                "group_c_id":         rec["group_c_id"],
-                "unknown_0c":         rec["unknown_0c"],
-                "interest_min":       rec["interest_min"],
-                "interest_max":       rec["interest_max"],
-                "favor_min":          rec["favor_min"],
-                "favor_max":          rec["favor_max"],
-                "personality_type":   rec["personality_type"],
-            }
-            for rec in records
-        ]
+        return [dict(rec) for rec in parse_npcpersonality_records(data)]
 
     def render_records_page(
         self,
@@ -94,8 +79,11 @@ class NpcPersonalityHandler(PreviewHandler):
                 e(r["personality_id"]),
                 e(r["row"]),
                 e(_group_str(r["group_a_id"])),
+                e(r["group_a_need_count"]),
                 e(_group_str(r["group_b_id"])),
+                e(r["group_b_need_count"]),
                 e(_group_str(r["group_c_id"])),
+                e(r["group_c_need_count"]),
                 e(int(r["interest_min"])),
                 e(int(r["interest_max"])),
                 e(int(r["favor_min"])),

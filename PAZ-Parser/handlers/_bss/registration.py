@@ -66,6 +66,7 @@ from .masterlessservantstaticstatus.handler import MasterlessServantStaticStatus
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
+from .morninglandoption.handler import MorningLandOptionBssHandler
 from .multiplequest.handler import MultipleQuestBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
@@ -211,6 +212,7 @@ def register_bss_handlers() -> None:
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
+    register_handler("morninglandoption.bss", MorningLandOptionBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("servant.bss", ServantBssHandler())

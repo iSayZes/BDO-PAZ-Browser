@@ -15,6 +15,8 @@
     "siegeStage4": "Ранг 3",
     "siegeStage5": "Ранг 4",
     "siegeStage6": "Захват территории",
+    "statResetCost": "Оплата сброса доп. характеристик",
+    "lightOrbResetCost": "Оплата сброса сокровища света",
     "valueBytes": "Байты значения"
   },
   "meta": {

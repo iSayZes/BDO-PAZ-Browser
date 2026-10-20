@@ -15,6 +15,8 @@
     "siegeStage4": "3단계",
     "siegeStage5": "4단계",
     "siegeStage6": "점령전",
+    "statResetCost": "추가 능력치 초기화 비용",
+    "lightOrbResetCost": "빛의 보옥 초기화 비용",
     "valueBytes": "값 바이트"
   },
   "meta": {

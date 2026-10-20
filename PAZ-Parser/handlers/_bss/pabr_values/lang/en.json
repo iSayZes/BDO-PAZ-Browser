@@ -36,12 +36,28 @@
     "item": "Item",
     "generalBarter": "Trade Item Barter Refresh",
     "materialBarter": "Ship Material Refresh",
-    "valueBytes": "Value Bytes"
+    "valueBytes": "Value Bytes",
+    "sunBlessingAp": "Blessing of the Sun AP",
+    "moonBlessingDp": "Blessing of the Moon DP",
+    "earthBlessingDropRate": "Blessing of the Earth Item Drop Rate",
+    "buffDuration": "Duration",
+    "academyClass": "Class",
+    "startTime": "Enrollment Start",
+    "graduationTime": "Graduation Start",
+    "closeTime": "Enrollment End",
+    "endTime": "Graduation End",
+    "enterQuestId": "Enrollment Quest ID",
+    "enterQuest": "Enrollment Quest",
+    "graduationQuestId": "Graduation Quest ID",
+    "graduationQuest": "Graduation Quest",
+    "itemCount": "Item Count",
+    "successRate": "Success Rate"
   },
   "meta": {
     "count": "{count} entries",
     "blackShrineAuras": "{count} Black Shrine auras",
     "petTiers": "{count} tiers",
-    "notMovableItems": "{count} items that cannot go into another town's storage"
+    "notMovableItems": "{count} items that cannot go into another town's storage",
+    "academyClasses": "{count} Olvia Academy classes"
   }
 }

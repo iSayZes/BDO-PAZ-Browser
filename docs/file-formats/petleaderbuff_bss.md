@@ -80,6 +80,7 @@ up by; see Open Questions.
 - The installed `BlackDesert64.exe` (client 3474) holds no `PetLeader` or
   `leaderbuff` text as ASCII or UTF-16, so it does not show the loader.
 - No buff key is stored: the bonus is a rate, not a `buff.dbss` reference.
+- The item the Tier 5 training uses is in [`petupgrade.bss`](petupgrade_bss.md).
 - In game on client 3474, the Tier 5 Pet Training window shows "Pack
   Leader: Loot cooldown -15% for active pets" under Tier 5 Pet Effects,
   which is `150000` on the 1,000,000 = 100% scale.

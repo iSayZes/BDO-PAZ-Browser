@@ -36,12 +36,28 @@
     "item": "Objet",
     "generalBarter": "Actualisation des marchandises",
     "materialBarter": "Actualisation matériaux de navire",
-    "valueBytes": "Octets de valeur"
+    "valueBytes": "Octets de valeur",
+    "sunBlessingAp": "PA de la bénédiction du soleil",
+    "moonBlessingDp": "PD de la bénédiction des perles",
+    "earthBlessingDropRate": "Chances de butin de la bénédiction de la terre",
+    "buffDuration": "Durée",
+    "academyClass": "Promotion",
+    "startTime": "Début de l'inscription",
+    "graduationTime": "Début de la remise de diplôme",
+    "closeTime": "Fin de l'inscription",
+    "endTime": "Fin de la remise de diplôme",
+    "enterQuestId": "ID de la quête d'inscription",
+    "enterQuest": "Quête d'inscription",
+    "graduationQuestId": "ID de la quête de remise de diplôme",
+    "graduationQuest": "Quête de remise de diplôme",
+    "itemCount": "Quantité",
+    "successRate": "Taux de réussite"
   },
   "meta": {
     "count": "{count} entrées",
     "blackShrineAuras": "{count} énergies du Sanctuaire noir",
     "petTiers": "{count} tiers",
-    "notMovableItems": "{count} objets impossibles à déplacer vers le dépôt d'un autre village"
+    "notMovableItems": "{count} objets impossibles à déplacer vers le dépôt d'un autre village",
+    "academyClasses": "{count} promotions de l'Académie d'Olvia"
   }
 }

@@ -102,6 +102,8 @@ Quest 201 of chain 2323 (`Finest First Impression`) is `quest_category` 2 and no
 - Every quest of the three lists is in `allquestlist.bss` and has a LOC type 18 title (client 3474).
 - The test client 1784 has none of the three files.
 - `olviaacademypassstaticstatusmanager.bss` (0.8 KB, not documented yet) is a `PABR` file whose first block is a u32 `10` and 20 packed quest IDs, 101 to 120 of chain 2324 in sub ID order, followed by the same for 201 to 220 and 301 to 320. It is the first file to check for the pass step order.
+- The current class, its dates and its enrollment and graduation quests
+  are in [`olviaacademyseasonss.bss`](olviaacademyseasonss_bss.md).
 - `test_olvia_academy_lists.py` asserts that each list is its `quest_category` in `quest.dbss` record order and that every pass base quest has its pass quest at sub ID + 1.
 
 ## Open Questions

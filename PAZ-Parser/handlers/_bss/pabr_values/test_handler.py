@@ -27,7 +27,7 @@ from _common.pa_text import pa_key
 from _dbss.cashproduct.parser import parse_cashproductoffset_records
 from _dbss.pet.parser import parse_pet_records
 from .handler import VALUE_BYTES_FIELD, PabrValuesBssHandler
-from .names import ELEMENT_TYPE_NAMES, aura_name
+from .names import ELEMENT_TYPE_NAMES, aura_name, utc_time
 from .parser import PABR_VALUES_START, parse_value_table, row_value_bytes
 from .tables import VALUE_TABLES, Framing, NameLookup, RowCount, ValueField, ValueTable
 
@@ -46,6 +46,15 @@ _TIER_5 = 4
 # A cooldown cut on the 1,000,000 = 100% scale.
 _FULL_RATE = 1_000_000
 _ARCHAEOLOGISTS_MAP = 16019
+_ELEMENTAL_SERVER_BUFF = "elementalserverbuff.bss"
+_OLVIA_SEASON = "olviaacademyseasonss.bss"
+_PET_UPGRADE = "petupgrade.bss"
+# Stored pet tier of Tier 4, the tier that trains into Tier 5 (petupgrade_bss.md).
+_TIER_4 = 3
+_ROYAL_PLUME = 59376
+# Packed quest IDs (quest_id << 16 | quest_chain_id) of 2308/1 and 2309/1.
+_FIRST_STEPS_IN = 1 << 16 | 2308
+_GRADUATION_WITH_HONOR = 1 << 16 | 2309
 _EN_LANG = Path(__file__).parent / "lang" / "en.json"
 
 
@@ -122,12 +131,27 @@ _TARGETS: dict[str, list[TargetTest]] = {
         TargetTest(col="skill_key", value=0xA6050001, expected={"skill_name": "All-Consuming Heat"}),
         TargetTest(col="skill_key", value=0xA6060001, expected={"skill_name": "Dead Soul's Chill"}),
     ],
+    _OLVIA_SEASON: [
+        TargetTest(
+            col="enter_quest",
+            value=_FIRST_STEPS_IN,
+            expected={
+                "enter_quest_title": "[Olvia Academy] Your First Steps In",
+                "graduation_quest": _GRADUATION_WITH_HONOR,
+                "graduation_quest_title": "[Olvia Academy] Graduation with Honor",
+            },
+        ),
+    ],
+    _PET_UPGRADE: [
+        TargetTest(col="pet_tier", value=_TIER_4, expected={"item_id": _ROYAL_PLUME, "item_name": "Royal Plume"}),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {
     # __eElementalStat_Sun, _Moon, _Land.
     _ELEMENTAL_STAT: [RangeTest(col="element_type", min_val=0, max_val=len(ELEMENT_TYPE_NAMES) - 1)],
     _PET_LEADER_BUFF: [RangeTest(col="leader_buff_rate", min_val=0, max_val=_FULL_RATE)],
+    _ELEMENTAL_SERVER_BUFF: [RangeTest(col="earth_blessing_drop_rate", min_val=0, max_val=_FULL_RATE)],
 }
 
 
@@ -252,6 +276,83 @@ def test_a_barter_list_shows_its_values_in_order() -> None:
     html = _render(_BARTER_RESET, [record])
     assert '<td class="num">20, 40, 50</td>' in html
     assert '<td class="num">-</td>' in html
+
+
+def test_the_academy_class_title_names_its_class() -> None:
+    (record,) = _result(_OLVIA_SEASON).records
+    assert record["title_name"] == f"Olvia Academy Class {record['season_no']}"
+
+
+def test_enrollment_closes_before_graduation_opens() -> None:
+    (record,) = _result(_OLVIA_SEASON).records
+    assert record["start_time"] <= record["close_time"] < record["graduation_time"] <= record["end_time"]
+
+
+def test_the_academy_cells_show_dates_and_quest_ids() -> None:
+    record = {
+        "season_no": 3,
+        "start_time": 1_785_402_000,
+        "graduation_time": 0,
+        "close_time": 0,
+        "end_time": 1_794_474_000,
+        "enter_quest": _FIRST_STEPS_IN,
+        "graduation_quest": _GRADUATION_WITH_HONOR,
+        "title_id": 3687,
+        "enter_quest_title": "",
+        "graduation_quest_title": "",
+        "title_name": "",
+    }
+    html = _render(_OLVIA_SEASON, [record])
+    assert '<td class="num">2026-07-30 09:00 UTC</td>' in html
+    assert '<td class="num">2026-11-12 09:00 UTC</td>' in html
+    assert '<td class="num">2308/1</td>' in html
+    assert '<td class="num">2309/1</td>' in html
+
+
+@pytest.mark.parametrize(
+    ("seconds", "text"),
+    [
+        (0, "1970-01-01 00:00 UTC"),
+        (951_782_400, "2000-02-29 00:00 UTC"),
+        (1_709_251_199, "2024-02-29 23:59 UTC"),
+        (4_102_444_800, "2100-01-01 00:00 UTC"),
+    ],
+)
+def test_unix_seconds_read_as_utc_dates(seconds: int, text: str) -> None:
+    assert utc_time(seconds) == text
+
+
+def test_each_pet_upgrade_row_repeats_its_tier() -> None:
+    for record in _result(_PET_UPGRADE).records:
+        assert record["pet_tier_dup"] == record["pet_tier"]
+
+
+def test_every_pet_upgrade_tier_is_a_pet_dbss_tier() -> None:
+    pets = parse_pet_records(load_binary_fixture("pet.dbss"), load_binary_fixture("petoffset.dbss"))
+    pet_tiers = {pet["tier"] for pet in pets}
+    assert {record["pet_tier"] for record in _result(_PET_UPGRADE).records} <= pet_tiers
+
+
+def test_each_blessing_row_repeats_its_key() -> None:
+    records = _result(_ELEMENTAL_SERVER_BUFF).records
+    assert all(record["unknown_01"] == record["unknown_00"] for record in records)
+    assert len({record["unknown_00"] for record in records}) == len(records)
+
+
+def test_the_blessing_cells_show_a_bonus_and_a_duration() -> None:
+    record = {
+        "unknown_00": 9,
+        "unknown_01": 9,
+        "sun_blessing_ap": 1.0,
+        "moon_blessing_dp": 1.0,
+        "earth_blessing_drop_rate": 200_000,
+        "buff_duration": 10_800,
+        "unknown_12": 0,
+    }
+    html = _render(_ELEMENTAL_SERVER_BUFF, [record])
+    assert '<td class="num">+20%</td>' in html
+    assert '<td class="num">3h</td>' in html
+    assert '<td class="num">1</td>' in html
 
 
 # Synthetic files: PABR, the values, an empty string table and the trailer.

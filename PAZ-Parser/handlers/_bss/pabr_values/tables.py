@@ -17,9 +17,21 @@ from enum import Enum
 
 from _common.character import character_name
 from _common.item_key import item_name_tagged
+from _common.rate import rate_percent
 from _common.title import title_name
 from _common.town import town_name
-from .names import aura_name, cooldown_cut, item_icon_path, skill_key_name, vehicle_skill_name
+from .names import (
+    aura_name,
+    cooldown_cut,
+    duration_seconds,
+    item_icon_path,
+    packed_quest_text,
+    packed_quest_title,
+    rate_bonus,
+    skill_key_name,
+    utc_time,
+    vehicle_skill_name,
+)
 
 
 class Framing(Enum):
@@ -120,6 +132,14 @@ def _unknown_fields(*layout: tuple[int, str]) -> tuple[ValueField, ...]:
 
 _CHARACTER_NAME = NameLookup("character_name", "character", character_name)
 _CHARACTER_KEY = ValueField("character_key", "H", "characterId", _CHARACTER_NAME)
+_ITEM_ID = ValueField(
+    "item_id",
+    "I",
+    "itemId",
+    NameLookup("item_name", "item", item_name_tagged, is_tagged=True),
+    IconLookup("icon_path", "icon", item_icon_path),
+)
+_TITLE_ID = ValueField("title_id", "I", "titleId", NameLookup("title_name", "title", title_name))
 
 
 VALUE_TABLES: tuple[ValueTable, ...] = (
@@ -186,13 +206,7 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     ValueTable(
         "othertownnotmovableitem.bss",
         (
-            ValueField(
-                "item_id",
-                "I",
-                "itemId",
-                NameLookup("item_name", "item", item_name_tagged, is_tagged=True),
-                IconLookup("icon_path", "icon", item_icon_path),
-            ),
+            _ITEM_ID,
         ),
         RowCount.COUNTED,
         Framing.BARE,
@@ -219,7 +233,7 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         "servantchecktitle.bss",
         (
             ValueField("unknown_04", "H"),
-            ValueField("title_id", "I", "titleId", NameLookup("title_name", "title", title_name)),
+            _TITLE_ID,
             _CHARACTER_KEY,
         ),
     ),
@@ -251,5 +265,60 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
             ValueField("skill_key", "I", "skillId", NameLookup("skill_name", "skill", skill_key_name)),
         ),
         RowCount.COUNTED,
+    ),
+    ValueTable(
+        "elementalserverbuff.bss",
+        (
+            ValueField("unknown_00", "B"),
+            ValueField("unknown_01", "B"),
+            ValueField("sun_blessing_ap", "f", "sunBlessingAp"),
+            ValueField("moon_blessing_dp", "f", "moonBlessingDp"),
+            ValueField("earth_blessing_drop_rate", "I", "earthBlessingDropRate", display=rate_bonus),
+            ValueField("buff_duration", "I", "buffDuration", display=duration_seconds),
+            ValueField("unknown_12", "I"),
+        ),
+        RowCount.COUNTED,
+        Framing.BARE,
+    ),
+    ValueTable(
+        "olviaacademyseasonss.bss",
+        (
+            ValueField("season_no", "I", "academyClass"),
+            ValueField("start_time", "Q", "startTime", display=utc_time),
+            ValueField("graduation_time", "Q", "graduationTime", display=utc_time),
+            ValueField("close_time", "Q", "closeTime", display=utc_time),
+            ValueField("end_time", "Q", "endTime", display=utc_time),
+            ValueField(
+                "enter_quest",
+                "I",
+                "enterQuestId",
+                NameLookup("enter_quest_title", "enterQuest", packed_quest_title),
+                display=packed_quest_text,
+            ),
+            ValueField(
+                "graduation_quest",
+                "I",
+                "graduationQuestId",
+                NameLookup("graduation_quest_title", "graduationQuest", packed_quest_title),
+                display=packed_quest_text,
+            ),
+            _TITLE_ID,
+        ),
+        framing=Framing.BARE,
+        count_key="academyClasses",
+    ),
+    ValueTable(
+        "petupgrade.bss",
+        (
+            ValueField("pet_tier", "B", "petTier"),
+            _ITEM_ID,
+            ValueField("item_count", "Q", "itemCount"),
+            ValueField("success_rate", "I", "successRate", display=rate_percent),
+            ValueField("unknown_11", "I"),
+            ValueField("pet_tier_dup", "B"),
+        ),
+        RowCount.COUNTED,
+        Framing.BARE,
+        "petTiers",
     ),
 )

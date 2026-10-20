@@ -36,12 +36,28 @@
     "item": "Objeto",
     "generalBarter": "Reinicio de mercancías",
     "materialBarter": "Reinicio de componentes",
-    "valueBytes": "Bytes de valor"
+    "valueBytes": "Bytes de valor",
+    "sunBlessingAp": "Ataque de la Bendición del sol",
+    "moonBlessingDp": "Defensa de la Bendición de la luna",
+    "earthBlessingDropRate": "Obtención de objetos de la Bendición de la tierra",
+    "buffDuration": "Duración",
+    "academyClass": "Promoción",
+    "startTime": "Inicio de la inscripción",
+    "graduationTime": "Inicio de la graduación",
+    "closeTime": "Fin de la inscripción",
+    "endTime": "Fin de la graduación",
+    "enterQuestId": "ID de la misión de inscripción",
+    "enterQuest": "Misión de inscripción",
+    "graduationQuestId": "ID de la misión de graduación",
+    "graduationQuest": "Misión de graduación",
+    "itemCount": "Cantidad",
+    "successRate": "Tasa de éxito"
   },
   "meta": {
     "count": "{count} entradas",
     "blackShrineAuras": "{count} energías del Santuario Oscuro",
     "petTiers": "{count} grados",
-    "notMovableItems": "{count} objetos que no se pueden trasladar al almacén de otra ciudad"
+    "notMovableItems": "{count} objetos que no se pueden trasladar al almacén de otra ciudad",
+    "academyClasses": "{count} promociones de la Academia de Olvia"
   }
 }

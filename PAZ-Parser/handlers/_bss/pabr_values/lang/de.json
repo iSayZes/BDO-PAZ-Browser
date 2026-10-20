@@ -36,12 +36,28 @@
     "item": "Gegenstand",
     "generalBarter": "Handelswaren",
     "materialBarter": "Schiffsmaterialien",
-    "valueBytes": "Wertbytes"
+    "valueBytes": "Wertbytes",
+    "sunBlessingAp": "AK Segen der Sonne",
+    "moonBlessingDp": "VK Segen des Monds",
+    "earthBlessingDropRate": "Beuterate Segen der Erde",
+    "buffDuration": "Dauer",
+    "academyClass": "Semester",
+    "startTime": "Einschreibung Beginn",
+    "graduationTime": "Abschluss Beginn",
+    "closeTime": "Einschreibung Ende",
+    "endTime": "Abschluss Ende",
+    "enterQuestId": "Einschreibungsquest-ID",
+    "enterQuest": "Einschreibungsquest",
+    "graduationQuestId": "Abschlussquest-ID",
+    "graduationQuest": "Abschlussquest",
+    "itemCount": "Anzahl",
+    "successRate": "Erfolgsrate"
   },
   "meta": {
     "count": "{count} Einträge",
     "blackShrineAuras": "{count} Energien des Finsteren Schreins",
     "petTiers": "{count} Ränge",
-    "notMovableItems": "{count} Gegenstände, die nicht ins Lager einer anderen Stadt gebracht werden können"
+    "notMovableItems": "{count} Gegenstände, die nicht ins Lager einer anderen Stadt gebracht werden können",
+    "academyClasses": "{count} Semester der Olvia-Akademie"
   }
 }

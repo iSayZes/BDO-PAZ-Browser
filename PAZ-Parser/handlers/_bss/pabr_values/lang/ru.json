@@ -36,12 +36,28 @@
     "item": "Предмет",
     "generalBarter": "Обновление: предметы торговли",
     "materialBarter": "Обновление: материалы",
-    "valueBytes": "Байты значения"
+    "valueBytes": "Байты значения",
+    "sunBlessingAp": "Атака Благословения солнца",
+    "moonBlessingDp": "Защита Благословения луны",
+    "earthBlessingDropRate": "Шанс получения трофеев Благословения земли",
+    "buffDuration": "Время действия",
+    "academyClass": "Набор",
+    "startTime": "Начало зачисления",
+    "graduationTime": "Начало выпуска",
+    "closeTime": "Конец зачисления",
+    "endTime": "Конец выпуска",
+    "enterQuestId": "ID задания зачисления",
+    "enterQuest": "Задание зачисления",
+    "graduationQuestId": "ID задания выпуска",
+    "graduationQuest": "Задание выпуска",
+    "itemCount": "Кол-во",
+    "successRate": "Шанс успеха"
   },
   "meta": {
     "count": "Записей: {count}",
     "blackShrineAuras": "Энергий Черного храма: {count}",
     "petTiers": "Рангов: {count}",
-    "notMovableItems": "Предметов, которые нельзя переместить на склад другой деревни: {count}"
+    "notMovableItems": "Предметов, которые нельзя переместить на склад другой деревни: {count}",
+    "academyClasses": "Наборов Академии Оливии: {count}"
   }
 }

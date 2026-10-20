@@ -109,5 +109,7 @@ and sit in that order in every row, so `ap_per_orb`, `dp_per_orb` and
 - The handler for the option tables (`_bss/pabr_values/`) previews this
   file with the shared layout table in `_bss/pabr_values/tables.py`, framed
   `Framing.BARE`, one row per aura.
-- Siblings without a doc yet: `elementalmonsterstat.bss`,
-  `elementalmonsterreward.bss` and `elementalserverbuff.bss`.
+- The server Blessings of the Sun, Moon and Earth that a defeated boss
+  gives are in [`elementalserverbuff.bss`](elementalserverbuff_bss.md).
+- Siblings without a doc yet: `elementalmonsterstat.bss` and
+  `elementalmonsterreward.bss`.

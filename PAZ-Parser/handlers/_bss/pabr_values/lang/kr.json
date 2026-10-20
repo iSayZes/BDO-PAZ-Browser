@@ -36,12 +36,28 @@
     "item": "아이템",
     "generalBarter": "교역품 교환 갱신",
     "materialBarter": "재료 교환 갱신",
-    "valueBytes": "값 바이트"
+    "valueBytes": "값 바이트",
+    "sunBlessingAp": "해의 축복 공격력",
+    "moonBlessingDp": "달의 축복 방어력",
+    "earthBlessingDropRate": "땅의 축복 아이템 획득 확률 증가",
+    "buffDuration": "지속 시간",
+    "academyClass": "기수",
+    "startTime": "입학 시작",
+    "graduationTime": "졸업 시작",
+    "closeTime": "입학 종료",
+    "endTime": "졸업 종료",
+    "enterQuestId": "입학 의뢰 ID",
+    "enterQuest": "입학 의뢰",
+    "graduationQuestId": "졸업 의뢰 ID",
+    "graduationQuest": "졸업 의뢰",
+    "itemCount": "수량",
+    "successRate": "성공 확률"
   },
   "meta": {
     "count": "{count}개 항목",
     "blackShrineAuras": "검은 사당 기운 {count}개",
     "petTiers": "세대 {count}개",
-    "notMovableItems": "다른 마을 창고로 이동할 수 없는 아이템 {count}개"
+    "notMovableItems": "다른 마을 창고로 이동할 수 없는 아이템 {count}개",
+    "academyClasses": "올비아 아카데미 기수 {count}개"
   }
 }

@@ -10,7 +10,9 @@
     "title": "Título",
     "sectorX": "Sector X",
     "sectorY": "Sector Y",
-    "sectorZ": "Sector Z"
+    "sectorZ": "Sector Z",
+    "fieldNo": "N.º de campo",
+    "field": "Campo"
   },
   "meta": {
     "count": "{count} campos de instancia"

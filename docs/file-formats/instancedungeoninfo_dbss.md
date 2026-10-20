@@ -97,8 +97,8 @@ the same for Z, when a coordinate is bad. The 2016 PDB has no instance
 dungeon struct.
 
 `FieldNo` is the key column of the `Field_Table` sheet of the same 1784
-source, whose client copy is `fieldinfo.bss` (no doc yet). That sheet
-names the four fields:
+source, whose client copy is [fieldinfo.bss](fieldinfo_bss.md). The sheet
+and the client 3474 file give the four fields the same names:
 
 | `field_no` | `FieldName` in the sheet | Translation                       |
 | ---------- | ------------------------ | --------------------------------- |

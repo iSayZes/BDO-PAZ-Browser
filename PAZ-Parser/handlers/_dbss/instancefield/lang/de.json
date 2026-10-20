@@ -10,7 +10,9 @@
     "title": "Titel",
     "sectorX": "Sektor X",
     "sectorY": "Sektor Y",
-    "sectorZ": "Sektor Z"
+    "sectorZ": "Sektor Z",
+    "fieldNo": "Feld-Nr.",
+    "field": "Feld"
   },
   "meta": {
     "count": "{count} Instanzfelder"

@@ -17,9 +17,12 @@ from tests.framework import (
     run_case,
 )
 
+from _common.lookup_index import IndexKind
 from _dbss.instancefield.parser import build_instance_field_name_index
 
 _FILE = "instancefield.dbss"
+_WORLD_FIELD_NO = 1
+_WORLD_FIELD = "월드"
 _OFFSET_FILE = "instancefieldoffset.dbss"
 # u16 key, 6 x i32 box, u32, u64 name length, u16 tail: every byte but the name.
 _FIXED_SIZE = 40
@@ -34,16 +37,22 @@ INSTANCE_FIELD_CASE = HandlerCase(
     uses_loc=False,
     loc_fields=[],
     internal_path=f"gamecommondata/binary/{_FILE}",
+    lookup_indexes={IndexKind.FIELD_NAME: {_WORLD_FIELD_NO: _WORLD_FIELD}},
     tests=[
         SchemaTest(required_keys=[
             "key", "name", "min_x", "min_y", "min_z", "max_x", "max_y", "max_z",
-            "field_grid_sector_count", "field_no",
+            "field_grid_sector_count", "field_no", "field_name",
         ]),
         DeclaredCountTest(declared=header_count()),
         DeclaredCountTest(declared=header_count(companion=_OFFSET_FILE)),
         # Buff type 176 test items A1_001 onwards name the field they move to.
         TargetTest(col="key", value=4001, expected={"name": "A1_001"}),
-        TargetTest(col="key", value=150, expected={"name": "Atoraxion_Desert"}),
+        # Atoraxion runs in the world field, fieldinfo.bss field 1.
+        TargetTest(col="key", value=150, expected={
+            "name": "Atoraxion_Desert",
+            "field_no": _WORLD_FIELD_NO,
+            "field_name": _WORLD_FIELD,
+        }),
     ],
 )
 

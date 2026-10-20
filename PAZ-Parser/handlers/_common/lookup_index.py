@@ -102,6 +102,9 @@ class IndexKind(Enum):
     INSTANCE_FIELD_NAME = "instance_field_name"
     # GAME sheet key hash of each instance field title (instancefieldmapinfo.bss).
     INSTANCE_FIELD_TITLE = "instance_field_title"
+    # Name of each fieldinfo.bss field (`월드`, `A1_001`) by field number; read
+    # through _bss/fieldinfo/names.py.
+    FIELD_NAME = "field_name"
 
 
 # Dependency name each read reports to `data_deps`, built once per kind.

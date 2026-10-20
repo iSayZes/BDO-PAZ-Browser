@@ -10,7 +10,9 @@
     "title": "제목",
     "sectorX": "섹터 X",
     "sectorY": "섹터 Y",
-    "sectorZ": "섹터 Z"
+    "sectorZ": "섹터 Z",
+    "fieldNo": "필드 번호",
+    "field": "필드"
   },
   "meta": {
     "count": "인스턴스 필드 {count}개"

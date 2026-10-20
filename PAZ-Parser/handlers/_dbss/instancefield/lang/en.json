@@ -10,7 +10,9 @@
     "title": "Title",
     "sectorX": "Sector X",
     "sectorY": "Sector Y",
-    "sectorZ": "Sector Z"
+    "sectorZ": "Sector Z",
+    "fieldNo": "Field No",
+    "field": "Field"
   },
   "meta": {
     "count": "{count} instance fields"

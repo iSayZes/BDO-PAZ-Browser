@@ -10,7 +10,9 @@
     "title": "Заголовок",
     "sectorX": "Сектор X",
     "sectorY": "Сектор Y",
-    "sectorZ": "Сектор Z"
+    "sectorZ": "Сектор Z",
+    "fieldNo": "№ поля",
+    "field": "Поле"
   },
   "meta": {
     "count": "Инстанс-полей: {count}"

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "fieldNo": "Field No",
+    "name": "Name",
+    "resource": "Resource",
+    "type": "Type",
+    "spawn": "Spawn Point",
+    "sectorX": "Sector X",
+    "sectorY": "Sector Y",
+    "sectorZ": "Sector Z",
+    "players": "Players",
+    "ridable": "Mount Allowed",
+    "rangeSpawn": "World Spawns",
+    "dropRate": "Item Drop Rate"
+  },
+  "meta": {
+    "count": "{count} fields"
+  }
+}

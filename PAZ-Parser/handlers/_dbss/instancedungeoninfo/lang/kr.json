@@ -6,7 +6,8 @@
   },
   "columns": {
     "key": "키",
-    "fieldNo": "필드",
+    "fieldNo": "필드 번호",
+    "field": "필드",
     "x": "X",
     "y": "Y",
     "z": "Z",

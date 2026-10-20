@@ -1287,6 +1287,7 @@ IDs (`LookupValue`).
 | `LIGHTSTONE_SETS` | `lightstoneset.bss`                       | set IDs (tuple) |
 | `INSTANCE_FIELD_NAME` | `instancefield.dbss`                  | internal field name |
 | `INSTANCE_FIELD_TITLE` | `instancefieldmapinfo.bss`, `stringtable.bss` | `GAME` sheet key hash of the title |
+| `FIELD_NAME`     | `fieldinfo.bss`                            | field name     |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1561,6 +1562,15 @@ Single Path`). `instance_field_label()` there joins both indexes; the
 `buff.dbss` Effect text of type 176 uses it, `Teleport to Instance Field The
 Magnus: The Great Single Path (A1_001)`, and the `instancefield.dbss` Title
 column uses the title alone.
+
+`FIELD_NAME` maps a [fieldinfo.bss](file-formats/fieldinfo_bss.md) field
+number to the field's name as the file writes it (`월드`, `A1_001`). It is
+built by `build_field_name_index()` in `_bss/fieldinfo/parser.py` and read
+through `field_no_label()` in `_bss/fieldinfo/names.py`, which gives an `A1_`
+field its `instance_field_label()` when the instance field with the same key
+has the same name. The Field columns of `instancefield.dbss` and
+`instancedungeoninfo.dbss` use it, next to a Field No cell that
+`field_no_link()` links to the `fieldinfo.bss` row.
 
 ## Icons
 

@@ -23,6 +23,7 @@ from typing import cast
 from _common.icon_index import borrow_icons
 from _bss.buffsimply.parser import build_buff_icon_index
 from _bss.exploration.parser import build_map_node_index, build_node_name_kr_index, build_node_parent_index
+from _bss.fieldinfo.parser import build_field_name_index
 from _bss.groupcameradata.parser import build_cutscene_icon_index
 from _bss.instancefieldmapinfo.parser import build_instance_field_title_index
 from _bss.itemexchangesource.parser import build_exchange_name_kr_index
@@ -97,6 +98,7 @@ BUFF_OFFSET = f"{_BINARY}/buffoffset.dbss"
 TELEPORT = f"{_BINARY}/teleport.dbss"
 LIGHTSTONESET = f"{_BINARY}/lightstoneset.bss"
 INSTANCEFIELD = f"{_BINARY}/instancefield.dbss"
+FIELDINFO = f"{_BINARY}/fieldinfo.bss"
 INSTANCEFIELDMAPINFO = f"{_BINARY}/instancefieldmapinfo.bss"
 STRINGTABLE = f"{_BINARY}/stringtable.bss"
 TEXTBIND = f"{_BINARY}/textbind.dbss"
@@ -226,6 +228,8 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         (INSTANCEFIELDMAPINFO, STRINGTABLE),
         build_instance_field_title_index,
     ),
+    # Field number -> name, for the instancefield.dbss and instancedungeoninfo.dbss Field columns.
+    IndexSpec(IndexKind.FIELD_NAME, (FIELDINFO,), build_field_name_index),
 )
 
 

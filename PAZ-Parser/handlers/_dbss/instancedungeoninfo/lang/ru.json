@@ -6,7 +6,8 @@
   },
   "columns": {
     "key": "Ключ",
-    "fieldNo": "Поле",
+    "fieldNo": "№ поля",
+    "field": "Поле",
     "x": "X",
     "y": "Y",
     "z": "Z",

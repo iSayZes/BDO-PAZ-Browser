@@ -6,7 +6,8 @@
   },
   "columns": {
     "key": "Clave",
-    "fieldNo": "Campo",
+    "fieldNo": "N.º de campo",
+    "field": "Campo",
     "x": "X",
     "y": "Y",
     "z": "Z",

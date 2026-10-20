@@ -21,6 +21,7 @@ from tests.framework import (
     run_case,
 )
 
+from _common.lookup_index import IndexKind
 from _dbss.instancedungeoninfo.handler import InstanceDungeonInfoHandler
 from _dbss.instancedungeoninfo.parser import (
     COUNT_SIZE,
@@ -31,9 +32,15 @@ from _dbss.instancedungeoninfo.parser import (
 )
 
 _ENTRY = PazEntry("", f"gamecommondata/binary/{FILE_NAME}", 0, 0, 0, 0, 0)
+_KZARKA_FIELD = "칼페온 크자카 인던"
 
 
-def _case(name: str, required_keys: list[str], extra_tests: list[Any]) -> HandlerCase:
+def _case(
+    name: str,
+    required_keys: list[str],
+    extra_tests: list[Any],
+    lookup_indexes: dict[IndexKind, dict[int, str]] | None = None,
+) -> HandlerCase:
     return HandlerCase(
         handler_name=name,
         data_file=name,
@@ -42,6 +49,7 @@ def _case(name: str, required_keys: list[str], extra_tests: list[Any]) -> Handle
         uses_loc=False,
         loc_fields=[],
         internal_path=f"gamecommondata/binary/{name}",
+        lookup_indexes=lookup_indexes or {},
         tests=[
             SchemaTest(required_keys=required_keys),
             DeclaredCountTest(declared=header_count(offset=0)),
@@ -53,13 +61,14 @@ def _case(name: str, required_keys: list[str], extra_tests: list[Any]) -> Handle
 CASES = {
     FILE_NAME: _case(
         FILE_NAME,
-        ["key", "field_no", "enter_x", "enter_y", "enter_z", "enter_rotation"],
-        # Key 2 enters field 700, the Calpheon Kzarka instance dungeon of the
-        # client 1784 `Field_Table` sheet.
+        ["key", "field_no", "field_name", "enter_x", "enter_y", "enter_z", "enter_rotation"],
+        # Key 2 enters field 700, the Calpheon Kzarka instance dungeon of
+        # fieldinfo.bss and of the client 1784 `Field_Table` sheet.
         [
             DeclaredCountTest(declared=fixed_rows(ROW_SIZE, header_size=COUNT_SIZE)),
-            TargetTest(col="key", value=2, expected={"field_no": 700}),
+            TargetTest(col="key", value=2, expected={"field_no": 700, "field_name": _KZARKA_FIELD}),
         ],
+        {IndexKind.FIELD_NAME: {700: _KZARKA_FIELD}},
     ),
     OFFSET_FILE: _case(
         OFFSET_FILE,

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "fieldNo": "N.º de campo",
+    "name": "Nombre",
+    "resource": "Recurso",
+    "type": "Tipo",
+    "spawn": "Punto de aparición",
+    "sectorX": "Sector X",
+    "sectorY": "Sector Y",
+    "sectorZ": "Sector Z",
+    "players": "Jugadores",
+    "ridable": "Montura permitida",
+    "rangeSpawn": "Apariciones del mundo",
+    "dropRate": "Obtención de objetos"
+  },
+  "meta": {
+    "count": "{count} campos"
+  }
+}

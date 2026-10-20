@@ -5,6 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _bss.fieldinfo.names import field_no_label, field_no_link
 from _bss.instancefieldmapinfo.titles import instance_field_title
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
@@ -43,6 +44,8 @@ class InstanceFieldHandler(PreviewHandler):
             Column(cols["title"], sort_key="title"),
             # Each span sorts by its lower bound.
             *(Column(cols[f"sector{axis.upper()}"], "num", sort_key=f"min_{axis}") for axis in _AXES),
+            Column(cols["fieldNo"], "num", sort_key="field_no"),
+            Column(cols["field"], sort_key="field_name"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -55,8 +58,12 @@ class InstanceFieldHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> list[dict]:
         return [
-            # None without a map info title, so the column sorts it last.
-            {**record, "title": instance_field_title(record["key"]) or None}
+            # None without a map info title or field name, so the column sorts it last.
+            {
+                **record,
+                "title": instance_field_title(record["key"]) or None,
+                "field_name": field_no_label(record["field_no"]) or None,
+            }
             for record in parse_instancefield_records(data)
         ]
 
@@ -74,6 +81,8 @@ class InstanceFieldHandler(PreviewHandler):
                 e(r["name"]),
                 e(r["title"] or _EMPTY),
                 *(e(_sector_range(r, axis)) for axis in _AXES),
+                field_no_link(r["field_no"]),
+                e(r["field_name"] or _EMPTY),
             ]
             for r in records[start : start + page_size]
         ]

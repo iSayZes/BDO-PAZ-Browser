@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "fieldNo": "필드 번호",
+    "name": "이름",
+    "resource": "리소스",
+    "type": "종류",
+    "spawn": "시작 위치",
+    "sectorX": "섹터 X",
+    "sectorY": "섹터 Y",
+    "sectorZ": "섹터 Z",
+    "players": "인원",
+    "ridable": "탑승물 허용",
+    "rangeSpawn": "월드 스폰",
+    "dropRate": "아이템 획득 확률"
+  },
+  "meta": {
+    "count": "필드 {count}개"
+  }
+}

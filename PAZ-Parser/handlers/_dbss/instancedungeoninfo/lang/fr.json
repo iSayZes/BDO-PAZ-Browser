@@ -6,7 +6,8 @@
   },
   "columns": {
     "key": "Clé",
-    "fieldNo": "Champ",
+    "fieldNo": "N° de champ",
+    "field": "Champ",
     "x": "X",
     "y": "Y",
     "z": "Z",

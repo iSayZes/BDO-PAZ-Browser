@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "petId": "Pet ID",
+    "pet": "Pet",
+    "skill1": "Skill 1",
+    "skill2": "Skill 2",
+    "skill3": "Skill 3"
+  },
+  "offsetColumns": {
+    "petId": "Pet ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} PC room pets"
+  }
+}

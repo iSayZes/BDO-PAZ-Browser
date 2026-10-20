@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "petId": "ID de la mascota",
+    "pet": "Mascota",
+    "skill1": "Habilidad 1",
+    "skill2": "Habilidad 2",
+    "skill3": "Habilidad 3"
+  },
+  "offsetColumns": {
+    "petId": "ID de la mascota",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} mascotas de PC Bang"
+  }
+}

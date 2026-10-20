@@ -266,6 +266,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `petmarketsetting.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petmarketsettingoffset.dbss` | Empty offset companion for `petmarketsetting.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petoffset.dbss`                   | Keyed offset index into `pet.dbss`, maps pet ID → offset/size                                                 | [pet](file-formats/pet_dbss.md)                                     | 1              | 0 |
+| `petpcroom.dbss` | The three equip skills of each PC room pet: u16 `pet.dbss` key and three Section 1 `equip_skill_id`s of `petequipskill.bss` (14-byte rows) | [petpcroom](file-formats/petpcroom_dbss.md) | 1 | 0 |
+| `petpcroomoffset.dbss` | Index into `petpcroom.dbss` with no magic: u16 pet key, offset and size (10-byte rows) | [petpcroom](file-formats/petpcroom_dbss.md) | 1 | 0 |
 | `petset.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petsetoffset.dbss` | Empty offset companion for `petset.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `petskill.dbss`                    | Pet skill levels keyed by pet skill ID: skill type (the pet window's skill name) and two effect parameters per level | [petskill](file-formats/petskill_dbss.md)                           | 2              | 0 |

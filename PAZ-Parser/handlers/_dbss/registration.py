@@ -179,6 +179,7 @@ from .exceptionskillcooltimewidget.handler import (
     ExceptionSkillCoolTimeWidgetHandler,
     exception_skill_cool_time_widget_offset_handler,
 )
+from .petpcroom.handler import PetPcRoomHandler, pet_pc_room_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -408,3 +409,5 @@ def register_dbss_handlers() -> None:
     register_handler("petdetectposition.dbss", PetDetectPositionHandler())
     register_handler("exceptionskillcooltimewidgetoffset.dbss", exception_skill_cool_time_widget_offset_handler())
     register_handler("exceptionskillcooltimewidget.dbss", ExceptionSkillCoolTimeWidgetHandler())
+    register_handler("petpcroomoffset.dbss", pet_pc_room_offset_handler())
+    register_handler("petpcroom.dbss", PetPcRoomHandler())

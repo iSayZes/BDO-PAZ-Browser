@@ -51,7 +51,8 @@
     "graduationQuestId": "ID задания выпуска",
     "graduationQuest": "Задание выпуска",
     "itemCount": "Кол-во",
-    "successRate": "Шанс успеха"
+    "successRate": "Шанс успеха",
+    "weeklyClearLimit": "Еженед. победы"
   },
   "meta": {
     "count": "Записей: {count}",

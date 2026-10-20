@@ -51,7 +51,8 @@
     "graduationQuestId": "졸업 의뢰 ID",
     "graduationQuest": "졸업 의뢰",
     "itemCount": "수량",
-    "successRate": "성공 확률"
+    "successRate": "성공 확률",
+    "weeklyClearLimit": "주간 처치 횟수"
   },
   "meta": {
     "count": "{count}개 항목",

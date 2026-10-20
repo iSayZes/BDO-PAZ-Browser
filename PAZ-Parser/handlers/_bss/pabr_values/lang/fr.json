@@ -51,7 +51,8 @@
     "graduationQuestId": "ID de la quête de remise de diplôme",
     "graduationQuest": "Quête de remise de diplôme",
     "itemCount": "Quantité",
-    "successRate": "Taux de réussite"
+    "successRate": "Taux de réussite",
+    "weeklyClearLimit": "Victoires hebdomadaires"
   },
   "meta": {
     "count": "{count} entrées",

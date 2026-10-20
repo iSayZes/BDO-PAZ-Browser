@@ -5,8 +5,8 @@
 Three option values for the Land of the Morning Light, with no PABR magic
 and no string table: two u64 numbers and one byte. On client 3474 they are
 `500000`, `2000000` and `5`. The two u64 values are the silver costs of the
-two resets in the Black Shrine aura window (see Field Names). The byte has
-no lead.
+two resets in the Black Shrine aura window, and the byte is the number of
+Black Shrine clears a family gets per week (see Field Names).
 
 ## Versions
 
@@ -18,9 +18,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ----------------------- | ----- | ------- | --------- |
 | 1      | 2519 and later | 3474    | `morninglandoption.bss` | 17    | -       | -         |
 
-| Layout | File                    | Known        | Unknown    |
-| ------ | ----------------------- | ------------ | ---------- |
-| 1      | `morninglandoption.bss` | 16 B (94.1%) | 1 B (5.9%) |
+| Layout | File                    | Known         | Unknown    |
+| ------ | ----------------------- | ------------- | ---------- |
+| 1      | `morninglandoption.bss` | 17 B (100.0%) | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -38,7 +38,7 @@ All multi-byte values are little-endian.
 | ------- | ---- | -------------------- | ------------------------------------------------------------------ |
 | `+0x00` | u64  | stat_reset_cost      | Silver to reset one aura's Additional Stats; `500000` on clients 2519 to 3474 |
 | `+0x08` | u64  | light_orb_reset_cost | Silver to reset the Light Orbs; `2000000` on clients 2519 to 3474  |
-| `+0x10` | u8   | unknown_10           | `5` on clients 2519 to 3474; see Open Questions                    |
+| `+0x10` | u8   | weekly_clear_limit   | Black Shrine clears per family per week; `5` on clients 2519 to 3474 |
 
 ## Field Names
 
@@ -51,6 +51,15 @@ from it, and no other Lua reads that manager: `getStateResetCost` for the
 Shrine Auras") says "Resetting only your additional stats will be 500k, so
 even less than resetting your Light Orbs", which is the `500000` at `+0x00`.
 The other cost, `2000000` at `+0x08`, is then the Light Orb reset.
+
+The boss window Lua also counts against `__eElementalMonsterWeekLimit`
+(weekly boss conquests), a global no Lua file defines, so the client sets
+it. The official update history page "[Update History] Black Shrine (Boss
+Blitz)"
+([groupMasterNo 8498](https://www.naeu.playblackdesert.com/en-us/Adventure/History?_groupMasterNo=8498))
+says "You have 5 weekly successful attempts per Family to defeat bosses of
+the Black Shrine" (resetting at midnight on Sunday), which is the `5` at
+`+0x10`, the only other value of this option file.
 
 ## Notes
 
@@ -68,14 +77,3 @@ The other cost, `2000000` at `+0x08`, is then the Light Orb reset.
   file with the shared layout table in `_bss/pabr_values/tables.py`, framed
   `Framing.BARE`: the values alone, with no magic, string table or trailer.
   A file of any other size raises.
-
-## Open Questions
-
-### Byte at 0x10
-
-`unknown_10` is `5` on every client checked. The only Morning Land option
-the client Lua reads is the reset cost pair (see Field Names). The boss
-window Lua also uses two limits, `__eElementalMonsterWeekLimit` (weekly
-boss conquests) and `__eMaxMorningLandMonsterLevel`, but no Lua file
-defines either global, so their values cannot be compared. What the byte
-holds is unknown.

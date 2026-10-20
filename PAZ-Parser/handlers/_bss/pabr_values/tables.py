@@ -195,7 +195,7 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         (
             ValueField("stat_reset_cost", "Q", "statResetCost"),
             ValueField("light_orb_reset_cost", "Q", "lightOrbResetCost"),
-            ValueField("unknown_10", "B"),
+            ValueField("weekly_clear_limit", "B", "weeklyClearLimit"),
         ),
         framing=Framing.BARE,
     ),

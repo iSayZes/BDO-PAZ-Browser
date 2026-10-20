@@ -51,7 +51,8 @@
     "graduationQuestId": "ID de la misión de graduación",
     "graduationQuest": "Misión de graduación",
     "itemCount": "Cantidad",
-    "successRate": "Tasa de éxito"
+    "successRate": "Tasa de éxito",
+    "weeklyClearLimit": "Victorias semanales"
   },
   "meta": {
     "count": "{count} entradas",

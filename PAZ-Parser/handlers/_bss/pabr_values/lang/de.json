@@ -51,7 +51,8 @@
     "graduationQuestId": "Abschlussquest-ID",
     "graduationQuest": "Abschlussquest",
     "itemCount": "Anzahl",
-    "successRate": "Erfolgsrate"
+    "successRate": "Erfolgsrate",
+    "weeklyClearLimit": "Wöchentliche Abschlüsse"
   },
   "meta": {
     "count": "{count} Einträge",

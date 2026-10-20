@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "인덱스",
+    "skillNo": "기술 번호",
+    "skill": "기술",
+    "dropAmount": "아이템 획득 수량"
+  },
+  "meta": {
+    "count": "아그리스의 열기 기술 {count}개"
+  }
+}

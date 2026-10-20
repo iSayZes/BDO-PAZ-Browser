@@ -38,6 +38,7 @@ from .fairyfeedenchantfailcount.handler import (
 )
 from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .feverquestdatatable.handler import FeverQuestDataTableBssHandler
+from .fevertimeskill.handler import FeverTimeSkillBssHandler
 from .fieldinfo.handler import FieldInfoBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
@@ -175,6 +176,7 @@ def register_bss_handlers() -> None:
     )
     register_handler("fairyupgraderate.bss", FairyUpgradeRateBssHandler())
     register_handler("feverquestdatatable.bss", FeverQuestDataTableBssHandler())
+    register_handler("fevertimeskill.bss", FeverTimeSkillBssHandler())
     register_handler("fieldinfo.bss", FieldInfoBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())

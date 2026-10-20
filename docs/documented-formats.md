@@ -129,6 +129,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `fairyskillchangeoffset.dbss`      | Level-keyed offset index into `fairyskillchange.dbss`, maps fairy level → offset/size                          | [fairyskillchange](file-formats/fairyskillchange_dbss.md)           | 2              | 0 |
 | `fairyupgraderate.bss` | Fairy Sprouting success rates, per-item chance and guaranteed-success item count for each grade upgrade | [fairyupgraderate](file-formats/fairyupgraderate_bss.md) | 2 | 0 |
 | `feverquestdatatable.bss` | PABR list of the Agris Fever quests: per packed quest ID the Agris Fever points accepting it costs | [feverquestdatatable](file-formats/feverquestdatatable_bss.md) | 0 | 0 |
+| `fevertimeskill.bss` | PABR list of the Agris Fever drop skills: per index the skill and its item drop amount bonus | [fevertimeskill](file-formats/fevertimeskill_bss.md) | 2 | 0 |
 | `fieldboss.dbss` | Field boss list: 33-byte rows of a character ID and two bytes that are `1` on every row | [fieldboss](file-formats/fieldboss_dbss.md) | 2 | 0 |
 | `fieldbossoffset.dbss` | Bare u16-keyed index into `fieldboss.dbss`, maps character ID → offset/size | [fieldboss](file-formats/fieldboss_dbss.md) | 2 | 0 |
 | `fieldinfo.bss` | PABR field list (`Field_Table`): field number, world-editor name, resource folder, spawn point, sector box, field type, map keys and entry rules; `instancefield.dbss` and `instancedungeoninfo.dbss` store the field number | [fieldinfo](file-formats/fieldinfo_bss.md) | 3 | 0 |

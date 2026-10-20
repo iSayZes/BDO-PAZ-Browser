@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "Índice",
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad",
+    "dropAmount": "Obtención de objetos (cantidad)"
+  },
+  "meta": {
+    "count": "{count} habilidades de Fiebre de Agris"
+  }
+}

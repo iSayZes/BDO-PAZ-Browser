@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "Index",
+    "skillNo": "Skill No",
+    "skill": "Skill",
+    "dropAmount": "Item Drop Amount"
+  },
+  "meta": {
+    "count": "{count} Agris Fever skills"
+  }
+}

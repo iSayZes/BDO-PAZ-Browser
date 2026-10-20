@@ -1,13 +1,11 @@
-"""The grouped walk, and the helpers the alchemy stone table tests share."""
+"""The alchemy stone rows on the grouped walk, and the helpers the alchemy stone table tests share."""
 from __future__ import annotations
 
 import struct
 
-import pytest
-
 from tests.framework import CaseInput, DeclaredCount
 
-from .grouped import parse_grouped_rows, parse_stone_offset_records
+from .grouped import parse_stone_offset_records, parse_stone_rows
 
 
 ROW_SIZE = 12
@@ -39,7 +37,7 @@ def grouped_file(*groups: list[tuple[int, int, int]]) -> bytes:
 
 def check_rows_sit_in_their_stone_group(data: bytes, file_name: str) -> None:
     """Every main row's `stone_type` equals the index of the group holding it."""
-    rows = parse_grouped_rows(data, file_name)
+    rows = parse_stone_rows(data, file_name)
     assert all(group == stone_type for group, (stone_type, _item, _value) in rows)
 
 
@@ -52,7 +50,7 @@ def check_offset_rows_point_at_main_rows(main: bytes, offset_records: list[dict]
 
 def test_rows_carry_their_group_index() -> None:
     data = grouped_file([(0, 6601, 10)], [], [(2, 5301, 1)])
-    assert parse_grouped_rows(data, "test") == [(0, (0, 6601, 10)), (2, (2, 5301, 1))]
+    assert parse_stone_rows(data, "test") == [(0, (0, 6601, 10)), (2, (2, 5301, 1))]
 
 
 def test_an_offset_row_takes_its_group_as_stone_type() -> None:
@@ -61,12 +59,3 @@ def test_an_offset_row_takes_its_group_as_stone_type() -> None:
         {"stone_type": 1, "item_id": 6601, "offset": 8, "size": 12},
     ]
 
-
-def test_a_cut_group_raises() -> None:
-    with pytest.raises(ValueError):
-        parse_grouped_rows(grouped_file([(0, 6601, 10)])[:-4], "test")
-
-
-def test_bytes_after_the_last_group_raise() -> None:
-    with pytest.raises(ValueError):
-        parse_grouped_rows(grouped_file([(0, 6601, 10)]) + b"\0\0\0\0", "test")

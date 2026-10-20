@@ -1038,6 +1038,7 @@ _common/
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
 ├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
+├── grouped_rows.py      # parse_grouped_rows(): u32 group count, per group a row count and fixed rows
 ├── html.py
 ├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
 ├── offset_table.py      # OffsetTableHandler: the one preview handler for every offset companion

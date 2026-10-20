@@ -1,7 +1,7 @@
 """`buildingbuff.dbss`: the villa buffs and their silver cost.
 
 The file and its `buildingbuffoffset.dbss` index use the grouped walk in
-`_dbss/alchemystone/grouped.py`: a u32 list count, then per list a u32 row
+`_common/grouped_rows.py`: a u32 list count, then per list a u32 row
 count and that many rows. List `i` holds the rows whose `Count_Villa` is
 `i + 1`.
 
@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import struct
 
-from _dbss.alchemystone.grouped import parse_grouped_rows
+from _common.grouped_rows import parse_grouped_rows
 
 FILE_NAME = "buildingbuff.dbss"
 OFFSET_FILE = "buildingbuffoffset.dbss"

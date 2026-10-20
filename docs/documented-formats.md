@@ -153,6 +153,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `huntingstatdata.bss` | PABR Hunting Mastery table: chance of butchering more items per 50 mastery; the other seven fields are 0 on client 3464 | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `installation.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `installationoffset.dbss` | Empty offset companion for `installation.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `instancedungeoninfo.dbss` | Instance dungeon entry points: record key, `Field_Table` field number, entry world position and facing in radians | [instancedungeoninfo](file-formats/instancedungeoninfo_dbss.md) | 1 | 0 |
+| `instancedungeoninfooffset.dbss` | Index into `instancedungeoninfo.dbss`, maps record key → offset/size | [instancedungeoninfo](file-formats/instancedungeoninfo_dbss.md) | 1 | 0 |
 | `instancedungeonskillstatic.dbss` | Instance dungeon skill table by name: a u32 count of 0 on client 3473; on client 1784, 157 records of a key and a Korean `<PAColor>` text | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
 | `instancedungeonskillstaticoffset.dbss` | Index into `instancedungeonskillstatic.dbss`: a u32 count of 0 on client 3473; on client 1784, (u32 key, offset, size) rows | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
 | `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 1 | 0 |

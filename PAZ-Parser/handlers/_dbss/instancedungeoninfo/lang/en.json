@@ -1,0 +1,18 @@
+{
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "columns": {
+    "key": "Key",
+    "fieldNo": "Field",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Direction"
+  },
+  "meta": {
+    "count": "{count} instance dungeon entry points"
+  }
+}

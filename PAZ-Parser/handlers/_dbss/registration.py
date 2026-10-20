@@ -126,6 +126,7 @@ from .alchemycharge.handler import AlchemyChargeHandler, alchemy_charge_offset_h
 from .itemtradegrouptonpc.handler import ItemTradeGroupHandler, item_trade_group_offset_handler
 from .itemtradegroupfromnpc.parser import parse_itemtradegroupfromnpc_records
 from .growthpasspointshop.handler import GrowthPassPointShopHandler, growth_pass_point_shop_offset_handler
+from .instancedungeoninfo.handler import InstanceDungeonInfoHandler, instance_dungeon_info_offset_handler
 from .instancedungeonskillstatic.handler import (
     InstanceDungeonSkillStaticHandler,
     instance_dungeon_skill_static_offset_handler,
@@ -259,6 +260,8 @@ def register_dbss_handlers() -> None:
     register_handler("growthpasscategory.dbss", GrowthPassCategoryHandler())
     register_handler("growthpasspointshopoffset.dbss", growth_pass_point_shop_offset_handler())
     register_handler("growthpasspointshop.dbss", GrowthPassPointShopHandler())
+    register_handler("instancedungeoninfooffset.dbss", instance_dungeon_info_offset_handler())
+    register_handler("instancedungeoninfo.dbss", InstanceDungeonInfoHandler())
     register_handler("instancedungeonskillstaticoffset.dbss", instance_dungeon_skill_static_offset_handler())
     register_handler("instancedungeonskillstatic.dbss", InstanceDungeonSkillStaticHandler())
     register_handler("maincategoryoffset.dbss", main_category_offset_handler())

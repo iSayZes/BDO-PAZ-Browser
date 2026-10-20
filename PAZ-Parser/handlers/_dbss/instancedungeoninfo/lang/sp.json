@@ -1,0 +1,18 @@
+{
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "key": "Clave",
+    "fieldNo": "Campo",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Dirección"
+  },
+  "meta": {
+    "count": "{count} puntos de entrada de mazmorra de instancia"
+  }
+}

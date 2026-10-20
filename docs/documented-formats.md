@@ -354,6 +354,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `skillsimplyoffset.dbss` | Bare u32-keyed index into `skillsimply.dbss` (no magic, no trailer) | [skillsimply](file-formats/skillsimply_dbss.md) | 1 | 1 |
 | `skilltype.dbss` | Presentation record of every skill: Korean name and family name, active/passive kind, icon path | [skilltype](file-formats/skilltype_dbss.md) | 1 | 0 |
 | `skilltypeoffset.dbss` | PABR index into `skilltype.dbss`, same layout as `skilloffset.dbss` | [skilltype](file-formats/skilltype_dbss.md) | 1 | 0 |
+| `solareetcoptionstaticstatus.bss` | Five unnamed Arena of Solare f32 options with no magic (`60`, `115`, `400`, `37`, `57` on client 3474); three on client 3002 | [solareetcoptionstaticstatus](file-formats/solareetcoptionstaticstatus_bss.md) | 1 | 0 |
 | `spawngroup.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `specialenchantitem.bss` | PABR per-level table of the items whose name or icon changes with enhancement: item key, shown level, icon path and Korean name string indices | [specialenchantitem](file-formats/specialenchantitem_bss.md) | 1 | 0 |
 | `specialquestinfo.bss` | PABR special quest groups: per u32 group key a list of packed quest IDs, the groups that `alreadyclearspecialquest` quest action scripts name | [specialquestinfo](file-formats/specialquestinfo_bss.md) | 1 | 0 |

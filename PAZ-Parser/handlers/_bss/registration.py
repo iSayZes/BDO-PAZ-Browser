@@ -100,6 +100,7 @@ from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandl
 from .servantmating.handler import ServantMatingBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
+from .solareetcoptionstaticstatus.handler import SolareEtcOptionBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
 from .specialquestinfo.handler import SpecialQuestInfoBssHandler
 from .stringtable.handler import StringTableBssHandler
@@ -258,6 +259,7 @@ def register_bss_handlers() -> None:
     for name in ("skillexperiencemaxlevel.bss", "guildskillexperiencemaxlevel.bss"):
         register_handler(name, SkillExperienceMaxLevelBssHandler())
     register_handler("skillgroup.bss", SkillGroupBssHandler())
+    register_handler("solareetcoptionstaticstatus.bss", SolareEtcOptionBssHandler())
     register_handler("specialenchantitem.bss", SpecialEnchantItemBssHandler())
     register_handler("specialquestinfo.bss", SpecialQuestInfoBssHandler())
     register_handler("stringtable.bss", StringTableBssHandler())

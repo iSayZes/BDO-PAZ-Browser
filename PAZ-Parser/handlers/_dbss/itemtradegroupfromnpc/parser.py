@@ -2,14 +2,15 @@
 
     u32 count | count x (u16 character_id | u32 item_count | item_count x entry)
 
-    entry: u16 character_id | u32 item_id | str16 unknown_condition
-           | 0x6D bytes with the trade group type and the trade category
+    entry: u16 character_id | u32 item_id | str16 condition
+           | 0x6D bytes of trade members, the itemtradegrouptonpc.dbss Layout 1 tail
 
 Client 3473 ships the count `0` and no groups. On client 1784 the entries
 open with a counted condition string, the Layout 1 entry of
 `itemtradegrouptonpc.dbss`, so the fields after it sit at offsets from the
 string's end. The record keys match `_dbss/itemtradegrouptonpc/parser.py`, so
-its handler draws both tables. Layout in
+its handler draws both tables; `territory_trade_no` and `is_for_magnate` are
+the `BuyingFromNpc_Table` columns only this file fills. Layout in
 docs/file-formats/itemtradegroupfromnpc_dbss.md.
 """
 
@@ -27,10 +28,11 @@ OFFSET_FILE = "itemtradegroupfromnpcoffset.dbss"
 
 # u16 character_id | u32 item_id
 _ENTRY_HEAD = struct.Struct("<HI")
-# After unknown_condition: bytes[40] unknown_condition_00 | u8 trade_group_type
-# | u8 unknown_37 | bytes[51] unknown_38 | u16 unknown_6b | bytes[11] unknown_6d
-# | u8 unknown_7c | u8 commerce_type | u8 unknown_7e
-_ENTRY_TAIL = struct.Struct("<40xBB51xH11xBBB")
+# After condition: bytes[40] price rate members | u8 trade_group_type
+# | u8 is_sell_to_npc | bytes[51] price and stock members | u16 territory_supply_no
+# | u16 territory_trade_no | i32 get_selling_trade_exp_rate | i32 event_price_rate_per_sell
+# | u8 is_for_magnate | u8 trade_type | u8 commerce_type | u8 price_type
+_ENTRY_TAIL = struct.Struct("<40xBB51xHH8xBBBB")
 _ENTRY_TAIL_SIZE = 0x6D
 assert _ENTRY_TAIL.size == _ENTRY_TAIL_SIZE
 
@@ -61,16 +63,27 @@ def _entry(reader: RecordReader, group_character_id: int) -> dict:
         raise ValueError(
             f"{FILE_NAME} entry at 0x{start:X} names character {character_id}, its group {group_character_id}"
         )
-    unknown_condition = reader.text(wide=True)
-    trade_group_type, unknown_37, unknown_6b, unknown_7c, commerce_type, unknown_7e = reader.unpack(_ENTRY_TAIL)
+    condition = reader.text(wide=True)
+    (
+        trade_group_type,
+        is_sell_to_npc,
+        territory_supply_no,
+        territory_trade_no,
+        is_for_magnate,
+        trade_type,
+        commerce_type,
+        price_type,
+    ) = reader.unpack(_ENTRY_TAIL)
     return {
         "character_id": character_id,
         "item_id": item_id,
-        "unknown_condition": unknown_condition,
+        "condition": condition,
         "trade_group_type": trade_group_type,
         "commerce_type": commerce_type,
-        "unknown_37": unknown_37,
-        "unknown_6b": unknown_6b,
-        "unknown_7c": unknown_7c,
-        "unknown_7e": unknown_7e,
+        "is_sell_to_npc": is_sell_to_npc,
+        "territory_supply_no": territory_supply_no,
+        "territory_trade_no": territory_trade_no,
+        "is_for_magnate": is_for_magnate,
+        "trade_type": trade_type,
+        "price_type": price_type,
     }

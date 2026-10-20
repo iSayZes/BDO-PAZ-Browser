@@ -24,13 +24,15 @@ from _dbss.itemtradegrouptonpc.parser import GROUP_HEADER
 _RECORD_KEYS = [
     "character_id",
     "item_id",
-    "unknown_condition",
+    "condition",
     "trade_group_type",
     "commerce_type",
-    "unknown_37",
-    "unknown_6b",
-    "unknown_7c",
-    "unknown_7e",
+    "is_sell_to_npc",
+    "territory_supply_no",
+    "territory_trade_no",
+    "is_for_magnate",
+    "trade_type",
+    "price_type",
     "name",
     "item_name",
     "icon_path",
@@ -75,18 +77,29 @@ def test_itemtradegroupfromnpc_dbss(name: str, spec: Any) -> None:
 
 # Offsets after the condition string, from the Item Entry table.
 _TRADE_GROUP_TYPE = 0x28
-_UNKNOWN_6B = 0x5D
-_UNKNOWN_7C = 0x6A
+_TERRITORY_SUPPLY_NO = 0x5D
+_TERRITORY_TRADE_NO = 0x5F
+_IS_FOR_MAGNATE = 0x69
+_TRADE_TYPE = 0x6A
 _COMMERCE_TYPE = 0x6B
 _TAIL_SIZE = 0x6D
 
 
-def _entry(character_id: int, item_id: int, commerce_type: int, condition: str = "", unknown_7c: int = 0) -> bytes:
+def _entry(
+    character_id: int,
+    item_id: int,
+    commerce_type: int,
+    condition: str = "",
+    trade_type: int = 0,
+    territory_trade_no: int = 0,
+) -> bytes:
     encoded = condition.encode("utf-16-le")
     tail = bytearray(_TAIL_SIZE)
     tail[_TRADE_GROUP_TYPE] = 3
-    struct.pack_into("<H", tail, _UNKNOWN_6B, 515)
-    tail[_UNKNOWN_7C] = unknown_7c
+    struct.pack_into("<H", tail, _TERRITORY_SUPPLY_NO, 515)
+    struct.pack_into("<H", tail, _TERRITORY_TRADE_NO, territory_trade_no)
+    tail[_IS_FOR_MAGNATE] = 1 if territory_trade_no else 0
+    tail[_TRADE_TYPE] = trade_type
     tail[_COMMERCE_TYPE] = commerce_type
     return struct.pack("<HIQ", character_id, item_id, len(encoded) // 2) + encoded + bytes(tail)
 
@@ -102,15 +115,16 @@ def _table(*groups: bytes) -> bytes:
 def test_layout_1_entries_read_back() -> None:
     data = _table(
         _group(47092, _entry(47092, 55097, 1, "getlifeLevel(7)>41", 2)),
-        _group(44020, _entry(44020, 55646, 6), _entry(44020, 55647, 6)),
+        _group(44020, _entry(44020, 55646, 6, territory_trade_no=301), _entry(44020, 55647, 6)),
     )
     records = parse_itemtradegroupfromnpc_records(data)
-    assert [(r["character_id"], r["item_id"], r["unknown_condition"], r["commerce_type"], r["unknown_7c"]) for r in records] == [
+    assert [(r["character_id"], r["item_id"], r["condition"], r["commerce_type"], r["trade_type"]) for r in records] == [
         (47092, 55097, "getlifeLevel(7)>41", 1, 2),
         (44020, 55646, "", 6, 0),
         (44020, 55647, "", 6, 0),
     ]
-    assert {(r["trade_group_type"], r["unknown_6b"]) for r in records} == {(3, 515)}
+    assert [(r["territory_trade_no"], r["is_for_magnate"]) for r in records] == [(0, 0), (301, 1), (0, 0)]
+    assert {(r["trade_group_type"], r["territory_supply_no"], r["is_sell_to_npc"]) for r in records} == {(3, 515, 0)}
 
 
 def test_an_empty_group_reads_back() -> None:

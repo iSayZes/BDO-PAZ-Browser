@@ -250,7 +250,11 @@ The names that rest on values:
 The other fields are `0` in every entry of both clients, so their names rest
 on the member order and widths of the row reader alone. Their columns in the
 developer sheet (`datasheet_tradedatatable.xlsm`) are server-only (`%`), or
-belong to `BuyingFromNpc_Table` only, or the member has no column. In Layout
+belong to `BuyingFromNpc_Table` only, or the member has no column. The
+client 1784 [`itemtradegroupfromnpc.dbss`](itemtradegroupfromnpc_dbss.md#field-names),
+read by the same row reader, fills `territory_trade_no` and `is_for_magnate`
+from `BuyingFromNpc_Table` and matches both columns on all 451 entries, which
+places the Layout 1 members after `territory_supply_no` by value. In Layout
 2, every field up to `territory_supply_no` sits where Layout 1 has it after
 an empty `condition`, and the last three bytes keep their order; the names of
 the zero fields there rest on that order. Layout 2 has 4 more bytes in

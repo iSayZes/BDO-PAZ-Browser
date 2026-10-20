@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "productId": "ID товара",
+    "feedItemCount": "Корм для питомцев",
+    "playableDistance": "Дальность исполнения",
+    "regionKey": "Ключ региона",
+    "region": "Регион",
+    "miniGameGroup": "Группа мини-игры",
+    "skillId": "ID навыка",
+    "skill": "Навык",
+    "valueBytes": "Байты значения"
+  },
+  "meta": {
+    "count": "Записей: {count}"
+  }
+}

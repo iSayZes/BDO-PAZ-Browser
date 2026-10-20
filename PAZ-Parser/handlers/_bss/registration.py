@@ -71,6 +71,8 @@ from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
 from .othertownnotmovableitem.handler import OtherTownNotMovableItemBssHandler
+from .pabr_values.handler import PabrValuesBssHandler
+from .pabr_values.tables import VALUE_TABLES
 from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .pcroommaid.handler import PcRoomMaidBssHandler
@@ -217,6 +219,9 @@ def register_bss_handlers() -> None:
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("othertownnotmovableitem.bss", OtherTownNotMovableItemBssHandler())
+    # One handler for the small PABR option tables, each with its own layout.
+    for value_table in VALUE_TABLES:
+        register_handler(value_table.file_name, PabrValuesBssHandler(value_table))
     register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("pcroommaid.bss", PcRoomMaidBssHandler())

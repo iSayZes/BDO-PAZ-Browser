@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "productId": "상품 ID",
+    "feedItemCount": "반려동물 먹이",
+    "playableDistance": "연주 가능 거리",
+    "regionKey": "지역 키",
+    "region": "지역",
+    "miniGameGroup": "미니게임 그룹",
+    "skillId": "기술 ID",
+    "skill": "기술",
+    "valueBytes": "값 바이트"
+  },
+  "meta": {
+    "count": "{count}개 항목"
+  }
+}

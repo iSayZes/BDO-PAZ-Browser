@@ -48,6 +48,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `cashforuioffset.dbss` | Empty offset companion for `cashforui.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |
 | `cashproduct_discountperiodcheck.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `cashproduct_newbieproduct.bss` | PABR with one u32 in the count slot: the `cashproduct.dbss` product ID of the newbie Pearl Shop banner (Black Spirit Pass on client 3474) | [cashproduct_newbieproduct](file-formats/cashproduct_newbieproduct_bss.md) | 1 | 0 |
 | `cashproductcachedata.bss` | Empty PABR table on the live client: a count of 0, no records and no strings; records on clients 1784 and 1485 | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `cashproductoffset.dbss` | Index into `cashproduct.dbss`, maps product ID → offset/size; no PABR magic and no trailer | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |
 | `characteraudioradius.dbss` | Sound radius per character for the few whose sounds carry further (world bosses, weather actors): u16 character key and f32 radius | [characteraudioradius](file-formats/characteraudioradius_dbss.md) | 1 | 0 |
@@ -163,12 +164,14 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `houseinforeceipe.dbss` | House uses (receipes): key, Korean name, `eHouseUseType` and `eHouseIconType`, `houseinfoneeditem.dbss` group, item exchange keys per house level 1 to 5 | [houseinforeceipe](file-formats/houseinforeceipe_dbss.md) | 3 | 0 |
 | `houseinforeceipeoffset.dbss` | Index into `houseinforeceipe.dbss`, maps receipe key → offset/size | [houseinforeceipe](file-formats/houseinforeceipe_dbss.md) | 3 | 0 |
 | `huntingstatdata.bss` | PABR Hunting Mastery table: chance of butchering more items per 50 mastery; the other seven fields are 0 on client 3464 | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
+| `icefisingregionstaticstatus.bss` | PABR ice fishing regions: 4-byte rows of u16 region key and u16 mini-game group up to the string table, no count | [icefisingregionstaticstatus](file-formats/icefisingregionstaticstatus_bss.md) | 0 | 0 |
 | `installation.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `installationoffset.dbss` | Empty offset companion for `installation.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `instancedungeoninfo.dbss` | Instance dungeon entry points: record key, `Field_Table` field number, entry world position and facing in radians | [instancedungeoninfo](file-formats/instancedungeoninfo_dbss.md) | 1 | 0 |
 | `instancedungeoninfooffset.dbss` | Index into `instancedungeoninfo.dbss`, maps record key → offset/size | [instancedungeoninfo](file-formats/instancedungeoninfo_dbss.md) | 1 | 0 |
 | `instancedungeonskillstatic.dbss` | Instance dungeon skill table by name: a u32 count of 0 on client 3473; on client 1784, 157 records of a key and a Korean `<PAColor>` text | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
 | `instancedungeonskillstaticoffset.dbss` | Index into `instancedungeonskillstatic.dbss`: a u32 count of 0 on client 3473; on client 1784, (u32 key, offset, size) rows | [instancedungeonskillstatic](file-formats/instancedungeonskillstatic_dbss.md) | 2 | 0 |
+| `instanceetcoption.bss` | PABR with two unnamed u32 instance options in the count slot (`5000000` and `0` on client 3474) | [instanceetcoption](file-formats/instanceetcoption_bss.md) | 1 | 0 |
 | `instancefield.dbss` | Instance fields (arenas, Atoraxion, siege maps, test fields): key, world area as a sector box and internal ASCII name; buff type 176 stores the key | [instancefield](file-formats/instancefield_dbss.md) | 1 | 0 |
 | `instancefieldenteroption.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `instancefieldmanagement.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
@@ -220,6 +223,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `lifeexpoffset.dbss` | Index into `lifeexp.dbss`, one block per life skill, maps level → offset/size | [lifeexp](file-formats/lifeexp_dbss.md) | 0 | 0 |
 | `lightstoneenchantgroup.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `lightstoneset.bss` | PABR Lightstone sets: set ID, set skill, three or four member Lightstone item IDs and the Korean name and effect, then a table of the Lightstones that count as each member (Amplified Lightstones) | [lightstoneset](file-formats/lightstoneset_bss.md) | 0 | 1 |
+| `maidactoroption.bss` | PABR with two unnamed maid actor option bytes in the count slot (`1` and `10` on client 3474); since client 3251 | [maidactoroption](file-formats/maidactoroption_bss.md) | 1 | 1 |
 | `maincategory.dbss`                | Pearl Shop main category records with category IDs, enabled flags, and DDS icon paths                          | [maincategory](file-formats/maincategory_dbss.md)                   | 2              | 1 |
 | `maincategoryoffset.dbss`          | Offset index into `maincategory.dbss`, maps category ID → offset/size                                         | [maincategory](file-formats/maincategory_dbss.md)                   | 2              | 1 |
 | `mainquest.bss`                    | PABR main-quest chains with quest references, visible and hide condition scripts and a Korean string table; English names and condition lines in LOC type 43 | [mainquest](file-formats/mainquest_bss.md)                          | 2              | 0 |
@@ -238,6 +242,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `minigamereward.dbss` | Rewards of the cow, herbal machine and extractor minigames: energy on success and failure, the `itemmaingroup.bss` drop group and the vehicle type the player must be on | [minigamereward](file-formats/minigamereward_dbss.md) | 1 | 0 |
 | `minigamerewardoffset.dbss` | Index into `minigamereward.dbss`, maps the minigame key → offset/size, 2 bytes past the row start; no PABR magic | [minigamereward](file-formats/minigamereward_dbss.md) | 1 | 0 |
 | `multiplequest.bss` | PABR quest ID ranges: per quest chain a first and a last quest ID, the versions of one quest picked by life skill level, contribution points, item or random roll | [multiplequest](file-formats/multiplequest_bss.md) | 1 | 1 |
+| `musicoption.bss` | PABR instrument performance options: f32 playable distance, then 8 unnamed bytes since client 2519 | [musicoption](file-formats/musicoption_bss.md) | 1 | 0 |
 | `naktype.bss` | Empty PABR table on the live client: a count of 0, no records and no strings; records on client 1485 | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `newquest.bss`                     | PABR new-quest (event) groups with event periods, quest references, visible and hide condition scripts and a Korean string table; English names and condition lines in LOC type 58; layout reference for the four quest lists | [newquest](file-formats/newquest_bss.md)                            | 3              | 0 |
 | `nodeexperience.bss` | PABR node level EXP table, 15-byte rows with level and the EXP to the next level (levels 0 to 20 on client 3464) | [nodeexperience](file-formats/nodeexperience_bss.md) | 0 | 0 |
@@ -270,6 +275,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `petequipskillaquireoffset.dbss`   | Keyed offset index into `petequipskillaquire.dbss`, maps acquire_type_id → offset/size                        | [petequipskillaquire](file-formats/petequipskillaquire_dbss.md)     | 3              | 0 |
 | `petexp.dbss`                      | Pet experience tables keyed by EXP table ID, with per-level u64 thresholds                                     | [petexp](file-formats/petexp_dbss.md)                               | 0              | 0 |
 | `petexpoffset.dbss`                | Keyed offset index into `petexp.dbss`, maps exp_table_id → offset/size                                         | [petexp](file-formats/petexp_dbss.md)                               | 0              | 0 |
+| `petfeedcount.bss` | PABR with one u32 in the count slot: the number of pet feed items (`ContentsEventType` 13) | [petfeedcount](file-formats/petfeedcount_bss.md) | 1 | 0 |
 | `petgrade.dbss`                    | Pet species/variant grade table                                                                                | [petgrade](file-formats/petgrade_dbss.md)                           | 0              | 1 |
 | `petgradeoffset.dbss`              | Keyed offset index into `petgrade.dbss`, maps `(species << 8) \| variant` → offset/size                        | [petgrade](file-formats/petgrade_dbss.md)                           | 0              | 1 |
 | `petmarketsetting.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
@@ -327,6 +333,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `servanttransformdataoffset.dbss` | Index into `servanttransformdata.dbss` with no magic: u16 form key, offset and size (10-byte rows) | [servanttransformdata](file-formats/servanttransformdata_dbss.md) | 2 | 0 |
 | `servantupgrade.dbss` | Ship upgrade recipes grouped by source ship: target ship, four gear pieces as item enchant keys and up to ten material stacks | [servantupgrade](file-formats/servantupgrade_dbss.md) | 0 | 0 |
 | `servantupgradeoffset.dbss` | Index into `servantupgrade.dbss`: per source ship, per target ship, offset and size | [servantupgrade](file-formats/servantupgrade_dbss.md) | 0 | 0 |
+| `servantwhistledistance.bss` | PABR with two unnamed bytes in the count slot, `0` on every client checked | [servantwhistledistance](file-formats/servantwhistledistance_bss.md) | 1 | 0 |
 | `shadowarenalist.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `skill.dbss` | Rule record of every skill rank: cooldown, applied buff IDs, effect script, next ranks and Core base skill | [skill](file-formats/skill_dbss.md) | 1 | 0 |
 | `skillexperience.dbss` | Combat skill point EXP table: EXP to the next skill point level, levels 0 to 2000 on client 3464 | [skillexperience](file-formats/skillexperience_dbss.md) | 1 | 0 |
@@ -375,6 +382,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `vehicleskilloffset.dbss` | PABR index into `vehicleskill.dbss`: u8 key → offset/size | [vehicleskill](file-formats/vehicleskill_dbss.md) | 1 | 0 |
 | `vehicleskillowner.dbss` | Per servant character: the `vehicleskill.dbss` skills it can learn, each with learn weight, EXP value and learn flag, and the "Does not learn" weight; skill key widened from u8 (client 1784) to u32 | [vehicleskillowner](file-formats/vehicleskillowner_dbss.md) | 2 | 0 |
 | `vehicleskillowneroffset.dbss` | PABR index into `vehicleskillowner.dbss`: character ID → offset/size | [vehicleskillowner](file-formats/vehicleskillowner_dbss.md) | 2 | 0 |
+| `vehicletrainingskill.bss` | PABR list of the mount training skill keys: u32 count and u8 `vehicleskill.dbss` keys (Skill, Elegance, Strength) | [vehicletrainingskill](file-formats/vehicletrainingskill_bss.md) | 0 | 0 |
 | `waititem.dbss` | Central Market Registration Queue items: 17-byte rows of item key, item ID, enhancement level and the wait in seconds (`900`) | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `waititemoffset.dbss` | Index into `waititem.dbss`, maps item key → offset/size | [waititem](file-formats/waititem_dbss.md) | 1 | 1 |
 | `weatheractor.dbss` | Weather actors (Cloudy Day, Night, Typhoon, Sandstorm, Margoria storms, bosses and monsters): 75-byte rows of u16 character key, type byte, floats, small integers and a skill key on three rows | [weatheractor](file-formats/weatheractor_dbss.md) | 2 | 0 |

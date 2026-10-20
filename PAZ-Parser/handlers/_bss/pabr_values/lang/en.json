@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "productId": "Product ID",
+    "feedItemCount": "Pet Feed Items",
+    "playableDistance": "Playable Distance",
+    "regionKey": "Region Key",
+    "region": "Region",
+    "miniGameGroup": "Minigame Group",
+    "skillId": "Skill ID",
+    "skill": "Skill",
+    "valueBytes": "Value Bytes"
+  },
+  "meta": {
+    "count": "{count} entries"
+  }
+}

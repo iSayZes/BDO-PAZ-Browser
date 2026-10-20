@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "productId": "ID del producto",
+    "feedItemCount": "Comida para mascota",
+    "playableDistance": "Distancia de interpretación",
+    "regionKey": "Clave de región",
+    "region": "Región",
+    "miniGameGroup": "Grupo de minijuego",
+    "skillId": "ID de habilidad",
+    "skill": "Habilidad",
+    "valueBytes": "Bytes de valor"
+  },
+  "meta": {
+    "count": "{count} entradas"
+  }
+}

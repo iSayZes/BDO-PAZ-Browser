@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "productId": "Produkt-ID",
+    "feedItemCount": "Begleiterfutter",
+    "playableDistance": "Spielreichweite",
+    "regionKey": "Regionsschlüssel",
+    "region": "Region",
+    "miniGameGroup": "Minispielgruppe",
+    "skillId": "Talent-ID",
+    "skill": "Talent",
+    "valueBytes": "Wertbytes"
+  },
+  "meta": {
+    "count": "{count} Einträge"
+  }
+}

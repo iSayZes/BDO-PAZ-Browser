@@ -188,6 +188,9 @@ On client 1784 the source sheet and the struct name agree with that:
 - Two 20-byte PABR files are not empty tables: `cashproduct_newbieproduct.bss`
   holds `0x18CAD` at `+0x04` and `petfeedcount.bss` holds `10` there, each
   with no row bytes before the string table, so the u32 is a single value.
+  They have their own docs,
+  [cashproduct_newbieproduct](cashproduct_newbieproduct_bss.md) and
+  [petfeedcount](petfeedcount_bss.md).
 - Neither Lightstone file is in the client 1784 archive. The 2016 PDB, a
   private server's `DataSheets.bexcel`, `.xlsm` sheets, compiled `binary/`
   folder and server dump on client 1784 hold no table, file, struct or

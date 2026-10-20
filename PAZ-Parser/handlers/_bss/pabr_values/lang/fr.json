@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "productId": "ID du produit",
+    "feedItemCount": "Nourriture pour familier",
+    "playableDistance": "Distance de jeu",
+    "regionKey": "Clé de région",
+    "region": "Région",
+    "miniGameGroup": "Groupe de mini-jeu",
+    "skillId": "ID de compétence",
+    "skill": "Compétence",
+    "valueBytes": "Octets de valeur"
+  },
+  "meta": {
+    "count": "{count} entrées"
+  }
+}

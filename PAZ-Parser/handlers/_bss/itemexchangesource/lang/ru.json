@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Ключ обмена",
+    "name": "Название",
+    "exchangeType": "Тип обмена",
+    "materials": "Материалы",
+    "productCategory": "Категория продукции",
+    "workload": "Нагрузка",
+    "productDropKey": "Группа продукции",
+    "productItems": "Продукция",
+    "luckDropKey": "Группа удачи",
+    "luckItems": "Добыча удачи",
+    "craftCharacter": "Рабочий объект",
+    "description": "Описание",
+    "workAnimation": "Анимация работы",
+    "repeatGroupKey": "Группа повтора",
+    "dailyWorkingCount": "Лимит в день",
+    "firstWorkingIndex": "Первый индекс работы",
+    "contentsGroups": "Группы контента"
+  },
+  "meta": {
+    "count": "Обменов предметов: {count} · материалов: {materials}"
+  }
+}

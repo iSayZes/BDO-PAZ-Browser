@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "교환 키",
+    "name": "이름",
+    "exchangeType": "교환 종류",
+    "materials": "재료",
+    "productCategory": "생산 분류",
+    "workload": "작업량",
+    "productDropKey": "생산 그룹",
+    "productItems": "생산품",
+    "luckDropKey": "행운 그룹",
+    "luckItems": "행운 획득물",
+    "craftCharacter": "작업 오브젝트",
+    "description": "설명",
+    "workAnimation": "작업 애니메이션",
+    "repeatGroupKey": "반복 그룹",
+    "dailyWorkingCount": "일일 제한",
+    "firstWorkingIndex": "첫 작업 인덱스",
+    "contentsGroups": "콘텐츠 그룹"
+  },
+  "meta": {
+    "count": "아이템 교환 {count}개 · 재료 {materials}개"
+  }
+}

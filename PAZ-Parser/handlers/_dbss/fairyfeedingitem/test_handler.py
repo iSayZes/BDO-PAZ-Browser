@@ -41,9 +41,9 @@ CASE = HandlerCase(
             required_keys=[
                 "key",
                 "item_id",
-                "unknown_08",
+                "padding_08",
                 "exp",
-                "unknown_10",
+                "unknown_14",
                 "item_name",
                 "icon_path",
             ],

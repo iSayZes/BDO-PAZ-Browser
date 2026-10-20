@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ------- | --------- |
-| 1      | 3473 and later | 3473    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
+| 1      | 3473 and later | 3474    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
 
 | Layout | File                   | Known        | Unknown      |
 | ------ | ---------------------- | ------------ | ------------ |
@@ -94,6 +94,18 @@ Orbita and Tenebraum swap key numbers 3 and 4. The file confirms the values of t
 `unknown_04` equals `unknown_00` on every row. Whether the two are fill and
 border, or two map layers, and what the `_Count` row's `100d10` is used for
 are not known. The In-Game Check below only settles what the value is.
+
+Each colour plus its zero byte has the shape of `regioninfo.bss` `color`
+(u8[3]) and `color_alpha`, which the 2016 client types as one 4-byte
+`pa::Color _colorKey`, so `unknown_03` and `unknown_07` read as alpha
+bytes; that is a reading, not a name. No source names any of the four
+fields: the file is not in the client 1784 private server's binaries,
+sheets or server dump (no `edania` string), the 2016 client predates
+Edania, the live client exe holds no readable strings, and none of the
+client 3474 Lua Edania calls (`ToClient_GetEdaniaRegion`,
+`ToClient_GetEdaniaApplyRegion`, `ToClient_IsEdaniaAreaOn`,
+`ToClient_ToggleEdaniaArea`, `ToClient_GetEdaniaEtcOption`) returns a
+colour.
 
 ## In-Game Checks
 

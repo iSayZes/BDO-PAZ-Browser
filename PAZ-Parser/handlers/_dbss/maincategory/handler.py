@@ -6,7 +6,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, icon_cell, sort_keys, table
+from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from _common.ui_texture import ui_texture_path
@@ -33,6 +33,11 @@ class MainCategoryHandler(PreviewHandler):
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
         return [
             Column(cols["categoryId"], "num", sort_key="category_id"),
+            Column(cols["displayOrder"], "num", sort_key="display_order"),
+            Column(cols["tabImageNo"], "num", sort_key="tab_image_no"),
+            Column(cols["categoryType"], "num", sort_key="category_type"),
+            Column(cols["eventCategory"], "num", sort_key="event_category"),
+            Column(cols["isDisplay"], sort_key="is_display"),
             Column(cols["icon"], sort_key="icon_path"),
         ]
 
@@ -66,7 +71,15 @@ class MainCategoryHandler(PreviewHandler):
     ) -> str:
         start = page * page_size
         rows = [
-            [e(r["category_id"]), icon_cell(r["_icon_file"])]
+            [
+                e(r["category_id"]),
+                e(r["display_order"]),
+                e(r["tab_image_no"]),
+                e(r["category_type"]),
+                e(r["event_category"]),
+                flag_cell(r["is_display"]),
+                icon_cell(r["_icon_file"]),
+            ]
             for r in records[start : start + page_size]
         ]
         meta = handler_text(self.lang, _LANG_DIR, "meta.count", count=len(records))

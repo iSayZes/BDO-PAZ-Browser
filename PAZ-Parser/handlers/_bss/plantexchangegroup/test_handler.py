@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import replace
 from functools import cache
 from typing import Any
@@ -7,11 +8,20 @@ from typing import Any
 import pytest
 
 from _bss.exploration.parser import build_node_parent_index
+from _bss.itemexchangesource.parser import (
+    ItemExchange,
+    build_exchange_name_kr_index,
+    parse_itemexchangesource_records,
+)
+from _bss.itemmaingroup.parser import group_item_keys, parse_itemmaingroup_records
 from _bss.plantexchangegroup.node_names import english_group_names
-from _bss.plantexchangegroup.parser import build_production_item_index
+from _bss.plantexchangegroup.parser import (
+    build_production_item_index,
+    build_production_luck_item_index,
+    parse_plantexchangegroup_records,
+)
 from _dbss.plantzone.parser import parse_plantzone_records
 from _common.lookup_index import IndexKind
-from _common.pabr_offset import parse_pabr_offset_rows
 from _dbss.itemsubgroup.parser import parse_itemsubgroup_records
 from tests.framework import (
     DeclaredCountTest,
@@ -23,15 +33,32 @@ from tests.framework import (
     header_count,
     run_case,
 )
-from tests.fixtures import ensure_fixtures, load_binary_fixture
+from tests.fixtures import load_binary_fixture
 
 
+_EXCHANGE_FILE = "itemexchangesource.bss"
+_MAINGROUP_FILE = "itemmaingroup.bss"
 _SUBGROUP_FILE = "itemsubgroup.dbss"
 _SUBGROUP_OFFSET_FILE = "itemsubgroupoffset.dbss"
 _WORLDMAP_FILE = "mapdata_realexplore2.bwp"
+# The build_production_*_index sources, in argument order.
+_PRODUCTION_FILES = (
+    "plantexchangegroup.bss",
+    _EXCHANGE_FILE,
+    _MAINGROUP_FILE,
+    _SUBGROUP_FILE,
+    _SUBGROUP_OFFSET_FILE,
+)
 # Platerra Mountains lumbering: Elder Tree Timber, Bloody Tree Knot, Elder Tree Sap.
+# Exchange 42356 drops group 42356, which lists subgroup 42356, so the chain and
+# the old subgroup reading of +0x06 agree on it.
 _LUMBERING_KEY = 1928
+_LUMBERING_EXCHANGE = 42356
 _LUMBERING_ITEMS = (4611, 5005, 5014)
+# Pohalam Farm teff: subgroup 40189 is missing from itemsubgroupoffset.dbss, so
+# only the exchange chain finds its items.
+_TEFF_KEY = 1539
+_TEFF_EXCHANGE = 40189
 
 
 @cache
@@ -40,16 +67,38 @@ def _node_parent_index() -> dict[int, int]:
     return build_node_parent_index(load_binary_fixture("exploration.bss"), load_binary_fixture(_WORLDMAP_FILE))
 
 
+@cache
+def _production_sources() -> tuple[bytes, ...]:
+    return tuple(load_binary_fixture(name) for name in _PRODUCTION_FILES)
+
+
+@cache
+def _production_items() -> dict[int, tuple[int, ...]]:
+    return build_production_item_index(*_production_sources())
+
+
+@cache
+def _production_luck_items() -> dict[int, tuple[int, ...]]:
+    return build_production_luck_item_index(*_production_sources())
+
+
+@cache
+def _exchange_names() -> dict[int, str]:
+    return build_exchange_name_kr_index(load_binary_fixture(_EXCHANGE_FILE))
+
+
 CASE = HandlerCase(
     handler_name="plantexchangegroup.bss",
     data_file="plantexchangegroup.bss",
     companion_files={name: name for name in ("plantzone.dbss", "plantzoneoffset.dbss")},
     loc_file="languagedata_en.loc",
     uses_loc=True,
-    loc_fields=["Name", "Items"],
+    loc_fields=["Name", "Exchange", "Items", "Luck Drops"],
     internal_path="gamecommondata/binary/plantexchangegroup.bss",
     lookup_indexes={
-        IndexKind.PRODUCTION_ITEMS: {_LUMBERING_KEY: _LUMBERING_ITEMS},
+        IndexKind.PRODUCTION_ITEMS: _production_items,
+        IndexKind.PRODUCTION_LUCK_ITEMS: _production_luck_items,
+        IndexKind.EXCHANGE_NAME_KR: _exchange_names,
         IndexKind.NODE_PARENT: _node_parent_index,
     },
     tests=[
@@ -58,12 +107,15 @@ CASE = HandlerCase(
                 "production_key",
                 "unknown_02",
                 "unknown_04",
-                "item_subgroup_key",
+                "exchange_key",
+                "exchange",
                 "name_kr",
                 "name_en",
                 "name",
                 "item_keys",
                 "items",
+                "luck_item_keys",
+                "luck_items",
             ],
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
@@ -71,7 +123,8 @@ CASE = HandlerCase(
             col="production_key",
             value=_LUMBERING_KEY,
             expected={
-                "item_subgroup_key": 42356,
+                "exchange_key": _LUMBERING_EXCHANGE,
+                "exchange": f"Lumbering ({_LUMBERING_EXCHANGE})",
                 "name_kr": "플라테르 산맥 - 벌목",
                 "name_en": "Platerra Mountains - Lumbering",
                 "name": "Platerra Mountains - Lumbering",
@@ -84,11 +137,10 @@ CASE = HandlerCase(
         TargetTest(col="production_key", value=992, expected={"name_en": "Arehaza - Specialties"}),
         # Godu Village has no main node in exploration.bss, only the worldmap link.
         TargetTest(col="production_key", value=1880, expected={"name_en": "Godu Village - Farming"}),
-        # Pohalam Farm teff; not in the installed index, so no items.
         TargetTest(
             col="production_key",
-            value=1539,
-            expected={"item_subgroup_key": 40189, "name_kr": "포할람 농장 - 테프", "item_keys": None},
+            value=_TEFF_KEY,
+            expected={"exchange_key": _TEFF_EXCHANGE, "name_kr": "포할람 농장 - 테프"},
         ),
     ],
 )
@@ -121,6 +173,19 @@ def test_name_is_english_or_the_korean_label(plantexchangegroup_result: HandlerR
         assert record["name"] == (record["name_en"] or record["name_kr"])
 
 
+def test_every_exchange_key_has_an_exchange_row(plantexchangegroup_result: HandlerResult) -> None:
+    """`+0x06` is an item exchange key: each one names an `itemexchangesource.bss` row."""
+    names = _exchange_names()
+    assert [r["exchange_key"] for r in plantexchangegroup_result.records if r["exchange_key"] not in names] == []
+
+
+def test_records_carry_the_luck_drops(plantexchangegroup_result: HandlerResult) -> None:
+    lucky = [r for r in plantexchangegroup_result.records if r["luck_item_keys"] is not None]
+    assert lucky
+    for record in lucky:
+        assert len(record["luck_items"]) == len(record["luck_item_keys"]) > 0
+
+
 _ZONE_NAMES = {2: "Town - Farm", 3: "Town - Mine", 4: "Other Town - Farm"}
 
 
@@ -142,27 +207,39 @@ def test_group_name_needs_one_name_across_its_zones() -> None:
     assert _names([(2, 100), (9, 100)]) == {}
 
 
-def test_production_item_index_matches_the_subgroup_table(
-    plantexchangegroup_result: HandlerResult,
-) -> None:
-    """Each production key maps to its subgroup's items, or is left out when the subgroup is missing."""
-    paths = ensure_fixtures(replace(
-        CASE,
-        companion_files={name: name for name in (_SUBGROUP_FILE, _SUBGROUP_OFFSET_FILE)},
-    ))
-    subgroups = paths[_SUBGROUP_FILE].read_bytes()
-    offsets = paths[_SUBGROUP_OFFSET_FILE].read_bytes()
-    index = build_production_item_index(plantexchangegroup_result.source.data, subgroups, offsets)
+def _walk_drop_groups(drop_key: Callable[[ItemExchange], int]) -> dict[int, tuple[int, ...]]:
+    """The production key -> exchange -> drop group -> items chain, walked over whole tables."""
+    groups_data, exchange_data, maingroup_data, subgroup_data, offset_data = _production_sources()
+    exchanges = {exchange.key: exchange for exchange in parse_itemexchangesource_records(exchange_data)}
+    maingroups = {group.group_id: group for group in parse_itemmaingroup_records(maingroup_data)}
+    subgroups = {subgroup.subgroup_key: subgroup for subgroup in parse_itemsubgroup_records(subgroup_data, offset_data)}
+    walked: dict[int, tuple[int, ...]] = {}
+    for record in parse_plantexchangegroup_records(groups_data):
+        exchange = exchanges.get(record["exchange_key"])
+        group = maingroups.get(drop_key(exchange)) if exchange is not None else None
+        item_keys = tuple(group_item_keys(group, subgroups)) if group is not None else ()
+        if item_keys:
+            walked[record["production_key"]] = item_keys
+    return walked
 
-    indexed_subgroups = {row.entry_id for row in parse_pabr_offset_rows(offsets)}
-    items_by_subgroup = {
-        subgroup.subgroup_key: subgroup.item_keys
-        for subgroup in parse_itemsubgroup_records(subgroups, offsets)
-    }
-    expected = {
-        record["production_key"]: items_by_subgroup[record["item_subgroup_key"]]
-        for record in plantexchangegroup_result.records
-        if record["item_subgroup_key"] in indexed_subgroups
-    }
-    assert index == expected
+
+def test_production_items_follow_the_exchange_product_group() -> None:
+    index = _production_items()
+    assert index == _walk_drop_groups(lambda exchange: exchange.product_drop_key)
     assert index[_LUMBERING_KEY] == _LUMBERING_ITEMS
+    # Only the exchange chain reaches the items of a subgroup the offset table lacks.
+    assert index[_TEFF_KEY]
+
+
+def test_production_luck_items_follow_the_exchange_luck_group() -> None:
+    index = _production_luck_items()
+    assert index == _walk_drop_groups(lambda exchange: exchange.luck_drop_key)
+    assert index
+    assert set(index) <= {record["production_key"] for record in parse_plantexchangegroup_records(_production_sources()[0])}
+
+
+def test_old_subgroup_reading_agrees_on_the_lumbering_key() -> None:
+    """Exchange 42356, its drop group and the group's subgroup share one number."""
+    _, _, _, subgroup_data, offset_data = _production_sources()
+    subgroups = {subgroup.subgroup_key: subgroup for subgroup in parse_itemsubgroup_records(subgroup_data, offset_data)}
+    assert subgroups[_LUMBERING_EXCHANGE].item_keys == _production_items()[_LUMBERING_KEY]

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mainId": "Основной ID",
+    "minSubId": "Мин. доп. ID",
+    "minTitle": "Первое задание",
+    "maxSubId": "Макс. доп. ID",
+    "maxTitle": "Последнее задание"
+  },
+  "meta": {
+    "count": "Цепочек заданий: {count}"
+  }
+}

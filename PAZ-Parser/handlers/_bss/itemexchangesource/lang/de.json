@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Tauschschlüssel",
+    "name": "Name",
+    "exchangeType": "Tauschart",
+    "materials": "Materialien",
+    "productCategory": "Produktkategorie",
+    "workload": "Arbeitspensum",
+    "productDropKey": "Produktgruppe",
+    "productItems": "Produkte",
+    "luckDropKey": "Glücksgruppe",
+    "luckItems": "Glücksfunde",
+    "craftCharacter": "Arbeitsobjekt",
+    "description": "Beschreibung",
+    "workAnimation": "Arbeitsanimation",
+    "repeatGroupKey": "Wiederholgruppe",
+    "dailyWorkingCount": "Tageslimit",
+    "firstWorkingIndex": "Erster Arbeitsindex",
+    "contentsGroups": "Inhaltsgruppen"
+  },
+  "meta": {
+    "count": "{count} Gegenstandstausche · {materials} Materialien"
+  }
+}

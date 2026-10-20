@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Key",
+    "npcKey": "NPC Key",
+    "npc": "NPC",
+    "dicePreset": "Dice Preset",
+    "handRanks": "Hand Ranks",
+    "knowledgeKey": "Knowledge ID",
+    "knowledge": "Knowledge",
+    "deckLimit": "Deck Limit",
+    "rollCountMax": "Max Rolls"
+  },
+  "meta": {
+    "count": "{count} Yar! opponents"
+  }
+}

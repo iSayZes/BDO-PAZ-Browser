@@ -7,20 +7,13 @@ from bdo_preview import PreviewHandler
 
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
+from _common.rate import rate_percent
 from _common.town import town_name
 from .parser import parse_blizzardregioninfo_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-# The spawn chances are stored on the 1,000,000 = 100% scale.
-_RATE_PER_PERCENT = 10_000
-
-
-def _percent(value: int) -> str:
-    return f"{value / _RATE_PER_PERCENT:g}%"
-
-
 def _wind(record: dict) -> str:
     return ", ".join(f"{record[axis]:g}" for axis in ("wind_x", "wind_y", "wind_z"))
 
@@ -65,8 +58,8 @@ class BlizzardRegionInfoBssHandler(PreviewHandler):
                 e(r["key"]),
                 e(r["region_key"]),
                 e(r["region_name"] or _EMPTY),
-                e(_percent(r["effect_spawn_percent_min"])),
-                e(_percent(r["effect_spawn_percent_max"])),
+                e(rate_percent(r["effect_spawn_percent_min"])),
+                e(rate_percent(r["effect_spawn_percent_max"])),
                 e(_wind(r)),
             ]
             for r in records[start : start + page_size]

@@ -15,13 +15,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ------------- | --------- |
-| 1      | 1784 and later | 3473    | `waititem.dbss`       | 5,580 | 328 Row       | 17        |
-| 1      | 1784 and later | 3473    | `waititemoffset.dbss` | 3,940 | 328 Index Row | 12        |
+| 1      | 1784 and later | 3474    | `waititem.dbss`       | 5,580 | 328 Row       | 17        |
+| 1      | 1784 and later | 3474    | `waititemoffset.dbss` | 3,940 | 328 Index Row | 12        |
 
-| Layout | File                  | Known            | Unknown         |
-| ------ | --------------------- | ---------------- | --------------- |
-| 1      | `waititem.dbss`       | 4,268 B (76.5%)  | 1,312 B (23.5%) |
-| 1      | `waititemoffset.dbss` | 3,940 B (100.0%) | 0 B (0.0%)      |
+| Layout | File                  | Known            | Unknown    |
+| ------ | --------------------- | ---------------- | ---------- |
+| 1      | `waititem.dbss`       | 5,580 B (100.0%) | 0 B (0.0%) |
+| 1      | `waititemoffset.dbss` | 3,940 B (100.0%) | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -53,7 +53,7 @@ file ends after the last row.
 | `+0x04` | u32  | item_key      | `enchant_level << 24 \| item_id`, the packed key of `_common/item_key.py` |
 | `+0x08` | u32  | item_id       | The low 24 bits of `item_key`                                |
 | `+0x0C` | u8   | enchant_level | The top byte of `item_key`                                   |
-| `+0x0D` | u32  | unknown_0d    | `900` on every row (client 3464); see Open Questions         |
+| `+0x0D` | u32  | wait_second   | `900` on every row (client 3474); see Field Names            |
 
 On client 3464 the 328 rows hold 184 items:
 
@@ -85,6 +85,29 @@ A row count equal to the main file's, then one index row per main row.
 Every index row points at the main row with the same key. The index rows are
 not in the main file's order (the first one points at main row 4).
 
+## Field Names
+
+The row is the `WorldMarketWaitItem` sheet of a private server on client
+1784, with the columns `ItemKey`, `EnchantLevel` and `WaitSecond`. That
+server's dump (`Instance_dumpFull.exe`) loads the sheet into
+`WorldTradeMarketWaitItemStaticStatus` (loader at VA `0x140a70270`) and
+fills the struct in file order (VA `0x140cf600f` to `0x140cf6020`): the
+packed key `EnchantLevel << 24 | ItemKey` at `+0`, `ItemKey` at `+4`,
+`EnchantLevel` as a byte at `+8` and `WaitSecond` as a u32 at `+0x0C`. After
+the row's 4-byte `key`, the 13 bytes the index points at are that struct,
+so `+0x0D` is `WaitSecond`.
+
+The loader rejects a row whose `ItemKey` is `0`, whose `EnchantLevel` is
+21 or more, or whose `WaitSecond` is above 18,000 (5 hours), with
+"판매 대기 waitSecond 비정상 입니다" ("sale wait: waitSecond is invalid") for
+the last. The server has no reader for the client file; it loads only the
+sheet.
+
+The sheet and the private server's own `waititem.dbss` hold the same 101
+rows: matched on item and level, `wait_second` equals `WaitSecond` on all
+101. Every value is `900` there and on the 328 rows of client 3474, so the
+values alone do not place the column; the struct order above does.
+
 ## Notes
 
 - The Central Market sell window asks
@@ -112,12 +135,15 @@ the file is not in Lua.
 
 ## In-Game Checks
 
-### unknown_0d as the Queue Time
+### wait_second as the Queue Time
 
 Needs zone: any Central Market
 
-`unknown_0d` is `900` on every row, 15 minutes if it counts seconds. Open the
-Central Market, pick "In Registration Queue" and note the end time of an
-item that just entered the queue (it appears at the top of the list). An end
-time 15 minutes after it appeared means `unknown_0d` is the queue time in
-seconds.
+`wait_second` is `900` on every row, 15 minutes. This checks that it is the
+time an item waits in the Registration Queue.
+
+1. Open the Central Market and list an item from this table.
+2. Pick "In Registration Queue" and note the end time of the item, which
+   appears at the top of the list.
+
+Expected: the end time is 15 minutes after the item entered the queue.

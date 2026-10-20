@@ -1,0 +1,35 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "servantKind": "Kind",
+    "servantKindSub": "Sub Kind",
+    "tier": "Tier",
+    "grade": "Grade",
+    "color1": "Color 1",
+    "color2": "Color 2",
+    "color3": "Color 3",
+    "matingCount": "Breeding Count",
+    "lifespan": "Lifespan",
+    "basePrice": "Base Price",
+    "pricePerLevel": "Price per Level",
+    "isMale": "Male",
+    "isDisplayGender": "Gender Shown",
+    "servantMainModel": "Main Model",
+    "isMatingResult": "Bred",
+    "isTrade": "Tradeable",
+    "linkCount": "Link Count",
+    "experiencePerOne": "EXP per One",
+    "formIndex": "Form Index",
+    "basicLearnSkillMaxCount": "Max Skills",
+    "basicLearnSkills": "Starting Skills",
+    "rewardMoneyPercent": "Reward Money",
+    "isOnlyPcroom": "PC Room Only",
+    "stallionSkills": "Stallion Skills",
+    "canMix": "Can Mix",
+    "canMating": "Can Breed"
+  },
+  "meta": {
+    "count": "{count} mounts and ships"
+  }
+}

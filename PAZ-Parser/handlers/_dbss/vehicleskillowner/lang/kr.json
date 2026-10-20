@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "name": "이름",
+    "cantLearnableRate": "미습득 가중치",
+    "skillKey": "기술 ID",
+    "skill": "기술",
+    "able": "습득 가중치",
+    "addExp": "추가 경험치",
+    "isLearn": "습득 가능"
+  },
+  "offsetColumns": {
+    "characterId": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "기술 항목 {count}개 · 탑승물과 선박 {servants}개"
+  }
+}

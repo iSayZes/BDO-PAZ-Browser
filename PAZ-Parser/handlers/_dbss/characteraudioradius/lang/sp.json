@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "ID del personaje",
+    "name": "Nombre",
+    "soundRadius": "Radio de sonido"
+  },
+  "offsetColumns": {
+    "characterKey": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} personajes"
+  }
+}

@@ -13,7 +13,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records         | Row bytes               |
 | ------ | -------------- | ------- | ----------------------------- | ------ | --------------- | ----------------------- |
-| 1      | 1784 and later | 3473    | `plantworkerpassiveskill.bss` | 13,294 | 72 Skill Record | 56 to 72, 56 on average |
+| 1      | 1784 and later | 3474    | `plantworkerpassiveskill.bss` | 13,294 | 72 Skill Record | 56 to 72, 56 on average |
 
 | Layout | File                          | Known            | Unknown      |
 | ------ | ----------------------------- | ---------------- | ------------ |

@@ -53,16 +53,16 @@ CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "record",
-                "unknown_00",
-                "unknown_02",
-                "unknown_03",
-                "unknown_07",
+                "fairy_feed_key",
+                "enchant_level",
+                "feed_value",
+                "equip_exp",
             ],
         ),
         DeclaredCountTest(declared=_entry_rows()),
-        # Every entry repeats its record's key, which is the record index plus one.
-        TargetTest(col="record", value=0, expected={"unknown_00": 1}),
-        TargetTest(col="record", value=1, expected={"unknown_00": 2}),
+        # Every entry repeats its record's FairyFeedKey, which is the record index plus one.
+        TargetTest(col="record", value=0, expected={"fairy_feed_key": 1}),
+        TargetTest(col="record", value=1, expected={"fairy_feed_key": 2}),
     ],
 )
 

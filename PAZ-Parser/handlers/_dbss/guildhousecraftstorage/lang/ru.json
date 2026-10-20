@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "receipeKey": "Ключ",
+    "name": "Применение",
+    "storageCount": "Количество складов"
+  },
+  "offsetColumns": {
+    "receipeKey": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Применений склада гильдии: {count}"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "name": "이름",
+    "titleName": "칭호 인덱스",
+    "title": "외형 정보",
+    "contentsOption": "콘텐츠 그룹"
+  },
+  "meta": {
+    "count": "말 {count}마리"
+  }
+}

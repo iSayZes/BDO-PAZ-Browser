@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                        | Bytes | Records              | Row bytes |
 | ------ | -------------- | ------- | --------------------------- | ----- | -------------------- | --------- |
-| 1      | 3473 and later | 3473    | `questjournalvideoinfo.bss` | 7,687 | 80 Journal Video Row | 13        |
+| 1      | 3473 and later | 3474    | `questjournalvideoinfo.bss` | 7,687 | 80 Journal Video Row | 13        |
 
 | Layout | File                        | Known           | Unknown     |
 | ------ | --------------------------- | --------------- | ----------- |
@@ -102,4 +102,8 @@ used once.
 
 It is `1` in all 80 rows. It may be an "enabled" flag or a page kind for
 the journal book, but with a single value on the current client nothing in
-the file tells them apart.
+the file tells them apart. The client 1784 private server sources name
+nothing here: its `binary/` folder has no `questjournalvideoinfo.bss`, its
+server dump has no `Video` string, and its sheets have no video or artwork
+sheet (`Quest_Journal` is the [`journalquest.dbss`](journalquest_dbss.md)
+source).

@@ -3,6 +3,9 @@
 It runs over the key's UTF-16LE bytes with seed `0xC5EDE`. On client 3464 it
 reproduces every `key_hash` and `sheet_hash` of `stringtable.bss` and the LOC
 type 59 `str_id1` of every TextBind name (docs/file-formats/stringtable_bss.md).
+Action and file names are hashed over their ASCII bytes with the same seed
+(`ascii_key_hash`): `manufacture.bss` actions, `collectresourcename.dbss`
+file names and the `servantbuff.dbss` action names.
 """
 
 from __future__ import annotations
@@ -73,3 +76,8 @@ def hashlittle(data: bytes, seed: int) -> int:
 def key_hash(key: str) -> int:
     """The hash the client stores for a string key, such as a TextBind name."""
     return hashlittle(key.encode("utf-16-le"), KEY_HASH_SEED)
+
+
+def ascii_key_hash(name: str) -> int:
+    """The hash the client stores for an ASCII name, such as an action name."""
+    return hashlittle(name.encode("ascii"), KEY_HASH_SEED)

@@ -37,7 +37,7 @@ INSTANCE_FIELD_CASE = HandlerCase(
     tests=[
         SchemaTest(required_keys=[
             "key", "name", "min_x", "min_y", "min_z", "max_x", "max_y", "max_z",
-            "unknown_1a", "unknown_tail",
+            "field_grid_sector_count", "field_no",
         ]),
         DeclaredCountTest(declared=header_count()),
         DeclaredCountTest(declared=header_count(companion=_OFFSET_FILE)),

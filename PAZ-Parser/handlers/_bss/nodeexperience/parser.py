@@ -1,7 +1,11 @@
 """`nodeexperience.bss`: the EXP a node needs from one node level to the next.
 
     PABR | u32 row_count | row_count x 15-byte row | 12-byte PABR trailer
-    row = u8 unknown_00 | u32 unknown_01 | u16 level | u64 exp
+    row = u8 is_integrity | u32 node_exp_type | i16 level | i64 exp
+
+The row is the 2016 client's `gc::NodeExperienceStaticStatus` with its
+padding left out (`_isIntegrity`, `_nodeExpType`, `_nodeLevel`,
+`_requiredExperience`).
 
 The trailer's middle u32 is the end of the rows. Full layout in
 docs/file-formats/nodeexperience_bss.md.
@@ -17,7 +21,7 @@ from _common.pabr_offset import PABR_MAGIC
 FILE_NAME = "nodeexperience.bss"
 _COUNT = struct.Struct("<I")
 ROWS_START = len(PABR_MAGIC) + _COUNT.size
-ROW = struct.Struct("<BIHQ")
+ROW = struct.Struct("<BIhq")
 TRAILER = struct.Struct("<III")
 
 
@@ -39,6 +43,6 @@ def parse_nodeexperience_records(data: bytes) -> list[dict]:
             f"but the trailer says {end_of_data} and the file holds {len(data)} bytes"
         )
     return [
-        {"level": level, "exp": exp, "unknown_00": unknown_00, "unknown_01": unknown_01}
-        for unknown_00, unknown_01, level, exp in ROW.iter_unpack(data[ROWS_START:rows_end])
+        {"level": level, "exp": exp, "is_integrity": is_integrity, "node_exp_type": node_exp_type}
+        for is_integrity, node_exp_type, level, exp in ROW.iter_unpack(data[ROWS_START:rows_end])
     ]

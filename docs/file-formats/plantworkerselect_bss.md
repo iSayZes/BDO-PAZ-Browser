@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes | Records                                 | Row bytes |
 | ------ | -------------- | ------- | ----------------------- | ----- | --------------------------------------- | --------- |
-| 1      | 3473 and later | 3473    | `plantworkerselect.bss` | 6,288 | 385 Selection Entry, 31 Selection Group | 16        |
+| 1      | 3473 and later | 3474    | `plantworkerselect.bss` | 6,288 | 385 Selection Entry, 31 Selection Group | 16        |
 
 | Layout | File                    | Known           | Unknown         |
 | ------ | ----------------------- | --------------- | --------------- |

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from _common.binary import u8, u16, u32
+from _common.binary import u16, u32
 
 
 _MAGIC = b"PABR"
@@ -43,9 +43,8 @@ def parse_fairyequipskill_records(data: bytes) -> list[dict]:
         records.append({
             "equip_skill_id": equip_skill_id,
             "skill_type": u32(data, pos + 0x04),
-            "unknown_08": u8(data, pos + 0x08),
-            "unknown_09": u8(data, pos + 0x09),
-            "loc_id": u16(data, pos + 0x0A),
+            "skill_level": u16(data, pos + 0x08),
+            "skill_no": u16(data, pos + 0x0A),
         })
         pos += _RECORD_SIZE
 

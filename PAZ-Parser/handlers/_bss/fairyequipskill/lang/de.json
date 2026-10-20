@@ -5,7 +5,7 @@
     "skillName": "Talentname",
     "description": "Beschreibung",
     "skillType": "Talenttyp",
-    "locId": "LOC-ID"
+    "skillNo": "Talent-ID"
   },
   "meta": {
     "count": "{count} Feentalent-Einträge",

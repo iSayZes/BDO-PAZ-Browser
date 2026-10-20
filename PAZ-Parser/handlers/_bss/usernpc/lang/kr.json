@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterNo": "캐릭터 번호",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "방향",
+    "action": "행동",
+    "class": "직업"
+  },
+  "meta": {
+    "count": "유저 NPC {count}명"
+  }
+}

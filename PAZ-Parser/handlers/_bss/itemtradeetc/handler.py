@@ -39,7 +39,7 @@ class ItemTradeEtcBssHandler(PreviewHandler):
             parsed = parse_itemtradeetc(data)
         except ValueError as ex:
             return [{"_error": f"{FILE_NAME} could not be parsed: {ex}"}]
-        # The 12-byte rows after the pairs are unknown and stay out of the table.
+        # The trade stock limit rows after the pairs stay out of this pair table.
         return [
             {
                 **pair,

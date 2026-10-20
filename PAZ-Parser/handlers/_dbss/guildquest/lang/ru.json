@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "questNo": "№ задания",
+    "title": "Задание гильдии",
+    "type": "Тип",
+    "objective": "Цель",
+    "condition": "Скрипт условия",
+    "questLevel": "Уровень задания",
+    "description": "Описание",
+    "icon": "Значок",
+    "limitMinute": "Таймер (мин.)",
+    "needItem": "Оплата за принятие",
+    "isPreoccupancy": "Предварительный захват",
+    "rewards": "Награды",
+    "contentsGroups": "Группы контента"
+  },
+  "offsetColumns": {
+    "questNo": "№ задания",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Заданий гильдии: {count}"
+  }
+}

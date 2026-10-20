@@ -42,7 +42,7 @@ PET_EQUIP_SKILL_ACQUIRE_CASE = HandlerCase(
                 "group",
                 "tier",
                 "equip_skill_id",
-                "loc_id",
+                "skill_no",
                 "skill_name",
                 "weight",
                 "chance_pct",
@@ -57,7 +57,7 @@ PET_EQUIP_SKILL_ACQUIRE_CASE = HandlerCase(
         TargetTest(col="acquire_type_id", value=204, expected={"group": 2, "tier": 4}),
         TargetTest(col="acquire_type_id", value=401, expected={"group": 4, "tier": 1}),
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49001,
             expected={"equip_skill_id": 9, "skill_name": "Luck +1"},
         ),

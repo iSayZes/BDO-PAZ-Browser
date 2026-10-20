@@ -12,17 +12,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes     | Records             | Row bytes |
 | ------ | -------------- | ------- | ------------------------------- | --------- | ------------------- | --------- |
-| 2      | 3473 and later | 3473    | `characterspawntype.dbss`       | 1,178,548 | 24,553 Record       | 48        |
-| 2      | 3473 and later | 3473    | `characterspawntypeoffset.dbss` | 245,550   | 24,553 Index Record | 10        |
-| 1      | 1784           | 1784    | `characterspawntype.dbss`       | 725,344   | 16,485 Record       | 44        |
-| 1      | 1784           | 1784    | `characterspawntypeoffset.dbss` | 164,870   | 16,485 Index Record | 10        |
+| 2      | 3473 and later | 3474    | `characterspawntype.dbss`       | 1,178,548 | 24,553 Record       | 48        |
+| 2      | 3473 and later | 3474    | `characterspawntypeoffset.dbss` | 245,550   | 24,553 Index Record | 10        |
+| 1      | 1784           | 1784    | `characterspawntype.dbss`       | 690,980   | 15,704 Record       | 44        |
+| 1      | 1784           | 1784    | `characterspawntypeoffset.dbss` | 157,060   | 15,704 Index Record | 10        |
 
 | Layout | File                            | Known                | Unknown    |
 | ------ | ------------------------------- | -------------------- | ---------- |
 | 2      | `characterspawntype.dbss`       | 1,178,548 B (100.0%) | 0 B (0.0%) |
 | 2      | `characterspawntypeoffset.dbss` | 245,550 B (100.0%)   | 0 B (0.0%) |
-| 1      | `characterspawntype.dbss`       | 725,344 B (100.0%)   | 0 B (0.0%) |
-| 1      | `characterspawntypeoffset.dbss` | 164,870 B (100.0%)   | 0 B (0.0%) |
+| 1      | `characterspawntype.dbss`       | 690,980 B (100.0%)   | 0 B (0.0%) |
+| 1      | `characterspawntypeoffset.dbss` | 157,060 B (100.0%)   | 0 B (0.0%) |
 
 <!-- versions:end -->
 

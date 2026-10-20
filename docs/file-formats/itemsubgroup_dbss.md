@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Item subgroups: named lists of items that other tables hand out as a group. Each record is one subgroup key followed by its item entries. Worker production uses it through [`plantexchangegroup.bss`](plantexchangegroup_bss.md) (`item_subgroup_key`); NPC shops and trade managers reach theirs through [`itemmaingroup.bss`](itemmaingroup_bss.md) groups; the other subgroups belong to tables not decoded yet (drops, boxes, trade goods). `itemsubgroupoffset.dbss` is required to address the variable-length records.
+Item subgroups: named lists of items that other tables hand out as a group. Each record is one subgroup key followed by its item entries. Worker production reaches it through [`plantexchangegroup.bss`](plantexchangegroup_bss.md) (`exchange_key`), its `itemexchangesource.bss` exchange and that exchange's [`itemmaingroup.bss`](itemmaingroup_bss.md) drop groups; NPC shops and trade managers reach theirs through [`itemmaingroup.bss`](itemmaingroup_bss.md) groups; the other subgroups belong to tables not decoded yet (drops, boxes, trade goods). `itemsubgroupoffset.dbss` is required to address the variable-length records.
 
 The record header and the item ID position match [iDevelopThings/bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor) (`FORMATS.md`, "Worker-production item tables"), which leaves the rest of each 135-byte entry unmapped. Their "0-100 items" range does not hold: subgroup 52001 has 11,560 entries.
 
@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes      | Records                                   | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ---------- | ----------------------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `itemsubgroup.dbss`       | 13,546,174 | 98,108 Item Entry, 16,755 Subgroup Record | 135       |
-| 1      | 1784 and later | 3473    | `itemsubgroupoffset.dbss` | 167,570    | 16,755 Offset Row                         | 10        |
+| 1      | 1784 and later | 3474    | `itemsubgroup.dbss`       | 13,546,174 | 98,108 Item Entry, 16,755 Subgroup Record | 135       |
+| 1      | 1784 and later | 3474    | `itemsubgroupoffset.dbss` | 167,570    | 16,755 Offset Row                         | 10        |
 
 | Layout | File                      | Known               | Unknown              |
 | ------ | ------------------------- | ------------------- | -------------------- |

@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3473    | `pcgrowthsimply.bss` | 1,038 | 47 Row  | 10        |
+| 1      | 1784 and later | 3474    | `pcgrowthsimply.bss` | 1,038 | 47 Row  | 10        |
 
 | Layout | File                 | Known         | Unknown       |
 | ------ | -------------------- | ------------- | ------------- |
@@ -64,3 +64,16 @@ The `is_playable` rows are exactly the class types of `PLAYABLE_CLASSES_MASK` in
 ## Localization
 
 The class name is LOC type 21, `str_id1` = `class_type`, `str_id4` 0, as in [pcgrowth](pcgrowth_dbss.md). The handler shows the LOC name and falls back to the Korean name of the string table.
+
+## Open Questions
+
+### What does `unknown_06` index?
+
+The server dump of a private server on client 1784 (`Instance_dumpFull.exe`)
+builds each `PcGrowthSimplyStaticStatus` from the class's
+`PcGrowthStaticStatus` (VA `0x140bbd790`): `unknown_06` is a copy of the
+last u32 of the [`pcgrowth.dbss`](pcgrowth_dbss.md) record (`unknown_end`).
+When a server language option is set, the dump uses it as a LOC type 21 key
+for the class name (VA `0x140bbc6b0`); a `0` skips that lookup. No
+`PC_Set_Table` column fills it and no message names it. It is `0` on all
+82 rows of client 1784 and all 47 of client 3474.

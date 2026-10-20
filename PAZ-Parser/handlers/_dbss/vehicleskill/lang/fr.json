@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "key": "ID de compétence",
+    "icon": "Icône",
+    "name": "Nom",
+    "maxExp": "EXP max.",
+    "addExpForCheck": "EXP par vérification",
+    "basePrice": "Prix de base",
+    "addMatingRate": "Bonus d'élevage",
+    "isLearnFromItem": "Apprise par objet",
+    "keyCommand": "Commande",
+    "description": "Description",
+    "consoleKeyCommand": "Commande console",
+    "trainingSkillCharacters": "Montures de dressage",
+    "isMarketFilter": "Filtre du marché",
+    "contentsGroups": "Groupes de contenu",
+    "conditionDesc": "Condition",
+    "vehicleSkillLock": "Verrouillée",
+    "skillOrder": "Ordre",
+    "needLifeLevelForAutoSkill": "Niveau de compétence auto"
+  },
+  "offsetColumns": {
+    "key": "ID de compétence",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} compétences de monture et de navire"
+  }
+}

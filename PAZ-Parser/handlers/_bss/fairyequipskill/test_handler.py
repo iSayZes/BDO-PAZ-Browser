@@ -59,9 +59,8 @@ CASE = HandlerCase(
             required_keys=[
                 "equip_skill_id",
                 "skill_type",
-                "unknown_08",
-                "unknown_09",
-                "loc_id",
+                "skill_level",
+                "skill_no",
                 "skill_name",
                 "skill_description",
                 "icon_path",
@@ -69,24 +68,25 @@ CASE = HandlerCase(
         ),
         # The 200 null reserved slots must be skipped.
         DeclaredCountTest(declared=_catalog_rows()),
-        RangeTest(col="unknown_09", min_val=0, max_val=0),
+        # The low half of the gc::SkillKey; skill levels start at 1.
+        RangeTest(col="skill_level", min_val=1, max_val=0xFFFF),
         TargetTest(
             col="equip_skill_id",
             value=0,
             expected={
                 "skill_type": 1,
-                "loc_id": 49096,
+                "skill_no": 49096,
                 "skill_name": "Tingling Breath I",
                 "icon_path": f"{_ICON_DIR}/equipskill_fairy_00049096.dds",
             },
         ),
-        # Fairy's Tear is the one group whose loc_ids descend as ids ascend.
+        # Fairy's Tear is the one group whose skill_nos descend as ids ascend.
         TargetTest(
             col="equip_skill_id",
             value=10,
             expected={
                 "skill_type": 3,
-                "loc_id": 49114,
+                "skill_no": 49114,
                 "skill_name": "Fairy's Tear I",
             },
         ),
@@ -95,13 +95,13 @@ CASE = HandlerCase(
             value=13,
             expected={
                 "skill_type": 3,
-                "loc_id": 49111,
+                "skill_no": 49111,
                 "skill_name": "Fairy's Tear IV",
             },
         ),
         # Single-record skill groups.
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49120,
             expected={
                 "equip_skill_id": 19,
@@ -114,13 +114,13 @@ CASE = HandlerCase(
             value=29,
             expected={
                 "skill_type": 7,
-                "loc_id": 49130,
+                "skill_no": 49130,
                 "skill_name": "Gift",
             },
         ),
         # Legacy and current naming coexist inside skill type 6.
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49121,
             expected={
                 "equip_skill_id": 20,
@@ -129,7 +129,7 @@ CASE = HandlerCase(
             },
         ),
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49129,
             expected={
                 "equip_skill_id": 28,
@@ -142,7 +142,7 @@ CASE = HandlerCase(
             value=34,
             expected={
                 "skill_type": 8,
-                "loc_id": 49181,
+                "skill_no": 49181,
                 "skill_name": "Continuous Care V",
             },
         ),

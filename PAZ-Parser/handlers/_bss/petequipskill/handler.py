@@ -39,8 +39,8 @@ class PetEquipSkillBssHandler(PreviewHandler):
 
         for record in parse_petequipskill_records(data):
             row = dict(record)
-            row["skill_name"] = equip_skill_name(row["loc_id"])
-            row["icon_path"] = icon_path(IconKind.PET_EQUIP_SKILL, row["loc_id"])
+            row["skill_name"] = equip_skill_name(row["skill_no"])
+            row["icon_path"] = icon_path(IconKind.PET_EQUIP_SKILL, row["skill_no"])
             records.append(row)
 
         return records
@@ -61,7 +61,7 @@ class PetEquipSkillBssHandler(PreviewHandler):
         rows = [
             [
                 e(record["equip_skill_id"]),
-                e(record.get("skill_name") or record["loc_id"]),
+                e(record.get("skill_name") or record["skill_no"]),
                 icon_cell(record["icon_path"]),
                 e(record["skill_type"]),
                 e(record["section"]),

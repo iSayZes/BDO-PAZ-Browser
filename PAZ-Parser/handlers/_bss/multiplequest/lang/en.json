@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mainId": "Main ID",
+    "minSubId": "Min Sub ID",
+    "minTitle": "First Quest",
+    "maxSubId": "Max Sub ID",
+    "maxTitle": "Last Quest"
+  },
+  "meta": {
+    "count": "{count} quest chains"
+  }
+}

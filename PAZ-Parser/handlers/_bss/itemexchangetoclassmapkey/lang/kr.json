@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "key": "교환 그룹"
+  },
+  "meta": {
+    "count": "교환 가능 아이템 {count}개"
+  }
+}

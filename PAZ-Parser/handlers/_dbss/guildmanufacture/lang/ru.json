@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "productItemKey": "ID результата",
+    "product": "Результат",
+    "category": "Категория",
+    "exchange": "Обмен",
+    "requiredItems": "Материалы",
+    "time": "Время",
+    "price": "Цена",
+    "productItemLimit": "Дневной лимит производства",
+    "guildSkill": "Навыки гильдии",
+    "guildHouses": "Дом гильдии"
+  },
+  "offsetColumns": {
+    "productItemKey": "ID результата",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Рецептов производства гильдии: {count}"
+  }
+}

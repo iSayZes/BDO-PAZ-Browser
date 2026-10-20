@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "ship": "선박",
+    "upgradeCharacterId": "개량 ID",
+    "upgradeShip": "개량 결과",
+    "mainItems": "장착 장비",
+    "subItems": "재료"
+  },
+  "offsetColumns": {
+    "characterId": "캐릭터 ID",
+    "upgradeCharacterId": "개량 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "개량 {count}개 · 선박 {ships}척"
+  }
+}

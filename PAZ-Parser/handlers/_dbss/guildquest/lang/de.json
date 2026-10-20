@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "questNo": "Missionsnr.",
+    "title": "Gildenmission",
+    "type": "Typ",
+    "objective": "Ziel",
+    "condition": "Bedingungsskript",
+    "questLevel": "Missionsstufe",
+    "description": "Beschreibung",
+    "icon": "Symbol",
+    "limitMinute": "Zeitlimit (Min.)",
+    "needItem": "Annahmekosten",
+    "isPreoccupancy": "Vorbelegung",
+    "rewards": "Belohnungen",
+    "contentsGroups": "Inhaltsgruppen"
+  },
+  "offsetColumns": {
+    "questNo": "Missionsnr.",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gildenmissionen"
+  }
+}

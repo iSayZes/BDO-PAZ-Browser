@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "questRegionId": "지역 ID",
+    "questRegion": "지역",
+    "questTypeId": "의뢰 타입 ID",
+    "questType": "의뢰 타입",
+    "questCount": "의뢰"
+  },
+  "meta": {
+    "regionCount": "지역 {count}개",
+    "typeCount": "의뢰 타입 {count}개"
+  }
+}

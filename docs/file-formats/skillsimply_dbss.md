@@ -15,12 +15,12 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes     | Records                    | Row bytes                  |
 | ------ | -------------- | ------- | ------------------------ | --------- | -------------------------- | -------------------------- |
-| 1      | 1784 and later | 3473    | `skillsimply.dbss`       | 3,499,846 | 30,487 Skill Simply Record | 114 to 134, 115 on average |
-| 1      | 1784 and later | 3473    | `skillsimplyoffset.dbss` | 365,848   | 30,487 Offset Row          | 12                         |
+| 1      | 1784 and later | 3474    | `skillsimply.dbss`       | 3,499,846 | 30,487 Skill Simply Record | 114 to 134, 115 on average |
+| 1      | 1784 and later | 3474    | `skillsimplyoffset.dbss` | 365,848   | 30,487 Offset Row          | 12                         |
 
 | Layout | File                     | Known               | Unknown             |
 | ------ | ------------------------ | ------------------- | ------------------- |
-| 1      | `skillsimply.dbss`       | 2,463,288 B (70.4%) | 1,036,558 B (29.6%) |
+| 1      | `skillsimply.dbss`       | 2,493,775 B (71.3%) | 1,006,071 B (28.7%) |
 | 1      | `skillsimplyoffset.dbss` | 365,848 B (100.0%)  | 0 B (0.0%)          |
 
 <!-- versions:end -->
@@ -63,7 +63,7 @@ The last 12 bytes are the empty string table and its trailer: `u32 0`, `u32` end
 `size` bytes from `offset` in `skillsimplyoffset.dbss`. Four lists make the
 record variable; offsets after a list count from the end of
 `contents_group_hashes`, `next_rank_keys`, `exclusive_skill_nos` or
-`base_skill_keys`. Record counts in the table are from client 3458, and
+`related_cool_time_skill_keys`. Record counts in the table are from client 3458, and
 fields noted "Always `0`" are `0` on every record of it. The sheet columns
 behind the names are in Field Names.
 
@@ -109,11 +109,11 @@ behind the names are in Field Names.
 | `next_rank_keys+0x3A`      | u64                   | exclusive_count     | `0` on 29,716 records, up to `5`                                   |
 | `next_rank_keys+0x42`      | u16[exclusive_count]  | exclusive_skill_nos | Skill numbers it cannot be held with, see below                    |
 | `exclusive_skill_nos+0x00` | bytes[8]              | unknown_e00         | Always `0`                                                         |
-| `exclusive_skill_nos+0x08` | u8                    | unknown_e08         | Equals `skill.dbss` `unknown_08` on every record; see Notes        |
+| `exclusive_skill_nos+0x08` | u8                    | is_attack_skill         | Equals `skill.dbss` `is_attack_skill` on every record; see Notes  |
 | `exclusive_skill_nos+0x09` | u8                    | is_except_cool_time | `1` on 255 records, all "Black Spirit:" skills; see Field Names    |
-| `exclusive_skill_nos+0x0A` | u32                   | base_skill_count    | `1` on 155 records, else `0`                                       |
-| `exclusive_skill_nos+0x0E` | u32[base_skill_count] | base_skill_keys     | Equals `skill.dbss` `base_skill_keys` on every record              |
-| `base_skill_keys+0x00`     | u8                    | need_buff_module_type | `buff.dbss` `effect_type` that must be active: `179` (`0xB3`) on exactly the 27 "Elvia:" skills, `202` (`0xCA`, none) on the rest; see below |
+| `exclusive_skill_nos+0x0A` | u32                   | related_cool_time_skill_count    | `1` on 155 records, else `0`                                       |
+| `exclusive_skill_nos+0x0E` | u32[related_cool_time_skill_count] | related_cool_time_skill_keys     | Equals `skill.dbss` `related_cool_time_skill_keys` on every record |
+| `related_cool_time_skill_keys+0x00`     | u8                    | need_buff_module_type | `buff.dbss` `effect_type` that must be active: `179` (`0xB3`) on exactly the 27 "Elvia:" skills, `202` (`0xCA`, none) on the rest; see below |
 
 Every one of the 30,424 records on client 3458 walks to exactly its `size`
 with this layout. The shortest record (114 bytes) has one contents group and
@@ -124,8 +124,9 @@ empty lists. Earlier versions of this doc called `contents_group_count`
 `unknown_n0d` and `unknown_n0e`,
 `condition` `unknown_n17`, `max_level` `unknown_n1a` and `unknown_n1b`,
 `need_skill_level_1` and `need_skill_level_2` `has_need_skill_1` and
-`has_need_skill_2`, `is_except_cool_time` `unknown_e09` and
-`need_buff_module_type` `unknown_end`.
+`has_need_skill_2`, `is_except_cool_time` `unknown_e09`,
+`need_buff_module_type` `unknown_end`, `is_attack_skill` `unknown_e08` and
+`related_cool_time_skill_keys` `base_skill_keys`.
 
 ### `skillsimplyoffset.dbss`
 
@@ -316,14 +317,14 @@ its `buff.dbss` (`201`); the private server's file on client 1784 stores
   from "Fireball IV" or "Lightning V". The tooltip's "Effect Details" lines
   are LOC type `46`, keyed by 32-bit IDs that appear in none of the skill
   tables; the class action chart (`.paac`) is the likely source.
-- `unknown_e08` follows the damage line of the tooltip's "Effect Details" on
+- `is_attack_skill` follows the damage line of the tooltip's "Effect Details" on
   7 of 8 Wizard skills checked in game. It is `1` on "Flame's Calling",
   "Magma Bomb" and "Fireball IV", which show damage, and `0` on
   "Archwizardry: Mass Teleport", "Prime: Elemental Palace", "Speed Spell III"
   and "Summon: Keeper Marg", which show none. "Elementalization" is the
   exception: it stores `1` but deals no damage (it moves the character
-  backwards for 250 stamina, 5 s cooldown). No sheet column matches it, so
-  the field keeps its offset name.
+  backwards for 250 stamina, 5 s cooldown). No sheet column matches it; the
+  name comes from `skill.dbss`, see Field Names.
 
 ## Field Names
 
@@ -400,29 +401,32 @@ and the `has_need_skill_*` flags turn out to be the required skill's level.
 - `require_equip_slot` follows the `itemenchant.dbss` `equip_slot` it copies,
   as `buff.dbss` names its `need_equip_slot`; see the equip type paragraph
   above.
+- `is_attack_skill` and `related_cool_time_skill_keys` equal the
+  `skill.dbss` fields of those names on every record and take their names
+  from there (`skill_dbss.md`, Field Names): the client 1784 server's file
+  reader puts the byte in the member the 2016 struct calls `_isAttackSkill`,
+  and the list is the `RelatedCoolTimeSkillNo` column.
 
 ## Open Questions
 
 ### What do the remaining flags hold?
 
-`unknown_0d`, `unknown_h00`, `unknown_n11` and `unknown_e08` match no column
-of `SkillType_Table_New` or `Skill_Table_New`. `unknown_h00` sits where the
+`unknown_0d`, `unknown_h00` and `unknown_n11` match no column of
+`SkillType_Table_New` or `Skill_Table_New`. `unknown_h00` sits where the
 2016 `gc::SkillStaticStatus` has `_isPromptForLearning`, before the learning
 level and points, but it is not `IsPrompt_ForLearning`: on client 3473, 4,715
-shared ranks have the column at `1` and the byte at `0`. `unknown_e08` marks
-damage skills on Wizard except "Elementalization" (see Notes); the 2016
-`gc::SkillStaticStatus` has `_dontUse` and `_isAttackSkill` between `_key`
-and `_actionName`, where `skill.dbss` stores the same byte, so it is likely
-one of them, but the order does not pick which. `unknown_n03` to
+shared ranks have the column at `1` and the byte at `0`. `skill.dbss` stores
+`IsPrompt_ForLearning` in its own byte (equal on 22,857 of 22,876 ranks,
+client 3474), so `unknown_h00` is a different flag. `unknown_n03` to
 `unknown_n06` and `unknown_n08` are item equip type bytes (see above) with
 no column. `unknown_n09` sits where the 2016 struct has `_equippedItemKey`,
 right after `_requireEquipType`, but its four bytes are `0` on every record
 and the sheet's `EquipedItemID` is empty on every row, so the values cannot
 confirm it. The HP cost and learning item the skill tooltip Lua reads are
-the `RequireHP` and `NeedItemID_ForLearning` columns, which are empty or `0`
-on all but 10 of the 26,811 bexcel rows; the always-zero blocks
-(`unknown_n2c`, `unknown_n36`, `unknown_e00`) may hold them, and the values
-cannot tell.
+the `RequireHP` and `NeedItemID_ForLearning` columns, which `skill.dbss`
+holds (`require_hp`, `need_item_key_for_learning`); whether the always-zero
+blocks here (`unknown_n2c`, `unknown_n36`, `unknown_e00`) copy them, the
+values cannot tell.
 
 ## In-Game Checks
 

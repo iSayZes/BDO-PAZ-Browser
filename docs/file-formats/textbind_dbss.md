@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes     | Records          | Row bytes                      |
 | ------ | -------------- | ------- | --------------------- | --------- | ---------------- | ------------------------------ |
-| 1      | 1784 and later | 3473    | `textbind.dbss`       | 1,952,118 | 1,167 Record     | 64 to 12,716, 1,673 on average |
-| 1      | 1784 and later | 3473    | `textbindoffset.dbss` | 14,008    | 1,167 Offset Row | 12                             |
+| 1      | 1784 and later | 3474    | `textbind.dbss`       | 1,952,118 | 1,167 Record     | 64 to 12,716, 1,673 on average |
+| 1      | 1784 and later | 3474    | `textbindoffset.dbss` | 14,008    | 1,167 Offset Row | 12                             |
 
 | Layout | File                  | Known               | Unknown        |
 | ------ | --------------------- | ------------------- | -------------- |

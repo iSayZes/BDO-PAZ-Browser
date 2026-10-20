@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.equipskill_roll import equip_skill_name, flatten_roll_rows, read_skill_loc_ids
+from _common.equipskill_roll import equip_skill_name, flatten_roll_rows, read_skill_nos
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
@@ -65,8 +65,8 @@ class PetEquipSkillAcquireHandler(PreviewHandler):
         by_key = {r["acquire_type_id"]: r for r in records}
 
         catalog_raw = companions.get(_CATALOG_FILE)
-        loc_ids = read_skill_loc_ids(catalog_raw) if catalog_raw else {}
-        rows = flatten_roll_rows(records, loc_ids, equip_skill_name)
+        skill_nos = read_skill_nos(catalog_raw) if catalog_raw else {}
+        rows = flatten_roll_rows(records, skill_nos, equip_skill_name)
 
         for row in rows:
             source = by_key[row["acquire_type_id"]]
@@ -90,7 +90,7 @@ class PetEquipSkillAcquireHandler(PreviewHandler):
             [
                 e(r["acquire_type_id"]),
                 e(r["equip_skill_id"]),
-                e(r["skill_name"] or r["loc_id"]),
+                e(r["skill_name"] or r["skill_no"]),
                 e(f"{round(r['chance_pct'], 2):g}%"),
                 e(f"{r['weight']:,}"),
             ]

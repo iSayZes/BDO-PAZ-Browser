@@ -20,9 +20,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes   | Records                                            | Row bytes             |
 | ------ | -------------- | ------- | ------------------------------ | ------- | -------------------------------------------------- | --------------------- |
-| 1      | 1784 and later | 3473    | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
-| 1      | 1784 and later | 3473    | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
-| 1      | 1784 and later | 3473    | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
+| 1      | 1784 and later | 3474    | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
+| 1      | 1784 and later | 3474    | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
+| 1      | 1784 and later | 3474    | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
 
 | Layout | File                           | Known             | Unknown          |
 | ------ | ------------------------------ | ----------------- | ---------------- |
@@ -58,7 +58,7 @@ shared counted string table and 8-byte trailer (see
 | `grids+0x00`               | u32                          | tab_class_count     | Number of tab entries, equal to `class_count`   |
 | `grids+0x04`               | Class Tabs[tab_class_count]  | tabs                | One per class, see Class Tabs                   |
 | `tabs+0x00`                | u32                          | class_slots         | Always `101`                                    |
-| `tabs+0x04`                | u16[class_slots]             | unknown_class_table | Indexed by class type, see Open Questions       |
+| `tabs+0x04`                | u16[class_slots]             | unknown_class_table | Indexed by class type, see Developer Sheets     |
 | `unknown_class_table+0x00` | String Table                 | string_table        | Tab name keys, e.g. `LUA_SKILLTREE_PANEL_NAME0` |
 | `string_table+0x00`        | u32                          | string_table_start  | Where `unknown_class_table` ends                |
 | `string_table+0x04`        | u32                          | zero                | Always `0`                                      |
@@ -71,9 +71,9 @@ table and an empty string table.
 | Offset  | Type                | Field      | Notes                                                                    |
 | ------- | ------------------- | ---------- | ------------------------------------------------------------------------ |
 | `+0x00` | u8                  | class_type | Class, LOC type `21` (`0` Warrior, `4` Ranger, `32` Seraph)              |
-| `+0x01` | u32                 | width      | Grid columns; `8` on every class                                         |
-| `+0x05` | u32                 | height     | Grid rows; `42` to `123` in the combat window, `21` to `38` in awakening |
-| `+0x09` | Cell[height][width] | cells      | `width * height` cells, row by row                                       |
+| `+0x01` | u32                 | width      | Sheet columns; `8` on every class                                        |
+| `+0x05` | u32                 | height     | Sheet rows; `42` to `123` in the combat window, `21` to `38` in awakening |
+| `+0x09` | Cell[width][height] | cells      | `width * height` cells, column by column: cell `column * height + row`   |
 
 ### Cell (variable: 8 bytes + types)
 
@@ -82,8 +82,8 @@ table and an empty string table.
 | `+0x00`       | u32            | type_count             | Number of drawing types                                       |
 | `+0x04`       | u8[type_count] | types                  | Cell types, see Cell Types; `2` means the cell holds a skill group |
 | `types+0x00`  | u16            | group_no               | `skillgroup.bss` group when `types` holds `2`                 |
-| `types+0x02`  | u8             | unknown_after_group_no | `0` on every skill cell                                       |
-| `types+0x03`  | u8             | subgroup               | The tab the skill is listed under, see Tabs                   |
+| `types+0x02`  | u8             | unknown_after_group_no | `0` on every cell of clients 1784 and 3474                    |
+| `types+0x03`  | u8             | subgroup               | The tab band of the cell's row, set on every cell; see Tabs   |
 
 ### Class Tabs (variable: 9 bytes + tabs)
 
@@ -91,7 +91,7 @@ table and an empty string table.
 | ------- | -------------- | ---------- | ------------------------------------ |
 | `+0x00` | u8             | class_type | Same classes as the grids            |
 | `+0x01` | u32            | tab_count  | `4` for every combat class; `1` to `4` in awakening |
-| `+0x05` | u32            | unknown_05 | Always `0`                           |
+| `+0x05` | u32            | unknown_05 | Always `0`; see Developer Sheets     |
 | `+0x09` | Tab[tab_count] | tabs       | See Tab                              |
 
 ### Tab (5 bytes)
@@ -189,20 +189,28 @@ order of the tab entries. Checked 2026-09-29:
   Flow: Cloud's Strife, Aerial Burst and Doombringer.
 
 The window no longer draws the tree: each section is a list of skill cards
-in three columns, and the grid is the three columns stacked: a cell's card
-column is `row * 3 // height` (`0` left, `1` middle, `2` right). The skill
-rows of every class in both windows fall in three runs split by two wide
-blank gaps (at least three times any other gap), and the thirds rule puts
-all 3,334 skill cells in the same run.
+in three columns, and those are the developer sheet's columns `0`, `3` and
+`6` (sheet columns A, D and G; the two columns between them hold the tree
+lines). A cell's card column is `column * 3 // width` (`0` left, `1` middle,
+`2` right). On client 3474 the combat skill cells sit in columns `0`, `3` and
+`6` 922, 581 and 1,107 times, the awakening ones 283, 282 and 223 times, and
+no skill cell sits in another column. Earlier versions of this doc read the
+cells row by row and split the grid height into thirds; that rule gives the
+same card column for all 3,398 skill cells, because a column-by-column index
+divided by the width falls in the same third.
 
-Drakania's Awakening grid is 38 rows, so its columns start at rows `0`,
-`13` and `26` (checked 2026-09-29). Main Skills shows Burning Resolve, Fate
-Beckons, Trion Training (row `0`) on the left, Legacy, Flow: Dragon Flight,
-Impale (rows `14` and `15`) in the middle and Elvia: Edict Unbound (row
-`28`) on the right. Over all four sections the three columns hold 13, 11
-and 10 skills in game, exactly the file's skill cells per third. Inside a
-column the cards follow the cells row by row. Hexeblood's middle column has an empty card slot after Extinction,
-probably an empty grid cell between Extinction and Storm Piercer.
+`subgroup` is the same on all 8 cells of a sheet row (3,278 combat and 944
+awakening rows on client 3474, none mixed), so it marks horizontal tab bands
+of the sheet, and blank and line cells carry it too.
+
+Drakania's Awakening grid has 38 rows (checked 2026-09-29). Main Skills
+shows Burning Resolve, Fate Beckons and Trion Training (column `0`) on the
+left, Legacy, Flow: Dragon Flight and Impale (column `3`) in the middle and
+Elvia: Edict Unbound (column `6`) on the right. Over all four sections the
+three columns hold 13, 11 and 10 skills in game, exactly the file's skill
+cells per column. Inside a column the cards follow the cells top to bottom.
+Hexeblood's middle column has an empty card slot after Extinction, probably
+an empty grid cell between Extinction and Storm Piercer.
 
 Elvia: Edict Unbound is usable only while the 10-minute Elvia weapon buff
 from the Elvia realm is active, so the grid lists temporary skills too.
@@ -223,6 +231,43 @@ and the section did not show on my Wizard, so it most likely appears only
 while one of the items is equipped. Taebaek's Belt: see the GrumpyG guide
 (grumpygreen.cricket/taebaeks-belt).
 
+## Developer Sheets
+
+A private server on client 1784 ships the sheets the files are built from,
+under `DataSheet/skilldatasheet/uiskilltree/`:
+`ui_tree_awakening_weaponskill.xlsm` is the source of its
+`ui_skillgroup_awakening.bss`, and `ui_tree_main_weaponskillNew.xlsm` and
+`ui_tree_main_weaponskill2.xlsm` are older combat versions. Each class is a
+grid sheet with no column headers: `END` in the first row and in column A
+mark the grid's edges ("END marks the limit of the data, so it must be
+written at the end of the first column and the end of the first row", a
+note in `uiguildskilltreelayout.xlsm`), column I lists the tab keys, and a
+cell holds a group number or a comma-separated list of line characters. A
+trailing comma (`─,─,`) compiles to an extra type `1`. Read column by
+column, the awakening sheet matches the 1784 file on 6,383 of 6,384 cells
+(type list and group number); the one miss is Shai, whose sheet ends a row
+early.
+
+`unknown_class_table` is cell A2 of each class sheet: the compiler moves
+that number into the table and writes a Blank cell in its place (24 of 24
+classes in the awakening sheet, 21 of 21 in each older combat sheet). The
+value is a `skillgroup.bss` group with one rank that is never placed on the
+grid: in the combat file the class's Succession skill (Warrior `596`, skill
+4062 "전승 : 워리어의 투지", Succession: Warrior's Spirit; Woosa and Maegu
+hold their Predominance and Transcendence skills), in the awakening file the
+class's Awakening skill (Warrior `563`, skill 1712 "각성 : 고옌의 대검",
+Awakening: Goyen's Greatsword). Client 3474 keeps 99 of the 101 slots and
+adds slots `33` and `35`. No sheet or code names the table, so it keeps its
+name.
+
+No sheet cell supplies `unknown_after_group_no` or `unknown_05`. The 2016
+client read these sheets itself into `ge::UISkillTreeLayout_CellValue`
+(u8 `_cellType`, u8 `_arrowType`, u16 `_skillNo`), whose arrow byte came
+from `↑ ↓ ← →` in a cell; no current sheet holds an arrow and the 1784 cell
+shape differs, so `_arrowType` stays a candidate for
+`unknown_after_group_no`, not a name. `unknown_05` may be the upper half of
+a u64 `tab_count`; the data cannot tell.
+
 ## Notes
 
 - The grid and cell layout comes from bdo-data-extractor, which keeps the
@@ -235,9 +280,9 @@ while one of the items is equipped. Taebaek's Belt: see the GrumpyG guide
 
 ## Open Questions
 
-### What is `unknown_class_table`?
+### What does the client do with `unknown_class_table`?
 
-101 u16 values, one per LOC type `21` class slot (types `0` to `100`). 26 are
-non-zero, at the same indexes in both windows, and the values are close
-between the windows (Warrior `596` and `563`, class `1` `10057` and `10045`).
-They are not byte offsets of the class grids.
+The table holds each class's Succession group (combat file) or Awakening
+group (awakening file), see Developer Sheets. The skill window Lua does not
+read it by any name I found; whether the client uses it to show those
+skills outside the grid is open.

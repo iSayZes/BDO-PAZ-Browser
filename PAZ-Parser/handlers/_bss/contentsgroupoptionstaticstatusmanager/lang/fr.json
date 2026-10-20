@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "contentsGroup": "Groupe de contenu",
+    "isOpen": "Ouvert",
+    "keyHash": "Hash"
+  },
+  "meta": {
+    "count": "{count} groupes de contenu, {open} ouverts"
+  }
+}

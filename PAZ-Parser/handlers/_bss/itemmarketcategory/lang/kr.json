@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "key": "키",
+    "name": "카테고리",
+    "subCategories": "하위 카테고리",
+    "filter1": "필터 1",
+    "filter2": "필터 2"
+  },
+  "meta": {
+    "count": "카테고리 {count}개"
+  }
+}

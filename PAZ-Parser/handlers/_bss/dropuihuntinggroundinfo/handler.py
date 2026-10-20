@@ -13,7 +13,7 @@ from _common.item_key import item_key_list_cell, item_name
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_text
 from _common.node import node_name
-from _common.quest.quest import quest_title
+from _common.quest.quest import quest_title, split_packed_quest_id
 from _common.territory import territory_name
 from _common.title import title_name
 from _bss.dropuimaincategoryinfo.parser import parse_territory_keys
@@ -21,7 +21,7 @@ from _bss.dropuitaginfo.parser import TagColors, parse_tag_colors
 from _bss.dropuitaginfo.tag_chips import tag_chips_cell
 from _bss.dropuitaginfo.text import tag_name
 from .parser import parse_hunting_ground_records
-from .tribe_labels import tribe_text
+from _common.tribe_labels import tribe_text
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -32,10 +32,6 @@ _LIST_PREVIEW_ITEMS = 8
 
 _LOC_CATEGORY = 115
 
-# Packed quest key: low u16 quest chain, high u16 quest, as in allquestlist.bss.
-_QUEST_CHAIN_MASK = 0xFFFF
-_QUEST_ID_SHIFT = 16
-
 
 def _names(ids: Iterable[int], name_of: Callable[[int], str]) -> list[str]:
     """The name of each ID, the ID itself where it has none."""
@@ -44,7 +40,7 @@ def _names(ids: Iterable[int], name_of: Callable[[int], str]) -> list[str]:
 
 def _quest_text(quest_key: int) -> str:
     """The quest title, else `chain/quest`."""
-    chain, quest = quest_key & _QUEST_CHAIN_MASK, quest_key >> _QUEST_ID_SHIFT
+    chain, quest = split_packed_quest_id(quest_key)
     return quest_title(chain, quest) or f"{chain}/{quest}"
 
 

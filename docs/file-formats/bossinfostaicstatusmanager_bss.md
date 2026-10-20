@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes | Records                                                    | Row bytes               |
 | ------ | -------------- | ------- | -------------------------------- | ----- | ---------------------------------------------------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `bossinfostaicstatusmanager.bss` | 7,396 | 58 Group List, 29 Boss Record, 52 Group, 8 Reinforced Form | 4 to 126, 32 on average |
+| 1      | 3473 and later | 3474    | `bossinfostaicstatusmanager.bss` | 7,396 | 58 Group List, 29 Boss Record, 52 Group, 8 Reinforced Form | 4 to 126, 32 on average |
 
 | Layout | File                             | Known           | Unknown     |
 | ------ | -------------------------------- | --------------- | ----------- |

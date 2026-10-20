@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "coolTime": "Cooldown",
+    "buffs": "Horse Communion"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} mounts"
+  }
+}

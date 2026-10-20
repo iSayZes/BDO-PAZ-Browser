@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "groupKey": "그룹 키",
+    "mainId": "메인 ID",
+    "subId": "서브 ID",
+    "icon": "아이콘",
+    "title": "제목",
+    "role": "역할"
+  },
+  "roles": {
+    "0": "선택을 여는 의뢰",
+    "1": "선택 의뢰",
+    "2": "이후 의뢰"
+  },
+  "meta": {
+    "count": "의뢰 참조 {count}개 · 그룹 {group_count}개",
+    "withTitles": " · LOC 제목 있음 {with_titles}개"
+  }
+}

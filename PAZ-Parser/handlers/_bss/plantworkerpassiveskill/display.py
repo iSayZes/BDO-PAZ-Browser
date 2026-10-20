@@ -25,6 +25,7 @@ from __future__ import annotations
 from enum import IntEnum
 from typing import NamedTuple
 
+from _common.rate import rate_percent
 from _common.worker import LUCK_SCALE, WORK_SPEED_SCALE
 
 
@@ -85,8 +86,7 @@ EXTRA_WORK_LABELS: dict[int, str] = {
     9006: "Ore Packing",
 }
 
-# Move speed bonuses, chances and refund shares are percent × 10,000 (70000 is +7%).
-PERCENT_SCALE = 10_000
+# Move speed bonuses, chances and refund shares are percent × 10,000 (70000 is +7%, `rate_percent`).
 _GENERIC_TARGET = 0
 _EMPTY = "-"
 
@@ -109,10 +109,6 @@ def _number(value: float) -> str:
     return f"{value:g}"
 
 
-def _percent(raw: int) -> str:
-    return f"{_number(raw / PERCENT_SCALE)}%"
-
-
 def _stat_or_none(code: int) -> SkillStat | None:
     return SkillStat(code) if code in SkillStat._value2member_map_ else None
 
@@ -121,7 +117,7 @@ def _stat_amount(stat: SkillStat | None, raw: int) -> str:
     if stat is None:
         return str(raw)
     if stat is SkillStat.MOVE_SPEED:
-        return f"+{_percent(raw)}"
+        return f"+{rate_percent(raw)}"
     scale = WORK_SPEED_SCALE if stat is SkillStat.WORK_SPEED else LUCK_SCALE
     return f"+{_number(raw / scale)}"
 
@@ -146,7 +142,7 @@ def format_effect(effect_type: int, effect_target: int, value_a: int, value_b: i
     if effect_type == EffectType.FULL_REFUND:
         # effect_target holds the chance, so there is no target to show. Effect A
         # is the chance, Effect B the share refunded (value_b repeats it).
-        return EffectCells(_EMPTY, _percent(effect_target), _percent(value_a))
+        return EffectCells(_EMPTY, rate_percent(effect_target), rate_percent(value_a))
     if effect_type == EffectType.STATS_PER_LEVEL_UP:
         stat = _stat_or_none(effect_target)
         return EffectCells(_stat_label(stat, effect_target), _stat_amount(stat, value_a), _EMPTY)

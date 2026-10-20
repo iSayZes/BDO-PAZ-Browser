@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "npcId": "ID del PNJ",
+    "npcName": "Nombre del PNJ",
+    "dialog": "Diálogo",
+    "dialogName": "Nombre del diálogo",
+    "exchangeCount": "Intercambios",
+    "exchangeKeys": "Claves de intercambio de objetos"
+  },
+  "offsetColumns": {
+    "dialogKey": "Clave de diálogo",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} diálogos · {npc_count} PNJ"
+  }
+}

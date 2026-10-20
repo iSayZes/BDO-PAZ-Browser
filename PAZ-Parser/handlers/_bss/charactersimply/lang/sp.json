@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "title": "Título",
+    "npcKind": "Tipo de PNJ",
+    "grade": "Grado",
+    "level": "Nivel",
+    "characterGroup": "Grupo de personaje",
+    "maxHp": "Salud máx.",
+    "bodySize": "Tamaño corporal",
+    "vehicleType": "Tipo de vehículo",
+    "classType": "Tipo de clase",
+    "model": "Modelo",
+    "voice": "Voz",
+    "actionScript": "Script de acción",
+    "knowledgeId": "ID de conocimiento",
+    "conditionScript": "Condición"
+  },
+  "meta": {
+    "count": "{count} entradas"
+  }
+}

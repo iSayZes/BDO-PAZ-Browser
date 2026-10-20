@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----- | ------- | --------- |
-| 1      | 3473 and later | 3473    | `blizzardregioninfo.bss` | 566   | 21 Row  | 26        |
+| 1      | 3473 and later | 3474    | `blizzardregioninfo.bss` | 566   | 21 Row  | 26        |
 
 | Layout | File                     | Known          | Unknown    |
 | ------ | ------------------------ | -------------- | ---------- |
@@ -88,7 +88,7 @@ The region keys of both rows and every column of key 2 match. `Wind_Y` and `Wind
 
 The server dump of that private server holds the loader messages for `BlizzardRegionInfoStaticStatus` (sheet `Blizzard_Region_Table`, loader `loadBlizzardRegionInfo`). They reject an `EffectSpawnPercentMin` or `EffectSpawnPercentMax` outside "1~100%", a minimum above the maximum, and a `RegionIndex` with no region info. The sheet's largest value is `1000000` (key 5, both columns), so the chances are on the 1,000,000 = 100% scale.
 
-Neither the 2016 client with debug symbols nor the BdoEmu tables of client 519 have a blizzard type or table. The client Lua has no blizzard text.
+Neither the 2016 client with debug symbols nor the tables of a private server on client 519 have a blizzard type or table. The client Lua has no blizzard text.
 
 ## Notes
 

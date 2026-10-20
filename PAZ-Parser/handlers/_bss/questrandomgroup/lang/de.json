@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupKey": "Gruppenschlüssel",
+    "questCount": "Quests",
+    "drawCount": "Gezogen",
+    "mainId": "Haupt-ID"
+  },
+  "meta": {
+    "count": "{count} zufällige Questgruppen"
+  }
+}

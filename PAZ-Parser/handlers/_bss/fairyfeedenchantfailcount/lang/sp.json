@@ -1,6 +1,9 @@
 {
   "columns": {
-    "record": "Registro"
+    "fairyFeedKey": "Clave de alimentación",
+    "enchantLevel": "Nivel de refuerzo",
+    "feedValue": "Valor de alimentación",
+    "equipExp": "Exp. de equipo"
   },
   "meta": {
     "count": "{count} entradas en {record_count} registros"

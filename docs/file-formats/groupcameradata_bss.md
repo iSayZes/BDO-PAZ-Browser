@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes  | Records                                 | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ------ | --------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row                         | 28        |
+| 2      | 3473 and later | 3474    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row                         | 28        |
 | 1      | 1784           | 1784    | `groupcameradata.bss` | 12,760 | 6 Cutscene Row, 170 Line, 12 Line Group | 16        |
 
 | Layout | File                  | Known            | Unknown         |

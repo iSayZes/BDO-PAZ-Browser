@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "employeeMax": "Sailor Limit",
+    "employeeSpawnCount": "Sailor Positions",
+    "foodMax": "Max Rations",
+    "cannonSetup": "Cannon Setup",
+    "foodRecovery": "Ration Recovery",
+    "cannonRecovery": "Cannonball Recovery",
+    "restorationCost": "Restoration Cost",
+    "summonFull": "Summon Full",
+    "newCannonShipUi": "New Cannon UI",
+    "newCannonCount": "Cannons",
+    "newCannonSpeed": "Cannon Speed",
+    "shipSkillUi": "Ship Skill UI",
+    "manualCannonFire": "Manual Cannon Fire",
+    "manualMinLength": "Fire Min Distance",
+    "manualMaxLength": "Fire Max Distance",
+    "manualRandomDist": "Fire Random Distance",
+    "manualRandomPos": "Fire Random Position",
+    "manualMaxAngle": "Fire Max Angle",
+    "decreaseCoolTime": "Cooldown Decrease",
+    "condition": "Cooldown Condition"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} ships"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom",
+    "productType": "Type de récolte",
+    "tools": "Outils et groupes de butin",
+    "productDrop": "Groupe de butin du produit",
+    "productTime": "Temps de production",
+    "productHp": "PV",
+    "productDecreaseHp": "Perte de PV",
+    "actionPoint": "Points d'action",
+    "spawnDelay": "Délai d'apparition",
+    "spawnVariable": "Variation d'apparition"
+  },
+  "productTypes": {
+    "0": "Par défaut",
+    "1": "Base",
+    "2": "Récolte",
+    "3": "Agriculture",
+    "4": "Minage",
+    "5": "Purification",
+    "6": "Bûcheronnage",
+    "7": "Tannage"
+  },
+  "offsetColumns": {
+    "characterId": "ID du personnage",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} personnages de récolte"
+  }
+}

@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3473    | `guildskillexperiencemaxlevel.bss` | 18    | -       | -         |
-| 1      | 1784 and later | 3473    | `skillexperiencemaxlevel.bss`      | 18    | -       | -         |
+| 1      | 1784 and later | 3474    | `guildskillexperiencemaxlevel.bss` | 18    | -       | -         |
+| 1      | 1784 and later | 3474    | `skillexperiencemaxlevel.bss`      | 18    | -       | -         |
 
 | Layout | File                               | Known         | Unknown    |
 | ------ | ---------------------------------- | ------------- | ---------- |

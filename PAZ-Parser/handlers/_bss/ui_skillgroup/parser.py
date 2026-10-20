@@ -4,13 +4,14 @@
     | u32 tab_class_count | tab_class_count x tabs
     | u32 class_slots | class_slots x u16 | string table | trailer
 
-    grid: u8 class_type | u32 width | u32 height | width*height x cell
+    grid: u8 class_type | u32 width | u32 height | width*height x cell,
+          column by column (cell index = column * height + row)
     cell: u32 type_count | type_count x u8 type | u16 group_no | u8 | u8 subgroup
     tabs: u8 class_type | u32 tab_count | u32 0 | tab_count x (u32 string_index | u8 subgroup)
 
 Cell type 2 holds a `skillgroup.bss` group; the others draw the tree lines.
-The skill window shows each grid as three card columns stacked top to
-bottom, a third of the grid height each. Full layout in
+The grid is the developer sheet's cell grid: skill cards sit in sheet columns
+0, 3 and 6, the three card columns of the skill window. Full layout in
 docs/file-formats/ui_skillgroup_bss.md.
 """
 
@@ -45,7 +46,7 @@ class ClassGrid:
     class_type: int
     width: int
     height: int
-    # Skill group cells only, row by row.
+    # Skill group cells only, column by column.
     cells: tuple[SkillCell, ...]
 
 
@@ -61,9 +62,9 @@ class SkillWindow:
     tabs: dict[int, tuple[Tab, ...]]
 
 
-def card_column(row: int, height: int) -> int:
-    """The card column (0 left, 1 middle, 2 right) a grid row is shown in."""
-    return row * CARD_COLUMNS // height
+def card_column(column: int, width: int) -> int:
+    """The card column (0 left, 1 middle, 2 right) a grid column is shown in."""
+    return column * CARD_COLUMNS // width
 
 
 def _check(end: int, limit: int, what: str) -> None:
@@ -83,7 +84,7 @@ def _parse_grid(data: bytes, pos: int, limit: int) -> tuple[ClassGrid, int]:
         _check(types_end + _CELL_TAIL.size, limit, f"class {class_type} cell {index}")
         group_no, _, subgroup = _CELL_TAIL.unpack_from(data, types_end)
         if _CELL_TYPE_SKILL_GROUP in data[pos + _U32.size:types_end]:
-            row, column = divmod(index, width)
+            column, row = divmod(index, height)
             cells.append(SkillCell(row=row, column=column, group_no=group_no, subgroup=subgroup))
         pos = types_end + _CELL_TAIL.size
     return ClassGrid(class_type=class_type, width=width, height=height, cells=tuple(cells)), pos

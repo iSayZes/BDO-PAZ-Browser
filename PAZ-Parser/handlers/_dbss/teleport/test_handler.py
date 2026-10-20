@@ -70,7 +70,7 @@ POINT_CASE = HandlerCase(
                 "x",
                 "y",
                 "z",
-                "unknown_11",
+                "destination",
                 "nearest_node_key",
                 "nearest_node",
                 "distance_m",

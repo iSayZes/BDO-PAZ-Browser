@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                    | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------- | --------------------------------------- | ----- | -------------- | --------- |
-| 1      | 1784 and later | 3473    | `itemimprovementdefaultdisplaylist.bss` | 116   | 1 String Table | 4         |
+| 1      | 1784 and later | 3474    | `itemimprovementdefaultdisplaylist.bss` | 116   | 1 String Table | 4         |
 
 | Layout | File                                    | Known          | Unknown    |
 | ------ | --------------------------------------- | -------------- | ---------- |
@@ -36,7 +36,7 @@ All multi-byte values are little-endian.
 ### File Layout
 
 A `PABR` table of u32 rows with an empty string table, read by
-`fixed_row_offsets()` in `_common/pabr_strings.py`.
+`u32_rows()` in `_common/pabr_strings.py`.
 
 | Offset              | Type         | Field        | Notes                                                       |
 | ------------------- | ------------ | ------------ | ----------------------------------------------------------- |

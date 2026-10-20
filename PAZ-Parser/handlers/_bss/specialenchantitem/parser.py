@@ -18,8 +18,8 @@ from _common.pabr_strings import fixed_row_offsets, read_string_table, string_at
 from _common.ui_texture import UI_TEXTURE_ICON_ROOT, ui_texture_path
 
 
-# u32 item_key | u8 display_level | u32 icon_ref | u32 name_ref | 4x
-# | u8 unknown_11 | u8 unknown_12
+# u32 item_key | u8 display_level | u32 icon_ref | u32 name_ref | u32 unknown_0d (skipped)
+# | u8 unknown_11 | u8 family_name_exception
 _ROW = struct.Struct("<IBII4xBB")
 _ROW_SIZE = 19
 assert _ROW.size == _ROW_SIZE
@@ -40,7 +40,7 @@ def parse_specialenchantitem_records(data: bytes) -> list[dict]:
     strings = read_string_table(data)
     records: list[dict] = []
     for offset in offsets:
-        item_key, display_level, icon_ref, name_ref, unknown_11, unknown_12 = (
+        item_key, display_level, icon_ref, name_ref, unknown_11, family_name_exception = (
             _ROW.unpack_from(data, offset)
         )
         item_id, enchant_level = split_item_key(item_key)
@@ -53,7 +53,7 @@ def parse_specialenchantitem_records(data: bytes) -> list[dict]:
             "icon_path": ui_texture_path(string_at(strings, icon_ref), UI_TEXTURE_ICON_ROOT),
             "name_kr": string_at(strings, name_ref),
             "unknown_11": unknown_11,
-            "unknown_12": unknown_12,
+            "family_name_exception": family_name_exception,
         })
     return records
 

@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Clave de intercambio",
+    "name": "Nombre",
+    "exchangeType": "Tipo de intercambio",
+    "materials": "Materiales",
+    "productCategory": "Categoría de producto",
+    "workload": "Carga de trabajo",
+    "productDropKey": "Grupo de productos",
+    "productItems": "Productos",
+    "luckDropKey": "Grupo de suerte",
+    "luckItems": "Botín de suerte",
+    "craftCharacter": "Objeto de trabajo",
+    "description": "Descripción",
+    "workAnimation": "Animación de trabajo",
+    "repeatGroupKey": "Grupo de repetición",
+    "dailyWorkingCount": "Límite diario",
+    "firstWorkingIndex": "Primer índice de trabajo",
+    "contentsGroups": "Grupos de contenido"
+  },
+  "meta": {
+    "count": "{count} intercambios de objetos · {materials} materiales"
+  }
+}

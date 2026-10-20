@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "productItemKey": "ID du résultat",
+    "product": "Résultat",
+    "category": "Catégorie",
+    "exchange": "Échange",
+    "requiredItems": "Matériaux",
+    "time": "Temps",
+    "price": "Prix",
+    "productItemLimit": "Limite de fabrication journalière",
+    "guildSkill": "Compétences de guilde",
+    "guildHouses": "Maison de guilde"
+  },
+  "offsetColumns": {
+    "productItemKey": "ID du résultat",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} recettes d'artisanat de guilde"
+  }
+}

@@ -36,7 +36,7 @@ CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "index", "action", "action_name", "material_keys", "material_counts", "materials",
-                "result_group", "has_result_group", "result_item_keys", "result_items",
+                "result_group", "has_result_group", "result_item_keys", "result_items", "success_percent",
             ]
         ),
         DeclaredCountTest(declared=header_count(offset=4)),
@@ -87,9 +87,25 @@ def _ascii(text: str) -> bytes:
     return struct.pack("<BI", 0, len(payload)) + payload
 
 
+_SUCCESS_PERCENT = 700_000
+_CHECK_TIME = 7_000
+# CppEnums.InstallationType.TypeCount on client 3474: no installation needed.
+_NO_INSTALLATION = 40
+
+
 def _row(action_index: int, stored_hash: int, result_group: int, materials: list[tuple[int, int]], first_key: int | None = None) -> bytes:
     key = materials[0][0] if first_key is None else first_key
-    head = struct.pack("<I8xIIIBII", key, action_index, 700_000, stored_hash, 40, result_group, len(materials))
+    head = struct.pack(
+        "<IqIiIBII",
+        key,
+        _CHECK_TIME,
+        action_index,
+        _SUCCESS_PERCENT,
+        stored_hash,
+        _NO_INSTALLATION,
+        result_group,
+        len(materials),
+    )
     return head + b"".join(struct.pack("<IQ", item_key, count) for item_key, count in materials)
 
 
@@ -115,9 +131,20 @@ def test_parser_reads_rows_and_materials() -> None:
     )
 
     assert parse_manufacture_records(data) == [
-        Recipe(_HEAT, 12006, (Material(4057, 10),)),
-        Recipe("MANUFACTURE_DRY", 9978, (Material(5, 1), Material(1 << 24 | 6, 300))),
+        _recipe(_HEAT, 12006, (Material(4057, 10),)),
+        _recipe("MANUFACTURE_DRY", 9978, (Material(5, 1), Material(1 << 24 | 6, 300))),
     ]
+
+
+def _recipe(action: str, result_group: int, materials: tuple[Material, ...]) -> Recipe:
+    return Recipe(
+        action=action,
+        result_group=result_group,
+        materials=materials,
+        success_percent=_SUCCESS_PERCENT,
+        check_time=_CHECK_TIME,
+        installation_type=_NO_INSTALLATION,
+    )
 
 
 def test_parser_rejects_a_hash_of_another_action() -> None:

@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File           | Bytes   | Records                              | Row bytes |
 | ------ | -------------- | ------- | -------------- | ------- | ------------------------------------ | --------- |
-| 1      | 1784 and later | 3473    | `newquest.bss` | 789,308 | 1,236 Quest Reference Row, 229 Group | 17        |
+| 1      | 1784 and later | 3474    | `newquest.bss` | 789,308 | 1,236 Quest Reference Row, 229 Group | 17        |
 
 | Layout | File           | Known             | Unknown      |
 | ------ | -------------- | ----------------- | ------------ |
@@ -168,3 +168,14 @@ The client Lua confirms the two condition roles: the quest window (`panel_window
 
 A quest in two groups has a condition line under both group keys, so a quest can be listed by two events (11060 / 1 in the 2019 and 2020 Halloween groups). Whether the game shows both copies at once is not confirmed.
 
+### What Does `unknown_tail_08` Index?
+
+`0` in every group of the four lists (clients 1784 and 3474). No sheet
+column of `Group_MainQuest` or `Group_NewQuest` fills it. The client 1784
+server dump has a u32 that its group loader sets to `0` as the last member
+of the group struct (`+0x98`), and the only code that reads that member is
+the language-data writer (VA `0x140c1faf0`): it passes the value with the
+list's LOC type (28, 42, 43 or 58) to a lookup that skips `0` and otherwise
+reads an 8-byte entry at `value * 8` of a `Head_LanguageData_` file. The
+server has no reader for these files, so tying the file's trailer to that
+member rests on position only, and nothing names it.

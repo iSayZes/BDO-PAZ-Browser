@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Clé",
+    "exchangeType": "Type",
+    "classCount": "Classes",
+    "items": "Objets"
+  },
+  "exchangeTypes": {
+    "0": "Normal",
+    "1": "Saison"
+  },
+  "offsetColumns": {
+    "key": "Clé",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} groupes d'échange d'armes"
+  }
+}

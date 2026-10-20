@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "groupKey": "Gruppenschlüssel",
+    "mainId": "Haupt-ID",
+    "subId": "Unter-ID",
+    "title": "Titel",
+    "finalSubId": "Letzte Unter-ID",
+    "finalTitle": "Letzte Quest"
+  },
+  "meta": {
+    "count": "{count} Questreihen in {groups} Gruppen"
+  }
+}

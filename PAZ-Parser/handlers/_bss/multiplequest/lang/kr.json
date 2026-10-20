@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mainId": "메인 ID",
+    "minSubId": "최소 서브 ID",
+    "minTitle": "첫 의뢰",
+    "maxSubId": "최대 서브 ID",
+    "maxTitle": "마지막 의뢰"
+  },
+  "meta": {
+    "count": "의뢰 연계 {count}개"
+  }
+}

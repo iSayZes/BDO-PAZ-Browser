@@ -27,17 +27,18 @@ WEIGHT_COUNT = 43
 # Fairy tables normalise to this total; pet tables do not (see format docs).
 PPM_SCALE = 1_000_000
 
-# Catalog records are 12 bytes from +0x04: [u32 id][u32 type][u8 unknown_08][u8 unknown_09][u16 loc_id].
+# Catalog records are 12 bytes from +0x04: [u32 id][u32 type][u16 skill_level][u16 skill_no],
+# the last two a gc::SkillKey.
 _CATALOG_START = 4
 _CATALOG_RECORD_SIZE = 12
 _CATALOG_NULL_ID = 200
-# Catalog skill names are LOC type 10, keyed by the record's loc_id.
+# Catalog skill names are LOC type 10, keyed by the record's skill_no.
 EQUIP_SKILL_LOC_TYPE = 10
 
 
-def equip_skill_name(loc_id: int) -> str:
+def equip_skill_name(skill_no: int) -> str:
     """Name of an equip-skill catalog entry, or '' on a miss or without LOC."""
-    return loc_text(EQUIP_SKILL_LOC_TYPE, loc_id)
+    return loc_text(EQUIP_SKILL_LOC_TYPE, skill_no)
 
 
 def parse_roll_offset_records(data: bytes, label: str) -> list[dict]:
@@ -117,13 +118,13 @@ def parse_roll_records(data: bytes, offset_data: bytes, label: str) -> list[dict
     return records
 
 
-def read_skill_loc_ids(catalog_data: bytes, max_records: int = WEIGHT_COUNT) -> dict[int, int]:
-    """Map `equip_skill_id -> loc_id` from an equip-skill catalog (`*equipskill.bss`).
+def read_skill_nos(catalog_data: bytes, max_records: int = WEIGHT_COUNT) -> dict[int, int]:
+    """Map `equip_skill_id -> skill_no` from an equip-skill catalog (`*equipskill.bss`).
 
     Reads the leading fixed-stride section only, which is the portion the roll
     weights index. Stops early at the catalog's null sentinel.
     """
-    loc_ids: dict[int, int] = {}
+    skill_nos: dict[int, int] = {}
 
     for index in range(max_records):
         pos = _CATALOG_START + index * _CATALOG_RECORD_SIZE
@@ -134,14 +135,14 @@ def read_skill_loc_ids(catalog_data: bytes, max_records: int = WEIGHT_COUNT) -> 
         if skill_id == _CATALOG_NULL_ID:
             break
 
-        loc_ids[skill_id] = struct.unpack_from("<H", catalog_data, pos + 0x0A)[0]
+        skill_nos[skill_id] = struct.unpack_from("<H", catalog_data, pos + 0x0A)[0]
 
-    return loc_ids
+    return skill_nos
 
 
 def flatten_roll_rows(
     records: list[dict],
-    loc_ids: dict[int, int],
+    skill_nos: dict[int, int],
     skill_name: Callable[[int], str],
 ) -> list[dict]:
     """Expand weight arrays into one row per (acquire type, rollable skill)."""
@@ -153,12 +154,12 @@ def flatten_roll_rows(
             if not weight:
                 continue
 
-            loc_id = loc_ids.get(skill_id, 0)
+            skill_no = skill_nos.get(skill_id, 0)
             rows.append({
                 "acquire_type_id": record["acquire_type_id"],
                 "equip_skill_id": skill_id,
-                "loc_id": loc_id,
-                "skill_name": skill_name(loc_id) if loc_id else "",
+                "skill_no": skill_no,
+                "skill_name": skill_name(skill_no) if skill_no else "",
                 "weight": weight,
                 "chance_pct": round(weight * 100 / total, 4) if total else 0.0,
                 "total_weight": total,

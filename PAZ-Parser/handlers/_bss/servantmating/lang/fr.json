@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Tranche",
+    "averageGrade": "Niveau moyen",
+    "resultMaxGrade": "Niveau max. du poulain",
+    "resultMinGrade": "Niveau min. du poulain",
+    "imperialSteedCharacterId": "ID du cheval impérial",
+    "imperialSteed": "Cheval impérial",
+    "imperialSteedRate": "Chance de cheval impérial"
+  },
+  "meta": {
+    "count": "{count} tranches de niveau"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "npcId": "NPC-ID",
+    "npcName": "NPC-Name",
+    "dialog": "Dialog",
+    "dialogName": "Dialogname",
+    "exchangeCount": "Tausch",
+    "exchangeKeys": "Gegenstandstausch-Schlüssel"
+  },
+  "offsetColumns": {
+    "dialogKey": "Dialog-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Dialoge · {npc_count} NPCs"
+  }
+}

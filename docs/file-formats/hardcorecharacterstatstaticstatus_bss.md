@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                    | Bytes | Records              | Row bytes |
 | ------ | -------------- | ------- | --------------------------------------- | ----- | -------------------- | --------- |
-| 1      | 3473 and later | 3473    | `hardcorecharacterstatstaticstatus.bss` | 9,474 | 47 Stat Body, 47 Row | 200       |
+| 1      | 3473 and later | 3474    | `hardcorecharacterstatstaticstatus.bss` | 9,474 | 47 Stat Body, 47 Row | 200       |
 
 | Layout | File                                    | Known           | Unknown         |
 | ------ | --------------------------------------- | --------------- | --------------- |

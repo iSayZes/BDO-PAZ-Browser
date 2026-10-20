@@ -39,6 +39,17 @@ _COPY_8_FROM_8 = (8 << 6) | ((8 - 3) << 2) | 0x02
 _COPY_10_FROM_3 = (3 << 6) | ((10 - 3) << 2) | 0x02
 _DECOMPRESSED = b"ABCDEFGH" + b"ABCDEFGH" + b"FGHFGHFGHF" + b"WXYZ"
 
+# A hand-built LZ4 block (header flag 0x80): 8 literals and a copy of them, an
+# overlapping copy whose length needs an extra byte (repeat 2, length 20),
+# then 20 literals whose count needs one.
+_LZ4_FLAGS = 0x80 | 0x02 | 0x01
+_LZ4_BODY = (
+    bytes([0x84]) + b"ABCDEFGH" + struct.pack("<H", 8)
+    + bytes([0x0F]) + struct.pack("<H", 2) + bytes([20 - 4 - 15])
+    + bytes([0xF0, 20 - 15]) + b"0123456789abcdefghij"
+)
+_LZ4_DECOMPRESSED = b"ABCDEFGH" * 2 + b"GH" * 10 + b"0123456789abcdefghij"
+
 _SIZES = [0, 1, 8, 64, 4096, 1 << 20]
 _FUZZ_SEED = 3464
 _FUZZ_MUTATIONS = 300
@@ -56,6 +67,14 @@ def _short_stream(decompressed_length: int) -> bytes:
         + b"WXYZ"
     )
     return bytes([0x01, 3 + len(body), decompressed_length]) + body
+
+
+def _lz4_payload(body: bytes, decompressed_length: int) -> bytes:
+    return struct.pack("<BII", _LZ4_FLAGS, 9 + len(body), decompressed_length) + body
+
+
+def _entry(compressed_size: int, uncompressed_size: int) -> PazEntry:
+    return PazEntry("pad00001.paz", "gamecommondata/binary/table.bss", 0, compressed_size, uncompressed_size, 0, 0)
 
 
 def _native() -> Unpack:
@@ -100,6 +119,41 @@ def test_decompress_rejects_a_truncated_stream(unpack: Unpack) -> None:
 
     with pytest.raises(ValueError, match="error code"):
         bdo_decompress(payload[: len(payload) // 2], 4096, unpack=unpack)
+
+
+@pytest.mark.parametrize("unpack", _BACKENDS)
+def test_decompress_reads_an_lz4_block(unpack: Unpack) -> None:
+    payload = _lz4_payload(_LZ4_BODY, len(_LZ4_DECOMPRESSED))
+
+    assert bdo_decompress(payload, unpack=unpack) == _LZ4_DECOMPRESSED
+
+
+@pytest.mark.parametrize(
+    ("body", "size", "message"),
+    [
+        (_LZ4_BODY[:-5], len(_LZ4_DECOMPRESSED), "literals run past"),
+        (_LZ4_BODY, len(_LZ4_DECOMPRESSED) + 1, "expected"),
+        (bytes([0x10]) + b"A" + struct.pack("<H", 2), 5, "points before the start"),
+        (bytes([0x10]) + b"A" + b"\x01", 5, "offset runs past"),
+    ],
+    ids=["truncated", "wrong-size", "offset-before-start", "cut-offset"],
+)
+def test_decompress_rejects_a_bad_lz4_block(body: bytes, size: int, message: str) -> None:
+    with pytest.raises(ValueError, match=message):
+        bdo_decompress(_lz4_payload(body, size))
+
+
+def test_needs_decompress_flags_an_lz4_payload_larger_than_its_file() -> None:
+    payload = _lz4_payload(bytes([0x50]) + b"PLAIN", 5)
+
+    assert needs_decompress(_entry(len(payload), 5), payload)
+    assert bdo_decompress(payload, 5) == b"PLAIN"
+
+
+def test_needs_decompress_leaves_stored_utf8_bom_text_alone() -> None:
+    stored = b"\xef\xbb\xbf<?xml version='1.0'?>"
+
+    assert not needs_decompress(_entry(len(stored), len(stored)), stored)
 
 
 def test_decompress_returns_a_stored_payload_as_is() -> None:

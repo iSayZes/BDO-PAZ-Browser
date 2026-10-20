@@ -1,6 +1,7 @@
-"""Monster species labels of the drop item window.
+"""Monster species labels of the drop item window, for `tribe_type` values.
 
-`panel_window_renewdropitem_all_1.luac` labels each `__eNewTribeType_*` value
+`dropuihuntinggroundinfo.bss` zones and `characterstatic.dbss` characters store
+a `__eNewTribeType_*` value. `panel_window_renewdropitem_all_1.luac` labels each
 with a `GAME` sheet key, `LUA_DROPITEM_<name>_TOOLTIP_NAME`. The key's text is
 LOC type 37 under its `stringtable.bss` hash. The hash function is unknown but
 depends on the key string alone, so the hashes are stored here, and a test

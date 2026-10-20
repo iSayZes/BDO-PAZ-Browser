@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records  | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | -------- | --------- |
-| 1      | 1784 and later | 3473    | `zodiacsignindex.bss` | 32    | 12 Entry | 1         |
+| 1      | 1784 and later | 3474    | `zodiacsignindex.bss` | 32    | 12 Entry | 1         |
 
 | Layout | File                  | Known         | Unknown    |
 | ------ | --------------------- | ------------- | ---------- |

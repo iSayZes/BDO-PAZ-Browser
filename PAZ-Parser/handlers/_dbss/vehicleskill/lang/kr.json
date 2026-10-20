@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "key": "기술 ID",
+    "icon": "아이콘",
+    "name": "이름",
+    "maxExp": "최대 경험치",
+    "addExpForCheck": "확인당 경험치",
+    "basePrice": "시작가",
+    "addMatingRate": "교배 보너스",
+    "isLearnFromItem": "아이템 습득",
+    "keyCommand": "조작키",
+    "description": "설명",
+    "consoleKeyCommand": "콘솔 조작키",
+    "trainingSkillCharacters": "조련 탑승물",
+    "isMarketFilter": "거래소 필터",
+    "contentsGroups": "콘텐츠 그룹",
+    "conditionDesc": "조건",
+    "vehicleSkillLock": "잠금",
+    "skillOrder": "순서",
+    "needLifeLevelForAutoSkill": "자동 기술 레벨"
+  },
+  "offsetColumns": {
+    "key": "기술 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "탑승물과 선박 기술 {count}개"
+  }
+}

@@ -796,7 +796,8 @@ layout change fails loudly instead of yielding shifted fields:
 `fixed_row_offsets(data, row_size, file_name)` checks the magic and returns the
 start of every fixed-size row, raising when the rows do not end where the string
 table starts; `check_rows_end(data, rows_end, what)` does that last check for
-records walked by hand; `checked_string_table_start(data, file_name)` returns the
+records walked by hand; `u32_rows(data, file_name)` returns the values of a file
+whose rows are one u32 each; `checked_string_table_start(data, file_name)` returns the
 bound for a variable-size walk; `check_pabr(data, file_name)` checks the magic only.
 
 Example:
@@ -1031,6 +1032,7 @@ _common/
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
 ├── character.py         # character names and titles (LOC type 6)
+├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
@@ -1042,21 +1044,27 @@ _common/
 ├── pabr_offset.py       # offset companions: u8, u16 or u32 keys, with or without PABR magic
 ├── prefixed_string.py   # length-prefixed strings: strict and lenient readers
 ├── inline_text.py       # decode_inline_text(): the stored \n escape of inline text
+├── item_exchange.py     # itemexchangesource.bss keys: LOC type 24 names, links to the row (EXCHANGE_NAME_KR)
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
 ├── knowledge.py         # knowledge entry names (LOC type 34)
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
+├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
+├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
+├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
 ├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/
+├── vehicle_skill.py     # mount and ship skill names: LOC type 8, else the Korean vehicleskill.dbss name
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 
 Read an offset companion with `parse_pabr_offset_rows()` (PABR magic, count,
 u16-keyed rows), `parse_pabr_u32_offset_rows()` (the same with u32 keys, e.g.
-`mentalcardoffset.dbss`), `parse_bare_offset_rows()`,
+`mentalcardoffset.dbss`), `parse_pabr_u8_offset_rows()` (u8 keys,
+`vehicleskilloffset.dbss`), `parse_bare_offset_rows()`,
 `parse_bare_u32_offset_rows()` or `parse_bare_u8_offset_rows()` (count, rows;
 the u8 key of `pcgrowthoffset.dbss`), never by hand. A u16 field
 followed by a zero u16 (`plantzoneoffset.dbss` keys, `petoffset.dbss` sizes)
@@ -1095,6 +1103,13 @@ the `territoryinfo.bss` territory key) and the speaker of an NPC dialog with
 `npc_id`, `dialog_index`, else the LOC type 6 name). All return `''` when LOC is not
 loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
+
+Link a character key with `character_key_cell()` from `character_link.py`. A
+table keyed by character can hold keys with no `characterstatic.dbss` row
+(149 of the 713 `collect.dbss` keys on client 3474): list
+`characterstatic_offset_companion()` in `companions()`, store
+`has_character_row(character_row_ids(companions), key)` on each record, and
+the cell shows those keys as plain text instead of a link that opens nothing.
 
 Tables in the skill cluster build a skill key with `skill_key(skill_no, level)`,
 split one with `split_skill_key()` and name
@@ -1255,7 +1270,8 @@ IDs (`LookupValue`).
 | `WORLDMAP_MARKER_ICON` | `worldmapmonster.dbss`, `worldmapmonsteroffset.dbss` | icon path |
 | `MENU_ICON`, `SUBMENU_ICON` | `menu.bss`, `submenu.bss`       | sprite sheet path |
 | `MENU_ICON_REGION`, `SUBMENU_ICON_REGION` | `menu.bss`, `submenu.bss` | `(x1, y1, x2, y2)` |
-| `PRODUCTION_ITEMS` | `plantexchangegroup.bss`, `itemsubgroup.dbss`, `itemsubgroupoffset.dbss` | item keys (tuple) |
+| `PRODUCTION_ITEMS`, `PRODUCTION_LUCK_ITEMS` | `plantexchangegroup.bss`, `itemexchangesource.bss`, `itemmaingroup.bss`, `itemsubgroup.dbss`, `itemsubgroupoffset.dbss` | item keys (tuple) |
+| `EXCHANGE_NAME_KR` | `itemexchangesource.bss`                 | Korean name, `''` for none |
 | `SKILL_BUFFS`    | `skill.dbss`, `skilloffset.dbss`           | buff IDs (tuple) |
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
@@ -1351,7 +1367,15 @@ lists show it through `item_key_list_cell(item_keys, max_items)` in the same
 module: the `itemsubgroup.dbss` Item Names column, the `plantexchangegroup.bss`
 Items column, the `plantzone.dbss` Produced Items column and the
 `dropuihuntinggroundinfo.bss` Items column. A plain item ID is its level 0
-key, so lists of item IDs use it too.
+key, so lists of item IDs use it too. Lists of `(item_key, count)` pairs, such
+as recipe materials, use `item_count_list_cell(items)`, with
+`item_count_text(item_key, count)` for the searchable text field.
+
+A table that stores an `itemmaingroup.bss` group ID (`manufacture.bss`,
+`itemexchangesource.bss`) lists `DROP_GROUP_FILES` from
+`_bss/itemmaingroup/drop_groups.py` as companions, loads the groups it names
+with `load_drop_groups(companions, group_ids)`, reads each group's items with
+`DropGroups.item_keys()` and links the ID with `drop_group_cell()`.
 
 Those lists name each key with `item_key_text()` from the same module. A level
 with its own LOC type 79 name (`str_id1` item ID, `str_id2` level, read with
@@ -1399,19 +1423,43 @@ of them changes an icon an existing table shows:
   The `menu.bss` and `submenu.bss` tables show them with `sprite_icon_cell()`.
 
 `PRODUCTION_ITEMS` maps a worker production key to the packed item keys
-(`enchant_level << 24 | item_id`) of its
-[itemsubgroup.dbss](file-formats/itemsubgroup_dbss.md) subgroup, through the
-subgroup key in [plantexchangegroup.bss](file-formats/plantexchangegroup_bss.md).
-Only the few hundred production subgroups are read, so no table needs the
-13 MB `itemsubgroup.dbss` as a companion to show production items. Production
-keys whose subgroup is missing from `itemsubgroupoffset.dbss` are left out.
-It is built by `build_production_item_index()` in
-`_bss/plantexchangegroup/parser.py`. Read it through `production_item_keys()`
-in `_common/production_items.py`, or through `production_item_fields()`
-there, which adds the `item_keys` and `items`
-record fields (names from `item_key_text()` in `_common/item_key.py`). The
-`plantexchangegroup.bss` Items column and the `plantzone.dbss` Produced Items
-column read it that way.
+(`enchant_level << 24 | item_id`) of its exchange's product drop group:
+the `exchange_key` in
+[plantexchangegroup.bss](file-formats/plantexchangegroup_bss.md) is an
+[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) row, whose
+`product_drop_key` is an [itemmaingroup.bss](file-formats/itemmaingroup_bss.md)
+group, whose subgroups list the items in
+[itemsubgroup.dbss](file-formats/itemsubgroup_dbss.md).
+`PRODUCTION_LUCK_ITEMS` does the same for the exchange's `luck_drop_key`.
+Only the few hundred production exchanges and their groups are kept, so no
+table needs the 3 MB `itemexchangesource.bss` or the 13 MB
+`itemsubgroup.dbss` as a companion to show production items. Production keys
+whose exchange or group has no items are left out: on client 3474 that leaves
+403 of the 403 keys in `PRODUCTION_ITEMS` and 335 in `PRODUCTION_LUCK_ITEMS`.
+They are built by `build_production_item_index()` and
+`build_production_luck_item_index()` in `_bss/plantexchangegroup/parser.py`,
+which load the groups with `load_drop_groups()` from
+`_bss/itemmaingroup/drop_groups.py`. Read them through
+`production_item_keys()` and `production_luck_item_keys()` in
+`_common/production_items.py`, or through `production_item_fields()` and
+`production_luck_item_fields()` there, which add the `item_keys` and `items`
+(or `luck_item_keys` and `luck_items`) record fields (names from
+`item_key_text()` in `_common/item_key.py`). The `plantexchangegroup.bss`
+Items and Luck Drops columns and the `plantzone.dbss` Produced Items and Luck
+Drops columns read them that way.
+
+`EXCHANGE_NAME_KR` maps every
+[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) key to its
+Korean name, `''` for the rows without one, so it also tells which keys have
+a row. It is built by `build_exchange_name_kr_index()` in
+`_bss/itemexchangesource/parser.py`. Read it through `_common/item_exchange.py`:
+`exchange_name(key)` gives the LOC type 24 name, else the Korean name;
+`exchange_text(key)` gives `Azwell Longsword (5026)`, or the bare key without
+a name; `exchange_cell(key)` links that text to the exchange's row when the
+index holds the key; `exchange_list_cell(keys, max_items)` draws a list of
+them with a hoverable count. The `plantexchangegroup.bss` Exchange column,
+the `houseinforeceipe.dbss` Exchanges column and the `guildmanufacture.dbss`
+Exchange column use them.
 
 `SKILL_BUFFS` and `BUFF_ITEMS` are the item to buff link. An item's
 `itemenchant.dbss` skill keys name [skill.dbss](file-formats/skill_dbss.md)

@@ -233,7 +233,7 @@ def _parse_record(data: bytes, head: int, end: int, strings: list[str]) -> tuple
         **_named_head_fields(data, head),
         "is_world_boss_reward": data[tail + _IS_WORLD_BOSS_REWARD],
         **_unknown_fields(data, head, _HEAD_UNKNOWNS, "unknown_"),
-        "unknown_d2_keys": list(struct.unpack_from(f"<{key_count}H", data, head + _HEAD_SIZE + 4)),
+        "pc_delivery_region_keys": list(struct.unpack_from(f"<{key_count}H", data, head + _HEAD_SIZE + 4)),
         "unknown_d2_vectors": [
             _floats(data, keys_end + 4 + i * _VECTOR_SIZE, 3) for i in range(vector_count)
         ],

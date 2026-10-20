@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ------------------------------- | ----- | ------- | --------- |
-| 1      | 3473 and later | 3473    | `explorepointexperiencenew.bss` | 244   | 24 Row  | 10        |
+| 1      | 3473 and later | 3474    | `explorepointexperiencenew.bss` | 244   | 24 Row  | 10        |
 
 | Layout | File                            | Known          | Unknown    |
 | ------ | ------------------------------- | -------------- | ---------- |

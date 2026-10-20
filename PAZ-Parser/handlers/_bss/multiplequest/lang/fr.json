@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mainId": "ID principal",
+    "minSubId": "ID secondaire min.",
+    "minTitle": "Première quête",
+    "maxSubId": "ID secondaire max.",
+    "maxTitle": "Dernière quête"
+  },
+  "meta": {
+    "count": "{count} séries de quêtes"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "name": "이름",
+    "employeeMax": "선원 한도",
+    "employeeSpawnCount": "선원 위치",
+    "foodMax": "최대 식량",
+    "cannonSetup": "함포 설정",
+    "foodRecovery": "식량 회복",
+    "cannonRecovery": "포탄 회복",
+    "restorationCost": "복구 비용",
+    "summonFull": "소환 시 가득",
+    "newCannonShipUi": "신규 함포 UI",
+    "newCannonCount": "함포 수",
+    "newCannonSpeed": "함포 속도",
+    "shipSkillUi": "선박 기술 UI",
+    "manualCannonFire": "수동 함포 발사",
+    "manualMinLength": "최소 발사 거리",
+    "manualMaxLength": "최대 발사 거리",
+    "manualRandomDist": "발사 무작위 거리",
+    "manualRandomPos": "발사 무작위 위치",
+    "manualMaxAngle": "최대 발사 각도",
+    "decreaseCoolTime": "재사용 대기 시간 감소",
+    "condition": "재사용 대기 시간 감소 조건"
+  },
+  "offsetColumns": {
+    "characterId": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "선박 {count}척"
+  }
+}

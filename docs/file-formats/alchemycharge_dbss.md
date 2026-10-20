@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes | Records                     | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ----- | --------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `alchemycharge.dbss`       | 468   | 36 Row, 8 Group             | 12        |
-| 1      | 1784 and later | 3473    | `alchemychargeoffset.dbss` | 468   | 36 Index Row, 8 Index Group | 12        |
+| 1      | 1784 and later | 3474    | `alchemycharge.dbss`       | 468   | 36 Row, 8 Group             | 12        |
+| 1      | 1784 and later | 3474    | `alchemychargeoffset.dbss` | 468   | 36 Index Row, 8 Index Group | 12        |
 
 | Layout | File                       | Known          | Unknown    |
 | ------ | -------------------------- | -------------- | ---------- |

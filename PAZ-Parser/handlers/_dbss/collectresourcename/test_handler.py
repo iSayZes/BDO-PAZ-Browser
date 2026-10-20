@@ -17,8 +17,9 @@ from tests.framework import (
     run_case,
 )
 
+from _common.character_link import CHARACTERSTATIC_OFFSET_FILE
 from _common.pabr_offset import parse_bare_u32_offset_rows
-from _common.string_hash import KEY_HASH_SEED, hashlittle
+from _common.string_hash import ascii_key_hash
 from .parser import FILE_NAME, OFFSET_FILE, parse_collectresourcename_records
 
 
@@ -35,20 +36,21 @@ _FELDSPAR = 10004
 CASE = HandlerCase(
     handler_name=FILE_NAME,
     data_file=FILE_NAME,
-    companion_files={},
+    companion_files={CHARACTERSTATIC_OFFSET_FILE: CHARACTERSTATIC_OFFSET_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["character_name"],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
     tests=[
         SchemaTest(required_keys=[
-            "name_hash", "resource_file_name", "character_key", "character_name", "name_hash_dup",
+            "name_hash", "resource_file_name", "character_key", "character_name", "has_character_row",
+            "name_hash_dup",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         TargetTest(
             col="resource_file_name",
             value=_BAL_STONE,
-            expected={"character_key": _FELDSPAR},
+            expected={"character_key": _FELDSPAR, "has_character_row": True},
         ),
     ],
 )
@@ -98,7 +100,7 @@ def test_collectresourcenameoffset_dbss(spec: Any, offset_result: HandlerResult)
 
 def test_name_hash_is_the_lookup3_hash_of_the_name(collect_result: HandlerResult) -> None:
     for r in collect_result.records:
-        assert r["name_hash"] == hashlittle(r["resource_file_name"].encode("ascii"), KEY_HASH_SEED)
+        assert r["name_hash"] == ascii_key_hash(r["resource_file_name"])
 
 
 def test_name_hash_is_stored_twice(collect_result: HandlerResult) -> None:

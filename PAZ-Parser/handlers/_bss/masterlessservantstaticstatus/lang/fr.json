@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "name": "Nom"
+  },
+  "meta": {
+    "count": "{count} lignes"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "actionHash": "Hash de elaboración",
+    "action": "Elaboración",
+    "name": "Nombre",
+    "visibleCondition": "Requisito de visibilidad",
+    "enableCondition": "Requisitos de uso"
+  },
+  "offsetColumns": {
+    "actionHash": "Hash de elaboración",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} tipos de elaboración"
+  }
+}

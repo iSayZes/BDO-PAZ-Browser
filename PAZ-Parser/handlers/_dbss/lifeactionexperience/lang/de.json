@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemKey": "Item-Schlüssel",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "lifeSkill1": "Arbeitstalent 1",
+    "exp1": "EP 1",
+    "lifeSkill2": "Arbeitstalent 2",
+    "exp2": "EP 2"
+  },
+  "offsetColumns": {
+    "itemKey": "Item-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gegenstände"
+  }
+}

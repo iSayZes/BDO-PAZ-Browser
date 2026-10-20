@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ----------------------------- | ----- | ------------- | --------- |
-| 1      | 1784 and later | 3473    | `fairyskillchange.dbss`       | 604   | 50 Record     | 12        |
-| 1      | 1784 and later | 3473    | `fairyskillchangeoffset.dbss` | 604   | 50 Offset Row | 12        |
+| 1      | 1784 and later | 3474    | `fairyskillchange.dbss`       | 604   | 50 Record     | 12        |
+| 1      | 1784 and later | 3474    | `fairyskillchangeoffset.dbss` | 604   | 50 Offset Row | 12        |
 
 | Layout | File                          | Known          | Unknown    |
 | ------ | ----------------------------- | -------------- | ---------- |

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "ship": "Navire",
+    "upgradeCharacterId": "ID de l'amélioration",
+    "upgradeShip": "Amélioré en",
+    "mainItems": "Équipement",
+    "subItems": "Matériaux"
+  },
+  "offsetColumns": {
+    "characterId": "ID du personnage",
+    "upgradeCharacterId": "ID de l'amélioration",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} améliorations · {ships} navires"
+  }
+}

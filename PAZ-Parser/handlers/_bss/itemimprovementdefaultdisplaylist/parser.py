@@ -6,14 +6,10 @@ docs/file-formats/itemimprovementdefaultdisplaylist_bss.md.
 
 from __future__ import annotations
 
-import struct
-
-from _common.pabr_strings import fixed_row_offsets
+from _common.pabr_strings import u32_rows
 
 
 FILE_NAME = "itemimprovementdefaultdisplaylist.bss"
-
-_ROW = struct.Struct("<I")
 
 
 def parse_itemimprovementdefaultdisplaylist_records(data: bytes) -> list[dict]:
@@ -23,6 +19,6 @@ def parse_itemimprovementdefaultdisplaylist_records(data: bytes) -> list[dict]:
     string table starts.
     """
     return [
-        {"order": order, "item_id": _ROW.unpack_from(data, start)[0]}
-        for order, start in enumerate(fixed_row_offsets(data, _ROW.size, FILE_NAME), start=1)
+        {"order": order, "item_id": item_id}
+        for order, item_id in enumerate(u32_rows(data, FILE_NAME), start=1)
     ]

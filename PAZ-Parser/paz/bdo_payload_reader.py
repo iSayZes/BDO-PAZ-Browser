@@ -4,11 +4,14 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from .bdo_decompress import bdo_decompress
+from .bdo_decompress import bdo_decompress, has_lz4_header
 from .bdo_ice import BDO_ICE_KEY, IceCipher
 from bdo_models import PazEntry
 
 _CIPHER: IceCipher = IceCipher(BDO_ICE_KEY)
+
+# First byte of a compressed payload that the sizes alone do not flag.
+_HEADER_ONLY_MAGIC = 0x6E
 
 
 # ── ICE decrypt ───────────────────────────────────────────────────────────────
@@ -65,17 +68,21 @@ def is_encrypted(entry: PazEntry) -> bool:
 def needs_decompress(entry: PazEntry, decrypted: bytes) -> bool:
     """True when the decrypted payload is BDO-compressed.
 
-    Flagged by a size mismatch or the 0x6E magic byte. The 0x6E check is
-    skipped when the bytes already equal the expected uncompressed size, those
-    bytes are stored raw, not compressed.
+    Flagged by a size mismatch, the 0x6E magic byte or an LZ4 header. The
+    0x6E check is skipped when the bytes already equal the expected
+    uncompressed size, those bytes are stored raw, not compressed.
     """
     return (
         entry.uncompressed_size > entry.compressed_size
         or (
             len(decrypted) > 0
-            and decrypted[0] == 0x6E
+            and decrypted[0] == _HEADER_ONLY_MAGIC
             and len(decrypted) != entry.uncompressed_size
         )
+        # A private server repack stores small files as LZ4 even when that
+        # makes them larger (client 376350: 2,160 bytes for a 2,140-byte
+        # `.bss`), so the sizes do not flag them.
+        or has_lz4_header(decrypted, entry.uncompressed_size)
     )
 
 
@@ -84,8 +91,7 @@ def read_entry_payload(archive_path: Path, entry: PazEntry) -> bytes:
     Read, decrypt, and decompress a single PAZ entry.
 
     Encryption is skipped for .dbss files.
-    Decompression is applied when original_size > compressed_size OR when the
-    first byte of the decrypted data is 0x6E.
+    Decompression is applied when `needs_decompress` flags the payload.
     Zero padding past the recorded size (the 8-byte ICE block of a stored
     entry) is trimmed, as extraction does.
     """

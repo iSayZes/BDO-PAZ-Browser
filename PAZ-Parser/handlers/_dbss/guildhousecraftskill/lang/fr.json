@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "receipeKey": "Clé",
+    "name": "Utilisation",
+    "skillCount": "Compétences",
+    "skills": "Compétences de guilde"
+  },
+  "offsetColumns": {
+    "receipeKey": "Clé",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} utilisations de maison de guilde · {skills} compétences de guilde"
+  }
+}

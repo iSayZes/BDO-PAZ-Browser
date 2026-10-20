@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "actionHash": "Action Hash",
+    "action": "Action",
+    "name": "Name",
+    "visibleCondition": "Visible Condition",
+    "enableCondition": "Enable Condition"
+  },
+  "offsetColumns": {
+    "actionHash": "Action Hash",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} processing actions"
+  }
+}

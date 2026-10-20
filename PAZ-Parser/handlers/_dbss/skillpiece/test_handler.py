@@ -48,7 +48,7 @@ CASE = HandlerCase(
             required_keys=[
                 "skill_key", "skill_no", "point", "level", "set_name", "requires",
                 "effects", "buff_ids", "buffs",
-                "group_title_kr", "desc_title_kr", "desc_kr", "unknown_end",
+                "group_title_kr", "desc_title_kr", "desc_kr", "skill_property", "unknown_end",
             ]
         ),
         RangeTest(col="level", min_val=1, max_val=_U16_MAX),
@@ -134,8 +134,8 @@ def test_every_offset_row_points_past_its_records_key_prefix() -> None:
 
 
 def _record(key_prefix: int, skill_no: int) -> bytes:
-    """A record with no tiers and a zero end."""
-    return struct.pack("<HIII", key_prefix, skill_no, 0, 0)
+    """A record with skill property 0, no tiers and a zero end."""
+    return struct.pack("<HHHII", key_prefix, skill_no, 0, 0, 0)
 
 
 def test_a_key_prefix_that_misses_the_skill_raises() -> None:

@@ -4,6 +4,7 @@
     "chainId": "ID цепочки",
     "questId": "ID задания",
     "category": "Категория",
+    "questType": "Тип заданий",
     "icon": "Значок",
     "titleName": "Название / имя",
     "acceptNpc": "НИП (Принять)",
@@ -11,6 +12,8 @@
     "condition": "Условие",
     "action": "Действие",
     "objective": "Цель",
+    "rewards": "Награды",
+    "selectRewards": "Награды на выбор",
     "familyStat": "Характеристика семьи"
   },
   "meta": {

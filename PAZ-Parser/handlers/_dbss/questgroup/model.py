@@ -17,3 +17,4 @@ class QuestGroupRecord(TypedDict):
     name_kr: str
     quest_count: int
     quests: list[QuestGroupLink]
+    unknown_end: int

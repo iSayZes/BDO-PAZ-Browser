@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupKey": "Clé du groupe",
+    "questCount": "Quêtes",
+    "drawCount": "Tirées",
+    "mainId": "ID principal"
+  },
+  "meta": {
+    "count": "{count} groupes de quêtes aléatoires"
+  }
+}

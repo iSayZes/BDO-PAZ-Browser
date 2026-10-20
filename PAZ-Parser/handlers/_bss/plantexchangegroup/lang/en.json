@@ -2,10 +2,11 @@
   "columns": {
     "productionKey": "Production Key",
     "name": "Name",
-    "itemSubgroup": "Item Subgroup",
-    "items": "Items"
+    "exchange": "Exchange",
+    "items": "Items",
+    "luckItems": "Luck Drops"
   },
   "meta": {
-    "count": "{count} production groups · {resolved} with items"
+    "count": "{count} production groups · {resolved} with items · {luck} with luck drops"
   }
 }

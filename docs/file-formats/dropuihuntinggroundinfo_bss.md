@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records                | Row bytes                  |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ---------------------- | -------------------------- |
-| 1      | 3473 and later | 3473    | `dropuihuntinggroundinfo.bss` | 28,350 | 112 Hunting Ground Row | 103 to 325, 218 on average |
+| 1      | 3473 and later | 3474    | `dropuihuntinggroundinfo.bss` | 28,350 | 112 Hunting Ground Row | 103 to 325, 218 on average |
 
 | Layout | File                          | Known             | Unknown    |
 | ------ | ----------------------------- | ----------------- | ---------- |
@@ -39,8 +39,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 categories of `sub_category_keys`; the handler names them from LOC type 115
 alone.
 
-`dropuiurlinfo.bss` (20 bytes) is an empty PABR block on client 3458 (count
-0).
+`dropuiurlinfo.bss` (20 bytes) is an empty PABR table on client 3458 (count
+0); see [empty](empty_bss.md).
 
 All multi-byte values are little-endian.
 

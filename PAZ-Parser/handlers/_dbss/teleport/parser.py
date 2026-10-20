@@ -1,7 +1,7 @@
 """`teleport.dbss` and `teleportoffset.dbss`: the destinations of teleport buffs.
 
     u32 section_count | section_count x (u32 count | count x 18-byte record)
-    record: u32 key | u8 section | f32 x | f32 y | f32 z | u8 unknown_11
+    record: u32 key | u8 section | f32 x | f32 y | f32 z | u8 destination
 
 A buff of effect type 23 names a point by section (`param_1`) and key
 (`param_2`). The offset file holds the same sections without a section count,
@@ -59,7 +59,7 @@ def parse_teleport_records(data: bytes) -> list[dict]:
     records: list[dict] = []
     for section, (start, count) in enumerate(sections):
         for index in range(count):
-            key, stored_section, x, y, z, unknown_11 = _RECORD.unpack_from(data, start + index * _RECORD.size)
+            key, stored_section, x, y, z, destination = _RECORD.unpack_from(data, start + index * _RECORD.size)
             if stored_section != section:
                 raise ValueError(
                     f"teleport.dbss record {index} of section {section} names section {stored_section}"
@@ -70,7 +70,7 @@ def parse_teleport_records(data: bytes) -> list[dict]:
                 "x": x,
                 "y": y,
                 "z": z,
-                "unknown_11": unknown_11,
+                "destination": destination,
             })
     return records
 

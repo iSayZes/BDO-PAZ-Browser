@@ -9,9 +9,10 @@
     "nodeName": "Node Name",
     "workAnimation": "Work Animation",
     "productionKey": "Production Key",
-    "producedItems": "Produced Items"
+    "producedItems": "Produced Items",
+    "luckItems": "Luck Drops"
   },
   "meta": {
-    "count": "{count} plant zone records · {resolved} with items"
+    "count": "{count} plant zone records · {resolved} with items · {luck} with luck drops"
   }
 }

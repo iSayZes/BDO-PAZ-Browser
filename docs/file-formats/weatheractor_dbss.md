@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------------- | --------- |
-| 2      | 3473 and later | 3473    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
-| 2      | 3473 and later | 3473    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
+| 2      | 3473 and later | 3474    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
+| 2      | 3473 and later | 3474    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
 | 1      | 1784           | 1784    | `weatheractor.dbss`       | 4,960 | 84 Row        | 59        |
 | 1      | 1784           | 1784    | `weatheractoroffset.dbss` | 844   | 84 Index Row  | 10        |
 

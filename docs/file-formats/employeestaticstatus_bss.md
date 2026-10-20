@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes  | Records                         | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ------ | ------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
+| 2      | 3473 and later | 3474    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
 | 1      | 1784           | 1784    | `employeestaticstatus.bss` | 29,799 | 3,910 Ability, 230 Employee Row | 5         |
 
 | Layout | File                       | Known            | Unknown        |

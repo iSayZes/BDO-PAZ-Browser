@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "Talent-Nr.",
+    "skill": "Gildentalent",
+    "linkCount": "Verwendungen",
+    "houseUses": "Hausverwendungen",
+    "slots": "Plätze"
+  },
+  "meta": {
+    "count": "{count} Gildentalente · {links} Hausverwendungen"
+  }
+}

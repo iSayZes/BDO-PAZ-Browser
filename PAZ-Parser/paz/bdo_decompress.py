@@ -2,7 +2,8 @@
 
 `bdo_decompress` reads the header and hands the stream to `UNPACK`: the
 compiled `_bdo_native.unpack` (Rust, `PAZ-Parser/native/`) when it is
-installed, else `unpack_python`. The Python version is the reference, the
+installed, else `unpack_python`. A header with the LZ4 flag goes to
+`bdo_lz4.unpack_lz4` instead, in Python on both backends. The Python version is the reference, the
 format has no public spec, and the two must return the same bytes and error
 codes (`tests/test_decompress.py`).
 """
@@ -14,6 +15,7 @@ import sys
 from dataclasses import dataclass
 
 from . import native_backend
+from .bdo_lz4 import unpack_lz4
 from .native_backend import NativeUnpack
 
 # (data, input_start, input_end, decompressed_length) -> decompressed bytes.
@@ -28,11 +30,16 @@ _BDO_TABLE: list[int] = [4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0]
 _U32_LE = struct.Struct("<I")
 _SHORT_HEADER_SIZE = 3
 _LONG_HEADER_SIZE = 9
+_FLAG_COMPRESSED = 0x01
+_FLAG_LONG = 0x02
+_FLAG_LZ4 = 0x80
 
 
 @dataclass(frozen=True)
 class _Header:
-    """Byte 0 = flags: 0x01 compressed, 0x02 long mode (4-byte lengths).
+    """Byte 0 = flags: 0x01 compressed, 0x02 long mode (4-byte lengths),
+    0x80 LZ4 block instead of the BDO stream (private server repacks only,
+    `bdo_lz4.py`).
 
     Long mode:  bytes 1-4 = compressed_length, bytes 5-8 = decompressed_length
     Short mode: byte 1 = compressed_length,    byte 2    = decompressed_length
@@ -40,6 +47,7 @@ class _Header:
     """
 
     is_compressed: bool
+    is_lz4: bool
     size: int
     compressed_length: int
     decompressed_length: int
@@ -49,7 +57,7 @@ def _read_header(data: bytes) -> _Header:
     if not data:
         raise ValueError("BDO payload is empty.")
     flags = data[0]
-    is_long = bool(flags & 0x02)
+    is_long = bool(flags & _FLAG_LONG)
     size = _LONG_HEADER_SIZE if is_long else _SHORT_HEADER_SIZE
     if len(data) < size:
         raise ValueError(f"BDO payload header is truncated: {len(data)} of {size} bytes.")
@@ -59,7 +67,27 @@ def _read_header(data: bytes) -> _Header:
     else:
         compressed_length = data[1]
         decompressed_length = data[2]
-    return _Header(bool(flags & 0x01), size, compressed_length, decompressed_length)
+    return _Header(
+        is_compressed=bool(flags & _FLAG_COMPRESSED),
+        is_lz4=bool(flags & _FLAG_LZ4),
+        size=size,
+        compressed_length=compressed_length,
+        decompressed_length=decompressed_length,
+    )
+
+
+def has_lz4_header(data: bytes, expected_size: int) -> bool:
+    """True when `data` opens with a long LZ4 header whose lengths fit it.
+
+    UTF-8 text with a byte order mark also starts with 0xEF, so the flags
+    alone do not tell; the decompressed length must equal `expected_size`
+    and the compressed length must fit in `data`.
+    """
+    lz4_flags = _FLAG_LZ4 | _FLAG_LONG | _FLAG_COMPRESSED
+    if len(data) < _LONG_HEADER_SIZE or data[0] & lz4_flags != lz4_flags:
+        return False
+    header = _read_header(data)
+    return header.decompressed_length == expected_size and header.compressed_length <= len(data)
 
 
 def bdo_decompress(data: bytes, expected_size: int | None = None, unpack: Unpack | None = None) -> bytes:
@@ -85,6 +113,8 @@ def bdo_decompress(data: bytes, expected_size: int | None = None, unpack: Unpack
     # A header claiming more bytes than the payload holds ends the stream at
     # the payload's end, so a truncated payload fails with an error code.
     input_end = min(header.compressed_length, len(data))
+    if header.is_lz4:
+        return unpack_lz4(data, header.size, input_end, decompressed_length)
     return (unpack or UNPACK)(data, header.size, input_end, decompressed_length)
 
 

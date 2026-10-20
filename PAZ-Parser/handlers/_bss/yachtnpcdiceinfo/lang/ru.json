@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "npcKey": "Ключ НИП",
+    "npc": "НИП",
+    "dicePreset": "Набор костей",
+    "handRanks": "Комбинации",
+    "knowledgeKey": "ID знания",
+    "knowledge": "Знание",
+    "deckLimit": "Лимит колоды",
+    "rollCountMax": "Макс. бросков"
+  },
+  "meta": {
+    "count": "Соперники в Яр: {count}"
+  }
+}

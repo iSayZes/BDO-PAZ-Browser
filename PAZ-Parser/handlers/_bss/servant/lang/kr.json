@@ -1,0 +1,35 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "name": "이름",
+    "servantKind": "종류",
+    "servantKindSub": "세부 종류",
+    "tier": "세대",
+    "grade": "등급",
+    "color1": "색상 1",
+    "color2": "색상 2",
+    "color3": "색상 3",
+    "matingCount": "교배 횟수",
+    "lifespan": "수명",
+    "basePrice": "시작가",
+    "pricePerLevel": "레벨당 가격",
+    "isMale": "수컷",
+    "isDisplayGender": "성별 표시",
+    "servantMainModel": "대표 모델",
+    "isMatingResult": "교배 출생",
+    "isTrade": "거래 가능",
+    "linkCount": "연결 수",
+    "experiencePerOne": "단위당 경험치",
+    "formIndex": "형태 인덱스",
+    "basicLearnSkillMaxCount": "최대 기술 수",
+    "basicLearnSkills": "배운 기술",
+    "rewardMoneyPercent": "보상 은화",
+    "isOnlyPcroom": "PC방 전용",
+    "stallionSkills": "종마 기술",
+    "canMix": "혼합 가능",
+    "canMating": "교배 가능"
+  },
+  "meta": {
+    "count": "탑승물과 선박 {count}개"
+  }
+}

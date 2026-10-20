@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Clave",
+    "condition": "Condición",
+    "actionName": "Acción",
+    "actionHash": "Hash de la acción",
+    "servantActionName": "Acción de la montura",
+    "servantActionHash": "Hash de la acción de la montura",
+    "skillNo": "ID de habilidad",
+    "skill": "Habilidad"
+  },
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} acciones de comunión con el caballo"
+  }
+}

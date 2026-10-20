@@ -23,6 +23,7 @@ from tests.framework import (
 )
 
 from _bss.stringtable.parser import parse_key_hashes
+from _dbss.itemenchant.parser import parse_itemenchant_records
 from _common.pabr_offset import parse_bare_offset_rows
 from .commerce_types import COMMERCE_TYPES, KEY_HASHES, RESOURCE_SHEET
 from .parser import (
@@ -75,9 +76,10 @@ CASE = HandlerCase(
                 "commerce_type",
                 "commerce_type_name",
                 "trade_group_type",
-                "unknown_37",
-                "unknown_6b",
-                "unknown_7c",
+                "is_sell_to_npc",
+                "territory_supply_no",
+                "trade_type",
+                "price_type",
             ]
         ),
         DeclaredCountTest(declared=_offset_entries(OFFSET_FILE)),
@@ -164,7 +166,7 @@ def test_commerce_type_hashes_match_stringtable() -> None:
 def _entry(character_id: int, item_id: int, commerce_type: int) -> bytes:
     entry = bytearray(ENTRY_SIZE)
     struct.pack_into("<HI", entry, 0, character_id, item_id)
-    entry[0x37] = 1
+    entry[0x37] = 1  # is_sell_to_npc
     entry[0x7D] = commerce_type
     return bytes(entry)
 
@@ -183,7 +185,7 @@ def test_a_small_table_reads_back() -> None:
         _group(40075, _entry(40075, 8201, 8), _entry(40075, 55001, 6)),
     )
     records = parse_itemtradegrouptonpc_records(data)
-    assert [(r["character_id"], r["item_id"], r["commerce_type"], r["unknown_37"]) for r in records] == [
+    assert [(r["character_id"], r["item_id"], r["commerce_type"], r["is_sell_to_npc"]) for r in records] == [
         (40010, 810442, 2, 1),
         (40075, 8201, 8, 1),
         (40075, 55001, 6, 1),
@@ -219,3 +221,27 @@ def test_every_trade_group_code_has_a_label(trade_group_result: HandlerResult) -
     }
 
     assert not bare, f"trade group codes without a label: {sorted(bare)}"
+
+
+def test_every_entry_is_sold_to_the_npc(trade_group_result: HandlerResult) -> None:
+    """The server's `SellingToNpc_Table` loader sets the flag on every row it reads."""
+    not_set = {(r["character_id"], r["item_id"]) for r in trade_group_result.records if r["is_sell_to_npc"] != 1}
+
+    assert not not_set, f"entries without is_sell_to_npc: {sorted(not_set)[:10]}"
+
+
+def test_trade_type_is_the_item_trade_type() -> None:
+    """The server copies the item's `TradeType` into the entry; `itemenchant.dbss` stores it only on trade goods."""
+    item_trade_types = {
+        r["item_id"]: r["trade_type"] or 0
+        for r in parse_itemenchant_records(
+            load_binary_fixture("itemenchant.dbss"), load_binary_fixture("itemenchantoffset.dbss")
+        )
+    }
+    differ = {
+        (r["item_id"], r["trade_type"], item_trade_types.get(r["item_id"]))
+        for r in parse_itemtradegrouptonpc_records(load_binary_fixture(FILE_NAME))
+        if r["trade_type"] != item_trade_types.get(r["item_id"])
+    }
+
+    assert not differ, f"entries whose trade_type differs from the item's (item, entry, item's): {sorted(differ)[:10]}"

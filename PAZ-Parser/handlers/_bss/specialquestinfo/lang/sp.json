@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Clave del grupo",
+    "questCount": "Misiones",
+    "quests": "Nombres de misiones"
+  },
+  "meta": {
+    "count": "{count} grupos de misiones especiales · {quests} misiones"
+  }
+}

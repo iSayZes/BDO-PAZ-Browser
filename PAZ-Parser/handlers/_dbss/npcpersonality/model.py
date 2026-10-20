@@ -7,11 +7,11 @@ class NpcPersonalityRecord(TypedDict):
     row: int
     personality_id: int
     group_a_id: int
-    unknown_04: int
+    group_a_need_count: int
     group_b_id: int
-    unknown_08: int
+    group_b_need_count: int
     group_c_id: int
-    unknown_0c: int
+    group_c_need_count: int
     interest_min: float
     interest_max: float
     favor_min: float

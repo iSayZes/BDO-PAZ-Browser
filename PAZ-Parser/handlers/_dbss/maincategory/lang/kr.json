@@ -6,6 +6,11 @@
   },
   "columns": {
     "categoryId": "카테고리 ID",
+    "displayOrder": "표시 순서",
+    "tabImageNo": "탭 이미지",
+    "categoryType": "카테고리 유형",
+    "eventCategory": "이벤트 카테고리",
+    "isDisplay": "표시",
     "icon": "아이콘"
   },
   "meta": {

@@ -2,10 +2,11 @@
   "columns": {
     "productionKey": "Produktionsschlüssel",
     "name": "Name",
-    "itemSubgroup": "Gegenstandsuntergruppe",
-    "items": "Gegenstände"
+    "exchange": "Tausch",
+    "items": "Gegenstände",
+    "luckItems": "Glücksfunde"
   },
   "meta": {
-    "count": "{count} Produktionsgruppen · {resolved} mit Gegenständen"
+    "count": "{count} Produktionsgruppen · {resolved} mit Gegenständen · {luck} mit Glücksfunden"
   }
 }

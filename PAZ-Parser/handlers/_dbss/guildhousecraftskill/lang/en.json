@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "receipeKey": "Key",
+    "name": "House Use",
+    "skillCount": "Skills",
+    "skills": "Guild Skills"
+  },
+  "offsetColumns": {
+    "receipeKey": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} guild house uses · {skills} guild skills"
+  }
+}

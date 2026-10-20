@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Franja",
+    "averageGrade": "Rango medio",
+    "resultMaxGrade": "Rango máx. de la cría",
+    "resultMinGrade": "Rango mín. de la cría",
+    "imperialSteedCharacterId": "ID del caballo imperial",
+    "imperialSteed": "Caballo imperial",
+    "imperialSteedRate": "Probabilidad de caballo imperial"
+  },
+  "meta": {
+    "count": "{count} franjas de rango"
+  }
+}

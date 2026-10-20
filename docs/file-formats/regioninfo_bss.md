@@ -16,13 +16,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
-| 1      | 1784           | 1784    | `regioninfo.bss` | 556,117 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
+| 2      | 3473 and later | 3474    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 1      | 1784           | 1784    | `regioninfo.bss` | 555,464 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |
 | ------ | ---------------- | ----------------- | ----------------- |
-| 2      | `regioninfo.bss` | 241,279 B (37.5%) | 402,390 B (62.5%) |
-| 1      | `regioninfo.bss` | 159,093 B (28.6%) | 397,024 B (71.4%) |
+| 2      | `regioninfo.bss` | 244,883 B (38.0%) | 398,786 B (62.0%) |
+| 1      | `regioninfo.bss` | 160,930 B (29.0%) | 394,534 B (71.0%) |
 
 <!-- versions:end -->
 
@@ -55,9 +55,9 @@ A record is a 210-byte head, two counted lists and a 171-byte tail, so its size 
 | ------------------------- | ------------------------ | ------------------ | ----- |
 | `+0x00`                   | Region Head              | head               | See Region Head |
 | `+0xD2`                   | u32                      | key_count          | |
-| `+0xD6`                   | u16[key_count]           | unknown_d2_keys    | Region keys; set on 58 town regions and always includes the region itself. Extractor: warehouse group. Velia's list holds the mainland towns from Velia to Muzgar; Hakinza Sanctuary's holds Altinova, Asparkan, Shakatu, Sand Grain Bazaar, Muzgar, Velandir, Aal's Revelation and Angavu Outpost |
-| `unknown_d2_keys+0x00`    | u32                      | vector_count       | |
-| `unknown_d2_keys+0x04`    | f32[vector_count][3]     | unknown_d2_vectors | World positions; only The Great Desert of Valencia (region 230) has any (3) |
+| `+0xD6`                   | u16[key_count]           | pc_delivery_region_keys | Regions a character can be sent to by PC delivery; set on 58 town regions and always includes the region itself (Field Names). Velia's list holds the mainland towns from Velia to Muzgar; Hakinza Sanctuary's holds Altinova, Asparkan, Shakatu, Sand Grain Bazaar, Muzgar, Velandir, Aal's Revelation and Angavu Outpost |
+| `pc_delivery_region_keys+0x00` | u32                      | vector_count       | |
+| `pc_delivery_region_keys+0x04` | f32[vector_count][3]     | unknown_d2_vectors | World positions; only The Great Desert of Valencia (region 230) has any (3) |
 | `unknown_d2_vectors+0x00` | Region Tail              | tail               | See Region Tail |
 
 ### Region Head (210 bytes)
@@ -216,9 +216,9 @@ and end after `unknown_tail_7a`, without the 37 bytes from
 | ------------------------- | -------------------- | ------------------ | --------------- |
 | `+0x00`                   | Region Head          | head               | See Region Head |
 | `+0x169`                  | u32                  | key_count          |                 |
-| `+0x16D`                  | u16[key_count]       | unknown_d2_keys    |                 |
-| `unknown_d2_keys+0x00`    | u32                  | vector_count       |                 |
-| `unknown_d2_keys+0x04`    | f32[vector_count][3] | unknown_d2_vectors |                 |
+| `+0x16D`                  | u16[key_count]       | pc_delivery_region_keys |            |
+| `pc_delivery_region_keys+0x00` | u32                  | vector_count       |                 |
+| `pc_delivery_region_keys+0x04` | f32[vector_count][3] | unknown_d2_vectors |                 |
 | `unknown_d2_vectors+0x00` | Region Tail          | tail               | See Region Tail |
 
 ### Region Head (361 bytes)
@@ -394,6 +394,14 @@ Matches on client 3464 (896 shared region keys). The mismatches are regions chan
 
 `is_arena_zone` (`+0x0D`) and `villain_respawn_position` (`+0x2A`) have no column; they are named from their place in the 2016 member order between two matched fields.
 
+
+`pc_delivery_region_keys` is the 2016 `gc::RegionInfo`
+`_pcDeliveryRegionKeyList`; the client 1784 server builds it from waypoint
+paths and checks a PC delivery request against it, see
+[`regioninfo_linkandcheckvalid2.bss`](regioninfo_linkandcheckvalid2_bss.md)
+Field Names. The extractor's "warehouse group" reading does not fit that
+use.
+
 ## Enum Values
 
 ### `region_type` (`CppEnums.RegionType`)
@@ -442,7 +450,7 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 - `unknown_tail_86` (`0`, `5`, `15`) follows the territory pairs of the construction mode node wars on the land nodes: `0` on Balenos and Serendia (gear score limit 550), `5` on Calpheon and Ulukita (720), `15` on Valencia and Edania (no limit). The island nodes carry `0` in every territory.
 - `unknown_tail_9a` and `unknown_tail_a2` hold silver-sized amounts on the siege regions (node war regions `15.6M` to `46.9M`, capitals up to `273.4M`), always a fixed step apart; they may be the node war participation fee or reward, but nothing in the client names them.
 - Related files out of scope here: `regionclientdata.xml` and its per-service variants (`regionclientdata_<code>_.xml`) place NPCs and monsters per region and key them by `<RegionInfo Key=...>`, the same region key.
-- [`regioninfo_linkandcheckvalid2.bss`](regioninfo_linkandcheckvalid2_bss.md) stores `unknown_d2_keys` again, one record per region; its lists equal this file's in every record of client 3458, and the links are mutual (when A lists B, B lists A).
+- [`regioninfo_linkandcheckvalid2.bss`](regioninfo_linkandcheckvalid2_bss.md) stores `pc_delivery_region_keys` again, one record per region; its lists equal this file's in every record of client 3458, and the links are mutual (when A lists B, B lists A).
 
 ## Open Questions
 
@@ -467,10 +475,6 @@ Every node tooltip shows 3 max war heroes. `unknown_tail_15` is `3` on every nod
 ### Other tail fields
 
 `unknown_tail_47` (`10011`), `unknown_tail_89` (`10`) and `unknown_tail_91` (`49`) are constant across the node war regions; `unknown_tail_86` (`0`, `5`, `15`) follows the territory pairs (see Notes) and `unknown_tail_9a` / `unknown_tail_a2` (silver-sized amounts) vary by node. `unknown_tail_39` repeats `siege_ap_limit` and `unknown_tail_3d` is `100000000` on every siege region; both may be limits the current node wars do not use. `unknown_tail_4b` groups the Atoraxion regions, `unknown_tail_6d` the separated PvP areas, `unknown_tail_6e` points instance regions to a town (all of Atoraxion to Velia), and `unknown_tail_19` / `unknown_tail_7a` are world positions. None of these has a name in the client yet.
-
-### Meaning of `unknown_d2_keys`
-
-The list holds town region keys and includes the owning region; the extractor calls it a warehouse group. Velia's list covers the mainland towns but not Valencia City or Shakatu. It is not the transport network: in game, Velia's transport window sends to Valencia City (and every other town with a storage), though Valencia City is not in Velia's list. The same question is open for [`regioninfo_linkandcheckvalid2.bss`](regioninfo_linkandcheckvalid2_bss.md).
 
 ### Town and War Flags
 

@@ -9,9 +9,10 @@
     "nodeName": "Nombre del nodo",
     "workAnimation": "Animación de trabajo",
     "productionKey": "Clave de producción",
-    "producedItems": "Objetos producidos"
+    "producedItems": "Objetos producidos",
+    "luckItems": "Botín de suerte"
   },
   "meta": {
-    "count": "{count} nodos de producción · {resolved} con objetos"
+    "count": "{count} nodos de producción · {resolved} con objetos · {luck} con botín de suerte"
   }
 }

@@ -35,22 +35,22 @@ CASE = HandlerCase(
                 "skill_name",
                 "icon_path",
                 "skill_type",
-                "unknown_08",
-                "unknown_09",
-                "loc_id",
+                "skill_level",
+                "skill_no",
                 "unknown_0c",
                 "unknown_10",
             ],
         ),
-        RangeTest(col="unknown_09", min_val=0, max_val=0),
+        # The low half of the gc::SkillKey; skill levels start at 1.
+        RangeTest(col="skill_level", min_val=1, max_val=0xFFFF),
         RangeTest(col="unknown_0c", min_val=0, max_val=1),
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49023,
             expected={"equip_skill_id": 15, "section": "S1", "slot": 15, "skill_type": 8},
         ),
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49061,
             expected={
                 "equip_skill_id": 15,
@@ -63,12 +63,12 @@ CASE = HandlerCase(
         ),
         # Follows equip_skill_id 65, which carries the extra u32.
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49047,
             expected={"equip_skill_id": 66, "section": "S2", "slot": 66},
         ),
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49162,
             expected={
                 "equip_skill_id": 91,
@@ -79,7 +79,7 @@ CASE = HandlerCase(
             },
         ),
         TargetTest(
-            col="loc_id",
+            col="skill_no",
             value=49176,
             expected={"equip_skill_id": 111, "section": "S2", "slot": 111, "skill_type": 19},
         ),

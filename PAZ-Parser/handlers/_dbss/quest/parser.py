@@ -5,14 +5,15 @@ There is no offset table. Records sit back to back from `+0x04`, and record
 
     u32 accept_dialog_key | u32 complete_dialog_key | u32 unknown_08 | condition_script | action_script
     | objective_gap | objective_text_kr | u32 quest_category
-    Q: u32 packed_quest_id | ... | u8 block_kind @ Q+0x14
-    | u32 reward_entry_count @ Q+0x15 | 178-byte reward entries | ...
-    | icon_path | u8[16 or 8] | u32 packed_quest_id_echo | u8[13] trailer
+    Q: u32 packed_quest_id | u32 | u32 list_count | u16 list[] | u32 | u32 | u8 block_kind
+    | u32 base_reward_count | 178-byte reward entries | u32 select_reward_count | reward entries
+    | ... | icon_path | u8[16 or 8] | u32 packed_quest_id_echo | u8[13] trailer
 
 Strings are a u64 count plus text with no terminator: UTF-16LE for the scripts
 and objective, ASCII for the icon. The walk finds `Q` as the record's own
 packed ID after the scripts, and the echo as its next occurrence. The objective
-is the string that ends at the category right before `Q`. Full layout in
+is the string that ends at the category right before `Q`. The reward entries
+are read by `_common/quest/reward_entry.py`. Full layout in
 docs/file-formats/quest_dbss.md.
 """
 
@@ -26,6 +27,8 @@ from _bss.allquestlist.parser import parse_allquestlist_records
 from _common.binary import u32
 from _common.inline_text import decode_inline_text
 from _common.prefixed_string import prefixes_ending_at
+from _common.quest.reward_entry import FAMILY_STAT_OFFSET, REWARD_ENTRY_SIZE, RewardEntry, read_reward_list
+from _common.record_reader import RecordReader
 from _common.ui_texture import ui_texture_path
 from .model import FamilyStat, QuestRecord
 
@@ -39,13 +42,11 @@ _TRAILER_SIZE = 13
 # Bytes from the echo's start to the next record's start.
 _ECHO_TO_NEXT = 4 + _TRAILER_SIZE
 
-# Fixed block, relative to Q.
-_BLOCK_KIND = 0x14
-_REWARD_COUNT = 0x15
-_UNION_START = 0x80
-_REWARD_ENTRY_SIZE = 178
-# block_kind 0 shifts the block; its reward entries are not read.
-_SHIFTED_BLOCK_KIND = 0
+# The block after Q: unknown_q04, then the counted u16 unknown_list at Q+0x08.
+_LIST_COUNT = 0x08
+# unknown_list_00, unknown_list_04, block_kind
+_AFTER_LIST = struct.Struct("<IIB")
+_REWARD_COUNT_SIZE = 4
 
 # Bytes between the icon path and the echo.
 _POST_ICON_SIZES = (16, 8)
@@ -234,16 +235,36 @@ def _family_stat_value(data: bytes, union: int, stat_type: int) -> float | None:
     return value / _WEIGHT_PER_LT if stat_type == _WEIGHT_TYPE else value
 
 
-def _family_stats(data: bytes, quest_offset: int, echo: int) -> list[FamilyStat]:
-    """Family stats granted by the counted reward entries (type 16 is none)."""
-    if data[quest_offset + _BLOCK_KIND] == _SHIFTED_BLOCK_KIND:
-        return []
+@dataclass(frozen=True)
+class _RewardBlock:
+    block_kind: int
+    base_rewards: list[RewardEntry]
+    select_rewards: list[RewardEntry]
+    # Where the base_reward_count sits.
+    base_rewards_offset: int
 
+
+def _reward_block(data: bytes, quest_offset: int, echo: int) -> _RewardBlock:
+    """`block_kind` and the two reward lists after `Q`.
+
+    Raises ValueError when a list runs past the echo.
+    """
+    reader = RecordReader(data, quest_offset + _LIST_COUNT, echo, f"quest.dbss ID at 0x{quest_offset:X}")
+    (list_count,) = reader.unpack(_U32)
+    reader.skip(2 * list_count)
+    _list_00, _list_04, block_kind = reader.unpack(_AFTER_LIST)
+    base_rewards_offset = reader.pos
+    base_rewards = read_reward_list(reader)
+    select_rewards = read_reward_list(reader)
+    return _RewardBlock(block_kind, base_rewards, select_rewards, base_rewards_offset)
+
+
+def _family_stats(data: bytes, block: _RewardBlock) -> list[FamilyStat]:
+    """Family stats granted by the base reward entries (type 16 is none)."""
+    first_entry = block.base_rewards_offset + _REWARD_COUNT_SIZE
     stats: list[FamilyStat] = []
-    for entry in range(u32(data, quest_offset + _REWARD_COUNT)):
-        union = quest_offset + _UNION_START + entry * _REWARD_ENTRY_SIZE
-        if union + _REWARD_ENTRY_SIZE > echo:
-            break
+    for entry in range(len(block.base_rewards)):
+        union = first_entry + entry * REWARD_ENTRY_SIZE + FAMILY_STAT_OFFSET
         stat_type = u32(data, union)
         if stat_type == _NO_FAMILY_STAT:
             continue
@@ -267,6 +288,7 @@ def parse_quest_record(data: bytes, index: QuestIndex, row: int) -> QuestRecord:
     action_script, pos = _read_utf16(data, pos)
     objective_start = _objective_start(data, pos, quest_offset)
     objective_text_kr = "" if objective_start is None else _read_utf16(data, objective_start)[0]
+    rewards = _reward_block(data, quest_offset, echo)
 
     return QuestRecord(
         row=row,
@@ -278,12 +300,14 @@ def parse_quest_record(data: bytes, index: QuestIndex, row: int) -> QuestRecord:
         quest_chain_id=packed_quest_id & 0xFFFF,
         quest_id=packed_quest_id >> 16,
         quest_category=u32(data, quest_offset - _CATEGORY_SIZE),
-        block_kind=data[quest_offset + _BLOCK_KIND],
+        block_kind=rewards.block_kind,
         condition_script=condition_script,
         action_script=action_script,
         objective_text_kr=decode_inline_text(objective_text_kr),
         icon_path=_icon_path(data, quest_offset, echo),
-        family_stats=_family_stats(data, quest_offset, echo),
+        base_rewards=rewards.base_rewards,
+        select_rewards=rewards.select_rewards,
+        family_stats=_family_stats(data, rewards),
         loc_texts_en=[],
     )
 

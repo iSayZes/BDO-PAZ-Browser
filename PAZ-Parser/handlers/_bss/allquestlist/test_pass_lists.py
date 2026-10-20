@@ -5,17 +5,8 @@ from typing import Any
 
 import pytest
 
-from tests.framework import (
-    DeclaredCountTest,
-    HandlerCase,
-    HandlerResult,
-    SchemaTest,
-    TargetTest,
-    TestSpec as Spec,
-    case_id,
-    header_count,
-    run_case,
-)
+from tests.framework import HandlerResult, TargetTest, case_id, run_case
+from tests.quest_list_cases import quest_list_case
 
 
 _FULL = "seasonpassquestlist.bss"
@@ -24,30 +15,12 @@ _NORMAL = "seasonpassquestlistfornormal.bss"
 _GROWTH = "growthpassquestlist.bss"
 
 
-def _case(name: str, *extra: Spec) -> HandlerCase:
-    return HandlerCase(
-        handler_name=name,
-        data_file=name,
-        companion_files={},
-        loc_file="languagedata_en.loc",
-        uses_loc=True,
-        loc_fields=["Title"],
-        internal_path=f"gamecommondata/binary/{name}",
-        tests=[
-            SchemaTest(required_keys=["slot", "packed_quest_id", "quest_chain_id", "quest_id", "title"]),
-            # The u32 count after the PABR magic.
-            DeclaredCountTest(declared=header_count(offset=4)),
-            *extra,
-        ],
-    )
-
-
 CASES = {
-    _FULL: _case(_FULL),
-    _CASH: _case(_CASH),
-    _NORMAL: _case(_NORMAL),
+    _FULL: quest_list_case(_FULL),
+    _CASH: quest_list_case(_CASH),
+    _NORMAL: quest_list_case(_NORMAL),
     # Quest 1 of the first Growth Pass chain: (1 << 16) | 4464.
-    _GROWTH: _case(
+    _GROWTH: quest_list_case(
         _GROWTH,
         TargetTest(col="packed_quest_id", value=70000, expected={"quest_chain_id": 4464, "quest_id": 1}),
     ),

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "level": "Nivel",
+    "rank": "Rango",
+    "discountPoint": "Puntos de descuento",
+    "discount": "Descuento de persuasión"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

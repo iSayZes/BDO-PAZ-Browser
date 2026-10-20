@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes  | Records           | Row bytes               |
 | ------ | -------------- | ------- | ---------------- | ------ | ----------------- | ----------------------- |
-| 1      | 1784 and later | 3473    | `skillgroup.bss` | 65,078 | 3,517 Skill Group | 14 to 90, 19 on average |
+| 1      | 1784 and later | 3474    | `skillgroup.bss` | 65,078 | 3,517 Skill Group | 14 to 90, 19 on average |
 
 | Layout | File             | Known             | Unknown    |
 | ------ | ---------------- | ----------------- | ---------- |

@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records               | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | --------------------- | --------- |
-| 1      | 1784 and later | 3473    | `employeespawnposition.dbss`       | 514   | 15 Spawn Position Row | 34        |
-| 1      | 1784 and later | 3473    | `employeespawnpositionoffset.dbss` | 184   | 15 Offset Row         | 12        |
+| 1      | 1784 and later | 3474    | `employeespawnposition.dbss`       | 514   | 15 Spawn Position Row | 34        |
+| 1      | 1784 and later | 3474    | `employeespawnpositionoffset.dbss` | 184   | 15 Offset Row         | 12        |
 
 | Layout | File                               | Known          | Unknown      |
 | ------ | ---------------------------------- | -------------- | ------------ |

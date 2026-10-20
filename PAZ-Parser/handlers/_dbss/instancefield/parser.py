@@ -2,7 +2,8 @@
 
     u32 count | count x record
     record: u16 key | i32 min_x, min_y, min_z | i32 max_x, max_y, max_z
-            | u32 unknown_1a | u64 name_length | ascii name | u16 unknown_tail
+            | i32 field_grid_sector_count | u64 name_length | ascii name
+            | u16 field_no
 
 The box is in world sectors of 12,800 units. Buff effect type 176 stores the
 key in `param_3`. The offset file is a bare count plus [u16 key][u32 offset]
@@ -21,14 +22,14 @@ from _common.record_reader import RecordReader
 
 _FILE = "instancefield.dbss"
 _COUNT_SIZE = 4
-_HEAD = struct.Struct("<H6iI")
+_HEAD = struct.Struct("<H7i")
 _TAIL = struct.Struct("<H")
 
 
 def _read_record(reader: RecordReader) -> dict:
-    key, min_x, min_y, min_z, max_x, max_y, max_z, unknown_1a = reader.unpack(_HEAD)
+    key, min_x, min_y, min_z, max_x, max_y, max_z, field_grid_sector_count = reader.unpack(_HEAD)
     name = reader.text(wide=False)
-    (unknown_tail,) = reader.unpack(_TAIL)
+    (field_no,) = reader.unpack(_TAIL)
     return {
         "key": key,
         "name": name,
@@ -38,8 +39,8 @@ def _read_record(reader: RecordReader) -> dict:
         "max_x": max_x,
         "max_y": max_y,
         "max_z": max_z,
-        "unknown_1a": unknown_1a,
-        "unknown_tail": unknown_tail,
+        "field_grid_sector_count": field_grid_sector_count,
+        "field_no": field_no,
     }
 
 

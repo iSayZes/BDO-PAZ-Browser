@@ -18,8 +18,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes  | Records         | Row bytes               |
 | ------ | -------------- | ------- | -------------------------------- | ------ | --------------- | ----------------------- |
-| 1      | 1784 and later | 3473    | `collectresourcename.dbss`       | 52,109 | 1,112 Record    | 30 to 84, 47 on average |
-| 1      | 1784 and later | 3473    | `collectresourcenameoffset.dbss` | 13,348 | 1,112 Index Row | 12                      |
+| 1      | 1784 and later | 3474    | `collectresourcename.dbss`       | 52,109 | 1,112 Record    | 30 to 84, 47 on average |
+| 1      | 1784 and later | 3474    | `collectresourcenameoffset.dbss` | 13,348 | 1,112 Index Row | 12                      |
 
 | Layout | File                             | Known             | Unknown    |
 | ------ | -------------------------------- | ----------------- | ---------- |
@@ -106,8 +106,8 @@ Client 3473 has 101 names the sheet lacks, and 6 of the sheet's names
 
 - On client 3473 the 1,112 records name 561 distinct characters. Every one
   is a `characterstatic.dbss` character with `npc_kind` Collect, and every
-  one is also the u16 key that starts a row of `collect.dbss` (713 rows,
-  not documented yet). The character's `label_kr` is often one of its
+  one is also the u16 key that starts a row of [`collect.dbss`](collect_dbss.md) (713 rows on
+  client 3474). The character's `label_kr` is often one of its
   model names in another case (`Weed_Seasphere_01` for Agar `10369`, whose
   four models are `weed_seasphere_01`, `_02`, `_b_01` and `_c_01`).
 - The name has two forms (client 3473). 423 names hold a folder and are a

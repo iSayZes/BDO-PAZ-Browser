@@ -2,10 +2,11 @@
   "columns": {
     "productionKey": "Ключ производства",
     "name": "Название",
-    "itemSubgroup": "Подгруппа предметов",
-    "items": "Предметы"
+    "exchange": "Обмен",
+    "items": "Предметы",
+    "luckItems": "Добыча удачи"
   },
   "meta": {
-    "count": "Групп производства: {count} · с предметами: {resolved}"
+    "count": "Групп производства: {count} · с предметами: {resolved} · с добычей удачи: {luck}"
   }
 }

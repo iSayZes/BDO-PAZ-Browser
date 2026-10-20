@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "receipeKey": "키",
+    "name": "집 용도",
+    "storageCount": "창고 수"
+  },
+  "offsetColumns": {
+    "receipeKey": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "길드 창고 용도 {count}개"
+  }
+}

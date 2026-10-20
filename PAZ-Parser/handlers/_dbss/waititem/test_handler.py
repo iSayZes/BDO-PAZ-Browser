@@ -40,7 +40,7 @@ CASE = HandlerCase(
     loc_fields=["item_name"],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
     tests=[
-        SchemaTest(required_keys=["key", "item_key", "item_id", "enchant_level", "item_name", "icon_path", "unknown_0d"]),
+        SchemaTest(required_keys=["key", "item_key", "item_id", "enchant_level", "item_name", "icon_path", "wait_second"]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         TargetTest(
             col="item_key",
@@ -120,7 +120,7 @@ def test_a_small_table_reads_back() -> None:
             "item_key": _BLACKSTAR_SHIELD_PEN,
             "item_id": _BLACKSTAR_SHIELD,
             "enchant_level": _PEN,
-            "unknown_0d": 900,
+            "wait_second": 900,
         },
     ]
 

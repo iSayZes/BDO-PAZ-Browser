@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes  | Records                         | Row bytes               |
 | ------ | -------------- | ------- | ------------------- | ------ | ------------------------------- | ----------------------- |
-| 1      | 3473 and later | 3473    | `lightstoneset.bss` | 30,209 | 165 Set Row, 105 Substitute Row | 26 to 30, 29 on average |
+| 1      | 3473 and later | 3474    | `lightstoneset.bss` | 30,209 | 165 Set Row, 105 Substitute Row | 26 to 30, 29 on average |
 
 | Layout | File                | Known             | Unknown    |
 | ------ | ------------------- | ----------------- | ---------- |

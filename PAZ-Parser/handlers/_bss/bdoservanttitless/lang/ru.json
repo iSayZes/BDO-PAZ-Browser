@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "titleName": "Индекс названия",
+    "title": "Внешний вид",
+    "contentsOption": "Группа контента"
+  },
+  "meta": {
+    "count": "{count} лошадей"
+  }
+}

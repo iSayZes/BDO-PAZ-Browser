@@ -16,17 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes   | Records         | Row bytes               |
 | ------ | -------------- | ------- | ---------------------------- | ------- | --------------- | ----------------------- |
-| 2      | 3473 and later | 3473    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
-| 2      | 3473 and later | 3473    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
-| 1      | 1784           | 1784    | `itemimprovement.dbss`       | 77,001  | 2,081 Record    | 37                      |
-| 1      | 1784           | 1784    | `itemimprovementoffset.dbss` | 24,976  | 2,081 Index Row | 12                      |
+| 2      | 3473 and later | 3474    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
+| 2      | 3473 and later | 3474    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
+| 1      | 1784           | 1784    | `itemimprovement.dbss`       | 74,226  | 2,006 Record    | 37                      |
+| 1      | 1784           | 1784    | `itemimprovementoffset.dbss` | 24,076  | 2,006 Index Row | 12                      |
 
 | Layout | File                         | Known             | Unknown          |
 | ------ | ---------------------------- | ----------------- | ---------------- |
 | 2      | `itemimprovement.dbss`       | 127,428 B (73.1%) | 46,848 B (26.9%) |
 | 2      | `itemimprovementoffset.dbss` | 46,852 B (100.0%) | 0 B (0.0%)       |
-| 1      | `itemimprovement.dbss`       | 68,677 B (89.2%)  | 8,324 B (10.8%)  |
-| 1      | `itemimprovementoffset.dbss` | 24,976 B (100.0%) | 0 B (0.0%)       |
+| 1      | `itemimprovement.dbss`       | 66,202 B (89.2%)  | 8,024 B (10.8%)  |
+| 1      | `itemimprovementoffset.dbss` | 24,076 B (100.0%) | 0 B (0.0%)       |
 
 <!-- versions:end -->
 

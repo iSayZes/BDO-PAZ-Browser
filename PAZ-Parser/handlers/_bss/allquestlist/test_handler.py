@@ -5,52 +5,32 @@ from typing import Any
 
 import pytest
 
-from tests.framework import (
-    DeclaredCountTest,
-    HandlerCase,
-    HandlerResult,
-    PaFieldTest,
-    SchemaTest,
-    TargetTest,
-    case_id,
-    header_count,
-    run_case,
-)
+from tests.framework import HandlerResult, PaFieldTest, TargetTest, case_id, run_case
+from tests.quest_list_cases import quest_list_case
 
 
-CASE = HandlerCase(
-    handler_name="allquestlist.bss",
-    data_file="allquestlist.bss",
-    companion_files={},
-    loc_file="languagedata_en.loc",
-    uses_loc=True,
-    loc_fields=["Title"],
-    internal_path="gamecommondata/binary/allquestlist.bss",
-    tests=[
-        SchemaTest(required_keys=["slot", "packed_quest_id", "quest_chain_id", "quest_id", "title"]),
-        # The u32 count after the PABR magic.
-        DeclaredCountTest(declared=header_count(offset=4)),
-        # Academy and event quests carry a coloured `[Olvia Academy]` prefix.
-        PaFieldTest(field="title"),
-        TargetTest(
-            col="packed_quest_id",
-            value=1050655,
-            expected={
-                "quest_chain_id": 2079,
-                "quest_id": 16,
-                "title": "[Elvia Weekly] Gigagord",
-            },
-        ),
-        TargetTest(
-            col="packed_quest_id",
-            value=181218,
-            expected={
-                "quest_chain_id": 50146,
-                "quest_id": 2,
-                "title": "A Whole New Experience Presented by Fughar! (Black Spirit Pass)",
-            },
-        ),
-    ],
+CASE = quest_list_case(
+    "allquestlist.bss",
+    # Academy and event quests carry a coloured `[Olvia Academy]` prefix.
+    PaFieldTest(field="title"),
+    TargetTest(
+        col="packed_quest_id",
+        value=1050655,
+        expected={
+            "quest_chain_id": 2079,
+            "quest_id": 16,
+            "title": "[Elvia Weekly] Gigagord",
+        },
+    ),
+    TargetTest(
+        col="packed_quest_id",
+        value=181218,
+        expected={
+            "quest_chain_id": 50146,
+            "quest_id": 2,
+            "title": "A Whole New Experience Presented by Fughar! (Black Spirit Pass)",
+        },
+    ),
 )
 
 

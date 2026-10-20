@@ -1,6 +1,9 @@
 {
   "columns": {
-    "record": "Запись"
+    "fairyFeedKey": "Ключ кормления",
+    "enchantLevel": "Уровень усиления",
+    "feedValue": "Значение кормления",
+    "equipExp": "Опыт снаряжения"
   },
   "meta": {
     "count": "Значений: {count} · записей: {record_count}"

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterNo": "N° de personnage",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Direction",
+    "action": "Action",
+    "class": "Classe"
+  },
+  "meta": {
+    "count": "{count} PNJ de joueurs"
+  }
+}

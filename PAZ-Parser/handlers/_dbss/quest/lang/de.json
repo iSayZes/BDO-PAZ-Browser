@@ -4,6 +4,7 @@
     "chainId": "Ketten-ID",
     "questId": "Quest-ID",
     "category": "Kategorie",
+    "questType": "Questtyp",
     "icon": "Symbol",
     "titleName": "Titel / Name",
     "acceptNpc": "NPC (Annehmen)",
@@ -11,6 +12,8 @@
     "condition": "Bedingung",
     "action": "Aktion",
     "objective": "Ziel",
+    "rewards": "Belohnungen",
+    "selectRewards": "Wählbare Belohnungen",
     "familyStat": "Familienstatistik"
   },
   "meta": {

@@ -4,6 +4,7 @@
     "chainId": "ID de chaîne",
     "questId": "ID de quête",
     "category": "Catégorie",
+    "questType": "Type de quête",
     "icon": "Icône",
     "titleName": "Titre / nom",
     "acceptNpc": "PNJ (Accepter)",
@@ -11,6 +12,8 @@
     "condition": "Condition",
     "action": "Action",
     "objective": "Objectif",
+    "rewards": "Récompenses",
+    "selectRewards": "Récompenses au choix",
     "familyStat": "Statistique de famille"
   },
   "meta": {

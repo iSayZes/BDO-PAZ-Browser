@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "name": "Имя",
+    "soundRadius": "Радиус звука"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Персонажей: {count}"
+  }
+}

@@ -17,17 +17,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
-| 2      | 3473 and later | 3473    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
-| 2      | 3473 and later | 3473    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
-| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,902 | 490 Level List, 98 Row  | 4 to 156, 16 on average |
-| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,180  | 98 Index Row            | 12                      |
+| 2      | 3473 and later | 3474    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 2      | 3473 and later | 3474    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,819 | 485 Level List, 97 Row  | 4 to 156, 16 on average |
+| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,168  | 97 Index Row            | 12                      |
 
 | Layout | File                          | Known            | Unknown        |
 | ------ | ----------------------------- | ---------------- | -------------- |
 | 2      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
 | 2      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
-| 1      | `houseinforeceipe.dbss`       | 10,510 B (96.4%) | 392 B (3.6%)   |
-| 1      | `houseinforeceipeoffset.dbss` | 1,180 B (100.0%) | 0 B (0.0%)     |
+| 1      | `houseinforeceipe.dbss`       | 10,431 B (96.4%) | 388 B (3.6%)   |
+| 1      | `houseinforeceipeoffset.dbss` | 1,168 B (100.0%) | 0 B (0.0%)     |
 
 <!-- versions:end -->
 
@@ -37,8 +37,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ----------------------------- | -------- | ---------------------------------------------------------------------------------- |
 | `houseinforeceipeoffset.dbss` | Optional | Index `receipe_key -> (offset, size)`, see below; the handler walks the rows in order and does not load it |
 | `languagedata_en.loc`         | Optional | LOC type 16, `str_id1` = `receipe_key`: the English receipe name                   |
-| `houseinfoneeditem.dbss`      | Optional | Per-level need items, joined by `need_item_key`; not documented yet                 |
-| `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; not documented yet             |
+| `houseinfoneeditem.dbss`      | Optional | Per-level need items, joined by `need_item_key`; see [`houseinfoneeditem.dbss`](houseinfoneeditem_dbss.md) |
+| `itemexchangesource.bss`      | Optional | The item exchange recipes the level lists key into; see [`itemexchangesource.bss`](itemexchangesource_bss.md). The handler reads their names from the `EXCHANGE_NAME_KR` lookup index and LOC type 24 (see `docs/handler.md`) and does not open the file |
 
 All multi-byte values are little-endian.
 
@@ -191,9 +191,10 @@ name the same uses as `eHouseUseType`, and on those rows `icon_type` equals
 
 ## Need Item Join
 
-`need_item_key` is a key of `houseinfoneeditem.dbss`, whose index holds the
-u16 keys 1 to 11. Each of its rows holds five levels, and each level a list
-of (item key, count) pairs; every item key there is 1 (Silver, LOC type 0).
+`need_item_key` is a key of [`houseinfoneeditem.dbss`](houseinfoneeditem_dbss.md),
+whose index holds the u16 keys 1 to 11. Each of its rows holds level slots 0
+to 5, and each level a transfer time and a list of (item key, count) pairs;
+every item key there is 1 (Silver, LOC type 0).
 On client 3464 the receipes use every key except 9, and no row's filled
 level lists reach past the last level its group prices:
 
@@ -235,11 +236,17 @@ groups line up with the level lists.
   `eHouseUseType` values: the tutorial compares the group type with
   `CppEnums.eHouseUseType.Empty` (`tutorial_phase11_worldmapbuyhouse.lua`).
   `getIconType()` feeds `CppEnums.HouseIconType_*Texture[iconType]`.
-- All 2,405 distinct exchange keys (5002 to 35015, client 3464) appear in
-  `itemexchangesource.bss` as a doubled u32 (`key, key`), the way that file's
-  rows start. The bytes after the doubled key hold material item IDs: 5026
-  (Weapon Workshop level 1) lists 4077 Steel x5, and 8801 (Shipyard level
-  1) lists 4669 Usable Scantling x10 and 4652 Ash Plywood x20.
+- On client 3474 all 2,405 distinct exchange keys (5002 to 35015) are
+  `itemexchangesource.bss` rows: 2,364 NonRecipeCraft, 19 LargeCraft and 22
+  GuildHouseLargeCraft. 5026 (Weapon Workshop level 1) is Azwell Longsword:
+  Steel x5, Pure Copper Crystal x1, Fine Tough Hide x1 and Black Stone
+  Powder x5. 8801 (Shipyard level 1) is Ship License: Rowboat, starting with
+  Usable Scantling x10 and Ash Plywood x20.
+- The Exchanges column shows one line per filled level, each exchange as its
+  name and key (`Azwell Longsword (5026)`) linked to its
+  `itemexchangesource.bss` row; past four per level the rest sit behind a
+  hoverable count. The `exchanges` record field holds the same texts for
+  search and export.
 - LOC type 16 also names 1603 "Chariot Workshop", which has no row on
   client 3464.
 - Rows 50006 and 50007 both carry the Korean name `길드 창고 7단계` and the

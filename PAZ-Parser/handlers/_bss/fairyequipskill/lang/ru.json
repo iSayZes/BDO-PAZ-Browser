@@ -5,7 +5,7 @@
     "skillName": "Название навыка",
     "description": "Описание",
     "skillType": "Тип навыка",
-    "locId": "ID LOC"
+    "skillNo": "ID навыка"
   },
   "meta": {
     "count": "Навыков феи: {count}",

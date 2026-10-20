@@ -4,6 +4,7 @@
     "chainId": "ID de cadena",
     "questId": "ID de misión",
     "category": "Categoría",
+    "questType": "Tipo de misión",
     "icon": "Icono",
     "titleName": "Título / nombre",
     "acceptNpc": "PNJ (Aceptar)",
@@ -11,6 +12,8 @@
     "condition": "Condición",
     "action": "Acción",
     "objective": "Objetivo",
+    "rewards": "Recompensas",
+    "selectRewards": "Recompensas a elegir",
     "familyStat": "Estadística de familia"
   },
   "meta": {

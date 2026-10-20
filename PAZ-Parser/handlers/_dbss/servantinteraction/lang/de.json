@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "coolTime": "Abklingzeit",
+    "buffs": "Pferdekommunikation"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Reittiere"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "coolTime": "Перезарядка",
+    "buffs": "Общение с лошадью"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "{count} транспорта"
+  }
+}

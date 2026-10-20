@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "needItemKey": "Key",
+    "houseUses": "House Uses",
+    "levels": "Levels",
+    "needItems": "Cost"
+  },
+  "offsetColumns": {
+    "needItemKey": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "cells": {
+    "level": "Lv {level}:"
+  },
+  "meta": {
+    "count": "{count} need item groups"
+  }
+}

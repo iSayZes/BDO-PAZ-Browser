@@ -18,7 +18,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
-| 2      | 3473 and later | 3473    | `boss_spawn.bss` | 278   | 6 Row   | 43        |
+| 2      | 3473 and later | 3474    | `boss_spawn.bss` | 278   | 6 Row   | 43        |
 | 1      | 1784           | 1784    | `boss_spawn.bss` | 180   | 4 Row   | 40        |
 
 | Layout | File             | Known         | Unknown       |

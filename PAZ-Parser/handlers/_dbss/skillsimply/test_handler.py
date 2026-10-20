@@ -6,8 +6,6 @@ from typing import Any
 import pytest
 
 from _common.class_type import ALL_CLASSES_MASK, class_types_in_mask
-from _common.string_hash import key_hash
-from _dbss.skillsimply.parser import contents_group_key
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -57,7 +55,7 @@ CASE = HandlerCase(
             "skill_owner_type", "is_fusion", "can_quick_slot", "condition", "is_except_cool_time",
             "need_buff_module_type", "contents_group_keys",
             "need_level", "need_skill_point", "need_skill_nos", "need_skills", "previous_rank_no",
-            "previous_rank", "next_rank_keys", "first_rank_key", "exclusive_skill_nos", "base_skill_keys",
+            "previous_rank", "next_rank_keys", "first_rank_key", "exclusive_skill_nos", "related_cool_time_skill_keys",
         ]),
         DeclaredCountTest(declared=header_count(offset=4)),
         DeclaredCountTest(declared=header_count(offset=0, companion=_OFFSET_FILE)),
@@ -158,7 +156,7 @@ def test_every_linked_skill_is_in_the_table(skillsimply_result: HandlerResult) -
     keys = {r["skill_key"] for r in skillsimply_result.records}
     skill_nos = {r["skill_no"] for r in skillsimply_result.records}
     for record in skillsimply_result.records:
-        assert set(record["next_rank_keys"] + record["base_skill_keys"]) <= keys, record["skill_key"]
+        assert set(record["next_rank_keys"] + record["related_cool_time_skill_keys"]) <= keys, record["skill_key"]
         linked_nos = record["need_skill_nos"] + record["exclusive_skill_nos"]
         if record["previous_rank_no"]:
             linked_nos = linked_nos + [record["previous_rank_no"]]
@@ -183,12 +181,6 @@ def test_every_contents_group_hash_decodes_to_a_key(skillsimply_result: HandlerR
     for record in skillsimply_result.records:
         assert record["contents_group_keys"], record["skill_key"]
         assert None not in record["contents_group_keys"], record["skill_key"]
-
-
-def test_contents_group_key_reads_the_hash_of_the_decimal_key() -> None:
-    assert contents_group_key(key_hash("0")) == 0
-    assert contents_group_key(key_hash("1642")) == 1642
-    assert contents_group_key(key_hash("not a key")) is None
 
 
 def test_only_elvia_skills_need_the_elvia_blessing(skillsimply_result: HandlerResult) -> None:

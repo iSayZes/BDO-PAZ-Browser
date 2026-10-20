@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from _common.binary import u8, u16, u32
+from _common.binary import u16, u32
 
 
 _MAGIC = b"PABR"
@@ -34,9 +34,8 @@ def _parse_section1(data: bytes) -> tuple[list[dict], int]:
             "section": "S1",
             "equip_skill_id": equip_skill_id,
             "skill_type": u32(data, pos + 0x04),
-            "unknown_08": u8(data, pos + 0x08),
-            "unknown_09": u8(data, pos + 0x09),
-            "loc_id": u16(data, pos + 0x0A),
+            "skill_level": u16(data, pos + 0x08),
+            "skill_no": u16(data, pos + 0x0A),
             "unknown_0c": None,
             "unknown_10": None,
         })
@@ -55,9 +54,8 @@ def _parse_section2(data: bytes, start: int) -> list[dict]:
     while pos + _SECTION2_RECORD_SIZE <= end:
         equip_skill_id = u32(data, pos)
         skill_type = u32(data, pos + 0x04)
-        unknown_08 = u8(data, pos + 0x08)
-        unknown_09 = u8(data, pos + 0x09)
-        loc_id = u16(data, pos + 0x0A)
+        skill_level = u16(data, pos + 0x08)
+        skill_no = u16(data, pos + 0x0A)
         # 0 or 1; each record with 1 carries one more u32 after the 16 bytes.
         unknown_0c = u32(data, pos + 0x0C)
         pos += _SECTION2_RECORD_SIZE
@@ -76,9 +74,8 @@ def _parse_section2(data: bytes, start: int) -> list[dict]:
             "section": "S2",
             "equip_skill_id": equip_skill_id,
             "skill_type": skill_type,
-            "unknown_08": unknown_08,
-            "unknown_09": unknown_09,
-            "loc_id": loc_id,
+            "skill_level": skill_level,
+            "skill_no": skill_no,
             "unknown_0c": unknown_0c,
             "unknown_10": unknown_10,
         })

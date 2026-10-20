@@ -6,6 +6,11 @@
   },
   "columns": {
     "categoryId": "ID категории",
+    "displayOrder": "Порядок отображения",
+    "tabImageNo": "Изображение вкладки",
+    "categoryType": "Тип категории",
+    "eventCategory": "Категория события",
+    "isDisplay": "Показана",
     "icon": "Значок"
   },
   "meta": {

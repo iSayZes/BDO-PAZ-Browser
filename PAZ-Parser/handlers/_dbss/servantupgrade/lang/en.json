@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "ship": "Ship",
+    "upgradeCharacterId": "Upgrade ID",
+    "upgradeShip": "Upgrades To",
+    "mainItems": "Equipped Gear",
+    "subItems": "Materials"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "upgradeCharacterId": "Upgrade ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} upgrades · {ships} ships"
+  }
+}

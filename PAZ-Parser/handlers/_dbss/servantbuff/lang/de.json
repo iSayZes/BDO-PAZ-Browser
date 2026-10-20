@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "condition": "Bedingung",
+    "actionName": "Aktion",
+    "actionHash": "Aktions-Hash",
+    "servantActionName": "Reittieraktion",
+    "servantActionHash": "Reittieraktions-Hash",
+    "skillNo": "Talent-ID",
+    "skill": "Talent"
+  },
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Aktionen der Pferdekommunikation"
+  }
+}

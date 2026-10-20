@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "groupKey": "그룹 키",
+    "mainId": "메인 ID",
+    "subId": "서브 ID",
+    "title": "제목",
+    "finalSubId": "마지막 서브 ID",
+    "finalTitle": "마지막 의뢰"
+  },
+  "meta": {
+    "count": "의뢰 연계 {count}개 · 그룹 {groups}개"
+  }
+}

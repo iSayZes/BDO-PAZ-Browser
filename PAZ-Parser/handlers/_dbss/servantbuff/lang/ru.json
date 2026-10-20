@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "condition": "Условие",
+    "actionName": "Действие",
+    "actionHash": "Хэш действия",
+    "servantActionName": "Действие транспорта",
+    "servantActionHash": "Хэш действия транспорта",
+    "skillNo": "ID навыка",
+    "skill": "Навык"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "{count} действий общения с лошадью"
+  }
+}

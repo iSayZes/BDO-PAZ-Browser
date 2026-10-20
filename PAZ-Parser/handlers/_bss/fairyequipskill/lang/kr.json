@@ -5,7 +5,7 @@
     "skillName": "기술 이름",
     "description": "설명",
     "skillType": "기술 유형",
-    "locId": "LOC ID"
+    "skillNo": "기술 ID"
   },
   "meta": {
     "count": "요정 기술 {count}개",

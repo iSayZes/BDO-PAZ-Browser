@@ -70,12 +70,12 @@ def _derive_item_icon(item_id: int) -> str:
     return f"{ITEM_ICON_DIR}/{item_id:08d}.png"
 
 
-def _derive_pet_equip_skill_icon(loc_id: int) -> str:
-    return f"{SERVANT_SKILL_ICON_DIR}/equipskill_{loc_id:08d}.dds"
+def _derive_pet_equip_skill_icon(skill_no: int) -> str:
+    return f"{SERVANT_SKILL_ICON_DIR}/equipskill_{skill_no:08d}.dds"
 
 
-def _derive_fairy_equip_skill_icon(loc_id: int) -> str:
-    return f"{SERVANT_SKILL_ICON_DIR}/equipskill_fairy_{loc_id:08d}.dds"
+def _derive_fairy_equip_skill_icon(skill_no: int) -> str:
+    return f"{SERVANT_SKILL_ICON_DIR}/equipskill_fairy_{skill_no:08d}.dds"
 
 
 # Fallback path templates, used only when the index has no entry. Kinds absent

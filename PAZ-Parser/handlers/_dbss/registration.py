@@ -100,6 +100,10 @@ from .fairyskillchange.handler import (
     FairySkillChangeHandler,
     fairy_skill_change_offset_handler,
 )
+from .employeecharactership.handler import (
+    EmployeeCharacterShipHandler,
+    employee_character_ship_offset_handler,
+)
 from .employeename.handler import EmployeeNameHandler, employee_name_offset_handler
 from .employeespawninfo.handler import EmployeeSpawnInfoHandler, employee_spawn_info_offset_handler
 from .employeespawnposition.handler import (
@@ -135,10 +139,27 @@ from .itemimprovement.handler import (
     item_improvement_source_offset_handler,
 )
 from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
+from .collect.handler import CollectHandler, collect_offset_handler
+from .lifeactionexperience.handler import LifeActionExperienceHandler, life_action_experience_offset_handler
+from .displayexchangeitemnpc.handler import DisplayExchangeItemNpcHandler, display_exchange_item_npc_offset_handler
+from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
+from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
 from .teleport.handler import TeleportHandler, teleport_offset_handler
 from .instancefield.handler import InstanceFieldHandler, instance_field_offset_handler
 from .houseinforeceipe.handler import HouseInfoReceipeHandler, house_info_receipe_offset_handler
+from .houseinfoneeditem.handler import HouseInfoNeedItemHandler, house_info_need_item_offset_handler
+from .guildhousecraftskill.handler import GuildHouseCraftSkillHandler, guild_house_craft_skill_offset_handler
+from .guildhousecraftstorage.handler import GuildHouseCraftStorageHandler, guild_house_craft_storage_offset_handler
+from .characteraudioradius.handler import CharacterAudioRadiusHandler, character_audio_radius_offset_handler
+from .itemexchangetoclass.handler import ItemExchangeToClassHandler, item_exchange_to_class_offset_handler
+from .repairmaxendurance.handler import RepairMaxEnduranceHandler, repair_max_endurance_offset_handler
+from .guildquest.handler import GuildQuestHandler, guild_quest_offset_handler
+from .vehicleskill.handler import VehicleSkillHandler, vehicle_skill_offset_handler
+from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_owner_offset_handler
+from .servantbuff.handler import ServantBuffHandler, servant_buff_offset_handler
+from .servantinteraction.handler import ServantInteractionHandler, servant_interaction_offset_handler
+from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -191,6 +212,16 @@ def register_dbss_handlers() -> None:
     register_handler("extractitem.dbss", ExtractItemHandler())
     register_handler("collectresourcenameoffset.dbss", collect_resource_name_offset_handler())
     register_handler("collectresourcename.dbss", CollectResourceNameHandler())
+    register_handler("manufactureconditionoffset.dbss", manufacture_condition_offset_handler())
+    register_handler("manufacturecondition.dbss", ManufactureConditionHandler())
+    register_handler("collectoffset.dbss", collect_offset_handler())
+    register_handler("collect.dbss", CollectHandler())
+    register_handler("lifeactionexperienceoffset.dbss", life_action_experience_offset_handler())
+    register_handler("lifeactionexperience.dbss", LifeActionExperienceHandler())
+    register_handler("displayexchangeitemnpcoffset.dbss", display_exchange_item_npc_offset_handler())
+    register_handler("displayexchangeitemnpc.dbss", DisplayExchangeItemNpcHandler())
+    register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
+    register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
     register_handler("textbindoffset.dbss", text_bind_offset_handler())
@@ -288,6 +319,8 @@ def register_dbss_handlers() -> None:
         fairy_skill_change_offset_handler(),
     )
     register_handler("fairyskillchange.dbss", FairySkillChangeHandler())
+    register_handler("employeecharactershipoffset.dbss", employee_character_ship_offset_handler())
+    register_handler("employeecharactership.dbss", EmployeeCharacterShipHandler())
     register_handler("employeenameoffset.dbss", employee_name_offset_handler())
     register_handler("employeename.dbss", EmployeeNameHandler())
     register_handler(
@@ -307,3 +340,27 @@ def register_dbss_handlers() -> None:
     register_handler("instancefield.dbss", InstanceFieldHandler())
     register_handler("houseinforeceipeoffset.dbss", house_info_receipe_offset_handler())
     register_handler("houseinforeceipe.dbss", HouseInfoReceipeHandler())
+    register_handler("houseinfoneeditemoffset.dbss", house_info_need_item_offset_handler())
+    register_handler("houseinfoneeditem.dbss", HouseInfoNeedItemHandler())
+    register_handler("guildhousecraftskilloffset.dbss", guild_house_craft_skill_offset_handler())
+    register_handler("guildhousecraftskill.dbss", GuildHouseCraftSkillHandler())
+    register_handler("guildhousecraftstorageoffset.dbss", guild_house_craft_storage_offset_handler())
+    register_handler("guildhousecraftstorage.dbss", GuildHouseCraftStorageHandler())
+    register_handler("characteraudioradiusoffset.dbss", character_audio_radius_offset_handler())
+    register_handler("characteraudioradius.dbss", CharacterAudioRadiusHandler())
+    register_handler("itemexchangetoclassoffset.dbss", item_exchange_to_class_offset_handler())
+    register_handler("itemexchangetoclass.dbss", ItemExchangeToClassHandler())
+    register_handler("repairmaxenduranceoffset.dbss", repair_max_endurance_offset_handler())
+    register_handler("repairmaxendurance.dbss", RepairMaxEnduranceHandler())
+    register_handler("guildquestoffset.dbss", guild_quest_offset_handler())
+    register_handler("guildquest.dbss", GuildQuestHandler())
+    register_handler("vehicleskilloffset.dbss", vehicle_skill_offset_handler())
+    register_handler("vehicleskill.dbss", VehicleSkillHandler())
+    register_handler("vehicleskillowneroffset.dbss", vehicle_skill_owner_offset_handler())
+    register_handler("vehicleskillowner.dbss", VehicleSkillOwnerHandler())
+    register_handler("servantbuffoffset.dbss", servant_buff_offset_handler())
+    register_handler("servantbuff.dbss", ServantBuffHandler())
+    register_handler("servantinteractionoffset.dbss", servant_interaction_offset_handler())
+    register_handler("servantinteraction.dbss", ServantInteractionHandler())
+    register_handler("servantupgradeoffset.dbss", servant_upgrade_offset_handler())
+    register_handler("servantupgrade.dbss", ServantUpgradeHandler())

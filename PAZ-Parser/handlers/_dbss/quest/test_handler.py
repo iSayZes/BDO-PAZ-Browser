@@ -21,6 +21,55 @@ from tests.framework import (
 )
 from tests.runner import load_case
 
+from _common.quest.reward_entry import (
+    REWARD_EXP,
+    REWARD_EXP_GRADE,
+    REWARD_EXPLORE_EXP,
+    REWARD_FAMILY_STAT,
+    REWARD_FEVER_POINT,
+    REWARD_INTIMACY,
+    REWARD_ITEM,
+    REWARD_KNOWLEDGE,
+    REWARD_LIFE_EXP,
+    REWARD_SEASON_REWARD,
+    REWARD_SKILL_EXP,
+)
+
+# The head members a reward leaves at these values unless its type uses them.
+_UNSET_MEMBERS = {
+    "experience": 0,
+    "skill_experience": 0,
+    "product_experience": 0,
+    "life_experience_type": 15,
+    "life_experience": 0,
+    "item_key": 0,
+    "item_count": 0,
+    "intimacy_character": 0,
+    "intimacy_value": 0,
+    "mental_card_key": 0,
+    "exp_grade": 0,
+    "max_fever_point": 0,
+    "add_fever_point": 0,
+    "season_no": 0,
+    "explore_exp": 0,
+}
+# gc::RewardType -> the members that hold its reward.
+_TYPE_MEMBERS_2016 = {
+    REWARD_EXP: {"experience"},
+    REWARD_SKILL_EXP: {"skill_experience"},
+    REWARD_LIFE_EXP: {"life_experience_type", "life_experience"},
+    REWARD_ITEM: {"item_key", "item_count"},
+    REWARD_INTIMACY: {"intimacy_character", "intimacy_value"},
+}
+_TYPE_MEMBERS = {
+    **_TYPE_MEMBERS_2016,
+    REWARD_KNOWLEDGE: {"mental_card_key"},
+    REWARD_EXP_GRADE: {"exp_grade"},
+    REWARD_EXPLORE_EXP: {"explore_exp"},
+    REWARD_FEVER_POINT: {"max_fever_point", "add_fever_point"},
+    REWARD_SEASON_REWARD: {"season_no"},
+}
+
 
 def _quest_record(record: dict) -> dict:
     loc_texts = record.get("loc_texts_en", [])
@@ -35,7 +84,7 @@ def _quest_record(record: dict) -> dict:
 CASE = HandlerCase(
     handler_name="quest.dbss",
     data_file="quest.dbss",
-    companion_files={"allquestlist.bss": "allquestlist.bss"},
+    companion_files={"allquestlist.bss": "allquestlist.bss", "stringtable.bss": "stringtable.bss"},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["Title", "Objective"],
@@ -55,12 +104,17 @@ CASE = HandlerCase(
                 "quest_chain_id",
                 "quest_id",
                 "quest_category",
+                "quest_type_name",
                 "block_kind",
                 "condition_script",
                 "action_script",
                 "objective_text_kr",
                 "title_en",
                 "icon_path",
+                "base_rewards",
+                "select_rewards",
+                "base_rewards_text",
+                "select_rewards_text",
                 "family_stats",
                 "family_stat_text",
             ]
@@ -101,7 +155,17 @@ CASE = HandlerCase(
         TargetTest(
             col="packed_quest_id",
             value=197406,
-            expected={"quest_category": 11, "family_stat_labels": ["Stamina"]},
+            expected={
+                "quest_category": 11,
+                "quest_type_name": "Adventurer's Tome",
+                "family_stat_labels": ["Stamina"],
+            },
+        ),
+        # An Olvia Academy Pass quest: the quest window has no name for the type, so the enum name shows.
+        TargetTest(
+            col="packed_quest_id",
+            value=101 << 16 | 2324,
+            expected={"quest_category": 17, "quest_type_name": "OlviaAcademyPass"},
         ),
         # A Growth Pass quest whose LOC title is a TextBind placeholder (LOC type 59).
         TargetTest(
@@ -149,6 +213,84 @@ def test_quest_dbss(spec: Any, quest_result: HandlerResult) -> None:
 
 def _record(result: HandlerResult, packed_quest_id: int) -> dict:
     return next(record for record in result.records if record["packed_quest_id"] == packed_quest_id)
+
+
+def _all_rewards(record: dict) -> list[dict]:
+    return [*record["base_rewards"], *record["select_rewards"]]
+
+
+def test_quest_dbss_rewards_fill_only_their_own_members(quest_result: HandlerResult) -> None:
+    # A wrong member offset shows as a value in a member of another reward type.
+    for record in quest_result.records:
+        for reward in _all_rewards(record):
+            own = _TYPE_MEMBERS.get(reward["reward_type"], set())
+            stray = {name for name, unset in _UNSET_MEMBERS.items() if name not in own and reward[name] != unset}
+            assert not stray, (record["packed_quest_id"], reward["reward_type"], stray)
+
+
+def test_quest_dbss_uses_every_2016_reward_type(quest_result: HandlerResult) -> None:
+    used = {reward["reward_type"] for record in quest_result.records for reward in record["base_rewards"]}
+    assert set(_TYPE_MEMBERS_2016) <= used
+
+
+def test_quest_dbss_family_stats_sit_in_one_reward_type(quest_result: HandlerResult) -> None:
+    types = {
+        record["base_rewards"][stat["entry"]]["reward_type"]
+        for record in quest_result.records
+        for stat in record["family_stats"]
+    }
+    assert types == {REWARD_FAMILY_STAT}, types
+
+
+def test_quest_dbss_select_rewards_follow_the_base_rewards(quest_result: HandlerResult) -> None:
+    # "[Processing] The Beauty of Planks": pick Pine Sap or the Pine Plank its script gathers.
+    record = _record(quest_result, 138172)
+    assert [reward["item_key"] for reward in record["select_rewards"]] == [5003, 4657]
+    assert "gatheritem(4657," in record["action_script"]
+
+
+def test_quest_dbss_amity_reward_names_its_npc(quest_result: HandlerResult) -> None:
+    record = _record(quest_result, 788483)
+    amity = [reward for reward in record["base_rewards"] if reward["reward_type"] == REWARD_INTIMACY]
+    assert [reward["intimacy_character"] for reward in amity] == [41011]
+    assert any(text.startswith("Melissa Brady ") for text in record["base_rewards_text"])
+
+
+def test_quest_dbss_knowledge_rewards_name_a_knowledge_card(quest_result: HandlerResult) -> None:
+    """Every knowledge reward keys a `mentalcard.dbss` card; the text names it."""
+    from _dbss.mentalcard.parser import parse_mentalcard_records
+    from tests.fixtures import load_binary_fixture
+
+    cards = {
+        card.card_id
+        for card in parse_mentalcard_records(
+            load_binary_fixture("mentalcard.dbss"), load_binary_fixture("mentalcardoffset.dbss")
+        )
+    }
+    keys = [
+        reward["mental_card_key"]
+        for record in quest_result.records
+        for reward in _all_rewards(record)
+        if reward["reward_type"] == REWARD_KNOWLEDGE
+    ]
+    assert keys
+    assert set(keys) <= cards
+    # "Food for Hungry Pets" teaches the Pet - Dog and Pet - Cat entries.
+    assert {"[Knowledge] Pet - Dog", "[Knowledge] Pet - Cat"} <= set(_record(quest_result, 788483)["base_rewards_text"])
+
+
+def _is_silent(reward: dict) -> bool:
+    """A Family stat shows in its own column; a fever entry without points has no widget text."""
+    if reward["reward_type"] == REWARD_FAMILY_STAT:
+        return True
+    return reward["reward_type"] == REWARD_FEVER_POINT and not (reward["max_fever_point"] or reward["add_fever_point"])
+
+
+def test_quest_dbss_every_other_reward_has_text(quest_result: HandlerResult) -> None:
+    for record in quest_result.records:
+        for kind in ("base_rewards", "select_rewards"):
+            shown = [reward for reward in record[kind] if not _is_silent(reward)]
+            assert len(record[f"{kind}_text"]) == len(shown), (record["packed_quest_id"], kind)
 
 
 def test_quest_dbss_family_stats_are_gains(quest_result: HandlerResult) -> None:

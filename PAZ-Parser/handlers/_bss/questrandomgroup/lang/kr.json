@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "groupKey": "그룹 키",
+    "questCount": "의뢰",
+    "drawCount": "추첨 수",
+    "mainId": "메인 ID"
+  },
+  "meta": {
+    "count": "무작위 의뢰 그룹 {count}개"
+  }
+}

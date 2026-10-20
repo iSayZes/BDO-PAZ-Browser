@@ -9,9 +9,10 @@
     "nodeName": "거점명",
     "workAnimation": "작업 애니메이션",
     "productionKey": "생산 키",
-    "producedItems": "생산 아이템"
+    "producedItems": "생산 아이템",
+    "luckItems": "행운 획득물"
   },
   "meta": {
-    "count": "생산 거점 {count}개 · 아이템 있음 {resolved}개"
+    "count": "생산 거점 {count}개 · 아이템 있음 {resolved}개 · 행운 획득물 있음 {luck}개"
   }
 }

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "receipeKey": "Schlüssel",
+    "name": "Hausverwendung",
+    "storageCount": "Lageranzahl"
+  },
+  "offsetColumns": {
+    "receipeKey": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gildenlager-Hausverwendungen"
+  }
+}

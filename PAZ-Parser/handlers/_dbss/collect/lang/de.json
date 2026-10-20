@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "productType": "Sammelart",
+    "tools": "Werkzeuge und Drop-Gruppen",
+    "productDrop": "Produkt-Drop-Gruppe",
+    "productTime": "Produktionszeit",
+    "productHp": "HP",
+    "productDecreaseHp": "HP-Abzug",
+    "actionPoint": "Aktionspunkte",
+    "spawnDelay": "Spawn-Verzögerung",
+    "spawnVariable": "Spawn-Schwankung"
+  },
+  "productTypes": {
+    "0": "Standard",
+    "1": "Basis",
+    "2": "Sammeln",
+    "3": "Anbau",
+    "4": "Bergbau",
+    "5": "Reinigung",
+    "6": "Holzfällen",
+    "7": "Gerben"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Sammel-Charaktere"
+  }
+}

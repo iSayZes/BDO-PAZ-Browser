@@ -15,8 +15,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes   | Records         | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ------- | --------------- | --------- |
-| 1      | 1784 and later | 3473    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
-| 1      | 1784 and later | 3473    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
+| 1      | 1784 and later | 3474    | `extractitem.dbss`       | 112,132 | 2,336 Row       | 48        |
+| 1      | 1784 and later | 3474    | `extractitemoffset.dbss` | 28,036  | 2,336 Index Row | 12        |
 
 | Layout | File                     | Known              | Unknown    |
 | ------ | ------------------------ | ------------------ | ---------- |
@@ -144,8 +144,8 @@ read for 1 and 2), each with a literal `1`. It rejects a row when any key is
 `0` or any count is not above `0`. So `need_item_count` is the only count
 the sheet sets, and the other three are `1` by the loader.
 
-Neither the 2016 client with debug symbols nor the BdoEmu tables of client
-519 have an extraction type or table.
+Neither the 2016 client with debug symbols nor the tables of a private server on
+client 519 have an extraction type or table.
 
 ## Notes
 

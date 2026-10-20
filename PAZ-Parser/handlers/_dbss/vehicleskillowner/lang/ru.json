@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя",
+    "cantLearnableRate": "Вес: не изучает",
+    "skillKey": "ID навыка",
+    "skill": "Навык",
+    "able": "Вес изучения",
+    "addExp": "Доп. опыт",
+    "isLearn": "Можно изучить"
+  },
+  "offsetColumns": {
+    "characterId": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "{count} записей навыков · {servants} транспорта и кораблей"
+  }
+}

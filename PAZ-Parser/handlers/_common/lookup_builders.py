@@ -25,10 +25,11 @@ from _bss.buffsimply.parser import build_buff_icon_index
 from _bss.exploration.parser import build_map_node_index, build_node_name_kr_index, build_node_parent_index
 from _bss.groupcameradata.parser import build_cutscene_icon_index
 from _bss.instancefieldmapinfo.parser import build_instance_field_title_index
+from _bss.itemexchangesource.parser import build_exchange_name_kr_index
 from _bss.lightstoneset.parser import build_lightstone_set_index
 from _bss.mansionpartinfo.parser import build_manor_part_icon_index
 from _bss.menu.parser import build_menu_icon_index, build_menu_icon_region_index
-from _bss.plantexchangegroup.parser import build_production_item_index
+from _bss.plantexchangegroup.parser import build_production_item_index, build_production_luck_item_index
 from _bss.questjournalvideoinfo.parser import build_quest_artwork_index
 from _bss.specialenchantitem.parser import build_item_key_icon_index
 from _bss.submenu.parser import build_submenu_icon_index, build_submenu_icon_region_index
@@ -86,6 +87,8 @@ WORLDMAPMONSTER_OFFSET = f"{_BINARY}/worldmapmonsteroffset.dbss"
 MENU = f"{_BINARY}/menu.bss"
 SUBMENU = f"{_BINARY}/submenu.bss"
 PLANTEXCHANGEGROUP = f"{_BINARY}/plantexchangegroup.bss"
+ITEMEXCHANGESOURCE = f"{_BINARY}/itemexchangesource.bss"
+ITEMMAINGROUP = f"{_BINARY}/itemmaingroup.bss"
 ITEMSUBGROUP = f"{_BINARY}/itemsubgroup.dbss"
 ITEMSUBGROUP_OFFSET = f"{_BINARY}/itemsubgroupoffset.dbss"
 EXPLORATION = f"{_BINARY}/exploration.bss"
@@ -98,6 +101,9 @@ INSTANCEFIELDMAPINFO = f"{_BINARY}/instancefieldmapinfo.bss"
 STRINGTABLE = f"{_BINARY}/stringtable.bss"
 TEXTBIND = f"{_BINARY}/textbind.dbss"
 WORLDMAP = f"gamecommondata/waypoint_binary/{WORLDMAP_FILE}"
+
+# plantexchangegroup.bss, then its exchanges, then the drop group tables.
+_PRODUCTION_SOURCES = (PLANTEXCHANGEGROUP, ITEMEXCHANGESOURCE, ITEMMAINGROUP, ITEMSUBGROUP, ITEMSUBGROUP_OFFSET)
 
 # Every built index, keyed by `IndexKind.value`.
 BuiltIndexes = dict[str, Mapping[int, LookupValue]]
@@ -185,12 +191,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.MENU_ICON_REGION, (MENU,), build_menu_icon_region_index),
     IndexSpec(IndexKind.SUBMENU_ICON, (SUBMENU,), build_submenu_icon_index),
     IndexSpec(IndexKind.SUBMENU_ICON_REGION, (SUBMENU,), build_submenu_icon_region_index),
-    # A few hundred production subgroups out of the 13 MB itemsubgroup.dbss.
-    IndexSpec(
-        IndexKind.PRODUCTION_ITEMS,
-        (PLANTEXCHANGEGROUP, ITEMSUBGROUP, ITEMSUBGROUP_OFFSET),
-        build_production_item_index,
-    ),
+    # The few hundred production exchanges out of the 3 MB itemexchangesource.bss
+    # and their drop groups out of the 13 MB itemsubgroup.dbss.
+    IndexSpec(IndexKind.PRODUCTION_ITEMS, _PRODUCTION_SOURCES, build_production_item_index),
+    IndexSpec(IndexKind.PRODUCTION_LUCK_ITEMS, _PRODUCTION_SOURCES, build_production_luck_item_index),
+    # Exchange key -> Korean name, for the tables that store an exchange key.
+    IndexSpec(IndexKind.EXCHANGE_NAME_KR, (ITEMEXCHANGESOURCE,), build_exchange_name_kr_index),
     IndexSpec(IndexKind.SKILL_BUFFS, (SKILL, SKILL_OFFSET), build_skill_buff_index),
     # The item to buff link: itemenchant.dbss skill keys -> skill.dbss buff_ids.
     IndexSpec(

@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "characterId": "ID de personaje",
+    "name": "Nombre",
+    "employeeMax": "Límite de marineros",
+    "employeeSpawnCount": "Posiciones de marineros",
+    "foodMax": "Raciones máx.",
+    "cannonSetup": "Configuración de cañones",
+    "foodRecovery": "Recuperación de raciones",
+    "cannonRecovery": "Recuperación de balas de cañón",
+    "restorationCost": "Coste de restauración",
+    "summonFull": "Invocar completo",
+    "newCannonShipUi": "Nueva IU de cañones",
+    "newCannonCount": "Cañones",
+    "newCannonSpeed": "Velocidad de cañones",
+    "shipSkillUi": "IU de habilidades del barco",
+    "manualCannonFire": "Disparo manual de cañón",
+    "manualMinLength": "Distancia mín. de disparo",
+    "manualMaxLength": "Distancia máx. de disparo",
+    "manualRandomDist": "Distancia aleatoria de disparo",
+    "manualRandomPos": "Posición aleatoria de disparo",
+    "manualMaxAngle": "Ángulo máx. de disparo",
+    "decreaseCoolTime": "Reducción del tiempo de reutilización",
+    "condition": "Condición del tiempo de reutilización"
+  },
+  "offsetColumns": {
+    "characterId": "ID de personaje",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} barcos"
+  }
+}

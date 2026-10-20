@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines NPC personality entries used to parameterise AI behaviour. Each record maps a personality ID to three knowledge group references (each with an unknown u16 beside it) and four floating-point amity threshold parameters. Used to drive the in-game amity mini-game.
+Defines NPC personality entries used to parameterise AI behaviour. Each record maps a personality ID to three knowledge group references (each with a need count beside it) and four floating-point amity threshold parameters. Used to drive the in-game amity mini-game.
 
 ## Versions
 
@@ -12,13 +12,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                        | Bytes  | Records             | Row bytes |
 | ------ | -------------- | ------- | --------------------------- | ------ | ------------------- | --------- |
-| 1      | 1784 and later | 3473    | `npcpersonality.dbss`       | 40,192 | 1,182 Record        | 34        |
-| 1      | 1784 and later | 3473    | `npcpersonalityoffset.dbss` | 11,824 | 1,182 Offset Record | 10        |
+| 1      | 1784 and later | 3474    | `npcpersonality.dbss`       | 40,192 | 1,182 Record        | 34        |
+| 1      | 1784 and later | 3474    | `npcpersonalityoffset.dbss` | 11,824 | 1,182 Offset Record | 10        |
 
-| Layout | File                        | Known            | Unknown         |
-| ------ | --------------------------- | ---------------- | --------------- |
-| 1      | `npcpersonality.dbss`       | 33,100 B (82.4%) | 7,092 B (17.6%) |
-| 1      | `npcpersonalityoffset.dbss` | 9,460 B (80.0%)  | 2,364 B (20.0%) |
+| Layout | File                        | Known             | Unknown         |
+| ------ | --------------------------- | ----------------- | --------------- |
+| 1      | `npcpersonality.dbss`       | 40,192 B (100.0%) | 0 B (0.0%)      |
+| 1      | `npcpersonalityoffset.dbss` | 9,460 B (80.0%)   | 2,364 B (20.0%) |
 
 <!-- versions:end -->
 
@@ -43,14 +43,14 @@ All multi-byte values are little-endian.
 
 | Offset  | Type | Field              | Notes                                                         |
 | ------- | ---- | ------------------ | ------------------------------------------------------------- |
-| `+0x00` | u16  | personality_id     | Unique personality identifier                                 |
+| `+0x00` | u16  | personality_id     | Unique personality identifier (the NPC's character key)       |
 | `+0x02` | u16  | group_a_id         | First amity interest group (knowledge group ID)               |
-| `+0x04` | u16  | unknown_04         | Per-group number for group A; see below                       |
+| `+0x04` | u16  | group_a_need_count | Need count for group A; see below                             |
 | `+0x06` | u16  | group_b_id         | Second amity interest group                                   |
-| `+0x08` | u16  | unknown_08         | Per-group number for group B                                  |
+| `+0x08` | u16  | group_b_need_count | Need count for group B                                        |
 | `+0x0A` | u16  | group_c_id         | Third amity interest group                                    |
-| `+0x0C` | u16  | unknown_0c         | Per-group number for group C                                  |
-| `+0x0E` | u16  | personality_id_dup | Always equal to `personality_id` at `+0x00`; purpose unknown  |
+| `+0x0C` | u16  | group_c_need_count | Need count for group C                                        |
+| `+0x0E` | u16  | personality_id_dup | The row's own key member; always equal to `personality_id` at `+0x00` |
 | `+0x10` | f32  | interest_min       | Inclusive lower bound for amity interest (range: 11–37)       |
 | `+0x14` | f32  | interest_max       | Upper bound for amity interest (range: 23–70); inclusive or exclusive is open |
 | `+0x18` | f32  | favor_min          | Inclusive lower bound for amity favor (range: 10–35)          |
@@ -59,9 +59,9 @@ All multi-byte values are little-endian.
 
 #### Interest Groups
 
-Each group is a u16 knowledge group ID (matches `node_id` in `mentalcard.dbss`) followed by an unknown u16 (`unknown_04`, `unknown_08`, `unknown_0c`). Earlier versions of this doc read each pair as one packed u32 and called the high half `item_count`.
+Each group is a u16 knowledge group ID (matches `node_id` in `mentalcard.dbss`) followed by its u16 need count (`group_a_need_count`, `group_b_need_count`, `group_c_need_count`; source names under Field Names). Earlier versions of this doc read each pair as one packed u32 and called the high half `item_count`.
 
-The same numbers appear on the BDO wiki next to each NPC's interest groups, but the game does not show them: the conversation window lists only the topics you can use, with no per-group count or maximum (I checked in game, 2026-09-27). It is not the number of topics offered either: with Oliviero (`6` for Serendia Adventure Log II) the topic list showed 7 cards of that group. What the number controls is open. Observed values: 0, 1, 2, 4, 5, 6, 7, 8, 10. All three fields in a record typically share the same value (1121 of 1182 records).
+The same numbers appear on the BDO wiki next to each NPC's interest groups, but the game does not show them: the conversation window lists only the topics you can use, with no per-group count or maximum (I checked in game, 2026-09-27). It is not the number of topics offered either: with Oliviero (`6` for Serendia Adventure Log II) the topic list showed 7 cards of that group. What the current game does with the need count is open. On client 3474 the values are 0, 1, 2, 4, 5, 6, 7, 8 and 10, and all three fields of a record share one value in 1,121 of 1,182 records.
 
 ### `npcpersonalityoffset.dbss`
 
@@ -108,10 +108,66 @@ Every offset row points at a record that repeats its `personality_id`, and every
 
 [`zodiacsignorder.dbss`](zodiacsignorder_dbss.md) stores the sign of every `personality_type` as `zodiac_id`, and it equals the major in all 24 records (client 3464). The names are LOC type 7 sign names from [`zodiacsign.dbss`](zodiacsign_dbss.md). Majors 1 and 9 have only variant 1 here.
 
+## Field Names
+
+The 2016 client's debug symbols (`BlackDesert64.pdb`) list the members of
+`gc::NpcPersonalityStaticStatus` in this order: `pa::Array<gc::FavoritedTheme,3> _themeList`
+(each `gc::FavoritedTheme` is `KeyType<unsigned short> _key`, `unsigned short _needCount`
+and a `gc::MentalThemeStaticStatus*`), `KeyType<unsigned short> _key`, `float _minDv`,
+`float _maxDv`, `float _minPv`, `float _maxPv` and
+`KeyType<unsigned short> _zodiacSignOrderKey`.
+
+The server dump of a private server on client 1784 (`Instance_dumpFull.exe`) fills those
+members twice. `NpcPersonalityStaticStatusManager::readFromBinarybyDynamic` (VA
+`0x140b98880`) hands each `npcpersonality.dbss` row, past the leading key, to a row reader
+(VA `0x140b96530`) that writes the 32 bytes in file order to the 2016 member offsets. The
+`Personality_Table` sheet loader reads one column per member (VA `0x140956897` to
+`0x1409569fa`) and stores the `Npc` ID column as `_key` (VA `0x140b95fca`):
+
+| Field                | File    | Member (2016)                | Member  | Sheet column         |
+| -------------------- | ------- | ---------------------------- | ------- | -------------------- |
+| `group_a_id`         | `+0x02` | `_themeList[0]._key`         | `+0x00` | `Theme1`             |
+| `group_a_need_count` | `+0x04` | `_themeList[0]._needCount`   | `+0x02` | `NeedCount1`         |
+| `group_b_id`         | `+0x06` | `_themeList[1]._key`         | `+0x10` | `Theme2`             |
+| `group_b_need_count` | `+0x08` | `_themeList[1]._needCount`   | `+0x12` | `NeedCount2`         |
+| `group_c_id`         | `+0x0A` | `_themeList[2]._key`         | `+0x20` | `Theme3`             |
+| `group_c_need_count` | `+0x0C` | `_themeList[2]._needCount`   | `+0x22` | `NeedCount3`         |
+| `personality_id_dup` | `+0x0E` | `_key`                       | `+0x30` | `Npc`                |
+| `interest_min`       | `+0x10` | `_minDv`                     | `+0x34` | `MinDv`              |
+| `interest_max`       | `+0x14` | `_maxDv`                     | `+0x38` | `MaxDv`              |
+| `favor_min`          | `+0x18` | `_minPv`                     | `+0x3C` | `MinPv`              |
+| `favor_max`          | `+0x1C` | `_maxPv`                     | `+0x40` | `MaxPv`              |
+| `personality_type`   | `+0x20` | `_zodiacSignOrderKey`        | `+0x44` | `ZodiacSignIndexKey` |
+
+The values agree. The `Personality_Table` sheet in that server's `datasheet_memorycarddatatable.xlsm`
+matches its own compiled `npcpersonality.dbss` on every column above in all 1,122 rows. On
+the official client 1784 file all 1,055 records are in the sheet, and the group, need count
+and `ZodiacSignIndexKey` columns match every one of them; the ten records whose three need
+counts differ pin `NeedCount1` to `+0x04`, `NeedCount2` to `+0x08` and `NeedCount3` to
+`+0x0C`. The four floats match the sheet exactly on only 230 to 310 of the 1,055, but each lies
+within 3 of its column on 838 to 962 of them, a mean distance of 1.4 to 2.1 against 7.2 or
+more to each of the other three float columns. The sheet's `NPC등급` and `NPC_Importance`
+columns have no field in the file.
+
+`personality_type` keeps its name; the sheet calls it `ZodiacSignIndexKey` and the 2016
+member `_zodiacSignOrderKey`, the key of [`zodiacsignorder.dbss`](zodiacsignorder_dbss.md).
+`interest_*` and `favor_*` keep theirs too, from the in-game readings under Notes. The server
+code of a private server on client 519 reads `Personality_Table` the other way round:
+`CardGame` rolls `npcInterest` between `MinPv` and `MaxPv` and `npcSympathy` between
+`MinDv` and `MaxDv`. Ornella's in-game Interest of 22 to 23 fits `+0x10`, which holds
+`MinDv`, so these names follow the client.
+
+The same server code (`PersonalityT`, `MentalCardHandler.newGame`) reads `NeedCount1` as the
+number of `Theme1` knowledge the player must hold to start the conversation game, and as the
+number of card slots in that game. That is its own reconstruction of the older game, not
+client data. The source sheet puts a reference column `#테마안에 있는 지식 개수` ("number of
+knowledge in the theme") before each `NeedCount`; in its first row the three themes hold 14,
+13 and 17 knowledge against a need count of 7 each.
+
 ## Notes
 
 - All 1182 `personality_id` values are unique; it is a true record key.
-- `personality_id_dup` at `+0x0E` is always identical to `personality_id` at `+0x00`; appears to be alignment padding or a redundant lookup key.
+- `personality_id_dup` at `+0x0E` is always identical to `personality_id` at `+0x00`: the leading u16 is the dbss row key, and `+0x0E` is the static status's own `_key` member (see Field Names).
 - The `variant` in `personality_type` (1 or 2) picks one of the two star orders in `zodiacsignorder.dbss`; any other in-game meaning is unknown. Distribution is roughly even (584 variant-1, 598 variant-2).
 - The groups and `unknown_*` numbers match the BDO wiki for Amerigo (41013): Vendors of Serendia, Serendia Adventure Log II and Plants (Serendia), `4` each.
 - The NPC rolls its Interest Level and Favor at the start of each conversation, and keeps them when the conversation is continued ([Black Desert Foundry, Story Exchange guide](https://www.blackdesertfoundry.com/story-exchange-guide/)). Readings do not always fall inside the stored ranges, though: see the table below.
@@ -133,9 +189,13 @@ Every offset row points at a record that repeats its `personality_id`, and every
 
 ## Open Questions
 
-### What do `unknown_04`, `unknown_08` and `unknown_0c` control?
+### What does the need count control in the current game?
 
-The per-group number matches the numbers the BDO wiki lists next to each interest group, but the game shows no per-group count, and Oliviero's topic list held 7 cards of a group whose number is `6`. It may cap how many of the group's topics the NPC accepts, weight which topics are offered, or be unused. `0` occurs as well.
+The 2016 member is `_needCount` and the sheet column `NeedCount1` to `3` (see Field Names), and the BDO wiki lists the same numbers next to each interest group. The game shows no per-group count, though, and Oliviero's topic list held 7 cards of a group whose need count is `6`. It may be a knowledge count the player needs for the group, cap how many of the group's topics the NPC accepts, or be unused since the conversation game changed. `0` occurs as well.
+
+### Why do the official floats differ from the sheet?
+
+The private server on client 1784 compiled its `npcpersonality.dbss` with every float equal to its `Personality_Table` sheet, but the official client 1784 file matches that sheet exactly on only 230 to 310 of 1,055 records per float, while groups, need counts and `ZodiacSignIndexKey` match on all of them. Whether the official build rolls the ranges when it compiles the sheet, or the private server edited three quarters of the float cells, is open. A roll at compile time would also explain why the stored ranges move between client versions while the groups stay (see Notes).
 
 ### Are the upper bounds inclusive?
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from _common.binary import u32
+from _common.binary import u32, u64
 
 
 _HEADER_SIZE = 4
@@ -10,7 +10,9 @@ _OFFSET_ROW_SIZE = 12
 # The offset companion addresses the payload that follows the record's key.
 _KEY_PREFIX_SIZE = 4
 
-_UNKNOWN_10_SIZE = 12
+# Struct padding between the u32 item ID and the u64 EXP: the client 1784
+# server never writes it, so the bytes are whatever the builder's stack held.
+_PADDING_08_SIZE = 4
 
 
 def _row_count(data: bytes, filename: str, row_size: int) -> int:
@@ -34,9 +36,9 @@ def parse_fairyfeedingitem_records(data: bytes) -> list[dict]:
         records.append({
             "key": u32(data, pos),
             "item_id": u32(data, pos + 0x04),
-            "unknown_08": u32(data, pos + 0x08),
-            "exp": u32(data, pos + 0x0C),
-            "unknown_10": data[pos + 0x10 : pos + 0x10 + _UNKNOWN_10_SIZE].hex(),
+            "padding_08": data[pos + 0x08 : pos + 0x08 + _PADDING_08_SIZE].hex(),
+            "exp": u64(data, pos + 0x0C),
+            "unknown_14": u64(data, pos + 0x14),
         })
 
     return records

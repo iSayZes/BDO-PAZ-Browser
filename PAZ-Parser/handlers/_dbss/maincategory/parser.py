@@ -1,8 +1,8 @@
 """`maincategory.dbss`: the Pearl Shop main categories.
 
-    u32 count | count x (u16 category_id | u32 unknown_02 | u32 unknown_06
-                         | u32 unknown_0a | str8 icon_path
-                         | u32 unknown_after_icon_path | u8 unknown_icon_path_04)
+    u32 count | count x (u16 category_id | u32 display_order | u32 tab_image_no
+                         | u32 category_type | str8 icon_path
+                         | u32 event_category | u8 is_display)
 
 `maincategoryoffset.dbss` (no magic, no trailer) holds a u16 category ID, the
 absolute u32 offset of its record, a u16 size and a u16 that is always 0 per
@@ -23,9 +23,9 @@ OFFSET_FILE = "maincategoryoffset.dbss"
 _COUNT_SIZE = 4
 # u16 category_id | u32 record_offset | u16 record_size | u16 unknown_08
 _OFFSET_ROW = struct.Struct("<HIHH")
-# u16 category_id | u32 unknown_02 | u32 unknown_06 | u32 unknown_0a
+# u16 category_id | u32 display_order | u32 tab_image_no | u32 category_type
 _HEAD = struct.Struct("<HIII")
-# u32 unknown_after_icon_path | u8 unknown_icon_path_04
+# u32 event_category | u8 is_display
 _TAIL = struct.Struct("<IB")
 
 
@@ -59,19 +59,19 @@ def _read_category(data: bytes, row: dict) -> dict:
     start = row["record_offset"]
     label = f"{FILE_NAME} category {row['category_id']}"
     reader = RecordReader(data, start, start + row["record_size"], label)
-    category_id, unknown_02, unknown_06, unknown_0a = reader.unpack(_HEAD)
+    category_id, display_order, tab_image_no, category_type = reader.unpack(_HEAD)
     if category_id != row["category_id"]:
         raise ValueError(f"{label}: the record at 0x{start:X} names category {category_id}")
     icon_path = reader.text(wide=False)
-    unknown_after_icon_path, unknown_icon_path_04 = reader.unpack(_TAIL)
+    event_category, is_display = reader.unpack(_TAIL)
     if not reader.at_end():
         raise ValueError(f"{label}: {reader.remaining()} bytes left after the record")
     return {
         "category_id": category_id,
-        "unknown_02": unknown_02,
-        "unknown_06": unknown_06,
-        "unknown_0a": unknown_0a,
+        "display_order": display_order,
+        "tab_image_no": tab_image_no,
+        "category_type": category_type,
         "icon_path": icon_path,
-        "unknown_after_icon_path": unknown_after_icon_path,
-        "unknown_icon_path_04": unknown_icon_path_04,
+        "event_category": event_category,
+        "is_display": bool(is_display),
     }

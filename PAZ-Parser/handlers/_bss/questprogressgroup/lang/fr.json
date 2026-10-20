@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "groupKey": "Clé du groupe",
+    "mainId": "ID principal",
+    "subId": "ID secondaire",
+    "title": "Titre",
+    "finalSubId": "Dernier ID secondaire",
+    "finalTitle": "Dernière quête"
+  },
+  "meta": {
+    "count": "{count} séries de quêtes dans {groups} groupes"
+  }
+}

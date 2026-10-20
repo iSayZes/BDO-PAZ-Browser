@@ -22,12 +22,12 @@ from _dbss.maincategory.parser import OFFSET_FILE, parse_maincategory_records, p
 _COUNT_SIZE = 4
 _RECORD_KEYS = [
     "category_id",
-    "unknown_02",
-    "unknown_06",
-    "unknown_0a",
+    "display_order",
+    "tab_image_no",
+    "category_type",
     "icon_path",
-    "unknown_after_icon_path",
-    "unknown_icon_path_04",
+    "event_category",
+    "is_display",
 ]
 
 CASE = HandlerCase(
@@ -103,8 +103,16 @@ def test_every_icon_is_a_dds_texture(category_result: HandlerResult) -> None:
     assert all(path.startswith("ui_texture/") and path.endswith(".dds") for path in paths), paths
 
 
+def test_is_display_byte_is_0_or_1(category_result: HandlerResult) -> None:
+    """The last byte of every record is the is_display flag."""
+    source = category_result.source
+    rows = parse_maincategoryoffset_records(source.file(OFFSET_FILE))
+    flags = {source.data[row["record_offset"] + row["record_size"] - 1] for row in rows}
+    assert flags <= {0, 1}, flags
+
+
 def _record(category_id: int, icon_path: bytes) -> bytes:
-    """A Category Record: the key, three u32, the str8 icon path, a u32 and the u8."""
+    """A Category Record: the key, three u32, the str8 icon path, event_category and is_display."""
     return struct.pack("<HIIIQ", category_id, 0, 0, 0, len(icon_path)) + icon_path + struct.pack("<IB", 0, 1)
 
 
@@ -118,12 +126,12 @@ def test_a_record_reads_back() -> None:
     data, offsets = _tables(record, len(record))
     assert parse_maincategory_records(data, offsets) == [{
         "category_id": 1,
-        "unknown_02": 0,
-        "unknown_06": 0,
-        "unknown_0a": 0,
+        "display_order": 0,
+        "tab_image_no": 0,
+        "category_type": 0,
         "icon_path": "a.dds",
-        "unknown_after_icon_path": 0,
-        "unknown_icon_path_04": 1,
+        "event_category": 0,
+        "is_display": True,
     }]
 
 

@@ -6,6 +6,11 @@
   },
   "columns": {
     "categoryId": "Kategorie-ID",
+    "displayOrder": "Anzeigereihenfolge",
+    "tabImageNo": "Reiterbild",
+    "categoryType": "Kategorietyp",
+    "eventCategory": "Event-Kategorie",
+    "isDisplay": "Angezeigt",
     "icon": "Symbol"
   },
   "meta": {

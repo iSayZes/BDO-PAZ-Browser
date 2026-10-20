@@ -58,8 +58,8 @@ def test_itemcouponrewardoffset_dbss(spec: Any, itemcouponrewardoffset_result: H
 
 
 def test_words_after_the_count_get_unknown_names() -> None:
-    records = parse_itemcouponreward_offset_records(bytes(12))
-    assert [r["field"] for r in records] == ["count", "unknown_04", "unknown_08"]
+    records = parse_itemcouponreward_offset_records(bytes(20))
+    assert [r["field"] for r in records] == ["count", "unknown_04", "unknown_08", "unknown_0c", "unknown_10"]
 
 
 def test_a_partial_word_raises() -> None:

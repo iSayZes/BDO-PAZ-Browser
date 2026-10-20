@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes      | Records                                                                                            | Row bytes                     |
 | ------ | -------------- | ------- | -------------------------- | ---------- | -------------------------------------------------------------------------------------------------- | ----------------------------- |
-| 1      | 1784 and later | 3473    | `detail_dialog.dbss`       | 28,282,772 | 35,766 Option, 59,782 Dialog Record, 59,782 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
-| 1      | 1784 and later | 3473    | `detail_dialogoffset.dbss` | 717,404    | 59,782 Index Row                                                                                   | 12                            |
+| 1      | 1784 and later | 3474    | `detail_dialog.dbss`       | 28,282,772 | 35,766 Option, 59,782 Dialog Record, 59,782 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
+| 1      | 1784 and later | 3474    | `detail_dialogoffset.dbss` | 717,404    | 59,782 Index Row                                                                                   | 12                            |
 
 | Layout | File                       | Known                | Unknown            |
 | ------ | -------------------------- | -------------------- | ------------------ |
@@ -147,6 +147,7 @@ A lease is an option whose `action` is `buyItemByPoint(item, 0, 1, 5, cost)`: th
 ## Notes
 
 - The key's low 16 bits are a character ID: 49,252 of the 59,776 records resolve to a LOC type `6` name, and 10,153 of the other 10,524 are shared social dialogs (`Social_Low_Front_01` and similar), many on low IDs such as `817` to `864`. The high 16 bits number the dialogs of one character from `0` up; the main NPC dialog is usually index `1` (`0x00019C58` Martina Finto, `0x00019C51` Igor Bartali). 3,788 of 4,569 characters have one record.
+- In option and greeting conditions, the first argument of `checkequipitemgroup(group,min,max)` and `checkinventoryitemgroup(group,min,max)` is a group key in [itemequipgroup.bss](itemequipgroup_bss.md).
 - The main dialog's `internal_name` is often the NPC's name plus a digit (`IgorBartali1`, `OttavioFerre1`).
 - A greeting can be the tag `{GetRandomText(<name>)}`, which picks a line from the pool of that name in [dialogtext.dbss](dialogtext_dbss.md), e.g. `{GetRandomText(PEDU_47759_1)}`.
 - `dialog_button_type` is the client's `CppEnums.DialogButtonType` (`global_define_cpp_enum.luac`), listed in order from `0`: `eDialogButton_Normal`, `_Knowledge`, `_Function`, `_CutScene`, `_Exchange`, `_ExceptExchange`, `_TimeAttack`, `_Sequence`, `_Count`. The data fits that order by the title prefixes and actions: `1` knowledge (지식, `pushknowledge`), `3` cutscenes and videos (회상, 이야기, `showCutScene`, `showVideo`), `4` and `5` exchanges (교환, `ExchangeItem...`), `6` time-limited quests (시간 제한, `resettimeattackquest`) and `7` sequences (`playsequence`). `0` (Normal, 21,252 options on client 3458) and `2` (Function, 4,185) mix quest turn-ins, returns and leases; `99` (options with an empty action) is not in the enum. The dialog list Lua (`panel_dialog_list_all_1.luac`) reads it as `_dialogButtonType`: it starts the cutscene for `eDialogButton_CutScene` and the sequence state for `eDialogButton_Sequence`, and `panel_dialog_exchangelist_all_2.luac` checks `eDialogButton_Exchange` and `eDialogButton_ExceptExchange` for the exchange list.

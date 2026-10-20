@@ -4,6 +4,7 @@
     "chainId": "연계 ID",
     "questId": "의뢰 ID",
     "category": "카테고리",
+    "questType": "의뢰 타입",
     "icon": "아이콘",
     "titleName": "제목 / 이름",
     "acceptNpc": "NPC (수락)",
@@ -11,6 +12,8 @@
     "condition": "조건",
     "action": "행동",
     "objective": "목표",
+    "rewards": "보상",
+    "selectRewards": "선택 보상",
     "familyStat": "가문 능력치"
   },
   "meta": {

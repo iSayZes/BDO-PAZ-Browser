@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes | Records                 | Row bytes                        |
 | ------ | -------------- | ------- | ------------------------------- | ----- | ----------------------- | -------------------------------- |
-| 2      | 3473 and later | 3473    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average        |
-| 2      | 3473 and later | 3473    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                               |
+| 2      | 3473 and later | 3474    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average        |
+| 2      | 3473 and later | 3474    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                               |
 | 1      | 1784           | 1784    | `growthpasscategory.dbss`       | 8,409 | 8 Record Body, 8 Record | 1,042 to 1,052, 1,047 on average |
 | 1      | 1784           | 1784    | `growthpasscategoryoffset.dbss` | 100   | 8 Offset Row            | 12                               |
 

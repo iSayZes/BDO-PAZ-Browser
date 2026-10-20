@@ -13,13 +13,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes               |
 | ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | ----------------------- |
-| 2      | 3473 and later | 3473    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
+| 2      | 3473 and later | 3474    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
 | 1      | 1784           | 1784    | `petequipskill.bss` | 1,732 | 43 Equip Skill, 100 Slot | 12                      |
 
-| Layout | File                | Known           | Unknown         |
-| ------ | ------------------- | --------------- | --------------- |
-| 2      | `petequipskill.bss` | 2,446 B (64.8%) | 1,326 B (35.2%) |
-| 1      | `petequipskill.bss` | 1,446 B (83.5%) | 286 B (16.5%)   |
+| Layout | File                | Known            | Unknown       |
+| ------ | ------------------- | ---------------- | ------------- |
+| 2      | `petequipskill.bss` | 2,932 B (77.7%)  | 840 B (22.3%) |
+| 1      | `petequipskill.bss` | 1,732 B (100.0%) | 0 B (0.0%)    |
 
 <!-- versions:end -->
 
@@ -52,9 +52,8 @@ Section 1, Equip Skills. Covers `equip_skill_id` 0 to 42 (regular pets). Stride 
 | ------- | ---- | -------------- | ---------------------------------------- |
 | `+0x00` | u32  | equip_skill_id | Unique skill record key (0 to 42)        |
 | `+0x04` | u32  | skill_type     | Skill group (1 to 20; see Skill Types table) |
-| `+0x08` | u8   | unknown_08     | Always 1 in Section 1                    |
-| `+0x09` | u8   | unknown_09     | Always 0                                 |
-| `+0x0A` | u16  | loc_id         | Localization key to skill name (type 10 string) |
+| `+0x08` | u16  | skill_level    | Skill level of the `gc::SkillKey`; always `1` |
+| `+0x0A` | u16  | skill_no       | Skill number (`SkillNo`); keys the LOC type 10 name |
 
 ### Slot (variable: 16 bytes + unknown_10)
 
@@ -66,17 +65,43 @@ Section 2, Base Skills (variable stream, offset `0x2F8`): covers `equip_skill_id
 | ------- | ----------------- | -------------- | ------------------------------------------------ |
 | `+0x00` | u32               | equip_skill_id | Unique skill record key (15 to 111, or 200 = null) |
 | `+0x04` | u32               | skill_type     | Skill group (different numbering from Section 1) |
-| `+0x08` | u8                | unknown_08     | Always 1                                         |
-| `+0x09` | u8                | unknown_09     | Always 0                                         |
-| `+0x0A` | u16               | loc_id         | Localization key to skill name (type 10 string)  |
+| `+0x08` | u16               | skill_level    | Skill level of the `gc::SkillKey`; always `1`    |
+| `+0x0A` | u16               | skill_no       | Skill number (`SkillNo`); keys the LOC type 10 name |
 | `+0x0C` | u32               | unknown_0c     | `0` or `1`; `1` means an extra u32 follows       |
 | `+0x10` | u32 if unknown_0c = 1 | unknown_10 | Present only when `unknown_0c = 1`               |
 
-Earlier versions of this doc called `unknown_08` `tier`, `unknown_0c` `extra_flag` and `unknown_10` `extra_value`.
+Earlier versions of this doc called `skill_level` `tier`, `unknown_0c` `extra_flag` and `unknown_10` `extra_value`. `unknown_0c` and `unknown_10` are not in the client 1784 build (12-byte slots, Layout 1), so no source names them; on client 3474 `unknown_0c` is `1` on 10 of 73 live slots (IDs 65 to 68, 79 to 82, 104, 107) and `unknown_10` equals that record's `skill_type` on all 10.
 
 The null block and Section 2 together are exactly 200 slots, from `0x208` up to the trailer's `data_end`, and every live Section 2 record sits at the slot whose index equals its `equip_skill_id` (slots `0` to `14` are the null block). Reading one extra u32 after each `unknown_0c = 1` record is what keeps that alignment and lands the last slot exactly on `data_end`. The parser walks the null block and Section 2 as one table starting right after Section 1, and its `slot` field is the table index, so every record in both sections has `slot = equip_skill_id`.
 
-Within each section, skills of the same `skill_type` form a tier group (e.g., all Karma Recovery entries share type 1 in S1). The type numbering is section-local and the mapping from type ID to skill category name is derived empirically from loc IDs. No authoritative mapping table has been found. The grouping itself holds for all 116 records: every record of one `skill_type` in a section resolves to the same effect name through LOC, which is why the field keeps its name while only the type-to-name table is open.
+Within each section, skills of the same `skill_type` form a tier group (e.g., all Karma Recovery entries share type 1 in S1). The type numbering is section-local and the mapping from type ID to skill category name is derived empirically from skill numbers. No authoritative mapping table has been found. The grouping itself holds for all 116 records: every record of one `skill_type` in a section resolves to the same effect name through LOC, which is why the field keeps its name while only the type-to-name table is open.
+
+## Field Names
+
+The client 1784 private server loads `Pet_EquipSkill_Table` and `Pet_BaseSkill_Table` into one 24-byte entry per
+record: `Index` (`equip_skill_id`) at `+0x00`, `GroupNo` (`skill_type`) at
+`+0x04`, a runtime skill pointer at `+0x08` and a `gc::SkillKey` at `+0x10`.
+The loader (VA `0x14086beaf` to `0x14086bebc`, and `0x14086c434` for the base skills) writes the key as `(SkillNo << 16) | 1`, so its low u16
+is the skill level (always `1`) and its high u16 the sheet's `SkillNo`. The
+2016 client's `gc::SkillKey` is one `unsigned int _value` whose `getLevel()`
+reads the low u16 and `getSkillNo()` the high u16, which places
+`skill_level` at `+0x08` and `skill_no` at `+0x0A`. The server has no reader
+for this file; the record is that entry in loader order without the pointer
+and the padding. After loading, it looks up every key in the skill table and
+logs "펫 착용 스킬에 알수 없는 스킬(%#)의 데이터가 있습니다!" ("pet equip
+skill has data for an unknown skill (%#)!") for a missing one.
+`petequipskill.bss` and `fairyequipskill.bss` share the entry, the loader
+shape and the per-entry checks.
+
+The client 1784 build's own file matches `Pet_EquipSkill_Table` on all
+43 equip records and `Pet_BaseSkill_Table` on all 60 base records (Index,
+GroupNo, level `1`, SkillNo). Unused entries hold `equip_skill_id` `100`
+there, the size of the base array (`200` on client 3474).
+
+LOC type 10 keys the skill name by `skill_no`
+([`languagedata_loc.md`](languagedata_loc.md)). Earlier versions of this doc
+read `+0x08` as two u8 fields (`unknown_08`, `unknown_09`) and named `+0x0A`
+`loc_id`.
 
 ## Layout 1
 
@@ -104,6 +129,5 @@ Section 2 record still sits at the slot whose index equals its
 | ------- | ---- | -------------- | ---------------------------------------------- |
 | `+0x00` | u32  | equip_skill_id | Skill record key, or `100` = null              |
 | `+0x04` | u32  | skill_type     | Skill group; `0` in a null slot                |
-| `+0x08` | u8   | unknown_08     | `1` in a live record, `0` in a null slot       |
-| `+0x09` | u8   | unknown_09     | Always 0                                       |
-| `+0x0A` | u16  | loc_id         | Localization key to skill name; `0` in a null slot |
+| `+0x08` | u16  | skill_level    | `1` in a live record, `0` in a null slot       |
+| `+0x0A` | u16  | skill_no       | Skill number; `0` in a null slot               |

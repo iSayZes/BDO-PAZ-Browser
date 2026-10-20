@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records           | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ----------------- | --------- |
-| 1      | 1784 and later | 3473    | `fairyupgraderate.bss` | 143   | 6 Entry, 3 Record | 16        |
+| 1      | 1784 and later | 3474    | `fairyupgraderate.bss` | 143   | 6 Entry, 3 Record | 16        |
 
 | Layout | File                   | Known         | Unknown      |
 | ------ | ---------------------- | ------------- | ------------ |
@@ -178,5 +178,6 @@ where it varies would distinguish these.
 
 Sprouting can be retried after a rebirth, but nothing in this file encodes a
 retry allowance, a rebirth cost, or a changed rate on a retry. Those values live
-elsewhere; `fairyfeedenchantfailcount.bss` (layout decoded, meaning open) and the
-fairy potion tables are the nearest candidates.
+elsewhere; the fairy potion tables are the nearest candidate.
+[fairyfeedenchantfailcount.bss](fairyfeedenchantfailcount_bss.md) is the
+equipment feeding table of the `FairyFeed_Table` sheet and holds none of them.

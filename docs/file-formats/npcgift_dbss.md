@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes | Records                      | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ----- | ---------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `npcgift.dbss`       | 1,552 | 117 Gift Row, 24 Gift Record | 12        |
-| 1      | 1784 and later | 3473    | `npcgiftoffset.dbss` | 244   | 24 Offset Record             | 10        |
+| 1      | 1784 and later | 3474    | `npcgift.dbss`       | 1,552 | 117 Gift Row, 24 Gift Record | 12        |
+| 1      | 1784 and later | 3474    | `npcgiftoffset.dbss` | 244   | 24 Offset Record             | 10        |
 
 | Layout | File                 | Known            | Unknown      |
 | ------ | -------------------- | ---------------- | ------------ |

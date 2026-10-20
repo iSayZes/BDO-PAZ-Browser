@@ -16,17 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
 | ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
-| 2      | 3473 and later | 3473    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
-| 2      | 3473 and later | 3473    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
-| 1      | 1784           | 1784    | `worldmapmonster.dbss`       | 20,586 | 127 Marker Record, 127 Record | 124 to 274, 160 on average |
-| 1      | 1784           | 1784    | `worldmapmonsteroffset.dbss` | 1,274  | 127 Offset Row                | 10                         |
+| 2      | 3473 and later | 3474    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
+| 2      | 3473 and later | 3474    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+| 1      | 1784           | 1784    | `worldmapmonster.dbss`       | 17,258 | 114 Marker Record, 114 Record | 124 to 214, 149 on average |
+| 1      | 1784           | 1784    | `worldmapmonsteroffset.dbss` | 1,144  | 114 Offset Row                | 10                         |
 
 | Layout | File                         | Known            | Unknown        |
 | ------ | ---------------------------- | ---------------- | -------------- |
 | 2      | `worldmapmonster.dbss`       | 39,426 B (92.0%) | 3,450 B (8.0%) |
 | 2      | `worldmapmonsteroffset.dbss` | 2,304 B (100.0%) | 0 B (0.0%)     |
-| 1      | `worldmapmonster.dbss`       | 19,570 B (95.1%) | 1,016 B (4.9%) |
-| 1      | `worldmapmonsteroffset.dbss` | 1,274 B (100.0%) | 0 B (0.0%)     |
+| 1      | `worldmapmonster.dbss`       | 16,346 B (94.7%) | 912 B (5.3%)   |
+| 1      | `worldmapmonsteroffset.dbss` | 1,144 B (100.0%) | 0 B (0.0%)     |
 
 <!-- versions:end -->
 

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mainId": "ID principal",
+    "minSubId": "ID secundario mín.",
+    "minTitle": "Primera misión",
+    "maxSubId": "ID secundario máx.",
+    "maxTitle": "Última misión"
+  },
+  "meta": {
+    "count": "{count} cadenas de misiones"
+  }
+}

@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes  | Records                                                       | Row bytes |
 | ------ | -------------- | ------- | ------------------------------ | ------ | ------------------------------------------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `knowledgelearning.dbss`       | 79,636 | 4,684 Learning Record, 4,684 Learning Entry, 2 Learning Table | 13        |
-| 1      | 1784 and later | 3473    | `knowledgelearningoffset.dbss` | 56,220 | 4,684 Index Row, 2 Index Table                                | 12        |
+| 1      | 1784 and later | 3474    | `knowledgelearning.dbss`       | 79,636 | 4,684 Learning Record, 4,684 Learning Entry, 2 Learning Table | 13        |
+| 1      | 1784 and later | 3474    | `knowledgelearningoffset.dbss` | 56,220 | 4,684 Index Row, 2 Index Table                                | 12        |
 
 | Layout | File                           | Known             | Unknown        |
 | ------ | ------------------------------ | ----------------- | -------------- |

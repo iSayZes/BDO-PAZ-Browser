@@ -18,7 +18,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes | Records      | Row bytes |
 | ------ | -------------- | ------- | ---------------------------- | ----- | ------------ | --------- |
-| 1      | 3473 and later | 3473    | `jewelgroupstaticstatus.bss` | 980   | 42 Group Row | 8         |
+| 1      | 3473 and later | 3474    | `jewelgroupstaticstatus.bss` | 980   | 42 Group Row | 8         |
 
 | Layout | File                         | Known          | Unknown    |
 | ------ | ---------------------------- | -------------- | ---------- |

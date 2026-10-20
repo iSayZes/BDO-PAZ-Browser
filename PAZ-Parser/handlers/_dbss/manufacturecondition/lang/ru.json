@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "actionHash": "Хеш изготовления",
+    "action": "Изготовление",
+    "name": "Название",
+    "visibleCondition": "Условие отображения",
+    "enableCondition": "Условия использования"
+  },
+  "offsetColumns": {
+    "actionHash": "Хеш изготовления",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Видов изготовления: {count}"
+  }
+}

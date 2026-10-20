@@ -2,10 +2,11 @@
   "columns": {
     "productionKey": "생산 키",
     "name": "이름",
-    "itemSubgroup": "아이템 하위 그룹",
-    "items": "아이템"
+    "exchange": "교환",
+    "items": "아이템",
+    "luckItems": "행운 획득물"
   },
   "meta": {
-    "count": "생산 그룹 {count}개 · 아이템 있음 {resolved}개"
+    "count": "생산 그룹 {count}개 · 아이템 있음 {resolved}개 · 행운 획득물 있음 {luck}개"
   }
 }

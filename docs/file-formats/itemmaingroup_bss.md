@@ -12,13 +12,13 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes   | Records                    | Row bytes |
 | ------ | -------------- | ------- | ------------------- | ------- | -------------------------- | --------- |
-| 2      | 3473 and later | 3473    | `itemmaingroup.bss` | 680,658 | 18,960 Entry, 16,555 Group | 10        |
-| 1      | 1784           | 1784    | `itemmaingroup.bss` | 550,518 | 15,376 Entry, 14,305 Group | 10        |
+| 2      | 3473 and later | 3474    | `itemmaingroup.bss` | 680,658 | 18,960 Entry, 16,555 Group | 10        |
+| 1      | 1784           | 1784    | `itemmaingroup.bss` | 366,210 | 10,394 Entry, 9,323 Group  | 10        |
 
 | Layout | File                | Known             | Unknown           |
 | ------ | ------------------- | ----------------- | ----------------- |
 | 2      | `itemmaingroup.bss` | 339,938 B (49.9%) | 340,720 B (50.1%) |
-| 1      | `itemmaingroup.bss` | 274,439 B (49.9%) | 276,079 B (50.1%) |
+| 1      | `itemmaingroup.bss` | 184,789 B (50.5%) | 181,421 B (49.5%) |
 
 <!-- versions:end -->
 

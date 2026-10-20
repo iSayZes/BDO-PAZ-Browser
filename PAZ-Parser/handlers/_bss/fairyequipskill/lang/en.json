@@ -5,7 +5,7 @@
     "skillName": "Skill Name",
     "description": "Description",
     "skillType": "Skill Type",
-    "locId": "Loc ID"
+    "skillNo": "Skill ID"
   },
   "meta": {
     "count": "{count} fairy skill records",

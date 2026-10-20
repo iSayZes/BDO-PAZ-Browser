@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "N° de compétence",
+    "skill": "Compétence de guilde",
+    "linkCount": "Utilisations",
+    "houseUses": "Utilisations de maison",
+    "slots": "Emplacements"
+  },
+  "meta": {
+    "count": "{count} compétences de guilde · {links} utilisations de maison"
+  }
+}

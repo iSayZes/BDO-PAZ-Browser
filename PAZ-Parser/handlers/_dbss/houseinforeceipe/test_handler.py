@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import struct
 from dataclasses import replace
+from functools import cache
 from typing import Any
 
 import pytest
@@ -20,6 +21,8 @@ from tests.framework import (
     run_case,
 )
 
+from _bss.itemexchangesource.parser import build_exchange_name_kr_index
+from _common.lookup_index import IndexKind
 from _common.pabr_offset import parse_bare_u32_offset_rows
 from .house_enums import HOUSE_ICON_TYPE_NAMES, HOUSE_USE_TYPE_NAMES
 from .parser import FILE_NAME, LEVEL_COUNT, OFFSET_FILE, parse_houseinforeceipe_records
@@ -29,6 +32,14 @@ _RESIDENCE = 0
 _WEAPON_WORKSHOP = 11
 _AREHAZA_WORKSHOP = 24
 _COUNT_OFFSET = 0
+# A level 1 Weapon Workshop exchange.
+_AZWELL_LONGSWORD_EXCHANGE = 5026
+
+
+@cache
+def _exchange_names() -> dict[int, str]:
+    """`EXCHANGE_NAME_KR` built from the installed table, the way the app builds it."""
+    return build_exchange_name_kr_index(load_binary_fixture("itemexchangesource.bss"))
 
 
 CASE = HandlerCase(
@@ -37,12 +48,13 @@ CASE = HandlerCase(
     companion_files={},
     loc_file="languagedata_en.loc",
     uses_loc=True,
-    loc_fields=["name"],
+    loc_fields=["name", "exchanges"],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
+    lookup_indexes={IndexKind.EXCHANGE_NAME_KR: _exchange_names},
     tests=[
         SchemaTest(required_keys=[
             "receipe_key", "need_item_key", "name_kr", "name", "house_use_type", "house_use_type_name",
-            "icon_type", "icon_type_name", "level_exchanges", "level_count", "exchange_count",
+            "icon_type", "icon_type_name", "level_exchanges", "level_count", "exchange_count", "exchanges",
             "unknown_tail_02", "unknown_after_level_exchanges", "unknown_end",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
@@ -140,6 +152,19 @@ def test_level_lists_fill_from_level_one(receipe_result: HandlerResult) -> None:
     for r in receipe_result.records:
         filled = [bool(keys) for keys in r["level_exchanges"]]
         assert filled == [True] * r["level_count"] + [False] * (LEVEL_COUNT - r["level_count"])
+
+
+def test_every_level_exchange_has_an_exchange_row(receipe_result: HandlerResult) -> None:
+    names = _exchange_names()
+    keys = {key for r in receipe_result.records for keys in r["level_exchanges"] for key in keys}
+    assert sorted(keys - names.keys()) == []
+
+
+def test_exchanges_carry_their_names(receipe_result: HandlerResult) -> None:
+    for r in receipe_result.records:
+        assert len(r["exchanges"]) == sum(len(keys) for keys in r["level_exchanges"])
+    weapon = next(r for r in receipe_result.records if r["receipe_key"] == _WEAPON_WORKSHOP)
+    assert f"Azwell Longsword ({_AZWELL_LONGSWORD_EXCHANGE})" in weapon["exchanges"]
 
 
 def test_offset_rows_tile_the_main_rows() -> None:

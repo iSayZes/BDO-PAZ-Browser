@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes  | Records                           | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ------ | --------------------------------- | --------- |
-| 1      | 1784 and later | 3473    | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
-| 1      | 1784 and later | 3473    | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
+| 1      | 1784 and later | 3474    | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
+| 1      | 1784 and later | 3474    | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
 
 | Layout | File                 | Known             | Unknown    |
 | ------ | -------------------- | ----------------- | ---------- |

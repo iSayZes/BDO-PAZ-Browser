@@ -16,17 +16,17 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes      | Records                                              | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ---------- | ---------------------------------------------------- | --------- |
-| 3      | 3473 and later | 3473    | `buff.dbss`       | 12,550,791 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
-| 3      | 3473 and later | 3473    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
-| 1      | 1784           | 1784    | `buff.dbss`       | 9,955,320  | 37,892 Stats Block, 37,892 Tail Block, 37,892 Record | 133       |
-| 1      | 1784           | 1784    | `buffoffset.dbss` | 378,940    | 37,892 Index Row                                     | 10        |
+| 3      | 3473 and later | 3474    | `buff.dbss`       | 12,550,743 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
+| 3      | 3473 and later | 3474    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
+| 1      | 1784           | 1784    | `buff.dbss`       | 9,733,373  | 37,030 Stats Block, 37,030 Tail Block, 37,030 Record | 133       |
+| 1      | 1784           | 1784    | `buffoffset.dbss` | 370,320    | 37,030 Index Row                                     | 10        |
 
 | Layout | File              | Known                | Unknown             |
 | ------ | ----------------- | -------------------- | ------------------- |
-| 3      | `buff.dbss`       | 10,718,501 B (85.4%) | 1,832,290 B (14.6%) |
+| 3      | `buff.dbss`       | 10,718,453 B (85.4%) | 1,832,290 B (14.6%) |
 | 3      | `buffoffset.dbss` | 536,300 B (100.0%)   | 0 B (0.0%)          |
-| 1      | `buff.dbss`       | 8,439,640 B (84.8%)  | 1,515,680 B (15.2%) |
-| 1      | `buffoffset.dbss` | 378,940 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `buff.dbss`       | 8,252,173 B (84.8%)  | 1,481,200 B (15.2%) |
+| 1      | `buffoffset.dbss` | 370,320 B (100.0%)   | 0 B (0.0%)          |
 
 <!-- versions:end -->
 

@@ -22,6 +22,7 @@ import webview
 from api.bdo_api import Api
 from api.bdo_config import LEGACY_CONFIG_FILE
 from app_dirs import adopt_legacy_config, server_info_file
+from cli.coverage import run_coverage
 from cli.files import run_extract, run_list
 from cli.formats import run_formats, run_handler_version, run_handlers
 from cli.index import run_index
@@ -109,6 +110,10 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Print a lookup index, e.g. character_item; without KIND, list every kind",
     )
     commands.add_argument(
+        "--coverage", metavar="PATTERN", nargs="?", const="",
+        help="Parse every file that has a parsed view (or those matching PATTERN) and list the ones that fail",
+    )
+    commands.add_argument(
         "--map-tiles", action="store_true",
         help="Write the Map view's tiles to --dir, every zoom or only --zoom",
     )
@@ -186,6 +191,8 @@ def _command(args: argparse.Namespace) -> Callable[[argparse.Namespace], int] | 
         return run_render
     if args.index is not None:
         return run_index
+    if args.coverage is not None:
+        return run_coverage
     if args.map_tiles:
         return run_map_tiles
     if args.map_image:
@@ -205,10 +212,10 @@ def _check_options(parser: argparse.ArgumentParser, args: argparse.Namespace) ->
         for name in _RECORDS_ONLY:
             if getattr(args, name):
                 parser.error(f"--{name} needs --records")
-    if not (is_records or is_index or args.handler_version is not None):
+    if not (is_records or is_index or args.handler_version is not None or args.coverage is not None):
         for name in _FORMAT_OPTIONS:
             if getattr(args, name):
-                parser.error(f"--{name} needs --records, --index or --handler-version")
+                parser.error(f"--{name} needs --records, --index, --handler-version or --coverage")
     if args.limit is not None and not (is_records or is_index):
         parser.error("--limit needs --records or --index")
     if args.no_loc and not (is_records or args.render):

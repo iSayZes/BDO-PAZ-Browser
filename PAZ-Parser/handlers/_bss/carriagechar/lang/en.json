@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterKey": "Character Key",
+    "name": "Name",
+    "objectName": "World Map Model"
+  },
+  "meta": {
+    "count": "{count} character keys"
+  }
+}

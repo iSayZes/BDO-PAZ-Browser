@@ -12,6 +12,7 @@ from .bdoservanttitless.handler import BdoServantTitlesBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .branchquest.handler import BranchQuestBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
+from .carriagechar.handler import CarriageCharBssHandler
 from .charactersimply.handler import CharacterSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
@@ -143,6 +144,7 @@ def register_bss_handlers() -> None:
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("branchquest.bss", BranchQuestBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
+    register_handler("carriagechar.bss", CarriageCharBssHandler())
     register_handler("charactersimply.bss", CharacterSimplyBssHandler())
     register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())

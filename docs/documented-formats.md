@@ -43,6 +43,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `effect_name` string indices, `is_shown`, `is_debuff`, `remove_on_dead` and the equipment the buff needs | [buffsimply](file-formats/buffsimply_bss.md) | 1 | 0 |
 | `buildingbuff.dbss` | Villa buffs on sale: four lists by `Count_Villa` (only the first used) of buff index, skill number and silver cost | [buildingbuff](file-formats/buildingbuff_dbss.md) | 1 | 0 |
 | `buildingbuffoffset.dbss` | Index into `buildingbuff.dbss`, same lists, maps (list, buff index) → offset/size | [buildingbuff](file-formats/buildingbuff_dbss.md) | 1 | 0 |
+| `carriagechar.bss` | PABR list of the warehouse transport carrier characters, each with a world map model path (`WorldMap/WorldMap_Cart.pam`) | [carriagechar](file-formats/carriagechar_bss.md) | 1 | 0 |
 | `carriagespec.dbss` | Transport carriage types of the warehouse transport window: u8 carriage key, distance per minute, loadage, max and overload weight, base fee and fee per weight, trade goods flags (40-byte rows) | [carriagespec](file-formats/carriagespec_dbss.md) | 3 | 0 |
 | `carriagespecoffset.dbss` | Index into `carriagespec.dbss` with no magic: u8 carriage key, offset and size (9-byte rows) | [carriagespec](file-formats/carriagespec_dbss.md) | 3 | 0 |
 | `cashforui.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |

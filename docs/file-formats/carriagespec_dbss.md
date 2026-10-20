@@ -128,11 +128,11 @@ these columns.
   file of the same 2 rows in 36-byte rows with a 12-byte trailer: the order
   above without `camasilb_add_transport_max_weight`. Client 794 has neither
   file.
-- `carriagechar.bss` comes from the `New_Carriage_Table` sheet of the same
-  workbook (`CharacterKey`, `ObjectName`: world map models
-  `WorldMap_Cart.pam`, `WorldMap_WoodenBoat_small.pam`,
-  `WorldMap_SailingShip.pam`) and has no carriage key column, so it does not
-  join this file.
+- [`carriagechar.bss`](carriagechar_bss.md) comes from the
+  `New_Carriage_Table` sheet of the same workbook (`CharacterKey`,
+  `ObjectName`: world map models `WorldMap_Cart.pam`,
+  `WorldMap_WoodenBoat_small.pam`, `WorldMap_SailingShip.pam`) and has no
+  carriage key column, so it does not join this file.
 - The transport window (`panel_window_delivery_all`) labels deliverers at
   or above the client constant `__eDeliveryTradeCarriageIndex` with
   `LUA_DELIVERYNEW_FIVENUMBER_CARRIAGE` and the rest with

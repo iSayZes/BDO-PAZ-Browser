@@ -81,7 +81,7 @@ def _record_dict(record: SkillSimplyRecord, strings: dict) -> dict:
         "first_rank_key": record.first_rank_key,
         "exclusive_skill_nos": list(record.exclusive_skill_nos),
         "exclusive_skills": [_skill_label(no) for no in record.exclusive_skill_nos],
-        "base_skill_keys": list(record.base_skill_keys),
+        "related_cool_time_skill_keys": list(record.related_cool_time_skill_keys),
     }
 
 

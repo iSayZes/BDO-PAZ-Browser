@@ -55,7 +55,7 @@ CASE = HandlerCase(
             "skill_owner_type", "is_fusion", "can_quick_slot", "condition", "is_except_cool_time",
             "need_buff_module_type", "contents_group_keys",
             "need_level", "need_skill_point", "need_skill_nos", "need_skills", "previous_rank_no",
-            "previous_rank", "next_rank_keys", "first_rank_key", "exclusive_skill_nos", "base_skill_keys",
+            "previous_rank", "next_rank_keys", "first_rank_key", "exclusive_skill_nos", "related_cool_time_skill_keys",
         ]),
         DeclaredCountTest(declared=header_count(offset=4)),
         DeclaredCountTest(declared=header_count(offset=0, companion=_OFFSET_FILE)),
@@ -156,7 +156,7 @@ def test_every_linked_skill_is_in_the_table(skillsimply_result: HandlerResult) -
     keys = {r["skill_key"] for r in skillsimply_result.records}
     skill_nos = {r["skill_no"] for r in skillsimply_result.records}
     for record in skillsimply_result.records:
-        assert set(record["next_rank_keys"] + record["base_skill_keys"]) <= keys, record["skill_key"]
+        assert set(record["next_rank_keys"] + record["related_cool_time_skill_keys"]) <= keys, record["skill_key"]
         linked_nos = record["need_skill_nos"] + record["exclusive_skill_nos"]
         if record["previous_rank_no"]:
             linked_nos = linked_nos + [record["previous_rank_no"]]

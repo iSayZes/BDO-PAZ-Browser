@@ -14,7 +14,7 @@ record. A record, in order:
     | u16 need_skill_level_1 + u16 need_skill_no_1 | u16 + u16 need_skill_no_2 | u8[8]
     | u16 need_skill_point | u8[4]
     | u64 n + n x u16 exclusive_skill_nos
-    | u8[9] | u8 is_except_cool_time | u32 n + n x u32 base_skill_keys | u8 need_buff_module_type
+    | u8[9] | u8 is_except_cool_time | u32 n + n x u32 related_cool_time_skill_keys | u8 need_buff_module_type
 
 Full layout and the sheet columns behind the names in
 docs/file-formats/skillsimply_dbss.md.
@@ -45,7 +45,7 @@ _EQUIP = struct.Struct("<BBB4xBx4xIx")
 _CLASS = struct.Struct("<IBBxBHQ")
 # Two (need_skill_level, need_skill_no) pairs, eight zero bytes, need_skill_point, four zero bytes.
 _NEEDS = struct.Struct("<2xH2xH8xH4x")
-# Eight zero bytes and unknown_e08, then is_except_cool_time.
+# Eight zero bytes and is_attack_skill, then is_except_cool_time.
 _COOL_TIME = struct.Struct("<9xB")
 _NEED_BUFF_MODULE = struct.Struct("<B")
 
@@ -73,7 +73,7 @@ class SkillSimplyRecord:
     need_skill_point: int
     exclusive_skill_nos: tuple[int, ...]
     is_except_cool_time: bool
-    base_skill_keys: tuple[int, ...]
+    related_cool_time_skill_keys: tuple[int, ...]
     need_buff_module_type: int
 
     @property
@@ -111,7 +111,7 @@ def parse_skillsimply_record(data: bytes, row: PabrOffsetRow) -> SkillSimplyReco
     need_skill_no_1, need_skill_no_2, need_skill_point = reader.unpack(_NEEDS)
     exclusive_skill_nos = _list(reader, _U64, "H")
     (is_except_cool_time,) = reader.unpack(_COOL_TIME)
-    base_skill_keys = _list(reader, _U32, "I")
+    related_cool_time_skill_keys = _list(reader, _U32, "I")
     (need_buff_module_type,) = reader.unpack(_NEED_BUFF_MODULE)
     if not reader.at_end():
         raise ValueError(f"{label} ends {reader.remaining()} bytes before its index size")
@@ -140,7 +140,7 @@ def parse_skillsimply_record(data: bytes, row: PabrOffsetRow) -> SkillSimplyReco
         need_skill_point=need_skill_point,
         exclusive_skill_nos=exclusive_skill_nos,
         is_except_cool_time=bool(is_except_cool_time),
-        base_skill_keys=base_skill_keys,
+        related_cool_time_skill_keys=related_cool_time_skill_keys,
         need_buff_module_type=need_buff_module_type,
     )
 

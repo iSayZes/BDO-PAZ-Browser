@@ -1,6 +1,9 @@
 {
   "columns": {
-    "record": "레코드"
+    "fairyFeedKey": "먹이 키",
+    "enchantLevel": "강화 단계",
+    "feedValue": "먹이 수치",
+    "equipExp": "장비 경험치"
   },
   "meta": {
     "count": "항목 {count}개 · 레코드 {record_count}개"

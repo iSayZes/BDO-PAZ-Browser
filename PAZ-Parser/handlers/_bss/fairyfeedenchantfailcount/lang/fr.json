@@ -1,6 +1,9 @@
 {
   "columns": {
-    "record": "Enregistrement"
+    "fairyFeedKey": "Clé de nourrissage",
+    "enchantLevel": "Niveau d'optimisation",
+    "feedValue": "Valeur de nourrissage",
+    "equipExp": "EXP d'équipement"
   },
   "meta": {
     "count": "{count} entrées dans {record_count} enregistrements"

@@ -1,6 +1,9 @@
 {
   "columns": {
-    "record": "Datensatz"
+    "fairyFeedKey": "Fütterungsschlüssel",
+    "enchantLevel": "Verstärkungsstufe",
+    "feedValue": "Fütterungswert",
+    "equipExp": "Ausrüstungs-EP"
   },
   "meta": {
     "count": "{count} Einträge in {record_count} Datensätzen"

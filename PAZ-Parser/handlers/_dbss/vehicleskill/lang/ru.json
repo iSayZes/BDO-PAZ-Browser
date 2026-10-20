@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "key": "ID навыка",
+    "icon": "Значок",
+    "name": "Название",
+    "maxExp": "Макс. опыт",
+    "addExpForCheck": "Опыт за проверку",
+    "basePrice": "Нач. цена",
+    "addMatingRate": "Бонус скрещивания",
+    "isLearnFromItem": "Из предмета",
+    "keyCommand": "Управление",
+    "description": "Описание",
+    "consoleKeyCommand": "Управление (консоль)",
+    "trainingSkillCharacters": "Транспорт для укрощения",
+    "isMarketFilter": "Фильтр рынка",
+    "contentsGroups": "Группы контента",
+    "conditionDesc": "Условие",
+    "vehicleSkillLock": "Заблокирован",
+    "skillOrder": "Порядок",
+    "needLifeLevelForAutoSkill": "Уровень автонавыка"
+  },
+  "offsetColumns": {
+    "key": "ID навыка",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "{count} навыков транспорта и кораблей"
+  }
+}

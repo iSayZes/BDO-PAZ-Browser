@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "key": "Talent-ID",
+    "icon": "Symbol",
+    "name": "Name",
+    "maxExp": "Max. EP",
+    "addExpForCheck": "EP pro Prüfung",
+    "basePrice": "Standardpreis",
+    "addMatingRate": "Zuchtbonus",
+    "isLearnFromItem": "Durch Gegenstand",
+    "keyCommand": "Tastenbefehl",
+    "description": "Beschreibung",
+    "consoleKeyCommand": "Konsolen-Tastenbefehl",
+    "trainingSkillCharacters": "Abrichtungsdiener",
+    "isMarketFilter": "Marktfilter",
+    "contentsGroups": "Inhaltsgruppen",
+    "conditionDesc": "Bedingung",
+    "vehicleSkillLock": "Gesperrt",
+    "skillOrder": "Reihenfolge",
+    "needLifeLevelForAutoSkill": "Auto-Talent-Stufe"
+  },
+  "offsetColumns": {
+    "key": "Talent-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Reittier- und Schiffstalente"
+  }
+}

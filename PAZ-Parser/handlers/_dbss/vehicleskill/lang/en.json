@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "key": "Skill ID",
+    "icon": "Icon",
+    "name": "Name",
+    "maxExp": "Max EXP",
+    "addExpForCheck": "EXP per Check",
+    "basePrice": "Base Price",
+    "addMatingRate": "Breeding Bonus",
+    "isLearnFromItem": "Learned from Item",
+    "keyCommand": "Key Command",
+    "description": "Description",
+    "consoleKeyCommand": "Console Key Command",
+    "trainingSkillCharacters": "Training Servants",
+    "isMarketFilter": "Market Filter",
+    "contentsGroups": "Contents Groups",
+    "conditionDesc": "Condition",
+    "vehicleSkillLock": "Locked",
+    "skillOrder": "Skill Order",
+    "needLifeLevelForAutoSkill": "Auto Skill Level"
+  },
+  "offsetColumns": {
+    "key": "Skill ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} mount and ship skills"
+  }
+}

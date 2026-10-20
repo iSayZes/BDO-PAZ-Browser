@@ -155,6 +155,7 @@ from .characteraudioradius.handler import CharacterAudioRadiusHandler, character
 from .itemexchangetoclass.handler import ItemExchangeToClassHandler, item_exchange_to_class_offset_handler
 from .repairmaxendurance.handler import RepairMaxEnduranceHandler, repair_max_endurance_offset_handler
 from .guildquest.handler import GuildQuestHandler, guild_quest_offset_handler
+from .vehicleskill.handler import VehicleSkillHandler, vehicle_skill_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -349,3 +350,5 @@ def register_dbss_handlers() -> None:
     register_handler("repairmaxendurance.dbss", RepairMaxEnduranceHandler())
     register_handler("guildquestoffset.dbss", guild_quest_offset_handler())
     register_handler("guildquest.dbss", GuildQuestHandler())
+    register_handler("vehicleskilloffset.dbss", vehicle_skill_offset_handler())
+    register_handler("vehicleskill.dbss", VehicleSkillHandler())

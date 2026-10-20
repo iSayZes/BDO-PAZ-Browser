@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "key": "ID de habilidad",
+    "icon": "Icono",
+    "name": "Nombre",
+    "maxExp": "Exp. máx.",
+    "addExpForCheck": "Exp. por comprobación",
+    "basePrice": "Precio base",
+    "addMatingRate": "Bonificación de cría",
+    "isLearnFromItem": "Aprendida con objeto",
+    "keyCommand": "Comando",
+    "description": "Descripción",
+    "consoleKeyCommand": "Comando de consola",
+    "trainingSkillCharacters": "Monturas de doma",
+    "isMarketFilter": "Filtro del mercado",
+    "contentsGroups": "Grupos de contenido",
+    "conditionDesc": "Condición",
+    "vehicleSkillLock": "Bloqueada",
+    "skillOrder": "Orden",
+    "needLifeLevelForAutoSkill": "Nivel de habilidad auto"
+  },
+  "offsetColumns": {
+    "key": "ID de habilidad",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} habilidades de montura y barco"
+  }
+}

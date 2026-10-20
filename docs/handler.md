@@ -1055,12 +1055,14 @@ _common/
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
 ├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/
+├── vehicle_skill.py     # mount and ship skill names: LOC type 8, else the Korean vehicleskill.dbss name
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
 
 Read an offset companion with `parse_pabr_offset_rows()` (PABR magic, count,
 u16-keyed rows), `parse_pabr_u32_offset_rows()` (the same with u32 keys, e.g.
-`mentalcardoffset.dbss`), `parse_bare_offset_rows()`,
+`mentalcardoffset.dbss`), `parse_pabr_u8_offset_rows()` (u8 keys,
+`vehicleskilloffset.dbss`), `parse_bare_offset_rows()`,
 `parse_bare_u32_offset_rows()` or `parse_bare_u8_offset_rows()` (count, rows;
 the u8 key of `pcgrowthoffset.dbss`), never by hand. A u16 field
 followed by a zero u16 (`plantzoneoffset.dbss` keys, `petoffset.dbss` sizes)

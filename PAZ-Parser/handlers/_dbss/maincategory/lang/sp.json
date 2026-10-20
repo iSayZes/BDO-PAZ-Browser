@@ -6,6 +6,11 @@
   },
   "columns": {
     "categoryId": "ID de categoría",
+    "displayOrder": "Orden de visualización",
+    "tabImageNo": "Imagen de pestaña",
+    "categoryType": "Tipo de categoría",
+    "eventCategory": "Categoría de evento",
+    "isDisplay": "Visible",
     "icon": "Icono"
   },
   "meta": {

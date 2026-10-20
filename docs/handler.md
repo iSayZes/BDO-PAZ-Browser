@@ -1050,6 +1050,7 @@ _common/
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
+├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names

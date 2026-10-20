@@ -123,7 +123,7 @@ The entry layout is the one [npcsimply.bss](npcsimply_bss.md) uses: a u8 `is_wid
 
 ## Layout 1
 
-The client 1784 file (`Paz_1784`, 15,704 rows of 121 bytes). It has 4 more bytes after `model_path_hash` and a zero byte after `absolute_interaction`, and lacks `unknown_63` and `unknown_76`. Only Row differs from Layout 2. The parser reads only Layout 2.
+The client 1784 file (15,704 rows of 121 bytes). It has 4 more bytes after `model_path_hash` and a zero byte after `absolute_interaction`, and lacks `unknown_63` and `unknown_76`. Only Row differs from Layout 2. The parser reads only Layout 2.
 
 ### Row (121 bytes)
 

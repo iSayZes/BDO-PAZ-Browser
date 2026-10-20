@@ -398,7 +398,7 @@ parser reads only Layout 3.
 
 ## Layout 1
 
-The client 1784 file (`Paz_1784`, 16,485 records). Character Fields is 298
+The client 1784 file (15,704 records). Character Fields is 298
 bytes: it has a `stun_gauge`, 12 more zero bytes before `max_varied_speed`
 (the 12 extra bytes of the [experience.bss](experience_bss.md#layout-1) Layout
 1 Stat Body) and four other zero runs, and lacks `unknown_c7`. The tail has

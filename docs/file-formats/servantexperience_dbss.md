@@ -173,6 +173,23 @@ the same bytes in both on all but 15 records.
 
 ## Notes
 
+- A servant's base HP and stamina in game are its level row plus the
+  `max_hp` and `max_mp` of its own character record in
+  [characterstatic.dbss](characterstatic_dbss.md): 500.0 and 1 on 309 of
+  the horses in `servant.bss` (client 3474). Checked in game on client 3474
+  (2026-10-20) in Horse Growth Info, each horse picked out by its Base
+  Coat breed ([bdoservanttitless.bss](bdoservanttitless_bss.md)):
+
+  | Horse | Level 1 row HP, stamina | Shown HP, stamina |
+  | ----- | ----------------------- | ----------------- |
+  | 9953 and 9915 (tier 6) | 1,630, 3,400 | 2,130, 3,401 |
+  | 9890 (tier 8) | 1,792, 3,408 | 2,292, 3,409 |
+  | 31619 (Mythical Arduanatt) | 2,140, 3,540 | 2,640, 3,541 |
+  | 9909, 31529 or 31624 (tier 6 Breed 1) | 1,594, 3,240 | 2,094, 3,241 |
+
+  The movement stats match the row without an offset, and the shown base
+  does not change with mount level, Training level, Mount Brand or the
+  Horse Gear Set. The maximums carry the same +500 and +1.
 - The stable window (`panel_dialog_servantinfo_all_1.luac`, decompiled with
   unluac) shows the four speed stats as
   `servantInfo:getStat(CppEnums.ServantStatType.Type_*) / 10000` with one
@@ -287,14 +304,6 @@ The private server's own `servantexperience.dbss` (client 1784, 10,869 records) 
 `level` is an i32, the 2016 `_level`; its high half (`+0x04`, earlier `unknown_04`) is 0 on every record.
 
 ## Open Questions
-
-### The Inherent HP and Stamina Offset
-
-Both checked horses start 500 HP and 1 stamina above their level 1 row:
-the Mythical Arduanatt at 2,640 and 3,541 against 2,140 and 3,540, the tier
-6 horse at 2,130 and 3,401 against 1,630 and 3,400. Their maximums carry the
-same offset. Nothing in this record holds 500 or 1, so where the offset
-comes from is open.
 
 ### The Constant Fields
 

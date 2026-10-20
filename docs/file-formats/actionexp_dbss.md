@@ -14,15 +14,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------- | ------- | --------------------------------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `actionexp.dbss`       | 577,128 | 6,480 Level Row, 6,480 Level Entry, 102 Class Block | 85        |
 | 2      | 3473 and later | 3474    | `actionexpoffset.dbss` | 78,164  | 6,480 Offset Row, 101 Offset Block                  | 12        |
-| 1      | 1784           | 1784    | `actionexp.dbss`       | 295,248 | 3,640 Level Row, 3,640 Level Entry, 102 Class Block | 77        |
-| 1      | 1784           | 1784    | `actionexpoffset.dbss` | 44,084  | 3,640 Offset Row, 101 Offset Block                  | 12        |
+| 1      | 1784           | 1784    | `actionexp.dbss`       | 263,658 | 3,250 Level Row, 3,250 Level Entry, 102 Class Block | 77        |
+| 1      | 1784           | 1784    | `actionexpoffset.dbss` | 39,404  | 3,250 Offset Row, 101 Offset Block                  | 12        |
 
 | Layout | File                   | Known              | Unknown           |
 | ------ | ---------------------- | ------------------ | ----------------- |
 | 2      | `actionexp.dbss`       | 58,728 B (10.2%)   | 518,400 B (89.8%) |
 | 2      | `actionexpoffset.dbss` | 78,164 B (100.0%)  | 0 B (0.0%)        |
-| 1      | `actionexp.dbss`       | 295,248 B (100.0%) | 0 B (0.0%)        |
-| 1      | `actionexpoffset.dbss` | 44,084 B (100.0%)  | 0 B (0.0%)        |
+| 1      | `actionexp.dbss`       | 263,658 B (100.0%) | 0 B (0.0%)        |
+| 1      | `actionexpoffset.dbss` | 39,404 B (100.0%)  | 0 B (0.0%)        |
 
 <!-- versions:end -->
 

@@ -18,15 +18,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
 | 3      | 3473 and later | 3474    | `skill.dbss`       | 9,767,132 | 30,487 Skill Record, 30,487 Record | 210 to 1,540, 316 on average |
 | 3      | 3473 and later | 3474    | `skilloffset.dbss` | 365,864   | 30,487 Index Row                   | 12                           |
-| 1      | 1784           | 1784    | `skill.dbss`       | 8,290,437 | 27,580 Skill Record, 27,580 Record | 190 to 1,320, 297 on average |
-| 1      | 1784           | 1784    | `skilloffset.dbss` | 330,980   | 27,580 Index Row                   | 12                           |
+| 1      | 1784           | 1784    | `skill.dbss`       | 6,930,431 | 22,932 Skill Record, 22,932 Record | 190 to 1,246, 298 on average |
+| 1      | 1784           | 1784    | `skilloffset.dbss` | 275,204   | 22,932 Index Row                   | 12                           |
 
 | Layout | File               | Known               | Unknown          |
 | ------ | ------------------ | ------------------- | ---------------- |
 | 3      | `skill.dbss`       | 9,492,749 B (97.2%) | 274,383 B (2.8%) |
 | 3      | `skilloffset.dbss` | 365,864 B (100.0%)  | 0 B (0.0%)       |
-| 1      | `skill.dbss`       | 8,152,537 B (98.3%) | 137,900 B (1.7%) |
-| 1      | `skilloffset.dbss` | 330,980 B (100.0%)  | 0 B (0.0%)       |
+| 1      | `skill.dbss`       | 6,815,771 B (98.3%) | 114,660 B (1.7%) |
+| 1      | `skilloffset.dbss` | 275,204 B (100.0%)  | 0 B (0.0%)       |
 
 <!-- versions:end -->
 

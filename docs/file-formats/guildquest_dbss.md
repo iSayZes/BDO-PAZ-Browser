@@ -20,15 +20,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ----------------------- | ------- | --------------------------- | --------- |
 | 2      | 3474 and later | 3474    | `guildquest.dbss`       | 244,538 | 999 Reward Entry, 140 Row   | 178       |
 | 2      | 3474 and later | 3474    | `guildquestoffset.dbss` | 1,684   | 140 Offset Row              | 12        |
-| 1      | 1784           | 1784    | `guildquest.dbss`       | 567,578 | 2,037 Reward Entry, 339 Row | 188       |
+| 1      | 1784           | 1784    | `guildquest.dbss`       | 400,070 | 1,146 Reward Entry, 339 Row | 188       |
 | 1      | 1784           | 1784    | `guildquestoffset.dbss` | 4,072   | 339 Offset Row              | 12        |
 
-| Layout | File                    | Known             | Unknown           |
-| ------ | ----------------------- | ----------------- | ----------------- |
-| 2      | `guildquest.dbss`       | 180,726 B (73.9%) | 63,812 B (26.1%)  |
-| 2      | `guildquestoffset.dbss` | 1,684 B (100.0%)  | 0 B (0.0%)        |
-| 1      | `guildquest.dbss`       | 419,564 B (73.9%) | 148,014 B (26.1%) |
-| 1      | `guildquestoffset.dbss` | 4,072 B (100.0%)  | 0 B (0.0%)        |
+| Layout | File                    | Known             | Unknown          |
+| ------ | ----------------------- | ----------------- | ---------------- |
+| 2      | `guildquest.dbss`       | 180,726 B (73.9%) | 63,812 B (26.1%) |
+| 2      | `guildquestoffset.dbss` | 1,684 B (100.0%)  | 0 B (0.0%)       |
+| 1      | `guildquest.dbss`       | 314,426 B (78.6%) | 85,644 B (21.4%) |
+| 1      | `guildquestoffset.dbss` | 4,072 B (100.0%)  | 0 B (0.0%)       |
 
 <!-- versions:end -->
 

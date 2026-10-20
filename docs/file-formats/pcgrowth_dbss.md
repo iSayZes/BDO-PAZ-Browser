@@ -16,14 +16,14 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | --------------------- | ------ | -------------------------------------------------------------------------------------------------- | ----------------------- |
 | 2      | 3473 and later | 3474    | `pcgrowth.dbss`       | 55,280 | 47 Setup Block, 47 Presentation Block, 250 Model Entry, 94 Model List, 47 Class Record, 47 Record  | 53 to 71, 58 on average |
 | 2      | 3473 and later | 3474    | `pcgrowthoffset.dbss` | 427    | 47 Offset Row                                                                                      | 9                       |
-| 1      | 1784           | 1784    | `pcgrowth.dbss`       | 64,866 | 82 Setup Block, 82 Presentation Block, 164 Model List, 82 Class Record, 82 Record, 162 Model Entry | 4 to 196, 62 on average |
+| 1      | 1784           | 1784    | `pcgrowth.dbss`       | 62,970 | 82 Setup Block, 82 Presentation Block, 164 Model List, 82 Class Record, 82 Record, 144 Model Entry | 4 to 196, 55 on average |
 | 1      | 1784           | 1784    | `pcgrowthoffset.dbss` | 742    | 82 Offset Row                                                                                      | 9                       |
 
 | Layout | File                  | Known            | Unknown         |
 | ------ | --------------------- | ---------------- | --------------- |
 | 2      | `pcgrowth.dbss`       | 49,013 B (88.7%) | 6,267 B (11.3%) |
 | 2      | `pcgrowthoffset.dbss` | 427 B (100.0%)   | 0 B (0.0%)      |
-| 1      | `pcgrowth.dbss`       | 57,552 B (88.7%) | 7,314 B (11.3%) |
+| 1      | `pcgrowth.dbss`       | 55,656 B (88.4%) | 7,314 B (11.6%) |
 | 1      | `pcgrowthoffset.dbss` | 742 B (100.0%)   | 0 B (0.0%)      |
 
 <!-- versions:end -->

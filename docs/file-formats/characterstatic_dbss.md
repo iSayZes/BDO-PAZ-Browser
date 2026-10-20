@@ -16,15 +16,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------------- | ---------- | ------------------------------------------------------------ | --------- |
 | 3      | 3464 and later | 3474    | `characterstatic.dbss`       | 13,561,073 | 24,553 Character Fields, 24,553 Payload, 24,553 Stream Entry | 287       |
 | 3      | 3464 and later | 3474    | `characterstaticoffset.dbss` | 245,550    | 24,553 Index Row                                             | 10        |
-| 1      | 1784           | 1784    | `characterstatic.dbss`       | 9,629,634  | 16,485 Character Fields, 16,485 Payload, 16,485 Stream Entry | 298       |
-| 1      | 1784           | 1784    | `characterstaticoffset.dbss` | 164,870    | 16,485 Index Row                                             | 10        |
+| 1      | 1784           | 1784    | `characterstatic.dbss`       | 9,145,762  | 15,704 Character Fields, 15,704 Payload, 15,704 Stream Entry | 298       |
+| 1      | 1784           | 1784    | `characterstaticoffset.dbss` | 157,060    | 15,704 Index Row                                             | 10        |
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
 | 3      | `characterstatic.dbss`       | 9,706,252 B (71.6%) | 3,854,821 B (28.4%) |
 | 3      | `characterstaticoffset.dbss` | 245,550 B (100.0%)  | 0 B (0.0%)          |
-| 1      | `characterstatic.dbss`       | 6,398,574 B (66.4%) | 3,231,060 B (33.6%) |
-| 1      | `characterstaticoffset.dbss` | 164,870 B (100.0%)  | 0 B (0.0%)          |
+| 1      | `characterstatic.dbss`       | 6,130,594 B (67.0%) | 3,015,168 B (33.0%) |
+| 1      | `characterstaticoffset.dbss` | 157,060 B (100.0%)  | 0 B (0.0%)          |
 
 <!-- versions:end -->
 

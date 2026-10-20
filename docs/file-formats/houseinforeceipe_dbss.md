@@ -19,15 +19,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
 | 2      | 3473 and later | 3474    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
 | 2      | 3473 and later | 3474    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
-| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,902 | 490 Level List, 98 Row  | 4 to 156, 16 on average |
-| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,180  | 98 Index Row            | 12                      |
+| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,819 | 485 Level List, 97 Row  | 4 to 156, 16 on average |
+| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,168  | 97 Index Row            | 12                      |
 
 | Layout | File                          | Known            | Unknown        |
 | ------ | ----------------------------- | ---------------- | -------------- |
 | 2      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
 | 2      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
-| 1      | `houseinforeceipe.dbss`       | 10,510 B (96.4%) | 392 B (3.6%)   |
-| 1      | `houseinforeceipeoffset.dbss` | 1,180 B (100.0%) | 0 B (0.0%)     |
+| 1      | `houseinforeceipe.dbss`       | 10,431 B (96.4%) | 388 B (3.6%)   |
+| 1      | `houseinforeceipeoffset.dbss` | 1,168 B (100.0%) | 0 B (0.0%)     |
 
 <!-- versions:end -->
 

@@ -23,15 +23,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | -------------------------------- | ---------- | ------------------------------- | ----------------------- |
 | 2      | 3473 and later | 3474    | `enchantstaticstatus.dbss`       | 23,776,392 | 100,512 Lane Dice, 33,504 Block | 18 to 28, 22 on average |
 | 2      | 3473 and later | 3474    | `enchantstaticstatusoffset.dbss` | 402,068    | 33,504 Offset Row               | 12                      |
-| 1      | 1784           | 1784    | `enchantstaticstatus.dbss`       | 23,536,214 | 101,415 Lane Dice, 33,805 Block | 18 to 28, 22 on average |
-| 1      | 1784           | 1784    | `enchantstaticstatusoffset.dbss` | 405,680    | 33,805 Offset Row               | 12                      |
+| 1      | 1784           | 1784    | `enchantstaticstatus.dbss`       | 19,472,396 | 83,271 Lane Dice, 27,757 Block  | 18 to 28, 22 on average |
+| 1      | 1784           | 1784    | `enchantstaticstatusoffset.dbss` | 333,104    | 27,757 Offset Row               | 12                      |
 
 | Layout | File                             | Known                | Unknown             |
 | ------ | -------------------------------- | -------------------- | ------------------- |
 | 2      | `enchantstaticstatus.dbss`       | 19,621,896 B (82.5%) | 4,154,496 B (17.5%) |
 | 2      | `enchantstaticstatusoffset.dbss` | 402,068 B (100.0%)   | 0 B (0.0%)          |
-| 1      | `enchantstaticstatus.dbss`       | 19,344,394 B (82.2%) | 4,191,820 B (17.8%) |
-| 1      | `enchantstaticstatusoffset.dbss` | 405,680 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `enchantstaticstatus.dbss`       | 16,030,528 B (82.3%) | 3,441,868 B (17.7%) |
+| 1      | `enchantstaticstatusoffset.dbss` | 333,104 B (100.0%)   | 0 B (0.0%)          |
 
 <!-- versions:end -->
 

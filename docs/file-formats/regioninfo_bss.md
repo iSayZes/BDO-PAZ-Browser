@@ -17,12 +17,12 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
-| 1      | 1784           | 1784    | `regioninfo.bss` | 556,117 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
+| 1      | 1784           | 1784    | `regioninfo.bss` | 555,464 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |
 | ------ | ---------------- | ----------------- | ----------------- |
 | 2      | `regioninfo.bss` | 244,883 B (38.0%) | 398,786 B (62.0%) |
-| 1      | `regioninfo.bss` | 159,093 B (28.6%) | 397,024 B (71.4%) |
+| 1      | `regioninfo.bss` | 160,930 B (29.0%) | 394,534 B (71.0%) |
 
 <!-- versions:end -->
 

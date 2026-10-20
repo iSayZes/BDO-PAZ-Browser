@@ -18,15 +18,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------------------- | ------ | ------------------------- | -------------------------- |
 | 2      | 3473 and later | 3474    | `itemtradegroupfromnpc.dbss`       | 4      | -                         | -                          |
 | 2      | 3473 and later | 3474    | `itemtradegroupfromnpcoffset.dbss` | 4      | -                         | -                          |
-| 1      | 1784           | 1784    | `itemtradegroupfromnpc.dbss`       | 68,899 | 459 Item Entry, 129 Group | 123 to 159, 148 on average |
-| 1      | 1784           | 1784    | `itemtradegroupfromnpcoffset.dbss` | 1,294  | 129 Index Row             | 10                         |
+| 1      | 1784           | 1784    | `itemtradegroupfromnpc.dbss`       | 67,603 | 451 Item Entry, 125 Group | 123 to 159, 148 on average |
+| 1      | 1784           | 1784    | `itemtradegroupfromnpcoffset.dbss` | 1,254  | 125 Index Row             | 10                         |
 
 | Layout | File                               | Known            | Unknown          |
 | ------ | ---------------------------------- | ---------------- | ---------------- |
 | 2      | `itemtradegroupfromnpc.dbss`       | 4 B (100.0%)     | 0 B (0.0%)       |
 | 2      | `itemtradegroupfromnpcoffset.dbss` | 4 B (100.0%)     | 0 B (0.0%)       |
-| 1      | `itemtradegroupfromnpc.dbss`       | 4,450 B (6.5%)   | 64,449 B (93.5%) |
-| 1      | `itemtradegroupfromnpcoffset.dbss` | 1,294 B (100.0%) | 0 B (0.0%)       |
+| 1      | `itemtradegroupfromnpc.dbss`       | 4,362 B (6.5%)   | 63,241 B (93.5%) |
+| 1      | `itemtradegroupfromnpcoffset.dbss` | 1,254 B (100.0%) | 0 B (0.0%)       |
 
 <!-- versions:end -->
 

@@ -19,15 +19,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------------------ | --------- | --------------------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
 | 2      | 3473 and later | 3474    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
-| 1      | 1784           | 1784    | `servantexperience.dbss`       | 4,359,226 | 32,607 Body String, 10,869 Level Record | 18        |
-| 1      | 1784           | 1784    | `servantexperienceoffset.dbss` | 130,432   | 10,869 Index Row                        | 12        |
+| 1      | 1784           | 1784    | `servantexperience.dbss`       | 4,209,202 | 31,485 Body String, 10,495 Level Record | 18        |
+| 1      | 1784           | 1784    | `servantexperienceoffset.dbss` | 125,944   | 10,495 Index Row                        | 12        |
 
 | Layout | File                           | Known               | Unknown             |
 | ------ | ------------------------------ | ------------------- | ------------------- |
 | 2      | `servantexperience.dbss`       | 3,890,890 B (46.5%) | 4,469,390 B (53.5%) |
 | 2      | `servantexperienceoffset.dbss` | 250,624 B (100.0%)  | 0 B (0.0%)          |
-| 1      | `servantexperience.dbss`       | 1,881,094 B (43.2%) | 2,478,132 B (56.8%) |
-| 1      | `servantexperienceoffset.dbss` | 130,432 B (100.0%)  | 0 B (0.0%)          |
+| 1      | `servantexperience.dbss`       | 1,816,342 B (43.2%) | 2,392,860 B (56.8%) |
+| 1      | `servantexperienceoffset.dbss` | 125,944 B (100.0%)  | 0 B (0.0%)          |
 
 <!-- versions:end -->
 

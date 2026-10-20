@@ -14,18 +14,18 @@ skill condition as an inline script, and the item it grows into.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes               |
-| ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | ----------------------- |
-| 2      | 3473 and later | 3474    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94                      |
-| 2      | 3473 and later | 3474    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12                      |
-| 1      | 1784           | 1784    | `alchemystonechange.dbss`       | 9,604  | 164 Row       | 40 to 78, 59 on average |
-| 1      | 1784           | 1784    | `alchemystonechangeoffset.dbss` | 1,972  | 164 Index Row | 12                      |
+| Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes |
+| ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | --------- |
+| 2      | 3473 and later | 3474    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
+| 2      | 3473 and later | 3474    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
+| 1      | 1784           | 1784    | `alchemystonechange.dbss`       | 12,796 | 164 Row       | 78        |
+| 1      | 1784           | 1784    | `alchemystonechangeoffset.dbss` | 1,972  | 164 Index Row | 12        |
 
 | Layout | File                            | Known            | Unknown         |
 | ------ | ------------------------------- | ---------------- | --------------- |
 | 2      | `alchemystonechange.dbss`       | 8,782 B (70.2%)  | 3,724 B (29.8%) |
 | 2      | `alchemystonechangeoffset.dbss` | 1,600 B (100.0%) | 0 B (0.0%)      |
-| 1      | `alchemystonechange.dbss`       | 6,980 B (72.7%)  | 2,624 B (27.3%) |
+| 1      | `alchemystonechange.dbss`       | 10,172 B (79.5%) | 2,624 B (20.5%) |
 | 1      | `alchemystonechangeoffset.dbss` | 1,972 B (100.0%) | 0 B (0.0%)      |
 
 <!-- versions:end -->

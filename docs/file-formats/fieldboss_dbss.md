@@ -20,15 +20,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
 | 2      | 3473 and later | 3474    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
 | 2      | 3473 and later | 3474    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
-| 1      | 1784           | 1784    | `fieldboss.dbss`       | 22,789 | 735 Row       | 31        |
-| 1      | 1784           | 1784    | `fieldbossoffset.dbss` | 7,354  | 735 Index Row | 10        |
+| 1      | 1784           | 1784    | `fieldboss.dbss`       | 16,868 | 544 Row       | 31        |
+| 1      | 1784           | 1784    | `fieldbossoffset.dbss` | 5,444  | 544 Index Row | 10        |
 
 | Layout | File                   | Known            | Unknown          |
 | ------ | ---------------------- | ---------------- | ---------------- |
 | 2      | `fieldboss.dbss`       | 2,780 B (12.1%)  | 20,126 B (87.9%) |
 | 2      | `fieldbossoffset.dbss` | 6,944 B (100.0%) | 0 B (0.0%)       |
-| 1      | `fieldboss.dbss`       | 2,944 B (12.9%)  | 19,845 B (87.1%) |
-| 1      | `fieldbossoffset.dbss` | 7,354 B (100.0%) | 0 B (0.0%)       |
+| 1      | `fieldboss.dbss`       | 2,180 B (12.9%)  | 14,688 B (87.1%) |
+| 1      | `fieldbossoffset.dbss` | 5,444 B (100.0%) | 0 B (0.0%)       |
 
 <!-- versions:end -->
 

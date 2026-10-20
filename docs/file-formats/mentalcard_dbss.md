@@ -16,15 +16,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ----------------------- | --------- | ---------------- | ---------------------------- |
 | 2      | 3473 and later | 3474    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
 | 2      | 3473 and later | 3474    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
-| 1      | 1784           | 1784    | `mentalcard.dbss`       | 4,002,305 | 8,092 Card       | 161 to 2,258, 495 on average |
-| 1      | 1784           | 1784    | `mentalcardoffset.dbss` | 97,124    | 8,092 Index Row  | 12                           |
+| 1      | 1784           | 1784    | `mentalcard.dbss`       | 3,695,047 | 7,635 Card       | 161 to 2,248, 484 on average |
+| 1      | 1784           | 1784    | `mentalcardoffset.dbss` | 91,640    | 7,635 Index Row  | 12                           |
 
 | Layout | File                    | Known               | Unknown          |
 | ------ | ----------------------- | ------------------- | ---------------- |
 | 2      | `mentalcard.dbss`       | 6,178,315 B (95.6%) | 283,608 B (4.4%) |
 | 2      | `mentalcardoffset.dbss` | 151,268 B (100.0%)  | 0 B (0.0%)       |
-| 1      | `mentalcard.dbss`       | 3,827,629 B (95.6%) | 174,676 B (4.4%) |
-| 1      | `mentalcardoffset.dbss` | 97,124 B (100.0%)   | 0 B (0.0%)       |
+| 1      | `mentalcard.dbss`       | 3,529,976 B (95.5%) | 165,071 B (4.5%) |
+| 1      | `mentalcardoffset.dbss` | 91,640 B (100.0%)   | 0 B (0.0%)       |
 
 <!-- versions:end -->
 

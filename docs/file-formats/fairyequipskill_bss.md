@@ -18,10 +18,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | 3473 and later | 3474    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
 | 1      | 1784           | 1784    | `fairyequipskill.bss` | 1,576 | 30 Skill Record, 100 Slot | 12        |
 
-| Layout | File                  | Known           | Unknown       |
-| ------ | --------------------- | --------------- | ------------- |
-| 2      | `fairyequipskill.bss` | 2,836 B (78.0%) | 800 B (22.0%) |
-| 1      | `fairyequipskill.bss` | 716 B (45.4%)   | 860 B (54.6%) |
+| Layout | File                  | Known            | Unknown       |
+| ------ | --------------------- | ---------------- | ------------- |
+| 2      | `fairyequipskill.bss` | 2,836 B (78.0%)  | 800 B (22.0%) |
+| 1      | `fairyequipskill.bss` | 1,576 B (100.0%) | 0 B (0.0%)    |
 
 <!-- versions:end -->
 

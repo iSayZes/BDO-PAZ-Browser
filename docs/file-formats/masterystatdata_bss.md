@@ -42,7 +42,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | 3473 and later | 3474    | `sailstatdata.bss`       | 2,704  | 61 Sailing Row                         | 44        |
 | 2      | 3473 and later | 3474    | `trainingstatdata.bss`   | 996    | 61 Training Row                        | 16        |
 | 1      | 1784           | 1784    | `alchemystatdata.bss`    | 1,414  | 41 Alchemy Row                         | 34        |
-| 1      | 1784           | 1784    | `collectingstatdata.bss` | 11,416 | 15 Gathering Group, 315 Gathering Row  | 36        |
+| 1      | 1784           | 1784    | `collectingstatdata.bss` | 10,408 | 15 Gathering Group, 287 Gathering Row  | 36        |
 | 1      | 1784           | 1784    | `cookingstatdata.bss`    | 1,004  | 41 Cooking Row                         | 24        |
 | 1      | 1784           | 1784    | `fishingstatdata.bss`    | 348    | 41 Fishing Row                         | 8         |
 | 1      | 1784           | 1784    | `huntingstatdata.bss`    | 1,496  | 41 Hunting Row                         | 36        |
@@ -61,7 +61,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `sailstatdata.bss`       | 2,216 B (82.0%)  | 488 B (18.0%)   |
 | 2      | `trainingstatdata.bss`   | 996 B (100.0%)   | 0 B (0.0%)      |
 | 1      | `alchemystatdata.bss`    | 1,168 B (82.6%)  | 246 B (17.4%)   |
-| 1      | `collectingstatdata.bss` | 8,896 B (77.9%)  | 2,520 B (22.1%) |
+| 1      | `collectingstatdata.bss` | 8,112 B (77.9%)  | 2,296 B (22.1%) |
 | 1      | `cookingstatdata.bss`    | 1,004 B (100.0%) | 0 B (0.0%)      |
 | 1      | `fishingstatdata.bss`    | 348 B (100.0%)   | 0 B (0.0%)      |
 | 1      | `huntingstatdata.bss`    | 348 B (23.3%)    | 1,148 B (76.7%) |

@@ -14,15 +14,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `characterobject.dbss`       | 8,182,196 | 28,202 Face, 2,321 Hull, 1,079 Hull Layer, 295 Structure Suffix, 1,160 Structure Body, 5,129 Record, 3,969 Furniture Block, 3,969 Furniture Tail, 3,969 Furniture Body, 865 House Tail | 140       |
 | 2      | 3473 and later | 3474    | `characterobjectoffset.dbss` | 51,310    | 5,129 Index Row                                                                                                                                                                        | 10        |
-| 1      | 1784           | 1784    | `characterobject.dbss`       | 6,323,392 | 2,566 Furniture Block, 2,566 Furniture Tail, 2,566 Furniture Body, 3,523 Record, 25,262 Face, 2,078 Hull, 985 Hull Layer, 149 Structure Suffix, 957 Structure Body, 808 House Tail     | 140       |
-| 1      | 1784           | 1784    | `characterobjectoffset.dbss` | 35,250    | 3,523 Index Row                                                                                                                                                                        | 10        |
+| 1      | 1784           | 1784    | `characterobject.dbss`       | 6,264,431 | 2,530 Furniture Block, 2,530 Furniture Tail, 2,530 Furniture Body, 3,480 Record, 25,082 Face, 2,063 Hull, 978 Hull Layer, 149 Structure Suffix, 950 Structure Body, 801 House Tail     | 140       |
+| 1      | 1784           | 1784    | `characterobjectoffset.dbss` | 34,820    | 3,480 Index Row                                                                                                                                                                        | 10        |
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
 | 2      | `characterobject.dbss`       | 1,382,626 B (16.9%) | 6,799,570 B (83.1%) |
 | 2      | `characterobjectoffset.dbss` | 51,310 B (100.0%)   | 0 B (0.0%)          |
-| 1      | `characterobject.dbss`       | 992,934 B (15.7%)   | 5,330,458 B (84.3%) |
-| 1      | `characterobjectoffset.dbss` | 35,250 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `characterobject.dbss`       | 980,943 B (15.7%)   | 5,283,488 B (84.3%) |
+| 1      | `characterobjectoffset.dbss` | 34,820 B (100.0%)   | 0 B (0.0%)          |
 
 <!-- versions:end -->
 

@@ -21,15 +21,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | -------------------------------- | ------ | -------------- | --------- |
 | 2      | 3474 and later | 3474    | `itemexchangetoclass.dbss`       | 39,404 | 200 Row        | 197       |
 | 2      | 3474 and later | 3474    | `itemexchangetoclassoffset.dbss` | 2,404  | 200 Offset Row | 12        |
-| 1      | 1784           | 1784    | `itemexchangetoclass.dbss`       | 23,431 | 171 Row        | 137       |
-| 1      | 1784           | 1784    | `itemexchangetoclassoffset.dbss` | 2,056  | 171 Offset Row | 12        |
+| 1      | 1784           | 1784    | `itemexchangetoclass.dbss`       | 22,198 | 162 Row        | 137       |
+| 1      | 1784           | 1784    | `itemexchangetoclassoffset.dbss` | 1,948  | 162 Offset Row | 12        |
 
 | Layout | File                             | Known             | Unknown    |
 | ------ | -------------------------------- | ----------------- | ---------- |
 | 2      | `itemexchangetoclass.dbss`       | 39,404 B (100.0%) | 0 B (0.0%) |
 | 2      | `itemexchangetoclassoffset.dbss` | 2,404 B (100.0%)  | 0 B (0.0%) |
-| 1      | `itemexchangetoclass.dbss`       | 23,431 B (100.0%) | 0 B (0.0%) |
-| 1      | `itemexchangetoclassoffset.dbss` | 2,056 B (100.0%)  | 0 B (0.0%) |
+| 1      | `itemexchangetoclass.dbss`       | 22,198 B (100.0%) | 0 B (0.0%) |
+| 1      | `itemexchangetoclassoffset.dbss` | 1,948 B (100.0%)  | 0 B (0.0%) |
 
 <!-- versions:end -->
 

@@ -96,4 +96,6 @@ def _record_fields(index: int, recipe: Recipe, groups: DropGroups) -> dict:
         "has_result_group": groups.has(recipe.result_group),
         "result_item_keys": result_item_keys,
         "result_items": [item_key_text(key) for key in result_item_keys],
+        # The sheet's SuccessPercent; the doc's In-Game Checks test its scale.
+        "success_percent": recipe.success_percent,
     }

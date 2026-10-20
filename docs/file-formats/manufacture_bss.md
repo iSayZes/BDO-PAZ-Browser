@@ -13,12 +13,12 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | Clients        | Checked | File              | Bytes   | Records                    | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------- | -------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `manufacture.bss` | 417,753 | 15,361 Material, 7,064 Row | 12        |
-| 1      | 1784           | 1784    | `manufacture.bss` | 466,321 | 16,442 Material, 8,668 Row | 12        |
+| 1      | 1784           | 1784    | `manufacture.bss` | 234,555 | 7,787 Material, 4,542 Row  | 12        |
 
-| Layout | File              | Known             | Unknown           |
-| ------ | ----------------- | ----------------- | ----------------- |
-| 2      | `manufacture.bss` | 325,921 B (78.0%) | 91,832 B (22.0%)  |
-| 1      | `manufacture.bss` | 336,301 B (72.1%) | 130,020 B (27.9%) |
+| Layout | File              | Known              | Unknown    |
+| ------ | ----------------- | ------------------ | ---------- |
+| 2      | `manufacture.bss` | 417,753 B (100.0%) | 0 B (0.0%) |
+| 1      | `manufacture.bss` | 234,555 B (100.0%) | 0 B (0.0%) |
 
 <!-- versions:end -->
 
@@ -50,17 +50,17 @@ The string table has the shape `itemmaingroup.bss`, `exploration.bss` and `npcsi
 
 ### Row (variable: 33 bytes + materials)
 
-| Offset  | Type                     | Field          | Notes                                                                                   |
-| ------- | ------------------------ | -------------- | --------------------------------------------------------------------------------------- |
-| `+0x00` | u32                      | first_item_key | Packed item key, equal to `materials[0].item_key` on every row                          |
-| `+0x04` | bytes[8]                 | unknown_04     | Always zero                                                                             |
-| `+0x0C` | u32                      | action_index   | Index into the string table, see [Actions](#actions)                                    |
-| `+0x10` | u32                      | unknown_10     | `1,000,000`, `700,000`, `900,000` or `850,000`, see In-Game Checks                      |
-| `+0x14` | u32                      | action_hash    | Hash of the action name, see below; matches `action_index` on every row                 |
-| `+0x18` | u8                       | unknown_18     | Always `40`                                                                             |
-| `+0x19` | u32                      | result_group   | `itemmaingroup.bss` group ID; unaligned                                                 |
-| `+0x1D` | u32                      | material_count | `1` to `5`; unaligned                                                                   |
-| `+0x21` | Material[material_count] | materials      | See Material                                                                            |
+| Offset  | Type                     | Field             | Notes                                                                             |
+| ------- | ------------------------ | ----------------- | --------------------------------------------------------------------------------- |
+| `+0x00` | u32                      | first_item_key    | Packed item key, equal to `materials[0].item_key` on every row                    |
+| `+0x04` | i64                      | check_time        | Always `0`                                                                        |
+| `+0x0C` | u32                      | action_index      | Index into the string table, see [Actions](#actions)                              |
+| `+0x10` | i32                      | success_percent   | `1,000,000`, `700,000`, `900,000` or `850,000`, see In-Game Checks                |
+| `+0x14` | u32                      | action_hash       | Hash of the action name, see below; matches `action_index` on every row           |
+| `+0x18` | u8                       | installation_type | Always `40`, `InstallationType.TypeCount`, see [Field Names](#field-names)        |
+| `+0x19` | u32                      | result_group      | `itemmaingroup.bss` group ID; unaligned                                           |
+| `+0x1D` | u32                      | material_count    | `1` to `5`; unaligned                                                             |
+| `+0x21` | Material[material_count] | materials         | See Material                                                                      |
 
 ### Material (12 bytes)
 
@@ -82,23 +82,79 @@ The entries of a row are in ascending `item_key` order on every row, so `first_i
 
 ## Layout 1
 
-On client 1784 the row holds a u16 `unknown_19`, always `0`, where Layout 2
-has the u32 `result_group`, so `material_count` sits at `+0x1B` and the
-fixed part is 31 bytes. Only the Row differs from Layout 2.
+On client 1784 `result_group` is a u16, the width of the struct member it
+fills (see [Field Names](#field-names)), so `material_count` sits at `+0x1B`
+and the fixed part is 31 bytes. Only the Row differs from Layout 2.
 
 ### Row (variable: 31 bytes + materials)
 
-| Offset  | Type                     | Field          | Notes                                   |
-| ------- | ------------------------ | -------------- | --------------------------------------- |
-| `+0x00` | u32                      | first_item_key |                                         |
-| `+0x04` | bytes[8]                 | unknown_04     | Always zero on client 1784              |
-| `+0x0C` | u32                      | action_index   |                                         |
-| `+0x10` | u32                      | unknown_10     | Always `0` on client 1784               |
-| `+0x14` | u32                      | action_hash    |                                         |
-| `+0x18` | u8                       | unknown_18     | Always `39` on client 1784              |
-| `+0x19` | u16                      | unknown_19     | Always `0` on client 1784               |
-| `+0x1B` | u32                      | material_count | `1` to `5`                              |
-| `+0x1F` | Material[material_count] | materials      |                                         |
+| Offset  | Type                     | Field             | Notes                                                 |
+| ------- | ------------------------ | ----------------- | ----------------------------------------------------- |
+| `+0x00` | u32                      | first_item_key    |                                                       |
+| `+0x04` | i64                      | check_time        | Always `0` on client 1784                             |
+| `+0x0C` | u32                      | action_index      |                                                       |
+| `+0x10` | i32                      | success_percent   | Always `0` on client 1784                             |
+| `+0x14` | u32                      | action_hash       |                                                       |
+| `+0x18` | u8                       | installation_type | Always `39` on client 1784, that client's `TypeCount` |
+| `+0x19` | u16                      | result_group      | Always `0` on client 1784                             |
+| `+0x1B` | u32                      | material_count    | `1` to `5`                                            |
+| `+0x1F` | Material[material_count] | materials         |                                                       |
+
+## Field Names
+
+The 2016 client's debug symbols (`BlackDesert64.pdb`) list the members of
+`gc::ManufactureStaticStatus` in this order: the material list,
+`__int64 _checkTime`, `int _successPercent`, `_strActionName`,
+`unsigned int _hashcodeActionName`, the one-byte
+`gc::InstallationType _installationType`,
+`KeyType<unsigned short> _resultItemGroupKey` and a contents group key list.
+The manager keeps the rows in a multimap keyed by `gc::ItemEnchantKey`, the
+role of `first_item_key`.
+
+The `Manufacture_Table` sheet of a private server on client 1784 has one
+column per member: `MaterialItem1` to `5` with `MaterialItemCount` and
+`EnchantLevel`, `ResultDropGroup`, `CheckTime`, `SuccessPercent`,
+`ActionName`, `UsingInstallationType` and `ContentsGroupKey`. That server's
+dump (`Instance_dumpFull.exe`) loads the sheet (loader at VA `0x1409ac090`)
+into members in the 2016 order:
+
+| Field               | Sheet column            | Member (2016)         | Column read in the dump                                          |
+| ------------------- | ----------------------- | --------------------- | ---------------------------------------------------------------- |
+| `check_time`        | `CheckTime`             | `_checkTime`          | VA `0x1409ac9f6`, widened to 64 bits                             |
+| `success_percent`   | `SuccessPercent`        | `_successPercent`     | VA `0x1409aca34`, 32 bits                                        |
+| `action_index`      | `ActionName`            | `_strActionName`      | VA `0x1409aca7b`, a string                                       |
+| `installation_type` | `UsingInstallationType` | `_installationType`   | VA `0x1409acad0`, one byte; an empty cell keeps the default `39` |
+| `result_group`      | `ResultDropGroup`       | `_resultItemGroupKey` | VA `0x1409ac7ec`, stored as 16 bits                              |
+
+No reader for the client file turned up in the dump, so the names rest on
+the values:
+
+- The private server's own `manufacture.bss`, compiled from that sheet,
+  matches it: 8,648 of its 8,651 rows join exactly one sheet row on action
+  and material list, and so do 4,538 of the 4,542 rows of the client 1784
+  file. `CheckTime`, `SuccessPercent` and `ResultDropGroup` are `0` on
+  every sheet row, as are `check_time`, `success_percent` and
+  `result_group` in both files. `ContentsGroupKey` is set on 7,190 of the
+  private server file's joined rows and has no field in the file.
+- 1,232 rows of the `Manufacture_Table` of a private server on client 519
+  join exactly one row of client 3474 on action and material list.
+  `success_percent` equals `SuccessPercent` on 1,091 of the 1,130 of them
+  where the column is not `0`, and `result_group` equals `ResultDropGroup`
+  on 942 of the 1,116 where it is not `0`. `CheckTime` there is mostly
+  `7000` (829 rows) or `9000` (289 rows), where the client file has `0`.
+- `UsingInstallationType` is empty on every row of both tables. The client
+  Lua (`global_define_cpp_enum.luac`) ends `CppEnums.InstallationType`, the
+  enum of [`characterobject.dbss`](characterobject_dbss.md)
+  `installation_type`, with `TypeCount = 39` on client 1784 (last type
+  `eType_MansionTree = 38`) and `TypeCount = 40` on client 3474
+  (`eType_EventPersonalTent = 39` added).
+  `installation_type` is `39` and `40` on those clients: the count, one past
+  the last real type, marks a recipe that needs no installation. The 2016
+  enum ends at `TypeCount = 33`.
+
+The file stores `action_index` before `success_percent`, the reverse of the
+member order. The two are told apart by value: `action_hash` matches
+`action_index` on every row.
 
 ## `action_hash`
 
@@ -136,13 +192,9 @@ The display keys are `ALCHEMY_MANUFACTURE_HEATING`, `LUA_ALCHEMY_MANUFACTURE_ALC
 
 ## Open Questions
 
-### `unknown_04`
+### What `check_time` Holds
 
-The eight bytes at `+0x04` are zero on every row (client 3464). calpheonlabs calls them retired processing controls, with no source given. Nothing in the client data shows what they held.
-
-### `unknown_18`
-
-`unknown_18` is `40` on every row (client 3464), over all actions and all `unknown_10` values. calpheonlabs treats it as a fixed row marker. No client Lua or other table explains it.
+`check_time` is `0` on every row of client 3474 and client 1784. The client 519 private server's `CheckTime` values (`7000`, `9000`, `10000`) read like a processing time in milliseconds, but no client row sets one and no client Lua reads the field.
 
 ### Missing Result Groups
 
@@ -152,16 +204,16 @@ Most `result_group` values (2,590 of 2,791 on client 3464) are not in `itemmaing
 
 ### Recipe Success Rate
 
-This settles whether `unknown_10` is the chance that one processing run succeeds.
+This settles whether `success_percent` is the chance that one processing run succeeds, in millionths.
 
-`unknown_10` is `1,000,000` on 3,641 rows, `700,000` on 3,336, `900,000` on 81 and `850,000` on 6 (client 3464). `1,000,000` is also the usual value of `itemsubgroup.dbss` `unknown_33`. `700,000` is the common value for ordinary processing (1,423 of 1,610 Heating rows, all 262 Drying rows), `1,000,000` dominates Imperial Cuisine (783 of 811) and Imperial Alchemy, and 79 of the 81 `900,000` rows are Heating, most of them Black Abyssal or Delphad Castillion's Carnage gear with Black Alloy, Obsidian Alloy or Targak Steel Shard. No client Lua reads a per-recipe value: the rate list window (`panel_alchemy_rateviewlist.luac`) gets its percentages from `ToClient_calculateManufacturePercent` through `FromClient_CalculateGroupPercent`, which reports per-item drop rates. calpheonlabs reads the field as a success rate in millionths, based on an archived `SuccessPercent` column, which is a lead but not client data.
+`success_percent` is `1,000,000` on 3,641 rows, `700,000` on 3,336, `900,000` on 81 and `850,000` on 6 (client 3464). `1,000,000` is also the usual value of `itemsubgroup.dbss` `unknown_33`. `700,000` is the common value for ordinary processing (1,423 of 1,610 Heating rows, all 262 Drying rows), `1,000,000` dominates Imperial Cuisine (783 of 811) and Imperial Alchemy, and 79 of the 81 `900,000` rows are Heating, most of them Black Abyssal or Delphad Castillion's Carnage gear with Black Alloy, Obsidian Alloy or Targak Steel Shard. No client Lua reads a per-recipe value: the rate list window (`panel_alchemy_rateviewlist.luac`) gets its percentages from `ToClient_calculateManufacturePercent` through `FromClient_CalculateGroupPercent`, which reports per-item drop rates. The name comes from the `SuccessPercent` sheet column (see [Field Names](#field-names)); the scale does not.
 
 Needs item: [Melted Copper Shard](https://bdocodex.com/us/item/4057/), 300 or more
 
 1. Open the processing window and pick Heating.
 2. Turn Mass Processing off.
-3. Put in Melted Copper Shard (row 0, 10 per run, `unknown_10` = `700,000`).
+3. Put in Melted Copper Shard (row 0, 10 per run, `success_percent` = `700,000`).
 4. Start processing and let it repeat 30 runs.
 5. Count the runs that end in a failure message and give no item.
 
-About 9 failures in 30 runs (30%) means `unknown_10` is the success chance in millionths. No failures means it is something else.
+About 9 failures in 30 runs (30%) means `success_percent` is the success chance in millionths. No failures means it is something else.

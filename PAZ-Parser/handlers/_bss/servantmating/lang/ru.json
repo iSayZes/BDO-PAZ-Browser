@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Диапазон",
+    "averageGrade": "Средний ранг",
+    "resultMaxGrade": "Макс. ранг жеребёнка",
+    "resultMinGrade": "Мин. ранг жеребёнка",
+    "imperialSteedCharacterId": "ID имперской лошади",
+    "imperialSteed": "Имперская лошадь",
+    "imperialSteedRate": "Шанс имперской лошади"
+  },
+  "meta": {
+    "count": "{count} диапазонов рангов"
+  }
+}

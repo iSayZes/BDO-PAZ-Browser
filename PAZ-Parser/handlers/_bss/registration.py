@@ -89,6 +89,7 @@ from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
 from .servant.handler import ServantBssHandler
 from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandler
+from .servantmating.handler import ServantMatingBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
@@ -208,6 +209,7 @@ def register_bss_handlers() -> None:
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("servant.bss", ServantBssHandler())
     register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
+    register_handler("servantmating.bss", ServantMatingBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())

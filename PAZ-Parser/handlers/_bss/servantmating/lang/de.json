@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Bereich",
+    "averageGrade": "Durchschnittlicher Rang",
+    "resultMaxGrade": "Max. Fohlenrang",
+    "resultMinGrade": "Min. Fohlenrang",
+    "imperialSteedCharacterId": "Kaiserliches-Ross-ID",
+    "imperialSteed": "Kaiserliches Ross",
+    "imperialSteedRate": "Chance auf Kaiserliches Ross"
+  },
+  "meta": {
+    "count": "{count} Rangbereiche"
+  }
+}

@@ -30,7 +30,12 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-None. Client 1784 ships the table as `servantmating.dbss` with the index
+| File                         | Required | Role |
+| ---------------------------- | -------- | ---- |
+| `languagedata_en.loc`        | Optional | The Imperial Steed's name (LOC type 6, `str_id1` = `imperial_steed_character_id`) |
+| `characterstaticoffset.dbss` | Optional | Every `characterstatic.dbss` key, so an `imperial_steed_character_id` without a row shows as plain text instead of a link |
+
+Client 1784 ships the table as `servantmating.dbss` with the index
 `servantmatingoffset.dbss` (Layout 1).
 
 All multi-byte values are little-endian.

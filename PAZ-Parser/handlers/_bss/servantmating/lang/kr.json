@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "구간",
+    "averageGrade": "평균 등급",
+    "resultMaxGrade": "최대 망아지 등급",
+    "resultMinGrade": "최소 망아지 등급",
+    "imperialSteedCharacterId": "황실 보마 ID",
+    "imperialSteed": "황실 보마",
+    "imperialSteedRate": "황실 보마 확률"
+  },
+  "meta": {
+    "count": "등급 구간 {count}개"
+  }
+}

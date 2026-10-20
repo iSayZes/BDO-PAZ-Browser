@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Band",
+    "averageGrade": "Average Grade",
+    "resultMaxGrade": "Max Foal Grade",
+    "resultMinGrade": "Min Foal Grade",
+    "imperialSteedCharacterId": "Imperial Steed ID",
+    "imperialSteed": "Imperial Steed",
+    "imperialSteedRate": "Imperial Steed Chance"
+  },
+  "meta": {
+    "count": "{count} grade bands"
+  }
+}

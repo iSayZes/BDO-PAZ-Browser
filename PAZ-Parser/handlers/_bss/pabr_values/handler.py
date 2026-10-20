@@ -17,7 +17,7 @@ from _common.binary import whole_float
 from _common.html import Column, e, html_list_cell, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.pa_text import pa_cell, pa_fields
-from .parser import parse_value_table, row_value_bytes
+from .parser import parse_value_rows, parse_value_table
 from .tables import IconLookup, NameLookup, ValueField, ValueTable
 
 
@@ -113,10 +113,9 @@ class PabrValuesBssHandler(PreviewHandler):
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
-        records = parse_value_table(data, self._table)
         if not self._table.has_named_field:
-            raws = row_value_bytes(data, self._table)
-            return [{**record, VALUE_BYTES_FIELD: raw} for record, raw in zip(records, raws, strict=True)]
+            return [{**record, VALUE_BYTES_FIELD: raw} for record, raw in parse_value_rows(data, self._table)]
+        records = parse_value_table(data, self._table)
         return [{**record, **_derived_fields(self._table.fields, record)} for record in records]
 
     def render_records_page(

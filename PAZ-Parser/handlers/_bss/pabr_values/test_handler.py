@@ -28,7 +28,7 @@ from _dbss.cashproduct.parser import parse_cashproductoffset_records
 from _dbss.pet.parser import parse_pet_records
 from .handler import VALUE_BYTES_FIELD, PabrValuesBssHandler
 from .names import ELEMENT_TYPE_NAMES, aura_name, utc_time
-from .parser import PABR_VALUES_START, parse_value_table, row_value_bytes
+from .parser import PABR_VALUES_START, parse_value_rows, parse_value_table
 from .tables import VALUE_TABLES, Framing, NameLookup, RowCount, ValueField, ValueTable
 
 
@@ -388,14 +388,19 @@ def test_a_counted_list_reads_one_record_per_entry() -> None:
     assert parse_value_table(data, _COUNTED) == [{"key": 49}, {"key": 50}, {"key": 51}]
 
 
-def test_row_value_bytes_split_a_counted_list_into_rows() -> None:
+def test_row_bytes_split_a_counted_list_into_rows() -> None:
     data = _pabr(_U32.pack(2) + bytes([1, 2, 3, 4]))
-    assert row_value_bytes(data, _COUNTED_PAIRS) == ["01 02", "03 04"]
+    assert [raw for _, raw in parse_value_rows(data, _COUNTED_PAIRS)] == ["01 02", "03 04"]
 
 
-def test_row_value_bytes_of_one_value_set_hold_every_value_byte() -> None:
+def test_row_bytes_of_one_value_set_hold_every_value_byte() -> None:
     data = _pabr(_U32.pack(7) + bytes([1, 10]))
-    assert row_value_bytes(data, _ONE) == ["07 00 00 00 01 0a"]
+    assert [raw for _, raw in parse_value_rows(data, _ONE)] == ["07 00 00 00 01 0a"]
+
+
+def test_value_rows_carry_the_same_records_as_the_table() -> None:
+    data = _pabr(_U32.pack(2) + bytes([1, 2, 3, 4]))
+    assert [record for record, _ in parse_value_rows(data, _COUNTED_PAIRS)] == parse_value_table(data, _COUNTED_PAIRS)
 
 
 def test_rows_run_up_to_the_string_table() -> None:

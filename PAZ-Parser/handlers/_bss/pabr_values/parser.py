@@ -9,8 +9,8 @@ A `Framing.BARE` file is the values alone, from +0x00 to the end of the file.
 
 The values end where the string table starts or the file ends; values that
 do not fill that space exactly raise ValueError, since every field would
-then be read from the wrong place. `row_value_bytes` gives each row's bytes
-as hex text, for the files with no named field.
+then be read from the wrong place. `parse_value_rows` also gives each row's
+bytes as hex text, for the files with no named field.
 """
 
 from __future__ import annotations
@@ -123,6 +123,9 @@ def parse_value_table(data: bytes, table: ValueTable) -> list[dict]:
     return [row.record for row in _read_rows(data, table)]
 
 
-def row_value_bytes(data: bytes, table: ValueTable) -> list[str]:
-    """Each row's bytes as hex text, in row order; a `RowCount.ONE` row holds every value byte."""
-    return [data[row.start : row.stop].hex(" ") for row in _read_rows(data, table)]
+def parse_value_rows(data: bytes, table: ValueTable) -> list[tuple[dict, str]]:
+    """Each row's record with its bytes as hex text, from one read, in row order.
+
+    A `RowCount.ONE` row holds every value byte. Raises as `parse_value_table`.
+    """
+    return [(row.record, data[row.start : row.stop].hex(" ")) for row in _read_rows(data, table)]

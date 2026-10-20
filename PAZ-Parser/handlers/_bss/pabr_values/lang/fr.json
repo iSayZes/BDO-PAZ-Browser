@@ -17,6 +17,13 @@
     "siegeStage6": "Guerre de conquête",
     "statResetCost": "Coût de réinit. des stats supplémentaires",
     "lightOrbResetCost": "Coût de réinit. des joyaux de lumière",
+    "cultivationEventType": "Type d'événement agricole",
+    "interactionType": "Type d'interaction",
+    "execute": "Exécution",
+    "characterId": "ID du personnage",
+    "character": "Personnage",
+    "titleId": "ID du titre",
+    "title": "Titre",
     "valueBytes": "Octets de valeur"
   },
   "meta": {

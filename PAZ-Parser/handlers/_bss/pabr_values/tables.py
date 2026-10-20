@@ -13,7 +13,10 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 
+from _common.character import character_name
 from _common.loc import loc_text
+from _common.skill import skill_name, split_skill_key
+from _common.title import title_name
 from _common.town import town_name
 from _common.vehicle_skill import LOC_VEHICLE_SKILL
 
@@ -72,8 +75,28 @@ def _vehicle_skill_name(key: int) -> str:
     return loc_text(LOC_VEHICLE_SKILL, key)
 
 
+def _skill_key_name(key: int) -> str:
+    skill_no, _level = split_skill_key(key)
+    return skill_name(skill_no)
+
+
+def _unknown_fields(*layout: tuple[int, str]) -> tuple[ValueField, ...]:
+    """`unknown_<offset>` fields from (offset, format) pairs."""
+    return tuple(ValueField(f"unknown_{offset:02x}", fmt) for offset, fmt in layout)
+
+
+_CHARACTER_NAME = NameLookup("character_name", "character", character_name)
+_CHARACTER_KEY = ValueField("character_key", "H", "characterId", _CHARACTER_NAME)
+
+
 VALUE_TABLES: tuple[ValueTable, ...] = (
     ValueTable("cashproduct_newbieproduct.bss", (ValueField("product_id", "I", "productId"),)),
+    ValueTable(
+        "cultivationevent.bss",
+        (ValueField("cultivation_event_type", "h", "cultivationEventType"),),
+        RowCount.COUNTED,
+    ),
+    ValueTable("employeeloyalismitemetc.bss", _unknown_fields((0x04, "I"), (0x08, "I"), (0x0C, "I"), (0x10, "I"))),
     ValueTable(
         "icefisingregionstaticstatus.bss",
         (
@@ -83,20 +106,57 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         RowCount.TO_TABLE_START,
     ),
     ValueTable("instanceetcoption.bss", (ValueField("unknown_04", "I"), ValueField("unknown_08", "I"))),
+    ValueTable(
+        "interaction.bss",
+        (
+            ValueField("interaction_type", "I", "interactionType"),
+            ValueField("unknown_04", "B"),
+            ValueField("execute", "I", "execute"),
+            _CHARACTER_KEY,
+        ),
+        RowCount.COUNTED,
+    ),
     ValueTable("maidactoroption.bss", (ValueField("unknown_04", "B"), ValueField("unknown_05", "B"))),
     ValueTable(
         "musicoption.bss",
         (ValueField("playable_distance", "f", "playableDistance"), ValueField("unknown_08", "8s")),
     ),
     ValueTable("petfeedcount.bss", (ValueField("feed_item_count", "I", "feedItemCount"),)),
+    ValueTable(
+        "rosewarinfo.bss",
+        _unknown_fields((0x00, "3s"), (0x03, "B"), (0x04, "3s"), (0x07, "B"), (0x08, "B")),
+        RowCount.COUNTED,
+    ),
+    ValueTable(
+        "servantchecktitle.bss",
+        (
+            ValueField("unknown_04", "H"),
+            ValueField("title_id", "I", "titleId", NameLookup("title_name", "title", title_name)),
+            _CHARACTER_KEY,
+        ),
+    ),
     ValueTable("servantwhistledistance.bss", (ValueField("unknown_04", "2s"),)),
     ValueTable(
         "siegemercenarylimitcount.bss",
         tuple(ValueField(f"siege_stage_{stage}", "I", f"siegeStage{stage}") for stage in range(SIEGE_STAGE_COUNT)),
     ),
     ValueTable(
+        "snowboardcourseinfo.bss",
+        _unknown_fields((0x00, "3s"), (0x03, "B"), (0x04, "B"), (0x05, "3s"), (0x08, "B")),
+        RowCount.COUNTED,
+    ),
+    ValueTable("timeattackranking.bss", (_CHARACTER_KEY,), RowCount.COUNTED),
+    ValueTable(
         "vehicletrainingskill.bss",
         (ValueField("skill_key", "B", "skillId", NameLookup("skill_name", "skill", _vehicle_skill_name)),),
+        RowCount.COUNTED,
+    ),
+    ValueTable(
+        "voxelregionskillstaticstatusmanager.bss",
+        (
+            ValueField("unknown_00", "B"),
+            ValueField("skill_key", "I", "skillId", NameLookup("skill_name", "skill", _skill_key_name)),
+        ),
         RowCount.COUNTED,
     ),
 )

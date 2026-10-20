@@ -21,7 +21,7 @@ from tests.framework import (
 
 from _dbss.cashproduct.parser import parse_cashproductoffset_records
 from .handler import VALUE_BYTES_FIELD
-from .parser import VALUES_START, parse_value_table
+from .parser import VALUES_START, parse_value_table, row_value_bytes
 from .tables import VALUE_TABLES, RowCount, ValueField, ValueTable
 
 
@@ -57,12 +57,33 @@ def _count_tests(value_table: ValueTable) -> list[Any]:
     return [DeclaredCountTest(declared=lambda _source: 1)]
 
 
-# Identity anchors: the training skills and their LOC type 8 names.
+# Identity anchors: keys and the LOC names they resolve to.
 _TARGETS: dict[str, list[TargetTest]] = {
+    "interaction.bss": [
+        # InteractionType_Awake (CppEnums.InteractionType 61) on both Offin characters.
+        TargetTest(col="character_key", value=23751, expected={"interaction_type": 61, "character_name": "Mirumok Watcher Offin"}),
+        TargetTest(col="character_key", value=23767, expected={"interaction_type": 61, "character_name": "Mirumok Destroyer Offin"}),
+    ],
+    "servantchecktitle.bss": [
+        TargetTest(
+            col="title_id",
+            value=2705,
+            expected={"title_name": "Captain Epheria", "character_key": 31020, "character_name": "Epheria Galleon"},
+        ),
+    ],
+    "timeattackranking.bss": [
+        TargetTest(col="character_key", value=23751, expected={"character_name": "Mirumok Watcher Offin"}),
+        TargetTest(col="character_key", value=24385, expected={"character_name": "Transcended Kzarka"}),
+    ],
     "vehicletrainingskill.bss": [
         TargetTest(col="skill_key", value=49, expected={"skill_name": "Skill"}),
         TargetTest(col="skill_key", value=50, expected={"skill_name": "Elegance"}),
         TargetTest(col="skill_key", value=51, expected={"skill_name": "Strength"}),
+    ],
+    "voxelregionskillstaticstatusmanager.bss": [
+        # skill_no 42501 and 42502, level 1.
+        TargetTest(col="skill_key", value=0xA6050001, expected={"skill_name": "All-Consuming Heat"}),
+        TargetTest(col="skill_key", value=0xA6060001, expected={"skill_name": "Dead Soul's Chill"}),
     ],
 }
 
@@ -125,6 +146,7 @@ def _pabr(values: bytes) -> bytes:
 
 _ONE = ValueTable("one.bss", (ValueField("a", "I", "productId"), ValueField("unknown_04", "2s")))
 _COUNTED = ValueTable("counted.bss", (ValueField("key", "B", "skillId"),), RowCount.COUNTED)
+_COUNTED_PAIRS = ValueTable("pairs.bss", (ValueField("unknown_00", "B"), ValueField("unknown_01", "B")), RowCount.COUNTED)
 _ROWS = ValueTable("rows.bss", (ValueField("a", "H", "regionKey"), ValueField("b", "H")), RowCount.TO_TABLE_START)
 
 
@@ -136,6 +158,21 @@ def test_one_value_set_reads_one_record_with_hex_bytes() -> None:
 def test_a_counted_list_reads_one_record_per_entry() -> None:
     data = _pabr(_U32.pack(3) + bytes([49, 50, 51]))
     assert parse_value_table(data, _COUNTED) == [{"key": 49}, {"key": 50}, {"key": 51}]
+
+
+def test_cultivation_event_types_are_unique() -> None:
+    types = [record["cultivation_event_type"] for record in _result("cultivationevent.bss").records]
+    assert len(types) == len(set(types))
+
+
+def test_row_value_bytes_split_a_counted_list_into_rows() -> None:
+    data = _pabr(_U32.pack(2) + bytes([1, 2, 3, 4]))
+    assert row_value_bytes(data, _COUNTED_PAIRS) == ["01 02", "03 04"]
+
+
+def test_row_value_bytes_of_one_value_set_hold_every_value_byte() -> None:
+    data = _pabr(_U32.pack(7) + bytes([1, 10]))
+    assert row_value_bytes(data, _ONE) == ["07 00 00 00 01 0a"]
 
 
 def test_rows_run_up_to_the_string_table() -> None:

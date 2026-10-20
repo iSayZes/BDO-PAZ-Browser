@@ -17,6 +17,13 @@
     "siegeStage6": "Conquest War",
     "statResetCost": "Additional Stats Reset Cost",
     "lightOrbResetCost": "Light Orb Reset Cost",
+    "cultivationEventType": "Farming Event Type",
+    "interactionType": "Interaction Type",
+    "execute": "Execute",
+    "characterId": "Character ID",
+    "character": "Character",
+    "titleId": "Title ID",
+    "title": "Title",
     "valueBytes": "Value Bytes"
   },
   "meta": {

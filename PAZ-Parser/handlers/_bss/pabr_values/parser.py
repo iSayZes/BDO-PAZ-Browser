@@ -5,7 +5,8 @@
 
 The values end where the string table starts; a file whose values do not
 fill that space exactly raises ValueError, since every field would then be
-read from the wrong place.
+read from the wrong place. `row_value_bytes` gives each row's bytes as hex
+text, for the files with no named field.
 """
 
 from __future__ import annotations
@@ -53,19 +54,26 @@ def _record(fields: tuple[ValueField, ...], values: tuple[object, ...]) -> dict:
     return {field.name: _value(raw) for field, raw in zip(fields, values, strict=True)}
 
 
+def _row_offsets(data: bytes, table: ValueTable) -> tuple[struct.Struct, range]:
+    """The row format of `table` and the offset of every row, checked against the string table."""
+    end = _values_end(data, table.file_name)
+    row = struct.Struct("<" + "".join(field.fmt for field in table.fields))
+    start, count = _rows(data, table, row.size, end)
+    check_rows_end(data, start + count * row.size, f"{table.file_name} values")
+    return row, range(start, start + count * row.size, row.size)
+
+
 def parse_value_table(data: bytes, table: ValueTable) -> list[dict]:
     """One record per row of `table`, keyed by the doc's field names.
 
     Raises ValueError on a bad magic or trailer, or when the rows do not end
     at the string table.
     """
-    end = _values_end(data, table.file_name)
-    row = struct.Struct("<" + "".join(field.fmt for field in table.fields))
-    start, count = _rows(data, table, row.size, end)
-    check_rows_end(data, start + count * row.size, f"{table.file_name} values")
-    return [_record(table.fields, row.unpack_from(data, start + index * row.size)) for index in range(count)]
+    row, offsets = _row_offsets(data, table)
+    return [_record(table.fields, row.unpack_from(data, offset)) for offset in offsets]
 
 
-def value_bytes(data: bytes, file_name: str) -> str:
-    """Every byte between the magic and the string table, as hex text."""
-    return data[VALUES_START : _values_end(data, file_name)].hex(" ")
+def row_value_bytes(data: bytes, table: ValueTable) -> list[str]:
+    """Each row's bytes as hex text, in row order; a `RowCount.ONE` row holds every value byte."""
+    row, offsets = _row_offsets(data, table)
+    return [data[offset : offset + row.size].hex(" ") for offset in offsets]

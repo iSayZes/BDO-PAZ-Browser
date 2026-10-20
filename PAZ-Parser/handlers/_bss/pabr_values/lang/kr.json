@@ -17,6 +17,13 @@
     "siegeStage6": "점령전",
     "statResetCost": "추가 능력치 초기화 비용",
     "lightOrbResetCost": "빛의 보옥 초기화 비용",
+    "cultivationEventType": "재배 이벤트 유형",
+    "interactionType": "상호작용 유형",
+    "execute": "실행",
+    "characterId": "캐릭터 ID",
+    "character": "캐릭터",
+    "titleId": "칭호 ID",
+    "title": "칭호",
     "valueBytes": "값 바이트"
   },
   "meta": {

@@ -17,6 +17,13 @@
     "siegeStage6": "Conquista",
     "statResetCost": "Coste de reinicio de estadísticas adicionales",
     "lightOrbResetCost": "Coste de reinicio de gemas luminosas",
+    "cultivationEventType": "Tipo de evento de cultivo",
+    "interactionType": "Tipo de interacción",
+    "execute": "Ejecución",
+    "characterId": "ID del personaje",
+    "character": "Personaje",
+    "titleId": "ID del título",
+    "title": "Título",
     "valueBytes": "Bytes de valor"
   },
   "meta": {

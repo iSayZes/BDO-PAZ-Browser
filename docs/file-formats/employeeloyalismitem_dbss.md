@@ -98,4 +98,4 @@ The names follow the `Employee_Loyalism` sheet of a private server's `DataSheets
 
 - The item texts agree with the values (LOC type 0, `str_id4` 1, client 3474): Chowder (6394, `100`) "Recover 100 Sailor Condition", Raisin Bread (6398, `1`) "Recover 1 Sailor Condition", Elixir of Regeneration (6395, `1000000`) "Cures one sailor, Recovers condition to 100%", Tears of the Star (320083, `1000000`) "Recover 1 Sick Sailor, Recover Sailor Condition to 100%".
 - The 2016 PDB has no `Loyalism` names; sailors came to the game later.
-- `employeeloyalismitemetc.bss` (32 bytes, PABR) shares the stem but is a separate file that this doc does not cover.
+- `employeeloyalismitemetc.bss` (32 bytes, PABR) shares the stem but has its own layout, see [employeeloyalismitemetc](employeeloyalismitemetc_bss.md).

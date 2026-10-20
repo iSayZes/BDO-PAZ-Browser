@@ -17,6 +17,13 @@
     "siegeStage6": "Захват территории",
     "statResetCost": "Оплата сброса доп. характеристик",
     "lightOrbResetCost": "Оплата сброса сокровища света",
+    "cultivationEventType": "Тип события урожая",
+    "interactionType": "Тип взаимодействия",
+    "execute": "Выполнение",
+    "characterId": "ID персонажа",
+    "character": "Персонаж",
+    "titleId": "ID титула",
+    "title": "Титул",
     "valueBytes": "Байты значения"
   },
   "meta": {

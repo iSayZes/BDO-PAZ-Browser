@@ -17,6 +17,13 @@
     "siegeStage6": "Eroberungskrieg",
     "statResetCost": "Rücksetzkosten Zusätzliche Werte",
     "lightOrbResetCost": "Rücksetzkosten Lichtjuwel",
+    "cultivationEventType": "Anbau-Ereignistyp",
+    "interactionType": "Interaktionstyp",
+    "execute": "Ausführung",
+    "characterId": "Charakter-ID",
+    "character": "Charakter",
+    "titleId": "Titel-ID",
+    "title": "Titel",
     "valueBytes": "Wertbytes"
   },
   "meta": {

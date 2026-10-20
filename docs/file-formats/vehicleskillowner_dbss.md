@@ -35,7 +35,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | File                           | Required | Role                                                    |
 | ------------------------------ | -------- | ------------------------------------------------------- |
 | `vehicleskillowneroffset.dbss` | Optional | PABR index: character ID to the record's offset and size |
-| `vehicleskill.dbss`            | Optional | The skills `skill_key` points at                        |
+| `vehicleskill.dbss`            | Optional | The skills `skill_key` points at; their Korean names when LOC has none |
+| `characterstaticoffset.dbss`   | Optional | Every `characterstatic.dbss` key, so a `character_id` without a row shows as plain text instead of a link |
 | `languagedata_en.loc`          | Optional | Servant names (LOC type 6) and skill names (LOC type 8) |
 
 All multi-byte values are little-endian.

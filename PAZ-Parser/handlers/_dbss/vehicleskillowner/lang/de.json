@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "cantLearnableRate": "Gewicht: Nicht erlernen",
+    "skillKey": "Talent-ID",
+    "skill": "Talent",
+    "able": "Lerngewicht",
+    "addExp": "Zusätzliche EP",
+    "isLearn": "Erlernbar"
+  },
+  "offsetColumns": {
+    "characterId": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Talenteinträge · {servants} Reittiere und Schiffe"
+  }
+}

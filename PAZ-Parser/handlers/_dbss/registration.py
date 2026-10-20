@@ -156,6 +156,7 @@ from .itemexchangetoclass.handler import ItemExchangeToClassHandler, item_exchan
 from .repairmaxendurance.handler import RepairMaxEnduranceHandler, repair_max_endurance_offset_handler
 from .guildquest.handler import GuildQuestHandler, guild_quest_offset_handler
 from .vehicleskill.handler import VehicleSkillHandler, vehicle_skill_offset_handler
+from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_owner_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -352,3 +353,5 @@ def register_dbss_handlers() -> None:
     register_handler("guildquest.dbss", GuildQuestHandler())
     register_handler("vehicleskilloffset.dbss", vehicle_skill_offset_handler())
     register_handler("vehicleskill.dbss", VehicleSkillHandler())
+    register_handler("vehicleskillowneroffset.dbss", vehicle_skill_owner_offset_handler())
+    register_handler("vehicleskillowner.dbss", VehicleSkillOwnerHandler())

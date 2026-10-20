@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "cantLearnableRate": "Peso: no aprende",
+    "skillKey": "ID de habilidad",
+    "skill": "Habilidad",
+    "able": "Peso de aprendizaje",
+    "addExp": "Exp. añadida",
+    "isLearn": "Aprendible"
+  },
+  "offsetColumns": {
+    "characterId": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} entradas de habilidad · {servants} monturas y barcos"
+  }
+}

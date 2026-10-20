@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "cantLearnableRate": "Does Not Learn Weight",
+    "skillKey": "Skill ID",
+    "skill": "Skill",
+    "able": "Learn Weight",
+    "addExp": "Added EXP",
+    "isLearn": "Learnable"
+  },
+  "offsetColumns": {
+    "characterId": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} skill entries · {servants} mounts and ships"
+  }
+}

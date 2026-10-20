@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Clé",
+    "condition": "Condition",
+    "actionName": "Action",
+    "actionHash": "Hash de l'action",
+    "servantActionName": "Action de la monture",
+    "servantActionHash": "Hash de l'action de la monture",
+    "skillNo": "ID de compétence",
+    "skill": "Compétence"
+  },
+  "offsetColumns": {
+    "key": "Clé",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} actions de communion équestre"
+  }
+}

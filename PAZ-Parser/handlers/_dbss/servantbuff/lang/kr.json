@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "키",
+    "condition": "조건",
+    "actionName": "행동",
+    "actionHash": "행동 해시",
+    "servantActionName": "탑승물 행동",
+    "servantActionHash": "탑승물 행동 해시",
+    "skillNo": "기술 ID",
+    "skill": "기술"
+  },
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "말과 교감 행동 {count}개"
+  }
+}

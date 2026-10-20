@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterId": "ID del personaje",
+    "name": "Nombre",
+    "coolTime": "Tiempo de reutilización",
+    "buffs": "Comunión con el caballo"
+  },
+  "offsetColumns": {
+    "characterId": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} monturas"
+  }
+}

@@ -36,6 +36,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------------------------------- | -------- | ----------------------------------------------------- |
 | `servantinteractionoffset.dbss` | Optional | Index: character ID to the record's offset and size   |
 | `servantbuff.dbss`              | Optional | The interactions `buff_keys` point at                 |
+| `characterstaticoffset.dbss`    | Optional | Every `characterstatic.dbss` key, so a `character_id` without a row shows as plain text instead of a link |
 | `languagedata_en.loc`           | Optional | Servant names (LOC type 6, `str_id1` = `character_id`) |
 
 All multi-byte values are little-endian.
@@ -55,7 +56,7 @@ All multi-byte values are little-endian.
 | ------- | ---------------- | ---------------- | ----- |
 | `+0x00` | u16              | character_id     | Servant character, as in `servant.bss` |
 | `+0x02` | u16              | character_id_dup | Equals `character_id` on every record |
-| `+0x04` | u64              | cool_time        | 1,200,000 on every record (client 3474) |
+| `+0x04` | u64              | cool_time        | Milliseconds ([Notes](#notes)); 1,200,000 (20 minutes) on every record (client 3474) |
 | `+0x0C` | u64              | buff_count       | 3 on every record (client 3474) |
 | `+0x14` | u32[buff_count]  | buff_keys        | `servantbuff.dbss` keys; 1, 2, 3 on every record (client 3474) |
 
@@ -97,3 +98,15 @@ The names follow the `ServantInteraction_Table` sheet of a private server's
 in the sheet match in every column. The 2016
 `gc::ServantInteractionStaticStatus` holds `_key`, `_buffKeyList` and
 `_coolTime`; the file stores the cooldown before the list.
+
+## Notes
+
+- `cool_time` is in milliseconds: the interaction panel
+  (`panel_interaction.luac`) shows the remaining Horse Communion cooldown
+  from `vehicleWrapper:getSympatheticCoolTime()` through
+  `convertStringFromMillisecondtime`.
+- On client 3474, 20 records name a character that is not in
+  [servant.bss](servant_bss.md): 9033, 9884 to 9886, 9900, 9986, 31518,
+  31534, 31535, 31537, 31538, 31540 to 31543, 31546, 31547, 31561, 31593
+  and 35129. All but 9033, 9986 and 35129 have no `characterstatic.dbss`
+  row either.

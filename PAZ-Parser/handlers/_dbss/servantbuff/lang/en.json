@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "key": "Key",
+    "condition": "Condition",
+    "actionName": "Action",
+    "actionHash": "Action Hash",
+    "servantActionName": "Mount Action",
+    "servantActionHash": "Mount Action Hash",
+    "skillNo": "Skill ID",
+    "skill": "Skill"
+  },
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Horse Communion actions"
+  }
+}

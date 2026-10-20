@@ -36,7 +36,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | File                     | Required | Role                                          |
 | ------------------------ | -------- | --------------------------------------------- |
 | `servantbuffoffset.dbss` | Optional | Index: key to the record's offset and size    |
-| `skill.dbss`             | Optional | `skill_no` names                              |
+| `languagedata_en.loc`    | Optional | `skill_no` names (LOC type 10); without a row, the Korean `skilltype.dbss` name |
 
 All multi-byte values are little-endian.
 
@@ -57,9 +57,9 @@ All multi-byte values are little-endian.
 | `+0x04`                      | u32   | key_dup             | Equals `key` on every record |
 | `+0x08`                      | str16 | condition           | Empty except `checkClass(16)` (Tamer) on key 4 |
 | `condition+0x00`             | str8  | action_name         | `VEHICLE_INTERACTION_HORSE_1` to `_4` |
-| `action_name+0x00`           | u32   | action_hash         | Equal on equal names |
+| `action_name+0x00`           | u32   | action_hash         | Hash of `action_name` ([Action Hashes](#action-hashes)) |
 | `action_name+0x04`           | str8  | servant_action_name | `HORSE_INTERACTION_1` to `_3`; key 4 uses `_3` |
-| `servant_action_name+0x00`   | u32   | servant_action_hash | Equal on equal names (keys 3 and 4) |
+| `servant_action_name+0x00`   | u32   | servant_action_hash | Hash of `servant_action_name`; equal on keys 3 and 4 |
 | `servant_action_name+0x04`   | u16   | skill_no            | `skill.dbss` skill number: 220, 221, 222, 15526 |
 
 ### `servantbuffoffset.dbss`
@@ -112,6 +112,13 @@ The record follows the 2016 `gc::ServantBuffStaticStatus` member for member:
 client 1784 (`Index`, `UseCondition`, `ActionName`, `SkillNo`,
 `ServantActionName`) matches all 3 records of clients 1784 and 3474 by
 value in every column.
+
+## Action Hashes
+
+`action_hash` and `servant_action_hash` are the client's lookup3
+`hashlittle` with seed `0xC5EDE` over the ASCII bytes of the name before
+them, as in `manufacture.bss` (`ascii_key_hash` in
+`_common/string_hash.py`); all 4 records of client 3474 match.
 
 ## Notes
 

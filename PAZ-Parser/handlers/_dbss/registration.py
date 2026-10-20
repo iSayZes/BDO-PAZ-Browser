@@ -157,6 +157,8 @@ from .repairmaxendurance.handler import RepairMaxEnduranceHandler, repair_max_en
 from .guildquest.handler import GuildQuestHandler, guild_quest_offset_handler
 from .vehicleskill.handler import VehicleSkillHandler, vehicle_skill_offset_handler
 from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_owner_offset_handler
+from .servantbuff.handler import ServantBuffHandler, servant_buff_offset_handler
+from .servantinteraction.handler import ServantInteractionHandler, servant_interaction_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -355,3 +357,7 @@ def register_dbss_handlers() -> None:
     register_handler("vehicleskill.dbss", VehicleSkillHandler())
     register_handler("vehicleskillowneroffset.dbss", vehicle_skill_owner_offset_handler())
     register_handler("vehicleskillowner.dbss", VehicleSkillOwnerHandler())
+    register_handler("servantbuffoffset.dbss", servant_buff_offset_handler())
+    register_handler("servantbuff.dbss", ServantBuffHandler())
+    register_handler("servantinteractionoffset.dbss", servant_interaction_offset_handler())
+    register_handler("servantinteraction.dbss", ServantInteractionHandler())

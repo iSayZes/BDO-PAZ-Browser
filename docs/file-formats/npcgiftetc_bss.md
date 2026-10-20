@@ -56,7 +56,7 @@ The four named fields are the columns of the one-row `NpcGift_Option` sheet, in 
 
 The field widths come from the server dump of that private server. Its `NpcGift_Option` loader reads exactly these four columns and stores them in a 16-byte global: `UseGiftWp` and `UseProposeWp` as u16 at `+0` and `+2`, `MinProposeIntimacy` as u32 at `+4` and `LimitGiftPrice` as an 8-byte value at `+8`. That global is the file's `+0x04..+0x14`, so the price is a u64 and the former `unknown_10` is its high half.
 
-Neither the 2016 client with debug symbols nor the BdoEmu code of client 519 has a gift option type or loader; the workbook comments date the gift sheets to 2019-04-09. BdoEmu's `NpcGift_Option` table holds `0` in every column. The client Lua gift window (`panel_dialog_npcgift_renew.lua`) calls `ToClient_giveNpcGift` and `ToClient_proposeToNpc` and reads none of these values.
+Neither the 2016 client with debug symbols nor the code of a private server on client 519 has a gift option type or loader; the workbook comments date the gift sheets to 2019-04-09. That server's `NpcGift_Option` table holds `0` in every column. The client Lua gift window (`panel_dialog_npcgift_renew.lua`) calls `ToClient_giveNpcGift` and `ToClient_proposeToNpc` and reads none of these values.
 
 ## Notes
 

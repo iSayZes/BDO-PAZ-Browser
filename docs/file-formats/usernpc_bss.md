@@ -114,8 +114,8 @@ bytes with no rows, so no build of the sheet can be compared byte for byte.
 The column-to-offset match rests on the values of the first row of client
 3474 and on the column order.
 
-Neither the 2016 client with debug symbols nor the BdoEmu tables of client
-519 have a user NPC type or table.
+Neither the 2016 client with debug symbols nor the tables of a private server on
+client 519 have a user NPC type or table.
 
 ## Notes
 

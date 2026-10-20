@@ -144,8 +144,8 @@ read for 1 and 2), each with a literal `1`. It rejects a row when any key is
 `0` or any count is not above `0`. So `need_item_count` is the only count
 the sheet sets, and the other three are `1` by the loader.
 
-Neither the 2016 client with debug symbols nor the BdoEmu tables of client
-519 have an extraction type or table.
+Neither the 2016 client with debug symbols nor the tables of a private server on
+client 519 have an extraction type or table.
 
 ## Notes
 

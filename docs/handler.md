@@ -1011,8 +1011,9 @@ the first record whose field reads the value, compared as text
 class (`11-data-tables.css`) styles it as a link in a table cell. The `.ai`
 Used by box links each character to its `characterstatic.dbss` row, the `.cl`
 view each skill number to its first `skill.dbss` row, `characterfunction.dbss`
-each shop group to its `itemmaingroup.bss` row, and `itemmaingroup.bss` each
-subgroup to its `itemsubgroup.dbss` row.
+each shop group to its `itemmaingroup.bss` row, `itemmaingroup.bss` each
+subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
+`pet.dbss` row, and `pcroommaid.bss` each maid to its `maid.dbss` row.
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries

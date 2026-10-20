@@ -27,10 +27,14 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-| File                         | Required | Role                                                        |
-| ---------------------------- | -------- | ----------------------------------------------------------- |
-| `characterstaticoffset.dbss` | Optional | Which keys have a `characterstatic.dbss` row to link to     |
-| `languagedata_*.loc`         | Optional | Character names, LOC type 6, keyed by `character_key`       |
+| File                 | Required | Role                                                                  |
+| -------------------- | -------- | --------------------------------------------------------------------- |
+| `maidoffset.dbss`    | Optional | Which keys have a [`maid.dbss`](maid_dbss.md) row to link to          |
+| `languagedata_*.loc` | Optional | Character names, LOC type 6, keyed by `character_key`                 |
+
+The key column links to the `maid.dbss` row, and that row's key links on to
+`characterstatic.dbss`, so the view loads no `characterstatic.dbss`
+companion. Without `maidoffset.dbss` every key stays a link.
 
 All multi-byte values are little-endian.
 

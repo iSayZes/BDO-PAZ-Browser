@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "groupNo": "ID de grupo",
+    "purchaseType": "Límite por",
+    "purchaseCount": "Límite de compras"
+  },
+  "limitTypes": {
+    "none": "Ninguno",
+    "atCharacter": "Personaje",
+    "atAccount": "Familia"
+  },
+  "offsetColumns": {
+    "groupNo": "ID de grupo",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} grupos de límite de compras"
+  }
+}

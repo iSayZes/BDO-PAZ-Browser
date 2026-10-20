@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "groupNo": "ID группы",
+    "purchaseType": "Лимит на",
+    "purchaseCount": "Лимит покупок"
+  },
+  "limitTypes": {
+    "none": "Нет",
+    "atCharacter": "Персонаж",
+    "atAccount": "Аккаунт"
+  },
+  "offsetColumns": {
+    "groupNo": "ID группы",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Групп лимита покупок: {count}"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "groupNo": "Gruppen-ID",
+    "purchaseType": "Limit pro",
+    "purchaseCount": "Kauflimit"
+  },
+  "limitTypes": {
+    "none": "Keins",
+    "atCharacter": "Charakter",
+    "atAccount": "Familie"
+  },
+  "offsetColumns": {
+    "groupNo": "Gruppen-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Kauflimit-Gruppen"
+  }
+}

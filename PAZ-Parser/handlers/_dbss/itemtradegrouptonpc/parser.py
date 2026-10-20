@@ -2,12 +2,13 @@
 
 A u32 group count, then one group per character key: the u16 key, a u32 item
 count and that many 127-byte item entries. Each entry repeats the key, then
-holds the u32 item ID, its trade group type (the code `itemtradeetc.bss`
-pairs for the desert buff) and the item's trade category (`enCommerceType`)
-near its end; the rest is zero but for three unknown fields. No `PABR` magic and no
-string table. `itemtradegrouptonpcoffset.dbss` points at each group, so
-reading the groups in order needs no index. Layout in
-docs/file-formats/itemtradegrouptonpc_dbss.md.
+holds the u32 item ID, the trade group type (the code `itemtradeetc.bss`
+pairs for the desert buff), the sell-to-NPC flag, the territory supply number
+and three bytes the server copies from the item (`TradeType`, `CommerceType`,
+`PriceType`); the price and stock members between them are zero on the live
+client. No `PABR` magic and no string table. `itemtradegrouptonpcoffset.dbss`
+points at each group, so reading the groups in order needs no index. Layout
+in docs/file-formats/itemtradegrouptonpc_dbss.md.
 """
 
 from __future__ import annotations
@@ -28,11 +29,12 @@ ENTRY_SIZE = 127
 # u16 character key, u32 item ID at the start of an entry.
 _ENTRY_HEAD = struct.Struct("<HI")
 _TRADE_GROUP_TYPE = 0x36
-_UNKNOWN_37 = 0x37
-_UNKNOWN_6B = struct.Struct("<H")
-_UNKNOWN_6B_OFFSET = 0x6B
-_UNKNOWN_7C = 0x7C
+_IS_SELL_TO_NPC = 0x37
+_TERRITORY_SUPPLY_NO = struct.Struct("<H")
+_TERRITORY_SUPPLY_NO_OFFSET = 0x6B
+_TRADE_TYPE = 0x7C
 _COMMERCE_TYPE = 0x7D
+_PRICE_TYPE = 0x7E
 
 
 def parse_itemtradegrouptonpc_records(data: bytes) -> list[dict]:
@@ -75,7 +77,8 @@ def _entry(data: bytes, start: int, group_character_id: int) -> dict:
         "item_id": item_id,
         "trade_group_type": data[start + _TRADE_GROUP_TYPE],
         "commerce_type": data[start + _COMMERCE_TYPE],
-        "unknown_37": data[start + _UNKNOWN_37],
-        "unknown_6b": _UNKNOWN_6B.unpack_from(data, start + _UNKNOWN_6B_OFFSET)[0],
-        "unknown_7c": data[start + _UNKNOWN_7C],
+        "is_sell_to_npc": data[start + _IS_SELL_TO_NPC],
+        "territory_supply_no": _TERRITORY_SUPPLY_NO.unpack_from(data, start + _TERRITORY_SUPPLY_NO_OFFSET)[0],
+        "trade_type": data[start + _TRADE_TYPE],
+        "price_type": data[start + _PRICE_TYPE],
     }

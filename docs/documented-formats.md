@@ -254,6 +254,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `olviaacademypassquestlist.bss` | Olvia Academy Pass base and pass quests of the nine pass tabs (the `quest.dbss` category 17 records), same layout | [olviaacademyquestlist](file-formats/olviaacademyquestlist_bss.md) | 1 | 0 |
 | `olviaacademyrewardquestlist.bss` | Olvia Academy family reward quests (the `quest.dbss` category 18 records), same layout | [olviaacademyquestlist](file-formats/olviaacademyquestlist_bss.md) | 1 | 0 |
 | `openuiwhennak.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `othertownnotmovableitem.bss` | Item IDs that cannot be put into another town's storage (5 on client 3474); u32 count and u32 entries, no PABR magic | [othertownnotmovableitem](file-formats/othertownnotmovableitem_bss.md) | 1 | 1 |
 | `pcgrowth.dbss` | Class selection record per class type: character key, gender, playable flag, combat type, beginner and class weapons, Korean name and description, selection video and weapon models | [pcgrowth](file-formats/pcgrowth_dbss.md) | 4 | 0 |
 | `pcgrowthdefaultcharacterkey.bss` | PABR file holding one u16 character key (`47`) | [pcgrowthdefaultcharacterkey](file-formats/pcgrowthdefaultcharacterkey_bss.md) | 0 | 0 |
 | `pcgrowthoffset.dbss` | Index into `pcgrowth.dbss`, maps u8 class type → offset/size; no PABR magic and no trailer | [pcgrowth](file-formats/pcgrowth_dbss.md) | 4 | 0 |

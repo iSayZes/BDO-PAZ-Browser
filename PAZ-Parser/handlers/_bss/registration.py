@@ -72,6 +72,7 @@ from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
 from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
+from .pcroommaid.handler import PcRoomMaidBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
 from .plantworker.handler import PlantWorkerBssHandler
@@ -216,6 +217,7 @@ def register_bss_handlers() -> None:
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
+    register_handler("pcroommaid.bss", PcRoomMaidBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())
     register_handler("plantworker.bss", PlantWorkerBssHandler())

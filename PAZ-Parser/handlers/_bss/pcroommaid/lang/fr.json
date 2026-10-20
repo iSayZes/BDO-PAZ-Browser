@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "Clé de personnage",
+    "name": "Domestique"
+  },
+  "meta": {
+    "count": "{count} domestiques PC Bang"
+  }
+}

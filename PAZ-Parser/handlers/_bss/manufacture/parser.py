@@ -27,7 +27,7 @@ from _common.pabr_strings import (
     checked_string_table_start,
     read_string_table,
 )
-from _common.string_hash import KEY_HASH_SEED, hashlittle
+from _common.string_hash import ascii_key_hash
 
 _FILE_NAME = "manufacture.bss"
 _HEAD = struct.Struct("<IqIiIBII")
@@ -57,7 +57,7 @@ class Recipe:
 
 def action_hash(action: str) -> int:
     """The `action_hash` the file stores for an action name."""
-    return hashlittle(action.encode("ascii"), KEY_HASH_SEED)
+    return ascii_key_hash(action)
 
 
 def parse_manufacture_records(data: bytes) -> list[Recipe]:

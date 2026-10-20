@@ -19,7 +19,7 @@ from tests.framework import (
 
 from _common.character_link import CHARACTERSTATIC_OFFSET_FILE
 from _common.pabr_offset import parse_bare_u32_offset_rows
-from _common.string_hash import KEY_HASH_SEED, hashlittle
+from _common.string_hash import ascii_key_hash
 from .parser import FILE_NAME, OFFSET_FILE, parse_collectresourcename_records
 
 
@@ -100,7 +100,7 @@ def test_collectresourcenameoffset_dbss(spec: Any, offset_result: HandlerResult)
 
 def test_name_hash_is_the_lookup3_hash_of_the_name(collect_result: HandlerResult) -> None:
     for r in collect_result.records:
-        assert r["name_hash"] == hashlittle(r["resource_file_name"].encode("ascii"), KEY_HASH_SEED)
+        assert r["name_hash"] == ascii_key_hash(r["resource_file_name"])
 
 
 def test_name_hash_is_stored_twice(collect_result: HandlerResult) -> None:

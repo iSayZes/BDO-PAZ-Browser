@@ -160,6 +160,7 @@ from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_o
 from .servantbuff.handler import ServantBuffHandler, servant_buff_offset_handler
 from .servantinteraction.handler import ServantInteractionHandler, servant_interaction_offset_handler
 from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offset_handler
+from .minigamereward.handler import MiniGameRewardHandler, minigame_reward_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -364,3 +365,5 @@ def register_dbss_handlers() -> None:
     register_handler("servantinteraction.dbss", ServantInteractionHandler())
     register_handler("servantupgradeoffset.dbss", servant_upgrade_offset_handler())
     register_handler("servantupgrade.dbss", ServantUpgradeHandler())
+    register_handler("minigamerewardoffset.dbss", minigame_reward_offset_handler())
+    register_handler("minigamereward.dbss", MiniGameRewardHandler())

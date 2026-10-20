@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "minigameKey": "Мини-игра",
+    "successWp": "Энергия (успех)",
+    "failWp": "Энергия (неудача)",
+    "dropGroup": "Группа добычи",
+    "dropItems": "Предметы добычи",
+    "vehicleType": "Тип транспорта"
+  },
+  "offsetColumns": {
+    "minigameKey": "Мини-игра",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Мини-игр: {count}"
+  }
+}

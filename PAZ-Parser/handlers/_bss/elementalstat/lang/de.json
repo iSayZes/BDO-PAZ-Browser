@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "elementType": "Energietyp",
+    "aura": "Energie",
+    "apPerOrb": "AK je Lichtjuwel",
+    "dpPerOrb": "VK je Lichtjuwel",
+    "statPointsPerOrb": "Zusätzliche Werte je Lichtjuwel"
+  },
+  "meta": {
+    "count": "{count} Energien des Finsteren Schreins"
+  }
+}

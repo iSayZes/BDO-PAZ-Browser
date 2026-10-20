@@ -51,7 +51,7 @@ All multi-byte values are little-endian.
 | ------- | ---- | ---------------- | ------------------------------------------------------------------------ |
 | `+0x00` | u32  | interaction_type | `CppEnums.InteractionType` value; see Interaction Types                   |
 | `+0x04` | u8   | unknown_04       | `0` on every row; see Open Questions                                     |
-| `+0x05` | u32  | execute          | `40414` on every row; see Notes                                          |
+| `+0x05` | u32  | execute          | Item key the interaction uses; `40414` on every row, see Notes           |
 | `+0x09` | u16  | character_key    | `characterstatic.dbss` key; the handler shows its LOC type 6 name         |
 
 ### String Table (variable: 4 bytes + strings)
@@ -96,7 +96,12 @@ dungeon and a desert prison).
   skill 40414 level 1). The `charactersimply.bss` interaction condition of
   both characters is `getitemcount(40414,0)>0;` (see
   [charactersimply](charactersimply_bss.md)), so the interaction needs that
-  item. Whether `execute` is the item or the skill is open.
+  item. The item's own description (LOC type 0, 40414, `str_id4` 1) says
+  "It awakens Guild Raid Bosses Mirumok Watcher Offin and Mirumok Destroyer
+  Offin", the two characters of the file with `InteractionType_Awake`, so
+  `execute` is the item. In game the quest that gives it reads "Talk to the
+  Trembling Spirit NPC at Mirumok Ruins to complete the quest and receive
+  the item". The handler shows the item's name and icon next to the key.
 - The server dump on client 1784 holds the column names `InteractionType`
   and `Excute` next to the error `인터렉션 정보를 등록할 수 없습니다!` ("cannot
   register the interaction info").
@@ -114,10 +119,3 @@ and a u32. The sheet's `Condition` column is `<NULL>` on both rows, so the
 data shows neither its width nor whether a condition is stored here at
 all; a PABR string reference would point into the string table, which is
 empty.
-
-### What Execute Points At
-
-`execute` is `40414` on both rows, the key of both an item ("[Guild]
-Ancient Contract: Mirumok Watcher") and a skill ("Final Damage
-400%+Debuff"). The characters' interaction condition checks for the item,
-which points to the item; no client Lua reads the value.

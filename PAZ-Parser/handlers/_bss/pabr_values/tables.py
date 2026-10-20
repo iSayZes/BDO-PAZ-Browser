@@ -185,7 +185,14 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         (
             ValueField("interaction_type", "I", "interactionType"),
             ValueField("unknown_04", "B"),
-            ValueField("execute", "I", "execute"),
+            # The item the interaction uses; interaction_bss.md Notes.
+            ValueField(
+                "execute",
+                "I",
+                "execute",
+                NameLookup("item_name", "item", item_name_tagged, is_tagged=True),
+                IconLookup("icon_path", "icon", item_icon_path),
+            ),
             _CHARACTER_KEY,
         ),
         RowCount.COUNTED,

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "mainId": "메인 ID",
+    "subId": "서브 ID",
+    "title": "제목",
+    "feverPoint": "아그리스의 열기 포인트"
+  },
+  "meta": {
+    "count": "아그리스의 열기 의뢰 {count}개"
+  }
+}

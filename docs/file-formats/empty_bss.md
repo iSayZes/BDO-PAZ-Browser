@@ -4,22 +4,27 @@
 
 PABR `.bss` tables the client ships with no records. Each is 20 bytes: the
 `PABR` magic, a record count of `0`, a string table with no strings and the
-8-byte PABR trailer. Every file below is that on client 3474; on the two
-older clients checked it is the same 20 bytes or not in the archive:
+8-byte PABR trailer. Every file below is that on client 3474. On the two
+older clients checked it is the same 20 bytes, not in the archive, or (four
+files) a table with records that this doc does not cover:
 
 | File                                  | Client 1784 | Client 1485 |
 | ------------------------------------- | ----------- | ----------- |
 | `audiorenewal.bss`                    | empty       | empty       |
 | `beginnerroadmaplinkurldata.bss`      | absent      | absent      |
 | `cashproduct_discountperiodcheck.bss` | empty       | empty       |
+| `cashproductcachedata.bss`            | records     | records     |
+| `charactertrigger.bss`                | records     | records     |
 | `commonskill.bss`                     | empty       | empty       |
 | `dropuiurlinfo.bss`                   | absent      | absent      |
 | `enchantlightstone.bss`               | absent      | absent      |
+| `equipitemchanage.bss`                | records     | absent      |
 | `fishinginfo.bss`                     | empty       | empty       |
 | `instancefieldenteroption.bss`        | empty       | absent      |
 | `instancefieldmanagement.bss`         | empty       | empty       |
 | `itembundle.bss`                      | empty       | empty       |
 | `lightstoneenchantgroup.bss`          | absent      | absent      |
+| `naktype.bss`                         | empty       | records     |
 | `normalgroupquest.bss`                | empty       | empty       |
 | `openuiwhennak.bss`                   | absent      | absent      |
 | `preloadpcactioncharacter.bss`        | empty       | empty       |
@@ -45,14 +50,18 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | 1784 and later | 3474    | `audiorenewal.bss`                    | 20    | 1 String Table | 4         |
 | 1      | 3474 and later | 3474    | `beginnerroadmaplinkurldata.bss`      | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `cashproduct_discountperiodcheck.bss` | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `cashproductcachedata.bss`            | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `charactertrigger.bss`                | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `commonskill.bss`                     | 20    | 1 String Table | 4         |
 | 1      | 3474 and later | 3474    | `dropuiurlinfo.bss`                   | 20    | 1 String Table | 4         |
 | 1      | 3473 and later | 3474    | `enchantlightstone.bss`               | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `equipitemchanage.bss`                | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `fishinginfo.bss`                     | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `instancefieldenteroption.bss`        | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `instancefieldmanagement.bss`         | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `itembundle.bss`                      | 20    | 1 String Table | 4         |
 | 1      | 3473 and later | 3474    | `lightstoneenchantgroup.bss`          | 20    | 1 String Table | 4         |
+| 1      | 3474 and later | 3474    | `naktype.bss`                         | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `normalgroupquest.bss`                | 20    | 1 String Table | 4         |
 | 1      | 3474 and later | 3474    | `openuiwhennak.bss`                   | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `preloadpcactioncharacter.bss`        | 20    | 1 String Table | 4         |
@@ -66,14 +75,18 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `audiorenewal.bss`                    | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `beginnerroadmaplinkurldata.bss`      | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `cashproduct_discountperiodcheck.bss` | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `cashproductcachedata.bss`            | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `charactertrigger.bss`                | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `commonskill.bss`                     | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `dropuiurlinfo.bss`                   | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `enchantlightstone.bss`               | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `equipitemchanage.bss`                | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `fishinginfo.bss`                     | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `instancefieldenteroption.bss`        | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `instancefieldmanagement.bss`         | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `itembundle.bss`                      | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `lightstoneenchantgroup.bss`          | 20 B (100.0%) | 0 B (0.0%) |
+| 1      | `naktype.bss`                         | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `normalgroupquest.bss`                | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `openuiwhennak.bss`                   | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `preloadpcactioncharacter.bss`        | 20 B (100.0%) | 0 B (0.0%) |
@@ -166,11 +179,12 @@ On client 1784 the source sheet and the struct name agree with that:
   on client 3474 for files of at most 40 bytes. The spawn grid files under
   `mapdata_*/spawnplacementfieldgrid/` are left out.
 - Four files with these 20 bytes on client 3474 hold records on an older
-  client, so each needs a doc and a handler of its own:
-  `cashproductcachedata.bss` (1,509,235 bytes on client 1784),
-  `charactertrigger.bss` (307 bytes, count 9, on clients 1784 and 1485),
-  `equipitemchanage.bss` (464 bytes, count 37, on client 1784) and
-  `naktype.bss` (empty on client 1784, 455 bytes and count 4 on client 1485).
+  client: `cashproductcachedata.bss` (1,509,235 bytes on client 1784,
+  1,097.1 KB on client 1485), `charactertrigger.bss` (307 bytes, count 9, on
+  clients 1784 and 1485), `equipitemchanage.bss` (464 bytes, count 37, on
+  client 1784) and `naktype.bss` (empty on client 1784, 455 bytes and count 4
+  on client 1485). The handler reads the live empty layout and rejects the
+  older files; their record layouts wait for multi-version support.
 - Two 20-byte PABR files are not empty tables: `cashproduct_newbieproduct.bss`
   holds `0x18CAD` at `+0x04` and `petfeedcount.bss` holds `10` there, each
   with no row bytes before the string table, so the u32 is a single value.

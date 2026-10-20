@@ -22,6 +22,7 @@ from _common.title import title_name
 from _common.town import town_name
 from .names import (
     aura_name,
+    calamity_number,
     cooldown_cut,
     duration_seconds,
     item_icon_path,
@@ -269,8 +270,8 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     ValueTable(
         "elementalserverbuff.bss",
         (
-            ValueField("unknown_00", "B"),
-            ValueField("unknown_01", "B"),
+            ValueField("calamity_level", "B", "calamity", display=calamity_number),
+            ValueField("calamity_level_dup", "B"),
             ValueField("sun_blessing_ap", "f", "sunBlessingAp"),
             ValueField("moon_blessing_dp", "f", "moonBlessingDp"),
             ValueField("earth_blessing_drop_rate", "I", "earthBlessingDropRate", display=rate_bonus),

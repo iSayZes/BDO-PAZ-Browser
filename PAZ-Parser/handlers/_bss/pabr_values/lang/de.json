@@ -52,7 +52,8 @@
     "graduationQuest": "Abschlussquest",
     "itemCount": "Anzahl",
     "successRate": "Erfolgsrate",
-    "weeklyClearLimit": "Wöchentliche Abschlüsse"
+    "weeklyClearLimit": "Wöchentliche Abschlüsse",
+    "calamity": "Unheilsstufe"
   },
   "meta": {
     "count": "{count} Einträge",

@@ -52,7 +52,8 @@
     "graduationQuest": "Graduation Quest",
     "itemCount": "Item Count",
     "successRate": "Success Rate",
-    "weeklyClearLimit": "Weekly Clears"
+    "weeklyClearLimit": "Weekly Clears",
+    "calamity": "Calamity"
   },
   "meta": {
     "count": "{count} entries",

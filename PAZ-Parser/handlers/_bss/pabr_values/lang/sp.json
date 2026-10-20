@@ -52,7 +52,8 @@
     "graduationQuest": "Misión de graduación",
     "itemCount": "Cantidad",
     "successRate": "Tasa de éxito",
-    "weeklyClearLimit": "Victorias semanales"
+    "weeklyClearLimit": "Victorias semanales",
+    "calamity": "Grado"
   },
   "meta": {
     "count": "{count} entradas",

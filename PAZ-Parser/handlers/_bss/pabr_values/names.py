@@ -61,6 +61,11 @@ def duration_seconds(seconds: int) -> str:
     return format_duration(seconds * _MS_PER_SECOND)
 
 
+def calamity_number(level: int) -> str:
+    """A stored Black Shrine level as the Calamity the window shows: `6` -> `7` (`getLevel() + 1`)."""
+    return str(level + 1)
+
+
 def rate_bonus(rate: int) -> str:
     """A rate as the client shows a bonus: `200000` -> `+20%` ("Item Drop Rate +20%")."""
     return f"+{rate_percent(rate)}"

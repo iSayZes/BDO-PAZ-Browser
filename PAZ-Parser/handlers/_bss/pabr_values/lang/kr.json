@@ -52,7 +52,8 @@
     "graduationQuest": "졸업 의뢰",
     "itemCount": "수량",
     "successRate": "성공 확률",
-    "weeklyClearLimit": "주간 처치 횟수"
+    "weeklyClearLimit": "주간 처치 횟수",
+    "calamity": "재시니"
   },
   "meta": {
     "count": "{count}개 항목",

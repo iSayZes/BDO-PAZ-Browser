@@ -52,7 +52,8 @@
     "graduationQuest": "Quête de remise de diplôme",
     "itemCount": "Quantité",
     "successRate": "Taux de réussite",
-    "weeklyClearLimit": "Victoires hebdomadaires"
+    "weeklyClearLimit": "Victoires hebdomadaires",
+    "calamity": "Calamité"
   },
   "meta": {
     "count": "{count} entrées",

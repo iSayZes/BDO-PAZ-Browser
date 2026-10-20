@@ -7,7 +7,7 @@ after a Black Shrine boss is defeated, its server gets the Blessing of the
 Sun (AP), the Blessing of the Moon (DP) or the Blessing of the Earth (Item
 Drop Rate) for 180 minutes. Each of the four rows holds the three blessing
 values and their duration, `1` AP, `1` DP, `200000` (+20%) and `10800`
-seconds on every row (client 3474). What the row key stands for is open. The file has no
+seconds on every row (client 3474), one row per Calamity 7 to 10. The file has no
 PABR magic and no trailer. The aura stats of the same content are in
 [`elementalstat.bss`](elementalstat_bss.md).
 
@@ -23,7 +23,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                      | Known        | Unknown      |
 | ------ | ------------------------- | ------------ | ------------ |
-| 1      | `elementalserverbuff.bss` | 68 B (73.9%) | 24 B (26.1%) |
+| 1      | `elementalserverbuff.bss` | 76 B (82.6%) | 16 B (17.4%) |
 
 <!-- versions:end -->
 
@@ -49,8 +49,8 @@ the order `9`, `8`, `7`, `6`.
 
 | Offset  | Type | Field                    | Notes                                                                  |
 | ------- | ---- | ------------------------ | ---------------------------------------------------------------------- |
-| `+0x00` | u8   | unknown_00               | Row key, `6` to `9` on client 3474; see Open Questions                 |
-| `+0x01` | u8   | unknown_01               | Equals `unknown_00` on every row                                       |
+| `+0x00` | u8   | calamity_level           | Row key, the stored Black Shrine level; `6` to `9` (Calamity 7 to 10) |
+| `+0x01` | u8   | calamity_level_dup       | Equals `calamity_level` on every row                                   |
 | `+0x02` | f32  | sun_blessing_ap          | AP of the Blessing of the Sun; `1.0` on every row (client 3474)        |
 | `+0x06` | f32  | moon_blessing_dp         | DP of the Blessing of the Moon; `1.0` on every row (client 3474)       |
 | `+0x0a` | u32  | earth_blessing_drop_rate | Item Drop Rate of the Blessing of the Earth; 1,000,000 = 100%, `200000` (+20%) on every row (client 3474) |
@@ -117,22 +117,10 @@ bosses.
   `Framing.BARE`, one row per key. The Item Drop Rate cell shows the bonus
   (`+20%`) and the Duration cell the time (`3h`); the record keeps the
   stored values.
-
-## Open Questions
-
-### Row Key
-
-`unknown_00` runs `6` to `9`, with a copy in `unknown_01`. The Black Shrine
-window (`panel_window_morningland_boss_all_1.luac`) has ten boss groups and
-ten difficulty levels (`getLevel()` `0` to `9`, shown as Calamity 1 to 10),
-so the key fits either a stored level (Calamity 7 to 10) or a boss group.
-No Lua reads the key. The official Black Desert wiki page "Black Shrine:
-Donghae (Solo)" says the blessing comes "every time the highest Calamity
-difficulty is completed", and the page lists ten bosses (three for the
-Sun, three for the Moon, four for the Earth), so neither reading follows
-from it. If the key is the level, the blessings would come from Calamity 7
-up. On client 2519 row `6` held twice the blessing values of rows `7` to
-`9`, the set an enhanced blessing event gives (see Notes); a higher level
-would not explain it, while an event applied to one row would, if row `6`
-was the only one in use then.
-
+- `calamity_level` is the stored difficulty of the Black Shrine window
+  (`panel_window_morningland_boss_all_1.luac`, `getLevel()` `0` to `9`,
+  shown as Calamity 1 to 10), so rows `6` to `9` are Calamity 7 to 10. In
+  game on client 3474 clearing Calamity 7 to 10 gives me the blessing, and
+  the official wiki page "Black Shrine: Donghae (Solo)" ties it to the
+  highest Calamity cleared. On client 2519 only row `6` (Calamity 7) held
+  the doubled event set, which fits Calamity 7 being the top level then.

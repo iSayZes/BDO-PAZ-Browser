@@ -52,7 +52,8 @@
     "graduationQuest": "Задание выпуска",
     "itemCount": "Кол-во",
     "successRate": "Шанс успеха",
-    "weeklyClearLimit": "Еженед. победы"
+    "weeklyClearLimit": "Еженед. победы",
+    "calamity": "Сложность"
   },
   "meta": {
     "count": "Записей: {count}",

@@ -335,14 +335,14 @@ def test_every_pet_upgrade_tier_is_a_pet_dbss_tier() -> None:
 
 def test_each_blessing_row_repeats_its_key() -> None:
     records = _result(_ELEMENTAL_SERVER_BUFF).records
-    assert all(record["unknown_01"] == record["unknown_00"] for record in records)
-    assert len({record["unknown_00"] for record in records}) == len(records)
+    assert all(record["calamity_level_dup"] == record["calamity_level"] for record in records)
+    assert len({record["calamity_level"] for record in records}) == len(records)
 
 
 def test_the_blessing_cells_show_a_bonus_and_a_duration() -> None:
     record = {
-        "unknown_00": 9,
-        "unknown_01": 9,
+        "calamity_level": 9,
+        "calamity_level_dup": 9,
         "sun_blessing_ap": 1.0,
         "moon_blessing_dp": 1.0,
         "earth_blessing_drop_rate": 200_000,
@@ -352,6 +352,8 @@ def test_the_blessing_cells_show_a_bonus_and_a_duration() -> None:
     html = _render(_ELEMENTAL_SERVER_BUFF, [record])
     assert '<td class="num">+20%</td>' in html
     assert '<td class="num">3h</td>' in html
+    # Stored level 9 is Calamity 10.
+    assert '<td class="num">10</td>' in html
     assert '<td class="num">1</td>' in html
 
 

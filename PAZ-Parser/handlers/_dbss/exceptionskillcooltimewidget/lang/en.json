@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillNo": "Skill ID",
+    "skill": "Skill",
+    "classes": "Classes",
+    "shownSkillNo": "Shown Skill ID",
+    "shownSkill": "Shown Skill",
+    "learnCheckSkillNo": "Learn Check Skill ID",
+    "learnCheckSkill": "Learn Check Skill"
+  },
+  "offsetColumns": {
+    "skillKey": "Skill Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} skill swaps"
+  }
+}

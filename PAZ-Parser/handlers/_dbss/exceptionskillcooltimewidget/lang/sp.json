@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillNo": "ID de habilidad",
+    "skill": "Habilidad",
+    "classes": "Clases",
+    "shownSkillNo": "ID de habilidad mostrada",
+    "shownSkill": "Habilidad mostrada",
+    "learnCheckSkillNo": "ID de habilidad comprobada",
+    "learnCheckSkill": "Habilidad comprobada"
+  },
+  "offsetColumns": {
+    "skillKey": "Clave de habilidad",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} sustituciones de habilidad"
+  }
+}

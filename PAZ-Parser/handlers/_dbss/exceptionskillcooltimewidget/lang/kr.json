@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillNo": "기술 ID",
+    "skill": "기술",
+    "classes": "적용 직업",
+    "shownSkillNo": "표시 기술 ID",
+    "shownSkill": "표시 기술",
+    "learnCheckSkillNo": "습득 확인 기술 ID",
+    "learnCheckSkill": "습득 확인 기술"
+  },
+  "offsetColumns": {
+    "skillKey": "기술 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "기술 교체 {count}개"
+  }
+}

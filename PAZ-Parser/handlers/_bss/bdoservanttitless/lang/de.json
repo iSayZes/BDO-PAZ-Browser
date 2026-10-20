@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "name": "Name",
+    "titleName": "Titelindex",
+    "title": "Aussehen",
+    "contentsOption": "Inhaltsgruppe"
+  },
+  "meta": {
+    "count": "{count} Pferde"
+  }
+}

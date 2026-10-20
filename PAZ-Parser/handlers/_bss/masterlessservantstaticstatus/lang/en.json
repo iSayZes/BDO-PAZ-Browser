@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name"
+  },
+  "meta": {
+    "count": "{count} rows"
+  }
+}

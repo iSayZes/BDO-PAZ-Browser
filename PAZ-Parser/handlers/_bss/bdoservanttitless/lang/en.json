@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "name": "Name",
+    "titleName": "Title Index",
+    "title": "Base Coat",
+    "contentsOption": "Contents Group"
+  },
+  "meta": {
+    "count": "{count} horses"
+  }
+}

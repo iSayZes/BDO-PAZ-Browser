@@ -26,7 +26,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-None.
+| File                         | Required | Role |
+| ---------------------------- | -------- | ---- |
+| `languagedata_en.loc`        | Optional | The horse's name (LOC type 6, `str_id1` = `character_id`) |
+| `characterstaticoffset.dbss` | Optional | Every `characterstatic.dbss` key, so a `character_id` without a row shows as plain text instead of a link |
 
 All multi-byte values are little-endian.
 

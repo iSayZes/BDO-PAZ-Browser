@@ -27,7 +27,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-None.
+| File                         | Required | Role |
+| ---------------------------- | -------- | ---- |
+| `languagedata_en.loc`        | Optional | Servant names (LOC type 6) and the shown breed title (LOC type 111, `str_id1` = `character_id`) |
+| `characterstaticoffset.dbss` | Optional | Every `characterstatic.dbss` key, so a `character_id` without a row shows as plain text instead of a link |
 
 All multi-byte values are little-endian.
 
@@ -102,4 +105,7 @@ open on that client, and sit on servants newer than the sheet: Krogdalo
   `vehicleskillowner.dbss` learn chances identify as 9953 (`품종 11번`), and
   "Breed 2" on 9915 (`품종 2번`), and "Breed 13" on a Mythical horse, which
   only 31619 (`품종 13번`, tier 9) can be; checked in game on client 3474. The
-  displayed text is "Breed N", not the Korean string.
+  displayed text is "Breed N", not the Korean string: LOC type 111 holds it
+  per character (`str_id1` = `character_id`, `str_id4` 0), "Breed 11" for
+  9953. On client 3474 all 254 rows have that text, and its number is the
+  one in the row's `품종 N번`.

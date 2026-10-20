@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "name": "Имя"
+  },
+  "meta": {
+    "count": "{count} строк"
+  }
+}

@@ -7,6 +7,7 @@ from _common.empty_table import EmptyTableHandler
 from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
+from .bdoservanttitless.handler import BdoServantTitlesBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .branchquest.handler import BranchQuestBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
@@ -60,6 +61,7 @@ from .lightstoneset.handler import LightstoneSetBssHandler
 from .manufacture.handler import ManufactureBssHandler
 from .manufactureitemnaminginfo.handler import ManufactureItemNamingInfoBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
+from .masterlessservantstaticstatus.handler import MasterlessServantStaticStatusBssHandler
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
@@ -124,6 +126,7 @@ def register_bss_handlers() -> None:
         register_handler(name, AllQuestListBssHandler())
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("barterlifelevelinfo.bss", BarterLifeLevelInfoBssHandler())
+    register_handler("bdoservanttitless.bss", BdoServantTitlesBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("branchquest.bss", BranchQuestBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
@@ -196,6 +199,7 @@ def register_bss_handlers() -> None:
     register_handler("manufacture.bss", ManufactureBssHandler())
     register_handler("manufactureitemnaminginfo.bss", ManufactureItemNamingInfoBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
+    register_handler("masterlessservantstaticstatus.bss", MasterlessServantStaticStatusBssHandler())
     # One layout for the eight life skill mastery tables, each with its own columns.
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))

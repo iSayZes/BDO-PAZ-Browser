@@ -43,7 +43,7 @@ On client 3474 the 180 quests come from 27 quest chains. Every entry has a LOC t
 | 12022                        | 9      | Defend the Delphe Knights Castle!                 |
 | 12023, 12024, 40015, 40032   | 76     | [Season] Settling Down at the Bashim Base         |
 
-The completion scripts (`action_script` in `quest.dbss`) on client 3474: 151 `killmonstergroup` (any case), 16 `killmonster`, 3 `KillMonsterTogether` and 10 `checkLooting`. Other categories hold kill quests too: 702 of the 853 quests with a `killmonstergroup` script (any case) are not in this list.
+The completion scripts (`action_script` in `quest.dbss`) on client 3474: 151 `killmonstergroup` (any case), 16 `killmonster`, 3 `KillMonsterTogether` and 10 `checkLooting`. Other categories hold kill quests too: 702 of the 853 quests with a `killmonstergroup` script (any case) are not in this list. The first argument of `killmonstergroup` is a `character_group` key of [`characterstatic.dbss`](characterstatic_dbss.md#character-group); all 167 keys of these 853 quests have characters on client 3474.
 
 ## Client Use
 

@@ -731,6 +731,21 @@ bosses (client 3464). It is non-zero on 2,450 rows on client 3474. Earlier
 versions of this doc called it `unknown_p3` and read the third-party "tribe
 type" note onto it; the tribe is [`tribe_type`](#tribe-type).
 
+The quest condition `killMonsterGroup(group, count)` takes this key. The
+2016 `gc::KillMonsterGroup` holds `_characterGroupKey`
+(`gc::KeyType<short,-1>`) and `_count`, and on client 3474 the 878 calls
+in [`quest.dbss`](quest_dbss.md) completion scripts use 167 keys, the 16
+in [`guildquest.dbss`](guildquest_dbss.md) use `84` and `125`, and every
+one of these keys is a `character_group` value. No client file lists or
+names the groups: membership is this field alone, and
+[`monstergroup.dbss`](monstergroup_dbss.md) is a separate key set. The
+`#MonsterGroup` sheet of a private server's `datasheet_titletable.xlsm`
+(client 1784) names 122 groups in two columns, `CharacterGroup` and
+`MonsterGroup`, for example `84` `대양 몬스터` (sea monsters) and `116`
+`별무덤` (Star's End); all 122 keys have characters on client 3474. Like the
+other `#` sheets of that workbook it is not in the compiled
+`DataSheets.bexcel`.
+
 ## Tribe Type
 
 `tribe_type` is the value `getTribeType()` returns in the target bar script

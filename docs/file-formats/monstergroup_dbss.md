@@ -196,9 +196,17 @@ Serendia, region 213 in Mediah.
 - The client Lua does not name the file: no `.luac` file of client 3474
   holds the string `monstergroup` or `totem`.
 - The bytes are the same on clients 1784 and 3474 (1,402 and 364 bytes).
-- The guild quest condition `killMonsterGroup(125,10);`
-  ([`guildquest.dbss`](guildquest_dbss.md)) names group 125, past the
-  highest key here (36), so those scripts point at another group table.
+- The quest condition `killMonsterGroup(group, count)` does not read this
+  file: its key is the `character_group` of
+  [`characterstatic.dbss`](characterstatic_dbss.md#character-group). The
+  2016 `gc::KillMonsterGroup` stores the first argument as
+  `_characterGroupKey` (`gc::KeyType<short,-1>`, the type of the
+  character's `_groupKey`), and on client 3474 every key of the 878
+  `killMonsterGroup` calls in `quest.dbss` and the 16 in
+  [`guildquest.dbss`](guildquest_dbss.md) (`84` and `125`) is a
+  `character_group` value. The two key sets overlap without matching: Star's
+  End is group 36 here and character group 116, and character group 36 is
+  the Calpheon Shrine.
 
 ## Open Questions
 

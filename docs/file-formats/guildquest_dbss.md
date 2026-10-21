@@ -319,6 +319,20 @@ type has 1,097 missions on client 3474, more than the file holds.
   is on and the guild's honor points unlock it.
 - Every contents group hash decodes to a key below `0x10000` on clients
   1784 and 3474 (`contents_group_key()` in `_common/contents_group.py`).
+- `killMonsterGroup(group, count)` counts kills of the characters whose
+  `character_group` in
+  [`characterstatic.dbss`](characterstatic_dbss.md#character-group) is
+  `group`; the 2016 `gc::KillMonsterGroup` names the argument
+  `_characterGroupKey`. On client 3474 the 16 rows with the script use two
+  groups: `84` on 8 rows (objective `마고리아 해양 몬스터 처치`, Margoria
+  sea monsters; 35 characters such as `21449` Nineshark and `28682`
+  Lyngbakr) and `125` on 8 rows (`굶주린 마고리아 해양 몬스터 처치`, hungry
+  Margoria sea monsters; `21415` Hekaru and `21416` Ocean Stalker). In the
+  `GuildQuest_Table` sheet (client 1784) all 41 keys of the 504
+  `killMonsterGroup` calls are `CharacterGroup` values of the
+  `Character_Table` sheet. The keys of
+  [`monstergroup.dbss`](monstergroup_dbss.md) (`1` to `36`) are a
+  different key set.
 - Client 1784 has 339 rows, client 3474 140; no `quest_no` is in both.
 - The mission list Lua names the guild size of a mission with
   `getGuildQuestGrade()` (`1` Small to `4` Extra Large, `GAME` keys

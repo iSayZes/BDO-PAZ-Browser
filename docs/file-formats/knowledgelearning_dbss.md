@@ -113,6 +113,7 @@ No `PABR` magic and no trailer; the file ends exactly after the last table.
 
 - Every `card_id` in both tables is a `mentalcard.dbss` card.
 - The app groups table 0 by card into the `KNOWLEDGE_LEARNING_CHARACTERS` lookup index and table 1 into `KNOWLEDGE_LEARNING_ITEMS`. The `mentalcard.dbss` Learned From and Learned From Items columns read them.
+- The Source Name column shows the name in the user's LOC language, else the Korean `characterstatic.dbss` name (table 0, `character_name()`) or `itemenchant.dbss` name (table 1, `item_name()`): `4070` shows `가공석탄` without LOC.
 - The source name equals the card name on 2,504 of 2,596 character rows and 2,003 of 2,088 item rows. The rest are close variants (`Pistachio Tree` teaches `Pistachio`, several Magic Crystals teach `Low Grade Crystal Fusion`).
 - Table 0 teaches 1,458 distinct cards, so several characters can teach one card (for example boss variants). Table 1 teaches 2,045 distinct cards.
 - `source_id` is unique within each table. Read it with the right LOC type: in table 0, `10004` is the character Feldspar, while item `10004` is `Raell Longsword`.

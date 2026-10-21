@@ -153,6 +153,8 @@ from .itempalette.handler import ItemPaletteHandler, item_palette_offset_handler
 from .dyeingpalette.handler import DyeingPaletteHandler, dyeing_palette_offset_handler
 from .itempuzzle.handler import ItemPuzzleHandler, item_puzzle_offset_handler
 from .itemnakmessage.handler import ItemNakMessageHandler, item_nak_message_offset_handler
+from .itemenchantsafety.handler import ItemEnchantSafetyHandler, item_enchant_safety_offset_handler
+from .accessorystepup.handler import AccessoryStepUpHandler
 from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
@@ -279,6 +281,9 @@ def register_dbss_handlers() -> None:
     register_handler("itempuzzle.dbss", ItemPuzzleHandler())
     register_handler("itemnakmessageoffset.dbss", item_nak_message_offset_handler())
     register_handler("itemnakmessage.dbss", ItemNakMessageHandler())
+    register_handler("itemenchantsafetyoffset.dbss", item_enchant_safety_offset_handler())
+    register_handler("itemenchantsafety.dbss", ItemEnchantSafetyHandler())
+    register_handler("accessorystepup.dbss", AccessoryStepUpHandler())
     register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "skillNo": "기술 번호",
+    "skill": "기술",
+    "skillLevel": "기술 레벨"
+  },
+  "meta": {
+    "count": "기술이 있는 장비 단계 {count}개"
+  }
+}

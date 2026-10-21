@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "type": "Tipo",
+    "gear": "Equipamiento",
+    "minLevel": "Nivel mín.",
+    "maxLevel": "Nivel máx.",
+    "stack": "Límite de acumulación",
+    "cautionStack": "Acumulación de aviso",
+    "cautionRate": "Probabilidad de aviso"
+  },
+  "gear": {
+    "0": "Armas",
+    "1": "Armadura",
+    "2": "Accesorios",
+    "3": "Herramientas y equipo de montura",
+    "4": "Ropa bordada en plata"
+  },
+  "offsetColumns": {
+    "type": "Tipo",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} tipos de equipamiento"
+  }
+}

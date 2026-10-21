@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemKey": "Clé d'objet",
+    "item": "Objet",
+    "skillNo": "N° de compétence",
+    "skill": "Compétence",
+    "skillLevel": "Niveau de compétence"
+  },
+  "meta": {
+    "count": "{count} niveaux d'équipement avec compétence"
+  }
+}

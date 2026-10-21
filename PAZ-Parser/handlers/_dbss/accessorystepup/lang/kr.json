@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "accessoryIndex": "번호",
+    "groupNo": "그룹",
+    "accessory": "장신구",
+    "enchantLevel": "강화 단계",
+    "materials": "재료"
+  },
+  "meta": {
+    "count": "단계 {count}개"
+  }
+}

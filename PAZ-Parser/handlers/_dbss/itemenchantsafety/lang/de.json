@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "type": "Typ",
+    "gear": "Ausrüstung",
+    "minLevel": "Min. Stufe",
+    "maxLevel": "Max. Stufe",
+    "stack": "Stapelgrenze",
+    "cautionStack": "Warnstapel",
+    "cautionRate": "Warnchance"
+  },
+  "gear": {
+    "0": "Waffen",
+    "1": "Rüstung",
+    "2": "Accessoires",
+    "3": "Werkzeuge und Reittierausrüstung",
+    "4": "Silberbestickte Kleidung"
+  },
+  "offsetColumns": {
+    "type": "Typ",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Ausrüstungstypen"
+  }
+}

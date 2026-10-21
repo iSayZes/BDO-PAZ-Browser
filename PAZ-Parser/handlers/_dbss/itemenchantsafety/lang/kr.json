@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "type": "종류",
+    "gear": "장비",
+    "minLevel": "최소 단계",
+    "maxLevel": "최대 단계",
+    "stack": "스택 제한",
+    "cautionStack": "주의 스택",
+    "cautionRate": "주의 확률"
+  },
+  "gear": {
+    "0": "무기",
+    "1": "방어구",
+    "2": "액세서리",
+    "3": "도구 및 탑승물 장비",
+    "4": "은자수 의상"
+  },
+  "offsetColumns": {
+    "type": "종류",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "장비 종류 {count}개"
+  }
+}

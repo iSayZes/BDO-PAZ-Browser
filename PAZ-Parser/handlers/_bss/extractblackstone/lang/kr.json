@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "difficulty": "난이도",
+    "difficultyName": "이름",
+    "gear": "장비",
+    "enchantLevel": "강화 단계",
+    "resultItem": "결과물"
+  },
+  "difficulties": {
+    "1": "쉬움",
+    "2": "보통",
+    "3": "어려움"
+  },
+  "gear": {
+    "weapon": "무기",
+    "armor": "방어구"
+  },
+  "meta": {
+    "count": "추출 결과 {count}개"
+  }
+}

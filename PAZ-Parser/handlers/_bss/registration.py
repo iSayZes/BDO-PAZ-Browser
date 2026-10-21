@@ -61,6 +61,8 @@ from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatus
 from .itemequipgroup.handler import ItemEquipGroupBssHandler
 from .itemexchangesource.handler import ItemExchangeSourceBssHandler
 from .itemlinkprice.handler import ItemLinkPriceHandler
+from .enchantactiveskillitem.handler import EnchantActiveSkillItemHandler
+from .extractblackstone.handler import ExtractBlackStoneHandler
 from .itemexchangetoclassmapkey.handler import ItemExchangeToClassMapKeyBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
@@ -216,6 +218,8 @@ def register_bss_handlers() -> None:
     register_handler("boss_spawn.bss", BossSpawnBssHandler())
     register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
     register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
+    register_handler("enchantactiveskillitem.bss", EnchantActiveSkillItemHandler())
+    register_handler("extractblackstone.bss", ExtractBlackStoneHandler())
     register_handler("itemequipgroup.bss", ItemEquipGroupBssHandler())
     register_handler("itemexchangesource.bss", ItemExchangeSourceBssHandler())
     register_handler("itemexchangetoclassmapkey.bss", ItemExchangeToClassMapKeyBssHandler())

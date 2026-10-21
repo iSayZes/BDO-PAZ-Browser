@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent",
+    "skillLevel": "Talentstufe"
+  },
+  "meta": {
+    "count": "{count} Ausrüstungsstufen mit Talent"
+  }
+}

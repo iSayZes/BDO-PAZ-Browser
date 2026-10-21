@@ -1,0 +1,15 @@
+{
+  "offsetColumns": {
+    "groupKey": "Clave de grupo",
+    "byteOffset": "Desplazamiento (bytes)",
+    "size": "Tamaño"
+  },
+  "columns": {
+    "groupKey": "Clave de grupo",
+    "memberCount": "Miembros",
+    "monsters": "Monstruos"
+  },
+  "meta": {
+    "count": "{count} grupos de monstruos · {members} miembros"
+  }
+}

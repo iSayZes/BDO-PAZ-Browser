@@ -1,0 +1,15 @@
+{
+  "offsetColumns": {
+    "groupKey": "그룹 키",
+    "byteOffset": "바이트 오프셋",
+    "size": "크기"
+  },
+  "columns": {
+    "groupKey": "그룹 키",
+    "memberCount": "몬스터 수",
+    "monsters": "몬스터"
+  },
+  "meta": {
+    "count": "몬스터 그룹 {count}개 · 몬스터 {members}마리"
+  }
+}

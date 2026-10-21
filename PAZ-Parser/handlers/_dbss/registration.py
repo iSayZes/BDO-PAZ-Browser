@@ -191,6 +191,7 @@ from .petfusionnew.handler import (
     pet_fusion_new_offset_handler,
 )
 from .maid.handler import MaidHandler, maid_offset_handler
+from .monstergroup.handler import MonsterGroupHandler, monster_group_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -431,3 +432,5 @@ def register_dbss_handlers() -> None:
     register_handler("petfusionnewaddrateinfo.dbss", PetFusionNewAddRateInfoHandler())
     register_handler("maidoffset.dbss", maid_offset_handler())
     register_handler("maid.dbss", MaidHandler())
+    register_handler("monstergroupoffset.dbss", monster_group_offset_handler())
+    register_handler("monstergroup.dbss", MonsterGroupHandler())

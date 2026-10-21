@@ -1,0 +1,15 @@
+{
+  "offsetColumns": {
+    "groupKey": "Ключ группы",
+    "byteOffset": "Смещение (байт)",
+    "size": "Размер"
+  },
+  "columns": {
+    "groupKey": "Ключ группы",
+    "memberCount": "Участники",
+    "monsters": "Монстры"
+  },
+  "meta": {
+    "count": "Групп монстров: {count} · участников: {members}"
+  }
+}

@@ -9,7 +9,7 @@ import pytest
 from format_docs import check_doc, read_layouts
 from format_docs.check_run import Client, Status, check_doc_file
 from format_docs.doc_fit import fit_layouts
-from format_docs.versions import VersionRow, merge_rows, read_rows, render_rows, write_rows
+from format_docs.versions import ClientCheck, VersionRow, merge_clients, merge_rows, read_clients, read_rows, render_rows, write_rows
 from format_docs.walk_model import LayoutFit, LayoutMiss, Unwalkable
 
 VERSIONS = (
@@ -220,11 +220,19 @@ def test_rows_of_other_layouts_are_never_dropped() -> None:
 
 def test_the_versions_block_round_trips_and_names_the_newest_layout_and_later() -> None:
     rows = merge_rows([], [_version(2, 3464, 1_000), _version(1, 3401, 900)])
-    text = write_rows(_doc(COUNTED, ROW), rows, newest_layout=2)
+    clients = merge_clients([], [ClientCheck(3464, 2, True), ClientCheck(3401, 1, True), ClientCheck(2107, None, True), ClientCheck(1230, None, False)])
+    text = write_rows(_doc(COUNTED, ROW), rows, clients, newest_layout=2)
 
-    assert "3464 and later" in render_rows(rows, 2)
+    assert "3464 and later" in render_rows(rows, clients, 2)
     assert read_rows(text) == rows
-    assert write_rows(text, read_rows(text), newest_layout=2) == text
+    assert read_clients(text) == clients
+    assert write_rows(text, read_rows(text), read_clients(text), newest_layout=2) == text
+
+
+def test_a_client_read_again_keeps_only_its_new_result_and_the_newest_client_comes_first() -> None:
+    merged = merge_clients([ClientCheck(1784, 1, True), ClientCheck(1230, None, False)], [ClientCheck(1230, 1, True), ClientCheck(3474, 2, True)])
+
+    assert merged == (ClientCheck(3474, 2, True), ClientCheck(1784, 1, True), ClientCheck(1230, 1, True))
 
 
 def test_check_doc_file_writes_versions_once_and_then_reports_ok(tmp_path: Path) -> None:
@@ -239,6 +247,21 @@ def test_check_doc_file_writes_versions_once_and_then_reports_ok(tmp_path: Path)
 
     assert (first.status, second.status) == (Status.UPDATED, Status.OK)
     assert "| 1      | 3473 and later | 3473" in doc.read_text(encoding="utf-8")
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3473, 1, True),)
+
+
+def test_a_client_without_the_docs_files_is_recorded_as_no_file_once(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    client = Client(794, lambda name: None)
+    rows = {"test_bss.md": [("test.bss", "Rows")]}
+
+    first = check_doc_file(doc, rows, client)
+    second = check_doc_file(doc, rows, client)
+
+    assert (first.status, second.status) == (Status.UPDATED, Status.SKIPPED)
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(794, None, False),)
+    assert read_rows(doc.read_text(encoding="utf-8")) == ()
 
 
 def test_a_doc_not_in_the_layout_format_is_skipped_not_reported(tmp_path: Path) -> None:
@@ -261,3 +284,5 @@ def test_check_doc_file_names_the_client_and_place_when_no_layout_fits(tmp_path:
     assert outcome.status is Status.NO_FIT
     assert outcome.messages[0] == "client 3480 fits no layout of test.bss"
     assert outcome.messages[1].startswith("Layout 1 breaks in test.bss: ")
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3480, None, True),)
+    assert "| 3480   | No documented layout |" in doc.read_text(encoding="utf-8")

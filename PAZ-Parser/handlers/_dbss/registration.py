@@ -174,6 +174,7 @@ from .guildboss.handler import GuildBossHandler, guild_boss_offset_handler
 from .itemcollectionscroll.handler import ItemCollectionScrollHandler, item_collection_scroll_offset_handler
 from .servanttransformdata.handler import ServantTransformDataHandler, servant_transform_data_offset_handler
 from .buildingbuff.handler import BuildingBuffHandler, building_buff_offset_handler
+from .buildingupgrade.handler import BuildingUpgradeHandler, building_upgrade_offset_handler
 from .carriagespec.handler import CarriageSpecHandler, carriage_spec_offset_handler
 from .petdetectposition.handler import PetDetectPositionHandler, pet_detect_position_offset_handler
 from .actionverificationindex.handler import (
@@ -417,6 +418,8 @@ def register_dbss_handlers() -> None:
     register_handler("servanttransformdata.dbss", ServantTransformDataHandler())
     register_handler("buildingbuffoffset.dbss", building_buff_offset_handler())
     register_handler("buildingbuff.dbss", BuildingBuffHandler())
+    register_handler("buildingupgradeoffset.dbss", building_upgrade_offset_handler())
+    register_handler("buildingupgrade.dbss", BuildingUpgradeHandler())
     register_handler("carriagespecoffset.dbss", carriage_spec_offset_handler())
     register_handler("carriagespec.dbss", CarriageSpecHandler())
     register_handler("petdetectpositionoffset.dbss", pet_detect_position_offset_handler())

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterKey": "ID de personnage",
+    "name": "Bâtiment",
+    "upgradeTime": "Durée d'amélioration",
+    "upgradeLevel": "Niveau d'amélioration",
+    "targetCharacterKey": "ID cible",
+    "targetName": "Devient",
+    "sourceItems": "Matériaux"
+  },
+  "offsetColumns": {
+    "characterKey": "ID de personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} améliorations de bâtiment"
+  }
+}

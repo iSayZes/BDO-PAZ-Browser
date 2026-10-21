@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "name": "Gebäude",
+    "upgradeTime": "Verbesserungszeit",
+    "upgradeLevel": "Verbesserungsstufe",
+    "targetCharacterKey": "Ziel-ID",
+    "targetName": "Wird zu",
+    "sourceItems": "Materialien"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gebäudeverbesserungen"
+  }
+}

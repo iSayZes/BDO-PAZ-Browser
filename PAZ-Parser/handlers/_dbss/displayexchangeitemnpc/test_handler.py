@@ -22,6 +22,7 @@ from tests.framework import (
 from _common.character_link import CHARACTERSTATIC_OFFSET_FILE
 from _common.pabr_offset import parse_bare_u32_offset_rows
 from _common.quest.dialog import dialog_key
+from _dbss.itemexchangebynpc.parser import FILE_NAME as EXCHANGE_FILE, parse_itemexchangebynpc_records
 from .parser import FILE_NAME, OFFSET_FILE, parse_displayexchangeitemnpc_records
 
 
@@ -40,7 +41,7 @@ _QUINA = 44010
 CASE = HandlerCase(
     handler_name=FILE_NAME,
     data_file=FILE_NAME,
-    companion_files={CHARACTERSTATIC_OFFSET_FILE: CHARACTERSTATIC_OFFSET_FILE},
+    companion_files={CHARACTERSTATIC_OFFSET_FILE: CHARACTERSTATIC_OFFSET_FILE, EXCHANGE_FILE: EXCHANGE_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["npc_name"],
@@ -49,7 +50,7 @@ CASE = HandlerCase(
         SchemaTest(required_keys=[
             "npc_character_key", "dialog_index", "item_exchange_count", "item_exchange_keys",
             "npc_character_key_dup", "dialog_index_dup", "npc_name", "has_character_row",
-            "dialog_key", "dialog_name", "item_exchange_keys_text",
+            "dialog_key", "dialog_name", "item_exchange_keys_text", "exchange_lines", "exchanges_text",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         TargetTest(
@@ -118,6 +119,15 @@ def test_dialog_keys_are_unique(display_exchange_result: HandlerResult) -> None:
 def test_every_dialog_lists_an_exchange(display_exchange_result: HandlerResult) -> None:
     for r in display_exchange_result.records:
         assert r["item_exchange_count"] == len(r["item_exchange_keys"]) > 0, r["dialog_key"]
+
+
+def test_exchange_lines_follow_the_keys(display_exchange_result: HandlerResult) -> None:
+    """One line per listed key, in list order, holding that key's `itemexchangebynpc.dbss` row when it has one."""
+    exchanges = {r["item_exchange_key"]: r for r in parse_itemexchangebynpc_records(load_binary_fixture(EXCHANGE_FILE))}
+    for r in display_exchange_result.records:
+        assert [line["key"] for line in r["exchange_lines"]] == r["item_exchange_keys"], r["dialog_key"]
+        for line in r["exchange_lines"]:
+            assert line["exchange"] == exchanges.get(line["key"]), (r["dialog_key"], line["key"])
 
 
 def test_offset_rows_point_past_the_key_pair() -> None:

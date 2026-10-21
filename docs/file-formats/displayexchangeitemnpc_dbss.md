@@ -33,6 +33,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ----------------------------------- | -------- | -------------------------------------------------------- |
 | `displayexchangeitemnpcoffset.dbss` | Optional | `dialog_key -> (data_offset, data_size)` index; the rows carry their own counts and can be walked without it |
 | `characterstaticoffset.dbss`        | Optional | Every `characterstatic.dbss` key, so an NPC key without a row shows as plain text instead of a link |
+| [`itemexchangebynpc.dbss`](itemexchangebynpc_dbss.md) | Optional | The need and result item and count of each listed key |
 | `languagedata_en.loc`               | Optional | NPC name (type `6`) and the name the NPC shows in the dialog (type `38`, keyed `npc_character_key`, `dialog_index`) |
 
 All multi-byte values are little-endian.

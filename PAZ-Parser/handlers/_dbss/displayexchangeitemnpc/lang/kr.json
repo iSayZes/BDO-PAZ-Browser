@@ -5,7 +5,7 @@
     "dialog": "대화",
     "dialogName": "대화 이름",
     "exchangeCount": "교환 수",
-    "exchangeKeys": "아이템 교환 키"
+    "exchanges": "아이템 교환"
   },
   "offsetColumns": {
     "dialogKey": "대화 키",
@@ -14,5 +14,6 @@
   },
   "meta": {
     "count": "대화 {count}개 · NPC {npc_count}명"
-  }
+  },
+  "missingExchange": "{exchange_key}: 교환 행 없음"
 }

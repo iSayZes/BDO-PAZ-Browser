@@ -5,7 +5,7 @@
     "dialog": "Diálogo",
     "dialogName": "Nombre del diálogo",
     "exchangeCount": "Intercambios",
-    "exchangeKeys": "Claves de intercambio de objetos"
+    "exchanges": "Intercambios de objetos"
   },
   "offsetColumns": {
     "dialogKey": "Clave de diálogo",
@@ -14,5 +14,6 @@
   },
   "meta": {
     "count": "{count} diálogos · {npc_count} PNJ"
-  }
+  },
+  "missingExchange": "{exchange_key}: sin fila de intercambio"
 }

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Index",
+    "regionKey": "Region Key",
+    "selectRate": "Select Rate",
+    "subGroup": "Sub Group",
+    "category": "Category"
+  },
+  "meta": {
+    "count": "{count} special barter offers"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Index",
+    "regionKey": "Regionsschlüssel",
+    "selectRate": "Auswahlrate",
+    "subGroup": "Untergruppe",
+    "category": "Kategorie"
+  },
+  "meta": {
+    "count": "{count} Sonderwarentausch-Angebote"
+  }
+}

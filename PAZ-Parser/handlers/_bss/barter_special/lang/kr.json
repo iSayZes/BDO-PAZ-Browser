@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "순번",
+    "regionKey": "지역 키",
+    "selectRate": "선택 확률",
+    "subGroup": "하위 그룹",
+    "category": "구분"
+  },
+  "meta": {
+    "count": "돌발 물물교환 {count}건"
+  }
+}

@@ -7,7 +7,9 @@ from _common.empty_table import EmptyTableHandler
 from .actionverification.handler import ActionVerificationBssHandler
 from .allquestlist.handler import AllQuestListBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
+from .barter_special.handler import BarterSpecialBssHandler
 from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
+from .bartersubgroup.handler import BarterSubGroupBssHandler
 from .bdoservanttitless.handler import BdoServantTitlesBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .branchquest.handler import BranchQuestBssHandler
@@ -147,7 +149,9 @@ def register_bss_handlers() -> None:
     ):
         register_handler(name, AllQuestListBssHandler())
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
+    register_handler("barter_special.bss", BarterSpecialBssHandler())
     register_handler("barterlifelevelinfo.bss", BarterLifeLevelInfoBssHandler())
+    register_handler("bartersubgroup.bss", BarterSubGroupBssHandler())
     register_handler("bdoservanttitless.bss", BdoServantTitlesBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("branchquest.bss", BranchQuestBssHandler())

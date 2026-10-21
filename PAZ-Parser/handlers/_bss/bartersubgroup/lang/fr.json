@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "subGroup": "Sous-groupe",
+    "material": "Matériau",
+    "selectRate": "Taux de sélection",
+    "cost": "Coût",
+    "category": "Catégorie"
+  },
+  "meta": {
+    "count": "{count} échanges de troc · {groups} sous-groupes"
+  }
+}

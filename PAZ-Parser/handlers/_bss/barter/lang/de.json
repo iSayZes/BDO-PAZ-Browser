@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "fromItem": "Abgegebener Gegenstand",
+    "fromCount": "Abgegebene Anzahl",
+    "toItem": "Erhaltener Gegenstand",
+    "toCount": "Erhaltene Anzahl",
+    "needPoint": "Benötigte Punkte",
+    "exchanges": "Tauschvorgänge",
+    "exchangeMin": "Tausch-Min.",
+    "exchangeMax": "Tausch-Max."
+  }
+}

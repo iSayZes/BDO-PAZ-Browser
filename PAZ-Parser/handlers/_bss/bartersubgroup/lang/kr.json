@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "subGroup": "하위 그룹",
+    "material": "재료",
+    "selectRate": "선택 확률",
+    "cost": "비용",
+    "category": "구분"
+  },
+  "meta": {
+    "count": "물물교환 {count}건 · 하위 그룹 {groups}개"
+  }
+}

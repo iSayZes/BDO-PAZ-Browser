@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "subGroup": "Подгруппа",
+    "material": "Материалы",
+    "selectRate": "Шанс выбора",
+    "cost": "Стоимость",
+    "category": "Категория"
+  },
+  "meta": {
+    "count": "Обменов бартера: {count} · подгрупп: {groups}"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "index": "Índice",
+    "regionKey": "Clave de región",
+    "selectRate": "Tasa de selección",
+    "subGroup": "Subgrupo",
+    "category": "Categoría"
+  },
+  "meta": {
+    "count": "{count} ofertas de trueque especial"
+  }
+}

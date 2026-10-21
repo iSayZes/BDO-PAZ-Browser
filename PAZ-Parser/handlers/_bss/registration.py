@@ -29,6 +29,7 @@ from .empty_tables.tables import EMPTY_PABR_TABLES
 from .employeeexp.handler import EmployeeExpBssHandler
 from .encyclopedia.handler import EncyclopediaBssHandler
 from .employeestaticstatus.handler import EmployeeStaticStatusBssHandler
+from .enchantfailcountexpstaticstatus.handler import EnchantFailCountExpBssHandler
 from .experience.handler import ExperienceBssHandler
 from .exploration.handler import ExplorationBssHandler
 from .explorepointexperiencenew.handler import ExplorePointExperienceBssHandler
@@ -159,6 +160,7 @@ def register_bss_handlers() -> None:
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
+    register_handler("enchantfailcountexpstaticstatus.bss", EnchantFailCountExpBssHandler())
     for name in EMPTY_PABR_TABLES:
         register_handler(name, EmptyTableHandler(name, parse_empty_pabr_table))
     register_handler("encyclopedia.bss", EncyclopediaBssHandler())

@@ -163,8 +163,11 @@ count; its hardcoded counts are the sheet's `FeedValue` column on client 519
 The sibling sheet `FairyFeed_Range` (`Stack`, `StackExp`) goes into a second
 static status in the same dump (insert at VA `0x140b70a20`, which logs
 "EnchantFailCountExpStaticStatusManager Insert Fail Stack(%#) , NeedExp(%#)").
-The client file for it is `enchantfailcountexpstaticstatus` (`.dbss` on
-client 1784, `.bss` on client 3474), which has no doc yet.
+The client file for it is
+[enchantfailcountexpstaticstatus.bss](enchantfailcountexpstaticstatus_bss.md)
+(`.dbss` on client 1784). On client 3474 that file is keyed by fail stack
+and holds this file's nine (key, level) pairs per stack, each non-zero only
+from `feed_value` up to below `equip_exp` (see its Stack Ranges).
 
 The 2016 client PDB has no struct for this table.
 
@@ -195,12 +198,18 @@ new on client 3474 and have `enchant_level` 0, so they key items fed at no
 particular level. The item sheet's `FairyFeedKey` column has not been found in
 a client item file, so which items carry these keys is open.
 
-### `feed_value` 0 at TET and PEN
+### `feed_value` and `equip_exp` as a Stack Range
 
-On client 3474, keys 1 and 2 hold only TET and PEN, both with `feed_value` 0
-and an `equip_exp` of 200 or 300. Whether feeding such an item still adds to
-the enchant fail count, or only gives `equip_exp` toward the
-`enchantfailcountexpstaticstatus.bss` table, is open.
+On client 3474 every entry's `feed_value` and `equip_exp` are the first
+stack and one past the last stack at which
+[enchantfailcountexpstaticstatus.bss](enchantfailcountexpstaticstatus_bss.md)
+holds a non-zero value for that key and level: 0 to 199 for TET, 0 to 299
+for PEN, 100 to 299 for keys 3 to 6, 300 to 349 for key 7, with 0 misses
+over 3,600 values. The client Lua titles the enchant stack list groups with
+a start and end stack (`ToClient_GetStartStackByIndex`,
+`ToClient_GetEndStackByIndex`). Whether the client reads these two fields
+as that start and end, which would leave the 1784 names wrong for client
+3474, is open.
 
 ### `equip_exp` Width
 

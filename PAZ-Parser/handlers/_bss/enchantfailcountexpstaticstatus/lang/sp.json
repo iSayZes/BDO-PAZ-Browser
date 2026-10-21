@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "stack": "Acumulación",
+    "fairyFeedKey": "Clave de alimentación",
+    "enchantLevel": "Nivel de refuerzo"
+  },
+  "meta": {
+    "count": "{count} entradas en {stack_count} acumulaciones"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "stack": "스택",
+    "fairyFeedKey": "먹이 키",
+    "enchantLevel": "강화 단계"
+  },
+  "meta": {
+    "count": "항목 {count}개 · 스택 {stack_count}개"
+  }
+}

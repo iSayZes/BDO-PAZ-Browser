@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "stack": "Stack",
+    "fairyFeedKey": "Feed Key",
+    "enchantLevel": "Enchant Level"
+  },
+  "meta": {
+    "count": "{count} entries across {stack_count} stacks"
+  }
+}

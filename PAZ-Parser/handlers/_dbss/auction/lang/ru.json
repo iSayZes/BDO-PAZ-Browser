@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "auctionNo": "№ аукциона",
+    "auctionType": "Тип",
+    "description": "Описание",
+    "startTickCount": "Тик начала",
+    "intervalTickCount": "Тик интервала",
+    "houses": "Дома",
+    "items": "Предметы"
+  },
+  "offsetColumns": {
+    "auctionNo": "№ аукциона",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "goods": {
+    "entry": "{name}: {price}"
+  },
+  "meta": {
+    "count": "Аукционов: {count}"
+  }
+}

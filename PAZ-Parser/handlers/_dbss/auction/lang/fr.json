@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "auctionNo": "N° d'enchère",
+    "auctionType": "Type",
+    "description": "Description",
+    "startTickCount": "Tick de début",
+    "intervalTickCount": "Tick d'intervalle",
+    "houses": "Maisons",
+    "items": "Objets"
+  },
+  "offsetColumns": {
+    "auctionNo": "N° d'enchère",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "goods": {
+    "entry": "{name} : {price}"
+  },
+  "meta": {
+    "count": "{count} enchères"
+  }
+}

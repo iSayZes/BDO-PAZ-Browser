@@ -23,6 +23,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `alchemyupgrade.dbss` | Alchemy stone Polishing materials: per stone type group, rows of (stone type, material item ID, EXP per material as percent x 10,000) | [alchemyupgrade](file-formats/alchemyupgrade_dbss.md) | 1 | 1 |
 | `alchemyupgradeoffset.dbss` | Index into `alchemyupgrade.dbss`, same groups, maps (stone type, item ID) → offset/size | [alchemyupgrade](file-formats/alchemyupgrade_dbss.md) | 1 | 1 |
 | `allquestlist.bss`                 | PABR list of canonical/display packed quest IDs linked to quest LOC keys                                       | [allquestlist](file-formats/allquestlist_bss.md)                    | 0              | 0 |
+| `auction.dbss` | Static auctions keyed by auction number: goods type (`CppEnums.AuctionType`), two tick counts, Korean description, the guild houses and villas each house auction starts with (character key, lower price) and masterpiece items | [auction](file-formats/auction_dbss.md) | 3 | 0 |
+| `auctionoffset.dbss` | PABR index into `auction.dbss`, maps auction number to offset/size (10-byte rows) | [auction](file-formats/auction_dbss.md) | 3 | 0 |
 | `audiorenewal.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `barter_npclist.bss` | PABR barter NPC list: per barter region (island, port or ship, a `regioninfo.bss` key) the NPC who barters there | [barter_npclist](file-formats/barter_npclist_bss.md) | 0 | 0 |
 | `barterlifelevelinfo.bss` | PABR parley discount per Barter level: level and discount in units of 0.0001% (2.73% at level 2), shown in the Barter window's parley tooltip | [barterlifelevelinfo](file-formats/barterlifelevelinfo_bss.md) | 0 | 0 |

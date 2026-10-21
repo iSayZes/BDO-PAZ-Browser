@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "classType": "Тип класса",
+    "class": "Класс",
+    "textureId": "ID текстуры"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Типов класса: {count}"
+  }
+}

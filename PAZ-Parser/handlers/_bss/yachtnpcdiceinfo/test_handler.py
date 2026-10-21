@@ -19,6 +19,9 @@ from tests.framework import (
     run_case,
 )
 
+from _bss.yachthandrank.parser import FILE_NAME as HAND_RANK_FILE
+from _dbss.yachtdicepreset.parser import FILE_NAME as DICE_PRESET_FILE
+
 from .parser import FILE_NAME
 
 
@@ -30,19 +33,21 @@ _EILEEN_ROW = 1
 _EILEEN_NPC = 40063
 _EILEEN_KNOWLEDGE = 45
 _DICE_PRESET_OFFSET_FILE = "yachtdicepresetoffset.dbss"
+# Eileen's row 1 offers the six single-eye hands, Bit o' Ones first.
+_BIT_O_ONES = "Bit o' Ones"
 
 CASE = HandlerCase(
     handler_name=FILE_NAME,
     data_file=FILE_NAME,
-    companion_files={},
+    companion_files={HAND_RANK_FILE: HAND_RANK_FILE, DICE_PRESET_FILE: DICE_PRESET_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
-    loc_fields=["npc_name", "knowledge_name"],
+    loc_fields=["npc_name", "knowledge_name", "hand_rank_names"],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
     tests=[
         SchemaTest(required_keys=[
-            "npc_dice_info_key", "npc_key", "npc_name", "dice_preset_key", "hand_rank_count",
-            "hand_rank_keys", "knowledge_key", "knowledge_name", "deck_limit", "roll_count_max",
+            "npc_dice_info_key", "npc_key", "npc_name", "dice_preset_key", "dice_text", "hand_rank_count",
+            "hand_rank_keys", "hand_rank_names", "knowledge_key", "knowledge_name", "deck_limit", "roll_count_max",
         ]),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
         TargetTest(
@@ -50,7 +55,7 @@ CASE = HandlerCase(
             value=_EILEEN_ROW,
             expected={"npc_key": _EILEEN_NPC, "knowledge_key": _EILEEN_KNOWLEDGE},
         ),
-        UserLanguageTest(fields=["npc_name", "knowledge_name"]),
+        UserLanguageTest(fields=["npc_name", "knowledge_name", "hand_rank_names"]),
     ],
 )
 
@@ -76,7 +81,17 @@ def test_row_keys_are_unique(yachtnpcdiceinfo_result: HandlerResult) -> None:
 
 def test_hand_rank_keys_follow_their_count(yachtnpcdiceinfo_result: HandlerResult) -> None:
     for r in yachtnpcdiceinfo_result.records:
-        assert len(r["hand_rank_keys"]) == r["hand_rank_count"], r["npc_dice_info_key"]
+        assert len(r["hand_rank_keys"]) == r["hand_rank_count"] == len(r["hand_rank_names"]), r["npc_dice_info_key"]
+
+
+def test_hand_ranks_show_their_names(yachtnpcdiceinfo_result: HandlerResult) -> None:
+    eileen = next(r for r in yachtnpcdiceinfo_result.records if r["npc_dice_info_key"] == _EILEEN_ROW)
+    assert eileen["hand_rank_names"][0] == _BIT_O_ONES
+
+
+def test_every_row_shows_its_preset_dice(yachtnpcdiceinfo_result: HandlerResult) -> None:
+    for r in yachtnpcdiceinfo_result.records:
+        assert r["dice_text"], r["npc_dice_info_key"]
 
 
 def test_every_dice_preset_is_in_the_preset_table(yachtnpcdiceinfo_result: HandlerResult) -> None:

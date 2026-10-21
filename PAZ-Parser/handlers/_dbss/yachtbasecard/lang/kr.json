@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "키",
+    "symbol": "문양",
+    "eye": "눈",
+    "image": "이미지"
+  },
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "카드 {count}장"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clave",
+    "level": "Nivel",
+    "description": "Descripción",
+    "handRankCount": "N.º de manos",
+    "handRanks": "Manos",
+    "rollCountMax": "Tiradas máx.",
+    "matchmaking": "Emparejamiento",
+    "iconTexture": "Textura del icono",
+    "bigTexture": "Textura grande"
+  },
+  "meta": {
+    "count": "{count} tableros"
+  }
+}

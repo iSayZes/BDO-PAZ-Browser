@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Clave",
+    "cards": "Cartas"
+  },
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} dados"
+  }
+}

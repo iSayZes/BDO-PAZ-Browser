@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "symbol": "Символ",
+    "eye": "Значение",
+    "image": "Изображение"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Карт: {count}"
+  }
+}

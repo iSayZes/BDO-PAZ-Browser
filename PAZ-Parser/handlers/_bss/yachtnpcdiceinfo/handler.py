@@ -6,10 +6,14 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _bss.yachthandrank.parser import FILE_NAME as HAND_RANK_FILE
+from _bss.yachthandrank.text import HAND_RANKS_SHOWN, hand_rank_names, korean_hand_rank_names
 from _common.character import character_name
-from _common.html import Column, e, error, sort_keys, table
+from _common.html import Column, e, error, sort_keys, table, text_list_cell
 from _common.knowledge import knowledge_name
 from _common.lang import handler_text, load_handler_strings
+from _dbss.yacht_common.text import keys_text
+from _dbss.yachtdicepreset.parser import FILE_NAME as DICE_PRESET_FILE, dice_keys_by_preset
 from .parser import FILE_NAME, parse_yachtnpcdiceinfo_records
 
 
@@ -25,7 +29,8 @@ class YachtNpcDiceInfoBssHandler(PreviewHandler):
             Column(cols["npcKey"], "num", sort_key="npc_key"),
             Column(cols["npc"], sort_key="npc_name"),
             Column(cols["dicePreset"], "num", sort_key="dice_preset_key"),
-            # A list column: it would only sort by its string form.
+            # List columns: they would only sort by their string form.
+            Column(cols["dice"]),
             Column(cols["handRanks"]),
             Column(cols["knowledgeKey"], "num", sort_key="knowledge_key"),
             Column(cols["knowledge"], sort_key="knowledge_name"),
@@ -36,6 +41,10 @@ class YachtNpcDiceInfoBssHandler(PreviewHandler):
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
 
+    def companions(self, entry: PazEntry) -> list[str]:
+        folder = entry.internal_path.rsplit("/", 1)[0]
+        return [f"{folder}/{HAND_RANK_FILE}", f"{folder}/{DICE_PRESET_FILE}"]
+
     def get_records(
         self,
         data: bytes,
@@ -44,6 +53,8 @@ class YachtNpcDiceInfoBssHandler(PreviewHandler):
     ) -> list[dict]:
         try:
             rows = parse_yachtnpcdiceinfo_records(data)
+            korean_names = korean_hand_rank_names(companions.get(HAND_RANK_FILE))
+            preset_dice = dice_keys_by_preset(companions.get(DICE_PRESET_FILE))
         except ValueError as ex:
             return [{"_error": f"{FILE_NAME} could not be parsed: {ex}"}]
 
@@ -51,6 +62,8 @@ class YachtNpcDiceInfoBssHandler(PreviewHandler):
             {
                 **row,
                 "npc_name": character_name(row["npc_key"]),
+                "dice_text": keys_text(preset_dice.get(row["dice_preset_key"], [])),
+                "hand_rank_names": hand_rank_names(row["hand_rank_keys"], korean_names),
                 "knowledge_name": knowledge_name(row["knowledge_key"]),
             }
             for row in rows
@@ -73,7 +86,8 @@ class YachtNpcDiceInfoBssHandler(PreviewHandler):
                 e(r["npc_key"]),
                 e(r["npc_name"] or _EMPTY),
                 e(r["dice_preset_key"]),
-                e(", ".join(str(key) for key in r["hand_rank_keys"]) or _EMPTY),
+                e(r["dice_text"] or _EMPTY),
+                text_list_cell(r["hand_rank_names"], HAND_RANKS_SHOWN) or _EMPTY,
                 e(r["knowledge_key"]),
                 e(r["knowledge_name"] or _EMPTY),
                 e(r["deck_limit"]),

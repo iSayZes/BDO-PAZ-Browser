@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "name": "Название",
+    "description": "Описание",
+    "targetEye": "Значение",
+    "targetCount": "Одинаковых карт",
+    "straightCount": "Стрит",
+    "twoPair": "Две пары",
+    "fullHouse": "Фулл-хаус",
+    "madePoint": "Фикс. очки",
+    "sumPoint": "Сумма карт",
+    "iconTexture": "Текстура значка"
+  },
+  "meta": {
+    "count": "Комбинаций: {count}"
+  }
+}

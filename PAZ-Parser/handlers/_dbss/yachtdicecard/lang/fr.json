@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "key": "Clé",
+    "symbol": "Symbole",
+    "eye": "Valeur"
+  },
+  "offsetColumns": {
+    "key": "Clé",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} cartes"
+  }
+}

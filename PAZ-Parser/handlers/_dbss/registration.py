@@ -195,6 +195,14 @@ from .petfusionnew.handler import (
 from .maid.handler import MaidHandler, maid_offset_handler
 from .auction.handler import AuctionHandler, auction_offset_handler
 from .monstergroup.handler import MonsterGroupHandler, monster_group_offset_handler
+from .yachtbasecard.handler import YachtBaseCardHandler, yacht_base_card_offset_handler
+from .yachtclasstypetextureinfo.handler import (
+    YachtClassTypeTextureInfoHandler,
+    yacht_class_type_texture_info_offset_handler,
+)
+from .yachtdice.handler import YachtDiceHandler, yacht_dice_offset_handler
+from .yachtdicecard.handler import YachtDiceCardHandler, yacht_dice_card_offset_handler
+from .yachtdicepreset.handler import YachtDicePresetHandler, yacht_dice_preset_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -443,3 +451,13 @@ def register_dbss_handlers() -> None:
     register_handler("auction.dbss", AuctionHandler())
     register_handler("monstergroupoffset.dbss", monster_group_offset_handler())
     register_handler("monstergroup.dbss", MonsterGroupHandler())
+    register_handler("yachtbasecardoffset.dbss", yacht_base_card_offset_handler())
+    register_handler("yachtbasecard.dbss", YachtBaseCardHandler())
+    register_handler("yachtclasstypetextureinfooffset.dbss", yacht_class_type_texture_info_offset_handler())
+    register_handler("yachtclasstypetextureinfo.dbss", YachtClassTypeTextureInfoHandler())
+    register_handler("yachtdiceoffset.dbss", yacht_dice_offset_handler())
+    register_handler("yachtdice.dbss", YachtDiceHandler())
+    register_handler("yachtdicecardoffset.dbss", yacht_dice_card_offset_handler())
+    register_handler("yachtdicecard.dbss", YachtDiceCardHandler())
+    register_handler("yachtdicepresetoffset.dbss", yacht_dice_preset_offset_handler())
+    register_handler("yachtdicepreset.dbss", YachtDicePresetHandler())

@@ -115,6 +115,9 @@ from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
 from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
 from .usernpc.handler import UserNpcBssHandler
+from .yachtautobubbletextinfo.handler import YachtAutoBubbleTextInfoHandler
+from .yachtgameboardinfo.handler import YachtGameBoardInfoHandler
+from .yachthandrank.handler import YachtHandRankHandler
 from .yachtnpcdiceinfo.handler import YachtNpcDiceInfoBssHandler
 from .zodiacsignindex.handler import ZodiacSignIndexHandler
 
@@ -279,5 +282,8 @@ def register_bss_handlers() -> None:
         register_handler(f"ui_skillgroup_{window}.bss", UiSkillGroupBssHandler())
     register_handler("uigrowthpasslayout.bss", UiGrowthPassLayoutBssHandler())
     register_handler("usernpc.bss", UserNpcBssHandler())
+    register_handler("yachtautobubbletextinfo.bss", YachtAutoBubbleTextInfoHandler())
+    register_handler("yachtgameboardinfo.bss", YachtGameBoardInfoHandler())
+    register_handler("yachthandrank.bss", YachtHandRankHandler())
     register_handler("yachtnpcdiceinfo.bss", YachtNpcDiceInfoBssHandler())
     register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())

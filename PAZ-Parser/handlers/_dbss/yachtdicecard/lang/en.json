@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "key": "Key",
+    "symbol": "Symbol",
+    "eye": "Eye"
+  },
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} cards"
+  }
+}

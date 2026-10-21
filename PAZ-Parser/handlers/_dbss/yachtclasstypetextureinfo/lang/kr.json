@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "classType": "클래스 타입",
+    "class": "클래스",
+    "textureId": "텍스처 ID"
+  },
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "클래스 타입 {count}개"
+  }
+}

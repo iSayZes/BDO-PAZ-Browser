@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clé",
+    "level": "Niveau",
+    "description": "Description",
+    "handRankCount": "Nb de mains",
+    "handRanks": "Mains",
+    "rollCountMax": "Lancers max.",
+    "matchmaking": "Recherche",
+    "iconTexture": "Texture d'icône",
+    "bigTexture": "Grande texture"
+  },
+  "meta": {
+    "count": "{count} plateaux de jeu"
+  }
+}

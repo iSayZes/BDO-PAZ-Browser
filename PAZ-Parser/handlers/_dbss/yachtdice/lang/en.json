@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Key",
+    "cards": "Cards"
+  },
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} dice"
+  }
+}

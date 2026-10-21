@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Key",
+    "npcKey": "NPC Key",
+    "speaker": "Speaker",
+    "condition": "Trigger",
+    "handRankKey": "Hand Key",
+    "handRank": "Hand",
+    "lines": "Lines"
+  },
+  "player": "Player",
+  "conditions": {
+    "1": "Scores 0 points",
+    "2": "Scores more than the opponent",
+    "3": "Game starts",
+    "4": "Wins",
+    "5": "Loses",
+    "6": "10 seconds left",
+    "7": "Own turn starts"
+  },
+  "meta": {
+    "count": "{count} speech bubbles"
+  }
+}

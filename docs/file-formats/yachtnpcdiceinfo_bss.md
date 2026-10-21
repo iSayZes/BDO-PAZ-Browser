@@ -22,9 +22,11 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 ## Companion Files
 
-| File                  | Required | Role                                                                                 |
-| --------------------- | -------- | ------------------------------------------------------------------------------------ |
-| `languagedata_en.loc` | Optional | NPC names (LOC type 6 at `str_id1=npc_key`), knowledge names (LOC type 34 at `str_id1=knowledge_key`) |
+| File                   | Required | Role                                                                                 |
+| ---------------------- | -------- | ------------------------------------------------------------------------------------ |
+| `yachthandrank.bss`    | Optional | Korean hand rank names, where LOC has none ([`yachthandrank.bss`](yachthandrank_bss.md)) |
+| `yachtdicepreset.dbss` | Optional | The five dice of each `dice_preset_key` ([`yachtdicepreset.dbss`](yachtdicepreset_dbss.md)) |
+| `languagedata_en.loc`  | Optional | NPC names (LOC type 6 at `str_id1=npc_key`), knowledge names (LOC type 34 at `str_id1=knowledge_key`), hand rank names (LOC type 105 at `str_id1=hand_rank_key`) |
 
 All multi-byte values are little-endian.
 

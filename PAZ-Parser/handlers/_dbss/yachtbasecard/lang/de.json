@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "symbol": "Symbol",
+    "eye": "Augenzahl",
+    "image": "Bild"
+  },
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Karten"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "dice": "Würfel"
+  },
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Würfelvorlagen"
+  }
+}

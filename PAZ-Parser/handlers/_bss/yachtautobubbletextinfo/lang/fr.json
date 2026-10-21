@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Clé",
+    "npcKey": "Clé du PNJ",
+    "speaker": "Locuteur",
+    "condition": "Déclencheur",
+    "handRankKey": "Clé de la main",
+    "handRank": "Main",
+    "lines": "Répliques"
+  },
+  "player": "Joueur",
+  "conditions": {
+    "1": "Marque 0 point",
+    "2": "Marque plus que l'adversaire",
+    "3": "Début de la partie",
+    "4": "Victoire",
+    "5": "Défaite",
+    "6": "10 secondes restantes",
+    "7": "Début de son tour"
+  },
+  "meta": {
+    "count": "{count} bulles de dialogue"
+  }
+}

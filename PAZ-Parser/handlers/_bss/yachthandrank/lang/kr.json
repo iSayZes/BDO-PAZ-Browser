@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "키",
+    "name": "이름",
+    "description": "설명",
+    "targetEye": "눈",
+    "targetCount": "같은 카드 수",
+    "straightCount": "스트레이트",
+    "twoPair": "투페어",
+    "fullHouse": "풀하우스",
+    "madePoint": "고정 점수",
+    "sumPoint": "합산 점수",
+    "iconTexture": "아이콘 텍스처"
+  },
+  "meta": {
+    "count": "족보 {count}개"
+  }
+}

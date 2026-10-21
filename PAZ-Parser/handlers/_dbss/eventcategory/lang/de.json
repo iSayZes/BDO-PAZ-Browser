@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "index": "Index",
+    "categoryMain": "Hauptkategorie",
+    "categoryMiddle": "Mittlere Kategorie",
+    "categorySmall": "Unterkategorie",
+    "discountStart": "Rabattbeginn",
+    "discountEnd": "Rabattende",
+    "eventType": "Event-Typ",
+    "maxDiscountPearl": "Max. Rabatt (Perlen)",
+    "discountSteps": "Rabattstufen (Perlen: Rabatt)"
+  },
+  "offsetColumns": {
+    "index": "Index",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Rabatt-Events"
+  }
+}

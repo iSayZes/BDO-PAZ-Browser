@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossSpawnKey": "우두머리 키",
+    "boss": "우두머리",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "길드 우두머리 필드 {count}개"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "serviceType": "서비스 종류",
+    "service": "서비스"
+  },
+  "meta": {
+    "count": "항목 {count}개"
+  }
+}

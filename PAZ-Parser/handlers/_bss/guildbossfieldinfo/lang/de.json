@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossSpawnKey": "Boss-Schlüssel",
+    "boss": "Boss",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} Gildenboss-Felder"
+  }
+}

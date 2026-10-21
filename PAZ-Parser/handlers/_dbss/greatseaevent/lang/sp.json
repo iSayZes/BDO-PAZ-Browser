@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "groupKey": "Grupo",
+    "selectIndex": "Índice",
+    "result": "Resultado",
+    "imagePath": "Ruta de imagen"
+  },
+  "offsetColumns": {
+    "groupKey": "Grupo",
+    "selectIndex": "Índice",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} eventos"
+  }
+}

@@ -63,6 +63,10 @@ from .itemexchangesource.handler import ItemExchangeSourceBssHandler
 from .itemlinkprice.handler import ItemLinkPriceHandler
 from .enchantactiveskillitem.handler import EnchantActiveSkillItemHandler
 from .extractblackstone.handler import ExtractBlackStoneHandler
+from .instancefieldcommonlimitentertime.handler import InstanceFieldCommonLimitEnterTimeHandler
+from .monsterbuffzone.handler import MonsterBuffZoneHandler
+from .simplesequence.handler import SimpleSequenceHandler
+from .guildbossfieldinfo.handler import GuildBossFieldInfoHandler
 from .itemexchangetoclassmapkey.handler import ItemExchangeToClassMapKeyBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
@@ -225,6 +229,10 @@ def register_bss_handlers() -> None:
     register_handler("itemexchangetoclassmapkey.bss", ItemExchangeToClassMapKeyBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler("itemlinkprice.bss", ItemLinkPriceHandler())
+    register_handler("instancefieldcommonlimitentertime.bss", InstanceFieldCommonLimitEnterTimeHandler())
+    register_handler("monsterbuffzone.bss", MonsterBuffZoneHandler())
+    register_handler("simplesequence.bss", SimpleSequenceHandler())
+    register_handler("guildbossfieldinfo.bss", GuildBossFieldInfoHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())

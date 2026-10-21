@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "serviceType": "Тип сервиса",
+    "service": "Сервис"
+  },
+  "meta": {
+    "count": "Записей: {count}"
+  }
+}

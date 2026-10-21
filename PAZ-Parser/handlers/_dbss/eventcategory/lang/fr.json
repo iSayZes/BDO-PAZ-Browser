@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "index": "Index",
+    "categoryMain": "Catégorie principale",
+    "categoryMiddle": "Catégorie moyenne",
+    "categorySmall": "Sous-catégorie",
+    "discountStart": "Début de la remise",
+    "discountEnd": "Fin de la remise",
+    "eventType": "Type d'événement",
+    "maxDiscountPearl": "Remise max. (perles)",
+    "discountSteps": "Paliers de remise (perles : remise)"
+  },
+  "offsetColumns": {
+    "index": "Index",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} événements de remise"
+  }
+}

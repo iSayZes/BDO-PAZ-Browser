@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "regionKey": "Ключ региона",
+    "region": "Регион",
+    "maid": "Служанка",
+    "worldMap": "Карта мира",
+    "characterChange": "Смена персонажа",
+    "muster": "Сбор",
+    "camp": "Лагерь",
+    "compass": "Компас",
+    "itemMap": "Карта предмета",
+    "miniMap": "Мини-карта"
+  },
+  "offsetColumns": {
+    "regionKey": "Ключ региона",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Регионов: {count}"
+  }
+}

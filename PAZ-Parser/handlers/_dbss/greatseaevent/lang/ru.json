@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "groupKey": "Группа",
+    "selectIndex": "Индекс",
+    "result": "Результат",
+    "imagePath": "Путь к изображению"
+  },
+  "offsetColumns": {
+    "groupKey": "Группа",
+    "selectIndex": "Индекс",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Событий: {count}"
+  }
+}

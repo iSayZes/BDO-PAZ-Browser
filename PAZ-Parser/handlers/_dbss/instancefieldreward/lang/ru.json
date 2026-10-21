@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "instanceDungeonNo": "Подземелье",
+    "learnSkill": "Изучаемый навык",
+    "itemGroups": "Группы предметов",
+    "relatedRegions": "Регионы"
+  },
+  "offsetColumns": {
+    "instanceDungeonNo": "Подземелье",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Подземелий: {count}"
+  }
+}

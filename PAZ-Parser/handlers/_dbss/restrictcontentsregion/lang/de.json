@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "regionKey": "Regionsschlüssel",
+    "region": "Region",
+    "maid": "Magd",
+    "worldMap": "Weltkarte",
+    "characterChange": "Charakterwechsel",
+    "muster": "Sammeln",
+    "camp": "Lager",
+    "compass": "Kompass",
+    "itemMap": "Gegenstandskarte",
+    "miniMap": "Minikarte"
+  },
+  "offsetColumns": {
+    "regionKey": "Regionsschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Regionen"
+  }
+}

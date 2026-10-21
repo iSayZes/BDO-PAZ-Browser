@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossSpawnKey": "Clave del jefe",
+    "boss": "Jefe",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} campos de jefe de gremio"
+  }
+}

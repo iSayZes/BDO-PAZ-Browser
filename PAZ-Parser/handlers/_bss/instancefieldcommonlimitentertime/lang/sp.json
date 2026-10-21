@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "serviceType": "Tipo de servicio",
+    "service": "Servicio"
+  },
+  "meta": {
+    "count": "{count} entradas"
+  }
+}

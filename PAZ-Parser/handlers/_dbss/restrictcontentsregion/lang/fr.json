@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "regionKey": "Clé de région",
+    "region": "Région",
+    "maid": "Servante",
+    "worldMap": "Carte du monde",
+    "characterChange": "Changer de personnage",
+    "muster": "Rassemblement",
+    "camp": "Camp",
+    "compass": "Boussole",
+    "itemMap": "Carte d'objet",
+    "miniMap": "Mini-carte"
+  },
+  "offsetColumns": {
+    "regionKey": "Clé de région",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} régions"
+  }
+}

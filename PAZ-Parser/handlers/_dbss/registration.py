@@ -163,6 +163,13 @@ from .specialemployeeinfostaticstatus.handler import (
     SpecialEmployeeInfoHandler,
     special_employee_info_offset_handler,
 )
+from .restrictcontentsregion.handler import (
+    RestrictContentsRegionHandler,
+    restrict_contents_region_offset_handler,
+)
+from .instancefieldreward.handler import InstanceFieldRewardHandler, instance_field_reward_offset_handler
+from .eventcategory.handler import EventCategoryHandler, event_category_offset_handler
+from .greatseaevent.handler import GreatSeaEventHandler, great_sea_event_offset_handler
 from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
@@ -302,6 +309,14 @@ def register_dbss_handlers() -> None:
     register_handler("skillfusion.dbss", SkillFusionHandler())
     register_handler("specialemployeeinfostaticstatusoffset.dbss", special_employee_info_offset_handler())
     register_handler("specialemployeeinfostaticstatus.dbss", SpecialEmployeeInfoHandler())
+    register_handler("restrictcontentsregionoffset.dbss", restrict_contents_region_offset_handler())
+    register_handler("restrictcontentsregion.dbss", RestrictContentsRegionHandler())
+    register_handler("instancefieldrewardoffset.dbss", instance_field_reward_offset_handler())
+    register_handler("instancefieldreward.dbss", InstanceFieldRewardHandler())
+    register_handler("eventcategoryoffset.dbss", event_category_offset_handler())
+    register_handler("eventcategory.dbss", EventCategoryHandler())
+    register_handler("greatseaeventoffset.dbss", great_sea_event_offset_handler())
+    register_handler("greatseaevent.dbss", GreatSeaEventHandler())
     register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())

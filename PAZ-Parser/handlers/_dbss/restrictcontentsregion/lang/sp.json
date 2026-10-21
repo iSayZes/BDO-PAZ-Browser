@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "regionKey": "Clave de región",
+    "region": "Región",
+    "maid": "Doncella",
+    "worldMap": "Mapamundi",
+    "characterChange": "Cambiar de personaje",
+    "muster": "Reunión",
+    "camp": "Campamento",
+    "compass": "Brújula",
+    "itemMap": "Mapa de objeto",
+    "miniMap": "Minimapa"
+  },
+  "offsetColumns": {
+    "regionKey": "Clave de región",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} regiones"
+  }
+}

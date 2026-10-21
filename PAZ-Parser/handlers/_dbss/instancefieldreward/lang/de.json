@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "instanceDungeonNo": "Instanz-Dungeon",
+    "learnSkill": "Erlerntes Talent",
+    "itemGroups": "Gegenstandsgruppen",
+    "relatedRegions": "Regionen"
+  },
+  "offsetColumns": {
+    "instanceDungeonNo": "Instanz-Dungeon",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Instanz-Dungeons"
+  }
+}

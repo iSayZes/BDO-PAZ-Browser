@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossSpawnKey": "Clé du boss",
+    "boss": "Boss",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} terrains de boss de guilde"
+  }
+}

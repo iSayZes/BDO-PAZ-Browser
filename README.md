@@ -63,58 +63,13 @@ To run from source or write handlers, see [Requirements](#requirements).
 - Game text in the language you pick, with the colours of its `<PAColor>` tags as in game; **Show game text tags** shows the tags too. A client ships only its region's LOC files, so for a missing one the tables show their Korean text and a corner warning says so.
 - **Show only handled tables** limits the file tree, searches and folder extraction to files with a parsed table, plus the LOC file.
 - A command-line version that lists, extracts and queries parsed records (see [CLI](#cli)).
-- New formats are handler files dropped into `handlers/` (see [Writing a Preview Handler](#writing-a-preview-handler)).
+- New formats are handler files dropped into `handlers/` (see [Writing a Preview Handler](CONTRIBUTING.md#writing-a-preview-handler)).
 - The PAZ index and parsed tables are cached on disk: `detail_dialog.dbss` reopens in 0.25 s instead of 1.3 s (see [Settings and Data Folder](#settings-and-data-folder)).
 - The Windows exe updates itself and its handlers from GitHub (see [Download](#download)).
 
-## Contributing Format Coverage
+## Contributing
 
-BDO has hundreds of undocumented binary formats. Contributions and corrections are welcome.
-
-**Reverse engineer a new format**: open a new issue using the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`).
-
-**Improve existing docs**: the [format docs](https://isayzes.github.io/BDO-PAZ-Browser/) are not all complete; their sources are in `docs/file-formats/`. Each doc has an **Open Questions** section listing specific unknowns. If you can answer any of them, update the doc directly. Some docs also end with an **In-Game Checks** section: a test that needs a given item, quest, NPC, class or zone. A player who has it can answer the check without reading the binary layout.
-
-**Translate the UI**: UI strings live in [`PAZ-Parser/ui/lang/`](PAZ-Parser/ui/lang/) as small JSON files, one per language. Missing keys fall back to English automatically, so partial translations are fine. See [`TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md) for instructions.
-
-See [`CONTRIBUTING.md`](CONTRIBUTING.md) for setup, the checks to run before a pull request, and project conventions.
-
-## Writing a Preview Handler
-
-Drop a `.py` file (not starting with `_`) into `handlers/`. It is auto-loaded at startup.
-
-All parsed-view handlers must implement two methods:
-
-```python
-# handlers/myformat_handler.py
-from bdo_preview import PreviewHandler, register_handler
-from bdo_models import PazEntry
-
-class MyFormatHandler(PreviewHandler):
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        # Parse all records once. Returns plain dicts, no HTML.
-        # Cached in memory for paging, tab search, and CSV export.
-        return [{"id": r.id, "name": r.name} for r in parse(data)]
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        # Render one page of records as an HTML fragment.
-        start = page * page_size
-        slice_ = records[start : start + page_size]
-        rows = "".join(f"<tr><td>{r['id']}</td><td>{r['name']}</td></tr>" for r in slice_)
-        return f"<table><thead>...</thead><tbody>{rows}</tbody></table>"
-
-register_handler("myfile.dbss", MyFormatHandler())
-```
-
-The browser automatically handles:
-
-- Prev/Next page navigation
-- Inline tab search (Ctrl+F) across all record field values
-- CSV export of the full record list
-
-See [docs/handler.md](docs/handler.md) for the full guide, including companion files, shared helpers, registration patterns, and [adding translations](docs/handler.md#localization).
-
-> **Tip:** Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. If you have a file open on the Parsed tab, the preview re-renders automatically with the updated handler.
+Format research, doc corrections, in-game checks, UI translations and new handlers are all welcome. [`CONTRIBUTING.md`](CONTRIBUTING.md) covers how to take part, setup, writing a preview handler, the checks to run before a pull request and the project conventions.
 
 ## Documented Formats
 
@@ -210,84 +165,7 @@ Run both the tests and pyright before committing a Python change; both should pa
 
 ## Benchmarking
 
-`benchmark.py` times the decode path, and a handler's parse, on fixed input,
-so two runs on the same machine can be compared.
-
-```bash
-# Time every stage of one entry and save the result
-python benchmark.py run --output before.json
-
-# Extract every file of one .paz archive, as extract_all does
-python benchmark.py run --archive --repeats 5 --output before.json
-
-# Parse one table with LOC and lookup indexes loaded, as the app does
-python benchmark.py run --entry itemenchant.dbss --stages parse --output before.json
-
-# Rebuild the client's file index, as the app does after a patch
-python benchmark.py run --index --repeats 3 --output before.json
-
-# Build the LOC text index, as every start does (default: the app's language)
-python benchmark.py run --loc --output before.json
-
-# Load the entry list from its cache and build the tree, as every start does
-python benchmark.py run --folder --output before.json
-
-# After a change: same command, then compare stage by stage
-python benchmark.py run --output after.json
-python benchmark.py compare before.json after.json
-
-# Where the time goes: cProfile, top 100 functions by cumulative time
-python benchmark.py profile --archive --stages extract --save extract.prof
-```
-
-The workload is one entry (`--entry`, default
-`morningland_boss_03_02_full.dds`, a 14 MB texture), one archive
-(`--archive`, default `pad05889.paz`, about 800 mixed files) or the client's
-file index (`--index`), one LOC file (`--loc`, optionally a language code
-such as `--loc de`) or the folder's entry list (`--folder`). The stages:
-
-| Stage | What it times |
-|---|---|
-| `decrypt` | ICE decryption of the entry, from memory |
-| `decompress` | BDO decompression of the decrypted entry, from memory |
-| `read` | The app's path to open a file: disk read, decrypt, decompress |
-| `extract` | `extract_all` per file: `read`, then the size check and the write to disk. On an archive, every file in it. The meta file parse is left out: it reads the file table of every archive on every call (the `index` stage) and would hide the decode time |
-| `parse` | The handler's `all_records()` (the cached `get_records()` the app's table uses) on the decoded entry, with its companions, LOC in the language picked in the app and the lookup indexes loaded. Only for a file with a parsed view; LOC and the indexes add about 5 s to start-up, so they only load when this stage runs. Every run parses cold (the handler's cached records and index are dropped first) and runs with the garbage collector on, as in the app, which pauses it while the records are built. The input hash covers the entry only, not its companions or LOC |
-| `index` | `--index` only: the `.meta` file parse, which reads the file table and decrypts the path block of every archive, with the garbage collector on. The app runs it when its index cache is out of date. The warm-up leaves every archive header in the OS file cache, so the timed runs are warm (about 2 s on client 3458); a cold parse right after a reboot reads 11,000 archives from disk and takes about a minute. For a cold figure, run `--warmup 0 --repeats 1` first thing after a reboot. The input hash is the meta file's |
-| `loc` | `--loc` only: `init_loc()` on the LOC file's bytes in memory, the decompress and the text index every table's game text comes from, which the app builds on every start and language switch. With the garbage collector on, as in the app |
-| `entries` | `--folder` only: what a start does before the page gets the tree. It loads the entry list from the PAZ index cache and builds the entry maps and the tree, without LOC (`loc`) and the lookup indexes. With the garbage collector on, as in the app. Needs an index cache that matches the client, so open the folder once first. The input hash is the cache file's |
-
-To keep numbers comparable, each run:
-
-- **Pins the process to one CPU** (`--cpu`, default 2) at high priority.
-  The decode loops run on one core anyway (ICE and decompression in
-  `_bdo_native`, or numpy and Python without it). Pinning
-  stops the OS moving the run between cores; on a hybrid Intel CPU an
-  efficiency core runs this code about 1.8x slower, so the benchmark refuses
-  one and lists the performance cores. The pin is read back after setting
-  it and checked again at the end. `--no-pin` runs unpinned and marks the
-  result so. Pinning works on Windows and Linux (Linux without the priority
-  raise, which needs root).
-- **Keeps the input fixed**: the entry bytes are read into memory once, and
-  their SHA-256 is saved so a client patch that changes the file shows up.
-- **Warms up first** (`--warmup`, default 1), then times `--repeats` runs
-  (default 5) with the garbage collector off, as `timeit` does (`parse`
-  keeps it on). What a run returns is freed after the clock stops. The minimum
-  is the steadiest figure for CPU-bound code; the median and spread show the
-  noise.
-- **Saves a fingerprint** with the timings: CPU model, logical CPUs, RAM,
-  power plan, OS, Python, the decoders (`native` with `_bdo_native`
-  installed, else `python`), git commit, the pinned CPU and the input hash.
-  `compare` lists every difference besides the code, so a speedup only
-  counts when that list is empty; a `python -> native` decoders line is the
-  native speedup. Results from before the decoders field (schema 1) still
-  read, with the decoders as unknown.
-
-`--memory` adds one run per stage under `tracemalloc` for the peak memory.
-It traces every allocation, so that run is many times slower and never
-shares a run with the timings. `profile` slows every call too; use it to find
-hot functions, and `run` for numbers. Its `--save` file opens in snakeviz or
-`pstats`.
+`benchmark.py` times the decode path and a handler's parse on fixed input, so two runs on the same machine can be compared. [`docs/benchmarking.md`](docs/benchmarking.md) has the commands, workloads, stages and how each run stays comparable.
 
 ## Building the Windows Exe
 
@@ -630,10 +508,11 @@ docs/
 ├── handler.md              # Guide for writing preview handlers
 ├── format-docs.md          # How a format doc is written; format_docs/ checks it
 ├── style-guide.md          # UI color palette and component reference
+├── benchmarking.md         # benchmark.py workloads, stages and comparable runs
 └── file-formats/           # Per-format binary layout documentation
 
 browser.py                  # Starts the app: GUI, or a CLI command
-benchmark.py                # Decode benchmarks (see Benchmarking)
+benchmark.py                # Decode benchmarks (see docs/benchmarking.md)
 build.py                    # Windows build (see Building the Windows Exe)
 build_wiki.py               # Format docs wiki into _site/ (see docs/format-docs.md)
 browser.spec                # PyInstaller spec that build.py runs

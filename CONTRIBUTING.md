@@ -5,10 +5,10 @@ Thanks for helping out. BDO has hundreds of undocumented binary formats, so rese
 ## Ways to Contribute
 
 - **Research a new format.** Open an issue with the [file format template](../../issues/new?template=file-format.yml) and title it `filename.ext` (e.g. `yachtdicepreset.dbss` or `.pac`). Hex observations and layout guesses are welcome, even if incomplete.
-- **Answer an open question.** Every doc in [`docs/file-formats/`](docs/file-formats/) ends with an **Open Questions** section. If you can answer one, edit the doc directly and open a pull request.
+- **Answer an open question.** Every doc in [`docs/file-formats/`](docs/file-formats/) (published as the [format docs wiki](https://isayzes.github.io/BDO-PAZ-Browser/)) ends with an **Open Questions** section. If you can answer one, edit the doc directly and open a pull request.
 - **Run an in-game check.** Some docs end with an **In-Game Checks** section after Open Questions: a test that needs a character with a given item, quest, NPC, class or zone, and what each result means. You don't need to read the binary layout to answer one; post the result in an issue or edit the doc.
 - **Document a format.** Start from [`docs/file-formats/_template.md`](docs/file-formats/_template.md), write the layout tables as [Writing Format Docs](docs/format-docs.md) describes, and add the format to [`docs/documented-formats.md`](docs/documented-formats.md).
-- **Write a preview handler.** Follow [`docs/handler.md`](docs/handler.md), including the [checklist for a new handler](docs/handler.md#checklist-for-a-new-handler).
+- **Write a preview handler.** See [Writing a Preview Handler](#writing-a-preview-handler) below.
 - **Translate the UI.** See [`PAZ-Parser/ui/lang/TRANSLATING.md`](PAZ-Parser/ui/lang/TRANSLATING.md). Partial translations are fine, since missing keys fall back to English.
 - **Report a bug or suggest a feature.** Use the [issue templates](../../issues/new/choose).
 
@@ -24,6 +24,45 @@ python browser.py
 Open your `Black Desert/Paz` folder once in the GUI, so the tests know where to fetch fixtures from.
 
 The compiled decoders are optional. With a Rust toolchain installed, `python -m pip install ./PAZ-Parser/native` builds them, and the tests then also check them against the Python and numpy versions. Install it again after changing the Rust code.
+
+## Writing a Preview Handler
+
+A handler turns one file format into the table on the Parsed tab. A `.py` file in `PAZ-Parser/handlers/` whose name does not start with `_` loads at startup; the handlers that ship with the app live in packages such as `handlers/_bss/<name>/` and register in that folder's `registration.py`.
+
+Every parsed-view handler implements two methods:
+
+```python
+# handlers/myformat_handler.py
+from bdo_models import PazEntry
+from bdo_preview import PreviewHandler, register_handler
+from _common.html import Column, e, sort_keys, table
+
+_COLUMNS = [Column("ID", "num", sort_key="id"), Column("Name", sort_key="name")]
+
+
+class MyFormatHandler(PreviewHandler):
+    def sortable_fields(self) -> tuple[str, ...]:
+        return sort_keys(_COLUMNS)
+
+    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
+        # Parse every record once into plain dicts, no HTML.
+        return [{"id": r.id, "name": r.name} for r in parse(data)]
+
+    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
+        # One page of records as an HTML fragment; e() escapes file data.
+        slice_ = records[page * page_size : (page + 1) * page_size]
+        rows = [[e(r["id"]), e(r["name"])] for r in slice_]
+        return table(f"{len(records):,} records", _COLUMNS, rows)
+
+
+register_handler("myfile.dbss", MyFormatHandler())
+```
+
+The browser adds page navigation, sorting on every column with a `sort_key`, tab search (Ctrl+F) over all record fields and CSV export of the full record list.
+
+[`docs/handler.md`](docs/handler.md) is the full guide: companion files, shared helpers, registration, tests, [translations](docs/handler.md#localization) and the [checklist for a new handler](docs/handler.md#checklist-for-a-new-handler).
+
+Press **Ctrl+R** in the GUI to reload all handlers without restarting the app. A file open on the Parsed tab re-renders with the changed handler.
 
 ## Branches and Pull Requests
 

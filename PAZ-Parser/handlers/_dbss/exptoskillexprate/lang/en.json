@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Level",
+    "rate": "EXP to Skill EXP Rate"
+  },
+  "offsetColumns": {
+    "level": "Level",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} levels"
+  }
+}

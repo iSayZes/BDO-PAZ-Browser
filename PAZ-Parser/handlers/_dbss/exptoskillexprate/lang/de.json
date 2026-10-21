@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Stufe",
+    "rate": "EP-zu-Talent-EP-Rate"
+  },
+  "offsetColumns": {
+    "level": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

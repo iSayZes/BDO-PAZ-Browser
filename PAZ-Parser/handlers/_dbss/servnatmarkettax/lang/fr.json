@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "level": "Niveau de Dressage",
+    "rank": "Rang",
+    "bonus": "Bonus d'argent du Marché équin"
+  },
+  "offsetColumns": {
+    "level": "Niveau de Dressage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} niveaux"
+  }
+}

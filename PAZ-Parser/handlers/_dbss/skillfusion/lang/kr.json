@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "기술 심화",
+    "mainSkillNo": "주 기술 번호",
+    "mainSkill": "주 기술",
+    "subSkillNo": "보조 기술 번호",
+    "subSkill": "보조 기술",
+    "slot": "칸",
+    "order": "순서"
+  },
+  "offsetColumns": {
+    "skillKey": "기술 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "기술 심화 {count}개"
+  }
+}

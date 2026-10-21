@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "ship": "Navire",
+    "index": "Index",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Direction"
+  },
+  "offsetColumns": {
+    "characterKey": "ID du personnage",
+    "index": "Index",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} positions des marins"
+  }
+}

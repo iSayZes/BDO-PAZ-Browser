@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "type": "Тип",
+    "category": "Категория",
+    "characterKey": "ID персонажа",
+    "name": "Матрос",
+    "needItem": "Предмет для найма",
+    "successRate": "Шанс успеха",
+    "successWord": "Фраза при найме",
+    "failWord": "Фраза при отказе"
+  },
+  "offsetColumns": {
+    "type": "Тип",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Особых матросов: {count}"
+  }
+}

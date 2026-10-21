@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "level": "Nivel de Doma",
+    "rank": "Rango",
+    "bonus": "Bonificación de plata del Mercado de caballos"
+  },
+  "offsetColumns": {
+    "level": "Nivel de Doma",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "ship": "Schiff",
+    "index": "Index",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Richtung"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "index": "Index",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Seefahrer-Positionen"
+  }
+}

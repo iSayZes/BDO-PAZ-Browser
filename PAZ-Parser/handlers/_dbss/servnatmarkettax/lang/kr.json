@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "level": "조련 레벨",
+    "rank": "등급",
+    "bonus": "마시장 은화 보너스"
+  },
+  "offsetColumns": {
+    "level": "조련 레벨",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "레벨 {count}개"
+  }
+}

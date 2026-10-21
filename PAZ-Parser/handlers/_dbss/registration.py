@@ -153,8 +153,16 @@ from .itempalette.handler import ItemPaletteHandler, item_palette_offset_handler
 from .dyeingpalette.handler import DyeingPaletteHandler, dyeing_palette_offset_handler
 from .itempuzzle.handler import ItemPuzzleHandler, item_puzzle_offset_handler
 from .itemnakmessage.handler import ItemNakMessageHandler, item_nak_message_offset_handler
-from .itemenchantsafety.handler import ItemEnchantSafetyHandler, item_enchant_safety_offset_handler
 from .accessorystepup.handler import AccessoryStepUpHandler
+from .employeeclientspawn.handler import EmployeeClientSpawnHandler, employee_client_spawn_offset_handler
+from .exptoskillexprate.handler import ExpToSkillExpRateHandler, exp_to_skill_exp_rate_offset_handler
+from .itemenchantsafety.handler import ItemEnchantSafetyHandler, item_enchant_safety_offset_handler
+from .servnatmarkettax.handler import ServantMarketTaxHandler, servant_market_tax_offset_handler
+from .skillfusion.handler import SkillFusionHandler, skill_fusion_offset_handler
+from .specialemployeeinfostaticstatus.handler import (
+    SpecialEmployeeInfoHandler,
+    special_employee_info_offset_handler,
+)
 from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
@@ -281,9 +289,19 @@ def register_dbss_handlers() -> None:
     register_handler("itempuzzle.dbss", ItemPuzzleHandler())
     register_handler("itemnakmessageoffset.dbss", item_nak_message_offset_handler())
     register_handler("itemnakmessage.dbss", ItemNakMessageHandler())
+    register_handler("accessorystepup.dbss", AccessoryStepUpHandler())
+    register_handler("employeeclientspawnoffset.dbss", employee_client_spawn_offset_handler())
+    register_handler("employeeclientspawn.dbss", EmployeeClientSpawnHandler())
+    register_handler("exptoskillexprateoffset.dbss", exp_to_skill_exp_rate_offset_handler())
+    register_handler("exptoskillexprate.dbss", ExpToSkillExpRateHandler())
     register_handler("itemenchantsafetyoffset.dbss", item_enchant_safety_offset_handler())
     register_handler("itemenchantsafety.dbss", ItemEnchantSafetyHandler())
-    register_handler("accessorystepup.dbss", AccessoryStepUpHandler())
+    register_handler("servnatmarkettaxoffset.dbss", servant_market_tax_offset_handler())
+    register_handler("servnatmarkettax.dbss", ServantMarketTaxHandler())
+    register_handler("skillfusionoffset.dbss", skill_fusion_offset_handler())
+    register_handler("skillfusion.dbss", SkillFusionHandler())
+    register_handler("specialemployeeinfostaticstatusoffset.dbss", special_employee_info_offset_handler())
+    register_handler("specialemployeeinfostaticstatus.dbss", SpecialEmployeeInfoHandler())
     register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())

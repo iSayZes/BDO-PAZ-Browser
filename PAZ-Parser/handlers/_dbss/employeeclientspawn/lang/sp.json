@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterKey": "ID de personaje",
+    "ship": "Barco",
+    "index": "Índice",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Dirección"
+  },
+  "offsetColumns": {
+    "characterKey": "ID de personaje",
+    "index": "Índice",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} posiciones de marineros"
+  }
+}

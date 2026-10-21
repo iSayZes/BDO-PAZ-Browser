@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "level": "Abrichten-Stufe",
+    "rank": "Rang",
+    "bonus": "Silberbonus am Pferdemarkt"
+  },
+  "offsetColumns": {
+    "level": "Abrichten-Stufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

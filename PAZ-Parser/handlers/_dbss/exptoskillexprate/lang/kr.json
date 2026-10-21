@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "레벨",
+    "rate": "경험치의 기술 경험치 전환 비율"
+  },
+  "offsetColumns": {
+    "level": "레벨",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "레벨 {count}개"
+  }
+}

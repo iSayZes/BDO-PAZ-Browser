@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "type": "Type",
+    "category": "Category",
+    "characterKey": "Character ID",
+    "name": "Sailor",
+    "needItem": "Hire Item",
+    "successRate": "Success Rate",
+    "successWord": "Hired Line",
+    "failWord": "Refusal Line"
+  },
+  "offsetColumns": {
+    "type": "Type",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} special sailors"
+  }
+}

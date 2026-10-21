@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "type": "Type",
+    "category": "Catégorie",
+    "characterKey": "ID du personnage",
+    "name": "Marin",
+    "needItem": "Objet d'embauche",
+    "successRate": "Taux de réussite",
+    "successWord": "Réplique à l'embauche",
+    "failWord": "Réplique au refus"
+  },
+  "offsetColumns": {
+    "type": "Type",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} marins spéciaux"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "level": "Training Level",
+    "rank": "Rank",
+    "bonus": "Horse Market Silver Bonus"
+  },
+  "offsetColumns": {
+    "level": "Training Level",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} levels"
+  }
+}

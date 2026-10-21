@@ -217,7 +217,10 @@ row. `ContentsGroupKey` has no place in the row.
 - `employee_spawn_count` equals the number of rows per `CharacterKey` in the
   `EmployeeShipSpawnPosition_Table` sheet of the same private server (1 for
   the Epheria Sailboat, 3 for the Caravel and Galleass, 5 for the Carracks).
-  No client file of that name exists on client 3474.
+  The client compiles that sheet to
+  [`employeeclientspawn.dbss`](employeeclientspawn_dbss.md), where 12 of
+  the 13 ships with a count above `0` have that many rows on client 3474;
+  the Panokseon (`31025`, count 5) has none.
 - On client 3474, 15 rows hold only `food_max` and `is_summon_full`: the
   rowboats, rafts, fishing boats, the three Epheria Cogs and the Trader
   (`9096`). `is_summon_full` is `1` on all of them but the Trader, and on

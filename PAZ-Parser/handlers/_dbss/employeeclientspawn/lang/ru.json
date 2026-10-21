@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "ship": "Судно",
+    "index": "Индекс",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Направление"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "index": "Индекс",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Мест матросов: {count}"
+  }
+}

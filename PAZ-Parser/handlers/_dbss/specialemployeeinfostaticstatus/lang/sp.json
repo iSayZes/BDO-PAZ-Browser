@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "type": "Tipo",
+    "category": "Categoría",
+    "characterKey": "ID de personaje",
+    "name": "Marinero",
+    "needItem": "Objeto para contratar",
+    "successRate": "Prob. éxito",
+    "successWord": "Frase al contratar",
+    "failWord": "Frase al rechazar"
+  },
+  "offsetColumns": {
+    "type": "Tipo",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} marineros especiales"
+  }
+}

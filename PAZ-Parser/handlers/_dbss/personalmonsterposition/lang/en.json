@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionIndex": "Position Index",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnDistance": "Spawn Distance"
+  },
+  "offsetColumns": {
+    "positionIndex": "Position Index",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Dark Rift spawn points"
+  }
+}

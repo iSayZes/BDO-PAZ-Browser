@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "name": "Boss",
+    "difficulty": "Schwierigkeitsgrad",
+    "description": "Beschreibung",
+    "image": "Bild",
+    "dropItems": "Beutegegenstände"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Bosse des Dunklen Risses"
+  }
+}

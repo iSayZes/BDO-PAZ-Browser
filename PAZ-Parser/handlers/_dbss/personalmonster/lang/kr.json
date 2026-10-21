@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "name": "우두머리",
+    "difficulty": "난이도",
+    "description": "설명",
+    "image": "이미지",
+    "dropItems": "드롭 아이템"
+  },
+  "offsetColumns": {
+    "characterKey": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "어둠의 틈 우두머리 {count}개"
+  }
+}

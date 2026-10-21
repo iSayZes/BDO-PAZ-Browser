@@ -207,6 +207,11 @@ from .exceptionskillcooltimewidget.handler import (
     ExceptionSkillCoolTimeWidgetHandler,
     exception_skill_cool_time_widget_offset_handler,
 )
+from .personalmonster.handler import PersonalMonsterHandler, personal_monster_offset_handler
+from .personalmonsterposition.handler import (
+    PersonalMonsterPositionHandler,
+    personal_monster_position_offset_handler,
+)
 from .petpcroom.handler import PetPcRoomHandler, pet_pc_room_offset_handler
 from .petchangelook.handler import PetChangeLookHandler, pet_change_look_offset_handler
 from .petoldfusion.handler import PetOldFusionHandler, pet_old_fusion_offset_handler
@@ -492,6 +497,10 @@ def register_dbss_handlers() -> None:
     register_handler("actionverificationindex.dbss", ActionVerificationIndexHandler())
     register_handler("exceptionskillcooltimewidgetoffset.dbss", exception_skill_cool_time_widget_offset_handler())
     register_handler("exceptionskillcooltimewidget.dbss", ExceptionSkillCoolTimeWidgetHandler())
+    register_handler("personalmonsteroffset.dbss", personal_monster_offset_handler())
+    register_handler("personalmonster.dbss", PersonalMonsterHandler())
+    register_handler("personalmonsterpositionoffset.dbss", personal_monster_position_offset_handler())
+    register_handler("personalmonsterposition.dbss", PersonalMonsterPositionHandler())
     register_handler("petpcroomoffset.dbss", pet_pc_room_offset_handler())
     register_handler("petpcroom.dbss", PetPcRoomHandler())
     register_handler("petfusionnewoffset.dbss", pet_fusion_new_offset_handler())

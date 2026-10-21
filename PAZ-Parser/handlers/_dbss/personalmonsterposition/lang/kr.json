@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionIndex": "위치 인덱스",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnDistance": "출현 거리"
+  },
+  "offsetColumns": {
+    "positionIndex": "위치 인덱스",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "어둠의 틈 출현 위치 {count}개"
+  }
+}

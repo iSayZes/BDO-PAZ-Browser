@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "name": "Boss",
+    "difficulty": "Difficulty",
+    "description": "Description",
+    "image": "Image",
+    "dropItems": "Drop Items"
+  },
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Dark Rift bosses"
+  }
+}

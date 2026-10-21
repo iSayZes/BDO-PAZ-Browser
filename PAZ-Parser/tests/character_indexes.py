@@ -8,7 +8,11 @@ from __future__ import annotations
 
 from functools import cache
 
-from _dbss.characterstatic.parser import build_character_group_index, build_character_name_kr_index
+from _dbss.characterstatic.parser import (
+    build_character_group_index,
+    build_character_name_kr_index,
+    build_character_title_kr_index,
+)
 
 from .fixtures import load_binary_fixture
 
@@ -20,6 +24,14 @@ _CHARACTERSTATIC_OFFSET = "characterstaticoffset.dbss"
 def character_name_kr_index() -> dict[int, str]:
     """`IndexKind.CHARACTER_NAME_KR` of the fixture client."""
     return build_character_name_kr_index(
+        load_binary_fixture(_CHARACTERSTATIC), load_binary_fixture(_CHARACTERSTATIC_OFFSET)
+    )
+
+
+@cache
+def character_title_kr_index() -> dict[int, str]:
+    """`IndexKind.CHARACTER_TITLE_KR` of the fixture client."""
+    return build_character_title_kr_index(
         load_binary_fixture(_CHARACTERSTATIC), load_binary_fixture(_CHARACTERSTATIC_OFFSET)
     )
 

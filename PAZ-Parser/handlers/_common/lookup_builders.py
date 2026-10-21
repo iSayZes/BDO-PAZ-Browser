@@ -45,6 +45,7 @@ from _dbss.characterstatic.parser import (
     build_character_ai_script_index,
     build_character_group_index,
     build_character_name_kr_index,
+    build_character_title_kr_index,
     build_knowledge_character_index,
 )
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
@@ -170,6 +171,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.CHARACTER_NAME_KR,
         (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
         build_character_name_kr_index,
+    ),
+    # Character -> Korean title, the fallback of character_title() without a LOC title.
+    IndexSpec(
+        IndexKind.CHARACTER_TITLE_KR,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_title_kr_index,
     ),
     # character_group -> its characters, for killMonsterGroup and the soul collectors.
     IndexSpec(

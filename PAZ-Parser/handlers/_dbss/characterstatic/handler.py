@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_loc_name, character_title
+from _common.character import character_loc_name, character_loc_title
 from _common.contents_group import contents_group_key, contents_groups_text
 from _common.html import Column, e, error, icon_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
@@ -25,6 +25,7 @@ from .parser import (
     NO_CLASS_TYPE,
     NO_VEHICLE_TYPE,
     korean_name,
+    korean_title,
     npc_kind_name,
     npc_kind_text,
     parse_characterstatic_records,
@@ -177,8 +178,9 @@ def _record(raw: dict) -> dict:
         # The LOC name in the user's language, else the Korean name the record
         # stores, the same text as the CHARACTER_NAME_KR lookup index.
         "name": character_loc_name(character_id) or korean_name(raw["name_kr"], raw["label_kr"]),
-        # The same for the title (`<Node Manager>`); most characters have none.
-        "title": character_title(character_id) or raw["title_kr"],
+        # The same for the title (`<Node Manager>`), the CHARACTER_TITLE_KR text;
+        # most characters have none.
+        "title": character_loc_title(character_id) or korean_title(raw["title_kr"]),
         "label_kr": raw["label_kr"],
         "action_script": raw["action_script"],
         "condition_script": raw["condition_script"],

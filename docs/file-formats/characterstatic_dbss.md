@@ -893,6 +893,13 @@ The same Korean name is the `CHARACTER_NAME_KR` lookup index
 where LOC type 6 has no name: 296 of the 24,553 characters on client 3474
 with the English LOC.
 
+`title_kr` is the `CHARACTER_TITLE_KR` lookup index
+(`build_character_title_kr_index`, empty titles left out), the fallback of
+`character_title()`. On client 3474 with the English LOC it titles the 64
+characters above that have only the Korean title, 50 of them `<메이드 통합>`.
+No record stores `UNKNOWN` as its title; `korean_title()` drops it like the
+name placeholder.
+
 ## Source Item
 
 `source_item_id` is the reverse of the `itemenchant.dbss` `+0xAA` `character_id` link

@@ -281,9 +281,10 @@ Picking the field behind a column:
   `category` and `is_special` this way.
 - **Text in the user's language, one column.** A text column shows the loaded
   LOC text (the language picked in settings) and falls back to the inline
-  Korean only when LOC has no row: `item_name()`, `skill_name()` and
-  `character_name()` already do, from the `*_NAME_KR` lookup indexes; a table
-  with a Korean name of its own writes `character_loc_name(id) or record["name_kr"]`.
+  Korean only when LOC has no row: `item_name()`, `skill_name()`,
+  `character_name()` and `character_title()` already do, from the `*_KR`
+  lookup indexes; a table with a Korean name of its own writes
+  `character_loc_name(id) or record["name_kr"]` (`character_loc_title()` for a title).
   Keep the raw `*_kr` field on the record, but never render it as its own
   column or label a column `(EN)` / `(KR)`. Never find LOC text by searching
   for an English phrase, since other languages miss it. Cover the column with
@@ -1036,7 +1037,7 @@ _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
-├── character.py         # character names (LOC type 6, else CHARACTER_NAME_KR) and titles
+├── character.py         # character names and titles (LOC type 6, else CHARACTER_NAME_KR / CHARACTER_TITLE_KR)
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
@@ -1100,11 +1101,14 @@ reads the older records and returns no rows for the count of `0`
 
 Name a character with `character_name()` from `character.py` (LOC type 6,
 then the Korean `characterstatic.dbss` name from the `CHARACTER_NAME_KR`
-lookup index; its title, `<Storage Keeper>`, with `character_title()`). A
-table that stores its own Korean or internal name and shows it before the
-`characterstatic.dbss` one (`base_dialog.dbss`, `detail_dialog.dbss`,
-`servant.bss`, `npcsimply.bss`, `charactersimply.bss`) reads the LOC name
-alone with `character_loc_name()`. Name a
+lookup index; its title, `<Storage Keeper>`, with `character_title()`, which
+falls back to `CHARACTER_TITLE_KR` the same way). A table that stores its own
+Korean or internal name and shows it before the `characterstatic.dbss` one
+(`base_dialog.dbss`, `detail_dialog.dbss`, `servant.bss`, `npcsimply.bss`,
+`charactersimply.bss`) reads the LOC name alone with `character_loc_name()`;
+one that stores its own Korean title (`npcsimply.bss`, `charactersimply.bss`,
+`characterstatic.dbss` itself) reads the LOC title alone with
+`character_loc_title()`. Name a
 knowledge entry with `knowledge_name()` from `knowledge.py` (LOC type 34), a
 worldmap node with `node_name()` or `full_node_name()` from `node.py` (LOC
 type 29, see `NODE_PARENT` under Lookup Indexes) and a title with
@@ -1269,6 +1273,7 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
 | `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
 | `CHARACTER_NAME_KR` | `characterstatic.dbss`, `characterstaticoffset.dbss` | Korean name |
+| `CHARACTER_TITLE_KR` | `characterstatic.dbss`, `characterstaticoffset.dbss` | Korean title |
 | `CHARACTER_GROUP_MEMBERS` | `characterstatic.dbss`, `characterstaticoffset.dbss` | character IDs (tuple) |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
 | `DIALOG_KEYS`    | `detail_dialogoffset.dbss`                 | character ID   |
@@ -1339,6 +1344,13 @@ name: `name_kr`, or `label_kr` where `name_kr` is the `UNKNOWN` placeholder.
 marker. On client 3474 that names 296 characters the English LOC leaves out,
 such as the War of the Roses buildings of `buildingupgrade.dbss` (`12688`
 `[장미 전쟁] 화염탑`).
+
+`CHARACTER_TITLE_KR` maps a character to its Korean `title_kr`, leaving out
+the characters without one. `character_title()` falls back to it when LOC
+type 6 has no title, so the Title columns of `employeespawninfo.dbss`,
+`employeestaticstatus.bss`, `fieldboss.dbss`, `itemtrade.dbss` and
+`weatheractor.dbss` show it without LOC. On client 3474 that titles 64
+characters the English LOC leaves out, 50 of them `<메이드 통합>`.
 
 `CHARACTER_GROUP_MEMBERS` maps each non-zero
 [`character_group`](file-formats/characterstatic_dbss.md#character-group) to

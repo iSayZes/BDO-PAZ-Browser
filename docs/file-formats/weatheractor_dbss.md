@@ -35,7 +35,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 None. The handler reads the rows in file order and does not need
 `weatheractoroffset.dbss` (see below). Character names and titles come from
-LOC type 6, skill names from LOC type 10 and skill icons from the
+LOC type 6, else the Korean `characterstatic.dbss` ones, skill names from LOC
+type 10 and skill icons from the
 `SKILL_ICON` lookup index.
 
 All multi-byte values are little-endian.

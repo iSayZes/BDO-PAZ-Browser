@@ -176,6 +176,15 @@ def korean_name(name_kr: str, label_kr: str) -> str:
     return label_kr if name_kr == KOREAN_NAME_PLACEHOLDER else name_kr
 
 
+def korean_title(title_kr: str) -> str:
+    """The Korean title of a record: `title_kr`, '' where it is the `UNKNOWN` placeholder.
+
+    No record on client 3474 stores the placeholder as its title; the check
+    keeps the title and the name readings alike.
+    """
+    return "" if title_kr == KOREAN_NAME_PLACEHOLDER else title_kr
+
+
 def _readable_records(data: bytes, offset_data: bytes) -> Iterator[dict]:
     """Every record that parses, in offset-table order, for the lookup index builders.
 
@@ -242,3 +251,17 @@ def build_character_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, 
         if name:
             names[record["character_id"]] = name
     return names
+
+
+def build_character_title_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
+    """Map character ID to its `korean_title`, for `IndexKind.CHARACTER_TITLE_KR`.
+
+    `character_title()` in `_common/character.py` falls back to it when LOC
+    type 6 has no title. Characters without a title are left out.
+    """
+    titles: dict[int, str] = {}
+    for record in _readable_records(data, offset_data):
+        title = korean_title(record["title_kr"])
+        if title:
+            titles[record["character_id"]] = title
+    return titles

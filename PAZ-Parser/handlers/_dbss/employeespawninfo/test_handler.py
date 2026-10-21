@@ -5,6 +5,7 @@ from typing import Any
 
 import pytest
 
+from tests.character_indexes import character_name_kr_index, character_title_kr_index
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -16,6 +17,8 @@ from tests.framework import (
     header_count,
     run_case,
 )
+
+from _common.lookup_index import IndexKind
 
 _OFFSET_FILE = "employeespawninfooffset.dbss"
 _SPAWN_POSITION_FILE = "employeespawnposition.dbss"
@@ -104,6 +107,24 @@ def offset_result(request: Any) -> HandlerResult:
 @pytest.mark.parametrize("spec", SPAWN_INFO_CASE.tests, ids=case_id)
 def test_employeespawninfo_dbss(spec: Any, spawn_info_result: HandlerResult) -> None:
     spawn_info_result.check(spec)
+
+
+def test_titles_fall_back_to_the_korean_title() -> None:
+    """Without LOC every sailor shows its Korean characterstatic.dbss name and title."""
+    names = character_name_kr_index()
+    titles = character_title_kr_index()
+    case = replace(
+        SPAWN_INFO_CASE,
+        tests=[],
+        loc_file=None,
+        uses_loc=False,
+        lookup_indexes={IndexKind.CHARACTER_NAME_KR: names, IndexKind.CHARACTER_TITLE_KR: titles},
+    )
+    records = run_case(case).records
+
+    assert records
+    assert all(r["title"] and r["title"] == titles[r["character_key"]] for r in records)
+    assert all(r["name"] == f"{names[r['character_key']]} {r['title']}" for r in records)
 
 
 @pytest.mark.parametrize("spec", OFFSET_CASE.tests, ids=case_id)

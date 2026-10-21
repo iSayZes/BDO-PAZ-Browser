@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_loc_name, character_title
+from _common.character import character_loc_name, character_loc_title
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import is_loc_loaded
@@ -69,7 +69,7 @@ class NpcSimplyBssHandler(PreviewHandler):
                 **_lease_fields(record, has_loc),
                 # User language first; the inline Korean stands in without LOC.
                 "name": character_loc_name(record["character_id"]) or record["name_kr"],
-                "role": character_title(record["character_id"]) or record["role_kr"],
+                "role": character_loc_title(record["character_id"]) or record["role_kr"],
                 "kind_name": spawn_type_name(record["kind"]),
                 "kind_label": role_label(record["kind"], role_labels),
             }

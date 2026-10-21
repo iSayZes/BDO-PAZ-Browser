@@ -10,8 +10,10 @@ from _dbss.characterstatic.parser import (
     KOREAN_NAME_PLACEHOLDER,
     build_character_group_index,
     build_character_name_kr_index,
+    build_character_title_kr_index,
     build_knowledge_character_index,
     korean_name,
+    korean_title,
     parse_characterstatic_records,
 )
 from _dbss.itemenchant.parser import build_character_item_index
@@ -231,6 +233,20 @@ def test_korean_name_index_holds_every_korean_name(static_result: HandlerResult)
 
     names = {record["character_id"]: korean_name(record["name_kr"], record["label_kr"]) for record in records}
     assert index == {character_id: name for character_id, name in names.items() if name}
+    assert KOREAN_NAME_PLACEHOLDER not in index.values()
+
+
+def test_korean_title_index_holds_every_korean_title(static_result: HandlerResult) -> None:
+    """IndexKind.CHARACTER_TITLE_KR is title_kr by character, without the untitled ones and the placeholder."""
+    source = static_result.source
+    offset_data = source.file("characterstaticoffset.dbss")
+    records = parse_characterstatic_records(source.data, parse_pabr_offset_rows(offset_data))
+    index = build_character_title_kr_index(source.data, offset_data)
+
+    titles = {record["character_id"]: korean_title(record["title_kr"]) for record in records}
+    assert index
+    assert index == {character_id: title for character_id, title in titles.items() if title}
+    assert index[47791] == "<거점 관리인>"
     assert KOREAN_NAME_PLACEHOLDER not in index.values()
 
 

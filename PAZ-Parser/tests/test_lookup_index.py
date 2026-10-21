@@ -92,6 +92,18 @@ def test_character_name_falls_back_to_the_korean_name() -> None:
     assert character_name(unnamed_character - 1) == ""
 
 
+def test_character_title_falls_back_to_the_korean_title() -> None:
+    from _common.character import character_loc_title, character_title
+
+    # A character ID no LOC names, so the result does not depend on a loaded LOC.
+    untitled_character = 0xFFFE
+    init_index(IndexKind.CHARACTER_TITLE_KR, {untitled_character: "<메이드 통합>"})
+
+    assert character_title(untitled_character) == "<메이드 통합>"
+    assert character_loc_title(untitled_character) == ""
+    assert character_title(untitled_character - 1) == ""
+
+
 def test_hunting_ground_name_falls_back_to_the_korean_name() -> None:
     from _common.hunting_ground import hunting_ground_name, hunting_ground_text
 

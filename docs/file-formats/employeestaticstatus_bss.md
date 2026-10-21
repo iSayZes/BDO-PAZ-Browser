@@ -26,7 +26,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | File                  | Required | Role                                                                 |
 | --------------------- | -------- | -------------------------------------------------------------------- |
-| `languagedata_en.loc` | Optional | Name (LOC type `6`, `str_id4=0`) and title (`str_id4=1`) per character |
+| `languagedata_en.loc` | Optional | Name (LOC type `6`, `str_id4=0`) and title (`str_id4=1`) per character; without one the Korean `characterstatic.dbss` name and title show |
 | `stringtable.bss`     | Optional | Key hashes of the First Mate skill texts (`LUA_CAPTAIN_SAILOR_PRESET_SKILL_DESC_*`, LOC type `37`) |
 
 All multi-byte values are little-endian.

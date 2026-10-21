@@ -28,7 +28,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 None. The handler reads the keys in file order and does not need
 `itemtradeoffset.dbss` (see below). Names and titles come from LOC type `6`
-(`str_id4` `0` and `1`, `_common/character.py`).
+(`str_id4` `0` and `1`), else the Korean `characterstatic.dbss` ones
+(`_common/character.py`).
 
 All multi-byte values are little-endian.
 

@@ -42,6 +42,9 @@ class IndexKind(Enum):
     # Korean characterstatic.dbss names, the fallback when LOC type 6 has none;
     # read through _common/character.py.
     CHARACTER_NAME_KR = "character_name_kr"
+    # Korean characterstatic.dbss titles, the fallback when LOC type 6 has none;
+    # read through _common/character.py.
+    CHARACTER_TITLE_KR = "character_title_kr"
     # Character IDs of each characterstatic.dbss character_group, ascending;
     # read through _common/character_group.py.
     CHARACTER_GROUP_MEMBERS = "character_group_members"

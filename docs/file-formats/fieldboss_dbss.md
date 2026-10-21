@@ -35,8 +35,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 ## Companion Files
 
 None. The handler reads the rows in file order and does not need
-`fieldbossoffset.dbss` (see below). Names and titles come from LOC type 6
-(`_common/character.py`).
+`fieldbossoffset.dbss` (see below). Names and titles come from LOC type 6,
+else the Korean `characterstatic.dbss` ones (`_common/character.py`).
 
 All multi-byte values are little-endian.
 

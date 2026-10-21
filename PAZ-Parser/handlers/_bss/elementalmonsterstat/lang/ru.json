@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Ключ персонажа",
+    "name": "Название",
+    "unlockBoss": "Открытие: босс",
+    "unlockKnowledge": "Открытие: знание",
+    "offence": "Атака",
+    "defence": "Защита",
+    "weakAura": "Слабость к энергии",
+    "difficulty": "Уровень сложности",
+    "group": "Группа",
+    "boss": "Босс",
+    "part": "Часть",
+    "showRewards": "Награды",
+    "position": "Место",
+    "minAp": "Мин. атака"
+  },
+  "parts": {
+    "solo": "Тонхе (одиночно)",
+    "party": "Хванхе (группа)"
+  },
+  "difficulties": {
+    "calamity": "Сложность {number}",
+    "normal": "Обычный",
+    "hard": "Тяжело"
+  },
+  "meta": {
+    "count": "Монстров Черного храма: {count} · боссов: {bosses}"
+  }
+}

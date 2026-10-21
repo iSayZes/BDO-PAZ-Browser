@@ -25,6 +25,8 @@ from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
 from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
+from .elementalmonsterreward.handler import ElementalMonsterRewardBssHandler
+from .elementalmonsterstat.handler import ElementalMonsterStatBssHandler
 from .empty_tables.parser import parse_empty_pabr_table
 from .empty_tables.tables import EMPTY_PABR_TABLES
 from .employeeexp.handler import EmployeeExpBssHandler
@@ -160,6 +162,8 @@ def register_bss_handlers() -> None:
     register_handler("dropuisubcategoryinfo.bss", DropUiSubCategoryInfoBssHandler())
     register_handler("dropuitaginfo.bss", DropUiTagInfoBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
+    register_handler("elementalmonsterreward.bss", ElementalMonsterRewardBssHandler())
+    register_handler("elementalmonsterstat.bss", ElementalMonsterStatBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())
     register_handler("employeestaticstatus.bss", EmployeeStaticStatusBssHandler())
     register_handler("enchantfailcountexpstaticstatus.bss", EnchantFailCountExpBssHandler())

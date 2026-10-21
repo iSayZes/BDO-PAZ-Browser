@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "bossKey": "Clé de boss",
+    "boss": "Boss",
+    "part": "Partie",
+    "difficulty": "Difficulté",
+    "partyRanking": "Classement de groupe",
+    "rank": "Rang",
+    "rewards": "Récompenses"
+  },
+  "ranks": {
+    "rank": "#{rank}",
+    "base": "Récompenses hors classement"
+  },
+  "meta": {
+    "count": "{count} lignes de récompense · {bosses} boss du Sanctuaire noir"
+  }
+}

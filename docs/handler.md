@@ -1016,9 +1016,10 @@ Used by box links each character to its `characterstatic.dbss` row, the `.cl`
 view each skill number to its first `skill.dbss` row, `characterfunction.dbss`
 each shop group to its `itemmaingroup.bss` row, `itemmaingroup.bss` each
 subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
-`pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row, and
+`pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row,
 `monstergroup.dbss` each hunting ground to its `dropuihuntinggroundinfo.bss`
-row.
+row, and `elementalmonsterreward.bss` each boss to its
+`elementalmonsterstat.bss` row.
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries

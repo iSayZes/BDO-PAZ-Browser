@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "bossKey": "Boss-Schlüssel",
+    "boss": "Boss",
+    "part": "Teil",
+    "difficulty": "Schwierigkeitsgrad",
+    "partyRanking": "Gruppen-Rangliste",
+    "rank": "Rang",
+    "rewards": "Belohnungen"
+  },
+  "ranks": {
+    "rank": "#{rank}",
+    "base": "Außer-Rang-Belohnungen"
+  },
+  "meta": {
+    "count": "{count} Belohnungszeilen · {bosses} Bosse des Finsteren Schreins"
+  }
+}

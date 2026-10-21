@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Character Key",
+    "name": "Name",
+    "unlockBoss": "Unlock Boss",
+    "unlockKnowledge": "Unlock Knowledge",
+    "offence": "Offence",
+    "defence": "Defence",
+    "weakAura": "Weak Aura",
+    "difficulty": "Difficulty",
+    "group": "Group",
+    "boss": "Boss",
+    "part": "Part",
+    "showRewards": "Rewards",
+    "position": "Position",
+    "minAp": "Min AP"
+  },
+  "parts": {
+    "solo": "Donghae (Solo)",
+    "party": "Hwanghae (Party)"
+  },
+  "difficulties": {
+    "calamity": "Calamity {number}",
+    "normal": "Normal",
+    "hard": "Hard"
+  },
+  "meta": {
+    "count": "{count} Black Shrine monsters · {bosses} bosses"
+  }
+}

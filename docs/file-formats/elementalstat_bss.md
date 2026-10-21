@@ -111,5 +111,7 @@ and sit in that order in every row, so `ap_per_orb`, `dp_per_orb` and
   `Framing.BARE`, one row per aura.
 - The server Blessings of the Sun, Moon and Earth that a defeated boss
   gives are in [`elementalserverbuff.bss`](elementalserverbuff_bss.md).
-- Siblings without a doc yet: `elementalmonsterstat.bss` and
-  `elementalmonsterreward.bss`.
+- The weak aura of each boss is the `element_type` of
+  [`elementalmonsterstat.bss`](elementalmonsterstat_bss.md), on the same
+  scale; its ranking rewards are in
+  [`elementalmonsterreward.bss`](elementalmonsterreward_bss.md).

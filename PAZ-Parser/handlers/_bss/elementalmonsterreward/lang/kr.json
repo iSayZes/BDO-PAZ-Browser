@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "bossKey": "우두머리 키",
+    "boss": "우두머리",
+    "part": "구역",
+    "difficulty": "난이도",
+    "partyRanking": "파티 순위",
+    "rank": "순위",
+    "rewards": "보상"
+  },
+  "ranks": {
+    "rank": "{rank}위",
+    "base": "순위 외 보상"
+  },
+  "meta": {
+    "count": "보상 {count}줄 · 검은 사당 우두머리 {bosses}개"
+  }
+}

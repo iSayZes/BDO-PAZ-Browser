@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 키",
+    "name": "이름",
+    "unlockBoss": "해금 우두머리",
+    "unlockKnowledge": "해금 지식",
+    "offence": "공격",
+    "defence": "방어",
+    "weakAura": "약점 기운",
+    "difficulty": "난이도",
+    "group": "그룹",
+    "boss": "우두머리",
+    "part": "구역",
+    "showRewards": "보상",
+    "position": "위치",
+    "minAp": "최소 공격력"
+  },
+  "parts": {
+    "solo": "동해도(개인)",
+    "party": "황해도(파티)"
+  },
+  "difficulties": {
+    "calamity": "{number}재시니",
+    "normal": "보통",
+    "hard": "어려움"
+  },
+  "meta": {
+    "count": "검은 사당 몬스터 {count}개 · 우두머리 {bosses}개"
+  }
+}

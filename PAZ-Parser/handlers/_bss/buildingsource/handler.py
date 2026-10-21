@@ -11,7 +11,7 @@ from _common.html import Column, e, error, icon_html_label_cell, sort_keys, tabl
 from _common.item_key import item_count_list_cell, item_count_text, item_key_icon_path, item_key_text, item_key_text_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.pa_text import pa_html
-from ..itemexchangesource.enums import WORK_ANI_TYPE_NAMES
+from _common.work_ani_type import WORK_ANI_TYPE_NAMES
 from .parser import FILE_NAME, parse_buildingsource_records
 
 

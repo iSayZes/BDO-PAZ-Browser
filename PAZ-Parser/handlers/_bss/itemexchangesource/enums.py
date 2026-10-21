@@ -1,9 +1,9 @@
 """Names of the enum fields of `itemexchangesource.bss`, in value order from `0`.
 
-`exchange_type` and `work_ani_type` follow the 2016 `gc::ItemExchangeType::Type`
-and `gc::EWorkAniType` enums (the current client Lua has no copy);
-`product_category` follows `CppEnums.ProductCategory` in
-`global_define_cpp_enum.luac`. Member prefixes are dropped.
+`exchange_type` follows the 2016 `gc::ItemExchangeType::Type` enum (the
+current client Lua has no copy); `product_category` follows
+`CppEnums.ProductCategory` in `global_define_cpp_enum.luac`. Member prefixes
+are dropped. `work_ani_type` names are in `_common/work_ani_type.py`.
 """
 
 from __future__ import annotations
@@ -33,18 +33,3 @@ PRODUCT_CATEGORY_NAMES: tuple[str, ...] = (
     "RegionManager",
     "LargeCraft",
 )
-
-WORK_ANI_TYPE_NAMES: tuple[str, ...] = (
-    "Mining",
-    "Gather",
-    "Cultivation",
-    "Logging",
-    "Making",
-    "Architecture",
-    "Hide",
-    "HouseParty",
-    "Breeding",
-)
-
-# `eWorkAniType_Count`: the value of every row without a work animation.
-NO_WORK_ANI_TYPE = len(WORK_ANI_TYPE_NAMES)

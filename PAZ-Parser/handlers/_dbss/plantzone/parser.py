@@ -26,12 +26,6 @@ _SPECIES = 0x1F
 # above assume it.
 _PRODUCTIONS_PER_ZONE = 1
 
-# gc::EWorkAniType of the 2016 client's debug symbols.
-WORK_ANI_TYPE_NAMES: tuple[str, ...] = (
-    "Mining", "Gather", "Cultivation", "Logging", "Making",
-    "Architecture", "Hide", "HouseParty", "Breeding",
-)
-
 # Worker species byte (plantworker.bss +0x38F), named after the workers that
 # carry each value; the client enum was not found.
 WORKER_SPECIES_NAMES: tuple[str, ...] = (

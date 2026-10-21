@@ -18,11 +18,13 @@ from tests.framework import (
     run_case,
 )
 
+from _common.work_ani_type import NO_WORK_ANI_TYPE
+
 from .parser import COUNT_OFFSET, FILE_NAME, parse_buildingsource_records
 
 
-# gc::EWorkAniType runs from 0 to eWorkAniType_Count (9).
-_MAX_WORK_ANI_TYPE = 9
+# gc::EWorkAniType runs from 0 to eWorkAniType_Count.
+_MAX_WORK_ANI_TYPE = NO_WORK_ANI_TYPE
 _COMMAND_POST = 56006
 _FIELD_HQ = 56073
 _POLISHED_STONE = 4068

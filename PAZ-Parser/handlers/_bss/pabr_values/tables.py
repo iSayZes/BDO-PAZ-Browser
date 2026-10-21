@@ -27,6 +27,7 @@ from .names import (
 )
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
+from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
 
 __all__ = [
@@ -232,4 +233,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *ROSE_WAR_TABLES,
     *GUILD_TABLES,
     *HARDCORE_TABLES,
+    *PVP_TABLES,
 )

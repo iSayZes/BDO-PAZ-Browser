@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "paletteType": "Palettentyp",
+    "palette": "Palette",
+    "paletteIndex": "Palettenindex",
+    "color": "Farbe"
+  },
+  "offsetColumns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Farbstoffe"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "mainMessage": "메인 메시지",
+    "subMessage": "서브 메시지"
+  },
+  "offsetColumns": {
+    "itemKey": "아이템 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "아이템 메시지 {count}개"
+  }
+}

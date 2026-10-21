@@ -1045,6 +1045,7 @@ _common/
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
+├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
@@ -1065,6 +1066,7 @@ _common/
 ├── quest/kill_monster_group.py # the killMonsterGroup(group, count) calls of a quest script, with the group's members
 ├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
+├── row_table.py         # RowTableHandler: the base of a table with one record per row
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
@@ -1214,6 +1216,28 @@ def buff_offset_handler() -> OffsetTableHandler:
   "N offset records" header with a `(records, lang) -> str` function
   (`journalquestoffset.dbss` counts its groups). The shared header text is in
   `_common/lang/`.
+
+Most indexes are a key, `data_offset` and `data_size` per row with the
+`dataOffset` and `size` labels; `keyed_offset_handler(lang_dir, parse_rows,
+key_field, key_label)` builds that handler in one call
+(`item_palette_offset_handler()`, `yacht_offset_handler()`).
+`tests/offset_rows.py` has `offset_row_problems(data, rows, key)`, which
+checks that the index rows point at rows with their key and tile the main
+file (`lead=` for an index that points past a key prefix).
+
+### Row Tables
+
+A table with one record per row (most `.dbss` tables with an offset index)
+subclasses `RowTableHandler` from `_common/row_table.py` and writes three
+methods: `read_records(data, companions)` returns the parser's records with
+any joined fields, `columns(labels)` the columns from the `columns` block of
+its lang file, and `cells(record)` one row's HTML cells. The base handles the
+`sortable_fields()`, the error page when the parser raises `ValueError`, the
+paging and the `meta.count` line. Set `file_name` and `lang_dir` as class
+attributes. A table of fixed rows after a u32 count reads them with
+`parse_counted_rows(data, row, fields, file_name)` from
+`_common/counted_rows.py` (`counted_row_values()` for rows with an array
+field). `_dbss/itempalette/` is the smallest example.
 
 ## Lookup Indexes
 

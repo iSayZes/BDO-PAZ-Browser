@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "targetItemKey": "가격 대상 아이템 키",
+    "targetItem": "가격 대상 아이템"
+  },
+  "meta": {
+    "count": "연동 가격 {count}개"
+  }
+}

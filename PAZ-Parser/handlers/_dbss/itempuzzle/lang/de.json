@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "puzzleKey": "Puzzle-Schlüssel",
+    "pieces": "Teile",
+    "pattern": "Muster",
+    "size": "Größe"
+  },
+  "offsetColumns": {
+    "puzzleKey": "Puzzle-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Inventar-Puzzles"
+  }
+}

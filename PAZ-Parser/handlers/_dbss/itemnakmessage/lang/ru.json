@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemKey": "Ключ предмета",
+    "item": "Предмет",
+    "mainMessage": "Основное сообщение",
+    "subMessage": "Подзаголовок"
+  },
+  "offsetColumns": {
+    "itemKey": "Ключ предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Сообщения о предметах: {count}"
+  }
+}

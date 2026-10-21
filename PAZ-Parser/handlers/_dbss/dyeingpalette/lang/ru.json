@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "paletteType": "Тип палитры",
+    "palette": "Палитра",
+    "paletteIndex": "Индекс палитры",
+    "color": "Цвет",
+    "environment": "Окружение",
+    "specular": "Блеск",
+    "items": "Красители"
+  },
+  "offsetColumns": {
+    "paletteType": "Тип палитры",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Цвета палитры: {count}"
+  }
+}

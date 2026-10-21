@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "item": "Objeto",
+    "paletteType": "Tipo de paleta",
+    "palette": "Paleta",
+    "paletteIndex": "Índice de paleta",
+    "color": "Color"
+  },
+  "offsetColumns": {
+    "itemKey": "Clave de objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} tintes"
+  }
+}

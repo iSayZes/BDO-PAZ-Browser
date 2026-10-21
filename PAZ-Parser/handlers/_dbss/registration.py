@@ -149,6 +149,10 @@ from .collect.handler import CollectHandler, collect_offset_handler
 from .lifeactionexperience.handler import LifeActionExperienceHandler, life_action_experience_offset_handler
 from .displayexchangeitemnpc.handler import DisplayExchangeItemNpcHandler, display_exchange_item_npc_offset_handler
 from .itemexchangebynpc.handler import ItemExchangeByNpcHandler, item_exchange_by_npc_offset_handler
+from .itempalette.handler import ItemPaletteHandler, item_palette_offset_handler
+from .dyeingpalette.handler import DyeingPaletteHandler, dyeing_palette_offset_handler
+from .itempuzzle.handler import ItemPuzzleHandler, item_puzzle_offset_handler
+from .itemnakmessage.handler import ItemNakMessageHandler, item_nak_message_offset_handler
 from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
@@ -267,6 +271,14 @@ def register_dbss_handlers() -> None:
     register_handler("displayexchangeitemnpc.dbss", DisplayExchangeItemNpcHandler())
     register_handler("itemexchangebynpcoffset.dbss", item_exchange_by_npc_offset_handler())
     register_handler("itemexchangebynpc.dbss", ItemExchangeByNpcHandler())
+    register_handler("itempaletteoffset.dbss", item_palette_offset_handler())
+    register_handler("itempalette.dbss", ItemPaletteHandler())
+    register_handler("dyeingpaletteoffset.dbss", dyeing_palette_offset_handler())
+    register_handler("dyeingpalette.dbss", DyeingPaletteHandler())
+    register_handler("itempuzzleoffset.dbss", item_puzzle_offset_handler())
+    register_handler("itempuzzle.dbss", ItemPuzzleHandler())
+    register_handler("itemnakmessageoffset.dbss", item_nak_message_offset_handler())
+    register_handler("itemnakmessage.dbss", ItemNakMessageHandler())
     register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())

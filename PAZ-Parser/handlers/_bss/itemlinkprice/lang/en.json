@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "Item",
+    "targetItemKey": "Price Item Key",
+    "targetItem": "Price Item"
+  },
+  "meta": {
+    "count": "{count} linked prices"
+  }
+}

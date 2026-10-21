@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "puzzleKey": "Clé de puzzle",
+    "pieces": "Pièces",
+    "pattern": "Motif",
+    "size": "Taille"
+  },
+  "offsetColumns": {
+    "puzzleKey": "Clé de puzzle",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} puzzles d'inventaire"
+  }
+}

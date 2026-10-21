@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "targetItemKey": "Preis-Gegenstandsschlüssel",
+    "targetItem": "Preis-Gegenstand"
+  },
+  "meta": {
+    "count": "{count} gekoppelte Preise"
+  }
+}

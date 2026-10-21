@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "paletteType": "Palette Type",
+    "palette": "Palette",
+    "paletteIndex": "Palette Index",
+    "color": "Color",
+    "environment": "Environment",
+    "specular": "Specular",
+    "items": "Dye Items"
+  },
+  "offsetColumns": {
+    "paletteType": "Palette Type",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} palette colors"
+  }
+}

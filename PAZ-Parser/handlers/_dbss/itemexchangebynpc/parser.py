@@ -12,13 +12,12 @@ from __future__ import annotations
 
 import struct
 
-from _common.binary import u32
+from _common.counted_rows import parse_counted_rows
 
 
 FILE_NAME = "itemexchangebynpc.dbss"
 OFFSET_FILE = "itemexchangebynpcoffset.dbss"
 
-_COUNT_SIZE = 4
 _ROW = struct.Struct("<HHIqIq")
 _FIELDS = (
     "item_exchange_key",
@@ -36,14 +35,4 @@ def parse_itemexchangebynpc_records(data: bytes) -> list[dict]:
     Raises ValueError when the file is not the row count followed by exactly
     that many rows.
     """
-    if len(data) < _COUNT_SIZE:
-        raise ValueError(f"{FILE_NAME} is too short to hold its row count")
-
-    count = u32(data, 0)
-    expected = _COUNT_SIZE + count * _ROW.size
-    if expected != len(data):
-        raise ValueError(f"{count:,} rows of {_ROW.size} bytes need {expected:,} bytes, the file is {len(data):,}")
-    return [
-        dict(zip(_FIELDS, _ROW.unpack_from(data, _COUNT_SIZE + index * _ROW.size), strict=True))
-        for index in range(count)
-    ]
+    return parse_counted_rows(data, _ROW, _FIELDS, FILE_NAME)

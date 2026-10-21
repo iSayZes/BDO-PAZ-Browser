@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "Item",
+    "mainMessage": "Main Message",
+    "subMessage": "Sub Message"
+  },
+  "offsetColumns": {
+    "itemKey": "Item Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} item messages"
+  }
+}

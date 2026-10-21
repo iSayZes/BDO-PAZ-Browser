@@ -59,6 +59,7 @@ from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
 from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
 from .itemequipgroup.handler import ItemEquipGroupBssHandler
 from .itemexchangesource.handler import ItemExchangeSourceBssHandler
+from .itemlinkprice.handler import ItemLinkPriceHandler
 from .itemexchangetoclassmapkey.handler import ItemExchangeToClassMapKeyBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
@@ -217,6 +218,7 @@ def register_bss_handlers() -> None:
     register_handler("itemexchangesource.bss", ItemExchangeSourceBssHandler())
     register_handler("itemexchangetoclassmapkey.bss", ItemExchangeToClassMapKeyBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
+    register_handler("itemlinkprice.bss", ItemLinkPriceHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())

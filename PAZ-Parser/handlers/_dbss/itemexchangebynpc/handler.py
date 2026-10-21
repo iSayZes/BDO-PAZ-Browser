@@ -10,7 +10,7 @@ from _common.character import character_name
 from _common.html import Column, e, error, sort_keys, table
 from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
-from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
+from _common.offset_table import OffsetTableHandler, keyed_offset_handler
 from _common.pabr_offset import parse_bare_offset_rows
 from _dbss.displayexchangeitemnpc.parser import (
     FILE_NAME as DISPLAY_FILE,
@@ -24,15 +24,7 @@ _EMPTY = "-"
 
 
 def item_exchange_by_npc_offset_handler() -> OffsetTableHandler:
-    return OffsetTableHandler(
-        _LANG_DIR,
-        [
-            OffsetColumn("item_exchange_key", "exchangeKey"),
-            offset_column("data_offset", "dataOffset"),
-            size_column("data_size", "size"),
-        ],
-        offset_records(parse_bare_offset_rows, "item_exchange_key", "data_offset", "data_size"),
-    )
+    return keyed_offset_handler(_LANG_DIR, parse_bare_offset_rows, "item_exchange_key", "exchangeKey")
 
 
 def _npc_names_by_key(display_data: bytes | None) -> dict[int, str]:

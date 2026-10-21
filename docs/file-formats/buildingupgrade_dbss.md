@@ -7,6 +7,8 @@ into an Iron Barricade, a Hwacha into a Big Hwacha, a Flame Tower into an
 Enhanced Flame Tower. Each row names the placed building by its character
 key, the character it becomes, the upgrade time and the items the upgrade
 takes. Companion `buildingupgradeoffset.dbss` lists where every row sits.
+The build and repair data of the guild building kits (forts, command
+posts, Indomitable Flags) is in [`buildingsource.bss`](buildingsource_bss.md).
 
 The interaction window reads a row when the server sends
 `FromClient_InteractionBuildingUpgrade` for a placed building

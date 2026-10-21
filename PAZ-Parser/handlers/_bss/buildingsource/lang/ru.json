@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "name": "Здание",
+    "buildTime": "Время постройки",
+    "workAnimation": "Анимация работы",
+    "repairItems": "Материалы для ремонта",
+    "repairPercents": "Доля ремонта",
+    "repairTime": "Время ремонта"
+  },
+  "meta": {
+    "count": "Наборов для постройки: {count}"
+  }
+}

@@ -2,8 +2,9 @@
 
 A PABR file is the PABR magic, the values, then the string table and the
 trailer. A bare file is the values alone, with no magic, string table or
-trailer. The values are one set of fields, a u32 count and that many rows,
-or rows up to the string table or the end of a bare file. A field can be a
+trailer. The values are one set of fields, a u32 count and that many rows
+(optionally after head fields stored once), or rows up to the string table
+or the end of a bare file. A field can be a
 counted list: a u32 (or u64) count, then that many values, or a string-table
 index whose string the record keeps.
 """
@@ -80,7 +81,8 @@ class ValueField:
 
     `column` is None for a field with no column (`unknown_*`, or a copy of
     another field). An `s` format (`8s`) is a byte run, stored as hex text.
-    `display` turns the value into its cell text; the record keeps the value.
+    `display` turns the value (a number, a byte run's hex text or an entry
+    list) into its cell text; the record keeps the value.
     With `is_counted_list` the field is a `count_fmt` count, then that many
     values, stored as a list; a format of several values (`B3I`) stores each
     entry as a list. `display` then draws each entry on its own line, and
@@ -112,6 +114,9 @@ class ValueTable:
 
     `first_fields` names fields whose columns come first, in that order: the
     row key when the row stores it after other fields, or a name stored late.
+    `head` holds fields stored once where the values start, before the row
+    count of `RowCount.COUNTED`; every record holds their values, and their
+    columns follow the row fields.
     """
 
     file_name: str
@@ -120,33 +125,41 @@ class ValueTable:
     framing: Framing = Framing.PABR
     count_key: str = "count"
     first_fields: tuple[str, ...] = ()
+    head: tuple[ValueField, ...] = ()
 
     def __post_init__(self) -> None:
         if self.rows is RowCount.TO_TABLE_START and any(field.is_counted_list for field in self.fields):
             raise ValueError(f"{self.file_name}: rows up to the string table need a fixed row size")
-        if self.framing is Framing.BARE and any(field.text is not None for field in self.fields):
+        if self.head and self.rows is not RowCount.COUNTED:
+            raise ValueError(f"{self.file_name}: head fields need a row count after them")
+        if self.framing is Framing.BARE and any(field.text is not None for field in self.all_fields):
             raise ValueError(f"{self.file_name}: a bare file has no string table")
-        missing = set(self.first_fields) - {field.name for field in self.fields}
+        missing = set(self.first_fields) - {field.name for field in self.all_fields}
         if missing:
             raise ValueError(f"{self.file_name}: no field {', '.join(sorted(missing))}")
+
+    @property
+    def all_fields(self) -> tuple[ValueField, ...]:
+        """The row fields, then the head fields."""
+        return self.fields + self.head
 
     @property
     def has_named_field(self) -> bool:
         return any(
             field.column is not None or (field.text is not None and field.text.column is not None)
-            for field in self.fields
+            for field in self.all_fields
         )
 
     @property
     def has_text(self) -> bool:
-        return any(field.text is not None for field in self.fields)
+        return any(field.text is not None for field in self.all_fields)
 
     @property
     def shown_fields(self) -> tuple[ValueField, ...]:
-        """The fields in column order: `first_fields`, then the rest in row order."""
-        by_name = {field.name: field for field in self.fields}
+        """The fields in column order: `first_fields`, then the rest in row order, then the head fields."""
+        by_name = {field.name: field for field in self.all_fields}
         first = tuple(by_name[name] for name in self.first_fields)
-        return first + tuple(field for field in self.fields if field.name not in self.first_fields)
+        return first + tuple(field for field in self.all_fields if field.name not in self.first_fields)
 
 
 def unknown_fields(*layout: tuple[int, str]) -> tuple[ValueField, ...]:

@@ -10,7 +10,7 @@ from __future__ import annotations
 from _common.item_key import item_name_tagged
 from _common.rate import rate_percent
 from _common.town import town_name
-from .fields import CHARACTER_KEY, ITEM_ID, TITLE_ID
+from .fields import CHARACTER_KEY, ITEM_ID, MAP_COLOR, TITLE_ID
 from .layout import Framing, IconLookup, NameLookup, RowCount, TextRef, ValueField, ValueTable, unknown_fields
 from .names import (
     aura_name,
@@ -26,6 +26,7 @@ from .names import (
     vehicle_skill_name,
 )
 from .guild_tables import GUILD_TABLES
+from .hardcore_tables import HARDCORE_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
 
 __all__ = [
@@ -150,8 +151,9 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     ),
     ValueTable(
         "snowboardcourseinfo.bss",
-        unknown_fields((0x00, "3s"), (0x03, "B"), (0x04, "B"), (0x05, "3s"), (0x08, "B")),
+        (MAP_COLOR, *unknown_fields((0x03, "B"), (0x04, "B"), (0x05, "3s"), (0x08, "B"))),
         RowCount.COUNTED,
+        count_key="mapColors",
     ),
     ValueTable(
         "solareetcoptionstaticstatus.bss",
@@ -229,4 +231,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     ),
     *ROSE_WAR_TABLES,
     *GUILD_TABLES,
+    *HARDCORE_TABLES,
 )

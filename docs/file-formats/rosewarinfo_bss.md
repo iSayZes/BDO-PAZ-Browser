@@ -2,12 +2,13 @@
 
 ## Purpose
 
-Two 9-byte rows for the Rose War, fought between the Kamasylvia and
-Odyllita teams (`__eRoseWarTeam_Kamasylvia`, `__eRoseWarTeam_Odyllita`
-in the client Lua). A u32 count follows the PABR magic. Each row has the
-shape of an [`edaniaregioninfo.bss`](edaniaregioninfo_bss.md) row: a
-3-byte value and a zero byte twice, then a u8. On client 3474 the rows are
-`10 0D 10` with `0` and `E8 1B 18` with `1`. No field is named yet.
+The two colours of the Rose War region map
+(`ui_texture/minimap/area/elfwar_siegemap.bmp`; the Rose War is `ElfWar` in
+the client's file names), one 9-byte row each. A u32 count follows the PABR
+magic. Each row has the shape of an
+[`edaniaregioninfo.bss`](edaniaregioninfo_bss.md) row: the colour and a
+zero byte twice, then a u8. On client 3474 the rows are `10 0D 10` with `0`
+and `E8 1B 18` with `1`.
 
 ## Versions
 
@@ -21,7 +22,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File              | Known        | Unknown      |
 | ------ | ----------------- | ------------ | ------------ |
-| 1      | `rosewarinfo.bss` | 20 B (52.6%) | 18 B (47.4%) |
+| 1      | `rosewarinfo.bss` | 26 B (68.4%) | 12 B (31.6%) |
 
 Every client the doc check read, and the layout its files fit.
 
@@ -62,9 +63,9 @@ All multi-byte values are little-endian.
 
 | Offset  | Type     | Field      | Notes                                                              |
 | ------- | -------- | ---------- | ------------------------------------------------------------------ |
-| `+0x00` | bytes[3] | unknown_00 | `10 0D 10` and `E8 1B 18` on client 3474                           |
+| `+0x00` | bytes[3] | map_color  | Region map colour, stored blue, green, red; `10 0D 10` and `E8 1B 18` on client 3474 |
 | `+0x03` | u8       | unknown_03 | Always `0`                                                         |
-| `+0x04` | bytes[3] | unknown_04 | Equals `unknown_00` on every row                                   |
+| `+0x04` | bytes[3] | unknown_04 | Equals `map_color` on every row                                    |
 | `+0x07` | u8       | unknown_07 | Always `0`                                                         |
 | `+0x08` | u8       | unknown_08 | `0` and `1`, one per row                                           |
 
@@ -82,29 +83,31 @@ All multi-byte values are little-endian.
   (38 bytes). The file is not in the archives of clients 794 to 2519.
 - The same two rows close `hardcorechannelinfo.bss` on client 3474, a
   15-row file of this row shape: `E8 1B 18` with `1`, then `10 0D 10`
-  with `0`. `10 0D 10` is also the 3-byte value of the `_Count` row of
+  with `0`. `10 0D 10` is also the colour of the `_Count` row of
   `edaniaregioninfo.bss`.
-- In `edaniaregioninfo.bss` the 3-byte value of five rows equals the
-  `regioninfo.bss` `color` (stored blue, green, red) of the castle region
-  of the same name. Read that way, the rows here are `100d10` (near black)
-  and `181be8` (blue).
+- `map_color` follows `ui_texture/minimap/area/elfwar_siegemap.bmp.rid`, the
+  palette of the Rose War region map, which lists exactly these two colours
+  (`100d10` first) on client 3474; the same holds for the region maps of
+  three other tables of this row shape
+  ([`hardcorechannelinfo.bss`](hardcorechannelinfo_bss.md#field-names)
+  Field Names). Read as `rrggbb` the rows are `100d10` (near black) and
+  `181be8` (blue).
 - The file is newer than client 1784: no sheet of a private server's
   `DataSheets.bexcel` on that client and no string of its server dump has
   `RoseWar` in the name.
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews this
-  file with the shared layout table in `_bss/pabr_values/rosewar_tables.py`.
-  With no confirmed field, the preview shows each row's raw bytes.
+  file with the shared layout table in `_bss/pabr_values/rosewar_tables.py`:
+  `map_color` as `rrggbb`.
 
 ## Open Questions
 
-### Team Colours
+### The Value of Each Colour
 
-The shape and the values point to one colour per Rose War team, with
-`unknown_08` as the team number, but no source names a field. The client
-3474 Lua has `getRoseWarTeamNo` and the two `__eRoseWarTeam_*` names
-without their values, and no Lua call returns a colour for a team.
-[`rosewarteamnostaticstatus.bss`](rosewarteamnostaticstatus_bss.md) puts
-the Kamasylvia characters on team `0` and the O'dyllita ones on `1`, so if
-`unknown_08` is the team number, `100d10` is Kamasylvia's and `181be8`
-O'dyllita's. Whether it is, and what the second copy of the 3-byte value
-is for, are open.
+What `unknown_08` stands for, and what the second copy of the colour is
+for. The Rose War region map has one colour besides the `100d10` that
+every region map palette lists first, so `unknown_08` (`1` for it, `0` for
+`100d10`) marks the one area and does not pick between the Kamasylvia and
+O'dyllita teams of
+[`rosewarteamnostaticstatus.bss`](rosewarteamnostaticstatus_bss.md). The
+client 3474 Lua has `getRoseWarTeamNo` and the two `__eRoseWarTeam_*`
+names, and no call that returns a colour.

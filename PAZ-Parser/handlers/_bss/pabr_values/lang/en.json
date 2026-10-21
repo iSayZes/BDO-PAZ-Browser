@@ -107,13 +107,28 @@
     "maxPoint": "Max Points",
     "rightIndex": "Right Index",
     "grades": "Grades",
-    "skillLevel": "Skill Level"
+    "skillLevel": "Skill Level",
+    "possibleClasses": "Classes",
+    "mapColor": "Map Color",
+    "hardcoreTitleKey": "Title Key",
+    "hardcoreTitle": "Title",
+    "description": "Description",
+    "condition": "Condition",
+    "killCount": "Kills",
+    "gradeColor": "Grade Color",
+    "gradeKey": "Grade Key",
+    "grade": "Grade",
+    "topPercent": "Top %",
+    "rankThreshold": "Ranked Players"
   },
   "meta": {
     "count": "{count} entries",
     "blackShrineAuras": "{count} Black Shrine auras",
     "petTiers": "{count} tiers",
     "notMovableItems": "{count} items that cannot go into another town's storage",
-    "academyClasses": "{count} Olvia Academy classes"
+    "academyClasses": "{count} Olvia Academy classes",
+    "mapColors": "{count} map colors",
+    "hardcoreTitles": "{count} Hardcore titles",
+    "hardcoreGrades": "{count} grades"
   }
 }

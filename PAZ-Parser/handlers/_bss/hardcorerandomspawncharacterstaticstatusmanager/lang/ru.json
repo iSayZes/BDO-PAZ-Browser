@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "randomSpawnKey": "Ключ случайного появления",
+    "characterId": "ID персонажа",
+    "character": "Персонаж",
+    "spawnList": "Список",
+    "worldMapIcon": "Значок карты мира",
+    "bossIcon": "Значок босса",
+    "noticeBackground": "Фон уведомления",
+    "notice": "Уведомление",
+    "revealNotice": "Уведомление о раскрытии"
+  },
+  "spawnLists": {
+    "boss": "Босс",
+    "npc": "НИП"
+  },
+  "meta": {
+    "count": "Случайных появлений: {count}"
+  }
+}

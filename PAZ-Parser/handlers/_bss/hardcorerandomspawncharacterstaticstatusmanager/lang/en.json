@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "randomSpawnKey": "Random Spawn Key",
+    "characterId": "Character ID",
+    "character": "Character",
+    "spawnList": "List",
+    "worldMapIcon": "World Map Icon",
+    "bossIcon": "Boss Icon",
+    "noticeBackground": "Notice Background",
+    "notice": "Notice",
+    "revealNotice": "Reveal Notice"
+  },
+  "spawnLists": {
+    "boss": "Boss",
+    "npc": "NPC"
+  },
+  "meta": {
+    "count": "{count} random spawns"
+  }
+}

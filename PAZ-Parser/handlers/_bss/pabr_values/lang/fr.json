@@ -107,13 +107,28 @@
     "maxPoint": "Points max.",
     "rightIndex": "Index du droit",
     "grades": "Grades",
-    "skillLevel": "Niveau de compétence"
+    "skillLevel": "Niveau de compétence",
+    "possibleClasses": "Classes",
+    "mapColor": "Couleur de la carte",
+    "hardcoreTitleKey": "Clé du titre",
+    "hardcoreTitle": "Titre",
+    "description": "Description",
+    "condition": "Condition",
+    "killCount": "Éliminations",
+    "gradeColor": "Couleur du rang",
+    "gradeKey": "Clé du rang",
+    "grade": "Rang",
+    "topPercent": "Top %",
+    "rankThreshold": "Joueurs classés"
   },
   "meta": {
     "count": "{count} entrées",
     "blackShrineAuras": "{count} énergies du Sanctuaire noir",
     "petTiers": "{count} tiers",
     "notMovableItems": "{count} objets impossibles à déplacer vers le dépôt d'un autre village",
-    "academyClasses": "{count} promotions de l'Académie d'Olvia"
+    "academyClasses": "{count} promotions de l'Académie d'Olvia",
+    "mapColors": "{count} couleurs de carte",
+    "hardcoreTitles": "{count} titres Hardcore",
+    "hardcoreGrades": "{count} rangs"
   }
 }

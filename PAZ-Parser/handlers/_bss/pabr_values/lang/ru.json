@@ -107,13 +107,28 @@
     "maxPoint": "Макс. очки",
     "rightIndex": "Индекс права",
     "grades": "Ранги",
-    "skillLevel": "Уровень навыка"
+    "skillLevel": "Уровень навыка",
+    "possibleClasses": "Классы",
+    "mapColor": "Цвет карты",
+    "hardcoreTitleKey": "Ключ титула",
+    "hardcoreTitle": "Титул",
+    "description": "Описание",
+    "condition": "Условие",
+    "killCount": "Убийств",
+    "gradeColor": "Цвет ранга",
+    "gradeKey": "Ключ ранга",
+    "grade": "Ранг",
+    "topPercent": "Топ %",
+    "rankThreshold": "Игроков в рейтинге"
   },
   "meta": {
     "count": "Записей: {count}",
     "blackShrineAuras": "Энергий Черного храма: {count}",
     "petTiers": "Рангов: {count}",
     "notMovableItems": "Предметов, которые нельзя переместить на склад другой деревни: {count}",
-    "academyClasses": "Наборов Академии Оливии: {count}"
+    "academyClasses": "Наборов Академии Оливии: {count}",
+    "mapColors": "Цветов карты: {count}",
+    "hardcoreTitles": "Титулов Hardcore: {count}",
+    "hardcoreGrades": "Рангов: {count}"
   }
 }

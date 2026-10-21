@@ -34,6 +34,7 @@ class EdaniaRegionInfoBssHandler(PreviewHandler):
         return [
             Column(cols["edaniaRegion"], "num", sort_key="edania_region"),
             Column(cols["castle"], sort_key="castle_name"),
+            Column(cols["mapColor"], "num", sort_key="map_color"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -67,6 +68,7 @@ class EdaniaRegionInfoBssHandler(PreviewHandler):
             [
                 e(r["edania_region"]),
                 e(r["castle_name"] or _EMPTY),
+                e(r["map_color"]),
             ]
             for r in records[start : start + page_size]
         ]

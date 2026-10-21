@@ -107,13 +107,28 @@
     "maxPoint": "최대 포인트",
     "rightIndex": "권한 인덱스",
     "grades": "등급",
-    "skillLevel": "기술 레벨"
+    "skillLevel": "기술 레벨",
+    "possibleClasses": "직업",
+    "mapColor": "지도 색상",
+    "hardcoreTitleKey": "칭호 키",
+    "hardcoreTitle": "칭호",
+    "description": "설명",
+    "condition": "조건",
+    "killCount": "처치 수",
+    "gradeColor": "등급 색상",
+    "gradeKey": "등급 키",
+    "grade": "등급",
+    "topPercent": "상위 %",
+    "rankThreshold": "순위 인원"
   },
   "meta": {
     "count": "{count}개 항목",
     "blackShrineAuras": "검은 사당 기운 {count}개",
     "petTiers": "세대 {count}개",
     "notMovableItems": "다른 마을 창고로 이동할 수 없는 아이템 {count}개",
-    "academyClasses": "올비아 아카데미 기수 {count}개"
+    "academyClasses": "올비아 아카데미 기수 {count}개",
+    "mapColors": "지도 색상 {count}개",
+    "hardcoreTitles": "하드코어 칭호 {count}개",
+    "hardcoreGrades": "등급 {count}개"
   }
 }

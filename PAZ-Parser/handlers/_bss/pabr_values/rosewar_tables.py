@@ -10,7 +10,7 @@ from __future__ import annotations
 from _common.character import character_name
 from _common.skill import skill_name
 from _common.town import town_name
-from .fields import CHARACTER_KEY, ITEM_ID
+from .fields import CHARACTER_KEY, ITEM_ID, MAP_COLOR
 from .layout import NameLookup, RowCount, TextRef, ValueField, ValueTable, unknown_fields
 from .rosewar_names import argb_hex, game_key_text, region_text, schedule_text, skill_type_text, team_text
 
@@ -83,8 +83,9 @@ ROSE_WAR_TABLES: tuple[ValueTable, ...] = (
     ),
     ValueTable(
         "rosewarinfo.bss",
-        unknown_fields((0x00, "3s"), (0x03, "B"), (0x04, "3s"), (0x07, "B"), (0x08, "B")),
+        (MAP_COLOR, *unknown_fields((0x03, "B"), (0x04, "3s"), (0x07, "B"), (0x08, "B"))),
         RowCount.COUNTED,
+        count_key="mapColors",
     ),
     ValueTable(
         "rosewarkillnamescoretagstaticstatus.bss",

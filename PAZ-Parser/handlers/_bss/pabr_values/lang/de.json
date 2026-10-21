@@ -107,13 +107,28 @@
     "maxPoint": "Max. Punkte",
     "rightIndex": "Rechte-Index",
     "grades": "Ränge",
-    "skillLevel": "Talentstufe"
+    "skillLevel": "Talentstufe",
+    "possibleClasses": "Klassen",
+    "mapColor": "Kartenfarbe",
+    "hardcoreTitleKey": "Titel-Schlüssel",
+    "hardcoreTitle": "Titel",
+    "description": "Beschreibung",
+    "condition": "Bedingung",
+    "killCount": "Getötet",
+    "gradeColor": "Rangfarbe",
+    "gradeKey": "Rang-Schlüssel",
+    "grade": "Rang",
+    "topPercent": "Top-%",
+    "rankThreshold": "Spieler in der Rangliste"
   },
   "meta": {
     "count": "{count} Einträge",
     "blackShrineAuras": "{count} Energien des Finsteren Schreins",
     "petTiers": "{count} Ränge",
     "notMovableItems": "{count} Gegenstände, die nicht ins Lager einer anderen Stadt gebracht werden können",
-    "academyClasses": "{count} Semester der Olvia-Akademie"
+    "academyClasses": "{count} Semester der Olvia-Akademie",
+    "mapColors": "{count} Kartenfarben",
+    "hardcoreTitles": "{count} Hardcore-Titel",
+    "hardcoreGrades": "{count} Ränge"
   }
 }

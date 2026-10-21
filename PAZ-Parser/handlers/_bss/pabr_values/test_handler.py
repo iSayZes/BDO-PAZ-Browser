@@ -76,6 +76,12 @@ def _values_start(value_table: ValueTable) -> int:
     return PABR_VALUES_START if value_table.framing is Framing.PABR else 0
 
 
+def _row_count_at(value_table: ValueTable) -> int:
+    """Where the u32 row count sits: after the fixed-size head fields."""
+    head_size = struct.calcsize("<" + "".join(field.fmt for field in value_table.head))
+    return _values_start(value_table) + head_size
+
+
 def _rows_to_table_start(source: CaseInput) -> int:
     """The 4-byte rows between the magic and the trailer's `table_start`."""
     (table_start,) = _U32.unpack_from(source.data, _TABLE_START_AT)
@@ -84,7 +90,7 @@ def _rows_to_table_start(source: CaseInput) -> int:
 
 def _lookups(name: str) -> list[NameLookup]:
     """The name lookups of a table: of its key fields, then of its strings."""
-    fields = _TABLES[name].fields
+    fields = _TABLES[name].all_fields
     keys = [field.lookup for field in fields if field.lookup is not None]
     texts = [field.text.lookup for field in fields if field.text is not None and field.text.lookup is not None]
     return keys + texts
@@ -96,10 +102,10 @@ def _lookup_fields(name: str) -> list[str]:
 
 def _required_keys(value_table: ValueTable) -> list[str]:
     name = value_table.file_name
-    keys = [field.name for field in value_table.fields] + _lookup_fields(name)
+    keys = [field.name for field in value_table.all_fields] + _lookup_fields(name)
     keys += [pa_key(lookup.field) for lookup in _lookups(name) if lookup.is_tagged]
-    keys += [field.icon.field for field in value_table.fields if field.icon is not None]
-    keys += [field.text.field for field in value_table.fields if field.text is not None]
+    keys += [field.icon.field for field in value_table.all_fields if field.icon is not None]
+    keys += [field.text.field for field in value_table.all_fields if field.text is not None]
     if not value_table.has_named_field:
         keys.append(VALUE_BYTES_FIELD)
     return keys
@@ -107,7 +113,7 @@ def _required_keys(value_table: ValueTable) -> list[str]:
 
 def _count_tests(value_table: ValueTable) -> list[Any]:
     if value_table.rows is RowCount.COUNTED:
-        return [DeclaredCountTest(declared=header_count(offset=_values_start(value_table)))]
+        return [DeclaredCountTest(declared=header_count(offset=_row_count_at(value_table)))]
     if value_table.rows is RowCount.TO_TABLE_START:
         return [DeclaredCountTest(declared=_rows_to_table_start)]
     return [DeclaredCountTest(declared=lambda _source: 1)]
@@ -273,10 +279,10 @@ def test_pabr_values(name: str, spec: Any) -> None:
 
 def _named_values(value_table: ValueTable) -> list[tuple[str, NameLookup]]:
     """(record key of the looked-up value, its lookup) of every name lookup."""
-    pairs = [(field.name, field.lookup) for field in value_table.fields if field.lookup is not None]
+    pairs = [(field.name, field.lookup) for field in value_table.all_fields if field.lookup is not None]
     pairs += [
         (field.text.field, field.text.lookup)
-        for field in value_table.fields
+        for field in value_table.all_fields
         if field.text is not None and field.text.lookup is not None
     ]
     return pairs
@@ -295,7 +301,7 @@ def test_every_table_has_its_labels() -> None:
     strings = json.loads(_EN_LANG.read_text(encoding="utf-8"))
     for value_table in VALUE_TABLES:
         assert value_table.count_key in strings["meta"], value_table.file_name
-        for field in value_table.fields:
+        for field in value_table.all_fields:
             columns = [field.column, *(lookup.column for lookup in (field.lookup, field.icon) if lookup is not None)]
             if field.text is not None:
                 columns += [field.text.column, field.text.lookup.column if field.text.lookup is not None else None]

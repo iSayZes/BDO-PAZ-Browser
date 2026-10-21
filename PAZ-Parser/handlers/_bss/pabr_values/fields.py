@@ -6,7 +6,7 @@ from _common.character import character_name
 from _common.item_key import item_name_tagged
 from _common.title import title_name
 from .layout import IconLookup, NameLookup, ValueField
-from .names import item_icon_path
+from .names import item_icon_path, map_color_text
 
 
 CHARACTER_NAME = NameLookup("character_name", "character", character_name)
@@ -19,3 +19,6 @@ ITEM_ID = ValueField(
     IconLookup("icon_path", "icon", item_icon_path),
 )
 TITLE_ID = ValueField("title_id", "I", "titleId", NameLookup("title_name", "title", title_name))
+# A colour of a region map bitmap (`ui_texture/minimap/area/<name>map.bmp`),
+# as its `.rid` palette lists it; hardcorechannelinfo_bss.md, Field Names.
+MAP_COLOR = ValueField("map_color", "3s", "mapColor", display=map_color_text)

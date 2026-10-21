@@ -53,6 +53,9 @@ from .groupcameradata.handler import GroupCameraDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
 from .guildrightnewstaticstatus.handler import GuildRightNewStaticStatusBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
+from .hardcorerandomspawncharacterstaticstatusmanager.handler import (
+    HardcoreRandomSpawnCharacterStaticStatusManagerBssHandler,
+)
 from .houseinfo.handler import HouseInfoBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHandler
@@ -217,6 +220,10 @@ def register_bss_handlers() -> None:
     register_handler(
         "hardcorecharacterstatstaticstatus.bss",
         HardcoreCharacterStatBssHandler(),
+    )
+    register_handler(
+        "hardcorerandomspawncharacterstaticstatusmanager.bss",
+        HardcoreRandomSpawnCharacterStaticStatusManagerBssHandler(),
     )
     register_handler("houseinfo.bss", HouseInfoBssHandler())
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())

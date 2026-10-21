@@ -48,6 +48,11 @@ def item_icon_path(item_id: int) -> str:
     return icon_path(IconKind.ITEM, item_id)
 
 
+def map_color_text(stored: str) -> str:
+    """A region map colour stored blue, green, red (`ff 14 64`) as `6414ff`."""
+    return bytes.fromhex(stored)[::-1].hex()
+
+
 def cooldown_cut(rate: int) -> str:
     """A rate as the client shows a cut: `150000` -> `-15%` ("Loot cooldown -15%")."""
     return f"-{rate_percent(rate)}"

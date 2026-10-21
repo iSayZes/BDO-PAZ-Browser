@@ -107,13 +107,28 @@
     "maxPoint": "Puntos máx.",
     "rightIndex": "Índice de permiso",
     "grades": "Grados",
-    "skillLevel": "Nivel de habilidad"
+    "skillLevel": "Nivel de habilidad",
+    "possibleClasses": "Clases",
+    "mapColor": "Color del mapa",
+    "hardcoreTitleKey": "Clave del título",
+    "hardcoreTitle": "Título",
+    "description": "Descripción",
+    "condition": "Condición",
+    "killCount": "Asesinatos",
+    "gradeColor": "Color del rango",
+    "gradeKey": "Clave del rango",
+    "grade": "Rango",
+    "topPercent": "Top %",
+    "rankThreshold": "Jugadores clasificados"
   },
   "meta": {
     "count": "{count} entradas",
     "blackShrineAuras": "{count} energías del Santuario Oscuro",
     "petTiers": "{count} grados",
     "notMovableItems": "{count} objetos que no se pueden trasladar al almacén de otra ciudad",
-    "academyClasses": "{count} promociones de la Academia de Olvia"
+    "academyClasses": "{count} promociones de la Academia de Olvia",
+    "mapColors": "{count} colores del mapa",
+    "hardcoreTitles": "{count} títulos de Hardcore",
+    "hardcoreGrades": "{count} rangos"
   }
 }

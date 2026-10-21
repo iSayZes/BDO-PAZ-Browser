@@ -3,7 +3,7 @@
     PABR | u32 count | count x 9-byte row | u32 0 (empty string table)
     | u32 string_table_start | u32 0
 
-A row is two 3-byte values, each followed by a zero byte, and the
+A row is the region map colour and a copy, each 3 bytes and a zero byte, and the
 `__eEdaniaRegion` value at +0x08. Full layout in docs/file-formats/edaniaregioninfo_bss.md.
 """
 
@@ -16,7 +16,7 @@ from _common.pabr_strings import fixed_row_offsets, string_table_start
 ROW_SIZE = 9
 
 # Row field offsets.
-_UNKNOWN_00 = 0x00
+_MAP_COLOR = 0x00
 _UNKNOWN_04 = 0x04
 _EDANIA_REGION = 0x08
 _RGB_SIZE = 3
@@ -39,7 +39,7 @@ def _rgb_hex(data: bytes, offset: int) -> str:
 def _parse_row(data: bytes, pos: int) -> dict:
     return {
         "edania_region": u8(data, pos + _EDANIA_REGION),
-        "unknown_00": _rgb_hex(data, pos + _UNKNOWN_00),
+        "map_color": _rgb_hex(data, pos + _MAP_COLOR),
         "unknown_04": _rgb_hex(data, pos + _UNKNOWN_04),
     }
 

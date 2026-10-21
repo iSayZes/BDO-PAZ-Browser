@@ -37,8 +37,8 @@ class _Shown(NamedTuple):
 
 
 def _cell(value: object, display: Callable[[Any], str] | None = None) -> str:
-    """The cell text of a value: `display` of a number or an entry list when the field has one."""
-    if display is not None and isinstance(value, (int, list)):
+    """The cell text of a value: `display` of a number, byte run or entry list when the field has one."""
+    if display is not None and (isinstance(value, (int, list)) or (isinstance(value, str) and value)):
         return e(display(value))
     if value == "":
         return _EMPTY
@@ -143,7 +143,7 @@ class PabrValuesBssHandler(PreviewHandler):
         if not self._table.has_named_field:
             return [{**record, VALUE_BYTES_FIELD: raw} for record, raw in parse_value_rows(data, self._table)]
         records = parse_value_table(data, self._table)
-        return [{**record, **_derived_fields(self._table.fields, record)} for record in records]
+        return [{**record, **_derived_fields(self._table.all_fields, record)} for record in records]
 
     def render_records_page(
         self,

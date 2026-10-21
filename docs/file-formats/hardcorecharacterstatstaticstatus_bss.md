@@ -122,9 +122,11 @@ in a row.
   `experience.bss` level 60 to 130 body, the one with both bonuses.
 - The table has a row for every class type, while the LOC type 37 server
   text (id `970407542`) opens Hardcore characters to four classes: Warrior,
-  Ranger, Sorceress and Berserker. The class list comes from the server
-  through `ToClient_getHardCorePossbieClassFromIndex()` in
-  `panel_lobby_classselect_renew.lua`.
+  Ranger, Sorceress and Berserker. The class list that
+  `ToClient_getHardCorePossbieClassFromIndex()` returns in
+  `panel_lobby_classselect_renew.lua` is the `possible_class_types` list of
+  [`hardcorechanneletcoptionstaticstatus.bss`](hardcorechanneletcoptionstaticstatus_bss.md),
+  29 class types on client 3474.
 - The two `5, 5, 5` triads are the drop item, fishing and collection luck
   limits and `max_varied_speed`, named in the
   [experience.bss](experience_bss.md#field-names) Field Names.

@@ -10,8 +10,9 @@ A `Framing.BARE` file is the values alone, from +0x00 to the end of the file.
 The values end where the string table starts or the file ends; values that
 do not fill that space exactly raise ValueError, since every field would
 then be read from the wrong place. A string-table index field (`TextRef`)
-also stores the string it points to. `parse_value_rows` also gives each
-row's bytes as hex text, for the files with no named field.
+also stores the string it points to. Head fields, read once before the row
+count, go on every record. `parse_value_rows` also gives each row's bytes
+as hex text, for the files with no named field.
 """
 
 from __future__ import annotations
@@ -84,10 +85,18 @@ def _field_value(data: bytes, field: ValueField, offset: int, end: int, table: V
     return _entries(raws, field.fmt), stop
 
 
-def _read_row(data: bytes, table: ValueTable, offset: int, end: int, strings: list[str]) -> _Row:
+def _read_values(
+    data: bytes,
+    table: ValueTable,
+    fields: tuple[ValueField, ...],
+    offset: int,
+    end: int,
+    strings: list[str],
+) -> _Row:
+    """The values of `fields` from `offset`, with the string of each string-table index."""
     values: dict[str, object] = {}
     stop = offset
-    for field in table.fields:
+    for field in fields:
         value, stop = _field_value(data, field, stop, end, table)
         values[field.name] = value
         if field.text is not None and isinstance(value, int):
@@ -114,12 +123,13 @@ def _first_row_and_count(data: bytes, table: ValueTable, start: int, end: int) -
 def _read_rows(data: bytes, table: ValueTable) -> list[_Row]:
     """Every row of `table`, checked to end exactly where the values stop."""
     start, end = _values_span(data, table)
-    offset, count = _first_row_and_count(data, table, start, end)
     strings = read_string_table(data) if table.has_text else []
+    head = _read_values(data, table, table.head, start, end, strings)
+    offset, count = _first_row_and_count(data, table, head.stop, end)
     rows: list[_Row] = []
     for _ in range(count):
-        row = _read_row(data, table, offset, end, strings)
-        rows.append(row)
+        row = _read_values(data, table, table.fields, offset, end, strings)
+        rows.append(_Row({**row.record, **head.record}, row.start, row.stop))
         offset = row.stop
     if offset != end:
         raise ValueError(f"{table.file_name} values end at 0x{offset:X}, but {_end_name(table)} at 0x{end:X}")

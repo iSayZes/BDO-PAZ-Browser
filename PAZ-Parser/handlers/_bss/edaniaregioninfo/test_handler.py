@@ -29,7 +29,7 @@ CASE = HandlerCase(
     loc_fields=["Castle"],
     internal_path="gamecommondata/binary/edaniaregioninfo.bss",
     tests=[
-        SchemaTest(required_keys=["edania_region", "castle_name", "unknown_00", "unknown_04"]),
+        SchemaTest(required_keys=["edania_region", "castle_name", "map_color", "unknown_04"]),
         DeclaredCountTest(declared=header_count(offset=4)),
         # __eEdaniaRegion values plus _Count, the "no region" value.
         RangeTest(col="edania_region", min_val=0, max_val=len(EDANIA_REGION_NAMES)),

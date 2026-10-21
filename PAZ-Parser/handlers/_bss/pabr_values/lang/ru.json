@@ -96,7 +96,18 @@
     "skillType": "Тип навыка",
     "regionKeys": "Регионы",
     "schedules": "Расписания",
-    "team": "Команда"
+    "team": "Команда",
+    "giveawayKey": "Ключ подарка",
+    "items": "Предметы",
+    "combatExp": "Боевой опыт по уровням",
+    "victoryRewards": "Награды за победу",
+    "defeatRewards": "Награды за поражение",
+    "rank": "Ранг",
+    "minPoint": "Мин. очки",
+    "maxPoint": "Макс. очки",
+    "rightIndex": "Индекс права",
+    "grades": "Ранги",
+    "skillLevel": "Уровень навыка"
   },
   "meta": {
     "count": "Записей: {count}",

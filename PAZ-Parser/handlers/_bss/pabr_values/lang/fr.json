@@ -96,7 +96,18 @@
     "skillType": "Type de compétence",
     "regionKeys": "Régions",
     "schedules": "Horaires",
-    "team": "Équipe"
+    "team": "Équipe",
+    "giveawayKey": "Clé de cadeau",
+    "items": "Objets",
+    "combatExp": "EXP de combat par niveau",
+    "victoryRewards": "Récompenses de victoire",
+    "defeatRewards": "Récompenses de défaite",
+    "rank": "Rang",
+    "minPoint": "Points min.",
+    "maxPoint": "Points max.",
+    "rightIndex": "Index du droit",
+    "grades": "Grades",
+    "skillLevel": "Niveau de compétence"
   },
   "meta": {
     "count": "{count} entrées",

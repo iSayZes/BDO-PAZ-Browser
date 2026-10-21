@@ -49,6 +49,7 @@ from .fieldinfo.handler import FieldInfoBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
+from .guildrightnewstaticstatus.handler import GuildRightNewStaticStatusBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
 from .houseinfo.handler import HouseInfoBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
@@ -201,6 +202,7 @@ def register_bss_handlers() -> None:
         "guildhousecraftskillreverselinklist.bss",
         GuildHouseCraftSkillReverseLinkListBssHandler(),
     )
+    register_handler("guildrightnewstaticstatus.bss", GuildRightNewStaticStatusBssHandler())
     register_handler(
         "hardcorecharacterstatstaticstatus.bss",
         HardcoreCharacterStatBssHandler(),

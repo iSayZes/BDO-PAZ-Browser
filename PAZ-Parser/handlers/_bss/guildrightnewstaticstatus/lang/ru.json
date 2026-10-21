@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rightNo": "№ права",
+    "right": "Право",
+    "groupNo": "№ группы",
+    "group": "Группа",
+    "description": "Описание"
+  },
+  "meta": {
+    "count": "Прав гильдии: {count}"
+  }
+}

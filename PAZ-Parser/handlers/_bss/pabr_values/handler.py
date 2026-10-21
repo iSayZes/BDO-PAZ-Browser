@@ -45,7 +45,15 @@ def _cell(value: object, display: Callable[[Any], str] | None = None) -> str:
     return e(whole_float(value) if isinstance(value, float) else value)
 
 
+def _list_text_cell(values: list[Any], list_display: Callable[[list[Any]], str]) -> str:
+    """The text `list_display` makes of a whole list, or the empty mark."""
+    return e(list_display(values)) or _EMPTY
+
+
 def _value_cell(field: ValueField) -> Cell:
+    list_display = field.list_display
+    if list_display is not None:
+        return lambda r: _list_text_cell(r[field.name], list_display)
     if field.is_counted_list:
         return lambda r: html_list_cell([_cell(value, field.display) for value in r[field.name]]) or _EMPTY
     return lambda r: _cell(r[field.name], field.display)

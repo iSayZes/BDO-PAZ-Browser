@@ -96,7 +96,18 @@
     "skillType": "기술 종류",
     "regionKeys": "지역 목록",
     "schedules": "진행 일정",
-    "team": "팀"
+    "team": "팀",
+    "giveawayKey": "선물 키",
+    "items": "아이템",
+    "combatExp": "레벨별 전투 경험치",
+    "victoryRewards": "승리 보상",
+    "defeatRewards": "패배 보상",
+    "rank": "순위",
+    "minPoint": "최소 포인트",
+    "maxPoint": "최대 포인트",
+    "rightIndex": "권한 인덱스",
+    "grades": "등급",
+    "skillLevel": "기술 레벨"
   },
   "meta": {
     "count": "{count}개 항목",

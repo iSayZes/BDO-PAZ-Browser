@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rightNo": "N.º de permiso",
+    "right": "Permiso",
+    "groupNo": "N.º de grupo",
+    "group": "Grupo",
+    "description": "Descripción"
+  },
+  "meta": {
+    "count": "{count} permisos de hermandad"
+  }
+}

@@ -96,7 +96,18 @@
     "skillType": "Skill Type",
     "regionKeys": "Regions",
     "schedules": "Schedules",
-    "team": "Team"
+    "team": "Team",
+    "giveawayKey": "Giveaway Key",
+    "items": "Items",
+    "combatExp": "Combat EXP by Level",
+    "victoryRewards": "Victory Rewards",
+    "defeatRewards": "Defeat Rewards",
+    "rank": "Rank",
+    "minPoint": "Min Points",
+    "maxPoint": "Max Points",
+    "rightIndex": "Right Index",
+    "grades": "Grades",
+    "skillLevel": "Skill Level"
   },
   "meta": {
     "count": "{count} entries",

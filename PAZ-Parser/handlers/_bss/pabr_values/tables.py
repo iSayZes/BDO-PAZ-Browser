@@ -25,6 +25,7 @@ from .names import (
     utc_time,
     vehicle_skill_name,
 )
+from .guild_tables import GUILD_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
 
 __all__ = [
@@ -227,4 +228,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         "petTiers",
     ),
     *ROSE_WAR_TABLES,
+    *GUILD_TABLES,
 )

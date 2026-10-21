@@ -96,7 +96,18 @@
     "skillType": "Talenttyp",
     "regionKeys": "Regionen",
     "schedules": "Zeitpläne",
-    "team": "Team"
+    "team": "Team",
+    "giveawayKey": "Geschenk-Schlüssel",
+    "items": "Gegenstände",
+    "combatExp": "Kampf-EP nach Stufe",
+    "victoryRewards": "Siegesbelohnungen",
+    "defeatRewards": "Belohnungen bei Niederlage",
+    "rank": "Rang",
+    "minPoint": "Min. Punkte",
+    "maxPoint": "Max. Punkte",
+    "rightIndex": "Rechte-Index",
+    "grades": "Ränge",
+    "skillLevel": "Talentstufe"
   },
   "meta": {
     "count": "{count} Einträge",

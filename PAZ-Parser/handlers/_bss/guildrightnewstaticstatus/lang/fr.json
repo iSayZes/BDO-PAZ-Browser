@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rightNo": "N° de droit",
+    "right": "Droit",
+    "groupNo": "N° de groupe",
+    "group": "Groupe",
+    "description": "Description"
+  },
+  "meta": {
+    "count": "{count} droits de guilde"
+  }
+}

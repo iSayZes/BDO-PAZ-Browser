@@ -83,7 +83,9 @@ class ValueField:
     `display` turns the value into its cell text; the record keeps the value.
     With `is_counted_list` the field is a `count_fmt` count, then that many
     values, stored as a list; a format of several values (`B3I`) stores each
-    entry as a list. `text` reads the value as a string-table index.
+    entry as a list. `display` then draws each entry on its own line, and
+    `list_display` draws the whole list as one text. `text` reads the value
+    as a string-table index.
     """
 
     name: str
@@ -95,10 +97,13 @@ class ValueField:
     is_counted_list: bool = False
     count_fmt: str = "I"
     text: TextRef | None = None
+    list_display: Callable[[list[Any]], str] | None = None
 
     def __post_init__(self) -> None:
         if self.is_counted_list and (self.lookup is not None or self.icon is not None or self.text is not None):
             raise ValueError(f"{self.name}: a counted list takes no name, icon or text lookup")
+        if self.list_display is not None and (not self.is_counted_list or self.display is not None):
+            raise ValueError(f"{self.name}: list_display needs a counted list without display")
 
 
 @dataclass(frozen=True)

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rightNo": "권한 번호",
+    "right": "권한",
+    "groupNo": "그룹 번호",
+    "group": "그룹",
+    "description": "설명"
+  },
+  "meta": {
+    "count": "길드 권한 {count}개"
+  }
+}

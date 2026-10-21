@@ -96,7 +96,18 @@
     "skillType": "Tipo de habilidad",
     "regionKeys": "Regiones",
     "schedules": "Calendarios",
-    "team": "Equipo"
+    "team": "Equipo",
+    "giveawayKey": "Clave de regalo",
+    "items": "Objetos",
+    "combatExp": "Exp. (Combate) por nivel",
+    "victoryRewards": "Recompensas por victoria",
+    "defeatRewards": "Recompensas por derrota",
+    "rank": "Rango",
+    "minPoint": "Puntos mín.",
+    "maxPoint": "Puntos máx.",
+    "rightIndex": "Índice de permiso",
+    "grades": "Grados",
+    "skillLevel": "Nivel de habilidad"
   },
   "meta": {
     "count": "{count} entradas",

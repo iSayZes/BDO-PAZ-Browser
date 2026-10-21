@@ -18,7 +18,8 @@ from tests.framework import (
     run_case,
 )
 
-from .parser import ENTRY_SIZE, FILE_NAME, GROUP_COUNT_OFFSET, parse_bartersubgroup_records
+from _bss.barter.group_lists import GROUP_COUNT_OFFSET
+from .parser import ENTRY_SIZE, FILE_NAME, parse_bartersubgroup_records
 
 # A u32 category mask; categories run 1 to 10 on client 3474.
 _MAX_CATEGORY_MASK = 0xFFFFFFFF
@@ -37,7 +38,7 @@ CASE = HandlerCase(
             "barter_sub_group", "is_material", "select_rate", "barter_cost", "from_item_key",
             "from_min_count", "from_max_count", "to_item_key", "to_min_count", "to_max_count",
             "barter_need_point", "exchange_max_count", "exchange_min", "exchange_max",
-            "barter_category", "from_item", "to_item", "category_names",
+            "barter_category", "from_item", "to_item", "category_names", "sub_group_ref",
         ]),
         RangeTest(col="barter_category", min_val=0, max_val=_MAX_CATEGORY_MASK),
         # Item 10 is Crow Coin.

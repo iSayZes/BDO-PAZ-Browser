@@ -8,6 +8,7 @@ from bdo_preview import PreviewHandler
 
 from _bss.barter.category import category_names
 from _bss.barter.display import exchange_cells, exchange_columns, exchange_text_fields
+from _bss.barter.sub_group import SUB_GROUP_REF_FIELD, sub_group_ref
 from _common.html import Column, e, error, flag_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from .parser import FILE_NAME, parse_bartersubgroup_records
@@ -47,6 +48,8 @@ class BarterSubGroupBssHandler(PreviewHandler):
                 **record,
                 **exchange_text_fields(record),
                 "category_names": category_names(record["barter_category"]),
+                # barter_normal.bss links its sub group entries by this field.
+                SUB_GROUP_REF_FIELD: sub_group_ref(record["is_material"], record["barter_sub_group"]),
             }
             for record in records
         ]

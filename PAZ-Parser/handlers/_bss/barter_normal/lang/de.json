@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "regionKey": "Regionsschlüssel",
+    "region": "Region",
+    "npc": "NPC",
+    "material": "Material",
+    "slot": "Platz",
+    "selectRate": "Auswahlrate",
+    "subGroup": "Untergruppe",
+    "category": "Kategorie"
+  },
+  "meta": {
+    "count": "{count} Warentausch-Plätze · {regions} Regionen"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "regionKey": "Region Key",
+    "region": "Region",
+    "npc": "NPC",
+    "material": "Material",
+    "slot": "Slot",
+    "selectRate": "Select Rate",
+    "subGroup": "Sub Group",
+    "category": "Category"
+  },
+  "meta": {
+    "count": "{count} barter slots · {regions} regions"
+  }
+}

@@ -4,8 +4,8 @@
 
 The barter sub groups of the Great Ocean barters: numbered lists of
 exchanges, each an item the player hands over, the item the player gets,
-their counts, a cost and the exchange limits. A row of
-`barter_normal.bss` (not documented yet) names a sub group in its
+their counts, a cost and the exchange limits. An entry of
+[`barter_normal.bss`](barter_normal_bss.md) names a sub group in its
 `barter_sub_group` u32, the same field this file keys its entries by.
 
 The file holds two lists of groups. The first is the trade item barter
@@ -13,7 +13,7 @@ list (the `BarterSubGroup` sheet of client 1784), the second the material
 barter list (the `MaterialBarterSubGroup` sheet). On client 3474 the first
 list has 197 groups with 731 entries, the second 5 groups with 85 entries;
 on client 1784 125 groups with 443 entries and the same 5 groups with 85.
-The same split runs through `barter_normal.bss` (two lists) and
+The same split runs through `barter_normal.bss` (two lists of regions) and
 [`barterresetoption.bss`](barterresetoption_bss.md), whose
 `MaterialBarter` list prices the ship material refreshes.
 
@@ -80,7 +80,8 @@ All multi-byte values are little-endian.
 ### Exchange (56 bytes)
 
 The part every barter row shares: the same 56 bytes sit in the rows of
-[`barter_special.bss`](barter_special_bss.md) and `barter_normal.bss`.
+[`barter_special.bss`](barter_special_bss.md) and the entries of
+[`barter_normal.bss`](barter_normal_bss.md).
 
 | Offset  | Type | Field              | Notes                                                                  |
 | ------- | ---- | ------------------ | ---------------------------------------------------------------------- |
@@ -219,15 +220,19 @@ for item `45505`. `exchange_max_count` is the
 ## Notes
 
 - The keys of the first list run `1` to `197` and those of the second `1`
-  to `5` on client 3474; the rows of `barter_normal.bss` name keys `1` to
-  `197` in its trade item list and `1` to `5` in its material list.
+  to `5` on client 3474; the entries of `barter_normal.bss` name keys `1`
+  to `197` in its trade item list and `1` to `5` in its material list (see
+  its [Sub Group Entries](barter_normal_bss.md#sub-group-entries)).
 - Item keys pack the enhancement level like
   [`itemenchant.dbss`](itemenchant_dbss.md); the from items are level `0`
   on every entry (client 3474).
 - The handler (`_bss/bartersubgroup/`) shows one row per entry, with a
   Material flag on the entries of the second list. It reads the Exchange
-  with the shared barter reader in `_bss/barter/`, which `barter_special.bss`
-  uses too, and names the categories with their LOC type 37 GAME text.
+  and walks the two lists with the shared barter reader in `_bss/barter/`,
+  which `barter_special.bss` and `barter_normal.bss` use too, and names the
+  categories with their LOC type 37 GAME text. Each entry carries
+  `sub_group_ref` (`trade:12`, `material:3`), the field the
+  `barter_normal.bss` sub group links open it by.
 
 ## Open Questions
 

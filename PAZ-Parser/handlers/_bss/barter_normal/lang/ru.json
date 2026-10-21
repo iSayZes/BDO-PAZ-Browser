@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "regionKey": "Ключ региона",
+    "region": "Регион",
+    "npc": "НИП",
+    "material": "Материалы",
+    "slot": "Ячейка",
+    "selectRate": "Шанс выбора",
+    "subGroup": "Подгруппа",
+    "category": "Категория"
+  },
+  "meta": {
+    "count": "Ячеек бартера: {count} · регионов: {regions}"
+  }
+}

@@ -6,6 +6,7 @@ from _common.empty_table import EmptyTableHandler
 
 from .actionverification.handler import ActionVerificationBssHandler
 from .allquestlist.handler import AllQuestListBssHandler
+from .barter_normal.handler import BarterNormalBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .barter_special.handler import BarterSpecialBssHandler
 from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
@@ -150,6 +151,7 @@ def register_bss_handlers() -> None:
         "supplyservantquestlist.bss",
     ):
         register_handler(name, AllQuestListBssHandler())
+    register_handler("barter_normal.bss", BarterNormalBssHandler())
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("barter_special.bss", BarterSpecialBssHandler())
     register_handler("barterlifelevelinfo.bss", BarterLifeLevelInfoBssHandler())

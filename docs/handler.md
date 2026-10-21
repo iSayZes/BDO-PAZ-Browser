@@ -1022,7 +1022,11 @@ row, `elementalmonsterreward.bss` each boss to its
 `elementalmonsterstat.bss` row, `houseinfo.bss` each use to its
 `houseinforeceipe.dbss` row and each needed house to its own row, and
 `mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
-each part count to the building's `mansionpartinfo.bss` rows.
+each part count to the building's `mansionpartinfo.bss` rows, and
+`barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group.
+Both lists of `bartersubgroup.bss` number their groups from 1, so that link
+reads `sub_group_ref` (`trade:12`, `material:3`), a field the target
+records carry for it (`_bss/barter/sub_group.py`).
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries

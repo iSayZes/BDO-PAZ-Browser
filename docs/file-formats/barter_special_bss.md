@@ -59,8 +59,8 @@ All multi-byte values are little-endian.
 
 ### Row (70 bytes)
 
-The row of `barter_normal.bss` (not documented yet) has the same layout;
-see Field Names for the three fields that are `0` here.
+The Entry of [`barter_normal.bss`](barter_normal_bss.md) has the same
+layout; see Field Names for the three fields that are `0` here.
 
 | Offset  | Type     | Field             | Notes                                                       |
 | ------- | -------- | ----------------- | ----------------------------------------------------------- |
@@ -136,19 +136,21 @@ field names and the `from` and `to` naming are explained in
 The sheet has no column for `barter_region_key`, `barter_sub_group`,
 `barter_category`, `barter_need_point` or `exchange_max_count`. The last two
 are Exchange fields and take their names from `bartersubgroup.bss`. The
-other three are named after the same slots of `barter_normal.bss`, whose
-rows are this 70-byte row (67 bytes on client 1784) grouped by region:
+other three are named after the same slots of
+[`barter_normal.bss`](barter_normal_bss.md#field-names), whose entries are
+this 70-byte row (67 bytes on client 1784) grouped by region:
 
 - `barter_region_key`: in `barter_normal.bss` the u16 equals the key of the
-  region group the row sits in, on all 3,640 + 3,731 rows of client 3474.
+  region the entry sits in, on all 3,640 + 3,731 entries of client 3474.
 - `barter_sub_group`: its values in `barter_normal.bss` are the
   `bartersubgroup.bss` keys, `1` to `197` in the trade item list and `1`
   to `5` in the material list (client 3474), and on client 1784 it matches
-  the `BarterSubGroup` column of the `BarterData` sheet on 1,718 of the
-  1,748 rows that region, from item and to item identify.
+  the `BarterSubGroup` column of the `BarterData` and `MaterialBarterData`
+  sheets on all 3,240 + 3,321 rows.
 - `barter_category`: on client 1784 it matches the `BarterCategory` column
-  of the `BarterData` sheet on all 1,748 of those rows; on client 3474 it
-  is the bit mask of [Barter Categories](bartersubgroup_bss.md#barter-categories).
+  of the `BarterData` sheet on the 2,958 rows without a sub group; on
+  client 3474 it is the bit mask of
+  [Barter Categories](bartersubgroup_bss.md#barter-categories).
 
 ## Notes
 

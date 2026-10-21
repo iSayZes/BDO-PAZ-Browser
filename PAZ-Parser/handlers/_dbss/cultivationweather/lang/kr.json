@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "교환 키",
+    "water": "지하수",
+    "temperature": "온도",
+    "humidity": "습도",
+    "pruning": "가지치기",
+    "birds": "새"
+  },
+  "offsetColumns": {
+    "exchangeKey": "교환 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "작물 {count}개"
+  }
+}

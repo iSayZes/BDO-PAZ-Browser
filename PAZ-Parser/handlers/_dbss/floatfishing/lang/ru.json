@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "groupKey": "Группа рыбалки",
+    "drops": "Добыча",
+    "points": "Места рыбалки"
+  },
+  "slots": {
+    "treasure": "Сокровище",
+    "rare": "Редкий",
+    "large": "Большой",
+    "general": "Обычный",
+    "junk": "Всякая всячина"
+  },
+  "offsetColumns": {
+    "groupKey": "Группа рыбалки",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Группы рыбалки: {count}"
+  }
+}

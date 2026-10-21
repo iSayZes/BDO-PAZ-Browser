@@ -90,6 +90,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `cookingstatdata.bss` | PABR Cooking Mastery table: per 50 mastery, mass cooking, max dishes, higher grade dish chances and Imperial Delivery extra profit | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `cronenchant.bss` | PABR Caphras enhancement table: per gear category and TRI / TET / PEN, the 20 Caphras levels with total Caphras Stones and the AP, accuracy, evasion, DR, HP and MP bonus | [cronenchant](file-formats/cronenchant_bss.md) | 1 | 0 |
 | `cultivationevent.bss` | PABR list of the farming event type keys (`CultivationEventType`): u32 count and i16 keys | [cultivationevent](file-formats/cultivationevent_bss.md) | 0 | 0 |
+| `cultivationweather.dbss` | Crop growth speed per weather: per crop exchange key, for water, temperature, humidity, pruning and birds, the rate ranges and the growth speed change in each (variable rows) | [cultivationweather](file-formats/cultivationweather_dbss.md) | 0 | 0 |
+| `cultivationweatheroffset.dbss` | Index into `cultivationweather.dbss` with no magic: u32 exchange key, offset and size (12-byte rows) | [cultivationweather](file-formats/cultivationweather_dbss.md) | 0 | 0 |
 | `cutscenecharacterdata.bss` | PABR list of the character keys set aside as cutscene actors (PC stand-ins, tutorial actors, the `Sequence_NPC_*` library) | [cutscenecharacterdata](file-formats/cutscenecharacterdata_bss.md) | 1 | 0 |
 | `detail_dialog.dbss` | NPC dialog trees: greeting, options with condition, title, answer and action scripts (quests, exchanges, leases) | [detail_dialog](file-formats/detail_dialog_dbss.md) | 1 | 0 |
 | `detail_dialogoffset.dbss` | PABR index into `detail_dialog.dbss`, maps `dialog_index << 16 \| character_id` → offset/size | [detail_dialog](file-formats/detail_dialog_dbss.md) | 1 | 0 |
@@ -160,11 +162,16 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `fieldboss.dbss` | Field boss list: 33-byte rows of a character ID and two bytes that are `1` on every row | [fieldboss](file-formats/fieldboss_dbss.md) | 2 | 0 |
 | `fieldbossoffset.dbss` | Bare u16-keyed index into `fieldboss.dbss`, maps character ID → offset/size | [fieldboss](file-formats/fieldboss_dbss.md) | 2 | 0 |
 | `fieldinfo.bss` | PABR field list (`Field_Table`): field number, world-editor name, resource folder, spawn point, sector box, field type, map keys and entry rules; `instancefield.dbss` and `instancedungeoninfo.dbss` store the field number | [fieldinfo](file-formats/fieldinfo_bss.md) | 3 | 0 |
+| `fishcompetition.bss` | PABR fishing contest fish: fish item, its grade, the six rank reward boxes and the title item, then the last rank of each reward tier | [fishcompetition](file-formats/fishcompetition_bss.md) | 1 | 0 |
 | `fishinginfo.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `fishingstatdata.bss` | PABR Fishing Mastery table: Prize Catch Fish Rate per 50 mastery | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `fitnesslevel.dbss` | Breath, Strength and Health level tables: EXP per level and the max Stamina, weight limit, max HP and max MP/WP/SP bonus | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
 | `fitnessleveloffset.dbss` | Index into `fitnesslevel.dbss`, one block per fitness type, maps level → offset/size | [fitnesslevel](file-formats/fitnesslevel_dbss.md) | 0 | 0 |
 | `fitnessmaxlevel.bss` | PABR max level per fitness type (50 for Breath, Strength and Health on client 3464) | [fitnessmaxlevel](file-formats/fitnessmaxlevel_bss.md) | 0 | 0 |
+| `floatfishing.dbss` | Fish drop groups of the floating fishing points: per group five drop slots (item drop group and chance) (70-byte rows) | [floatfishing](file-formats/floatfishing_dbss.md) | 1 | 0 |
+| `floatfishingoffset.dbss` | Index into `floatfishing.dbss` with no magic: u16 group key, offset and size (10-byte rows) | [floatfishing](file-formats/floatfishing_dbss.md) | 1 | 0 |
+| `floatfishingpoint.dbss` | Floating fishing points: size, start and end position, fish drop group, spawned character and action (42-byte rows) | [floatfishingpoint](file-formats/floatfishingpoint_dbss.md) | 1 | 0 |
+| `floatfishingpointoffset.dbss` | Index into `floatfishingpoint.dbss` with no magic: u16 point key, offset and size (10-byte rows) | [floatfishingpoint](file-formats/floatfishingpoint_dbss.md) | 1 | 0 |
 | `greatseaevent.dbss` | Great Ocean sailing event results in groups: group key, index, Korean result text, image path (variable rows) | [greatseaevent](file-formats/greatseaevent_dbss.md) | 1 | 0 |
 | `greatseaeventoffset.dbss` | Index into `greatseaevent.dbss` per group: u16 group key, count, then u32 index, offset and size per event | [greatseaevent](file-formats/greatseaevent_dbss.md) | 1 | 0 |
 | `grenadedata.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
@@ -476,6 +483,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `titleoffset.dbss`                 | Index into `title.dbss`, maps title ID → offset/size                                                          | [titleoffset](file-formats/titleoffset_dbss.md)                     | 0              | 0 |
 | `totalquestcountregion.bss` | PABR quest totals, one u32 per quest region (`QuestRegionType` 0 to 17 on client 3474) with no keys; region names from the quest window's GAME sheet keys | [totalquestcountregion](file-formats/totalquestcountregion_bss.md) | 3 | 0 |
 | `totalquestcounttype.bss` | PABR quest totals, one u32 per quest type (`__eQuestType`, the `quest.dbss` `quest_category`), same format as `totalquestcountregion.bss` | [totalquestcountregion](file-formats/totalquestcountregion_bss.md) | 3 | 0 |
+| `tradeexperiencess.bss` | A u32 count and 180 u64 values with no magic; what the values are is open | [tradeexperiencess](file-formats/tradeexperiencess_bss.md) | 1 | 0 |
 | `traininglevelskillstat.bss` | PABR list of two Training level bonuses per level: mount skill learn chance and higher minimum movement speed chance | [traininglevelskillstat](file-formats/traininglevelskillstat_bss.md) | 0 | 0 |
 | `trainingstatdata.bss` | PABR Training Mastery table: per 50 mastery, horse capture rate, mount EXP and higher tier horse chance | [masterystatdata](file-formats/masterystatdata_bss.md) | 4 | 0 |
 | `trainingvehicle.dbss` | Grade per training dummy character (Scarecrow, Advanced Scarecrow, Sandbag): u16 character key, its copy and an i32 grade | [trainingvehicle](file-formats/trainingvehicle_dbss.md) | 1 | 0 |

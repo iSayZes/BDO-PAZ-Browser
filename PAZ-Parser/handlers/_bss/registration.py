@@ -47,6 +47,7 @@ from .fairyupgraderate.handler import FairyUpgradeRateBssHandler
 from .feverquestdatatable.handler import FeverQuestDataTableBssHandler
 from .fevertimeskill.handler import FeverTimeSkillBssHandler
 from .fieldinfo.handler import FieldInfoBssHandler
+from .fishcompetition.handler import FishCompetitionBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
@@ -205,6 +206,7 @@ def register_bss_handlers() -> None:
     register_handler("feverquestdatatable.bss", FeverQuestDataTableBssHandler())
     register_handler("fevertimeskill.bss", FeverTimeSkillBssHandler())
     register_handler("fieldinfo.bss", FieldInfoBssHandler())
+    register_handler("fishcompetition.bss", FishCompetitionBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
     register_handler(

@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "pointKey": "Ключ места",
+    "pointSize": "Размер",
+    "startX": "Начало X",
+    "startY": "Начало Y",
+    "startZ": "Начало Z",
+    "endX": "Конец X",
+    "endZ": "Конец Z",
+    "fishingGroup": "Группа рыбалки",
+    "characterKey": "ID персонажа",
+    "character": "Персонаж",
+    "actionIndex": "Индекс действия"
+  },
+  "offsetColumns": {
+    "pointKey": "Ключ места",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Места рыбалки: {count}"
+  }
+}

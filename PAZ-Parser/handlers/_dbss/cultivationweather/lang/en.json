@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Exchange Key",
+    "water": "Groundwater",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "pruning": "Pruning",
+    "birds": "Birds"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Exchange Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} crops"
+  }
+}

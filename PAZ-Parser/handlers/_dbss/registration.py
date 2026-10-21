@@ -138,6 +138,9 @@ from .alchemystonechange.handler import AlchemyStoneChangeHandler, alchemy_stone
 from .waititem.handler import WaitItemHandler, wait_item_offset_handler
 from .fieldboss.handler import FieldBossHandler, field_boss_offset_handler
 from .weatheractor.handler import WeatherActorHandler, weather_actor_offset_handler
+from .cultivationweather.handler import CultivationWeatherHandler, cultivation_weather_offset_handler
+from .floatfishing.handler import FloatFishingHandler, float_fishing_offset_handler
+from .floatfishingpoint.handler import FloatFishingPointHandler, float_fishing_point_offset_handler
 from .itemimprovement.handler import (
     ItemImprovementHandler,
     ItemImprovementSourceHandler,
@@ -275,6 +278,12 @@ def register_dbss_handlers() -> None:
     register_handler("fieldboss.dbss", FieldBossHandler())
     register_handler("weatheractoroffset.dbss", weather_actor_offset_handler())
     register_handler("weatheractor.dbss", WeatherActorHandler())
+    register_handler("cultivationweatheroffset.dbss", cultivation_weather_offset_handler())
+    register_handler("cultivationweather.dbss", CultivationWeatherHandler())
+    register_handler("floatfishingoffset.dbss", float_fishing_offset_handler())
+    register_handler("floatfishing.dbss", FloatFishingHandler())
+    register_handler("floatfishingpointoffset.dbss", float_fishing_point_offset_handler())
+    register_handler("floatfishingpoint.dbss", FloatFishingPointHandler())
     register_handler("itemimprovementoffset.dbss", item_improvement_offset_handler())
     register_handler("itemimprovement.dbss", ItemImprovementHandler())
     register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())

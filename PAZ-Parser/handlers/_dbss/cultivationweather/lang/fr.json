@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Clé d'échange",
+    "water": "Nappe phréatique",
+    "temperature": "Température",
+    "humidity": "Humidité",
+    "pruning": "Élagage",
+    "birds": "Oiseaux"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Clé d'échange",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} cultures"
+  }
+}

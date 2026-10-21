@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "fishKey": "Fish Key",
+    "fish": "Fish",
+    "grade": "Grade",
+    "rewards": "Rank Rewards",
+    "titleItem": "Title Item"
+  },
+  "text": {
+    "rank": "Rank {rank}",
+    "rankRange": "Rank {first}-{last}"
+  },
+  "meta": {
+    "count": "{count} contest fish"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "level": "Nivel",
+    "autofishingTimePercents": "Tiempo de pesca automática (valor bruto)"
+  },
+  "offsetColumns": {
+    "itemId": "ID del objeto",
+    "level": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} registros · {items} objetos"
+  }
+}

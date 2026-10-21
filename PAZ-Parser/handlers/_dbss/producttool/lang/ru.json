@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "level": "Уровень",
+    "autofishingTimePercents": "Время авторыбалки (исходное значение)"
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "level": "Уровень",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Записей: {count} · предметов: {items}"
+  }
+}

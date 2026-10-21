@@ -318,6 +318,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `preloadpcactioncharacter.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `productexperience.dbss` | Life skill point EXP table, levels 0 to 2000 with an EXP of 0 on every level on client 3474 | [productexperience](file-formats/productexperience_dbss.md) | 0 | 0 |
 | `productexperienceoffset.dbss` | Index into `productexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [productexperience](file-formats/productexperience_dbss.md) | 0 | 0 |
+| `producttool.dbss` | Auto-fishing time per fishing rod or float and enhancement level, on the 1,000,000 = 100% scale; 22 records of 28 bytes on client 3474 | [producttool](file-formats/producttool_dbss.md) | 2 | 0 |
+| `producttooloffset.dbss` | Index into `producttool.dbss`: (u32 item key, offset, size) rows; no PABR magic and no trailer | [producttool](file-formats/producttool_dbss.md) | 2 | 0 |
 | `purchaselimitgroup.dbss` | Pearl Shop purchase limits shared by a product group: 9-byte rows of group number, limit type (character or family) and purchase count | [purchaselimitgroup](file-formats/purchaselimitgroup_dbss.md) | 2 | 0 |
 | `purchaselimitgroupoffset.dbss` | Index into `purchaselimitgroup.dbss`: bare count, then (u32 group number, offset, size) | [purchaselimitgroup](file-formats/purchaselimitgroup_dbss.md) | 2 | 0 |
 | `quest.dbss`                       | Variable-length quest definitions with accept and complete dialog keys, scripts, objectives, and icon paths    | [quest](file-formats/quest_dbss.md)                                 | 11              | 0 |

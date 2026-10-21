@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Exchange Key",
+    "needItem": "Need Item",
+    "needCount": "Need Count",
+    "resultItem": "Result Item",
+    "resultCount": "Result Count",
+    "npcs": "NPCs"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Exchange Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} item exchanges"
+  }
+}

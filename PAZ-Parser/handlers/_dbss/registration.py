@@ -148,6 +148,7 @@ from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
 from .collect.handler import CollectHandler, collect_offset_handler
 from .lifeactionexperience.handler import LifeActionExperienceHandler, life_action_experience_offset_handler
 from .displayexchangeitemnpc.handler import DisplayExchangeItemNpcHandler, display_exchange_item_npc_offset_handler
+from .itemexchangebynpc.handler import ItemExchangeByNpcHandler, item_exchange_by_npc_offset_handler
 from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
@@ -254,6 +255,8 @@ def register_dbss_handlers() -> None:
     register_handler("lifeactionexperience.dbss", LifeActionExperienceHandler())
     register_handler("displayexchangeitemnpcoffset.dbss", display_exchange_item_npc_offset_handler())
     register_handler("displayexchangeitemnpc.dbss", DisplayExchangeItemNpcHandler())
+    register_handler("itemexchangebynpcoffset.dbss", item_exchange_by_npc_offset_handler())
+    register_handler("itemexchangebynpc.dbss", ItemExchangeByNpcHandler())
     register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())

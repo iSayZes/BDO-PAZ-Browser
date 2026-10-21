@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Clave de intercambio",
+    "needItem": "Objeto necesario",
+    "needCount": "Cantidad necesaria",
+    "resultItem": "Objeto resultante",
+    "resultCount": "Cantidad resultante",
+    "npcs": "PNJ"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Clave de intercambio",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} intercambios de objetos"
+  }
+}

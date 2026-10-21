@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Ключ обмена",
+    "needItem": "Необходимый предмет",
+    "needCount": "Необходимое кол-во",
+    "resultItem": "Получаемый предмет",
+    "resultCount": "Получаемое кол-во",
+    "npcs": "НИП"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Ключ обмена",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Обменов предметов: {count}"
+  }
+}

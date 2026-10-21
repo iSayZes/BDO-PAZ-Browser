@@ -78,8 +78,8 @@ All multi-byte values are little-endian.
   `DataSheets.bexcel` on that client and no string of its server dump has
   `RoseWar` in the name.
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews this
-  file with the shared layout table in `_bss/pabr_values/tables.py`. With no
-  confirmed field, the preview shows each row's raw bytes.
+  file with the shared layout table in `_bss/pabr_values/rosewar_tables.py`.
+  With no confirmed field, the preview shows each row's raw bytes.
 
 ## Open Questions
 
@@ -88,6 +88,9 @@ All multi-byte values are little-endian.
 The shape and the values point to one colour per Rose War team, with
 `unknown_08` as the team number, but no source names a field. The client
 3474 Lua has `getRoseWarTeamNo` and the two `__eRoseWarTeam_*` names
-without their values, and no Lua call returns a colour for a team. Which
-team `0` and `1` are, and what the second copy of the 3-byte value is
-for, are open.
+without their values, and no Lua call returns a colour for a team.
+[`rosewarteamnostaticstatus.bss`](rosewarteamnostaticstatus_bss.md) puts
+the Kamasylvia characters on team `0` and the O'dyllita ones on `1`, so if
+`unknown_08` is the team number, `100d10` is Kamasylvia's and `181be8`
+O'dyllita's. Whether it is, and what the second copy of the 3-byte value
+is for, are open.

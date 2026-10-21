@@ -9,8 +9,9 @@ A `Framing.BARE` file is the values alone, from +0x00 to the end of the file.
 
 The values end where the string table starts or the file ends; values that
 do not fill that space exactly raise ValueError, since every field would
-then be read from the wrong place. `parse_value_rows` also gives each row's
-bytes as hex text, for the files with no named field.
+then be read from the wrong place. A string-table index field (`TextRef`)
+also stores the string it points to. `parse_value_rows` also gives each
+row's bytes as hex text, for the files with no named field.
 """
 
 from __future__ import annotations
@@ -18,8 +19,8 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass
 
-from _common.pabr_strings import TRAILER_SIZE, U32_SIZE, check_pabr, string_table_start
-from .tables import Framing, RowCount, ValueField, ValueTable
+from _common.pabr_strings import TRAILER_SIZE, U32_SIZE, check_pabr, read_string_table, string_at, string_table_start
+from .layout import Framing, RowCount, ValueField, ValueTable
 
 
 PABR_VALUES_START = 0x04
@@ -63,25 +64,35 @@ def _value(raw: object) -> object:
     return raw.hex(" ") if isinstance(raw, bytes) else raw
 
 
+def _entries(raws: tuple, fmt: str) -> list[object]:
+    """The values of a counted list; an entry of several values (`B3I`) as a list."""
+    per_entry = len(struct.unpack("<" + fmt, bytes(struct.calcsize("<" + fmt))))
+    if per_entry == 1:
+        return [_value(raw) for raw in raws]
+    return [[_value(raw) for raw in raws[i : i + per_entry]] for i in range(0, len(raws), per_entry)]
+
+
 def _field_value(data: bytes, field: ValueField, offset: int, end: int, table: ValueTable) -> tuple[object, int]:
     """One field's value (a list for a counted list) and the offset after it."""
     if not field.is_counted_list:
         (raw,), stop = _unpack(data, field.fmt, offset, end, table)
         return _value(raw), stop
-    (count,), start = _unpack(data, _COUNT_FORMAT, offset, end, table)
+    (count,), start = _unpack(data, field.count_fmt, offset, end, table)
     if start + count * struct.calcsize("<" + field.fmt) > end:
         raise ValueError(f"{table.file_name} {field.name} count {count:,} runs past 0x{end:X}, where {_end_name(table)}")
     raws, stop = _unpack(data, field.fmt * count, start, end, table)
-    return [_value(raw) for raw in raws], stop
+    return _entries(raws, field.fmt), stop
 
 
-def _read_row(data: bytes, table: ValueTable, offset: int, end: int) -> _Row:
-    values: list[tuple[str, object]] = []
+def _read_row(data: bytes, table: ValueTable, offset: int, end: int, strings: list[str]) -> _Row:
+    values: dict[str, object] = {}
     stop = offset
     for field in table.fields:
         value, stop = _field_value(data, field, stop, end, table)
-        values.append((field.name, value))
-    return _Row(dict(values), offset, stop)
+        values[field.name] = value
+        if field.text is not None and isinstance(value, int):
+            values[field.text.field] = string_at(strings, value)
+    return _Row(values, offset, stop)
 
 
 def _first_row_and_count(data: bytes, table: ValueTable, start: int, end: int) -> tuple[int, int]:
@@ -104,9 +115,10 @@ def _read_rows(data: bytes, table: ValueTable) -> list[_Row]:
     """Every row of `table`, checked to end exactly where the values stop."""
     start, end = _values_span(data, table)
     offset, count = _first_row_and_count(data, table, start, end)
+    strings = read_string_table(data) if table.has_text else []
     rows: list[_Row] = []
     for _ in range(count):
-        row = _read_row(data, table, offset, end)
+        row = _read_row(data, table, offset, end, strings)
         rows.append(row)
         offset = row.stop
     if offset != end:

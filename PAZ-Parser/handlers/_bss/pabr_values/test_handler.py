@@ -29,7 +29,8 @@ from _dbss.pet.parser import parse_pet_records
 from .handler import VALUE_BYTES_FIELD, PabrValuesBssHandler
 from .names import ELEMENT_TYPE_NAMES, aura_name, utc_time
 from .parser import PABR_VALUES_START, parse_value_rows, parse_value_table
-from .tables import VALUE_TABLES, Framing, NameLookup, RowCount, ValueField, ValueTable
+from .rosewar_names import ROSE_WAR_SKILL_TYPES, ROSE_WAR_TEAMS, schedule_text, skill_type_text, team_text
+from .tables import VALUE_TABLES, Framing, NameLookup, RowCount, TextRef, ValueField, ValueTable
 
 
 _U32 = struct.Struct("<I")
@@ -56,6 +57,15 @@ _ROYAL_PLUME = 59376
 _FIRST_STEPS_IN = 1 << 16 | 2308
 _GRADUATION_WITH_HONOR = 1 << 16 | 2309
 _EN_LANG = Path(__file__).parent / "lang" / "en.json"
+_ROSE_WAR_MONSTER = "rosewarfiercebattlemonsterstaticstatus.bss"
+_ROSE_WAR_NODE = "rosewarfiercebattlenodestaticstatus.bss"
+_ROSE_WAR_GIMMICK = "rosewargimicfiercebattlebuffstaicstatus.bss"
+_ROSE_WAR_STATIC = "rosewarstaticstatus.bss"
+_ROSE_WAR_SKILL = "rosewarskillstaticstatus.bss"
+_ROSE_WAR_TEAM_NO = "rosewarteamnostaticstatus.bss"
+# Faded Relic, the neutral character of sanctum 1, and Mysterious Statue, of the gimmick sanctums.
+_FADED_RELIC = 21811
+_MYSTERIOUS_STATUE = 21699
 
 
 def _values_start(value_table: ValueTable) -> int:
@@ -69,7 +79,11 @@ def _rows_to_table_start(source: CaseInput) -> int:
 
 
 def _lookups(name: str) -> list[NameLookup]:
-    return [field.lookup for field in _TABLES[name].fields if field.lookup is not None]
+    """The name lookups of a table: of its key fields, then of its strings."""
+    fields = _TABLES[name].fields
+    keys = [field.lookup for field in fields if field.lookup is not None]
+    texts = [field.text.lookup for field in fields if field.text is not None and field.text.lookup is not None]
+    return keys + texts
 
 
 def _lookup_fields(name: str) -> list[str]:
@@ -81,6 +95,7 @@ def _required_keys(value_table: ValueTable) -> list[str]:
     keys = [field.name for field in value_table.fields] + _lookup_fields(name)
     keys += [pa_key(lookup.field) for lookup in _lookups(name) if lookup.is_tagged]
     keys += [field.icon.field for field in value_table.fields if field.icon is not None]
+    keys += [field.text.field for field in value_table.fields if field.text is not None]
     if not value_table.has_named_field:
         keys.append(VALUE_BYTES_FIELD)
     return keys
@@ -145,6 +160,49 @@ _TARGETS: dict[str, list[TargetTest]] = {
     _PET_UPGRADE: [
         TargetTest(col="pet_tier", value=_TIER_4, expected={"item_id": _ROYAL_PLUME, "item_name": "Royal Plume"}),
     ],
+    _ROSE_WAR_MONSTER: [
+        TargetTest(
+            col="fierce_battle_key",
+            value=1,
+            expected={"name_kr": "오네트 제1성소", "neutral_character_key": _FADED_RELIC, "neutral_character_name": "Faded Relic"},
+        ),
+    ],
+    _ROSE_WAR_GIMMICK: [
+        TargetTest(col="gimmick_character_key", value=_MYSTERIOUS_STATUE, expected={"gimmick_character_name": "Mysterious Statue"}),
+    ],
+    "rosewarkillnamescoretagstaticstatus.bss": [
+        TargetTest(col="title_key", value="LUA_ROSEWAR_CHARTITLE_RANK_6", expected={"title": "Champion"}),
+        TargetTest(col="title_key", value="LUA_ROSEWAR_CHARTITLE_RANK_3", expected={"title": "Hero"}),
+    ],
+    "rosewarnodemonsterinfostaicstatus.bss": [
+        TargetTest(
+            col="character_key",
+            value=_FADED_RELIC,
+            expected={
+                "image_path": "UI_Artwork/ElfWar_Kama_N1.dds",
+                "tooltip_image_path": "UI_Artwork/ElfWar_Kama_Neutral_Tooltip.dds",
+            },
+        ),
+    ],
+    _ROSE_WAR_SKILL: [
+        # __eRoseWarSkillType_Bombard: King Griffon for Kamasylvia, Fugitive Khalk for O'dyllita.
+        TargetTest(
+            col="skill_type",
+            value=3,
+            expected={"kamasylvia_skill_no": 15282, "odyllita_skill_no": 15286, "kamasylvia_skill_name": "Powerful Attack"},
+        ),
+    ],
+    _ROSE_WAR_STATIC: [
+        TargetTest(
+            col="kamasylvia_boss_character_key",
+            value=21871,
+            expected={"kamasylvia_boss_character_name": "Narchillan", "odyllita_boss_character_name": "Sephir"},
+        ),
+    ],
+    _ROSE_WAR_TEAM_NO: [
+        TargetTest(col="character_key", value=27356, expected={"character_name": "Lemoria Guards", "team_no": 0}),
+        TargetTest(col="character_key", value=27351, expected={"character_name": "Ahib Spearmaiden", "team_no": 1}),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {
@@ -152,6 +210,8 @@ _RANGES: dict[str, list[RangeTest]] = {
     _ELEMENTAL_STAT: [RangeTest(col="element_type", min_val=0, max_val=len(ELEMENT_TYPE_NAMES) - 1)],
     _PET_LEADER_BUFF: [RangeTest(col="leader_buff_rate", min_val=0, max_val=_FULL_RATE)],
     _ELEMENTAL_SERVER_BUFF: [RangeTest(col="earth_blessing_drop_rate", min_val=0, max_val=_FULL_RATE)],
+    _ROSE_WAR_SKILL: [RangeTest(col="skill_type", min_val=1, max_val=len(ROSE_WAR_SKILL_TYPES))],
+    _ROSE_WAR_TEAM_NO: [RangeTest(col="team_no", min_val=0, max_val=len(ROSE_WAR_TEAMS) - 1)],
 }
 
 
@@ -199,11 +259,24 @@ def test_pabr_values(name: str, spec: Any) -> None:
     _result(name).check(spec)
 
 
+def _named_values(value_table: ValueTable) -> list[tuple[str, NameLookup]]:
+    """(record key of the looked-up value, its lookup) of every name lookup."""
+    pairs = [(field.name, field.lookup) for field in value_table.fields if field.lookup is not None]
+    pairs += [
+        (field.text.field, field.text.lookup)
+        for field in value_table.fields
+        if field.text is not None and field.text.lookup is not None
+    ]
+    return pairs
+
+
 @pytest.mark.parametrize("name", [name for name in _TABLES if _lookup_fields(name)])
 def test_every_key_has_a_loc_name(name: str) -> None:
+    """Every key but `0` (no character on a gimmick sanctum) has a name."""
     for record in _result(name).records:
-        for field in _lookup_fields(name):
-            assert record[field], f"{name}: no LOC name for {record}"
+        for value_field, lookup in _named_values(_TABLES[name]):
+            if record[value_field]:
+                assert record[lookup.field], f"{name}: no LOC name for {record}"
 
 
 def test_every_table_has_its_labels() -> None:
@@ -212,6 +285,8 @@ def test_every_table_has_its_labels() -> None:
         assert value_table.count_key in strings["meta"], value_table.file_name
         for field in value_table.fields:
             columns = [field.column, *(lookup.column for lookup in (field.lookup, field.icon) if lookup is not None)]
+            if field.text is not None:
+                columns += [field.text.column, field.text.lookup.column if field.text.lookup is not None else None]
             assert all(column in strings["columns"] for column in columns if column is not None), field.name
 
 
@@ -475,5 +550,115 @@ def test_rows_up_to_the_string_table_take_no_counted_list() -> None:
 
 
 def test_a_counted_list_takes_no_lookup() -> None:
-    with pytest.raises(ValueError, match="no name or icon lookup"):
+    with pytest.raises(ValueError, match="no name, icon or text lookup"):
         ValueField("a", "I", "skillId", NameLookup("name", "skill", str), is_counted_list=True)
+
+
+def test_every_sanctum_link_points_both_ways() -> None:
+    """A sanctum on another's O'dyllita side has that one on its Kamasylvia side, and back."""
+    records = {record["fierce_battle_key"]: record for record in _result(_ROSE_WAR_NODE).records}
+    for key, record in records.items():
+        for other in record["odyllita_side_keys"]:
+            assert key in records[other]["kamasylvia_side_keys"], (key, other)
+        for other in record["kamasylvia_side_keys"]:
+            assert key in records[other]["odyllita_side_keys"], (key, other)
+
+
+def test_every_node_key_is_a_monster_sanctum() -> None:
+    sanctums = {record["fierce_battle_key"] for record in _result(_ROSE_WAR_MONSTER).records}
+    for record in _result(_ROSE_WAR_NODE).records:
+        listed = {record["fierce_battle_key"], *record["kamasylvia_side_keys"], *record["odyllita_side_keys"]}
+        listed |= {*record["unknown_list_3"], *record["unknown_list_4"]}
+        assert listed <= sanctums, record
+
+
+def test_every_gimmick_character_guards_a_sanctum() -> None:
+    neutral = {record["neutral_character_key"] for record in _result(_ROSE_WAR_MONSTER).records}
+    assert {record["gimmick_character_key"] for record in _result(_ROSE_WAR_GIMMICK).records} <= neutral
+
+
+def test_each_team_region_is_a_rose_war_region() -> None:
+    (record,) = _result(_ROSE_WAR_STATIC).records
+    assert {record["kamasylvia_region_key"], record["odyllita_region_key"]} <= set(record["region_keys"])
+
+
+_SCHEDULE_VALUES = 25
+_DAYS_PER_WEEK = 7
+_HOURS_PER_DAY = 24
+_MINUTES_PER_HOUR = 60
+
+
+def test_schedule_entries_hold_days_hours_and_minutes() -> None:
+    (record,) = _result(_ROSE_WAR_STATIC).records
+    assert record["schedules"]
+    for entry in record["schedules"]:
+        assert len(entry) == _SCHEDULE_VALUES
+        times = entry[1:]
+        assert all(0 <= day < _DAYS_PER_WEEK for day in times[0::3])
+        assert all(0 <= hour < _HOURS_PER_DAY for hour in times[1::3])
+        assert all(0 <= minute < _MINUTES_PER_HOUR for minute in times[2::3])
+
+
+def test_rose_war_enum_cells_show_value_and_name() -> None:
+    assert skill_type_text(3) == "3 Bombard"
+    assert skill_type_text(9) == "9"
+    assert team_text(1) == "1 Odyllita"
+    assert team_text(2) == "2"
+
+
+def test_a_schedule_entry_shows_each_day_and_time() -> None:
+    assert schedule_text([1, 0, 15, 0, 5, 23, 10]) == "1: 0 15:00, 5 23:10"
+
+
+_U64_LISTS = ValueTable(
+    "u64.bss",
+    (ValueField("a", "H", "regionKey", is_counted_list=True, count_fmt="Q"), ValueField("key", "H", "skillId")),
+    RowCount.COUNTED,
+    first_fields=("key",),
+)
+_ENTRY_LISTS = ValueTable("entries.bss", (ValueField("a", "BI", "schedules", is_counted_list=True),))
+_TEXT = ValueTable(
+    "text.bss",
+    (ValueField("key", "B", "skillId"), ValueField("name_ref", "I", text=TextRef("name_kr", "sanctum"))),
+    RowCount.COUNTED,
+)
+
+
+def _pabr_with_strings(values: bytes, strings: list[str]) -> bytes:
+    """PABR, the values, a string table of wide strings and the trailer."""
+    table = _U32.pack(len(strings))
+    for text in strings:
+        encoded = text.encode("utf-16-le")
+        table += b"\x01" + _U32.pack(len(encoded)) + encoded
+    table_start = PABR_VALUES_START + len(values)
+    return b"PABR" + values + table + _U32.pack(table_start) + _U32.pack(0)
+
+
+def test_a_u64_count_opens_a_list() -> None:
+    data = _pabr(_U32.pack(1) + struct.pack("<QHHH", 2, 3, 4, 9))
+    assert parse_value_table(data, _U64_LISTS) == [{"a": [3, 4], "key": 9}]
+
+
+def test_an_entry_of_several_values_reads_as_a_list() -> None:
+    data = _pabr(_U32.pack(2) + struct.pack("<BIBI", 1, 50, 0, 7))
+    assert parse_value_table(data, _ENTRY_LISTS) == [{"a": [[1, 50], [0, 7]]}]
+
+
+def test_a_string_index_stores_its_string() -> None:
+    data = _pabr_with_strings(_U32.pack(2) + struct.pack("<BIBI", 1, 1, 2, 0), ["a", "b"])
+    expected = [{"key": 1, "name_ref": 1, "name_kr": "b"}, {"key": 2, "name_ref": 0, "name_kr": "a"}]
+    assert parse_value_table(data, _TEXT) == expected
+
+
+def test_first_fields_lead_the_columns() -> None:
+    assert [field.name for field in _U64_LISTS.shown_fields] == ["key", "a"]
+
+
+def test_a_bare_file_takes_no_string_index() -> None:
+    with pytest.raises(ValueError, match="no string table"):
+        ValueTable("bad.bss", (ValueField("a", "I", text=TextRef("a_kr")),), framing=Framing.BARE)
+
+
+def test_first_fields_must_be_fields() -> None:
+    with pytest.raises(ValueError, match="no field b"):
+        ValueTable("bad.bss", (ValueField("a", "I", "productId"),), first_fields=("b",))

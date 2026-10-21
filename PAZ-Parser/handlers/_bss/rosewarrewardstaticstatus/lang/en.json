@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "count": "Count",
+    "result": "Result",
+    "guild": "Guild"
+  },
+  "results": {
+    "win": "Victory",
+    "lose": "Defeat",
+    "draw": "Liberation"
+  },
+  "meta": {
+    "count": "{count} reward items"
+  }
+}

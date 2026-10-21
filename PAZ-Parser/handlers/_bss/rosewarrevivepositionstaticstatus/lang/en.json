@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "respawnPositionType": "Revive Point Type",
+    "sanctumId": "Sanctum ID",
+    "positions": "Positions"
+  },
+  "meta": {
+    "count": "{count} revive points"
+  }
+}

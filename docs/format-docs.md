@@ -177,12 +177,25 @@ site into `_site/` for a local preview. The generator is
 | File                | Content                                                                 |
 | ------------------- | ----------------------------------------------------------------------- |
 | `index.html`        | Every doc with its description, known share, open questions and in-game checks, searchable and sortable; grouped as the app's tree view: the LOC docs, the `.bss` / `.dbss` docs, then Others (the doc-page sidebar too) |
-| `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows its layouts as tabs, each structure with a byte map and its field table |
+| `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows the layout picked on its Versions timeline, each structure with a byte map and its field table |
 | `formats.js`        | The doc list both page kinds read                                       |
 | `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`, and the app's `favicon.ico` from `PAZ-Parser/ui/` |
 
-A doc page's Versions card shows each layout's clients and a known/unknown
-bar from its Versions tables, and the layout tabs name the clients. The
+A doc page's Versions card opens with the layout timeline: one axis for
+every doc, from the newest client any doc's Clients table names (live, on
+the left) to the oldest (on the right). Each run of clients with the same
+result is a band: a layout, `No documented layout` (a dotted orange bar)
+or `No file` (a dotted gray bar); only a layout band is clickable, the
+other two name their clients in a tooltip. A newer band reaches the newest client of the
+older one, the oldest band the right end; ticks mark live, the oldest
+client and each change. A layout with no client yet is a dashed band
+between the layouts numbered around it. A line under the timeline lists every client the doc check
+read for the doc. Under it each layout has a known/unknown bar. Clicking a
+band shows that layout in the Layout card, highlights its bar and names it
+in the card's pill; a doc without Versions rows gets tabs instead. Type
+cells, and code spans in the text that are a number or text type, are
+colored by token (number and text types, structures, counts, field
+references, literals, keywords) from the Type column grammar. The
 known share in the index and the sidebar counts the newest layout's bytes in
 the game files of the client Versions names, every record included. A doc
 without Versions counts the fixed-size fields of its newest layout, each

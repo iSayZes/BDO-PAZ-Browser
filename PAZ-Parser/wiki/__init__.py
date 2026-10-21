@@ -8,11 +8,13 @@ from __future__ import annotations
 
 import posixpath
 import shutil
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
 from format_docs import TEMPLATE_PREFIX
 from format_docs.doc_index import index_rows
+from format_docs.versions import read_clients, read_rows
 
 from .doc_page import doc_page
 from .doc_source import read_doc
@@ -54,10 +56,11 @@ def render_site(docs_dir: Path) -> RenderedSite:
     readme = docs_dir.parent / README
     totals = game_totals(readme.read_text(encoding="utf-8")) if readme.exists() else {}
     links = _links({doc.path.name: doc.page for doc in docs})
+    axis = _timeline_axis(doc.text for doc in docs)
     files = {
         FORMATS_SCRIPT: formats_script(entries, documented_counts(rows), totals),
         INDEX_PAGE: index_page(),
-        **{doc.page: doc_page(doc, links) for doc in docs},
+        **{doc.page: doc_page(doc, links, axis) for doc in docs},
     }
     return RenderedSite(files, len(docs), sum(1 for doc in docs if doc.is_converted))
 
@@ -71,6 +74,15 @@ def build_site(docs_dir: Path, out_dir: Path) -> BuildResult:
     for name, text in site.files.items():
         (out_dir / name).write_text(text, encoding="utf-8")
     return BuildResult(out_dir, site.doc_pages, site.converted)
+
+
+def _timeline_axis(texts: Iterable[str]) -> tuple[int, ...]:
+    """Every client any doc's Versions names, oldest first: the one axis all timelines share."""
+    clients: set[int] = set()
+    for text in texts:
+        clients.update(check.client for check in read_clients(text))
+        clients.update(client for row in read_rows(text) for client in (row.first, row.checked))
+    return tuple(sorted(clients))
 
 
 def _links(pages: dict[str, str]):

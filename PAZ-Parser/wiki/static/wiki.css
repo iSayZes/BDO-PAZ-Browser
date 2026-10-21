@@ -331,11 +331,6 @@ h1 {
 .field-name { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
 
 /* ── Versions ── */
-#sizesTable tbody tr { cursor: pointer; }
-#sizesTable tbody tr.selected-row td { background: var(--color-accent-soft); color: var(--color-text-strong); }
-#sizesTable tbody tr.selected-row { outline: 1px solid color-mix(in srgb, var(--color-accent) 60%, transparent); outline-offset: -1px; }
-#sizesTable tbody tr:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
-#sizesTable .row-pill { margin-left: var(--space-2); }
 .ver {
   display: flex;
   flex-direction: column;
@@ -345,13 +340,86 @@ h1 {
   border: 1px solid var(--color-line);
   border-radius: var(--radius-control);
 }
-.ver.current { border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+/* The layout on show: a 2px accent edge, the outer pixel a ring so the box does not shift. */
+.ver.sel {
+  border-color: color-mix(in srgb, var(--color-accent) 75%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 75%, transparent);
+}
 .ver-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .ver-name { color: var(--color-text-strong); font-weight: 600; }
 .ver-clients { color: var(--color-text-3); font-family: var(--font-mono); font-size: 11px; }
 .cov-legend { display: flex; flex-wrap: wrap; gap: 4px var(--space-3); color: var(--color-text-2); font-size: 12px; }
 .cov-legend span { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; }
 .cov-legend b { color: var(--color-text); font-weight: 500; }
+
+/* ── Layout timeline (timeline_html.py): live on the left, the oldest client on the right ── */
+.tl { display: grid; gap: 6px; }
+.tl-track { position: relative; height: 82px; user-select: none; }
+.tl-base { position: absolute; left: 0; right: 0; top: 30px; height: 10px; border-radius: var(--radius-pill); background: var(--color-raised); }
+/* A band is a button over its label and its bar; the bar is the ::after. */
+.tl-band { position: absolute; top: 0; height: 44px; padding: 0; border: 0; background: transparent; font: inherit; cursor: pointer; }
+.tl-band::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-line-hover);
+  transition: background 0.15s;
+}
+.tl-band:hover::after { background: color-mix(in srgb, var(--color-line-hover) 60%, var(--color-text-2)); }
+.tl-band.sel::after { background: var(--color-accent); }
+.tl-band.undated::after { background: transparent; border: 1px dashed var(--color-text-3); }
+.tl-band.sel.undated::after { background: var(--color-accent-soft); border-color: var(--color-accent); }
+/* No file and No documented layout only inform: plain bars, not buttons, their clients in the tooltip. */
+.tl-band.absent, .tl-band.nolayout { cursor: default; }
+.tl-band.absent::after, .tl-band.absent:hover::after { background: transparent; border: 1px dotted var(--color-line-hover); }
+.tl-band.absent .tl-band-label, .tl-band.absent:hover .tl-band-label { color: var(--color-disabled); }
+.tl-band.nolayout::after, .tl-band.nolayout:hover::after { background: transparent; border: 1px dotted var(--color-warning); }
+.tl-band.nolayout .tl-band-label, .tl-band.nolayout:hover .tl-band-label { color: color-mix(in srgb, var(--color-warning) 80%, var(--color-text-3)); }
+.tl-band:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; border-radius: var(--radius-inner); }
+.tl-band-label { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); font-size: 11px; color: var(--color-text-3); white-space: nowrap; }
+.tl-band:hover .tl-band-label { color: var(--color-text); }
+.tl-band.sel .tl-band-label { color: var(--color-accent); font-weight: 500; }
+.tl-band-label.thin { visibility: hidden; }
+.tl-band-label.to-start { left: 0; transform: none; }
+.tl-band-label.to-end { left: auto; right: 0; transform: none; }
+.tl-tick {
+  position: absolute;
+  top: 44px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--color-text-3);
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;
+}
+.tl-tick::before { content: ""; display: block; width: 1px; height: 5px; margin: 0 auto 1px; background: var(--color-line-hover); }
+/* Live and the oldest client sit on the track's ends, so their labels align inward. */
+.tl-tick.start { transform: none; text-align: left; }
+.tl-tick.start::before { margin-left: 0; }
+.tl-tick.end { transform: translateX(-100%); text-align: right; }
+.tl-tick.end::before { margin-right: 0; }
+.tl-tick small { display: block; font-size: 10px; line-height: 1.2; color: var(--color-disabled); }
+.tl-tick.unchecked { color: var(--color-disabled); }
+.tl-tick.thin, .tl-tick.thin small { color: transparent; }
+.tl-read, .tl-checked { margin: 0; font-size: 12px; color: var(--color-text-2); }
+.tl-read b { color: var(--color-text); font-weight: 500; }
+.tl-checked { color: var(--color-text-3); }
+
+/* ── Type tokens (type_html.py), in VS Code Dark+ colors ── */
+.tk-num { color: #569cd6; }
+.tk-text, .tk-str { color: #ce9178; }
+.tk-struct { color: #4ec9b0; }
+.tk-lit { color: #b5cea8; }
+.tk-field { color: #9cdcfe; }
+.tk-kw { color: #c586c0; }
+.tk-op { color: #d4d4d4; }
+.tk-punct { color: #808080; }
 
 /* ── Layout switcher (the app's .segmented) ── */
 .segmented {
@@ -395,15 +463,6 @@ h1 {
 .struct-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-3); }
 .struct-head h3 { margin: 0; color: var(--color-text-strong); font-size: 14px; font-weight: 600; }
 .struct-size { color: var(--color-text-3); font-family: var(--font-mono); font-size: 12px; font-weight: 400; }
-.badge {
-  padding: 0 8px;
-  border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 500;
-  border: 1px solid var(--color-line-strong);
-  color: var(--color-text-2);
-}
-.badge.changed { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent); color: var(--color-accent); background: var(--color-accent-soft); }
 .struct-cov { margin-left: auto; display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; color: var(--color-text-2); font-size: 12px; font-variant-numeric: tabular-nums; }
 .struct-cov span { display: inline-flex; align-items: center; gap: 6px; }
 .struct-desc { margin: 0; max-width: 110ch; color: var(--color-text-soft); }
@@ -663,7 +722,6 @@ a.fmt-name { color: var(--color-data); }
 
 /* ── Versions card: one summary per layout above the sizes table ── */
 .ver-list { display: flex; flex-direction: column; gap: var(--space-3); }
-.row-pill { margin-left: var(--space-2); }
 
 /* ── Format groups: LOC, the .bss / .dbss tables, Others ── */
 .group-row td, .side-group {

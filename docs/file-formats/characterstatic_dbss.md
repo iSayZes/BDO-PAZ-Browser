@@ -726,8 +726,8 @@ Workers store their worker grade here, Naive `0` to Artisan `4`, so the enum nam
 `character_group` is the sheet's `CharacterGroup` and the 2016 client's
 `_groupKey` (`gc::KeyType<short,-1>`). It groups monsters by content: `157`
 Infinity Tower monsters (199 rows), `96` Savage Rift (89), `95` world and
-raid bosses (`29929` Garmoth, `28732` Vell), `84` sea monsters, `121` node
-bosses (client 3464). It is non-zero on 2,450 rows on client 3474. Earlier
+raid bosses (`29929` Garmoth, `28732` Vell), `84` sea monsters, `121` Dark
+Rift bosses (client 3464; Korean labels ending in `_어둠의틈`). It is non-zero on 2,450 rows on client 3474. Earlier
 versions of this doc called it `unknown_p3` and read the third-party "tribe
 type" note onto it; the tribe is [`tribe_type`](#tribe-type).
 
@@ -939,6 +939,16 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 - `characterstaticoffset.dbss` uses the same `PABR` 10-byte row pattern as `characterspawntypeoffset.dbss`, but its `data_offset` points after an inline u16 ID.
 - The 2016 client fills `gc::CharacterStaticStatus` from the sheet (`CharacterStaticStatus::set`) and has no reader for this file, so its member order does not give the byte order here. The record is a packed serialization, not the 5,944-byte struct.
 - Earlier versions of this doc read `p+5` as a u32 `npc_kind` with flag bits above the kind; the "flags" are `grade` and the low half of `tendency_on_dead`. Reading `p+1` as a u32 `character_id` (as bdo-data-extractor does) fails where `character_group` is non-zero.
+- Soul collectors (Marni's Stones, `ContentsEventType` `59`) count kills by
+  `character_group` too. The Where Used panel
+  (`panel_whereuseitemdirection.luac`) calls the stone's
+  `_contentsEventParam1` its `monsterGroupKey`; that is
+  `contents_event_param1` of [`itemenchant.dbss`](itemenchant_dbss.md#soul-collectors).
+  On client 3474 the 105 stones store 38 values from `60` to `186`, each a
+  `character_group` whose members are the monsters the stone names (`70`
+  Bashim, `107` Protty Cave, `185` the Everfrost animals of Rumbling Marni's
+  Stone (Square)). None is a [`monstergroup.dbss`](monstergroup_dbss.md) key
+  (`1` to `36`).
 - Earlier names: `unknown_00` is the eight flags at `+0x00`, `tag` is `unknown_08`, `unknown_p` is `is_developing_contents`, `unknown_p3` is `character_group`, `unknown_p15` and `unknown_p167` are Character Fields `+0x0F` to `+0x11E` and the strings, `unknown_t23` is `repair_resources`, `unknown_t7` is `unknown_contents_group_hashes_11`, `unknown_tail_f32` is `reset_distance` and `unknown_t1` is `unknown_contents_group_hashes_17`.
 
 ## Open Questions

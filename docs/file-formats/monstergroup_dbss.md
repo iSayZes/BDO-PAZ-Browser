@@ -207,6 +207,10 @@ Serendia, region 213 in Mediah.
   `character_group` value. The two key sets overlap without matching: Star's
   End is group 36 here and character group 116, and character group 36 is
   the Calpheon Shrine.
+- The soul collectors' `monsterGroupKey` (`panel_whereuseitemdirection.luac`)
+  is not a key of this file either: it is a `character_group`, see
+  [`itemenchant.dbss`](itemenchant_dbss.md#soul-collectors). Bashim is
+  group 11 here and character group 70 there.
 
 ## Open Questions
 

@@ -111,6 +111,11 @@ class IndexKind(Enum):
     # Name of each fieldinfo.bss field (`월드`, `A1_001`) by field number; read
     # through _bss/fieldinfo/names.py.
     FIELD_NAME = "field_name"
+    # dropuihuntinggroundinfo.bss keys of the hunting grounds whose monster list
+    # holds a character, ascending; read through _common/hunting_ground.py.
+    CHARACTER_HUNTING_GROUNDS = "character_hunting_grounds"
+    # Korean dropuihuntinggroundinfo.bss names, the fallback when LOC type 116 has none.
+    HUNTING_GROUND_NAME_KR = "hunting_ground_name_kr"
 
 
 # Dependency name each read reports to `data_deps`, built once per kind.

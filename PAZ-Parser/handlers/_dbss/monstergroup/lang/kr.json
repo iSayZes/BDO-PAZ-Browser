@@ -7,7 +7,8 @@
   "columns": {
     "groupKey": "그룹 키",
     "memberCount": "몬스터 수",
-    "monsters": "몬스터"
+    "monsters": "몬스터",
+    "huntingGrounds": "사냥터"
   },
   "meta": {
     "count": "몬스터 그룹 {count}개 · 몬스터 {members}마리"

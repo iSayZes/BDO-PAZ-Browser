@@ -6,8 +6,9 @@ Monster groups: per group key a list of monster character keys, each with a
 `percent` on the 1,000,000 = 100% scale. The groups are hunting zones: on
 client 3474, 29 of the 35 groups with members have every member in one
 [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md) hunting ground
-(see Notes). `monstergroupoffset.dbss` is required to address the
-variable-length records.
+(see Notes). The file stores no hunting ground itself; the Hunting Grounds
+column shows the zones that list a member (see Hunting Grounds Column).
+`monstergroupoffset.dbss` is required to address the variable-length records.
 
 ## Versions
 
@@ -32,7 +33,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | File                      | Required | Role                                                      |
 | ------------------------- | -------- | --------------------------------------------------------- |
 | `monstergroupoffset.dbss` | Required | Bare u16-keyed index: group key -> record offset and size |
-| `languagedata_en.loc`     | Optional | Monster names, LOC type 6 at `str_id1` = `character_key`  |
+| `languagedata_en.loc`     | Optional | Monster names, LOC type 6 at `str_id1` = `character_key`; hunting ground names, LOC type 116 |
+| [`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md) | Optional | The hunting grounds that list each member, through the `CHARACTER_HUNTING_GROUNDS` and `HUNTING_GROUND_NAME_KR` lookup indexes |
 
 All multi-byte values are little-endian.
 
@@ -104,6 +106,24 @@ client 3474). A group of five stores `200,000`, `250,000`, `333,334`,
 chance, and moving on when it is not picked, gives every member the same
 chance of `1 / member_count`. Read as cumulative chances, the values would
 have to rise by equal steps (`200,000`, `400,000` ...); they do not.
+
+## Hunting Grounds Column
+
+The Hunting Grounds column lists every
+[`dropuihuntinggroundinfo.bss`](dropuihuntinggroundinfo_bss.md) hunting
+ground whose `monster_ids` hold at least one member of the group, in
+ascending hunting ground key order. It picks no best match and shows no
+member counts: a group whose members appear in two zones shows both. Each
+zone shows its name as stored, LOC type 116 (`Lv. 51 Abandoned Iron Mine`,
+the level is part of the name), else the Korean string table name, else the
+key, and links to its row in the `dropuihuntinggroundinfo.bss` view. The
+cell shows three zones and a hoverable `... (+N)`; `hunting_grounds` keeps
+every name for search and CSV export and `hunting_ground_keys` the keys. A
+group whose members appear in no zone shows `-`.
+
+The handler reads the zones from the `CHARACTER_HUNTING_GROUNDS` lookup index
+(character key -> hunting ground keys, see `docs/handler.md`), so the table
+opens no companion for them.
 
 ## Field Names
 
@@ -183,7 +203,10 @@ Serendia, region 213 in Mediah.
   member in one hunting ground (3 of 4). Groups 1 (Altar Imp and four
   more), 34 (Damaged Pirash and two more), 35 (Pirash and three more) and 36
   (Apostle of Corruption and five more) share no member with any hunting
-  ground.
+  ground. Group 6 is the one group with members in two zones: all 6 in
+  `Lv. 53 Canyon of Corruption` and 5 of them in `Lv. 53 Elric Shrine`, so
+  its Hunting Grounds cell names both. The cell of groups 1, 18, 34, 35 and
+  36 is empty.
 - `<Violent>` monsters: LOC type 6 gives 111 characters the title prefix
   `<Violent>` (`str_id4` = 1, client 3474), each a separate character key
   with the name of a regular monster. Every member of groups 13, 14, 16,

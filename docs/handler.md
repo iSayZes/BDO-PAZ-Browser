@@ -1015,7 +1015,9 @@ Used by box links each character to its `characterstatic.dbss` row, the `.cl`
 view each skill number to its first `skill.dbss` row, `characterfunction.dbss`
 each shop group to its `itemmaingroup.bss` row, `itemmaingroup.bss` each
 subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
-`pet.dbss` row, and `pcroommaid.bss` each maid to its `maid.dbss` row.
+`pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row, and
+`monstergroup.dbss` each hunting ground to its `dropuihuntinggroundinfo.bss`
+row.
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries
@@ -1044,7 +1046,7 @@ _common/
 ├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
 ├── grouped_rows.py      # parse_grouped_rows(): u32 group count, per group a row count and fixed rows
 ├── html.py
-├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
+├── hunting_ground.py    # drop window hunting grounds: names (LOC type 116, else HUNTING_GROUND_NAME_KR), row links, zones per monster (CHARACTER_HUNTING_GROUNDS)
 ├── offset_table.py      # OffsetTableHandler: the one preview handler for every offset companion
 ├── pabr_offset.py       # offset companions: u8, u16 or u32 keys, with or without PABR magic
 ├── prefixed_string.py   # length-prefixed strings: strict and lenient readers
@@ -1300,6 +1302,8 @@ IDs (`LookupValue`).
 | `INSTANCE_FIELD_NAME` | `instancefield.dbss`                  | internal field name |
 | `INSTANCE_FIELD_TITLE` | `instancefieldmapinfo.bss`, `stringtable.bss` | `GAME` sheet key hash of the title |
 | `FIELD_NAME`     | `fieldinfo.bss`                            | field name     |
+| `CHARACTER_HUNTING_GROUNDS` | `dropuihuntinggroundinfo.bss`   | hunting ground keys (tuple) |
+| `HUNTING_GROUND_NAME_KR` | `dropuihuntinggroundinfo.bss`      | Korean hunting ground name |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1604,6 +1608,23 @@ field its `instance_field_label()` when the instance field with the same key
 has the same name. The Field columns of `instancefield.dbss` and
 `instancedungeoninfo.dbss` use it, next to a Field No cell that
 `field_no_link()` links to the `fieldinfo.bss` row.
+
+`CHARACTER_HUNTING_GROUNDS` maps a monster character key to the
+[dropuihuntinggroundinfo.bss](file-formats/dropuihuntinggroundinfo_bss.md)
+hunting grounds whose `monster_ids` list it, ascending, and
+`HUNTING_GROUND_NAME_KR` maps a hunting ground key to its Korean name.
+`build_character_hunting_ground_index()` and
+`build_hunting_ground_name_kr_index()` in
+`_bss/dropuihuntinggroundinfo/parser.py` build them. Read both through
+`_common/hunting_ground.py`: `hunting_ground_name(key)` gives the LOC type
+116 name, else the Korean name, as `item_name()` does with `ITEM_NAME_KR`;
+`hunting_ground_text(key)` falls back to the bare key;
+`character_hunting_grounds(character_keys)` joins the zones of several
+characters; `hunting_ground_list_cell(keys, names, max_items)` links each zone
+to its row with a hoverable count of the rest. The
+[monstergroup.dbss](file-formats/monstergroup_dbss.md) Hunting Grounds column
+uses them, and the `worldmapmonster.dbss` Hunting Ground column names its
+zone with `hunting_ground_name()`.
 
 ## Icons
 

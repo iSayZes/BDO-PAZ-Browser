@@ -7,6 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.character import character_name
 from _common.html import Column, e, sort_keys, table, text_list_cell
+from _common.hunting_ground import character_hunting_grounds, hunting_ground_list_cell, hunting_ground_text
 from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import (
     OffsetColumn,
@@ -23,6 +24,7 @@ _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "monstergroupoffset.dbss"
 _EMPTY = "-"
 _LIST_PREVIEW_MONSTERS = 6
+_LIST_PREVIEW_HUNTING_GROUNDS = 3
 
 
 def _monster_text(member: dict) -> str:
@@ -30,6 +32,16 @@ def _monster_text(member: dict) -> str:
     key = member["character_key"]
     name = character_name(key) or str(key)
     return f"{name} ({rate_percent(member['percent'])})"
+
+
+def _hunting_ground_fields(members: list[dict]) -> dict:
+    """The hunting grounds whose monster list holds at least one member, by key and name.
+
+    `monstergroup.dbss` stores no hunting ground; the keys come from the
+    `CHARACTER_HUNTING_GROUNDS` lookup index (`dropuihuntinggroundinfo.bss`).
+    """
+    keys = character_hunting_grounds(member["character_key"] for member in members)
+    return {"hunting_ground_keys": list(keys), "hunting_grounds": [hunting_ground_text(key) for key in keys]}
 
 
 def monster_group_offset_handler() -> OffsetTableHandler:
@@ -50,8 +62,9 @@ class MonsterGroupHandler(PreviewHandler):
         return [
             Column(cols["groupKey"], "num", sort_key="group_key"),
             Column(cols["memberCount"], "num", sort_key="member_count"),
-            # A list column: it would only sort by its string form.
+            # List columns: they would only sort by their string form.
             Column(cols["monsters"]),
+            Column(cols["huntingGrounds"]),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -72,7 +85,11 @@ class MonsterGroupHandler(PreviewHandler):
             raise ValueError(f"{_OFFSET_FILE} companion not found.")
 
         return [
-            {**record, "monsters": [_monster_text(member) for member in record["members"]]}
+            {
+                **record,
+                "monsters": [_monster_text(member) for member in record["members"]],
+                **_hunting_ground_fields(record["members"]),
+            }
             for record in parse_monstergroup_records(data, offset_raw)
         ]
 
@@ -90,6 +107,10 @@ class MonsterGroupHandler(PreviewHandler):
                 e(r["group_key"]),
                 e(r["member_count"]),
                 text_list_cell(r["monsters"], _LIST_PREVIEW_MONSTERS) or _EMPTY,
+                hunting_ground_list_cell(
+                    r["hunting_ground_keys"], r["hunting_grounds"], _LIST_PREVIEW_HUNTING_GROUNDS
+                )
+                or _EMPTY,
             ]
             for r in records[start : start + page_size]
         ]

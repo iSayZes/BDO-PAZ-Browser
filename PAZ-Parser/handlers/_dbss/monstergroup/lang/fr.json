@@ -7,7 +7,8 @@
   "columns": {
     "groupKey": "Clé de groupe",
     "memberCount": "Membres",
-    "monsters": "Monstres"
+    "monsters": "Monstres",
+    "huntingGrounds": "Zone de chasse"
   },
   "meta": {
     "count": "{count} groupes de monstres · {members} membres"

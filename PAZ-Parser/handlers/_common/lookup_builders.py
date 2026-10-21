@@ -22,6 +22,10 @@ from typing import cast
 
 from _common.icon_index import borrow_icons
 from _bss.buffsimply.parser import build_buff_icon_index
+from _bss.dropuihuntinggroundinfo.parser import (
+    build_character_hunting_ground_index,
+    build_hunting_ground_name_kr_index,
+)
 from _bss.exploration.parser import build_map_node_index, build_node_name_kr_index, build_node_parent_index
 from _bss.fieldinfo.parser import build_field_name_index
 from _bss.groupcameradata.parser import build_cutscene_icon_index
@@ -107,6 +111,7 @@ FIELDINFO = f"{_BINARY}/fieldinfo.bss"
 INSTANCEFIELDMAPINFO = f"{_BINARY}/instancefieldmapinfo.bss"
 STRINGTABLE = f"{_BINARY}/stringtable.bss"
 TEXTBIND = f"{_BINARY}/textbind.dbss"
+DROPUIHUNTINGGROUNDINFO = f"{_BINARY}/dropuihuntinggroundinfo.bss"
 WORLDMAP = f"gamecommondata/waypoint_binary/{WORLDMAP_FILE}"
 
 # plantexchangegroup.bss, then its exchanges, then the drop group tables.
@@ -247,6 +252,18 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     ),
     # Field number -> name, for the instancefield.dbss and instancedungeoninfo.dbss Field columns.
     IndexSpec(IndexKind.FIELD_NAME, (FIELDINFO,), build_field_name_index),
+    # Monster -> the drop window hunting grounds that list it, for the monstergroup.dbss
+    # Hunting Grounds column; the names fall back to Korean like the other *_NAME_KR kinds.
+    IndexSpec(
+        IndexKind.CHARACTER_HUNTING_GROUNDS,
+        (DROPUIHUNTINGGROUNDINFO,),
+        build_character_hunting_ground_index,
+    ),
+    IndexSpec(
+        IndexKind.HUNTING_GROUND_NAME_KR,
+        (DROPUIHUNTINGGROUNDINFO,),
+        build_hunting_ground_name_kr_index,
+    ),
 )
 
 

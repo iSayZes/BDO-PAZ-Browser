@@ -50,6 +50,11 @@ _REQUIRED_LEVEL = 0x61
 # tooltip shows it when `isMaxLevelRestricted()`. 0x7FFFFFFF when there is none.
 _MAX_LEVEL = 0x65
 _NO_MAX_LEVEL = 0x7FFF_FFFF
+# What using the item does, a `CppEnums.ContentsEventType` (u16,
+# `contents_event.py`), then its two i64 parameters.
+_CONTENTS_EVENT_TYPE = 0x86
+_CONTENTS_EVENT_PARAMS = 0x88
+_CONTENTS_EVENT_PARAMS_STRUCT = struct.Struct("<qq")
 # 0 when the item can never be dyed. 1 allows it, but only an item whose
 # model has dye parts can be dyed, and this file does not hold those.
 _DYEABLE = 0xA8
@@ -174,6 +179,8 @@ def _header_fields(data: bytes, start: int) -> dict:
         "class_mask": u64(data, start + _CLASS_MASK),
         "servant_kinds": u32(data, start + _SERVANT_KINDS),
         "required_level": u32(data, late + _REQUIRED_LEVEL),
+        "contents_event_type": u16(data, late + _CONTENTS_EVENT_TYPE),
+        **_contents_event_params(data, late),
         "dyeable": bool(data[late + _DYEABLE]),
         "character_id": u16(data, late + _CHARACTER_ID),
         # None sorts last and exports empty.
@@ -184,6 +191,12 @@ def _header_fields(data: bytes, start: int) -> dict:
         "market_sub_category": data[late + _MARKET_SUB_CATEGORY],
         "skill_keys": list(_skill_keys(data, late)),
     }
+
+
+def _contents_event_params(data: bytes, late: int) -> dict:
+    """`contents_event_param1` and `param2`; `late` is from `_late_fields_at`."""
+    param1, param2 = _CONTENTS_EVENT_PARAMS_STRUCT.unpack_from(data, late + _CONTENTS_EVENT_PARAMS)
+    return {"contents_event_param1": param1, "contents_event_param2": param2}
 
 
 def _messages_end(data: bytes, icon_end: int, end: int) -> int:

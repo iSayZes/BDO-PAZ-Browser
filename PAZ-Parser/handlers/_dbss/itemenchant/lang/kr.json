@@ -22,6 +22,9 @@
     "dyeable": "염색",
     "objectId": "배치물 ID",
     "object": "배치물",
+    "contentsEvent": "사용 이벤트",
+    "eventParam1": "이벤트 인자 1",
+    "eventParam2": "이벤트 인자 2",
     "buffs": "버프",
     "lightstoneSets": "광명석 조합"
   },

@@ -746,6 +746,12 @@ names the groups: membership is this field alone, and
 other `#` sheets of that workbook it is not in the compiled
 `DataSheets.bexcel`.
 
+The app groups the characters by this field into the
+`CHARACTER_GROUP_MEMBERS` lookup index (`build_character_group_index`), 258
+groups on client 3474. The `quest.dbss` and `guildquest.dbss` Kill Groups
+columns and the soul collectors' Event Param 1 column of `itemenchant.dbss`
+show a group as its key and the distinct names of its members.
+
 ## Tribe Type
 
 `tribe_type` is the value `getTribeType()` returns in the target bar script

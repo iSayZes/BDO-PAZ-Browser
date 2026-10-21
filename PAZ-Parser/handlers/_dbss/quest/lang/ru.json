@@ -11,6 +11,7 @@
     "completeNpc": "НИП (Завершено)",
     "condition": "Условие",
     "action": "Действие",
+    "killGroups": "Группы для уничтожения",
     "objective": "Цель",
     "rewards": "Награды",
     "selectRewards": "Награды на выбор",

@@ -39,6 +39,7 @@ from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
 from _dbss.characterstatic.parser import (
     build_character_ai_script_index,
+    build_character_group_index,
     build_character_name_kr_index,
     build_knowledge_character_index,
 )
@@ -164,6 +165,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.CHARACTER_NAME_KR,
         (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
         build_character_name_kr_index,
+    ),
+    # character_group -> its characters, for killMonsterGroup and the soul collectors.
+    IndexSpec(
+        IndexKind.CHARACTER_GROUP_MEMBERS,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_group_index,
     ),
     IndexSpec(
         IndexKind.KNOWLEDGE_LEARNING_CHARACTERS,

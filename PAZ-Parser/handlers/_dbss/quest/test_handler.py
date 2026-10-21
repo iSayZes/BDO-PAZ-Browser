@@ -19,8 +19,10 @@ from tests.framework import (
     header_count,
     run_case,
 )
+from tests.character_indexes import character_group_index
 from tests.runner import load_case
 
+from _common.lookup_index import IndexKind
 from _common.quest.reward_entry import (
     REWARD_EXP,
     REWARD_EXP_GRADE,
@@ -90,6 +92,7 @@ CASE = HandlerCase(
     loc_fields=["Title", "Objective"],
     internal_path="gamecommondata/binary/quest.dbss",
     record_mapper=_quest_record,
+    lookup_indexes={IndexKind.CHARACTER_GROUP_MEMBERS: character_group_index},
     tests=[
         SchemaTest(
             required_keys=[
@@ -117,6 +120,7 @@ CASE = HandlerCase(
                 "select_rewards_text",
                 "family_stats",
                 "family_stat_text",
+                "kill_groups",
             ]
         ),
         # Every record, walked in allquestlist.bss order.
@@ -298,6 +302,19 @@ def test_quest_dbss_family_stats_are_gains(quest_result: HandlerResult) -> None:
     for record in quest_result.records:
         for stat in record["family_stats"]:
             assert stat["value"] is None or stat["value"] > 0, (record["packed_quest_id"], stat)
+
+
+def test_quest_dbss_kill_groups_name_their_members(quest_result: HandlerResult) -> None:
+    """Every killMonsterGroup call shows as `group (xcount)` and the names of the group's characters."""
+    records = quest_result.records
+    with_calls = [r for r in records if "killmonstergroup(" in (r["condition_script"] + r["action_script"]).lower()]
+
+    assert with_calls
+    assert sum(1 for r in records if r["kill_groups"]) == len(with_calls)
+    for record in with_calls:
+        calls, texts = record["_kill_groups"], record["kill_groups"]
+        assert calls and len(texts) == len(calls)
+        assert all(text.startswith(f"{group} (x{count:,}): ") for (group, count), text in zip(calls, texts))
 
 
 def test_quest_dbss_lazy_page(

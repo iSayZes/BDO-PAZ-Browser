@@ -5,6 +5,7 @@
     "type": "종류",
     "objective": "목표",
     "condition": "조건 스크립트",
+    "killGroups": "처치 그룹",
     "questLevel": "임무 레벨",
     "description": "설명",
     "icon": "아이콘",

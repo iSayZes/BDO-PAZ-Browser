@@ -913,9 +913,25 @@ group by day (`104`) and one by night (`100`), each with its own five
 character keys. Group `60` is the Abandoned Iron Mine of the Experimental
 Marni's Stone.
 
-The browser does not show the group: the handler does not read
-`contents_event_type` or the parameters, and no client file names the
-character groups.
+No client file names the character groups. The Event Param 1 column
+shows a soul collector's `contents_event_param1` as the group key and the
+distinct names of its characters from the `CHARACTER_GROUP_MEMBERS` lookup
+index (`70: Khala Commanding Officer, ...`, three names and a hoverable
+`... (+N)`), and `contents_event_param1_text` keeps every name for search and
+CSV export. Event Param 2 shows the kill count.
+
+## Contents Event
+
+The Use Event column names `contents_event_type` with the
+`CppEnums.ContentsEventType` member (`59 SoulCollect`), from
+`global_define_cpp_enum.luac` on client 3474 without the `ContentsType_`
+prefix (`_dbss/itemenchant/contents_event.py`); `68` to `70` are spelled
+`ContenteType_` there. The enum ends at `86` (`MusicIncreaseExp`), so higher
+values show as the number. `171`, "does nothing", shows as empty, and so
+does a parameter of `0`. On client 3474, 12 of the 55,651 base items with
+`171` store a non-zero parameter; the columns show it. Event Param 1 and 2
+show the stored numbers for every other event type, whose parameters are not
+decoded.
 
 ## Block Strings
 
@@ -1207,3 +1223,12 @@ offset, so it cannot be named `unknown_<offset>`) looks like an effect or sound 
 other tag families exist, is unconfirmed. Earlier versions called it
 `effect_tag` and showed it as an Effect Tag column; it stays on the record for
 search and CSV but is no longer shown.
+
+### Contents Event Types Past the Enum
+
+Items store `contents_event_type` values above `86`, up to `170` (`114` on 386
+base items and `149` on 218, client 3474), past the end of the Lua
+`CppEnums.ContentsEventType` at `86`. Which events they are, and what
+`contents_event_param1` and `param2` hold for the types other than `59`, is
+not worked out here; the Use Event column shows the bare number and the
+Event Param columns the stored values.

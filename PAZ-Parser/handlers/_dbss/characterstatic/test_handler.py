@@ -8,6 +8,7 @@ import pytest
 from _common.pabr_offset import parse_pabr_offset_rows
 from _dbss.characterstatic.parser import (
     KOREAN_NAME_PLACEHOLDER,
+    build_character_group_index,
     build_character_name_kr_index,
     build_knowledge_character_index,
     korean_name,
@@ -205,6 +206,20 @@ def test_korean_strings_follow_the_model_path(static_result: HandlerResult) -> N
     assert by_id[1]["name_kr"] == "워리어"
     assert by_id[47791]["title_kr"] == "<거점 관리인>"
     assert all(record["name_kr"] and record["label_kr"] for record in records)
+
+
+def test_group_index_holds_every_grouped_character(static_result: HandlerResult) -> None:
+    """IndexKind.CHARACTER_GROUP_MEMBERS is the preview's character groups, grouped by key."""
+    source = static_result.source
+    index = build_character_group_index(source.data, source.file("characterstaticoffset.dbss"))
+
+    expected: dict[int, list[int]] = {}
+    for record in static_result.records:
+        if record["character_group"] is not None:
+            expected.setdefault(record["character_group"], []).append(record["character_id"])
+
+    assert index
+    assert index == {group: tuple(sorted(ids)) for group, ids in expected.items()}
 
 
 def test_korean_name_index_holds_every_korean_name(static_result: HandlerResult) -> None:

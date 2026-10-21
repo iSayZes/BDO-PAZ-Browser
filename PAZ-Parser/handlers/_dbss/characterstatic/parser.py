@@ -216,6 +216,20 @@ def build_character_ai_script_index(data: bytes, offset_data: bytes) -> dict[int
     }
 
 
+def build_character_group_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
+    """Map each non-zero `character_group` to its character IDs, ascending.
+
+    For `IndexKind.CHARACTER_GROUP_MEMBERS`: `killMonsterGroup` quest
+    conditions and soul collector items name a group by this key.
+    """
+    members: dict[int, list[int]] = {}
+    for record in _readable_records(data, offset_data):
+        group = record["character_group"]
+        if group:
+            members.setdefault(group, []).append(record["character_id"])
+    return {group: tuple(sorted(ids)) for group, ids in members.items()}
+
+
 def build_character_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
     """Map character ID to its `korean_name`, for `IndexKind.CHARACTER_NAME_KR`.
 

@@ -5,6 +5,7 @@
     "type": "Typ",
     "objective": "Ziel",
     "condition": "Bedingungsskript",
+    "killGroups": "Zu besiegende Gruppen",
     "questLevel": "Missionsstufe",
     "description": "Beschreibung",
     "icon": "Symbol",

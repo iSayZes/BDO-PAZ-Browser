@@ -11,6 +11,7 @@
     "completeNpc": "NPC (완료)",
     "condition": "조건",
     "action": "행동",
+    "killGroups": "처치 그룹",
     "objective": "목표",
     "rewards": "보상",
     "selectRewards": "선택 보상",

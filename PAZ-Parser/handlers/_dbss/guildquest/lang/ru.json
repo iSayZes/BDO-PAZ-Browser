@@ -5,6 +5,7 @@
     "type": "Тип",
     "objective": "Цель",
     "condition": "Скрипт условия",
+    "killGroups": "Группы для уничтожения",
     "questLevel": "Уровень задания",
     "description": "Описание",
     "icon": "Значок",

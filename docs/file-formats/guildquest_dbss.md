@@ -332,7 +332,9 @@ type has 1,097 missions on client 3474, more than the file holds.
   `killMonsterGroup` calls are `CharacterGroup` values of the
   `Character_Table` sheet. The keys of
   [`monstergroup.dbss`](monstergroup_dbss.md) (`1` to `36`) are a
-  different key set.
+  different key set. The Kill Groups column shows each call as the group
+  key, the kill count and the group's character names, as in
+  [`quest.dbss`](quest_dbss.md#notes) (`_common/quest/kill_monster_group.py`).
 - Client 1784 has 339 rows, client 3474 140; no `quest_no` is in both.
 - The mission list Lua names the guild size of a mission with
   `getGuildQuestGrade()` (`1` Small to `4` Extra Large, `GAME` keys

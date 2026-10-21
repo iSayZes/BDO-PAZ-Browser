@@ -1036,6 +1036,7 @@ _common/
 ├── buff.py              # buff icon paths and LOC type 5 buff text
 ├── character.py         # character names (LOC type 6, else CHARACTER_NAME_KR) and titles
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
+├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
@@ -1054,6 +1055,7 @@ _common/
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
+├── quest/kill_monster_group.py # the killMonsterGroup(group, count) calls of a quest script, with the group's members
 ├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
@@ -1265,6 +1267,7 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
 | `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
 | `CHARACTER_NAME_KR` | `characterstatic.dbss`, `characterstaticoffset.dbss` | Korean name |
+| `CHARACTER_GROUP_MEMBERS` | `characterstatic.dbss`, `characterstaticoffset.dbss` | character IDs (tuple) |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
 | `DIALOG_KEYS`    | `detail_dialogoffset.dbss`                 | character ID   |
 | `SKILL_ICON`     | `skilltype.dbss`, `skilltypeoffset.dbss`   | icon path      |
@@ -1332,6 +1335,18 @@ name: `name_kr`, or `label_kr` where `name_kr` is the `UNKNOWN` placeholder.
 marker. On client 3474 that names 296 characters the English LOC leaves out,
 such as the War of the Roses buildings of `buildingupgrade.dbss` (`12688`
 `[장미 전쟁] 화염탑`).
+
+`CHARACTER_GROUP_MEMBERS` maps each non-zero
+[`character_group`](file-formats/characterstatic_dbss.md#character-group) to
+its character IDs, ascending (258 groups on client 3474). Read it through
+`_common/character_group.py`: `character_group_names(group)` gives the
+distinct member names (`character_name()`, so LOC then Korean),
+`character_group_text()` the full `70: Khala Commanding Officer, ...` text
+for search and export, and `character_group_cell(group, max_items)` the cell
+with a hoverable `... (+N)`. `_common/quest/kill_monster_group.py` reads the
+`killMonsterGroup(group, count)` calls of a quest script with it, for the
+Kill Groups columns of `quest.dbss` and `guildquest.dbss`, and the
+`itemenchant.dbss` Event Param 1 column names the group of a soul collector.
 
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
 option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),

@@ -7,6 +7,7 @@ from bdo_preview import PreviewHandler
 
 from _common.buff import buff_label, buff_list_cell
 from _common.character import character_name
+from _common.character_group import character_group_cell, character_group_text
 from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table
 from _common.item_grade import item_grade_tagged
 from _common.lang import handler_text, load_handler_strings
@@ -17,6 +18,7 @@ from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column
 from _bss.jewelgroupstaticstatus.names import jewel_groups
 from _bss.jewelgroupstaticstatus.parser import FILE_NAME as JEWEL_GROUP_FILE
 from _bss.lightstoneset.item_sets import item_set_ids, set_label_tagged
+from .contents_event import CONTENTS_EVENT_SOUL_COLLECT, NO_CONTENTS_EVENT, contents_event_text
 from .labels import binding_label, classes_label, crystal_group_label, trade_label
 from .parser import (
     parse_itemenchant_records,
@@ -50,6 +52,25 @@ def _item_description_tagged(item_id: int) -> str:
 
 def _item_name(record: dict) -> str:
     return loc_text(_LOC_TYPE_ITEM, record["item_id"]) or record["name_kr"]
+
+
+def _contents_event_fields(record: dict) -> dict:
+    """The contents event name and parameters, None for "no event" and for 0 so they sort last.
+
+    A soul collector's param1 is a characterstatic.dbss character_group:
+    `contents_event_param1_text` names its members for search and export.
+    """
+    event_type = record["contents_event_type"]
+    param1 = record["contents_event_param1"]
+    has_event = event_type != NO_CONTENTS_EVENT
+    is_soul_collector = event_type == CONTENTS_EVENT_SOUL_COLLECT
+    return {
+        "contents_event_type": event_type if has_event else None,
+        "contents_event": contents_event_text(event_type) if has_event else "",
+        "contents_event_param1": param1 or None,
+        "contents_event_param2": record["contents_event_param2"] or None,
+        "contents_event_param1_text": character_group_text(param1) if is_soul_collector else "",
+    }
 
 
 def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, weapon_type: str) -> dict:
@@ -86,6 +107,7 @@ def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, w
         "lightstone_set_ids": list(set_ids),
         **pa_list_fields("lightstone_sets", [set_label_tagged(set_id) for set_id in set_ids]),
         "lightstone_set_count": len(set_ids) or None,
+        **_contents_event_fields(record),
     }
 
 
@@ -107,6 +129,14 @@ def _slot_text(record: dict, slots: dict[int, str]) -> str:
 
 def _optional_cell(value: int | None) -> str:
     return _EMPTY if value is None else e(value)
+
+
+def _contents_event_param1_cell(record: dict) -> str:
+    """param1, or a soul collector's character group with its first member names."""
+    param1 = record["contents_event_param1"]
+    if record["contents_event_type"] == CONTENTS_EVENT_SOUL_COLLECT and param1 is not None:
+        return character_group_cell(param1, _LIST_PREVIEW_ITEMS)
+    return _optional_cell(param1)
 
 
 def _level_cell(record: dict) -> str:
@@ -155,6 +185,10 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["dyeable"], sort_key="dyeable"),
             Column(cols["objectId"], "num", sort_key="character_id"),
             Column(cols["object"], sort_key="character_name"),
+            # Sorts by the number; the cell adds the CppEnums.ContentsEventType name.
+            Column(cols["contentsEvent"], sort_key="contents_event_type"),
+            Column(cols["eventParam1"], sort_key="contents_event_param1"),
+            Column(cols["eventParam2"], "num", sort_key="contents_event_param2"),
             Column(cols["buffs"], sort_key="buff_count"),
             Column(cols["lightstoneSets"], sort_key="lightstone_set_count"),
         ]
@@ -239,6 +273,9 @@ class ItemEnchantHandler(PreviewHandler):
                 flag_cell(record["dyeable"]),
                 _optional_cell(record["character_id"]),
                 e(record["character_name"] or _EMPTY),
+                e(record["contents_event"] or _EMPTY),
+                _contents_event_param1_cell(record),
+                _optional_cell(record["contents_event_param2"]),
                 buff_list_cell(record["buff_ids"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 pa_list_cell(record[pa_key("lightstone_sets")], _LIST_PREVIEW_ITEMS),
             ]

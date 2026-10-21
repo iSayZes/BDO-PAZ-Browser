@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "petId": "ID du familier",
+    "pet": "Familier",
+    "section": "Table",
+    "resultPetId": "ID du familier obtenu",
+    "resultPet": "Familier obtenu",
+    "talentId": "ID du don de l'alpha",
+    "talent": "Don de l'alpha"
+  },
+  "sections": {
+    "1": "Résultat de l'entraînement",
+    "2": "Don de l'alpha"
+  },
+  "meta": {
+    "count": "{count} lignes"
+  }
+}

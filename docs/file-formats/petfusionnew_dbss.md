@@ -145,6 +145,6 @@ bar, the row whose `select_rate_1` is `0`.
   string table and the trailer. Client 794 has `en/petfusion.bss`.
 - Both files list the tiers in the same order, `0` to `3`. The offset
   points at the row's own `tier`.
-- The older pet exchange tables `petoldfusion.dbss` and
-  `petoldfusionoffset.dbss` (sheet `Pet_OldFusion_Table`) are separate
-  files with no doc yet.
+- The older pet exchange table [`petoldfusion.dbss`](petoldfusion_dbss.md)
+  (sheet `Pet_OldFusion_Table`) keys its result tiers by fusion key
+  (variant, species and tier) in place of the tier alone.

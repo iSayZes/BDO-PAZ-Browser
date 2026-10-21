@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "lookKey": "Aussehen-Schlüssel",
+    "pets": "Begleiter",
+    "actionIndex": "Aktionsindex",
+    "icon": "Symbol",
+    "icon1": "Symbol 1",
+    "icon2": "Symbol 2",
+    "skill": "Talent",
+    "skinName": "Name des Aussehens"
+  },
+  "offsetColumns": {
+    "lookKey": "Aussehen-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Aussehen · {keys} Aussehen-Schlüssel"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "lookKey": "Look Key",
+    "pets": "Pets",
+    "actionIndex": "Action Index",
+    "icon": "Icon",
+    "icon1": "Icon 1",
+    "icon2": "Icon 2",
+    "skill": "Skill",
+    "skinName": "Appearance Name"
+  },
+  "offsetColumns": {
+    "lookKey": "Look Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} looks · {keys} look keys"
+  }
+}

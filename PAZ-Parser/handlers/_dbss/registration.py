@@ -187,6 +187,8 @@ from .exceptionskillcooltimewidget.handler import (
     exception_skill_cool_time_widget_offset_handler,
 )
 from .petpcroom.handler import PetPcRoomHandler, pet_pc_room_offset_handler
+from .petchangelook.handler import PetChangeLookHandler, pet_change_look_offset_handler
+from .petoldfusion.handler import PetOldFusionHandler, pet_old_fusion_offset_handler
 from .petfusionnew.handler import (
     PetFusionNewAddRateInfoHandler,
     PetFusionNewHandler,
@@ -445,6 +447,10 @@ def register_dbss_handlers() -> None:
     register_handler("petfusionnewoffset.dbss", pet_fusion_new_offset_handler())
     register_handler("petfusionnew.dbss", PetFusionNewHandler())
     register_handler("petfusionnewaddrateinfo.dbss", PetFusionNewAddRateInfoHandler())
+    register_handler("petoldfusionoffset.dbss", pet_old_fusion_offset_handler())
+    register_handler("petoldfusion.dbss", PetOldFusionHandler())
+    register_handler("petchangelookoffset.dbss", pet_change_look_offset_handler())
+    register_handler("petchangelook.dbss", PetChangeLookHandler())
     register_handler("maidoffset.dbss", maid_offset_handler())
     register_handler("maid.dbss", MaidHandler())
     register_handler("auctionoffset.dbss", auction_offset_handler())

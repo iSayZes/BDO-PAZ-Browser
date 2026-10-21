@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "fusionKey": "Clé de fusion",
+    "petId": "ID du familier",
+    "pet": "Familier",
+    "species": "ID d'espèce",
+    "variant": "Variante",
+    "tier": "Tier"
+  },
+  "tier": "Tier {tier}",
+  "meta": {
+    "count": "{count} familiers · {keys} clés de fusion"
+  }
+}

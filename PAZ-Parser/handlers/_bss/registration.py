@@ -83,6 +83,8 @@ from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssH
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .pcroommaid.handler import PcRoomMaidBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
+from .petupgraderesult.handler import PetUpgradeResultBssHandler
+from .possiblefusionpet.handler import PossibleFusionPetBssHandler
 from .plantexchangegroup.handler import PlantExchangeGroupBssHandler
 from .plantworker.handler import PlantWorkerBssHandler
 from .plantworkerpassiveskill.handler import PlantWorkerPassiveSkillBssHandler
@@ -241,6 +243,8 @@ def register_bss_handlers() -> None:
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("pcroommaid.bss", PcRoomMaidBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
+    register_handler("petupgraderesult.bss", PetUpgradeResultBssHandler())
+    register_handler("possiblefusionpet.bss", PossibleFusionPetBssHandler())
     register_handler("plantexchangegroup.bss", PlantExchangeGroupBssHandler())
     register_handler("plantworker.bss", PlantWorkerBssHandler())
     register_handler(

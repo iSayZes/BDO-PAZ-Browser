@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "lookKey": "Clé d'apparence",
+    "pets": "Familiers",
+    "actionIndex": "Index d'action",
+    "icon": "Icône",
+    "icon1": "Icône 1",
+    "icon2": "Icône 2",
+    "skill": "Compétence",
+    "skinName": "Nom de l'apparence"
+  },
+  "offsetColumns": {
+    "lookKey": "Clé d'apparence",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} apparences · {keys} clés d'apparence"
+  }
+}

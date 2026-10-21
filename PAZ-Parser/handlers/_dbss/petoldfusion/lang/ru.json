@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "fusionKey": "Ключ слияния",
+    "species": "ID вида",
+    "variant": "Вариант",
+    "mainTier": "Главный питомец",
+    "pets": "Питомцы",
+    "result": "Итоги {index}",
+    "chance": "Шанс {index}"
+  },
+  "offsetColumns": {
+    "fusionKey": "Ключ слияния",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "tier": "Ранг {tier}",
+  "meta": {
+    "count": "Ключей слияния: {count}"
+  }
+}

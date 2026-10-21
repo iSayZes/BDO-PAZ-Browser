@@ -79,7 +79,7 @@ Counts are records on client 3473.
 | `+0x0F`          | u16      | exp_key                       | Key into [petexp.dbss](petexp_dbss.md): 1 to 4 for pets, 6 to 9 for the Laila grades    |
 | `+0x11`          | u8       | is_indexed                    | `1` on 355 records                                                                      |
 | `+0x12`          | u32      | default_action_index          | Default look within the `change_look_key` group                                         |
-| `+0x16`          | u16      | change_look_key               | Key into `petchangelook.dbss`; `0` on 614 records                                       |
+| `+0x16`          | u16      | change_look_key               | Key into [`petchangelook.dbss`](petchangelook_dbss.md); `0` on 614 records              |
 | `+0x18`          | str8     | icon_path                     | u64 byte length (`icon_path_len`), then the ASCII path with no null terminator          |
 | `icon_path+0x00` | i64      | base_price_for_pet_market     | `30000` in every record                                                                 |
 | `icon_path+0x08` | i64      | min_price_for_pet_market      | `base_price_for_pet_market × minest_percent_for_pet_market / 1,000,000`                  |

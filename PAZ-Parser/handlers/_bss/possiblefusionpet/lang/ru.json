@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "fusionKey": "Ключ слияния",
+    "petId": "ID питомца",
+    "pet": "Питомец",
+    "species": "ID вида",
+    "variant": "Вариант",
+    "tier": "Ранг"
+  },
+  "tier": "Ранг {tier}",
+  "meta": {
+    "count": "Питомцев: {count} · ключей слияния: {keys}"
+  }
+}

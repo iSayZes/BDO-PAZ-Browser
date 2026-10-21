@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "lookKey": "Clave de apariencia",
+    "pets": "Mascotas",
+    "actionIndex": "Índice de acción",
+    "icon": "Icono",
+    "icon1": "Icono 1",
+    "icon2": "Icono 2",
+    "skill": "Habilidad",
+    "skinName": "Nombre de la apariencia"
+  },
+  "offsetColumns": {
+    "lookKey": "Clave de apariencia",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} apariencias · {keys} claves de apariencia"
+  }
+}

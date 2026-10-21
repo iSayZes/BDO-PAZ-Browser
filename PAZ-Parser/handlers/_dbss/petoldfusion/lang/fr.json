@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "fusionKey": "Clé de fusion",
+    "species": "ID d'espèce",
+    "variant": "Variante",
+    "mainTier": "Familier principal",
+    "pets": "Familiers",
+    "result": "Résultat {index}",
+    "chance": "Chance {index}"
+  },
+  "offsetColumns": {
+    "fusionKey": "Clé de fusion",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "tier": "Tier {tier}",
+  "meta": {
+    "count": "{count} clés de fusion"
+  }
+}

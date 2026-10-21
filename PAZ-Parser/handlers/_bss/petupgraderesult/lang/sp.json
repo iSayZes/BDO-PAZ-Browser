@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "petId": "ID de la mascota",
+    "pet": "Mascota",
+    "section": "Tabla",
+    "resultPetId": "ID de la mascota resultante",
+    "resultPet": "Mascota resultante",
+    "talentId": "ID del don del alfa",
+    "talent": "Don del alfa"
+  },
+  "sections": {
+    "1": "Resultado del adiestramiento",
+    "2": "Don del alfa"
+  },
+  "meta": {
+    "count": "{count} filas"
+  }
+}

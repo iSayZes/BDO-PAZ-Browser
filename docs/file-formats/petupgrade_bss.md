@@ -87,8 +87,8 @@ and `_2.luac`, the Tier 5 Pet Training window):
   `ToClient_getPetUpgradeSimulationResult(characterKey)`, and the alpha
   bonus of the new tier from `ToClient_getPetLeaderBuff`
   ([`petleaderbuff.bss`](petleaderbuff_bss.md)). Which pet a pet trains
-  into is not in this file; `petupgraderesult.bss` (6.9 KB, not documented
-  yet) is the first file to check for it.
+  into, and its talent as the alpha, is in
+  [`petupgraderesult.bss`](petupgraderesult_bss.md).
 - The handler for the option tables (`_bss/pabr_values/`) previews this
   file with the shared layout table in `_bss/pabr_values/tables.py`, framed
   `Framing.BARE`, with the item's icon and name next to its ID.

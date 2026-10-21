@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "pointKey": "Clave del punto",
+    "pointSize": "Tamaño",
+    "startX": "Inicio X",
+    "startY": "Inicio Y",
+    "startZ": "Inicio Z",
+    "endX": "Fin X",
+    "endZ": "Fin Z",
+    "fishingGroup": "Grupo de pesca",
+    "characterKey": "ID del personaje",
+    "character": "Personaje",
+    "actionIndex": "Índice de acción"
+  },
+  "offsetColumns": {
+    "pointKey": "Clave del punto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} puntos de pesca"
+  }
+}

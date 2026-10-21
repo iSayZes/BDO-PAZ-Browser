@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "bossKey": "Boss Key",
+    "boss": "Boss",
+    "part": "Part",
+    "difficulty": "Difficulty",
+    "partyRanking": "Party Ranking",
+    "rank": "Rank",
+    "rewards": "Rewards"
+  },
+  "ranks": {
+    "rank": "#{rank}",
+    "base": "Bonus Rewards"
+  },
+  "meta": {
+    "count": "{count} reward rows · {bosses} Black Shrine bosses"
+  }
+}

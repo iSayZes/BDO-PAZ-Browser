@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "auctionNo": "N.º de subasta",
+    "auctionType": "Tipo",
+    "description": "Descripción",
+    "startTickCount": "Tick de inicio",
+    "intervalTickCount": "Tick de intervalo",
+    "houses": "Casas",
+    "items": "Artículos"
+  },
+  "offsetColumns": {
+    "auctionNo": "N.º de subasta",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "goods": {
+    "entry": "{name}: {price}"
+  },
+  "meta": {
+    "count": "{count} subastas"
+  }
+}

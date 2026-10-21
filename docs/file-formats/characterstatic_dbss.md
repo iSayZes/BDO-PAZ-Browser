@@ -26,6 +26,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `characterstatic.dbss`       | 6,130,594 B (67.0%) | 3,015,168 B (33.0%) |
 | 1      | `characterstaticoffset.dbss` | 157,060 B (100.0%)  | 0 B (0.0%)          |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 3             |
+| 3464   | Layout 3             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -726,10 +741,31 @@ Workers store their worker grade here, Naive `0` to Artisan `4`, so the enum nam
 `character_group` is the sheet's `CharacterGroup` and the 2016 client's
 `_groupKey` (`gc::KeyType<short,-1>`). It groups monsters by content: `157`
 Infinity Tower monsters (199 rows), `96` Savage Rift (89), `95` world and
-raid bosses (`29929` Garmoth, `28732` Vell), `84` sea monsters, `121` node
-bosses (client 3464). It is non-zero on 2,450 rows on client 3474. Earlier
+raid bosses (`29929` Garmoth, `28732` Vell), `84` sea monsters, `121` Dark
+Rift bosses (client 3464; Korean labels ending in `_어둠의틈`). It is non-zero on 2,450 rows on client 3474. Earlier
 versions of this doc called it `unknown_p3` and read the third-party "tribe
 type" note onto it; the tribe is [`tribe_type`](#tribe-type).
+
+The quest condition `killMonsterGroup(group, count)` takes this key. The
+2016 `gc::KillMonsterGroup` holds `_characterGroupKey`
+(`gc::KeyType<short,-1>`) and `_count`, and on client 3474 the 878 calls
+in [`quest.dbss`](quest_dbss.md) completion scripts use 167 keys, the 16
+in [`guildquest.dbss`](guildquest_dbss.md) use `84` and `125`, and every
+one of these keys is a `character_group` value. No client file lists or
+names the groups: membership is this field alone, and
+[`monstergroup.dbss`](monstergroup_dbss.md) is a separate key set. The
+`#MonsterGroup` sheet of a private server's `datasheet_titletable.xlsm`
+(client 1784) names 122 groups in two columns, `CharacterGroup` and
+`MonsterGroup`, for example `84` `대양 몬스터` (sea monsters) and `116`
+`별무덤` (Star's End); all 122 keys have characters on client 3474. Like the
+other `#` sheets of that workbook it is not in the compiled
+`DataSheets.bexcel`.
+
+The app groups the characters by this field into the
+`CHARACTER_GROUP_MEMBERS` lookup index (`build_character_group_index`), 258
+groups on client 3474. The `quest.dbss` and `guildquest.dbss` Kill Groups
+columns and the soul collectors' Event Param 1 column of `itemenchant.dbss`
+show a group as its key and the distinct names of its members.
 
 ## Tribe Type
 
@@ -852,16 +888,32 @@ Three UTF-16 strings follow the model path on all 24,551 records (client
 
 | Field      | Notes |
 | ---------- | ----- |
-| name_kr    | Korean name (`DisplayName`), never empty: `29929` `가모스` (Garmoth), `1` `워리어` (Warrior) |
+| name_kr    | Korean name (`DisplayName`), never empty: `29929` `가모스` (Garmoth), `1` `워리어` (Warrior). 335 records on client 3474 store the placeholder `UNKNOWN` instead, among them the War of the Roses buildings and the butler copies of the classes (`39840` to `39880`) |
 | label_kr   | Longer Korean label with region and role (`CharName`): `47791` `에다니아2_아우리스 해안_거점관리인_idx53`, `29929` `Dri_드리간 월드 레이드 보스 소환용`; never empty |
 | title_kr   | Korean title (`CharacterTitle`): `47791` `<거점 관리인>` (Node Manager). Non-empty on 6,242 rows, 6,168 of them in angle brackets |
 
 The LOC type 6 `str_id4=1` title is the translation of `title_kr`
 (`<Node Manager>` for `<거점 관리인>`): 6,178 records have both, 64 have only
 the Korean one and 3 only the LOC one. The parser reads all three: the Name
-column shows `name_kr` when LOC has no name for the character, the Title
+column shows the Korean name when LOC has no name for the character, the Title
 column `title_kr` when LOC has no title (`47481` `<여관 관리인>`, an unnamed
-inn keeper), and the Internal Label column `label_kr` as stored.
+inn keeper), and the Internal Label column `label_kr` as stored. The Korean
+name is `name_kr`, or `label_kr` where `name_kr` is `UNKNOWN` (`12688`
+`[장미 전쟁] 화염탑`, `47481` `카르아쉬 협곡 여관 관리인 idx206`);
+`korean_name()` in the parser picks it.
+
+The same Korean name is the `CHARACTER_NAME_KR` lookup index
+(`build_character_name_kr_index`), the fallback of `character_name()` in
+`_common/character.py`, so every table that names a character key shows it
+where LOC type 6 has no name: 296 of the 24,553 characters on client 3474
+with the English LOC.
+
+`title_kr` is the `CHARACTER_TITLE_KR` lookup index
+(`build_character_title_kr_index`, empty titles left out), the fallback of
+`character_title()`. On client 3474 with the English LOC it titles the 64
+characters above that have only the Korean title, 50 of them `<메이드 통합>`.
+No record stores `UNKNOWN` as its title; `korean_title()` drops it like the
+name placeholder.
 
 ## Source Item
 
@@ -924,6 +976,16 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
 - `characterstaticoffset.dbss` uses the same `PABR` 10-byte row pattern as `characterspawntypeoffset.dbss`, but its `data_offset` points after an inline u16 ID.
 - The 2016 client fills `gc::CharacterStaticStatus` from the sheet (`CharacterStaticStatus::set`) and has no reader for this file, so its member order does not give the byte order here. The record is a packed serialization, not the 5,944-byte struct.
 - Earlier versions of this doc read `p+5` as a u32 `npc_kind` with flag bits above the kind; the "flags" are `grade` and the low half of `tendency_on_dead`. Reading `p+1` as a u32 `character_id` (as bdo-data-extractor does) fails where `character_group` is non-zero.
+- Soul collectors (Marni's Stones, `ContentsEventType` `59`) count kills by
+  `character_group` too. The Where Used panel
+  (`panel_whereuseitemdirection.luac`) calls the stone's
+  `_contentsEventParam1` its `monsterGroupKey`; that is
+  `contents_event_param1` of [`itemenchant.dbss`](itemenchant_dbss.md#soul-collectors).
+  On client 3474 the 105 stones store 38 values from `60` to `186`, each a
+  `character_group` whose members are the monsters the stone names (`70`
+  Bashim, `107` Protty Cave, `185` the Everfrost animals of Rumbling Marni's
+  Stone (Square)). None is a [`monstergroup.dbss`](monstergroup_dbss.md) key
+  (`1` to `36`).
 - Earlier names: `unknown_00` is the eight flags at `+0x00`, `tag` is `unknown_08`, `unknown_p` is `is_developing_contents`, `unknown_p3` is `character_group`, `unknown_p15` and `unknown_p167` are Character Fields `+0x0F` to `+0x11E` and the strings, `unknown_t23` is `repair_resources`, `unknown_t7` is `unknown_contents_group_hashes_11`, `unknown_tail_f32` is `reset_distance` and `unknown_t1` is `unknown_contents_group_hashes_17`.
 
 ## Open Questions

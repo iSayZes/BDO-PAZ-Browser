@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "regionKey": "Region Key",
+    "region": "Region",
+    "maid": "Maid",
+    "worldMap": "World Map",
+    "characterChange": "Change Character",
+    "muster": "Muster",
+    "camp": "Camp",
+    "compass": "Compass",
+    "itemMap": "Item Map",
+    "miniMap": "Minimap"
+  },
+  "offsetColumns": {
+    "regionKey": "Region Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} regions"
+  }
+}

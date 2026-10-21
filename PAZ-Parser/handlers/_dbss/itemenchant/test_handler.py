@@ -8,6 +8,7 @@ import pytest
 
 from _common.item_grade import ITEM_GRADE_COLORS, item_grade_tagged
 from _common.lookup_index import IndexKind
+from tests.character_indexes import character_group_index
 from tests.framework import (
     CaseInput,
     DeclaredCountTest,
@@ -100,6 +101,11 @@ _OQUILLA_SAIL_BALANCE = 607887
 _ANCIENT_SPIRIT_VIPER = 15653
 _ANCIENT_SPIRIT_GROUP = 101
 _JEWEL_GROUP_FILE = "jewelgroupstaticstatus.bss"
+# Marni's Stone (Bashim), a soul collector (ContentsEventType 59) counting
+# the kills of characterstatic.dbss character group 70.
+_MARNIS_STONE_BASHIM = 40351
+_SOUL_COLLECT = 59
+_BASHIM_GROUP = 70
 
 
 def _base_item_count(offsets: bytes) -> int:
@@ -131,6 +137,7 @@ CASE = HandlerCase(
     lookup_indexes={
         IndexKind.SKILL_BUFFS: {_BOON_SKILL_KEY: _BOON_BUFFS},
         IndexKind.LIGHTSTONE_SETS: {_TWISTED_LIGHTSTONE: (_EDANIA_SET,)},
+        IndexKind.CHARACTER_GROUP_MEMBERS: character_group_index,
     },
     tests=[
         SchemaTest(
@@ -180,6 +187,11 @@ CASE = HandlerCase(
                 "lightstone_set_count",
                 "crystal_group",
                 "crystal_group_label",
+                "contents_event_type",
+                "contents_event",
+                "contents_event_param1",
+                "contents_event_param2",
+                "contents_event_param1_text",
             ],
         ),
         DeclaredCountTest(declared=_declared_items),
@@ -367,6 +379,22 @@ CASE = HandlerCase(
         TargetTest(col="item_id", value=_LOGGIA_RING, expected={"slot": "Ring", "life_restrict_type": 15}),
         TargetTest(col="item_id", value=_VENIA_KNOT, expected={"slot": "Knot"}),
         TargetTest(col="item_id", value=_EVERGREEN_ORB, expected={"slot": "Orb"}),
+        # A soul collector names its event and the character group it counts.
+        TargetTest(
+            col="item_id",
+            value=_MARNIS_STONE_BASHIM,
+            expected={
+                "contents_event_type": _SOUL_COLLECT,
+                "contents_event": "59 SoulCollect",
+                "contents_event_param1": _BASHIM_GROUP,
+            },
+        ),
+        # A weapon does nothing on use: no event, None to sort last.
+        TargetTest(
+            col="item_id",
+            value=_WEAPON,
+            expected={"contents_event_type": None, "contents_event": "", "contents_event_param1_text": ""},
+        ),
         # The fields after `unknown_5d` are read past its entries: a sail
         # places no character and casts no skill.
         TargetTest(
@@ -401,6 +429,16 @@ def test_every_item_has_a_name(itemenchant_result: HandlerResult) -> None:
 
     assert all(record["name_kr"] for record in records)
     assert all(record["item_name"] for record in records)
+
+
+def test_soul_collectors_name_their_character_group(itemenchant_result: HandlerResult) -> None:
+    """param1 of every soul collector is a character group with members; param2 is its kill count."""
+    collectors = [r for r in itemenchant_result.records if r["contents_event_type"] == _SOUL_COLLECT]
+
+    assert collectors
+    for record in collectors:
+        assert record["contents_event_param1_text"].startswith(f"{record['contents_event_param1']}: ")
+        assert record["contents_event_param2"] is not None and record["contents_event_param2"] > 0
 
 
 def test_every_block_opens_and_closes_with_its_packed_key(itemenchant_result: HandlerResult) -> None:

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "stack": "Cumul",
+    "fairyFeedKey": "Clé de nourrissage",
+    "enchantLevel": "Niveau d'optimisation"
+  },
+  "meta": {
+    "count": "{count} entrées dans {stack_count} cumuls"
+  }
+}

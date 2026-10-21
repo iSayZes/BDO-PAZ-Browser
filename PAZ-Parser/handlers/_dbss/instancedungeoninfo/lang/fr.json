@@ -1,0 +1,19 @@
+{
+  "offsetColumns": {
+    "key": "Clé",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "columns": {
+    "key": "Clé",
+    "fieldNo": "N° de champ",
+    "field": "Champ",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Direction"
+  },
+  "meta": {
+    "count": "{count} points d'entrée de donjon d'instance"
+  }
+}

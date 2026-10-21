@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carriageKey": "ID del carromato",
+    "distancePerMinute": "Distancia por minuto",
+    "loadage": "Carga",
+    "transportMaxWeight": "Peso máx.",
+    "camasilbAddTransportMaxWeight": "Peso extra del Kamarbor",
+    "baseFee": "Tasa base",
+    "overloadWeight": "Peso de sobrecarga",
+    "feePerWeight": "Tasa por peso",
+    "nonStackTrade": "Mercancías no apilables",
+    "stackTrade": "Mercancías apilables",
+    "expirationPeriodTrade": "Mercancías con caducidad"
+  },
+  "offsetColumns": {
+    "carriageKey": "ID del carromato",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} tipos de carromato"
+  }
+}

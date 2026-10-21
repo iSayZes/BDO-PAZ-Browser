@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "count": "Anzahl",
+    "result": "Ergebnis",
+    "guild": "Gilde"
+  },
+  "results": {
+    "win": "Sieg",
+    "lose": "Niederlage",
+    "draw": "Befreiung"
+  },
+  "meta": {
+    "count": "{count} Belohnungsgegenstände"
+  }
+}

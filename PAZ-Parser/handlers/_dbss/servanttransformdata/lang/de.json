@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "formKey": "Aussehen-ID",
+    "fromCharacterKey": "ID vorher",
+    "fromName": "Vor der Änderung",
+    "toCharacterKey": "ID nachher",
+    "toName": "Nach der Änderung"
+  },
+  "offsetColumns": {
+    "formKey": "Aussehen-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Aussehensänderungen"
+  }
+}

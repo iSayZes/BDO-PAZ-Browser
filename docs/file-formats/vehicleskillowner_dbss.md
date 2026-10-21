@@ -16,17 +16,31 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes  | Records                 | Row bytes |
 | ------ | -------------- | ------- | ------------------------------ | ------ | ----------------------- | --------- |
-| 2      | 3474 and later | 3474    | `vehicleskillowner.dbss`       | 94,316 | 5,620 Skill, 366 Record | 16        |
-| 2      | 3474 and later | 3474    | `vehicleskillowneroffset.dbss` | 3,680  | 366 Offset Row          | 10        |
-| 1      | 1784           | 1784    | `vehicleskillowner.dbss`       | 56,050 | 4,134 Skill, 288 Record | 13        |
-| 1      | 1784           | 1784    | `vehicleskillowneroffset.dbss` | 2,900  | 288 Offset Row          | 10        |
+| 2      | 2519 and later | 3474    | `vehicleskillowner.dbss`       | 94,316 | 5,620 Skill, 366 Record | 16        |
+| 2      | 2519 and later | 3474    | `vehicleskillowneroffset.dbss` | 3,680  | 366 Offset Row          | 10        |
+| 1      | 1485 to 2107   | 2107    | `vehicleskillowner.dbss`       | 57,016 | 4,204 Skill, 295 Record | 13        |
+| 1      | 1485 to 2107   | 2107    | `vehicleskillowneroffset.dbss` | 2,970  | 295 Offset Row          | 10        |
 
 | Layout | File                           | Known            | Unknown          |
 | ------ | ------------------------------ | ---------------- | ---------------- |
 | 2      | `vehicleskillowner.dbss`       | 77,456 B (82.1%) | 16,860 B (17.9%) |
 | 2      | `vehicleskillowneroffset.dbss` | 3,680 B (100.0%) | 0 B (0.0%)       |
-| 1      | `vehicleskillowner.dbss`       | 43,648 B (77.9%) | 12,402 B (22.1%) |
-| 1      | `vehicleskillowneroffset.dbss` | 2,900 B (100.0%) | 0 B (0.0%)       |
+| 1      | `vehicleskillowner.dbss`       | 44,404 B (77.9%) | 12,612 B (22.1%) |
+| 1      | `vehicleskillowneroffset.dbss` | 2,970 B (100.0%) | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

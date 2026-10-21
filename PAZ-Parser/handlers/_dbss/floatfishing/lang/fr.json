@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "groupKey": "Groupe de pêche",
+    "drops": "Butin",
+    "points": "Sites de pêche"
+  },
+  "slots": {
+    "treasure": "Trésor",
+    "rare": "Rare",
+    "large": "Grand",
+    "general": "Général",
+    "junk": "Objets divers"
+  },
+  "offsetColumns": {
+    "groupKey": "Groupe de pêche",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} groupes de pêche"
+  }
+}

@@ -22,6 +22,9 @@
     "dyeable": "Färbbar",
     "objectId": "Objekt-ID",
     "object": "Objekt",
+    "contentsEvent": "Verwendungsereignis",
+    "eventParam1": "Ereignisparameter 1",
+    "eventParam2": "Ereignisparameter 2",
     "buffs": "Buffs",
     "lightstoneSets": "Lichtstein-Kombinationen"
   },

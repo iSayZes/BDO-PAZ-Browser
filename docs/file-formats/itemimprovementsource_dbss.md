@@ -15,17 +15,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | --------- |
-| 2      | 3473 and later | 3474    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
-| 2      | 3473 and later | 3474    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
-| 1      | 1784           | 1784    | `itemimprovementsource.dbss`       | 3,858 | 94 Record     | 41        |
-| 1      | 1784           | 1784    | `itemimprovementsourceoffset.dbss` | 1,132 | 94 Index Row  | 12        |
+| 2      | 2519 and later | 3474    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
+| 2      | 2519 and later | 3474    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
+| 1      | 1784 to 2107   | 2107    | `itemimprovementsource.dbss`       | 4,063 | 99 Record     | 41        |
+| 1      | 1784 to 2107   | 2107    | `itemimprovementsourceoffset.dbss` | 1,192 | 99 Index Row  | 12        |
 
 | Layout | File                               | Known            | Unknown    |
 | ------ | ---------------------------------- | ---------------- | ---------- |
 | 2      | `itemimprovementsource.dbss`       | 4,246 B (100.0%) | 0 B (0.0%) |
 | 2      | `itemimprovementsourceoffset.dbss` | 1,216 B (100.0%) | 0 B (0.0%) |
-| 1      | `itemimprovementsource.dbss`       | 3,858 B (100.0%) | 0 B (0.0%) |
-| 1      | `itemimprovementsourceoffset.dbss` | 1,132 B (100.0%) | 0 B (0.0%) |
+| 1      | `itemimprovementsource.dbss`       | 4,063 B (100.0%) | 0 B (0.0%) |
+| 1      | `itemimprovementsourceoffset.dbss` | 1,192 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 2             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

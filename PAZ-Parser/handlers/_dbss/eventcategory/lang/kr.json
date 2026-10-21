@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "index": "번호",
+    "categoryMain": "대분류",
+    "categoryMiddle": "중분류",
+    "categorySmall": "소분류",
+    "discountStart": "할인 시작",
+    "discountEnd": "할인 종료",
+    "eventType": "이벤트 종류",
+    "maxDiscountPearl": "최대 할인 (펄)",
+    "discountSteps": "할인 단계 (펄: 할인)"
+  },
+  "offsetColumns": {
+    "index": "번호",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "할인 이벤트 {count}개"
+  }
+}

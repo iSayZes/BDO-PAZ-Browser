@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Clé",
+    "name": "Nom",
+    "description": "Description",
+    "targetEye": "Valeur",
+    "targetCount": "Cartes identiques",
+    "straightCount": "Suite",
+    "twoPair": "Double paire",
+    "fullHouse": "Full",
+    "madePoint": "Points fixes",
+    "sumPoint": "Somme des cartes",
+    "iconTexture": "Texture d'icône"
+  },
+  "meta": {
+    "count": "{count} mains"
+  }
+}

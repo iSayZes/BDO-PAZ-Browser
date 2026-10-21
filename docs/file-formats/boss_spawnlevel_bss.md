@@ -18,12 +18,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | Clients        | Checked | File                  | Bytes | Records           | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ----------------- | --------- |
 | 2      | 3473 and later | 3474    | `boss_spawnlevel.bss` | 1,070 | 24 Entry, 6 Group | 21        |
-| 1      | 1784           | 1784    | `boss_spawnlevel.bss` | 618   | 16 Entry, 4 Group | 19        |
+| 1      | 1485 to 3251   | 3251    | `boss_spawnlevel.bss` | 761   | 20 Entry, 5 Group | 19        |
 
 | Layout | File                  | Known         | Unknown       |
 | ------ | --------------------- | ------------- | ------------- |
 | 2      | `boss_spawnlevel.bss` | 926 B (86.5%) | 144 B (13.5%) |
-| 1      | `boss_spawnlevel.bss` | 522 B (84.5%) | 96 B (15.5%)  |
+| 1      | `boss_spawnlevel.bss` | 641 B (84.2%) | 120 B (15.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

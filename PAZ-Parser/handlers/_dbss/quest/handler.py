@@ -14,6 +14,11 @@ from _common.pa_text import pa_cell, pa_fields, strip_pa_tags
 from _common.html import Column, e, icon_cell, sort_keys, table, truncate
 from _common.lang import handler_text, load_handler_strings
 from _common.quest.dialog import dialog_cell, dialog_speaker
+from _common.quest.kill_monster_group import (
+    kill_monster_group_texts,
+    kill_monster_groups,
+    kill_monster_groups_cell,
+)
 from _common.quest.quest import quest_text_tagged
 from _common.quest.reward_text import reward_texts, rewards_cell
 from _bss.allquestlist.parser import parse_allquestlist_records
@@ -30,6 +35,8 @@ _ORDER_FILE = "allquestlist.bss"
 
 
 _TEXT_PREVIEW_CHARS = 140
+# Member names a killMonsterGroup line shows before its hoverable "+N".
+_LIST_PREVIEW_MEMBERS = 3
 
 
 def _truncate(text: str) -> str:
@@ -89,6 +96,8 @@ class QuestDbssHandler(PreviewHandler):
             Column(cols["completeNpc"], sort_key="complete_npc"),
             Column(cols["condition"], sort_key="condition_script"),
             Column(cols["action"], sort_key="action_script"),
+            # A list column: it would only sort by its string form.
+            Column(cols["killGroups"]),
             Column(cols["objective"], sort_key="objective"),
             # List columns: they would only sort by their string form.
             Column(cols["rewards"]),
@@ -122,6 +131,7 @@ class QuestDbssHandler(PreviewHandler):
     def _record_at(self, data: bytes, index: QuestIndex, hashes: KeyHashes, row: int) -> dict:
         parsed = parse_quest_record(data, index, row)
         loc_texts = _quest_loc_texts(parsed["quest_chain_id"], parsed["quest_id"])
+        kill_groups = kill_monster_groups(parsed["condition_script"], parsed["action_script"])
         return {
             **parsed,
             "loc_texts_en": [strip_pa_tags(text).strip() for text in loc_texts],
@@ -132,6 +142,9 @@ class QuestDbssHandler(PreviewHandler):
             # Text forms, so tab search and CSV export see them.
             "base_rewards_text": reward_texts(parsed["base_rewards"]),
             "select_rewards_text": reward_texts(parsed["select_rewards"]),
+            # The killMonsterGroup calls for the cell, their member names for search and export.
+            "_kill_groups": kill_groups,
+            "kill_groups": kill_monster_group_texts(kill_groups),
             "accept_npc": dialog_speaker(parsed["accept_dialog_key"]),
             "complete_npc": dialog_speaker(parsed["complete_dialog_key"]),
             # quest_category is the quest type (__eQuestType); see quest_dbss.md.
@@ -270,6 +283,7 @@ class QuestDbssHandler(PreviewHandler):
                 dialog_cell(record["complete_dialog_key"], record["complete_npc"] or "-"),
                 e(_truncate(record["condition_script"])),
                 e(_truncate(record["action_script"])),
+                kill_monster_groups_cell(record["_kill_groups"], _LIST_PREVIEW_MEMBERS) or "-",
                 pa_cell(record, "objective", _TEXT_PREVIEW_CHARS),
                 rewards_cell(record["base_rewards"]) or "-",
                 rewards_cell(record["select_rewards"]) or "-",

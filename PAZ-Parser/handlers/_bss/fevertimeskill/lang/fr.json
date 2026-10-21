@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "Index",
+    "skillNo": "N° de compétence",
+    "skill": "Compétence",
+    "dropAmount": "Quantité de butin"
+  },
+  "meta": {
+    "count": "{count} compétences de Fièvre d'Agris"
+  }
+}

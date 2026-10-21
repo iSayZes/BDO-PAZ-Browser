@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "fusionKey": "Clave de fusión",
+    "petId": "ID de la mascota",
+    "pet": "Mascota",
+    "species": "ID de especie",
+    "variant": "Variante",
+    "tier": "Grado"
+  },
+  "tier": "Grado {tier}",
+  "meta": {
+    "count": "{count} mascotas · {keys} claves de fusión"
+  }
+}

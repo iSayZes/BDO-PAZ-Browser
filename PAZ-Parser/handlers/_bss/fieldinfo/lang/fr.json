@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "fieldNo": "N° de champ",
+    "name": "Nom",
+    "resource": "Ressource",
+    "type": "Type",
+    "spawn": "Point d'apparition",
+    "sectorX": "Secteur X",
+    "sectorY": "Secteur Y",
+    "sectorZ": "Secteur Z",
+    "players": "Joueurs",
+    "ridable": "Monture autorisée",
+    "rangeSpawn": "Apparitions du monde",
+    "dropRate": "Chances de butin"
+  },
+  "meta": {
+    "count": "{count} champs"
+  }
+}

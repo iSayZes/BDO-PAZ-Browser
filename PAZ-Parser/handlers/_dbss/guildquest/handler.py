@@ -13,6 +13,11 @@ from _common.lang import handler_text, load_handler_strings
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, offset_records, size_column
 from _common.pa_text import pa_cell, pa_fields, pa_html, pa_line_cell
 from _common.pabr_offset import parse_bare_u32_offset_rows
+from _common.quest.kill_monster_group import (
+    kill_monster_group_texts,
+    kill_monster_groups,
+    kill_monster_groups_cell,
+)
 from _common.quest.reward_text import reward_texts, rewards_cell
 from .parser import FILE_NAME, parse_guildquest_records
 from .text import LOC_DESCRIPTION, LOC_OBJECTIVE, LOC_TITLE, guild_quest_tagged, guild_quest_type_name
@@ -20,6 +25,8 @@ from .text import LOC_DESCRIPTION, LOC_OBJECTIVE, LOC_TITLE, guild_quest_tagged,
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
+# Member names a killMonsterGroup line shows before its hoverable "+N".
+_LIST_PREVIEW_MEMBERS = 3
 
 
 def guild_quest_offset_handler() -> OffsetTableHandler:
@@ -46,6 +53,8 @@ class GuildQuestHandler(PreviewHandler):
             Column(cols["type"], sort_key="guild_quest_type_name"),
             Column(cols["objective"], sort_key="objective"),
             Column(cols["condition"], sort_key="complete_condition"),
+            # A list column: it would only sort by its string form.
+            Column(cols["killGroups"]),
             Column(cols["questLevel"], "num", sort_key="quest_level"),
             Column(cols["description"], sort_key="description"),
             Column(cols["icon"], sort_key="icon_path"),
@@ -74,6 +83,7 @@ class GuildQuestHandler(PreviewHandler):
 
     def _record_fields(self, record: dict) -> dict:
         quest_no = record["quest_no"]
+        kill_groups = kill_monster_groups(record["complete_condition"])
         return {
             **record,
             **pa_fields("title", guild_quest_tagged(quest_no, LOC_TITLE, record["title_kr"])),
@@ -83,6 +93,9 @@ class GuildQuestHandler(PreviewHandler):
             "need_item": f"{item_key_text(record['need_item_key'])} x{record['need_item_count']:,}",
             # Text forms, so tab search and CSV export see them.
             "rewards": reward_texts(record["base_rewards"]),
+            # The killMonsterGroup calls for the cell, their member names for search and export.
+            "_kill_groups": kill_groups,
+            "kill_groups": kill_monster_group_texts(kill_groups),
             "contents_groups": contents_groups_text(record["contents_group_hashes"]),
         }
 
@@ -94,6 +107,7 @@ class GuildQuestHandler(PreviewHandler):
             e(r["guild_quest_type_name"]),
             pa_cell(r, "objective"),
             e(r["complete_condition"]) or _EMPTY,
+            kill_monster_groups_cell(r["_kill_groups"], _LIST_PREVIEW_MEMBERS) or _EMPTY,
             e(r["quest_level"]),
             pa_line_cell(r, "description"),
             icon_cell(r["icon_path"]),

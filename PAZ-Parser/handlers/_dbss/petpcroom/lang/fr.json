@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "petId": "ID du familier",
+    "pet": "Familier",
+    "skill1": "Compétence 1",
+    "skill2": "Compétence 2",
+    "skill3": "Compétence 3"
+  },
+  "offsetColumns": {
+    "petId": "ID du familier",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} familiers PC Bang"
+  }
+}

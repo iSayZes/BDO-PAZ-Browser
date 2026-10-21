@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionKey": "ID de posición",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "type": "Tipo"
+  },
+  "offsetColumns": {
+    "positionKey": "ID de posición",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} posiciones para Encontrar ubicación"
+  }
+}

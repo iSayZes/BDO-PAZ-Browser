@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "bossKey": "Clave de jefe",
+    "boss": "Jefe",
+    "part": "Parte",
+    "difficulty": "Dificultad",
+    "partyRanking": "Clasificación de grupo",
+    "rank": "Rango",
+    "rewards": "Recompensas"
+  },
+  "ranks": {
+    "rank": "#{rank}",
+    "base": "No clasificados"
+  },
+  "meta": {
+    "count": "{count} filas de recompensa · {bosses} jefes del Santuario Oscuro"
+  }
+}

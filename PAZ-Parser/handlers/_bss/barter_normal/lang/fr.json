@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "regionKey": "Clé de région",
+    "region": "Région",
+    "npc": "PNJ",
+    "material": "Matériau",
+    "slot": "Emplacement",
+    "selectRate": "Taux de sélection",
+    "subGroup": "Sous-groupe",
+    "category": "Catégorie"
+  },
+  "meta": {
+    "count": "{count} emplacements de troc · {regions} régions"
+  }
+}

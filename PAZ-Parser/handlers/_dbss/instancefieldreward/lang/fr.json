@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "instanceDungeonNo": "Donjon d'instance",
+    "learnSkill": "Compétence apprise",
+    "itemGroups": "Groupes d'objets",
+    "relatedRegions": "Régions"
+  },
+  "offsetColumns": {
+    "instanceDungeonNo": "Donjon d'instance",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} donjons d'instance"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "petId": "Begleiter-ID",
+    "pet": "Begleiter",
+    "section": "Tabelle",
+    "resultPetId": "Ergebnis-Begleiter-ID",
+    "resultPet": "Ergebnis-Begleiter",
+    "talentId": "Alpha-Begabung-ID",
+    "talent": "Alpha-Begabung"
+  },
+  "sections": {
+    "1": "Ausbildungsergebnis",
+    "2": "Alpha-Begabung"
+  },
+  "meta": {
+    "count": "{count} Zeilen"
+  }
+}

@@ -14,13 +14,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes   | Records                                                        | Row bytes              |
 | ------ | -------------- | ------- | ----------------- | ------- | -------------------------------------------------------------- | ---------------------- |
-| 2      | 3473 and later | 3474    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
-| 1      | 1784           | 1784    | `exploration.bss` | 134,555 | 816 Node Head, 5,712 List, 816 Node Record                     | 4 to 196, 6 on average |
+| 2      | 2519 and later | 3474    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
+| 1      | 1485 to 2107   | 2107    | `exploration.bss` | 137,562 | 831 Node Head, 5,817 List, 831 Node Record                     | 4 to 196, 6 on average |
 
 | Layout | File              | Known             | Unknown          |
 | ------ | ----------------- | ----------------- | ---------------- |
 | 2      | `exploration.bss` | 120,984 B (66.6%) | 60,716 B (33.4%) |
-| 1      | `exploration.bss` | 85,595 B (63.6%)  | 48,960 B (36.4%) |
+| 1      | `exploration.bss` | 87,702 B (63.8%)  | 49,860 B (36.2%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 2             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No documented layout |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

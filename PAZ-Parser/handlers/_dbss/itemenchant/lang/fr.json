@@ -22,6 +22,9 @@
     "dyeable": "Colorable",
     "objectId": "ID d'objet placé",
     "object": "Objet placé",
+    "contentsEvent": "Événement d'utilisation",
+    "eventParam1": "Paramètre d'événement 1",
+    "eventParam2": "Paramètre d'événement 2",
     "buffs": "Bonus",
     "lightstoneSets": "Sets de Pierres de lumière"
   },

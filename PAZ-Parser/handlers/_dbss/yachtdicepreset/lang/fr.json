@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Clé",
+    "dice": "Dés"
+  },
+  "offsetColumns": {
+    "key": "Clé",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} préréglages de dés"
+  }
+}

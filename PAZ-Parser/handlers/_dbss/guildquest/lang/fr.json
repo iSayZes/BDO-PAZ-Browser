@@ -5,6 +5,7 @@
     "type": "Type",
     "objective": "Objectif",
     "condition": "Script de condition",
+    "killGroups": "Groupes à vaincre",
     "questLevel": "Niveau de mission",
     "description": "Description",
     "icon": "Icône",

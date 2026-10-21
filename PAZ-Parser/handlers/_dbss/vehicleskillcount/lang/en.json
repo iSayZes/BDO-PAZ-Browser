@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "count": "Count",
+    "highestKey": "Highest Skill ID"
+  },
+  "meta": {
+    "summary": "Highest mount and ship skill ID + 1"
+  }
+}

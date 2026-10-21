@@ -23,6 +23,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `skillsimply.dbss`       | 2,493,775 B (71.3%) | 1,006,071 B (28.7%) |
 | 1      | `skillsimplyoffset.dbss` | 365,848 B (100.0%)  | 0 B (0.0%)          |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

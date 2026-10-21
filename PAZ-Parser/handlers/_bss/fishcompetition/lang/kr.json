@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "fishKey": "물고기 키",
+    "fish": "물고기",
+    "grade": "등급",
+    "rewards": "순위 보상",
+    "titleItem": "칭호 아이템"
+  },
+  "text": {
+    "rank": "{rank}위",
+    "rankRange": "{first}-{last}위"
+  },
+  "meta": {
+    "count": "대회 물고기 {count}개"
+  }
+}

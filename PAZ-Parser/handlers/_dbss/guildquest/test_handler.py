@@ -6,6 +6,7 @@ from typing import Any
 
 import pytest
 
+from tests.character_indexes import character_group_index
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
@@ -22,6 +23,7 @@ from tests.framework import (
 )
 
 from _common.contents_group import contents_group_key
+from _common.lookup_index import IndexKind
 from .parser import FILE_NAME, OFFSET_FILE, REWARD_ENTRY_SIZE, parse_guildquest_records
 
 
@@ -47,6 +49,7 @@ CASE = HandlerCase(
     uses_loc=True,
     loc_fields=["title", "objective", "description"],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
+    lookup_indexes={IndexKind.CHARACTER_GROUP_MEMBERS: character_group_index},
     tests=[
         SchemaTest(
             required_keys=[
@@ -72,6 +75,7 @@ CASE = HandlerCase(
                 "guild_quest_type_name",
                 "rewards",
                 "contents_groups",
+                "kill_groups",
             ]
         ),
         DeclaredCountTest(declared=header_count(offset=_COUNT_OFFSET)),
@@ -146,6 +150,19 @@ def test_lists_follow_their_counts(guildquest_result: HandlerResult) -> None:
         assert len(record["base_rewards"]) == record["base_reward_count"] == len(record["rewards"])
         assert len(record["contents_group_hashes"]) == record["contents_group_count"]
         assert len(record["unknown_values"]) == record["unknown_value_count"]
+
+
+def test_kill_groups_name_their_members(guildquest_result: HandlerResult) -> None:
+    """A killMonsterGroup condition shows as `group (xcount)` and the names of the group's characters."""
+    records = guildquest_result.records
+    with_calls = [r for r in records if "killmonstergroup(" in r["complete_condition"].lower()]
+
+    assert with_calls
+    assert sum(1 for r in records if r["kill_groups"]) == len(with_calls)
+    for record in with_calls:
+        calls, texts = record["_kill_groups"], record["kill_groups"]
+        assert calls and len(texts) == len(calls)
+        assert all(text.startswith(f"{group} (x{count:,}): ") for (group, count), text in zip(calls, texts))
 
 
 def test_item_rewards_name_an_item_and_a_count(guildquest_result: HandlerResult) -> None:

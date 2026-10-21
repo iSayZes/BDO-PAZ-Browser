@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "difficulty": "Difficulty",
+    "difficultyName": "Difficulty Name",
+    "gear": "Gear",
+    "enchantLevel": "Enhancement Level",
+    "resultItem": "Result Item"
+  },
+  "difficulties": {
+    "1": "Easy",
+    "2": "Normal",
+    "3": "Hard"
+  },
+  "gear": {
+    "weapon": "Weapon",
+    "armor": "Armor"
+  },
+  "meta": {
+    "count": "{count} extraction results"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionKey": "ID позиции",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "type": "Тип"
+  },
+  "offsetColumns": {
+    "positionKey": "ID позиции",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Позиций для навыка «Поиск скрытых мест»: {count}"
+  }
+}

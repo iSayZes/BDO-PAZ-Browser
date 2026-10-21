@@ -14,11 +14,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes | Records   | Row bytes |
 | ------ | -------------- | ------- | -------------------------------- | ----- | --------- | --------- |
-| 1      | 1784 and later | 3474    | `regionmonsterkillquestlist.bss` | 740   | 180 Entry | 4         |
+| 1      | 1485 and later | 3474    | `regionmonsterkillquestlist.bss` | 740   | 180 Entry | 4         |
 
 | Layout | File                             | Known          | Unknown    |
 | ------ | -------------------------------- | -------------- | ---------- |
 | 1      | `regionmonsterkillquestlist.bss` | 740 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 
@@ -43,7 +57,7 @@ On client 3474 the 180 quests come from 27 quest chains. Every entry has a LOC t
 | 12022                        | 9      | Defend the Delphe Knights Castle!                 |
 | 12023, 12024, 40015, 40032   | 76     | [Season] Settling Down at the Bashim Base         |
 
-The completion scripts (`action_script` in `quest.dbss`) on client 3474: 151 `killmonstergroup` (any case), 16 `killmonster`, 3 `KillMonsterTogether` and 10 `checkLooting`. Other categories hold kill quests too: 702 of the 853 quests with a `killmonstergroup` script (any case) are not in this list.
+The completion scripts (`action_script` in `quest.dbss`) on client 3474: 151 `killmonstergroup` (any case), 16 `killmonster`, 3 `KillMonsterTogether` and 10 `checkLooting`. Other categories hold kill quests too: 702 of the 853 quests with a `killmonstergroup` script (any case) are not in this list. The first argument of `killmonstergroup` is a `character_group` key of [`characterstatic.dbss`](characterstatic_dbss.md#character-group); all 167 keys of these 853 quests have characters on client 3474.
 
 ## Client Use
 

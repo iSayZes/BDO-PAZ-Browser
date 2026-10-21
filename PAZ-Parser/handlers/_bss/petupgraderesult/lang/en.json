@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "petId": "Pet ID",
+    "pet": "Pet",
+    "section": "Map",
+    "resultPetId": "Result Pet ID",
+    "resultPet": "Result Pet",
+    "talentId": "Alpha Talent ID",
+    "talent": "Alpha Talent"
+  },
+  "sections": {
+    "1": "Training Result",
+    "2": "Alpha Talent"
+  },
+  "meta": {
+    "count": "{count} rows"
+  }
+}

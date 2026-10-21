@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "petId": "반려동물 ID",
+    "pet": "반려동물",
+    "skill1": "기술 1",
+    "skill2": "기술 2",
+    "skill3": "기술 3"
+  },
+  "offsetColumns": {
+    "petId": "반려동물 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "PC방 반려동물 {count}마리"
+  }
+}

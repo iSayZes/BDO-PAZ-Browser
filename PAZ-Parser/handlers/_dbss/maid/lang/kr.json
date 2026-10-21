@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 키",
+    "name": "메이드",
+    "maxActionIndex": "최대 액션 인덱스",
+    "coolTime": "재사용 대기 시간",
+    "warehouseIn": "창고 입고",
+    "warehouseOut": "창고 출고",
+    "marketSubmit": "거래소 등록",
+    "marketBuy": "거래소 구매",
+    "repair": "수리",
+    "pcRoom": "PC방",
+    "skill1": "기술 1",
+    "skill2": "기술 2",
+    "actionIndex": "액션 인덱스",
+    "icon": "아이콘",
+    "headMaid": "메이드장 (창고)",
+    "headMaidMarket": "메이드장 (거래소)"
+  },
+  "offsetColumns": {
+    "characterKey": "캐릭터 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "메이드 {count}명"
+  }
+}

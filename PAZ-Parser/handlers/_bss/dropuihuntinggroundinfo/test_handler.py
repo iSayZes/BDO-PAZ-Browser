@@ -20,6 +20,10 @@ from tests.framework import (
 from tests.runner import load_case
 
 from _common import tribe_labels
+from _bss.dropuihuntinggroundinfo.parser import (
+    build_character_hunting_ground_index,
+    build_hunting_ground_name_kr_index,
+)
 from _bss.dropuimaincategoryinfo.parser import parse_territory_keys
 from _common.tribe_labels import TRIBE_LABELS, tribe_label, tribe_text
 from _bss.stringtable.parser import GAME_SHEET, parse_key_hashes
@@ -150,6 +154,27 @@ def test_items_column_shows_each_item_with_its_icon(hunting_ground_result: Handl
 
     assert f'data-icon-path="{e(item_key_icon_path(first_item))}"' in html
     assert f'<span class="icon-cell-label">{e(aresion["items"][0])}</span>' in html
+
+
+def test_character_index_inverts_the_monster_lists(hunting_ground_result: HandlerResult) -> None:
+    """IndexKind.CHARACTER_HUNTING_GROUNDS lists, per monster, every row whose monster_ids hold it."""
+    expected: dict[int, set[int]] = {}
+    for record in hunting_ground_result.records:
+        for character_key in record["monster_ids"]:
+            expected.setdefault(character_key, set()).add(record["key"])
+
+    index = build_character_hunting_ground_index(hunting_ground_result.source.data)
+
+    assert index
+    assert index == {character_key: tuple(sorted(keys)) for character_key, keys in expected.items()}
+
+
+def test_name_index_holds_every_korean_name(hunting_ground_result: HandlerResult) -> None:
+    """IndexKind.HUNTING_GROUND_NAME_KR is the stripped name_kr of every row."""
+    index = build_hunting_ground_name_kr_index(hunting_ground_result.source.data)
+
+    assert index == {r["key"]: r["name_kr"].strip() for r in hunting_ground_result.records}
+    assert index[_ARESION_TEMPLE] == "Lv.74 아레시온 신전"
 
 
 def test_every_tag_has_its_colours(hunting_ground_result: HandlerResult) -> None:

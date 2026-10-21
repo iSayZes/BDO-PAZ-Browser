@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "name": "Имя",
+    "skillPointExp": "Опыт навыков",
+    "guildMoney": "Средства гильдии"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Персонажей: {count}"
+  }
+}

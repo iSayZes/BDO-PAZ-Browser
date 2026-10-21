@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "Item",
+    "skillNo": "Skill No",
+    "skill": "Skill",
+    "skillLevel": "Skill Level"
+  },
+  "meta": {
+    "count": "{count} gear levels with a skill"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "groupKey": "그룹",
+    "selectIndex": "번호",
+    "result": "결과",
+    "imagePath": "이미지 경로"
+  },
+  "offsetColumns": {
+    "groupKey": "그룹",
+    "selectIndex": "번호",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "이벤트 {count}개"
+  }
+}

@@ -18,15 +18,30 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------------- | ------- | --------------- | ----------------------- |
 | 2      | 3473 and later | 3474    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
 | 2      | 3473 and later | 3474    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
-| 1      | 1784           | 1784    | `itemimprovement.dbss`       | 74,226  | 2,006 Record    | 37                      |
-| 1      | 1784           | 1784    | `itemimprovementoffset.dbss` | 24,076  | 2,006 Index Row | 12                      |
+| 1      | 1485 to 2107   | 2107    | `itemimprovement.dbss`       | 104,415 | 2,863 Record    | 21 to 37, 36 on average |
+| 1      | 1485 to 2107   | 2107    | `itemimprovementoffset.dbss` | 34,360  | 2,863 Index Row | 12                      |
 
 | Layout | File                         | Known             | Unknown          |
 | ------ | ---------------------------- | ----------------- | ---------------- |
 | 2      | `itemimprovement.dbss`       | 127,428 B (73.1%) | 46,848 B (26.9%) |
 | 2      | `itemimprovementoffset.dbss` | 46,852 B (100.0%) | 0 B (0.0%)       |
-| 1      | `itemimprovement.dbss`       | 66,202 B (89.2%)  | 8,024 B (10.8%)  |
-| 1      | `itemimprovementoffset.dbss` | 24,076 B (100.0%) | 0 B (0.0%)       |
+| 1      | `itemimprovement.dbss`       | 92,963 B (89.0%)  | 11,452 B (11.0%) |
+| 1      | `itemimprovementoffset.dbss` | 34,360 B (100.0%) | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

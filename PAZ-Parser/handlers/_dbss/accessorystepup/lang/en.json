@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "accessoryIndex": "Index",
+    "groupNo": "Group",
+    "accessory": "Accessory",
+    "enchantLevel": "Enhancement Level",
+    "materials": "Materials"
+  },
+  "meta": {
+    "count": "{count} steps"
+  }
+}

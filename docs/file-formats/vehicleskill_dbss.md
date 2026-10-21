@@ -27,6 +27,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `vehicleskill.dbss`       | 69,012 B (98.2%) | 1,273 B (1.8%) |
 | 1      | `vehicleskilloffset.dbss` | 974 B (100.0%)   | 0 B (0.0%)     |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -150,15 +164,21 @@ field.
 
 - Client 1784 has the same layout with 76 records; 30 skills were added by
   client 3474.
-- `vehicleskillcount.dbss` is one byte on both clients and is not part of
-  this doc. The skills each servant can learn are in
+- The highest key plus one is in its own one-byte file,
+  [vehicleskillcount.dbss](vehicleskillcount_dbss.md). The skills each
+  servant can learn are in
   [vehicleskillowner.dbss](vehicleskillowner_dbss.md).
 
 ## Open Questions
 
 ### The Header Byte and Zero Fields
 
-`unknown_00` is the record count plus one on both clients, which fits a
-table size with an unused key 0 but nothing reads it. `unknown_contents_group_key_hashes_00`
+`unknown_00` holds the same value as
+[vehicleskillcount.dbss](vehicleskillcount_dbss.md) on clients 1485 to
+3474: the highest key plus one, the 2016
+`gc::VehicleSkillStaticStatusManager::_count`. The keys have no gap on any
+of these clients, so the byte cannot be told apart from the record count
+plus one, and nothing shows which of the two files the client takes
+`_count` from. `unknown_contents_group_key_hashes_00`
 (8 bytes) and `unknown_condition_desc_01` (u32) are `0` on every record of
 both clients and match no sheet column.

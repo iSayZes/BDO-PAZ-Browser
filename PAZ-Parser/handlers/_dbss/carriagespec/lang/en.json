@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carriageKey": "Carriage ID",
+    "distancePerMinute": "Distance per Minute",
+    "loadage": "Loadage",
+    "transportMaxWeight": "Max Weight",
+    "camasilbAddTransportMaxWeight": "Kamasylve Extra Weight",
+    "baseFee": "Base Fee",
+    "overloadWeight": "Overload Weight",
+    "feePerWeight": "Fee per Weight",
+    "nonStackTrade": "Non-stack Trade Goods",
+    "stackTrade": "Stack Trade Goods",
+    "expirationPeriodTrade": "Expiring Trade Goods"
+  },
+  "offsetColumns": {
+    "carriageKey": "Carriage ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} carriage types"
+  }
+}

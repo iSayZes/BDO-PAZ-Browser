@@ -16,17 +16,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes  | Records                   | Row bytes                  |
 | ------ | -------------- | ------- | ---------------------------------- | ------ | ------------------------- | -------------------------- |
-| 2      | 3473 and later | 3474    | `itemtradegroupfromnpc.dbss`       | 4      | -                         | -                          |
-| 2      | 3473 and later | 3474    | `itemtradegroupfromnpcoffset.dbss` | 4      | -                         | -                          |
-| 1      | 1784           | 1784    | `itemtradegroupfromnpc.dbss`       | 67,603 | 451 Item Entry, 125 Group | 123 to 159, 148 on average |
-| 1      | 1784           | 1784    | `itemtradegroupfromnpcoffset.dbss` | 1,254  | 125 Index Row             | 10                         |
+| 2      | 2519 and later | 3474    | `itemtradegroupfromnpc.dbss`       | 4      | -                         | -                          |
+| 2      | 2519 and later | 3474    | `itemtradegroupfromnpcoffset.dbss` | 4      | -                         | -                          |
+| 1      | 1485 to 2107   | 2107    | `itemtradegroupfromnpc.dbss`       | 69,376 | 462 Item Entry, 129 Group | 123 to 159, 148 on average |
+| 1      | 1485 to 2107   | 2107    | `itemtradegroupfromnpcoffset.dbss` | 1,294  | 129 Index Row             | 10                         |
 
 | Layout | File                               | Known             | Unknown    |
 | ------ | ---------------------------------- | ----------------- | ---------- |
 | 2      | `itemtradegroupfromnpc.dbss`       | 4 B (100.0%)      | 0 B (0.0%) |
 | 2      | `itemtradegroupfromnpcoffset.dbss` | 4 B (100.0%)      | 0 B (0.0%) |
-| 1      | `itemtradegroupfromnpc.dbss`       | 67,603 B (100.0%) | 0 B (0.0%) |
-| 1      | `itemtradegroupfromnpcoffset.dbss` | 1,254 B (100.0%)  | 0 B (0.0%) |
+| 1      | `itemtradegroupfromnpc.dbss`       | 69,376 B (100.0%) | 0 B (0.0%) |
+| 1      | `itemtradegroupfromnpcoffset.dbss` | 1,294 B (100.0%)  | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

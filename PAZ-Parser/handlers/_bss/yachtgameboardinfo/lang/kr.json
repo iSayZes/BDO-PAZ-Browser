@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "키",
+    "level": "레벨",
+    "description": "설명",
+    "handRankCount": "족보 수",
+    "handRanks": "족보",
+    "rollCountMax": "최대 굴림 횟수",
+    "matchmaking": "매칭",
+    "iconTexture": "아이콘 텍스처",
+    "bigTexture": "큰 텍스처"
+  },
+  "meta": {
+    "count": "게임판 {count}개"
+  }
+}

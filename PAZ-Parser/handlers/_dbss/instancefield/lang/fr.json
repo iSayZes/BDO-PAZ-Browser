@@ -10,7 +10,9 @@
     "title": "Titre",
     "sectorX": "Secteur X",
     "sectorY": "Secteur Y",
-    "sectorZ": "Secteur Z"
+    "sectorZ": "Secteur Z",
+    "fieldNo": "N° de champ",
+    "field": "Champ"
   },
   "meta": {
     "count": "{count} champs d'instance"

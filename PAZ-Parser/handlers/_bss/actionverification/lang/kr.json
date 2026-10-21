@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 키",
+    "name": "이름",
+    "actionName": "행동",
+    "actionHash": "행동 해시",
+    "ableCallTime": "호출 가능 시간"
+  },
+  "meta": {
+    "count": "캐릭터 {characters}명의 행동 {count}개"
+  }
+}

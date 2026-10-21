@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "difficulty": "Difficulté",
+    "difficultyName": "Nom",
+    "gear": "Équipement",
+    "enchantLevel": "Niveau d'optimisation",
+    "resultItem": "Résultat"
+  },
+  "difficulties": {
+    "1": "Facile",
+    "2": "Normal",
+    "3": "Difficile"
+  },
+  "gear": {
+    "weapon": "Arme",
+    "armor": "Armure"
+  },
+  "meta": {
+    "count": "{count} résultats d'extraction"
+  }
+}

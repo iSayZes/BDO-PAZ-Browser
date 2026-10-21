@@ -5,7 +5,7 @@
     "dialog": "Диалог",
     "dialogName": "Имя в диалоге",
     "exchangeCount": "Обмены",
-    "exchangeKeys": "Ключи обмена предметов"
+    "exchanges": "Обмены предметов"
   },
   "offsetColumns": {
     "dialogKey": "Ключ диалога",
@@ -14,5 +14,6 @@
   },
   "meta": {
     "count": "Диалогов: {count} · НИП: {npc_count}"
-  }
+  },
+  "missingExchange": "{exchange_key}: нет строки обмена"
 }

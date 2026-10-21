@@ -1,7 +1,8 @@
 {
   "columns": {
     "edaniaRegion": "Регион Идании",
-    "castle": "Замок"
+    "castle": "Замок",
+    "mapColor": "Цвет карты"
   },
   "meta": {
     "count": "Регионов Идании: {count}"

@@ -2,14 +2,19 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import replace
+from functools import cache
 from typing import Any
 
 import pytest
 
+from _common.lookup_index import IndexKind
+from _dbss.itemenchant.parser import build_item_name_kr_index
 from _dbss.knowledgelearning.parser import (
     build_knowledge_learning_character_index,
     build_knowledge_learning_item_index,
 )
+from tests.character_indexes import character_name_kr_index
+from tests.fixtures import load_binary_fixture
 from tests.framework import (
     CaseInput,
     DeclaredCount,
@@ -18,6 +23,7 @@ from tests.framework import (
     HandlerResult,
     SchemaTest,
     TargetTest,
+    UserLanguageTest,
     case_id,
     run_case,
 )
@@ -46,6 +52,18 @@ def _table_rows() -> DeclaredCount:
     return read
 
 
+@cache
+def _item_name_kr_index() -> dict[int, str]:
+    """`IndexKind.ITEM_NAME_KR` of the fixture client."""
+    return build_item_name_kr_index(
+        load_binary_fixture("itemenchant.dbss"), load_binary_fixture("itemenchantoffset.dbss")
+    )
+
+
+# The Korean names a Source Name falls back to; with LOC loaded none may show.
+_KOREAN_NAMES = {IndexKind.CHARACTER_NAME_KR: character_name_kr_index, IndexKind.ITEM_NAME_KR: _item_name_kr_index}
+
+
 CASE = HandlerCase(
     handler_name="knowledgelearning.dbss",
     data_file="knowledgelearning.dbss",
@@ -54,9 +72,11 @@ CASE = HandlerCase(
     uses_loc=True,
     loc_fields=["Knowledge Name"],
     internal_path="gamecommondata/binary/knowledgelearning.dbss",
+    lookup_indexes=_KOREAN_NAMES,
     tests=[
         SchemaTest(required_keys=["table", "source_type", "source_id", "source_name", "card_id", "card_name"]),
         DeclaredCountTest(declared=_table_rows()),
+        UserLanguageTest(fields=["source_name"]),
         TargetTest(
             col="source_id",
             value=10004,
@@ -118,3 +138,15 @@ def test_learning_index_groups_one_table_by_card(
             expected.setdefault(record["card_id"], []).append(record["source_id"])
 
     assert index == {card_id: tuple(sorted(ids)) for card_id, ids in expected.items()}
+
+
+def test_source_names_fall_back_to_the_korean_name() -> None:
+    """Without LOC a character row shows its Korean characterstatic.dbss name
+    and an item row its Korean itemenchant.dbss name."""
+    case = replace(CASE, tests=[], loc_file=None, uses_loc=False)
+    records = run_case(case).records
+    names_by_table = {0: character_name_kr_index(), 1: _item_name_kr_index()}
+
+    assert {r["table"] for r in records} == set(names_by_table)
+    assert all(r["source_name"] == names_by_table[r["table"]].get(r["source_id"], "") for r in records)
+    assert all(any(r["source_name"] for r in records if r["table"] == table) for table in names_by_table)

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "landKey": "부지 ID",
+    "manor": "장원",
+    "buildingKey": "건물 ID",
+    "region": "지역",
+    "contributionPoints": "공헌도",
+    "sectorStart": "섹터 시작",
+    "sectorEnd": "섹터 끝",
+    "quest": "의뢰",
+    "dayPay": "일간 금액",
+    "parts": "부위"
+  },
+  "meta": {
+    "count": "장원 {count}개"
+  }
+}

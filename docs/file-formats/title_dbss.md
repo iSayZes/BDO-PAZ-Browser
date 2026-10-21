@@ -24,6 +24,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `title.dbss`       | 704,544 B (81.0%) | 165,204 B (19.0%) |
 | 1      | `titleoffset.dbss` | 38,128 B (100.0%) | 0 B (0.0%)        |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

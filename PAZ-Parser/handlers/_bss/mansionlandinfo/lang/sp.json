@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "landKey": "ID del terreno",
+    "manor": "Mansión",
+    "buildingKey": "ID del edificio",
+    "region": "Región",
+    "contributionPoints": "Puntos de contribución",
+    "sectorStart": "Sector desde",
+    "sectorEnd": "Sector hasta",
+    "quest": "Misión",
+    "dayPay": "Precio diario",
+    "parts": "Partes"
+  },
+  "meta": {
+    "count": "{count} mansiones"
+  }
+}

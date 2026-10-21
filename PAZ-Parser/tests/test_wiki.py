@@ -11,6 +11,9 @@ import pytest
 from wiki import build_site, render_site
 from wiki.format_list import game_totals
 from wiki.markdown_html import render_inline, render_markdown
+from format_docs.versions import ClientCheck
+from wiki.timeline_model import LAYOUT, NO_FILE, NO_LAYOUT, UNDATED, TimelineLayout, build_timeline
+from wiki.type_html import type_html
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 REPO_DOCS = REPO_ROOT / "docs"
@@ -86,6 +89,26 @@ def test_inline_markdown_renders_code_links_and_bold() -> None:
     assert html == '<b>Use</b> <code>a&lt;b</code> and <a href="x_dbss.html"><code>x.dbss</code></a>'
 
 
+def test_a_code_span_that_is_a_number_or_text_type_gets_token_colors_and_others_stay_plain() -> None:
+    html = render_inline("`u32` then `char16[count]`, `Row[count]` and `row_count`", _no_links)
+
+    assert '<code><span class="tk-num">u32</span></code>' in html
+    assert '<span class="tk-text">char16</span><span class="tk-punct">[</span><span class="tk-field">count</span>' in html
+    assert "<code>Row[count]</code>" in html and "<code>row_count</code>" in html
+
+
+def test_a_type_cell_becomes_tokens_that_spell_it_and_text_outside_the_grammar_is_none() -> None:
+    cell = 'Tail if name ^= HH_ or kind = 2'
+    html = type_html(cell)
+
+    assert html is not None
+    assert re.sub(r"<[^>]+>", "", html) == cell
+    assert '<span class="tk-struct">Tail</span> <span class="tk-kw">if</span>' in html
+    assert '<span class="tk-str">HH_</span>' in html and '<span class="tk-lit">2</span>' in html
+    assert type_html("see Notes") is None
+    assert type_html("Row[count]", allow_structures=False) is None
+
+
 def test_block_markdown_renders_lists_tables_code_and_drops_comments() -> None:
     text = "- one\n  - nested\n- two\n\n| A | B |\n| - | - |\n| `1` | 2 |\n\n```text\n<raw>\n```\n\n<!-- hidden -->\n"
 
@@ -137,6 +160,9 @@ def test_a_converted_page_shows_structures_and_links_docs_and_repo_files(docs_di
     test_page = (tmp_path / "site" / "test_bss.html").read_text(encoding="utf-8")
     other_page = (tmp_path / "site" / "other_dbss.html").read_text(encoding="utf-8")
     assert 'id="l1-row"' in test_page and 'href="#l1-row"' in test_page
+    assert '<a href="#l1-row"><span class="tk-struct">Row</span>' in test_page
+    assert '<td class="mono"><span class="tk-num">u32</span></td>' in test_page
+    assert "Current: Layout" not in test_page
     assert 'href="other_dbss.html"' in test_page
     assert 'href="https://github.com/iSayZes/BDO-PAZ-Browser/blob/main/docs/handler.md#offset-tables"' in other_page
     assert "not in the layout format yet" in other_page
@@ -169,6 +195,14 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | ---------- | ------------- | ------------- |
 | 1      | `test.bss` | 404 B (50.2%) | 400 B (49.8%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3473   | Layout 1 |
+| 3464   | Layout 1 |
+| 1230   | No file  |
+
 <!-- versions:end -->"""
 
 
@@ -184,6 +218,52 @@ def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir:
     entry = _formats(tmp_path / "site")["test_bss.html"]
     assert "client 3464 and later, sizes from client 3473" in page
     assert (entry["known"], entry["unknown"], entry["client"]) == (404, 400, 3473)
+
+
+def test_the_versions_card_opens_with_a_timeline_of_the_checked_clients(docs_dir: Path, tmp_path: Path) -> None:
+    doc = docs_dir / "file-formats" / "test_bss.md"
+    marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"
+    doc.write_text(CONVERTED_DOC.replace(f"{marker}\n\n<!-- versions:end -->", VERSIONS_BLOCK), encoding="utf-8")
+
+    build_site(docs_dir, tmp_path / "site")
+
+    page = (tmp_path / "site" / "test_bss.html").read_text(encoding="utf-8")
+    versions = page.split('aria-labelledby="versions"')[1].split("</section>")[0]
+    assert versions.index('class="tl"') < versions.index('class="ver sel"')
+    assert 'class="tl-band sel" data-layout="1"' in versions
+    assert '<div class="tl-band absent" title="Not in client 1230."' in versions
+    assert "Checked on clients 3473, 3464 and 1230." in versions
+    assert "<table" not in versions
+    assert 'id="layoutPill">Layout 1 · client 3464 and later</span>' in page and 'id="layoutTabs"' not in page
+
+
+AXIS = (794, 1230, 1485, 1784, 2107, 2519, 3002, 3251, 3474)
+
+
+def test_the_timeline_runs_live_to_oldest_with_no_documented_layout_and_no_file_bands_in_place() -> None:
+    layouts = (TimelineLayout(2, 2519, None, True, 3474), TimelineLayout(1, 1485, 1784, False, 1784))
+    clients = (
+        ClientCheck(3474, 2, True), ClientCheck(2519, 2, True), ClientCheck(2107, None, True),
+        ClientCheck(1784, 1, True), ClientCheck(1485, 1, True), ClientCheck(794, None, False),
+    )
+
+    model = build_timeline(layouts, clients, AXIS)
+
+    assert [(band.kind, band.layout) for band in model.bands] == [(LAYOUT, 2), (NO_LAYOUT, None), (LAYOUT, 1), (NO_FILE, None)]
+    assert (model.bands[0].left, model.bands[-1].right) == (0.0, 1.0)
+    assert all(newer.right == older.left for newer, older in zip(model.bands, model.bands[1:]))
+    assert model.bands[1].left == model.at[2107] and model.bands[3].left == model.at[794]
+    assert model.ticks == (794, 1784, 2107, 3474)
+
+
+def test_a_layout_with_no_checked_client_sits_between_the_layouts_numbered_around_it() -> None:
+    layouts = (TimelineLayout(3, 3473, None, True, 3474), TimelineLayout(2, None, None, False, None), TimelineLayout(1, 1784, 1784, False, 1784))
+    clients = (ClientCheck(3474, 3, True), ClientCheck(1784, 1, True))
+
+    model = build_timeline(layouts, clients, AXIS)
+
+    assert [(band.kind, band.layout) for band in model.bands] == [(LAYOUT, 3), (UNDATED, 2), (LAYOUT, 1)]
+    assert (model.bands[1].left, model.bands[1].right) == (model.at[3473], model.at[1784])
 
 
 def test_game_totals_come_from_the_readme_supported_formats_lines() -> None:

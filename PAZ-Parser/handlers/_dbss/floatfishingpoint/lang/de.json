@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "pointKey": "Punktschlüssel",
+    "pointSize": "Größe",
+    "startX": "Start X",
+    "startY": "Start Y",
+    "startZ": "Start Z",
+    "endX": "Ende X",
+    "endZ": "Ende Z",
+    "fishingGroup": "Fischfanggruppe",
+    "characterKey": "Charakter-ID",
+    "character": "Charakter",
+    "actionIndex": "Aktionsindex"
+  },
+  "offsetColumns": {
+    "pointKey": "Punktschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Fischfangpunkte"
+  }
+}

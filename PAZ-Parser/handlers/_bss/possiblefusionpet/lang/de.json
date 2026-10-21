@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "fusionKey": "Fusionsschlüssel",
+    "petId": "Begleiter-ID",
+    "pet": "Begleiter",
+    "species": "Spezies-ID",
+    "variant": "Variante",
+    "tier": "Rang"
+  },
+  "tier": "Rang {tier}",
+  "meta": {
+    "count": "{count} Begleiter · {keys} Fusionsschlüssel"
+  }
+}

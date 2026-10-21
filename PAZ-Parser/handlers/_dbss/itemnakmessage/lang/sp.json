@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "item": "Objeto",
+    "mainMessage": "Mensaje principal",
+    "subMessage": "Mensaje secundario"
+  },
+  "offsetColumns": {
+    "itemKey": "Clave de objeto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} mensajes de objeto"
+  }
+}

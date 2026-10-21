@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Nivel",
+    "rate": "Tasa de Exp. a Exp. (Habilidades)"
+  },
+  "offsetColumns": {
+    "level": "Nivel",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

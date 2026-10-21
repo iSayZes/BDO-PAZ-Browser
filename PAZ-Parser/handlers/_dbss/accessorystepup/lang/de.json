@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "accessoryIndex": "Index",
+    "groupNo": "Gruppe",
+    "accessory": "Accessoire",
+    "enchantLevel": "Verstärkungsstufe",
+    "materials": "Materialien"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

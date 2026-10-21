@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "House Key",
+    "house": "House",
+    "town": "Town",
+    "node": "Node",
+    "contributionPoints": "CP",
+    "group": "Group",
+    "floor": "Floor",
+    "needHouses": "Needs",
+    "uses": "Uses",
+    "products": "Products"
+  },
+  "cells": {
+    "level": "{name} Lv {level}"
+  },
+  "meta": {
+    "count": "{count} houses · {products} product items"
+  }
+}

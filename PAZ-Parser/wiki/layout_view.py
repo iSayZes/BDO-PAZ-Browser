@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import re
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from format_docs import read_layouts, shared_layout_path, structure_sizes
 from format_docs.markdown import numbered_lines, sections
@@ -31,7 +31,7 @@ class FieldView:
 
 @dataclass(frozen=True)
 class StructureView:
-    """A structure in one layout. `origin` is own, changed (differs from `against`) or inherited (from `against`)."""
+    """A structure in one layout. `origin` is own, changed (differs from the newer layout's) or inherited (from a newer layout)."""
 
     structure: Structure
     heading: str
@@ -39,7 +39,6 @@ class StructureView:
     desc: str
     extra: str
     origin: str
-    against: int | None
 
     @property
     def known(self) -> int:
@@ -81,7 +80,7 @@ def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
         sizes = structure_sizes(layouts, index)
         intro, prose = _layout_prose(doc, layout)
         own = {
-            structure.name: _structure_view(structure, sizes, prose.get(structure.name, ("", "", structure.name)), "own", None)
+            structure.name: _structure_view(structure, sizes, prose.get(structure.name, ("", "", structure.name)), "own")
             for structure in layout.structures
         }
         if index == 0:
@@ -89,8 +88,8 @@ def layout_views(doc: DocSource) -> tuple[LayoutView, ...]:
             continue
         newer = views[-1]
         merged = tuple(
-            _with_origin(own[view.structure.name], "changed", newer.number) if view.structure.name in own
-            else _with_origin(view, "inherited", view.against if view.origin == "inherited" else newer.number)
+            _with_origin(own[view.structure.name], "changed") if view.structure.name in own
+            else _with_origin(view, "inherited")
             for view in newer.structures
         )
         newer_names = {view.structure.name for view in newer.structures}
@@ -105,12 +104,10 @@ def layout_source(doc: DocSource) -> DocSource:
     return doc if path is None else read_doc(path)
 
 
-def _structure_view(
-    structure: Structure, sizes: Mapping[str, int | None], prose: tuple[str, str, str], origin: str, against: int | None
-) -> StructureView:
+def _structure_view(structure: Structure, sizes: Mapping[str, int | None], prose: tuple[str, str, str], origin: str) -> StructureView:
     fields = tuple(_field_view(field, sizes) for field in structure.fields)
     desc, extra, heading = prose
-    return StructureView(structure, heading, fields, desc, extra, origin, against)
+    return StructureView(structure, heading, fields, desc, extra, origin)
 
 
 def _field_view(field: Field, sizes: Mapping[str, int | None]) -> FieldView:
@@ -127,8 +124,8 @@ def _name_state(name: str) -> str:
     return "unknown" if name.startswith(UNKNOWN_PREFIX) else "known"
 
 
-def _with_origin(view: StructureView, origin: str, against: int | None) -> StructureView:
-    return StructureView(view.structure, view.heading, view.fields, view.desc, view.extra, origin, against)
+def _with_origin(view: StructureView, origin: str) -> StructureView:
+    return replace(view, origin=origin)
 
 
 def _layout_prose(doc: DocSource, layout: Layout) -> tuple[str, dict[str, tuple[str, str, str]]]:

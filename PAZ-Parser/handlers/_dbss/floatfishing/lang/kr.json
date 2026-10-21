@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "groupKey": "낚시 그룹",
+    "drops": "드롭",
+    "points": "낚시 포인트"
+  },
+  "slots": {
+    "treasure": "보물",
+    "rare": "희귀",
+    "large": "대형",
+    "general": "일반",
+    "junk": "잡템"
+  },
+  "offsetColumns": {
+    "groupKey": "낚시 그룹",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "낚시 그룹 {count}개"
+  }
+}

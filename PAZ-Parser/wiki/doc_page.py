@@ -7,14 +7,17 @@ from __future__ import annotations
 
 import json
 import re
+from collections.abc import Sequence
 from html import escape
+
+from format_docs.versions import read_clients
 
 from .doc_source import DocSection, DocSource
 from .layout_html import layouts_card
 from .layout_view import layout_views
 from .markdown_html import LinkMap, render_markdown, slug
 from .page_shell import FORMATS_SCRIPT, STATIC_DIR, page
-from .versions_html import layout_versions, versions_card
+from .versions_html import layout_versions, timeline_layouts, versions_card
 
 _HEAD_SECTIONS = ("Purpose",)
 _CONVERTED_CARDS = ("Versions", "Companion Files")
@@ -35,17 +38,19 @@ _SIDEBAR = """<aside class="side" aria-label="Formats">
 </aside>"""
 
 
-def doc_page(doc: DocSource, links: LinkMap) -> str:
+def doc_page(doc: DocSource, links: LinkMap, axis: Sequence[int]) -> str:
+    """The page of `doc`; `axis` is every client the wiki's timelines span, oldest first."""
     views = layout_views(doc) if doc.is_converted else ()
     cards: list[str] = []
     if views:
         versions = layout_versions(doc.text, views[0].number)
+        layouts = timeline_layouts([view.number for view in views], versions)
         companions = _section_card(doc.section("Companion Files"), links)
         if versions:
-            cards.append(versions_card(versions, views[0].number) + companions)
+            cards.append(versions_card(versions, layouts, read_clients(doc.text), axis) + companions)
         else:
             cards.append(f'<div class="row-2 cv">{_versions_card(doc, links)}{companions}</div>')
-        cards.append(layouts_card(views, links, {version.layout: version.clients for version in versions}))
+        cards.append(layouts_card(views, links, {layout.number: layout.pill for layout in layouts}, bool(versions)))
     else:
         cards.append(
             '<section class="card"><div class="card-body"><p class="muted">This doc is not in the layout format yet, '
@@ -68,7 +73,6 @@ def _doc_head(doc: DocSource, layout_count: int, links: LinkMap) -> str:
     chips = [f'<span class="pill">{escape(doc.name.rsplit(".", 1)[-1])}</span>']
     if layout_count:
         chips.append(f'<span class="pill">{layout_count} layout{"s" if layout_count != 1 else ""}</span>')
-        chips.append(f'<span class="pill accent">Current: Layout {layout_count}</span>')
     else:
         chips.append('<span class="pill">Not converted</span>')
     return (

@@ -7,7 +7,9 @@ points that accepting it costs. On client 3474 the file lists the eleven
 quests of chain 9026 (`Agris: Challenging the Bashims` to `Agris: Tensions
 at the Sulfur Mine`), each at `15000`. The quest window and the world map
 quest widget show the cost as `Consume {point} Agris Point(s)`. The plain
-PABR file holds the rows, then an empty string table.
+PABR file holds the rows, then an empty string table. The drop skills that
+Agris Fever applies are in [`fevertimeskill.bss`](fevertimeskill_bss.md),
+next to this file in the same PAZ.
 
 ## Versions
 
@@ -22,6 +24,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | File                      | Known          | Unknown    |
 | ------ | ------------------------- | -------------- | ---------- |
 | 1      | `feverquestdatatable.bss` | 108 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

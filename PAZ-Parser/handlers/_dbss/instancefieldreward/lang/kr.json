@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "instanceDungeonNo": "인스턴스 던전",
+    "learnSkill": "습득 기술",
+    "itemGroups": "아이템 그룹",
+    "relatedRegions": "지역"
+  },
+  "offsetColumns": {
+    "instanceDungeonNo": "인스턴스 던전",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "인스턴스 던전 {count}개"
+  }
+}

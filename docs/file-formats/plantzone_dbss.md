@@ -16,17 +16,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records               | Row bytes               |
 | ------ | -------------- | ------- | ---------------------- | ------ | --------------------- | ----------------------- |
-| 2      | 3473 and later | 3474    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
-| 2      | 3473 and later | 3474    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
-| 1      | 1784           | 1784    | `plantzone.dbss`       | 8,347  | 309 Plant Zone Record | 27                      |
-| 1      | 1784           | 1784    | `plantzoneoffset.dbss` | 3,712  | 309 Offset Row        | 12                      |
+| 2      | 2519 and later | 3474    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
+| 2      | 2519 and later | 3474    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
+| 1      | 1485 to 2107   | 2107    | `plantzone.dbss`       | 8,725  | 323 Plant Zone Record | 27                      |
+| 1      | 1485 to 2107   | 2107    | `plantzoneoffset.dbss` | 3,880  | 323 Offset Row        | 12                      |
 
 | Layout | File                   | Known            | Unknown         |
 | ------ | ---------------------- | ---------------- | --------------- |
 | 2      | `plantzone.dbss`       | 11,721 B (72.8%) | 4,390 B (27.2%) |
 | 2      | `plantzoneoffset.dbss` | 4,394 B (83.3%)  | 878 B (16.7%)   |
-| 1      | `plantzone.dbss`       | 5,257 B (63.0%)  | 3,090 B (37.0%) |
-| 1      | `plantzoneoffset.dbss` | 3,094 B (83.4%)  | 618 B (16.6%)   |
+| 1      | `plantzone.dbss`       | 5,495 B (63.0%)  | 3,230 B (37.0%) |
+| 1      | `plantzoneoffset.dbss` | 3,234 B (83.4%)  | 646 B (16.6%)   |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

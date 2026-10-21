@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Tauschschlüssel",
+    "water": "Grundwasser",
+    "temperature": "Temperatur",
+    "humidity": "Luftfeuchtigkeit",
+    "pruning": "Stutzen",
+    "birds": "Vögel"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Tauschschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Feldfrüchte"
+  }
+}

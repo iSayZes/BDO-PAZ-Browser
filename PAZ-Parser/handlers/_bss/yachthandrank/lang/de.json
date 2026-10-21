@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "name": "Name",
+    "description": "Beschreibung",
+    "targetEye": "Augenzahl",
+    "targetCount": "Gleiche Karten",
+    "straightCount": "Straße",
+    "twoPair": "Zwei Paare",
+    "fullHouse": "Full House",
+    "madePoint": "Feste Punkte",
+    "sumPoint": "Kartensumme",
+    "iconTexture": "Icon-Textur"
+  },
+  "meta": {
+    "count": "{count} Hände"
+  }
+}

@@ -5,7 +5,7 @@ PAZ folder (check_docs.py) and on bytes a test builds.
 """
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -13,7 +13,7 @@ from pathlib import Path
 from .doc_checks import check_doc, is_converted, read_layouts
 from .doc_fit import fit_layouts
 from .doc_index import IndexRows, doc_files
-from .versions import merge_rows, read_rows, rows_from_fit, write_rows
+from .versions import ClientCheck, VersionRow, merge_clients, merge_rows, read_clients, read_rows, rows_from_fit, write_rows
 from .walk_model import LayoutFit, Unwalkable
 
 FileReader = Callable[[str], "bytes | None"]
@@ -52,7 +52,9 @@ def check_doc_file(
 ) -> DocOutcome:
     """Check `path`; with a client, walk its files and rewrite Versions in place when they change (unless `write` is off).
 
-    A doc not in the layout format yet is skipped: the doc rules do not apply to it.
+    A doc not in the layout format yet is skipped: the doc rules do not apply to it. Each client
+    goes into the Clients table: the layout its files fit, `No documented layout` when they fit
+    none, or `No file` when none of the doc's files is in it.
     """
     text = path.read_text(encoding="utf-8")
     if not is_converted(text):
@@ -73,7 +75,11 @@ def check_doc_file(
         else:
             files[name] = data
     if not files:
-        return DocOutcome(path, Status.SKIPPED, (f"none of its files is in the PAZ folder ({', '.join(missing) or 'no files listed'})",))
+        reason = f"none of its files is in the PAZ folder ({', '.join(missing) or 'no files listed'})"
+        if not missing or not write:
+            return DocOutcome(path, Status.SKIPPED, (reason,))
+        is_changed = _write_versions(path, text, layouts[0].number, ClientCheck(client.number, None, False), ())
+        return DocOutcome(path, Status.UPDATED if is_changed else Status.SKIPPED, (reason,))
     try:
         result = fit_layouts(layouts, files)
     except Unwalkable as reason:
@@ -81,13 +87,23 @@ def check_doc_file(
     if not isinstance(result, LayoutFit):
         broken = ", ".join(dict.fromkeys(miss.file for miss in result))
         breaks = tuple(f"Layout {miss.layout} breaks in {miss.file}: {miss.error}" for miss in result)
+        if write:
+            _write_versions(path, text, layouts[0].number, ClientCheck(client.number, None, True), ())
         return DocOutcome(path, Status.NO_FIT, (f"client {client.number} fits no layout of {broken}", *breaks))
     notes = tuple(f"not in the PAZ folder: {name}" for name in missing)
     if not write:
         return DocOutcome(path, Status.OK, notes + (f"fits Layout {result.layout}",))
-    updated = write_rows(text, merge_rows(read_rows(text), rows_from_fit(result, client.number)), layouts[0].number)
+    check = ClientCheck(client.number, result.layout, True)
+    is_changed = _write_versions(path, text, layouts[0].number, check, rows_from_fit(result, client.number))
+    return DocOutcome(path, Status.UPDATED if is_changed else Status.OK, notes)
+
+
+def _write_versions(path: Path, text: str, newest_layout: int, check: ClientCheck, rows: Sequence[VersionRow]) -> bool:
+    """Merges `check` and `rows` into the doc's Versions section; True when the file changed."""
+    clients = merge_clients(read_clients(text), (check,))
+    updated = write_rows(text, merge_rows(read_rows(text), rows), clients, newest_layout)
     if updated == text:
-        return DocOutcome(path, Status.OK, notes)
+        return False
     with path.open("w", encoding="utf-8", newline="") as handle:
         handle.write(updated)
-    return DocOutcome(path, Status.UPDATED, notes)
+    return True

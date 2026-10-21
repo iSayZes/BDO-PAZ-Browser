@@ -6,7 +6,7 @@ Only the latest commit on `main` is supported. Fixes are not backported.
 
 ## Reporting a Vulnerability
 
-Please don't open a public issue. Report it privately through the [Report a vulnerability](https://github.com/iSayZes/BDO-PAZ-Browser/security/advisories/new) form on the Security tab. Only the reporter and I can see it.
+Please don't open a public issue. Report it privately through the [Report a vulnerability](https://github.com/iSayZes/BDO-PAZ-Browser/security/advisories/new) form on the Security tab. Only the reporter and I can see it. If you can't use the form, message me on Discord (`sayzes`) instead.
 
 Include:
 

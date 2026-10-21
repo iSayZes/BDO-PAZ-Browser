@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "ID de la maison",
+    "house": "Maison",
+    "town": "Ville",
+    "node": "Géopoint",
+    "contributionPoints": "Points de contribution",
+    "group": "Groupe",
+    "floor": "Étage",
+    "needHouses": "Requis",
+    "uses": "Utilisation",
+    "products": "Production"
+  },
+  "cells": {
+    "level": "{name} Niv. {level}"
+  },
+  "meta": {
+    "count": "{count} maisons · {products} objets produits"
+  }
+}

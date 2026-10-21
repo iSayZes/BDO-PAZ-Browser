@@ -25,6 +25,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | ----------------------------- | ----------------- | ---------- |
 | 1      | `dropuihuntinggroundinfo.bss` | 28,350 B (100.0%) | 0 B (0.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3473   | Layout 1             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | No file              |
+| 1485   | No file              |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -154,6 +169,11 @@ Ash Forest, Olun's Valley; `4` Aetherion Castle to Scales of Judgment.
 - LOC type 116 names all 112 rows and has one more key, 49, with no row.
   Every monster, item, tag, region, title, node and quest ID in the file has
   LOC text on client 3458.
+- The `CHARACTER_HUNTING_GROUNDS` lookup index inverts `monster_ids`
+  (character key -> the keys of the rows that list it), and
+  `HUNTING_GROUND_NAME_KR` holds `name_kr` by key, the fallback when LOC type
+  116 has no name. The [`monstergroup.dbss`](monstergroup_dbss.md) Hunting
+  Grounds column reads both and links each zone to its row here.
 - `drop_item_ids` holds plain item IDs (`28` Prognyl Silver Bar, `721002`
   Ancient Spirit Dust), not the packed `itemenchant.dbss` key.
 - bdo-viewer (built on bdo-data-extractor) counts 105 zones; the file holds

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "level": "Stufe",
+    "description": "Beschreibung",
+    "handRankCount": "Anzahl Hände",
+    "handRanks": "Hände",
+    "rollCountMax": "Max. Würfe",
+    "matchmaking": "Matchmaking",
+    "iconTexture": "Icon-Textur",
+    "bigTexture": "Große Textur"
+  },
+  "meta": {
+    "count": "{count} Spielbretter"
+  }
+}

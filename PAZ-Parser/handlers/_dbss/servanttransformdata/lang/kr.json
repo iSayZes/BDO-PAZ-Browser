@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "formKey": "외형 ID",
+    "fromCharacterKey": "변경 전 ID",
+    "fromName": "변경 전",
+    "toCharacterKey": "변경 후 ID",
+    "toName": "변경 후"
+  },
+  "offsetColumns": {
+    "formKey": "외형 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "외형 변경 {count}개"
+  }
+}

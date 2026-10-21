@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "minigameKey": "Minispiel",
+    "successWp": "Energie (Erfolg)",
+    "failWp": "Energie (Fehlgeschlagen)",
+    "dropGroup": "Beutegruppe",
+    "dropItems": "Beutegegenstände",
+    "vehicleType": "Fahrzeugtyp"
+  },
+  "offsetColumns": {
+    "minigameKey": "Minispiel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Minispiele"
+  }
+}

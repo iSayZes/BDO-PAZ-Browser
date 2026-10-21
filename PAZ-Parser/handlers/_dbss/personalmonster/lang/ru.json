@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "name": "Босс",
+    "difficulty": "Уровень сложности",
+    "description": "Описание",
+    "image": "Изображение",
+    "dropItems": "Предметы добычи"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Боссов Разлома тьмы: {count}"
+  }
+}

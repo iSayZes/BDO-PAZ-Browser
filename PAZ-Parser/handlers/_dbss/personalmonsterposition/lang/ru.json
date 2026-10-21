@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionIndex": "Индекс позиции",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnDistance": "Расстояние появления"
+  },
+  "offsetColumns": {
+    "positionIndex": "Индекс позиции",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Точек появления Разлома тьмы: {count}"
+  }
+}

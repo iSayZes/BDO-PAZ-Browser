@@ -14,15 +14,30 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `characterobject.dbss`       | 8,182,196 | 28,202 Face, 2,321 Hull, 1,079 Hull Layer, 295 Structure Suffix, 1,160 Structure Body, 5,129 Record, 3,969 Furniture Block, 3,969 Furniture Tail, 3,969 Furniture Body, 865 House Tail | 140       |
 | 2      | 3473 and later | 3474    | `characterobjectoffset.dbss` | 51,310    | 5,129 Index Row                                                                                                                                                                        | 10        |
-| 1      | 1784           | 1784    | `characterobject.dbss`       | 6,264,431 | 2,530 Furniture Block, 2,530 Furniture Tail, 2,530 Furniture Body, 3,480 Record, 25,082 Face, 2,063 Hull, 978 Hull Layer, 149 Structure Suffix, 950 Structure Body, 801 House Tail     | 140       |
-| 1      | 1784           | 1784    | `characterobjectoffset.dbss` | 34,820    | 3,480 Index Row                                                                                                                                                                        | 10        |
+| 1      | 1784 to 2107   | 2107    | `characterobject.dbss`       | 6,476,354 | 25,370 Face, 2,087 Hull, 987 Hull Layer, 151 Structure Suffix, 959 Structure Body, 3,713 Record, 2,754 Furniture Block, 2,754 Furniture Tail, 2,754 Furniture Body, 808 House Tail     | 140       |
+| 1      | 1784 to 2107   | 2107    | `characterobjectoffset.dbss` | 37,150    | 3,713 Index Row                                                                                                                                                                        | 10        |
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
 | 2      | `characterobject.dbss`       | 1,382,626 B (16.9%) | 6,799,570 B (83.1%) |
 | 2      | `characterobjectoffset.dbss` | 51,310 B (100.0%)   | 0 B (0.0%)          |
-| 1      | `characterobject.dbss`       | 980,943 B (15.7%)   | 5,283,488 B (84.3%) |
-| 1      | `characterobjectoffset.dbss` | 34,820 B (100.0%)   | 0 B (0.0%)          |
+| 1      | `characterobject.dbss`       | 1,034,924 B (16.0%) | 5,441,430 B (84.0%) |
+| 1      | `characterobjectoffset.dbss` | 37,150 B (100.0%)   | 0 B (0.0%)          |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

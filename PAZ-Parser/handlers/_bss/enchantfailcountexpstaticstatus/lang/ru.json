@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "stack": "Стек",
+    "fairyFeedKey": "Ключ кормления",
+    "enchantLevel": "Уровень усиления"
+  },
+  "meta": {
+    "count": "Значений: {count} · стеков: {stack_count}"
+  }
+}

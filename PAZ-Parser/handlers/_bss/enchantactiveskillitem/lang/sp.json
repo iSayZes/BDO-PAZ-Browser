@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "item": "Objeto",
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad",
+    "skillLevel": "Nivel de habilidad"
+  },
+  "meta": {
+    "count": "{count} niveles de equipo con habilidad"
+  }
+}

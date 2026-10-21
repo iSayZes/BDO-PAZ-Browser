@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Key",
+    "level": "Level",
+    "description": "Description",
+    "handRankCount": "Hands",
+    "handRanks": "Hand Ranks",
+    "rollCountMax": "Max Rolls",
+    "matchmaking": "Matchmaking",
+    "iconTexture": "Icon Texture",
+    "bigTexture": "Large Texture"
+  },
+  "meta": {
+    "count": "{count} game boards"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "randomSpawnKey": "Clé d'apparition aléatoire",
+    "characterId": "ID du personnage",
+    "character": "Personnage",
+    "spawnList": "Liste",
+    "worldMapIcon": "Icône de la carte du monde",
+    "bossIcon": "Icône du boss",
+    "noticeBackground": "Fond de la notification",
+    "notice": "Notification",
+    "revealNotice": "Notification de révélation"
+  },
+  "spawnLists": {
+    "boss": "Boss",
+    "npc": "PNJ"
+  },
+  "meta": {
+    "count": "{count} apparitions aléatoires"
+  }
+}

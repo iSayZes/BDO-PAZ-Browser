@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Clé de personnage",
+    "name": "Nom",
+    "unlockBoss": "Déblocage : boss",
+    "unlockKnowledge": "Déblocage : connaissance",
+    "offence": "Attaque",
+    "defence": "Défense",
+    "weakAura": "Énergie de faiblesse",
+    "difficulty": "Difficulté",
+    "group": "Groupe",
+    "boss": "Boss",
+    "part": "Partie",
+    "showRewards": "Récompenses",
+    "position": "Position",
+    "minAp": "PA min."
+  },
+  "parts": {
+    "solo": "Donghae (Solo)",
+    "party": "Hwanghae (Groupe)"
+  },
+  "difficulties": {
+    "calamity": "Calamité {number}",
+    "normal": "Normal",
+    "hard": "Difficile"
+  },
+  "meta": {
+    "count": "{count} monstres du Sanctuaire noir · {bosses} boss"
+  }
+}

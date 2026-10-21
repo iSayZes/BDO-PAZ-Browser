@@ -18,17 +18,31 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes                |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | ------------------------ |
-| 2      | 3474 and later | 3474    | `employeecharactership.dbss`       | 3,348 | 38 Ship Row   | 76 to 114, 88 on average |
-| 2      | 3474 and later | 3474    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
-| 1      | 1784           | 1784    | `employeecharactership.dbss`       | 3,446 | 36 Ship Row   | 84 to 122, 96 on average |
-| 1      | 1784           | 1784    | `employeecharactershipoffset.dbss` | 364   | 36 Offset Row | 10                       |
+| 2      | 3251 and later | 3474    | `employeecharactership.dbss`       | 3,348 | 38 Ship Row   | 76 to 114, 88 on average |
+| 2      | 3251 and later | 3474    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
+| 1      | 1485 to 3002   | 3002    | `employeecharactership.dbss`       | 3,652 | 38 Ship Row   | 84 to 122, 96 on average |
+| 1      | 1485 to 3002   | 3002    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
 
 | Layout | File                               | Known           | Unknown       |
 | ------ | ---------------------------------- | --------------- | ------------- |
 | 2      | `employeecharactership.dbss`       | 3,044 B (90.9%) | 304 B (9.1%)  |
 | 2      | `employeecharactershipoffset.dbss` | 384 B (100.0%)  | 0 B (0.0%)    |
-| 1      | `employeecharactership.dbss`       | 2,870 B (83.3%) | 576 B (16.7%) |
-| 1      | `employeecharactershipoffset.dbss` | 364 B (100.0%)  | 0 B (0.0%)    |
+| 1      | `employeecharactership.dbss`       | 3,044 B (83.4%) | 608 B (16.6%) |
+| 1      | `employeecharactershipoffset.dbss` | 384 B (100.0%)  | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 
@@ -217,7 +231,10 @@ row. `ContentsGroupKey` has no place in the row.
 - `employee_spawn_count` equals the number of rows per `CharacterKey` in the
   `EmployeeShipSpawnPosition_Table` sheet of the same private server (1 for
   the Epheria Sailboat, 3 for the Caravel and Galleass, 5 for the Carracks).
-  No client file of that name exists on client 3474.
+  The client compiles that sheet to
+  [`employeeclientspawn.dbss`](employeeclientspawn_dbss.md), where 12 of
+  the 13 ships with a count above `0` have that many rows on client 3474;
+  the Panokseon (`31025`, count 5) has none.
 - On client 3474, 15 rows hold only `food_max` and `is_summon_full`: the
   rowboats, rafts, fishing boats, the three Epheria Cogs and the Trader
   (`9096`). `is_summon_full` is `1` on all of them but the Trader, and on

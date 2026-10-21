@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "class": "Clase",
+    "textureId": "ID de textura"
+  },
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} tipos de clase"
+  }
+}

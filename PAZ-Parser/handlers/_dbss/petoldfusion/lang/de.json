@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "fusionKey": "Fusionsschlüssel",
+    "species": "Spezies-ID",
+    "variant": "Variante",
+    "mainTier": "Hauptbegleiter",
+    "pets": "Begleiter",
+    "result": "Ergebnis {index}",
+    "chance": "Chance {index}"
+  },
+  "offsetColumns": {
+    "fusionKey": "Fusionsschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "tier": "Rang {tier}",
+  "meta": {
+    "count": "{count} Fusionsschlüssel"
+  }
+}

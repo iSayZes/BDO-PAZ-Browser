@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clave",
+    "symbol": "Símbolo",
+    "eye": "Valor",
+    "image": "Imagen"
+  },
+  "offsetColumns": {
+    "key": "Clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} cartas"
+  }
+}

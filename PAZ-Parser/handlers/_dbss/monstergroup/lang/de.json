@@ -1,0 +1,16 @@
+{
+  "offsetColumns": {
+    "groupKey": "Gruppenschlüssel",
+    "byteOffset": "Byte-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "groupKey": "Gruppenschlüssel",
+    "memberCount": "Mitglieder",
+    "monsters": "Monster",
+    "huntingGrounds": "Monstergebiete"
+  },
+  "meta": {
+    "count": "{count} Monstergruppen · {members} Mitglieder"
+  }
+}

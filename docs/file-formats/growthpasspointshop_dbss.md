@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | -------------------------------- | ----- | -------------------- | --------- |
 | 2      | 3473 and later | 3474    | `growthpasspointshop.dbss`       | 4     | -                    | -         |
 | 2      | 3473 and later | 3474    | `growthpasspointshopoffset.dbss` | 4     | -                    | -         |
-| 1      | 1784           | 1784    | `growthpasspointshop.dbss`       | 424   | 15 Point Shop Record | 28        |
-| 1      | 1784           | 1784    | `growthpasspointshopoffset.dbss` | 184   | 15 Index Row         | 12        |
+| 1      | 1784 to 3251   | 3251    | `growthpasspointshop.dbss`       | 424   | 15 Point Shop Record | 28        |
+| 1      | 1784 to 3251   | 3251    | `growthpasspointshopoffset.dbss` | 184   | 15 Index Row         | 12        |
 
 | Layout | File                             | Known          | Unknown       |
 | ------ | -------------------------------- | -------------- | ------------- |
@@ -26,6 +26,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `growthpasspointshopoffset.dbss` | 4 B (100.0%)   | 0 B (0.0%)    |
 | 1      | `growthpasspointshop.dbss`       | 124 B (29.2%)  | 300 B (70.8%) |
 | 1      | `growthpasspointshopoffset.dbss` | 184 B (100.0%) | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

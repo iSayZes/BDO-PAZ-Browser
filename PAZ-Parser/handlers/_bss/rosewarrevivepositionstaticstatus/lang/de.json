@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "respawnPositionType": "Wiederbelebungspunkt-Typ",
+    "sanctumId": "Heiligtum-ID",
+    "positions": "Positionen"
+  },
+  "meta": {
+    "count": "{count} Wiederbelebungspunkte"
+  }
+}

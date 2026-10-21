@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "skillNo": "N.º de habilidad",
+    "skill": "Fusión de habilidades",
+    "mainSkillNo": "N.º de habilidad principal",
+    "mainSkill": "Habilidad principal",
+    "subSkillNo": "N.º de habilidad secundaria",
+    "subSkill": "Habilidad secundaria",
+    "slot": "Casilla",
+    "order": "Orden"
+  },
+  "offsetColumns": {
+    "skillKey": "Clave de habilidad",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} fusiones de habilidades"
+  }
+}

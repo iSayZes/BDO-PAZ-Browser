@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "fieldNo": "Feld-Nr.",
+    "name": "Name",
+    "resource": "Ressource",
+    "type": "Typ",
+    "spawn": "Startpunkt",
+    "sectorX": "Sektor X",
+    "sectorY": "Sektor Y",
+    "sectorZ": "Sektor Z",
+    "players": "Spieler",
+    "ridable": "Reittier erlaubt",
+    "rangeSpawn": "Welt-Spawns",
+    "dropRate": "Beuterate"
+  },
+  "meta": {
+    "count": "{count} Felder"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "puzzleKey": "Puzzle Key",
+    "pieces": "Pieces",
+    "pattern": "Pattern",
+    "size": "Size"
+  },
+  "offsetColumns": {
+    "puzzleKey": "Puzzle Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} inventory puzzles"
+  }
+}

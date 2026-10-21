@@ -78,3 +78,50 @@ def test_item_name_falls_back_to_the_korean_name() -> None:
 
     assert item_name(unnamed_item) == "[이벤트] 울타리"
     assert item_name(unnamed_item - 1) == ""
+
+
+def test_character_name_falls_back_to_the_korean_name() -> None:
+    from _common.character import character_loc_name, character_name
+
+    # A character ID no LOC names, so the result does not depend on a loaded LOC.
+    unnamed_character = 0xFFFE
+    init_index(IndexKind.CHARACTER_NAME_KR, {unnamed_character: "[장미 전쟁] 화염탑"})
+
+    assert character_name(unnamed_character) == "[장미 전쟁] 화염탑"
+    assert character_loc_name(unnamed_character) == ""
+    assert character_name(unnamed_character - 1) == ""
+
+
+def test_character_title_falls_back_to_the_korean_title() -> None:
+    from _common.character import character_loc_title, character_title
+
+    # A character ID no LOC names, so the result does not depend on a loaded LOC.
+    untitled_character = 0xFFFE
+    init_index(IndexKind.CHARACTER_TITLE_KR, {untitled_character: "<메이드 통합>"})
+
+    assert character_title(untitled_character) == "<메이드 통합>"
+    assert character_loc_title(untitled_character) == ""
+    assert character_title(untitled_character - 1) == ""
+
+
+def test_hunting_ground_name_falls_back_to_the_korean_name() -> None:
+    from _common.hunting_ground import hunting_ground_name, hunting_ground_text
+
+    # A key no LOC names, so the result does not depend on a loaded LOC.
+    unnamed_ground = 0xFFFFFE
+    init_index(IndexKind.HUNTING_GROUND_NAME_KR, {unnamed_ground: "Lv.74 아레시온 신전"})
+
+    assert hunting_ground_name(unnamed_ground) == "Lv.74 아레시온 신전"
+    assert hunting_ground_name(unnamed_ground - 1) == ""
+    assert hunting_ground_text(unnamed_ground - 1) == str(unnamed_ground - 1)
+
+
+def test_character_hunting_grounds_join_every_member() -> None:
+    from _common.hunting_ground import character_hunting_grounds
+
+    init_index(IndexKind.CHARACTER_HUNTING_GROUNDS, {1: (20, 13), 2: (13,), 3: (21,)})
+
+    assert character_hunting_grounds([1, 2, 3]) == (13, 20, 21)
+    assert character_hunting_grounds([2, 4]) == (13,)
+    assert character_hunting_grounds([4]) == ()
+    assert character_hunting_grounds([]) == ()

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillNo": "ID навыка",
+    "skill": "Навык",
+    "classes": "Классы",
+    "shownSkillNo": "ID показанного навыка",
+    "shownSkill": "Показанный навык",
+    "learnCheckSkillNo": "ID проверяемого навыка",
+    "learnCheckSkill": "Проверяемый навык"
+  },
+  "offsetColumns": {
+    "skillKey": "Ключ навыка",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Замен навыков: {count}"
+  }
+}

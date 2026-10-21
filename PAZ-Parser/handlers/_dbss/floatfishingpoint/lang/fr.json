@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "pointKey": "Clé du site",
+    "pointSize": "Taille",
+    "startX": "Début X",
+    "startY": "Début Y",
+    "startZ": "Début Z",
+    "endX": "Fin X",
+    "endZ": "Fin Z",
+    "fishingGroup": "Groupe de pêche",
+    "characterKey": "ID du personnage",
+    "character": "Personnage",
+    "actionIndex": "Index d'action"
+  },
+  "offsetColumns": {
+    "pointKey": "Clé du site",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} sites de pêche"
+  }
+}

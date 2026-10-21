@@ -12,13 +12,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes | Records                      | Row bytes |
 | ------ | -------------- | ------- | ------------------------------ | ----- | ---------------------------- | --------- |
-| 1      | 1784 and later | 3474    | `employeespawninfo.dbss`       | 3,702 | 20 Hire Block, 20 Sailor Row | 44        |
-| 1      | 1784 and later | 3474    | `employeespawninfooffset.dbss` | 204   | 20 Offset Row                | 10        |
+| 1      | 1485 and later | 3474    | `employeespawninfo.dbss`       | 3,702 | 20 Hire Block, 20 Sailor Row | 44        |
+| 1      | 1485 and later | 3474    | `employeespawninfooffset.dbss` | 204   | 20 Offset Row                | 10        |
 
 | Layout | File                           | Known           | Unknown       |
 | ------ | ------------------------------ | --------------- | ------------- |
 | 1      | `employeespawninfo.dbss`       | 3,062 B (82.7%) | 640 B (17.3%) |
 | 1      | `employeespawninfooffset.dbss` | 204 B (100.0%)  | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 
@@ -110,7 +124,7 @@ The rows are in file order, which is not key order (59061, 59053, 59055, 59064, 
 | Hire item       | type 0, `str_id1` = `hire_item_key`                       |
 | Town            | type 17, `str_id1` = `region_key` of the spawn position   |
 
-LOC type 70 holds exactly these 40 lines on client 3458, `str_id4` 0 and 1 for each of the 20 characters. The English line matches the inline Korean one (59053: "I will get rid of all the prejudice you have on Goblins." for "고블린에 대한 편견을 다 없애드리지요."). The handler shows the LOC text and falls back to the inline Korean.
+LOC type 70 holds exactly these 40 lines on client 3458, `str_id4` 0 and 1 for each of the 20 characters. The English line matches the inline Korean one (59053: "I will get rid of all the prejudice you have on Goblins." for "고블린에 대한 편견을 다 없애드리지요."). The handler shows the LOC text and falls back to the inline Korean. Without LOC the Name and Title columns show the Korean `characterstatic.dbss` name and title (`59053` `선원 <욕심 있는>`).
 
 ## Notes
 

@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from _bss.itemexchangesource.parser import Material, parse_itemexchangesource_records
+from _common.work_ani_type import NO_WORK_ANI_TYPE
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -54,7 +55,7 @@ CASE = HandlerCase(
         DeclaredCountTest(declared=header_count(offset=4)),
         RangeTest(col="exchange_type", min_val=0, max_val=10),
         RangeTest(col="product_category", min_val=0, max_val=8),
-        RangeTest(col="work_ani_type", min_val=0, max_val=9),
+        RangeTest(col="work_ani_type", min_val=0, max_val=NO_WORK_ANI_TYPE),
         UserLanguageTest(fields=["name", "detail_description"]),
         TargetTest(
             col="key",

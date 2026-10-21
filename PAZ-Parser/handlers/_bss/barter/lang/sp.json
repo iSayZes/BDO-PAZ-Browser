@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "fromItem": "Objeto entregado",
+    "fromCount": "Cantidad entregada",
+    "toItem": "Objeto recibido",
+    "toCount": "Cantidad recibida",
+    "needPoint": "Puntos necesarios",
+    "exchanges": "Intercambios",
+    "exchangeMin": "Intercambio mín.",
+    "exchangeMax": "Intercambio máx."
+  }
+}

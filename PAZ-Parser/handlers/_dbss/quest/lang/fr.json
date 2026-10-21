@@ -11,6 +11,7 @@
     "completeNpc": "PNJ (Terminer)",
     "condition": "Condition",
     "action": "Action",
+    "killGroups": "Groupes à vaincre",
     "objective": "Objectif",
     "rewards": "Récompenses",
     "selectRewards": "Récompenses au choix",

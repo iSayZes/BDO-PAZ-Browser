@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "paletteType": "팔레트 종류",
+    "palette": "팔레트",
+    "paletteIndex": "팔레트 번호",
+    "color": "색상",
+    "environment": "환경",
+    "specular": "반사",
+    "items": "염색약"
+  },
+  "offsetColumns": {
+    "paletteType": "팔레트 종류",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "팔레트 색상 {count}개"
+  }
+}

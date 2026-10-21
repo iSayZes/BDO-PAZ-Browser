@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "mainMessage": "Hauptnachricht",
+    "subMessage": "Untertitel"
+  },
+  "offsetColumns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gegenstandsnachrichten"
+  }
+}

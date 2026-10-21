@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "mainTier": "Main Pet",
+    "result1": "Result 1",
+    "chance1": "Chance 1",
+    "result2": "Result 2",
+    "chance2": "Chance 2",
+    "subTier": "+ Tier {tier}",
+    "gosphy": "+ Wizard Gosphy"
+  },
+  "offsetColumns": {
+    "tier": "Tier",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "tier": "Tier {tier}",
+  "meta": {
+    "mainTiers": "{count} main pet tiers"
+  }
+}

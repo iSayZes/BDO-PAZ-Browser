@@ -1,0 +1,1 @@
+"""fishcompetition.bss preview handler."""

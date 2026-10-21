@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "difficulty": "Schwierigkeitsgrad",
+    "difficultyName": "Name",
+    "gear": "Ausrüstung",
+    "enchantLevel": "Verstärkungsstufe",
+    "resultItem": "Ergebnis"
+  },
+  "difficulties": {
+    "1": "Einfach",
+    "2": "Normal",
+    "3": "Schwer"
+  },
+  "gear": {
+    "weapon": "Waffe",
+    "armor": "Rüstung"
+  },
+  "meta": {
+    "count": "{count} Extraktionsergebnisse"
+  }
+}

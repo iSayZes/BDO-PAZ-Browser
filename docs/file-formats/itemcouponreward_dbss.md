@@ -15,13 +15,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3474    | `itemcouponreward.dbss`       | 16    | -       | -         |
-| 1      | 1784 and later | 3474    | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
+| 1      | 1485 and later | 3474    | `itemcouponreward.dbss`       | 16    | -       | -         |
+| 1      | 1485 and later | 3474    | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
 
 | Layout | File                          | Known       | Unknown      |
 | ------ | ----------------------------- | ----------- | ------------ |
 | 1      | `itemcouponreward.dbss`       | 4 B (25.0%) | 12 B (75.0%) |
 | 1      | `itemcouponrewardoffset.dbss` | 4 B (20.0%) | 16 B (80.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

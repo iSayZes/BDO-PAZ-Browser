@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "auctionNo": "Auktionsnr.",
+    "auctionType": "Typ",
+    "description": "Beschreibung",
+    "startTickCount": "Start-Tick",
+    "intervalTickCount": "Intervall-Tick",
+    "houses": "Häuser",
+    "items": "Gegenstände"
+  },
+  "offsetColumns": {
+    "auctionNo": "Auktionsnr.",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "goods": {
+    "entry": "{name}: {price}"
+  },
+  "meta": {
+    "count": "{count} Auktionen"
+  }
+}

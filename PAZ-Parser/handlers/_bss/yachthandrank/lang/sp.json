@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Clave",
+    "name": "Nombre",
+    "description": "Descripción",
+    "targetEye": "Valor",
+    "targetCount": "Cartas iguales",
+    "straightCount": "Escalera",
+    "twoPair": "Doble pareja",
+    "fullHouse": "Full",
+    "madePoint": "Puntos fijos",
+    "sumPoint": "Suma de cartas",
+    "iconTexture": "Textura del icono"
+  },
+  "meta": {
+    "count": "{count} manos"
+  }
+}

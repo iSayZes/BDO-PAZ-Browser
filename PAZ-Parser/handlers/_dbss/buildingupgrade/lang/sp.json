@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterKey": "ID de personaje",
+    "name": "Edificio",
+    "upgradeTime": "Tiempo de mejora",
+    "upgradeLevel": "Nivel de mejora",
+    "targetCharacterKey": "ID de destino",
+    "targetName": "Se convierte en",
+    "sourceItems": "Materiales"
+  },
+  "offsetColumns": {
+    "characterKey": "ID de personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} mejoras de edificio"
+  }
+}

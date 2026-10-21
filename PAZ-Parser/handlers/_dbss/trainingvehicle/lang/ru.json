@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "name": "Имя",
+    "grade": "Ранг"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Персонажей: {count}"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "count": "개수",
+    "highestKey": "최대 기술 ID"
+  },
+  "meta": {
+    "summary": "탑승물과 선박 기술 최대 ID + 1"
+  }
+}

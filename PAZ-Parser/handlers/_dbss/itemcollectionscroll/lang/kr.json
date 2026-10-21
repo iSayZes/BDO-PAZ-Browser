@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "grade": "단계",
+    "dropRate": "아이템 획득 확률",
+    "countRate": "아이템 획득 수량",
+    "costPercent": "시간 소모"
+  },
+  "offsetColumns": {
+    "grade": "단계",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "단계 {count}개"
+  }
+}

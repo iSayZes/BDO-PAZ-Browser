@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "puzzleKey": "퍼즐 키",
+    "pieces": "조각",
+    "pattern": "배치",
+    "size": "크기"
+  },
+  "offsetColumns": {
+    "puzzleKey": "퍼즐 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "인벤 퍼즐 {count}개"
+  }
+}

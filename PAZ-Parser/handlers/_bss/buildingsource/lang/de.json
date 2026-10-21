@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "name": "Gebäude",
+    "buildTime": "Bauzeit",
+    "workAnimation": "Arbeitsanimation",
+    "repairItems": "Reparaturmaterialien",
+    "repairPercents": "Reparaturanteil",
+    "repairTime": "Reparaturzeit"
+  },
+  "meta": {
+    "count": "{count} Gebäudebausätze"
+  }
+}

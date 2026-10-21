@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemKey": "Ключ предмета",
+    "item": "Предмет",
+    "paletteType": "Тип палитры",
+    "palette": "Палитра",
+    "paletteIndex": "Индекс палитры",
+    "color": "Цвет"
+  },
+  "offsetColumns": {
+    "itemKey": "Ключ предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Красители: {count}"
+  }
+}

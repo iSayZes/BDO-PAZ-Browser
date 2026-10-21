@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Ключ обмена",
+    "water": "Грунтовые воды",
+    "temperature": "Температура",
+    "humidity": "Влажность",
+    "pruning": "Обрезка растений",
+    "birds": "Птицы"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Ключ обмена",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Урожай: {count}"
+  }
+}

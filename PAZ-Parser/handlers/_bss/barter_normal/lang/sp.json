@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "regionKey": "Clave de región",
+    "region": "Región",
+    "npc": "PNJ",
+    "material": "Material",
+    "slot": "Casilla",
+    "selectRate": "Tasa de selección",
+    "subGroup": "Subgrupo",
+    "category": "Categoría"
+  },
+  "meta": {
+    "count": "{count} casillas de trueque · {regions} regiones"
+  }
+}

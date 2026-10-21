@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "ID дома",
+    "house": "Дом",
+    "town": "Поселение",
+    "node": "Узел",
+    "contributionPoints": "Очки влияния",
+    "group": "Группа",
+    "floor": "Этаж",
+    "needHouses": "Требуется",
+    "uses": "Применение",
+    "products": "Производство"
+  },
+  "cells": {
+    "level": "{name} ур. {level}"
+  },
+  "meta": {
+    "count": "Домов: {count} · производимых предметов: {products}"
+  }
+}

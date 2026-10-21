@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "cards": "Карты"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Костей: {count}"
+  }
+}

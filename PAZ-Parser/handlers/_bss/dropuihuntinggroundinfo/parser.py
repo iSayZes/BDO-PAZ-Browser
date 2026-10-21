@@ -110,3 +110,24 @@ def parse_hunting_ground_records(data: bytes) -> list[dict]:
         )
     return records
 
+
+def build_character_hunting_ground_index(data: bytes) -> dict[int, tuple[int, ...]]:
+    """Map each character in a `monster_ids` list to the hunting ground keys that list it, ascending.
+
+    For `IndexKind.CHARACTER_HUNTING_GROUNDS`: tables that store monster
+    character keys (`monstergroup.dbss`) name the zones without opening this file.
+    """
+    grounds: dict[int, set[int]] = {}
+    for record in parse_hunting_ground_records(data):
+        for character_key in record["monster_ids"]:
+            grounds.setdefault(character_key, set()).add(record["key"])
+    return {character_key: tuple(sorted(keys)) for character_key, keys in grounds.items()}
+
+
+def build_hunting_ground_name_kr_index(data: bytes) -> dict[int, str]:
+    """Map each hunting ground key to its Korean name, for `IndexKind.HUNTING_GROUND_NAME_KR`.
+
+    The fallback of `hunting_ground_name()` when LOC type 116 has no name.
+    """
+    return {record["key"]: record["name_kr"].strip() for record in parse_hunting_ground_records(data)}
+

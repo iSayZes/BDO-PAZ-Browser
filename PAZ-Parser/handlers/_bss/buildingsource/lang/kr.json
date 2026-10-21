@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "name": "건물",
+    "buildTime": "건설 시간",
+    "workAnimation": "작업 애니메이션",
+    "repairItems": "수리 재료",
+    "repairPercents": "수리 비율",
+    "repairTime": "수리 시간"
+  },
+  "meta": {
+    "count": "건설 키트 {count}개"
+  }
+}

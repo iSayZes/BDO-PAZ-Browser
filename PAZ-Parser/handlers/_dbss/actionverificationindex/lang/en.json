@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class"
+  },
+  "offsetColumns": {
+    "classType": "Class Type",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "meta": {
+    "count": "{count} class types"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "skillNo": "Skill No.",
+    "skill": "Skill Enhancement",
+    "mainSkillNo": "Main Skill No.",
+    "mainSkill": "Main Skill",
+    "subSkillNo": "Sub Skill No.",
+    "subSkill": "Sub Skill",
+    "slot": "Slot",
+    "order": "Order"
+  },
+  "offsetColumns": {
+    "skillKey": "Skill Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} skill enhancements"
+  }
+}

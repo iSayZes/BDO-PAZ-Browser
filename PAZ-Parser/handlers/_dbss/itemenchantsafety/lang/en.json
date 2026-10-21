@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "type": "Type",
+    "gear": "Gear",
+    "minLevel": "Min Level",
+    "maxLevel": "Max Level",
+    "stack": "Stack Limit",
+    "cautionStack": "Caution Stack",
+    "cautionRate": "Caution Chance"
+  },
+  "gear": {
+    "0": "Weapons",
+    "1": "Armor",
+    "2": "Accessories",
+    "3": "Tools and mount gear",
+    "4": "Silver Embroidered clothes"
+  },
+  "offsetColumns": {
+    "type": "Type",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} gear types"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Charakter-Schlüssel",
+    "name": "Name",
+    "unlockBoss": "Freischaltung: Boss",
+    "unlockKnowledge": "Freischaltung: Wissen",
+    "offence": "Angriff",
+    "defence": "Verteidigung",
+    "weakAura": "Schwäche (Energie)",
+    "difficulty": "Schwierigkeitsgrad",
+    "group": "Gruppe",
+    "boss": "Boss",
+    "part": "Teil",
+    "showRewards": "Belohnungen",
+    "position": "Position",
+    "minAp": "Min. AK"
+  },
+  "parts": {
+    "solo": "Donghae-Provinz (Einzelperson)",
+    "party": "Hwanghae-Provinz (Gruppe)"
+  },
+  "difficulties": {
+    "calamity": "Unheilsstufe {number}",
+    "normal": "Normal",
+    "hard": "Schwer"
+  },
+  "meta": {
+    "count": "{count} Monster des Finsteren Schreins · {bosses} Bosse"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "fishKey": "Clé du poisson",
+    "fish": "Poisson",
+    "grade": "Niveau",
+    "rewards": "Récompenses de classement",
+    "titleItem": "Objet de titre"
+  },
+  "text": {
+    "rank": "Rang {rank}",
+    "rankRange": "Rangs {first}-{last}"
+  },
+  "meta": {
+    "count": "{count} poissons du concours"
+  }
+}

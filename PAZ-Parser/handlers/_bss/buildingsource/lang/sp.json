@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "name": "Edificio",
+    "buildTime": "Tiempo de construcción",
+    "workAnimation": "Animación de trabajo",
+    "repairItems": "Materiales de reparación",
+    "repairPercents": "Porcentaje de reparación",
+    "repairTime": "Tiempo de reparación"
+  },
+  "meta": {
+    "count": "{count} kits de construcción"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "fromItem": "주는 아이템",
+    "fromCount": "주는 수량",
+    "toItem": "받는 아이템",
+    "toCount": "받는 수량",
+    "needPoint": "필요 포인트",
+    "exchanges": "교환 횟수",
+    "exchangeMin": "교환 최소",
+    "exchangeMax": "교환 최대"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "characterKey": "ID del personaje",
+    "name": "Nombre",
+    "skillPointExp": "Exp. (Habilidades)",
+    "guildMoney": "Fondos de hermandad"
+  },
+  "offsetColumns": {
+    "characterKey": "ID del personaje",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} personajes"
+  }
+}

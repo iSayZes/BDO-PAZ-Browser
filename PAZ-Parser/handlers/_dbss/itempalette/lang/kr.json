@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "paletteType": "팔레트 종류",
+    "palette": "팔레트",
+    "paletteIndex": "팔레트 번호",
+    "color": "색상"
+  },
+  "offsetColumns": {
+    "itemKey": "아이템 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "염색약 {count}개"
+  }
+}

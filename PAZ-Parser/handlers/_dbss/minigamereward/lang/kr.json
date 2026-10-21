@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "minigameKey": "미니게임",
+    "successWp": "기운 (성공)",
+    "failWp": "기운 (실패)",
+    "dropGroup": "드롭 그룹",
+    "dropItems": "드롭 아이템",
+    "vehicleType": "탑승물 종류"
+  },
+  "offsetColumns": {
+    "minigameKey": "미니게임",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "미니게임 {count}개"
+  }
+}

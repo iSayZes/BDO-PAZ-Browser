@@ -1,4 +1,4 @@
-// A doc page: the format list in the sidebar, the layout tabs and the byte map hover.
+// A doc page: the format list in the sidebar, the layout timeline (or tabs) and the byte map hover.
 // The page content itself is static HTML; CURRENT_PAGE names this page's file.
 (function () {
   "use strict";
@@ -46,28 +46,94 @@
       W.countChip(f.ig, "ig", "⌖", "in-game check", "in-game checks") + "</span></a></li>";
   }
 
+  // Shows layout `n`: its panel, its band on the timeline (or its tab), its Versions bar, the pill and the readout.
   function showLayout(n) {
+    var key = String(n);
     document.querySelectorAll("#layoutTabs button").forEach(function (b) {
-      var on = b.dataset.layout === String(n);
+      var on = b.dataset.layout === key;
       b.classList.toggle("active", on);
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
-    document.querySelectorAll(".layout-panel").forEach(function (p) {
-      p.hidden = p.dataset.layout !== String(n);
+    document.querySelectorAll(".tl-band[data-layout]").forEach(function (b) {
+      var on = b.dataset.layout === key;
+      b.classList.toggle("sel", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
     });
-    try { localStorage.setItem("pazdocs-layout-" + CURRENT_PAGE, String(n)); } catch (e) { /* storage blocked */ }
+    document.querySelectorAll(".ver[data-layout]").forEach(function (v) { v.classList.toggle("sel", v.dataset.layout === key); });
+    document.querySelectorAll(".layout-panel").forEach(function (p) { p.hidden = p.dataset.layout !== key; });
+    var source = document.querySelector('[data-layout="' + key + '"][data-pill]');
+    var pill = document.getElementById("layoutPill");
+    if (source && pill) pill.textContent = source.dataset.pill;
+    if (source && source.dataset.read) setReadout("Layout " + key, source.dataset.read);
+    try { localStorage.setItem("pazdocs-layout-" + CURRENT_PAGE, key); } catch (e) { /* storage blocked */ }
   }
 
-  function initLayoutTabs() {
-    var tabs = document.getElementById("layoutTabs");
-    if (!tabs) return;
+  function setReadout(name, text) {
+    var nameEl = document.getElementById("tlReadName");
+    var textEl = document.getElementById("tlReadText");
+    if (nameEl && textEl) { nameEl.textContent = name; textEl.textContent = text; }
+  }
+
+  // The layout picker is the timeline's bands, or the tabs on a doc without Versions rows.
+  function initLayoutPicker() {
+    var pickers = document.querySelectorAll(".tl-band[data-layout], #layoutTabs button[data-layout]");
+    if (!pickers.length) return;
     var saved = null;
     try { saved = localStorage.getItem("pazdocs-layout-" + CURRENT_PAGE); } catch (e) { saved = null; }
-    var valid = saved !== null && document.querySelector('#layoutTabs button[data-layout="' + saved + '"]');
-    showLayout(valid ? saved : tabs.querySelector("button").dataset.layout);
-    tabs.addEventListener("click", function (ev) {
-      var btn = ev.target.closest("button[data-layout]");
+    var valid = saved !== null && document.querySelector('.layout-panel[data-layout="' + saved + '"]');
+    var initial = document.querySelector(".tl-band.sel[data-layout], #layoutTabs button.active") || pickers[0];
+    showLayout(valid ? saved : initial.dataset.layout);
+    document.addEventListener("click", function (ev) {
+      var btn = ev.target.closest(".tl-band[data-layout], #layoutTabs button[data-layout]");
       if (btn) showLayout(btn.dataset.layout);
+    });
+    var track = document.querySelector(".tl-track");
+    if (track) {
+      thinLabels(track);
+      window.addEventListener("resize", function () { thinLabels(track); });
+    }
+  }
+
+  // Timeline labels that would touch: a layout label shortens to "L7", then labels and ticks thin out left to right.
+  var LABEL_GAP_PX = 10;
+  function thinLabels(track) {
+    var ticks = Array.prototype.slice.call(track.querySelectorAll(".tl-tick"));
+    var labels = Array.prototype.slice.call(track.querySelectorAll(".tl-band-label"));
+    ticks.concat(labels).forEach(function (el) { el.classList.remove("thin"); });
+    labels.forEach(function (el) {
+      var band = el.parentElement;
+      if (band.dataset.layout) el.textContent = "Layout " + band.dataset.layout;
+    });
+    labels.forEach(function (el) {
+      var band = el.parentElement;
+      if (band.dataset.layout && labels.some(function (other) { return other !== el && overlaps(el, other); })) el.textContent = "L" + band.dataset.layout;
+    });
+    labels.forEach(function (el) { keepInside(el, track); });
+    thinRow(ticks);
+    thinRow(labels);
+  }
+
+  // A label wider than a band at either end of the track aligns to that end instead of running past it.
+  function keepInside(label, track) {
+    label.classList.remove("to-start", "to-end");
+    var box = label.getBoundingClientRect(), edges = track.getBoundingClientRect();
+    if (box.right > edges.right) label.classList.add("to-end");
+    else if (box.left < edges.left) label.classList.add("to-start");
+  }
+
+  function overlaps(a, b) {
+    var x = a.getBoundingClientRect(), y = b.getBoundingClientRect();
+    return x.left < y.right + LABEL_GAP_PX && y.left < x.right + LABEL_GAP_PX;
+  }
+
+  function thinRow(items) {
+    var sorted = items.slice().sort(function (a, b) { return a.getBoundingClientRect().left - b.getBoundingClientRect().left; });
+    var lastRight = -Infinity;
+    sorted.forEach(function (el) {
+      var box = el.getBoundingClientRect();
+      var keep = el.parentElement.classList.contains("sel") || box.left - lastRight >= LABEL_GAP_PX;
+      el.classList.toggle("thin", !keep);
+      if (keep) lastRight = box.right;
     });
   }
 
@@ -91,7 +157,9 @@
       if (row && readout) {
         var cells = row.querySelectorAll("td");
         var name = cells[2].querySelector(".field-name");
-        readout.innerHTML = "<b>" + W.esc(cells[0].textContent) + "</b>  " + W.esc(cells[1].textContent) + "  <b>" +
+        // The Type cell is built from escaped tokens; a structure's link is left out.
+        var type = cells[1].querySelector("a") || cells[1];
+        readout.innerHTML = "<b>" + W.esc(cells[0].textContent) + "</b>  " + type.innerHTML + "  <b>" +
           W.esc(cells[2].textContent) + "</b>  " + W.esc(name ? name.title : "");
       }
     });
@@ -101,6 +169,6 @@
   }
 
   renderFormats();
-  initLayoutTabs();
+  initLayoutPicker();
   initHover();
 })();

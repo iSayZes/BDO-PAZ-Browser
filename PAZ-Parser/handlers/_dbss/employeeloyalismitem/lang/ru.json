@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "loyalismType": "Тип",
+    "recovery": "Восстановление"
+  },
+  "loyalismTypes": {
+    "0": "Здоровье",
+    "1": "Заболевший матрос"
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "dataSize": "Размер данных"
+  },
+  "meta": {
+    "count": "Предметов для здоровья матросов: {count}"
+  }
+}

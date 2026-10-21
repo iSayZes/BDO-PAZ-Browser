@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "grade": "Уровень",
+    "dropRate": "Шанс получения трофеев",
+    "countRate": "Кол-во получаемых трофеев",
+    "costPercent": "Расход времени"
+  },
+  "offsetColumns": {
+    "grade": "Уровень",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Уровней: {count}"
+  }
+}

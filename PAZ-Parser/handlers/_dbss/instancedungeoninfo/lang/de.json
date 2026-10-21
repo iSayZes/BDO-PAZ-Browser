@@ -1,0 +1,19 @@
+{
+  "offsetColumns": {
+    "key": "Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "columns": {
+    "key": "Schlüssel",
+    "fieldNo": "Feld-Nr.",
+    "field": "Feld",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Richtung"
+  },
+  "meta": {
+    "count": "{count} Eintrittspunkte in Instanzdungeons"
+  }
+}

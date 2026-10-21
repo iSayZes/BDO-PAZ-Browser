@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "petId": "ID питомца",
+    "pet": "Питомец",
+    "skill1": "Навык 1",
+    "skill2": "Навык 2",
+    "skill3": "Навык 3"
+  },
+  "offsetColumns": {
+    "petId": "ID питомца",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Питомцев PC-бана: {count}"
+  }
+}

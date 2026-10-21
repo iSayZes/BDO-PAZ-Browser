@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "loyalismType": "Type",
+    "recovery": "Recovery"
+  },
+  "loyalismTypes": {
+    "0": "Condition",
+    "1": "Sick Sailor"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "dataSize": "Data Size"
+  },
+  "meta": {
+    "count": "{count} sailor condition items"
+  }
+}

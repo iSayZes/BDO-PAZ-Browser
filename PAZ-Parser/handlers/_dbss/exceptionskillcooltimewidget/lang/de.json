@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillNo": "Talent-ID",
+    "skill": "Talent",
+    "classes": "Klassen",
+    "shownSkillNo": "Angezeigte Talent-ID",
+    "shownSkill": "Angezeigtes Talent",
+    "learnCheckSkillNo": "Lernprüfungs-Talent-ID",
+    "learnCheckSkill": "Lernprüfungs-Talent"
+  },
+  "offsetColumns": {
+    "skillKey": "Talentschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Talent-Ersetzungen"
+  }
+}

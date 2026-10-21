@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carriageKey": "마차 ID",
+    "distancePerMinute": "분당 거리",
+    "loadage": "적재량",
+    "transportMaxWeight": "최대 무게",
+    "camasilbAddTransportMaxWeight": "카마실브 추가 무게",
+    "baseFee": "기본 수송비",
+    "overloadWeight": "과적 무게",
+    "feePerWeight": "무게당 수송비",
+    "nonStackTrade": "비중첩 무역품",
+    "stackTrade": "중첩 무역품",
+    "expirationPeriodTrade": "기간제 무역품"
+  },
+  "offsetColumns": {
+    "carriageKey": "마차 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "마차 종류 {count}개"
+  }
+}

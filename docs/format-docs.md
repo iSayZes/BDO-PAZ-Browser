@@ -177,12 +177,25 @@ site into `_site/` for a local preview. The generator is
 | File                | Content                                                                 |
 | ------------------- | ----------------------------------------------------------------------- |
 | `index.html`        | Every doc with its description, known share, open questions and in-game checks, searchable and sortable; grouped as the app's tree view: the LOC docs, the `.bss` / `.dbss` docs, then Others (the doc-page sidebar too) |
-| `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows its layouts as tabs, each structure with a byte map and its field table |
+| `<doc>.html`        | One page per doc, e.g. `buffsimply_bss.html`; a converted doc shows the layout picked on its Versions timeline, each structure with a byte map and its field table |
 | `formats.js`        | The doc list both page kinds read                                       |
 | `static/`           | The CSS and JS, copied from `PAZ-Parser/wiki/static/`, and the app's `favicon.ico` from `PAZ-Parser/ui/` |
 
-A doc page's Versions card shows each layout's clients and a known/unknown
-bar from its Versions tables, and the layout tabs name the clients. The
+A doc page's Versions card opens with the layout timeline: one axis for
+every doc, from the newest client any doc's Clients table names (live, on
+the left) to the oldest (on the right). Each run of clients with the same
+result is a band: a layout, `No documented layout` (a dotted orange bar)
+or `No file` (a dotted gray bar); only a layout band is clickable, the
+other two name their clients in a tooltip. A newer band reaches the newest client of the
+older one, the oldest band the right end; ticks mark live, the oldest
+client and each change. A layout with no client yet is a dashed band
+between the layouts numbered around it. A line under the timeline lists every client the doc check
+read for the doc. Under it each layout has a known/unknown bar. Clicking a
+band shows that layout in the Layout card, highlights its bar and names it
+in the card's pill; a doc without Versions rows gets tabs instead. Type
+cells, and code spans in the text that are a number or text type, are
+colored by token (number and text types, structures, counts, field
+references, literals, keywords) from the Type column grammar. The
 known share in the index and the sidebar counts the newest layout's bytes in
 the game files of the client Versions names, every record included. A doc
 without Versions counts the fixed-size fields of its newest layout, each
@@ -209,18 +222,22 @@ from a PAZ folder.
 folder: the rows of [`documented-formats.md`](documented-formats.md) that
 link to the doc, and every file a ``### `x.dbss` `` heading names. It walks
 them by each layout, newest first, and takes the first layout every file
-walks to its last byte by. Two tables follow, one row per layout per file:
+walks to its last byte by. Three tables follow:
 
-| Table    | Columns                                                                 |
-| -------- | ----------------------------------------------------------------------- |
-| Sizes    | Layout, Clients, Checked (the client the numbers come from), File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
-| Coverage | Layout, File, Known and Unknown bytes over the whole file, every instance of every field counted |
+| Table    | Rows                    | Columns                                                       |
+| -------- | ----------------------- | ------------------------------------------------------------- |
+| Sizes    | One per layout per file | Layout, Clients, Checked (the client the numbers come from), File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
+| Coverage | One per layout per file | Layout, File, Known and Unknown bytes over the whole file, every instance of every field counted |
+| Clients  | One per client read     | Client, Result: `Layout N`; `No documented layout` when the files are there but no layout of the doc reads them; `No file` when none of the doc's files is in that client's `.meta` |
 
 - A client range only widens: each check adds its client to the layout it
   fits, and a layout's row stays once a client has fit it. The newest layout
   reads `<first client> and later`, an older one `<first> to <last>`.
 - Sizes and coverage come from the newest client checked for that layout;
   an older client never overwrites them.
+- The Clients table keeps every client the check read, newest first; a
+  client read again takes its new result. `No file` means the name is not in
+  the `.meta`, so an archive missing from a pruned folder is not one.
 - A doc whose layout holds `bytes[scan]` cannot be walked and keeps its
   markers only.
 
@@ -230,11 +247,13 @@ walks to its last byte by. Two tables follow, one row per layout per file:
 | `python check_docs.py --all`                         | Every doc in the layout format                              |
 | `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
 | `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
+| `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/2107/Paz` |
+| `python check_docs.py --all --version all`           | Every test client there, oldest first, then the live client; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
 | `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |
 
-Without `--paz-folder` the check reads the PAZ folder last opened in the
-app, the live client, and names it by the number its `.meta` holds. A
+Without `--paz-folder` or `--version` the check reads the PAZ folder last
+opened in the app, the live client, and names it by the number its `.meta` holds. A
 `.meta` that says `1` (a private server or a leaked client) needs
 `--client`. The command exits 1 when a doc breaks a rule, when a client's
 files fit no layout (it names the layout, structure, field and offset where

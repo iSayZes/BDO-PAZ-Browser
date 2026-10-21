@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "groupNo": "ID de groupe",
+    "purchaseType": "Limite par",
+    "purchaseCount": "Limite d'achat"
+  },
+  "limitTypes": {
+    "none": "Aucune",
+    "atCharacter": "Personnage",
+    "atAccount": "Famille"
+  },
+  "offsetColumns": {
+    "groupNo": "ID de groupe",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} groupes de limite d'achat"
+  }
+}

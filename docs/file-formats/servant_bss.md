@@ -17,15 +17,29 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes  | Records        | Row bytes                 |
 | ------ | -------------- | ------- | -------------------- | ------ | -------------- | ------------------------- |
-| 2      | 3474 and later | 3474    | `servant.bss`        | 45,128 | 419 Row        | 84 to 165, 108 on average |
-| 1      | 1784           | 1784    | `servant.dbss`       | 33,748 | 333 Row        | 84 to 145, 101 on average |
-| 1      | 1784           | 1784    | `servantoffset.dbss` | 3,334  | 333 Offset Row | 10                        |
+| 2      | 3002 and later | 3474    | `servant.bss`        | 45,128 | 419 Row        | 84 to 165, 108 on average |
+| 1      | 1485 to 2519   | 2519    | `servant.dbss`       | 38,835 | 371 Row        | 84 to 165, 105 on average |
+| 1      | 1485 to 2519   | 2519    | `servantoffset.dbss` | 3,714  | 371 Offset Row | 10                        |
 
 | Layout | File                 | Known            | Unknown        |
 | ------ | -------------------- | ---------------- | -------------- |
 | 2      | `servant.bss`        | 42,195 B (93.5%) | 2,933 B (6.5%) |
-| 1      | `servant.dbss`       | 31,417 B (93.1%) | 2,331 B (6.9%) |
-| 1      | `servantoffset.dbss` | 3,334 B (100.0%) | 0 B (0.0%)     |
+| 1      | `servant.dbss`       | 36,238 B (93.3%) | 2,597 B (6.7%) |
+| 1      | `servantoffset.dbss` | 3,714 B (100.0%) | 0 B (0.0%)     |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

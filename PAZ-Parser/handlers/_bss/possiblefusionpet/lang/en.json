@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "fusionKey": "Fusion Key",
+    "petId": "Pet ID",
+    "pet": "Pet",
+    "species": "Species ID",
+    "variant": "Variant",
+    "tier": "Tier"
+  },
+  "tier": "Tier {tier}",
+  "meta": {
+    "count": "{count} pets · {keys} fusion keys"
+  }
+}

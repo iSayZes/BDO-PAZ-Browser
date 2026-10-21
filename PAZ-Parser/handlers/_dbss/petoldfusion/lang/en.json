@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "fusionKey": "Fusion Key",
+    "species": "Species ID",
+    "variant": "Variant",
+    "mainTier": "Main Pet",
+    "pets": "Pets",
+    "result": "Result {index}",
+    "chance": "Chance {index}"
+  },
+  "offsetColumns": {
+    "fusionKey": "Fusion Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "tier": "Tier {tier}",
+  "meta": {
+    "count": "{count} fusion keys"
+  }
+}

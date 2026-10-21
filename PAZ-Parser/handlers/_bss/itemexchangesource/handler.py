@@ -17,8 +17,9 @@ from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_tagged, loc_text
 from _common.pa_text import pa_fields, pa_line_cell
 from _common.ui_texture import UI_TEXTURE_ICON_ROOT, ui_texture_path
+from _common.work_ani_type import NO_WORK_ANI_TYPE, WORK_ANI_TYPE_NAMES
 from _bss.itemmaingroup.drop_groups import DROP_GROUP_FILES, DropGroups, drop_group_cell, load_drop_groups
-from .enums import EXCHANGE_TYPE_NAMES, NO_WORK_ANI_TYPE, PRODUCT_CATEGORY_NAMES, WORK_ANI_TYPE_NAMES
+from .enums import EXCHANGE_TYPE_NAMES, PRODUCT_CATEGORY_NAMES
 from .parser import FILE_NAME, ItemExchange, parse_itemexchangesource_records
 
 _LANG_DIR = Path(__file__).parent / "lang"

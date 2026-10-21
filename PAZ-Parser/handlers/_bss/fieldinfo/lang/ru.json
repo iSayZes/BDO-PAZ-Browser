@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "fieldNo": "№ поля",
+    "name": "Название",
+    "resource": "Ресурс",
+    "type": "Тип",
+    "spawn": "Точка появления",
+    "sectorX": "Сектор X",
+    "sectorY": "Сектор Y",
+    "sectorZ": "Сектор Z",
+    "players": "Игроки",
+    "ridable": "Транспорт разрешён",
+    "rangeSpawn": "Появления мира",
+    "dropRate": "Шанс получения трофеев"
+  },
+  "meta": {
+    "count": "Полей: {count}"
+  }
+}

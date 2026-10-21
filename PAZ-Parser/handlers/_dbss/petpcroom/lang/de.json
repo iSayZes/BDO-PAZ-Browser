@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "petId": "Begleiter-ID",
+    "pet": "Begleiter",
+    "skill1": "Talent 1",
+    "skill2": "Talent 2",
+    "skill3": "Talent 3"
+  },
+  "offsetColumns": {
+    "petId": "Begleiter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} PC-Bang-Begleiter"
+  }
+}

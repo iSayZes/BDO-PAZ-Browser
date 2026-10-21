@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "groupKey": "Grupo de pesca",
+    "drops": "Botín",
+    "points": "Puntos de pesca"
+  },
+  "slots": {
+    "treasure": "Tesoro",
+    "rare": "Raro",
+    "large": "Grande",
+    "general": "General",
+    "junk": "Basura"
+  },
+  "offsetColumns": {
+    "groupKey": "Grupo de pesca",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} grupos de pesca"
+  }
+}

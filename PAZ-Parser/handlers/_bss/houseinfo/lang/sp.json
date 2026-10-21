@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "ID de la propiedad",
+    "house": "Propiedad",
+    "town": "Pueblo",
+    "node": "Nodo",
+    "contributionPoints": "Puntos de contribución",
+    "group": "Grupo",
+    "floor": "Planta",
+    "needHouses": "Necesario",
+    "uses": "Uso",
+    "products": "Producción"
+  },
+  "cells": {
+    "level": "{name} Nv. {level}"
+  },
+  "meta": {
+    "count": "{count} propiedades · {products} objetos producidos"
+  }
+}

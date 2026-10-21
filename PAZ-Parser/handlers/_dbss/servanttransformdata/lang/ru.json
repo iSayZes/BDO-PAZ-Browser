@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "formKey": "ID внешнего вида",
+    "fromCharacterKey": "ID до",
+    "fromName": "До изменения",
+    "toCharacterKey": "ID после",
+    "toName": "После изменения"
+  },
+  "offsetColumns": {
+    "formKey": "ID внешнего вида",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Изменений внешнего вида: {count}"
+  }
+}

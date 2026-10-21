@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "characterKey": "Ключ персонажа",
+    "name": "Имя",
+    "actionName": "Действие",
+    "actionHash": "Хэш действия",
+    "ableCallTime": "Время вызова"
+  },
+  "meta": {
+    "count": "Действий: {count}, персонажей: {characters}"
+  }
+}

@@ -17,13 +17,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                        | Bytes | Records                       | Row bytes |
 | ------ | -------------- | ------- | --------------------------- | ----- | ----------------------------- | --------- |
-| 1      | 1784 and later | 3474    | `servantupgrade.dbss`       | 2,272 | 182 Item, 13 Upgrade, 8 Group | 12        |
-| 1      | 1784 and later | 3474    | `servantupgradeoffset.dbss` | 182   | 13 Offset Row, 8 Offset Group | 10        |
+| 1      | 1485 and later | 3474    | `servantupgrade.dbss`       | 2,272 | 182 Item, 13 Upgrade, 8 Group | 12        |
+| 1      | 1485 and later | 3474    | `servantupgradeoffset.dbss` | 182   | 13 Offset Row, 8 Offset Group | 10        |
 
 | Layout | File                        | Known            | Unknown    |
 | ------ | --------------------------- | ---------------- | ---------- |
 | 1      | `servantupgrade.dbss`       | 2,272 B (100.0%) | 0 B (0.0%) |
 | 1      | `servantupgradeoffset.dbss` | 182 B (100.0%)   | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

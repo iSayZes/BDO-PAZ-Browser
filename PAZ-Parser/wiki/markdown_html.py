@@ -2,7 +2,10 @@
 
 Covers headings, paragraphs, nested lists, tables, fenced code, block quotes,
 code spans, links and bold text; HTML comments are dropped. Links go through
-a `LinkMap`, so a link to another format doc points at its wiki page.
+a `LinkMap`, so a link to another format doc points at its wiki page. A code
+span that is a number or text type (`u32`, `char16[32]`) gets the Type
+column's token colors; structure names stay plain, since prose does not know
+which structures a page has.
 """
 from __future__ import annotations
 
@@ -11,6 +14,8 @@ import re
 from collections.abc import Callable
 
 from format_docs.markdown import split_row
+
+from .type_html import type_html
 
 LinkMap = Callable[[str], str]
 
@@ -156,7 +161,8 @@ def _starts_block(lines: list[str], index: int) -> bool:
 def _inline_token(match: re.Match[str], links: LinkMap) -> str:
     code = match.group("code2") or match.group("code")
     if code is not None:
-        return f"<code>{html.escape(code.strip(), quote=False)}</code>"
+        code = code.strip()
+        return f"<code>{type_html(code, allow_structures=False) or html.escape(code, quote=False)}</code>"
     if match.group("url") is not None:
         url = html.escape(links(match.group("url")))
         return f'<a href="{url}">{render_inline(match.group("text"), links)}</a>'

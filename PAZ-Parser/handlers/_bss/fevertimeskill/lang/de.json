@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "Index",
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent",
+    "dropAmount": "Beutemenge"
+  },
+  "meta": {
+    "count": "{count} Agrisfieber-Talente"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "puzzleKey": "Clave de puzle",
+    "pieces": "Piezas",
+    "pattern": "Patrón",
+    "size": "Tamaño"
+  },
+  "offsetColumns": {
+    "puzzleKey": "Clave de puzle",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} puzles de inventario"
+  }
+}

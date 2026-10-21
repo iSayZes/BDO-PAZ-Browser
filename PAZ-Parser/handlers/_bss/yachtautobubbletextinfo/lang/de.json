@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "npcKey": "NPC-Schlüssel",
+    "speaker": "Sprecher",
+    "condition": "Auslöser",
+    "handRankKey": "Hand-Schlüssel",
+    "handRank": "Hand",
+    "lines": "Sätze"
+  },
+  "player": "Spieler",
+  "conditions": {
+    "1": "Erzielt 0 Punkte",
+    "2": "Erzielt mehr Punkte als der Gegner",
+    "3": "Spielbeginn",
+    "4": "Sieg",
+    "5": "Niederlage",
+    "6": "Noch 10 Sekunden",
+    "7": "Eigener Zug beginnt"
+  },
+  "meta": {
+    "count": "{count} Sprechblasen"
+  }
+}

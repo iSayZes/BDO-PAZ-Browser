@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "regionKey": "지역 키",
+    "region": "지역",
+    "maid": "메이드",
+    "worldMap": "월드맵",
+    "characterChange": "캐릭터 교체",
+    "muster": "소집",
+    "camp": "캠프",
+    "compass": "나침반",
+    "itemMap": "아이템 지도",
+    "miniMap": "미니맵"
+  },
+  "offsetColumns": {
+    "regionKey": "지역 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "지역 {count}개"
+  }
+}

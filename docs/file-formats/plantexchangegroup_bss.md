@@ -14,13 +14,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes  | Records                  | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ------ | ------------------------ | --------- |
-| 2      | 3473 and later | 3474    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
-| 1      | 1784           | 1784    | `plantexchangegroup.bss` | 20,224 | 287 Production Group Row | 52        |
+| 2      | 3002 and later | 3474    | `plantexchangegroup.bss` | 45,631 | 403 Production Group Row | 94        |
+| 1      | 1230 to 2519   | 2519    | `plantexchangegroup.bss` | 23,348 | 331 Production Group Row | 52        |
 
 | Layout | File                     | Known            | Unknown          |
 | ------ | ------------------------ | ---------------- | ---------------- |
 | 2      | `plantexchangegroup.bss` | 11,779 B (25.8%) | 33,852 B (74.2%) |
-| 1      | `plantexchangegroup.bss` | 8,170 B (40.4%)  | 12,054 B (59.6%) |
+| 1      | `plantexchangegroup.bss` | 9,446 B (40.5%)  | 13,902 B (59.5%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | Layout 1             |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

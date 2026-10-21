@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "accessoryIndex": "Индекс",
+    "groupNo": "Группа",
+    "accessory": "Бижутерия",
+    "enchantLevel": "Уровень усиления",
+    "materials": "Материалы"
+  },
+  "meta": {
+    "count": "Этапов: {count}"
+  }
+}

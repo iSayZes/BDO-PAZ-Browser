@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "randomSpawnKey": "무작위 등장 키",
+    "characterId": "캐릭터 ID",
+    "character": "캐릭터",
+    "spawnList": "목록",
+    "worldMapIcon": "월드맵 아이콘",
+    "bossIcon": "우두머리 아이콘",
+    "noticeBackground": "알림 배경",
+    "notice": "알림",
+    "revealNotice": "위치 공개 알림"
+  },
+  "spawnLists": {
+    "boss": "우두머리",
+    "npc": "NPC"
+  },
+  "meta": {
+    "count": "무작위 등장 {count}개"
+  }
+}

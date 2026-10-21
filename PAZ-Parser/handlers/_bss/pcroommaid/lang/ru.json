@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "Ключ персонажа",
+    "name": "Горничные"
+  },
+  "meta": {
+    "count": "Горничных PC-бана: {count}"
+  }
+}

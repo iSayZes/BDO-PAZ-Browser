@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carriageKey": "Wagen-ID",
+    "distancePerMinute": "Distanz pro Minute",
+    "loadage": "Ladung",
+    "transportMaxWeight": "Max. Gewicht",
+    "camasilbAddTransportMaxWeight": "Zusatzgewicht Kamasilve",
+    "baseFee": "Grundgebühr",
+    "overloadWeight": "Überladungsgewicht",
+    "feePerWeight": "Gebühr pro Gewicht",
+    "nonStackTrade": "Nicht stapelbare Handelsware",
+    "stackTrade": "Stapelbare Handelsware",
+    "expirationPeriodTrade": "Ablaufende Handelsware"
+  },
+  "offsetColumns": {
+    "carriageKey": "Wagen-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Wagentypen"
+  }
+}

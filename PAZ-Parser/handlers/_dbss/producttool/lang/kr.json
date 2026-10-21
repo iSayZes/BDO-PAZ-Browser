@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "level": "단계",
+    "autofishingTimePercents": "자동 낚시 시간 (원본 값)"
+  },
+  "offsetColumns": {
+    "itemId": "아이템 ID",
+    "level": "단계",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "항목 {count}개 · 아이템 {items}개"
+  }
+}

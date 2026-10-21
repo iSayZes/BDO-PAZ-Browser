@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "puzzleKey": "Ключ головоломки",
+    "pieces": "Части",
+    "pattern": "Узор",
+    "size": "Размер"
+  },
+  "offsetColumns": {
+    "puzzleKey": "Ключ головоломки",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Головоломки инвентаря: {count}"
+  }
+}

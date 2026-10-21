@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "class": "Class",
+    "textureId": "Texture ID"
+  },
+  "offsetColumns": {
+    "key": "Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} class types"
+  }
+}

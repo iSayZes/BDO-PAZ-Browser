@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "respawnPositionType": "Тип точки воскрешения",
+    "sanctumId": "ID святилища",
+    "positions": "Позиции"
+  },
+  "meta": {
+    "count": "Точек воскрешения: {count}"
+  }
+}

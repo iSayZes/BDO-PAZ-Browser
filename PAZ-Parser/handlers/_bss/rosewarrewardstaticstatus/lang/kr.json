@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "count": "개수",
+    "result": "결과",
+    "guild": "길드"
+  },
+  "results": {
+    "win": "승리",
+    "lose": "패배",
+    "draw": "해방"
+  },
+  "meta": {
+    "count": "보상 아이템 {count}개"
+  }
+}

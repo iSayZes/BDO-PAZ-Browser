@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "respawnPositionType": "부활 지점 종류",
+    "sanctumId": "성소 ID",
+    "positions": "좌표"
+  },
+  "meta": {
+    "count": "부활 지점 {count}개"
+  }
+}

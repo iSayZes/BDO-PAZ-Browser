@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "count": "Nombre",
+    "highestKey": "ID de compétence max."
+  },
+  "meta": {
+    "summary": "ID max. des compétences de monture et de navire + 1"
+  }
+}

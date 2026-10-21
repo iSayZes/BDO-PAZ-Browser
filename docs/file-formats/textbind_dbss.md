@@ -25,6 +25,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `textbind.dbss`       | 1,947,450 B (99.8%) | 4,668 B (0.2%) |
 | 1      | `textbindoffset.dbss` | 14,008 B (100.0%)   | 0 B (0.0%)     |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

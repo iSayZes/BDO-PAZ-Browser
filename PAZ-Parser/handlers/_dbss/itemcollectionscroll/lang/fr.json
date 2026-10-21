@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "grade": "Niveau",
+    "dropRate": "Chances de butin",
+    "countRate": "Quantité de butin",
+    "costPercent": "Consommation du temps"
+  },
+  "offsetColumns": {
+    "grade": "Niveau",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} niveaux"
+  }
+}

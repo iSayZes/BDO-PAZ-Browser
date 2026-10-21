@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Tausch-Schlüssel",
+    "needItem": "Benötigter Gegenstand",
+    "needCount": "Benötigte Anzahl",
+    "resultItem": "Ergebnisgegenstand",
+    "resultCount": "Ergebnisanzahl",
+    "npcs": "NPCs"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Tausch-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gegenstandstausche"
+  }
+}

@@ -12,10 +12,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records            | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------------------ | --------- |
-| 2      | 3473 and later | 3474    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
-| 2      | 3473 and later | 3474    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
-| 1      | 1784           | 1784    | `maincategory.dbss`       | 1,216 | 12 Category Record | 101       |
-| 1      | 1784           | 1784    | `maincategoryoffset.dbss` | 124   | 12 Offset Record   | 10        |
+| 2      | 2519 and later | 3474    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
+| 2      | 2519 and later | 3474    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
+| 1      | 1485 to 2107   | 2107    | `maincategory.dbss`       | 1,216 | 12 Category Record | 101       |
+| 1      | 1485 to 2107   | 2107    | `maincategoryoffset.dbss` | 124   | 12 Offset Record   | 10        |
 
 | Layout | File                      | Known            | Unknown      |
 | ------ | ------------------------- | ---------------- | ------------ |
@@ -23,6 +23,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `maincategoryoffset.dbss` | 124 B (80.5%)    | 30 B (19.5%) |
 | 1      | `maincategory.dbss`       | 1,216 B (100.0%) | 0 B (0.0%)   |
 | 1      | `maincategoryoffset.dbss` | 100 B (80.6%)    | 24 B (19.4%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

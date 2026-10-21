@@ -1,7 +1,8 @@
 {
   "columns": {
     "edaniaRegion": "에다니아 지역",
-    "castle": "성"
+    "castle": "성",
+    "mapColor": "지도 색상"
   },
   "meta": {
     "count": "에다니아 지역 {count}개"

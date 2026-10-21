@@ -97,6 +97,28 @@ def picked_records(
     return read
 
 
+def keyed_offset_handler(
+    lang_dir: Path,
+    parse_rows: Callable[[bytes], list[PabrOffsetRow]],
+    key_field: str = "key",
+    key_label: str = "key",
+) -> OffsetTableHandler:
+    """The usual index: `key_field`, `data_offset` and `data_size` per row, read by `parse_rows`.
+
+    Labels come from `key_label`, `dataOffset` and `size` in the
+    `offsetColumns` block of `lang_dir`.
+    """
+    return OffsetTableHandler(
+        lang_dir,
+        [
+            OffsetColumn(key_field, key_label),
+            offset_column("data_offset", "dataOffset"),
+            size_column("data_size", "size"),
+        ],
+        offset_records(parse_rows, key_field, "data_offset", "data_size"),
+    )
+
+
 def count_meta(records: list[dict], lang: str) -> str:
     return handler_text(lang, _COMMON_LANG_DIR, "meta.offsetRecords", count=len(records))
 

@@ -1,7 +1,8 @@
 {
   "columns": {
     "edaniaRegion": "Région d'Edania",
-    "castle": "Château"
+    "castle": "Château",
+    "mapColor": "Couleur de la carte"
   },
   "meta": {
     "count": "{count} régions d'Edania"

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "respawnPositionType": "Type de point de réanimation",
+    "sanctumId": "ID du sanctuaire",
+    "positions": "Positions"
+  },
+  "meta": {
+    "count": "{count} points de réanimation"
+  }
+}

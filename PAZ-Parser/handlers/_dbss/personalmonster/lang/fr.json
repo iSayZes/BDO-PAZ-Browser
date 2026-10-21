@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "name": "Boss",
+    "difficulty": "Difficulté",
+    "description": "Description",
+    "image": "Image",
+    "dropItems": "Objets de butin"
+  },
+  "offsetColumns": {
+    "characterKey": "ID du personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} boss de la Faille obscure"
+  }
+}

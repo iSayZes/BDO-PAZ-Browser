@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "fusionKey": "Clave de fusión",
+    "species": "ID de especie",
+    "variant": "Variante",
+    "mainTier": "Mascota principal",
+    "pets": "Mascotas",
+    "result": "Resultado {index}",
+    "chance": "Probabilidad {index}"
+  },
+  "offsetColumns": {
+    "fusionKey": "Clave de fusión",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "tier": "Grado {tier}",
+  "meta": {
+    "count": "{count} claves de fusión"
+  }
+}

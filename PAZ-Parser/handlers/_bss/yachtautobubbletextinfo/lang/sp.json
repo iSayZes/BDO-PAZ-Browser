@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "key": "Clave",
+    "npcKey": "Clave del PNJ",
+    "speaker": "Hablante",
+    "condition": "Activador",
+    "handRankKey": "Clave de la mano",
+    "handRank": "Mano",
+    "lines": "Frases"
+  },
+  "player": "Jugador",
+  "conditions": {
+    "1": "Obtiene 0 puntos",
+    "2": "Obtiene más puntos que el rival",
+    "3": "Inicio de la partida",
+    "4": "Victoria",
+    "5": "Derrota",
+    "6": "Quedan 10 segundos",
+    "7": "Empieza su turno"
+  },
+  "meta": {
+    "count": "{count} bocadillos"
+  }
+}

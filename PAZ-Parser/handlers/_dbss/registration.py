@@ -104,6 +104,10 @@ from .employeecharactership.handler import (
     EmployeeCharacterShipHandler,
     employee_character_ship_offset_handler,
 )
+from .employeeloyalismitem.handler import (
+    EmployeeLoyalismItemHandler,
+    employee_loyalism_item_offset_handler,
+)
 from .employeename.handler import EmployeeNameHandler, employee_name_offset_handler
 from .employeespawninfo.handler import EmployeeSpawnInfoHandler, employee_spawn_info_offset_handler
 from .employeespawnposition.handler import (
@@ -122,6 +126,8 @@ from .alchemycharge.handler import AlchemyChargeHandler, alchemy_charge_offset_h
 from .itemtradegrouptonpc.handler import ItemTradeGroupHandler, item_trade_group_offset_handler
 from .itemtradegroupfromnpc.parser import parse_itemtradegroupfromnpc_records
 from .growthpasspointshop.handler import GrowthPassPointShopHandler, growth_pass_point_shop_offset_handler
+from .producttool.handler import ProductToolHandler, product_tool_offset_handler
+from .instancedungeoninfo.handler import InstanceDungeonInfoHandler, instance_dungeon_info_offset_handler
 from .instancedungeonskillstatic.handler import (
     InstanceDungeonSkillStaticHandler,
     instance_dungeon_skill_static_offset_handler,
@@ -132,6 +138,9 @@ from .alchemystonechange.handler import AlchemyStoneChangeHandler, alchemy_stone
 from .waititem.handler import WaitItemHandler, wait_item_offset_handler
 from .fieldboss.handler import FieldBossHandler, field_boss_offset_handler
 from .weatheractor.handler import WeatherActorHandler, weather_actor_offset_handler
+from .cultivationweather.handler import CultivationWeatherHandler, cultivation_weather_offset_handler
+from .floatfishing.handler import FloatFishingHandler, float_fishing_offset_handler
+from .floatfishingpoint.handler import FloatFishingPointHandler, float_fishing_point_offset_handler
 from .itemimprovement.handler import (
     ItemImprovementHandler,
     ItemImprovementSourceHandler,
@@ -142,6 +151,28 @@ from .extractitem.handler import ExtractItemHandler, extract_item_offset_handler
 from .collect.handler import CollectHandler, collect_offset_handler
 from .lifeactionexperience.handler import LifeActionExperienceHandler, life_action_experience_offset_handler
 from .displayexchangeitemnpc.handler import DisplayExchangeItemNpcHandler, display_exchange_item_npc_offset_handler
+from .itemexchangebynpc.handler import ItemExchangeByNpcHandler, item_exchange_by_npc_offset_handler
+from .itempalette.handler import ItemPaletteHandler, item_palette_offset_handler
+from .dyeingpalette.handler import DyeingPaletteHandler, dyeing_palette_offset_handler
+from .itempuzzle.handler import ItemPuzzleHandler, item_puzzle_offset_handler
+from .itemnakmessage.handler import ItemNakMessageHandler, item_nak_message_offset_handler
+from .accessorystepup.handler import AccessoryStepUpHandler
+from .employeeclientspawn.handler import EmployeeClientSpawnHandler, employee_client_spawn_offset_handler
+from .exptoskillexprate.handler import ExpToSkillExpRateHandler, exp_to_skill_exp_rate_offset_handler
+from .itemenchantsafety.handler import ItemEnchantSafetyHandler, item_enchant_safety_offset_handler
+from .servnatmarkettax.handler import ServantMarketTaxHandler, servant_market_tax_offset_handler
+from .skillfusion.handler import SkillFusionHandler, skill_fusion_offset_handler
+from .specialemployeeinfostaticstatus.handler import (
+    SpecialEmployeeInfoHandler,
+    special_employee_info_offset_handler,
+)
+from .restrictcontentsregion.handler import (
+    RestrictContentsRegionHandler,
+    restrict_contents_region_offset_handler,
+)
+from .instancefieldreward.handler import InstanceFieldRewardHandler, instance_field_reward_offset_handler
+from .eventcategory.handler import EventCategoryHandler, event_category_offset_handler
+from .greatseaevent.handler import GreatSeaEventHandler, great_sea_event_offset_handler
 from .guildmanufacture.handler import GuildManufactureHandler, guild_manufacture_offset_handler
 from .collectresourcename.handler import CollectResourceNameHandler, collect_resource_name_offset_handler
 from .manufacturecondition.handler import ManufactureConditionHandler, manufacture_condition_offset_handler
@@ -156,10 +187,53 @@ from .itemexchangetoclass.handler import ItemExchangeToClassHandler, item_exchan
 from .repairmaxendurance.handler import RepairMaxEnduranceHandler, repair_max_endurance_offset_handler
 from .guildquest.handler import GuildQuestHandler, guild_quest_offset_handler
 from .vehicleskill.handler import VehicleSkillHandler, vehicle_skill_offset_handler
+from .vehicleskillcount.handler import VehicleSkillCountHandler
 from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_owner_offset_handler
 from .servantbuff.handler import ServantBuffHandler, servant_buff_offset_handler
 from .servantinteraction.handler import ServantInteractionHandler, servant_interaction_offset_handler
 from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offset_handler
+from .minigamereward.handler import MiniGameRewardHandler, minigame_reward_offset_handler
+from .purchaselimitgroup.handler import PurchaseLimitGroupHandler, purchase_limit_group_offset_handler
+from .trainingvehicle.handler import TrainingVehicleHandler, training_vehicle_offset_handler
+from .guildboss.handler import GuildBossHandler, guild_boss_offset_handler
+from .itemcollectionscroll.handler import ItemCollectionScrollHandler, item_collection_scroll_offset_handler
+from .servanttransformdata.handler import ServantTransformDataHandler, servant_transform_data_offset_handler
+from .buildingbuff.handler import BuildingBuffHandler, building_buff_offset_handler
+from .buildingupgrade.handler import BuildingUpgradeHandler, building_upgrade_offset_handler
+from .carriagespec.handler import CarriageSpecHandler, carriage_spec_offset_handler
+from .petdetectposition.handler import PetDetectPositionHandler, pet_detect_position_offset_handler
+from .actionverificationindex.handler import (
+    ActionVerificationIndexHandler,
+    action_verification_index_offset_handler,
+)
+from .exceptionskillcooltimewidget.handler import (
+    ExceptionSkillCoolTimeWidgetHandler,
+    exception_skill_cool_time_widget_offset_handler,
+)
+from .personalmonster.handler import PersonalMonsterHandler, personal_monster_offset_handler
+from .personalmonsterposition.handler import (
+    PersonalMonsterPositionHandler,
+    personal_monster_position_offset_handler,
+)
+from .petpcroom.handler import PetPcRoomHandler, pet_pc_room_offset_handler
+from .petchangelook.handler import PetChangeLookHandler, pet_change_look_offset_handler
+from .petoldfusion.handler import PetOldFusionHandler, pet_old_fusion_offset_handler
+from .petfusionnew.handler import (
+    PetFusionNewAddRateInfoHandler,
+    PetFusionNewHandler,
+    pet_fusion_new_offset_handler,
+)
+from .maid.handler import MaidHandler, maid_offset_handler
+from .auction.handler import AuctionHandler, auction_offset_handler
+from .monstergroup.handler import MonsterGroupHandler, monster_group_offset_handler
+from .yachtbasecard.handler import YachtBaseCardHandler, yacht_base_card_offset_handler
+from .yachtclasstypetextureinfo.handler import (
+    YachtClassTypeTextureInfoHandler,
+    yacht_class_type_texture_info_offset_handler,
+)
+from .yachtdice.handler import YachtDiceHandler, yacht_dice_offset_handler
+from .yachtdicecard.handler import YachtDiceCardHandler, yacht_dice_card_offset_handler
+from .yachtdicepreset.handler import YachtDicePresetHandler, yacht_dice_preset_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -204,6 +278,12 @@ def register_dbss_handlers() -> None:
     register_handler("fieldboss.dbss", FieldBossHandler())
     register_handler("weatheractoroffset.dbss", weather_actor_offset_handler())
     register_handler("weatheractor.dbss", WeatherActorHandler())
+    register_handler("cultivationweatheroffset.dbss", cultivation_weather_offset_handler())
+    register_handler("cultivationweather.dbss", CultivationWeatherHandler())
+    register_handler("floatfishingoffset.dbss", float_fishing_offset_handler())
+    register_handler("floatfishing.dbss", FloatFishingHandler())
+    register_handler("floatfishingpointoffset.dbss", float_fishing_point_offset_handler())
+    register_handler("floatfishingpoint.dbss", FloatFishingPointHandler())
     register_handler("itemimprovementoffset.dbss", item_improvement_offset_handler())
     register_handler("itemimprovement.dbss", ItemImprovementHandler())
     register_handler("itemimprovementsourceoffset.dbss", item_improvement_source_offset_handler())
@@ -220,6 +300,37 @@ def register_dbss_handlers() -> None:
     register_handler("lifeactionexperience.dbss", LifeActionExperienceHandler())
     register_handler("displayexchangeitemnpcoffset.dbss", display_exchange_item_npc_offset_handler())
     register_handler("displayexchangeitemnpc.dbss", DisplayExchangeItemNpcHandler())
+    register_handler("itemexchangebynpcoffset.dbss", item_exchange_by_npc_offset_handler())
+    register_handler("itemexchangebynpc.dbss", ItemExchangeByNpcHandler())
+    register_handler("itempaletteoffset.dbss", item_palette_offset_handler())
+    register_handler("itempalette.dbss", ItemPaletteHandler())
+    register_handler("dyeingpaletteoffset.dbss", dyeing_palette_offset_handler())
+    register_handler("dyeingpalette.dbss", DyeingPaletteHandler())
+    register_handler("itempuzzleoffset.dbss", item_puzzle_offset_handler())
+    register_handler("itempuzzle.dbss", ItemPuzzleHandler())
+    register_handler("itemnakmessageoffset.dbss", item_nak_message_offset_handler())
+    register_handler("itemnakmessage.dbss", ItemNakMessageHandler())
+    register_handler("accessorystepup.dbss", AccessoryStepUpHandler())
+    register_handler("employeeclientspawnoffset.dbss", employee_client_spawn_offset_handler())
+    register_handler("employeeclientspawn.dbss", EmployeeClientSpawnHandler())
+    register_handler("exptoskillexprateoffset.dbss", exp_to_skill_exp_rate_offset_handler())
+    register_handler("exptoskillexprate.dbss", ExpToSkillExpRateHandler())
+    register_handler("itemenchantsafetyoffset.dbss", item_enchant_safety_offset_handler())
+    register_handler("itemenchantsafety.dbss", ItemEnchantSafetyHandler())
+    register_handler("servnatmarkettaxoffset.dbss", servant_market_tax_offset_handler())
+    register_handler("servnatmarkettax.dbss", ServantMarketTaxHandler())
+    register_handler("skillfusionoffset.dbss", skill_fusion_offset_handler())
+    register_handler("skillfusion.dbss", SkillFusionHandler())
+    register_handler("specialemployeeinfostaticstatusoffset.dbss", special_employee_info_offset_handler())
+    register_handler("specialemployeeinfostaticstatus.dbss", SpecialEmployeeInfoHandler())
+    register_handler("restrictcontentsregionoffset.dbss", restrict_contents_region_offset_handler())
+    register_handler("restrictcontentsregion.dbss", RestrictContentsRegionHandler())
+    register_handler("instancefieldrewardoffset.dbss", instance_field_reward_offset_handler())
+    register_handler("instancefieldreward.dbss", InstanceFieldRewardHandler())
+    register_handler("eventcategoryoffset.dbss", event_category_offset_handler())
+    register_handler("eventcategory.dbss", EventCategoryHandler())
+    register_handler("greatseaeventoffset.dbss", great_sea_event_offset_handler())
+    register_handler("greatseaevent.dbss", GreatSeaEventHandler())
     register_handler("guildmanufactureoffset.dbss", guild_manufacture_offset_handler())
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
@@ -248,6 +359,10 @@ def register_dbss_handlers() -> None:
     register_handler("growthpasscategory.dbss", GrowthPassCategoryHandler())
     register_handler("growthpasspointshopoffset.dbss", growth_pass_point_shop_offset_handler())
     register_handler("growthpasspointshop.dbss", GrowthPassPointShopHandler())
+    register_handler("producttooloffset.dbss", product_tool_offset_handler())
+    register_handler("producttool.dbss", ProductToolHandler())
+    register_handler("instancedungeoninfooffset.dbss", instance_dungeon_info_offset_handler())
+    register_handler("instancedungeoninfo.dbss", InstanceDungeonInfoHandler())
     register_handler("instancedungeonskillstaticoffset.dbss", instance_dungeon_skill_static_offset_handler())
     register_handler("instancedungeonskillstatic.dbss", InstanceDungeonSkillStaticHandler())
     register_handler("maincategoryoffset.dbss", main_category_offset_handler())
@@ -321,6 +436,8 @@ def register_dbss_handlers() -> None:
     register_handler("fairyskillchange.dbss", FairySkillChangeHandler())
     register_handler("employeecharactershipoffset.dbss", employee_character_ship_offset_handler())
     register_handler("employeecharactership.dbss", EmployeeCharacterShipHandler())
+    register_handler("employeeloyalismitemoffset.dbss", employee_loyalism_item_offset_handler())
+    register_handler("employeeloyalismitem.dbss", EmployeeLoyalismItemHandler())
     register_handler("employeenameoffset.dbss", employee_name_offset_handler())
     register_handler("employeename.dbss", EmployeeNameHandler())
     register_handler(
@@ -356,6 +473,7 @@ def register_dbss_handlers() -> None:
     register_handler("guildquest.dbss", GuildQuestHandler())
     register_handler("vehicleskilloffset.dbss", vehicle_skill_offset_handler())
     register_handler("vehicleskill.dbss", VehicleSkillHandler())
+    register_handler("vehicleskillcount.dbss", VehicleSkillCountHandler())
     register_handler("vehicleskillowneroffset.dbss", vehicle_skill_owner_offset_handler())
     register_handler("vehicleskillowner.dbss", VehicleSkillOwnerHandler())
     register_handler("servantbuffoffset.dbss", servant_buff_offset_handler())
@@ -364,3 +482,56 @@ def register_dbss_handlers() -> None:
     register_handler("servantinteraction.dbss", ServantInteractionHandler())
     register_handler("servantupgradeoffset.dbss", servant_upgrade_offset_handler())
     register_handler("servantupgrade.dbss", ServantUpgradeHandler())
+    register_handler("minigamerewardoffset.dbss", minigame_reward_offset_handler())
+    register_handler("minigamereward.dbss", MiniGameRewardHandler())
+    register_handler("purchaselimitgroupoffset.dbss", purchase_limit_group_offset_handler())
+    register_handler("purchaselimitgroup.dbss", PurchaseLimitGroupHandler())
+    register_handler("trainingvehicleoffset.dbss", training_vehicle_offset_handler())
+    register_handler("trainingvehicle.dbss", TrainingVehicleHandler())
+    register_handler("guildbossoffset.dbss", guild_boss_offset_handler())
+    register_handler("guildboss.dbss", GuildBossHandler())
+    register_handler("itemcollectionscrolloffset.dbss", item_collection_scroll_offset_handler())
+    register_handler("itemcollectionscroll.dbss", ItemCollectionScrollHandler())
+    register_handler("servanttransformdataoffset.dbss", servant_transform_data_offset_handler())
+    register_handler("servanttransformdata.dbss", ServantTransformDataHandler())
+    register_handler("buildingbuffoffset.dbss", building_buff_offset_handler())
+    register_handler("buildingbuff.dbss", BuildingBuffHandler())
+    register_handler("buildingupgradeoffset.dbss", building_upgrade_offset_handler())
+    register_handler("buildingupgrade.dbss", BuildingUpgradeHandler())
+    register_handler("carriagespecoffset.dbss", carriage_spec_offset_handler())
+    register_handler("carriagespec.dbss", CarriageSpecHandler())
+    register_handler("petdetectpositionoffset.dbss", pet_detect_position_offset_handler())
+    register_handler("petdetectposition.dbss", PetDetectPositionHandler())
+    register_handler("actionverificationindexoffset.dbss", action_verification_index_offset_handler())
+    register_handler("actionverificationindex.dbss", ActionVerificationIndexHandler())
+    register_handler("exceptionskillcooltimewidgetoffset.dbss", exception_skill_cool_time_widget_offset_handler())
+    register_handler("exceptionskillcooltimewidget.dbss", ExceptionSkillCoolTimeWidgetHandler())
+    register_handler("personalmonsteroffset.dbss", personal_monster_offset_handler())
+    register_handler("personalmonster.dbss", PersonalMonsterHandler())
+    register_handler("personalmonsterpositionoffset.dbss", personal_monster_position_offset_handler())
+    register_handler("personalmonsterposition.dbss", PersonalMonsterPositionHandler())
+    register_handler("petpcroomoffset.dbss", pet_pc_room_offset_handler())
+    register_handler("petpcroom.dbss", PetPcRoomHandler())
+    register_handler("petfusionnewoffset.dbss", pet_fusion_new_offset_handler())
+    register_handler("petfusionnew.dbss", PetFusionNewHandler())
+    register_handler("petfusionnewaddrateinfo.dbss", PetFusionNewAddRateInfoHandler())
+    register_handler("petoldfusionoffset.dbss", pet_old_fusion_offset_handler())
+    register_handler("petoldfusion.dbss", PetOldFusionHandler())
+    register_handler("petchangelookoffset.dbss", pet_change_look_offset_handler())
+    register_handler("petchangelook.dbss", PetChangeLookHandler())
+    register_handler("maidoffset.dbss", maid_offset_handler())
+    register_handler("maid.dbss", MaidHandler())
+    register_handler("auctionoffset.dbss", auction_offset_handler())
+    register_handler("auction.dbss", AuctionHandler())
+    register_handler("monstergroupoffset.dbss", monster_group_offset_handler())
+    register_handler("monstergroup.dbss", MonsterGroupHandler())
+    register_handler("yachtbasecardoffset.dbss", yacht_base_card_offset_handler())
+    register_handler("yachtbasecard.dbss", YachtBaseCardHandler())
+    register_handler("yachtclasstypetextureinfooffset.dbss", yacht_class_type_texture_info_offset_handler())
+    register_handler("yachtclasstypetextureinfo.dbss", YachtClassTypeTextureInfoHandler())
+    register_handler("yachtdiceoffset.dbss", yacht_dice_offset_handler())
+    register_handler("yachtdice.dbss", YachtDiceHandler())
+    register_handler("yachtdicecardoffset.dbss", yacht_dice_card_offset_handler())
+    register_handler("yachtdicecard.dbss", YachtDiceCardHandler())
+    register_handler("yachtdicepresetoffset.dbss", yacht_dice_preset_offset_handler())
+    register_handler("yachtdicepreset.dbss", YachtDicePresetHandler())

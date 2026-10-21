@@ -22,7 +22,12 @@ from typing import cast
 
 from _common.icon_index import borrow_icons
 from _bss.buffsimply.parser import build_buff_icon_index
+from _bss.dropuihuntinggroundinfo.parser import (
+    build_character_hunting_ground_index,
+    build_hunting_ground_name_kr_index,
+)
 from _bss.exploration.parser import build_map_node_index, build_node_name_kr_index, build_node_parent_index
+from _bss.fieldinfo.parser import build_field_name_index
 from _bss.groupcameradata.parser import build_cutscene_icon_index
 from _bss.instancefieldmapinfo.parser import build_instance_field_title_index
 from _bss.itemexchangesource.parser import build_exchange_name_kr_index
@@ -36,7 +41,13 @@ from _bss.submenu.parser import build_submenu_icon_index, build_submenu_icon_reg
 from _bwp.waypoint.worldmap import WORLDMAP_FILE, build_node_link_index
 from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
-from _dbss.characterstatic.parser import build_character_ai_script_index, build_knowledge_character_index
+from _dbss.characterstatic.parser import (
+    build_character_ai_script_index,
+    build_character_group_index,
+    build_character_name_kr_index,
+    build_character_title_kr_index,
+    build_knowledge_character_index,
+)
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
 from _dbss.detail_dialog.parser import build_character_lease_index, build_dialog_key_index
 from _dbss.instancefield.parser import build_instance_field_name_index
@@ -97,9 +108,11 @@ BUFF_OFFSET = f"{_BINARY}/buffoffset.dbss"
 TELEPORT = f"{_BINARY}/teleport.dbss"
 LIGHTSTONESET = f"{_BINARY}/lightstoneset.bss"
 INSTANCEFIELD = f"{_BINARY}/instancefield.dbss"
+FIELDINFO = f"{_BINARY}/fieldinfo.bss"
 INSTANCEFIELDMAPINFO = f"{_BINARY}/instancefieldmapinfo.bss"
 STRINGTABLE = f"{_BINARY}/stringtable.bss"
 TEXTBIND = f"{_BINARY}/textbind.dbss"
+DROPUIHUNTINGGROUNDINFO = f"{_BINARY}/dropuihuntinggroundinfo.bss"
 WORLDMAP = f"gamecommondata/waypoint_binary/{WORLDMAP_FILE}"
 
 # plantexchangegroup.bss, then its exchanges, then the drop group tables.
@@ -152,6 +165,24 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.CHARACTER_AI_SCRIPT,
         (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
         build_character_ai_script_index,
+    ),
+    # Character -> Korean name, the fallback of character_name() without a LOC name.
+    IndexSpec(
+        IndexKind.CHARACTER_NAME_KR,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_name_kr_index,
+    ),
+    # Character -> Korean title, the fallback of character_title() without a LOC title.
+    IndexSpec(
+        IndexKind.CHARACTER_TITLE_KR,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_title_kr_index,
+    ),
+    # character_group -> its characters, for killMonsterGroup and the soul collectors.
+    IndexSpec(
+        IndexKind.CHARACTER_GROUP_MEMBERS,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_group_index,
     ),
     IndexSpec(
         IndexKind.KNOWLEDGE_LEARNING_CHARACTERS,
@@ -225,6 +256,20 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.INSTANCE_FIELD_TITLE,
         (INSTANCEFIELDMAPINFO, STRINGTABLE),
         build_instance_field_title_index,
+    ),
+    # Field number -> name, for the instancefield.dbss and instancedungeoninfo.dbss Field columns.
+    IndexSpec(IndexKind.FIELD_NAME, (FIELDINFO,), build_field_name_index),
+    # Monster -> the drop window hunting grounds that list it, for the monstergroup.dbss
+    # Hunting Grounds column; the names fall back to Korean like the other *_NAME_KR kinds.
+    IndexSpec(
+        IndexKind.CHARACTER_HUNTING_GROUNDS,
+        (DROPUIHUNTINGGROUNDINFO,),
+        build_character_hunting_ground_index,
+    ),
+    IndexSpec(
+        IndexKind.HUNTING_GROUND_NAME_KR,
+        (DROPUIHUNTINGGROUNDINFO,),
+        build_hunting_ground_name_kr_index,
     ),
 )
 

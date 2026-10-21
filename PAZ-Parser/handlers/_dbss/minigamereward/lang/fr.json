@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "minigameKey": "Mini-jeu",
+    "successWp": "Énergie (réussite)",
+    "failWp": "Énergie (échec)",
+    "dropGroup": "Groupe de butin",
+    "dropItems": "Objets de butin",
+    "vehicleType": "Type de véhicule"
+  },
+  "offsetColumns": {
+    "minigameKey": "Mini-jeu",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} mini-jeux"
+  }
+}

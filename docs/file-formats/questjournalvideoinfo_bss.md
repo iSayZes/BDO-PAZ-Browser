@@ -15,11 +15,26 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                        | Bytes | Records              | Row bytes |
 | ------ | -------------- | ------- | --------------------------- | ----- | -------------------- | --------- |
-| 1      | 3473 and later | 3474    | `questjournalvideoinfo.bss` | 7,687 | 80 Journal Video Row | 13        |
+| 1      | 2519 and later | 3474    | `questjournalvideoinfo.bss` | 7,687 | 80 Journal Video Row | 13        |
 
 | Layout | File                        | Known           | Unknown     |
 | ------ | --------------------------- | --------------- | ----------- |
 | 1      | `questjournalvideoinfo.bss` | 7,607 B (99.0%) | 80 B (1.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3473   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

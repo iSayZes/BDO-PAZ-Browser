@@ -33,6 +33,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `itemenchant.dbss`       | 99,716,229 B (58.0%) | 72,074,984 B (42.0%)  |
 | 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%) | 0 B (0.0%)            |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -121,8 +136,8 @@ decoded.
 | `unknown_61+0x15`         | i64                           | sell_price                  |       |
 | `unknown_61+0x1D`         | i64                           | repair_price                |       |
 | `unknown_61+0x25`         | u16                           | contents_event_type         | What using the item does, `CppEnums.ContentsEventType` (`6` ItemBox on 9,266 base items, `12` PetRegister, `22` Roulette, `25` SummonCharacter, `35` ConvertEnchantFailItemToCount); `171` when it does nothing (55,476). The Lua enum ends at `86`, but items store values up to `170` |
-| `unknown_61+0x27`         | i64                           | contents_event_param1       | First parameter of the contents event |
-| `unknown_61+0x2F`         | i64                           | contents_event_param2       | Second parameter |
+| `unknown_61+0x27`         | i64                           | contents_event_param1       | First parameter of the contents event; on soul collectors (type `59`) the `characterstatic.dbss` `character_group` of the monsters it counts, see Soul Collectors |
+| `unknown_61+0x2F`         | i64                           | contents_event_param2       | Second parameter; on soul collectors the kill count, see Soul Collectors |
 | `unknown_61+0x37`         | bytes[8]                      | unknown_98                  | Set in 390 base items |
 | `unknown_61+0x3F`         | u8                            | commerce_type               | Trade good category, `enCommerceType` in `panel_tooltip_item` (`1` Luxury Miscellaneous, `2` Luxury, `3` Grocery, `4` Medicine, `5` Military Supplies, `6` Object, `7` Cloth, `8` Seafood, `9` Raw Material): the trade market list opens on it and `getCalculateTradeItemPrice` takes it. `0` when none |
 | `unknown_61+0x40`         | u16                           | item_action_number          | `65535` when unused; `1` to `3` on 1,471 base items |
@@ -833,6 +848,106 @@ Examples: `58001` Strong Fence Garden (item) → `2001` Strong Fence Garden; `82
 
 The counts above include character `1`, which 120 unrelated items seemed to name: those are the mount and ship gear read without their `unknown_5d` entries (see Block). Read past them, no item names character `1`. On client 3464, 5,112 characters are named by at least one item and 4 by more than one. The browser keeps only characters named by exactly one item.
 
+## Soul Collectors
+
+Marni's Stones are soul collectors: `CppEnums.ContentsEventType` `59` is
+`ContentsType_SoulCollect`, and on client 3474 105 base items store it. The
+Where Used panel (`panel_whereuseitemdirection.luac`) reads the item's
+`_contentsEventParam1` into `currentMonsterGroupKey` and counts the stones in
+the inventory with the same `monsterGroupKey`, and how many of them are full
+(`getSoulCollectorCount()` against `getSoulCollectorMaxCount()`).
+
+That key is the `character_group` of
+[`characterstatic.dbss`](characterstatic_dbss.md#character-group), the key
+the quest condition `killMonsterGroup` takes, and not a group key of
+[`monstergroup.dbss`](monstergroup_dbss.md). The 105 items store 38 values
+from `60` to `186`, all outside that file's keys `1` to `36`, and each one is
+a `character_group` whose members are the monsters the item names. A zone has
+a different key in each set: Bashim is character group `70` and monster group
+`11`, Protty Cave `107` and `33`, Sycraia Upper Zone `108` and `34`.
+
+`contents_event_param2` is the kill count: it equals the count on the item
+description's Target line on 85 of the 105 items (Great Marni's Stone
+(Sycraia Upper Zone) `970017` stores `10000`, "Target: Sycraia Ruins Upper
+Zone monsters x10,000"). The 19 test copies named `... QA` store `100` with
+the description of the live stone, and Marni's Stone (Mediah Golem) `40359`
+stores `200` against "x100".
+
+The values on client 3474, with the first three members of each group by
+name:
+
+| Group | Items                                        | Example item                                       | Group members (client 3474)                                                           |
+| ----: | -------------------------------------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------- |
+|    60 | `40382`                                      | Experimental Marni's Stone                         | Abandoned Iron Mine Supervisor, Imp Work Supervisor, Khuruto Chaser (16 rows)         |
+|    65 | `40359`                                      | Marni's Stone (Mediah Golem)                       | Gravestone Golem, Stone Golem, Wilderness Golem (6 rows)                              |
+|    70 | `40351`, `40352`, `40584`, `40622`           | Marni's Stone (Bashim)                             | Khala Commanding Officer, Khala Elite Combatant, Khala Reinforced Thrower (12 rows)   |
+|    71 | `40364`, `40365`, `40590`, `40628`           | Marni's Stone (Basilisk)                           | Basilisk Ambusher, Basilisk Petrifier, Basilisk Statue (8 rows)                       |
+|    72 | `40353`, `40354`, `40585`, `40623`           | Marni's Stone (Cadry)                              | Cadry Armored Fighter, Cadry Black Mage, Cadry Chief Gatekeeper (15 rows)             |
+|    73 | `40366`, `40367`, `40591`, `40629`           | Marni's Stone (Centaurus)                          | Centaurus, Centaurus Axeman, Centaurus Hunter (5 rows)                                |
+|    74 | `40672`, `40673`                             | Marni's Stone (Stone Waragon)                      | Colossal Stone Waragon, Stone Mutant Waragon, Stone Waragon (4 rows)                  |
+|    75 | `40357`, `40358`, `40587`, `40625`           | Marni's Stone (Desert Fogan)                       | Desert Fogan Chief Gatekeeper, Desert Fogan Fighter, Desert Fogan Hoppity (8 rows)    |
+|    76 | `40362`, `40363`, `40589`, `40627`           | Marni's Stone (Crescent Shrine)                    | Crescent Chief Gatekeeper, Crescent Follower, Crescent Guardian (14 rows)             |
+|    77 | `40355`, `40356`, `40586`, `40624`           | Marni's Stone (Desert Naga)                        | Desert Naga Chief Gatekeeper, Desert Naga Combat Monk, Desert Naga Combatant (6 rows) |
+|    78 | `40360`, `40361`, `40588`, `40626`           | Marni's Stone (Gahaz Bandits)                      | Sandstorm Assassin, Sandstorm Elite, Sandstorm Plunderer (8 rows)                     |
+|    80 | `40372`, `40373`                             | Marni's Stone (Aakman Temple)                      | Aakman Airbender, Aakman Elite Guardian, Aakman Elite Watcher (14 rows)               |
+|    81 | `40368`, `40369`, `40592`, `40630`           | Marni's Stone (Roud Sulfur Mine)                   | Lava Devourer, Lava Fafalun, Lava Faolun (19 rows)                                    |
+|    82 | `40374`, `40375`                             | Marni's Stone (Hystria)                            | Elten, Kalqueesh, Tanco (16 rows)                                                     |
+|    83 | `40370`, `40371`, `40593`, `40631`           | Marni's Stone (Pila Ku)                            | Caphras's Follower, Dark Eyes Warder, Executioner (15 rows)                           |
+|    85 | `40380`, `40381`                             | Marni's Stone (Mirumok)                            | Degraded Old Tree Treant, Degraded Ruins Tree Treant, Mirumok (11 rows)               |
+|    86 | `40378`, `40379`, `40594`, `40632`, `66932`  | Marni's Stone (Manshaum)                           | Manshaum Fighter, Manshaum Great Warrior, Manshaum Hunter (6 rows)                    |
+|    87 | `40376`, `40377`                             | Marni's Stone (Navarn Steppe)                      | Baby Belladonna Elephant, Belladonna Elephant, Black Leopard (10 rows)                |
+|    91 | `40596`, `40634`, `40676`, `40677`           | Great Marni's Stone (Polly's Forest)               | Cloudy Rain Mushroom, Cotton Bubble Mushroom, Mushroom 3 (10 rows)                    |
+|    92 | `40595`, `40633`, `40674`, `40675`           | Great Marni's Stone (Fadus)                        | Fadus Archer, Fadus Challenger, Fadus Dual Wielder (7 rows)                           |
+|    93 | `40402`, `40403`, `40597`, `40635`, `66933`  | Marni's Stone (Forest Ronaros)                     | Forest Ronaros Catcher, Forest Ronaros Guardian, Forest Ronaros Marksman (6 rows)     |
+|    99 | `40516`, `40599`, `40637`, `66935`           | Marni's Stone (Kagtum)                             | Blood Wolf, Frenzied Kagtum, Kagtum Chaser (9 rows)                                   |
+|   100 | `40518`                                      | Marni's Stone (Sherekhan Necropolis - Night)       | Belcadas, Federik, Garud (5 rows)                                                     |
+|   101 | `40519`, `40598`, `40636`, `66285`, `66934`  | Marni's Stone (Tshira Ruins)                       | Grove Keeper, Leaf Keeper, Leaf Spider (10 rows)                                      |
+|   104 | `40517`, `40600`, `40638`, `66284`, `66936`  | Marni's Stone (Sherekhan Necropolis - Day)         | Belcadas, Federik, Garud (5 rows)                                                     |
+|   107 | `40552`, `40553`, `40602`, `40640`           | Marni's Stone (Protty Cave)                        | Kaz Protty, Protty, Sid Protty (10 rows)                                              |
+|   108 | `40554`, `40555`, `40601`, `40639`, `970017` | Marni's Stone (Sycraia Upper Zone)                 | Damaged Kureba, Damaged Lykin, Damaged Pirash (7 rows)                                |
+|   121 | `40679`                                      | Marni's Stone (Altar of Blood I)                   | Abandoned Iron Mine Executor, Agrakhan, Ahib Griffon (33 rows)                        |
+|   134 | `66288`                                      | Rumbling Marni's Stone (Blade)                     | Ahib Beast Trainer, Ahib Condemner, Ahib Dark Champion (70 rows)                      |
+|   147 | `65915`                                      | Elvia Marni's Stone (Orc Camp)                     | Fairy of Light, Firewood Orc, Long Red Orc (16 rows)                                  |
+|   148 | `65913`                                      | Elvia Marni's Stone (Glish Swamp - Swamp Naga)     | Swamp Naga, Swamp Naga Apprentice Axeman, Swamp Naga Apprentice Spearman (11 rows)    |
+|   149 | `65912`                                      | Elvia Marni's Stone (Southern Swamp - Swamp Fogan) | Big Swamp Fogan, Small Swamp Fogan, Swamp Fogan (16 rows)                             |
+|   150 | `65916`                                      | Elvia Marni's Stone (Bloody Monastery)             | Crimson Bell, Cultist, Cultist Giant Warrior (17 rows)                                |
+|   151 | `65910`                                      | Elvia Marni's Stone (Northern Plain of Serendia)   | Altar Imp, Altar Imp Fighter, Altar Imp Scout (20 rows)                               |
+|   152 | `65911`                                      | Elvia Marni's Stone (Biraghi Den)                  | Bandit Archer, Bandit Defense Captain, Bandit Warrior (22 rows)                       |
+|   153 | `65914`                                      | Elvia Marni's Stone (Castle Ruins)                 | Al Rhundi, Elite Guard, Elite Infantry (19 rows)                                      |
+|   185 | `66287`                                      | Rumbling Marni's Stone (Square)                    | Frost Wolf, Frost-tail Weasel, Snow Leopard (8 rows)                                  |
+|   186 | `66286`                                      | Rumbling Marni's Stone (Triangle)                  | Grass Rhino, Shadow Lion, Shadow Wolf (9 rows)                                        |
+
+The stones that name a zone match the group by monster name (Kagtum, Fadus,
+Cadry). The others match by their description: the Rumbling stones target
+"<Wild> monsters ... in Everfrost" (`185`, snowfield animals), "in Narcion"
+(`186`), "Thornwood Forest monsters" (`134`, the Ahib) and the Tshira and
+Sherekhan monsters (`101`, `104`). Altar of Blood I targets the Savage,
+Detest, Elusion and Desire stages; group `121` holds the Dark Rift bosses
+(Giath, Biraghi, Dastard Bheg, Korean labels ending in `_어둠의틈`). Sherekhan has one
+group by day (`104`) and one by night (`100`), each with its own five
+character keys. Group `60` is the Abandoned Iron Mine of the Experimental
+Marni's Stone.
+
+No client file names the character groups. The Event Param 1 column
+shows a soul collector's `contents_event_param1` as the group key and the
+distinct names of its characters from the `CHARACTER_GROUP_MEMBERS` lookup
+index (`70: Khala Commanding Officer, ...`, three names and a hoverable
+`... (+N)`), and `contents_event_param1_text` keeps every name for search and
+CSV export. Event Param 2 shows the kill count.
+
+## Contents Event
+
+The Use Event column names `contents_event_type` with the
+`CppEnums.ContentsEventType` member (`59 SoulCollect`), from
+`global_define_cpp_enum.luac` on client 3474 without the `ContentsType_`
+prefix (`_dbss/itemenchant/contents_event.py`); `68` to `70` are spelled
+`ContenteType_` there. The enum ends at `86` (`MusicIncreaseExp`), so higher
+values show as the number. `171`, "does nothing", shows as empty, and so
+does a parameter of `0`. On client 3474, 12 of the 55,651 base items with
+`171` store a non-zero parameter; the columns show it. Event Param 1 and 2
+show the stored numbers for every other event type, whose parameters are not
+decoded.
+
 ## Block Strings
 
 The strings do not sit at a fixed block offset: 47 distinct offsets were
@@ -1123,3 +1238,12 @@ offset, so it cannot be named `unknown_<offset>`) looks like an effect or sound 
 other tag families exist, is unconfirmed. Earlier versions called it
 `effect_tag` and showed it as an Effect Tag column; it stays on the record for
 search and CSV but is no longer shown.
+
+### Contents Event Types Past the Enum
+
+Items store `contents_event_type` values above `86`, up to `170` (`114` on 386
+base items and `149` on 218, client 3474), past the end of the Lua
+`CppEnums.ContentsEventType` at `86`. Which events they are, and what
+`contents_event_param1` and `param2` hold for the types other than `59`, is
+not worked out here; the Use Event column shows the bare number and the
+Event Param columns the stored values.

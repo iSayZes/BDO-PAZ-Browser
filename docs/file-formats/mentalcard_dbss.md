@@ -14,10 +14,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes     | Records          | Row bytes                    |
 | ------ | -------------- | ------- | ----------------------- | --------- | ---------------- | ---------------------------- |
-| 2      | 3473 and later | 3474    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
-| 2      | 3473 and later | 3474    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
-| 1      | 1784           | 1784    | `mentalcard.dbss`       | 3,695,047 | 7,635 Card       | 161 to 2,248, 484 on average |
-| 1      | 1784           | 1784    | `mentalcardoffset.dbss` | 91,640    | 7,635 Index Row  | 12                           |
+| 2      | 2107 and later | 3474    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
+| 2      | 2107 and later | 3474    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
+| 1      | 1485 to 1784   | 1784    | `mentalcard.dbss`       | 3,695,047 | 7,635 Card       | 161 to 2,248, 484 on average |
+| 1      | 1485 to 1784   | 1784    | `mentalcardoffset.dbss` | 91,640    | 7,635 Index Row  | 12                           |
 
 | Layout | File                    | Known               | Unknown          |
 | ------ | ----------------------- | ------------------- | ---------------- |
@@ -25,6 +25,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `mentalcardoffset.dbss` | 151,268 B (100.0%)  | 0 B (0.0%)       |
 | 1      | `mentalcard.dbss`       | 3,529,976 B (95.5%) | 165,071 B (4.5%) |
 | 1      | `mentalcardoffset.dbss` | 91,640 B (100.0%)   | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 2 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

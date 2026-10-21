@@ -11,6 +11,7 @@
     "completeNpc": "Complete NPC",
     "condition": "Condition",
     "action": "Action",
+    "killGroups": "Kill Groups",
     "objective": "Objective",
     "rewards": "Rewards",
     "selectRewards": "Selectable Rewards",

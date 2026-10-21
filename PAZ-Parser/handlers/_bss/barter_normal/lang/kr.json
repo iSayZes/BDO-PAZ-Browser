@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "regionKey": "지역 키",
+    "region": "지역",
+    "npc": "NPC",
+    "material": "재료",
+    "slot": "칸",
+    "selectRate": "선택 확률",
+    "subGroup": "하위 그룹",
+    "category": "구분"
+  },
+  "meta": {
+    "count": "물물교환 칸 {count}개 · 지역 {regions}개"
+  }
+}

@@ -25,6 +25,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `instancefield.dbss`       | 10,810 B (100.0%) | 0 B (0.0%) |
 | 1      | `instancefieldoffset.dbss` | 2,004 B (100.0%)  | 0 B (0.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -114,8 +128,9 @@ of `0` or `0xFFFF` to `1` and looks it up among its field infos, logging
 "InstanceFieldMap의 필드번호가 비정상입니다" ("the instance field map's field
 number is invalid") when it is missing. `FieldNo` is the key of the
 `Field_Table` sheet, where `1` is `월드` ("World") and `4001` to `4066` are
-`A1_001` to `A1_066`; the client copy of that table is `fieldinfo.bss`,
-which has no doc yet.
+`A1_001` to `A1_066`; the client copy of that table is
+[fieldinfo.bss](fieldinfo_bss.md), which holds every `field_no` of client
+3474.
 
 The sheet and the private server's own file hold the same 92 fields; every
 column above matches on all 92, and client 3474 has the same

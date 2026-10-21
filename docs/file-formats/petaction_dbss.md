@@ -12,13 +12,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records          | Row bytes                  |
 | ------ | -------------- | ------- | ---------------------- | ----- | ---------------- | -------------------------- |
-| 1      | 1784 and later | 3474    | `petaction.dbss`       | 1,498 | 10 Record        | 146 to 154, 150 on average |
-| 1      | 1784 and later | 3474    | `petactionoffset.dbss` | 124   | 10 Offset Record | 12                         |
+| 1      | 1485 and later | 3474    | `petaction.dbss`       | 1,498 | 10 Record        | 146 to 154, 150 on average |
+| 1      | 1485 and later | 3474    | `petactionoffset.dbss` | 124   | 10 Offset Record | 12                         |
 
 | Layout | File                   | Known           | Unknown       |
 | ------ | ---------------------- | --------------- | ------------- |
 | 1      | `petaction.dbss`       | 1,298 B (86.6%) | 200 B (13.4%) |
 | 1      | `petactionoffset.dbss` | 124 B (100.0%)  | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

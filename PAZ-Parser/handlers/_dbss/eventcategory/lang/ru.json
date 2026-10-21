@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "index": "Индекс",
+    "categoryMain": "Основная категория",
+    "categoryMiddle": "Средняя категория",
+    "categorySmall": "Подкатегория",
+    "discountStart": "Начало скидки",
+    "discountEnd": "Конец скидки",
+    "eventType": "Тип ивента",
+    "maxDiscountPearl": "Макс. скидка (жемчуг)",
+    "discountSteps": "Ступени скидки (жемчуг: скидка)"
+  },
+  "offsetColumns": {
+    "index": "Индекс",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Ивентов со скидкой: {count}"
+  }
+}

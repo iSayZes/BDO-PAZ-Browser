@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "fishKey": "Clave del pez",
+    "fish": "Pez",
+    "grade": "Grado",
+    "rewards": "Recompensas por clasificación",
+    "titleItem": "Objeto de título"
+  },
+  "text": {
+    "rank": "Puesto {rank}",
+    "rankRange": "Puestos {first}-{last}"
+  },
+  "meta": {
+    "count": "{count} peces del concurso"
+  }
+}

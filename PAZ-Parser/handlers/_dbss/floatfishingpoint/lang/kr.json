@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "pointKey": "포인트 키",
+    "pointSize": "크기",
+    "startX": "시작 X",
+    "startY": "시작 Y",
+    "startZ": "시작 Z",
+    "endX": "끝 X",
+    "endZ": "끝 Z",
+    "fishingGroup": "낚시 그룹",
+    "characterKey": "캐릭터 ID",
+    "character": "캐릭터",
+    "actionIndex": "액션 번호"
+  },
+  "offsetColumns": {
+    "pointKey": "포인트 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "낚시 포인트 {count}개"
+  }
+}

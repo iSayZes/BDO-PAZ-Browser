@@ -12,11 +12,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3474    | `barter_npclist.bss` | 384   | 91 Row  | 4         |
+| 1      | 1485 and later | 3474    | `barter_npclist.bss` | 384   | 91 Row  | 4         |
 
 | Layout | File                 | Known          | Unknown    |
 | ------ | -------------------- | -------------- | ---------- |
 | 1      | `barter_npclist.bss` | 384 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 
@@ -63,4 +77,4 @@ Rows are in neither key nor character order.
 
 - On client 3464 the `maritime_trade` slot of [`characterfunction.dbss`](characterfunction_dbss.md) stores the same key as `barter_region_key` for all 91 characters, and those 91 are the only characters with a non-zero `barter_region_key`.
 - The regions (client 3464): 70 islands, Arehaza, 8 coastal ports (Olvia Coast, Epheria Sentry Post, Sausan Garrison Wharf, Grándiha, Starry Midnight Port, Sanctuary Coastal Outpost, Dallae Pier, Crow's Nest) and 12 ship regions. Lema Island, Iliya Island and Arehaza are `MinorTown`, the others `Hunting`. The ship regions belong to characters 50814 to 50827 (Crow Merchants' Vessel, Old Moon Guild's Carrack, Wandering Merchant's Ship, Cholace Chico's Pirate Union and eight wrecks and rafts). The 12 ship regions are the only ones with `regioninfo.bss` `is_ocean` set.
-- The other barter tables (`barter_normal.bss`, `barter_special.bss`, `bartersubgroup.bss`, `barterlifelevelinfo.bss`, `barterresetoption.bss`) are not documented yet.
+- The other barter tables are [barter_normal](barter_normal_bss.md), [barter_special](barter_special_bss.md), [bartersubgroup](bartersubgroup_bss.md), [barterlifelevelinfo](barterlifelevelinfo_bss.md) and [barterresetoption](barterresetoption_bss.md). Both region lists of `barter_normal.bss` hold the 91 region keys of this file (client 3474).

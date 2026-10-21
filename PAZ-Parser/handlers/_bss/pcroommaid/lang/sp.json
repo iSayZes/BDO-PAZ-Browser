@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "Clave de personaje",
+    "name": "Sirvientes"
+  },
+  "meta": {
+    "count": "{count} sirvientes de PC Bang"
+  }
+}

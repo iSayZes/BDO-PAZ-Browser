@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "stack": "Verstärkungsstapel",
+    "fairyFeedKey": "Fütterungsschlüssel",
+    "enchantLevel": "Verstärkungsstufe"
+  },
+  "meta": {
+    "count": "{count} Einträge in {stack_count} Verstärkungsstapeln"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "name": "Nom",
+    "grade": "Grade"
+  },
+  "offsetColumns": {
+    "characterKey": "ID du personnage",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} personnages"
+  }
+}

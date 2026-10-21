@@ -11,6 +11,7 @@
     "completeNpc": "PNJ (Completar)",
     "condition": "Condición",
     "action": "Acción",
+    "killGroups": "Grupos a derrotar",
     "objective": "Objetivo",
     "rewards": "Recompensas",
     "selectRewards": "Recompensas a elegir",

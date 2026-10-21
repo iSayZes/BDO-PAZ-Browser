@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterKey": "Clé de personnage",
+    "name": "Nom",
+    "objectName": "Modèle de la carte du monde"
+  },
+  "meta": {
+    "count": "{count} clés de personnage"
+  }
+}

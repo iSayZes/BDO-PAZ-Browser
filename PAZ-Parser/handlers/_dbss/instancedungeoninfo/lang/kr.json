@@ -1,0 +1,19 @@
+{
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "columns": {
+    "key": "키",
+    "fieldNo": "필드 번호",
+    "field": "필드",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "방향"
+  },
+  "meta": {
+    "count": "인스턴스 던전 입장 위치 {count}개"
+  }
+}

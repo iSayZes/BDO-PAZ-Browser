@@ -12,10 +12,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records                                | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | -------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `petskill.dbss`       | 9,380 | 490 Level Entry, 49 Payload, 49 Record | 17        |
-| 2      | 3473 and later | 3474    | `petskilloffset.dbss` | 494   | 49 Offset Row                          | 10        |
-| 1      | 1784           | 1784    | `petskill.dbss`       | 8,606 | 460 Level Entry, 46 Payload, 46 Record | 17        |
-| 1      | 1784           | 1784    | `petskilloffset.dbss` | 464   | 46 Offset Row                          | 10        |
+| 2      | 2107 and later | 3474    | `petskill.dbss`       | 9,380 | 490 Level Entry, 49 Payload, 49 Record | 17        |
+| 2      | 2107 and later | 3474    | `petskilloffset.dbss` | 494   | 49 Offset Row                          | 10        |
+| 1      | 1485 to 1784   | 1784    | `petskill.dbss`       | 8,606 | 460 Level Entry, 46 Payload, 46 Record | 17        |
+| 1      | 1485 to 1784   | 1784    | `petskilloffset.dbss` | 464   | 46 Offset Row                          | 10        |
 
 | Layout | File                  | Known           | Unknown      |
 | ------ | --------------------- | --------------- | ------------ |
@@ -23,6 +23,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `petskilloffset.dbss` | 396 B (80.2%)   | 98 B (19.8%) |
 | 1      | `petskill.dbss`       | 8,238 B (95.7%) | 368 B (4.3%) |
 | 1      | `petskilloffset.dbss` | 372 B (80.2%)   | 92 B (19.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 2 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

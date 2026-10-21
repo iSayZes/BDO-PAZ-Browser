@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "instanceDungeonNo": "Instance Dungeon",
+    "learnSkill": "Learned Skill",
+    "itemGroups": "Item Groups",
+    "relatedRegions": "Regions"
+  },
+  "offsetColumns": {
+    "instanceDungeonNo": "Instance Dungeon",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} instance dungeons"
+  }
+}

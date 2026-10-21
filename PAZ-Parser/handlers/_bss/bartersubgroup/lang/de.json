@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "subGroup": "Untergruppe",
+    "material": "Material",
+    "selectRate": "Auswahlrate",
+    "cost": "Kosten",
+    "category": "Kategorie"
+  },
+  "meta": {
+    "count": "{count} Warentausche · {groups} Untergruppen"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "classType": "Type de classe",
+    "className": "Classe"
+  },
+  "offsetColumns": {
+    "classType": "Type de classe",
+    "dataOffset": "Décalage des données",
+    "dataSize": "Taille des données"
+  },
+  "meta": {
+    "count": "{count} types de classe"
+  }
+}

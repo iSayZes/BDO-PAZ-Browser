@@ -14,13 +14,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes | Records          | Row bytes |
 | ------ | -------------- | ------- | -------------------------------- | ----- | ---------------- | --------- |
-| 1      | 1784 and later | 3474    | `petequipskillaquire.dbss`       | 3,700 | 21 Record        | 176       |
-| 1      | 1784 and later | 3474    | `petequipskillaquireoffset.dbss` | 214   | 21 Offset Record | 10        |
+| 1      | 1485 and later | 3474    | `petequipskillaquire.dbss`       | 3,700 | 21 Record        | 176       |
+| 1      | 1485 and later | 3474    | `petequipskillaquireoffset.dbss` | 214   | 21 Offset Record | 10        |
 
 | Layout | File                             | Known            | Unknown      |
 | ------ | -------------------------------- | ---------------- | ------------ |
 | 1      | `petequipskillaquire.dbss`       | 3,700 B (100.0%) | 0 B (0.0%)   |
 | 1      | `petequipskillaquireoffset.dbss` | 172 B (80.4%)    | 42 B (19.6%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

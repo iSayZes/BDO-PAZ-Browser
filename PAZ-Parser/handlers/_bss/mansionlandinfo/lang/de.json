@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "landKey": "Grundstück-ID",
+    "manor": "Anwesen",
+    "buildingKey": "Gebäude-ID",
+    "region": "Region",
+    "contributionPoints": "Beitragspunkte",
+    "sectorStart": "Sektor von",
+    "sectorEnd": "Sektor bis",
+    "quest": "Quest",
+    "dayPay": "Preis pro Tag",
+    "parts": "Teile"
+  },
+  "meta": {
+    "count": "{count} Anwesen"
+  }
+}

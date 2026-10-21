@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 키",
+    "name": "이름",
+    "objectName": "월드맵 모델"
+  },
+  "meta": {
+    "count": "캐릭터 키 {count}개"
+  }
+}

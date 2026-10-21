@@ -14,11 +14,26 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------------------------- | ----- | ------- | --------- |
-| 1      | 3473 and later | 3474    | `bossmonsterhpsyncstaticstatus.bss` | 98    | 3 Row   | 26        |
+| 1      | 2519 and later | 3474    | `bossmonsterhpsyncstaticstatus.bss` | 98    | 3 Row   | 26        |
 
 | Layout | File                                | Known        | Unknown      |
 | ------ | ----------------------------------- | ------------ | ------------ |
 | 1      | `bossmonsterhpsyncstaticstatus.bss` | 80 B (81.6%) | 18 B (18.4%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3473   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

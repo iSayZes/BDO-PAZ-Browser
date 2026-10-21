@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "key": "Key",
+    "name": "Name",
+    "description": "Description",
+    "targetEye": "Eye",
+    "targetCount": "Equal Cards",
+    "straightCount": "Straight",
+    "twoPair": "Two Pair",
+    "fullHouse": "Full House",
+    "madePoint": "Fixed Points",
+    "sumPoint": "Card Sum",
+    "iconTexture": "Icon Texture"
+  },
+  "meta": {
+    "count": "{count} hand ranks"
+  }
+}

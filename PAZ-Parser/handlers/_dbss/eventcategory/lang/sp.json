@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "index": "Índice",
+    "categoryMain": "Categoría principal",
+    "categoryMiddle": "Categoría media",
+    "categorySmall": "Subcategoría",
+    "discountStart": "Inicio del descuento",
+    "discountEnd": "Fin del descuento",
+    "eventType": "Tipo de evento",
+    "maxDiscountPearl": "Descuento máx. (perlas)",
+    "discountSteps": "Niveles de descuento (perlas: descuento)"
+  },
+  "offsetColumns": {
+    "index": "Índice",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} eventos de descuento"
+  }
+}

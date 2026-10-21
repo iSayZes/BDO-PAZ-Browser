@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Clave de personaje",
+    "name": "Nombre",
+    "unlockBoss": "Desbloqueo: jefe",
+    "unlockKnowledge": "Desbloqueo: conocimiento",
+    "offence": "Ataque",
+    "defence": "Defensa",
+    "weakAura": "Energía débil",
+    "difficulty": "Dificultad",
+    "group": "Grupo",
+    "boss": "Jefe",
+    "part": "Parte",
+    "showRewards": "Recompensas",
+    "position": "Posición",
+    "minAp": "Ataque mín."
+  },
+  "parts": {
+    "solo": "Donghae (individual)",
+    "party": "Hwanghae (grupo)"
+  },
+  "difficulties": {
+    "calamity": "Grado {number}",
+    "normal": "Normal",
+    "hard": "Difícil"
+  },
+  "meta": {
+    "count": "{count} monstruos del Santuario Oscuro · {bosses} jefes"
+  }
+}

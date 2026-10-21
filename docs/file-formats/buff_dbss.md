@@ -18,6 +18,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ----------------- | ---------- | ---------------------------------------------------- | --------- |
 | 3      | 3473 and later | 3474    | `buff.dbss`       | 12,550,743 | 44,690 Stats Block, 44,690 Tail Block, 44,690 Record | 133       |
 | 3      | 3473 and later | 3474    | `buffoffset.dbss` | 536,300    | 44,690 Index Row                                     | 12        |
+| 2      | 3002 to 3251   | 3251    | `buff.dbss`       | 12,288,865 | 43,972 Stats Block, 43,972 Tail Block, 43,972 Record | 133       |
+| 2      | 3002 to 3251   | 3251    | `buffoffset.dbss` | 439,740    | 43,972 Index Row                                     | 10        |
 | 1      | 1784           | 1784    | `buff.dbss`       | 9,733,373  | 37,030 Stats Block, 37,030 Tail Block, 37,030 Record | 133       |
 | 1      | 1784           | 1784    | `buffoffset.dbss` | 370,320    | 37,030 Index Row                                     | 10        |
 
@@ -25,8 +27,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | ----------------- | -------------------- | ------------------- |
 | 3      | `buff.dbss`       | 10,718,453 B (85.4%) | 1,832,290 B (14.6%) |
 | 3      | `buffoffset.dbss` | 536,300 B (100.0%)   | 0 B (0.0%)          |
+| 2      | `buff.dbss`       | 10,486,013 B (85.3%) | 1,802,852 B (14.7%) |
+| 2      | `buffoffset.dbss` | 439,740 B (100.0%)   | 0 B (0.0%)          |
 | 1      | `buff.dbss`       | 8,252,173 B (84.8%)  | 1,481,200 B (15.2%) |
 | 1      | `buffoffset.dbss` | 370,320 B (100.0%)   | 0 B (0.0%)          |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 3             |
+| 3473   | Layout 3             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No file              |
 
 <!-- versions:end -->
 

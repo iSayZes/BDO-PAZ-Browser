@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "level": "Stufe",
+    "autofishingTimePercents": "Automatische Fischfangzeit (Rohwert)"
+  },
+  "offsetColumns": {
+    "itemId": "Gegenstands-ID",
+    "level": "Stufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Einträge · {items} Gegenstände"
+  }
+}

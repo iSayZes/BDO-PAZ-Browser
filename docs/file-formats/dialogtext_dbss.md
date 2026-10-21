@@ -12,13 +12,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes   | Records                                     | Row bytes                 |
 | ------ | -------------- | ------- | ----------------------- | ------- | ------------------------------------------- | ------------------------- |
-| 1      | 1784 and later | 3474    | `dialogtext.dbss`       | 614,336 | 3,645 Line, 1,043 Pool Record, 1,043 Record | 20 to 308, 153 on average |
-| 1      | 1784 and later | 3474    | `dialogtextoffset.dbss` | 12,520  | 1,043 Index Row                             | 12                        |
+| 1      | 1485 and later | 3474    | `dialogtext.dbss`       | 614,336 | 3,645 Line, 1,043 Pool Record, 1,043 Record | 20 to 308, 153 on average |
+| 1      | 1485 and later | 3474    | `dialogtextoffset.dbss` | 12,520  | 1,043 Index Row                             | 12                        |
 
 | Layout | File                    | Known             | Unknown        |
 | ------ | ----------------------- | ----------------- | -------------- |
 | 1      | `dialogtext.dbss`       | 610,164 B (99.3%) | 4,172 B (0.7%) |
 | 1      | `dialogtextoffset.dbss` | 12,520 B (100.0%) | 0 B (0.0%)     |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No documented layout |
+| 794    | No file              |
 
 <!-- versions:end -->
 

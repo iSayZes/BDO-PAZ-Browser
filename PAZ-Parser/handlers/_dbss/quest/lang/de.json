@@ -11,6 +11,7 @@
     "completeNpc": "NPC (Abgeschlossen)",
     "condition": "Bedingung",
     "action": "Aktion",
+    "killGroups": "Zu besiegende Gruppen",
     "objective": "Ziel",
     "rewards": "Belohnungen",
     "selectRewards": "Wählbare Belohnungen",

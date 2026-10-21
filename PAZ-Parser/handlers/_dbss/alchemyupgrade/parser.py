@@ -1,14 +1,14 @@
 """`alchemyupgrade.dbss`: the materials that polish each alchemy stone type.
 
 The file and its `alchemyupgradeoffset.dbss` index use the grouped walk in
-`_dbss/alchemystone/grouped.py`. A main row is
+`_common/grouped_rows.py`. A main row is
 `(stone_type, item_id, experience)`.
 Layout in docs/file-formats/alchemyupgrade_dbss.md.
 """
 
 from __future__ import annotations
 
-from _dbss.alchemystone.grouped import parse_grouped_rows, parse_stone_offset_records
+from _dbss.alchemystone.grouped import parse_stone_offset_records, parse_stone_rows
 
 FILE_NAME = "alchemyupgrade.dbss"
 OFFSET_FILE = "alchemyupgradeoffset.dbss"
@@ -21,7 +21,7 @@ def parse_alchemyupgrade_records(data: bytes) -> list[dict]:
     """Every material row, in file order."""
     return [
         {"stone_type": stone_type, "item_id": item_id, "experience": experience}
-        for _group, (stone_type, item_id, experience) in parse_grouped_rows(data, FILE_NAME)
+        for _group, (stone_type, item_id, experience) in parse_stone_rows(data, FILE_NAME)
     ]
 
 

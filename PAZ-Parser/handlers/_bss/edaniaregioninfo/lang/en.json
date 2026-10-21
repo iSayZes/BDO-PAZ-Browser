@@ -1,7 +1,8 @@
 {
   "columns": {
     "edaniaRegion": "Edania Region",
-    "castle": "Castle"
+    "castle": "Castle",
+    "mapColor": "Map Color"
   },
   "meta": {
     "count": "{count} Edania regions"

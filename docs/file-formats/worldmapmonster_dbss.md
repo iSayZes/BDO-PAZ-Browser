@@ -16,8 +16,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
 | ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
-| 2      | 3473 and later | 3474    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
-| 2      | 3473 and later | 3474    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
+| 2      | 3251 and later | 3474    | `worldmapmonster.dbss`       | 42,876 | 230 Marker Record, 230 Record | 138 to 277, 184 on average |
+| 2      | 3251 and later | 3474    | `worldmapmonsteroffset.dbss` | 2,304  | 230 Offset Row                | 10                         |
 | 1      | 1784           | 1784    | `worldmapmonster.dbss`       | 17,258 | 114 Marker Record, 114 Record | 124 to 214, 149 on average |
 | 1      | 1784           | 1784    | `worldmapmonsteroffset.dbss` | 1,144  | 114 Offset Row                | 10                         |
 
@@ -27,6 +27,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `worldmapmonsteroffset.dbss` | 2,304 B (100.0%) | 0 B (0.0%)     |
 | 1      | `worldmapmonster.dbss`       | 16,346 B (94.7%) | 912 B (5.3%)   |
 | 1      | `worldmapmonsteroffset.dbss` | 1,144 B (100.0%) | 0 B (0.0%)     |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

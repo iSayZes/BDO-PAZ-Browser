@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "키",
+    "cards": "카드"
+  },
+  "offsetColumns": {
+    "key": "키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "주사위 {count}개"
+  }
+}

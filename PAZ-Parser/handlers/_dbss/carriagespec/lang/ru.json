@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carriageKey": "ID повозки",
+    "distancePerMinute": "Расстояние в минуту",
+    "loadage": "Загрузка",
+    "transportMaxWeight": "Макс. вес",
+    "camasilbAddTransportMaxWeight": "Доп. вес Камасильва",
+    "baseFee": "Базовая стоимость",
+    "overloadWeight": "Вес перегрузки",
+    "feePerWeight": "Стоимость за вес",
+    "nonStackTrade": "Нескладываемые товары",
+    "stackTrade": "Складываемые товары",
+    "expirationPeriodTrade": "Товары со сроком годности"
+  },
+  "offsetColumns": {
+    "carriageKey": "ID повозки",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Типов повозок: {count}"
+  }
+}

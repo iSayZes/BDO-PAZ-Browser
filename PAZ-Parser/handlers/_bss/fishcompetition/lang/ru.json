@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "fishKey": "Ключ рыбы",
+    "fish": "Рыба",
+    "grade": "Ранг",
+    "rewards": "Награды за место",
+    "titleItem": "Предмет титула"
+  },
+  "text": {
+    "rank": "Место {rank}",
+    "rankRange": "Места {first}-{last}"
+  },
+  "meta": {
+    "count": "Рыба конкурса: {count}"
+  }
+}

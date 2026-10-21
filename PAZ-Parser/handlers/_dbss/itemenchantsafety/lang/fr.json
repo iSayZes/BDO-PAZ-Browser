@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "type": "Type",
+    "gear": "Équipement",
+    "minLevel": "Niveau min.",
+    "maxLevel": "Niveau max.",
+    "stack": "Cumul limite",
+    "cautionStack": "Cumul d'alerte",
+    "cautionRate": "Chance d'alerte"
+  },
+  "gear": {
+    "0": "Armes",
+    "1": "Armure",
+    "2": "Accessoires",
+    "3": "Outils et équipement de monture",
+    "4": "Vêtements brodés d'argent"
+  },
+  "offsetColumns": {
+    "type": "Type",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} types d'équipement"
+  }
+}

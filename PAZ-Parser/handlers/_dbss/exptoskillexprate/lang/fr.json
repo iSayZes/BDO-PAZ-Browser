@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "level": "Niveau",
+    "rate": "Taux EXP vers EXP de compétence"
+  },
+  "offsetColumns": {
+    "level": "Niveau",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} niveaux"
+  }
+}

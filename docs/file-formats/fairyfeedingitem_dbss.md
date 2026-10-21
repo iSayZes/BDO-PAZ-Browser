@@ -14,13 +14,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records          | Row bytes |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ---------------- | --------- |
-| 1      | 1784 and later | 3474    | `fairyfeedingitem.dbss`       | 62,892 | 2,246 Record     | 28        |
-| 1      | 1784 and later | 3474    | `fairyfeedingitemoffset.dbss` | 26,956 | 2,246 Offset Row | 12        |
+| 1      | 1485 and later | 3474    | `fairyfeedingitem.dbss`       | 62,892 | 2,246 Record     | 28        |
+| 1      | 1485 and later | 3474    | `fairyfeedingitemoffset.dbss` | 26,956 | 2,246 Offset Row | 12        |
 
 | Layout | File                          | Known             | Unknown          |
 | ------ | ----------------------------- | ----------------- | ---------------- |
 | 1      | `fairyfeedingitem.dbss`       | 44,924 B (71.4%)  | 17,968 B (28.6%) |
 | 1      | `fairyfeedingitemoffset.dbss` | 26,956 B (100.0%) | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

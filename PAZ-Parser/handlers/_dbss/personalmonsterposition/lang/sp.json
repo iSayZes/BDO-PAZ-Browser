@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionIndex": "Índice de posición",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnDistance": "Distancia de aparición"
+  },
+  "offsetColumns": {
+    "positionIndex": "Índice de posición",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} puntos de aparición de la Fisura oscura"
+  }
+}

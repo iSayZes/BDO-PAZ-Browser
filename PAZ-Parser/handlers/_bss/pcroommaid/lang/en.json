@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "Character Key",
+    "name": "Maid/Butler"
+  },
+  "meta": {
+    "count": "{count} PC room maids and butlers"
+  }
+}

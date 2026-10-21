@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "skillNo": "N° de compétence",
+    "skill": "Fusion de compétence",
+    "mainSkillNo": "N° de compétence principale",
+    "mainSkill": "Compétence principale",
+    "subSkillNo": "N° de compétence secondaire",
+    "subSkill": "Compétence secondaire",
+    "slot": "Emplacement",
+    "order": "Ordre"
+  },
+  "offsetColumns": {
+    "skillKey": "Clé de compétence",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} fusions de compétence"
+  }
+}

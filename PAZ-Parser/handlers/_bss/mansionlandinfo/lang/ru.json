@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "landKey": "ID участка",
+    "manor": "Особняк",
+    "buildingKey": "ID здания",
+    "region": "Регион",
+    "contributionPoints": "Очки влияния",
+    "sectorStart": "Сектор от",
+    "sectorEnd": "Сектор до",
+    "quest": "Задание",
+    "dayPay": "Цена за день",
+    "parts": "Части"
+  },
+  "meta": {
+    "count": "Особняков: {count}"
+  }
+}

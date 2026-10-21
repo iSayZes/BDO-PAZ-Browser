@@ -26,6 +26,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `pcgrowth.dbss`       | 55,656 B (88.4%) | 7,314 B (11.6%) |
 | 1      | `pcgrowthoffset.dbss` | 742 B (100.0%)   | 0 B (0.0%)      |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

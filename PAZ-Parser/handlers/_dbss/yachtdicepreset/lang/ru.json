@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "dice": "Кости"
+  },
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Наборов костей: {count}"
+  }
+}

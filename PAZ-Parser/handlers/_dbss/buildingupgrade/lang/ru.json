@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "name": "Здание",
+    "upgradeTime": "Время улучшения",
+    "upgradeLevel": "Уровень улучшения",
+    "targetCharacterKey": "ID цели",
+    "targetName": "Становится",
+    "sourceItems": "Материалы"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Улучшений зданий: {count}"
+  }
+}

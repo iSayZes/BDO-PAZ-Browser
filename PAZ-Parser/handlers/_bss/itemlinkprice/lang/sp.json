@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "item": "Objeto",
+    "targetItemKey": "Clave del objeto de precio",
+    "targetItem": "Objeto de precio"
+  },
+  "meta": {
+    "count": "{count} precios vinculados"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "groupKey": "Fishing Group",
+    "drops": "Drops",
+    "points": "Fishing Points"
+  },
+  "slots": {
+    "treasure": "Treasure",
+    "rare": "Rare",
+    "large": "Large",
+    "general": "General",
+    "junk": "Junk"
+  },
+  "offsetColumns": {
+    "groupKey": "Fishing Group",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} fishing groups"
+  }
+}

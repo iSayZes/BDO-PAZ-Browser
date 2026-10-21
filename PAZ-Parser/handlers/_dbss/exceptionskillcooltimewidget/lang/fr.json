@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "skillNo": "ID de compétence",
+    "skill": "Compétence",
+    "classes": "Classes",
+    "shownSkillNo": "ID de compétence affichée",
+    "shownSkill": "Compétence affichée",
+    "learnCheckSkillNo": "ID de compétence vérifiée",
+    "learnCheckSkill": "Compétence vérifiée"
+  },
+  "offsetColumns": {
+    "skillKey": "Clé de compétence",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} remplacements de compétence"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "offsetColumns": {
+    "key": "Ключ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "columns": {
+    "key": "Ключ",
+    "fieldNo": "№ поля",
+    "field": "Поле",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "direction": "Направление"
+  },
+  "meta": {
+    "count": "Точек входа в подземелья: {count}"
+  }
+}

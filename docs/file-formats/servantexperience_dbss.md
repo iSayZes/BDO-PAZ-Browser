@@ -19,15 +19,30 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------------------ | --------- | --------------------------------------- | --------- |
 | 2      | 3473 and later | 3474    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
 | 2      | 3473 and later | 3474    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
-| 1      | 1784           | 1784    | `servantexperience.dbss`       | 4,209,202 | 31,485 Body String, 10,495 Level Record | 18        |
-| 1      | 1784           | 1784    | `servantexperienceoffset.dbss` | 125,944   | 10,495 Index Row                        | 12        |
+| 1      | 1485 to 2519   | 2519    | `servantexperience.dbss`       | 4,737,292 | 35,448 Body String, 11,816 Level Record | 18        |
+| 1      | 1485 to 2519   | 2519    | `servantexperienceoffset.dbss` | 141,796   | 11,816 Index Row                        | 12        |
 
 | Layout | File                           | Known               | Unknown             |
 | ------ | ------------------------------ | ------------------- | ------------------- |
 | 2      | `servantexperience.dbss`       | 3,890,890 B (46.5%) | 4,469,390 B (53.5%) |
 | 2      | `servantexperienceoffset.dbss` | 250,624 B (100.0%)  | 0 B (0.0%)          |
-| 1      | `servantexperience.dbss`       | 1,816,342 B (43.2%) | 2,392,860 B (56.8%) |
-| 1      | `servantexperienceoffset.dbss` | 125,944 B (100.0%)  | 0 B (0.0%)          |
+| 1      | `servantexperience.dbss`       | 2,043,244 B (43.1%) | 2,694,048 B (56.9%) |
+| 1      | `servantexperienceoffset.dbss` | 141,796 B (100.0%)  | 0 B (0.0%)          |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

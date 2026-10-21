@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Ключ предмета",
+    "item": "Предмет",
+    "targetItemKey": "Ключ предмета цены",
+    "targetItem": "Предмет цены"
+  },
+  "meta": {
+    "count": "Связанные цены: {count}"
+  }
+}

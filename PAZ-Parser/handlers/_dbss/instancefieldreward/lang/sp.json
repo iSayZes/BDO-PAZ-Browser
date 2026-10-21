@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "instanceDungeonNo": "Mazmorra de instancia",
+    "learnSkill": "Habilidad aprendida",
+    "itemGroups": "Grupos de objetos",
+    "relatedRegions": "Regiones"
+  },
+  "offsetColumns": {
+    "instanceDungeonNo": "Mazmorra de instancia",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} mazmorras de instancia"
+  }
+}

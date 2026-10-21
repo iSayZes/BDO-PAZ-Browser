@@ -12,8 +12,8 @@ from _common.lang import handler_text, load_handler_strings
 from _common.node import node_name
 from _common.production_items import production_item_fields, production_luck_item_fields
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
+from _common.work_ani_type import WORK_ANI_TYPE_NAMES
 from .parser import (
-    WORK_ANI_TYPE_NAMES,
     WORKER_SPECIES_NAMES,
     parse_offset_records,
     parse_plantzone_records,

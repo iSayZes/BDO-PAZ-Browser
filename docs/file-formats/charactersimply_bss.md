@@ -13,12 +13,26 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | Clients        | Checked | File                  | Bytes     | Records    | Row bytes |
 | ------ | -------------- | ------- | --------------------- | --------- | ---------- | --------- |
 | 2      | 3474 and later | 3474    | `charactersimply.bss` | 3,861,711 | 24,553 Row | 119       |
-| 1      | 1784           | 1784    | `charactersimply.bss` | 2,564,291 | 15,704 Row | 121       |
+| 1      | 1784 to 2519   | 2519    | `charactersimply.bss` | 3,364,243 | 21,201 Row | 121       |
 
 | Layout | File                  | Known               | Unknown           |
 | ------ | --------------------- | ------------------- | ----------------- |
 | 2      | `charactersimply.bss` | 3,296,992 B (85.4%) | 564,719 B (14.6%) |
-| 1      | `charactersimply.bss` | 2,171,691 B (84.7%) | 392,600 B (15.3%) |
+| 1      | `charactersimply.bss` | 2,834,218 B (84.2%) | 530,025 B (15.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

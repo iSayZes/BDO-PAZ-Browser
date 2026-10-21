@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "level": "Уровень",
+    "description": "Описание",
+    "handRankCount": "Комбинаций",
+    "handRanks": "Комбинации",
+    "rollCountMax": "Макс. бросков",
+    "matchmaking": "Подбор",
+    "iconTexture": "Текстура значка",
+    "bigTexture": "Большая текстура"
+  },
+  "meta": {
+    "count": "Игровых полей: {count}"
+  }
+}

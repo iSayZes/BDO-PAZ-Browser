@@ -5,7 +5,7 @@
     "dialog": "Dialog",
     "dialogName": "Dialogname",
     "exchangeCount": "Tausch",
-    "exchangeKeys": "Gegenstandstausch-Schlüssel"
+    "exchanges": "Gegenstandstausch"
   },
   "offsetColumns": {
     "dialogKey": "Dialog-Schlüssel",
@@ -14,5 +14,6 @@
   },
   "meta": {
     "count": "{count} Dialoge · {npc_count} NPCs"
-  }
+  },
+  "missingExchange": "{exchange_key}: keine Tauschzeile"
 }

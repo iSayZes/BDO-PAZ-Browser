@@ -1,0 +1,8 @@
+{
+  "columns": {
+    "key": "키"
+  },
+  "meta": {
+    "count": "행 {count}개"
+  }
+}

@@ -39,6 +39,15 @@ class IndexKind(Enum):
     KNOWLEDGE_LEARNING_ITEMS = "knowledge_learning_items"
     # Stem of the `.ai` script each character runs (characterstatic.dbss), as written.
     CHARACTER_AI_SCRIPT = "character_ai_script"
+    # Korean characterstatic.dbss names, the fallback when LOC type 6 has none;
+    # read through _common/character.py.
+    CHARACTER_NAME_KR = "character_name_kr"
+    # Korean characterstatic.dbss titles, the fallback when LOC type 6 has none;
+    # read through _common/character.py.
+    CHARACTER_TITLE_KR = "character_title_kr"
+    # Character IDs of each characterstatic.dbss character_group, ascending;
+    # read through _common/character_group.py.
+    CHARACTER_GROUP_MEMBERS = "character_group_members"
     # Flat (item_id, cost, ...) pairs; read through _common/lease.py.
     CHARACTER_LEASES = "character_leases"
     # Every detail_dialog.dbss key -> its character ID; read through _common/quest/dialog.py.
@@ -102,6 +111,14 @@ class IndexKind(Enum):
     INSTANCE_FIELD_NAME = "instance_field_name"
     # GAME sheet key hash of each instance field title (instancefieldmapinfo.bss).
     INSTANCE_FIELD_TITLE = "instance_field_title"
+    # Name of each fieldinfo.bss field (`월드`, `A1_001`) by field number; read
+    # through _bss/fieldinfo/names.py.
+    FIELD_NAME = "field_name"
+    # dropuihuntinggroundinfo.bss keys of the hunting grounds whose monster list
+    # holds a character, ascending; read through _common/hunting_ground.py.
+    CHARACTER_HUNTING_GROUNDS = "character_hunting_grounds"
+    # Korean dropuihuntinggroundinfo.bss names, the fallback when LOC type 116 has none.
+    HUNTING_GROUND_NAME_KR = "hunting_ground_name_kr"
 
 
 # Dependency name each read reports to `data_deps`, built once per kind.

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "positionIndex": "Index de position",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnDistance": "Distance d'apparition"
+  },
+  "offsetColumns": {
+    "positionIndex": "Index de position",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} points d'apparition de la Faille obscure"
+  }
+}

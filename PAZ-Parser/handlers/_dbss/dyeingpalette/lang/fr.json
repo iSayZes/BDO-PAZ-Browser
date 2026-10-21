@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "paletteType": "Type de palette",
+    "palette": "Palette",
+    "paletteIndex": "Index de palette",
+    "color": "Couleur",
+    "environment": "Environnement",
+    "specular": "Spéculaire",
+    "items": "Colorants"
+  },
+  "offsetColumns": {
+    "paletteType": "Type de palette",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} couleurs de palette"
+  }
+}

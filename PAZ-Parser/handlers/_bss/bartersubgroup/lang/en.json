@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "subGroup": "Sub Group",
+    "material": "Material",
+    "selectRate": "Select Rate",
+    "cost": "Cost",
+    "category": "Category"
+  },
+  "meta": {
+    "count": "{count} barter exchanges · {groups} sub groups"
+  }
+}

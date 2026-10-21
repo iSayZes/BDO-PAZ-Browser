@@ -17,15 +17,30 @@ or weight growth.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes     | Records                                               | Row bytes |
-| ------ | -------------- | ------- | ---------------- | --------- | ----------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group   | 200       |
-| 1      | 1784           | 1784    | `experience.bss` | 3,201,476 | 10,742 Stat Body, 10,742 Level Record, 82 Class Group | 270       |
+| Layout | Clients        | Checked | File             | Bytes     | Records                                             | Row bytes |
+| ------ | -------------- | ------- | ---------------- | --------- | --------------------------------------------------- | --------- |
+| 2      | 3002 and later | 3474    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group | 200       |
+| 1      | 1784 to 2519   | 2519    | `experience.bss` | 1,444,786 | 4,847 Stat Body, 4,847 Level Record, 87 Class Group | 270       |
 
 | Layout | File             | Known             | Unknown             |
 | ------ | ---------------- | ----------------- | ------------------- |
 | 2      | `experience.bss` | 320,379 B (22.0%) | 1,133,088 B (78.0%) |
-| 1      | `experience.bss` | 558,944 B (17.5%) | 2,642,532 B (82.5%) |
+| 1      | `experience.bss` | 252,424 B (17.5%) | 1,192,362 B (82.5%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | Layout 2             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

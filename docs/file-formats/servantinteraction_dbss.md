@@ -18,15 +18,29 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------------------- | ----- | -------------- | --------- |
 | 2      | 3474 and later | 3474    | `servantinteraction.dbss`       | 9,956 | 311 Record     | 32        |
 | 2      | 3474 and later | 3474    | `servantinteractionoffset.dbss` | 3,114 | 311 Offset Row | 10        |
-| 1      | 1784           | 1784    | `servantinteraction.dbss`       | 6,634 | 255 Record     | 26        |
-| 1      | 1784           | 1784    | `servantinteractionoffset.dbss` | 2,554 | 255 Offset Row | 10        |
+| 1      | 1485 to 3251   | 3251    | `servantinteraction.dbss`       | 8,090 | 311 Record     | 26        |
+| 1      | 1485 to 3251   | 3251    | `servantinteractionoffset.dbss` | 3,114 | 311 Offset Row | 10        |
 
 | Layout | File                            | Known            | Unknown    |
 | ------ | ------------------------------- | ---------------- | ---------- |
 | 2      | `servantinteraction.dbss`       | 9,956 B (100.0%) | 0 B (0.0%) |
 | 2      | `servantinteractionoffset.dbss` | 3,114 B (100.0%) | 0 B (0.0%) |
-| 1      | `servantinteraction.dbss`       | 6,634 B (100.0%) | 0 B (0.0%) |
-| 1      | `servantinteractionoffset.dbss` | 2,554 B (100.0%) | 0 B (0.0%) |
+| 1      | `servantinteraction.dbss`       | 8,090 B (100.0%) | 0 B (0.0%) |
+| 1      | `servantinteractionoffset.dbss` | 3,114 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

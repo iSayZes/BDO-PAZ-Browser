@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "exchangeKey": "Clave de intercambio",
+    "water": "Agua del suelo",
+    "temperature": "Temperatura",
+    "humidity": "Humedad",
+    "pruning": "Poda",
+    "birds": "Pájaros"
+  },
+  "offsetColumns": {
+    "exchangeKey": "Clave de intercambio",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} cosechas"
+  }
+}

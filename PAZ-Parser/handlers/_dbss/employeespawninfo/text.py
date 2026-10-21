@@ -23,7 +23,7 @@ _REFUSE_ID4 = 1
 
 
 def sailor_name(character_key: int) -> str:
-    """`Sailor <Ambitious>`, as the name plate reads; '' when LOC has neither part."""
+    """`Sailor <Ambitious>`, as the name plate reads; '' when neither LOC nor the Korean indexes have a part."""
     parts = (character_name(character_key), character_title(character_key))
     return " ".join(part for part in parts if part)
 
@@ -31,7 +31,7 @@ def sailor_name(character_key: int) -> str:
 def sailors_by_spawn_position(info_data: bytes, info_offset_data: bytes) -> dict[int, list[str]]:
     """Spawn position key -> the sailors that can appear on it, in file order.
 
-    A sailor without a LOC name shows as its character key.
+    A sailor without a name or title shows as its character key.
     """
     sailors: dict[int, list[str]] = {}
     for record in parse_employeespawninfo_records(info_data, info_offset_data):

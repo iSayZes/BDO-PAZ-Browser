@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "fromItem": "Item Given",
+    "fromCount": "Count Given",
+    "toItem": "Item Received",
+    "toCount": "Count Received",
+    "needPoint": "Need Point",
+    "exchanges": "Exchanges",
+    "exchangeMin": "Exchange Min",
+    "exchangeMax": "Exchange Max"
+  }
+}

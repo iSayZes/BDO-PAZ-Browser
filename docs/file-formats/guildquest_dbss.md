@@ -18,17 +18,31 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes   | Records                     | Row bytes |
 | ------ | -------------- | ------- | ----------------------- | ------- | --------------------------- | --------- |
-| 2      | 3474 and later | 3474    | `guildquest.dbss`       | 244,538 | 999 Reward Entry, 140 Row   | 178       |
-| 2      | 3474 and later | 3474    | `guildquestoffset.dbss` | 1,684   | 140 Offset Row              | 12        |
-| 1      | 1784           | 1784    | `guildquest.dbss`       | 400,070 | 1,146 Reward Entry, 339 Row | 188       |
-| 1      | 1784           | 1784    | `guildquestoffset.dbss` | 4,072   | 339 Offset Row              | 12        |
+| 2      | 3002 and later | 3474    | `guildquest.dbss`       | 244,538 | 999 Reward Entry, 140 Row   | 178       |
+| 2      | 3002 and later | 3474    | `guildquestoffset.dbss` | 1,684   | 140 Offset Row              | 12        |
+| 1      | 1784 to 2519   | 2519    | `guildquest.dbss`       | 774,760 | 3,050 Reward Entry, 406 Row | 188       |
+| 1      | 1784 to 2519   | 2519    | `guildquestoffset.dbss` | 4,876   | 406 Offset Row              | 12        |
 
-| Layout | File                    | Known             | Unknown          |
-| ------ | ----------------------- | ----------------- | ---------------- |
-| 2      | `guildquest.dbss`       | 180,726 B (73.9%) | 63,812 B (26.1%) |
-| 2      | `guildquestoffset.dbss` | 1,684 B (100.0%)  | 0 B (0.0%)       |
-| 1      | `guildquest.dbss`       | 314,426 B (78.6%) | 85,644 B (21.4%) |
-| 1      | `guildquestoffset.dbss` | 4,072 B (100.0%)  | 0 B (0.0%)       |
+| Layout | File                    | Known             | Unknown           |
+| ------ | ----------------------- | ----------------- | ----------------- |
+| 2      | `guildquest.dbss`       | 180,726 B (73.9%) | 63,812 B (26.1%)  |
+| 2      | `guildquestoffset.dbss` | 1,684 B (100.0%)  | 0 B (0.0%)        |
+| 1      | `guildquest.dbss`       | 554,764 B (71.6%) | 219,996 B (28.4%) |
+| 1      | `guildquestoffset.dbss` | 4,876 B (100.0%)  | 0 B (0.0%)        |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 
@@ -319,6 +333,22 @@ type has 1,097 missions on client 3474, more than the file holds.
   is on and the guild's honor points unlock it.
 - Every contents group hash decodes to a key below `0x10000` on clients
   1784 and 3474 (`contents_group_key()` in `_common/contents_group.py`).
+- `killMonsterGroup(group, count)` counts kills of the characters whose
+  `character_group` in
+  [`characterstatic.dbss`](characterstatic_dbss.md#character-group) is
+  `group`; the 2016 `gc::KillMonsterGroup` names the argument
+  `_characterGroupKey`. On client 3474 the 16 rows with the script use two
+  groups: `84` on 8 rows (objective `마고리아 해양 몬스터 처치`, Margoria
+  sea monsters; 35 characters such as `21449` Nineshark and `28682`
+  Lyngbakr) and `125` on 8 rows (`굶주린 마고리아 해양 몬스터 처치`, hungry
+  Margoria sea monsters; `21415` Hekaru and `21416` Ocean Stalker). In the
+  `GuildQuest_Table` sheet (client 1784) all 41 keys of the 504
+  `killMonsterGroup` calls are `CharacterGroup` values of the
+  `Character_Table` sheet. The keys of
+  [`monstergroup.dbss`](monstergroup_dbss.md) (`1` to `36`) are a
+  different key set. The Kill Groups column shows each call as the group
+  key, the kill count and the group's character names, as in
+  [`quest.dbss`](quest_dbss.md#notes) (`_common/quest/kill_monster_group.py`).
 - Client 1784 has 339 rows, client 3474 140; no `quest_no` is in both.
 - The mission list Lua names the guild size of a mission with
   `getGuildQuestGrade()` (`1` Small to `4` Extra Large, `GAME` keys

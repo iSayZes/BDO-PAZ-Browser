@@ -20,6 +20,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `pet.dbss`       | 357,997 B (95.2%) | 18,081 B (4.8%) |
 | 1      | `petoffset.dbss` | 16,076 B (80.0%)  | 4,018 B (20.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -79,7 +93,7 @@ Counts are records on client 3473.
 | `+0x0F`          | u16      | exp_key                       | Key into [petexp.dbss](petexp_dbss.md): 1 to 4 for pets, 6 to 9 for the Laila grades    |
 | `+0x11`          | u8       | is_indexed                    | `1` on 355 records                                                                      |
 | `+0x12`          | u32      | default_action_index          | Default look within the `change_look_key` group                                         |
-| `+0x16`          | u16      | change_look_key               | Key into `petchangelook.dbss`; `0` on 614 records                                       |
+| `+0x16`          | u16      | change_look_key               | Key into [`petchangelook.dbss`](petchangelook_dbss.md); `0` on 614 records              |
 | `+0x18`          | str8     | icon_path                     | u64 byte length (`icon_path_len`), then the ASCII path with no null terminator          |
 | `icon_path+0x00` | i64      | base_price_for_pet_market     | `30000` in every record                                                                 |
 | `icon_path+0x08` | i64      | min_price_for_pet_market      | `base_price_for_pet_market × minest_percent_for_pet_market / 1,000,000`                  |
@@ -146,6 +160,8 @@ The parser reads `data_size` and `unknown_08` as one u32 (`parse_bare_offset_row
 - The fairy records are species 25 (Laila, 20 records, `exp_key` 6 to 9 by grade) and one "Fairy's Energy" record of species 100. They are the 21 records with `pet_type` 1 and the 21 with `acquire_type_id` 501 to 504, which have no row in `petequipskillaquire.dbss`.
 - `acquire_type_id` values 301–304 appear for regular pets and correspond to tiers 0–4 (tier 0 → 301, tier 4 → 304); lower values (1, 2, 3, 4) and mid-range values (101–104, 201–204, 401–404) appear for specific sub-groups.
 - 21 records have no `petgrade.dbss` row for their `(species, variant)` and show no grade.
+- [`petleaderbuff.bss`](petleaderbuff_bss.md) is keyed by `tier`: tier `4` (Tier 5 in the game) holds the alpha pet's loot cooldown cut.
+- [`petupgrade.bss`](petupgrade_bss.md) is keyed by `tier` too: tier `3` (Tier 4) holds the Tier 5 Pet Training item.
 
 ## Field Names
 

@@ -281,7 +281,10 @@ Picking the field behind a column:
   `category` and `is_special` this way.
 - **Text in the user's language, one column.** A text column shows the loaded
   LOC text (the language picked in settings) and falls back to the inline
-  Korean only when LOC has no row: `character_name(id) or record["name_kr"]`.
+  Korean only when LOC has no row: `item_name()`, `skill_name()`,
+  `character_name()` and `character_title()` already do, from the `*_KR`
+  lookup indexes; a table with a Korean name of its own writes
+  `character_loc_name(id) or record["name_kr"]` (`character_loc_title()` for a title).
   Keep the raw `*_kr` field on the record, but never render it as its own
   column or label a column `(EN)` / `(KR)`. Never find LOC text by searching
   for an English phrase, since other languages miss it. Cover the column with
@@ -1011,8 +1014,19 @@ the first record whose field reads the value, compared as text
 class (`11-data-tables.css`) styles it as a link in a table cell. The `.ai`
 Used by box links each character to its `characterstatic.dbss` row, the `.cl`
 view each skill number to its first `skill.dbss` row, `characterfunction.dbss`
-each shop group to its `itemmaingroup.bss` row, and `itemmaingroup.bss` each
-subgroup to its `itemsubgroup.dbss` row.
+each shop group to its `itemmaingroup.bss` row, `itemmaingroup.bss` each
+subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
+`pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row,
+`monstergroup.dbss` each hunting ground to its `dropuihuntinggroundinfo.bss`
+row, `elementalmonsterreward.bss` each boss to its
+`elementalmonsterstat.bss` row, `houseinfo.bss` each use to its
+`houseinforeceipe.dbss` row and each needed house to its own row, and
+`mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
+each part count to the building's `mansionpartinfo.bss` rows, and
+`barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group.
+Both lists of `bartersubgroup.bss` number their groups from 1, so that link
+reads `sub_group_ref` (`trade:12`, `material:3`), a field the target
+records carry for it (`_bss/barter/sub_group.py`).
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries
@@ -1031,15 +1045,18 @@ _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
-├── character.py         # character names and titles (LOC type 6)
+├── character.py         # character names and titles (LOC type 6, else CHARACTER_NAME_KR / CHARACTER_TITLE_KR)
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
+├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
+├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
 ├── enum_name.py         # enum_name(): CppEnums member name of a stored value, or the bare value
+├── grouped_rows.py      # parse_grouped_rows(): u32 group count, per group a row count and fixed rows
 ├── html.py
-├── hunting_ground.py    # drop window hunting ground names by key (LOC type 116)
+├── hunting_ground.py    # drop window hunting grounds: names (LOC type 116, else HUNTING_GROUND_NAME_KR), row links, zones per monster (CHARACTER_HUNTING_GROUNDS)
 ├── offset_table.py      # OffsetTableHandler: the one preview handler for every offset companion
 ├── pabr_offset.py       # offset companions: u8, u16 or u32 keys, with or without PABR magic
 ├── prefixed_string.py   # length-prefixed strings: strict and lenient readers
@@ -1050,8 +1067,10 @@ _common/
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
+├── quest/kill_monster_group.py # the killMonsterGroup(group, count) calls of a quest script, with the group's members
 ├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
+├── row_table.py         # RowTableHandler: the base of a table with one record per row
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
@@ -1090,8 +1109,16 @@ reads the older records and returns no rows for the count of `0`
 (`growthpasspointshop.dbss`, `instancedungeonskillstatic.dbss`,
 `itemtradegroupfromnpc.dbss`, client 1784).
 
-Name a character with `character_name()` from `character.py` (LOC type 6; its
-title, `<Storage Keeper>`, with `character_title()`), a
+Name a character with `character_name()` from `character.py` (LOC type 6,
+then the Korean `characterstatic.dbss` name from the `CHARACTER_NAME_KR`
+lookup index; its title, `<Storage Keeper>`, with `character_title()`, which
+falls back to `CHARACTER_TITLE_KR` the same way). A table that stores its own
+Korean or internal name and shows it before the `characterstatic.dbss` one
+(`base_dialog.dbss`, `detail_dialog.dbss`, `servant.bss`, `npcsimply.bss`,
+`charactersimply.bss`) reads the LOC name alone with `character_loc_name()`;
+one that stores its own Korean title (`npcsimply.bss`, `charactersimply.bss`,
+`characterstatic.dbss` itself) reads the LOC title alone with
+`character_loc_title()`. Name a
 knowledge entry with `knowledge_name()` from `knowledge.py` (LOC type 34), a
 worldmap node with `node_name()` or `full_node_name()` from `node.py` (LOC
 type 29, see `NODE_PARENT` under Lookup Indexes) and a title with
@@ -1100,8 +1127,8 @@ its own tagged lookup for the colours), a territory with `territory_name()`
 or its nation with `nation_name()` from `territory.py` (LOC type 12 keyed by
 the `territoryinfo.bss` territory key) and the speaker of an NPC dialog with
 `dialog_name()` or `dialog_speaker()` from `quest/dialog.py` (LOC type 38 keyed
-`npc_id`, `dialog_index`, else the LOC type 6 name). All return `''` when LOC is not
-loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
+`npc_id`, `dialog_index`, else the character name). All return `''` (or the
+Korean fallback) when LOC is not loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
 
 Link a character key with `character_key_cell()` from `character_link.py`. A
@@ -1194,6 +1221,28 @@ def buff_offset_handler() -> OffsetTableHandler:
   (`journalquestoffset.dbss` counts its groups). The shared header text is in
   `_common/lang/`.
 
+Most indexes are a key, `data_offset` and `data_size` per row with the
+`dataOffset` and `size` labels; `keyed_offset_handler(lang_dir, parse_rows,
+key_field, key_label)` builds that handler in one call
+(`item_palette_offset_handler()`, `yacht_offset_handler()`).
+`tests/offset_rows.py` has `offset_row_problems(data, rows, key)`, which
+checks that the index rows point at rows with their key and tile the main
+file (`lead=` for an index that points past a key prefix).
+
+### Row Tables
+
+A table with one record per row (most `.dbss` tables with an offset index)
+subclasses `RowTableHandler` from `_common/row_table.py` and writes three
+methods: `read_records(data, companions)` returns the parser's records with
+any joined fields, `columns(labels)` the columns from the `columns` block of
+its lang file, and `cells(record)` one row's HTML cells. The base handles the
+`sortable_fields()`, the error page when the parser raises `ValueError`, the
+paging and the `meta.count` line. Set `file_name` and `lang_dir` as class
+attributes. A table of fixed rows after a u32 count reads them with
+`parse_counted_rows(data, row, fields, file_name)` from
+`_common/counted_rows.py` (`counted_row_values()` for rows with an array
+field). `_dbss/itempalette/` is the smallest example.
+
 ## Lookup Indexes
 
 Some joins need a table far too large to open as a companion on every preview,
@@ -1255,6 +1304,9 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_LEARNING_CHARACTERS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | character IDs (tuple) |
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
 | `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
+| `CHARACTER_NAME_KR` | `characterstatic.dbss`, `characterstaticoffset.dbss` | Korean name |
+| `CHARACTER_TITLE_KR` | `characterstatic.dbss`, `characterstaticoffset.dbss` | Korean title |
+| `CHARACTER_GROUP_MEMBERS` | `characterstatic.dbss`, `characterstaticoffset.dbss` | character IDs (tuple) |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
 | `DIALOG_KEYS`    | `detail_dialogoffset.dbss`                 | character ID   |
 | `SKILL_ICON`     | `skilltype.dbss`, `skilltypeoffset.dbss`   | icon path      |
@@ -1286,6 +1338,9 @@ IDs (`LookupValue`).
 | `LIGHTSTONE_SETS` | `lightstoneset.bss`                       | set IDs (tuple) |
 | `INSTANCE_FIELD_NAME` | `instancefield.dbss`                  | internal field name |
 | `INSTANCE_FIELD_TITLE` | `instancefieldmapinfo.bss`, `stringtable.bss` | `GAME` sheet key hash of the title |
+| `FIELD_NAME`     | `fieldinfo.bss`                            | field name     |
+| `CHARACTER_HUNTING_GROUNDS` | `dropuihuntinggroundinfo.bss`   | hunting ground keys (tuple) |
+| `HUNTING_GROUND_NAME_KR` | `dropuihuntinggroundinfo.bss`      | Korean hunting ground name |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
@@ -1312,6 +1367,34 @@ in ascending ID order; the Learned From Items column shows them with
 file stem as written (`Monsters_Main_Manager`). The `.ai` handler reads the
 whole index and keeps the characters whose stem matches its file, without
 case, for its Used by box.
+
+`CHARACTER_NAME_KR` maps a character to its Korean
+[characterstatic.dbss](file-formats/characterstatic_dbss.md#korean-strings)
+name: `name_kr`, or `label_kr` where `name_kr` is the `UNKNOWN` placeholder.
+`character_name()` in `_common/character.py` falls back to it when LOC type
+6 has no name, as `item_name()` does with `ITEM_NAME_KR`, with no `(KR)`
+marker. On client 3474 that names 296 characters the English LOC leaves out,
+such as the War of the Roses buildings of `buildingupgrade.dbss` (`12688`
+`[장미 전쟁] 화염탑`).
+
+`CHARACTER_TITLE_KR` maps a character to its Korean `title_kr`, leaving out
+the characters without one. `character_title()` falls back to it when LOC
+type 6 has no title, so the Title columns of `employeespawninfo.dbss`,
+`employeestaticstatus.bss`, `fieldboss.dbss`, `itemtrade.dbss` and
+`weatheractor.dbss` show it without LOC. On client 3474 that titles 64
+characters the English LOC leaves out, 50 of them `<메이드 통합>`.
+
+`CHARACTER_GROUP_MEMBERS` maps each non-zero
+[`character_group`](file-formats/characterstatic_dbss.md#character-group) to
+its character IDs, ascending (258 groups on client 3474). Read it through
+`_common/character_group.py`: `character_group_names(group)` gives the
+distinct member names (`character_name()`, so LOC then Korean),
+`character_group_text()` the full `70: Khala Commanding Officer, ...` text
+for search and export, and `character_group_cell(group, max_items)` the cell
+with a hoverable `... (+N)`. `_common/quest/kill_monster_group.py` reads the
+`killMonsterGroup(group, count)` calls of a quest script with it, for the
+Kill Groups columns of `quest.dbss` and `guildquest.dbss`, and the
+`itemenchant.dbss` Event Param 1 column names the group of a soul collector.
 
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
 option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),
@@ -1560,6 +1643,32 @@ Single Path`). `instance_field_label()` there joins both indexes; the
 `buff.dbss` Effect text of type 176 uses it, `Teleport to Instance Field The
 Magnus: The Great Single Path (A1_001)`, and the `instancefield.dbss` Title
 column uses the title alone.
+
+`FIELD_NAME` maps a [fieldinfo.bss](file-formats/fieldinfo_bss.md) field
+number to the field's name as the file writes it (`월드`, `A1_001`). It is
+built by `build_field_name_index()` in `_bss/fieldinfo/parser.py` and read
+through `field_no_label()` in `_bss/fieldinfo/names.py`, which gives an `A1_`
+field its `instance_field_label()` when the instance field with the same key
+has the same name. The Field columns of `instancefield.dbss` and
+`instancedungeoninfo.dbss` use it, next to a Field No cell that
+`field_no_link()` links to the `fieldinfo.bss` row.
+
+`CHARACTER_HUNTING_GROUNDS` maps a monster character key to the
+[dropuihuntinggroundinfo.bss](file-formats/dropuihuntinggroundinfo_bss.md)
+hunting grounds whose `monster_ids` list it, ascending, and
+`HUNTING_GROUND_NAME_KR` maps a hunting ground key to its Korean name.
+`build_character_hunting_ground_index()` and
+`build_hunting_ground_name_kr_index()` in
+`_bss/dropuihuntinggroundinfo/parser.py` build them. Read both through
+`_common/hunting_ground.py`: `hunting_ground_name(key)` gives the LOC type
+116 name, else the Korean name, as `item_name()` does with `ITEM_NAME_KR`;
+`hunting_ground_text(key)` falls back to the bare key;
+`character_hunting_grounds(character_keys)` joins the zones of several
+characters; `hunting_ground_list_cell(keys, names, max_items)` links each zone
+to its row with a hoverable count of the rest. The
+[monstergroup.dbss](file-formats/monstergroup_dbss.md) Hunting Grounds column
+uses them, and the `worldmapmonster.dbss` Hunting Ground column names its
+zone with `hunting_ground_name()`.
 
 ## Icons
 

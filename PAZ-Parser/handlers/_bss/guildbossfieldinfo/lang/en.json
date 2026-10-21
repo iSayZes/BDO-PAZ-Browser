@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "bossSpawnKey": "Boss Key",
+    "boss": "Boss",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} guild boss fields"
+  }
+}

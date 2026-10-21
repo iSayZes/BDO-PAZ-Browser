@@ -12,13 +12,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes   | Records                       | Row bytes                   |
 | ------ | -------------- | ------- | ------------------------ | ------- | ----------------------------- | --------------------------- |
-| 1      | 1784 and later | 3474    | `mentaltheme.dbss`       | 108,785 | 939 Theme Payload, 939 Record | 45 to 1,587, 114 on average |
-| 1      | 1784 and later | 3474    | `mentalthemeoffset.dbss` | 9,394   | 939 Offset Row                | 10                          |
+| 1      | 1485 and later | 3474    | `mentaltheme.dbss`       | 108,785 | 939 Theme Payload, 939 Record | 45 to 1,587, 114 on average |
+| 1      | 1485 and later | 3474    | `mentalthemeoffset.dbss` | 9,394   | 939 Offset Row                | 10                          |
 
 | Layout | File                     | Known             | Unknown        |
 | ------ | ------------------------ | ----------------- | -------------- |
 | 1      | `mentaltheme.dbss`       | 105,029 B (96.5%) | 3,756 B (3.5%) |
 | 1      | `mentalthemeoffset.dbss` | 9,394 B (100.0%)  | 0 B (0.0%)     |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "name": "Building",
+    "upgradeTime": "Upgrade Time",
+    "upgradeLevel": "Upgrade Level",
+    "targetCharacterKey": "Target ID",
+    "targetName": "Upgrades To",
+    "sourceItems": "Materials"
+  },
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} building upgrades"
+  }
+}

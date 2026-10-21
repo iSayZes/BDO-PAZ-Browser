@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "Haus-ID",
+    "house": "Haus",
+    "town": "Stadt",
+    "node": "Posten",
+    "contributionPoints": "Beitragspunkte",
+    "group": "Gruppe",
+    "floor": "Stockwerk",
+    "needHouses": "Benötigt",
+    "uses": "Verwendung",
+    "products": "Produktion"
+  },
+  "cells": {
+    "level": "{name} St. {level}"
+  },
+  "meta": {
+    "count": "{count} Häuser · {products} hergestellte Gegenstände"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "landKey": "ID du terrain",
+    "manor": "Manoir",
+    "buildingKey": "ID du bâtiment",
+    "region": "Région",
+    "contributionPoints": "Points de contribution",
+    "sectorStart": "Secteur de",
+    "sectorEnd": "Secteur à",
+    "quest": "Quête",
+    "dayPay": "Prix par jour",
+    "parts": "Parties"
+  },
+  "meta": {
+    "count": "{count} manoirs"
+  }
+}

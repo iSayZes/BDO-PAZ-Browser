@@ -48,6 +48,7 @@ from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
+from .houseinfo.handler import HouseInfoBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHandler
 from .boss_spawn.handler import BossSpawnBssHandler
@@ -68,6 +69,7 @@ from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
 from .manufacture.handler import ManufactureBssHandler
 from .manufactureitemnaminginfo.handler import ManufactureItemNamingInfoBssHandler
+from .mansionlandinfo.handler import MansionLandInfoBssHandler
 from .mansionpartinfo.handler import MansionPartInfoBssHandler
 from .masterlessservantstaticstatus.handler import MasterlessServantStaticStatusBssHandler
 from .masterystatdata.handler import MasteryStatDataBssHandler
@@ -199,6 +201,7 @@ def register_bss_handlers() -> None:
         "hardcorecharacterstatstaticstatus.bss",
         HardcoreCharacterStatBssHandler(),
     )
+    register_handler("houseinfo.bss", HouseInfoBssHandler())
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler("bossinfostaicstatusmanager.bss", BossInfoStaicStatusManagerBssHandler())
     register_handler("boss_spawn.bss", BossSpawnBssHandler())
@@ -225,6 +228,7 @@ def register_bss_handlers() -> None:
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("manufacture.bss", ManufactureBssHandler())
     register_handler("manufactureitemnaminginfo.bss", ManufactureItemNamingInfoBssHandler())
+    register_handler("mansionlandinfo.bss", MansionLandInfoBssHandler())
     register_handler("mansionpartinfo.bss", MansionPartInfoBssHandler())
     register_handler("masterlessservantstaticstatus.bss", MasterlessServantStaticStatusBssHandler())
     # One layout for the eight life skill mastery tables, each with its own columns.

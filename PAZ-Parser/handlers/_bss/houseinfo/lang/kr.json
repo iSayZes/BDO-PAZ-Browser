@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "집 ID",
+    "house": "집",
+    "town": "마을",
+    "node": "거점",
+    "contributionPoints": "공헌도",
+    "group": "그룹",
+    "floor": "층",
+    "needHouses": "필요",
+    "uses": "용도",
+    "products": "생산"
+  },
+  "cells": {
+    "level": "{name} {level}단계"
+  },
+  "meta": {
+    "count": "집 {count}개 · 생산 아이템 {products}개"
+  }
+}

@@ -1018,8 +1018,11 @@ each shop group to its `itemmaingroup.bss` row, `itemmaingroup.bss` each
 subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
 `pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row,
 `monstergroup.dbss` each hunting ground to its `dropuihuntinggroundinfo.bss`
-row, and `elementalmonsterreward.bss` each boss to its
-`elementalmonsterstat.bss` row.
+row, `elementalmonsterreward.bss` each boss to its
+`elementalmonsterstat.bss` row, `houseinfo.bss` each use to its
+`houseinforeceipe.dbss` row and each needed house to its own row, and
+`mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
+each part count to the building's `mansionpartinfo.bss` rows.
 
 The `.ai` behavior chips (`data-action="ai-filter"`, `_applyAiFilter()` in
 `preview-views.js`) hide the rows of the shown page whose `.ai-name` carries

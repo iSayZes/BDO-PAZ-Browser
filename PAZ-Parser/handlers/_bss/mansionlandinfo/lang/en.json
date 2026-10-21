@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "landKey": "Land Key",
+    "manor": "Manor",
+    "buildingKey": "Building Key",
+    "region": "Region",
+    "contributionPoints": "CP",
+    "sectorStart": "Sector From",
+    "sectorEnd": "Sector To",
+    "quest": "Quest",
+    "dayPay": "Daily Price",
+    "parts": "Parts"
+  },
+  "meta": {
+    "count": "{count} manors"
+  }
+}

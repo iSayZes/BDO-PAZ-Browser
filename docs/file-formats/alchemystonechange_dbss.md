@@ -16,17 +16,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes |
 | ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | --------- |
-| 2      | 3473 and later | 3474    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
-| 2      | 3473 and later | 3474    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
-| 1      | 1784           | 1784    | `alchemystonechange.dbss`       | 12,796 | 164 Row       | 78        |
-| 1      | 1784           | 1784    | `alchemystonechangeoffset.dbss` | 1,972  | 164 Index Row | 12        |
+| 2      | 3251 and later | 3474    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
+| 2      | 3251 and later | 3474    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
+| 1      | 1485 to 2519   | 2519    | `alchemystonechange.dbss`       | 13,732 | 176 Row       | 78        |
+| 1      | 1485 to 2519   | 2519    | `alchemystonechangeoffset.dbss` | 2,116  | 176 Index Row | 12        |
 
 | Layout | File                            | Known            | Unknown         |
 | ------ | ------------------------------- | ---------------- | --------------- |
 | 2      | `alchemystonechange.dbss`       | 8,782 B (70.2%)  | 3,724 B (29.8%) |
 | 2      | `alchemystonechangeoffset.dbss` | 1,600 B (100.0%) | 0 B (0.0%)      |
-| 1      | `alchemystonechange.dbss`       | 10,172 B (79.5%) | 2,624 B (20.5%) |
-| 1      | `alchemystonechangeoffset.dbss` | 1,972 B (100.0%) | 0 B (0.0%)      |
+| 1      | `alchemystonechange.dbss`       | 10,916 B (79.5%) | 2,816 B (20.5%) |
+| 1      | `alchemystonechangeoffset.dbss` | 2,116 B (100.0%) | 0 B (0.0%)      |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | No documented layout |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

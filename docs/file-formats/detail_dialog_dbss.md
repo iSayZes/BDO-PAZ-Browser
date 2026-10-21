@@ -20,6 +20,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `detail_dialog.dbss`       | 26,852,567 B (94.9%) | 1,430,205 B (5.1%) |
 | 1      | `detail_dialogoffset.dbss` | 717,404 B (100.0%)   | 0 B (0.0%)         |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

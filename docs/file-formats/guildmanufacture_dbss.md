@@ -18,17 +18,31 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes | Records       | Row bytes                  |
 | ------ | -------------- | ------- | ----------------------------- | ----- | ------------- | -------------------------- |
-| 2      | 3474 and later | 3474    | `guildmanufacture.dbss`       | 2,120 | 16 Row        | 125 to 163, 132 on average |
-| 2      | 3474 and later | 3474    | `guildmanufactureoffset.dbss` | 196   | 16 Offset Row | 12                         |
-| 1      | 1784           | 1784    | `guildmanufacture.dbss`       | 2,251 | 17 Row        | 123 to 161, 132 on average |
-| 1      | 1784           | 1784    | `guildmanufactureoffset.dbss` | 208   | 17 Offset Row | 12                         |
+| 2      | 3002 and later | 3474    | `guildmanufacture.dbss`       | 2,120 | 16 Row        | 125 to 163, 132 on average |
+| 2      | 3002 and later | 3474    | `guildmanufactureoffset.dbss` | 196   | 16 Offset Row | 12                         |
+| 1      | 1485 to 2519   | 2519    | `guildmanufacture.dbss`       | 2,612 | 20 Row        | 123 to 161, 130 on average |
+| 1      | 1485 to 2519   | 2519    | `guildmanufactureoffset.dbss` | 244   | 20 Offset Row | 12                         |
 
 | Layout | File                          | Known            | Unknown    |
 | ------ | ----------------------------- | ---------------- | ---------- |
 | 2      | `guildmanufacture.dbss`       | 2,120 B (100.0%) | 0 B (0.0%) |
 | 2      | `guildmanufactureoffset.dbss` | 196 B (100.0%)   | 0 B (0.0%) |
-| 1      | `guildmanufacture.dbss`       | 2,251 B (100.0%) | 0 B (0.0%) |
-| 1      | `guildmanufactureoffset.dbss` | 208 B (100.0%)   | 0 B (0.0%) |
+| 1      | `guildmanufacture.dbss`       | 2,612 B (100.0%) | 0 B (0.0%) |
+| 1      | `guildmanufactureoffset.dbss` | 244 B (100.0%)   | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

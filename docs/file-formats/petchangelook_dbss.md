@@ -29,6 +29,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `petchangelook.dbss`       | 58,131 B (100.0%) | 0 B (0.0%)     |
 | 1      | `petchangelookoffset.dbss` | 1,454 B (100.0%)  | 0 B (0.0%)     |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

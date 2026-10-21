@@ -12,17 +12,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes   | Records                                             | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ------- | --------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `actionexp.dbss`       | 577,128 | 6,480 Level Row, 6,480 Level Entry, 102 Class Block | 85        |
-| 2      | 3473 and later | 3474    | `actionexpoffset.dbss` | 78,164  | 6,480 Offset Row, 101 Offset Block                  | 12        |
-| 1      | 1784           | 1784    | `actionexp.dbss`       | 263,658 | 3,250 Level Row, 3,250 Level Entry, 102 Class Block | 77        |
-| 1      | 1784           | 1784    | `actionexpoffset.dbss` | 39,404  | 3,250 Offset Row, 101 Offset Block                  | 12        |
+| 2      | 2519 and later | 3474    | `actionexp.dbss`       | 577,128 | 6,480 Level Row, 6,480 Level Entry, 102 Class Block | 85        |
+| 2      | 2519 and later | 3474    | `actionexpoffset.dbss` | 78,164  | 6,480 Offset Row, 101 Offset Block                  | 12        |
+| 1      | 1485 to 2107   | 2107    | `actionexp.dbss`       | 316,308 | 3,900 Level Row, 3,900 Level Entry, 102 Class Block | 77        |
+| 1      | 1485 to 2107   | 2107    | `actionexpoffset.dbss` | 47,204  | 3,900 Offset Row, 101 Offset Block                  | 12        |
 
 | Layout | File                   | Known              | Unknown           |
 | ------ | ---------------------- | ------------------ | ----------------- |
 | 2      | `actionexp.dbss`       | 58,728 B (10.2%)   | 518,400 B (89.8%) |
 | 2      | `actionexpoffset.dbss` | 78,164 B (100.0%)  | 0 B (0.0%)        |
-| 1      | `actionexp.dbss`       | 263,658 B (100.0%) | 0 B (0.0%)        |
-| 1      | `actionexpoffset.dbss` | 39,404 B (100.0%)  | 0 B (0.0%)        |
+| 1      | `actionexp.dbss`       | 316,308 B (100.0%) | 0 B (0.0%)        |
+| 1      | `actionexpoffset.dbss` | 47,204 B (100.0%)  | 0 B (0.0%)        |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

@@ -28,6 +28,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | ------------------------------- | --------------- | ---------- |
 | 1      | `guildrightnewstaticstatus.bss` | 4,876 B (99.9%) | 4 B (0.1%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | No file  |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

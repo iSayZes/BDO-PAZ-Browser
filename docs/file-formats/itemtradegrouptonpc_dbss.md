@@ -15,19 +15,34 @@ fish, trade crates and the old regional trade goods.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes                  |
-| ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | -------------------------- |
-| 2      | 3473 and later | 3474    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127                        |
-| 2      | 3473 and later | 3474    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10                         |
-| 1      | 1784           | 1784    | `itemtradegrouptonpc.dbss`       | 142,270 | 1,140 Item Entry, 126 Group | 123 to 163, 124 on average |
-| 1      | 1784           | 1784    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10                         |
+| Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes |
+| ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | --------- |
+| 2      | 3002 and later | 3474    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127       |
+| 2      | 3002 and later | 3474    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10        |
+| 1      | 1485 to 2519   | 2519    | `itemtradegrouptonpc.dbss`       | 177,715 | 1,439 Item Entry, 119 Group | 123       |
+| 1      | 1485 to 2519   | 2519    | `itemtradegrouptonpcoffset.dbss` | 1,194   | 119 Index Row               | 10        |
 
 | Layout | File                             | Known              | Unknown          |
 | ------ | -------------------------------- | ------------------ | ---------------- |
 | 2      | `itemtradegrouptonpc.dbss`       | 182,872 B (88.2%)  | 24,390 B (11.8%) |
 | 2      | `itemtradegrouptonpcoffset.dbss` | 1,264 B (100.0%)   | 0 B (0.0%)       |
-| 1      | `itemtradegrouptonpc.dbss`       | 142,270 B (100.0%) | 0 B (0.0%)       |
-| 1      | `itemtradegrouptonpcoffset.dbss` | 1,264 B (100.0%)   | 0 B (0.0%)       |
+| 1      | `itemtradegrouptonpc.dbss`       | 177,715 B (100.0%) | 0 B (0.0%)       |
+| 1      | `itemtradegrouptonpcoffset.dbss` | 1,194 B (100.0%)   | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

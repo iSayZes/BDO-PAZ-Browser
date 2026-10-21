@@ -25,6 +25,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `rosewarrewardstaticstatus.bss` | 226 B (76.9%) | 68 B (23.1%) |
 | 1      | `rosewarrewardstaticstatus.bss` | 94 B (79.7%)  | 24 B (20.3%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | No file  |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

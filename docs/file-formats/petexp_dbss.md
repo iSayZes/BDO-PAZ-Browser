@@ -12,10 +12,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes |
 | ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | --------- |
-| 2      | 3473 and later | 3474    | `petexp.dbss`       | 3,676 | 9 Data Payload, 9 Record | 406       |
-| 2      | 3473 and later | 3474    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
-| 1      | 1784           | 1784    | `petexp.dbss`       | 2,956 | 9 Data Payload, 9 Record | 326       |
-| 1      | 1784           | 1784    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
+| 2      | 2107 and later | 3474    | `petexp.dbss`       | 3,676 | 9 Data Payload, 9 Record | 406       |
+| 2      | 2107 and later | 3474    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
+| 1      | 1485 to 1784   | 1784    | `petexp.dbss`       | 2,956 | 9 Data Payload, 9 Record | 326       |
+| 1      | 1485 to 1784   | 1784    | `petexpoffset.dbss` | 94    | 9 Offset Row             | 10        |
 
 | Layout | File                | Known            | Unknown    |
 | ------ | ------------------- | ---------------- | ---------- |
@@ -23,6 +23,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `petexpoffset.dbss` | 94 B (100.0%)    | 0 B (0.0%) |
 | 1      | `petexp.dbss`       | 2,956 B (100.0%) | 0 B (0.0%) |
 | 1      | `petexpoffset.dbss` | 94 B (100.0%)    | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 2 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

@@ -47,28 +47,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                  | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------- | ------------------------------------- | ----- | -------------- | --------- |
-| 1      | 1784 and later | 3474    | `audiorenewal.bss`                    | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `beginnerroadmaplinkurldata.bss`      | 20    | 1 String Table | 4         |
+| 1      | 1230 and later | 3474    | `audiorenewal.bss`                    | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `beginnerroadmaplinkurldata.bss`      | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `cashproduct_discountperiodcheck.bss` | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `cashproductcachedata.bss`            | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `charactertrigger.bss`                | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `cashproductcachedata.bss`            | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `charactertrigger.bss`                | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `commonskill.bss`                     | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `dropuiurlinfo.bss`                   | 20    | 1 String Table | 4         |
-| 1      | 3473 and later | 3474    | `enchantlightstone.bss`               | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `equipitemchanage.bss`                | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3474    | `fishinginfo.bss`                     | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `dropuiurlinfo.bss`                   | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `enchantlightstone.bss`               | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `equipitemchanage.bss`                | 20    | 1 String Table | 4         |
+| 1      | 1230 and later | 3474    | `fishinginfo.bss`                     | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `instancefieldenteroption.bss`        | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `instancefieldmanagement.bss`         | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3474    | `itembundle.bss`                      | 20    | 1 String Table | 4         |
-| 1      | 3473 and later | 3474    | `lightstoneenchantgroup.bss`          | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `naktype.bss`                         | 20    | 1 String Table | 4         |
+| 1      | 1230 and later | 3474    | `itembundle.bss`                      | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `lightstoneenchantgroup.bss`          | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `naktype.bss`                         | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `normalgroupquest.bss`                | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `openuiwhennak.bss`                   | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `openuiwhennak.bss`                   | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `preloadpcactioncharacter.bss`        | 20    | 1 String Table | 4         |
 | 1      | 1784 and later | 3474    | `shadowarenalist.bss`                 | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `skillselectuiinfo.bss`               | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3474    | `spawngroup.bss`                      | 20    | 1 String Table | 4         |
-| 1      | 3474 and later | 3474    | `tempcashstaticstatus.bss`            | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `skillselectuiinfo.bss`               | 20    | 1 String Table | 4         |
+| 1      | 1230 and later | 3474    | `spawngroup.bss`                      | 20    | 1 String Table | 4         |
+| 1      | 3251 and later | 3474    | `tempcashstaticstatus.bss`            | 20    | 1 String Table | 4         |
 
 | Layout | File                                  | Known         | Unknown    |
 | ------ | ------------------------------------- | ------------- | ---------- |
@@ -94,6 +94,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `skillselectuiinfo.bss`               | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `spawngroup.bss`                      | 20 B (100.0%) | 0 B (0.0%) |
 | 1      | `tempcashstaticstatus.bss`            | 20 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3473   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | No documented layout |
+| 1485   | No documented layout |
+| 1230   | Layout 1             |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

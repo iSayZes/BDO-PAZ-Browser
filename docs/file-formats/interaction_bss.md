@@ -22,6 +22,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | ----------------- | ------------ | ---------- |
 | 1      | `interaction.bss` | 40 B (95.2%) | 2 B (4.8%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | Layout 1             |
+| 794    | No documented layout |
+
 <!-- versions:end -->
 
 ## Companion Files

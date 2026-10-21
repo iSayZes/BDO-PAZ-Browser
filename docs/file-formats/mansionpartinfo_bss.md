@@ -17,13 +17,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records          | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ---------------- | --------- |
-| 2      | 3473 and later | 3474    | `mansionpartinfo.bss` | 664   | 9 Manor Part Row | 12        |
-| 1      | 1784           | 1784    | `mansionpartinfo.bss` | 491   | 6 Manor Part Row | 16        |
+| 2      | 2519 and later | 3474    | `mansionpartinfo.bss` | 664   | 9 Manor Part Row | 12        |
+| 1      | 1784 to 2107   | 2107    | `mansionpartinfo.bss` | 491   | 6 Manor Part Row | 16        |
 
 | Layout | File                  | Known         | Unknown      |
 | ------ | --------------------- | ------------- | ------------ |
 | 2      | `mansionpartinfo.bss` | 619 B (93.2%) | 45 B (6.8%)  |
 | 1      | `mansionpartinfo.bss` | 437 B (89.0%) | 54 B (11.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

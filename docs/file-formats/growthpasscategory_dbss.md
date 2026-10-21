@@ -14,8 +14,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------------------- | ----- | ----------------------- | -------------------------------- |
 | 2      | 3473 and later | 3474    | `growthpasscategory.dbss`       | 251   | 2 Record Body, 2 Record | 87 to 152, 120 on average        |
 | 2      | 3473 and later | 3474    | `growthpasscategoryoffset.dbss` | 28    | 2 Offset Row            | 12                               |
-| 1      | 1784           | 1784    | `growthpasscategory.dbss`       | 8,409 | 8 Record Body, 8 Record | 1,042 to 1,052, 1,047 on average |
-| 1      | 1784           | 1784    | `growthpasscategoryoffset.dbss` | 100   | 8 Offset Row            | 12                               |
+| 1      | 1784 to 2519   | 2519    | `growthpasscategory.dbss`       | 8,409 | 8 Record Body, 8 Record | 1,042 to 1,052, 1,047 on average |
+| 1      | 1784 to 2519   | 2519    | `growthpasscategoryoffset.dbss` | 100   | 8 Offset Row            | 12                               |
 
 | Layout | File                            | Known          | Unknown         |
 | ------ | ------------------------------- | -------------- | --------------- |
@@ -23,6 +23,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `growthpasscategoryoffset.dbss` | 28 B (100.0%)  | 0 B (0.0%)      |
 | 1      | `growthpasscategory.dbss`       | 569 B (6.8%)   | 7,840 B (93.2%) |
 | 1      | `growthpasscategoryoffset.dbss` | 100 B (100.0%) | 0 B (0.0%)      |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No file              |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

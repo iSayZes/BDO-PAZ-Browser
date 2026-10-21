@@ -12,13 +12,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes  | Records                         | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ------ | ------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
-| 1      | 1784           | 1784    | `employeestaticstatus.bss` | 29,799 | 3,910 Ability, 230 Employee Row | 5         |
+| 2      | 3002 and later | 3474    | `employeestaticstatus.bss` | 33,465 | 4,484 Ability, 236 Employee Row | 5         |
+| 1      | 1485 to 2519   | 2519    | `employeestaticstatus.bss` | 29,799 | 3,910 Ability, 230 Employee Row | 5         |
 
 | Layout | File                       | Known            | Unknown        |
 | ------ | -------------------------- | ---------------- | -------------- |
 | 2      | `employeestaticstatus.bss` | 31,985 B (95.6%) | 1,480 B (4.4%) |
 | 1      | `employeestaticstatus.bss` | 28,379 B (95.2%) | 1,420 B (4.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

@@ -16,10 +16,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes  | Records        | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ------ | -------------- | --------- |
-| 2      | 3474 and later | 3474    | `collect.dbss`       | 48,488 | 713 Row        | 68        |
-| 2      | 3474 and later | 3474    | `collectoffset.dbss` | 7,134  | 713 Offset Row | 10        |
-| 1      | 1784           | 1784    | `collect.dbss`       | 29,092 | 606 Row        | 48        |
-| 1      | 1784           | 1784    | `collectoffset.dbss` | 6,064  | 606 Offset Row | 10        |
+| 2      | 3002 and later | 3474    | `collect.dbss`       | 48,488 | 713 Row        | 68        |
+| 2      | 3002 and later | 3474    | `collectoffset.dbss` | 7,134  | 713 Offset Row | 10        |
+| 1      | 1485 to 1784   | 1784    | `collect.dbss`       | 29,092 | 606 Row        | 48        |
+| 1      | 1485 to 1784   | 1784    | `collectoffset.dbss` | 6,064  | 606 Offset Row | 10        |
 
 | Layout | File                 | Known             | Unknown         |
 | ------ | -------------------- | ----------------- | --------------- |
@@ -27,6 +27,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `collectoffset.dbss` | 7,134 B (100.0%)  | 0 B (0.0%)      |
 | 1      | `collect.dbss`       | 29,092 B (100.0%) | 0 B (0.0%)      |
 | 1      | `collectoffset.dbss` | 6,064 B (100.0%)  | 0 B (0.0%)      |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

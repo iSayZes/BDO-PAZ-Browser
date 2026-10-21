@@ -21,6 +21,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | --------------------- | ------------ | ----------- |
 | 1      | `maidactoroption.bss` | 16 B (88.9%) | 2 B (11.1%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | No file  |
+| 2519   | No file  |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

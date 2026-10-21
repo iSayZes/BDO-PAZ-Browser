@@ -17,19 +17,33 @@ rows by auction number.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records                  | Row bytes                  |
-| ------ | -------------- | ------- | -------------------- | ----- | ------------------------ | -------------------------- |
-| 2      | 3474 and later | 3474    | `auction.dbss`       | 2,142 | 36 Row, 37 House         | 10                         |
-| 2      | 3474 and later | 3474    | `auctionoffset.dbss` | 380   | 36 Index Row             | 10                         |
-| 1      | 1784           | 1784    | `auction.dbss`       | 3,586 | 3 Item, 38 Row, 37 House | 53 to 1,071, 94 on average |
-| 1      | 1784           | 1784    | `auctionoffset.dbss` | 400   | 38 Index Row             | 10                         |
+| Layout | Clients        | Checked | File                 | Bytes | Records                  | Row bytes                   |
+| ------ | -------------- | ------- | -------------------- | ----- | ------------------------ | --------------------------- |
+| 2      | 3002 and later | 3474    | `auction.dbss`       | 2,142 | 36 Row, 37 House         | 10                          |
+| 2      | 3002 and later | 3474    | `auctionoffset.dbss` | 380   | 36 Index Row             | 10                          |
+| 1      | 1485 to 2519   | 2519    | `auction.dbss`       | 7,086 | 7 Item, 40 Row, 37 House | 53 to 2,619, 177 on average |
+| 1      | 1485 to 2519   | 2519    | `auctionoffset.dbss` | 420   | 40 Index Row             | 10                          |
 
 | Layout | File                 | Known           | Unknown       |
 | ------ | -------------------- | --------------- | ------------- |
 | 2      | `auction.dbss`       | 1,854 B (86.6%) | 288 B (13.4%) |
 | 2      | `auctionoffset.dbss` | 380 B (100.0%)  | 0 B (0.0%)    |
-| 1      | `auction.dbss`       | 3,270 B (91.2%) | 316 B (8.8%)  |
-| 1      | `auctionoffset.dbss` | 400 B (100.0%)  | 0 B (0.0%)    |
+| 1      | `auction.dbss`       | 6,738 B (95.1%) | 348 B (4.9%)  |
+| 1      | `auctionoffset.dbss` | 420 B (100.0%)  | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

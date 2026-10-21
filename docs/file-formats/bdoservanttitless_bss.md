@@ -15,13 +15,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------------- | ----- | ------- | --------- |
-| 2      | 3474 and later | 3474    | `bdoservanttitless.bss` | 2,950 | 254 Row | 10        |
-| 1      | 1784           | 1784    | `bdoservanttitless.bss` | 2,334 | 166 Row | 12        |
+| 2      | 2519 and later | 3474    | `bdoservanttitless.bss` | 2,950 | 254 Row | 10        |
+| 1      | 1784 to 2107   | 2107    | `bdoservanttitless.bss` | 2,334 | 166 Row | 12        |
 
 | Layout | File                    | Known            | Unknown    |
 | ------ | ----------------------- | ---------------- | ---------- |
 | 2      | `bdoservanttitless.bss` | 2,950 B (100.0%) | 0 B (0.0%) |
 | 1      | `bdoservanttitless.bss` | 2,334 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

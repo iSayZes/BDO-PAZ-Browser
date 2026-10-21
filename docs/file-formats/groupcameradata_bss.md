@@ -15,13 +15,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes  | Records                                 | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ------ | --------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row                         | 28        |
+| 2      | 2519 and later | 3474    | `groupcameradata.bss` | 25,147 | 92 Cutscene Row                         | 28        |
 | 1      | 1784           | 1784    | `groupcameradata.bss` | 12,760 | 6 Cutscene Row, 170 Line, 12 Line Group | 16        |
 
 | Layout | File                  | Known            | Unknown         |
 | ------ | --------------------- | ---------------- | --------------- |
 | 2      | `groupcameradata.bss` | 24,411 B (97.1%) | 736 B (2.9%)    |
 | 1      | `groupcameradata.bss` | 11,400 B (89.3%) | 1,360 B (10.7%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 2             |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No file              |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

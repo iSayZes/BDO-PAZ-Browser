@@ -25,6 +25,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | ----------------------------- | ----------------- | ---------- |
 | 1      | `dropuihuntinggroundinfo.bss` | 28,350 B (100.0%) | 0 B (0.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3473   | Layout 1             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | No file              |
+| 1485   | No file              |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

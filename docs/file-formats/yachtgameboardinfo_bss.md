@@ -17,13 +17,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes               |
 | ------ | -------------- | ------- | ------------------------ | ----- | ------- | ----------------------- |
-| 2      | 3474 and later | 3474    | `yachtgameboardinfo.bss` | 2,523 | 9 Row   | 54 to 90, 68 on average |
-| 1      | 1784           | 1784    | `yachtgameboardinfo.bss` | 2,220 | 8 Row   | 53 to 89, 64 on average |
+| 2      | 3002 and later | 3474    | `yachtgameboardinfo.bss` | 2,523 | 9 Row   | 54 to 90, 68 on average |
+| 1      | 1784 to 2519   | 2519    | `yachtgameboardinfo.bss` | 2,220 | 8 Row   | 53 to 89, 64 on average |
 
 | Layout | File                     | Known            | Unknown    |
 | ------ | ------------------------ | ---------------- | ---------- |
 | 2      | `yachtgameboardinfo.bss` | 2,523 B (100.0%) | 0 B (0.0%) |
 | 1      | `yachtgameboardinfo.bss` | 2,220 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

@@ -20,8 +20,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ----------------------------------- | ----- | ------------- | --------- |
-| 2      | 3474 and later | 3474    | `restrictcontentsregion.dbss`       | 628   | 48 Row        | 13        |
-| 2      | 3474 and later | 3474    | `restrictcontentsregionoffset.dbss` | 484   | 48 Offset Row | 10        |
+| 2      | 2107 and later | 3474    | `restrictcontentsregion.dbss`       | 628   | 48 Row        | 13        |
+| 2      | 2107 and later | 3474    | `restrictcontentsregionoffset.dbss` | 484   | 48 Offset Row | 10        |
 | 1      | 1784           | 1784    | `restrictcontentsregion.dbss`       | 292   | 24 Row        | 12        |
 | 1      | 1784           | 1784    | `restrictcontentsregionoffset.dbss` | 244   | 24 Offset Row | 10        |
 
@@ -31,6 +31,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `restrictcontentsregionoffset.dbss` | 484 B (100.0%) | 0 B (0.0%)  |
 | 1      | `restrictcontentsregion.dbss`       | 292 B (100.0%) | 0 B (0.0%)  |
 | 1      | `restrictcontentsregionoffset.dbss` | 244 B (100.0%) | 0 B (0.0%)  |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 2 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

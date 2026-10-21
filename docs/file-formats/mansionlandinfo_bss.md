@@ -30,6 +30,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `mansionlandinfo.bss` | 140 B (55.8%) | 111 B (44.2%) |
 | 1      | `mansionlandinfo.bss` | 60 B (68.2%)  | 28 B (31.8%)  |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 3 |
+| 3251   | Layout 3 |
+| 3002   | Layout 3 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -43,6 +43,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------------- | --------------- | ------------ |
 | 1      | `buildingsource.bss` | 4,778 B (91.0%) | 472 B (9.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No documented layout |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -15,13 +15,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes     | Records                       | Row bytes                    |
 | ------ | -------------- | ------- | ---------------------- | --------- | ----------------------------- | ---------------------------- |
-| 1      | 1784 and later | 3474    | `skilltype.dbss`       | 8,669,986 | 30,415 Payload, 30,415 Record | 153 to 1,041, 281 on average |
-| 1      | 1784 and later | 3474    | `skilltypeoffset.dbss` | 365,000   | 30,415 Index Row              | 12                           |
+| 1      | 1485 and later | 3474    | `skilltype.dbss`       | 8,669,986 | 30,415 Payload, 30,415 Record | 153 to 1,041, 281 on average |
+| 1      | 1485 and later | 3474    | `skilltypeoffset.dbss` | 365,000   | 30,415 Index Row              | 12                           |
 
 | Layout | File                   | Known                | Unknown    |
 | ------ | ---------------------- | -------------------- | ---------- |
 | 1      | `skilltype.dbss`       | 8,669,986 B (100.0%) | 0 B (0.0%) |
 | 1      | `skilltypeoffset.dbss` | 365,000 B (100.0%)   | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

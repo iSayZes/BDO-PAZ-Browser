@@ -12,11 +12,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records               | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | --------------------- | --------- |
-| 1      | 3474 and later | 3474    | `questrandomgroup.bss` | 52    | 1 Row, 1 String Table | 32        |
+| 1      | 3251 and later | 3474    | `questrandomgroup.bss` | 52    | 1 Row, 1 String Table | 32        |
 
 | Layout | File                   | Known        | Unknown      |
 | ------ | ---------------------- | ------------ | ------------ |
 | 1      | `questrandomgroup.bss` | 30 B (57.7%) | 22 B (42.3%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | No file  |
+| 2519   | No file  |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

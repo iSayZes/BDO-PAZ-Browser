@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ------------- | --------- |
-| 2      | 3473 and later | 3474    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
-| 2      | 3473 and later | 3474    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
+| 2      | 2107 and later | 3474    | `weatheractor.dbss`       | 7,579 | 101 Row       | 75        |
+| 2      | 2107 and later | 3474    | `weatheractoroffset.dbss` | 1,014 | 101 Index Row | 10        |
 | 1      | 1784           | 1784    | `weatheractor.dbss`       | 4,960 | 84 Row        | 59        |
 | 1      | 1784           | 1784    | `weatheractoroffset.dbss` | 844   | 84 Index Row  | 10        |
 
@@ -28,6 +28,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `weatheractoroffset.dbss` | 1,014 B (100.0%) | 0 B (0.0%)      |
 | 1      | `weatheractor.dbss`       | 3,448 B (69.5%)  | 1,512 B (30.5%) |
 | 1      | `weatheractoroffset.dbss` | 844 B (100.0%)   | 0 B (0.0%)      |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 2             |
+| 2107   | Layout 2             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

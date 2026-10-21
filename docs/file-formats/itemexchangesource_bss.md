@@ -12,13 +12,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes     | Records                     | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | --------- | --------------------------- | --------- |
-| 2      | 3474 and later | 3474    | `itemexchangesource.bss` | 3,136,023 | 34,063 Material, 13,848 Row | 12        |
-| 1      | 1784           | 1784    | `itemexchangesource.bss` | 1,562,202 | 17,353 Material, 7,053 Row  | 12        |
+| 2      | 3002 and later | 3474    | `itemexchangesource.bss` | 3,136,023 | 34,063 Material, 13,848 Row | 12        |
+| 1      | 1485 to 2519   | 2519    | `itemexchangesource.bss` | 2,320,882 | 26,658 Material, 10,514 Row | 12        |
 
 | Layout | File                     | Known               | Unknown             |
 | ------ | ------------------------ | ------------------- | ------------------- |
 | 2      | `itemexchangesource.bss` | 1,401,363 B (44.7%) | 1,734,660 B (55.3%) |
-| 1      | `itemexchangesource.bss` | 678,229 B (43.4%)   | 883,973 B (56.6%)   |
+| 1      | `itemexchangesource.bss` | 1,003,640 B (43.2%) | 1,317,242 B (56.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No documented layout |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

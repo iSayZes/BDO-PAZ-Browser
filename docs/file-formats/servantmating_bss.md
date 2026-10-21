@@ -16,15 +16,31 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes | Records       | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ----- | ------------- | --------- |
-| 2      | 3474 and later | 3474    | `servantmating.bss`        | 684   | 34 Row        | 20        |
-| 1      | 1784           | 1784    | `servantmating.dbss`       | 340   | 24 Row        | 14        |
-| 1      | 1784           | 1784    | `servantmatingoffset.dbss` | 292   | 24 Offset Row | 12        |
+| 2      | 3002 and later | 3474    | `servantmating.bss`        | 684   | 34 Row        | 20        |
+| 1      | 794            | 794     | `servantmating.bss`        | 298   | 21 Row        | 14        |
+| 1      | 1485 to 2107   | 2107    | `servantmating.dbss`       | 340   | 24 Row        | 14        |
+| 1      | 1485 to 2107   | 2107    | `servantmatingoffset.dbss` | 292   | 24 Offset Row | 12        |
 
 | Layout | File                       | Known          | Unknown    |
 | ------ | -------------------------- | -------------- | ---------- |
 | 2      | `servantmating.bss`        | 684 B (100.0%) | 0 B (0.0%) |
+| 1      | `servantmating.bss`        | 298 B (100.0%) | 0 B (0.0%) |
 | 1      | `servantmating.dbss`       | 340 B (100.0%) | 0 B (0.0%) |
 | 1      | `servantmatingoffset.dbss` | 292 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No documented layout |
+| 794    | Layout 1             |
 
 <!-- versions:end -->
 

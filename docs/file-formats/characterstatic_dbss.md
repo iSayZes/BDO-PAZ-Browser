@@ -26,6 +26,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `characterstatic.dbss`       | 6,130,594 B (67.0%) | 3,015,168 B (33.0%) |
 | 1      | `characterstaticoffset.dbss` | 157,060 B (100.0%)  | 0 B (0.0%)          |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 3             |
+| 3464   | Layout 3             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

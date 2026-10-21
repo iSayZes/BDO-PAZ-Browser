@@ -21,11 +21,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records                    | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----- | -------------------------- | --------- |
-| 1      | 1784 and later | 3474    | `itemmarketcategory.bss` | 5,999 | 420 Category Value, 18 Row | 5         |
+| 1      | 1485 and later | 3474    | `itemmarketcategory.bss` | 5,999 | 420 Category Value, 18 Row | 5         |
 
 | Layout | File                     | Known           | Unknown     |
 | ------ | ------------------------ | --------------- | ----------- |
 | 1      | `itemmarketcategory.bss` | 5,927 B (98.8%) | 72 B (1.2%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3251   | Layout 1             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No documented layout |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

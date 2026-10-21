@@ -35,6 +35,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `elementalmonsterstat.bss` | 42,208 B (100.0%) | 0 B (0.0%) |
 | 1      | `elementalmonsterstat.bss` | 38,138 B (100.0%) | 0 B (0.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 3 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

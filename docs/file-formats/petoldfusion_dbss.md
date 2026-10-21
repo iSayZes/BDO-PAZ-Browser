@@ -27,6 +27,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `petoldfusion.dbss`       | 14,980 B (97.5%) | 384 B (2.5%) |
 | 1      | `petoldfusionoffset.dbss` | 4,612 B (100.0%) | 0 B (0.0%)   |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

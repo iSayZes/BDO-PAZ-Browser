@@ -18,10 +18,10 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes | Records            | Row bytes |
 | ------ | -------------- | ------- | -------------------------------- | ----- | ------------------ | --------- |
-| 2      | 3474 and later | 3474    | `instancefieldreward.dbss`       | 154   | 6 Push Item, 2 Row | 12        |
-| 2      | 3474 and later | 3474    | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
-| 1      | 1784           | 1784    | `instancefieldreward.dbss`       | 134   | 6 Push Item, 2 Row | 12        |
-| 1      | 1784           | 1784    | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
+| 2      | 3002 and later | 3474    | `instancefieldreward.dbss`       | 154   | 6 Push Item, 2 Row | 12        |
+| 2      | 3002 and later | 3474    | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
+| 1      | 1485 to 2519   | 2519    | `instancefieldreward.dbss`       | 134   | 6 Push Item, 2 Row | 12        |
+| 1      | 1485 to 2519   | 2519    | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
 
 | Layout | File                             | Known         | Unknown      |
 | ------ | -------------------------------- | ------------- | ------------ |
@@ -29,6 +29,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `instancefieldrewardoffset.dbss` | 24 B (100.0%) | 0 B (0.0%)   |
 | 1      | `instancefieldreward.dbss`       | 62 B (46.3%)  | 72 B (53.7%) |
 | 1      | `instancefieldrewardoffset.dbss` | 24 B (100.0%) | 0 B (0.0%)   |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

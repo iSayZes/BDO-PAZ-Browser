@@ -15,11 +15,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File       | Bytes | Records         | Row bytes |
 | ------ | -------------- | ------- | ---------- | ----- | --------------- | --------- |
-| 1      | 1784 and later | 3474    | `menu.bss` | 1,083 | 12 Category Row | 40        |
+| 1      | 1485 and later | 3474    | `menu.bss` | 1,083 | 12 Category Row | 40        |
 
 | Layout | File       | Known            | Unknown    |
 | ------ | ---------- | ---------------- | ---------- |
 | 1      | `menu.bss` | 1,083 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

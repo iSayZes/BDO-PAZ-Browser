@@ -29,6 +29,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `houseinfo.bss` | 169,712 B (98.6%) | 2,469 B (1.4%) |
 | 1      | `houseinfo.bss` | 47,036 B (96.8%)  | 1,532 B (3.2%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 2             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | Layout 1             |
+| 794    | No documented layout |
+
 <!-- versions:end -->
 
 ## Companion Files

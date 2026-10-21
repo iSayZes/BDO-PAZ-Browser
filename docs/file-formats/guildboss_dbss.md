@@ -17,13 +17,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records      | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ------------ | --------- |
-| 1      | 1784 and later | 3474    | `guildboss.dbss`       | 21    | 1 Row        | 17        |
-| 1      | 1784 and later | 3474    | `guildbossoffset.dbss` | 14    | 1 Offset Row | 10        |
+| 1      | 1485 and later | 3474    | `guildboss.dbss`       | 21    | 1 Row        | 17        |
+| 1      | 1485 and later | 3474    | `guildbossoffset.dbss` | 14    | 1 Offset Row | 10        |
 
 | Layout | File                   | Known         | Unknown    |
 | ------ | ---------------------- | ------------- | ---------- |
 | 1      | `guildboss.dbss`       | 20 B (95.2%)  | 1 B (4.8%) |
 | 1      | `guildbossoffset.dbss` | 14 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

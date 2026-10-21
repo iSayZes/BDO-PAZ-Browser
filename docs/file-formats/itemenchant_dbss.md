@@ -33,6 +33,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `itemenchant.dbss`       | 99,716,229 B (58.0%) | 72,074,984 B (42.0%)  |
 | 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%) | 0 B (0.0%)            |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

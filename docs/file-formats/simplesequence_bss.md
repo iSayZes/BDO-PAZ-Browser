@@ -17,11 +17,25 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
-| 1      | 3474 and later | 3474    | `simplesequence.bss` | 6,946 | 534 Row | 13        |
+| 1      | 2519 and later | 3474    | `simplesequence.bss` | 6,946 | 534 Row | 13        |
 
 | Layout | File                 | Known           | Unknown         |
 | ------ | -------------------- | --------------- | --------------- |
 | 1      | `simplesequence.bss` | 2,140 B (30.8%) | 4,806 B (69.2%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

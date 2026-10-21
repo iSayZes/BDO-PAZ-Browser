@@ -30,6 +30,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `actionverification.bss` | 1,304 B (100.0%) | 0 B (0.0%)   |
 | 1      | `actionverification.bss` | 60 B (60.0%)     | 40 B (40.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 2 |
+| 1784   | Layout 2 |
+| 1485   | Layout 2 |
+| 1230   | Layout 1 |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

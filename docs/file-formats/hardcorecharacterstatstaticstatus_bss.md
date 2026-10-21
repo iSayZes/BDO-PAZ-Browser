@@ -22,6 +22,21 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | --------------------------------------- | --------------- | --------------- |
 | 1      | `hardcorecharacterstatstaticstatus.bss` | 2,142 B (22.6%) | 7,332 B (77.4%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 1             |
+| 3473   | Layout 1             |
+| 3251   | No documented layout |
+| 3002   | No documented layout |
+| 2519   | No file              |
+| 2107   | No file              |
+| 1784   | No file              |
+| 1485   | No file              |
+| 1230   | No file              |
+| 794    | No file              |
+
 <!-- versions:end -->
 
 ## Companion Files

@@ -28,6 +28,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | `maid.dbss`       | 1,536 B (100.0%) | 0 B (0.0%) |
 | 1      | `maidoffset.dbss` | 174 B (100.0%)   | 0 B (0.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 2 |
+| 1784   | Layout 2 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

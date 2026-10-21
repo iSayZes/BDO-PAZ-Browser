@@ -21,13 +21,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File            | Bytes  | Records | Row bytes |
 | ------ | -------------- | ------- | --------------- | ------ | ------- | --------- |
-| 2      | 3474 and later | 3474    | `fieldinfo.bss` | 23,620 | 122 Row | 157       |
-| 1      | 1784           | 1784    | `fieldinfo.bss` | 52,352 | 306 Row | 145       |
+| 2      | 3251 and later | 3474    | `fieldinfo.bss` | 23,620 | 122 Row | 157       |
+| 1      | 1784 to 2107   | 2107    | `fieldinfo.bss` | 22,361 | 123 Row | 145       |
 
 | Layout | File            | Known             | Unknown        |
 | ------ | --------------- | ----------------- | -------------- |
 | 2      | `fieldinfo.bss` | 22,156 B (93.8%)  | 1,464 B (6.2%) |
-| 1      | `fieldinfo.bss` | 52,352 B (100.0%) | 0 B (0.0%)     |
+| 1      | `fieldinfo.bss` | 22,361 B (100.0%) | 0 B (0.0%)     |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

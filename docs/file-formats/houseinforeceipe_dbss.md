@@ -17,17 +17,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
 | ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
-| 2      | 3473 and later | 3474    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
-| 2      | 3473 and later | 3474    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
-| 1      | 1784           | 1784    | `houseinforeceipe.dbss`       | 10,819 | 485 Level List, 97 Row  | 4 to 156, 16 on average |
-| 1      | 1784           | 1784    | `houseinforeceipeoffset.dbss` | 1,168  | 97 Index Row            | 12                      |
+| 2      | 3002 and later | 3474    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 2      | 3002 and later | 3474    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 1      | 1485 to 2107   | 2107    | `houseinforeceipe.dbss`       | 12,213 | 505 Level List, 101 Row | 4 to 156, 18 on average |
+| 1      | 1485 to 2107   | 2107    | `houseinforeceipeoffset.dbss` | 1,216  | 101 Index Row           | 12                      |
 
 | Layout | File                          | Known            | Unknown        |
 | ------ | ----------------------------- | ---------------- | -------------- |
 | 2      | `houseinforeceipe.dbss`       | 24,232 B (92.6%) | 1,934 B (7.4%) |
 | 2      | `houseinforeceipeoffset.dbss` | 1,588 B (100.0%) | 0 B (0.0%)     |
-| 1      | `houseinforeceipe.dbss`       | 10,431 B (96.4%) | 388 B (3.6%)   |
-| 1      | `houseinforeceipeoffset.dbss` | 1,168 B (100.0%) | 0 B (0.0%)     |
+| 1      | `houseinforeceipe.dbss`       | 11,809 B (96.7%) | 404 B (3.3%)   |
+| 1      | `houseinforeceipeoffset.dbss` | 1,216 B (100.0%) | 0 B (0.0%)     |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

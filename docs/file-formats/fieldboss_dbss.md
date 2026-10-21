@@ -18,17 +18,32 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
-| 2      | 3473 and later | 3474    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
-| 2      | 3473 and later | 3474    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
-| 1      | 1784           | 1784    | `fieldboss.dbss`       | 16,868 | 544 Row       | 31        |
-| 1      | 1784           | 1784    | `fieldbossoffset.dbss` | 5,444  | 544 Index Row | 10        |
+| 2      | 3002 and later | 3474    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
+| 2      | 3002 and later | 3474    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+| 1      | 1784 to 2519   | 2519    | `fieldboss.dbss`       | 19,906 | 642 Row       | 31        |
+| 1      | 1784 to 2519   | 2519    | `fieldbossoffset.dbss` | 6,424  | 642 Index Row | 10        |
 
 | Layout | File                   | Known            | Unknown          |
 | ------ | ---------------------- | ---------------- | ---------------- |
 | 2      | `fieldboss.dbss`       | 2,780 B (12.1%)  | 20,126 B (87.9%) |
 | 2      | `fieldbossoffset.dbss` | 6,944 B (100.0%) | 0 B (0.0%)       |
-| 1      | `fieldboss.dbss`       | 2,180 B (12.9%)  | 14,688 B (87.1%) |
-| 1      | `fieldbossoffset.dbss` | 5,444 B (100.0%) | 0 B (0.0%)       |
+| 1      | `fieldboss.dbss`       | 2,572 B (12.9%)  | 17,334 B (87.1%) |
+| 1      | `fieldbossoffset.dbss` | 6,424 B (100.0%) | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

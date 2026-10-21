@@ -18,15 +18,29 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                         | Bytes  | Records                              | Row bytes |
 | ------ | -------------- | ------- | -------------------------------------------- | ------ | ------------------------------------ | --------- |
-| 2      | 3474 and later | 3474    | `enchantfailcountexpstaticstatus.bss`        | 39,620 | 3,600 Entry, 2,800 Group, 400 Record | 5         |
-| 1      | 1784           | 1784    | `enchantfailcountexpstaticstatus.dbss`       | 4,020  | 251 Row                              | 16        |
-| 1      | 1784           | 1784    | `enchantfailcountexpstaticstatusoffset.dbss` | 4,020  | 251 Offset Row                       | 16        |
+| 2      | 3251 and later | 3474    | `enchantfailcountexpstaticstatus.bss`        | 39,620 | 3,600 Entry, 2,800 Group, 400 Record | 5         |
+| 1      | 1485 to 3002   | 3002    | `enchantfailcountexpstaticstatus.dbss`       | 5,140  | 321 Row                              | 16        |
+| 1      | 1485 to 3002   | 3002    | `enchantfailcountexpstaticstatusoffset.dbss` | 5,140  | 321 Offset Row                       | 16        |
 
 | Layout | File                                         | Known            | Unknown          |
 | ------ | -------------------------------------------- | ---------------- | ---------------- |
 | 2      | `enchantfailcountexpstaticstatus.bss`        | 25,220 B (63.7%) | 14,400 B (36.3%) |
-| 1      | `enchantfailcountexpstaticstatus.dbss`       | 4,020 B (100.0%) | 0 B (0.0%)       |
-| 1      | `enchantfailcountexpstaticstatusoffset.dbss` | 4,020 B (100.0%) | 0 B (0.0%)       |
+| 1      | `enchantfailcountexpstaticstatus.dbss`       | 5,140 B (100.0%) | 0 B (0.0%)       |
+| 1      | `enchantfailcountexpstaticstatusoffset.dbss` | 5,140 B (100.0%) | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 1             |
+| 2519   | Layout 1             |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No documented layout |
+| 794    | No file              |
 
 <!-- versions:end -->
 

@@ -14,13 +14,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes  | Records                   | Row bytes                  |
 | ------ | -------------- | ------- | ------------------- | ------ | ------------------------- | -------------------------- |
-| 2      | 3473 and later | 3474    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
-| 1      | 1784           | 1784    | `journalquest.dbss` | 23,327 | 52 Book Record, 12 Group  | 205 to 639, 448 on average |
+| 2      | 2519 and later | 3474    | `journalquest.dbss` | 48,886 | 118 Book Record, 13 Group | 258 to 774, 414 on average |
+| 1      | 1485 to 2107   | 2107    | `journalquest.dbss` | 23,327 | 52 Book Record, 12 Group  | 205 to 639, 448 on average |
 
 | Layout | File                | Known            | Unknown         |
 | ------ | ------------------- | ---------------- | --------------- |
 | 2      | `journalquest.dbss` | 48,414 B (99.0%) | 472 B (1.0%)    |
 | 1      | `journalquest.dbss` | 20,580 B (88.2%) | 2,747 B (11.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3473   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

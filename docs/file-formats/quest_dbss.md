@@ -8,6 +8,13 @@ Quest definition table. Each record stores the quest's accept and completion scr
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result  |
+| ------ | ------- |
+| 1230   | No file |
+| 794    | No file |
+
 <!-- versions:end -->
 
 ## Companion Files

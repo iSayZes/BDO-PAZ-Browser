@@ -18,17 +18,31 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes                |
 | ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | ------------------------ |
-| 2      | 3474 and later | 3474    | `employeecharactership.dbss`       | 3,348 | 38 Ship Row   | 76 to 114, 88 on average |
-| 2      | 3474 and later | 3474    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
-| 1      | 1784           | 1784    | `employeecharactership.dbss`       | 3,446 | 36 Ship Row   | 84 to 122, 96 on average |
-| 1      | 1784           | 1784    | `employeecharactershipoffset.dbss` | 364   | 36 Offset Row | 10                       |
+| 2      | 3251 and later | 3474    | `employeecharactership.dbss`       | 3,348 | 38 Ship Row   | 76 to 114, 88 on average |
+| 2      | 3251 and later | 3474    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
+| 1      | 1485 to 3002   | 3002    | `employeecharactership.dbss`       | 3,652 | 38 Ship Row   | 84 to 122, 96 on average |
+| 1      | 1485 to 3002   | 3002    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
 
 | Layout | File                               | Known           | Unknown       |
 | ------ | ---------------------------------- | --------------- | ------------- |
 | 2      | `employeecharactership.dbss`       | 3,044 B (90.9%) | 304 B (9.1%)  |
 | 2      | `employeecharactershipoffset.dbss` | 384 B (100.0%)  | 0 B (0.0%)    |
-| 1      | `employeecharactership.dbss`       | 2,870 B (83.3%) | 576 B (16.7%) |
-| 1      | `employeecharactershipoffset.dbss` | 364 B (100.0%)  | 0 B (0.0%)    |
+| 1      | `employeecharactership.dbss`       | 3,044 B (83.4%) | 608 B (16.6%) |
+| 1      | `employeecharactershipoffset.dbss` | 384 B (100.0%)  | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

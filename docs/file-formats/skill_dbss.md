@@ -18,15 +18,34 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
 | 3      | 3473 and later | 3474    | `skill.dbss`       | 9,767,132 | 30,487 Skill Record, 30,487 Record | 210 to 1,540, 316 on average |
 | 3      | 3473 and later | 3474    | `skilloffset.dbss` | 365,864   | 30,487 Index Row                   | 12                           |
-| 1      | 1784           | 1784    | `skill.dbss`       | 6,930,431 | 22,932 Skill Record, 22,932 Record | 190 to 1,246, 298 on average |
-| 1      | 1784           | 1784    | `skilloffset.dbss` | 275,204   | 22,932 Index Row                   | 12                           |
+| 2      | 3251           | 3251    | `skill.dbss`       | 8,917,786 | 29,656 Skill Record, 29,656 Record | 190 to 1,520, 297 on average |
+| 2      | 3251           | 3251    | `skilloffset.dbss` | 355,892   | 29,656 Index Row                   | 12                           |
+| 1      | 1485 to 2107   | 2107    | `skill.dbss`       | 7,682,236 | 24,970 Skill Record, 24,970 Record | 190 to 1,320, 304 on average |
+| 1      | 1485 to 2107   | 2107    | `skilloffset.dbss` | 299,660   | 24,970 Index Row                   | 12                           |
 
 | Layout | File               | Known               | Unknown          |
 | ------ | ------------------ | ------------------- | ---------------- |
 | 3      | `skill.dbss`       | 9,492,749 B (97.2%) | 274,383 B (2.8%) |
 | 3      | `skilloffset.dbss` | 365,864 B (100.0%)  | 0 B (0.0%)       |
-| 1      | `skill.dbss`       | 6,815,771 B (98.3%) | 114,660 B (1.7%) |
-| 1      | `skilloffset.dbss` | 275,204 B (100.0%)  | 0 B (0.0%)       |
+| 2      | `skill.dbss`       | 8,650,882 B (97.0%) | 266,904 B (3.0%) |
+| 2      | `skilloffset.dbss` | 355,892 B (100.0%)  | 0 B (0.0%)       |
+| 1      | `skill.dbss`       | 7,557,386 B (98.4%) | 124,850 B (1.6%) |
+| 1      | `skilloffset.dbss` | 299,660 B (100.0%)  | 0 B (0.0%)       |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 3             |
+| 3473   | Layout 3             |
+| 3251   | Layout 2             |
+| 3002   | No documented layout |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | No file              |
+| 794    | No file              |
 
 <!-- versions:end -->
 

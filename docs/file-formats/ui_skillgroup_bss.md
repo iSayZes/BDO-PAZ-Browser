@@ -20,15 +20,29 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes   | Records                                            | Row bytes             |
 | ------ | -------------- | ------- | ------------------------------ | ------- | -------------------------------------------------- | --------------------- |
-| 1      | 1784 and later | 3474    | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
-| 1      | 1784 and later | 3474    | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
-| 1      | 1784 and later | 3474    | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
+| 1      | 1485 and later | 3474    | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
+| 1      | 1485 and later | 3474    | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
+| 1      | 1485 and later | 3474    | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
 
 | Layout | File                           | Known             | Unknown          |
 | ------ | ------------------------------ | ----------------- | ---------------- |
 | 1      | `ui_skillgroup_awakening.bss`  | 61,498 B (88.6%)  | 7,882 B (11.4%)  |
 | 1      | `ui_skillgroup_combat.bss`     | 215,549 B (89.0%) | 26,554 B (11.0%) |
 | 1      | `ui_skillgroup_succession.bss` | 28 B (12.2%)      | 202 B (87.8%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

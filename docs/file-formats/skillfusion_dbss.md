@@ -18,13 +18,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----- | -------------- | --------- |
-| 1      | 1784 and later | 3474    | `skillfusion.dbss`       | 4,612 | 192 Row        | 24        |
-| 1      | 1784 and later | 3474    | `skillfusionoffset.dbss` | 2,308 | 192 Offset Row | 12        |
+| 1      | 1485 and later | 3474    | `skillfusion.dbss`       | 4,612 | 192 Row        | 24        |
+| 1      | 1485 and later | 3474    | `skillfusionoffset.dbss` | 2,308 | 192 Offset Row | 12        |
 
 | Layout | File                     | Known            | Unknown    |
 | ------ | ------------------------ | ---------------- | ---------- |
 | 1      | `skillfusion.dbss`       | 4,612 B (100.0%) | 0 B (0.0%) |
 | 1      | `skillfusionoffset.dbss` | 2,308 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

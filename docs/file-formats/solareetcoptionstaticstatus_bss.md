@@ -22,6 +22,20 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 2      | `solareetcoptionstaticstatus.bss` | 0 B (0.0%) | 20 B (100.0%) |
 | 1      | `solareetcoptionstaticstatus.bss` | 0 B (0.0%) | 12 B (100.0%) |
 
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 1 |
+| 2519   | No file  |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
+
 <!-- versions:end -->
 
 ## Companion Files

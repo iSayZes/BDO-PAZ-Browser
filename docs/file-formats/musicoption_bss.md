@@ -17,12 +17,26 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | Clients        | Checked | File              | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ----- | -------------- | --------- |
 | 2      | 2519 and later | 3474    | `musicoption.bss` | 28    | 1 String Table | 4         |
-| 1      | 1784 to 2107   | 2107    | `musicoption.bss` | 20    | 1 String Table | 4         |
+| 1      | 1485 to 2107   | 2107    | `musicoption.bss` | 20    | 1 String Table | 4         |
 
 | Layout | File              | Known         | Unknown     |
 | ------ | ----------------- | ------------- | ----------- |
 | 2      | `musicoption.bss` | 20 B (71.4%)  | 8 B (28.6%) |
 | 1      | `musicoption.bss` | 20 B (100.0%) | 0 B (0.0%)  |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 2 |
+| 3251   | Layout 2 |
+| 3002   | Layout 2 |
+| 2519   | Layout 2 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

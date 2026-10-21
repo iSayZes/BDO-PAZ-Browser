@@ -12,11 +12,26 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ------- | --------- |
-| 1      | 3473 and later | 3474    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
+| 1      | 3002 and later | 3474    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
 
 | Layout | File                   | Known        | Unknown      |
 | ------ | ---------------------- | ------------ | ------------ |
 | 1      | `edaniaregioninfo.bss` | 31 B (26.1%) | 88 B (73.9%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3473   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | No file  |
+| 2107   | No file  |
+| 1784   | No file  |
+| 1485   | No file  |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

@@ -22,13 +22,27 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes  | Records                        | Row bytes                  |
 | ------ | -------------- | ------- | -------------------------- | ------ | ------------------------------ | -------------------------- |
-| 1      | 1784 and later | 3474    | `greatseaevent.dbss`       | 15,299 | 101 Event, 5 Group             | 139 to 181, 151 on average |
-| 1      | 1784 and later | 3474    | `greatseaeventoffset.dbss` | 1,246  | 101 Offset Row, 5 Offset Group | 12                         |
+| 1      | 1485 and later | 3474    | `greatseaevent.dbss`       | 15,299 | 101 Event, 5 Group             | 139 to 181, 151 on average |
+| 1      | 1485 and later | 3474    | `greatseaeventoffset.dbss` | 1,246  | 101 Offset Row, 5 Offset Group | 12                         |
 
 | Layout | File                       | Known            | Unknown      |
 | ------ | -------------------------- | ---------------- | ------------ |
 | 1      | `greatseaevent.dbss`       | 14,895 B (97.4%) | 404 B (2.6%) |
 | 1      | `greatseaeventoffset.dbss` | 1,246 B (100.0%) | 0 B (0.0%)   |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   |
+| ------ | -------- |
+| 3474   | Layout 1 |
+| 3251   | Layout 1 |
+| 3002   | Layout 1 |
+| 2519   | Layout 1 |
+| 2107   | Layout 1 |
+| 1784   | Layout 1 |
+| 1485   | Layout 1 |
+| 1230   | No file  |
+| 794    | No file  |
 
 <!-- versions:end -->
 

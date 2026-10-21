@@ -13,13 +13,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes               |
 | ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | ----------------------- |
-| 2      | 3473 and later | 3474    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
-| 1      | 1784           | 1784    | `petequipskill.bss` | 1,732 | 43 Equip Skill, 100 Slot | 12                      |
+| 2      | 2107 and later | 3474    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
+| 1      | 1230 to 1784   | 1784    | `petequipskill.bss` | 1,732 | 43 Equip Skill, 100 Slot | 12                      |
 
 | Layout | File                | Known            | Unknown       |
 | ------ | ------------------- | ---------------- | ------------- |
 | 2      | `petequipskill.bss` | 2,932 B (77.7%)  | 840 B (22.3%) |
 | 1      | `petequipskill.bss` | 1,732 B (100.0%) | 0 B (0.0%)    |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | Layout 2             |
+| 2107   | Layout 2             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | Layout 1             |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

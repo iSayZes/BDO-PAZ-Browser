@@ -12,13 +12,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes  | Records           | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ------ | ----------------- | --------- |
-| 2      | 3473 and later | 3474    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
-| 1      | 1784           | 1784    | `plantworker.bss` | 65,380 | 89 Worker Record  | 707       |
+| 2      | 3002 and later | 3474    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
+| 1      | 1230 to 2107   | 2107    | `plantworker.bss` | 66,794 | 91 Worker Record  | 707       |
 
 | Layout | File              | Known          | Unknown          |
 | ------ | ----------------- | -------------- | ---------------- |
 | 2      | `plantworker.bss` | 5,780 B (5.8%) | 93,704 B (94.2%) |
-| 1      | `plantworker.bss` | 4,771 B (7.3%) | 60,609 B (92.7%) |
+| 1      | `plantworker.bss` | 4,823 B (7.2%) | 61,971 B (92.8%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | No documented layout |
+| 2107   | Layout 1             |
+| 1784   | Layout 1             |
+| 1485   | Layout 1             |
+| 1230   | Layout 1             |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

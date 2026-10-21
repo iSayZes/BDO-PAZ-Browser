@@ -16,13 +16,28 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 2      | 3002 and later | 3474    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
 | 1      | 1784           | 1784    | `regioninfo.bss` | 555,464 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |
 | ------ | ---------------- | ----------------- | ----------------- |
 | 2      | `regioninfo.bss` | 244,883 B (38.0%) | 398,786 B (62.0%) |
 | 1      | `regioninfo.bss` | 160,930 B (29.0%) | 394,534 B (71.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result               |
+| ------ | -------------------- |
+| 3474   | Layout 2             |
+| 3473   | Layout 2             |
+| 3251   | Layout 2             |
+| 3002   | Layout 2             |
+| 2519   | No documented layout |
+| 2107   | No documented layout |
+| 1784   | Layout 1             |
+| 1485   | No documented layout |
+| 1230   | No documented layout |
+| 794    | No documented layout |
 
 <!-- versions:end -->
 

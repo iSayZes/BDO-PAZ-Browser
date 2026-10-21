@@ -281,7 +281,9 @@ Picking the field behind a column:
   `category` and `is_special` this way.
 - **Text in the user's language, one column.** A text column shows the loaded
   LOC text (the language picked in settings) and falls back to the inline
-  Korean only when LOC has no row: `character_name(id) or record["name_kr"]`.
+  Korean only when LOC has no row: `item_name()`, `skill_name()` and
+  `character_name()` already do, from the `*_NAME_KR` lookup indexes; a table
+  with a Korean name of its own writes `character_loc_name(id) or record["name_kr"]`.
   Keep the raw `*_kr` field on the record, but never render it as its own
   column or label a column `(EN)` / `(KR)`. Never find LOC text by searching
   for an English phrase, since other languages miss it. Cover the column with
@@ -1032,7 +1034,7 @@ _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
-├── character.py         # character names and titles (LOC type 6)
+├── character.py         # character names (LOC type 6, else CHARACTER_NAME_KR) and titles
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
@@ -1092,8 +1094,13 @@ reads the older records and returns no rows for the count of `0`
 (`growthpasspointshop.dbss`, `instancedungeonskillstatic.dbss`,
 `itemtradegroupfromnpc.dbss`, client 1784).
 
-Name a character with `character_name()` from `character.py` (LOC type 6; its
-title, `<Storage Keeper>`, with `character_title()`), a
+Name a character with `character_name()` from `character.py` (LOC type 6,
+then the Korean `characterstatic.dbss` name from the `CHARACTER_NAME_KR`
+lookup index; its title, `<Storage Keeper>`, with `character_title()`). A
+table that stores its own Korean or internal name and shows it before the
+`characterstatic.dbss` one (`base_dialog.dbss`, `detail_dialog.dbss`,
+`servant.bss`, `npcsimply.bss`, `charactersimply.bss`) reads the LOC name
+alone with `character_loc_name()`. Name a
 knowledge entry with `knowledge_name()` from `knowledge.py` (LOC type 34), a
 worldmap node with `node_name()` or `full_node_name()` from `node.py` (LOC
 type 29, see `NODE_PARENT` under Lookup Indexes) and a title with
@@ -1102,8 +1109,8 @@ its own tagged lookup for the colours), a territory with `territory_name()`
 or its nation with `nation_name()` from `territory.py` (LOC type 12 keyed by
 the `territoryinfo.bss` territory key) and the speaker of an NPC dialog with
 `dialog_name()` or `dialog_speaker()` from `quest/dialog.py` (LOC type 38 keyed
-`npc_id`, `dialog_index`, else the LOC type 6 name). All return `''` when LOC is not
-loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
+`npc_id`, `dialog_index`, else the character name). All return `''` (or the
+Korean fallback) when LOC is not loaded, so no `is_loc_loaded()` guard is needed. Do not define those LOC types
 in a handler.
 
 Link a character key with `character_key_cell()` from `character_link.py`. A
@@ -1257,6 +1264,7 @@ IDs (`LookupValue`).
 | `KNOWLEDGE_LEARNING_CHARACTERS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | character IDs (tuple) |
 | `KNOWLEDGE_LEARNING_ITEMS` | `knowledgelearning.dbss`, `knowledgelearningoffset.dbss` | item IDs (tuple) |
 | `CHARACTER_AI_SCRIPT` | `characterstatic.dbss`, `characterstaticoffset.dbss` | `.ai` file stem |
+| `CHARACTER_NAME_KR` | `characterstatic.dbss`, `characterstaticoffset.dbss` | Korean name |
 | `CHARACTER_LEASES` | `detail_dialog.dbss`, `detail_dialogoffset.dbss` | flat `(item_id, cost, ...)` pairs |
 | `DIALOG_KEYS`    | `detail_dialogoffset.dbss`                 | character ID   |
 | `SKILL_ICON`     | `skilltype.dbss`, `skilltypeoffset.dbss`   | icon path      |
@@ -1315,6 +1323,15 @@ in ascending ID order; the Learned From Items column shows them with
 file stem as written (`Monsters_Main_Manager`). The `.ai` handler reads the
 whole index and keeps the characters whose stem matches its file, without
 case, for its Used by box.
+
+`CHARACTER_NAME_KR` maps a character to its Korean
+[characterstatic.dbss](file-formats/characterstatic_dbss.md#korean-strings)
+name: `name_kr`, or `label_kr` where `name_kr` is the `UNKNOWN` placeholder.
+`character_name()` in `_common/character.py` falls back to it when LOC type
+6 has no name, as `item_name()` does with `ITEM_NAME_KR`, with no `(KR)`
+marker. On client 3474 that names 296 characters the English LOC leaves out,
+such as the War of the Roses buildings of `buildingupgrade.dbss` (`12688`
+`[장미 전쟁] 화염탑`).
 
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
 option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),

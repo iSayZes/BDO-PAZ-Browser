@@ -20,6 +20,8 @@ from tests.framework import (
 )
 
 from _common.character_link import CHARACTERSTATIC_OFFSET_FILE
+from _common.lookup_index import IndexKind
+from _dbss.characterstatic.parser import build_character_name_kr_index
 from _common.pabr_offset import parse_bare_offset_rows
 from _common.pabr_strings import HEADER_SIZE, string_table_start
 from .parser import COUNT_OFFSET, FILE_NAME, OFFSET_FILE, parse_buildingupgrade_records
@@ -116,6 +118,20 @@ def test_buildingupgrade_dbss(spec: Any, upgrade_result: HandlerResult) -> None:
 @pytest.mark.parametrize("spec", OFFSET_CASE.tests, ids=case_id)
 def test_buildingupgradeoffset_dbss(spec: Any, offset_result: HandlerResult) -> None:
     offset_result.check(spec)
+
+
+def test_names_fall_back_to_the_korean_name() -> None:
+    """Without LOC every building shows its Korean characterstatic.dbss name,
+    which names the War of the Roses buildings that LOC type 6 leaves out."""
+    names = build_character_name_kr_index(
+        load_binary_fixture("characterstatic.dbss"), load_binary_fixture(CHARACTERSTATIC_OFFSET_FILE)
+    )
+    case = replace(CASE, tests=[], loc_file=None, uses_loc=False, lookup_indexes={IndexKind.CHARACTER_NAME_KR: names})
+    records = run_case(case).records
+
+    assert records
+    assert all(r["name"] and r["name"] == names[r["character_key"]] for r in records)
+    assert all(r["target_name"] == names.get(r["target_character_key"], "") for r in records)
 
 
 def test_keys_are_unique(upgrade_result: HandlerResult) -> None:

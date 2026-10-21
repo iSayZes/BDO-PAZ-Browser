@@ -39,7 +39,8 @@ On client 3474 the 32 rows are these upgrades; names are LOC type 6:
 The three War of the Roses rows have no LOC type 6 name; their
 `characterstatic.dbss` Korean labels are the Flame Tower (`12688` to
 `12691`), the Hwacha (`12690` to `12692`) and the Barricade (`12698` to
-`12699`). Every row on client 3474 takes Iron Ingot x10 and Melted Copper
+`12699`). The Name and Target Name columns show that Korean label
+(`[장미 전쟁] 화염탑`) through `character_name()`. Every row on client 3474 takes Iron Ingot x10 and Melted Copper
 Shard x10, except the Savage Barricade, which takes [Savage] Iron Ingot
 x10. Client 1784 has 16 rows: the `12605` to `12609` and `12632` to `12639`
 rows, `2022`, `2035`, `2036`, `2056`, and `2013` (Sturdy Barricade to

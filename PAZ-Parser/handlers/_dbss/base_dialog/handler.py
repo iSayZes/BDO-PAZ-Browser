@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_name
+from _common.character import character_loc_name
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import is_loc_loaded, loc_lookup
@@ -30,7 +30,7 @@ def _dialog_text(record: BaseDialogRecord, field: int) -> str:
 def _record_dict(record: BaseDialogRecord, has_loc: bool) -> dict:
     # English first; the character's LOC name, then the Korean source, stand in.
     name = strip_pa_tags(
-        ((_dialog_text(record, 0) or character_name(record.character_id)) if has_loc else "") or record.name_kr
+        ((_dialog_text(record, 0) or character_loc_name(record.character_id)) if has_loc else "") or record.name_kr
     ).strip()
     lines = [
         (_dialog_text(record, number) if has_loc else "") or line

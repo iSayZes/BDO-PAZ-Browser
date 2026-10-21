@@ -37,7 +37,11 @@ from _bss.submenu.parser import build_submenu_icon_index, build_submenu_icon_reg
 from _bwp.waypoint.worldmap import WORLDMAP_FILE, build_node_link_index
 from _common.lookup_index import IndexKind, LookupValue
 from _dbss.characterobject.parser import build_character_icon_index
-from _dbss.characterstatic.parser import build_character_ai_script_index, build_knowledge_character_index
+from _dbss.characterstatic.parser import (
+    build_character_ai_script_index,
+    build_character_name_kr_index,
+    build_knowledge_character_index,
+)
 from _dbss.buff.parser import build_teleport_buff_index, build_teleport_buff_name_index
 from _dbss.detail_dialog.parser import build_character_lease_index, build_dialog_key_index
 from _dbss.instancefield.parser import build_instance_field_name_index
@@ -154,6 +158,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.CHARACTER_AI_SCRIPT,
         (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
         build_character_ai_script_index,
+    ),
+    # Character -> Korean name, the fallback of character_name() without a LOC name.
+    IndexSpec(
+        IndexKind.CHARACTER_NAME_KR,
+        (CHARACTERSTATIC, CHARACTERSTATIC_OFFSET),
+        build_character_name_kr_index,
     ),
     IndexSpec(
         IndexKind.KNOWLEDGE_LEARNING_CHARACTERS,

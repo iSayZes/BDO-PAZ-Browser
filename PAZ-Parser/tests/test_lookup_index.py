@@ -78,3 +78,15 @@ def test_item_name_falls_back_to_the_korean_name() -> None:
 
     assert item_name(unnamed_item) == "[이벤트] 울타리"
     assert item_name(unnamed_item - 1) == ""
+
+
+def test_character_name_falls_back_to_the_korean_name() -> None:
+    from _common.character import character_loc_name, character_name
+
+    # A character ID no LOC names, so the result does not depend on a loaded LOC.
+    unnamed_character = 0xFFFE
+    init_index(IndexKind.CHARACTER_NAME_KR, {unnamed_character: "[장미 전쟁] 화염탑"})
+
+    assert character_name(unnamed_character) == "[장미 전쟁] 화염탑"
+    assert character_loc_name(unnamed_character) == ""
+    assert character_name(unnamed_character - 1) == ""

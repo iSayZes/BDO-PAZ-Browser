@@ -867,16 +867,25 @@ Three UTF-16 strings follow the model path on all 24,551 records (client
 
 | Field      | Notes |
 | ---------- | ----- |
-| name_kr    | Korean name (`DisplayName`), never empty: `29929` `가모스` (Garmoth), `1` `워리어` (Warrior) |
+| name_kr    | Korean name (`DisplayName`), never empty: `29929` `가모스` (Garmoth), `1` `워리어` (Warrior). 335 records on client 3474 store the placeholder `UNKNOWN` instead, among them the War of the Roses buildings and the butler copies of the classes (`39840` to `39880`) |
 | label_kr   | Longer Korean label with region and role (`CharName`): `47791` `에다니아2_아우리스 해안_거점관리인_idx53`, `29929` `Dri_드리간 월드 레이드 보스 소환용`; never empty |
 | title_kr   | Korean title (`CharacterTitle`): `47791` `<거점 관리인>` (Node Manager). Non-empty on 6,242 rows, 6,168 of them in angle brackets |
 
 The LOC type 6 `str_id4=1` title is the translation of `title_kr`
 (`<Node Manager>` for `<거점 관리인>`): 6,178 records have both, 64 have only
 the Korean one and 3 only the LOC one. The parser reads all three: the Name
-column shows `name_kr` when LOC has no name for the character, the Title
+column shows the Korean name when LOC has no name for the character, the Title
 column `title_kr` when LOC has no title (`47481` `<여관 관리인>`, an unnamed
-inn keeper), and the Internal Label column `label_kr` as stored.
+inn keeper), and the Internal Label column `label_kr` as stored. The Korean
+name is `name_kr`, or `label_kr` where `name_kr` is `UNKNOWN` (`12688`
+`[장미 전쟁] 화염탑`, `47481` `카르아쉬 협곡 여관 관리인 idx206`);
+`korean_name()` in the parser picks it.
+
+The same Korean name is the `CHARACTER_NAME_KR` lookup index
+(`build_character_name_kr_index`), the fallback of `character_name()` in
+`_common/character.py`, so every table that names a character key shows it
+where LOC type 6 has no name: 296 of the 24,553 characters on client 3474
+with the English LOC.
 
 ## Source Item
 

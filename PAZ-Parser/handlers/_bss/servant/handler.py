@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_name
+from _common.character import character_loc_name
 from _common.character_link import (
     character_key_cell,
     character_row_ids,
@@ -101,7 +101,7 @@ class ServantBssHandler(PreviewHandler):
             {
                 **record,
                 # The shown name: LOC in the user's language, else the Korean dev name.
-                "name": character_name(record["character_id"]) or record["name_kr"],
+                "name": character_loc_name(record["character_id"]) or record["name_kr"],
                 "servant_kind_name": servant_kind_name(record["servant_kind"]),
                 # 0 is "no lifespan"; None keeps those rows last in a sort.
                 "lifespan": record["lifespan"] or None,

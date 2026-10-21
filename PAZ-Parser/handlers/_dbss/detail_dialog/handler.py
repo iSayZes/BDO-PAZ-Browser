@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_name
+from _common.character import character_loc_name, character_name_kr
 from _common.enum_name import enum_name
 from _common.html import Column, e, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
@@ -58,8 +58,13 @@ def _record_dict(record: DialogRecord, has_loc: bool) -> dict:
         "key": record.key,
         "character_id": record.character_id,
         "dialog_index": record.dialog_index,
-        # LOC first; the internal name stands in without it.
-        "character": character_name(record.character_id) or record.internal_name,
+        # LOC first; the internal name stands in without it, then the Korean
+        # characterstatic.dbss name for the dialogs without one.
+        "character": (
+            character_loc_name(record.character_id)
+            or record.internal_name
+            or character_name_kr(record.character_id)
+        ),
         "internal_name": record.internal_name,
         # User language first, the Korean source as fallback.
         **pa_fields(

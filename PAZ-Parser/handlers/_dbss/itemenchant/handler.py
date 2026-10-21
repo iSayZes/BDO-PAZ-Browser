@@ -6,6 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.buff import buff_label, buff_list_cell
+from _common.character import character_name
 from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table
 from _common.item_grade import item_grade_tagged
 from _common.lang import handler_text, load_handler_strings
@@ -30,11 +31,10 @@ from .weapon_types import weapon_type_names
 _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "itemenchantoffset.dbss"
 
-# Item names are LOC type 0 keyed by item ID; character names type 6.
+# Item names are LOC type 0 keyed by item ID.
 _LOC_TYPE_ITEM = 0
 # LOC type 0 field of the item description.
 _LOC_ITEM_DESCRIPTION = 1
-_LOC_TYPE_CHARACTER = 6
 
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 3
@@ -76,11 +76,8 @@ def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, w
         **pa_fields("description", _item_description_tagged(record["item_id"])),
         # 0 means "places no character"; None sorts last and exports empty.
         "character_id": record["character_id"] or None,
-        "character_name": (
-            loc_text(_LOC_TYPE_CHARACTER, record["character_id"])
-            if record["character_id"]
-            else ""
-        ),
+        # LOC type 6, else the Korean characterstatic.dbss name.
+        "character_name": character_name(record["character_id"]) if record["character_id"] else "",
         # Both skills' buffs, in slot order, from the SKILL_BUFFS lookup index.
         "buff_ids": buff_ids,
         "buffs": [buff_label(buff_id) for buff_id in buff_ids],

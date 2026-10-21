@@ -7,7 +7,10 @@ import pytest
 
 from _common.pabr_offset import parse_pabr_offset_rows
 from _dbss.characterstatic.parser import (
+    KOREAN_NAME_PLACEHOLDER,
+    build_character_name_kr_index,
     build_knowledge_character_index,
+    korean_name,
     parse_characterstatic_records,
 )
 from _dbss.itemenchant.parser import build_character_item_index
@@ -202,6 +205,18 @@ def test_korean_strings_follow_the_model_path(static_result: HandlerResult) -> N
     assert by_id[1]["name_kr"] == "워리어"
     assert by_id[47791]["title_kr"] == "<거점 관리인>"
     assert all(record["name_kr"] and record["label_kr"] for record in records)
+
+
+def test_korean_name_index_holds_every_korean_name(static_result: HandlerResult) -> None:
+    """IndexKind.CHARACTER_NAME_KR is name_kr by character, label_kr where name_kr is the placeholder."""
+    source = static_result.source
+    offset_data = source.file("characterstaticoffset.dbss")
+    records = parse_characterstatic_records(source.data, parse_pabr_offset_rows(offset_data))
+    index = build_character_name_kr_index(source.data, offset_data)
+
+    names = {record["character_id"]: korean_name(record["name_kr"], record["label_kr"]) for record in records}
+    assert index == {character_id: name for character_id, name in names.items() if name}
+    assert KOREAN_NAME_PLACEHOLDER not in index.values()
 
 
 def test_every_contents_group_hash_names_a_key(static_result: HandlerResult) -> None:

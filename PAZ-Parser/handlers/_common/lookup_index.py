@@ -39,6 +39,9 @@ class IndexKind(Enum):
     KNOWLEDGE_LEARNING_ITEMS = "knowledge_learning_items"
     # Stem of the `.ai` script each character runs (characterstatic.dbss), as written.
     CHARACTER_AI_SCRIPT = "character_ai_script"
+    # Korean characterstatic.dbss names, the fallback when LOC type 6 has none;
+    # read through _common/character.py.
+    CHARACTER_NAME_KR = "character_name_kr"
     # Flat (item_id, cost, ...) pairs; read through _common/lease.py.
     CHARACTER_LEASES = "character_leases"
     # Every detail_dialog.dbss key -> its character ID; read through _common/quest/dialog.py.

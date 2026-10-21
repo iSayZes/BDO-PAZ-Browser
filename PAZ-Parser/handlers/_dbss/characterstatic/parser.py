@@ -22,6 +22,7 @@ docs/file-formats/characterstatic_dbss.md.
 from __future__ import annotations
 
 import struct
+from collections.abc import Iterator
 
 from _common.binary import whole_float
 from _common.knowledge_script import knowledge_id_of
@@ -56,6 +57,8 @@ NO_CLASS_TYPE = 101
 # vehicle_type on every row that is not a vehicle: the sheet's -1 written as
 # the CppEnums.VehicleType member count.
 NO_VEHICLE_TYPE = 65
+# name_kr of the records whose Korean name is only in label_kr.
+KOREAN_NAME_PLACEHOLDER = "UNKNOWN"
 # gc::CharacterKind member names of the 2016 client, in value order. The file
 # also stores 12, 15 and 17, which came later and have no name.
 NPC_KIND_NAMES: tuple[str, ...] = (
@@ -164,22 +167,39 @@ def parse_characterstatic_records(data: bytes, rows: list[PabrOffsetRow]) -> lis
     return [_parse_record(data, row) for row in rows]
 
 
+def korean_name(name_kr: str, label_kr: str) -> str:
+    """The Korean name of a record: `name_kr`, else `label_kr` where the name is the `UNKNOWN` placeholder.
+
+    The placeholder rows include the War of the Roses buildings
+    (`12688` `[장미 전쟁] 화염탑`) and the butler copies of the classes.
+    """
+    return label_kr if name_kr == KOREAN_NAME_PLACEHOLDER else name_kr
+
+
+def _readable_records(data: bytes, offset_data: bytes) -> Iterator[dict]:
+    """Every record that parses, in offset-table order, for the lookup index builders.
+
+    A malformed record is skipped rather than failing the whole index: the
+    preview of this table reports it instead.
+    """
+    for row in parse_pabr_offset_rows(offset_data):
+        try:
+            yield _parse_record(data, row)
+        except (ValueError, struct.error):
+            continue
+
+
 def build_knowledge_character_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
     """Map knowledge ID to every character whose action script grants it.
 
     Character IDs are ascending, so the original NPC comes before later copies
-    of it (47280 before 59998). A malformed record is skipped rather than
-    failing the whole index: the preview of this table reports it instead.
+    of it (47280 before 59998).
     """
     characters: dict[int, list[int]] = {}
-
-    for row in parse_pabr_offset_rows(offset_data):
-        try:
-            knowledge_id = _parse_record(data, row)["knowledge_id"]
-        except (ValueError, struct.error):
-            continue
+    for record in _readable_records(data, offset_data):
+        knowledge_id = record["knowledge_id"]
         if knowledge_id is not None:
-            characters.setdefault(knowledge_id, []).append(row.entry_id)
+            characters.setdefault(knowledge_id, []).append(record["character_id"])
 
     return {
         knowledge_id: tuple(sorted(ids))
@@ -188,16 +208,23 @@ def build_knowledge_character_index(data: bytes, offset_data: bytes) -> dict[int
 
 
 def build_character_ai_script_index(data: bytes, offset_data: bytes) -> dict[int, str]:
-    """Map character ID to the stem of its `.ai` script, for characters that name one.
+    """Map character ID to the stem of its `.ai` script, for characters that name one."""
+    return {
+        record["character_id"]: record["ai_script"]
+        for record in _readable_records(data, offset_data)
+        if record["ai_script"]
+    }
 
-    A malformed record is skipped, as in `build_knowledge_character_index`.
+
+def build_character_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
+    """Map character ID to its `korean_name`, for `IndexKind.CHARACTER_NAME_KR`.
+
+    `character_name()` in `_common/character.py` falls back to it when LOC
+    type 6 has no name.
     """
-    scripts: dict[int, str] = {}
-    for row in parse_pabr_offset_rows(offset_data):
-        try:
-            ai_script = _parse_record(data, row)["ai_script"]
-        except (ValueError, struct.error):
-            continue
-        if ai_script:
-            scripts[row.entry_id] = ai_script
-    return scripts
+    names: dict[int, str] = {}
+    for record in _readable_records(data, offset_data):
+        name = korean_name(record["name_kr"], record["label_kr"])
+        if name:
+            names[record["character_id"]] = name
+    return names

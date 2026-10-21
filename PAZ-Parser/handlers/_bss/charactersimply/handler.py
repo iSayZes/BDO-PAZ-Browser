@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.character import character_name, character_title
+from _common.character import character_loc_name, character_title
 from _common.html import Column, e, error, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
@@ -28,7 +28,7 @@ def _record(raw: dict) -> dict:
     return {
         **raw,
         # The LOC name in the user's language, else the Korean name the row points at.
-        "name": character_name(character_id) or raw["name_kr"],
+        "name": character_loc_name(character_id) or raw["name_kr"],
         "title": character_title(character_id) or raw["title_kr"],
         "npc_kind_name": npc_kind_name(raw["npc_kind"]),
         # 0 means "in no group".

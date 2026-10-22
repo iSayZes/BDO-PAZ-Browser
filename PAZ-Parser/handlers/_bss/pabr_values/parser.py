@@ -11,7 +11,7 @@ The values end where the string table starts or the file ends; values that
 do not fill that space exactly raise ValueError, since every field would
 then be read from the wrong place. A string-table index field (`TextRef`)
 also stores the string it points to. Head fields, read once before the row
-count, go on every record. `parse_value_rows` also gives each row's bytes
+count, and tail fields, read once after the last row, go on every record. `parse_value_rows` also gives each row's bytes
 as hex text, for the files with no named field.
 """
 
@@ -129,8 +129,11 @@ def _read_rows(data: bytes, table: ValueTable) -> list[_Row]:
     rows: list[_Row] = []
     for _ in range(count):
         row = _read_values(data, table, table.fields, offset, end, strings)
-        rows.append(_Row({**row.record, **head.record}, row.start, row.stop))
+        rows.append(row)
         offset = row.stop
+    tail = _read_values(data, table, table.tail, offset, end, strings)
+    offset = tail.stop
+    rows = [_Row({**row.record, **head.record, **tail.record}, row.start, row.stop) for row in rows]
     if offset != end:
         raise ValueError(f"{table.file_name} values end at 0x{offset:X}, but {_end_name(table)} at 0x{end:X}")
     return rows

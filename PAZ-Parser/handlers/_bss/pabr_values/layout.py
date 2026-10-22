@@ -3,8 +3,8 @@
 A PABR file is the PABR magic, the values, then the string table and the
 trailer. A bare file is the values alone, with no magic, string table or
 trailer. The values are one set of fields, a u32 count and that many rows
-(optionally after head fields stored once), or rows up to the string table
-or the end of a bare file. A field can be a
+(optionally after head fields or before tail fields stored once), or rows up
+to the string table or the end of a bare file. A field can be a
 counted list: a u32 (or u64) count, then that many values, or a string-table
 index whose string the record keeps.
 """
@@ -115,8 +115,9 @@ class ValueTable:
     `first_fields` names fields whose columns come first, in that order: the
     row key when the row stores it after other fields, or a name stored late.
     `head` holds fields stored once where the values start, before the row
-    count of `RowCount.COUNTED`; every record holds their values, and their
-    columns follow the row fields.
+    count of `RowCount.COUNTED`, and `tail` fields stored once after the
+    last row; every record holds their values, and their columns follow the
+    row fields.
     """
 
     file_name: str
@@ -126,12 +127,15 @@ class ValueTable:
     count_key: str = "count"
     first_fields: tuple[str, ...] = ()
     head: tuple[ValueField, ...] = ()
+    tail: tuple[ValueField, ...] = ()
 
     def __post_init__(self) -> None:
         if self.rows is RowCount.TO_TABLE_START and any(field.is_counted_list for field in self.fields):
             raise ValueError(f"{self.file_name}: rows up to the string table need a fixed row size")
         if self.head and self.rows is not RowCount.COUNTED:
             raise ValueError(f"{self.file_name}: head fields need a row count after them")
+        if self.tail and self.rows is not RowCount.COUNTED:
+            raise ValueError(f"{self.file_name}: tail fields need a row count before the rows")
         if self.framing is Framing.BARE and any(field.text is not None for field in self.all_fields):
             raise ValueError(f"{self.file_name}: a bare file has no string table")
         missing = set(self.first_fields) - {field.name for field in self.all_fields}
@@ -140,8 +144,8 @@ class ValueTable:
 
     @property
     def all_fields(self) -> tuple[ValueField, ...]:
-        """The row fields, then the head fields."""
-        return self.fields + self.head
+        """The row fields, then the head fields, then the tail fields."""
+        return self.fields + self.head + self.tail
 
     @property
     def has_named_field(self) -> bool:
@@ -156,7 +160,7 @@ class ValueTable:
 
     @property
     def shown_fields(self) -> tuple[ValueField, ...]:
-        """The fields in column order: `first_fields`, then the rest in row order, then the head fields."""
+        """The fields in column order: `first_fields`, then the rest in row order, then the head and tail fields."""
         by_name = {field.name: field for field in self.all_fields}
         first = tuple(by_name[name] for name in self.first_fields)
         return first + tuple(field for field in self.all_fields if field.name not in self.first_fields)

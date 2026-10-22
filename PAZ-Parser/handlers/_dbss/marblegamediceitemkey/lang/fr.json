@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "diceItemKey": "ID d'objet de dé",
+    "items": "Objets",
+    "groups": "Groupes de butin"
+  },
+  "offsetColumns": {
+    "diceItemKey": "ID d'objet de dé",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} objets de dé"
+  }
+}

@@ -1335,6 +1335,7 @@ IDs (`LookupValue`).
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `ENHANCEMENT_TYPE_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `MARBLE_DICE_GROUP_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
 | `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
 | `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
@@ -1583,6 +1584,15 @@ level-0 blocks. The
 [guaranteeenchantss.dbss](file-formats/guaranteeenchantss_dbss.md) Items
 column reads it; `itemenchant.dbss` shows each item's own type as its
 Enhancement Type column.
+
+`MARBLE_DICE_GROUP_ITEMS` maps a
+[marblegamediceitemgroup.dbss](file-formats/marblegamediceitemgroup_dbss.md)
+group key to the base items with contents event `98` whose
+`contents_event_param1` names it, in ascending ID order. It is built by
+`build_marble_dice_group_item_index()` in `_dbss/itemenchant/parser.py`
+from the level-0 blocks. The Items columns of `marblegamediceitemgroup.dbss`
+and `marblegamediceitemkey.dbss` read it through
+`_dbss/marblegamediceitemgroup/group_items.py`.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links

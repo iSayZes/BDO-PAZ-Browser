@@ -247,6 +247,8 @@ from .interiorrelationpoint.handler import InteriorRelationPointHandler, interio
 from .guildhouseinfo.handler import GuildHouseInfoHandler, guild_house_info_offset_handler
 from .blackspirit.handler import BlackSpiritHandler, black_spirit_offset_handler
 from .form.handler import FormHandler, form_offset_handler
+from .marblegamediceitemgroup.handler import MarbleDiceItemGroupHandler, marble_dice_item_group_offset_handler
+from .marblegamediceitemkey.handler import MarbleDiceItemKeyHandler, marble_dice_item_key_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -574,3 +576,7 @@ def register_dbss_handlers() -> None:
     register_handler("blackspirit.dbss", BlackSpiritHandler())
     register_handler("formoffset.dbss", form_offset_handler())
     register_handler("form.dbss", FormHandler())
+    register_handler("marblegamediceitemgroupoffset.dbss", marble_dice_item_group_offset_handler())
+    register_handler("marblegamediceitemgroup.dbss", MarbleDiceItemGroupHandler())
+    register_handler("marblegamediceitemkeyoffset.dbss", marble_dice_item_key_offset_handler())
+    register_handler("marblegamediceitemkey.dbss", MarbleDiceItemKeyHandler())

@@ -949,6 +949,13 @@ does a parameter of `0`. On client 3474, 12 of the 55,651 base items with
 show the stored numbers for every other event type, whose parameters are not
 decoded.
 
+Type `98` (past the enum) grants a Black Spirit's Adventure dice drop group:
+`contents_event_param1` is a
+[`marblegamediceitemgroup.dbss`](marblegamediceitemgroup_dbss.md) group key
+on all 42 base items with the type (client 3482), and the
+`MARBLE_DICE_GROUP_ITEMS` lookup index turns the link around for the
+marble dice views.
+
 ## Block Strings
 
 The strings do not sit at a fixed block offset: 47 distinct offsets were
@@ -1249,6 +1256,6 @@ search and CSV but is no longer shown.
 Items store `contents_event_type` values above `86`, up to `170` (`114` on 386
 base items and `149` on 218, client 3474), past the end of the Lua
 `CppEnums.ContentsEventType` at `86`. Which events they are, and what
-`contents_event_param1` and `param2` hold for the types other than `59`, is
-not worked out here; the Use Event column shows the bare number and the
-Event Param columns the stored values.
+`contents_event_param1` and `param2` hold for the types other than `59` and
+`98` (see Contents Event), is not worked out here; the Use Event column
+shows the bare number and the Event Param columns the stored values.

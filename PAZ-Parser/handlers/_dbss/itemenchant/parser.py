@@ -10,6 +10,7 @@ from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.prefixed_string import locate_prefixed_ascii, read_prefixed_at
 from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 from _dbss.skill.parser import build_skill_buff_index
+from .contents_event import CONTENTS_EVENT_MARBLE_DICE
 from .layout import BlockStrings, header_shift, read_block_strings
 
 
@@ -332,6 +333,26 @@ def build_enhancement_type_item_index(data: bytes, offset_data: bytes) -> dict[i
             items_by_type.setdefault(enhancement_type, []).append(row["item_id"])
 
     return {key: tuple(sorted(items)) for key, items in items_by_type.items()}
+
+
+def build_marble_dice_group_item_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
+    """Map a marblegamediceitemgroup.dbss group key to the base items that grant it, ascending.
+
+    An item with contents event `98` names the group in `contents_event_param1`
+    (itemenchant_dbss.md, Contents Event). Only level-0 records are read.
+    """
+    items_by_group: dict[int, list[int]] = {}
+
+    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+        start = row["data_offset"]
+        if start + row["data_size"] > len(data):
+            continue
+        late = _late_fields_at(data, start)
+        if u16(data, late + _CONTENTS_EVENT_TYPE) == CONTENTS_EVENT_MARBLE_DICE:
+            group = _contents_event_params(data, late)["contents_event_param1"]
+            items_by_group.setdefault(group, []).append(row["item_id"])
+
+    return {group: tuple(sorted(items)) for group, items in items_by_group.items()}
 
 
 def build_item_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:

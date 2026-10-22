@@ -14,6 +14,9 @@ NO_CONTENTS_EVENT = 171
 # Soul collectors (Marni's Stones): param1 is a characterstatic.dbss
 # character_group, param2 the kill count. See Soul Collectors in itemenchant_dbss.md.
 CONTENTS_EVENT_SOUL_COLLECT = 59
+# Black Spirit's Adventure dice: param1 is a marblegamediceitemgroup.dbss group
+# key. See Contents Event in itemenchant_dbss.md.
+CONTENTS_EVENT_MARBLE_DICE = 98
 
 CONTENTS_EVENT_TYPE_NAMES: tuple[str, ...] = (
     "Housing",

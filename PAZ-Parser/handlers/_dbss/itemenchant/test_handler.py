@@ -81,6 +81,10 @@ _ARSHA_PURGATUM_180_DAYS = 830533
 _ORDINARY_GEAR = 1
 _BLACKSTAR_LONGSWORD = 715001
 _BLACKSTAR = 2
+# Pace of Delight - 1 Square grants marblegamediceitemgroup.dbss group 1001
+# (contents event 98, marblegamediceitemgroup_dbss.md).
+_PACE_OF_DELIGHT_1 = 756440
+_PACE_OF_DELIGHT_1_GROUP = 1001
 _KHARAZAD = 21
 # Equipment types the tooltip names (PaGlobalFunc_Util_ClassEquipParts):
 # longsword 1 (a main-hand type), necklace 15.
@@ -639,6 +643,24 @@ def test_enhancement_type_item_index_matches_the_enhancement_type_column(
 
     assert index == {key: tuple(sorted(items)) for key, items in expected.items()}
     assert _BLACKSTAR_LONGSWORD in index[_BLACKSTAR]
+
+
+def test_marble_dice_group_item_index_matches_the_contents_event_columns(
+    itemenchant_result: HandlerResult,
+) -> None:
+    """IndexKind.MARBLE_DICE_GROUP_ITEMS is Event Param 1 of the contents event 98 items turned around."""
+    from _dbss.itemenchant.contents_event import CONTENTS_EVENT_MARBLE_DICE
+    from _dbss.itemenchant.parser import build_marble_dice_group_item_index
+
+    source = itemenchant_result.source
+    index = build_marble_dice_group_item_index(source.data, source.file(_OFFSET_FILE))
+    expected: dict[int, list[int]] = {}
+    for record in itemenchant_result.records:
+        if record["contents_event_type"] == CONTENTS_EVENT_MARBLE_DICE:
+            expected.setdefault(record["contents_event_param1"], []).append(record["item_id"])
+
+    assert index == {group: tuple(sorted(items)) for group, items in expected.items()}
+    assert _PACE_OF_DELIGHT_1 in index[_PACE_OF_DELIGHT_1_GROUP]
 
 
 def test_itemmaxlevel_holds_the_max_level_of_every_item_with_an_enchant_key(

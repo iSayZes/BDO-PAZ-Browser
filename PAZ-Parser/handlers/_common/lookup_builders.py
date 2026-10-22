@@ -59,6 +59,7 @@ from _dbss.itemenchant.parser import (
     build_item_grade_index,
     build_item_icon_index,
     build_item_name_kr_index,
+    build_marble_dice_group_item_index,
 )
 from _dbss.knowledgelearning.parser import (
     build_knowledge_learning_character_index,
@@ -143,6 +144,12 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
         IndexKind.ENHANCEMENT_TYPE_ITEMS,
         (ITEMENCHANT, ITEMENCHANT_OFFSET),
         build_enhancement_type_item_index,
+    ),
+    # marblegamediceitemgroup.dbss group -> the items that grant it.
+    IndexSpec(
+        IndexKind.MARBLE_DICE_GROUP_ITEMS,
+        (ITEMENCHANT, ITEMENCHANT_OFFSET),
+        build_marble_dice_group_item_index,
     ),
     IndexSpec(IndexKind.QUEST_ICON, (QUEST, ALLQUESTLIST), build_quest_icon_index),
     IndexSpec(

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "diceItemKey": "ID предмета кубика",
+    "items": "Предметы",
+    "groups": "Группы добычи"
+  },
+  "offsetColumns": {
+    "diceItemKey": "ID предмета кубика",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Предметов кубика: {count}"
+  }
+}

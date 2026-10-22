@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "diceItemKey": "Dice Item Key",
+    "items": "Items",
+    "groups": "Drop Groups"
+  },
+  "offsetColumns": {
+    "diceItemKey": "Dice Item Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} dice item keys"
+  }
+}

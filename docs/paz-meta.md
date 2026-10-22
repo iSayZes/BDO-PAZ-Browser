@@ -96,7 +96,9 @@ u32 values.
 
 On clients 435, 1784 and 3482, `path_hash` matches every file row
 (471,162, 568,977 and 872,965 rows) and `checksum` matches every archive on
-disk (30, 32 and 30). The function is `PaChecksum` in
+disk (30, 32 and 30). `pa_checksum` in `PAZ-Parser/paz/bdo_checksum.py` computes it, and
+`PAZ-Parser/tests/test_checksum.py` checks it on the smallest archive of the
+installed client. The function is `PaChecksum` in
 MrIkso/CrimsonDesertTools (`Utils/PaChecksum.cs`, written for Crimson
 Desert); `calculatePackCRC` in kukdh1/PAZ-Unpacker starts from the same
 `length - 0x2145E233`.

@@ -444,6 +444,7 @@ PAZ-Parser/
 │
 ├── paz/                    # PAZ archive reading and caching
 │   ├── bdo_cache.py        # PAZ index cache
+│   ├── bdo_checksum.py     # Pearl Abyss checksum of archives and paths (docs/paz-meta.md)
 │   ├── bdo_ice.py          # ICE cipher implementation
 │   ├── bdo_meta_reader.py  # pad00000.meta: archive table and full file list (docs/paz-meta.md)
 │   ├── bdo_payload_cache.py# LRU payload cache

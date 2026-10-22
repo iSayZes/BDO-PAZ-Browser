@@ -179,7 +179,9 @@
     "territory1IconX": "Значок территории 1 X",
     "territory1IconY": "Значок территории 1 Y",
     "territory2IconX": "Значок территории 2 X",
-    "territory2IconY": "Значок территории 2 Y"
+    "territory2IconY": "Значок территории 2 Y",
+    "rewardRate": "Доля награды",
+    "objectPoint": "Очки"
   },
   "meta": {
     "count": "Записей: {count}",

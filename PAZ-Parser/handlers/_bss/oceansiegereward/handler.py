@@ -12,7 +12,7 @@ from _common.item_key import item_name_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.pa_text import pa_cell, pa_fields
 from _common.skill import skill_name
-from .parser import SET_REWARD_LISTS, parse_reward_records
+from .parser import FILE_NAME, SET_REWARD_LISTS, parse_reward_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -33,7 +33,14 @@ def _text_cell(text: str) -> str:
 
 
 class OceanSiegeRewardBssHandler(PreviewHandler):
-    """One row per reward item: the item and its count, its set and list, and the row's two skills."""
+    """One row per reward item: the item and its count, its set and list, and the row's two skills.
+
+    `file_name` is the table the instance reads: `oceansiegereward.bss`, or
+    `siege2024rewardstaticstatus.bss`, which has the same rows.
+    """
+
+    def __init__(self, file_name: str = FILE_NAME) -> None:
+        self._file_name = file_name
 
     def _columns(self) -> list[Column]:
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
@@ -72,7 +79,7 @@ class OceanSiegeRewardBssHandler(PreviewHandler):
                 "skill_name_1": skill_name(record["skill_key_1"]),
                 "skill_name_2": skill_name(record["skill_key_2"]),
             }
-            for record in parse_reward_records(data)
+            for record in parse_reward_records(data, self._file_name)
         ]
 
     def render_records_page(

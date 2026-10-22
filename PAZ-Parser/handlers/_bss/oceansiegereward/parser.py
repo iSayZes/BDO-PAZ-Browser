@@ -8,7 +8,8 @@
     Rewards: u64 count | count x Reward
     Reward (16 bytes): u32 item_id | bytes[4] unknown_04 | u64 count
 
-Full layout in docs/file-formats/oceansiegereward_bss.md.
+`siege2024rewardstaticstatus.bss` has the same rows; the parse functions take
+its name. Full layout in docs/file-formats/oceansiegereward_bss.md.
 """
 
 from __future__ import annotations
@@ -17,6 +18,7 @@ import struct
 
 from _common.pabr_strings import HEADER_SIZE, checked_string_table_start, check_rows_end
 from _common.record_reader import RecordReader
+from _common.reward_items import read_reward_items
 
 
 FILE_NAME = "oceansiegereward.bss"
@@ -28,26 +30,15 @@ ROW_REWARD_LIST = "unknown_rewards"
 
 _ROW_COUNT = struct.Struct("<I")
 _ROW_KEY = struct.Struct("<H")
-_LIST_COUNT = struct.Struct("<Q")
-_REWARD = struct.Struct("<I4sQ")
 _SKILL_KEYS = struct.Struct("<II")
 
 
-def _read_rewards(reader: RecordReader) -> list[dict]:
-    (count,) = reader.unpack(_LIST_COUNT)
-    if count * _REWARD.size > reader.remaining():
-        raise ValueError(f"{FILE_NAME} reward count {count:,} runs past the string table")
-    rewards: list[dict] = []
-    for _ in range(count):
-        item_id, unknown_04, item_count = reader.unpack(_REWARD)
-        rewards.append({"item_id": item_id, "unknown_04": unknown_04.hex(" "), "count": item_count})
-    return rewards
-
-
-def _read_row(reader: RecordReader) -> dict:
+def _read_row(reader: RecordReader, file_name: str) -> dict:
     (unknown_00,) = reader.unpack(_ROW_KEY)
-    reward_sets = [{name: _read_rewards(reader) for name in SET_REWARD_LISTS} for _ in range(REWARD_SET_COUNT)]
-    unknown_rewards = _read_rewards(reader)
+    reward_sets = [
+        {name: read_reward_items(reader, file_name) for name in SET_REWARD_LISTS} for _ in range(REWARD_SET_COUNT)
+    ]
+    unknown_rewards = read_reward_items(reader, file_name)
     skill_key_1, skill_key_2 = reader.unpack(_SKILL_KEYS)
     return {
         "unknown_00": unknown_00,
@@ -58,17 +49,17 @@ def _read_row(reader: RecordReader) -> dict:
     }
 
 
-def parse_reward_rows(data: bytes) -> list[dict]:
+def parse_reward_rows(data: bytes, file_name: str = FILE_NAME) -> list[dict]:
     """Every row in file order: `unknown_00`, the five reward sets, the last list and the two skill keys.
 
-    Raises ValueError on a bad magic or trailer, or when the rows do not end
-    where the string table starts.
+    `file_name` names the file in error messages. Raises ValueError on a bad
+    magic or trailer, or when the rows do not end where the string table starts.
     """
-    end = checked_string_table_start(data, FILE_NAME)
-    reader = RecordReader(data, HEADER_SIZE - _ROW_COUNT.size, end, FILE_NAME)
+    end = checked_string_table_start(data, file_name)
+    reader = RecordReader(data, HEADER_SIZE - _ROW_COUNT.size, end, file_name)
     (row_count,) = reader.unpack(_ROW_COUNT)
-    rows = [_read_row(reader) for _ in range(row_count)]
-    check_rows_end(data, reader.pos, f"{FILE_NAME} rows")
+    rows = [_read_row(reader, file_name) for _ in range(row_count)]
+    check_rows_end(data, reader.pos, f"{file_name} rows")
     return rows
 
 
@@ -76,7 +67,7 @@ def _row_fields(row: dict) -> dict:
     return {"unknown_00": row["unknown_00"], "skill_key_1": row["skill_key_1"], "skill_key_2": row["skill_key_2"]}
 
 
-def parse_reward_records(data: bytes) -> list[dict]:
+def parse_reward_records(data: bytes, file_name: str = FILE_NAME) -> list[dict]:
     """One record per reward item, in file order, with its row's fields.
 
     `reward_set` is the set's number (1 to 5) and `reward_list` the list's
@@ -84,7 +75,7 @@ def parse_reward_records(data: bytes) -> list[dict]:
     Raises ValueError like `parse_reward_rows`.
     """
     records: list[dict] = []
-    for row in parse_reward_rows(data):
+    for row in parse_reward_rows(data, file_name):
         for set_number, reward_set in enumerate(row["reward_sets"], start=1):
             for name in SET_REWARD_LISTS:
                 records += [

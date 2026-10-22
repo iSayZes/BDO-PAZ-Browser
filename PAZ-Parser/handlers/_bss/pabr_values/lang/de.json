@@ -179,7 +179,9 @@
     "territory1IconX": "Territorium 1 Symbol X",
     "territory1IconY": "Territorium 1 Symbol Y",
     "territory2IconX": "Territorium 2 Symbol X",
-    "territory2IconY": "Territorium 2 Symbol Y"
+    "territory2IconY": "Territorium 2 Symbol Y",
+    "rewardRate": "Belohnungsrate",
+    "objectPoint": "Punkte"
   },
   "meta": {
     "count": "{count} Einträge",

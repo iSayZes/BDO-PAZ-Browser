@@ -179,7 +179,9 @@
     "territory1IconX": "영지 1 아이콘 X",
     "territory1IconY": "영지 1 아이콘 Y",
     "territory2IconX": "영지 2 아이콘 X",
-    "territory2IconY": "영지 2 아이콘 Y"
+    "territory2IconY": "영지 2 아이콘 Y",
+    "rewardRate": "보상 비율",
+    "objectPoint": "포인트"
   },
   "meta": {
     "count": "{count}개 항목",

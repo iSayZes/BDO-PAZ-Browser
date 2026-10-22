@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "count": "Anzahl",
+    "reward": "Belohnung",
+    "tier": "Rang",
+    "tierGrid": "Rangraster",
+    "block": "Block"
+  },
+  "slots": {
+    "win": "Sieg",
+    "lose": "Niederlage",
+    "release": "Befreiung",
+    "plusMedal": "Zusatzmedaille",
+    "plusItem": "Zusatzgegenstand",
+    "majorWin": "Eroberungskrieg: Sieg",
+    "majorLose": "Eroberungskrieg: Niederlage",
+    "majorRelease": "Eroberungskrieg: Befreiung",
+    "majorRelease0": "Eroberungskrieg: Punktzahl Platz 2",
+    "majorRelease1": "Eroberungskrieg: Punktzahl Platz 3",
+    "majorRelease2": "Eroberungskrieg: Punktzahl Platz 4",
+    "majorRelease3": "Eroberungskrieg: Punktzahl Platz 5",
+    "majorRelease4": "Eroberungskrieg: Punktzahl Platz 6",
+    "majorReleaseWin": "Eroberungskrieg: Punktzahl Platz 1",
+    "majorPlusMedal": "Eroberungskrieg: Zusatzmedaille",
+    "majorPlusItem": "Eroberungskrieg: Zusatzgegenstand"
+  },
+  "meta": {
+    "count": "{count} Belohnungsplätze"
+  }
+}

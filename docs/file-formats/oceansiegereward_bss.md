@@ -36,7 +36,9 @@ Every client the doc check read, and the layout its files fit.
 | 3251   | Layout 1 |
 | 3002   | No file  |
 | 2765   | No file  |
+| 2637   | No file  |
 | 2519   | No file  |
+| 2313   | No file  |
 | 2107   | No file  |
 | 1937   | No file  |
 | 1784   | No file  |
@@ -44,8 +46,12 @@ Every client the doc check read, and the layout its files fit.
 | 1485   | No file  |
 | 1348   | No file  |
 | 1230   | No file  |
+| 1156   | No file  |
 | 1058   | No file  |
+| 911    | No file  |
 | 794    | No file  |
+| 606    | No file  |
+| 435    | No file  |
 
 <!-- versions:end -->
 
@@ -188,7 +194,8 @@ skill is for stays open.
 - The handler (`_bss/oceansiegereward/`) shows one row per reward item:
   the item with its icon, name and count, its set (1 to 5, empty for
   `unknown_rewards`), its list (1 to 4) and the row's two skills, in file
-  order.
+  order. It previews `siege2024rewardstaticstatus.bss` the same way; both
+  read their rewards with `_common/reward_items.py`.
 
 ## Open Questions
 

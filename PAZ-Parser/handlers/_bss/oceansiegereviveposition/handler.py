@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 from pathlib import Path
 
 from bdo_models import PazEntry
@@ -22,7 +23,15 @@ def _coordinate_cell(value: float) -> str:
 
 
 class OceanSiegeRevivePositionBssHandler(PreviewHandler):
-    """One row per revive position: its territory and its world position."""
+    """One row per revive position: its territory and its world position.
+
+    `parse` reads the file into records with `territory_key`, `x`, `y` and
+    `z`: the ocean siege reader by default, or the one of
+    `siege2024revivepositionstaticstatus.bss`, which shows the same columns.
+    """
+
+    def __init__(self, parse: Callable[[bytes], list[dict]] = parse_revive_position_records) -> None:
+        self._parse = parse
 
     def _columns(self) -> list[Column]:
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
@@ -49,7 +58,7 @@ class OceanSiegeRevivePositionBssHandler(PreviewHandler):
     ) -> list[dict]:
         return [
             {**record, "territory_name": territory_name(record["territory_key"])}
-            for record in parse_revive_position_records(data)
+            for record in self._parse(data)
         ]
 
     def render_records_page(

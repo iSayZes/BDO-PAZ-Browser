@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "count": "Count",
+    "reward": "Reward",
+    "tier": "Tier",
+    "tierGrid": "Tier Grid",
+    "block": "Block"
+  },
+  "slots": {
+    "win": "Victory",
+    "lose": "Defeat",
+    "release": "Liberation",
+    "plusMedal": "Plus Medal",
+    "plusItem": "Plus Item",
+    "majorWin": "Conquest War Victory",
+    "majorLose": "Conquest War Defeat",
+    "majorRelease": "Conquest War Liberation",
+    "majorRelease0": "Conquest War Score 2nd",
+    "majorRelease1": "Conquest War Score 3rd",
+    "majorRelease2": "Conquest War Score 4th",
+    "majorRelease3": "Conquest War Score 5th",
+    "majorRelease4": "Conquest War Score 6th",
+    "majorReleaseWin": "Conquest War Score 1st",
+    "majorPlusMedal": "Conquest War Plus Medal",
+    "majorPlusItem": "Conquest War Plus Item"
+  },
+  "meta": {
+    "count": "{count} reward slots"
+  }
+}

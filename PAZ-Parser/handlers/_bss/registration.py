@@ -92,6 +92,7 @@ from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKey
 from .letter.handler import LetterBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
+from .majorsiegerewardstaticstatus.handler import MajorSiegeRewardBssHandler
 from .manufacture.handler import ManufactureBssHandler
 from .manufactureitemnaminginfo.handler import ManufactureItemNamingInfoBssHandler
 from .mansionlandinfo.handler import MansionLandInfoBssHandler
@@ -137,6 +138,10 @@ from .rosewarrewardstaticstatus.handler import RoseWarRewardStaticStatusBssHandl
 from .servant.handler import ServantBssHandler
 from .servantexperiencemaxlevel.handler import ServantExperienceMaxLevelBssHandler
 from .servantmating.handler import ServantMatingBssHandler
+from .siege2024revivepositionstaticstatus.parser import (
+    parse_revive_position_records as parse_siege2024_revive_positions,
+)
+from .siegerewarddata.handler import SiegeRewardDataBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
@@ -307,6 +312,13 @@ def register_bss_handlers() -> None:
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("oceansiegereviveposition.bss", OceanSiegeRevivePositionBssHandler())
     register_handler("oceansiegereward.bss", OceanSiegeRewardBssHandler())
+    # The land siege tables of the same shapes as the ocean siege ones.
+    register_handler("siege2024rewardstaticstatus.bss", OceanSiegeRewardBssHandler("siege2024rewardstaticstatus.bss"))
+    register_handler(
+        "siege2024revivepositionstaticstatus.bss", OceanSiegeRevivePositionBssHandler(parse_siege2024_revive_positions)
+    )
+    register_handler("majorsiegerewardstaticstatus.bss", MajorSiegeRewardBssHandler())
+    register_handler("siegerewarddata.bss", SiegeRewardDataBssHandler())
     register_handler("tax.bss", TaxBssHandler())
     # One handler for the small option tables (PABR and bare), each with its own layout.
     for value_table in VALUE_TABLES:

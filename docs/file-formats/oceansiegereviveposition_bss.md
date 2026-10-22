@@ -136,7 +136,9 @@ level.
   the archives of client 1784.
 - The handler (`_bss/oceansiegereviveposition/`) shows one row per
   position: the territory key and name and the position rounded to whole
-  units, in file order.
+  units, in file order. It previews
+  [`siege2024revivepositionstaticstatus.bss`](siege2024revivepositionstaticstatus_bss.md)
+  too, with that file's reader.
 
 ## Open Questions
 

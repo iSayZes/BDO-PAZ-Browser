@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "count": "Anzahl",
+    "reward": "Belohnung"
+  },
+  "rewards": {
+    "win": "Sieg",
+    "lose": "Niederlage",
+    "scoreRank1": "Punktzahl Platz 1",
+    "scoreRank2": "Punktzahl Platz 2",
+    "scoreRank3": "Punktzahl Platz 3",
+    "scoreRank4": "Punktzahl Platz 4",
+    "scoreRank5": "Punktzahl Platz 5",
+    "scoreRank6": "Punktzahl Platz 6",
+    "liberation": "Befreiung",
+    "plusMedal": "Zusatzmedaille",
+    "plusItem": "Zusatzgegenstand",
+    "item1": "Gegenstand 1",
+    "item2": "Gegenstand 2",
+    "item3": "Gegenstand 3",
+    "booty": "Beute: {territory}"
+  },
+  "meta": {
+    "count": "{count} Belohnungsgegenstände"
+  }
+}

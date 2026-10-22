@@ -1074,6 +1074,7 @@ _common/
 ├── quest/kill_monster_group.py # the killMonsterGroup(group, count) calls of a quest script, with the group's members
 ├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
+├── reward_items.py      # read_reward_items(): a u64-counted list of 16-byte rewards (item ID, 4 unknown bytes, u64 count) of the siege and Rose War reward tables
 ├── row_table.py         # RowTableHandler: the base of a table with one record per row
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
@@ -1251,7 +1252,12 @@ field); rows with counted lists read each row from one `RecordReader` with
 A u32-counted list inside a row or after the rows reads with
 `read_counted_structs(reader, item, fields, what)` (fixed structs as dicts)
 or `read_counted_u32s(reader, what)` from the same module
-(`_bss/autoseasonclosechangeitemstaticstatus/`).
+(`_bss/autoseasonclosechangeitemstaticstatus/`). The siege and Rose War
+reward tables (`oceansiegereward.bss`, `siege2024rewardstaticstatus.bss`,
+`rosewarrewardstaticstatus.bss`, `majorsiegerewardstaticstatus.bss`)
+store each reward list as a u64 count and 16-byte rewards; read one with
+`read_reward_items(reader, file_name)` from `_common/reward_items.py`,
+which gives `item_id`, `unknown_04` (hex text) and `count` per reward.
 `_dbss/itempalette/` is the smallest example.
 
 ## Lookup Indexes

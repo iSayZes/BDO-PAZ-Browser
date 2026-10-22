@@ -28,6 +28,7 @@ from .names import (
 from .edania_tables import EDANIA_TABLES
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
+from .majorsiege_tables import MAJOR_SIEGE_TABLES
 from .oceansiege_tables import OCEAN_SIEGE_TABLES
 from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
@@ -242,4 +243,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *OCEAN_SIEGE_TABLES,
     *EDANIA_TABLES,
     *SIEGE_TABLES,
+    *MAJOR_SIEGE_TABLES,
 )

@@ -15,6 +15,7 @@ import struct
 
 from _common.pabr_strings import HEADER_SIZE, checked_string_table_start, check_rows_end
 from _common.record_reader import RecordReader
+from _common.reward_items import read_reward_items
 
 
 FILE_NAME = "rosewarrewardstaticstatus.bss"
@@ -22,20 +23,7 @@ FILE_NAME = "rosewarrewardstaticstatus.bss"
 REWARD_LISTS: tuple[str, ...] = ("win_rewards", "lose_rewards", "draw_rewards", "unknown_rewards")
 
 _ROW_COUNT = struct.Struct("<I")
-_LIST_COUNT = struct.Struct("<Q")
-_REWARD = struct.Struct("<I4sQ")
 _IS_GUILD = struct.Struct("<B")
-
-
-def _read_rewards(reader: RecordReader) -> list[dict]:
-    (count,) = reader.unpack(_LIST_COUNT)
-    if count * _REWARD.size > reader.remaining():
-        raise ValueError(f"{FILE_NAME} reward count {count:,} runs past the string table")
-    rewards: list[dict] = []
-    for _ in range(count):
-        item_id, unknown_04, item_count = reader.unpack(_REWARD)
-        rewards.append({"item_id": item_id, "unknown_04": unknown_04.hex(" "), "count": item_count})
-    return rewards
 
 
 def parse_reward_rows(data: bytes) -> list[dict]:
@@ -49,7 +37,7 @@ def parse_reward_rows(data: bytes) -> list[dict]:
     (row_count,) = reader.unpack(_ROW_COUNT)
     rows: list[dict] = []
     for _ in range(row_count):
-        lists = {name: _read_rewards(reader) for name in REWARD_LISTS}
+        lists = {name: read_reward_items(reader, FILE_NAME) for name in REWARD_LISTS}
         (is_guild,) = reader.unpack(_IS_GUILD)
         rows.append({**lists, "is_guild": is_guild})
     check_rows_end(data, reader.pos, f"{FILE_NAME} rows")

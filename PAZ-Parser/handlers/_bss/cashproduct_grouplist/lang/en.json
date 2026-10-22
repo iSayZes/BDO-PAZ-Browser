@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offerGroup": "Offer Group",
+    "productCount": "Products",
+    "products": "Product List"
+  },
+  "meta": {
+    "count": "{count} offer groups"
+  }
+}

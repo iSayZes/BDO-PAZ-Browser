@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "exchangeNo": "교환 번호",
+    "coin": "주화",
+    "infoCategory": "카테고리",
+    "needCoinCount": "필요 주화",
+    "reward": "보상",
+    "exchangeType": "교환 유형",
+    "limitCount": "한도",
+    "accumulatedNeedLevel": "필요 단계"
+  },
+  "meta": {
+    "count": "교환 {count}개"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "exchangeNo": "Tausch-Nr.",
+    "coin": "Münze",
+    "infoCategory": "Kategorie",
+    "needCoinCount": "Benötigte Münzen",
+    "reward": "Belohnung",
+    "exchangeType": "Tauschart",
+    "limitCount": "Limit",
+    "accumulatedNeedLevel": "Benötigte Stufe"
+  },
+  "meta": {
+    "count": "{count} Tauschangebote"
+  }
+}

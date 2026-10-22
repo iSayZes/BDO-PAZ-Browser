@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "exchangeNo": "№ обмена",
+    "coin": "Монета",
+    "infoCategory": "Категория",
+    "needCoinCount": "Нужно монет",
+    "reward": "Награда",
+    "exchangeType": "Тип обмена",
+    "limitCount": "Макс.",
+    "accumulatedNeedLevel": "Нужный уровень"
+  },
+  "meta": {
+    "count": "Обменов: {count}"
+  }
+}

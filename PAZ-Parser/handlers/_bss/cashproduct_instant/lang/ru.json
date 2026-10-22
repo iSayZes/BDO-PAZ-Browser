@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "instantType": "Тип",
+    "instantTypeName": "Задача",
+    "minute": "Осталось минут",
+    "cost": "Стоимость"
+  },
+  "meta": {
+    "count": "Записей: {count}"
+  }
+}

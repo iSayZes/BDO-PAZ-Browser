@@ -18,6 +18,8 @@ from .branchquest.handler import BranchQuestBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .buildingsource.handler import BuildingSourceBssHandler
 from .carriagechar.handler import CarriageCharBssHandler
+from .cashproduct_grouplist.handler import CashProductGroupListHandler
+from .cashproduct_instant.handler import CashProductInstantHandler
 from .challengerewardlist.handler import ChallengeRewardListHandler
 from .charactersimply.handler import CharacterSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
@@ -159,7 +161,9 @@ from .zodiacsignindex.handler import ZodiacSignIndexHandler
 from .blackspiritchangeformcondition.handler import BlackSpiritChangeFormConditionBssHandler
 from .charactervoice.handler import CharacterVoiceBssHandler
 from .duelcharacter.handler import DuelCharacterBssHandler
+from .exchangecoin.handler import ExchangeCoinHandler
 from .playercharacterstatic.handler import PlayerCharacterStaticBssHandler
+from .rewardmarket.handler import RewardMarketHandler
 
 
 def register_bss_handlers() -> None:
@@ -368,3 +372,7 @@ def register_bss_handlers() -> None:
     register_handler("charactervoice.bss", CharacterVoiceBssHandler())
     register_handler("duelcharacter.bss", DuelCharacterBssHandler())
     register_handler("playercharacterstatic.bss", PlayerCharacterStaticBssHandler())
+    register_handler("cashproduct_grouplist.bss", CashProductGroupListHandler())
+    register_handler("cashproduct_instant.bss", CashProductInstantHandler())
+    register_handler("exchangecoin.bss", ExchangeCoinHandler())
+    register_handler("rewardmarket.bss", RewardMarketHandler())

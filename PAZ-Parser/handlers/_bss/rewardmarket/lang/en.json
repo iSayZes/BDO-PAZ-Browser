@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradeKey": "Trade Key",
+    "petKey": "Pet ID",
+    "pet": "Pet",
+    "rewards": "Rewards"
+  },
+  "meta": {
+    "count": "{count} trades"
+  }
+}

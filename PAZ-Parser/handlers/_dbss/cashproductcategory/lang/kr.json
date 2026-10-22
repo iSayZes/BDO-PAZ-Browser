@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "mainKey": "대분류",
+    "middleKey": "중분류",
+    "smallKey": "소분류",
+    "name": "이름",
+    "uniqueNo": "고유 번호",
+    "priceType": "가격 유형",
+    "useable": "사용 가능",
+    "specialCategoryType": "특수 유형",
+    "tagType": "태그 유형",
+    "tagOrder": "태그 순서"
+  },
+  "offsetColumns": {
+    "mainKey": "대분류",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "카테고리 {count}개"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "couponKey": "Coupon-ID",
+    "name": "Coupon",
+    "discountRate": "Rabatt",
+    "discountPearl": "Perlenrabatt",
+    "maxDiscountPearl": "Max. Rabatt",
+    "minProductPearl": "Mindestpreis",
+    "expirationDays": "Gültige Tage",
+    "category": "Kategorie"
+  },
+  "offsetColumns": {
+    "couponKey": "Coupon-ID",
+    "dataOffset": "Datenoffset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Coupons"
+  }
+}

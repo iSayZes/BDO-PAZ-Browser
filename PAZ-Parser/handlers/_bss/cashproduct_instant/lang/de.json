@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "instantType": "Typ",
+    "instantTypeName": "Aufgabe",
+    "minute": "Restminuten",
+    "cost": "Kosten"
+  },
+  "meta": {
+    "count": "{count} Einträge"
+  }
+}

@@ -13,6 +13,8 @@ from .base_dialog.handler import BaseDialogHandler
 from .dialogtext.handler import DialogTextHandler, dialog_text_offset_handler
 from .emoticon.handler import EmoticonHandler, emoticon_offset_handler
 from .emoticonpackage.handler import EmoticonPackageHandler, emoticon_package_offset_handler
+from .cashproductcategory.handler import CashProductCategoryHandler, cash_product_category_offset_handler
+from .coupon.handler import CouponHandler, coupon_offset_handler
 from .socialaction.handler import SocialActionHandler, social_action_offset_handler
 from .textbind.handler import TextBindHandler, text_bind_offset_handler
 from .mentaltheme.handler import MentalThemeHandler, mental_theme_offset_handler
@@ -357,6 +359,10 @@ def register_dbss_handlers() -> None:
     register_handler("emoticon.dbss", EmoticonHandler())
     register_handler("emoticonpackageoffset.dbss", emoticon_package_offset_handler())
     register_handler("emoticonpackage.dbss", EmoticonPackageHandler())
+    register_handler("cashproductcategoryoffset.dbss", cash_product_category_offset_handler())
+    register_handler("cashproductcategory.dbss", CashProductCategoryHandler())
+    register_handler("couponoffset.dbss", coupon_offset_handler())
+    register_handler("coupon.dbss", CouponHandler())
     register_handler("socialactionoffset.dbss", social_action_offset_handler())
     register_handler("socialaction.dbss", SocialActionHandler())
     register_handler("textbindoffset.dbss", text_bind_offset_handler())

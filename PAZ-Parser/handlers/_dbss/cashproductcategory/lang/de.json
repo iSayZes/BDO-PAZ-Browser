@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "mainKey": "Haupt",
+    "middleKey": "Mittel",
+    "smallKey": "Unter",
+    "name": "Name",
+    "uniqueNo": "Eindeutige Nr.",
+    "priceType": "Preisart",
+    "useable": "Verwendbar",
+    "specialCategoryType": "Sondertyp",
+    "tagType": "Markierungstyp",
+    "tagOrder": "Markierungsreihenfolge"
+  },
+  "offsetColumns": {
+    "mainKey": "Haupt",
+    "dataOffset": "Datenoffset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Kategorien"
+  }
+}

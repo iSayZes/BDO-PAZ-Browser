@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradeKey": "Tausch-ID",
+    "petKey": "Begleiter-ID",
+    "pet": "Begleiter",
+    "rewards": "Belohnungen"
+  },
+  "meta": {
+    "count": "{count} Tauschangebote"
+  }
+}

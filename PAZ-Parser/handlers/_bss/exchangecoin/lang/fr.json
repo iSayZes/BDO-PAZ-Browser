@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "exchangeNo": "N° d'échange",
+    "coin": "Pièce",
+    "infoCategory": "Catégorie",
+    "needCoinCount": "Pièces requises",
+    "reward": "Récompense",
+    "exchangeType": "Type d'échange",
+    "limitCount": "Limite",
+    "accumulatedNeedLevel": "Niveau requis"
+  },
+  "meta": {
+    "count": "{count} échanges"
+  }
+}

@@ -80,7 +80,7 @@ rebuilds it from `docs/file-formats/` whenever a release changes the docs.
 
 ## Supported Formats
 
-- `.bss`: 243 of 402 files with a handler.
+- `.bss`: 247 of 402 files with a handler.
 - `.dbss`: 331 of 374 files with a handler.
 - Other formats: 31 with a handler.
 

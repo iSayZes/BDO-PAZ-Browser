@@ -153,7 +153,12 @@
     "limitMemberCountWednesday": "Participantes máximos (Miércoles)",
     "limitMemberCountThursday": "Participantes máximos (Jueves)",
     "limitMemberCountFriday": "Participantes máximos (Viernes)",
-    "startDays": "Días de batalla"
+    "startDays": "Días de batalla",
+    "markTexture": "Textura de la marca",
+    "x": "X",
+    "z": "Z",
+    "nodeKey": "Clave del nodo",
+    "node": "Nodo"
   },
   "meta": {
     "count": "{count} entradas",
@@ -165,6 +170,7 @@
     "hardcoreTitles": "{count} títulos de Hardcore",
     "hardcoreGrades": "{count} rangos",
     "oceanSiegeGroups": "{count} grupos de Isla de Agua",
-    "houseCharacters": "{count} personajes de propiedad"
+    "houseCharacters": "{count} personajes de propiedad",
+    "edaniaCastles": "{count} castillos de Edania"
   }
 }

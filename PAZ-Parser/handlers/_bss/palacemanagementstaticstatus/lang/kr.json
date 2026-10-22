@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "boardGroupKey": "보드 그룹 키",
+    "boardGroup": "보드 그룹",
+    "type": "유형",
+    "npc": "NPC",
+    "boardKey": "보드 키",
+    "board": "보드",
+    "itemIndex": "아이템 인덱스",
+    "probability": "확률",
+    "exchange": "교환"
+  },
+  "types": {
+    "production": "생산",
+    "manufacture": "가공"
+  },
+  "meta": {
+    "count": "보드 아이템 {count}개"
+  }
+}

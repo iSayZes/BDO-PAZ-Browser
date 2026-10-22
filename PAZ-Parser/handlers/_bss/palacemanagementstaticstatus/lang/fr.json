@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "boardGroupKey": "Clé du groupe de tableaux",
+    "boardGroup": "Groupe de tableaux",
+    "type": "Type",
+    "npc": "PNJ",
+    "boardKey": "Clé du tableau",
+    "board": "Tableau",
+    "itemIndex": "Index de l'objet",
+    "probability": "Chance",
+    "exchange": "Échange"
+  },
+  "types": {
+    "production": "Production",
+    "manufacture": "Transformation"
+  },
+  "meta": {
+    "count": "{count} objets de tableau"
+  }
+}

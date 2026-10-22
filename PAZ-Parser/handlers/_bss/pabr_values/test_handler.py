@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 import struct
+from collections.abc import Callable
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
@@ -35,7 +36,6 @@ from .tables import VALUE_TABLES, Framing, NameLookup, RowCount, TextRef, ValueF
 
 _U32 = struct.Struct("<I")
 _TABLE_START_AT = -8
-_ROW_SIZE_TO_TABLE_START = 4
 _TABLES = {value_table.file_name: value_table for value_table in VALUE_TABLES}
 _NEWBIE_PRODUCT = "cashproduct_newbieproduct.bss"
 _ELEMENTAL_STAT = "elementalstat.bss"
@@ -82,10 +82,15 @@ def _row_count_at(value_table: ValueTable) -> int:
     return _values_start(value_table) + head_size
 
 
-def _rows_to_table_start(source: CaseInput) -> int:
-    """The 4-byte rows between the magic and the trailer's `table_start`."""
-    (table_start,) = _U32.unpack_from(source.data, _TABLE_START_AT)
-    return (table_start - PABR_VALUES_START) // _ROW_SIZE_TO_TABLE_START
+def _rows_to_table_start(value_table: ValueTable) -> Callable[[CaseInput], int]:
+    """The fixed-size rows of `value_table` between the magic and the trailer's `table_start`."""
+    row_size = struct.calcsize("<" + "".join(field.fmt for field in value_table.fields))
+
+    def declared(source: CaseInput) -> int:
+        (table_start,) = _U32.unpack_from(source.data, _TABLE_START_AT)
+        return (table_start - PABR_VALUES_START) // row_size
+
+    return declared
 
 
 def _lookups(name: str) -> list[NameLookup]:
@@ -115,7 +120,7 @@ def _count_tests(value_table: ValueTable) -> list[Any]:
     if value_table.rows is RowCount.COUNTED:
         return [DeclaredCountTest(declared=header_count(offset=_row_count_at(value_table)))]
     if value_table.rows is RowCount.TO_TABLE_START:
-        return [DeclaredCountTest(declared=_rows_to_table_start)]
+        return [DeclaredCountTest(declared=_rows_to_table_start(value_table))]
     return [DeclaredCountTest(declared=lambda _source: 1)]
 
 
@@ -226,6 +231,14 @@ _TARGETS: dict[str, list[TargetTest]] = {
         TargetTest(col="skill_no", value=_COMMAND_TO_GATHER, expected={"skill_level": 1, "skill_name": "Command to Gather"}),
     ],
     "guildmatchrank.bss": [TargetTest(col="rank", value=1, expected={"rank": 1})],
+    # The first Edania castle (__eEdaniaRegion_Aetherion) and its node.
+    "edanacastleinfostaicstatusmanager.bss": [
+        TargetTest(
+            col="node_key",
+            value=2002,
+            expected={"node_name": "Aetherion Castle", "mark_texture": "territorymark_Jordine_large"},
+        ),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {

@@ -153,7 +153,12 @@
     "limitMemberCountWednesday": "Max. Teilnehmeranzahl (Mittwoch)",
     "limitMemberCountThursday": "Max. Teilnehmeranzahl (Donnerstag)",
     "limitMemberCountFriday": "Max. Teilnehmeranzahl (Freitag)",
-    "startDays": "Kampftage"
+    "startDays": "Kampftage",
+    "markTexture": "Markierungstextur",
+    "x": "X",
+    "z": "Z",
+    "nodeKey": "Postenschlüssel",
+    "node": "Posten"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -165,6 +170,7 @@
     "hardcoreTitles": "{count} Hardcore-Titel",
     "hardcoreGrades": "{count} Ränge",
     "oceanSiegeGroups": "{count} Gruppen des Blauen Schlachtfelds",
-    "houseCharacters": "{count} Hauscharaktere"
+    "houseCharacters": "{count} Hauscharaktere",
+    "edaniaCastles": "{count} Edania-Burgen"
   }
 }

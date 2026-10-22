@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "edaniaRegion": "Región de Edania",
+    "castle": "Castillo",
+    "contentsGroup": "Grupo de contenido",
+    "throneQuest": "Misión del trono",
+    "bossClearItemKey": "ID de objeto de victoria",
+    "bossClearItem": "Objeto de victoria",
+    "minAp1": "PA mín. 1",
+    "minDp1": "PD mín. 1",
+    "minAp2": "PA mín. 2",
+    "minDp2": "PD mín. 2",
+    "minItemGrade1": "Grado mín. 1",
+    "minItemGrade2": "Grado mín. 2",
+    "taxRate": "Tasa de impuesto",
+    "taxBaseAmount": "Importe base del impuesto"
+  },
+  "meta": {
+    "count": "{count} castillos de Edania",
+    "dropBuff": "; Bonificación de Edana: tasa de botín +{rate} durante {minutes} min, {uses} usos"
+  }
+}

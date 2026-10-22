@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "edaniaRegion": "에다니아 지역",
+    "castle": "성",
+    "contentsGroup": "콘텐츠 그룹",
+    "throneQuest": "왕좌 의뢰",
+    "bossClearItemKey": "보스 처치 아이템 ID",
+    "bossClearItem": "보스 처치 아이템",
+    "minAp1": "최소 공격력 1",
+    "minDp1": "최소 방어력 1",
+    "minAp2": "최소 공격력 2",
+    "minDp2": "최소 방어력 2",
+    "minItemGrade1": "최소 아이템 등급 1",
+    "minItemGrade2": "최소 아이템 등급 2",
+    "taxRate": "세율",
+    "taxBaseAmount": "세금 기본 금액"
+  },
+  "meta": {
+    "count": "에다니아 성 {count}개",
+    "dropBuff": "; 에다나 드롭 버프: 아이템 획득 확률 +{rate}, {minutes}분, {uses}회"
+  }
+}

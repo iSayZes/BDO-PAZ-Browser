@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "row": "Fila",
+    "time1": "Hora 1",
+    "time2": "Hora 2"
+  },
+  "meta": {
+    "count": "{count} entradas de horario"
+  }
+}

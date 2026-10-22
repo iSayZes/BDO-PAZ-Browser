@@ -153,7 +153,12 @@
     "limitMemberCountWednesday": "Participants max. (Mercredi)",
     "limitMemberCountThursday": "Participants max. (Jeudi)",
     "limitMemberCountFriday": "Participants max. (Vendredi)",
-    "startDays": "Jours de bataille"
+    "startDays": "Jours de bataille",
+    "markTexture": "Texture de la marque",
+    "x": "X",
+    "z": "Z",
+    "nodeKey": "Clé du géopoint",
+    "node": "Géopoint"
   },
   "meta": {
     "count": "{count} entrées",
@@ -165,6 +170,7 @@
     "hardcoreTitles": "{count} titres Hardcore",
     "hardcoreGrades": "{count} rangs",
     "oceanSiegeGroups": "{count} groupes du Champ de bataille bleu",
-    "houseCharacters": "{count} personnages de maison"
+    "houseCharacters": "{count} personnages de maison",
+    "edaniaCastles": "{count} châteaux d'Edania"
   }
 }

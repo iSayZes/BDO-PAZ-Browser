@@ -153,7 +153,12 @@
     "limitMemberCountWednesday": "Макс. кол-во участников (Среда)",
     "limitMemberCountThursday": "Макс. кол-во участников (Четверг)",
     "limitMemberCountFriday": "Макс. кол-во участников (Пятница)",
-    "startDays": "Дни битвы"
+    "startDays": "Дни битвы",
+    "markTexture": "Текстура метки",
+    "x": "X",
+    "z": "Z",
+    "nodeKey": "Ключ узла",
+    "node": "Узел"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -165,6 +170,7 @@
     "hardcoreTitles": "Титулов Hardcore: {count}",
     "hardcoreGrades": "Рангов: {count}",
     "oceanSiegeGroups": "Групп Лазурной арены: {count}",
-    "houseCharacters": "Персонажей домов: {count}"
+    "houseCharacters": "Персонажей домов: {count}",
+    "edaniaCastles": "Замков Эдании: {count}"
   }
 }

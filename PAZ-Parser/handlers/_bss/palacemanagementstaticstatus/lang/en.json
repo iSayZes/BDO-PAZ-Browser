@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "boardGroupKey": "Board Group Key",
+    "boardGroup": "Board Group",
+    "type": "Type",
+    "npc": "NPC",
+    "boardKey": "Board Key",
+    "board": "Board",
+    "itemIndex": "Item Index",
+    "probability": "Chance",
+    "exchange": "Exchange"
+  },
+  "types": {
+    "production": "Production",
+    "manufacture": "Processing"
+  },
+  "meta": {
+    "count": "{count} board items"
+  }
+}

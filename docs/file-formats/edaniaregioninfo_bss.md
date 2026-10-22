@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ------- | --------- |
-| 1      | 3002 and later | 3474    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
+| 1      | 3002 and later | 3482    | `edaniaregioninfo.bss` | 119   | 11 Row  | 9         |
 
 | Layout | File                   | Known        | Unknown      |
 | ------ | ---------------------- | ------------ | ------------ |
@@ -22,6 +22,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3473   | Layout 1 |
 | 3251   | Layout 1 |
@@ -37,10 +38,9 @@ Every client the doc check read, and the layout its files fit.
 
 ## Companion Files
 
-| File                  | Required | Role                                                                               |
-| --------------------- | -------- | ---------------------------------------------------------------------------------- |
-| `stringtable.bss`     | Optional | Hash of the castle name keys `LUA_EDANIA_SYSTEM_CASTLE_NAME_<n>` (GAME sheet)      |
-| `languagedata_en.loc` | Optional | Castle name text (LOC type 37, keyed by that hash)                                 |
+| File                  | Required | Role                                                                                                   |
+| --------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| `languagedata_en.loc` | Optional | Castle name text (LOC type 37, keyed by the hash of the GAME sheet key `LUA_EDANIA_SYSTEM_CASTLE_NAME_<n>`) |
 
 All multi-byte values are little-endian unless noted otherwise.
 

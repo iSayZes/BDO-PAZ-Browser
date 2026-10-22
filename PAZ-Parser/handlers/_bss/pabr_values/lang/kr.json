@@ -153,7 +153,12 @@
     "limitMemberCountWednesday": "최대 인원 (수요일)",
     "limitMemberCountThursday": "최대 인원 (목요일)",
     "limitMemberCountFriday": "최대 인원 (금요일)",
-    "startDays": "전투 요일"
+    "startDays": "전투 요일",
+    "markTexture": "표식 텍스처",
+    "x": "X",
+    "z": "Z",
+    "nodeKey": "거점 키",
+    "node": "거점"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -165,6 +170,7 @@
     "hardcoreTitles": "하드코어 칭호 {count}개",
     "hardcoreGrades": "등급 {count}개",
     "oceanSiegeGroups": "푸른 전장 그룹 {count}개",
-    "houseCharacters": "집 캐릭터 {count}개"
+    "houseCharacters": "집 캐릭터 {count}개",
+    "edaniaCastles": "에다니아 성 {count}개"
   }
 }

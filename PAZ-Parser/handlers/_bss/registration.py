@@ -28,6 +28,8 @@ from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
 from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
 from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
 from .dropuitaginfo.handler import DropUiTagInfoBssHandler
+from .edaniaetcoptionstaticstatus.handler import EdaniaEtcOptionBssHandler
+from .edaniapvpdayoptionstaticstatus.handler import EdaniaPvpDayOptionBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
 from .elementalmonsterreward.handler import ElementalMonsterRewardBssHandler
 from .elementalmonsterstat.handler import ElementalMonsterStatBssHandler
@@ -102,6 +104,7 @@ from .npcsimply.handler import NpcSimplyBssHandler
 from .oceansiegereviveposition.handler import OceanSiegeRevivePositionBssHandler
 from .oceansiegereward.handler import OceanSiegeRewardBssHandler
 from .pabr_values.handler import PabrValuesBssHandler
+from .palacemanagementstaticstatus.handler import PalaceManagementBssHandler
 from .pabr_values.tables import VALUE_TABLES
 from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
@@ -201,6 +204,8 @@ def register_bss_handlers() -> None:
     register_handler("dropuimaincategoryinfo.bss", DropUiMainCategoryInfoBssHandler())
     register_handler("dropuisubcategoryinfo.bss", DropUiSubCategoryInfoBssHandler())
     register_handler("dropuitaginfo.bss", DropUiTagInfoBssHandler())
+    register_handler("edaniaetcoptionstaticstatus.bss", EdaniaEtcOptionBssHandler())
+    register_handler("edaniapvpdayoptionstaticstatus.bss", EdaniaPvpDayOptionBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
     register_handler("elementalmonsterreward.bss", ElementalMonsterRewardBssHandler())
     register_handler("elementalmonsterstat.bss", ElementalMonsterStatBssHandler())
@@ -295,6 +300,7 @@ def register_bss_handlers() -> None:
     # One handler for the small option tables (PABR and bare), each with its own layout.
     for value_table in VALUE_TABLES:
         register_handler(value_table.file_name, PabrValuesBssHandler(value_table))
+    register_handler("palacemanagementstaticstatus.bss", PalaceManagementBssHandler())
     register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("pcroommaid.bss", PcRoomMaidBssHandler())

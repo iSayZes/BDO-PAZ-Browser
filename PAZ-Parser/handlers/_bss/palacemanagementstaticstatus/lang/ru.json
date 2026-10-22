@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "boardGroupKey": "Ключ группы досок",
+    "boardGroup": "Группа досок",
+    "type": "Тип",
+    "npc": "NPC",
+    "boardKey": "Ключ доски",
+    "board": "Доска",
+    "itemIndex": "Индекс предмета",
+    "probability": "Шанс",
+    "exchange": "Обмен"
+  },
+  "types": {
+    "production": "Производство",
+    "manufacture": "Изготовление"
+  },
+  "meta": {
+    "count": "Предметов на досках: {count}"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "edaniaRegion": "Регион Эдании",
+    "castle": "Замок",
+    "contentsGroup": "Группа контента",
+    "throneQuest": "Задание трона",
+    "bossClearItemKey": "ID предмета за босса",
+    "bossClearItem": "Предмет за босса",
+    "minAp1": "Мин. атака 1",
+    "minDp1": "Мин. защита 1",
+    "minAp2": "Мин. атака 2",
+    "minDp2": "Мин. защита 2",
+    "minItemGrade1": "Мин. класс предмета 1",
+    "minItemGrade2": "Мин. класс предмета 2",
+    "taxRate": "Налог",
+    "taxBaseAmount": "Базовая сумма налога"
+  },
+  "meta": {
+    "count": "Замков Эдании: {count}",
+    "dropBuff": "; Бафф Эданы: шанс добычи +{rate} на {minutes} мин., использований: {uses}"
+  }
+}

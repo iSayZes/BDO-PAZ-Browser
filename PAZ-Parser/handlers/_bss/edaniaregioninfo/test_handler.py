@@ -23,7 +23,7 @@ from .parser import EDANIA_REGION_NAMES, ROW_SIZE, parse_edaniaregioninfo_record
 CASE = HandlerCase(
     handler_name="edaniaregioninfo.bss",
     data_file="edaniaregioninfo.bss",
-    companion_files={"stringtable.bss": "stringtable.bss"},
+    companion_files={},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["Castle"],

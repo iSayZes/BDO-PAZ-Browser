@@ -11,7 +11,8 @@
     "players": "Spieler",
     "ridable": "Reittier erlaubt",
     "rangeSpawn": "Welt-Spawns",
-    "dropRate": "Beuterate"
+    "dropRate": "Beuterate",
+    "maps": "Karten"
   },
   "meta": {
     "count": "{count} Felder"

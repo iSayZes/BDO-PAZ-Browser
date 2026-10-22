@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mapIndex": "Index de carte",
+    "image": "Image",
+    "type": "Type",
+    "sectorX": "Secteur X",
+    "sectorY": "Secteur Y"
+  },
+  "meta": {
+    "count": "{count} cartes"
+  }
+}

@@ -8,7 +8,7 @@ the field number that [instancefield.dbss](instancefield_dbss.md) and
 [instancedungeoninfo.dbss](instancedungeoninfo_dbss.md) store as
 `field_no`, and holds the field's world-editor name, its resource folder, a
 spawn point, its area as a sector box (in three units), its field type, the
-keys of the `regionmapinfo.bss` maps it uses (see
+keys of the [regionmapinfo.bss](regionmapinfo_bss.md) maps it uses (see
 [Map Index Fields](#map-index-fields)) and its entry rules (players,
 mounts, item drop rate). The file is the client copy
 of the developers' `Field_Table` sheet (see [Field Names](#field-names)).
@@ -21,8 +21,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File            | Bytes  | Records | Row bytes |
 | ------ | -------------- | ------- | --------------- | ------ | ------- | --------- |
-| 2      | 3251 and later | 3474    | `fieldinfo.bss` | 23,620 | 122 Row | 157       |
-| 1      | 1784 to 2107   | 2107    | `fieldinfo.bss` | 22,361 | 123 Row | 145       |
+| 2      | 3251 and later | 3482    | `fieldinfo.bss` | 23,620 | 122 Row | 157       |
+| 1      | 1636 to 2107   | 2107    | `fieldinfo.bss` | 22,361 | 123 Row | 145       |
 
 | Layout | File            | Known             | Unknown        |
 | ------ | --------------- | ----------------- | -------------- |
@@ -33,21 +33,30 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3482   | Layout 2             |
 | 3474   | Layout 2             |
 | 3251   | Layout 2             |
 | 3002   | No documented layout |
+| 2765   | No documented layout |
 | 2519   | No documented layout |
 | 2107   | Layout 1             |
 | 1784   | Layout 1             |
+| 1636   | Layout 1             |
 | 1485   | No documented layout |
+| 1348   | No documented layout |
 | 1230   | No documented layout |
+| 1058   | No file              |
 | 794    | No documented layout |
 
 <!-- versions:end -->
 
 ## Companion Files
 
-None. The handler reads two lookup indexes to name the `A1_` fields (see
+| File                | Required | Role                                                                 |
+| ------------------- | -------- | -------------------------------------------------------------------- |
+| `regionmapinfo.bss` | Optional | The image name of each map key (see [Map Index Fields](#map-index-fields)); without it the Maps column is empty |
+
+The handler also reads two lookup indexes to name the `A1_` fields (see
 Notes).
 
 All multi-byte values are little-endian.
@@ -210,10 +219,14 @@ same meaning.
 ## Map Index Fields
 
 The `*_map_index` fields and `unknown_73`, `unknown_93` to `unknown_9b`
-hold the same value on every row of a client: the key of one map in
-`regionmapinfo.bss` (no doc yet; on client 3474 13 PABR rows of 25 bytes,
-each with a u16 key, a sector box and a string-table index of the map
-image).
+hold the same value on every row of a client: the `map_index` of one map
+in [regionmapinfo.bss](regionmapinfo_bss.md), which names its image.
+
+The handler stores the image of each named map key field under the field
+name with `_image` for `_index` (`region_map_index` 1 gives
+`region_map_image` `RegionMap_New.bmp`), `''` for a key without a
+`regionmapinfo.bss` row, and lists the images once each in the Maps column.
+The `unknown_*` map keys get no image field.
 
 | Field                              | Value | `regionmapinfo.bss` image (client 3474) |
 | ---------------------------------- | ----- | --------------------------------------- |
@@ -236,7 +249,8 @@ image).
 
 On client 1784 the `RegionMap_Table` sheet of the same source lists keys
 `1` to `10`: `2` is `FishingMap.bmp`, `3` `WaterMap.bmp` and `6`
-`Undergroundmap.bmp`, the three keys client 3474 no longer ships.
+`Undergroundmap.bmp`, three keys that no `regionmapinfo.bss` from client
+1230 to 3482 holds.
 
 ## Field Names
 

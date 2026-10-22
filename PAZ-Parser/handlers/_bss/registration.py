@@ -117,6 +117,7 @@ from .questrandomgroup.handler import QuestRandomGroupBssHandler
 from .regiongroupinfo.handler import RegionGroupInfoBssHandler
 from .regioninfo.handler import RegionInfoBssHandler
 from .regioninfo_linkandcheckvalid2.handler import RegionLinkBssHandler
+from .regionmapinfo.handler import RegionMapInfoBssHandler
 from .rosewarrevivepositionstaticstatus.handler import RoseWarRevivePositionStaticStatusBssHandler
 from .rosewarrewardstaticstatus.handler import RoseWarRewardStaticStatusBssHandler
 from .servant.handler import ServantBssHandler
@@ -304,6 +305,7 @@ def register_bss_handlers() -> None:
     register_handler("regiongroupinfo.bss", RegionGroupInfoBssHandler())
     register_handler("regioninfo.bss", RegionInfoBssHandler())
     register_handler("regioninfo_linkandcheckvalid2.bss", RegionLinkBssHandler())
+    register_handler("regionmapinfo.bss", RegionMapInfoBssHandler())
     register_handler("rosewarrevivepositionstaticstatus.bss", RoseWarRevivePositionStaticStatusBssHandler())
     register_handler("rosewarrewardstaticstatus.bss", RoseWarRewardStaticStatusBssHandler())
     # One layout for the combat skill point and guild point max levels.

@@ -11,7 +11,8 @@
     "players": "Players",
     "ridable": "Mount Allowed",
     "rangeSpawn": "World Spawns",
-    "dropRate": "Item Drop Rate"
+    "dropRate": "Item Drop Rate",
+    "maps": "Maps"
   },
   "meta": {
     "count": "{count} fields"

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mapIndex": "Индекс карты",
+    "image": "Изображение",
+    "type": "Тип",
+    "sectorX": "Сектор X",
+    "sectorY": "Сектор Y"
+  },
+  "meta": {
+    "count": "Карт: {count}"
+  }
+}

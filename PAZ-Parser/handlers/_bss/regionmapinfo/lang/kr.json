@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mapIndex": "지도 번호",
+    "image": "이미지",
+    "type": "종류",
+    "sectorX": "섹터 X",
+    "sectorY": "섹터 Y"
+  },
+  "meta": {
+    "count": "지도 {count}개"
+  }
+}

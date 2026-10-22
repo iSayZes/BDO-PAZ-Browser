@@ -1,0 +1,32 @@
+{
+  "columns": {
+    "attendanceKey": "ID посещения",
+    "name": "Ивент",
+    "startDate": "Начало",
+    "attendanceEndDate": "Конец отметок",
+    "rewardEndDate": "Конец получения",
+    "eventPeriod": "Период ивента",
+    "claimPeriod": "Срок получения",
+    "players": "Игроки",
+    "rewards": "Награды",
+    "overlapCount": "Доп. отметки",
+    "overlapWaitingTime": "Ожидание доп. отметки",
+    "dayOfWeek": "Дни доп. отметки",
+    "displayOrder": "Порядок вкладок",
+    "guildLevel": "Уровни гильдии"
+  },
+  "offsetColumns": {
+    "attendanceKey": "ID посещения",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "playerTypes": {
+    "0": "Все",
+    "1": "Вернувшиеся",
+    "2": "Новые",
+    "3": "Предварительный перенос"
+  },
+  "meta": {
+    "count": "Ивентов посещения: {count}"
+  }
+}

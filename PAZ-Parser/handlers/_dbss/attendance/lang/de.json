@@ -1,0 +1,32 @@
+{
+  "columns": {
+    "attendanceKey": "Anwesenheits-ID",
+    "name": "Event",
+    "startDate": "Beginn",
+    "attendanceEndDate": "Anwesenheit bis",
+    "rewardEndDate": "Abholen bis",
+    "eventPeriod": "Eventzeitraum",
+    "claimPeriod": "Abholen bis zum",
+    "players": "Spieler",
+    "rewards": "Belohnungen",
+    "overlapCount": "Extra-Anwesenheiten",
+    "overlapWaitingTime": "Wartezeit Extra-Anwesenheit",
+    "dayOfWeek": "Tage mit Extra-Anwesenheit",
+    "displayOrder": "Reihenfolge",
+    "guildLevel": "Gildenstufen"
+  },
+  "offsetColumns": {
+    "attendanceKey": "Anwesenheits-ID",
+    "dataOffset": "Datenoffset",
+    "size": "Größe"
+  },
+  "playerTypes": {
+    "0": "Alle",
+    "1": "Wiederkehrend",
+    "2": "Neu",
+    "3": "Vorab-Transfer"
+  },
+  "meta": {
+    "count": "{count} Anwesenheitsevents"
+  }
+}

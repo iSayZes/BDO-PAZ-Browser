@@ -14,7 +14,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records   | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | --------- | --------- |
-| 1      | 1485 and later | 3474    | `specialquestlist.bss` | 3,604 | 896 Entry | 4         |
+| 1      | 1485 and later | 3482    | `specialquestlist.bss` | 3,604 | 896 Entry | 4         |
 
 | Layout | File                   | Known            | Unknown    |
 | ------ | ---------------------- | ---------------- | ---------- |
@@ -24,6 +24,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3251   | Layout 1 |
 | 3002   | Layout 1 |
@@ -74,6 +75,7 @@ The client Lua reads a list of the same name through the quest list object: `que
 ## Notes
 
 - Decompressed size on client 3474: `3,604` bytes, `8 + 896 * 4 + 12`.
-- On client 3474 `quest.dbss` has 896 records with `quest_category` 11, and they are this list in the same order. The same 896 quests are the page references of the 118 `journalquest.dbss` books, each once. `test_special_quest_list.py` checks both.
+- On client 3474 `quest.dbss` has 896 records with `quest_category` 11, and they are this list in the same order. The same 896 quests are the page references of the 118 `journalquest.dbss` books, each once. `test_special_quest_list.py` checks the order and that every page is in the list.
+- Client 3482 keeps the 896 entries but drops the book of chain 962 (the ten "Boss: Calamity 10" quests of the Black Shrine) from `journalquest.dbss`: 886 pages in 117 books, so chain 962 is in the list without a book.
 - Client 1784 has 261 entries in 52 chains; its `journalquest.dbss` has 52 books. The 1784 list follows the 1784 `allquestlist.bss` order. 256 of the 261 entries are still in the client 3474 list; chain 11103 (5 quests) is gone. All 261 have `QuestType` 10 in the `Quest_Table` sheet of a private server's `DataSheets.bexcel` on client 1784; 219 other `QuestType` 10 rows of that sheet are not in the list. On the 256 keys that both clients share, `QuestType` 10 lines up with the live `quest_category` 11.
 - [`specialquestinfo.bss`](specialquestinfo_bss.md) is a separate file with its own layout: the quest groups that `alreadyclearspecialquest(group)` action scripts name. On client 3474, 65 of its 277 quest entries are entries of this list.

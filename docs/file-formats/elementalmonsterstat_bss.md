@@ -23,15 +23,15 @@ with a Normal and a Hard difficulty each.
 
 Sizes and coverage from the client in the Checked column. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes  | Records                    | Row bytes               |
-| ------ | -------------- | ------- | -------------------------- | ------ | -------------------------- | ----------------------- |
-| 3      | 3474 and later | 3474    | `elementalmonsterstat.bss` | 44,732 | 1,000 Row, 108 Reward Item | 43 to 59, 45 on average |
-| 2      | 3002 to 3251   | 3251    | `elementalmonsterstat.bss` | 42,208 | 972 Row                    | 43 to 47, 43 on average |
-| 1      | 2519           | 2519    | `elementalmonsterstat.bss` | 38,138 | 993 Row                    | 38 to 42, 38 on average |
+| Layout | Clients        | Checked | File                       | Bytes  | Records                  | Row bytes               |
+| ------ | -------------- | ------- | -------------------------- | ------ | ------------------------ | ----------------------- |
+| 3      | 3474 and later | 3482    | `elementalmonsterstat.bss` | 10,311 | 104 Reward Item, 201 Row | 43 to 59, 51 on average |
+| 2      | 3002 to 3251   | 3251    | `elementalmonsterstat.bss` | 42,208 | 972 Row                  | 43 to 47, 43 on average |
+| 1      | 2519           | 2519    | `elementalmonsterstat.bss` | 38,138 | 993 Row                  | 38 to 42, 38 on average |
 
 | Layout | File                       | Known             | Unknown    |
 | ------ | -------------------------- | ----------------- | ---------- |
-| 3      | `elementalmonsterstat.bss` | 44,732 B (100.0%) | 0 B (0.0%) |
+| 3      | `elementalmonsterstat.bss` | 10,311 B (100.0%) | 0 B (0.0%) |
 | 2      | `elementalmonsterstat.bss` | 42,208 B (100.0%) | 0 B (0.0%) |
 | 1      | `elementalmonsterstat.bss` | 38,138 B (100.0%) | 0 B (0.0%) |
 
@@ -39,6 +39,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3482   | Layout 3 |
 | 3474   | Layout 3 |
 | 3251   | Layout 2 |
 | 3002   | Layout 2 |
@@ -194,6 +195,11 @@ On client 3474 the stats split by difficulty:
 | Donghae (Solo), levels 0 to 6 | Set on every row              | `0`                   |
 | Donghae (Solo), levels 7 to 9 | `0`                           | `305` to `385`        |
 | Hwanghae (Party)             | `0`                            | `0`                   |
+
+Client 3482 reworks the Donghae (Solo) difficulties: its 201 rows hold 104
+bosses, nine levels (`0` to `8`) per Donghae group, each gated by `min_ap`
+alone (`300` to `430`). `unlock_character_key`, `unlock_mental_card_key`,
+`offence_stat` and `defence_stat` are `0` on every row.
 
 ## Field Names
 

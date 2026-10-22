@@ -24,6 +24,8 @@ from tests.framework import (
 
 
 _ICON_ROOT = "ui_texture/icon/new_icon"
+# Stored icon paths start with one of these, in any case.
+_ICON_FOLDERS = ("new_icon", "item_icon")
 # King Clam Wall Ornament: furniture, so its icon is named after the 3D asset
 # and is unreachable from the item ID alone. It is the case this format solves.
 _KING_CLAM = 24626
@@ -468,7 +470,8 @@ def test_every_block_walks_to_its_name_and_icon(itemenchant_result: HandlerResul
     for row in parse_itemenchantoffset_records(source.file(_OFFSET_FILE)):
         start = row["data_offset"]
         strings = read_block_strings(data, start, start + row["data_size"])
-        if not strings.name_kr or not strings.icon.lower().endswith(".dds"):
+        # The icon folder, not `.dds`: item 31645 stores its path without one (client 3482).
+        if not strings.name_kr or not strings.icon.lower().startswith(_ICON_FOLDERS):
             bad.append(row["key"])
 
     assert not bad, f"blocks whose walk ends on no name or icon: {bad[:5]}"

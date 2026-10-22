@@ -65,4 +65,6 @@ def test_list_holds_every_adventure_log_page(special_list: HandlerResult) -> Non
     pages = [page["raw_ref"] for book in books for page in book["page_refs"]]
     ids = _packed_ids(special_list)
     assert len(ids) == len(set(ids))
-    assert sorted(ids) == sorted(pages)
+    assert len(pages) == len(set(pages))
+    # A removed book can leave its quests in the list (chain 962 on client 3482).
+    assert set(pages) <= set(ids)

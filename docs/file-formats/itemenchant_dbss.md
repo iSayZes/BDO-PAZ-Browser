@@ -21,15 +21,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
-| 2      | 3473 and later | 3474    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
+| 2      | 3473 and later | 3482    | `itemenchant.dbss`       | 203,042,002 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
+| 2      | 3473 and later | 3482    | `itemenchantoffset.dbss` | 2,032,160   | 169,345 Offset Row                                                          | 12        |
 | 1      | 1784           | 1784    | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
 | 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
 
 | Layout | File                     | Known                | Unknown               |
 | ------ | ------------------------ | -------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 58,104,867 B (28.7%) | 144,240,099 B (71.3%) |
-| 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%) | 0 B (0.0%)            |
+| 2      | `itemenchant.dbss`       | 58,269,685 B (28.7%) | 144,772,317 B (71.3%) |
+| 2      | `itemenchantoffset.dbss` | 2,032,160 B (100.0%) | 0 B (0.0%)            |
 | 1      | `itemenchant.dbss`       | 99,716,229 B (58.0%) | 72,074,984 B (42.0%)  |
 | 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%) | 0 B (0.0%)            |
 
@@ -37,6 +37,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3482   | Layout 2             |
 | 3474   | Layout 2             |
 | 3473   | Layout 2             |
 | 3251   | No documented layout |
@@ -981,6 +982,10 @@ backslashes, such as `New_Icon/03_ETC\03_Quest_Item/00042393.dds`. The
 parser turns backslashes into slashes and collapses doubled slashes, as for
 buff icons, so all eight paths name shipped files
 (`ui_texture/icon/item_icon/00724507.dds` exists).
+
+Client 3482 adds one path without `.dds`: item `31645` ([이벤트] 페치카)
+stores `New_Icon/03_ETC/06_Housing/InHouse_X_DFW_Pechka_01`, and no icon of
+that name ships, so the item shows no icon.
 
 ## After the Icon
 

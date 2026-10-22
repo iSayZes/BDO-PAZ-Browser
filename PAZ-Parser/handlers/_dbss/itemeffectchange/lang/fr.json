@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "meshKey": "Clé de maillage",
+    "enchantLevel": "Niveau d'optimisation",
+    "levels": "Niveaux",
+    "model": "Modèle"
+  },
+  "offsetColumns": {
+    "meshKey": "Clé de maillage",
+    "enchantLevel": "Niveau d'optimisation",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} modèles par niveau"
+  }
+}

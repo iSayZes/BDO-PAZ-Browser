@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "meshKey": "Ключ меша",
+    "enchantLevel": "Уровень усиления",
+    "levels": "Уровней",
+    "model": "Модель"
+  },
+  "offsetColumns": {
+    "meshKey": "Ключ меша",
+    "enchantLevel": "Уровень усиления",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Моделей по уровням: {count}"
+  }
+}

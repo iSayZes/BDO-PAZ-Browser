@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "meshKey": "메시 키",
+    "enchantLevel": "강화 단계",
+    "levels": "단계 수",
+    "model": "모델"
+  },
+  "offsetColumns": {
+    "meshKey": "메시 키",
+    "enchantLevel": "강화 단계",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "단계별 모델 {count}개"
+  }
+}

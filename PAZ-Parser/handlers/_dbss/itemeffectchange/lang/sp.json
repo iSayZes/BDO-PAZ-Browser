@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "meshKey": "Clave de malla",
+    "enchantLevel": "Nivel de refuerzo",
+    "levels": "Niveles",
+    "model": "Modelo"
+  },
+  "offsetColumns": {
+    "meshKey": "Clave de malla",
+    "enchantLevel": "Nivel de refuerzo",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} modelos por nivel"
+  }
+}

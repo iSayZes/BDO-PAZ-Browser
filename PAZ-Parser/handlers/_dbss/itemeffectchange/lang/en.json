@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "meshKey": "Mesh Key",
+    "enchantLevel": "Enhancement Level",
+    "levels": "Levels",
+    "model": "Model"
+  },
+  "offsetColumns": {
+    "meshKey": "Mesh Key",
+    "enchantLevel": "Enhancement Level",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} level models"
+  }
+}

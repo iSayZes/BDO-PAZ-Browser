@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Clase",
+    "list": "Lista",
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad"
+  },
+  "meta": {
+    "count": "{count} habilidades"
+  }
+}

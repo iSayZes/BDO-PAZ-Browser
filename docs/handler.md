@@ -1078,6 +1078,7 @@ _common/
 ├── row_table.py         # RowTableHandler: the base of a table with one record per row
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
+├── skill_cells.py       # skill_link(), skill_list_cell(): skill numbers with icon and name, linked to their skill.dbss row
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
 ├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/

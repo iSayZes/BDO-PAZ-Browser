@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Klasse",
+    "slot": "Platz",
+    "choiceCount": "Auswahl",
+    "skills": "Talentverstärkungen"
+  },
+  "meta": {
+    "count": "{count} Plätze der Talentverstärkung"
+  }
+}

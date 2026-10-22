@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Класс",
+    "combo": "Комбо",
+    "skillCount": "Навыки",
+    "steps": "Шаги"
+  },
+  "meta": {
+    "count": "Комбинаций навыков: {count} · классов: {classes}"
+  }
+}

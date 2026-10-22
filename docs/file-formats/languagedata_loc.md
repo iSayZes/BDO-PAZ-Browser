@@ -76,6 +76,7 @@ are `str_id2 | str_id3 << 16`. Their `key0` is `str_type` and their `id` is
 | 25       | Quest chain/group names, `str_id1` = chain/group ID (matches `questgroup.dbss` group_id)   |
 | 28       | `recommendationquest.bss` group names (`str_id1` = group key, `str_id4=0`) and quest condition lines (`str_id1` = packed quest ID, `str_id2` = group key, `str_id4=1`); see Type 58 below |
 | 29       | Town/node names, `str_id1` = node_id from `planttown.bss`; `str_id4` selects sub-field     |
+| 33       | Skill Add-on effect texts, `str_id1` = `skillawakeningability.dbss` ability_index; English of its `description_kr` |
 | 34       | Knowledge card text, `str_id1` = `mentalcard.dbss` card_id; see Type 34 below              |
 | 37       | UI string sheets, `str_id1` = `stringtable.bss` key hash; see Type 37 below                |
 | 38       | Other systems                                                                              |

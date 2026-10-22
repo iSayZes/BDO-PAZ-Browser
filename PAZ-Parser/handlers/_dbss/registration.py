@@ -254,6 +254,7 @@ from .marblegamediceitemkey.handler import MarbleDiceItemKeyHandler, marble_dice
 from .moonblessingss.handler import MoonBlessingHandler
 from .seasonpass.handler import SeasonPassHandler
 from .seasonreward.handler import SeasonRewardHandler
+from .skillawakeningability.handler import SkillAwakeningAbilityHandler, skill_awakening_ability_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -592,3 +593,5 @@ def register_dbss_handlers() -> None:
     register_handler("moonblessingss.dbss", MoonBlessingHandler())
     register_handler("seasonpass.dbss", SeasonPassHandler())
     register_handler("seasonreward.dbss", SeasonRewardHandler())
+    register_handler("skillawakeningabilityoffset.dbss", skill_awakening_ability_offset_handler())
+    register_handler("skillawakeningability.dbss", SkillAwakeningAbilityHandler())

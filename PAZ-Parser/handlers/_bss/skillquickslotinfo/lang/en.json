@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Class",
+    "slot": "Quick Slot",
+    "skillNo": "Skill No.",
+    "skill": "Skill"
+  },
+  "meta": {
+    "count": "{count} quick slot skills · {classes} classes"
+  }
+}

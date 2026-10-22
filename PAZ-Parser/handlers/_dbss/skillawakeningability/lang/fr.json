@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "abilityIndex": "Index de l'effet",
+    "buff": "Bonus",
+    "effect": "Effet"
+  },
+  "offsetColumns": {
+    "abilityIndex": "Index de l'effet",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} effets d'amélioration de compétence"
+  }
+}

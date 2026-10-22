@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "직업",
+    "list": "목록",
+    "skillNo": "기술 번호",
+    "skill": "기술"
+  },
+  "meta": {
+    "count": "기술 {count}개"
+  }
+}

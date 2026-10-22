@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Classe",
+    "combo": "Enchaînement",
+    "skillCount": "Compétences",
+    "steps": "Étapes"
+  },
+  "meta": {
+    "count": "{count} enchaînements de compétences · {classes} classes"
+  }
+}

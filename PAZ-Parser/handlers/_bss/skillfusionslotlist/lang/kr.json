@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "직업",
+    "slot": "칸",
+    "choiceCount": "선택지",
+    "skills": "기술 심화"
+  },
+  "meta": {
+    "count": "기술 심화 칸 {count}개"
+  }
+}

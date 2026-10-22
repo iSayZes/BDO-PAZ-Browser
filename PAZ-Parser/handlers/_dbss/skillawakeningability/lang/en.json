@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "abilityIndex": "Ability Index",
+    "buff": "Buff",
+    "effect": "Effect"
+  },
+  "offsetColumns": {
+    "abilityIndex": "Ability Index",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Skill Add-on effects"
+  }
+}

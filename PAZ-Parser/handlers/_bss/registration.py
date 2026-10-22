@@ -174,7 +174,12 @@ from .charactervoice.handler import CharacterVoiceBssHandler
 from .duelcharacter.handler import DuelCharacterBssHandler
 from .exchangecoin.handler import ExchangeCoinHandler
 from .playercharacterstatic.handler import PlayerCharacterStaticBssHandler
+from .instancedungeonskillinfo.handler import InstanceDungeonSkillInfoBssHandler
 from .rewardmarket.handler import RewardMarketHandler
+from .skillcomboguide.handler import SkillComboGuideBssHandler
+from .skillfusionslotlist.handler import SkillFusionSlotListBssHandler
+from .skillquickslotinfo.handler import SkillQuickSlotInfoBssHandler
+from .uipracticeskilltreelayout.handler import UiPracticeSkillTreeLayoutBssHandler
 
 
 def register_bss_handlers() -> None:
@@ -399,4 +404,9 @@ def register_bss_handlers() -> None:
     register_handler("cashproduct_grouplist.bss", CashProductGroupListHandler())
     register_handler("cashproduct_instant.bss", CashProductInstantHandler())
     register_handler("exchangecoin.bss", ExchangeCoinHandler())
+    register_handler("instancedungeonskillinfo.bss", InstanceDungeonSkillInfoBssHandler())
     register_handler("rewardmarket.bss", RewardMarketHandler())
+    register_handler("skillcomboguide.bss", SkillComboGuideBssHandler())
+    register_handler("skillfusionslotlist.bss", SkillFusionSlotListBssHandler())
+    register_handler("skillquickslotinfo.bss", SkillQuickSlotInfoBssHandler())
+    register_handler("uipracticeskilltreelayout.bss", UiPracticeSkillTreeLayoutBssHandler())

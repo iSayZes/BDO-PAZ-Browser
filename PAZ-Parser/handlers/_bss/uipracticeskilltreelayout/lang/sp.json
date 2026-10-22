@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "class": "Clase",
+    "width": "Ancho",
+    "height": "Alto",
+    "blankCells": "Casillas vacías",
+    "skillCells": "Casillas de habilidad",
+    "skills": "Habilidades"
+  },
+  "meta": {
+    "count": "{count} cuadrículas de clase"
+  }
+}

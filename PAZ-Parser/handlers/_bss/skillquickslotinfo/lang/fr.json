@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Classe",
+    "slot": "Emplacement rapide",
+    "skillNo": "N° de compétence",
+    "skill": "Compétence"
+  },
+  "meta": {
+    "count": "{count} compétences en emplacement rapide · {classes} classes"
+  }
+}

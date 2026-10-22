@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "class": "Classe",
+    "width": "Largeur",
+    "height": "Hauteur",
+    "blankCells": "Cases vides",
+    "skillCells": "Cases de compétence",
+    "skills": "Compétences"
+  },
+  "meta": {
+    "count": "{count} grilles de classe"
+  }
+}

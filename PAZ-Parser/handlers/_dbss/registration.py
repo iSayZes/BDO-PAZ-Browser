@@ -255,6 +255,7 @@ from .moonblessingss.handler import MoonBlessingHandler
 from .seasonpass.handler import SeasonPassHandler
 from .seasonreward.handler import SeasonRewardHandler
 from .skillawakeningability.handler import SkillAwakeningAbilityHandler, skill_awakening_ability_offset_handler
+from .customizeditem.handler import CustomizedItemHandler, customized_item_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -595,3 +596,5 @@ def register_dbss_handlers() -> None:
     register_handler("seasonreward.dbss", SeasonRewardHandler())
     register_handler("skillawakeningabilityoffset.dbss", skill_awakening_ability_offset_handler())
     register_handler("skillawakeningability.dbss", SkillAwakeningAbilityHandler())
+    register_handler("customizeditemoffset.dbss", customized_item_offset_handler())
+    register_handler("customizeditem.dbss", CustomizedItemHandler())

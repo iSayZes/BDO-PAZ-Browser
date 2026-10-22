@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "boxKey": "Box Key",
+    "choices": "Choices",
+    "items": "Items"
+  },
+  "offsetColumns": {
+    "boxKey": "Box Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} box item lists"
+  }
+}

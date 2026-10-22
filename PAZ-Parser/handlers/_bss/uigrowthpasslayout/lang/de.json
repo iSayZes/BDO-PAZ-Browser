@@ -7,7 +7,8 @@
     "mainId": "Haupt-ID",
     "subId": "Unter-ID",
     "icon": "Symbol",
-    "title": "Titel"
+    "title": "Titel",
+    "links": "Links"
   },
   "meta": {
     "count": "{count} Rasterzellen · {layouts} Kategorien"

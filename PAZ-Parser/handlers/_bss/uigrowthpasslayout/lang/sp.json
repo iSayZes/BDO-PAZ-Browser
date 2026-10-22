@@ -7,7 +7,8 @@
     "mainId": "ID principal",
     "subId": "ID secundario",
     "icon": "Icono",
-    "title": "Título"
+    "title": "Título",
+    "links": "Enlaces"
   },
   "meta": {
     "count": "{count} celdas de cuadrícula · {layouts} categorías"

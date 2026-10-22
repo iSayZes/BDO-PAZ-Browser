@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "mainId": "Основной ID",
+    "subId": "Доп. ID",
+    "title": "Название",
+    "service": "Сервис",
+    "link": "Ссылка",
+    "author": "Автор"
+  },
+  "meta": {
+    "count": "Ссылок на гид: {count}"
+  }
+}

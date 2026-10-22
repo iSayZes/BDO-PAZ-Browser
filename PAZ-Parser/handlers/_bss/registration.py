@@ -50,6 +50,7 @@ from .fieldinfo.handler import FieldInfoBssHandler
 from .fishcompetition.handler import FishCompetitionBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
+from .growthpasslinkdata.handler import GrowthPassLinkDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
 from .guildrightnewstaticstatus.handler import GuildRightNewStaticStatusBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
@@ -215,6 +216,7 @@ def register_bss_handlers() -> None:
     register_handler("fishcompetition.bss", FishCompetitionBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
+    register_handler("growthpasslinkdata.bss", GrowthPassLinkDataBssHandler())
     register_handler(
         "guildhousecraftskillreverselinklist.bss",
         GuildHouseCraftSkillReverseLinkListBssHandler(),

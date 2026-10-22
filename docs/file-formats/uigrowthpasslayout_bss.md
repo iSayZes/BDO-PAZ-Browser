@@ -12,7 +12,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes | Records            | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----- | ------------------ | --------- |
-| 1      | 1784 and later | 3474    | `uigrowthpasslayout.bss` | 1,724 | 280 Cell, 2 Layout | 6         |
+| 1      | 1784 and later | 3482    | `uigrowthpasslayout.bss` | 1,724 | 280 Cell, 2 Layout | 6         |
 
 | Layout | File                     | Known           | Unknown       |
 | ------ | ------------------------ | --------------- | ------------- |
@@ -22,21 +22,32 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3251   | Layout 1 |
 | 3002   | Layout 1 |
+| 2765   | Layout 1 |
 | 2519   | Layout 1 |
 | 2107   | Layout 1 |
+| 1937   | Layout 1 |
 | 1784   | Layout 1 |
+| 1636   | No file  |
 | 1485   | No file  |
+| 1348   | No file  |
 | 1230   | No file  |
+| 1058   | No file  |
 | 794    | No file  |
 
 <!-- versions:end -->
 
 ## Companion Files
 
-None.
+| File                     | Required | Role                                                                 |
+| ------------------------ | -------- | -------------------------------------------------------------------- |
+| [`growthpasslinkdata.bss`](growthpasslinkdata_bss.md) | Optional | The guide links of each quest cell, keyed by its `quest_chain_id` and `quest_id`; the view lists every service type's addresses once in a Links column |
+
+Every quest key of `growthpasslinkdata.bss` is a quest cell of this file
+(37 of 37 on client 3482). Without the file the Links column stays empty.
 
 All multi-byte values are little-endian.
 

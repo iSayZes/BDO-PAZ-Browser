@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "mainId": "메인 ID",
+    "subId": "서브 ID",
+    "title": "제목",
+    "service": "서비스",
+    "link": "링크",
+    "author": "작성자"
+  },
+  "meta": {
+    "count": "가이드 링크 {count}개"
+  }
+}

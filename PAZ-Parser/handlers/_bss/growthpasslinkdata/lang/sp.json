@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "mainId": "ID principal",
+    "subId": "ID secundario",
+    "title": "Título",
+    "service": "Servicio",
+    "link": "Enlace",
+    "author": "Autor"
+  },
+  "meta": {
+    "count": "{count} enlaces de guía"
+  }
+}

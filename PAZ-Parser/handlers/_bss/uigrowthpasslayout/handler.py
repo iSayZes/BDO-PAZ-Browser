@@ -1,4 +1,4 @@
-"""uigrowthpasslayout.bss preview handler: one row per filled cell of each category's grid."""
+"""uigrowthpasslayout.bss preview handler: one row per filled cell of each category's grid, with its guide links."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -6,12 +6,14 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.html import Column, e, icon_cell, sort_keys, table
+from _bss.growthpasslinkdata.parser import FILE_NAME as LINK_FILE
+from _common.html import Column, e, icon_cell, sort_keys, table, text_list_cell
 from _common.icon_index import IconKind, icon_path
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import is_loc_loaded
 from _common.pa_text import pa_cell, pa_fields
 from _common.quest.quest import quest_title_tagged
+from .links import LINKS_FIELD, cell_links, read_quest_links
 from .parser import parse_uigrowthpasslayout
 
 
@@ -19,6 +21,8 @@ _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 _BLANK = 1
 _QUEST = 2
+# The window has three guide link buttons per quest cell.
+_MAX_LINKS_SHOWN = 3
 # `__eGrowthPass_CellType_*` members, matched to values by where each value
 # sits in the grids (docs/file-formats/uigrowthpasslayout_bss.md). 0, 9 and 10
 # do not occur, so they stay numbers.
@@ -58,10 +62,15 @@ class UiGrowthPassLayoutBssHandler(PreviewHandler):
             Column(cols["subId"], "num", sort_key="quest_id"),
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["title"], sort_key="title"),
+            Column(cols["links"]),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
+
+    def companions(self, entry: PazEntry) -> list[str]:
+        folder = entry.internal_path.rsplit("/", 1)[0]
+        return [f"{folder}/{LINK_FILE}"]
 
     def get_records(
         self,
@@ -70,6 +79,7 @@ class UiGrowthPassLayoutBssHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> list[dict]:
         has_loc = is_loc_loaded()
+        links = read_quest_links(companions.get(LINK_FILE))
         records: list[dict] = []
         for layout in parse_uigrowthpasslayout(data):
             for cell in layout.cells:
@@ -88,6 +98,7 @@ class UiGrowthPassLayoutBssHandler(PreviewHandler):
                     "quest_chain_id": cell.quest_chain_id or None,
                     "quest_id": cell.quest_id or None,
                     **_quest_fields(cell.quest_chain_id, cell.quest_id, has_loc),
+                    LINKS_FIELD: cell_links(links, cell.quest_chain_id, cell.quest_id),
                 })
         return records
 
@@ -114,4 +125,5 @@ class UiGrowthPassLayoutBssHandler(PreviewHandler):
             e(r["quest_id"]) if is_quest else _EMPTY,
             icon_cell(r["icon_path"]) if r["icon_path"] else _EMPTY,
             pa_cell(r, "title"),
+            text_list_cell(r[LINKS_FIELD], _MAX_LINKS_SHOWN) or _EMPTY,
         ]

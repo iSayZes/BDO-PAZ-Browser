@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "houseKey": "ID дома",
+    "house": "Дом",
+    "town": "Поселение",
+    "useType": "Применение",
+    "position": "Позиция",
+    "yaw": "Направление (°)"
+  },
+  "offsetColumns": {
+    "houseKey": "ID дома",
+    "useType": "Применение",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Позиций обзора: {count}"
+  }
+}

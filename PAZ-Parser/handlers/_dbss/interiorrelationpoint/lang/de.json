@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "furniture": "Möbel",
+    "matchingCharacter": "Passender Charakter",
+    "matchingPoint": "Passungspunkte",
+    "onDresser": "Auf Kommode",
+    "onBedSideCabinet": "Auf Nachttisch",
+    "onWardrobe": "Auf Kleiderschrank",
+    "onDiningTable": "Auf Esstisch",
+    "onTable": "Auf Tisch",
+    "onChair": "Auf Stuhl",
+    "onSofa": "Auf Kanapee",
+    "onBed": "Auf Bett",
+    "onBookCase": "Auf Bücherregal",
+    "onShelf": "Auf Regal",
+    "isEmptyInFront": "Vorne frei",
+    "isEmptyInBack": "Hinten frei",
+    "isEmptyInLeft": "Links frei",
+    "isEmptyInRight": "Rechts frei"
+  },
+  "offsetColumns": {
+    "characterKey": "Charakter-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Möbel"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "ID del personaje",
+    "furniture": "Muebles",
+    "matchingCharacter": "Personaje a juego",
+    "matchingPoint": "Puntos de conjunto",
+    "onDresser": "En tocador",
+    "onBedSideCabinet": "En mesita de noche",
+    "onWardrobe": "En armario",
+    "onDiningTable": "En mesa de comedor",
+    "onTable": "En mesa",
+    "onChair": "En silla",
+    "onSofa": "En sofá",
+    "onBed": "En cama",
+    "onBookCase": "En estantería",
+    "onShelf": "En estante",
+    "isEmptyInFront": "Libre delante",
+    "isEmptyInBack": "Libre detrás",
+    "isEmptyInLeft": "Libre a la izquierda",
+    "isEmptyInRight": "Libre a la derecha"
+  },
+  "offsetColumns": {
+    "characterKey": "ID del personaje",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} muebles"
+  }
+}

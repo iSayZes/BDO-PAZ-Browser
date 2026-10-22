@@ -164,6 +164,7 @@
     "mapColors": "{count} map colors",
     "hardcoreTitles": "{count} Hardcore titles",
     "hardcoreGrades": "{count} grades",
-    "oceanSiegeGroups": "{count} Blue Battlefield groups"
+    "oceanSiegeGroups": "{count} Blue Battlefield groups",
+    "houseCharacters": "{count} house characters"
   }
 }

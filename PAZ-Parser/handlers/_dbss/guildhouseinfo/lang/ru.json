@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "ID дома",
+    "house": "Дом",
+    "town": "Поселение",
+    "node": "Узел",
+    "uses": "Применение"
+  },
+  "offsetColumns": {
+    "houseKey": "ID дома",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "cells": {
+    "level": "{name} ур. {level}"
+  },
+  "meta": {
+    "count": "Домов гильдии: {count}"
+  }
+}

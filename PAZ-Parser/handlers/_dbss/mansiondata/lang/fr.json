@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "furniture": "Meubles"
+  },
+  "offsetColumns": {
+    "characterKey": "ID du personnage",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} meubles de manoir"
+  }
+}

@@ -77,6 +77,8 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         "blackShrineAuras",
     ),
     ValueTable("employeeloyalismitemetc.bss", unknown_fields((0x04, "I"), (0x08, "I"), (0x0C, "I"), (0x10, "I"))),
+    # Every house character: node houses, guild houses and villas (householdlist_bss.md).
+    ValueTable("householdlist.bss", (CHARACTER_KEY,), RowCount.COUNTED, count_key="houseCharacters"),
     ValueTable(
         "icefisingregionstaticstatus.bss",
         (

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "toolKey": "ID de la herramienta",
+    "tool": "Herramienta",
+    "works": "Intercambios"
+  },
+  "offsetColumns": {
+    "toolKey": "ID de la herramienta",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "cells": {
+    "units": "unidades producidas {units}"
+  },
+  "meta": {
+    "count": "{count} herramientas"
+  }
+}

@@ -1019,9 +1019,13 @@ subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
 `pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row,
 `monstergroup.dbss` each hunting ground to its `dropuihuntinggroundinfo.bss`
 row, `elementalmonsterreward.bss` each boss to its
-`elementalmonsterstat.bss` row, `houseinfo.bss` each use to its
-`houseinforeceipe.dbss` row and each needed house to its own row, and
-`mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
+`elementalmonsterstat.bss` row, `houseinfo.bss` and `guildhouseinfo.dbss`
+each use to its `houseinforeceipe.dbss` row (`_dbss/houseinforeceipe/house_uses.py`),
+`houseinfo.bss` each needed house to its own row,
+`houseinfoviewposition.dbss` and `innstaticstatus.dbss` each house to its
+`houseinfo.bss` or `guildhouseinfo.dbss` row
+(`_dbss/guildhouseinfo/house_rows.py`), `houseworking.dbss` each exchange
+to its `itemexchangesource.bss` row, and `mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
 each part count to the building's `mansionpartinfo.bss` rows, and
 `barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group.
 Both lists of `bartersubgroup.bss` number their groups from 1, so that link
@@ -1049,7 +1053,7 @@ _common/
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
-├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte
+├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte; read_counted_records() for rows with lists
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
@@ -1227,7 +1231,8 @@ key_field, key_label)` builds that handler in one call
 (`item_palette_offset_handler()`, `yacht_offset_handler()`).
 `tests/offset_rows.py` has `offset_row_problems(data, rows, key)`, which
 checks that the index rows point at rows with their key and tile the main
-file (`lead=` for an index that points past a key prefix).
+file (`lead=` for an index that points past a key prefix, `key_from_end=`
+for a table that stores the key after its lists, `guildhouseinfo.dbss`).
 
 ### Row Tables
 
@@ -1241,7 +1246,9 @@ paging and the `meta.count` line. Set `file_name` and `lang_dir` as class
 attributes. A table of fixed rows after a u32 count reads them with
 `parse_counted_rows(data, row, fields, file_name)` from
 `_common/counted_rows.py` (`counted_row_values()` for rows with an array
-field). `_dbss/itempalette/` is the smallest example.
+field); rows with counted lists read each row from one `RecordReader` with
+`read_counted_records(data, read_row, file_name)` (`_dbss/houseworking/`).
+`_dbss/itempalette/` is the smallest example.
 
 ## Lookup Indexes
 

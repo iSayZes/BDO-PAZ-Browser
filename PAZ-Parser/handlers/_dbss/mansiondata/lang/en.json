@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "furniture": "Furniture"
+  },
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} manor furniture"
+  }
+}

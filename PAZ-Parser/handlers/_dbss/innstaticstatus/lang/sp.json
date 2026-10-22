@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "innKey": "ID de la posada",
+    "roomKey": "ID de la habitación",
+    "house": "Propiedad",
+    "town": "Pueblo"
+  },
+  "offsetColumns": {
+    "innKey": "ID de la posada",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} habitaciones de posada"
+  }
+}

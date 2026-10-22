@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "innKey": "Inn Key",
+    "roomKey": "Room Key",
+    "house": "House",
+    "town": "Town"
+  },
+  "offsetColumns": {
+    "innKey": "Inn Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} inn rooms"
+  }
+}

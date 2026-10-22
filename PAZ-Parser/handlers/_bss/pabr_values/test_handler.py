@@ -131,6 +131,11 @@ _TARGETS: dict[str, list[TargetTest]] = {
         TargetTest(col="character_key", value=23751, expected={"interaction_type": 61, "character_name": "Mirumok Watcher Offin"}),
         TargetTest(col="character_key", value=23767, expected={"interaction_type": 61, "character_name": "Mirumok Destroyer Offin"}),
     ],
+    "householdlist.bss": [
+        # A guild house and a villa, which houseinfo.bss does not hold.
+        TargetTest(col="character_key", value=2110, expected={"character_name": "Velia Guild House"}),
+        TargetTest(col="character_key", value=3371, expected={"character_name": "Kunid's Villa"}),
+    ],
     "othertownnotmovableitem.bss": [
         TargetTest(col="item_id", value=_ARCHAEOLOGISTS_MAP, expected={"item_name": "Archaeologist's Map"}),
     ],

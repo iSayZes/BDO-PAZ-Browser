@@ -20,17 +20,21 @@ def offset_row_problems(
     *,
     rows_start: int = 4,
     lead: int = 0,
+    key_from_end: int = 0,
 ) -> list[str]:
     """What breaks the index: a row whose key differs from its index key, or rows that do not tile the file.
 
     The table's rows start at `rows_start`. Each index row points `lead`
     bytes into its row, past a key prefix that its size leaves out; `key` is
-    read from the row start (`offset - lead`).
+    read from the row start (`offset - lead`), or `key_from_end` bytes
+    before the row end for a table that stores the key after its lists
+    (`guildhouseinfo.dbss`).
     """
     problems = []
     expected_offset = rows_start + lead
     for row in sorted(rows, key=lambda row: row.offset):
-        (row_key,) = key.unpack_from(data, row.offset - lead)
+        key_at = row.offset + row.size - key_from_end if key_from_end else row.offset - lead
+        (row_key,) = key.unpack_from(data, key_at)
         if row_key != row.entry_id:
             problems.append(f"key {row.entry_id} points at a row with key {row_key} (0x{row.offset:X})")
         if row.offset != expected_offset:

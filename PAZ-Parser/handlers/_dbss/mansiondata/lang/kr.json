@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "furniture": "가구"
+  },
+  "offsetColumns": {
+    "characterKey": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "장원 가구 {count}개"
+  }
+}

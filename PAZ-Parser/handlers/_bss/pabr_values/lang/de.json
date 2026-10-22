@@ -164,6 +164,7 @@
     "mapColors": "{count} Kartenfarben",
     "hardcoreTitles": "{count} Hardcore-Titel",
     "hardcoreGrades": "{count} Ränge",
-    "oceanSiegeGroups": "{count} Gruppen des Blauen Schlachtfelds"
+    "oceanSiegeGroups": "{count} Gruppen des Blauen Schlachtfelds",
+    "houseCharacters": "{count} Hauscharaktere"
   }
 }

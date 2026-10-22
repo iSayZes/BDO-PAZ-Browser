@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "ID de la maison",
+    "house": "Maison",
+    "town": "Ville",
+    "node": "Géopoint",
+    "uses": "Utilisation"
+  },
+  "offsetColumns": {
+    "houseKey": "ID de la maison",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "cells": {
+    "level": "{name} Niv. {level}"
+  },
+  "meta": {
+    "count": "{count} maisons de guilde"
+  }
+}

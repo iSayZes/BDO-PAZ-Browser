@@ -164,6 +164,7 @@
     "mapColors": "{count} colores del mapa",
     "hardcoreTitles": "{count} títulos de Hardcore",
     "hardcoreGrades": "{count} rangos",
-    "oceanSiegeGroups": "{count} grupos de Isla de Agua"
+    "oceanSiegeGroups": "{count} grupos de Isla de Agua",
+    "houseCharacters": "{count} personajes de propiedad"
   }
 }

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "Haus-ID",
+    "house": "Haus",
+    "town": "Stadt",
+    "node": "Posten",
+    "uses": "Verwendung"
+  },
+  "offsetColumns": {
+    "houseKey": "Haus-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "cells": {
+    "level": "{name} St. {level}"
+  },
+  "meta": {
+    "count": "{count} Gildenhäuser"
+  }
+}

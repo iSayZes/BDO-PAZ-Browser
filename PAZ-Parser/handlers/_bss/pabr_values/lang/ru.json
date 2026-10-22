@@ -164,6 +164,7 @@
     "mapColors": "Цветов карты: {count}",
     "hardcoreTitles": "Титулов Hardcore: {count}",
     "hardcoreGrades": "Рангов: {count}",
-    "oceanSiegeGroups": "Групп Лазурной арены: {count}"
+    "oceanSiegeGroups": "Групп Лазурной арены: {count}",
+    "houseCharacters": "Персонажей домов: {count}"
   }
 }

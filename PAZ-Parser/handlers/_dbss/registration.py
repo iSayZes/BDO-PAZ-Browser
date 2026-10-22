@@ -234,6 +234,12 @@ from .yachtclasstypetextureinfo.handler import (
 from .yachtdice.handler import YachtDiceHandler, yacht_dice_offset_handler
 from .yachtdicecard.handler import YachtDiceCardHandler, yacht_dice_card_offset_handler
 from .yachtdicepreset.handler import YachtDicePresetHandler, yacht_dice_preset_offset_handler
+from .houseinfoviewposition.handler import HouseInfoViewPositionHandler, house_info_view_position_offset_handler
+from .mansiondata.handler import MansionDataHandler, mansion_data_offset_handler
+from .innstaticstatus.handler import InnStaticStatusHandler, inn_static_status_offset_handler
+from .houseworking.handler import HouseWorkingHandler, house_working_offset_handler
+from .interiorrelationpoint.handler import InteriorRelationPointHandler, interior_relation_point_offset_handler
+from .guildhouseinfo.handler import GuildHouseInfoHandler, guild_house_info_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -535,3 +541,15 @@ def register_dbss_handlers() -> None:
     register_handler("yachtdicecard.dbss", YachtDiceCardHandler())
     register_handler("yachtdicepresetoffset.dbss", yacht_dice_preset_offset_handler())
     register_handler("yachtdicepreset.dbss", YachtDicePresetHandler())
+    register_handler("houseinfoviewpositionoffset.dbss", house_info_view_position_offset_handler())
+    register_handler("houseinfoviewposition.dbss", HouseInfoViewPositionHandler())
+    register_handler("mansiondataoffset.dbss", mansion_data_offset_handler())
+    register_handler("mansiondata.dbss", MansionDataHandler())
+    register_handler("innstaticstatusoffset.dbss", inn_static_status_offset_handler())
+    register_handler("innstaticstatus.dbss", InnStaticStatusHandler())
+    register_handler("houseworkingoffset.dbss", house_working_offset_handler())
+    register_handler("houseworking.dbss", HouseWorkingHandler())
+    register_handler("interiorrelationpointoffset.dbss", interior_relation_point_offset_handler())
+    register_handler("interiorrelationpoint.dbss", InteriorRelationPointHandler())
+    register_handler("guildhouseinfooffset.dbss", guild_house_info_offset_handler())
+    register_handler("guildhouseinfo.dbss", GuildHouseInfoHandler())

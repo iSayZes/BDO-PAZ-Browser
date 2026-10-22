@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "socialActionKey": "ID эмоции",
+    "name": "Название",
+    "condition": "Условие",
+    "command": "Команда",
+    "keywords": "Ключевые слова",
+    "action": "Действие",
+    "icon": "Значок",
+    "conditionMessage": "Текст условия",
+    "contentsGroups": "Группы контента"
+  },
+  "offsetColumns": {
+    "socialActionKey": "ID эмоции",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Эмоций: {count}"
+  }
+}

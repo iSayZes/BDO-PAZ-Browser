@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "packageKey": "ID набора",
+    "name": "Название",
+    "emoticonCount": "Количество",
+    "emoticons": "Смайлики"
+  },
+  "offsetColumns": {
+    "packageKey": "ID набора",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Наборов смайликов: {count}"
+  }
+}

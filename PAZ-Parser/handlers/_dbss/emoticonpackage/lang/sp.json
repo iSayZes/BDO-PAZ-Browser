@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "packageKey": "ID del paquete",
+    "name": "Nombre",
+    "emoticonCount": "Cantidad",
+    "emoticons": "Emoticonos"
+  },
+  "offsetColumns": {
+    "packageKey": "ID del paquete",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} paquetes de emoticonos"
+  }
+}

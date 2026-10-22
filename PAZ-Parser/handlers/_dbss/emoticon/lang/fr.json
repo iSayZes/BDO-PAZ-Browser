@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "emoticonKey": "ID d'émoticône",
+    "name": "Nom",
+    "icon": "Icône",
+    "iconCount": "Icônes",
+    "rowCount": "Lignes",
+    "columnCount": "Colonnes",
+    "keyword": "Mot-clé",
+    "sequence": "Séquence",
+    "group": "Groupe"
+  },
+  "offsetColumns": {
+    "emoticonKey": "ID d'émoticône",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} émoticônes"
+  }
+}

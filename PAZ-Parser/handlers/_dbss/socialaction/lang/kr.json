@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "socialActionKey": "소셜 액션 ID",
+    "name": "이름",
+    "condition": "조건",
+    "command": "명령어",
+    "keywords": "키워드",
+    "action": "행동",
+    "icon": "아이콘",
+    "conditionMessage": "조건 메시지",
+    "contentsGroups": "콘텐츠 그룹"
+  },
+  "offsetColumns": {
+    "socialActionKey": "소셜 액션 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "소셜 액션 {count}개"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "socialActionKey": "Social Action Key",
+    "name": "Name",
+    "condition": "Condition",
+    "command": "Command",
+    "keywords": "Keywords",
+    "action": "Action",
+    "icon": "Icon",
+    "conditionMessage": "Condition Message",
+    "contentsGroups": "Contents Groups"
+  },
+  "offsetColumns": {
+    "socialActionKey": "Social Action Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} social actions"
+  }
+}

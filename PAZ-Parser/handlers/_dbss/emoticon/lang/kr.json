@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "emoticonKey": "이모티콘 ID",
+    "name": "이름",
+    "icon": "아이콘",
+    "iconCount": "아이콘 수",
+    "rowCount": "행",
+    "columnCount": "열",
+    "keyword": "키워드",
+    "sequence": "시퀀스",
+    "group": "그룹"
+  },
+  "offsetColumns": {
+    "emoticonKey": "이모티콘 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "이모티콘 {count}개"
+  }
+}

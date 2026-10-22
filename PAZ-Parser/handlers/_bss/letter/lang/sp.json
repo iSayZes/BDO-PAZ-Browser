@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemKey": "ID del objeto",
+    "item": "Objeto",
+    "textKey": "Clave del texto",
+    "text": "Texto",
+    "background": "Fondo",
+    "centered": "Centrado"
+  },
+  "meta": {
+    "count": "{count} cartas"
+  }
+}

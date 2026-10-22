@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carrierKey": "ID del transporte",
+    "carrier": "Transporte",
+    "route": "Ruta",
+    "load": "Carga",
+    "fee": "Tarifa",
+    "model": "Modelo",
+    "waypoints": "Puntos de ruta",
+    "type": "Tipo"
+  },
+  "types": {
+    "0": "Sin transporte",
+    "1": "Carromato",
+    "2": "Barco de transporte",
+    "3": "Barco mercante",
+    "4": "Carromato de pasajeros",
+    "5": "Carromato de tributo"
+  },
+  "meta": {
+    "count": "{count} transportes"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemKey": "ID d'objet",
+    "item": "Objet",
+    "textKey": "Clé du texte",
+    "text": "Texte",
+    "background": "Arrière-plan",
+    "centered": "Centré"
+  },
+  "meta": {
+    "count": "{count} lettres"
+  }
+}

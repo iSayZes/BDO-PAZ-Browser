@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "socialActionKey": "ID de acción social",
+    "name": "Nombre",
+    "condition": "Condición",
+    "command": "Comando",
+    "keywords": "Palabras clave",
+    "action": "Acción",
+    "icon": "Icono",
+    "conditionMessage": "Mensaje de condición",
+    "contentsGroups": "Grupos de contenido"
+  },
+  "offsetColumns": {
+    "socialActionKey": "ID de acción social",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} acciones sociales"
+  }
+}

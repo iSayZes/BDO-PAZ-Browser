@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemKey": "ID предмета",
+    "item": "Предмет",
+    "textKey": "Ключ текста",
+    "text": "Текст",
+    "background": "Фон",
+    "centered": "По центру"
+  },
+  "meta": {
+    "count": "Писем: {count}"
+  }
+}

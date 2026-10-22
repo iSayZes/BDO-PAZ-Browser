@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carrierKey": "ID du transporteur",
+    "carrier": "Transporteur",
+    "route": "Route",
+    "load": "Charge",
+    "fee": "Frais",
+    "model": "Modèle",
+    "waypoints": "Points de passage",
+    "type": "Type"
+  },
+  "types": {
+    "0": "Pas un transporteur",
+    "1": "Wagon",
+    "2": "Navire de transport",
+    "3": "Navire marchand",
+    "4": "Wagon de passagers",
+    "5": "Wagon de tribut"
+  },
+  "meta": {
+    "count": "{count} transporteurs"
+  }
+}

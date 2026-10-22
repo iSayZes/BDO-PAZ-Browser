@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "carrierKey": "Carrier Key",
+    "carrier": "Carrier",
+    "route": "Route",
+    "load": "Load",
+    "fee": "Fee",
+    "model": "Model",
+    "waypoints": "Waypoints",
+    "type": "Type"
+  },
+  "types": {
+    "0": "Not a carrier",
+    "1": "Wagon",
+    "2": "Transport Ship",
+    "3": "Trading Ship",
+    "4": "Passenger Wagon",
+    "5": "Tribute Wagon"
+  },
+  "meta": {
+    "count": "{count} carriers"
+  }
+}

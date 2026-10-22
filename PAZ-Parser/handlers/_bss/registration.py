@@ -23,6 +23,7 @@ from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .contentsgroupoptionstaticstatusmanager.handler import ContentsGroupOptionBssHandler
 from .cronenchant.handler import CronEnchantBssHandler
 from .cutscenecharacterdata.handler import CutsceneCharacterDataBssHandler
+from .deliverer.handler import DelivererBssHandler
 from .dropuihuntinggroundinfo.handler import DropUiHuntingGroundInfoBssHandler
 from .dropuimaincategoryinfo.handler import DropUiMainCategoryInfoBssHandler
 from .dropuisubcategoryinfo.handler import DropUiSubCategoryInfoBssHandler
@@ -59,6 +60,7 @@ from .hardcorerandomspawncharacterstaticstatusmanager.handler import (
 )
 from .houseinfo.handler import HouseInfoBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
+from .intimacyinfo.handler import IntimacyInfoBssHandler
 from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHandler
 from .boss_spawn.handler import BossSpawnBssHandler
 from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
@@ -81,6 +83,7 @@ from .itemviewstackenchantgroupss.handler import ItemViewStackEnchantGroupSsBssH
 from .jewelgroupstaticstatus.handler import JewelGroupStaticStatusBssHandler
 from .jewelspecialslotsgroupstaticstatus.handler import JewelSpecialSlotsGroupStaticStatusBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
+from .letter.handler import LetterBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
 from .manufacture.handler import ManufactureBssHandler
@@ -190,6 +193,7 @@ def register_bss_handlers() -> None:
     )
     register_handler("cronenchant.bss", CronEnchantBssHandler())
     register_handler("cutscenecharacterdata.bss", CutsceneCharacterDataBssHandler())
+    register_handler("deliverer.bss", DelivererBssHandler())
     register_handler(
         "dropuihuntinggroundinfo.bss",
         DropUiHuntingGroundInfoBssHandler(),
@@ -237,6 +241,7 @@ def register_bss_handlers() -> None:
     )
     register_handler("houseinfo.bss", HouseInfoBssHandler())
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
+    register_handler("intimacyinfo.bss", IntimacyInfoBssHandler())
     register_handler("bossinfostaicstatusmanager.bss", BossInfoStaicStatusManagerBssHandler())
     register_handler("boss_spawn.bss", BossSpawnBssHandler())
     register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
@@ -265,6 +270,7 @@ def register_bss_handlers() -> None:
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),
     )
+    register_handler("letter.bss", LetterBssHandler())
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("manufacture.bss", ManufactureBssHandler())

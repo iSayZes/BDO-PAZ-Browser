@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "npcKey": "Clé du PNJ",
+    "npc": "PNJ",
+    "entryCount": "Nombre",
+    "entries": "Récompenses d'amitié"
+  },
+  "types": {
+    "0": "Quête",
+    "1": "Boutique",
+    "2": "Bonus",
+    "3": "Connaissance",
+    "4": "Discussion",
+    "5": "Objet"
+  },
+  "operators": {
+    "0": "=",
+    "1": "▲",
+    "2": "▼"
+  },
+  "meta": {
+    "count": "{count} PNJ"
+  }
+}

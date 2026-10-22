@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "packageKey": "패키지 ID",
+    "name": "이름",
+    "emoticonCount": "개수",
+    "emoticons": "이모티콘"
+  },
+  "offsetColumns": {
+    "packageKey": "패키지 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "이모티콘 패키지 {count}개"
+  }
+}

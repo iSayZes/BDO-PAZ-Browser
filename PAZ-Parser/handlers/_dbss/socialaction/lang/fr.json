@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "socialActionKey": "ID d'emote",
+    "name": "Nom",
+    "condition": "Condition",
+    "command": "Commande",
+    "keywords": "Mots-clés",
+    "action": "Action",
+    "icon": "Icône",
+    "conditionMessage": "Message de condition",
+    "contentsGroups": "Groupes de contenu"
+  },
+  "offsetColumns": {
+    "socialActionKey": "ID d'emote",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} emotes"
+  }
+}

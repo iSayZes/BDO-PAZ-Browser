@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "index": "Form",
+    "type": "Typ",
+    "actionIndex": "Aktionsindex",
+    "tier": "Rang",
+    "icon1": "Symbol",
+    "icon2": "Symbol 2",
+    "characters": "Charaktere"
+  },
+  "offsetColumns": {
+    "index": "Form",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "types": {
+    "0": "Pferd"
+  },
+  "meta": {
+    "count": "{count} Reittier-Formen"
+  }
+}

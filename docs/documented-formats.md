@@ -39,6 +39,9 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `base_dialogoffset.dbss` | PABR index into `base_dialog.dbss`, same layout and keys as `detail_dialogoffset.dbss` | [base_dialog](file-formats/base_dialog_dbss.md) | 0 | 0 |
 | `bdoservanttitless.bss` | PABR horse breed titles: per servant character, a string-table index (`품종 N번`) and a contents group key | [bdoservanttitless](file-formats/bdoservanttitless_bss.md) | 0 | 0 |
 | `beginnerroadmaplinkurldata.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `blackspirit.dbss` | Black Spirit forms: u8 form index and the UTF-16 unlock condition script per row | [blackspirit](file-formats/blackspirit_dbss.md) | 0 | 0 |
+| `blackspiritchangeformcondition.bss` | The condition to change the Black Spirit's form: one UTF-16 script, the whole file | [blackspiritchangeformcondition](file-formats/blackspiritchangeformcondition_bss.md) | 0 | 0 |
+| `blackspiritoffset.dbss` | Index into `blackspirit.dbss`: bare count, then (u8 form index, offset, size) at the row start | [blackspirit](file-formats/blackspirit_dbss.md) | 0 | 0 |
 | `blizzardregioninfo.bss` | PABR snow regions of the Mountain of Eternal Winter and Ulukita: a key, the `regioninfo.bss` region, the blizzard effect's min and max spawn chance (1,000,000 = 100%) and a wind vector | [blizzardregioninfo](file-formats/blizzardregioninfo_bss.md) | 2 | 1 |
 | `boss_spawn.bss` | Guild Boss Summon bosses: PABR 43-byte rows of spawn key, level count, world position and spawn range | [boss_spawn](file-formats/boss_spawn_bss.md) | 2 | 0 |
 | `boss_spawnlevel.bss` | Guild Boss Summon levels: per spawn key, 21-byte entries of level, reward item, window image and boss character | [boss_spawnlevel](file-formats/boss_spawnlevel_bss.md) | 2 | 0 |
@@ -77,6 +80,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `characterstatic.dbss`             | Variable-length character/NPC static records with inline action scripts                                        | [characterstatic](file-formats/characterstatic_dbss.md)             | 4              | 0 |
 | `characterstaticoffset.dbss`       | PABR index into `characterstatic.dbss`, maps character id_low16 → offset/size                                 | [characterstatic](file-formats/characterstatic_dbss.md)             | 4              | 0 |
 | `charactertrigger.bss` | Empty PABR table on the live client: a count of 0, no records and no strings; records on clients 1784 and 1485 | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `charactervoice.bss` | PABR voice lists per character: u16 key, two u32-counted lists of voice name string indexes (appearance types 0 and 1) and two voice counts | [charactervoice](file-formats/charactervoice_bss.md) | 0 | 0 |
 | `chinaspawnoption.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `chinaspawnoptionoffset.dbss` | Empty offset companion for `chinaspawnoption.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `classskilllist.bss` | PABR Skill Command list: per class type, the skill numbers (`skillcommand.dbss` keys) whose key commands the Skill Command panel can show | [classskilllist](file-formats/classskilllist_bss.md) | 0 | 0 |
@@ -107,6 +111,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `dropuisubcategoryinfo.bss` | Drop item window filter categories (party, Elvia, Marni's Realm, Dehkia, ...): Korean name and button icon | [dropuisubcategoryinfo](file-formats/dropuisubcategoryinfo_bss.md) | 0 | 0 |
 | `dropuitaginfo.bss` | Drop item window tags: Korean name and tooltip, Dehkia's Lantern guide image, tag background and text colours | [dropuitaginfo](file-formats/dropuitaginfo_bss.md) | 1 | 0 |
 | `dropuiurlinfo.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `duelcharacter.bss` | Tag Characters options, one 58-byte record: the item copy quest, the two fuel items and eleven unnamed values | [duelcharacter](file-formats/duelcharacter_bss.md) | 1 | 0 |
 | `dyeingpalette.dbss` | Dye palettes: per palette type (the dye window's tabs, Basic Dye to Valencian Dye, and type 100 with six lantern colours) the list of colours with their environment and specular values | [dyeingpalette](file-formats/dyeingpalette_dbss.md) | 2 | 0 |
 | `dyeingpaletteoffset.dbss` | Index into `dyeingpalette.dbss`: bare count, then (u8 palette type, offset, size), 1 byte past the row start | [dyeingpalette](file-formats/dyeingpalette_dbss.md) | 2 | 0 |
 | `edaniaregioninfo.bss` | PABR Edania regions: the `__eEdaniaRegion` value (castle domain) and its colour in `edaniaregionmap.bmp`, equal to the `color` of the castle's `regioninfo.bss` region | [edaniaregioninfo](file-formats/edaniaregioninfo_bss.md) | 1 | 1 |
@@ -174,6 +179,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `floatfishingoffset.dbss` | Index into `floatfishing.dbss` with no magic: u16 group key, offset and size (10-byte rows) | [floatfishing](file-formats/floatfishing_dbss.md) | 1 | 0 |
 | `floatfishingpoint.dbss` | Floating fishing points: size, start and end position, fish drop group, spawned character and action (42-byte rows) | [floatfishingpoint](file-formats/floatfishingpoint_dbss.md) | 1 | 0 |
 | `floatfishingpointoffset.dbss` | Index into `floatfishingpoint.dbss` with no magic: u16 point key, offset and size (10-byte rows) | [floatfishingpoint](file-formats/floatfishingpoint_dbss.md) | 1 | 0 |
+| `form.dbss` | Mount forms: u16 index and its copy, type, action index, tier, two UTF-16 icon paths and a u16 character key list | [form](file-formats/form_dbss.md) | 1 | 0 |
+| `formoffset.dbss` | Index into `form.dbss`: bare count, then (u16 index, offset, size), 2 bytes past the row start | [form](file-formats/form_dbss.md) | 1 | 0 |
 | `greatseaevent.dbss` | Great Ocean sailing event results in groups: group key, index, Korean result text, image path (variable rows) | [greatseaevent](file-formats/greatseaevent_dbss.md) | 1 | 0 |
 | `greatseaeventoffset.dbss` | Index into `greatseaevent.dbss` per group: u16 group key, count, then u32 index, offset and size per event | [greatseaevent](file-formats/greatseaevent_dbss.md) | 1 | 0 |
 | `grenadedata.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
@@ -416,6 +423,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `plantworkerselect.bss`            | Worker selection groups keyed by town/node LOC IDs with worker IDs and hire-cost tiers                         | [plantworkerselect](file-formats/plantworkerselect_bss.md)          | 0              | 1 |
 | `plantzone.dbss`                   | Worker production zones: work animation type, production key and capacity level, worker species list; variable-length records with a required offset table | [plantzone](file-formats/plantzone_dbss.md)                         | 3              | 0 |
 | `plantzoneoffset.dbss`             | Offset index into `plantzone.dbss`, maps record ID → offset/size                                              | [plantzone](file-formats/plantzone_dbss.md)                         | 3              | 0 |
+| `playercharacterstatic.bss` | PABR list of the player characters: u32 count and u16 character keys (106 on client 3482) | [playercharacterstatic](file-formats/playercharacterstatic_bss.md) | 0 | 0 |
 | `possiblefusionpet.bss` | Pets per fusion key with no PABR magic: variant, species, tier and a `pet.dbss` key, sorted by fusion key (6-byte rows) | [possiblefusionpet](file-formats/possiblefusionpet_bss.md) | 2 | 0 |
 | `preloadpcactioncharacter.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `productexperience.dbss` | Life skill point EXP table, levels 0 to 2000 with an EXP of 0 on every level on client 3474 | [productexperience](file-formats/productexperience_dbss.md) | 0 | 0 |

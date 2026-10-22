@@ -146,6 +146,10 @@ from .yachtgameboardinfo.handler import YachtGameBoardInfoHandler
 from .yachthandrank.handler import YachtHandRankHandler
 from .yachtnpcdiceinfo.handler import YachtNpcDiceInfoBssHandler
 from .zodiacsignindex.handler import ZodiacSignIndexHandler
+from .blackspiritchangeformcondition.handler import BlackSpiritChangeFormConditionBssHandler
+from .charactervoice.handler import CharacterVoiceBssHandler
+from .duelcharacter.handler import DuelCharacterBssHandler
+from .playercharacterstatic.handler import PlayerCharacterStaticBssHandler
 
 
 def register_bss_handlers() -> None:
@@ -340,3 +344,7 @@ def register_bss_handlers() -> None:
     register_handler("yachthandrank.bss", YachtHandRankHandler())
     register_handler("yachtnpcdiceinfo.bss", YachtNpcDiceInfoBssHandler())
     register_handler("zodiacsignindex.bss", ZodiacSignIndexHandler())
+    register_handler("blackspiritchangeformcondition.bss", BlackSpiritChangeFormConditionBssHandler())
+    register_handler("charactervoice.bss", CharacterVoiceBssHandler())
+    register_handler("duelcharacter.bss", DuelCharacterBssHandler())
+    register_handler("playercharacterstatic.bss", PlayerCharacterStaticBssHandler())

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "index": "Figura",
+    "condition": "Condición"
+  },
+  "offsetColumns": {
+    "index": "Figura",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} figuras del Espíritu Oscuro"
+  }
+}

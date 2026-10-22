@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "index": "Figura",
+    "type": "Tipo",
+    "actionIndex": "Índice de acción",
+    "tier": "Grado",
+    "icon1": "Icono",
+    "icon2": "Icono 2",
+    "characters": "Personajes"
+  },
+  "offsetColumns": {
+    "index": "Figura",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "types": {
+    "0": "Caballo"
+  },
+  "meta": {
+    "count": "{count} figuras de montura"
+  }
+}

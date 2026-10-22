@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemCopyQuest": "Item Copy Quest",
+    "copyItem": "Item Copy",
+    "singleCopyItem": "Single Copy"
+  },
+  "meta": {
+    "count": "Tag Characters options"
+  }
+}

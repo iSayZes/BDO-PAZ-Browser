@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "character": "Personnage"
+  },
+  "meta": {
+    "count": "{count} personnages joueurs"
+  }
+}

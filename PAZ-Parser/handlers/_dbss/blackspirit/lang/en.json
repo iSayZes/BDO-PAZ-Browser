@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "index": "Form",
+    "condition": "Condition"
+  },
+  "offsetColumns": {
+    "index": "Form",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Black Spirit forms"
+  }
+}

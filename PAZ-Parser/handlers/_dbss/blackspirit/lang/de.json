@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "index": "Form",
+    "condition": "Bedingung"
+  },
+  "offsetColumns": {
+    "index": "Form",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Schwarzgeist-Formen"
+  }
+}

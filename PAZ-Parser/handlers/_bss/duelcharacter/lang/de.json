@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemCopyQuest": "Quest für Gegenstandskopie",
+    "copyItem": "Gegenstandskopie",
+    "singleCopyItem": "Einzelkopien"
+  },
+  "meta": {
+    "count": "Optionen des Soforttauschs"
+  }
+}

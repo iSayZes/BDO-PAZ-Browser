@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "index": "형상",
+    "type": "종류",
+    "actionIndex": "액션 인덱스",
+    "tier": "세대",
+    "icon1": "아이콘",
+    "icon2": "아이콘 2",
+    "characters": "캐릭터"
+  },
+  "offsetColumns": {
+    "index": "형상",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "types": {
+    "0": "말"
+  },
+  "meta": {
+    "count": "탑승물 형상 {count}개"
+  }
+}

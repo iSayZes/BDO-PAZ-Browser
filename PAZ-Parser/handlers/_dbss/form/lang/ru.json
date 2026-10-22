@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "index": "Образ",
+    "type": "Тип",
+    "actionIndex": "Индекс действия",
+    "tier": "Ранг",
+    "icon1": "Значок",
+    "icon2": "Значок 2",
+    "characters": "Персонажи"
+  },
+  "offsetColumns": {
+    "index": "Образ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "types": {
+    "0": "Лошадь"
+  },
+  "meta": {
+    "count": "Образов транспорта: {count}"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "character": "캐릭터",
+    "voices": "목소리",
+    "voiceCount": "목소리 수",
+    "voices1": "목소리 (외형 1)",
+    "voiceCount1": "목소리 수 (외형 1)"
+  },
+  "meta": {
+    "count": "캐릭터 {count}개"
+  }
+}

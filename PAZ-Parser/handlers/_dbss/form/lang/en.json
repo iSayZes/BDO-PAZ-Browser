@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "index": "Form",
+    "type": "Type",
+    "actionIndex": "Action Index",
+    "tier": "Tier",
+    "icon1": "Icon",
+    "icon2": "Icon 2",
+    "characters": "Characters"
+  },
+  "offsetColumns": {
+    "index": "Form",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "types": {
+    "0": "Horse"
+  },
+  "meta": {
+    "count": "{count} mount forms"
+  }
+}

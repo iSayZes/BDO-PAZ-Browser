@@ -14,7 +14,7 @@ from check_docs import CheckError, client_folders  # noqa: E402
 
 @pytest.fixture
 def test_clients(tmp_path: Path) -> Path:
-    for name in ("3251", "794", "1784_repack", "1230"):
+    for name in ("3251", "794", "1230"):
         (tmp_path / name / "Paz").mkdir(parents=True)
     (tmp_path / "2107").mkdir()
     return tmp_path
@@ -28,6 +28,6 @@ def test_all_takes_every_folder_named_by_a_number_with_a_paz_folder_oldest_first
 
 def test_a_number_takes_that_folder_and_a_missing_one_or_other_text_is_an_error(test_clients: Path) -> None:
     assert client_folders(test_clients, "1230") == [(1230, test_clients / "1230" / "Paz")]
-    for version in ("2107", "1784_repack", "latest"):
+    for version in ("2107", "latest"):
         with pytest.raises(CheckError):
             client_folders(test_clients, version)

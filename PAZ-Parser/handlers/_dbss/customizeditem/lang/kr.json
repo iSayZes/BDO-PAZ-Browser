@@ -1,6 +1,7 @@
 {
   "columns": {
     "boxKey": "상자 키",
+    "boxes": "상자",
     "choices": "선택지",
     "items": "아이템"
   },

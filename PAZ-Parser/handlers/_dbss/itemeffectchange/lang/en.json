@@ -1,6 +1,7 @@
 {
   "columns": {
     "meshKey": "Mesh Key",
+    "items": "Items",
     "enchantLevel": "Enhancement Level",
     "levels": "Levels",
     "model": "Model"

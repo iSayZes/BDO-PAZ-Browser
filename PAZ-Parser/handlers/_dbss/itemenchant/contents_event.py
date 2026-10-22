@@ -11,6 +11,9 @@ from __future__ import annotations
 
 # contents_event_type on items whose use does nothing.
 NO_CONTENTS_EVENT = 171
+# Boxes that give each character its own item: param1 is a customizeditem.dbss
+# key. See Contents Event in itemenchant_dbss.md.
+CONTENTS_EVENT_CUSTOMIZED_ITEM_BOX = 31
 # Soul collectors (Marni's Stones): param1 is a characterstatic.dbss
 # character_group, param2 the kill count. See Soul Collectors in itemenchant_dbss.md.
 CONTENTS_EVENT_SOUL_COLLECT = 59

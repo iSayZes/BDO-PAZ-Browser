@@ -28,7 +28,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                     | Known                | Unknown               |
 | ------ | ------------------------ | -------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 58,269,685 B (28.7%) | 144,772,317 B (71.3%) |
+| 2      | `itemenchant.dbss`       | 60,051,733 B (29.6%) | 142,990,269 B (70.4%) |
 | 2      | `itemenchantoffset.dbss` | 2,032,160 B (100.0%) | 0 B (0.0%)            |
 | 1      | `itemenchant.dbss`       | 99,716,229 B (58.0%) | 72,074,984 B (42.0%)  |
 | 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%) | 0 B (0.0%)            |
@@ -162,10 +162,10 @@ decoded.
 | `unknown_61+0x6A`         | u8                            | unknown_cb                  | `1` on every base block (client 3464) |
 | `unknown_61+0x6B`         | u32                           | skill_key_1                 | Skill a consumable casts, a [`skill.dbss`](skill_dbss.md) key; its `buff_ids` are the item's buffs; `0` when none |
 | `unknown_61+0x6F`         | u32                           | skill_key_2                 | Second skill, used by composite meals; `0` when none |
-| `unknown_61+0x73`         | u32                           | unknown_d4                  | Entry count of the first list. Set in 28,101 base items on client 3464, and every entry's class is one `class_mask` allows; 32 entries on armour for all classes |
-| `unknown_61+0x77`         | Class Entry[unknown_d4]       | unknown_d4_entries          | A class type (u8) and a u32 per entry |
-| `unknown_d4_entries+0x00` | u32                           | unknown_list2_count         | Entry count of the second list. Set in 498 base items on client 3464: one entry in 330, two in 164, six in 4. 490 of them are `category` 9 or 11 (`eItemClassify_PearlGoods`, `eItemClassify_Vehicle`), mostly mount, wagon and ship gear |
-| `unknown_d4_entries+0x04` | u8[unknown_list2_count][5]    | unknown_list2               | 5-byte entries |
+| `unknown_61+0x73`         | u32                           | class_entry_count           | Entry count of `class_entries`. Set in 28,101 base items on client 3464, and every entry's class is one `class_mask` allows; 32 entries on armour for all classes |
+| `unknown_61+0x77`         | Class Entry[class_entry_count] | class_entries              | The item mesh key each class type wears, see Item Mesh Keys |
+| `class_entries+0x00`      | u32                           | unknown_list2_count         | Entry count of the second list. Set in 498 base items on client 3464: one entry in 330, two in 164, six in 4. 490 of them are `category` 9 or 11 (`eItemClassify_PearlGoods`, `eItemClassify_Vehicle`), mostly mount, wagon and ship gear |
+| `class_entries+0x04`      | u8[unknown_list2_count][5]    | unknown_list2               | 5-byte entries |
 | `unknown_list2+0x00`      | bytes[4]                      | unknown_after_unknown_list2 | `0` in 67,081 base items on client 3464; most others set only the third byte, `1` to `10` |
 | `unknown_list2+0x04`      | u32                           | unknown_list3_count         | Up to three entries; set in 2,575 base items on client 3464 |
 | `unknown_list2+0x08`      | u32[unknown_list3_count]      | unknown_list3               |       |
@@ -266,12 +266,12 @@ briefs store `0` there and the staff `1`; it is `repair_endurance_count`.
 
 ### Class Entry (5 bytes)
 
-An entry of `unknown_d4_entries`, the first list before the name.
+An entry of `class_entries`, the first list before the name.
 
-| Offset  | Type | Field      | Notes                                       |
-| ------- | ---- | ---------- | ------------------------------------------- |
-| `+0x00` | u8   | class_type | A class `class_mask` allows, in every entry |
-| `+0x01` | u32  | unknown_01 |                                             |
+| Offset  | Type | Field         | Notes                                                                 |
+| ------- | ---- | ------------- | --------------------------------------------------------------------- |
+| `+0x00` | u8   | class_type    | A class `class_mask` allows, in every entry                           |
+| `+0x01` | u32  | item_mesh_key | The mesh this class wears, the key of [`itemeffectchange.dbss`](itemeffectchange_dbss.md); see Item Mesh Keys |
 
 ### Icon Tail (18 bytes)
 
@@ -817,7 +817,7 @@ Names).
 ## Before the Name
 
 From `+0xD4` (plus the `unknown_5d` count) to the icon, a block is a fixed
-sequence of counted lists and strings: the Block rows from `unknown_d4` to
+sequence of counted lists and strings: the Block rows from `class_entry_count` to
 `icon`.
 
 This walk reaches the name and the icon in all 168,680 blocks on client 3464,
@@ -955,6 +955,35 @@ Type `98` (past the enum) grants a Black Spirit's Adventure dice drop group:
 on all 42 base items with the type (client 3482), and the
 `MARBLE_DICE_GROUP_ITEMS` lookup index turns the link around for the
 marble dice views.
+
+Type `31` (`CustomizedItemBox`) opens a box that gives each character its
+own item: `contents_event_param1` is a
+[`customizeditem.dbss`](customizeditem_dbss.md) key. On client 3482, 731 of
+the 740 distinct values of the 754 base items with the type are keys there.
+Event Param 1 shows the key as a link to that record, and the
+`CUSTOMIZED_ITEM_BOXES` lookup index turns the link around for the
+`customizeditem.dbss` Boxes column.
+
+## Item Mesh Keys
+
+`item_mesh_key` in each Class Entry is the mesh the item uses for that class
+type, the key of [`itemeffectchange.dbss`](itemeffectchange_dbss.md). The
+list is the 2016 `gc::ItemEnchantStaticStatus` member `_itemMeshKeyList`,
+one mesh key per class type. Every enhancement level of an item stores the
+same class entries as its base block (client 3482).
+
+| Check (client 3482)                                                   | Result                       |
+| --------------------------------------------------------------------- | ---------------------------- |
+| `itemeffectchange.dbss` mesh keys that are an `item_mesh_key`          | 471 of 596, on 739 base items |
+| Those class entries whose class type matches the class folder of the mesh's level `0` model (`0` `1_phm`, `4` `3_pew`, `24` `7_pvw`, ...) | 1,482 of 1,482, 32 class types |
+| Distinct `item_mesh_key` values that are an `Index` of the `Item_Mesh_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 | 12,124 of 22,859 |
+| Class entries naming such a row whose `UseMeshFile` lies in the folder of the entry's class type | 33,959 of 34,947 |
+
+Blackstar Longsword (715001) names mesh `336000` for the Warrior, the
+21-level one-handed sword of `itemeffectchange.dbss`. The
+`MESH_KEY_ITEMS` lookup index (`build_mesh_key_item_index()` in
+`_dbss/itemenchant/parser.py`) maps each mesh key to its base items for the
+`itemeffectchange.dbss` Items column.
 
 ## Block Strings
 

@@ -8,6 +8,7 @@ from typing import Any
 
 import pytest
 
+from _common.lookup_index import IndexKind
 from tests.case_input import CaseInput
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
@@ -32,6 +33,9 @@ _ENTRY_HEAD = struct.Struct("<IBQ")
 # levels with this model at level 0.
 _SWORD_MESH = 336000
 _SWORD_MODEL = "1_pc/1_phm/weapon/1_onehandsword/phm_01_ohs_0017_r.pac"
+# Blackstar Longsword wears that mesh as a Warrior (itemenchant.dbss class entry).
+_BLACKSTAR_LONGSWORD = 715001
+_BLACKSTAR_LONGSWORD_NAME = "Blackstar Longsword"
 
 
 def _index_rows(companion: str | None = None) -> Callable[[CaseInput], int]:
@@ -52,14 +56,27 @@ CASE = HandlerCase(
     handler_name=FILE_NAME,
     data_file=FILE_NAME,
     companion_files={OFFSET_FILE: OFFSET_FILE},
-    loc_file=None,
-    uses_loc=False,
+    loc_file="languagedata_en.loc",
+    uses_loc=True,
     loc_fields=[],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
+    lookup_indexes={IndexKind.MESH_KEY_ITEMS: {_SWORD_MESH: (_BLACKSTAR_LONGSWORD,)}},
     tests=[
-        SchemaTest(required_keys=["mesh_key", "enchant_level", "entry_count", "mesh_file"]),
+        SchemaTest(
+            required_keys=["mesh_key", "enchant_level", "entry_count", "mesh_file", "item_ids", "item_names", "item_count"],
+        ),
         DeclaredCountTest(declared=_index_rows(OFFSET_FILE)),
-        TargetTest(col="mesh_key", value=_SWORD_MESH, expected={"enchant_level": 0, "mesh_file": _SWORD_MODEL}),
+        TargetTest(
+            col="mesh_key",
+            value=_SWORD_MESH,
+            expected={
+                "enchant_level": 0,
+                "mesh_file": _SWORD_MODEL,
+                "item_ids": [_BLACKSTAR_LONGSWORD],
+                "item_names": [_BLACKSTAR_LONGSWORD_NAME],
+                "item_count": 1,
+            },
+        ),
     ],
 )
 

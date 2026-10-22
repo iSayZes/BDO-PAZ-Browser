@@ -66,6 +66,7 @@ Every client the doc check read, and the layout its files fit.
 | --------------------------- | -------- | ----------------------------------------------------------------------------------------- |
 | `customizeditemoffset.dbss` | Optional | `customized_item_key -> (data_offset, data_size)` index, see below; the records can be walked without it |
 | `languagedata_en.loc`       | Optional | Item names (LOC type 0), class names (LOC type 21) and quest titles (LOC type 18) for the view |
+| `itemenchant.dbss`          | Optional | The box items that open each record, for the Boxes column; the handler reads them from the `CUSTOMIZED_ITEM_BOXES` lookup index, not as a companion |
 
 All multi-byte values are little-endian.
 
@@ -163,6 +164,9 @@ O'dyllita, For Power).
   731 of their 740 distinct `contents_event_param1` values are keys here.
   The nine others (`536`, `60013`, `60016`, `60025`, `60113`, `60116`,
   `60119`, `60122`, `60125`) have no record, and 148 records have no box item.
+  The `CUSTOMIZED_ITEM_BOXES` lookup index turns `contents_event_param1`
+  around: the Boxes column lists the items that open each record, and the
+  `itemenchant.dbss` Event Param 1 of a box item links to its record here.
 - Client 1784 has 410 records with keys 1 to 485 and the same layout.
 
 ## Open Questions
@@ -170,6 +174,10 @@ O'dyllita, For Power).
 ### Boxes Without a Record
 
 Nine `contents_event_param1` values of `CustomizedItemBox` items have no
-record on client 3482 (listed in Notes). No client Lua shows what opening
-such a box does; `getMatchedItem()` is only read after a `nil` check of the
-wrapper.
+record on client 3482 (listed in Notes). The items are Awakening Secret Book
+Box (65297, `536`), three Enduring Crow Main Weapon Boxes (950323, 950326,
+950335: `60013`, `60016`, `60025`) and five Enduring Crow Awakening Weapon
+Boxes (950423 to 950435: `60113` to `60125`). No client Lua shows what opening
+such a box does: only `panel_ingamecashshop_setequip.luac` and
+`panel_pearlshop_displaycontroller.luac` read a record, and
+`getMatchedItem()` is only read after a `nil` check of the wrapper.

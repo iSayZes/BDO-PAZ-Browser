@@ -1,6 +1,7 @@
 {
   "columns": {
     "meshKey": "Ключ меша",
+    "items": "Предметы",
     "enchantLevel": "Уровень усиления",
     "levels": "Уровней",
     "model": "Модель"

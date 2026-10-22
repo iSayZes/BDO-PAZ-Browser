@@ -1,6 +1,7 @@
 {
   "columns": {
     "meshKey": "Clé de maillage",
+    "items": "Objets",
     "enchantLevel": "Niveau d'optimisation",
     "levels": "Niveaux",
     "model": "Modèle"

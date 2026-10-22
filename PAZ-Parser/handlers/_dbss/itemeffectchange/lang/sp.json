@@ -1,6 +1,7 @@
 {
   "columns": {
     "meshKey": "Clave de malla",
+    "items": "Objetos",
     "enchantLevel": "Nivel de refuerzo",
     "levels": "Niveles",
     "model": "Modelo"

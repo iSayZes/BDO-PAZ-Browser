@@ -12,7 +12,8 @@ from _common.html import Column, e, html_list_cell, record_link
 from _common.offset_table import OffsetTableHandler, keyed_offset_handler
 from _common.row_table import RowTableHandler
 from _dbss.marblegamediceitemkey.parser import FILE_NAME as DICE_ITEM_KEY_FILE, KEY_FIELD as DICE_ITEM_KEY_FIELD
-from .group_items import group_item_ids, item_fields, items_cell
+from _common.linked_items import item_list_cell, item_list_fields
+from .group_items import group_item_ids
 from .parser import FILE_NAME, KEY_FIELD, parse_marblegamediceitemgroup_records, parse_marblegamediceitemgroupoffset_rows
 
 
@@ -31,7 +32,7 @@ def _group_record(record: dict) -> dict:
         **record,
         "dice_item_keys": dice_item_keys,
         "dice_items_text": ", ".join(str(key) for key in dice_item_keys),
-        **item_fields(group_item_ids([record[KEY_FIELD]])),
+        **item_list_fields(group_item_ids([record[KEY_FIELD]])),
     }
 
 
@@ -57,6 +58,6 @@ class MarbleDiceItemGroupHandler(RowTableHandler):
         ]
         return [
             e(record[KEY_FIELD]),
-            items_cell(record["item_ids"]),
+            item_list_cell(record["item_ids"]),
             html_list_cell(links),
         ]

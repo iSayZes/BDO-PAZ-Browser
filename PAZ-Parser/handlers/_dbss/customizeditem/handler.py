@@ -1,8 +1,9 @@
 """customizeditem.dbss preview handler: the item each condition gives out of a per-character box.
 
 Each record shows its key (the `contents_event_param1` of the box items that
-open it), the number of choices and each choice as `Condition: Item`, the
-condition named by `condition.py` and the item with its icon and level.
+open it), those box items from the `CUSTOMIZED_ITEM_BOXES` lookup index, the
+number of choices and each choice as `Condition: Item`, the condition named by
+`condition.py` and the item with its icon and level.
 """
 from __future__ import annotations
 
@@ -11,6 +12,8 @@ from pathlib import Path
 
 from _common.html import Column, e, hidden_slice, html_list_cell, icon_html_label_cell
 from _common.item_key import item_key_icon_path, item_key_text, item_key_text_tagged
+from _common.linked_items import item_list_cell, item_list_fields, linked_item_ids
+from _common.lookup_index import IndexKind
 from _common.offset_table import OffsetTableHandler, keyed_offset_handler
 from _common.pa_text import pa_html
 from _common.row_table import RowTableHandler
@@ -24,6 +27,9 @@ _SHOWN_CHOICES = 6
 # Display-only: the condition text of each item, for the cell labels.
 _CONDITION_TEXTS = "_condition_texts"
 _CHOICE_SEPARATOR = "<br>"
+# The box item fields read `box_item_ids`, `box_item_names` and
+# `box_item_count`, since `item_count` already holds the number of choices.
+_BOX_PREFIX = "box_"
 
 
 def customized_item_offset_handler() -> OffsetTableHandler:
@@ -43,6 +49,7 @@ def _with_choices(record: dict) -> dict:
             for condition, item in zip(conditions, record["items"], strict=True)
         ],
         _CONDITION_TEXTS: conditions,
+        **item_list_fields(linked_item_ids(IndexKind.CUSTOMIZED_ITEM_BOXES, [record[KEY_FIELD]]), _BOX_PREFIX),
     }
 
 
@@ -67,6 +74,7 @@ class CustomizedItemHandler(RowTableHandler):
     def columns(self, labels: Mapping[str, str]) -> list[Column]:
         return [
             Column(labels["boxKey"], "num", sort_key=KEY_FIELD),
+            Column(labels["boxes"], sort_key="box_item_count"),
             Column(labels["choices"], "num", sort_key="item_count"),
             # A list column: it would only sort by its string form.
             Column(labels["items"]),
@@ -78,6 +86,7 @@ class CustomizedItemHandler(RowTableHandler):
     def cells(self, record: dict) -> list[str]:
         return [
             e(record[KEY_FIELD]),
+            item_list_cell(record["box_item_ids"]),
             e(record["item_count"]),
             _choices_cell(record),
         ]

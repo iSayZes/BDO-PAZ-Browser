@@ -1,6 +1,7 @@
 {
   "columns": {
     "meshKey": "Mesh-Schlüssel",
+    "items": "Gegenstände",
     "enchantLevel": "Verstärkungsstufe",
     "levels": "Stufen",
     "model": "Modell"

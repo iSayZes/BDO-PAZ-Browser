@@ -8,7 +8,7 @@ from bdo_preview import PreviewHandler
 from _common.buff import buff_label, buff_list_cell
 from _common.character import character_name
 from _common.character_group import character_group_cell, character_group_text
-from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table
+from _common.html import Column, e, flag_cell, icon_cell, record_link, sort_keys, table
 from _common.item_grade import item_grade_tagged
 from _common.lang import handler_text, load_handler_strings
 from _common.loc import LOC_NULL, loc_tagged, loc_text
@@ -18,7 +18,13 @@ from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column
 from _bss.jewelgroupstaticstatus.names import jewel_groups
 from _bss.jewelgroupstaticstatus.parser import FILE_NAME as JEWEL_GROUP_FILE
 from _bss.lightstoneset.item_sets import item_set_ids, set_label_tagged
-from .contents_event import CONTENTS_EVENT_SOUL_COLLECT, NO_CONTENTS_EVENT, contents_event_text
+from _dbss.customizeditem.parser import FILE_NAME as CUSTOMIZED_ITEM_FILE, KEY_FIELD as CUSTOMIZED_ITEM_KEY_FIELD
+from .contents_event import (
+    CONTENTS_EVENT_CUSTOMIZED_ITEM_BOX,
+    CONTENTS_EVENT_SOUL_COLLECT,
+    NO_CONTENTS_EVENT,
+    contents_event_text,
+)
 from .labels import binding_label, classes_label, crystal_group_label, trade_label
 from .parser import (
     parse_itemenchant_records,
@@ -40,6 +46,9 @@ _LOC_ITEM_DESCRIPTION = 1
 
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 3
+_LINK_CLASS = "record-link"
+# A CustomizedItemBox item's param1 opens this record.
+_CUSTOMIZED_ITEM_PATH = f"gamecommondata/binary/{CUSTOMIZED_ITEM_FILE}"
 # A required level of 0 or 1 means the item has none.
 _NO_LEVEL_LIMIT = 1
 
@@ -132,11 +141,17 @@ def _optional_cell(value: int | None) -> str:
 
 
 def _contents_event_param1_cell(record: dict) -> str:
-    """param1, or a soul collector's character group with its first member names."""
+    """param1; a soul collector's character group with its first member names, and a
+    CustomizedItemBox's customizeditem.dbss key as a link to that record."""
     param1 = record["contents_event_param1"]
-    if record["contents_event_type"] == CONTENTS_EVENT_SOUL_COLLECT and param1 is not None:
+    if param1 is None:
+        return _EMPTY
+    event_type = record["contents_event_type"]
+    if event_type == CONTENTS_EVENT_SOUL_COLLECT:
         return character_group_cell(param1, _LIST_PREVIEW_ITEMS)
-    return _optional_cell(param1)
+    if event_type == CONTENTS_EVENT_CUSTOMIZED_ITEM_BOX:
+        return record_link(str(param1), _CUSTOMIZED_ITEM_PATH, CUSTOMIZED_ITEM_KEY_FIELD, param1, _LINK_CLASS)
+    return e(param1)
 
 
 def _level_cell(record: dict) -> str:

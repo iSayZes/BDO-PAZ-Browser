@@ -1069,6 +1069,7 @@ _common/
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
 ├── knowledge.py         # knowledge entry names (LOC type 34)
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
+├── linked_items.py      # linked_item_ids(): the base items an item ID index links to keys; item_list_fields() and item_list_cell() for the Items column
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
 ├── quest/kill_monster_group.py # the killMonsterGroup(group, count) calls of a quest script, with the group's members
@@ -1347,6 +1348,8 @@ IDs (`LookupValue`).
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `ENHANCEMENT_TYPE_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `MARBLE_DICE_GROUP_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `CUSTOMIZED_ITEM_BOXES` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `MESH_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
 | `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
 | `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
@@ -1603,7 +1606,25 @@ group key to the base items with contents event `98` whose
 `build_marble_dice_group_item_index()` in `_dbss/itemenchant/parser.py`
 from the level-0 blocks. The Items columns of `marblegamediceitemgroup.dbss`
 and `marblegamediceitemkey.dbss` read it through
-`_dbss/marblegamediceitemgroup/group_items.py`.
+`_dbss/marblegamediceitemgroup/group_items.py`, which calls
+`linked_item_ids()` in `_common/linked_items.py`.
+
+`CUSTOMIZED_ITEM_BOXES` maps a
+[customizeditem.dbss](file-formats/customizeditem_dbss.md) key to the base
+items with contents event `31` (CustomizedItemBox) whose
+`contents_event_param1` names it, in ascending ID order. It is built by
+`build_customized_item_box_index()` in `_dbss/itemenchant/parser.py`, which
+shares the level-0 walk with the marble dice index. The `customizeditem.dbss`
+Boxes column reads it through `_common/linked_items.py`.
+
+`MESH_KEY_ITEMS` maps an item mesh key (`item_mesh_key` in the
+[itemenchant.dbss](file-formats/itemenchant_dbss.md) Class Entry list, the key
+of [itemeffectchange.dbss](file-formats/itemeffectchange_dbss.md)) to the base
+items that wear it for any class type, in ascending ID order. It is built by
+`build_mesh_key_item_index()` in `_dbss/itemenchant/parser.py` from the
+level-0 blocks, since every level of an item stores the same class entries.
+The `itemeffectchange.dbss` Items column reads it through
+`_common/linked_items.py`.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links

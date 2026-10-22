@@ -1,6 +1,7 @@
 {
   "columns": {
     "meshKey": "메시 키",
+    "items": "아이템",
     "enchantLevel": "강화 단계",
     "levels": "단계 수",
     "model": "모델"

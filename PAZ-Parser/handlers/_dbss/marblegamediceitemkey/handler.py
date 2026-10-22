@@ -14,7 +14,8 @@ from bdo_models import PazEntry
 from _common.html import Column, e, html_list_cell, record_link
 from _common.offset_table import OffsetTableHandler, keyed_offset_handler
 from _common.row_table import RowTableHandler
-from _dbss.marblegamediceitemgroup.group_items import group_item_ids, item_fields, items_cell
+from _common.linked_items import item_list_cell, item_list_fields
+from _dbss.marblegamediceitemgroup.group_items import group_item_ids
 from _dbss.marblegamediceitemgroup.parser import (
     FILE_NAME as GROUP_FILE,
     KEY_FIELD as GROUP_KEY_FIELD,
@@ -38,7 +39,7 @@ def _key_record(dice_item_key: int, group_keys: list[int]) -> dict:
         KEY_FIELD: dice_item_key,
         "group_keys": group_keys,
         "groups_text": ", ".join(str(key) for key in group_keys),
-        **item_fields(group_item_ids(group_keys)),
+        **item_list_fields(group_item_ids(group_keys)),
     }
 
 
@@ -75,6 +76,6 @@ class MarbleDiceItemKeyHandler(RowTableHandler):
         ]
         return [
             e(record[KEY_FIELD]),
-            items_cell(record["item_ids"]),
+            item_list_cell(record["item_ids"]),
             html_list_cell(links) or _EMPTY,
         ]

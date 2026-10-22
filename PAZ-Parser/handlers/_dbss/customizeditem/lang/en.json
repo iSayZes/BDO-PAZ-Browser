@@ -1,6 +1,7 @@
 {
   "columns": {
     "boxKey": "Box Key",
+    "boxes": "Boxes",
     "choices": "Choices",
     "items": "Items"
   },

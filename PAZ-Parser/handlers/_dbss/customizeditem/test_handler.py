@@ -6,6 +6,7 @@ from typing import Any
 
 import pytest
 
+from _common.lookup_index import IndexKind
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
@@ -31,6 +32,9 @@ _KEY_SIZE = 2
 _QUEST_BOX_KEY = 497
 _QUEST_BOX_CONDITIONS = ["clearquest(22226,20);", "clearquest(22226,21);", "clearquest(22226,22);"]
 _QUEST_BOX_ITEMS = [66298, 66299, 66300]
+# Mysterious Secret Note is the box item that opens key 497 (contents event 31).
+_SECRET_NOTE = 66297
+_SECRET_NOTE_NAME = "Mysterious Secret Note"
 # checkClass(0) names the Warrior (class type 0, LOC type 21).
 _WARRIOR_CONDITION = "checkClass(0);"
 _WARRIOR = "Warrior"
@@ -44,10 +48,31 @@ CASE = HandlerCase(
     uses_loc=True,
     loc_fields=[],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
+    lookup_indexes={IndexKind.CUSTOMIZED_ITEM_BOXES: {_QUEST_BOX_KEY: (_SECRET_NOTE,)}},
     tests=[
-        SchemaTest(required_keys=[KEY_FIELD, "item_count", "items", "customized_item_key_dup", "choices"]),
+        SchemaTest(
+            required_keys=[
+                KEY_FIELD,
+                "item_count",
+                "items",
+                "customized_item_key_dup",
+                "choices",
+                "box_item_ids",
+                "box_item_names",
+                "box_item_count",
+            ],
+        ),
         DeclaredCountTest(declared=header_count(offset=0)),
-        TargetTest(col=KEY_FIELD, value=_QUEST_BOX_KEY, expected={"item_count": len(_QUEST_BOX_ITEMS)}),
+        TargetTest(
+            col=KEY_FIELD,
+            value=_QUEST_BOX_KEY,
+            expected={
+                "item_count": len(_QUEST_BOX_ITEMS),
+                "box_item_ids": [_SECRET_NOTE],
+                "box_item_names": [_SECRET_NOTE_NAME],
+                "box_item_count": 1,
+            },
+        ),
     ],
 )
 
@@ -141,3 +166,10 @@ def test_parser_reads_packed_item_keys_and_rejects_trailing_bytes() -> None:
     assert split_item_key(parsed["items"][0]["item_key"]) == (10005, 8)
     with pytest.raises(ValueError):
         parse_customizeditem_records(data + b"\x00")
+
+
+def test_records_no_box_item_opens_show_no_box(customized_item_result: HandlerResult) -> None:
+    """Only the indexed key lists a box item; the others sort last with None."""
+    for r in customized_item_result.records:
+        if r[KEY_FIELD] != _QUEST_BOX_KEY:
+            assert r["box_item_ids"] == [] and r["box_item_count"] is None

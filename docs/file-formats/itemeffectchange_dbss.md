@@ -63,6 +63,7 @@ Every client the doc check read, and the layout its files fit.
 | File                          | Required | Role                                                   |
 | ----------------------------- | -------- | ------------------------------------------------------ |
 | `itemeffectchangeoffset.dbss` | No       | Index of every entry by mesh key and level; the handler reads the groups in file order and does not need it |
+| `itemenchant.dbss`            | No       | The items that wear each mesh, for the Items column; the handler reads them from the `MESH_KEY_ITEMS` lookup index, not as a companion |
 
 All multi-byte values are little-endian.
 
@@ -184,8 +185,26 @@ model switches at the same levels:
 
 Levels 19 and 20 of a 21-entry group are TET and PEN on the item scale of
 `+1` to `+15` then PRI to DEC (the LOC type 79 level names, see
-[`specialenchantitem.bss`](specialenchantitem_bss.md)). Which item lines
-use the 6- and 11-entry scales is open (see below).
+[`specialenchantitem.bss`](specialenchantitem_bss.md)). The scale follows
+the items that wear the mesh (see Items): on client 3482 the items behind the
+6-entry groups enhance to level 5 (Labreska's Helmet, Dahn's Gloves), those
+behind the 11-entry groups to level 10 (Sovereign Kibelius, Edana -
+Heavensmite) and those behind the 21-entry groups to level 20 (Blackstar
+Longsword). The other items on these meshes are appearance and temporary
+versions with no or one level, such as the Edana appearance pieces and the
+(Temp) Blackstar weapons.
+
+## Items
+
+The item that wears a mesh is in [`itemenchant.dbss`](itemenchant_dbss.md):
+its Class Entry list names an `item_mesh_key` per class type, and those keys
+are the `mesh_key` of this file (Item Mesh Keys there). On client 3482, 471
+of the 596 groups are named by 739 base items, and in all 1,482 of those
+class entries the class type matches the class folder of the group's level
+`0` model (class type `0` and `1_pc/1_phm/`, for one). Mesh `336000` is worn
+by Blackstar Longsword (715001) and three more items. The `MESH_KEY_ITEMS`
+lookup index turns the list around, and the Items column shows the items of
+each entry's mesh.
 
 ## Notes
 
@@ -204,12 +223,11 @@ use the 6- and 11-entry scales is open (see below).
 
 ## Open Questions
 
-### Mesh Key to Item
+### Meshes Without an Item
 
-`mesh_key` is an item mesh key, not an item ID: 336000 is no item. The item
-that wears a mesh is not in this file. The 2016 `gc::ItemEnchantStaticStatus`
-held an `_itemMeshKeyList` per class type, and the live
-[`itemenchant.dbss`](itemenchant_dbss.md) Class Entry (a class type and a u32)
-is a candidate for that list. Matching its u32 values against these mesh keys
-would show which items each group belongs to and which item lines use the 6-
-and 11-level scales.
+On client 3482, 125 of the 596 mesh keys are in no `itemenchant.dbss` class
+entry: 122 six-entry groups and three 21-entry groups, 95 with a weapon model
+and 30 with armour, among them 17255 and 336071 to 336075. 103 of them are an `Index` of
+the `Item_Mesh_Table` sheet in the private server's client 1784 workbook
+(Field Names). Which item, if any, uses them is
+open.

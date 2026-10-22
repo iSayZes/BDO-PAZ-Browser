@@ -1,6 +1,7 @@
 {
   "columns": {
     "boxKey": "Clé de boîte",
+    "boxes": "Boîtes",
     "choices": "Choix",
     "items": "Objets"
   },

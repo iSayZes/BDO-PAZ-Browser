@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Ключ",
+    "start": "Начало",
+    "end": "Конец",
+    "maxPearl": "Макс. жемчуг",
+    "level": "Уровень",
+    "title": "Название",
+    "targetPearl": "Цель (жемчуг)",
+    "rewards": "Награды",
+    "description": "Описание"
+  },
+  "meta": {
+    "count": "Уровней: {count}"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "Index",
+    "changeItem": "Umwandlungsgegenstand",
+    "beforeItem": "Vorher",
+    "afterItem": "Nachher"
+  },
+  "meta": {
+    "count": "{count} Umwandlungen"
+  }
+}

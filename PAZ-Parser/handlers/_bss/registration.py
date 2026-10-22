@@ -6,6 +6,7 @@ from _common.empty_table import EmptyTableHandler
 
 from .actionverification.handler import ActionVerificationBssHandler
 from .allquestlist.handler import AllQuestListBssHandler
+from .autoseasonclosechangeitemstaticstatus.handler import AutoSeasonCloseChangeItemHandler
 from .barter_normal.handler import BarterNormalBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
 from .barter_special.handler import BarterSpecialBssHandler
@@ -17,6 +18,7 @@ from .branchquest.handler import BranchQuestBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .buildingsource.handler import BuildingSourceBssHandler
 from .carriagechar.handler import CarriageCharBssHandler
+from .challengerewardlist.handler import ChallengeRewardListHandler
 from .charactersimply.handler import CharacterSimplyBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
@@ -136,6 +138,7 @@ from .servantmating.handler import ServantMatingBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
+from .specialpass.handler import SpecialPassHandler
 from .specialquestinfo.handler import SpecialQuestInfoBssHandler
 from .stringtable.handler import StringTableBssHandler
 from .submenu.handler import SubmenuBssHandler
@@ -186,7 +189,9 @@ def register_bss_handlers() -> None:
     register_handler("branchquest.bss", BranchQuestBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("buildingsource.bss", BuildingSourceBssHandler())
+    register_handler("autoseasonclosechangeitemstaticstatus.bss", AutoSeasonCloseChangeItemHandler())
     register_handler("carriagechar.bss", CarriageCharBssHandler())
+    register_handler("challengerewardlist.bss", ChallengeRewardListHandler())
     register_handler("charactersimply.bss", CharacterSimplyBssHandler())
     register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
@@ -337,6 +342,7 @@ def register_bss_handlers() -> None:
         register_handler(name, SkillExperienceMaxLevelBssHandler())
     register_handler("skillgroup.bss", SkillGroupBssHandler())
     register_handler("specialenchantitem.bss", SpecialEnchantItemBssHandler())
+    register_handler("specialpass.bss", SpecialPassHandler())
     register_handler("specialquestinfo.bss", SpecialQuestInfoBssHandler())
     register_handler("stringtable.bss", StringTableBssHandler())
     register_handler("submenu.bss", SubmenuBssHandler())

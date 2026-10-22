@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "passNo": "번호",
+    "freeQuest": "무료 의뢰",
+    "premiumQuest": "프리미엄 의뢰",
+    "seasonType": "시즌 종류",
+    "conditionQuest": "조건 의뢰",
+    "changedTitle": "변경된 제목",
+    "changedDescription": "변경된 설명"
+  },
+  "meta": {
+    "count": "패스 {count}줄"
+  }
+}

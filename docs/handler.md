@@ -1053,7 +1053,7 @@ _common/
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
-├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte; read_counted_records() for rows with lists
+├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte; read_counted_records() for rows with lists; read_counted_structs() and read_counted_u32s() for counted lists
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
@@ -1248,6 +1248,10 @@ attributes. A table of fixed rows after a u32 count reads them with
 `_common/counted_rows.py` (`counted_row_values()` for rows with an array
 field); rows with counted lists read each row from one `RecordReader` with
 `read_counted_records(data, read_row, file_name)` (`_dbss/houseworking/`).
+A u32-counted list inside a row or after the rows reads with
+`read_counted_structs(reader, item, fields, what)` (fixed structs as dicts)
+or `read_counted_u32s(reader, what)` from the same module
+(`_bss/autoseasonclosechangeitemstaticstatus/`).
 `_dbss/itempalette/` is the smallest example.
 
 ## Lookup Indexes

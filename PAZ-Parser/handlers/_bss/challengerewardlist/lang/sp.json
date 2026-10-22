@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "itemId": "ID del objeto",
+    "enchantLevel": "Nivel de refuerzo",
+    "item": "Objeto"
+  },
+  "meta": {
+    "count": "{count} objetos de recompensa"
+  }
+}

@@ -249,6 +249,9 @@ from .blackspirit.handler import BlackSpiritHandler, black_spirit_offset_handler
 from .form.handler import FormHandler, form_offset_handler
 from .marblegamediceitemgroup.handler import MarbleDiceItemGroupHandler, marble_dice_item_group_offset_handler
 from .marblegamediceitemkey.handler import MarbleDiceItemKeyHandler, marble_dice_item_key_offset_handler
+from .moonblessingss.handler import MoonBlessingHandler
+from .seasonpass.handler import SeasonPassHandler
+from .seasonreward.handler import SeasonRewardHandler
 
 
 def register_dbss_handlers() -> None:
@@ -580,3 +583,6 @@ def register_dbss_handlers() -> None:
     register_handler("marblegamediceitemgroup.dbss", MarbleDiceItemGroupHandler())
     register_handler("marblegamediceitemkeyoffset.dbss", marble_dice_item_key_offset_handler())
     register_handler("marblegamediceitemkey.dbss", MarbleDiceItemKeyHandler())
+    register_handler("moonblessingss.dbss", MoonBlessingHandler())
+    register_handler("seasonpass.dbss", SeasonPassHandler())
+    register_handler("seasonreward.dbss", SeasonRewardHandler())

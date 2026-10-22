@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "passKey": "Clave del pase",
+    "contentType": "Tipo",
+    "title": "Título",
+    "start": "Inicio",
+    "end": "Fin",
+    "saleEnd": "Fin de la venta",
+    "step": "Paso",
+    "passPoints": "Puntos del pase",
+    "basicReward": "Recompensa básica",
+    "passReward": "Recompensas del pase",
+    "description": "Descripción"
+  },
+  "contentTypes": {
+    "1": "Diaria",
+    "2": "Solare",
+    "3": "Combate",
+    "4": "Náutica",
+    "5": "Recolección"
+  },
+  "meta": {
+    "count": "{count} pasos de recompensa"
+  }
+}

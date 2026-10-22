@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "passNo": "N.º",
+    "freeQuest": "Misión gratuita",
+    "premiumQuest": "Misión prémium",
+    "seasonType": "Tipo de temporada",
+    "conditionQuest": "Misión requerida",
+    "changedTitle": "Título cambiado",
+    "changedDescription": "Descripción cambiada"
+  },
+  "meta": {
+    "count": "{count} filas del pase"
+  }
+}

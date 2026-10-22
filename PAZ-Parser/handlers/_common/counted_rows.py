@@ -3,7 +3,8 @@
 Most `.dbss` tables with an `*offset.dbss` index have this shape; the index
 only says where each row sits, so the rows can be read from the count.
 `parse_counted_rows()` reads rows of one fixed size, `read_counted_records()`
-rows with lists in them.
+rows with lists in them. `read_counted_structs()` and `read_counted_u32s()`
+read such a list inside a row or after the rows.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ from _common.binary import u32
 from _common.record_reader import RecordReader
 
 COUNT_SIZE = 4
+_U32 = struct.Struct("<I")
 
 
 def counted_row_values(data: bytes, row: struct.Struct, file_name: str) -> list[tuple]:
@@ -52,3 +54,22 @@ def read_counted_records(data: bytes, read_row: Callable[[RecordReader], dict], 
     if not reader.at_end():
         raise ValueError(f"{file_name} rows end at 0x{reader.pos:X}, the file at 0x{len(data):X}")
     return records
+
+
+def read_counted_structs(reader: RecordReader, item: struct.Struct, fields: Sequence[str], what: str) -> list[dict]:
+    """A u32 count, then that many `item` structs, each as `fields` -> the values it unpacks.
+
+    Raises ValueError naming `what` when the count runs past the reader's end.
+    """
+    (count,) = reader.unpack(_U32)
+    if count * item.size > reader.remaining():
+        raise ValueError(f"{what} count {count:,} at 0x{reader.pos - _U32.size:X} runs past the end")
+    return [dict(zip(fields, reader.unpack(item), strict=True)) for _ in range(count)]
+
+
+def read_counted_u32s(reader: RecordReader, what: str) -> list[int]:
+    """A u32 count, then that many u32 values. Raises ValueError like `read_counted_structs()`."""
+    (count,) = reader.unpack(_U32)
+    if count * _U32.size > reader.remaining():
+        raise ValueError(f"{what} count {count:,} at 0x{reader.pos - _U32.size:X} runs past the end")
+    return list(reader.unpack(struct.Struct(f"<{count}I")))

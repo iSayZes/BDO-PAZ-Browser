@@ -140,7 +140,20 @@
     "summonItemId": "소환 아이템 ID",
     "summonItem": "소환 아이템",
     "tokenItemId": "증표 아이템 ID",
-    "tokenItem": "증표 아이템"
+    "tokenItem": "증표 아이템",
+    "territory1Key": "영지 1 키",
+    "territory1": "영지 1",
+    "territory2Key": "영지 2 키",
+    "territory2": "영지 2",
+    "consoleTerritoryKey": "콘솔 영지 키",
+    "consoleTerritory": "콘솔 영지",
+    "limitMemberCountSunday": "최대 인원 (일요일)",
+    "limitMemberCountMonday": "최대 인원 (월요일)",
+    "limitMemberCountTuesday": "최대 인원 (화요일)",
+    "limitMemberCountWednesday": "최대 인원 (수요일)",
+    "limitMemberCountThursday": "최대 인원 (목요일)",
+    "limitMemberCountFriday": "최대 인원 (금요일)",
+    "startDays": "전투 요일"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -150,6 +163,7 @@
     "academyClasses": "올비아 아카데미 기수 {count}개",
     "mapColors": "지도 색상 {count}개",
     "hardcoreTitles": "하드코어 칭호 {count}개",
-    "hardcoreGrades": "등급 {count}개"
+    "hardcoreGrades": "등급 {count}개",
+    "oceanSiegeGroups": "푸른 전장 그룹 {count}개"
   }
 }

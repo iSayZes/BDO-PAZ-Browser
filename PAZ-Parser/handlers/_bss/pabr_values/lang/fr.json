@@ -140,7 +140,20 @@
     "summonItemId": "ID de l'objet d'invocation",
     "summonItem": "Objet d'invocation",
     "tokenItemId": "ID du jeton",
-    "tokenItem": "Jeton"
+    "tokenItem": "Jeton",
+    "territory1Key": "Clé de territoire 1",
+    "territory1": "Territoire 1",
+    "territory2Key": "Clé de territoire 2",
+    "territory2": "Territoire 2",
+    "consoleTerritoryKey": "Clé de territoire console",
+    "consoleTerritory": "Territoire console",
+    "limitMemberCountSunday": "Participants max. (Dimanche)",
+    "limitMemberCountMonday": "Participants max. (Lundi)",
+    "limitMemberCountTuesday": "Participants max. (Mardi)",
+    "limitMemberCountWednesday": "Participants max. (Mercredi)",
+    "limitMemberCountThursday": "Participants max. (Jeudi)",
+    "limitMemberCountFriday": "Participants max. (Vendredi)",
+    "startDays": "Jours de bataille"
   },
   "meta": {
     "count": "{count} entrées",
@@ -150,6 +163,7 @@
     "academyClasses": "{count} promotions de l'Académie d'Olvia",
     "mapColors": "{count} couleurs de carte",
     "hardcoreTitles": "{count} titres Hardcore",
-    "hardcoreGrades": "{count} rangs"
+    "hardcoreGrades": "{count} rangs",
+    "oceanSiegeGroups": "{count} groupes du Champ de bataille bleu"
   }
 }

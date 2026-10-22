@@ -140,7 +140,20 @@
     "summonItemId": "Summon Item ID",
     "summonItem": "Summon Item",
     "tokenItemId": "Token Item ID",
-    "tokenItem": "Token Item"
+    "tokenItem": "Token Item",
+    "territory1Key": "Territory 1 Key",
+    "territory1": "Territory 1",
+    "territory2Key": "Territory 2 Key",
+    "territory2": "Territory 2",
+    "consoleTerritoryKey": "Console Territory Key",
+    "consoleTerritory": "Console Territory",
+    "limitMemberCountSunday": "Max Participants (Sunday)",
+    "limitMemberCountMonday": "Max Participants (Monday)",
+    "limitMemberCountTuesday": "Max Participants (Tuesday)",
+    "limitMemberCountWednesday": "Max Participants (Wednesday)",
+    "limitMemberCountThursday": "Max Participants (Thursday)",
+    "limitMemberCountFriday": "Max Participants (Friday)",
+    "startDays": "Battle Days"
   },
   "meta": {
     "count": "{count} entries",
@@ -150,6 +163,7 @@
     "academyClasses": "{count} Olvia Academy classes",
     "mapColors": "{count} map colors",
     "hardcoreTitles": "{count} Hardcore titles",
-    "hardcoreGrades": "{count} grades"
+    "hardcoreGrades": "{count} grades",
+    "oceanSiegeGroups": "{count} Blue Battlefield groups"
   }
 }

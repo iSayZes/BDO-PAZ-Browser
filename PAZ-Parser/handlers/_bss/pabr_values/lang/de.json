@@ -140,7 +140,20 @@
     "summonItemId": "Beschwörungsgegenstand-ID",
     "summonItem": "Beschwörungsgegenstand",
     "tokenItemId": "Marken-ID",
-    "tokenItem": "Marke"
+    "tokenItem": "Marke",
+    "territory1Key": "Territorium-1-Schlüssel",
+    "territory1": "Territorium 1",
+    "territory2Key": "Territorium-2-Schlüssel",
+    "territory2": "Territorium 2",
+    "consoleTerritoryKey": "Konsolen-Territorium-Schlüssel",
+    "consoleTerritory": "Konsolen-Territorium",
+    "limitMemberCountSunday": "Max. Teilnehmeranzahl (Sonntag)",
+    "limitMemberCountMonday": "Max. Teilnehmeranzahl (Montag)",
+    "limitMemberCountTuesday": "Max. Teilnehmeranzahl (Dienstag)",
+    "limitMemberCountWednesday": "Max. Teilnehmeranzahl (Mittwoch)",
+    "limitMemberCountThursday": "Max. Teilnehmeranzahl (Donnerstag)",
+    "limitMemberCountFriday": "Max. Teilnehmeranzahl (Freitag)",
+    "startDays": "Kampftage"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -150,6 +163,7 @@
     "academyClasses": "{count} Semester der Olvia-Akademie",
     "mapColors": "{count} Kartenfarben",
     "hardcoreTitles": "{count} Hardcore-Titel",
-    "hardcoreGrades": "{count} Ränge"
+    "hardcoreGrades": "{count} Ränge",
+    "oceanSiegeGroups": "{count} Gruppen des Blauen Schlachtfelds"
   }
 }

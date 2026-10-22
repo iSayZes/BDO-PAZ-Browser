@@ -140,7 +140,20 @@
     "summonItemId": "ID предмета призыва",
     "summonItem": "Предмет призыва",
     "tokenItemId": "ID жетона",
-    "tokenItem": "Жетон"
+    "tokenItem": "Жетон",
+    "territory1Key": "Ключ территории 1",
+    "territory1": "Территория 1",
+    "territory2Key": "Ключ территории 2",
+    "territory2": "Территория 2",
+    "consoleTerritoryKey": "Ключ территории консоли",
+    "consoleTerritory": "Территория консоли",
+    "limitMemberCountSunday": "Макс. кол-во участников (Воскресенье)",
+    "limitMemberCountMonday": "Макс. кол-во участников (Понедельник)",
+    "limitMemberCountTuesday": "Макс. кол-во участников (Вторник)",
+    "limitMemberCountWednesday": "Макс. кол-во участников (Среда)",
+    "limitMemberCountThursday": "Макс. кол-во участников (Четверг)",
+    "limitMemberCountFriday": "Макс. кол-во участников (Пятница)",
+    "startDays": "Дни битвы"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -150,6 +163,7 @@
     "academyClasses": "Наборов Академии Оливии: {count}",
     "mapColors": "Цветов карты: {count}",
     "hardcoreTitles": "Титулов Hardcore: {count}",
-    "hardcoreGrades": "Рангов: {count}"
+    "hardcoreGrades": "Рангов: {count}",
+    "oceanSiegeGroups": "Групп Лазурной арены: {count}"
   }
 }

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "count": "개수",
+    "rewardSet": "세트",
+    "rewardList": "목록",
+    "skill1Id": "기술 1 ID",
+    "skill1": "기술 1",
+    "skill2Id": "기술 2 ID",
+    "skill2": "기술 2"
+  },
+  "meta": {
+    "count": "보상 아이템 {count}개"
+  }
+}

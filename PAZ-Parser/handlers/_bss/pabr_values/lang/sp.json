@@ -140,7 +140,20 @@
     "summonItemId": "ID del objeto de invocación",
     "summonItem": "Objeto de invocación",
     "tokenItemId": "ID de la ficha",
-    "tokenItem": "Ficha"
+    "tokenItem": "Ficha",
+    "territory1Key": "Clave de territorio 1",
+    "territory1": "Territorio 1",
+    "territory2Key": "Clave de territorio 2",
+    "territory2": "Territorio 2",
+    "consoleTerritoryKey": "Clave de territorio de consola",
+    "consoleTerritory": "Territorio de consola",
+    "limitMemberCountSunday": "Participantes máximos (Domingo)",
+    "limitMemberCountMonday": "Participantes máximos (Lunes)",
+    "limitMemberCountTuesday": "Participantes máximos (Martes)",
+    "limitMemberCountWednesday": "Participantes máximos (Miércoles)",
+    "limitMemberCountThursday": "Participantes máximos (Jueves)",
+    "limitMemberCountFriday": "Participantes máximos (Viernes)",
+    "startDays": "Días de batalla"
   },
   "meta": {
     "count": "{count} entradas",
@@ -150,6 +163,7 @@
     "academyClasses": "{count} promociones de la Academia de Olvia",
     "mapColors": "{count} colores del mapa",
     "hardcoreTitles": "{count} títulos de Hardcore",
-    "hardcoreGrades": "{count} rangos"
+    "hardcoreGrades": "{count} rangos",
+    "oceanSiegeGroups": "{count} grupos de Isla de Agua"
   }
 }

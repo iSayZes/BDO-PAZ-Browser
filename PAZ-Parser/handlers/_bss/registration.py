@@ -94,6 +94,8 @@ from .multiplequest.handler import MultipleQuestBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
+from .oceansiegereviveposition.handler import OceanSiegeRevivePositionBssHandler
+from .oceansiegereward.handler import OceanSiegeRewardBssHandler
 from .pabr_values.handler import PabrValuesBssHandler
 from .pabr_values.tables import VALUE_TABLES
 from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
@@ -274,6 +276,8 @@ def register_bss_handlers() -> None:
     register_handler("servantmating.bss", ServantMatingBssHandler())
     register_handler("npcgiftetc.bss", NpcGiftEtcBssHandler())
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
+    register_handler("oceansiegereviveposition.bss", OceanSiegeRevivePositionBssHandler())
+    register_handler("oceansiegereward.bss", OceanSiegeRewardBssHandler())
     # One handler for the small option tables (PABR and bare), each with its own layout.
     for value_table in VALUE_TABLES:
         register_handler(value_table.file_name, PabrValuesBssHandler(value_table))

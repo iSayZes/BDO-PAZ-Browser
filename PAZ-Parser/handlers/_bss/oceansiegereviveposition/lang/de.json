@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "territoryKey": "Territorium-Schlüssel",
+    "territory": "Territorium",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} Wiederbelebungspositionen"
+  }
+}

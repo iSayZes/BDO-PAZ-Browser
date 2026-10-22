@@ -142,6 +142,7 @@ from .specialpass.handler import SpecialPassHandler
 from .specialquestinfo.handler import SpecialQuestInfoBssHandler
 from .stringtable.handler import StringTableBssHandler
 from .submenu.handler import SubmenuBssHandler
+from .tax.handler import TaxBssHandler
 from .territoryinfo.handler import TerritoryInfoBssHandler
 from .titlecategory.handler import TitleCategoryBssHandler
 from .totalquestcount.handler import TotalQuestCountBssHandler
@@ -302,6 +303,7 @@ def register_bss_handlers() -> None:
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("oceansiegereviveposition.bss", OceanSiegeRevivePositionBssHandler())
     register_handler("oceansiegereward.bss", OceanSiegeRewardBssHandler())
+    register_handler("tax.bss", TaxBssHandler())
     # One handler for the small option tables (PABR and bare), each with its own layout.
     for value_table in VALUE_TABLES:
         register_handler(value_table.file_name, PabrValuesBssHandler(value_table))

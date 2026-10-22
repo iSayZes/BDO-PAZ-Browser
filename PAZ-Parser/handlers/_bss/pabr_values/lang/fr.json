@@ -158,7 +158,28 @@
     "x": "X",
     "z": "Z",
     "nodeKey": "Clé du géopoint",
-    "node": "Géopoint"
+    "node": "Géopoint",
+    "territoryKey": "Clé du territoire",
+    "isSiege": "Zone de siège",
+    "sundayTerritories": "Dimanche",
+    "mondayTerritories": "Lundi",
+    "tuesdayTerritories": "Mardi",
+    "wednesdayTerritories": "Mercredi",
+    "thursdayTerritories": "Jeudi",
+    "fridayTerritories": "Vendredi",
+    "saturdayTerritories": "Samedi",
+    "hpLimit": "Limite PV max.",
+    "apLimit": "Limite PA",
+    "drLimit": "Limite Réduction des dégâts",
+    "accuracyLimit": "Limite Précision",
+    "evasionLimit": "Limite Esquive",
+    "drRateLimit": "Limite Réduction des dégâts (%)",
+    "hpRecoveryLimit": "Limite Récupération des PV",
+    "staminaLimit": "Limite Endurance",
+    "territory1IconX": "Icône territoire 1 X",
+    "territory1IconY": "Icône territoire 1 Y",
+    "territory2IconX": "Icône territoire 2 X",
+    "territory2IconY": "Icône territoire 2 Y"
   },
   "meta": {
     "count": "{count} entrées",
@@ -171,6 +192,7 @@
     "hardcoreGrades": "{count} rangs",
     "oceanSiegeGroups": "{count} groupes du Champ de bataille bleu",
     "houseCharacters": "{count} personnages de maison",
-    "edaniaCastles": "{count} châteaux d'Edania"
+    "edaniaCastles": "{count} châteaux d'Edania",
+    "territoryGroups": "{count} groupes de territoires"
   }
 }

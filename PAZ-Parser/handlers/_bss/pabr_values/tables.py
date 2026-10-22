@@ -31,6 +31,7 @@ from .hardcore_tables import HARDCORE_TABLES
 from .oceansiege_tables import OCEAN_SIEGE_TABLES
 from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
+from .siege_tables import SIEGE_TABLES
 
 __all__ = [
     "VALUE_TABLES",
@@ -240,4 +241,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *PVP_TABLES,
     *OCEAN_SIEGE_TABLES,
     *EDANIA_TABLES,
+    *SIEGE_TABLES,
 )

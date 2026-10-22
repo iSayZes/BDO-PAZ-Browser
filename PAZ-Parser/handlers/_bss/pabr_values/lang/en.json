@@ -158,7 +158,28 @@
     "x": "X",
     "z": "Z",
     "nodeKey": "Node Key",
-    "node": "Node"
+    "node": "Node",
+    "territoryKey": "Territory Key",
+    "isSiege": "Siege Area",
+    "sundayTerritories": "Sunday",
+    "mondayTerritories": "Monday",
+    "tuesdayTerritories": "Tuesday",
+    "wednesdayTerritories": "Wednesday",
+    "thursdayTerritories": "Thursday",
+    "fridayTerritories": "Friday",
+    "saturdayTerritories": "Saturday",
+    "hpLimit": "Max HP Limit",
+    "apLimit": "AP Limit",
+    "drLimit": "Damage Reduction Limit",
+    "accuracyLimit": "Accuracy Limit",
+    "evasionLimit": "Evasion Limit",
+    "drRateLimit": "Damage Reduction Rate Limit",
+    "hpRecoveryLimit": "HP Recovery Limit",
+    "staminaLimit": "Stamina Limit",
+    "territory1IconX": "Territory 1 Icon X",
+    "territory1IconY": "Territory 1 Icon Y",
+    "territory2IconX": "Territory 2 Icon X",
+    "territory2IconY": "Territory 2 Icon Y"
   },
   "meta": {
     "count": "{count} entries",
@@ -171,6 +192,7 @@
     "hardcoreGrades": "{count} grades",
     "oceanSiegeGroups": "{count} Blue Battlefield groups",
     "houseCharacters": "{count} house characters",
-    "edaniaCastles": "{count} Edania castles"
+    "edaniaCastles": "{count} Edania castles",
+    "territoryGroups": "{count} territory groups"
   }
 }

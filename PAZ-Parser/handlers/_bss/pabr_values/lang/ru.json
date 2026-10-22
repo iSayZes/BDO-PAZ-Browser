@@ -158,7 +158,28 @@
     "x": "X",
     "z": "Z",
     "nodeKey": "Ключ узла",
-    "node": "Узел"
+    "node": "Узел",
+    "territoryKey": "Ключ территории",
+    "isSiege": "Зона осады",
+    "sundayTerritories": "Воскресенье",
+    "mondayTerritories": "Понедельник",
+    "tuesdayTerritories": "Вторник",
+    "wednesdayTerritories": "Среда",
+    "thursdayTerritories": "Четверг",
+    "fridayTerritories": "Пятница",
+    "saturdayTerritories": "Суббота",
+    "hpLimit": "Лимит макс. HP",
+    "apLimit": "Лимит атаки",
+    "drLimit": "Лимит снижения урона",
+    "accuracyLimit": "Лимит меткости",
+    "evasionLimit": "Лимит уклонения",
+    "drRateLimit": "Лимит коэф. снижения урона",
+    "hpRecoveryLimit": "Лимит восстановления HP",
+    "staminaLimit": "Лимит выносливости",
+    "territory1IconX": "Значок территории 1 X",
+    "territory1IconY": "Значок территории 1 Y",
+    "territory2IconX": "Значок территории 2 X",
+    "territory2IconY": "Значок территории 2 Y"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -171,6 +192,7 @@
     "hardcoreGrades": "Рангов: {count}",
     "oceanSiegeGroups": "Групп Лазурной арены: {count}",
     "houseCharacters": "Персонажей домов: {count}",
-    "edaniaCastles": "Замков Эдании: {count}"
+    "edaniaCastles": "Замков Эдании: {count}",
+    "territoryGroups": "Групп территорий: {count}"
   }
 }

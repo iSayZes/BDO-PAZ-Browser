@@ -3,8 +3,9 @@
 ## Purpose
 
 The Blue Battlefield (ocean siege) options of each siege group: the two
-territories the group fights over and the one console shows, a block of
-stat limits and amounts left unknown, a world position, the most
+territories the group fights over and the one console shows, the HP,
+AP, damage reduction, accuracy, evasion and damage reduction rate limits
+(all uncapped), amounts left unknown, a world position, the most
 participants per day and the days the battle runs. Client 3482 has one
 row, the only ocean group (`BEGINNER`), for Balenos and Calpheon. The Lua
 reads it with `ToClient_GetOceanSiegeTerritoryOptionStaticStatusWrapper`.
@@ -22,8 +23,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                            | Known        | Unknown       |
 | ------ | ------------------------------- | ------------ | ------------- |
-| 2      | `oceansiegeterritoryoption.bss` | 66 B (33.7%) | 130 B (66.3%) |
-| 1      | `oceansiegeterritoryoption.bss` | 62 B (32.3%) | 130 B (67.7%) |
+| 2      | `oceansiegeterritoryoption.bss` | 90 B (45.9%) | 106 B (54.1%) |
+| 1      | `oceansiegeterritoryoption.bss` | 86 B (44.8%) | 106 B (55.2%) |
 
 Every client the doc check read, and the layout its files fit.
 
@@ -35,6 +36,7 @@ Every client the doc check read, and the layout its files fit.
 | 3002   | No file  |
 | 2765   | No file  |
 | 2519   | No file  |
+| 2313   | No file  |
 | 2107   | No file  |
 | 1937   | No file  |
 | 1784   | No file  |
@@ -44,6 +46,7 @@ Every client the doc check read, and the layout its files fit.
 | 1230   | No file  |
 | 1058   | No file  |
 | 794    | No file  |
+| 435    | No file  |
 
 <!-- versions:end -->
 
@@ -75,14 +78,14 @@ All multi-byte values are little-endian.
 | `+0x00` | u16                   | territory_key_1             | `territoryinfo.bss` key, LOC type 12 name; `0` (Balenos) on client 3482     |
 | `+0x02` | u16                   | territory_key_2             | `2` (Calpheon) on client 3482                                               |
 | `+0x04` | u16                   | console_territory_key       | The territory console shows; `0` on client 3482                             |
-| `+0x06` | f32                   | unknown_06                  | `100000000`                                                                 |
-| `+0x0A` | f32                   | unknown_0a                  | `9999`                                                                      |
-| `+0x0E` | f32                   | unknown_0e                  | `9999`                                                                      |
-| `+0x12` | f32                   | unknown_12                  | FLT_MAX (`FF FF 7F 7F`); see Open Questions                                 |
+| `+0x06` | f32                   | hp_limit                    | `100000000`                                                                 |
+| `+0x0A` | f32                   | ap_limit                    | `9999`                                                                      |
+| `+0x0E` | f32                   | dr_limit                    | `9999`                                                                      |
+| `+0x12` | f32                   | unknown_12                  | FLT_MAX (`FF FF 7F 7F`); with `unknown_16` the AP+DP limit, see Field Names |
 | `+0x16` | f32                   | unknown_16                  | FLT_MAX                                                                     |
-| `+0x1A` | f32                   | unknown_1a                  | `9999`                                                                      |
-| `+0x1E` | f32                   | unknown_1e                  | `9999`                                                                      |
-| `+0x22` | u32                   | unknown_22                  | `1000000`                                                                   |
+| `+0x1A` | f32                   | accuracy_limit              | `9999`                                                                      |
+| `+0x1E` | f32                   | evasion_limit               | `9999`                                                                      |
+| `+0x22` | u32                   | dr_rate_limit               | `1000000`                                                                   |
 | `+0x26` | u32                   | unknown_26                  | `1000000`                                                                   |
 | `+0x2A` | u32                   | unknown_2a                  | `1000000`                                                                   |
 | `+0x2E` | u32                   | unknown_2e                  | `0`                                                                         |
@@ -123,14 +126,14 @@ All multi-byte values are little-endian.
 | Offset  | Type                  | Field                        | Notes                                     |
 | ------- | --------------------- | ---------------------------- | ----------------------------------------- |
 | `+0x00` | u16                   | territory_key_1              | `0` (Balenos), the only ocean territory   |
-| `+0x02` | f32                   | unknown_06                   |                                           |
-| `+0x06` | f32                   | unknown_0a                   |                                           |
-| `+0x0A` | f32                   | unknown_0e                   |                                           |
+| `+0x02` | f32                   | hp_limit                     |                                           |
+| `+0x06` | f32                   | ap_limit                     |                                           |
+| `+0x0A` | f32                   | dr_limit                     |                                           |
 | `+0x0E` | f32                   | unknown_12                   |                                           |
 | `+0x12` | f32                   | unknown_16                   |                                           |
-| `+0x16` | f32                   | unknown_1a                   |                                           |
-| `+0x1A` | f32                   | unknown_1e                   |                                           |
-| `+0x1E` | u32                   | unknown_22                   |                                           |
+| `+0x16` | f32                   | accuracy_limit               |                                           |
+| `+0x1A` | f32                   | evasion_limit                |                                           |
+| `+0x1E` | u32                   | dr_rate_limit                |                                           |
 | `+0x22` | u32                   | unknown_26                   |                                           |
 | `+0x26` | u32                   | unknown_2a                   |                                           |
 | `+0x2A` | u32                   | unknown_2e                   |                                           |
@@ -180,6 +183,16 @@ to one of the pair. That fixes the order key 1, key 2, console key. It
 holds six u16 counts before the same `0` to `5` day list too (`30, 25,
 30, 25, 30, 25` on its first row).
 
+The limit block from `+0x06` to `+0x4E` has the shape of the one in
+[`siegeterritoryoptionstaticstatus.bss`](siegeterritoryoptionstaticstatus_bss.md)
+from `+0x08`, where node tooltips name `hp_limit`, `ap_limit`,
+`dr_limit`, `accuracy_limit`, `evasion_limit` and `dr_rate_limit`. This
+row holds the values of that table's uncapped Valencia and Outer Edania
+row (`100000000`, `9999`, FLT_MAX, `1000000`), field for field.
+`unknown_12` and `unknown_16` are the `_siegeMaxDDForUI` and
+`_siegeMaxPVForUI` pair: FLT_MAX in both is the "No Stat Limit" case of
+`isUnlimitedDDPV()`. Which of the two is DD stays open there.
+
 ## Notes
 
 - Client 3251 uses Layout 1: one territory key and no second or console
@@ -194,19 +207,10 @@ holds six u16 counts before the same `0` to `5` day list too (`30, 25,
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews
   this file with the shared layout table in
   `_bss/pabr_values/oceansiege_tables.py`: the three territory keys with
-  their names, the six day limits and the battle days by name.
+  their names, the six named limits, the six day limits and the battle
+  days by name.
 
 ## Open Questions
-
-### The Stat Limits
-
-The Lua reads `_siegeMaxDDForUI` and `_siegeMaxPVForUI` and calls
-`isUnlimitedDDPV()`, then prints "unlimited" or the sum of the two
-limits. `unknown_12` and `unknown_16` are FLT_MAX, which fits two
-unlimited stats, but which f32 is DD and which PV, and what the `9999`,
-`100000000` and `1000000` values limit, is open. The land table holds
-real limits at the same places (`270` and `346` on its first row), which
-the node war limits of `regioninfo.bss` may name.
 
 ### The Fields Before the Position
 

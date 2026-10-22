@@ -6,26 +6,15 @@ and have their own handlers.
 
 from __future__ import annotations
 
-from _common.territory import territory_name
 from .fields import MAP_COLOR
-from .layout import NameLookup, RowCount, ValueField, ValueTable, unknown_fields
+from .layout import RowCount, ValueField, ValueTable, unknown_fields
 from .oceansiege_names import siege_days_text
 from .rosewar_names import region_text
+from .siege_fields import limit_member_count_fields, stat_limit_fields, territory_key_field
 
 
-# CppEnums.VillageSiegeType 0 to 5: the days getLimitMemberCount(day) takes,
-# one u16 each (oceansiegeterritoryoption_bss.md, Field Names).
-_LIMIT_MEMBER_DAYS: tuple[str, ...] = ("sunday", "monday", "tuesday", "wednesday", "thursday", "friday")
-
-
-def _territory(name: str, column: str) -> ValueField:
-    """A u16 territory key and its LOC type 12 name, stored as `<role>_name`."""
-    name_field = name.replace("_key", "_name")
-    return ValueField(name, "H", f"{column}Key", NameLookup(name_field, column, territory_name))
-
-
-def _limit_member_count(day: str) -> ValueField:
-    return ValueField(f"limit_member_count_{day}", "H", f"limitMemberCount{day.capitalize()}")
+# Where the limit block starts in the row, after the three territory keys.
+_STAT_LIMITS_AT = 0x06
 
 
 OCEAN_SIEGE_TABLES: tuple[ValueTable, ...] = (
@@ -43,12 +32,11 @@ OCEAN_SIEGE_TABLES: tuple[ValueTable, ...] = (
     ValueTable(
         "oceansiegeterritoryoption.bss",
         (
-            _territory("territory_key_1", "territory1"),
-            _territory("territory_key_2", "territory2"),
-            _territory("console_territory_key", "consoleTerritory"),
+            territory_key_field("territory_key_1", "territory1"),
+            territory_key_field("territory_key_2", "territory2"),
+            territory_key_field("console_territory_key", "consoleTerritory"),
+            *stat_limit_fields(_STAT_LIMITS_AT),
             *unknown_fields(
-                *((offset, "f") for offset in range(0x06, 0x22, 4)),
-                *((offset, "I") for offset in range(0x22, 0x32, 4)),
                 *((offset, "f") for offset in range(0x32, 0x3E, 4)),
                 *((offset, "I") for offset in range(0x3E, 0x4E, 4)),
                 (0x4E, "34s"),
@@ -56,7 +44,7 @@ OCEAN_SIEGE_TABLES: tuple[ValueTable, ...] = (
                 (0x74, "I"),
                 *((offset, "f") for offset in range(0x78, 0x88, 4)),
             ),
-            *(_limit_member_count(day) for day in _LIMIT_MEMBER_DAYS),
+            *limit_member_count_fields(),
             ValueField("start_days", "I", "startDays", is_counted_list=True, list_display=siege_days_text),
         ),
         RowCount.COUNTED,

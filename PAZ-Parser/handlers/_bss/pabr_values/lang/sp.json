@@ -158,7 +158,28 @@
     "x": "X",
     "z": "Z",
     "nodeKey": "Clave del nodo",
-    "node": "Nodo"
+    "node": "Nodo",
+    "territoryKey": "Clave del territorio",
+    "isSiege": "Zona de asedio",
+    "sundayTerritories": "Domingo",
+    "mondayTerritories": "Lunes",
+    "tuesdayTerritories": "Martes",
+    "wednesdayTerritories": "Miércoles",
+    "thursdayTerritories": "Jueves",
+    "fridayTerritories": "Viernes",
+    "saturdayTerritories": "Sábado",
+    "hpLimit": "Límite de salud máx.",
+    "apLimit": "Límite de ataque",
+    "drLimit": "Límite de reduc. de daño",
+    "accuracyLimit": "Límite de precisión",
+    "evasionLimit": "Límite de evasión",
+    "drRateLimit": "Límite de reducción de daño (%)",
+    "hpRecoveryLimit": "Límite de regeneración de salud",
+    "staminaLimit": "Límite de aguante",
+    "territory1IconX": "Icono territorio 1 X",
+    "territory1IconY": "Icono territorio 1 Y",
+    "territory2IconX": "Icono territorio 2 X",
+    "territory2IconY": "Icono territorio 2 Y"
   },
   "meta": {
     "count": "{count} entradas",
@@ -171,6 +192,7 @@
     "hardcoreGrades": "{count} rangos",
     "oceanSiegeGroups": "{count} grupos de Isla de Agua",
     "houseCharacters": "{count} personajes de propiedad",
-    "edaniaCastles": "{count} castillos de Edania"
+    "edaniaCastles": "{count} castillos de Edania",
+    "territoryGroups": "{count} grupos de territorios"
   }
 }

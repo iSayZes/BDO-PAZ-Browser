@@ -158,7 +158,28 @@
     "x": "X",
     "z": "Z",
     "nodeKey": "Postenschlüssel",
-    "node": "Posten"
+    "node": "Posten",
+    "territoryKey": "Territorium-Schlüssel",
+    "isSiege": "Belagerungsgebiet",
+    "sundayTerritories": "Sonntag",
+    "mondayTerritories": "Montag",
+    "tuesdayTerritories": "Dienstag",
+    "wednesdayTerritories": "Mittwoch",
+    "thursdayTerritories": "Donnerstag",
+    "fridayTerritories": "Freitag",
+    "saturdayTerritories": "Samstag",
+    "hpLimit": "Max. LP-Limit",
+    "apLimit": "AK-Limit",
+    "drLimit": "Schadensreduktion-Limit",
+    "accuracyLimit": "Präzision-Limit",
+    "evasionLimit": "Ausweichen-Limit",
+    "drRateLimit": "Schadensreduktionsrate-Limit",
+    "hpRecoveryLimit": "LP-Regeneration-Limit",
+    "staminaLimit": "Ausdauer-Limit",
+    "territory1IconX": "Territorium 1 Symbol X",
+    "territory1IconY": "Territorium 1 Symbol Y",
+    "territory2IconX": "Territorium 2 Symbol X",
+    "territory2IconY": "Territorium 2 Symbol Y"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -171,6 +192,7 @@
     "hardcoreGrades": "{count} Ränge",
     "oceanSiegeGroups": "{count} Gruppen des Blauen Schlachtfelds",
     "houseCharacters": "{count} Hauscharaktere",
-    "edaniaCastles": "{count} Edania-Burgen"
+    "edaniaCastles": "{count} Edania-Burgen",
+    "territoryGroups": "{count} Territoriumsgruppen"
   }
 }

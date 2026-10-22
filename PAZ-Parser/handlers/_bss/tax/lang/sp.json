@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "territoryKey": "Clave del territorio",
+    "territory": "Territorio",
+    "taxType": "Tipo de impuesto",
+    "minPercentOrPrice": "Mínimo",
+    "maxPercentOrPrice": "Máximo",
+    "systemPercent": "Tasa del sistema"
+  },
+  "meta": {
+    "count": "{count} tipos de impuesto de territorios"
+  }
+}

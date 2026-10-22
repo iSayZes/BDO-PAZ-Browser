@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
-| 2      | 3002 and later | 3474    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 2      | 3002 and later | 3482    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
 | 1      | 1784           | 1784    | `regioninfo.bss` | 555,464 | 1,062 Region Head, 1,062 Region Tail, 1,062 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |
@@ -28,6 +28,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3482   | Layout 2             |
 | 3474   | Layout 2             |
 | 3473   | Layout 2             |
 | 3251   | Layout 2             |
@@ -461,7 +462,7 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 
   Black Desert Foundry's node war guide lists the old Tier 1 Beginner limits as AP 245, damage reduction 223, accuracy 645, evasion 741, damage reduction rate 7%, accuracy and evasion rate 15% and resistance 20%: the first set, field for field. Its Tier 1 Intermediate rates (14%, 15%, 15%, 30%) match the second set, whose flat values have been raised since. The `9999` set is the uncapped one. Velia (`560 / 410 / 768 / 680`) and Heidel (`680 / 530 / 908 / 820`) have their own. The sets no longer follow today's node tiers (Hexe Sanctuary and Longleaf Tree Sentry Post are both Tier 4 but use the 485 and 362 sets), and neither the tier nor the 550 / 720 gear score limit of the construction mode node wars is stored in this file.
 - **The capital records hold the live limits.** In game, Trina Fort (Calpheon) and City of the Dead (Ulukita) both show AP limit 680, damage reduction 530, evasion 908, accuracy 820 and damage reduction rate 30%: exactly Heidel's record, not their own `9999` and `540` sets. So the four capital records look like the limit sets per territory pair of the construction mode node wars: Heidel for Calpheon and Ulukita (gear score limit 720, confirmed by both nodes), Altinova and Valencia City (`9999`, uncapped) for Valencia and Edania (no gear score limit, consistent but not checked in game), Velia (`560` set) unconfirmed. The per-node sets in the table above look like leftovers from the older tier system. Both tooltips also show an HP limit of 11,000, which this file has no field for.
-- **Occupation mode overrides these values.** Balenos and Serendia run their node wars in occupation mode, and there the in-game node tooltip ignores this file: Castle Ruins, Glish Swamp, Orc Camp and Wolf Hills all show AP limit 395, evasion 738, damage reduction 335, damage reduction rate 20%, accuracy 650, 25 max participants and 3 max war heroes, while this file gives them four different limit sets and 55, 45, 65 and 80 participants. None of the extracted client tables holds 395 / 335 / 738 / 650, so the occupation mode limits are likely server-side. The tooltip also lists limits this file has no field for (critical hit rate and damage, back / down / air attack damage at 20%, HP 6,500, HP recovery 5, Black Spirit's Rage 100% and its recovery 0.15%, stamina 2,100).
+- **Occupation mode overrides these values.** Balenos and Serendia run their node wars in occupation mode, and there the in-game node tooltip ignores this file: Castle Ruins, Glish Swamp, Orc Camp and Wolf Hills all show AP limit 395, evasion 738, damage reduction 335, damage reduction rate 20%, accuracy 650, 25 max participants and 3 max war heroes, while this file gives them four different limit sets and 55, 45, 65 and 80 participants. [`siegeterritoryoptionstaticstatus.bss`](siegeterritoryoptionstaticstatus_bss.md) holds them: its Balenos and Serendia row has HP 6,500, AP 395, damage reduction 335, accuracy 650, evasion 738 and damage reduction rate 20%, and its Calpheon and Ulukita row has HP 11,000 and Heidel's set. The tooltip also lists limits this file has no field for (critical hit rate and damage, back / down / air attack damage at 20%, HP 6,500, HP recovery 5, Black Spirit's Rage 100% and its recovery 0.15%, stamina 2,100).
 - `unknown_tail_86` (`0`, `5`, `15`) follows the territory pairs of the construction mode node wars on the land nodes: `0` on Balenos and Serendia (gear score limit 550), `5` on Calpheon and Ulukita (720), `15` on Valencia and Edania (no limit). The island nodes carry `0` in every territory.
 - `unknown_tail_9a` and `unknown_tail_a2` hold silver-sized amounts on the siege regions (node war regions `15.6M` to `46.9M`, capitals up to `273.4M`), always a fixed step apart; they may be the node war participation fee or reward, but nothing in the client names them.
 - Related files out of scope here: `regionclientdata.xml` and its per-service variants (`regionclientdata_<code>_.xml`) place NPCs and monsters per region and key them by `<RegionInfo Key=...>`, the same region key.
@@ -473,11 +474,10 @@ Names from `global_define_cpp_enum.luac`, without the `eRegionType_` prefix. The
 
 Several values the node tooltip shows are not in this file, or differ from it:
 
-- **Occupation mode limits.** The Balenos and Serendia nodes show one shared set (AP 395, evasion 738, damage reduction 335, accuracy 650, 25 participants) that is not in this file (see Notes).
 - **Participant cap.** City of the Dead shows 40 max participants in game, while `max_participants` and the published construction mode table both say 35. Something overrides the cap per node.
-- **Limits with no field here.** HP (6,500 in occupation mode, 11,000 on Calpheon and Ulukita nodes), HP recovery, critical hit rate and damage, back / down / air attack damage, Black Spirit's Rage and its recovery, and stamina.
+- **Limits with no field here.** Critical hit rate and damage, back / down / air attack damage, Black Spirit's Rage and its recovery. HP, HP recovery and stamina are in [`siegeterritoryoptionstaticstatus.bss`](siegeterritoryoptionstaticstatus_bss.md), per territory group.
 
-None of these values turns up in the extracted client tables. If a client table holds them, it is one I have not extracted yet; otherwise the server sends them.
+The remaining tooltip limits may be among the unnamed tail values of [`siegeterritoryoptionstaticstatus.bss`](siegeterritoryoptionstaticstatus_bss.md).
 
 ### Max war heroes
 

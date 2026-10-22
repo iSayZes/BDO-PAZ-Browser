@@ -158,7 +158,28 @@
     "x": "X",
     "z": "Z",
     "nodeKey": "거점 키",
-    "node": "거점"
+    "node": "거점",
+    "territoryKey": "영지 키",
+    "isSiege": "점령전 지역",
+    "sundayTerritories": "일요일",
+    "mondayTerritories": "월요일",
+    "tuesdayTerritories": "화요일",
+    "wednesdayTerritories": "수요일",
+    "thursdayTerritories": "목요일",
+    "fridayTerritories": "금요일",
+    "saturdayTerritories": "토요일",
+    "hpLimit": "최대 생명력 제한",
+    "apLimit": "공격력 제한",
+    "drLimit": "피해 감소 제한",
+    "accuracyLimit": "적중력 제한",
+    "evasionLimit": "회피력 제한",
+    "drRateLimit": "피해 감소율 제한",
+    "hpRecoveryLimit": "생명력 회복 제한",
+    "staminaLimit": "지구력 제한",
+    "territory1IconX": "영지 1 아이콘 X",
+    "territory1IconY": "영지 1 아이콘 Y",
+    "territory2IconX": "영지 2 아이콘 X",
+    "territory2IconY": "영지 2 아이콘 Y"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -171,6 +192,7 @@
     "hardcoreGrades": "등급 {count}개",
     "oceanSiegeGroups": "푸른 전장 그룹 {count}개",
     "houseCharacters": "집 캐릭터 {count}개",
-    "edaniaCastles": "에다니아 성 {count}개"
+    "edaniaCastles": "에다니아 성 {count}개",
+    "territoryGroups": "영지 그룹 {count}개"
   }
 }

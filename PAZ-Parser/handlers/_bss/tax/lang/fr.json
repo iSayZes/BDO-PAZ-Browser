@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "territoryKey": "Clé du territoire",
+    "territory": "Territoire",
+    "taxType": "Type de taxe",
+    "minPercentOrPrice": "Minimum",
+    "maxPercentOrPrice": "Maximum",
+    "systemPercent": "Taux système"
+  },
+  "meta": {
+    "count": "{count} types de taxe des territoires"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "categoryKey": "카테고리 키",
+    "name": "카테고리"
+  },
+  "meta": {
+    "count": "인벤토리 카테고리 {count}개"
+  }
+}

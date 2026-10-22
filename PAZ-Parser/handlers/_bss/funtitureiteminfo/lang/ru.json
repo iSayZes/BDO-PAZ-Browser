@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Ключ предмета",
+    "item": "Предмет",
+    "installationType": "Тип установки"
+  },
+  "meta": {
+    "count": "Предметов мебели: {count}"
+  }
+}

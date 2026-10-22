@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "Item",
+    "categoryKey": "Category Key"
+  },
+  "meta": {
+    "count": "{count} auto-use buff items"
+  }
+}

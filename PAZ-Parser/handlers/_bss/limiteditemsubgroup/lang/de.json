@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "subgroupKey": "Untergruppenschlüssel",
+    "item": "Gegenstand",
+    "purchaseSubject": "Käufer",
+    "purchaseCountLimit": "Kauflimit",
+    "resetType": "Zurücksetzen"
+  },
+  "resetTypes": {
+    "1": "Täglich",
+    "2": "Wöchentlich",
+    "3": "Monatlich",
+    "4": "Belagerung"
+  },
+  "meta": {
+    "count": "{count} begrenzte Shop-Gegenstände"
+  }
+}

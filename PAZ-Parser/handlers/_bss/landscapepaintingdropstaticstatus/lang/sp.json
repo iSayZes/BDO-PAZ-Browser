@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "type": "Tipo",
+    "name": "Paisaje",
+    "dropItem": "Botín"
+  },
+  "meta": {
+    "count": "{count} cuadros de paisajes"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "categoryKey": "Clé de catégorie",
+    "name": "Catégorie"
+  },
+  "meta": {
+    "count": "{count} catégories d'inventaire"
+  }
+}

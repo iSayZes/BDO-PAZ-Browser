@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "item": "Objeto",
+    "categoryKey": "Clave de categoría"
+  },
+  "meta": {
+    "count": "{count} objetos de mejora de uso automático"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "subgroupKey": "하위 그룹 키",
+    "item": "아이템",
+    "purchaseSubject": "구매 주체",
+    "purchaseCountLimit": "구매 제한",
+    "resetType": "초기화"
+  },
+  "resetTypes": {
+    "1": "일간",
+    "2": "주간",
+    "3": "월간",
+    "4": "공성"
+  },
+  "meta": {
+    "count": "구매 제한 아이템 {count}개"
+  }
+}

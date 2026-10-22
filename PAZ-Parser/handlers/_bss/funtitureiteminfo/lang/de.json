@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "installationType": "Installationstyp"
+  },
+  "meta": {
+    "count": "{count} Möbel"
+  }
+}

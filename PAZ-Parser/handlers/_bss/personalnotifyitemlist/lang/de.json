@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "item": "Gegenstand"
+  },
+  "meta": {
+    "count": "{count} Gegenstände"
+  }
+}

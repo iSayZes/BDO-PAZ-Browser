@@ -52,6 +52,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/buff_dbss.md) | 6 | 2 |
 | `buffcondition.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `buffconditionoffset.dbss` | Empty offset companion for `buffcondition.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `buffitemautousestaticstatus.bss` | PABR list of the items the buff item auto-use can use: `autousebuffitemcategoryinfo.bss` category key, item key and a u8 (9-byte rows) | [buffitemautousestaticstatus](file-formats/buffitemautousestaticstatus_bss.md) | 1 | 0 |
 | `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/buff_dbss.md) | 6 | 2 |
 | `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `effect_name` string indices, `is_shown`, `is_debuff`, `remove_on_dead` and the equipment the buff needs | [buffsimply](file-formats/buffsimply_bss.md) | 1 | 0 |
 | `buildingbuff.dbss` | Villa buffs on sale: four lists by `Count_Villa` (only the first used) of buff index, skill number and silver cost | [buildingbuff](file-formats/buildingbuff_dbss.md) | 1 | 0 |
@@ -198,6 +199,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `floatfishingpointoffset.dbss` | Index into `floatfishingpoint.dbss` with no magic: u16 point key, offset and size (10-byte rows) | [floatfishingpoint](file-formats/floatfishingpoint_dbss.md) | 1 | 0 |
 | `form.dbss` | Mount forms: u16 index and its copy, type, action index, tier, two UTF-16 icon paths and a u16 character key list | [form](file-formats/form_dbss.md) | 1 | 0 |
 | `formoffset.dbss` | Index into `form.dbss`: bare count, then (u16 index, offset, size), 2 bytes past the row start | [form](file-formats/form_dbss.md) | 1 | 0 |
+| `funtitureiteminfo.bss` | PABR furniture items: item key, its copy and the `InstallationType` of the object the item places (9-byte rows) | [funtitureiteminfo](file-formats/funtitureiteminfo_bss.md) | 1 | 0 |
 | `greatseaevent.dbss` | Great Ocean sailing event results in groups: group key, index, Korean result text, image path (variable rows) | [greatseaevent](file-formats/greatseaevent_dbss.md) | 1 | 0 |
 | `greatseaeventoffset.dbss` | Index into `greatseaevent.dbss` per group: u16 group key, count, then u32 index, offset and size per event | [greatseaevent](file-formats/greatseaevent_dbss.md) | 1 | 0 |
 | `grenadedata.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
@@ -274,6 +276,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `interiorrelationpoint.dbss` | PABR furniture placement points: per furniture character its matching chair and points for 10 furniture it stands on and 4 free sides, 66-byte rows | [interiorrelationpoint](file-formats/interiorrelationpoint_dbss.md) | 1 | 0 |
 | `interiorrelationpointoffset.dbss` | PABR index into `interiorrelationpoint.dbss`: u16 key, offset 2 bytes past the row start, size `0` | [interiorrelationpoint](file-formats/interiorrelationpoint_dbss.md) | 1 | 0 |
 | `intimacyinfo.bss` | PABR NPC amity list: per NPC character the amity value, comparison and kind (quest, shop, knowledge, talk) of each entry with its quest, knowledge or dialog | [intimacyinfo](file-formats/intimacyinfo_bss.md) | 1 | 0 |
+| `inventorycategorysort.bss` | Inventory categories of the category view: u8 key, Korean name, a u8 and the key's copy; no PABR magic | [inventorycategorysort](file-formats/inventorycategorysort_bss.md) | 1 | 0 |
 | `itembundle.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `itemcollectionscroll.dbss` | Item Collection Increase gauge levels 1 and 2: 16-byte rows of level, Item Drop Rate, Item Drop Amount and charged time use per second (1,000,000 = 100%) | [itemcollectionscroll](file-formats/itemcollectionscroll_dbss.md) | 0 | 0 |
 | `itemcollectionscrolloffset.dbss` | Index into `itemcollectionscroll.dbss`: bare count, then (u32 level, offset, size) | [itemcollectionscroll](file-formats/itemcollectionscroll_dbss.md) | 0 | 0 |
@@ -323,6 +326,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `knowledgelearning.dbss` | How knowledge cards are learned: table 0 maps a character ID to the card it teaches, table 1 an item ID | [knowledgelearning](file-formats/knowledgelearning_dbss.md) | 1 | 0 |
 | `knowledgelearningcharacterkey.bss` | Knowledge table 0 grouped by card: each card ID with the u16 IDs of the characters that teach it | [knowledgelearningcharacterkey](file-formats/knowledgelearningcharacterkey_bss.md) | 0 | 0 |
 | `knowledgelearningoffset.dbss` | Index into `knowledgelearning.dbss`, maps source ID → offset/size per table | [knowledgelearning](file-formats/knowledgelearning_dbss.md) | 1 | 0 |
+| `landscapepaintingdropstaticstatus.bss` | PABR landscape paintings of the landscape painting window: type, Korean name, a counted u32 list and the treasure piece the window names for each | [landscapepaintingdropstaticstatus](file-formats/landscapepaintingdropstaticstatus_bss.md) | 2 | 0 |
 | `languagedata_en.loc`              | Localization string table (zlib-compressed, UTF-16-LE)                                                         | [loc](file-formats/languagedata_loc.md)                             | 5              | 0 |
 | `letter.bss` | PABR letter window per item: item key, `RESOURCE` string sheet key of the text, background texture and center alignment flag | [letter](file-formats/letter_bss.md) | 0 | 0 |
 | `lifeactionexperience.dbss` | Life skill EXP per item: an item key and two life skill and EXP slots; every EXP is 0 on clients 1784 and 3474 | [lifeactionexperience](file-formats/lifeactionexperience_dbss.md) | 1 | 0 |
@@ -332,6 +336,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `lifeexpoffset.dbss` | Index into `lifeexp.dbss`, one block per life skill, maps level → offset/size | [lifeexp](file-formats/lifeexp_dbss.md) | 0 | 0 |
 | `lightstoneenchantgroup.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `lightstoneset.bss` | PABR Lightstone sets: set ID, set skill, three or four member Lightstone item IDs and the Korean name and effect, then a table of the Lightstones that count as each member (Amplified Lightstones) | [lightstoneset](file-formats/lightstoneset_bss.md) | 0 | 1 |
+| `limiteditemsubgroup.bss` | PABR shop purchase limits per item subgroup: item key, purchase subject, limit count and reset type (day, week, month, siege) per item | [limiteditemsubgroup](file-formats/limiteditemsubgroup_bss.md) | 2 | 0 |
 | `maid.dbss` | Maids and butlers by character key: cooldown, warehouse and marketplace duty flags, PC room and head maid flags, list icons; rows of 34 or 140 bytes | [maid](file-formats/maid_dbss.md) | 2 | 0 |
 | `maidactoroption.bss` | PABR with two unnamed maid actor option bytes in the count slot (`1` and `10` on client 3474); since client 3251 | [maidactoroption](file-formats/maidactoroption_bss.md) | 1 | 1 |
 | `maidoffset.dbss` | Index into `maid.dbss` with no magic: u16 character key, offset and size (10-byte rows), 2 bytes past the record start | [maid](file-formats/maid_dbss.md) | 2 | 0 |
@@ -409,6 +414,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `personalmonsteroffset.dbss` | Index into `personalmonster.dbss` with no magic: u16 character key, offset and size (10-byte rows) | [personalmonster](file-formats/personalmonster_dbss.md) | 1 | 0 |
 | `personalmonsterposition.dbss` | Dark Rift boss spawn points: per position index a world position, a spawn distance and (from client 3474) a u16 that is `1` on every row (22-byte rows) | [personalmonsterposition](file-formats/personalmonsterposition_dbss.md) | 1 | 0 |
 | `personalmonsterpositionoffset.dbss` | Index into `personalmonsterposition.dbss` with no magic: u32 position index, offset and size (12-byte rows) | [personalmonsterposition](file-formats/personalmonsterposition_dbss.md) | 1 | 0 |
+| `personalnotifyitemlist.bss` | PABR list of item IDs in ascending order with an empty string table | [personalnotifyitemlist](file-formats/personalnotifyitemlist_bss.md) | 1 | 0 |
 | `personalrelayoption.bss` | PABR Golden Pig Cave relay fields: Korean name (string table), unnamed positions and times, the NPC and monster character keys, summon and token item IDs | [personalrelayoption](file-formats/personalrelayoption_bss.md) | 2 | 0 |
 | `pet.dbss`                         | Per pet type/tier records: species, tier, level cap, EXP table, look, icon path, market prices, loot, race and base skills, equip-skill roll pool and action rates; fairies are `pet_type` 1 | [pet](file-formats/pet_dbss.md)                                     | 1              | 0 |
 | `petaction.dbss`                   | Pet action records with Korean action names and UTF-16 DDS icon paths                                          | [petaction](file-formats/petaction_dbss.md)                         | 1              | 0 |

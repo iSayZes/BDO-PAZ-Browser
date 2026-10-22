@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "categoryKey": "카테고리 키"
+  },
+  "meta": {
+    "count": "자동 사용 버프 아이템 {count}개"
+  }
+}

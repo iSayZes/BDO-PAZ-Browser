@@ -15,6 +15,7 @@ from .bartersubgroup.handler import BarterSubGroupBssHandler
 from .bdoservanttitless.handler import BdoServantTitlesBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .branchquest.handler import BranchQuestBssHandler
+from .buffitemautousestaticstatus.handler import BuffItemAutoUseBssHandler
 from .buffsimply.handler import BuffSimplyBssHandler
 from .buildingsource.handler import BuildingSourceBssHandler
 from .carriagechar.handler import CarriageCharBssHandler
@@ -56,6 +57,7 @@ from .fevertimeskill.handler import FeverTimeSkillBssHandler
 from .fieldinfo.handler import FieldInfoBssHandler
 from .fishcompetition.handler import FishCompetitionBssHandler
 from .fitnessmaxlevel.handler import FitnessMaxLevelBssHandler
+from .funtitureiteminfo.handler import FuntitureItemInfoBssHandler
 from .groupcameradata.handler import GroupCameraDataBssHandler
 from .growthpasslinkdata.handler import GrowthPassLinkDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
@@ -67,6 +69,7 @@ from .hardcorerandomspawncharacterstaticstatusmanager.handler import (
 from .houseinfo.handler import HouseInfoBssHandler
 from .instancefieldmapinfo.handler import InstanceFieldMapInfoBssHandler
 from .intimacyinfo.handler import IntimacyInfoBssHandler
+from .inventorycategorysort.handler import InventoryCategorySortBssHandler
 from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHandler
 from .boss_spawn.handler import BossSpawnBssHandler
 from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
@@ -89,9 +92,11 @@ from .itemviewstackenchantgroupss.handler import ItemViewStackEnchantGroupSsBssH
 from .jewelgroupstaticstatus.handler import JewelGroupStaticStatusBssHandler
 from .jewelspecialslotsgroupstaticstatus.handler import JewelSpecialSlotsGroupStaticStatusBssHandler
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
+from .landscapepaintingdropstaticstatus.handler import LandscapePaintingDropBssHandler
 from .letter.handler import LetterBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
+from .limiteditemsubgroup.handler import LimitedItemSubGroupBssHandler
 from .majorsiegerewardstaticstatus.handler import MajorSiegeRewardBssHandler
 from .manufacture.handler import ManufactureBssHandler
 from .manufactureitemnaminginfo.handler import ManufactureItemNamingInfoBssHandler
@@ -114,6 +119,7 @@ from .pabr_values.tables import VALUE_TABLES
 from .pcgrowthdefaultcharacterkey.handler import PcGrowthDefaultCharacterKeyBssHandler
 from .pcgrowthsimply.handler import PcGrowthSimplyBssHandler
 from .pcroommaid.handler import PcRoomMaidBssHandler
+from .personalnotifyitemlist.handler import PersonalNotifyItemListBssHandler
 from .petequipskill.handler import PetEquipSkillBssHandler
 from .petupgraderesult.handler import PetUpgradeResultBssHandler
 from .possiblefusionpet.handler import PossibleFusionPetBssHandler
@@ -197,6 +203,7 @@ def register_bss_handlers() -> None:
     register_handler("bdoservanttitless.bss", BdoServantTitlesBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("branchquest.bss", BranchQuestBssHandler())
+    register_handler("buffitemautousestaticstatus.bss", BuffItemAutoUseBssHandler())
     register_handler("buffsimply.bss", BuffSimplyBssHandler())
     register_handler("buildingsource.bss", BuildingSourceBssHandler())
     register_handler("autoseasonclosechangeitemstaticstatus.bss", AutoSeasonCloseChangeItemHandler())
@@ -244,6 +251,7 @@ def register_bss_handlers() -> None:
     register_handler("fieldinfo.bss", FieldInfoBssHandler())
     register_handler("fishcompetition.bss", FishCompetitionBssHandler())
     register_handler("fitnessmaxlevel.bss", FitnessMaxLevelBssHandler())
+    register_handler("funtitureiteminfo.bss", FuntitureItemInfoBssHandler())
     register_handler("groupcameradata.bss", GroupCameraDataBssHandler())
     register_handler("growthpasslinkdata.bss", GrowthPassLinkDataBssHandler())
     register_handler(
@@ -262,6 +270,7 @@ def register_bss_handlers() -> None:
     register_handler("houseinfo.bss", HouseInfoBssHandler())
     register_handler("instancefieldmapinfo.bss", InstanceFieldMapInfoBssHandler())
     register_handler("intimacyinfo.bss", IntimacyInfoBssHandler())
+    register_handler("inventorycategorysort.bss", InventoryCategorySortBssHandler())
     register_handler("bossinfostaicstatusmanager.bss", BossInfoStaicStatusManagerBssHandler())
     register_handler("boss_spawn.bss", BossSpawnBssHandler())
     register_handler("boss_spawnlevel.bss", BossSpawnLevelBssHandler())
@@ -290,9 +299,11 @@ def register_bss_handlers() -> None:
         "knowledgelearningcharacterkey.bss",
         KnowledgeLearningCharacterKeyBssHandler(),
     )
+    register_handler("landscapepaintingdropstaticstatus.bss", LandscapePaintingDropBssHandler())
     register_handler("letter.bss", LetterBssHandler())
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
+    register_handler("limiteditemsubgroup.bss", LimitedItemSubGroupBssHandler())
     register_handler("manufacture.bss", ManufactureBssHandler())
     register_handler("manufactureitemnaminginfo.bss", ManufactureItemNamingInfoBssHandler())
     register_handler("mansionlandinfo.bss", MansionLandInfoBssHandler())
@@ -327,6 +338,7 @@ def register_bss_handlers() -> None:
     register_handler("pcgrowthdefaultcharacterkey.bss", PcGrowthDefaultCharacterKeyBssHandler())
     register_handler("pcgrowthsimply.bss", PcGrowthSimplyBssHandler())
     register_handler("pcroommaid.bss", PcRoomMaidBssHandler())
+    register_handler("personalnotifyitemlist.bss", PersonalNotifyItemListBssHandler())
     register_handler("petequipskill.bss", PetEquipSkillBssHandler())
     register_handler("petupgraderesult.bss", PetUpgradeResultBssHandler())
     register_handler("possiblefusionpet.bss", PossibleFusionPetBssHandler())

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Clé d'objet",
+    "item": "Objet",
+    "categoryKey": "Clé de catégorie"
+  },
+  "meta": {
+    "count": "{count} objets de buff à utilisation automatique"
+  }
+}

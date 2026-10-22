@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "subgroupKey": "Subgroup Key",
+    "item": "Item",
+    "purchaseSubject": "Purchase Subject",
+    "purchaseCountLimit": "Purchase Limit",
+    "resetType": "Reset"
+  },
+  "resetTypes": {
+    "1": "Daily",
+    "2": "Weekly",
+    "3": "Monthly",
+    "4": "Siege"
+  },
+  "meta": {
+    "count": "{count} limited shop items"
+  }
+}

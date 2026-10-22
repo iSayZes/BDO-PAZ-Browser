@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "item": "아이템"
+  },
+  "meta": {
+    "count": "아이템 {count}개"
+  }
+}

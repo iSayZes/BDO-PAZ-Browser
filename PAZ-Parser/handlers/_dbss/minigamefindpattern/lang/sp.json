@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "slotIndex": "Casilla",
+    "patternIndex": "Patrón",
+    "image": "Imagen",
+    "image2": "Imagen 2",
+    "rootSize": "Tamaño de raíz",
+    "changePattern": "Patrón de cambio",
+    "rootBeginNo": "Inicio de raíz",
+    "endDirection": "Dirección final",
+    "beginDirection": "Dirección inicial",
+    "nextPatterns": "Patrones siguientes"
+  },
+  "directions": {
+    "left": "Izquierda",
+    "right": "Derecha",
+    "top": "Arriba",
+    "bottom": "Abajo"
+  },
+  "offsetColumns": {
+    "slotIndex": "Casilla",
+    "patternIndex": "Patrón",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} patrones"
+  }
+}

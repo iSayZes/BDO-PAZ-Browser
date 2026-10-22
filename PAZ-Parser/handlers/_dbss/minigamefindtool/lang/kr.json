@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemGrade": "아이템 등급",
+    "enchantLevel": "강화 단계",
+    "rClickCount": "우클릭 횟수",
+    "openSlotCount": "열리는 칸",
+    "decreaseDamageRate": "손상 감소율"
+  },
+  "offsetColumns": {
+    "itemGrade": "아이템 등급",
+    "enchantLevel": "강화 단계",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "호미 단계 {count}개"
+  }
+}

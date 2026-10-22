@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "gameType": "게임 타입",
+    "nextGame": "다음 게임",
+    "minDamageRate": "최소 손상률",
+    "nextRate": "다음 확률",
+    "lifeType": "생명 타입",
+    "lifeRate": "생명 확률",
+    "tools": "호미",
+    "toolRate": "도구 확률",
+    "stoneRate": "돌 확률",
+    "stoneDrop": "돌 드롭",
+    "grid": "격자",
+    "startPos": "시작 위치",
+    "minRootCount": "최소 뿌리 수",
+    "beginRootCount": "시작 뿌리 수",
+    "useSlots": "슬롯 그룹",
+    "rewards": "보상",
+    "lakiaros": "라키아로"
+  },
+  "sides": {
+    "left": "왼쪽",
+    "right": "오른쪽",
+    "top": "위",
+    "bottom": "아래"
+  },
+  "lakiaro": {
+    "depth": "{name} ({key}), 깊이 {depth}"
+  },
+  "meta": {
+    "count": "게임 타입 {count}개"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemGrade": "Grado del objeto",
+    "enchantLevel": "Nivel de refuerzo",
+    "rClickCount": "Clics derechos",
+    "openSlotCount": "Casillas abiertas",
+    "decreaseDamageRate": "Tasa de reducción de daño"
+  },
+  "offsetColumns": {
+    "itemGrade": "Grado del objeto",
+    "enchantLevel": "Nivel de refuerzo",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} niveles de hoz"
+  }
+}

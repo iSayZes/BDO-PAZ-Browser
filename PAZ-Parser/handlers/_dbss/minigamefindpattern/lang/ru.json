@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "slotIndex": "Ячейка",
+    "patternIndex": "Узор",
+    "image": "Изображение",
+    "image2": "Изображение 2",
+    "rootSize": "Размер корня",
+    "changePattern": "Смена узора",
+    "rootBeginNo": "Начало корня",
+    "endDirection": "Направление конца",
+    "beginDirection": "Направление начала",
+    "nextPatterns": "Следующие узоры"
+  },
+  "directions": {
+    "left": "Слева",
+    "right": "Справа",
+    "top": "Сверху",
+    "bottom": "Снизу"
+  },
+  "offsetColumns": {
+    "slotIndex": "Ячейка",
+    "patternIndex": "Узор",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Узоров: {count}"
+  }
+}

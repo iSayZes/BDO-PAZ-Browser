@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "gameType": "Spieltyp",
+    "nextGame": "Nächstes Spiel",
+    "minDamageRate": "Min. Schadensrate",
+    "nextRate": "Weiter-Rate",
+    "lifeType": "Lebenstyp",
+    "lifeRate": "Lebensrate",
+    "tools": "Hacken",
+    "toolRate": "Werkzeugrate",
+    "stoneRate": "Steinrate",
+    "stoneDrop": "Steinbeute",
+    "grid": "Raster",
+    "startPos": "Startposition",
+    "minRootCount": "Min. Wurzelanzahl",
+    "beginRootCount": "Wurzelanzahl am Start",
+    "useSlots": "Slot-Gruppen",
+    "rewards": "Belohnungen",
+    "lakiaros": "Lakiaros"
+  },
+  "sides": {
+    "left": "Links",
+    "right": "Rechts",
+    "top": "Oben",
+    "bottom": "Unten"
+  },
+  "lakiaro": {
+    "depth": "{name} ({key}), Tiefe {depth}"
+  },
+  "meta": {
+    "count": "{count} Spieltypen"
+  }
+}

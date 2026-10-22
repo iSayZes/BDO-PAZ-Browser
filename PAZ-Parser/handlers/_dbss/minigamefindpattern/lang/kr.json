@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "slotIndex": "슬롯",
+    "patternIndex": "패턴",
+    "image": "이미지",
+    "image2": "이미지 2",
+    "rootSize": "뿌리 크기",
+    "changePattern": "변경 패턴",
+    "rootBeginNo": "뿌리 시작",
+    "endDirection": "끝 방향",
+    "beginDirection": "시작 방향",
+    "nextPatterns": "다음 패턴"
+  },
+  "directions": {
+    "left": "왼쪽",
+    "right": "오른쪽",
+    "top": "위",
+    "bottom": "아래"
+  },
+  "offsetColumns": {
+    "slotIndex": "슬롯",
+    "patternIndex": "패턴",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "패턴 {count}개"
+  }
+}

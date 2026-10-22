@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "gameType": "Тип игры",
+    "nextGame": "Следующая игра",
+    "minDamageRate": "Мин. урон",
+    "nextRate": "Шанс перехода",
+    "lifeType": "Тип жизни",
+    "lifeRate": "Шанс жизни",
+    "tools": "Серпы",
+    "toolRate": "Шанс инструмента",
+    "stoneRate": "Шанс камня",
+    "stoneDrop": "Камень",
+    "grid": "Сетка",
+    "startPos": "Начальная позиция",
+    "minRootCount": "Мин. число корней",
+    "beginRootCount": "Корни в начале",
+    "useSlots": "Группы ячеек",
+    "rewards": "Награды",
+    "lakiaros": "Лакиары"
+  },
+  "sides": {
+    "left": "Слева",
+    "right": "Справа",
+    "top": "Сверху",
+    "bottom": "Снизу"
+  },
+  "lakiaro": {
+    "depth": "{name} ({key}), глубина {depth}"
+  },
+  "meta": {
+    "count": "Типов игры: {count}"
+  }
+}

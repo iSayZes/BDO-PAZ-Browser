@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemGrade": "Item Grade",
+    "enchantLevel": "Enhancement Level",
+    "rClickCount": "Right Clicks",
+    "openSlotCount": "Open Slots",
+    "decreaseDamageRate": "Decrease Damage Rate"
+  },
+  "offsetColumns": {
+    "itemGrade": "Item Grade",
+    "enchantLevel": "Enhancement Level",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} hoe levels"
+  }
+}

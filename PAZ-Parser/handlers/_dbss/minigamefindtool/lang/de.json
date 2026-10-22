@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "itemGrade": "Gegenstandsstufe",
+    "enchantLevel": "Verstärkungsstufe",
+    "rClickCount": "Rechtsklicks",
+    "openSlotCount": "Geöffnete Felder",
+    "decreaseDamageRate": "Schadenssenkungsrate"
+  },
+  "offsetColumns": {
+    "itemGrade": "Gegenstandsstufe",
+    "enchantLevel": "Verstärkungsstufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Hackenstufen"
+  }
+}

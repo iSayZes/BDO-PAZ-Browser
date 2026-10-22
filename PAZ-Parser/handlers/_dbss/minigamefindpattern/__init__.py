@@ -1,0 +1,1 @@
+"""minigamefindpattern.dbss preview handler."""

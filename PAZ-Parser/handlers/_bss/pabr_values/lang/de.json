@@ -284,7 +284,22 @@
     "weight": "Max. Traglast",
     "inventory": "Inventar",
     "hit": "Präzision",
-    "dv": "Ausweichen"
+    "dv": "Ausweichen",
+    "zoomInMax": "Max. Heranzoomen",
+    "zoomOutMax": "Max. Herauszoomen",
+    "eventName": "Audio-Ereignis",
+    "processorType": "Prozessortyp",
+    "lobbyMode": "Lobbymodus",
+    "gameCondition": "Spielzustand",
+    "recordClient": "Record-Client-URL",
+    "cashShop": "Shop-URL",
+    "replay": "Wiederholungs-URL",
+    "payment": "Zahlungs-URL",
+    "deviceType": "Gerätetyp",
+    "animationNo": "Animation Nr.",
+    "asus": "Asus-Effekt",
+    "razer": "Razer-Effekt",
+    "realRgb": "RGB"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -310,6 +325,10 @@
     "familyPointRanges": "{count} Familienpunkte-Bereiche",
     "staticStatusTypes": "{count} Tabellentypen",
     "familyStatSteps": "{count} Familienwert-Stufen",
-    "colors": "{count} Farben"
+    "colors": "{count} Farben",
+    "lobbyCharacters": "{count} Lobby-Charaktere",
+    "bgmStates": "{count} Musikzustände",
+    "gameConditions": "{count} Spielzustände",
+    "ledEffects": "{count} Lichteffekte"
   }
 }

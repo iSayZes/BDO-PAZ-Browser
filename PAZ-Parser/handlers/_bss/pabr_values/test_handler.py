@@ -279,6 +279,8 @@ _TARGETS: dict[str, list[TargetTest]] = {
             expected={"node_name": "Velia", "name_key": "LUA_WORLDMAP_TERRITORYSTRING_0", "knowledge_name": "Velia"},
         ),
     ],
+    # The first class character of the lobby (CharacterLobby_Table, client 1784).
+    "characterlobby.bss": [TargetTest(col="character_key", value=1, expected={"character_name": "Warrior"})],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {

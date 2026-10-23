@@ -284,7 +284,22 @@
     "weight": "Макс. вес",
     "inventory": "Инвентарь",
     "hit": "Меткость",
-    "dv": "Уклонение"
+    "dv": "Уклонение",
+    "zoomInMax": "Макс. приближение",
+    "zoomOutMax": "Макс. отдаление",
+    "eventName": "Звуковое событие",
+    "processorType": "Тип процессора",
+    "lobbyMode": "Режим лобби",
+    "gameCondition": "Состояние игры",
+    "recordClient": "URL клиента записи",
+    "cashShop": "URL магазина",
+    "replay": "URL повтора",
+    "payment": "URL оплаты",
+    "deviceType": "Тип устройства",
+    "animationNo": "№ анимации",
+    "asus": "Эффект Asus",
+    "razer": "Эффект Razer",
+    "realRgb": "RGB"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -310,6 +325,10 @@
     "familyPointRanges": "Диапазонов очков семьи: {count}",
     "staticStatusTypes": "Типов таблиц: {count}",
     "familyStatSteps": "Ступеней характеристик семьи: {count}",
-    "colors": "Цветов: {count}"
+    "colors": "Цветов: {count}",
+    "lobbyCharacters": "Персонажей лобби: {count}",
+    "bgmStates": "Музыкальных состояний: {count}",
+    "gameConditions": "Состояний игры: {count}",
+    "ledEffects": "Световых эффектов: {count}"
   }
 }

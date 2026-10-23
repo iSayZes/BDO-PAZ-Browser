@@ -174,6 +174,7 @@ from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
 from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
 from .usernpc.handler import UserNpcBssHandler
+from .weburl.handler import WebUrlBssHandler
 from .worldmapdecostaticstatusmanager.handler import WorldmapDecoBssHandler
 from .worldmaphousedecostaticstatusmanager.handler import WorldmapHouseDecoBssHandler
 from .yachtautobubbletextinfo.handler import YachtAutoBubbleTextInfoHandler
@@ -422,6 +423,7 @@ def register_bss_handlers() -> None:
         register_handler(f"ui_skillgroup_{window}.bss", UiSkillGroupBssHandler())
     register_handler("uigrowthpasslayout.bss", UiGrowthPassLayoutBssHandler())
     register_handler("usernpc.bss", UserNpcBssHandler())
+    register_handler("weburl.bss", WebUrlBssHandler())
     register_handler("worldmapdecostaticstatusmanager.bss", WorldmapDecoBssHandler())
     register_handler("worldmaphousedecostaticstatusmanager.bss", WorldmapHouseDecoBssHandler())
     register_handler("yachtautobubbletextinfo.bss", YachtAutoBubbleTextInfoHandler())

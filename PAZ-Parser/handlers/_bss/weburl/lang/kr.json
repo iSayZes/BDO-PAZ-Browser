@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "position": "위치",
+    "url": "URL",
+    "inserts": "삽입 위치"
+  },
+  "meta": {
+    "count": "웹 주소 {count}개"
+  }
+}

@@ -284,7 +284,22 @@
     "weight": "Weight Limit",
     "inventory": "Inventory",
     "hit": "Accuracy",
-    "dv": "Evasion"
+    "dv": "Evasion",
+    "zoomInMax": "Zoom In Max",
+    "zoomOutMax": "Zoom Out Max",
+    "eventName": "Audio Event",
+    "processorType": "Processor Type",
+    "lobbyMode": "Lobby Mode",
+    "gameCondition": "Game Condition",
+    "recordClient": "Record Client URL",
+    "cashShop": "Cash Shop URL",
+    "replay": "Replay URL",
+    "payment": "Payment URL",
+    "deviceType": "Device Type",
+    "animationNo": "Animation No.",
+    "asus": "Asus Effect",
+    "razer": "Razer Effect",
+    "realRgb": "RGB"
   },
   "meta": {
     "count": "{count} entries",
@@ -310,6 +325,10 @@
     "familyPointRanges": "{count} family point ranges",
     "staticStatusTypes": "{count} table types",
     "familyStatSteps": "{count} family stat steps",
-    "colors": "{count} colors"
+    "colors": "{count} colors",
+    "lobbyCharacters": "{count} lobby characters",
+    "bgmStates": "{count} music states",
+    "gameConditions": "{count} game conditions",
+    "ledEffects": "{count} lighting effects"
   }
 }

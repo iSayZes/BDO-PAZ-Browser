@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "position": "Posición",
+    "url": "URL",
+    "inserts": "Puntos de inserción"
+  },
+  "meta": {
+    "count": "{count} direcciones web"
+  }
+}

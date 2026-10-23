@@ -284,7 +284,22 @@
     "weight": "탑재 가능 무게",
     "inventory": "가방",
     "hit": "적중력",
-    "dv": "회피력"
+    "dv": "회피력",
+    "zoomInMax": "최대 줌 인",
+    "zoomOutMax": "최대 줌 아웃",
+    "eventName": "오디오 이벤트",
+    "processorType": "프로세서 타입",
+    "lobbyMode": "로비 모드",
+    "gameCondition": "게임 상태",
+    "recordClient": "기록 클라이언트 URL",
+    "cashShop": "캐시샵 URL",
+    "replay": "리플레이 URL",
+    "payment": "결제 URL",
+    "deviceType": "장치 타입",
+    "animationNo": "애니메이션 번호",
+    "asus": "Asus 효과",
+    "razer": "Razer 효과",
+    "realRgb": "RGB"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -310,6 +325,10 @@
     "familyPointRanges": "가문 포인트 구간 {count}개",
     "staticStatusTypes": "테이블 종류 {count}개",
     "familyStatSteps": "가문 능력치 단계 {count}개",
-    "colors": "색상 {count}개"
+    "colors": "색상 {count}개",
+    "lobbyCharacters": "로비 캐릭터 {count}개",
+    "bgmStates": "배경음 상태 {count}개",
+    "gameConditions": "게임 상태 {count}개",
+    "ledEffects": "조명 효과 {count}개"
   }
 }

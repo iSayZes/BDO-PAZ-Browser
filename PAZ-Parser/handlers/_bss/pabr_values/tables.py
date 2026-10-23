@@ -26,6 +26,7 @@ from .names import (
     vehicle_skill_name,
 )
 from .abyssone_tables import ABYSS_ONE_TABLES
+from .client_tables import CLIENT_TABLES
 from .edania_tables import EDANIA_TABLES
 from .greatsea_tables import GREAT_SEA_TABLES
 from .guild_tables import GUILD_TABLES
@@ -254,4 +255,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *ABYSS_ONE_TABLES,
     *WORLD_TABLES,
     *SERVER_TABLES,
+    *CLIENT_TABLES,
 )

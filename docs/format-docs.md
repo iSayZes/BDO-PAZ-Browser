@@ -226,7 +226,10 @@ from a PAZ folder.
 
 `check_docs.py` writes the section. It reads the doc's files from a PAZ
 folder: the rows of [`documented-formats.md`](documented-formats.md) that
-link to the doc, and every file a ``### `x.dbss` `` heading names. It walks
+link to the doc, and every file a ``### `x.dbss` `` heading names. A row
+names a file by its name, or by its full PAZ path when several folders hold
+a file of that name or the family has no single name
+(`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`). It walks
 them by each layout, newest first, and takes the first layout every file
 walks to its last byte by. Three tables follow:
 

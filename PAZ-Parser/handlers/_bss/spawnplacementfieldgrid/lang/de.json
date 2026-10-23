@@ -1,0 +1,44 @@
+{
+  "cellColumns": {
+    "spawnKey": "Erscheinungs-Schlüssel",
+    "type": "Typ",
+    "characterKey": "Charakter-Schlüssel",
+    "name": "Name",
+    "gridX": "Raster X",
+    "gridZ": "Raster Z",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnRange": "Erscheinungsradius",
+    "delay": "Wiedererscheinungszeit",
+    "variableDelay": "Zufälliger Zuschlag",
+    "actionIndex": "Aktionsindex",
+    "dialogIndex": "Dialogindex",
+    "territory": "Gebiet",
+    "goHome": "Wegpunkt Heimweg",
+    "goBack": "Wegpunkt Rückweg",
+    "spawnable": "Erscheint"
+  },
+  "gridColumns": {
+    "x": "Raster X",
+    "z": "Raster Z",
+    "worldX": "Welt X",
+    "worldZ": "Welt Z"
+  },
+  "fileColumns": {
+    "x": "Zelle X",
+    "z": "Zelle Z",
+    "worldX": "Welt X",
+    "worldZ": "Welt Z"
+  },
+  "types": {
+    "monster": "Monster",
+    "npc": "NPC"
+  },
+  "meta": {
+    "spawns": "{count} Erscheinungspunkte",
+    "squares": "{count} Rasterfelder mit Erscheinungspunkten",
+    "cells": "{count} Zellendateien",
+    "withField": "{count}, Feld {field}"
+  }
+}

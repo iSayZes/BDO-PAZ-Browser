@@ -38,8 +38,17 @@ class GameFiles:
         return cls(root, client, api, by_name)
 
     def read(self, name: str) -> bytes | None:
-        """The decompressed bytes of the one file called `name`, or None when the folder has none."""
-        entries = self.by_name.get(name.lower(), [])
+        """The decompressed bytes of the one file called `name`, or None when the folder has none.
+
+        A `name` with a `/` is a full PAZ path, for a file whose name several
+        folders share (`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`).
+        """
+        wanted = _norm(name).lower()
+        if "/" in wanted:
+            file_name = wanted.rsplit("/", 1)[-1]
+            entries = [e for e in self.by_name.get(file_name, []) if _norm(e.internal_path).lower() == wanted]
+        else:
+            entries = self.by_name.get(wanted, [])
         if not entries:
             return None
         if len(entries) > 1:

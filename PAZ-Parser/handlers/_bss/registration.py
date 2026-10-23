@@ -222,6 +222,8 @@ from .instancefieldrankingmanage.handler import InstanceFieldRankingManageHandle
 from .instancespawninfo.handler import InstanceSpawnInfoHandler
 from .monsterbuffzonegroup.handler import MonsterBuffZoneGroupHandler
 from .solareoptionstaticstatusmanager.handler import SolareOptionHandler
+from .spawnplacementfieldgrid.handler import FieldGridInfoHandler, FileInfoHandler, SpawnGridCellHandler
+from .spawnplacementfieldgrid.parser import CELL_FILE_KEY, FIELDGRIDINFO_FILE, FILEINFO_FILE
 
 
 def register_bss_handlers() -> None:
@@ -495,3 +497,7 @@ def register_bss_handlers() -> None:
     # One handler for the seven world map grids; each kind joins its cell values.
     for grid_kind in GRID_KINDS:
         register_handler(grid_kind.file_name, WorldMapGridHandler(grid_kind))
+    # Every `<x>_<y>.bss` spawn grid cell reads under the one grid cell key.
+    register_handler(CELL_FILE_KEY, SpawnGridCellHandler())
+    register_handler(FIELDGRIDINFO_FILE, FieldGridInfoHandler())
+    register_handler(FILEINFO_FILE, FileInfoHandler())

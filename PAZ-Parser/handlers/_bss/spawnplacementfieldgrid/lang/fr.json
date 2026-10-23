@@ -1,0 +1,44 @@
+{
+  "cellColumns": {
+    "spawnKey": "Clé d'apparition",
+    "type": "Type",
+    "characterKey": "Clé du personnage",
+    "name": "Nom",
+    "gridX": "Grille X",
+    "gridZ": "Grille Z",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnRange": "Rayon d'apparition",
+    "delay": "Délai de réapparition",
+    "variableDelay": "Supplément aléatoire",
+    "actionIndex": "Index d'action",
+    "dialogIndex": "Index de dialogue",
+    "territory": "Territoire",
+    "goHome": "Point de retour",
+    "goBack": "Point de repli",
+    "spawnable": "Apparaît"
+  },
+  "gridColumns": {
+    "x": "Grille X",
+    "z": "Grille Z",
+    "worldX": "Monde X",
+    "worldZ": "Monde Z"
+  },
+  "fileColumns": {
+    "x": "Cellule X",
+    "z": "Cellule Z",
+    "worldX": "Monde X",
+    "worldZ": "Monde Z"
+  },
+  "types": {
+    "monster": "Monstre",
+    "npc": "PNJ"
+  },
+  "meta": {
+    "spawns": "{count} points d'apparition",
+    "squares": "{count} cases de grille avec points d'apparition",
+    "cells": "{count} fichiers de cellule",
+    "withField": "{count}, champ {field}"
+  }
+}

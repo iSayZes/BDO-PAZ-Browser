@@ -141,6 +141,12 @@ Resolution order:
 2. Extension fallback
 3. Raw hex fallback
 
+A file named only by its grid cell, `<digits>_<digits>.bss` (the
+`553_364.bss` spawn grid cells under `mapdata_*/spawnplacementfieldgrid/`),
+looks up the key `x_y.bss` (`GRID_CELL_KEY` in `bdo_preview.py`) in place of
+its own name, so one `register_handler("x_y.bss", ...)` reads all 1,433 of
+client 3482. `browser.py --formats` lists the family under the same key.
+
 Exact filename handlers should be preferred for known formats.
 
 Extension handlers are useful for generic fallback previews.

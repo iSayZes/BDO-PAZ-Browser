@@ -74,6 +74,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `carriagechar.bss` | PABR list of the warehouse transport carrier characters, each with a world map model path (`WorldMap/WorldMap_Cart.pam`) | [carriagechar](file-formats/carriagechar_bss.md) | 1 | 0 |
 | `carriagespec.dbss` | Transport carriage types of the warehouse transport window: u8 carriage key, distance per minute, loadage, max and overload weight, base fee and fee per weight, trade goods flags (40-byte rows) | [carriagespec](file-formats/carriagespec_dbss.md) | 3 | 0 |
 | `carriagespecoffset.dbss` | Index into `carriagespec.dbss` with no magic: u8 carriage key, offset and size (9-byte rows) | [carriagespec](file-formats/carriagespec_dbss.md) | 3 | 0 |
+| `cashchoose.dbss` | Pearl Shop choice packs: per choose key up to ten `cashproduct.dbss` product IDs with a count each, how many the buyer picks, whether a pick may repeat, and an optional icon path (139-byte rows plus the path) | [cashchoose](file-formats/cashchoose_dbss.md) | 1 | 0 |
+| `cashchooseoffset.dbss` | Index into `cashchoose.dbss`, maps choose key → offset/size; no PABR magic | [cashchoose](file-formats/cashchoose_dbss.md) | 1 | 0 |
 | `cashforui.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashforuioffset.dbss` | Empty offset companion for `cashforui.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |

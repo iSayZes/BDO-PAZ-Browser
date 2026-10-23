@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "chooseKey": "Ключ выбора",
+    "icon": "Значок",
+    "chooseCount": "Выбор",
+    "isChooseDuplicate": "Повторный выбор",
+    "productCount": "Товаров",
+    "products": "Список товаров"
+  },
+  "offsetColumns": {
+    "chooseKey": "Ключ выбора",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Наборов на выбор: {count}"
+  }
+}

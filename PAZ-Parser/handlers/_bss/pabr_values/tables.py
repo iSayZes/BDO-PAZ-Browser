@@ -25,7 +25,9 @@ from .names import (
     utc_time,
     vehicle_skill_name,
 )
+from .abyssone_tables import ABYSS_ONE_TABLES
 from .edania_tables import EDANIA_TABLES
+from .greatsea_tables import GREAT_SEA_TABLES
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
 from .majorsiege_tables import MAJOR_SIEGE_TABLES
@@ -246,4 +248,6 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *SIEGE_TABLES,
     *MAJOR_SIEGE_TABLES,
     *SIEGE_OBJECT_TABLES,
+    *GREAT_SEA_TABLES,
+    *ABYSS_ONE_TABLES,
 )

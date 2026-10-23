@@ -231,6 +231,22 @@ _TARGETS: dict[str, list[TargetTest]] = {
         TargetTest(col="skill_no", value=_COMMAND_TO_GATHER, expected={"skill_level": 1, "skill_name": "Command to Gather"}),
     ],
     "guildmatchrank.bss": [TargetTest(col="rank", value=1, expected={"rank": 1})],
+    # The Carrack the servant list offers the change for (Type_Carrack) and its Ship License.
+    "oceanshipchangeitemstaticstatus.bss": [
+        TargetTest(
+            col="character_key",
+            value=31045,
+            expected={"character_name": "Epheria Carrack", "item_id": 49021, "item_name": "Ship License: Epheria Carrack"},
+        ),
+    ],
+    # A storage town and the Abyssal Vein knowledge of its area.
+    "abyssonewarehouse.bss": [
+        TargetTest(
+            col="region_key",
+            value=32,
+            expected={"region_name": "Heidel", "knowledge_key": 11347, "knowledge_name": "Abyssal Veins - Serendia"},
+        ),
+    ],
     # The first Edania castle (__eEdaniaRegion_Aetherion) and its node.
     "edanacastleinfostaicstatusmanager.bss": [
         TargetTest(

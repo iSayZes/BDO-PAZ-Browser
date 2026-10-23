@@ -211,7 +211,33 @@
     "carriageStartTime": "Heure de début",
     "actionIndex": "Index d'action",
     "maxTerm": "Durée max",
-    "spawnPositions": "Positions d'apparition"
+    "spawnPositions": "Positions d'apparition",
+    "magnification": "Agrandissement",
+    "vehicleTypes": "Types de véhicule",
+    "restrictedAreaState": "État de zone restreinte",
+    "windImpact": "Influence du vent",
+    "foodConsume": "Consommation de nourriture",
+    "exploreCoolTime": "Temps de recharge d'exploration",
+    "shipManagementRange": "Portée de gestion du navire",
+    "barterRange": "Portée du troc",
+    "resetCoolTime": "Temps de recharge de réinitialisation",
+    "maxExchangeCount": "Nombre max. d'échanges",
+    "overMaxCount": "Nombre au-delà du max.",
+    "maxResetCount": "Nombre max. de réinitialisations",
+    "barterResetTime": "Heure de réinitialisation du troc",
+    "discountRate": "Taux de réduction",
+    "addResetCount": "Réinitialisations ajoutées",
+    "resetNeedCount": "Nombre requis pour réinitialiser",
+    "timeDiscount": "Réduction de temps",
+    "timeDiscountLimit": "Limite de réduction de temps",
+    "subEmployeeExp": "EXP d'employé secondaire",
+    "subTradeExp": "EXP de commerce secondaire",
+    "feeMoney": "Frais (argent)",
+    "knowledgeKey": "ID de connaissance",
+    "knowledge": "Connaissance",
+    "equipSlot": "Emplacement d'équipement",
+    "presets": "Préréglages",
+    "moves": "Déplacements"
   },
   "meta": {
     "count": "{count} entrées",
@@ -225,6 +251,9 @@
     "oceanSiegeGroups": "{count} groupes du Champ de bataille bleu",
     "houseCharacters": "{count} personnages de maison",
     "edaniaCastles": "{count} châteaux d'Edania",
-    "territoryGroups": "{count} groupes de territoires"
+    "territoryGroups": "{count} groupes de territoires",
+    "ships": "{count} navires",
+    "abyssStorages": "{count} dépôts",
+    "equipSlots": "{count} emplacements d'équipement"
   }
 }

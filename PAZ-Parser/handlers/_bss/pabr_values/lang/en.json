@@ -211,7 +211,33 @@
     "carriageStartTime": "Start Time",
     "actionIndex": "Action Index",
     "maxTerm": "Max Term",
-    "spawnPositions": "Spawn Positions"
+    "spawnPositions": "Spawn Positions",
+    "magnification": "Magnification",
+    "vehicleTypes": "Vehicle Types",
+    "restrictedAreaState": "Restricted Area State",
+    "windImpact": "Wind Impact",
+    "foodConsume": "Food Consumption",
+    "exploreCoolTime": "Explore Cooldown",
+    "shipManagementRange": "Ship Management Range",
+    "barterRange": "Barter Range",
+    "resetCoolTime": "Reset Cooldown",
+    "maxExchangeCount": "Max Exchange Count",
+    "overMaxCount": "Over Max Count",
+    "maxResetCount": "Max Reset Count",
+    "barterResetTime": "Barter Reset Time",
+    "discountRate": "Discount Rate",
+    "addResetCount": "Added Reset Count",
+    "resetNeedCount": "Reset Need Count",
+    "timeDiscount": "Time Discount",
+    "timeDiscountLimit": "Time Discount Limit",
+    "subEmployeeExp": "Sub Employee EXP",
+    "subTradeExp": "Sub Trade EXP",
+    "feeMoney": "Fee (Silver)",
+    "knowledgeKey": "Knowledge ID",
+    "knowledge": "Knowledge",
+    "equipSlot": "Equipment Slot",
+    "presets": "Presets",
+    "moves": "Moves"
   },
   "meta": {
     "count": "{count} entries",
@@ -225,6 +251,9 @@
     "oceanSiegeGroups": "{count} Blue Battlefield groups",
     "houseCharacters": "{count} house characters",
     "edaniaCastles": "{count} Edania castles",
-    "territoryGroups": "{count} territory groups"
+    "territoryGroups": "{count} territory groups",
+    "ships": "{count} ships",
+    "abyssStorages": "{count} storages",
+    "equipSlots": "{count} equipment slots"
   }
 }

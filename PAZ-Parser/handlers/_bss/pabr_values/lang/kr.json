@@ -211,7 +211,33 @@
     "carriageStartTime": "시작 시간",
     "actionIndex": "액션 인덱스",
     "maxTerm": "최대 기간",
-    "spawnPositions": "스폰 위치"
+    "spawnPositions": "스폰 위치",
+    "magnification": "배율",
+    "vehicleTypes": "탈것 종류",
+    "restrictedAreaState": "제한 구역 상태",
+    "windImpact": "바람 영향",
+    "foodConsume": "식량 소모",
+    "exploreCoolTime": "탐험 재사용 대기 시간",
+    "shipManagementRange": "선박 관리 범위",
+    "barterRange": "교역 범위",
+    "resetCoolTime": "초기화 재사용 대기 시간",
+    "maxExchangeCount": "최대 교환 횟수",
+    "overMaxCount": "최대 초과 횟수",
+    "maxResetCount": "최대 초기화 횟수",
+    "barterResetTime": "교역 초기화 시간",
+    "discountRate": "할인율",
+    "addResetCount": "추가 초기화 횟수",
+    "resetNeedCount": "초기화 필요 횟수",
+    "timeDiscount": "시간 할인",
+    "timeDiscountLimit": "시간 할인 한도",
+    "subEmployeeExp": "보조 선원 경험치",
+    "subTradeExp": "보조 무역 경험치",
+    "feeMoney": "수수료 (은화)",
+    "knowledgeKey": "지식 ID",
+    "knowledge": "지식",
+    "equipSlot": "장비 슬롯",
+    "presets": "프리셋",
+    "moves": "이동"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -225,6 +251,9 @@
     "oceanSiegeGroups": "푸른 전장 그룹 {count}개",
     "houseCharacters": "집 캐릭터 {count}개",
     "edaniaCastles": "에다니아 성 {count}개",
-    "territoryGroups": "영지 그룹 {count}개"
+    "territoryGroups": "영지 그룹 {count}개",
+    "ships": "선박 {count}척",
+    "abyssStorages": "창고 {count}개",
+    "equipSlots": "장비 슬롯 {count}개"
   }
 }

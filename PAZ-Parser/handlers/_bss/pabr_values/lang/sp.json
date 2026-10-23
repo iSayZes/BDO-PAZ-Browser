@@ -211,7 +211,33 @@
     "carriageStartTime": "Hora de inicio",
     "actionIndex": "Índice de acción",
     "maxTerm": "Duración máx.",
-    "spawnPositions": "Posiciones de aparición"
+    "spawnPositions": "Posiciones de aparición",
+    "magnification": "Ampliación",
+    "vehicleTypes": "Tipos de vehículo",
+    "restrictedAreaState": "Estado de zona restringida",
+    "windImpact": "Impacto del viento",
+    "foodConsume": "Consumo de comida",
+    "exploreCoolTime": "Tiempo de reutilización de exploración",
+    "shipManagementRange": "Alcance de gestión del barco",
+    "barterRange": "Alcance del trueque",
+    "resetCoolTime": "Tiempo de reutilización del reinicio",
+    "maxExchangeCount": "Máx. de intercambios",
+    "overMaxCount": "Cantidad sobre el máximo",
+    "maxResetCount": "Máx. de reinicios",
+    "barterResetTime": "Hora de reinicio del trueque",
+    "discountRate": "Tasa de descuento",
+    "addResetCount": "Reinicios añadidos",
+    "resetNeedCount": "Cantidad necesaria para reiniciar",
+    "timeDiscount": "Descuento de tiempo",
+    "timeDiscountLimit": "Límite de descuento de tiempo",
+    "subEmployeeExp": "EXP de empleado secundario",
+    "subTradeExp": "EXP de comercio secundario",
+    "feeMoney": "Tarifa (plata)",
+    "knowledgeKey": "ID de conocimiento",
+    "knowledge": "Conocimiento",
+    "equipSlot": "Ranura de equipo",
+    "presets": "Preajustes",
+    "moves": "Desplazamientos"
   },
   "meta": {
     "count": "{count} entradas",
@@ -225,6 +251,9 @@
     "oceanSiegeGroups": "{count} grupos de Isla de Agua",
     "houseCharacters": "{count} personajes de propiedad",
     "edaniaCastles": "{count} castillos de Edania",
-    "territoryGroups": "{count} grupos de territorios"
+    "territoryGroups": "{count} grupos de territorios",
+    "ships": "{count} barcos",
+    "abyssStorages": "{count} almacenes",
+    "equipSlots": "{count} ranuras de equipo"
   }
 }

@@ -211,7 +211,33 @@
     "carriageStartTime": "Startzeit",
     "actionIndex": "Aktionsindex",
     "maxTerm": "Max. Dauer",
-    "spawnPositions": "Spawn-Positionen"
+    "spawnPositions": "Spawn-Positionen",
+    "magnification": "Vergrößerung",
+    "vehicleTypes": "Fahrzeugtypen",
+    "restrictedAreaState": "Sperrgebietsstatus",
+    "windImpact": "Windeinfluss",
+    "foodConsume": "Nahrungsverbrauch",
+    "exploreCoolTime": "Erkundungs-Abklingzeit",
+    "shipManagementRange": "Schiffsverwaltungsreichweite",
+    "barterRange": "Warentausch-Reichweite",
+    "resetCoolTime": "Zurücksetzungs-Abklingzeit",
+    "maxExchangeCount": "Max. Tauschanzahl",
+    "overMaxCount": "Überschreitungsanzahl",
+    "maxResetCount": "Max. Zurücksetzungen",
+    "barterResetTime": "Warentausch-Zurücksetzungszeit",
+    "discountRate": "Rabattrate",
+    "addResetCount": "Zusätzliche Zurücksetzungen",
+    "resetNeedCount": "Benötigte Anzahl für Zurücksetzung",
+    "timeDiscount": "Zeitrabatt",
+    "timeDiscountLimit": "Zeitrabatt-Grenze",
+    "subEmployeeExp": "Neben-Mitarbeiter-EP",
+    "subTradeExp": "Neben-Handels-EP",
+    "feeMoney": "Gebühr (Silber)",
+    "knowledgeKey": "Wissens-ID",
+    "knowledge": "Wissen",
+    "equipSlot": "Ausrüstungsplatz",
+    "presets": "Voreinstellungen",
+    "moves": "Bewegungen"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -225,6 +251,9 @@
     "oceanSiegeGroups": "{count} Gruppen des Blauen Schlachtfelds",
     "houseCharacters": "{count} Hauscharaktere",
     "edaniaCastles": "{count} Edania-Burgen",
-    "territoryGroups": "{count} Territoriumsgruppen"
+    "territoryGroups": "{count} Territoriumsgruppen",
+    "ships": "{count} Schiffe",
+    "abyssStorages": "{count} Lager",
+    "equipSlots": "{count} Ausrüstungsplätze"
   }
 }

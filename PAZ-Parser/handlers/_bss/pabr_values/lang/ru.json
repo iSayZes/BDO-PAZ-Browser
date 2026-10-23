@@ -211,7 +211,33 @@
     "carriageStartTime": "Время начала",
     "actionIndex": "Индекс поведения",
     "maxTerm": "Макс. длительность",
-    "spawnPositions": "Точки появления"
+    "spawnPositions": "Точки появления",
+    "magnification": "Увеличение",
+    "vehicleTypes": "Типы транспорта",
+    "restrictedAreaState": "Статус запретной зоны",
+    "windImpact": "Влияние ветра",
+    "foodConsume": "Расход еды",
+    "exploreCoolTime": "Перезарядка исследования",
+    "shipManagementRange": "Радиус управления судном",
+    "barterRange": "Радиус бартера",
+    "resetCoolTime": "Перезарядка сброса",
+    "maxExchangeCount": "Макс. число обменов",
+    "overMaxCount": "Сверх максимума",
+    "maxResetCount": "Макс. число сбросов",
+    "barterResetTime": "Время сброса бартера",
+    "discountRate": "Размер скидки",
+    "addResetCount": "Доп. сбросы",
+    "resetNeedCount": "Нужно для сброса",
+    "timeDiscount": "Скидка по времени",
+    "timeDiscountLimit": "Предел скидки по времени",
+    "subEmployeeExp": "Опыт доп. сотрудника",
+    "subTradeExp": "Доп. опыт торговли",
+    "feeMoney": "Плата (серебро)",
+    "knowledgeKey": "ID знания",
+    "knowledge": "Знание",
+    "equipSlot": "Ячейка снаряжения",
+    "presets": "Наборы",
+    "moves": "Перемещения"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -225,6 +251,9 @@
     "oceanSiegeGroups": "Групп Лазурной арены: {count}",
     "houseCharacters": "Персонажей домов: {count}",
     "edaniaCastles": "Замков Эдании: {count}",
-    "territoryGroups": "Групп территорий: {count}"
+    "territoryGroups": "Групп территорий: {count}",
+    "ships": "Суда: {count}",
+    "abyssStorages": "Склады: {count}",
+    "equipSlots": "Ячейки снаряжения: {count}"
   }
 }

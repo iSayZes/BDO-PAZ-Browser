@@ -1302,7 +1302,10 @@ Results are
 cached by `paz/bdo_index_cache.py` in `paz_browser_indexes.cache` in the
 client's cache folder, keyed by `IndexKind.value` (renaming a value orphans its cached data
 until the rebuild) and invalidated on the PAZ meta version or when the code that
-builds them changes. The cache stores `builder_fingerprint()` (through
+builds them changes. A folder load also deletes it when the `pad*.paz` files on
+disk differ from the ones the PAZ entry cache (`paz/bdo_cache.py`) recorded under
+the same meta version, as when archives are added to or deleted from a client
+folder that keeps its `pad00000.meta`. The cache stores `builder_fingerprint()` (through
 `index_fingerprint()` in `api/bdo_lookup_indexes.py`), a hash of
 `_common/lookup_builders.py` plus every project module it imports and the JSON
 files beside them (`paz/source_fingerprint.py`), so editing a builder, a helper

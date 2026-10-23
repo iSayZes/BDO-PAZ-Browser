@@ -78,6 +78,8 @@ class ApiState:
         self._recent_tables = RecentTables()
         self._global_search_cancel: threading.Event = threading.Event()
         self._meta_version: int | None = None
+        # `pad*.paz` names on disk, saved with the entry cache (`paz/bdo_cache.py`).
+        self._archive_files: tuple[str, ...] = ()
         # The status `load_folder()` returned, shown again after the cache pass.
         self._folder_status: dict | None = None
         # Archive file name -> (CRC, size) from the meta file, for cache keys.

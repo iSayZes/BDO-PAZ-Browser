@@ -37,9 +37,15 @@ from .bdo_api_search import SearchMixin
 from .bdo_api_map_pins import MapPinsMixin
 from .bdo_api_world_map import WorldMapMixin
 from .bdo_tree import build_tree, collect_entries, count_entries, find_node, handled_entries
-from paz.bdo_cache import load_cache, read_meta_version, save_cache
+from paz.bdo_cache import CachedEntries, archive_files, load_cache, read_meta_version, save_cache
 from paz.bdo_thumbnail_cache import ThumbnailCache
-from paz.bdo_index_cache import IndexCacheData, index_digests, load_index_cache, save_index_cache
+from paz.bdo_index_cache import (
+    IndexCacheData,
+    drop_index_cache,
+    index_digests,
+    load_index_cache,
+    save_index_cache,
+)
 from paz.bdo_meta_reader import read_bdo_meta
 from bdo_models import PazEntry
 from paz.bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
@@ -371,14 +377,19 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         current_version = read_meta_version(meta_path)
         self._meta_version = current_version
         self._set_archive_ids(read_bdo_meta(meta_path))
+        self._archive_files = archive_files(paz_root)
         cached = load_cache(self._cache_dir)
 
-        if cached and cached[0] == current_version:
-            _, entries = cached
+        if cached and cached.version == current_version and cached.archive_files == self._archive_files:
+            entries = cached.entries
             msg = {"key": "status.loadedFromCache", "args": {"count": f"{len(entries):,}", "version": current_version}}
         else:
+            if cached and cached.version == current_version:
+                # Archives were added or deleted: the indexes were built without
+                # the tables of the new ones, and their version still matches.
+                drop_index_cache(self._cache_dir)
             entries = parse(meta_path)
-            save_cache(self._cache_dir, current_version, entries)
+            save_cache(self._cache_dir, CachedEntries(current_version, self._archive_files, entries))
             msg = {"key": "status.parsedAndCached", "args": {"count": f"{len(entries):,}", "version": current_version}}
 
         self._entries = entries

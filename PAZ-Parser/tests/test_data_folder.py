@@ -10,7 +10,7 @@ from api.bdo_api import Api
 from api.bdo_config import config_file, load_config
 from app_dirs import cache_root, client_id, data_dir, default_data_dir, picked_data_dir
 from bdo_models import PazEntry
-from paz.bdo_cache import CACHE_FILE, load_cache
+from paz.bdo_cache import CACHE_FILE, CachedEntries, load_cache
 
 _VERSION = 3458
 _ENTRIES = [PazEntry("pad00001.paz", "gamecommondata/binary/a.dbss", 0, 10, 20, 0, 0)]
@@ -76,7 +76,7 @@ def test_a_new_data_folder_gets_the_settings_and_the_entry_list(tmp_path: Path) 
     assert load_config()["language"] == "de"
     assert api.get_settings()["data_folder"] == str(new_folder)
     assert api.cache_dir == cache_root(new_folder) / client_id(paz_root)
-    assert load_cache(_cache_dir(api)) == (_VERSION, _ENTRIES)
+    assert load_cache(_cache_dir(api)) == CachedEntries(_VERSION, (), _ENTRIES)
     assert not old_cache_root.exists()
 
 

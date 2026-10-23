@@ -262,7 +262,29 @@
     "isHunting": "Jagd",
     "nameKey": "Namensschlüssel",
     "reuseGroup": "Abklingzeitgruppe",
-    "isExpiredInOffline": "Läuft offline ab"
+    "isExpiredInOffline": "Läuft offline ab",
+    "startRangePrice": "Preisbereich ab",
+    "endRangePrice": "Preisbereich bis",
+    "unitPrice": "Preisschritt",
+    "passBiddingCount": "Gebotsanzahl",
+    "worldMarketPricePoint": "Marktpreispunkte",
+    "minFamilyPoint": "Min. Familienpunkte",
+    "maxFamilyPoint": "Max. Familienpunkte",
+    "addTradeCount": "Zusätzliche Handelsanzahl",
+    "real": "REAL",
+    "key": "Schlüssel",
+    "rewards": "Belohnungen",
+    "validRewardCount": "Gültige Belohnungen",
+    "point": "Punkte",
+    "offencePoint": "AK",
+    "defencePoint": "VK",
+    "hp": "Max. LP",
+    "mp": "Max. MP",
+    "sp": "Ausdauer",
+    "weight": "Max. Traglast",
+    "inventory": "Inventar",
+    "hit": "Präzision",
+    "dv": "Ausweichen"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -283,6 +305,11 @@
     "stages": "{count} Stufen",
     "treasures": "{count} Schätze",
     "teleports": "{count} Teleportziele",
-    "reuseGroups": "{count} Abklingzeitgruppen"
+    "reuseGroups": "{count} Abklingzeitgruppen",
+    "priceRanges": "{count} Preisbereiche",
+    "familyPointRanges": "{count} Familienpunkte-Bereiche",
+    "staticStatusTypes": "{count} Tabellentypen",
+    "familyStatSteps": "{count} Familienwert-Stufen",
+    "colors": "{count} Farben"
   }
 }

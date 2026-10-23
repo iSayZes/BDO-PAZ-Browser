@@ -262,7 +262,29 @@
     "isHunting": "Охота",
     "nameKey": "Ключ названия",
     "reuseGroup": "Группа перезарядки",
-    "isExpiredInOffline": "Истекает офлайн"
+    "isExpiredInOffline": "Истекает офлайн",
+    "startRangePrice": "Начало ценового диапазона",
+    "endRangePrice": "Конец ценового диапазона",
+    "unitPrice": "Шаг цены",
+    "passBiddingCount": "Число ставок",
+    "worldMarketPricePoint": "Очки рыночной цены",
+    "minFamilyPoint": "Мин. очки семьи",
+    "maxFamilyPoint": "Макс. очки семьи",
+    "addTradeCount": "Доп. число сделок",
+    "real": "REAL",
+    "key": "Ключ",
+    "rewards": "Награды",
+    "validRewardCount": "Действующие награды",
+    "point": "Очки",
+    "offencePoint": "Атака",
+    "defencePoint": "Защита",
+    "hp": "Макс. HP",
+    "mp": "Макс. MP",
+    "sp": "Выносливость",
+    "weight": "Макс. вес",
+    "inventory": "Инвентарь",
+    "hit": "Меткость",
+    "dv": "Уклонение"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -283,6 +305,11 @@
     "stages": "Уровней: {count}",
     "treasures": "Сокровищ: {count}",
     "teleports": "Точек телепортации: {count}",
-    "reuseGroups": "Групп перезарядки: {count}"
+    "reuseGroups": "Групп перезарядки: {count}",
+    "priceRanges": "Ценовых диапазонов: {count}",
+    "familyPointRanges": "Диапазонов очков семьи: {count}",
+    "staticStatusTypes": "Типов таблиц: {count}",
+    "familyStatSteps": "Ступеней характеристик семьи: {count}",
+    "colors": "Цветов: {count}"
   }
 }

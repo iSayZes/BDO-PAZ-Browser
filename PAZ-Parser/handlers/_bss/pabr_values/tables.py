@@ -34,6 +34,7 @@ from .majorsiege_tables import MAJOR_SIEGE_TABLES
 from .oceansiege_tables import OCEAN_SIEGE_TABLES
 from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
+from .server_tables import SERVER_TABLES
 from .siege_tables import SIEGE_TABLES
 from .siegeobject_tables import SIEGE_OBJECT_TABLES
 from .world_tables import WORLD_TABLES
@@ -252,4 +253,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *GREAT_SEA_TABLES,
     *ABYSS_ONE_TABLES,
     *WORLD_TABLES,
+    *SERVER_TABLES,
 )

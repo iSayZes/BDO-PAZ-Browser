@@ -262,7 +262,29 @@
     "isHunting": "Caza",
     "nameKey": "Clave del nombre",
     "reuseGroup": "Grupo de reutilización",
-    "isExpiredInOffline": "Caduca sin conexión"
+    "isExpiredInOffline": "Caduca sin conexión",
+    "startRangePrice": "Inicio del rango de precio",
+    "endRangePrice": "Fin del rango de precio",
+    "unitPrice": "Paso de precio",
+    "passBiddingCount": "Número de pujas",
+    "worldMarketPricePoint": "Puntos de precio del mercado",
+    "minFamilyPoint": "Puntos de familia mín.",
+    "maxFamilyPoint": "Puntos de familia máx.",
+    "addTradeCount": "Intercambios adicionales",
+    "real": "REAL",
+    "key": "Clave",
+    "rewards": "Recompensas",
+    "validRewardCount": "Recompensas válidas",
+    "point": "Puntos",
+    "offencePoint": "Ataque",
+    "defencePoint": "Defensa",
+    "hp": "Salud máx.",
+    "mp": "Maná máx.",
+    "sp": "Aguante",
+    "weight": "Capacidad de carga",
+    "inventory": "Inventario",
+    "hit": "Precisión",
+    "dv": "Evasión"
   },
   "meta": {
     "count": "{count} entradas",
@@ -283,6 +305,11 @@
     "stages": "{count} niveles",
     "treasures": "{count} tesoros",
     "teleports": "{count} destinos de teletransporte",
-    "reuseGroups": "{count} grupos de reutilización"
+    "reuseGroups": "{count} grupos de reutilización",
+    "priceRanges": "{count} rangos de precio",
+    "familyPointRanges": "{count} rangos de puntos de familia",
+    "staticStatusTypes": "{count} tipos de tabla",
+    "familyStatSteps": "{count} niveles de estadísticas de familia",
+    "colors": "{count} colores"
   }
 }

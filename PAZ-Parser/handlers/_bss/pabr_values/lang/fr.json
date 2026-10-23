@@ -262,7 +262,29 @@
     "isHunting": "Chasse",
     "nameKey": "Clé du nom",
     "reuseGroup": "Groupe de recharge",
-    "isExpiredInOffline": "Expire hors ligne"
+    "isExpiredInOffline": "Expire hors ligne",
+    "startRangePrice": "Début de la tranche de prix",
+    "endRangePrice": "Fin de la tranche de prix",
+    "unitPrice": "Pas de prix",
+    "passBiddingCount": "Nombre d'enchères",
+    "worldMarketPricePoint": "Points de prix du marché",
+    "minFamilyPoint": "Points de famille min.",
+    "maxFamilyPoint": "Points de famille max.",
+    "addTradeCount": "Échanges supplémentaires",
+    "real": "REAL",
+    "key": "Clé",
+    "rewards": "Récompenses",
+    "validRewardCount": "Récompenses valides",
+    "point": "Points",
+    "offencePoint": "PA",
+    "defencePoint": "PD",
+    "hp": "PV max.",
+    "mp": "PM max.",
+    "sp": "Endurance",
+    "weight": "Limite de poids",
+    "inventory": "Inventaire",
+    "hit": "Précision",
+    "dv": "Esquive"
   },
   "meta": {
     "count": "{count} entrées",
@@ -283,6 +305,11 @@
     "stages": "{count} niveaux",
     "treasures": "{count} trésors",
     "teleports": "{count} destinations de téléportation",
-    "reuseGroups": "{count} groupes de recharge"
+    "reuseGroups": "{count} groupes de recharge",
+    "priceRanges": "{count} tranches de prix",
+    "familyPointRanges": "{count} tranches de points de famille",
+    "staticStatusTypes": "{count} types de table",
+    "familyStatSteps": "{count} paliers de statistiques de famille",
+    "colors": "{count} couleurs"
   }
 }

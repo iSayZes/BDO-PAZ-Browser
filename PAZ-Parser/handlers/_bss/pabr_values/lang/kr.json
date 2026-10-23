@@ -262,7 +262,29 @@
     "isHunting": "수렵",
     "nameKey": "이름 키",
     "reuseGroup": "재사용 그룹",
-    "isExpiredInOffline": "오프라인 중 만료"
+    "isExpiredInOffline": "오프라인 중 만료",
+    "startRangePrice": "구간 시작 가격",
+    "endRangePrice": "구간 끝 가격",
+    "unitPrice": "단위 가격",
+    "passBiddingCount": "입찰 통과 횟수",
+    "worldMarketPricePoint": "거래소 가격 포인트",
+    "minFamilyPoint": "최소 가문 포인트",
+    "maxFamilyPoint": "최대 가문 포인트",
+    "addTradeCount": "추가 거래 횟수",
+    "real": "REAL",
+    "key": "키",
+    "rewards": "보상",
+    "validRewardCount": "유효 보상 수",
+    "point": "포인트",
+    "offencePoint": "공격력",
+    "defencePoint": "방어력",
+    "hp": "최대 생명력",
+    "mp": "최대 정신력",
+    "sp": "지구력",
+    "weight": "탑재 가능 무게",
+    "inventory": "가방",
+    "hit": "적중력",
+    "dv": "회피력"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -283,6 +305,11 @@
     "stages": "단계 {count}개",
     "treasures": "보물 {count}개",
     "teleports": "이동 지점 {count}개",
-    "reuseGroups": "재사용 그룹 {count}개"
+    "reuseGroups": "재사용 그룹 {count}개",
+    "priceRanges": "가격 구간 {count}개",
+    "familyPointRanges": "가문 포인트 구간 {count}개",
+    "staticStatusTypes": "테이블 종류 {count}개",
+    "familyStatSteps": "가문 능력치 단계 {count}개",
+    "colors": "색상 {count}개"
   }
 }

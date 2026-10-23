@@ -321,10 +321,14 @@ def _result(name: str) -> HandlerResult:
     return _RESULTS[name]
 
 
-def _render(name: str, records: list[dict]) -> str:
-    handler = PabrValuesBssHandler(_TABLES[name])
+def _render_table(value_table: ValueTable, records: list[dict]) -> str:
+    handler = PabrValuesBssHandler(value_table)
     handler.lang = "en"
     return handler.render_records_page(records, 0, len(records))
+
+
+def _render(name: str, records: list[dict]) -> str:
+    return _render_table(_TABLES[name], records)
 
 
 @pytest.mark.parametrize(
@@ -359,6 +363,7 @@ def test_every_table_has_its_labels() -> None:
     strings = json.loads(_EN_LANG.read_text(encoding="utf-8"))
     for value_table in VALUE_TABLES:
         assert value_table.count_key in strings["meta"], value_table.file_name
+        assert value_table.index_column in (None, *strings["columns"]), value_table.file_name
         for field in value_table.all_fields:
             columns = [field.column, *(lookup.column for lookup in (field.lookup, field.icon) if lookup is not None)]
             if field.text is not None:
@@ -733,6 +738,34 @@ def test_first_fields_lead_the_columns() -> None:
 def test_a_bare_file_takes_no_string_index() -> None:
     with pytest.raises(ValueError, match="no string table"):
         ValueTable("bad.bss", (ValueField("a", "I", text=TextRef("a_kr")),), framing=Framing.BARE)
+
+
+_FIXED_LIST = ValueTable(
+    "fixed.bss",
+    (ValueField("key", "H", "skillId"), ValueField("a", "qI", "schedules", fixed_count=2), ValueField("b", "I", "productId")),
+    RowCount.COUNTED,
+)
+_INDEXED = ValueTable("indexed.bss", (ValueField("a", "B", "productId"),), RowCount.TO_TABLE_START, index_column="index")
+
+
+def test_a_fixed_list_reads_its_entries_with_no_count() -> None:
+    data = _pabr(_U32.pack(1) + struct.pack("<HqIqII", 1, 60, 7, 0, 0, 2))
+    assert parse_value_table(data, _FIXED_LIST) == [{"key": 1, "a": [[60, 7], [0, 0]], "b": 2}]
+
+
+def test_an_index_column_stores_each_row_position() -> None:
+    data = _pabr(bytes([0, 1, 1]))
+    assert parse_value_table(data, _INDEXED) == [{"index": 0, "a": 0}, {"index": 1, "a": 1}, {"index": 2, "a": 1}]
+
+
+def test_the_index_column_comes_first() -> None:
+    html = _render_table(_INDEXED, [{"index": 4, "a": 1}])
+    assert html.index("Index") < html.index("Product ID")
+
+
+def test_a_list_takes_a_file_count_or_a_fixed_count() -> None:
+    with pytest.raises(ValueError, match="not both"):
+        ValueField("a", "I", "productId", is_counted_list=True, fixed_count=2)
 
 
 def test_first_fields_must_be_fields() -> None:

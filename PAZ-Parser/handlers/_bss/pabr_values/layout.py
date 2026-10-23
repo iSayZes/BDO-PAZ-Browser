@@ -5,8 +5,9 @@ trailer. A bare file is the values alone, with no magic, string table or
 trailer. The values are one set of fields, a u32 count and that many rows
 (optionally after head fields or before tail fields stored once), or rows up
 to the string table or the end of a bare file. A field can be a
-counted list: a u32 (or u64) count, then that many values, or a string-table
-index whose string the record keeps.
+counted list: a u32 (or u64) count, then that many values, a list of a fixed
+number of values with no count, or a string-table index whose string the
+record keeps.
 """
 
 from __future__ import annotations
@@ -15,6 +16,10 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from enum import Enum
 from typing import Any
+
+
+# The record key of a row's position, for a table with `index_column`.
+ROW_INDEX_FIELD = "index"
 
 
 class Framing(Enum):
@@ -85,7 +90,8 @@ class ValueField:
     list) into its cell text; the record keeps the value.
     With `is_counted_list` the field is a `count_fmt` count, then that many
     values, stored as a list; a format of several values (`B3I`) stores each
-    entry as a list. `display` then draws each entry on its own line, and
+    entry as a list. `fixed_count` reads a list of that many entries with no
+    count before it. `display` then draws each entry on its own line, and
     `list_display` draws the whole list as one text. `text` reads the value
     as a string-table index.
     """
@@ -100,12 +106,22 @@ class ValueField:
     count_fmt: str = "I"
     text: TextRef | None = None
     list_display: Callable[[list[Any]], str] | None = None
+    fixed_count: int | None = None
 
     def __post_init__(self) -> None:
-        if self.is_counted_list and (self.lookup is not None or self.icon is not None or self.text is not None):
+        if self.is_counted_list and self.fixed_count is not None:
+            raise ValueError(f"{self.name}: a list has a count in the file or a fixed count, not both")
+        if self.fixed_count is not None and self.fixed_count < 1:
+            raise ValueError(f"{self.name}: a fixed list needs at least one entry")
+        if self.is_list and (self.lookup is not None or self.icon is not None or self.text is not None):
             raise ValueError(f"{self.name}: a counted list takes no name, icon or text lookup")
-        if self.list_display is not None and (not self.is_counted_list or self.display is not None):
+        if self.list_display is not None and (not self.is_list or self.display is not None):
             raise ValueError(f"{self.name}: list_display needs a counted list without display")
+
+    @property
+    def is_list(self) -> bool:
+        """True for a counted list and for a list of `fixed_count` entries."""
+        return self.is_counted_list or self.fixed_count is not None
 
 
 @dataclass(frozen=True)
@@ -117,7 +133,9 @@ class ValueTable:
     `head` holds fields stored once where the values start, before the row
     count of `RowCount.COUNTED`, and `tail` fields stored once after the
     last row; every record holds their values, and their columns follow the
-    row fields.
+    row fields. `index_column` is the lang column key of the row's position
+    (from 0), for a file whose rows hold no key: every record stores it under
+    `ROW_INDEX_FIELD`, and its column comes first.
     """
 
     file_name: str
@@ -128,6 +146,7 @@ class ValueTable:
     first_fields: tuple[str, ...] = ()
     head: tuple[ValueField, ...] = ()
     tail: tuple[ValueField, ...] = ()
+    index_column: str | None = None
 
     def __post_init__(self) -> None:
         if self.rows is RowCount.TO_TABLE_START and any(field.is_counted_list for field in self.fields):

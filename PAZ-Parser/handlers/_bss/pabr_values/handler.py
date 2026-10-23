@@ -19,7 +19,7 @@ from _common.html import Column, e, html_list_cell, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.pa_text import pa_cell, pa_fields
 from .parser import parse_value_rows, parse_value_table
-from .layout import IconLookup, NameLookup, TextRef, ValueField, ValueTable
+from .layout import ROW_INDEX_FIELD, IconLookup, NameLookup, TextRef, ValueField, ValueTable
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -54,7 +54,7 @@ def _value_cell(field: ValueField) -> Cell:
     list_display = field.list_display
     if list_display is not None:
         return lambda r: _list_text_cell(r[field.name], list_display)
-    if field.is_counted_list:
+    if field.is_list:
         return lambda r: html_list_cell([_cell(value, field.display) for value in r[field.name]]) or _EMPTY
     return lambda r: _cell(r[field.name], field.display)
 
@@ -88,7 +88,7 @@ def _field_columns(field: ValueField, cols: dict[str, str]) -> list[_Shown]:
     shown: list[_Shown] = []
     if field.column is not None:
         # A list column stays unsortable: it would sort by its string form.
-        sort_key = None if field.is_counted_list else field.name
+        sort_key = None if field.is_list else field.name
         shown.append(_Shown(Column(cols[field.column], "num", sort_key=sort_key), _value_cell(field)))
         if field.icon is not None:
             shown.append(_Shown(Column(cols[field.icon.column], sort_key=field.icon.field), _icon_cell(field.icon)))
@@ -129,7 +129,11 @@ class PabrValuesBssHandler(PreviewHandler):
         if not self._table.has_named_field:
             column = Column(cols["valueBytes"], sort_key=VALUE_BYTES_FIELD)
             return [_Shown(column, lambda r: _cell(r[VALUE_BYTES_FIELD]))]
-        return [shown for field in self._table.shown_fields for shown in _field_columns(field, cols)]
+        fields = [shown for field in self._table.shown_fields for shown in _field_columns(field, cols)]
+        if self._table.index_column is None:
+            return fields
+        index = Column(cols[self._table.index_column], "num", sort_key=ROW_INDEX_FIELD)
+        return [_Shown(index, lambda r: _cell(r[ROW_INDEX_FIELD])), *fields]
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys([shown.column for shown in self._shown()])

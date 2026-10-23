@@ -262,7 +262,29 @@
     "isHunting": "Hunting",
     "nameKey": "Name Key",
     "reuseGroup": "Reuse Group",
-    "isExpiredInOffline": "Expires While Offline"
+    "isExpiredInOffline": "Expires While Offline",
+    "startRangePrice": "Range Start Price",
+    "endRangePrice": "Range End Price",
+    "unitPrice": "Unit Price",
+    "passBiddingCount": "Pass Bidding Count",
+    "worldMarketPricePoint": "Market Price Points",
+    "minFamilyPoint": "Min Family Points",
+    "maxFamilyPoint": "Max Family Points",
+    "addTradeCount": "Added Trade Count",
+    "real": "REAL",
+    "key": "Key",
+    "rewards": "Rewards",
+    "validRewardCount": "Valid Rewards",
+    "point": "Points",
+    "offencePoint": "AP",
+    "defencePoint": "DP",
+    "hp": "Max HP",
+    "mp": "Max MP",
+    "sp": "Stamina",
+    "weight": "Weight Limit",
+    "inventory": "Inventory",
+    "hit": "Accuracy",
+    "dv": "Evasion"
   },
   "meta": {
     "count": "{count} entries",
@@ -283,6 +305,11 @@
     "stages": "{count} stages",
     "treasures": "{count} treasures",
     "teleports": "{count} teleport destinations",
-    "reuseGroups": "{count} reuse groups"
+    "reuseGroups": "{count} reuse groups",
+    "priceRanges": "{count} price ranges",
+    "familyPointRanges": "{count} family point ranges",
+    "staticStatusTypes": "{count} table types",
+    "familyStatSteps": "{count} family stat steps",
+    "colors": "{count} colors"
   }
 }

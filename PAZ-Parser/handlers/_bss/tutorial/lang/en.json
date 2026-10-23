@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "tutorialType": "Tutorial",
+    "tutorialIndex": "Step",
+    "title": "Title",
+    "text": "Text",
+    "startCondition": "Start Condition",
+    "completeCondition": "Complete Condition",
+    "startEvents": "Start Events",
+    "panel": "Panel",
+    "image": "Image",
+    "usePopup": "Popup"
+  },
+  "meta": {
+    "count": "{count} tutorial steps"
+  }
+}

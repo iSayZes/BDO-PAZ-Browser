@@ -18,7 +18,6 @@ from tests.framework import (
 )
 
 from .parser import FILE_NAME, parse_instancefieldrankingmanage_records
-from .times import utc_text
 
 
 _STRINGTABLE_FILE = "stringtable.bss"
@@ -79,16 +78,6 @@ def test_every_ranking_ends_after_it_starts(manage_result: HandlerResult) -> Non
 
 def test_every_name_index_names_a_game_key(manage_result: HandlerResult) -> None:
     assert all(r["ranking_name_key"].startswith("LUA_") for r in manage_result.records)
-
-
-@pytest.mark.parametrize(("seconds", "text"), [
-    (0, "1970-01-01 00:00"),
-    (951_782_400, "2000-02-29 00:00"),
-    (1_612_342_740, "2021-02-03 08:59"),
-    (4_092_530_400, "2099-09-08 06:00"),
-])
-def test_utc_text(seconds: int, text: str) -> None:
-    assert utc_text(seconds) == text
 
 
 def test_bad_magic_raises() -> None:

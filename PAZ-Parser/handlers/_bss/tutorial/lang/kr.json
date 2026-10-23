@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "tutorialType": "튜토리얼",
+    "tutorialIndex": "단계",
+    "title": "제목",
+    "text": "내용",
+    "startCondition": "시작 조건",
+    "completeCondition": "완료 조건",
+    "startEvents": "시작 이벤트",
+    "panel": "창",
+    "image": "이미지",
+    "usePopup": "팝업"
+  },
+  "meta": {
+    "count": "튜토리얼 단계 {count}개"
+  }
+}

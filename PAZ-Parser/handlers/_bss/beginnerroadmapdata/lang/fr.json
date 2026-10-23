@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "roadmapKey": "Case",
+    "icon": "Icône",
+    "title": "Titre",
+    "text": "Texte",
+    "eventName": "Bouton d'événement",
+    "event": "Événement"
+  },
+  "events": {
+    "1": "Ouvre la fenêtre des quêtes (quêtes principales)",
+    "2": "Ouvre l'Esprit sombre",
+    "openUi": "Ouvre l'interface {target}",
+    "category": "Catégorie d'événement {category}"
+  },
+  "meta": {
+    "count": "{count} cases de la feuille de route"
+  }
+}

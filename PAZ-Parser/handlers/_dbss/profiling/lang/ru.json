@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "profilingKey": "Ключ профиля",
+    "infoCount": "Сообщения",
+    "subjects": "Темы",
+    "messages": "Текст",
+    "execute": "Скрипты наград"
+  },
+  "offsetColumns": {
+    "profilingKey": "Ключ профиля",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Ключей профиля: {count}"
+  }
+}

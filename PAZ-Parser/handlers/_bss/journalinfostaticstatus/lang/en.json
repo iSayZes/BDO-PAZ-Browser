@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "journalList": "Board",
+    "chapter": "Chapter",
+    "page": "Page",
+    "card": "Card",
+    "texture": "Card Texture",
+    "questChain": "Quest Chain",
+    "chapterName": "Chapter Name",
+    "title": "Title",
+    "story": "Story",
+    "bookQuests": "Bookshelf Quests"
+  },
+  "meta": {
+    "count": "{count} quest board cards"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "roadmapKey": "Slot",
+    "icon": "Icon",
+    "title": "Title",
+    "text": "Text",
+    "eventName": "Event Button",
+    "event": "Event"
+  },
+  "events": {
+    "1": "Opens the quest window (main quests)",
+    "2": "Opens the Black Spirit",
+    "openUi": "Opens UI {target}",
+    "category": "Event category {category}"
+  },
+  "meta": {
+    "count": "{count} roadmap slots"
+  }
+}

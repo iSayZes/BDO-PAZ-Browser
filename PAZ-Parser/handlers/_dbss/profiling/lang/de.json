@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "profilingKey": "Profiling-Schlüssel",
+    "infoCount": "Nachrichten",
+    "subjects": "Themen",
+    "messages": "Text",
+    "execute": "Belohnungsskripte"
+  },
+  "offsetColumns": {
+    "profilingKey": "Profiling-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Profiling-Schlüssel"
+  }
+}

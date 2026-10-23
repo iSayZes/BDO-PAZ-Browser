@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "roadmapKey": "Feld",
+    "icon": "Symbol",
+    "title": "Titel",
+    "text": "Text",
+    "eventName": "Ereignis-Schaltfläche",
+    "event": "Ereignis"
+  },
+  "events": {
+    "1": "Öffnet das Questfenster (Hauptquests)",
+    "2": "Öffnet den Schwarzgeist",
+    "openUi": "Öffnet UI {target}",
+    "category": "Ereigniskategorie {category}"
+  },
+  "meta": {
+    "count": "{count} Roadmap-Felder"
+  }
+}

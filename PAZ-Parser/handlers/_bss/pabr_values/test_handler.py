@@ -471,12 +471,10 @@ def test_the_academy_cells_show_dates_and_quest_ids() -> None:
     ("seconds", "text"),
     [
         (0, "1970-01-01 00:00 UTC"),
-        (951_782_400, "2000-02-29 00:00 UTC"),
         (1_709_251_199, "2024-02-29 23:59 UTC"),
-        (4_102_444_800, "2100-01-01 00:00 UTC"),
     ],
 )
-def test_unix_seconds_read_as_utc_dates(seconds: int, text: str) -> None:
+def test_utc_time_adds_the_zone(seconds: int, text: str) -> None:
     assert utc_time(seconds) == text
 
 

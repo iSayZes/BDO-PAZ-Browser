@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "tutorialType": "Tutorial",
+    "tutorialIndex": "Paso",
+    "title": "Título",
+    "text": "Texto",
+    "startCondition": "Condición de inicio",
+    "completeCondition": "Condición de fin",
+    "startEvents": "Eventos de inicio",
+    "panel": "Ventana",
+    "image": "Imagen",
+    "usePopup": "Ventana emergente"
+  },
+  "meta": {
+    "count": "{count} pasos de tutorial"
+  }
+}

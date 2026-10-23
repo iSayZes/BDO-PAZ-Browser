@@ -119,6 +119,10 @@ from .midiinstrument.handler import MidiInstrumentBssHandler
 from .minigamefind.handler import MiniGameFindBssHandler
 from .multiplequest.handler import MultipleQuestBssHandler
 from .nakmessagerenewelss.handler import NakMessageRenewelBssHandler
+from .tutorial.handler import TutorialHandler
+from .beginnerroadmapdata.handler import BeginnerRoadmapHandler
+from .journalinfostaticstatus.handler import JournalInfoHandler
+from .eventguidess.handler import EventGuideHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
@@ -352,6 +356,10 @@ def register_bss_handlers() -> None:
     register_handler("minigamefind.bss", MiniGameFindBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nakmessagerenewelss.bss", NakMessageRenewelBssHandler())
+    register_handler("tutorial.bss", TutorialHandler())
+    register_handler("beginnerroadmapdata.bss", BeginnerRoadmapHandler())
+    register_handler("journalinfostaticstatus.bss", JournalInfoHandler())
+    register_handler("eventguidess.bss", EventGuideHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("selectbox.bss", SelectBoxBssHandler())
     register_handler("servant.bss", ServantBssHandler())

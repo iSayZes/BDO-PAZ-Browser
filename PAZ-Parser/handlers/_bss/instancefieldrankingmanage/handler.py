@@ -10,8 +10,8 @@ from _bss.stringtable.parser import GAME_SHEET
 from _bss.stringtable.text import STRINGTABLE_FILE, ui_key_hashes, ui_key_text
 from _common.html import Column, e
 from _common.row_table import RowTableHandler
+from _common.utc_time import utc_text
 from .parser import FILE_NAME, parse_instancefieldrankingmanage_records
-from .times import utc_text
 
 
 _LANG_DIR = Path(__file__).parent / "lang"

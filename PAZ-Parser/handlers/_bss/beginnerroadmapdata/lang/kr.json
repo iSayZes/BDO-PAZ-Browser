@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "roadmapKey": "슬롯",
+    "icon": "아이콘",
+    "title": "제목",
+    "text": "내용",
+    "eventName": "이벤트 버튼",
+    "event": "이벤트"
+  },
+  "events": {
+    "1": "의뢰 창 열기 (메인 의뢰)",
+    "2": "흑정령 열기",
+    "openUi": "UI {target} 열기",
+    "category": "이벤트 분류 {category}"
+  },
+  "meta": {
+    "count": "로드맵 슬롯 {count}개"
+  }
+}

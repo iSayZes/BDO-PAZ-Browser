@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "eventKey": "Clé d'événement",
+    "icon": "Icône",
+    "title": "Titre",
+    "text": "Texte",
+    "start": "Début (UTC)",
+    "end": "Fin (UTC)",
+    "button": "Bouton",
+    "function": "Fonction",
+    "tag": "Étiquette",
+    "rewards": "Récompenses"
+  },
+  "meta": {
+    "count": "{count} événements"
+  }
+}

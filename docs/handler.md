@@ -1083,6 +1083,7 @@ _common/
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
 ├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/
+├── utc_time.py          # utc_text(): Unix seconds as "2021-02-03 08:59" UTC, without datetime (the exe does not bundle it)
 ├── vehicle_skill.py     # mount and ship skill names: LOC type 8, else the Korean vehicleskill.dbss name
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```

@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "setKey": "Clé d'ensemble",
+    "setType": "Type",
+    "effects": "Effets d'ensemble",
+    "pieceCount": "Pièces",
+    "pieces": "Objets"
+  },
+  "offsetColumns": {
+    "setKey": "Clé d'ensemble",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "setTypes": {
+    "0": "Équipement",
+    "1": "Meubles"
+  },
+  "text": {
+    "points": "{points} points d'intérieur"
+  },
+  "meta": {
+    "count": "{count} ensembles"
+  }
+}

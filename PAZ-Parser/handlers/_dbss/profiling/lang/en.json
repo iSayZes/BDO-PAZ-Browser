@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "profilingKey": "Profiling Key",
+    "infoCount": "Messages",
+    "subjects": "Subjects",
+    "messages": "Text",
+    "execute": "Reward Scripts"
+  },
+  "offsetColumns": {
+    "profilingKey": "Profiling Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} profiling keys"
+  }
+}

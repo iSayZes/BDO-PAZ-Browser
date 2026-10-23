@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneKey": "Cutscene Key",
+    "fileName": "File Name",
+    "name": "Name",
+    "place": "Place"
+  },
+  "offsetColumns": {
+    "cutsceneKey": "Cutscene Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} cutscenes"
+  }
+}

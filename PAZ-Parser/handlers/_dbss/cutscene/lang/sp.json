@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneKey": "Clave de cinemática",
+    "fileName": "Nombre de archivo",
+    "name": "Nombre",
+    "place": "Lugar"
+  },
+  "offsetColumns": {
+    "cutsceneKey": "Clave de cinemática",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} cinemáticas"
+  }
+}

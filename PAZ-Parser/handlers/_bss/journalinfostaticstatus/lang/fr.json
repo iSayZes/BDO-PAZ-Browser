@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "journalList": "Tableau",
+    "chapter": "Chapitre",
+    "page": "Page",
+    "card": "Carte",
+    "texture": "Image de carte",
+    "questChain": "Chaîne de quêtes",
+    "chapterName": "Nom du chapitre",
+    "title": "Titre",
+    "story": "Histoire",
+    "bookQuests": "Quêtes de la bibliothèque"
+  },
+  "meta": {
+    "count": "{count} cartes du tableau de quêtes"
+  }
+}

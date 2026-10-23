@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "journalList": "의뢰 게시판",
+    "chapter": "장",
+    "page": "페이지",
+    "card": "카드",
+    "texture": "카드 이미지",
+    "questChain": "의뢰 그룹",
+    "chapterName": "장 이름",
+    "title": "제목",
+    "story": "이야기",
+    "bookQuests": "책장 의뢰"
+  },
+  "meta": {
+    "count": "의뢰 게시판 카드 {count}개"
+  }
+}

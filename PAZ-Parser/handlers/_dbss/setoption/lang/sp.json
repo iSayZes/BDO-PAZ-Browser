@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "setKey": "Clave de conjunto",
+    "setType": "Tipo",
+    "effects": "Efectos de conjunto",
+    "pieceCount": "Piezas",
+    "pieces": "Objetos"
+  },
+  "offsetColumns": {
+    "setKey": "Clave de conjunto",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "setTypes": {
+    "0": "Equipo",
+    "1": "Muebles"
+  },
+  "text": {
+    "points": "{points} puntos de interior"
+  },
+  "meta": {
+    "count": "{count} conjuntos"
+  }
+}

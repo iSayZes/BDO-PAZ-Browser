@@ -262,6 +262,9 @@ from .attendance.handler import AttendanceHandler, attendance_offset_handler
 from .customizeditem.handler import CustomizedItemHandler, customized_item_offset_handler
 from .cashchoose.handler import CashChooseHandler, cash_choose_offset_handler
 from .skillcommand.handler import SkillCommandHandler, skill_command_offset_handler
+from .setoption.handler import SetOptionHandler, set_option_offset_handler
+from .profiling.handler import ProfilingHandler, profiling_offset_handler
+from .cutscene.handler import CutsceneHandler, cutscene_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -615,3 +618,9 @@ def register_dbss_handlers() -> None:
     register_handler("cashchoose.dbss", CashChooseHandler())
     register_handler("skillcommandoffset.dbss", skill_command_offset_handler())
     register_handler("skillcommand.dbss", SkillCommandHandler())
+    register_handler("setoptionoffset.dbss", set_option_offset_handler())
+    register_handler("setoption.dbss", SetOptionHandler())
+    register_handler("profilingoffset.dbss", profiling_offset_handler())
+    register_handler("profiling.dbss", ProfilingHandler())
+    register_handler("cutsceneoffset.dbss", cutscene_offset_handler())
+    register_handler("cutscene.dbss", CutsceneHandler())

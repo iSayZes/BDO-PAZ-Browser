@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "characterId": "Charakter-ID",
+    "icon": "Symbol",
+    "name": "Name",
+    "armorMaterial": "Rüstungsmaterial",
+    "objectKind": "Art",
+    "installationType": "Platzierungsart",
+    "collision": "Kollision",
+    "siegeTent": "Belagerungszelt",
+    "layers": "Hüllenebenen",
+    "faces": "Flächen",
+    "placement": "Platzierung"
+  },
+  "placement": {
+    "inside": "Innen",
+    "outside": "Außen",
+    "floor": "Boden",
+    "wall": "Wand",
+    "table": "Tisch",
+    "carpet": "Teppich"
+  },
+  "meta": {
+    "count": "{count} Objekte"
+  }
+}

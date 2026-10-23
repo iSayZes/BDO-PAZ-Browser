@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "characterId": "Character ID",
+    "icon": "Icon",
+    "name": "Name",
+    "armorMaterial": "Armor Material",
+    "objectKind": "Kind",
+    "installationType": "Installation Type",
+    "collision": "Collision",
+    "siegeTent": "Siege Tent",
+    "layers": "Hull Layers",
+    "faces": "Faces",
+    "placement": "Placement"
+  },
+  "placement": {
+    "inside": "Inside",
+    "outside": "Outside",
+    "floor": "Floor",
+    "wall": "Wall",
+    "table": "Table",
+    "carpet": "Carpet"
+  },
+  "meta": {
+    "count": "{count} objects"
+  }
+}

@@ -15,6 +15,7 @@ from .barter_npclist.handler import BarterNpcListBssHandler
 from .barter_special.handler import BarterSpecialBssHandler
 from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
 from .bartersubgroup.handler import BarterSubGroupBssHandler
+from .baseobject.handler import BaseObjectBssHandler
 from .bdoservanttitless.handler import BdoServantTitlesBssHandler
 from .binkaudioinfo.handler import BinkAudioInfoBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
@@ -256,6 +257,7 @@ def register_bss_handlers() -> None:
     register_handler("barter_special.bss", BarterSpecialBssHandler())
     register_handler("barterlifelevelinfo.bss", BarterLifeLevelInfoBssHandler())
     register_handler("bartersubgroup.bss", BarterSubGroupBssHandler())
+    register_handler("baseobject.bss", BaseObjectBssHandler())
     register_handler("bdoservanttitless.bss", BdoServantTitlesBssHandler())
     register_handler("binkaudioinfo.bss", BinkAudioInfoBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())

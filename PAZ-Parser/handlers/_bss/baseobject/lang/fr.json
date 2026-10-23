@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "characterId": "ID du personnage",
+    "icon": "Icône",
+    "name": "Nom",
+    "armorMaterial": "Matériau d'armure",
+    "objectKind": "Genre",
+    "installationType": "Type d'installation",
+    "collision": "Collision",
+    "siegeTent": "Tente de siège",
+    "layers": "Couches d'enveloppe",
+    "faces": "Faces",
+    "placement": "Placement"
+  },
+  "placement": {
+    "inside": "Intérieur",
+    "outside": "Extérieur",
+    "floor": "Sol",
+    "wall": "Mur",
+    "table": "Table",
+    "carpet": "Tapis"
+  },
+  "meta": {
+    "count": "{count} objets"
+  }
+}

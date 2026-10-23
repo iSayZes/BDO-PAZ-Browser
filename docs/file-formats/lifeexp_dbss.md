@@ -12,8 +12,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                 | Bytes  | Records                           | Row bytes |
 | ------ | -------------- | ------- | -------------------- | ------ | --------------------------------- | --------- |
-| 1      | 1485 and later | 3474    | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
-| 1      | 1485 and later | 3474    | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
+| 1      | 1485 and later | 3483    | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
+| 1      | 1485 and later | 3483    | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
 
 | Layout | File                 | Known             | Unknown    |
 | ------ | -------------------- | ----------------- | ---------- |
@@ -24,6 +24,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
 | 3474   | Layout 1 |
 | 3251   | Layout 1 |
 | 3002   | Layout 1 |
@@ -145,7 +146,7 @@ Level 0 has no rank; the Lua function falls through and returns the bare level.
 ## Notes
 
 - Observed on client 3464: twelve of the fifteen blocks hold the same EXP on every level (IDs 0, 2 to 6, 8 to 10 and 12 to 14). Fishing (1) needs less on levels 1 to 128 (level 1: 200 against 400) and matches them from level 129 up. Barter (11) has its own curve on every level but 0.
-- Trading (7) holds finite EXP up to level 60 (212,980,644 to go from Master 10 to Master 11), then `999,999,999,999` on levels 61 to 130 and `9,999,999,999,999` on levels 131 to 180, so Trading stops at Master 11 (level 61), while [lifeexpmaxlevel](lifeexpmaxlevel_bss.md) still gives it 180.
+- Trading (7) holds finite EXP up to level 60, then `999,999,999,999` on levels 61 to 130 and `9,999,999,999,999` on levels 131 to 180, so Trading stops at Master 11 (level 61), while [lifeexpmaxlevel](lifeexpmaxlevel_bss.md) still gives it 180. Client 3473 replaced the finite part of the curve: Beginner 1 needs 5 EXP instead of 20, and level 60 (Master 10 to Master 11) 630,643,672,350 instead of 212,980,644 (client 3464). The same client added [tradeexperiencess](tradeexperiencess_bss.md), whose rows divide the new curve into whole numbers of equal parts.
 - The shared curve and Barter both change pace at level 131: Barter rises by about 8,150 EXP per level on levels 125 to 130, then 13% per level from 131 (4,104,606 on 130, 4,638,200 on 131). Trading's second sentinel starts on the same level.
 - Every block starts with level 0 at `100` EXP, `20` for Trading.
 - The client reads a life skill's level and EXP through `getLifeExperienceLevel`, `getCurrLifeExperiencePoint` and `getDemandLifeExperiencePoint` (`panel_transferlifeexperience_all.luac`) and draws the bar as current / demand, so EXP restarts at 0 on every level.

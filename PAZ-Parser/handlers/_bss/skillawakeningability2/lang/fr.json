@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "skillNo": "N° de compétence",
+    "skill": "Compétence",
+    "abilityCount": "Options",
+    "addOns": "Effets d'amélioration de compétence"
+  },
+  "meta": {
+    "count": "{count} compétences avec des options d'amélioration"
+  }
+}

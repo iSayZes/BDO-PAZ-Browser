@@ -154,8 +154,9 @@ indexes (index 96: "Target's recovery -40% for 7 sec").
   `panel_window_skillgroup_all_1.luac` (client 3482) read up to two
   add-ons per skill: `ToClient_GetAwakeningAbilityCount(skillNo)`, then
   `ToClient_GetAwakeningAbilityIndex(skillNo, i)` for each, and show
-  `getSkillAwakenDescription(index)`. Which indexes a skill may roll is not
-  in this file.
+  `getSkillAwakenDescription(index)`. `index` is a position in the skill's
+  option list: which ability indexes a skill offers, and in which order, is
+  in [`skillawakeningability2.bss`](skillawakeningability2_bss.md).
 - The Korean texts open with `자신` (self, 36 rows on client 3482), `상대`
   (target, 54 rows) or `타격` (on hit, 6 rows), which follows the sheet's
   `BuffTarget` on client 1784; the client gets the target from the buff.
@@ -168,9 +169,3 @@ The u32 after the description is `0` on all 93 rows of client 1784 and all
 96 rows of client 3482. The 2016 struct ends with the six `Varied*` floats,
 which the sheet leaves empty; a u32 count of an empty list would read as
 `0` too, but no row has a non-zero value to tell the two apart.
-
-### Which File Lists the Add-ons of a Skill
-
-`skillawakeningability2.bss` (82 KB on client 3482, not documented yet)
-shares the stem and is the likely source of the per-skill index lists the
-Lua reads through `ToClient_GetAwakeningAbilityIndex`.

@@ -6,7 +6,6 @@ from pathlib import Path
 
 from _common.buff import buff_label, buff_list_cell
 from _common.html import Column, e
-from _common.loc import LOC_NULL, loc_tagged
 from _common.offset_table import OffsetTableHandler, keyed_offset_handler
 from _common.pa_text import pa_cell, pa_fields
 from _common.row_table import RowTableHandler
@@ -16,25 +15,15 @@ from .parser import (
     parse_skillawakeningability_records,
     parse_skillawakeningabilityoffset_rows,
 )
+from .text import ability_description_tagged
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-# LOC type 33, str_id1 = ability index: the English of `description_kr`
-# (skillawakeningability_dbss.md, Field Names).
-LOC_AWAKENING_ABILITY = 33
 _ONE_BUFF = 1
 
 
 def skill_awakening_ability_offset_handler() -> OffsetTableHandler:
     return keyed_offset_handler(_LANG_DIR, parse_skillawakeningabilityoffset_rows, KEY_FIELD, "abilityIndex")
-
-
-def _description_tagged(record: dict) -> str:
-    """The LOC type 33 text of the ability, else the row's own Korean text."""
-    text = loc_tagged(LOC_AWAKENING_ABILITY, record[KEY_FIELD])
-    if text and text != LOC_NULL:
-        return text
-    return record["description_kr"].strip()
 
 
 class SkillAwakeningAbilityHandler(RowTableHandler):
@@ -53,7 +42,7 @@ class SkillAwakeningAbilityHandler(RowTableHandler):
             {
                 **record,
                 "buff": buff_label(record["buff_id"]),
-                **pa_fields("description", _description_tagged(record)),
+                **pa_fields("description", ability_description_tagged(record[KEY_FIELD], record["description_kr"])),
             }
             for record in parse_skillawakeningability_records(data)
         ]

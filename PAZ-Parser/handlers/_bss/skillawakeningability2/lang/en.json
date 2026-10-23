@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "skillNo": "Skill No.",
+    "skill": "Skill",
+    "abilityCount": "Options",
+    "addOns": "Skill Add-on Effects"
+  },
+  "meta": {
+    "count": "{count} skills with Skill Add-on options"
+  }
+}

@@ -27,6 +27,8 @@ from .cashproduct_grouplist.handler import CashProductGroupListHandler
 from .cashproduct_instant.handler import CashProductInstantHandler
 from .challengerewardlist.handler import ChallengeRewardListHandler
 from .charactersimply.handler import CharacterSimplyBssHandler
+from .classcooltimeuilist.handler import ClassCoolTimeUiListBssHandler
+from .classinputdata.handler import ClassInputDataBssHandler
 from .classskilllist.handler import ClassSkillListBssHandler
 from .commonlifestatdata.handler import CommonLifeStatDataBssHandler
 from .contentsgroupoptionstaticstatusmanager.handler import ContentsGroupOptionBssHandler
@@ -248,6 +250,8 @@ def register_bss_handlers() -> None:
     register_handler("carriagechar.bss", CarriageCharBssHandler())
     register_handler("challengerewardlist.bss", ChallengeRewardListHandler())
     register_handler("charactersimply.bss", CharacterSimplyBssHandler())
+    register_handler("classcooltimeuilist.bss", ClassCoolTimeUiListBssHandler())
+    register_handler("classinputdata.bss", ClassInputDataBssHandler())
     register_handler("classskilllist.bss", ClassSkillListBssHandler())
     register_handler("commonlifestatdata.bss", CommonLifeStatDataBssHandler())
     register_handler(

@@ -304,7 +304,13 @@
     "maxLevel": "Max. Stufe",
     "iconSize": "Symbolgröße",
     "difficultyIconUvs": "Symbolbereiche je Schwierigkeitsgrad",
-    "levelIconUvs": "Symbolbereiche je Stufe"
+    "levelIconUvs": "Symbolbereiche je Stufe",
+    "answerType": "Antwort",
+    "quizActions": "Aktionen",
+    "contentsGroups": "Inhaltsgruppen",
+    "weatherPreset": "Voreinstellung",
+    "weatherNameKey": "Namensschlüssel",
+    "weather": "Wetter"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -334,6 +340,8 @@
     "lobbyCharacters": "{count} Lobby-Charaktere",
     "bgmStates": "{count} Musikzustände",
     "gameConditions": "{count} Spielzustände",
-    "ledEffects": "{count} Lichteffekte"
+    "ledEffects": "{count} Lichteffekte",
+    "quizAnswers": "{count} Quizantworten",
+    "weatherPresets": "{count} Wettervoreinstellungen"
   }
 }

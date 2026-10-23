@@ -39,6 +39,7 @@ from .rosewar_tables import ROSE_WAR_TABLES
 from .server_tables import SERVER_TABLES
 from .siege_tables import SIEGE_TABLES
 from .siegeobject_tables import SIEGE_OBJECT_TABLES
+from .ui_tables import UI_TABLES
 from .world_tables import WORLD_TABLES
 
 __all__ = [
@@ -258,4 +259,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *SERVER_TABLES,
     *CLIENT_TABLES,
     *PERSONAL_MONSTER_TABLES,
+    *UI_TABLES,
 )

@@ -304,7 +304,13 @@
     "maxLevel": "최대 레벨",
     "iconSize": "아이콘 크기",
     "difficultyIconUvs": "난이도 아이콘 영역",
-    "levelIconUvs": "레벨 아이콘 영역"
+    "levelIconUvs": "레벨 아이콘 영역",
+    "answerType": "정답",
+    "quizActions": "액션",
+    "contentsGroups": "콘텐츠 그룹",
+    "weatherPreset": "프리셋",
+    "weatherNameKey": "이름 키",
+    "weather": "날씨"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -334,6 +340,8 @@
     "lobbyCharacters": "로비 캐릭터 {count}개",
     "bgmStates": "배경음 상태 {count}개",
     "gameConditions": "게임 상태 {count}개",
-    "ledEffects": "조명 효과 {count}개"
+    "ledEffects": "조명 효과 {count}개",
+    "quizAnswers": "퀴즈 정답 {count}개",
+    "weatherPresets": "날씨 프리셋 {count}개"
   }
 }

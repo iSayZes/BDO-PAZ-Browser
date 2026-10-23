@@ -304,7 +304,13 @@
     "maxLevel": "Макс. уровень",
     "iconSize": "Размер значка",
     "difficultyIconUvs": "Области значка по уровню сложности",
-    "levelIconUvs": "Области значка по уровню"
+    "levelIconUvs": "Области значка по уровню",
+    "answerType": "Ответ",
+    "quizActions": "Действия",
+    "contentsGroups": "Группы контента",
+    "weatherPreset": "Пресет",
+    "weatherNameKey": "Ключ названия",
+    "weather": "Погода"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -334,6 +340,8 @@
     "lobbyCharacters": "Персонажей лобби: {count}",
     "bgmStates": "Музыкальных состояний: {count}",
     "gameConditions": "Состояний игры: {count}",
-    "ledEffects": "Световых эффектов: {count}"
+    "ledEffects": "Световых эффектов: {count}",
+    "quizAnswers": "Ответов викторины: {count}",
+    "weatherPresets": "Пресетов погоды: {count}"
   }
 }

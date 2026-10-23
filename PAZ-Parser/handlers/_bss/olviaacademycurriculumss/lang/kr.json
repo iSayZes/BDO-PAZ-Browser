@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "section": "구분",
+    "parentIndex": "분류",
+    "parent": "분류 이름",
+    "index": "항목",
+    "title": "과목 또는 그룹",
+    "startQuest": "시작 의뢰",
+    "questCount": "의뢰 수",
+    "quests": "의뢰"
+  },
+  "sections": {
+    "curriculum": "커리큘럼",
+    "reward": "가문 보상"
+  },
+  "meta": {
+    "count": "과목 및 보상 그룹 {count}개"
+  }
+}

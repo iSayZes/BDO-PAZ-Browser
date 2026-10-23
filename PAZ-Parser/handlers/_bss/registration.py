@@ -6,6 +6,7 @@ from _common.empty_table import EmptyTableHandler
 
 from .actionverification.handler import ActionVerificationBssHandler
 from .allquestlist.handler import AllQuestListBssHandler
+from .allquestlist.olvia_academy import LIST_PLACES as OLVIA_LIST_PLACES
 from .abyssoneaudioinfo.handler import AbyssOneAudioInfoBssHandler
 from .audioinfo.handler import AudioInfoBssHandler
 from .autoseasonclosechangeitemstaticstatus.handler import AutoSeasonCloseChangeItemHandler
@@ -128,6 +129,8 @@ from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
 from .oceansiegereviveposition.handler import OceanSiegeRevivePositionBssHandler
 from .oceansiegereward.handler import OceanSiegeRewardBssHandler
+from .olviaacademycurriculumss.handler import OlviaAcademyCurriculumBssHandler
+from .olviaacademypassstaticstatusmanager.handler import OlviaAcademyPassBssHandler
 from .pabr_values.handler import PabrValuesBssHandler
 from .palacemanagementstaticstatus.handler import PalaceManagementBssHandler
 from .pabr_values.tables import VALUE_TABLES
@@ -217,9 +220,6 @@ def register_bss_handlers() -> None:
         "allquestlist.bss",
         "doguildquestlist.bss",
         "growthpassquestlist.bss",
-        "olviaacademycurriculumquestlist.bss",
-        "olviaacademypassquestlist.bss",
-        "olviaacademyrewardquestlist.bss",
         "regionmonsterkillquestlist.bss",
         "seasonpassquestlist.bss",
         "seasonpassquestlistforcash.bss",
@@ -228,6 +228,9 @@ def register_bss_handlers() -> None:
         "supplyservantquestlist.bss",
     ):
         register_handler(name, AllQuestListBssHandler())
+    # The Olvia Academy lists also show where each quest sits in the academy tables.
+    for name, places in OLVIA_LIST_PLACES.items():
+        register_handler(name, AllQuestListBssHandler(places))
     register_handler("barter_normal.bss", BarterNormalBssHandler())
     register_handler("barter_npclist.bss", BarterNpcListBssHandler())
     register_handler("barter_special.bss", BarterSpecialBssHandler())
@@ -369,6 +372,8 @@ def register_bss_handlers() -> None:
     register_handler("npcsimply.bss", NpcSimplyBssHandler())
     register_handler("oceansiegereviveposition.bss", OceanSiegeRevivePositionBssHandler())
     register_handler("oceansiegereward.bss", OceanSiegeRewardBssHandler())
+    register_handler("olviaacademycurriculumss.bss", OlviaAcademyCurriculumBssHandler())
+    register_handler("olviaacademypassstaticstatusmanager.bss", OlviaAcademyPassBssHandler())
     # The land siege tables of the same shapes as the ocean siege ones.
     register_handler("siege2024rewardstaticstatus.bss", OceanSiegeRewardBssHandler("siege2024rewardstaticstatus.bss"))
     register_handler(

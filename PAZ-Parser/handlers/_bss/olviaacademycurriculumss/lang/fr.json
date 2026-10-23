@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "section": "Section",
+    "parentIndex": "Catégorie",
+    "parent": "Nom de catégorie",
+    "index": "Entrée",
+    "title": "Cours ou groupe",
+    "startQuest": "Quête de départ",
+    "questCount": "Nombre de quêtes",
+    "quests": "Quêtes"
+  },
+  "sections": {
+    "curriculum": "Programme",
+    "reward": "Récompense de famille"
+  },
+  "meta": {
+    "count": "{count} cours et groupes de récompenses"
+  }
+}

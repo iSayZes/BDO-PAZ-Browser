@@ -3,7 +3,10 @@
     "mainId": "Main ID",
     "subId": "Sub ID",
     "icon": "Icon",
-    "title": "Title"
+    "title": "Title",
+    "course": "Course",
+    "familyReward": "Family Reward",
+    "passStep": "Pass Step"
   },
   "meta": {
     "count": "{count} quest list entries",

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "passType": "Тип подписки",
+    "passTypeName": "Подписка",
+    "step": "Этап",
+    "baseQuest": "Основное задание",
+    "passQuest": "Задание подписки"
+  },
+  "meta": {
+    "count": "Этапов подписки: {count}"
+  }
+}

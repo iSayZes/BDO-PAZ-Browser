@@ -1027,7 +1027,12 @@ each use to its `houseinforeceipe.dbss` row (`_dbss/houseinforeceipe/house_uses.
 (`_dbss/guildhouseinfo/house_rows.py`), `houseworking.dbss` each exchange
 to its `itemexchangesource.bss` row, and `mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
 each part count to the building's `mansionpartinfo.bss` rows, and
-`barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group.
+`barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group,
+and the three Olvia Academy quest lists each quest to its
+`olviaacademycurriculumss.bss` subject or reward group (by `row_ref`) or its
+`olviaacademypassstaticstatusmanager.bss` step (by `base_quest`), whose
+views link each quest back to its list row
+(`_bss/allquestlist/olvia_academy.py`).
 Both lists of `bartersubgroup.bss` number their groups from 1, so that link
 reads `sub_group_ref` (`trade:12`, `material:3`), a field the target
 records carry for it (`_bss/barter/sub_group.py`).

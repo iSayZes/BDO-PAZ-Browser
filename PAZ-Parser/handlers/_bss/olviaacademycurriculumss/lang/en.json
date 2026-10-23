@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "section": "Section",
+    "parentIndex": "Category",
+    "parent": "Category Name",
+    "index": "Entry",
+    "title": "Subject or Group",
+    "startQuest": "Start Quest",
+    "questCount": "Quest Count",
+    "quests": "Quests"
+  },
+  "sections": {
+    "curriculum": "Curriculum",
+    "reward": "Family Rewards"
+  },
+  "meta": {
+    "count": "{count} subjects and reward groups"
+  }
+}

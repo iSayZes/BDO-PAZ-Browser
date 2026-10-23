@@ -3,7 +3,10 @@
     "mainId": "ID principal",
     "subId": "ID secundario",
     "icon": "Icono",
-    "title": "Título"
+    "title": "Título",
+    "course": "Curso",
+    "familyReward": "Recompensa de familia",
+    "passStep": "Paso del Pase de Academia"
   },
   "meta": {
     "count": "{count} entradas de lista de misiones",

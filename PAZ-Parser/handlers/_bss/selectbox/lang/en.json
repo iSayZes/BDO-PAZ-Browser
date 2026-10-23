@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Box Key",
+    "tabs": "Tabs",
+    "type0": "Type 0",
+    "type1": "Type 1",
+    "type2": "Type 2",
+    "type3": "Type 3",
+    "type4": "Type 4"
+  },
+  "meta": {
+    "count": "{count} select boxes"
+  }
+}

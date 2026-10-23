@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "키",
+    "fromItem": "변경 전 아이템",
+    "toItem": "변경 후 아이템",
+    "type": "종류"
+  },
+  "meta": {
+    "count": "아이템 변경 {count}개"
+  }
+}

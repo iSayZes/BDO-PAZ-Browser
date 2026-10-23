@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "ID del personaje",
+    "name": "Nombre",
+    "kitItem": "Kit",
+    "useCondition": "Condición",
+    "contentsEventType": "Evento de contenido",
+    "contentsEventParam1": "Parámetro 1",
+    "icon": "Icono",
+    "description": "Descripción"
+  },
+  "meta": {
+    "count": "{count} estructuras instalables"
+  }
+}

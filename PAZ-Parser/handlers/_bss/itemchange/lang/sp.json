@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Clave",
+    "fromItem": "Objeto de origen",
+    "toItem": "Objeto resultante",
+    "type": "Tipo"
+  },
+  "meta": {
+    "count": "{count} cambios de objeto"
+  }
+}

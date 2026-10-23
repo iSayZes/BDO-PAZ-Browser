@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Gegenstands-ID",
+    "item": "Erstes Teil",
+    "puzzleCount": "Puzzles",
+    "puzzleKeys": "Puzzle-Schlüssel"
+  },
+  "meta": {
+    "count": "{count} erste Teile"
+  }
+}

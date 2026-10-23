@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Clave de la caja",
+    "tabs": "Pestañas",
+    "type0": "Tipo 0",
+    "type1": "Tipo 1",
+    "type2": "Tipo 2",
+    "type3": "Tipo 3",
+    "type4": "Tipo 4"
+  },
+  "meta": {
+    "count": "{count} cajas de selección"
+  }
+}

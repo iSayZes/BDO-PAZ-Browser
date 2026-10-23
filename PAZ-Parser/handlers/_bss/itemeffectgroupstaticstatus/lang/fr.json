@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemGroupType": "Type de groupe",
+    "effectIndex": "Effet",
+    "name": "Nom",
+    "color": "Couleur",
+    "dyeItem": "Colorant"
+  },
+  "meta": {
+    "count": "{count} effets d'objet"
+  }
+}

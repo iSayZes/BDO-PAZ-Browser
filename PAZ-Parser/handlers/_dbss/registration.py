@@ -165,6 +165,7 @@ from .accessorystepup.handler import AccessoryStepUpHandler
 from .employeeclientspawn.handler import EmployeeClientSpawnHandler, employee_client_spawn_offset_handler
 from .exptoskillexprate.handler import ExpToSkillExpRateHandler, exp_to_skill_exp_rate_offset_handler
 from .itemeffectchange.handler import ItemEffectChangeHandler, item_effect_change_offset_handler
+from .itemenchantpuzzle.handler import ItemEnchantPuzzleHandler
 from .itemenchantsafety.handler import ItemEnchantSafetyHandler, item_enchant_safety_offset_handler
 from .servnatmarkettax.handler import ServantMarketTaxHandler, servant_market_tax_offset_handler
 from .skillfusion.handler import SkillFusionHandler, skill_fusion_offset_handler
@@ -342,6 +343,7 @@ def register_dbss_handlers() -> None:
     register_handler("exptoskillexprate.dbss", ExpToSkillExpRateHandler())
     register_handler("itemeffectchangeoffset.dbss", item_effect_change_offset_handler())
     register_handler("itemeffectchange.dbss", ItemEffectChangeHandler())
+    register_handler("itemenchantpuzzle.dbss", ItemEnchantPuzzleHandler())
     register_handler("itemenchantsafetyoffset.dbss", item_enchant_safety_offset_handler())
     register_handler("itemenchantsafety.dbss", ItemEnchantSafetyHandler())
     register_handler("servnatmarkettaxoffset.dbss", servant_market_tax_offset_handler())

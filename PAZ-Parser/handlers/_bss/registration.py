@@ -77,9 +77,14 @@ from .bossinfostaicstatusmanager.handler import BossInfoStaicStatusManagerBssHan
 from .boss_spawn.handler import BossSpawnBssHandler
 from .boss_spawnlevel.handler import BossSpawnLevelBssHandler
 from .bossmonsterhpsyncstaticstatus.handler import BossMonsterHpSyncStaticStatusBssHandler
+from .itembuildkit.handler import ItemBuildKitBssHandler
+from .itemchange.handler import ItemChangeBssHandler
+from .itemeffectgroupstaticstatus.handler import ItemEffectGroupBssHandler
 from .itemequipgroup.handler import ItemEquipGroupBssHandler
 from .itemexchangesource.handler import ItemExchangeSourceBssHandler
+from .itemgroupingstaticstatus.handler import ItemGroupingBssHandler
 from .itemlinkprice.handler import ItemLinkPriceHandler
+from .selectbox.handler import SelectBoxBssHandler
 from .enchantactiveskillitem.handler import EnchantActiveSkillItemHandler
 from .extractblackstone.handler import ExtractBlackStoneHandler
 from .instancefieldcommonlimitentertime.handler import InstanceFieldCommonLimitEnterTimeHandler
@@ -291,8 +296,12 @@ def register_bss_handlers() -> None:
     register_handler("bossmonsterhpsyncstaticstatus.bss", BossMonsterHpSyncStaticStatusBssHandler())
     register_handler("enchantactiveskillitem.bss", EnchantActiveSkillItemHandler())
     register_handler("extractblackstone.bss", ExtractBlackStoneHandler())
+    register_handler("itembuildkit.bss", ItemBuildKitBssHandler())
+    register_handler("itemchange.bss", ItemChangeBssHandler())
+    register_handler("itemeffectgroupstaticstatus.bss", ItemEffectGroupBssHandler())
     register_handler("itemequipgroup.bss", ItemEquipGroupBssHandler())
     register_handler("itemexchangesource.bss", ItemExchangeSourceBssHandler())
+    register_handler("itemgroupingstaticstatus.bss", ItemGroupingBssHandler())
     register_handler("itemexchangetoclassmapkey.bss", ItemExchangeToClassMapKeyBssHandler())
     register_handler("itemimprovementdefaultdisplaylist.bss", ItemImprovementDefaultDisplayListBssHandler())
     register_handler("itemlinkprice.bss", ItemLinkPriceHandler())
@@ -331,6 +340,7 @@ def register_bss_handlers() -> None:
     register_handler("minigamefind.bss", MiniGameFindBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
+    register_handler("selectbox.bss", SelectBoxBssHandler())
     register_handler("servant.bss", ServantBssHandler())
     register_handler("servantexperiencemaxlevel.bss", ServantExperienceMaxLevelBssHandler())
     register_handler("servantmating.bss", ServantMatingBssHandler())

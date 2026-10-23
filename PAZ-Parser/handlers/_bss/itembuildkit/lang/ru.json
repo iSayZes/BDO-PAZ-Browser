@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "name": "Имя",
+    "kitItem": "Набор",
+    "useCondition": "Условие",
+    "contentsEventType": "Событие контента",
+    "contentsEventParam1": "Параметр 1",
+    "icon": "Иконка",
+    "description": "Описание"
+  },
+  "meta": {
+    "count": "Устанавливаемых построек: {count}"
+  }
+}

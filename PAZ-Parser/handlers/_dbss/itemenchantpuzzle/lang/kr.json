@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "아이템 ID",
+    "item": "첫 조각",
+    "puzzleCount": "퍼즐 수",
+    "puzzleKeys": "퍼즐 키"
+  },
+  "meta": {
+    "count": "첫 조각 {count}개"
+  }
+}

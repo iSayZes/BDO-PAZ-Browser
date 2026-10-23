@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemGroupType": "Тип группы",
+    "itemCount": "Предметы",
+    "items": "Список предметов"
+  },
+  "meta": {
+    "count": "Групп предметов: {count}"
+  }
+}

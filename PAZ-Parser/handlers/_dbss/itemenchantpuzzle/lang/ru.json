@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "ID предмета",
+    "item": "Первая часть",
+    "puzzleCount": "Головоломки",
+    "puzzleKeys": "Ключи головоломок"
+  },
+  "meta": {
+    "count": "Первых частей: {count}"
+  }
+}

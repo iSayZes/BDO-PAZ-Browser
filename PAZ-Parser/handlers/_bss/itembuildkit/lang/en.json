@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "Character Key",
+    "name": "Name",
+    "kitItem": "Kit",
+    "useCondition": "Condition",
+    "contentsEventType": "Contents Event",
+    "contentsEventParam1": "Event Param 1",
+    "icon": "Icon",
+    "description": "Description"
+  },
+  "meta": {
+    "count": "{count} installable structures"
+  }
+}

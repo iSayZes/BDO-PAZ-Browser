@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "name": "Name",
+    "kitItem": "Bausatz",
+    "useCondition": "Bedingung",
+    "contentsEventType": "Inhaltsereignis",
+    "contentsEventParam1": "Ereignisparameter 1",
+    "icon": "Symbol",
+    "description": "Beschreibung"
+  },
+  "meta": {
+    "count": "{count} aufstellbare Bauten"
+  }
+}

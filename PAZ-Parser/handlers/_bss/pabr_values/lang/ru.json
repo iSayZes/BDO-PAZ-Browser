@@ -353,7 +353,18 @@
     "category": "Категория",
     "territory": "Территория",
     "bootyItem": "Трофеи",
-    "expirationPeriodNotify": "Уведомление до истечения"
+    "expirationPeriodNotify": "Уведомление до истечения",
+    "stacks": "Шанс усиления",
+    "reforgeLevels": "Уровни",
+    "coinItem": "Предмет-монета",
+    "loseItem": "Утешительный предмет",
+    "mainChallengeId": "ID основного достижения",
+    "mainChallenge": "Основное достижение",
+    "challenges": "Достижения",
+    "productTag": "Метка товара",
+    "tagOrder": "Порядок метки",
+    "rentalDiscounts": "Скидка на аренду",
+    "returnPercents": "Доля возврата"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -397,6 +408,11 @@
     "autoUseCategories": "Категорий автоприменения: {count}",
     "bootyLists": "Списков трофеев: {count}",
     "notifyItems": "Предметов с уведомлением об истечении: {count}",
-    "marketSearchItems": "Предметов поиска Центрального аукциона: {count}"
+    "marketSearchItems": "Предметов поиска Центрального аукциона: {count}",
+    "stackItems": "Предметов для накопления: {count}",
+    "reforgeStones": "Камней перековки: {count}",
+    "drawItems": "Призов розыгрыша: {count}",
+    "challengeGroupRows": "Строк групп достижений: {count}",
+    "productTags": "Меток товаров: {count}"
   }
 }

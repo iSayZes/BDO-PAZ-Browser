@@ -353,7 +353,18 @@
     "category": "Categoría",
     "territory": "Territorio",
     "bootyItem": "Objetos del botín",
-    "expirationPeriodNotify": "Aviso antes de caducar"
+    "expirationPeriodNotify": "Aviso antes de caducar",
+    "stacks": "Probabilidad de refuerzo",
+    "reforgeLevels": "Niveles",
+    "coinItem": "Objeto moneda",
+    "loseItem": "Objeto de consolación",
+    "mainChallengeId": "ID del desafío principal",
+    "mainChallenge": "Desafío principal",
+    "challenges": "Desafíos",
+    "productTag": "Etiqueta de producto",
+    "tagOrder": "Orden de etiqueta",
+    "rentalDiscounts": "Descuento de alquiler",
+    "returnPercents": "Tasa de devolución"
   },
   "meta": {
     "count": "{count} entradas",
@@ -397,6 +408,11 @@
     "autoUseCategories": "{count} categorías de uso automático",
     "bootyLists": "{count} listas de botín",
     "notifyItems": "{count} objetos con aviso de caducidad",
-    "marketSearchItems": "{count} objetos de búsqueda del Mercado central"
+    "marketSearchItems": "{count} objetos de búsqueda del Mercado central",
+    "stackItems": "{count} objetos de acumulación",
+    "reforgeStones": "{count} piedras de reforja",
+    "drawItems": "{count} premios de sorteo",
+    "challengeGroupRows": "{count} filas de grupos de desafíos",
+    "productTags": "{count} etiquetas de producto"
   }
 }

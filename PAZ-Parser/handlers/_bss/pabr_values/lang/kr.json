@@ -353,7 +353,18 @@
     "category": "카테고리",
     "territory": "영지",
     "bootyItem": "전리품",
-    "expirationPeriodNotify": "만료 전 알림"
+    "expirationPeriodNotify": "만료 전 알림",
+    "stacks": "강화 확률",
+    "reforgeLevels": "단계",
+    "coinItem": "코인 아이템",
+    "loseItem": "꽝 아이템",
+    "mainChallengeId": "대표 도전과제 ID",
+    "mainChallenge": "대표 도전과제",
+    "challenges": "도전과제",
+    "productTag": "상품 태그",
+    "tagOrder": "태그 순서",
+    "rentalDiscounts": "임대 할인",
+    "returnPercents": "반환 비율"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -397,6 +408,11 @@
     "autoUseCategories": "자동 사용 카테고리 {count}개",
     "bootyLists": "전리품 목록 {count}개",
     "notifyItems": "만료 알림 아이템 {count}개",
-    "marketSearchItems": "거래소 검색 아이템 {count}개"
+    "marketSearchItems": "거래소 검색 아이템 {count}개",
+    "stackItems": "누적 아이템 {count}개",
+    "reforgeStones": "재련석 {count}개",
+    "drawItems": "뽑기 보상 {count}개",
+    "challengeGroupRows": "도전과제 그룹 행 {count}개",
+    "productTags": "상품 태그 {count}개"
   }
 }

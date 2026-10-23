@@ -353,7 +353,18 @@
     "category": "Category",
     "territory": "Territory",
     "bootyItem": "Booty Items",
-    "expirationPeriodNotify": "Notify Before Expiry"
+    "expirationPeriodNotify": "Notify Before Expiry",
+    "stacks": "Enhancement Chance",
+    "reforgeLevels": "Levels",
+    "coinItem": "Coin Item",
+    "loseItem": "Consolation Item",
+    "mainChallengeId": "Main Challenge ID",
+    "mainChallenge": "Main Challenge",
+    "challenges": "Challenges",
+    "productTag": "Product Tag",
+    "tagOrder": "Tag Order",
+    "rentalDiscounts": "Rental Discount",
+    "returnPercents": "Return Rate"
   },
   "meta": {
     "count": "{count} entries",
@@ -397,6 +408,11 @@
     "autoUseCategories": "{count} auto-use categories",
     "bootyLists": "{count} booty lists",
     "notifyItems": "{count} items with an expiry notice",
-    "marketSearchItems": "{count} Central Market search items"
+    "marketSearchItems": "{count} Central Market search items",
+    "stackItems": "{count} stack items",
+    "reforgeStones": "{count} reforge stones",
+    "drawItems": "{count} draw prizes",
+    "challengeGroupRows": "{count} challenge group rows",
+    "productTags": "{count} product tags"
   }
 }

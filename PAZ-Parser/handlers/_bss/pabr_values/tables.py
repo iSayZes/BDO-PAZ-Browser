@@ -28,6 +28,7 @@ from .names import (
 from .abyssone_tables import ABYSS_ONE_TABLES
 from .client_tables import CLIENT_TABLES
 from .edania_tables import EDANIA_TABLES
+from .enchantshop_tables import ENCHANT_SHOP_TABLES
 from .greatsea_tables import GREAT_SEA_TABLES
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
@@ -266,4 +267,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *SERVANT_TABLES,
     *LIFE_SKILL_TABLES,
     *ITEM_TABLES,
+    *ENCHANT_SHOP_TABLES,
 )

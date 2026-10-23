@@ -353,7 +353,18 @@
     "category": "Kategorie",
     "territory": "Territorium",
     "bootyItem": "Beutegegenstände",
-    "expirationPeriodNotify": "Hinweis vor Ablauf"
+    "expirationPeriodNotify": "Hinweis vor Ablauf",
+    "stacks": "Verstärkungschance",
+    "reforgeLevels": "Stufen",
+    "coinItem": "Münzgegenstand",
+    "loseItem": "Trostgegenstand",
+    "mainChallengeId": "Hauptherausforderungs-ID",
+    "mainChallenge": "Hauptherausforderung",
+    "challenges": "Herausforderungen",
+    "productTag": "Produktmarkierung",
+    "tagOrder": "Markierungsreihenfolge",
+    "rentalDiscounts": "Mietrabatt",
+    "returnPercents": "Rückgaberate"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -397,6 +408,11 @@
     "autoUseCategories": "{count} Kategorien der automatischen Verwendung",
     "bootyLists": "{count} Beutelisten",
     "notifyItems": "{count} Gegenstände mit Ablaufhinweis",
-    "marketSearchItems": "{count} Suchgegenstände des Zentralmarkts"
+    "marketSearchItems": "{count} Suchgegenstände des Zentralmarkts",
+    "stackItems": "{count} Stapelgegenstände",
+    "reforgeStones": "{count} Umschmiedesteine",
+    "drawItems": "{count} Ziehungspreise",
+    "challengeGroupRows": "{count} Zeilen von Herausforderungsgruppen",
+    "productTags": "{count} Produktmarkierungen"
   }
 }

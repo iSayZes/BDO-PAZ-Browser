@@ -353,7 +353,18 @@
     "category": "Catégorie",
     "territory": "Territoire",
     "bootyItem": "Objets du butin",
-    "expirationPeriodNotify": "Avis avant expiration"
+    "expirationPeriodNotify": "Avis avant expiration",
+    "stacks": "Chances d'optimisation",
+    "reforgeLevels": "Niveaux",
+    "coinItem": "Objet pièce",
+    "loseItem": "Objet de consolation",
+    "mainChallengeId": "ID du défi principal",
+    "mainChallenge": "Défi principal",
+    "challenges": "Défis",
+    "productTag": "Étiquette de produit",
+    "tagOrder": "Ordre d'étiquette",
+    "rentalDiscounts": "Remise de location",
+    "returnPercents": "Taux de remboursement"
   },
   "meta": {
     "count": "{count} entrées",
@@ -397,6 +408,11 @@
     "autoUseCategories": "{count} catégories d'utilisation automatique",
     "bootyLists": "{count} listes de butin",
     "notifyItems": "{count} objets avec avis d'expiration",
-    "marketSearchItems": "{count} objets de recherche du Marché commun"
+    "marketSearchItems": "{count} objets de recherche du Marché commun",
+    "stackItems": "{count} objets de cumul",
+    "reforgeStones": "{count} pierres de reforge",
+    "drawItems": "{count} lots de tirage",
+    "challengeGroupRows": "{count} lignes de groupes de défis",
+    "productTags": "{count} étiquettes de produit"
   }
 }

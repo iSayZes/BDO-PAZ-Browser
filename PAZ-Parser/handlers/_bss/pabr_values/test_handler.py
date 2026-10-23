@@ -316,6 +316,16 @@ _TARGETS: dict[str, list[TargetTest]] = {
     "marketsearchlist.bss": [
         TargetTest(col="item_key", value=44195, expected={"item_name": "Memory Fragment", "item_name_kr": "기억의 파편"}),
     ],
+    # The Enchant_BlackStoneStack sheet of client 1784 keys its steps by Black Stone 16001.
+    "enchant_blackstonestack.bss": [TargetTest(col="need_stack_item_key", value=16001, expected={"item_name": "Black Stone"})],
+    # The first weekly group of the August 2021 Pearl spending event, also on client 1784.
+    "pearlusedchallengegroup.bss": [
+        TargetTest(
+            col="main_challenge_key",
+            value=2984,
+            expected={"main_challenge_name": "[Event] Use 20,000 Pearls", "challenge_keys": [2981, 2982, 2983, 2984]},
+        ),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {

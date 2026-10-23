@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "기술",
+    "classes": "직업",
+    "command": "기술 커맨드",
+    "consoleCommand": "컨트롤러 커맨드",
+    "level": "레벨",
+    "showCheck": "표시",
+    "awakening": "각성",
+    "form": "드라카니아 형태"
+  },
+  "forms": {
+    "1": "일반 형태",
+    "2": "용 형태"
+  },
+  "offsetColumns": {
+    "skillNo": "기술 번호",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "기술 커맨드 {count}개"
+  }
+}

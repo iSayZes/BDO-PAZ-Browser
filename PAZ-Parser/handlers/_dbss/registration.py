@@ -261,6 +261,7 @@ from .skillawakeningability.handler import SkillAwakeningAbilityHandler, skill_a
 from .attendance.handler import AttendanceHandler, attendance_offset_handler
 from .customizeditem.handler import CustomizedItemHandler, customized_item_offset_handler
 from .cashchoose.handler import CashChooseHandler, cash_choose_offset_handler
+from .skillcommand.handler import SkillCommandHandler, skill_command_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -612,3 +613,5 @@ def register_dbss_handlers() -> None:
     register_handler("customizeditem.dbss", CustomizedItemHandler())
     register_handler("cashchooseoffset.dbss", cash_choose_offset_handler())
     register_handler("cashchoose.dbss", CashChooseHandler())
+    register_handler("skillcommandoffset.dbss", skill_command_offset_handler())
+    register_handler("skillcommand.dbss", SkillCommandHandler())

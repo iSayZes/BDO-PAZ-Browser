@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "skillNo": "Skill No.",
+    "skill": "Skill",
+    "classes": "Class",
+    "command": "Command",
+    "consoleCommand": "Controller Command",
+    "level": "Level",
+    "showCheck": "Show Check",
+    "awakening": "Awakening",
+    "form": "Drakania Form"
+  },
+  "forms": {
+    "1": "Normal Form",
+    "2": "Dragon Form"
+  },
+  "offsetColumns": {
+    "skillNo": "Skill No.",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} skill commands"
+  }
+}

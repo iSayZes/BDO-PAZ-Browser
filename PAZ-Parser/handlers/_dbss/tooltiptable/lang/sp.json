@@ -1,0 +1,38 @@
+{
+  "columns": {
+    "keyHash": "Hash",
+    "type": "Tipo",
+    "text": "Texto",
+    "paramCount": "Parámetros",
+    "icons": "Iconos"
+  },
+  "offsetColumns": {
+    "type": "Tipo",
+    "keyHash": "Hash",
+    "dataOffset": "Desplazamiento de datos"
+  },
+  "icons": {
+    "0": "Invencible",
+    "1": "Inamovible",
+    "2": "Guardia frontal",
+    "3": "Derribo",
+    "4": "Levantamiento",
+    "5": "Abatir",
+    "6": "Aturdir",
+    "7": "Inmovilización",
+    "8": "Desequilibrio",
+    "9": "Agarre",
+    "10": "Congelación",
+    "11": "Remate bajo",
+    "12": "Remate aéreo",
+    "13": "Ataque bajo",
+    "14": "Ataque aéreo",
+    "15": "Regeneración de salud",
+    "16": "Recuperar recursos de habilidades",
+    "17": "Contraataque",
+    "18": "Ataque rápido"
+  },
+  "meta": {
+    "count": "{count} líneas de descripción"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "columns": {
+    "keyHash": "Key Hash",
+    "type": "Type",
+    "text": "Text",
+    "paramCount": "Parameters",
+    "icons": "Icons"
+  },
+  "offsetColumns": {
+    "type": "Type",
+    "keyHash": "Key Hash",
+    "dataOffset": "Data Offset"
+  },
+  "icons": {
+    "0": "Invincible",
+    "1": "Super Armor",
+    "2": "Forward Guard",
+    "3": "Knockdown",
+    "4": "Floating",
+    "5": "Bound",
+    "6": "Stun",
+    "7": "Stiffness",
+    "8": "Knockback",
+    "9": "Grapple",
+    "10": "Freezing",
+    "11": "Down Smash",
+    "12": "Air Smash",
+    "13": "Down Attack",
+    "14": "Air Attack",
+    "15": "HP Recovery",
+    "16": "Resource Recovery",
+    "17": "Counter Attack",
+    "18": "Speed Attack"
+  },
+  "meta": {
+    "count": "{count} tooltip lines"
+  }
+}

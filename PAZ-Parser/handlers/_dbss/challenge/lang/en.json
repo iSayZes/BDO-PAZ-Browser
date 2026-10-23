@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "challengeKey": "Challenge Key",
+    "title": "Title",
+    "type": "Type",
+    "completeCondition": "Completion",
+    "conditionParam1": "Param 1",
+    "conditionParam2": "Param 2",
+    "rewardCondition": "Reward Condition",
+    "resetType": "Reset",
+    "resetValue": "Reset Value",
+    "rewards": "Rewards",
+    "selectRewards": "Selectable Rewards",
+    "optionalType": "Reward Group",
+    "isRewardOverlapable": "Stacks Rewards",
+    "isShowIcon": "Progress Alert",
+    "description": "Description"
+  },
+  "offsetColumns": {
+    "challengeKey": "Challenge Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "text": {
+    "coupon": "Coupon {number}"
+  },
+  "meta": {
+    "count": "{count} challenges"
+  }
+}

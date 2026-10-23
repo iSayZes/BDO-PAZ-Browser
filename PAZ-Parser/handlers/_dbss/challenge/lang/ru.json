@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "challengeKey": "Ключ достижения",
+    "title": "Название",
+    "type": "Тип",
+    "completeCondition": "Выполнение",
+    "conditionParam1": "Параметр 1",
+    "conditionParam2": "Параметр 2",
+    "rewardCondition": "Условие награды",
+    "resetType": "Сброс",
+    "resetValue": "Значение сброса",
+    "rewards": "Награды",
+    "selectRewards": "Награды на выбор",
+    "optionalType": "Группа наград",
+    "isRewardOverlapable": "Накопление наград",
+    "isShowIcon": "Уведомление о прогрессе",
+    "description": "Описание"
+  },
+  "offsetColumns": {
+    "challengeKey": "Ключ достижения",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "text": {
+    "coupon": "Купон {number}"
+  },
+  "meta": {
+    "count": "Достижений: {count}"
+  }
+}

@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from _common.challenge import challenge_name
 from _common.item_key import item_count_text
-from _common.loc import loc_lookup, strip_pa_tags
 from _common.rate import rate_percent
 from .world_names import item_key_entry_text
 
@@ -17,10 +17,6 @@ _STACK_ITEM_COUNT, _STACK = 0, 1
 _LEVEL_ITEM_KEY, _LEVEL_MATERIAL_KEY, _LEVEL_MATERIAL_COUNT = 0, 2, 4
 # One entry of the two mansionrentaldiscount.bss lists: day, then a percent.
 _DAY, _PERCENT = 0, 1
-# LOC type 48 names a challenge by its key in `str_id1`; `str_id3` is one of
-# these two values on client 3483 (pearlusedchallengegroup_bss.md).
-LOC_CHALLENGE_NAME = 48
-_CHALLENGE_STR_ID3 = (12, 28)
 
 
 def stack_text(entry: list) -> str:
@@ -35,15 +31,6 @@ def reforge_level_text(entry: list) -> str:
     if not material_key:
         return item
     return f"{item} <- {item_count_text(material_key, entry[_LEVEL_MATERIAL_COUNT])}"
-
-
-def challenge_name(challenge_key: int) -> str:
-    """LOC type 48 name of a challenge, or ''."""
-    for str_id3 in _CHALLENGE_STR_ID3:
-        text = strip_pa_tags(loc_lookup(LOC_CHALLENGE_NAME, challenge_key, 0, str_id3)).strip()
-        if text:
-            return text
-    return ""
 
 
 def challenge_text(challenge_key: int) -> str:

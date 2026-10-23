@@ -269,6 +269,7 @@ from .profiling.handler import ProfilingHandler, profiling_offset_handler
 from .cutscene.handler import CutsceneHandler, cutscene_offset_handler
 from .cashitemmarketsetting.handler import CashItemMarketSettingHandler, cash_item_market_setting_offset_handler
 from .intimacyrelation.handler import IntimacyRelationHandler, intimacy_relation_offset_handler
+from .challenge.handler import ChallengeHandler, challenge_offset_handler
 from .tooltiptable.handler import TooltipTableHandler, tooltip_offset_handler
 
 
@@ -637,5 +638,7 @@ def register_dbss_handlers() -> None:
     register_handler("cashitemmarketsetting.dbss", CashItemMarketSettingHandler())
     register_handler("intimacyrelationoffset.dbss", intimacy_relation_offset_handler())
     register_handler("intimacyrelation.dbss", IntimacyRelationHandler())
+    register_handler("challengeoffset.dbss", challenge_offset_handler())
+    register_handler("challenge.dbss", ChallengeHandler())
     register_handler("tooltiptableoffset.dbss", tooltip_offset_handler())
     register_handler("tooltiptable.dbss", TooltipTableHandler())

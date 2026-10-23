@@ -13,7 +13,8 @@ and takes its name from the file.
 
 from __future__ import annotations
 
-from .enchantshop_names import challenge_name, challenge_text, day_percent_text, reforge_level_text, stack_text
+from _common.challenge import challenge_name
+from .enchantshop_names import challenge_text, day_percent_text, reforge_level_text, stack_text
 from .fields import ITEM_KEY, item_field
 from .layout import NameLookup, RowCount, ValueField, ValueTable, unknown_fields
 from .world_names import item_key_entry_text

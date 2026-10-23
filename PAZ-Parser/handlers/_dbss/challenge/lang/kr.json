@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "challengeKey": "도전과제 키",
+    "title": "제목",
+    "type": "종류",
+    "completeCondition": "완료 조건",
+    "conditionParam1": "파라미터 1",
+    "conditionParam2": "파라미터 2",
+    "rewardCondition": "보상 조건",
+    "resetType": "초기화",
+    "resetValue": "초기화 값",
+    "rewards": "보상",
+    "selectRewards": "선택 보상",
+    "optionalType": "보상 그룹",
+    "isRewardOverlapable": "보상 누적",
+    "isShowIcon": "진행 알림",
+    "description": "설명"
+  },
+  "offsetColumns": {
+    "challengeKey": "도전과제 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "text": {
+    "coupon": "쿠폰 {number}"
+  },
+  "meta": {
+    "count": "도전과제 {count}개"
+  }
+}

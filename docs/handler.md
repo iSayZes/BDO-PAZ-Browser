@@ -1063,6 +1063,7 @@ _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
+├── challenge.py         # challenge titles and descriptions (LOC type 48 keyed by the challenge.dbss key)
 ├── character.py         # character names and titles (LOC type 6, else CHARACTER_NAME_KR / CHARACTER_TITLE_KR)
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)

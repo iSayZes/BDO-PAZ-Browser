@@ -189,6 +189,8 @@ from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
 from .usernpc.handler import UserNpcBssHandler
 from .weburl.handler import WebUrlBssHandler
 from .worldmapdecostaticstatusmanager.handler import WorldmapDecoBssHandler
+from .worldmapgrid.handler import WorldMapGridHandler
+from .worldmapgrid.kinds import GRID_KINDS
 from .worldmaphousedecostaticstatusmanager.handler import WorldmapHouseDecoBssHandler
 from .yachtautobubbletextinfo.handler import YachtAutoBubbleTextInfoHandler
 from .yachtgameboardinfo.handler import YachtGameBoardInfoHandler
@@ -484,3 +486,6 @@ def register_bss_handlers() -> None:
     register_handler("instancespawninfo.bss", InstanceSpawnInfoHandler())
     register_handler("monsterbuffzonegroup.bss", MonsterBuffZoneGroupHandler())
     register_handler("solareoptionstaticstatusmanager.bss", SolareOptionHandler())
+    # One handler for the seven world map grids; each kind joins its cell values.
+    for grid_kind in GRID_KINDS:
+        register_handler(grid_kind.file_name, WorldMapGridHandler(grid_kind))

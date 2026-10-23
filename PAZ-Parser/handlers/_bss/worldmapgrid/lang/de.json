@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "value": "Zellenwert",
+    "territoryKeys": "Territorium-Schlüssel",
+    "regionGroupKeys": "Regionsgruppen",
+    "regionKeys": "Regionsschlüssel",
+    "name": "Name",
+    "cellCount": "Zellen",
+    "columns": "Spalten",
+    "rows": "Zeilen",
+    "worldX": "Welt-X",
+    "worldZ": "Welt-Z"
+  },
+  "cells": {
+    "range": "{low} bis {high}"
+  },
+  "meta": {
+    "count": "{count} Zellenwerte"
+  }
+}

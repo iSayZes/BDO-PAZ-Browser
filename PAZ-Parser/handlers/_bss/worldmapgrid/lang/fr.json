@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "value": "Valeur de cellule",
+    "territoryKeys": "Clé de territoire",
+    "regionGroupKeys": "Groupes de régions",
+    "regionKeys": "Clés de région",
+    "name": "Nom",
+    "cellCount": "Cellules",
+    "columns": "Colonnes",
+    "rows": "Lignes",
+    "worldX": "X du monde",
+    "worldZ": "Z du monde"
+  },
+  "cells": {
+    "range": "{low} à {high}"
+  },
+  "meta": {
+    "count": "{count} valeurs de cellule"
+  }
+}

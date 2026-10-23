@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "value": "Значение ячейки",
+    "territoryKeys": "Ключ территории",
+    "regionGroupKeys": "Группы регионов",
+    "regionKeys": "Ключи регионов",
+    "name": "Название",
+    "cellCount": "Ячейки",
+    "columns": "Столбцы",
+    "rows": "Строки",
+    "worldX": "X мира",
+    "worldZ": "Z мира"
+  },
+  "cells": {
+    "range": "от {low} до {high}"
+  },
+  "meta": {
+    "count": "Значений ячеек: {count}"
+  }
+}

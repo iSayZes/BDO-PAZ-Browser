@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "value": "Cell value",
+    "territoryKeys": "Territory key",
+    "regionGroupKeys": "Region group keys",
+    "regionKeys": "Region keys",
+    "name": "Name",
+    "cellCount": "Cells",
+    "columns": "Columns",
+    "rows": "Rows",
+    "worldX": "World X",
+    "worldZ": "World Z"
+  },
+  "cells": {
+    "range": "{low} to {high}"
+  },
+  "meta": {
+    "count": "{count} cell values"
+  }
+}

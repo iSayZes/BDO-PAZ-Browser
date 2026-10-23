@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fieldNo": "Field ID",
+    "field": "Field",
+    "bgmStates": "BGM States",
+    "bankNoEnvironment": "Ambience"
+  },
+  "meta": {
+    "count": "{count} fields"
+  }
+}

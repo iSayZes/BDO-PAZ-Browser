@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "musicLevel": "Уровень музыки",
+    "musicLevelExp": "Опыт",
+    "increasingBarNumber": "Такты",
+    "increasingNoteNumber": "Ноты",
+    "musicRank": "Ранг"
+  },
+  "offsetColumns": {
+    "musicLevel": "Уровень музыки",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Уровней музыки: {count}"
+  }
+}

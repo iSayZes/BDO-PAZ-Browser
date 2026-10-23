@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "building": "Строение",
+    "model": "Модель на карте мира",
+    "objectChangeLevel": "Уровень смены объекта"
+  },
+  "meta": {
+    "count": "Строений: {count}"
+  }
+}

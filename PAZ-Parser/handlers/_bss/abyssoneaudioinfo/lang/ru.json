@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fieldNo": "ID поля",
+    "field": "Поле",
+    "bgmStates": "Состояния BGM",
+    "bankNoEnvironment": "Окружение"
+  },
+  "meta": {
+    "count": "Полей: {count}"
+  }
+}

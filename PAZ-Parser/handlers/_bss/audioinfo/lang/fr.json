@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "color": "Couleur",
+    "section": "Partie",
+    "stateGroup": "Groupe d'états",
+    "states": "États BGM",
+    "bankNoEnvironment": "Ambiance",
+    "channelName": "Chaîne",
+    "eventName": "Événement"
+  },
+  "sections": {
+    "area": "Zone",
+    "state": "État spécial",
+    "radio": "Radio"
+  },
+  "meta": {
+    "count": "{count} entrées"
+  }
+}

@@ -201,6 +201,7 @@ from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offse
 from .minigamefindpattern.handler import MiniGameFindPatternHandler, minigame_find_pattern_offset_handler
 from .minigamefindtool.handler import MiniGameFindToolHandler, minigame_find_tool_offset_handler
 from .minigamereward.handler import MiniGameRewardHandler, minigame_reward_offset_handler
+from .musiclevel.handler import MusicLevelHandler, musiclevel_offset_handler
 from .purchaselimitgroup.handler import PurchaseLimitGroupHandler, purchase_limit_group_offset_handler
 from .trainingvehicle.handler import TrainingVehicleHandler, training_vehicle_offset_handler
 from .guildboss.handler import GuildBossHandler, guild_boss_offset_handler
@@ -524,6 +525,8 @@ def register_dbss_handlers() -> None:
     register_handler("minigamefindtool.dbss", MiniGameFindToolHandler())
     register_handler("minigamerewardoffset.dbss", minigame_reward_offset_handler())
     register_handler("minigamereward.dbss", MiniGameRewardHandler())
+    register_handler("musicleveloffset.dbss", musiclevel_offset_handler())
+    register_handler("musiclevel.dbss", MusicLevelHandler())
     register_handler("purchaselimitgroupoffset.dbss", purchase_limit_group_offset_handler())
     register_handler("purchaselimitgroup.dbss", PurchaseLimitGroupHandler())
     register_handler("trainingvehicleoffset.dbss", training_vehicle_offset_handler())

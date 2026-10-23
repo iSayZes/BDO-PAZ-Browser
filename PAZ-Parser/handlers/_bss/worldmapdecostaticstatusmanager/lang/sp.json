@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "decoIndex": "Índice",
+    "model": "Modelo",
+    "locationX": "X",
+    "locationY": "Y",
+    "locationZ": "Z",
+    "scale": "Escala (%)",
+    "rotation": "Rotación (°)"
+  },
+  "meta": {
+    "count": "{count} modelos del mapa del mundo"
+  }
+}

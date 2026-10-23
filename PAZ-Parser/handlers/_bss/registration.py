@@ -6,6 +6,8 @@ from _common.empty_table import EmptyTableHandler
 
 from .actionverification.handler import ActionVerificationBssHandler
 from .allquestlist.handler import AllQuestListBssHandler
+from .abyssoneaudioinfo.handler import AbyssOneAudioInfoBssHandler
+from .audioinfo.handler import AudioInfoBssHandler
 from .autoseasonclosechangeitemstaticstatus.handler import AutoSeasonCloseChangeItemHandler
 from .barter_normal.handler import BarterNormalBssHandler
 from .barter_npclist.handler import BarterNpcListBssHandler
@@ -13,6 +15,7 @@ from .barter_special.handler import BarterSpecialBssHandler
 from .barterlifelevelinfo.handler import BarterLifeLevelInfoBssHandler
 from .bartersubgroup.handler import BarterSubGroupBssHandler
 from .bdoservanttitless.handler import BdoServantTitlesBssHandler
+from .binkaudioinfo.handler import BinkAudioInfoBssHandler
 from .blizzardregioninfo.handler import BlizzardRegionInfoBssHandler
 from .branchquest.handler import BranchQuestBssHandler
 from .buffitemautousestaticstatus.handler import BuffItemAutoUseBssHandler
@@ -106,6 +109,7 @@ from .masterlessservantstaticstatus.handler import MasterlessServantStaticStatus
 from .masterystatdata.handler import MasteryStatDataBssHandler
 from .masterystatdata.spec import MASTERY_TABLES
 from .menu.handler import MenuBssHandler
+from .midiinstrument.handler import MidiInstrumentBssHandler
 from .minigamefind.handler import MiniGameFindBssHandler
 from .multiplequest.handler import MultipleQuestBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
@@ -164,6 +168,8 @@ from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
 from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
 from .usernpc.handler import UserNpcBssHandler
+from .worldmapdecostaticstatusmanager.handler import WorldmapDecoBssHandler
+from .worldmaphousedecostaticstatusmanager.handler import WorldmapHouseDecoBssHandler
 from .yachtautobubbletextinfo.handler import YachtAutoBubbleTextInfoHandler
 from .yachtgameboardinfo.handler import YachtGameBoardInfoHandler
 from .yachthandrank.handler import YachtHandRankHandler
@@ -184,6 +190,8 @@ from .uipracticeskilltreelayout.handler import UiPracticeSkillTreeLayoutBssHandl
 
 def register_bss_handlers() -> None:
     register_handler("actionverification.bss", ActionVerificationBssHandler())
+    register_handler("abyssoneaudioinfo.bss", AbyssOneAudioInfoBssHandler())
+    register_handler("audioinfo.bss", AudioInfoBssHandler())
     # One layout: PABR, a count and packed quest IDs.
     for name in (
         "allquestlist.bss",
@@ -206,6 +214,7 @@ def register_bss_handlers() -> None:
     register_handler("barterlifelevelinfo.bss", BarterLifeLevelInfoBssHandler())
     register_handler("bartersubgroup.bss", BarterSubGroupBssHandler())
     register_handler("bdoservanttitless.bss", BdoServantTitlesBssHandler())
+    register_handler("binkaudioinfo.bss", BinkAudioInfoBssHandler())
     register_handler("blizzardregioninfo.bss", BlizzardRegionInfoBssHandler())
     register_handler("branchquest.bss", BranchQuestBssHandler())
     register_handler("buffitemautousestaticstatus.bss", BuffItemAutoUseBssHandler())
@@ -318,6 +327,7 @@ def register_bss_handlers() -> None:
     for mastery_table in MASTERY_TABLES:
         register_handler(mastery_table.file_name, MasteryStatDataBssHandler(mastery_table))
     register_handler("menu.bss", MenuBssHandler())
+    register_handler("midiinstrument.bss", MidiInstrumentBssHandler())
     register_handler("minigamefind.bss", MiniGameFindBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
@@ -392,6 +402,8 @@ def register_bss_handlers() -> None:
         register_handler(f"ui_skillgroup_{window}.bss", UiSkillGroupBssHandler())
     register_handler("uigrowthpasslayout.bss", UiGrowthPassLayoutBssHandler())
     register_handler("usernpc.bss", UserNpcBssHandler())
+    register_handler("worldmapdecostaticstatusmanager.bss", WorldmapDecoBssHandler())
+    register_handler("worldmaphousedecostaticstatusmanager.bss", WorldmapHouseDecoBssHandler())
     register_handler("yachtautobubbletextinfo.bss", YachtAutoBubbleTextInfoHandler())
     register_handler("yachtgameboardinfo.bss", YachtGameBoardInfoHandler())
     register_handler("yachthandrank.bss", YachtHandRankHandler())

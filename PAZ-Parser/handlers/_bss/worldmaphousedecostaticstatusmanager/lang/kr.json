@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "building": "건물",
+    "model": "월드맵 모델",
+    "objectChangeLevel": "오브젝트 변경 단계"
+  },
+  "meta": {
+    "count": "건물 {count}개"
+  }
+}

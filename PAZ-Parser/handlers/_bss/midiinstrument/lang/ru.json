@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "index": "Индекс",
+    "bankName": "Банк",
+    "eventName": "Событие",
+    "ingameName": "Ключ названия",
+    "articulations": "Артикуляции",
+    "startAction": "Действие начала",
+    "endAction": "Действие окончания",
+    "advancedType": "Вкладка",
+    "instrumentNameType": "Ключ вкладки",
+    "isOpened": "Открыт",
+    "ingActions": "Циклические действия",
+    "isProvided": "Есть у всех"
+  },
+  "advancedTypes": {
+    "0": "Новичок",
+    "1": "Продвинутый",
+    "2": "Электронный"
+  },
+  "meta": {
+    "count": "Инструментов: {count}"
+  }
+}

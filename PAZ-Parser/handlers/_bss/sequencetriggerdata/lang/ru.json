@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "sequenceFile": "Файл последовательности",
+    "regionKeys": "Ключи регионов",
+    "regions": "Регионы",
+    "contentsGroup": "Группа контента",
+    "position": "Позиция",
+    "radius": "Радиус",
+    "resurrectPosition": "Позиция воскрешения",
+    "startCondition": "Условие запуска",
+    "startExecute": "Скрипт запуска",
+    "endExecute": "Скрипт завершения",
+    "skipCondition": "Условие пропуска",
+    "forceSkipEndExecute": "Скрипт завершения при пропуске",
+    "options": "Параметры"
+  },
+  "flags": {
+    "use_client_spawn": "Появление на клиенте",
+    "exit_character_select": "Выход к выбору персонажа",
+    "pre_update_fade_out": "Предварительное затемнение",
+    "party_sequence": "Групповая последовательность",
+    "character_swap_sequence": "Смена персонажа",
+    "force_skip_sequence": "Принудительный пропуск"
+  },
+  "meta": {
+    "count": "Триггеров последовательностей: {count}"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "key": "Clé",
+    "itemWhereType": "Type d'emplacement d'objet",
+    "item": "Objet",
+    "blackBg": "Fond noir",
+    "whiteBg": "Cadre blanc",
+    "whiteIgnore": "Masquer le cadre blanc",
+    "selected": "Contrôles sélectionnables",
+    "snappingEffect": "Effet d'accroche",
+    "doLua": "Appel Lua",
+    "steps": "Étapes du tutoriel"
+  },
+  "meta": {
+    "count": "{count} événements de départ"
+  }
+}

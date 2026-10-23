@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "itemWhereType": "Gegenstandsort-Typ",
+    "item": "Gegenstand",
+    "blackBg": "Schwarzer Hintergrund",
+    "whiteBg": "Weißer Rahmen",
+    "whiteIgnore": "Weißen Rahmen ausblenden",
+    "selected": "Wählbare Elemente",
+    "snappingEffect": "Einrast-Effekt",
+    "doLua": "Lua-Aufruf",
+    "steps": "Tutorial-Schritte"
+  },
+  "meta": {
+    "count": "{count} Startereignisse"
+  }
+}

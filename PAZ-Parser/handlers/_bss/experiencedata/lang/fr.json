@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "row": "Ligne",
+    "onceCondition": "Condition unique",
+    "constantCondition": "Condition permanente",
+    "execute": "Exécution",
+    "repeat": "Répéter",
+    "deleteCondition": "Condition de suppression"
+  },
+  "meta": {
+    "count": "{count} déclencheurs de première expérience"
+  }
+}

@@ -503,8 +503,10 @@ Every client the doc check read, and the layout its files fit.
 
 ## Companion Files
 
-None. The handler reads this file alone. `start_event_keys` are keys of
-`tutorial_startevent.bss`, which has no doc yet.
+None. The handler reads this file alone. Each of a step's
+`start_event_keys` links to its
+[`tutorial_startevent.bss`](tutorial_startevent_bss.md) row, and that
+view links each start event back to the steps that list it.
 
 All multi-byte values are little-endian.
 

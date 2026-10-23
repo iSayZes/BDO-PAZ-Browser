@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "sequenceFile": "시퀀스 파일",
+    "regionKeys": "지역 키",
+    "regions": "지역",
+    "contentsGroup": "콘텐츠 그룹",
+    "position": "위치",
+    "radius": "반경",
+    "resurrectPosition": "부활 위치",
+    "startCondition": "시작 조건",
+    "startExecute": "시작 스크립트",
+    "endExecute": "종료 스크립트",
+    "skipCondition": "건너뛰기 조건",
+    "forceSkipEndExecute": "건너뛰기 종료 스크립트",
+    "options": "옵션"
+  },
+  "flags": {
+    "use_client_spawn": "클라이언트 스폰",
+    "exit_character_select": "캐릭터 선택으로",
+    "pre_update_fade_out": "사전 페이드 아웃",
+    "party_sequence": "파티 시퀀스",
+    "character_swap_sequence": "캐릭터 교체",
+    "force_skip_sequence": "강제 건너뛰기"
+  },
+  "meta": {
+    "count": "시퀀스 트리거 {count}개"
+  }
+}

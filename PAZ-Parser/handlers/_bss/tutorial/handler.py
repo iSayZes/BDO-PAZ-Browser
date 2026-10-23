@@ -1,30 +1,24 @@
 """tutorial.bss preview handler: each Black Spirit guide step with its conditions and text."""
 from __future__ import annotations
 
-import re
-from collections.abc import Iterable, Mapping
+from collections.abc import Mapping
 from pathlib import Path
 
 from table_sort import TableSort
 
-from _common.html import Column, e, flag_cell, icon_cell, text_list_cell
+from _common.html import Column, e, flag_cell, hidden_slice, html_list_cell, icon_cell
 from _common.inline_text import decode_inline_text
 from _common.pa_text import pa_cell, pa_fields, pa_line_cell
 from _common.row_table import RowTableHandler
-from _common.string_hash import ascii_key_hash
 from _common.ui_texture import ui_texture_path
+from .links import start_event_link, step_text
 from .parser import FILE_NAME, parse_tutorial_records
+from .ui_names import ui_name, ui_names_by_hash
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-_PANEL_NAME_RE = re.compile(r"\bPanel_\w+")
 _MAX_EVENTS = 6
-
-
-def _panel_names(strings: Iterable[str]) -> dict[int, str]:
-    """`ascii_key_hash` -> name of every `Panel_*` name the step scripts mention."""
-    return {ascii_key_hash(name): name for text in strings for name in _PANEL_NAME_RE.findall(text)}
 
 
 def _step_order(record: dict) -> tuple[int, int]:
@@ -33,6 +27,14 @@ def _step_order(record: dict) -> tuple[int, int]:
 
 def _point_text(point: list[float]) -> str:
     return ", ".join(f"{value:g}" for value in point)
+
+
+def _start_events_cell(keys: list[int]) -> str:
+    """Each start event key as a link to its `tutorial_startevent.bss` row, or '-'."""
+    if not keys:
+        return _EMPTY
+    shown = [start_event_link(key) for key in keys[:_MAX_EVENTS]]
+    return html_list_cell(shown, len(keys) - _MAX_EVENTS, [str(key) for key in hidden_slice(keys, _MAX_EVENTS)])
 
 
 class TutorialHandler(RowTableHandler):
@@ -59,18 +61,16 @@ class TutorialHandler(RowTableHandler):
 
     def read_records(self, data: bytes, companions: dict[str, bytes]) -> list[dict]:
         rows, strings = parse_tutorial_records(data)
-        panels = _panel_names(strings)
+        ui_names = ui_names_by_hash(strings)
         records = [
             {
                 **row,
-                "step": f"{row['tutorial_type']}.{row['tutorial_index']}",
+                "step": step_text(row["tutorial_type"], row["tutorial_index"]),
                 **pa_fields("title", row["title_kr"]),
                 **pa_fields("desc", decode_inline_text(row["desc_kr"])),
                 "start_events_text": ", ".join(str(key) for key in row["start_event_keys"]),
-                # The hash itself when no step script names the panel; None for the screen.
-                "base_pos_panel": panels.get(row["base_pos_panel_hash"], str(row["base_pos_panel_hash"]))
-                if row["base_pos_panel_hash"]
-                else None,
+                # The hash in hex when no name fits; None for the screen.
+                "base_pos_panel": ui_name(ui_names, row["base_pos_panel_hash"]) or None,
                 "pos_text": _point_text(row["pos"]),
                 "pan_text": _point_text(row["pan"]),
                 "image_texture": ui_texture_path(row["image_path"]),
@@ -87,7 +87,7 @@ class TutorialHandler(RowTableHandler):
             pa_line_cell(record, "desc"),
             e(record["start_condition"]) or _EMPTY,
             e(record["complete_condition"]) or _EMPTY,
-            text_list_cell(record["start_event_keys"], _MAX_EVENTS) or _EMPTY,
+            _start_events_cell(record["start_event_keys"]),
             e(record["base_pos_panel"]) if record["base_pos_panel"] else _EMPTY,
             icon_cell(record["image_texture"]) if record["image_texture"] else _EMPTY,
             flag_cell(bool(record["use_popup"])),

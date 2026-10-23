@@ -1033,6 +1033,9 @@ and the three Olvia Academy quest lists each quest to its
 `olviaacademypassstaticstatusmanager.bss` step (by `base_quest`), whose
 views link each quest back to its list row
 (`_bss/allquestlist/olvia_academy.py`).
+`tutorial.bss` links each start event key to its `tutorial_startevent.bss`
+row, and that view links each event back to the steps that list it
+(`_bss/tutorial/links.py`).
 Both lists of `bartersubgroup.bss` number their groups from 1, so that link
 reads `sub_group_ref` (`trade:12`, `material:3`), a field the target
 records carry for it (`_bss/barter/sub_group.py`).

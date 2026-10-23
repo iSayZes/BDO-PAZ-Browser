@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "video": "Video",
+    "contentsGroup": "Inhaltsgruppe",
+    "position": "Position",
+    "radius": "Radius",
+    "startCondition": "Startbedingung",
+    "startExecute": "Startskript",
+    "endExecute": "Endskript"
+  },
+  "meta": {
+    "count": "{count} Video-Auslöser"
+  }
+}

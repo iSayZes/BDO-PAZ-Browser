@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "row": "Zeile",
+    "onceCondition": "Einmalbedingung",
+    "constantCondition": "Dauerbedingung",
+    "execute": "Ausführen",
+    "repeat": "Wiederholen",
+    "deleteCondition": "Löschbedingung"
+  },
+  "meta": {
+    "count": "{count} Ersterfahrungs-Auslöser"
+  }
+}

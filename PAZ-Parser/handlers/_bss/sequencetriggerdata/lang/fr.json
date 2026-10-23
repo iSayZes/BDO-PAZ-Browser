@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "sequenceFile": "Fichier de séquence",
+    "regionKeys": "Clés de région",
+    "regions": "Régions",
+    "contentsGroup": "Groupe de contenu",
+    "position": "Position",
+    "radius": "Rayon",
+    "resurrectPosition": "Position de résurrection",
+    "startCondition": "Condition de départ",
+    "startExecute": "Script de départ",
+    "endExecute": "Script de fin",
+    "skipCondition": "Condition pour passer",
+    "forceSkipEndExecute": "Script de fin si passé",
+    "options": "Options"
+  },
+  "flags": {
+    "use_client_spawn": "Apparition côté client",
+    "exit_character_select": "Retour à la sélection du personnage",
+    "pre_update_fade_out": "Fondu préalable",
+    "party_sequence": "Séquence de groupe",
+    "character_swap_sequence": "Changement de personnage",
+    "force_skip_sequence": "Passage forcé"
+  },
+  "meta": {
+    "count": "{count} déclencheurs de séquence"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "video": "영상",
+    "contentsGroup": "콘텐츠 그룹",
+    "position": "위치",
+    "radius": "반경",
+    "startCondition": "시작 조건",
+    "startExecute": "시작 스크립트",
+    "endExecute": "종료 스크립트"
+  },
+  "meta": {
+    "count": "영상 트리거 {count}개"
+  }
+}

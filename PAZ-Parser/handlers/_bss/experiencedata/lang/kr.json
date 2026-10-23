@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "row": "행",
+    "onceCondition": "1회 조건",
+    "constantCondition": "상시 조건",
+    "execute": "실행",
+    "repeat": "반복",
+    "deleteCondition": "삭제 조건"
+  },
+  "meta": {
+    "count": "첫 경험 트리거 {count}개"
+  }
+}

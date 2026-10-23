@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "sequenceFile": "Sequenzdatei",
+    "regionKeys": "Regionsschlüssel",
+    "regions": "Regionen",
+    "contentsGroup": "Inhaltsgruppe",
+    "position": "Position",
+    "radius": "Radius",
+    "resurrectPosition": "Wiederbelebungsposition",
+    "startCondition": "Startbedingung",
+    "startExecute": "Startskript",
+    "endExecute": "Endskript",
+    "skipCondition": "Überspringbedingung",
+    "forceSkipEndExecute": "Endskript beim Überspringen",
+    "options": "Optionen"
+  },
+  "flags": {
+    "use_client_spawn": "Client-Spawn",
+    "exit_character_select": "Zur Charakterauswahl",
+    "pre_update_fade_out": "Vorher ausblenden",
+    "party_sequence": "Gruppensequenz",
+    "character_swap_sequence": "Charakterwechsel",
+    "force_skip_sequence": "Überspringen erzwingen"
+  },
+  "meta": {
+    "count": "{count} Sequenz-Auslöser"
+  }
+}

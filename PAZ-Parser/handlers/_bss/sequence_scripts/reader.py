@@ -10,10 +10,13 @@ The hash is the client's ASCII key hash of the name without `.pas`
 (`cutscene_file_hash()`). Text fields, such as the start condition and the
 two scripts of `sequencedatatable.bss`, are u32 indexes into the same table;
 several rows point at one string. Per-class lists are a u32 count of entries
-that each start with a u8 class type (`read_class_entries()`).
+that each start with a u8 class type (`read_class_entries()`). The trigger
+tables place their rows in the world with an f32 x, y, z position
+(`read_position()`).
 
-See docs/file-formats/sequencedatatable_bss.md, sequence_skill_bss.md and
-tutorial_equipment_bss.md.
+See docs/file-formats/sequencedatatable_bss.md, sequence_skill_bss.md,
+tutorial_equipment_bss.md, videotriggerdata_bss.md and
+sequencetriggerdata_bss.md.
 """
 
 from __future__ import annotations
@@ -35,6 +38,7 @@ SCRIPT_FIELDS = ("start_condition", "start_execute", "end_execute")
 
 _ROW_COUNT_OFFSET = 4
 _U32 = struct.Struct("<I")
+_POSITION = struct.Struct("<3f")
 
 EntryT = TypeVar("EntryT")
 
@@ -77,6 +81,11 @@ def read_string_refs(table: ScriptTable, fields: Sequence[str], label: str) -> d
         field: string_ref(table.strings, table.reader.unpack(_U32)[0], f"{label} {field}")
         for field in fields
     }
+
+
+def read_position(reader: RecordReader) -> list[float]:
+    """An f32 x, y, z world position."""
+    return list(reader.unpack(_POSITION))
 
 
 def cutscene_file_hash(file_name: str) -> int:

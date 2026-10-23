@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "row": "Fila",
+    "onceCondition": "Condición única",
+    "constantCondition": "Condición constante",
+    "execute": "Ejecución",
+    "repeat": "Repetir",
+    "deleteCondition": "Condición de borrado"
+  },
+  "meta": {
+    "count": "{count} activadores de primera experiencia"
+  }
+}

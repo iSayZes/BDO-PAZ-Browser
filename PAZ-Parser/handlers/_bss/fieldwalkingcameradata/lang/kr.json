@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "event": "이벤트",
+    "regionKey": "지역 키",
+    "region": "지역",
+    "point": "지점",
+    "position": "위치",
+    "rotation": "회전",
+    "fov": "시야각 (°)",
+    "speedOrTime": "속도 또는 시간",
+    "speedMode": "속도 모드",
+    "spline": "스플라인"
+  },
+  "meta": {
+    "count": "카메라 지점 {count}개"
+  }
+}

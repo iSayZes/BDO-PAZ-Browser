@@ -129,6 +129,7 @@ from .tutorial.handler import TutorialHandler
 from .beginnerroadmapdata.handler import BeginnerRoadmapHandler
 from .journalinfostaticstatus.handler import JournalInfoHandler
 from .eventguidess.handler import EventGuideHandler
+from .eventmanagement.handler import EventManagementHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
@@ -383,6 +384,7 @@ def register_bss_handlers() -> None:
     register_handler("beginnerroadmapdata.bss", BeginnerRoadmapHandler())
     register_handler("journalinfostaticstatus.bss", JournalInfoHandler())
     register_handler("eventguidess.bss", EventGuideHandler())
+    register_handler("eventmanagement.bss", EventManagementHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("selectbox.bss", SelectBoxBssHandler())
     register_handler("servant.bss", ServantBssHandler())

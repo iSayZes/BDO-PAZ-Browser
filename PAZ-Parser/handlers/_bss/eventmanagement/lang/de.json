@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "section": "Bereich",
+    "name": "Name / Funktion",
+    "details": "Bedingung / Parameter",
+    "periodStart": "Beginn",
+    "periodEnd": "Ende",
+    "characters": "Charaktere",
+    "linked": "Verknüpfte Zeilen"
+  },
+  "sections": {
+    "event": "Event",
+    "contents": "Event-Inhalte"
+  },
+  "meta": {
+    "count": "{count} Events und Event-Inhalte"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "키",
+    "section": "구분",
+    "name": "이름 / 기능",
+    "details": "조건 / 파라미터",
+    "periodStart": "시작",
+    "periodEnd": "종료",
+    "characters": "캐릭터",
+    "linked": "연결된 행"
+  },
+  "sections": {
+    "event": "이벤트",
+    "contents": "이벤트 내용"
+  },
+  "meta": {
+    "count": "이벤트 및 이벤트 내용 {count}개"
+  }
+}

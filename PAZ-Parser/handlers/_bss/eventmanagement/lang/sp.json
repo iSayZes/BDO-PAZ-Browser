@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Clave",
+    "section": "Sección",
+    "name": "Nombre / Función",
+    "details": "Condición / Parámetros",
+    "periodStart": "Inicio",
+    "periodEnd": "Fin",
+    "characters": "Personajes",
+    "linked": "Filas vinculadas"
+  },
+  "sections": {
+    "event": "Evento",
+    "contents": "Contenidos de evento"
+  },
+  "meta": {
+    "count": "{count} eventos y contenidos de evento"
+  }
+}

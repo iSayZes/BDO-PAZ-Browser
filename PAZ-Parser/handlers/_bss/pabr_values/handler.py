@@ -99,8 +99,8 @@ def _field_columns(field: ValueField, cols: dict[str, str]) -> list[_Shown]:
     return shown
 
 
-def _name_fields(lookup: NameLookup, key: object) -> dict[str, str]:
-    name = lookup.name_of(key)
+def _name_fields(lookup: NameLookup, key: object, record: dict) -> dict[str, str]:
+    name = lookup.name_of(record if lookup.is_row_lookup else key)
     return pa_fields(lookup.field, name) if lookup.is_tagged else {lookup.field: name}
 
 
@@ -109,11 +109,11 @@ def _derived_fields(fields: tuple[ValueField, ...], record: dict) -> dict[str, s
     derived: dict[str, str] = {}
     for field in fields:
         if field.lookup is not None:
-            derived |= _name_fields(field.lookup, record[field.name])
+            derived |= _name_fields(field.lookup, record[field.name], record)
         if field.icon is not None:
             derived[field.icon.field] = field.icon.path_of(record[field.name])
         if field.text is not None and field.text.lookup is not None:
-            derived |= _name_fields(field.text.lookup, record[field.text.field])
+            derived |= _name_fields(field.text.lookup, record[field.text.field], record)
     return derived
 
 

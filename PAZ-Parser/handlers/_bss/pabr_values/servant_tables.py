@@ -12,21 +12,11 @@ sheets of a private server's `DataSheets.bexcel` on client 1784:
 from __future__ import annotations
 
 from _common.character import character_name
-from _common.item_key import item_name_tagged
 from _common.rate import rate_percent
-from .fields import CHARACTER_KEY, CHARACTER_NAME, MAP_COLOR
-from .layout import IconLookup, NameLookup, RowCount, TextRef, ValueField, ValueTable
-from .names import item_icon_path, vehicle_skill_name
+from .fields import CHARACTER_KEY, CHARACTER_NAME, ITEM_KEY, MAP_COLOR
+from .layout import NameLookup, RowCount, TextRef, ValueField, ValueTable
+from .names import vehicle_skill_name
 from .servant_names import servant_kind_text
-
-
-ITEM_KEY = ValueField(
-    "item_key",
-    "I",
-    "itemId",
-    NameLookup("item_name", "item", item_name_tagged, is_tagged=True),
-    IconLookup("icon_path", "icon", item_icon_path),
-)
 
 
 def _character_key(prefix: str, column: str) -> ValueField:

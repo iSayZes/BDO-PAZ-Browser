@@ -31,6 +31,7 @@ from .edania_tables import EDANIA_TABLES
 from .greatsea_tables import GREAT_SEA_TABLES
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
+from .item_tables import ITEM_TABLES
 from .lifeskill_tables import LIFE_SKILL_TABLES
 from .majorsiege_tables import MAJOR_SIEGE_TABLES
 from .oceansiege_tables import OCEAN_SIEGE_TABLES
@@ -264,4 +265,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *UI_TABLES,
     *SERVANT_TABLES,
     *LIFE_SKILL_TABLES,
+    *ITEM_TABLES,
 )

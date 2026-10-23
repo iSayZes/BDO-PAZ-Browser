@@ -343,7 +343,17 @@
     "enduranceDecrease": "Perte de durabilité",
     "rewardDropGroup": "Groupe de butin de récompense",
     "fishingLevel": "Niveau de pêche",
-    "discardGrade": "Jeter jusqu'à"
+    "discardGrade": "Jeter jusqu'à",
+    "protectType": "Type de protection",
+    "moveFilter": "Filtrer",
+    "contentsEventType": "Effet d'utilisation",
+    "itemClassify": "Classe d'objet",
+    "itemType": "Type d'objet",
+    "categoryKey": "ID de catégorie",
+    "category": "Catégorie",
+    "territory": "Territoire",
+    "bootyItem": "Objets du butin",
+    "expirationPeriodNotify": "Avis avant expiration"
   },
   "meta": {
     "count": "{count} entrées",
@@ -381,6 +391,11 @@
     "trainingItems": "{count} objets de dressage",
     "vehicleCharacters": "{count} personnages de véhicule",
     "miniGameGroups": "{count} groupes de mini-jeu",
-    "discardSteps": "{count} paliers de rejet"
+    "discardSteps": "{count} paliers de rejet",
+    "protectorItems": "{count} objets de protection",
+    "moveFilters": "{count} filtres de déplacement",
+    "autoUseCategories": "{count} catégories d'utilisation automatique",
+    "bootyLists": "{count} listes de butin",
+    "notifyItems": "{count} objets avec avis d'expiration"
   }
 }

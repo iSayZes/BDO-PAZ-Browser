@@ -343,7 +343,17 @@
     "enduranceDecrease": "내구도 감소",
     "rewardDropGroup": "보상 드롭 그룹",
     "fishingLevel": "낚시 레벨",
-    "discardGrade": "버리기 등급"
+    "discardGrade": "버리기 등급",
+    "protectType": "보호 종류",
+    "moveFilter": "필터",
+    "contentsEventType": "사용 효과",
+    "itemClassify": "아이템 분류",
+    "itemType": "아이템 종류",
+    "categoryKey": "카테고리 ID",
+    "category": "카테고리",
+    "territory": "영지",
+    "bootyItem": "전리품",
+    "expirationPeriodNotify": "만료 전 알림"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -381,6 +391,11 @@
     "trainingItems": "조련 아이템 {count}개",
     "vehicleCharacters": "탑승물 캐릭터 {count}개",
     "miniGameGroups": "미니게임 그룹 {count}개",
-    "discardSteps": "버리기 단계 {count}개"
+    "discardSteps": "버리기 단계 {count}개",
+    "protectorItems": "보호 아이템 {count}개",
+    "moveFilters": "이동 필터 {count}개",
+    "autoUseCategories": "자동 사용 카테고리 {count}개",
+    "bootyLists": "전리품 목록 {count}개",
+    "notifyItems": "만료 알림 아이템 {count}개"
   }
 }

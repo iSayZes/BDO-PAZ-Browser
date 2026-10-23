@@ -4,7 +4,7 @@
 
 The items the auto-use of buff items (a Fairy skill) can use: one 9-byte
 row per item with its category. The categories are the rows of
-`autousebuffitemcategoryinfo.bss`. The auto-use window
+[`autousebuffitemcategoryinfo.bss`](autousebuffitemcategoryinfo_bss.md). The auto-use window
 (`panel_window_autousebuffitem_1.luac`) walks
 `ToClient_getAutoUseBuffItemCategoryCount()` and
 `ToClient_getAutoUseBuffItemCategoryKey(index)`, names each category with
@@ -21,7 +21,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                              | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | --------------------------------- | ----- | ------- | --------- |
-| 2      | 2637 and later | 3482    | `buffitemautousestaticstatus.bss` | 8,228 | 912 Row | 9         |
+| 2      | 2637 and later | 3483    | `buffitemautousestaticstatus.bss` | 8,228 | 912 Row | 9         |
 | 1      | 2107 to 2519   | 2519    | `buffitemautousestaticstatus.bss` | 4,980 | 620 Row | 8         |
 
 | Layout | File                              | Known            | Unknown       |
@@ -33,6 +33,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3251   | Layout 2 |
@@ -107,9 +108,9 @@ No `unknown_08`: a row is 8 bytes. Only the Row differs from Layout 2.
 ## Categories
 
 `autousebuffitemcategoryinfo.bss` holds the nine category keys `1` to `9`,
-each with a Korean name in its string table. Every `category_key` of this
-file is one of them, and the items of each key fit its name. Counts are
-from client 3482.
+each with a Korean name in its string table and an English name in LOC
+type 118. Every `category_key` of this file is one of them, and the items
+of each key fit its name. Counts are from client 3482.
 
 | `category_key` | Korean name (`autousebuffitemcategoryinfo.bss`) | Items | Examples                                       |
 | -------------- | ----------------------------------------------- | ----- | ---------------------------------------------- |

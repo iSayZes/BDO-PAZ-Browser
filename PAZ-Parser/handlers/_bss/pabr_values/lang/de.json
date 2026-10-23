@@ -343,7 +343,17 @@
     "enduranceDecrease": "Haltbarkeitsverlust",
     "rewardDropGroup": "Belohnungs-Dropgruppe",
     "fishingLevel": "Fischfang-Stufe",
-    "discardGrade": "Wegwerfen bis"
+    "discardGrade": "Wegwerfen bis",
+    "protectType": "Schutzart",
+    "moveFilter": "Filter",
+    "contentsEventType": "Verwendungseffekt",
+    "itemClassify": "Gegenstandsklasse",
+    "itemType": "Gegenstandstyp",
+    "categoryKey": "Kategorie-ID",
+    "category": "Kategorie",
+    "territory": "Territorium",
+    "bootyItem": "Beutegegenstände",
+    "expirationPeriodNotify": "Hinweis vor Ablauf"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -381,6 +391,11 @@
     "trainingItems": "{count} Abricht-Gegenstände",
     "vehicleCharacters": "{count} Fahrzeug-Charaktere",
     "miniGameGroups": "{count} Minispielgruppen",
-    "discardSteps": "{count} Wegwerf-Stufen"
+    "discardSteps": "{count} Wegwerf-Stufen",
+    "protectorItems": "{count} Schutzgegenstände",
+    "moveFilters": "{count} Verschiebefilter",
+    "autoUseCategories": "{count} Kategorien der automatischen Verwendung",
+    "bootyLists": "{count} Beutelisten",
+    "notifyItems": "{count} Gegenstände mit Ablaufhinweis"
   }
 }

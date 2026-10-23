@@ -343,7 +343,17 @@
     "enduranceDecrease": "Снижение прочности",
     "rewardDropGroup": "Группа добычи награды",
     "fishingLevel": "Уровень рыбалки",
-    "discardGrade": "Выбросить до"
+    "discardGrade": "Выбросить до",
+    "protectType": "Тип защиты",
+    "moveFilter": "Фильтр",
+    "contentsEventType": "Эффект использования",
+    "itemClassify": "Класс предмета",
+    "itemType": "Тип предмета",
+    "categoryKey": "ID категории",
+    "category": "Категория",
+    "territory": "Территория",
+    "bootyItem": "Трофеи",
+    "expirationPeriodNotify": "Уведомление до истечения"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -381,6 +391,11 @@
     "trainingItems": "Предметов укрощения: {count}",
     "vehicleCharacters": "Персонажей транспорта: {count}",
     "miniGameGroups": "Групп мини-игры: {count}",
-    "discardSteps": "Ступеней выбрасывания: {count}"
+    "discardSteps": "Ступеней выбрасывания: {count}",
+    "protectorItems": "Предметов защиты: {count}",
+    "moveFilters": "Фильтров перемещения: {count}",
+    "autoUseCategories": "Категорий автоприменения: {count}",
+    "bootyLists": "Списков трофеев: {count}",
+    "notifyItems": "Предметов с уведомлением об истечении: {count}"
   }
 }

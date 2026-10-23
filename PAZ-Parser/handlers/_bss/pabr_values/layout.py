@@ -49,13 +49,16 @@ class NameLookup:
     With `is_tagged`, `name_of` returns game text with `<PAColor>` tags: the
     record keeps the plain text under `field` and the tagged copy under
     `pa_key(field)`, and the cell draws the colours. `name_of` takes the key,
-    or the string of a `TextRef`.
+    or the string of a `TextRef`. With `is_row_lookup` it takes the whole
+    record: for a LOC key built from several fields, or LOC text that falls
+    back to the row's inline Korean string.
     """
 
     field: str
     column: str
     name_of: Callable[[Any], str]
     is_tagged: bool = False
+    is_row_lookup: bool = False
 
 
 @dataclass(frozen=True)

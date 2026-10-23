@@ -343,7 +343,17 @@
     "enduranceDecrease": "Durability Decrease",
     "rewardDropGroup": "Reward Drop Group",
     "fishingLevel": "Fishing Level",
-    "discardGrade": "Discard Up To"
+    "discardGrade": "Discard Up To",
+    "protectType": "Protect Type",
+    "moveFilter": "Filter",
+    "contentsEventType": "Use Effect",
+    "itemClassify": "Item Classify",
+    "itemType": "Item Type",
+    "categoryKey": "Category ID",
+    "category": "Category",
+    "territory": "Territory",
+    "bootyItem": "Booty Items",
+    "expirationPeriodNotify": "Notify Before Expiry"
   },
   "meta": {
     "count": "{count} entries",
@@ -381,6 +391,11 @@
     "trainingItems": "{count} training items",
     "vehicleCharacters": "{count} vehicle characters",
     "miniGameGroups": "{count} minigame groups",
-    "discardSteps": "{count} discard steps"
+    "discardSteps": "{count} discard steps",
+    "protectorItems": "{count} protector items",
+    "moveFilters": "{count} move filters",
+    "autoUseCategories": "{count} auto-use categories",
+    "bootyLists": "{count} booty lists",
+    "notifyItems": "{count} items with an expiry notice"
   }
 }

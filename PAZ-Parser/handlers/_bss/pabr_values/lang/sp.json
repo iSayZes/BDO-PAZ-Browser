@@ -343,7 +343,17 @@
     "enduranceDecrease": "Pérdida de durabilidad",
     "rewardDropGroup": "Grupo de botín de recompensa",
     "fishingLevel": "Nivel de pesca",
-    "discardGrade": "Descartar hasta"
+    "discardGrade": "Descartar hasta",
+    "protectType": "Tipo de protección",
+    "moveFilter": "Filtro",
+    "contentsEventType": "Efecto de uso",
+    "itemClassify": "Clase de objeto",
+    "itemType": "Tipo de objeto",
+    "categoryKey": "ID de categoría",
+    "category": "Categoría",
+    "territory": "Territorio",
+    "bootyItem": "Objetos del botín",
+    "expirationPeriodNotify": "Aviso antes de caducar"
   },
   "meta": {
     "count": "{count} entradas",
@@ -381,6 +391,11 @@
     "trainingItems": "{count} objetos de doma",
     "vehicleCharacters": "{count} personajes de vehículo",
     "miniGameGroups": "{count} grupos de minijuego",
-    "discardSteps": "{count} niveles de descarte"
+    "discardSteps": "{count} niveles de descarte",
+    "protectorItems": "{count} objetos de protección",
+    "moveFilters": "{count} filtros de traslado",
+    "autoUseCategories": "{count} categorías de uso automático",
+    "bootyLists": "{count} listas de botín",
+    "notifyItems": "{count} objetos con aviso de caducidad"
   }
 }

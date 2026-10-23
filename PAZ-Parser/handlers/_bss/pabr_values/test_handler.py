@@ -10,6 +10,7 @@ from typing import Any
 
 import pytest
 
+from bdo_models import PazEntry
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     CaseInput,
@@ -300,6 +301,18 @@ _TARGETS: dict[str, list[TargetTest]] = {
     "vehicletypename.bss": [
         TargetTest(col="character_key", value=29805, expected={"character_name": "Ogre", "vehicle_type_name": "MonsterRideOgre"}),
     ],
+    # The Enchant_Protect row of client 1784 (ItemKey 45077, ProtectType 1).
+    "itemprotector.dbss": [TargetTest(col="item_key", value=45077, expected={"item_name": "J's Hammer of Loyalty"})],
+    # Auto_Warehouse_Order_Filter row 3 of client 1784: ContentsEvent items, Vehicle classify, PetFeed.
+    "itemmovedata.bss": [
+        TargetTest(
+            col="index",
+            value=3,
+            expected={"item_type": 10, "item_classify": 11, "contents_event_type": 13, "filter_name": "Exclude Pet Feed"},
+        ),
+    ],
+    "autousebuffitemcategoryinfo.bss": [TargetTest(col="category_key", value=3, expected={"category_name": "Perfumes"})],
+    "bootyitemlist.bss": [TargetTest(col="territory_key", value=0, expected={"territory_name": "Balenos"})],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {
@@ -309,6 +322,8 @@ _RANGES: dict[str, list[RangeTest]] = {
     _ELEMENTAL_SERVER_BUFF: [RangeTest(col="earth_blessing_drop_rate", min_val=0, max_val=_FULL_RATE)],
     _ROSE_WAR_SKILL: [RangeTest(col="skill_type", min_val=1, max_val=len(ROSE_WAR_SKILL_TYPES))],
     _ROSE_WAR_TEAM_NO: [RangeTest(col="team_no", min_val=0, max_val=len(ROSE_WAR_TEAMS) - 1)],
+    # The two ProtectType values of the Enchant_Protect sheet (client 1784).
+    "itemprotector.dbss": [RangeTest(col="protect_type", min_val=0, max_val=1)],
 }
 
 
@@ -777,6 +792,35 @@ def test_a_fixed_list_reads_its_entries_with_no_count() -> None:
 def test_an_index_column_stores_each_row_position() -> None:
     data = _pabr(bytes([0, 1, 1]))
     assert parse_value_table(data, _INDEXED) == [{"index": 0, "a": 0}, {"index": 1, "a": 1}, {"index": 2, "a": 1}]
+
+
+def _joined_name(record: dict) -> str:
+    return f"{record['key']}-{record['name_kr']}"
+
+
+_ROW_LOOKUP = ValueTable(
+    "rowlookup.bss",
+    (
+        ValueField("key", "B", "productId", NameLookup("name", "item", _joined_name, is_row_lookup=True)),
+        ValueField("name_ref", "I", text=TextRef("name_kr")),
+    ),
+    RowCount.COUNTED,
+)
+
+
+def test_a_row_lookup_reads_the_whole_record() -> None:
+    data = _pabr_with_strings(_U32.pack(1) + struct.pack("<BI", 7, 0), ["a"])
+    entry = PazEntry(
+        archive_name="",
+        internal_path="gamecommondata/binary/rowlookup.bss",
+        offset=0,
+        compressed_size=0,
+        uncompressed_size=0,
+        compression_type=0,
+        encryption_type=0,
+    )
+    (record,) = PabrValuesBssHandler(_ROW_LOOKUP).get_records(data, entry, {})
+    assert record["name"] == "7-a"
 
 
 def test_the_index_column_comes_first() -> None:

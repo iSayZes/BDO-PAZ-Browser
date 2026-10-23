@@ -237,7 +237,32 @@
     "knowledge": "Connaissance",
     "equipSlot": "Emplacement d'équipement",
     "presets": "Préréglages",
-    "moves": "Déplacements"
+    "moves": "Déplacements",
+    "summonKey": "Clé d'invocation",
+    "summonLevel": "Niveau d'invocation",
+    "addedDd": "PA supplémentaires",
+    "addedPv": "Réduction des dégâts supplémentaire",
+    "addedDv": "Esquive supplémentaire",
+    "addedHit": "Précision supplémentaire",
+    "addedHp": "PV max. supplémentaires",
+    "stageKey": "Niveau",
+    "bossTexture": "Texture du boss",
+    "matchMinOffence": "PA min.",
+    "matchMinDefence": "PD min.",
+    "recommendedOffence": "PA recommandés",
+    "recommendedDefence": "PD recommandés",
+    "firstRewards": "Récompense (1re réussite)",
+    "weeklyRewards": "Récompenses hebdomadaires",
+    "puzzleKey": "Clé du puzzle",
+    "descKey": "Clé de description",
+    "coreMaterials": "Matériaux principaux",
+    "questId": "ID de quête",
+    "quest": "Quête",
+    "textureId": "Texture",
+    "isHunting": "Chasse",
+    "nameKey": "Clé du nom",
+    "reuseGroup": "Groupe de recharge",
+    "isExpiredInOffline": "Expire hors ligne"
   },
   "meta": {
     "count": "{count} entrées",
@@ -254,6 +279,10 @@
     "territoryGroups": "{count} groupes de territoires",
     "ships": "{count} navires",
     "abyssStorages": "{count} dépôts",
-    "equipSlots": "{count} emplacements d'équipement"
+    "equipSlots": "{count} emplacements d'équipement",
+    "stages": "{count} niveaux",
+    "treasures": "{count} trésors",
+    "teleports": "{count} destinations de téléportation",
+    "reuseGroups": "{count} groupes de recharge"
   }
 }

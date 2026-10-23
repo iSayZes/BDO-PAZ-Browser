@@ -237,7 +237,32 @@
     "knowledge": "Wissen",
     "equipSlot": "Ausrüstungsplatz",
     "presets": "Voreinstellungen",
-    "moves": "Bewegungen"
+    "moves": "Bewegungen",
+    "summonKey": "Beschwörungsschlüssel",
+    "summonLevel": "Beschwörungsstufe",
+    "addedDd": "Zusätzliche AK",
+    "addedPv": "Zusätzliche Schadensreduktion",
+    "addedDv": "Zusätzliches Ausweichen",
+    "addedHit": "Zusätzliche Präzision",
+    "addedHp": "Zusätzliche Max. LP",
+    "stageKey": "Stufe",
+    "bossTexture": "Boss-Textur",
+    "matchMinOffence": "Min. AK",
+    "matchMinDefence": "Min. VK",
+    "recommendedOffence": "Empfohlene AK",
+    "recommendedDefence": "Empfohlene VK",
+    "firstRewards": "Belohnung für ersten Abschluss",
+    "weeklyRewards": "Wöchentliche Belohnungen",
+    "puzzleKey": "Puzzle-Schlüssel",
+    "descKey": "Beschreibungsschlüssel",
+    "coreMaterials": "Kernmaterialien",
+    "questId": "Quest-ID",
+    "quest": "Quest",
+    "textureId": "Textur",
+    "isHunting": "Jagd",
+    "nameKey": "Namensschlüssel",
+    "reuseGroup": "Abklingzeitgruppe",
+    "isExpiredInOffline": "Läuft offline ab"
   },
   "meta": {
     "count": "{count} Einträge",
@@ -254,6 +279,10 @@
     "territoryGroups": "{count} Territoriumsgruppen",
     "ships": "{count} Schiffe",
     "abyssStorages": "{count} Lager",
-    "equipSlots": "{count} Ausrüstungsplätze"
+    "equipSlots": "{count} Ausrüstungsplätze",
+    "stages": "{count} Stufen",
+    "treasures": "{count} Schätze",
+    "teleports": "{count} Teleportziele",
+    "reuseGroups": "{count} Abklingzeitgruppen"
   }
 }

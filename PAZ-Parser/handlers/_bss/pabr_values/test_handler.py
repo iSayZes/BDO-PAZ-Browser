@@ -255,6 +255,30 @@ _TARGETS: dict[str, list[TargetTest]] = {
             expected={"node_name": "Aetherion Castle", "mark_texture": "territorymark_Jordine_large"},
         ),
     ],
+    # Level 1 of the Ancient Relic Crystal Summon Scroll, keyed level << 24 | item key.
+    "bdobatchsummonmonsterss.bss": [
+        TargetTest(
+            col="summon_key",
+            value=1 << 24 | 41583,
+            expected={"item_key": 41583, "summon_level": 1, "item_name": "Ancient Relic Crystal Summon Scroll"},
+        ),
+    ],
+    # The treasure guidebook's map and its GAME sheet description key.
+    "treasureinfostaicstatusmanager.bss": [
+        TargetTest(
+            col="item_enchant_key",
+            value=_ARCHAEOLOGISTS_MAP,
+            expected={"item_name": "Archaeologist's Map", "desc_key": "LUA_TREASURE_GUIDEBOOK_ITEMDESC_MAP"},
+        ),
+    ],
+    # The Balenos destination: Velia's node and Velia's knowledge card.
+    "magnuseasyteleport.bss": [
+        TargetTest(
+            col="waypoint_key",
+            value=1,
+            expected={"node_name": "Velia", "name_key": "LUA_WORLDMAP_TERRITORYSTRING_0", "knowledge_name": "Velia"},
+        ),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {

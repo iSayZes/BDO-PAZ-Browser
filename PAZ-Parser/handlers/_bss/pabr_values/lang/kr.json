@@ -237,7 +237,32 @@
     "knowledge": "지식",
     "equipSlot": "장비 슬롯",
     "presets": "프리셋",
-    "moves": "이동"
+    "moves": "이동",
+    "summonKey": "소환 키",
+    "summonLevel": "소환 단계",
+    "addedDd": "추가 공격력",
+    "addedPv": "추가 피해 감소",
+    "addedDv": "추가 회피력",
+    "addedHit": "추가 적중력",
+    "addedHp": "추가 최대 생명력",
+    "stageKey": "단계",
+    "bossTexture": "보스 텍스처",
+    "matchMinOffence": "최소 공격력",
+    "matchMinDefence": "최소 방어력",
+    "recommendedOffence": "추천 공격력",
+    "recommendedDefence": "추천 방어력",
+    "firstRewards": "최초 완료 보상",
+    "weeklyRewards": "주간 보상",
+    "puzzleKey": "퍼즐 키",
+    "descKey": "설명 키",
+    "coreMaterials": "핵심 재료",
+    "questId": "의뢰 ID",
+    "quest": "의뢰",
+    "textureId": "텍스처",
+    "isHunting": "수렵",
+    "nameKey": "이름 키",
+    "reuseGroup": "재사용 그룹",
+    "isExpiredInOffline": "오프라인 중 만료"
   },
   "meta": {
     "count": "{count}개 항목",
@@ -254,6 +279,10 @@
     "territoryGroups": "영지 그룹 {count}개",
     "ships": "선박 {count}척",
     "abyssStorages": "창고 {count}개",
-    "equipSlots": "장비 슬롯 {count}개"
+    "equipSlots": "장비 슬롯 {count}개",
+    "stages": "단계 {count}개",
+    "treasures": "보물 {count}개",
+    "teleports": "이동 지점 {count}개",
+    "reuseGroups": "재사용 그룹 {count}개"
   }
 }

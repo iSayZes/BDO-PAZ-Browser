@@ -237,7 +237,32 @@
     "knowledge": "Knowledge",
     "equipSlot": "Equipment Slot",
     "presets": "Presets",
-    "moves": "Moves"
+    "moves": "Moves",
+    "summonKey": "Summon Key",
+    "summonLevel": "Summon Level",
+    "addedDd": "Added AP",
+    "addedPv": "Added Damage Reduction",
+    "addedDv": "Added Evasion",
+    "addedHit": "Added Accuracy",
+    "addedHp": "Added Max HP",
+    "stageKey": "Stage",
+    "bossTexture": "Boss Texture",
+    "matchMinOffence": "Min AP",
+    "matchMinDefence": "Min DP",
+    "recommendedOffence": "Recommended AP",
+    "recommendedDefence": "Recommended DP",
+    "firstRewards": "First Clear Rewards",
+    "weeklyRewards": "Weekly Rewards",
+    "puzzleKey": "Puzzle Key",
+    "descKey": "Description Key",
+    "coreMaterials": "Core Materials",
+    "questId": "Quest ID",
+    "quest": "Quest",
+    "textureId": "Texture",
+    "isHunting": "Hunting",
+    "nameKey": "Name Key",
+    "reuseGroup": "Reuse Group",
+    "isExpiredInOffline": "Expires While Offline"
   },
   "meta": {
     "count": "{count} entries",
@@ -254,6 +279,10 @@
     "territoryGroups": "{count} territory groups",
     "ships": "{count} ships",
     "abyssStorages": "{count} storages",
-    "equipSlots": "{count} equipment slots"
+    "equipSlots": "{count} equipment slots",
+    "stages": "{count} stages",
+    "treasures": "{count} treasures",
+    "teleports": "{count} teleport destinations",
+    "reuseGroups": "{count} reuse groups"
   }
 }

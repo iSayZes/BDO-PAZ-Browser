@@ -237,7 +237,32 @@
     "knowledge": "Conocimiento",
     "equipSlot": "Ranura de equipo",
     "presets": "Preajustes",
-    "moves": "Desplazamientos"
+    "moves": "Desplazamientos",
+    "summonKey": "Clave de invocación",
+    "summonLevel": "Nivel de invocación",
+    "addedDd": "Ataque adicional",
+    "addedPv": "Reduc. de daño adicional",
+    "addedDv": "Evasión adicional",
+    "addedHit": "Precisión adicional",
+    "addedHp": "Salud máx. adicional",
+    "stageKey": "Nivel",
+    "bossTexture": "Textura del jefe",
+    "matchMinOffence": "PA mín.",
+    "matchMinDefence": "PD mín.",
+    "recommendedOffence": "PA recomendado",
+    "recommendedDefence": "PD recomendado",
+    "firstRewards": "Recompensa inicial",
+    "weeklyRewards": "Recompensas semanales",
+    "puzzleKey": "Clave del rompecabezas",
+    "descKey": "Clave de descripción",
+    "coreMaterials": "Materiales principales",
+    "questId": "ID de misión",
+    "quest": "Misión",
+    "textureId": "Textura",
+    "isHunting": "Caza",
+    "nameKey": "Clave del nombre",
+    "reuseGroup": "Grupo de reutilización",
+    "isExpiredInOffline": "Caduca sin conexión"
   },
   "meta": {
     "count": "{count} entradas",
@@ -254,6 +279,10 @@
     "territoryGroups": "{count} grupos de territorios",
     "ships": "{count} barcos",
     "abyssStorages": "{count} almacenes",
-    "equipSlots": "{count} ranuras de equipo"
+    "equipSlots": "{count} ranuras de equipo",
+    "stages": "{count} niveles",
+    "treasures": "{count} tesoros",
+    "teleports": "{count} destinos de teletransporte",
+    "reuseGroups": "{count} grupos de reutilización"
   }
 }

@@ -237,7 +237,32 @@
     "knowledge": "Знание",
     "equipSlot": "Ячейка снаряжения",
     "presets": "Наборы",
-    "moves": "Перемещения"
+    "moves": "Перемещения",
+    "summonKey": "Ключ призыва",
+    "summonLevel": "Уровень призыва",
+    "addedDd": "Доп. атака",
+    "addedPv": "Доп. снижение урона",
+    "addedDv": "Доп. уклонение",
+    "addedHit": "Доп. меткость",
+    "addedHp": "Доп. макс. HP",
+    "stageKey": "Уровень",
+    "bossTexture": "Текстура босса",
+    "matchMinOffence": "Мин. атака",
+    "matchMinDefence": "Мин. защита",
+    "recommendedOffence": "Оптимальная атака",
+    "recommendedDefence": "Оптимальная защита",
+    "firstRewards": "Награда за первое завершение",
+    "weeklyRewards": "Еженедельные награды",
+    "puzzleKey": "Ключ головоломки",
+    "descKey": "Ключ описания",
+    "coreMaterials": "Основные материалы",
+    "questId": "ID задания",
+    "quest": "Задание",
+    "textureId": "Текстура",
+    "isHunting": "Охота",
+    "nameKey": "Ключ названия",
+    "reuseGroup": "Группа перезарядки",
+    "isExpiredInOffline": "Истекает офлайн"
   },
   "meta": {
     "count": "Записей: {count}",
@@ -254,6 +279,10 @@
     "territoryGroups": "Групп территорий: {count}",
     "ships": "Суда: {count}",
     "abyssStorages": "Склады: {count}",
-    "equipSlots": "Ячейки снаряжения: {count}"
+    "equipSlots": "Ячейки снаряжения: {count}",
+    "stages": "Уровней: {count}",
+    "treasures": "Сокровищ: {count}",
+    "teleports": "Точек телепортации: {count}",
+    "reuseGroups": "Групп перезарядки: {count}"
   }
 }

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "fileNameHash": "Datei-Hash",
+    "cutsceneFile": "Zwischensequenz-Datei",
+    "classType": "Klassentyp",
+    "className": "Klasse",
+    "skillCount": "Anzahl Talente",
+    "skills": "Talente"
+  },
+  "meta": {
+    "count": "{count} Talentlisten pro Klasse"
+  }
+}

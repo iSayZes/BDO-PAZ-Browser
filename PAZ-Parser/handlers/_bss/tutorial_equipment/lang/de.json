@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneFile": "Zwischensequenz-Datei",
+    "classType": "Klassentyp",
+    "className": "Klasse",
+    "mainWeapon": "Hauptwaffe",
+    "subWeapon": "Sekundärwaffe",
+    "helmet": "Helm",
+    "armor": "Rüstung",
+    "gloves": "Handschuhe",
+    "shoes": "Schuhe"
+  },
+  "meta": {
+    "count": "{count} Klassen-Outfits"
+  }
+}

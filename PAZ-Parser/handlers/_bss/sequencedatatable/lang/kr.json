@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "cutsceneFile": "컷신 파일",
+    "regionKey": "지역 키",
+    "region": "지역",
+    "startCondition": "시작 조건",
+    "startExecute": "시작 스크립트",
+    "endExecute": "종료 스크립트"
+  },
+  "meta": {
+    "count": "컷신 시작 {count}개"
+  }
+}

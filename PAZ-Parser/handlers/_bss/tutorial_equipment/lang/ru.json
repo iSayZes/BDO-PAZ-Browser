@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneFile": "Файл кат-сцены",
+    "classType": "Тип класса",
+    "className": "Класс",
+    "mainWeapon": "Основное оружие",
+    "subWeapon": "Доп. оружие",
+    "helmet": "Шлем",
+    "armor": "Доспехи",
+    "gloves": "Перчатки",
+    "shoes": "Обувь"
+  },
+  "meta": {
+    "count": "Нарядов классов: {count}"
+  }
+}

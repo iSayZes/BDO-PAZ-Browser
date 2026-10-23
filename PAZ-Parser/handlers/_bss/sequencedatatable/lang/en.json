@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "cutsceneFile": "Cutscene File",
+    "regionKey": "Region Key",
+    "region": "Region",
+    "startCondition": "Start Condition",
+    "startExecute": "Start Script",
+    "endExecute": "End Script"
+  },
+  "meta": {
+    "count": "{count} cutscene starts"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "fileNameHash": "File Hash",
+    "cutsceneFile": "Cutscene File",
+    "classType": "Class Type",
+    "className": "Class",
+    "skillCount": "Skill Count",
+    "skills": "Skills"
+  },
+  "meta": {
+    "count": "{count} class skill lists"
+  }
+}

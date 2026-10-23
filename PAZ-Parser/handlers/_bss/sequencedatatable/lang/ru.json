@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "cutsceneFile": "Файл кат-сцены",
+    "regionKey": "Ключ региона",
+    "region": "Регион",
+    "startCondition": "Условие запуска",
+    "startExecute": "Скрипт запуска",
+    "endExecute": "Скрипт завершения"
+  },
+  "meta": {
+    "count": "Запусков кат-сцен: {count}"
+  }
+}

@@ -90,6 +90,7 @@ from .extractblackstone.handler import ExtractBlackStoneHandler
 from .instancefieldcommonlimitentertime.handler import InstanceFieldCommonLimitEnterTimeHandler
 from .monsterbuffzone.handler import MonsterBuffZoneHandler
 from .simplesequence.handler import SimpleSequenceHandler
+from .sequence_scripts.registration import register_sequence_script_handlers
 from .guildbossfieldinfo.handler import GuildBossFieldInfoHandler
 from .itemexchangetoclassmapkey.handler import ItemExchangeToClassMapKeyBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
@@ -318,6 +319,7 @@ def register_bss_handlers() -> None:
     register_handler("instancefieldcommonlimitentertime.bss", InstanceFieldCommonLimitEnterTimeHandler())
     register_handler("monsterbuffzone.bss", MonsterBuffZoneHandler())
     register_handler("simplesequence.bss", SimpleSequenceHandler())
+    register_sequence_script_handlers()
     register_handler("guildbossfieldinfo.bss", GuildBossFieldInfoHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())

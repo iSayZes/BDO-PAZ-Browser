@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneFile": "Archivo de cinemática",
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "mainWeapon": "Arma principal",
+    "subWeapon": "Arma secundaria",
+    "helmet": "Cabeza",
+    "armor": "Cuerpo",
+    "gloves": "Manos",
+    "shoes": "Calzado"
+  },
+  "meta": {
+    "count": "{count} atuendos de clase"
+  }
+}

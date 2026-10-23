@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "fileNameHash": "Hash del archivo",
+    "cutsceneFile": "Archivo de cinemática",
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "skillCount": "Número de habilidades",
+    "skills": "Habilidades"
+  },
+  "meta": {
+    "count": "{count} listas de habilidades de clase"
+  }
+}

@@ -396,6 +396,7 @@
     "moveFilters": "{count} filtres de déplacement",
     "autoUseCategories": "{count} catégories d'utilisation automatique",
     "bootyLists": "{count} listes de butin",
-    "notifyItems": "{count} objets avec avis d'expiration"
+    "notifyItems": "{count} objets avec avis d'expiration",
+    "marketSearchItems": "{count} objets de recherche du Marché commun"
   }
 }

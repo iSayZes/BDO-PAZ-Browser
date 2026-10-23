@@ -396,6 +396,7 @@
     "moveFilters": "{count} move filters",
     "autoUseCategories": "{count} auto-use categories",
     "bootyLists": "{count} booty lists",
-    "notifyItems": "{count} items with an expiry notice"
+    "notifyItems": "{count} items with an expiry notice",
+    "marketSearchItems": "{count} Central Market search items"
   }
 }

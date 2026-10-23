@@ -396,6 +396,7 @@
     "moveFilters": "Фильтров перемещения: {count}",
     "autoUseCategories": "Категорий автоприменения: {count}",
     "bootyLists": "Списков трофеев: {count}",
-    "notifyItems": "Предметов с уведомлением об истечении: {count}"
+    "notifyItems": "Предметов с уведомлением об истечении: {count}",
+    "marketSearchItems": "Предметов поиска Центрального аукциона: {count}"
   }
 }

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from tests.fixtures import load_binary_fixture
 
+from _common.pabr_strings import read_string_table
 from _bss.buffitemautousestaticstatus.parser import parse_buffitemautouse_records
 from _bss.territoryinfo.parser import parse_territoryinfo_records
 from .item_names import auto_use_category_name, item_classify_text, item_type_text, move_filter_loc_key, move_filter_name
@@ -18,6 +19,7 @@ _MOVE_DATA = _TABLES["itemmovedata.bss"]
 _AUTO_USE_CATEGORY = _TABLES["autousebuffitemcategoryinfo.bss"]
 _BOOTY = _TABLES["bootyitemlist.bss"]
 _NOTIFY = _TABLES["notifyexpirationperioditem.bss"]
+_MARKET_SEARCH = _TABLES["marketsearchlist.bss"]
 # The 4 bytes after the u8 index of an itemmovedata.bss row: contents event, classify, type.
 _MOVE_KEY_AT = 1
 _MOVE_KEY_SIZE = 4
@@ -86,3 +88,16 @@ def test_the_notified_items_are_unique() -> None:
     keys = [record["item_key"] for record in _records(_NOTIFY)]
     assert keys and len(keys) == len(set(keys))
 
+
+
+def test_the_market_search_items_are_unique() -> None:
+    keys = [record["item_key"] for record in _records(_MARKET_SEARCH)]
+    assert keys and len(keys) == len(set(keys))
+
+
+def test_each_market_search_name_is_stored_once_in_first_use_order() -> None:
+    """Rows with the same Korean name share one string; a new name takes the next index."""
+    strings = read_string_table(load_binary_fixture(_MARKET_SEARCH.file_name))
+    assert len(strings) == len(set(strings))
+    first_use = list(dict.fromkeys(record["item_name_ref"] for record in _records(_MARKET_SEARCH)))
+    assert first_use == list(range(len(strings)))

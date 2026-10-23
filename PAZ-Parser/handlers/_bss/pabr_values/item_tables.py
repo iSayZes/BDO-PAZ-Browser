@@ -5,7 +5,8 @@ for the one `.dbss`). The names follow the sheets of a private server's
 `DataSheets.bexcel` on client 1784: `Enchant_Protect` (`itemprotector.dbss`),
 `Auto_Warehouse_Order_Filter` (`itemmovedata.bss`), `MedalTable`
 (`bootyitemlist.bss`, its row key named after `territoryinfo.bss`) and
-`Notice_Table` (`notifyexpirationperioditem.bss`).
+`Notice_Table` (`notifyexpirationperioditem.bss`), and the `Item_Table`
+`Index` and `ItemName` (`marketsearchlist.bss`, a selection of that sheet).
 `autousebuffitemcategoryinfo.bss` has no sheet; its names follow the
 auto-use window's getters in the client Lua. `itemsortprioritytype.bss` has
 neither, and its two bytes stay `unknown_*`.
@@ -85,5 +86,15 @@ ITEM_TABLES: tuple[ValueTable, ...] = (
         (ITEM_KEY, ValueField("expiration_period_notify", "I", "expirationPeriodNotify")),
         RowCount.COUNTED,
         count_key="notifyItems",
+    ),
+    ValueTable(
+        "marketsearchlist.bss",
+        (
+            ITEM_KEY,
+            ValueField("item_name_ref", "I", text=TextRef("item_name_kr")),
+            *unknown_fields((0x08, "I")),
+        ),
+        RowCount.COUNTED,
+        count_key="marketSearchItems",
     ),
 )

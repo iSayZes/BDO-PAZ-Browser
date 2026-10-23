@@ -396,6 +396,7 @@
     "moveFilters": "이동 필터 {count}개",
     "autoUseCategories": "자동 사용 카테고리 {count}개",
     "bootyLists": "전리품 목록 {count}개",
-    "notifyItems": "만료 알림 아이템 {count}개"
+    "notifyItems": "만료 알림 아이템 {count}개",
+    "marketSearchItems": "거래소 검색 아이템 {count}개"
   }
 }

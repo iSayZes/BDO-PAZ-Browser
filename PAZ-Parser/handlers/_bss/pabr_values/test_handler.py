@@ -313,6 +313,9 @@ _TARGETS: dict[str, list[TargetTest]] = {
     ],
     "autousebuffitemcategoryinfo.bss": [TargetTest(col="category_key", value=3, expected={"category_name": "Perfumes"})],
     "bootyitemlist.bss": [TargetTest(col="territory_key", value=0, expected={"territory_name": "Balenos"})],
+    "marketsearchlist.bss": [
+        TargetTest(col="item_key", value=44195, expected={"item_name": "Memory Fragment", "item_name_kr": "기억의 파편"}),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {

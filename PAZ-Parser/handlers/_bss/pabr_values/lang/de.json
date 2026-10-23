@@ -396,6 +396,7 @@
     "moveFilters": "{count} Verschiebefilter",
     "autoUseCategories": "{count} Kategorien der automatischen Verwendung",
     "bootyLists": "{count} Beutelisten",
-    "notifyItems": "{count} Gegenstände mit Ablaufhinweis"
+    "notifyItems": "{count} Gegenstände mit Ablaufhinweis",
+    "marketSearchItems": "{count} Suchgegenstände des Zentralmarkts"
   }
 }

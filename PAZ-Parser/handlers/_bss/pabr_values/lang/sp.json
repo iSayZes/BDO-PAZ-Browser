@@ -396,6 +396,7 @@
     "moveFilters": "{count} filtros de traslado",
     "autoUseCategories": "{count} categorías de uso automático",
     "bootyLists": "{count} listas de botín",
-    "notifyItems": "{count} objetos con aviso de caducidad"
+    "notifyItems": "{count} objetos con aviso de caducidad",
+    "marketSearchItems": "{count} objetos de búsqueda del Mercado central"
   }
 }

@@ -984,7 +984,9 @@ Blackstar Longsword (715001) names mesh `336000` for the Warrior, the
 21-level one-handed sword of `itemeffectchange.dbss`. The
 `MESH_KEY_ITEMS` lookup index (`build_mesh_key_item_index()` in
 `_dbss/itemenchant/parser.py`) maps each mesh key to its base items for the
-`itemeffectchange.dbss` Items column.
+Items columns of `itemeffectchange.dbss` and
+[`itemmeshstaticstatus.bss`](itemmeshstaticstatus_bss.md), the mesh table:
+all 22,859 distinct `item_mesh_key` values of client 3483 are keys there.
 
 ## Block Strings
 

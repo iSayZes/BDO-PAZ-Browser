@@ -100,6 +100,7 @@ from .guildhonorsystem.handler import GuildHonorSystemHandler
 from .itemexchangetoclassmapkey.handler import ItemExchangeToClassMapKeyBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
+from .itemmeshstaticstatus.handler import ItemMeshStaticStatusBssHandler
 from .itemmarketcategory.handler import ItemMarketCategoryBssHandler
 from .itemtradeetc.handler import ItemTradeEtcBssHandler
 from .itemviewstackenchantgroupss.handler import ItemViewStackEnchantGroupSsBssHandler
@@ -351,6 +352,7 @@ def register_bss_handlers() -> None:
     register_handler("guildbossfieldinfo.bss", GuildBossFieldInfoHandler())
     register_handler("guildhonorsystem.bss", GuildHonorSystemHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
+    register_handler("itemmeshstaticstatus.bss", ItemMeshStaticStatusBssHandler())
     register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())
     register_handler("itemviewstackenchantgroupss.bss", ItemViewStackEnchantGroupSsBssHandler())

@@ -1644,8 +1644,9 @@ of [itemeffectchange.dbss](file-formats/itemeffectchange_dbss.md)) to the base
 items that wear it for any class type, in ascending ID order. It is built by
 `build_mesh_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same class entries.
-The `itemeffectchange.dbss` Items column reads it through
-`_common/linked_items.py`.
+The Items columns of `itemeffectchange.dbss` and
+[itemmeshstaticstatus.bss](file-formats/itemmeshstaticstatus_bss.md) read it
+through `_common/linked_items.py`.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links

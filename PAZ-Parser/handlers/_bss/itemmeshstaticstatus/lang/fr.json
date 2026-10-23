@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "meshKey": "Clé de maillage",
+    "items": "Objets",
+    "model": "Modèle",
+    "effectFile": "Fichier d'effet",
+    "weaponMaterial": "Matériau d'arme",
+    "armorMaterial": "Matériau d'armure",
+    "adult": "Adulte",
+    "effectsChange": "Changement d'effet"
+  },
+  "meta": {
+    "count": "{count} maillages d'objets"
+  }
+}

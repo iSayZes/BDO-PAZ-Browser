@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nakMessageType": "메시지 타입",
+    "mainMessage": "메인 메시지",
+    "subMessage": "서브 메시지",
+    "aniTime": "지속 시간",
+    "mainBg": "배경",
+    "subBg": "서브 배경",
+    "effects": "효과",
+    "sounds": "사운드",
+    "contentsGroup": "콘텐츠 그룹"
+  },
+  "meta": {
+    "count": "메시지 타입 {count}개"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nakMessageType": "Nachrichtentyp",
+    "mainMessage": "Hauptnachricht",
+    "subMessage": "Untertitel",
+    "aniTime": "Dauer",
+    "mainBg": "Hintergrund",
+    "subBg": "Zweiter Hintergrund",
+    "effects": "Effekte",
+    "sounds": "Sounds",
+    "contentsGroup": "Inhaltsgruppe"
+  },
+  "meta": {
+    "count": "{count} Nachrichtentypen"
+  }
+}

@@ -117,6 +117,7 @@ from .menu.handler import MenuBssHandler
 from .midiinstrument.handler import MidiInstrumentBssHandler
 from .minigamefind.handler import MiniGameFindBssHandler
 from .multiplequest.handler import MultipleQuestBssHandler
+from .nakmessagerenewelss.handler import NakMessageRenewelBssHandler
 from .nodeexperience.handler import NodeExperienceBssHandler
 from .npcgiftetc.handler import NpcGiftEtcBssHandler
 from .npcsimply.handler import NpcSimplyBssHandler
@@ -347,6 +348,7 @@ def register_bss_handlers() -> None:
     register_handler("midiinstrument.bss", MidiInstrumentBssHandler())
     register_handler("minigamefind.bss", MiniGameFindBssHandler())
     register_handler("multiplequest.bss", MultipleQuestBssHandler())
+    register_handler("nakmessagerenewelss.bss", NakMessageRenewelBssHandler())
     register_handler("nodeexperience.bss", NodeExperienceBssHandler())
     register_handler("selectbox.bss", SelectBoxBssHandler())
     register_handler("servant.bss", ServantBssHandler())

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nakMessageType": "Message Type",
+    "mainMessage": "Main Message",
+    "subMessage": "Sub Message",
+    "aniTime": "Duration",
+    "mainBg": "Background",
+    "subBg": "Sub Background",
+    "effects": "Effects",
+    "sounds": "Sounds",
+    "contentsGroup": "Contents Group"
+  },
+  "meta": {
+    "count": "{count} message types"
+  }
+}

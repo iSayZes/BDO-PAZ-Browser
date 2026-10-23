@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "기술"
+  },
+  "meta": {
+    "count": "기술 {count}개"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "skillNo": "Skill No.",
+    "skill": "Skill",
+    "kind": "Kind",
+    "classes": "Classes"
+  },
+  "kind": {
+    "1": "Active",
+    "2": "Passive"
+  },
+  "allClasses": "All",
+  "meta": {
+    "count": "{count} active and passive skills"
+  }
+}

@@ -523,12 +523,14 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `playercharacterstatic.bss` | PABR list of the player characters: u32 count and u16 character keys (106 on client 3482) | [playercharacterstatic](file-formats/playercharacterstatic_bss.md) | 0 | 0 |
 | `possiblefusionpet.bss` | Pets per fusion key with no PABR magic: variant, species, tier and a `pet.dbss` key, sorted by fusion key (6-byte rows) | [possiblefusionpet](file-formats/possiblefusionpet_bss.md) | 2 | 0 |
 | `preloadpcactioncharacter.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
+| `privateskill.bss` | PABR class skills: a u32-counted list of active and one of passive level 1 skill keys, each with the u64 class mask of the classes that learn it (10,044 and 5,250 on client 3482) | [privateskill](file-formats/privateskill_bss.md) | 0 | 0 |
 | `productexperience.dbss` | Life skill point EXP table, levels 0 to 2000 with an EXP of 0 on every level on client 3474 | [productexperience](file-formats/productexperience_dbss.md) | 0 | 0 |
 | `productexperienceoffset.dbss` | Index into `productexperience.dbss`, maps level → offset/size; no PABR magic and no trailer | [productexperience](file-formats/productexperience_dbss.md) | 0 | 0 |
 | `producttool.dbss` | Auto-fishing time per fishing rod or float and enhancement level, on the 1,000,000 = 100% scale; 22 records of 28 bytes on client 3474 | [producttool](file-formats/producttool_dbss.md) | 2 | 0 |
 | `producttooloffset.dbss` | Index into `producttool.dbss`: (u32 item key, offset, size) rows; no PABR magic and no trailer | [producttool](file-formats/producttool_dbss.md) | 2 | 0 |
 | `profiling.dbss` | Information messages handed out per profiling key: u32-counted Korean messages with an optional reward script each | [profiling](file-formats/profiling_dbss.md) | 0 | 0 |
 | `profilingoffset.dbss` | Index into `profiling.dbss` with no magic: u16 profiling key, offset and size (10-byte rows) | [profiling](file-formats/profiling_dbss.md) | 0 | 0 |
+| `publicskill.bss` | PABR item and event skills: a u32 that is `0`, then a u32-counted list of level 1 skill keys of `kind` 0 (14,405 on client 3482) | [publicskill](file-formats/publicskill_bss.md) | 1 | 0 |
 | `purchaselimitgroup.dbss` | Pearl Shop purchase limits shared by a product group: 9-byte rows of group number, limit type (character or family) and purchase count | [purchaselimitgroup](file-formats/purchaselimitgroup_dbss.md) | 2 | 0 |
 | `purchaselimitgroupoffset.dbss` | Index into `purchaselimitgroup.dbss`: bare count, then (u32 group number, offset, size) | [purchaselimitgroup](file-formats/purchaselimitgroup_dbss.md) | 2 | 0 |
 | `quest.dbss`                       | Variable-length quest definitions with accept and complete dialog keys, scripts, objectives, and icon paths    | [quest](file-formats/quest_dbss.md)                                 | 11              | 0 |

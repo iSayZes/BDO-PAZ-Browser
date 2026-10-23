@@ -151,6 +151,8 @@ from .plantworkerselect.handler import PlantWorkerSelectBssHandler
 from .planttown.handler import PlantTownBssHandler
 from .plantupgradeparam.handler import PlantUpgradeParamBssHandler
 from .plantupgraderesource.handler import PlantUpgradeResourceBssHandler
+from .privateskill.handler import PrivateSkillHandler
+from .publicskill.handler import PublicSkillHandler
 from .questjournalvideoinfo.handler import QuestJournalVideoInfoBssHandler
 from .questlist.handler import EVENT_PERIOD_LISTS, QUEST_LIST_LOC_TYPES, QuestListBssHandler
 from .questnpc.handler import QuestNpcBssHandler
@@ -410,6 +412,8 @@ def register_bss_handlers() -> None:
     register_handler("planttown.bss", PlantTownBssHandler())
     register_handler("plantupgradeparam.bss", PlantUpgradeParamBssHandler())
     register_handler("plantupgraderesource.bss", PlantUpgradeResourceBssHandler())
+    register_handler("privateskill.bss", PrivateSkillHandler())
+    register_handler("publicskill.bss", PublicSkillHandler())
     register_handler("questjournalvideoinfo.bss", QuestJournalVideoInfoBssHandler())
     register_handler("questprogressgroup.bss", QuestProgressGroupBssHandler())
     register_handler("questrandomgroup.bss", QuestRandomGroupBssHandler())

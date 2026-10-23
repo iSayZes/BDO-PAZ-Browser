@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "skillNo": "N° de compétence",
+    "skill": "Compétence",
+    "kind": "Genre",
+    "classes": "Classes"
+  },
+  "kind": {
+    "1": "Actif",
+    "2": "Passif"
+  },
+  "allClasses": "Toutes",
+  "meta": {
+    "count": "{count} compétences actives et passives"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "기술",
+    "kind": "종류",
+    "classes": "적용 직업"
+  },
+  "kind": {
+    "1": "액티브",
+    "2": "패시브"
+  },
+  "allClasses": "전체",
+  "meta": {
+    "count": "액티브 및 패시브 기술 {count}개"
+  }
+}

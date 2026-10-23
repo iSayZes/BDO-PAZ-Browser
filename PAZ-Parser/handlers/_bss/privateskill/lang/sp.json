@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad",
+    "kind": "Tipo",
+    "classes": "Clases"
+  },
+  "kind": {
+    "1": "Activa",
+    "2": "Pasiva"
+  },
+  "allClasses": "Todas",
+  "meta": {
+    "count": "{count} habilidades activas y pasivas"
+  }
+}

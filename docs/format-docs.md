@@ -189,10 +189,16 @@ or `No file` (a dotted gray bar); only a layout band is clickable, the
 other two name their clients in a tooltip. A newer band reaches the newest client of the
 older one, the oldest band the right end; ticks mark live, the oldest
 client and each change. A layout with no client yet is a dashed band
-between the layouts numbered around it. A line under the timeline lists every client the doc check
-read for the doc. Under it each layout has a known/unknown bar. Clicking a
-band shows that layout in the Layout card, highlights its bar and names it
-in the card's pill; a doc without Versions rows gets tabs instead. Type
+between the layouts numbered around it. The Checked versions panel under
+the timeline lists every client the doc check read for the doc, newest
+first, behind a View button: a region picker, a search box and one chip per
+client, styled like its band (dotted orange for no documented layout, dotted
+gray for no file). The doc check has no region yet, so every client lists
+under Europe (EU) and the other regions list none. The browser remembers
+the open state and the region across doc pages. Under the panel each
+layout has a known/unknown bar. Clicking a band or a client chip with a
+layout shows that layout in the Layout card, highlights its bar and its
+client chips and names it in the card's pill; a doc without Versions rows gets tabs instead. Type
 cells, and code spans in the text that are a number or text type, are
 colored by token (number and text types, structures, counts, field
 references, literals, keywords) from the Type column grammar. The

@@ -2,8 +2,9 @@
 
 A layout band is a button that shows its layout (static/doc.js); a No
 documented layout or No file band is a plain bar whose tooltip names its
-clients. Ticks mark live, the oldest client and every change. A
-line under the timeline lists every client the doc check read.
+clients. Ticks mark live, the oldest client and every change. The
+Checked versions panel under the timeline (`checked_html`) lists every
+client the doc check read.
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ from html import escape
 
 from format_docs.versions import ClientCheck
 
+from .checked_html import checked_panel
 from .timeline_model import LAYOUT, NO_FILE, NO_LAYOUT, UNDATED, Band, Timeline, TimelineLayout, build_timeline
 
 # The year under a tick: the date of the official Steam depot manifest of that client.
@@ -29,13 +31,11 @@ def timeline(layouts: Sequence[TimelineLayout], clients: Sequence[ClientCheck], 
     bands = "".join(_band(band, by_number, shown) for band in model.bands)
     ticks = "".join(_tick(client, model) for client in model.ticks)
     selected = by_number[shown]
-    checked = sorted((check.client for check in clients), reverse=True)
-    checked_line = f'<p class="tl-checked">Checked on {escape(_client_list(checked))}.</p>' if checked else ""
     return (
         '<div class="tl"><div class="tl-track" role="group" aria-label="Layouts by client">'
         f'<div class="tl-base"></div>{bands}{ticks}</div>'
         f'<p class="tl-read" aria-live="polite"><b id="tlReadName">Layout {selected.number}</b>: '
-        f'<span id="tlReadText">{escape(_read_text(selected))}</span></p>{checked_line}</div>'
+        f'<span id="tlReadText">{escape(_read_text(selected))}</span></p>{checked_panel(clients)}</div>'
     )
 
 

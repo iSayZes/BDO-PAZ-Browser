@@ -182,6 +182,7 @@ code {
   color: var(--color-text-3);
 }
 .input-box:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 3px var(--color-accent-soft); }
+.input-box input:focus-visible { outline: none; }
 .input-box input {
   flex: 1;
   min-width: 0;
@@ -407,9 +408,97 @@ h1 {
 .tl-tick small { display: block; font-size: 10px; line-height: 1.2; color: var(--color-disabled); }
 .tl-tick.unchecked { color: var(--color-disabled); }
 .tl-tick.thin, .tl-tick.thin small { color: transparent; }
-.tl-read, .tl-checked { margin: 0; font-size: 12px; color: var(--color-text-2); }
+.tl-read { margin: 0; font-size: 12px; color: var(--color-text-2); }
 .tl-read b { color: var(--color-text); font-weight: 500; }
-.tl-checked { color: var(--color-text-3); }
+
+/* ── Checked versions (checked_html.py): the clients the doc check read, by region ── */
+.cv {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-1);
+  padding: 10px var(--space-3);
+  background: var(--color-bg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+}
+.cv-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.cv-title { display: inline-flex; align-items: center; gap: var(--space-2); margin-right: auto; color: var(--color-text-strong); font-weight: 600; }
+.cv-icon { width: 16px; height: 16px; fill: none; stroke: var(--color-accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.cv-count {
+  padding: 0 7px;
+  border-radius: var(--radius-pill);
+  background: var(--color-raised);
+  color: var(--color-text-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.cv-select, .cv-toggle {
+  height: 28px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background-color: var(--color-surface);
+  color: var(--color-text-soft);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.cv-select:hover, .cv-toggle:hover { border-color: var(--color-line-hover); color: var(--color-text); }
+.cv-select:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.cv-select {
+  appearance: none;
+  padding: 0 30px 0 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%2380858d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 14px;
+}
+.cv-select option { background: var(--color-raised); color: var(--color-text); }
+.cv-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 0 10px; }
+.cv-chevron { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.15s; }
+.cv-toggle[aria-expanded="true"] .cv-chevron { transform: rotate(180deg); }
+.cv-body { display: flex; flex-direction: column; gap: var(--space-3); }
+.cv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+  gap: 6px;
+  max-height: 232px;
+  margin: 0;
+  padding: var(--space-2);
+  overflow-y: auto;
+  list-style: none;
+  background: var(--color-sidebar);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-hover) transparent;
+}
+.cv-grid:empty { display: none; }
+/* The chip states follow the timeline bands: a layout, dotted orange for No documented layout, dotted gray for No file. */
+.cv-grid li { display: flex; }
+.cv-chip {
+  flex: 1;
+  padding: 3px 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-inner);
+  background: var(--color-raised);
+  color: var(--color-text-soft);
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+/* A chip with a layout is a button that shows it; the other two only inform. */
+button.cv-chip { cursor: pointer; }
+button.cv-chip:hover { background: var(--color-hover); color: var(--color-text-strong); }
+button.cv-chip.sel, button.cv-chip.sel:hover { border-color: color-mix(in srgb, var(--color-accent) 45%, transparent); background: var(--color-accent-soft); color: var(--color-accent); }
+.cv-chip.nolayout { border-style: dotted; border-color: var(--color-warning); background: transparent; color: color-mix(in srgb, var(--color-warning) 80%, var(--color-text-3)); }
+.cv-chip.absent { border-style: dotted; border-color: var(--color-line-hover); background: transparent; color: var(--color-disabled); }
+.cv-empty, .cv-foot { margin: 0; color: var(--color-text-3); font-size: 12px; }
+.cv-empty { padding: var(--space-4); border: 1px dashed var(--color-line); border-radius: var(--radius-control); text-align: center; }
 
 /* ── Type tokens (type_html.py), in VS Code Dark+ colors ── */
 .tk-num { color: #569cd6; }

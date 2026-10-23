@@ -210,6 +210,7 @@ from .instancedungeonskillinfo.handler import InstanceDungeonSkillInfoBssHandler
 from .rewardmarket.handler import RewardMarketHandler
 from .skillawakeningability2.handler import SkillAwakeningAbility2Handler
 from .skillclasstypelist.handler import SkillClassTypeListHandler
+from .pcactionpackagename.handler import PcActionPackageNameBssHandler
 from .skillcomboguide.handler import SkillComboGuideBssHandler
 from .skillfusionslotlist.handler import SkillFusionSlotListBssHandler
 from .skillquickslotinfo.handler import SkillQuickSlotInfoBssHandler
@@ -483,6 +484,7 @@ def register_bss_handlers() -> None:
     register_handler("rewardmarket.bss", RewardMarketHandler())
     register_handler("skillawakeningability2.bss", SkillAwakeningAbility2Handler())
     register_handler("skillclasstypelist.bss", SkillClassTypeListHandler())
+    register_handler("pcactionpackagename.bss", PcActionPackageNameBssHandler())
     register_handler("skillcomboguide.bss", SkillComboGuideBssHandler())
     register_handler("skillfusionslotlist.bss", SkillFusionSlotListBssHandler())
     register_handler("skillquickslotinfo.bss", SkillQuickSlotInfoBssHandler())

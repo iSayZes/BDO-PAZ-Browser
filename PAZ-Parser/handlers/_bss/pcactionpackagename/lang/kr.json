@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "section": "구분",
+    "equipType": "장비 유형",
+    "vehicleType": "탑승물 종류",
+    "package": "패키지"
+  },
+  "sections": {
+    "weapon": "무기",
+    "vehicle": "탑승물",
+    "vehicle_weapon": "무기 장착 탑승물",
+    "cutscene": "컷신",
+    "class_package": "파일 끝 목록"
+  },
+  "meta": {
+    "count": "액션 패키지 {count}개"
+  }
+}

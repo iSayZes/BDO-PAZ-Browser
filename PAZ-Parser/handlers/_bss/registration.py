@@ -42,6 +42,7 @@ from .dropuitaginfo.handler import DropUiTagInfoBssHandler
 from .edaniaetcoptionstaticstatus.handler import EdaniaEtcOptionBssHandler
 from .edaniapvpdayoptionstaticstatus.handler import EdaniaPvpDayOptionBssHandler
 from .edaniaregioninfo.handler import EdaniaRegionInfoBssHandler
+from .effectfilename.handler import EffectFileNameBssHandler
 from .elementalmonsterreward.handler import ElementalMonsterRewardBssHandler
 from .elementalmonsterstat.handler import ElementalMonsterStatBssHandler
 from .empty_tables.parser import parse_empty_pabr_table
@@ -287,6 +288,7 @@ def register_bss_handlers() -> None:
     register_handler("edaniaetcoptionstaticstatus.bss", EdaniaEtcOptionBssHandler())
     register_handler("edaniapvpdayoptionstaticstatus.bss", EdaniaPvpDayOptionBssHandler())
     register_handler("edaniaregioninfo.bss", EdaniaRegionInfoBssHandler())
+    register_handler("effectfilename.bss", EffectFileNameBssHandler())
     register_handler("elementalmonsterreward.bss", ElementalMonsterRewardBssHandler())
     register_handler("elementalmonsterstat.bss", ElementalMonsterStatBssHandler())
     register_handler("employeeexp.bss", EmployeeExpBssHandler())

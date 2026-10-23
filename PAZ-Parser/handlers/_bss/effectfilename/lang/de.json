@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "grid": "Raster",
+    "table": "Tabelle",
+    "row": "Waffe / Boden",
+    "column": "Rüstung / Bewegung",
+    "effect": "Effekt"
+  },
+  "grids": {
+    "attack": "Angriff",
+    "special": "Spezialangriff",
+    "ground": "Boden"
+  },
+  "meta": {
+    "count": "{count} Effektzellen"
+  }
+}

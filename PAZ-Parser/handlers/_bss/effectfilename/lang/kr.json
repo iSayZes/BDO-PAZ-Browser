@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "grid": "그리드",
+    "table": "테이블",
+    "row": "무기 / 지면",
+    "column": "방어구 / 동작",
+    "effect": "이펙트"
+  },
+  "grids": {
+    "attack": "공격",
+    "special": "특수 공격",
+    "ground": "지면"
+  },
+  "meta": {
+    "count": "이펙트 셀 {count}개"
+  }
+}

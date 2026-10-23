@@ -70,6 +70,9 @@ _COMMAND_TO_GATHER = 65070
 # Tables with keys that only skilltype.dbss names, in Korean, which the tests do not load:
 # the guild skill variants (기습적인 행동A, 34 of 766 skills on client 3474).
 _KOREAN_NAMED = frozenset({"guildskill.bss"})
+# Tables that keep keys of characters the client no longer has: vehicletypename.bss
+# (31036 NationElephant and 11 more of its 112 rows on client 3482, in no characterstatic.dbss).
+_RETIRED_KEYS = frozenset({"vehicletypename.bss"})
 
 
 def _values_start(value_table: ValueTable) -> int:
@@ -281,6 +284,22 @@ _TARGETS: dict[str, list[TargetTest]] = {
     ],
     # The first class character of the lobby (CharacterLobby_Table, client 1784).
     "characterlobby.bss": [TargetTest(col="character_key", value=1, expected={"character_name": "Warrior"})],
+    # The ServantFantasy_Table row of client 1784: Arduanatt and Arduanatt make Mythical Arduanatt.
+    "servantfantasymix.bss": [
+        TargetTest(
+            col="female_character_key",
+            value=9889,
+            expected={"male_character_name": "Arduanatt", "upgrade_character_key": 31539, "upgrade_character_name": "Mythical Arduanatt"},
+        ),
+    ],
+    # The Pearl Shop shows Horse outfits on character 9909 (ServantKind 0).
+    "delegateservant.bss": [TargetTest(col="index", value=0, expected={"character_key": 9909, "character_name": "Horse"})],
+    "vehicletraining.bss": [
+        TargetTest(col="item_key", value=50808, expected={"item_name": "Rainbow Gem Fruit", "skill_key": 49, "skill_name": "Skill"}),
+    ],
+    "vehicletypename.bss": [
+        TargetTest(col="character_key", value=29805, expected={"character_name": "Ogre", "vehicle_type_name": "MonsterRideOgre"}),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {
@@ -352,7 +371,9 @@ def _named_values(value_table: ValueTable) -> list[tuple[str, NameLookup]]:
     return pairs
 
 
-@pytest.mark.parametrize("name", [name for name in _TABLES if _lookup_fields(name) and name not in _KOREAN_NAMED])
+@pytest.mark.parametrize(
+    "name", [name for name in _TABLES if _lookup_fields(name) and name not in _KOREAN_NAMED | _RETIRED_KEYS]
+)
 def test_every_key_has_a_loc_name(name: str) -> None:
     """Every key but `0` (no character on a gimmick sanctum) has a name."""
     for record in _result(name).records:

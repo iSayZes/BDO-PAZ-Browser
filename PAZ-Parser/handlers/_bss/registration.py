@@ -107,6 +107,7 @@ from .jewelspecialslotsgroupstaticstatus.handler import JewelSpecialSlotsGroupSt
 from .knowledgelearningcharacterkey.handler import KnowledgeLearningCharacterKeyBssHandler
 from .landscapepaintingdropstaticstatus.handler import LandscapePaintingDropBssHandler
 from .letter.handler import LetterBssHandler
+from .lifeequipitemstaticstatusmanager.handler import LifeEquipItemStaticStatusManagerBssHandler
 from .lifeexpmaxlevel.handler import LifeExpMaxLevelBssHandler
 from .lightstoneset.handler import LightstoneSetBssHandler
 from .limiteditemsubgroup.handler import LimitedItemSubGroupBssHandler
@@ -173,6 +174,7 @@ from .siege2024revivepositionstaticstatus.parser import (
 from .siegerewarddata.handler import SiegeRewardDataBssHandler
 from .skillexperiencemaxlevel.handler import SkillExperienceMaxLevelBssHandler
 from .skillgroup.handler import SkillGroupBssHandler
+from .snowboard.handler import SnowboardBssHandler
 from .specialenchantitem.handler import SpecialEnchantItemBssHandler
 from .specialpass.handler import SpecialPassHandler
 from .specialquestinfo.handler import SpecialQuestInfoBssHandler
@@ -356,6 +358,7 @@ def register_bss_handlers() -> None:
     )
     register_handler("landscapepaintingdropstaticstatus.bss", LandscapePaintingDropBssHandler())
     register_handler("letter.bss", LetterBssHandler())
+    register_handler("lifeequipitemstaticstatusmanager.bss", LifeEquipItemStaticStatusManagerBssHandler())
     register_handler("lifeexpmaxlevel.bss", LifeExpMaxLevelBssHandler())
     register_handler("lightstoneset.bss", LightstoneSetBssHandler())
     register_handler("limiteditemsubgroup.bss", LimitedItemSubGroupBssHandler())
@@ -437,6 +440,7 @@ def register_bss_handlers() -> None:
     for name in ("skillexperiencemaxlevel.bss", "guildskillexperiencemaxlevel.bss"):
         register_handler(name, SkillExperienceMaxLevelBssHandler())
     register_handler("skillgroup.bss", SkillGroupBssHandler())
+    register_handler("snowboard.bss", SnowboardBssHandler())
     register_handler("specialenchantitem.bss", SpecialEnchantItemBssHandler())
     register_handler("specialpass.bss", SpecialPassHandler())
     register_handler("specialquestinfo.bss", SpecialQuestInfoBssHandler())

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "lifeStatType": "ID de profession",
+    "lifeSkill": "Profession",
+    "effectType": "Type d'effet"
+  },
+  "meta": {
+    "count": "{count} types d'effet des onglets de profession"
+  }
+}

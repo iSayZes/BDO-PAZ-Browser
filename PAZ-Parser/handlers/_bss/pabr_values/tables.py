@@ -31,12 +31,14 @@ from .edania_tables import EDANIA_TABLES
 from .greatsea_tables import GREAT_SEA_TABLES
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
+from .lifeskill_tables import LIFE_SKILL_TABLES
 from .majorsiege_tables import MAJOR_SIEGE_TABLES
 from .oceansiege_tables import OCEAN_SIEGE_TABLES
 from .personalmonster_tables import PERSONAL_MONSTER_TABLES
 from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
 from .server_tables import SERVER_TABLES
+from .servant_tables import SERVANT_TABLES
 from .siege_tables import SIEGE_TABLES
 from .siegeobject_tables import SIEGE_OBJECT_TABLES
 from .ui_tables import UI_TABLES
@@ -260,4 +262,6 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *CLIENT_TABLES,
     *PERSONAL_MONSTER_TABLES,
     *UI_TABLES,
+    *SERVANT_TABLES,
+    *LIFE_SKILL_TABLES,
 )

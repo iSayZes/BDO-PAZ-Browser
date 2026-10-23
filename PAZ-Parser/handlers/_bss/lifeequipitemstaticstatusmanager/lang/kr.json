@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "lifeStatType": "생활 ID",
+    "lifeSkill": "생활",
+    "effectType": "효과 유형"
+  },
+  "meta": {
+    "count": "생활 탭 효과 유형 {count}개"
+  }
+}

@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                              | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | --------------------------------- | ----- | ------- | --------- |
-| 1      | 1784 and later | 3474    | `icefisingregionstaticstatus.bss` | 24    | 2 Row   | 4         |
+| 1      | 1784 and later | 3483    | `icefisingregionstaticstatus.bss` | 24    | 2 Row   | 4         |
 
 | Layout | File                              | Known         | Unknown    |
 | ------ | --------------------------------- | ------------- | ---------- |
@@ -27,6 +27,8 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
+| 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3251   | Layout 1 |
 | 3002   | Layout 1 |
@@ -103,9 +105,9 @@ Glide and `1484` Gyeonghoeru Pavilion.
 
 The same sheet file holds the `IceFishing` sheet, whose first column is
 `MiniGameGroup` (`1` on client 1784) followed by the mini-game timings, HP
-and rewards. Its compiled file is `icefisingstaticstatus.bss` (not
-documented yet), whose header count is `1` on client 1784 and `2` on client
-3474, one per group above.
+and rewards. Its compiled file is
+[`icefisingstaticstatus.bss`](icefisingstaticstatus_bss.md), whose header
+count is `1` on client 1784 and `2` on client 3474, one per group above.
 
 ## Notes
 

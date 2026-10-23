@@ -133,7 +133,8 @@ class PabrValuesBssHandler(PreviewHandler):
         if self._table.index_column is None:
             return fields
         index = Column(cols[self._table.index_column], "num", sort_key=ROW_INDEX_FIELD)
-        return [_Shown(index, lambda r: _cell(r[ROW_INDEX_FIELD])), *fields]
+        index_display = self._table.index_display
+        return [_Shown(index, lambda r: _cell(r[ROW_INDEX_FIELD], index_display)), *fields]
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys([shown.column for shown in self._shown()])

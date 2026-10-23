@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                       | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------- | -------------------------- | ----- | -------------- | --------- |
-| 1      | 1485 and later | 3474    | `vehicletrainingskill.bss` | 23    | 1 String Table | 4         |
+| 1      | 1485 and later | 3483    | `vehicletrainingskill.bss` | 23    | 1 String Table | 4         |
 
 | Layout | File                       | Known         | Unknown    |
 | ------ | -------------------------- | ------------- | ---------- |
@@ -26,6 +26,8 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
+| 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3251   | Layout 1 |
 | 3002   | Layout 1 |
@@ -74,7 +76,8 @@ The `VehicleTrainingSkill_Item_Table` sheet of a private server's
 `Experience` and `Desc` and 13 rows. Its `SkillKey` values are `49`, `50`
 and `51`, the three keys of the client 1784 file (3 of 3) and of the live
 file (client 3474). The file keeps only the distinct skill keys; the item
-rows are not in it. The `Desc` texts name the three trainings
+rows are in [`vehicletraining.bss`](vehicletraining_bss.md). The `Desc`
+texts name the three trainings
 (`기술 훈련`, `기품 훈련`, `체력 훈련`), and a note column of the workbook
 says one training skill can be raised with several items (dated
 2016-12-12).

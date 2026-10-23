@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "lifeStatType": "Life Skill ID",
+    "lifeSkill": "Life Skill",
+    "effectType": "Effect Type"
+  },
+  "meta": {
+    "count": "{count} effect types of the Life Skill tabs"
+  }
+}

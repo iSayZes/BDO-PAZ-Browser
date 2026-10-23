@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "lifeStatType": "ID de profesión",
+    "lifeSkill": "Profesión",
+    "effectType": "Tipo de efecto"
+  },
+  "meta": {
+    "count": "{count} tipos de efecto de las pestañas de profesión"
+  }
+}

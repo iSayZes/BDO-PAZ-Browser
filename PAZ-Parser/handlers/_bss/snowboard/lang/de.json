@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "courseKey": "Streckenschlüssel",
+    "course": "Strecke",
+    "mode": "Modus",
+    "checkpoint": "Kontrollpunkt",
+    "nextCheckpoint": "Nächster Kontrollpunkt"
+  },
+  "meta": {
+    "count": "{count} Kontrollpunkte"
+  }
+}

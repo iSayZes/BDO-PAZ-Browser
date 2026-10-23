@@ -135,7 +135,8 @@ class ValueTable:
     last row; every record holds their values, and their columns follow the
     row fields. `index_column` is the lang column key of the row's position
     (from 0), for a file whose rows hold no key: every record stores it under
-    `ROW_INDEX_FIELD`, and its column comes first.
+    `ROW_INDEX_FIELD`, and its column comes first. `index_display` turns the
+    position into its cell text, for a position that is an enum value.
     """
 
     file_name: str
@@ -147,8 +148,11 @@ class ValueTable:
     head: tuple[ValueField, ...] = ()
     tail: tuple[ValueField, ...] = ()
     index_column: str | None = None
+    index_display: Callable[[int], str] | None = None
 
     def __post_init__(self) -> None:
+        if self.index_display is not None and self.index_column is None:
+            raise ValueError(f"{self.file_name}: index_display needs an index_column")
         if self.rows is RowCount.TO_TABLE_START and any(field.is_counted_list for field in self.fields):
             raise ValueError(f"{self.file_name}: rows up to the string table need a fixed row size")
         if self.head and self.rows is not RowCount.COUNTED:

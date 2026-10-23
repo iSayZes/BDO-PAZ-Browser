@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "maxLevel": "Niveau max.",
+    "accessLevel": "Niveau d'accès",
+    "crystalGroup": "Groupe de cristaux"
+  },
+  "meta": {
+    "count": "{count} objets"
+  }
+}

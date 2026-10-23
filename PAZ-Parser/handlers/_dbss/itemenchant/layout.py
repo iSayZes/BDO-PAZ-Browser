@@ -8,6 +8,10 @@ Structure):
   adds it to the offsets of those fields.
 - The lists between the header and the strings: two lists of 5-byte entries,
   4 bytes, a list of u32, then `enchant_key`, the Korean name and the icon path.
+
+After the icon come 18 bytes, three UTF-16 strings and the Message Tail.
+`itemenchantbackendtest.dbss` stores each block up to Message Tail `+0x2B`
+(`front_end`), and `itemenchantbackend.dbss` the rest of it.
 """
 
 from __future__ import annotations
@@ -36,6 +40,12 @@ _ENTRY_SIZE = 5
 _GAP_SIZE = 4
 _VALUE_SIZE = 4
 _ENCHANT_KEY_SIZE = 4
+# Three UTF-16 strings follow at this offset from the end of the icon.
+_MESSAGES = 0x12
+_MESSAGE_COUNT = 3
+# The Message Tail bytes `itemenchantbackendtest.dbss` keeps, up to
+# `life_restrict_type`; `itemenchantbackend.dbss` holds the rest.
+_FRONT_MESSAGE_TAIL = 0x2B
 
 
 class BlockStrings(NamedTuple):
@@ -79,3 +89,28 @@ def read_block_strings(data: bytes, start: int, end: int) -> BlockStrings:
     name_kr, pos = read_prefixed_at(data, pos + _ENCHANT_KEY_SIZE, end, wide=True)
     icon, icon_end = read_prefixed_at(data, pos, end, wide=False)
     return BlockStrings(enchant_key, name_kr, icon, icon_end)
+
+
+def messages_end(data: bytes, icon_end: int, end: int) -> int:
+    """Where the three strings that follow the icon end; the Message Tail starts here.
+
+    Raises ValueError when a string runs past `end`, since the fields after
+    them would then be read from the wrong place.
+    """
+    pos = icon_end + _MESSAGES
+    for _ in range(_MESSAGE_COUNT):
+        _, pos = read_prefixed_at(data, pos, end, wide=True)
+    return pos
+
+
+def front_end(data: bytes, start: int, end: int) -> int:
+    """Where the part of the block at `start` that `itemenchantbackendtest.dbss` stores ends.
+
+    `end` bounds the walk: the block end, or the file end when only the front
+    part is stored. Raises ValueError when the walk runs past it.
+    """
+    strings = read_block_strings(data, start, end)
+    front = messages_end(data, strings.icon_end, end) + _FRONT_MESSAGE_TAIL
+    if front > end:
+        raise ValueError(f"block at 0x{start:X}: the Message Tail runs past its end")
+    return front

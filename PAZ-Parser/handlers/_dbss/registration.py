@@ -36,6 +36,8 @@ from .itemenchant.handler import (
     ItemEnchantHandler,
     item_enchant_offset_handler,
 )
+from .itemenchantbackend.handler import ItemEnchantBackendHandler
+from .itemenchantbackendtest.handler import ItemEnchantBackendTestHandler
 from .guaranteeenchantss.handler import GuaranteeEnchantHandler
 from .enchantstaticstatus.handler import (
     EnchantStaticStatusHandler,
@@ -396,6 +398,10 @@ def register_dbss_handlers() -> None:
     register_handler("cashproductoffset.dbss", cash_product_offset_handler())
     register_handler("itemenchant.dbss", ItemEnchantHandler())
     register_handler("itemenchantoffset.dbss", item_enchant_offset_handler())
+    register_handler("itemenchantbackend.dbss", ItemEnchantBackendHandler())
+    # The same index layout and keys as itemenchantoffset.dbss.
+    register_handler("itemenchantbackendoffset.dbss", item_enchant_offset_handler())
+    register_handler("itemenchantbackendtest.dbss", ItemEnchantBackendTestHandler())
     register_handler("enchantstaticstatus.dbss", EnchantStaticStatusHandler())
     register_handler("enchantstaticstatusoffset.dbss", enchant_static_status_offset_handler())
     register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())

@@ -7,12 +7,14 @@ from _common.binary import u8, u16, u32, u64
 from _common.icon_index import clean_stored_icon_path
 from _common.item_key import split_item_key
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
-from _common.prefixed_string import locate_prefixed_ascii, read_prefixed_at
+from _common.prefixed_string import locate_prefixed_ascii
 from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 from _dbss.skill.parser import build_skill_buff_index
 from .contents_event import CONTENTS_EVENT_CUSTOMIZED_ITEM_BOX, CONTENTS_EVENT_MARBLE_DICE
-from .layout import BlockStrings, header_shift, read_block_strings
+from .layout import BlockStrings, header_shift, messages_end, read_block_strings
 
+
+_FILE_NAME = "itemenchant.dbss"
 
 # Keys are packed item keys (`_common/item_key.py`). Level 0 is the base item
 # and there is exactly one per item ID; an item has one record per level up to
@@ -94,11 +96,10 @@ _MARKETABLE = 0x00
 _FAMILY_INVENTORY = 0x0D
 _FAMILY_INVENTORY_ALLOWED = 2
 # Three UTF-16 strings follow at +0x12 (a pet script, a box prompt, Exchange
-# Info); the enhancement type sits 13 bytes after the last of them. It is the
-# enhancement system (1 ordinary weapons and armour, 19 Sovereign) and the
-# group key of guaranteeenchantss.dbss; 0 when the item has none.
-_MESSAGES = 0x12
-_MESSAGE_COUNT = 3
+# Info; `layout.messages_end`); the enhancement type sits 13 bytes after the
+# last of them. It is the enhancement system (1 ordinary weapons and armour,
+# 19 Sovereign) and the group key of guaranteeenchantss.dbss; 0 when the item
+# has none.
 _ENHANCEMENT_TYPE_AFTER_MESSAGES = 0x0D
 # The Life Skill gear kind and the Life Skill tab it is for (`life_slots.py`),
 # after the three strings; 37 and 15 on items that are not Life Skill gear.
@@ -113,10 +114,11 @@ _NO_CRYSTAL_GROUP = 0xFFFF
 
 def parse_itemenchantoffset_records(data: bytes) -> list[dict]:
     """Parse the key/offset index into plain dicts."""
-    return [_offset_record(row) for row in parse_pabr_u32_offset_rows(data)]
+    return [offset_record(row) for row in parse_pabr_u32_offset_rows(data)]
 
 
-def _offset_record(row: PabrOffsetRow) -> dict:
+def offset_record(row: PabrOffsetRow) -> dict:
+    """One index row with its packed key split into item ID and enchant level."""
     item_id, enchant_level = split_item_key(row.entry_id)
     return {
         "key": row.entry_id,
@@ -136,18 +138,18 @@ def max_enchant_levels(offset_rows: list[dict]) -> dict[int, int]:
     return levels
 
 
-def _base_rows(offset_rows: list[dict]) -> Iterator[dict]:
+def base_rows(offset_rows: list[dict]) -> Iterator[dict]:
     """The level-0 (base item) rows, one per item."""
     return (row for row in offset_rows if not row["enchant_level"])
 
 
-def _block_strings(data: bytes, row: dict) -> BlockStrings:
+def _block_strings(data: bytes, row: dict, file_name: str = _FILE_NAME) -> BlockStrings:
     """The enchant key, Korean name and icon of an offset row's block."""
     start = row["data_offset"]
     try:
         return read_block_strings(data, start, start + row["data_size"])
     except ValueError as error:
-        raise ValueError(f"itemenchant.dbss block for key {row['key']}: {error}") from error
+        raise ValueError(f"{file_name} block for key {row['key']}: {error}") from error
 
 
 def _icon_path(icon: str) -> str:
@@ -206,37 +208,28 @@ def _contents_event_params(data: bytes, late: int) -> dict:
     return {"contents_event_param1": param1, "contents_event_param2": param2}
 
 
-def _messages_end(data: bytes, icon_end: int, end: int) -> int:
-    """Where the three strings that follow the icon end.
-
-    Raises ValueError when a string runs past the block, since the fields
-    after them would then be read from the wrong place.
-    """
-    pos = icon_end + _MESSAGES
-    for _ in range(_MESSAGE_COUNT):
-        _, pos = read_prefixed_at(data, pos, end, wide=True)
-    return pos
-
-
 def _enhancement_type(data: bytes, icon_end: int, end: int) -> int:
     """The u32 13 bytes after the three strings that follow the icon."""
-    return u32(data, _messages_end(data, icon_end, end) + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
+    return u32(data, messages_end(data, icon_end, end) + _ENHANCEMENT_TYPE_AFTER_MESSAGES)
 
 
 def _after_icon_fields(data: bytes, icon_end: int, end: int) -> dict:
     """The confirmed fields that follow the icon text."""
-    messages_end = _messages_end(data, icon_end, end)
+    tail = messages_end(data, icon_end, end)
     return {
         "marketable": bool(u8(data, icon_end + _MARKETABLE)),
         "family_inventory": u8(data, icon_end + _FAMILY_INVENTORY) == _FAMILY_INVENTORY_ALLOWED,
-        "enhancement_type": u32(data, messages_end + _ENHANCEMENT_TYPE_AFTER_MESSAGES),
-        "life_equip_type": u8(data, messages_end + _LIFE_EQUIP_TYPE_AFTER_MESSAGES),
-        "life_restrict_type": u8(data, messages_end + _LIFE_RESTRICT_TYPE_AFTER_MESSAGES),
+        "enhancement_type": u32(data, tail + _ENHANCEMENT_TYPE_AFTER_MESSAGES),
+        "life_equip_type": u8(data, tail + _LIFE_EQUIP_TYPE_AFTER_MESSAGES),
+        "life_restrict_type": u8(data, tail + _LIFE_RESTRICT_TYPE_AFTER_MESSAGES),
     }
 
 
-def _crystal_group(data: bytes, end: int) -> int | None:
-    """The crystal group of the block ending at `end`, or None when it is not a crystal."""
+def crystal_group_before(data: bytes, end: int) -> int | None:
+    """The crystal group of the block ending at `end`, or None when it is not a crystal.
+
+    `itemenchantbackend.dbss` blocks end with the same two bytes.
+    """
     group = u16(data, end - _CRYSTAL_GROUP_FROM_END)
     return None if group == _NO_CRYSTAL_GROUP else group
 
@@ -259,6 +252,42 @@ def _mesh_keys(data: bytes, late: int, end: int) -> set[int]:
     return {mesh_key for _, mesh_key in _CLASS_ENTRY_STRUCT.iter_unpack(data[first:last])}
 
 
+def base_records(
+    data: bytes,
+    offset_rows: list[dict],
+    file_name: str,
+) -> Iterator[tuple[dict, dict, BlockStrings]]:
+    """Each level-0 row of `offset_rows` with its front fields and block strings.
+
+    The front fields are those up to `life_restrict_type`, which
+    `itemenchant.dbss` and `itemenchantbackendtest.dbss` both store (the
+    blocks of the second end there). Raises ValueError, naming `file_name`,
+    when a block runs past the file or its lists past the block.
+    """
+    max_levels = max_enchant_levels(offset_rows)
+    for row in base_rows(offset_rows):
+        start = row["data_offset"]
+        end = start + row["data_size"]
+        if end > len(data):
+            raise ValueError(
+                f"{file_name} block for key {row['key']} ends at "
+                f"{end:,} but the file is {len(data):,} bytes."
+            )
+
+        strings = _block_strings(data, row, file_name)
+        fields = {
+            "item_id": row["item_id"],
+            "name_kr": strings.name_kr,
+            "max_enchant_level": max_levels[row["item_id"]],
+            # None sorts last and exports empty.
+            "enchant_key": strings.enchant_key or None,
+            "icon_path": _icon_path(strings.icon),
+            **_header_fields(data, start),
+            **_after_icon_fields(data, strings.icon_end, end),
+        }
+        yield row, fields, strings
+
+
 def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
     """Parse one row per item from its level-0 block, with its highest level.
 
@@ -268,31 +297,14 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
     the optional ASCII string after the icon (e.g. `ITEM_BIC_HIT_1`) means is
     unconfirmed.
     """
-    offset_rows = parse_itemenchantoffset_records(offset_data)
-    max_levels = max_enchant_levels(offset_rows)
     records: list[dict] = []
-
-    for row in _base_rows(offset_rows):
-        start = row["data_offset"]
-        end = start + row["data_size"]
-        if end > len(data):
-            raise ValueError(
-                f"itemenchant.dbss block for key {row['key']} ends at "
-                f"{end:,} but the file is {len(data):,} bytes."
-            )
-
-        strings = _block_strings(data, row)
+    offset_rows = parse_itemenchantoffset_records(offset_data)
+    for row, fields, strings in base_records(data, offset_rows, _FILE_NAME):
+        end = row["data_offset"] + row["data_size"]
         records.append({
-            "item_id": row["item_id"],
-            "name_kr": strings.name_kr,
-            "max_enchant_level": max_levels[row["item_id"]],
+            **fields,
             # None sorts last and exports empty.
-            "enchant_key": strings.enchant_key or None,
-            "icon_path": _icon_path(strings.icon),
-            **_header_fields(data, start),
-            **_after_icon_fields(data, strings.icon_end, end),
-            # None sorts last and exports empty.
-            "crystal_group": _crystal_group(data, end),
+            "crystal_group": crystal_group_before(data, end),
             "second_string": _second_string(data, strings.icon_end, end),
             "block_size": row["data_size"],
         })
@@ -309,7 +321,7 @@ def build_item_icon_index(data: bytes, offset_data: bytes) -> dict[int, str]:
     """
     index: dict[int, str] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         if row["data_offset"] + row["data_size"] > len(data):
             continue
         index[row["item_id"]] = _icon_path(_block_strings(data, row).icon)
@@ -325,7 +337,7 @@ def build_enchant_key_item_index(data: bytes, offset_data: bytes) -> dict[int, t
     """
     items_by_key: dict[int, list[int]] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         if row["data_offset"] + row["data_size"] > len(data):
             continue
         enchant_key = _block_strings(data, row).enchant_key
@@ -343,7 +355,7 @@ def build_enhancement_type_item_index(data: bytes, offset_data: bytes) -> dict[i
     """
     items_by_type: dict[int, list[int]] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         end = row["data_offset"] + row["data_size"]
         if end > len(data):
             continue
@@ -361,7 +373,7 @@ def _contents_event_item_index(data: bytes, offset_data: bytes, event_type: int)
     """
     items_by_param: dict[int, list[int]] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
         if start + row["data_size"] > len(data):
             continue
@@ -398,7 +410,7 @@ def build_item_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
     """
     index: dict[int, str] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         if row["data_offset"] + row["data_size"] > len(data):
             continue
         name = _block_strings(data, row).name_kr.strip()
@@ -415,7 +427,7 @@ def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:
     """
     index: dict[int, int] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
         if start + _GRADE >= len(data):
             continue
@@ -432,7 +444,7 @@ def build_character_item_index(data: bytes, offset_data: bytes) -> dict[int, int
     """
     items_by_character: dict[int, list[int]] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
         if start + row["data_size"] > len(data):
             continue
@@ -456,7 +468,7 @@ def build_mesh_key_item_index(data: bytes, offset_data: bytes) -> dict[int, tupl
     """
     items_by_mesh: dict[int, list[int]] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
         end = start + row["data_size"]
         if end > len(data):
@@ -481,7 +493,7 @@ def build_buff_item_index(
     skill_buffs = build_skill_buff_index(skill_data, skill_offset_data)
     items_by_buff: dict[int, set[int]] = {}
 
-    for row in _base_rows(parse_itemenchantoffset_records(offset_data)):
+    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
         start = row["data_offset"]
         if start + row["data_size"] > len(data):
             continue

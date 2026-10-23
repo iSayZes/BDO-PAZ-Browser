@@ -15,7 +15,7 @@ from _common.loc import LOC_NULL, loc_tagged, loc_text
 from _common.pa_text import pa_cell, pa_fields, pa_key, pa_line_cell, pa_list_cell, pa_list_fields
 from _common.skill import skill_buff_ids
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
-from _bss.jewelgroupstaticstatus.names import jewel_groups
+from _bss.jewelgroupstaticstatus.names import JewelGroup, jewel_groups
 from _bss.jewelgroupstaticstatus.parser import FILE_NAME as JEWEL_GROUP_FILE
 from _bss.lightstoneset.item_sets import item_set_ids, set_label_tagged
 from _dbss.customizeditem.parser import FILE_NAME as CUSTOMIZED_ITEM_FILE, KEY_FIELD as CUSTOMIZED_ITEM_KEY_FIELD
@@ -36,8 +36,9 @@ from .slot_labels import NO_SLOT, slot_label
 from .weapon_types import weapon_type_names
 
 
-_LANG_DIR = Path(__file__).parent / "lang"
+LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "itemenchantoffset.dbss"
+_CRYSTAL_GROUP_SORT_KEY = "crystal_group_label"
 
 # Item names are LOC type 0 keyed by item ID.
 _LOC_TYPE_ITEM = 0
@@ -163,7 +164,7 @@ def _level_cell(record: dict) -> str:
 
 def item_enchant_offset_handler() -> OffsetTableHandler:
     return OffsetTableHandler(
-        _LANG_DIR,
+        LANG_DIR,
         [
             OffsetColumn("item_id", "itemId"),
             OffsetColumn("enchant_level", "enchantLevel"),
@@ -174,10 +175,27 @@ def item_enchant_offset_handler() -> OffsetTableHandler:
     )
 
 
+def sibling_paths(entry: PazEntry, names: list[str]) -> list[str]:
+    """The paths of `names` in the folder of `entry`."""
+    folder = entry.internal_path.rsplit("/", 1)[0]
+    if folder == entry.internal_path:
+        return list(names)
+    return [f"{folder}/{name}" for name in names]
+
+
 class ItemEnchantHandler(PreviewHandler):
+    """One row per item, from its level-0 block.
+
+    `itemenchantbackendtest.dbss` stores the same blocks up to Message Tail
+    `+0x2B`, without the crystal group at their end: its handler subclasses
+    this one with `shows_crystal_group` off and its own `parsed_records`.
+    """
+
+    shows_crystal_group = True
+
     def _columns(self) -> list[Column]:
-        cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]
-        return [
+        cols = load_handler_strings(self.lang, LANG_DIR)["columns"]
+        columns = [
             Column(cols["itemId"], "num", sort_key="item_id"),
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["item"], sort_key="item_name"),
@@ -187,7 +205,7 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["enhancementType"], "num", sort_key="enhancement_type"),
             Column(cols["slot"], sort_key="slot"),
             Column(cols["weaponType"], sort_key="weapon_type"),
-            Column(cols["crystalGroup"], sort_key="crystal_group_label"),
+            Column(cols["crystalGroup"], sort_key=_CRYSTAL_GROUP_SORT_KEY),
             Column(cols["requiredLevel"], "num", sort_key="required_level"),
             Column(cols["classes"], sort_key="classes"),
             Column(cols["binding"], sort_key="binding"),
@@ -207,16 +225,23 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["buffs"], sort_key="buff_count"),
             Column(cols["lightstoneSets"], sort_key="lightstone_set_count"),
         ]
+        if self.shows_crystal_group:
+            return columns
+        return [column for column in columns if column.sort_key != _CRYSTAL_GROUP_SORT_KEY]
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
 
     def companions(self, entry: PazEntry) -> list[str]:
         # The jewel group table is optional: without it crystal groups show as numbers.
-        folder = entry.internal_path.rsplit("/", 1)[0]
-        if folder == entry.internal_path:
-            return [_OFFSET_FILE, JEWEL_GROUP_FILE]
-        return [f"{folder}/{_OFFSET_FILE}", f"{folder}/{JEWEL_GROUP_FILE}"]
+        return sibling_paths(entry, [_OFFSET_FILE, JEWEL_GROUP_FILE])
+
+    def parsed_records(self, data: bytes, companions: dict[str, bytes]) -> list[dict]:
+        """The parser's records, one per item."""
+        offset_raw = companions.get(_OFFSET_FILE)
+        if offset_raw is None:
+            raise ValueError(f"{_OFFSET_FILE} companion not found.")
+        return parse_itemenchant_records(data, offset_raw)
 
     def get_records(
         self,
@@ -224,17 +249,13 @@ class ItemEnchantHandler(PreviewHandler):
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
-        offset_raw = companions.get(_OFFSET_FILE)
-        if offset_raw is None:
-            raise ValueError(f"{_OFFSET_FILE} companion not found.")
-
-        values = load_handler_strings(self.lang, _LANG_DIR)["values"]
-        records = parse_itemenchant_records(data, offset_raw)
+        values = load_handler_strings(self.lang, LANG_DIR)["values"]
+        records = self.parsed_records(data, companions)
         # About 150 masks and 40 slots cover all items, so each label is built once.
         classes = {mask: classes_label(mask, values) for mask in {record["class_mask"] for record in records}}
         slots = {slot: slot_label(slot) for slot in {record["equip_slot"] for record in records}}
         weapon_types = weapon_type_names(records)
-        groups = jewel_groups(companions.get(JEWEL_GROUP_FILE))
+        groups = jewel_groups(companions.get(JEWEL_GROUP_FILE)) if self.shows_crystal_group else {}
         return [
             {
                 **_with_links(
@@ -244,10 +265,20 @@ class ItemEnchantHandler(PreviewHandler):
                     _slot_text(record, slots),
                     weapon_types.get(record["equip_type"], ""),
                 ),
-                "crystal_group_label": crystal_group_label(record["crystal_group"], groups, values),
+                **self._crystal_group_fields(record, groups, values),
             }
             for record in records
         ]
+
+    def _crystal_group_fields(self, record: dict, groups: dict[int, JewelGroup], values: dict[str, str]) -> dict:
+        if not self.shows_crystal_group:
+            return {}
+        return {"crystal_group_label": crystal_group_label(record["crystal_group"], groups, values)}
+
+    def _crystal_group_cells(self, record: dict) -> list[str]:
+        if not self.shows_crystal_group:
+            return []
+        return [e(record["crystal_group_label"] or _EMPTY)]
 
     def render_records_page(
         self,
@@ -258,11 +289,11 @@ class ItemEnchantHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         enhanceable = sum(1 for record in records if record["max_enchant_level"])
-        meta = handler_text(self.lang, _LANG_DIR, "meta.count", count=len(records), enhanceable=enhanceable)
+        meta = handler_text(self.lang, LANG_DIR, "meta.count", count=len(records), enhanceable=enhanceable)
 
         with_icon = sum(1 for record in records if record["icon_path"])
         if with_icon:
-            meta += handler_text(self.lang, _LANG_DIR, "meta.withIcon", with_icon=with_icon)
+            meta += handler_text(self.lang, LANG_DIR, "meta.withIcon", with_icon=with_icon)
 
         rows = [
             [
@@ -275,7 +306,7 @@ class ItemEnchantHandler(PreviewHandler):
                 _optional_cell(record["enhancement_type"]),
                 e(record["slot"] or _EMPTY),
                 e(record["weapon_type"] or _EMPTY),
-                e(record["crystal_group_label"] or _EMPTY),
+                *self._crystal_group_cells(record),
                 _level_cell(record),
                 e(record["classes"] or _EMPTY),
                 e(record["binding"] or _EMPTY),

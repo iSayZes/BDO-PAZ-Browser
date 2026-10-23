@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "maxLevel": "Макс. ур.",
+    "accessLevel": "Уровень доступа",
+    "crystalGroup": "Категория"
+  },
+  "meta": {
+    "count": "Предметов: {count}"
+  }
+}

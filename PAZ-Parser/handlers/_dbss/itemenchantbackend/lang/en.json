@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "maxLevel": "Max Level",
+    "accessLevel": "Access Level",
+    "crystalGroup": "Crystal Group"
+  },
+  "meta": {
+    "count": "{count} items"
+  }
+}

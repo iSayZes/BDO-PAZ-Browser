@@ -21,8 +21,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3482    | `itemenchant.dbss`       | 203,042,002 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
-| 2      | 3473 and later | 3482    | `itemenchantoffset.dbss` | 2,032,160   | 169,345 Offset Row                                                          | 12        |
+| 2      | 3473 and later | 3483    | `itemenchant.dbss`       | 203,042,002 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
+| 2      | 3473 and later | 3483    | `itemenchantoffset.dbss` | 2,032,160   | 169,345 Offset Row                                                          | 12        |
 | 1      | 1784           | 1784    | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
 | 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
 
@@ -37,6 +37,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3483   | Layout 2             |
 | 3482   | Layout 2             |
 | 3474   | Layout 2             |
 | 3473   | Layout 2             |
@@ -1151,9 +1152,12 @@ only approach that covers items whose icon is named after a 3D asset
 
 ## Notes
 
-- `itemenchantbackendtest.dbss` (73 MB) contains the identical set of 169,962
-  icon path references and 21,768 unique paths; it looks like a test copy and
-  adds nothing. `itemenchantbackend.dbss` (121 MB) contains no icon paths at all.
+- Two more files hold these blocks again, split at Message Tail `+0x2B`:
+  [`itemenchantbackendtest.dbss`](itemenchantbackendtest_dbss.md) stores
+  each block up to `life_restrict_type`, with no offset index, and
+  [`itemenchantbackend.dbss`](itemenchantbackend_dbss.md) the rest, indexed
+  by `itemenchantbackendoffset.dbss`. On client 3483 every block here is the
+  two parts of its key put together, byte for byte.
 - 17 `gamecommondata` tables store inline icon paths this way. After this file
   the largest are `cashproduct.dbss` (14,750 unique paths, keyed by cash product
   ID rather than item ID), `quest.dbss` (6,366) and `skilltype.dbss` (3,530).

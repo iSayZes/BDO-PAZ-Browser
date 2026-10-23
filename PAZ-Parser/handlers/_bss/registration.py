@@ -96,6 +96,7 @@ from .monsterbuffzone.handler import MonsterBuffZoneHandler
 from .simplesequence.handler import SimpleSequenceHandler
 from .sequence_scripts.registration import register_sequence_script_handlers
 from .guildbossfieldinfo.handler import GuildBossFieldInfoHandler
+from .guildhonorsystem.handler import GuildHonorSystemHandler
 from .itemexchangetoclassmapkey.handler import ItemExchangeToClassMapKeyBssHandler
 from .itemimprovementdefaultdisplaylist.handler import ItemImprovementDefaultDisplayListBssHandler
 from .itemmaingroup.handler import ItemMainGroupBssHandler
@@ -343,6 +344,7 @@ def register_bss_handlers() -> None:
     register_handler("simplesequence.bss", SimpleSequenceHandler())
     register_sequence_script_handlers()
     register_handler("guildbossfieldinfo.bss", GuildBossFieldInfoHandler())
+    register_handler("guildhonorsystem.bss", GuildHonorSystemHandler())
     register_handler("itemmaingroup.bss", ItemMainGroupBssHandler())
     register_handler("itemmarketcategory.bss", ItemMarketCategoryBssHandler())
     register_handler("itemtradeetc.bss", ItemTradeEtcBssHandler())

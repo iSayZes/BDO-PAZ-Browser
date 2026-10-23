@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Clé",
+    "section": "Section",
+    "description": "Description",
+    "point": "Renommée de guilde",
+    "type": "Type",
+    "details": "Détails"
+  },
+  "sections": {
+    "gain": "Acquisition",
+    "use": "Consommation",
+    "benefit": "Avantages de Renommée",
+    "dailyPay": "Salaire quotidien"
+  },
+  "meta": {
+    "count": "{count} changements de Renommée de guilde, avantages et paliers de salaire quotidien"
+  }
+}

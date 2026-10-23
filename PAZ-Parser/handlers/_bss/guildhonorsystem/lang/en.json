@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Key",
+    "section": "Section",
+    "description": "Description",
+    "point": "Guild Fame",
+    "type": "Type",
+    "details": "Details"
+  },
+  "sections": {
+    "gain": "How to Obtain",
+    "use": "Uses",
+    "benefit": "Guild Fame Benefits",
+    "dailyPay": "Daily Pay"
+  },
+  "meta": {
+    "count": "{count} Guild Fame changes, benefits and daily pay steps"
+  }
+}

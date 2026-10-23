@@ -74,3 +74,14 @@ def boss_characters(data: bytes) -> dict[int, int]:
     for record in sorted(parse_boss_spawnlevel_records(data), key=lambda r: r["level"]):
         characters.setdefault(record["boss_key"], record["character_id"])
     return characters
+
+
+def optional_boss_characters(data: bytes | None) -> dict[int, int]:
+    """`boss_characters` of an optional companion; empty when it is missing or
+    unreadable, for tables that show the boss names only as a convenience."""
+    if data is None:
+        return {}
+    try:
+        return boss_characters(data)
+    except ValueError:
+        return {}

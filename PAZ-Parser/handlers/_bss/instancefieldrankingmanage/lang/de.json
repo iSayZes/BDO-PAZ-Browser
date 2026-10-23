@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rankingIdx": "Ranglisten-Schlüssel",
+    "instanceType": "Instanztyp",
+    "start": "Beginn (UTC)",
+    "end": "Ende (UTC)",
+    "season": "Saison"
+  },
+  "meta": {
+    "count": "{count} Ranglisten"
+  }
+}

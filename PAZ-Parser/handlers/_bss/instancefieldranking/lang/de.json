@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "instanceFieldType": "Instanzfeldtyp",
+    "rankingCount": "Ranglisten",
+    "rankings": "Ranglisten-Schlüssel"
+  },
+  "meta": {
+    "count": "{count} Instanzfeldtypen"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "instanceType": "Instance Type",
+    "instanceMode": "Instance Mode",
+    "level": "Min Level",
+    "quest": "Quest",
+    "questName": "Quest Name",
+    "message": "Message"
+  },
+  "meta": {
+    "count": "{count} entry limits"
+  }
+}

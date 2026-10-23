@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "instanceFieldType": "Instance Field Type",
+    "rankingCount": "Rankings",
+    "rankings": "Ranking Keys"
+  },
+  "meta": {
+    "count": "{count} instance field types"
+  }
+}

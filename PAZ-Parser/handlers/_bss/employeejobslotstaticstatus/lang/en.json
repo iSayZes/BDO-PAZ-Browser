@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterKey": "Character Key",
+    "ship": "Ship",
+    "jobSlots": "Job Slots"
+  },
+  "meta": {
+    "count": "{count} ships"
+  }
+}

@@ -191,6 +191,14 @@ from .skillcomboguide.handler import SkillComboGuideBssHandler
 from .skillfusionslotlist.handler import SkillFusionSlotListBssHandler
 from .skillquickslotinfo.handler import SkillQuickSlotInfoBssHandler
 from .uipracticeskilltreelayout.handler import UiPracticeSkillTreeLayoutBssHandler
+from .contentsschedulerss.handler import ContentsSchedulerHandler
+from .employeejobslotstaticstatus.handler import EmployeeJobSlotHandler
+from .instancefieldcommon.handler import InstanceFieldCommonHandler
+from .instancefieldranking.handler import InstanceFieldRankingHandler
+from .instancefieldrankingmanage.handler import InstanceFieldRankingManageHandler
+from .instancespawninfo.handler import InstanceSpawnInfoHandler
+from .monsterbuffzonegroup.handler import MonsterBuffZoneGroupHandler
+from .solareoptionstaticstatusmanager.handler import SolareOptionHandler
 
 
 def register_bss_handlers() -> None:
@@ -432,3 +440,11 @@ def register_bss_handlers() -> None:
     register_handler("skillfusionslotlist.bss", SkillFusionSlotListBssHandler())
     register_handler("skillquickslotinfo.bss", SkillQuickSlotInfoBssHandler())
     register_handler("uipracticeskilltreelayout.bss", UiPracticeSkillTreeLayoutBssHandler())
+    register_handler("contentsschedulerss.bss", ContentsSchedulerHandler())
+    register_handler("employeejobslotstaticstatus.bss", EmployeeJobSlotHandler())
+    register_handler("instancefieldcommon.bss", InstanceFieldCommonHandler())
+    register_handler("instancefieldranking.bss", InstanceFieldRankingHandler())
+    register_handler("instancefieldrankingmanage.bss", InstanceFieldRankingManageHandler())
+    register_handler("instancespawninfo.bss", InstanceSpawnInfoHandler())
+    register_handler("monsterbuffzonegroup.bss", MonsterBuffZoneGroupHandler())
+    register_handler("solareoptionstaticstatusmanager.bss", SolareOptionHandler())

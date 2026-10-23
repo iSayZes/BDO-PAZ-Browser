@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "instanceFieldType": "인스턴스 필드 타입",
+    "rankingCount": "랭킹 수",
+    "rankings": "랭킹 키"
+  },
+  "meta": {
+    "count": "인스턴스 필드 타입 {count}개"
+  }
+}

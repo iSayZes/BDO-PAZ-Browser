@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "area": "Gebiet",
+    "offense": "Empfohlene AK",
+    "enterItem": "Zugangsgegenstand",
+    "enterType": "Zugangstyp",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Radius (m)"
+  },
+  "meta": {
+    "count": "{count} Gebiete"
+  }
+}

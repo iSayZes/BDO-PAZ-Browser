@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "contentType": "Тип контента",
+    "icon": "Значок",
+    "title": "Название",
+    "contentsGroups": "Группы контента"
+  },
+  "meta": {
+    "count": "Контента в расписании: {count}"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "키",
+    "area": "영역",
+    "offense": "권장 공격력",
+    "enterItem": "입장 아이템",
+    "enterType": "입장 타입",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "반경 (m)"
+  },
+  "meta": {
+    "count": "영역 {count}개"
+  }
+}

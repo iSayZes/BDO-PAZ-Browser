@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "instanceType": "Type d'instance",
+    "instanceMode": "Mode d'instance",
+    "level": "Niveau min.",
+    "quest": "Quête",
+    "questName": "Nom de la quête",
+    "message": "Message"
+  },
+  "meta": {
+    "count": "{count} limites d'accès"
+  }
+}

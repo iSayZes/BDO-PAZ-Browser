@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rankingIdx": "랭킹 키",
+    "instanceType": "인스턴스 타입",
+    "start": "시작 (UTC)",
+    "end": "종료 (UTC)",
+    "season": "시즌"
+  },
+  "meta": {
+    "count": "랭킹 {count}개"
+  }
+}

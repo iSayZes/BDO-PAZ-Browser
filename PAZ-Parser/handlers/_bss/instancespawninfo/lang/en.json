@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Key",
+    "area": "Area",
+    "offense": "Recommended AP",
+    "enterItem": "Entry Item",
+    "enterType": "Entry Type",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Radius (m)"
+  },
+  "meta": {
+    "count": "{count} zones"
+  }
+}

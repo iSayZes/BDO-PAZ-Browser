@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "instanceFieldType": "Тип поля инстанса",
+    "rankingCount": "Рейтинги",
+    "rankings": "Ключи рейтингов"
+  },
+  "meta": {
+    "count": "Типов полей инстанса: {count}"
+  }
+}

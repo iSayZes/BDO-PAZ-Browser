@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clé",
+    "area": "Zone",
+    "offense": "PA recommandée",
+    "enterItem": "Objet d'entrée",
+    "enterType": "Type d'entrée",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Rayon (m)"
+  },
+  "meta": {
+    "count": "{count} zones"
+  }
+}

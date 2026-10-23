@@ -247,6 +247,12 @@ walks to its last byte by. Three tables follow:
 - The Clients table keeps every client the check read, newest first; a
   client read again takes its new result. `No file` means the name is not in
   the `.meta`, so an archive missing from a pruned folder is not one.
+- When a client keeps a second copy of a file in a language folder (client
+  531 has `regioninfo_linkandcheckvalid2.bss` in `binary/` and `binary/en/`),
+  the check reads the base copy. Two copies at the same depth are ambiguous:
+  that doc's game check is skipped for that client, its Versions stay as
+  they are, and the run goes on; naming the full PAZ path in the doc reads
+  one of them.
 - A doc whose layout holds `bytes[scan]` cannot be walked and keeps its
   markers only.
 

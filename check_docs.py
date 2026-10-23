@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path[:0] = [str(ROOT / "PAZ-Parser"), str(ROOT / "PAZ-Parser" / "handlers")]
 
 from format_docs import TEMPLATE_PREFIX, converted_docs  # noqa: E402
-from format_docs.check_run import Client, DocOutcome, Status, check_doc_file  # noqa: E402
+from format_docs.check_run import Client, DocOutcome, Status, UnreadableFile, check_doc_file  # noqa: E402
 from format_docs.doc_index import IndexRows, index_rows  # noqa: E402
 
 DOCS_DIR = ROOT / "docs" / "file-formats"
@@ -215,7 +215,14 @@ def _client(paz_folder: str | None, number: int | None, docs_only: bool) -> Clie
     client = number if number is not None else files.client
     if client == _UNNUMBERED_CLIENT:
         raise CheckError(f"the .meta of {files.root} says client {_UNNUMBERED_CLIENT}; pass its real number with --client")
-    return Client(client, files.read)
+
+    def read_file(name: str) -> bytes | None:
+        try:
+            return files.read(name)
+        except CliError as error:
+            raise UnreadableFile(str(error)) from error
+
+    return Client(client, read_file)
 
 
 def _warn_parser_without_doc() -> None:

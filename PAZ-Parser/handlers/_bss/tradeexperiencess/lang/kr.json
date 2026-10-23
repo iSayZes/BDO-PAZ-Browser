@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradingLevel": "무역 레벨",
+    "rank": "등급",
+    "tradeExp": "기본 무역 경험치",
+    "saleExpRate01": "비율 0.1, 거리 1,000"
+  },
+  "meta": {
+    "count": "무역 레벨 {count}개"
+  }
+}

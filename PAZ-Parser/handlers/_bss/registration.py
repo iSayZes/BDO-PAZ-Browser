@@ -190,6 +190,7 @@ from .territoryinfo.handler import TerritoryInfoBssHandler
 from .titlecategory.handler import TitleCategoryBssHandler
 from .totalquestcount.handler import TotalQuestCountBssHandler
 from .totalquestcount.tables import QUEST_COUNT_TABLES
+from .tradeexperiencess.handler import TradeExperienceSsBssHandler
 from .traininglevelskillstat.handler import TrainingLevelSkillStatBssHandler
 from .ui_skillgroup.handler import UiSkillGroupBssHandler
 from .uigrowthpasslayout.handler import UiGrowthPassLayoutBssHandler
@@ -465,6 +466,7 @@ def register_bss_handlers() -> None:
     # One layout for the quests per region and per quest type.
     for quest_table in QUEST_COUNT_TABLES:
         register_handler(quest_table.file_name, TotalQuestCountBssHandler(quest_table))
+    register_handler("tradeexperiencess.bss", TradeExperienceSsBssHandler())
     register_handler("traininglevelskillstat.bss", TrainingLevelSkillStatBssHandler())
     # One layout for the three skill windows.
     for window in ("combat", "awakening", "succession"):

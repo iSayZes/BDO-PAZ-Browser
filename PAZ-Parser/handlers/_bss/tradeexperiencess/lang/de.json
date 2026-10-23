@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradingLevel": "Handelsstufe",
+    "rank": "Rang",
+    "tradeExp": "Basis-Handel-EP",
+    "saleExpRate01": "Rate 0,1, Distanz 1.000"
+  },
+  "meta": {
+    "count": "{count} Handelsstufen"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "offset": "Décalage",
+    "field": "Champ",
+    "value": "Valeur",
+    "text": "Texte"
+  },
+  "meta": {
+    "count": "{fields} champs, {strings} textes, {body} octets non décodés"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "offset": "Desplazamiento",
+    "field": "Campo",
+    "value": "Valor",
+    "text": "Texto"
+  },
+  "meta": {
+    "count": "{fields} campos, {strings} textos, {body} bytes sin descifrar"
+  }
+}

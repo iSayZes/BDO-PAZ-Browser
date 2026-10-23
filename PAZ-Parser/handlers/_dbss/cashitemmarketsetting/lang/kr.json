@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "basePrice": "시작가",
+    "maxestPercent": "최대 비율",
+    "minestPercent": "최소 비율",
+    "maxRegisterCount": "최대 등록 개수"
+  },
+  "offsetColumns": {
+    "itemId": "아이템 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "펄 상점 아이템 {count}개"
+  }
+}

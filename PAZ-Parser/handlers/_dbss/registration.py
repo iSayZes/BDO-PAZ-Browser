@@ -267,6 +267,7 @@ from .skillcommand.handler import SkillCommandHandler, skill_command_offset_hand
 from .setoption.handler import SetOptionHandler, set_option_offset_handler
 from .profiling.handler import ProfilingHandler, profiling_offset_handler
 from .cutscene.handler import CutsceneHandler, cutscene_offset_handler
+from .cashitemmarketsetting.handler import CashItemMarketSettingHandler, cash_item_market_setting_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -630,3 +631,5 @@ def register_dbss_handlers() -> None:
     register_handler("profiling.dbss", ProfilingHandler())
     register_handler("cutsceneoffset.dbss", cutscene_offset_handler())
     register_handler("cutscene.dbss", CutsceneHandler())
+    register_handler("cashitemmarketsettingoffset.dbss", cash_item_market_setting_offset_handler())
+    register_handler("cashitemmarketsetting.dbss", CashItemMarketSettingHandler())

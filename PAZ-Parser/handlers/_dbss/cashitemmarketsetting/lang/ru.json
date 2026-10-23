@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "basePrice": "Нач. цена",
+    "maxestPercent": "Макс. процент",
+    "minestPercent": "Мин. процент",
+    "maxRegisterCount": "Макс. кол-во продаж"
+  },
+  "offsetColumns": {
+    "itemId": "ID предмета",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Предметов Премиум-магазина: {count}"
+  }
+}

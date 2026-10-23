@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "basePrice": "Prix de base",
+    "maxestPercent": "Pourcentage max",
+    "minestPercent": "Pourcentage min",
+    "maxRegisterCount": "Nombre mis en vente max"
+  },
+  "offsetColumns": {
+    "itemId": "ID d'objet",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} objets de la Boutique de perles"
+  }
+}

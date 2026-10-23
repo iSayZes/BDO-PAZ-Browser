@@ -83,6 +83,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `cashchooseoffset.dbss` | Index into `cashchoose.dbss`, maps choose key → offset/size; no PABR magic | [cashchoose](file-formats/cashchoose_dbss.md) | 1 | 0 |
 | `cashforui.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/empty_dbss.md) | 1 | 0 |
 | `cashforuioffset.dbss` | Empty offset companion for `cashforui.dbss`: a u32 count of 0 | [empty](file-formats/empty_dbss.md) | 1 | 0 |
+| `cashitemmarketsetting.dbss` | PABR rows of 46 bytes: per Pearl Shop item its Central Market base price, max and min percent and register count, each stored twice | [cashitemmarketsetting](file-formats/cashitemmarketsetting_dbss.md) | 4 | 0 |
+| `cashitemmarketsettingoffset.dbss` | PABR index into `cashitemmarketsetting.dbss`, maps item ID → offset 4 bytes into its row; the size column is always 0 | [cashitemmarketsetting](file-formats/cashitemmarketsetting_dbss.md) | 4 | 0 |
 | `cashproduct.dbss` | Pearl Shop product catalog, Korean names, inline icon path, and the granted item ID; English names and descriptions in LOC type 50 | [cashproduct](file-formats/cashproduct_dbss.md) | 4 | 0 |
 | `cashproduct_discountperiodcheck.bss` | Empty PABR table: a count of 0, no records and no strings | [empty](file-formats/empty_bss.md) | 2 | 0 |
 | `cashproduct_grouplist.bss` | PABR Pearl Shop offer groups: per `OfferGroup` the `cashproduct.dbss` product IDs that share it (3,007 groups on client 3482) | [cashproduct_grouplist](file-formats/cashproduct_grouplist_bss.md) | 1 | 0 |

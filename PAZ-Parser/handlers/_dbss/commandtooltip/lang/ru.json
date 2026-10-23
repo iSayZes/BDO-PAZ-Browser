@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "keyHash": "Хеш ключа",
+    "pcCommand": "Управление (ПК)",
+    "consoleCommand": "Управление (геймпад)"
+  },
+  "offsetColumns": {
+    "keyHash": "Хеш ключа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Подсказок управления: {count}"
+  }
+}

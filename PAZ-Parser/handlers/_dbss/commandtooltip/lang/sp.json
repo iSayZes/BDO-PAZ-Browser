@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "keyHash": "Hash de clave",
+    "pcCommand": "Comandos de PC",
+    "consoleCommand": "Comandos de mando"
+  },
+  "offsetColumns": {
+    "keyHash": "Hash de clave",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} descripciones de comandos"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "keyHash": "키 해시",
+    "pcCommand": "PC 조작",
+    "consoleCommand": "콘솔 조작"
+  },
+  "offsetColumns": {
+    "keyHash": "키 해시",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "조작 툴팁 {count}개"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "keyHash": "Schlüssel-Hash",
+    "pcCommand": "PC-Steuerung",
+    "consoleCommand": "Controller-Steuerung"
+  },
+  "offsetColumns": {
+    "keyHash": "Schlüssel-Hash",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Steuerungs-Tooltips"
+  }
+}

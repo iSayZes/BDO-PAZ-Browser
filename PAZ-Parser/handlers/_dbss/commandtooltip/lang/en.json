@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "keyHash": "Key Hash",
+    "pcCommand": "PC Command",
+    "consoleCommand": "Console Command"
+  },
+  "offsetColumns": {
+    "keyHash": "Key Hash",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} command tooltips"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "column": "Column",
+    "row": "Row",
+    "skillNo": "Skill No.",
+    "skill": "Skill"
+  },
+  "meta": {
+    "count": "{count} skill cells"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "column": "열",
+    "row": "행",
+    "skillNo": "기술 번호",
+    "skill": "기술"
+  },
+  "meta": {
+    "count": "기술 칸 {count}개"
+  }
+}

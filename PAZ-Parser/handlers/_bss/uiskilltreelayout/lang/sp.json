@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "column": "Columna",
+    "row": "Fila",
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad"
+  },
+  "meta": {
+    "count": "{count} casillas de habilidad"
+  }
+}

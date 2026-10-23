@@ -110,7 +110,9 @@ Left, `2` Right, `3` Top, `4` Bottom.
 The cell is the 2016 `ge::UISkillTreeLayout_CellValue`, 4 bytes: u8
 `_cellType`, u8 `_arrowType`, u16 `_skillNo`, in that order. The current
 `ui_skillgroup_*.bss` files use a longer cell (a counted type list, a
-group number and a tab band); this file keeps the 2016 one.
+group number and a tab band); this file keeps the 2016 one, and so do the
+eight one-grid files of
+[`uiguildskilltreelayout.bss`](uiguildskilltreelayout_bss.md).
 
 The developer workbook `UIPracticeSkillTreeLayout.xlsm` of a private
 server on client 1784 has one sheet per grid, named `0_SKill`, `4_Skill`,

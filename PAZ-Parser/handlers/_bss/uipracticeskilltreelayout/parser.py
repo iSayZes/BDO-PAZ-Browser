@@ -5,8 +5,9 @@
     Class Grid: u8 class_type | u32 width | u32 height | width * height x Cell
     Cell (4 bytes): u8 cell_type | u8 arrow_type | u16 skill_no
 
-The cell is the 2016 `ge::UISkillTreeLayout_CellValue`; cell type `2` holds a
-skill. Full layout in docs/file-formats/uipracticeskilltreelayout_bss.md.
+The cell is the 2016 `ge::UISkillTreeLayout_CellValue`, read by
+`_bss.uiskilltreelayout.parser`; cell type `2` holds a skill. Full layout in
+docs/file-formats/uipracticeskilltreelayout_bss.md.
 """
 
 from __future__ import annotations
@@ -16,16 +17,13 @@ from dataclasses import dataclass
 
 from _common.pabr_strings import HEADER_SIZE, check_rows_end, checked_string_table_start
 from _common.record_reader import RecordReader
+from _bss.uiskilltreelayout.parser import CELL_TYPE_BLANK, CELL_TYPE_SKILL, read_cells
 
 
 FILE_NAME = "uipracticeskilltreelayout.bss"
-# ge::UISkillTreeLayout_CellValueType_Blank and _Skill (2016 PDB).
-CELL_TYPE_BLANK = 1
-CELL_TYPE_SKILL = 2
 
 _U32 = struct.Struct("<I")
 _GRID_HEAD = struct.Struct("<BII")
-_CELL = struct.Struct("<BBH")
 _CLASS_COUNT_AT = 4
 
 
@@ -41,16 +39,13 @@ class ClassGrid:
 
 def _read_grid(reader: RecordReader) -> ClassGrid:
     class_type, width, height = reader.unpack(_GRID_HEAD)
-    cell_count = width * height
-    if cell_count * _CELL.size > reader.remaining():
-        raise ValueError(f"{FILE_NAME} class {class_type} grid of {width} x {height} runs past the rows")
-    cells = [reader.unpack(_CELL) for _ in range(cell_count)]
+    cells = read_cells(reader, width, height, f"{FILE_NAME} class {class_type}")
     return ClassGrid(
         class_type=class_type,
         width=width,
         height=height,
-        blank_cells=sum(1 for cell_type, _, _ in cells if cell_type == CELL_TYPE_BLANK),
-        skill_nos=tuple(skill_no for cell_type, _, skill_no in cells if cell_type == CELL_TYPE_SKILL),
+        blank_cells=sum(1 for cell in cells if cell.cell_type == CELL_TYPE_BLANK),
+        skill_nos=tuple(cell.skill_no for cell in cells if cell.cell_type == CELL_TYPE_SKILL),
     )
 
 

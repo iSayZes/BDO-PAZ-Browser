@@ -207,6 +207,8 @@ from .skillcomboguide.handler import SkillComboGuideBssHandler
 from .skillfusionslotlist.handler import SkillFusionSlotListBssHandler
 from .skillquickslotinfo.handler import SkillQuickSlotInfoBssHandler
 from .uipracticeskilltreelayout.handler import UiPracticeSkillTreeLayoutBssHandler
+from .uiskilltreelayout.handler import UiSkillTreeLayoutBssHandler
+from .uiskilltreelayout.parser import SKILL_TREE_FILES
 from .contentsschedulerss.handler import ContentsSchedulerHandler
 from .employeejobslotstaticstatus.handler import EmployeeJobSlotHandler
 from .instancefieldcommon.handler import InstanceFieldCommonHandler
@@ -471,6 +473,9 @@ def register_bss_handlers() -> None:
     register_handler("skillfusionslotlist.bss", SkillFusionSlotListBssHandler())
     register_handler("skillquickslotinfo.bss", SkillQuickSlotInfoBssHandler())
     register_handler("uipracticeskilltreelayout.bss", UiPracticeSkillTreeLayoutBssHandler())
+    # One grid layout for the guild, fusion, life skill and territory policy trees.
+    for name in SKILL_TREE_FILES:
+        register_handler(name, UiSkillTreeLayoutBssHandler())
     register_handler("contentsschedulerss.bss", ContentsSchedulerHandler())
     register_handler("employeejobslotstaticstatus.bss", EmployeeJobSlotHandler())
     register_handler("instancefieldcommon.bss", InstanceFieldCommonHandler())

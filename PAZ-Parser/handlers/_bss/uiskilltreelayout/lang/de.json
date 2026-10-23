@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "column": "Spalte",
+    "row": "Zeile",
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent"
+  },
+  "meta": {
+    "count": "{count} Talentfelder"
+  }
+}

@@ -33,6 +33,7 @@ from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
 from .majorsiege_tables import MAJOR_SIEGE_TABLES
 from .oceansiege_tables import OCEAN_SIEGE_TABLES
+from .personalmonster_tables import PERSONAL_MONSTER_TABLES
 from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
 from .server_tables import SERVER_TABLES
@@ -256,4 +257,5 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *WORLD_TABLES,
     *SERVER_TABLES,
     *CLIENT_TABLES,
+    *PERSONAL_MONSTER_TABLES,
 )

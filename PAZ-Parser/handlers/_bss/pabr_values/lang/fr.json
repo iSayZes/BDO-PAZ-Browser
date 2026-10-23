@@ -299,7 +299,12 @@
     "animationNo": "N° d'animation",
     "asus": "Effet Asus",
     "razer": "Effet Razer",
-    "realRgb": "RVB"
+    "realRgb": "RVB",
+    "detectRange": "Portée de détection",
+    "maxLevel": "Niveau max.",
+    "iconSize": "Taille de l'icône",
+    "difficultyIconUvs": "Zones d'icône par difficulté",
+    "levelIconUvs": "Zones d'icône par niveau"
   },
   "meta": {
     "count": "{count} entrées",

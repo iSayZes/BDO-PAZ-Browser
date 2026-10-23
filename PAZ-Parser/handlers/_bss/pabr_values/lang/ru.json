@@ -299,7 +299,12 @@
     "animationNo": "№ анимации",
     "asus": "Эффект Asus",
     "razer": "Эффект Razer",
-    "realRgb": "RGB"
+    "realRgb": "RGB",
+    "detectRange": "Дальность обнаружения",
+    "maxLevel": "Макс. уровень",
+    "iconSize": "Размер значка",
+    "difficultyIconUvs": "Области значка по уровню сложности",
+    "levelIconUvs": "Области значка по уровню"
   },
   "meta": {
     "count": "Записей: {count}",

@@ -268,6 +268,7 @@ from .setoption.handler import SetOptionHandler, set_option_offset_handler
 from .profiling.handler import ProfilingHandler, profiling_offset_handler
 from .cutscene.handler import CutsceneHandler, cutscene_offset_handler
 from .cashitemmarketsetting.handler import CashItemMarketSettingHandler, cash_item_market_setting_offset_handler
+from .intimacyrelation.handler import IntimacyRelationHandler, intimacy_relation_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -633,3 +634,5 @@ def register_dbss_handlers() -> None:
     register_handler("cutscene.dbss", CutsceneHandler())
     register_handler("cashitemmarketsettingoffset.dbss", cash_item_market_setting_offset_handler())
     register_handler("cashitemmarketsetting.dbss", CashItemMarketSettingHandler())
+    register_handler("intimacyrelationoffset.dbss", intimacy_relation_offset_handler())
+    register_handler("intimacyrelation.dbss", IntimacyRelationHandler())

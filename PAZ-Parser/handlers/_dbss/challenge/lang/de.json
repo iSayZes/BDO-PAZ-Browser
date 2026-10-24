@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "challengeKey": "Herausforderungsschlüssel",
+    "title": "Titel",
+    "type": "Typ",
+    "completeCondition": "Abschluss",
+    "conditionParam1": "Parameter 1",
+    "conditionParam2": "Parameter 2",
+    "rewardCondition": "Belohnungsbedingung",
+    "resetType": "Zurücksetzen",
+    "resetValue": "Rücksetzwert",
+    "rewards": "Belohnungen",
+    "selectRewards": "Wählbare Belohnungen",
+    "optionalType": "Belohnungsgruppe",
+    "isRewardOverlapable": "Belohnungen stapeln",
+    "isShowIcon": "Fortschrittshinweis",
+    "description": "Beschreibung"
+  },
+  "offsetColumns": {
+    "challengeKey": "Herausforderungsschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "text": {
+    "coupon": "Gutschein {number}"
+  },
+  "meta": {
+    "count": "{count} Herausforderungen"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "row": "Row",
+    "onceCondition": "Once Condition",
+    "constantCondition": "Constant Condition",
+    "execute": "Execute",
+    "repeat": "Repeat",
+    "deleteCondition": "Delete Condition"
+  },
+  "meta": {
+    "count": "{count} first-experience triggers"
+  }
+}

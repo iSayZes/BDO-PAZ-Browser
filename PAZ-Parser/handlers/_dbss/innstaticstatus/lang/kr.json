@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "innKey": "여관 ID",
+    "roomKey": "방 ID",
+    "house": "집",
+    "town": "마을"
+  },
+  "offsetColumns": {
+    "innKey": "여관 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "여관 방 {count}개"
+  }
+}

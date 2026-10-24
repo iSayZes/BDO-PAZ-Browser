@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "color": "Colour",
+    "section": "Part",
+    "stateGroup": "State Group",
+    "states": "BGM States",
+    "bankNoEnvironment": "Ambience",
+    "channelName": "Channel",
+    "eventName": "Event"
+  },
+  "sections": {
+    "area": "Area",
+    "state": "Special State",
+    "radio": "Radio"
+  },
+  "meta": {
+    "count": "{count} entries"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Clé d'objet",
+    "itemId": "ID d'objet",
+    "enchantLevel": "Niveau d'optimisation",
+    "item": "Objet"
+  },
+  "meta": {
+    "count": "{count} objets de récompense"
+  }
+}

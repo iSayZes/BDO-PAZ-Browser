@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "key": "Key",
+    "itemWhereType": "Item Where Type",
+    "item": "Item",
+    "blackBg": "Black Background",
+    "whiteBg": "White Frame",
+    "whiteIgnore": "Hide White Frame",
+    "selected": "Selectable Controls",
+    "snappingEffect": "Snapping Effect",
+    "doLua": "Lua Call",
+    "steps": "Tutorial Steps"
+  },
+  "meta": {
+    "count": "{count} start events"
+  }
+}

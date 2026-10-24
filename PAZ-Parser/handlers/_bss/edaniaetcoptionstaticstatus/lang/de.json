@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "edaniaRegion": "Edania-Region",
+    "castle": "Burg",
+    "contentsGroup": "Inhaltsgruppe",
+    "throneQuest": "Thron-Quest",
+    "bossClearItemKey": "Boss-Belohnungs-ID",
+    "bossClearItem": "Boss-Belohnung",
+    "minAp1": "Min. AP 1",
+    "minDp1": "Min. VP 1",
+    "minAp2": "Min. AP 2",
+    "minDp2": "Min. VP 2",
+    "minItemGrade1": "Min. Gegenstandsstufe 1",
+    "minItemGrade2": "Min. Gegenstandsstufe 2",
+    "taxRate": "Steuersatz",
+    "taxBaseAmount": "Steuer-Grundbetrag"
+  },
+  "meta": {
+    "count": "{count} Edania-Burgen",
+    "dropBuff": "; Edanas Drop-Buff: Dropchance +{rate} für {minutes} Min., {uses} Einsätze"
+  }
+}

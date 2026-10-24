@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "instantType": "유형",
+    "instantTypeName": "작업",
+    "minute": "남은 시간(분)",
+    "cost": "비용"
+  },
+  "meta": {
+    "count": "항목 {count}개"
+  }
+}

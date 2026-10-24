@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "index": "Índice",
+    "classNo": "N.º de clase",
+    "commands": "Comandos"
+  },
+  "meta": {
+    "count": "{count} comandos de teclas"
+  }
+}

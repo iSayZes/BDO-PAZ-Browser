@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "tutorialType": "Обучение",
+    "tutorialIndex": "Шаг",
+    "title": "Заголовок",
+    "text": "Текст",
+    "startCondition": "Условие начала",
+    "completeCondition": "Условие завершения",
+    "startEvents": "События начала",
+    "panel": "Окно",
+    "image": "Изображение",
+    "usePopup": "Всплывающее окно"
+  },
+  "meta": {
+    "count": "Шагов обучения: {count}"
+  }
+}

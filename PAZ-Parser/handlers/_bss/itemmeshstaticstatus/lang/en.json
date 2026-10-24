@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "meshKey": "Mesh Key",
+    "items": "Items",
+    "model": "Model",
+    "effectFile": "Effect File",
+    "weaponMaterial": "Weapon Material",
+    "armorMaterial": "Armor Material",
+    "adult": "Adult",
+    "effectsChange": "Effects Change"
+  },
+  "meta": {
+    "count": "{count} item meshes"
+  }
+}

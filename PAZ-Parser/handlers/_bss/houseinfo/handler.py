@@ -18,8 +18,7 @@ from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.node import full_node_name
 from _common.town import town_name
-from _dbss.guildhousecraftskill.labels import house_use_name
-from _dbss.houseinforeceipe.parser import FILE_NAME as RECEIPE_FILE, parse_houseinforeceipe_records
+from _dbss.houseinforeceipe.house_uses import labelled_crafts, receipe_companion, receipe_names_kr, uses_cell
 from .parser import FILE_NAME, parse_houseinfo, products_by_house
 
 
@@ -28,16 +27,8 @@ _EMPTY = "-"
 _LIST_SEPARATOR = ", "
 _LINK_CLASS = "record-link"
 _HOUSEINFO_PATH = f"gamecommondata/binary/{FILE_NAME}"
-_RECEIPE_PATH = f"gamecommondata/binary/{RECEIPE_FILE}"
 # Products shown per row; the rest go behind a hoverable count.
 _PRODUCTS_SHOWN = 4
-
-
-def _receipe_names_kr(receipe_data: bytes | None) -> dict[int, str]:
-    """Korean name of each `houseinforeceipe.dbss` receipe; empty without the companion."""
-    if receipe_data is None:
-        return {}
-    return {r["receipe_key"]: r["name_kr"] for r in parse_houseinforeceipe_records(receipe_data)}
 
 
 def _house_label(character_key: int) -> str:
@@ -68,8 +59,7 @@ class HouseInfoBssHandler(PreviewHandler):
         return sort_keys(self._columns())
 
     def companions(self, entry: PazEntry) -> list[str]:
-        folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/{RECEIPE_FILE}", characterstatic_offset_companion(entry.internal_path)]
+        return [receipe_companion(entry.internal_path), characterstatic_offset_companion(entry.internal_path)]
 
     def get_records(
         self,
@@ -79,7 +69,7 @@ class HouseInfoBssHandler(PreviewHandler):
     ) -> list[dict]:
         try:
             info = parse_houseinfo(data)
-            receipe_names_kr = _receipe_names_kr(companions.get(RECEIPE_FILE))
+            names_kr = receipe_names_kr(companions)
             row_ids = character_row_ids(companions)
         except ValueError as ex:
             return [{"_error": f"{FILE_NAME} could not be parsed: {ex}"}]
@@ -87,7 +77,7 @@ class HouseInfoBssHandler(PreviewHandler):
         level_format = self._strings()["cells"]["level"]
         products = products_by_house(info.products)
         return [
-            self._with_display_fields(house, products.get(house["character_key"], []), receipe_names_kr, level_format, row_ids)
+            self._with_display_fields(house, products.get(house["character_key"], []), names_kr, level_format, row_ids)
             for house in info.houses
         ]
 
@@ -95,23 +85,12 @@ class HouseInfoBssHandler(PreviewHandler):
     def _with_display_fields(
         house: dict,
         product_item_keys: list[int],
-        receipe_names_kr: dict[int, str],
+        names_kr: dict[int, str],
         level_format: str,
         row_ids: frozenset[int] | None,
     ) -> dict:
         """The house with its names, its uses as text and the items the product list names for it."""
-        crafts = [
-            {
-                **craft,
-                "label": level_format.format(
-                    name=house_use_name(craft["receipe_key"])
-                    or receipe_names_kr.get(craft["receipe_key"])
-                    or craft["receipe_key"],
-                    level=craft["level"],
-                ),
-            }
-            for craft in house["crafts"]
-        ]
+        crafts = labelled_crafts(house["crafts"], names_kr, level_format)
         return {
             **house,
             "crafts": crafts,
@@ -138,17 +117,6 @@ class HouseInfoBssHandler(PreviewHandler):
             record_link(_house_label(key), _HOUSEINFO_PATH, "character_key", key, _LINK_CLASS) for key in keys
         ])
 
-    @staticmethod
-    def _uses_cell(crafts: list[dict]) -> str:
-        """One line per use, linked to its `houseinforeceipe.dbss` row."""
-        if not crafts:
-            return _EMPTY
-        lines = [
-            record_link(craft["label"], _RECEIPE_PATH, "receipe_key", craft["receipe_key"], _LINK_CLASS)
-            for craft in crafts
-        ]
-        return html_list_cell(lines, separator="<br>")
-
     def render_records_page(
         self,
         records: list[dict],
@@ -169,7 +137,7 @@ class HouseInfoBssHandler(PreviewHandler):
                 e(_EMPTY if r["group"] is None else r["group"]),
                 e(_EMPTY if r["floor"] is None else r["floor"]),
                 self._need_houses_cell(r["need_house_keys"]),
-                self._uses_cell(r["crafts"]),
+                uses_cell(r["crafts"]),
                 item_key_list_cell(r["product_item_keys"], _PRODUCTS_SHOWN) if r["product_item_keys"] else _EMPTY,
             ]
             for r in records[start : start + page_size]

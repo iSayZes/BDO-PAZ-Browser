@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "houseKey": "ID de la maison",
+    "house": "Maison",
+    "town": "Ville",
+    "useType": "Utilisation",
+    "position": "Position",
+    "yaw": "Direction (°)"
+  },
+  "offsetColumns": {
+    "houseKey": "ID de la maison",
+    "useType": "Utilisation",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} positions de vue"
+  }
+}

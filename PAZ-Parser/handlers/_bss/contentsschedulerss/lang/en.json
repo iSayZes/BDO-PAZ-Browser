@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "contentType": "Content Type",
+    "icon": "Icon",
+    "title": "Title",
+    "contentsGroups": "Contents Groups"
+  },
+  "meta": {
+    "count": "{count} schedule contents"
+  }
+}

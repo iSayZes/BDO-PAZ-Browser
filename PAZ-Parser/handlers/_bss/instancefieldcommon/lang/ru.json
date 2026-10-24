@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "instanceType": "Тип инстанса",
+    "instanceMode": "Режим инстанса",
+    "level": "Мин. ур.",
+    "quest": "Задание",
+    "questName": "Название задания",
+    "message": "Сообщение"
+  },
+  "meta": {
+    "count": "Ограничений входа: {count}"
+  }
+}

@@ -11,7 +11,8 @@
     "players": "인원",
     "ridable": "탑승물 허용",
     "rangeSpawn": "월드 스폰",
-    "dropRate": "아이템 획득 확률"
+    "dropRate": "아이템 획득 확률",
+    "maps": "지도"
   },
   "meta": {
     "count": "필드 {count}개"

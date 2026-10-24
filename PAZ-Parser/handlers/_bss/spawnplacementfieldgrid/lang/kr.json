@@ -1,0 +1,44 @@
+{
+  "cellColumns": {
+    "spawnKey": "스폰 키",
+    "type": "종류",
+    "characterKey": "캐릭터 키",
+    "name": "이름",
+    "gridX": "그리드 X",
+    "gridZ": "그리드 Z",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnRange": "스폰 범위",
+    "delay": "리스폰 시간",
+    "variableDelay": "추가 랜덤 시간",
+    "actionIndex": "액션 인덱스",
+    "dialogIndex": "대화 인덱스",
+    "territory": "영지",
+    "goHome": "귀환 웨이포인트",
+    "goBack": "복귀 웨이포인트",
+    "spawnable": "스폰 여부"
+  },
+  "gridColumns": {
+    "x": "그리드 X",
+    "z": "그리드 Z",
+    "worldX": "월드 X",
+    "worldZ": "월드 Z"
+  },
+  "fileColumns": {
+    "x": "셀 X",
+    "z": "셀 Z",
+    "worldX": "월드 X",
+    "worldZ": "월드 Z"
+  },
+  "types": {
+    "monster": "몬스터",
+    "npc": "NPC"
+  },
+  "meta": {
+    "spawns": "스폰 {count}개",
+    "squares": "스폰이 있는 그리드 칸 {count}개",
+    "cells": "셀 파일 {count}개",
+    "withField": "{count}, 필드 {field}"
+  }
+}

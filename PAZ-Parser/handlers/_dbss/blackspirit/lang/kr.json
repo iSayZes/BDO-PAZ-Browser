@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "index": "형상",
+    "condition": "조건"
+  },
+  "offsetColumns": {
+    "index": "형상",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "흑정령 형상 {count}개"
+  }
+}

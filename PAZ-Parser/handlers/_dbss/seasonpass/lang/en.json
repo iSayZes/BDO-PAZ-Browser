@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "passNo": "No.",
+    "freeQuest": "Free Quest",
+    "premiumQuest": "Premium Quest",
+    "seasonType": "Season Type",
+    "conditionQuest": "Condition Quest",
+    "changedTitle": "Changed Title",
+    "changedDescription": "Changed Description"
+  },
+  "meta": {
+    "count": "{count} pass rows"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "seasonNo": "Saison-Nr.",
+    "season": "Saison",
+    "description": "Beschreibung",
+    "rewards": "Belohnungen"
+  },
+  "meta": {
+    "count": "{count} Saisons"
+  }
+}

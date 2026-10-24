@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "contentType": "Type de contenu",
+    "icon": "Icône",
+    "title": "Titre",
+    "contentsGroups": "Groupes de contenu"
+  },
+  "meta": {
+    "count": "{count} contenus du planning"
+  }
+}

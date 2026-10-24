@@ -1,0 +1,32 @@
+{
+  "columns": {
+    "attendanceKey": "Attendance Key",
+    "name": "Event",
+    "startDate": "Start",
+    "attendanceEndDate": "Check-In End",
+    "rewardEndDate": "Claim End",
+    "eventPeriod": "Event Period",
+    "claimPeriod": "Claim Period",
+    "players": "Players",
+    "rewards": "Rewards",
+    "overlapCount": "Extra Check-Ins",
+    "overlapWaitingTime": "Extra Check-In Wait",
+    "dayOfWeek": "Extra Check-In Days",
+    "displayOrder": "Tab Order",
+    "guildLevel": "Guild Levels"
+  },
+  "offsetColumns": {
+    "attendanceKey": "Attendance Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "playerTypes": {
+    "0": "Everyone",
+    "1": "Returning",
+    "2": "New",
+    "3": "Pre-Transfer"
+  },
+  "meta": {
+    "count": "{count} attendance events"
+  }
+}

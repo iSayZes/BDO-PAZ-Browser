@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "instanceType": "Instanztyp",
+    "instanceMode": "Instanzmodus",
+    "level": "Mindeststufe",
+    "quest": "Quest",
+    "questName": "Questname",
+    "message": "Meldung"
+  },
+  "meta": {
+    "count": "{count} Zugangsgrenzen"
+  }
+}

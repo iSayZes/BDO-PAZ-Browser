@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "musicLevel": "Nivel de música",
+    "musicLevelExp": "EXP",
+    "increasingBarNumber": "Compases",
+    "increasingNoteNumber": "Notas",
+    "musicRank": "Rango"
+  },
+  "offsetColumns": {
+    "musicLevel": "Nivel de música",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} niveles de música"
+  }
+}

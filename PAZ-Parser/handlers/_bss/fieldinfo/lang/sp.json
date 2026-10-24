@@ -11,7 +11,8 @@
     "players": "Jugadores",
     "ridable": "Montura permitida",
     "rangeSpawn": "Apariciones del mundo",
-    "dropRate": "Obtención de objetos"
+    "dropRate": "Obtención de objetos",
+    "maps": "Mapas"
   },
   "meta": {
     "count": "{count} campos"

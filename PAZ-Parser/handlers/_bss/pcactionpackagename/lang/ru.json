@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "classType": "Тип класса",
+    "className": "Класс",
+    "section": "Раздел",
+    "equipType": "Тип снаряжения",
+    "vehicleType": "Тип транспорта",
+    "package": "Пакет"
+  },
+  "sections": {
+    "weapon": "Оружие",
+    "vehicle": "Транспорт",
+    "vehicle_weapon": "Транспорт с оружием",
+    "cutscene": "Кат-сцена",
+    "class_package": "Список в конце файла"
+  },
+  "meta": {
+    "count": "Пакетов действий: {count}"
+  }
+}

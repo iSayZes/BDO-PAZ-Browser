@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "gameMode": "게임 모드",
+    "rankGroup": "랭크 그룹",
+    "tier": "등급",
+    "icon": "아이콘",
+    "name": "이름",
+    "minRating": "최소 점수",
+    "maxRanking": "최대 순위",
+    "itemLists": "아이템 목록"
+  },
+  "meta": {
+    "count": "랭크 등급 {count}개"
+  }
+}

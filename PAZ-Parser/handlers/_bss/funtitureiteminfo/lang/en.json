@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "Item",
+    "installationType": "Installation Type"
+  },
+  "meta": {
+    "count": "{count} furniture items"
+  }
+}

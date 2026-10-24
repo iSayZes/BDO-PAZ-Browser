@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "key": "키",
+    "itemWhereType": "아이템 위치 타입",
+    "item": "아이템",
+    "blackBg": "검은 배경",
+    "whiteBg": "흰색 테두리",
+    "whiteIgnore": "흰색 테두리 숨김",
+    "selected": "선택 가능 컨트롤",
+    "snappingEffect": "스냅 효과",
+    "doLua": "Lua 호출",
+    "steps": "튜토리얼 단계"
+  },
+  "meta": {
+    "count": "시작 이벤트 {count}개"
+  }
+}

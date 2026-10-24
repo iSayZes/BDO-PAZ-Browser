@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class",
+    "section": "Section",
+    "equipType": "Equip Type",
+    "vehicleType": "Vehicle Type",
+    "package": "Package"
+  },
+  "sections": {
+    "weapon": "Weapon",
+    "vehicle": "Vehicle",
+    "vehicle_weapon": "Vehicle with weapon",
+    "cutscene": "Cutscene",
+    "class_package": "Trailing list"
+  },
+  "meta": {
+    "count": "{count} action packages"
+  }
+}

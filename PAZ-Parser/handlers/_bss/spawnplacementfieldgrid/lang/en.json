@@ -1,0 +1,44 @@
+{
+  "cellColumns": {
+    "spawnKey": "Spawn Key",
+    "type": "Type",
+    "characterKey": "Character Key",
+    "name": "Name",
+    "gridX": "Grid X",
+    "gridZ": "Grid Z",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnRange": "Spawn Range",
+    "delay": "Spawn Delay",
+    "variableDelay": "Variable Delay",
+    "actionIndex": "Action Index",
+    "dialogIndex": "Dialog Index",
+    "territory": "Territory",
+    "goHome": "Go Home Waypoint",
+    "goBack": "Go Back Waypoint",
+    "spawnable": "Spawnable"
+  },
+  "gridColumns": {
+    "x": "Grid X",
+    "z": "Grid Z",
+    "worldX": "World X",
+    "worldZ": "World Z"
+  },
+  "fileColumns": {
+    "x": "Cell X",
+    "z": "Cell Z",
+    "worldX": "World X",
+    "worldZ": "World Z"
+  },
+  "types": {
+    "monster": "Monster",
+    "npc": "NPC"
+  },
+  "meta": {
+    "spawns": "{count} spawns",
+    "squares": "{count} grid squares with spawns",
+    "cells": "{count} cell files",
+    "withField": "{count}, field {field}"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "innKey": "ID de l'auberge",
+    "roomKey": "ID de la chambre",
+    "house": "Maison",
+    "town": "Ville"
+  },
+  "offsetColumns": {
+    "innKey": "ID de l'auberge",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} chambres d'auberge"
+  }
+}

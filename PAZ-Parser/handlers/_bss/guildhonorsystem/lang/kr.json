@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "키",
+    "section": "구분",
+    "description": "설명",
+    "point": "길드 명성",
+    "type": "종류",
+    "details": "내용"
+  },
+  "sections": {
+    "gain": "획득 방법",
+    "use": "소모처",
+    "benefit": "명성에 따른 혜택",
+    "dailyPay": "일일 급여"
+  },
+  "meta": {
+    "count": "길드 명성 변동, 혜택, 일일 급여 단계 {count}개"
+  }
+}

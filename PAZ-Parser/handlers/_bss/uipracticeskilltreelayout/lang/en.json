@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "class": "Class",
+    "width": "Width",
+    "height": "Height",
+    "blankCells": "Blank Cells",
+    "skillCells": "Skill Cells",
+    "skills": "Skills"
+  },
+  "meta": {
+    "count": "{count} class grids"
+  }
+}

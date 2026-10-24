@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Class Type",
+    "className": "Class",
+    "showType": "Show Type",
+    "skillNo": "Skill No.",
+    "skillName": "Skill"
+  },
+  "meta": {
+    "count": "{count} cooldown window skills"
+  }
+}

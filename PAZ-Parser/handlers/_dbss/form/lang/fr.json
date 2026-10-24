@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "index": "Image",
+    "type": "Type",
+    "actionIndex": "Index d'action",
+    "tier": "Tier",
+    "icon1": "Icône",
+    "icon2": "Icône 2",
+    "characters": "Personnages"
+  },
+  "offsetColumns": {
+    "index": "Image",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "types": {
+    "0": "Cheval"
+  },
+  "meta": {
+    "count": "{count} images de monture"
+  }
+}

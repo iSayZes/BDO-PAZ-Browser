@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "기술",
+    "abilityCount": "선택지",
+    "addOns": "기술 특화 효과"
+  },
+  "meta": {
+    "count": "기술 특화 선택지가 있는 기술 {count}개"
+  }
+}

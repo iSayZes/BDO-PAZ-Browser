@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "color": "색상",
+    "section": "구분",
+    "stateGroup": "상태 그룹",
+    "states": "BGM 상태",
+    "bankNoEnvironment": "환경음",
+    "channelName": "채널",
+    "eventName": "이벤트"
+  },
+  "sections": {
+    "area": "지역",
+    "state": "특수 상태",
+    "radio": "라디오"
+  },
+  "meta": {
+    "count": "항목 {count}개"
+  }
+}

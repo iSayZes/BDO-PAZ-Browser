@@ -189,10 +189,16 @@ or `No file` (a dotted gray bar); only a layout band is clickable, the
 other two name their clients in a tooltip. A newer band reaches the newest client of the
 older one, the oldest band the right end; ticks mark live, the oldest
 client and each change. A layout with no client yet is a dashed band
-between the layouts numbered around it. A line under the timeline lists every client the doc check
-read for the doc. Under it each layout has a known/unknown bar. Clicking a
-band shows that layout in the Layout card, highlights its bar and names it
-in the card's pill; a doc without Versions rows gets tabs instead. Type
+between the layouts numbered around it. The Checked versions panel under
+the timeline lists every client the doc check read for the doc, newest
+first, behind a View button: a region picker, a search box and one chip per
+client, styled like its band (dotted orange for no documented layout, dotted
+gray for no file). The doc check has no region yet, so every client lists
+under NA / EU / OC and the other regions list none. The browser remembers
+the open state and the region across doc pages. Under the panel each
+layout has a known/unknown bar. Clicking a band or a client chip with a
+layout shows that layout in the Layout card, highlights its bar and its
+client chips and names it in the card's pill; a doc without Versions rows gets tabs instead. Type
 cells, and code spans in the text that are a number or text type, are
 colored by token (number and text types, structures, counts, field
 references, literals, keywords) from the Type column grammar. The
@@ -220,7 +226,10 @@ from a PAZ folder.
 
 `check_docs.py` writes the section. It reads the doc's files from a PAZ
 folder: the rows of [`documented-formats.md`](documented-formats.md) that
-link to the doc, and every file a ``### `x.dbss` `` heading names. It walks
+link to the doc, and every file a ``### `x.dbss` `` heading names. A row
+names a file by its name, or by its full PAZ path when several folders hold
+a file of that name or the family has no single name
+(`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`). It walks
 them by each layout, newest first, and takes the first layout every file
 walks to its last byte by. Three tables follow:
 
@@ -238,6 +247,12 @@ walks to its last byte by. Three tables follow:
 - The Clients table keeps every client the check read, newest first; a
   client read again takes its new result. `No file` means the name is not in
   the `.meta`, so an archive missing from a pruned folder is not one.
+- When a client keeps a second copy of a file in a language folder (client
+  531 has `regioninfo_linkandcheckvalid2.bss` in `binary/` and `binary/en/`),
+  the check reads the base copy. Two copies at the same depth are ambiguous:
+  that doc's game check is skipped for that client, its Versions stay as
+  they are, and the run goes on; naming the full PAZ path in the doc reads
+  one of them.
 - A doc whose layout holds `bytes[scan]` cannot be walked and keeps its
   markers only.
 
@@ -247,10 +262,12 @@ walks to its last byte by. Three tables follow:
 | `python check_docs.py --all`                         | Every doc in the layout format                              |
 | `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
 | `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
-| `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/2107/Paz` |
-| `python check_docs.py --all --version all`           | Every test client there, oldest first, then the live client; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
+| `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/<region>/2107/Paz` in whichever region folder (`NAEU`) holds it |
+| `python check_docs.py --all --version all`           | Every test client of every region folder, oldest first, then the live client; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
+| `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on, to resume one that stopped |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
 | `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |
+| `python check_docs.py --all --version 2107 --jobs 4`  | The same check on four worker processes; the default is one per core, and `--jobs 1` checks in one process |
 
 Without `--paz-folder` or `--version` the check reads the PAZ folder last
 opened in the app, the live client, and names it by the number its `.meta` holds. A

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fieldNo": "필드 ID",
+    "field": "필드",
+    "bgmStates": "BGM 상태",
+    "bankNoEnvironment": "환경음"
+  },
+  "meta": {
+    "count": "필드 {count}개"
+  }
+}

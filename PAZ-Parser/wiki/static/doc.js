@@ -60,12 +60,13 @@
       b.setAttribute("aria-pressed", on ? "true" : "false");
     });
     document.querySelectorAll(".ver[data-layout]").forEach(function (v) { v.classList.toggle("sel", v.dataset.layout === key); });
+    document.querySelectorAll(".cv-chip[data-layout]").forEach(function (c) { c.classList.toggle("sel", c.dataset.layout === key); });
     document.querySelectorAll(".layout-panel").forEach(function (p) { p.hidden = p.dataset.layout !== key; });
     var source = document.querySelector('[data-layout="' + key + '"][data-pill]');
     var pill = document.getElementById("layoutPill");
     if (source && pill) pill.textContent = source.dataset.pill;
     if (source && source.dataset.read) setReadout("Layout " + key, source.dataset.read);
-    try { localStorage.setItem("pazdocs-layout-" + CURRENT_PAGE, key); } catch (e) { /* storage blocked */ }
+    writeSetting("pazdocs-layout-" + CURRENT_PAGE, key);
   }
 
   function setReadout(name, text) {
@@ -78,13 +79,12 @@
   function initLayoutPicker() {
     var pickers = document.querySelectorAll(".tl-band[data-layout], #layoutTabs button[data-layout]");
     if (!pickers.length) return;
-    var saved = null;
-    try { saved = localStorage.getItem("pazdocs-layout-" + CURRENT_PAGE); } catch (e) { saved = null; }
+    var saved = readSetting("pazdocs-layout-" + CURRENT_PAGE);
     var valid = saved !== null && document.querySelector('.layout-panel[data-layout="' + saved + '"]');
     var initial = document.querySelector(".tl-band.sel[data-layout], #layoutTabs button.active") || pickers[0];
     showLayout(valid ? saved : initial.dataset.layout);
     document.addEventListener("click", function (ev) {
-      var btn = ev.target.closest(".tl-band[data-layout], #layoutTabs button[data-layout]");
+      var btn = ev.target.closest(".tl-band[data-layout], #layoutTabs button[data-layout], button.cv-chip[data-layout]");
       if (btn) showLayout(btn.dataset.layout);
     });
     var track = document.querySelector(".tl-track");
@@ -168,7 +168,70 @@
     });
   }
 
+  // The Checked versions panel: View/Hide, the region picker and the client search.
+  // The open state and the region carry over to every doc page; clicking a chip with a layout is handled by initLayoutPicker.
+  var CHECKED_OPEN_KEY = "pazdocs-checked-open";
+  var CHECKED_REGION_KEY = "pazdocs-checked-region";
+  function initCheckedVersions() {
+    var panel = document.getElementById("checkedVersions");
+    if (!panel) return;
+    var toggle = document.getElementById("cvToggle");
+    var region = document.getElementById("cvRegion");
+    var search = document.getElementById("cvSearch");
+    var saved = readSetting(CHECKED_REGION_KEY);
+    if (saved !== null && region.querySelector('option[value="' + saved + '"]')) {
+      region.value = saved;
+      filterChecked(region.value, search.value);
+    }
+    setCheckedOpen(readSetting(CHECKED_OPEN_KEY) === "1");
+    toggle.addEventListener("click", function () {
+      var open = document.getElementById("cvBody").hidden;
+      setCheckedOpen(open);
+      writeSetting(CHECKED_OPEN_KEY, open ? "1" : "0");
+    });
+    region.addEventListener("change", function () {
+      filterChecked(region.value, search.value);
+      writeSetting(CHECKED_REGION_KEY, region.value);
+    });
+    search.addEventListener("input", function () { filterChecked(region.value, search.value); });
+  }
+
+  function setCheckedOpen(open) {
+    document.getElementById("cvBody").hidden = !open;
+    document.getElementById("cvToggle").setAttribute("aria-expanded", open ? "true" : "false");
+    document.getElementById("cvToggleText").textContent = open ? "Hide" : "View";
+  }
+
+  function readSetting(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+
+  function writeSetting(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) { /* storage blocked */ }
+  }
+
+  function filterChecked(key, query) {
+    var q = query.trim();
+    var total = 0, shown = 0, name = "";
+    document.querySelectorAll("#checkedVersions .cv-grid").forEach(function (grid) {
+      var on = grid.dataset.region === key;
+      if (on) name = grid.dataset.name;
+      grid.querySelectorAll("li").forEach(function (chip) {
+        var match = chip.textContent.indexOf(q) !== -1;
+        chip.hidden = !match;
+        if (on) { total++; if (match) shown++; }
+      });
+      grid.hidden = !on || !shown;
+    });
+    var empty = document.getElementById("cvEmpty");
+    empty.hidden = shown > 0;
+    empty.textContent = total ? 'No checked client matches "' + q + '".' : "No " + name + " client checked yet.";
+    document.getElementById("cvCount").textContent = total;
+    document.getElementById("cvShown").textContent = "Showing " + shown + " of " + total + " versions";
+  }
+
   renderFormats();
   initLayoutPicker();
   initHover();
+  initCheckedVersions();
 })();

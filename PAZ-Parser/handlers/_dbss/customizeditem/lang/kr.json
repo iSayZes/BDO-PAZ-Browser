@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "boxKey": "상자 키",
+    "boxes": "상자",
+    "choices": "선택지",
+    "items": "아이템"
+  },
+  "offsetColumns": {
+    "boxKey": "상자 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "상자 아이템 목록 {count}개"
+  }
+}

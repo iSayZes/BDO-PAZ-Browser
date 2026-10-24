@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemCopyQuest": "아이템 전이 의뢰",
+    "copyItem": "아이템 전이",
+    "singleCopyItem": "개별 전이"
+  },
+  "meta": {
+    "count": "캐릭터 전환 설정"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "basePrice": "Base Price",
+    "maxestPercent": "Max Percent",
+    "minestPercent": "Min Percent",
+    "maxRegisterCount": "Max Registrations"
+  },
+  "offsetColumns": {
+    "itemId": "Item ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} Pearl Shop items"
+  }
+}

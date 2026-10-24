@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "sequenceFile": "Sequence File",
+    "regionKeys": "Region Keys",
+    "regions": "Regions",
+    "contentsGroup": "Contents Group",
+    "position": "Position",
+    "radius": "Radius",
+    "resurrectPosition": "Revival Position",
+    "startCondition": "Start Condition",
+    "startExecute": "Start Script",
+    "endExecute": "End Script",
+    "skipCondition": "Skip Condition",
+    "forceSkipEndExecute": "Skip End Script",
+    "options": "Options"
+  },
+  "flags": {
+    "use_client_spawn": "Client Spawn",
+    "exit_character_select": "Exit to Character Select",
+    "pre_update_fade_out": "Fade Out First",
+    "party_sequence": "Party Sequence",
+    "character_swap_sequence": "Character Swap",
+    "force_skip_sequence": "Force Skip"
+  },
+  "meta": {
+    "count": "{count} sequence triggers"
+  }
+}

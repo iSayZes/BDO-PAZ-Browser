@@ -141,6 +141,12 @@ Resolution order:
 2. Extension fallback
 3. Raw hex fallback
 
+A file named only by its grid cell, `<digits>_<digits>.bss` (the
+`553_364.bss` spawn grid cells under `mapdata_*/spawnplacementfieldgrid/`),
+looks up the key `x_y.bss` (`GRID_CELL_KEY` in `bdo_preview.py`) in place of
+its own name, so one `register_handler("x_y.bss", ...)` reads all 1,433 of
+client 3482. `browser.py --formats` lists the family under the same key.
+
 Exact filename handlers should be preferred for known formats.
 
 Extension handlers are useful for generic fallback previews.
@@ -1019,11 +1025,23 @@ subgroup to its `itemsubgroup.dbss` row, `petpcroom.dbss` each pet to its
 `pet.dbss` row, `pcroommaid.bss` each maid to its `maid.dbss` row,
 `monstergroup.dbss` each hunting ground to its `dropuihuntinggroundinfo.bss`
 row, `elementalmonsterreward.bss` each boss to its
-`elementalmonsterstat.bss` row, `houseinfo.bss` each use to its
-`houseinforeceipe.dbss` row and each needed house to its own row, and
-`mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
+`elementalmonsterstat.bss` row, `houseinfo.bss` and `guildhouseinfo.dbss`
+each use to its `houseinforeceipe.dbss` row (`_dbss/houseinforeceipe/house_uses.py`),
+`houseinfo.bss` each needed house to its own row,
+`houseinfoviewposition.dbss` and `innstaticstatus.dbss` each house to its
+`houseinfo.bss` or `guildhouseinfo.dbss` row
+(`_dbss/guildhouseinfo/house_rows.py`), `houseworking.dbss` each exchange
+to its `itemexchangesource.bss` row, and `mansionlandinfo.bss` each land and building to its `houseinfo.bss` row and
 each part count to the building's `mansionpartinfo.bss` rows, and
-`barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group.
+`barter_normal.bss` each sub group entry to its `bartersubgroup.bss` group,
+and the three Olvia Academy quest lists each quest to its
+`olviaacademycurriculumss.bss` subject or reward group (by `row_ref`) or its
+`olviaacademypassstaticstatusmanager.bss` step (by `base_quest`), whose
+views link each quest back to its list row
+(`_bss/allquestlist/olvia_academy.py`).
+`tutorial.bss` links each start event key to its `tutorial_startevent.bss`
+row, and that view links each event back to the steps that list it
+(`_bss/tutorial/links.py`).
 Both lists of `bartersubgroup.bss` number their groups from 1, so that link
 reads `sub_group_ref` (`trade:12`, `material:3`), a field the target
 records carry for it (`_bss/barter/sub_group.py`).
@@ -1045,11 +1063,12 @@ _common/
 ├── loc.py               # LOC index: loc_lookup(), loc_tagged() / loc_text(), loc_type_entries()
 ├── binary.py            # u8() to f32() readers, whole_float(): an f32 stat as int when whole
 ├── buff.py              # buff icon paths and LOC type 5 buff text
+├── challenge.py         # challenge titles and descriptions (LOC type 48 keyed by the challenge.dbss key)
 ├── character.py         # character names and titles (LOC type 6, else CHARACTER_NAME_KR / CHARACTER_TITLE_KR)
 ├── character_link.py    # a character key as a characterstatic.dbss link, plain text without a row
 ├── character_group.py   # a characterstatic.dbss character_group as its key and member names (CHARACTER_GROUP_MEMBERS)
 ├── class_type.py        # class types: LOC type 21 names, class bit masks
-├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte
+├── counted_rows.py      # parse_counted_rows(): a u32 count, then fixed rows that end at the last byte; read_counted_records() for rows with lists; read_counted_structs() and read_counted_u32s() for counted lists
 ├── duration.py          # format_duration(): milliseconds as "1h 30m", "45s", "1.5s"
 ├── empty_table.py       # EmptyTableHandler: tables the client ships with a zero count
 ├── enchant_level.py     # enchant_level_text(): enhancement level as "+7", "TRI" or "DEC"
@@ -1065,17 +1084,21 @@ _common/
 ├── item_key.py          # item keys (enchant_level << 24 | item_id), LOC type 0 names, per-level icons
 ├── knowledge.py         # knowledge entry names (LOC type 34)
 ├── lease.py             # Lease, its text and dialog_leases() (CHARACTER_LEASES)
+├── linked_items.py      # linked_item_ids(): the base items an item ID index links to keys; item_list_fields() and item_list_cell() for the Items column
 ├── pa_text.py           # game text tags and key bindings: pa_fields() / pa_cell() / pa_line_cell() for records, pa_html(), argb_css()
 ├── quest/reward_entry.py # read_reward_list(): the 178-byte reward entries of quest.dbss and guildquest.dbss; quest/reward_text.py shows them
 ├── quest/kill_monster_group.py # the killMonsterGroup(group, count) calls of a quest script, with the group's members
 ├── rate.py              # rate_percent(): a chance on the 1,000,000 = 100% scale as "0.16%"
 ├── record_reader.py     # RecordReader: walks one variable-length record in order
+├── reward_items.py      # read_reward_items(): a u64-counted list of 16-byte rewards (item ID, 4 unknown bytes, u64 count) of the siege and Rose War reward tables
 ├── row_table.py         # RowTableHandler: the base of a table with one record per row
 ├── servant_kind.py      # servant_kind_name(): CppEnums.ServantKind member names
 ├── skill.py             # skill keys (skill_no << 16 | level) and LOC type 10 names
+├── skill_cells.py       # skill_link(), skill_list_cell(): skill numbers with icon and name, linked to their skill.dbss row
 ├── string_hash.py       # key_hash(): the client's lookup3 hash of a string key (stringtable.bss, LOC type 59)
 ├── text_bind.py         # fill_text_binds(): finds TextBind placeholders; loc.py fills them from LOC type 59 or textbind.dbss
 ├── ui_texture.py        # ui_texture_path(): the PAZ path of a stored texture path under ui_texture/ or ui_texture/icon/
+├── utc_time.py          # utc_text(): Unix seconds as "2021-02-03 08:59" UTC, without datetime (the exe does not bundle it)
 ├── vehicle_skill.py     # mount and ship skill names: LOC type 8, else the Korean vehicleskill.dbss name
 └── worker.py            # plantation workers: WorkerGrade, worker_name_cell(), stat scales and format_stat()
 ```
@@ -1151,7 +1174,10 @@ skill table needs `skilltype.dbss` as a companion. A `GAME` sheet UI key
 A class type (`0` Warrior, `8` Sorceress) is named with `class_name()` from
 `class_type.py` (LOC type 21). Skill tables that store a set of classes as a
 bit mask (`skillsimply.dbss` `class_mask`) split it with
-`class_types_in_mask()`; `ALL_CLASSES_MASK` is the "every class" value.
+`class_types_in_mask()`; `ALL_CLASSES_MASK` is the "every class" value on
+client 3482 (client 1784 sets all 64 bits). `classes_label(mask, all_label)`
+gives the column text: the "all" label when `is_all_classes()`, else the
+playable class names.
 Items store every playable class as `PLAYABLE_CLASSES_MASK` instead, which
 skips unused class types: test for it with `is_all_classes()`, a superset
 check that keeps working when a class is added, and name the playable
@@ -1227,7 +1253,8 @@ key_field, key_label)` builds that handler in one call
 (`item_palette_offset_handler()`, `yacht_offset_handler()`).
 `tests/offset_rows.py` has `offset_row_problems(data, rows, key)`, which
 checks that the index rows point at rows with their key and tile the main
-file (`lead=` for an index that points past a key prefix).
+file (`lead=` for an index that points past a key prefix, `key_from_end=`
+for a table that stores the key after its lists, `guildhouseinfo.dbss`).
 
 ### Row Tables
 
@@ -1241,7 +1268,18 @@ paging and the `meta.count` line. Set `file_name` and `lang_dir` as class
 attributes. A table of fixed rows after a u32 count reads them with
 `parse_counted_rows(data, row, fields, file_name)` from
 `_common/counted_rows.py` (`counted_row_values()` for rows with an array
-field). `_dbss/itempalette/` is the smallest example.
+field); rows with counted lists read each row from one `RecordReader` with
+`read_counted_records(data, read_row, file_name)` (`_dbss/houseworking/`).
+A u32-counted list inside a row or after the rows reads with
+`read_counted_structs(reader, item, fields, what)` (fixed structs as dicts)
+or `read_counted_u32s(reader, what)` from the same module
+(`_bss/autoseasonclosechangeitemstaticstatus/`). The siege and Rose War
+reward tables (`oceansiegereward.bss`, `siege2024rewardstaticstatus.bss`,
+`rosewarrewardstaticstatus.bss`, `majorsiegerewardstaticstatus.bss`)
+store each reward list as a u64 count and 16-byte rewards; read one with
+`read_reward_items(reader, file_name)` from `_common/reward_items.py`,
+which gives `item_id`, `unknown_04` (hex text) and `count` per reward.
+`_dbss/itempalette/` is the smallest example.
 
 ## Lookup Indexes
 
@@ -1283,7 +1321,10 @@ Results are
 cached by `paz/bdo_index_cache.py` in `paz_browser_indexes.cache` in the
 client's cache folder, keyed by `IndexKind.value` (renaming a value orphans its cached data
 until the rebuild) and invalidated on the PAZ meta version or when the code that
-builds them changes. The cache stores `builder_fingerprint()` (through
+builds them changes. A folder load also deletes it when the `pad*.paz` files on
+disk differ from the ones the PAZ entry cache (`paz/bdo_cache.py`) recorded under
+the same meta version, as when archives are added to or deleted from a client
+folder that keeps its `pad00000.meta`. The cache stores `builder_fingerprint()` (through
 `index_fingerprint()` in `api/bdo_lookup_indexes.py`), a hash of
 `_common/lookup_builders.py` plus every project module it imports and the JSON
 files beside them (`paz/source_fingerprint.py`), so editing a builder, a helper
@@ -1328,6 +1369,9 @@ IDs (`LookupValue`).
 | `BUFF_ITEMS`     | `itemenchant.dbss`, `itemenchantoffset.dbss`, `skill.dbss`, `skilloffset.dbss` | item IDs (tuple) |
 | `ENCHANT_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `ENHANCEMENT_TYPE_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `MARBLE_DICE_GROUP_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `CUSTOMIZED_ITEM_BOXES` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
+| `MESH_KEY_ITEMS` | `itemenchant.dbss`, `itemenchantoffset.dbss` | item IDs (tuple) |
 | `NODE_PARENT`    | `exploration.bss`, `mapdata_realexplore2.bwp` | parent node key |
 | `MAP_NODE`       | `exploration.bss`, `mapdata_realexplore2.bwp` | `(node_kind, x, z, is_sub_node, is_sea)` |
 | `NODE_NAME_KR`   | `exploration.bss`                          | Korean node name |
@@ -1576,6 +1620,34 @@ level-0 blocks. The
 [guaranteeenchantss.dbss](file-formats/guaranteeenchantss_dbss.md) Items
 column reads it; `itemenchant.dbss` shows each item's own type as its
 Enhancement Type column.
+
+`MARBLE_DICE_GROUP_ITEMS` maps a
+[marblegamediceitemgroup.dbss](file-formats/marblegamediceitemgroup_dbss.md)
+group key to the base items with contents event `98` whose
+`contents_event_param1` names it, in ascending ID order. It is built by
+`build_marble_dice_group_item_index()` in `_dbss/itemenchant/parser.py`
+from the level-0 blocks. The Items columns of `marblegamediceitemgroup.dbss`
+and `marblegamediceitemkey.dbss` read it through
+`_dbss/marblegamediceitemgroup/group_items.py`, which calls
+`linked_item_ids()` in `_common/linked_items.py`.
+
+`CUSTOMIZED_ITEM_BOXES` maps a
+[customizeditem.dbss](file-formats/customizeditem_dbss.md) key to the base
+items with contents event `31` (CustomizedItemBox) whose
+`contents_event_param1` names it, in ascending ID order. It is built by
+`build_customized_item_box_index()` in `_dbss/itemenchant/parser.py`, which
+shares the level-0 walk with the marble dice index. The `customizeditem.dbss`
+Boxes column reads it through `_common/linked_items.py`.
+
+`MESH_KEY_ITEMS` maps an item mesh key (`item_mesh_key` in the
+[itemenchant.dbss](file-formats/itemenchant_dbss.md) Class Entry list, the key
+of [itemeffectchange.dbss](file-formats/itemeffectchange_dbss.md)) to the base
+items that wear it for any class type, in ascending ID order. It is built by
+`build_mesh_key_item_index()` in `_dbss/itemenchant/parser.py` from the
+level-0 blocks, since every level of an item stores the same class entries.
+The Items columns of `itemeffectchange.dbss` and
+[itemmeshstaticstatus.bss](file-formats/itemmeshstaticstatus_bss.md) read it
+through `_common/linked_items.py`.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
 [exploration.bss](file-formats/exploration_bss.md)) to the one node it links

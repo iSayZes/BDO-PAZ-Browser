@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemGroupType": "Gruppentyp",
+    "effectIndex": "Effekt",
+    "name": "Name",
+    "color": "Farbe",
+    "dyeItem": "Farbstoff"
+  },
+  "meta": {
+    "count": "{count} Gegenstandseffekte"
+  }
+}

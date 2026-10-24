@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "index": "인덱스",
+    "bankName": "뱅크",
+    "eventName": "이벤트",
+    "ingameName": "이름 키",
+    "articulations": "아티큘레이션",
+    "startAction": "시작 액션",
+    "endAction": "종료 액션",
+    "advancedType": "탭",
+    "instrumentNameType": "탭 키",
+    "isOpened": "공개",
+    "ingActions": "반복 액션",
+    "isProvided": "기본 지급"
+  },
+  "advancedTypes": {
+    "0": "초급",
+    "1": "고급",
+    "2": "전자"
+  },
+  "meta": {
+    "count": "악기 {count}개"
+  }
+}

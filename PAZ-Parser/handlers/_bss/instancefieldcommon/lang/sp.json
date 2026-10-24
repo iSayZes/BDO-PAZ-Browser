@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "instanceType": "Tipo de instancia",
+    "instanceMode": "Modo de instancia",
+    "level": "Nivel mín.",
+    "quest": "Misión",
+    "questName": "Nombre de la misión",
+    "message": "Mensaje"
+  },
+  "meta": {
+    "count": "{count} límites de acceso"
+  }
+}

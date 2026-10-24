@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemGroupType": "Тип группы",
+    "effectIndex": "Эффект",
+    "name": "Название",
+    "color": "Цвет",
+    "dyeItem": "Краситель"
+  },
+  "meta": {
+    "count": "Эффектов предметов: {count}"
+  }
+}

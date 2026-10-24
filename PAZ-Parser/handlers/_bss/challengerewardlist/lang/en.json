@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "itemId": "Item ID",
+    "enchantLevel": "Enhancement Level",
+    "item": "Item"
+  },
+  "meta": {
+    "count": "{count} reward items"
+  }
+}

@@ -11,6 +11,11 @@ from .mentalcard.handler import MentalCardHandler, mental_card_offset_handler
 from .detail_dialog.handler import DetailDialogHandler, detail_dialog_offset_handler
 from .base_dialog.handler import BaseDialogHandler
 from .dialogtext.handler import DialogTextHandler, dialog_text_offset_handler
+from .emoticon.handler import EmoticonHandler, emoticon_offset_handler
+from .emoticonpackage.handler import EmoticonPackageHandler, emoticon_package_offset_handler
+from .cashproductcategory.handler import CashProductCategoryHandler, cash_product_category_offset_handler
+from .coupon.handler import CouponHandler, coupon_offset_handler
+from .socialaction.handler import SocialActionHandler, social_action_offset_handler
 from .textbind.handler import TextBindHandler, text_bind_offset_handler
 from .mentaltheme.handler import MentalThemeHandler, mental_theme_offset_handler
 from .knowledgelearning.handler import (
@@ -31,6 +36,8 @@ from .itemenchant.handler import (
     ItemEnchantHandler,
     item_enchant_offset_handler,
 )
+from .itemenchantbackend.handler import ItemEnchantBackendHandler
+from .itemenchantbackendtest.handler import ItemEnchantBackendTestHandler
 from .guaranteeenchantss.handler import GuaranteeEnchantHandler
 from .enchantstaticstatus.handler import (
     EnchantStaticStatusHandler,
@@ -159,6 +166,8 @@ from .itemnakmessage.handler import ItemNakMessageHandler, item_nak_message_offs
 from .accessorystepup.handler import AccessoryStepUpHandler
 from .employeeclientspawn.handler import EmployeeClientSpawnHandler, employee_client_spawn_offset_handler
 from .exptoskillexprate.handler import ExpToSkillExpRateHandler, exp_to_skill_exp_rate_offset_handler
+from .itemeffectchange.handler import ItemEffectChangeHandler, item_effect_change_offset_handler
+from .itemenchantpuzzle.handler import ItemEnchantPuzzleHandler
 from .itemenchantsafety.handler import ItemEnchantSafetyHandler, item_enchant_safety_offset_handler
 from .servnatmarkettax.handler import ServantMarketTaxHandler, servant_market_tax_offset_handler
 from .skillfusion.handler import SkillFusionHandler, skill_fusion_offset_handler
@@ -192,7 +201,10 @@ from .vehicleskillowner.handler import VehicleSkillOwnerHandler, vehicle_skill_o
 from .servantbuff.handler import ServantBuffHandler, servant_buff_offset_handler
 from .servantinteraction.handler import ServantInteractionHandler, servant_interaction_offset_handler
 from .servantupgrade.handler import ServantUpgradeHandler, servant_upgrade_offset_handler
+from .minigamefindpattern.handler import MiniGameFindPatternHandler, minigame_find_pattern_offset_handler
+from .minigamefindtool.handler import MiniGameFindToolHandler, minigame_find_tool_offset_handler
 from .minigamereward.handler import MiniGameRewardHandler, minigame_reward_offset_handler
+from .musiclevel.handler import MusicLevelHandler, musiclevel_offset_handler
 from .purchaselimitgroup.handler import PurchaseLimitGroupHandler, purchase_limit_group_offset_handler
 from .trainingvehicle.handler import TrainingVehicleHandler, training_vehicle_offset_handler
 from .guildboss.handler import GuildBossHandler, guild_boss_offset_handler
@@ -234,6 +246,32 @@ from .yachtclasstypetextureinfo.handler import (
 from .yachtdice.handler import YachtDiceHandler, yacht_dice_offset_handler
 from .yachtdicecard.handler import YachtDiceCardHandler, yacht_dice_card_offset_handler
 from .yachtdicepreset.handler import YachtDicePresetHandler, yacht_dice_preset_offset_handler
+from .houseinfoviewposition.handler import HouseInfoViewPositionHandler, house_info_view_position_offset_handler
+from .mansiondata.handler import MansionDataHandler, mansion_data_offset_handler
+from .innstaticstatus.handler import InnStaticStatusHandler, inn_static_status_offset_handler
+from .houseworking.handler import HouseWorkingHandler, house_working_offset_handler
+from .interiorrelationpoint.handler import InteriorRelationPointHandler, interior_relation_point_offset_handler
+from .guildhouseinfo.handler import GuildHouseInfoHandler, guild_house_info_offset_handler
+from .blackspirit.handler import BlackSpiritHandler, black_spirit_offset_handler
+from .form.handler import FormHandler, form_offset_handler
+from .marblegamediceitemgroup.handler import MarbleDiceItemGroupHandler, marble_dice_item_group_offset_handler
+from .marblegamediceitemkey.handler import MarbleDiceItemKeyHandler, marble_dice_item_key_offset_handler
+from .moonblessingss.handler import MoonBlessingHandler
+from .seasonpass.handler import SeasonPassHandler
+from .seasonreward.handler import SeasonRewardHandler
+from .skillawakeningability.handler import SkillAwakeningAbilityHandler, skill_awakening_ability_offset_handler
+from .attendance.handler import AttendanceHandler, attendance_offset_handler
+from .customizeditem.handler import CustomizedItemHandler, customized_item_offset_handler
+from .cashchoose.handler import CashChooseHandler, cash_choose_offset_handler
+from .skillcommand.handler import SkillCommandHandler, skill_command_offset_handler
+from .setoption.handler import SetOptionHandler, set_option_offset_handler
+from .profiling.handler import ProfilingHandler, profiling_offset_handler
+from .cutscene.handler import CutsceneHandler, cutscene_offset_handler
+from .cashitemmarketsetting.handler import CashItemMarketSettingHandler, cash_item_market_setting_offset_handler
+from .intimacyrelation.handler import IntimacyRelationHandler, intimacy_relation_offset_handler
+from .challenge.handler import ChallengeHandler, challenge_offset_handler
+from .commandtooltip.handler import CommandTooltipHandler, command_tooltip_offset_handler
+from .tooltiptable.handler import TooltipTableHandler, tooltip_offset_handler
 
 
 def register_dbss_handlers() -> None:
@@ -315,6 +353,9 @@ def register_dbss_handlers() -> None:
     register_handler("employeeclientspawn.dbss", EmployeeClientSpawnHandler())
     register_handler("exptoskillexprateoffset.dbss", exp_to_skill_exp_rate_offset_handler())
     register_handler("exptoskillexprate.dbss", ExpToSkillExpRateHandler())
+    register_handler("itemeffectchangeoffset.dbss", item_effect_change_offset_handler())
+    register_handler("itemeffectchange.dbss", ItemEffectChangeHandler())
+    register_handler("itemenchantpuzzle.dbss", ItemEnchantPuzzleHandler())
     register_handler("itemenchantsafetyoffset.dbss", item_enchant_safety_offset_handler())
     register_handler("itemenchantsafety.dbss", ItemEnchantSafetyHandler())
     register_handler("servnatmarkettaxoffset.dbss", servant_market_tax_offset_handler())
@@ -335,6 +376,16 @@ def register_dbss_handlers() -> None:
     register_handler("guildmanufacture.dbss", GuildManufactureHandler())
     register_handler("dialogtextoffset.dbss", dialog_text_offset_handler())
     register_handler("dialogtext.dbss", DialogTextHandler())
+    register_handler("emoticonoffset.dbss", emoticon_offset_handler())
+    register_handler("emoticon.dbss", EmoticonHandler())
+    register_handler("emoticonpackageoffset.dbss", emoticon_package_offset_handler())
+    register_handler("emoticonpackage.dbss", EmoticonPackageHandler())
+    register_handler("cashproductcategoryoffset.dbss", cash_product_category_offset_handler())
+    register_handler("cashproductcategory.dbss", CashProductCategoryHandler())
+    register_handler("couponoffset.dbss", coupon_offset_handler())
+    register_handler("coupon.dbss", CouponHandler())
+    register_handler("socialactionoffset.dbss", social_action_offset_handler())
+    register_handler("socialaction.dbss", SocialActionHandler())
     register_handler("textbindoffset.dbss", text_bind_offset_handler())
     register_handler("textbind.dbss", TextBindHandler())
     register_handler("mentalthemeoffset.dbss", mental_theme_offset_handler())
@@ -352,6 +403,10 @@ def register_dbss_handlers() -> None:
     register_handler("cashproductoffset.dbss", cash_product_offset_handler())
     register_handler("itemenchant.dbss", ItemEnchantHandler())
     register_handler("itemenchantoffset.dbss", item_enchant_offset_handler())
+    register_handler("itemenchantbackend.dbss", ItemEnchantBackendHandler())
+    # The same index layout and keys as itemenchantoffset.dbss.
+    register_handler("itemenchantbackendoffset.dbss", item_enchant_offset_handler())
+    register_handler("itemenchantbackendtest.dbss", ItemEnchantBackendTestHandler())
     register_handler("enchantstaticstatus.dbss", EnchantStaticStatusHandler())
     register_handler("enchantstaticstatusoffset.dbss", enchant_static_status_offset_handler())
     register_handler("guaranteeenchantss.dbss", GuaranteeEnchantHandler())
@@ -482,8 +537,14 @@ def register_dbss_handlers() -> None:
     register_handler("servantinteraction.dbss", ServantInteractionHandler())
     register_handler("servantupgradeoffset.dbss", servant_upgrade_offset_handler())
     register_handler("servantupgrade.dbss", ServantUpgradeHandler())
+    register_handler("minigamefindpatternoffset.dbss", minigame_find_pattern_offset_handler())
+    register_handler("minigamefindpattern.dbss", MiniGameFindPatternHandler())
+    register_handler("minigamefindtooloffset.dbss", minigame_find_tool_offset_handler())
+    register_handler("minigamefindtool.dbss", MiniGameFindToolHandler())
     register_handler("minigamerewardoffset.dbss", minigame_reward_offset_handler())
     register_handler("minigamereward.dbss", MiniGameRewardHandler())
+    register_handler("musicleveloffset.dbss", musiclevel_offset_handler())
+    register_handler("musiclevel.dbss", MusicLevelHandler())
     register_handler("purchaselimitgroupoffset.dbss", purchase_limit_group_offset_handler())
     register_handler("purchaselimitgroup.dbss", PurchaseLimitGroupHandler())
     register_handler("trainingvehicleoffset.dbss", training_vehicle_offset_handler())
@@ -535,3 +596,52 @@ def register_dbss_handlers() -> None:
     register_handler("yachtdicecard.dbss", YachtDiceCardHandler())
     register_handler("yachtdicepresetoffset.dbss", yacht_dice_preset_offset_handler())
     register_handler("yachtdicepreset.dbss", YachtDicePresetHandler())
+    register_handler("houseinfoviewpositionoffset.dbss", house_info_view_position_offset_handler())
+    register_handler("houseinfoviewposition.dbss", HouseInfoViewPositionHandler())
+    register_handler("mansiondataoffset.dbss", mansion_data_offset_handler())
+    register_handler("mansiondata.dbss", MansionDataHandler())
+    register_handler("innstaticstatusoffset.dbss", inn_static_status_offset_handler())
+    register_handler("innstaticstatus.dbss", InnStaticStatusHandler())
+    register_handler("houseworkingoffset.dbss", house_working_offset_handler())
+    register_handler("houseworking.dbss", HouseWorkingHandler())
+    register_handler("interiorrelationpointoffset.dbss", interior_relation_point_offset_handler())
+    register_handler("interiorrelationpoint.dbss", InteriorRelationPointHandler())
+    register_handler("guildhouseinfooffset.dbss", guild_house_info_offset_handler())
+    register_handler("guildhouseinfo.dbss", GuildHouseInfoHandler())
+    register_handler("blackspiritoffset.dbss", black_spirit_offset_handler())
+    register_handler("blackspirit.dbss", BlackSpiritHandler())
+    register_handler("formoffset.dbss", form_offset_handler())
+    register_handler("form.dbss", FormHandler())
+    register_handler("marblegamediceitemgroupoffset.dbss", marble_dice_item_group_offset_handler())
+    register_handler("marblegamediceitemgroup.dbss", MarbleDiceItemGroupHandler())
+    register_handler("marblegamediceitemkeyoffset.dbss", marble_dice_item_key_offset_handler())
+    register_handler("marblegamediceitemkey.dbss", MarbleDiceItemKeyHandler())
+    register_handler("moonblessingss.dbss", MoonBlessingHandler())
+    register_handler("seasonpass.dbss", SeasonPassHandler())
+    register_handler("seasonreward.dbss", SeasonRewardHandler())
+    register_handler("skillawakeningabilityoffset.dbss", skill_awakening_ability_offset_handler())
+    register_handler("skillawakeningability.dbss", SkillAwakeningAbilityHandler())
+    register_handler("attendanceoffset.dbss", attendance_offset_handler())
+    register_handler("attendance.dbss", AttendanceHandler())
+    register_handler("customizeditemoffset.dbss", customized_item_offset_handler())
+    register_handler("customizeditem.dbss", CustomizedItemHandler())
+    register_handler("cashchooseoffset.dbss", cash_choose_offset_handler())
+    register_handler("cashchoose.dbss", CashChooseHandler())
+    register_handler("skillcommandoffset.dbss", skill_command_offset_handler())
+    register_handler("skillcommand.dbss", SkillCommandHandler())
+    register_handler("setoptionoffset.dbss", set_option_offset_handler())
+    register_handler("setoption.dbss", SetOptionHandler())
+    register_handler("profilingoffset.dbss", profiling_offset_handler())
+    register_handler("profiling.dbss", ProfilingHandler())
+    register_handler("cutsceneoffset.dbss", cutscene_offset_handler())
+    register_handler("cutscene.dbss", CutsceneHandler())
+    register_handler("cashitemmarketsettingoffset.dbss", cash_item_market_setting_offset_handler())
+    register_handler("cashitemmarketsetting.dbss", CashItemMarketSettingHandler())
+    register_handler("intimacyrelationoffset.dbss", intimacy_relation_offset_handler())
+    register_handler("intimacyrelation.dbss", IntimacyRelationHandler())
+    register_handler("challengeoffset.dbss", challenge_offset_handler())
+    register_handler("challenge.dbss", ChallengeHandler())
+    register_handler("commandtooltipoffset.dbss", command_tooltip_offset_handler())
+    register_handler("commandtooltip.dbss", CommandTooltipHandler())
+    register_handler("tooltiptableoffset.dbss", tooltip_offset_handler())
+    register_handler("tooltiptable.dbss", TooltipTableHandler())

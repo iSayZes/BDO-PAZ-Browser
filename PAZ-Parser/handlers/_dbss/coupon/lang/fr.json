@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "couponKey": "ID du coupon",
+    "name": "Coupon",
+    "discountRate": "Remise",
+    "discountPearl": "Remise en Perles",
+    "maxDiscountPearl": "Remise max.",
+    "minProductPearl": "Prix min.",
+    "expirationDays": "Jours de validité",
+    "category": "Catégorie"
+  },
+  "offsetColumns": {
+    "couponKey": "ID du coupon",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} coupons"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "courseKey": "Clé du parcours",
+    "course": "Parcours",
+    "mode": "Mode",
+    "checkpoint": "Point de passage",
+    "nextCheckpoint": "Point de passage suivant"
+  },
+  "meta": {
+    "count": "{count} points de passage"
+  }
+}

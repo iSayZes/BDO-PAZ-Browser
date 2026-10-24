@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "packageKey": "Paket-ID",
+    "name": "Name",
+    "emoticonCount": "Anzahl",
+    "emoticons": "Emoticons"
+  },
+  "offsetColumns": {
+    "packageKey": "Paket-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Emoticon-Pakete"
+  }
+}

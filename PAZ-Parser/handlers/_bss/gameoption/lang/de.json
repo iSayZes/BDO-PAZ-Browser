@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "offset": "Offset",
+    "field": "Feld",
+    "value": "Wert",
+    "text": "Text"
+  },
+  "meta": {
+    "count": "{fields} Felder, {strings} Texte, {body} Bytes nicht entschlüsselt"
+  }
+}

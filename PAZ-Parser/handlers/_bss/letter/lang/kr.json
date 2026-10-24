@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemKey": "아이템 ID",
+    "item": "아이템",
+    "textKey": "텍스트 키",
+    "text": "텍스트",
+    "background": "배경",
+    "centered": "가운데 정렬"
+  },
+  "meta": {
+    "count": "편지 {count}개"
+  }
+}

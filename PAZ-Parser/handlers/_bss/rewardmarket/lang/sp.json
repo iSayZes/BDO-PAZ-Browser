@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradeKey": "ID de intercambio",
+    "petKey": "ID de mascota",
+    "pet": "Mascota",
+    "rewards": "Recompensas"
+  },
+  "meta": {
+    "count": "{count} intercambios"
+  }
+}

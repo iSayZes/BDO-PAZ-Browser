@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "Regionsschlüssel",
+    "region": "Region",
+    "structures": "Bauwerk-Monster",
+    "characters": "Gelistete Charaktere"
+  },
+  "meta": {
+    "count": "{count} Regionen"
+  }
+}

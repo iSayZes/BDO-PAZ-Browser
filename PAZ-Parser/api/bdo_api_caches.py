@@ -37,7 +37,7 @@ from bdo_preview import PreviewHandler, get_handler, has_parsed_view, parsed_han
 # The handlers folder the entry point put on the path (bdo_preview.use_handlers_dir).
 from _common.loc import init_loc
 from paz import bdo_cache, bdo_index_cache, bdo_records_cache, bdo_thumbnail_cache
-from paz.bdo_cache import save_cache
+from paz.bdo_cache import CachedEntries, save_cache
 from paz.bdo_payload_reader import read_entry_payload
 from paz.bdo_records_cache import RecordsCache
 from paz.bdo_thumbnail_cache import ThumbnailCache
@@ -133,7 +133,7 @@ class CacheMixin(ApiState):
         self._open_cache_dir(self._paz_root)
         assert self._cache_dir is not None
         try:
-            save_cache(self._cache_dir, self._meta_version, self._entries)
+            save_cache(self._cache_dir, CachedEntries(self._meta_version, self._archive_files, self._entries))
         except OSError:
             # Not fatal: the next start parses the meta file again.
             logging.warning("Could not write the PAZ index cache in %s", self._cache_dir, exc_info=True)

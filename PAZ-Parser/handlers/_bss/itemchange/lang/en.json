@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Key",
+    "fromItem": "From Item",
+    "toItem": "To Item",
+    "type": "Type"
+  },
+  "meta": {
+    "count": "{count} item changes"
+  }
+}

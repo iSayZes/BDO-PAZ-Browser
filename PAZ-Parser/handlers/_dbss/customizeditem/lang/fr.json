@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "boxKey": "Clé de boîte",
+    "boxes": "Boîtes",
+    "choices": "Choix",
+    "items": "Objets"
+  },
+  "offsetColumns": {
+    "boxKey": "Clé de boîte",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} listes d'objets de boîte"
+  }
+}

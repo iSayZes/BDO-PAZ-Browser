@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "emoticonKey": "Emoticon Key",
+    "name": "Name",
+    "icon": "Icon",
+    "iconCount": "Icons",
+    "rowCount": "Rows",
+    "columnCount": "Columns",
+    "keyword": "Keyword",
+    "sequence": "Sequence",
+    "group": "Group"
+  },
+  "offsetColumns": {
+    "emoticonKey": "Emoticon Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} emoticons"
+  }
+}

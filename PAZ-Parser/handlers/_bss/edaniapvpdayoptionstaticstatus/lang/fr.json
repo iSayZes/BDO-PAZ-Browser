@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "row": "Ligne",
+    "time1": "Heure 1",
+    "time2": "Heure 2"
+  },
+  "meta": {
+    "count": "{count} entrées de calendrier"
+  }
+}

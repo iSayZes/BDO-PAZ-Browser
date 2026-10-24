@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "chooseKey": "선택 키",
+    "icon": "아이콘",
+    "chooseCount": "선택 수",
+    "isChooseDuplicate": "중복 선택",
+    "productCount": "상품 수",
+    "products": "상품 목록"
+  },
+  "offsetColumns": {
+    "chooseKey": "선택 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "선택 상품 {count}개"
+  }
+}

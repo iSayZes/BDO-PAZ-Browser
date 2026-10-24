@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "territoryKey": "Territory Key",
+    "territory": "Territory",
+    "taxType": "Tax Type",
+    "minPercentOrPrice": "Minimum",
+    "maxPercentOrPrice": "Maximum",
+    "systemPercent": "System Rate"
+  },
+  "meta": {
+    "count": "{count} territory tax types"
+  }
+}

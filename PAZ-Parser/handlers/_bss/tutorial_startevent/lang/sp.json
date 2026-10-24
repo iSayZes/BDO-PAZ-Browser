@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "key": "Clave",
+    "itemWhereType": "Tipo de ubicación de objeto",
+    "item": "Objeto",
+    "blackBg": "Fondo negro",
+    "whiteBg": "Marco blanco",
+    "whiteIgnore": "Ocultar marco blanco",
+    "selected": "Controles seleccionables",
+    "snappingEffect": "Efecto de ajuste",
+    "doLua": "Llamada Lua",
+    "steps": "Pasos del tutorial"
+  },
+  "meta": {
+    "count": "{count} eventos de inicio"
+  }
+}

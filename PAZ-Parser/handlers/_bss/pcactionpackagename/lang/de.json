@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "classType": "Klassentyp",
+    "className": "Klasse",
+    "section": "Bereich",
+    "equipType": "Ausrüstungstyp",
+    "vehicleType": "Fahrzeugtyp",
+    "package": "Paket"
+  },
+  "sections": {
+    "weapon": "Waffe",
+    "vehicle": "Fahrzeug",
+    "vehicle_weapon": "Fahrzeug mit Waffe",
+    "cutscene": "Zwischensequenz",
+    "class_package": "Liste am Dateiende"
+  },
+  "meta": {
+    "count": "{count} Aktionspakete"
+  }
+}

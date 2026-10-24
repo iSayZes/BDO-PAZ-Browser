@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "exchangeNo": "Exchange No",
+    "coin": "Coin",
+    "infoCategory": "Category",
+    "needCoinCount": "Coins Needed",
+    "reward": "Reward",
+    "exchangeType": "Exchange Type",
+    "limitCount": "Limit",
+    "accumulatedNeedLevel": "Needed Level"
+  },
+  "meta": {
+    "count": "{count} exchanges"
+  }
+}

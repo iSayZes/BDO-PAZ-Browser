@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "count": "Count",
+    "reward": "Reward"
+  },
+  "rewards": {
+    "win": "Victory",
+    "lose": "Defeat",
+    "scoreRank1": "Score 1st",
+    "scoreRank2": "Score 2nd",
+    "scoreRank3": "Score 3rd",
+    "scoreRank4": "Score 4th",
+    "scoreRank5": "Score 5th",
+    "scoreRank6": "Score 6th",
+    "liberation": "Liberation",
+    "plusMedal": "Plus Medal",
+    "plusItem": "Plus Item",
+    "item1": "Item 1",
+    "item2": "Item 2",
+    "item3": "Item 3",
+    "booty": "Booty: {territory}"
+  },
+  "meta": {
+    "count": "{count} reward items"
+  }
+}

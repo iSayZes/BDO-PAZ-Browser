@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "courseKey": "코스 키",
+    "course": "코스",
+    "mode": "모드",
+    "checkpoint": "체크포인트",
+    "nextCheckpoint": "다음 체크포인트"
+  },
+  "meta": {
+    "count": "체크포인트 {count}개"
+  }
+}

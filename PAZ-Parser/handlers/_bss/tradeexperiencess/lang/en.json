@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradingLevel": "Trading Level",
+    "rank": "Rank",
+    "tradeExp": "Base Trade EXP",
+    "saleExpRate01": "Rate 0.1 Item, 1,000 Distance"
+  },
+  "meta": {
+    "count": "{count} Trading levels"
+  }
+}

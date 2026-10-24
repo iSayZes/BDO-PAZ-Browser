@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "class": "Класс",
+    "width": "Ширина",
+    "height": "Высота",
+    "blankCells": "Пустые ячейки",
+    "skillCells": "Ячейки навыков",
+    "skills": "Навыки"
+  },
+  "meta": {
+    "count": "Сеток классов: {count}"
+  }
+}

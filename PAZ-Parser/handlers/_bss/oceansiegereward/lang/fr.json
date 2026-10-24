@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "count": "Quantité",
+    "rewardSet": "Ensemble",
+    "rewardList": "Liste",
+    "skill1Id": "ID de compétence 1",
+    "skill1": "Compétence 1",
+    "skill2Id": "ID de compétence 2",
+    "skill2": "Compétence 2"
+  },
+  "meta": {
+    "count": "{count} objets de récompense"
+  }
+}

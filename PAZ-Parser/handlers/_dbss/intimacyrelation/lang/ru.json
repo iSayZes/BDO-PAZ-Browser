@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "npcKey": "Ключ НИП",
+    "npc": "НИП",
+    "knowledgeKey": "ID знания",
+    "knowledge": "Знание",
+    "cutscene": "Ролик",
+    "coveredDialog": "Скрытый диалог",
+    "discoverDialog": "Диалог открытия",
+    "dialogLines": "Другие диалоги"
+  },
+  "offsetColumns": {
+    "npcKey": "Ключ НИП",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "НИП: {count}"
+  }
+}

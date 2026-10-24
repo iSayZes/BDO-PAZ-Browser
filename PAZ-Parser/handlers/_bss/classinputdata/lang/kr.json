@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "index": "인덱스",
+    "classNo": "클래스 번호",
+    "commands": "커맨드"
+  },
+  "meta": {
+    "count": "키 커맨드 {count}개"
+  }
+}

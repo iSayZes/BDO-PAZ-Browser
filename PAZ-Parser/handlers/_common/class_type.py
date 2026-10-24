@@ -36,3 +36,8 @@ def is_all_classes(class_mask: int) -> bool:
 def class_names(class_mask: int) -> list[str]:
     """LOC names of the playable classes in the mask, lowest type first."""
     return [class_name(class_type) for class_type in class_types_in_mask(class_mask & PLAYABLE_CLASSES_MASK)]
+
+
+def classes_label(class_mask: int, all_label: str) -> str:
+    """`all_label` when every playable class may use it, else the class names; '' for none."""
+    return all_label if is_all_classes(class_mask) else ", ".join(class_names(class_mask))

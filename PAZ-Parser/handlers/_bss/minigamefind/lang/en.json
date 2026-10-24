@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "gameType": "Game Type",
+    "nextGame": "Next Game",
+    "minDamageRate": "Min Damage Rate",
+    "nextRate": "Next Rate",
+    "lifeType": "Life Type",
+    "lifeRate": "Life Rate",
+    "tools": "Hoes",
+    "toolRate": "Tool Rate",
+    "stoneRate": "Stone Rate",
+    "stoneDrop": "Stone Drop",
+    "grid": "Grid",
+    "startPos": "Start Position",
+    "minRootCount": "Min Root Count",
+    "beginRootCount": "Begin Root Count",
+    "useSlots": "Slot Groups",
+    "rewards": "Rewards",
+    "lakiaros": "Lakiaros"
+  },
+  "sides": {
+    "left": "Left",
+    "right": "Right",
+    "top": "Top",
+    "bottom": "Bottom"
+  },
+  "lakiaro": {
+    "depth": "{name} ({key}), depth {depth}"
+  },
+  "meta": {
+    "count": "{count} game types"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "chooseKey": "Choice Key",
+    "icon": "Icon",
+    "chooseCount": "Picks",
+    "isChooseDuplicate": "Repeat Picks",
+    "productCount": "Products",
+    "products": "Product List"
+  },
+  "offsetColumns": {
+    "chooseKey": "Choice Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} choice packs"
+  }
+}

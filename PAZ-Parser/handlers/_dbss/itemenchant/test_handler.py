@@ -24,6 +24,8 @@ from tests.framework import (
 
 
 _ICON_ROOT = "ui_texture/icon/new_icon"
+# Stored icon paths start with one of these, in any case.
+_ICON_FOLDERS = ("new_icon", "item_icon")
 # King Clam Wall Ornament: furniture, so its icon is named after the 3D asset
 # and is unreachable from the item ID alone. It is the case this format solves.
 _KING_CLAM = 24626
@@ -79,6 +81,19 @@ _ARSHA_PURGATUM_180_DAYS = 830533
 _ORDINARY_GEAR = 1
 _BLACKSTAR_LONGSWORD = 715001
 _BLACKSTAR = 2
+# Pace of Delight - 1 Square grants marblegamediceitemgroup.dbss group 1001
+# (contents event 98, marblegamediceitemgroup_dbss.md).
+_PACE_OF_DELIGHT_1 = 756440
+_PACE_OF_DELIGHT_1_GROUP = 1001
+_MARBLE_DICE = 98
+# Mysterious Secret Note opens customizeditem.dbss record 497 (contents event
+# 31 CustomizedItemBox, customizeditem_dbss.md).
+_MYSTERIOUS_SECRET_NOTE = 66297
+_SECRET_NOTE_BOX_KEY = 497
+_CUSTOMIZED_ITEM_BOX = 31
+# Blackstar Longsword's Warrior class entry names item mesh key 336000, the
+# itemeffectchange.dbss one-handed sword mesh (itemenchant_dbss.md, Item Mesh Keys).
+_BLACKSTAR_SWORD_MESH = 336000
 _KHARAZAD = 21
 # Equipment types the tooltip names (PaGlobalFunc_Util_ClassEquipParts):
 # longsword 1 (a main-hand type), necklace 15.
@@ -468,7 +483,8 @@ def test_every_block_walks_to_its_name_and_icon(itemenchant_result: HandlerResul
     for row in parse_itemenchantoffset_records(source.file(_OFFSET_FILE)):
         start = row["data_offset"]
         strings = read_block_strings(data, start, start + row["data_size"])
-        if not strings.name_kr or not strings.icon.lower().endswith(".dds"):
+        # The icon folder, not `.dds`: item 31645 stores its path without one (client 3482).
+        if not strings.name_kr or not strings.icon.lower().startswith(_ICON_FOLDERS):
             bad.append(row["key"])
 
     assert not bad, f"blocks whose walk ends on no name or icon: {bad[:5]}"
@@ -636,6 +652,65 @@ def test_enhancement_type_item_index_matches_the_enhancement_type_column(
 
     assert index == {key: tuple(sorted(items)) for key, items in expected.items()}
     assert _BLACKSTAR_LONGSWORD in index[_BLACKSTAR]
+
+
+@pytest.mark.parametrize(
+    ("event_type", "builder", "item_id", "param1"),
+    [
+        (_MARBLE_DICE, "build_marble_dice_group_item_index", _PACE_OF_DELIGHT_1, _PACE_OF_DELIGHT_1_GROUP),
+        (_CUSTOMIZED_ITEM_BOX, "build_customized_item_box_index", _MYSTERIOUS_SECRET_NOTE, _SECRET_NOTE_BOX_KEY),
+    ],
+    ids=["marble_dice_group_items", "customized_item_boxes"],
+)
+def test_contents_event_item_index_matches_the_contents_event_columns(
+    itemenchant_result: HandlerResult,
+    event_type: int,
+    builder: str,
+    item_id: int,
+    param1: int,
+) -> None:
+    """MARBLE_DICE_GROUP_ITEMS and CUSTOMIZED_ITEM_BOXES are Event Param 1 of their event's items turned around."""
+    from _dbss.itemenchant import parser
+
+    source = itemenchant_result.source
+    index = getattr(parser, builder)(source.data, source.file(_OFFSET_FILE))
+    expected: dict[int, list[int]] = {}
+    for record in itemenchant_result.records:
+        if record["contents_event_type"] == event_type:
+            # The view shows a param1 of 0 as empty (None); the index keeps the stored 0.
+            expected.setdefault(record["contents_event_param1"] or 0, []).append(record["item_id"])
+
+    assert index == {key: tuple(sorted(items)) for key, items in expected.items()}
+    assert item_id in index[param1]
+
+
+def test_mesh_key_item_index_links_a_mesh_to_the_items_that_wear_it(itemenchant_result: HandlerResult) -> None:
+    """MESH_KEY_ITEMS turns the class entries around: Blackstar Longsword wears the itemeffectchange.dbss sword mesh."""
+    from _dbss.itemeffectchange.parser import FILE_NAME as EFFECT_CHANGE_FILE, parse_itemeffectchange_records
+    from _dbss.itemenchant.parser import build_mesh_key_item_index
+    from tests.fixtures import load_binary_fixture
+
+    source = itemenchant_result.source
+    index = build_mesh_key_item_index(source.data, source.file(_OFFSET_FILE))
+    item_ids = {r["item_id"] for r in itemenchant_result.records}
+    mesh_keys = {r["mesh_key"] for r in parse_itemeffectchange_records(load_binary_fixture(EFFECT_CHANGE_FILE))}
+
+    assert _BLACKSTAR_LONGSWORD in index[_BLACKSTAR_SWORD_MESH]
+    assert mesh_keys & set(index)
+    assert all(items and set(items) <= item_ids for items in index.values())
+
+
+def test_customized_item_box_param1_links_to_its_record() -> None:
+    """Event Param 1 of a CustomizedItemBox item opens its customizeditem.dbss row."""
+    from _dbss.itemenchant.handler import _contents_event_param1_cell
+
+    cell = _contents_event_param1_cell(
+        {"contents_event_type": _CUSTOMIZED_ITEM_BOX, "contents_event_param1": _SECRET_NOTE_BOX_KEY}
+    )
+
+    assert 'data-action="open-record"' in cell
+    assert 'data-path="gamecommondata/binary/customizeditem.dbss"' in cell
+    assert f'data-value="{_SECRET_NOTE_BOX_KEY}"' in cell
 
 
 def test_itemmaxlevel_holds_the_max_level_of_every_item_with_an_enchant_key(

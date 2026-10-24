@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "mapIndex": "Índice de mapa",
+    "image": "Imagen",
+    "type": "Tipo",
+    "sectorX": "Sector X",
+    "sectorY": "Sector Y"
+  },
+  "meta": {
+    "count": "{count} mapas"
+  }
+}

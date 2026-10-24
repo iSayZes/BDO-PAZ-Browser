@@ -14,6 +14,20 @@ from .errors import CliError
 from .session import open_session, resolve_paz_root
 
 
+def base_copies(entries: list[PazEntry]) -> list[PazEntry]:
+    """The entries with the fewest folders in their path.
+
+    Old clients keep a second copy of some tables in a language folder:
+    client 531 has `gamecommondata/binary/regioninfo_linkandcheckvalid2.bss`
+    and `gamecommondata/binary/en/regioninfo_linkandcheckvalid2.bss`. The base
+    copy is the one read; copies at the same depth stay ambiguous.
+    """
+    if len(entries) < 2:
+        return entries
+    depth = min(_norm(entry.internal_path).count("/") for entry in entries)
+    return [entry for entry in entries if _norm(entry.internal_path).count("/") == depth]
+
+
 @dataclass(frozen=True)
 class GameFiles:
     """A loaded PAZ folder and the client number its `.meta` holds."""
@@ -38,8 +52,19 @@ class GameFiles:
         return cls(root, client, api, by_name)
 
     def read(self, name: str) -> bytes | None:
-        """The decompressed bytes of the one file called `name`, or None when the folder has none."""
-        entries = self.by_name.get(name.lower(), [])
+        """The decompressed bytes of the file called `name`, or None when the folder has none.
+
+        A `name` with a `/` is a full PAZ path, for a file whose name several
+        folders share (`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`).
+        Without one, a copy in a language folder loses to the base copy (see
+        `base_copies`).
+        """
+        wanted = _norm(name).lower()
+        if "/" in wanted:
+            file_name = wanted.rsplit("/", 1)[-1]
+            entries = [e for e in self.by_name.get(file_name, []) if _norm(e.internal_path).lower() == wanted]
+        else:
+            entries = base_copies(self.by_name.get(wanted, []))
         if not entries:
             return None
         if len(entries) > 1:

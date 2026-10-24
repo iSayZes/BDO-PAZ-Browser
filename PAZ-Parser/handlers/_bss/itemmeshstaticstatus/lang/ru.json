@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "meshKey": "Ключ меша",
+    "items": "Предметы",
+    "model": "Модель",
+    "effectFile": "Файл эффекта",
+    "weaponMaterial": "Материал оружия",
+    "armorMaterial": "Материал доспехов",
+    "adult": "18+",
+    "effectsChange": "Смена эффекта"
+  },
+  "meta": {
+    "count": "Мешей предметов: {count}"
+  }
+}

@@ -3,7 +3,10 @@
     "mainId": "ID principal",
     "subId": "ID secondaire",
     "icon": "Icône",
-    "title": "Titre"
+    "title": "Titre",
+    "course": "Cours",
+    "familyReward": "Récompense de famille",
+    "passStep": "Étape du Pass Académie"
   },
   "meta": {
     "count": "{count} entrées de liste de quêtes",

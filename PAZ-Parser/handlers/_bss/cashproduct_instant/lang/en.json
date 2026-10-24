@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "instantType": "Type",
+    "instantTypeName": "Task",
+    "minute": "Minutes Left",
+    "cost": "Cost"
+  },
+  "meta": {
+    "count": "{count} entries"
+  }
+}

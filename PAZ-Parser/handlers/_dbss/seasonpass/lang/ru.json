@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "passNo": "№",
+    "freeQuest": "Бесплатное задание",
+    "premiumQuest": "Премиум-задание",
+    "seasonType": "Тип сезона",
+    "conditionQuest": "Условное задание",
+    "changedTitle": "Изменённое название",
+    "changedDescription": "Изменённое описание"
+  },
+  "meta": {
+    "count": "Строк подписки: {count}"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nakMessageType": "Тип сообщения",
+    "mainMessage": "Основное сообщение",
+    "subMessage": "Подзаголовок",
+    "aniTime": "Длительность",
+    "mainBg": "Фон",
+    "subBg": "Дополнительный фон",
+    "effects": "Эффекты",
+    "sounds": "Звуки",
+    "contentsGroup": "Группа контента"
+  },
+  "meta": {
+    "count": "Типы сообщений: {count}"
+  }
+}

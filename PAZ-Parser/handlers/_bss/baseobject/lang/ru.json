@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "characterId": "ID персонажа",
+    "icon": "Значок",
+    "name": "Название",
+    "armorMaterial": "Материал доспехов",
+    "objectKind": "Вид",
+    "installationType": "Тип установки",
+    "collision": "Столкновение",
+    "siegeTent": "Осадный навес",
+    "layers": "Слои оболочки",
+    "faces": "Грани",
+    "placement": "Размещение"
+  },
+  "placement": {
+    "inside": "Внутри",
+    "outside": "Снаружи",
+    "floor": "Пол",
+    "wall": "Стена",
+    "table": "Стол",
+    "carpet": "Ковер"
+  },
+  "meta": {
+    "count": "Объектов: {count}"
+  }
+}

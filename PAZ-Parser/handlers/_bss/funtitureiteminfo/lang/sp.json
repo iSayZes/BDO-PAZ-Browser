@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Clave de objeto",
+    "item": "Objeto",
+    "installationType": "Tipo de instalación"
+  },
+  "meta": {
+    "count": "{count} muebles"
+  }
+}

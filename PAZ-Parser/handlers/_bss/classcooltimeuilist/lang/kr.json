@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "직업 유형",
+    "className": "직업",
+    "showType": "표시 타입",
+    "skillNo": "기술 번호",
+    "skillName": "기술"
+  },
+  "meta": {
+    "count": "재사용 대기 시간 창 기술 {count}개"
+  }
+}

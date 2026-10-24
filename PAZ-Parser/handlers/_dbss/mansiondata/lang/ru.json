@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "furniture": "Мебель"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Мебели особняка: {count}"
+  }
+}

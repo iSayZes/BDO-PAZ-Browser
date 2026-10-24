@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Class",
+    "slot": "Slot",
+    "choiceCount": "Choices",
+    "skills": "Skill Enhancements"
+  },
+  "meta": {
+    "count": "{count} Skill Enhancement slots"
+  }
+}

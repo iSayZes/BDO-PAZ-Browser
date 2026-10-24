@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "item": "Gegenstand",
+    "categoryKey": "Kategorieschlüssel"
+  },
+  "meta": {
+    "count": "{count} Buff-Gegenstände zur automatischen Nutzung"
+  }
+}

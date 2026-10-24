@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "maxLevel": "Höchststufe",
+    "accessLevel": "Zugriffsstufe",
+    "crystalGroup": "Kristall-Gruppe"
+  },
+  "meta": {
+    "count": "{count} Gegenstände"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "event": "Événement",
+    "regionKey": "Clé de région",
+    "region": "Région",
+    "point": "Point",
+    "position": "Position",
+    "rotation": "Rotation",
+    "fov": "Champ de vision (°)",
+    "speedOrTime": "Vitesse ou durée",
+    "speedMode": "Mode vitesse",
+    "spline": "Spline"
+  },
+  "meta": {
+    "count": "{count} points de caméra"
+  }
+}

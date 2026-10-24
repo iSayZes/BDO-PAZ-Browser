@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "mainKey": "Principale",
+    "middleKey": "Intermédiaire",
+    "smallKey": "Sous-catégorie",
+    "name": "Nom",
+    "uniqueNo": "N° unique",
+    "priceType": "Type de prix",
+    "useable": "Utilisable",
+    "specialCategoryType": "Type spécial",
+    "tagType": "Type d'étiquette",
+    "tagOrder": "Ordre d'étiquette"
+  },
+  "offsetColumns": {
+    "mainKey": "Principale",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} catégories"
+  }
+}

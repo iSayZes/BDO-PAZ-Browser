@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "section": "Sección",
+    "parentIndex": "Categoría",
+    "parent": "Nombre de categoría",
+    "index": "Entrada",
+    "title": "Curso o grupo",
+    "startQuest": "Misión inicial",
+    "questCount": "Número de misiones",
+    "quests": "Misiones"
+  },
+  "sections": {
+    "curriculum": "Plan de estudios",
+    "reward": "Recompensa de familia"
+  },
+  "meta": {
+    "count": "{count} cursos y grupos de recompensas"
+  }
+}

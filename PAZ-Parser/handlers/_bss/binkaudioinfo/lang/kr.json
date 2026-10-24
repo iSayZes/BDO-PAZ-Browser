@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "movieName": "영상",
+    "audioName": "오디오 이름",
+    "audioNameDup": "오디오 이름 (사본)"
+  },
+  "meta": {
+    "count": "영상 {count}개"
+  }
+}

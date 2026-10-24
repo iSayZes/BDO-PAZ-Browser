@@ -1,0 +1,26 @@
+{
+  "columns": {
+    "characterId": "캐릭터 ID",
+    "icon": "아이콘",
+    "name": "이름",
+    "armorMaterial": "방어구 재질",
+    "objectKind": "종류",
+    "installationType": "설치 유형",
+    "collision": "충돌",
+    "siegeTent": "공성 천막",
+    "layers": "외곽 층",
+    "faces": "면",
+    "placement": "배치"
+  },
+  "placement": {
+    "inside": "실내",
+    "outside": "실외",
+    "floor": "바닥",
+    "wall": "벽",
+    "table": "테이블",
+    "carpet": "카펫"
+  },
+  "meta": {
+    "count": "오브젝트 {count}개"
+  }
+}

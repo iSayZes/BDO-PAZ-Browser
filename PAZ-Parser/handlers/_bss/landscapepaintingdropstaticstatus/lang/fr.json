@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "type": "Type",
+    "name": "Paysage",
+    "dropItem": "Butin"
+  },
+  "meta": {
+    "count": "{count} tableaux de paysage"
+  }
+}

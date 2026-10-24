@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent",
+    "kind": "Art",
+    "classes": "Klassen"
+  },
+  "kind": {
+    "1": "Aktiv",
+    "2": "Passiv"
+  },
+  "allClasses": "Alle",
+  "meta": {
+    "count": "{count} aktive und passive Talente"
+  }
+}

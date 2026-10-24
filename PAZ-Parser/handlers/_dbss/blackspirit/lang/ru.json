@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "index": "Образ",
+    "condition": "Условие"
+  },
+  "offsetColumns": {
+    "index": "Образ",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Образов Черного духа: {count}"
+  }
+}

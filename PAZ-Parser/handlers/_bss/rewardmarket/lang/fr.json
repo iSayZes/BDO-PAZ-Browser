@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradeKey": "ID d'échange",
+    "petKey": "ID du familier",
+    "pet": "Familier",
+    "rewards": "Récompenses"
+  },
+  "meta": {
+    "count": "{count} échanges"
+  }
+}

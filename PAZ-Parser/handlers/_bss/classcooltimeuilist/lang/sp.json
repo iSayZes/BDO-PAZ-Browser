@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "showType": "Tipo de visualización",
+    "skillNo": "N.º de habilidad",
+    "skillName": "Habilidad"
+  },
+  "meta": {
+    "count": "{count} habilidades de la ventana de tiempo de reutilización"
+  }
+}

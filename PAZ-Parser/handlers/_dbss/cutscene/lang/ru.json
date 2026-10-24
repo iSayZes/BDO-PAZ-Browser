@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneKey": "Ключ ролика",
+    "fileName": "Имя файла",
+    "name": "Название",
+    "place": "Место"
+  },
+  "offsetColumns": {
+    "cutsceneKey": "Ключ ролика",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Роликов: {count}"
+  }
+}

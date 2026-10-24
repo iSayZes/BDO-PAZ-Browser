@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "section": "Bereich",
+    "description": "Beschreibung",
+    "point": "Gildenruhm",
+    "type": "Typ",
+    "details": "Details"
+  },
+  "sections": {
+    "gain": "Beschaffung",
+    "use": "Verwendungszweck",
+    "benefit": "Belohnungen je nach Ruhm",
+    "dailyPay": "Tageslohn"
+  },
+  "meta": {
+    "count": "{count} Änderungen des Gildenruhms, Belohnungen und Tageslohnstufen"
+  }
+}

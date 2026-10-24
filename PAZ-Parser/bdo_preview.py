@@ -566,11 +566,21 @@ _PLUGIN_FAILURES: dict[str, str] = {}
 _hex_handler = HexHandler()
 _handler_lang = PreviewHandler.lang
 
+# Files named only by their grid cell (`553_364.bss`, the spawn grid cells in
+# `mapdata_*/spawnplacementfieldgrid/`) share one format and one registry key.
+GRID_CELL_KEY = "x_y.bss"
+_GRID_CELL_NAME = _re.compile(r"^\d+_\d+\.bss$")
+
+
+def _name_key(name: str) -> str:
+    """The registry key of a lower-case file name: `x_y.bss` for a grid cell, else the name."""
+    return GRID_CELL_KEY if name[:1].isdigit() and _GRID_CELL_NAME.match(name) else name
+
 
 def get_handler(name: str, ext: str) -> PreviewHandler:
     """Return best handler for a file: filename match → extension → HexHandler."""
     return (
-        _REGISTRY.get(name.lower())
+        _REGISTRY.get(_name_key(name.lower()))
         or _REGISTRY.get(ext.lower())
         or _hex_handler
     )
@@ -645,7 +655,7 @@ def handler_key(name: str, ext: str) -> str | None:
 
     None when only a built-in view, or the hex view, reads it.
     """
-    return _first_plugin_key((name.lower(), ext.lower()))
+    return _first_plugin_key((_name_key(name.lower()), ext.lower()))
 
 
 def _registry_keys(name: str) -> tuple[str, ...]:
@@ -656,7 +666,8 @@ def _registry_keys(name: str) -> tuple[str, ...]:
     """
     name = name.lower()
     _, dot, ext = name.rpartition(".")
-    return (name, f".{ext}") if dot else (name,)
+    key = _name_key(name)
+    return (key, f".{ext}") if dot else (key,)
 
 
 def is_handled_file(name: str) -> bool:
@@ -682,18 +693,15 @@ def unique_format_keys(entries: list[PazEntry]) -> list[str]:
     full filename so each is counted separately. Everything else is keyed by
     extension (e.g. '.pac'), grouping unknown variants together.
     """
-    _numeric_bss = _re.compile(r"^\d+_\d+\.bss$")
-
     keys: set[str] = set()
     for entry in entries:
         name = entry.internal_path.replace("\\", "/").rsplit("/", 1)[-1].lower()
         if "." not in name:
             continue
         ext  = "." + name.rsplit(".", 1)[-1]
+        name = _name_key(name)
         if name in _REGISTRY:
             keys.add(name)
-        elif _numeric_bss.match(name):
-            keys.add("x_y.bss")
         elif ext in (".bss", ".dbss"):
             keys.add(name)
         else:

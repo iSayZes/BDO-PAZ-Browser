@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "count": "Anzahl",
+    "rewardSet": "Satz",
+    "rewardList": "Liste",
+    "skill1Id": "Talent-1-ID",
+    "skill1": "Talent 1",
+    "skill2Id": "Talent-2-ID",
+    "skill2": "Talent 2"
+  },
+  "meta": {
+    "count": "{count} Belohnungsgegenstände"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "exchangeNo": "N.º de intercambio",
+    "coin": "Moneda",
+    "infoCategory": "Categoría",
+    "needCoinCount": "Monedas necesarias",
+    "reward": "Recompensa",
+    "exchangeType": "Tipo de intercambio",
+    "limitCount": "Límite",
+    "accumulatedNeedLevel": "Nivel necesario"
+  },
+  "meta": {
+    "count": "{count} intercambios"
+  }
+}

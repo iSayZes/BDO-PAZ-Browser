@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "npcKey": "Clave del PNJ",
+    "npc": "PNJ",
+    "knowledgeKey": "ID de conocimiento",
+    "knowledge": "Conocimiento",
+    "cutscene": "Cinemática",
+    "coveredDialog": "Diálogo oculto",
+    "discoverDialog": "Diálogo de descubrimiento",
+    "dialogLines": "Otros diálogos"
+  },
+  "offsetColumns": {
+    "npcKey": "Clave del PNJ",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} PNJ"
+  }
+}

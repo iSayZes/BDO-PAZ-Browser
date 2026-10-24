@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "index": "Index",
+    "classNo": "Class No.",
+    "commands": "Commands"
+  },
+  "meta": {
+    "count": "{count} key commands"
+  }
+}

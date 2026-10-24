@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "lifeStatType": "ID ремесла",
+    "lifeSkill": "Ремесло",
+    "effectType": "Тип эффекта"
+  },
+  "meta": {
+    "count": "Типов эффекта во вкладках ремесла: {count}"
+  }
+}

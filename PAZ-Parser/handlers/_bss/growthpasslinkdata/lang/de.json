@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "mainId": "Haupt-ID",
+    "subId": "Unter-ID",
+    "title": "Titel",
+    "service": "Dienst",
+    "link": "Link",
+    "author": "Autor"
+  },
+  "meta": {
+    "count": "{count} Anleitungslinks"
+  }
+}

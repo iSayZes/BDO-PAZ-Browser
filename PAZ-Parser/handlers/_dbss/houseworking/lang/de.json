@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "toolKey": "Werkzeug-ID",
+    "tool": "Werkzeug",
+    "works": "Tausch"
+  },
+  "offsetColumns": {
+    "toolKey": "Werkzeug-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "cells": {
+    "units": "Produktionseinheit {units}"
+  },
+  "meta": {
+    "count": "{count} Werkzeuge"
+  }
+}

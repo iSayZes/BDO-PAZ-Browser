@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Clase",
+    "slot": "Casilla",
+    "choiceCount": "Opciones",
+    "skills": "Fusiones de habilidades"
+  },
+  "meta": {
+    "count": "{count} casillas de fusión de habilidades"
+  }
+}

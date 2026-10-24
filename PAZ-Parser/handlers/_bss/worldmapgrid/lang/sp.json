@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "value": "Valor de celda",
+    "territoryKeys": "Clave de territorio",
+    "regionGroupKeys": "Grupos de regiones",
+    "regionKeys": "Claves de región",
+    "name": "Nombre",
+    "cellCount": "Celdas",
+    "columns": "Columnas",
+    "rows": "Filas",
+    "worldX": "X del mundo",
+    "worldZ": "Z del mundo"
+  },
+  "cells": {
+    "range": "{low} a {high}"
+  },
+  "meta": {
+    "count": "{count} valores de celda"
+  }
+}

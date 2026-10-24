@@ -18,12 +18,15 @@ from tests.framework import (
     run_case,
 )
 
+from _bss.fieldinfo.maps import MAP_INDEX_FIELDS, MAPS_FIELD, image_field, map_image_fields
 from _bss.fieldinfo.names import field_label
 from _bss.fieldinfo.parser import ROW_SIZE, build_field_name_index, parse_fieldinfo_records
 from _bss.instancefieldmapinfo.parser import build_instance_field_title_index
+from _bss.regionmapinfo.parser import map_images
 from _common.lookup_index import IndexKind, clear_indexes, init_index
 
 _FILE = "fieldinfo.bss"
+_REGION_MAP_FILE = "regionmapinfo.bss"
 # World units per sector, the unit of `teleport.dbss` and the instancefield.dbss boxes.
 _SECTOR_UNITS = 12800
 # The server box counts three of its sectors per field sector.
@@ -45,7 +48,7 @@ def _instance_field_titles() -> dict[int, int]:
 CASE = HandlerCase(
     handler_name=_FILE,
     data_file=_FILE,
-    companion_files={},
+    companion_files={_REGION_MAP_FILE: _REGION_MAP_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["label"],
@@ -67,11 +70,13 @@ CASE = HandlerCase(
             "use_range_spawn", "use_return_position", "item_drop_rate",
             "bank_no_music", "bank_no_environment", "great_sea_map_index",
             "horse_race_course_map_index",
+            "region_map_image", "horse_race_course_map_image", "map_images",
         ]),
         DeclaredCountTest(declared=header_count(offset=4)),
         # Field 1 is the open world the instancefield.dbss fields copy.
         TargetTest(col="field_no", value=1, expected={
             "field_name": "월드", "resource_name": "_real", "field_type_name": "OpenField",
+            "region_map_image": "RegionMap_New.bmp",
         }),
         # instancedungeoninfo.dbss key 2 enters the Calpheon Kzarka instance dungeon.
         TargetTest(col="field_no", value=700, expected={"field_name": "칼페온 크자카 인던"}),
@@ -138,3 +143,21 @@ def test_rows_that_miss_the_string_table_are_rejected() -> None:
     data += (8).to_bytes(4, "little") + bytes(4)
     with pytest.raises(ValueError, match="string table starts"):
         parse_fieldinfo_records(data)
+
+
+def test_map_keys_resolve_to_regionmapinfo_images(fieldinfo_result: HandlerResult) -> None:
+    """Every named map key with a regionmapinfo.bss row shows that row's image."""
+    images = map_images(fieldinfo_result.source.file(_REGION_MAP_FILE))
+    for r in fieldinfo_result.records:
+        for field in MAP_INDEX_FIELDS:
+            assert r[image_field(field)] == images.get(r[field], ""), (r["field_no"], field)
+        assert set(r[MAPS_FIELD]) == {r[image_field(field)] for field in MAP_INDEX_FIELDS} - {""}
+
+
+def test_map_images_are_empty_without_the_companion() -> None:
+    record = dict.fromkeys(MAP_INDEX_FIELDS, 1)
+    fields = map_image_fields(record, {})
+    assert fields[MAPS_FIELD] == []
+    assert all(fields[image_field(field)] == "" for field in MAP_INDEX_FIELDS)
+    # One image named by several keys is listed once.
+    assert map_image_fields(record, {1: "A.bmp"})[MAPS_FIELD] == ["A.bmp"]

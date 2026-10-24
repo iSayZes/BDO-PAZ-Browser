@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemGroupType": "Group Type",
+    "itemCount": "Items",
+    "items": "Item List"
+  },
+  "meta": {
+    "count": "{count} item groups"
+  }
+}

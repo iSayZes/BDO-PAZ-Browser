@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "fileNameHash": "Хеш файла",
+    "cutsceneFile": "Файл кат-сцены",
+    "classType": "Тип класса",
+    "className": "Класс",
+    "skillCount": "Число навыков",
+    "skills": "Навыки"
+  },
+  "meta": {
+    "count": "Списков навыков классов: {count}"
+  }
+}

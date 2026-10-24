@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "index": "Índice",
+    "bankName": "Banco",
+    "eventName": "Evento",
+    "ingameName": "Clave del nombre",
+    "articulations": "Articulaciones",
+    "startAction": "Acción de inicio",
+    "endAction": "Acción final",
+    "advancedType": "Pestaña",
+    "instrumentNameType": "Clave de pestaña",
+    "isOpened": "Abierto",
+    "ingActions": "Acciones en bucle",
+    "isProvided": "De todos"
+  },
+  "advancedTypes": {
+    "0": "Principiante",
+    "1": "Avanzado",
+    "2": "Electrónico"
+  },
+  "meta": {
+    "count": "{count} instrumentos"
+  }
+}

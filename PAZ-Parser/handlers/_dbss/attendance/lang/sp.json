@@ -1,0 +1,32 @@
+{
+  "columns": {
+    "attendanceKey": "ID de asistencia",
+    "name": "Evento",
+    "startDate": "Inicio",
+    "attendanceEndDate": "Fin de asistencia",
+    "rewardEndDate": "Fin de recompensas",
+    "eventPeriod": "Duración del evento",
+    "claimPeriod": "Recompensa",
+    "players": "Jugadores",
+    "rewards": "Recompensas",
+    "overlapCount": "Asistencias extra",
+    "overlapWaitingTime": "Espera asistencia extra",
+    "dayOfWeek": "Días con asistencia extra",
+    "displayOrder": "Orden de pestañas",
+    "guildLevel": "Niveles de hermandad"
+  },
+  "offsetColumns": {
+    "attendanceKey": "ID de asistencia",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "playerTypes": {
+    "0": "Todos",
+    "1": "De regreso",
+    "2": "Nuevo",
+    "3": "Pretransferencia"
+  },
+  "meta": {
+    "count": "{count} eventos de asistencia"
+  }
+}

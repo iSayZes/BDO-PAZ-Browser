@@ -1,4 +1,4 @@
-"""fieldinfo.bss preview handler: every field the world and its instances run in."""
+"""fieldinfo.bss preview handler: every field the world and its instances run in, with its map images."""
 from __future__ import annotations
 
 from pathlib import Path
@@ -6,10 +6,12 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _bss.regionmapinfo.parser import FILE_NAME as REGION_MAP_FILE
 from _common.enum_name import enum_name
-from _common.html import Column, e, flag_cell, sort_keys, table
+from _common.html import Column, e, flag_cell, sort_keys, table, text_list_cell
 from _common.lang import handler_text, load_handler_strings
 from _common.rate import rate_percent
+from .maps import MAPS_FIELD, map_image_fields, read_map_images
 from .names import field_label
 from .parser import parse_fieldinfo_records
 
@@ -44,10 +46,15 @@ class FieldInfoBssHandler(PreviewHandler):
             Column(cols["ridable"], sort_key="is_ridable"),
             Column(cols["rangeSpawn"], sort_key="use_range_spawn"),
             Column(cols["dropRate"], "num", sort_key="item_drop_rate"),
+            Column(cols["maps"]),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
+
+    def companions(self, entry: PazEntry) -> list[str]:
+        folder = entry.internal_path.rsplit("/", 1)[0]
+        return [f"{folder}/{REGION_MAP_FILE}"]
 
     def get_records(
         self,
@@ -55,11 +62,13 @@ class FieldInfoBssHandler(PreviewHandler):
         entry: PazEntry,
         companions: dict[str, bytes],
     ) -> list[dict]:
+        images = read_map_images(companions.get(REGION_MAP_FILE))
         return [
             {
                 **record,
                 "label": field_label(record["field_no"], record["field_name"]),
                 "field_type_name": enum_name(FIELD_TYPE_NAMES, record["field_type"]),
+                **map_image_fields(record, images),
             }
             for record in parse_fieldinfo_records(data)
         ]
@@ -84,6 +93,7 @@ class FieldInfoBssHandler(PreviewHandler):
                 flag_cell(bool(r["is_ridable"])),
                 flag_cell(bool(r["use_range_spawn"])),
                 e(rate_percent(r["item_drop_rate"])),
+                text_list_cell(r[MAPS_FIELD], len(r[MAPS_FIELD])),
             ]
             for r in records[start : start + page_size]
         ]

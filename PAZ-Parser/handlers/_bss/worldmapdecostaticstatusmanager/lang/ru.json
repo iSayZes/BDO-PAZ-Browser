@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "decoIndex": "Индекс",
+    "model": "Модель",
+    "locationX": "X",
+    "locationY": "Y",
+    "locationZ": "Z",
+    "scale": "Масштаб (%)",
+    "rotation": "Поворот (°)"
+  },
+  "meta": {
+    "count": "Моделей на карте мира: {count}"
+  }
+}

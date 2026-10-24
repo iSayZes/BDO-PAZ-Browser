@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "passKey": "Pass Key",
+    "contentType": "Type",
+    "title": "Title",
+    "start": "Start",
+    "end": "End",
+    "saleEnd": "Sale End",
+    "step": "Step",
+    "passPoints": "Pass Points",
+    "basicReward": "Basic Reward",
+    "passReward": "Pass Reward",
+    "description": "Description"
+  },
+  "contentTypes": {
+    "1": "Daily",
+    "2": "Solare",
+    "3": "Combat",
+    "4": "Sailing",
+    "5": "Gathering"
+  },
+  "meta": {
+    "count": "{count} reward steps"
+  }
+}

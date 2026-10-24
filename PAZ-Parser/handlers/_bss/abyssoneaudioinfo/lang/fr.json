@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "fieldNo": "ID de terrain",
+    "field": "Terrain",
+    "bgmStates": "États BGM",
+    "bankNoEnvironment": "Ambiance"
+  },
+  "meta": {
+    "count": "{count} terrains"
+  }
+}

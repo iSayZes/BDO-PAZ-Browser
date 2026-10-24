@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "lifeStatType": "Arbeitstalent-ID",
+    "lifeSkill": "Arbeitstalent",
+    "effectType": "Effekttyp"
+  },
+  "meta": {
+    "count": "{count} Effekttypen der Arbeitstalent-Reiter"
+  }
+}

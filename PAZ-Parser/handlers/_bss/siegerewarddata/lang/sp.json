@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "count": "Cantidad",
+    "reward": "Recompensa",
+    "tier": "Grado",
+    "tierGrid": "Cuadro de grados",
+    "block": "Bloque"
+  },
+  "slots": {
+    "win": "Victoria",
+    "lose": "Derrota",
+    "release": "Liberación",
+    "plusMedal": "Medalla extra",
+    "plusItem": "Objeto extra",
+    "majorWin": "Conquista: Victoria",
+    "majorLose": "Conquista: Derrota",
+    "majorRelease": "Conquista: Liberación",
+    "majorRelease0": "Conquista: Puntuación 2.º",
+    "majorRelease1": "Conquista: Puntuación 3.º",
+    "majorRelease2": "Conquista: Puntuación 4.º",
+    "majorRelease3": "Conquista: Puntuación 5.º",
+    "majorRelease4": "Conquista: Puntuación 6.º",
+    "majorReleaseWin": "Conquista: Puntuación 1.º",
+    "majorPlusMedal": "Conquista: Medalla extra",
+    "majorPlusItem": "Conquista: Objeto extra"
+  },
+  "meta": {
+    "count": "{count} casillas de recompensa"
+  }
+}

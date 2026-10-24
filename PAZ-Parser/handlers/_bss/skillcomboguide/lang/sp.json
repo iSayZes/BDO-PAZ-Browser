@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Clase",
+    "combo": "Combo",
+    "skillCount": "Habilidades",
+    "steps": "Pasos"
+  },
+  "meta": {
+    "count": "{count} combos · {classes} clases"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "offerGroup": "상품 그룹",
+    "productCount": "상품 수",
+    "products": "상품 목록"
+  },
+  "meta": {
+    "count": "상품 그룹 {count}개"
+  }
+}

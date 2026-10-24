@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterKey": "Charakter-Schlüssel",
+    "ship": "Schiff",
+    "jobSlots": "Aufgabenplätze"
+  },
+  "meta": {
+    "count": "{count} Schiffe"
+  }
+}

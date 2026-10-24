@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "grid": "Grille",
+    "table": "Table",
+    "row": "Arme / Sol",
+    "column": "Armure / Mouvement",
+    "effect": "Effet"
+  },
+  "grids": {
+    "attack": "Attaque",
+    "special": "Attaque spéciale",
+    "ground": "Sol"
+  },
+  "meta": {
+    "count": "{count} cellules d'effet"
+  }
+}

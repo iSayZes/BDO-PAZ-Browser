@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "ID предмета",
+    "icon": "Значок",
+    "item": "Предмет",
+    "count": "Количество",
+    "rewardSet": "Набор",
+    "rewardList": "Список",
+    "skill1Id": "ID навыка 1",
+    "skill1": "Навык 1",
+    "skill2Id": "ID навыка 2",
+    "skill2": "Навык 2"
+  },
+  "meta": {
+    "count": "Предметов награды: {count}"
+  }
+}

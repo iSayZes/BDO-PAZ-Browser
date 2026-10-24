@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Item Key",
+    "item": "First Piece",
+    "puzzleCount": "Puzzles",
+    "puzzleKeys": "Puzzle Keys"
+  },
+  "meta": {
+    "count": "{count} first pieces"
+  }
+}

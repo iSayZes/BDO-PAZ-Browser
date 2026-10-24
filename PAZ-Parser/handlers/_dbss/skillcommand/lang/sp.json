@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad",
+    "classes": "Clase",
+    "command": "Comando de habilidad",
+    "consoleCommand": "Comando de mando",
+    "level": "Nivel",
+    "showCheck": "Mostrar",
+    "awakening": "Despertar",
+    "form": "Forma de Drakania"
+  },
+  "forms": {
+    "1": "Forma normal",
+    "2": "Forma de dragón"
+  },
+  "offsetColumns": {
+    "skillNo": "N.º de habilidad",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} comandos de habilidad"
+  }
+}

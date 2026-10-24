@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "abilityIndex": "Effektindex",
+    "buff": "Buff",
+    "effect": "Effekt"
+  },
+  "offsetColumns": {
+    "abilityIndex": "Effektindex",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Talentzusatz-Effekte"
+  }
+}

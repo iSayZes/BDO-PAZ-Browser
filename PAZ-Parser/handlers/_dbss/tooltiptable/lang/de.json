@@ -1,0 +1,38 @@
+{
+  "columns": {
+    "keyHash": "Hash",
+    "type": "Typ",
+    "text": "Text",
+    "paramCount": "Parameter",
+    "icons": "Symbole"
+  },
+  "offsetColumns": {
+    "type": "Typ",
+    "keyHash": "Hash",
+    "dataOffset": "Daten-Offset"
+  },
+  "icons": {
+    "0": "Unverwundbar",
+    "1": "Super-Rüstung",
+    "2": "Vorwärtsabwehr",
+    "3": "Niederschlag",
+    "4": "Rückwurf",
+    "5": "Umsturz",
+    "6": "Betäuben",
+    "7": "Erstarren",
+    "8": "Rückstoß",
+    "9": "Greifen",
+    "10": "Frost",
+    "11": "Niederschmettern",
+    "12": "Luftschlag",
+    "13": "Abwärtsangriff",
+    "14": "Luftangriff",
+    "15": "LP-Regeneration",
+    "16": "Regeneration von Talentressourcen",
+    "17": "Konterangriff",
+    "18": "Schnellangriff"
+  },
+  "meta": {
+    "count": "{count} Tooltip-Zeilen"
+  }
+}

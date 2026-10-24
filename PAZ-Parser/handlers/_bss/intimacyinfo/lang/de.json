@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "npcKey": "NPC-Schlüssel",
+    "npc": "NPC",
+    "entryCount": "Anzahl",
+    "entries": "Freundschaftsbelohnungen"
+  },
+  "types": {
+    "0": "Quest",
+    "1": "Laden",
+    "2": "Buff",
+    "3": "Wissen",
+    "4": "Plaudern",
+    "5": "Gegenstand"
+  },
+  "operators": {
+    "0": "=",
+    "1": "▲",
+    "2": "▼"
+  },
+  "meta": {
+    "count": "{count} NPCs"
+  }
+}

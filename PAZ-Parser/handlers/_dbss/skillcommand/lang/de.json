@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent",
+    "classes": "Klasse",
+    "command": "Talentbefehl",
+    "consoleCommand": "Controller-Befehl",
+    "level": "Stufe",
+    "showCheck": "Anzeigen",
+    "awakening": "Erweckung",
+    "form": "Drakania-Gestalt"
+  },
+  "forms": {
+    "1": "Normale Gestalt",
+    "2": "Drachengestalt"
+  },
+  "offsetColumns": {
+    "skillNo": "Talent-Nr.",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Talentbefehle"
+  }
+}

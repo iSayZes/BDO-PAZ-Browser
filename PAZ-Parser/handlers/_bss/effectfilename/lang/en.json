@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "grid": "Grid",
+    "table": "Table",
+    "row": "Weapon / Ground",
+    "column": "Armor / Movement",
+    "effect": "Effect"
+  },
+  "grids": {
+    "attack": "Attack",
+    "special": "Special attack",
+    "ground": "Ground"
+  },
+  "meta": {
+    "count": "{count} effect cells"
+  }
+}

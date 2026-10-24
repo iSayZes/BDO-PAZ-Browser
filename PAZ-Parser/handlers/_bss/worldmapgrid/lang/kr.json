@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "value": "셀 값",
+    "territoryKeys": "영지 키",
+    "regionGroupKeys": "지역 그룹",
+    "regionKeys": "지역 키",
+    "name": "이름",
+    "cellCount": "셀",
+    "columns": "열",
+    "rows": "행",
+    "worldX": "월드 X",
+    "worldZ": "월드 Z"
+  },
+  "cells": {
+    "range": "{low} ~ {high}"
+  },
+  "meta": {
+    "count": "셀 값 {count}개"
+  }
+}

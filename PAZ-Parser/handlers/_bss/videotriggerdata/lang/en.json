@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "video": "Video",
+    "contentsGroup": "Contents Group",
+    "position": "Position",
+    "radius": "Radius",
+    "startCondition": "Start Condition",
+    "startExecute": "Start Script",
+    "endExecute": "End Script"
+  },
+  "meta": {
+    "count": "{count} video triggers"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "index": "Image",
+    "condition": "Condition"
+  },
+  "offsetColumns": {
+    "index": "Image",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} images de l'esprit occulte"
+  }
+}

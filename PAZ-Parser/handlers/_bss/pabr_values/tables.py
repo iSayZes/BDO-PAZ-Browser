@@ -25,10 +25,26 @@ from .names import (
     utc_time,
     vehicle_skill_name,
 )
+from .abyssone_tables import ABYSS_ONE_TABLES
+from .client_tables import CLIENT_TABLES
+from .edania_tables import EDANIA_TABLES
+from .enchantshop_tables import ENCHANT_SHOP_TABLES
+from .greatsea_tables import GREAT_SEA_TABLES
 from .guild_tables import GUILD_TABLES
 from .hardcore_tables import HARDCORE_TABLES
+from .item_tables import ITEM_TABLES
+from .lifeskill_tables import LIFE_SKILL_TABLES
+from .majorsiege_tables import MAJOR_SIEGE_TABLES
+from .oceansiege_tables import OCEAN_SIEGE_TABLES
+from .personalmonster_tables import PERSONAL_MONSTER_TABLES
 from .pvp_tables import PVP_TABLES
 from .rosewar_tables import ROSE_WAR_TABLES
+from .server_tables import SERVER_TABLES
+from .servant_tables import SERVANT_TABLES
+from .siege_tables import SIEGE_TABLES
+from .siegeobject_tables import SIEGE_OBJECT_TABLES
+from .ui_tables import UI_TABLES
+from .world_tables import WORLD_TABLES
 
 __all__ = [
     "VALUE_TABLES",
@@ -76,6 +92,8 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
         "blackShrineAuras",
     ),
     ValueTable("employeeloyalismitemetc.bss", unknown_fields((0x04, "I"), (0x08, "I"), (0x0C, "I"), (0x10, "I"))),
+    # Every house character: node houses, guild houses and villas (householdlist_bss.md).
+    ValueTable("householdlist.bss", (CHARACTER_KEY,), RowCount.COUNTED, count_key="houseCharacters"),
     ValueTable(
         "icefisingregionstaticstatus.bss",
         (
@@ -234,4 +252,20 @@ VALUE_TABLES: tuple[ValueTable, ...] = (
     *GUILD_TABLES,
     *HARDCORE_TABLES,
     *PVP_TABLES,
+    *OCEAN_SIEGE_TABLES,
+    *EDANIA_TABLES,
+    *SIEGE_TABLES,
+    *MAJOR_SIEGE_TABLES,
+    *SIEGE_OBJECT_TABLES,
+    *GREAT_SEA_TABLES,
+    *ABYSS_ONE_TABLES,
+    *WORLD_TABLES,
+    *SERVER_TABLES,
+    *CLIENT_TABLES,
+    *PERSONAL_MONSTER_TABLES,
+    *UI_TABLES,
+    *SERVANT_TABLES,
+    *LIFE_SKILL_TABLES,
+    *ITEM_TABLES,
+    *ENCHANT_SHOP_TABLES,
 )

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "type": "Typ",
+    "name": "Landschaft",
+    "dropItem": "Beute"
+  },
+  "meta": {
+    "count": "{count} Landschaftsgemälde"
+  }
+}

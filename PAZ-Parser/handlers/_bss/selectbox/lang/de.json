@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "key": "Kisten-Schlüssel",
+    "tabs": "Reiter",
+    "type0": "Typ 0",
+    "type1": "Typ 1",
+    "type2": "Typ 2",
+    "type3": "Typ 3",
+    "type4": "Typ 4"
+  },
+  "meta": {
+    "count": "{count} Auswahlkisten"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "territoryKey": "Territory Key",
+    "territory": "Territory",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} revive positions"
+  }
+}

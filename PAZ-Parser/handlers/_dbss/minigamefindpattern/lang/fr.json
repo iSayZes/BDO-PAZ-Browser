@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "slotIndex": "Emplacement",
+    "patternIndex": "Motif",
+    "image": "Image",
+    "image2": "Image 2",
+    "rootSize": "Taille de racine",
+    "changePattern": "Motif de remplacement",
+    "rootBeginNo": "Début de racine",
+    "endDirection": "Direction de fin",
+    "beginDirection": "Direction de départ",
+    "nextPatterns": "Motifs suivants"
+  },
+  "directions": {
+    "left": "Gauche",
+    "right": "Droite",
+    "top": "Haut",
+    "bottom": "Bas"
+  },
+  "offsetColumns": {
+    "slotIndex": "Emplacement",
+    "patternIndex": "Motif",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} motifs"
+  }
+}

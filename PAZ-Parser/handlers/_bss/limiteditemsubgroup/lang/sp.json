@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "subgroupKey": "Clave de subgrupo",
+    "item": "Objeto",
+    "purchaseSubject": "Comprador",
+    "purchaseCountLimit": "Límite de compra",
+    "resetType": "Reinicio"
+  },
+  "resetTypes": {
+    "1": "Diaria",
+    "2": "Semanal",
+    "3": "Mensual",
+    "4": "Asedio"
+  },
+  "meta": {
+    "count": "{count} objetos de tienda limitados"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "columns": {
+    "attendanceKey": "출석 키",
+    "name": "이벤트",
+    "startDate": "시작",
+    "attendanceEndDate": "출석 종료",
+    "rewardEndDate": "보상 수령 종료",
+    "eventPeriod": "이벤트 기간",
+    "claimPeriod": "보상 수령 기간",
+    "players": "대상",
+    "rewards": "보상",
+    "overlapCount": "추가 출석 횟수",
+    "overlapWaitingTime": "추가 출석 대기 시간",
+    "dayOfWeek": "추가 출석 요일",
+    "displayOrder": "탭 순서",
+    "guildLevel": "길드 등급"
+  },
+  "offsetColumns": {
+    "attendanceKey": "출석 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "playerTypes": {
+    "0": "전체",
+    "1": "복귀",
+    "2": "신규",
+    "3": "사전이관"
+  },
+  "meta": {
+    "count": "출석 이벤트 {count}개"
+  }
+}

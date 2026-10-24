@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "gameMode": "Режим игры",
+    "rankGroup": "Группа ранга",
+    "tier": "Ранг",
+    "icon": "Значок",
+    "name": "Название",
+    "minRating": "Мин. рейтинг",
+    "maxRanking": "Макс. место",
+    "itemLists": "Списки предметов"
+  },
+  "meta": {
+    "count": "Рангов: {count}"
+  }
+}

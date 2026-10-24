@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "innKey": "ID гостиницы",
+    "roomKey": "ID комнаты",
+    "house": "Дом",
+    "town": "Поселение"
+  },
+  "offsetColumns": {
+    "innKey": "ID гостиницы",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Комнат гостиницы: {count}"
+  }
+}

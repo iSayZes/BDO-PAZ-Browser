@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "type": "Type",
+    "name": "Landscape",
+    "dropItem": "Drop Item"
+  },
+  "meta": {
+    "count": "{count} landscape paintings"
+  }
+}

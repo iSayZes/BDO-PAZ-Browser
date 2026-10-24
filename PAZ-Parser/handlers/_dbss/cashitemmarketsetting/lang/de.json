@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "Gegenstands-ID",
+    "icon": "Symbol",
+    "item": "Gegenstand",
+    "basePrice": "Standardpreis",
+    "maxestPercent": "Max. Prozent",
+    "minestPercent": "Min. Prozent",
+    "maxRegisterCount": "Max. Registrierungen"
+  },
+  "offsetColumns": {
+    "itemId": "Gegenstands-ID",
+    "dataOffset": "Datenoffset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Perlenladen-Gegenstände"
+  }
+}

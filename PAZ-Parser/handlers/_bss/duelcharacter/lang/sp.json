@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemCopyQuest": "Misión de copia de objetos",
+    "copyItem": "Copia de objetos",
+    "singleCopyItem": "Copia individual"
+  },
+  "meta": {
+    "count": "Opciones de cambiar de personaje"
+  }
+}

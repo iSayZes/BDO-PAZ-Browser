@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "itemId": "ID d'objet",
+    "icon": "Icône",
+    "item": "Objet",
+    "count": "Quantité",
+    "reward": "Récompense",
+    "tier": "Tier",
+    "tierGrid": "Grille de tiers",
+    "block": "Bloc"
+  },
+  "slots": {
+    "win": "Victoire",
+    "lose": "Défaite",
+    "release": "Libération",
+    "plusMedal": "Médaille bonus",
+    "plusItem": "Objet bonus",
+    "majorWin": "Guerre de conquête : Victoire",
+    "majorLose": "Guerre de conquête : Défaite",
+    "majorRelease": "Guerre de conquête : Libération",
+    "majorRelease0": "Guerre de conquête : Score 2e",
+    "majorRelease1": "Guerre de conquête : Score 3e",
+    "majorRelease2": "Guerre de conquête : Score 4e",
+    "majorRelease3": "Guerre de conquête : Score 5e",
+    "majorRelease4": "Guerre de conquête : Score 6e",
+    "majorReleaseWin": "Guerre de conquête : Score 1er",
+    "majorPlusMedal": "Guerre de conquête : Médaille bonus",
+    "majorPlusItem": "Guerre de conquête : Objet bonus"
+  },
+  "meta": {
+    "count": "{count} emplacements de récompense"
+  }
+}

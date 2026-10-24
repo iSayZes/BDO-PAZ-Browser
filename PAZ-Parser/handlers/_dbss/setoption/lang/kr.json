@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "setKey": "세트 키",
+    "setType": "유형",
+    "effects": "세트 효과",
+    "pieceCount": "부위 수",
+    "pieces": "아이템"
+  },
+  "offsetColumns": {
+    "setKey": "세트 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "setTypes": {
+    "0": "장비",
+    "1": "가구"
+  },
+  "text": {
+    "points": "인테리어 점수 {points}"
+  },
+  "meta": {
+    "count": "세트 {count}개"
+  }
+}

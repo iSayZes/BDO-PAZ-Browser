@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradeKey": "교환 키",
+    "petKey": "반려동물 ID",
+    "pet": "반려동물",
+    "rewards": "보상"
+  },
+  "meta": {
+    "count": "교환 {count}개"
+  }
+}

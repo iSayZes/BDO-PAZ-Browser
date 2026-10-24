@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "start": "Beginn",
+    "end": "Ende",
+    "maxPearl": "Max. Perlen",
+    "level": "Stufe",
+    "title": "Titel",
+    "targetPearl": "Ziel-Perlen",
+    "rewards": "Belohnungen",
+    "description": "Beschreibung"
+  },
+  "meta": {
+    "count": "{count} Stufen"
+  }
+}

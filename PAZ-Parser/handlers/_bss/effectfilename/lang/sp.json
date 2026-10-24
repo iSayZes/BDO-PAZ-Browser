@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "grid": "Cuadrícula",
+    "table": "Tabla",
+    "row": "Arma / Suelo",
+    "column": "Armadura / Movimiento",
+    "effect": "Efecto"
+  },
+  "grids": {
+    "attack": "Ataque",
+    "special": "Ataque especial",
+    "ground": "Suelo"
+  },
+  "meta": {
+    "count": "{count} celdas de efecto"
+  }
+}

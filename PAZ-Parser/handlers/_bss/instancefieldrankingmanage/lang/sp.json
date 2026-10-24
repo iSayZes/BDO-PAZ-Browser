@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rankingIdx": "Clave de clasificación",
+    "instanceType": "Tipo de instancia",
+    "start": "Inicio (UTC)",
+    "end": "Fin (UTC)",
+    "season": "Temporada"
+  },
+  "meta": {
+    "count": "{count} clasificaciones"
+  }
+}

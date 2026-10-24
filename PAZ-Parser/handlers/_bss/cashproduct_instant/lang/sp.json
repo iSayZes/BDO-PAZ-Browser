@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "instantType": "Tipo",
+    "instantTypeName": "Tarea",
+    "minute": "Minutos restantes",
+    "cost": "Coste"
+  },
+  "meta": {
+    "count": "{count} entradas"
+  }
+}

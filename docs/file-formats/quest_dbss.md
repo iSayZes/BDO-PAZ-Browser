@@ -10,10 +10,139 @@ Quest definition table. Each record stores the quest's accept and completion scr
 
 Every client the doc check read, and the layout its files fit.
 
-| Client | Result  |
-| ------ | ------- |
-| 1230   | No file |
-| 794    | No file |
+| Client | Result               |
+| ------ | -------------------- |
+| 2052   | No documented layout |
+| 2044   | No documented layout |
+| 2039   | No documented layout |
+| 2032   | No documented layout |
+| 2025   | No documented layout |
+| 2011   | No documented layout |
+| 2005   | No documented layout |
+| 1246   | No file              |
+| 1239   | No file              |
+| 1230   | No file              |
+| 1226   | No file              |
+| 1220   | No file              |
+| 1217   | No file              |
+| 1211   | No file              |
+| 1210   | No file              |
+| 1208   | No file              |
+| 1203   | No file              |
+| 1197   | No file              |
+| 1194   | No file              |
+| 1192   | No file              |
+| 1187   | No file              |
+| 1183   | No file              |
+| 1177   | No file              |
+| 1173   | No file              |
+| 1167   | No file              |
+| 1164   | No file              |
+| 1156   | No file              |
+| 1149   | No file              |
+| 1144   | No file              |
+| 1137   | No file              |
+| 1132   | No file              |
+| 1127   | No file              |
+| 1122   | No file              |
+| 1118   | No file              |
+| 1114   | No file              |
+| 1109   | No file              |
+| 1102   | No file              |
+| 1096   | No file              |
+| 1088   | No file              |
+| 1081   | No file              |
+| 1076   | No file              |
+| 1069   | No file              |
+| 1064   | No file              |
+| 1058   | No file              |
+| 1051   | No file              |
+| 1044   | No file              |
+| 1036   | No file              |
+| 1026   | No file              |
+| 1016   | No file              |
+| 1009   | No file              |
+| 1005   | No file              |
+| 1000   | No file              |
+| 998    | No file              |
+| 990    | No file              |
+| 979    | No file              |
+| 972    | No file              |
+| 963    | No file              |
+| 955    | No file              |
+| 946    | No file              |
+| 938    | No file              |
+| 927    | No file              |
+| 911    | No file              |
+| 904    | No file              |
+| 899    | No file              |
+| 894    | No file              |
+| 885    | No file              |
+| 879    | No file              |
+| 872    | No file              |
+| 864    | No file              |
+| 855    | No file              |
+| 853    | No file              |
+| 845    | No file              |
+| 837    | No file              |
+| 829    | No file              |
+| 822    | No file              |
+| 814    | No file              |
+| 805    | No file              |
+| 794    | No file              |
+| 787    | No file              |
+| 780    | No file              |
+| 771    | No file              |
+| 760    | No file              |
+| 748    | No file              |
+| 741    | No file              |
+| 736    | No file              |
+| 731    | No file              |
+| 723    | No file              |
+| 711    | No file              |
+| 707    | No file              |
+| 697    | No file              |
+| 689    | No file              |
+| 683    | No file              |
+| 678    | No file              |
+| 670    | No file              |
+| 661    | No file              |
+| 656    | No file              |
+| 652    | No file              |
+| 643    | No file              |
+| 637    | No file              |
+| 630    | No file              |
+| 627    | No file              |
+| 621    | No file              |
+| 617    | No file              |
+| 615    | No file              |
+| 606    | No file              |
+| 599    | No file              |
+| 592    | No file              |
+| 586    | No file              |
+| 577    | No file              |
+| 569    | No file              |
+| 561    | No file              |
+| 554    | No file              |
+| 542    | No file              |
+| 532    | No file              |
+| 531    | No file              |
+| 526    | No file              |
+| 521    | No file              |
+| 517    | No file              |
+| 510    | No file              |
+| 508    | No file              |
+| 504    | No file              |
+| 497    | No file              |
+| 491    | No file              |
+| 485    | No file              |
+| 478    | No file              |
+| 472    | No file              |
+| 466    | No file              |
+| 457    | No file              |
+| 452    | No file              |
+| 449    | No file              |
+| 435    | No file              |
 
 <!-- versions:end -->
 

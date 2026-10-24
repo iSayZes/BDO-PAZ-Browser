@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "abilityIndex": "Índice del efecto",
+    "buff": "Bonificador",
+    "effect": "Efecto"
+  },
+  "offsetColumns": {
+    "abilityIndex": "Índice del efecto",
+    "dataOffset": "Desplazamiento de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} efectos extra"
+  }
+}

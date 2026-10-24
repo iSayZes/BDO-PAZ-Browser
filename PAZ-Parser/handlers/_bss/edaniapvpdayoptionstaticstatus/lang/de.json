@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "row": "Zeile",
+    "time1": "Zeit 1",
+    "time2": "Zeit 2"
+  },
+  "meta": {
+    "count": "{count} Zeitplaneinträge"
+  }
+}

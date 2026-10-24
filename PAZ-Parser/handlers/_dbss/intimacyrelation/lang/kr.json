@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "npcKey": "NPC 키",
+    "npc": "NPC",
+    "knowledgeKey": "지식 ID",
+    "knowledge": "지식",
+    "cutscene": "컷신",
+    "coveredDialog": "미발견 대화",
+    "discoverDialog": "발견 대화",
+    "dialogLines": "기타 대화"
+  },
+  "offsetColumns": {
+    "npcKey": "NPC 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "NPC {count}명"
+  }
+}

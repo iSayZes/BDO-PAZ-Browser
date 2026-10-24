@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "toolKey": "Tool Key",
+    "tool": "Tool",
+    "works": "Exchanges"
+  },
+  "offsetColumns": {
+    "toolKey": "Tool Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "cells": {
+    "units": "unit production {units}"
+  },
+  "meta": {
+    "count": "{count} tools"
+  }
+}

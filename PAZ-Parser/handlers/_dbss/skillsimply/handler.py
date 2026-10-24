@@ -5,7 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _common.class_type import ALL_CLASSES_MASK, class_name, class_types_in_mask
+from _common.class_type import classes_label, is_all_classes
 from _common.html import Column, e, flag_cell, icon_cell, sort_keys, table, text_list_cell
 from _common.icon_index import IconKind, icon_path
 from _common.lang import handler_text, load_handler_strings
@@ -24,12 +24,6 @@ _AWAKENING_EQUIP_TYPE = 57
 
 def _skill_label(skill_no: int) -> str:
     return skill_name(skill_no) or str(skill_no)
-
-
-def _classes(class_mask: int, all_label: str) -> str:
-    if class_mask == ALL_CLASSES_MASK:
-        return all_label
-    return ", ".join(class_name(class_type) for class_type in class_types_in_mask(class_mask))
 
 
 def _weapon(record: SkillSimplyRecord, labels: dict[str, str]) -> str:
@@ -54,7 +48,7 @@ def _record_dict(record: SkillSimplyRecord, strings: dict) -> dict:
         "icon_path": icon_path(IconKind.SKILL, record.skill_no),
         **pa_fields("name", skill_name_tagged(record.skill_no)),
         "class_mask": record.class_mask,
-        "classes": _classes(record.class_mask, strings["allClasses"]),
+        "classes": classes_label(record.class_mask, strings["allClasses"]),
         "kind": record.kind,
         "kind_label": kind_labels.get(str(record.kind), str(record.kind)),
         # Zero means neither branch; None sorts last.
@@ -137,7 +131,7 @@ class SkillSimplyHandler(PreviewHandler):
         start = page * page_size
         slice_ = records[start : start + page_size]
         # Neither every class (item and event skills) nor none (ship and item effects).
-        class_skills = sum(1 for r in records if r["class_mask"] not in (0, ALL_CLASSES_MASK))
+        class_skills = sum(1 for r in records if r["class_mask"] and not is_all_classes(r["class_mask"]))
         meta = handler_text(self.lang, _LANG_DIR, "meta.count", count=len(records), class_skills=class_skills)
         rows = [
             [

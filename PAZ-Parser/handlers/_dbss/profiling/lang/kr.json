@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "profilingKey": "프로파일링 키",
+    "infoCount": "메시지 수",
+    "subjects": "대상",
+    "messages": "내용",
+    "execute": "보상 스크립트"
+  },
+  "offsetColumns": {
+    "profilingKey": "프로파일링 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "프로파일링 키 {count}개"
+  }
+}

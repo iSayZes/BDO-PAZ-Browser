@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent",
+    "abilityCount": "Optionen",
+    "addOns": "Talentzusatz-Effekte"
+  },
+  "meta": {
+    "count": "{count} Talente mit Talentzusatz-Optionen"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "item": "아이템",
+    "installationType": "설치 유형"
+  },
+  "meta": {
+    "count": "가구 아이템 {count}개"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "couponKey": "ID купона",
+    "name": "Купон",
+    "discountRate": "Скидка",
+    "discountPearl": "Скидка в жемчуге",
+    "maxDiscountPearl": "Макс. скидка",
+    "minProductPearl": "Мин. цена",
+    "expirationDays": "Дней действия",
+    "category": "Категория"
+  },
+  "offsetColumns": {
+    "couponKey": "ID купона",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Купонов: {count}"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "slotIndex": "Slot",
+    "patternIndex": "Pattern",
+    "image": "Image",
+    "image2": "Image 2",
+    "rootSize": "Root Size",
+    "changePattern": "Change Pattern",
+    "rootBeginNo": "Root Begin",
+    "endDirection": "End Direction",
+    "beginDirection": "Begin Direction",
+    "nextPatterns": "Next Patterns"
+  },
+  "directions": {
+    "left": "Left",
+    "right": "Right",
+    "top": "Top",
+    "bottom": "Bottom"
+  },
+  "offsetColumns": {
+    "slotIndex": "Slot",
+    "patternIndex": "Pattern",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} patterns"
+  }
+}

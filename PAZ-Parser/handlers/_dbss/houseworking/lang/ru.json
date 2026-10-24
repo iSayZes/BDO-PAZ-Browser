@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "toolKey": "ID инструмента",
+    "tool": "Инструмент",
+    "works": "Обмен"
+  },
+  "offsetColumns": {
+    "toolKey": "ID инструмента",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "cells": {
+    "units": "единиц производства: {units}"
+  },
+  "meta": {
+    "count": "Инструментов: {count}"
+  }
+}

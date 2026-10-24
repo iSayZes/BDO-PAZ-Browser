@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "characterKey": "Charakter-ID",
+    "building": "Gebäude",
+    "model": "Weltkarten-Modell",
+    "objectChangeLevel": "Objekt-Änderungsstufe"
+  },
+  "meta": {
+    "count": "{count} Gebäude"
+  }
+}

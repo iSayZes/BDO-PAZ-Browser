@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "passKey": "Clé du Pass",
+    "contentType": "Type",
+    "title": "Titre",
+    "start": "Début",
+    "end": "Fin",
+    "saleEnd": "Fin de la vente",
+    "step": "Étape",
+    "passPoints": "Points du Pass",
+    "basicReward": "Récompense de base",
+    "passReward": "Récompense du Pass",
+    "description": "Description"
+  },
+  "contentTypes": {
+    "1": "Quotidien",
+    "2": "Solare",
+    "3": "Combat",
+    "4": "Navigation",
+    "5": "Récolte"
+  },
+  "meta": {
+    "count": "{count} étapes de récompense"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "socialActionKey": "Gesten-ID",
+    "name": "Name",
+    "condition": "Bedingung",
+    "command": "Befehl",
+    "keywords": "Stichwörter",
+    "action": "Aktion",
+    "icon": "Symbol",
+    "conditionMessage": "Bedingungstext",
+    "contentsGroups": "Inhaltsgruppen"
+  },
+  "offsetColumns": {
+    "socialActionKey": "Gesten-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gesten"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "type": "Тип",
+    "name": "Пейзаж",
+    "dropItem": "Добыча"
+  },
+  "meta": {
+    "count": "Пейзажей: {count}"
+  }
+}

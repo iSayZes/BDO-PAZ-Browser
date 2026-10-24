@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "gameMode": "Modo de juego",
+    "rankGroup": "Grupo de rango",
+    "tier": "Grado",
+    "icon": "Icono",
+    "name": "Nombre",
+    "minRating": "Puntuación mín.",
+    "maxRanking": "Puesto máx.",
+    "itemLists": "Listas de objetos"
+  },
+  "meta": {
+    "count": "{count} grados de rango"
+  }
+}

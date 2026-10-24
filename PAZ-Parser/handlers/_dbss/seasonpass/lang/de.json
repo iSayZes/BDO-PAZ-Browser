@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "passNo": "Nr.",
+    "freeQuest": "Gratis-Quest",
+    "premiumQuest": "Premium-Quest",
+    "seasonType": "Saisontyp",
+    "conditionQuest": "Bedingungsquest",
+    "changedTitle": "Geänderter Titel",
+    "changedDescription": "Geänderte Beschreibung"
+  },
+  "meta": {
+    "count": "{count} Pass-Zeilen"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Classe",
+    "slot": "Emplacement",
+    "choiceCount": "Choix",
+    "skills": "Fusions de compétence"
+  },
+  "meta": {
+    "count": "{count} emplacements de fusion de compétence"
+  }
+}

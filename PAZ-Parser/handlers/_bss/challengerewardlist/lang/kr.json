@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "아이템 키",
+    "itemId": "아이템 ID",
+    "enchantLevel": "강화 단계",
+    "item": "아이템"
+  },
+  "meta": {
+    "count": "보상 아이템 {count}개"
+  }
+}

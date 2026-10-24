@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "gameMode": "Game Mode",
+    "rankGroup": "Rank Group",
+    "tier": "Tier",
+    "icon": "Icon",
+    "name": "Name",
+    "minRating": "Min Rating",
+    "maxRanking": "Max Ranking",
+    "itemLists": "Item Lists"
+  },
+  "meta": {
+    "count": "{count} rank tiers"
+  }
+}

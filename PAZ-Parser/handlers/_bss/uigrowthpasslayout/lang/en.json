@@ -7,7 +7,8 @@
     "mainId": "Main ID",
     "subId": "Sub ID",
     "icon": "Icon",
-    "title": "Title"
+    "title": "Title",
+    "links": "Links"
   },
   "meta": {
     "count": "{count} grid cells · {layouts} categories"

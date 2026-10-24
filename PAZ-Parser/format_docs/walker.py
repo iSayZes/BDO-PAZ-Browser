@@ -18,13 +18,37 @@ from .walk_model import FieldBytes, FileFit, RowStats, Unwalkable, WalkError
 
 _FORMATS = {"u8": "B", "i8": "b", "u16": "H", "i16": "h", "u32": "I", "i32": "i", "u64": "Q", "i64": "q", "f32": "f", "f64": "d"}
 _STRING_UNITS = {"str8": 1, "str16": 2}
+_NUMBER, _STRING, _STRUCTURE = "number", "string", "structure"
 
 
 @dataclass(frozen=True)
 class _Row:
+    """One field of a structure, with what a read of it needs worked out once: a large file reads each row millions of times."""
+
     field: Field
     spec: TypeSpec
     offset: Offset
+    is_from_end: bool
+    kind: str
+    # The bytes of one value of a number or unit type; 0 for the other kinds.
+    unit: int
+    # Reads one number; None for a unit type, which only an array reads.
+    number: struct.Struct | None
+    cover_key: tuple[str, str]
+
+
+@dataclass(frozen=True)
+class _Plan:
+    """A structure's rows, split by where they are read from, and the fields `_note_sizes` pairs."""
+
+    rows: tuple[_Row, ...]
+    forward: tuple[_Row, ...]
+    from_end: tuple[_Row, ...]
+    # How far back from the end the first trailer row starts; 0 without one.
+    trailer: int
+    offset_names: tuple[str, ...]
+    size_names: tuple[str, ...]
+    notes_sizes: bool
 
 
 Values = dict[str, int | float | str]
@@ -46,15 +70,17 @@ def walk_file(
 class _Walker:
     def __init__(self, data: bytes, structures: Mapping[str, Structure], sizes_by_file: Mapping[str, Mapping[int, int]]) -> None:
         self.data = data
+        self.size = len(data)
         self.structures = structures
         self.sizes_by_file = sizes_by_file
-        self.rows: dict[str, RowStats] = {}
+        # Per structure: count, smallest, largest and total bytes, kept as plain numbers until `result`.
+        self.row_sizes: dict[str, list[int]] = {}
         self.covered: dict[tuple[str, str], int] = {}
         self.found_sizes: dict[int, int] = {}
-        self._plans: dict[str, tuple[_Row, ...]] = {}
+        self._plans: dict[str, _Plan] = {}
 
     def result(self, name: str) -> FileFit:
-        rows = dict(self.rows)
+        rows = {structure: RowStats(*sizes) for structure, sizes in self.row_sizes.items()}
         fields = tuple(
             FieldBytes(structure, field, not field.startswith(UNKNOWN_PREFIX), size)
             for (structure, field), size in self.covered.items()
@@ -83,8 +109,8 @@ class _Walker:
             raise WalkError(structure.name, "(end)", pos, f"the fields end at 0x{pos:X}, its size says 0x{body_end:X}")
         final = end if end is not None else pos
         self._count_row(structure.name, final - start)
-        if structure.size is None or structure.size.external is None:
-            self._note_sizes(values)
+        if plan.notes_sizes:
+            self._note_sizes(plan, values)
         return final, values
 
     def _fixed_end(self, structure: Structure, pos: int, values: Values) -> int | None:
@@ -101,47 +127,49 @@ class _Walker:
             return pos + sizes[pos]
         return None if spec.is_variable or spec.fixed is None else pos + spec.fixed
 
-    def _read_end_rows(self, structure: Structure, plan: tuple[_Row, ...], end: int, values: Values) -> int:
+    def _read_end_rows(self, structure: Structure, plan: _Plan, end: int, values: Values) -> int:
         """Read the rows counted back from `end` first; return where they start."""
-        from_end = [row for row in plan if row.offset.is_from_end]
-        if not from_end:
+        if not plan.from_end:
             return end
-        start = end - max(row.offset.value for row in from_end)
+        start = end - plan.trailer
         if start < 0:
-            raise WalkError(structure.name, from_end[0].field.name, 0, "the file is shorter than its trailer")
-        for row in from_end:
+            raise WalkError(structure.name, plan.from_end[0].field.name, 0, "the file is shorter than its trailer")
+        for row in plan.from_end:
             self._read(structure, row, end - row.offset.value, end, values)
         return start
 
-    def _walk_rows(self, structure: Structure, plan: tuple[_Row, ...], pos: int, end: int | None, values: Values) -> int:
-        for row in plan:
-            if not row.offset.is_from_end:
-                pos = self._read(structure, row, pos, end, values)
+    def _walk_rows(self, structure: Structure, plan: _Plan, pos: int, end: int | None, values: Values) -> int:
+        for row in plan.forward:
+            pos = self._read(structure, row, pos, end, values)
         return pos
 
     def _read(self, structure: Structure, row: _Row, pos: int, end: int | None, values: Values) -> int:
-        spec = row.spec
-        if spec.condition is not None and not self._holds(structure, row, spec.condition, pos, values):
+        condition = row.spec.condition
+        if condition is not None and not self._holds(structure, row, condition, pos, values):
             return pos
-        if spec.is_structure:
+        if row.kind is _NUMBER:
+            return self._read_numbers(structure, row, pos, end, values)
+        if row.kind is _STRUCTURE:
             return self._read_structures(structure, row, pos, end, values)
-        if spec.name in STRING_HEADS:
-            return self._read_strings(structure, row, pos, end, values)
-        return self._read_numbers(structure, row, pos, end, values)
+        return self._read_strings(structure, row, pos, end, values)
 
     def _read_numbers(self, structure: Structure, row: _Row, pos: int, end: int | None, values: Values) -> int:
-        spec, name = row.spec, row.field.name
-        unit = NUMBER_SIZES.get(spec.name) or UNIT_SIZES[spec.name]
+        spec, unit = row.spec, row.unit
         if spec.count is None:
-            self._need(structure, row, pos, unit, end)
-            values[name] = struct.unpack_from("<" + _FORMATS[spec.name], self.data, pos)[0]
-            self._cover(structure, row, unit)
+            if row.number is None:
+                raise Unwalkable(f"{structure.name} `{row.field.name}` is a {spec.name} without a count")
+            # `_need` inlined: this is the walk's most frequent read.
+            limit = self.size if end is None or end > self.size else end
+            if pos + unit > limit:
+                self._need(structure, row, pos, unit, end)
+            values[row.field.name] = row.number.unpack_from(self.data, pos)[0]
+            self.covered[row.cover_key] = self.covered.get(row.cover_key, 0) + unit
             return pos + unit
         size = self._array_bytes(structure, row, pos, end, values, unit)
         self._need(structure, row, pos, size, end)
         if spec.name in ("char", "char16"):
-            values[name] = self.data[pos : pos + size].decode("ascii" if spec.name == "char" else "utf-16-le", errors="replace")
-        self._cover(structure, row, size)
+            values[row.field.name] = self.data[pos : pos + size].decode("ascii" if spec.name == "char" else "utf-16-le", errors="replace")
+        self._cover(row, size)
         return pos + size
 
     def _array_bytes(self, structure: Structure, row: _Row, pos: int, end: int | None, values: Values, unit: int) -> int:
@@ -173,7 +201,7 @@ class _Walker:
             pos, text = self._string(structure, row, pos, end)
             if row.spec.count is None:
                 values[row.field.name] = text
-        self._cover(structure, row, pos - start)
+        self._cover(row, pos - start)
         return pos
 
     def _string(self, structure: Structure, row: _Row, pos: int, end: int | None) -> tuple[int, str]:
@@ -224,7 +252,7 @@ class _Walker:
         count = row.spec.count
         assert count is not None and count.stop is not None
         field_name = str(count.value)
-        peek = next((r for r in self._plan(element) if r.field.name == field_name), None)
+        peek = next((r for r in self._plan(element).rows if r.field.name == field_name), None)
         if (
             peek is None or peek.offset.anchor is not None or peek.spec.name not in NUMBER_SIZES
             or peek.spec.count is not None or peek.spec.condition is not None
@@ -272,30 +300,51 @@ class _Walker:
             where = "the file ends" if limit == len(self.data) else f"{structure.name} ends"
             raise WalkError(structure.name, row.field.name, pos, f"needs {size:,} bytes, {where} at 0x{limit:X}")
 
-    def _cover(self, structure: Structure, row: _Row, size: int) -> None:
-        key = (structure.name, row.field.name)
-        self.covered[key] = self.covered.get(key, 0) + size
+    def _cover(self, row: _Row, size: int) -> None:
+        self.covered[row.cover_key] = self.covered.get(row.cover_key, 0) + size
 
     def _count_row(self, name: str, size: int) -> None:
-        stats = self.rows.get(name)
-        self.rows[name] = (
-            RowStats(1, size, size, size)
-            if stats is None
-            else RowStats(stats.count + 1, min(stats.smallest, size), max(stats.largest, size), stats.total + size)
-        )
+        sizes = self.row_sizes.get(name)
+        if sizes is None:
+            self.row_sizes[name] = [1, size, size, size]
+            return
+        sizes[0] += 1
+        if size < sizes[1]:
+            sizes[1] = size
+        if size > sizes[2]:
+            sizes[2] = size
+        sizes[3] += size
 
-    def _note_sizes(self, values: Values) -> None:
-        offsets = [value for key, value in values.items() if OFFSET_FIELD.match(key) and isinstance(value, int)]
-        sizes = [value for key, value in values.items() if SIZE_FIELD.match(key) and isinstance(value, int)]
+    def _note_sizes(self, plan: _Plan, values: Values) -> None:
+        offsets = [value for key in plan.offset_names if isinstance(value := values.get(key), int)]
+        sizes = [value for key in plan.size_names if isinstance(value := values.get(key), int)]
         if len(offsets) == 1 and len(sizes) == 1:
             self.found_sizes[offsets[0]] = sizes[0]
 
-    def _plan(self, structure: Structure) -> tuple[_Row, ...]:
+    def _plan(self, structure: Structure) -> _Plan:
         plan = self._plans.get(structure.name)
         if plan is None:
-            plan = tuple(_row(structure, field) for field in structure.fields)
+            plan = _plan(structure)
             self._plans[structure.name] = plan
         return plan
+
+
+def _plan(structure: Structure) -> _Plan:
+    rows = tuple(_row(structure, field) for field in structure.fields)
+    from_end = tuple(row for row in rows if row.is_from_end)
+    # The keys a structure's values can hold: its fields, and `size` from an external size.
+    names = tuple(dict.fromkeys((*(row.field.name for row in rows), "size")))
+    offset_names = tuple(name for name in names if OFFSET_FIELD.match(name))
+    size_names = tuple(name for name in names if SIZE_FIELD.match(name))
+    return _Plan(
+        rows,
+        tuple(row for row in rows if not row.is_from_end),
+        from_end,
+        max((row.offset.value for row in from_end), default=0),
+        offset_names,
+        size_names,
+        bool(offset_names and size_names) and (structure.size is None or structure.size.external is None),
+    )
 
 
 def _row(structure: Structure, field: Field) -> _Row:
@@ -303,7 +352,14 @@ def _row(structure: Structure, field: Field) -> _Row:
     offset = parse_offset(field.offset)
     if isinstance(spec, str) or isinstance(offset, str):
         raise Unwalkable(f"{structure.name} `{field.name}` does not pass the doc check")
-    return _Row(field, spec, offset)
+    if spec.is_structure:
+        kind, unit, number = _STRUCTURE, 0, None
+    elif spec.name in STRING_HEADS:
+        kind, unit, number = _STRING, 0, None
+    else:
+        fmt = _FORMATS.get(spec.name)
+        kind, unit, number = _NUMBER, NUMBER_SIZES.get(spec.name) or UNIT_SIZES[spec.name], None if fmt is None else struct.Struct("<" + fmt)
+    return _Row(field, spec, offset, offset.is_from_end, kind, unit, number, (structure.name, field.name))
 
 
 def _unquoted(text: str) -> str:

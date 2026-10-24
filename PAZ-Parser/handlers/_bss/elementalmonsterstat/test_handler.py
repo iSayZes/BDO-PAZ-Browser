@@ -104,8 +104,8 @@ def test_each_group_and_level_has_one_boss(stat_result: HandlerResult) -> None:
 
 def test_unlock_boss_is_the_boss_one_level_lower(stat_result: HandlerResult) -> None:
     boss_at = {(r["group"], r["level"]): r["character_key"] for r in stat_result.records if r["is_boss"]}
+    # Client 3482 gates every difficulty by min_ap alone and has no unlock rows.
     unlocked = [r for r in stat_result.records if r["unlock_character_key"]]
-    assert unlocked
     for r in unlocked:
         assert boss_at.get((r["group"], r["level"] - 1)) == r["unlock_character_key"], r["character_key"]
 

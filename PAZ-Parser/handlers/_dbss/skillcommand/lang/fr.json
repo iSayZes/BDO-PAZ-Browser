@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "skillNo": "N° de compétence",
+    "skill": "Compétence",
+    "classes": "Classe",
+    "command": "Commande de compétence",
+    "consoleCommand": "Commande manette",
+    "level": "Niveau",
+    "showCheck": "Afficher",
+    "awakening": "Éveil",
+    "form": "Forme de Drakania"
+  },
+  "forms": {
+    "1": "Forme normale",
+    "2": "Forme de dragon"
+  },
+  "offsetColumns": {
+    "skillNo": "N° de compétence",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} commandes de compétence"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "meshKey": "Clave de malla",
+    "items": "Objetos",
+    "model": "Modelo",
+    "effectFile": "Archivo de efecto",
+    "weaponMaterial": "Material de arma",
+    "armorMaterial": "Material de armadura",
+    "adult": "Adulto",
+    "effectsChange": "Cambio de efecto"
+  },
+  "meta": {
+    "count": "{count} mallas de objetos"
+  }
+}

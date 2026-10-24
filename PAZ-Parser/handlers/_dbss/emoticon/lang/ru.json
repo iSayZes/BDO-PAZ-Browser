@@ -1,0 +1,21 @@
+{
+  "columns": {
+    "emoticonKey": "ID смайлика",
+    "name": "Название",
+    "icon": "Значок",
+    "iconCount": "Значки",
+    "rowCount": "Строки",
+    "columnCount": "Столбцы",
+    "keyword": "Ключевое слово",
+    "sequence": "Анимация",
+    "group": "Группа"
+  },
+  "offsetColumns": {
+    "emoticonKey": "ID смайлика",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Смайликов: {count}"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "contentType": "콘텐츠 타입",
+    "icon": "아이콘",
+    "title": "제목",
+    "contentsGroups": "콘텐츠 그룹"
+  },
+  "meta": {
+    "count": "일정 콘텐츠 {count}개"
+  }
+}

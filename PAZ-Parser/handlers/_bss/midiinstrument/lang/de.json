@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "index": "Index",
+    "bankName": "Bank",
+    "eventName": "Ereignis",
+    "ingameName": "Namensschlüssel",
+    "articulations": "Artikulationen",
+    "startAction": "Startaktion",
+    "endAction": "Endaktion",
+    "advancedType": "Reiter",
+    "instrumentNameType": "Reiterschlüssel",
+    "isOpened": "Geöffnet",
+    "ingActions": "Schleifenaktionen",
+    "isProvided": "Für alle"
+  },
+  "advancedTypes": {
+    "0": "Anfänger",
+    "1": "Fortgeschritten",
+    "2": "Elektronisch"
+  },
+  "meta": {
+    "count": "{count} Instrumente"
+  }
+}

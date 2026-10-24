@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "meshKey": "Mesh-Schlüssel",
+    "items": "Gegenstände",
+    "enchantLevel": "Verstärkungsstufe",
+    "levels": "Stufen",
+    "model": "Modell"
+  },
+  "offsetColumns": {
+    "meshKey": "Mesh-Schlüssel",
+    "enchantLevel": "Verstärkungsstufe",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Stufenmodelle"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneKey": "컷신 키",
+    "fileName": "파일 이름",
+    "name": "이름",
+    "place": "장소"
+  },
+  "offsetColumns": {
+    "cutsceneKey": "컷신 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "컷신 {count}개"
+  }
+}

@@ -90,6 +90,13 @@ class IndexKind(Enum):
     ENCHANT_KEY_ITEMS = "enchant_key_items"
     # Base item IDs per enhancement type (the guaranteeenchantss.dbss group), ascending.
     ENHANCEMENT_TYPE_ITEMS = "enhancement_type_items"
+    # Base item IDs per marblegamediceitemgroup.dbss group key (contents event 98), ascending.
+    MARBLE_DICE_GROUP_ITEMS = "marble_dice_group_items"
+    # Base item IDs per customizeditem.dbss key (contents event 31 CustomizedItemBox), ascending.
+    CUSTOMIZED_ITEM_BOXES = "customized_item_boxes"
+    # Base item IDs per item mesh key (the itemenchant.dbss class entries, the
+    # itemeffectchange.dbss key), ascending.
+    MESH_KEY_ITEMS = "mesh_key_items"
     # Parent node key of each sub-node (exploration.bss + the worldmap graph).
     NODE_PARENT = "node_parent"
     # (node_kind, x, z, is_sub_node, is_sea) of each enabled node with a

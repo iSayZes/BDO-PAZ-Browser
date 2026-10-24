@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Key",
+    "section": "Section",
+    "name": "Name / Function",
+    "details": "Condition / Parameters",
+    "periodStart": "Period Start",
+    "periodEnd": "Period End",
+    "characters": "Characters",
+    "linked": "Linked Rows"
+  },
+  "sections": {
+    "event": "Event",
+    "contents": "Event Contents"
+  },
+  "meta": {
+    "count": "{count} events and event contents"
+  }
+}

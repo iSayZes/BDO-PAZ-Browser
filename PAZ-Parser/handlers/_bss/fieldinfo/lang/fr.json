@@ -11,7 +11,8 @@
     "players": "Joueurs",
     "ridable": "Monture autorisée",
     "rangeSpawn": "Apparitions du monde",
-    "dropRate": "Chances de butin"
+    "dropRate": "Chances de butin",
+    "maps": "Cartes"
   },
   "meta": {
     "count": "{count} champs"

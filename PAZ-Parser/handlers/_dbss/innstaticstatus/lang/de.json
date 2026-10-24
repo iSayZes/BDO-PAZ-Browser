@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "innKey": "Gasthaus-ID",
+    "roomKey": "Zimmer-ID",
+    "house": "Haus",
+    "town": "Stadt"
+  },
+  "offsetColumns": {
+    "innKey": "Gasthaus-ID",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Gasthauszimmer"
+  }
+}

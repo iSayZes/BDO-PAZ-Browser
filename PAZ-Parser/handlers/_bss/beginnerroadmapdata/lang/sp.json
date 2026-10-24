@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "roadmapKey": "Casilla",
+    "icon": "Icono",
+    "title": "Título",
+    "text": "Texto",
+    "eventName": "Botón de evento",
+    "event": "Evento"
+  },
+  "events": {
+    "1": "Abre la ventana de misiones (misiones principales)",
+    "2": "Abre el Espíritu Oscuro",
+    "openUi": "Abre la interfaz {target}",
+    "category": "Categoría de evento {category}"
+  },
+  "meta": {
+    "count": "{count} casillas de la hoja de ruta"
+  }
+}

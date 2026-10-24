@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "eventKey": "Event Key",
+    "icon": "Icon",
+    "title": "Title",
+    "text": "Text",
+    "start": "Start (UTC)",
+    "end": "End (UTC)",
+    "button": "Button",
+    "function": "Function",
+    "tag": "Tag",
+    "rewards": "Rewards"
+  },
+  "meta": {
+    "count": "{count} events"
+  }
+}

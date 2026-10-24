@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "집 ID",
+    "house": "집",
+    "town": "마을",
+    "node": "거점",
+    "uses": "용도"
+  },
+  "offsetColumns": {
+    "houseKey": "집 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "cells": {
+    "level": "{name} {level}단계"
+  },
+  "meta": {
+    "count": "길드 하우스 {count}개"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "type": "종류",
+    "name": "풍경화",
+    "dropItem": "드롭 아이템"
+  },
+  "meta": {
+    "count": "풍경화 {count}개"
+  }
+}

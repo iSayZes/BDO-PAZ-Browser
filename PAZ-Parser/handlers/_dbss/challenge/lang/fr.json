@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "challengeKey": "Clé du défi",
+    "title": "Titre",
+    "type": "Type",
+    "completeCondition": "Accomplissement",
+    "conditionParam1": "Paramètre 1",
+    "conditionParam2": "Paramètre 2",
+    "rewardCondition": "Condition de récompense",
+    "resetType": "Réinitialisation",
+    "resetValue": "Valeur de réinitialisation",
+    "rewards": "Récompenses",
+    "selectRewards": "Récompenses au choix",
+    "optionalType": "Groupe de récompenses",
+    "isRewardOverlapable": "Cumul des récompenses",
+    "isShowIcon": "Alerte de progression",
+    "description": "Description"
+  },
+  "offsetColumns": {
+    "challengeKey": "Clé du défi",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "text": {
+    "coupon": "Coupon {number}"
+  },
+  "meta": {
+    "count": "{count} défis"
+  }
+}

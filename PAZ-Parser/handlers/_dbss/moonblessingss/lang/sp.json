@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clave",
+    "start": "Inicio",
+    "end": "Fin",
+    "maxPearl": "Perlas máx.",
+    "level": "Nivel",
+    "title": "Título",
+    "targetPearl": "Perlas objetivo",
+    "rewards": "Recompensas",
+    "description": "Descripción"
+  },
+  "meta": {
+    "count": "{count} niveles"
+  }
+}

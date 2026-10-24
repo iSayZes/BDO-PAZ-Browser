@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "gameType": "Type de jeu",
+    "nextGame": "Jeu suivant",
+    "minDamageRate": "Taux de dégâts min.",
+    "nextRate": "Taux suivant",
+    "lifeType": "Type de vie",
+    "lifeRate": "Taux de vie",
+    "tools": "Houes",
+    "toolRate": "Taux d'outil",
+    "stoneRate": "Taux de pierre",
+    "stoneDrop": "Butin de pierre",
+    "grid": "Grille",
+    "startPos": "Position de départ",
+    "minRootCount": "Nb. min. de racines",
+    "beginRootCount": "Racines au départ",
+    "useSlots": "Groupes d'emplacements",
+    "rewards": "Récompenses",
+    "lakiaros": "Lakiaros"
+  },
+  "sides": {
+    "left": "Gauche",
+    "right": "Droite",
+    "top": "Haut",
+    "bottom": "Bas"
+  },
+  "lakiaro": {
+    "depth": "{name} ({key}), profondeur {depth}"
+  },
+  "meta": {
+    "count": "{count} types de jeu"
+  }
+}

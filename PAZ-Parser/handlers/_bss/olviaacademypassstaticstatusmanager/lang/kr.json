@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "passType": "패스 종류",
+    "passTypeName": "패스",
+    "step": "단계",
+    "baseQuest": "기본 의뢰",
+    "passQuest": "패스 의뢰"
+  },
+  "meta": {
+    "count": "패스 단계 {count}개"
+  }
+}

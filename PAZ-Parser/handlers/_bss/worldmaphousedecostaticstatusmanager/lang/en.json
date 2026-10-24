@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "building": "Building",
+    "model": "World Map Model",
+    "objectChangeLevel": "Object Change Level"
+  },
+  "meta": {
+    "count": "{count} buildings"
+  }
+}

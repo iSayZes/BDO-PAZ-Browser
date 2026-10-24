@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Тип класса",
+    "className": "Класс",
+    "showType": "Тип показа",
+    "skillNo": "№ навыка",
+    "skillName": "Навык"
+  },
+  "meta": {
+    "count": "Навыков окна перезарядки: {count}"
+  }
+}

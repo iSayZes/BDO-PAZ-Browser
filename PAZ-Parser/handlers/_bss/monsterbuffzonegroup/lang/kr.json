@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "지역 키",
+    "region": "지역",
+    "structures": "구조물 몬스터",
+    "characters": "목록 캐릭터"
+  },
+  "meta": {
+    "count": "지역 {count}개"
+  }
+}

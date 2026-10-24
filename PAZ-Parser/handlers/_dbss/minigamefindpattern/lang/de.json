@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "slotIndex": "Slot",
+    "patternIndex": "Muster",
+    "image": "Bild",
+    "image2": "Bild 2",
+    "rootSize": "Wurzelgröße",
+    "changePattern": "Wechselmuster",
+    "rootBeginNo": "Wurzelbeginn",
+    "endDirection": "Endrichtung",
+    "beginDirection": "Startrichtung",
+    "nextPatterns": "Nächste Muster"
+  },
+  "directions": {
+    "left": "Links",
+    "right": "Rechts",
+    "top": "Oben",
+    "bottom": "Unten"
+  },
+  "offsetColumns": {
+    "slotIndex": "Slot",
+    "patternIndex": "Muster",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Muster"
+  }
+}

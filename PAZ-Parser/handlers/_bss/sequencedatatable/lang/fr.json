@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "cutsceneFile": "Fichier de cinématique",
+    "regionKey": "Clé de région",
+    "region": "Région",
+    "startCondition": "Condition de départ",
+    "startExecute": "Script de départ",
+    "endExecute": "Script de fin"
+  },
+  "meta": {
+    "count": "{count} départs de cinématique"
+  }
+}

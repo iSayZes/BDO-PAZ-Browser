@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "furniture": "가구",
+    "matchingCharacter": "짝 캐릭터",
+    "matchingPoint": "짝 점수",
+    "onDresser": "화장대 위",
+    "onBedSideCabinet": "협탁 위",
+    "onWardrobe": "옷장 위",
+    "onDiningTable": "식탁 위",
+    "onTable": "테이블 위",
+    "onChair": "의자 위",
+    "onSofa": "소파 위",
+    "onBed": "침대 위",
+    "onBookCase": "책장 위",
+    "onShelf": "선반 위",
+    "isEmptyInFront": "앞 비움",
+    "isEmptyInBack": "뒤 비움",
+    "isEmptyInLeft": "왼쪽 비움",
+    "isEmptyInRight": "오른쪽 비움"
+  },
+  "offsetColumns": {
+    "characterKey": "캐릭터 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "가구 {count}개"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "itemGroupType": "그룹 종류",
+    "effectIndex": "효과",
+    "name": "이름",
+    "color": "색상",
+    "dyeItem": "염료"
+  },
+  "meta": {
+    "count": "아이템 효과 {count}개"
+  }
+}

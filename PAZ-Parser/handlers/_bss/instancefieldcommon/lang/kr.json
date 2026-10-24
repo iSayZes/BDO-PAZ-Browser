@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "instanceType": "인스턴스 타입",
+    "instanceMode": "인스턴스 모드",
+    "level": "최소 레벨",
+    "quest": "의뢰",
+    "questName": "의뢰 이름",
+    "message": "메시지"
+  },
+  "meta": {
+    "count": "입장 제한 {count}개"
+  }
+}

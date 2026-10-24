@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "territoryKey": "영지 키",
+    "territory": "영지",
+    "taxType": "세금 종류",
+    "minPercentOrPrice": "최소",
+    "maxPercentOrPrice": "최대",
+    "systemPercent": "시스템 세율"
+  },
+  "meta": {
+    "count": "영지 세금 종류 {count}개"
+  }
+}

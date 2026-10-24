@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "seasonNo": "시즌 번호",
+    "season": "시즌",
+    "description": "설명",
+    "rewards": "보상"
+  },
+  "meta": {
+    "count": "시즌 {count}개"
+  }
+}

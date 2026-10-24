@@ -1,0 +1,44 @@
+{
+  "cellColumns": {
+    "spawnKey": "Ключ появления",
+    "type": "Тип",
+    "characterKey": "Ключ персонажа",
+    "name": "Имя",
+    "gridX": "Сетка X",
+    "gridZ": "Сетка Z",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "spawnRange": "Радиус появления",
+    "delay": "Время возрождения",
+    "variableDelay": "Случайная добавка",
+    "actionIndex": "Индекс действия",
+    "dialogIndex": "Индекс диалога",
+    "territory": "Территория",
+    "goHome": "Точка возврата домой",
+    "goBack": "Точка отхода",
+    "spawnable": "Появляется"
+  },
+  "gridColumns": {
+    "x": "Сетка X",
+    "z": "Сетка Z",
+    "worldX": "Мир X",
+    "worldZ": "Мир Z"
+  },
+  "fileColumns": {
+    "x": "Ячейка X",
+    "z": "Ячейка Z",
+    "worldX": "Мир X",
+    "worldZ": "Мир Z"
+  },
+  "types": {
+    "monster": "Монстр",
+    "npc": "НИП"
+  },
+  "meta": {
+    "spawns": "Точек появления: {count}",
+    "squares": "Клеток сетки с точками появления: {count}",
+    "cells": "Файлов ячеек: {count}",
+    "withField": "{count}, поле {field}"
+  }
+}

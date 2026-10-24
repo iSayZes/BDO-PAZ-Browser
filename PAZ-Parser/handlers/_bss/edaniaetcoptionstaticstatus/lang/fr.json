@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "edaniaRegion": "Région d'Edania",
+    "castle": "Château",
+    "contentsGroup": "Groupe de contenu",
+    "throneQuest": "Quête du trône",
+    "bossClearItemKey": "ID d'objet de victoire",
+    "bossClearItem": "Objet de victoire",
+    "minAp1": "PA min. 1",
+    "minDp1": "PD min. 1",
+    "minAp2": "PA min. 2",
+    "minDp2": "PD min. 2",
+    "minItemGrade1": "Qualité min. 1",
+    "minItemGrade2": "Qualité min. 2",
+    "taxRate": "Taux de taxe",
+    "taxBaseAmount": "Montant de base de la taxe"
+  },
+  "meta": {
+    "count": "{count} châteaux d'Edania",
+    "dropBuff": "; Bonus d'Edana : taux de butin +{rate} pendant {minutes} min, {uses} utilisations"
+  }
+}

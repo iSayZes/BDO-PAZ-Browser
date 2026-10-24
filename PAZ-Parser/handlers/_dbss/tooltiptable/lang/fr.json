@@ -1,0 +1,38 @@
+{
+  "columns": {
+    "keyHash": "Hash",
+    "type": "Type",
+    "text": "Texte",
+    "paramCount": "Paramètres",
+    "icons": "Icônes"
+  },
+  "offsetColumns": {
+    "type": "Type",
+    "keyHash": "Hash",
+    "dataOffset": "Décalage des données"
+  },
+  "icons": {
+    "0": "Invincible",
+    "1": "Super armure",
+    "2": "Garde Avant",
+    "3": "Trébuchement",
+    "4": "Projection",
+    "5": "Fauchage",
+    "6": "Étourdissement",
+    "7": "Rigidité",
+    "8": "Repoussement",
+    "9": "Prise",
+    "10": "Gel",
+    "11": "Écrasement",
+    "12": "Fracas aérien",
+    "13": "Attaque au sol",
+    "14": "Attaque aérienne",
+    "15": "Récupération des PV",
+    "16": "Récupération des ressources de compétence",
+    "17": "Contre-attaque",
+    "18": "Attaque rapide"
+  },
+  "meta": {
+    "count": "{count} lignes d'infobulle"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "key": "Clave",
+    "section": "Sección",
+    "description": "Descripción",
+    "point": "Renombre de hermandad",
+    "type": "Tipo",
+    "details": "Detalles"
+  },
+  "sections": {
+    "gain": "Cómo obtener",
+    "use": "Lugar de uso",
+    "benefit": "Beneficios por Renombre",
+    "dailyPay": "Pago diario"
+  },
+  "meta": {
+    "count": "{count} cambios de Renombre de hermandad, beneficios y niveles de pago diario"
+  }
+}

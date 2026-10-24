@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "count": "개수",
+    "reward": "보상"
+  },
+  "rewards": {
+    "win": "승리",
+    "lose": "패배",
+    "scoreRank1": "점수 1위",
+    "scoreRank2": "점수 2위",
+    "scoreRank3": "점수 3위",
+    "scoreRank4": "점수 4위",
+    "scoreRank5": "점수 5위",
+    "scoreRank6": "점수 6위",
+    "liberation": "해방",
+    "plusMedal": "추가 메달",
+    "plusItem": "추가 아이템",
+    "item1": "아이템 1",
+    "item2": "아이템 2",
+    "item3": "아이템 3",
+    "booty": "전리품: {territory}"
+  },
+  "meta": {
+    "count": "보상 아이템 {count}개"
+  }
+}

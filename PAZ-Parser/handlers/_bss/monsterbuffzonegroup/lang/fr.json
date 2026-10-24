@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "regionKey": "Clé de région",
+    "region": "Région",
+    "structures": "Monstres-structures",
+    "characters": "Personnages listés"
+  },
+  "meta": {
+    "count": "{count} régions"
+  }
+}

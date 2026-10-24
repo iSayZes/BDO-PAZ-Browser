@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "territoryKey": "Ключ территории",
+    "territory": "Территория",
+    "taxType": "Тип налога",
+    "minPercentOrPrice": "Минимум",
+    "maxPercentOrPrice": "Максимум",
+    "systemPercent": "Системная ставка"
+  },
+  "meta": {
+    "count": "Типов налога территорий: {count}"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "decoIndex": "인덱스",
+    "model": "모델",
+    "locationX": "X",
+    "locationY": "Y",
+    "locationZ": "Z",
+    "scale": "크기 (%)",
+    "rotation": "회전 (°)"
+  },
+  "meta": {
+    "count": "월드맵 모델 {count}개"
+  }
+}

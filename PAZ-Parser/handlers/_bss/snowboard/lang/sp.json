@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "courseKey": "Clave de la pista",
+    "course": "Pista",
+    "mode": "Modo",
+    "checkpoint": "Punto de control",
+    "nextCheckpoint": "Siguiente punto de control"
+  },
+  "meta": {
+    "count": "{count} puntos de control"
+  }
+}

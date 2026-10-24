@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "instanceFieldType": "Type de champ d'instance",
+    "rankingCount": "Classements",
+    "rankings": "Clés de classement"
+  },
+  "meta": {
+    "count": "{count} types de champ d'instance"
+  }
+}

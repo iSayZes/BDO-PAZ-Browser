@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 키",
+    "ship": "선박",
+    "jobSlots": "직책 슬롯"
+  },
+  "meta": {
+    "count": "선박 {count}척"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "rankingIdx": "Ключ рейтинга",
+    "instanceType": "Тип инстанса",
+    "start": "Начало (UTC)",
+    "end": "Конец (UTC)",
+    "season": "Сезон"
+  },
+  "meta": {
+    "count": "Рейтингов: {count}"
+  }
+}

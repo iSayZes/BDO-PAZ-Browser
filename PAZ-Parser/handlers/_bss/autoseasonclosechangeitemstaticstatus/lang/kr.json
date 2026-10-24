@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "번호",
+    "changeItem": "변환 아이템",
+    "beforeItem": "변경 전",
+    "afterItem": "변경 후"
+  },
+  "meta": {
+    "count": "변환 {count}개"
+  }
+}

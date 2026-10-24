@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "couponKey": "쿠폰 키",
+    "name": "쿠폰",
+    "discountRate": "할인율",
+    "discountPearl": "펄 할인",
+    "maxDiscountPearl": "최대 할인",
+    "minProductPearl": "최소 가격",
+    "expirationDays": "유효 기간(일)",
+    "category": "카테고리"
+  },
+  "offsetColumns": {
+    "couponKey": "쿠폰 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "쿠폰 {count}개"
+  }
+}

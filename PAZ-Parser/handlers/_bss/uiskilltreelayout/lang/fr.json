@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "column": "Colonne",
+    "row": "Ligne",
+    "skillNo": "N° de compétence",
+    "skill": "Compétence"
+  },
+  "meta": {
+    "count": "{count} cases de compétence"
+  }
+}

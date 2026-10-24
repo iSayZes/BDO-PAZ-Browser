@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "cutsceneFile": "Archivo de cinemática",
+    "regionKey": "Clave de región",
+    "region": "Región",
+    "startCondition": "Condición de inicio",
+    "startExecute": "Script de inicio",
+    "endExecute": "Script de fin"
+  },
+  "meta": {
+    "count": "{count} inicios de cinemática"
+  }
+}

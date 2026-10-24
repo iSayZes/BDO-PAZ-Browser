@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "section": "Bereich",
+    "parentIndex": "Kategorie",
+    "parent": "Kategoriename",
+    "index": "Eintrag",
+    "title": "Kurs oder Gruppe",
+    "startQuest": "Startquest",
+    "questCount": "Questanzahl",
+    "quests": "Quests"
+  },
+  "sections": {
+    "curriculum": "Lehrplan",
+    "reward": "Familienbelohnungen"
+  },
+  "meta": {
+    "count": "{count} Kurse und Belohnungsgruppen"
+  }
+}

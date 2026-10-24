@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "color": "Farbe",
+    "section": "Teil",
+    "stateGroup": "Statusgruppe",
+    "states": "BGM-Status",
+    "bankNoEnvironment": "Umgebung",
+    "channelName": "Kanal",
+    "eventName": "Ereignis"
+  },
+  "sections": {
+    "area": "Gebiet",
+    "state": "Sonderstatus",
+    "radio": "Radio"
+  },
+  "meta": {
+    "count": "{count} Einträge"
+  }
+}

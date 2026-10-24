@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "passKey": "Pass-Schlüssel",
+    "contentType": "Typ",
+    "title": "Titel",
+    "start": "Beginn",
+    "end": "Ende",
+    "saleEnd": "Verkaufsende",
+    "step": "Schritt",
+    "passPoints": "Pass-Punkte",
+    "basicReward": "Basisbelohnung",
+    "passReward": "Pass-Belohnung",
+    "description": "Beschreibung"
+  },
+  "contentTypes": {
+    "1": "Täglich",
+    "2": "Solare",
+    "3": "Kampf",
+    "4": "Segeln",
+    "5": "Sammeln"
+  },
+  "meta": {
+    "count": "{count} Belohnungsschritte"
+  }
+}

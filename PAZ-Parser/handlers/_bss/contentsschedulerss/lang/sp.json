@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "contentType": "Tipo de contenido",
+    "icon": "Icono",
+    "title": "Título",
+    "contentsGroups": "Grupos de contenido"
+  },
+  "meta": {
+    "count": "{count} contenidos del calendario"
+  }
+}

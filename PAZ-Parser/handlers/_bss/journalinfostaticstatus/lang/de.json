@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "journalList": "Tafel",
+    "chapter": "Kapitel",
+    "page": "Seite",
+    "card": "Karte",
+    "texture": "Kartenbild",
+    "questChain": "Questreihe",
+    "chapterName": "Kapitelname",
+    "title": "Titel",
+    "story": "Geschichte",
+    "bookQuests": "Bücherregal-Quests"
+  },
+  "meta": {
+    "count": "{count} Questtafel-Karten"
+  }
+}

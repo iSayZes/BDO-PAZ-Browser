@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "basePrice": "Precio base",
+    "maxestPercent": "Porcentaje máximo",
+    "minestPercent": "Porcentaje mínimo",
+    "maxRegisterCount": "Cuenta de registro máx."
+  },
+  "offsetColumns": {
+    "itemId": "ID del objeto",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} objetos del Bazar Perla"
+  }
+}

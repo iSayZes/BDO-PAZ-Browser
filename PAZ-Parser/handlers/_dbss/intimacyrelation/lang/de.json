@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "npcKey": "NPC-Schlüssel",
+    "npc": "NPC",
+    "knowledgeKey": "Wissens-ID",
+    "knowledge": "Wissen",
+    "cutscene": "Zwischensequenz",
+    "coveredDialog": "Verdeckter Dialog",
+    "discoverDialog": "Entdeckungsdialog",
+    "dialogLines": "Weitere Dialoge"
+  },
+  "offsetColumns": {
+    "npcKey": "NPC-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} NPCs"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "columns": {
+    "sequenceFile": "Archivo de secuencia",
+    "regionKeys": "Claves de región",
+    "regions": "Regiones",
+    "contentsGroup": "Grupo de contenido",
+    "position": "Posición",
+    "radius": "Radio",
+    "resurrectPosition": "Posición de resurrección",
+    "startCondition": "Condición de inicio",
+    "startExecute": "Script de inicio",
+    "endExecute": "Script de fin",
+    "skipCondition": "Condición para omitir",
+    "forceSkipEndExecute": "Script de fin al omitir",
+    "options": "Opciones"
+  },
+  "flags": {
+    "use_client_spawn": "Aparición en cliente",
+    "exit_character_select": "Volver a selección de personaje",
+    "pre_update_fade_out": "Fundido previo",
+    "party_sequence": "Secuencia de grupo",
+    "character_swap_sequence": "Cambio de personaje",
+    "force_skip_sequence": "Omisión forzada"
+  },
+  "meta": {
+    "count": "{count} activadores de secuencia"
+  }
+}

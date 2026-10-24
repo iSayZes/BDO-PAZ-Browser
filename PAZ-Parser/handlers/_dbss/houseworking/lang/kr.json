@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "toolKey": "도구 ID",
+    "tool": "도구",
+    "works": "교환"
+  },
+  "offsetColumns": {
+    "toolKey": "도구 ID",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "cells": {
+    "units": "생산 단위 {units}"
+  },
+  "meta": {
+    "count": "도구 {count}개"
+  }
+}

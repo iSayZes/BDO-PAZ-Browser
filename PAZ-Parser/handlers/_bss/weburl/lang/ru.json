@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "position": "Позиция",
+    "url": "URL",
+    "inserts": "Точки вставки"
+  },
+  "meta": {
+    "count": "Веб-адресов: {count}"
+  }
+}

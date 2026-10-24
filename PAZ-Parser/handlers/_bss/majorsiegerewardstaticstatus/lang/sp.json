@@ -1,0 +1,29 @@
+{
+  "columns": {
+    "itemId": "ID del objeto",
+    "icon": "Icono",
+    "item": "Objeto",
+    "count": "Cantidad",
+    "reward": "Recompensa"
+  },
+  "rewards": {
+    "win": "Victoria",
+    "lose": "Derrota",
+    "scoreRank1": "Puntuación 1.º",
+    "scoreRank2": "Puntuación 2.º",
+    "scoreRank3": "Puntuación 3.º",
+    "scoreRank4": "Puntuación 4.º",
+    "scoreRank5": "Puntuación 5.º",
+    "scoreRank6": "Puntuación 6.º",
+    "liberation": "Liberación",
+    "plusMedal": "Medalla extra",
+    "plusItem": "Objeto extra",
+    "item1": "Objeto 1",
+    "item2": "Objeto 2",
+    "item3": "Objeto 3",
+    "booty": "Botín: {territory}"
+  },
+  "meta": {
+    "count": "{count} objetos de recompensa"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "abilityIndex": "효과 번호",
+    "buff": "버프",
+    "effect": "효과"
+  },
+  "offsetColumns": {
+    "abilityIndex": "효과 번호",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "기술 특화 효과 {count}개"
+  }
+}

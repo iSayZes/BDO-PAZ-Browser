@@ -11,7 +11,7 @@ The values end where the string table starts or the file ends; values that
 do not fill that space exactly raise ValueError, since every field would
 then be read from the wrong place. A string-table index field (`TextRef`)
 also stores the string it points to. Head fields, read once before the row
-count, go on every record. `parse_value_rows` also gives each row's bytes
+count, and tail fields, read once after the last row, go on every record. `parse_value_rows` also gives each row's bytes
 as hex text, for the files with no named field.
 """
 
@@ -21,7 +21,7 @@ import struct
 from dataclasses import dataclass
 
 from _common.pabr_strings import TRAILER_SIZE, U32_SIZE, check_pabr, read_string_table, string_at, string_table_start
-from .layout import Framing, RowCount, ValueField, ValueTable
+from .layout import ROW_INDEX_FIELD, Framing, RowCount, ValueField, ValueTable
 
 
 PABR_VALUES_START = 0x04
@@ -74,7 +74,10 @@ def _entries(raws: tuple, fmt: str) -> list[object]:
 
 
 def _field_value(data: bytes, field: ValueField, offset: int, end: int, table: ValueTable) -> tuple[object, int]:
-    """One field's value (a list for a counted list) and the offset after it."""
+    """One field's value (a list for a counted or fixed list) and the offset after it."""
+    if field.fixed_count is not None:
+        raws, stop = _unpack(data, field.fmt * field.fixed_count, offset, end, table)
+        return _entries(raws, field.fmt), stop
     if not field.is_counted_list:
         (raw,), stop = _unpack(data, field.fmt, offset, end, table)
         return _value(raw), stop
@@ -110,7 +113,7 @@ def _first_row_and_count(data: bytes, table: ValueTable, start: int, end: int) -
         (count,), first = _unpack(data, _COUNT_FORMAT, start, end, table)
         return first, count
     if table.rows is RowCount.TO_TABLE_START:
-        row_size = struct.calcsize("<" + "".join(field.fmt for field in table.fields))
+        row_size = struct.calcsize("<" + "".join(field.fmt * (field.fixed_count or 1) for field in table.fields))
         if (end - start) % row_size:
             raise ValueError(
                 f"{table.file_name} values from 0x{start:X} to 0x{end:X}, where {_end_name(table)}, "
@@ -129,8 +132,11 @@ def _read_rows(data: bytes, table: ValueTable) -> list[_Row]:
     rows: list[_Row] = []
     for _ in range(count):
         row = _read_values(data, table, table.fields, offset, end, strings)
-        rows.append(_Row({**row.record, **head.record}, row.start, row.stop))
+        rows.append(row)
         offset = row.stop
+    tail = _read_values(data, table, table.tail, offset, end, strings)
+    offset = tail.stop
+    rows = [_Row({**row.record, **head.record, **tail.record}, row.start, row.stop) for row in rows]
     if offset != end:
         raise ValueError(f"{table.file_name} values end at 0x{offset:X}, but {_end_name(table)} at 0x{end:X}")
     return rows
@@ -140,9 +146,13 @@ def parse_value_table(data: bytes, table: ValueTable) -> list[dict]:
     """One record per row of `table`, keyed by the doc's field names.
 
     Raises ValueError on a bad PABR magic or trailer, or when the rows do not
-    end where the string table starts (PABR) or the file ends (BARE).
+    end where the string table starts (PABR) or the file ends (BARE). With
+    `index_column`, each record starts with its row position.
     """
-    return [row.record for row in _read_rows(data, table)]
+    records = [row.record for row in _read_rows(data, table)]
+    if table.index_column is None:
+        return records
+    return [{ROW_INDEX_FIELD: index, **record} for index, record in enumerate(records)]
 
 
 def parse_value_rows(data: bytes, table: ValueTable) -> list[tuple[dict, str]]:

@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "count": "개수",
+    "reward": "보상",
+    "tier": "등급",
+    "tierGrid": "등급 표",
+    "block": "블록"
+  },
+  "slots": {
+    "win": "승리",
+    "lose": "패배",
+    "release": "해방",
+    "plusMedal": "추가 메달",
+    "plusItem": "추가 아이템",
+    "majorWin": "점령전 승리",
+    "majorLose": "점령전 패배",
+    "majorRelease": "점령전 해방",
+    "majorRelease0": "점령전 점수 2위",
+    "majorRelease1": "점령전 점수 3위",
+    "majorRelease2": "점령전 점수 4위",
+    "majorRelease3": "점령전 점수 5위",
+    "majorRelease4": "점령전 점수 6위",
+    "majorReleaseWin": "점령전 점수 1위",
+    "majorPlusMedal": "점령전 추가 메달",
+    "majorPlusItem": "점령전 추가 아이템"
+  },
+  "meta": {
+    "count": "보상 칸 {count}개"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "nakMessageType": "Type de message",
+    "mainMessage": "Message principal",
+    "subMessage": "Sous-message",
+    "aniTime": "Durée",
+    "mainBg": "Arrière-plan",
+    "subBg": "Arrière-plan secondaire",
+    "effects": "Effets",
+    "sounds": "Sons",
+    "contentsGroup": "Groupe de contenu"
+  },
+  "meta": {
+    "count": "{count} types de message"
+  }
+}

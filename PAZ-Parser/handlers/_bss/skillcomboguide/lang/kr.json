@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "직업",
+    "combo": "연계",
+    "skillCount": "기술 수",
+    "steps": "순서"
+  },
+  "meta": {
+    "count": "기술 연계 {count}개 · 직업 {classes}개"
+  }
+}

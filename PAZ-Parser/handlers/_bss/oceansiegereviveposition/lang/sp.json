@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "territoryKey": "Clave de territorio",
+    "territory": "Territorio",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "{count} posiciones de resurrección"
+  }
+}

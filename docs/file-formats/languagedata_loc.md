@@ -76,6 +76,7 @@ are `str_id2 | str_id3 << 16`. Their `key0` is `str_type` and their `id` is
 | 25       | Quest chain/group names, `str_id1` = chain/group ID (matches `questgroup.dbss` group_id)   |
 | 28       | `recommendationquest.bss` group names (`str_id1` = group key, `str_id4=0`) and quest condition lines (`str_id1` = packed quest ID, `str_id2` = group key, `str_id4=1`); see Type 58 below |
 | 29       | Town/node names, `str_id1` = node_id from `planttown.bss`; `str_id4` selects sub-field     |
+| 33       | Skill Add-on effect texts, `str_id1` = `skillawakeningability.dbss` ability_index; English of its `description_kr` |
 | 34       | Knowledge card text, `str_id1` = `mentalcard.dbss` card_id; see Type 34 below              |
 | 37       | UI string sheets, `str_id1` = `stringtable.bss` key hash; see Type 37 below                |
 | 38       | Other systems                                                                              |
@@ -83,6 +84,7 @@ are `str_id2 | str_id3 << 16`. Their `key0` is `str_type` and their `id` is
 | 42       | `repetitionquest.bss` group names (`str_id1` = group key, `str_id4=0`) and quest condition lines (`str_id1` = packed quest ID, `str_id2` = group key, `str_id4=1`); see Type 58 below |
 | 43       | `mainquest.bss` group names (`str_id1` = group key, `str_id4=0`) and quest condition lines (`str_id1` = packed quest ID, `str_id2` = group key, `str_id4=1`); see Type 58 below |
 | 44       | Central Market categories, `str_id1` = main category; see Type 44 below                    |
+| 49       | Daily login reward event texts, `str_id1` = `attendance.dbss` attendance_key, `str_id3` = service code; `str_id4` 0 title, 1 period, 2 claim deadline, `2 + day` reward description; see Notes in [`attendance.dbss`](attendance_dbss.md) |
 | 50       | Pearl Shop product names and descriptions, `str_id1` = `cashproduct.dbss` product_id, `str_id3` = service code; see Type 50 below |
 | 52       | Item-set bonus text, `str_id1` = `skillpiece.dbss` key; see Type 52 below                  |
 | 54       | NPC gift/confession response dialogue, `str_id1` = NPC ID                                  |

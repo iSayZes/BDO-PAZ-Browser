@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "gameMode": "Spielmodus",
+    "rankGroup": "Ranggruppe",
+    "tier": "Rang",
+    "icon": "Symbol",
+    "name": "Name",
+    "minRating": "Mindestwertung",
+    "maxRanking": "Max. Platz",
+    "itemLists": "Gegenstandslisten"
+  },
+  "meta": {
+    "count": "{count} Rangstufen"
+  }
+}

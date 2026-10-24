@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "characterKey": "캐릭터 ID",
+    "name": "이름",
+    "kitItem": "설치 도구",
+    "useCondition": "조건",
+    "contentsEventType": "콘텐츠 이벤트",
+    "contentsEventParam1": "이벤트 인자 1",
+    "icon": "아이콘",
+    "description": "설명"
+  },
+  "meta": {
+    "count": "설치물 {count}개"
+  }
+}

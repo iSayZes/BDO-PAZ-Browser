@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "groupKey": "Drop Group",
+    "items": "Items",
+    "diceItems": "Dice Items"
+  },
+  "offsetColumns": {
+    "groupKey": "Drop Group",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} drop groups"
+  }
+}

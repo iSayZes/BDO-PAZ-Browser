@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "setKey": "Set-Schlüssel",
+    "setType": "Typ",
+    "effects": "Set-Effekte",
+    "pieceCount": "Teile",
+    "pieces": "Gegenstände"
+  },
+  "offsetColumns": {
+    "setKey": "Set-Schlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "setTypes": {
+    "0": "Ausrüstung",
+    "1": "Möbel"
+  },
+  "text": {
+    "points": "{points} Einrichtungspunkte"
+  },
+  "meta": {
+    "count": "{count} Sets"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "territoryKey": "Territorium-Schlüssel",
+    "territory": "Territorium",
+    "taxType": "Steuerart",
+    "minPercentOrPrice": "Minimum",
+    "maxPercentOrPrice": "Maximum",
+    "systemPercent": "Systemsatz"
+  },
+  "meta": {
+    "count": "{count} Steuerarten der Territorien"
+  }
+}

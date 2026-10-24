@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "cutsceneFile": "Cutscene File",
+    "classType": "Class Type",
+    "className": "Class",
+    "mainWeapon": "Main Weapon",
+    "subWeapon": "Sub-weapon",
+    "helmet": "Helmet",
+    "armor": "Armor",
+    "gloves": "Gloves",
+    "shoes": "Shoes"
+  },
+  "meta": {
+    "count": "{count} class outfits"
+  }
+}

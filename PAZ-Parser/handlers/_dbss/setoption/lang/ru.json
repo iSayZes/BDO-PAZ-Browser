@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "setKey": "Ключ комплекта",
+    "setType": "Тип",
+    "effects": "Эффекты комплекта",
+    "pieceCount": "Части",
+    "pieces": "Предметы"
+  },
+  "offsetColumns": {
+    "setKey": "Ключ комплекта",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "setTypes": {
+    "0": "Снаряжение",
+    "1": "Мебель"
+  },
+  "text": {
+    "points": "{points} очков интерьера"
+  },
+  "meta": {
+    "count": "Комплектов: {count}"
+  }
+}

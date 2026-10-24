@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "Character ID",
+    "furniture": "Furniture",
+    "matchingCharacter": "Matching Character",
+    "matchingPoint": "Matching Points",
+    "onDresser": "On Dresser",
+    "onBedSideCabinet": "On Bedside Cabinet",
+    "onWardrobe": "On Wardrobe",
+    "onDiningTable": "On Dining Table",
+    "onTable": "On Table",
+    "onChair": "On Chair",
+    "onSofa": "On Sofa",
+    "onBed": "On Bed",
+    "onBookCase": "On Bookcase",
+    "onShelf": "On Shelf",
+    "isEmptyInFront": "Free in Front",
+    "isEmptyInBack": "Free Behind",
+    "isEmptyInLeft": "Free Left",
+    "isEmptyInRight": "Free Right"
+  },
+  "offsetColumns": {
+    "characterKey": "Character ID",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} furniture"
+  }
+}

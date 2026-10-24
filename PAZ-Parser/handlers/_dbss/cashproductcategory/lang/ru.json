@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "mainKey": "Основная",
+    "middleKey": "Средняя",
+    "smallKey": "Малая",
+    "name": "Название",
+    "uniqueNo": "Уникальный №",
+    "priceType": "Тип цены",
+    "useable": "Доступна",
+    "specialCategoryType": "Особый тип",
+    "tagType": "Тип метки",
+    "tagOrder": "Порядок метки"
+  },
+  "offsetColumns": {
+    "mainKey": "Основная",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Категорий: {count}"
+  }
+}

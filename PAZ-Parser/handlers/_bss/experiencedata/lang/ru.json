@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "row": "Строка",
+    "onceCondition": "Разовое условие",
+    "constantCondition": "Постоянное условие",
+    "execute": "Выполнение",
+    "repeat": "Повтор",
+    "deleteCondition": "Условие удаления"
+  },
+  "meta": {
+    "count": "Триггеров первого опыта: {count}"
+  }
+}

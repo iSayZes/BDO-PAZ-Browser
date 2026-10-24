@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from format_docs import check_doc, read_layouts
-from format_docs.check_run import Client, Status, check_doc_file
+from format_docs.check_run import Client, Status, UnreadableFile, check_doc_file
 from format_docs.doc_fit import fit_layouts
 from format_docs.versions import ClientCheck, VersionRow, merge_clients, merge_rows, read_clients, read_rows, render_rows, write_rows
 from format_docs.walk_model import LayoutFit, LayoutMiss, Unwalkable
@@ -262,6 +262,21 @@ def test_a_client_without_the_docs_files_is_recorded_as_no_file_once(tmp_path: P
     assert (first.status, second.status) == (Status.UPDATED, Status.SKIPPED)
     assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(794, None, False),)
     assert read_rows(doc.read_text(encoding="utf-8")) == ()
+
+
+def test_a_file_the_reader_cannot_pick_skips_the_doc_and_keeps_its_versions(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    before = doc.read_text(encoding="utf-8")
+
+    def ambiguous(name: str) -> bytes | None:
+        raise UnreadableFile(f"2 files are called {name}")
+
+    outcome = check_doc_file(doc, {"test_bss.md": [("test.bss", "Rows")]}, Client(531, ambiguous))
+
+    assert outcome.status is Status.SKIPPED
+    assert outcome.messages == ("2 files are called test.bss",)
+    assert doc.read_text(encoding="utf-8") == before
 
 
 def test_a_doc_not_in_the_layout_format_is_skipped_not_reported(tmp_path: Path) -> None:

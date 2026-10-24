@@ -21,15 +21,15 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
 | ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
-| 2      | 3473 and later | 3474    | `itemenchant.dbss`       | 202,344,966 | 276,167 Class Entry, 168,969 Icon Tail, 168,969 Message Tail, 168,969 Block | 5         |
-| 2      | 3473 and later | 3474    | `itemenchantoffset.dbss` | 2,027,648   | 168,969 Offset Row                                                          | 12        |
-| 1      | 1784           | 1784    | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
-| 1      | 1784           | 1784    | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
+| 2      | 3387 and later | 3483    | `itemenchant.dbss`       | 203,042,002 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
+| 2      | 3387 and later | 3483    | `itemenchantoffset.dbss` | 2,032,160   | 169,345 Offset Row                                                          | 12        |
+| 1      | 1754 to 1784   | 1784    | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
+| 1      | 1754 to 1784   | 1784    | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
 
 | Layout | File                     | Known                | Unknown               |
 | ------ | ------------------------ | -------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 58,104,867 B (28.7%) | 144,240,099 B (71.3%) |
-| 2      | `itemenchantoffset.dbss` | 2,027,648 B (100.0%) | 0 B (0.0%)            |
+| 2      | `itemenchant.dbss`       | 60,051,733 B (29.6%) | 142,990,269 B (70.4%) |
+| 2      | `itemenchantoffset.dbss` | 2,032,160 B (100.0%) | 0 B (0.0%)            |
 | 1      | `itemenchant.dbss`       | 99,716,229 B (58.0%) | 72,074,984 B (42.0%)  |
 | 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%) | 0 B (0.0%)            |
 
@@ -37,16 +37,474 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3483   | Layout 2             |
+| 3482   | Layout 2             |
 | 3474   | Layout 2             |
 | 3473   | Layout 2             |
+| 3464   | Layout 2             |
+| 3458   | Layout 2             |
+| 3454   | Layout 2             |
+| 3444   | Layout 2             |
+| 3435   | Layout 2             |
+| 3426   | Layout 2             |
+| 3418   | Layout 2             |
+| 3412   | Layout 2             |
+| 3402   | Layout 2             |
+| 3396   | Layout 2             |
+| 3387   | Layout 2             |
+| 3381   | No documented layout |
+| 3373   | No documented layout |
+| 3364   | No documented layout |
+| 3356   | No documented layout |
+| 3349   | No documented layout |
+| 3342   | No documented layout |
+| 3335   | No documented layout |
+| 3326   | No documented layout |
+| 3321   | No documented layout |
+| 3314   | No documented layout |
+| 3303   | No documented layout |
+| 3302   | No documented layout |
+| 3293   | No documented layout |
+| 3283   | No documented layout |
+| 3275   | No documented layout |
+| 3267   | No documented layout |
+| 3258   | No documented layout |
 | 3251   | No documented layout |
+| 3242   | No documented layout |
+| 3235   | No documented layout |
+| 3229   | No documented layout |
+| 3212   | No documented layout |
+| 3203   | No documented layout |
+| 3193   | No documented layout |
+| 3186   | No documented layout |
+| 3177   | No documented layout |
+| 3169   | No documented layout |
+| 3158   | No documented layout |
+| 3151   | No documented layout |
+| 3144   | No documented layout |
+| 3133   | No documented layout |
+| 3125   | No documented layout |
+| 3118   | No documented layout |
+| 3111   | No documented layout |
+| 3103   | No documented layout |
+| 3095   | No documented layout |
+| 3086   | No documented layout |
+| 3072   | No documented layout |
+| 3062   | No documented layout |
+| 3052   | No documented layout |
+| 3045   | No documented layout |
+| 3037   | No documented layout |
+| 3030   | No documented layout |
+| 3021   | No documented layout |
+| 3012   | No documented layout |
 | 3002   | No documented layout |
+| 2995   | No documented layout |
+| 2987   | No documented layout |
+| 2978   | No documented layout |
+| 2970   | No documented layout |
+| 2959   | No documented layout |
+| 2951   | No documented layout |
+| 2942   | No documented layout |
+| 2935   | No documented layout |
+| 2932   | No documented layout |
+| 2923   | No documented layout |
+| 2919   | No documented layout |
+| 2907   | No documented layout |
+| 2900   | No documented layout |
+| 2891   | No documented layout |
+| 2882   | No documented layout |
+| 2872   | No documented layout |
+| 2863   | No documented layout |
+| 2855   | No documented layout |
+| 2849   | No documented layout |
+| 2844   | No documented layout |
+| 2834   | No documented layout |
+| 2825   | No documented layout |
+| 2819   | No documented layout |
+| 2811   | No documented layout |
+| 2803   | No documented layout |
+| 2794   | No documented layout |
+| 2783   | No documented layout |
+| 2774   | No documented layout |
+| 2765   | No documented layout |
+| 2756   | No documented layout |
+| 2750   | No documented layout |
+| 2743   | No documented layout |
+| 2736   | No documented layout |
+| 2726   | No documented layout |
+| 2717   | No documented layout |
+| 2709   | No documented layout |
+| 2703   | No documented layout |
+| 2695   | No documented layout |
+| 2684   | No documented layout |
+| 2672   | No documented layout |
+| 2665   | No documented layout |
+| 2657   | No documented layout |
+| 2649   | No documented layout |
+| 2644   | No documented layout |
+| 2637   | No documented layout |
+| 2629   | No documented layout |
+| 2619   | No documented layout |
+| 2612   | No documented layout |
+| 2606   | No documented layout |
+| 2602   | No documented layout |
+| 2601   | No documented layout |
+| 2592   | No documented layout |
+| 2583   | No documented layout |
+| 2575   | No documented layout |
+| 2567   | No documented layout |
+| 2560   | No documented layout |
+| 2553   | No documented layout |
+| 2545   | No documented layout |
+| 2538   | No documented layout |
+| 2529   | No documented layout |
 | 2519   | No documented layout |
+| 2513   | No documented layout |
+| 2510   | No documented layout |
+| 2507   | No documented layout |
+| 2503   | No documented layout |
+| 2498   | No documented layout |
+| 2492   | No documented layout |
+| 2487   | No documented layout |
+| 2480   | No documented layout |
+| 2474   | No documented layout |
+| 2468   | No documented layout |
+| 2460   | No documented layout |
+| 2453   | No documented layout |
+| 2444   | No documented layout |
+| 2438   | No documented layout |
+| 2434   | No documented layout |
+| 2429   | No documented layout |
+| 2421   | No documented layout |
+| 2414   | No documented layout |
+| 2407   | No documented layout |
+| 2397   | No documented layout |
+| 2393   | No documented layout |
+| 2384   | No documented layout |
+| 2378   | No documented layout |
+| 2372   | No documented layout |
+| 2358   | No documented layout |
+| 2352   | No documented layout |
+| 2347   | No documented layout |
+| 2343   | No documented layout |
+| 2335   | No documented layout |
+| 2327   | No documented layout |
+| 2324   | No documented layout |
+| 2319   | No documented layout |
+| 2313   | No documented layout |
+| 2308   | No documented layout |
+| 2302   | No documented layout |
+| 2295   | No documented layout |
+| 2290   | No documented layout |
+| 2284   | No documented layout |
+| 2276   | No documented layout |
+| 2269   | No documented layout |
+| 2259   | No documented layout |
+| 2250   | No documented layout |
+| 2243   | No documented layout |
+| 2235   | No documented layout |
+| 2229   | No documented layout |
+| 2224   | No documented layout |
+| 2218   | No documented layout |
+| 2215   | No documented layout |
+| 2207   | No documented layout |
+| 2203   | No documented layout |
+| 2196   | No documented layout |
+| 2192   | No documented layout |
+| 2189   | No documented layout |
+| 2183   | No documented layout |
+| 2179   | No documented layout |
+| 2171   | No documented layout |
+| 2163   | No documented layout |
+| 2156   | No documented layout |
+| 2151   | No documented layout |
+| 2147   | No documented layout |
+| 2142   | No documented layout |
+| 2138   | No documented layout |
+| 2134   | No documented layout |
+| 2130   | No documented layout |
+| 2122   | No documented layout |
 | 2107   | No documented layout |
+| 2098   | No documented layout |
+| 2089   | No documented layout |
+| 2081   | No documented layout |
+| 2073   | No documented layout |
+| 2067   | No documented layout |
+| 2063   | No documented layout |
+| 2059   | No documented layout |
+| 2052   | No documented layout |
+| 2044   | No documented layout |
+| 2039   | No documented layout |
+| 2032   | No documented layout |
+| 2025   | No documented layout |
+| 2011   | No documented layout |
+| 2005   | No documented layout |
+| 2000   | No documented layout |
+| 1996   | No documented layout |
+| 1991   | No documented layout |
+| 1985   | No documented layout |
+| 1980   | No documented layout |
+| 1969   | No documented layout |
+| 1964   | No documented layout |
+| 1958   | No documented layout |
+| 1950   | No documented layout |
+| 1945   | No documented layout |
+| 1937   | No documented layout |
+| 1933   | No documented layout |
+| 1927   | No documented layout |
+| 1921   | No documented layout |
+| 1914   | No documented layout |
+| 1908   | No documented layout |
+| 1897   | No documented layout |
+| 1892   | No documented layout |
+| 1886   | No documented layout |
+| 1881   | No documented layout |
+| 1871   | No documented layout |
+| 1866   | No documented layout |
+| 1862   | No documented layout |
+| 1854   | No documented layout |
+| 1846   | No documented layout |
+| 1838   | No documented layout |
+| 1832   | No documented layout |
+| 1826   | No documented layout |
+| 1822   | No documented layout |
+| 1818   | No documented layout |
+| 1804   | No documented layout |
+| 1794   | No documented layout |
+| 1790   | No documented layout |
 | 1784   | Layout 1             |
+| 1774   | Layout 1             |
+| 1771   | Layout 1             |
+| 1762   | Layout 1             |
+| 1759   | Layout 1             |
+| 1754   | Layout 1             |
+| 1749   | No documented layout |
+| 1743   | No documented layout |
+| 1737   | No documented layout |
+| 1731   | No documented layout |
+| 1725   | No documented layout |
+| 1717   | No documented layout |
+| 1710   | No documented layout |
+| 1704   | No documented layout |
+| 1698   | No documented layout |
+| 1690   | No documented layout |
+| 1685   | No documented layout |
+| 1680   | No documented layout |
+| 1674   | No documented layout |
+| 1668   | No documented layout |
+| 1659   | No documented layout |
+| 1649   | No documented layout |
+| 1642   | No documented layout |
+| 1636   | No documented layout |
+| 1628   | No documented layout |
+| 1622   | No documented layout |
+| 1614   | No documented layout |
+| 1608   | No documented layout |
+| 1602   | No documented layout |
+| 1598   | No documented layout |
+| 1594   | No documented layout |
+| 1590   | No documented layout |
+| 1587   | No documented layout |
+| 1584   | No documented layout |
+| 1579   | No documented layout |
+| 1572   | No documented layout |
+| 1565   | No documented layout |
+| 1559   | No documented layout |
+| 1554   | No documented layout |
+| 1547   | No documented layout |
+| 1537   | No documented layout |
+| 1529   | No documented layout |
+| 1524   | No documented layout |
+| 1519   | No documented layout |
+| 1509   | No documented layout |
+| 1506   | No documented layout |
+| 1504   | No documented layout |
+| 1500   | No documented layout |
+| 1493   | No documented layout |
+| 1489   | No documented layout |
 | 1485   | No documented layout |
+| 1481   | No documented layout |
+| 1474   | No documented layout |
+| 1466   | No documented layout |
+| 1462   | No documented layout |
+| 1459   | No documented layout |
+| 1453   | No documented layout |
+| 1450   | No documented layout |
+| 1445   | No documented layout |
+| 1439   | No documented layout |
+| 1433   | No documented layout |
+| 1430   | No documented layout |
+| 1426   | No documented layout |
+| 1421   | No documented layout |
+| 1417   | No documented layout |
+| 1416   | No documented layout |
+| 1409   | No documented layout |
+| 1405   | No documented layout |
+| 1401   | No documented layout |
+| 1396   | No documented layout |
+| 1391   | No documented layout |
+| 1390   | No documented layout |
+| 1386   | No documented layout |
+| 1381   | No documented layout |
+| 1379   | No documented layout |
+| 1372   | No documented layout |
+| 1366   | No documented layout |
+| 1364   | No documented layout |
+| 1363   | No documented layout |
+| 1360   | No documented layout |
+| 1358   | No documented layout |
+| 1355   | No documented layout |
+| 1351   | No documented layout |
+| 1348   | No documented layout |
+| 1346   | No documented layout |
+| 1341   | No documented layout |
+| 1340   | No documented layout |
+| 1338   | No documented layout |
+| 1335   | No documented layout |
+| 1333   | No documented layout |
+| 1329   | No documented layout |
+| 1327   | No documented layout |
+| 1324   | No documented layout |
+| 1321   | No documented layout |
+| 1319   | No documented layout |
+| 1318   | No documented layout |
+| 1316   | No documented layout |
+| 1313   | No documented layout |
+| 1311   | No documented layout |
+| 1309   | No documented layout |
+| 1304   | No documented layout |
+| 1292   | No documented layout |
+| 1286   | No documented layout |
+| 1280   | No documented layout |
+| 1276   | No documented layout |
+| 1267   | No documented layout |
+| 1261   | No documented layout |
+| 1256   | No documented layout |
+| 1250   | No documented layout |
+| 1246   | No documented layout |
+| 1239   | No documented layout |
 | 1230   | No documented layout |
+| 1226   | No documented layout |
+| 1220   | No documented layout |
+| 1217   | No documented layout |
+| 1211   | No documented layout |
+| 1210   | No documented layout |
+| 1208   | No documented layout |
+| 1203   | No documented layout |
+| 1197   | No documented layout |
+| 1194   | No documented layout |
+| 1192   | No documented layout |
+| 1187   | No documented layout |
+| 1183   | No documented layout |
+| 1177   | No documented layout |
+| 1173   | No documented layout |
+| 1167   | No documented layout |
+| 1164   | No documented layout |
+| 1156   | No documented layout |
+| 1149   | No documented layout |
+| 1144   | No documented layout |
+| 1137   | No documented layout |
+| 1132   | No documented layout |
+| 1127   | No documented layout |
+| 1122   | No documented layout |
+| 1118   | No documented layout |
+| 1114   | No file              |
+| 1109   | No documented layout |
+| 1102   | No file              |
+| 1096   | No file              |
+| 1088   | No file              |
+| 1081   | No file              |
+| 1076   | No file              |
+| 1069   | No file              |
+| 1064   | No file              |
+| 1058   | No file              |
+| 1051   | No file              |
+| 1044   | No file              |
+| 1036   | No file              |
+| 1026   | No file              |
+| 1016   | No file              |
+| 1009   | No file              |
+| 1005   | No file              |
+| 1000   | No file              |
+| 998    | No file              |
+| 990    | No file              |
+| 979    | No file              |
+| 972    | No file              |
+| 963    | No file              |
+| 955    | No file              |
+| 946    | No file              |
+| 938    | No file              |
+| 927    | No file              |
+| 911    | No file              |
+| 904    | No file              |
+| 899    | No file              |
+| 894    | No file              |
+| 885    | No file              |
+| 879    | No file              |
+| 872    | No file              |
+| 864    | No file              |
+| 855    | No file              |
+| 853    | No file              |
+| 845    | No file              |
+| 837    | No file              |
+| 829    | No file              |
+| 822    | No file              |
+| 814    | No file              |
+| 805    | No file              |
 | 794    | No file              |
+| 787    | No file              |
+| 780    | No file              |
+| 771    | No file              |
+| 760    | No file              |
+| 748    | No file              |
+| 741    | No file              |
+| 736    | No file              |
+| 731    | No file              |
+| 723    | No file              |
+| 711    | No file              |
+| 707    | No file              |
+| 697    | No file              |
+| 689    | No file              |
+| 683    | No file              |
+| 678    | No file              |
+| 670    | No file              |
+| 661    | No file              |
+| 656    | No file              |
+| 652    | No file              |
+| 643    | No file              |
+| 637    | No file              |
+| 630    | No file              |
+| 627    | No file              |
+| 621    | No file              |
+| 617    | No file              |
+| 615    | No file              |
+| 606    | No file              |
+| 599    | No file              |
+| 592    | No file              |
+| 586    | No file              |
+| 577    | No file              |
+| 569    | No file              |
+| 561    | No file              |
+| 554    | No file              |
+| 542    | No file              |
+| 532    | No file              |
+| 531    | No file              |
+| 526    | No file              |
+| 521    | No file              |
+| 517    | No file              |
+| 510    | No file              |
+| 508    | No file              |
+| 504    | No file              |
+| 497    | No file              |
+| 491    | No file              |
+| 485    | No file              |
+| 478    | No file              |
+| 472    | No file              |
+| 466    | No file              |
+| 457    | No file              |
+| 452    | No file              |
+| 449    | No file              |
+| 435    | No file              |
 
 <!-- versions:end -->
 
@@ -161,10 +619,10 @@ decoded.
 | `unknown_61+0x6A`         | u8                            | unknown_cb                  | `1` on every base block (client 3464) |
 | `unknown_61+0x6B`         | u32                           | skill_key_1                 | Skill a consumable casts, a [`skill.dbss`](skill_dbss.md) key; its `buff_ids` are the item's buffs; `0` when none |
 | `unknown_61+0x6F`         | u32                           | skill_key_2                 | Second skill, used by composite meals; `0` when none |
-| `unknown_61+0x73`         | u32                           | unknown_d4                  | Entry count of the first list. Set in 28,101 base items on client 3464, and every entry's class is one `class_mask` allows; 32 entries on armour for all classes |
-| `unknown_61+0x77`         | Class Entry[unknown_d4]       | unknown_d4_entries          | A class type (u8) and a u32 per entry |
-| `unknown_d4_entries+0x00` | u32                           | unknown_list2_count         | Entry count of the second list. Set in 498 base items on client 3464: one entry in 330, two in 164, six in 4. 490 of them are `category` 9 or 11 (`eItemClassify_PearlGoods`, `eItemClassify_Vehicle`), mostly mount, wagon and ship gear |
-| `unknown_d4_entries+0x04` | u8[unknown_list2_count][5]    | unknown_list2               | 5-byte entries |
+| `unknown_61+0x73`         | u32                           | class_entry_count           | Entry count of `class_entries`. Set in 28,101 base items on client 3464, and every entry's class is one `class_mask` allows; 32 entries on armour for all classes |
+| `unknown_61+0x77`         | Class Entry[class_entry_count] | class_entries              | The item mesh key each class type wears, see Item Mesh Keys |
+| `class_entries+0x00`      | u32                           | unknown_list2_count         | Entry count of the second list. Set in 498 base items on client 3464: one entry in 330, two in 164, six in 4. 490 of them are `category` 9 or 11 (`eItemClassify_PearlGoods`, `eItemClassify_Vehicle`), mostly mount, wagon and ship gear |
+| `class_entries+0x04`      | u8[unknown_list2_count][5]    | unknown_list2               | 5-byte entries |
 | `unknown_list2+0x00`      | bytes[4]                      | unknown_after_unknown_list2 | `0` in 67,081 base items on client 3464; most others set only the third byte, `1` to `10` |
 | `unknown_list2+0x04`      | u32                           | unknown_list3_count         | Up to three entries; set in 2,575 base items on client 3464 |
 | `unknown_list2+0x08`      | u32[unknown_list3_count]      | unknown_list3               |       |
@@ -265,12 +723,12 @@ briefs store `0` there and the staff `1`; it is `repair_endurance_count`.
 
 ### Class Entry (5 bytes)
 
-An entry of `unknown_d4_entries`, the first list before the name.
+An entry of `class_entries`, the first list before the name.
 
-| Offset  | Type | Field      | Notes                                       |
-| ------- | ---- | ---------- | ------------------------------------------- |
-| `+0x00` | u8   | class_type | A class `class_mask` allows, in every entry |
-| `+0x01` | u32  | unknown_01 |                                             |
+| Offset  | Type | Field         | Notes                                                                 |
+| ------- | ---- | ------------- | --------------------------------------------------------------------- |
+| `+0x00` | u8   | class_type    | A class `class_mask` allows, in every entry                           |
+| `+0x01` | u32  | item_mesh_key | The mesh this class wears, the key of [`itemeffectchange.dbss`](itemeffectchange_dbss.md); see Item Mesh Keys |
 
 ### Icon Tail (18 bytes)
 
@@ -816,7 +1274,7 @@ Names).
 ## Before the Name
 
 From `+0xD4` (plus the `unknown_5d` count) to the icon, a block is a fixed
-sequence of counted lists and strings: the Block rows from `unknown_d4` to
+sequence of counted lists and strings: the Block rows from `class_entry_count` to
 `icon`.
 
 This walk reaches the name and the icon in all 168,680 blocks on client 3464,
@@ -948,6 +1406,44 @@ does a parameter of `0`. On client 3474, 12 of the 55,651 base items with
 show the stored numbers for every other event type, whose parameters are not
 decoded.
 
+Type `98` (past the enum) grants a Black Spirit's Adventure dice drop group:
+`contents_event_param1` is a
+[`marblegamediceitemgroup.dbss`](marblegamediceitemgroup_dbss.md) group key
+on all 42 base items with the type (client 3482), and the
+`MARBLE_DICE_GROUP_ITEMS` lookup index turns the link around for the
+marble dice views.
+
+Type `31` (`CustomizedItemBox`) opens a box that gives each character its
+own item: `contents_event_param1` is a
+[`customizeditem.dbss`](customizeditem_dbss.md) key. On client 3482, 731 of
+the 740 distinct values of the 754 base items with the type are keys there.
+Event Param 1 shows the key as a link to that record, and the
+`CUSTOMIZED_ITEM_BOXES` lookup index turns the link around for the
+`customizeditem.dbss` Boxes column.
+
+## Item Mesh Keys
+
+`item_mesh_key` in each Class Entry is the mesh the item uses for that class
+type, the key of [`itemeffectchange.dbss`](itemeffectchange_dbss.md). The
+list is the 2016 `gc::ItemEnchantStaticStatus` member `_itemMeshKeyList`,
+one mesh key per class type. Every enhancement level of an item stores the
+same class entries as its base block (client 3482).
+
+| Check (client 3482)                                                   | Result                       |
+| --------------------------------------------------------------------- | ---------------------------- |
+| `itemeffectchange.dbss` mesh keys that are an `item_mesh_key`          | 471 of 596, on 739 base items |
+| Those class entries whose class type matches the class folder of the mesh's level `0` model (`0` `1_phm`, `4` `3_pew`, `24` `7_pvw`, ...) | 1,482 of 1,482, 32 class types |
+| Distinct `item_mesh_key` values that are an `Index` of the `Item_Mesh_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 | 12,124 of 22,859 |
+| Class entries naming such a row whose `UseMeshFile` lies in the folder of the entry's class type | 33,959 of 34,947 |
+
+Blackstar Longsword (715001) names mesh `336000` for the Warrior, the
+21-level one-handed sword of `itemeffectchange.dbss`. The
+`MESH_KEY_ITEMS` lookup index (`build_mesh_key_item_index()` in
+`_dbss/itemenchant/parser.py`) maps each mesh key to its base items for the
+Items columns of `itemeffectchange.dbss` and
+[`itemmeshstaticstatus.bss`](itemmeshstaticstatus_bss.md), the mesh table:
+all 22,859 distinct `item_mesh_key` values of client 3483 are keys there.
+
 ## Block Strings
 
 The strings do not sit at a fixed block offset: 47 distinct offsets were
@@ -981,6 +1477,10 @@ backslashes, such as `New_Icon/03_ETC\03_Quest_Item/00042393.dds`. The
 parser turns backslashes into slashes and collapses doubled slashes, as for
 buff icons, so all eight paths name shipped files
 (`ui_texture/icon/item_icon/00724507.dds` exists).
+
+Client 3482 adds one path without `.dds`: item `31645` ([이벤트] 페치카)
+stores `New_Icon/03_ETC/06_Housing/InHouse_X_DFW_Pechka_01`, and no icon of
+that name ships, so the item shows no icon.
 
 ## After the Icon
 
@@ -1110,9 +1610,12 @@ only approach that covers items whose icon is named after a 3D asset
 
 ## Notes
 
-- `itemenchantbackendtest.dbss` (73 MB) contains the identical set of 169,962
-  icon path references and 21,768 unique paths; it looks like a test copy and
-  adds nothing. `itemenchantbackend.dbss` (121 MB) contains no icon paths at all.
+- Two more files hold these blocks again, split at Message Tail `+0x2B`:
+  [`itemenchantbackendtest.dbss`](itemenchantbackendtest_dbss.md) stores
+  each block up to `life_restrict_type`, with no offset index, and
+  [`itemenchantbackend.dbss`](itemenchantbackend_dbss.md) the rest, indexed
+  by `itemenchantbackendoffset.dbss`. On client 3483 every block here is the
+  two parts of its key put together, byte for byte.
 - 17 `gamecommondata` tables store inline icon paths this way. After this file
   the largest are `cashproduct.dbss` (14,750 unique paths, keyed by cash product
   ID rather than item ID), `quest.dbss` (6,366) and `skilltype.dbss` (3,530).
@@ -1244,6 +1747,6 @@ search and CSV but is no longer shown.
 Items store `contents_event_type` values above `86`, up to `170` (`114` on 386
 base items and `149` on 218, client 3474), past the end of the Lua
 `CppEnums.ContentsEventType` at `86`. Which events they are, and what
-`contents_event_param1` and `param2` hold for the types other than `59`, is
-not worked out here; the Use Event column shows the bare number and the
-Event Param columns the stored values.
+`contents_event_param1` and `param2` hold for the types other than `59` and
+`98` (see Contents Event), is not worked out here; the Use Event column
+shows the bare number and the Event Param columns the stored values.

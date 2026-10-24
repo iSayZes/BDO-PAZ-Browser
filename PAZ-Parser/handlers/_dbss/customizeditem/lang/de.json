@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "boxKey": "Kistenschlüssel",
+    "boxes": "Kisten",
+    "choices": "Auswahl",
+    "items": "Gegenstände"
+  },
+  "offsetColumns": {
+    "boxKey": "Kistenschlüssel",
+    "dataOffset": "Daten-Offset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Kisten-Gegenstandslisten"
+  }
+}

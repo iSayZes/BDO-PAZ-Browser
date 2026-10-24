@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "index": "Индекс",
+    "classNo": "№ класса",
+    "commands": "Команды"
+  },
+  "meta": {
+    "count": "Команд клавиш: {count}"
+  }
+}

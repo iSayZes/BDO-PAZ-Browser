@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "직업",
+    "slot": "퀵슬롯",
+    "skillNo": "기술 번호",
+    "skill": "기술"
+  },
+  "meta": {
+    "count": "퀵슬롯 기술 {count}개 · 직업 {classes}개"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "houseKey": "ID de la propiedad",
+    "house": "Propiedad",
+    "town": "Pueblo",
+    "node": "Nodo",
+    "uses": "Uso"
+  },
+  "offsetColumns": {
+    "houseKey": "ID de la propiedad",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "cells": {
+    "level": "{name} Nv. {level}"
+  },
+  "meta": {
+    "count": "{count} casas de hermandad"
+  }
+}

@@ -3,7 +3,10 @@
     "mainId": "Haupt-ID",
     "subId": "Unter-ID",
     "icon": "Symbol",
-    "title": "Titel"
+    "title": "Titel",
+    "course": "Kurs",
+    "familyReward": "Familienbelohnung",
+    "passStep": "Akademie-Pass-Stufe"
   },
   "meta": {
     "count": "{count} Questlisten-Einträge",

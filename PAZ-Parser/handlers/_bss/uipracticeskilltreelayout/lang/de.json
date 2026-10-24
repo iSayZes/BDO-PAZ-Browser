@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "class": "Klasse",
+    "width": "Breite",
+    "height": "Höhe",
+    "blankCells": "Leere Felder",
+    "skillCells": "Talentfelder",
+    "skills": "Talente"
+  },
+  "meta": {
+    "count": "{count} Klassenraster"
+  }
+}

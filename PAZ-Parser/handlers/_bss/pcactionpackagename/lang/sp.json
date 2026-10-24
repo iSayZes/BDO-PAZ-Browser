@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "classType": "Tipo de clase",
+    "className": "Clase",
+    "section": "Sección",
+    "equipType": "Tipo de equipo",
+    "vehicleType": "Tipo de vehículo",
+    "package": "Paquete"
+  },
+  "sections": {
+    "weapon": "Arma",
+    "vehicle": "Vehículo",
+    "vehicle_weapon": "Vehículo con arma",
+    "cutscene": "Cinemática",
+    "class_package": "Lista al final del archivo"
+  },
+  "meta": {
+    "count": "{count} paquetes de acciones"
+  }
+}

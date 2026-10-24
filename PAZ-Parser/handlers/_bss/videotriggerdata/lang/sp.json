@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "video": "Vídeo",
+    "contentsGroup": "Grupo de contenido",
+    "position": "Posición",
+    "radius": "Radio",
+    "startCondition": "Condición de inicio",
+    "startExecute": "Script de inicio",
+    "endExecute": "Script de fin"
+  },
+  "meta": {
+    "count": "{count} activadores de vídeo"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "columns": {
+    "color": "Цвет",
+    "section": "Часть",
+    "stateGroup": "Группа состояний",
+    "states": "Состояния BGM",
+    "bankNoEnvironment": "Окружение",
+    "channelName": "Канал",
+    "eventName": "Событие"
+  },
+  "sections": {
+    "area": "Область",
+    "state": "Особое состояние",
+    "radio": "Радио"
+  },
+  "meta": {
+    "count": "Записей: {count}"
+  }
+}

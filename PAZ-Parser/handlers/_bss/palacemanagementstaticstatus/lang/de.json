@@ -1,0 +1,20 @@
+{
+  "columns": {
+    "boardGroupKey": "Tafelgruppen-Schlüssel",
+    "boardGroup": "Tafelgruppe",
+    "type": "Typ",
+    "npc": "NPC",
+    "boardKey": "Tafel-Schlüssel",
+    "board": "Tafel",
+    "itemIndex": "Gegenstandsindex",
+    "probability": "Chance",
+    "exchange": "Tausch"
+  },
+  "types": {
+    "production": "Produktion",
+    "manufacture": "Verarbeitung"
+  },
+  "meta": {
+    "count": "{count} Tafelgegenstände"
+  }
+}

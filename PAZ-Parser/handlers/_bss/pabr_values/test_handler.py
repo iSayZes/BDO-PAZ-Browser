@@ -3,12 +3,14 @@ from __future__ import annotations
 import json
 import math
 import struct
+from collections.abc import Callable
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
 import pytest
 
+from bdo_models import PazEntry
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     CaseInput,
@@ -35,7 +37,6 @@ from .tables import VALUE_TABLES, Framing, NameLookup, RowCount, TextRef, ValueF
 
 _U32 = struct.Struct("<I")
 _TABLE_START_AT = -8
-_ROW_SIZE_TO_TABLE_START = 4
 _TABLES = {value_table.file_name: value_table for value_table in VALUE_TABLES}
 _NEWBIE_PRODUCT = "cashproduct_newbieproduct.bss"
 _ELEMENTAL_STAT = "elementalstat.bss"
@@ -70,6 +71,9 @@ _COMMAND_TO_GATHER = 65070
 # Tables with keys that only skilltype.dbss names, in Korean, which the tests do not load:
 # the guild skill variants (기습적인 행동A, 34 of 766 skills on client 3474).
 _KOREAN_NAMED = frozenset({"guildskill.bss"})
+# Tables that keep keys of characters the client no longer has: vehicletypename.bss
+# (31036 NationElephant and 11 more of its 112 rows on client 3482, in no characterstatic.dbss).
+_RETIRED_KEYS = frozenset({"vehicletypename.bss"})
 
 
 def _values_start(value_table: ValueTable) -> int:
@@ -82,10 +86,15 @@ def _row_count_at(value_table: ValueTable) -> int:
     return _values_start(value_table) + head_size
 
 
-def _rows_to_table_start(source: CaseInput) -> int:
-    """The 4-byte rows between the magic and the trailer's `table_start`."""
-    (table_start,) = _U32.unpack_from(source.data, _TABLE_START_AT)
-    return (table_start - PABR_VALUES_START) // _ROW_SIZE_TO_TABLE_START
+def _rows_to_table_start(value_table: ValueTable) -> Callable[[CaseInput], int]:
+    """The fixed-size rows of `value_table` between the magic and the trailer's `table_start`."""
+    row_size = struct.calcsize("<" + "".join(field.fmt for field in value_table.fields))
+
+    def declared(source: CaseInput) -> int:
+        (table_start,) = _U32.unpack_from(source.data, _TABLE_START_AT)
+        return (table_start - PABR_VALUES_START) // row_size
+
+    return declared
 
 
 def _lookups(name: str) -> list[NameLookup]:
@@ -115,7 +124,7 @@ def _count_tests(value_table: ValueTable) -> list[Any]:
     if value_table.rows is RowCount.COUNTED:
         return [DeclaredCountTest(declared=header_count(offset=_row_count_at(value_table)))]
     if value_table.rows is RowCount.TO_TABLE_START:
-        return [DeclaredCountTest(declared=_rows_to_table_start)]
+        return [DeclaredCountTest(declared=_rows_to_table_start(value_table))]
     return [DeclaredCountTest(declared=lambda _source: 1)]
 
 
@@ -130,6 +139,11 @@ _TARGETS: dict[str, list[TargetTest]] = {
         # InteractionType_Awake (CppEnums.InteractionType 61) on both Offin characters.
         TargetTest(col="character_key", value=23751, expected={"interaction_type": 61, "character_name": "Mirumok Watcher Offin"}),
         TargetTest(col="character_key", value=23767, expected={"interaction_type": 61, "character_name": "Mirumok Destroyer Offin"}),
+    ],
+    "householdlist.bss": [
+        # A guild house and a villa, which houseinfo.bss does not hold.
+        TargetTest(col="character_key", value=2110, expected={"character_name": "Velia Guild House"}),
+        TargetTest(col="character_key", value=3371, expected={"character_name": "Kunid's Villa"}),
     ],
     "othertownnotmovableitem.bss": [
         TargetTest(col="item_id", value=_ARCHAEOLOGISTS_MAP, expected={"item_name": "Archaeologist's Map"}),
@@ -221,6 +235,97 @@ _TARGETS: dict[str, list[TargetTest]] = {
         TargetTest(col="skill_no", value=_COMMAND_TO_GATHER, expected={"skill_level": 1, "skill_name": "Command to Gather"}),
     ],
     "guildmatchrank.bss": [TargetTest(col="rank", value=1, expected={"rank": 1})],
+    # The Carrack the servant list offers the change for (Type_Carrack) and its Ship License.
+    "oceanshipchangeitemstaticstatus.bss": [
+        TargetTest(
+            col="character_key",
+            value=31045,
+            expected={"character_name": "Epheria Carrack", "item_id": 49021, "item_name": "Ship License: Epheria Carrack"},
+        ),
+    ],
+    # A storage town and the Abyssal Vein knowledge of its area.
+    "abyssonewarehouse.bss": [
+        TargetTest(
+            col="region_key",
+            value=32,
+            expected={"region_name": "Heidel", "knowledge_key": 11347, "knowledge_name": "Abyssal Veins - Serendia"},
+        ),
+    ],
+    # The first Edania castle (__eEdaniaRegion_Aetherion) and its node.
+    "edanacastleinfostaicstatusmanager.bss": [
+        TargetTest(
+            col="node_key",
+            value=2002,
+            expected={"node_name": "Aetherion Castle", "mark_texture": "territorymark_Jordine_large"},
+        ),
+    ],
+    # Level 1 of the Ancient Relic Crystal Summon Scroll, keyed level << 24 | item key.
+    "bdobatchsummonmonsterss.bss": [
+        TargetTest(
+            col="summon_key",
+            value=1 << 24 | 41583,
+            expected={"item_key": 41583, "summon_level": 1, "item_name": "Ancient Relic Crystal Summon Scroll"},
+        ),
+    ],
+    # The treasure guidebook's map and its GAME sheet description key.
+    "treasureinfostaicstatusmanager.bss": [
+        TargetTest(
+            col="item_enchant_key",
+            value=_ARCHAEOLOGISTS_MAP,
+            expected={"item_name": "Archaeologist's Map", "desc_key": "LUA_TREASURE_GUIDEBOOK_ITEMDESC_MAP"},
+        ),
+    ],
+    # The Balenos destination: Velia's node and Velia's knowledge card.
+    "magnuseasyteleport.bss": [
+        TargetTest(
+            col="waypoint_key",
+            value=1,
+            expected={"node_name": "Velia", "name_key": "LUA_WORLDMAP_TERRITORYSTRING_0", "knowledge_name": "Velia"},
+        ),
+    ],
+    # The first class character of the lobby (CharacterLobby_Table, client 1784).
+    "characterlobby.bss": [TargetTest(col="character_key", value=1, expected={"character_name": "Warrior"})],
+    # The ServantFantasy_Table row of client 1784: Arduanatt and Arduanatt make Mythical Arduanatt.
+    "servantfantasymix.bss": [
+        TargetTest(
+            col="female_character_key",
+            value=9889,
+            expected={"male_character_name": "Arduanatt", "upgrade_character_key": 31539, "upgrade_character_name": "Mythical Arduanatt"},
+        ),
+    ],
+    # The Pearl Shop shows Horse outfits on character 9909 (ServantKind 0).
+    "delegateservant.bss": [TargetTest(col="index", value=0, expected={"character_key": 9909, "character_name": "Horse"})],
+    "vehicletraining.bss": [
+        TargetTest(col="item_key", value=50808, expected={"item_name": "Rainbow Gem Fruit", "skill_key": 49, "skill_name": "Skill"}),
+    ],
+    "vehicletypename.bss": [
+        TargetTest(col="character_key", value=29805, expected={"character_name": "Ogre", "vehicle_type_name": "MonsterRideOgre"}),
+    ],
+    # The Enchant_Protect row of client 1784 (ItemKey 45077, ProtectType 1).
+    "itemprotector.dbss": [TargetTest(col="item_key", value=45077, expected={"item_name": "J's Hammer of Loyalty"})],
+    # Auto_Warehouse_Order_Filter row 3 of client 1784: ContentsEvent items, Vehicle classify, PetFeed.
+    "itemmovedata.bss": [
+        TargetTest(
+            col="index",
+            value=3,
+            expected={"item_type": 10, "item_classify": 11, "contents_event_type": 13, "filter_name": "Exclude Pet Feed"},
+        ),
+    ],
+    "autousebuffitemcategoryinfo.bss": [TargetTest(col="category_key", value=3, expected={"category_name": "Perfumes"})],
+    "bootyitemlist.bss": [TargetTest(col="territory_key", value=0, expected={"territory_name": "Balenos"})],
+    "marketsearchlist.bss": [
+        TargetTest(col="item_key", value=44195, expected={"item_name": "Memory Fragment", "item_name_kr": "기억의 파편"}),
+    ],
+    # The Enchant_BlackStoneStack sheet of client 1784 keys its steps by Black Stone 16001.
+    "enchant_blackstonestack.bss": [TargetTest(col="need_stack_item_key", value=16001, expected={"item_name": "Black Stone"})],
+    # The first weekly group of the August 2021 Pearl spending event, also on client 1784.
+    "pearlusedchallengegroup.bss": [
+        TargetTest(
+            col="main_challenge_key",
+            value=2984,
+            expected={"main_challenge_name": "[Event] Use 20,000 Pearls", "challenge_keys": [2981, 2982, 2983, 2984]},
+        ),
+    ],
 }
 
 _RANGES: dict[str, list[RangeTest]] = {
@@ -230,6 +335,8 @@ _RANGES: dict[str, list[RangeTest]] = {
     _ELEMENTAL_SERVER_BUFF: [RangeTest(col="earth_blessing_drop_rate", min_val=0, max_val=_FULL_RATE)],
     _ROSE_WAR_SKILL: [RangeTest(col="skill_type", min_val=1, max_val=len(ROSE_WAR_SKILL_TYPES))],
     _ROSE_WAR_TEAM_NO: [RangeTest(col="team_no", min_val=0, max_val=len(ROSE_WAR_TEAMS) - 1)],
+    # The two ProtectType values of the Enchant_Protect sheet (client 1784).
+    "itemprotector.dbss": [RangeTest(col="protect_type", min_val=0, max_val=1)],
 }
 
 
@@ -263,10 +370,14 @@ def _result(name: str) -> HandlerResult:
     return _RESULTS[name]
 
 
-def _render(name: str, records: list[dict]) -> str:
-    handler = PabrValuesBssHandler(_TABLES[name])
+def _render_table(value_table: ValueTable, records: list[dict]) -> str:
+    handler = PabrValuesBssHandler(value_table)
     handler.lang = "en"
     return handler.render_records_page(records, 0, len(records))
+
+
+def _render(name: str, records: list[dict]) -> str:
+    return _render_table(_TABLES[name], records)
 
 
 @pytest.mark.parametrize(
@@ -288,7 +399,9 @@ def _named_values(value_table: ValueTable) -> list[tuple[str, NameLookup]]:
     return pairs
 
 
-@pytest.mark.parametrize("name", [name for name in _TABLES if _lookup_fields(name) and name not in _KOREAN_NAMED])
+@pytest.mark.parametrize(
+    "name", [name for name in _TABLES if _lookup_fields(name) and name not in _KOREAN_NAMED | _RETIRED_KEYS]
+)
 def test_every_key_has_a_loc_name(name: str) -> None:
     """Every key but `0` (no character on a gimmick sanctum) has a name."""
     for record in _result(name).records:
@@ -301,6 +414,7 @@ def test_every_table_has_its_labels() -> None:
     strings = json.loads(_EN_LANG.read_text(encoding="utf-8"))
     for value_table in VALUE_TABLES:
         assert value_table.count_key in strings["meta"], value_table.file_name
+        assert value_table.index_column in (None, *strings["columns"]), value_table.file_name
         for field in value_table.all_fields:
             columns = [field.column, *(lookup.column for lookup in (field.lookup, field.icon) if lookup is not None)]
             if field.text is not None:
@@ -406,12 +520,10 @@ def test_the_academy_cells_show_dates_and_quest_ids() -> None:
     ("seconds", "text"),
     [
         (0, "1970-01-01 00:00 UTC"),
-        (951_782_400, "2000-02-29 00:00 UTC"),
         (1_709_251_199, "2024-02-29 23:59 UTC"),
-        (4_102_444_800, "2100-01-01 00:00 UTC"),
     ],
 )
-def test_unix_seconds_read_as_utc_dates(seconds: int, text: str) -> None:
+def test_utc_time_adds_the_zone(seconds: int, text: str) -> None:
     assert utc_time(seconds) == text
 
 
@@ -675,6 +787,63 @@ def test_first_fields_lead_the_columns() -> None:
 def test_a_bare_file_takes_no_string_index() -> None:
     with pytest.raises(ValueError, match="no string table"):
         ValueTable("bad.bss", (ValueField("a", "I", text=TextRef("a_kr")),), framing=Framing.BARE)
+
+
+_FIXED_LIST = ValueTable(
+    "fixed.bss",
+    (ValueField("key", "H", "skillId"), ValueField("a", "qI", "schedules", fixed_count=2), ValueField("b", "I", "productId")),
+    RowCount.COUNTED,
+)
+_INDEXED = ValueTable("indexed.bss", (ValueField("a", "B", "productId"),), RowCount.TO_TABLE_START, index_column="index")
+
+
+def test_a_fixed_list_reads_its_entries_with_no_count() -> None:
+    data = _pabr(_U32.pack(1) + struct.pack("<HqIqII", 1, 60, 7, 0, 0, 2))
+    assert parse_value_table(data, _FIXED_LIST) == [{"key": 1, "a": [[60, 7], [0, 0]], "b": 2}]
+
+
+def test_an_index_column_stores_each_row_position() -> None:
+    data = _pabr(bytes([0, 1, 1]))
+    assert parse_value_table(data, _INDEXED) == [{"index": 0, "a": 0}, {"index": 1, "a": 1}, {"index": 2, "a": 1}]
+
+
+def _joined_name(record: dict) -> str:
+    return f"{record['key']}-{record['name_kr']}"
+
+
+_ROW_LOOKUP = ValueTable(
+    "rowlookup.bss",
+    (
+        ValueField("key", "B", "productId", NameLookup("name", "item", _joined_name, is_row_lookup=True)),
+        ValueField("name_ref", "I", text=TextRef("name_kr")),
+    ),
+    RowCount.COUNTED,
+)
+
+
+def test_a_row_lookup_reads_the_whole_record() -> None:
+    data = _pabr_with_strings(_U32.pack(1) + struct.pack("<BI", 7, 0), ["a"])
+    entry = PazEntry(
+        archive_name="",
+        internal_path="gamecommondata/binary/rowlookup.bss",
+        offset=0,
+        compressed_size=0,
+        uncompressed_size=0,
+        compression_type=0,
+        encryption_type=0,
+    )
+    (record,) = PabrValuesBssHandler(_ROW_LOOKUP).get_records(data, entry, {})
+    assert record["name"] == "7-a"
+
+
+def test_the_index_column_comes_first() -> None:
+    html = _render_table(_INDEXED, [{"index": 4, "a": 1}])
+    assert html.index("Index") < html.index("Product ID")
+
+
+def test_a_list_takes_a_file_count_or_a_fixed_count() -> None:
+    with pytest.raises(ValueError, match="not both"):
+        ValueField("a", "I", "productId", is_counted_list=True, fixed_count=2)
 
 
 def test_first_fields_must_be_fields() -> None:

@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "index": "Index",
+    "bankName": "Bank",
+    "eventName": "Event",
+    "ingameName": "Name Key",
+    "articulations": "Articulations",
+    "startAction": "Start Action",
+    "endAction": "End Action",
+    "advancedType": "Tab",
+    "instrumentNameType": "Tab Key",
+    "isOpened": "Opened",
+    "ingActions": "Loop Actions",
+    "isProvided": "Owned by All"
+  },
+  "advancedTypes": {
+    "0": "Novice",
+    "1": "Advanced",
+    "2": "Electronic"
+  },
+  "meta": {
+    "count": "{count} instruments"
+  }
+}

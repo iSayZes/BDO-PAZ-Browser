@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "packageKey": "Package Key",
+    "name": "Name",
+    "emoticonCount": "Count",
+    "emoticons": "Emoticons"
+  },
+  "offsetColumns": {
+    "packageKey": "Package Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "meta": {
+    "count": "{count} emoticon packages"
+  }
+}

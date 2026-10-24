@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "setKey": "Set Key",
+    "setType": "Type",
+    "effects": "Set Effects",
+    "pieceCount": "Pieces",
+    "pieces": "Items"
+  },
+  "offsetColumns": {
+    "setKey": "Set Key",
+    "dataOffset": "Data Offset",
+    "size": "Size"
+  },
+  "setTypes": {
+    "0": "Gear",
+    "1": "Furniture"
+  },
+  "text": {
+    "points": "{points} interior points"
+  },
+  "meta": {
+    "count": "{count} sets"
+  }
+}

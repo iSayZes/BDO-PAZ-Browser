@@ -1,0 +1,18 @@
+{
+  "columns": {
+    "chooseKey": "Auswahlschlüssel",
+    "icon": "Symbol",
+    "chooseCount": "Auswahlen",
+    "isChooseDuplicate": "Mehrfachauswahl",
+    "productCount": "Produkte",
+    "products": "Produktliste"
+  },
+  "offsetColumns": {
+    "chooseKey": "Auswahlschlüssel",
+    "dataOffset": "Datenoffset",
+    "size": "Größe"
+  },
+  "meta": {
+    "count": "{count} Auswahlpakete"
+  }
+}

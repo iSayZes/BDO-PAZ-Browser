@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "tradingLevel": "Niveau de commerce",
+    "rank": "Rang",
+    "tradeExp": "EXP de commerce de base",
+    "saleExpRate01": "Taux 0,1, distance 1 000"
+  },
+  "meta": {
+    "count": "{count} niveaux de commerce"
+  }
+}

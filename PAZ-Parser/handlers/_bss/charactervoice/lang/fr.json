@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "characterKey": "ID du personnage",
+    "character": "Personnage",
+    "voices": "Voix",
+    "voiceCount": "Nombre de voix",
+    "voices1": "Voix (apparence 1)",
+    "voiceCount1": "Nombre de voix (apparence 1)"
+  },
+  "meta": {
+    "count": "{count} personnages"
+  }
+}

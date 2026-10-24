@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "passType": "Pass-Typ",
+    "passTypeName": "Pass",
+    "step": "Stufe",
+    "baseQuest": "Grundquest",
+    "passQuest": "Pass-Quest"
+  },
+  "meta": {
+    "count": "{count} Pass-Stufen"
+  }
+}

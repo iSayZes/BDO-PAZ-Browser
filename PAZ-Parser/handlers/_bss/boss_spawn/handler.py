@@ -6,7 +6,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
-from _bss.boss_spawnlevel.parser import FILE_NAME as LEVEL_FILE, boss_characters
+from _bss.boss_spawnlevel.parser import FILE_NAME as LEVEL_FILE, optional_boss_characters
 from _common.character import character_name
 from _common.html import Column, e, error, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
@@ -16,17 +16,6 @@ from .parser import FILE_NAME, parse_boss_spawn_records
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 _AXES = ("x", "y", "z")
-
-
-def _characters(level_data: bytes | None) -> dict[int, int]:
-    """Boss key -> character from the optional levels file; empty when it is
-    missing or unreadable, since the names are only a convenience here."""
-    if level_data is None:
-        return {}
-    try:
-        return boss_characters(level_data)
-    except ValueError:
-        return {}
 
 
 class BossSpawnBssHandler(PreviewHandler):
@@ -58,7 +47,7 @@ class BossSpawnBssHandler(PreviewHandler):
         except ValueError as ex:
             return [{"_error": f"{FILE_NAME} could not be parsed: {ex}"}]
 
-        characters = _characters(companions.get(LEVEL_FILE))
+        characters = optional_boss_characters(companions.get(LEVEL_FILE))
         return [
             {
                 **record,

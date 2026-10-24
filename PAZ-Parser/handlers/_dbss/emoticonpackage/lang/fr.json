@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "packageKey": "ID du lot",
+    "name": "Nom",
+    "emoticonCount": "Nombre",
+    "emoticons": "Émoticônes"
+  },
+  "offsetColumns": {
+    "packageKey": "ID du lot",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} lots d'émoticônes"
+  }
+}

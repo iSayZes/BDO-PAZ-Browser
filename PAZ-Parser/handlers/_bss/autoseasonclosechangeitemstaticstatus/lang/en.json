@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "index": "Index",
+    "changeItem": "Conversion Item",
+    "beforeItem": "Before",
+    "afterItem": "After"
+  },
+  "meta": {
+    "count": "{count} item conversions"
+  }
+}

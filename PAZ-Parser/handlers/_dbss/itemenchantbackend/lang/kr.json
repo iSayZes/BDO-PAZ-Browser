@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemId": "아이템 ID",
+    "icon": "아이콘",
+    "item": "아이템",
+    "maxLevel": "최대 레벨",
+    "accessLevel": "접근 레벨",
+    "crystalGroup": "수정 그룹"
+  },
+  "meta": {
+    "count": "아이템 {count}개"
+  }
+}

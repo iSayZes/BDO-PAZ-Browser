@@ -19,6 +19,10 @@ from .walk_model import LayoutFit, Unwalkable
 FileReader = Callable[[str], "bytes | None"]
 
 
+class UnreadableFile(Exception):
+    """Raised by a `FileReader` that cannot pick or read a file, e.g. two PAZ paths share its name."""
+
+
 class Status(Enum):
     OK = "ok"
     UPDATED = "Versions updated"
@@ -54,7 +58,8 @@ def check_doc_file(
 
     A doc not in the layout format yet is skipped: the doc rules do not apply to it. Each client
     goes into the Clients table: the layout its files fit, `No documented layout` when they fit
-    none, or `No file` when none of the doc's files is in it.
+    none, or `No file` when none of the doc's files is in it. A file the reader cannot pick
+    skips the game check for this doc and client and leaves Versions as they are.
     """
     text = path.read_text(encoding="utf-8")
     if not is_converted(text):
@@ -69,7 +74,10 @@ def check_doc_file(
     files: dict[str, bytes] = {}
     missing: list[str] = []
     for name in doc_files(path.name, layouts, rows):
-        data = client.read_file(name)
+        try:
+            data = client.read_file(name)
+        except UnreadableFile as error:
+            return DocOutcome(path, Status.SKIPPED, (str(error),))
         if data is None:
             missing.append(name)
         else:

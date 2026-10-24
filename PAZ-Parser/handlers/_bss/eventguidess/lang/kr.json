@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "eventKey": "이벤트 키",
+    "icon": "아이콘",
+    "title": "제목",
+    "text": "내용",
+    "start": "시작 (UTC)",
+    "end": "종료 (UTC)",
+    "button": "버튼",
+    "function": "기능",
+    "tag": "태그",
+    "rewards": "보상"
+  },
+  "meta": {
+    "count": "이벤트 {count}개"
+  }
+}

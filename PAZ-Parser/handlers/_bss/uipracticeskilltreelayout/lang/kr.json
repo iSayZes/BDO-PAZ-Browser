@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "class": "직업",
+    "width": "너비",
+    "height": "높이",
+    "blankCells": "빈 칸",
+    "skillCells": "기술 칸",
+    "skills": "기술"
+  },
+  "meta": {
+    "count": "직업 격자 {count}개"
+  }
+}

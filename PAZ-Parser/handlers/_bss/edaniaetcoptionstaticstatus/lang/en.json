@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "edaniaRegion": "Edania Region",
+    "castle": "Castle",
+    "contentsGroup": "Contents Group",
+    "throneQuest": "Throne Quest",
+    "bossClearItemKey": "Boss Clear Item ID",
+    "bossClearItem": "Boss Clear Item",
+    "minAp1": "Min AP 1",
+    "minDp1": "Min DP 1",
+    "minAp2": "Min AP 2",
+    "minDp2": "Min DP 2",
+    "minItemGrade1": "Min Item Grade 1",
+    "minItemGrade2": "Min Item Grade 2",
+    "taxRate": "Tax Rate",
+    "taxBaseAmount": "Tax Base Amount"
+  },
+  "meta": {
+    "count": "{count} Edania castles",
+    "dropBuff": "; Edana's drop buff: Item Drop Rate +{rate} for {minutes} min, {uses} uses"
+  }
+}

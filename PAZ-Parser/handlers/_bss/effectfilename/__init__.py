@@ -1,0 +1,1 @@
+"""effectfilename.bss preview handler."""

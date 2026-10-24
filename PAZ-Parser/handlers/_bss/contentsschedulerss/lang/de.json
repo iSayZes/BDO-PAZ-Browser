@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "contentType": "Inhaltstyp",
+    "icon": "Symbol",
+    "title": "Titel",
+    "contentsGroups": "Inhaltsgruppen"
+  },
+  "meta": {
+    "count": "{count} Zeitplaninhalte"
+  }
+}

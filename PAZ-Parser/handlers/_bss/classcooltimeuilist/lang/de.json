@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "classType": "Klassentyp",
+    "className": "Klasse",
+    "showType": "Anzeigetyp",
+    "skillNo": "Talent-Nr.",
+    "skillName": "Talent"
+  },
+  "meta": {
+    "count": "{count} Talente im Abklingzeitfenster"
+  }
+}

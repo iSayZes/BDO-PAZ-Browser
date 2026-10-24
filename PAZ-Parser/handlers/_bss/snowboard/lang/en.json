@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "courseKey": "Course Key",
+    "course": "Course",
+    "mode": "Mode",
+    "checkpoint": "Checkpoint",
+    "nextCheckpoint": "Next Checkpoint"
+  },
+  "meta": {
+    "count": "{count} checkpoints"
+  }
+}

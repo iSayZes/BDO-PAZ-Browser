@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "territoryKey": "영지 키",
+    "territory": "영지",
+    "x": "X",
+    "y": "Y",
+    "z": "Z"
+  },
+  "meta": {
+    "count": "부활 위치 {count}개"
+  }
+}

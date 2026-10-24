@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "키",
+    "start": "시작",
+    "end": "종료",
+    "maxPearl": "최대 펄",
+    "level": "단계",
+    "title": "제목",
+    "targetPearl": "목표 펄",
+    "rewards": "보상",
+    "description": "설명"
+  },
+  "meta": {
+    "count": "단계 {count}개"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "itemKey": "Gegenstandsschlüssel",
+    "itemId": "Gegenstands-ID",
+    "enchantLevel": "Verstärkungsstufe",
+    "item": "Gegenstand"
+  },
+  "meta": {
+    "count": "{count} Belohnungsgegenstände"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "keyHash": "Hash de clé",
+    "pcCommand": "Commandes PC",
+    "consoleCommand": "Commandes manette"
+  },
+  "offsetColumns": {
+    "keyHash": "Hash de clé",
+    "dataOffset": "Décalage des données",
+    "size": "Taille"
+  },
+  "meta": {
+    "count": "{count} infobulles de commandes"
+  }
+}

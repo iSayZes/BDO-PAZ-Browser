@@ -1,0 +1,30 @@
+{
+  "columns": {
+    "characterKey": "ID персонажа",
+    "furniture": "Мебель",
+    "matchingCharacter": "Парный персонаж",
+    "matchingPoint": "Очки пары",
+    "onDresser": "На комоде",
+    "onBedSideCabinet": "На тумбочке",
+    "onWardrobe": "На шкафу",
+    "onDiningTable": "На обеденном столе",
+    "onTable": "На столе",
+    "onChair": "На стуле",
+    "onSofa": "На диване",
+    "onBed": "На кровати",
+    "onBookCase": "На книжном шкафу",
+    "onShelf": "На полке",
+    "isEmptyInFront": "Свободно спереди",
+    "isEmptyInBack": "Свободно сзади",
+    "isEmptyInLeft": "Свободно слева",
+    "isEmptyInRight": "Свободно справа"
+  },
+  "offsetColumns": {
+    "characterKey": "ID персонажа",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Мебели: {count}"
+  }
+}

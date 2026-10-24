@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "boxKey": "Clave de cofre",
+    "boxes": "Cofres",
+    "choices": "Opciones",
+    "items": "Objetos"
+  },
+  "offsetColumns": {
+    "boxKey": "Clave de cofre",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} listas de objetos de cofre"
+  }
+}

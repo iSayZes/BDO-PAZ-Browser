@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "meshKey": "Mesh-Schlüssel",
+    "items": "Gegenstände",
+    "model": "Modell",
+    "effectFile": "Effektdatei",
+    "weaponMaterial": "Waffenmaterial",
+    "armorMaterial": "Rüstungsmaterial",
+    "adult": "Ab 18",
+    "effectsChange": "Effektwechsel"
+  },
+  "meta": {
+    "count": "{count} Gegenstand-Meshes"
+  }
+}

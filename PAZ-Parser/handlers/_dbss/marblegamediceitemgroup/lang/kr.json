@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "groupKey": "드롭 그룹",
+    "items": "아이템",
+    "diceItems": "주사위 아이템"
+  },
+  "offsetColumns": {
+    "groupKey": "드롭 그룹",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "드롭 그룹 {count}개"
+  }
+}

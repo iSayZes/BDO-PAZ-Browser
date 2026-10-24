@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "meshKey": "메시 키",
+    "items": "아이템",
+    "model": "모델",
+    "effectFile": "이펙트 파일",
+    "weaponMaterial": "무기 재질",
+    "armorMaterial": "방어구 재질",
+    "adult": "성인",
+    "effectsChange": "이펙트 변경"
+  },
+  "meta": {
+    "count": "아이템 메시 {count}개"
+  }
+}

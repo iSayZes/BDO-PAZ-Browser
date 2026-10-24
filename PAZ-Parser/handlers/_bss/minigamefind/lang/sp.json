@@ -1,0 +1,33 @@
+{
+  "columns": {
+    "gameType": "Tipo de juego",
+    "nextGame": "Siguiente juego",
+    "minDamageRate": "Tasa de daño mín.",
+    "nextRate": "Tasa siguiente",
+    "lifeType": "Tipo de vida",
+    "lifeRate": "Tasa de vida",
+    "tools": "Hoces",
+    "toolRate": "Tasa de herramienta",
+    "stoneRate": "Tasa de piedra",
+    "stoneDrop": "Botín de piedra",
+    "grid": "Cuadrícula",
+    "startPos": "Posición inicial",
+    "minRootCount": "Raíces mín.",
+    "beginRootCount": "Raíces iniciales",
+    "useSlots": "Grupos de casillas",
+    "rewards": "Recompensas",
+    "lakiaros": "Lakiaros"
+  },
+  "sides": {
+    "left": "Izquierda",
+    "right": "Derecha",
+    "top": "Arriba",
+    "bottom": "Abajo"
+  },
+  "lakiaro": {
+    "depth": "{name} ({key}), profundidad {depth}"
+  },
+  "meta": {
+    "count": "{count} tipos de juego"
+  }
+}

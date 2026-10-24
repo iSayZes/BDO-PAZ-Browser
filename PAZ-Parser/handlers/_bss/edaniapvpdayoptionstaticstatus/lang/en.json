@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "row": "Row",
+    "time1": "Time 1",
+    "time2": "Time 2"
+  },
+  "meta": {
+    "count": "{count} schedule entries"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "diceItemKey": "ID de objeto de dado",
+    "items": "Objetos",
+    "groups": "Grupos de botín"
+  },
+  "offsetColumns": {
+    "diceItemKey": "ID de objeto de dado",
+    "dataOffset": "Offset de datos",
+    "size": "Tamaño"
+  },
+  "meta": {
+    "count": "{count} objetos de dado"
+  }
+}

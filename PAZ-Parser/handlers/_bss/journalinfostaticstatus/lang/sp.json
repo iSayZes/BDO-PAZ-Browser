@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "journalList": "Tablón",
+    "chapter": "Capítulo",
+    "page": "Página",
+    "card": "Tarjeta",
+    "texture": "Imagen de tarjeta",
+    "questChain": "Cadena de misiones",
+    "chapterName": "Nombre del capítulo",
+    "title": "Título",
+    "story": "Historia",
+    "bookQuests": "Misiones de la estantería"
+  },
+  "meta": {
+    "count": "{count} tarjetas del tablón de misiones"
+  }
+}

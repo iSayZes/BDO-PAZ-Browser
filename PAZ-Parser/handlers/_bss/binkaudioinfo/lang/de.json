@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "movieName": "Video",
+    "audioName": "Audioname",
+    "audioNameDup": "Audioname (Kopie)"
+  },
+  "meta": {
+    "count": "{count} Videos"
+  }
+}

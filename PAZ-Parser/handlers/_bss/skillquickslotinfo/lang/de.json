@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "class": "Klasse",
+    "slot": "Schnellauswahl",
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent"
+  },
+  "meta": {
+    "count": "{count} Talente in der Schnellauswahl · {classes} Klassen"
+  }
+}

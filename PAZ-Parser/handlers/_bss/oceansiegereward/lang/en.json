@@ -1,0 +1,17 @@
+{
+  "columns": {
+    "itemId": "Item ID",
+    "icon": "Icon",
+    "item": "Item",
+    "count": "Count",
+    "rewardSet": "Set",
+    "rewardList": "List",
+    "skill1Id": "Skill 1 ID",
+    "skill1": "Skill 1",
+    "skill2Id": "Skill 2 ID",
+    "skill2": "Skill 2"
+  },
+  "meta": {
+    "count": "{count} reward items"
+  }
+}

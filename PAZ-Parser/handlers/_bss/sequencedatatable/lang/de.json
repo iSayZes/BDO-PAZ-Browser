@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "cutsceneFile": "Zwischensequenz-Datei",
+    "regionKey": "Regionsschlüssel",
+    "region": "Region",
+    "startCondition": "Startbedingung",
+    "startExecute": "Startskript",
+    "endExecute": "Endskript"
+  },
+  "meta": {
+    "count": "{count} Zwischensequenz-Starts"
+  }
+}

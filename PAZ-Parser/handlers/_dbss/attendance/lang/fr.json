@@ -1,0 +1,32 @@
+{
+  "columns": {
+    "attendanceKey": "ID de présence",
+    "name": "Événement",
+    "startDate": "Début",
+    "attendanceEndDate": "Fin des présences",
+    "rewardEndDate": "Fin des récompenses",
+    "eventPeriod": "Durée de l'événement",
+    "claimPeriod": "Dernière récompense",
+    "players": "Joueurs",
+    "rewards": "Récompenses",
+    "overlapCount": "Présences en plus",
+    "overlapWaitingTime": "Attente présence en plus",
+    "dayOfWeek": "Jours avec présence en plus",
+    "displayOrder": "Ordre des onglets",
+    "guildLevel": "Niveaux de guilde"
+  },
+  "offsetColumns": {
+    "attendanceKey": "ID de présence",
+    "dataOffset": "Offset des données",
+    "size": "Taille"
+  },
+  "playerTypes": {
+    "0": "Tous",
+    "1": "De retour",
+    "2": "Nouveau",
+    "3": "Pré-transfert"
+  },
+  "meta": {
+    "count": "{count} événements de présence"
+  }
+}

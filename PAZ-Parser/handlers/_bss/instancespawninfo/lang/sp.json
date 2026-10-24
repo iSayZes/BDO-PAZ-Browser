@@ -1,0 +1,16 @@
+{
+  "columns": {
+    "key": "Clave",
+    "area": "Zona",
+    "offense": "Ataque recomendado",
+    "enterItem": "Objeto de entrada",
+    "enterType": "Tipo de entrada",
+    "x": "X",
+    "y": "Y",
+    "z": "Z",
+    "radius": "Radio (m)"
+  },
+  "meta": {
+    "count": "{count} zonas"
+  }
+}

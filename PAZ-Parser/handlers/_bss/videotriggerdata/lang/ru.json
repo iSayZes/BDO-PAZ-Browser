@@ -1,0 +1,14 @@
+{
+  "columns": {
+    "video": "Видео",
+    "contentsGroup": "Группа контента",
+    "position": "Позиция",
+    "radius": "Радиус",
+    "startCondition": "Условие запуска",
+    "startExecute": "Скрипт запуска",
+    "endExecute": "Скрипт завершения"
+  },
+  "meta": {
+    "count": "Видеотриггеров: {count}"
+  }
+}

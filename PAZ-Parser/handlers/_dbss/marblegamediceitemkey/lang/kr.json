@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "diceItemKey": "주사위 아이템 키",
+    "items": "아이템",
+    "groups": "드롭 그룹"
+  },
+  "offsetColumns": {
+    "diceItemKey": "주사위 아이템 키",
+    "dataOffset": "데이터 오프셋",
+    "size": "크기"
+  },
+  "meta": {
+    "count": "주사위 아이템 {count}개"
+  }
+}

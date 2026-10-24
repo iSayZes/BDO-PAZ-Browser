@@ -1,0 +1,25 @@
+{
+  "columns": {
+    "passKey": "패스 키",
+    "contentType": "종류",
+    "title": "제목",
+    "start": "시작",
+    "end": "종료",
+    "saleEnd": "판매 종료",
+    "step": "단계",
+    "passPoints": "패스 포인트",
+    "basicReward": "기본 보상",
+    "passReward": "패스 보상",
+    "description": "설명"
+  },
+  "contentTypes": {
+    "1": "일간",
+    "2": "솔라레",
+    "3": "전투",
+    "4": "항해",
+    "5": "채집"
+  },
+  "meta": {
+    "count": "보상 단계 {count}개"
+  }
+}

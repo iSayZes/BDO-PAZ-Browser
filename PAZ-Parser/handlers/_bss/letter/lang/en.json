@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemKey": "Item ID",
+    "item": "Item",
+    "textKey": "Text Key",
+    "text": "Text",
+    "background": "Background",
+    "centered": "Centered"
+  },
+  "meta": {
+    "count": "{count} letters"
+  }
+}

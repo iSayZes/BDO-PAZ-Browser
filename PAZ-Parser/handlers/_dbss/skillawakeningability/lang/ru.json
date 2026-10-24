@@ -1,0 +1,15 @@
+{
+  "columns": {
+    "abilityIndex": "Индекс эффекта",
+    "buff": "Эффект",
+    "effect": "Описание"
+  },
+  "offsetColumns": {
+    "abilityIndex": "Индекс эффекта",
+    "dataOffset": "Смещение данных",
+    "size": "Размер"
+  },
+  "meta": {
+    "count": "Эффектов пробуждения: {count}"
+  }
+}

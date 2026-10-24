@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "key": "Schlüssel",
+    "fromItem": "Ausgangsgegenstand",
+    "toItem": "Ergebnisgegenstand",
+    "type": "Typ"
+  },
+  "meta": {
+    "count": "{count} Gegenstandsänderungen"
+  }
+}

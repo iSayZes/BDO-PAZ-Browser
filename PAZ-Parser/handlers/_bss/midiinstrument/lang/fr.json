@@ -1,0 +1,24 @@
+{
+  "columns": {
+    "index": "Index",
+    "bankName": "Banque",
+    "eventName": "Événement",
+    "ingameName": "Clé du nom",
+    "articulations": "Articulations",
+    "startAction": "Action de début",
+    "endAction": "Action de fin",
+    "advancedType": "Onglet",
+    "instrumentNameType": "Clé d'onglet",
+    "isOpened": "Ouvert",
+    "ingActions": "Actions en boucle",
+    "isProvided": "Possédé par tous"
+  },
+  "advancedTypes": {
+    "0": "Débutant",
+    "1": "Avancé",
+    "2": "Électronique"
+  },
+  "meta": {
+    "count": "{count} instruments"
+  }
+}

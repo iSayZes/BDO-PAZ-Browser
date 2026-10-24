@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "seasonNo": "№ сезона",
+    "season": "Сезон",
+    "description": "Описание",
+    "rewards": "Награды"
+  },
+  "meta": {
+    "count": "Сезонов: {count}"
+  }
+}

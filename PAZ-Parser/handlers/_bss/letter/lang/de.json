@@ -1,0 +1,13 @@
+{
+  "columns": {
+    "itemKey": "Gegenstands-ID",
+    "item": "Gegenstand",
+    "textKey": "Textschlüssel",
+    "text": "Text",
+    "background": "Hintergrund",
+    "centered": "Zentriert"
+  },
+  "meta": {
+    "count": "{count} Briefe"
+  }
+}

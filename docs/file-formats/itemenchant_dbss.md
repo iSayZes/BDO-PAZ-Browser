@@ -26,12 +26,12 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 1      | 1754 to 1784   | 1784    | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
 | 1      | 1754 to 1784   | 1784    | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
 
-| Layout | File                     | Known                | Unknown               |
-| ------ | ------------------------ | -------------------- | --------------------- |
-| 2      | `itemenchant.dbss`       | 60,051,733 B (29.6%) | 142,990,269 B (70.4%) |
-| 2      | `itemenchantoffset.dbss` | 2,032,160 B (100.0%) | 0 B (0.0%)            |
-| 1      | `itemenchant.dbss`       | 99,716,229 B (58.0%) | 72,074,984 B (42.0%)  |
-| 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%) | 0 B (0.0%)            |
+| Layout | File                     | Known                 | Unknown               |
+| ------ | ------------------------ | --------------------- | --------------------- |
+| 2      | `itemenchant.dbss`       | 60,390,423 B (29.7%)  | 142,651,579 B (70.3%) |
+| 2      | `itemenchantoffset.dbss` | 2,032,160 B (100.0%)  | 0 B (0.0%)            |
+| 1      | `itemenchant.dbss`       | 100,729,969 B (58.6%) | 71,061,244 B (41.4%)  |
+| 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%)  | 0 B (0.0%)            |
 
 Every client the doc check read, and the layout its files fit.
 
@@ -178,6 +178,7 @@ Every client the doc check read, and the layout its files fit.
 | 2421   | No documented layout |
 | 2414   | No documented layout |
 | 2407   | No documented layout |
+| 2401   | No documented layout |
 | 2397   | No documented layout |
 | 2393   | No documented layout |
 | 2384   | No documented layout |
@@ -506,6 +507,8 @@ Every client the doc check read, and the layout its files fit.
 | 449    | No file              |
 | 435    | No file              |
 
+<!-- checked against layouts 37e1249bfa22: 3483 -->
+
 <!-- versions:end -->
 
 ## Companion Files
@@ -623,7 +626,8 @@ decoded.
 | `unknown_61+0x77`         | Class Entry[class_entry_count] | class_entries              | The item mesh key each class type wears, see Item Mesh Keys |
 | `class_entries+0x00`      | u32                           | unknown_list2_count         | Entry count of the second list. Set in 498 base items on client 3464: one entry in 330, two in 164, six in 4. 490 of them are `category` 9 or 11 (`eItemClassify_PearlGoods`, `eItemClassify_Vehicle`), mostly mount, wagon and ship gear |
 | `class_entries+0x04`      | u8[unknown_list2_count][5]    | unknown_list2               | 5-byte entries |
-| `unknown_list2+0x00`      | bytes[4]                      | unknown_after_unknown_list2 | `0` in 67,081 base items on client 3464; most others set only the third byte, `1` to `10` |
+| `unknown_list2+0x00`      | u16                           | special_event_type          | `0` in 70,716 of the 70,826 base items on client 3483, else `1` to `5`; see Layout 1 Field Matches |
+| `unknown_list2+0x02`      | bytes[2]                      | unknown_after_special_event_type | `0` in 67,804 base items on client 3483; the others set only the first byte, `1` to `10` |
 | `unknown_list2+0x04`      | u32                           | unknown_list3_count         | Up to three entries; set in 2,575 base items on client 3464 |
 | `unknown_list2+0x08`      | u32[unknown_list3_count]      | unknown_list3               |       |
 | `unknown_list3+0x00`      | u32                           | enchant_key                 | With the block's level, the key of [enchantstaticstatus.dbss](enchantstaticstatus_dbss.md); `0` in 40,025 base items (client 3458), which have no enhancement data. Every level of an item stores the key of its base block (all 70,213 items on client 3464) |
@@ -870,7 +874,7 @@ block.
 | `+0x83`                                 | i64                              | buy_price                           | |
 | `+0x8B`                                 | i64                              | sell_price                          | |
 | `+0x93`                                 | i32[6]                           | unknown_old_93                      | `1000000` in most blocks; the place of the 2016 `_originalPriceLevel[3]` and `_priceLevel[3]`; `Item_Table` `OriginalPriceRate_0` to `_2` and `PriceRate_0` to `_2` in that order |
-| `+0xAB`                                 | i64                              | unknown_old_ab                      | `0` or `1000000` in most blocks; not `repair_price`, which it equals on 289 of the 6,987 shared base items with a repair price |
+| `+0xAB`                                 | i64                              | repair_price                        | `0` on 36,124 of the 42,559 base items; see Layout 1 Field Matches |
 | `+0xB3`                                 | i64                              | unknown_old_b3                      | `0`, `100000000` or `14000000000` |
 | `+0xBB`                                 | i64[4]                           | unknown_old_bb                      | Four prices, `0` in 34,861 of the 51,882 base blocks with empty lists; the place of the 2016 `_maxPrice`, `_minPrice`, `_maxestPrice` and `_minestPrice` |
 | `+0xDB`                                 | i32                              | unknown_old_db                      | |
@@ -950,7 +954,7 @@ block.
 | `unknown_old_14d_entries+0x47`          | u32[101]                         | skill_keys                          | One skill key per class type 0 to 100 (Layout 1 Field Matches); `0` when none; 32 to 50 are always 0 |
 | `unknown_old_14d_entries+0x1DB`         | u16[101]                         | unknown_old_330                     | One value per class type, set only for class types 0 to 31: Basteer Longsword (10011) holds `1011` at index 0 (Warrior) and `7005` at index 24 (Valkyrie); the place of the 2016 `_itemMeshKeyList` |
 | `unknown_old_14d_entries+0x2A5`         | u16[31]                          | unknown_old_3fa                     | Set in 490 base blocks |
-| `unknown_old_14d_entries+0x2E3`         | u16                              | unknown_old_438                     | `0` in all but 73 base blocks; `Item_Table` `SpecialEventType` on every base item |
+| `unknown_old_14d_entries+0x2E3`         | u16                              | special_event_type                  | `0` in all but 73 base blocks; see Layout 1 Field Matches |
 | `unknown_old_14d_entries+0x2E5`         | u32                              | unknown_old_43a                     | Entry count, `1` to `6` |
 | `unknown_old_14d_entries+0x2E9`         | u32[unknown_old_43a]             | unknown_old_43a_entries             | 32-bit values with no pattern, such as `0x6016CFF7` |
 | `unknown_old_43a_entries+0x00`          | u16                              | unknown_old_43e                     | `0` to `10` |
@@ -1027,9 +1031,19 @@ Layout 1 hold the client 3473 value on that many of them:
 | `name_kr`, `icon` | 87.2%, 92.1% | |
 | `marketable`, `karma_type`, `barter_type`, `family_inventory` | 96.1% to 100% | Icon Tail and Message Tail fields in Layout 2 |
 
+`repair_price` and `special_event_type` were counted against client 3483
+instead. Client 1784 and client 3483 share 41,408 base items, and
+`repair_price` holds the client 3483 value on 41,403 of them (6,194 of the 6,195 with a repair price; item 16142 is `0` on
+client 1784 and `1100` on client 3483). The client 1784 server dump reads
+it into the row field its `Item_Table` loader fills from `RepairPrice`.
+`special_event_type` holds the value of Layout 2's u16 after
+`unknown_list2` on all 41,408 shared base items (all 52 that are not `0`,
+values `1` to `4`); the server dump reads it as a u16 into the row field
+filled from `SpecialEventType`.
+
 `enhancement_group`, `enhancement_type`, `cron_enchant_control`,
-`is_notice_world_market`, `life_equip_type`, `life_restrict_type`,
-`unknown_limit` and `repair_price` match no Layout 1 offset.
+`is_notice_world_market`, `life_equip_type`, `life_restrict_type` and
+`unknown_limit` match no Layout 1 offset.
 
 The private server's `DataSheets.bexcel` on client 1784 holds `Item_Table`,
 the sheet its `itemenchant.dbss` was built from. Its 50,116 base items match
@@ -1669,6 +1683,52 @@ The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ItemEnc
 The current client Lua reads several of these by name: `_minLevel`, `_maxLevel` and `isMaxLevelRestricted()` (tooltip use limit), `getLifeExperienceType()` and `getLifeMinLevel()`, `getCommerceType()`, `isHideFromNote()`, `getGuildStockLevel()`, `isItemTargetAlive()`, `_repairEnduranceCount`, `isNodeFreeTrade()` and `isApplyDirectly()`; the Block rows say where. The server sets `do_apply_directly` and `is_cash` on fewer items than the client (505 and 793 client-only rows), and `commerce_type` on more (1,556 rows the client stores as `0`); I read those as patches since the server data. `karma_type`, `is_client_use`, `node_free_trade`, `repair_endurance_count` and the flags after the third string other than `is_exchange_item`, `is_navigation` and `item_access_level` are not in the 2016 struct, so their names rest on the server column.
 
 The header fields named before also match their columns: `ItemType`, `GradeType`, `EquipType`, `Weight`, `IsStack`, `ExpirationPeriod`, `VestedType`, `IsUserVested`, `IsForTrade`, `TradeType`, `OriginalPrice`, `SellPriceToNpc`, `IsDyeable`, `Character_Key`, `EnduranceLimit`, `MarketCategory1` and `MarketCategory2`; the class columns `0` to `31` are the `class_mask` bits and `Pet_0` to `Pet_28` the `servant_kinds` bits. `marketable` (icon end `+0x00`) matches `isDisplayWorldMarket`.
+
+The client 1784 server dump reads `itemenchant.dbss` with its own record
+reader (VA `0x140b57130`), into the row its `Item_Table` loader fills. The
+Layout 1 fields below go into the row field of the column named; only that
+read and the private server's sheet name them, and client 3483 holds none of
+their values, so they keep their `unknown_*` names:
+
+| Field | Read | `Item_Table` column |
+| ----- | ---- | ------------------- |
+| unknown_old_50 | u8 | `IsDualWield` |
+| unknown_old_51 | u8 | `AwakenEquipType` |
+| unknown_old_73 | u8 | `SubType` |
+| unknown_old_db | i32 | `maxestPercentForItemMarket` |
+| unknown_old_df | i32 | `minestPercentForItemMarket` |
+| unknown_old_e3 | i64 | `basePriceForItemMarket` |
+| unknown_old_eb | u16 | `maxRegisterCountForItemMarket` |
+| unknown_old_f6 | u8 | `JewelEquipType` |
+| unknown_old_f7 | u8 | `JewelColorType` |
+| unknown_old_f8 | i32 | `JewelDemolitionRate` |
+| unknown_old_fc | i32 | `JewelVariedLevel` |
+| unknown_98 | i32 | `ContentsEventParam3` |
+| unknown_old_10f | u8 | `CollectToolType` |
+| unknown_old_110 | i64 | `CollectTime` |
+| unknown_old_11a | i32 | `DropRateByKill` |
+| unknown_old_11f | u16 | `NeedContribute` |
+| unknown_old_121 | u8 | `IsAbandon` |
+| unknown_old_125 | u8 | `ProductCategory` |
+| unknown_old_12c | u8 | `TargetType` |
+| unknown_old_130 | u32, then i32 | none, then `DestroyProbability` |
+| unknown_old_165 | u8 | `EnchantDifficulty` |
+| unknown_old_176 | u8 | `ExtractionCount` |
+| unknown_old_179 | u8 | `ExpirationPeriod Type` |
+| unknown_old_17a | i32 | `ExpirationPeriod Param1` |
+| unknown_old_17e | i64 | `ExpirationPeriod Param2` |
+| unknown_old_189 | i32 | `ConnectUi` |
+| unknown_old_195 | u32, with the first three bytes of `unknown_old_196` | `ItemProperties` |
+| Tail unknown_08 | u8 | `ServantSupplyType` |
+| Tail unknown_09 to unknown_0b | one u32 | `ServantSupplyValue` |
+| Tail unknown_11 | u8 | `RestoreType` |
+| Tail unknown_14 | u8 | `OlympicItemType` |
+| Tail unknown_15 | u32 | `SpecialWeaponHitEffect` |
+
+The reader takes some neighbours as one value: `servant_kinds` with
+`unknown_59` as 8 bytes, `repair_endurance_count` with `unknown_old_139` as a
+u32, `unknown_old_166` with `unknown_old_167` and `unknown_old_16e` with
+`unknown_old_16f` as 8 bytes each, and `unknown_old_93` as two i32[3] reads.
 
 ## Open Questions
 

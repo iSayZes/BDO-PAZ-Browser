@@ -233,9 +233,9 @@ def test_the_versions_card_opens_with_a_timeline_of_the_checked_clients(docs_dir
     assert 'class="tl-band sel" data-layout="1"' in versions
     assert '<div class="tl-band absent" title="Not in client 1230."' in versions
     checked = versions.split('id="checkedVersions"')[1]
-    assert '<option value="eu" selected>Europe (EU)</option>' in checked
-    eu, others = checked.split('data-region="eu"')[1].split("</ul>", 1)
-    assert [chip.split(">", 1)[0] for chip in eu.split("<li><")[1:]] == [
+    assert '<option value="naeu" selected>NA / EU / OC</option>' in checked
+    naeu, others = checked.split('data-region="naeu"')[1].split("</ul>", 1)
+    assert [chip.split(">", 1)[0] for chip in naeu.split("<li><")[1:]] == [
         'button type="button" class="cv-chip" data-layout="1" title="Layout 1" aria-label="Client 3473, show layout 1"',
         'button type="button" class="cv-chip" data-layout="1" title="Layout 1" aria-label="Client 3464, show layout 1"',
         'span class="cv-chip absent" title="No file"',

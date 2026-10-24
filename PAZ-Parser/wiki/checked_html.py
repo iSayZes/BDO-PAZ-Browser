@@ -1,6 +1,6 @@
 """The Checked versions panel under a doc's layout timeline: every client the doc check read, by region.
 
-The doc check has no region yet, so every client lists under Europe (EU), the
+The doc check has no region yet, so every client lists under NA / EU / OC, the
 first region, and the others list none. A chip's tooltip names the client's
 result; clicking a chip with a layout shows that layout. static/doc.js opens
 the panel, switches the region, filters the chips and remembers the open
@@ -15,15 +15,16 @@ from format_docs.versions import ClientCheck
 
 # (key, name) per region, in the order of the region picker.
 REGIONS: tuple[tuple[str, str], ...] = (
-    ("eu", "Europe (EU)"),
-    ("na", "North America (NA)"),
+    ("naeu", "NA / EU / OC"),
+    ("kr", "Korea"),
+    ("jp", "Japan"),
+    ("tw", "Taiwan / Hong Kong / Macau"),
+    ("mena", "Turkey / MENA"),
+    ("ru", "Russian-speaking Region"),
+    ("sa", "South America"),
     ("sea", "Asia (TH/SEA)"),
-    ("sa", "South America (SA)"),
-    ("mena", "Turkey & MENA"),
-    ("asia", "East Asia (KR, JP, TW)"),
-    ("ru", "Russia (RU)"),
 )
-CHECKED_REGION = "eu"
+CHECKED_REGION = "naeu"
 
 _CHECK_ICON = (
     '<svg class="cv-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/>'

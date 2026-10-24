@@ -194,7 +194,7 @@ the timeline lists every client the doc check read for the doc, newest
 first, behind a View button: a region picker, a search box and one chip per
 client, styled like its band (dotted orange for no documented layout, dotted
 gray for no file). The doc check has no region yet, so every client lists
-under Europe (EU) and the other regions list none. The browser remembers
+under NA / EU / OC and the other regions list none. The browser remembers
 the open state and the region across doc pages. Under the panel each
 layout has a known/unknown bar. Clicking a band or a client chip with a
 layout shows that layout in the Layout card, highlights its bar and its

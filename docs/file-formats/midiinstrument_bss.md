@@ -21,16 +21,16 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes               |
 | ------ | -------------- | ------- | -------------------- | ----- | ------- | ----------------------- |
 | 4      | 1846 and later | 3483    | `midiinstrument.bss` | 5,242 | 38 Row  | 56 to 69, 63 on average |
-| 3      | 1547 to 3482   | 3482    | `midiinstrument.bss` | 5,242 | 38 Row  | 56 to 69, 63 on average |
-| 2      | 1504 to 3482   | 3482    | `midiinstrument.bss` | 5,242 | 38 Row  | 56 to 69, 63 on average |
-| 1      | 1409 to 1838   | 1838    | `midiinstrument.bss` | 1,833 | 15 Row  | 53 to 61, 55 on average |
+| 3      | 1547 to 1838   | 1838    | `midiinstrument.bss` | 1,833 | 15 Row  | 53 to 61, 55 on average |
+| 2      | 1504 to 1537   | 1537    | `midiinstrument.bss` | 974   | 8 Row   | 52 to 53, 52 on average |
+| 1      | 1409 to 1500   | 1500    | `midiinstrument.bss` | 887   | 8 Row   | 47 to 48, 47 on average |
 
 | Layout | File                 | Known            | Unknown      |
 | ------ | -------------------- | ---------------- | ------------ |
 | 4      | `midiinstrument.bss` | 5,128 B (97.8%)  | 114 B (2.2%) |
-| 3      | `midiinstrument.bss` | 5,128 B (97.8%)  | 114 B (2.2%) |
-| 2      | `midiinstrument.bss` | 5,128 B (97.8%)  | 114 B (2.2%) |
-| 1      | `midiinstrument.bss` | 1,833 B (100.0%) | 0 B (0.0%)   |
+| 3      | `midiinstrument.bss` | 1,833 B (100.0%) | 0 B (0.0%)   |
+| 2      | `midiinstrument.bss` | 974 B (100.0%)   | 0 B (0.0%)   |
+| 1      | `midiinstrument.bss` | 887 B (100.0%)   | 0 B (0.0%)   |
 
 Every client the doc check read, and the layout its files fit.
 

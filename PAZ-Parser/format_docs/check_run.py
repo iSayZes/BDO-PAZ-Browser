@@ -18,6 +18,7 @@ from .fingerprint import layouts_fingerprint
 from .versions import (
     ClientCheck,
     VersionRow,
+    current_rows,
     merge_clients,
     merge_rows,
     read_clients,
@@ -69,7 +70,7 @@ def apply_updates(text: str, updates: Sequence[VersionsUpdate]) -> str:
     if not updates:
         return text
     clients = merge_clients(read_clients(text), (update.check for update in updates))
-    rows = merge_rows(read_rows(text), (row for update in updates for row in update.rows))
+    rows = merge_rows(current_rows(read_rows(text), clients), (row for update in updates for row in update.rows))
     return write_rows(text, rows, clients, updates[-1].newest_layout)
 
 

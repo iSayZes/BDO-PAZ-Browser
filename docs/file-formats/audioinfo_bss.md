@@ -21,8 +21,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 6      | 2665 and later | 3483    | `audioinfo.bss` | 40,977  | 1,256 Row, 10 State Entry, 10 Radio Entry | 28        |
 | 5      | 2000 to 2657   | 2657    | `audioinfo.bss` | 36,534  | 1,113 Row, 10 State Entry, 10 Radio Entry | 28        |
 | 4      | 1958 to 1996   | 1996    | `audioinfo.bss` | 28,374  | 831 Row, 9 State Entry, 10 Radio Entry    | 28        |
-| 3      | 1914 to 3482   | 3482    | `audioinfo.bss` | 40,977  | 1,256 Row, 10 State Entry, 10 Radio Entry | 28        |
-| 2      | 1866 to 1937   | 1937    | `audioinfo.bss` | 27,671  | 831 Row, 8 State Entry                    | 28        |
+| 3      | 1914 to 1937   | 1937    | `audioinfo.bss` | 27,671  | 831 Row, 8 State Entry                    | 28        |
+| 2      | 1866 to 1908   | 1908    | `audioinfo.bss` | 27,546  | 831 Row, 5 State Entry                    | 28        |
 | 1      | 1109 to 1862   | 1862    | `audioinfo.bss` | 132,980 | 831 Row                                   | 160       |
 
 | Layout | File            | Known             | Unknown        |
@@ -30,8 +30,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | 6      | `audioinfo.bss` | 40,846 B (99.7%)  | 131 B (0.3%)   |
 | 5      | `audioinfo.bss` | 36,443 B (99.8%)  | 91 B (0.2%)    |
 | 4      | `audioinfo.bss` | 28,285 B (99.7%)  | 89 B (0.3%)    |
-| 3      | `audioinfo.bss` | 40,846 B (99.7%)  | 131 B (0.3%)   |
-| 2      | `audioinfo.bss` | 27,655 B (99.9%)  | 16 B (0.1%)    |
+| 3      | `audioinfo.bss` | 27,655 B (99.9%)  | 16 B (0.1%)    |
+| 2      | `audioinfo.bss` | 27,536 B (100.0%) | 10 B (0.0%)    |
 | 1      | `audioinfo.bss` | 129,656 B (97.5%) | 3,324 B (2.5%) |
 
 Every client the doc check read, and the layout its files fit.

@@ -1,7 +1,9 @@
 """The `## Versions` section: which clients each layout fits, with sizes and coverage.
 
-The doc check writes it between the two markers. Rows only grow: a client
-widens its layout's range, and sizes come from the newest client checked.
+The doc check writes it between the two markers. A client widens its
+layout's range, and sizes come from the newest client checked. Rows shrink
+only after a renumber, when the Clients table says a client of a row now
+fits another layout (`current_rows`).
 The Clients table lists every client the doc check read, with the layout
 the files fit, `No documented layout` when they are there but no layout of
 the doc reads them, or `No file` when none of the doc's files is in that
@@ -91,6 +93,31 @@ def merge_rows(old: Iterable[VersionRow], new: Iterable[VersionRow]) -> tuple[Ve
         newest = row if row.checked >= known.checked else known
         merged[(row.layout, row.file)] = replace(newest, first=first, checked=max(known.checked, row.checked))
     return tuple(sorted(merged.values(), key=lambda row: (-row.layout, row.file)))
+
+
+def current_rows(rows: Iterable[VersionRow], clients: Sequence[ClientCheck]) -> tuple[VersionRow, ...]:
+    """`rows` without what a renumber left stale, judged by the Clients table.
+
+    A row whose Checked client now fits another layout is dropped, and a
+    range whose first client does starts at the next client that still fits.
+    Only another layout number counts: a client the table does not hold, or
+    one without a layout (a doc of several files is `No file` where one of
+    them is missing), leaves a row as it is.
+    """
+    layouts = {check.client: check.layout for check in clients if check.layout is not None}
+
+    def moved(client: int, layout: int) -> bool:
+        return layouts.get(client, layout) != layout
+
+    kept: list[VersionRow] = []
+    for row in rows:
+        if moved(row.checked, row.layout):
+            continue
+        if moved(row.first, row.layout):
+            fitting = [client for client, layout in layouts.items() if layout == row.layout and row.first < client <= row.checked]
+            row = replace(row, first=min(fitting, default=row.checked))
+        kept.append(row)
+    return tuple(kept)
 
 
 def merge_clients(old: Iterable[ClientCheck], new: Iterable[ClientCheck]) -> tuple[ClientCheck, ...]:

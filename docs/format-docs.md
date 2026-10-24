@@ -45,7 +45,11 @@ A file whose layout changed between clients keeps every known layout. Layout
 1 is the oldest; a new layout takes the next number, and the sections go
 newest first, so the current layout is always the first one. A layout
 older than Layout 1, found later in an older client, becomes Layout 1 and
-the others move up by one; the doc check then rewrites Versions for them.
+the others move up by one; the doc check then rewrites Versions for them:
+`check_docs.py --version all` reads every client again (the layouts
+changed), drops a Sizes row whose
+Checked client now fits another layout and starts a range at the first
+client that still fits its layout.
 
 - The newest layout is written in full and has a `### File Layout`.
 - An older layout lists only the structures that differ from the next newer

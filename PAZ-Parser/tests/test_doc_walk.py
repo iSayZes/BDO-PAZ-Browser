@@ -12,6 +12,7 @@ from format_docs.doc_fit import fit_layouts
 from format_docs.versions import (
     ClientCheck,
     VersionRow,
+    current_rows,
     merge_clients,
     merge_rows,
     read_clients,
@@ -225,6 +226,30 @@ def test_rows_of_other_layouts_are_never_dropped() -> None:
     merged = merge_rows([_version(1, 3401, 90)], [_version(2, 3464, 100)])
 
     assert [row.layout for row in merged] == [2, 1]
+
+
+def test_a_row_whose_checked_client_moved_to_another_layout_is_dropped() -> None:
+    # Layout 1 became Layout 2 when an older Layout 1 was found: the old row still names client 3464.
+    stale = VersionRow(1, 3401, 3464, "test.bss", 90, "2 Row", "8", 86, 4)
+    clients = merge_clients([], [ClientCheck(3464, 2, True), ClientCheck(3401, 1, True)])
+
+    assert current_rows([stale, _version(2, 3464, 100)], clients) == (_version(2, 3464, 100),)
+
+
+def test_a_range_whose_first_client_moved_starts_at_the_first_client_that_still_fits() -> None:
+    row = VersionRow(2, 3356, 3483, "test.bss", 100, "2 Row", "8", 96, 4)
+    clients = merge_clients([], [ClientCheck(3483, 2, True), ClientCheck(3402, 2, True), ClientCheck(3356, 1, True)])
+
+    assert [(kept.first, kept.checked) for kept in current_rows([row], clients)] == [(3402, 3483)]
+
+
+def test_clients_the_table_does_not_hold_or_without_a_layout_leave_a_row_as_it_is() -> None:
+    row = VersionRow(1, 1784, 3002, "test.bss", 100, "2 Row", "8", 96, 4)
+    # A doc of several files: client 1784 misses another file, so the doc reads No file there.
+    clients = merge_clients([], [ClientCheck(3002, 1, True), ClientCheck(1784, None, False), ClientCheck(805, 1, True)])
+
+    assert current_rows([row], ()) == (row,)
+    assert current_rows([row], clients) == (row,)
 
 
 def test_the_versions_block_round_trips_and_names_the_newest_layout_and_later() -> None:

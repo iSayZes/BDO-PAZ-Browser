@@ -262,10 +262,12 @@ walks to its last byte by. Three tables follow:
 | `python check_docs.py --all`                         | Every doc in the layout format                              |
 | `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
 | `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
-| `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/2107/Paz` |
-| `python check_docs.py --all --version all`           | Every test client there, oldest first, then the live client; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
+| `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/<region>/2107/Paz` in whichever region folder (`NAEU`) holds it |
+| `python check_docs.py --all --version all`           | Every test client of every region folder, oldest first, then the live client; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
+| `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on, to resume one that stopped |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
 | `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |
+| `python check_docs.py --all --version 2107 --jobs 4`  | The same check on four worker processes; the default is one per core, and `--jobs 1` checks in one process |
 
 Without `--paz-folder` or `--version` the check reads the PAZ folder last
 opened in the app, the live client, and names it by the number its `.meta` holds. A

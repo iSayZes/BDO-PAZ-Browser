@@ -18,10 +18,11 @@ from tests.framework import (
 )
 
 from _common.string_hash import ascii_key_hash
+from .equip_types import equip_type_name
 from .parser import (
-    CLASS_TYPE_COUNT,
-    EQUIP_TYPE_COUNT,
     FILE_NAME,
+    MAX_CLASS_TYPE_COUNT,
+    MAX_EQUIP_TYPE_COUNT,
     SECTION_CLASS_PACKAGE,
     SECTION_CUTSCENE,
     SECTION_VEHICLE,
@@ -48,16 +49,22 @@ CASE = HandlerCase(
     tests=[
         SchemaTest(
             required_keys=[
-                "class_type", "class_name", "section", "section_name", "equip_type",
+                "class_type", "class_name", "section", "section_name", "equip_type", "equip_type_name",
                 "vehicle_name", "vehicle_name_index", "package", "package_index", "package_hash",
             ]
         ),
-        RangeTest(col="class_type", min_val=0, max_val=CLASS_TYPE_COUNT - 1),
-        RangeTest(col="equip_type", min_val=0, max_val=EQUIP_TYPE_COUNT - 1),
+        RangeTest(col="class_type", min_val=0, max_val=MAX_CLASS_TYPE_COUNT - 1),
+        RangeTest(col="equip_type", min_val=0, max_val=MAX_EQUIP_TYPE_COUNT - 1),
         TargetTest(
             col="package",
             value=_WARRIOR_LONGSWORD,
-            expected={"class_type": _WARRIOR, "class_name": "Warrior", "section": SECTION_WEAPON, "equip_type": _LONGSWORD},
+            expected={
+                "class_type": _WARRIOR,
+                "class_name": "Warrior",
+                "section": SECTION_WEAPON,
+                "equip_type": _LONGSWORD,
+                "equip_type_name": "LongSword",
+            },
         ),
         TargetTest(
             col="package",
@@ -118,54 +125,96 @@ def _folder(package: str) -> str:
     return package.split("/", 2)[1]
 
 
+def test_equip_type_names_come_from_the_enum_and_the_sheet() -> None:
+    assert equip_type_name(_LONGSWORD) == "LongSword"
+    assert equip_type_name(53) == "HuntRifle"
+    assert equip_type_name(63) == "Kriegsmesser"
+    assert equip_type_name(MAX_EQUIP_TYPE_COUNT - 1) == ""
+    assert equip_type_name(None) == ""
+
+
 _U32 = struct.Struct("<I")
 _CELL = struct.Struct("<II")
+_VEHICLE_ROW = struct.Struct("<III")
 _CLASS_PACKAGE_ROW = struct.Struct("<BII")
-_EMPTY_STRING = 0
-_PACKAGE_STRING = 1
-_PACKAGE = "pc/1_phm/test_package"
+_STRINGS = ["", "pc/1_phm/test_package", "Horse", "pc/1_phm/test_horse", "pc/cutscene/test_cutscene"]
+_EMPTY_STRING, _PACKAGE_STRING, _HORSE_STRING, _HORSE_PACKAGE_STRING, _CUTSCENE_STRING = range(len(_STRINGS))
+_LIST_CLASS = 2
 
 
-def _string_table(strings: list[str]) -> bytes:
-    entries = b"".join(bytes([0]) + _U32.pack(len(text)) + text.encode("ascii") for text in strings)
-    return _U32.pack(len(strings)) + entries
+def _cell(index: int) -> bytes:
+    text = _STRINGS[index]
+    return _CELL.pack(index, ascii_key_hash(text) if text else 0)
 
 
-def _file(*, magic: bytes = b"PABR", class_package_count: int = 0) -> bytes:
-    """Every class block empty but Warrior's Longsword cell, then the class package list."""
-    blocks = bytearray()
-    for class_type in range(CLASS_TYPE_COUNT):
-        for equip_type in range(EQUIP_TYPE_COUNT):
-            if (class_type, equip_type) == (_WARRIOR, _LONGSWORD):
-                blocks += _CELL.pack(_PACKAGE_STRING, ascii_key_hash(_PACKAGE))
-            else:
-                blocks += _CELL.pack(_EMPTY_STRING, 0)
-        blocks += _U32.pack(0)
-        blocks += _U32.pack(0) * EQUIP_TYPE_COUNT
-        blocks += _CELL.pack(_EMPTY_STRING, 0)
-    rows = _CLASS_PACKAGE_ROW.pack(6, _PACKAGE_STRING, ascii_key_hash(_PACKAGE))
-    body = magic + bytes(blocks) + _U32.pack(class_package_count) + rows
-    return body + _string_table(["", _PACKAGE]) + _U32.pack(len(body)) + bytes(4)
+def _class_block(class_type: int, equip_type_count: int) -> bytes:
+    """Block 0 holds a Longsword cell, a horse row and a cutscene package; every other block is empty."""
+    is_filled = class_type == _WARRIOR
+    cells = b"".join(
+        _cell(_PACKAGE_STRING if is_filled and equip_type == _LONGSWORD else _EMPTY_STRING)
+        for equip_type in range(equip_type_count)
+    )
+    horse = _VEHICLE_ROW.pack(_HORSE_STRING, _HORSE_PACKAGE_STRING, ascii_key_hash(_STRINGS[_HORSE_PACKAGE_STRING]))
+    vehicles = _U32.pack(1) + horse if is_filled else _U32.pack(0)
+    vehicle_weapons = _U32.pack(0) * equip_type_count
+    cutscene = _cell(_CUTSCENE_STRING if is_filled else _EMPTY_STRING)
+    return cells + vehicles + vehicle_weapons + cutscene
 
 
-def test_empty_cells_get_no_record() -> None:
-    parsed = parse_pcactionpackagename(_file(class_package_count=1))
-    assert [(r["class_type"], r["section"], r["equip_type"], r["package"]) for r in parsed] == [
-        (_WARRIOR, SECTION_WEAPON, _LONGSWORD, _PACKAGE),
-        (6, SECTION_CLASS_PACKAGE, None, _PACKAGE),
+def _file(
+    *,
+    class_type_count: int = 3,
+    equip_type_count: int = 5,
+    class_package_count: int | None = 1,
+    magic: bytes = b"PABR",
+) -> bytes:
+    """The class blocks, then a class package list of one row unless `class_package_count` is None.
+
+    A `class_package_count` other than 1 makes the stored count disagree with the one row.
+    """
+    blocks = b"".join(_class_block(class_type, equip_type_count) for class_type in range(class_type_count))
+    body = magic + blocks
+    if class_package_count is not None:
+        row = _CLASS_PACKAGE_ROW.pack(_LIST_CLASS, _PACKAGE_STRING, ascii_key_hash(_STRINGS[_PACKAGE_STRING]))
+        body += _U32.pack(class_package_count) + row
+    entries = b"".join(bytes([0]) + _U32.pack(len(text)) + text.encode("ascii") for text in _STRINGS)
+    return body + _U32.pack(len(_STRINGS)) + entries + _U32.pack(len(body)) + bytes(4)
+
+
+def _summary(parsed: list[dict]) -> list[tuple]:
+    return [(r["class_type"], r["section"], r["equip_type"], r["vehicle_name"], r["package"]) for r in parsed]
+
+
+@pytest.mark.parametrize("equip_type_count", [2, 5, 9])
+def test_the_equip_type_count_comes_from_the_file(equip_type_count: int) -> None:
+    parsed = parse_pcactionpackagename(_file(equip_type_count=equip_type_count))
+    assert _summary(parsed) == [
+        (_WARRIOR, SECTION_WEAPON, _LONGSWORD, None, _STRINGS[_PACKAGE_STRING]),
+        (_WARRIOR, SECTION_VEHICLE, None, "Horse", _STRINGS[_HORSE_PACKAGE_STRING]),
+        (_WARRIOR, SECTION_CUTSCENE, None, None, _STRINGS[_CUTSCENE_STRING]),
+        (_LIST_CLASS, SECTION_CLASS_PACKAGE, None, None, _STRINGS[_PACKAGE_STRING]),
     ]
 
 
-def test_blocks_short_of_the_string_table_are_rejected() -> None:
-    with pytest.raises(ValueError, match="string table starts"):
-        parse_pcactionpackagename(_file(class_package_count=0))
+def test_a_file_without_the_class_package_list_reads() -> None:
+    parsed = parse_pcactionpackagename(_file(class_package_count=None))
+    assert SECTION_CLASS_PACKAGE not in {r["section"] for r in parsed}
+    assert len(parsed) == 3
 
 
-def test_a_list_past_the_string_table_is_rejected() -> None:
-    with pytest.raises(ValueError, match="runs past"):
+def test_an_empty_class_package_list_reads() -> None:
+    blocks = _file(class_package_count=None)
+    # Same file with a u32 list count of 0 in front of the string table.
+    end = _U32.unpack_from(blocks, len(blocks) - 8)[0]
+    data = blocks[:end] + _U32.pack(0) + blocks[end:-8] + _U32.pack(end + _U32.size) + bytes(4)
+    assert len(parse_pcactionpackagename(data)) == 3
+
+
+def test_a_list_count_that_disagrees_with_its_rows_is_rejected() -> None:
+    with pytest.raises(ValueError, match="fits no class block"):
         parse_pcactionpackagename(_file(class_package_count=2))
 
 
 def test_a_bad_magic_is_rejected() -> None:
     with pytest.raises(ValueError, match="invalid magic"):
-        parse_pcactionpackagename(_file(magic=b"XXXX", class_package_count=1))
+        parse_pcactionpackagename(_file(magic=b"XXXX"))

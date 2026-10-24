@@ -4,6 +4,7 @@
     "className": "Класс",
     "section": "Раздел",
     "equipType": "Тип снаряжения",
+    "equipTypeName": "Название типа снаряжения",
     "vehicleType": "Тип транспорта",
     "package": "Пакет"
   },

@@ -4,6 +4,7 @@
     "className": "Klasse",
     "section": "Bereich",
     "equipType": "Ausrüstungstyp",
+    "equipTypeName": "Name des Ausrüstungstyps",
     "vehicleType": "Fahrzeugtyp",
     "package": "Paket"
   },

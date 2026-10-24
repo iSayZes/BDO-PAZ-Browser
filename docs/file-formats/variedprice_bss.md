@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File              | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------- | ----- | ------- | --------- |
-| 2      | 1127 and later | 3482    | `variedprice.bss` | 940   | 23 Row  | 40        |
+| 2      | 1127 and later | 3483    | `variedprice.bss` | 940   | 23 Row  | 40        |
 | 1      | 1109 to 1122   | 1122    | `variedprice.bss` | 756   | 23 Row  | 32        |
 
 | Layout | File              | Known          | Unknown    |
@@ -29,8 +29,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
+| 3473   | Layout 2 |
 | 3464   | Layout 2 |
 | 3458   | Layout 2 |
 | 3454   | Layout 2 |

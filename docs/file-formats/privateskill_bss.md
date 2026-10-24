@@ -18,7 +18,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File               | Bytes   | Records    | Row bytes |
 | ------ | -------------- | ------- | ------------------ | ------- | ---------- | --------- |
-| 2      | 1267 and later | 3482    | `privateskill.bss` | 183,552 | 15,294 Row | 12        |
+| 2      | 1267 and later | 3483    | `privateskill.bss` | 183,552 | 15,294 Row | 12        |
 | 1      | 1194 to 1261   | 1261    | `privateskill.bss` | 302,892 | 8,413 Row  | 36        |
 
 | Layout | File               | Known              | Unknown    |
@@ -30,6 +30,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

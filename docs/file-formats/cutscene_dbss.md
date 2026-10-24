@@ -18,8 +18,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records           | Row bytes                  |
 | ------ | -------------- | ------- | --------------------- | ----- | ----------------- | -------------------------- |
-| 1      | 1346 and later | 3482    | `cutscene.dbss`       | 8,882 | 68 Row, 68 Record | 100 to 160, 127 on average |
-| 1      | 1346 and later | 3482    | `cutsceneoffset.dbss` | 820   | 68 Offset Row     | 12                         |
+| 1      | 1346 and later | 3483    | `cutscene.dbss`       | 8,882 | 68 Row, 68 Record | 100 to 160, 127 on average |
+| 1      | 1346 and later | 3483    | `cutsceneoffset.dbss` | 820   | 68 Offset Row     | 12                         |
 
 | Layout | File                  | Known           | Unknown      |
 | ------ | --------------------- | --------------- | ------------ |
@@ -30,6 +30,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3483   | Layout 1             |
 | 3482   | Layout 1             |
 | 3474   | Layout 1             |
 | 3473   | Layout 1             |

@@ -20,7 +20,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                      | Bytes | Records         | Row bytes |
 | ------ | -------------- | ------- | ----------------------------------------- | ----- | --------------- | --------- |
-| 1      | 3186 and later | 3482    | `olviaacademypassstaticstatusmanager.bss` | 772   | 90 Step, 9 Pass | 8         |
+| 1      | 3186 and later | 3483    | `olviaacademypassstaticstatusmanager.bss` | 772   | 90 Step, 9 Pass | 8         |
 
 | Layout | File                                      | Known          | Unknown    |
 | ------ | ----------------------------------------- | -------------- | ---------- |
@@ -30,6 +30,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
 | 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3473   | Layout 1 |

@@ -18,7 +18,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes | Records                                   | Row bytes |
 | ------ | -------------- | ------- | ------------------------- | ----- | ----------------------------------------- | --------- |
-| 2      | 1725 and later | 3482    | `tutorial_startevent.bss` | 1,770 | 34 Highlight, 85 Selected Control, 17 Row | 8         |
+| 2      | 1725 and later | 3483    | `tutorial_startevent.bss` | 1,770 | 34 Highlight, 85 Selected Control, 17 Row | 8         |
 | 1      | 1717           | 1717    | `tutorial_startevent.bss` | 851   | 28 Highlight, 14 Row                      | 21        |
 
 | Layout | File                      | Known            | Unknown    |
@@ -30,6 +30,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

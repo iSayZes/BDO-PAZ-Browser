@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ------- | --------- |
-| 1      | 1109 and later | 3482    | `familypointstat.bss` | 450   | 10 Row  | 43        |
+| 1      | 1109 and later | 3483    | `familypointstat.bss` | 450   | 10 Row  | 43        |
 
 | Layout | File                  | Known         | Unknown     |
 | ------ | --------------------- | ------------- | ----------- |
@@ -25,8 +25,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
 | 3482   | Layout 1 |
 | 3474   | Layout 1 |
+| 3473   | Layout 1 |
 | 3464   | Layout 1 |
 | 3458   | Layout 1 |
 | 3454   | Layout 1 |

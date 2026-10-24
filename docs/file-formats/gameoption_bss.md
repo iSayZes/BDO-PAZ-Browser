@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes   | Records        | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ------- | -------------- | --------- |
-| 2      | 3464 and later | 3482    | `gameoption.bss` | 123,989 | 1 String Table | 1,546     |
+| 2      | 3464 and later | 3483    | `gameoption.bss` | 123,989 | 1 String Table | 1,546     |
 | 1      | 1784           | 1784    | `gameoption.bss` | 329,469 | 1 String Table | 19,847    |
 
 | Layout | File             | Known           | Unknown           |
@@ -29,6 +29,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3483   | Layout 2             |
 | 3482   | Layout 2             |
 | 3474   | Layout 2             |
 | 3473   | Layout 2             |

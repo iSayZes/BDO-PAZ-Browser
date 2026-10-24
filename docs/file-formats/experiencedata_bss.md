@@ -21,7 +21,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients       | Checked | File                 | Bytes   | Records   | Row bytes                 |
 | ------ | ------------- | ------- | -------------------- | ------- | --------- | ------------------------- |
-| 2      | 805 and later | 3482    | `experiencedata.bss` | 247,896 | 1,608 Row | 17                        |
+| 2      | 805 and later | 3483    | `experiencedata.bss` | 247,896 | 1,608 Row | 17                        |
 | 1      | 435 to 794    | 794     | `experiencedata.bss` | 88,330  | 502 Row   | 95 to 503, 176 on average |
 
 | Layout | File                 | Known              | Unknown    |
@@ -33,6 +33,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

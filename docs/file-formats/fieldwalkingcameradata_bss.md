@@ -18,7 +18,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                         | Bytes | Records         | Row bytes |
 | ------ | -------------- | ------- | ---------------------------- | ----- | --------------- | --------- |
-| 1      | 2171 and later | 3482    | `fieldwalkingcameradata.bss` | 1,848 | 43 Point, 4 Row | 38        |
+| 1      | 2171 and later | 3483    | `fieldwalkingcameradata.bss` | 1,848 | 43 Point, 4 Row | 38        |
 
 | Layout | File                         | Known           | Unknown     |
 | ------ | ---------------------------- | --------------- | ----------- |
@@ -28,6 +28,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
 | 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3473   | Layout 1 |

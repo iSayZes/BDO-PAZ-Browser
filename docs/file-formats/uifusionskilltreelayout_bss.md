@@ -18,7 +18,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients       | Checked | File                          | Bytes | Records | Row bytes |
 | ------ | ------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 2      | 805 and later | 3482    | `uifusionskilltreelayout.bss` | 64    | 10 Cell | 4         |
+| 2      | 805 and later | 3483    | `uifusionskilltreelayout.bss` | 64    | 10 Cell | 4         |
 | 1      | 485 to 794    | 794     | `uifusionskilltreelayout.bss` | 32    | 6 Cell  | 4         |
 
 | Layout | File                          | Known         | Unknown    |
@@ -30,6 +30,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

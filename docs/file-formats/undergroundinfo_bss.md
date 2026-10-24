@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                  | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | --------------------- | ----- | ------- | --------- |
-| 3      | 2726 and later | 3482    | `undergroundinfo.bss` | 368   | 29 Row  | 12        |
+| 3      | 2726 and later | 3483    | `undergroundinfo.bss` | 368   | 29 Row  | 12        |
 | 2      | 805 to 2717    | 2717    | `undergroundinfo.bss` | 310   | 29 Row  | 10        |
 | 1      | 435 to 794     | 794     | `undergroundinfo.bss` | 284   | 28 Row  | 10        |
 
@@ -31,8 +31,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 3 |
 | 3482   | Layout 3 |
 | 3474   | Layout 3 |
+| 3473   | Layout 3 |
 | 3464   | Layout 3 |
 | 3458   | Layout 3 |
 | 3454   | Layout 3 |

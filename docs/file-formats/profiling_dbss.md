@@ -17,8 +17,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes  | Records         | Row bytes                   |
 | ------ | -------------- | ------- | ---------------------- | ------ | --------------- | --------------------------- |
-| 1      | 1280 and later | 3482    | `profiling.dbss`       | 23,948 | 75 Info, 27 Row | 66 to 1,766, 316 on average |
-| 1      | 1280 and later | 3482    | `profilingoffset.dbss` | 274    | 27 Offset Row   | 10                          |
+| 1      | 1280 and later | 3483    | `profiling.dbss`       | 23,948 | 75 Info, 27 Row | 66 to 1,766, 316 on average |
+| 1      | 1280 and later | 3483    | `profilingoffset.dbss` | 274    | 27 Offset Row   | 10                          |
 
 | Layout | File                   | Known            | Unknown      |
 | ------ | ---------------------- | ---------------- | ------------ |
@@ -29,6 +29,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3483   | Layout 1             |
 | 3482   | Layout 1             |
 | 3474   | Layout 1             |
 | 3473   | Layout 1             |

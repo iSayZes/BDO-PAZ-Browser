@@ -24,7 +24,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                          | Bytes      | Records                                                                     | Row bytes |
 | ------ | -------------- | ------- | ----------------------------- | ---------- | --------------------------------------------------------------------------- | --------- |
-| 1      | 3473 and later | 3483    | `itemenchantbackendtest.dbss` | 76,122,866 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
+| 1      | 3435 and later | 3483    | `itemenchantbackendtest.dbss` | 76,122,866 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
 
 | Layout | File                          | Known                | Unknown              |
 | ------ | ----------------------------- | -------------------- | -------------------- |
@@ -38,7 +38,154 @@ Every client the doc check read, and the layout its files fit.
 | 3482   | Layout 1             |
 | 3474   | Layout 1             |
 | 3473   | Layout 1             |
+| 3464   | Layout 1             |
+| 3458   | Layout 1             |
+| 3454   | Layout 1             |
+| 3444   | Layout 1             |
+| 3435   | Layout 1             |
+| 3426   | No documented layout |
+| 3418   | No documented layout |
+| 3412   | No documented layout |
+| 3402   | No documented layout |
+| 3396   | No documented layout |
+| 3387   | No documented layout |
+| 3381   | No documented layout |
+| 3373   | No documented layout |
+| 3364   | No documented layout |
+| 3356   | No documented layout |
+| 3349   | No documented layout |
+| 3342   | No documented layout |
+| 3335   | No documented layout |
+| 3326   | No documented layout |
+| 3321   | No documented layout |
+| 3314   | No documented layout |
+| 3303   | No documented layout |
+| 3302   | No documented layout |
+| 3293   | No documented layout |
+| 3283   | No documented layout |
+| 3275   | No documented layout |
+| 3267   | No documented layout |
+| 3258   | No documented layout |
 | 3251   | No documented layout |
+| 3242   | No documented layout |
+| 3235   | No documented layout |
+| 3229   | No documented layout |
+| 3212   | No documented layout |
+| 3203   | No documented layout |
+| 3193   | No documented layout |
+| 3186   | No documented layout |
+| 3177   | No documented layout |
+| 3169   | No documented layout |
+| 3158   | No documented layout |
+| 3151   | No documented layout |
+| 3144   | No documented layout |
+| 3133   | No documented layout |
+| 3125   | No documented layout |
+| 3118   | No documented layout |
+| 3111   | No documented layout |
+| 3103   | No documented layout |
+| 3095   | No documented layout |
+| 3086   | No documented layout |
+| 3072   | No documented layout |
+| 3062   | No documented layout |
+| 3052   | No documented layout |
+| 3045   | No documented layout |
+| 3037   | No documented layout |
+| 3030   | No documented layout |
+| 3021   | No documented layout |
+| 3012   | No documented layout |
+| 3002   | No documented layout |
+| 2995   | No documented layout |
+| 2987   | No documented layout |
+| 2978   | No documented layout |
+| 2970   | No documented layout |
+| 2959   | No documented layout |
+| 2951   | No documented layout |
+| 2942   | No documented layout |
+| 2935   | No documented layout |
+| 2932   | No documented layout |
+| 2923   | No documented layout |
+| 2919   | No documented layout |
+| 2907   | No documented layout |
+| 2900   | No documented layout |
+| 2891   | No documented layout |
+| 2882   | No documented layout |
+| 2872   | No documented layout |
+| 2863   | No documented layout |
+| 2855   | No documented layout |
+| 2849   | No documented layout |
+| 2844   | No documented layout |
+| 2834   | No documented layout |
+| 2825   | No documented layout |
+| 2819   | No documented layout |
+| 2811   | No documented layout |
+| 2803   | No documented layout |
+| 2794   | No documented layout |
+| 2783   | No documented layout |
+| 2774   | No documented layout |
+| 2765   | No documented layout |
+| 2756   | No documented layout |
+| 2750   | No documented layout |
+| 2743   | No documented layout |
+| 2736   | No documented layout |
+| 2726   | No documented layout |
+| 2717   | No documented layout |
+| 2709   | No documented layout |
+| 2703   | No documented layout |
+| 2695   | No documented layout |
+| 2684   | No documented layout |
+| 2672   | No documented layout |
+| 2665   | No documented layout |
+| 2657   | No documented layout |
+| 2649   | No documented layout |
+| 2644   | No documented layout |
+| 2637   | No documented layout |
+| 2629   | No documented layout |
+| 2619   | No documented layout |
+| 2612   | No documented layout |
+| 2606   | No documented layout |
+| 2602   | No documented layout |
+| 2601   | No documented layout |
+| 2592   | No documented layout |
+| 2583   | No documented layout |
+| 2575   | No documented layout |
+| 2567   | No documented layout |
+| 2560   | No documented layout |
+| 2553   | No documented layout |
+| 2545   | No documented layout |
+| 2538   | No documented layout |
+| 2529   | No documented layout |
+| 2519   | No documented layout |
+| 2513   | No documented layout |
+| 2510   | No documented layout |
+| 2507   | No documented layout |
+| 2503   | No documented layout |
+| 2498   | No documented layout |
+| 2492   | No documented layout |
+| 2487   | No documented layout |
+| 2480   | No documented layout |
+| 2474   | No documented layout |
+| 2468   | No documented layout |
+| 2460   | No documented layout |
+| 2453   | No documented layout |
+| 2444   | No documented layout |
+| 2438   | No documented layout |
+| 2434   | No documented layout |
+| 2429   | No documented layout |
+| 2421   | No documented layout |
+| 2414   | No documented layout |
+| 2407   | No documented layout |
+| 2401   | No documented layout |
+| 2397   | No documented layout |
+| 2393   | No documented layout |
+| 2384   | No documented layout |
+| 2378   | No documented layout |
+| 2372   | No documented layout |
+| 2358   | No documented layout |
+| 2352   | No documented layout |
+| 2347   | No documented layout |
+| 2343   | No documented layout |
+| 2335   | No documented layout |
 | 2327   | No documented layout |
 | 2324   | No documented layout |
 | 2319   | No documented layout |

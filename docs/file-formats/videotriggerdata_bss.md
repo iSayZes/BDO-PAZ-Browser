@@ -20,7 +20,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------------- | ----- | ------- | --------- |
-| 2      | 3458 and later | 3482    | `videotriggerdata.bss` | 1,676 | 6 Row   | 45        |
+| 2      | 3458 and later | 3483    | `videotriggerdata.bss` | 1,676 | 6 Row   | 45        |
 | 1      | 3454           | 3454    | `videotriggerdata.bss` | 1,507 | 5 Row   | 44        |
 
 | Layout | File                   | Known            | Unknown    |
@@ -32,6 +32,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

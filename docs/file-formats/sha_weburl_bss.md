@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ----- | -------------- | --------- |
-| 4      | 1485 and later | 3482    | `sha_weburl.bss` | 438   | 1 String Table | 398       |
+| 4      | 1485 and later | 3483    | `sha_weburl.bss` | 438   | 1 String Table | 398       |
 | 3      | 1481           | 1481    | `sha_weburl.bss` | 391   | 1 String Table | 355       |
 | 2      | 1358 to 1474   | 1474    | `sha_weburl.bss` | 329   | 1 String Table | 297       |
 | 1      | 1355           | 1355    | `sha_weburl.bss` | 92    | 1 String Table | 76        |
@@ -31,8 +31,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 4 |
 | 3482   | Layout 4 |
 | 3474   | Layout 4 |
+| 3473   | Layout 4 |
 | 3464   | Layout 4 |
 | 3458   | Layout 4 |
 | 3454   | Layout 4 |

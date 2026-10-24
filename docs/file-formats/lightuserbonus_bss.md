@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients       | Checked | File                 | Bytes | Records   | Row bytes |
 | ------ | ------------- | ------- | -------------------- | ----- | --------- | --------- |
-| 3      | 805 and later | 3482    | `lightuserbonus.bss` | 146   | 10 Reward | 12        |
+| 3      | 805 and later | 3483    | `lightuserbonus.bss` | 146   | 10 Reward | 12        |
 | 2      | 526 to 794    | 794     | `lightuserbonus.bss` | 130   | 10 Reward | 12        |
 | 1      | 435 to 521    | 521     | `lightuserbonus.bss` | 132   | 10 Reward | 12        |
 
@@ -30,8 +30,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 3 |
 | 3482   | Layout 3 |
 | 3474   | Layout 3 |
+| 3473   | Layout 3 |
 | 3464   | Layout 3 |
 | 3458   | Layout 3 |
 | 3454   | Layout 3 |

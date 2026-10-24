@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File           | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | -------------- | ----- | ------- | --------- |
-| 3      | 1886 and later | 3482    | `bgmstate.bss` | 353   | 12 Row  | 12        |
+| 3      | 1886 and later | 3483    | `bgmstate.bss` | 353   | 12 Row  | 12        |
 | 2      | 1267 to 1881   | 1881    | `bgmstate.bss` | 358   | 12 Row  | 16        |
 | 1      | 1250 to 1261   | 1261    | `bgmstate.bss` | 478   | 24 Row  | 13        |
 
@@ -29,8 +29,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 3 |
 | 3482   | Layout 3 |
 | 3474   | Layout 3 |
+| 3473   | Layout 3 |
 | 3464   | Layout 3 |
 | 3458   | Layout 3 |
 | 3454   | Layout 3 |

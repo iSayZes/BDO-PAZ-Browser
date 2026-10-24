@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                    | Bytes  | Records | Row bytes |
 | ------ | -------------- | ------- | ----------------------- | ------ | ------- | --------- |
-| 2      | 2011 and later | 3482    | `sequencedatatable.bss` | 63,181 | 185 Row | 27        |
+| 2      | 2011 and later | 3483    | `sequencedatatable.bss` | 63,181 | 185 Row | 27        |
 | 1      | 1927 to 2005   | 2005    | `sequencedatatable.bss` | 38,651 | 76 Row  | 26        |
 
 | Layout | File                    | Known            | Unknown      |
@@ -31,8 +31,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
+| 3473   | Layout 2 |
 | 3464   | Layout 2 |
 | 3458   | Layout 2 |
 | 3454   | Layout 2 |

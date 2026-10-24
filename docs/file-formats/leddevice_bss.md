@@ -17,7 +17,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File            | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | --------------- | ----- | ------- | --------- |
-| 4      | 1335 and later | 3482    | `leddevice.bss` | 3,028 | 80 Row  | 16        |
+| 4      | 1335 and later | 3483    | `leddevice.bss` | 3,028 | 80 Row  | 16        |
 | 3      | 1321 to 1333   | 1333    | `leddevice.bss` | 2,868 | 80 Row  | 14        |
 | 2      | 1156 to 1319   | 1319    | `leddevice.bss` | 2,708 | 80 Row  | 12        |
 | 1      | 1137 to 1149   | 1149    | `leddevice.bss` | 470   | 16 Row  | 9         |
@@ -33,8 +33,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 4 |
 | 3482   | Layout 4 |
 | 3474   | Layout 4 |
+| 3473   | Layout 4 |
 | 3464   | Layout 4 |
 | 3458   | Layout 4 |
 | 3454   | Layout 4 |

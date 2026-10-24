@@ -21,7 +21,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes   | Records                                                   | Row bytes                 |
 | ------ | -------------- | ------- | ------------------------- | ------- | --------------------------------------------------------- | ------------------------- |
-| 4      | 2923 and later | 3482    | `nakmessagerenewelss.bss` | 170,779 | 612 Background, 1,224 Text, 306 Row, 99 Effect, 152 Sound | 33 to 354, 69 on average  |
+| 4      | 2923 and later | 3483    | `nakmessagerenewelss.bss` | 170,779 | 612 Background, 1,224 Text, 306 Row, 99 Effect, 152 Sound | 33 to 354, 69 on average  |
 | 3      | 3381 to 3396   | 3396    | `nakmessagerenewelss.bss` | 144,940 | 602 Background, 602 Text, 301 Row, 97 Effect, 150 Sound   | 85 to 138, 102 on average |
 | 2      | 2987 to 3373   | 3373    | `nakmessagerenewelss.bss` | 140,183 | 590 Background, 590 Text, 295 Row, 87 Effect, 144 Sound   | 85 to 138, 102 on average |
 | 1      | 2970 to 2978   | 2978    | `nakmessagerenewelss.bss` | 93,443  | 582 Background, 582 Text, 291 Row, 83 Effect, 141 Sound   | 20 to 73, 37 on average   |
@@ -37,8 +37,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 4 |
 | 3482   | Layout 4 |
 | 3474   | Layout 4 |
+| 3473   | Layout 4 |
 | 3464   | Layout 4 |
 | 3458   | Layout 4 |
 | 3454   | Layout 4 |

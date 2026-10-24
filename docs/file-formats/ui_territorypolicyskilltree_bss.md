@@ -30,11 +30,11 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                                       | Bytes | Records  | Row bytes |
 | ------ | -------------- | ------- | ------------------------------------------ | ----- | -------- | --------- |
-| 2      | 1584 and later | 3482    | `ui_territorypolicyskilltree_balenos.bss`  | 2,124 | 525 Cell | 4         |
-| 2      | 1584 and later | 3482    | `ui_territorypolicyskilltree_calpheon.bss` | 2,796 | 693 Cell | 4         |
-| 2      | 1584 and later | 3482    | `ui_territorypolicyskilltree_media.bss`    | 2,628 | 651 Cell | 4         |
-| 2      | 1584 and later | 3482    | `ui_territorypolicyskilltree_serendia.bss` | 2,796 | 693 Cell | 4         |
-| 2      | 1584 and later | 3482    | `ui_territorypolicyskilltree_valencia.bss` | 2,628 | 651 Cell | 4         |
+| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_balenos.bss`  | 2,124 | 525 Cell | 4         |
+| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_calpheon.bss` | 2,796 | 693 Cell | 4         |
+| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_media.bss`    | 2,628 | 651 Cell | 4         |
+| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_serendia.bss` | 2,796 | 693 Cell | 4         |
+| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_valencia.bss` | 2,628 | 651 Cell | 4         |
 
 | Layout | File                                       | Known            | Unknown    |
 | ------ | ------------------------------------------ | ---------------- | ---------- |
@@ -48,6 +48,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

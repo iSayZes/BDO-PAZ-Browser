@@ -16,7 +16,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
 | ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
-| 2      | 1886 and later | 3482    | `bgmstatesa.bss` | 1,228 | 16 Row  | 14        |
+| 2      | 1886 and later | 3483    | `bgmstatesa.bss` | 1,228 | 16 Row  | 14        |
 | 1      | 1267 to 1881   | 1881    | `bgmstatesa.bss` | 498   | 7 Row   | 18        |
 
 | Layout | File             | Known           | Unknown     |
@@ -28,8 +28,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
+| 3473   | Layout 2 |
 | 3464   | Layout 2 |
 | 3458   | Layout 2 |
 | 3454   | Layout 2 |

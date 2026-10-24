@@ -15,7 +15,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients       | Checked | File                         | Bytes  | Records | Row bytes |
 | ------ | ------------- | ------- | ---------------------------- | ------ | ------- | --------- |
-| 2      | 805 and later | 3482    | `skillawakeningability2.bss` | 83,648 | 909 Row | 92        |
+| 2      | 805 and later | 3483    | `skillawakeningability2.bss` | 83,648 | 909 Row | 92        |
 | 1      | 435 to 794    | 794     | `skillawakeningability2.bss` | 14,044 | 390 Row | 36        |
 
 | Layout | File                         | Known             | Unknown    |
@@ -27,6 +27,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

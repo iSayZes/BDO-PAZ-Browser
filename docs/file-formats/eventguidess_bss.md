@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File               | Bytes  | Records | Row bytes                  |
 | ------ | -------------- | ------- | ------------------ | ------ | ------- | -------------------------- |
-| 2      | 3012 and later | 3482    | `eventguidess.bss` | 77,912 | 162 Row | 375 to 623, 481 on average |
+| 2      | 3012 and later | 3483    | `eventguidess.bss` | 77,912 | 162 Row | 375 to 623, 481 on average |
 | 1      | 3002           | 3002    | `eventguidess.bss` | 6,579  | 15 Row  | 388 to 504, 438 on average |
 
 | Layout | File               | Known             | Unknown    |
@@ -31,6 +31,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
 | 3473   | Layout 2 |

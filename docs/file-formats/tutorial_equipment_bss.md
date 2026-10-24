@@ -22,8 +22,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                             | Bytes | Records                     | Row bytes |
 | ------ | -------------- | ------- | -------------------------------- | ----- | --------------------------- | --------- |
-| 1      | 1866 and later | 3482    | `cutscenetutorial_equipment.bss` | 9,356 | 352 Class Equipment, 11 Row | 25        |
-| 1      | 2401 and later | 3482    | `sequencetutorial_equipment.bss` | 3,389 | 128 Class Equipment, 4 Row  | 25        |
+| 1      | 1866 and later | 3483    | `cutscenetutorial_equipment.bss` | 9,356 | 352 Class Equipment, 11 Row | 25        |
+| 1      | 2401 and later | 3483    | `sequencetutorial_equipment.bss` | 3,389 | 128 Class Equipment, 4 Row  | 25        |
 
 | Layout | File                             | Known            | Unknown    |
 | ------ | -------------------------------- | ---------------- | ---------- |
@@ -34,8 +34,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
 | 3482   | Layout 1 |
 | 3474   | Layout 1 |
+| 3473   | Layout 1 |
 | 3464   | Layout 1 |
 | 3458   | Layout 1 |
 | 3454   | Layout 1 |

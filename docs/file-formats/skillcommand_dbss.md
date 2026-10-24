@@ -20,8 +20,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes   | Records        | Row bytes                  |
 | ------ | -------------- | ------- | ------------------------- | ------- | -------------- | -------------------------- |
-| 4      | 1950 and later | 3482    | `skillcommand.dbss`       | 211,258 | 626 Row        | 187 to 705, 337 on average |
-| 4      | 1950 and later | 3482    | `skillcommandoffset.dbss` | 6,264   | 626 Offset Row | 10                         |
+| 4      | 1950 and later | 3483    | `skillcommand.dbss`       | 211,258 | 626 Row        | 187 to 705, 337 on average |
+| 4      | 1950 and later | 3483    | `skillcommandoffset.dbss` | 6,264   | 626 Offset Row | 10                         |
 | 3      | 1559 to 1945   | 1945    | `skillcommand.dbss`       | 118,968 | 421 Row        | 186 to 546, 283 on average |
 | 3      | 1559 to 1945   | 1945    | `skillcommandoffset.dbss` | 4,214   | 421 Offset Row | 10                         |
 | 2      | 1346 to 1554   | 1554    | `skillcommand.dbss`       | 70,914  | 349 Row        | 176 to 280, 203 on average |
@@ -44,8 +44,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 4 |
 | 3482   | Layout 4 |
 | 3474   | Layout 4 |
+| 3473   | Layout 4 |
 | 3464   | Layout 4 |
 | 3458   | Layout 4 |
 | 3454   | Layout 4 |

@@ -19,7 +19,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File         | Bytes | Records           | Row bytes              |
 | ------ | -------------- | ------- | ------------ | ----- | ----------------- | ---------------------- |
-| 2      | 1358 and later | 3482    | `weburl.bss` | 1,236 | 32 Insert, 17 Url | 5                      |
+| 2      | 1358 and later | 3483    | `weburl.bss` | 1,236 | 32 Insert, 17 Url | 5                      |
 | 1      | 1309 to 1355   | 1355    | `weburl.bss` | 255   | 4 Insert, 8 Url   | 8 to 18, 10 on average |
 
 | Layout | File         | Known           | Unknown    |
@@ -31,8 +31,10 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 2 |
 | 3482   | Layout 2 |
 | 3474   | Layout 2 |
+| 3473   | Layout 2 |
 | 3464   | Layout 2 |
 | 3458   | Layout 2 |
 | 3454   | Layout 2 |

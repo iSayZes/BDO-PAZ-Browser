@@ -22,7 +22,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                      | Bytes   | Records   | Row bytes               |
 | ------ | -------------- | ------- | ------------------------- | ------- | --------- | ----------------------- |
-| 4      | 2156 and later | 3482    | `sequencetriggerdata.bss` | 390,727 | 1,101 Row | 84 to 86, 84 on average |
+| 4      | 2156 and later | 3483    | `sequencetriggerdata.bss` | 390,727 | 1,101 Row | 84 to 86, 84 on average |
 | 3      | 3242           | 3242    | `sequencetriggerdata.bss` | 264,735 | 731 Row   | 85                      |
 | 2      | 3111 to 3212   | 3212    | `sequencetriggerdata.bss` | 261,790 | 727 Row   | 83                      |
 | 1      | 2703 to 3103   | 3103    | `sequencetriggerdata.bss` | 249,445 | 705 Row   | 75                      |
@@ -38,6 +38,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               |
 | ------ | -------------------- |
+| 3483   | Layout 4             |
 | 3482   | Layout 4             |
 | 3474   | Layout 4             |
 | 3473   | Layout 4             |

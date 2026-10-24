@@ -22,7 +22,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | Clients        | Checked | File                           | Bytes  | Records                                                                           | Row bytes               |
 | ------ | -------------- | ------- | ------------------------------ | ------ | --------------------------------------------------------------------------------- | ----------------------- |
-| 1      | 3186 and later | 3482    | `olviaacademycurriculumss.bss` | 17,166 | 142 Subject Quest, 11 Subject, 2 Curriculum, 9 Preview, 10 Reward Group, 2 Reward | 46 to 49, 47 on average |
+| 1      | 3186 and later | 3483    | `olviaacademycurriculumss.bss` | 17,166 | 142 Subject Quest, 11 Subject, 2 Curriculum, 9 Preview, 10 Reward Group, 2 Reward | 46 to 49, 47 on average |
 
 | Layout | File                           | Known             | Unknown    |
 | ------ | ------------------------------ | ----------------- | ---------- |
@@ -32,6 +32,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   |
 | ------ | -------- |
+| 3483   | Layout 1 |
 | 3482   | Layout 1 |
 | 3474   | Layout 1 |
 | 3473   | Layout 1 |

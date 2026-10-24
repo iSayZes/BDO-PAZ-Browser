@@ -508,10 +508,19 @@ Every client the doc check read, and the layout its files fit.
 
 ## Companion Files
 
-None. The handler names each class with its LOC type 21 name and each
-item with its LOC type 0 name from `languagedata_*.loc` when it is
-loaded, else the Korean item name. The file name stays a name: the
-`.pas` cutscenes and the `sequence/` files have no handler.
+| File                      | Required | Role                                                                                                         |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `sequencetriggerdata.bss` | Optional | For `sequencetutorial_equipment.bss`: the sequence folder and file name by hash ([format](sequencetriggerdata_bss.md)) |
+| `languagedata_*.loc`      | Optional | Class names (type `21`) and item names (type `0`), else the Korean item name                                 |
+
+`sequencetutorial_equipment.bss` shows a Sequence File column next to
+the stored name: the folder and file name of the `sequencetriggerdata.bss`
+row with the same `file_name_hash`, joined with `/`
+(`IllezraTutorial/CS_Tutorial_Illezra_00` for `CS_Tutorial_Illezra_00.pas`).
+A hash the trigger table does not hold, or a trigger table the handler
+cannot read, leaves the column empty. Cutscenes have no trigger row, so
+`cutscenetutorial_equipment.bss` reads no companion. The names stay
+names: the `.pas` cutscenes and the `sequence/` files have no handler.
 
 All multi-byte values are little-endian.
 
@@ -581,9 +590,16 @@ prefix.
   class type `2` (Sage): no weapons, the armor `830046` on all 8 and the
   helmet `830049` on 5. Neither item has a LOC name; the item table names
   them 개발용 갑옷 and 개발용 투구 (development armor, development helmet).
+- On client 3482 all 4 `sequencetutorial_equipment.bss` rows key a
+  `sequencetriggerdata.bss` sequence of the same name
+  (`IllezraTutorial/CS_Tutorial_Illezra_00`, `IllezraTutorial/CS_Tutorial_Illezra_01`,
+  `OVAC/CS_OVAC_03_Admission`, `OVAC/CS_OVAC_04_Graduation`). The stored
+  name ends in `.pas` although the sequence file under `sequence/` is a
+  `.paseqfe`.
 - The `sequence_skill.bss` and `cutscene_skill.bss` rows key the same
-  files by `file_name_hash` alone, and their handler takes the file name
-  from these tables.
+  files by `file_name_hash` alone. Their handler takes the cutscene names
+  from `cutscenetutorial_equipment.bss` and the sequence names from
+  `sequencetriggerdata.bss`.
 
 ## Open Questions
 

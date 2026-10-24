@@ -1,6 +1,7 @@
 {
   "columns": {
     "cutsceneFile": "Cutscene File",
+    "sequenceFile": "Sequence File",
     "classType": "Class Type",
     "className": "Class",
     "mainWeapon": "Main Weapon",

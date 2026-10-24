@@ -714,8 +714,9 @@ placed by that order alone.
   `_bss/sequence_scripts/reader.py`). On client 3482 the 2 rows of
   [`sequence_skill.bss`](sequence_skill_bss.md) and the 4 of
   [`sequencetutorial_equipment.bss`](tutorial_equipment_bss.md) all key a
-  sequence of this file; none of the 1,101 file names is a
-  `sequencedatatable.bss` cutscene.
+  sequence of this file, and their handlers show the sequence path from
+  here (`_bss/sequencetriggerdata/lookup.py`); none of the 1,101 file names
+  is a `sequencedatatable.bss` cutscene.
 - `folder` writes both separators: `PEDU/EdaniaSub` (3 rows) and
   `PEDU\EdaniaSub` (4 rows) are one folder.
 - On client 3482 the rows cover 268 regions and 75 contents groups; the

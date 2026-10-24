@@ -1,6 +1,7 @@
 {
   "columns": {
     "cutsceneFile": "Fichier de cinématique",
+    "sequenceFile": "Fichier de séquence",
     "classType": "Type de classe",
     "className": "Classe",
     "mainWeapon": "Arme principale",

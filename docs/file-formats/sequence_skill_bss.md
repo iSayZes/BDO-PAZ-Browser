@@ -9,7 +9,7 @@ Two files share the format:
 
 | File                 | Rows name                                         |
 | -------------------- | ------------------------------------------------- |
-| `sequence_skill.bss` | Sequences under `sequence/` (`CS_Tutorial_Illezra_00`) |
+| `sequence_skill.bss` | Sequences under `sequence/` (`IllezraTutorial/CS_Tutorial_Illezra_00`) |
 | `cutscene_skill.bss` | Cutscenes under `character/cutscene/` (`CS_Tutorial_00_Illezra_0008`) |
 
 ## Versions
@@ -506,13 +506,13 @@ Every client the doc check read, and the layout its files fit.
 
 ## Companion Files
 
-| File                             | Required | Role                                                                    |
-| -------------------------------- | -------- | ----------------------------------------------------------------------- |
-| `sequencetutorial_equipment.bss` | Optional | For `sequence_skill.bss`: file names by hash ([format](tutorial_equipment_bss.md)) |
-| `cutscenetutorial_equipment.bss` | Optional | For `cutscene_skill.bss`: file names by hash                            |
-| `languagedata_en.loc`            | Optional | Class names (type `21`) and skill names (type `10`)                     |
+| File                             | Required | Role                                                                                              |
+| -------------------------------- | -------- | ------------------------------------------------------------------------------------------------- |
+| `sequencetriggerdata.bss`        | Optional | For `sequence_skill.bss`: sequence folder and file name by hash ([format](sequencetriggerdata_bss.md)) |
+| `cutscenetutorial_equipment.bss` | Optional | For `cutscene_skill.bss`: cutscene file names by hash ([format](tutorial_equipment_bss.md))       |
+| `languagedata_en.loc`            | Optional | Class names (type `21`) and skill names (type `10`)                                               |
 
-A hash the equipment table does not hold shows without a name.
+A hash the companion does not hold shows without a name.
 
 All multi-byte values are little-endian.
 
@@ -554,18 +554,31 @@ All multi-byte values are little-endian.
 
 ## File Names
 
-The rows of client 3482 and the names their hashes match. The names were
-found by hashing the `character/cutscene/` and `sequence/` file names of
-the PAZ index, which are lower case, with the case the other tables of
-the family use (`CS_Tutorial_00_IllezraCH_0008`).
+The rows of client 3482 and the names their hashes match. Every
+`sequence_skill.bss` hash is the `file_name_hash` of a
+`sequencetriggerdata.bss` row, which holds the sequence's folder and file
+name; the handler joins them with `/`, as the Sequence File column of
+that table does. A `cutscene_skill.bss` hash has no trigger row. One is
+in `cutscenetutorial_equipment.bss`; the other two match no table and
+were found by hashing the `character/cutscene/` file names of the PAZ
+index, which are lower case, with the case the other tables of the family
+use (`CS_Tutorial_00_IllezraCH_0008`). The handler shows those two
+without a name.
 
-| File                 | `file_name_hash` | File name                       | Classes | Also in                          |
-| -------------------- | ---------------- | ------------------------------- | ------- | -------------------------------- |
-| `sequence_skill.bss` | `0xDEFE7AE1`     | `CS_Tutorial_Illezra_00`        | 32      | `sequencetutorial_equipment.bss` |
-| `sequence_skill.bss` | `0x4B724300`     | `CS_Tutorial_Illezra_01`        | 32      | `sequencetutorial_equipment.bss` |
-| `cutscene_skill.bss` | `0x90DDA72B`     | `CS_Test_00_Skill_0001`         | 31      | None                             |
-| `cutscene_skill.bss` | `0xB5DDE516`     | `CS_Tutorial_00_Illezra_0008`   | 31      | `cutscenetutorial_equipment.bss` |
-| `cutscene_skill.bss` | `0xA1DE7B15`     | `CS_Tutorial_00_IllezraCH_0008` | 31      | None                             |
+| File                 | `file_name_hash` | File name                                | Classes | Named by                         |
+| -------------------- | ---------------- | ---------------------------------------- | ------- | -------------------------------- |
+| `sequence_skill.bss` | `0xDEFE7AE1`     | `IllezraTutorial/CS_Tutorial_Illezra_00` | 32      | `sequencetriggerdata.bss`        |
+| `sequence_skill.bss` | `0x4B724300`     | `IllezraTutorial/CS_Tutorial_Illezra_01` | 32      | `sequencetriggerdata.bss`        |
+| `cutscene_skill.bss` | `0x90DDA72B`     | `CS_Test_00_Skill_0001`                  | 31      | PAZ index only                   |
+| `cutscene_skill.bss` | `0xB5DDE516`     | `CS_Tutorial_00_Illezra_0008`            | 31      | `cutscenetutorial_equipment.bss` |
+| `cutscene_skill.bss` | `0xA1DE7B15`     | `CS_Tutorial_00_IllezraCH_0008`          | 31      | PAZ index only                   |
+
+The two sequences are also rows of `sequencetutorial_equipment.bss`, which
+stores them as `CS_Tutorial_Illezra_00.pas` and `CS_Tutorial_Illezra_01.pas`.
+The trigger table holds both hashes on client 2421 and every later client
+searched; clients 2401 to 2414 hold neither. The handler reads it in Layout 4 only, so where
+the trigger table has another shape (client 3242 and the clients before
+3229) the `sequence_skill.bss` rows show without a name.
 
 ## Notes
 

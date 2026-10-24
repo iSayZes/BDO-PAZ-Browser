@@ -2,6 +2,7 @@
   "columns": {
     "fileNameHash": "Hash del archivo",
     "cutsceneFile": "Archivo de cinemática",
+    "sequenceFile": "Archivo de secuencia",
     "classType": "Tipo de clase",
     "className": "Clase",
     "skillCount": "Número de habilidades",

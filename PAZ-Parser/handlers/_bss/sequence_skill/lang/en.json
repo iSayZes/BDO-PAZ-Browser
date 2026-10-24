@@ -2,6 +2,7 @@
   "columns": {
     "fileNameHash": "File Hash",
     "cutsceneFile": "Cutscene File",
+    "sequenceFile": "Sequence File",
     "classType": "Class Type",
     "className": "Class",
     "skillCount": "Skill Count",

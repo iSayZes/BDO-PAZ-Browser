@@ -2,6 +2,7 @@
   "columns": {
     "fileNameHash": "Хеш файла",
     "cutsceneFile": "Файл кат-сцены",
+    "sequenceFile": "Файл последовательности",
     "classType": "Тип класса",
     "className": "Класс",
     "skillCount": "Число навыков",

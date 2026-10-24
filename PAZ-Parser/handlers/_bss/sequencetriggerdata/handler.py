@@ -15,16 +15,10 @@ from _common.html import Column, e
 from _common.lang import load_handler_strings
 from _common.row_table import RowTableHandler
 from _common.town import town_name
-from .parser import FILE_NAME, FLAG_FIELDS, parse_sequencetriggerdata_records
+from .parser import FILE_NAME, FLAG_FIELDS, parse_sequencetriggerdata_records, sequence_path
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
-
-
-def sequence_path(folder: str, file_name: str) -> str:
-    """`Sadang/CS_SadangSeoul_06_02_Pyeseja`: the folder and file name as the source XML joins them."""
-    return f"{folder}/{file_name}" if folder else file_name
-
 
 class SequenceTriggerDataBssHandler(RowTableHandler):
     file_name = FILE_NAME

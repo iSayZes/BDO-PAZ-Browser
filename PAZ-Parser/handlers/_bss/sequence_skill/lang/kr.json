@@ -2,6 +2,7 @@
   "columns": {
     "fileNameHash": "파일 해시",
     "cutsceneFile": "컷신 파일",
+    "sequenceFile": "시퀀스 파일",
     "classType": "직업 타입",
     "className": "직업",
     "skillCount": "기술 수",

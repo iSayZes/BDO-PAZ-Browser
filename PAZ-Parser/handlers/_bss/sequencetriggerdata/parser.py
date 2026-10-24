@@ -11,7 +11,7 @@
 The text fields are indexes into the string table
 (`_bss/sequence_scripts/reader.py`); `file_name_hash` is
 `cutscene_file_hash()` of `file_name`. The file is compiled from
-`sequence/sequencetriggerdata.xml`. Layout 1 in
+`sequence/sequencetriggerdata.xml`. Layout 4 in
 docs/file-formats/sequencetriggerdata_bss.md.
 """
 
@@ -52,6 +52,11 @@ _HASH = struct.Struct("<I")
 _REGION_COUNT = struct.Struct("<Q")
 _REGION_KEY_SIZE = 2
 _AREA_AND_FLAGS = struct.Struct(f"<If{len(FLAG_FIELDS)}B")
+
+
+def sequence_path(folder: str, file_name: str) -> str:
+    """`Sadang/CS_SadangSeoul_06_02_Pyeseja`: the folder and file name as the source XML joins them."""
+    return f"{folder}/{file_name}" if folder else file_name
 
 
 def _read_row(table: ScriptTable, index: int) -> dict:

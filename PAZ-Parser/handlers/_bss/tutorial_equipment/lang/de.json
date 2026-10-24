@@ -1,6 +1,7 @@
 {
   "columns": {
     "cutsceneFile": "Zwischensequenz-Datei",
+    "sequenceFile": "Sequenzdatei",
     "classType": "Klassentyp",
     "className": "Klasse",
     "mainWeapon": "Hauptwaffe",

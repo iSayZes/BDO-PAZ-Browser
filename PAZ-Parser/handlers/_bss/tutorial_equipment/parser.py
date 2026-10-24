@@ -62,5 +62,5 @@ def parse_tutorial_equipment_rows(data: bytes, file_name: str) -> list[dict]:
 
 
 def file_names_by_hash(data: bytes, file_name: str) -> dict[int, str]:
-    """Each row's file name by its hash, for the skill tables that store the hash alone."""
+    """Each row's file name by its hash, for `cutscene_skill.bss`, which stores the hash alone."""
     return {row["file_name_hash"]: row["cutscene_file_name"] for row in parse_tutorial_equipment_rows(data, file_name)}

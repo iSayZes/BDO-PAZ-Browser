@@ -4,10 +4,12 @@
 
 The areas of the Blue Battlefield (ocean siege) region map, one row per
 colour of `ui_texture/minimap/area/oceansiegemap.bmp`: the colour, a copy
-of it, the islands (region keys) the area covers and a u16 that numbers
-the rows. The rows open like the 9-byte rows of
+of it, the islands (region keys) the area covers and the area number
+that the [`worldmapoceansiegeregionforconquest.bss`](worldmapgrid_bss.md)
+grid stores in its cells. The rows open like the 9-byte rows of
 [`hardcorechannelinfo.bss`](hardcorechannelinfo_bss.md) and its siblings,
-with a counted region list and the u16 in place of their last u8.
+with a counted region list and the u16 area number in place of their
+last u8.
 
 ## Versions
 
@@ -21,7 +23,7 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                 | Known         | Unknown       |
 | ------ | -------------------- | ------------- | ------------- |
-| 1      | `oceansiegeinfo.bss` | 277 B (57.7%) | 203 B (42.3%) |
+| 1      | `oceansiegeinfo.bss` | 335 B (69.8%) | 145 B (30.2%) |
 
 Every client the doc check read, and the layout its files fit.
 
@@ -530,7 +532,7 @@ All multi-byte values are little-endian.
 | `+0x07`            | u8                     | unknown_07             | Always `0`                                                                              |
 | `+0x08`            | u32                    | region_key_count       | Number of `region_keys`; `0` or `1` on every client checked                             |
 | `+0x0C`            | u16[region_key_count]  | region_keys            | `regioninfo.bss` region keys, LOC type 17 names; each an island. See Map Colours         |
-| `region_keys+0x00` | u16                    | unknown_region_keys_00 | `0` to `28` on client 3482, unique per row. See Open Questions                           |
+| `region_keys+0x00` | u16                    | area_number            | Cell value of `worldmapoceansiegeregionforconquest.bss` for this area; `0` to `28` on client 3482, unique per row. See Area Number |
 
 ### String Table (variable: 4 bytes + strings)
 
@@ -542,10 +544,10 @@ All multi-byte values are little-endian.
 ## Map Colours
 
 Client 3482, in file order: `map_color` read as `rrggbb`, the island,
-its territory in `regioninfo.bss` and the u16 after the list. The `.rid`
+its territory in `regioninfo.bss` and the area number. The `.rid`
 position is the colour's place in `oceansiegemap.bmp.rid`.
 
-| `map_color` | `region_keys`            | Territory | `unknown_region_keys_00` | Position in `.rid` |
+| `map_color` | `region_keys`            | Territory | `area_number`            | Position in `.rid` |
 | ----------- | ------------------------ | --------- | ------------------------ | ------------------ |
 | `dd0b0b`    | 365 Balvege Island       | Balenos   | 7                        | 10                 |
 | `100d10`    | none                     |           | 0                        | 1                  |
@@ -588,7 +590,23 @@ client 3482 `oceansiegemap.bmp.rid` lists 28 colours, and all 28 are
 `regioninfo.bss` keys: all 27 are islands (region type Hunting, node war
 day Friday), 15 in Balenos and 12 in Calpheon, the two territories of
 `CppEnums.OceanSiegeTerritoryName` in `global_define_cpp_enum.luac`
-(client 3482).
+(client 3482). `area_number` is named from the grid that stores it; see
+Area Number.
+
+## Area Number
+
+`area_number` is the value the Blue Battlefield grid
+[`worldmapoceansiegeregionforconquest.bss`](worldmapgrid_bss.md) stores
+in every cell of the area (`255` outside the areas), so the grid joins
+each cell to its row here. On client 3482 each island was looked up at
+its `mapdata_realexplore2.bwp` waypoint's cell: the 15 Balenos islands
+(`2` to `16`) read their row's `area_number`, and the 12 Calpheon islands
+(`17` to `28`) read `255`, as the grid holds no number above `16`. Every
+grid value other than `255` is the `area_number` of a row. The numbers
+follow neither file order (`7, 0, 4, 1, 2, ...`) nor `.rid` order. The
+client 3482 Lua walks the ocean siege territories with
+`ToClient_GetOceanSiegeTerritoryByIndex(groupIdx, territory_idx)` and
+reads no area number.
 
 ## Notes
 
@@ -596,23 +614,24 @@ day Friday), 15 in Balenos and 12 in Calpheon, the two territories of
   `739bd7` rows and the 15 Balenos islands, each with the same values as on
   client 3482. Client 3482 adds the 12 Calpheon island rows.
 - The `100d10` row, first in every region map palette, has no region and
-  `unknown_region_keys_00` `0`, as the shared `10 0D 10` row of the other
+  `area_number` `0`, as the shared `10 0D 10` row of the other
   map colour tables has `0`. The `739bd7` row has no region either and is
   the one colour the `.rid` does not list.
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews
   this file with the shared layout table in
-  `_bss/pabr_values/oceansiege_tables.py`: `map_color` as `rrggbb` and the
-  region keys with their names.
+  `_bss/pabr_values/oceansiege_tables.py`: `map_color` as `rrggbb`, the
+  region keys with their names and `area_number`. The world map grid
+  handler (`_bss/worldmapgrid/kinds.py`) reads this file to name the
+  islands of each `worldmapoceansiegeregionforconquest.bss` cell value.
 
 ## Open Questions
 
-### The u16 After the Region List
+### Calpheon Islands Outside the Grid
 
-`unknown_region_keys_00` is `0` to `28` on client 3482, one value per
-row, but not in file order (`7, 0, 4, 1, 2, ...`) and not in `.rid`
-order. The Lua walks the ocean siege territories with
-`ToClient_GetOceanSiegeTerritoryByIndex(groupIdx, territory_idx)` and
-reads no area or island index, so what the number counts is open.
+On client 3482 the 12 Calpheon island rows have an `area_number` (`17`
+to `28`), but no cell of `worldmapoceansiegeregionforconquest.bss` holds
+one, and their waypoints read `255`. Whether a later client adds them to
+the grid, or the map draws them from another source, is open.
 
 ### Why the Colour Is Stored Twice
 

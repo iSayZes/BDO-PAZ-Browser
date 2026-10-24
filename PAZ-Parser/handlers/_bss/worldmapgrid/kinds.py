@@ -33,7 +33,7 @@ _REGION_GROUP_FILE = "regiongroupinfo.bss"
 _VILLAGE_SIEGE_FILE = "villagesiegeinfo.bss"
 _OCEAN_SIEGE_FILE = "oceansiegeinfo.bss"
 # The u16 after the region list of the siege area tables: the number a grid cell holds.
-_AREA_NUMBER = "unknown_region_keys_00"
+_AREA_NUMBER = "area_number"
 
 
 class KeyKind(Enum):

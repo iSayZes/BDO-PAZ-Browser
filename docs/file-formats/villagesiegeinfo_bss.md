@@ -4,8 +4,9 @@
 
 The areas of the Node War (village siege) region map, one row per colour
 of `ui_texture/minimap/area/villagesiegemap_2024.bmp`: the colour, a copy
-of it, the node war region the area covers and a u16 that numbers the
-rows territory by territory. Client 3482 has 41 rows: 36 node war nodes,
+of it, the node war region the area covers and the area number that the
+[`worldmapsiegeregionforconquest.bss`](worldmapgrid_bss.md) grid stores
+in its cells. Client 3482 has 41 rows: 36 node war nodes,
 the four capitals and the `0d0d0d` row with no region. The rows have the
 shape of the [`oceansiegeinfo.bss`](oceansiegeinfo_bss.md) rows.
 
@@ -22,8 +23,8 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                   | Known           | Unknown       |
 | ------ | ---------------------- | --------------- | ------------- |
-| 2      | `villagesiegeinfo.bss` | 510 B (75.7%)   | 164 B (24.3%) |
-| 1      | `villagesiegeinfo.bss` | 1,112 B (61.1%) | 708 B (38.9%) |
+| 2      | `villagesiegeinfo.bss` | 592 B (87.8%)   | 82 B (12.2%)  |
+| 1      | `villagesiegeinfo.bss` | 1,230 B (67.6%) | 590 B (32.4%) |
 
 Every client the doc check read, and the layout its files fit.
 
@@ -532,7 +533,7 @@ All multi-byte values are little-endian.
 | `+0x07`            | u8                    | unknown_07             | Always `0`                                                                 |
 | `+0x08`            | u32                   | region_key_count       | Number of `region_keys`; `0` or `1` on client 3482                         |
 | `+0x0C`            | u16[region_key_count] | region_keys            | `regioninfo.bss` region keys, LOC type 17 names. See Map Colours           |
-| `region_keys+0x00` | u16                   | unknown_region_keys_00 | `0` to `40` on client 3482, unique per row. See Open Questions             |
+| `region_keys+0x00` | u16                   | area_number            | Cell value of `worldmapsiegeregionforconquest.bss` for this area; `0` to `40` on client 3482, unique per row. See Area Number |
 
 ### String Table (variable: 4 bytes + strings)
 
@@ -554,17 +555,17 @@ All multi-byte values are little-endian.
 | `+0x08`            | u32                   | region_key_count       |                                                                    |
 | `+0x0C`            | u16[region_key_count] | region_keys            |                                                                    |
 | `region_keys+0x00` | u32                   | unknown_str_ref        | Index into the string table: 27 Korean town names on client 1784   |
-| `region_keys+0x04` | u16                   | unknown_region_keys_00 | `0` to `81` on client 1784, unique per row                         |
+| `region_keys+0x04` | u16                   | area_number            | As in Layout 2; `0` to `81` on client 1784, unique per row         |
 | `region_keys+0x06` | u32                   | unknown_region_keys_06 | `0` on every row of client 1784                                    |
 
 ## Map Colours
 
 Client 3482, in file order: `map_color` read as `rrggbb`, the region,
-its territory in `regioninfo.bss` and the u16 after the list. The `.rid`
+its territory in `regioninfo.bss` and the area number. The `.rid`
 position is the colour's place in `villagesiegemap_2024.bmp.rid` (2024),
 or for the four capitals in `villagesiegemap.bmp.rid` (old map).
 
-| `map_color` | `region_keys`                 | Territory    | `unknown_region_keys_00` | Position in `.rid` |
+| `map_color` | `region_keys`                 | Territory    | `area_number`            | Position in `.rid` |
 | ----------- | ----------------------------- | ------------ | ------------------------ | ------------------ |
 | `3c784b`    | 1556 Great Red Spot           | Outer Edania | 39                       | 2024: 5            |
 | `781ecd`    | 12 Forest of Plunder          | Balenos      | 2                        | 2024: 16           |
@@ -629,32 +630,57 @@ The `VillageSiege_Table` sheet of a private server's `DataSheets.bexcel`
 on client 1784 (`VillageSiegeKey`, `R`, `G`, `B`, `RegionKey`,
 `RegionName`) holds 33 rows with up to six region keys each, while the
 client 1784 file has 82 rows with one region each; the sheet does not
-match the file and names no field here.
+match the file and names no field here. `area_number` is named from
+the grid that stores it; see Area Number.
+
+## Area Number
+
+`area_number` is the value the Node War grid
+[`worldmapsiegeregionforconquest.bss`](worldmapgrid_bss.md) stores in
+every cell of the area, so the grid joins each cell to its row here.
+Each row's region was looked up at its `mapdata_realexplore2.bwp`
+waypoint's cell:
+
+| Client | Regions | Cell reads `area_number` | Capital, number not in the grid | Cell reads `0` | Cell reads another area |
+| ------ | ------- | ------------------------ | ------------------------------- | -------------- | ----------------------- |
+| 3482   | 40      | 30                       | 4 (`25` to `28`)                | 6              | 0                       |
+| 1784   | 79      | 68                       | 3 (`79` to `81`)                | 6              | 2                       |
+
+On both clients every value of the grid is the `area_number` of a row.
+Client 1784 was checked with its own grid and the client 3482 region
+waypoints; its capitals are Calpheon City (77), Altinova (202) and
+Valencia City (229), and its numbers
+`77` and `78` belong to rows without a region. On client 3482 the
+numbers run territory by territory: `1` to `6` the Balenos nodes, `7`
+to `12` Serendia, `13` to `18` Calpheon, `19` to `24` Valencia, `25` to
+`28` the capitals Velia, Heidel, Altinova and Valencia City, `29` to
+`34` Ulukita and `35` to `40` Outer Edania.
 
 ## Notes
 
 - Layout 1 (clients 1348 to 2765) adds a u32 string-table index and a u32 that is
-  always `0` around the u16, and its string table holds 27 Korean town
+  always `0` around `area_number`, and its string table holds 27 Korean town
   names (`타리프 마을`, `벨리아 마을`, `알티노바`, ...). Layout 2 drops
   both and the strings.
 - The `0d0d0d` row, first in the 2024 palette, has no region and
-  `unknown_region_keys_00` `0`, as the shared first-palette row of the
+  `area_number` `0`, as the shared first-palette row of the
   other map colour tables.
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews
   this file with the shared layout table in
-  `_bss/pabr_values/siege_tables.py`: `map_color` as `rrggbb` and the
-  region keys with their names.
+  `_bss/pabr_values/siege_tables.py`: `map_color` as `rrggbb`, the
+  region keys with their names and `area_number`. The world map grid
+  handler (`_bss/worldmapgrid/kinds.py`) reads this file to name the
+  regions of each `worldmapsiegeregionforconquest.bss` cell value.
 
 ## Open Questions
 
-### The u16 After the Region List
+### Capitals Outside the Grid
 
-`unknown_region_keys_00` numbers the rows territory by territory on client
-3482: `1` to `6` the Balenos nodes, `7` to `12` Serendia, `13` to `18`
-Calpheon, `19` to `24` Valencia, `25` to `28` the capitals Velia, Heidel,
-Altinova and Valencia City, `29` to `34` Ulukita and `35` to `40` Outer
-Edania. The sheet's `VillageSiegeKey` column is a lead, but its client
-1784 values do not match the file's. What reads the number is open.
+The four capital rows (`25` to `28` on client 3482) have an
+`area_number`, but no cell of `worldmapsiegeregionforconquest.bss`
+holds it. Which map draws the capital areas (the old
+`villagesiegemap.bmp`, whose `.rid` lists their colours, is a lead) is
+open.
 
 ### The Town Names of Client 1784
 

@@ -24,7 +24,8 @@ OCEAN_SIEGE_TABLES: tuple[ValueTable, ...] = (
             MAP_COLOR,
             *unknown_fields((0x03, "B"), (0x04, "3s"), (0x07, "B")),
             ValueField("region_keys", "H", "regionKeys", display=region_text, is_counted_list=True),
-            ValueField("unknown_region_keys_00", "H"),
+            # The value the worldmapoceansiegeregionforconquest.bss grid cells store (worldmapgrid_bss.md).
+            ValueField("area_number", "H", "areaNumber"),
         ),
         RowCount.COUNTED,
         count_key="mapColors",

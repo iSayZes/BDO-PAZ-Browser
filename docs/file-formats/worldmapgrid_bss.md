@@ -591,8 +591,8 @@ regions).
 | `worldmapfieldtypedata.bss`                | Cell value equals `region_group_key & 0xFF`                 | 604 of 628; 20 of the misses read `0`, 3 a neighbouring group, and Duvencrune (group `0`) reads `220` |
 | `worldmapmajorsiegeregiontypedata.bss`     | Cell value equals `territory_key`, cells other than `255`   | 13 of 13 |
 | `worldmapterritorytypedataforconquest.bss` | Cell value equals `territory_key + 1`, cells other than `255` | 147 of 148; Serendia Western Gateway (Calpheon) reads `2` (Serendia) |
-| `worldmapsiegeregionforconquest.bss`       | Each `villagesiegeinfo.bss` row's region reads the row's `unknown_region_keys_00` | 30 of 40; the 4 capitals (`25` to `28`) are not in the grid, the other 6 waypoints read `0` |
-| `worldmapoceansiegeregionforconquest.bss`  | Each `oceansiegeinfo.bss` island reads its row's `unknown_region_keys_00` | 15 of the 15 islands whose number the grid holds |
+| `worldmapsiegeregionforconquest.bss`       | Each `villagesiegeinfo.bss` row's region reads the row's `area_number` | 30 of 40; the 4 capitals (`25` to `28`) are not in the grid, the other 6 waypoints read `0` |
+| `worldmapoceansiegeregionforconquest.bss`  | Each `oceansiegeinfo.bss` island reads its row's `area_number` | 15 of the 15 islands whose number the grid holds |
 
 Values present on client 3482:
 

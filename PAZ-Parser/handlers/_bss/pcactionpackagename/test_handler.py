@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import struct
+from collections.abc import Callable
 from dataclasses import replace
 from typing import Any
 
@@ -18,19 +19,18 @@ from tests.framework import (
 )
 
 from _common.string_hash import ascii_key_hash
+from .array_layout import CLASS_TYPE_COUNT
 from .equip_types import equip_type_name
-from .parser import (
+from .packages import (
     FILE_NAME,
-    MAX_CLASS_TYPE_COUNT,
-    MAX_EQUIP_TYPE_COUNT,
     SECTION_CLASS_PACKAGE,
     SECTION_CUTSCENE,
     SECTION_VEHICLE,
     SECTION_VEHICLE_WEAPON,
     SECTION_WEAPON,
     SECTIONS,
-    parse_pcactionpackagename,
 )
+from .parser import MAX_CLASS_TYPE_COUNT, MAX_EQUIP_TYPE_COUNT, parse_pcactionpackagename
 
 # Warrior (class type 0) with a Longsword (equip type 1), and the Warrior's cutscene package.
 _WARRIOR = 0
@@ -147,7 +147,7 @@ def _cell(index: int) -> bytes:
     return _CELL.pack(index, ascii_key_hash(text) if text else 0)
 
 
-def _class_block(class_type: int, equip_type_count: int) -> bytes:
+def _class_block(class_type: int, equip_type_count: int, has_cutscene: bool) -> bytes:
     """Block 0 holds a Longsword cell, a horse row and a cutscene package; every other block is empty."""
     is_filled = class_type == _WARRIOR
     cells = b"".join(
@@ -157,7 +157,7 @@ def _class_block(class_type: int, equip_type_count: int) -> bytes:
     horse = _VEHICLE_ROW.pack(_HORSE_STRING, _HORSE_PACKAGE_STRING, ascii_key_hash(_STRINGS[_HORSE_PACKAGE_STRING]))
     vehicles = _U32.pack(1) + horse if is_filled else _U32.pack(0)
     vehicle_weapons = _U32.pack(0) * equip_type_count
-    cutscene = _cell(_CUTSCENE_STRING if is_filled else _EMPTY_STRING)
+    cutscene = _cell(_CUTSCENE_STRING if is_filled else _EMPTY_STRING) if has_cutscene else b""
     return cells + vehicles + vehicle_weapons + cutscene
 
 
@@ -166,19 +166,26 @@ def _file(
     class_type_count: int = 3,
     equip_type_count: int = 5,
     class_package_count: int | None = 1,
+    has_cutscene: bool = True,
     magic: bytes = b"PABR",
 ) -> bytes:
     """The class blocks, then a class package list of one row unless `class_package_count` is None.
 
     A `class_package_count` other than 1 makes the stored count disagree with the one row.
     """
-    blocks = b"".join(_class_block(class_type, equip_type_count) for class_type in range(class_type_count))
+    blocks = b"".join(
+        _class_block(class_type, equip_type_count, has_cutscene) for class_type in range(class_type_count)
+    )
     body = magic + blocks
     if class_package_count is not None:
         row = _CLASS_PACKAGE_ROW.pack(_LIST_CLASS, _PACKAGE_STRING, ascii_key_hash(_STRINGS[_PACKAGE_STRING]))
         body += _U32.pack(class_package_count) + row
-    entries = b"".join(bytes([0]) + _U32.pack(len(text)) + text.encode("ascii") for text in _STRINGS)
-    return body + _U32.pack(len(_STRINGS)) + entries + _U32.pack(len(body)) + bytes(4)
+    return body + _string_table(_STRINGS) + _U32.pack(len(body)) + bytes(4)
+
+
+def _string_table(strings: list[str]) -> bytes:
+    entries = b"".join(bytes([0]) + _U32.pack(len(text)) + text.encode("ascii") for text in strings)
+    return _U32.pack(len(strings)) + entries
 
 
 def _summary(parsed: list[dict]) -> list[tuple]:
@@ -215,6 +222,84 @@ def test_a_list_count_that_disagrees_with_its_rows_is_rejected() -> None:
         parse_pcactionpackagename(_file(class_package_count=2))
 
 
-def test_a_bad_magic_is_rejected() -> None:
-    with pytest.raises(ValueError, match="invalid magic"):
+def test_a_file_without_magic_that_is_no_array_layout_is_rejected() -> None:
+    with pytest.raises(ValueError, match="no PABR magic"):
         parse_pcactionpackagename(_file(magic=b"XXXX"))
+
+
+def test_class_blocks_without_the_cutscene_cell_read() -> None:
+    parsed = parse_pcactionpackagename(_file(class_package_count=None, has_cutscene=False))
+    assert _summary(parsed) == [
+        (_WARRIOR, SECTION_WEAPON, _LONGSWORD, None, _STRINGS[_PACKAGE_STRING]),
+        (_WARRIOR, SECTION_VEHICLE, None, "Horse", _STRINGS[_HORSE_PACKAGE_STRING]),
+    ]
+
+
+def test_a_hash_that_does_not_match_its_path_is_rejected() -> None:
+    data = bytearray(_file())
+    # The first cell of class block 1 points at the empty string, whose stored hash is 0.
+    block_size = len(_class_block(_WARRIOR, 5, True))
+    _U32.pack_into(data, len(b"PABR") + block_size + _U32.size, 1)
+    with pytest.raises(ValueError, match="not the hash of its path"):
+        parse_pcactionpackagename(bytes(data))
+
+
+# Clients 435 to 829 store arrays: [class][equip type] and [class][vehicle type] names, one
+# map per class, then the same arrays of hashes.
+_ARRAY_STRINGS = ["", "pc/1_phm/test_package", "pc/vehicle/ridinghorse/test_horse", "pc/vehicle/horse/test_weapon"]
+_ARRAY_EMPTY, _ARRAY_WEAPON, _ARRAY_VEHICLE, _ARRAY_VEHICLE_WEAPON = range(len(_ARRAY_STRINGS))
+_HORSE = 0
+_ARRAY_EQUIP_TYPES = 3
+_ARRAY_VEHICLE_TYPES = 2
+
+
+def _hash(text: str) -> int:
+    return ascii_key_hash(text) if text else 0
+
+
+def _array_map(row_tail: bytes) -> bytes:
+    """A map of one horse with Longsword row, `row_tail` after its key."""
+    return _U32.pack(1) + bytes([_HORSE, _LONGSWORD]) + row_tail
+
+
+def _array_body(name: Callable[[int], bytes]) -> bytes:
+    """The Warrior holds a Longsword package, a horse package and a horse with Longsword package."""
+    weapons = [_ARRAY_EMPTY] * (CLASS_TYPE_COUNT * _ARRAY_EQUIP_TYPES)
+    weapons[_WARRIOR * _ARRAY_EQUIP_TYPES + _LONGSWORD] = _ARRAY_WEAPON
+    vehicles = [_ARRAY_EMPTY] * (CLASS_TYPE_COUNT * _ARRAY_VEHICLE_TYPES)
+    vehicles[_WARRIOR * _ARRAY_VEHICLE_TYPES + _HORSE] = _ARRAY_VEHICLE
+    cells = weapons + vehicles
+    empty_maps = _U32.pack(0) * (CLASS_TYPE_COUNT - 1)
+    maps = _array_map(name(_ARRAY_VEHICLE_WEAPON)) + empty_maps
+    hash_maps = _array_map(_U32.pack(_hash(_ARRAY_STRINGS[_ARRAY_VEHICLE_WEAPON]))) + empty_maps
+    hashes = b"".join(_U32.pack(_hash(_ARRAY_STRINGS[index])) for index in cells)
+    return b"".join(name(index) for index in cells) + maps + hashes + hash_maps
+
+
+def _str8(index: int) -> bytes:
+    text = _ARRAY_STRINGS[index].encode("ascii")
+    return struct.pack("<Q", len(text)) + text
+
+
+def _indexed_array_file() -> bytes:
+    body = b"PABR" + _array_body(_U32.pack)
+    return body + _string_table(_ARRAY_STRINGS) + _U32.pack(len(body)) + bytes(4)
+
+
+_ARRAY_SUMMARY = [
+    (_WARRIOR, SECTION_WEAPON, _LONGSWORD, None, _ARRAY_STRINGS[_ARRAY_WEAPON]),
+    (_WARRIOR, SECTION_VEHICLE, None, "Horse", _ARRAY_STRINGS[_ARRAY_VEHICLE]),
+    (_WARRIOR, SECTION_VEHICLE_WEAPON, _LONGSWORD, "Horse", _ARRAY_STRINGS[_ARRAY_VEHICLE_WEAPON]),
+]
+
+
+def test_arrays_of_inline_names_read() -> None:
+    parsed = parse_pcactionpackagename(_array_body(_str8))
+    assert _summary(parsed) == _ARRAY_SUMMARY
+    assert {r["package_index"] for r in parsed} == {None}
+
+
+def test_arrays_of_string_indices_read() -> None:
+    parsed = parse_pcactionpackagename(_indexed_array_file())
+    assert _summary(parsed) == _ARRAY_SUMMARY
+    assert [r["package_index"] for r in parsed] == [_ARRAY_WEAPON, _ARRAY_VEHICLE, _ARRAY_VEHICLE_WEAPON]

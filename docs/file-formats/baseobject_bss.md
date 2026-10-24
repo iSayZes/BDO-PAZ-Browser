@@ -717,7 +717,7 @@ faces follow the `characterobject.dbss` Structure Body names. The 2016
 - `armor_material` on client 3483 is `100` on 4,815 rows of kinds `1`,
   `2`, `5`, `9` and `36`, and `0` on 21 rows of kinds `2` and `5`; the
   other kinds (siege objects, tents, traps) hold `4`, `6` or `7`. It holds
-  the same value as `characterobject.dbss` `unknown_21b` on every
+  the same value as `characterobject.dbss` `armor_material` on every
   furniture row, the byte at the place of `_armorMaterial` in the 2016
   order.
 

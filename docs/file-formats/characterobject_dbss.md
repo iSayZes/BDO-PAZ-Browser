@@ -19,9 +19,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
-| 2      | `characterobject.dbss`       | 1,383,071 B (16.9%) | 6,800,670 B (83.1%) |
+| 2      | `characterobject.dbss`       | 5,222,514 B (63.8%) | 2,961,227 B (36.2%) |
 | 2      | `characterobjectoffset.dbss` | 51,330 B (100.0%)   | 0 B (0.0%)          |
-| 1      | `characterobject.dbss`       | 1,154,934 B (16.6%) | 5,804,114 B (83.4%) |
+| 1      | `characterobject.dbss`       | 4,706,425 B (67.6%) | 2,252,623 B (32.4%) |
 | 1      | `characterobjectoffset.dbss` | 42,340 B (100.0%)   | 0 B (0.0%)          |
 
 Every client the doc check read, and the layout its files fit.
@@ -584,7 +584,7 @@ The 556-byte block is constant across all kind-2 records except for the bytes wi
 | `+0x17C` | bytes[154] | unknown_17c                  | Constant                                                             |
 | `+0x216` | u32        | audio_bank_no                | Set on 30 records the server shares (client 3464)                    |
 | `+0x21A` | u8         | unknown_21a                  | Constant                                                             |
-| `+0x21B` | u8         | unknown_21b                  | `100`, or `0` in 13 records (client 3464)                            |
+| `+0x21B` | u8         | armor_material               | `100`, or `0` in 13 records (client 3483); see Field Names           |
 | `+0x21C` | u16        | summon_character             | Character the object spawns; `0` when it spawns none                 |
 | `+0x21E` | u16        | material_index               | Set on 103 records the server shares (client 3464)                   |
 | `+0x220` | f32[3]     | relocate_position            | Where the character stands to use the object; set on 44 of them      |
@@ -657,9 +657,21 @@ per layer, so a walk that read it once ended short on every multi-layer house.
 
 ### Face (140 bytes)
 
-| Offset  | Type    | Field      | Notes                 |
-| ------- | ------- | ---------- | --------------------- |
-| `+0x00` | f32[35] | unknown_00 | f32 data, not decoded |
+One bounding plane of a convex hull, the same 140-byte face as in
+[`baseobject.bss`](baseobject_bss.md#face-140-bytes).
+
+| Offset  | Type      | Field      | Notes                                                     |
+| ------- | --------- | ---------- | --------------------------------------------------------- |
+| `+0x00` | f32       | distance   | Plane distance: `-(normal . origin)` on every face        |
+| `+0x04` | f32[3]    | normal     | Unit normal (x, y, z) of the plane                        |
+| `+0x10` | f32[3]    | origin     | A point on the plane                                      |
+| `+0x1C` | f32[9][3] | points     | Nine points (x, y, z), all on the plane; the first equals `origin` |
+| `+0x88` | i32       | unknown_88 | `0` on every face                                         |
+
+On client 3483 all 28,202 faces have a unit `normal`, a `distance` equal to
+`-(normal . origin)` and nine `points` that satisfy the plane equation. The
+hull layers of all 1,160 structure records are byte for byte the hull
+layers of the `baseobject.bss` row with the same `character_id`.
 
 ### House Tail (variable: 234 bytes + text and paths)
 
@@ -793,7 +805,7 @@ reads only Layout 2.
 | `+0x14A` | bytes[154] | unknown_17c                  |       |
 | `+0x1E4` | u32        | audio_bank_no                |       |
 | `+0x1E8` | u8         | unknown_21a                  |       |
-| `+0x1E9` | u8         | unknown_21b                  |       |
+| `+0x1E9` | u8         | armor_material               |       |
 | `+0x1EA` | u16        | summon_character             |       |
 | `+0x1EC` | u16        | material_index               |       |
 | `+0x1EE` | f32[3]     | relocate_position            |       |
@@ -898,17 +910,19 @@ The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::ObjectS
 | material_index               | `MaterialIndex`              | 103 of 103             |
 | relocate_position            | `RelocatePosX`, `Y`, `Z`     | 2,041 of 2,041 rows    |
 
+`armor_material` sits where the 2016 order has `_armorMaterial` and holds the same value as `baseobject.bss` `armor_material` on all 3,971 furniture records of client 3483 (`100` on 3,958, `0` on 13). That file takes the name from the client 1784 `Object_Table` column `ArmorMaterial`, which is empty on most rows and compiles to `100`; the client 519 table above holds `0` in that column on every row.
+
 `installation_type` follows `CppEnums.InstallationType` in `global_define_cpp_enum.luac` (`0` Default to `39` EventPersonalTent). `is_siege_tent` has no server column; it is named from the 2016 order and is set only on the King, Lord and Village tent kinds.
 
 ## Open Questions
 
 ### Furniture Block Fields
 
-Most varying bytes now have names (see Field Names). `unknown_010`, `unknown_091`, `unknown_0bd` and the u8 `unknown_21b` (`100` almost everywhere) match no server column. In the 2016 order `unknown_21b` sits where `_armorMaterial` is, but the server's `ArmorMaterial` is `0` on every row.
+Most varying bytes now have names (see Field Names). `unknown_010`, `unknown_091` and `unknown_0bd` match no server column.
 
 ### Structure Body Blocks
 
-The walk crosses `unknown_block` (333 bytes), `unknown_after_material_path` (16), `unknown_description_kr_00` (162), `unknown_unknown_path_4_00` (24) and the 234-byte structure suffix without decoding them. Also open: whether a hull layer is a house floor (only houses have two or more), what `unknown_flag` and `unknown_b` select, and what the 21 `unknown_digits` values of the kind `1` records (`60` to `900`) measure.
+The walk crosses `unknown_block` (333 bytes), `unknown_after_material_path` (16), `unknown_description_kr_00` (162), `unknown_unknown_path_4_00` (24) and the 234-byte structure suffix without decoding them. Also open: whether a hull layer is a house floor (only houses have two or more), what `unknown_flag` and `unknown_b` select, and what the 21 `unknown_digits` values of the kind `1` records (`60` to `900`) measure. `unknown_88` of every face is `0`, where the 2016 `pa::PlaneExtended` has `_negNormBitMask`.
 
 ### Later Kind Names
 

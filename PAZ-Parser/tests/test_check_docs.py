@@ -1,6 +1,7 @@
 """check_docs.py picking test client folders for --version, and its worker processes."""
 from __future__ import annotations
 
+import struct
 import sys
 from pathlib import Path
 
@@ -12,6 +13,16 @@ sys.path.insert(0, str(REPO_ROOT))
 import check_docs  # noqa: E402
 from check_docs import CheckError, PazSource, client_folders  # noqa: E402
 from format_docs.check_run import Client, Status  # noqa: E402
+
+_TABLE = "| Offset | Type | Field | Notes |\n| --- | --- | --- | --- |\n"
+DOC = (
+    "# `test.bss` Format\n\n## Purpose\n\nRows.\n\n## Versions\n\n"
+    "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->\n\n"
+    "<!-- versions:end -->\n\n## Layout 1\n\n"
+    f"### File Layout\n\n{_TABLE}| `+0x00` | u32 | count | note |\n| `+0x04` | Row[count] | rows | note |\n\n"
+    f"### Row (8 bytes)\n\n{_TABLE}| `+0x00` | u32 | key | note |\n| `+0x04` | u32 | unknown_04 | note |\n"
+)
+ROW_FILE = struct.pack("<I", 1) + struct.pack("<II", 1, 0)
 
 
 @pytest.fixture
@@ -63,20 +74,41 @@ def test_jobs_takes_at_least_one_worker() -> None:
     assert check_docs._arguments(["--all", "--jobs", "1"]).jobs == 1
 
 
-def test_a_worker_opens_each_client_once_and_again_after_another(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_a_worker_keeps_the_clients_in_flight_open_and_lets_the_oldest_go(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     opened: list[PazSource] = []
 
-    def open_client(source: PazSource) -> Client:
+    def open_client(source: PazSource, quiet: bool = False) -> Client:
         opened.append(source)
         return Client(source.number, lambda name: None)
 
     monkeypatch.setattr(check_docs, "_open_client", open_client)
-    monkeypatch.setattr(check_docs, "_worker_client", None)
+    monkeypatch.setattr(check_docs, "_worker_clients", check_docs.OrderedDict())
+    monkeypatch.setattr(check_docs, "CLIENTS_IN_FLIGHT", 3)
     doc = tmp_path / "x_bss.md"
     doc.write_text("# x.bss\n", encoding="utf-8")
-    old, new = PazSource("old/Paz", 1230), PazSource("new/Paz", 3251)
+    a, b, c, d = (PazSource(f"{number}/Paz", number) for number in (1230, 1784, 2107, 3251))
 
-    outcomes = [check_docs._check_in_worker(doc, source, False) for source in (old, old, new, old)]
+    outcomes = [check_docs._check_in_worker(doc, source, False) for source in (a, b, a, c, a, d, a, b)]
 
-    assert opened == [old, new, old]
+    assert opened == [a, b, c, d, b]  # d lets b go (a was used since), so b opens again
     assert {outcome.status for outcome in outcomes} == {Status.NOT_CONVERTED}
+
+
+def test_pending_docs_merge_each_clients_change_and_write_them_on_flush(tmp_path: Path) -> None:
+    from format_docs.check_run import check_doc_file
+    from format_docs.versions import ClientCheck, read_clients
+
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(DOC, encoding="utf-8")
+    before = doc.read_text(encoding="utf-8")
+    rows = {"test_bss.md": [("test.bss", "Rows")]}
+    pending = check_docs.PendingDocs(flush_seconds=3600)
+
+    for number in (1784, 3473):
+        client = Client(number, lambda name: ROW_FILE if name == "test.bss" else None)
+        pending.add([check_doc_file(doc, rows, client, defer_write=True)])
+        pending.flush_if_due()
+
+    assert doc.read_text(encoding="utf-8") == before
+    pending.flush()
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3473, 1, True), ClientCheck(1784, 1, True))

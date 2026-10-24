@@ -220,6 +220,24 @@ def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir:
     assert (entry["known"], entry["unknown"], entry["client"]) == (404, 400, 3473)
 
 
+def test_a_versions_card_without_layout_rows_leaves_out_the_checked_against_column(docs_dir: Path, tmp_path: Path) -> None:
+    doc = docs_dir / "file-formats" / "test_bss.md"
+    marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"
+    clients = (
+        f"{marker}\n\nEvery client the doc check read, and the layout its files fit.\n\n"
+        "| Client | Result  | Checked against |\n| ------ | ------- | --------------- |\n| 1230   | No file | `37e1249bfa22`  |\n\n"
+        "<!-- versions:end -->"
+    )
+    doc.write_text(CONVERTED_DOC.replace(f"{marker}\n\n<!-- versions:end -->", clients), encoding="utf-8")
+
+    build_site(docs_dir, tmp_path / "site")
+
+    versions = (tmp_path / "site" / "test_bss.html").read_text(encoding="utf-8").split('aria-labelledby="versions"')[1].split("</section>")[0]
+    assert "No file" in versions
+    assert "Checked against" not in versions
+    assert "37e1249bfa22" not in versions
+
+
 def test_the_versions_card_opens_with_a_timeline_of_the_checked_clients(docs_dir: Path, tmp_path: Path) -> None:
     doc = docs_dir / "file-formats" / "test_bss.md"
     marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"

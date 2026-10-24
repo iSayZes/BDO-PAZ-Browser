@@ -5,6 +5,7 @@ PAZ folder (check_docs.py) and on bytes a test builds.
 """
 from __future__ import annotations
 
+import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from enum import Enum
@@ -13,10 +14,23 @@ from pathlib import Path
 from .doc_checks import check_doc, is_converted, read_layouts
 from .doc_fit import fit_layouts
 from .doc_index import IndexRows, doc_files
-from .versions import ClientCheck, VersionRow, merge_clients, merge_rows, read_clients, read_rows, rows_from_fit, write_rows
+from .fingerprint import layouts_fingerprint
+from .versions import (
+    ClientCheck,
+    VersionRow,
+    merge_clients,
+    merge_rows,
+    read_clients,
+    read_rows,
+    rows_from_fit,
+    write_rows,
+)
 from .walk_model import LayoutFit, Unwalkable
 
 FileReader = Callable[[str], "bytes | None"]
+# Another program (a virus scanner, an editor) can hold a doc for a moment; wait for it this long at most.
+_WRITE_ATTEMPTS = 40
+_WRITE_WAIT_SECONDS = 0.25
 
 
 class UnreadableFile(Exception):
@@ -30,6 +44,7 @@ class Status(Enum):
     NO_FIT = "fits no layout"
     SKIPPED = "game check skipped"
     NOT_CONVERTED = "skipped (not converted)"
+    CHECKED_BEFORE = "checked before"
 
     @property
     def stops_commit(self) -> bool:
@@ -37,10 +52,35 @@ class Status(Enum):
 
 
 @dataclass(frozen=True)
+class VersionsUpdate:
+    """What one client adds to a doc's Versions: its Clients row and the size rows of the layout it fits."""
+
+    newest_layout: int
+    check: ClientCheck
+    rows: tuple[VersionRow, ...] = ()
+
+    def apply(self, text: str) -> str:
+        """`text` with this update merged into its Versions section."""
+        return apply_updates(text, (self,))
+
+
+def apply_updates(text: str, updates: Sequence[VersionsUpdate]) -> str:
+    """`text` with `updates` merged into its Versions section in order, parsed and written once."""
+    if not updates:
+        return text
+    clients = merge_clients(read_clients(text), (update.check for update in updates))
+    rows = merge_rows(read_rows(text), (row for update in updates for row in update.rows))
+    return write_rows(text, rows, clients, updates[-1].newest_layout)
+
+
+@dataclass(frozen=True)
 class DocOutcome:
+    """A doc's check; `update` is the Versions change when the caller merges and writes it (`defer_write`)."""
+
     doc: Path
     status: Status
     messages: tuple[str, ...] = ()
+    update: VersionsUpdate | None = None
 
 
 @dataclass(frozen=True)
@@ -52,14 +92,18 @@ class Client:
 
 
 def check_doc_file(
-    path: Path, rows: IndexRows, client: Client | None, *, write: bool = True
+    path: Path, rows: IndexRows, client: Client | None, *, write: bool = True, recheck: bool = False, defer_write: bool = False
 ) -> DocOutcome:
     """Check `path`; with a client, walk its files and rewrite Versions in place when they change (unless `write` is off).
 
     A doc not in the layout format yet is skipped: the doc rules do not apply to it. Each client
     goes into the Clients table: the layout its files fit, `No documented layout` when they fit
     none, or `No file` when none of the doc's files is in it. A file the reader cannot pick
-    skips the game check for this doc and client and leaves Versions as they are.
+    skips the game check for this doc and client and leaves Versions as they are. A client the
+    table already holds, read against the same layouts, is not read again unless `recheck` is set.
+    With `defer_write` the change comes back in the outcome instead, for the caller to merge and
+    write: a worker process must not rewrite a doc that another worker may be reading as a
+    shared layout, and a run over many clients writes each doc once in a while, not per client.
     """
     text = path.read_text(encoding="utf-8")
     if not is_converted(text):
@@ -71,9 +115,15 @@ def check_doc_file(
     if client is None:
         return DocOutcome(path, Status.OK)
     layouts, _ = read_layouts(text, folder)
+    if not layouts:
+        return DocOutcome(path, Status.SKIPPED, ("no layout to read its files by",))
+    names = doc_files(path.name, layouts, rows)
+    fingerprint = layouts_fingerprint(layouts, names)
+    if not recheck and _is_checked_before(text, fingerprint, client.number):
+        return DocOutcome(path, Status.CHECKED_BEFORE)
     files: dict[str, bytes] = {}
     missing: list[str] = []
-    for name in doc_files(path.name, layouts, rows):
+    for name in names:
         try:
             data = client.read_file(name)
         except UnreadableFile as error:
@@ -82,12 +132,12 @@ def check_doc_file(
             missing.append(name)
         else:
             files[name] = data
+    newest = layouts[0].number
     if not files:
         reason = f"none of its files is in the PAZ folder ({', '.join(missing) or 'no files listed'})"
         if not missing or not write:
             return DocOutcome(path, Status.SKIPPED, (reason,))
-        is_changed = _write_versions(path, text, layouts[0].number, ClientCheck(client.number, None, False), ())
-        return DocOutcome(path, Status.UPDATED if is_changed else Status.SKIPPED, (reason,))
+        return _outcome(path, text, Status.SKIPPED, (reason,), VersionsUpdate(newest, ClientCheck(client.number, None, False, fingerprint)), defer_write)
     try:
         result = fit_layouts(layouts, files)
     except Unwalkable as reason:
@@ -95,23 +145,45 @@ def check_doc_file(
     if not isinstance(result, LayoutFit):
         broken = ", ".join(dict.fromkeys(miss.file for miss in result))
         breaks = tuple(f"Layout {miss.layout} breaks in {miss.file}: {miss.error}" for miss in result)
-        if write:
-            _write_versions(path, text, layouts[0].number, ClientCheck(client.number, None, True), ())
-        return DocOutcome(path, Status.NO_FIT, (f"client {client.number} fits no layout of {broken}", *breaks))
+        messages = (f"client {client.number} fits no layout of {broken}", *breaks)
+        if not write:
+            return DocOutcome(path, Status.NO_FIT, messages)
+        update = VersionsUpdate(newest, ClientCheck(client.number, None, True, fingerprint))
+        return _outcome(path, text, Status.NO_FIT, messages, update, defer_write, always=Status.NO_FIT)
     notes = tuple(f"not in the PAZ folder: {name}" for name in missing)
     if not write:
         return DocOutcome(path, Status.OK, notes + (f"fits Layout {result.layout}",))
-    check = ClientCheck(client.number, result.layout, True)
-    is_changed = _write_versions(path, text, layouts[0].number, check, rows_from_fit(result, client.number))
-    return DocOutcome(path, Status.UPDATED if is_changed else Status.OK, notes)
+    update = VersionsUpdate(newest, ClientCheck(client.number, result.layout, True, fingerprint), rows_from_fit(result, client.number))
+    return _outcome(path, text, Status.OK, notes, update, defer_write)
 
 
-def _write_versions(path: Path, text: str, newest_layout: int, check: ClientCheck, rows: Sequence[VersionRow]) -> bool:
-    """Merges `check` and `rows` into the doc's Versions section; True when the file changed."""
-    clients = merge_clients(read_clients(text), (check,))
-    updated = write_rows(text, merge_rows(read_rows(text), rows), clients, newest_layout)
+def _outcome(
+    path: Path, text: str, unchanged: Status, messages: tuple[str, ...], update: VersionsUpdate, defer_write: bool,
+    always: Status | None = None,
+) -> DocOutcome:
+    """The outcome of `update`: `unchanged` when it changes nothing, else UPDATED (or `always`), written now unless deferred."""
+    updated = update.apply(text)
     if updated == text:
-        return False
-    with path.open("w", encoding="utf-8", newline="") as handle:
-        handle.write(updated)
-    return True
+        return DocOutcome(path, always or unchanged, messages)
+    if defer_write:
+        return DocOutcome(path, always or Status.UPDATED, messages, update)
+    write_doc(path, updated)
+    return DocOutcome(path, always or Status.UPDATED, messages)
+
+
+def _is_checked_before(text: str, fingerprint: str, client: int) -> bool:
+    """True when the Clients table holds `client` with a row read against the layouts `fingerprint` stands for."""
+    return any(check.client == client and check.fingerprint == fingerprint for check in read_clients(text))
+
+
+def write_doc(path: Path, text: str) -> None:
+    """Writes `text` to `path`, waiting a moment while another program (a virus scanner, an editor) holds the file."""
+    for attempt in range(_WRITE_ATTEMPTS):
+        try:
+            with path.open("w", encoding="utf-8", newline="") as handle:
+                handle.write(text)
+            return
+        except OSError:
+            if attempt == _WRITE_ATTEMPTS - 1:
+                raise
+            time.sleep(_WRITE_WAIT_SECONDS)

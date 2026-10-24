@@ -7,13 +7,17 @@
     python check_docs.py --all --version 2107  # one of my test clients, in whichever region folder holds it
     python check_docs.py --all --version all   # every test client, oldest first, then the live one
     python check_docs.py --all --version all --from 2063  # resume a stopped run at client 2063
-    python check_docs.py --all --version 2107 --jobs 4     # four worker processes instead of one per core
+    python check_docs.py --all --version 2107 --jobs 4     # four worker processes instead of sixteen
+    python check_docs.py --all --version all --recheck     # read every client again, also those checked before
 
 Without --paz-folder or --version the check reads the PAZ folder last opened
 in the app, the live client. It writes each doc's `## Versions` section and exits 1 when
 it changed one, so the hook stops the commit for a review. A staged or named
 doc not in the layout format yet is listed as skipped and never stops it.
-Several docs are checked on worker processes, one per core unless --jobs says otherwise.
+Several docs are checked on worker processes, sixteen (fewer on a smaller machine) unless --jobs says otherwise.
+A client a doc's Versions already lists, read against the same layouts, is skipped;
+--recheck reads it again (after a change to the walk, for one client or with
+--version all for every one).
 See "Versions" in docs/format-docs.md.
 """
 
@@ -21,16 +25,18 @@ from __future__ import annotations
 
 import argparse
 import contextlib
+import faulthandler
 import io
 import multiprocessing
 import os
 import subprocess
 import sys
 import threading
+import time
+from collections import OrderedDict, deque
 from collections.abc import Iterator, Sequence
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import Future, ProcessPoolExecutor
 from dataclasses import dataclass
-from itertools import repeat
 from multiprocessing.process import BaseProcess
 from pathlib import Path
 
@@ -41,7 +47,16 @@ sys.path[:0] = [str(ROOT / "PAZ-Parser"), str(ROOT / "PAZ-Parser" / "handlers")]
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 
 from format_docs import TEMPLATE_PREFIX, converted_docs  # noqa: E402
-from format_docs.check_run import Client, DocOutcome, Status, UnreadableFile, check_doc_file  # noqa: E402
+from format_docs.check_run import (  # noqa: E402
+    Client,
+    DocOutcome,
+    Status,
+    UnreadableFile,
+    VersionsUpdate,
+    apply_updates,
+    check_doc_file,
+    write_doc,
+)
 from format_docs.doc_index import IndexRows, index_rows  # noqa: E402
 
 DOCS_DIR = ROOT / "docs" / "file-formats"
@@ -54,6 +69,15 @@ _UNNUMBERED_CLIENT = 1
 TEST_CLIENTS = Path("F:/BDO Projects/_TestClient")
 ALL_VERSIONS = "all"
 GAME_PROCESS = "BlackDesert64.exe"
+# Worker processes by default: half the 32 threads of my machine. With all 32 busy for a whole
+# --version all sweep its CPU crashed; 16 ran a sweep fine.
+DEFAULT_JOBS = min(16, os.cpu_count() or 1)
+# A run on worker processes writes the docs this often, at the end and when it stops: a write per doc per
+# client is 250,000 writes for a sweep over every test client, each one a chance to meet a virus scanner.
+FLUSH_SECONDS = 120
+# Clients whose docs the workers check at once; each worker keeps their PAZ indexes open. With one,
+# the workers wait for every client's slowest doc (itemenchantbackendtest.dbss walks for 14 s).
+CLIENTS_IN_FLIGHT = 3
 
 
 class CheckError(Exception):
@@ -68,9 +92,9 @@ class PazSource:
     number: int
 
 
-# Set in each worker process: the doc index, and the client it opened last.
+# Set in each worker process: the doc index, and the clients it opened last (at most CLIENTS_IN_FLIGHT).
 _worker_rows: IndexRows = {}
-_worker_client: tuple[PazSource, Client] | None = None
+_worker_clients: OrderedDict[PazSource, Client] = OrderedDict()
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -84,18 +108,48 @@ def main(argv: Sequence[str] | None = None) -> int:
         _warn_parser_without_doc()
     rows = index_rows(DOCUMENTED.read_text(encoding="utf-8"))
     pool = _pool(args, rows, len(docs))
+    pending = PendingDocs()
     is_stopped = False
     try:
-        # One client at a time, so each test client's PAZ index is let go before the next loads.
-        for source in _each_client(args):
-            is_stopped |= _check_client(docs, rows, source, args.no_write, pool)
+        is_stopped = _check_clients(docs, rows, _each_client(args), args, pool, pending)
     except CheckError as error:
         print(f"check_docs: {error}", file=sys.stderr)
         return 1
     finally:
         if pool is not None:
             pool.shutdown(cancel_futures=True)
+        pending.flush()
     return 1 if is_stopped else 0
+
+
+class PendingDocs:
+    """The Versions changes the workers hand back, kept here and written every `FLUSH_SECONDS`.
+
+    Each client's changes are only collected; `flush` merges a doc's changes in one go and writes
+    it, also when the run stops, so a stopped run loses at most `FLUSH_SECONDS` of clients, which the
+    next run reads again. Merging per client parsed and rewrote every doc's Versions on one core
+    between clients, which held up the workers.
+    """
+
+    def __init__(self, flush_seconds: float = FLUSH_SECONDS) -> None:
+        self._updates: dict[Path, list[VersionsUpdate]] = {}
+        self._flush_seconds = flush_seconds
+        self._last_flush = time.monotonic()
+
+    def add(self, outcomes: Sequence[DocOutcome]) -> None:
+        for outcome in outcomes:
+            if outcome.update is not None:
+                self._updates.setdefault(outcome.doc, []).append(outcome.update)
+
+    def flush_if_due(self) -> None:
+        if time.monotonic() - self._last_flush >= self._flush_seconds:
+            self.flush()
+
+    def flush(self) -> None:
+        for doc, updates in self._updates.items():
+            write_doc(doc, apply_updates(doc.read_text(encoding="utf-8"), updates))
+        self._updates.clear()
+        self._last_flush = time.monotonic()
 
 
 def _pool(args: argparse.Namespace, rows: IndexRows, doc_count: int) -> ProcessPoolExecutor | None:
@@ -106,36 +160,73 @@ def _pool(args: argparse.Namespace, rows: IndexRows, doc_count: int) -> ProcessP
     return ProcessPoolExecutor(workers, initializer=_start_worker, initargs=(rows,))
 
 
-def _check_client(
-    docs: Sequence[Path], rows: IndexRows, source: PazSource | None, no_write: bool, pool: ProcessPoolExecutor | None
+def _check_clients(
+    docs: Sequence[Path],
+    rows: IndexRows,
+    sources: Iterator[PazSource | None],
+    args: argparse.Namespace,
+    pool: ProcessPoolExecutor | None,
+    pending: PendingDocs,
 ) -> bool:
-    """Checks `docs` against `source` and reports them; True when one of them stops the commit."""
-    outcomes = _outcomes(docs, rows, source, not no_write, pool)
+    """Checks `docs` against each source and reports them in order; True when one of them stops the commit.
+
+    On the pool, the docs of up to `CLIENTS_IN_FLIGHT` clients are queued at once, so the workers go on
+    with the next client while one walks a large file of the last.
+    """
+    write = not args.no_write
+    is_stopped = False
+    in_flight: deque[tuple[PazSource, list[Future[DocOutcome]]]] = deque()
+    for source in sources:
+        if pool is None or source is None:
+            is_stopped |= _finish_client(docs, source, _outcomes(docs, rows, source, write, args.recheck, pool), pending)
+            continue
+        futures = [pool.submit(_check_in_worker, doc, source, write, args.recheck) for doc in docs]
+        in_flight.append((source, futures))
+        if len(in_flight) >= CLIENTS_IN_FLIGHT:
+            is_stopped |= _finish_queued(docs, in_flight.popleft(), pending)
+    while in_flight:
+        is_stopped |= _finish_queued(docs, in_flight.popleft(), pending)
+    return is_stopped
+
+
+def _finish_queued(docs: Sequence[Path], queued: tuple[PazSource, list[Future[DocOutcome]]], pending: PendingDocs) -> bool:
+    source, futures = queued
+    return _finish_client(docs, source, [future.result() for future in futures], pending)
+
+
+def _finish_client(docs: Sequence[Path], source: PazSource | None, outcomes: Sequence[DocOutcome], pending: PendingDocs) -> bool:
+    """Reports one client's outcomes and keeps their Versions changes; True when one of them stops the commit."""
+    pending.add(outcomes)
+    pending.flush_if_due()
     for outcome in outcomes:
         _report(outcome)
     stopped = [outcome for outcome in outcomes if outcome.status.stops_commit]
     if any(outcome.status is Status.UPDATED for outcome in stopped):
         print("check_docs: Versions updated, check and `git add` again", file=sys.stderr)
     checked = "docs only" if source is None else f"client {source.number}"
-    print(f"check_docs: {len(docs)} docs, {checked}, {len(stopped)} to fix", file=sys.stderr)
+    before = sum(outcome.status is Status.CHECKED_BEFORE for outcome in outcomes)
+    skipped = f", {before} checked before" if before else ""
+    print(f"check_docs: {len(docs)} docs, {checked}, {len(stopped)} to fix{skipped}", file=sys.stderr)
     return bool(stopped)
 
 
 def _outcomes(
-    docs: Sequence[Path], rows: IndexRows, source: PazSource | None, write: bool, pool: ProcessPoolExecutor | None
+    docs: Sequence[Path], rows: IndexRows, source: PazSource | None, write: bool, recheck: bool, pool: ProcessPoolExecutor | None
 ) -> list[DocOutcome]:
     """Each doc's outcome on `source`, in `docs` order; on the pool's workers when there is a pool."""
     if source is None:
         return [check_doc_file(doc, rows, None, write=write) for doc in docs]
     if pool is None:
         client = _open_client(source)
-        return [check_doc_file(doc, rows, client, write=write) for doc in docs]
-    return list(pool.map(_check_in_worker, docs, repeat(source), repeat(write)))
+        return [check_doc_file(doc, rows, client, write=write, recheck=recheck) for doc in docs]
+    # The workers hand their changes back (PendingDocs): a worker may read any doc as another doc's shared layout.
+    return [future.result() for future in [pool.submit(_check_in_worker, doc, source, write, recheck) for doc in docs]]
 
 
 def _start_worker(rows: IndexRows) -> None:
     global _worker_rows
     _worker_rows = rows
+    faulthandler.enable()  # a worker that dies in native code prints where, instead of only breaking the pool
     parent = multiprocessing.parent_process()
     if parent is not None:
         threading.Thread(target=_exit_with, args=(parent,), daemon=True).start()
@@ -147,14 +238,25 @@ def _exit_with(parent: BaseProcess) -> None:
     os._exit(1)
 
 
-def _check_in_worker(doc: Path, source: PazSource, write: bool) -> DocOutcome:
-    """Checks one doc in a worker process, which opens each client once and keeps its progress lines quiet."""
-    global _worker_client
-    if _worker_client is None or _worker_client[0] != source:
-        _worker_client = None  # let the last client's PAZ index go before the next loads
-        with contextlib.redirect_stderr(io.StringIO()):
-            _worker_client = (source, _open_client(source))
-    return check_doc_file(doc, _worker_rows, _worker_client[1], write=write)
+def _check_in_worker(doc: Path, source: PazSource, write: bool, recheck: bool = False) -> DocOutcome:
+    """Checks one doc in a worker process, which keeps the clients in flight open and its progress lines quiet.
+
+    The doc's Versions change comes back in the outcome for the main process to merge and write.
+    """
+    return check_doc_file(doc, _worker_rows, _worker_client(source), write=write, recheck=recheck, defer_write=True)
+
+
+def _worker_client(source: PazSource) -> Client:
+    """`source` opened in this worker; the oldest client is let go once more than `CLIENTS_IN_FLIGHT` are open."""
+    client = _worker_clients.get(source)
+    if client is not None:
+        _worker_clients.move_to_end(source)
+        return client
+    while len(_worker_clients) >= CLIENTS_IN_FLIGHT:
+        _worker_clients.popitem(last=False)
+    client = _open_client(source, quiet=True)
+    _worker_clients[source] = client
+    return client
 
 
 def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
@@ -173,7 +275,10 @@ def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
     parser.add_argument("--from", dest="first", type=int, help=f"With --version {ALL_VERSIONS}: start at this client number, to resume a stopped run")
     parser.add_argument("--no-write", action="store_true", help="Report which layout fits; leave Versions as they are")
     parser.add_argument(
-        "--jobs", type=int, default=os.cpu_count() or 1, help="Worker processes for the doc checks; 1 checks them here (default: one per core)"
+        "--recheck", action="store_true", help="Read the clients again that a doc's Versions already list against the same layouts"
+    )
+    parser.add_argument(
+        "--jobs", type=int, default=DEFAULT_JOBS, help=f"Worker processes for the doc checks; 1 checks them here (default: {DEFAULT_JOBS})"
     )
     args = parser.parse_args(argv)
     if args.client is not None and not args.paz_folder:
@@ -328,24 +433,29 @@ def _source(paz_folder: str | None, number: int | None, docs_only: bool) -> PazS
     return PazSource(str(root), client)
 
 
-def _open_client(source: PazSource) -> Client:
-    """Loads `source`'s PAZ index and reads its files by name.
+def _open_client(source: PazSource, quiet: bool = False) -> Client:
+    """Reads `source`'s files by name, loading its PAZ index on the first read.
 
-    The payload cache is emptied first: the last client's files are of no use to this one.
+    A client every doc checked before is never loaded. The payload cache is emptied before the
+    index loads: the last client's files are of no use to this one. `quiet` drops the loading
+    lines, which each worker would print once.
     """
     from cli.errors import CliError
     from cli.game_files import GameFiles
     from paz.bdo_payload_cache import clear_payload_cache
 
-    clear_payload_cache()
-    try:
-        files = GameFiles.open(source.root)
-    except CliError as error:
-        raise CheckError(str(error)) from error
+    opened: list[GameFiles] = []
 
     def read_file(name: str) -> bytes | None:
+        if not opened:
+            clear_payload_cache()
+            try:
+                with contextlib.redirect_stderr(io.StringIO()) if quiet else contextlib.nullcontext():
+                    opened.append(GameFiles.open(source.root))
+            except CliError as error:
+                raise CheckError(str(error)) from error
         try:
-            return files.read(name)
+            return opened[0].read(name)
         except CliError as error:
             raise UnreadableFile(str(error)) from error
 
@@ -365,7 +475,7 @@ def _warn_parser_without_doc() -> None:
 
 
 def _report(outcome: DocOutcome) -> None:
-    if outcome.status is Status.OK and not outcome.messages:
+    if outcome.status in (Status.OK, Status.CHECKED_BEFORE) and not outcome.messages:
         return
     print(f"{outcome.doc.name}: {outcome.status.value}", file=sys.stderr)
     for message in outcome.messages:

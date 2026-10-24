@@ -237,7 +237,7 @@ walks to its last byte by. Three tables follow:
 | -------- | ----------------------- | ------------------------------------------------------------- |
 | Sizes    | One per layout per file | Layout, Clients, Checked (the client the numbers come from), File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
 | Coverage | One per layout per file | Layout, File, Known and Unknown bytes over the whole file, every instance of every field counted |
-| Clients  | One per client read     | Client, Result: `Layout N`; `No documented layout` when the files are there but no layout of the doc reads them; `No file` when none of the doc's files is in that client's `.meta` |
+| Clients  | One per client read     | Client, Result: `Layout N`; `No documented layout` when the files are there but no layout of the doc reads them; `No file` when none of the doc's files is in that client's `.meta`; Checked against: the layouts hash the result was read against |
 
 - A client range only widens: each check adds its client to the layout it
   fits, and a layout's row stays once a client has fit it. The newest layout
@@ -255,6 +255,26 @@ walks to its last byte by. Three tables follow:
   one of them.
 - A doc whose layout holds `bytes[scan]` cannot be walked and keeps its
   markers only.
+- The Clients table's Checked against column holds a hash of what the check
+  read that client against, such as `37e1249bfa22`: the layout tables
+  (structure names and sizes; field offsets, types and names) and the doc's
+  files. Line numbers, notes and prose leave it as it is. A client whose row
+  holds the doc's current hash is not read again, and a client every doc
+  checked before is not opened at all. After a layout change each row keeps
+  its old hash until a run reads that client again, so a stopped run goes on
+  where it left off. A row from before the column (`-`) is read again once.
+  The wiki leaves the column out.
+- `--recheck` reads the clients a run reaches whatever their row holds. A
+  change to the walk or the coverage count raises `CHECK_VERSION` in
+  `PAZ-Parser/format_docs/fingerprint.py`, which changes every doc's hash.
+- A run on worker processes hands each doc's change to the main process,
+  which writes the docs every 2 minutes (`FLUSH_SECONDS`), at the end and
+  when the run stops. A PC crash loses at most the last 2 minutes of
+  clients, which the next run reads again.
+- The workers check the docs of up to 3 clients at once
+  (`CLIENTS_IN_FLIGHT`) and keep those clients open, so they go on with the
+  next client while one walks a large file (`itemenchantbackendtest.dbss`
+  takes 14 s on client 3426). Each client is still reported in order.
 
 | Command                                              | Checks                                                      |
 | ---------------------------------------------------- | ----------------------------------------------------------- |
@@ -265,9 +285,10 @@ walks to its last byte by. Three tables follow:
 | `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/<region>/2107/Paz` in whichever region folder (`NAEU`) holds it |
 | `python check_docs.py --all --version all`           | Every test client of every region folder, oldest first, then the live client; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
 | `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on, to resume one that stopped |
+| `python check_docs.py --all --version 1784 --recheck` | Test client 1784 again for every doc, also where Versions list it against the same layouts; with `--version all`, every client |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
 | `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |
-| `python check_docs.py --all --version 2107 --jobs 4`  | The same check on four worker processes; the default is one per core, and `--jobs 1` checks in one process |
+| `python check_docs.py --all --version 2107 --jobs 4`  | The same check on four worker processes; the default is sixteen (or the core count when lower), and `--jobs 1` checks in one process |
 
 Without `--paz-folder` or `--version` the check reads the PAZ folder last
 opened in the app, the live client, and names it by the number its `.meta` holds. A

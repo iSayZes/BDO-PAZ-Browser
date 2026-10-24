@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import struct
 from dataclasses import replace
 from typing import Any
 
@@ -16,7 +17,7 @@ from tests.framework import (
     run_case,
 )
 
-from .parser import POSITION_FIELDS
+from .parser import POSITION_FIELDS, parse_territoryinfo_records
 
 
 _ICON_DIR = "ui_texture/renewal/etc/wordmap"
@@ -112,7 +113,7 @@ def test_every_territory_has_names_and_icons(territoryinfo_result: HandlerResult
         assert record["name_kr"] and record["nation_kr"], record["territory_key"]
         assert record["icon_large_path"].startswith("ui_texture/"), record["territory_key"]
         assert record["icon_small_path"].startswith("ui_texture/"), record["territory_key"]
-        assert all(len(record[field]) == 3 for field in POSITION_FIELDS), record["territory_key"]
+        assert all(len(record[field]) == 3 for field in POSITION_FIELDS if field in record), record["territory_key"]
 
 
 def test_national_key_matches_the_nation_name(territoryinfo_result: HandlerResult) -> None:
@@ -133,3 +134,70 @@ def test_supply_keys_belong_to_their_territory(territoryinfo_result: HandlerResu
     for record in territoryinfo_result.records:
         for supply_key in record["territory_supply_keys"]:
             assert supply_key // _SUPPLY_KEYS_PER_TERRITORY == record["territory_key"], supply_key
+
+
+# Older layouts, built in memory: the fixtures hold the live client only.
+_CALPHEON_TENT = (-357067.0, 5348.0, -64503.0)
+_NATIONAL_KEY = 0x71B32A3D
+_STRINGS = ["칼페온 공화국", "칼페온 직할령", "Renewal/ETC/WordMap/large.dds", "Renewal/ETC/WordMap/small.dds"]
+
+
+def _counted(count_format: str, value_format: str, values: list[int]) -> bytes:
+    return struct.pack(f"<{count_format}{len(values)}{value_format}", len(values), *values)
+
+
+def _pabr_file(rows: list[bytes]) -> bytes:
+    """PABR header, the rows, a wide string table of `_STRINGS` and the trailer."""
+    body = b"PABR" + struct.pack("<I", len(rows)) + b"".join(rows)
+    encoded = [text.encode("utf-16-le") for text in _STRINGS]
+    table = struct.pack("<I", len(encoded)) + b"".join(struct.pack("<BI", 1, len(raw)) + raw for raw in encoded)
+    return body + table + struct.pack("<II", len(body), 0)
+
+
+def _layout_6_row() -> bytes:
+    """The client 1784 shape: five positions, u16 trade and supply keys, u32 tail."""
+    coords = _CALPHEON_TENT * 5
+    return (
+        struct.pack("<HBB15fI4I", _CALPHEON, 1, 0, *coords, _NATIONAL_KEY, 0, 1, 2, 3)
+        + _counted("Q", "I", _GOLDEN_EAGLE_BOOTY)
+        + _counted("Q", "H", [205, 201])
+        + _counted("Q", "H", [213, 214])
+        + struct.pack("<I", 0)
+    )
+
+
+def _layout_1_file() -> bytes:
+    """No PABR header: one position, inline UTF-16LE strings, u32 list counts."""
+    strings = b"".join(struct.pack("<Q", len(text)) + text.encode("utf-16-le") for text in _STRINGS)
+    row = (
+        struct.pack("<HBB3fI", _CALPHEON, 1, 0, *_CALPHEON_TENT, _NATIONAL_KEY)
+        + strings
+        + _counted("I", "I", _GOLDEN_EAGLE_BOOTY)
+        + _counted("I", "H", [205, 201])
+        + _counted("I", "H", [213])
+    )
+    return struct.pack("<I", 1) + row
+
+
+def test_layout_6_reads_trade_keys_and_plunder_positions() -> None:
+    (record,) = parse_territoryinfo_records(_pabr_file([_layout_6_row()]))
+
+    assert (record["territory_key"], record["name_kr"], record["nation_kr"]) == (_CALPHEON, _STRINGS[1], _STRINGS[0])
+    assert record["booty_item_ids"] == _GOLDEN_EAGLE_BOOTY
+    assert (record["territory_trade_keys"], record["territory_supply_keys"]) == ([205, 201], [213, 214])
+    assert record["plunder_defense_position"] == list(_CALPHEON_TENT)
+    assert record["unknown_tail"] == 0
+
+
+def test_layout_1_reads_inline_strings_and_one_position() -> None:
+    (record,) = parse_territoryinfo_records(_layout_1_file())
+
+    assert (record["name_kr"], record["icon_small_path"]) == (_STRINGS[1], "ui_texture/renewal/etc/wordmap/small.dds")
+    assert [field for field in POSITION_FIELDS if field in record] == ["occupying_tent_position"]
+    assert (record["territory_trade_keys"], record["territory_supply_keys"]) == ([205, 201], [213])
+    assert "unknown_tail" not in record
+
+
+def test_a_row_no_layout_tiles_raises() -> None:
+    with pytest.raises(ValueError, match="fits no known layout"):
+        parse_territoryinfo_records(_pabr_file([_layout_6_row() + b"\0"]))

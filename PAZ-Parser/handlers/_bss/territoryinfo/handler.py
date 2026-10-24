@@ -15,7 +15,8 @@ from .parser import POSITION_FIELDS, parse_territoryinfo_records
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-# Column label key per position field, in file order.
+# Column label key per shown position field, in file order; the plunder war
+# positions of the older layouts have no column.
 _POSITION_LABELS = dict(zip(POSITION_FIELDS, ("occupyingTent", "militiaAttack", "militiaDefense")))
 _BOOTY_PREVIEW_ITEMS = 2
 
@@ -44,7 +45,7 @@ class TerritoryInfoBssHandler(PreviewHandler):
             Column(cols["kingTerritory"], sort_key="is_king_territory_only"),
             Column(cols["booty"], sort_key="booty"),
             # Position columns: an x, y, z list would only sort by its string form.
-            *(Column(cols[_POSITION_LABELS[field]]) for field in POSITION_FIELDS),
+            *(Column(cols[label]) for label in _POSITION_LABELS.values()),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -85,7 +86,8 @@ class TerritoryInfoBssHandler(PreviewHandler):
                 flag_cell(r["is_lord_territory_only"]),
                 flag_cell(r["is_king_territory_only"]),
                 item_key_list_cell(r["booty_item_ids"], _BOOTY_PREVIEW_ITEMS) or _EMPTY,
-                *(e(_position_text(r[field]) or _EMPTY) for field in POSITION_FIELDS),
+                # Layout 1 stores only the occupying tent position.
+                *(e(_position_text(r.get(field, [])) or _EMPTY) for field in _POSITION_LABELS),
             ]
             for r in slice_
         ]

@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "N.º de habilidad",
+    "skill": "Habilidad",
+    "skillLevel": "Nivel de habilidad",
+    "treeColumn": "Columna del árbol",
+    "treeRow": "Fila del árbol"
+  },
+  "meta": {
+    "count": "{count} habilidades de hermandad"
+  }
+}

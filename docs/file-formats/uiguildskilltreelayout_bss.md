@@ -628,5 +628,8 @@ a 40-row sheet that lacks the skills `65123` to `65126`.
   numbers `65001` to `65332`) and 3482 (17 by 46, 58 skills, `62844` to
   `65332`). On client 3482 all 58 are rows of
   [`skill.dbss`](skill_dbss.md) and of [`guildskill.bss`](guildskill_bss.md).
+  The `guildskill.bss` handler loads this grid as a companion and shows each
+  guild skill's column and row
+  ([Guild Skill Tree](guildskill_bss.md#guild-skill-tree)).
 - No arrow appears in any grid of the eight files on clients 1784 and
   3482: the arrows exist only in the sheet templates.

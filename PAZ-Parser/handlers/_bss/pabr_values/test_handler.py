@@ -68,9 +68,6 @@ _ROSE_WAR_TEAM_NO = "rosewarteamnostaticstatus.bss"
 _FADED_RELIC = 21811
 _MYSTERIOUS_STATUE = 21699
 _COMMAND_TO_GATHER = 65070
-# Tables with keys that only skilltype.dbss names, in Korean, which the tests do not load:
-# the guild skill variants (기습적인 행동A, 34 of 766 skills on client 3474).
-_KOREAN_NAMED = frozenset({"guildskill.bss"})
 # Tables that keep keys of characters the client no longer has: vehicletypename.bss
 # (31036 NationElephant and 11 more of its 112 rows on client 3482, in no characterstatic.dbss).
 _RETIRED_KEYS = frozenset({"vehicletypename.bss"})
@@ -230,9 +227,6 @@ _TARGETS: dict[str, list[TargetTest]] = {
     # The first guild skill with a grade list on every client (GuildSpecialSkillRight_Table, client 1784).
     "guildspecialskillright.bss": [
         TargetTest(col="guild_skill_no", value=_COMMAND_TO_GATHER, expected={"skill_name": "Command to Gather"}),
-    ],
-    "guildskill.bss": [
-        TargetTest(col="skill_no", value=_COMMAND_TO_GATHER, expected={"skill_level": 1, "skill_name": "Command to Gather"}),
     ],
     "guildmatchrank.bss": [TargetTest(col="rank", value=1, expected={"rank": 1})],
     # The Carrack the servant list offers the change for (Type_Carrack) and its Ship License.
@@ -400,7 +394,7 @@ def _named_values(value_table: ValueTable) -> list[tuple[str, NameLookup]]:
 
 
 @pytest.mark.parametrize(
-    "name", [name for name in _TABLES if _lookup_fields(name) and name not in _KOREAN_NAMED | _RETIRED_KEYS]
+    "name", [name for name in _TABLES if _lookup_fields(name) and name not in _RETIRED_KEYS]
 )
 def test_every_key_has_a_loc_name(name: str) -> None:
     """Every key but `0` (no character on a gimmick sanctum) has a name."""

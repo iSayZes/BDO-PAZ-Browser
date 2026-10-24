@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "N° de compétence",
+    "skill": "Compétence",
+    "skillLevel": "Niveau de compétence",
+    "treeColumn": "Colonne de l'arbre",
+    "treeRow": "Ligne de l'arbre"
+  },
+  "meta": {
+    "count": "{count} compétences de guilde"
+  }
+}

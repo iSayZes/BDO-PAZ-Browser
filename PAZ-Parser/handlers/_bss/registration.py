@@ -71,6 +71,7 @@ from .groupcameradata.handler import GroupCameraDataBssHandler
 from .growthpasslinkdata.handler import GrowthPassLinkDataBssHandler
 from .guildhousecraftskillreverselinklist.handler import GuildHouseCraftSkillReverseLinkListBssHandler
 from .guildrightnewstaticstatus.handler import GuildRightNewStaticStatusBssHandler
+from .guildskill.handler import GuildSkillBssHandler
 from .hardcorecharacterstatstaticstatus.handler import HardcoreCharacterStatBssHandler
 from .hardcorerandomspawncharacterstaticstatusmanager.handler import (
     HardcoreRandomSpawnCharacterStaticStatusManagerBssHandler,
@@ -323,6 +324,7 @@ def register_bss_handlers() -> None:
         GuildHouseCraftSkillReverseLinkListBssHandler(),
     )
     register_handler("guildrightnewstaticstatus.bss", GuildRightNewStaticStatusBssHandler())
+    register_handler("guildskill.bss", GuildSkillBssHandler())
     register_handler(
         "hardcorecharacterstatstaticstatus.bss",
         HardcoreCharacterStatBssHandler(),

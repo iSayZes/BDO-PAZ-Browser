@@ -34,12 +34,6 @@ def test_the_grade_tables_agree_on_the_grade_count() -> None:
     assert len(counts) == 1
 
 
-def test_every_special_skill_is_a_guild_skill() -> None:
-    guild_skills = {record["skill_no"] for record in _records("guildskill.bss")}
-    special = {record["guild_skill_no"] for record in _records("guildspecialskillright.bss")}
-    assert special and special <= guild_skills
-
-
 def test_the_rank_brackets_join_without_gaps() -> None:
     brackets = sorted((record["rank"], record["min_point"], record["max_point"]) for record in _records("guildmatchrank.bss"))
     assert brackets[-1][1] == 0

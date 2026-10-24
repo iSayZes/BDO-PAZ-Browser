@@ -505,9 +505,10 @@ Every client the doc check read, and the layout its files fit.
 
 ## Companion Files
 
-| File                  | Required | Role                                                  |
-| --------------------- | -------- | ----------------------------------------------------- |
-| `languagedata_en.loc` | Optional | Skill names, LOC type 10 at `str_id1=skill_no`        |
+| File                                                         | Required | Role                                                                 |
+| ------------------------------------------------------------ | -------- | -------------------------------------------------------------------- |
+| [`uiguildskilltreelayout.bss`](uiguildskilltreelayout_bss.md) | Optional | The guild skill tree grid: the column and row of each `skill_no` it places |
+| `languagedata_en.loc`                                        | Optional | Skill names, LOC type 10 at `str_id1=skill_no`                       |
 
 All multi-byte values are little-endian.
 
@@ -548,11 +549,25 @@ little-endian `skill_key` (`skill_no << 16 | level`, as in
 skill in LOC type 10 or, for 34 variants such as `기습적인 행동A`, only in
 the Korean skill name of `skilltype.dbss` (client 3474).
 
+## Guild Skill Tree
+
+The guild window draws its skill page from
+[`uiguildskilltreelayout.bss`](uiguildskilltreelayout_bss.md), a grid whose
+skill cells hold a `skill_no`. Every skill cell of that grid is a row here,
+and no skill sits on two cells: on client 3483, 58 of the 766 rows have a
+cell. The other rows are skills the window does not place, such as the
+Giant Mudster summons 54414 to 54417. A cell's column and row are its
+position in the window, with even columns and rows the skill slots (see
+[Client Use](uiguildskilltreelayout_bss.md#client-use)).
+
 ## Notes
 
 - Client 1784 and 2107 have 724 rows, 2519 736, 3002 738, 3251 750 and
   3474 766. Seven skill numbers of client 1784 are gone by client 3474.
-- The handler for the PABR option tables (`_bss/pabr_values/`) previews
-  this file with the shared layout table in
-  `_bss/pabr_values/guild_tables.py`: the skill number first, then its name
-  and the level.
+- No skill number has two rows (client 3483), so `skill_no` alone keys a
+  row.
+- The handler (`_bss/guildskill/`) reads the rows with the PABR value table
+  reader of `_bss/pabr_values/` and the grid with the reader of
+  `_bss/uiskilltreelayout/`, joins them on `skill_no` and shows each row's
+  tree column and row, empty for a row the grid does not place or when the
+  grid file is missing.

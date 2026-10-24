@@ -11,6 +11,7 @@ the west edge (smallest x).
 
 from __future__ import annotations
 
+from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 
 from _common.binary import u32
@@ -26,6 +27,9 @@ CELL_UNITS = 1600
 GRID_MIN_X = -2_048_000
 GRID_MIN_Z = -1_126_400
 _STRING_COUNT_SIZE = 4
+_BYTE_VALUES = 256
+_FULL_BYTE = 0xFF
+_BYTE_ORDER = "little"
 
 
 @dataclass(frozen=True)
@@ -76,6 +80,55 @@ def cell_areas(cells: bytes) -> list[CellArea]:
         CellArea(value, counts[value], *columns[value], *rows[value])
         for value in sorted(counts)
     ]
+
+
+def split_areas(cells: bytes, split_cells: bytes, values: Collection[int]) -> dict[tuple[int, int], CellArea]:
+    """One `CellArea` per (cell value, split value) pair, for the cell values in `values`.
+
+    `split_cells` is a second grid read with `read_cells` (the territory
+    grid); a pair's area holds the cells where `cells` has the value and
+    `split_cells` the split value.
+    """
+    if len(split_cells) != len(cells):
+        raise ValueError(f"the split grid has {len(split_cells)} cells, the grid {len(cells)}")
+    # Stands in for every cell outside the pair; a byte none of `values` uses.
+    outside = next((byte for byte in range(_BYTE_VALUES) if byte not in values), None)
+    if outside is None:
+        raise ValueError("every byte value is split, so no byte is left to mask the other cells")
+    grid = _as_int(cells)
+    fill = _as_int(bytes((outside,)) * len(cells))
+    wanted = _byte_mask(cells, values)
+    areas: dict[tuple[int, int], CellArea] = {}
+    for split_value in sorted(set(split_cells)):
+        pair = wanted & _byte_mask(split_cells, (split_value,))
+        masked = ((grid & pair) | (fill & ~pair)).to_bytes(len(cells), _BYTE_ORDER)
+        for area in cell_areas(masked):
+            if area.value != outside:
+                areas[(area.value, split_value)] = area
+    return areas
+
+
+def _as_int(cells: bytes) -> int:
+    """The cells as one int, so `&` and `|` work on all of them at once."""
+    return int.from_bytes(cells, _BYTE_ORDER)
+
+
+def _byte_mask(cells: bytes, selected: Collection[int]) -> int:
+    """`_as_int` of a grid that is `0xFF` where `cells` holds a selected value, else `0`."""
+    table = bytes(_FULL_BYTE if byte in selected else 0 for byte in range(_BYTE_VALUES))
+    return _as_int(cells.translate(table))
+
+
+def merge_areas(areas: Sequence[CellArea]) -> CellArea:
+    """One area over the cells of `areas`, which share a cell value: summed counts, the box around their boxes."""
+    return CellArea(
+        areas[0].value,
+        sum(area.cell_count for area in areas),
+        min(area.column_min for area in areas),
+        max(area.column_max for area in areas),
+        min(area.row_min for area in areas),
+        max(area.row_max for area in areas),
+    )
 
 
 def _line_values(line: bytes) -> set[int]:

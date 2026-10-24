@@ -20,7 +20,9 @@ joins to:
 | `worldmapsiegeregionforconquest.bss`       | Node War areas                    | Area number of a [`villagesiegeinfo.bss`](villagesiegeinfo_bss.md) row; `0` outside |
 | `worldmapoceansiegeregionforconquest.bss`  | Blue Battlefield areas            | Area number of an [`oceansiegeinfo.bss`](oceansiegeinfo_bss.md) row; `255` outside |
 
-[Cell Values](#cell-values) gives the evidence for each join.
+[Cell Values](#cell-values) gives the evidence for each join. A
+`worldmapfieldtypedata.bss` value that two region groups share is split
+by territory, see [Shared Region Group Values](#shared-region-group-values).
 
 ## Versions
 
@@ -529,6 +531,8 @@ Every client the doc check read, and the layout its files fit.
 | File                   | Required | Role                                                                                     |
 | ---------------------- | -------- | ---------------------------------------------------------------------------------------- |
 | `regiongroupinfo.bss`  | Optional | Region groups of `worldmapfieldtypedata.bss`, named by their worldmap node (LOC type 29) |
+| `regioninfo.bss`       | Optional | Territory of each region group's regions, to split a shared `worldmapfieldtypedata.bss` value |
+| `worldmapterritorytypedata.bss` | Optional | Territory of each cell, to split a shared `worldmapfieldtypedata.bss` value |
 | `villagesiegeinfo.bss` | Optional | Region keys of each Node War area number, for `worldmapsiegeregionforconquest.bss`       |
 | `oceansiegeinfo.bss`   | Optional | Island region keys of each Blue Battlefield area number, for `worldmapoceansiegeregionforconquest.bss` |
 | `languagedata_en.loc`  | Optional | Territory names (type 12), region names (type 17), node names (type 29)                  |
@@ -610,6 +614,41 @@ client 3482, 39 of the values `0` to `46` stand for two groups each, `2`
 for the Altar of Agris group (`2`) and the Unjongga Street group (`258`)
 in the Land of the Morning Light.
 
+## Shared Region Group Values
+
+The territory grid tells the two groups of a shared
+`worldmapfieldtypedata.bss` value apart, and the preview gives each group
+its own row:
+
+1. A group's territory is the `territory_key` of its `regioninfo.bss`
+   regions. On client 3483, 249 of the 250 groups have all their regions
+   in one territory; group `0` (no worldmap node, no position, the Test
+   Zone, ocean and undiscovered-area regions among its 32) spans eight.
+2. A group with one territory owns the value's cells whose
+   `worldmapterritorytypedata.bss` cell is that territory. When two groups
+   of a value have the same territory, neither owns it.
+3. The value's other cells go to the groups that own no territory (group
+   `0` for value `0`), or, when every group owns one, to one row with all
+   the groups' keys.
+
+On client 3483 the shared values pair a group in Balenos or Serendia with
+one in the Land of the Morning Light (values `1` to `25` except `10`),
+Calpheon with Ulukita (`31`, `33`, `34` and `36` to `38`), Calpheon with
+Outer Edania (`40` to `46`) and Calpheon with Balenos (`39`, groups `39`
+and `295`). Value `0` pairs group `0` with group `256` in the Land of the
+Morning Light. Values `3`, `22` and `23` keep a row with both keys
+for their cells in a territory neither group lies in: 3 cells in Serendia
+and 95 in territory 7.
+
+Evidence on client 3483: of the `regioninfo.bss` regions in a group of a
+shared value whose `mapdata_realexplore2.bwp` waypoint lies on a cell of
+that value, all 208 (121 in the lower group, 87 in the upper) land on
+their own group's row. Another 15 waypoints lie on a cell of another
+value.
+
+Without `regioninfo.bss` or the territory grid, a shared value keeps one
+row with both keys.
+
 ## Field Names
 
 The 2016 client (build of 2016-01-11) ships with debug symbols. Its
@@ -653,6 +692,8 @@ and why both major siege files exist, is open.
 ### Region Groups Above 255
 
 The field type grid keeps only the low byte of a region group key, so
-groups `256` to `302` share values with groups `0` to `46`. Whether the
-client tells them apart (by the territory grid, say) or highlights both
-is open.
+groups `256` to `302` share values with groups `0` to `46`. The preview
+splits them by territory (see
+[Shared Region Group Values](#shared-region-group-values)), which fits
+every waypoint checked. Whether the client does the same when it
+highlights a group on the world map, or highlights both groups, is open.

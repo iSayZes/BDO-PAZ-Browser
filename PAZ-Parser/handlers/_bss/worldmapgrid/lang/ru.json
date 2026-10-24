@@ -15,6 +15,6 @@
     "range": "от {low} до {high}"
   },
   "meta": {
-    "count": "Значений ячеек: {count}"
+    "count": "Строк: {count}"
   }
 }

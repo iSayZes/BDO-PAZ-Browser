@@ -15,6 +15,6 @@
     "range": "{low} ~ {high}"
   },
   "meta": {
-    "count": "셀 값 {count}개"
+    "count": "행 {count}개"
   }
 }

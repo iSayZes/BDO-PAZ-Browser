@@ -1,13 +1,14 @@
 """`guildhonorsystem.bss`: the Guild Fame change reasons, benefits and daily pay steps.
 
-    u64 unknown_00 | i64 unknown_08 | i64 unknown_10 | u64 unknown_18..unknown_38 (5)
+    u64 unknown_00 | i64 min_guild_fame | i64 max_guild_fame | u64 war_duration | u64 response_war_duration
+    | u64 war_cooldown | u64 war_guild_age | u64 war_online_members
     u32 count | count x (u32 key | str16 description_kr | i64 point | u64 reason_param
                          | u32 key_dup | u32 reason_type)
     u32 count | count x (u32 key | str16 description_kr | i64 point | u64 param_1
                          | u64 param_2 | u32 key_dup | u8 benefit_type)
     u32 count | count x (i64 point | u32 bonus_percent)
 
-No PABR magic and no string table; the lists end at the last byte. Layout 1
+No PABR magic and no string table; the lists end at the last byte. Layout 4
 in docs/file-formats/guildhonorsystem_bss.md.
 """
 
@@ -25,13 +26,13 @@ FILE_NAME = "guildhonorsystem.bss"
 
 HEAD_FIELDS = (
     "unknown_00",
-    "unknown_08",
-    "unknown_10",
-    "unknown_18",
-    "unknown_20",
-    "unknown_28",
-    "unknown_30",
-    "unknown_38",
+    "min_guild_fame",
+    "max_guild_fame",
+    "war_duration",
+    "response_war_duration",
+    "war_cooldown",
+    "war_guild_age",
+    "war_online_members",
 )
 _HEAD = struct.Struct("<Qqq5Q")
 _U32 = struct.Struct("<I")

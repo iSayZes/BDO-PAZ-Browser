@@ -18,9 +18,9 @@ Sizes and coverage from the client in the Checked column. The newest layout is t
 | ------ | -------------- | ------- | ------------------------ | ----- | -------------- | --------- |
 | 1      | 1246 and later | 3483    | `personalmonsteretc.bss` | 236   | 1 String Table | 72        |
 
-| Layout | File                     | Known         | Unknown    |
-| ------ | ------------------------ | ------------- | ---------- |
-| 1      | `personalmonsteretc.bss` | 228 B (96.6%) | 8 B (3.4%) |
+| Layout | File                     | Known          | Unknown    |
+| ------ | ------------------------ | -------------- | ---------- |
+| 1      | `personalmonsteretc.bss` | 236 B (100.0%) | 0 B (0.0%) |
 
 Every client the doc check read, and the layout its files fit.
 
@@ -508,19 +508,19 @@ All multi-byte values are little-endian.
 
 ### File Layout
 
-| Offset              | Type         | Field               | Notes                                                                |
-| ------------------- | ------------ | ------------------- | -------------------------------------------------------------------- |
-| `+0x00`             | char[4]      | magic               | ASCII `PABR`                                                         |
-| `+0x04`             | u32          | unknown_04          | `0` on clients 1784 and 3474                                         |
-| `+0x08`             | f32          | detect_range        | `2000000`; the world map shows a boss once an adventurer is this close |
-| `+0x0C`             | u32          | max_level           | `5`; the highest boss level                                          |
-| `+0x10`             | f32[2]       | icon_size           | `119, 119`: width and height of the world map icon                   |
-| `+0x18`             | f32[3][4]    | difficulty_icon_uvs | Per difficulty `1` to `3` a region `x1, y1, x2, y2` of the icon sheet |
-| `+0x48`             | f32[5][4]    | level_icon_uvs      | Per level `1` to `5` a region `x1, y1, x2, y2` of the icon sheet     |
-| `+0x98`             | u32          | unknown_98          | `1` on clients 1784 and 3474                                         |
-| `+0x9C`             | String Table | string_table        | See String Table                                                     |
-| `string_table+0x00` | u32          | table_start         | Offset of the string table; `0x9C` on clients 1784 and 3474          |
-| `string_table+0x04` | u32          | zero                | Always `0`                                                           |
+| Offset              | Type         | Field                      | Notes                                                                    |
+| ------------------- | ------------ | -------------------------- | ------------------------------------------------------------------------ |
+| `+0x00`             | char[4]      | magic                      | ASCII `PABR`                                                             |
+| `+0x04`             | u32          | monster_icon_image_ref     | String table index of the icon sheet path; `0` on clients 1784 and 3474  |
+| `+0x08`             | f32          | detect_range               | `2000000`; the world map shows a boss once an adventurer is this close   |
+| `+0x0C`             | u32          | max_level                  | `5`; the highest boss level                                              |
+| `+0x10`             | f32[2]       | icon_size                  | `119, 119`: width and height of the world map icon                       |
+| `+0x18`             | f32[3][4]    | difficulty_icon_uvs        | Per difficulty `1` to `3` a region `x1, y1, x2, y2` of the icon sheet    |
+| `+0x48`             | f32[5][4]    | level_icon_uvs             | Per level `1` to `5` a region `x1, y1, x2, y2` of the icon sheet         |
+| `+0x98`             | u32          | total_accept_condition_ref | String table index of the accept condition; `1` (empty) on clients 1784 and 3474 |
+| `+0x9C`             | String Table | string_table               | See String Table                                                         |
+| `string_table+0x00` | u32          | table_start                | Offset of the string table; `0x9C` on clients 1784 and 3474              |
+| `string_table+0x04` | u32          | zero                       | Always `0`                                                               |
 
 ### String Table (variable: 4 bytes + strings)
 
@@ -531,13 +531,14 @@ All multi-byte values are little-endian.
 
 ## Strings
 
-| Index | Wide | Text (clients 1784 and 3474)                                   |
-| ----- | ---- | -------------------------------------------------------------- |
-| 0     | `0`  | `renewal/PcRemaster/Remaster_Icon_Worldmap_AutoBoss_All.dds`   |
-| 1     | `1`  | Empty                                                          |
+| Index | Wide | Field                      | Text (clients 1784 and 3474)                                 |
+| ----- | ---- | -------------------------- | ------------------------------------------------------------ |
+| 0     | `0`  | monster_icon_image_ref     | `renewal/PcRemaster/Remaster_Icon_Worldmap_AutoBoss_All.dds` |
+| 1     | `1`  | total_accept_condition_ref | Empty                                                        |
 
 String 0 is the sheet's `MonsterIconImage`, the icon sheet the regions
-below cut from.
+below cut from. String 1 is its `TotalAcceptCondition`, empty in the
+sheet.
 
 ## Icon Regions
 
@@ -575,6 +576,16 @@ holds: `DetectRange` `2000000`, `MaxLevel` `5`, `IconSize` `119,119`, the
 the difficulty and level regions of the world map boss icon. The 2016
 client's debug symbols have no personal monster type.
 
+The server loader for the sheet in the client 1784 server dump reads
+`MonsterIconImage` first, as a narrow string, then `DetectRange`,
+`LevelUpCycle`, `MaxLevel`, `APDecreaseRate`, `DPDecreaseRate` and
+`IconSize`, and `TotalAcceptCondition` last, as a wide string, into the
+last member of its option struct. The file keeps that order without the
+server-only columns: `monster_icon_image_ref` before `detect_range`, and
+`total_accept_condition_ref` after the regions. Each index points at a
+string of the matching kind: string 0 is narrow (`is_wide` `0`), string 1
+wide (`is_wide` `1`).
+
 ## Notes
 
 - `MonsterIcon` lists three `.dds` paths in the sheet; the file holds none
@@ -585,18 +596,6 @@ client's debug symbols have no personal monster type.
   `max_level`.
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews
   this file with the layout in `_bss/pabr_values/personalmonster_tables.py`:
-  one row with the range, the highest level, the icon size as
-  `width x height` and each icon region as `x1, y1, x2, y2` on its own
-  line. `unknown_04`, `unknown_98` and the two strings get no column.
-
-## Open Questions
-
-### unknown_04 and unknown_98
-
-The two u32 fields are `0` and `1`, the indexes of the two strings. The
-sheet's two text columns that the file could hold are `MonsterIconImage`
-(string 0) and `TotalAcceptCondition` (`<null>`, which a PABR table would
-store as an empty string such as string 1), so `unknown_04` may be the
-string index of the icon sheet and `unknown_98` that of the condition. A
-second client with other values would tell them apart from counts or
-flags that happen to be `0` and `1`.
+  one row with the icon sheet path, the range, the highest level, the icon
+  size as `width x height` and each icon region as `x1, y1, x2, y2` on its
+  own line. The empty accept condition gets no column.

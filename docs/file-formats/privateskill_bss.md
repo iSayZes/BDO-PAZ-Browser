@@ -557,6 +557,11 @@ bytes), where Layout 2 has one bit per class type.
 
 On client 1194 the lists hold 4,865 active and 2,516 passive skills.
 
+Client 1267 holds all 8,413 keys of client 1261, 8,411 of them in the same
+list, and on every one bits `0` to `31` of the Layout 2 `class_mask` are the
+class bytes of client 1261. The 1,519 rows of client 1261 with all 32 bytes
+set store `0xFFFFFFFFFFFFFFFF` on client 1267.
+
 ## `class_mask`
 
 On every row of client 3482 the mask equals the `class_mask` of the same
@@ -570,7 +575,14 @@ key in [`skillsimply.dbss`](skillsimply_dbss.md#class_mask), 15,294 of
 | `0x7FFFFFFFFFFF` | 610                  | 2,557                 | Every class                   |
 | `0`              | 2,534                | 1,756                 | No class                      |
 
-On client 1784 every-class rows store `0xFFFFFFFFFFFFFFFF`, all 64 bits.
+On clients 1267 to 2243 the mask is a 32-bit mask with bit `31` copied into
+the high half: every row with bit `31` set has a high half of `0xFFFFFFFF`
+and every other row a high half of `0`, so every-class rows store
+`0xFFFFFFFFFFFFFFFF`. The parser keeps the low half of such a file and reads
+it with 32 class slots, like Layout 1. Clients 2243 and 2250 hold the same
+12,765 keys; on client 2250 the 2,333 rows that store all 64 bits on 2243
+store `0x1FFFFFFFFF` (class types `0` to `36`), and 267 rows have bit `31`
+set with a high half of `0`.
 
 ## Field Names
 
@@ -597,6 +609,10 @@ in the same layouts. The names come from the matching `skill.dbss` and
 - The handler shows one row per key, the active list first: the skill
   number linked to its `skill.dbss` row, the skill icon and LOC type `10`
   name, Active or Passive, and the LOC type `21` names of the classes in
-  `class_mask` (All for every class).
+  `class_mask` (All for every class, and for a row with all 32 class slots
+  set in a Layout 1 file or a Layout 2 file of clients 1267 to 2243).
+- Nothing in the file names its layout. The parser reads it with Layout 2,
+  then Layout 1, and keeps the first whose rows end where the string table
+  starts.
 - The 2016 exe binds `isPrivateSkill` on `SkillTypeStaticStatusWrapper` for
   the Lua; no `.luac` on client 3482 calls it.

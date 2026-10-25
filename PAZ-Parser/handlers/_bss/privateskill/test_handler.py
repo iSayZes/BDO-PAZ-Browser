@@ -22,7 +22,8 @@ from tests.framework import (
 from _bss.publicskill.parser import FILE_NAME as PUBLICSKILL_FILE, parse_publicskill_keys
 from _common.skill import skill_key
 from _dbss.skillsimply.parser import parse_skillsimply_records
-from .parser import ACTIVE_KIND, FILE_NAME, PASSIVE_KIND, parse_privateskill_records
+from .handler import row_classes_label
+from .parser import ACTIVE_KIND, FILE_NAME, PASSIVE_KIND, class_flags_mask, parse_privateskill, parse_privateskill_records
 
 # Ground Roar, a Warrior active skill, and Sword Training, a Musa passive.
 _GROUND_ROAR = 216
@@ -111,10 +112,22 @@ def test_kind_and_class_mask_follow_skillsimply() -> None:
 
 _U32 = struct.Struct("<I")
 _ROW = struct.Struct("<IQ")
+_LAYOUT_1_ROW = struct.Struct("<I32s")
+_LAYOUT_1_SLOTS = 32
+_ALL = "All"
 
 
 def _list(*rows: tuple[int, int]) -> bytes:
     return _U32.pack(len(rows)) + b"".join(_ROW.pack(*row) for row in rows)
+
+
+def _flags(*class_types: int) -> bytes:
+    """A Layout 1 class set: byte `n` is `1` for each given class type."""
+    return bytes(1 if n in class_types else 0 for n in range(_LAYOUT_1_SLOTS))
+
+
+def _layout_1_list(*rows: tuple[int, bytes]) -> bytes:
+    return _U32.pack(len(rows)) + b"".join(_LAYOUT_1_ROW.pack(*row) for row in rows)
 
 
 def _file(*lists: bytes) -> bytes:
@@ -131,6 +144,44 @@ def test_both_lists_are_read_with_their_kind() -> None:
         {"skill_key": ground_roar, "class_mask": 0x1, "kind": ACTIVE_KIND},
         {"skill_key": sword_training, "class_mask": 0x100000, "kind": PASSIVE_KIND},
     ]
+
+
+def test_layout_1_class_bytes_are_read_as_the_bit_mask() -> None:
+    ground_roar = skill_key(_GROUND_ROAR, 1)
+    sword_training = skill_key(_SWORD_TRAINING, 1)
+    table = parse_privateskill(_file(_layout_1_list((ground_roar, _flags(0))), _layout_1_list((sword_training, _flags(20, 31)))))
+    assert table.layout.number == 1
+    assert table.records == [
+        {"skill_key": ground_roar, "class_mask": 0x1, "kind": ACTIVE_KIND},
+        {"skill_key": sword_training, "class_mask": 1 << 20 | 1 << 31, "kind": PASSIVE_KIND},
+    ]
+
+
+def test_layout_2_rows_are_read_as_layout_2() -> None:
+    assert parse_privateskill(_file(_list((skill_key(_GROUND_ROAR, 1), 0x1)), _list())).layout.number == 2
+
+
+def test_layout_2_masks_with_bit_31_copied_into_the_high_half_keep_their_low_half() -> None:
+    # Clients 1267 to 2243: a 32-bit mask widened with its sign bit.
+    widened = 0xFFFF_FFFF_8000_0001
+    table = parse_privateskill(_file(_list((skill_key(_GROUND_ROAR, 1), widened)), _list((skill_key(_SWORD_TRAINING, 1), 0x2))))
+
+    assert table.class_slots == _LAYOUT_1_SLOTS
+    assert [row["class_mask"] for row in table.records] == [0x8000_0001, 0x2]
+
+
+def test_layout_2_masks_with_classes_past_31_stay_as_stored() -> None:
+    masks = (0x1F_8000_0001, 0x2)
+    table = parse_privateskill(_file(_list((skill_key(_GROUND_ROAR, 1), masks[0])), _list((skill_key(_SWORD_TRAINING, 1), masks[1]))))
+
+    assert table.class_slots == 64
+    assert tuple(row["class_mask"] for row in table.records) == masks
+
+
+def test_every_class_slot_of_a_layout_1_row_is_every_class() -> None:
+    every_slot = class_flags_mask(bytes([1]) * _LAYOUT_1_SLOTS)
+    assert row_classes_label(every_slot, _LAYOUT_1_SLOTS, _ALL) == _ALL
+    assert row_classes_label(every_slot, 64, _ALL) != _ALL
 
 
 def test_rows_short_of_the_string_table_are_rejected() -> None:

@@ -9,11 +9,21 @@ from _common.html import Column, e
 from _common.lang import load_handler_strings
 from _common.row_table import RowTableHandler
 from _bss.publicskill.skill_rows import SKILL_FIELD, SKILL_NO_FIELD, skill_key_fields, skill_name_cell, skill_no_cell
-from .parser import FILE_NAME, parse_privateskill_records
+from .parser import FILE_NAME, parse_privateskill
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
+
+
+def row_classes_label(class_mask: int, class_slots: int, all_label: str) -> str:
+    """`all_label` when the mask holds every class slot of its row or every playable class, else the class names.
+
+    A file of 32 class slots (Layout 1, and Layout 2 up to client 2243) cannot
+    hold the playable class types from `32` on in its every-class rows.
+    """
+    every_slot = (1 << class_slots) - 1
+    return all_label if class_mask & every_slot == every_slot else classes_label(class_mask, all_label)
 
 
 class PrivateSkillHandler(RowTableHandler):
@@ -31,15 +41,16 @@ class PrivateSkillHandler(RowTableHandler):
     def read_records(self, data: bytes, companions: dict[str, bytes]) -> list[dict]:
         strings = load_handler_strings(self.lang, _LANG_DIR)
         kind_labels = strings["kind"]
+        table = parse_privateskill(data)
         return [
             {
                 **skill_key_fields(row["skill_key"]),
                 "kind": row["kind"],
                 "kind_label": kind_labels[str(row["kind"])],
                 "class_mask": row["class_mask"],
-                "classes": classes_label(row["class_mask"], strings["allClasses"]),
+                "classes": row_classes_label(row["class_mask"], table.class_slots, strings["allClasses"]),
             }
-            for row in parse_privateskill_records(data)
+            for row in table.records
         ]
 
     def cells(self, record: dict) -> list[str]:

@@ -516,7 +516,7 @@ All multi-byte values are little-endian.
 | Offset              | Type             | Field        | Notes                                                              |
 | ------------------- | ---------------- | ------------ | ------------------------------------------------------------------ |
 | `+0x00`             | char[4]          | magic        | ASCII `PABR`                                                       |
-| `+0x04`             | u32              | unknown_04   | `0` on clients 1784 and 3482; see [Open Questions](#open-questions) |
+| `+0x04`             | u32              | unknown_04   | `0` on every client from 1194 to 3482; see [Open Questions](#open-questions) |
 | `+0x08`             | u32              | skill_count  | Number of skill keys; `14405` on client 3482, `11327` on client 1784 |
 | `+0x0c`             | u32[skill_count] | skill_keys   | `skill_no << 16 \| level`; see [Skill Keys](#skill-keys)           |
 | `skill_keys+0x00`   | String Table     | string_table | Empty: `string_count` is `0`                                       |
@@ -579,5 +579,16 @@ from the skill sheets.
 
 The u32 at `0x04` sits where `privateskill.bss` keeps its first list count,
 `active_count`, so it may count a list that is empty in every checked
-file. With no rows to read, the row size of such a list is not known, and
-the parser rejects a file where the value is not `0`.
+file: it is `0` on all 356 test clients from 1194, where the file first
+appears, to 3482. With no rows to read, the row size of such a list is not
+known, and the parser rejects a file where the value is not `0`.
+
+No source names the field:
+
+| Source                                                 | What it holds                                                   |
+| ------------------------------------------------------ | --------------------------------------------------------------- |
+| Client Lua on client 3482                              | No call names `publicskill` or `privateskill`                   |
+| A private server's `DataSheets.bexcel` on client 1784  | No sheet or column named for either file                        |
+| That private server's server exe                       | No record loader and no string for either file                  |
+| The client 519 private server's tables and server code | No table or class named for either file                         |
+| The 2016 exe and PDB                                   | Only `isPrivateSkill` on `SkillTypeStaticStatusWrapper`; they predate client 1194 |

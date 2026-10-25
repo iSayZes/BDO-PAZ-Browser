@@ -91,6 +91,17 @@ def test_jobs_takes_at_least_one_worker() -> None:
     assert check_docs._arguments(["--all", "--jobs", "1"]).jobs == 1
 
 
+def test_the_paz_index_is_read_from_the_folder_without_opening_the_archives(tmp_path: Path) -> None:
+    # The folder has no archives: opening them would fail, so a read that works never tried.
+    (tmp_path / "pad00000.meta").write_bytes(b"meta")
+    read_file = check_docs._open_client(PazSource(str(tmp_path), 3483)).read_file
+    empty = tmp_path / "empty"
+    empty.mkdir()
+
+    assert read_file("pad00000.meta") == b"meta"
+    assert check_docs._open_client(PazSource(str(empty), 3483)).read_file("pad00000.meta") is None
+
+
 def test_a_worker_keeps_the_clients_in_flight_open_and_lets_the_oldest_go(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     opened: list[PazSource] = []
 

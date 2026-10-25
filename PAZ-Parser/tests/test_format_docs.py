@@ -50,7 +50,7 @@ def test_a_doc_in_the_layout_format_has_no_problems() -> None:
 
 
 # Docs not in the layout format yet; their layout form is still open (todo.md, Tier 2).
-NOT_IN_LAYOUT_FORM = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md", "pad00000_meta.md", "waypoint_bwp.md"})
+NOT_IN_LAYOUT_FORM = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md"})
 
 
 def test_every_doc_but_the_script_docs_is_in_the_layout_format() -> None:

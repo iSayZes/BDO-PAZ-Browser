@@ -9,7 +9,7 @@
     waypoint: u32 key | u32 index | f32 x | f32 y | f32 z | u8 property
               | u8 is_sub_waypoint | u8 is_escape
     route:    u32 route_key | u32 name_ref | u32 point_count
-              | point_count x u32 waypoint_key | u32 unknown
+              | point_count x u32 waypoint_key | u32 unknown_waypoint_keys_00
 
 Waypoint names are string `index` of the table; groups and routes point into
 it by `name_ref`. Full layout in docs/file-formats/other/waypoint_bwp.md.
@@ -67,7 +67,7 @@ class Route:
     key: int
     name: str
     waypoint_keys: tuple[int, ...]
-    unknown: int
+    unknown_waypoint_keys_00: int
 
 
 @dataclass(frozen=True)

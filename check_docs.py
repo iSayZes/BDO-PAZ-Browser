@@ -60,6 +60,8 @@ from format_docs.check_run import (  # noqa: E402
 from format_docs.doc_index import IndexRows, index_rows  # noqa: E402
 
 DOCS_DIR = ROOT / "docs" / "file-formats"
+# Next to the archives, not in them (docs/file-formats/other/pad00000_meta.md).
+PAZ_INDEX_FILE = "pad00000.meta"
 DOCUMENTED = ROOT / "docs" / "documented-formats.md"
 _HANDLER_PARSER = ("PAZ-Parser/handlers/_bss/", "PAZ-Parser/handlers/_dbss/")
 # A private server or leaked client's .meta holds this in place of its client number.
@@ -442,7 +444,8 @@ def _open_client(source: PazSource, quiet: bool = False) -> Client:
 
     A client every doc checked before is never loaded. The payload cache is emptied before the
     index loads: the last client's files are of no use to this one. `quiet` drops the loading
-    lines, which each worker would print once.
+    lines, which each worker would print once. The PAZ index itself (`pad00000.meta`) is not in
+    the archives; it is read from the folder without loading anything.
     """
     from cli.errors import CliError
     from cli.game_files import GameFiles
@@ -451,6 +454,9 @@ def _open_client(source: PazSource, quiet: bool = False) -> Client:
     opened: list[GameFiles] = []
 
     def read_file(name: str) -> bytes | None:
+        if name.lower() == PAZ_INDEX_FILE:
+            index = Path(source.root) / name
+            return index.read_bytes() if index.is_file() else None
         if not opened:
             clear_payload_cache()
             try:

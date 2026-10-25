@@ -8,8 +8,9 @@
 
 `key_prefix` repeats `npc_key`. `intimacyrelationoffset.dbss` (u32 count,
 then u16 key, u32 offset and u32 size per row, no PABR magic) points past
-the key prefix. Layout 2 in docs/file-formats/intimacyrelation_dbss.md;
-clients with `npc_importance` (Layout 1) are not read.
+the key prefix. Layout 3 in docs/file-formats/intimacyrelation_dbss.md;
+clients with `npc_importance` (Layout 2) or without the key prefix
+(Layout 1) are not read.
 """
 
 from __future__ import annotations

@@ -576,9 +576,9 @@ without a name.
 The two sequences are also rows of `sequencetutorial_equipment.bss`, which
 stores them as `CS_Tutorial_Illezra_00.pas` and `CS_Tutorial_Illezra_01.pas`.
 The trigger table holds both hashes on client 2421 and every later client
-searched; clients 2401 to 2414 hold neither. The handler reads it in Layout 4 only, so where
-the trigger table has another shape (client 3242 and the clients before
-3229) the `sequence_skill.bss` rows show without a name.
+searched, and the handler reads every layout of it, so the rows show their
+sequence from client 2421 on. Clients 2401 to 2414 hold neither hash;
+there the rows show without a name.
 
 ## Notes
 

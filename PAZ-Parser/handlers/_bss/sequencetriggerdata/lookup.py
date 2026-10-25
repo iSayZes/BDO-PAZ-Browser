@@ -24,8 +24,8 @@ def sequence_trigger_companion(entry: PazEntry) -> str:
 def sequence_paths_by_hash(companions: Mapping[str, bytes]) -> dict[int, str]:
     """File name hash -> `IllezraTutorial/CS_Tutorial_Illezra_00`.
 
-    Empty when the table is missing or not in the layout the parser reads
-    (clients before 3229 and client 3242), so the keyed rows show no name.
+    Empty when the table is missing or fits no layout the parser reads, so
+    the keyed rows show no name.
     """
     data = companions.get(FILE_NAME)
     if data is None:

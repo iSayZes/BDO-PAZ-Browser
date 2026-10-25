@@ -1,11 +1,13 @@
 {
   "columns": {
     "offset": "Offset",
+    "sheet": "Sheet",
     "field": "Field",
     "value": "Value",
     "text": "Text"
   },
   "meta": {
-    "count": "{fields} fields, {strings} strings, {body} bytes not decoded"
+    "count": "{fields} fields, {strings} strings, {body} bytes not decoded",
+    "body_error": "The record past the head does not walk by the documented layout ({reason}); only the head is shown."
   }
 }

@@ -1,11 +1,13 @@
 {
   "columns": {
     "offset": "Desplazamiento",
+    "sheet": "Hoja",
     "field": "Campo",
     "value": "Valor",
     "text": "Texto"
   },
   "meta": {
-    "count": "{fields} campos, {strings} textos, {body} bytes sin descifrar"
+    "count": "{fields} campos, {strings} textos, {body} bytes sin descifrar",
+    "body_error": "El registro tras la cabecera no sigue la estructura documentada ({reason}); solo se muestra la cabecera."
   }
 }

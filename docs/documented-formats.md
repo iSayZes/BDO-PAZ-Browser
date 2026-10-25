@@ -254,7 +254,7 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `greatsea.bss` | PABR Great Ocean map areas: a colour of `greatseamap.bmp`, its copy, three f32 values, magnification, a u64-counted list of u8 vehicle types, restricted area state and wind impact | [greatsea](file-formats/bss/greatsea_bss.md) | 3 | 0 |
 | `greatseaevent.dbss` | Great Ocean sailing event results in groups: group key, index, Korean result text, image path (variable rows) | [greatseaevent](file-formats/dbss/greatseaevent_dbss.md) | 1 | 0 |
 | `greatseaeventoffset.dbss` | Index into `greatseaevent.dbss` per group: u16 group key, count, then u32 index, offset and size per event | [greatseaevent](file-formats/dbss/greatseaevent_dbss.md) | 1 | 0 |
-| `greatseaoption.bss` | PABR Great Ocean and island barter options in one record: food use, explore cooldown, ship management and barter ranges, barter exchange and reset counts, discounts and EXP values | [greatseaoption](file-formats/bss/greatseaoption_bss.md) | 2 | 0 |
+| `greatseaoption.bss` | PABR Great Ocean and island barter options in one record: food use, explore cooldown, ship management and barter ranges, barter exchange and reset counts, discounts and EXP values | [greatseaoption](file-formats/bss/greatseaoption_bss.md) | 2 | 1 |
 | `grenadedata.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/dbss/empty_dbss.md) | 1 | 0 |
 | `grenadedataoffset.dbss` | Empty offset companion for `grenadedata.dbss`: a u32 count of 0 | [empty](file-formats/dbss/empty_dbss.md) | 1 | 0 |
 | `groupcameradata.bss` | PABR cutscene skip summaries: scene ID, Korean title, recap and quote, and region symbol icon path (LOC type 97) | [groupcameradata](file-formats/bss/groupcameradata_bss.md) | 0 | 0 |

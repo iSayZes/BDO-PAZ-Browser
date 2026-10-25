@@ -706,19 +706,23 @@ The sheet's `VoyageExploreCoolTime` (`300`), `ResetBarter` (`45504`),
 `OceanPenalty` columns (`1`, `1`, `500000`) have no other match in the
 file.
 
-That server's `IslandExplore_Option` loader stores the columns in this
-order: `FoodConsume`, `ExploreCoolTime`, `VoyageExploreCoolTime`,
-`ShipManagementRange`, `BarterRange`, `SpecialBarterInvokationCost`,
-`ResetCoolTime` (i16), `MaxExchangeCount`, `OverMaxCount`,
-`MaxResetCount`, `BarterResetTime` (u16), `DiscountRate`,
+That server's `IslandExplore_Option` loader stores the columns into a
+struct with this member order: `FoodConsume`, `ExploreCoolTime`,
+`VoyageExploreCoolTime`, `ShipManagementRange`, `BarterRange`,
+`SpecialBarterInvokationCost`, `ResetCoolTime` (i16), `MaxExchangeCount`,
+`OverMaxCount`, `MaxResetCount`, `BarterResetTime` (u16), `DiscountRate`,
 `AddResetCount`, `ResetNeedCount`, `TimeDiscount`, `TimeDiscountLimit`,
 `SubEmployeeExp` and `SubTradeExp` (both i64), `KamasylveDiscount`,
 `OceanPenaltyRate`, then `OceanPenaltyMin` and `OceanPenaltyMax` (both
-i8). Without `VoyageExploreCoolTime` and `SpecialBarterInvokationCost`
-this is the field order of Layout 5 up to `unknown_48`. Read with those
-widths, `unknown_15` is the high byte of an i16 `ResetCoolTime`,
-`unknown_3c` and `unknown_44` are the high halves of the i64
-`SubEmployeeExp` and `SubTradeExp`, and `unknown_48` is
+i8). It reads `ExploreCoolTime` before `FoodConsume` and `SubTradeExp`
+before `SubEmployeeExp`; the file follows the member order. The struct
+has no `ResetBarter` or `ShipMoveEmployeeExp` member. Without
+`VoyageExploreCoolTime`, `SpecialBarterInvokationCost` and the three
+`OceanPenalty` members this is the field order of Layout 5 up to
+`unknown_48`, and those widths fill its 72 value bytes (`+0x04` to
+`+0x4C`). Read with them, `unknown_15` is the high byte of an i16
+`ResetCoolTime`, `unknown_3c` and `unknown_44` are the high halves of the
+i64 `SubEmployeeExp` and `SubTradeExp`, and `unknown_48` is
 `KamasylveDiscount`. These names rest on the server read only, so the
 fields keep their `unknown_` names (see Open Questions).
 
@@ -728,8 +732,8 @@ fields keep their `unknown_` names (see Open Questions).
   (54 bytes), client 1309 Layout 3 (82 bytes), clients 1316 to 2703
   Layout 4 (86 bytes) and clients 2736 to 3482 Layout 5 (88 bytes).
   Between them `barter_range` drops from `8000` to `5000` (client 1267),
-  `reset_cool_time` from `4` to `2` (client 2519) and
-  `ship_management_range` rises from `15000` to `20000` (client 3474).
+  `reset_cool_time` from `4` to `2` (client 2487) and
+  `ship_management_range` rises from `15000` to `20000` (client 3283).
 - The handler for the PABR option tables (`_bss/pabr_values/`) previews
   this file with the layout in `_bss/pabr_values/greatsea_tables.py`: one
   row with every named field. It reads Layout 5 only.
@@ -742,15 +746,46 @@ fields keep their `unknown_` names (see Open Questions).
 `KamasylveDiscount` and `OceanPenaltyRate`, so the value alone does not
 name it. The column strings put `KamasylveDiscount` next to
 `SubEmployeeExp`, but the file stores `sub_trade_exp` between them. The
-server loader stores `KamasylveDiscount` right after `SubTradeExp` (Field
-Names); no client getter or client value confirms it yet.
+server struct holds `KamasylveDiscount` right after `SubTradeExp` and
+before `OceanPenaltyRate` (Field Names). No client 3483 Lua script calls a
+getter for either column, and no client value tells them apart yet. The
+official wiki's Sailing & Bartering page (wikiNo 325) and Black Desert
+Foundry's Bartering Lifeskill Guide name no 50% barter value and no ocean
+penalty rate; the barter discounts they list are the first mate's 10%
+parley reduction and the Value Pack's 50 extra refresh points.
 
 ### The Zero Fields
 
-`unknown_15`, `unknown_3c` and `unknown_44` are `0` on every client
-checked. No column of the sheet is `0`; `ShipMoveEmployeeExp`,
-`OceanPenaltyMin` and `OceanPenaltyMax` are `1` there and may read `0` in
-the client build. The server loader's widths (Field Names) make them the
-high parts of `reset_cool_time`, `sub_employee_exp` and `sub_trade_exp`;
-a client value above `0xFF` or `0xFFFFFFFF` in one of those fields would
-confirm it.
+`unknown_15`, `unknown_3c` and `unknown_44` are `0` on every client from
+1239 to 3482. In the server struct (Field Names) only the high parts of
+the i16 `ResetCoolTime` and the i64 `SubEmployeeExp` and `SubTradeExp`
+can fill them: it has no `ShipMoveEmployeeExp` member, and
+`OceanPenaltyMin` and `OceanPenaltyMax` come after `OceanPenaltyRate`.
+The client files fit that reading without proving it: `unknown_15` is in
+the first file (client 1239), and `unknown_3c` and `unknown_44` arrive in
+client 1304 together with `sub_employee_exp` and `sub_trade_exp`, each
+right after its low part. No client 3483 Lua script calls a getter for
+`ResetCoolTime`, `SubEmployeeExp` or `SubTradeExp`; the barter windows
+read only live state (`ToClient_changeBarterInfoRemainSec`, the exchange
+and reset counts). A client value above `0xFF` in `reset_cool_time` or
+above `0xFFFFFFFF` in one of the EXP fields would confirm the widths.
+
+## In-Game Checks
+
+### discount_rate as the Value Pack Parley Discount
+
+Needs item: an active Value Pack
+
+`discount_rate` is `100000` (10% through `CppDefine.e1Percent`) and sits
+next to `add_reset_count` `50`, the Value Pack's "Required Parley for Barter
+-10%" and "Barter Refresh Points +50". The barter search window reads it
+through `ToClient_discountPointByPremiumPackage()`
+([`panel_window_barterinfosearch_2_luac.md`](../lua/panel_window_barterinfosearch_2_luac.md)).
+
+1. Activate a Value Pack and leave the First Mate off the ship.
+2. Open the barter window and hover the parley cost of a barter.
+3. Read the discount lines of the cost tooltip.
+
+A Value Pack line at 10% next to the barter level line confirms
+`discount_rate` as the premium package discount. No such line, or a value
+other than 10%, means the getter reads another source.

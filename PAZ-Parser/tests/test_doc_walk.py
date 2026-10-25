@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import struct
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -250,6 +251,24 @@ def test_clients_the_table_does_not_hold_or_without_a_layout_leave_a_row_as_it_i
 
     assert current_rows([row], ()) == (row,)
     assert current_rows([row], clients) == (row,)
+
+
+def test_a_renumber_read_newest_first_keeps_every_layouts_rows_across_flushes() -> None:
+    # An older Layout 1 was found at 3300: Layouts 1 and 2 became 2 and 3. check_docs writes in timed flushes,
+    # so each client lands on a text whose older clients still hold the stale numbers.
+    stale_rows = [VersionRow(2, 3464, 3483, "test.bss", 110, "2 Row", "8", 106, 4), _version(1, 3401, 90)]
+    stale_rows[1] = replace(stale_rows[1], checked=3458)
+    stale_clients = merge_clients([], [ClientCheck(3483, 2, True), ClientCheck(3458, 1, True), ClientCheck(3401, 1, True)])
+    text = write_rows(_doc(COUNTED, ROW), stale_rows, stale_clients, newest_layout=2)
+    fresh = ((3483, 3, 110), (3458, 2, 90), (3401, 2, 90), (3300, 1, 70))
+
+    for client, layout, size in fresh:
+        update = check_run.VersionsUpdate(3, ClientCheck(client, layout, True), (_version(layout, client, size),))
+        text = check_run.apply_updates(text, [update])
+
+    assert [(row.layout, row.first, row.checked, row.size) for row in read_rows(text)] == [
+        (3, 3483, 3483, 110), (2, 3401, 3458, 90), (1, 3300, 3300, 70)
+    ]
 
 
 def test_the_versions_block_round_trips_and_names_the_newest_layout_and_later() -> None:

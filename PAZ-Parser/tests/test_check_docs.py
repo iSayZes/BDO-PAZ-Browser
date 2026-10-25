@@ -37,10 +37,10 @@ def paz(root: Path, region: str, client: int) -> tuple[int, Path]:
     return client, root / region / str(client) / "Paz"
 
 
-def test_all_takes_every_numbered_folder_with_a_paz_folder_of_every_region_oldest_first(test_clients: Path) -> None:
+def test_all_takes_every_numbered_folder_with_a_paz_folder_of_every_region_newest_first(test_clients: Path) -> None:
     found = client_folders(test_clients, "all")
 
-    assert found == [paz(test_clients, "NAEU", 794), paz(test_clients, "KR", 1230), paz(test_clients, "NAEU", 3251)]
+    assert found == [paz(test_clients, "NAEU", 3251), paz(test_clients, "KR", 1230), paz(test_clients, "NAEU", 794)]
 
 
 def test_a_number_takes_that_folder_from_its_region_and_a_missing_one_or_other_text_is_an_error(test_clients: Path) -> None:
@@ -50,11 +50,28 @@ def test_a_number_takes_that_folder_from_its_region_and_a_missing_one_or_other_t
             client_folders(test_clients, version)
 
 
-def test_all_from_a_number_starts_at_that_client_and_past_the_newest_is_an_error(test_clients: Path) -> None:
-    assert client_folders(test_clients, "all", 1000) == [paz(test_clients, "KR", 1230), paz(test_clients, "NAEU", 3251)]
+def test_all_from_a_number_starts_at_that_client_and_goes_on_to_older_ones(test_clients: Path) -> None:
+    assert client_folders(test_clients, "all", 3000) == [paz(test_clients, "KR", 1230), paz(test_clients, "NAEU", 794)]
     assert client_folders(test_clients, "all", 1230)[0] == paz(test_clients, "KR", 1230)
     with pytest.raises(CheckError):
-        client_folders(test_clients, "all", 4000)
+        client_folders(test_clients, "all", 500)
+
+
+def test_all_starts_with_the_live_client_unless_the_run_resumes_at_an_older_one(
+    test_clients: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    live = PazSource("live", 3483)
+    monkeypatch.setattr(check_docs, "TEST_CLIENTS", test_clients)
+    monkeypatch.setattr(check_docs, "_meta_client", lambda folder: int(folder.parent.name))
+    monkeypatch.setattr(
+        check_docs, "_live_client", lambda numbers, first: iter([live] if first is None or first >= live.number else [])
+    )
+
+    every = list(check_docs._each_client(check_docs._arguments(["--all", "--version", "all"])))
+    resumed = list(check_docs._each_client(check_docs._arguments(["--all", "--version", "all", "--from", "1230"])))
+
+    assert [source.number for source in every if source is not None] == [3483, 3251, 1230, 794]
+    assert [source.number for source in resumed if source is not None] == [1230, 794]
 
 
 def test_one_number_in_two_regions_or_a_client_outside_a_region_is_an_error(test_clients: Path, tmp_path: Path) -> None:

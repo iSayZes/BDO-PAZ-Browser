@@ -5,8 +5,8 @@
     python check_docs.py buffsimply_bss.md    # named docs
     python check_docs.py --all --paz-folder D:/old/Paz --client 3401
     python check_docs.py --all --version 2107  # one of my test clients, in whichever region folder holds it
-    python check_docs.py --all --version all   # every test client, oldest first, then the live one
-    python check_docs.py --all --version all --from 2063  # resume a stopped run at client 2063
+    python check_docs.py --all --version all   # the live client, then every test client, newest first
+    python check_docs.py --all --version all --from 2063  # resume a stopped run at client 2063 and go on to older ones
     python check_docs.py --all --version 2107 --jobs 4     # four worker processes instead of sixteen
     python check_docs.py --all --version all --recheck     # read every client again, also those checked before
 
@@ -268,11 +268,11 @@ def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
     source = parser.add_mutually_exclusive_group()
     source.add_argument("--paz-folder", help="A PAZ folder other than the one last opened in the app")
     source.add_argument(
-        "--version", help=f"A test client in {TEST_CLIENTS} by its client number, or {ALL_VERSIONS} for every one and then the live client"
+        "--version", help=f"A test client in {TEST_CLIENTS} by its client number, or {ALL_VERSIONS} for the live client and then every one"
     )
     source.add_argument("--docs-only", action="store_true", help="Skip the game files")
     parser.add_argument("--client", type=int, help="The client number of --paz-folder, when its .meta does not hold it")
-    parser.add_argument("--from", dest="first", type=int, help=f"With --version {ALL_VERSIONS}: start at this client number, to resume a stopped run")
+    parser.add_argument("--from", dest="first", type=int, help=f"With --version {ALL_VERSIONS}: start at this client number and go on to older ones, to resume a stopped run")
     parser.add_argument("--no-write", action="store_true", help="Report which layout fits; leave Versions as they are")
     parser.add_argument(
         "--recheck", action="store_true", help="Read the clients again that a doc's Versions already list against the same layouts"
@@ -306,13 +306,17 @@ def _docs(args: argparse.Namespace) -> list[Path]:
 def _each_client(args: argparse.Namespace) -> Iterator[PazSource | None]:
     """The clients to check, opened one at a time: the test clients `--version` names, or the one other folder.
 
-    `--version all` ends with the live client, unless the game is running or a test client had its number.
+    `--version all` goes newest first and starts with the live client, unless the game is running, a test
+    client has its number or `--from` names an older client. Sizes come from the newest client of a layout,
+    so after a layout renumber each stale size row is dropped before an older client's row could merge into it.
     """
     if args.version is None:
         yield _source(args.paz_folder, args.client, args.docs_only)
         return
-    checked: set[int] = set()
-    for number, paz in client_folders(TEST_CLIENTS, args.version, args.first):
+    folders = client_folders(TEST_CLIENTS, args.version, args.first)
+    if args.version == ALL_VERSIONS:
+        yield from _live_client({number for number, _ in folders}, args.first)
+    for number, paz in folders:
         meta = _meta_client(paz)
         if meta != number:
             message = f"{paz.parent.name}: its .meta says client {meta}, not {number}"
@@ -321,14 +325,11 @@ def _each_client(args: argparse.Namespace) -> Iterator[PazSource | None]:
             print(f"check_docs: skipped {message}", file=sys.stderr)
             continue
         print(f"check_docs: client {number} ({paz})", file=sys.stderr)
-        checked.add(number)
         yield PazSource(str(paz), number)
-    if args.version == ALL_VERSIONS:
-        yield from _live_client(checked)
 
 
-def _live_client(checked: set[int]) -> Iterator[PazSource]:
-    """The PAZ folder last opened in the app, when the game is closed and no test client had its number."""
+def _live_client(test_clients: set[int], first: int | None) -> Iterator[PazSource]:
+    """The PAZ folder last opened in the app, when the game is closed, no test client has its number and `first` is not older."""
     from cli.errors import CliError
     from cli.session import resolve_paz_root
 
@@ -341,8 +342,11 @@ def _live_client(checked: set[int]) -> Iterator[PazSource]:
         print(f"check_docs: skipped the live client: {error}", file=sys.stderr)
         return
     number = _meta_client(root)
-    if number in checked:
-        print(f"check_docs: skipped the live client, client {number} is checked above", file=sys.stderr)
+    if number in test_clients:
+        print(f"check_docs: skipped the live client, test client {number} has its number", file=sys.stderr)
+        return
+    if first is not None and number > first:
+        print(f"check_docs: skipped the live client {number}, the run starts at {first}", file=sys.stderr)
         return
     print(f"check_docs: live client {number} ({root})", file=sys.stderr)
     yield PazSource(str(root), number)
@@ -361,17 +365,17 @@ def _is_game_running() -> bool:
 
 
 def client_folders(root: Path, version: str, first: int | None = None) -> list[tuple[int, Path]]:
-    """The `<region>/<client>/Paz` folders under `root`: every client of every region for `all`, oldest first, or `version`'s.
+    """The `<region>/<client>/Paz` folders under `root`: every client of every region for `all`, newest first, or `version`'s.
 
-    `first` drops the `all` folders older than that client.
+    `first` drops the `all` folders newer than that client.
     """
     found = _region_clients(root)
     if version == ALL_VERSIONS:
         if first is not None:
-            found = [(number, paz) for number, paz in found if number >= first]
+            found = [(number, paz) for number, paz in found if number <= first]
         if not found:
-            raise CheckError(f"no <region>/<client>/Paz folder in {root}" + ("" if first is None else f" from client {first} on"))
-        return found
+            raise CheckError(f"no <region>/<client>/Paz folder in {root}" + ("" if first is None else f" at or before client {first}"))
+        return found[::-1]
     if not version.isdigit():
         raise CheckError(f"--version takes a client number or {ALL_VERSIONS}, not {version}")
     wanted = [(number, paz) for number, paz in found if number == int(version)]

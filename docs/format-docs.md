@@ -247,7 +247,10 @@ walks to its last byte by. Three tables follow:
   fits, and a layout's row stays once a client has fit it. The newest layout
   reads `<first client> and later`, an older one `<first> to <last>`.
 - Sizes and coverage come from the newest client checked for that layout;
-  an older client never overwrites them.
+  an older client never overwrites them. `--version all` reads the newest
+  client first: after a renumber the row a client used to give is dropped
+  once that client is read again, before an older client's fresh row could
+  merge into it and go with it.
 - The Clients table keeps every client the check read, newest first; a
   client read again takes its new result. `No file` means the name is not in
   the `.meta`, so an archive missing from a pruned folder is not one.
@@ -287,8 +290,8 @@ walks to its last byte by. Three tables follow:
 | `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
 | `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
 | `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/<region>/2107/Paz` in whichever region folder (`NAEU`) holds it |
-| `python check_docs.py --all --version all`           | Every test client of every region folder, oldest first, then the live client; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
-| `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on, to resume one that stopped |
+| `python check_docs.py --all --version all`           | The live client, then every test client of every region folder, newest first; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
+| `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on to older ones, to resume one that stopped |
 | `python check_docs.py --all --version 1784 --recheck` | Test client 1784 again for every doc, also where Versions list it against the same layouts; with `--version all`, every client |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
 | `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |

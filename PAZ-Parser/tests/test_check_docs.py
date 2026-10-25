@@ -57,6 +57,13 @@ def test_all_from_a_number_starts_at_that_client_and_goes_on_to_older_ones(test_
         client_folders(test_clients, "all", 500)
 
 
+def test_all_to_a_number_stops_at_that_client_and_with_from_takes_the_range(test_clients: Path) -> None:
+    assert client_folders(test_clients, "all", last=1000) == [paz(test_clients, "NAEU", 3251), paz(test_clients, "KR", 1230)]
+    assert client_folders(test_clients, "all", 3000, 1230) == [paz(test_clients, "KR", 1230)]
+    with pytest.raises(CheckError):
+        client_folders(test_clients, "all", 3000, 2000)
+
+
 def test_all_starts_with_the_live_client_unless_the_run_resumes_at_an_older_one(
     test_clients: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
@@ -64,14 +71,18 @@ def test_all_starts_with_the_live_client_unless_the_run_resumes_at_an_older_one(
     monkeypatch.setattr(check_docs, "TEST_CLIENTS", test_clients)
     monkeypatch.setattr(check_docs, "_meta_client", lambda folder: int(folder.parent.name))
     monkeypatch.setattr(
-        check_docs, "_live_client", lambda numbers, first: iter([live] if first is None or first >= live.number else [])
+        check_docs,
+        "_live_client",
+        lambda numbers, first, last: iter([live] if check_docs._in_range(live.number, first, last) else []),
     )
 
-    every = list(check_docs._each_client(check_docs._arguments(["--all", "--version", "all"])))
-    resumed = list(check_docs._each_client(check_docs._arguments(["--all", "--version", "all", "--from", "1230"])))
+    def numbers(*flags: str) -> list[int]:
+        sources = check_docs._each_client(check_docs._arguments(["--all", "--version", "all", *flags]))
+        return [source.number for source in sources if source is not None]
 
-    assert [source.number for source in every if source is not None] == [3483, 3251, 1230, 794]
-    assert [source.number for source in resumed if source is not None] == [1230, 794]
+    assert numbers() == [3483, 3251, 1230, 794]
+    assert numbers("--from", "1230") == [1230, 794]
+    assert numbers("--to", "1230") == [3483, 3251, 1230]
 
 
 def test_one_number_in_two_regions_or_a_client_outside_a_region_is_an_error(test_clients: Path, tmp_path: Path) -> None:

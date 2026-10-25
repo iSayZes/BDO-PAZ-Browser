@@ -275,6 +275,7 @@ def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
     source.add_argument("--docs-only", action="store_true", help="Skip the game files")
     parser.add_argument("--client", type=int, help="The client number of --paz-folder, when its .meta does not hold it")
     parser.add_argument("--from", dest="first", type=int, help=f"With --version {ALL_VERSIONS}: start at this client number and go on to older ones, to resume a stopped run")
+    parser.add_argument("--to", dest="last", type=int, help=f"With --version {ALL_VERSIONS}: stop after this client number, the oldest one checked")
     parser.add_argument("--no-write", action="store_true", help="Report which layout fits; leave Versions as they are")
     parser.add_argument(
         "--recheck", action="store_true", help="Read the clients again that a doc's Versions already list against the same layouts"
@@ -285,8 +286,11 @@ def _arguments(argv: Sequence[str] | None) -> argparse.Namespace:
     args = parser.parse_args(argv)
     if args.client is not None and not args.paz_folder:
         parser.error("--client needs --paz-folder")
-    if args.first is not None and args.version != ALL_VERSIONS:
-        parser.error(f"--from needs --version {ALL_VERSIONS}")
+    for flag, value in (("--from", args.first), ("--to", args.last)):
+        if value is not None and args.version != ALL_VERSIONS:
+            parser.error(f"{flag} needs --version {ALL_VERSIONS}")
+    if args.first is not None and args.last is not None and args.last > args.first:
+        parser.error("--to names an older client than --from")
     if args.jobs < 1:
         parser.error("--jobs needs at least 1")
     return args
@@ -309,15 +313,15 @@ def _each_client(args: argparse.Namespace) -> Iterator[PazSource | None]:
     """The clients to check, opened one at a time: the test clients `--version` names, or the one other folder.
 
     `--version all` goes newest first and starts with the live client, unless the game is running, a test
-    client has its number or `--from` names an older client. Sizes come from the newest client of a layout,
+    client has its number or it is outside `--from` / `--to`. Sizes come from the newest client of a layout,
     so after a layout renumber each stale size row is dropped before an older client's row could merge into it.
     """
     if args.version is None:
         yield _source(args.paz_folder, args.client, args.docs_only)
         return
-    folders = client_folders(TEST_CLIENTS, args.version, args.first)
+    folders = client_folders(TEST_CLIENTS, args.version, args.first, args.last)
     if args.version == ALL_VERSIONS:
-        yield from _live_client({number for number, _ in folders}, args.first)
+        yield from _live_client({number for number, _ in folders}, args.first, args.last)
     for number, paz in folders:
         meta = _meta_client(paz)
         if meta != number:
@@ -330,8 +334,8 @@ def _each_client(args: argparse.Namespace) -> Iterator[PazSource | None]:
         yield PazSource(str(paz), number)
 
 
-def _live_client(test_clients: set[int], first: int | None) -> Iterator[PazSource]:
-    """The PAZ folder last opened in the app, when the game is closed, no test client has its number and `first` is not older."""
+def _live_client(test_clients: set[int], first: int | None, last: int | None) -> Iterator[PazSource]:
+    """The PAZ folder last opened in the app, when the game is closed, no test client has its number and it is in `first` to `last`."""
     from cli.errors import CliError
     from cli.session import resolve_paz_root
 
@@ -347,8 +351,8 @@ def _live_client(test_clients: set[int], first: int | None) -> Iterator[PazSourc
     if number in test_clients:
         print(f"check_docs: skipped the live client, test client {number} has its number", file=sys.stderr)
         return
-    if first is not None and number > first:
-        print(f"check_docs: skipped the live client {number}, the run starts at {first}", file=sys.stderr)
+    if not _in_range(number, first, last):
+        print(f"check_docs: skipped the live client {number}, the run covers clients{_range_text(first, last)}", file=sys.stderr)
         return
     print(f"check_docs: live client {number} ({root})", file=sys.stderr)
     yield PazSource(str(root), number)
@@ -366,17 +370,16 @@ def _is_game_running() -> bool:
     return GAME_PROCESS.lower() in done.stdout.lower()
 
 
-def client_folders(root: Path, version: str, first: int | None = None) -> list[tuple[int, Path]]:
+def client_folders(root: Path, version: str, first: int | None = None, last: int | None = None) -> list[tuple[int, Path]]:
     """The `<region>/<client>/Paz` folders under `root`: every client of every region for `all`, newest first, or `version`'s.
 
-    `first` drops the `all` folders newer than that client.
+    `first` drops the `all` folders newer than that client, `last` the ones older than it.
     """
     found = _region_clients(root)
     if version == ALL_VERSIONS:
-        if first is not None:
-            found = [(number, paz) for number, paz in found if number <= first]
+        found = [(number, paz) for number, paz in found if _in_range(number, first, last)]
         if not found:
-            raise CheckError(f"no <region>/<client>/Paz folder in {root}" + ("" if first is None else f" at or before client {first}"))
+            raise CheckError(f"no <region>/<client>/Paz folder in {root}{_range_text(first, last)}")
         return found[::-1]
     if not version.isdigit():
         raise CheckError(f"--version takes a client number or {ALL_VERSIONS}, not {version}")
@@ -384,6 +387,16 @@ def client_folders(root: Path, version: str, first: int | None = None) -> list[t
     if not wanted:
         raise CheckError(f"no test client {version} in a region folder of {root}")
     return wanted
+
+
+def _in_range(number: int, first: int | None, last: int | None) -> bool:
+    """True when client `number` is at or before `first` and at or after `last`; None is no bound."""
+    return (first is None or number <= first) and (last is None or number >= last)
+
+
+def _range_text(first: int | None, last: int | None) -> str:
+    bounds = [text for bound, text in ((first, f"at or before client {first}"), (last, f"at or after client {last}")) if bound is not None]
+    return f" {' and '.join(bounds)}" if bounds else ""
 
 
 def _region_clients(root: Path) -> list[tuple[int, Path]]:

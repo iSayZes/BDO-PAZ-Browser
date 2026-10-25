@@ -32,6 +32,7 @@ FileReader = Callable[[str], "bytes | None"]
 # Another program (a virus scanner, an editor) can hold a doc for a moment; wait for it this long at most.
 _WRITE_ATTEMPTS = 40
 _WRITE_WAIT_SECONDS = 0.25
+NA_COPY_PREFIX = "#na#"
 
 
 class UnreadableFile(Exception):
@@ -91,6 +92,21 @@ class Client:
     number: int
     read_file: FileReader
 
+    def read_doc_file(self, name: str) -> bytes | None:
+        """`name`, else its NA copy (`#na#eventmanagement.bss`), which some clients ship in its place."""
+        data = self.read_file(name)
+        return data if data is not None else self.read_file(na_copy_name(name))
+
+
+def na_copy_name(name: str) -> str:
+    """`name` with the NA prefix on its file name: `#na#x.bss`, `folder/#na#x.bss` for a full path.
+
+    Clients 837 to 1246 ship some tables only under this name; client 1000 has
+    244 `.bss` files outside `detaildialog/` with it.
+    """
+    folder, slash, file_name = name.rpartition("/")
+    return f"{folder}{slash}{NA_COPY_PREFIX}{file_name}"
+
 
 def check_doc_file(
     path: Path, rows: IndexRows, client: Client | None, *, write: bool = True, recheck: bool = False, defer_write: bool = False
@@ -99,7 +115,8 @@ def check_doc_file(
 
     A doc not in the layout format yet is skipped: the doc rules do not apply to it. Each client
     goes into the Clients table: the layout its files fit, `No documented layout` when they fit
-    none, or `No file` when none of the doc's files is in it. A file the reader cannot pick
+    none, or `No file` when none of the doc's files is in it, under its name or as its NA copy
+    (`Client.read_doc_file`). A file the reader cannot pick
     skips the game check for this doc and client and leaves Versions as they are. A client the
     table already holds, read against the same layouts, is not read again unless `recheck` is set.
     With `defer_write` the change comes back in the outcome instead, for the caller to merge and
@@ -126,7 +143,7 @@ def check_doc_file(
     missing: list[str] = []
     for name in names:
         try:
-            data = client.read_file(name)
+            data = client.read_doc_file(name)
         except UnreadableFile as error:
             return DocOutcome(path, Status.SKIPPED, (str(error),))
         if data is None:

@@ -331,6 +331,23 @@ def test_a_client_checked_against_the_same_layouts_is_not_read_again(tmp_path: P
     assert len(_fingerprints(doc)) == 1
 
 
+def test_a_client_without_the_file_reads_its_na_copy_under_the_doc_file_name(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    na_only = Client(1000, lambda name: ONE_ROW if name == "#na#test.bss" else None)
+
+    outcome = check_doc_file(doc, ROWS_INDEX, na_only)
+
+    assert outcome.status is Status.UPDATED
+    assert "| 1      | 1000 and later | `test.bss`" in doc.read_text(encoding="utf-8")
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(1000, 1, True),)
+
+
+def test_the_na_copy_name_prefixes_the_file_name_of_a_full_path() -> None:
+    assert check_run.na_copy_name("eventmanagement.bss") == "#na#eventmanagement.bss"
+    assert check_run.na_copy_name("gamecommondata/binary/x.bss") == "gamecommondata/binary/#na#x.bss"
+
+
 def _fingerprints(doc: Path) -> dict[int, str]:
     return {check.client: check.fingerprint for check in read_clients(doc.read_text(encoding="utf-8"))}
 

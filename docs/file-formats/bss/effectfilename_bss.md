@@ -21,8 +21,8 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | ------ | -------------- | -------------------- | --------- | ------------------------------------------------------------------ | ----------------------- |
 | 6      | 1481 and later | `effectfilename.bss` | 2,493,263 | 6,010 Weapon Row, 10 Attack Table, 10 Special Table, 30 Ground Row | 400                     |
 | 5      | 1462 to 1474   | `effectfilename.bss` | 867,305   | 2,000 Weapon Row, 10 Attack Table, 10 Special Table, 30 Ground Row | 400                     |
-| 4      | 1109 to 1459   | `effectfilename.bss` | 437,449   | 1,000 Weapon Row, 10 Attack Table, 30 Ground Row                   | 400                     |
-| 3      | 805 to 829     | `effectfilename.bss` | 50,790    | 100 Weapon Row, 30 Ground Row                                      | 400                     |
+| 4      | 1069 to 1459   | `effectfilename.bss` | 437,449   | 1,000 Weapon Row, 10 Attack Table, 30 Ground Row                   | 400                     |
+| 3      | 805 to 1064    | `effectfilename.bss` | 59,985    | 100 Weapon Row, 30 Ground Row                                      | 400                     |
 | 2      | 531 to 794     | `effectfilename.bss` | 193,704   | 10,150 Effect Text, 100 Weapon Row, 30 Ground Row                  | 8 to 145, 19 on average |
 | 1      | 485 to 526     | `effectfilename.bss` | 70,630    | 1,375 Effect Text, 35 Weapon Row, 30 Ground Row                    | 8 to 226, 51 on average |
 
@@ -31,7 +31,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | 6      | `effectfilename.bss` | 2,493,263 B (100.0%) | 0 B (0.0%) |
 | 5      | `effectfilename.bss` | 867,305 B (100.0%)   | 0 B (0.0%) |
 | 4      | `effectfilename.bss` | 437,449 B (100.0%)   | 0 B (0.0%) |
-| 3      | `effectfilename.bss` | 50,790 B (100.0%)    | 0 B (0.0%) |
+| 3      | `effectfilename.bss` | 59,985 B (100.0%)    | 0 B (0.0%) |
 | 2      | `effectfilename.bss` | 193,704 B (100.0%)   | 0 B (0.0%) |
 | 1      | `effectfilename.bss` | 70,630 B (100.0%)    | 0 B (0.0%) |
 
@@ -413,43 +413,43 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 4 | `899cfbce7111`  |
 | 1114   | Layout 4 | `899cfbce7111`  |
 | 1109   | Layout 4 | `899cfbce7111`  |
-| 1102   | No file  | `899cfbce7111`  |
-| 1096   | No file  | `899cfbce7111`  |
-| 1088   | No file  | `899cfbce7111`  |
-| 1081   | No file  | `899cfbce7111`  |
-| 1076   | No file  | `899cfbce7111`  |
-| 1069   | No file  | `899cfbce7111`  |
-| 1064   | No file  | `899cfbce7111`  |
-| 1058   | No file  | `899cfbce7111`  |
-| 1051   | No file  | `899cfbce7111`  |
-| 1044   | No file  | `899cfbce7111`  |
-| 1036   | No file  | `899cfbce7111`  |
-| 1026   | No file  | `899cfbce7111`  |
-| 1016   | No file  | `899cfbce7111`  |
-| 1009   | No file  | `899cfbce7111`  |
-| 1005   | No file  | `899cfbce7111`  |
-| 1000   | No file  | `899cfbce7111`  |
-| 998    | No file  | `899cfbce7111`  |
-| 990    | No file  | `899cfbce7111`  |
-| 979    | No file  | `899cfbce7111`  |
-| 972    | No file  | `899cfbce7111`  |
-| 963    | No file  | `899cfbce7111`  |
-| 955    | No file  | `899cfbce7111`  |
-| 946    | No file  | `899cfbce7111`  |
-| 938    | No file  | `899cfbce7111`  |
-| 927    | No file  | `899cfbce7111`  |
-| 911    | No file  | `899cfbce7111`  |
-| 904    | No file  | `899cfbce7111`  |
-| 899    | No file  | `899cfbce7111`  |
-| 894    | No file  | `899cfbce7111`  |
-| 885    | No file  | `899cfbce7111`  |
-| 879    | No file  | `899cfbce7111`  |
-| 872    | No file  | `899cfbce7111`  |
-| 864    | No file  | `899cfbce7111`  |
-| 855    | No file  | `899cfbce7111`  |
-| 853    | No file  | `899cfbce7111`  |
-| 845    | No file  | `899cfbce7111`  |
-| 837    | No file  | `899cfbce7111`  |
+| 1102   | Layout 4 | `899cfbce7111`  |
+| 1096   | Layout 4 | `899cfbce7111`  |
+| 1088   | Layout 4 | `899cfbce7111`  |
+| 1081   | Layout 4 | `899cfbce7111`  |
+| 1076   | Layout 4 | `899cfbce7111`  |
+| 1069   | Layout 4 | `899cfbce7111`  |
+| 1064   | Layout 3 | `899cfbce7111`  |
+| 1058   | Layout 3 | `899cfbce7111`  |
+| 1051   | Layout 3 | `899cfbce7111`  |
+| 1044   | Layout 3 | `899cfbce7111`  |
+| 1036   | Layout 3 | `899cfbce7111`  |
+| 1026   | Layout 3 | `899cfbce7111`  |
+| 1016   | Layout 3 | `899cfbce7111`  |
+| 1009   | Layout 3 | `899cfbce7111`  |
+| 1005   | Layout 3 | `899cfbce7111`  |
+| 1000   | Layout 3 | `899cfbce7111`  |
+| 998    | Layout 3 | `899cfbce7111`  |
+| 990    | Layout 3 | `899cfbce7111`  |
+| 979    | Layout 3 | `899cfbce7111`  |
+| 972    | Layout 3 | `899cfbce7111`  |
+| 963    | Layout 3 | `899cfbce7111`  |
+| 955    | Layout 3 | `899cfbce7111`  |
+| 946    | Layout 3 | `899cfbce7111`  |
+| 938    | Layout 3 | `899cfbce7111`  |
+| 927    | Layout 3 | `899cfbce7111`  |
+| 911    | Layout 3 | `899cfbce7111`  |
+| 904    | Layout 3 | `899cfbce7111`  |
+| 899    | Layout 3 | `899cfbce7111`  |
+| 894    | Layout 3 | `899cfbce7111`  |
+| 885    | Layout 3 | `899cfbce7111`  |
+| 879    | Layout 3 | `899cfbce7111`  |
+| 872    | Layout 3 | `899cfbce7111`  |
+| 864    | Layout 3 | `899cfbce7111`  |
+| 855    | Layout 3 | `899cfbce7111`  |
+| 853    | Layout 3 | `899cfbce7111`  |
+| 845    | Layout 3 | `899cfbce7111`  |
+| 837    | Layout 3 | `899cfbce7111`  |
 | 829    | Layout 3 | `899cfbce7111`  |
 | 822    | Layout 3 | `899cfbce7111`  |
 | 814    | Layout 3 | `899cfbce7111`  |
@@ -809,8 +809,9 @@ the two grids it had `_attackEffectFileNameArray` (35 x 35) and
   Layout 2 widens the table to 100 x 100, Layout 3 moves the texts into a
   string table, Layout 4 has ten attack tables, Layout 5 adds ten special
   tables of 100 rows and Layout 6 widens them to 501 rows.
-- Clients 1000 to 1102 name the file `#na#effectfilename.bss` (one attack
-  table on client 1000), which the doc check does not read.
+- Clients 837 to 1102 name the file `#na#effectfilename.bss`; the doc
+  check reads that copy under the plain name. Up to client 1064 it holds
+  Layout 3, from client 1069 on Layout 4.
 
 ## Open Questions
 

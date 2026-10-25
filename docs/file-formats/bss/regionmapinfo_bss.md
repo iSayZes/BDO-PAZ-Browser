@@ -406,43 +406,43 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 2 | `d06318f71a21`  |
 | 1114   | Layout 2 | `d06318f71a21`  |
 | 1109   | Layout 2 | `d06318f71a21`  |
-| 1102   | No file  | `d06318f71a21`  |
-| 1096   | No file  | `d06318f71a21`  |
-| 1088   | No file  | `d06318f71a21`  |
-| 1081   | No file  | `d06318f71a21`  |
-| 1076   | No file  | `d06318f71a21`  |
-| 1069   | No file  | `d06318f71a21`  |
-| 1064   | No file  | `d06318f71a21`  |
-| 1058   | No file  | `d06318f71a21`  |
-| 1051   | No file  | `d06318f71a21`  |
-| 1044   | No file  | `d06318f71a21`  |
-| 1036   | No file  | `d06318f71a21`  |
-| 1026   | No file  | `d06318f71a21`  |
-| 1016   | No file  | `d06318f71a21`  |
-| 1009   | No file  | `d06318f71a21`  |
-| 1005   | No file  | `d06318f71a21`  |
-| 1000   | No file  | `d06318f71a21`  |
-| 998    | No file  | `d06318f71a21`  |
-| 990    | No file  | `d06318f71a21`  |
-| 979    | No file  | `d06318f71a21`  |
-| 972    | No file  | `d06318f71a21`  |
-| 963    | No file  | `d06318f71a21`  |
-| 955    | No file  | `d06318f71a21`  |
-| 946    | No file  | `d06318f71a21`  |
-| 938    | No file  | `d06318f71a21`  |
-| 927    | No file  | `d06318f71a21`  |
-| 911    | No file  | `d06318f71a21`  |
-| 904    | No file  | `d06318f71a21`  |
-| 899    | No file  | `d06318f71a21`  |
-| 894    | No file  | `d06318f71a21`  |
-| 885    | No file  | `d06318f71a21`  |
-| 879    | No file  | `d06318f71a21`  |
-| 872    | No file  | `d06318f71a21`  |
-| 864    | No file  | `d06318f71a21`  |
-| 855    | No file  | `d06318f71a21`  |
-| 853    | No file  | `d06318f71a21`  |
-| 845    | No file  | `d06318f71a21`  |
-| 837    | No file  | `d06318f71a21`  |
+| 1102   | Layout 2 | `d06318f71a21`  |
+| 1096   | Layout 2 | `d06318f71a21`  |
+| 1088   | Layout 2 | `d06318f71a21`  |
+| 1081   | Layout 2 | `d06318f71a21`  |
+| 1076   | Layout 2 | `d06318f71a21`  |
+| 1069   | Layout 2 | `d06318f71a21`  |
+| 1064   | Layout 2 | `d06318f71a21`  |
+| 1058   | Layout 2 | `d06318f71a21`  |
+| 1051   | Layout 2 | `d06318f71a21`  |
+| 1044   | Layout 2 | `d06318f71a21`  |
+| 1036   | Layout 2 | `d06318f71a21`  |
+| 1026   | Layout 2 | `d06318f71a21`  |
+| 1016   | Layout 2 | `d06318f71a21`  |
+| 1009   | Layout 2 | `d06318f71a21`  |
+| 1005   | Layout 2 | `d06318f71a21`  |
+| 1000   | Layout 2 | `d06318f71a21`  |
+| 998    | Layout 2 | `d06318f71a21`  |
+| 990    | Layout 2 | `d06318f71a21`  |
+| 979    | Layout 2 | `d06318f71a21`  |
+| 972    | Layout 2 | `d06318f71a21`  |
+| 963    | Layout 2 | `d06318f71a21`  |
+| 955    | Layout 2 | `d06318f71a21`  |
+| 946    | Layout 2 | `d06318f71a21`  |
+| 938    | Layout 2 | `d06318f71a21`  |
+| 927    | Layout 2 | `d06318f71a21`  |
+| 911    | Layout 2 | `d06318f71a21`  |
+| 904    | Layout 2 | `d06318f71a21`  |
+| 899    | Layout 2 | `d06318f71a21`  |
+| 894    | Layout 2 | `d06318f71a21`  |
+| 885    | Layout 2 | `d06318f71a21`  |
+| 879    | Layout 2 | `d06318f71a21`  |
+| 872    | Layout 2 | `d06318f71a21`  |
+| 864    | Layout 2 | `d06318f71a21`  |
+| 855    | Layout 2 | `d06318f71a21`  |
+| 853    | Layout 2 | `d06318f71a21`  |
+| 845    | Layout 2 | `d06318f71a21`  |
+| 837    | Layout 2 | `d06318f71a21`  |
 | 829    | Layout 2 | `d06318f71a21`  |
 | 822    | Layout 2 | `d06318f71a21`  |
 | 814    | Layout 2 | `d06318f71a21`  |
@@ -661,9 +661,9 @@ the key and the rectangle. `map_type` takes its name from
 - Keys `2`, `3` and `6` (fishing, water and underground maps) are in no
   client read; `fieldinfo.bss` still stores them in `fishing_map_index`,
   `water_info_map_index` and `underground_map_index`.
-- Client 1058 ships the table as `#na#regionmapinfo.bss`: four
-  Layout 2 rows (keys 1, 4, 5 and 7), so the doc check finds no
-  `regionmapinfo.bss` there. Client 794 has the same four maps in Layout 1,
+- Clients 837 to 1102 ship the table as `#na#regionmapinfo.bss`, which the
+  doc check reads under the plain name: four Layout 2 rows on client 1058
+  (keys 1, 4, 5 and 7). Client 794 has the same four maps in Layout 1,
   under `gamecommondata/binary/en/`.
 
 ## Open Questions

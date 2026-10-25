@@ -15,6 +15,7 @@ from typing import Protocol
 
 from bdo_models import PazEntry
 from gc_pause import gc_paused
+from paz.na_copy import plain_name
 from preview_views import image_meta, image_view_html, text_view_html
 from record_fields import record_matches
 from table_sort import SORT_DESC, TableSort, sort_order
@@ -573,7 +574,12 @@ _GRID_CELL_NAME = _re.compile(r"^\d+_\d+\.bss$")
 
 
 def _name_key(name: str) -> str:
-    """The registry key of a lower-case file name: `x_y.bss` for a grid cell, else the name."""
+    """The registry key of a lower-case file name: `x_y.bss` for a grid cell, else the name.
+
+    A table's NA copy looks up its plain name (`#na#quest.bss` reads as
+    `quest.bss`, `paz/na_copy.py`).
+    """
+    name = plain_name(name)
     return GRID_CELL_KEY if name[:1].isdigit() and _GRID_CELL_NAME.match(name) else name
 
 

@@ -286,6 +286,7 @@
     "loadingText": "Spieltexte und Indizes werden geladen…",
     "error": "Fehler: {message}",
     "indexFailed": "Nachschlage-Indizes konnten nicht erstellt werden, einige Symbole und Verknüpfungen fehlen: {message}",
+    "indexSkipped": "Einige Nachschlage-Indizes wurden übersprungen, weil eine Tabelle nicht gelesen werden kann ({tables}); ihre Symbole und Verknüpfungen fehlen",
     "extracting": "Extrahiere… {done}/{total}, {extracted} ok  {skipped} übersprungen  {failed} fehlgeschlagen",
     "extractDone": "Fertig, {extracted} extrahiert, {skipped} übersprungen, {failed} fehlgeschlagen.",
     "searching": "Suche… {done}/{total} Dateien gescannt, bisher {matches} Treffer",

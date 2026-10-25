@@ -13,6 +13,7 @@ import webview
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 from paz.bdo_thumbnail_cache import ThumbnailCache
+from paz.na_copy import find_or_na_copy, shown_name
 from table_sort import TableSort
 
 from updates.releases import Release
@@ -121,9 +122,16 @@ class ApiState:
         self._folder_text_ready.wait()
 
     def _entry_ignoring_case(self, path: str) -> PazEntry | None:
-        """The entry at the normalised `path` in any letter case, or None."""
-        folded = path.lower()
+        """The entry at the normalised `path` in any letter case, else a table's NA copy, or None."""
+        return find_or_na_copy(self._entry_folded, path.lower())
+
+    def _entry_folded(self, folded: str) -> PazEntry | None:
         return self._entry_map.get(folded) or self._entry_map_folded.get(folded)
+
+    def _shown_path(self, path: str) -> str:
+        """The normalised `path` as the tree and the searches show it: a table's
+        NA copy under its plain name, unless the folder has a plain copy too."""
+        return shown_name(path, self._entry_map.__contains__)
 
     def _read_any_case(self, path: str) -> bytes | None:
         """The file at `path` in any letter case, or None when the folder has none."""

@@ -16,6 +16,7 @@ shapes the result.
 
 from __future__ import annotations
 
+import logging
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import cast
@@ -295,11 +296,15 @@ def build_indexes(
     read: Callable[[str], bytes | None],
     exists: Callable[[str], bool],
     specs: tuple[IndexSpec, ...] = INDEX_SPECS,
+    on_skip: Callable[[IndexSpec], None] | None = None,
 ) -> BuiltIndexes:
-    """Build every spec whose sources are all present, keyed by kind value.
+    """Build every spec whose sources are all present and parse, keyed by kind value.
 
     `read` returns a PAZ payload or None; `exists` answers whether a PAZ path
-    is shipped, for the character icon borrowing step.
+    is shipped, for the character icon borrowing step. A source that does not
+    parse (raises ValueError) drops its own specs only; each one is logged and
+    passed to `on_skip`. An old client's table, read as its NA copy
+    (`paz/na_copy.py`), can predate the layout the parser reads.
     """
     payloads: dict[str, bytes | None] = {}
 
@@ -313,9 +318,19 @@ def build_indexes(
         data = [load(path) for path in spec.sources]
         if any(payload is None for payload in data):
             continue
-        indexes[spec.kind.value] = dict(spec.build(*data))
+        try:
+            indexes[spec.kind.value] = dict(spec.build(*data))
+        except ValueError as ex:
+            logging.warning("Could not build the %s lookup index: %s", spec.kind.value, ex)
+            if on_skip is not None:
+                on_skip(spec)
 
     return _with_borrowed_character_icons(indexes, exists)
+
+
+def skipped_tables(specs: list[IndexSpec]) -> str:
+    """The file names of the skipped specs' sources, sorted and comma-separated, for the status line."""
+    return ", ".join(sorted({path.rsplit("/", 1)[-1] for spec in specs for path in spec.sources}))
 
 
 def _with_borrowed_character_icons(

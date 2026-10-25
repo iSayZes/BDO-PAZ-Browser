@@ -343,9 +343,15 @@ def test_a_client_without_the_file_reads_its_na_copy_under_the_doc_file_name(tmp
     assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(1000, 1, True),)
 
 
-def test_the_na_copy_name_prefixes_the_file_name_of_a_full_path() -> None:
-    assert check_run.na_copy_name("eventmanagement.bss") == "#na#eventmanagement.bss"
-    assert check_run.na_copy_name("gamecommondata/binary/x.bss") == "gamecommondata/binary/#na#x.bss"
+def test_a_client_with_both_copies_reads_the_plain_one(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    both = Client(1000, lambda name: {"test.bss": ONE_ROW, "#na#test.bss": b""}.get(name))
+
+    outcome = check_doc_file(doc, ROWS_INDEX, both)
+
+    assert outcome.status is Status.UPDATED
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(1000, 1, True),)
 
 
 def _fingerprints(doc: Path) -> dict[int, str]:

@@ -286,6 +286,7 @@
     "loadingText": "Loading game text and indexes…",
     "error": "Error: {message}",
     "indexFailed": "Lookup indexes could not be built, some icons and links are missing: {message}",
+    "indexSkipped": "Some lookup indexes were skipped because a table does not parse ({tables}); their icons and links are missing",
     "extracting": "Extracting… {done}/{total}, {extracted} ok  {skipped} skipped  {failed} failed",
     "extractDone": "Done, {extracted} extracted, {skipped} skipped, {failed} failed.",
     "searching": "Searching… {done}/{total} files scanned, {matches} match(es) so far",

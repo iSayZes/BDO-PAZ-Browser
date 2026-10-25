@@ -6,6 +6,7 @@ from typing import NamedTuple
 
 from bdo_models import PazEntry
 from bdo_preview import has_preview, is_handled_file
+from paz.na_copy import plain_name
 
 _DISK_VIRTUAL_PREFIX = "__disk__"
 
@@ -82,24 +83,36 @@ def folder_then_name(path: str) -> tuple[str, str]:
     return folder, name
 
 
-def search_result(path: str) -> dict:
-    """The file-search row for normalised PAZ path `path`."""
-    name = path.rsplit("/", 1)[-1]
-    return {"id": path, "name": name, "path": path, **file_row_fields(name)}
+def search_result(path: str, shown_path: str) -> dict:
+    """The file-search row for normalised PAZ path `path`, shown as `shown_path` (`ApiState._shown_path`)."""
+    name = shown_path.rsplit("/", 1)[-1]
+    return {"id": path, "name": name, "path": shown_path, **file_row_fields(name)}
 
 
 def path_matcher(pattern: str) -> Callable[[str], bool]:
     """Test a normalised PAZ path against a search pattern, case-insensitively.
 
     A glob (containing *, ? or [) matches the full path or the file name
-    alone; plain text matches anywhere in the path.
+    alone; plain text matches anywhere in the path. A table's NA copy also
+    matches by its plain name (`paz/na_copy.py`), so `event*.bss` finds
+    `#na#eventmanagement.bss`.
     """
     q = _norm(pattern).lower()
     if any(c in q for c in ("*", "?", "[")):
         def is_glob_hit(path: str) -> bool:
-            path_lc = path.lower()
-            name_lc = path_lc.rsplit("/", 1)[-1]
-            return fnmatch.fnmatch(path_lc, q) or fnmatch.fnmatch(name_lc, q)
+            return any(_is_glob_hit(form, q) for form in _match_forms(path))
         return is_glob_hit
 
-    return lambda path: q in path.lower()
+    return lambda path: any(q in form for form in _match_forms(path))
+
+
+def _match_forms(path: str) -> tuple[str, ...]:
+    """The lower-case forms a search matches `path` by: itself, and the plain name of an NA copy."""
+    path_lc = path.lower()
+    plain = plain_name(path_lc)
+    return (path_lc,) if plain == path_lc else (path_lc, plain)
+
+
+def _is_glob_hit(path_lc: str, q: str) -> bool:
+    name_lc = path_lc.rsplit("/", 1)[-1]
+    return fnmatch.fnmatch(path_lc, q) or fnmatch.fnmatch(name_lc, q)

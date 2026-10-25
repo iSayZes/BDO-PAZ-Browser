@@ -286,6 +286,7 @@
     "loadingText": "Chargement des textes du jeu et des index…",
     "error": "Erreur : {message}",
     "indexFailed": "Impossible de créer les index de recherche, certaines icônes et certains liens manquent : {message}",
+    "indexSkipped": "Certains index de recherche ont été ignorés, car une table ne peut pas être lue ({tables}) ; leurs icônes et leurs liens manquent",
     "extracting": "Extraction… {done}/{total}, {extracted} ok  {skipped} ignorés  {failed} échoués",
     "extractDone": "Terminé, {extracted} extraits, {skipped} ignorés, {failed} échoués.",
     "searching": "Recherche… {done}/{total} fichiers analysés, {matches} correspondance(s) pour l'instant",

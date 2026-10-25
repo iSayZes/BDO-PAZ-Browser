@@ -267,11 +267,13 @@ walks to its last byte by. Three tables follow:
 - The Clients table keeps every client the check read, newest first; a
   client read again takes its new result. `No file` means the name is not in
   the `.meta`, so an archive missing from a pruned folder is not one.
-- A client without a file reads its NA copy, the same name with `#na#` in
-  front (`#na#eventmanagement.bss`, `gamecommondata/binary/#na#x.bss` for a
-  full path), under the file's own name. Clients 837 to 1246 ship some
-  tables only under that name; client 1000 has 244 `.bss` files outside
-  `detaildialog/` with it.
+- A client without a `.bss` / `.dbss` file reads its NA copy, the same name
+  with `#na#` in front (`#na#eventmanagement.bss`,
+  `gamecommondata/binary/#na#x.bss` for a full path), under the file's own
+  name. Clients 837 to 1246 ship some tables only under that name; client
+  1000 has 244 `.bss` files outside `detaildialog/` with it. The browser
+  reads them by the same rule (`paz/na_copy.py`, see
+  [NA Copies](handler.md#na-copies)).
 - When a client keeps a second copy of a file in a language folder (client
   531 has `regioninfo_linkandcheckvalid2.bss` in `binary/` and `binary/en/`),
   the check reads the base copy. Two copies at the same depth are ambiguous:

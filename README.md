@@ -455,6 +455,7 @@ PAZ-Parser/
 │   ├── bdo_thumbnail_cache.py# Icon thumbnail cache (SQLite, in the cache folder)
 │   ├── bdo_records_cache.py# Parsed table cache (SQLite, in the cache folder)
 │   ├── bdo_paz_extract.py  # File extraction logic
+│   ├── na_copy.py          # NA copies (#na#x.bss): plain name, lookup fallback
 │   └── bdo_paz_reader.py   # PAZ archive parser
 │
 ├── native/                 # _bdo_native, the decoders in Rust (see Native Decoders)

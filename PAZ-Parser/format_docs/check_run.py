@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
+from paz.na_copy import find_or_na_copy
+
 from .doc_checks import check_doc, is_converted, read_layouts
 from .doc_fit import fit_layouts
 from .doc_index import IndexRows, doc_files
@@ -32,7 +34,6 @@ FileReader = Callable[[str], "bytes | None"]
 # Another program (a virus scanner, an editor) can hold a doc for a moment; wait for it this long at most.
 _WRITE_ATTEMPTS = 40
 _WRITE_WAIT_SECONDS = 0.25
-NA_COPY_PREFIX = "#na#"
 
 
 class UnreadableFile(Exception):
@@ -93,19 +94,11 @@ class Client:
     read_file: FileReader
 
     def read_doc_file(self, name: str) -> bytes | None:
-        """`name`, else its NA copy (`#na#eventmanagement.bss`), which some clients ship in its place."""
-        data = self.read_file(name)
-        return data if data is not None else self.read_file(na_copy_name(name))
+        """`name`, else for a table its NA copy (`#na#eventmanagement.bss`), which some clients ship in its place.
 
-
-def na_copy_name(name: str) -> str:
-    """`name` with the NA prefix on its file name: `#na#x.bss`, `folder/#na#x.bss` for a full path.
-
-    Clients 837 to 1246 ship some tables only under this name; client 1000 has
-    244 `.bss` files outside `detaildialog/` with it.
-    """
-    folder, slash, file_name = name.rpartition("/")
-    return f"{folder}{slash}{NA_COPY_PREFIX}{file_name}"
+        The rule lives in `paz/na_copy.py`, which the browser's lookups share.
+        """
+        return find_or_na_copy(self.read_file, name)
 
 
 def check_doc_file(

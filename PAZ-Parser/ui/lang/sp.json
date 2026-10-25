@@ -286,6 +286,7 @@
     "loadingText": "Cargando los textos del juego y los índices…",
     "error": "Error: {message}",
     "indexFailed": "No se pudieron crear los índices de búsqueda, faltan algunos iconos y enlaces: {message}",
+    "indexSkipped": "Se omitieron algunos índices de búsqueda porque una tabla no se puede leer ({tables}); faltan sus iconos y enlaces",
     "extracting": "Extrayendo… {done}/{total}, {extracted} ok  {skipped} omitidos  {failed} fallidos",
     "extractDone": "Listo, {extracted} extraídos, {skipped} omitidos, {failed} fallidos.",
     "searching": "Buscando… {done}/{total} archivos escaneados, {matches} coincidencia(s) hasta ahora",

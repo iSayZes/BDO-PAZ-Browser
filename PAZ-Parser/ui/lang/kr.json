@@ -286,6 +286,7 @@
     "loadingText": "게임 텍스트와 인덱스를 불러오는 중…",
     "error": "오류: {message}",
     "indexFailed": "조회 인덱스를 만들 수 없어 일부 아이콘과 링크가 없습니다: {message}",
+    "indexSkipped": "테이블을 읽을 수 없어 일부 조회 인덱스를 건너뛰었습니다({tables}). 해당 아이콘과 링크가 없습니다",
     "extracting": "추출 중… {done}/{total}, {extracted} 성공  {skipped} 건너뜀  {failed} 실패",
     "extractDone": "완료, {extracted}개 추출, {skipped}개 건너뜀, {failed}개 실패.",
     "searching": "검색 중… {done}/{total}개 파일 스캔됨, 현재 {matches}개 일치",

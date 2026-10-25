@@ -9,6 +9,7 @@ from api.bdo_api import Api
 from api.bdo_api_helpers import _norm, path_matcher
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler, get_handler, has_parsed_view
+from paz.na_copy import plain_name
 
 from .errors import CliError
 
@@ -32,7 +33,8 @@ class ParsedFile:
 def find_entry(entries: Sequence[PazEntry], name: str) -> PazEntry:
     """The single entry of `entries` that `name` refers to.
 
-    Tried in order: an exact path, an exact file name, then the `--list`
+    Tried in order: an exact path, an exact file name, the plain path or
+    file name of a table's NA copy (`paz/na_copy.py`), then the `--list`
     pattern rules (glob, else substring). Anything but one hit is an error, so
     a command never picks a file silently.
     """
@@ -40,6 +42,9 @@ def find_entry(entries: Sequence[PazEntry], name: str) -> PazEntry:
     exact = [e for e in entries if _norm(e.internal_path).lower() == wanted]
     if not exact:
         exact = [e for e in entries if _file_name(e) == wanted]
+    if not exact:
+        # `#` first: only an NA copy (`#na#x.bss`) has a plain name of its own.
+        exact = [e for e in entries if "#" in e.internal_path and wanted in _plain_names(e)]
     if len(exact) == 1:
         return exact[0]
     if exact:
@@ -81,6 +86,12 @@ def _parsed_handler(entry: PazEntry) -> PreviewHandler:
 
 def _file_name(entry: PazEntry) -> str:
     return _norm(entry.internal_path).rsplit("/", 1)[-1].lower()
+
+
+def _plain_names(entry: PazEntry) -> tuple[str, str]:
+    """The plain path and file name of an NA copy; for any other entry its own."""
+    plain = plain_name(_norm(entry.internal_path).lower())
+    return plain, plain.rsplit("/", 1)[-1]
 
 
 def _ambiguous(name: str, matches: Sequence[PazEntry]) -> str:

@@ -163,6 +163,33 @@ handler from the built-in one, so such a file counts as handled, and
 `reload_plugins()` puts the built-in view back before it imports the
 handlers again.
 
+### NA Copies
+
+Clients 837 to 1246 ship 27 to 33,774 `.bss` / `.dbss` files only as
+`#na#<name>` (`#na#eventmanagement.bss`), never next to a plain copy. Such a
+file is an NA copy, and the browser treats it as the table of its plain name.
+The rule is in `paz/na_copy.py`; the browser and `check_docs.py` share it.
+
+| Where | What happens to `gamecommondata/binary/#na#eventmanagement.bss` |
+|-------|------------------------------------------------------------------|
+| Handler lookup | Looks up the key `eventmanagement.bss`, so it opens with that handler and counts as handled |
+| Tree, file search, content search | Listed as `eventmanagement.bss`; the row opens the stored `#na#` path, which the details pane shows |
+| Lookups by path | `Api.get_entry()` finds the NA copy for `gamecommondata/binary/eventmanagement.bss` when the client has no plain copy: companions, lookup indexes, the records cache and links into another table all read through it |
+| File search, `--list`, `--file`, `--records` | A pattern or name matches the plain name too (`event*.bss`, `eventmanagement.bss`) |
+| `--list`, `--file`, extraction | Print and write the stored `#na#` name |
+
+A plain copy wins: a lookup by path takes it first, and an NA copy next to its
+plain copy keeps its `#na#` name in the tree. Spaces after the prefix go too
+(client 1000 ships `#na# cashshoose.bss`, shown as `cashshoose.bss`). Only
+`.bss` and `.dbss` files follow the rule. `#na#default` and `#na#userdefault.xml` keep their names,
+because their plain copies hold other bytes on every client up to 3482.
+
+Handlers read the live layout only, so an old client's table that does not fit
+it fails as any other file that does not fit: the Parsed tab shows the error,
+and a lookup index whose table does not parse is left out (the others are
+built). The status line names those tables (`status.indexSkipped`) when the
+indexes are built; a later launch loads them from the index cache without it.
+
 ## Handler Template
 
 All parsed-view handlers must implement `get_records()` and `render_records_page()`.
@@ -792,7 +819,9 @@ Companion files are passed into `get_records()` as:
 companions: dict[str, bytes]
 ```
 
-The dictionary is keyed by basename.
+The dictionary is keyed by basename, the name the handler asked for. A client
+that ships the companion only as its [NA copy](#na-copies) gives that copy
+under the plain name.
 
 `data` and every companion hold exactly the file's recorded size: a stored
 (uncompressed) `.bss` is padded to the 8-byte ICE block in the archive, and the

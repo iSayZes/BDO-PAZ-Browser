@@ -369,11 +369,11 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `5bfba18001de`  |
 | 1256   | No documented layout | `5bfba18001de`  |
 | 1250   | No documented layout | `5bfba18001de`  |
-| 1246   | No file              | `5bfba18001de`  |
-| 1239   | No file              | `5bfba18001de`  |
-| 1230   | No file              | `5bfba18001de`  |
-| 1226   | No file              | `5bfba18001de`  |
-| 1220   | No file              | `5bfba18001de`  |
+| 1246   | No documented layout | `5bfba18001de`  |
+| 1239   | No documented layout | `5bfba18001de`  |
+| 1230   | No documented layout | `5bfba18001de`  |
+| 1226   | No documented layout | `5bfba18001de`  |
+| 1220   | No documented layout | `5bfba18001de`  |
 | 1217   | No file              | `5bfba18001de`  |
 | 1211   | No file              | `5bfba18001de`  |
 | 1210   | No file              | `5bfba18001de`  |

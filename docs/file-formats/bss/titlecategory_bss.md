@@ -12,7 +12,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                | Bytes  | Records         | Row bytes                      |
 | ------ | -------------- | ------------------- | ------ | --------------- | ------------------------------ |
-| 1      | 1250 and later | `titlecategory.bss` | 12,752 | 4 Category List | 792 to 5,296, 3,183 on average |
+| 1      | 1230 and later | `titlecategory.bss` | 12,752 | 4 Category List | 792 to 5,296, 3,183 on average |
 
 | Layout | File                | Known             | Unknown    |
 | ------ | ------------------- | ----------------- | ---------- |
@@ -367,9 +367,9 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `f499b164fc7e`  |
 | 1256   | Layout 1 | `f499b164fc7e`  |
 | 1250   | Layout 1 | `f499b164fc7e`  |
-| 1246   | No file  | `f499b164fc7e`  |
-| 1239   | No file  | `f499b164fc7e`  |
-| 1230   | No file  | `f499b164fc7e`  |
+| 1246   | Layout 1 | `f499b164fc7e`  |
+| 1239   | Layout 1 | `f499b164fc7e`  |
+| 1230   | Layout 1 | `f499b164fc7e`  |
 | 1226   | No file  | `f499b164fc7e`  |
 | 1220   | No file  | `f499b164fc7e`  |
 | 1217   | No file  | `f499b164fc7e`  |

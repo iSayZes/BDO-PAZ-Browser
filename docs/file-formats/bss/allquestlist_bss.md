@@ -10,9 +10,9 @@ Quest order list. The file is a compact `PABR` table of packed quest IDs, one pe
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File               | Bytes  | Records      | Row bytes |
-| ------ | -------------- | ------------------ | ------ | ------------ | --------- |
-| 1      | 1109 and later | `allquestlist.bss` | 75,984 | 18,991 Entry | 4         |
+| Layout | Clients       | File               | Bytes  | Records      | Row bytes |
+| ------ | ------------- | ------------------ | ------ | ------------ | --------- |
+| 1      | 972 and later | `allquestlist.bss` | 75,984 | 18,991 Entry | 4         |
 
 | Layout | File               | Known             | Unknown    |
 | ------ | ------------------ | ----------------- | ---------- |
@@ -367,27 +367,27 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `210c7b5c748a`  |
 | 1256   | Layout 1 | `210c7b5c748a`  |
 | 1250   | Layout 1 | `210c7b5c748a`  |
-| 1246   | No file  | `210c7b5c748a`  |
-| 1239   | No file  | `210c7b5c748a`  |
-| 1230   | No file  | `210c7b5c748a`  |
-| 1226   | No file  | `210c7b5c748a`  |
-| 1220   | No file  | `210c7b5c748a`  |
-| 1217   | No file  | `210c7b5c748a`  |
-| 1211   | No file  | `210c7b5c748a`  |
-| 1210   | No file  | `210c7b5c748a`  |
-| 1208   | No file  | `210c7b5c748a`  |
-| 1203   | No file  | `210c7b5c748a`  |
-| 1197   | No file  | `210c7b5c748a`  |
-| 1194   | No file  | `210c7b5c748a`  |
-| 1192   | No file  | `210c7b5c748a`  |
-| 1187   | No file  | `210c7b5c748a`  |
-| 1183   | No file  | `210c7b5c748a`  |
-| 1177   | No file  | `210c7b5c748a`  |
-| 1173   | No file  | `210c7b5c748a`  |
-| 1167   | No file  | `210c7b5c748a`  |
-| 1164   | No file  | `210c7b5c748a`  |
-| 1156   | No file  | `210c7b5c748a`  |
-| 1149   | No file  | `210c7b5c748a`  |
+| 1246   | Layout 1 | `210c7b5c748a`  |
+| 1239   | Layout 1 | `210c7b5c748a`  |
+| 1230   | Layout 1 | `210c7b5c748a`  |
+| 1226   | Layout 1 | `210c7b5c748a`  |
+| 1220   | Layout 1 | `210c7b5c748a`  |
+| 1217   | Layout 1 | `210c7b5c748a`  |
+| 1211   | Layout 1 | `210c7b5c748a`  |
+| 1210   | Layout 1 | `210c7b5c748a`  |
+| 1208   | Layout 1 | `210c7b5c748a`  |
+| 1203   | Layout 1 | `210c7b5c748a`  |
+| 1197   | Layout 1 | `210c7b5c748a`  |
+| 1194   | Layout 1 | `210c7b5c748a`  |
+| 1192   | Layout 1 | `210c7b5c748a`  |
+| 1187   | Layout 1 | `210c7b5c748a`  |
+| 1183   | Layout 1 | `210c7b5c748a`  |
+| 1177   | Layout 1 | `210c7b5c748a`  |
+| 1173   | Layout 1 | `210c7b5c748a`  |
+| 1167   | Layout 1 | `210c7b5c748a`  |
+| 1164   | Layout 1 | `210c7b5c748a`  |
+| 1156   | Layout 1 | `210c7b5c748a`  |
+| 1149   | Layout 1 | `210c7b5c748a`  |
 | 1144   | Layout 1 | `210c7b5c748a`  |
 | 1137   | Layout 1 | `210c7b5c748a`  |
 | 1132   | Layout 1 | `210c7b5c748a`  |
@@ -396,26 +396,26 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `210c7b5c748a`  |
 | 1114   | Layout 1 | `210c7b5c748a`  |
 | 1109   | Layout 1 | `210c7b5c748a`  |
-| 1102   | No file  | `210c7b5c748a`  |
-| 1096   | No file  | `210c7b5c748a`  |
-| 1088   | No file  | `210c7b5c748a`  |
-| 1081   | No file  | `210c7b5c748a`  |
-| 1076   | No file  | `210c7b5c748a`  |
-| 1069   | No file  | `210c7b5c748a`  |
-| 1064   | No file  | `210c7b5c748a`  |
-| 1058   | No file  | `210c7b5c748a`  |
-| 1051   | No file  | `210c7b5c748a`  |
-| 1044   | No file  | `210c7b5c748a`  |
-| 1036   | No file  | `210c7b5c748a`  |
-| 1026   | No file  | `210c7b5c748a`  |
-| 1016   | No file  | `210c7b5c748a`  |
-| 1009   | No file  | `210c7b5c748a`  |
-| 1005   | No file  | `210c7b5c748a`  |
-| 1000   | No file  | `210c7b5c748a`  |
-| 998    | No file  | `210c7b5c748a`  |
-| 990    | No file  | `210c7b5c748a`  |
-| 979    | No file  | `210c7b5c748a`  |
-| 972    | No file  | `210c7b5c748a`  |
+| 1102   | Layout 1 | `210c7b5c748a`  |
+| 1096   | Layout 1 | `210c7b5c748a`  |
+| 1088   | Layout 1 | `210c7b5c748a`  |
+| 1081   | Layout 1 | `210c7b5c748a`  |
+| 1076   | Layout 1 | `210c7b5c748a`  |
+| 1069   | Layout 1 | `210c7b5c748a`  |
+| 1064   | Layout 1 | `210c7b5c748a`  |
+| 1058   | Layout 1 | `210c7b5c748a`  |
+| 1051   | Layout 1 | `210c7b5c748a`  |
+| 1044   | Layout 1 | `210c7b5c748a`  |
+| 1036   | Layout 1 | `210c7b5c748a`  |
+| 1026   | Layout 1 | `210c7b5c748a`  |
+| 1016   | Layout 1 | `210c7b5c748a`  |
+| 1009   | Layout 1 | `210c7b5c748a`  |
+| 1005   | Layout 1 | `210c7b5c748a`  |
+| 1000   | Layout 1 | `210c7b5c748a`  |
+| 998    | Layout 1 | `210c7b5c748a`  |
+| 990    | Layout 1 | `210c7b5c748a`  |
+| 979    | Layout 1 | `210c7b5c748a`  |
+| 972    | Layout 1 | `210c7b5c748a`  |
 | 963    | No file  | `210c7b5c748a`  |
 | 955    | No file  | `210c7b5c748a`  |
 | 946    | No file  | `210c7b5c748a`  |

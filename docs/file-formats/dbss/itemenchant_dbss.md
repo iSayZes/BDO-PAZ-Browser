@@ -411,8 +411,8 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | No documented layout | `37e1249bfa22`  |
 | 1114   | No file              | `37e1249bfa22`  |
 | 1109   | No documented layout | `37e1249bfa22`  |
-| 1102   | No file              | `37e1249bfa22`  |
-| 1096   | No file              | `37e1249bfa22`  |
+| 1102   | No documented layout | `37e1249bfa22`  |
+| 1096   | No documented layout | `37e1249bfa22`  |
 | 1088   | No file              | `37e1249bfa22`  |
 | 1081   | No file              | `37e1249bfa22`  |
 | 1076   | No file              | `37e1249bfa22`  |

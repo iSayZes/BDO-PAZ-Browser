@@ -19,7 +19,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                  | Bytes | Records  | Row bytes |
 | ------ | -------------- | --------------------- | ----- | -------- | --------- |
-| 1      | 1250 and later | `delegateservant.bss` | 80    | 32 Entry | 2         |
+| 1      | 1230 and later | `delegateservant.bss` | 80    | 32 Entry | 2         |
 
 | Layout | File                  | Known         | Unknown    |
 | ------ | --------------------- | ------------- | ---------- |
@@ -374,9 +374,9 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `f47d7db5e430`  |
 | 1256   | Layout 1 | `f47d7db5e430`  |
 | 1250   | Layout 1 | `f47d7db5e430`  |
-| 1246   | No file  | `f47d7db5e430`  |
-| 1239   | No file  | `f47d7db5e430`  |
-| 1230   | No file  | `f47d7db5e430`  |
+| 1246   | Layout 1 | `f47d7db5e430`  |
+| 1239   | Layout 1 | `f47d7db5e430`  |
+| 1230   | Layout 1 | `f47d7db5e430`  |
 | 1226   | No file  | `f47d7db5e430`  |
 | 1220   | No file  | `f47d7db5e430`  |
 | 1217   | No file  | `f47d7db5e430`  |

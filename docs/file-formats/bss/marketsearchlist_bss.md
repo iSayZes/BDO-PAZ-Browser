@@ -28,7 +28,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | Layout | Clients        | File                   | Bytes   | Records    | Row bytes |
 | ------ | -------------- | ---------------------- | ------- | ---------- | --------- |
 | 2      | 1319 and later | `marketsearchlist.bss` | 556,961 | 12,842 Row | 12        |
-| 1      | 1109 to 1318   | `marketsearchlist.bss` | 285,016 | 7,594 Row  | 8         |
+| 1      | 979 to 1318    | `marketsearchlist.bss` | 285,016 | 7,594 Row  | 8         |
 
 | Layout | File                   | Known              | Unknown         |
 | ------ | ---------------------- | ------------------ | --------------- |
@@ -413,25 +413,25 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `74462d33c6db`  |
 | 1114   | Layout 1 | `74462d33c6db`  |
 | 1109   | Layout 1 | `74462d33c6db`  |
-| 1102   | No file  | `74462d33c6db`  |
-| 1096   | No file  | `74462d33c6db`  |
-| 1088   | No file  | `74462d33c6db`  |
-| 1081   | No file  | `74462d33c6db`  |
-| 1076   | No file  | `74462d33c6db`  |
-| 1069   | No file  | `74462d33c6db`  |
-| 1064   | No file  | `74462d33c6db`  |
-| 1058   | No file  | `74462d33c6db`  |
-| 1051   | No file  | `74462d33c6db`  |
-| 1044   | No file  | `74462d33c6db`  |
-| 1036   | No file  | `74462d33c6db`  |
-| 1026   | No file  | `74462d33c6db`  |
-| 1016   | No file  | `74462d33c6db`  |
-| 1009   | No file  | `74462d33c6db`  |
-| 1005   | No file  | `74462d33c6db`  |
-| 1000   | No file  | `74462d33c6db`  |
-| 998    | No file  | `74462d33c6db`  |
-| 990    | No file  | `74462d33c6db`  |
-| 979    | No file  | `74462d33c6db`  |
+| 1102   | Layout 1 | `74462d33c6db`  |
+| 1096   | Layout 1 | `74462d33c6db`  |
+| 1088   | Layout 1 | `74462d33c6db`  |
+| 1081   | Layout 1 | `74462d33c6db`  |
+| 1076   | Layout 1 | `74462d33c6db`  |
+| 1069   | Layout 1 | `74462d33c6db`  |
+| 1064   | Layout 1 | `74462d33c6db`  |
+| 1058   | Layout 1 | `74462d33c6db`  |
+| 1051   | Layout 1 | `74462d33c6db`  |
+| 1044   | Layout 1 | `74462d33c6db`  |
+| 1036   | Layout 1 | `74462d33c6db`  |
+| 1026   | Layout 1 | `74462d33c6db`  |
+| 1016   | Layout 1 | `74462d33c6db`  |
+| 1009   | Layout 1 | `74462d33c6db`  |
+| 1005   | Layout 1 | `74462d33c6db`  |
+| 1000   | Layout 1 | `74462d33c6db`  |
+| 998    | Layout 1 | `74462d33c6db`  |
+| 990    | Layout 1 | `74462d33c6db`  |
+| 979    | Layout 1 | `74462d33c6db`  |
 | 972    | No file  | `74462d33c6db`  |
 | 963    | No file  | `74462d33c6db`  |
 | 955    | No file  | `74462d33c6db`  |

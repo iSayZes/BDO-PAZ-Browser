@@ -379,15 +379,15 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `b25fd9f1471e`  |
 | 1256   | No documented layout | `b25fd9f1471e`  |
 | 1250   | No documented layout | `b25fd9f1471e`  |
-| 1246   | No file              | `b25fd9f1471e`  |
-| 1239   | No file              | `b25fd9f1471e`  |
-| 1230   | No file              | `b25fd9f1471e`  |
-| 1226   | No file              | `b25fd9f1471e`  |
-| 1220   | No file              | `b25fd9f1471e`  |
-| 1217   | No file              | `b25fd9f1471e`  |
-| 1211   | No file              | `b25fd9f1471e`  |
-| 1210   | No file              | `b25fd9f1471e`  |
-| 1208   | No file              | `b25fd9f1471e`  |
+| 1246   | No documented layout | `b25fd9f1471e`  |
+| 1239   | No documented layout | `b25fd9f1471e`  |
+| 1230   | No documented layout | `b25fd9f1471e`  |
+| 1226   | No documented layout | `b25fd9f1471e`  |
+| 1220   | No documented layout | `b25fd9f1471e`  |
+| 1217   | No documented layout | `b25fd9f1471e`  |
+| 1211   | No documented layout | `b25fd9f1471e`  |
+| 1210   | No documented layout | `b25fd9f1471e`  |
+| 1208   | No documented layout | `b25fd9f1471e`  |
 | 1203   | No file              | `b25fd9f1471e`  |
 | 1197   | No file              | `b25fd9f1471e`  |
 | 1194   | No file              | `b25fd9f1471e`  |

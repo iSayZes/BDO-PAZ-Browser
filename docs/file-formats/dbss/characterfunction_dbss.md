@@ -373,15 +373,15 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `4009e96c8f82`  |
 | 1256   | No documented layout | `4009e96c8f82`  |
 | 1250   | No documented layout | `4009e96c8f82`  |
-| 1246   | No file              | `4009e96c8f82`  |
-| 1239   | No file              | `4009e96c8f82`  |
-| 1230   | No file              | `4009e96c8f82`  |
-| 1226   | No file              | `4009e96c8f82`  |
-| 1220   | No file              | `4009e96c8f82`  |
-| 1217   | No file              | `4009e96c8f82`  |
-| 1211   | No file              | `4009e96c8f82`  |
-| 1210   | No file              | `4009e96c8f82`  |
-| 1208   | No file              | `4009e96c8f82`  |
+| 1246   | No documented layout | `4009e96c8f82`  |
+| 1239   | No documented layout | `4009e96c8f82`  |
+| 1230   | No documented layout | `4009e96c8f82`  |
+| 1226   | No documented layout | `4009e96c8f82`  |
+| 1220   | No documented layout | `4009e96c8f82`  |
+| 1217   | No documented layout | `4009e96c8f82`  |
+| 1211   | No documented layout | `4009e96c8f82`  |
+| 1210   | No documented layout | `4009e96c8f82`  |
+| 1208   | No documented layout | `4009e96c8f82`  |
 | 1203   | No file              | `4009e96c8f82`  |
 | 1197   | No file              | `4009e96c8f82`  |
 | 1194   | No file              | `4009e96c8f82`  |

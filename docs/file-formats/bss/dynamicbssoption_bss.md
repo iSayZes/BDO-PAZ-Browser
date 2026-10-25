@@ -16,9 +16,9 @@ with no count: 109 bytes on client 3482, 88 of them `1`.
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File                   | Bytes | Records   | Row bytes |
-| ------ | -------------- | ---------------------- | ----- | --------- | --------- |
-| 1      | 1250 and later | `dynamicbssoption.bss` | 125   | 109 Entry | 1         |
+| Layout | Clients       | File                   | Bytes | Records   | Row bytes |
+| ------ | ------------- | ---------------------- | ----- | --------- | --------- |
+| 1      | 911 and later | `dynamicbssoption.bss` | 125   | 109 Entry | 1         |
 
 | Layout | File                   | Known          | Unknown    |
 | ------ | ---------------------- | -------------- | ---------- |
@@ -373,61 +373,61 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `b82c20ac01be`  |
 | 1256   | Layout 1 | `b82c20ac01be`  |
 | 1250   | Layout 1 | `b82c20ac01be`  |
-| 1246   | No file  | `b82c20ac01be`  |
-| 1239   | No file  | `b82c20ac01be`  |
-| 1230   | No file  | `b82c20ac01be`  |
-| 1226   | No file  | `b82c20ac01be`  |
-| 1220   | No file  | `b82c20ac01be`  |
-| 1217   | No file  | `b82c20ac01be`  |
-| 1211   | No file  | `b82c20ac01be`  |
-| 1210   | No file  | `b82c20ac01be`  |
-| 1208   | No file  | `b82c20ac01be`  |
-| 1203   | No file  | `b82c20ac01be`  |
-| 1197   | No file  | `b82c20ac01be`  |
-| 1194   | No file  | `b82c20ac01be`  |
-| 1192   | No file  | `b82c20ac01be`  |
-| 1187   | No file  | `b82c20ac01be`  |
-| 1183   | No file  | `b82c20ac01be`  |
-| 1177   | No file  | `b82c20ac01be`  |
-| 1173   | No file  | `b82c20ac01be`  |
-| 1167   | No file  | `b82c20ac01be`  |
-| 1164   | No file  | `b82c20ac01be`  |
-| 1156   | No file  | `b82c20ac01be`  |
-| 1149   | No file  | `b82c20ac01be`  |
-| 1144   | No file  | `b82c20ac01be`  |
-| 1137   | No file  | `b82c20ac01be`  |
-| 1132   | No file  | `b82c20ac01be`  |
-| 1127   | No file  | `b82c20ac01be`  |
-| 1122   | No file  | `b82c20ac01be`  |
-| 1118   | No file  | `b82c20ac01be`  |
-| 1114   | No file  | `b82c20ac01be`  |
-| 1109   | No file  | `b82c20ac01be`  |
-| 1102   | No file  | `b82c20ac01be`  |
-| 1096   | No file  | `b82c20ac01be`  |
-| 1088   | No file  | `b82c20ac01be`  |
-| 1081   | No file  | `b82c20ac01be`  |
-| 1076   | No file  | `b82c20ac01be`  |
-| 1069   | No file  | `b82c20ac01be`  |
-| 1064   | No file  | `b82c20ac01be`  |
-| 1058   | No file  | `b82c20ac01be`  |
-| 1051   | No file  | `b82c20ac01be`  |
-| 1044   | No file  | `b82c20ac01be`  |
-| 1036   | No file  | `b82c20ac01be`  |
-| 1026   | No file  | `b82c20ac01be`  |
-| 1016   | No file  | `b82c20ac01be`  |
-| 1009   | No file  | `b82c20ac01be`  |
-| 1005   | No file  | `b82c20ac01be`  |
-| 1000   | No file  | `b82c20ac01be`  |
-| 998    | No file  | `b82c20ac01be`  |
-| 990    | No file  | `b82c20ac01be`  |
-| 979    | No file  | `b82c20ac01be`  |
-| 972    | No file  | `b82c20ac01be`  |
-| 963    | No file  | `b82c20ac01be`  |
-| 955    | No file  | `b82c20ac01be`  |
-| 946    | No file  | `b82c20ac01be`  |
-| 938    | No file  | `b82c20ac01be`  |
-| 927    | No file  | `b82c20ac01be`  |
-| 911    | No file  | `b82c20ac01be`  |
+| 1246   | Layout 1 | `b82c20ac01be`  |
+| 1239   | Layout 1 | `b82c20ac01be`  |
+| 1230   | Layout 1 | `b82c20ac01be`  |
+| 1226   | Layout 1 | `b82c20ac01be`  |
+| 1220   | Layout 1 | `b82c20ac01be`  |
+| 1217   | Layout 1 | `b82c20ac01be`  |
+| 1211   | Layout 1 | `b82c20ac01be`  |
+| 1210   | Layout 1 | `b82c20ac01be`  |
+| 1208   | Layout 1 | `b82c20ac01be`  |
+| 1203   | Layout 1 | `b82c20ac01be`  |
+| 1197   | Layout 1 | `b82c20ac01be`  |
+| 1194   | Layout 1 | `b82c20ac01be`  |
+| 1192   | Layout 1 | `b82c20ac01be`  |
+| 1187   | Layout 1 | `b82c20ac01be`  |
+| 1183   | Layout 1 | `b82c20ac01be`  |
+| 1177   | Layout 1 | `b82c20ac01be`  |
+| 1173   | Layout 1 | `b82c20ac01be`  |
+| 1167   | Layout 1 | `b82c20ac01be`  |
+| 1164   | Layout 1 | `b82c20ac01be`  |
+| 1156   | Layout 1 | `b82c20ac01be`  |
+| 1149   | Layout 1 | `b82c20ac01be`  |
+| 1144   | Layout 1 | `b82c20ac01be`  |
+| 1137   | Layout 1 | `b82c20ac01be`  |
+| 1132   | Layout 1 | `b82c20ac01be`  |
+| 1127   | Layout 1 | `b82c20ac01be`  |
+| 1122   | Layout 1 | `b82c20ac01be`  |
+| 1118   | Layout 1 | `b82c20ac01be`  |
+| 1114   | Layout 1 | `b82c20ac01be`  |
+| 1109   | Layout 1 | `b82c20ac01be`  |
+| 1102   | Layout 1 | `b82c20ac01be`  |
+| 1096   | Layout 1 | `b82c20ac01be`  |
+| 1088   | Layout 1 | `b82c20ac01be`  |
+| 1081   | Layout 1 | `b82c20ac01be`  |
+| 1076   | Layout 1 | `b82c20ac01be`  |
+| 1069   | Layout 1 | `b82c20ac01be`  |
+| 1064   | Layout 1 | `b82c20ac01be`  |
+| 1058   | Layout 1 | `b82c20ac01be`  |
+| 1051   | Layout 1 | `b82c20ac01be`  |
+| 1044   | Layout 1 | `b82c20ac01be`  |
+| 1036   | Layout 1 | `b82c20ac01be`  |
+| 1026   | Layout 1 | `b82c20ac01be`  |
+| 1016   | Layout 1 | `b82c20ac01be`  |
+| 1009   | Layout 1 | `b82c20ac01be`  |
+| 1005   | Layout 1 | `b82c20ac01be`  |
+| 1000   | Layout 1 | `b82c20ac01be`  |
+| 998    | Layout 1 | `b82c20ac01be`  |
+| 990    | Layout 1 | `b82c20ac01be`  |
+| 979    | Layout 1 | `b82c20ac01be`  |
+| 972    | Layout 1 | `b82c20ac01be`  |
+| 963    | Layout 1 | `b82c20ac01be`  |
+| 955    | Layout 1 | `b82c20ac01be`  |
+| 946    | Layout 1 | `b82c20ac01be`  |
+| 938    | Layout 1 | `b82c20ac01be`  |
+| 927    | Layout 1 | `b82c20ac01be`  |
+| 911    | Layout 1 | `b82c20ac01be`  |
 | 904    | No file  | `b82c20ac01be`  |
 | 899    | No file  | `b82c20ac01be`  |
 | 894    | No file  | `b82c20ac01be`  |

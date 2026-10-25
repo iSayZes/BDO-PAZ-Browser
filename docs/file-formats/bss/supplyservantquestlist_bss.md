@@ -14,7 +14,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                         | Bytes | Records        | Row bytes |
 | ------ | -------------- | ---------------------------- | ----- | -------------- | --------- |
-| 1      | 1250 and later | `supplyservantquestlist.bss` | 20    | 1 String Table | 4         |
+| 1      | 1173 and later | `supplyservantquestlist.bss` | 20    | 1 String Table | 4         |
 
 | Layout | File                         | Known         | Unknown    |
 | ------ | ---------------------------- | ------------- | ---------- |
@@ -369,23 +369,23 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `cf58d8232e2e`  |
 | 1256   | Layout 1 | `cf58d8232e2e`  |
 | 1250   | Layout 1 | `cf58d8232e2e`  |
-| 1246   | No file  | `cf58d8232e2e`  |
-| 1239   | No file  | `cf58d8232e2e`  |
-| 1230   | No file  | `cf58d8232e2e`  |
-| 1226   | No file  | `cf58d8232e2e`  |
-| 1220   | No file  | `cf58d8232e2e`  |
-| 1217   | No file  | `cf58d8232e2e`  |
-| 1211   | No file  | `cf58d8232e2e`  |
-| 1210   | No file  | `cf58d8232e2e`  |
-| 1208   | No file  | `cf58d8232e2e`  |
-| 1203   | No file  | `cf58d8232e2e`  |
-| 1197   | No file  | `cf58d8232e2e`  |
-| 1194   | No file  | `cf58d8232e2e`  |
-| 1192   | No file  | `cf58d8232e2e`  |
-| 1187   | No file  | `cf58d8232e2e`  |
-| 1183   | No file  | `cf58d8232e2e`  |
-| 1177   | No file  | `cf58d8232e2e`  |
-| 1173   | No file  | `cf58d8232e2e`  |
+| 1246   | Layout 1 | `cf58d8232e2e`  |
+| 1239   | Layout 1 | `cf58d8232e2e`  |
+| 1230   | Layout 1 | `cf58d8232e2e`  |
+| 1226   | Layout 1 | `cf58d8232e2e`  |
+| 1220   | Layout 1 | `cf58d8232e2e`  |
+| 1217   | Layout 1 | `cf58d8232e2e`  |
+| 1211   | Layout 1 | `cf58d8232e2e`  |
+| 1210   | Layout 1 | `cf58d8232e2e`  |
+| 1208   | Layout 1 | `cf58d8232e2e`  |
+| 1203   | Layout 1 | `cf58d8232e2e`  |
+| 1197   | Layout 1 | `cf58d8232e2e`  |
+| 1194   | Layout 1 | `cf58d8232e2e`  |
+| 1192   | Layout 1 | `cf58d8232e2e`  |
+| 1187   | Layout 1 | `cf58d8232e2e`  |
+| 1183   | Layout 1 | `cf58d8232e2e`  |
+| 1177   | Layout 1 | `cf58d8232e2e`  |
+| 1173   | Layout 1 | `cf58d8232e2e`  |
 | 1167   | No file  | `cf58d8232e2e`  |
 | 1164   | No file  | `cf58d8232e2e`  |
 | 1156   | No file  | `cf58d8232e2e`  |

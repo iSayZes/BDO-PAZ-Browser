@@ -373,7 +373,7 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `2344812ec7b5`  |
 | 1256   | No documented layout | `2344812ec7b5`  |
 | 1250   | No documented layout | `2344812ec7b5`  |
-| 1246   | No file              | `2344812ec7b5`  |
+| 1246   | No documented layout | `2344812ec7b5`  |
 | 1239   | No file              | `2344812ec7b5`  |
 | 1230   | No file              | `2344812ec7b5`  |
 | 1226   | No file              | `2344812ec7b5`  |

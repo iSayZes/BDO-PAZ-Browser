@@ -12,8 +12,8 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                       | Bytes | Records       | Row bytes                  |
 | ------ | -------------- | -------------------------- | ----- | ------------- | -------------------------- |
-| 1      | 1250 and later | `titlebufflist.dbss`       | 5,972 | 18 Block      | 140 to 410, 332 on average |
-| 1      | 1250 and later | `titlebufflistoffset.dbss` | 220   | 18 Offset Row | 12                         |
+| 1      | 1230 and later | `titlebufflist.dbss`       | 5,972 | 18 Block      | 140 to 410, 332 on average |
+| 1      | 1230 and later | `titlebufflistoffset.dbss` | 220   | 18 Offset Row | 12                         |
 
 | Layout | File                       | Known           | Unknown      |
 | ------ | -------------------------- | --------------- | ------------ |
@@ -369,9 +369,9 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `6981208bd58f`  |
 | 1256   | Layout 1 | `6981208bd58f`  |
 | 1250   | Layout 1 | `6981208bd58f`  |
-| 1246   | No file  | `6981208bd58f`  |
-| 1239   | No file  | `6981208bd58f`  |
-| 1230   | No file  | `6981208bd58f`  |
+| 1246   | Layout 1 | `6981208bd58f`  |
+| 1239   | Layout 1 | `6981208bd58f`  |
+| 1230   | Layout 1 | `6981208bd58f`  |
 | 1226   | No file  | `6981208bd58f`  |
 | 1220   | No file  | `6981208bd58f`  |
 | 1217   | No file  | `6981208bd58f`  |

@@ -17,9 +17,9 @@ and shows it as Silver (`LUA_WORLDMAP_WORKDING_PROGRESS_IMMEDIATELY_SILVER`).
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File                      | Bytes | Records            | Row bytes |
-| ------ | -------------- | ------------------------- | ----- | ------------------ | --------- |
-| 1      | 1250 and later | `cashproduct_instant.bss` | 3,668 | 226 Entry, 4 Group | 16        |
+| Layout | Clients       | File                      | Bytes | Records            | Row bytes |
+| ------ | ------------- | ------------------------- | ----- | ------------------ | --------- |
+| 1      | 904 and later | `cashproduct_instant.bss` | 3,668 | 226 Entry, 4 Group | 16        |
 
 | Layout | File                      | Known           | Unknown    |
 | ------ | ------------------------- | --------------- | ---------- |
@@ -374,62 +374,62 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `32b52d2caf84`  |
 | 1256   | Layout 1 | `32b52d2caf84`  |
 | 1250   | Layout 1 | `32b52d2caf84`  |
-| 1246   | No file  | `32b52d2caf84`  |
-| 1239   | No file  | `32b52d2caf84`  |
-| 1230   | No file  | `32b52d2caf84`  |
-| 1226   | No file  | `32b52d2caf84`  |
-| 1220   | No file  | `32b52d2caf84`  |
-| 1217   | No file  | `32b52d2caf84`  |
-| 1211   | No file  | `32b52d2caf84`  |
-| 1210   | No file  | `32b52d2caf84`  |
-| 1208   | No file  | `32b52d2caf84`  |
-| 1203   | No file  | `32b52d2caf84`  |
-| 1197   | No file  | `32b52d2caf84`  |
-| 1194   | No file  | `32b52d2caf84`  |
-| 1192   | No file  | `32b52d2caf84`  |
-| 1187   | No file  | `32b52d2caf84`  |
-| 1183   | No file  | `32b52d2caf84`  |
-| 1177   | No file  | `32b52d2caf84`  |
-| 1173   | No file  | `32b52d2caf84`  |
-| 1167   | No file  | `32b52d2caf84`  |
-| 1164   | No file  | `32b52d2caf84`  |
-| 1156   | No file  | `32b52d2caf84`  |
-| 1149   | No file  | `32b52d2caf84`  |
-| 1144   | No file  | `32b52d2caf84`  |
-| 1137   | No file  | `32b52d2caf84`  |
-| 1132   | No file  | `32b52d2caf84`  |
-| 1127   | No file  | `32b52d2caf84`  |
-| 1122   | No file  | `32b52d2caf84`  |
-| 1118   | No file  | `32b52d2caf84`  |
-| 1114   | No file  | `32b52d2caf84`  |
-| 1109   | No file  | `32b52d2caf84`  |
-| 1102   | No file  | `32b52d2caf84`  |
-| 1096   | No file  | `32b52d2caf84`  |
-| 1088   | No file  | `32b52d2caf84`  |
-| 1081   | No file  | `32b52d2caf84`  |
-| 1076   | No file  | `32b52d2caf84`  |
-| 1069   | No file  | `32b52d2caf84`  |
-| 1064   | No file  | `32b52d2caf84`  |
-| 1058   | No file  | `32b52d2caf84`  |
-| 1051   | No file  | `32b52d2caf84`  |
-| 1044   | No file  | `32b52d2caf84`  |
-| 1036   | No file  | `32b52d2caf84`  |
-| 1026   | No file  | `32b52d2caf84`  |
-| 1016   | No file  | `32b52d2caf84`  |
-| 1009   | No file  | `32b52d2caf84`  |
-| 1005   | No file  | `32b52d2caf84`  |
-| 1000   | No file  | `32b52d2caf84`  |
-| 998    | No file  | `32b52d2caf84`  |
-| 990    | No file  | `32b52d2caf84`  |
-| 979    | No file  | `32b52d2caf84`  |
-| 972    | No file  | `32b52d2caf84`  |
-| 963    | No file  | `32b52d2caf84`  |
-| 955    | No file  | `32b52d2caf84`  |
-| 946    | No file  | `32b52d2caf84`  |
-| 938    | No file  | `32b52d2caf84`  |
-| 927    | No file  | `32b52d2caf84`  |
-| 911    | No file  | `32b52d2caf84`  |
-| 904    | No file  | `32b52d2caf84`  |
+| 1246   | Layout 1 | `32b52d2caf84`  |
+| 1239   | Layout 1 | `32b52d2caf84`  |
+| 1230   | Layout 1 | `32b52d2caf84`  |
+| 1226   | Layout 1 | `32b52d2caf84`  |
+| 1220   | Layout 1 | `32b52d2caf84`  |
+| 1217   | Layout 1 | `32b52d2caf84`  |
+| 1211   | Layout 1 | `32b52d2caf84`  |
+| 1210   | Layout 1 | `32b52d2caf84`  |
+| 1208   | Layout 1 | `32b52d2caf84`  |
+| 1203   | Layout 1 | `32b52d2caf84`  |
+| 1197   | Layout 1 | `32b52d2caf84`  |
+| 1194   | Layout 1 | `32b52d2caf84`  |
+| 1192   | Layout 1 | `32b52d2caf84`  |
+| 1187   | Layout 1 | `32b52d2caf84`  |
+| 1183   | Layout 1 | `32b52d2caf84`  |
+| 1177   | Layout 1 | `32b52d2caf84`  |
+| 1173   | Layout 1 | `32b52d2caf84`  |
+| 1167   | Layout 1 | `32b52d2caf84`  |
+| 1164   | Layout 1 | `32b52d2caf84`  |
+| 1156   | Layout 1 | `32b52d2caf84`  |
+| 1149   | Layout 1 | `32b52d2caf84`  |
+| 1144   | Layout 1 | `32b52d2caf84`  |
+| 1137   | Layout 1 | `32b52d2caf84`  |
+| 1132   | Layout 1 | `32b52d2caf84`  |
+| 1127   | Layout 1 | `32b52d2caf84`  |
+| 1122   | Layout 1 | `32b52d2caf84`  |
+| 1118   | Layout 1 | `32b52d2caf84`  |
+| 1114   | Layout 1 | `32b52d2caf84`  |
+| 1109   | Layout 1 | `32b52d2caf84`  |
+| 1102   | Layout 1 | `32b52d2caf84`  |
+| 1096   | Layout 1 | `32b52d2caf84`  |
+| 1088   | Layout 1 | `32b52d2caf84`  |
+| 1081   | Layout 1 | `32b52d2caf84`  |
+| 1076   | Layout 1 | `32b52d2caf84`  |
+| 1069   | Layout 1 | `32b52d2caf84`  |
+| 1064   | Layout 1 | `32b52d2caf84`  |
+| 1058   | Layout 1 | `32b52d2caf84`  |
+| 1051   | Layout 1 | `32b52d2caf84`  |
+| 1044   | Layout 1 | `32b52d2caf84`  |
+| 1036   | Layout 1 | `32b52d2caf84`  |
+| 1026   | Layout 1 | `32b52d2caf84`  |
+| 1016   | Layout 1 | `32b52d2caf84`  |
+| 1009   | Layout 1 | `32b52d2caf84`  |
+| 1005   | Layout 1 | `32b52d2caf84`  |
+| 1000   | Layout 1 | `32b52d2caf84`  |
+| 998    | Layout 1 | `32b52d2caf84`  |
+| 990    | Layout 1 | `32b52d2caf84`  |
+| 979    | Layout 1 | `32b52d2caf84`  |
+| 972    | Layout 1 | `32b52d2caf84`  |
+| 963    | Layout 1 | `32b52d2caf84`  |
+| 955    | Layout 1 | `32b52d2caf84`  |
+| 946    | Layout 1 | `32b52d2caf84`  |
+| 938    | Layout 1 | `32b52d2caf84`  |
+| 927    | Layout 1 | `32b52d2caf84`  |
+| 911    | Layout 1 | `32b52d2caf84`  |
+| 904    | Layout 1 | `32b52d2caf84`  |
 | 899    | No file  | `32b52d2caf84`  |
 | 894    | No file  | `32b52d2caf84`  |
 | 885    | No file  | `32b52d2caf84`  |

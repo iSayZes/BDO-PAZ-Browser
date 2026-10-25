@@ -16,7 +16,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                     | Bytes | Records                  | Row bytes |
 | ------ | -------------- | ------------------------ | ----- | ------------------------ | --------- |
-| 1      | 1109 and later | `skillquickslotinfo.bss` | 7,776 | 1,940 Slot, 97 Class Row | 4         |
+| 1      | 1102 and later | `skillquickslotinfo.bss` | 7,776 | 1,940 Slot, 97 Class Row | 4         |
 
 | Layout | File                     | Known           | Unknown         |
 | ------ | ------------------------ | --------------- | --------------- |
@@ -400,7 +400,7 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `fa0e74e583fe`  |
 | 1114   | Layout 1 | `fa0e74e583fe`  |
 | 1109   | Layout 1 | `fa0e74e583fe`  |
-| 1102   | No file  | `fa0e74e583fe`  |
+| 1102   | Layout 1 | `fa0e74e583fe`  |
 | 1096   | No file  | `fa0e74e583fe`  |
 | 1088   | No file  | `fa0e74e583fe`  |
 | 1081   | No file  | `fa0e74e583fe`  |

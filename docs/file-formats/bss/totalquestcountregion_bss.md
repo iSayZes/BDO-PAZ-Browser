@@ -10,10 +10,10 @@ Quest totals. `totalquestcountregion.bss` holds the number of quests per quest r
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File                        | Bytes | Records        | Row bytes |
-| ------ | -------------- | --------------------------- | ----- | -------------- | --------- |
-| 1      | 1109 and later | `totalquestcountregion.bss` | 88    | 1 String Table | 4         |
-| 1      | 1109 and later | `totalquestcounttype.bss`   | 96    | 1 String Table | 4         |
+| Layout | Clients       | File                        | Bytes | Records        | Row bytes |
+| ------ | ------------- | --------------------------- | ----- | -------------- | --------- |
+| 1      | 972 and later | `totalquestcountregion.bss` | 88    | 1 String Table | 4         |
+| 1      | 972 and later | `totalquestcounttype.bss`   | 96    | 1 String Table | 4         |
 
 | Layout | File                        | Known         | Unknown    |
 | ------ | --------------------------- | ------------- | ---------- |
@@ -369,27 +369,27 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `daaca0977a82`  |
 | 1256   | Layout 1 | `daaca0977a82`  |
 | 1250   | Layout 1 | `daaca0977a82`  |
-| 1246   | No file  | `daaca0977a82`  |
-| 1239   | No file  | `daaca0977a82`  |
-| 1230   | No file  | `daaca0977a82`  |
-| 1226   | No file  | `daaca0977a82`  |
-| 1220   | No file  | `daaca0977a82`  |
-| 1217   | No file  | `daaca0977a82`  |
-| 1211   | No file  | `daaca0977a82`  |
-| 1210   | No file  | `daaca0977a82`  |
-| 1208   | No file  | `daaca0977a82`  |
-| 1203   | No file  | `daaca0977a82`  |
-| 1197   | No file  | `daaca0977a82`  |
-| 1194   | No file  | `daaca0977a82`  |
-| 1192   | No file  | `daaca0977a82`  |
-| 1187   | No file  | `daaca0977a82`  |
-| 1183   | No file  | `daaca0977a82`  |
-| 1177   | No file  | `daaca0977a82`  |
-| 1173   | No file  | `daaca0977a82`  |
-| 1167   | No file  | `daaca0977a82`  |
-| 1164   | No file  | `daaca0977a82`  |
-| 1156   | No file  | `daaca0977a82`  |
-| 1149   | No file  | `daaca0977a82`  |
+| 1246   | Layout 1 | `daaca0977a82`  |
+| 1239   | Layout 1 | `daaca0977a82`  |
+| 1230   | Layout 1 | `daaca0977a82`  |
+| 1226   | Layout 1 | `daaca0977a82`  |
+| 1220   | Layout 1 | `daaca0977a82`  |
+| 1217   | Layout 1 | `daaca0977a82`  |
+| 1211   | Layout 1 | `daaca0977a82`  |
+| 1210   | Layout 1 | `daaca0977a82`  |
+| 1208   | Layout 1 | `daaca0977a82`  |
+| 1203   | Layout 1 | `daaca0977a82`  |
+| 1197   | Layout 1 | `daaca0977a82`  |
+| 1194   | Layout 1 | `daaca0977a82`  |
+| 1192   | Layout 1 | `daaca0977a82`  |
+| 1187   | Layout 1 | `daaca0977a82`  |
+| 1183   | Layout 1 | `daaca0977a82`  |
+| 1177   | Layout 1 | `daaca0977a82`  |
+| 1173   | Layout 1 | `daaca0977a82`  |
+| 1167   | Layout 1 | `daaca0977a82`  |
+| 1164   | Layout 1 | `daaca0977a82`  |
+| 1156   | Layout 1 | `daaca0977a82`  |
+| 1149   | Layout 1 | `daaca0977a82`  |
 | 1144   | Layout 1 | `daaca0977a82`  |
 | 1137   | Layout 1 | `daaca0977a82`  |
 | 1132   | Layout 1 | `daaca0977a82`  |
@@ -398,26 +398,26 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `daaca0977a82`  |
 | 1114   | Layout 1 | `daaca0977a82`  |
 | 1109   | Layout 1 | `daaca0977a82`  |
-| 1102   | No file  | `daaca0977a82`  |
-| 1096   | No file  | `daaca0977a82`  |
-| 1088   | No file  | `daaca0977a82`  |
-| 1081   | No file  | `daaca0977a82`  |
-| 1076   | No file  | `daaca0977a82`  |
-| 1069   | No file  | `daaca0977a82`  |
-| 1064   | No file  | `daaca0977a82`  |
-| 1058   | No file  | `daaca0977a82`  |
-| 1051   | No file  | `daaca0977a82`  |
-| 1044   | No file  | `daaca0977a82`  |
-| 1036   | No file  | `daaca0977a82`  |
-| 1026   | No file  | `daaca0977a82`  |
-| 1016   | No file  | `daaca0977a82`  |
-| 1009   | No file  | `daaca0977a82`  |
-| 1005   | No file  | `daaca0977a82`  |
-| 1000   | No file  | `daaca0977a82`  |
-| 998    | No file  | `daaca0977a82`  |
-| 990    | No file  | `daaca0977a82`  |
-| 979    | No file  | `daaca0977a82`  |
-| 972    | No file  | `daaca0977a82`  |
+| 1102   | Layout 1 | `daaca0977a82`  |
+| 1096   | Layout 1 | `daaca0977a82`  |
+| 1088   | Layout 1 | `daaca0977a82`  |
+| 1081   | Layout 1 | `daaca0977a82`  |
+| 1076   | Layout 1 | `daaca0977a82`  |
+| 1069   | Layout 1 | `daaca0977a82`  |
+| 1064   | Layout 1 | `daaca0977a82`  |
+| 1058   | Layout 1 | `daaca0977a82`  |
+| 1051   | Layout 1 | `daaca0977a82`  |
+| 1044   | Layout 1 | `daaca0977a82`  |
+| 1036   | Layout 1 | `daaca0977a82`  |
+| 1026   | Layout 1 | `daaca0977a82`  |
+| 1016   | Layout 1 | `daaca0977a82`  |
+| 1009   | Layout 1 | `daaca0977a82`  |
+| 1005   | Layout 1 | `daaca0977a82`  |
+| 1000   | Layout 1 | `daaca0977a82`  |
+| 998    | Layout 1 | `daaca0977a82`  |
+| 990    | Layout 1 | `daaca0977a82`  |
+| 979    | Layout 1 | `daaca0977a82`  |
+| 972    | Layout 1 | `daaca0977a82`  |
 | 963    | No file  | `daaca0977a82`  |
 | 955    | No file  | `daaca0977a82`  |
 | 946    | No file  | `daaca0977a82`  |

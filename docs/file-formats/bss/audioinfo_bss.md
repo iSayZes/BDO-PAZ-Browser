@@ -23,7 +23,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | 4      | 1958 to 1996   | `audioinfo.bss` | 28,374  | 831 Row, 9 State Entry, 10 Radio Entry    | 28        |
 | 3      | 1914 to 1937   | `audioinfo.bss` | 27,671  | 831 Row, 8 State Entry                    | 28        |
 | 2      | 1866 to 1908   | `audioinfo.bss` | 27,546  | 831 Row, 5 State Entry                    | 28        |
-| 1      | 1109 to 1862   | `audioinfo.bss` | 132,980 | 831 Row                                   | 160       |
+| 1      | 1069 to 1862   | `audioinfo.bss` | 132,980 | 831 Row                                   | 160       |
 
 | Layout | File            | Known             | Unknown        |
 | ------ | --------------- | ----------------- | -------------- |
@@ -412,43 +412,43 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1             | `af52924c6778`  |
 | 1114   | Layout 1             | `af52924c6778`  |
 | 1109   | Layout 1             | `af52924c6778`  |
-| 1102   | No file              | `af52924c6778`  |
-| 1096   | No file              | `af52924c6778`  |
-| 1088   | No file              | `af52924c6778`  |
-| 1081   | No file              | `af52924c6778`  |
-| 1076   | No file              | `af52924c6778`  |
-| 1069   | No file              | `af52924c6778`  |
-| 1064   | No file              | `af52924c6778`  |
-| 1058   | No file              | `af52924c6778`  |
-| 1051   | No file              | `af52924c6778`  |
-| 1044   | No file              | `af52924c6778`  |
-| 1036   | No file              | `af52924c6778`  |
-| 1026   | No file              | `af52924c6778`  |
-| 1016   | No file              | `af52924c6778`  |
-| 1009   | No file              | `af52924c6778`  |
-| 1005   | No file              | `af52924c6778`  |
-| 1000   | No file              | `af52924c6778`  |
-| 998    | No file              | `af52924c6778`  |
-| 990    | No file              | `af52924c6778`  |
-| 979    | No file              | `af52924c6778`  |
-| 972    | No file              | `af52924c6778`  |
-| 963    | No file              | `af52924c6778`  |
-| 955    | No file              | `af52924c6778`  |
-| 946    | No file              | `af52924c6778`  |
-| 938    | No file              | `af52924c6778`  |
-| 927    | No file              | `af52924c6778`  |
-| 911    | No file              | `af52924c6778`  |
-| 904    | No file              | `af52924c6778`  |
-| 899    | No file              | `af52924c6778`  |
-| 894    | No file              | `af52924c6778`  |
-| 885    | No file              | `af52924c6778`  |
-| 879    | No file              | `af52924c6778`  |
-| 872    | No file              | `af52924c6778`  |
-| 864    | No file              | `af52924c6778`  |
-| 855    | No file              | `af52924c6778`  |
-| 853    | No file              | `af52924c6778`  |
-| 845    | No file              | `af52924c6778`  |
-| 837    | No file              | `af52924c6778`  |
+| 1102   | Layout 1             | `af52924c6778`  |
+| 1096   | Layout 1             | `af52924c6778`  |
+| 1088   | Layout 1             | `af52924c6778`  |
+| 1081   | Layout 1             | `af52924c6778`  |
+| 1076   | Layout 1             | `af52924c6778`  |
+| 1069   | Layout 1             | `af52924c6778`  |
+| 1064   | No documented layout | `af52924c6778`  |
+| 1058   | No documented layout | `af52924c6778`  |
+| 1051   | No documented layout | `af52924c6778`  |
+| 1044   | No documented layout | `af52924c6778`  |
+| 1036   | No documented layout | `af52924c6778`  |
+| 1026   | No documented layout | `af52924c6778`  |
+| 1016   | No documented layout | `af52924c6778`  |
+| 1009   | No documented layout | `af52924c6778`  |
+| 1005   | No documented layout | `af52924c6778`  |
+| 1000   | No documented layout | `af52924c6778`  |
+| 998    | No documented layout | `af52924c6778`  |
+| 990    | No documented layout | `af52924c6778`  |
+| 979    | No documented layout | `af52924c6778`  |
+| 972    | No documented layout | `af52924c6778`  |
+| 963    | No documented layout | `af52924c6778`  |
+| 955    | No documented layout | `af52924c6778`  |
+| 946    | No documented layout | `af52924c6778`  |
+| 938    | No documented layout | `af52924c6778`  |
+| 927    | No documented layout | `af52924c6778`  |
+| 911    | No documented layout | `af52924c6778`  |
+| 904    | No documented layout | `af52924c6778`  |
+| 899    | No documented layout | `af52924c6778`  |
+| 894    | No documented layout | `af52924c6778`  |
+| 885    | No documented layout | `af52924c6778`  |
+| 879    | No documented layout | `af52924c6778`  |
+| 872    | No documented layout | `af52924c6778`  |
+| 864    | No documented layout | `af52924c6778`  |
+| 855    | No documented layout | `af52924c6778`  |
+| 853    | No documented layout | `af52924c6778`  |
+| 845    | No documented layout | `af52924c6778`  |
+| 837    | No documented layout | `af52924c6778`  |
 | 829    | No documented layout | `af52924c6778`  |
 | 822    | No documented layout | `af52924c6778`  |
 | 814    | No documented layout | `af52924c6778`  |

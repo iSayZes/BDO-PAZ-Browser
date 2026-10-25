@@ -24,7 +24,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                 | Bytes | Records               | Row bytes |
 | ------ | -------------- | -------------------- | ----- | --------------------- | --------- |
-| 3      | 1109 and later | `barter_special.bss` | 7,370 | 105 Exchange, 105 Row | 56        |
+| 3      | 1102 and later | `barter_special.bss` | 7,370 | 105 Exchange, 105 Row | 56        |
 | 2      | 1261 to 2855   | `barter_special.bss` | 8,194 | 122 Exchange, 122 Row | 56        |
 | 1      | 1304 to 1685   | `barter_special.bss` | 9,788 | 148 Exchange, 148 Row | 56        |
 
@@ -412,7 +412,7 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 3             | `450d3b6666e9`  |
 | 1114   | Layout 3             | `450d3b6666e9`  |
 | 1109   | Layout 3             | `450d3b6666e9`  |
-| 1102   | No file              | `450d3b6666e9`  |
+| 1102   | Layout 3             | `450d3b6666e9`  |
 | 1096   | No file              | `450d3b6666e9`  |
 | 1088   | No file              | `450d3b6666e9`  |
 | 1081   | No file              | `450d3b6666e9`  |

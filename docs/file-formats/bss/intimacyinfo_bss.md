@@ -17,9 +17,9 @@ dialog Lua (`panel_dialog_intimacy_all_1.luac`) reads them through
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File               | Bytes  | Records           | Row bytes |
-| ------ | -------------- | ------------------ | ------ | ----------------- | --------- |
-| 1      | 1109 and later | `intimacyinfo.bss` | 22,028 | 765 Info, 353 Row | 26        |
+| Layout | Clients       | File               | Bytes  | Records           | Row bytes |
+| ------ | ------------- | ------------------ | ------ | ----------------- | --------- |
+| 1      | 845 and later | `intimacyinfo.bss` | 22,028 | 765 Info, 353 Row | 26        |
 
 | Layout | File               | Known            | Unknown         |
 | ------ | ------------------ | ---------------- | --------------- |
@@ -403,42 +403,42 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1             | `b222d466e128`  |
 | 1114   | Layout 1             | `b222d466e128`  |
 | 1109   | Layout 1             | `b222d466e128`  |
-| 1102   | No file              | `b222d466e128`  |
-| 1096   | No file              | `b222d466e128`  |
-| 1088   | No file              | `b222d466e128`  |
-| 1081   | No file              | `b222d466e128`  |
-| 1076   | No file              | `b222d466e128`  |
-| 1069   | No file              | `b222d466e128`  |
-| 1064   | No file              | `b222d466e128`  |
-| 1058   | No file              | `b222d466e128`  |
-| 1051   | No file              | `b222d466e128`  |
-| 1044   | No file              | `b222d466e128`  |
-| 1036   | No file              | `b222d466e128`  |
-| 1026   | No file              | `b222d466e128`  |
-| 1016   | No file              | `b222d466e128`  |
-| 1009   | No file              | `b222d466e128`  |
-| 1005   | No file              | `b222d466e128`  |
-| 1000   | No file              | `b222d466e128`  |
-| 998    | No file              | `b222d466e128`  |
-| 990    | No file              | `b222d466e128`  |
-| 979    | No file              | `b222d466e128`  |
-| 972    | No file              | `b222d466e128`  |
-| 963    | No file              | `b222d466e128`  |
-| 955    | No file              | `b222d466e128`  |
-| 946    | No file              | `b222d466e128`  |
-| 938    | No file              | `b222d466e128`  |
-| 927    | No file              | `b222d466e128`  |
-| 911    | No file              | `b222d466e128`  |
-| 904    | No file              | `b222d466e128`  |
-| 899    | No file              | `b222d466e128`  |
-| 894    | No file              | `b222d466e128`  |
-| 885    | No file              | `b222d466e128`  |
-| 879    | No file              | `b222d466e128`  |
-| 872    | No file              | `b222d466e128`  |
-| 864    | No file              | `b222d466e128`  |
-| 855    | No file              | `b222d466e128`  |
-| 853    | No file              | `b222d466e128`  |
-| 845    | No file              | `b222d466e128`  |
+| 1102   | Layout 1             | `b222d466e128`  |
+| 1096   | Layout 1             | `b222d466e128`  |
+| 1088   | Layout 1             | `b222d466e128`  |
+| 1081   | Layout 1             | `b222d466e128`  |
+| 1076   | Layout 1             | `b222d466e128`  |
+| 1069   | Layout 1             | `b222d466e128`  |
+| 1064   | Layout 1             | `b222d466e128`  |
+| 1058   | Layout 1             | `b222d466e128`  |
+| 1051   | Layout 1             | `b222d466e128`  |
+| 1044   | Layout 1             | `b222d466e128`  |
+| 1036   | Layout 1             | `b222d466e128`  |
+| 1026   | Layout 1             | `b222d466e128`  |
+| 1016   | Layout 1             | `b222d466e128`  |
+| 1009   | Layout 1             | `b222d466e128`  |
+| 1005   | Layout 1             | `b222d466e128`  |
+| 1000   | Layout 1             | `b222d466e128`  |
+| 998    | Layout 1             | `b222d466e128`  |
+| 990    | Layout 1             | `b222d466e128`  |
+| 979    | Layout 1             | `b222d466e128`  |
+| 972    | Layout 1             | `b222d466e128`  |
+| 963    | Layout 1             | `b222d466e128`  |
+| 955    | Layout 1             | `b222d466e128`  |
+| 946    | Layout 1             | `b222d466e128`  |
+| 938    | Layout 1             | `b222d466e128`  |
+| 927    | Layout 1             | `b222d466e128`  |
+| 911    | Layout 1             | `b222d466e128`  |
+| 904    | Layout 1             | `b222d466e128`  |
+| 899    | Layout 1             | `b222d466e128`  |
+| 894    | Layout 1             | `b222d466e128`  |
+| 885    | Layout 1             | `b222d466e128`  |
+| 879    | Layout 1             | `b222d466e128`  |
+| 872    | Layout 1             | `b222d466e128`  |
+| 864    | Layout 1             | `b222d466e128`  |
+| 855    | Layout 1             | `b222d466e128`  |
+| 853    | Layout 1             | `b222d466e128`  |
+| 845    | Layout 1             | `b222d466e128`  |
 | 837    | No file              | `b222d466e128`  |
 | 829    | No file              | `b222d466e128`  |
 | 822    | No file              | `b222d466e128`  |

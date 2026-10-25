@@ -16,7 +16,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                       | Bytes | Records        | Row bytes |
 | ------ | -------------- | -------------------------- | ----- | -------------- | --------- |
-| 1      | 1250 and later | `vehicletrainingskill.bss` | 23    | 1 String Table | 4         |
+| 1      | 1226 and later | `vehicletrainingskill.bss` | 23    | 1 String Table | 4         |
 
 | Layout | File                       | Known         | Unknown    |
 | ------ | -------------------------- | ------------- | ---------- |
@@ -371,10 +371,10 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `f2e70712ee5c`  |
 | 1256   | Layout 1 | `f2e70712ee5c`  |
 | 1250   | Layout 1 | `f2e70712ee5c`  |
-| 1246   | No file  | `f2e70712ee5c`  |
-| 1239   | No file  | `f2e70712ee5c`  |
-| 1230   | No file  | `f2e70712ee5c`  |
-| 1226   | No file  | `f2e70712ee5c`  |
+| 1246   | Layout 1 | `f2e70712ee5c`  |
+| 1239   | Layout 1 | `f2e70712ee5c`  |
+| 1230   | Layout 1 | `f2e70712ee5c`  |
+| 1226   | Layout 1 | `f2e70712ee5c`  |
 | 1220   | No file  | `f2e70712ee5c`  |
 | 1217   | No file  | `f2e70712ee5c`  |
 | 1211   | No file  | `f2e70712ee5c`  |

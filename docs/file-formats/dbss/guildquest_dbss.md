@@ -379,7 +379,7 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `e4dd5d4e671f`  |
 | 1256   | No documented layout | `e4dd5d4e671f`  |
 | 1250   | No documented layout | `e4dd5d4e671f`  |
-| 1246   | No file              | `e4dd5d4e671f`  |
+| 1246   | No documented layout | `e4dd5d4e671f`  |
 | 1239   | No file              | `e4dd5d4e671f`  |
 | 1230   | No file              | `e4dd5d4e671f`  |
 | 1226   | No file              | `e4dd5d4e671f`  |

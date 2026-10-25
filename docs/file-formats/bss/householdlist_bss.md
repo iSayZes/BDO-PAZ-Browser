@@ -16,7 +16,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                | Bytes | Records        | Row bytes |
 | ------ | -------------- | ------------------- | ----- | -------------- | --------- |
-| 1      | 1109 and later | `householdlist.bss` | 1,750 | 1 String Table | 4         |
+| 1      | 1096 and later | `householdlist.bss` | 1,750 | 1 String Table | 4         |
 
 | Layout | File                | Known            | Unknown    |
 | ------ | ------------------- | ---------------- | ---------- |
@@ -371,27 +371,27 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `dc5d8194589b`  |
 | 1256   | Layout 1 | `dc5d8194589b`  |
 | 1250   | Layout 1 | `dc5d8194589b`  |
-| 1246   | No file  | `dc5d8194589b`  |
-| 1239   | No file  | `dc5d8194589b`  |
-| 1230   | No file  | `dc5d8194589b`  |
-| 1226   | No file  | `dc5d8194589b`  |
-| 1220   | No file  | `dc5d8194589b`  |
-| 1217   | No file  | `dc5d8194589b`  |
-| 1211   | No file  | `dc5d8194589b`  |
-| 1210   | No file  | `dc5d8194589b`  |
-| 1208   | No file  | `dc5d8194589b`  |
-| 1203   | No file  | `dc5d8194589b`  |
-| 1197   | No file  | `dc5d8194589b`  |
-| 1194   | No file  | `dc5d8194589b`  |
-| 1192   | No file  | `dc5d8194589b`  |
-| 1187   | No file  | `dc5d8194589b`  |
-| 1183   | No file  | `dc5d8194589b`  |
-| 1177   | No file  | `dc5d8194589b`  |
-| 1173   | No file  | `dc5d8194589b`  |
-| 1167   | No file  | `dc5d8194589b`  |
-| 1164   | No file  | `dc5d8194589b`  |
-| 1156   | No file  | `dc5d8194589b`  |
-| 1149   | No file  | `dc5d8194589b`  |
+| 1246   | Layout 1 | `dc5d8194589b`  |
+| 1239   | Layout 1 | `dc5d8194589b`  |
+| 1230   | Layout 1 | `dc5d8194589b`  |
+| 1226   | Layout 1 | `dc5d8194589b`  |
+| 1220   | Layout 1 | `dc5d8194589b`  |
+| 1217   | Layout 1 | `dc5d8194589b`  |
+| 1211   | Layout 1 | `dc5d8194589b`  |
+| 1210   | Layout 1 | `dc5d8194589b`  |
+| 1208   | Layout 1 | `dc5d8194589b`  |
+| 1203   | Layout 1 | `dc5d8194589b`  |
+| 1197   | Layout 1 | `dc5d8194589b`  |
+| 1194   | Layout 1 | `dc5d8194589b`  |
+| 1192   | Layout 1 | `dc5d8194589b`  |
+| 1187   | Layout 1 | `dc5d8194589b`  |
+| 1183   | Layout 1 | `dc5d8194589b`  |
+| 1177   | Layout 1 | `dc5d8194589b`  |
+| 1173   | Layout 1 | `dc5d8194589b`  |
+| 1167   | Layout 1 | `dc5d8194589b`  |
+| 1164   | Layout 1 | `dc5d8194589b`  |
+| 1156   | Layout 1 | `dc5d8194589b`  |
+| 1149   | Layout 1 | `dc5d8194589b`  |
 | 1144   | Layout 1 | `dc5d8194589b`  |
 | 1137   | Layout 1 | `dc5d8194589b`  |
 | 1132   | Layout 1 | `dc5d8194589b`  |
@@ -400,8 +400,8 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `dc5d8194589b`  |
 | 1114   | Layout 1 | `dc5d8194589b`  |
 | 1109   | Layout 1 | `dc5d8194589b`  |
-| 1102   | No file  | `dc5d8194589b`  |
-| 1096   | No file  | `dc5d8194589b`  |
+| 1102   | Layout 1 | `dc5d8194589b`  |
+| 1096   | Layout 1 | `dc5d8194589b`  |
 | 1088   | No file  | `dc5d8194589b`  |
 | 1081   | No file  | `dc5d8194589b`  |
 | 1076   | No file  | `dc5d8194589b`  |

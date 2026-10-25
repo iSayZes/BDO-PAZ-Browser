@@ -15,8 +15,8 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                      | Bytes   | Records          | Row bytes |
 | ------ | -------------- | ------------------------- | ------- | ---------------- | --------- |
-| 1      | 1109 and later | `itemmaxlevel.dbss`       | 151,880 | 30,372 Row       | 5         |
-| 1      | 1109 and later | `itemmaxleveloffset.dbss` | 364,484 | 30,372 Index Row | 12        |
+| 1      | 1096 and later | `itemmaxlevel.dbss`       | 151,880 | 30,372 Row       | 5         |
+| 1      | 1096 and later | `itemmaxleveloffset.dbss` | 364,484 | 30,372 Index Row | 12        |
 
 | Layout | File                      | Known              | Unknown    |
 | ------ | ------------------------- | ------------------ | ---------- |
@@ -401,8 +401,8 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `450f7e30e4ad`  |
 | 1114   | No file  | `450f7e30e4ad`  |
 | 1109   | Layout 1 | `450f7e30e4ad`  |
-| 1102   | No file  | `450f7e30e4ad`  |
-| 1096   | No file  | `450f7e30e4ad`  |
+| 1102   | Layout 1 | `450f7e30e4ad`  |
+| 1096   | Layout 1 | `450f7e30e4ad`  |
 | 1088   | No file  | `450f7e30e4ad`  |
 | 1081   | No file  | `450f7e30e4ad`  |
 | 1076   | No file  | `450f7e30e4ad`  |

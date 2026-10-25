@@ -12,7 +12,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                              | Bytes | Records        | Row bytes |
 | ------ | -------------- | --------------------------------- | ----- | -------------- | --------- |
-| 1      | 1250 and later | `pcgrowthdefaultcharacterkey.bss` | 18    | 1 String Table | 4         |
+| 1      | 1217 and later | `pcgrowthdefaultcharacterkey.bss` | 18    | 1 String Table | 4         |
 
 | Layout | File                              | Known         | Unknown    |
 | ------ | --------------------------------- | ------------- | ---------- |
@@ -367,12 +367,12 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `093199a5ef3c`  |
 | 1256   | Layout 1 | `093199a5ef3c`  |
 | 1250   | Layout 1 | `093199a5ef3c`  |
-| 1246   | No file  | `093199a5ef3c`  |
-| 1239   | No file  | `093199a5ef3c`  |
-| 1230   | No file  | `093199a5ef3c`  |
-| 1226   | No file  | `093199a5ef3c`  |
-| 1220   | No file  | `093199a5ef3c`  |
-| 1217   | No file  | `093199a5ef3c`  |
+| 1246   | Layout 1 | `093199a5ef3c`  |
+| 1239   | Layout 1 | `093199a5ef3c`  |
+| 1230   | Layout 1 | `093199a5ef3c`  |
+| 1226   | Layout 1 | `093199a5ef3c`  |
+| 1220   | Layout 1 | `093199a5ef3c`  |
+| 1217   | Layout 1 | `093199a5ef3c`  |
 | 1211   | No file  | `093199a5ef3c`  |
 | 1210   | No file  | `093199a5ef3c`  |
 | 1208   | No file  | `093199a5ef3c`  |

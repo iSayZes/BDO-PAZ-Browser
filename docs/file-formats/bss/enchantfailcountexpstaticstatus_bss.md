@@ -18,7 +18,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                                         | Bytes  | Records                              | Row bytes |
 | ------ | -------------- | -------------------------------------------- | ------ | ------------------------------------ | --------- |
-| 2      | 1109 and later | `enchantfailcountexpstaticstatus.bss`        | 39,620 | 3,600 Entry, 2,800 Group, 400 Record | 5         |
+| 2      | 1081 and later | `enchantfailcountexpstaticstatus.bss`        | 39,620 | 3,600 Entry, 2,800 Group, 400 Record | 5         |
 | 1      | 1286 to 3212   | `enchantfailcountexpstaticstatus.dbss`       | 5,140  | 321 Row                              | 16        |
 | 1      | 1286 to 3212   | `enchantfailcountexpstaticstatusoffset.dbss` | 5,140  | 321 Offset Row                       | 16        |
 
@@ -406,10 +406,10 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 2             | `0837094b2ea7`  |
 | 1114   | Layout 2             | `0837094b2ea7`  |
 | 1109   | Layout 2             | `0837094b2ea7`  |
-| 1102   | No file              | `0837094b2ea7`  |
-| 1096   | No file              | `0837094b2ea7`  |
-| 1088   | No file              | `0837094b2ea7`  |
-| 1081   | No file              | `0837094b2ea7`  |
+| 1102   | Layout 2             | `0837094b2ea7`  |
+| 1096   | Layout 2             | `0837094b2ea7`  |
+| 1088   | Layout 2             | `0837094b2ea7`  |
+| 1081   | Layout 2             | `0837094b2ea7`  |
 | 1076   | No file              | `0837094b2ea7`  |
 | 1069   | No file              | `0837094b2ea7`  |
 | 1064   | No file              | `0837094b2ea7`  |

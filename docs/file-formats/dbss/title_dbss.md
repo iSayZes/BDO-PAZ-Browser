@@ -373,9 +373,9 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `686f627a8e93`  |
 | 1256   | No documented layout | `686f627a8e93`  |
 | 1250   | No documented layout | `686f627a8e93`  |
-| 1246   | No file              | `686f627a8e93`  |
-| 1239   | No file              | `686f627a8e93`  |
-| 1230   | No file              | `686f627a8e93`  |
+| 1246   | No documented layout | `686f627a8e93`  |
+| 1239   | No documented layout | `686f627a8e93`  |
+| 1230   | No documented layout | `686f627a8e93`  |
 | 1226   | No file              | `686f627a8e93`  |
 | 1220   | No file              | `686f627a8e93`  |
 | 1217   | No file              | `686f627a8e93`  |

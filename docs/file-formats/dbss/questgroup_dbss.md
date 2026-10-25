@@ -12,7 +12,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File              | Bytes | Records                                | Row bytes |
 | ------ | -------------- | ----------------- | ----- | -------------------------------------- | --------- |
-| 1      | 1250 and later | `questgroup.dbss` | 5,918 | 110 Quest Group Record, 474 Quest Link | 4         |
+| 1      | 1220 and later | `questgroup.dbss` | 5,918 | 110 Quest Group Record, 474 Quest Link | 4         |
 
 | Layout | File              | Known           | Unknown      |
 | ------ | ----------------- | --------------- | ------------ |
@@ -367,11 +367,11 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `1fa2e8560512`  |
 | 1256   | Layout 1 | `1fa2e8560512`  |
 | 1250   | Layout 1 | `1fa2e8560512`  |
-| 1246   | No file  | `1fa2e8560512`  |
-| 1239   | No file  | `1fa2e8560512`  |
-| 1230   | No file  | `1fa2e8560512`  |
-| 1226   | No file  | `1fa2e8560512`  |
-| 1220   | No file  | `1fa2e8560512`  |
+| 1246   | Layout 1 | `1fa2e8560512`  |
+| 1239   | Layout 1 | `1fa2e8560512`  |
+| 1230   | Layout 1 | `1fa2e8560512`  |
+| 1226   | Layout 1 | `1fa2e8560512`  |
+| 1220   | Layout 1 | `1fa2e8560512`  |
 | 1217   | No file  | `1fa2e8560512`  |
 | 1211   | No file  | `1fa2e8560512`  |
 | 1210   | No file  | `1fa2e8560512`  |

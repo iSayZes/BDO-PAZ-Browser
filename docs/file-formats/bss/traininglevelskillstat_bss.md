@@ -13,9 +13,9 @@ The Training tooltip in the Character Info Basic tab shows both.
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File                         | Bytes | Records         | Row bytes |
-| ------ | -------------- | ---------------------------- | ----- | --------------- | --------- |
-| 1      | 1109 and later | `traininglevelskillstat.bss` | 1,456 | 180 Level Entry | 8         |
+| Layout | Clients       | File                         | Bytes | Records         | Row bytes |
+| ------ | ------------- | ---------------------------- | ----- | --------------- | --------- |
+| 1      | 946 and later | `traininglevelskillstat.bss` | 1,456 | 180 Level Entry | 8         |
 
 | Layout | File                         | Known            | Unknown    |
 | ------ | ---------------------------- | ---------------- | ---------- |
@@ -399,29 +399,29 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `8393d4bcd55a`  |
 | 1114   | Layout 1 | `8393d4bcd55a`  |
 | 1109   | Layout 1 | `8393d4bcd55a`  |
-| 1102   | No file  | `8393d4bcd55a`  |
-| 1096   | No file  | `8393d4bcd55a`  |
-| 1088   | No file  | `8393d4bcd55a`  |
-| 1081   | No file  | `8393d4bcd55a`  |
-| 1076   | No file  | `8393d4bcd55a`  |
-| 1069   | No file  | `8393d4bcd55a`  |
-| 1064   | No file  | `8393d4bcd55a`  |
-| 1058   | No file  | `8393d4bcd55a`  |
-| 1051   | No file  | `8393d4bcd55a`  |
-| 1044   | No file  | `8393d4bcd55a`  |
-| 1036   | No file  | `8393d4bcd55a`  |
-| 1026   | No file  | `8393d4bcd55a`  |
-| 1016   | No file  | `8393d4bcd55a`  |
-| 1009   | No file  | `8393d4bcd55a`  |
-| 1005   | No file  | `8393d4bcd55a`  |
-| 1000   | No file  | `8393d4bcd55a`  |
-| 998    | No file  | `8393d4bcd55a`  |
-| 990    | No file  | `8393d4bcd55a`  |
-| 979    | No file  | `8393d4bcd55a`  |
-| 972    | No file  | `8393d4bcd55a`  |
-| 963    | No file  | `8393d4bcd55a`  |
-| 955    | No file  | `8393d4bcd55a`  |
-| 946    | No file  | `8393d4bcd55a`  |
+| 1102   | Layout 1 | `8393d4bcd55a`  |
+| 1096   | Layout 1 | `8393d4bcd55a`  |
+| 1088   | Layout 1 | `8393d4bcd55a`  |
+| 1081   | Layout 1 | `8393d4bcd55a`  |
+| 1076   | Layout 1 | `8393d4bcd55a`  |
+| 1069   | Layout 1 | `8393d4bcd55a`  |
+| 1064   | Layout 1 | `8393d4bcd55a`  |
+| 1058   | Layout 1 | `8393d4bcd55a`  |
+| 1051   | Layout 1 | `8393d4bcd55a`  |
+| 1044   | Layout 1 | `8393d4bcd55a`  |
+| 1036   | Layout 1 | `8393d4bcd55a`  |
+| 1026   | Layout 1 | `8393d4bcd55a`  |
+| 1016   | Layout 1 | `8393d4bcd55a`  |
+| 1009   | Layout 1 | `8393d4bcd55a`  |
+| 1005   | Layout 1 | `8393d4bcd55a`  |
+| 1000   | Layout 1 | `8393d4bcd55a`  |
+| 998    | Layout 1 | `8393d4bcd55a`  |
+| 990    | Layout 1 | `8393d4bcd55a`  |
+| 979    | Layout 1 | `8393d4bcd55a`  |
+| 972    | Layout 1 | `8393d4bcd55a`  |
+| 963    | Layout 1 | `8393d4bcd55a`  |
+| 955    | Layout 1 | `8393d4bcd55a`  |
+| 946    | Layout 1 | `8393d4bcd55a`  |
 | 938    | No file  | `8393d4bcd55a`  |
 | 927    | No file  | `8393d4bcd55a`  |
 | 911    | No file  | `8393d4bcd55a`  |

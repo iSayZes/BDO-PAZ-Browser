@@ -18,7 +18,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                  | Bytes | Records | Row bytes |
 | ------ | -------------- | --------------------- | ----- | ------- | --------- |
-| 1      | 1109 and later | `vehicletypename.bss` | 3,043 | 112 Row | 8         |
+| 1      | 1064 and later | `vehicletypename.bss` | 3,043 | 112 Row | 8         |
 
 | Layout | File                  | Known            | Unknown    |
 | ------ | --------------------- | ---------------- | ---------- |
@@ -402,13 +402,13 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `96a842568da3`  |
 | 1114   | Layout 1 | `96a842568da3`  |
 | 1109   | Layout 1 | `96a842568da3`  |
-| 1102   | No file  | `96a842568da3`  |
-| 1096   | No file  | `96a842568da3`  |
-| 1088   | No file  | `96a842568da3`  |
-| 1081   | No file  | `96a842568da3`  |
-| 1076   | No file  | `96a842568da3`  |
-| 1069   | No file  | `96a842568da3`  |
-| 1064   | No file  | `96a842568da3`  |
+| 1102   | Layout 1 | `96a842568da3`  |
+| 1096   | Layout 1 | `96a842568da3`  |
+| 1088   | Layout 1 | `96a842568da3`  |
+| 1081   | Layout 1 | `96a842568da3`  |
+| 1076   | Layout 1 | `96a842568da3`  |
+| 1069   | Layout 1 | `96a842568da3`  |
+| 1064   | Layout 1 | `96a842568da3`  |
 | 1058   | No file  | `96a842568da3`  |
 | 1051   | No file  | `96a842568da3`  |
 | 1044   | No file  | `96a842568da3`  |

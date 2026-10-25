@@ -380,10 +380,10 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | No documented layout | `ba364580032e`  |
 | 1256   | No documented layout | `ba364580032e`  |
 | 1250   | No documented layout | `ba364580032e`  |
-| 1246   | No file              | `ba364580032e`  |
-| 1239   | No file              | `ba364580032e`  |
-| 1230   | No file              | `ba364580032e`  |
-| 1226   | No file              | `ba364580032e`  |
+| 1246   | No documented layout | `ba364580032e`  |
+| 1239   | No documented layout | `ba364580032e`  |
+| 1230   | No documented layout | `ba364580032e`  |
+| 1226   | No documented layout | `ba364580032e`  |
 | 1220   | No file              | `ba364580032e`  |
 | 1217   | No file              | `ba364580032e`  |
 | 1211   | No file              | `ba364580032e`  |

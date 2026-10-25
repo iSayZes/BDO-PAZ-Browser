@@ -372,7 +372,7 @@ Every client the doc check read, and the layout its files fit.
 | 1246   | No file              | `508de056d425`  |
 | 1239   | No file              | `508de056d425`  |
 | 1230   | No file              | `508de056d425`  |
-| 1226   | No file              | `508de056d425`  |
+| 1226   | No documented layout | `508de056d425`  |
 | 1220   | No file              | `508de056d425`  |
 | 1217   | No file              | `508de056d425`  |
 | 1211   | No file              | `508de056d425`  |

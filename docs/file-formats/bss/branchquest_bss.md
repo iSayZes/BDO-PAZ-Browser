@@ -12,7 +12,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File              | Bytes | Records                  | Row bytes |
 | ------ | -------------- | ----------------- | ----- | ------------------------ | --------- |
-| 1      | 1109 and later | `branchquest.bss` | 1,637 | 161 Branch Row, 42 Group | 9         |
+| 1      | 1044 and later | `branchquest.bss` | 1,637 | 161 Branch Row, 42 Group | 9         |
 
 | Layout | File              | Known            | Unknown    |
 | ------ | ----------------- | ---------------- | ---------- |
@@ -367,27 +367,27 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `fea0c98552bf`  |
 | 1256   | Layout 1 | `fea0c98552bf`  |
 | 1250   | Layout 1 | `fea0c98552bf`  |
-| 1246   | No file  | `fea0c98552bf`  |
-| 1239   | No file  | `fea0c98552bf`  |
-| 1230   | No file  | `fea0c98552bf`  |
-| 1226   | No file  | `fea0c98552bf`  |
-| 1220   | No file  | `fea0c98552bf`  |
-| 1217   | No file  | `fea0c98552bf`  |
-| 1211   | No file  | `fea0c98552bf`  |
-| 1210   | No file  | `fea0c98552bf`  |
-| 1208   | No file  | `fea0c98552bf`  |
-| 1203   | No file  | `fea0c98552bf`  |
-| 1197   | No file  | `fea0c98552bf`  |
-| 1194   | No file  | `fea0c98552bf`  |
-| 1192   | No file  | `fea0c98552bf`  |
-| 1187   | No file  | `fea0c98552bf`  |
-| 1183   | No file  | `fea0c98552bf`  |
-| 1177   | No file  | `fea0c98552bf`  |
-| 1173   | No file  | `fea0c98552bf`  |
-| 1167   | No file  | `fea0c98552bf`  |
-| 1164   | No file  | `fea0c98552bf`  |
-| 1156   | No file  | `fea0c98552bf`  |
-| 1149   | No file  | `fea0c98552bf`  |
+| 1246   | Layout 1 | `fea0c98552bf`  |
+| 1239   | Layout 1 | `fea0c98552bf`  |
+| 1230   | Layout 1 | `fea0c98552bf`  |
+| 1226   | Layout 1 | `fea0c98552bf`  |
+| 1220   | Layout 1 | `fea0c98552bf`  |
+| 1217   | Layout 1 | `fea0c98552bf`  |
+| 1211   | Layout 1 | `fea0c98552bf`  |
+| 1210   | Layout 1 | `fea0c98552bf`  |
+| 1208   | Layout 1 | `fea0c98552bf`  |
+| 1203   | Layout 1 | `fea0c98552bf`  |
+| 1197   | Layout 1 | `fea0c98552bf`  |
+| 1194   | Layout 1 | `fea0c98552bf`  |
+| 1192   | Layout 1 | `fea0c98552bf`  |
+| 1187   | Layout 1 | `fea0c98552bf`  |
+| 1183   | Layout 1 | `fea0c98552bf`  |
+| 1177   | Layout 1 | `fea0c98552bf`  |
+| 1173   | Layout 1 | `fea0c98552bf`  |
+| 1167   | Layout 1 | `fea0c98552bf`  |
+| 1164   | Layout 1 | `fea0c98552bf`  |
+| 1156   | Layout 1 | `fea0c98552bf`  |
+| 1149   | Layout 1 | `fea0c98552bf`  |
 | 1144   | Layout 1 | `fea0c98552bf`  |
 | 1137   | Layout 1 | `fea0c98552bf`  |
 | 1132   | Layout 1 | `fea0c98552bf`  |
@@ -396,16 +396,16 @@ Every client the doc check read, and the layout its files fit.
 | 1118   | Layout 1 | `fea0c98552bf`  |
 | 1114   | Layout 1 | `fea0c98552bf`  |
 | 1109   | Layout 1 | `fea0c98552bf`  |
-| 1102   | No file  | `fea0c98552bf`  |
-| 1096   | No file  | `fea0c98552bf`  |
-| 1088   | No file  | `fea0c98552bf`  |
-| 1081   | No file  | `fea0c98552bf`  |
-| 1076   | No file  | `fea0c98552bf`  |
-| 1069   | No file  | `fea0c98552bf`  |
-| 1064   | No file  | `fea0c98552bf`  |
-| 1058   | No file  | `fea0c98552bf`  |
-| 1051   | No file  | `fea0c98552bf`  |
-| 1044   | No file  | `fea0c98552bf`  |
+| 1102   | Layout 1 | `fea0c98552bf`  |
+| 1096   | Layout 1 | `fea0c98552bf`  |
+| 1088   | Layout 1 | `fea0c98552bf`  |
+| 1081   | Layout 1 | `fea0c98552bf`  |
+| 1076   | Layout 1 | `fea0c98552bf`  |
+| 1069   | Layout 1 | `fea0c98552bf`  |
+| 1064   | Layout 1 | `fea0c98552bf`  |
+| 1058   | Layout 1 | `fea0c98552bf`  |
+| 1051   | Layout 1 | `fea0c98552bf`  |
+| 1044   | Layout 1 | `fea0c98552bf`  |
 | 1036   | No file  | `fea0c98552bf`  |
 | 1026   | No file  | `fea0c98552bf`  |
 | 1016   | No file  | `fea0c98552bf`  |

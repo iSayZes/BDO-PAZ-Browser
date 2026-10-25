@@ -14,7 +14,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | Clients        | File                 | Bytes | Records                | Row bytes |
 | ------ | -------------- | -------------------- | ----- | ---------------------- | --------- |
-| 1      | 1250 and later | `siegedayoption.bss` | 108   | 1 Days, 1 String Table | 92        |
+| 1      | 1187 and later | `siegedayoption.bss` | 108   | 1 Days, 1 String Table | 92        |
 
 | Layout | File                 | Known          | Unknown    |
 | ------ | -------------------- | -------------- | ---------- |
@@ -369,20 +369,20 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `d2c8e91844d3`  |
 | 1256   | Layout 1 | `d2c8e91844d3`  |
 | 1250   | Layout 1 | `d2c8e91844d3`  |
-| 1246   | No file  | `d2c8e91844d3`  |
-| 1239   | No file  | `d2c8e91844d3`  |
-| 1230   | No file  | `d2c8e91844d3`  |
-| 1226   | No file  | `d2c8e91844d3`  |
-| 1220   | No file  | `d2c8e91844d3`  |
-| 1217   | No file  | `d2c8e91844d3`  |
-| 1211   | No file  | `d2c8e91844d3`  |
-| 1210   | No file  | `d2c8e91844d3`  |
-| 1208   | No file  | `d2c8e91844d3`  |
-| 1203   | No file  | `d2c8e91844d3`  |
-| 1197   | No file  | `d2c8e91844d3`  |
-| 1194   | No file  | `d2c8e91844d3`  |
-| 1192   | No file  | `d2c8e91844d3`  |
-| 1187   | No file  | `d2c8e91844d3`  |
+| 1246   | Layout 1 | `d2c8e91844d3`  |
+| 1239   | Layout 1 | `d2c8e91844d3`  |
+| 1230   | Layout 1 | `d2c8e91844d3`  |
+| 1226   | Layout 1 | `d2c8e91844d3`  |
+| 1220   | Layout 1 | `d2c8e91844d3`  |
+| 1217   | Layout 1 | `d2c8e91844d3`  |
+| 1211   | Layout 1 | `d2c8e91844d3`  |
+| 1210   | Layout 1 | `d2c8e91844d3`  |
+| 1208   | Layout 1 | `d2c8e91844d3`  |
+| 1203   | Layout 1 | `d2c8e91844d3`  |
+| 1197   | Layout 1 | `d2c8e91844d3`  |
+| 1194   | Layout 1 | `d2c8e91844d3`  |
+| 1192   | Layout 1 | `d2c8e91844d3`  |
+| 1187   | Layout 1 | `d2c8e91844d3`  |
 | 1183   | No file  | `d2c8e91844d3`  |
 | 1177   | No file  | `d2c8e91844d3`  |
 | 1173   | No file  | `d2c8e91844d3`  |

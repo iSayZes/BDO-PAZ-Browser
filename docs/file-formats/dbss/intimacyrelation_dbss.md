@@ -22,8 +22,8 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | 3      | 2583 and later | `intimacyrelationoffset.dbss` | 22,064  | 2,206 Offset Row        | 10                           |
 | 2      | 1346 to 2575   | `intimacyrelation.dbss`       | 667,200 | 1,895 Row, 1,895 Record | 140 to 1,508, 350 on average |
 | 2      | 1346 to 2575   | `intimacyrelationoffset.dbss` | 18,954  | 1,895 Offset Row        | 10                           |
-| 1      | 1250 to 1341   | `intimacyrelation.dbss`       | 422,598 | 1,256 Row               | 140 to 1,582, 336 on average |
-| 1      | 1250 to 1341   | `intimacyrelationoffset.dbss` | 12,564  | 1,256 Offset Row        | 10                           |
+| 1      | 1246 to 1341   | `intimacyrelation.dbss`       | 422,598 | 1,256 Row               | 140 to 1,582, 336 on average |
+| 1      | 1246 to 1341   | `intimacyrelationoffset.dbss` | 12,564  | 1,256 Offset Row        | 10                           |
 
 | Layout | File                          | Known             | Unknown        |
 | ------ | ----------------------------- | ----------------- | -------------- |
@@ -383,7 +383,7 @@ Every client the doc check read, and the layout its files fit.
 | 1261   | Layout 1 | `5a4fdea8ba87`  |
 | 1256   | Layout 1 | `5a4fdea8ba87`  |
 | 1250   | Layout 1 | `5a4fdea8ba87`  |
-| 1246   | No file  | `5a4fdea8ba87`  |
+| 1246   | Layout 1 | `5a4fdea8ba87`  |
 | 1239   | No file  | `5a4fdea8ba87`  |
 | 1230   | No file  | `5a4fdea8ba87`  |
 | 1226   | No file  | `5a4fdea8ba87`  |

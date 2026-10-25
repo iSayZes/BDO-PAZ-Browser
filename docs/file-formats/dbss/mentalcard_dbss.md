@@ -16,8 +16,8 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | ------ | -------------- | ----------------------- | --------- | ---------------- | ---------------------------- |
 | 2      | 2098 and later | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
 | 2      | 2098 and later | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
-| 1      | 1250 to 2089   | `mentalcard.dbss`       | 4,291,476 | 8,576 Card       | 161 to 2,248, 500 on average |
-| 1      | 1250 to 2089   | `mentalcardoffset.dbss` | 102,932   | 8,576 Index Row  | 12                           |
+| 1      | 1220 to 2089   | `mentalcard.dbss`       | 4,291,476 | 8,576 Card       | 161 to 2,248, 500 on average |
+| 1      | 1220 to 2089   | `mentalcardoffset.dbss` | 102,932   | 8,576 Index Row  | 12                           |
 
 | Layout | File                    | Known               | Unknown          |
 | ------ | ----------------------- | ------------------- | ---------------- |
@@ -378,8 +378,8 @@ Every client the doc check read, and the layout its files fit.
 | 1246   | No file  | `98e40a9793ec`  |
 | 1239   | No file  | `98e40a9793ec`  |
 | 1230   | No file  | `98e40a9793ec`  |
-| 1226   | No file  | `98e40a9793ec`  |
-| 1220   | No file  | `98e40a9793ec`  |
+| 1226   | Layout 1 | `98e40a9793ec`  |
+| 1220   | Layout 1 | `98e40a9793ec`  |
 | 1217   | No file  | `98e40a9793ec`  |
 | 1211   | No file  | `98e40a9793ec`  |
 | 1210   | No file  | `98e40a9793ec`  |

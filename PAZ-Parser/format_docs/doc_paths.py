@@ -1,6 +1,7 @@
 """Where a format doc lives: `docs/file-formats/<group>/<name>.md`, grouped like the wiki's side bar.
 
-`buff_dbss.md` is in `dbss/`, `regioninfo_bss.md` in `bss/`, every other format
+`buff_dbss.md` is in `dbss/`, `regioninfo_bss.md` in `bss/`, the `.luac` docs
+(`luascript_luac.md` and one per script) in `lua/`, every other format
 (`aiscript_ai.md`, `languagedata_loc.md`) in `other/`. The template stays in
 `docs/file-formats/` itself.
 """
@@ -10,13 +11,15 @@ from pathlib import Path
 
 TEMPLATE_PREFIX = "_"
 TABLE_GROUPS = ("bss", "dbss")
+LUA_GROUP = "lua"
 OTHER_GROUP = "other"
+# Doc file name suffix -> group folder.
+_GROUPS = {"bss": "bss", "dbss": "dbss", "luac": LUA_GROUP}
 
 
 def doc_group(name: str) -> str:
-    """The folder of a doc by its file name: `bss` or `dbss` from its suffix (`buff_dbss.md`), else `other`."""
-    suffix = Path(name).stem.rpartition("_")[2]
-    return suffix if suffix in TABLE_GROUPS else OTHER_GROUP
+    """The folder of a doc by its file name suffix: `buff_dbss.md` is in `dbss`, `x_luac.md` in `lua`, else `other`."""
+    return _GROUPS.get(Path(name).stem.rpartition("_")[2], OTHER_GROUP)
 
 
 def doc_path(folder: Path, name: str) -> Path:

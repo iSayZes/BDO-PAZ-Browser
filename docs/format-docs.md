@@ -9,9 +9,12 @@ every doc that has a `## Layout` section. Start a new doc from
 
 A doc is named `<file stem>_<extension>.md` and sits in the folder of its
 group, the groups of the wiki's side bar: `bss/regioninfo_bss.md`,
-`dbss/buff_dbss.md`, and `other/` for every other format
-(`other/languagedata_loc.md`, `other/pad00000_meta.md`).
-`format_docs/doc_paths.py` holds the rule.
+`dbss/buff_dbss.md`, `lua/` for the `.luac` docs, and `other/` for every
+other format (`other/languagedata_loc.md`, `other/pad00000_meta.md`).
+`format_docs/doc_paths.py` holds the rule. `lua/luascript_luac.md` is the
+layout of every `.luac`; each other doc in `lua/` describes one script and
+follows that doc's Script Docs section instead of the layout format
+(`format_docs/script_docs.py` checks it).
 
 ## Doc Order
 

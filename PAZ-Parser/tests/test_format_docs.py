@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from format_docs import check_doc, converted_docs, format_doc_paths, is_converted, read_layouts
+from format_docs.script_docs import is_script_doc, script_doc_problems
 from format_docs.markdown import split_row
 from format_docs.model import Field
 from format_docs.names import name_problems
@@ -52,11 +53,27 @@ def test_a_doc_in_the_layout_format_has_no_problems() -> None:
 NOT_IN_LAYOUT_FORM = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md", "pad00000_meta.md", "waypoint_bwp.md"})
 
 
-def test_every_bss_and_dbss_doc_is_in_the_layout_format() -> None:
-    docs = {path.name for path in format_doc_paths(DOCS_DIR)}
+def test_every_doc_but_the_script_docs_is_in_the_layout_format() -> None:
+    docs = {path.name for path in format_doc_paths(DOCS_DIR) if not is_script_doc(path)}
     converted = {path.name for path in converted_docs(DOCS_DIR)}
 
     assert sorted(docs - converted - NOT_IN_LAYOUT_FORM) == []
+
+
+@pytest.mark.parametrize("path", [path for path in format_doc_paths(DOCS_DIR) if is_script_doc(path)], ids=lambda path: path.name)
+def test_every_script_doc_passes(path: Path) -> None:
+    assert [str(problem) for problem in script_doc_problems(path.read_text(encoding="utf-8"))] == []
+
+
+def test_a_script_doc_needs_its_sections_in_order_and_the_four_call_columns() -> None:
+    calls = "## Calls Into Client Data\n\n| Call | Notes |\n| --- | --- |\n| `ToClient_x()` | x |\n"
+    text = f"# `x.luac`\n\n## Versions\n\nClient 3483.\n\n## Purpose\n\nA window.\n\n{calls}\n## Field Names\n\nNone.\n"
+
+    assert [problem.message for problem in script_doc_problems(text)] == [
+        "`## Field Names` is not a script doc section",
+        "sections go Purpose, Calls Into Client Data, Enums Used, Versions, Open Questions",
+        "the call table has the columns Call | What the script does with it | Format doc field | Client",
+    ]
 
 
 @pytest.mark.parametrize("path", converted_docs(DOCS_DIR), ids=lambda path: path.name)

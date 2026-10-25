@@ -40,9 +40,10 @@ var PazWiki = (function () {
   // A to Z by the shown name, ignoring leading symbols: `{alchemy,...}statdata.bss` sorts under A.
   function sortName(f) { return f.name.toLowerCase().replace(/^[^a-z0-9]+/, ""); }
 
-  // The app's tree view order: the LOC files, the .bss / .dbss tables, then every other format.
-  var GROUP_LABELS = ["", "", "Others"];
-  function groupOf(f) { return /_loc\.html$/.test(f.page) ? 0 : f.ext === "other" ? 2 : 1; }
+  // The app's tree view order: the LOC files, the .bss / .dbss tables, every other format, then the Lua script docs.
+  var GROUP_LABELS = ["", "", "Others", "Lua"];
+  var EXT_GROUPS = { other: 2, lua: 3 };
+  function groupOf(f) { return /_loc\.html$/.test(f.page) ? 0 : EXT_GROUPS[f.ext] || 1; }
 
   // The groups of `sorted` that hold a doc, each keeping its order; every group after the first gets a divider.
   function groups(sorted) {

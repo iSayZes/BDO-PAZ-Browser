@@ -3,14 +3,14 @@
     PABR | u32 row_count | row_count x Row | String Table (empty)
     | u32 string_table_start | u32 0
     Row: u16 character_id | u8 armor_material | u8 object_kind | u8 installation_type
-    | f32[4][4] unknown_05 | f32[4][4] unknown_45 | i32 unknown_85
+    | f32[4][4] parent_world_tm | f32[4][4] child_world_tm | i32 household_index
     | u8 is_collision | u8 is_siege_tent | u8 unknown_8b
     | u32 layer_count | u32 unknown_90 | layer_count x Hull Layer
     | u16 unknown_layers_00 | u8 x6 place flags
     Hull Layer: u32 hull_count | hull_count x (u32 face_count | face_count x 140-byte face)
 
 The faces (3.9 MB of the 4.7 MB on client 3483) are skipped by their counts;
-a record keeps the hull and face totals. Layout 2 in
+a record keeps the hull and face totals. Layout 4 in
 docs/file-formats/bss/baseobject_bss.md.
 """
 
@@ -80,7 +80,7 @@ def _read_row(cursor: _Cursor, index: int) -> dict:
     head = cursor.take(_HEAD, label)
     character_id, armor_material, object_kind, installation_type = head[:4]
     matrices = head[4 : 4 + 2 * _MATRIX_SIZE]
-    unknown_85, is_collision, is_siege_tent, unknown_8b, layer_count, unknown_90 = head[4 + 2 * _MATRIX_SIZE :]
+    household_index, is_collision, is_siege_tent, unknown_8b, layer_count, unknown_90 = head[4 + 2 * _MATRIX_SIZE :]
     hull_count, face_count = _skip_layers(cursor, layer_count, label)
     unknown_layers_00, *place_flags = cursor.take(_TAIL, label)
     return {
@@ -88,9 +88,9 @@ def _read_row(cursor: _Cursor, index: int) -> dict:
         "armor_material": armor_material,
         "object_kind": object_kind,
         "installation_type": installation_type,
-        "unknown_05": _matrix(matrices[:_MATRIX_SIZE]),
-        "unknown_45": _matrix(matrices[_MATRIX_SIZE:]),
-        "unknown_85": unknown_85,
+        "parent_world_tm": _matrix(matrices[:_MATRIX_SIZE]),
+        "child_world_tm": _matrix(matrices[_MATRIX_SIZE:]),
+        "household_index": household_index,
         "is_collision": is_collision,
         "is_siege_tent": is_siege_tent,
         "unknown_8b": unknown_8b,

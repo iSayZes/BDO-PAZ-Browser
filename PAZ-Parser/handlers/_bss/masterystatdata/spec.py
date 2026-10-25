@@ -4,7 +4,7 @@ Every row is an f32 mastery threshold followed by 4-byte fields; only the
 fields differ per file. Rates are stored with 1,000,000 = 100%. The gathering
 and processing tables hold one row group per type (`sub_types`). Field names
 come from the client Lua that reads each table (see
-docs/file-formats/masterystatdata_bss.md); fields the Lua does not name are
+docs/file-formats/bss/masterystatdata_bss.md); fields the Lua does not name are
 `unknown_<offset>` and stay out of the table.
 """
 

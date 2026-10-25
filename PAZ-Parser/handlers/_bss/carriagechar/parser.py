@@ -4,7 +4,7 @@
     | u32 count | count x pstr | u32 table_start | u32 0
 
 `unknown_04` is one less than the rows on every client checked, so the rows
-are counted from the trailer. Layout in docs/file-formats/carriagechar_bss.md.
+are counted from the trailer. Layout in docs/file-formats/bss/carriagechar_bss.md.
 """
 
 from __future__ import annotations

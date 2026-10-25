@@ -1,6 +1,6 @@
 """Layouts of the monster and world tables that fit the PABR value tables.
 
-Each file's doc is `docs/file-formats/<stem>_bss.md`. The field names of
+Each file's doc is `docs/file-formats/bss/<stem>_bss.md`. The field names of
 `bloodaltar.bss`, `treasureinfostaicstatusmanager.bss` and
 `magnuseasyteleport.bss` follow the getters of the client Lua, those of
 `bdobatchsummonmonsterss.bss` and `reusegroup.bss` a private server's

@@ -6,7 +6,7 @@
 The five slots are treasure, rare, large, general and junk; a rate is on the
 1,000,000 = 100% scale, `0` with an empty slot. `floatfishingoffset.dbss`
 (u32 count, then u16 key, u32 offset and u32 size per row) points at the
-row start. Layout 2 in docs/file-formats/floatfishing_dbss.md.
+row start. Layout 2 in docs/file-formats/dbss/floatfishing_dbss.md.
 """
 
 from __future__ import annotations

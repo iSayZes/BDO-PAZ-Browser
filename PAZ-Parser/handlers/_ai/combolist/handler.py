@@ -2,7 +2,7 @@
 
 The Parsed tab, named Combo List, shows a summary and the combos in file
 order; the Text tab next to it shows the file's XML. See
-docs/file-formats/combolist_cl.md.
+docs/file-formats/other/combolist_cl.md.
 """
 from __future__ import annotations
 

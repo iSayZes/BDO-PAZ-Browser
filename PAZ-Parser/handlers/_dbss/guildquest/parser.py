@@ -13,7 +13,7 @@ A u32 row count, then rows back to back:
 The reward entries are read by `_common/quest/reward_entry.py`. Every row
 carries its own counts, so the walk needs no index;
 `guildquestoffset.dbss` lists (quest_no, row offset, row size). Layout 2 in
-docs/file-formats/guildquest_dbss.md.
+docs/file-formats/dbss/guildquest_dbss.md.
 """
 
 from __future__ import annotations

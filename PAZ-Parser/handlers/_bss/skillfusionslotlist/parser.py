@@ -7,7 +7,7 @@
 
 No row count: the rows run to the string table, one per class type from `0`.
 Each key is a `skillfusion.dbss` key, a skill key `skill_no << 16 | level`.
-Full layout in docs/file-formats/skillfusionslotlist_bss.md.
+Full layout in docs/file-formats/bss/skillfusionslotlist_bss.md.
 """
 
 from __future__ import annotations

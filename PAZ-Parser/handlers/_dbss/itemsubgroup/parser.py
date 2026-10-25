@@ -7,7 +7,7 @@
 
 `itemsubgroupoffset.dbss` addresses the records. Only the item key of each
 entry is decoded; the other entry fields are unconfirmed. Full layout in
-docs/file-formats/itemsubgroup_dbss.md.
+docs/file-formats/dbss/itemsubgroup_dbss.md.
 """
 
 from __future__ import annotations

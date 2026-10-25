@@ -6,7 +6,7 @@
 
 `skillawakeningabilityoffset.dbss` (u32 count, then u32 ability index, offset
 and size per row) points 4 bytes into a row, at `ability_index_dup`. Layout 2
-in docs/file-formats/skillawakeningability_dbss.md.
+in docs/file-formats/dbss/skillawakeningability_dbss.md.
 """
 
 from __future__ import annotations

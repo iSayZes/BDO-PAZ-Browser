@@ -1,7 +1,7 @@
 """`personalnotifyitemlist.bss`: a list of item IDs, ascending.
 
 A `PABR` table of u32 item IDs with an empty string table. Layout 1 in
-docs/file-formats/personalnotifyitemlist_bss.md.
+docs/file-formats/bss/personalnotifyitemlist_bss.md.
 """
 
 from __future__ import annotations

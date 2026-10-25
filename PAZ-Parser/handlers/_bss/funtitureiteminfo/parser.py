@@ -5,7 +5,7 @@
     row: u32 item_key | u32 item_key_dup | u8 installation_type
 
 The file name is spelled `funtiture` in the client. Layout 1 in
-docs/file-formats/funtitureiteminfo_bss.md.
+docs/file-formats/bss/funtitureiteminfo_bss.md.
 """
 
 from __future__ import annotations

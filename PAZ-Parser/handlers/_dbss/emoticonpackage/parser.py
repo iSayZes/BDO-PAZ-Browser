@@ -6,7 +6,7 @@
 
 `emoticonpackageoffset.dbss` (u32 count, then u32 key, u32 unknown_04, u32
 offset and u32 size per row) points at the row start. Layout 1 in
-docs/file-formats/emoticonpackage_dbss.md.
+docs/file-formats/dbss/emoticonpackage_dbss.md.
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@ import struct
 from .bdo_payload_reader import ice_decrypt_bytes
 from bdo_models import MetaFile, PazEntry, PazTable
 
-# Layout: docs/paz-meta.md.
+# Layout: docs/file-formats/other/pad00000_meta.md.
 _HEADER = struct.Struct("<II")
 _PAZ_ROW = struct.Struct("<III")
 _COUNT = struct.Struct("<I")

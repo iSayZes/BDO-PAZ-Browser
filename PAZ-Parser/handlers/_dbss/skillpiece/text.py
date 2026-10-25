@@ -3,7 +3,7 @@
 Keyed `(skill_no, level, 0, field)`: field 2 is the set title, 1 the
 threshold label (`2 Parts`) and 0 the bonus lines, all with their `<PAColor>`
 tags. The Korean strings of the record stand in where LOC has no row. See
-"Type 52" in docs/file-formats/languagedata_loc.md.
+"Type 52" in docs/file-formats/other/languagedata_loc.md.
 """
 
 from __future__ import annotations

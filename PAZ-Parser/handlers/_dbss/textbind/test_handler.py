@@ -20,7 +20,7 @@ from tests.framework import (
 )
 from .parser import VARIANT_COUNT, build_text_bind_kr_index, parse_textbind_offset_rows, parse_textbind_records
 
-# Quest 4470 / 3 of the Growth Pass names this text (docs/file-formats/textbind_dbss.md).
+# Quest 4470 / 3 of the Growth Pass names this text (docs/file-formats/dbss/textbind_dbss.md).
 _GROWTH_PASS_NAME = "GROWTHPASS_PC_CONSOLE_SEP1"
 _GROWTH_PASS_KEY = key_hash(_GROWTH_PASS_NAME)
 

@@ -4,7 +4,7 @@
 
 Each row holds a scene ID and string-table indices for the Korean title,
 recap and quote and the region symbol icon. Full layout in
-docs/file-formats/groupcameradata_bss.md.
+docs/file-formats/bss/groupcameradata_bss.md.
 """
 
 from __future__ import annotations

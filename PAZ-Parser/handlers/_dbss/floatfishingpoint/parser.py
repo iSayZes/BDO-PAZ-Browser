@@ -7,7 +7,7 @@
 
 `fishing_group_key` is a `floatfishing.dbss` row. `floatfishingpointoffset.dbss`
 (u32 count, then u16 key, u32 offset and u32 size per row) points at the row
-start. Layout 1 in docs/file-formats/floatfishingpoint_dbss.md.
+start. Layout 1 in docs/file-formats/dbss/floatfishingpoint_dbss.md.
 """
 
 from __future__ import annotations

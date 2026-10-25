@@ -8,7 +8,7 @@
 The box is in world sectors of 12,800 units. Buff effect type 176 stores the
 key in `param_3`. The offset file is a bare count plus [u16 key][u32 offset]
 [u32 size] rows in hash order; the main file reads without it.
-Full layout in docs/file-formats/instancefield_dbss.md.
+Full layout in docs/file-formats/dbss/instancefield_dbss.md.
 """
 
 from __future__ import annotations

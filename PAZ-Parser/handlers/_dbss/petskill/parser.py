@@ -5,7 +5,7 @@
               | level_count x 17-byte level entry | [u32 list_count | list_count x u8]
 
 The trailing list is missing on older clients. Full layout in
-docs/file-formats/petskill_dbss.md.
+docs/file-formats/dbss/petskill_dbss.md.
 """
 
 from __future__ import annotations

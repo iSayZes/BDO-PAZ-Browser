@@ -6,7 +6,7 @@
     | u32 unknown_09 | unknown_09 x u32 unknown_0d | u32 drop_item_key
 
 `name_index` points into the string table (the Korean name). Layout 2 in
-docs/file-formats/landscapepaintingdropstaticstatus_bss.md; client 3251
+docs/file-formats/bss/landscapepaintingdropstaticstatus_bss.md; client 3251
 has no `drop_item_key` (Layout 1), which this parser does not read.
 """
 

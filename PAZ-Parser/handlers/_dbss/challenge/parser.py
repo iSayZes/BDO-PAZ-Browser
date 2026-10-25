@@ -14,7 +14,7 @@
 `key_prefix` repeats `challenge_key`. `challengeoffset.dbss` (u32 count, then
 u16 key, u32 offset and u32 size per row, no PABR magic) points past the key
 prefix. The reward entries are read by `_common/quest/reward_entry.py`.
-Layout 2 in docs/file-formats/challenge_dbss.md; the client 1784 rows with
+Layout 2 in docs/file-formats/dbss/challenge_dbss.md; the client 1784 rows with
 188-byte entries and `expected_price` (Layout 1) are not read.
 """
 

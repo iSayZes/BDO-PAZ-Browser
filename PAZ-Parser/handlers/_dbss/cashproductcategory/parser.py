@@ -12,7 +12,7 @@ The top-level categories are the main categories (`CppEnums.CashProductCategory`
 their children the middle ones and theirs the small ones.
 `cashproductcategoryoffset.dbss` (PABR, u16 main key, u32 offset, u32 size)
 points at each main category. Layout 1 in
-docs/file-formats/cashproductcategory_dbss.md.
+docs/file-formats/dbss/cashproductcategory_dbss.md.
 """
 
 from __future__ import annotations

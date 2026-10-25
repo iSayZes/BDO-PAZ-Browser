@@ -6,7 +6,7 @@
 Each row holds the string table index of the group's Korean name, the group
 number (the crystal footer of `itemenchant.dbss`, LOC type 121) and the most
 crystals of the group one crystal preset holds. Layout in
-docs/file-formats/jewelgroupstaticstatus_bss.md.
+docs/file-formats/bss/jewelgroupstaticstatus_bss.md.
 """
 
 from __future__ import annotations

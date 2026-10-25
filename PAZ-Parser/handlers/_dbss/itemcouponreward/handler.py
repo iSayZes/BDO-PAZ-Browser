@@ -14,7 +14,7 @@ _LANG_DIR = Path(__file__).parent / "lang"
 
 
 class ItemCouponRewardOffsetHandler(PreviewHandler):
-    """Raw u32 words of itemcouponrewardoffset.dbss; docs/file-formats/itemcouponreward_dbss.md."""
+    """Raw u32 words of itemcouponrewardoffset.dbss; docs/file-formats/dbss/itemcouponreward_dbss.md."""
 
     def _columns(self) -> list[Column]:
         cols = load_handler_strings(self.lang, _LANG_DIR)["columns"]

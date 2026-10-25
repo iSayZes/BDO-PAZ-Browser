@@ -7,7 +7,7 @@
 
 The four scripts are indexes into the string table
 (`_bss/sequence_scripts/reader.py`). Layout 1 in
-docs/file-formats/experiencedata_bss.md.
+docs/file-formats/bss/experiencedata_bss.md.
 """
 
 from __future__ import annotations

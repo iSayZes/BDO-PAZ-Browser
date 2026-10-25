@@ -3,7 +3,7 @@
     u32 open_count | u32 open_key_hashes x open_count (ascending)
     | u32 group_count | group_count x (u32 key_hash, str16 contents_group_key)
 
-Layout in docs/file-formats/contentsgroupoptionstaticstatusmanager_bss.md.
+Layout in docs/file-formats/bss/contentsgroupoptionstaticstatusmanager_bss.md.
 """
 
 from __future__ import annotations

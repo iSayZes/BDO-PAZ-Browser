@@ -10,7 +10,7 @@
     product:   u32 item_key | u64 house_count | house_count x u16
 
 The product list maps an item to the houses whose uses make it. Full layout
-in docs/file-formats/houseinfo_bss.md.
+in docs/file-formats/bss/houseinfo_bss.md.
 """
 
 from __future__ import annotations

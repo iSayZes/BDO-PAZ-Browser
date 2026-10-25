@@ -5,7 +5,7 @@ table: a u16 key, the character key, the weather type, the radius, rain,
 cloud and damage values, a skill key with its apply rate, and a few fields
 whose meaning is open. `weatheractoroffset.dbss`
 points 2 bytes into each row, past its key. Layout in
-docs/file-formats/weatheractor_dbss.md.
+docs/file-formats/dbss/weatheractor_dbss.md.
 """
 
 from __future__ import annotations

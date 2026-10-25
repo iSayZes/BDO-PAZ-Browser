@@ -10,7 +10,7 @@ Each book record is self-describing:
 Strings are a u64 code-unit count followed by the text with no terminator: the
 first four are UTF-16LE, the two model names ASCII. Page quest IDs pack
 `(quest_id << 16) | quest_chain_id`. Full layout in
-docs/file-formats/journalquest_dbss.md.
+docs/file-formats/dbss/journalquest_dbss.md.
 """
 
 from __future__ import annotations

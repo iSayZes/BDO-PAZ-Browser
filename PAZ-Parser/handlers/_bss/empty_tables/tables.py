@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 # PABR tables the client ships with a count of 0 and an empty string table
-# (docs/file-formats/empty_bss.md). Each file is 20 bytes on the live client;
+# (docs/file-formats/bss/empty_bss.md). Each file is 20 bytes on the live client;
 # cashproductcachedata, charactertrigger, equipitemchanage and naktype hold
 # records on an older client, which this handler rejects.
 EMPTY_PABR_TABLES: tuple[str, ...] = (

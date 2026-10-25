@@ -9,7 +9,7 @@
     radio entry: u32 unknown_00 | u32 unknown_04 | u32 channel_name | u32 event_name | u8 unknown_10
 
 No field counts the state entries; Layout 6 of
-docs/file-formats/audioinfo_bss.md has 10, older clients fewer, and the
+docs/file-formats/bss/audioinfo_bss.md has 10, older clients fewer, and the
 parser fails on them when the rest does not end at the string table. Every
 string field indexes the string table; the record carries its text as
 `<field>_text`. Each record has a `section`: an area row, a state entry or

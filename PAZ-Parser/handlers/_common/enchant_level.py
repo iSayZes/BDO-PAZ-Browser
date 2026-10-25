@@ -1,7 +1,7 @@
 """Names of item enhancement levels: `+1` to `+15`, then PRI to DEC.
 
 Levels 16 to 25 are drawn as grades in game; the LOC type 79 level names
-confirm them (docs/file-formats/specialenchantitem_bss.md).
+confirm them (docs/file-formats/bss/specialenchantitem_bss.md).
 """
 
 from __future__ import annotations

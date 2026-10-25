@@ -6,7 +6,7 @@ A row is a u16 character key, a u32 upgrade time, an i32 upgrade level, the
 u16 character key it becomes and a u32-counted list of (u32 item key, i64
 count) pairs. The rows end where the empty PABR string table starts.
 `buildingupgradeoffset.dbss` points at each row's key. Layout in
-docs/file-formats/buildingupgrade_dbss.md.
+docs/file-formats/dbss/buildingupgrade_dbss.md.
 """
 
 from __future__ import annotations

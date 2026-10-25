@@ -5,7 +5,7 @@
     | u32 production_count | (u16 production_key | u16 max_capacity_level)[production_count]
     | u32 species_count | u8[species_count] worker_species
 
-Full layout in docs/file-formats/plantzone_dbss.md.
+Full layout in docs/file-formats/dbss/plantzone_dbss.md.
 """
 
 from __future__ import annotations

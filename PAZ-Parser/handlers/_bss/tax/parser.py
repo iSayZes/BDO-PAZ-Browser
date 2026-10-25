@@ -6,7 +6,7 @@
     Tax (12 bytes): i32 min_percent_or_price | i32 max_percent_or_price
     | i32 system_percent
 
-Full layout in docs/file-formats/tax_bss.md.
+Full layout in docs/file-formats/bss/tax_bss.md.
 """
 
 from __future__ import annotations

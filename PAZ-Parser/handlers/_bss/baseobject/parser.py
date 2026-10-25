@@ -11,7 +11,7 @@
 
 The faces (3.9 MB of the 4.7 MB on client 3483) are skipped by their counts;
 a record keeps the hull and face totals. Layout 2 in
-docs/file-formats/baseobject_bss.md.
+docs/file-formats/bss/baseobject_bss.md.
 """
 
 from __future__ import annotations

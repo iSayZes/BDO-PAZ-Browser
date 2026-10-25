@@ -4,7 +4,7 @@ No PABR magic, no trailer:
 
     u32 count | u16 character_key[count]
 
-Layout in docs/file-formats/pcroommaid_bss.md.
+Layout in docs/file-formats/bss/pcroommaid_bss.md.
 """
 
 from __future__ import annotations

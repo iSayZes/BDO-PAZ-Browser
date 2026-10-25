@@ -4,7 +4,7 @@ An item whose contents event is `98` names a `marblegamediceitemgroup.dbss`
 group key in `contents_event_param1`; the `MARBLE_DICE_GROUP_ITEMS` lookup
 index turns that around, so neither view loads `itemenchant.dbss`. Both
 marble dice views show the items with `item_list_cell()` from
-`_common/linked_items.py`. See docs/file-formats/marblegamediceitemgroup_dbss.md.
+`_common/linked_items.py`. See docs/file-formats/dbss/marblegamediceitemgroup_dbss.md.
 """
 
 from __future__ import annotations

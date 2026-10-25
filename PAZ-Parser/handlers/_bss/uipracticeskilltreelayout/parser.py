@@ -7,7 +7,7 @@
 
 The cell is the 2016 `ge::UISkillTreeLayout_CellValue`, read by
 `_bss.uiskilltreelayout.parser`; cell type `2` holds a skill. Full layout in
-docs/file-formats/uipracticeskilltreelayout_bss.md.
+docs/file-formats/bss/uipracticeskilltreelayout_bss.md.
 """
 
 from __future__ import annotations

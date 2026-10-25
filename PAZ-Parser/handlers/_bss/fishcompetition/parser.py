@@ -7,7 +7,7 @@
 
 `rank_tiers` holds the last rank of each reward tier, in the order of every
 row's `rank_reward_item_keys`. Layout 1 in
-docs/file-formats/fishcompetition_bss.md.
+docs/file-formats/bss/fishcompetition_bss.md.
 """
 
 from __future__ import annotations

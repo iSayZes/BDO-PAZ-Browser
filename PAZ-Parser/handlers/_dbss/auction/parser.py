@@ -10,7 +10,7 @@
 
 The rows follow each other with no gap, so the walk from the start needs no
 index; `auctionoffset.dbss` points at each row's `auction_no`. Layout 2 in
-docs/file-formats/auction_dbss.md.
+docs/file-formats/dbss/auction_dbss.md.
 """
 
 from __future__ import annotations

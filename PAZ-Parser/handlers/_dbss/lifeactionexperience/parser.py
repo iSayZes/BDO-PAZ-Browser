@@ -3,7 +3,7 @@
 A u32 row count, then 26-byte rows: the u32 item key, the key again, two u8
 life skill types and two i64 EXP amounts. `lifeactionexperienceoffset.dbss`
 points 4 bytes into a row, at the second key, so the walk from the start
-needs no index. Layout 1 in docs/file-formats/lifeactionexperience_dbss.md.
+needs no index. Layout 1 in docs/file-formats/dbss/lifeactionexperience_dbss.md.
 """
 
 from __future__ import annotations

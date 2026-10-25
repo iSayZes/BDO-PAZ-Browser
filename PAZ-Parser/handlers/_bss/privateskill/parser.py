@@ -11,7 +11,7 @@ client 2243 hold a 32-bit mask with its bit 31 copied into the high half;
 such a file is read with 32 class slots like Layout 1. Nothing in the file
 names its layout, so it is read with the first layout (newest first) whose
 rows end where the string table starts. Layouts 1 and 2 in
-docs/file-formats/privateskill_bss.md.
+docs/file-formats/bss/privateskill_bss.md.
 """
 
 from __future__ import annotations

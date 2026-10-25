@@ -5,7 +5,7 @@
     | string table | u32 string_table_start | u32 0
 
 A Collect Rate Row names its image by string table index. Layout 1 in
-docs/file-formats/minigamefind_bss.md.
+docs/file-formats/bss/minigamefind_bss.md.
 """
 
 from __future__ import annotations

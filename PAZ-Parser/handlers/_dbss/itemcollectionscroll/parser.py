@@ -4,7 +4,7 @@ A u32 row count, then 16-byte rows: the u32 gauge level (`grade`), then the
 Item Drop Rate bonus, the Item Drop Amount bonus and the charged time used
 per real second, each an i32 on the 1,000,000 = 100% scale.
 `itemcollectionscrolloffset.dbss` points at the start of each row. Layout 1
-in docs/file-formats/itemcollectionscroll_dbss.md.
+in docs/file-formats/dbss/itemcollectionscroll_dbss.md.
 """
 
 from __future__ import annotations

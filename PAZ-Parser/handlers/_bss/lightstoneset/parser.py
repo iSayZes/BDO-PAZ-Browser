@@ -9,7 +9,7 @@
 
 The substitute table says which Lightstone item counts as which set member:
 each member to itself, and each Amplified Lightstone to its base Lightstone.
-Full layout in docs/file-formats/lightstoneset_bss.md.
+Full layout in docs/file-formats/bss/lightstoneset_bss.md.
 """
 
 from __future__ import annotations

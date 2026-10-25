@@ -6,7 +6,7 @@
     entry: u32 group_key | u16 quest_chain_id | u16 quest_id | u16 final_quest_id
 
 Each entry repeats its group's key. The string table is empty. Layout in
-docs/file-formats/questprogressgroup_bss.md.
+docs/file-formats/bss/questprogressgroup_bss.md.
 """
 
 from __future__ import annotations

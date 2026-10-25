@@ -3,7 +3,7 @@
     u32 row_count | row_count x 7-byte row
     row = u32 enhancement_type | u8 enchant_level | u16 agris_count
 
-No magic and no trailer. Full layout in docs/file-formats/guaranteeenchantss_dbss.md.
+No magic and no trailer. Full layout in docs/file-formats/dbss/guaranteeenchantss_dbss.md.
 """
 
 from __future__ import annotations

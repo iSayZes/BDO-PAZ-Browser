@@ -6,7 +6,7 @@
 
 where strings are a u64 UTF-16 code-unit count plus UTF-16LE text. The action
 `config` is not decoded; the skill icon is its first length-prefixed ASCII
-`.dds` path. Full layout in docs/file-formats/skilltype_dbss.md.
+`.dds` path. Full layout in docs/file-formats/dbss/skilltype_dbss.md.
 """
 
 from __future__ import annotations

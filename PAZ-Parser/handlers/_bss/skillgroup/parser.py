@@ -6,7 +6,7 @@ end of the file:
     u16 group_no | u32 rank_count | rank_count x u32 skill_key
 
 Rank 0 is always `0` (not learned); the rest are `skill.dbss` keys in rank
-order. Full layout in docs/file-formats/skillgroup_bss.md.
+order. Full layout in docs/file-formats/bss/skillgroup_bss.md.
 """
 
 from __future__ import annotations

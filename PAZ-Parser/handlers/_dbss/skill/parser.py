@@ -14,7 +14,7 @@ record. A record, in order:
     | u8 is_except_cool_time | u8[2]
 
 Strings are a u64 unit count plus UTF-16LE (text) or ASCII (action_name).
-Full layout in docs/file-formats/skill_dbss.md.
+Full layout in docs/file-formats/dbss/skill_dbss.md.
 """
 
 from __future__ import annotations

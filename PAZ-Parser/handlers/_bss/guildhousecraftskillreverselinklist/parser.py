@@ -6,7 +6,7 @@
 
 The reverse of `guildhousecraftskill.dbss`: `slot` is `1` for that row's
 `skill_nos[0]`. The string table is empty. Layout in
-docs/file-formats/guildhousecraftskillreverselinklist_bss.md.
+docs/file-formats/bss/guildhousecraftskillreverselinklist_bss.md.
 """
 
 from __future__ import annotations

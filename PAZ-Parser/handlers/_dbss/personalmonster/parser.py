@@ -7,7 +7,7 @@
 
 `personalmonsteroffset.dbss` (u32 count, then u16 key, offset and size per
 row) points at each row start. Layout 1 in
-docs/file-formats/personalmonster_dbss.md.
+docs/file-formats/dbss/personalmonster_dbss.md.
 """
 
 from __future__ import annotations

@@ -4,7 +4,7 @@
 
 Each row names the house character of a manor, a part index and a
 string-table index for the part icon. Full layout in
-docs/file-formats/mansionpartinfo_bss.md.
+docs/file-formats/bss/mansionpartinfo_bss.md.
 """
 
 from __future__ import annotations

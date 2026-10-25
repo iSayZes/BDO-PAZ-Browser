@@ -6,7 +6,7 @@
     row: u8 class_type | u64 skill_count | skill_count x u16 skill_no
 
 The string table is present but empty. Full layout in
-docs/file-formats/classskilllist_bss.md.
+docs/file-formats/bss/classskilllist_bss.md.
 """
 
 from __future__ import annotations

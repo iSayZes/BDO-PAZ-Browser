@@ -7,7 +7,7 @@
     | u32 description | u32 unknown_1a | u32 unknown_1e | u8 unknown_22
 
 `use_condition`, `icon_image_file` and `description` index the string table.
-Layout 3 in docs/file-formats/itembuildkit_bss.md.
+Layout 3 in docs/file-formats/bss/itembuildkit_bss.md.
 """
 
 from __future__ import annotations

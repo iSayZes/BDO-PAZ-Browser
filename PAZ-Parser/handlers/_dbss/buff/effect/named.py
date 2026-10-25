@@ -2,7 +2,7 @@
 
 `Summon Rock Golem`, `Learn Skill: Lightning Chain`, `Velia Storage +8`: one
 or more entries per type, read by `render.py` for both the Effect text and the
-Param labels. The evidence for each type is in docs/file-formats/buff_dbss.md
+Param labels. The evidence for each type is in docs/file-formats/dbss/buff_dbss.md
 (Enum Values and Effect text).
 """
 

@@ -11,7 +11,7 @@
 
 The `*_ref` fields index the string table; the records hold their text.
 `tutorial_type` and `tutorial_index` are the Lua `TutorialKey(type, index)`;
-a tutorial runs its steps from index 0 up. Layout 1 in docs/file-formats/tutorial_bss.md.
+a tutorial runs its steps from index 0 up. Layout 1 in docs/file-formats/bss/tutorial_bss.md.
 """
 
 from __future__ import annotations

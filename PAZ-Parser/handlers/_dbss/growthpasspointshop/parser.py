@@ -5,7 +5,7 @@
 Client 3473 ships the count `0` and no records; client 1784 holds 15 records
 (Layout 1). `growthpasspointshopoffset.dbss` holds bare u32-keyed index rows
 that point just past each record's key. Layout in
-docs/file-formats/growthpasspointshop_dbss.md.
+docs/file-formats/dbss/growthpasspointshop_dbss.md.
 """
 
 from __future__ import annotations

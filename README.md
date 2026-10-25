@@ -444,9 +444,9 @@ PAZ-Parser/
 │
 ├── paz/                    # PAZ archive reading and caching
 │   ├── bdo_cache.py        # PAZ index cache
-│   ├── bdo_checksum.py     # Pearl Abyss checksum of archives and paths (docs/paz-meta.md)
+│   ├── bdo_checksum.py     # Pearl Abyss checksum of archives and paths (pad00000_meta.md)
 │   ├── bdo_ice.py          # ICE cipher implementation
-│   ├── bdo_meta_reader.py  # pad00000.meta: archive table and full file list (docs/paz-meta.md)
+│   ├── bdo_meta_reader.py  # pad00000.meta: archive table and full file list (pad00000_meta.md)
 │   ├── bdo_payload_cache.py# LRU payload cache
 │   ├── bdo_payload_reader.py# Entry payload read: ICE decryption, then decompression
 │   ├── bdo_decompress.py   # BDO decompression: Python decoder, _bdo_native when installed
@@ -510,8 +510,7 @@ docs/
 ├── format-docs.md          # How a format doc is written; format_docs/ checks it
 ├── style-guide.md          # UI color palette and component reference
 ├── benchmarking.md         # benchmark.py workloads, stages and comparable runs
-├── paz-meta.md             # pad00000.meta layout: archive table, file table, name blocks
-└── file-formats/           # Per-format binary layout documentation
+└── file-formats/           # Format docs in bss/, dbss/ and other/ (other/pad00000_meta.md: the PAZ index)
 
 browser.py                  # Starts the app: GUI, or a CLI command
 benchmark.py                # Decode benchmarks (see docs/benchmarking.md)

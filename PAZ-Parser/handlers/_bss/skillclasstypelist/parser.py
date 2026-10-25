@@ -5,7 +5,7 @@
 
 The keys are the level 1 keys of `publicskill.bss` and `privateskill.bss`
 together; `unknown_04` is the `skillsimply.dbss` every-class mask on every
-row. Layout 2 in docs/file-formats/skillclasstypelist_bss.md; the 36-byte
+row. Layout 2 in docs/file-formats/bss/skillclasstypelist_bss.md; the 36-byte
 rows of Layout 1 (clients before 1267) are not read.
 """
 

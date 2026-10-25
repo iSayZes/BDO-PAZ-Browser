@@ -7,7 +7,7 @@
          | u32 unknown_10 | u16[unknown_10] unknown_14
 
 `limited_quest_string` indexes the string table (the Korean limit message).
-Layout 2 in docs/file-formats/instancefieldcommon_bss.md.
+Layout 2 in docs/file-formats/bss/instancefieldcommon_bss.md.
 """
 
 from __future__ import annotations

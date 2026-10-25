@@ -4,7 +4,7 @@
     | u32 string_count | string_count x pstr | u32 table_start | u32 0
 
 Only the head is decoded; the rest of the record stays one byte run. Layout
-in docs/file-formats/gameoption_bss.md (Layout 2, the live client).
+in docs/file-formats/bss/gameoption_bss.md (Layout 2, the live client).
 """
 
 from __future__ import annotations

@@ -8,7 +8,7 @@ record is preceded by a copy of its key, and walks as:
 
 Strings are a u64 UTF-16 code-unit count plus UTF-16LE text. The lines are
 localized in LOC type 36, keyed `(key, text_id, 0, 0)`. Full layout in
-docs/file-formats/dialogtext_dbss.md.
+docs/file-formats/dbss/dialogtext_dbss.md.
 """
 
 from __future__ import annotations

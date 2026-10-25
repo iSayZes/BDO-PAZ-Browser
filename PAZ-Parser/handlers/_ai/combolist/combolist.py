@@ -5,7 +5,7 @@
 each action name (`<skill_command>` with `<command key starttime endtime>`).
 Two files use an older layout with capitalized names (`<Combo Name
 StartWeaponType>`, `<Skill SkillNo Command>`); both spellings are read. See
-docs/file-formats/combolist_cl.md.
+docs/file-formats/other/combolist_cl.md.
 """
 from __future__ import annotations
 

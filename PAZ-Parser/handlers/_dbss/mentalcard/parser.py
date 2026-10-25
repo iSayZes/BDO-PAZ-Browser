@@ -9,7 +9,7 @@ The offset file is `PABR`, a u32 count and 12-byte rows (`card_id`,
     | u8 u32 | u32 hash_count + hash_count x u32 | u8[5]
 
 Strings are an i64 UTF-16 code-unit count plus UTF-16LE text; the icon path is
-an i64 byte count plus ASCII. Full layout in docs/file-formats/mentalcard_dbss.md.
+an i64 byte count plus ASCII. Full layout in docs/file-formats/dbss/mentalcard_dbss.md.
 """
 
 from __future__ import annotations

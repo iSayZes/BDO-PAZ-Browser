@@ -7,7 +7,7 @@ The main file is a u32 count and one 34-byte row per spawn position:
 
 `employeespawnpositionoffset.dbss` is a bare offset table of 12-byte
 [u32 spawn_position_key][u32 offset][u32 size] rows. Full layout in
-docs/file-formats/employeespawnposition_dbss.md.
+docs/file-formats/dbss/employeespawnposition_dbss.md.
 """
 
 from __future__ import annotations

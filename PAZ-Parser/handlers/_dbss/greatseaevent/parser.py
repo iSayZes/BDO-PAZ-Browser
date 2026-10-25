@@ -8,7 +8,7 @@
 `greatseaeventoffset.dbss` holds the same groups: u32 group_count, then per
 group u16 group_key, u32 count and count x (u32 select_index, u32 offset,
 u32 size), each pointing at the event start with the event's whole size.
-Layout 1 in docs/file-formats/greatseaevent_dbss.md.
+Layout 1 in docs/file-formats/dbss/greatseaevent_dbss.md.
 """
 
 from __future__ import annotations

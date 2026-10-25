@@ -2,7 +2,7 @@
 
 A `PABR` table of 5-byte rows (u32 item ID, u8 level) with an empty string
 table. `itemmaxleveloffset.dbss` points at each row, so reading the rows in
-order needs no index. Layout in docs/file-formats/itemmaxlevel_dbss.md.
+order needs no index. Layout in docs/file-formats/dbss/itemmaxlevel_dbss.md.
 """
 
 from __future__ import annotations

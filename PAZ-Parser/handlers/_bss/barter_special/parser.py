@@ -5,7 +5,7 @@
     row: u16 barter_region_key | u32 select_rate | 56-byte Exchange
          | u32 barter_sub_group | u32 barter_category (bit mask)
 
-Full layout in docs/file-formats/barter_special_bss.md; the Exchange is read
+Full layout in docs/file-formats/bss/barter_special_bss.md; the Exchange is read
 by `_bss/barter/exchange.py`.
 """
 

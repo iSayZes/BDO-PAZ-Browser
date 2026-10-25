@@ -5,7 +5,7 @@
 
 `itemeffectchangeoffset.dbss` has the same groups in another order, each a
 u32 row count, the u32 mesh key and (u32 enchant_level, offset, size) rows.
-Layout 2 in docs/file-formats/itemeffectchange_dbss.md.
+Layout 2 in docs/file-formats/dbss/itemeffectchange_dbss.md.
 """
 
 from __future__ import annotations

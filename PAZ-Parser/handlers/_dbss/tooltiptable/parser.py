@@ -8,7 +8,7 @@
 Section `n` holds the rows of tooltip type `n`; `format_ref` indexes the
 string table. `tooltiptableoffset.dbss` has the same frame, with 12-byte
 index rows (u32 key_hash, u32 data_offset, u32 unknown_08) and an empty
-string table. Layout 2 in docs/file-formats/tooltiptable_dbss.md; the
+string table. Layout 2 in docs/file-formats/dbss/tooltiptable_dbss.md; the
 17-byte rows of Layout 1 (no `icon_flags`) are not read.
 """
 

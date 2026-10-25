@@ -6,7 +6,7 @@
 
 Each row is one employee key at one level, with 19 (ability type, value)
 slots and the character whose name, title and icon the sailor uses. Full
-layout in docs/file-formats/employeestaticstatus_bss.md.
+layout in docs/file-formats/bss/employeestaticstatus_bss.md.
 """
 
 from __future__ import annotations

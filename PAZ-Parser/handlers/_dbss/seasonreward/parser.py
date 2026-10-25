@@ -5,7 +5,7 @@
          | u32 reward_count | reward_count x u32 reward_item_keys
 
 The two keys are `GAME` string sheet keys (`LUA_SEASONSERVER_NAME15`); each
-reward is a packed item key. Layout 1 in docs/file-formats/seasonreward_dbss.md.
+reward is a packed item key. Layout 1 in docs/file-formats/dbss/seasonreward_dbss.md.
 """
 
 from __future__ import annotations

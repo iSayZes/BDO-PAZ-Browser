@@ -5,7 +5,7 @@
 No count is stored: the array runs up to the string table. Value N of the
 region file counts the quests of `eQuestRegionType` N, value N of the type
 file the quests of `__eQuestType` N. Full layout in
-docs/file-formats/totalquestcountregion_bss.md.
+docs/file-formats/bss/totalquestcountregion_bss.md.
 """
 
 from __future__ import annotations

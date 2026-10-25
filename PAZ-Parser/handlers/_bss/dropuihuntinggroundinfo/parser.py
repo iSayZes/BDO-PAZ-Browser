@@ -8,7 +8,7 @@ drop items, tags, regions and titles (each a u32 count and its values), then
 its position, recommended and Total Stat AP / DP, node, Max AP Limit and
 monster species. `_bss/dropuimaincategoryinfo/parser.py` maps the region
 tab to a territory; `_bss/dropuitaginfo/parser.py` reads the tag colours.
-Layout in docs/file-formats/dropuihuntinggroundinfo_bss.md.
+Layout in docs/file-formats/bss/dropuihuntinggroundinfo_bss.md.
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@
 No PABR magic and no string table. The group types are the ones
 `ToClient_getItemKeyGroupTypeByTItemKey` returns; `itemeffectgroupstaticstatus.bss`
 keys its glow effects by them. Layout 1 in
-docs/file-formats/itemgroupingstaticstatus_bss.md.
+docs/file-formats/bss/itemgroupingstaticstatus_bss.md.
 """
 
 from __future__ import annotations

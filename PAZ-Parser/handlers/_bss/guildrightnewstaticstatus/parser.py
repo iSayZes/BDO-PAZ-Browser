@@ -8,7 +8,7 @@
 
 Every `*_ref` is an index into the PABR string table. One record per right,
 with its group's fields. Full layout in
-docs/file-formats/guildrightnewstaticstatus_bss.md.
+docs/file-formats/bss/guildrightnewstaticstatus_bss.md.
 """
 
 from __future__ import annotations

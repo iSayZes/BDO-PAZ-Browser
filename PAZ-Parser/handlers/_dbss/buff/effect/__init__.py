@@ -1,7 +1,7 @@
 """Effect text and Param column labels of a buff, read from its parameters.
 
 The parameters are the applied value; the name and the description can both
-be stale (see docs/file-formats/buff_dbss.md). Only the effect types whose
+be stale (see docs/file-formats/dbss/buff_dbss.md). Only the effect types whose
 parameters are confirmed, against the English LOC type 5 text, item names or
 bdocodex tooltips, get a text, in the game's own wording (`Life EXP +15%`);
 every other type yields ''. Some types name what their parameters point at

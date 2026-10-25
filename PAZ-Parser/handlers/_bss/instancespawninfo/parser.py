@@ -8,7 +8,7 @@
          | u32 unknown_item_key | u8 unknown_area_name_kr_17
 
 The box is in world units, the centre and radius in centimetres. Layout 6
-(client 3454 and later) in docs/file-formats/instancespawninfo_bss.md.
+(client 3454 and later) in docs/file-formats/bss/instancespawninfo_bss.md.
 """
 
 from __future__ import annotations

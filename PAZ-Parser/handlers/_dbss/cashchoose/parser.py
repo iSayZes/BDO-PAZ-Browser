@@ -7,7 +7,7 @@
 
 `cashchooseoffset.dbss` (u32 count, then u16 key, u32 offset and u32 size per
 row, no PABR magic) points at the row start. Layout 3 in
-docs/file-formats/cashchoose_dbss.md; older rows have no
+docs/file-formats/dbss/cashchoose_dbss.md; older rows have no
 `display_icon_path` (Layout 2) and u16 product IDs (Layout 1).
 """
 

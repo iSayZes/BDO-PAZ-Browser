@@ -13,7 +13,7 @@
 `bank_name`, `event_name`, `ingame_name` and `instrument_name_type` index
 the string table; the record carries their text as `<field>_text`. The
 action hashes are `ascii_key_hash` of action names. Layout 4 in
-docs/file-formats/midiinstrument_bss.md. Layouts 1 to 3 (client 1838 and older,
+docs/file-formats/bss/midiinstrument_bss.md. Layouts 1 to 3 (client 1838 and older,
 without the three trailing bytes) are not read.
 """
 

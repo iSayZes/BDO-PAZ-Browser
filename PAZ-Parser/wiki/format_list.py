@@ -7,6 +7,7 @@ from collections.abc import Iterable
 from dataclasses import asdict, dataclass
 
 from format_docs.doc_index import IndexRows, is_file_pattern
+from format_docs.doc_paths import doc_group
 
 from .doc_source import DocSource, first_sentence
 from .layout_view import layout_views
@@ -51,7 +52,7 @@ def format_entry(doc: DocSource, rows: list[tuple[str, str]]) -> FormatEntry:
         name=doc.name,
         others=tuple(file for file in files if file != doc.name),
         desc=desc,
-        ext=_ext(doc.path.stem),
+        ext=doc_group(doc.path.name),
         oq=doc.open_questions,
         ig=doc.in_game_checks,
         converted=doc.is_converted,
@@ -78,7 +79,3 @@ def formats_script(entries: Iterable[FormatEntry], documented: dict[str, int], t
     return f"var FORMATS = {data};\nvar SUMMARY = {summary};\n"
 
 
-def _ext(doc_stem: str) -> str:
-    """`bss` or `dbss` from the doc's file name (`buff_dbss`), else `other`."""
-    suffix = doc_stem.rsplit("_", 1)[-1]
-    return suffix if suffix in _COUNTED_EXTS else "other"

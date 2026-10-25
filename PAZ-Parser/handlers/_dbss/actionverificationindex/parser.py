@@ -7,7 +7,7 @@ The main file is a u32 count and one 9-byte record per class type:
 `key_prefix` repeats the class type. `actionverificationindexoffset.dbss` is a
 bare offset table of 12-byte [u32 class_type][u32 offset][u32 size] rows; each
 offset points past the record's key_prefix, at `class_type`.
-Full layout in docs/file-formats/actionverificationindex_dbss.md.
+Full layout in docs/file-formats/dbss/actionverificationindex_dbss.md.
 """
 
 from __future__ import annotations

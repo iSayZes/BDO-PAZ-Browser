@@ -12,7 +12,8 @@ from .reader import COMPANION_HEADING
 IndexRows = Mapping[str, list[tuple[str, str]]]
 
 _FIRST_CODE = re.compile(r"`([^`]+)`")
-_DOC_LINK = re.compile(r"\(file-formats/([^)#]+)")
+# The doc's file name, behind its group folder: `(file-formats/dbss/buff_dbss.md)`.
+_DOC_LINK = re.compile(r"\(file-formats/(?:[^)#/]+/)*([^)#/]+)")
 _INDEX_COLUMNS = ("File", "Description", "Docs")
 # Index rows such as `*.ai` or `{a,b}stat.bss` name a family, not one file.
 _PATTERN_CHARS = "*{"

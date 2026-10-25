@@ -5,7 +5,7 @@
 The first eight bytes are the `Ban_*` flags of the `Ban_Function` sheet, the
 ninth is unknown. `restrictcontentsregionoffset.dbss` (u32 count, then u16
 region key, offset and size per row) points 2 bytes into each row, at
-`region_key_dup`. Layout 2 in docs/file-formats/restrictcontentsregion_dbss.md.
+`region_key_dup`. Layout 2 in docs/file-formats/dbss/restrictcontentsregion_dbss.md.
 """
 
 from __future__ import annotations

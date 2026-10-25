@@ -5,7 +5,7 @@
          | u32 object_change_level
 
 No PABR magic and no string table. Layout 1 in
-docs/file-formats/worldmaphousedecostaticstatusmanager_bss.md.
+docs/file-formats/bss/worldmaphousedecostaticstatusmanager_bss.md.
 """
 
 from __future__ import annotations

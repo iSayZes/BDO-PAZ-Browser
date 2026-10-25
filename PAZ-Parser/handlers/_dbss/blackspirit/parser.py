@@ -4,7 +4,7 @@
 
 `blackspiritoffset.dbss` (u32 count, then u8 index, offset and size per
 row) points at the row start. Layout 1 in
-docs/file-formats/blackspirit_dbss.md.
+docs/file-formats/dbss/blackspirit_dbss.md.
 """
 
 from __future__ import annotations

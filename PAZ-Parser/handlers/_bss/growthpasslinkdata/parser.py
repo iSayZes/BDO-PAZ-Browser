@@ -9,7 +9,7 @@
 
 `link_ref` and `author_ref` index the string table. The quest key is a quest
 cell of `uigrowthpasslayout.bss`. Full layout in
-docs/file-formats/growthpasslinkdata_bss.md.
+docs/file-formats/bss/growthpasslinkdata_bss.md.
 """
 
 from __future__ import annotations

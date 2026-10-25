@@ -12,7 +12,7 @@
               | point_count x u32 waypoint_key | u32 unknown
 
 Waypoint names are string `index` of the table; groups and routes point into
-it by `name_ref`. Full layout in docs/file-formats/waypoint_bwp.md.
+it by `name_ref`. Full layout in docs/file-formats/other/waypoint_bwp.md.
 """
 
 from __future__ import annotations

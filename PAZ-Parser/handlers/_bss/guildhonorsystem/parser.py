@@ -9,7 +9,7 @@
     u32 count | count x (i64 point | u32 bonus_percent)
 
 No PABR magic and no string table; the lists end at the last byte. Layout 4
-in docs/file-formats/guildhonorsystem_bss.md.
+in docs/file-formats/bss/guildhonorsystem_bss.md.
 """
 
 from __future__ import annotations

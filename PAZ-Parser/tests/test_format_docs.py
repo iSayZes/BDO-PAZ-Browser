@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from format_docs import check_doc, converted_docs, is_converted, read_layouts
+from format_docs import check_doc, converted_docs, format_doc_paths, is_converted, read_layouts
 from format_docs.markdown import split_row
 from format_docs.model import Field
 from format_docs.names import name_problems
@@ -48,20 +48,20 @@ def test_a_doc_in_the_layout_format_has_no_problems() -> None:
     assert _messages(_doc(FILE_LAYOUT, ROW)) == []
 
 
-# Text and graph formats; their layout form is still open (todo.md, Tier 7).
-NOT_BINARY_TABLES = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md", "waypoint_bwp.md"})
+# Docs not in the layout format yet; their layout form is still open (todo.md, Tier 2).
+NOT_IN_LAYOUT_FORM = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md", "pad00000_meta.md", "waypoint_bwp.md"})
 
 
 def test_every_bss_and_dbss_doc_is_in_the_layout_format() -> None:
-    docs = {path.name for path in DOCS_DIR.glob("*.md") if not path.name.startswith("_")}
+    docs = {path.name for path in format_doc_paths(DOCS_DIR)}
     converted = {path.name for path in converted_docs(DOCS_DIR)}
 
-    assert sorted(docs - converted - NOT_BINARY_TABLES) == []
+    assert sorted(docs - converted - NOT_IN_LAYOUT_FORM) == []
 
 
 @pytest.mark.parametrize("path", converted_docs(DOCS_DIR), ids=lambda path: path.name)
 def test_every_converted_doc_passes(path: Path) -> None:
-    assert [str(problem) for problem in check_doc(path.read_text(encoding="utf-8"), DOCS_DIR)] == []
+    assert [str(problem) for problem in check_doc(path.read_text(encoding="utf-8"), path.parent)] == []
 
 
 def test_a_fixed_size_must_equal_the_sum_of_the_fields() -> None:

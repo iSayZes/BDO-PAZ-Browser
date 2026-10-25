@@ -2,7 +2,7 @@
 
 The Parsed tab, named AI Script, shows a summary, the behavior filter and the
 states in file order; the Text tab next to it shows the script's XML. See
-docs/file-formats/aiscript_ai.md.
+docs/file-formats/other/aiscript_ai.md.
 """
 from __future__ import annotations
 

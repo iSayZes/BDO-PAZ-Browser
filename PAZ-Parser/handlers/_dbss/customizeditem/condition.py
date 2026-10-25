@@ -1,6 +1,6 @@
 """Readable text for the `customizeditem.dbss` condition scripts.
 
-Two forms occur (Conditions in docs/file-formats/customizeditem_dbss.md):
+Two forms occur (Conditions in docs/file-formats/dbss/customizeditem_dbss.md):
 `checkClass(N);` names class type `N` (LOC type 21) and
 `clearquest(chain,quest);` a quest (LOC type 18 title). Any other script,
 or a name LOC lacks, shows as the script itself.

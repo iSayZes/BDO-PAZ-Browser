@@ -7,7 +7,7 @@ function slots of `layout.py` and the tail, read in order:
     u8[4] head | 40 x (name, condition, slot fields) | u8, u8, u32, u8 tail
 
 Every record must end exactly at its row's size, so a changed layout fails
-loudly. Full layout in docs/file-formats/characterfunction_dbss.md.
+loudly. Full layout in docs/file-formats/dbss/characterfunction_dbss.md.
 """
 
 from __future__ import annotations

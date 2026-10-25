@@ -3,7 +3,7 @@
     u32 count | count x (u32 dice_key | u32 dice_key_dup | u32[6] card_keys)
 
 `card_keys` are `yachtbasecard.dbss` keys; `yachtdiceoffset.dbss` points at
-`dice_key_dup`. Layout in docs/file-formats/yachtdice_dbss.md.
+`dice_key_dup`. Layout in docs/file-formats/dbss/yachtdice_dbss.md.
 """
 
 from __future__ import annotations

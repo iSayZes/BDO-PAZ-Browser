@@ -6,7 +6,7 @@
 `pet_id` is a `pet.dbss` key and each `equip_skill_id_*` a Section 1
 `equip_skill_id` of `petequipskill.bss`. `petpcroomoffset.dbss` points at
 each row's key, so the walk from the start needs no index. Layout 1 in
-docs/file-formats/petpcroom_dbss.md.
+docs/file-formats/dbss/petpcroom_dbss.md.
 """
 
 from __future__ import annotations

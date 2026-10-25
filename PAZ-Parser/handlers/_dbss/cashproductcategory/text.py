@@ -3,7 +3,7 @@
 `(51, main, middle, small, 0)` names one category; a main category writes
 middle `65535` and small `255`, a middle category small `255`. Client 3482
 also keeps rows with middle or small `0`, which no category of the file
-uses. See docs/file-formats/cashproductcategory_dbss.md.
+uses. See docs/file-formats/dbss/cashproductcategory_dbss.md.
 """
 
 from __future__ import annotations

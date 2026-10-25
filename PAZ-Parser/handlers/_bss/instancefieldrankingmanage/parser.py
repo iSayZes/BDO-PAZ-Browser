@@ -6,7 +6,7 @@
          | u64 end_date_rank | u32 ranking_name
 
 The times are seconds since 1970; `ranking_name` indexes the string table (a
-`GAME` sheet key). Layout 1 in docs/file-formats/instancefieldrankingmanage_bss.md.
+`GAME` sheet key). Layout 1 in docs/file-formats/bss/instancefieldrankingmanage_bss.md.
 """
 
 from __future__ import annotations

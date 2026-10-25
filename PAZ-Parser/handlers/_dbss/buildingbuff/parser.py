@@ -8,7 +8,7 @@ count and that many rows. List `i` holds the rows whose `Count_Villa` is
     Row:        u16 buff_index | u16 skill_no | i64 cost
     Offset Row: u16 buff_index | u32 offset | u32 size
 
-Layout in docs/file-formats/buildingbuff_dbss.md.
+Layout in docs/file-formats/dbss/buildingbuff_dbss.md.
 """
 
 from __future__ import annotations

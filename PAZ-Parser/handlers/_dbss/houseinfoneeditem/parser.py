@@ -7,7 +7,7 @@ string table. A row is a u16 group key (the `need_item_key` of
 time in seconds and a u32-counted list of (u32 item key, i64 count) pairs.
 Slot 0 holds level 0 and no items; slots 1 to 5 are the house levels.
 `houseinfoneeditemoffset.dbss` points at each row's key. Layout in
-docs/file-formats/houseinfoneeditem_dbss.md.
+docs/file-formats/dbss/houseinfoneeditem_dbss.md.
 """
 
 from __future__ import annotations

@@ -7,7 +7,7 @@
 `petoldfusionoffset.dbss` is a bare u32-keyed offset table into it (u32
 count, then u32 fusion key, u32 offset, u32 size per row); each offset points
 past the row's key prefix. Tiers are stored from 0 (Tier 1), rates on the
-1,000,000 = 100% scale. Layout 1 in docs/file-formats/petoldfusion_dbss.md.
+1,000,000 = 100% scale. Layout 1 in docs/file-formats/dbss/petoldfusion_dbss.md.
 """
 
 from __future__ import annotations

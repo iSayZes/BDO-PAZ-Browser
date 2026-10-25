@@ -5,7 +5,7 @@
     Row: u16 character_id | u32 title_name | u32 contents_option
 
 `title_name` indexes the string table (`품종 1번` to `품종 24번`). Layout 2
-in docs/file-formats/bdoservanttitless_bss.md.
+in docs/file-formats/bss/bdoservanttitless_bss.md.
 """
 
 from __future__ import annotations

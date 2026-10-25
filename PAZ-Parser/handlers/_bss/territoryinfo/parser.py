@@ -12,7 +12,7 @@ ends. The layouts differ in the position count, the list count width, which
 lists a row holds, the supply key width, the tail and, before PABR, inline
 UTF-16LE strings in place of string table refs. A file is read with the first
 layout of its kind (PABR or not, newest first) whose rows tile it exactly.
-Layouts 1 to 9 in docs/file-formats/territoryinfo_bss.md.
+Layouts 1 to 9 in docs/file-formats/bss/territoryinfo_bss.md.
 """
 
 from __future__ import annotations

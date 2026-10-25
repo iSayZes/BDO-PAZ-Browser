@@ -7,7 +7,7 @@ A PABR file of sheets, then the shared counted string table and trailer:
            | row_count x (u32 key_hash | u32 key_ref | u32 value_ref | u32 0)
 
 `key_hash` is the LOC type 37 `str_id1` of the key, and the sheet fixes
-`str_id2` (`GAME` = 1). Full layout in docs/file-formats/stringtable_bss.md.
+`str_id2` (`GAME` = 1). Full layout in docs/file-formats/bss/stringtable_bss.md.
 """
 
 from __future__ import annotations

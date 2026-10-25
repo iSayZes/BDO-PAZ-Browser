@@ -6,7 +6,7 @@
 
 `maincategoryoffset.dbss` (no magic, no trailer) holds a u16 category ID, the
 absolute u32 offset of its record, a u16 size and a u16 that is always 0 per
-row. Layout in docs/file-formats/maincategory_dbss.md.
+row. Layout in docs/file-formats/dbss/maincategory_dbss.md.
 """
 
 from __future__ import annotations

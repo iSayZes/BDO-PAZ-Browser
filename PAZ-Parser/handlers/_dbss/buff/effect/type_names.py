@@ -9,7 +9,7 @@ buffs on client 3464 fit them. Left out: `19` DeprecatedBuffModule (now
 Sailor EXP), `13` HungerStateVariationAmount, `15` ShieldGuardVariationAmount,
 `82` CollectorEquipment and `124` VaryGuildProtectMemberCount, whose buffs
 do not fit the name; the `16` types no buff uses; and every type from `132`,
-which came later. See docs/file-formats/buff_dbss.md, Enum Values.
+which came later. See docs/file-formats/dbss/buff_dbss.md, Enum Values.
 """
 
 from __future__ import annotations

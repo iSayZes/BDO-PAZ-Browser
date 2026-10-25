@@ -4,7 +4,7 @@ max level of a skill point EXP table.
 `PABR`, a u16 array with no count (one value on client 3464: the top level of
 `skillexperience.dbss` or `guildskillexperience.dbss`), then the 12-byte PABR
 trailer whose middle u32 is the end of the array. Full layout in
-docs/file-formats/skillexperiencemaxlevel_bss.md.
+docs/file-formats/bss/skillexperiencemaxlevel_bss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@ items (`itemenchant.dbss` `contents_event_param1`) name a group by this key.
 No client file names the groups, so a group shows as its key and the names
 of its members. The members come from the `CHARACTER_GROUP_MEMBERS` lookup
 index, so no table needs `characterstatic.dbss` as a companion. See
-"Character Group" in docs/file-formats/characterstatic_dbss.md.
+"Character Group" in docs/file-formats/dbss/characterstatic_dbss.md.
 """
 
 from __future__ import annotations

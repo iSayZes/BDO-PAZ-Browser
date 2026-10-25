@@ -5,7 +5,7 @@ then the 2016 `gc::ItemExchangeByNpcStaticStatus` packed (the key again, the
 u32 need item key, i64 need count, u32 result item key, i64 result count).
 `itemexchangebynpcoffset.dbss` points 2 bytes into a row, at the key copy, so
 the walk from the start needs no index. Layout 1 in
-docs/file-formats/itemexchangebynpc_dbss.md.
+docs/file-formats/dbss/itemexchangebynpc_dbss.md.
 """
 
 from __future__ import annotations

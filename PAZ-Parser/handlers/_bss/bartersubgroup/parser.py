@@ -7,7 +7,7 @@
     entry: u32 barter_sub_group | u32 select_rate | u32 barter_cost
            | 56-byte Exchange | u32 barter_category (bit mask)
 
-Full layout in docs/file-formats/bartersubgroup_bss.md; the Exchange is read
+Full layout in docs/file-formats/bss/bartersubgroup_bss.md; the Exchange is read
 by `_bss/barter/exchange.py`, the two lists by `_bss/barter/group_lists.py`.
 """
 

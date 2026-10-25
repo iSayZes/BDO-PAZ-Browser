@@ -5,7 +5,7 @@
 
 `innstaticstatusoffset.dbss` (u32 count, then u16 key, offset and size per
 row) points 2 bytes into a row, at `room_count`. Layout 1 in
-docs/file-formats/innstaticstatus_dbss.md.
+docs/file-formats/dbss/innstaticstatus_dbss.md.
 """
 
 from __future__ import annotations

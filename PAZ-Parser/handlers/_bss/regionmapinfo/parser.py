@@ -8,7 +8,7 @@
 
 The rectangle is the 2016 `CRect` order (left, top, right, bottom); the
 map's Y axis is world Z. `fieldinfo.bss` stores `map_index` in its
-`*_map_index` fields. Full layout in docs/file-formats/regionmapinfo_bss.md.
+`*_map_index` fields. Full layout in docs/file-formats/bss/regionmapinfo_bss.md.
 """
 
 from __future__ import annotations

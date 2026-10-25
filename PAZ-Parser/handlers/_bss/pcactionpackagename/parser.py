@@ -19,7 +19,7 @@ cell and row, and the class blocks go on until the rest of the file is empty
 (clients 1109 to 2098) or exactly one class package list (client 2107 on).
 Every cell and row must hold the hash of the string its index points at; an
 empty cell points at the empty string with hash `0`. Clients 435 to 829 store
-arrays instead (`array_layout.py`). docs/file-formats/pcactionpackagename_bss.md
+arrays instead (`array_layout.py`). docs/file-formats/bss/pcactionpackagename_bss.md
 has a layout per count pair.
 """
 

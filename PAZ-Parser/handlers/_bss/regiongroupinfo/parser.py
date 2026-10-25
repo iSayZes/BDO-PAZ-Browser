@@ -7,7 +7,7 @@ Rows are byte-packed, so fields sit at odd offsets. Each row stores the
 members of the 2016 gc::RegionGroupInfo in order: the user limit, the
 worldmap node (LOC type 29) of the group's main region, three enable flags,
 the display position and the productivity values.
-Full layout in docs/file-formats/regiongroupinfo_bss.md.
+Full layout in docs/file-formats/bss/regiongroupinfo_bss.md.
 """
 
 from __future__ import annotations

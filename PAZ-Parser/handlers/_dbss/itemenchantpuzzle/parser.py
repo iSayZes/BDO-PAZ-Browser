@@ -5,7 +5,7 @@
 
 No offset index and no PABR magic. Each puzzle key is an `itempuzzle.dbss`
 row whose `start_puzzle_item_key` is the record's item. Layout 1 in
-docs/file-formats/itemenchantpuzzle_dbss.md.
+docs/file-formats/dbss/itemenchantpuzzle_dbss.md.
 """
 
 from __future__ import annotations

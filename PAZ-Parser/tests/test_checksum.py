@@ -1,4 +1,4 @@
-"""`pa_checksum`, the checksum of `pad00000.meta` and the PAZ headers (docs/paz-meta.md).
+"""`pa_checksum`, the checksum of `pad00000.meta` and the PAZ headers (docs/file-formats/other/pad00000_meta.md).
 
 The client test skips without a client.
 """

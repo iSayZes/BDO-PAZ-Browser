@@ -6,7 +6,7 @@
 
 `field_no` is a `fieldinfo.bss` field; the row ends like an `audioinfo.bss`
 area row (`_bss/audioinfo/bgm_states.py`). Layout 1 in
-docs/file-formats/abyssoneaudioinfo_bss.md.
+docs/file-formats/bss/abyssoneaudioinfo_bss.md.
 """
 
 from __future__ import annotations

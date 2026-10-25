@@ -5,7 +5,7 @@
     Row: u16 key | u16 key_dup | u32 from_item_key | u32 to_item_key | i32 type
 
 Both item keys are packed (`enchant_level << 24 | item_id`). Layout 2 in
-docs/file-formats/itemchange_bss.md.
+docs/file-formats/bss/itemchange_bss.md.
 """
 
 from __future__ import annotations

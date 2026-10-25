@@ -1,7 +1,7 @@
 """Layout of the Dark Rift world map table that fits the PABR value tables.
 
 `personalmonsteretc.bss` is one value set; its doc is
-`docs/file-formats/personalmonsteretc_bss.md`. The field names follow the
+`docs/file-formats/bss/personalmonsteretc_bss.md`. The field names follow the
 `PersonalMonsterOption_Table` sheet of a private server's `DataSheets.bexcel`
 on client 1784. `personalmonster.dbss` and `personalmonsterposition.dbss`
 have offset files and are not value tables.

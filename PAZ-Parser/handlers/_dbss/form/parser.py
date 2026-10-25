@@ -7,7 +7,7 @@
 
 `formoffset.dbss` (u32 count, then u16 index, offset and size per row)
 points 2 bytes into a row, at `index_dup`. Layout 2 in
-docs/file-formats/form_dbss.md; clients without the character key list
+docs/file-formats/dbss/form_dbss.md; clients without the character key list
 (Layout 1) are not read.
 """
 

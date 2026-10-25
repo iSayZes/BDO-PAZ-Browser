@@ -3,7 +3,7 @@
 Every entry drives both the Effect text and the labels of the Param columns,
 so a type is described once. The types whose parameters are the key of
 something LOC names are in `named.py`. The evidence for each type is in
-docs/file-formats/buff_dbss.md (Enum Values and Effect text).
+docs/file-formats/dbss/buff_dbss.md (Enum Values and Effect text).
 """
 
 from __future__ import annotations

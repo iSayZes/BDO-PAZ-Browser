@@ -14,7 +14,7 @@ and objective, ASCII for the icon. The walk finds `Q` as the record's own
 packed ID after the scripts, and the echo as its next occurrence. The objective
 is the string that ends at the category right before `Q`. The reward entries
 are read by `_common/quest/reward_entry.py`. Full layout in
-docs/file-formats/quest_dbss.md.
+docs/file-formats/dbss/quest_dbss.md.
 """
 
 from __future__ import annotations

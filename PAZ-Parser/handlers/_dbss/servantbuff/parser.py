@@ -5,7 +5,7 @@
             | u32 action_hash | str8 servant_action_name
             | u32 servant_action_hash | u16 skill_no
 
-Layout 2 in docs/file-formats/servantbuff_dbss.md.
+Layout 2 in docs/file-formats/dbss/servantbuff_dbss.md.
 """
 
 from __future__ import annotations

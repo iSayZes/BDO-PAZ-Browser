@@ -5,7 +5,7 @@
     Row: u32 unknown_00 | u32 unknown_04 | u32 unknown_08 | u16 character_id
 
 What the three numbers set is open. Layout 1 in
-docs/file-formats/masterlessservantstaticstatus_bss.md.
+docs/file-formats/bss/masterlessservantstaticstatus_bss.md.
 """
 
 from __future__ import annotations

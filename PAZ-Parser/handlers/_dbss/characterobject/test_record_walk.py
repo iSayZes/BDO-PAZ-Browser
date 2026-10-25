@@ -1,4 +1,4 @@
-"""The full record grammar of docs/file-formats/characterobject_dbss.md, walked on the installed client.
+"""The full record grammar of docs/file-formats/dbss/characterobject_dbss.md, walked on the installed client.
 
 The handler reads only the record prefix and the icon index scans for the icon
 path, so nothing in production walks a whole record. These tests keep the

@@ -1,7 +1,7 @@
 """What the cell values of each world map grid stand for, and their names.
 
 Each grid stores one byte per cell; the byte joins a different table per file
-(docs/file-formats/worldmapgrid_bss.md, Cell Values):
+(docs/file-formats/bss/worldmapgrid_bss.md, Cell Values):
 
 | File                                       | Cell value                                   |
 | ------------------------------------------ | -------------------------------------------- |
@@ -35,7 +35,7 @@ NONE_VALUE = 255
 _VILLAGE_SIEGE_FILE = "villagesiegeinfo.bss"
 _OCEAN_SIEGE_FILE = "oceansiegeinfo.bss"
 # The siege area number of `villagesiegeinfo.bss` and `oceansiegeinfo.bss`
-# (docs/file-formats/villagesiegeinfo_bss.md, Area Number): the number a grid cell holds.
+# (docs/file-formats/bss/villagesiegeinfo_bss.md, Area Number): the number a grid cell holds.
 _AREA_NUMBER = "area_number"
 
 

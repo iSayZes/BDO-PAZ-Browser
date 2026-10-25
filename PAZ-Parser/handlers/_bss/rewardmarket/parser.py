@@ -5,7 +5,7 @@
          | reward_count x (u32 item_key, u64 item_count)
 
 `pet_key` is a `pet.dbss` pet ID. Layout 1 in
-docs/file-formats/rewardmarket_bss.md.
+docs/file-formats/bss/rewardmarket_bss.md.
 """
 
 from __future__ import annotations

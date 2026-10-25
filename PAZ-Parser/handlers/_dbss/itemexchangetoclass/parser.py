@@ -5,7 +5,7 @@ one u32 item key per class type (index = class type) and a u8 exchange type.
 `itemexchangetoclassoffset.dbss` points 4 bytes into a row, at the second
 key, so the walk from the start needs no index. The class slot count is the
 only difference between the layouts: 47 on client 3474 (Layout 2), 32 on
-client 1784 (Layout 1). Layouts in docs/file-formats/itemexchangetoclass_dbss.md.
+client 1784 (Layout 1). Layouts in docs/file-formats/dbss/itemexchangetoclass_dbss.md.
 """
 
 from __future__ import annotations

@@ -11,6 +11,7 @@ import pytest
 from wiki import build_site, render_site
 from wiki.format_list import game_totals
 from wiki.markdown_html import render_inline, render_markdown
+from format_docs import format_doc_paths
 from format_docs.versions import ClientCheck
 from wiki.timeline_model import LAYOUT, NO_FILE, NO_LAYOUT, UNDATED, TimelineLayout, build_timeline
 from wiki.type_html import type_html
@@ -21,7 +22,7 @@ CONVERTED_DOC = """# `test.bss` Format
 
 ## Purpose
 
-Rows that point at [`other.dbss`](other_dbss.md).
+Rows that point at [`other.dbss`](../dbss/other_dbss.md).
 
 ## Versions
 
@@ -55,10 +56,10 @@ None.
 
 Always zero.
 """
-PLAIN_DOC = "# `other.dbss` Format\n\n## Purpose\n\nOther rows. See [the handler guide](../handler.md#offset-tables).\n"
+PLAIN_DOC = "# `other.dbss` Format\n\n## Purpose\n\nOther rows. See [the handler guide](../../handler.md#offset-tables).\n"
 DOCUMENTED = (
     "| File | Description | Docs | Open Questions | In-Game Checks |\n| --- | --- | --- | --- | --- |\n"
-    "| `test.bss` | Test rows | [test](file-formats/test_bss.md) | 1 | 0 |\n"
+    "| `test.bss` | Test rows | [test](file-formats/bss/test_bss.md) | 1 | 0 |\n"
 )
 
 
@@ -69,9 +70,10 @@ def _no_links(url: str) -> str:
 @pytest.fixture
 def docs_dir(tmp_path: Path) -> Path:
     formats = tmp_path / "docs" / "file-formats"
-    formats.mkdir(parents=True)
-    (formats / "test_bss.md").write_text(CONVERTED_DOC, encoding="utf-8")
-    (formats / "other_dbss.md").write_text(PLAIN_DOC, encoding="utf-8")
+    for group in ("bss", "dbss"):
+        (formats / group).mkdir(parents=True)
+    (formats / "bss" / "test_bss.md").write_text(CONVERTED_DOC, encoding="utf-8")
+    (formats / "dbss" / "other_dbss.md").write_text(PLAIN_DOC, encoding="utf-8")
     (formats / "_template.md").write_text("# `<filename.ext>` Format\n", encoding="utf-8")
     (tmp_path / "docs" / "documented-formats.md").write_text(DOCUMENTED, encoding="utf-8")
     return tmp_path / "docs"
@@ -171,7 +173,7 @@ def test_a_converted_page_shows_structures_and_links_docs_and_repo_files(docs_di
 def test_a_doc_that_shares_a_layout_shows_the_linked_docs_structures(docs_dir: Path, tmp_path: Path) -> None:
     shared = CONVERTED_DOC.split("## Layout 1")[0].replace("test.bss", "shared.bss")
     shared += "## Observed Values\n\nSame layout as [`test.bss`](test_bss.md), with other rows.\n"
-    (docs_dir / "file-formats" / "shared_bss.md").write_text(shared, encoding="utf-8")
+    (docs_dir / "file-formats" / "bss" / "shared_bss.md").write_text(shared, encoding="utf-8")
 
     build_site(docs_dir, tmp_path / "site")
 
@@ -207,7 +209,7 @@ Every client the doc check read, and the layout its files fit.
 
 
 def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir: Path, tmp_path: Path) -> None:
-    doc = docs_dir / "file-formats" / "test_bss.md"
+    doc = docs_dir / "file-formats" / "bss" / "test_bss.md"
     marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"
     empty = f"{marker}\n\n<!-- versions:end -->"
     doc.write_text(CONVERTED_DOC.replace(empty, VERSIONS_BLOCK), encoding="utf-8")
@@ -221,7 +223,7 @@ def test_a_doc_with_versions_shows_them_and_shares_from_the_game_files(docs_dir:
 
 
 def test_a_versions_card_without_layout_rows_leaves_out_the_checked_against_column(docs_dir: Path, tmp_path: Path) -> None:
-    doc = docs_dir / "file-formats" / "test_bss.md"
+    doc = docs_dir / "file-formats" / "bss" / "test_bss.md"
     marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"
     clients = (
         f"{marker}\n\nEvery client the doc check read, and the layout its files fit.\n\n"
@@ -239,7 +241,7 @@ def test_a_versions_card_without_layout_rows_leaves_out_the_checked_against_colu
 
 
 def test_the_versions_card_opens_with_a_timeline_of_the_checked_clients(docs_dir: Path, tmp_path: Path) -> None:
-    doc = docs_dir / "file-formats" / "test_bss.md"
+    doc = docs_dir / "file-formats" / "bss" / "test_bss.md"
     marker = "<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->"
     doc.write_text(CONVERTED_DOC.replace(f"{marker}\n\n<!-- versions:end -->", VERSIONS_BLOCK), encoding="utf-8")
 
@@ -307,7 +309,7 @@ def test_the_repo_wiki_has_a_page_for_every_doc_and_no_dead_page_links() -> None
     # spent in the virus scanner on first open.
     html_pages = {name: text for name, text in render_site(REPO_DOCS).files.items() if name.endswith(".html")}
 
-    docs = {path.stem for path in (REPO_DOCS / "file-formats").glob("*.md") if not path.name.startswith("_")}
+    docs = {path.stem for path in format_doc_paths(REPO_DOCS / "file-formats")}
     pages = {Path(name).stem for name in html_pages} - {"index"}
     assert pages == docs
     for name, text in html_pages.items():

@@ -11,7 +11,7 @@ The main file is a u32 count and one variable-length row per sailor character:
 
 `employeespawninfooffset.dbss` is a bare offset table of 10-byte
 [u16 character_key][u32 offset][u32 size] rows. Full layout in
-docs/file-formats/employeespawninfo_dbss.md.
+docs/file-formats/dbss/employeespawninfo_dbss.md.
 """
 
 from __future__ import annotations

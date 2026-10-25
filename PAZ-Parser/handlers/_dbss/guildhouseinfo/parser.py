@@ -7,7 +7,7 @@
 
 The row key sits after the crafts. `guildhouseinfooffset.dbss` (u32 count,
 then u16 character key, offset and size per row) points at the row start.
-Layout 1 in docs/file-formats/guildhouseinfo_dbss.md.
+Layout 1 in docs/file-formats/dbss/guildhouseinfo_dbss.md.
 """
 
 from __future__ import annotations

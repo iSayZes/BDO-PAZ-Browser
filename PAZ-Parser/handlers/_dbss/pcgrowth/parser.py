@@ -13,7 +13,7 @@ after a u8 copy of its class type:
 
 `pcgrowthoffset.dbss` is a bare offset table of 9-byte
 [u8 class_type][u32 offset][u32 size] rows; the offset points just past the
-u8 copy. Full layout in docs/file-formats/pcgrowth_dbss.md.
+u8 copy. Full layout in docs/file-formats/dbss/pcgrowth_dbss.md.
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@ ration and cannonball recovery prices, the restoration cost, 8 unknown
 bytes, the cannon and ship skill flags, the manual cannon fire values and a
 u64-prefixed UTF-16 condition script. `employeecharactershipoffset.dbss`
 points at each row start, so the walk from the start needs no index.
-Layout 2 in docs/file-formats/employeecharactership_dbss.md.
+Layout 2 in docs/file-formats/dbss/employeecharactership_dbss.md.
 """
 
 from __future__ import annotations

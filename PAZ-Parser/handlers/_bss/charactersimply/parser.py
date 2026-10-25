@@ -5,7 +5,7 @@
 Each row repeats a subset of the character's `characterstatic.dbss` fields
 in another order and points into the string table for the model path, the
 voice bank, the Korean name and title and the two scripts. Full layout in
-docs/file-formats/charactersimply_bss.md.
+docs/file-formats/bss/charactersimply_bss.md.
 """
 
 from __future__ import annotations

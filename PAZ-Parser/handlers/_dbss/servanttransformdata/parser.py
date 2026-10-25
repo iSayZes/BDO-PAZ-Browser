@@ -4,7 +4,7 @@
 
 `servanttransformdataoffset.dbss` points at each row's `form_key_dup`, so
 the walk from the start needs no index. Layout 1 in
-docs/file-formats/servanttransformdata_dbss.md.
+docs/file-formats/dbss/servanttransformdata_dbss.md.
 """
 
 from __future__ import annotations

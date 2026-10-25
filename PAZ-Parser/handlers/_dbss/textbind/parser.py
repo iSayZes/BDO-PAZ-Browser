@@ -3,7 +3,7 @@
 Records follow the u32 count back to back in file order: a u32 key (the
 `key_hash()` of the TextBind name, LOC type 59 `str_id1`), variants 0 to 2 as
 u64-prefixed UTF-16LE strings, a u32 that is 0 on every record, then
-variant 3 (docs/file-formats/textbind_dbss.md).
+variant 3 (docs/file-formats/dbss/textbind_dbss.md).
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from _common.pabr_offset import PabrOffsetRow, parse_bare_u32_offset_rows
 from _common.record_reader import RecordReader
 
 VARIANT_COUNT = 4
-# Variant 0 is the PC text (docs/file-formats/textbind_dbss.md, Variants).
+# Variant 0 is the PC text (docs/file-formats/dbss/textbind_dbss.md, Variants).
 PC_VARIANT = 0
 _COUNT_SIZE = 4
 _U32 = struct.Struct("<I")

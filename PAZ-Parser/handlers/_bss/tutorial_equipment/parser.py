@@ -8,7 +8,7 @@ costume items each class wears in a tutorial sequence or cutscene.
     class: u8 class_type | u32 item IDs of the main weapon, sub-weapon,
            helmet, armor, gloves and shoes (0 for none)
 
-Layout 1 in docs/file-formats/tutorial_equipment_bss.md; the row head is
+Layout 1 in docs/file-formats/bss/tutorial_equipment_bss.md; the row head is
 read by `_bss/sequence_scripts/reader.py`.
 """
 

@@ -16,7 +16,7 @@
     material: u32 item_key | u64 count
 
 The `*_ref` fields index the string table; string 0 is empty. The always-zero
-byte blocks are skipped. Full layout in docs/file-formats/itemexchangesource_bss.md.
+byte blocks are skipped. Full layout in docs/file-formats/bss/itemexchangesource_bss.md.
 """
 
 from __future__ import annotations

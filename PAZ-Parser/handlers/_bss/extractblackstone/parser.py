@@ -5,7 +5,7 @@
            | weapon_count x Entry | armor_count x Entry
     Entry: u8 enchant_level | u32 result_item_key | u64 unknown_05 | u64 unknown_0d
 
-Layout 1 in docs/file-formats/extractblackstone_bss.md.
+Layout 1 in docs/file-formats/bss/extractblackstone_bss.md.
 """
 
 from __future__ import annotations

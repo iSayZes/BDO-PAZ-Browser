@@ -7,7 +7,7 @@
 
 `instancefieldrewardoffset.dbss` (u32 count, then u16 key, offset and size per
 row) points 2 bytes into each row, at `instance_dungeon_no_dup`. Layout 2 in
-docs/file-formats/instancefieldreward_dbss.md.
+docs/file-formats/dbss/instancefieldreward_dbss.md.
 """
 
 from __future__ import annotations

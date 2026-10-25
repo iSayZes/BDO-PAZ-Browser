@@ -3,7 +3,7 @@
 A u32 count, then `count` u16 character keys and nothing else: no `PABR`
 magic and no string table. `itemtradeoffset.dbss` points at each key, so
 reading the keys in order needs no index. Layout in
-docs/file-formats/itemtrade_dbss.md.
+docs/file-formats/dbss/itemtrade_dbss.md.
 """
 
 from __future__ import annotations

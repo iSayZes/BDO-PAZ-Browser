@@ -7,6 +7,12 @@ reads the docs and `PAZ-Parser/tests/test_format_docs.py` runs its checks on
 every doc that has a `## Layout` section. Start a new doc from
 [`_template.md`](file-formats/_template.md).
 
+A doc is named `<file stem>_<extension>.md` and sits in the folder of its
+group, the groups of the wiki's side bar: `bss/regioninfo_bss.md`,
+`dbss/buff_dbss.md`, and `other/` for every other format
+(`other/languagedata_loc.md`, `other/pad00000_meta.md`).
+`format_docs/doc_paths.py` holds the rule.
+
 ## Doc Order
 
 | Section             | Content                                                                 |

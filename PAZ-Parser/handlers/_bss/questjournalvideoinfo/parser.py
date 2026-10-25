@@ -3,7 +3,7 @@
     PABR | u32 count | count x 13-byte row | string table | u32 string_table_start | u32 0
 
 Each row names a quest and string-table indices for its Bink video and its
-full-size artwork. Full layout in docs/file-formats/questjournalvideoinfo_bss.md.
+full-size artwork. Full layout in docs/file-formats/bss/questjournalvideoinfo_bss.md.
 """
 
 from __future__ import annotations

@@ -4,7 +4,7 @@
 
     u32 count | count x (u32 character_count | u32 card_id | u16 character_ids[character_count])
 
-Full layout in docs/file-formats/knowledgelearningcharacterkey_bss.md.
+Full layout in docs/file-formats/bss/knowledgelearningcharacterkey_bss.md.
 """
 
 from __future__ import annotations

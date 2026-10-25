@@ -5,7 +5,7 @@
             | u64 buff_count | u32 buff_keys x buff_count
 
 `buff_keys` are `servantbuff.dbss` keys. Layout 2 in
-docs/file-formats/servantinteraction_dbss.md.
+docs/file-formats/dbss/servantinteraction_dbss.md.
 """
 
 from __future__ import annotations

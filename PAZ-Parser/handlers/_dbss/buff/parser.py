@@ -5,7 +5,7 @@ Each record chains fixed blocks and length-prefixed strings:
     u32 buff_id | name | 133-byte stats block | effect_name | icon_path
     | u8 is_shown | u32 apply_rate | description | 27-byte tail block
 
-Full layout in docs/file-formats/buff_dbss.md.
+Full layout in docs/file-formats/dbss/buff_dbss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@ as its `ascii_key_hash()`. The step scripts of `tutorial.bss` name most of
 them (`uiinputevent(Panel_Window_PetList_All, Button_AllUnSeal, Mouse_LUp)`);
 `_EXTRA_NAMES` holds the client UI names that no step script mentions, each
 matching a `tutorial_startevent.bss` hash. See
-docs/file-formats/tutorial_startevent_bss.md.
+docs/file-formats/bss/tutorial_startevent_bss.md.
 """
 
 from __future__ import annotations

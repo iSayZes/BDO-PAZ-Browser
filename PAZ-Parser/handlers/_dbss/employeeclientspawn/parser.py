@@ -6,7 +6,7 @@
 
 `employeeclientspawnoffset.dbss` (u32 count, then u16 character key, u16
 index, u32 offset and u32 size per row) points at the row start. Layout 1
-in docs/file-formats/employeeclientspawn_dbss.md.
+in docs/file-formats/dbss/employeeclientspawn_dbss.md.
 """
 
 from __future__ import annotations

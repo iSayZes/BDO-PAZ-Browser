@@ -15,7 +15,7 @@ then 135 bytes for the reward types the 2016 enum does not have:
 
 `reward_type` picks the member that holds the reward. Both files store a list
 as a u32 count and the entries back to back. "Reward Entry" in
-docs/file-formats/quest_dbss.md and guildquest_dbss.md.
+docs/file-formats/dbss/quest_dbss.md and guildquest_dbss.md.
 """
 
 from __future__ import annotations

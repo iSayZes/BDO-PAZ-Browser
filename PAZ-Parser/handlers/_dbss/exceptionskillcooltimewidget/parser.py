@@ -7,7 +7,7 @@ A `PABR` table of 20-byte rows with an empty string table:
 Each key is `skill_no << 16 | 1`. `exceptionskillcooltimewidgetoffset.dbss`
 is a bare index (u32 count, then u32 key, u32 offset, u32 size per row) that
 points at each row's start, so reading the rows in order needs no index.
-Layout in docs/file-formats/exceptionskillcooltimewidget_dbss.md.
+Layout in docs/file-formats/dbss/exceptionskillcooltimewidget_dbss.md.
 """
 
 from __future__ import annotations

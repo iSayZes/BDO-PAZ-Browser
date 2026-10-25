@@ -8,7 +8,7 @@
 The file stores no class row count; 97 is the count of the newest layout
 (client 3482, the row count of `skillquickslotinfo.bss` too). Client 3482
 ships every list empty and no entries. Full layout in
-docs/file-formats/instancedungeonskillinfo_bss.md.
+docs/file-formats/bss/instancedungeonskillinfo_bss.md.
 """
 
 from __future__ import annotations

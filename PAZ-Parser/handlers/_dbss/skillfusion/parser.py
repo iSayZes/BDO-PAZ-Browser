@@ -7,7 +7,7 @@
 The three keys are skill keys (`skill_no << 16 | level`, level 1 on every
 row). `skillfusionoffset.dbss` (u32 count, then u32 skill key, offset and
 size per row) points 4 bytes into a row, at `skill_fusion_key_dup`. Layout
-1 in docs/file-formats/skillfusion_dbss.md.
+1 in docs/file-formats/dbss/skillfusion_dbss.md.
 """
 
 from __future__ import annotations

@@ -2,7 +2,7 @@
 
 A class type is the number `getClassType()` returns: `0` Warrior, `4` Ranger,
 `8` Sorceress, `32` Seraph. Skill tables store sets of them as a bit mask
-where bit `n` is class type `n`. See docs/file-formats/skillsimply_dbss.md.
+where bit `n` is class type `n`. See docs/file-formats/dbss/skillsimply_dbss.md.
 """
 
 from __future__ import annotations

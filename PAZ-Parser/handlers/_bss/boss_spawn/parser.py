@@ -5,7 +5,7 @@
          | u8 | u8 | 4 zero | u8 | zero | u8 | u8 | zero
 
 The key is the `BossSpawnKey` that `boss_spawnlevel.bss` groups by. Full
-layout in docs/file-formats/boss_spawn_bss.md.
+layout in docs/file-formats/bss/boss_spawn_bss.md.
 """
 
 from __future__ import annotations

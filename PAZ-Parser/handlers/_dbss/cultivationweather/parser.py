@@ -9,7 +9,7 @@
 `product_speed_rate` is on the 1,000,000 = 100% scale.
 `cultivationweatheroffset.dbss` (u32 count, then u32 key, u32 offset and u32
 size per row) points past the key prefix. Layout 2 in
-docs/file-formats/cultivationweather_dbss.md.
+docs/file-formats/dbss/cultivationweather_dbss.md.
 """
 
 from __future__ import annotations

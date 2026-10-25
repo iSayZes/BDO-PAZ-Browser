@@ -9,7 +9,7 @@
 
 `eventcategoryoffset.dbss` (u32 count, then u16 index, offset and size per
 row) points at the row start with the whole row's size. Layout 1 in
-docs/file-formats/eventcategory_dbss.md.
+docs/file-formats/dbss/eventcategory_dbss.md.
 """
 
 from __future__ import annotations

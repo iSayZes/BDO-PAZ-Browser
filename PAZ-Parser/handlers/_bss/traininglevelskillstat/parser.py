@@ -6,7 +6,7 @@
     entry: u32 add_vehicle_skill_owner_rate | u32 add_servant_stat_rate
 
 The layout of `commonlifestatdata.bss` with 8-byte entries. Rates use
-1,000,000 = 100%. Full layout in docs/file-formats/traininglevelskillstat_bss.md.
+1,000,000 = 100%. Full layout in docs/file-formats/bss/traininglevelskillstat_bss.md.
 """
 
 from __future__ import annotations

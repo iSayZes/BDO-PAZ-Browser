@@ -5,7 +5,7 @@ the i64 silver-only cost, the i16 silver-only repair count, a u32 material
 count and that many 14-byte materials (u32 item key, i16 repair count, i64
 silver). `repairmaxenduranceoffset.dbss` points 4 bytes into a row, at the
 second key, so the walk from the start needs no index. Layout 1 in
-docs/file-formats/repairmaxendurance_dbss.md.
+docs/file-formats/dbss/repairmaxendurance_dbss.md.
 """
 
 from __future__ import annotations

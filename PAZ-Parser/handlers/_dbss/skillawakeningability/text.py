@@ -4,7 +4,7 @@ LOC type 33 holds the text in the loaded language, keyed by the ability
 index in `str_id1`; `skillawakeningability.dbss` holds the Korean text
 (`description_kr`). `skillawakeningability.dbss` and
 `skillawakeningability2.bss` show the same text. Field Names in
-docs/file-formats/skillawakeningability_dbss.md.
+docs/file-formats/dbss/skillawakeningability_dbss.md.
 """
 
 from __future__ import annotations

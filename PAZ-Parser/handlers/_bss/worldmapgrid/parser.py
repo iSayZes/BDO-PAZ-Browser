@@ -1,4 +1,4 @@
-"""Reads the world map grids (docs/file-formats/worldmapgrid_bss.md).
+"""Reads the world map grids (docs/file-formats/bss/worldmapgrid_bss.md).
 
     PABR | u8 cells[1984][2176] | u32 string_count (0) | u32 table_start | u32 0
 

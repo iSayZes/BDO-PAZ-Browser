@@ -3,7 +3,7 @@
 The file and its `alchemychargeoffset.dbss` index use the grouped walk in
 `_common/grouped_rows.py`. A main row is
 `(stone_type, item_id, charge_point)`.
-Layout in docs/file-formats/alchemycharge_dbss.md.
+Layout in docs/file-formats/dbss/alchemycharge_dbss.md.
 """
 
 from __future__ import annotations

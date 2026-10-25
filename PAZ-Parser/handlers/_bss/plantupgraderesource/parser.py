@@ -5,7 +5,7 @@
 
 Each entry is keyed by (level group, level) and holds the time, contribution
 points, silver and up to three items the upgrade takes. Full layout in
-docs/file-formats/plantupgraderesource_bss.md.
+docs/file-formats/bss/plantupgraderesource_bss.md.
 """
 
 from __future__ import annotations

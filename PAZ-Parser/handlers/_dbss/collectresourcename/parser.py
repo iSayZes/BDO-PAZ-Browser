@@ -4,7 +4,7 @@ A u32 record count, then records back to back to the end of the file: the
 u32 hash of the model name, the same hash again, the name as a u64-prefixed
 ASCII string and a u16 character key. `collectresourcenameoffset.dbss` points
 4 bytes into a record, at the second hash, so the walk from the start needs
-no index. Layout in docs/file-formats/collectresourcename_dbss.md.
+no index. Layout in docs/file-formats/dbss/collectresourcename_dbss.md.
 """
 
 from __future__ import annotations

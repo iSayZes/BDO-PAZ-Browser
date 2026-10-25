@@ -1,6 +1,6 @@
 """Layouts of the mount tables that fit the PABR value tables.
 
-Each file's doc is `docs/file-formats/<stem>_bss.md`. The names follow the
+Each file's doc is `docs/file-formats/bss/<stem>_bss.md`. The names follow the
 sheets of a private server's `DataSheets.bexcel` on client 1784:
 `HorseRace_CourseSpeed` (`horsemap.bss`), `ServantFantasy_Table`
 (`servantfantasymix.bss`), `VehicleTrainingSkill_Item_Table`

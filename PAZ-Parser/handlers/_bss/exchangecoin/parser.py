@@ -11,7 +11,7 @@
 
 No PABR magic and no string table. `unknown_order_keys` lists the coin item
 keys of the coins in another order. Layout 3 in
-docs/file-formats/exchangecoin_bss.md.
+docs/file-formats/bss/exchangecoin_bss.md.
 """
 
 from __future__ import annotations

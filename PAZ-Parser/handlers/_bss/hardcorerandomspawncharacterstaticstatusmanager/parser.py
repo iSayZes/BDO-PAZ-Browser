@@ -9,7 +9,7 @@
     | u32 random_spawn_key | u16 unknown_11
 
 A string ref is a string-table index, `-1` for none. Full layout in
-docs/file-formats/hardcorerandomspawncharacterstaticstatusmanager_bss.md.
+docs/file-formats/bss/hardcorerandomspawncharacterstaticstatusmanager_bss.md.
 """
 
 from __future__ import annotations

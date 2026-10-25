@@ -8,7 +8,7 @@
 
 The object file and waypoint names are indexes into the PABR string table
 at the end of the file; an unused waypoint slot points at an empty string.
-Layout 1 in docs/file-formats/deliverer_bss.md.
+Layout 1 in docs/file-formats/bss/deliverer_bss.md.
 """
 
 from __future__ import annotations

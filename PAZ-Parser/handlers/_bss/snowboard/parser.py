@@ -10,7 +10,7 @@ The menu reads each course with `ToClient_GetSnowBoardStaticStatusByIndex`
 `*_ref` is a string-table index: the course names are Korean, the effect
 names `effectbin/<name>.pae` files.
 
-Layout 1 in docs/file-formats/snowboard_bss.md.
+Layout 1 in docs/file-formats/bss/snowboard_bss.md.
 """
 
 from __future__ import annotations

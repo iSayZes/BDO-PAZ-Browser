@@ -9,7 +9,7 @@
     Reward (16 bytes): u32 item_id | bytes[4] unknown_04 | u64 count
 
 `siege2024rewardstaticstatus.bss` has the same rows; the parse functions take
-its name. Full layout in docs/file-formats/oceansiegereward_bss.md.
+its name. Full layout in docs/file-formats/bss/oceansiegereward_bss.md.
 """
 
 from __future__ import annotations

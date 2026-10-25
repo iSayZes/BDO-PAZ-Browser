@@ -5,7 +5,7 @@
 
 `offer_group` is the `OfferGroup` the products share; `product_nos` are
 `cashproduct.dbss` product IDs. Layout 1 in
-docs/file-formats/cashproduct_grouplist_bss.md.
+docs/file-formats/bss/cashproduct_grouplist_bss.md.
 """
 
 from __future__ import annotations

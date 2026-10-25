@@ -3,7 +3,7 @@
     u32 item_copy_quest | u32 need_item_for_copy | u32 need_item_for_individual_copy
     | 11 x u32 unknown_0c .. unknown_34 | u16 unknown_38
 
-58 bytes in all. Layout 1 in docs/file-formats/duelcharacter_bss.md.
+58 bytes in all. Layout 1 in docs/file-formats/bss/duelcharacter_bss.md.
 """
 
 from __future__ import annotations

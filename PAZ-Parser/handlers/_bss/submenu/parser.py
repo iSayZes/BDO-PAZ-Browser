@@ -5,7 +5,7 @@
 
 Each entry holds its ID, its `menu.bss` category and position, its icon as a
 region of a sprite sheet, and its title as a UI string key with the key's
-sheet. Full layout in docs/file-formats/submenu_bss.md.
+sheet. Full layout in docs/file-formats/bss/submenu_bss.md.
 """
 
 from __future__ import annotations

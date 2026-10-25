@@ -12,7 +12,7 @@ The text fields are indexes into the string table
 (`_bss/sequence_scripts/reader.py`); `file_name_hash` is
 `cutscene_file_hash()` of `file_name`. The file is compiled from
 `sequence/sequencetriggerdata.xml`. Layout 4 in
-docs/file-formats/sequencetriggerdata_bss.md.
+docs/file-formats/bss/sequencetriggerdata_bss.md.
 """
 
 from __future__ import annotations

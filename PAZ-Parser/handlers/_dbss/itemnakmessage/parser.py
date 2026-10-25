@@ -5,7 +5,7 @@
 Both strings are `GAME` sheet keys of `stringtable.bss`.
 `itemnakmessageoffset.dbss` is a `PABR` index (u32 item key, offset and size
 per row) that points at the row start. Layout 1 in
-docs/file-formats/itemnakmessage_dbss.md.
+docs/file-formats/dbss/itemnakmessage_dbss.md.
 """
 
 from __future__ import annotations

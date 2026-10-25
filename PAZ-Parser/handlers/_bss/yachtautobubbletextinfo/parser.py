@@ -8,7 +8,7 @@
 
 The player's rows come first, then the NPCs' rows. Each text index points
 into the string table; unused slots point at an empty string. Layout in
-docs/file-formats/yachtautobubbletextinfo_bss.md.
+docs/file-formats/bss/yachtautobubbletextinfo_bss.md.
 """
 
 from __future__ import annotations

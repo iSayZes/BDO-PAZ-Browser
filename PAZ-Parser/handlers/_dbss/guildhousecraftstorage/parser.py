@@ -3,7 +3,7 @@
 A u32 row count, then 10-byte rows: the i32 `houseinforeceipe.dbss` key, the
 same key again and a u16 storage count. `guildhousecraftstorageoffset.dbss`
 points 4 bytes into a row, at the second key, so the walk from the start
-needs no index. Layout 1 in docs/file-formats/guildhousecraftstorage_dbss.md.
+needs no index. Layout 1 in docs/file-formats/dbss/guildhousecraftstorage_dbss.md.
 """
 
 from __future__ import annotations

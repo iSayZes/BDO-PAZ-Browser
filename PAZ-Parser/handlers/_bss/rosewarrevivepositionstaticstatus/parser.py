@@ -7,7 +7,7 @@
     Sanctum Point: u16 fierce_battle_key | Points
     Points: u32 position_count | position_count x (f32 x, y, z) | f32 unknown_positions_00
 
-Full layout in docs/file-formats/rosewarrevivepositionstaticstatus_bss.md.
+Full layout in docs/file-formats/bss/rosewarrevivepositionstaticstatus_bss.md.
 """
 
 from __future__ import annotations

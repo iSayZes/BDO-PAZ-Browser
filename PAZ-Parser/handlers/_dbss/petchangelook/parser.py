@@ -10,7 +10,7 @@
 `petchangelookoffset.dbss` is a bare u16-keyed offset table into it (u32
 count, then u16 key, u32 offset, u32 size per row); each offset points at the
 payload, past the key prefix. The parser reads Layout 2 (client 3474) of
-docs/file-formats/petchangelook_dbss.md and walks the main file without the
+docs/file-formats/dbss/petchangelook_dbss.md and walks the main file without the
 offset table.
 """
 

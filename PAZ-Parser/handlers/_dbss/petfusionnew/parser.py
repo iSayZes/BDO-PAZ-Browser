@@ -13,8 +13,8 @@ then u8 tier, u32 offset, u32 size per row).
     u32[4][4] add rates by main pet tier, then sub pet tier | u32[4] gosphy_add_rate
 
 Every rate is on the 1,000,000 = 100% scale and every tier is stored from 0
-(Tier 1). Layout 1 in docs/file-formats/petfusionnew_dbss.md and
-docs/file-formats/petfusionnewaddrateinfo_dbss.md.
+(Tier 1). Layout 1 in docs/file-formats/dbss/petfusionnew_dbss.md and
+docs/file-formats/dbss/petfusionnewaddrateinfo_dbss.md.
 """
 
 from __future__ import annotations

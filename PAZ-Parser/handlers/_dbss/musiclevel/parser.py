@@ -6,7 +6,7 @@
 
 `musicleveloffset.dbss` (u32 count, then u32 music_level, u32 offset, u32
 size per row) points at each row past its key prefix. Layout 1 in
-docs/file-formats/musiclevel_dbss.md.
+docs/file-formats/dbss/musiclevel_dbss.md.
 """
 
 from __future__ import annotations

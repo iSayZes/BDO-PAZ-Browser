@@ -6,7 +6,7 @@ Each row holds the field number that `instancefield.dbss` and
 `instancedungeoninfo.dbss` store as `field_no`, string-table indexes for the
 field and resource names, a spawn point, the field's sector box in three
 units, its type, the keys of the `regionmapinfo.bss` maps it uses and the
-entry rules. Full layout in docs/file-formats/fieldinfo_bss.md.
+entry rules. Full layout in docs/file-formats/bss/fieldinfo_bss.md.
 """
 
 from __future__ import annotations

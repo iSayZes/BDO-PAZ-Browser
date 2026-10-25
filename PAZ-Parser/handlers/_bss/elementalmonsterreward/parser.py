@@ -8,7 +8,7 @@
 
 No PABR magic. The second table is the one the window reads with its Part 2
 (Hwanghae party) flag on. Full layout in
-docs/file-formats/elementalmonsterreward_bss.md.
+docs/file-formats/bss/elementalmonsterreward_bss.md.
 """
 
 from __future__ import annotations

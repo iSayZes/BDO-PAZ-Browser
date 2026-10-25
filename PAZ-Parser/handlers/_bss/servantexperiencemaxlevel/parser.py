@@ -2,7 +2,7 @@
 
 A u32 count, then `count` rows of (u16 character_id, u16 max_level) up to the
 end of the file; no magic and no trailer. Layout in
-docs/file-formats/servantexperiencemaxlevel_bss.md.
+docs/file-formats/bss/servantexperiencemaxlevel_bss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@ period text, 2 the claim deadline text. The service code in `str_id3` is `12`
 on every event of the en file; keys 1 to 25 also have rows under code `0`
 (key 1 under `26`). The code most events use wins, else the lowest one, as
 for the Pearl Shop texts of LOC type 50. See Notes in
-docs/file-formats/attendance_dbss.md.
+docs/file-formats/dbss/attendance_dbss.md.
 """
 
 from __future__ import annotations

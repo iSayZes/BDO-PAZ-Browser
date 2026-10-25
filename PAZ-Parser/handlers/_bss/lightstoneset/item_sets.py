@@ -1,7 +1,7 @@
 """The Lightstone sets an item counts toward, for the `itemenchant.dbss` table.
 
 Read from the `LIGHTSTONE_SETS` lookup index, so the item table needs no
-`lightstoneset.bss` companion. See docs/file-formats/lightstoneset_bss.md.
+`lightstoneset.bss` companion. See docs/file-formats/bss/lightstoneset_bss.md.
 """
 
 from __future__ import annotations

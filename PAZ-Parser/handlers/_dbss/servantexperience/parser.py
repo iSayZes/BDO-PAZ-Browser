@@ -4,7 +4,7 @@
 and points at its first byte. A record is a fixed head with the
 `experience.bss` stat body from `+0x0A`, three inline `1D1` strings, six
 level-up dice strings and a zero tail. Layout in
-docs/file-formats/servantexperience_dbss.md.
+docs/file-formats/dbss/servantexperience_dbss.md.
 """
 
 from __future__ import annotations

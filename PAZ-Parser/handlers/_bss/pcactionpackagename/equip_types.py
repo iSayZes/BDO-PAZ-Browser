@@ -4,7 +4,7 @@
 symbols (`BlackDesert64.pdb`), which ends with `TypeCount = 63`. `63` to `89`
 are the `PcActionWeapon_Table` columns of a private server's
 `DataSheets.bexcel` on client 1784 whose cells match that position in the
-client 1784 file (docs/file-formats/pcactionpackagename_bss.md, Equip Types).
+client 1784 file (docs/file-formats/bss/pcactionpackagename_bss.md, Equip Types).
 Types the sheet has no column for, `93` and up among them, have no name.
 """
 

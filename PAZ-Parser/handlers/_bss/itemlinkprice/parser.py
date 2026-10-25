@@ -3,7 +3,7 @@
     PABR | u32 count | count x (u32 price_follow_item_key, u32 price_target_item_key)
     | u32 0 (empty string table) | u32 string_table_start | u32 0
 
-Layout 1 in docs/file-formats/itemlinkprice_bss.md.
+Layout 1 in docs/file-formats/bss/itemlinkprice_bss.md.
 """
 
 from __future__ import annotations

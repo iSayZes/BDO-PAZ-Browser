@@ -3,7 +3,7 @@
     PABR | u32 count | count x (u16 quest_chain_id, u16 min_quest_id, u16 max_quest_id)
     | u32 0 (empty string table) | u32 string_table_start | u32 0
 
-Layout in docs/file-formats/multiplequest_bss.md.
+Layout in docs/file-formats/bss/multiplequest_bss.md.
 """
 
 from __future__ import annotations

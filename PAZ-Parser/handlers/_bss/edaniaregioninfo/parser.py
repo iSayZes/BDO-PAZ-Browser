@@ -4,7 +4,7 @@
     | u32 string_table_start | u32 0
 
 A row is the region map colour and a copy, each 3 bytes and a zero byte, and the
-`__eEdaniaRegion` value at +0x08. Full layout in docs/file-formats/edaniaregioninfo_bss.md.
+`__eEdaniaRegion` value at +0x08. Full layout in docs/file-formats/bss/edaniaregioninfo_bss.md.
 """
 
 from __future__ import annotations

@@ -63,7 +63,7 @@ class WaypointBwpHandler(PreviewHandler):
         companions: dict[str, bytes],
     ) -> list[dict]:
         # The old instance dungeon templates are left unread: they hold no data
-        # (see the Notes of docs/file-formats/waypoint_bwp.md).
+        # (see the Notes of docs/file-formats/other/waypoint_bwp.md).
         if not is_waypoint_graph(data):
             return []
         return _records(parse_waypoint_graph(data))

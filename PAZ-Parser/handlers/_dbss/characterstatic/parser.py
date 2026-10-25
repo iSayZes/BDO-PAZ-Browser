@@ -16,7 +16,7 @@ three Korean strings, ASCII for the AI script (the stem of an `.ai` file,
 `9999`, `PC`), the model path and the voice bank. Each contents group is
 stored as the client's string hash of its decimal key, which
 `_common/contents_group.py` turns back into the key. Full layout in
-docs/file-formats/characterstatic_dbss.md.
+docs/file-formats/dbss/characterstatic_dbss.md.
 """
 
 from __future__ import annotations

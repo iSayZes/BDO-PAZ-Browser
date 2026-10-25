@@ -5,7 +5,7 @@
          | u16 | u32
 
 One sector is 12,800 world units. Full layout in
-docs/file-formats/bossmonsterhpsyncstaticstatus_bss.md.
+docs/file-formats/bss/bossmonsterhpsyncstaticstatus_bss.md.
 """
 
 from __future__ import annotations

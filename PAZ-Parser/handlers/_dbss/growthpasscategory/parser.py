@@ -7,7 +7,7 @@
 
 Both strings carry a u64 length prefix (`RecordReader.text`).
 `growthpasscategoryoffset.dbss` (no magic, u32 keys) points at each body.
-Full layout in docs/file-formats/growthpasscategory_dbss.md.
+Full layout in docs/file-formats/dbss/growthpasscategory_dbss.md.
 """
 
 from __future__ import annotations

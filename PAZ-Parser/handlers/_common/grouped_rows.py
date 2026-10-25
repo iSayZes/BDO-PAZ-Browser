@@ -2,8 +2,8 @@
 
 Used by `alchemycharge.dbss`, `alchemyupgrade.dbss` (rows of three u32,
 `_dbss/alchemystone/grouped.py`), `buildingbuff.dbss` and their `*offset.dbss`
-indexes. Layouts in docs/file-formats/alchemycharge_dbss.md and
-docs/file-formats/buildingbuff_dbss.md.
+indexes. Layouts in docs/file-formats/dbss/alchemycharge_dbss.md and
+docs/file-formats/dbss/buildingbuff_dbss.md.
 """
 
 from __future__ import annotations

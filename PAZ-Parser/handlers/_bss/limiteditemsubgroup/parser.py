@@ -7,7 +7,7 @@
     | u32 purchase_count_limit | u8 reset_type | u32 unknown_0c
 
 Every entry of one row holds the same `subgroup_key`. Layout 2 in
-docs/file-formats/limiteditemsubgroup_bss.md; clients 1348 and 1485 have
+docs/file-formats/bss/limiteditemsubgroup_bss.md; clients 1348 and 1485 have
 no `unknown_0c` (Layout 1), which this parser does not read.
 """
 

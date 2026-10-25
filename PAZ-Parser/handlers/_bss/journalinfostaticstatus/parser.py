@@ -19,7 +19,7 @@
 The `*_ref` fields and `unknown_22` index the string table; the records
 hold their text under the name without `_ref`. Texture info entry `n` is
 `ToClient_getJournalTextureInfo(list, n)`. Layout 1 in
-docs/file-formats/journalinfostaticstatus_bss.md.
+docs/file-formats/bss/journalinfostaticstatus_bss.md.
 """
 
 from __future__ import annotations

@@ -4,7 +4,7 @@
     | u32 table_start | u32 0
     row: u32 category_key | u32 item_key | u8 unknown_08
 
-Layout 2 in docs/file-formats/buffitemautousestaticstatus_bss.md; clients
+Layout 2 in docs/file-formats/bss/buffitemautousestaticstatus_bss.md; clients
 2107 to 2519 have no `unknown_08` (Layout 1), which this parser does not
 read.
 """

@@ -2,7 +2,7 @@
 
 From `luacscript/x64/include/global_define_cpp_enum.luac` on client 3474,
 without the `AuctionGoods_` prefix. See Auction Types in
-docs/file-formats/auction_dbss.md.
+docs/file-formats/dbss/auction_dbss.md.
 """
 
 from __future__ import annotations

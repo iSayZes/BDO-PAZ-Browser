@@ -10,7 +10,7 @@ A `PABR` table of 46-byte rows with an empty string table:
 `cashitemmarketsettingoffset.dbss` (the `PABR` u32 index of `skilloffset.dbss`)
 points 4 bytes into each row, past its `item_id`, and stores size `0`; reading
 the rows in order needs no index. Layout in
-docs/file-formats/cashitemmarketsetting_dbss.md.
+docs/file-formats/dbss/cashitemmarketsetting_dbss.md.
 """
 
 from __future__ import annotations

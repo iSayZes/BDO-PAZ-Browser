@@ -46,7 +46,7 @@ sys.path[:0] = [str(ROOT / "PAZ-Parser"), str(ROOT / "PAZ-Parser" / "handlers")]
 # worker process. The check does no matrix math; one thread keeps the import at 24 MB. Workers inherit it.
 os.environ.setdefault("OPENBLAS_NUM_THREADS", "1")
 
-from format_docs import TEMPLATE_PREFIX, converted_docs  # noqa: E402
+from format_docs import TEMPLATE_PREFIX, converted_docs, doc_path  # noqa: E402
 from format_docs.check_run import (  # noqa: E402
     Client,
     DocOutcome,
@@ -296,7 +296,7 @@ def _docs(args: argparse.Namespace) -> list[Path]:
     if args.staged:
         staged = _git("diff", "--cached", "--name-only", "--diff-filter=ACMR", "--", "docs/file-formats/*.md")
         return [ROOT / name for name in staged if not Path(name).name.startswith(TEMPLATE_PREFIX)]
-    paths = [DOCS_DIR / Path(name).name for name in args.docs]
+    paths = [doc_path(DOCS_DIR, Path(name).name) for name in args.docs]
     missing = [path.name for path in paths if not path.is_file()]
     if missing:
         raise CheckError(f"no such doc: {', '.join(missing)}")
@@ -474,7 +474,7 @@ def _warn_parser_without_doc() -> None:
             continue
         folder = name.split("/")[3]
         ext = name.split("/")[2].lstrip("_")
-        if f"{folder}_{ext}" not in docs and (DOCS_DIR / f"{folder}_{ext}.md").is_file():
+        if f"{folder}_{ext}" not in docs and doc_path(DOCS_DIR, f"{folder}_{ext}.md").is_file():
             print(f"check_docs: parser of {folder}.{ext} changed, its doc is not in this commit", file=sys.stderr)
 
 

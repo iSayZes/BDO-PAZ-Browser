@@ -3,7 +3,7 @@
     u32 count | count x (u32 card_key | u32 card_key_dup | u8 symbol | u8 eye)
 
 `yachtdicecardoffset.dbss` points at `card_key_dup`. Layout in
-docs/file-formats/yachtdicecard_dbss.md.
+docs/file-formats/dbss/yachtdicecard_dbss.md.
 """
 
 from __future__ import annotations

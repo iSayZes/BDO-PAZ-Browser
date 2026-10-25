@@ -8,7 +8,7 @@
 
 `service_type` is a `CppEnums.GameServiceType` value. The parser returns one
 record per Entry with its row's and group's keys. Layout 1 in
-docs/file-formats/instancefieldcommonlimitentertime_bss.md.
+docs/file-formats/bss/instancefieldcommonlimitentertime_bss.md.
 """
 
 from __future__ import annotations

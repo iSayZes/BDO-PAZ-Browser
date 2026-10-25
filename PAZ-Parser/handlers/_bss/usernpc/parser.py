@@ -4,7 +4,7 @@
 
 Each row names the player character by number, places the NPC in the world
 and points at the action it plays in the string table. Full layout in
-docs/file-formats/usernpc_bss.md.
+docs/file-formats/bss/usernpc_bss.md.
 """
 
 from __future__ import annotations

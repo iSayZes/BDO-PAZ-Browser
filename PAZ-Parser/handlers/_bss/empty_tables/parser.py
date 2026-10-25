@@ -1,4 +1,4 @@
-"""Reads a PABR table that declares no records (docs/file-formats/empty_bss.md).
+"""Reads a PABR table that declares no records (docs/file-formats/bss/empty_bss.md).
 
     PABR | u32 count (0) | u32 string_count (0) | u32 table_start (0x08) | u32 0
 

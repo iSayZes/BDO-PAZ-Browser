@@ -2,7 +2,7 @@
 
 The file is a bare u32 array with no header: entry N is the max level of life
 skill N, in the `lifeexp.dbss` block order. Full layout in
-docs/file-formats/lifeexpmaxlevel_bss.md.
+docs/file-formats/bss/lifeexpmaxlevel_bss.md.
 """
 
 from __future__ import annotations

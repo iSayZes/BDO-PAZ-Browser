@@ -12,7 +12,7 @@
 Cell type 2 holds a `skillgroup.bss` group; the others draw the tree lines.
 The grid is the developer sheet's cell grid: skill cards sit in sheet columns
 0, 3 and 6, the three card columns of the skill window. Full layout in
-docs/file-formats/ui_skillgroup_bss.md.
+docs/file-formats/bss/ui_skillgroup_bss.md.
 """
 
 from __future__ import annotations

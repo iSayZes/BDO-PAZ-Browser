@@ -11,7 +11,7 @@
 `couponoffset.dbss` (u32 count, then u16 key, u32 offset and u32 size per
 row, no PABR magic) points at the row start. The category keys are
 `cashproductcategory.dbss` keys, `65535` where the coupon stops at a higher
-level. Layout 1 in docs/file-formats/coupon_dbss.md.
+level. Layout 1 in docs/file-formats/dbss/coupon_dbss.md.
 """
 
 from __future__ import annotations

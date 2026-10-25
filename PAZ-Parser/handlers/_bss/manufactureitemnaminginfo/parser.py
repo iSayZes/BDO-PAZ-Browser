@@ -1,7 +1,7 @@
 """`manufactureitemnaminginfo.bss`: the items that take the crafter's name through processing.
 
 A `PABR` table of u32 item IDs with an empty string table. Layout in
-docs/file-formats/manufactureitemnaminginfo_bss.md.
+docs/file-formats/bss/manufactureitemnaminginfo_bss.md.
 """
 
 from __future__ import annotations

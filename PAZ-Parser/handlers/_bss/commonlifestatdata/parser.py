@@ -6,7 +6,7 @@
 There is no row count: the values run from +0x04 up to the string table.
 `traininglevelskillstat.bss` has the same layout with 8-byte entries and
 reads them through `parse_level_entries`.
-Full layout in docs/file-formats/commonlifestatdata_bss.md.
+Full layout in docs/file-formats/bss/commonlifestatdata_bss.md.
 """
 
 from __future__ import annotations

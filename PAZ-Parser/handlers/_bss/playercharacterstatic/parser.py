@@ -3,7 +3,7 @@
     PABR | u32 character_count | character_count x u16 character_key
     | String Table (empty) | u32 string_table_start | u32 0
 
-Layout 1 in docs/file-formats/playercharacterstatic_bss.md.
+Layout 1 in docs/file-formats/bss/playercharacterstatic_bss.md.
 """
 
 from __future__ import annotations

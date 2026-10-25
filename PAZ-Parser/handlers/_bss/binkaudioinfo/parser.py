@@ -6,7 +6,7 @@
          | u8 unknown_0c | u8 unknown_0d | u8 unknown_0e
 
 The three names index the string table; the record carries their text as
-`<field>_text`. Layout 1 in docs/file-formats/binkaudioinfo_bss.md.
+`<field>_text`. Layout 1 in docs/file-formats/bss/binkaudioinfo_bss.md.
 """
 
 from __future__ import annotations

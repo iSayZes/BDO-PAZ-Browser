@@ -5,7 +5,7 @@
 `key_hash` is `key_hash()` (`_common/string_hash.py`) of the row's string key
 (`WARRIOR_01`); the key itself is not stored. `commandtooltipoffset.dbss` is a
 `PABR` index (u32 key hash, offset and size per row) that points at the row
-start. Layout 1 in docs/file-formats/commandtooltip_dbss.md.
+start. Layout 1 in docs/file-formats/dbss/commandtooltip_dbss.md.
 """
 
 from __future__ import annotations

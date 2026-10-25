@@ -24,7 +24,7 @@ _QUEST = 2
 # The window has three guide link buttons per quest cell.
 _MAX_LINKS_SHOWN = 3
 # `__eGrowthPass_CellType_*` members, matched to values by where each value
-# sits in the grids (docs/file-formats/uigrowthpasslayout_bss.md). 0, 9 and 10
+# sits in the grids (docs/file-formats/bss/uigrowthpasslayout_bss.md). 0, 9 and 10
 # do not occur, so they stay numbers.
 CELL_TYPE_NAMES: dict[int, str] = {
     _BLANK: "Blank",

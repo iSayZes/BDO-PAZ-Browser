@@ -7,7 +7,7 @@
 
 The box stores no key of its own; every entry repeats it. `texture_name`
 indexes the string table (`Combine_Tab_Icon_Daily`). Layout 1 in
-docs/file-formats/selectbox_bss.md.
+docs/file-formats/bss/selectbox_bss.md.
 """
 
 from __future__ import annotations

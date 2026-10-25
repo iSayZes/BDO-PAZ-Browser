@@ -1388,7 +1388,7 @@ IDs (`LookupValue`).
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
-[itemenchant.dbss](file-formats/itemenchant_dbss.md), moved back by the
+[itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md), moved back by the
 `unknown_5d` byte count on mount and ship gear); characters named by zero
 or several items are left out. The `characterobject.dbss` Item column reads it.
 The `characterstatic.dbss` `source_item_id` holds the same link for 4,874 of
@@ -1399,7 +1399,7 @@ read it.
 `getknowledge(<id>);` action script grants it, in ascending ID order.
 `KNOWLEDGE_LEARNING_CHARACTERS` maps a card to the monsters, NPCs and
 gathering nodes that teach it through
-[knowledgelearning.dbss](file-formats/knowledgelearning_dbss.md) table 0, also
+[knowledgelearning.dbss](file-formats/dbss/knowledgelearning_dbss.md) table 0, also
 in ascending ID order. The two overlap but neither covers the other, so the
 `mentalcard.dbss` Learned From column reads both and merges them.
 `KNOWLEDGE_LEARNING_ITEMS` maps a card to the items that teach it (table 1),
@@ -1407,13 +1407,13 @@ in ascending ID order; the Learned From Items column shows them with
 `item_key_list_cell()`.
 
 `CHARACTER_AI_SCRIPT` maps a character to the AI script its
-[characterstatic.dbss](file-formats/characterstatic_dbss.md) record names, a
+[characterstatic.dbss](file-formats/dbss/characterstatic_dbss.md) record names, a
 file stem as written (`Monsters_Main_Manager`). The `.ai` handler reads the
 whole index and keeps the characters whose stem matches its file, without
 case, for its Used by box.
 
 `CHARACTER_NAME_KR` maps a character to its Korean
-[characterstatic.dbss](file-formats/characterstatic_dbss.md#korean-strings)
+[characterstatic.dbss](file-formats/dbss/characterstatic_dbss.md#korean-strings)
 name: `name_kr`, or `label_kr` where `name_kr` is the `UNKNOWN` placeholder.
 `character_name()` in `_common/character.py` falls back to it when LOC type
 6 has no name, as `item_name()` does with `ITEM_NAME_KR`, with no `(KR)`
@@ -1429,7 +1429,7 @@ type 6 has no title, so the Title columns of `employeespawninfo.dbss`,
 characters the English LOC leaves out, 50 of them `<메이드 통합>`.
 
 `CHARACTER_GROUP_MEMBERS` maps each non-zero
-[`character_group`](file-formats/characterstatic_dbss.md#character-group) to
+[`character_group`](file-formats/dbss/characterstatic_dbss.md#character-group) to
 its character IDs, ascending (258 groups on client 3474). Read it through
 `_common/character_group.py`: `character_group_names(group)` gives the
 distinct member names (`character_name()`, so LOC then Korean),
@@ -1441,7 +1441,7 @@ Kill Groups columns of `quest.dbss` and `guildquest.dbss`, and the
 `itemenchant.dbss` Event Param 1 column names the group of a soul collector.
 
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
-option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),
+option in its dialogs ([detail_dialog.dbss](file-formats/dbss/detail_dialog_dbss.md)),
 in dialog order and without repeats, as flat `(item_id, cost)` pairs. It is
 built by `build_character_lease_index()` in `_dbss/detail_dialog/parser.py`.
 Read it through `dialog_leases(character_id)` in `_common/lease.py`, which
@@ -1474,7 +1474,7 @@ is not loaded or has no type 59 text for the name. The records follow the
 count back to back, so the spec reads `textbind.dbss` alone.
 
 `BUFF_ICON` maps a buff ID to its icon. It reads
-[buffsimply.bss](file-formats/buffsimply_bss.md), which stores the same icon
+[buffsimply.bss](file-formats/bss/buffsimply_bss.md), which stores the same icon
 paths as `buff.dbss` in fixed 32-byte rows (1.4 MB against 12 MB of
 variable-length records). Buffs without an icon or with the `UNKNOWN`
 placeholder are left out. Read it through `IconKind.BUFF`, or through
@@ -1485,7 +1485,7 @@ there normalizes the stored paths for both buff tables.
 `ITEM_KEY_ICON` maps a packed item key (`enchant_level << 24 | item_id`) to
 the icon of that level, for the 551 items whose icon or name changes with
 their level (Sovereign weapons, Fallen God armor, PEN Nouver sub-weapons). It
-reads [specialenchantitem.bss](file-formats/specialenchantitem_bss.md), which
+reads [specialenchantitem.bss](file-formats/bss/specialenchantitem_bss.md), which
 copies those per-level icons out of `itemenchant.dbss` in fixed 19-byte rows
 (175 KB); `ITEM_ICON` reads level-0 blocks only and cannot reach them. Read it
 through `item_key_icon_path(item_key)` in `_common/item_key.py`, which falls
@@ -1513,7 +1513,7 @@ level, `Blackstar Helmet (19)`, including levels whose LOC type 79 name is just
 the item name (`Preonne Belt (3)`).
 
 `ITEM_GRADE` maps a base item ID to its grade (`+0x06` in
-[itemenchant.dbss](file-formats/itemenchant_dbss.md)), which the game draws
+[itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md)), which the game draws
 the name in. `item_key_list_cell()` reads it through
 `item_key_text_tagged()`, which wraps the name in the grade's `<PAColor>`
 tag, so every item list (and the `buff.dbss` Applied By and `teleport.dbss`
@@ -1552,11 +1552,11 @@ of them changes an icon an existing table shows:
 `PRODUCTION_ITEMS` maps a worker production key to the packed item keys
 (`enchant_level << 24 | item_id`) of its exchange's product drop group:
 the `exchange_key` in
-[plantexchangegroup.bss](file-formats/plantexchangegroup_bss.md) is an
-[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) row, whose
-`product_drop_key` is an [itemmaingroup.bss](file-formats/itemmaingroup_bss.md)
+[plantexchangegroup.bss](file-formats/bss/plantexchangegroup_bss.md) is an
+[itemexchangesource.bss](file-formats/bss/itemexchangesource_bss.md) row, whose
+`product_drop_key` is an [itemmaingroup.bss](file-formats/bss/itemmaingroup_bss.md)
 group, whose subgroups list the items in
-[itemsubgroup.dbss](file-formats/itemsubgroup_dbss.md).
+[itemsubgroup.dbss](file-formats/dbss/itemsubgroup_dbss.md).
 `PRODUCTION_LUCK_ITEMS` does the same for the exchange's `luck_drop_key`.
 Only the few hundred production exchanges and their groups are kept, so no
 table needs the 3 MB `itemexchangesource.bss` or the 13 MB
@@ -1576,7 +1576,7 @@ Items and Luck Drops columns and the `plantzone.dbss` Produced Items and Luck
 Drops columns read them that way.
 
 `EXCHANGE_NAME_KR` maps every
-[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) key to its
+[itemexchangesource.bss](file-formats/bss/itemexchangesource_bss.md) key to its
 Korean name, `''` for the rows without one, so it also tells which keys have
 a row. It is built by `build_exchange_name_kr_index()` in
 `_bss/itemexchangesource/parser.py`. Read it through `_common/item_exchange.py`:
@@ -1589,7 +1589,7 @@ the `houseinforeceipe.dbss` Exchanges column and the `guildmanufacture.dbss`
 Exchange column use them.
 
 `SKILL_BUFFS` and `BUFF_ITEMS` are the item to buff link. An item's
-`itemenchant.dbss` skill keys name [skill.dbss](file-formats/skill_dbss.md)
+`itemenchant.dbss` skill keys name [skill.dbss](file-formats/dbss/skill_dbss.md)
 records, whose `buff_ids` are the item's buffs (item 761880 -> skill 47683 ->
 buffs 48723 to 48728). `SKILL_BUFFS` maps a skill key to its buff IDs in slot
 order, leaving out skills without buffs; read it through `skill_buff_ids()` in
@@ -1602,27 +1602,27 @@ every base item whose skills apply it, in ascending ID order; the
 tables, so `BUFF_ITEMS` costs no second read of `itemenchant.dbss`.
 
 `ENCHANT_KEY_ITEMS` maps an
-[enchantstaticstatus.dbss](file-formats/enchantstaticstatus_dbss.md) enchant
+[enchantstaticstatus.dbss](file-formats/dbss/enchantstaticstatus_dbss.md) enchant
 key to the base items whose `itemenchant.dbss` block stores it, in ascending
 ID order; keys no item uses and items with key `0` are left out. It is built
 by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same key. The
 `enchantstaticstatus.dbss` Items column and the
-[itemviewstackenchantgroupss.bss](file-formats/itemviewstackenchantgroupss_bss.md)
+[itemviewstackenchantgroupss.bss](file-formats/bss/itemviewstackenchantgroupss_bss.md)
 Items and Group Items columns read it; `itemenchant.dbss` shows each item's
 own key as its Enchant Key column.
 
 `ENHANCEMENT_TYPE_ITEMS` maps an enhancement type (`enhancement_type` after
-the icon in [itemenchant.dbss](file-formats/itemenchant_dbss.md)) to its base
+the icon in [itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md)) to its base
 items, in ascending ID order; type `0` is left out. It is built by
 `build_enhancement_type_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks. The
-[guaranteeenchantss.dbss](file-formats/guaranteeenchantss_dbss.md) Items
+[guaranteeenchantss.dbss](file-formats/dbss/guaranteeenchantss_dbss.md) Items
 column reads it; `itemenchant.dbss` shows each item's own type as its
 Enhancement Type column.
 
 `MARBLE_DICE_GROUP_ITEMS` maps a
-[marblegamediceitemgroup.dbss](file-formats/marblegamediceitemgroup_dbss.md)
+[marblegamediceitemgroup.dbss](file-formats/dbss/marblegamediceitemgroup_dbss.md)
 group key to the base items with contents event `98` whose
 `contents_event_param1` names it, in ascending ID order. It is built by
 `build_marble_dice_group_item_index()` in `_dbss/itemenchant/parser.py`
@@ -1632,7 +1632,7 @@ and `marblegamediceitemkey.dbss` read it through
 `linked_item_ids()` in `_common/linked_items.py`.
 
 `CUSTOMIZED_ITEM_BOXES` maps a
-[customizeditem.dbss](file-formats/customizeditem_dbss.md) key to the base
+[customizeditem.dbss](file-formats/dbss/customizeditem_dbss.md) key to the base
 items with contents event `31` (CustomizedItemBox) whose
 `contents_event_param1` names it, in ascending ID order. It is built by
 `build_customized_item_box_index()` in `_dbss/itemenchant/parser.py`, which
@@ -1640,17 +1640,17 @@ shares the level-0 walk with the marble dice index. The `customizeditem.dbss`
 Boxes column reads it through `_common/linked_items.py`.
 
 `MESH_KEY_ITEMS` maps an item mesh key (`item_mesh_key` in the
-[itemenchant.dbss](file-formats/itemenchant_dbss.md) Class Entry list, the key
-of [itemeffectchange.dbss](file-formats/itemeffectchange_dbss.md)) to the base
+[itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md) Class Entry list, the key
+of [itemeffectchange.dbss](file-formats/dbss/itemeffectchange_dbss.md)) to the base
 items that wear it for any class type, in ascending ID order. It is built by
 `build_mesh_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same class entries.
 The Items columns of `itemeffectchange.dbss` and
-[itemmeshstaticstatus.bss](file-formats/itemmeshstaticstatus_bss.md) read it
+[itemmeshstaticstatus.bss](file-formats/bss/itemmeshstaticstatus_bss.md) read it
 through `_common/linked_items.py`.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
-[exploration.bss](file-formats/exploration_bss.md)) to the one node it links
+[exploration.bss](file-formats/bss/exploration_bss.md)) to the one node it links
 to in the worldmap graph, its parent; sub-nodes with no link or several are
 left out. Read it through `full_node_name()` in `_common/node.py`, which names
 a sub-node `Bambu Valley - Mining` where LOC type 29 alone says `Mining`; the
@@ -1674,7 +1674,7 @@ every link is listed under both its ends; `map_nodes.py` keeps the links
 between two map nodes for the Map view's link lines. It is built by
 `build_node_link_index()` in `_bwp/waypoint/worldmap.py`.
 
-`TELEPORT_BUFFS` maps a [teleport.dbss](file-formats/teleport_dbss.md) point
+`TELEPORT_BUFFS` maps a [teleport.dbss](file-formats/dbss/teleport_dbss.md) point
 to the effect type 23 buffs that go there, and `TELEPORT_BUFF_NAME_KR` maps
 those buffs to their Korean names; the point ID packs section and key
 (`teleport_point_id()` in `_common/teleport.py`, which also reads both
@@ -1688,7 +1688,7 @@ over every node (`build_teleport_nearest_node_index()` in
 Lab (12 m)` for the `buff.dbss` Effect text of type 23.
 
 `LIGHTSTONE_SETS` maps a Lightstone item to the
-[lightstoneset.bss](file-formats/lightstoneset_bss.md) sets it counts toward,
+[lightstoneset.bss](file-formats/bss/lightstoneset_bss.md) sets it counts toward,
 in ascending set ID order: a member to every set that lists it, and a
 substitute (an Amplified Lightstone) to the sets of its base Lightstone. It
 is built by `build_lightstone_set_index()` in `_bss/lightstoneset/parser.py`.
@@ -1697,7 +1697,7 @@ Read it through `item_set_ids()` in `_bss/lightstoneset/item_sets.py`, whose
 `itemenchant.dbss` Lightstone Sets column uses both.
 
 `INSTANCE_FIELD_NAME` maps an
-[instancefield.dbss](file-formats/instancefield_dbss.md) key to the field's
+[instancefield.dbss](file-formats/dbss/instancefield_dbss.md) key to the field's
 internal ASCII name (`A1_001`, `Solare_Arena_Kell`); no LOC type names the
 fields. It is built by `build_instance_field_name_index()` in
 `_dbss/instancefield/parser.py`. Read it through `instance_field_name()` in
@@ -1705,7 +1705,7 @@ fields. It is built by `build_instance_field_name_index()` in
 
 `INSTANCE_FIELD_TITLE` maps the same key to the `GAME` sheet hash of the
 field's title key in
-[instancefieldmapinfo.bss](file-formats/instancefieldmapinfo_bss.md)
+[instancefieldmapinfo.bss](file-formats/bss/instancefieldmapinfo_bss.md)
 (`INSTANCEDUNGEONDATA_A1_001_NAME`), so the text follows the loaded LOC
 language without a rebuild. It is built by
 `build_instance_field_title_index()` in `_bss/instancefieldmapinfo/parser.py`
@@ -1716,7 +1716,7 @@ Single Path`). `instance_field_label()` there joins both indexes; the
 Magnus: The Great Single Path (A1_001)`, and the `instancefield.dbss` Title
 column uses the title alone.
 
-`FIELD_NAME` maps a [fieldinfo.bss](file-formats/fieldinfo_bss.md) field
+`FIELD_NAME` maps a [fieldinfo.bss](file-formats/bss/fieldinfo_bss.md) field
 number to the field's name as the file writes it (`월드`, `A1_001`). It is
 built by `build_field_name_index()` in `_bss/fieldinfo/parser.py` and read
 through `field_no_label()` in `_bss/fieldinfo/names.py`, which gives an `A1_`
@@ -1726,7 +1726,7 @@ has the same name. The Field columns of `instancefield.dbss` and
 `field_no_link()` links to the `fieldinfo.bss` row.
 
 `CHARACTER_HUNTING_GROUNDS` maps a monster character key to the
-[dropuihuntinggroundinfo.bss](file-formats/dropuihuntinggroundinfo_bss.md)
+[dropuihuntinggroundinfo.bss](file-formats/bss/dropuihuntinggroundinfo_bss.md)
 hunting grounds whose `monster_ids` list it, ascending, and
 `HUNTING_GROUND_NAME_KR` maps a hunting ground key to its Korean name.
 `build_character_hunting_ground_index()` and
@@ -1738,7 +1738,7 @@ hunting grounds whose `monster_ids` list it, ascending, and
 `character_hunting_grounds(character_keys)` joins the zones of several
 characters; `hunting_ground_list_cell(keys, names, max_items)` links each zone
 to its row with a hoverable count of the rest. The
-[monstergroup.dbss](file-formats/monstergroup_dbss.md) Hunting Grounds column
+[monstergroup.dbss](file-formats/dbss/monstergroup_dbss.md) Hunting Grounds column
 uses them, and the `worldmapmonster.dbss` Hunting Ground column names its
 zone with `hunting_ground_name()`.
 

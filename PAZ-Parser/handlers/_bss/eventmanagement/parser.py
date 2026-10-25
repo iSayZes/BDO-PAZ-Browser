@@ -6,7 +6,7 @@
 
 Every text of both tables is a string table index (`*_ref`); the records
 carry the index and its text. Layout 1 in
-docs/file-formats/eventmanagement_bss.md.
+docs/file-formats/bss/eventmanagement_bss.md.
 """
 
 from __future__ import annotations

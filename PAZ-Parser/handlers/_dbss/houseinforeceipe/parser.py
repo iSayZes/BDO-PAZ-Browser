@@ -5,7 +5,7 @@ string table. A row is the receipe key, the `houseinfoneeditem.dbss` key, a
 u64-prefixed UTF-16LE Korean name, the use type, icon type and one unknown
 byte, five counted u32 lists of item exchange keys (house levels 1 to 5), an
 unknown u32 and a counted u8 list. `houseinforeceipeoffset.dbss` points at
-each row's key. Layout in docs/file-formats/houseinforeceipe_dbss.md.
+each row's key. Layout in docs/file-formats/dbss/houseinforeceipe_dbss.md.
 """
 
 from __future__ import annotations

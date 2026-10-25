@@ -8,7 +8,7 @@ strings, and list `n` is class type `n`
 (`ToClient_getSkillCoolTimeUIListCount`, `..._SkillNo(idx)` and
 `..._ShowType(idx)` read the list of the player's class).
 
-Layout 1 in docs/file-formats/classcooltimeuilist_bss.md.
+Layout 1 in docs/file-formats/bss/classcooltimeuilist_bss.md.
 """
 
 from __future__ import annotations

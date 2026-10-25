@@ -4,7 +4,7 @@
 
 `personalmonsterpositionoffset.dbss` (u32 count, then u32 index, offset and
 size per row) points at the row start. Layout 2 in
-docs/file-formats/personalmonsterposition_dbss.md.
+docs/file-formats/dbss/personalmonsterposition_dbss.md.
 """
 
 from __future__ import annotations

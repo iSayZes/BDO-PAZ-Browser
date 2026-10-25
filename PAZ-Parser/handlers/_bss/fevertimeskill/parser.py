@@ -6,7 +6,7 @@
     row: u16 index | u16 skill_level | u16 skill_no | u32 description
 
 `skill_level` and `skill_no` are one gc::SkillKey. The string table is empty.
-Layout in docs/file-formats/fevertimeskill_bss.md.
+Layout in docs/file-formats/bss/fevertimeskill_bss.md.
 """
 
 from __future__ import annotations

@@ -9,7 +9,7 @@
 
 The quests are packed quest IDs (low u16 chain, high u16 quest). Clients up
 to 2107 end the file after the rows (Layout 1). Layout 2 in
-docs/file-formats/seasonpass_dbss.md.
+docs/file-formats/dbss/seasonpass_dbss.md.
 """
 
 from __future__ import annotations

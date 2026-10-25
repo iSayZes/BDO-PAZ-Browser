@@ -3,7 +3,7 @@
 A cell holds the low byte of a `regiongroupinfo.bss` key, so a key from 256
 on shares its value with the key 256 lower (`2` and `258`). The territory
 grid `worldmapterritorytypedata.bss` and the regions of `regioninfo.bss` tell
-the two groups apart (docs/file-formats/worldmapgrid_bss.md, Shared Values):
+the two groups apart (docs/file-formats/bss/worldmapgrid_bss.md, Shared Values):
 a group whose regions all lie in one territory owns the value's cells in that
 territory. The value's other cells go to the groups that own no territory
 (group `0`, whose regions lie in several), or to every group of the value

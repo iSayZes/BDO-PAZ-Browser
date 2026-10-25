@@ -6,7 +6,7 @@
 The rows are read as a PABR value table (`_bss.pabr_values`). The tree is
 `uiguildskilltreelayout.bss`, read by `_bss.uiskilltreelayout.parser`; a
 skill cell there gives the skill's column and row in the guild window. Full
-layout in docs/file-formats/guildskill_bss.md.
+layout in docs/file-formats/bss/guildskill_bss.md.
 """
 
 from __future__ import annotations

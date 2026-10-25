@@ -5,7 +5,7 @@
 
 Each row joins one `regioninfo.bss` region by its region key and holds the
 blizzard effect's spawn chance range (1,000,000 = 100%) and a wind vector.
-Full layout in docs/file-formats/blizzardregioninfo_bss.md.
+Full layout in docs/file-formats/bss/blizzardregioninfo_bss.md.
 """
 
 from __future__ import annotations

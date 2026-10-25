@@ -6,7 +6,7 @@
 
 `cutscene_key` is `key_hash()` of `file_name`, and `key_prefix` repeats it.
 `cutsceneoffset.dbss` (u32 count, then u32 key, u32 offset and u32 size per
-row, no PABR magic) points past the key prefix. Layout 1 in
+row, no PABR magic) points past the key prefix. Layout 3 in
 docs/file-formats/dbss/cutscene_dbss.md.
 """
 

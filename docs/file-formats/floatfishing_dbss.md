@@ -13,14 +13,14 @@ lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes  | Records        | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ------ | -------------- | --------- |
-| 2      | 2726 and later | 3483    | `floatfishing.dbss`       | 29,264 | 418 Row        | 70        |
-| 2      | 2726 and later | 3483    | `floatfishingoffset.dbss` | 4,184  | 418 Offset Row | 10        |
-| 1      | 1267 to 2717   | 2717    | `floatfishing.dbss`       | 25,084 | 418 Row        | 60        |
-| 1      | 1267 to 2717   | 2717    | `floatfishingoffset.dbss` | 4,184  | 418 Offset Row | 10        |
+| Layout | Clients        | File                      | Bytes  | Records        | Row bytes |
+| ------ | -------------- | ------------------------- | ------ | -------------- | --------- |
+| 2      | 2726 and later | `floatfishing.dbss`       | 29,264 | 418 Row        | 70        |
+| 2      | 2726 and later | `floatfishingoffset.dbss` | 4,184  | 418 Offset Row | 10        |
+| 1      | 1267 to 2717   | `floatfishing.dbss`       | 25,084 | 418 Row        | 60        |
+| 1      | 1267 to 2717   | `floatfishingoffset.dbss` | 4,184  | 418 Offset Row | 10        |
 
 | Layout | File                      | Known            | Unknown          |
 | ------ | ------------------------- | ---------------- | ---------------- |

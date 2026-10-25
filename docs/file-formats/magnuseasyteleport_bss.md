@@ -13,12 +13,12 @@ Edania); the map shows button `CheckButton_<index + 1>` for row `index`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----- | ------- | --------- |
-| 2      | 3144 and later | 3483    | `magnuseasyteleport.bss` | 1,099 | 16 Row  | 32        |
-| 1      | 2421 to 3133   | 3133    | `magnuseasyteleport.bss` | 967   | 15 Row  | 28        |
+| Layout | Clients        | File                     | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------------ | ----- | ------- | --------- |
+| 2      | 3144 and later | `magnuseasyteleport.bss` | 1,099 | 16 Row  | 32        |
+| 1      | 2421 to 3133   | `magnuseasyteleport.bss` | 967   | 15 Row  | 28        |
 
 | Layout | File                     | Known         | Unknown       |
 | ------ | ------------------------ | ------------- | ------------- |

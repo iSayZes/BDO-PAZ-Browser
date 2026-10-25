@@ -16,11 +16,11 @@ opens a UI window. The Lua walks the slots with
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ------- | --------- |
-| 1      | 1950 and later | 3483    | `beginnerroadmapdata.bss` | 5,052 | 16 Row  | 40        |
+| Layout | Clients        | File                      | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ------- | --------- |
+| 1      | 1950 and later | `beginnerroadmapdata.bss` | 5,052 | 16 Row  | 40        |
 
 | Layout | File                      | Known            | Unknown    |
 | ------ | ------------------------- | ---------------- | ---------- |

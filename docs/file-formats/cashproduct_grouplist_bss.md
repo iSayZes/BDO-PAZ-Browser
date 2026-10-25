@@ -14,11 +14,11 @@ product's group with `cashProduct:getOfferGroup()`, then the members with
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                        | Bytes  | Records   | Row bytes                |
-| ------ | -------------- | ------- | --------------------------- | ------ | --------- | ------------------------ |
-| 1      | 1327 and later | 3483    | `cashproduct_grouplist.bss` | 89,704 | 3,007 Row | 12 to 128, 30 on average |
+| Layout | Clients        | File                        | Bytes  | Records   | Row bytes                |
+| ------ | -------------- | --------------------------- | ------ | --------- | ------------------------ |
+| 1      | 1327 and later | `cashproduct_grouplist.bss` | 89,704 | 3,007 Row | 12 to 128, 30 on average |
 
 | Layout | File                        | Known             | Unknown    |
 | ------ | --------------------------- | ----------------- | ---------- |

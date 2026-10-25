@@ -15,12 +15,12 @@ values.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                        | Bytes | Records               | Row bytes |
-| ------ | -------------- | ------- | --------------------------- | ----- | --------------------- | --------- |
-| 2      | 2726 and later | 3483    | `icefisingstaticstatus.bss` | 240   | 2 Row                 | 110       |
-| 1      | 1784 to 2717   | 2717    | `icefisingstaticstatus.bss` | 128   | 1 Row, 1 String Table | 108       |
+| Layout | Clients        | File                        | Bytes | Records               | Row bytes |
+| ------ | -------------- | --------------------------- | ----- | --------------------- | --------- |
+| 2      | 2726 and later | `icefisingstaticstatus.bss` | 240   | 2 Row                 | 110       |
+| 1      | 1784 to 2717   | `icefisingstaticstatus.bss` | 128   | 1 Row, 1 String Table | 108       |
 
 | Layout | File                        | Known          | Unknown    |
 | ------ | --------------------------- | -------------- | ---------- |

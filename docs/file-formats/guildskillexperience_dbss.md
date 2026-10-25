@@ -8,12 +8,12 @@ EXP table of the guild points (skill point pool `3`, the points guild skills cos
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                              | Bytes  | Records          | Row bytes |
-| ------ | -------------- | ------- | --------------------------------- | ------ | ---------------- | --------- |
-| 1      | 1276 and later | 3483    | `guildskillexperience.dbss`       | 13,017 | 1,001 Level Row  | 13        |
-| 1      | 1276 and later | 3483    | `guildskillexperienceoffset.dbss` | 10,014 | 1,001 Offset Row | 10        |
+| Layout | Clients        | File                              | Bytes  | Records          | Row bytes |
+| ------ | -------------- | --------------------------------- | ------ | ---------------- | --------- |
+| 1      | 1276 and later | `guildskillexperience.dbss`       | 13,017 | 1,001 Level Row  | 13        |
+| 1      | 1276 and later | `guildskillexperienceoffset.dbss` | 10,014 | 1,001 Offset Row | 10        |
 
 | Layout | File                              | Known             | Unknown    |
 | ------ | --------------------------------- | ----------------- | ---------- |

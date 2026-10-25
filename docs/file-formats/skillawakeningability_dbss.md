@@ -11,14 +11,14 @@ and shows their text, so the index is the key other files and the Lua use.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes  | Records      | Row bytes                  |
-| ------ | -------------- | ------- | ---------------------------------- | ------ | ------------ | -------------------------- |
-| 2      | 3464 and later | 3483    | `skillawakeningability.dbss`       | 15,838 | 96 Row       | 110 to 270, 165 on average |
-| 2      | 3464 and later | 3483    | `skillawakeningabilityoffset.dbss` | 1,156  | 96 Index Row | 12                         |
-| 1      | 1346 to 3458   | 3458    | `skillawakeningability.dbss`       | 15,646 | 96 Row       | 108 to 268, 163 on average |
-| 1      | 1346 to 3458   | 3458    | `skillawakeningabilityoffset.dbss` | 1,156  | 96 Index Row | 12                         |
+| Layout | Clients        | File                               | Bytes  | Records      | Row bytes                  |
+| ------ | -------------- | ---------------------------------- | ------ | ------------ | -------------------------- |
+| 2      | 3464 and later | `skillawakeningability.dbss`       | 15,838 | 96 Row       | 110 to 270, 165 on average |
+| 2      | 3464 and later | `skillawakeningabilityoffset.dbss` | 1,156  | 96 Index Row | 12                         |
+| 1      | 1346 to 3458   | `skillawakeningability.dbss`       | 15,646 | 96 Row       | 108 to 268, 163 on average |
+| 1      | 1346 to 3458   | `skillawakeningabilityoffset.dbss` | 1,156  | 96 Index Row | 12                         |
 
 | Layout | File                               | Known            | Unknown      |
 | ------ | ---------------------------------- | ---------------- | ------------ |

@@ -20,11 +20,11 @@ Another Adventurer's Choice).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                              | Bytes   | Records   | Row bytes                 |
-| ------ | -------------- | ------- | --------------------------------- | ------- | --------- | ------------------------- |
-| 1      | 2218 and later | 3483    | `itemviewstackenchantgroupss.bss` | 192,732 | 1,146 Row | 20 to 628, 168 on average |
+| Layout | Clients        | File                              | Bytes   | Records   | Row bytes                 |
+| ------ | -------------- | --------------------------------- | ------- | --------- | ------------------------- |
+| 1      | 2218 and later | `itemviewstackenchantgroupss.bss` | 192,732 | 1,146 Row | 20 to 628, 168 on average |
 
 | Layout | File                              | Known             | Unknown        |
 | ------ | --------------------------------- | ----------------- | -------------- |

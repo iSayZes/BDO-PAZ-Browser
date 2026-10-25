@@ -14,14 +14,14 @@ and a few others. Companion `formoffset.dbss` lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes  | Records        | Row bytes                 |
-| ------ | -------------- | ------- | ----------------- | ------ | -------------- | ------------------------- |
-| 2      | 1996 and later | 3483    | `form.dbss`       | 76,275 | 297 Row        | 31 to 269, 257 on average |
-| 2      | 1996 and later | 3483    | `formoffset.dbss` | 2,974  | 297 Offset Row | 10                        |
-| 1      | 1346 to 1991   | 1991    | `form.dbss`       | 70,234 | 278 Row        | 27 to 265, 253 on average |
-| 1      | 1346 to 1991   | 1991    | `formoffset.dbss` | 2,784  | 278 Offset Row | 10                        |
+| Layout | Clients        | File              | Bytes  | Records        | Row bytes                 |
+| ------ | -------------- | ----------------- | ------ | -------------- | ------------------------- |
+| 2      | 1996 and later | `form.dbss`       | 76,275 | 297 Row        | 31 to 269, 257 on average |
+| 2      | 1996 and later | `formoffset.dbss` | 2,974  | 297 Offset Row | 10                        |
+| 1      | 1346 to 1991   | `form.dbss`       | 70,234 | 278 Row        | 27 to 265, 253 on average |
+| 1      | 1346 to 1991   | `formoffset.dbss` | 2,784  | 278 Offset Row | 10                        |
 
 | Layout | File              | Known             | Unknown    |
 | ------ | ----------------- | ----------------- | ---------- |

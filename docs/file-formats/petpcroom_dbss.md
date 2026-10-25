@@ -11,12 +11,12 @@ The equip skills of the PC room pets: each row is a pet key from
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ----- | ------------- | --------- |
-| 1      | 1261 and later | 3483    | `petpcroom.dbss`       | 144   | 10 Row        | 14        |
-| 1      | 1261 and later | 3483    | `petpcroomoffset.dbss` | 104   | 10 Offset Row | 10        |
+| Layout | Clients        | File                   | Bytes | Records       | Row bytes |
+| ------ | -------------- | ---------------------- | ----- | ------------- | --------- |
+| 1      | 1261 and later | `petpcroom.dbss`       | 144   | 10 Row        | 14        |
+| 1      | 1261 and later | `petpcroomoffset.dbss` | 104   | 10 Offset Row | 10        |
 
 | Layout | File                   | Known          | Unknown    |
 | ------ | ---------------------- | -------------- | ---------- |

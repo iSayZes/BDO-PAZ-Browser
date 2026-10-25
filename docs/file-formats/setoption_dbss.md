@@ -13,12 +13,12 @@ count, a furniture set's effect is interior points per piece count.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes                  |
-| ------ | -------------- | ------- | ---------------------- | ------ | ------------- | -------------------------- |
-| 1      | 1267 and later | 3483    | `setoption.dbss`       | 12,114 | 75 Row        | 146 to 198, 161 on average |
-| 1      | 1267 and later | 3483    | `setoptionoffset.dbss` | 754    | 75 Offset Row | 10                         |
+| Layout | Clients        | File                   | Bytes  | Records       | Row bytes                  |
+| ------ | -------------- | ---------------------- | ------ | ------------- | -------------------------- |
+| 1      | 1267 and later | `setoption.dbss`       | 12,114 | 75 Row        | 146 to 198, 161 on average |
+| 1      | 1267 and later | `setoptionoffset.dbss` | 754    | 75 Offset Row | 10                         |
 
 | Layout | File                   | Known             | Unknown    |
 | ------ | ---------------------- | ----------------- | ---------- |

@@ -15,16 +15,16 @@ names one or more effects as a comma-separated list
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes     | Records                                                            | Row bytes               |
-| ------ | -------------- | ------- | -------------------- | --------- | ------------------------------------------------------------------ | ----------------------- |
-| 6      | 1481 and later | 3483    | `effectfilename.bss` | 2,493,263 | 6,010 Weapon Row, 10 Attack Table, 10 Special Table, 30 Ground Row | 400                     |
-| 5      | 1462 to 1474   | 1474    | `effectfilename.bss` | 867,305   | 2,000 Weapon Row, 10 Attack Table, 10 Special Table, 30 Ground Row | 400                     |
-| 4      | 1109 to 1459   | 1459    | `effectfilename.bss` | 437,449   | 1,000 Weapon Row, 10 Attack Table, 30 Ground Row                   | 400                     |
-| 3      | 805 to 829     | 829     | `effectfilename.bss` | 50,790    | 100 Weapon Row, 30 Ground Row                                      | 400                     |
-| 2      | 531 to 794     | 794     | `effectfilename.bss` | 193,704   | 10,150 Effect Text, 100 Weapon Row, 30 Ground Row                  | 8 to 145, 19 on average |
-| 1      | 485 to 526     | 526     | `effectfilename.bss` | 70,630    | 1,375 Effect Text, 35 Weapon Row, 30 Ground Row                    | 8 to 226, 51 on average |
+| Layout | Clients        | File                 | Bytes     | Records                                                            | Row bytes               |
+| ------ | -------------- | -------------------- | --------- | ------------------------------------------------------------------ | ----------------------- |
+| 6      | 1481 and later | `effectfilename.bss` | 2,493,263 | 6,010 Weapon Row, 10 Attack Table, 10 Special Table, 30 Ground Row | 400                     |
+| 5      | 1462 to 1474   | `effectfilename.bss` | 867,305   | 2,000 Weapon Row, 10 Attack Table, 10 Special Table, 30 Ground Row | 400                     |
+| 4      | 1109 to 1459   | `effectfilename.bss` | 437,449   | 1,000 Weapon Row, 10 Attack Table, 30 Ground Row                   | 400                     |
+| 3      | 805 to 829     | `effectfilename.bss` | 50,790    | 100 Weapon Row, 30 Ground Row                                      | 400                     |
+| 2      | 531 to 794     | `effectfilename.bss` | 193,704   | 10,150 Effect Text, 100 Weapon Row, 30 Ground Row                  | 8 to 145, 19 on average |
+| 1      | 485 to 526     | `effectfilename.bss` | 70,630    | 1,375 Effect Text, 35 Weapon Row, 30 Ground Row                    | 8 to 226, 51 on average |
 
 | Layout | File                 | Known                | Unknown    |
 | ------ | -------------------- | -------------------- | ---------- |

@@ -25,29 +25,29 @@ count; see [itemcouponreward](itemcouponreward_dbss.md).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 1      | 1256 and later | 3483    | `alchemystatus.dbss`          | 4     | -       | -         |
-| 1      | 1256 and later | 3483    | `alchemystatusoffset.dbss`    | 4     | -       | -         |
-| 1      | 1239 and later | 3483    | `buffcondition.dbss`          | 4     | -       | -         |
-| 1      | 1239 and later | 3483    | `buffconditionoffset.dbss`    | 4     | -       | -         |
-| 1      | 1286 and later | 3483    | `cashforui.dbss`              | 4     | -       | -         |
-| 1      | 1286 and later | 3483    | `cashforuioffset.dbss`        | 4     | -       | -         |
-| 1      | 1346 and later | 3483    | `chinaspawnoption.dbss`       | 4     | -       | -         |
-| 1      | 1346 and later | 3483    | `chinaspawnoptionoffset.dbss` | 4     | -       | -         |
-| 1      | 1267 and later | 3483    | `grenadedata.dbss`            | 4     | -       | -         |
-| 1      | 1267 and later | 3483    | `grenadedataoffset.dbss`      | 4     | -       | -         |
-| 1      | 1267 and later | 3483    | `installation.dbss`           | 4     | -       | -         |
-| 1      | 1267 and later | 3483    | `installationoffset.dbss`     | 4     | -       | -         |
-| 1      | 1261 and later | 3483    | `petmarketsetting.dbss`       | 4     | -       | -         |
-| 1      | 1261 and later | 3483    | `petmarketsettingoffset.dbss` | 4     | -       | -         |
-| 1      | 1313 and later | 3483    | `petset.dbss`                 | 4     | -       | -         |
-| 1      | 1313 and later | 3483    | `petsetoffset.dbss`           | 4     | -       | -         |
-| 1      | 1774 and later | 3483    | `servantcategory.dbss`        | 4     | -       | -         |
-| 1      | 1774 and later | 3483    | `servantcategoryoffset.dbss`  | 4     | -       | -         |
-| 1      | 1774 and later | 3483    | `worldquest.dbss`             | 4     | -       | -         |
+| Layout | Clients        | File                          | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------------------- | ----- | ------- | --------- |
+| 1      | 1256 and later | `alchemystatus.dbss`          | 4     | -       | -         |
+| 1      | 1256 and later | `alchemystatusoffset.dbss`    | 4     | -       | -         |
+| 1      | 1239 and later | `buffcondition.dbss`          | 4     | -       | -         |
+| 1      | 1239 and later | `buffconditionoffset.dbss`    | 4     | -       | -         |
+| 1      | 1286 and later | `cashforui.dbss`              | 4     | -       | -         |
+| 1      | 1286 and later | `cashforuioffset.dbss`        | 4     | -       | -         |
+| 1      | 1346 and later | `chinaspawnoption.dbss`       | 4     | -       | -         |
+| 1      | 1346 and later | `chinaspawnoptionoffset.dbss` | 4     | -       | -         |
+| 1      | 1267 and later | `grenadedata.dbss`            | 4     | -       | -         |
+| 1      | 1267 and later | `grenadedataoffset.dbss`      | 4     | -       | -         |
+| 1      | 1267 and later | `installation.dbss`           | 4     | -       | -         |
+| 1      | 1267 and later | `installationoffset.dbss`     | 4     | -       | -         |
+| 1      | 1261 and later | `petmarketsetting.dbss`       | 4     | -       | -         |
+| 1      | 1261 and later | `petmarketsettingoffset.dbss` | 4     | -       | -         |
+| 1      | 1313 and later | `petset.dbss`                 | 4     | -       | -         |
+| 1      | 1313 and later | `petsetoffset.dbss`           | 4     | -       | -         |
+| 1      | 1774 and later | `servantcategory.dbss`        | 4     | -       | -         |
+| 1      | 1774 and later | `servantcategoryoffset.dbss`  | 4     | -       | -         |
+| 1      | 1774 and later | `worldquest.dbss`             | 4     | -       | -         |
 
 | Layout | File                          | Known        | Unknown    |
 | ------ | ----------------------------- | ------------ | ---------- |

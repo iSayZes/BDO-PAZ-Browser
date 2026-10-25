@@ -15,16 +15,16 @@ with no PABR magic.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes | Records | Row bytes                 |
-| ------ | -------------- | ------- | ----------------------- | ----- | ------- | ------------------------- |
-| 6      | 3435 and later | 3483    | `instancespawninfo.bss` | 4,582 | 54 Row  | 74 to 98, 85 on average   |
-| 5      | 3125 to 3426   | 3426    | `instancespawninfo.bss` | 5,122 | 54 Row  | 84 to 108, 95 on average  |
-| 4      | 3002 to 3118   | 3118    | `instancespawninfo.bss` | 4,592 | 44 Row  | 93 to 117, 104 on average |
-| 3      | 2134 to 2995   | 2995    | `instancespawninfo.bss` | 3,490 | 38 Row  | 80 to 104, 92 on average  |
-| 2      | 1881 to 2130   | 2130    | `instancespawninfo.bss` | 2,266 | 25 Row  | 78 to 102, 90 on average  |
-| 1      | 1854 to 1871   | 1871    | `instancespawninfo.bss` | 40    | 1 Row   | 36                        |
+| Layout | Clients        | File                    | Bytes | Records | Row bytes                 |
+| ------ | -------------- | ----------------------- | ----- | ------- | ------------------------- |
+| 6      | 3435 and later | `instancespawninfo.bss` | 4,582 | 54 Row  | 74 to 98, 85 on average   |
+| 5      | 3125 to 3426   | `instancespawninfo.bss` | 5,122 | 54 Row  | 84 to 108, 95 on average  |
+| 4      | 3002 to 3118   | `instancespawninfo.bss` | 4,592 | 44 Row  | 93 to 117, 104 on average |
+| 3      | 2134 to 2995   | `instancespawninfo.bss` | 3,490 | 38 Row  | 80 to 104, 92 on average  |
+| 2      | 1881 to 2130   | `instancespawninfo.bss` | 2,266 | 25 Row  | 78 to 102, 90 on average  |
+| 1      | 1854 to 1871   | `instancespawninfo.bss` | 40    | 1 Row   | 36                        |
 
 | Layout | File                    | Known           | Unknown       |
 | ------ | ----------------------- | --------------- | ------------- |

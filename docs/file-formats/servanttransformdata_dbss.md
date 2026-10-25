@@ -16,12 +16,12 @@ the chosen form with `stable_servantTransform(slot, formIndex)`. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                              | Bytes | Records      | Row bytes |
-| ------ | -------------- | ------- | --------------------------------- | ----- | ------------ | --------- |
-| 1      | 1346 and later | 3483    | `servanttransformdata.dbss`       | 20    | 2 Row        | 8         |
-| 1      | 1346 and later | 3483    | `servanttransformdataoffset.dbss` | 24    | 2 Offset Row | 10        |
+| Layout | Clients        | File                              | Bytes | Records      | Row bytes |
+| ------ | -------------- | --------------------------------- | ----- | ------------ | --------- |
+| 1      | 1346 and later | `servanttransformdata.dbss`       | 20    | 2 Row        | 8         |
+| 1      | 1346 and later | `servanttransformdataoffset.dbss` | 24    | 2 Offset Row | 10        |
 
 | Layout | File                              | Known         | Unknown    |
 | ------ | --------------------------------- | ------------- | ---------- |

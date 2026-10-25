@@ -14,16 +14,16 @@ the getters of the cash product that sells it: `isChooseCash()`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes   | Records          | Row bytes                  |
-| ------ | -------------- | ------- | ----------------------- | ------- | ---------------- | -------------------------- |
-| 3      | 1590 and later | 3483    | `cashchoose.dbss`       | 191,114 | 1,329 Row        | 139 to 168, 144 on average |
-| 3      | 1590 and later | 3483    | `cashchooseoffset.dbss` | 13,294  | 1,329 Offset Row | 10                         |
-| 2      | 1327 to 1587   | 1587    | `cashchoose.dbss`       | 52,142  | 398 Row          | 131                        |
-| 2      | 1327 to 1587   | 1587    | `cashchooseoffset.dbss` | 3,984   | 398 Offset Row   | 10                         |
-| 1      | 1286 to 1324   | 1324    | `cashchoose.dbss`       | 23,758  | 214 Row          | 111                        |
-| 1      | 1286 to 1324   | 1324    | `cashchooseoffset.dbss` | 2,144   | 214 Offset Row   | 10                         |
+| Layout | Clients        | File                    | Bytes   | Records          | Row bytes                  |
+| ------ | -------------- | ----------------------- | ------- | ---------------- | -------------------------- |
+| 3      | 1590 and later | `cashchoose.dbss`       | 191,114 | 1,329 Row        | 139 to 168, 144 on average |
+| 3      | 1590 and later | `cashchooseoffset.dbss` | 13,294  | 1,329 Offset Row | 10                         |
+| 2      | 1327 to 1587   | `cashchoose.dbss`       | 52,142  | 398 Row          | 131                        |
+| 2      | 1327 to 1587   | `cashchooseoffset.dbss` | 3,984   | 398 Offset Row   | 10                         |
+| 1      | 1286 to 1324   | `cashchoose.dbss`       | 23,758  | 214 Row          | 111                        |
+| 1      | 1286 to 1324   | `cashchooseoffset.dbss` | 2,144   | 214 Offset Row   | 10                         |
 
 | Layout | File                    | Known              | Unknown    |
 | ------ | ----------------------- | ------------------ | ---------- |

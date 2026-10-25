@@ -17,14 +17,14 @@ At roughly 194 MB it is the largest file in the game data.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes       | Records                                                                     | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
-| 2      | 3387 and later | 3483    | `itemenchant.dbss`       | 203,042,002 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
-| 2      | 3387 and later | 3483    | `itemenchantoffset.dbss` | 2,032,160   | 169,345 Offset Row                                                          | 12        |
-| 1      | 1754 to 1784   | 1784    | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
-| 1      | 1754 to 1784   | 1784    | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
+| Layout | Clients        | File                     | Bytes       | Records                                                                     | Row bytes |
+| ------ | -------------- | ------------------------ | ----------- | --------------------------------------------------------------------------- | --------- |
+| 2      | 3387 and later | `itemenchant.dbss`       | 203,042,002 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
+| 2      | 3387 and later | `itemenchantoffset.dbss` | 2,032,160   | 169,345 Offset Row                                                          | 12        |
+| 1      | 1754 to 1784   | `itemenchant.dbss`       | 171,791,213 | 101,374 Tail, 101,374 Block                                                 | 25        |
+| 1      | 1754 to 1784   | `itemenchantoffset.dbss` | 1,216,508   | 101,374 Offset Row                                                          | 12        |
 
 | Layout | File                     | Known                 | Unknown               |
 | ------ | ------------------------ | --------------------- | --------------------- |

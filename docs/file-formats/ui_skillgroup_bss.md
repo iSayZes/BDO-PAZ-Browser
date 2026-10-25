@@ -16,13 +16,13 @@ tabs the skills are sorted into. Three files share the format:
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes   | Records                                            | Row bytes             |
-| ------ | -------------- | ------- | ------------------------------ | ------- | -------------------------------------------------- | --------------------- |
-| 1      | 1363 and later | 3483    | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
-| 1      | 1363 and later | 3483    | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
-| 1      | 1363 and later | 3483    | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
+| Layout | Clients        | File                           | Bytes   | Records                                            | Row bytes             |
+| ------ | -------------- | ------------------------------ | ------- | -------------------------------------------------- | --------------------- |
+| 1      | 1363 and later | `ui_skillgroup_awakening.bss`  | 69,380  | 7,552 Cell, 32 Class Grid, 68 Tab, 32 Class Tabs   | 9 to 11, 9 on average |
+| 1      | 1363 and later | `ui_skillgroup_combat.bss`     | 242,103 | 26,224 Cell, 32 Class Grid, 160 Tab, 32 Class Tabs | 9 to 11, 9 on average |
+| 1      | 1363 and later | `ui_skillgroup_succession.bss` | 230     | 1 String Table                                     | 4                     |
 
 | Layout | File                           | Known             | Unknown          |
 | ------ | ------------------------------ | ----------------- | ---------------- |

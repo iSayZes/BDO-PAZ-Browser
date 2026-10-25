@@ -16,14 +16,14 @@ the texts in the PABR string table at the end of the file.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes   | Records                          | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ------- | -------------------------------- | --------- |
-| 2      | 1324 and later | 3483    | `tooltiptable.dbss`       | 885,245 | 4,615 Row, 3 Section             | 21        |
-| 2      | 1324 and later | 3483    | `tooltiptableoffset.dbss` | 55,408  | 4,615 Index Row, 3 Index Section | 12        |
-| 1      | 1230 to 1321   | 1321    | `tooltiptable.dbss`       | 405,047 | 2,554 Row, 3 Section             | 17        |
-| 1      | 1230 to 1321   | 1321    | `tooltiptableoffset.dbss` | 30,676  | 2,554 Index Row, 3 Index Section | 12        |
+| Layout | Clients        | File                      | Bytes   | Records                          | Row bytes |
+| ------ | -------------- | ------------------------- | ------- | -------------------------------- | --------- |
+| 2      | 1324 and later | `tooltiptable.dbss`       | 885,245 | 4,615 Row, 3 Section             | 21        |
+| 2      | 1324 and later | `tooltiptableoffset.dbss` | 55,408  | 4,615 Index Row, 3 Index Section | 12        |
+| 1      | 1230 to 1321   | `tooltiptable.dbss`       | 405,047 | 2,554 Row, 3 Section             | 17        |
+| 1      | 1230 to 1321   | `tooltiptableoffset.dbss` | 30,676  | 2,554 Index Row, 3 Index Section | 12        |
 
 | Layout | File                      | Known             | Unknown          |
 | ------ | ------------------------- | ----------------- | ---------------- |

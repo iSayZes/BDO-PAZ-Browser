@@ -12,14 +12,14 @@ The production-key reading and the worker-species field boundaries follow [iDeve
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes  | Records               | Row bytes               |
-| ------ | -------------- | ------- | ---------------------- | ------ | --------------------- | ----------------------- |
-| 2      | 2142 and later | 3483    | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
-| 2      | 2142 and later | 3483    | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
-| 1      | 1261 to 2138   | 2138    | `plantzone.dbss`       | 8,725  | 323 Plant Zone Record | 27                      |
-| 1      | 1261 to 2138   | 2138    | `plantzoneoffset.dbss` | 3,880  | 323 Offset Row        | 12                      |
+| Layout | Clients        | File                   | Bytes  | Records               | Row bytes               |
+| ------ | -------------- | ---------------------- | ------ | --------------------- | ----------------------- |
+| 2      | 2142 and later | `plantzone.dbss`       | 16,111 | 439 Plant Zone Record | 32 to 37, 37 on average |
+| 2      | 2142 and later | `plantzoneoffset.dbss` | 5,272  | 439 Offset Row        | 12                      |
+| 1      | 1261 to 2138   | `plantzone.dbss`       | 8,725  | 323 Plant Zone Record | 27                      |
+| 1      | 1261 to 2138   | `plantzoneoffset.dbss` | 3,880  | 323 Offset Row        | 12                      |
 
 | Layout | File                   | Known            | Unknown         |
 | ------ | ---------------------- | ---------------- | --------------- |

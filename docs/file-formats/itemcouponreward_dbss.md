@@ -11,12 +11,12 @@ item by one of four sale types; see Field Names for the row the server reads.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 1      | 1346 and later | 3483    | `itemcouponreward.dbss`       | 16    | -       | -         |
-| 1      | 1346 and later | 3483    | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
+| Layout | Clients        | File                          | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------------------- | ----- | ------- | --------- |
+| 1      | 1346 and later | `itemcouponreward.dbss`       | 16    | -       | -         |
+| 1      | 1346 and later | `itemcouponrewardoffset.dbss` | 20    | -       | -         |
 
 | Layout | File                          | Known       | Unknown      |
 | ------ | ----------------------------- | ----------- | ------------ |

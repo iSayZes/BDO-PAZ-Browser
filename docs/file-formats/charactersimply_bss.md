@@ -8,12 +8,12 @@ Stores one fixed 119-byte row per character template (player classes, NPCs, mons
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes     | Records    | Row bytes |
-| ------ | -------------- | ------- | --------------------- | --------- | ---------- | --------- |
-| 2      | 3464 and later | 3483    | `charactersimply.bss` | 3,849,053 | 24,445 Row | 119       |
-| 1      | 1762 to 2553   | 2553    | `charactersimply.bss` | 3,367,224 | 21,220 Row | 121       |
+| Layout | Clients        | File                  | Bytes     | Records    | Row bytes |
+| ------ | -------------- | --------------------- | --------- | ---------- | --------- |
+| 2      | 3464 and later | `charactersimply.bss` | 3,849,053 | 24,445 Row | 119       |
+| 1      | 1762 to 2553   | `charactersimply.bss` | 3,367,224 | 21,220 Row | 121       |
 
 | Layout | File                  | Known               | Unknown           |
 | ------ | --------------------- | ------------------- | ----------------- |

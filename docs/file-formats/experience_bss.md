@@ -15,12 +15,12 @@ or weight growth.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes     | Records                                             | Row bytes |
-| ------ | -------------- | ------- | ---------------- | --------- | --------------------------------------------------- | --------- |
-| 2      | 2919 and later | 3483    | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group | 200       |
-| 1      | 1519 to 2891   | 2891    | `experience.bss` | 1,444,786 | 4,847 Stat Body, 4,847 Level Record, 87 Class Group | 270       |
+| Layout | Clients        | File             | Bytes     | Records                                             | Row bytes |
+| ------ | -------------- | ---------------- | --------- | --------------------------------------------------- | --------- |
+| 2      | 2919 and later | `experience.bss` | 1,453,467 | 6,157 Stat Body, 6,157 Level Record, 47 Class Group | 200       |
+| 1      | 1519 to 2891   | `experience.bss` | 1,444,786 | 4,847 Stat Body, 4,847 Level Record, 87 Class Group | 270       |
 
 | Layout | File             | Known             | Unknown             |
 | ------ | ---------------- | ----------------- | ------------------- |

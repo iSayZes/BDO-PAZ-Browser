@@ -12,11 +12,11 @@ every row equals the `experience.bss` level 60 body: AP `+1` and DP `+1`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                    | Bytes | Records              | Row bytes |
-| ------ | -------------- | ------- | --------------------------------------- | ----- | -------------------- | --------- |
-| 1      | 3326 and later | 3483    | `hardcorecharacterstatstaticstatus.bss` | 9,474 | 47 Stat Body, 47 Row | 200       |
+| Layout | Clients        | File                                    | Bytes | Records              | Row bytes |
+| ------ | -------------- | --------------------------------------- | ----- | -------------------- | --------- |
+| 1      | 3326 and later | `hardcorecharacterstatstaticstatus.bss` | 9,474 | 47 Stat Body, 47 Row | 200       |
 
 | Layout | File                                    | Known           | Unknown         |
 | ------ | --------------------------------------- | --------------- | --------------- |

@@ -10,14 +10,14 @@ Field names `cardKey`, `themeKey`, `minFavor`, `maxFavor` and `interest` follow 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes     | Records          | Row bytes                    |
-| ------ | -------------- | ------- | ----------------------- | --------- | ---------------- | ---------------------------- |
-| 2      | 2098 and later | 3483    | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
-| 2      | 2098 and later | 3483    | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
-| 1      | 1250 to 2089   | 2089    | `mentalcard.dbss`       | 4,291,476 | 8,576 Card       | 161 to 2,248, 500 on average |
-| 1      | 1250 to 2089   | 2089    | `mentalcardoffset.dbss` | 102,932   | 8,576 Index Row  | 12                           |
+| Layout | Clients        | File                    | Bytes     | Records          | Row bytes                    |
+| ------ | -------------- | ----------------------- | --------- | ---------------- | ---------------------------- |
+| 2      | 2098 and later | `mentalcard.dbss`       | 6,461,923 | 12,604 Card      | 162 to 2,273, 513 on average |
+| 2      | 2098 and later | `mentalcardoffset.dbss` | 151,268   | 12,604 Index Row | 12                           |
+| 1      | 1250 to 2089   | `mentalcard.dbss`       | 4,291,476 | 8,576 Card       | 161 to 2,248, 500 on average |
+| 1      | 1250 to 2089   | `mentalcardoffset.dbss` | 102,932   | 8,576 Index Row  | 12                           |
 
 | Layout | File                    | Known               | Unknown          |
 | ------ | ----------------------- | ------------------- | ---------------- |

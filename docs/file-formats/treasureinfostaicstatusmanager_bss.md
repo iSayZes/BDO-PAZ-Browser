@@ -15,11 +15,11 @@ Krogdalo's Sanctuary.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                 | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | ------------------------------------ | ----- | ------- | ----------------------- |
-| 1      | 3458 and later | 3483    | `treasureinfostaicstatusmanager.bss` | 1,232 | 6 Row   | 23 to 43, 34 on average |
+| Layout | Clients        | File                                 | Bytes | Records | Row bytes               |
+| ------ | -------------- | ------------------------------------ | ----- | ------- | ----------------------- |
+| 1      | 3458 and later | `treasureinfostaicstatusmanager.bss` | 1,232 | 6 Row   | 23 to 43, 34 on average |
 
 | Layout | File                                 | Known            | Unknown    |
 | ------ | ------------------------------------ | ---------------- | ---------- |

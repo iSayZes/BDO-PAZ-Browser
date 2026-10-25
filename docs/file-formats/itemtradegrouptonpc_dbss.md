@@ -13,14 +13,14 @@ fish, trade crates and the old regional trade goods.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes   | Records                     | Row bytes |
-| ------ | -------------- | ------- | -------------------------------- | ------- | --------------------------- | --------- |
-| 2      | 2726 and later | 3483    | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127       |
-| 2      | 2726 and later | 3483    | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10        |
-| 1      | 1329 to 2717   | 2717    | `itemtradegrouptonpc.dbss`       | 192,751 | 1,561 Item Entry, 124 Group | 123       |
-| 1      | 1329 to 2717   | 2717    | `itemtradegrouptonpcoffset.dbss` | 1,244   | 124 Index Row               | 10        |
+| Layout | Clients        | File                             | Bytes   | Records                     | Row bytes |
+| ------ | -------------- | -------------------------------- | ------- | --------------------------- | --------- |
+| 2      | 2726 and later | `itemtradegrouptonpc.dbss`       | 207,262 | 1,626 Item Entry, 126 Group | 127       |
+| 2      | 2726 and later | `itemtradegrouptonpcoffset.dbss` | 1,264   | 126 Index Row               | 10        |
+| 1      | 1329 to 2717   | `itemtradegrouptonpc.dbss`       | 192,751 | 1,561 Item Entry, 124 Group | 123       |
+| 1      | 1329 to 2717   | `itemtradegrouptonpcoffset.dbss` | 1,244   | 124 Index Row               | 10        |
 
 | Layout | File                             | Known              | Unknown          |
 | ------ | -------------------------------- | ------------------ | ---------------- |

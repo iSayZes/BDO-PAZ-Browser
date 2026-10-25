@@ -21,13 +21,13 @@ The same split runs through `barter_normal.bss` (two lists of regions) and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes  | Records                            | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ------ | ---------------------------------- | --------- |
-| 3      | 2863 and later | 3483    | `bartersubgroup.bss` | 59,584 | 816 Exchange, 816 Entry, 202 Group | 56        |
-| 2      | 1690 to 2855   | 2855    | `bartersubgroup.bss` | 36,976 | 528 Exchange, 528 Entry, 130 Group | 56        |
-| 1      | 1351 to 1685   | 1685    | `bartersubgroup.bss` | 36,448 | 528 Exchange, 528 Entry, 130 Group | 56        |
+| Layout | Clients        | File                 | Bytes  | Records                            | Row bytes |
+| ------ | -------------- | -------------------- | ------ | ---------------------------------- | --------- |
+| 3      | 2863 and later | `bartersubgroup.bss` | 59,584 | 816 Exchange, 816 Entry, 202 Group | 56        |
+| 2      | 1690 to 2855   | `bartersubgroup.bss` | 36,976 | 528 Exchange, 528 Entry, 130 Group | 56        |
+| 1      | 1351 to 1685   | `bartersubgroup.bss` | 36,448 | 528 Exchange, 528 Entry, 130 Group | 56        |
 
 | Layout | File                 | Known             | Unknown    |
 | ------ | -------------------- | ----------------- | ---------- |

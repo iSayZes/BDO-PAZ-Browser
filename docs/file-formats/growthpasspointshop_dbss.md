@@ -11,14 +11,14 @@ fields mean is not known.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes | Records              | Row bytes |
-| ------ | -------------- | ------- | -------------------------------- | ----- | -------------------- | --------- |
-| 2      | 3418 and later | 3483    | `growthpasspointshop.dbss`       | 4     | -                    | -         |
-| 2      | 3418 and later | 3483    | `growthpasspointshopoffset.dbss` | 4     | -                    | -         |
-| 1      | 1717 to 3412   | 3412    | `growthpasspointshop.dbss`       | 424   | 15 Point Shop Record | 28        |
-| 1      | 1717 to 3412   | 3412    | `growthpasspointshopoffset.dbss` | 184   | 15 Index Row         | 12        |
+| Layout | Clients        | File                             | Bytes | Records              | Row bytes |
+| ------ | -------------- | -------------------------------- | ----- | -------------------- | --------- |
+| 2      | 3418 and later | `growthpasspointshop.dbss`       | 4     | -                    | -         |
+| 2      | 3418 and later | `growthpasspointshopoffset.dbss` | 4     | -                    | -         |
+| 1      | 1717 to 3412   | `growthpasspointshop.dbss`       | 424   | 15 Point Shop Record | 28        |
+| 1      | 1717 to 3412   | `growthpasspointshopoffset.dbss` | 184   | 15 Index Row         | 12        |
 
 | Layout | File                             | Known          | Unknown       |
 | ------ | -------------------------------- | -------------- | ------------- |

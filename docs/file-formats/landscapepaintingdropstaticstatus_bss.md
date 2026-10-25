@@ -15,12 +15,12 @@ the paints that charge it through
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                    | Bytes  | Records | Row bytes                      |
-| ------ | -------------- | ------- | --------------------------------------- | ------ | ------- | ------------------------------ |
-| 2      | 3387 and later | 3483    | `landscapepaintingdropstaticstatus.bss` | 15,776 | 14 Row  | 953 to 1,153, 1,106 on average |
-| 1      | 3012 to 3381   | 3381    | `landscapepaintingdropstaticstatus.bss` | 10,926 | 12 Row  | 849 to 925, 889 on average     |
+| Layout | Clients        | File                                    | Bytes  | Records | Row bytes                      |
+| ------ | -------------- | --------------------------------------- | ------ | ------- | ------------------------------ |
+| 2      | 3387 and later | `landscapepaintingdropstaticstatus.bss` | 15,776 | 14 Row  | 953 to 1,153, 1,106 on average |
+| 1      | 3012 to 3381   | `landscapepaintingdropstaticstatus.bss` | 10,926 | 12 Row  | 849 to 925, 889 on average     |
 
 | Layout | File                                    | Known        | Unknown          |
 | ------ | --------------------------------------- | ------------ | ---------------- |

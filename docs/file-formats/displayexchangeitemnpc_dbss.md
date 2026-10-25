@@ -13,12 +13,12 @@ keys (need item and count, result item and count) the window shows.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                | Bytes | Records        | Row bytes               |
-| ------ | -------------- | ------- | ----------------------------------- | ----- | -------------- | ----------------------- |
-| 1      | 1346 and later | 3483    | `displayexchangeitemnpc.dbss`       | 2,944 | 124 Row        | 18 to 60, 24 on average |
-| 1      | 1346 and later | 3483    | `displayexchangeitemnpcoffset.dbss` | 1,492 | 124 Offset Row | 12                      |
+| Layout | Clients        | File                                | Bytes | Records        | Row bytes               |
+| ------ | -------------- | ----------------------------------- | ----- | -------------- | ----------------------- |
+| 1      | 1346 and later | `displayexchangeitemnpc.dbss`       | 2,944 | 124 Row        | 18 to 60, 24 on average |
+| 1      | 1346 and later | `displayexchangeitemnpcoffset.dbss` | 1,492 | 124 Offset Row | 12                      |
 
 | Layout | File                                | Known            | Unknown    |
 | ------ | ----------------------------------- | ---------------- | ---------- |

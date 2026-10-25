@@ -13,12 +13,12 @@ up to the string table.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes   | Records        | Row bytes |
-| ------ | -------------- | ------- | ---------------- | ------- | -------------- | --------- |
-| 2      | 3464 and later | 3483    | `gameoption.bss` | 123,989 | 1 String Table | 1,546     |
-| 1      | 1784           | 1784    | `gameoption.bss` | 329,469 | 1 String Table | 19,847    |
+| Layout | Clients        | File             | Bytes   | Records        | Row bytes |
+| ------ | -------------- | ---------------- | ------- | -------------- | --------- |
+| 2      | 3464 and later | `gameoption.bss` | 123,989 | 1 String Table | 1,546     |
+| 1      | 1784           | `gameoption.bss` | 329,469 | 1 String Table | 19,847    |
 
 | Layout | File             | Known           | Unknown           |
 | ------ | ---------------- | --------------- | ----------------- |

@@ -20,12 +20,12 @@ u32 `skill_key_1` and `skill_key_2`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                              | Bytes | Records                         | Row bytes |
-| ------ | -------------- | ------- | --------------------------------- | ----- | ------------------------------- | --------- |
-| 2      | 3473 and later | 3483    | `siege2024rewardstaticstatus.bss` | 1,658 | 69 Reward, 15 Reward Set, 3 Row | 16        |
-| 1      | 2538 to 3464   | 3464    | `siege2024rewardstaticstatus.bss` | 806   | 63 Reward, 15 Reward Set, 3 Row | 12        |
+| Layout | Clients        | File                              | Bytes | Records                         | Row bytes |
+| ------ | -------------- | --------------------------------- | ----- | ------------------------------- | --------- |
+| 2      | 3473 and later | `siege2024rewardstaticstatus.bss` | 1,658 | 69 Reward, 15 Reward Set, 3 Row | 16        |
+| 1      | 2538 to 3464   | `siege2024rewardstaticstatus.bss` | 806   | 63 Reward, 15 Reward Set, 3 Row | 12        |
 
 | Layout | File                              | Known         | Unknown       |
 | ------ | --------------------------------- | ------------- | ------------- |

@@ -14,14 +14,14 @@ Ruins (`63`) and Glish Swamp (`37`). Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes | Records            | Row bytes |
-| ------ | -------------- | ------- | -------------------------------- | ----- | ------------------ | --------- |
-| 2      | 2726 and later | 3483    | `instancefieldreward.dbss`       | 154   | 6 Push Item, 2 Row | 12        |
-| 2      | 2726 and later | 3483    | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
-| 1      | 1346 to 2717   | 2717    | `instancefieldreward.dbss`       | 134   | 6 Push Item, 2 Row | 12        |
-| 1      | 1346 to 2717   | 2717    | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
+| Layout | Clients        | File                             | Bytes | Records            | Row bytes |
+| ------ | -------------- | -------------------------------- | ----- | ------------------ | --------- |
+| 2      | 2726 and later | `instancefieldreward.dbss`       | 154   | 6 Push Item, 2 Row | 12        |
+| 2      | 2726 and later | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
+| 1      | 1346 to 2717   | `instancefieldreward.dbss`       | 134   | 6 Push Item, 2 Row | 12        |
+| 1      | 1346 to 2717   | `instancefieldrewardoffset.dbss` | 24    | 2 Offset Row       | 10        |
 
 | Layout | File                             | Known         | Unknown      |
 | ------ | -------------------------------- | ------------- | ------------ |

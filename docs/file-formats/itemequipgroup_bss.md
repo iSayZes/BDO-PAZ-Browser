@@ -8,11 +8,11 @@ Equipment groups: each group key lists the item IDs of one kind of gear across i
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records  | Row bytes               |
-| ------ | -------------- | ------- | -------------------- | ----- | -------- | ----------------------- |
-| 1      | 1500 and later | 3483    | `itemequipgroup.bss` | 5,784 | 61 Group | 8 to 176, 94 on average |
+| Layout | Clients        | File                 | Bytes | Records  | Row bytes               |
+| ------ | -------------- | -------------------- | ----- | -------- | ----------------------- |
+| 1      | 1500 and later | `itemequipgroup.bss` | 5,784 | 61 Group | 8 to 176, 94 on average |
 
 | Layout | File                 | Known            | Unknown    |
 | ------ | -------------------- | ---------------- | ---------- |

@@ -10,11 +10,11 @@ rotation. The world map draws these models over the terrain.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                  | Bytes  | Records | Row bytes               |
-| ------ | -------------- | ------- | ------------------------------------- | ------ | ------- | ----------------------- |
-| 1      | 2987 and later | 3483    | `worldmapdecostaticstatusmanager.bss` | 41,058 | 657 Row | 49 to 78, 62 on average |
+| Layout | Clients        | File                                  | Bytes  | Records | Row bytes               |
+| ------ | -------------- | ------------------------------------- | ------ | ------- | ----------------------- |
+| 1      | 2987 and later | `worldmapdecostaticstatusmanager.bss` | 41,058 | 657 Row | 49 to 78, 62 on average |
 
 | Layout | File                                  | Known            | Unknown        |
 | ------ | ------------------------------------- | ---------------- | -------------- |

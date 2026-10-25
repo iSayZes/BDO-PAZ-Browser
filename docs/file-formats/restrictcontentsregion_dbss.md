@@ -16,14 +16,14 @@ where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ----------------------------------- | ----- | ------------- | --------- |
-| 2      | 1794 and later | 3483    | `restrictcontentsregion.dbss`       | 628   | 48 Row        | 13        |
-| 2      | 1794 and later | 3483    | `restrictcontentsregionoffset.dbss` | 484   | 48 Offset Row | 10        |
-| 1      | 1602 to 1790   | 1790    | `restrictcontentsregion.dbss`       | 292   | 24 Row        | 12        |
-| 1      | 1602 to 1790   | 1790    | `restrictcontentsregionoffset.dbss` | 244   | 24 Offset Row | 10        |
+| Layout | Clients        | File                                | Bytes | Records       | Row bytes |
+| ------ | -------------- | ----------------------------------- | ----- | ------------- | --------- |
+| 2      | 1794 and later | `restrictcontentsregion.dbss`       | 628   | 48 Row        | 13        |
+| 2      | 1794 and later | `restrictcontentsregionoffset.dbss` | 484   | 48 Offset Row | 10        |
+| 1      | 1602 to 1790   | `restrictcontentsregion.dbss`       | 292   | 24 Row        | 12        |
+| 1      | 1602 to 1790   | `restrictcontentsregionoffset.dbss` | 244   | 24 Offset Row | 10        |
 
 | Layout | File                                | Known          | Unknown     |
 | ------ | ----------------------------------- | -------------- | ----------- |

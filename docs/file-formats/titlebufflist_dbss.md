@@ -8,12 +8,12 @@ Stores the title collection bonus/effect list shown in-game under **Title Effect
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes | Records       | Row bytes                  |
-| ------ | -------------- | ------- | -------------------------- | ----- | ------------- | -------------------------- |
-| 1      | 1250 and later | 3483    | `titlebufflist.dbss`       | 5,972 | 18 Block      | 140 to 410, 332 on average |
-| 1      | 1250 and later | 3483    | `titlebufflistoffset.dbss` | 220   | 18 Offset Row | 12                         |
+| Layout | Clients        | File                       | Bytes | Records       | Row bytes                  |
+| ------ | -------------- | -------------------------- | ----- | ------------- | -------------------------- |
+| 1      | 1250 and later | `titlebufflist.dbss`       | 5,972 | 18 Block      | 140 to 410, 332 on average |
+| 1      | 1250 and later | `titlebufflistoffset.dbss` | 220   | 18 Offset Row | 12                         |
 
 | Layout | File                       | Known           | Unknown      |
 | ------ | -------------------------- | --------------- | ------------ |

@@ -11,11 +11,11 @@ quiz window sends the answer with `ToClient_DoQuizAction(selectAnswer)`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | ----- | ------- | --------- |
-| 1      | 1674 and later | 3483    | `quizactionstaticstatus.bss` | 62    | 2 Row   | 21        |
+| Layout | Clients        | File                         | Bytes | Records | Row bytes |
+| ------ | -------------- | ---------------------------- | ----- | ------- | --------- |
+| 1      | 1674 and later | `quizactionstaticstatus.bss` | 62    | 2 Row   | 21        |
 
 | Layout | File                         | Known         | Unknown    |
 | ------ | ---------------------------- | ------------- | ---------- |

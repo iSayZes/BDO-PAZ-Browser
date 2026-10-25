@@ -15,11 +15,11 @@ with no PABR magic.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                    | Bytes | Records                      | Row bytes |
-| ------ | -------------- | ------- | --------------------------------------- | ----- | ---------------------------- | --------- |
-| 1      | 1969 and later | 3483    | `instancefieldcommonlimitentertime.bss` | 5,750 | 232 Entry, 122 Group, 26 Row | 20        |
+| Layout | Clients        | File                                    | Bytes | Records                      | Row bytes |
+| ------ | -------------- | --------------------------------------- | ----- | ---------------------------- | --------- |
+| 1      | 1969 and later | `instancefieldcommonlimitentertime.bss` | 5,750 | 232 Entry, 122 Group, 26 Row | 20        |
 
 | Layout | File                                    | Known         | Unknown         |
 | ------ | --------------------------------------- | ------------- | --------------- |

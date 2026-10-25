@@ -14,12 +14,12 @@ Same layout as [`uiguildskilltreelayout.bss`](uiguildskilltreelayout_bss.md), re
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File                          | Bytes | Records | Row bytes |
-| ------ | ------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 2      | 805 and later | 3483    | `uifusionskilltreelayout.bss` | 64    | 10 Cell | 4         |
-| 1      | 485 to 794    | 794     | `uifusionskilltreelayout.bss` | 32    | 6 Cell  | 4         |
+| Layout | Clients       | File                          | Bytes | Records | Row bytes |
+| ------ | ------------- | ----------------------------- | ----- | ------- | --------- |
+| 2      | 805 and later | `uifusionskilltreelayout.bss` | 64    | 10 Cell | 4         |
+| 1      | 485 to 794    | `uifusionskilltreelayout.bss` | 32    | 6 Cell  | 4         |
 
 | Layout | File                          | Known         | Unknown    |
 | ------ | ----------------------------- | ------------- | ---------- |

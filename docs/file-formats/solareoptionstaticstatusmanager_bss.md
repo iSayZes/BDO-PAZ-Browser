@@ -17,14 +17,14 @@ class types have weapon presets.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                  | Bytes  | Records                                                                             | Row bytes              |
-| ------ | -------------- | ------- | ------------------------------------- | ------ | ----------------------------------------------------------------------------------- | ---------------------- |
-| 4      | 3473 and later | 3483    | `solareoptionstaticstatusmanager.bss` | 17,773 | 333 List Item, 432 Item List, 48 Tier, 32 Group, 4 Mode, 132 Preset Item, 48 Preset | 8 to 40, 20 on average |
-| 3      | 3412 to 3458   | 3458    | `solareoptionstaticstatusmanager.bss` | 14,169 | 144 Item Block, 48 Tier, 32 Group, 4 Mode, 132 Preset Item, 48 Preset               | 36                     |
-| 2      | 3381 to 3402   | 3402    | `solareoptionstaticstatusmanager.bss` | 14,129 | 144 Item Block, 48 Tier, 32 Group, 4 Mode, 132 Preset Item, 48 Preset               | 36                     |
-| 1      | 3302 to 3356   | 3356    | `solareoptionstaticstatusmanager.bss` | 13,846 | 144 Item Block, 48 Tier, 32 Group, 4 Mode, 129 Preset Item, 38 Preset               | 36                     |
+| Layout | Clients        | File                                  | Bytes  | Records                                                                             | Row bytes              |
+| ------ | -------------- | ------------------------------------- | ------ | ----------------------------------------------------------------------------------- | ---------------------- |
+| 4      | 3473 and later | `solareoptionstaticstatusmanager.bss` | 17,773 | 333 List Item, 432 Item List, 48 Tier, 32 Group, 4 Mode, 132 Preset Item, 48 Preset | 8 to 40, 20 on average |
+| 3      | 3412 to 3458   | `solareoptionstaticstatusmanager.bss` | 14,169 | 144 Item Block, 48 Tier, 32 Group, 4 Mode, 132 Preset Item, 48 Preset               | 36                     |
+| 2      | 3381 to 3402   | `solareoptionstaticstatusmanager.bss` | 14,129 | 144 Item Block, 48 Tier, 32 Group, 4 Mode, 132 Preset Item, 48 Preset               | 36                     |
+| 1      | 3302 to 3356   | `solareoptionstaticstatusmanager.bss` | 13,846 | 144 Item Block, 48 Tier, 32 Group, 4 Mode, 129 Preset Item, 38 Preset               | 36                     |
 
 | Layout | File                                  | Known            | Unknown         |
 | ------ | ------------------------------------- | ---------------- | --------------- |

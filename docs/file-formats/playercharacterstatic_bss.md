@@ -14,11 +14,11 @@ to `528` and `536`, and the 37 keys `39831` to `39867` named `집사 PC-<class>`
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                        | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | --------------------------- | ----- | -------------- | --------- |
-| 1      | 1319 and later | 3483    | `playercharacterstatic.bss` | 232   | 1 String Table | 4         |
+| Layout | Clients        | File                        | Bytes | Records        | Row bytes |
+| ------ | -------------- | --------------------------- | ----- | -------------- | --------- |
+| 1      | 1319 and later | `playercharacterstatic.bss` | 232   | 1 String Table | 4         |
 
 | Layout | File                        | Known          | Unknown    |
 | ------ | --------------------------- | -------------- | ---------- |

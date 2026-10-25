@@ -11,11 +11,11 @@ on every client checked (1485 to 3474). No field is named yet.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ----- | -------------- | --------- |
-| 1      | 1239 and later | 3483    | `employeeloyalismitemetc.bss` | 32    | 1 String Table | 4         |
+| Layout | Clients        | File                          | Bytes | Records        | Row bytes |
+| ------ | -------------- | ----------------------------- | ----- | -------------- | --------- |
+| 1      | 1239 and later | `employeeloyalismitemetc.bss` | 32    | 1 String Table | 4         |
 
 | Layout | File                          | Known        | Unknown      |
 | ------ | ----------------------------- | ------------ | ------------ |

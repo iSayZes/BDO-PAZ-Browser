@@ -8,12 +8,12 @@ Defines pet action records keyed by action ID. Each record stores the Korean act
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records          | Row bytes                  |
-| ------ | -------------- | ------- | ---------------------- | ----- | ---------------- | -------------------------- |
-| 1      | 1346 and later | 3483    | `petaction.dbss`       | 1,498 | 10 Record        | 146 to 154, 150 on average |
-| 1      | 1346 and later | 3483    | `petactionoffset.dbss` | 124   | 10 Offset Record | 12                         |
+| Layout | Clients        | File                   | Bytes | Records          | Row bytes                  |
+| ------ | -------------- | ---------------------- | ----- | ---------------- | -------------------------- |
+| 1      | 1346 and later | `petaction.dbss`       | 1,498 | 10 Record        | 146 to 154, 150 on average |
+| 1      | 1346 and later | `petactionoffset.dbss` | 124   | 10 Offset Record | 12                         |
 
 | Layout | File                   | Known           | Unknown       |
 | ------ | ---------------------- | --------------- | ------------- |

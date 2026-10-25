@@ -14,14 +14,14 @@ where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes   | Records                     | Row bytes |
-| ------ | -------------- | ------- | ----------------------- | ------- | --------------------------- | --------- |
-| 2      | 2923 and later | 3483    | `guildquest.dbss`       | 244,538 | 999 Reward Entry, 140 Row   | 178       |
-| 2      | 2923 and later | 3483    | `guildquestoffset.dbss` | 1,684   | 140 Offset Row              | 12        |
-| 1      | 1598 to 2545   | 2545    | `guildquest.dbss`       | 742,504 | 2,914 Reward Entry, 390 Row | 188       |
-| 1      | 1598 to 2545   | 2545    | `guildquestoffset.dbss` | 4,684   | 390 Offset Row              | 12        |
+| Layout | Clients        | File                    | Bytes   | Records                     | Row bytes |
+| ------ | -------------- | ----------------------- | ------- | --------------------------- | --------- |
+| 2      | 2923 and later | `guildquest.dbss`       | 244,538 | 999 Reward Entry, 140 Row   | 178       |
+| 2      | 2923 and later | `guildquestoffset.dbss` | 1,684   | 140 Offset Row              | 12        |
+| 1      | 1598 to 2545   | `guildquest.dbss`       | 742,504 | 2,914 Reward Entry, 390 Row | 188       |
+| 1      | 1598 to 2545   | `guildquestoffset.dbss` | 4,684   | 390 Offset Row              | 12        |
 
 | Layout | File                    | Known             | Unknown           |
 | ------ | ----------------------- | ----------------- | ----------------- |

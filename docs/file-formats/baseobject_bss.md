@@ -17,12 +17,12 @@ every character ID here.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes     | Records                                              | Row bytes |
-| ------ | -------------- | ------- | ---------------- | --------- | ---------------------------------------------------- | --------- |
-| 2      | 1762 and later | 3483    | `baseobject.bss` | 4,762,336 | 5,131 Row, 28,202 Face, 2,321 Hull, 1,079 Hull Layer | 140       |
-| 1      | 1333 to 1759   | 1759    | `baseobject.bss` | 4,060,119 | 3,461 Row, 25,082 Face, 2,063 Hull, 978 Hull Layer   | 140       |
+| Layout | Clients        | File             | Bytes     | Records                                              | Row bytes |
+| ------ | -------------- | ---------------- | --------- | ---------------------------------------------------- | --------- |
+| 2      | 1762 and later | `baseobject.bss` | 4,762,336 | 5,131 Row, 28,202 Face, 2,321 Hull, 1,079 Hull Layer | 140       |
+| 1      | 1333 to 1759   | `baseobject.bss` | 4,060,119 | 3,461 Row, 25,082 Face, 2,063 Hull, 978 Hull Layer   | 140       |
 
 | Layout | File             | Known               | Unknown           |
 | ------ | ---------------- | ------------------- | ----------------- |

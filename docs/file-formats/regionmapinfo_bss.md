@@ -16,12 +16,12 @@ of the developers' `RegionMap_Table` sheet (see
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File                | Bytes | Records | Row bytes               |
-| ------ | ------------- | ------- | ------------------- | ----- | ------- | ----------------------- |
-| 2      | 805 and later | 3483    | `regionmapinfo.bss` | 896   | 13 Row  | 25                      |
-| 1      | 435 to 794    | 794     | `regionmapinfo.bss` | 240   | 4 Row   | 53 to 67, 59 on average |
+| Layout | Clients       | File                | Bytes | Records | Row bytes               |
+| ------ | ------------- | ------------------- | ----- | ------- | ----------------------- |
+| 2      | 805 and later | `regionmapinfo.bss` | 896   | 13 Row  | 25                      |
+| 1      | 435 to 794    | `regionmapinfo.bss` | 240   | 4 Row   | 53 to 67, 59 on average |
 
 | Layout | File                | Known          | Unknown    |
 | ------ | ------------------- | -------------- | ---------- |

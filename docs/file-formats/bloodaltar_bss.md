@@ -17,12 +17,12 @@ Illusion (`980040 + N`) and Combat Secret Book (M) (`890118`).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes | Records                   | Row bytes |
-| ------ | -------------- | ------- | ---------------- | ----- | ------------------------- | --------- |
-| 2      | 3473 and later | 3483    | `bloodaltar.bss` | 3,363 | 72 Reward Entry, 24 Stage | 16        |
-| 1      | 3283 to 3464   | 3464    | `bloodaltar.bss` | 2,211 | 24 Stage                  | 40        |
+| Layout | Clients        | File             | Bytes | Records                   | Row bytes |
+| ------ | -------------- | ---------------- | ----- | ------------------------- | --------- |
+| 2      | 3473 and later | `bloodaltar.bss` | 3,363 | 72 Reward Entry, 24 Stage | 16        |
+| 1      | 3283 to 3464   | `bloodaltar.bss` | 2,211 | 24 Stage                  | 40        |
 
 | Layout | File             | Known           | Unknown      |
 | ------ | ---------------- | --------------- | ------------ |

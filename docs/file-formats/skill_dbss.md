@@ -12,16 +12,16 @@ the skill names its buffs.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes     | Records                            | Row bytes                    |
-| ------ | -------------- | ------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
-| 3      | 3464 and later | 3483    | `skill.dbss`       | 9,781,356 | 30,547 Skill Record, 30,547 Record | 210 to 1,540, 316 on average |
-| 3      | 3464 and later | 3483    | `skilloffset.dbss` | 366,584   | 30,547 Index Row                   | 12                           |
-| 2      | 3242 to 3458   | 3458    | `skill.dbss`       | 9,128,941 | 30,424 Skill Record, 30,424 Record | 190 to 1,520, 296 on average |
-| 2      | 3242 to 3458   | 3458    | `skilloffset.dbss` | 365,108   | 30,424 Index Row                   | 12                           |
-| 1      | 1481 to 2243   | 2243    | `skill.dbss`       | 7,997,606 | 25,996 Skill Record, 25,996 Record | 190 to 1,320, 304 on average |
-| 1      | 1481 to 2243   | 2243    | `skilloffset.dbss` | 311,972   | 25,996 Index Row                   | 12                           |
+| Layout | Clients        | File               | Bytes     | Records                            | Row bytes                    |
+| ------ | -------------- | ------------------ | --------- | ---------------------------------- | ---------------------------- |
+| 3      | 3464 and later | `skill.dbss`       | 9,781,356 | 30,547 Skill Record, 30,547 Record | 210 to 1,540, 316 on average |
+| 3      | 3464 and later | `skilloffset.dbss` | 366,584   | 30,547 Index Row                   | 12                           |
+| 2      | 3242 to 3458   | `skill.dbss`       | 9,128,941 | 30,424 Skill Record, 30,424 Record | 190 to 1,520, 296 on average |
+| 2      | 3242 to 3458   | `skilloffset.dbss` | 365,108   | 30,424 Index Row                   | 12                           |
+| 1      | 1481 to 2243   | `skill.dbss`       | 7,997,606 | 25,996 Skill Record, 25,996 Record | 190 to 1,320, 304 on average |
+| 1      | 1481 to 2243   | `skilloffset.dbss` | 311,972   | 25,996 Index Row                   | 12                           |
 
 | Layout | File               | Known               | Unknown          |
 | ------ | ------------------ | ------------------- | ---------------- |

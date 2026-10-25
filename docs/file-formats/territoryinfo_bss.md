@@ -12,19 +12,19 @@ ID, so the English territory and nation names come from that type.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records          | Row bytes                  |
-| ------ | -------------- | ------- | ------------------- | ----- | ---------------- | -------------------------- |
-| 9      | 2726 and later | 3483    | `territoryinfo.bss` | 4,730 | 14 Territory Row | 88 to 92, 89 on average    |
-| 8      | 2575 to 2717   | 2717    | `territoryinfo.bss` | 4,067 | 12 Territory Row | 88 to 90, 88 on average    |
-| 7      | 2474 to 2567   | 2567    | `territoryinfo.bss` | 4,203 | 12 Territory Row | 96 to 108, 100 on average  |
-| 6      | 1276 to 2468   | 2468    | `territoryinfo.bss` | 4,491 | 12 Territory Row | 120 to 132, 124 on average |
-| 5      | 805 to 1267    | 1267    | `territoryinfo.bss` | 3,218 | 9 Territory Row  | 116 to 136, 129 on average |
-| 4      | 723 to 794     | 794     | `territoryinfo.bss` | 4,168 | 8 Territory Row  | 480 to 542, 520 on average |
-| 3      | 526 to 711     | 711     | `territoryinfo.bss` | 3,976 | 8 Territory Row  | 456 to 518, 496 on average |
-| 2      | 472 to 521     | 521     | `territoryinfo.bss` | 3,138 | 7 Territory Row  | 434 to 456, 448 on average |
-| 1      | 435 to 466     | 466     | `territoryinfo.bss` | 2,986 | 7 Territory Row  | 412 to 438, 426 on average |
+| Layout | Clients        | File                | Bytes | Records          | Row bytes                  |
+| ------ | -------------- | ------------------- | ----- | ---------------- | -------------------------- |
+| 9      | 2726 and later | `territoryinfo.bss` | 4,730 | 14 Territory Row | 88 to 92, 89 on average    |
+| 8      | 2575 to 2717   | `territoryinfo.bss` | 4,067 | 12 Territory Row | 88 to 90, 88 on average    |
+| 7      | 2474 to 2567   | `territoryinfo.bss` | 4,203 | 12 Territory Row | 96 to 108, 100 on average  |
+| 6      | 1276 to 2468   | `territoryinfo.bss` | 4,491 | 12 Territory Row | 120 to 132, 124 on average |
+| 5      | 805 to 1267    | `territoryinfo.bss` | 3,218 | 9 Territory Row  | 116 to 136, 129 on average |
+| 4      | 723 to 794     | `territoryinfo.bss` | 4,168 | 8 Territory Row  | 480 to 542, 520 on average |
+| 3      | 526 to 711     | `territoryinfo.bss` | 3,976 | 8 Territory Row  | 456 to 518, 496 on average |
+| 2      | 472 to 521     | `territoryinfo.bss` | 3,138 | 7 Territory Row  | 434 to 456, 448 on average |
+| 1      | 435 to 466     | `territoryinfo.bss` | 2,986 | 7 Territory Row  | 412 to 438, 426 on average |
 
 | Layout | File                | Known            | Unknown     |
 | ------ | ------------------- | ---------------- | ----------- |

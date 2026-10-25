@@ -13,12 +13,12 @@ and the fallback without LOC.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes     | Records          | Row bytes                      |
-| ------ | -------------- | ------- | --------------------- | --------- | ---------------- | ------------------------------ |
-| 1      | 1584 and later | 3483    | `textbind.dbss`       | 1,953,258 | 1,169 Record     | 64 to 12,716, 1,671 on average |
-| 1      | 1584 and later | 3483    | `textbindoffset.dbss` | 14,032    | 1,169 Offset Row | 12                             |
+| Layout | Clients        | File                  | Bytes     | Records          | Row bytes                      |
+| ------ | -------------- | --------------------- | --------- | ---------------- | ------------------------------ |
+| 1      | 1584 and later | `textbind.dbss`       | 1,953,258 | 1,169 Record     | 64 to 12,716, 1,671 on average |
+| 1      | 1584 and later | `textbindoffset.dbss` | 14,032    | 1,169 Offset Row | 12                             |
 
 | Layout | File                  | Known               | Unknown        |
 | ------ | --------------------- | ------------------- | -------------- |

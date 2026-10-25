@@ -14,12 +14,12 @@ column shows the zones that list a member (see Hunting Grounds Column).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records                                | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | -------------------------------------- | --------- |
-| 1      | 1346 and later | 3483    | `monstergroup.dbss`       | 1,402 | 185 Member, 36 Group Record, 36 Record | 6         |
-| 1      | 1346 and later | 3483    | `monstergroupoffset.dbss` | 364   | 36 Offset Row                          | 10        |
+| Layout | Clients        | File                      | Bytes | Records                                | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | -------------------------------------- | --------- |
+| 1      | 1346 and later | `monstergroup.dbss`       | 1,402 | 185 Member, 36 Group Record, 36 Record | 6         |
+| 1      | 1346 and later | `monstergroupoffset.dbss` | 364   | 36 Offset Row                          | 10        |
 
 | Layout | File                      | Known            | Unknown    |
 | ------ | ------------------------- | ---------------- | ---------- |

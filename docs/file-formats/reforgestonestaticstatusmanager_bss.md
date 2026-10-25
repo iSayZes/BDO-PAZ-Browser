@@ -16,11 +16,11 @@ Recovery), level 1 the HAN Reforge Stone of the same effect (`821260` to
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                  | Bytes | Records          | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------- | ----- | ---------------- | --------- |
-| 1      | 3412 and later | 3483    | `reforgestonestaticstatusmanager.bss` | 592   | 22 Level, 11 Row | 24        |
+| Layout | Clients        | File                                  | Bytes | Records          | Row bytes |
+| ------ | -------------- | ------------------------------------- | ----- | ---------------- | --------- |
+| 1      | 3412 and later | `reforgestonestaticstatusmanager.bss` | 592   | 22 Level, 11 Row | 24        |
 
 | Layout | File                                  | Known         | Unknown      |
 | ------ | ------------------------------------- | ------------- | ------------ |

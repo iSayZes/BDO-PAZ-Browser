@@ -15,12 +15,12 @@ whether the text is centered. The letter Lua
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File         | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------ | ----- | ------- | --------- |
-| 2      | 1504 and later | 3483    | `letter.bss` | 5,408 | 53 Row  | 13        |
-| 1      | 1524 to 1685   | 1685    | `letter.bss` | 1,651 | 13 Row  | 12        |
+| Layout | Clients        | File         | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------ | ----- | ------- | --------- |
+| 2      | 1504 and later | `letter.bss` | 5,408 | 53 Row  | 13        |
+| 1      | 1524 to 1685   | `letter.bss` | 1,651 | 13 Row  | 12        |
 
 | Layout | File         | Known            | Unknown    |
 | ------ | ------------ | ---------------- | ---------- |

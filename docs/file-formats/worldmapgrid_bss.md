@@ -28,17 +28,17 @@ by territory, see [Shared Region Group Values](#shared-region-group-values).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                       | Bytes     | Records        | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------------ | --------- | -------------- | --------- |
-| 1      | 805 and later  | 3483    | `worldmapfieldtypedata.bss`                | 4,317,200 | 1 String Table | 4         |
-| 1      | 1749 and later | 3483    | `worldmapmajorsiegeregiontypedata.bss`     | 4,317,200 | 1 String Table | 4         |
-| 1      | 1749 and later | 3483    | `worldmapmajorsiegeterritorytypedata.bss`  | 4,317,200 | 1 String Table | 4         |
-| 1      | 3111 and later | 3483    | `worldmapoceansiegeregionforconquest.bss`  | 4,317,200 | 1 String Table | 4         |
-| 1      | 1524 and later | 3483    | `worldmapsiegeregionforconquest.bss`       | 4,317,200 | 1 String Table | 4         |
-| 1      | 805 and later  | 3483    | `worldmapterritorytypedata.bss`            | 4,317,200 | 1 String Table | 4         |
-| 1      | 1524 and later | 3483    | `worldmapterritorytypedataforconquest.bss` | 4,317,200 | 1 String Table | 4         |
+| Layout | Clients        | File                                       | Bytes     | Records        | Row bytes |
+| ------ | -------------- | ------------------------------------------ | --------- | -------------- | --------- |
+| 1      | 805 and later  | `worldmapfieldtypedata.bss`                | 4,317,200 | 1 String Table | 4         |
+| 1      | 1749 and later | `worldmapmajorsiegeregiontypedata.bss`     | 4,317,200 | 1 String Table | 4         |
+| 1      | 1749 and later | `worldmapmajorsiegeterritorytypedata.bss`  | 4,317,200 | 1 String Table | 4         |
+| 1      | 3111 and later | `worldmapoceansiegeregionforconquest.bss`  | 4,317,200 | 1 String Table | 4         |
+| 1      | 1524 and later | `worldmapsiegeregionforconquest.bss`       | 4,317,200 | 1 String Table | 4         |
+| 1      | 805 and later  | `worldmapterritorytypedata.bss`            | 4,317,200 | 1 String Table | 4         |
+| 1      | 1524 and later | `worldmapterritorytypedataforconquest.bss` | 4,317,200 | 1 String Table | 4         |
 
 | Layout | File                                       | Known                | Unknown    |
 | ------ | ------------------------------------------ | -------------------- | ---------- |

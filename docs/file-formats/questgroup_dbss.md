@@ -8,11 +8,11 @@ Quest grouping table. Each record names a quest chain/group in Korean and lists 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes | Records                                | Row bytes |
-| ------ | -------------- | ------- | ----------------- | ----- | -------------------------------------- | --------- |
-| 1      | 1250 and later | 3483    | `questgroup.dbss` | 5,918 | 110 Quest Group Record, 474 Quest Link | 4         |
+| Layout | Clients        | File              | Bytes | Records                                | Row bytes |
+| ------ | -------------- | ----------------- | ----- | -------------------------------------- | --------- |
+| 1      | 1250 and later | `questgroup.dbss` | 5,918 | 110 Quest Group Record, 474 Quest Link | 4         |
 
 | Layout | File              | Known           | Unknown      |
 | ------ | ----------------- | --------------- | ------------ |

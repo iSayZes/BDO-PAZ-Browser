@@ -17,14 +17,14 @@ and counts the pigments with `ToClient_GetEquipItemEffectDyeItemCount`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                              | Bytes | Records            | Row bytes               |
-| ------ | -------------- | ------- | --------------------------------- | ----- | ------------------ | ----------------------- |
-| 4      | 3302 and later | 3483    | `itemeffectgroupstaticstatus.bss` | 606   | 20 Effect, 4 Group | 24 to 30, 28 on average |
-| 3      | 3186 to 3293   | 3293    | `itemeffectgroupstaticstatus.bss` | 292   | 11 Effect, 4 Group | 20 to 26, 23 on average |
-| 2      | 3169 to 3177   | 3177    | `itemeffectgroupstaticstatus.bss` | 168   | 11 Effect, 4 Group | 12                      |
-| 1      | 2503 to 3158   | 3158    | `itemeffectgroupstaticstatus.bss` | 438   | 22 Effect, 2 Group | 19                      |
+| Layout | Clients        | File                              | Bytes | Records            | Row bytes               |
+| ------ | -------------- | --------------------------------- | ----- | ------------------ | ----------------------- |
+| 4      | 3302 and later | `itemeffectgroupstaticstatus.bss` | 606   | 20 Effect, 4 Group | 24 to 30, 28 on average |
+| 3      | 3186 to 3293   | `itemeffectgroupstaticstatus.bss` | 292   | 11 Effect, 4 Group | 20 to 26, 23 on average |
+| 2      | 3169 to 3177   | `itemeffectgroupstaticstatus.bss` | 168   | 11 Effect, 4 Group | 12                      |
+| 1      | 2503 to 3158   | `itemeffectgroupstaticstatus.bss` | 438   | 22 Effect, 2 Group | 19                      |
 
 | Layout | File                              | Known         | Unknown       |
 | ------ | --------------------------------- | ------------- | ------------- |

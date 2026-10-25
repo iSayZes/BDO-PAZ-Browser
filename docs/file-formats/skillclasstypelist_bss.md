@@ -13,12 +13,12 @@ row.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes   | Records    | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ------- | ---------- | --------- |
-| 2      | 1267 and later | 3483    | `skillclasstypelist.bss` | 356,408 | 29,699 Row | 12        |
-| 1      | 1226 to 1261   | 1261    | `skillclasstypelist.bss` | 656,012 | 18,222 Row | 36        |
+| Layout | Clients        | File                     | Bytes   | Records    | Row bytes |
+| ------ | -------------- | ------------------------ | ------- | ---------- | --------- |
+| 2      | 1267 and later | `skillclasstypelist.bss` | 356,408 | 29,699 Row | 12        |
+| 1      | 1226 to 1261   | `skillclasstypelist.bss` | 656,012 | 18,222 Row | 36        |
 
 | Layout | File                     | Known             | Unknown           |
 | ------ | ------------------------ | ----------------- | ----------------- |

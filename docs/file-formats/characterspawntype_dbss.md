@@ -8,14 +8,14 @@ NPC role flags. Each record gives one character (NPC, monster, object) 46 indepe
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes     | Records             | Row bytes |
-| ------ | -------------- | ------- | ------------------------------- | --------- | ------------------- | --------- |
-| 2      | 2335 and later | 3483    | `characterspawntype.dbss`       | 1,173,364 | 24,445 Record       | 48        |
-| 2      | 2335 and later | 3483    | `characterspawntypeoffset.dbss` | 244,470   | 24,445 Index Record | 10        |
-| 1      | 1421 to 1892   | 1892    | `characterspawntype.dbss`       | 722,220   | 16,414 Record       | 44        |
-| 1      | 1421 to 1892   | 1892    | `characterspawntypeoffset.dbss` | 164,160   | 16,414 Index Record | 10        |
+| Layout | Clients        | File                            | Bytes     | Records             | Row bytes |
+| ------ | -------------- | ------------------------------- | --------- | ------------------- | --------- |
+| 2      | 2335 and later | `characterspawntype.dbss`       | 1,173,364 | 24,445 Record       | 48        |
+| 2      | 2335 and later | `characterspawntypeoffset.dbss` | 244,470   | 24,445 Index Record | 10        |
+| 1      | 1421 to 1892   | `characterspawntype.dbss`       | 722,220   | 16,414 Record       | 44        |
+| 1      | 1421 to 1892   | `characterspawntypeoffset.dbss` | 164,160   | 16,414 Index Record | 10        |
 
 | Layout | File                            | Known                | Unknown    |
 | ------ | ------------------------------- | -------------------- | ---------- |

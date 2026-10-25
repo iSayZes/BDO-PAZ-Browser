@@ -14,12 +14,12 @@ reads it with `ToClient_GetOceanSiegeTerritoryOptionStaticStatusWrapper`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes | Records               | Row bytes |
-| ------ | -------------- | ------- | ------------------------------- | ----- | --------------------- | --------- |
-| 2      | 3342 and later | 3483    | `oceansiegeterritoryoption.bss` | 196   | 1 Row, 1 String Table | 176       |
-| 1      | 3125 to 3335   | 3335    | `oceansiegeterritoryoption.bss` | 192   | 1 Row, 1 String Table | 172       |
+| Layout | Clients        | File                            | Bytes | Records               | Row bytes |
+| ------ | -------------- | ------------------------------- | ----- | --------------------- | --------- |
+| 2      | 3342 and later | `oceansiegeterritoryoption.bss` | 196   | 1 Row, 1 String Table | 176       |
+| 1      | 3125 to 3335   | `oceansiegeterritoryoption.bss` | 192   | 1 Row, 1 String Table | 172       |
 
 | Layout | File                            | Known        | Unknown       |
 | ------ | ------------------------------- | ------------ | ------------- |

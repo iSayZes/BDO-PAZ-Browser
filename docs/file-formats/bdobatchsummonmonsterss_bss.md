@@ -17,13 +17,13 @@ Scroll (`41595`), Manshaum Narc's Stone (`41619`), Ibedor's Scroll
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ----- | ------- | --------- |
-| 3      | 2935 and later | 3483    | `bdobatchsummonmonsterss.bss` | 700   | 20 Row  | 34        |
-| 2      | 1762 to 2932   | 2932    | `bdobatchsummonmonsterss.bss` | 780   | 20 Row  | 38        |
-| 1      | 1743 to 1759   | 1759    | `bdobatchsummonmonsterss.bss` | 214   | 5 Row   | 38        |
+| Layout | Clients        | File                          | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------------------- | ----- | ------- | --------- |
+| 3      | 2935 and later | `bdobatchsummonmonsterss.bss` | 700   | 20 Row  | 34        |
+| 2      | 1762 to 2932   | `bdobatchsummonmonsterss.bss` | 780   | 20 Row  | 38        |
+| 1      | 1743 to 1759   | `bdobatchsummonmonsterss.bss` | 214   | 5 Row   | 38        |
 
 | Layout | File                          | Known          | Unknown      |
 | ------ | ----------------------------- | -------------- | ------------ |

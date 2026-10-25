@@ -11,11 +11,11 @@ Epheria Galleon Ship License") and character `31020` Epheria Galleon.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ----------------------- | ----- | -------------- | --------- |
-| 1      | 2138 and later | 3483    | `servantchecktitle.bss` | 24    | 1 String Table | 4         |
+| Layout | Clients        | File                    | Bytes | Records        | Row bytes |
+| ------ | -------------- | ----------------------- | ----- | -------------- | --------- |
+| 1      | 2138 and later | `servantchecktitle.bss` | 24    | 1 String Table | 4         |
 
 | Layout | File                    | Known        | Unknown    |
 | ------ | ----------------------- | ------------ | ---------- |

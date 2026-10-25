@@ -10,12 +10,12 @@ Field names for several head fields and the `ExplorationNodeType` mapping follow
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes   | Records                                                        | Row bytes              |
-| ------ | -------------- | ------- | ----------------- | ------- | -------------------------------------------------------------- | ---------------------- |
-| 2      | 2130 and later | 3483    | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
-| 1      | 1351 to 2122   | 2122    | `exploration.bss` | 137,562 | 831 Node Head, 5,817 List, 831 Node Record                     | 4 to 196, 6 on average |
+| Layout | Clients        | File              | Bytes   | Records                                                        | Row bytes              |
+| ------ | -------------- | ----------------- | ------- | -------------------------------------------------------------- | ---------------------- |
+| 2      | 2130 and later | `exploration.bss` | 181,700 | 1,080 Node Head, 7,560 List, 1,080 Node Record, 118 Footer Row | 4 to 200, 6 on average |
+| 1      | 1351 to 2122   | `exploration.bss` | 137,562 | 831 Node Head, 5,817 List, 831 Node Record                     | 4 to 196, 6 on average |
 
 | Layout | File              | Known             | Unknown          |
 | ------ | ----------------- | ----------------- | ---------------- |

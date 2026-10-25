@@ -11,14 +11,14 @@ PABR row, each pointing at a URL template with `{branch}`, `{region}`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ---------------- | ----- | -------------- | --------- |
-| 4      | 1485 and later | 3483    | `sha_weburl.bss` | 438   | 1 String Table | 398       |
-| 3      | 1481           | 1481    | `sha_weburl.bss` | 391   | 1 String Table | 355       |
-| 2      | 1358 to 1474   | 1474    | `sha_weburl.bss` | 329   | 1 String Table | 297       |
-| 1      | 1355           | 1355    | `sha_weburl.bss` | 92    | 1 String Table | 76        |
+| Layout | Clients        | File             | Bytes | Records        | Row bytes |
+| ------ | -------------- | ---------------- | ----- | -------------- | --------- |
+| 4      | 1485 and later | `sha_weburl.bss` | 438   | 1 String Table | 398       |
+| 3      | 1481           | `sha_weburl.bss` | 391   | 1 String Table | 355       |
+| 2      | 1358 to 1474   | `sha_weburl.bss` | 329   | 1 String Table | 297       |
+| 1      | 1355           | `sha_weburl.bss` | 92    | 1 String Table | 76        |
 
 | Layout | File             | Known         | Unknown     |
 | ------ | ---------------- | ------------- | ----------- |

@@ -15,11 +15,11 @@ resistance (`128`) for Sailing. Lists `10` to `14` are empty.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                   | Bytes | Records           | Row bytes             |
-| ------ | -------------- | ------- | -------------------------------------- | ----- | ----------------- | --------------------- |
-| 1      | 3435 and later | 3483    | `lifeequipitemstaticstatusmanager.bss` | 128   | 15 Life Stat List | 4 to 12, 7 on average |
+| Layout | Clients        | File                                   | Bytes | Records           | Row bytes             |
+| ------ | -------------- | -------------------------------------- | ----- | ----------------- | --------------------- |
+| 1      | 3435 and later | `lifeequipitemstaticstatusmanager.bss` | 128   | 15 Life Stat List | 4 to 12, 7 on average |
 
 | Layout | File                                   | Known          | Unknown    |
 | ------ | -------------------------------------- | -------------- | ---------- |

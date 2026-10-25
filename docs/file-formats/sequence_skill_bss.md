@@ -16,12 +16,12 @@ Two files share the format:
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records                | Row bytes               |
-| ------ | -------------- | ------- | -------------------- | ----- | ---------------------- | ----------------------- |
-| 1      | 1914 and later | 3483    | `cutscene_skill.bss` | 4,955 | 93 Class Skills, 3 Row | 33 to 77, 53 on average |
-| 1      | 2192 and later | 3483    | `sequence_skill.bss` | 3,420 | 64 Class Skills, 2 Row | 33 to 77, 53 on average |
+| Layout | Clients        | File                 | Bytes | Records                | Row bytes               |
+| ------ | -------------- | -------------------- | ----- | ---------------------- | ----------------------- |
+| 1      | 1914 and later | `cutscene_skill.bss` | 4,955 | 93 Class Skills, 3 Row | 33 to 77, 53 on average |
+| 1      | 2192 and later | `sequence_skill.bss` | 3,420 | 64 Class Skills, 2 Row | 33 to 77, 53 on average |
 
 | Layout | File                 | Known            | Unknown    |
 | ------ | -------------------- | ---------------- | ---------- |

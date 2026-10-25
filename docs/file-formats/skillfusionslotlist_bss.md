@@ -12,11 +12,11 @@ Seismic Strike or Frenzied Spear); slots 3 and 4 are empty.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes  | Records                 | Row bytes               |
-| ------ | -------------- | ------- | ------------------------- | ------ | ----------------------- | ----------------------- |
-| 1      | 1246 and later | 3483    | `skillfusionslotlist.bss` | 41,204 | 505 Slot, 101 Class Row | 4 to 260, 82 on average |
+| Layout | Clients        | File                      | Bytes  | Records                 | Row bytes               |
+| ------ | -------------- | ------------------------- | ------ | ----------------------- | ----------------------- |
+| 1      | 1246 and later | `skillfusionslotlist.bss` | 41,204 | 505 Slot, 101 Class Row | 4 to 260, 82 on average |
 
 | Layout | File                      | Known             | Unknown    |
 | ------ | ------------------------- | ----------------- | ---------- |

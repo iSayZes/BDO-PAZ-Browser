@@ -13,12 +13,12 @@ plain PABR file holds the rows, then the string table.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | ------------------------ | ----- | ------- | ----------------------- |
-| 2      | 2855 and later | 3483    | `yachtgameboardinfo.bss` | 2,523 | 9 Row   | 54 to 90, 68 on average |
-| 1      | 1762 to 2849   | 2849    | `yachtgameboardinfo.bss` | 2,220 | 8 Row   | 53 to 89, 64 on average |
+| Layout | Clients        | File                     | Bytes | Records | Row bytes               |
+| ------ | -------------- | ------------------------ | ----- | ------- | ----------------------- |
+| 2      | 2855 and later | `yachtgameboardinfo.bss` | 2,523 | 9 Row   | 54 to 90, 68 on average |
+| 1      | 1762 to 2849   | `yachtgameboardinfo.bss` | 2,220 | 8 Row   | 53 to 89, 64 on average |
 
 | Layout | File                     | Known            | Unknown    |
 | ------ | ------------------------ | ---------------- | ---------- |

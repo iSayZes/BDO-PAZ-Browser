@@ -13,11 +13,11 @@ five ship types of `CppEnums.VehicleType` from `Type_Carrack` to
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File           | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | -------------- | ----- | ------- | ----------------------- |
-| 1      | 1239 and later | 3483    | `greatsea.bss` | 5,173 | 139 Row | 37 to 42, 37 on average |
+| Layout | Clients        | File           | Bytes | Records | Row bytes               |
+| ------ | -------------- | -------------- | ----- | ------- | ----------------------- |
+| 1      | 1239 and later | `greatsea.bss` | 5,173 | 139 Row | 37 to 42, 37 on average |
 
 | Layout | File           | Known           | Unknown       |
 | ------ | -------------- | --------------- | ------------- |

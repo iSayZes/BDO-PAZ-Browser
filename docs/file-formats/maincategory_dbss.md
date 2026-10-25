@@ -8,14 +8,14 @@
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records            | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ------------------ | --------- |
-| 2      | 2151 and later | 3483    | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
-| 2      | 2151 and later | 3483    | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
-| 1      | 1286 to 2147   | 2147    | `maincategory.dbss`       | 1,216 | 12 Category Record | 101       |
-| 1      | 1286 to 2147   | 2147    | `maincategoryoffset.dbss` | 124   | 12 Offset Record   | 10        |
+| Layout | Clients        | File                      | Bytes | Records            | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ------------------ | --------- |
+| 2      | 2151 and later | `maincategory.dbss`       | 1,534 | 15 Category Record | 102       |
+| 2      | 2151 and later | `maincategoryoffset.dbss` | 154   | 15 Offset Record   | 10        |
+| 1      | 1286 to 2147   | `maincategory.dbss`       | 1,216 | 12 Category Record | 101       |
+| 1      | 1286 to 2147   | `maincategoryoffset.dbss` | 124   | 12 Offset Record   | 10        |
 
 | Layout | File                      | Known            | Unknown      |
 | ------ | ------------------------- | ---------------- | ------------ |

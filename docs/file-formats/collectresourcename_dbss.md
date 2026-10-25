@@ -14,12 +14,12 @@ the model name.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes  | Records         | Row bytes               |
-| ------ | -------------- | ------- | -------------------------------- | ------ | --------------- | ----------------------- |
-| 1      | 1346 and later | 3483    | `collectresourcename.dbss`       | 52,109 | 1,112 Record    | 30 to 84, 47 on average |
-| 1      | 1346 and later | 3483    | `collectresourcenameoffset.dbss` | 13,348 | 1,112 Index Row | 12                      |
+| Layout | Clients        | File                             | Bytes  | Records         | Row bytes               |
+| ------ | -------------- | -------------------------------- | ------ | --------------- | ----------------------- |
+| 1      | 1346 and later | `collectresourcename.dbss`       | 52,109 | 1,112 Record    | 30 to 84, 47 on average |
+| 1      | 1346 and later | `collectresourcenameoffset.dbss` | 13,348 | 1,112 Index Row | 12                      |
 
 | Layout | File                             | Known             | Unknown    |
 | ------ | -------------------------------- | ----------------- | ---------- |

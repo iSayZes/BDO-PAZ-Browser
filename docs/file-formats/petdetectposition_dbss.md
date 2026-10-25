@@ -13,12 +13,12 @@ the source sheet. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes | Records      | Row bytes |
-| ------ | -------------- | ------- | ------------------------------ | ----- | ------------ | --------- |
-| 1      | 1261 and later | 3483    | `petdetectposition.dbss`       | 64    | 4 Row        | 15        |
-| 1      | 1261 and later | 3483    | `petdetectpositionoffset.dbss` | 44    | 4 Offset Row | 10        |
+| Layout | Clients        | File                           | Bytes | Records      | Row bytes |
+| ------ | -------------- | ------------------------------ | ----- | ------------ | --------- |
+| 1      | 1261 and later | `petdetectposition.dbss`       | 64    | 4 Row        | 15        |
+| 1      | 1261 and later | `petdetectpositionoffset.dbss` | 44    | 4 Offset Row | 10        |
 
 | Layout | File                           | Known         | Unknown    |
 | ------ | ------------------------------ | ------------- | ---------- |

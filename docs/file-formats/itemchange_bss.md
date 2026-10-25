@@ -13,12 +13,12 @@ makes.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File             | Bytes | Records | Row bytes |
-| ------ | ------------- | ------- | ---------------- | ----- | ------- | --------- |
-| 2      | 805 and later | 3483    | `itemchange.bss` | 6,548 | 408 Row | 16        |
-| 1      | 435 to 794    | 794     | `itemchange.bss` | 3,908 | 244 Row | 16        |
+| Layout | Clients       | File             | Bytes | Records | Row bytes |
+| ------ | ------------- | ---------------- | ----- | ------- | --------- |
+| 2      | 805 and later | `itemchange.bss` | 6,548 | 408 Row | 16        |
+| 1      | 435 to 794    | `itemchange.bss` | 3,908 | 244 Row | 16        |
 
 | Layout | File             | Known            | Unknown    |
 | ------ | ---------------- | ---------------- | ---------- |

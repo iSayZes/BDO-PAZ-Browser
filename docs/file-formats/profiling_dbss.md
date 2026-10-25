@@ -13,12 +13,12 @@ the file or a getter for it.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes  | Records         | Row bytes                   |
-| ------ | -------------- | ------- | ---------------------- | ------ | --------------- | --------------------------- |
-| 1      | 1280 and later | 3483    | `profiling.dbss`       | 23,948 | 75 Info, 27 Row | 66 to 1,766, 316 on average |
-| 1      | 1280 and later | 3483    | `profilingoffset.dbss` | 274    | 27 Offset Row   | 10                          |
+| Layout | Clients        | File                   | Bytes  | Records         | Row bytes                   |
+| ------ | -------------- | ---------------------- | ------ | --------------- | --------------------------- |
+| 1      | 1280 and later | `profiling.dbss`       | 23,948 | 75 Info, 27 Row | 66 to 1,766, 316 on average |
+| 1      | 1280 and later | `profilingoffset.dbss` | 274    | 27 Offset Row   | 10                          |
 
 | Layout | File                   | Known            | Unknown      |
 | ------ | ---------------------- | ---------------- | ------------ |

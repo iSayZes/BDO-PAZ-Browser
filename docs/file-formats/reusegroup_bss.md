@@ -14,12 +14,12 @@ not in key order: they run down in blocks of up to 16 keys (`175` to
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
-| 2      | 3242 and later | 3483    | `reusegroup.bss` | 910   | 178 Row | 5         |
-| 1      | 1187 to 3235   | 3235    | `reusegroup.bss` | 562   | 180 Row | 3         |
+| Layout | Clients        | File             | Bytes | Records | Row bytes |
+| ------ | -------------- | ---------------- | ----- | ------- | --------- |
+| 2      | 3242 and later | `reusegroup.bss` | 910   | 178 Row | 5         |
+| 1      | 1187 to 3235   | `reusegroup.bss` | 562   | 180 Row | 3         |
 
 | Layout | File             | Known          | Unknown    |
 | ------ | ---------------- | -------------- | ---------- |

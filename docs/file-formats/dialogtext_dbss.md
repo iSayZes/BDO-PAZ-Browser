@@ -8,12 +8,12 @@ Stores named pools of NPC lines. A dialog greeting in `detail_dialog.dbss` can b
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes   | Records                                     | Row bytes                 |
-| ------ | -------------- | ------- | ----------------------- | ------- | ------------------------------------------- | ------------------------- |
-| 1      | 1346 and later | 3483    | `dialogtext.dbss`       | 614,336 | 3,645 Line, 1,043 Pool Record, 1,043 Record | 20 to 308, 153 on average |
-| 1      | 1346 and later | 3483    | `dialogtextoffset.dbss` | 12,520  | 1,043 Index Row                             | 12                        |
+| Layout | Clients        | File                    | Bytes   | Records                                     | Row bytes                 |
+| ------ | -------------- | ----------------------- | ------- | ------------------------------------------- | ------------------------- |
+| 1      | 1346 and later | `dialogtext.dbss`       | 614,336 | 3,645 Line, 1,043 Pool Record, 1,043 Record | 20 to 308, 153 on average |
+| 1      | 1346 and later | `dialogtextoffset.dbss` | 12,520  | 1,043 Index Row                             | 12                        |
 
 | Layout | File                    | Known             | Unknown        |
 | ------ | ----------------------- | ----------------- | -------------- |

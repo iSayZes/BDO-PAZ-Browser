@@ -17,11 +17,11 @@ mainCategoryValue:getCategoryNo(), subCategoryValue:getCategoryNo())` in
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records                    | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----- | -------------------------- | --------- |
-| 1      | 1280 and later | 3483    | `itemmarketcategory.bss` | 5,999 | 420 Category Value, 18 Row | 5         |
+| Layout | Clients        | File                     | Bytes | Records                    | Row bytes |
+| ------ | -------------- | ------------------------ | ----- | -------------------------- | --------- |
+| 1      | 1280 and later | `itemmarketcategory.bss` | 5,999 | 420 Category Value, 18 Row | 5         |
 
 | Layout | File                     | Known           | Unknown     |
 | ------ | ------------------------ | --------------- | ----------- |

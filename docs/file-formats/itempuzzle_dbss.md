@@ -13,12 +13,12 @@ file. Companion `itempuzzleoffset.dbss` lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes  | Records        | Row bytes |
-| ------ | -------------- | ------- | ----------------------- | ------ | -------------- | --------- |
-| 1      | 1280 and later | 3483    | `itempuzzle.dbss`       | 46,324 | 386 Row        | 120       |
-| 1      | 1280 and later | 3483    | `itempuzzleoffset.dbss` | 3,864  | 386 Offset Row | 10        |
+| Layout | Clients        | File                    | Bytes  | Records        | Row bytes |
+| ------ | -------------- | ----------------------- | ------ | -------------- | --------- |
+| 1      | 1280 and later | `itempuzzle.dbss`       | 46,324 | 386 Row        | 120       |
+| 1      | 1280 and later | `itempuzzleoffset.dbss` | 3,864  | 386 Offset Row | 10        |
 
 | Layout | File                    | Known             | Unknown    |
 | ------ | ----------------------- | ----------------- | ---------- |

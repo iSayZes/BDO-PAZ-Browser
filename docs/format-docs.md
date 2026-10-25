@@ -48,7 +48,7 @@ older than Layout 1, found later in an older client, becomes Layout 1 and
 the others move up by one; the doc check then rewrites Versions for them:
 `check_docs.py --version all` reads every client again (the layouts
 changed), drops a Sizes row whose
-Checked client now fits another layout and starts a range at the first
+newest client now fits another layout and starts a range at the first
 client that still fits its layout.
 
 - The newest layout is written in full and has a `### File Layout`.
@@ -239,7 +239,7 @@ walks to its last byte by. Three tables follow:
 
 | Table    | Rows                    | Columns                                                       |
 | -------- | ----------------------- | ------------------------------------------------------------- |
-| Sizes    | One per layout per file | Layout, Clients, Checked (the client the numbers come from), File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
+| Sizes    | One per layout per file | Layout, Clients, File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
 | Coverage | One per layout per file | Layout, File, Known and Unknown bytes over the whole file, every instance of every field counted |
 | Clients  | One per client read     | Client, Result: `Layout N`; `No documented layout` when the files are there but no layout of the doc reads them; `No file` when none of the doc's files is in that client's `.meta`; Checked against: the layouts hash the result was read against |
 
@@ -247,7 +247,9 @@ walks to its last byte by. Three tables follow:
   fits, and a layout's row stays once a client has fit it. The newest layout
   reads `<first client> and later`, an older one `<first> to <last>`.
 - Sizes and coverage come from the newest client checked for that layout;
-  an older client never overwrites them. `--version all` reads the newest
+  an older client never overwrites them. That client is the last of the
+  row's range, or for `<first client> and later` the newest Clients row
+  with that layout. `--version all` reads the newest
   client first: after a renumber the row a client used to give is dropped
   once that client is read again, before an older client's fresh row could
   merge into it and go with it.

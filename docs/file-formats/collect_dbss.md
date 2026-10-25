@@ -12,14 +12,14 @@ models to. `collectoffset.dbss` is the key-ordered index into it.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes  | Records        | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ------ | -------------- | --------- |
-| 2      | 2726 and later | 3483    | `collect.dbss`       | 48,556 | 714 Row        | 68        |
-| 2      | 2726 and later | 3483    | `collectoffset.dbss` | 7,144  | 714 Offset Row | 10        |
-| 1      | 1346 to 2039   | 2039    | `collect.dbss`       | 29,716 | 619 Row        | 48        |
-| 1      | 1346 to 2039   | 2039    | `collectoffset.dbss` | 6,194  | 619 Offset Row | 10        |
+| Layout | Clients        | File                 | Bytes  | Records        | Row bytes |
+| ------ | -------------- | -------------------- | ------ | -------------- | --------- |
+| 2      | 2726 and later | `collect.dbss`       | 48,556 | 714 Row        | 68        |
+| 2      | 2726 and later | `collectoffset.dbss` | 7,144  | 714 Offset Row | 10        |
+| 1      | 1346 to 2039   | `collect.dbss`       | 29,716 | 619 Row        | 48        |
+| 1      | 1346 to 2039   | `collectoffset.dbss` | 6,194  | 619 Offset Row | 10        |
 
 | Layout | File                 | Known             | Unknown         |
 | ------ | -------------------- | ----------------- | --------------- |

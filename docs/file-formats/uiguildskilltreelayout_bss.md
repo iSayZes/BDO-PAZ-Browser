@@ -20,12 +20,12 @@ without that file's class header.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File                         | Bytes | Records  | Row bytes |
-| ------ | ------------- | ------- | ---------------------------- | ----- | -------- | --------- |
-| 2      | 805 and later | 3483    | `uiguildskilltreelayout.bss` | 3,152 | 782 Cell | 4         |
-| 1      | 457 to 794    | 794     | `uiguildskilltreelayout.bss` | 1,844 | 459 Cell | 4         |
+| Layout | Clients       | File                         | Bytes | Records  | Row bytes |
+| ------ | ------------- | ---------------------------- | ----- | -------- | --------- |
+| 2      | 805 and later | `uiguildskilltreelayout.bss` | 3,152 | 782 Cell | 4         |
+| 1      | 457 to 794    | `uiguildskilltreelayout.bss` | 1,844 | 459 Cell | 4         |
 
 | Layout | File                         | Known            | Unknown    |
 | ------ | ---------------------------- | ---------------- | ---------- |

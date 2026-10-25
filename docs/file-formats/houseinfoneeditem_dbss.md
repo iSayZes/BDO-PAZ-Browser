@@ -13,12 +13,12 @@ item is Silver.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes | Records                        | Row bytes               |
-| ------ | -------------- | ------- | ------------------------------ | ----- | ------------------------------ | ----------------------- |
-| 1      | 1292 and later | 3483    | `houseinfoneeditem.dbss`       | 1,322 | 66 Level, 42 Need Item, 11 Row | 12 to 24, 20 on average |
-| 1      | 1292 and later | 3483    | `houseinfoneeditemoffset.dbss` | 114   | 11 Index Row                   | 10                      |
+| Layout | Clients        | File                           | Bytes | Records                        | Row bytes               |
+| ------ | -------------- | ------------------------------ | ----- | ------------------------------ | ----------------------- |
+| 1      | 1292 and later | `houseinfoneeditem.dbss`       | 1,322 | 66 Level, 42 Need Item, 11 Row | 12 to 24, 20 on average |
+| 1      | 1292 and later | `houseinfoneeditemoffset.dbss` | 114   | 11 Index Row                   | 10                      |
 
 | Layout | File                           | Known            | Unknown    |
 | ------ | ------------------------------ | ---------------- | ---------- |

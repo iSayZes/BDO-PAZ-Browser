@@ -21,13 +21,13 @@ with a Normal and a Hard difficulty each.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes  | Records                  | Row bytes               |
-| ------ | -------------- | ------- | -------------------------- | ------ | ------------------------ | ----------------------- |
-| 3      | 3473 and later | 3483    | `elementalmonsterstat.bss` | 10,311 | 104 Reward Item, 201 Row | 43 to 59, 51 on average |
-| 2      | 2726 to 3464   | 3464    | `elementalmonsterstat.bss` | 43,436 | 1,000 Row                | 43 to 47, 43 on average |
-| 1      | 2224 to 2606   | 2606    | `elementalmonsterstat.bss` | 38,138 | 993 Row                  | 38 to 42, 38 on average |
+| Layout | Clients        | File                       | Bytes  | Records                  | Row bytes               |
+| ------ | -------------- | -------------------------- | ------ | ------------------------ | ----------------------- |
+| 3      | 3473 and later | `elementalmonsterstat.bss` | 10,311 | 104 Reward Item, 201 Row | 43 to 59, 51 on average |
+| 2      | 2726 to 3464   | `elementalmonsterstat.bss` | 43,436 | 1,000 Row                | 43 to 47, 43 on average |
+| 1      | 2224 to 2606   | `elementalmonsterstat.bss` | 38,138 | 993 Row                  | 38 to 42, 38 on average |
 
 | Layout | File                       | Known             | Unknown    |
 | ------ | -------------------------- | ----------------- | ---------- |

@@ -12,14 +12,14 @@ sits. [`pcroommaid.bss`](pcroommaid_bss.md) lists the keys whose
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes | Records                    | Row bytes                |
-| ------ | -------------- | ------- | ----------------- | ----- | -------------------------- | ------------------------ |
-| 2      | 1636 and later | 3483    | `maid.dbss`       | 2,566 | 27 Row, 27 Record, 15 Form | 34 to 140, 93 on average |
-| 2      | 1636 and later | 3483    | `maidoffset.dbss` | 274   | 27 Offset Row              | 10                       |
-| 1      | 1346 to 1590   | 1590    | `maid.dbss`       | 1,536 | 9 Form, 17 Row, 17 Record  | 32 to 138, 88 on average |
-| 1      | 1346 to 1590   | 1590    | `maidoffset.dbss` | 174   | 17 Offset Row              | 10                       |
+| Layout | Clients        | File              | Bytes | Records                    | Row bytes                |
+| ------ | -------------- | ----------------- | ----- | -------------------------- | ------------------------ |
+| 2      | 1636 and later | `maid.dbss`       | 2,566 | 27 Row, 27 Record, 15 Form | 34 to 140, 93 on average |
+| 2      | 1636 and later | `maidoffset.dbss` | 274   | 27 Offset Row              | 10                       |
+| 1      | 1346 to 1590   | `maid.dbss`       | 1,536 | 9 Form, 17 Row, 17 Record  | 32 to 138, 88 on average |
+| 1      | 1346 to 1590   | `maidoffset.dbss` | 174   | 17 Offset Row              | 10                       |
 
 | Layout | File              | Known            | Unknown    |
 | ------ | ----------------- | ---------------- | ---------- |

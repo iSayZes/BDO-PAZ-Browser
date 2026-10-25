@@ -12,13 +12,13 @@ empty and the table with no entries.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes  | Records                        | Row bytes |
-| ------ | -------------- | ------- | ------------------------------ | ------ | ------------------------------ | --------- |
-| 3      | 3381 and later | 3483    | `instancedungeonskillinfo.bss` | 15,540 | 1,940 Skill List, 97 Class Row | 8         |
-| 2      | 2250 to 3373   | 3373    | `instancedungeonskillinfo.bss` | 13,940 | 1,740 Skill List, 87 Class Row | 8         |
-| 1      | 1598 to 2243   | 2243    | `instancedungeonskillinfo.bss` | 13,140 | 1,640 Skill List, 82 Class Row | 8         |
+| Layout | Clients        | File                           | Bytes  | Records                        | Row bytes |
+| ------ | -------------- | ------------------------------ | ------ | ------------------------------ | --------- |
+| 3      | 3381 and later | `instancedungeonskillinfo.bss` | 15,540 | 1,940 Skill List, 97 Class Row | 8         |
+| 2      | 2250 to 3373   | `instancedungeonskillinfo.bss` | 13,940 | 1,740 Skill List, 87 Class Row | 8         |
+| 1      | 1598 to 2243   | `instancedungeonskillinfo.bss` | 13,140 | 1,640 Skill List, 82 Class Row | 8         |
 
 | Layout | File                           | Known             | Unknown    |
 | ------ | ------------------------------ | ----------------- | ---------- |

@@ -12,12 +12,12 @@ Most of the zone flags and keys are named from two more sources (see Field Names
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes   | Records                                            | Row bytes |
-| ------ | -------------- | ------- | ---------------- | ------- | -------------------------------------------------- | --------- |
-| 2      | 2978 and later | 3483    | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
-| 1      | 1762 to 1838   | 1838    | `regioninfo.bss` | 555,972 | 1,063 Region Head, 1,063 Region Tail, 1,063 Region | 361       |
+| Layout | Clients        | File             | Bytes   | Records                                            | Row bytes |
+| ------ | -------------- | ---------------- | ------- | -------------------------------------------------- | --------- |
+| 2      | 2978 and later | `regioninfo.bss` | 643,669 | 1,595 Region Head, 1,595 Region Tail, 1,595 Region | 210       |
+| 1      | 1762 to 1838   | `regioninfo.bss` | 555,972 | 1,063 Region Head, 1,063 Region Tail, 1,063 Region | 361       |
 
 | Layout | File             | Known             | Unknown           |
 | ------ | ---------------- | ----------------- | ----------------- |

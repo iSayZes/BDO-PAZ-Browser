@@ -8,11 +8,11 @@ Lists, per world region, the town regions a character can be sent to from it by 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File                                | Bytes  | Records                  | Row bytes               |
-| ------ | ------------- | ------- | ----------------------------------- | ------ | ------------------------ | ----------------------- |
-| 1      | 805 and later | 3483    | `regioninfo_linkandcheckvalid2.bss` | 19,574 | 1,595 Region Link Record | 10 to 98, 12 on average |
+| Layout | Clients       | File                                | Bytes  | Records                  | Row bytes               |
+| ------ | ------------- | ----------------------------------- | ------ | ------------------------ | ----------------------- |
+| 1      | 805 and later | `regioninfo_linkandcheckvalid2.bss` | 19,574 | 1,595 Region Link Record | 10 to 98, 12 on average |
 
 | Layout | File                                | Known            | Unknown         |
 | ------ | ----------------------------------- | ---------------- | --------------- |

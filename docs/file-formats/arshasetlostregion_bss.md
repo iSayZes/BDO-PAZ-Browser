@@ -14,11 +14,11 @@ field debuff, -500 per second"). On client 3474 the file has 3 stages.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----- | ------- | --------- |
-| 1      | 1554 and later | 3483    | `arshasetlostregion.bss` | 110   | 3 Row   | 30        |
+| Layout | Clients        | File                     | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------------ | ----- | ------- | --------- |
+| 1      | 1554 and later | `arshasetlostregion.bss` | 110   | 3 Row   | 30        |
 
 | Layout | File                     | Known        | Unknown      |
 | ------ | ------------------------ | ------------ | ------------ |

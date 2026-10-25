@@ -12,12 +12,12 @@ another order: 865 on client 3482, 801 on client 1784. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes | Records      | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | ----- | ------------ | --------- |
-| 1      | 1346 and later | 3483    | `innstaticstatus.dbss`       | 1,740 | 1 Row        | 1,736     |
-| 1      | 1346 and later | 3483    | `innstaticstatusoffset.dbss` | 14    | 1 Offset Row | 10        |
+| Layout | Clients        | File                         | Bytes | Records      | Row bytes |
+| ------ | -------------- | ---------------------------- | ----- | ------------ | --------- |
+| 1      | 1346 and later | `innstaticstatus.dbss`       | 1,740 | 1 Row        | 1,736     |
+| 1      | 1346 and later | `innstaticstatusoffset.dbss` | 14    | 1 Offset Row | 10        |
 
 | Layout | File                         | Known            | Unknown    |
 | ------ | ---------------------------- | ---------------- | ---------- |

@@ -8,12 +8,12 @@ Item exchanges: one row per recipe a worker, a house, a guild house or a garden 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes     | Records                     | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | --------- | --------------------------- | --------- |
-| 2      | 2726 and later | 3483    | `itemexchangesource.bss` | 3,214,251 | 34,801 Material, 14,217 Row | 12        |
-| 1      | 1280 to 2717   | 2717    | `itemexchangesource.bss` | 2,466,879 | 28,343 Material, 11,188 Row | 12        |
+| Layout | Clients        | File                     | Bytes     | Records                     | Row bytes |
+| ------ | -------------- | ------------------------ | --------- | --------------------------- | --------- |
+| 2      | 2726 and later | `itemexchangesource.bss` | 3,214,251 | 34,801 Material, 14,217 Row | 12        |
+| 1      | 1280 to 2717   | `itemexchangesource.bss` | 2,466,879 | 28,343 Material, 11,188 Row | 12        |
 
 | Layout | File                     | Known               | Unknown             |
 | ------ | ------------------------ | ------------------- | ------------------- |

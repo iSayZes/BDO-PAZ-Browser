@@ -12,11 +12,11 @@ list of [`innstaticstatus.dbss`](innstaticstatus_dbss.md).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ------------------- | ----- | -------------- | --------- |
-| 1      | 1109 and later | 3483    | `householdlist.bss` | 1,750 | 1 String Table | 4         |
+| Layout | Clients        | File                | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------------------- | ----- | -------------- | --------- |
+| 1      | 1109 and later | `householdlist.bss` | 1,750 | 1 String Table | 4         |
 
 | Layout | File                | Known            | Unknown    |
 | ------ | ------------------- | ---------------- | ---------- |

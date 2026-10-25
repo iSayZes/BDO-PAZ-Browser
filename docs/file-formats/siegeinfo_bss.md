@@ -14,11 +14,11 @@ with a u8 and a u16 territory key in place of their last u8.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File            | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | --------------- | ----- | ------- | --------- |
-| 1      | 1749 and later | 3483    | `siegeinfo.bss` | 86    | 6 Row   | 11        |
+| Layout | Clients        | File            | Bytes | Records | Row bytes |
+| ------ | -------------- | --------------- | ----- | ------- | --------- |
+| 1      | 1749 and later | `siegeinfo.bss` | 86    | 6 Row   | 11        |
 
 | Layout | File            | Known        | Unknown      |
 | ------ | --------------- | ------------ | ------------ |

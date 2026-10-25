@@ -15,11 +15,11 @@ repeatable reward (`_seasonNoRewardRepeatable = 254` in the same Lua).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records | Row bytes                  |
-| ------ | -------------- | ------- | ------------------- | ----- | ------- | -------------------------- |
-| 1      | 1386 and later | 3483    | `seasonreward.dbss` | 1,749 | 15 Row  | 115 to 119, 116 on average |
+| Layout | Clients        | File                | Bytes | Records | Row bytes                  |
+| ------ | -------------- | ------------------- | ----- | ------- | -------------------------- |
+| 1      | 1386 and later | `seasonreward.dbss` | 1,749 | 15 Row  | 115 to 119, 116 on average |
 
 | Layout | File                | Known            | Unknown    |
 | ------ | ------------------- | ---------------- | ---------- |

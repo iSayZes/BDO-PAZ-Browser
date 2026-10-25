@@ -19,12 +19,12 @@ to `__eSPECIALPASS_MAX_COUNT - 1`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes  | Records                           | Row bytes |
-| ------ | -------------- | ------- | ----------------- | ------ | --------------------------------- | --------- |
-| 2      | 2844 and later | 3483    | `specialpass.bss` | 39,107 | 31 Row, 434 Step, 31 Reward Track | 34        |
-| 1      | 2059 to 2834   | 2834    | `specialpass.bss` | 16,481 | 13 Row, 182 Step, 13 Reward Track | 26        |
+| Layout | Clients        | File              | Bytes  | Records                           | Row bytes |
+| ------ | -------------- | ----------------- | ------ | --------------------------------- | --------- |
+| 2      | 2844 and later | `specialpass.bss` | 39,107 | 31 Row, 434 Step, 31 Reward Track | 34        |
+| 1      | 2059 to 2834   | `specialpass.bss` | 16,481 | 13 Row, 182 Step, 13 Reward Track | 26        |
 
 | Layout | File              | Known            | Unknown      |
 | ------ | ----------------- | ---------------- | ------------ |

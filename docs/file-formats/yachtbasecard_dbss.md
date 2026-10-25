@@ -11,12 +11,12 @@ its eye value (`1` to `6`) and the `UI_Artwork` picture the card shows.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | -------------------------- | ----- | ------------- | --------- |
-| 1      | 1680 and later | 3483    | `yachtbasecard.dbss`       | 1,924 | 30 Row        | 64        |
-| 1      | 1680 and later | 3483    | `yachtbasecardoffset.dbss` | 364   | 30 Offset Row | 12        |
+| Layout | Clients        | File                       | Bytes | Records       | Row bytes |
+| ------ | -------------- | -------------------------- | ----- | ------------- | --------- |
+| 1      | 1680 and later | `yachtbasecard.dbss`       | 1,924 | 30 Row        | 64        |
+| 1      | 1680 and later | `yachtbasecardoffset.dbss` | 364   | 30 Offset Row | 12        |
 
 | Layout | File                       | Known            | Unknown    |
 | ------ | -------------------------- | ---------------- | ---------- |

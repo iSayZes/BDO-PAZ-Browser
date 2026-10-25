@@ -13,14 +13,14 @@ Tamer's version (`checkClass(16)`, skill 15526 `말과교감_금수랑전용`).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records      | Row bytes                |
-| ------ | -------------- | ------- | ------------------------ | ----- | ------------ | ------------------------ |
-| 2      | 3464 and later | 3483    | `servantbuff.dbss`       | 384   | 4 Record     | 88 to 116, 95 on average |
-| 2      | 3464 and later | 3483    | `servantbuffoffset.dbss` | 52    | 4 Offset Row | 12                       |
-| 1      | 1346 to 3458   | 3458    | `servantbuff.dbss`       | 368   | 4 Record     | 84 to 112, 91 on average |
-| 1      | 1346 to 3458   | 3458    | `servantbuffoffset.dbss` | 44    | 4 Offset Row | 10                       |
+| Layout | Clients        | File                     | Bytes | Records      | Row bytes                |
+| ------ | -------------- | ------------------------ | ----- | ------------ | ------------------------ |
+| 2      | 3464 and later | `servantbuff.dbss`       | 384   | 4 Record     | 88 to 116, 95 on average |
+| 2      | 3464 and later | `servantbuffoffset.dbss` | 52    | 4 Offset Row | 12                       |
+| 1      | 1346 to 3458   | `servantbuff.dbss`       | 368   | 4 Record     | 84 to 112, 91 on average |
+| 1      | 1346 to 3458   | `servantbuffoffset.dbss` | 44    | 4 Offset Row | 10                       |
 
 | Layout | File                     | Known          | Unknown    |
 | ------ | ------------------------ | -------------- | ---------- |

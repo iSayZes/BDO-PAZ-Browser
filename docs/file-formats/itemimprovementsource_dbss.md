@@ -11,14 +11,14 @@ are what the stone reforms.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | --------- |
-| 2      | 2507 and later | 3483    | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
-| 2      | 2507 and later | 3483    | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
-| 1      | 1504 to 2503   | 2503    | `itemimprovementsource.dbss`       | 3,858 | 94 Record     | 41        |
-| 1      | 1504 to 2503   | 2503    | `itemimprovementsourceoffset.dbss` | 1,132 | 94 Index Row  | 12        |
+| Layout | Clients        | File                               | Bytes | Records       | Row bytes |
+| ------ | -------------- | ---------------------------------- | ----- | ------------- | --------- |
+| 2      | 2507 and later | `itemimprovementsource.dbss`       | 4,246 | 101 Record    | 42        |
+| 2      | 2507 and later | `itemimprovementsourceoffset.dbss` | 1,216 | 101 Index Row | 12        |
+| 1      | 1504 to 2503   | `itemimprovementsource.dbss`       | 3,858 | 94 Record     | 41        |
+| 1      | 1504 to 2503   | `itemimprovementsourceoffset.dbss` | 1,132 | 94 Index Row  | 12        |
 
 | Layout | File                               | Known            | Unknown    |
 | ------ | ---------------------------------- | ---------------- | ---------- |

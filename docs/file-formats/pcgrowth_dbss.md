@@ -10,14 +10,14 @@ The class type is the number `getClassType()` returns and the bit of a class mas
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes  | Records                                                                                            | Row bytes               |
-| ------ | -------------- | ------- | --------------------- | ------ | -------------------------------------------------------------------------------------------------- | ----------------------- |
-| 2      | 3314 and later | 3483    | `pcgrowth.dbss`       | 55,280 | 47 Setup Block, 47 Presentation Block, 250 Model Entry, 94 Model List, 47 Class Record, 47 Record  | 53 to 71, 58 on average |
-| 2      | 3314 and later | 3483    | `pcgrowthoffset.dbss` | 427    | 47 Offset Row                                                                                      | 9                       |
-| 1      | 1759 to 1862   | 1862    | `pcgrowth.dbss`       | 63,228 | 82 Setup Block, 82 Presentation Block, 164 Model List, 82 Class Record, 82 Record, 144 Model Entry | 4 to 196, 55 on average |
-| 1      | 1759 to 1862   | 1862    | `pcgrowthoffset.dbss` | 742    | 82 Offset Row                                                                                      | 9                       |
+| Layout | Clients        | File                  | Bytes  | Records                                                                                            | Row bytes               |
+| ------ | -------------- | --------------------- | ------ | -------------------------------------------------------------------------------------------------- | ----------------------- |
+| 2      | 3314 and later | `pcgrowth.dbss`       | 55,280 | 47 Setup Block, 47 Presentation Block, 250 Model Entry, 94 Model List, 47 Class Record, 47 Record  | 53 to 71, 58 on average |
+| 2      | 3314 and later | `pcgrowthoffset.dbss` | 427    | 47 Offset Row                                                                                      | 9                       |
+| 1      | 1759 to 1862   | `pcgrowth.dbss`       | 63,228 | 82 Setup Block, 82 Presentation Block, 164 Model List, 82 Class Record, 82 Record, 144 Model Entry | 4 to 196, 55 on average |
+| 1      | 1759 to 1862   | `pcgrowthoffset.dbss` | 742    | 82 Offset Row                                                                                      | 9                       |
 
 | Layout | File                  | Known            | Unknown         |
 | ------ | --------------------- | ---------------- | --------------- |

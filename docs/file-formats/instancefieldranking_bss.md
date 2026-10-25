@@ -14,11 +14,11 @@ sheet compiled into a PABR table, with the sheet's row for one service.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes | Records | Row bytes             |
-| ------ | -------------- | ------- | -------------------------- | ----- | ------- | --------------------- |
-| 1      | 1506 and later | 3483    | `instancefieldranking.bss` | 216   | 24 Row  | 6 to 10, 8 on average |
+| Layout | Clients        | File                       | Bytes | Records | Row bytes             |
+| ------ | -------------- | -------------------------- | ----- | ------- | --------------------- |
+| 1      | 1506 and later | `instancefieldranking.bss` | 216   | 24 Row  | 6 to 10, 8 on average |
 
 | Layout | File                       | Known          | Unknown    |
 | ------ | -------------------------- | -------------- | ---------- |

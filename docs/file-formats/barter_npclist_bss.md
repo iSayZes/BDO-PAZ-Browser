@@ -8,11 +8,11 @@ Lists the barter NPCs of the Great Ocean: one row per barter region (the island,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
-| 1      | 1239 and later | 3483    | `barter_npclist.bss` | 384   | 91 Row  | 4         |
+| Layout | Clients        | File                 | Bytes | Records | Row bytes |
+| ------ | -------------- | -------------------- | ----- | ------- | --------- |
+| 1      | 1239 and later | `barter_npclist.bss` | 384   | 91 Row  | 4         |
 
 | Layout | File                 | Known          | Unknown    |
 | ------ | -------------------- | -------------- | ---------- |

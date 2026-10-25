@@ -12,11 +12,11 @@ the action input values.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records                     | Row bytes               |
-| ------ | -------------- | ------- | -------------------- | ----- | --------------------------- | ----------------------- |
-| 1      | 1759 and later | 3483    | `classinputdata.bss` | 214   | 10 Class Entry, 5 Index Row | 13 to 21, 15 on average |
+| Layout | Clients        | File                 | Bytes | Records                     | Row bytes               |
+| ------ | -------------- | -------------------- | ----- | --------------------------- | ----------------------- |
+| 1      | 1759 and later | `classinputdata.bss` | 214   | 10 Class Entry, 5 Index Row | 13 to 21, 15 on average |
 
 | Layout | File                 | Known          | Unknown    |
 | ------ | -------------------- | -------------- | ---------- |

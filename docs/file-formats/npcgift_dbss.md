@@ -8,12 +8,12 @@ The gift items of the in-game "Give Gift" interaction: per NPC, the accepted gif
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records                      | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ----- | ---------------------------- | --------- |
-| 1      | 1346 and later | 3483    | `npcgift.dbss`       | 1,552 | 117 Gift Row, 24 Gift Record | 12        |
-| 1      | 1346 and later | 3483    | `npcgiftoffset.dbss` | 244   | 24 Offset Record             | 10        |
+| Layout | Clients        | File                 | Bytes | Records                      | Row bytes |
+| ------ | -------------- | -------------------- | ----- | ---------------------------- | --------- |
+| 1      | 1346 and later | `npcgift.dbss`       | 1,552 | 117 Gift Row, 24 Gift Record | 12        |
+| 1      | 1346 and later | `npcgiftoffset.dbss` | 244   | 24 Offset Record             | 10        |
 
 | Layout | File                 | Known            | Unknown      |
 | ------ | -------------------- | ---------------- | ------------ |

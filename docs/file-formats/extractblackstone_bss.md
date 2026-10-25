@@ -14,11 +14,11 @@ with the same arguments.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes | Records            | Row bytes |
-| ------ | -------------- | ------- | ----------------------- | ----- | ------------------ | --------- |
-| 1      | 3229 and later | 3483    | `extractblackstone.bss` | 2,308 | 108 Entry, 3 Group | 21        |
+| Layout | Clients        | File                    | Bytes | Records            | Row bytes |
+| ------ | -------------- | ----------------------- | ----- | ------------------ | --------- |
+| 1      | 3229 and later | `extractblackstone.bss` | 2,308 | 108 Entry, 3 Group | 21        |
 
 | Layout | File                    | Known         | Unknown         |
 | ------ | ----------------------- | ------------- | --------------- |

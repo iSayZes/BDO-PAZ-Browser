@@ -13,14 +13,14 @@ the stat body of [experience.bss](experience_bss.md) in its middle. On client
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes     | Records                                 | Row bytes |
-| ------ | -------------- | ------- | ------------------------------ | --------- | --------------------------------------- | --------- |
-| 2      | 3326 and later | 3483    | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
-| 2      | 3326 and later | 3483    | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
-| 1      | 1338 to 2907   | 2907    | `servantexperience.dbss`       | 7,631,446 | 55,359 Body String, 18,453 Level Record | 18        |
-| 1      | 1338 to 2907   | 2907    | `servantexperienceoffset.dbss` | 221,440   | 18,453 Index Row                        | 12        |
+| Layout | Clients        | File                           | Bytes     | Records                                 | Row bytes |
+| ------ | -------------- | ------------------------------ | --------- | --------------------------------------- | --------- |
+| 2      | 3326 and later | `servantexperience.dbss`       | 8,360,280 | 62,655 Body String, 20,885 Level Record | 18        |
+| 2      | 3326 and later | `servantexperienceoffset.dbss` | 250,624   | 20,885 Index Row                        | 12        |
+| 1      | 1338 to 2907   | `servantexperience.dbss`       | 7,631,446 | 55,359 Body String, 18,453 Level Record | 18        |
+| 1      | 1338 to 2907   | `servantexperienceoffset.dbss` | 221,440   | 18,453 Index Row                        | 12        |
 
 | Layout | File                           | Known               | Unknown             |
 | ------ | ------------------------------ | ------------------- | ------------------- |

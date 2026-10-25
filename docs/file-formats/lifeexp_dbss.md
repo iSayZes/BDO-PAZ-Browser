@@ -8,12 +8,12 @@ EXP tables of the life skills (Gathering, Fishing, Hunting, Cooking, Alchemy, Pr
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes  | Records                           | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ------ | --------------------------------- | --------- |
-| 1      | 1280 and later | 3483    | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
-| 1      | 1280 and later | 3483    | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
+| Layout | Clients        | File                 | Bytes  | Records                           | Row bytes |
+| ------ | -------------- | -------------------- | ------ | --------------------------------- | --------- |
+| 1      | 1280 and later | `lifeexp.dbss`       | 35,359 | 2,715 Level Row, 15 Block         | 13        |
+| 1      | 1280 and later | `lifeexpoffset.dbss` | 32,644 | 2,715 Offset Row, 15 Offset Block | 12        |
 
 | Layout | File                 | Known             | Unknown    |
 | ------ | -------------------- | ----------------- | ---------- |

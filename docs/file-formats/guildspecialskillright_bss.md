@@ -13,11 +13,11 @@ Blessing and Seawatch Pulse, each with grades `0`, `6`, `8` and `9` set.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | ----- | ------- | --------- |
-| 1      | 1421 and later | 3483    | `guildspecialskillright.bss` | 156   | 8 Row   | 17        |
+| Layout | Clients        | File                         | Bytes | Records | Row bytes |
+| ------ | -------------- | ---------------------------- | ----- | ------- | --------- |
+| 1      | 1421 and later | `guildspecialskillright.bss` | 156   | 8 Row   | 17        |
 
 | Layout | File                         | Known          | Unknown    |
 | ------ | ---------------------------- | -------------- | ---------- |

@@ -14,11 +14,11 @@ sanctums `21` and `22` have empty lists.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                      | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | ----------------------------------------- | ----- | ------- | ----------------------- |
-| 1      | 2575 and later | 3483    | `rosewarfiercebattlenodestaticstatus.bss` | 880   | 22 Row  | 34 to 44, 39 on average |
+| Layout | Clients        | File                                      | Bytes | Records | Row bytes               |
+| ------ | -------------- | ----------------------------------------- | ----- | ------- | ----------------------- |
+| 1      | 2575 and later | `rosewarfiercebattlenodestaticstatus.bss` | 880   | 22 Row  | 34 to 44, 39 on average |
 
 | Layout | File                                      | Known         | Unknown       |
 | ------ | ----------------------------------------- | ------------- | ------------- |

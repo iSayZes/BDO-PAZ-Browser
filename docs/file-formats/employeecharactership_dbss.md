@@ -14,14 +14,14 @@ Companion `employeecharactershipoffset.dbss` lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes                |
-| ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | ------------------------ |
-| 2      | 1340 and later | 3483    | `employeecharactership.dbss`       | 3,348 | 38 Ship Row   | 76 to 114, 88 on average |
-| 2      | 1340 and later | 3483    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
-| 1      | 1485 to 3133   | 3133    | `employeecharactership.dbss`       | 3,652 | 38 Ship Row   | 84 to 122, 96 on average |
-| 1      | 1485 to 3133   | 3133    | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
+| Layout | Clients        | File                               | Bytes | Records       | Row bytes                |
+| ------ | -------------- | ---------------------------------- | ----- | ------------- | ------------------------ |
+| 2      | 1340 and later | `employeecharactership.dbss`       | 3,348 | 38 Ship Row   | 76 to 114, 88 on average |
+| 2      | 1340 and later | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
+| 1      | 1485 to 3133   | `employeecharactership.dbss`       | 3,652 | 38 Ship Row   | 84 to 122, 96 on average |
+| 1      | 1485 to 3133   | `employeecharactershipoffset.dbss` | 384   | 38 Offset Row | 10                       |
 
 | Layout | File                               | Known           | Unknown       |
 | ------ | ---------------------------------- | --------------- | ------------- |

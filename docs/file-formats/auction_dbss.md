@@ -15,14 +15,14 @@ rows by auction number.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records          | Row bytes                |
-| ------ | -------------- | ------- | -------------------- | ----- | ---------------- | ------------------------ |
-| 2      | 2575 and later | 3483    | `auction.dbss`       | 2,142 | 36 Row, 37 House | 10                       |
-| 2      | 2575 and later | 3483    | `auctionoffset.dbss` | 380   | 36 Index Row     | 10                       |
-| 1      | 1276 to 2567   | 2567    | `auction.dbss`       | 2,714 | 40 Row, 37 House | 53 to 213, 68 on average |
-| 1      | 1276 to 2567   | 2567    | `auctionoffset.dbss` | 420   | 40 Index Row     | 10                       |
+| Layout | Clients        | File                 | Bytes | Records          | Row bytes                |
+| ------ | -------------- | -------------------- | ----- | ---------------- | ------------------------ |
+| 2      | 2575 and later | `auction.dbss`       | 2,142 | 36 Row, 37 House | 10                       |
+| 2      | 2575 and later | `auctionoffset.dbss` | 380   | 36 Index Row     | 10                       |
+| 1      | 1276 to 2567   | `auction.dbss`       | 2,714 | 40 Row, 37 House | 53 to 213, 68 on average |
+| 1      | 1276 to 2567   | `auctionoffset.dbss` | 420   | 40 Index Row     | 10                       |
 
 | Layout | File                 | Known           | Unknown       |
 | ------ | -------------------- | --------------- | ------------- |

@@ -13,11 +13,11 @@ Blessing Box` and `Choose Your Spotlight Dance Box`).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ------------------- | ----- | ------------- | --------- |
-| 1      | 1500 and later | 3483    | `guildgiveaway.bss` | 80    | 3 Item, 3 Row | 12        |
+| Layout | Clients        | File                | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------------------- | ----- | ------------- | --------- |
+| 1      | 1500 and later | `guildgiveaway.bss` | 80    | 3 Item, 3 Row | 12        |
 
 | Layout | File                | Known         | Unknown    |
 | ------ | ------------------- | ------------- | ---------- |

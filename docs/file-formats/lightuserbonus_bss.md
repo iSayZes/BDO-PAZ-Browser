@@ -12,13 +12,13 @@ a filled-slot count of `0`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File                 | Bytes | Records   | Row bytes |
-| ------ | ------------- | ------- | -------------------- | ----- | --------- | --------- |
-| 3      | 805 and later | 3483    | `lightuserbonus.bss` | 146   | 10 Reward | 12        |
-| 2      | 526 to 794    | 794     | `lightuserbonus.bss` | 130   | 10 Reward | 12        |
-| 1      | 435 to 521    | 521     | `lightuserbonus.bss` | 132   | 10 Reward | 12        |
+| Layout | Clients       | File                 | Bytes | Records   | Row bytes |
+| ------ | ------------- | -------------------- | ----- | --------- | --------- |
+| 3      | 805 and later | `lightuserbonus.bss` | 146   | 10 Reward | 12        |
+| 2      | 526 to 794    | `lightuserbonus.bss` | 130   | 10 Reward | 12        |
+| 1      | 435 to 521    | `lightuserbonus.bss` | 132   | 10 Reward | 12        |
 
 | Layout | File                 | Known          | Unknown    |
 | ------ | -------------------- | -------------- | ---------- |

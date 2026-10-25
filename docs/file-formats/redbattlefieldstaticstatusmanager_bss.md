@@ -13,13 +13,13 @@ reward Battlefield Token x10 and Skill EXP (Red Battlefield Lose).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                    | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | --------------------------------------- | ----- | ------------- | --------- |
-| 3      | 3275 and later | 3483    | `redbattlefieldstaticstatusmanager.bss` | 488   | 5 Reward Item | 12        |
-| 2      | 2819 to 3251   | 3251    | `redbattlefieldstaticstatusmanager.bss` | 198   | 4 Reward Item | 12        |
-| 1      | 2849 to 3229   | 3229    | `redbattlefieldstaticstatusmanager.bss` | 178   | 4 Reward Item | 12        |
+| Layout | Clients        | File                                    | Bytes | Records       | Row bytes |
+| ------ | -------------- | --------------------------------------- | ----- | ------------- | --------- |
+| 3      | 3275 and later | `redbattlefieldstaticstatusmanager.bss` | 488   | 5 Reward Item | 12        |
+| 2      | 2819 to 3251   | `redbattlefieldstaticstatusmanager.bss` | 198   | 4 Reward Item | 12        |
+| 1      | 2849 to 3229   | `redbattlefieldstaticstatusmanager.bss` | 178   | 4 Reward Item | 12        |
 
 | Layout | File                                    | Known         | Unknown       |
 | ------ | --------------------------------------- | ------------- | ------------- |

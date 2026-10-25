@@ -24,13 +24,13 @@ The barter windows read a region's exchanges at run time through
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes   | Records                                 | Row bytes |
-| ------ | -------------- | ------- | ------------------- | ------- | --------------------------------------- | --------- |
-| 3      | 2863 and later | 3483    | `barter_normal.bss` | 517,086 | 7,371 Exchange, 7,371 Entry, 182 Region | 56        |
-| 2      | 1690 to 2855   | 2855    | `barter_normal.bss` | 440,583 | 6,561 Exchange, 6,561 Entry, 162 Region | 56        |
-| 1      | 1351 to 1685   | 1685    | `barter_normal.bss` | 434,022 | 6,561 Exchange, 6,561 Entry, 162 Region | 56        |
+| Layout | Clients        | File                | Bytes   | Records                                 | Row bytes |
+| ------ | -------------- | ------------------- | ------- | --------------------------------------- | --------- |
+| 3      | 2863 and later | `barter_normal.bss` | 517,086 | 7,371 Exchange, 7,371 Entry, 182 Region | 56        |
+| 2      | 1690 to 2855   | `barter_normal.bss` | 440,583 | 6,561 Exchange, 6,561 Entry, 162 Region | 56        |
+| 1      | 1351 to 1685   | `barter_normal.bss` | 434,022 | 6,561 Exchange, 6,561 Entry, 162 Region | 56        |
 
 | Layout | File                | Known              | Unknown    |
 | ------ | ------------------- | ------------------ | ---------- |

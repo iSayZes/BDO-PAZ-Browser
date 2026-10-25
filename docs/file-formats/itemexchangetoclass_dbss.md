@@ -15,14 +15,14 @@ each item back to its group.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes  | Records        | Row bytes |
-| ------ | -------------- | ------- | -------------------------------- | ------ | -------------- | --------- |
-| 2      | 3381 and later | 3483    | `itemexchangetoclass.dbss`       | 39,404 | 200 Row        | 197       |
-| 2      | 3381 and later | 3483    | `itemexchangetoclassoffset.dbss` | 2,404  | 200 Offset Row | 12        |
-| 1      | 1622 to 2243   | 2243    | `itemexchangetoclass.dbss`       | 26,171 | 191 Row        | 137       |
-| 1      | 1622 to 2243   | 2243    | `itemexchangetoclassoffset.dbss` | 2,296  | 191 Offset Row | 12        |
+| Layout | Clients        | File                             | Bytes  | Records        | Row bytes |
+| ------ | -------------- | -------------------------------- | ------ | -------------- | --------- |
+| 2      | 3381 and later | `itemexchangetoclass.dbss`       | 39,404 | 200 Row        | 197       |
+| 2      | 3381 and later | `itemexchangetoclassoffset.dbss` | 2,404  | 200 Offset Row | 12        |
+| 1      | 1622 to 2243   | `itemexchangetoclass.dbss`       | 26,171 | 191 Row        | 137       |
+| 1      | 1622 to 2243   | `itemexchangetoclassoffset.dbss` | 2,296  | 191 Offset Row | 12        |
 
 | Layout | File                             | Known             | Unknown    |
 | ------ | -------------------------------- | ----------------- | ---------- |

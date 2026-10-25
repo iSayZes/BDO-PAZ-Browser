@@ -8,14 +8,14 @@ Pet skill levels. Each record is keyed by `pet_skill_id`, has a skill type that 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes | Records                                | Row bytes |
-| ------ | -------------- | ------- | --------------------- | ----- | -------------------------------------- | --------- |
-| 2      | 1881 and later | 3483    | `petskill.dbss`       | 9,380 | 490 Level Entry, 49 Payload, 49 Record | 17        |
-| 2      | 1881 and later | 3483    | `petskilloffset.dbss` | 494   | 49 Offset Row                          | 10        |
-| 1      | 1346 to 1871   | 1871    | `petskill.dbss`       | 8,606 | 460 Level Entry, 46 Payload, 46 Record | 17        |
-| 1      | 1346 to 1871   | 1871    | `petskilloffset.dbss` | 464   | 46 Offset Row                          | 10        |
+| Layout | Clients        | File                  | Bytes | Records                                | Row bytes |
+| ------ | -------------- | --------------------- | ----- | -------------------------------------- | --------- |
+| 2      | 1881 and later | `petskill.dbss`       | 9,380 | 490 Level Entry, 49 Payload, 49 Record | 17        |
+| 2      | 1881 and later | `petskilloffset.dbss` | 494   | 49 Offset Row                          | 10        |
+| 1      | 1346 to 1871   | `petskill.dbss`       | 8,606 | 460 Level Entry, 46 Payload, 46 Record | 17        |
+| 1      | 1346 to 1871   | `petskilloffset.dbss` | 464   | 46 Offset Row                          | 10        |
 
 | Layout | File                  | Known           | Unknown      |
 | ------ | --------------------- | --------------- | ------------ |

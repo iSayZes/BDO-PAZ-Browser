@@ -13,14 +13,14 @@ lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records         | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | --------------- | --------- |
-| 2      | 2726 and later | 3483    | `houseworking.dbss`       | 242   | 17 Work, 17 Row | 8         |
-| 2      | 2726 and later | 3483    | `houseworkingoffset.dbss` | 174   | 17 Offset Row   | 10        |
-| 1      | 1267 to 2717   | 2717    | `houseworking.dbss`       | 208   | 17 Work, 17 Row | 6         |
-| 1      | 1267 to 2717   | 2717    | `houseworkingoffset.dbss` | 174   | 17 Offset Row   | 10        |
+| Layout | Clients        | File                      | Bytes | Records         | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | --------------- | --------- |
+| 2      | 2726 and later | `houseworking.dbss`       | 242   | 17 Work, 17 Row | 8         |
+| 2      | 2726 and later | `houseworkingoffset.dbss` | 174   | 17 Offset Row   | 10        |
+| 1      | 1267 to 2717   | `houseworking.dbss`       | 208   | 17 Work, 17 Row | 6         |
+| 1      | 1267 to 2717   | `houseworkingoffset.dbss` | 174   | 17 Offset Row   | 10        |
 
 | Layout | File                      | Known          | Unknown    |
 | ------ | ------------------------- | -------------- | ---------- |

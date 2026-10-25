@@ -9,12 +9,12 @@ Defines two pet skill catalogs, both keyed by `equip_skill_id`. 116 skill entrie
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records                  | Row bytes               |
-| ------ | -------------- | ------- | ------------------- | ----- | ------------------------ | ----------------------- |
-| 2      | 1921 and later | 3483    | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
-| 1      | 805 to 1914    | 1914    | `petequipskill.bss` | 2,164 | 43 Equip Skill, 136 Slot | 12                      |
+| Layout | Clients        | File                | Bytes | Records                  | Row bytes               |
+| ------ | -------------- | ------------------- | ----- | ------------------------ | ----------------------- |
+| 2      | 1921 and later | `petequipskill.bss` | 3,772 | 43 Equip Skill, 200 Slot | 16 to 20, 16 on average |
+| 1      | 805 to 1914    | `petequipskill.bss` | 2,164 | 43 Equip Skill, 136 Slot | 12                      |
 
 | Layout | File                | Known            | Unknown       |
 | ------ | ------------------- | ---------------- | ------------- |

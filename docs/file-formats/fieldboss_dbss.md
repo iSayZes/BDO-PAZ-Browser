@@ -14,14 +14,14 @@ bytes that are `1` on every row.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes  | Records       | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ------ | ------------- | --------- |
-| 2      | 2726 and later | 3483    | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
-| 2      | 2726 and later | 3483    | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
-| 1      | 1636 to 2717   | 2717    | `fieldboss.dbss`       | 20,588 | 664 Row       | 31        |
-| 1      | 1636 to 2717   | 2717    | `fieldbossoffset.dbss` | 6,644  | 664 Index Row | 10        |
+| Layout | Clients        | File                   | Bytes  | Records       | Row bytes |
+| ------ | -------------- | ---------------------- | ------ | ------------- | --------- |
+| 2      | 2726 and later | `fieldboss.dbss`       | 22,906 | 694 Row       | 33        |
+| 2      | 2726 and later | `fieldbossoffset.dbss` | 6,944  | 694 Index Row | 10        |
+| 1      | 1636 to 2717   | `fieldboss.dbss`       | 20,588 | 664 Row       | 31        |
+| 1      | 1636 to 2717   | `fieldbossoffset.dbss` | 6,644  | 664 Index Row | 10        |
 
 | Layout | File                   | Known            | Unknown          |
 | ------ | ---------------------- | ---------------- | ---------------- |

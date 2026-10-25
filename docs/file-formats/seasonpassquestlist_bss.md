@@ -14,13 +14,13 @@ Quest lists of the Black Spirit Pass (season pass) window. Three files share one
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes | Records   | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ----- | --------- | --------- |
-| 1      | 1327 and later | 3483    | `seasonpassquestlist.bss`          | 1,660 | 410 Entry | 4         |
-| 1      | 1381 and later | 3483    | `seasonpassquestlistforcash.bss`   | 840   | 205 Entry | 4         |
-| 1      | 1381 and later | 3483    | `seasonpassquestlistfornormal.bss` | 840   | 205 Entry | 4         |
+| Layout | Clients        | File                               | Bytes | Records   | Row bytes |
+| ------ | -------------- | ---------------------------------- | ----- | --------- | --------- |
+| 1      | 1327 and later | `seasonpassquestlist.bss`          | 1,660 | 410 Entry | 4         |
+| 1      | 1381 and later | `seasonpassquestlistforcash.bss`   | 840   | 205 Entry | 4         |
+| 1      | 1381 and later | `seasonpassquestlistfornormal.bss` | 840   | 205 Entry | 4         |
 
 | Layout | File                               | Known            | Unknown    |
 | ------ | ---------------------------------- | ---------------- | ---------- |

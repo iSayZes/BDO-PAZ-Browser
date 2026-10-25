@@ -310,7 +310,7 @@ def test_check_doc_file_writes_versions_once_and_then_reports_ok(tmp_path: Path)
     second = check_doc_file(doc, ROWS_INDEX, _client(3473), recheck=True)
 
     assert (first.status, second.status) == (Status.UPDATED, Status.OK)
-    assert "| 1      | 3473 and later | 3473" in doc.read_text(encoding="utf-8")
+    assert "| 1      | 3473 and later | `test.bss`" in doc.read_text(encoding="utf-8")
     assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3473, 1, True),)
 
 
@@ -354,6 +354,33 @@ def test_a_note_edit_keeps_the_clients_and_a_layout_edit_reads_each_one_again(tm
     assert (first.status, second.status) == (Status.UPDATED, Status.UPDATED)
     assert between[1784] == old[1784] != between[3473]
     assert _fingerprints(doc) == {1784: between[3473], 3473: between[3473]}
+
+
+def _sizes_block(sizes: str) -> str:
+    coverage = "| Layout | File | Known | Unknown |\n| --- | --- | --- | --- |\n| 2 | `test.bss` | 96 B | 4 B |\n| 1 | `test.bss` | 86 B | 4 B |\n"
+    clients = (
+        "| Client | Result | Checked against |\n| --- | --- | --- |\n"
+        "| 3483 | Layout 2 | - |\n| 3464 | Layout 2 | - |\n| 3458 | Layout 1 | - |\n| 3401 | Layout 1 | - |\n"
+    )
+    return _doc(COUNTED, ROW).replace("-->\n\n<!-- versions:end", f"-->\n\n{sizes}\n{coverage}\n{clients}\n<!-- versions:end")
+
+
+def test_the_sizes_rows_take_their_newest_client_from_the_range_end_or_the_clients_table() -> None:
+    sizes = (
+        "| Layout | Clients | File | Bytes | Records | Row bytes |\n| --- | --- | --- | --- | --- | --- |\n"
+        "| 2 | 3464 and later | `test.bss` | 100 | 2 Row | 8 |\n| 1 | 3401 to 3458 | `test.bss` | 90 | 2 Row | 8 |\n"
+    )
+
+    assert [(row.layout, row.first, row.checked) for row in read_rows(_sizes_block(sizes))] == [(2, 3464, 3483), (1, 3401, 3458)]
+
+
+def test_a_sizes_table_with_the_old_checked_column_is_still_read() -> None:
+    sizes = (
+        "| Layout | Clients | Checked | File | Bytes | Records | Row bytes |\n| --- | --- | --- | --- | --- | --- | --- |\n"
+        "| 2 | 3464 and later | 3483 | `test.bss` | 100 | 2 Row | 8 |\n| 1 | 3401 to 3458 | 3458 | `test.bss` | 90 | 2 Row | 8 |\n"
+    )
+
+    assert [(row.layout, row.first, row.checked) for row in read_rows(_sizes_block(sizes))] == [(2, 3464, 3483), (1, 3401, 3458)]
 
 
 def test_a_doc_whose_layouts_read_back_empty_is_skipped_and_writes_nothing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

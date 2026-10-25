@@ -13,11 +13,11 @@ client knows with its hash. On client 3474 that is 1,492 open groups out of
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                         | Bytes  | Records     | Row bytes               |
-| ------ | -------------- | ------- | -------------------------------------------- | ------ | ----------- | ----------------------- |
-| 1      | 3062 and later | 3483    | `contentsgroupoptionstaticstatusmanager.bss` | 53,056 | 2,463 Group | 14 to 22, 19 on average |
+| Layout | Clients        | File                                         | Bytes  | Records     | Row bytes               |
+| ------ | -------------- | -------------------------------------------- | ------ | ----------- | ----------------------- |
+| 1      | 3062 and later | `contentsgroupoptionstaticstatusmanager.bss` | 53,056 | 2,463 Group | 14 to 22, 19 on average |
 
 | Layout | File                                         | Known             | Unknown    |
 | ------ | -------------------------------------------- | ----------------- | ---------- |

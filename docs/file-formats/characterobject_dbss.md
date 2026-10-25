@@ -8,14 +8,14 @@ Per-character world-object records for placeable objects: house furniture and cr
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes     | Records                                                                                                                                                                                | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| 2      | 3302 and later | 3483    | `characterobject.dbss`       | 8,183,741 | 28,202 Face, 2,321 Hull, 1,079 Hull Layer, 295 Structure Suffix, 1,160 Structure Body, 5,131 Record, 3,971 Furniture Block, 3,971 Furniture Tail, 3,971 Furniture Body, 865 House Tail | 140       |
-| 2      | 3302 and later | 3483    | `characterobjectoffset.dbss` | 51,330    | 5,131 Index Row                                                                                                                                                                        | 10        |
-| 1      | 1762 to 2243   | 2243    | `characterobject.dbss`       | 6,959,048 | 26,090 Face, 2,147 Hull, 1,009 Hull Layer, 151 Structure Suffix, 981 Structure Body, 4,232 Record, 3,251 Furniture Block, 3,251 Furniture Tail, 3,251 Furniture Body, 830 House Tail   | 140       |
-| 1      | 1762 to 2243   | 2243    | `characterobjectoffset.dbss` | 42,340    | 4,232 Index Row                                                                                                                                                                        | 10        |
+| Layout | Clients        | File                         | Bytes     | Records                                                                                                                                                                                | Row bytes |
+| ------ | -------------- | ---------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| 2      | 3302 and later | `characterobject.dbss`       | 8,183,741 | 28,202 Face, 2,321 Hull, 1,079 Hull Layer, 295 Structure Suffix, 1,160 Structure Body, 5,131 Record, 3,971 Furniture Block, 3,971 Furniture Tail, 3,971 Furniture Body, 865 House Tail | 140       |
+| 2      | 3302 and later | `characterobjectoffset.dbss` | 51,330    | 5,131 Index Row                                                                                                                                                                        | 10        |
+| 1      | 1762 to 2243   | `characterobject.dbss`       | 6,959,048 | 26,090 Face, 2,147 Hull, 1,009 Hull Layer, 151 Structure Suffix, 981 Structure Body, 4,232 Record, 3,251 Furniture Block, 3,251 Furniture Tail, 3,251 Furniture Body, 830 House Tail   | 140       |
+| 1      | 1762 to 2243   | `characterobjectoffset.dbss` | 42,340    | 4,232 Index Row                                                                                                                                                                        | 10        |
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |

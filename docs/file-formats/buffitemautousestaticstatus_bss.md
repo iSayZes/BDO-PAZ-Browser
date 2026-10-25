@@ -17,12 +17,12 @@ whose `getItemKey()` is the item.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                              | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | --------------------------------- | ----- | ------- | --------- |
-| 2      | 2583 and later | 3483    | `buffitemautousestaticstatus.bss` | 8,228 | 912 Row | 9         |
-| 1      | 1969 to 2575   | 2575    | `buffitemautousestaticstatus.bss` | 4,980 | 620 Row | 8         |
+| Layout | Clients        | File                              | Bytes | Records | Row bytes |
+| ------ | -------------- | --------------------------------- | ----- | ------- | --------- |
+| 2      | 2583 and later | `buffitemautousestaticstatus.bss` | 8,228 | 912 Row | 9         |
+| 1      | 1969 to 2575   | `buffitemautousestaticstatus.bss` | 4,980 | 620 Row | 8         |
 
 | Layout | File                              | Known            | Unknown       |
 | ------ | --------------------------------- | ---------------- | ------------- |

@@ -14,13 +14,13 @@ sheet (Layout 1).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                         | Bytes  | Records                              | Row bytes |
-| ------ | -------------- | ------- | -------------------------------------------- | ------ | ------------------------------------ | --------- |
-| 2      | 1109 and later | 3483    | `enchantfailcountexpstaticstatus.bss`        | 39,620 | 3,600 Entry, 2,800 Group, 400 Record | 5         |
-| 1      | 1286 to 3212   | 3212    | `enchantfailcountexpstaticstatus.dbss`       | 5,140  | 321 Row                              | 16        |
-| 1      | 1286 to 3212   | 3212    | `enchantfailcountexpstaticstatusoffset.dbss` | 5,140  | 321 Offset Row                       | 16        |
+| Layout | Clients        | File                                         | Bytes  | Records                              | Row bytes |
+| ------ | -------------- | -------------------------------------------- | ------ | ------------------------------------ | --------- |
+| 2      | 1109 and later | `enchantfailcountexpstaticstatus.bss`        | 39,620 | 3,600 Entry, 2,800 Group, 400 Record | 5         |
+| 1      | 1286 to 3212   | `enchantfailcountexpstaticstatus.dbss`       | 5,140  | 321 Row                              | 16        |
+| 1      | 1286 to 3212   | `enchantfailcountexpstaticstatusoffset.dbss` | 5,140  | 321 Offset Row                       | 16        |
 
 | Layout | File                                         | Known            | Unknown          |
 | ------ | -------------------------------------------- | ---------------- | ---------------- |

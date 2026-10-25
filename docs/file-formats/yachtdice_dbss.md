@@ -12,12 +12,12 @@ preset. `yachtdiceoffset.dbss` is the index into it.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ----- | ------------- | --------- |
-| 1      | 1614 and later | 3483    | `yachtdice.dbss`       | 484   | 15 Row        | 32        |
-| 1      | 1614 and later | 3483    | `yachtdiceoffset.dbss` | 184   | 15 Offset Row | 12        |
+| Layout | Clients        | File                   | Bytes | Records       | Row bytes |
+| ------ | -------------- | ---------------------- | ----- | ------------- | --------- |
+| 1      | 1614 and later | `yachtdice.dbss`       | 484   | 15 Row        | 32        |
+| 1      | 1614 and later | `yachtdiceoffset.dbss` | 184   | 15 Offset Row | 12        |
 
 | Layout | File                   | Known          | Unknown    |
 | ------ | ---------------------- | -------------- | ---------- |

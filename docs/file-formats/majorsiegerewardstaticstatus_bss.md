@@ -14,13 +14,13 @@ Balenos to Valencia with [Guild] Reminiscence of Battle.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes | Records                   | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ----- | ------------------------- | --------- |
-| 3      | 3473 and later | 3483    | `majorsiegerewardstaticstatus.bss` | 1,409 | 60 Reward, 3 Row, 5 Booty | 16        |
-| 2      | 3235 to 3464   | 3464    | `majorsiegerewardstaticstatus.bss` | 581   | 33 Reward, 3 Row, 5 Booty | 12        |
-| 1      | 2900 to 3212   | 3212    | `majorsiegerewardstaticstatus.bss` | 533   | 33 Reward, 3 Row, 5 Booty | 12        |
+| Layout | Clients        | File                               | Bytes | Records                   | Row bytes |
+| ------ | -------------- | ---------------------------------- | ----- | ------------------------- | --------- |
+| 3      | 3473 and later | `majorsiegerewardstaticstatus.bss` | 1,409 | 60 Reward, 3 Row, 5 Booty | 16        |
+| 2      | 3235 to 3464   | `majorsiegerewardstaticstatus.bss` | 581   | 33 Reward, 3 Row, 5 Booty | 12        |
+| 1      | 2900 to 3212   | `majorsiegerewardstaticstatus.bss` | 533   | 33 Reward, 3 Row, 5 Booty | 12        |
 
 | Layout | File                               | Known           | Unknown       |
 | ------ | ---------------------------------- | --------------- | ------------- |

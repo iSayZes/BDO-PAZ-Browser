@@ -8,14 +8,14 @@ The Guild Fame system (`_ContentsGroup_GuildHonorSystem`): how many points each 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records                                          | Row bytes               |
-| ------ | -------------- | ------- | ---------------------- | ----- | ------------------------------------------------ | ----------------------- |
-| 4      | 3402 and later | 3483    | `guildhonorsystem.bss` | 3,472 | 26 Change Reason, 22 Benefit, 10 Daily Incentive | 46 to 78, 57 on average |
-| 3      | 3387           | 3387    | `guildhonorsystem.bss` | 1,591 | 20 Change Reason, 13 Benefit, 6 Daily Incentive  | 16                      |
-| 2      | 3373 to 3381   | 3381    | `guildhonorsystem.bss` | 1,236 | 20 Change Reason, 13 Benefit, 6 Daily Incentive  | 24                      |
-| 1      | 3356 to 3364   | 3364    | `guildhonorsystem.bss` | 732   | 20 Change Reason, 6 Unknown Row                  | 24                      |
+| Layout | Clients        | File                   | Bytes | Records                                          | Row bytes               |
+| ------ | -------------- | ---------------------- | ----- | ------------------------------------------------ | ----------------------- |
+| 4      | 3402 and later | `guildhonorsystem.bss` | 3,472 | 26 Change Reason, 22 Benefit, 10 Daily Incentive | 46 to 78, 57 on average |
+| 3      | 3387           | `guildhonorsystem.bss` | 1,591 | 20 Change Reason, 13 Benefit, 6 Daily Incentive  | 16                      |
+| 2      | 3373 to 3381   | `guildhonorsystem.bss` | 1,236 | 20 Change Reason, 13 Benefit, 6 Daily Incentive  | 24                      |
+| 1      | 3356 to 3364   | `guildhonorsystem.bss` | 732   | 20 Change Reason, 6 Unknown Row                  | 24                      |
 
 | Layout | File                   | Known           | Unknown       |
 | ------ | ---------------------- | --------------- | ------------- |

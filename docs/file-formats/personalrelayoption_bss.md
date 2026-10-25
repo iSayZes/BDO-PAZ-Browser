@@ -14,11 +14,11 @@ file has 2 rows, 금돼지굴 (Golden Pig Cave) with Golden Pig and 금돼지굴
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ------- | --------- |
-| 1      | 2811 and later | 3483    | `personalrelayoption.bss` | 250   | 2 Row   | 98        |
+| Layout | Clients        | File                      | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ------- | --------- |
+| 1      | 2811 and later | `personalrelayoption.bss` | 250   | 2 Row   | 98        |
 
 | Layout | File                      | Known        | Unknown       |
 | ------ | ------------------------- | ------------ | ------------- |

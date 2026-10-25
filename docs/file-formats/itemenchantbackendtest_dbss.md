@@ -20,11 +20,11 @@ end of a block by walking its lists and strings.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes      | Records                                                                     | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ---------- | --------------------------------------------------------------------------- | --------- |
-| 1      | 3435 and later | 3483    | `itemenchantbackendtest.dbss` | 76,122,866 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
+| Layout | Clients        | File                          | Bytes      | Records                                                                     | Row bytes |
+| ------ | -------------- | ----------------------------- | ---------- | --------------------------------------------------------------------------- | --------- |
+| 1      | 3435 and later | `itemenchantbackendtest.dbss` | 76,122,866 | 276,167 Class Entry, 169,345 Icon Tail, 169,345 Message Tail, 169,345 Block | 5         |
 
 | Layout | File                          | Known                | Unknown              |
 | ------ | ----------------------------- | -------------------- | -------------------- |

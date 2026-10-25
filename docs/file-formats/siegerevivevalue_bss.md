@@ -14,15 +14,15 @@ fields at the end.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ----- | -------------- | --------- |
-| 5      | 3203 and later | 3483    | `siegerevivevalue.bss` | 97    | 1 String Table | 4         |
-| 4      | 2736 to 3193   | 3193    | `siegerevivevalue.bss` | 93    | 1 String Table | 4         |
-| 3      | 2122 to 2726   | 2726    | `siegerevivevalue.bss` | 94    | 1 String Table | 4         |
-| 2      | 1737 to 2107   | 2107    | `siegerevivevalue.bss` | 92    | 1 String Table | 4         |
-| 1      | 1391 to 1659   | 1659    | `siegerevivevalue.bss` | 48    | 1 String Table | 4         |
+| Layout | Clients        | File                   | Bytes | Records        | Row bytes |
+| ------ | -------------- | ---------------------- | ----- | -------------- | --------- |
+| 5      | 3203 and later | `siegerevivevalue.bss` | 97    | 1 String Table | 4         |
+| 4      | 2736 to 3193   | `siegerevivevalue.bss` | 93    | 1 String Table | 4         |
+| 3      | 2122 to 2726   | `siegerevivevalue.bss` | 94    | 1 String Table | 4         |
+| 2      | 1737 to 2107   | `siegerevivevalue.bss` | 92    | 1 String Table | 4         |
+| 1      | 1391 to 1659   | `siegerevivevalue.bss` | 48    | 1 String Table | 4         |
 
 | Layout | File                   | Known         | Unknown    |
 | ------ | ---------------------- | ------------- | ---------- |

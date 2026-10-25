@@ -12,12 +12,12 @@ lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes  | Records          | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ------ | ---------------- | --------- |
-| 1      | 1276 and later | 3483    | `itempalette.dbss`       | 6,766  | 1,127 Row        | 6         |
-| 1      | 1276 and later | 3483    | `itempaletteoffset.dbss` | 13,528 | 1,127 Offset Row | 12        |
+| Layout | Clients        | File                     | Bytes  | Records          | Row bytes |
+| ------ | -------------- | ------------------------ | ------ | ---------------- | --------- |
+| 1      | 1276 and later | `itempalette.dbss`       | 6,766  | 1,127 Row        | 6         |
+| 1      | 1276 and later | `itempaletteoffset.dbss` | 13,528 | 1,127 Offset Row | 12        |
 
 | Layout | File                     | Known             | Unknown    |
 | ------ | ------------------------ | ----------------- | ---------- |

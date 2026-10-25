@@ -12,12 +12,12 @@ such as `Set_State_SA_States_Login` for `Login`. On client 3482 it holds
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ---------------- | ----- | ------- | --------- |
-| 2      | 1886 and later | 3483    | `bgmstatesa.bss` | 1,228 | 16 Row  | 14        |
-| 1      | 1267 to 1881   | 1881    | `bgmstatesa.bss` | 498   | 7 Row   | 18        |
+| Layout | Clients        | File             | Bytes | Records | Row bytes |
+| ------ | -------------- | ---------------- | ----- | ------- | --------- |
+| 2      | 1886 and later | `bgmstatesa.bss` | 1,228 | 16 Row  | 14        |
+| 1      | 1267 to 1881   | `bgmstatesa.bss` | 498   | 7 Row   | 18        |
 
 | Layout | File             | Known           | Unknown     |
 | ------ | ---------------- | --------------- | ----------- |

@@ -18,12 +18,12 @@ Notes).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records                  | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----- | ------------------------ | --------- |
-| 2      | 1280 and later | 3483    | `actionverification.bss` | 1,304 | 150 Action, 14 Character | 8         |
-| 1      | 1220 to 1230   | 1230    | `actionverification.bss` | 100   | 5 Row                    | 16        |
+| Layout | Clients        | File                     | Bytes | Records                  | Row bytes |
+| ------ | -------------- | ------------------------ | ----- | ------------------------ | --------- |
+| 2      | 1280 and later | `actionverification.bss` | 1,304 | 150 Action, 14 Character | 8         |
+| 1      | 1220 to 1230   | `actionverification.bss` | 100   | 5 Row                    | 16        |
 
 | Layout | File                     | Known            | Unknown      |
 | ------ | ------------------------ | ---------------- | ------------ |

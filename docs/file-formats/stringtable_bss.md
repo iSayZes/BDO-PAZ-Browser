@@ -11,11 +11,11 @@ client scripts use turns into the translated text in `languagedata_*.loc`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes     | Records                    | Row bytes |
-| ------ | -------------- | ------- | ----------------- | --------- | -------------------------- | --------- |
-| 1      | 1286 and later | 3483    | `stringtable.bss` | 7,334,867 | 51,099 String Row, 8 Sheet | 16        |
+| Layout | Clients        | File              | Bytes     | Records                    | Row bytes |
+| ------ | -------------- | ----------------- | --------- | -------------------------- | --------- |
+| 1      | 1286 and later | `stringtable.bss` | 7,334,867 | 51,099 String Row, 8 Sheet | 16        |
 
 | Layout | File              | Known               | Unknown          |
 | ------ | ----------------- | ------------------- | ---------------- |

@@ -12,14 +12,14 @@ Results). On client 3474 the file has 34 rows, keys 1 to 36 without 29 and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | -------------------------- | ----- | ------------- | --------- |
-| 2      | 2794 and later | 3483    | `servantmating.bss`        | 684   | 34 Row        | 20        |
-| 1      | 435 to 794     | 794     | `servantmating.bss`        | 298   | 21 Row        | 14        |
-| 1      | 1346 to 2460   | 2460    | `servantmating.dbss`       | 340   | 24 Row        | 14        |
-| 1      | 1346 to 2460   | 2460    | `servantmatingoffset.dbss` | 292   | 24 Offset Row | 12        |
+| Layout | Clients        | File                       | Bytes | Records       | Row bytes |
+| ------ | -------------- | -------------------------- | ----- | ------------- | --------- |
+| 2      | 2794 and later | `servantmating.bss`        | 684   | 34 Row        | 20        |
+| 1      | 435 to 794     | `servantmating.bss`        | 298   | 21 Row        | 14        |
+| 1      | 1346 to 2460   | `servantmating.dbss`       | 340   | 24 Row        | 14        |
+| 1      | 1346 to 2460   | `servantmatingoffset.dbss` | 292   | 24 Offset Row | 12        |
 
 | Layout | File                       | Known          | Unknown    |
 | ------ | -------------------------- | -------------- | ---------- |

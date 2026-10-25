@@ -11,15 +11,15 @@ client side of the `IslandExplore_Option` sheet (see Field Names).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ----- | -------------- | --------- |
-| 5      | 2717 and later | 3483    | `greatseaoption.bss` | 88    | 1 String Table | 4         |
-| 4      | 1313 to 2709   | 2709    | `greatseaoption.bss` | 86    | 1 String Table | 4         |
-| 3      | 1304 to 1311   | 1311    | `greatseaoption.bss` | 82    | 1 String Table | 4         |
-| 2      | 1267 to 1292   | 1292    | `greatseaoption.bss` | 54    | 1 String Table | 4         |
-| 1      | 1239 to 1261   | 1261    | `greatseaoption.bss` | 42    | 1 String Table | 4         |
+| Layout | Clients        | File                 | Bytes | Records        | Row bytes |
+| ------ | -------------- | -------------------- | ----- | -------------- | --------- |
+| 5      | 2717 and later | `greatseaoption.bss` | 88    | 1 String Table | 4         |
+| 4      | 1313 to 2709   | `greatseaoption.bss` | 86    | 1 String Table | 4         |
+| 3      | 1304 to 1311   | `greatseaoption.bss` | 82    | 1 String Table | 4         |
+| 2      | 1267 to 1292   | `greatseaoption.bss` | 54    | 1 String Table | 4         |
+| 1      | 1239 to 1261   | `greatseaoption.bss` | 42    | 1 String Table | 4         |
 
 | Layout | File                 | Known        | Unknown      |
 | ------ | -------------------- | ------------ | ------------ |

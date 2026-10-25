@@ -11,12 +11,12 @@ The remainder of the file is a 200-slot reserved block of null placeholders, so 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes | Records                   | Row bytes |
-| ------ | -------------- | ------- | --------------------- | ----- | ------------------------- | --------- |
-| 2      | 1921 and later | 3483    | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
-| 1      | 805 to 1871    | 1871    | `fairyequipskill.bss` | 1,576 | 30 Skill Record, 100 Slot | 12        |
+| Layout | Clients        | File                  | Bytes | Records                   | Row bytes |
+| ------ | -------------- | --------------------- | ----- | ------------------------- | --------- |
+| 2      | 1921 and later | `fairyequipskill.bss` | 3,636 | 35 Skill Record, 200 Slot | 16        |
+| 1      | 805 to 1871    | `fairyequipskill.bss` | 1,576 | 30 Skill Record, 100 Slot | 12        |
 
 | Layout | File                  | Known            | Unknown       |
 | ------ | --------------------- | ---------------- | ------------- |

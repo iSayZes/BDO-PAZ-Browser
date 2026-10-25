@@ -14,14 +14,14 @@ the file holds six grades (0 to 5) of 21 levels each.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records                      | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ----- | ---------------------------- | --------- |
-| 2      | 2583 and later | 3483    | `minigamefindtool.dbss`       | 1,140 | 126 Level Row, 6 Grade Block | 9         |
-| 2      | 2583 and later | 3483    | `minigamefindtooloffset.dbss` | 1,158 | 126 Index Row, 6 Index Group | 9         |
-| 1      | 1261 to 2575   | 2575    | `minigamefindtool.dbss`       | 945   | 105 Level Row, 5 Grade Block | 9         |
-| 1      | 1261 to 2575   | 2575    | `minigamefindtooloffset.dbss` | 965   | 105 Index Row, 5 Index Group | 9         |
+| Layout | Clients        | File                          | Bytes | Records                      | Row bytes |
+| ------ | -------------- | ----------------------------- | ----- | ---------------------------- | --------- |
+| 2      | 2583 and later | `minigamefindtool.dbss`       | 1,140 | 126 Level Row, 6 Grade Block | 9         |
+| 2      | 2583 and later | `minigamefindtooloffset.dbss` | 1,158 | 126 Index Row, 6 Index Group | 9         |
+| 1      | 1261 to 2575   | `minigamefindtool.dbss`       | 945   | 105 Level Row, 5 Grade Block | 9         |
+| 1      | 1261 to 2575   | `minigamefindtooloffset.dbss` | 965   | 105 Index Row, 5 Index Group | 9         |
 
 | Layout | File                          | Known            | Unknown    |
 | ------ | ----------------------------- | ---------------- | ---------- |

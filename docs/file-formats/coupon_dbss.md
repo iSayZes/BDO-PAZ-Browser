@@ -15,12 +15,12 @@ getters `getCouponKey()`, `getCouponName()`, `getCouponDisCountRate()`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes  | Records        | Row bytes                  |
-| ------ | -------------- | ------- | ------------------- | ------ | -------------- | -------------------------- |
-| 1      | 1256 and later | 3483    | `coupon.dbss`       | 21,557 | 117 Row        | 155 to 239, 184 on average |
-| 1      | 1256 and later | 3483    | `couponoffset.dbss` | 1,174  | 117 Offset Row | 10                         |
+| Layout | Clients        | File                | Bytes  | Records        | Row bytes                  |
+| ------ | -------------- | ------------------- | ------ | -------------- | -------------------------- |
+| 1      | 1256 and later | `coupon.dbss`       | 21,557 | 117 Row        | 155 to 239, 184 on average |
+| 1      | 1256 and later | `couponoffset.dbss` | 1,174  | 117 Offset Row | 10                         |
 
 | Layout | File                | Known            | Unknown      |
 | ------ | ------------------- | ---------------- | ------------ |

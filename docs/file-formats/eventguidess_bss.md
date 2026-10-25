@@ -15,12 +15,12 @@ Lua lists the events whose end is still ahead
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes  | Records | Row bytes                  |
-| ------ | -------------- | ------- | ------------------ | ------ | ------- | -------------------------- |
-| 2      | 3012 and later | 3483    | `eventguidess.bss` | 77,912 | 162 Row | 375 to 623, 481 on average |
-| 1      | 3002           | 3002    | `eventguidess.bss` | 6,579  | 15 Row  | 388 to 504, 438 on average |
+| Layout | Clients        | File               | Bytes  | Records | Row bytes                  |
+| ------ | -------------- | ------------------ | ------ | ------- | -------------------------- |
+| 2      | 3012 and later | `eventguidess.bss` | 77,912 | 162 Row | 375 to 623, 481 on average |
+| 1      | 3002           | `eventguidess.bss` | 6,579  | 15 Row  | 388 to 504, 438 on average |
 
 | Layout | File               | Known             | Unknown    |
 | ------ | ------------------ | ----------------- | ---------- |

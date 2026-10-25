@@ -15,12 +15,12 @@ web URL type through `ToClient_getWebUrl`. On client 3482 it holds
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File         | Bytes | Records           | Row bytes              |
-| ------ | -------------- | ------- | ------------ | ----- | ----------------- | ---------------------- |
-| 2      | 1358 and later | 3483    | `weburl.bss` | 1,236 | 32 Insert, 17 Url | 5                      |
-| 1      | 1309 to 1355   | 1355    | `weburl.bss` | 255   | 4 Insert, 8 Url   | 8 to 18, 10 on average |
+| Layout | Clients        | File         | Bytes | Records           | Row bytes              |
+| ------ | -------------- | ------------ | ----- | ----------------- | ---------------------- |
+| 2      | 1358 and later | `weburl.bss` | 1,236 | 32 Insert, 17 Url | 5                      |
+| 1      | 1309 to 1355   | `weburl.bss` | 255   | 4 Insert, 8 Url   | 8 to 18, 10 on average |
 
 | Layout | File         | Known           | Unknown    |
 | ------ | ------------ | --------------- | ---------- |

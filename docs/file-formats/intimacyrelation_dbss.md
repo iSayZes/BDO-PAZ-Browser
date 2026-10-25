@@ -14,16 +14,16 @@ LOC type 23 holds the user-language text under the NPC key. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes   | Records                 | Row bytes                    |
-| ------ | -------------- | ------- | ----------------------------- | ------- | ----------------------- | ---------------------------- |
-| 3      | 2583 and later | 3483    | `intimacyrelation.dbss`       | 748,525 | 2,206 Row, 2,206 Record | 136 to 1,504, 337 on average |
-| 3      | 2583 and later | 3483    | `intimacyrelationoffset.dbss` | 22,064  | 2,206 Offset Row        | 10                           |
-| 2      | 1346 to 2575   | 2575    | `intimacyrelation.dbss`       | 667,200 | 1,895 Row, 1,895 Record | 140 to 1,508, 350 on average |
-| 2      | 1346 to 2575   | 2575    | `intimacyrelationoffset.dbss` | 18,954  | 1,895 Offset Row        | 10                           |
-| 1      | 1250 to 1341   | 1341    | `intimacyrelation.dbss`       | 422,598 | 1,256 Row               | 140 to 1,582, 336 on average |
-| 1      | 1250 to 1341   | 1341    | `intimacyrelationoffset.dbss` | 12,564  | 1,256 Offset Row        | 10                           |
+| Layout | Clients        | File                          | Bytes   | Records                 | Row bytes                    |
+| ------ | -------------- | ----------------------------- | ------- | ----------------------- | ---------------------------- |
+| 3      | 2583 and later | `intimacyrelation.dbss`       | 748,525 | 2,206 Row, 2,206 Record | 136 to 1,504, 337 on average |
+| 3      | 2583 and later | `intimacyrelationoffset.dbss` | 22,064  | 2,206 Offset Row        | 10                           |
+| 2      | 1346 to 2575   | `intimacyrelation.dbss`       | 667,200 | 1,895 Row, 1,895 Record | 140 to 1,508, 350 on average |
+| 2      | 1346 to 2575   | `intimacyrelationoffset.dbss` | 18,954  | 1,895 Offset Row        | 10                           |
+| 1      | 1250 to 1341   | `intimacyrelation.dbss`       | 422,598 | 1,256 Row               | 140 to 1,582, 336 on average |
+| 1      | 1250 to 1341   | `intimacyrelationoffset.dbss` | 12,564  | 1,256 Offset Row        | 10                           |
 
 | Layout | File                          | Known             | Unknown        |
 | ------ | ----------------------------- | ----------------- | -------------- |

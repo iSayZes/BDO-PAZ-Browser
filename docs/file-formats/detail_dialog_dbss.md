@@ -8,12 +8,12 @@ Stores the NPC dialog trees: for each character and dialog index, the greeting t
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes      | Records                                                                                            | Row bytes                     |
-| ------ | -------------- | ------- | -------------------------- | ---------- | -------------------------------------------------------------------------------------------------- | ----------------------------- |
-| 1      | 1784 and later | 3483    | `detail_dialog.dbss`       | 28,283,830 | 35,768 Option, 59,783 Dialog Record, 59,783 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
-| 1      | 1784 and later | 3483    | `detail_dialogoffset.dbss` | 717,416    | 59,783 Index Row                                                                                   | 12                            |
+| Layout | Clients        | File                       | Bytes      | Records                                                                                            | Row bytes                     |
+| ------ | -------------- | -------------------------- | ---------- | -------------------------------------------------------------------------------------------------- | ----------------------------- |
+| 1      | 1784 and later | `detail_dialog.dbss`       | 28,283,830 | 35,768 Option, 59,783 Dialog Record, 59,783 Record, 12,774 Conditional Greeting, 197 Greeting Line | 56 to 603,491, 469 on average |
+| 1      | 1784 and later | `detail_dialogoffset.dbss` | 717,416    | 59,783 Index Row                                                                                   | 12                            |
 
 | Layout | File                       | Known                | Unknown            |
 | ------ | -------------------------- | -------------------- | ------------------ |

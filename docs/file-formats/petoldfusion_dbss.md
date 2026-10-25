@@ -15,12 +15,12 @@ where every row sits. Tiers are stored from 0, as `tier` of
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes  | Records        | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ------ | -------------- | --------- |
-| 1      | 1346 and later | 3483    | `petoldfusion.dbss`       | 15,364 | 384 Row        | 40        |
-| 1      | 1346 and later | 3483    | `petoldfusionoffset.dbss` | 4,612  | 384 Offset Row | 12        |
+| Layout | Clients        | File                      | Bytes  | Records        | Row bytes |
+| ------ | -------------- | ------------------------- | ------ | -------------- | --------- |
+| 1      | 1346 and later | `petoldfusion.dbss`       | 15,364 | 384 Row        | 40        |
+| 1      | 1346 and later | `petoldfusionoffset.dbss` | 4,612  | 384 Offset Row | 12        |
 
 | Layout | File                      | Known            | Unknown      |
 | ------ | ------------------------- | ---------------- | ------------ |

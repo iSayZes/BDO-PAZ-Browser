@@ -16,18 +16,18 @@ each row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes   | Records        | Row bytes                  |
-| ------ | -------------- | ------- | ------------------------- | ------- | -------------- | -------------------------- |
-| 4      | 1950 and later | 3483    | `skillcommand.dbss`       | 211,258 | 626 Row        | 187 to 705, 337 on average |
-| 4      | 1950 and later | 3483    | `skillcommandoffset.dbss` | 6,264   | 626 Offset Row | 10                         |
-| 3      | 1559 to 1945   | 1945    | `skillcommand.dbss`       | 118,968 | 421 Row        | 186 to 546, 283 on average |
-| 3      | 1559 to 1945   | 1945    | `skillcommandoffset.dbss` | 4,214   | 421 Offset Row | 10                         |
-| 2      | 1346 to 1554   | 1554    | `skillcommand.dbss`       | 70,914  | 349 Row        | 176 to 280, 203 on average |
-| 2      | 1346 to 1554   | 1554    | `skillcommandoffset.dbss` | 3,494   | 349 Offset Row | 10                         |
-| 1      | 1256 to 1341   | 1341    | `skillcommand.dbss`       | 63,530  | 316 Row        | 174 to 278, 201 on average |
-| 1      | 1256 to 1341   | 1341    | `skillcommandoffset.dbss` | 3,164   | 316 Offset Row | 10                         |
+| Layout | Clients        | File                      | Bytes   | Records        | Row bytes                  |
+| ------ | -------------- | ------------------------- | ------- | -------------- | -------------------------- |
+| 4      | 1950 and later | `skillcommand.dbss`       | 211,258 | 626 Row        | 187 to 705, 337 on average |
+| 4      | 1950 and later | `skillcommandoffset.dbss` | 6,264   | 626 Offset Row | 10                         |
+| 3      | 1559 to 1945   | `skillcommand.dbss`       | 118,968 | 421 Row        | 186 to 546, 283 on average |
+| 3      | 1559 to 1945   | `skillcommandoffset.dbss` | 4,214   | 421 Offset Row | 10                         |
+| 2      | 1346 to 1554   | `skillcommand.dbss`       | 70,914  | 349 Row        | 176 to 280, 203 on average |
+| 2      | 1346 to 1554   | `skillcommandoffset.dbss` | 3,494   | 349 Offset Row | 10                         |
+| 1      | 1256 to 1341   | `skillcommand.dbss`       | 63,530  | 316 Row        | 174 to 278, 201 on average |
+| 1      | 1256 to 1341   | `skillcommandoffset.dbss` | 3,164   | 316 Offset Row | 10                         |
 
 | Layout | File                      | Known             | Unknown        |
 | ------ | ------------------------- | ----------------- | -------------- |

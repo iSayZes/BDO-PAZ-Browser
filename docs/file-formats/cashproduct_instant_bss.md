@@ -15,11 +15,11 @@ and shows it as Silver (`LUA_WORLDMAP_WORKDING_PROGRESS_IMMEDIATELY_SILVER`).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records            | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ------------------ | --------- |
-| 1      | 1250 and later | 3483    | `cashproduct_instant.bss` | 3,668 | 226 Entry, 4 Group | 16        |
+| Layout | Clients        | File                      | Bytes | Records            | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ------------------ | --------- |
+| 1      | 1250 and later | `cashproduct_instant.bss` | 3,668 | 226 Entry, 4 Group | 16        |
 
 | Layout | File                      | Known           | Unknown    |
 | ------ | ------------------------- | --------------- | ---------- |

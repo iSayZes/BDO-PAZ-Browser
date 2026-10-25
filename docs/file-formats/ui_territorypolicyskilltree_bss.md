@@ -26,15 +26,15 @@ Same layout as [`uiguildskilltreelayout.bss`](uiguildskilltreelayout_bss.md), re
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                       | Bytes | Records  | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------------ | ----- | -------- | --------- |
-| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_balenos.bss`  | 2,124 | 525 Cell | 4         |
-| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_calpheon.bss` | 2,796 | 693 Cell | 4         |
-| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_media.bss`    | 2,628 | 651 Cell | 4         |
-| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_serendia.bss` | 2,796 | 693 Cell | 4         |
-| 2      | 1584 and later | 3483    | `ui_territorypolicyskilltree_valencia.bss` | 2,628 | 651 Cell | 4         |
+| Layout | Clients        | File                                       | Bytes | Records  | Row bytes |
+| ------ | -------------- | ------------------------------------------ | ----- | -------- | --------- |
+| 2      | 1584 and later | `ui_territorypolicyskilltree_balenos.bss`  | 2,124 | 525 Cell | 4         |
+| 2      | 1584 and later | `ui_territorypolicyskilltree_calpheon.bss` | 2,796 | 693 Cell | 4         |
+| 2      | 1584 and later | `ui_territorypolicyskilltree_media.bss`    | 2,628 | 651 Cell | 4         |
+| 2      | 1584 and later | `ui_territorypolicyskilltree_serendia.bss` | 2,796 | 693 Cell | 4         |
+| 2      | 1584 and later | `ui_territorypolicyskilltree_valencia.bss` | 2,628 | 651 Cell | 4         |
 
 | Layout | File                                       | Known            | Unknown    |
 | ------ | ------------------------------------------ | ---------------- | ---------- |

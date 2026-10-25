@@ -8,11 +8,11 @@ Lists the title IDs of each title category. A `PABR` file holding one counted li
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes  | Records         | Row bytes                      |
-| ------ | -------------- | ------- | ------------------- | ------ | --------------- | ------------------------------ |
-| 1      | 1250 and later | 3483    | `titlecategory.bss` | 12,752 | 4 Category List | 792 to 5,296, 3,183 on average |
+| Layout | Clients        | File                | Bytes  | Records         | Row bytes                      |
+| ------ | -------------- | ------------------- | ------ | --------------- | ------------------------------ |
+| 1      | 1250 and later | `titlecategory.bss` | 12,752 | 4 Category List | 792 to 5,296, 3,183 on average |
 
 | Layout | File                | Known             | Unknown    |
 | ------ | ------------------- | ----------------- | ---------- |

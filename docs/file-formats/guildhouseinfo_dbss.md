@@ -21,12 +21,12 @@ and 3482.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                        | Bytes | Records          | Row bytes |
-| ------ | -------------- | ------- | --------------------------- | ----- | ---------------- | --------- |
-| 1      | 1346 and later | 3483    | `guildhouseinfo.dbss`       | 974   | 81 Craft, 23 Row | 8         |
-| 1      | 1346 and later | 3483    | `guildhouseinfooffset.dbss` | 234   | 23 Offset Row    | 10        |
+| Layout | Clients        | File                        | Bytes | Records          | Row bytes |
+| ------ | -------------- | --------------------------- | ----- | ---------------- | --------- |
+| 1      | 1346 and later | `guildhouseinfo.dbss`       | 974   | 81 Craft, 23 Row | 8         |
+| 1      | 1346 and later | `guildhouseinfooffset.dbss` | 234   | 23 Offset Row    | 10        |
 
 | Layout | File                        | Known          | Unknown     |
 | ------ | --------------------------- | -------------- | ----------- |

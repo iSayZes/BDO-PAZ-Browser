@@ -21,13 +21,13 @@ has the 14 Hwanghae (Party) bosses with their party tiers and no base items.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes  | Records                                    | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | ------ | ------------------------------------------ | --------- |
-| 3      | 3473 and later | 3483    | `elementalmonsterreward.bss` | 18,240 | 797 Reward Item, 319 Rank Tier, 118 Record | 16        |
-| 2      | 2619 to 3464   | 3464    | `elementalmonsterreward.bss` | 4,782  | 453 Reward Item, 331 Rank Tier, 122 Record | 6         |
-| 1      | 2224 to 2612   | 2612    | `elementalmonsterreward.bss` | 4,204  | 400 Reward Item, 300 Rank Tier, 100 Record | 6         |
+| Layout | Clients        | File                         | Bytes  | Records                                    | Row bytes |
+| ------ | -------------- | ---------------------------- | ------ | ------------------------------------------ | --------- |
+| 3      | 3473 and later | `elementalmonsterreward.bss` | 18,240 | 797 Reward Item, 319 Rank Tier, 118 Record | 16        |
+| 2      | 2619 to 3464   | `elementalmonsterreward.bss` | 4,782  | 453 Reward Item, 331 Rank Tier, 122 Record | 6         |
+| 1      | 2224 to 2612   | `elementalmonsterreward.bss` | 4,204  | 400 Reward Item, 300 Rank Tier, 100 Record | 6         |
 
 | Layout | File                         | Known             | Unknown    |
 | ------ | ---------------------------- | ----------------- | ---------- |

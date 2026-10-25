@@ -13,11 +13,11 @@ for is open. The file is a u32 count and fixed rows, with no PABR magic.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ----- | ------- | --------- |
-| 1      | 2358 and later | 3483    | `simplesequence.bss` | 6,946 | 534 Row | 13        |
+| Layout | Clients        | File                 | Bytes | Records | Row bytes |
+| ------ | -------------- | -------------------- | ----- | ------- | --------- |
+| 1      | 2358 and later | `simplesequence.bss` | 6,946 | 534 Row | 13        |
 
 | Layout | File                 | Known           | Unknown         |
 | ------ | -------------------- | --------------- | --------------- |

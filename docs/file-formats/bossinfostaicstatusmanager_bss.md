@@ -15,11 +15,11 @@ Rift bosses and 3 Hunting/Sniper bosses. The file name spells "staic" for
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes | Records                                                    | Row bytes               |
-| ------ | -------------- | ------- | -------------------------------- | ----- | ---------------------------------------------------------- | ----------------------- |
-| 1      | 3326 and later | 3483    | `bossinfostaicstatusmanager.bss` | 7,640 | 56 Group, 58 Group List, 29 Boss Record, 8 Reinforced Form | 4 to 126, 36 on average |
+| Layout | Clients        | File                             | Bytes | Records                                                    | Row bytes               |
+| ------ | -------------- | -------------------------------- | ----- | ---------------------------------------------------------- | ----------------------- |
+| 1      | 3326 and later | `bossinfostaicstatusmanager.bss` | 7,640 | 56 Group, 58 Group List, 29 Boss Record, 8 Reinforced Form | 4 to 126, 36 on average |
 
 | Layout | File                             | Known           | Unknown     |
 | ------ | -------------------------------- | --------------- | ----------- |

@@ -13,12 +13,12 @@ silver and more, with a price step of `1` silver in the first range and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------- | ----- | ------- | --------- |
-| 2      | 1127 and later | 3483    | `variedprice.bss` | 940   | 23 Row  | 40        |
-| 1      | 1109 to 1122   | 1122    | `variedprice.bss` | 756   | 23 Row  | 32        |
+| Layout | Clients        | File              | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------- | ----- | ------- | --------- |
+| 2      | 1127 and later | `variedprice.bss` | 940   | 23 Row  | 40        |
+| 1      | 1109 to 1122   | `variedprice.bss` | 756   | 23 Row  | 32        |
 
 | Layout | File              | Known          | Unknown    |
 | ------ | ----------------- | -------------- | ---------- |

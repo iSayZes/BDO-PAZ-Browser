@@ -14,12 +14,12 @@ active skill (`kind` `1`) and the second for every passive skill (`kind`
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes   | Records    | Row bytes |
-| ------ | -------------- | ------- | ------------------ | ------- | ---------- | --------- |
-| 2      | 1267 and later | 3483    | `privateskill.bss` | 183,552 | 15,294 Row | 12        |
-| 1      | 1194 to 1261   | 1261    | `privateskill.bss` | 302,892 | 8,413 Row  | 36        |
+| Layout | Clients        | File               | Bytes   | Records    | Row bytes |
+| ------ | -------------- | ------------------ | ------- | ---------- | --------- |
+| 2      | 1267 and later | `privateskill.bss` | 183,552 | 15,294 Row | 12        |
+| 1      | 1194 to 1261   | `privateskill.bss` | 302,892 | 8,413 Row  | 36        |
 
 | Layout | File               | Known              | Unknown    |
 | ------ | ------------------ | ------------------ | ---------- |

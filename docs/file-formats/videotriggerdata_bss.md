@@ -16,12 +16,12 @@ video in place of the sequence.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ----- | ------- | --------- |
-| 2      | 3458 and later | 3483    | `videotriggerdata.bss` | 1,676 | 6 Row   | 45        |
-| 1      | 3454           | 3454    | `videotriggerdata.bss` | 1,507 | 5 Row   | 44        |
+| Layout | Clients        | File                   | Bytes | Records | Row bytes |
+| ------ | -------------- | ---------------------- | ----- | ------- | --------- |
+| 2      | 3458 and later | `videotriggerdata.bss` | 1,676 | 6 Row   | 45        |
+| 1      | 3454           | `videotriggerdata.bss` | 1,507 | 5 Row   | 44        |
 
 | Layout | File                   | Known            | Unknown    |
 | ------ | ---------------------- | ---------------- | ---------- |

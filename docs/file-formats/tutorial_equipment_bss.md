@@ -18,12 +18,12 @@ Two files share the format:
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                             | Bytes | Records                     | Row bytes |
-| ------ | -------------- | ------- | -------------------------------- | ----- | --------------------------- | --------- |
-| 1      | 1866 and later | 3483    | `cutscenetutorial_equipment.bss` | 9,356 | 352 Class Equipment, 11 Row | 25        |
-| 1      | 2401 and later | 3483    | `sequencetutorial_equipment.bss` | 3,389 | 128 Class Equipment, 4 Row  | 25        |
+| Layout | Clients        | File                             | Bytes | Records                     | Row bytes |
+| ------ | -------------- | -------------------------------- | ----- | --------------------------- | --------- |
+| 1      | 1866 and later | `cutscenetutorial_equipment.bss` | 9,356 | 352 Class Equipment, 11 Row | 25        |
+| 1      | 2401 and later | `sequencetutorial_equipment.bss` | 3,389 | 128 Class Equipment, 4 Row  | 25        |
 
 | Layout | File                             | Known            | Unknown    |
 | ------ | -------------------------------- | ---------------- | ---------- |

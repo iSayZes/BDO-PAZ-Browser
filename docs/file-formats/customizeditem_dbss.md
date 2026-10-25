@@ -18,12 +18,12 @@ the box contents.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                        | Bytes   | Records                 | Row bytes               |
-| ------ | -------------- | ------- | --------------------------- | ------- | ----------------------- | ----------------------- |
-| 1      | 1346 and later | 3483    | `customizeditem.dbss`       | 763,556 | 18,295 Item, 879 Record | 40 to 54, 41 on average |
-| 1      | 1346 and later | 3483    | `customizeditemoffset.dbss` | 8,794   | 879 Index Row           | 10                      |
+| Layout | Clients        | File                        | Bytes   | Records                 | Row bytes               |
+| ------ | -------------- | --------------------------- | ------- | ----------------------- | ----------------------- |
+| 1      | 1346 and later | `customizeditem.dbss`       | 763,556 | 18,295 Item, 879 Record | 40 to 54, 41 on average |
+| 1      | 1346 and later | `customizeditemoffset.dbss` | 8,794   | 879 Index Row           | 10                      |
 
 | Layout | File                        | Known              | Unknown    |
 | ------ | --------------------------- | ------------------ | ---------- |

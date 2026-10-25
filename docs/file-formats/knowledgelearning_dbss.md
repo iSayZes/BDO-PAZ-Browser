@@ -8,12 +8,12 @@ Defines how knowledge entries are obtained from characters and items. The file h
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes  | Records                                                       | Row bytes |
-| ------ | -------------- | ------- | ------------------------------ | ------ | ------------------------------------------------------------- | --------- |
-| 1      | 1346 and later | 3483    | `knowledgelearning.dbss`       | 79,534 | 4,678 Learning Record, 4,678 Learning Entry, 2 Learning Table | 13        |
-| 1      | 1346 and later | 3483    | `knowledgelearningoffset.dbss` | 56,148 | 4,678 Index Row, 2 Index Table                                | 12        |
+| Layout | Clients        | File                           | Bytes  | Records                                                       | Row bytes |
+| ------ | -------------- | ------------------------------ | ------ | ------------------------------------------------------------- | --------- |
+| 1      | 1346 and later | `knowledgelearning.dbss`       | 79,534 | 4,678 Learning Record, 4,678 Learning Entry, 2 Learning Table | 13        |
+| 1      | 1346 and later | `knowledgelearningoffset.dbss` | 56,148 | 4,678 Index Row, 2 Index Table                                | 12        |
 
 | Layout | File                           | Known             | Unknown        |
 | ------ | ------------------------------ | ----------------- | -------------- |

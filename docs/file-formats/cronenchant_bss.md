@@ -23,11 +23,11 @@ hold their counts; the client reads those through
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File              | Bytes  | Records                                     | Row bytes |
-| ------ | ------------- | ------- | ----------------- | ------ | ------------------------------------------- | --------- |
-| 1      | 805 and later | 3483    | `cronenchant.bss` | 23,580 | 600 Step, 30 Grade Block, 10 Category Block | 39        |
+| Layout | Clients       | File              | Bytes  | Records                                     | Row bytes |
+| ------ | ------------- | ----------------- | ------ | ------------------------------------------- | --------- |
+| 1      | 805 and later | `cronenchant.bss` | 23,580 | 600 Step, 30 Grade Block, 10 Category Block | 39        |
 
 | Layout | File              | Known             | Unknown    |
 | ------ | ----------------- | ----------------- | ---------- |

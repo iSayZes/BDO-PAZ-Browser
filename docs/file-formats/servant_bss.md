@@ -13,13 +13,13 @@ stats live in [servantexperience.dbss](servantexperience_dbss.md).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes  | Records        | Row bytes                 |
-| ------ | -------------- | ------- | -------------------- | ------ | -------------- | ------------------------- |
-| 2      | 2794 and later | 3483    | `servant.bss`        | 45,128 | 419 Row        | 84 to 165, 108 on average |
-| 1      | 1421 to 2783   | 2783    | `servant.dbss`       | 40,590 | 384 Row        | 84 to 165, 106 on average |
-| 1      | 1421 to 2783   | 2783    | `servantoffset.dbss` | 3,844  | 384 Offset Row | 10                        |
+| Layout | Clients        | File                 | Bytes  | Records        | Row bytes                 |
+| ------ | -------------- | -------------------- | ------ | -------------- | ------------------------- |
+| 2      | 2794 and later | `servant.bss`        | 45,128 | 419 Row        | 84 to 165, 108 on average |
+| 1      | 1421 to 2783   | `servant.dbss`       | 40,590 | 384 Row        | 84 to 165, 106 on average |
+| 1      | 1421 to 2783   | `servantoffset.dbss` | 3,844  | 384 Offset Row | 10                        |
 
 | Layout | File                 | Known            | Unknown        |
 | ------ | -------------------- | ---------------- | -------------- |

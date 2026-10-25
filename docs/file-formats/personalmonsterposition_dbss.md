@@ -14,14 +14,14 @@ every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                 | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------ | ----- | ------------- | --------- |
-| 2      | 2134 and later | 3483    | `personalmonsterposition.dbss`       | 1,060 | 48 Row        | 22        |
-| 2      | 2134 and later | 3483    | `personalmonsterpositionoffset.dbss` | 580   | 48 Offset Row | 12        |
-| 1      | 1280 to 2130   | 2130    | `personalmonsterposition.dbss`       | 944   | 47 Row        | 20        |
-| 1      | 1280 to 2130   | 2130    | `personalmonsterpositionoffset.dbss` | 568   | 47 Offset Row | 12        |
+| Layout | Clients        | File                                 | Bytes | Records       | Row bytes |
+| ------ | -------------- | ------------------------------------ | ----- | ------------- | --------- |
+| 2      | 2134 and later | `personalmonsterposition.dbss`       | 1,060 | 48 Row        | 22        |
+| 2      | 2134 and later | `personalmonsterpositionoffset.dbss` | 580   | 48 Offset Row | 12        |
+| 1      | 1280 to 2130   | `personalmonsterposition.dbss`       | 944   | 47 Row        | 20        |
+| 1      | 1280 to 2130   | `personalmonsterpositionoffset.dbss` | 568   | 47 Offset Row | 12        |
 
 | Layout | File                                 | Known          | Unknown     |
 | ------ | ------------------------------------ | -------------- | ----------- |

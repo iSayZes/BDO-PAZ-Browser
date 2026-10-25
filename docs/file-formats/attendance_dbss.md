@@ -16,16 +16,16 @@ event through `ToClient_GetAttendanceInfoWrapper(index)` and the getters
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes   | Records               | Row bytes |
-| ------ | -------------- | ------- | ----------------------- | ------- | --------------------- | --------- |
-| 3      | 2235 and later | 3483    | `attendance.dbss`       | 275,558 | 6,810 Reward, 298 Row | 25        |
-| 3      | 2235 and later | 3483    | `attendanceoffset.dbss` | 2,984   | 298 Offset Row        | 10        |
-| 2      | 1749 to 2229   | 2229    | `attendance.dbss`       | 175,848 | 4,524 Reward, 185 Row | 25        |
-| 2      | 1749 to 2229   | 2229    | `attendanceoffset.dbss` | 1,854   | 185 Offset Row        | 10        |
-| 1      | 1250 to 1743   | 1743    | `attendance.dbss`       | 97,195  | 3,269 Reward, 126 Row | 17        |
-| 1      | 1250 to 1743   | 1743    | `attendanceoffset.dbss` | 1,264   | 126 Offset Row        | 10        |
+| Layout | Clients        | File                    | Bytes   | Records               | Row bytes |
+| ------ | -------------- | ----------------------- | ------- | --------------------- | --------- |
+| 3      | 2235 and later | `attendance.dbss`       | 275,558 | 6,810 Reward, 298 Row | 25        |
+| 3      | 2235 and later | `attendanceoffset.dbss` | 2,984   | 298 Offset Row        | 10        |
+| 2      | 1749 to 2229   | `attendance.dbss`       | 175,848 | 4,524 Reward, 185 Row | 25        |
+| 2      | 1749 to 2229   | `attendanceoffset.dbss` | 1,854   | 185 Offset Row        | 10        |
+| 1      | 1250 to 1743   | `attendance.dbss`       | 97,195  | 3,269 Reward, 126 Row | 17        |
+| 1      | 1250 to 1743   | `attendanceoffset.dbss` | 1,264   | 126 Offset Row        | 10        |
 
 | Layout | File                    | Known             | Unknown         |
 | ------ | ----------------------- | ----------------- | --------------- |

@@ -11,12 +11,12 @@ potion type: list `0` is the HP potions for the fairy's HP slot, lists `1`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records       | Row bytes                  |
-| ------ | -------------- | ------- | ------------------------ | ----- | ------------- | -------------------------- |
-| 1      | 1261 and later | 3483    | `fairypotion.dbss`       | 1,200 | 4 Potion List | 257 to 313, 299 on average |
-| 1      | 1261 and later | 3483    | `fairypotionoffset.dbss` | 44    | 4 Offset Row  | 10                         |
+| Layout | Clients        | File                     | Bytes | Records       | Row bytes                  |
+| ------ | -------------- | ------------------------ | ----- | ------------- | -------------------------- |
+| 1      | 1261 and later | `fairypotion.dbss`       | 1,200 | 4 Potion List | 257 to 313, 299 on average |
+| 1      | 1261 and later | `fairypotionoffset.dbss` | 44    | 4 Offset Row  | 10                         |
 
 | Layout | File                     | Known            | Unknown    |
 | ------ | ------------------------ | ---------------- | ---------- |

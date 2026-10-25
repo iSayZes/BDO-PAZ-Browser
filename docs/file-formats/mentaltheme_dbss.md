@@ -8,12 +8,12 @@ Defines the knowledge group/category tree. Each theme record stores a group ID, 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes   | Records                       | Row bytes                   |
-| ------ | -------------- | ------- | ------------------------ | ------- | ----------------------------- | --------------------------- |
-| 1      | 1346 and later | 3483    | `mentaltheme.dbss`       | 108,785 | 939 Theme Payload, 939 Record | 45 to 1,587, 114 on average |
-| 1      | 1346 and later | 3483    | `mentalthemeoffset.dbss` | 9,394   | 939 Offset Row                | 10                          |
+| Layout | Clients        | File                     | Bytes   | Records                       | Row bytes                   |
+| ------ | -------------- | ------------------------ | ------- | ----------------------------- | --------------------------- |
+| 1      | 1346 and later | `mentaltheme.dbss`       | 108,785 | 939 Theme Payload, 939 Record | 45 to 1,587, 114 on average |
+| 1      | 1346 and later | `mentalthemeoffset.dbss` | 9,394   | 939 Offset Row                | 10                          |
 
 | Layout | File                     | Known             | Unknown        |
 | ------ | ------------------------ | ----------------- | -------------- |

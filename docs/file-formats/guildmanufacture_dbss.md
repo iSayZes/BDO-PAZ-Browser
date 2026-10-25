@@ -14,14 +14,14 @@ it, keyed by the product item key.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records       | Row bytes                  |
-| ------ | -------------- | ------- | ----------------------------- | ----- | ------------- | -------------------------- |
-| 2      | 2726 and later | 3483    | `guildmanufacture.dbss`       | 2,120 | 16 Row        | 125 to 163, 132 on average |
-| 2      | 2726 and later | 3483    | `guildmanufactureoffset.dbss` | 196   | 16 Offset Row | 12                         |
-| 1      | 1346 to 2717   | 2717    | `guildmanufacture.dbss`       | 2,612 | 20 Row        | 123 to 161, 130 on average |
-| 1      | 1346 to 2717   | 2717    | `guildmanufactureoffset.dbss` | 244   | 20 Offset Row | 12                         |
+| Layout | Clients        | File                          | Bytes | Records       | Row bytes                  |
+| ------ | -------------- | ----------------------------- | ----- | ------------- | -------------------------- |
+| 2      | 2726 and later | `guildmanufacture.dbss`       | 2,120 | 16 Row        | 125 to 163, 132 on average |
+| 2      | 2726 and later | `guildmanufactureoffset.dbss` | 196   | 16 Offset Row | 12                         |
+| 1      | 1346 to 2717   | `guildmanufacture.dbss`       | 2,612 | 20 Row        | 123 to 161, 130 on average |
+| 1      | 1346 to 2717   | `guildmanufactureoffset.dbss` | 244   | 20 Offset Row | 12                         |
 
 | Layout | File                          | Known            | Unknown    |
 | ------ | ----------------------------- | ---------------- | ---------- |

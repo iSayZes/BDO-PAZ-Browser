@@ -8,12 +8,12 @@ Defines one record per pet: species, tier, level cap, EXP table, look, icon path
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File             | Bytes   | Records                     | Row bytes                  |
-| ------ | -------------- | ------- | ---------------- | ------- | --------------------------- | -------------------------- |
-| 1      | 1685 and later | 3483    | `pet.dbss`       | 376,078 | 2,009 Payload, 2,009 Record | 180 to 194, 185 on average |
-| 1      | 1685 and later | 3483    | `petoffset.dbss` | 20,094  | 2,009 Offset Row            | 10                         |
+| Layout | Clients        | File             | Bytes   | Records                     | Row bytes                  |
+| ------ | -------------- | ---------------- | ------- | --------------------------- | -------------------------- |
+| 1      | 1685 and later | `pet.dbss`       | 376,078 | 2,009 Payload, 2,009 Record | 180 to 194, 185 on average |
+| 1      | 1685 and later | `petoffset.dbss` | 20,094  | 2,009 Offset Row            | 10                         |
 
 | Layout | File             | Known             | Unknown         |
 | ------ | ---------------- | ----------------- | --------------- |

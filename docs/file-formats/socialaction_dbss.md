@@ -17,14 +17,14 @@ every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes  | Records       | Row bytes                    |
-| ------ | -------------- | ------- | ------------------------- | ------ | ------------- | ---------------------------- |
-| 2      | 3072 and later | 3483    | `socialaction.dbss`       | 82,933 | 86 Row        | 199 to 3,888, 964 on average |
-| 2      | 3072 and later | 3483    | `socialactionoffset.dbss` | 864    | 86 Offset Row | 10                           |
-| 1      | 1346 to 3062   | 3062    | `socialaction.dbss`       | 49,041 | 73 Row        | 198 to 3,771, 672 on average |
-| 1      | 1346 to 3062   | 3062    | `socialactionoffset.dbss` | 734    | 73 Offset Row | 10                           |
+| Layout | Clients        | File                      | Bytes  | Records       | Row bytes                    |
+| ------ | -------------- | ------------------------- | ------ | ------------- | ---------------------------- |
+| 2      | 3072 and later | `socialaction.dbss`       | 82,933 | 86 Row        | 199 to 3,888, 964 on average |
+| 2      | 3072 and later | `socialactionoffset.dbss` | 864    | 86 Offset Row | 10                           |
+| 1      | 1346 to 3062   | `socialaction.dbss`       | 49,041 | 73 Row        | 198 to 3,771, 672 on average |
+| 1      | 1346 to 3062   | `socialactionoffset.dbss` | 734    | 73 Offset Row | 10                           |
 
 | Layout | File                      | Known            | Unknown      |
 | ------ | ------------------------- | ---------------- | ------------ |

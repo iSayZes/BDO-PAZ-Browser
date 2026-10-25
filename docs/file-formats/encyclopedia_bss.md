@@ -14,12 +14,12 @@ size, Korean description and artwork path. The window reads a row through
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes   | Records             | Row bytes |
-| ------ | -------------- | ------- | ------------------ | ------- | ------------------- | --------- |
-| 2      | 2849 and later | 3483    | `encyclopedia.bss` | 129,560 | 1,510 Dice, 302 Row | 12        |
-| 1      | 1280 to 2844   | 2844    | `encyclopedia.bss` | 102,675 | 1,390 Dice, 278 Row | 12        |
+| Layout | Clients        | File               | Bytes   | Records             | Row bytes |
+| ------ | -------------- | ------------------ | ------- | ------------------- | --------- |
+| 2      | 2849 and later | `encyclopedia.bss` | 129,560 | 1,510 Dice, 302 Row | 12        |
+| 1      | 1280 to 2844   | `encyclopedia.bss` | 102,675 | 1,390 Dice, 278 Row | 12        |
 
 | Layout | File               | Known             | Unknown        |
 | ------ | ------------------ | ----------------- | -------------- |

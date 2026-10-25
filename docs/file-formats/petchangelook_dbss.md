@@ -13,14 +13,14 @@ where every record's payload sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes  | Records                           | Row bytes                 |
-| ------ | -------------- | ------- | -------------------------- | ------ | --------------------------------- | ------------------------- |
-| 2      | 3458 and later | 3483    | `petchangelook.dbss`       | 70,196 | 653 Look, 149 Payload, 149 Record | 99 to 211, 106 on average |
-| 2      | 3458 and later | 3483    | `petchangelookoffset.dbss` | 1,494  | 149 Offset Row                    | 10                        |
-| 1      | 1433 to 3412   | 3412    | `petchangelook.dbss`       | 61,219 | 651 Look, 149 Payload, 149 Record | 86 to 184, 92 on average  |
-| 1      | 1433 to 3412   | 3412    | `petchangelookoffset.dbss` | 1,494  | 149 Offset Row                    | 10                        |
+| Layout | Clients        | File                       | Bytes  | Records                           | Row bytes                 |
+| ------ | -------------- | -------------------------- | ------ | --------------------------------- | ------------------------- |
+| 2      | 3458 and later | `petchangelook.dbss`       | 70,196 | 653 Look, 149 Payload, 149 Record | 99 to 211, 106 on average |
+| 2      | 3458 and later | `petchangelookoffset.dbss` | 1,494  | 149 Offset Row                    | 10                        |
+| 1      | 1433 to 3412   | `petchangelook.dbss`       | 61,219 | 651 Look, 149 Payload, 149 Record | 86 to 184, 92 on average  |
+| 1      | 1433 to 3412   | `petchangelookoffset.dbss` | 1,494  | 149 Offset Row                    | 10                        |
 
 | Layout | File                       | Known             | Unknown        |
 | ------ | -------------------------- | ----------------- | -------------- |

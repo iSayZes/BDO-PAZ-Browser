@@ -14,12 +14,12 @@ shape of the [`oceansiegeinfo.bss`](oceansiegeinfo_bss.md) rows.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | ---------------------- | ----- | ------- | ----------------------- |
-| 2      | 2978 and later | 3483    | `villagesiegeinfo.bss` | 674   | 41 Row  | 14 to 16, 16 on average |
-| 1      | 1276 to 2970   | 2970    | `villagesiegeinfo.bss` | 1,820 | 59 Row  | 22 to 24, 24 on average |
+| Layout | Clients        | File                   | Bytes | Records | Row bytes               |
+| ------ | -------------- | ---------------------- | ----- | ------- | ----------------------- |
+| 2      | 2978 and later | `villagesiegeinfo.bss` | 674   | 41 Row  | 14 to 16, 16 on average |
+| 1      | 1276 to 2970   | `villagesiegeinfo.bss` | 1,820 | 59 Row  | 22 to 24, 24 on average |
 
 | Layout | File                   | Known           | Unknown       |
 | ------ | ---------------------- | --------------- | ------------- |

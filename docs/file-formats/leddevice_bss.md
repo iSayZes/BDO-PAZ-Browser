@@ -13,14 +13,14 @@ it holds 16 animations for 5 device types, from `EnhancementFailed` to
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File            | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | --------------- | ----- | ------- | --------- |
-| 4      | 1335 and later | 3483    | `leddevice.bss` | 3,028 | 80 Row  | 16        |
-| 3      | 1321 to 1333   | 1333    | `leddevice.bss` | 2,868 | 80 Row  | 14        |
-| 2      | 1156 to 1319   | 1319    | `leddevice.bss` | 2,708 | 80 Row  | 12        |
-| 1      | 1137 to 1149   | 1149    | `leddevice.bss` | 470   | 16 Row  | 9         |
+| Layout | Clients        | File            | Bytes | Records | Row bytes |
+| ------ | -------------- | --------------- | ----- | ------- | --------- |
+| 4      | 1335 and later | `leddevice.bss` | 3,028 | 80 Row  | 16        |
+| 3      | 1321 to 1333   | `leddevice.bss` | 2,868 | 80 Row  | 14        |
+| 2      | 1156 to 1319   | `leddevice.bss` | 2,708 | 80 Row  | 12        |
+| 1      | 1137 to 1149   | `leddevice.bss` | 470   | 16 Row  | 9         |
 
 | Layout | File            | Known            | Unknown    |
 | ------ | --------------- | ---------------- | ---------- |

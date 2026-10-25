@@ -16,14 +16,14 @@ change next to the temperature, humidity and groundwater bars. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes  | Records                                             | Row bytes |
-| ------ | -------------- | ------- | ------------------------------- | ------ | --------------------------------------------------- | --------- |
-| 2      | 2726 and later | 3483    | `cultivationweather.dbss`       | 77,916 | 5,247 Range, 2,020 Weather, 404 Payload, 404 Record | 12        |
-| 2      | 2726 and later | 3483    | `cultivationweatheroffset.dbss` | 4,852  | 404 Offset Row                                      | 12        |
-| 1      | 1346 to 2717   | 2717    | `cultivationweather.dbss`       | 64,771 | 4,454 Range, 1,715 Weather, 343 Payload, 343 Record | 12        |
-| 1      | 1346 to 2717   | 2717    | `cultivationweatheroffset.dbss` | 3,434  | 343 Offset Row                                      | 10        |
+| Layout | Clients        | File                            | Bytes  | Records                                             | Row bytes |
+| ------ | -------------- | ------------------------------- | ------ | --------------------------------------------------- | --------- |
+| 2      | 2726 and later | `cultivationweather.dbss`       | 77,916 | 5,247 Range, 2,020 Weather, 404 Payload, 404 Record | 12        |
+| 2      | 2726 and later | `cultivationweatheroffset.dbss` | 4,852  | 404 Offset Row                                      | 12        |
+| 1      | 1346 to 2717   | `cultivationweather.dbss`       | 64,771 | 4,454 Range, 1,715 Weather, 343 Payload, 343 Record | 12        |
+| 1      | 1346 to 2717   | `cultivationweatheroffset.dbss` | 3,434  | 343 Offset Row                                      | 10        |
 
 | Layout | File                            | Known             | Unknown    |
 | ------ | ------------------------------- | ----------------- | ---------- |

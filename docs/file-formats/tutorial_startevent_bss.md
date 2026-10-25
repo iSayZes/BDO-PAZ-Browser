@@ -14,12 +14,12 @@ hashes.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records                                   | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ----------------------------------------- | --------- |
-| 2      | 1725 and later | 3483    | `tutorial_startevent.bss` | 1,770 | 34 Highlight, 85 Selected Control, 17 Row | 8         |
-| 1      | 1717           | 1717    | `tutorial_startevent.bss` | 851   | 28 Highlight, 14 Row                      | 21        |
+| Layout | Clients        | File                      | Bytes | Records                                   | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ----------------------------------------- | --------- |
+| 2      | 1725 and later | `tutorial_startevent.bss` | 1,770 | 34 Highlight, 85 Selected Control, 17 Row | 8         |
+| 1      | 1717           | `tutorial_startevent.bss` | 851   | 28 Highlight, 14 Row                      | 21        |
 
 | Layout | File                      | Known            | Unknown    |
 | ------ | ------------------------- | ---------------- | ---------- |

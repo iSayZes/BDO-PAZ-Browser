@@ -12,11 +12,11 @@ character types, the graduation quest and the graduation items.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                        | Bytes | Records                                      | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------------- | ----- | -------------------------------------------- | --------- |
-| 1      | 1590 and later | 3483    | `autoseasonclosechangeitemstaticstatus.bss` | 1,496 | 89 Row, 2 Season Challenge, 2 Character Type | 16        |
+| Layout | Clients        | File                                        | Bytes | Records                                      | Row bytes |
+| ------ | -------------- | ------------------------------------------- | ----- | -------------------------------------------- | --------- |
+| 1      | 1590 and later | `autoseasonclosechangeitemstaticstatus.bss` | 1,496 | 89 Row, 2 Season Challenge, 2 Character Type | 16        |
 
 | Layout | File                                        | Known           | Unknown     |
 | ------ | ------------------------------------------- | --------------- | ----------- |

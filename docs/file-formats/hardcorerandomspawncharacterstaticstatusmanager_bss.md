@@ -15,11 +15,11 @@ Laytenn and Ancient Puturum. The characters are
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                                  | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------------------------------------------- | ----- | ------- | --------- |
-| 1      | 2849 and later | 3483    | `hardcorerandomspawncharacterstaticstatusmanager.bss` | 1,620 | 12 Row  | 19        |
+| Layout | Clients        | File                                                  | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------------------------------------------- | ----- | ------- | --------- |
+| 1      | 2849 and later | `hardcorerandomspawncharacterstaticstatusmanager.bss` | 1,620 | 12 Row  | 19        |
 
 | Layout | File                                                  | Known           | Unknown      |
 | ------ | ----------------------------------------------------- | --------------- | ------------ |

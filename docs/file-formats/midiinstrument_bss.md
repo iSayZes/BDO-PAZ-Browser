@@ -16,14 +16,14 @@ The composer Lua (`panel_window_selectinstruments_all_1.luac`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | -------------------- | ----- | ------- | ----------------------- |
-| 4      | 1846 and later | 3483    | `midiinstrument.bss` | 5,242 | 38 Row  | 56 to 69, 63 on average |
-| 3      | 1547 to 1838   | 1838    | `midiinstrument.bss` | 1,833 | 15 Row  | 53 to 61, 55 on average |
-| 2      | 1504 to 1537   | 1537    | `midiinstrument.bss` | 974   | 8 Row   | 52 to 53, 52 on average |
-| 1      | 1409 to 1500   | 1500    | `midiinstrument.bss` | 887   | 8 Row   | 47 to 48, 47 on average |
+| Layout | Clients        | File                 | Bytes | Records | Row bytes               |
+| ------ | -------------- | -------------------- | ----- | ------- | ----------------------- |
+| 4      | 1846 and later | `midiinstrument.bss` | 5,242 | 38 Row  | 56 to 69, 63 on average |
+| 3      | 1547 to 1838   | `midiinstrument.bss` | 1,833 | 15 Row  | 53 to 61, 55 on average |
+| 2      | 1504 to 1537   | `midiinstrument.bss` | 974   | 8 Row   | 52 to 53, 52 on average |
+| 1      | 1409 to 1500   | `midiinstrument.bss` | 887   | 8 Row   | 47 to 48, 47 on average |
 
 | Layout | File                 | Known            | Unknown      |
 | ------ | -------------------- | ---------------- | ------------ |

@@ -16,13 +16,13 @@ House and Hyeollokdang. The manor contract window
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes | Records               | Row bytes |
-| ------ | -------------- | ------- | --------------------- | ----- | --------------------- | --------- |
-| 3      | 1602 and later | 3483    | `mansionlandinfo.bss` | 392   | 4 Row                 | 93        |
-| 2      | 2189 to 2601   | 2601    | `mansionlandinfo.bss` | 251   | 3 Row                 | 77        |
-| 1      | 1737 to 2163   | 2163    | `mansionlandinfo.bss` | 88    | 1 Row, 1 String Table | 68        |
+| Layout | Clients        | File                  | Bytes | Records               | Row bytes |
+| ------ | -------------- | --------------------- | ----- | --------------------- | --------- |
+| 3      | 1602 and later | `mansionlandinfo.bss` | 392   | 4 Row                 | 93        |
+| 2      | 2189 to 2601   | `mansionlandinfo.bss` | 251   | 3 Row                 | 77        |
+| 1      | 1737 to 2163   | `mansionlandinfo.bss` | 88    | 1 Row, 1 String Table | 68        |
 
 | Layout | File                  | Known         | Unknown       |
 | ------ | --------------------- | ------------- | ------------- |

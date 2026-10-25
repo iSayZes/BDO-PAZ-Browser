@@ -8,14 +8,14 @@ One row per class type and level with EXP amounts for action kinds: quests, gath
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes   | Records                                             | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ------- | --------------------------------------------------- | --------- |
-| 2      | 2171 and later | 3483    | `actionexp.dbss`       | 577,128 | 6,480 Level Row, 6,480 Level Entry, 102 Class Block | 85        |
-| 2      | 2171 and later | 3483    | `actionexpoffset.dbss` | 78,164  | 6,480 Offset Row, 101 Offset Block                  | 12        |
-| 1      | 1346 to 2163   | 2163    | `actionexp.dbss`       | 316,308 | 3,900 Level Row, 3,900 Level Entry, 102 Class Block | 77        |
-| 1      | 1346 to 2163   | 2163    | `actionexpoffset.dbss` | 47,204  | 3,900 Offset Row, 101 Offset Block                  | 12        |
+| Layout | Clients        | File                   | Bytes   | Records                                             | Row bytes |
+| ------ | -------------- | ---------------------- | ------- | --------------------------------------------------- | --------- |
+| 2      | 2171 and later | `actionexp.dbss`       | 577,128 | 6,480 Level Row, 6,480 Level Entry, 102 Class Block | 85        |
+| 2      | 2171 and later | `actionexpoffset.dbss` | 78,164  | 6,480 Offset Row, 101 Offset Block                  | 12        |
+| 1      | 1346 to 2163   | `actionexp.dbss`       | 316,308 | 3,900 Level Row, 3,900 Level Entry, 102 Class Block | 77        |
+| 1      | 1346 to 2163   | `actionexpoffset.dbss` | 47,204  | 3,900 Offset Row, 101 Offset Block                  | 12        |
 
 | Layout | File                   | Known              | Unknown           |
 | ------ | ---------------------- | ------------------ | ----------------- |

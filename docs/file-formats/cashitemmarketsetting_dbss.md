@@ -14,14 +14,14 @@ One 46-byte row per item, keyed by item ID. On client 3483 the file holds
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes   | Records           | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ------- | ----------------- | --------- |
-| 2      | 1346 and later | 3483    | `cashitemmarketsetting.dbss`       | 462,826 | 10,061 Row        | 46        |
-| 2      | 1346 and later | 3483    | `cashitemmarketsettingoffset.dbss` | 120,752 | 10,061 Offset Row | 12        |
-| 1      | 1250 to 1341   | 1341    | `cashitemmarketsetting.dbss`       | 241,520 | 5,750 Row         | 42        |
-| 1      | 1250 to 1341   | 1341    | `cashitemmarketsettingoffset.dbss` | 69,020  | 5,750 Offset Row  | 12        |
+| Layout | Clients        | File                               | Bytes   | Records           | Row bytes |
+| ------ | -------------- | ---------------------------------- | ------- | ----------------- | --------- |
+| 2      | 1346 and later | `cashitemmarketsetting.dbss`       | 462,826 | 10,061 Row        | 46        |
+| 2      | 1346 and later | `cashitemmarketsettingoffset.dbss` | 120,752 | 10,061 Offset Row | 12        |
+| 1      | 1250 to 1341   | `cashitemmarketsetting.dbss`       | 241,520 | 5,750 Row         | 42        |
+| 1      | 1250 to 1341   | `cashitemmarketsettingoffset.dbss` | 69,020  | 5,750 Offset Row  | 12        |
 
 | Layout | File                               | Known              | Unknown          |
 | ------ | ---------------------------------- | ------------------ | ---------------- |

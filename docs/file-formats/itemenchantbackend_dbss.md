@@ -15,12 +15,12 @@ the blocks with the keys of `itemenchantoffset.dbss`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes       | Records            | Row bytes                    |
-| ------ | -------------- | ------- | ------------------------------- | ----------- | ------------------ | ---------------------------- |
-| 1      | 1964 and later | 3483    | `itemenchantbackend.dbss`       | 126,919,140 | 169,345 Block      | 320 to 4,484, 749 on average |
-| 1      | 1964 and later | 3483    | `itemenchantbackendoffset.dbss` | 2,032,160   | 169,345 Offset Row | 12                           |
+| Layout | Clients        | File                            | Bytes       | Records            | Row bytes                    |
+| ------ | -------------- | ------------------------------- | ----------- | ------------------ | ---------------------------- |
+| 1      | 1964 and later | `itemenchantbackend.dbss`       | 126,919,140 | 169,345 Block      | 320 to 4,484, 749 on average |
+| 1      | 1964 and later | `itemenchantbackendoffset.dbss` | 2,032,160   | 169,345 Offset Row | 12                           |
 
 | Layout | File                            | Known                | Unknown               |
 | ------ | ------------------------------- | -------------------- | --------------------- |

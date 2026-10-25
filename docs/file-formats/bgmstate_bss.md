@@ -11,13 +11,13 @@ rows name seven events, from `BGM_STATE_HOME` to `BGM_STATE_DEFAULT`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File           | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | -------------- | ----- | ------- | --------- |
-| 3      | 1886 and later | 3483    | `bgmstate.bss` | 353   | 12 Row  | 12        |
-| 2      | 1267 to 1881   | 1881    | `bgmstate.bss` | 358   | 12 Row  | 16        |
-| 1      | 1250 to 1261   | 1261    | `bgmstate.bss` | 478   | 24 Row  | 13        |
+| Layout | Clients        | File           | Bytes | Records | Row bytes |
+| ------ | -------------- | -------------- | ----- | ------- | --------- |
+| 3      | 1886 and later | `bgmstate.bss` | 353   | 12 Row  | 12        |
+| 2      | 1267 to 1881   | `bgmstate.bss` | 358   | 12 Row  | 16        |
+| 1      | 1250 to 1261   | `bgmstate.bss` | 478   | 24 Row  | 13        |
 
 | Layout | File           | Known          | Unknown      |
 | ------ | -------------- | -------------- | ------------ |

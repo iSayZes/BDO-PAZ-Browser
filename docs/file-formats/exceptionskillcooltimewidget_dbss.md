@@ -34,12 +34,12 @@ Client 1485 has 5 of those rows: `1209`, the three Valkyrie rows and `94`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                      | Bytes | Records     | Row bytes |
-| ------ | -------------- | ------- | ----------------------------------------- | ----- | ----------- | --------- |
-| 1      | 1292 and later | 3483    | `exceptionskillcooltimewidget.dbss`       | 140   | 6 Row       | 20        |
-| 1      | 1292 and later | 3483    | `exceptionskillcooltimewidgetoffset.dbss` | 76    | 6 Index Row | 12        |
+| Layout | Clients        | File                                      | Bytes | Records     | Row bytes |
+| ------ | -------------- | ----------------------------------------- | ----- | ----------- | --------- |
+| 1      | 1292 and later | `exceptionskillcooltimewidget.dbss`       | 140   | 6 Row       | 20        |
+| 1      | 1292 and later | `exceptionskillcooltimewidgetoffset.dbss` | 76    | 6 Index Row | 12        |
 
 | Layout | File                                      | Known          | Unknown    |
 | ------ | ----------------------------------------- | -------------- | ---------- |

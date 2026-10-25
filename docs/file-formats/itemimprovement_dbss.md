@@ -12,14 +12,14 @@ ties it to the stones of
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes   | Records         | Row bytes               |
-| ------ | -------------- | ------- | ---------------------------- | ------- | --------------- | ----------------------- |
-| 2      | 3258 and later | 3483    | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
-| 2      | 3258 and later | 3483    | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
-| 1      | 1346 to 2498   | 2498    | `itemimprovement.dbss`       | 121,142 | 3,274 Record    | 37                      |
-| 1      | 1346 to 2498   | 2498    | `itemimprovementoffset.dbss` | 39,292  | 3,274 Index Row | 12                      |
+| Layout | Clients        | File                         | Bytes   | Records         | Row bytes               |
+| ------ | -------------- | ---------------------------- | ------- | --------------- | ----------------------- |
+| 2      | 3258 and later | `itemimprovement.dbss`       | 174,276 | 3,904 Record    | 29 to 45, 45 on average |
+| 2      | 3258 and later | `itemimprovementoffset.dbss` | 46,852  | 3,904 Index Row | 12                      |
+| 1      | 1346 to 2498   | `itemimprovement.dbss`       | 121,142 | 3,274 Record    | 37                      |
+| 1      | 1346 to 2498   | `itemimprovementoffset.dbss` | 39,292  | 3,274 Index Row | 12                      |
 
 | Layout | File                         | Known             | Unknown          |
 | ------ | ---------------------------- | ----------------- | ---------------- |

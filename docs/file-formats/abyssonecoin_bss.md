@@ -12,11 +12,11 @@ a coin amount per key; what the key counts is open (see Open Questions).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------ | ----- | ------- | --------- |
-| 1      | 2011 and later | 3483    | `abyssonecoin.bss` | 714   | 71 Row  | 10        |
+| Layout | Clients        | File               | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------ | ----- | ------- | --------- |
+| 1      | 2011 and later | `abyssonecoin.bss` | 714   | 71 Row  | 10        |
 
 | Layout | File               | Known      | Unknown       |
 | ------ | ------------------ | ---------- | ------------- |

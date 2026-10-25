@@ -11,12 +11,12 @@ file has 254 rows and 24 titles.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                    | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------------- | ----- | ------- | --------- |
-| 2      | 2468 and later | 3483    | `bdoservanttitless.bss` | 2,950 | 254 Row | 10        |
-| 1      | 1762 to 2460   | 2460    | `bdoservanttitless.bss` | 2,334 | 166 Row | 12        |
+| Layout | Clients        | File                    | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------------- | ----- | ------- | --------- |
+| 2      | 2468 and later | `bdoservanttitless.bss` | 2,950 | 254 Row | 10        |
+| 1      | 1762 to 2460   | `bdoservanttitless.bss` | 2,334 | 166 Row | 12        |
 
 | Layout | File                    | Known            | Unknown    |
 | ------ | ----------------------- | ---------------- | ---------- |

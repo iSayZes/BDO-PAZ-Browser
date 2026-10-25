@@ -16,11 +16,11 @@ and variable rows, with no PABR magic.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes | Records          | Row bytes |
-| ------ | -------------- | ------- | -------------------------- | ----- | ---------------- | --------- |
-| 1      | 2243 and later | 3483    | `monsterbuffzonegroup.bss` | 1,026 | 34 Entry, 28 Row | 21        |
+| Layout | Clients        | File                       | Bytes | Records          | Row bytes |
+| ------ | -------------- | -------------------------- | ----- | ---------------- | --------- |
+| 1      | 2243 and later | `monsterbuffzonegroup.bss` | 1,026 | 34 Entry, 28 Row | 21        |
 
 | Layout | File                       | Known         | Unknown       |
 | ------ | -------------------------- | ------------- | ------------- |

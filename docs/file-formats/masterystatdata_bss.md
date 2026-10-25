@@ -29,26 +29,26 @@ layout.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes  | Records                                | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ------ | -------------------------------------- | --------- |
-| 2      | 2726 and later | 3483    | `alchemystatdata.bss`    | 2,460  | 61 Alchemy Row                         | 40        |
-| 2      | 2726 and later | 3483    | `collectingstatdata.bss` | 15,464 | 19 Gathering Group, 427 Gathering Row  | 36        |
-| 2      | 2726 and later | 3483    | `cookingstatdata.bss`    | 1,484  | 61 Cooking Row                         | 24        |
-| 2      | 2726 and later | 3483    | `fishingstatdata.bss`    | 508    | 61 Fishing Row                         | 8         |
-| 2      | 2726 and later | 3483    | `huntingstatdata.bss`    | 2,216  | 61 Hunting Row                         | 36        |
-| 2      | 2726 and later | 3483    | `manufacturingstat.bss`  | 7,340  | 7 Processing Group, 456 Processing Row | 16        |
-| 2      | 2726 and later | 3483    | `sailstatdata.bss`       | 2,704  | 61 Sailing Row                         | 44        |
-| 2      | 2726 and later | 3483    | `trainingstatdata.bss`   | 996    | 61 Training Row                        | 16        |
-| 1      | 1338 to 2717   | 2717    | `alchemystatdata.bss`    | 1,414  | 41 Alchemy Row                         | 34        |
-| 1      | 1338 to 2717   | 2717    | `collectingstatdata.bss` | 10,412 | 16 Gathering Group, 287 Gathering Row  | 36        |
-| 1      | 1338 to 2717   | 2717    | `cookingstatdata.bss`    | 1,004  | 41 Cooking Row                         | 24        |
-| 1      | 1338 to 2717   | 2717    | `fishingstatdata.bss`    | 348    | 41 Fishing Row                         | 8         |
-| 1      | 1338 to 2717   | 2717    | `huntingstatdata.bss`    | 1,496  | 41 Hunting Row                         | 36        |
-| 1      | 1338 to 2717   | 2717    | `manufacturingstat.bss`  | 6,380  | 7 Processing Group, 396 Processing Row | 16        |
-| 1      | 1338 to 2717   | 2717    | `sailstatdata.bss`       | 1,824  | 41 Sailing Row                         | 44        |
-| 1      | 1338 to 2717   | 2717    | `trainingstatdata.bss`   | 676    | 41 Training Row                        | 16        |
+| Layout | Clients        | File                     | Bytes  | Records                                | Row bytes |
+| ------ | -------------- | ------------------------ | ------ | -------------------------------------- | --------- |
+| 2      | 2726 and later | `alchemystatdata.bss`    | 2,460  | 61 Alchemy Row                         | 40        |
+| 2      | 2726 and later | `collectingstatdata.bss` | 15,464 | 19 Gathering Group, 427 Gathering Row  | 36        |
+| 2      | 2726 and later | `cookingstatdata.bss`    | 1,484  | 61 Cooking Row                         | 24        |
+| 2      | 2726 and later | `fishingstatdata.bss`    | 508    | 61 Fishing Row                         | 8         |
+| 2      | 2726 and later | `huntingstatdata.bss`    | 2,216  | 61 Hunting Row                         | 36        |
+| 2      | 2726 and later | `manufacturingstat.bss`  | 7,340  | 7 Processing Group, 456 Processing Row | 16        |
+| 2      | 2726 and later | `sailstatdata.bss`       | 2,704  | 61 Sailing Row                         | 44        |
+| 2      | 2726 and later | `trainingstatdata.bss`   | 996    | 61 Training Row                        | 16        |
+| 1      | 1338 to 2717   | `alchemystatdata.bss`    | 1,414  | 41 Alchemy Row                         | 34        |
+| 1      | 1338 to 2717   | `collectingstatdata.bss` | 10,412 | 16 Gathering Group, 287 Gathering Row  | 36        |
+| 1      | 1338 to 2717   | `cookingstatdata.bss`    | 1,004  | 41 Cooking Row                         | 24        |
+| 1      | 1338 to 2717   | `fishingstatdata.bss`    | 348    | 41 Fishing Row                         | 8         |
+| 1      | 1338 to 2717   | `huntingstatdata.bss`    | 1,496  | 41 Hunting Row                         | 36        |
+| 1      | 1338 to 2717   | `manufacturingstat.bss`  | 6,380  | 7 Processing Group, 396 Processing Row | 16        |
+| 1      | 1338 to 2717   | `sailstatdata.bss`       | 1,824  | 41 Sailing Row                         | 44        |
+| 1      | 1338 to 2717   | `trainingstatdata.bss`   | 676    | 41 Training Row                        | 16        |
 
 | Layout | File                     | Known            | Unknown         |
 | ------ | ------------------------ | ---------------- | --------------- |

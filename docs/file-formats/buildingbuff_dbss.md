@@ -29,12 +29,12 @@ lists.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records                      | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ---------------------------- | --------- |
-| 1      | 1346 and later | 3483    | `buildingbuff.dbss`       | 140   | 10 Row, 4 Villa List         | 12        |
-| 1      | 1346 and later | 3483    | `buildingbuffoffset.dbss` | 120   | 10 Offset Row, 4 Offset List | 10        |
+| Layout | Clients        | File                      | Bytes | Records                      | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ---------------------------- | --------- |
+| 1      | 1346 and later | `buildingbuff.dbss`       | 140   | 10 Row, 4 Villa List         | 12        |
+| 1      | 1346 and later | `buildingbuffoffset.dbss` | 120   | 10 Offset Row, 4 Offset List | 10        |
 
 | Layout | File                      | Known          | Unknown    |
 | ------ | ------------------------- | -------------- | ---------- |

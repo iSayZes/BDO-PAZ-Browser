@@ -18,11 +18,11 @@ the pass tabs are in
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes  | Records                                                                           | Row bytes               |
-| ------ | -------------- | ------- | ------------------------------ | ------ | --------------------------------------------------------------------------------- | ----------------------- |
-| 1      | 3186 and later | 3483    | `olviaacademycurriculumss.bss` | 17,166 | 142 Subject Quest, 11 Subject, 2 Curriculum, 9 Preview, 10 Reward Group, 2 Reward | 46 to 49, 47 on average |
+| Layout | Clients        | File                           | Bytes  | Records                                                                           | Row bytes               |
+| ------ | -------------- | ------------------------------ | ------ | --------------------------------------------------------------------------------- | ----------------------- |
+| 1      | 3186 and later | `olviaacademycurriculumss.bss` | 17,166 | 142 Subject Quest, 11 Subject, 2 Curriculum, 9 Preview, 10 Reward Group, 2 Reward | 46 to 49, 47 on average |
 
 | Layout | File                           | Known             | Unknown    |
 | ------ | ------------------------------ | ----------------- | ---------- |

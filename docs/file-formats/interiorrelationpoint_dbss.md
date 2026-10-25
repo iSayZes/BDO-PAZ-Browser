@@ -15,12 +15,12 @@ On client 3482 the file holds 1,140 rows, 966 on client 1784. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes  | Records          | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ------ | ---------------- | --------- |
-| 1      | 1346 and later | 3483    | `interiorrelationpoint.dbss`       | 75,260 | 1,140 Row        | 66        |
-| 1      | 1346 and later | 3483    | `interiorrelationpointoffset.dbss` | 11,420 | 1,140 Offset Row | 10        |
+| Layout | Clients        | File                               | Bytes  | Records          | Row bytes |
+| ------ | -------------- | ---------------------------------- | ------ | ---------------- | --------- |
+| 1      | 1346 and later | `interiorrelationpoint.dbss`       | 75,260 | 1,140 Row        | 66        |
+| 1      | 1346 and later | `interiorrelationpointoffset.dbss` | 11,420 | 1,140 Offset Row | 10        |
 
 | Layout | File                               | Known             | Unknown    |
 | ------ | ---------------------------------- | ----------------- | ---------- |

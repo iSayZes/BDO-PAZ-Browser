@@ -16,13 +16,13 @@ Same layout as [`allquestlist.bss`](allquestlist_bss.md), read by the same handl
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                  | Bytes | Records   | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------- | ----- | --------- | --------- |
-| 1      | 3314 and later | 3483    | `olviaacademycurriculumquestlist.bss` | 692   | 168 Entry | 4         |
-| 1      | 3144 and later | 3483    | `olviaacademypassquestlist.bss`       | 740   | 180 Entry | 4         |
-| 1      | 3186 and later | 3483    | `olviaacademyrewardquestlist.bss`     | 360   | 85 Entry  | 4         |
+| Layout | Clients        | File                                  | Bytes | Records   | Row bytes |
+| ------ | -------------- | ------------------------------------- | ----- | --------- | --------- |
+| 1      | 3314 and later | `olviaacademycurriculumquestlist.bss` | 692   | 168 Entry | 4         |
+| 1      | 3144 and later | `olviaacademypassquestlist.bss`       | 740   | 180 Entry | 4         |
+| 1      | 3186 and later | `olviaacademyrewardquestlist.bss`     | 360   | 85 Entry  | 4         |
 
 | Layout | File                                  | Known          | Unknown    |
 | ------ | ------------------------------------- | -------------- | ---------- |

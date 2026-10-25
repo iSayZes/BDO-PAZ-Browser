@@ -14,11 +14,11 @@ makes one tab per course from `ToClient_SnowBoardCourseCount()` and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File            | Bytes | Records                                   | Row bytes |
-| ------ | -------------- | ------- | --------------- | ----- | ----------------------------------------- | --------- |
-| 1      | 3151 and later | 3483    | `snowboard.bss` | 3,293 | 45 Checkpoint, 3 Course, 2 Item, 7 Effect | 50        |
+| Layout | Clients        | File            | Bytes | Records                                   | Row bytes |
+| ------ | -------------- | --------------- | ----- | ----------------------------------------- | --------- |
+| 1      | 3151 and later | `snowboard.bss` | 3,293 | 45 Checkpoint, 3 Course, 2 Item, 7 Effect | 50        |
 
 | Layout | File            | Known         | Unknown         |
 | ------ | --------------- | ------------- | --------------- |

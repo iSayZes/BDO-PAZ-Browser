@@ -10,16 +10,16 @@ Most field names follow the `Character_Table` sheet of a private server's `DataS
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes      | Records                                                      | Row bytes |
-| ------ | -------------- | ------- | ---------------------------- | ---------- | ------------------------------------------------------------ | --------- |
-| 3      | 3464 and later | 3483    | `characterstatic.dbss`       | 13,491,651 | 24,445 Character Fields, 24,445 Payload, 24,445 Stream Entry | 287       |
-| 3      | 3464 and later | 3483    | `characterstaticoffset.dbss` | 244,470    | 24,445 Index Row                                             | 10        |
-| 2      | 3335 to 3458   | 3458    | `characterstatic.dbss`       | 13,339,244 | 24,551 Character Fields, 24,551 Payload, 24,551 Stream Entry | 279       |
-| 2      | 3335 to 3458   | 3458    | `characterstaticoffset.dbss` | 245,530    | 24,551 Index Row                                             | 10        |
-| 1      | 1685 to 2011   | 2011    | `characterstatic.dbss`       | 10,038,543 | 17,178 Character Fields, 17,178 Payload, 17,178 Stream Entry | 298       |
-| 1      | 1685 to 2011   | 2011    | `characterstaticoffset.dbss` | 171,800    | 17,178 Index Row                                             | 10        |
+| Layout | Clients        | File                         | Bytes      | Records                                                      | Row bytes |
+| ------ | -------------- | ---------------------------- | ---------- | ------------------------------------------------------------ | --------- |
+| 3      | 3464 and later | `characterstatic.dbss`       | 13,491,651 | 24,445 Character Fields, 24,445 Payload, 24,445 Stream Entry | 287       |
+| 3      | 3464 and later | `characterstaticoffset.dbss` | 244,470    | 24,445 Index Row                                             | 10        |
+| 2      | 3335 to 3458   | `characterstatic.dbss`       | 13,339,244 | 24,551 Character Fields, 24,551 Payload, 24,551 Stream Entry | 279       |
+| 2      | 3335 to 3458   | `characterstaticoffset.dbss` | 245,530    | 24,551 Index Row                                             | 10        |
+| 1      | 1685 to 2011   | `characterstatic.dbss`       | 10,038,543 | 17,178 Character Fields, 17,178 Payload, 17,178 Stream Entry | 298       |
+| 1      | 1685 to 2011   | `characterstaticoffset.dbss` | 171,800    | 17,178 Index Row                                             | 10        |
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |

@@ -16,13 +16,13 @@ structures with `ToClient_getSiegeInstallableListSize()` and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes  | Records   | Row bytes |
-| ------ | -------------- | ------- | ------------------ | ------ | --------- | --------- |
-| 3      | 2507 and later | 3483    | `itembuildkit.bss` | 41,439 | 103 Entry | 35        |
-| 2      | 1704 to 2503   | 2503    | `itembuildkit.bss` | 56,950 | 56 Entry  | 26        |
-| 1      | 1680 to 1698   | 1698    | `itembuildkit.bss` | 2,770  | 56 Entry  | 22        |
+| Layout | Clients        | File               | Bytes  | Records   | Row bytes |
+| ------ | -------------- | ------------------ | ------ | --------- | --------- |
+| 3      | 2507 and later | `itembuildkit.bss` | 41,439 | 103 Entry | 35        |
+| 2      | 1704 to 2503   | `itembuildkit.bss` | 56,950 | 56 Entry  | 26        |
+| 1      | 1680 to 1698   | `itembuildkit.bss` | 2,770  | 56 Entry  | 22        |
 
 | Layout | File               | Known             | Unknown      |
 | ------ | ------------------ | ----------------- | ------------ |

@@ -15,12 +15,12 @@ and Pacuna (`59228`). Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                         | Bytes | Records                      | Row bytes                 |
-| ------ | -------------- | ------- | -------------------------------------------- | ----- | ---------------------------- | ------------------------- |
-| 1      | 1346 and later | 3483    | `specialemployeeinfostaticstatus.dbss`       | 391   | 3 Row, 2 Group               | 87 to 187, 128 on average |
-| 1      | 1346 and later | 3483    | `specialemployeeinfostaticstatusoffset.dbss` | 42    | 3 Offset Row, 2 Offset Group | 10                        |
+| Layout | Clients        | File                                         | Bytes | Records                      | Row bytes                 |
+| ------ | -------------- | -------------------------------------------- | ----- | ---------------------------- | ------------------------- |
+| 1      | 1346 and later | `specialemployeeinfostaticstatus.dbss`       | 391   | 3 Row, 2 Group               | 87 to 187, 128 on average |
+| 1      | 1346 and later | `specialemployeeinfostaticstatusoffset.dbss` | 42    | 3 Offset Row, 2 Offset Group | 10                        |
 
 | Layout | File                                         | Known         | Unknown     |
 | ------ | -------------------------------------------- | ------------- | ----------- |

@@ -10,12 +10,12 @@ The record header and the item ID position match [iDevelopThings/bdo-data-extrac
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes      | Records                                    | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ---------- | ------------------------------------------ | --------- |
-| 1      | 1529 and later | 3483    | `itemsubgroup.dbss`       | 13,963,261 | 101,183 Item Entry, 16,864 Subgroup Record | 135       |
-| 1      | 1529 and later | 3483    | `itemsubgroupoffset.dbss` | 168,660    | 16,864 Offset Row                          | 10        |
+| Layout | Clients        | File                      | Bytes      | Records                                    | Row bytes |
+| ------ | -------------- | ------------------------- | ---------- | ------------------------------------------ | --------- |
+| 1      | 1529 and later | `itemsubgroup.dbss`       | 13,963,261 | 101,183 Item Entry, 16,864 Subgroup Record | 135       |
+| 1      | 1529 and later | `itemsubgroupoffset.dbss` | 168,660    | 16,864 Offset Row                          | 10        |
 
 | Layout | File                      | Known               | Unknown              |
 | ------ | ------------------------- | ------------------- | -------------------- |

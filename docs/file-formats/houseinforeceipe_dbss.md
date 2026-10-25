@@ -13,14 +13,14 @@ the item exchange recipes the house unlocks at each level.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes  | Records                 | Row bytes               |
-| ------ | -------------- | ------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
-| 2      | 2726 and later | 3483    | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
-| 2      | 2726 and later | 3483    | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
-| 1      | 1304 to 2138   | 2138    | `houseinforeceipe.dbss`       | 12,533 | 515 Level List, 103 Row | 4 to 156, 18 on average |
-| 1      | 1304 to 2138   | 2138    | `houseinforeceipeoffset.dbss` | 1,240  | 103 Index Row           | 12                      |
+| Layout | Clients        | File                          | Bytes  | Records                 | Row bytes               |
+| ------ | -------------- | ----------------------------- | ------ | ----------------------- | ----------------------- |
+| 2      | 2726 and later | `houseinforeceipe.dbss`       | 26,166 | 660 Level List, 132 Row | 4 to 376, 31 on average |
+| 2      | 2726 and later | `houseinforeceipeoffset.dbss` | 1,588  | 132 Index Row           | 12                      |
+| 1      | 1304 to 2138   | `houseinforeceipe.dbss`       | 12,533 | 515 Level List, 103 Row | 4 to 156, 18 on average |
+| 1      | 1304 to 2138   | `houseinforeceipeoffset.dbss` | 1,240  | 103 Index Row           | 12                      |
 
 | Layout | File                          | Known            | Unknown        |
 | ------ | ----------------------------- | ---------------- | -------------- |

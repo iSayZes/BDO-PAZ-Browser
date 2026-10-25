@@ -17,13 +17,13 @@ and `ToClient_getAccumulatedCoinNeedLevel`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes  | Records             | Row bytes |
-| ------ | -------------- | ------- | ------------------ | ------ | ------------------- | --------- |
-| 3      | 3412 and later | 3483    | `exchangecoin.bss` | 27,980 | 752 Reward, 54 Coin | 35        |
-| 2      | 3111 to 3402   | 3402    | `exchangecoin.bss` | 28,824 | 810 Reward, 58 Coin | 34        |
-| 1      | 2480 to 3103   | 3103    | `exchangecoin.bss` | 22,114 | 623 Reward, 44 Coin | 34        |
+| Layout | Clients        | File               | Bytes  | Records             | Row bytes |
+| ------ | -------------- | ------------------ | ------ | ------------------- | --------- |
+| 3      | 3412 and later | `exchangecoin.bss` | 27,980 | 752 Reward, 54 Coin | 35        |
+| 2      | 3111 to 3402   | `exchangecoin.bss` | 28,824 | 810 Reward, 58 Coin | 34        |
+| 1      | 2480 to 3103   | `exchangecoin.bss` | 22,114 | 623 Reward, 44 Coin | 34        |
 
 | Layout | File               | Known            | Unknown         |
 | ------ | ------------------ | ---------------- | --------------- |

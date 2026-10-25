@@ -14,11 +14,11 @@ of six (`Spend 800 Pearls` to `Spend 44,000 Pearls`).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | ----------------------------- | ----- | ------- | ----------------------- |
-| 1      | 1659 and later | 3483    | `pearlusedchallengegroup.bss` | 680   | 33 Row  | 18 to 24, 20 on average |
+| Layout | Clients        | File                          | Bytes | Records | Row bytes               |
+| ------ | -------------- | ----------------------------- | ----- | ------- | ----------------------- |
+| 1      | 1659 and later | `pearlusedchallengegroup.bss` | 680   | 33 Row  | 18 to 24, 20 on average |
 
 | Layout | File                          | Known         | Unknown       |
 | ------ | ----------------------------- | ------------- | ------------- |

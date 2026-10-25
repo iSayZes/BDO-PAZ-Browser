@@ -12,14 +12,14 @@ the top levels.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes   | Records                          | Row bytes               |
-| ------ | -------------- | ------- | ----------------------------- | ------- | -------------------------------- | ----------------------- |
-| 2      | 3387 and later | 3483    | `itemeffectchange.dbss`       | 385,623 | 6,141 Entry, 596 Group           | 57 to 78, 62 on average |
-| 2      | 3387 and later | 3483    | `itemeffectchangeoffset.dbss` | 78,464  | 6,141 Index Row, 596 Index Group | 12                      |
-| 1      | 1276 to 3381   | 3381    | `itemeffectchange.dbss`       | 365,245 | 6,009 Entry, 584 Group           | 55 to 76, 60 on average |
-| 1      | 1276 to 3381   | 3381    | `itemeffectchangeoffset.dbss` | 75,616  | 6,009 Index Row, 584 Index Group | 12                      |
+| Layout | Clients        | File                          | Bytes   | Records                          | Row bytes               |
+| ------ | -------------- | ----------------------------- | ------- | -------------------------------- | ----------------------- |
+| 2      | 3387 and later | `itemeffectchange.dbss`       | 385,623 | 6,141 Entry, 596 Group           | 57 to 78, 62 on average |
+| 2      | 3387 and later | `itemeffectchangeoffset.dbss` | 78,464  | 6,141 Index Row, 596 Index Group | 12                      |
+| 1      | 1276 to 3381   | `itemeffectchange.dbss`       | 365,245 | 6,009 Entry, 584 Group           | 55 to 76, 60 on average |
+| 1      | 1276 to 3381   | `itemeffectchangeoffset.dbss` | 75,616  | 6,009 Index Row, 584 Index Group | 12                      |
 
 | Layout | File                          | Known              | Unknown    |
 | ------ | ----------------------------- | ------------------ | ---------- |

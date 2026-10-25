@@ -8,12 +8,12 @@ Hire data of the sailors that wait in Velia, Port Epheria and Iliya Island (the 
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                           | Bytes | Records                      | Row bytes |
-| ------ | -------------- | ------- | ------------------------------ | ----- | ---------------------------- | --------- |
-| 1      | 1280 and later | 3483    | `employeespawninfo.dbss`       | 3,702 | 20 Hire Block, 20 Sailor Row | 44        |
-| 1      | 1280 and later | 3483    | `employeespawninfooffset.dbss` | 204   | 20 Offset Row                | 10        |
+| Layout | Clients        | File                           | Bytes | Records                      | Row bytes |
+| ------ | -------------- | ------------------------------ | ----- | ---------------------------- | --------- |
+| 1      | 1280 and later | `employeespawninfo.dbss`       | 3,702 | 20 Hire Block, 20 Sailor Row | 44        |
+| 1      | 1280 and later | `employeespawninfooffset.dbss` | 204   | 20 Offset Row                | 10        |
 
 | Layout | File                           | Known           | Unknown       |
 | ------ | ------------------------------ | --------------- | ------------- |

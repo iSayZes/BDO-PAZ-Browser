@@ -14,12 +14,12 @@ lists where every row sits.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes | Records       | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ----- | ------------- | --------- |
-| 1      | 1292 and later | 3483    | `houseinfoviewposition.dbss`       | 2,708 | 84 Row        | 32        |
-| 1      | 1292 and later | 3483    | `houseinfoviewpositionoffset.dbss` | 1,348 | 84 Offset Row | 16        |
+| Layout | Clients        | File                               | Bytes | Records       | Row bytes |
+| ------ | -------------- | ---------------------------------- | ----- | ------------- | --------- |
+| 1      | 1292 and later | `houseinfoviewposition.dbss`       | 2,708 | 84 Row        | 32        |
+| 1      | 1292 and later | `houseinfoviewpositionoffset.dbss` | 1,348 | 84 Offset Row | 16        |
 
 | Layout | File                               | Known            | Unknown    |
 | ------ | ---------------------------------- | ---------------- | ---------- |

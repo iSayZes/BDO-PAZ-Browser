@@ -12,14 +12,14 @@ LOC type 40 holds the translations.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes  | Records                       | Row bytes                  |
-| ------ | -------------- | ------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
-| 2      | 3251 and later | 3483    | `worldmapmonster.dbss`       | 43,034 | 231 Marker Record, 231 Record | 138 to 277, 184 on average |
-| 2      | 3251 and later | 3483    | `worldmapmonsteroffset.dbss` | 2,314  | 231 Offset Row                | 10                         |
-| 1      | 1565 to 1908   | 1908    | `worldmapmonster.dbss`       | 18,285 | 119 Marker Record, 119 Record | 124 to 214, 152 on average |
-| 1      | 1565 to 1908   | 1908    | `worldmapmonsteroffset.dbss` | 1,194  | 119 Offset Row                | 10                         |
+| Layout | Clients        | File                         | Bytes  | Records                       | Row bytes                  |
+| ------ | -------------- | ---------------------------- | ------ | ----------------------------- | -------------------------- |
+| 2      | 3251 and later | `worldmapmonster.dbss`       | 43,034 | 231 Marker Record, 231 Record | 138 to 277, 184 on average |
+| 2      | 3251 and later | `worldmapmonsteroffset.dbss` | 2,314  | 231 Offset Row                | 10                         |
+| 1      | 1565 to 1908   | `worldmapmonster.dbss`       | 18,285 | 119 Marker Record, 119 Record | 124 to 214, 152 on average |
+| 1      | 1565 to 1908   | `worldmapmonsteroffset.dbss` | 1,194  | 119 Offset Row                | 10                         |
 
 | Layout | File                         | Known            | Unknown        |
 | ------ | ---------------------------- | ---------------- | -------------- |

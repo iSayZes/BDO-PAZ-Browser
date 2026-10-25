@@ -23,12 +23,12 @@ client 1784 the file is read by
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes   | Records    | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ------- | ---------- | --------- |
-| 2      | 1319 and later | 3483    | `marketsearchlist.bss` | 556,961 | 12,842 Row | 12        |
-| 1      | 1109 to 1318   | 1318    | `marketsearchlist.bss` | 285,016 | 7,594 Row  | 8         |
+| Layout | Clients        | File                   | Bytes   | Records    | Row bytes |
+| ------ | -------------- | ---------------------- | ------- | ---------- | --------- |
+| 2      | 1319 and later | `marketsearchlist.bss` | 556,961 | 12,842 Row | 12        |
+| 1      | 1109 to 1318   | `marketsearchlist.bss` | 285,016 | 7,594 Row  | 8         |
 
 | Layout | File                   | Known              | Unknown         |
 | ------ | ---------------------- | ------------------ | --------------- |

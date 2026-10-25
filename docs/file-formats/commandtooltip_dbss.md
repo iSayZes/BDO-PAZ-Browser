@@ -15,14 +15,14 @@ user-language text under the same hash. Companion
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                        | Bytes     | Records          | Row bytes                   |
-| ------ | -------------- | ------- | --------------------------- | --------- | ---------------- | --------------------------- |
-| 2      | 1529 and later | 3483    | `commandtooltip.dbss`       | 3,865,388 | 7,663 Row        | 36 to 2,614, 504 on average |
-| 2      | 1529 and later | 3483    | `commandtooltipoffset.dbss` | 91,976    | 7,663 Offset Row | 12                          |
-| 1      | 1239 to 1524   | 1524    | `commandtooltip.dbss`       | 1,001,964 | 5,289 Row        | 22 to 1,036, 189 on average |
-| 1      | 1239 to 1524   | 1524    | `commandtooltipoffset.dbss` | 63,488    | 5,289 Offset Row | 12                          |
+| Layout | Clients        | File                        | Bytes     | Records          | Row bytes                   |
+| ------ | -------------- | --------------------------- | --------- | ---------------- | --------------------------- |
+| 2      | 1529 and later | `commandtooltip.dbss`       | 3,865,388 | 7,663 Row        | 36 to 2,614, 504 on average |
+| 2      | 1529 and later | `commandtooltipoffset.dbss` | 91,976    | 7,663 Offset Row | 12                          |
+| 1      | 1239 to 1524   | `commandtooltip.dbss`       | 1,001,964 | 5,289 Row        | 22 to 1,036, 189 on average |
+| 1      | 1239 to 1524   | `commandtooltipoffset.dbss` | 63,488    | 5,289 Offset Row | 12                          |
 
 | Layout | File                        | Known               | Unknown         |
 | ------ | --------------------------- | ------------------- | --------------- |

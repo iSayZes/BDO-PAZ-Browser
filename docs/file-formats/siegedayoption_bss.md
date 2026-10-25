@@ -10,11 +10,11 @@ u64-counted lists of u16 territory keys.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records                | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ----- | ---------------------- | --------- |
-| 1      | 1250 and later | 3483    | `siegedayoption.bss` | 108   | 1 Days, 1 String Table | 92        |
+| Layout | Clients        | File                 | Bytes | Records                | Row bytes |
+| ------ | -------------- | -------------------- | ----- | ---------------------- | --------- |
+| 1      | 1250 and later | `siegedayoption.bss` | 108   | 1 Days, 1 String Table | 92        |
 
 | Layout | File                 | Known          | Unknown    |
 | ------ | -------------------- | -------------- | ---------- |

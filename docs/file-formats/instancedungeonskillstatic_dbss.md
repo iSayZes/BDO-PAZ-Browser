@@ -11,14 +11,14 @@ Korean text with `<PAColor0x...>` tags.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                    | Bytes  | Records                 | Row bytes                |
-| ------ | -------------- | ------- | --------------------------------------- | ------ | ----------------------- | ------------------------ |
-| 2      | 2243 and later | 3483    | `instancedungeonskillstatic.dbss`       | 4      | -                       | -                        |
-| 2      | 2243 and later | 3483    | `instancedungeonskillstaticoffset.dbss` | 4      | -                       | -                        |
-| 1      | 1346 to 2235   | 2235    | `instancedungeonskillstatic.dbss`       | 13,984 | 157 Skill Static Record | 20 to 166, 89 on average |
-| 1      | 1346 to 2235   | 2235    | `instancedungeonskillstaticoffset.dbss` | 1,888  | 157 Index Row           | 12                       |
+| Layout | Clients        | File                                    | Bytes  | Records                 | Row bytes                |
+| ------ | -------------- | --------------------------------------- | ------ | ----------------------- | ------------------------ |
+| 2      | 2243 and later | `instancedungeonskillstatic.dbss`       | 4      | -                       | -                        |
+| 2      | 2243 and later | `instancedungeonskillstaticoffset.dbss` | 4      | -                       | -                        |
+| 1      | 1346 to 2235   | `instancedungeonskillstatic.dbss`       | 13,984 | 157 Skill Static Record | 20 to 166, 89 on average |
+| 1      | 1346 to 2235   | `instancedungeonskillstaticoffset.dbss` | 1,888  | 157 Index Row           | 12                       |
 
 | Layout | File                                    | Known            | Unknown          |
 | ------ | --------------------------------------- | ---------------- | ---------------- |

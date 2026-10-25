@@ -8,12 +8,12 @@ Worker definition table. The file stores one fixed-size record per worker type/g
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes  | Records           | Row bytes |
-| ------ | -------------- | ------- | ----------------- | ------ | ----------------- | --------- |
-| 2      | 2726 and later | 3483    | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
-| 1      | 805 to 2138    | 2138    | `plantworker.bss` | 66,794 | 91 Worker Record  | 707       |
+| Layout | Clients        | File              | Bytes  | Records           | Row bytes |
+| ------ | -------------- | ----------------- | ------ | ----------------- | --------- |
+| 2      | 2726 and later | `plantworker.bss` | 99,484 | 106 Worker Record | 912       |
+| 1      | 805 to 2138    | `plantworker.bss` | 66,794 | 91 Worker Record  | 707       |
 
 | Layout | File              | Known          | Unknown          |
 | ------ | ----------------- | -------------- | ---------------- |

@@ -13,11 +13,11 @@ is not known. On client 3474 the file has 6 rows.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                        | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------------- | ----- | ------- | --------- |
-| 1      | 3426 and later | 3483    | `matchingcongestionstaticstatusmanager.bss` | 98    | 6 Row   | 13        |
+| Layout | Clients        | File                                        | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------------------------------- | ----- | ------- | --------- |
+| 1      | 3426 and later | `matchingcongestionstaticstatusmanager.bss` | 98    | 6 Row   | 13        |
 
 | Layout | File                                        | Known        | Unknown      |
 | ------ | ------------------------------------------- | ------------ | ------------ |

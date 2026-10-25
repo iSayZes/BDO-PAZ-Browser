@@ -14,16 +14,16 @@ the older layout with sound bank and music numbers per situation.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File            | Bytes   | Records                                   | Row bytes |
-| ------ | -------------- | ------- | --------------- | ------- | ----------------------------------------- | --------- |
-| 6      | 2665 and later | 3483    | `audioinfo.bss` | 40,977  | 1,256 Row, 10 State Entry, 10 Radio Entry | 28        |
-| 5      | 2000 to 2657   | 2657    | `audioinfo.bss` | 36,534  | 1,113 Row, 10 State Entry, 10 Radio Entry | 28        |
-| 4      | 1958 to 1996   | 1996    | `audioinfo.bss` | 28,374  | 831 Row, 9 State Entry, 10 Radio Entry    | 28        |
-| 3      | 1914 to 1937   | 1937    | `audioinfo.bss` | 27,671  | 831 Row, 8 State Entry                    | 28        |
-| 2      | 1866 to 1908   | 1908    | `audioinfo.bss` | 27,546  | 831 Row, 5 State Entry                    | 28        |
-| 1      | 1109 to 1862   | 1862    | `audioinfo.bss` | 132,980 | 831 Row                                   | 160       |
+| Layout | Clients        | File            | Bytes   | Records                                   | Row bytes |
+| ------ | -------------- | --------------- | ------- | ----------------------------------------- | --------- |
+| 6      | 2665 and later | `audioinfo.bss` | 40,977  | 1,256 Row, 10 State Entry, 10 Radio Entry | 28        |
+| 5      | 2000 to 2657   | `audioinfo.bss` | 36,534  | 1,113 Row, 10 State Entry, 10 Radio Entry | 28        |
+| 4      | 1958 to 1996   | `audioinfo.bss` | 28,374  | 831 Row, 9 State Entry, 10 Radio Entry    | 28        |
+| 3      | 1914 to 1937   | `audioinfo.bss` | 27,671  | 831 Row, 8 State Entry                    | 28        |
+| 2      | 1866 to 1908   | `audioinfo.bss` | 27,546  | 831 Row, 5 State Entry                    | 28        |
+| 1      | 1109 to 1862   | `audioinfo.bss` | 132,980 | 831 Row                                   | 160       |
 
 | Layout | File            | Known             | Unknown        |
 | ------ | --------------- | ----------------- | -------------- |

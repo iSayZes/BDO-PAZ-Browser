@@ -10,11 +10,11 @@ file has 4 rows, score `0` to `100`, from Champion up to Hero.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                      | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ----------------------------------------- | ----- | ------- | --------- |
-| 1      | 2545 and later | 3483    | `rosewarkillnamescoretagstaticstatus.bss` | 312   | 4 Row   | 12        |
+| Layout | Clients        | File                                      | Bytes | Records | Row bytes |
+| ------ | -------------- | ----------------------------------------- | ----- | ------- | --------- |
+| 1      | 2545 and later | `rosewarkillnamescoretagstaticstatus.bss` | 312   | 4 Row   | 12        |
 
 | Layout | File                                      | Known          | Unknown    |
 | ------ | ----------------------------------------- | -------------- | ---------- |

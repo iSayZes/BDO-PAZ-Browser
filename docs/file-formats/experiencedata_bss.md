@@ -17,12 +17,12 @@ It is a PABR table of 17-byte rows whose scripts sit in the string table.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients       | Checked | File                 | Bytes   | Records   | Row bytes                 |
-| ------ | ------------- | ------- | -------------------- | ------- | --------- | ------------------------- |
-| 2      | 805 and later | 3483    | `experiencedata.bss` | 247,896 | 1,608 Row | 17                        |
-| 1      | 435 to 794    | 794     | `experiencedata.bss` | 88,330  | 502 Row   | 95 to 503, 176 on average |
+| Layout | Clients       | File                 | Bytes   | Records   | Row bytes                 |
+| ------ | ------------- | -------------------- | ------- | --------- | ------------------------- |
+| 2      | 805 and later | `experiencedata.bss` | 247,896 | 1,608 Row | 17                        |
+| 1      | 435 to 794    | `experiencedata.bss` | 88,330  | 502 Row   | 95 to 503, 176 on average |
 
 | Layout | File                 | Known              | Unknown    |
 | ------ | -------------------- | ------------------ | ---------- |

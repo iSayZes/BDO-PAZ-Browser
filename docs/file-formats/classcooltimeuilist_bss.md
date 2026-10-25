@@ -16,11 +16,11 @@ even when it is not a learnable skill, and one with
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes | Records                   | Row bytes |
-| ------ | -------------- | ------- | ------------------------- | ----- | ------------------------- | --------- |
-| 1      | 1519 and later | 3483    | `classcooltimeuilist.bss` | 2,260 | 101 Class List, 460 Skill | 4         |
+| Layout | Clients        | File                      | Bytes | Records                   | Row bytes |
+| ------ | -------------- | ------------------------- | ----- | ------------------------- | --------- |
+| 1      | 1519 and later | `classcooltimeuilist.bss` | 2,260 | 101 Class List, 460 Skill | 4         |
 
 | Layout | File                      | Known            | Unknown    |
 | ------ | ------------------------- | ---------------- | ---------- |

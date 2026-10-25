@@ -8,11 +8,11 @@ The NPC opponents of Yar!, a dice minigame (`panel_window_minigame_yachtdice` in
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records | Row bytes               |
-| ------ | -------------- | ------- | ---------------------- | ----- | ------- | ----------------------- |
-| 1      | 1790 and later | 3483    | `yachtnpcdiceinfo.bss` | 560   | 11 Row  | 44 to 60, 49 on average |
+| Layout | Clients        | File                   | Bytes | Records | Row bytes               |
+| ------ | -------------- | ---------------------- | ----- | ------- | ----------------------- |
+| 1      | 1790 and later | `yachtnpcdiceinfo.bss` | 560   | 11 Row  | 44 to 60, 49 on average |
 
 | Layout | File                   | Known          | Unknown    |
 | ------ | ---------------------- | -------------- | ---------- |

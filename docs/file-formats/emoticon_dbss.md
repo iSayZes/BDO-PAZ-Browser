@@ -18,12 +18,12 @@ emoticons a player can use comes from
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes  | Records       | Row bytes                  |
-| ------ | -------------- | ------- | --------------------- | ------ | ------------- | -------------------------- |
-| 1      | 1280 and later | 3483    | `emoticon.dbss`       | 26,336 | 87 Row        | 140 to 342, 303 on average |
-| 1      | 1280 and later | 3483    | `emoticonoffset.dbss` | 1,396  | 87 Offset Row | 16                         |
+| Layout | Clients        | File                  | Bytes  | Records       | Row bytes                  |
+| ------ | -------------- | --------------------- | ------ | ------------- | -------------------------- |
+| 1      | 1280 and later | `emoticon.dbss`       | 26,336 | 87 Row        | 140 to 342, 303 on average |
+| 1      | 1280 and later | `emoticonoffset.dbss` | 1,396  | 87 Offset Row | 16                         |
 
 | Layout | File                  | Known            | Unknown       |
 | ------ | --------------------- | ---------------- | ------------- |

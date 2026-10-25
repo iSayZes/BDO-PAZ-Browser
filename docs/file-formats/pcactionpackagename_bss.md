@@ -21,49 +21,49 @@ see [Block Counts](#block-counts).
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes   | Records                                                                                                | Row bytes              |
-| ------ | -------------- | ------- | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------ | ---------------------- |
-| 39     | 3381 and later | 3483    | `pcactionpackagename.bss` | 548,981 | 11,640 Package Cell, 5,444 Vehicle Row, 11,543 Equip Vehicle List, 97 Class Block, 3 Class Package Row | 8                      |
-| 38     | 3177 to 3373   | 3373    | `pcactionpackagename.bss` | 510,912 | 10,440 Package Cell, 4,579 Vehicle Row, 10,353 Equip Vehicle List, 87 Class Block, 3 Class Package Row | 8                      |
-| 37     | 3012 to 3169   | 3169    | `pcactionpackagename.bss` | 509,578 | 10,353 Package Cell, 4,645 Vehicle Row, 10,266 Equip Vehicle List, 87 Class Block, 3 Class Package Row | 8                      |
-| 36     | 2825 to 3002   | 3002    | `pcactionpackagename.bss` | 507,443 | 10,179 Package Cell, 4,645 Vehicle Row, 10,092 Equip Vehicle List, 87 Class Block, 2 Class Package Row | 8                      |
-| 35     | 2794 to 2819   | 2819    | `pcactionpackagename.bss` | 554,293 | 10,092 Package Cell, 5,474 Vehicle Row, 10,005 Equip Vehicle List, 87 Class Block, 2 Class Package Row | 8                      |
-| 34     | 2644 to 2783   | 2783    | `pcactionpackagename.bss` | 542,694 | 10,005 Package Cell, 5,474 Vehicle Row, 9,918 Equip Vehicle List, 87 Class Block, 2 Class Package Row  | 8                      |
-| 33     | 2601 to 2637   | 2637    | `pcactionpackagename.bss` | 522,022 | 9,831 Package Cell, 5,297 Vehicle Row, 9,744 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
-| 32     | 2429 to 2592   | 2592    | `pcactionpackagename.bss` | 520,978 | 9,744 Package Cell, 5,297 Vehicle Row, 9,657 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
-| 31     | 2393 to 2421   | 2421    | `pcactionpackagename.bss` | 507,606 | 9,570 Package Cell, 5,225 Vehicle Row, 9,483 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
-| 30     | 2302 to 2384   | 2384    | `pcactionpackagename.bss` | 506,562 | 9,483 Package Cell, 5,225 Vehicle Row, 9,396 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
-| 29     | 2250 to 2295   | 2295    | `pcactionpackagename.bss` | 497,777 | 8,961 Package Cell, 5,190 Vehicle Row, 8,874 Equip Vehicle List, 87 Class Block                        | 8                      |
-| 28     | 2207 to 2243   | 2243    | `pcactionpackagename.bss` | 506,186 | 8,364 Package Cell, 7,932 Vehicle Row, 8,282 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 27     | 2107 to 2203   | 2203    | `pcactionpackagename.bss` | 502,161 | 8,282 Package Cell, 7,828 Vehicle Row, 8,200 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 26     | 2059 to 2098   | 2098    | `pcactionpackagename.bss` | 492,651 | 8,282 Package Cell, 7,827 Vehicle Row, 8,200 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 25     | 1991 to 2052   | 2052    | `pcactionpackagename.bss` | 490,625 | 8,118 Package Cell, 7,827 Vehicle Row, 8,036 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 24     | 1794 to 1985   | 1985    | `pcactionpackagename.bss` | 450,061 | 7,872 Package Cell, 7,335 Vehicle Row, 7,790 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 23     | 1790           | 1790    | `pcactionpackagename.bss` | 366,086 | 7,708 Package Cell, 5,887 Vehicle Row, 7,626 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 22     | 1774 to 1784   | 1784    | `pcactionpackagename.bss` | 362,622 | 7,626 Package Cell, 5,839 Vehicle Row, 7,544 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 21     | 1743 to 1771   | 1771    | `pcactionpackagename.bss` | 362,128 | 7,544 Package Cell, 5,884 Vehicle Row, 7,462 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 20     | 1608 to 1737   | 1737    | `pcactionpackagename.bss` | 360,465 | 7,462 Package Cell, 5,884 Vehicle Row, 7,462 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 19     | 1565 to 1602   | 1602    | `pcactionpackagename.bss` | 320,158 | 7,380 Package Cell, 5,143 Vehicle Row, 7,380 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 18     | 1500 to 1559   | 1559    | `pcactionpackagename.bss` | 312,615 | 7,298 Package Cell, 5,042 Vehicle Row, 7,298 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 17     | 1358 to 1493   | 1493    | `pcactionpackagename.bss` | 303,461 | 7,216 Package Cell, 4,931 Vehicle Row, 7,216 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 16     | 1167 to 1355   | 1355    | `pcactionpackagename.bss` | 256,508 | 6,888 Package Cell, 4,152 Vehicle Row, 6,888 Equip Vehicle List, 82 Class Block                        | 8                      |
-| 15     | 1109 to 1164   | 1164    | `pcactionpackagename.bss` | 145,223 | 2,688 Package Cell, 2,201 Vehicle Row, 2,688 Equip Vehicle List, 32 Class Block                        | 8                      |
-| 14     | 822 to 829     | 829     | `pcactionpackagename.bss` | 88,551  | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 10, 9 on average  |
-| 13     | 814            | 814     | `pcactionpackagename.bss` | 87,335  | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 10, 9 on average  |
-| 12     | 805            | 805     | `pcactionpackagename.bss` | 87,079  | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 10, 9 on average  |
-| 11     | 771 to 794     | 794     | `pcactionpackagename.bss` | 140,683 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
-| 10     | 707 to 760     | 760     | `pcactionpackagename.bss` | 137,785 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
-| 9      | 643 to 697     | 697     | `pcactionpackagename.bss` | 135,939 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
-| 8      | 637            | 637     | `pcactionpackagename.bss` | 133,930 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
-| 7      | 592 to 630     | 630     | `pcactionpackagename.bss` | 130,265 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
-| 6      | 531 to 586     | 586     | `pcactionpackagename.bss` | 129,881 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
-| 5      | 508 to 526     | 526     | `pcactionpackagename.bss` | 128,089 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
-| 4      | 504            | 504     | `pcactionpackagename.bss` | 126,505 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
-| 3      | 485 to 497     | 497     | `pcactionpackagename.bss` | 123,343 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
-| 2      | 472 to 478     | 478     | `pcactionpackagename.bss` | 121,574 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
-| 1      | 435 to 466     | 466     | `pcactionpackagename.bss` | 116,021 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| Layout | Clients        | File                      | Bytes   | Records                                                                                                | Row bytes              |
+| ------ | -------------- | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------ | ---------------------- |
+| 39     | 3381 and later | `pcactionpackagename.bss` | 548,981 | 11,640 Package Cell, 5,444 Vehicle Row, 11,543 Equip Vehicle List, 97 Class Block, 3 Class Package Row | 8                      |
+| 38     | 3177 to 3373   | `pcactionpackagename.bss` | 510,912 | 10,440 Package Cell, 4,579 Vehicle Row, 10,353 Equip Vehicle List, 87 Class Block, 3 Class Package Row | 8                      |
+| 37     | 3012 to 3169   | `pcactionpackagename.bss` | 509,578 | 10,353 Package Cell, 4,645 Vehicle Row, 10,266 Equip Vehicle List, 87 Class Block, 3 Class Package Row | 8                      |
+| 36     | 2825 to 3002   | `pcactionpackagename.bss` | 507,443 | 10,179 Package Cell, 4,645 Vehicle Row, 10,092 Equip Vehicle List, 87 Class Block, 2 Class Package Row | 8                      |
+| 35     | 2794 to 2819   | `pcactionpackagename.bss` | 554,293 | 10,092 Package Cell, 5,474 Vehicle Row, 10,005 Equip Vehicle List, 87 Class Block, 2 Class Package Row | 8                      |
+| 34     | 2644 to 2783   | `pcactionpackagename.bss` | 542,694 | 10,005 Package Cell, 5,474 Vehicle Row, 9,918 Equip Vehicle List, 87 Class Block, 2 Class Package Row  | 8                      |
+| 33     | 2601 to 2637   | `pcactionpackagename.bss` | 522,022 | 9,831 Package Cell, 5,297 Vehicle Row, 9,744 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
+| 32     | 2429 to 2592   | `pcactionpackagename.bss` | 520,978 | 9,744 Package Cell, 5,297 Vehicle Row, 9,657 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
+| 31     | 2393 to 2421   | `pcactionpackagename.bss` | 507,606 | 9,570 Package Cell, 5,225 Vehicle Row, 9,483 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
+| 30     | 2302 to 2384   | `pcactionpackagename.bss` | 506,562 | 9,483 Package Cell, 5,225 Vehicle Row, 9,396 Equip Vehicle List, 87 Class Block, 2 Class Package Row   | 8                      |
+| 29     | 2250 to 2295   | `pcactionpackagename.bss` | 497,777 | 8,961 Package Cell, 5,190 Vehicle Row, 8,874 Equip Vehicle List, 87 Class Block                        | 8                      |
+| 28     | 2207 to 2243   | `pcactionpackagename.bss` | 506,186 | 8,364 Package Cell, 7,932 Vehicle Row, 8,282 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 27     | 2107 to 2203   | `pcactionpackagename.bss` | 502,161 | 8,282 Package Cell, 7,828 Vehicle Row, 8,200 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 26     | 2059 to 2098   | `pcactionpackagename.bss` | 492,651 | 8,282 Package Cell, 7,827 Vehicle Row, 8,200 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 25     | 1991 to 2052   | `pcactionpackagename.bss` | 490,625 | 8,118 Package Cell, 7,827 Vehicle Row, 8,036 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 24     | 1794 to 1985   | `pcactionpackagename.bss` | 450,061 | 7,872 Package Cell, 7,335 Vehicle Row, 7,790 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 23     | 1790           | `pcactionpackagename.bss` | 366,086 | 7,708 Package Cell, 5,887 Vehicle Row, 7,626 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 22     | 1774 to 1784   | `pcactionpackagename.bss` | 362,622 | 7,626 Package Cell, 5,839 Vehicle Row, 7,544 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 21     | 1743 to 1771   | `pcactionpackagename.bss` | 362,128 | 7,544 Package Cell, 5,884 Vehicle Row, 7,462 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 20     | 1608 to 1737   | `pcactionpackagename.bss` | 360,465 | 7,462 Package Cell, 5,884 Vehicle Row, 7,462 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 19     | 1565 to 1602   | `pcactionpackagename.bss` | 320,158 | 7,380 Package Cell, 5,143 Vehicle Row, 7,380 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 18     | 1500 to 1559   | `pcactionpackagename.bss` | 312,615 | 7,298 Package Cell, 5,042 Vehicle Row, 7,298 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 17     | 1358 to 1493   | `pcactionpackagename.bss` | 303,461 | 7,216 Package Cell, 4,931 Vehicle Row, 7,216 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 16     | 1167 to 1355   | `pcactionpackagename.bss` | 256,508 | 6,888 Package Cell, 4,152 Vehicle Row, 6,888 Equip Vehicle List, 82 Class Block                        | 8                      |
+| 15     | 1109 to 1164   | `pcactionpackagename.bss` | 145,223 | 2,688 Package Cell, 2,201 Vehicle Row, 2,688 Equip Vehicle List, 32 Class Block                        | 8                      |
+| 14     | 822 to 829     | `pcactionpackagename.bss` | 88,551  | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 10, 9 on average  |
+| 13     | 814            | `pcactionpackagename.bss` | 87,335  | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 10, 9 on average  |
+| 12     | 805            | `pcactionpackagename.bss` | 87,079  | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 10, 9 on average  |
+| 11     | 771 to 794     | `pcactionpackagename.bss` | 140,683 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
+| 10     | 707 to 760     | `pcactionpackagename.bss` | 137,785 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
+| 9      | 643 to 697     | `pcactionpackagename.bss` | 135,939 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
+| 8      | 637            | `pcactionpackagename.bss` | 133,930 | 28 Vehicle Weapon Row, 32 Vehicle Weapon Map, 28 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 62 on average |
+| 7      | 592 to 630     | `pcactionpackagename.bss` | 130,265 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| 6      | 531 to 586     | `pcactionpackagename.bss` | 129,881 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| 5      | 508 to 526     | `pcactionpackagename.bss` | 128,089 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| 4      | 504            | `pcactionpackagename.bss` | 126,505 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| 3      | 485 to 497     | `pcactionpackagename.bss` | 123,343 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| 2      | 472 to 478     | `pcactionpackagename.bss` | 121,574 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
+| 1      | 435 to 466     | `pcactionpackagename.bss` | 116,021 | 27 Vehicle Weapon Row, 32 Vehicle Weapon Map, 27 Vehicle Weapon Hash Row, 32 Vehicle Weapon Hash Map   | 4 to 78, 60 on average |
 
 | Layout | File                      | Known              | Unknown    |
 | ------ | ------------------------- | ------------------ | ---------- |

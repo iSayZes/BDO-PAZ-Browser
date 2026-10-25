@@ -18,13 +18,13 @@ textures with `ToClient_getJournalTextureInfo(list, slot)`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                          | Bytes  | Records                                                                                    | Row bytes |
-| ------ | -------------- | ------- | ----------------------------- | ------ | ------------------------------------------------------------------------------------------ | --------- |
-| 3      | 3473 and later | 3483    | `journalinfostaticstatus.bss` | 22,717 | 49 Book Quest, 57 Ed Texture, 41 Journal, 2 Journal List, 2 Texture Info                   | 10        |
-| 2      | 3052 to 3464   | 3464    | `journalinfostaticstatus.bss` | 22,635 | 49 Book Quest, 57 Ed Texture, 41 Journal, 2 Journal List, 2 Texture Info                   | 10        |
-| 1      | 3002 to 3045   | 3045    | `journalinfostaticstatus.bss` | 17,673 | 42 Book Quest, 50 Ed Texture, 34 Journal, 2 Journal List, 2 Select Texture, 2 Texture Info | 10        |
+| Layout | Clients        | File                          | Bytes  | Records                                                                                    | Row bytes |
+| ------ | -------------- | ----------------------------- | ------ | ------------------------------------------------------------------------------------------ | --------- |
+| 3      | 3473 and later | `journalinfostaticstatus.bss` | 22,717 | 49 Book Quest, 57 Ed Texture, 41 Journal, 2 Journal List, 2 Texture Info                   | 10        |
+| 2      | 3052 to 3464   | `journalinfostaticstatus.bss` | 22,635 | 49 Book Quest, 57 Ed Texture, 41 Journal, 2 Journal List, 2 Texture Info                   | 10        |
+| 1      | 3002 to 3045   | `journalinfostaticstatus.bss` | 17,673 | 42 Book Quest, 50 Ed Texture, 34 Journal, 2 Journal List, 2 Select Texture, 2 Texture Info | 10        |
 
 | Layout | File                          | Known            | Unknown      |
 | ------ | ----------------------------- | ---------------- | ------------ |

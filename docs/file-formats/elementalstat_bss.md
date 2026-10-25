@@ -13,11 +13,11 @@ adds to it: 50 AP, 100 DP and 3 Additional Stats on every row (client
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------- | ----- | ------- | --------- |
-| 1      | 2224 and later | 3483    | `elementalstat.bss` | 46    | 3 Row   | 14        |
+| Layout | Clients        | File                | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------- | ----- | ------- | --------- |
+| 1      | 2224 and later | `elementalstat.bss` | 46    | 3 Row   | 14        |
 
 | Layout | File                | Known         | Unknown    |
 | ------ | ------------------- | ------------- | ---------- |

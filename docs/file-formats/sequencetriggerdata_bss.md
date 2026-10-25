@@ -18,14 +18,14 @@ whose text sits in the string table.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes   | Records   | Row bytes               |
-| ------ | -------------- | ------- | ------------------------- | ------- | --------- | ----------------------- |
-| 4      | 2156 and later | 3483    | `sequencetriggerdata.bss` | 390,727 | 1,101 Row | 84 to 86, 84 on average |
-| 3      | 3242           | 3242    | `sequencetriggerdata.bss` | 264,735 | 731 Row   | 85                      |
-| 2      | 3111 to 3212   | 3212    | `sequencetriggerdata.bss` | 261,790 | 727 Row   | 83                      |
-| 1      | 2703 to 3103   | 3103    | `sequencetriggerdata.bss` | 249,445 | 705 Row   | 75                      |
+| Layout | Clients        | File                      | Bytes   | Records   | Row bytes               |
+| ------ | -------------- | ------------------------- | ------- | --------- | ----------------------- |
+| 4      | 2156 and later | `sequencetriggerdata.bss` | 390,727 | 1,101 Row | 84 to 86, 84 on average |
+| 3      | 3242           | `sequencetriggerdata.bss` | 264,735 | 731 Row   | 85                      |
+| 2      | 3111 to 3212   | `sequencetriggerdata.bss` | 261,790 | 727 Row   | 83                      |
+| 1      | 2703 to 3103   | `sequencetriggerdata.bss` | 249,445 | 705 Row   | 75                      |
 
 | Layout | File                      | Known              | Unknown      |
 | ------ | ------------------------- | ------------------ | ------------ |

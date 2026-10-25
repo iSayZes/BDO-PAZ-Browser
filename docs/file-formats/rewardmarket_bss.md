@@ -17,11 +17,11 @@ through `ToClient_GetRewardMarketRewardItemKey(tradeKey, index)` and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File               | Bytes  | Records               | Row bytes |
-| ------ | -------------- | ------- | ------------------ | ------ | --------------------- | --------- |
-| 1      | 2844 and later | 3483    | `rewardmarket.bss` | 33,122 | 1,264 Reward, 854 Row | 12        |
+| Layout | Clients        | File               | Bytes  | Records               | Row bytes |
+| ------ | -------------- | ------------------ | ------ | --------------------- | --------- |
+| 1      | 2844 and later | `rewardmarket.bss` | 33,122 | 1,264 Reward, 854 Row | 12        |
 
 | Layout | File               | Known            | Unknown         |
 | ------ | ------------------ | ---------------- | --------------- |

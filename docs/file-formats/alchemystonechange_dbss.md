@@ -12,14 +12,14 @@ skill condition as an inline script, and the item it grows into.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes  | Records       | Row bytes |
-| ------ | -------------- | ------- | ------------------------------- | ------ | ------------- | --------- |
-| 2      | 3045 and later | 3483    | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
-| 2      | 3045 and later | 3483    | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
-| 1      | 1346 to 2717   | 2717    | `alchemystonechange.dbss`       | 13,732 | 176 Row       | 78        |
-| 1      | 1346 to 2717   | 2717    | `alchemystonechangeoffset.dbss` | 2,116  | 176 Index Row | 12        |
+| Layout | Clients        | File                            | Bytes  | Records       | Row bytes |
+| ------ | -------------- | ------------------------------- | ------ | ------------- | --------- |
+| 2      | 3045 and later | `alchemystonechange.dbss`       | 12,506 | 133 Row       | 94        |
+| 2      | 3045 and later | `alchemystonechangeoffset.dbss` | 1,600  | 133 Index Row | 12        |
+| 1      | 1346 to 2717   | `alchemystonechange.dbss`       | 13,732 | 176 Row       | 78        |
+| 1      | 1346 to 2717   | `alchemystonechangeoffset.dbss` | 2,116  | 176 Index Row | 12        |
 
 | Layout | File                            | Known            | Unknown         |
 | ------ | ------------------------------- | ---------------- | --------------- |

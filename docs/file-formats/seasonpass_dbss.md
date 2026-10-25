@@ -17,13 +17,13 @@ replacement texts through `ToClient_CanShowChangedSeasonPass(listIdx)`,
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File              | Bytes | Records                 | Row bytes                |
-| ------ | -------------- | ------- | ----------------- | ----- | ----------------------- | ------------------------ |
-| 3      | 2319 and later | 3483    | `seasonpass.dbss` | 7,737 | 205 Row, 5 Season Range | 37 to 149, 38 on average |
-| 2      | 1329 to 2313   | 2313    | `seasonpass.dbss` | 2,262 | 58 Row                  | 37 to 149, 39 on average |
-| 1      | 1360 to 1622   | 1622    | `seasonpass.dbss` | 693   | 53 Row                  | 13                       |
+| Layout | Clients        | File              | Bytes | Records                 | Row bytes                |
+| ------ | -------------- | ----------------- | ----- | ----------------------- | ------------------------ |
+| 3      | 2319 and later | `seasonpass.dbss` | 7,737 | 205 Row, 5 Season Range | 37 to 149, 38 on average |
+| 2      | 1329 to 2313   | `seasonpass.dbss` | 2,262 | 58 Row                  | 37 to 149, 39 on average |
+| 1      | 1360 to 1622   | `seasonpass.dbss` | 693   | 53 Row                  | 13                       |
 
 | Layout | File              | Known           | Unknown       |
 | ------ | ----------------- | --------------- | ------------- |

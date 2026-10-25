@@ -43,32 +43,32 @@ quest widget's group quest line, a feature the live client keeps off; see
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                                  | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ------------------------------------- | ----- | -------------- | --------- |
-| 1      | 1208 and later | 3483    | `audiorenewal.bss`                    | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `beginnerroadmaplinkurldata.bss`      | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `cashproduct_discountperiodcheck.bss` | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `cashproductcachedata.bss`            | 20    | 1 String Table | 4         |
-| 1      | 822 and later  | 3483    | `charactertrigger.bss`                | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `commonskill.bss`                     | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `dropuiurlinfo.bss`                   | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `enchantlightstone.bss`               | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `equipitemchanage.bss`                | 20    | 1 String Table | 4         |
-| 1      | 805 and later  | 3483    | `fishinginfo.bss`                     | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `instancefieldenteroption.bss`        | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `instancefieldmanagement.bss`         | 20    | 1 String Table | 4         |
-| 1      | 805 and later  | 3483    | `itembundle.bss`                      | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `lightstoneenchantgroup.bss`          | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `naktype.bss`                         | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `normalgroupquest.bss`                | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `openuiwhennak.bss`                   | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `preloadpcactioncharacter.bss`        | 20    | 1 String Table | 4         |
-| 1      | 1784 and later | 3483    | `shadowarenalist.bss`                 | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `skillselectuiinfo.bss`               | 20    | 1 String Table | 4         |
-| 1      | 805 and later  | 3483    | `spawngroup.bss`                      | 20    | 1 String Table | 4         |
-| 1      | 3144 and later | 3483    | `tempcashstaticstatus.bss`            | 20    | 1 String Table | 4         |
+| Layout | Clients        | File                                  | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------------------------------------- | ----- | -------------- | --------- |
+| 1      | 1208 and later | `audiorenewal.bss`                    | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `beginnerroadmaplinkurldata.bss`      | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `cashproduct_discountperiodcheck.bss` | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `cashproductcachedata.bss`            | 20    | 1 String Table | 4         |
+| 1      | 822 and later  | `charactertrigger.bss`                | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `commonskill.bss`                     | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `dropuiurlinfo.bss`                   | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `enchantlightstone.bss`               | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `equipitemchanage.bss`                | 20    | 1 String Table | 4         |
+| 1      | 805 and later  | `fishinginfo.bss`                     | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `instancefieldenteroption.bss`        | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `instancefieldmanagement.bss`         | 20    | 1 String Table | 4         |
+| 1      | 805 and later  | `itembundle.bss`                      | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `lightstoneenchantgroup.bss`          | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `naktype.bss`                         | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `normalgroupquest.bss`                | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `openuiwhennak.bss`                   | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `preloadpcactioncharacter.bss`        | 20    | 1 String Table | 4         |
+| 1      | 1784 and later | `shadowarenalist.bss`                 | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `skillselectuiinfo.bss`               | 20    | 1 String Table | 4         |
+| 1      | 805 and later  | `spawngroup.bss`                      | 20    | 1 String Table | 4         |
+| 1      | 3144 and later | `tempcashstaticstatus.bss`            | 20    | 1 String Table | 4         |
 
 | Layout | File                                  | Known         | Unknown    |
 | ------ | ------------------------------------- | ------------- | ---------- |

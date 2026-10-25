@@ -8,11 +8,11 @@ Lists zodiac sign IDs in display/index order. The file is a compact `PABR` looku
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                  | Bytes | Records  | Row bytes |
-| ------ | -------------- | ------- | --------------------- | ----- | -------- | --------- |
-| 1      | 1210 and later | 3483    | `zodiacsignindex.bss` | 32    | 12 Entry | 1         |
+| Layout | Clients        | File                  | Bytes | Records  | Row bytes |
+| ------ | -------------- | --------------------- | ----- | -------- | --------- |
+| 1      | 1210 and later | `zodiacsignindex.bss` | 32    | 12 Entry | 1         |
 
 | Layout | File                  | Known         | Unknown    |
 | ------ | --------------------- | ------------- | ---------- |

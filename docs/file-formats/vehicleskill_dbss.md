@@ -15,12 +15,12 @@ these keys.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                      | Bytes  | Records        | Row bytes                    |
-| ------ | -------------- | ------- | ------------------------- | ------ | -------------- | ---------------------------- |
-| 1      | 1572 and later | 3483    | `vehicleskill.dbss`       | 70,285 | 106 Record     | 268 to 1,646, 663 on average |
-| 1      | 1572 and later | 3483    | `vehicleskilloffset.dbss` | 974    | 106 Offset Row | 9                            |
+| Layout | Clients        | File                      | Bytes  | Records        | Row bytes                    |
+| ------ | -------------- | ------------------------- | ------ | -------------- | ---------------------------- |
+| 1      | 1572 and later | `vehicleskill.dbss`       | 70,285 | 106 Record     | 268 to 1,646, 663 on average |
+| 1      | 1572 and later | `vehicleskilloffset.dbss` | 974    | 106 Offset Row | 9                            |
 
 | Layout | File                      | Known            | Unknown        |
 | ------ | ------------------------- | ---------------- | -------------- |

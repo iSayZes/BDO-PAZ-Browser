@@ -1,7 +1,9 @@
 """The `## Versions` section: which clients each layout fits, with sizes and coverage.
 
 The doc check writes it between the two markers. A client widens its
-layout's range, and sizes come from the newest client checked. Rows shrink
+layout's range, and sizes come from the newest client checked: the last client of
+a row's range, or for the newest layout the newest Clients row that fits it
+(the Sizes table holds no column for it). Rows shrink
 only after a renumber, when the Clients table says a client of a row now
 fits another layout (`current_rows`).
 The Clients table lists every client the doc check read, with the layout
@@ -24,8 +26,10 @@ from .walk_model import FileFit, LayoutFit
 
 VERSIONS_BEGIN = "<!-- versions:begin"
 VERSIONS_END = "<!-- versions:end -->"
-_LEAD = "Sizes and coverage from the client in the Checked column. The newest layout is the current one."
-_SIZES_HEADER = ("Layout", "Clients", "Checked", "File", "Bytes", "Records", "Row bytes")
+_LEAD = "Sizes and coverage from the newest client of each row. The newest layout is the current one."
+_SIZES_HEADER = ("Layout", "Clients", "File", "Bytes", "Records", "Row bytes")
+# The Sizes table while it named the newest client in a Checked column; read until every doc is rewritten.
+_OLD_SIZES_HEADER = ("Layout", "Clients", "Checked", "File", "Bytes", "Records", "Row bytes")
 _COVERAGE_HEADER = ("Layout", "File", "Known", "Unknown")
 _CLIENTS_LEAD = "Every client the doc check read, and the layout its files fit."
 _CLIENTS_HEADER = ("Client", "Result", "Checked against")
@@ -98,7 +102,7 @@ def merge_rows(old: Iterable[VersionRow], new: Iterable[VersionRow]) -> tuple[Ve
 def current_rows(rows: Iterable[VersionRow], clients: Sequence[ClientCheck]) -> tuple[VersionRow, ...]:
     """`rows` without what a renumber left stale, judged by the Clients table.
 
-    A row whose Checked client now fits another layout is dropped, and a
+    A row whose newest client now fits another layout is dropped, and a
     range whose first client does starts at the next client that still fits.
     Only another layout number counts: a client the table does not hold, or
     one without a layout (a doc of several files is `No file` where one of
@@ -156,7 +160,7 @@ def read_rows(text: str) -> tuple[VersionRow, ...]:
     if block is None:
         return ()
     found = tables(numbered_lines(block))
-    sizes = next((table for table in found if table.header == _SIZES_HEADER), None)
+    sizes = next((table for table in found if table.header in (_SIZES_HEADER, _OLD_SIZES_HEADER)), None)
     coverage = next((table for table in found if table.header == _COVERAGE_HEADER), None)
     if sizes is None or coverage is None:
         return ()
@@ -165,18 +169,34 @@ def read_rows(text: str) -> tuple[VersionRow, ...]:
         for _, cells in coverage.rows
         if _is_row(cells, _COVERAGE_HEADER)
     }
+    clients = read_clients(text)
     rows: list[VersionRow] = []
     for _, cells in sizes.rows:
-        if not _is_row(cells, _SIZES_HEADER):
+        if not _is_row(cells, sizes.header):
             continue
-        layout, clients, checked, file, size, records, row_bytes = cells
-        match = _CLIENTS.match(clients)
-        if not match or not checked.isdigit():
+        if sizes.header == _OLD_SIZES_HEADER:
+            layout, clients_cell, checked_cell, file, size, records, row_bytes = cells
+        else:
+            layout, clients_cell, file, size, records, row_bytes = cells
+            checked_cell = ""
+        match = _CLIENTS.match(clients_cell)
+        if not match:
             continue
+        first = int(match.group("first"))
+        checked = int(checked_cell) if checked_cell.isdigit() else _newest_client(match, int(layout), first, clients)
         name = file.strip("`")
         known, unknown = covered.get((int(layout), name), (0, 0))
-        rows.append(VersionRow(int(layout), int(match.group("first")), int(checked), name, _bytes(size), records, row_bytes, known, unknown))
+        rows.append(VersionRow(int(layout), first, checked, name, _bytes(size), records, row_bytes, known, unknown))
     return tuple(rows)
+
+
+def _newest_client(match: re.Match[str], layout: int, first: int, clients: Sequence[ClientCheck]) -> int:
+    """The client a row's sizes come from: its last client, or for `<first> and later` the newest that fits its layout."""
+    if match.group("last"):
+        return int(match.group("last"))
+    if not match.group(0).endswith("later"):
+        return first
+    return max((check.client for check in clients if check.layout == layout and check.client >= first), default=first)
 
 
 def write_rows(text: str, rows: Sequence[VersionRow], clients: Sequence[ClientCheck], newest_layout: int) -> str:
@@ -204,7 +224,7 @@ def render_rows(rows: Sequence[VersionRow], clients: Sequence[ClientCheck], newe
 
 def _sizes_and_coverage(rows: Sequence[VersionRow], newest_layout: int) -> str:
     sizes = [
-        (str(row.layout), clients_text(row, newest_layout), str(row.checked), f"`{row.file}`", f"{row.size:,}", row.records, row.row_bytes)
+        (str(row.layout), clients_text(row, newest_layout), f"`{row.file}`", f"{row.size:,}", row.records, row.row_bytes)
         for row in rows
     ]
     coverage = [

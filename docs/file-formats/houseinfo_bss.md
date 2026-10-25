@@ -17,12 +17,12 @@ holds 2,521 items.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File            | Bytes   | Records                                   | Row bytes |
-| ------ | -------------- | ------- | --------------- | ------- | ----------------------------------------- | --------- |
-| 2      | 2429 and later | 3483    | `houseinfo.bss` | 172,181 | 3,056 Craft, 823 House Row, 2,521 Product | 8         |
-| 1      | 805 to 2163    | 2163    | `houseinfo.bss` | 48,608  | 2,866 Craft, 766 House Row                | 8         |
+| Layout | Clients        | File            | Bytes   | Records                                   | Row bytes |
+| ------ | -------------- | --------------- | ------- | ----------------------------------------- | --------- |
+| 2      | 2429 and later | `houseinfo.bss` | 172,181 | 3,056 Craft, 823 House Row, 2,521 Product | 8         |
+| 1      | 805 to 2163    | `houseinfo.bss` | 48,608  | 2,866 Craft, 766 House Row                | 8         |
 
 | Layout | File            | Known             | Unknown        |
 | ------ | --------------- | ----------------- | -------------- |

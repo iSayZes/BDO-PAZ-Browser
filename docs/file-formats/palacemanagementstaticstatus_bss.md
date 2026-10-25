@@ -14,11 +14,11 @@ calls of `panel_window_palacemanagement_*.luac`.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                               | Bytes | Records                                                                                                                     | Row bytes |
-| ------ | -------------- | ------- | ---------------------------------- | ----- | --------------------------------------------------------------------------------------------------------------------------- | --------- |
-| 1      | 2726 and later | 3483    | `palacemanagementstaticstatus.bss` | 4,325 | 32 Board Ref, 8 Board Group, 182 Production Item, 20 Production Board, 84 Manufacture Item, 12 Manufacture Board, 12 Nation | 10        |
+| Layout | Clients        | File                               | Bytes | Records                                                                                                                     | Row bytes |
+| ------ | -------------- | ---------------------------------- | ----- | --------------------------------------------------------------------------------------------------------------------------- | --------- |
+| 1      | 2726 and later | `palacemanagementstaticstatus.bss` | 4,325 | 32 Board Ref, 8 Board Group, 182 Production Item, 20 Production Board, 84 Manufacture Item, 12 Manufacture Board, 12 Nation | 10        |
 
 | Layout | File                               | Known           | Unknown     |
 | ------ | ---------------------------------- | --------------- | ----------- |

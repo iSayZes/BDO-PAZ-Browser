@@ -8,11 +8,11 @@ The random quest groups that the quest condition `checkRandomGroup(group, index)
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                   | Bytes | Records               | Row bytes |
-| ------ | -------------- | ------- | ---------------------- | ----- | --------------------- | --------- |
-| 1      | 3125 and later | 3483    | `questrandomgroup.bss` | 52    | 1 Row, 1 String Table | 32        |
+| Layout | Clients        | File                   | Bytes | Records               | Row bytes |
+| ------ | -------------- | ---------------------- | ----- | --------------------- | --------- |
+| 1      | 3125 and later | `questrandomgroup.bss` | 52    | 1 Row, 1 String Table | 32        |
 
 | Layout | File                   | Known        | Unknown      |
 | ------ | ---------------------- | ------------ | ------------ |

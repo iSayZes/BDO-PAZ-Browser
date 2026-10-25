@@ -16,12 +16,12 @@ world map icon settings in
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                         | Bytes | Records      | Row bytes                  |
-| ------ | -------------- | ------- | ---------------------------- | ----- | ------------ | -------------------------- |
-| 1      | 1280 and later | 3483    | `personalmonster.dbss`       | 1,120 | 6 Row        | 179 to 197, 186 on average |
-| 1      | 1280 and later | 3483    | `personalmonsteroffset.dbss` | 64    | 6 Offset Row | 10                         |
+| Layout | Clients        | File                         | Bytes | Records      | Row bytes                  |
+| ------ | -------------- | ---------------------------- | ----- | ------------ | -------------------------- |
+| 1      | 1280 and later | `personalmonster.dbss`       | 1,120 | 6 Row        | 179 to 197, 186 on average |
+| 1      | 1280 and later | `personalmonsteroffset.dbss` | 64    | 6 Offset Row | 10                         |
 
 | Layout | File                         | Known           | Unknown     |
 | ------ | ---------------------------- | --------------- | ----------- |

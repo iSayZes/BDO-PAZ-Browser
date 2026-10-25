@@ -14,11 +14,11 @@ the higher (705,375). Both change in steps up to level 40, fall from level
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------- | ----- | ------- | --------- |
-| 1      | 2444 and later | 3483    | `guildmatchexp.bss` | 828   | 2 Row   | 404       |
+| Layout | Clients        | File                | Bytes | Records | Row bytes |
+| ------ | -------------- | ------------------- | ----- | ------- | --------- |
+| 1      | 2444 and later | `guildmatchexp.bss` | 828   | 2 Row   | 404       |
 
 | Layout | File                | Known          | Unknown    |
 | ------ | ------------------- | -------------- | ---------- |

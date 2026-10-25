@@ -12,11 +12,11 @@ and sound bank that play its audio. The movie name is the stem of the
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                | Bytes  | Records | Row bytes |
-| ------ | -------------- | ------- | ------------------- | ------ | ------- | --------- |
-| 1      | 2073 and later | 3483    | `binkaudioinfo.bss` | 11,349 | 161 Row | 15        |
+| Layout | Clients        | File                | Bytes  | Records | Row bytes |
+| ------ | -------------- | ------------------- | ------ | ------- | --------- |
+| 1      | 2073 and later | `binkaudioinfo.bss` | 11,349 | 161 Row | 15        |
 
 | Layout | File                | Known            | Unknown      |
 | ------ | ------------------- | ---------------- | ------------ |

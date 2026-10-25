@@ -20,13 +20,13 @@ crystals, Sethra's Artifacts and other items.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                 | Bytes | Records               | Row bytes |
-| ------ | -------------- | ------- | -------------------- | ----- | --------------------- | --------- |
-| 3      | 1109 and later | 3483    | `barter_special.bss` | 7,370 | 105 Exchange, 105 Row | 56        |
-| 2      | 1261 to 2855   | 2855    | `barter_special.bss` | 8,194 | 122 Exchange, 122 Row | 56        |
-| 1      | 1304 to 1685   | 1685    | `barter_special.bss` | 9,788 | 148 Exchange, 148 Row | 56        |
+| Layout | Clients        | File                 | Bytes | Records               | Row bytes |
+| ------ | -------------- | -------------------- | ----- | --------------------- | --------- |
+| 3      | 1109 and later | `barter_special.bss` | 7,370 | 105 Exchange, 105 Row | 56        |
+| 2      | 1261 to 2855   | `barter_special.bss` | 8,194 | 122 Exchange, 122 Row | 56        |
+| 1      | 1304 to 1685   | `barter_special.bss` | 9,788 | 148 Exchange, 148 Row | 56        |
 
 | Layout | File                 | Known            | Unknown    |
 | ------ | -------------------- | ---------------- | ---------- |

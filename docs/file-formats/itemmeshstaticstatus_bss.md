@@ -13,12 +13,12 @@ mesh per class type for each item.
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                       | Bytes     | Records    | Row bytes                |
-| ------ | -------------- | ------- | -------------------------- | --------- | ---------- | ------------------------ |
-| 2      | 3387 and later | 3483    | `itemmeshstaticstatus.bss` | 2,104,179 | 25,749 Row | 71 to 108, 82 on average |
-| 1      | 3052 to 3381   | 3381    | `itemmeshstaticstatus.bss` | 1,951,696 | 24,466 Row | 69 to 106, 80 on average |
+| Layout | Clients        | File                       | Bytes     | Records    | Row bytes                |
+| ------ | -------------- | -------------------------- | --------- | ---------- | ------------------------ |
+| 2      | 3387 and later | `itemmeshstaticstatus.bss` | 2,104,179 | 25,749 Row | 71 to 108, 82 on average |
+| 1      | 3052 to 3381   | `itemmeshstaticstatus.bss` | 1,951,696 | 24,466 Row | 69 to 106, 80 on average |
 
 | Layout | File                       | Known               | Unknown           |
 | ------ | -------------------------- | ------------------- | ----------------- |

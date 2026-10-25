@@ -14,12 +14,12 @@ named `Dev ...` ("Dev Plant13- AfricanIron", `4454`), 4 more with a name and
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                     | Bytes | Records        | Row bytes |
-| ------ | -------------- | ------- | ------------------------ | ----- | -------------- | --------- |
-| 1      | 1537 and later | 3483    | `mansiondata.dbss`       | 2,992 | 498 Row        | 6         |
-| 1      | 1537 and later | 3483    | `mansiondataoffset.dbss` | 4,984 | 498 Offset Row | 10        |
+| Layout | Clients        | File                     | Bytes | Records        | Row bytes |
+| ------ | -------------- | ------------------------ | ----- | -------------- | --------- |
+| 1      | 1537 and later | `mansiondata.dbss`       | 2,992 | 498 Row        | 6         |
+| 1      | 1537 and later | `mansiondataoffset.dbss` | 4,984 | 498 Offset Row | 10        |
 
 | Layout | File                     | Known            | Unknown       |
 | ------ | ------------------------ | ---------------- | ------------- |

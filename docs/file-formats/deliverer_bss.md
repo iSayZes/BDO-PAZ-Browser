@@ -14,12 +14,12 @@ through `FromClient_getDelivererType()` and opens no cargo window for a
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File            | Bytes | Records | Row bytes |
-| ------ | -------------- | ------- | --------------- | ----- | ------- | --------- |
-| 2      | 2429 and later | 3483    | `deliverer.bss` | 7,497 | 27 Row  | 106       |
-| 1      | 805 to 2421    | 2421    | `deliverer.bss` | 6,718 | 24 Row  | 104       |
+| Layout | Clients        | File            | Bytes | Records | Row bytes |
+| ------ | -------------- | --------------- | ----- | ------- | --------- |
+| 2      | 2429 and later | `deliverer.bss` | 7,497 | 27 Row  | 106       |
+| 1      | 805 to 2421    | `deliverer.bss` | 6,718 | 24 Row  | 104       |
 
 | Layout | File            | Known            | Unknown     |
 | ------ | --------------- | ---------------- | ----------- |

@@ -12,11 +12,11 @@ equipment gives. Each record holds the entries of one `fairy_feed_key`, one
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
-Sizes and coverage from the client in the Checked column. The newest layout is the current one.
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | Checked | File                            | Bytes | Records           | Row bytes |
-| ------ | -------------- | ------- | ------------------------------- | ----- | ----------------- | --------- |
-| 1      | 3229 and later | 3483    | `fairyfeedenchantfailcount.bss` | 147   | 9 Entry, 7 Record | 11        |
+| Layout | Clients        | File                            | Bytes | Records           | Row bytes |
+| ------ | -------------- | ------------------------------- | ----- | ----------------- | --------- |
+| 1      | 3229 and later | `fairyfeedenchantfailcount.bss` | 147   | 9 Entry, 7 Record | 11        |
 
 | Layout | File                            | Known          | Unknown    |
 | ------ | ------------------------------- | -------------- | ---------- |

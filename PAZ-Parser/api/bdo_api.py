@@ -35,6 +35,7 @@ from .bdo_api_file_search import FileSearchMixin
 from .bdo_api_preview import PreviewMixin
 from .bdo_api_search import SearchMixin
 from .bdo_api_map_pins import MapPinsMixin
+from .bdo_api_model_rigs import ModelRigsMixin
 from .bdo_api_model_textures import ModelTexturesMixin
 from .bdo_api_world_map import WorldMapMixin
 from .bdo_tree import build_tree, collect_entries, count_entries, find_node, handled_entries
@@ -92,7 +93,7 @@ def _data_folder(text: str) -> str | None:
     return str(path)
 
 
-class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin, ModelTexturesMixin):
+class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin, ModelTexturesMixin, ModelRigsMixin):
     """Backend the UI calls through pywebview; the CLI loads folders through it too."""
 
     @property
@@ -401,6 +402,8 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         self._icon_data_url_cache.clear()
         self._icon_preview_images.clear()
         self._model_texture_urls.clear()
+        self._model_skeletons.clear()
+        self._model_rig_index = None
         self._open_thumbnail_cache()
         self._tree_data = build_tree(entries)
         self._handled_view = None

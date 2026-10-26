@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Bone hierarchies of the skinned meshes under `character/model/`: per bone its name, parent, bind pose matrices and local scale, rotation and translation, then optional collision shapes and constraint axes, and after the bones a list of bone volumes. A `.pac` mesh names bones by `bone_id` in its `bone_palette` (see [`mesh_pac.md`](mesh_pac.md)); the skeleton holding those ids is a `.pab` file in the mesh's folder or a folder above it (see Finding a Mesh's Skeleton). Byte `0x04` of the `PAR ` header is `0x01`. On client 3483 there are 2,007 `.pab` files: 1 of version 2, 970 of version 3 and 1,036 of version 4, with 1 to 256 bones each.
+Bone hierarchies of the skinned meshes under `character/model/`: per bone its name, parent, bind pose matrices and local scale, rotation and translation, then optional collision shapes and constraint axes, and after the bones a list of bone volumes. A `.pac` mesh names bones by `bone_id` in its `bone_palette` (see [`mesh_pac.md`](mesh_pac.md)); the skeleton holding those ids is a `.pab` file in the mesh's folder or a folder above it (see Finding a Mesh's Skeleton). The Model tab of the browser draws the bones and poses `.pac` meshes on them (`PAZ-Parser/par_skeleton.py`). Byte `0x04` of the `PAR ` header is `0x01`. On client 3483 there are 2,007 `.pab` files: 1 of version 2, 970 of version 3 and 1,036 of version 4, with 1 to 256 bones each.
 
 ## Versions
 

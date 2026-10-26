@@ -1,14 +1,12 @@
 """HTML of the built-in text, image and model previews: a toolbar line, then the view.
 
-TextHandler, DdsHandler and ModelHandler (bdo_preview.py) call these. The
-controls carry data-action attributes that ui/js/features/preview-views.js
-handles; ui/js/features/model-view.js draws the model.
+TextHandler and DdsHandler (bdo_preview.py) call these; the model view is in
+preview_model.py. The controls carry data-action attributes that
+ui/js/features/preview-views.js handles.
 """
 from __future__ import annotations
 
-import base64
 import html as _html
-import json
 import struct
 from collections.abc import Callable
 
@@ -35,7 +33,7 @@ def _icon(name: str) -> str:
     return f'<svg class="icon" aria-hidden="true"><use href="#icon-{name}"></use></svg>'
 
 
-def _count(key: str, count: int) -> str:
+def count_text(key: str, count: int) -> str:
     return ui_text(f"{key}One" if count == 1 else f"{key}Many", count=f"{count:,}")
 
 
@@ -71,7 +69,7 @@ def text_view_html(
     (`xml_highlight.highlight_xml_lines`); without it each line is escaped text.
     """
     lines = text_lines(text)
-    meta = [_count("preview.line", len(lines)), _ENCODING_NAMES.get(encoding, encoding.upper())]
+    meta = [count_text("preview.line", len(lines)), _ENCODING_NAMES.get(encoding, encoding.upper())]
     ending = line_ending(text)
     if ending:
         meta.append(ending)
@@ -120,11 +118,11 @@ def image_meta(width: int | None, height: int | None, data: bytes, kind: str = "
     dds = dds_format(data)
     if dds:
         fmt, mips = dds
-        parts += [fmt, _count("preview.mip", mips)]
+        parts += [fmt, count_text("preview.mip", mips)]
     return " · ".join(parts)
 
 
-def _segmented(action: str, label_key: str, options: list[tuple[str, str]], active: str) -> str:
+def segmented_control(action: str, label_key: str, options: list[tuple[str, str]], active: str) -> str:
     buttons = "".join(
         f'<button type="button" class="{"active" if value == active else ""}" '
         f'data-action="{action}" data-value="{value}" aria-pressed="{"true" if value == active else "false"}">'
@@ -138,9 +136,9 @@ def _segmented(action: str, label_key: str, options: list[tuple[str, str]], acti
 
 def image_view_html(src: str, name: str, meta: str) -> str:
     """The image with zoom (Fit, 100%, 200%), background and a pixel readout."""
-    zoom = _segmented("image-zoom", "preview.zoom",
+    zoom = segmented_control("image-zoom", "preview.zoom",
                       [("fit", ui_text("preview.zoomFit")), ("1", "100%"), ("2", "200%")], "fit")
-    background = _segmented("image-background", "preview.background",
+    background = segmented_control("image-background", "preview.background",
                             [("checker", ui_text("preview.bgChecker")),
                              ("dark", ui_text("preview.bgDark")),
                              ("light", ui_text("preview.bgLight"))], "checker")
@@ -154,63 +152,5 @@ def image_view_html(src: str, name: str, meta: str) -> str:
         f'<img src="{src}" alt="{_html.escape(name)}">'
         '</div>'
         '<div class="img-readout" aria-live="off"></div>'
-        '</div>'
-    )
-
-
-# ── Model ─────────────────────────────────────────────────────────────────────
-
-def model_meta(vertex_count: int, triangle_count: int, submesh_count: int) -> str:
-    """`1,234 vertices · 2,000 triangles · 3 submeshes`."""
-    return " · ".join((
-        _count("preview.vertex", vertex_count),
-        _count("preview.triangle", triangle_count),
-        _count("preview.submesh", submesh_count),
-    ))
-
-
-def _base64(data: bytes) -> str:
-    return base64.b64encode(data).decode("ascii")
-
-
-def model_view_html(
-    positions: bytes,
-    uvs: bytes,
-    indices: bytes,
-    submeshes: list[tuple[int, int, str]],
-    meta: str,
-) -> str:
-    """The model canvas with shading, a texture count and a reset button.
-
-    `positions` holds float32 x, y, z per vertex, `uvs` float32 u, v per
-    vertex (empty for a mesh without them) and `indices` uint32 triangle
-    corners, all little-endian; `submeshes` the (first index, index count,
-    texture file name) of each part. The view tints the parts apart and
-    fetches their textures (Api.get_model_texture). A model with no
-    triangles gets a note in place of the canvas.
-    """
-    toolbar = f'<span class="view-meta">{_html.escape(meta)}</span>'
-    if not indices:
-        return (
-            f'<div class="model-view"><div class="view-toolbar">{toolbar}</div>'
-            f'<div class="model-note">{_html.escape(ui_text("preview.modelEmpty"))}</div></div>'
-        )
-    has_textures = bool(uvs) and any(texture for _, _, texture in submeshes)
-    modes = [("solid", ui_text("preview.shadingSolid")), ("wire", ui_text("preview.shadingWire"))]
-    if has_textures:
-        modes.insert(0, ("textured", ui_text("preview.shadingTextured")))
-    shading = _segmented("model-shading", "preview.shading", modes, modes[0][0])
-    reset = (f'<button type="button" data-action="model-reset">'
-             f'{_html.escape(ui_text("preview.resetView"))}</button>')
-    parts = _html.escape(json.dumps(submeshes, separators=(",", ":")), quote=True)
-    textures = '<span class="view-meta model-textures" aria-live="polite"></span>' if has_textures else ""
-    return (
-        '<div class="model-view">'
-        f'<div class="view-toolbar">{toolbar}{textures}<span class="view-toolbar-gap"></span>{shading}{reset}</div>'
-        f'<div class="model-stage" data-positions="{_base64(positions)}" data-uvs="{_base64(uvs)}" '
-        f'data-indices="{_base64(indices)}" data-submeshes="{parts}">'
-        '<canvas></canvas>'
-        f'<div class="model-note model-hint">{_html.escape(ui_text("preview.modelHint"))}</div>'
-        '</div>'
         '</div>'
     )

@@ -1,9 +1,12 @@
 "use strict";
 
+import { clamp, cross, lookAt, multiply, normalize, perspective } from "./model-math.js";
+
 // A WebGL 2 view of one triangle mesh: orbit, pan and zoom around its
 // bounding box, lit from the camera with its textures or a tint per part, or
-// a wireframe. Draws only when something changed. model-view.js makes one
-// per Model tab and hands it the textures as they arrive.
+// a wireframe, with the bones of a skeleton drawn over it as lines. Draws
+// only when something changed. model-view.js makes one per Model tab and
+// hands it the textures as they arrive; model-rig.js poses it.
 
 const FIELD_OF_VIEW = Math.PI / 4;
 const START_YAW = Math.PI / 4;
@@ -31,6 +34,8 @@ const SUBMESH_TINTS = [
 ];
 // --color-accent
 const WIRE_COLOR = [0.886, 0.663, 0.31];
+// Bones show through the mesh in a cool tone that the wood and skin tints lack.
+const BONE_COLOR = [0.35, 0.85, 0.95];
 
 const VERTEX_SHADER = `#version 300 es
 in vec3 a_position;
@@ -95,6 +100,8 @@ export class ModelRenderer {
     // Texture name -> WebGL texture, as setTexture() gets them.
     this._textures = new Map();
     this._lineBuffer = null;
+    // Bone lines: two x, y, z ends per bone, or null when hidden.
+    this._boneLineCount = 0;
     this._isDrawQueued = false;
     this._isDisposed = false;
     this._bounds = meshBounds(positions);
@@ -112,10 +119,45 @@ export class ModelRenderer {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this._triangleBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
 
+    this._boneArray = gl.createVertexArray();
+    gl.bindVertexArray(this._boneArray);
+    this._boneBuffer = this._attribute("a_position", new Float32Array(0), 3, gl.DYNAMIC_DRAW);
+    gl.bindVertexArray(null);
+
     this.reset();
     this._listen();
     this._resizeObserver = new ResizeObserver(() => this._resize());
     this._resizeObserver.observe(canvas);
+  }
+
+  // Posed positions and normals, x, y, z per vertex, in place of the bind pose.
+  setVertices(positions, normals) {
+    if (this._isDisposed) return;
+    const gl = this._gl;
+    gl.bindBuffer(gl.ARRAY_BUFFER, this._positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, positions, gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, this._normalBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, normals, gl.DYNAMIC_DRAW);
+    this._requestDraw();
+  }
+
+  // Line ends, x, y, z each, two per bone; null hides the bones.
+  setBoneLines(ends) {
+    if (this._isDisposed) return;
+    const gl = this._gl;
+    this._boneLineCount = ends ? ends.length / 3 : 0;
+    if (ends) {
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._boneBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, ends, gl.DYNAMIC_DRAW);
+    }
+    this._requestDraw();
+  }
+
+  // Fits the camera to `points` (x, y, z each) in place of the mesh: a view
+  // with no triangles shows only its bones.
+  fitPoints(points) {
+    this._bounds = meshBounds(points);
+    this.reset();
   }
 
   setShading(mode) {
@@ -152,22 +194,24 @@ export class ModelRenderer {
     this._resizeObserver.disconnect();
     this._abort.abort();
     const gl = this._gl;
-    [this._positionBuffer, this._normalBuffer, this._uvBuffer, this._triangleBuffer, this._lineBuffer].forEach(
+    [this._positionBuffer, this._normalBuffer, this._uvBuffer, this._triangleBuffer, this._lineBuffer,
+      this._boneBuffer].forEach(
       (buffer) => {
         if (buffer) gl.deleteBuffer(buffer);
       },
     );
     this._textures.forEach((texture) => gl.deleteTexture(texture));
     gl.deleteVertexArray(this._vertexArray);
+    gl.deleteVertexArray(this._boneArray);
     gl.deleteProgram(this._program);
     gl.getExtension("WEBGL_lose_context")?.loseContext();
   }
 
-  _attribute(name, values, size) {
+  _attribute(name, values, size, usage = this._gl.STATIC_DRAW) {
     const gl = this._gl;
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, values, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, values, usage);
     const location = gl.getAttribLocation(this._program, name);
     gl.enableVertexAttribArray(location);
     gl.vertexAttribPointer(location, size, gl.FLOAT, false, 0, 0);
@@ -288,6 +332,19 @@ export class ModelRenderer {
 
     if (this._shading === "wire") this._drawWire();
     else this._drawSolid();
+    if (this._boneLineCount) this._drawBones();
+  }
+
+  // Over the mesh, depth test off, so the bones show through it.
+  _drawBones() {
+    const gl = this._gl;
+    gl.disable(gl.DEPTH_TEST);
+    gl.bindVertexArray(this._boneArray);
+    gl.uniform1i(this._uniforms.u_isLit, 0);
+    gl.uniform3fv(this._uniforms.u_color, BONE_COLOR);
+    gl.drawArrays(gl.LINES, 0, this._boneLineCount);
+    gl.bindVertexArray(this._vertexArray);
+    gl.enable(gl.DEPTH_TEST);
   }
 
   // A part whose texture has not arrived (or does not exist) keeps its tint.
@@ -358,8 +415,8 @@ function meshBounds(positions) {
 }
 
 // Smooth normals: the area-weighted face normals around each vertex. A vertex
-// on no triangle points up.
-function vertexNormals(positions, indices) {
+// on no triangle points up. model-rig.js skins these with the vertices.
+export function vertexNormals(positions, indices) {
   const normals = new Float32Array(positions.length);
   for (let i = 0; i < indices.length; i += 3) {
     const a = indices[i] * 3;
@@ -395,54 +452,4 @@ function triangleEdges(indices) {
     out += 6;
   }
   return lines;
-}
-
-function clamp(value, low, high) {
-  return Math.min(high, Math.max(low, value));
-}
-
-function cross(a, b) {
-  return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
-}
-
-function normalize(vector) {
-  const length = Math.hypot(...vector) || 1;
-  return vector.map((value) => value / length);
-}
-
-// Column-major 4 x 4 matrices, as WebGL reads them.
-function perspective(fieldOfView, aspect, near, far) {
-  const f = 1 / Math.tan(fieldOfView / 2);
-  const depth = 1 / (near - far);
-  return new Float32Array([
-    f / aspect, 0, 0, 0,
-    0, f, 0, 0,
-    0, 0, (far + near) * depth, -1,
-    0, 0, 2 * far * near * depth, 0,
-  ]);
-}
-
-function lookAt(eye, target) {
-  const back = normalize(eye.map((value, axis) => value - target[axis]));
-  const right = normalize(cross([0, 1, 0], back));
-  const up = cross(back, right);
-  const dot = (axis) => -(axis[0] * eye[0] + axis[1] * eye[1] + axis[2] * eye[2]);
-  return new Float32Array([
-    right[0], up[0], back[0], 0,
-    right[1], up[1], back[1], 0,
-    right[2], up[2], back[2], 0,
-    dot(right), dot(up), dot(back), 1,
-  ]);
-}
-
-function multiply(a, b) {
-  const out = new Float32Array(16);
-  for (let column = 0; column < 4; column += 1) {
-    for (let row = 0; row < 4; row += 1) {
-      let sum = 0;
-      for (let k = 0; k < 4; k += 1) sum += a[k * 4 + row] * b[column * 4 + k];
-      out[column * 4 + row] = sum;
-    }
-  }
-  return out;
 }

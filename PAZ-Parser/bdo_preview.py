@@ -17,7 +17,10 @@ from bdo_models import PazEntry
 from gc_pause import gc_paused
 from par_mesh import parse_mesh
 from paz.na_copy import plain_name
-from preview_views import image_meta, image_view_html, model_meta, model_view_html, text_view_html
+from par_animation import parse_animation
+from par_skeleton import parse_skeleton
+from preview_model import RIG_CLIP, RIG_MESH, RIG_SKELETON, RigView, clip_meta, model_meta, model_view_html, skeleton_meta
+from preview_views import image_meta, image_view_html, text_view_html
 from record_fields import record_matches
 from table_sort import SORT_DESC, TableSort, sort_order
 from ui_text import set_ui_language, ui_text
@@ -400,19 +403,34 @@ class DdsHandler(ViewHandler):
 # ── 3D model ──────────────────────────────────────────────────────────────────
 
 class ModelHandler(ViewHandler):
-    """Draws the PAR meshes (`.pam`, `.pcm`, `.pac`) in a WebGL view (ui/js/features/model-view.js)."""
+    """Draws the PAR meshes (`.pam`, `.pcm`, `.pac`), skeletons (`.pab`) and clips (`.paa`)
+    in a WebGL view (ui/js/features/model-view.js); a `.pac` can be posed and played on its skeleton."""
 
     view_label_key = "preview.tabModel"
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
+        extension = Path(entry.internal_path).suffix.lower()
+        if extension == ".pab":
+            skeleton = parse_skeleton(data)
+            return model_view_html(b"", b"", b"", [], skeleton_meta(skeleton.bone_count), RigView(RIG_SKELETON))
+        if extension == ".paa":
+            animation = parse_animation(data)
+            return model_view_html(b"", b"", b"", [], clip_meta(len(animation.nodes), animation.duration),
+                                   RigView(RIG_CLIP))
         mesh = parse_mesh(data)
         submeshes = [(part.first_index, part.index_count, part.texture) for part in mesh.submeshes]
+        skin = mesh.skin
+        # A mesh with no triangles shows its note, posed or not.
+        rig = None if skin is None or not skin.palette or not mesh.triangle_count else RigView(
+            RIG_MESH, skin.palette, skin.bone_indices.tobytes(), skin.bone_weights.tobytes(),
+        )
         return model_view_html(
             mesh.positions.tobytes(),
             b"" if mesh.uvs is None else mesh.uvs.tobytes(),
             mesh.indices.tobytes(),
             submeshes,
             model_meta(mesh.vertex_count, mesh.triangle_count, len(mesh.submeshes)),
+            rig,
         )
 
 
@@ -555,8 +573,8 @@ _REGISTRY: dict[str, PreviewHandler] = {
         ".dds", ".dds1", ".dds11",
         ".png", ".jpg", ".bmp", ".gif", ".tga", ".tif",
     )},
-    # PAR meshes: static, collision and character
-    **{ext: _model_handler for ext in (".pam", ".pcm", ".pac")},
+    # PAR meshes (static, collision, character), skeletons and animation clips
+    **{ext: _model_handler for ext in (".pam", ".pcm", ".pac", ".pab", ".paa")},
     ".webm": _webm_handler,
     ".svg": SvgHandler(),
 }

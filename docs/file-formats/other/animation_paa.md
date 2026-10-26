@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Animation clips under `character/motion/`: per bone a list of scale, rotation and translation keys with millisecond times. A clip names its bones by the `bone_id` name hashes of a [`.pab` skeleton](skeleton_pab.md); the keys are local transforms in that skeleton's frame. Byte `0x04` of the `PAR ` header is `0x02`. On client 3483 there are 71,286 `.paa` files: 71,285 of version 2 and one of version 1, with 0 to 254 bones and 0.033 to 65.33 seconds each.
+Animation clips under `character/motion/`: per bone a list of scale, rotation and translation keys with millisecond times. A clip names its bones by the `bone_id` name hashes of a [`.pab` skeleton](skeleton_pab.md); the keys are local transforms in that skeleton's frame. The Model tab of the browser plays a clip on its skeleton (`PAZ-Parser/par_animation.py`). Byte `0x04` of the `PAR ` header is `0x02`. On client 3483 there are 71,286 `.paa` files: 71,285 of version 2 and one of version 1, with 0 to 254 bones and 0.033 to 65.33 seconds each.
 
 ## Versions
 
@@ -600,7 +600,7 @@ Version 1: the same sizes with i16 values.
 
 ## Finding a Clip's Skeleton
 
-A clip names no skeleton. The motion folders mirror the model folders by their first two levels: the clips under `character/motion/1_pc/17_psw/` belong with the skeletons under `character/model/1_pc/17_psw/`. In 2,000 sampled clips (client 3483), 1,845 have a `.pab` that holds every bone id they name, and for 1,650 of them such a skeleton sits under the mirrored model folder. A mirrored folder also holds clips of other skeletons (pets, mounts, gear), so the `.pab` under it that holds the most of the clip's ids is the pick.
+A clip names no skeleton. The motion folders mirror the model folders by their first two levels: the clips under `character/motion/1_pc/17_psw/` belong with the skeletons under `character/model/1_pc/17_psw/`. In 2,000 sampled clips (client 3483), 1,845 have a `.pab` that holds every bone id they name, and for 1,650 of them such a skeleton sits under the mirrored model folder. A mirrored folder also holds clips of other skeletons (pets, mounts, gear), so the browser takes the `.pab` under it that holds the most of the clip's ids.
 
 ## Notes
 

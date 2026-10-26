@@ -28,6 +28,11 @@ from .bdo_recent_tables import RecentTables
 from .bdo_records_prefill import RecordsPrefill
 from .bdo_records_store import DataDigests, RecordStore
 
+if TYPE_CHECKING:
+    from par_skeleton import Skeleton
+
+    from .bdo_api_model_rigs import RigIndex
+
 
 class ApiState:
     """State and small helpers that `Api` and its mixins share.
@@ -61,6 +66,11 @@ class ApiState:
         # Model view textures: PAZ path -> PNG data URL, oldest first (`ModelTexturesMixin`).
         self._model_texture_urls: dict[str, str] = {}
         self._model_texture_lock = threading.Lock()
+        # Model view skeletons and clips (`ModelRigsMixin`): parsed skeletons by
+        # PAZ path, oldest first, and the folder index of .pab and .paa files.
+        self._model_skeletons: dict[str, Skeleton] = {}
+        self._model_rig_index: RigIndex | None = None
+        self._model_rig_lock = threading.Lock()
         self._tree_data: dict = {}
         # "Show only handled tables": the tree, file search, global search
         # and extraction see only the entries a binary handler reads.

@@ -46,3 +46,15 @@
 .model-stage > .model-hint {
   padding: 0;
 }
+
+/* Bones, the animation picker, play and the clock (model-rig.js). The
+   toolbar stays hidden until the skeleton lookup answers. */
+.model-rig[hidden] {
+  display: none;
+}
+.model-clip-box {
+  flex: 0 1 34rem;
+}
+.model-clock {
+  font-variant-numeric: tabular-nums;
+}

@@ -1,28 +1,24 @@
 "use strict";
 
 import { t } from "../core/i18n.js";
+import { decodeBase64 } from "./model-pose.js";
 import { ModelRenderer, WebGLUnavailableError } from "./model-renderer.js";
+import { ModelRig } from "./model-rig.js";
 
-// The Model tab of the PAR meshes (.pam, .pcm, .pac): preview_views.py
-// model_view_html puts the geometry on .model-stage as base64 data
-// attributes, and one ModelRenderer draws it. Each texture comes from
-// Api.get_model_texture once the mesh is drawn. A new view, or a canvas
-// taken off the page, disposes the old renderer, so one WebGL context is
-// alive.
-
-function decodeBase64(text) {
-  const binary = atob(text);
-  const bytes = new Uint8Array(binary.length);
-  for (let i = 0; i < binary.length; i += 1) bytes[i] = binary.charCodeAt(i);
-  return bytes.buffer;
-}
+// The Model tab of the PAR meshes (.pam, .pcm, .pac), skeletons (.pab) and
+// clips (.paa): preview_model.py model_view_html puts the geometry on
+// .model-stage as base64 data attributes, and one ModelRenderer draws it.
+// Each texture comes from Api.get_model_texture once the mesh is drawn; a
+// stage with a data-rig gets a ModelRig that finds its skeleton and plays
+// clips. A new view, or a canvas taken off the page, disposes the old
+// renderer, so one WebGL context is alive.
 
 function stageMesh(stage) {
   const uvs = stage.dataset.uvs;
   return {
-    positions: new Float32Array(decodeBase64(stage.dataset.positions)),
-    uvs: uvs ? new Float32Array(decodeBase64(uvs)) : null,
-    indices: new Uint32Array(decodeBase64(stage.dataset.indices)),
+    positions: decodeBase64(stage.dataset.positions, Float32Array),
+    uvs: uvs ? decodeBase64(uvs, Float32Array) : null,
+    indices: decodeBase64(stage.dataset.indices, Uint32Array),
     submeshes: JSON.parse(stage.dataset.submeshes),
   };
 }
@@ -55,6 +51,10 @@ export const modelViewMethods = {
       return;
     }
     if (mesh.uvs) this._loadModelTextures(view, this._modelRenderer, mesh.submeshes);
+    if (stage.dataset.rig) {
+      this._modelRig = new ModelRig(view, this._modelRenderer, mesh, this._selectedPath);
+      this._modelRig.start();
+    }
   },
 
   // Fetches each texture the parts name, once, and counts the ones found in
@@ -97,7 +97,17 @@ export const modelViewMethods = {
     this._modelRenderer?.reset();
   },
 
+  _toggleModelBones(button) {
+    this._modelRig?.toggleBones(button);
+  },
+
+  _toggleModelPlay() {
+    this._modelRig?.togglePlay();
+  },
+
   _disposeModelView() {
+    this._modelRig?.dispose();
+    this._modelRig = null;
     this._modelRenderer?.dispose();
     this._modelRenderer = null;
   },

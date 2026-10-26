@@ -56,11 +56,9 @@ _FORMATS_IGNORE: frozenset[str] = frozenset({
     ".mapdata", # LOD map data per sector (sectormapinfo_combine/*_lod.mapdata)
     ".namelist", # Far tree model names, .srt paths (mapdata_real)
     ".object", # Event map object placements with .pam paths
-    ".paa", # Animations, binary form of the .pa text exports (character/motion)
     ".paac", # Action charts per character (character/binaryactionchart)
     ".paach", # Action chart header shared by the .paac files
     ".paap", # Object bounding box pack (object/aabb_pack.paap)
-    ".pab", # Skeleton? (character/model)
     ".pabav", # Action chart version stamp, 20 bytes (1 file)
     ".pad", # Animation data packs (character/motion/*/animdatapack.pad)
     ".pae", # Effects (effectbin)

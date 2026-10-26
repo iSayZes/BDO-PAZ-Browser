@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Skinned meshes of player classes, NPCs, monsters, mounts and their gear under `character/model/`. A file holds submeshes, each with three levels of detail; a vertex names up to four bones through the file's bone palette. A submesh's texture is its name plus `.dds` (546 of 548 sampled submeshes find one, in `character/texture/` or `object/texture/`). The Model tab of the browser draws LOD 0 of every submesh (`PAZ-Parser/par_mesh.py`). Byte `0x04` of the `PAR ` header is `0x03`. On client 3483 there are 97,645 `.pac` files: 18,117 of version 1, 12,077 of version 2, 67,450 of version 3, and one that is not a `PAR ` file (see Notes).
+Skinned meshes of player classes, NPCs, monsters, mounts and their gear under `character/model/`. A file holds submeshes, each with three levels of detail; a vertex names up to four bones through the file's bone palette. A submesh's texture is its name plus `.dds` (546 of 548 sampled submeshes find one, in `character/texture/` or `object/texture/`). The Model tab of the browser draws LOD 0 of every submesh (`PAZ-Parser/par_mesh.py`) and poses it on its `.pab` skeleton with the vertex bone indices and weights. Byte `0x04` of the `PAR ` header is `0x03`. On client 3483 there are 97,645 `.pac` files: 18,117 of version 1, 12,077 of version 2, 67,450 of version 3, and one that is not a `PAR ` file (see Notes).
 
 ## Versions
 

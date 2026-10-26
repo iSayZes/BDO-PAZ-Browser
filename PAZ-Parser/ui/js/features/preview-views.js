@@ -4,7 +4,7 @@ import { t } from "../core/i18n.js";
 
 // The toolbars of the text, image and model views (preview_views.py builds
 // them): Wrap lines, image zoom and background, the pixel under the cursor,
-// and the model's shading and camera reset (model-view.js).
+// and the model's shading, camera reset, bones and play (model-view.js).
 // Also the links between rows of a parsed table (`goto-record`, the state
 // names of an .ai script), links into another table (`open-record`, the
 // characters that run an .ai script) and the .ai behavior filter (`ai-filter`).
@@ -37,6 +37,8 @@ export const previewViewMethods = {
         setPressed(button);
         this._setModelShading(button.dataset.value);
       } else if (action === "model-reset") this._resetModelView();
+      else if (action === "model-bones") this._toggleModelBones(button);
+      else if (action === "model-play") this._toggleModelPlay();
       else if (action === "goto-record") this._showParsedRecord(Number(button.dataset.record));
       else if (action === "ai-filter") this._toggleAiFilter(button.dataset.value);
       else if (action === "open-record") this._openRecord(button.dataset);

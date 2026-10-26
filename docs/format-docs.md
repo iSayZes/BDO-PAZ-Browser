@@ -116,7 +116,7 @@ layout tables and the check leaves them alone.
 
 | Type                                | Meaning                                                    | Size |
 | ----------------------------------- | ---------------------------------------------------------- | ---- |
-| `u8` `i8` `u16` `i16` `u32` `i32` `u64` `i64` `f32` `f64` | Little-endian numbers             | 1, 2, 4 or 8 |
+| `u8` `i8` `u16` `i16` `u32` `i32` `u64` `i64` `f16` `f32` `f64` | Little-endian numbers; `f16` is a half float | 1, 2, 4 or 8 |
 | `bytes[N]`, `bytes[field]`          | Bytes with no inner layout                                 | N, or the field's value |
 | `char[N]`, `char[field]`            | ASCII characters, e.g. `char[4]` for `PABR`                | N, or the field's value |
 | `char16[N]`, `char16[field]`        | UTF-16LE code units                                        | 2 x N, or 2 x the field's value |
@@ -129,6 +129,7 @@ layout tables and the check leaves them alone.
 | `Name[N]`, `Name[field]`            | Several of them                                            | count x its size |
 | `Name[..field]`, `Name[..end]`      | Repeated up to the offset a field holds, or to the end of the enclosing structure; in a top-level table `..end` stops at the first `EOF-` row | the bytes up to there |
 | `Name[while field != V]`            | Repeated up to the first one whose `field` is `V`, that one excluded; `field` is a field of `Name` | count x its size |
+| `T[sum field]`                      | As many as the values of `field` add up to over every structure repeated earlier in the same structure (`Vertex[sum vertex_count]` after `Material[material_count]`); a repeat its condition leaves out adds 0 | total x size of T |
 | `bytes[rest]`                       | The bytes left in a structure whose size comes from an offset file | the rest |
 | `bytes[scan]`                       | Bytes whose end only a scan finds, in a structure with no size from outside; named `unknown_*`, the scan in Notes, later rows count from it | what the scan finds |
 | `T if field = V`, `T if field != V` | Present only when the condition holds; `size` names the structure's size from its offset file | T's size, or 0 |
@@ -244,7 +245,9 @@ names a file by its name, or by its full PAZ path when several folders hold
 a file of that name or the family has no single name
 (`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`). `pad00000.meta`
 is not in the archives, so it is read from the PAZ folder itself. A row that
-names a family by pattern (`*.bwp`, `*.luac`) gives no file to read. It walks
+names a family by pattern (`*.bwp`, `*.luac`) gives no file by the pattern;
+the sample files in parentheses after it (`*.bwp` (`mapdata_realexplore2.bwp`))
+are read. It walks
 them by each layout, newest first, and takes the first layout every file
 walks to its last byte by. Three tables follow:
 

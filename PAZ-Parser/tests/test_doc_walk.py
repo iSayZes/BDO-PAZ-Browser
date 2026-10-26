@@ -10,6 +10,7 @@ import pytest
 from format_docs import check_doc, check_run, read_layouts
 from format_docs.check_run import Client, Status, UnreadableFile, check_doc_file
 from format_docs.doc_fit import fit_layouts
+from format_docs.doc_index import doc_files, index_rows
 from format_docs.versions import (
     ClientCheck,
     VersionRow,
@@ -466,3 +467,68 @@ def test_updates_applied_in_one_go_match_them_applied_one_by_one(tmp_path: Path)
 
     assert check_run.apply_updates(before, updates) == one_by_one
     assert check_run.apply_updates(before, []) == before
+
+
+# Two kinds of part, picked by `kind`, then one f16 value per vertex both kinds count.
+SUMMED = _table(
+    "File Layout",
+    ("+0x00", "u8", "kind"),
+    ("+0x01", "u8", "part_count"),
+    ("+0x02", "Part[part_count] if kind = 0", "parts"),
+    ("parts+0x00", "Wide Part[part_count] if kind = 1", "wide_parts"),
+    ("wide_parts+0x00", "f16[sum vertex_count]", "vertices"),
+)
+PART = _table("Part (2 bytes)", ("+0x00", "u16", "vertex_count"))
+WIDE_PART = _table("Wide Part (4 bytes)", ("+0x00", "u16", "vertex_count"), ("+0x02", "u16", "unknown_02"))
+
+
+@pytest.mark.parametrize(
+    ("data", "vertices"),
+    [
+        (bytes([0, 2]) + struct.pack("<HH", 1, 2) + struct.pack("<3e", 0.5, 1.0, 1.5), 3),
+        (bytes([1, 1]) + struct.pack("<HH", 2, 9) + struct.pack("<2e", 0.5, 1.0), 2),
+    ],
+)
+def test_a_sum_count_adds_up_a_field_of_the_parts_read_before_it(data: bytes, vertices: int) -> None:
+    fit = _fit(_doc(SUMMED, PART, WIDE_PART), {"test.bss": data})
+
+    assert isinstance(fit, LayoutFit)
+    assert fit.files[0].size == len(data)
+    assert vertices * 2 == len(data) - 2 - fit.files[0].rows["Part" if data[0] == 0 else "Wide Part"].total
+
+
+def test_a_sum_count_that_reads_past_the_file_does_not_fit() -> None:
+    data = bytes([0, 1]) + struct.pack("<H", 4) + struct.pack("<3e", 0.5, 1.0, 1.5)
+
+    misses = _fit(_doc(SUMMED, PART, WIDE_PART), {"test.bss": data})
+
+    assert isinstance(misses, tuple)
+
+
+def test_a_sum_count_needs_an_earlier_repeated_structure_with_the_field() -> None:
+    layout = SUMMED.replace("f16[sum vertex_count]", "f16[sum index_count]")
+
+    problems = [str(problem) for problem in check_doc(_doc(layout, PART, WIDE_PART))]
+
+    assert any("`[sum index_count]` needs an earlier repeated structure with a field `index_count`" in p for p in problems)
+
+
+def test_a_sum_count_over_no_parts_is_zero() -> None:
+    fit = _fit(_doc(SUMMED, PART, WIDE_PART), {"test.bss": bytes([0, 0])})
+
+    assert isinstance(fit, LayoutFit)
+
+
+def test_a_pattern_row_reads_the_sample_files_named_after_it() -> None:
+    index = (
+        "| File | Description | Docs | Open Questions | In-Game Checks |\n"
+        "| --- | --- | --- | --- | --- |\n"
+        "| `*.pam` (`a.pam`, `b.pam`) | Meshes | [mesh](file-formats/other/mesh_pam.md) | 0 | 0 |\n"
+        "| `*.ai` | Scripts | [aiscript](file-formats/other/aiscript_ai.md) | 0 | 0 |\n"
+        "| `quest.bss` (`#na#quest.bss`) | Quests | [quest](file-formats/bss/quest_bss.md) | 0 | 0 |\n"
+    )
+    rows = index_rows(index)
+
+    assert doc_files("mesh_pam.md", (), rows) == ("a.pam", "b.pam")
+    assert doc_files("aiscript_ai.md", (), rows) == ()
+    assert doc_files("quest_bss.md", (), rows) == ("quest.bss",)

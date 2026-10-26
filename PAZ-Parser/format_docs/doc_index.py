@@ -11,7 +11,7 @@ from .reader import COMPANION_HEADING
 # What `index_rows` returns, as the readers of it take it.
 IndexRows = Mapping[str, list[tuple[str, str]]]
 
-_FIRST_CODE = re.compile(r"`([^`]+)`")
+_CODE = re.compile(r"`([^`]+)`")
 # The doc's file name, behind its group folder: `(file-formats/dbss/buff_dbss.md)`.
 _DOC_LINK = re.compile(r"\(file-formats/(?:[^)#/]+/)*([^)#/]+)")
 _INDEX_COLUMNS = ("File", "Description", "Docs")
@@ -34,10 +34,13 @@ def index_rows(documented_formats: str) -> dict[str, list[tuple[str, str]]]:
             if len(cells) < len(_INDEX_COLUMNS):
                 continue
             file_cell, description, docs_cell = cells[: len(_INDEX_COLUMNS)]
-            file_match = _FIRST_CODE.search(file_cell)
+            names = _CODE.findall(file_cell)
             doc_match = _DOC_LINK.search(docs_cell)
-            if file_match and doc_match:
-                rows.setdefault(doc_match.group(1), []).append((file_match.group(1), description))
+            if not names or not doc_match:
+                continue
+            # A pattern row may name sample files after it: `*.bwp` (`mapdata_realexplore2.bwp`).
+            files = names if is_file_pattern(names[0]) else names[:1]
+            rows.setdefault(doc_match.group(1), []).extend((file, description) for file in files)
     return rows
 
 

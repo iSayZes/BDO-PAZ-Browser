@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 NUMBER_SIZES: Mapping[str, int] = {
     "u8": 1, "i8": 1, "u16": 2, "i16": 2, "u32": 4, "i32": 4,
-    "u64": 8, "i64": 8, "f32": 4, "f64": 8,
+    "u64": 8, "i64": 8, "f16": 2, "f32": 4, "f64": 8,
 }
 UNIT_SIZES: Mapping[str, int] = {"bytes": 1, "char": 1, "char16": 2}
 # A string type has a count head of this many bytes, then text of any length.
@@ -23,13 +23,16 @@ _CLAUSE = re.compile(rf"^(?P<field>{_FIELD}) (?P<op>!?\^?=) (?P<value>\S+)$")
 _BASE = re.compile(rf"^(?P<name>[a-z][a-z0-9]*|[A-Z][A-Za-z0-9 ]*?)(?:\[(?P<count>[^\]]+)\])?(?:\[(?P<inner>\d+|{_FIELD})\])?$")
 _UNTIL = re.compile(rf"^\.\.(?P<target>{_FIELD}|end)$")
 _WHILE = re.compile(rf"^while (?P<field>{_FIELD}) != (?P<value>\S+)$")
+_SUM = re.compile(rf"^sum (?P<field>{_FIELD})$")
 
 
 @dataclass(frozen=True)
 class Count:
-    """How many elements: `kind` is fixed, field, until, while, rest or scan.
+    """How many elements: `kind` is fixed, field, until, while, sum, rest or scan.
 
     A `while` count holds the field it reads in `value` and the value that ends it in `stop`.
+    A `sum` count holds a field of the structures repeated earlier in the same structure,
+    whose values it adds up.
     """
 
     kind: str
@@ -131,7 +134,8 @@ def fixed_part(spec: TypeSpec, structure_sizes: Mapping[str, int | None]) -> int
 def referenced_fields(spec: TypeSpec) -> tuple[str, ...]:
     """The fields of the enclosing structure a count or condition reads, `size` and `end` left out.
 
-    A `while` count reads a field of the repeated structure, so it is not listed.
+    A `while` count reads a field of the repeated structure and a `sum` count fields of earlier
+    repeated structures, so neither is listed.
     """
     names: list[str] = []
     if spec.count and spec.count.kind in ("field", "until"):
@@ -154,6 +158,9 @@ def _parse_count(text: str) -> Count | str:
     loop = _WHILE.match(text)
     if loop:
         return Count("while", loop.group("field"), loop.group("value"))
+    total = _SUM.match(text)
+    if total:
+        return Count("sum", total.group("field"))
     if re.fullmatch(_FIELD, text):
         return Count("field", text)
     return f"`[{text}]` is not a count"

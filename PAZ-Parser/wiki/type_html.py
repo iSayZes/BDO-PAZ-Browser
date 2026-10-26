@@ -56,6 +56,8 @@ def _count(count: Count) -> list[Token]:
         return [("punct", ".."), ("kw", target) if target == "end" else ("field", target)]
     if count.kind == "while":
         return [("kw", "while"), (None, " "), ("field", str(count.value)), (None, " "), ("op", "!="), (None, " "), _value(count.stop or "")]
+    if count.kind == "sum":
+        return [("kw", "sum"), (None, " "), ("field", str(count.value))]
     return [("field", str(count.value))]
 
 

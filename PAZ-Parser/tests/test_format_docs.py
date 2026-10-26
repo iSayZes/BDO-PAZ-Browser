@@ -244,6 +244,9 @@ def test_unknown_after_and_dup_names_point_at_a_field_of_the_structure() -> None
         ("Row[row_count]", None, 0),
         ("Row[..table_start]", None, 0),
         ("Row[while key != 200]", None, 0),
+        ("Row[sum vertex_count]", None, 0),
+        ("f16[2]", 4, 4),
+        ("u16[sum index_count] if wide = 0", None, 0),
         ("bytes[rest]", None, 0),
     ],
 )
@@ -255,7 +258,7 @@ def test_type_sizes(text: str, size: int | None, part: int) -> None:
     assert fixed_part(spec, {"Row": 8}) == part
 
 
-@pytest.mark.parametrize("text", ["row[]", "u24", "bytes", "str16[2][2]", "char[rest]", "Row[a b]"])
+@pytest.mark.parametrize("text", ["row[]", "u24", "bytes", "str16[2][2]", "char[rest]", "Row[a b]", "Row[sum a.b]"])
 def test_types_outside_the_grammar_are_rejected(text: str) -> None:
     assert isinstance(parse_type(text), str)
 

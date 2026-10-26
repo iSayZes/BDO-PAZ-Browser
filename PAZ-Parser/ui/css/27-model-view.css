@@ -1,0 +1,48 @@
+/* ── Model view ───────────────────────────────────────────────────────────── */
+
+/* The PAR meshes (.pam, .pcm, .pac): toolbar, then the WebGL canvas (model-view.js). */
+.model-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.model-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: radial-gradient(circle at 50% 40%, var(--color-raised), var(--color-bg));
+  box-shadow: inset 0 0 0 1px var(--color-line);
+}
+
+.model-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+.model-stage canvas:active {
+  cursor: grabbing;
+}
+
+.model-note {
+  color: var(--color-text-3);
+  font-size: 12px;
+}
+.model-stage > .model-note {
+  padding: var(--space-4);
+}
+
+/* "Drag to orbit · right-drag to pan ..." over the canvas's lower left corner. */
+.model-hint {
+  position: absolute;
+  left: var(--space-3);
+  bottom: var(--space-2);
+  pointer-events: none;
+}
+.model-stage > .model-hint {
+  padding: 0;
+}

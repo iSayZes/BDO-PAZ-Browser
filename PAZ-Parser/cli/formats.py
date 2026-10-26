@@ -62,16 +62,13 @@ _FORMATS_IGNORE: frozenset[str] = frozenset({
     ".paap", # Object bounding box pack (object/aabb_pack.paap)
     ".pab", # Skeleton? (character/model)
     ".pabav", # Action chart version stamp, 20 bytes (1 file)
-    ".pac", # Skinned character meshes? (character/model)
     ".pad", # Animation data packs (character/motion/*/animdatapack.pad)
     ".pae", # Effects (effectbin)
     ".paem", # Effect meshes (effectbin/mesh)
     ".pah", # Effect meshes, binary form of the .ph text exports? (effect/mesh)
-    ".pam", # Static object meshes, binary form of the .pm text exports? (object/)
     ".pas", # Cutscenes (character/cutscene)
     ".paseqfe", # Sequences, most are 20-byte stubs (sequence/)
     ".pat", # Head data (character/model/*/head/*_mt_*.pat)
-    ".pcm", # Small PAR file next to the .pam meshes (object/), not audio
     ".probe", # Probes per sector, almost all empty (mapdata_real/probe)
     ".procedural", # Event map procedural ground decoration
     ".r3m", # Old effect meshes (effect/mesh/oldpah)

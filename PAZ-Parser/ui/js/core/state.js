@@ -29,6 +29,8 @@ export const app = {
   _aiFilter: new Set(),
   // Bumped per parsed page request so late responses can be dropped.
   _parsedPageSeq: 0,
+  // The WebGL renderer of the open Model tab, or null (model-view.js).
+  _modelRenderer: null,
   // The open view of the toolbar rail (views.js).
   _activeView: "files",
   // Map view (map-view.js): the Leaflet map once the tiles are built, and a

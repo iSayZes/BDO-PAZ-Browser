@@ -153,7 +153,7 @@ Extension handlers are useful for generic fallback previews.
 
 The **Show only handled tables** setting keeps a file in the tree when
 `is_handled_file()` (`bdo_preview.py`) finds a registered key for it by the
-same order, built-in text and image views aside. A new handler shows up there
+same order, built-in text, image and model views aside. A new handler shows up there
 with no second list to update. An extension key such as `.dbss` would count
 every file of that extension as handled, so register known formats by name.
 
@@ -989,6 +989,15 @@ tag pills).
 bytes for `title.dbss`.
 
 The CLI `--records` table and JSON keep display-only fields, to show the tags.
+
+## Built-in Views
+
+The text, image, model, video and hex views in `bdo_preview.py` subclass
+`ViewHandler`: they render the whole file under one tab (`view_label_key`)
+and have no records, so `has_parsed_view()` is False for them. The Model
+view reads `.pam`, `.pcm` and `.pac` with `par_mesh.py`, draws them in
+`ui/js/features/model-renderer.js` (WebGL 2) and fetches each texture by
+file name through `Api.get_model_texture` (`api/bdo_api_model_textures.py`).
 
 ## Raw Hex Preview
 

@@ -58,6 +58,9 @@ class ApiState:
         # norm path -> (decoded image, preview data URL), oldest first.
         self._icon_preview_images: dict[str, tuple[Any, str]] = {}
         self._thumbnail_cache: ThumbnailCache | None = None
+        # Model view textures: PAZ path -> PNG data URL, oldest first (`ModelTexturesMixin`).
+        self._model_texture_urls: dict[str, str] = {}
+        self._model_texture_lock = threading.Lock()
         self._tree_data: dict = {}
         # "Show only handled tables": the tree, file search, global search
         # and extraction see only the entries a binary handler reads.

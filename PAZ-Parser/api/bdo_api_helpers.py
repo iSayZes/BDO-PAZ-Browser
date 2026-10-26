@@ -24,7 +24,8 @@ _ICON_MAP: dict[str, str] = {
     ".srt": "text", ".ifl": "text",
     ".pa": "text", ".pc": "text", ".ph": "text", ".pm": "text", ".pami": "text",
     ".webm": "video",
-    ".pac": "archive",
+    # PAR meshes (Model view)
+    ".pam": "archive", ".pcm": "archive", ".pac": "archive",
 }
 FOLDER_ICON = "folder"
 # Icons of handled files by extension, in place of the table icon `parsed`.

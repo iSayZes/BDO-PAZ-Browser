@@ -2,8 +2,9 @@
 
 import { t } from "../core/i18n.js";
 
-// The toolbars of the text and image views (preview_views.py builds them):
-// Wrap lines, image zoom and background, and the pixel under the cursor.
+// The toolbars of the text, image and model views (preview_views.py builds
+// them): Wrap lines, image zoom and background, the pixel under the cursor,
+// and the model's shading and camera reset (model-view.js).
 // Also the links between rows of a parsed table (`goto-record`, the state
 // names of an .ai script), links into another table (`open-record`, the
 // characters that run an .ai script) and the .ai behavior filter (`ai-filter`).
@@ -32,16 +33,22 @@ export const previewViewMethods = {
       if (action === "toggle-wrap") this._toggleTextWrap(button);
       else if (action === "image-zoom") this._setImageZoom(button);
       else if (action === "image-background") this._setImageBackground(button);
+      else if (action === "model-shading") {
+        setPressed(button);
+        this._setModelShading(button.dataset.value);
+      } else if (action === "model-reset") this._resetModelView();
       else if (action === "goto-record") this._showParsedRecord(Number(button.dataset.record));
       else if (action === "ai-filter") this._toggleAiFilter(button.dataset.value);
       else if (action === "open-record") this._openRecord(button.dataset);
     });
   },
 
-  // Called after a text or image view is put into the preview.
+  // Called after a text, image or model view is put into the preview.
   _initPreviewView(root) {
     const view = root.querySelector(".img-view");
     if (view) this._initImageReadout(view);
+    const model = root.querySelector(".model-view");
+    if (model) this._initModelView(model);
   },
 
   // Opens the file at `path` on its Parsed tab and pages to the first record

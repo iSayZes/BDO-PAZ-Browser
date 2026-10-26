@@ -22,6 +22,7 @@ import { locWarningMethods } from "./js/features/loc-warning.js";
 import { appUpdateMethods } from "./js/features/app-update.js";
 import { handlerUpdateMethods } from "./js/features/handler-update.js";
 import { previewViewMethods } from "./js/features/preview-views.js";
+import { modelViewMethods } from "./js/features/model-view.js";
 import { viewMethods } from "./js/features/views.js";
 import { mapViewMethods } from "./js/features/map-view.js";
 import { mapPinMethods } from "./js/features/map-pins.js";
@@ -53,6 +54,7 @@ Object.assign(
   appUpdateMethods,
   handlerUpdateMethods,
   previewViewMethods,
+  modelViewMethods,
   viewMethods,
   mapViewMethods,
   mapPinMethods,

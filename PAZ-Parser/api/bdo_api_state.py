@@ -12,6 +12,7 @@ import webview
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
+from paz.bdo_cache import MetaStamp
 from paz.bdo_thumbnail_cache import ThumbnailCache
 from paz.na_copy import find_or_na_copy, shown_name
 from table_sort import TableSort
@@ -94,6 +95,10 @@ class ApiState:
         self._meta_version: int | None = None
         # `pad*.paz` names on disk, saved with the entry cache (`paz/bdo_cache.py`).
         self._archive_files: tuple[str, ...] = ()
+        # Size and mtime of the meta file, saved with the entry cache too.
+        self._meta_stamp: MetaStamp = MetaStamp(0, 0)
+        # Version plus archive row digest (`paz/bdo_content_key.py`): the thumbnail and map key.
+        self._content_key: str | None = None
         # The status `load_folder()` returned, shown again after the cache pass.
         self._folder_status: dict | None = None
         # Archive file name -> (CRC, size) from the meta file, for cache keys.

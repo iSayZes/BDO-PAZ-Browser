@@ -29,10 +29,11 @@ class StreamReader(Protocol):
 @dataclass(frozen=True)
 class _MapTiles:
     folder: Path
-    version: int
+    content_key: str
 
 
-# Map tiles are named by client version, so one never changes under its URL.
+# Map tile URLs carry the client's content key (version and archive row digest),
+# so a tile never changes under its URL, not even after a repack.
 _TILE_CACHE_CONTROL = "max-age=31536000, immutable"
 
 
@@ -104,18 +105,19 @@ class LocalServer:
         encoded = base64.urlsafe_b64encode(internal_path.encode("utf-8")).decode("ascii")
         return f"http://127.0.0.1:{self.port}/stream?path={encoded}&t={self.token}"
 
-    def serve_map(self, folder: Path | None, version: int) -> str:
+    def serve_map(self, folder: Path | None, content_key: str) -> str:
         """Serve the map tiles in `folder` (`<zoom>/<x>/<y>.jpg`), or none when None.
 
-        Returns the Leaflet tile URL template; the client version in it keeps
-        the page from showing an older client's tile.
+        Returns the Leaflet tile URL template; the content key in it
+        (`paz/bdo_content_key.py`) keeps the page from showing a tile of
+        another client or of the same client before a repack.
         """
-        self._map_tiles = None if folder is None else _MapTiles(folder=folder, version=version)
-        return f"http://127.0.0.1:{self.port}/map/{version}/{{z}}/{{x}}/{{y}}.jpg?t={self.token}"
+        self._map_tiles = None if folder is None else _MapTiles(folder=folder, content_key=content_key)
+        return f"http://127.0.0.1:{self.port}/map/{content_key}/{{z}}/{{x}}/{{y}}.jpg?t={self.token}"
 
-    def map_icon_url(self, version: int) -> str:
+    def map_icon_url(self, content_key: str) -> str:
         """The URL template of the served map's icons (`map_icons_build.py`), `{name}` for the icon name."""
-        return f"http://127.0.0.1:{self.port}/map/{version}/icons/{{name}}.png?t={self.token}"
+        return f"http://127.0.0.1:{self.port}/map/{content_key}/icons/{{name}}.png?t={self.token}"
 
     def _run(self) -> None:
         loop = asyncio.new_event_loop()
@@ -136,8 +138,8 @@ class LocalServer:
     async def _startup(self) -> None:
         app = web.Application()
         app.router.add_get("/stream", self._handle_stream)
-        app.router.add_get(r"/map/{version:\d+}/{zoom:\d+}/{x:-?\d+}/{y:-?\d+}.jpg", self._handle_map_tile)
-        app.router.add_get(r"/map/{version:\d+}/icons/{name:[a-z_]+}.png", self._handle_map_icon)
+        app.router.add_get(r"/map/{key:[0-9a-f-]+}/{zoom:\d+}/{x:-?\d+}/{y:-?\d+}.jpg", self._handle_map_tile)
+        app.router.add_get(r"/map/{key:[0-9a-f-]+}/icons/{name:[a-z_]+}.png", self._handle_map_icon)
         add_map_api(app, self.token, lambda: self._pins)
         self._runner = web.AppRunner(app)
         await self._runner.setup()
@@ -188,7 +190,7 @@ class LocalServer:
             raise web.HTTPForbidden(text="Invalid stream token")
         tiles = self._map_tiles
         match = request.match_info
-        if tiles is None or int(match["version"]) != tiles.version:
+        if tiles is None or match["key"] != tiles.content_key:
             raise web.HTTPNotFound(text="No map for this client")
         # The route only matches whole numbers, so the path stays inside the folder.
         # A tile without radar images under it gets one of its zoom's sea tiles.
@@ -201,7 +203,7 @@ class LocalServer:
         if request.query.get("t") != self.token:
             raise web.HTTPForbidden(text="Invalid stream token")
         tiles = self._map_tiles
-        if tiles is None or int(request.match_info["version"]) != tiles.version:
+        if tiles is None or request.match_info["key"] != tiles.content_key:
             raise web.HTTPNotFound(text="No map for this client")
         # Only the catalog's names: the path stays inside the icons folder.
         path = icon_file(tiles.folder, request.match_info["name"])

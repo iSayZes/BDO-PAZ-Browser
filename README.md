@@ -263,9 +263,10 @@ folders in the data folder, marks those whose PAZ folder is gone and deletes
 one with its **Delete**.
 
 **Keep map updated** is turned on by the Map view's first build. With it on,
-a folder load whose client has no finished map (after a game patch) builds
-the tiles and pin icons again in the background, and the old client's map is
-deleted once the new one is in place.
+a folder load whose client has no finished map (after a game patch, or a
+repack that changed an archive's checksum or size in `pad00000.meta`) builds
+the tiles and pin icons again in the background, and the old map is deleted
+once the new one is in place.
 
 `paz_config.json` carries a `config_version`. A newer app updates older
 settings on load; settings it can't read are renamed to
@@ -448,6 +449,7 @@ PAZ-Parser/
 ├── paz/                    # PAZ archive reading and caching
 │   ├── bdo_cache.py        # PAZ index cache
 │   ├── bdo_checksum.py     # Pearl Abyss checksum of archives and paths (pad00000_meta.md)
+│   ├── bdo_content_key.py  # Meta version + archive row digest: thumbnail and map cache key
 │   ├── bdo_ice.py          # ICE cipher implementation
 │   ├── bdo_meta_reader.py  # pad00000.meta: archive table and full file list (pad00000_meta.md)
 │   ├── bdo_payload_cache.py# LRU payload cache

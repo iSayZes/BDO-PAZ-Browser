@@ -15,6 +15,10 @@ from tests.map_icon_samples import sample_files
 from world_map import sea_variant
 from world_map_build import sea_path, tile_path
 
+_KEY = "3464-0123456789abcdef"
+# The same client before a repack, so only the digest differs.
+_OLD_KEY = "3464-fedcba9876543210"
+
 
 @pytest.fixture
 def server() -> Iterator[LocalServer]:
@@ -50,57 +54,57 @@ def _write(path: Path, data: bytes) -> None:
 
 def test_a_map_tile_is_served_as_jpeg(server: LocalServer, tmp_path: Path) -> None:
     _write(tile_path(tmp_path, 7, (-3, 5)), b"tile")
-    template = server.serve_map(tmp_path, 3464)
+    template = server.serve_map(tmp_path, _KEY)
 
     assert _get(_tile_url(template, 7, -3, 5)) == (b"tile", "image/jpeg")
 
 
 def test_a_tile_not_on_disk_gets_the_sea_tile_of_its_zoom(server: LocalServer, tmp_path: Path) -> None:
     _write(sea_path(tmp_path, 4, sea_variant(4, (2, 2))), b"sea")
-    template = server.serve_map(tmp_path, 3464)
+    template = server.serve_map(tmp_path, _KEY)
 
     assert _get(_tile_url(template, 4, 2, 2))[0] == b"sea"
 
 
 def test_a_tile_without_any_file_is_not_found(server: LocalServer, tmp_path: Path) -> None:
-    template = server.serve_map(tmp_path, 3464)
+    template = server.serve_map(tmp_path, _KEY)
 
     assert _status(_tile_url(template, 4, 2, 2)) == 404
 
 
-def test_another_clients_tile_url_is_not_found(server: LocalServer, tmp_path: Path) -> None:
+def test_a_tile_url_of_another_content_key_is_not_found(server: LocalServer, tmp_path: Path) -> None:
     _write(tile_path(tmp_path, 7, (0, 0)), b"tile")
-    old = server.serve_map(tmp_path, 3458)
-    server.serve_map(tmp_path, 3464)
+    old = server.serve_map(tmp_path, _OLD_KEY)
+    server.serve_map(tmp_path, _KEY)
 
     assert _status(_tile_url(old, 7, 0, 0)) == 404
 
 
 def test_no_map_served_after_serve_map_none(server: LocalServer, tmp_path: Path) -> None:
     _write(tile_path(tmp_path, 7, (0, 0)), b"tile")
-    template = server.serve_map(tmp_path, 3464)
-    server.serve_map(None, 0)
+    template = server.serve_map(tmp_path, _KEY)
+    server.serve_map(None, "")
 
     assert _status(_tile_url(template, 7, 0, 0)) == 404
 
 
 def test_a_tile_url_without_the_token_is_forbidden(server: LocalServer, tmp_path: Path) -> None:
     _write(tile_path(tmp_path, 7, (0, 0)), b"tile")
-    template = server.serve_map(tmp_path, 3464)
+    template = server.serve_map(tmp_path, _KEY)
 
     assert _status(_tile_url(template, 7, 0, 0).split("?")[0]) == 403
 
 
 def test_a_built_map_icon_is_served_as_png(server: LocalServer, tmp_path: Path) -> None:
     build_icons(sample_files().get, tmp_path)
-    server.serve_map(tmp_path, 3464)
-    template = server.map_icon_url(3464)
+    server.serve_map(tmp_path, _KEY)
+    template = server.map_icon_url(_KEY)
 
     body, content_type = _get(template.replace("{name}", "village"))
 
     assert content_type == "image/png" and body.startswith(b"\x89PNG")
     assert _status(template.replace("{name}", "tent")) == 404  # not built: the sample client lacks it
-    assert _status(server.map_icon_url(3458).replace("{name}", "village")) == 404
+    assert _status(server.map_icon_url(_OLD_KEY).replace("{name}", "village")) == 404
     assert _status(template.replace("{name}", "village").split("?")[0]) == 403
 
 

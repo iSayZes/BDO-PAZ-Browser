@@ -139,9 +139,9 @@ def map_root(cache_dir: Path) -> Path:
     return cache_dir / MAP_FOLDER
 
 
-def version_folder(cache_dir: Path, version: int) -> Path:
-    """The map of client `version`."""
-    return map_root(cache_dir) / str(version)
+def content_folder(cache_dir: Path, content_key: str) -> Path:
+    """The map of the client with `content_key` (`paz/bdo_content_key.py`)."""
+    return map_root(cache_dir) / content_key
 
 
 def tile_path(folder: Path, zoom: int, tile: TileKey) -> Path:

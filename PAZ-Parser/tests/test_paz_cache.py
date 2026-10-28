@@ -5,7 +5,15 @@ import pickle
 from pathlib import Path
 
 from bdo_models import PazEntry
-from paz.bdo_cache import CACHE_FILE, CACHE_FORMAT, CachedEntries, archive_files, load_cache, save_cache
+from paz.bdo_cache import (
+    CACHE_FILE,
+    CACHE_FORMAT,
+    CachedEntries,
+    MetaStamp,
+    archive_files,
+    load_cache,
+    save_cache,
+)
 
 _ENTRIES = [
     PazEntry("PAD00001.PAZ", "gamecommondata/binary/quest.dbss", 12, 400, 900, 0, 0),
@@ -13,7 +21,8 @@ _ENTRIES = [
     PazEntry("PAD00001.PAZ", "readme.txt", 412, 8, 8, 0, 0),
 ]
 _FILES = ("pad00001.paz", "pad00002.paz")
-_CACHED = CachedEntries(3458, _FILES, _ENTRIES)
+_STAMP = MetaStamp(1_048_576, 1_761_609_600_123_456_789)
+_CACHED = CachedEntries(3458, _FILES, _STAMP, _ENTRIES)
 
 
 def _saved_columns(tmp_path: Path) -> dict:
@@ -36,9 +45,9 @@ def test_saved_entries_load_back_in_order(tmp_path: Path) -> None:
 
 
 def test_an_empty_client_round_trips(tmp_path: Path) -> None:
-    save_cache(tmp_path, CachedEntries(1, (), []))
+    save_cache(tmp_path, CachedEntries(1, (), MetaStamp(0, 0), []))
 
-    assert load_cache(tmp_path) == CachedEntries(1, (), [])
+    assert load_cache(tmp_path) == CachedEntries(1, (), MetaStamp(0, 0), [])
 
 
 def test_a_missing_cache_is_a_miss(tmp_path: Path) -> None:
@@ -55,6 +64,21 @@ def test_a_cache_without_the_archive_file_list_is_a_miss(tmp_path: Path) -> None
     columns = _saved_columns(tmp_path)
     del columns["archive_files"]
     _write(tmp_path, {**columns, "format": 2})
+
+    assert load_cache(tmp_path) is None
+
+
+def test_a_cache_without_the_meta_stamp_is_a_miss(tmp_path: Path) -> None:
+    columns = _saved_columns(tmp_path)
+    del columns["meta_stamp"]
+    _write(tmp_path, {**columns, "format": 3})
+
+    assert load_cache(tmp_path) is None
+
+
+def test_a_meta_stamp_of_the_wrong_shape_is_a_miss(tmp_path: Path) -> None:
+    columns = _saved_columns(tmp_path)
+    _write(tmp_path, {**columns, "meta_stamp": [1_048_576]})
 
     assert load_cache(tmp_path) is None
 
@@ -91,3 +115,4 @@ def test_archive_files_lists_only_the_archives_in_lower_case(tmp_path: Path) -> 
         (tmp_path / name).write_bytes(b"")
 
     assert archive_files(tmp_path) == ("pad00001.paz", "pad00002.paz")
+

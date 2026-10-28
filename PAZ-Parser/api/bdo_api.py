@@ -39,7 +39,8 @@ from .bdo_api_model_rigs import ModelRigsMixin
 from .bdo_api_model_textures import ModelTexturesMixin
 from .bdo_api_world_map import WorldMapMixin
 from .bdo_tree import build_tree, collect_entries, count_entries, find_node, handled_entries
-from paz.bdo_cache import CachedEntries, archive_files, load_cache, read_meta_version, save_cache
+from paz.bdo_cache import CachedEntries, archive_files, load_cache, meta_stamp, read_meta_version, save_cache
+from paz.bdo_content_key import content_key
 from paz.bdo_thumbnail_cache import ThumbnailCache
 from paz.bdo_index_cache import (
     IndexCacheData,
@@ -379,20 +380,30 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         meta_path = find_single_meta_file(paz_root)
         current_version = read_meta_version(meta_path)
         self._meta_version = current_version
-        self._set_archive_ids(read_bdo_meta(meta_path))
+        meta = read_bdo_meta(meta_path)
+        self._set_archive_ids(meta)
+        self._content_key = content_key(meta)
         self._archive_files = archive_files(paz_root)
+        self._meta_stamp = meta_stamp(meta_path)
         cached = load_cache(self._cache_dir)
 
-        if cached and cached.version == current_version and cached.archive_files == self._archive_files:
+        if (
+            cached
+            and cached.version == current_version
+            and cached.archive_files == self._archive_files
+            and cached.meta_stamp == self._meta_stamp
+        ):
             entries = cached.entries
             msg = {"key": "status.loadedFromCache", "args": {"count": f"{len(entries):,}", "version": current_version}}
         else:
             if cached and cached.version == current_version:
-                # Archives were added or deleted: the indexes were built without
-                # the tables of the new ones, and their version still matches.
+                # Archives were added, deleted or repacked: the indexes were built
+                # from the old tables, and their version still matches.
                 drop_index_cache(self._cache_dir)
             entries = parse(meta_path)
-            save_cache(self._cache_dir, CachedEntries(current_version, self._archive_files, entries))
+            save_cache(
+                self._cache_dir, CachedEntries(current_version, self._archive_files, self._meta_stamp, entries)
+            )
             msg = {"key": "status.parsedAndCached", "args": {"count": f"{len(entries):,}", "version": current_version}}
 
         self._entries = entries

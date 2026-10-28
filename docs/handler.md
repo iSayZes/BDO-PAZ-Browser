@@ -1359,10 +1359,11 @@ Results are
 cached by `paz/bdo_index_cache.py` in `paz_browser_indexes.cache` in the
 client's cache folder, keyed by `IndexKind.value` (renaming a value orphans its cached data
 until the rebuild) and invalidated on the PAZ meta version or when the code that
-builds them changes. A folder load also deletes it when the `pad*.paz` files on
-disk differ from the ones the PAZ entry cache (`paz/bdo_cache.py`) recorded under
-the same meta version, as when archives are added to or deleted from a client
-folder that keeps its `pad00000.meta`. The cache stores `builder_fingerprint()` (through
+builds them changes. A folder load also deletes it when the PAZ entry cache
+(`paz/bdo_cache.py`) is rebuilt under the same meta version: the `pad*.paz`
+files on disk differ from the ones it recorded, as when archives are added to
+or deleted from a client folder, or the size or modification time of
+`pad00000.meta` differs, as after a repack. The cache stores `builder_fingerprint()` (through
 `index_fingerprint()` in `api/bdo_lookup_indexes.py`), a hash of
 `_common/lookup_builders.py` plus every project module it imports and the JSON
 files beside them (`paz/source_fingerprint.py`), so editing a builder, a helper
@@ -1821,9 +1822,12 @@ full-size art some tables use as icons (the 2560 x 1440 journal artwork).
 Thumbnails are built one at a time, since each JS call runs on its own thread
 and a screen of large textures would otherwise starve the window thread, and
 each finished one is stored in `paz_browser_thumbnails.sqlite` in the client's
-cache folder (`paz/bdo_thumbnail_cache.py`), cleared when the meta version changes. A
-large texture therefore costs its read (about 1 s for a 14 MB file, mostly
-decompression) once per client version, not once per session.
+cache folder (`paz/bdo_thumbnail_cache.py`), cleared when the client's content
+key changes: the meta version plus a digest of the checksum and size of every
+archive row in `pad00000.meta` (`paz/bdo_content_key.py`), so a patch and a
+repack under the same version both clear it. A large texture therefore costs
+its read (about 1 s for a 14 MB file, mostly decompression) once per client
+content, not once per session.
 
 Icons are looked up by kind and entity ID through `_common/icon_index.py`,
 never by hand-written template:

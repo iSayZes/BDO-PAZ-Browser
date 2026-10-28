@@ -356,9 +356,11 @@ and `--limit` too, and prints JSON as a bare list.
 
 `--coverage [pattern]` runs every handler that builds records over every file
 it reads in the loaded client, the way `--records` would, without LOC or
-lookup indexes. A file passes when its records build, and an error ends only
-that file. The text output lists the failing files with their handler key and
-error, and the pass count goes to stderr. `--json` writes an object with
+lookup indexes. A file passes when its records build. It fails when reading
+or parsing raises, or when the handler returns its "could not be parsed"
+record (the error page the GUI shows); an error ends only that file. The
+text output lists the failing files with their handler key and error, and
+the pass count goes to stderr. `--json` writes an object with
 `client_version`, `files`, `passed`, `failed` and `results` (every file:
 `file`, `handler`, `ok`, `records`, `error`, `seconds`); `--csv` writes the
 same rows. Run on an older client, the failures are the tables whose layout

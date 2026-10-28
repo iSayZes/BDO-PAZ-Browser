@@ -8,7 +8,9 @@ import pytest
 import bdo_app
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
-from cli.coverage import FileResult, check_file, coverage_document, coverage_targets, describe_error
+from cli.coverage import ERROR_FIELD, FileResult, check_file, coverage_document, coverage_targets, describe_error
+
+from _common import row_table
 
 
 def _entry(path: str) -> PazEntry:
@@ -24,16 +26,17 @@ def _entry(path: str) -> PazEntry:
 
 
 class _Handler(PreviewHandler):
-    """Returns two records, or raises `error` when one is given."""
+    """Returns two records, or raises `error` when one is given, or returns `records` when given."""
 
-    def __init__(self, error: Exception | None = None) -> None:
+    def __init__(self, error: Exception | None = None, records: list[dict] | None = None) -> None:
         self.error = error
+        self.records = records
         self.released: list[bytes] = []
 
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         if self.error is not None:
             raise self.error
-        return [{"id": 1}, {"id": 2}]
+        return self.records if self.records is not None else [{"id": 1}, {"id": 2}]
 
     def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
         return ""
@@ -90,6 +93,26 @@ def test_a_parse_error_is_the_file_result() -> None:
     assert (result.ok, result.records) == (False, None)
     assert result.error == "ValueError: row 0 runs past its record at 0x30"
     assert handler.released == [b"payload"]
+
+
+def test_an_error_record_fails_the_file() -> None:
+    handler = _Handler(records=[{ERROR_FIELD: "table.bss could not be parsed: rows end at 0x40\nbut strings start at 0x30"}])
+
+    result = check_file(_read, _entry("gamecommondata/binary/table.bss"), handler)
+
+    assert (result.ok, result.records) == (False, None)
+    assert result.error == "table.bss could not be parsed: rows end at 0x40 but strings start at 0x30"
+    assert handler.released == [b"payload"]
+
+
+def test_the_error_field_is_the_one_handlers_write() -> None:
+    assert ERROR_FIELD == row_table.ERROR_FIELD
+
+
+def test_no_records_is_a_pass() -> None:
+    result = check_file(_read, _entry("gamecommondata/binary/table.bss"), _Handler(records=[]))
+
+    assert (result.ok, result.records) == (True, 0)
 
 
 def test_a_read_error_is_the_file_result() -> None:

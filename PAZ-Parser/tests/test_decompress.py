@@ -156,6 +156,19 @@ def test_needs_decompress_leaves_stored_utf8_bom_text_alone() -> None:
     assert not needs_decompress(_entry(len(stored), len(stored)), stored)
 
 
+def test_needs_decompress_flags_a_payload_stored_behind_a_header() -> None:
+    payload = struct.pack("<BII", 0x6E, 9 + 5, 5) + b"plain"
+
+    assert needs_decompress(_entry(len(payload) + 2, 5), payload + b"\x00\x00")
+    assert bdo_decompress(payload, 5) == b"plain"
+
+
+def test_needs_decompress_leaves_a_padded_plain_file_starting_with_6e_alone() -> None:
+    stored = b"\x6eplain" + b"\x00\x00"  # padded to the 8-byte ICE block
+
+    assert not needs_decompress(_entry(len(stored), 6), stored)
+
+
 def test_decompress_returns_a_stored_payload_as_is() -> None:
     stored = bytes([0x00, 3 + 5, 5]) + b"plain"
 

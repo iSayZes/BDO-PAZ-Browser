@@ -91,3 +91,30 @@ QUEST_TYPE_TABLE = QuestCountTable(
 )
 
 QUEST_COUNT_TABLES: tuple[QuestCountTable, ...] = (QUEST_REGION_TABLE, QUEST_TYPE_TABLE)
+
+# quest.dbss Layout 1 (clients 1717 to 2000) numbers quest types in
+# `CppEnums.QuestType` of global_define_cpp_enum.luac (read on client 1784), with
+# gaps. The data also holds 13 and 16 (the season pass and Growth Pass quest
+# lists), which that enum does not name.
+_CPP_QUEST_TYPES: dict[int, str] = {
+    0: "BlackSpirit", 1: "Story", 2: "Town", 3: "Adventure", 4: "Trade", 5: "Craft",
+    6: "Repetition", 7: "Guild", 10: "Special", 11: "RegionMonsterKill", 15: "Production",
+}
+# The _typeString table of that client's panel_window_quest_all.luac: value N
+# reads TYPE_(N+1) up to Guild, then Special TYPE_10 and RegionMonsterKill TYPE_11.
+_CPP_TYPE_KEYS: dict[int, str] = {
+    **{quest_type: _HISTORY_TYPE.format(quest_type + 1) for quest_type in range(8)},
+    10: _HISTORY_TYPE.format(10),
+    11: _HISTORY_TYPE.format(11),
+}
+
+CPP_ENUMS_QUEST_TYPE_TABLE = QuestCountTable(
+    file_name="totalquestcounttype.bss",
+    key_field="quest_type",
+    name_field="quest_type_name",
+    enum_names=tuple(_CPP_QUEST_TYPES.get(value, "") for value in range(max(_CPP_QUEST_TYPES) + 1)),
+    name_keys=MappingProxyType(_CPP_TYPE_KEYS),
+    key_column="questTypeId",
+    name_column="questType",
+    count_meta="typeCount",
+)

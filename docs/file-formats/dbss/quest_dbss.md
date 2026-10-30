@@ -8,141 +8,293 @@ Quest definition table. Each record stores the quest's accept and completion scr
 
 <!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
 
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
+
+| Layout | Clients      | File         | Bytes      | Records                                                                     | Row bytes |
+| ------ | ------------ | ------------ | ---------- | --------------------------------------------------------------------------- | --------- |
+| 1      | 1717 to 2000 | `quest.dbss` | 27,738,057 | 36,318 Reward Entry, 14,254 Record, 15,062 Position, 51 Link, 51 Link Group | 188       |
+
+| Layout | File         | Known               | Unknown              |
+| ------ | ------------ | ------------------- | -------------------- |
+| 1      | `quest.dbss` | 9,550,392 B (34.4%) | 18,187,665 B (65.6%) |
+
 Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 2052   | No documented layout | `0be7df8a4777`  |
-| 2044   | No documented layout | `0be7df8a4777`  |
-| 2039   | No documented layout | `0be7df8a4777`  |
-| 2032   | No documented layout | `0be7df8a4777`  |
-| 2025   | No documented layout | `0be7df8a4777`  |
-| 2011   | No documented layout | `0be7df8a4777`  |
-| 2005   | No documented layout | `0be7df8a4777`  |
-| 1246   | No file              | `0be7df8a4777`  |
-| 1239   | No file              | `0be7df8a4777`  |
-| 1230   | No file              | `0be7df8a4777`  |
-| 1226   | No file              | `0be7df8a4777`  |
-| 1220   | No file              | `0be7df8a4777`  |
-| 1217   | No file              | `0be7df8a4777`  |
-| 1211   | No file              | `0be7df8a4777`  |
-| 1210   | No file              | `0be7df8a4777`  |
-| 1208   | No file              | `0be7df8a4777`  |
-| 1203   | No file              | `0be7df8a4777`  |
-| 1197   | No file              | `0be7df8a4777`  |
-| 1194   | No file              | `0be7df8a4777`  |
-| 1192   | No file              | `0be7df8a4777`  |
-| 1187   | No file              | `0be7df8a4777`  |
-| 1183   | No file              | `0be7df8a4777`  |
-| 1177   | No file              | `0be7df8a4777`  |
-| 1173   | No file              | `0be7df8a4777`  |
-| 1167   | No file              | `0be7df8a4777`  |
-| 1164   | No file              | `0be7df8a4777`  |
-| 1156   | No file              | `0be7df8a4777`  |
-| 1149   | No file              | `0be7df8a4777`  |
-| 1144   | No file              | `0be7df8a4777`  |
-| 1137   | No file              | `0be7df8a4777`  |
-| 1132   | No file              | `0be7df8a4777`  |
-| 1127   | No file              | `0be7df8a4777`  |
-| 1122   | No file              | `0be7df8a4777`  |
-| 1118   | No file              | `0be7df8a4777`  |
-| 1114   | No file              | `0be7df8a4777`  |
-| 1109   | No file              | `0be7df8a4777`  |
-| 1102   | No file              | `0be7df8a4777`  |
-| 1096   | No file              | `0be7df8a4777`  |
-| 1088   | No file              | `0be7df8a4777`  |
-| 1081   | No file              | `0be7df8a4777`  |
-| 1076   | No file              | `0be7df8a4777`  |
-| 1069   | No file              | `0be7df8a4777`  |
-| 1064   | No file              | `0be7df8a4777`  |
-| 1058   | No file              | `0be7df8a4777`  |
-| 1051   | No file              | `0be7df8a4777`  |
-| 1044   | No file              | `0be7df8a4777`  |
-| 1036   | No file              | `0be7df8a4777`  |
-| 1026   | No file              | `0be7df8a4777`  |
-| 1016   | No file              | `0be7df8a4777`  |
-| 1009   | No file              | `0be7df8a4777`  |
-| 1005   | No file              | `0be7df8a4777`  |
-| 1000   | No file              | `0be7df8a4777`  |
-| 998    | No file              | `0be7df8a4777`  |
-| 990    | No file              | `0be7df8a4777`  |
-| 979    | No file              | `0be7df8a4777`  |
-| 972    | No file              | `0be7df8a4777`  |
-| 963    | No file              | `0be7df8a4777`  |
-| 955    | No file              | `0be7df8a4777`  |
-| 946    | No file              | `0be7df8a4777`  |
-| 938    | No file              | `0be7df8a4777`  |
-| 927    | No file              | `0be7df8a4777`  |
-| 911    | No file              | `0be7df8a4777`  |
-| 904    | No file              | `0be7df8a4777`  |
-| 899    | No file              | `0be7df8a4777`  |
-| 894    | No file              | `0be7df8a4777`  |
-| 885    | No file              | `0be7df8a4777`  |
-| 879    | No file              | `0be7df8a4777`  |
-| 872    | No file              | `0be7df8a4777`  |
-| 864    | No file              | `0be7df8a4777`  |
-| 855    | No file              | `0be7df8a4777`  |
-| 853    | No file              | `0be7df8a4777`  |
-| 845    | No file              | `0be7df8a4777`  |
-| 837    | No file              | `0be7df8a4777`  |
-| 829    | No file              | `0be7df8a4777`  |
-| 822    | No file              | `0be7df8a4777`  |
-| 814    | No file              | `0be7df8a4777`  |
-| 805    | No file              | `0be7df8a4777`  |
-| 794    | No file              | `0be7df8a4777`  |
-| 787    | No file              | `0be7df8a4777`  |
-| 780    | No file              | `0be7df8a4777`  |
-| 771    | No file              | `0be7df8a4777`  |
-| 760    | No file              | `0be7df8a4777`  |
-| 748    | No file              | `0be7df8a4777`  |
-| 741    | No file              | `0be7df8a4777`  |
-| 736    | No file              | `0be7df8a4777`  |
-| 731    | No file              | `0be7df8a4777`  |
-| 723    | No file              | `0be7df8a4777`  |
-| 711    | No file              | `0be7df8a4777`  |
-| 707    | No file              | `0be7df8a4777`  |
-| 697    | No file              | `0be7df8a4777`  |
-| 689    | No file              | `0be7df8a4777`  |
-| 683    | No file              | `0be7df8a4777`  |
-| 678    | No file              | `0be7df8a4777`  |
-| 670    | No file              | `0be7df8a4777`  |
-| 661    | No file              | `0be7df8a4777`  |
-| 656    | No file              | `0be7df8a4777`  |
-| 652    | No file              | `0be7df8a4777`  |
-| 643    | No file              | `0be7df8a4777`  |
-| 637    | No file              | `0be7df8a4777`  |
-| 630    | No file              | `0be7df8a4777`  |
-| 627    | No file              | `0be7df8a4777`  |
-| 621    | No file              | `0be7df8a4777`  |
-| 617    | No file              | `0be7df8a4777`  |
-| 615    | No file              | `0be7df8a4777`  |
-| 606    | No file              | `0be7df8a4777`  |
-| 599    | No file              | `0be7df8a4777`  |
-| 592    | No file              | `0be7df8a4777`  |
-| 586    | No file              | `0be7df8a4777`  |
-| 577    | No file              | `0be7df8a4777`  |
-| 569    | No file              | `0be7df8a4777`  |
-| 561    | No file              | `0be7df8a4777`  |
-| 554    | No file              | `0be7df8a4777`  |
-| 542    | No file              | `0be7df8a4777`  |
-| 532    | No file              | `0be7df8a4777`  |
-| 531    | No file              | `0be7df8a4777`  |
-| 526    | No file              | `0be7df8a4777`  |
-| 521    | No file              | `0be7df8a4777`  |
-| 517    | No file              | `0be7df8a4777`  |
-| 510    | No file              | `0be7df8a4777`  |
-| 508    | No file              | `0be7df8a4777`  |
-| 504    | No file              | `0be7df8a4777`  |
-| 497    | No file              | `0be7df8a4777`  |
-| 491    | No file              | `0be7df8a4777`  |
-| 485    | No file              | `0be7df8a4777`  |
-| 478    | No file              | `0be7df8a4777`  |
-| 472    | No file              | `0be7df8a4777`  |
-| 466    | No file              | `0be7df8a4777`  |
-| 457    | No file              | `0be7df8a4777`  |
-| 452    | No file              | `0be7df8a4777`  |
-| 449    | No file              | `0be7df8a4777`  |
-| 435    | No file              | `0be7df8a4777`  |
+| 2052   | No documented layout | `2b43d9f0a87b`  |
+| 2044   | No documented layout | `2b43d9f0a87b`  |
+| 2039   | No documented layout | `2b43d9f0a87b`  |
+| 2032   | No documented layout | `2b43d9f0a87b`  |
+| 2025   | No documented layout | `2b43d9f0a87b`  |
+| 2011   | No documented layout | `2b43d9f0a87b`  |
+| 2005   | No documented layout | `2b43d9f0a87b`  |
+| 2000   | Layout 1             | `2b43d9f0a87b`  |
+| 1996   | Layout 1             | `2b43d9f0a87b`  |
+| 1991   | Layout 1             | `2b43d9f0a87b`  |
+| 1985   | Layout 1             | `2b43d9f0a87b`  |
+| 1980   | Layout 1             | `2b43d9f0a87b`  |
+| 1969   | Layout 1             | `2b43d9f0a87b`  |
+| 1964   | Layout 1             | `2b43d9f0a87b`  |
+| 1958   | Layout 1             | `2b43d9f0a87b`  |
+| 1950   | Layout 1             | `2b43d9f0a87b`  |
+| 1945   | Layout 1             | `2b43d9f0a87b`  |
+| 1937   | Layout 1             | `2b43d9f0a87b`  |
+| 1933   | Layout 1             | `2b43d9f0a87b`  |
+| 1927   | Layout 1             | `2b43d9f0a87b`  |
+| 1921   | Layout 1             | `2b43d9f0a87b`  |
+| 1914   | Layout 1             | `2b43d9f0a87b`  |
+| 1908   | Layout 1             | `2b43d9f0a87b`  |
+| 1897   | Layout 1             | `2b43d9f0a87b`  |
+| 1892   | Layout 1             | `2b43d9f0a87b`  |
+| 1886   | Layout 1             | `2b43d9f0a87b`  |
+| 1881   | Layout 1             | `2b43d9f0a87b`  |
+| 1871   | Layout 1             | `2b43d9f0a87b`  |
+| 1866   | Layout 1             | `2b43d9f0a87b`  |
+| 1862   | Layout 1             | `2b43d9f0a87b`  |
+| 1854   | Layout 1             | `2b43d9f0a87b`  |
+| 1846   | Layout 1             | `2b43d9f0a87b`  |
+| 1838   | Layout 1             | `2b43d9f0a87b`  |
+| 1832   | Layout 1             | `2b43d9f0a87b`  |
+| 1826   | Layout 1             | `2b43d9f0a87b`  |
+| 1822   | Layout 1             | `2b43d9f0a87b`  |
+| 1818   | Layout 1             | `2b43d9f0a87b`  |
+| 1804   | Layout 1             | `2b43d9f0a87b`  |
+| 1794   | Layout 1             | `2b43d9f0a87b`  |
+| 1790   | Layout 1             | `2b43d9f0a87b`  |
+| 1784   | Layout 1             | `2b43d9f0a87b`  |
+| 1774   | Layout 1             | `2b43d9f0a87b`  |
+| 1771   | Layout 1             | `2b43d9f0a87b`  |
+| 1762   | Layout 1             | `2b43d9f0a87b`  |
+| 1759   | Layout 1             | `2b43d9f0a87b`  |
+| 1754   | Layout 1             | `2b43d9f0a87b`  |
+| 1749   | Layout 1             | `2b43d9f0a87b`  |
+| 1743   | Layout 1             | `2b43d9f0a87b`  |
+| 1737   | Layout 1             | `2b43d9f0a87b`  |
+| 1731   | Layout 1             | `2b43d9f0a87b`  |
+| 1725   | Layout 1             | `2b43d9f0a87b`  |
+| 1717   | Layout 1             | `2b43d9f0a87b`  |
+| 1710   | No documented layout | `2b43d9f0a87b`  |
+| 1704   | No documented layout | `2b43d9f0a87b`  |
+| 1698   | No documented layout | `2b43d9f0a87b`  |
+| 1690   | No documented layout | `2b43d9f0a87b`  |
+| 1685   | No documented layout | `2b43d9f0a87b`  |
+| 1680   | No documented layout | `2b43d9f0a87b`  |
+| 1674   | No documented layout | `2b43d9f0a87b`  |
+| 1668   | No documented layout | `2b43d9f0a87b`  |
+| 1659   | No documented layout | `2b43d9f0a87b`  |
+| 1649   | No documented layout | `2b43d9f0a87b`  |
+| 1642   | No documented layout | `2b43d9f0a87b`  |
+| 1636   | No documented layout | `2b43d9f0a87b`  |
+| 1628   | No documented layout | `2b43d9f0a87b`  |
+| 1622   | No documented layout | `2b43d9f0a87b`  |
+| 1614   | No documented layout | `2b43d9f0a87b`  |
+| 1608   | No documented layout | `2b43d9f0a87b`  |
+| 1602   | No documented layout | `2b43d9f0a87b`  |
+| 1598   | No documented layout | `2b43d9f0a87b`  |
+| 1594   | No documented layout | `2b43d9f0a87b`  |
+| 1590   | No documented layout | `2b43d9f0a87b`  |
+| 1587   | No documented layout | `2b43d9f0a87b`  |
+| 1584   | No documented layout | `2b43d9f0a87b`  |
+| 1579   | No documented layout | `2b43d9f0a87b`  |
+| 1572   | No documented layout | `2b43d9f0a87b`  |
+| 1565   | No documented layout | `2b43d9f0a87b`  |
+| 1559   | No documented layout | `2b43d9f0a87b`  |
+| 1554   | No documented layout | `2b43d9f0a87b`  |
+| 1547   | No documented layout | `2b43d9f0a87b`  |
+| 1537   | No documented layout | `2b43d9f0a87b`  |
+| 1529   | No documented layout | `2b43d9f0a87b`  |
+| 1524   | No documented layout | `2b43d9f0a87b`  |
+| 1519   | No documented layout | `2b43d9f0a87b`  |
+| 1509   | No documented layout | `2b43d9f0a87b`  |
+| 1506   | No documented layout | `2b43d9f0a87b`  |
+| 1504   | No documented layout | `2b43d9f0a87b`  |
+| 1500   | No documented layout | `2b43d9f0a87b`  |
+| 1493   | No documented layout | `2b43d9f0a87b`  |
+| 1489   | No documented layout | `2b43d9f0a87b`  |
+| 1485   | No documented layout | `2b43d9f0a87b`  |
+| 1481   | No documented layout | `2b43d9f0a87b`  |
+| 1474   | No documented layout | `2b43d9f0a87b`  |
+| 1466   | No documented layout | `2b43d9f0a87b`  |
+| 1462   | No documented layout | `2b43d9f0a87b`  |
+| 1459   | No documented layout | `2b43d9f0a87b`  |
+| 1453   | No documented layout | `2b43d9f0a87b`  |
+| 1450   | No documented layout | `2b43d9f0a87b`  |
+| 1445   | No documented layout | `2b43d9f0a87b`  |
+| 1439   | No documented layout | `2b43d9f0a87b`  |
+| 1433   | No documented layout | `2b43d9f0a87b`  |
+| 1430   | No documented layout | `2b43d9f0a87b`  |
+| 1426   | No documented layout | `2b43d9f0a87b`  |
+| 1421   | No documented layout | `2b43d9f0a87b`  |
+| 1417   | No documented layout | `2b43d9f0a87b`  |
+| 1416   | No documented layout | `2b43d9f0a87b`  |
+| 1409   | No documented layout | `2b43d9f0a87b`  |
+| 1405   | No documented layout | `2b43d9f0a87b`  |
+| 1401   | No documented layout | `2b43d9f0a87b`  |
+| 1396   | No documented layout | `2b43d9f0a87b`  |
+| 1391   | No documented layout | `2b43d9f0a87b`  |
+| 1390   | No documented layout | `2b43d9f0a87b`  |
+| 1386   | No documented layout | `2b43d9f0a87b`  |
+| 1381   | No documented layout | `2b43d9f0a87b`  |
+| 1379   | No documented layout | `2b43d9f0a87b`  |
+| 1372   | No documented layout | `2b43d9f0a87b`  |
+| 1366   | No documented layout | `2b43d9f0a87b`  |
+| 1364   | No documented layout | `2b43d9f0a87b`  |
+| 1363   | No documented layout | `2b43d9f0a87b`  |
+| 1360   | No documented layout | `2b43d9f0a87b`  |
+| 1358   | No documented layout | `2b43d9f0a87b`  |
+| 1355   | No documented layout | `2b43d9f0a87b`  |
+| 1351   | No documented layout | `2b43d9f0a87b`  |
+| 1348   | No documented layout | `2b43d9f0a87b`  |
+| 1346   | No documented layout | `2b43d9f0a87b`  |
+| 1341   | No documented layout | `2b43d9f0a87b`  |
+| 1340   | No documented layout | `2b43d9f0a87b`  |
+| 1338   | No documented layout | `2b43d9f0a87b`  |
+| 1335   | No documented layout | `2b43d9f0a87b`  |
+| 1333   | No documented layout | `2b43d9f0a87b`  |
+| 1329   | No documented layout | `2b43d9f0a87b`  |
+| 1327   | No documented layout | `2b43d9f0a87b`  |
+| 1324   | No documented layout | `2b43d9f0a87b`  |
+| 1321   | No documented layout | `2b43d9f0a87b`  |
+| 1319   | No documented layout | `2b43d9f0a87b`  |
+| 1318   | No documented layout | `2b43d9f0a87b`  |
+| 1316   | No documented layout | `2b43d9f0a87b`  |
+| 1313   | No documented layout | `2b43d9f0a87b`  |
+| 1311   | No documented layout | `2b43d9f0a87b`  |
+| 1309   | No documented layout | `2b43d9f0a87b`  |
+| 1304   | No documented layout | `2b43d9f0a87b`  |
+| 1292   | No documented layout | `2b43d9f0a87b`  |
+| 1286   | No documented layout | `2b43d9f0a87b`  |
+| 1280   | No documented layout | `2b43d9f0a87b`  |
+| 1276   | No documented layout | `2b43d9f0a87b`  |
+| 1267   | No documented layout | `2b43d9f0a87b`  |
+| 1261   | No documented layout | `2b43d9f0a87b`  |
+| 1256   | No documented layout | `2b43d9f0a87b`  |
+| 1250   | No documented layout | `2b43d9f0a87b`  |
+| 1246   | No documented layout | `2b43d9f0a87b`  |
+| 1239   | No documented layout | `2b43d9f0a87b`  |
+| 1230   | No documented layout | `2b43d9f0a87b`  |
+| 1226   | No documented layout | `2b43d9f0a87b`  |
+| 1220   | No documented layout | `2b43d9f0a87b`  |
+| 1217   | No file              | `2b43d9f0a87b`  |
+| 1211   | No file              | `2b43d9f0a87b`  |
+| 1210   | No file              | `2b43d9f0a87b`  |
+| 1208   | No file              | `2b43d9f0a87b`  |
+| 1203   | No file              | `2b43d9f0a87b`  |
+| 1197   | No file              | `2b43d9f0a87b`  |
+| 1194   | No file              | `2b43d9f0a87b`  |
+| 1192   | No file              | `2b43d9f0a87b`  |
+| 1187   | No file              | `2b43d9f0a87b`  |
+| 1183   | No file              | `2b43d9f0a87b`  |
+| 1177   | No file              | `2b43d9f0a87b`  |
+| 1173   | No file              | `2b43d9f0a87b`  |
+| 1167   | No file              | `2b43d9f0a87b`  |
+| 1164   | No file              | `2b43d9f0a87b`  |
+| 1156   | No file              | `2b43d9f0a87b`  |
+| 1149   | No file              | `2b43d9f0a87b`  |
+| 1144   | No file              | `2b43d9f0a87b`  |
+| 1137   | No file              | `2b43d9f0a87b`  |
+| 1132   | No file              | `2b43d9f0a87b`  |
+| 1127   | No file              | `2b43d9f0a87b`  |
+| 1122   | No file              | `2b43d9f0a87b`  |
+| 1118   | No file              | `2b43d9f0a87b`  |
+| 1114   | No file              | `2b43d9f0a87b`  |
+| 1109   | No file              | `2b43d9f0a87b`  |
+| 1102   | No file              | `2b43d9f0a87b`  |
+| 1096   | No file              | `2b43d9f0a87b`  |
+| 1088   | No file              | `2b43d9f0a87b`  |
+| 1081   | No file              | `2b43d9f0a87b`  |
+| 1076   | No file              | `2b43d9f0a87b`  |
+| 1069   | No file              | `2b43d9f0a87b`  |
+| 1064   | No file              | `2b43d9f0a87b`  |
+| 1058   | No file              | `2b43d9f0a87b`  |
+| 1051   | No file              | `2b43d9f0a87b`  |
+| 1044   | No file              | `2b43d9f0a87b`  |
+| 1036   | No file              | `2b43d9f0a87b`  |
+| 1026   | No file              | `2b43d9f0a87b`  |
+| 1016   | No file              | `2b43d9f0a87b`  |
+| 1009   | No file              | `2b43d9f0a87b`  |
+| 1005   | No file              | `2b43d9f0a87b`  |
+| 1000   | No file              | `2b43d9f0a87b`  |
+| 998    | No file              | `2b43d9f0a87b`  |
+| 990    | No file              | `2b43d9f0a87b`  |
+| 979    | No file              | `2b43d9f0a87b`  |
+| 972    | No file              | `2b43d9f0a87b`  |
+| 963    | No file              | `2b43d9f0a87b`  |
+| 955    | No file              | `2b43d9f0a87b`  |
+| 946    | No file              | `2b43d9f0a87b`  |
+| 938    | No file              | `2b43d9f0a87b`  |
+| 927    | No file              | `2b43d9f0a87b`  |
+| 911    | No file              | `2b43d9f0a87b`  |
+| 904    | No file              | `2b43d9f0a87b`  |
+| 899    | No file              | `2b43d9f0a87b`  |
+| 894    | No file              | `2b43d9f0a87b`  |
+| 885    | No file              | `2b43d9f0a87b`  |
+| 879    | No file              | `2b43d9f0a87b`  |
+| 872    | No file              | `2b43d9f0a87b`  |
+| 864    | No file              | `2b43d9f0a87b`  |
+| 855    | No file              | `2b43d9f0a87b`  |
+| 853    | No file              | `2b43d9f0a87b`  |
+| 845    | No file              | `2b43d9f0a87b`  |
+| 837    | No file              | `2b43d9f0a87b`  |
+| 829    | No file              | `2b43d9f0a87b`  |
+| 822    | No file              | `2b43d9f0a87b`  |
+| 814    | No file              | `2b43d9f0a87b`  |
+| 805    | No file              | `2b43d9f0a87b`  |
+| 794    | No file              | `2b43d9f0a87b`  |
+| 787    | No file              | `2b43d9f0a87b`  |
+| 780    | No file              | `2b43d9f0a87b`  |
+| 771    | No file              | `2b43d9f0a87b`  |
+| 760    | No file              | `2b43d9f0a87b`  |
+| 748    | No file              | `2b43d9f0a87b`  |
+| 741    | No file              | `2b43d9f0a87b`  |
+| 736    | No file              | `2b43d9f0a87b`  |
+| 731    | No file              | `2b43d9f0a87b`  |
+| 723    | No file              | `2b43d9f0a87b`  |
+| 711    | No file              | `2b43d9f0a87b`  |
+| 707    | No file              | `2b43d9f0a87b`  |
+| 697    | No file              | `2b43d9f0a87b`  |
+| 689    | No file              | `2b43d9f0a87b`  |
+| 683    | No file              | `2b43d9f0a87b`  |
+| 678    | No file              | `2b43d9f0a87b`  |
+| 670    | No file              | `2b43d9f0a87b`  |
+| 661    | No file              | `2b43d9f0a87b`  |
+| 656    | No file              | `2b43d9f0a87b`  |
+| 652    | No file              | `2b43d9f0a87b`  |
+| 643    | No file              | `2b43d9f0a87b`  |
+| 637    | No file              | `2b43d9f0a87b`  |
+| 630    | No file              | `2b43d9f0a87b`  |
+| 627    | No file              | `2b43d9f0a87b`  |
+| 621    | No file              | `2b43d9f0a87b`  |
+| 617    | No file              | `2b43d9f0a87b`  |
+| 615    | No file              | `2b43d9f0a87b`  |
+| 606    | No file              | `2b43d9f0a87b`  |
+| 599    | No file              | `2b43d9f0a87b`  |
+| 592    | No file              | `2b43d9f0a87b`  |
+| 586    | No file              | `2b43d9f0a87b`  |
+| 577    | No file              | `2b43d9f0a87b`  |
+| 569    | No file              | `2b43d9f0a87b`  |
+| 561    | No file              | `2b43d9f0a87b`  |
+| 554    | No file              | `2b43d9f0a87b`  |
+| 542    | No file              | `2b43d9f0a87b`  |
+| 532    | No file              | `2b43d9f0a87b`  |
+| 531    | No file              | `2b43d9f0a87b`  |
+| 526    | No file              | `2b43d9f0a87b`  |
+| 521    | No file              | `2b43d9f0a87b`  |
+| 517    | No file              | `2b43d9f0a87b`  |
+| 510    | No file              | `2b43d9f0a87b`  |
+| 508    | No file              | `2b43d9f0a87b`  |
+| 504    | No file              | `2b43d9f0a87b`  |
+| 497    | No file              | `2b43d9f0a87b`  |
+| 491    | No file              | `2b43d9f0a87b`  |
+| 485    | No file              | `2b43d9f0a87b`  |
+| 478    | No file              | `2b43d9f0a87b`  |
+| 472    | No file              | `2b43d9f0a87b`  |
+| 466    | No file              | `2b43d9f0a87b`  |
+| 457    | No file              | `2b43d9f0a87b`  |
+| 452    | No file              | `2b43d9f0a87b`  |
+| 449    | No file              | `2b43d9f0a87b`  |
+| 435    | No file              | `2b43d9f0a87b`  |
 
 <!-- versions:end -->
 
@@ -196,7 +348,7 @@ Strings are a u64 character count (equivalently a u32 count plus a u32 zero) fol
 | `unknown_list+0x0D`          | Reward Entry[base_reward_count]   | base_rewards              | See Reward Entry |
 | `base_rewards+0x00`          | u32                               | select_reward_count       | `0` in 17,589 records, up to `7` in the other 1,402 |
 | `base_rewards+0x04`          | Reward Entry[select_reward_count] | select_rewards            | The rewards the player picks one of; all 3,723 are items (`reward_type` `3`) |
-| `select_rewards+0x00`        | u32                               | unknown_select_rewards_00 | `0` in 18,955 records, `1` in 36 |
+| `select_rewards+0x00`        | u32                               | unknown_select_rewards_00 | `0` in 18,955 records, `1` in 36. A count: in those 36 records one Reward Entry (an item) follows it, which puts `unknown_select_rewards_04` 178 bytes later; see Layout 1 `unknown_reward_count` |
 | `select_rewards+0x04`        | i64                               | unknown_select_rewards_04 | `0` in 13,781 records; also `13,500`, `100,000`, `200,000`, `300,000`, `1,000,000` and 973 more values |
 | `select_rewards+0x0C`        | bytes[scan]                       | unknown_payload           | Rich text (PAColor markup), more length-prefixed Korean strings, numeric config. Ends at the u64 count of `icon_path`, which the parser finds by scanning back from 16, then 8, bytes before the echo for the highest count whose ASCII text ends there in `.dds` |
 | `unknown_payload+0x00`       | str8                              | icon_path                 | Quest icon path such as `Icon/Quest/Hadum08.dds`; ends 16 or 8 bytes before the echo. 18,988 of 18,991 records have one; the other three store zero bytes here. See Notes |
@@ -261,50 +413,143 @@ Offsets relative to the union start `U`, `family_stat` of a base reward entry. F
 
 ## Layout 1
 
-On client 1784 a record opens with a Korean string after the two dialog
-keys, has no `unknown_objective_gap` (the objective follows `action_script`
-directly), and stores `packed_quest_id` once, near the end, after the
-reward and text data. A counted u32 list and 14 bytes end the record. A
-walk by this layout with the same `allquestlist[i]` search reads all
-16,877 records of client 1784 and ends at the last byte of the file.
+On client 1784 every field has a fixed place in the read order: a record
+holds no scanned part, stores `packed_quest_id` once (near the end, with no
+echo), and its reward entries are 188 bytes. The parser reads it field by
+field. The order is that of the `quest.dbss` record reader of a private
+server's server executable on client 1784, and a read in that order takes
+12,361 of the 12,361 records of client 1784 (the `allquestlist.bss` count),
+gives each record its `allquestlist[i]` as `packed_quest_id` and ends at the
+last byte of the file. The first three records start at `0x00000004`,
+`0x00000BD1` and `0x000015C6`; records are 569 to 8,615 bytes long.
 
-The reward lists sit at the start of `unknown_payload`. In 16,515 of the
-16,877 records, 9 bytes after the objective (zero in 16,463 records) come
-`base_reward_count`, `base_rewards`, `select_reward_count` and
-`select_rewards` as in Layout 2, with entries of 188 bytes. Their members
-`+0x00` to `+0x9B` are those of Layout 2. The 10 extra bytes lie after the
-Family Stat Union: `unknown_9c` is 10 bytes long, which moves
-`max_fever_point`, `add_fever_point`, `unknown_a8` and `season_no` 6 bytes
-later (`+0xA6` to `+0xAF`), and 4 zero bytes follow `season_no`, which puts
-`explore_exp` at `+0xB4` (the [`guildquest.dbss`](guildquest_dbss.md#reward-entry-188-bytes)
-Layout 1 table). In the other 362 records the count comes later. The
-layout keeps these bytes in `unknown_payload`, as the parser reads Layout 2
-only.
+The Notes name the column of `Quest_Table` in a private server's
+`DataSheets.bexcel` on client 1784 that holds the same value. The sheet has
+12,050 of the 12,361 quests; "every record" means all 12,050. Counts in
+this section are from client 1784.
 
-### Record (variable: 71 bytes + text and scanned parts)
+### Record (variable: 159 bytes + texts and lists)
 
-| Offset                       | Type                          | Field                | Notes |
-| ---------------------------- | ----------------------------- | -------------------- | ----- |
-| `+0x00`                      | u32                           | accept_dialog_key    | |
-| `+0x04`                      | u32                           | complete_dialog_key  | |
-| `+0x08`                      | str16                         | unknown_old_08       | Korean text, e.g. `노먼 레이트` in record 0 |
-| `unknown_old_08+0x00`        | u32                           | unknown_08           | |
-| `unknown_old_08+0x04`        | str16                         | condition_script     | |
-| `condition_script+0x00`      | str16                         | action_script        | |
-| `action_script+0x00`         | str16                         | objective_text_kr    | |
-| `objective_text_kr+0x00`     | bytes[scan]                   | unknown_payload      | Reward entries, rich text and the `.dds` icon path; ends at `packed_quest_id`, found by searching for `allquestlist[i]` after the objective, taking the first hit after which the next record parses |
-| `unknown_payload+0x00`       | u32                           | packed_quest_id      | Equals `allquestlist[i]` |
-| `unknown_payload+0x04`       | u32                           | unknown_payload_04   | `0` in 13,182 records, `1` in 3,576 |
-| `unknown_payload+0x08`       | u8                            | unknown_payload_08   | `0` or `1` |
-| `unknown_payload+0x09`       | u32                           | unknown_value_count  | `1` to `7` |
-| `unknown_payload+0x0D`       | u32[unknown_value_count]      | unknown_values       | Hash-like values; `0xFEED568F` in the list of 4,514 records |
-| `unknown_values+0x00`        | bytes[14]                     | unknown_end          | Zero in 16,062 of 16,877 records |
+| Offset                                 | Type                                     | Field                         | Notes |
+| -------------------------------------- | ---------------------------------------- | ----------------------------- | ----- |
+| `+0x00`                                | u32                                      | accept_dialog_key             | |
+| `+0x04`                                | u32                                      | complete_dialog_key           | |
+| `+0x08`                                | str16                                    | unknown_old_08                | Korean NPC name, e.g. `푸가르` in record 0; `CompleteDisplay` in 11,731 records |
+| `unknown_old_08+0x00`                  | u32                                      | unknown_old_08_00             | `0` in 10,838 records; `RecommendLevel` on every record |
+| `unknown_old_08+0x04`                  | str16                                    | condition_script              | `AcceptConditions` in 11,952 records |
+| `condition_script+0x00`                | str16                                    | action_script                 | `CompleteCondition` in 11,670 records |
+| `action_script+0x00`                   | str16                                    | objective_text_kr             | `CompleteConditionText` in 9,668 records |
+| `objective_text_kr+0x00`               | str16                                    | unknown_old_objective_00      | Empty in 12,004 records, a script in the others, e.g. `getLifeLevel(4)>20;clearquest(1200,130);`; `DoGuide` on every record |
+| `unknown_old_objective_00+0x00`        | u8                                       | unknown_old_objective_00_00   | `0` in 12,309 records, `1` in 52; `IsEscortQuest` on every record |
+| `unknown_old_objective_00+0x01`        | u32                                      | base_reward_count             | `0` to `10` |
+| `unknown_old_objective_00+0x05`        | Reward Entry[base_reward_count]          | base_rewards                  | 188-byte entries; see Reward Entry below |
+| `base_rewards+0x00`                    | u32                                      | select_reward_count           | `0` in 10,784 records, up to `7` in the other 1,577 |
+| `base_rewards+0x04`                    | Reward Entry[select_reward_count]        | select_rewards                | |
+| `select_rewards+0x00`                  | u32                                      | unknown_reward_count          | `0` in 12,334 records, `1` in 27 |
+| `select_rewards+0x04`                  | Reward Entry[unknown_reward_count]       | unknown_rewards               | An item in all 27; `SeasonReward` on every record |
+| `unknown_rewards+0x00`                 | i64                                      | unknown_rewards_00            | Layout 2's `unknown_select_rewards_04` holds the same value for 9,823 of the 10,815 quests both clients have |
+| `unknown_rewards+0x08`                 | u64                                      | unknown_old_rewards_08        | `3000` in 3,911 records, `2000` in 3,540; `ExpectedPrice` on every record |
+| `unknown_rewards+0x10`                 | u32                                      | unknown_old_rewards_10        | `0` in 12,090 records; `AcceptPushItem` on every record |
+| `unknown_rewards+0x14`                 | u32                                      | unknown_old_rewards_14        | `0` in 12,300 records |
+| `unknown_rewards+0x18`                 | u8                                       | unknown_old_rewards_18        | `1` in 12,038 records, `0` in 323; `GuideAutoErase` on every record |
+| `unknown_rewards+0x19`                 | str16[2]                                 | unknown_old_texts_a           | Korean quest title and description; `Title` and `Desc` on every record |
+| `unknown_old_texts_a+0x00`             | u32                                      | unknown_old_position_count    | `0` in 3,187 records |
+| `unknown_old_texts_a+0x04`             | Position[unknown_old_position_count]     | unknown_old_positions         | See Position; `PositionAndRadius` on every record |
+| `unknown_old_positions+0x00`           | str8                                     | icon_path                     | Empty in 214 records; `QuestIcon` on every record |
+| `icon_path+0x00`                       | str8                                     | unknown_old_icon_path_00      | Another `.dds` path in 211 records, e.g. `Icon/Quest/GrowthPass_Gather_20.dds`, empty in the others |
+| `unknown_old_icon_path_00+0x00`        | u32                                      | unknown_old_link_group_count  | `0` in 12,335 records |
+| `unknown_old_icon_path_00+0x04`        | Link Group[unknown_old_link_group_count] | unknown_old_link_groups       | See Link Group |
+| `unknown_old_link_groups+0x00`         | str16[4]                                 | unknown_old_texts_b           | Korean NPC lines; `AcceptDialog`, `NotAcceptDialog`, `CompleteDialog` and `ProgressDialog` on every record |
+| `unknown_old_texts_b+0x00`             | u32                                      | unknown_list_04               | The Layout 2 field: the same value for 10,704 of the 10,815 quests both clients have; `RepeatTime` in 12,037 records |
+| `unknown_old_texts_b+0x04`             | u8                                       | block_kind                    | `7` in 12,228 records, `4` in 133; the Layout 2 value for 10,769 of the 10,815 shared quests |
+| `unknown_old_texts_b+0x05`             | u8                                       | unknown_old_texts_b_05        | `0` or `1`; `isUserBaseQuest` on every record |
+| `unknown_old_texts_b+0x06`             | u32                                      | quest_region                  | `0` in 6,706 records. The quest region: per value, the record counts equal the values of that client's [`totalquestcountregion.bss`](../bss/totalquestcountregion_bss.md). `Region` on every record |
+| `unknown_old_texts_b+0x0A`             | u32                                      | quest_category                | The quest type: per value, the record counts equal the values of that client's `totalquestcounttype.bss`. `QuestType` on every record. Numbered as `CppEnums.QuestType` of the client 1784 `global_define_cpp_enum.luac`, not as Layout 2's `__eQuestType`: only 2,765 of the 10,815 quests both clients have keep their value. The handler names these records by that enum; see [`totalquestcounttype.bss`](../bss/totalquestcountregion_bss.md#client-1784-quest-types) |
+| `unknown_old_texts_b+0x0E`             | u32                                      | unknown_old_texts_b_0e        | `0` in 7,702 records; `SelectType` on every record |
+| `unknown_old_texts_b+0x12`             | u32                                      | packed_quest_id               | Equals `allquestlist[i]` for every record |
+| `unknown_old_texts_b+0x16`             | u8                                       | unknown_old_texts_b_16              | `0` or `1`; byte 0 of Layout 2's `unknown_q04` for 10,591 of the 10,815 shared quests |
+| `unknown_old_texts_b+0x17`             | u16                                      | unknown_old_texts_b_17              | `0` in 12,247 records; the first key of `RegionKey` on every record, and Layout 2's first `unknown_list` value for 10,802 of the 10,815 shared quests |
+| `unknown_old_texts_b+0x19`             | u8                                       | unknown_old_texts_b_19              | `0` in every record |
+| `unknown_old_texts_b+0x1A`             | u8                                       | unknown_old_texts_b_1a              | `0` or `1`; byte 1 of Layout 2's `unknown_q04` for 10,624 of the 10,815 shared quests |
+| `unknown_old_texts_b+0x1B`             | u32                                      | contents_group_count          | `1` to `7` |
+| `unknown_old_texts_b+0x1F`             | u32[contents_group_count]                | contents_group_hashes         | Each value is the key hash of a contents group key's decimal text, as in [`characterstatic.dbss`](characterstatic_dbss.md); all values of the 12,361 records resolve. `ContentsGroupKey` on every record |
+| `contents_group_hashes+0x00`           | u64                                      | unknown_old_contents_00       | `0` in 12,333 records; `LimitTime` times 60 on every record |
+| `contents_group_hashes+0x08`           | u8                                       | unknown_old_contents_08       | `0` in 12,333 records, `1` in 28; `ResetLimitTime` on every record |
+| `contents_group_hashes+0x09`           | u32                                      | unknown_old_contents_09       | `0` in every record |
+| `contents_group_hashes+0x0D`           | u8                                       | unknown_old_contents_0d       | `0` in 11,574 records, `1` in 787; `isHideQuestCount` on every record; record ends here |
+
+`unknown_reward_count` is the u32 Layout 2 calls `unknown_select_rewards_00`,
+with the same value for 10,812 of the 10,815 quests both clients have. On
+client 3483 the 36 Layout 2 records where it is `1` also hold one Reward
+Entry after it, an item.
+
+### Position (16 bytes)
+
+The values of one `PositionAndRadius` entry, in its order.
+
+| Offset  | Type | Field              | Notes |
+| ------- | ---- | ------------------ | ----- |
+| `+0x00` | f32  | unknown_00         | |
+| `+0x04` | f32  | unknown_04         | |
+| `+0x08` | f32  | unknown_08         | |
+| `+0x0C` | f32  | unknown_0c         | `300.0` in 3,233 of the 13,194 entries |
+
+### Link Group (variable: 5 bytes + links)
+
+| Offset  | Type             | Field      | Notes |
+| ------- | ---------------- | ---------- | ----- |
+| `+0x00` | u8               | unknown_00 | `7`, `6`, `18` or `2` in the 51 groups |
+| `+0x01` | u32              | link_count | `1` in every group |
+| `+0x05` | Link[link_count] | links      | See Link |
+
+### Link (variable: 16 bytes + text)
+
+| Offset          | Type  | Field   | Notes |
+| --------------- | ----- | ------- | ----- |
+| `+0x00`         | str8  | url     | An official site Adventurer Notes page, e.g. `https://www.naeu.playblackdesert.com/de-DE/InGame/AdventurerNotes/CommunityDetail?_topicNo=72` |
+| `url+0x00`      | str16 | unknown_url_00 | The page's authors in the groups seen, e.g. `MissFox, Ragrador` |
+
+### Reward Entry (188 bytes)
+
+The [`guildquest.dbss`](guildquest_dbss.md#reward-entry-188-bytes) Layout 1
+entry. Members `+0x00` to `+0x9B` are those of the 178-byte entry; the 10
+extra bytes lie after the Family Stat Union: `unknown_9c` is 10 bytes long,
+which moves `max_fever_point`, `add_fever_point`, `unknown_a8` and
+`season_no` to `+0xA6` to `+0xAF`, and 4 zero bytes follow `season_no`,
+which puts `explore_exp` at `+0xB4`. The Family Stat Union is the same, so
+the parser reads Family stats from both entry sizes.
+
+| Offset  | Type      | Field                   | Notes |
+| ------- | --------- | ----------------------- | ----- |
+| `+0x00` | u32       | reward_type             | |
+| `+0x04` | i64       | experience              | |
+| `+0x0C` | i32       | skill_experience        | |
+| `+0x10` | i32       | product_experience      | |
+| `+0x14` | u8        | life_experience_type    | |
+| `+0x15` | i32       | life_experience         | |
+| `+0x19` | u32       | item_key                | |
+| `+0x1D` | i64       | item_count              | |
+| `+0x25` | u16       | intimacy_character      | |
+| `+0x27` | i32       | intimacy_value          | |
+| `+0x2B` | i32       | mental_card_key         | |
+| `+0x2F` | bytes[2]  | unknown_2f              | |
+| `+0x31` | u8        | exp_grade               | |
+| `+0x32` | bytes[4]  | unknown_32              | |
+| `+0x36` | bytes[49] | unknown_36              | |
+| `+0x67` | bytes[53] | family_stat             | See Family Stat Union |
+| `+0x9C` | bytes[10] | unknown_9c              | |
+| `+0xA6` | u32       | max_fever_point         | |
+| `+0xAA` | u32       | add_fever_point         | |
+| `+0xAE` | u8        | unknown_a8              | |
+| `+0xAF` | u8        | season_no               | |
+| `+0xB0` | bytes[4]  | unknown_after_season_no | |
+| `+0xB4` | i64       | explore_exp             | |
 
 ## Reward Types
 
 `reward_type` values `0` to `4` are the 2016 `gc::RewardType` (`eRewardCount` = `5`). On clients 1784 and 3474 each of these types holds its value in its own members of the Reward Entry and leaves every other member unset, so the member sizes of the 2016 struct place every offset of `+0x00` to `+0x2A`.
 
-The later types are not in the 2016 enum, and the 2016 `gc::QuestRewardElement` ends at `_intimacyValue`. Their script calls in the table are those of the `Quest_Table` `BaseReward` and `SelectReward` columns of a private server's `DataSheets.bexcel` on client 1784: there, on the 15,825 records whose `BaseReward` lists as many calls as the file has base entries and the 15,849 whose `SelectReward` does the same for the select entries, each entry type pairs with one call name, and the item, EXP, Skill EXP, Life EXP and Amity members equal the call arguments in every entry but one item. Entries from client 3474, base and select rewards together:
+The later types are not in the 2016 enum, and the 2016 `gc::QuestRewardElement` ends at `_intimacyValue`. Their script calls in the table are those of the `Quest_Table` `BaseReward` and `SelectReward` columns of a private server's `DataSheets.bexcel` on client 1784: there, on the 12,013 records whose `BaseReward` lists as many calls as the file has base entries and the 12,050 whose `SelectReward` does the same for the select entries, each entry type pairs with one call name, and the item, EXP, Skill EXP, Life EXP and Amity members equal the call arguments in every entry but 39 items. The exception is type `12`: 159 of its 171 entries pair with an `item` call, where the sheet lists an item in place of the Family stat the client file holds (`328511`: HP in the file, `item(17854,0,1)` in the sheet). Entries from client 3474, base and select rewards together:
 
 | Value | `gc::RewardType`  | Client Lua               | Script call     | Members                            | Entries (client 3474) |
 | ----: | ----------------- | ------------------------ | --------------- | ---------------------------------- | --------------------: |
@@ -322,9 +567,9 @@ The later types are not in the 2016 enum, and the 2016 `gc::QuestRewardElement` 
 | `17`  |                   | `__eeRewardFeverPoint`   | `feverpoint`    | `max_fever_point`, `add_fever_point`, `unknown_a8` | 10 |
 | `18`  |                   | `__eRewardSeasonReward`  | `seasonreward`  | `season_no`                        | 5      |
 
-Type `14` occurs on client 1784 only. The type `12` entries are exactly the entries whose Family Stat Union holds a stat (`family_stat_type` other than `16`). Each type sets only its own members; every other member holds `0` (`15` for `life_experience_type`, `16` for `family_stat_type`) in every entry of client 3474 and in the 38,878 entries of client 1784 that pair with a sheet call.
+Type `14` occurs on client 1784 only. The type `12` entries are exactly the entries whose Family Stat Union holds a stat (`family_stat_type` other than `16`). Each type sets only its own members; every other member holds `0` (`15` for `life_experience_type`, `16` for `family_stat_type`) in every entry of client 3474 and in the 31,498 entries of client 1784 that pair with a sheet call.
 
-The tail members were placed on client 1784, where each equals the call argument of its entry: `knowledge(key)` at `+0x2B` in 711 of 711 entries, `expgrade(n)` at `+0x31` in 2,832 of 2,832, `exploreexp(n)` at `+0xB4` in 9,132 of 9,132, `feverpoint(a,b,c)` at `+0xA6`, `+0xAA` and `+0xAE` in 22 of 22 and `seasonreward(n)` at `+0xAF` in 7 of 7. On client 3474 the same types fill `+0x2B` and `+0x31`, the fever and season members 6 bytes earlier and `explore_exp` 10 bytes earlier (the last 8 bytes of both entry sizes). `skillexpgrade(n)` and `growstep(n)` leave all 188 bytes at their unset values. The widths follow the spacing: `explore_exp` is the last 8 bytes, `season_no` sits between `unknown_a8` and `explore_exp`, and the 2016 `gc::MentalCard` key is a `KeyType<int>`.
+The tail members were placed on client 1784, where each equals the call argument of its entry: `knowledge(key)` at `+0x2B` in 730 of 730 entries, `expgrade(n)` at `+0x31` in 2,852 of 2,852, `exploreexp(n)` at `+0xB4` in 9,226 of 9,226, `feverpoint(a,b,c)` at `+0xA6`, `+0xAA` and `+0xAE` in 10 of 10 and `seasonreward(n)` at `+0xAF` in 6 of 6. On client 3474 the same types fill `+0x2B` and `+0x31`, the fever and season members 6 bytes earlier and `explore_exp` 10 bytes earlier (the last 8 bytes of both entry sizes). `skillexpgrade(n)` and `growstep(n)` leave all 188 bytes at their unset values. The widths follow the spacing: `explore_exp` is the last 8 bytes, `season_no` sits between `unknown_a8` and `explore_exp`, and the 2016 `gc::MentalCard` key is a `KeyType<int>`.
 
 The member names come from the client Lua. `panel_widget_questrewarditem.luac`, `panel_window_questinfo_all_1.luac` and `panel_dialog_quest_all_1.luac` branch on the `__eReward*` globals of the table and read `getMentalCardKey()` for `__eRewardKnowledge` (passed to `ToClinet_getMentalCardStaticStatus()`; every type `5` key of client 3474 is a `mentalcard.dbss` card), `_exploreExp` and `getExploreExperience()` (an int64) for `__eRewardExploreExp`, `_season` and `getSeasonNo()` for `__eRewardSeasonReward`, and `getMaxFeverPoint()`, `getAddFeverPoint()` and `getAddFeverDropRate()` for `__eeRewardFeverPoint`. They read no value for `__eRewardExpGrade` and `__eRewardSkillExpGrade`. The getters do not say which fever member is which; the Agris Fever tooltip does. It starts a family at 3,000 recovery points a day up to 10,000 (`TEXTBIND_PANEL_FEVERPOINT_ICON`, client 3474), and the ten "Book of Margahan" entries of client 3474 add 50,000 at `+0xA0` and 5,000 at `+0xA4`. Read the other way round, a family would recover 53,000 points a day toward a cap of 15,000. The Lua holds no numbers for the globals; the values pair with them through the call names and the members their getters read.
 
@@ -460,7 +705,7 @@ window shows for a Book of Margahan chapter is not checked.
 
 ### Fields After the Select Rewards
 
-The 2016 `gc::QuestRewardGroup` is `_baseReward`, `_selectReward` and `_expectedPrice` (`__int64`), and `unknown_select_rewards_04` is an i64 in that place. On client 1784 it equals the sheet's `ExpectedPrice` column in 18 of the 15,849 records with a sheet row, so the name does not carry over. `unknown_select_rewards_00` is not explained either.
+The 2016 `gc::QuestRewardGroup` is `_baseReward`, `_selectReward` and `_expectedPrice` (`__int64`), and `unknown_select_rewards_04` is an i64 in that place. On client 1784 it equals the sheet's `ExpectedPrice` column in 18 of the 12,050 records with a sheet row, so the name does not carry over; that column is the u64 8 bytes later in Layout 1 (`unknown_old_rewards_08`). `unknown_select_rewards_00` is the count of a third reward list, Layout 1's `unknown_reward_count`.
 
 ### Contribution and Energy Union Types
 

@@ -553,7 +553,7 @@ The parser takes the value count from the trailer: `(table_start - 4) / 4`.
 | 16    | `Edania_1`                | `LUA_QUESTLIST_HISTORY_TXT_REGION_17`  | Outer Edania                      |
 | 17    | `Edania_2`                | `LUA_QUESTLIST_HISTORY_TXT_REGION_20`  | Inner Edania                      |
 
-On client 1784 the 13 values add up to 16,877, the record count of that client's `quest.dbss`. On client 3474 the 18 values add up to 18,980, 11 fewer than the 18,991 `quest.dbss` records (see Open Questions).
+On client 1784 the 13 values add up to 12,361, the record count of that client's `quest.dbss`, and each equals the number of its records with that `quest_region` ([Layout 1](../dbss/quest_dbss.md#layout-1)). On client 3474 the 18 values add up to 18,980, 11 fewer than the 18,991 `quest.dbss` records (see Open Questions).
 
 ## Quest Types
 
@@ -584,7 +584,7 @@ On client 1784 the 13 values add up to 16,877, the record count of that client's
 
 `_typeString` has no key for the three Olvia Academy types; the handler shows their enum names. `LUA_QUESTLIST_HISTORY_TXT_TYPE_16` reads "Instant Clear", but the quest window names `DirectClear` "Etc.".
 
-The client 1784 file holds 17 values that add up to 16,877, the record count of that client's `quest.dbss`. That client's Lua has another enum, `CppEnums.QuestType` (`BlackSpirit` `0` to `Guild` `7`, `Special` `10`, `RegionMonsterKill` `11`, `Production` `15`, `_Count` `16`), which is one value short of the file; the 1784 values are not named here (see Open Questions).
+The client 1784 file holds 17 values that add up to 12,361, the record count of that client's `quest.dbss`, and each equals the number of its records with that `quest_category` ([Layout 1](../dbss/quest_dbss.md#layout-1)). That client's Lua has another enum, `CppEnums.QuestType` (`BlackSpirit` `0` to `Guild` `7`, `Special` `10`, `RegionMonsterKill` `11`, `Production` `15`, `_Count` `16`), which is one value short of the file; the 1784 values are not named here (see Open Questions).
 
 ## Notes
 
@@ -597,7 +597,7 @@ The client 1784 file holds 17 values that add up to 16,877, the record count of 
 
 ### Eleven Quests Without a Region Count
 
-On client 3474 the region values add up to 18,980 and the type values to 18,991, the `quest.dbss` record count; on client 1784 both files add up to all 16,877 records. The 11 missing quests may carry a region value outside `QuestRegionType` (the enum has no value past `Edania_2` and `_Count` `18`), but `quest.dbss` has no decoded region field to check which quests they are.
+On client 3474 the region values add up to 18,980 and the type values to 18,991, the `quest.dbss` record count; on client 1784 both files add up to all 12,361 records. The 11 missing quests may carry a region value outside `QuestRegionType` (the enum has no value past `Edania_2` and `_Count` `18`), but the Layout 2 `quest.dbss` has no decoded region field to check which quests they are; Layout 1 of client 1784 has one, `quest_region`.
 
 ### What Fills the Getters
 
@@ -605,4 +605,14 @@ On client 3474 the region values add up to 18,980 and the type values to 18,991,
 
 ### Client 1784 Quest Types
 
-The client 1784 type file has 17 values, while that client's Lua `CppEnums.QuestType` ends at `_Count` `16` and has no names for values `8`, `9` and `12` to `14`. Its value `6` holds 6,169 of the 16,877 quests, more than any other type, so the 3474 names (`6` is `OceanLife`) do not carry over. The 1784 `quest.dbss` layout has no decoded `quest_category` to count against. The handler shows no names for the client 1784 files.
+The client 1784 type file has 17 values, while that client's `global_define_cpp_enum.luac` defines `CppEnums.QuestType` as `BlackSpirit` `0`, `Story` `1`, `Town` `2`, `Adventure` `3`, `Trade` `4`, `Craft` `5`, `Repetition` `6`, `Guild` `7`, `Special` `10`, `RegionMonsterKill` `11`, `Production` `15` and `_Count` `16`. Only 2,765 of the 10,815 quests both clients have keep their `quest_category`, so the 3474 names do not carry over. The 1784 `quest.dbss` agrees with the 1784 names, and it fills two values the enum does not name:
+
+| Value | `CppEnums.QuestType` | Quests (client 1784) | Same quests as |
+| ----: | -------------------- | -------------------: | -------------- |
+| `6`   | `Repetition`         | 1,879 | 1,743 of them have an `unknown_list_04` repeat time; no other type has more than 114 |
+| `10`  | `Special`            | 261   | The 261 quests of `specialquestlist.bss` |
+| `11`  | `RegionMonsterKill`  | 114   | The 114 quests of `regionmonsterkillquestlist.bss` |
+| `13`  | none                 | 100   | The 100 quests of `seasonpassquestlist.bss` |
+| `16`  | none (`_Count`)      | 211   | The 211 quests of `growthpassquestlist.bss` |
+
+The `quest.dbss` handler names client 1784 quest types by this enum and the GAME sheet keys of that client's `_typeString` (`TYPE_1` to `TYPE_8` for `0` to `7`, `TYPE_10` and `TYPE_11` for `10` and `11`), and leaves `13` and `16` unnamed. The handler of this file still shows no names for the client 1784 files: its value count cannot tell the enums apart, since the type files of clients 2519, 2765, 2923 and 3002 also hold 17 values while their Lua has no `CppEnums.QuestType`, and clients 1286 and 1598 hold 13 and 15 with the same enum up to `RegionMonsterKill` `11`.

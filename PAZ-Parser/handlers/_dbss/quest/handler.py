@@ -25,7 +25,8 @@ from _bss.allquestlist.parser import parse_allquestlist_records
 from _bss.stringtable.parser import GAME_SHEET
 from _bss.stringtable.text import STRINGTABLE_FILE, KeyHashes, ui_key_hashes
 from _bss.totalquestcount.names import value_name
-from _bss.totalquestcount.tables import QUEST_TYPE_TABLE
+from _bss.totalquestcount.tables import CPP_ENUMS_QUEST_TYPE_TABLE, QUEST_TYPE_TABLE
+from .layout1 import QuestIndexLayout1
 from .model import FamilyStat
 from .parser import QuestIndex, build_quest_index, parse_quest_record
 
@@ -78,6 +79,16 @@ def _family_stat_text(stats: list[FamilyStat]) -> str:
         unit = " LT" if stat["label"] == "Weight" else ""
         parts.append(f"{stat['label']} {value:+g}{unit}")
     return ", ".join(parts)
+
+
+def _quest_type_name(index: QuestIndex, hashes: KeyHashes, quest_category: int) -> str:
+    """The quest window name of `quest_category`, the quest type; see quest_dbss.md.
+
+    Layout 2 numbers it as `__eQuestType`, Layout 1 (clients 1717 to 2000) as
+    `CppEnums.QuestType` of those clients' Lua.
+    """
+    table = CPP_ENUMS_QUEST_TYPE_TABLE if isinstance(index, QuestIndexLayout1) else QUEST_TYPE_TABLE
+    return value_name(table, hashes, quest_category)
 
 
 class QuestDbssHandler(PreviewHandler):
@@ -147,8 +158,7 @@ class QuestDbssHandler(PreviewHandler):
             "kill_groups": kill_monster_group_texts(kill_groups),
             "accept_npc": dialog_speaker(parsed["accept_dialog_key"]),
             "complete_npc": dialog_speaker(parsed["complete_dialog_key"]),
-            # quest_category is the quest type (__eQuestType); see quest_dbss.md.
-            "quest_type_name": value_name(QUEST_TYPE_TABLE, hashes, parsed["quest_category"]),
+            "quest_type_name": _quest_type_name(index, hashes, parsed["quest_category"]),
         }
 
     def _records_at(self, data: bytes, companions: dict[str, bytes], rows: Iterable[int]) -> list[dict]:

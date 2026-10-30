@@ -16,11 +16,16 @@ then 135 bytes for the reward types the 2016 enum does not have:
 `reward_type` picks the member that holds the reward. Both files store a list
 as a u32 count and the entries back to back. "Reward Entry" in
 docs/file-formats/dbss/quest_dbss.md and guildquest_dbss.md.
+
+Client 1784 entries are 188 bytes (`REWARD_ENTRY_LAYOUT_1`): `unknown_9c` is
+10 bytes long and 4 zero bytes follow `season_no`. "Reward Entry (188 bytes)"
+in guildquest_dbss.md.
 """
 
 from __future__ import annotations
 
 import struct
+from dataclasses import dataclass
 from typing import TypedDict
 
 from _common.record_reader import RecordReader
@@ -66,7 +71,25 @@ _HEAD = struct.Struct("<IqiiBiIqHi")
 # mental_card_key, unknown_2f, exp_grade, unknown_32, unknown_36, family_stat,
 # unknown_9c, max_fever_point, add_fever_point, unknown_a8, season_no, explore_exp
 _TAIL = struct.Struct("<i2sB4s49s53s4sIIBBq")
+# The same members with the 10-byte unknown_9c; the 4 zero bytes after
+# season_no are skipped.
+_TAIL_LAYOUT_1 = struct.Struct("<i2sB4s49s53s10sIIBB4xq")
 _U32 = struct.Struct("<I")
+
+
+@dataclass(frozen=True)
+class RewardEntryLayout:
+    """One documented Reward Entry shape: the 2016 head, then `tail`."""
+
+    tail: struct.Struct
+
+    @property
+    def size(self) -> int:
+        return _HEAD.size + self.tail.size
+
+
+REWARD_ENTRY_LAYOUT_2 = RewardEntryLayout(_TAIL)
+REWARD_ENTRY_LAYOUT_1 = RewardEntryLayout(_TAIL_LAYOUT_1)
 
 
 class RewardEntry(TypedDict):
@@ -100,7 +123,7 @@ class RewardEntry(TypedDict):
     explore_exp: int
 
 
-def read_reward_entry(reader: RecordReader) -> RewardEntry:
+def read_reward_entry(reader: RecordReader, layout: RewardEntryLayout = REWARD_ENTRY_LAYOUT_2) -> RewardEntry:
     """One entry at the reader's position."""
     (
         reward_type,
@@ -127,7 +150,7 @@ def read_reward_entry(reader: RecordReader) -> RewardEntry:
         unknown_a8,
         season_no,
         explore_exp,
-    ) = reader.unpack(_TAIL)
+    ) = reader.unpack(layout.tail)
     return RewardEntry(
         reward_type=reward_type,
         experience=experience,
@@ -154,7 +177,7 @@ def read_reward_entry(reader: RecordReader) -> RewardEntry:
     )
 
 
-def read_reward_list(reader: RecordReader) -> list[RewardEntry]:
+def read_reward_list(reader: RecordReader, layout: RewardEntryLayout = REWARD_ENTRY_LAYOUT_2) -> list[RewardEntry]:
     """A u32 count, then that many entries."""
     (count,) = reader.unpack(_U32)
-    return [read_reward_entry(reader) for _ in range(count)]
+    return [read_reward_entry(reader, layout) for _ in range(count)]

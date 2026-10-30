@@ -584,14 +584,37 @@ On client 1784 the 13 values add up to 12,361, the record count of that client's
 
 `_typeString` has no key for the three Olvia Academy types; the handler shows their enum names. `LUA_QUESTLIST_HISTORY_TXT_TYPE_16` reads "Instant Clear", but the quest window names `DirectClear` "Etc.".
 
-The client 1784 file holds 17 values that add up to 12,361, the record count of that client's `quest.dbss`, and each equals the number of its records with that `quest_category` ([Layout 1](../dbss/quest_dbss.md#layout-1)). That client's Lua has another enum, `CppEnums.QuestType` (`BlackSpirit` `0` to `Guild` `7`, `Special` `10`, `RegionMonsterKill` `11`, `Production` `15`, `_Count` `16`), which is one value short of the file; the 1784 values are not named here (see Open Questions).
+The client 1784 file holds 17 values that add up to 12,361, the record count of that client's `quest.dbss`, and each equals the number of its records with that `quest_category` ([Layout 1](../dbss/quest_dbss.md#layout-1)). That client's Lua numbers quest types in another enum; see [Quest Types Before Client 2498](#quest-types-before-client-2498).
+
+### Quest Types Before Client 2498
+
+Clients 1109 to 2492 number quest types in `CppEnums.QuestType` of `global_define_cpp_enum.luac`, not in the `__eQuestType` order above. A survey of the NAEU test clients (2026-10-30) read that enum and the value count of this file on each:
+
+| Clients | `CppEnums.QuestType` | Type file values |
+| --- | --- | --- |
+| 435 to 1102 | Grows from `BlackSpirit` `0` to `Repetition` `6`: `Guild` `7` from 466, `Special` `10` from 1026, `RegionMonsterKill` `11` from 1036; not found on 504 to 683 | No file |
+| 1109 to 1608 | `BlackSpirit` `0` to `Guild` `7`, `Special` `10`, `RegionMonsterKill` `11` | 12 to 15; no file under its plain name on 1149 to 1246 |
+| 1614 to 2492 | The same and `Production` `15` | 16 to 18 |
+| 2498 and later | Not in the Lua | 17 to 20 |
+
+Values are added and never renumbered, so the 1614 form names every client of the range. The quest window keys (`_typeString`, read on clients 1109, 1784 and 2492) give value N `LUA_QUESTLIST_HISTORY_TXT_TYPE_<N+1>` up to `Guild`, `TYPE_10` for `Special` and `TYPE_11` for `RegionMonsterKill`. The handler names the type values of a client in 1109 to 2492 this way, by the client's `.meta` version: the value count cannot tell these clients from 2498 to 3133, which also hold 17 values. `Production` `15` has no `_typeString` key and shows its enum name.
+
+On client 1784 the enum agrees with that client's `quest.dbss`: only 2,765 of the 10,815 quests both clients have keep their `quest_category`, so the 3474 names do not carry over, and the 1784 records fill two values the enum does not name, which stay unnamed:
+
+| Value | `CppEnums.QuestType` | Quests (client 1784) | Same quests as |
+| ----: | -------------------- | -------------------: | -------------- |
+| `6`   | `Repetition`         | 1,879 | 1,743 of them have an `unknown_list_04` repeat time; no other type has more than 114 |
+| `10`  | `Special`            | 261   | The 261 quests of `specialquestlist.bss` |
+| `11`  | `RegionMonsterKill`  | 114   | The 114 quests of `regionmonsterkillquestlist.bss` |
+| `13`  | none                 | 100   | The 100 quests of `seasonpassquestlist.bss` |
+| `16`  | none (`_Count`)      | 211   | The 211 quests of `growthpassquestlist.bss` |
 
 ## Notes
 
 - Decompressed sizes: `totalquestcountregion.bss` 88 bytes on client 3474 (`4 + 18 × 4 + 12`) and 68 bytes on client 1784; `totalquestcounttype.bss` 96 bytes on client 3474 (`4 + 20 × 4 + 12`) and 84 bytes on client 1784.
 - The quest window (`panel_window_quest_all_2.luac`) shows a completion percentage per region or per type group in its progress tab: `ToClient_GetClearedQuestCountByQuestRegion(region) / ToClient_GetTotalQuestCountByQuestRegion(region) * 100`, and the same pair `ByQuestType` when the list is sorted by type. The totals these getters return have the shape of the two files.
 - No sheet of a private server's `DataSheets.bexcel` on client 1784 has `TotalQuest` in its name or a column, while that server's `binary/` folder holds both files.
-- The handler (`_bss/totalquestcount/`) gives each value its enum value as key (`quest_region` or `quest_type`), the quest window name next to it, and `quest_count`. It names the values only when the file holds at least as many values as the client 3474 enum (18 regions, 20 types); a shorter file, such as both client 1784 files, gets an empty name column, since its enum order is not checked against the client 3474 one. A value past the end of the enum, on a later client, also has no name.
+- The handler (`_bss/totalquestcount/`) gives each value its enum value as key (`quest_region` or `quest_type`), the quest window name next to it, and `quest_count`. On a client of 1109 to 2492 it names the type values by `CppEnums.QuestType` ([Quest Types Before Client 2498](#quest-types-before-client-2498)). Otherwise it names the values only when the file holds at least as many values as the client 3474 enum (18 regions, 20 types); a shorter file, such as the client 1784 region file, gets an empty name column, since its enum order is not checked against the client 3474 one. A value past the end of the enum, on a later client, also has no name. The names come through `stringtable.bss`, and the handler fails where that file does not parse (client 1109).
 
 ## Open Questions
 
@@ -602,17 +625,3 @@ On client 3474 the region values add up to 18,980 and the type values to 18,991,
 ### What Fills the Getters
 
 `ToClient_GetTotalQuestCountByQuestRegion` and `ToClient_GetTotalQuestCountByQuestType` take a region or type value and return a total, which is what these files store per value, but nothing in the client Lua names the files. The client could also count the totals from `quest.dbss` itself, which on client 3474 gives the same type totals.
-
-### Client 1784 Quest Types
-
-The client 1784 type file has 17 values, while that client's `global_define_cpp_enum.luac` defines `CppEnums.QuestType` as `BlackSpirit` `0`, `Story` `1`, `Town` `2`, `Adventure` `3`, `Trade` `4`, `Craft` `5`, `Repetition` `6`, `Guild` `7`, `Special` `10`, `RegionMonsterKill` `11`, `Production` `15` and `_Count` `16`. Only 2,765 of the 10,815 quests both clients have keep their `quest_category`, so the 3474 names do not carry over. The 1784 `quest.dbss` agrees with the 1784 names, and it fills two values the enum does not name:
-
-| Value | `CppEnums.QuestType` | Quests (client 1784) | Same quests as |
-| ----: | -------------------- | -------------------: | -------------- |
-| `6`   | `Repetition`         | 1,879 | 1,743 of them have an `unknown_list_04` repeat time; no other type has more than 114 |
-| `10`  | `Special`            | 261   | The 261 quests of `specialquestlist.bss` |
-| `11`  | `RegionMonsterKill`  | 114   | The 114 quests of `regionmonsterkillquestlist.bss` |
-| `13`  | none                 | 100   | The 100 quests of `seasonpassquestlist.bss` |
-| `16`  | none (`_Count`)      | 211   | The 211 quests of `growthpassquestlist.bss` |
-
-The `quest.dbss` handler names client 1784 quest types by this enum and the GAME sheet keys of that client's `_typeString` (`TYPE_1` to `TYPE_8` for `0` to `7`, `TYPE_10` and `TYPE_11` for `10` and `11`), and leaves `13` and `16` unnamed. The handler of this file still shows no names for the client 1784 files: its value count cannot tell the enums apart, since the type files of clients 2519, 2765, 2923 and 3002 also hold 17 values while their Lua has no `CppEnums.QuestType`, and clients 1286 and 1598 hold 13 and 15 with the same enum up to `RegionMonsterKill` `11`.

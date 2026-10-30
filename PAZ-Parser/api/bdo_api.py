@@ -54,7 +54,7 @@ from bdo_models import PazEntry
 from paz.bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
 from paz.bdo_payload_cache import cached_read_entry_payload, clear_payload_cache
 from paz.na_copy import find_or_na_copy
-from bdo_preview import StreamPreviewHandler, get_handler, set_handler_lang
+from bdo_preview import StreamPreviewHandler, get_handler, set_handler_client, set_handler_lang
 from _common.pa_text import set_show_pa_tags
 from ui_text import ui_text
 
@@ -380,6 +380,10 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         meta_path = find_single_meta_file(paz_root)
         current_version = read_meta_version(meta_path)
         self._meta_version = current_version
+        # Handlers read the folder as its own .meta version (planner.md,
+        # Multi-Version Support, step 3); a chosen client will override it.
+        set_handler_client(current_version)
+        self._data_digests.set_client(current_version)
         meta = read_bdo_meta(meta_path)
         self._set_archive_ids(meta)
         self._content_key = content_key(meta)

@@ -590,6 +590,9 @@ _PLUGIN_FAILURES: dict[str, str] = {}
 
 _hex_handler = HexHandler()
 _handler_lang = PreviewHandler.lang
+# The client version handlers read the loaded folder as; None before a folder
+# loads. Handlers read it through `_common/effective_client.py`.
+_handler_client: int | None = None
 
 # Files named only by their grid cell (`553_364.bss`, the spawn grid cells in
 # `mapdata_*/spawnplacementfieldgrid/`) share one format and one registry key.
@@ -640,6 +643,24 @@ def set_handler_lang(lang: str) -> None:
     _hex_handler.lang = lang
     if is_change:
         clear_handler_caches()
+
+
+def set_handler_client(client: int | None) -> None:
+    """Set the client version handlers read the loaded folder as.
+
+    Today the `.meta` version of the folder. Tables parsed for another client
+    may hold another reading of the same bytes, so a change drops them.
+    """
+    global _handler_client
+    is_change = client != _handler_client
+    _handler_client = client
+    if is_change:
+        clear_handler_caches()
+
+
+def handler_client() -> int | None:
+    """The client version set by `set_handler_client()`, or None before a folder loads."""
+    return _handler_client
 
 
 def parsed_handlers() -> list[PreviewHandler]:

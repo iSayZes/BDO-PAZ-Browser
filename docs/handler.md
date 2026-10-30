@@ -732,15 +732,19 @@ row is reused only while all of these match:
 - the table and every path `companions()` returns: archive, archive CRC and size,
   offset and sizes
 - the LOC text and each lookup index the build read, by content digest
+- the client version, or only the layout range it falls in, when the build asked
+  for it ([Client Version](#client-version))
 
 So `get_records()` has to follow a few rules:
 
-- **Read shared data only through `_common/loc.py` and `_common/lookup_index.py`.**
-  Their functions report each read to `_common/data_deps.py`; a build that never read
-  LOC keeps its row when a patch changes LOC. A module-level memo of LOC text or an
-  index value would hide the read and serve another language's text.
-- **Depend only on the payload, the declared companions, LOC, the lookup indexes and
-  `self.lang`.** Anything else, such as a setting or the time, is not in the key.
+- **Read shared data only through `_common/loc.py`, `_common/lookup_index.py`,
+  `_common/effective_client.py` and `_common/client_versions.py`.** Their functions report each read to
+  `_common/data_deps.py`; a build that never read LOC keeps its row when a patch
+  changes LOC. A module-level memo of LOC text, an index value or the client would
+  hide the read and serve another language's text or another client's reading.
+- **Depend only on the payload, the declared companions, LOC, the lookup indexes,
+  the client version and `self.lang`.** Anything else, such as a setting or the
+  time, is not in the key.
 - **Return picklable plain values** (dicts, lists, tuples, str, int, float, bool,
   None), and do not change the records after returning them: a background thread
   pickles them.
@@ -2089,6 +2093,57 @@ Rules:
   means tab search and CSV export also see the localized values.
 - Do not put translated labels directly in `render_records_page()`, because the HTML layer
   should be format-agnostic.
+
+## Client Version
+
+`effective_client()` in `_common/effective_client.py` returns the client version the
+loaded folder is read as: today the `.meta` version of the folder, set on every
+folder load (`bdo_preview.set_handler_client`). It returns None when no folder is
+loaded or the exe predates the setter; read the file as the live client then.
+
+A handler with more than one layout keeps the first layout that reads the file to
+its end; the client only decides which layout it tries first. Each layout declares
+the test clients it reads as `ClientRange`s (`_common/client_versions.py`), taken
+from the Versions table of the format doc, which `check_docs.py` writes; a layout
+with no checked client declares none. Loop over `client_order()` instead of the
+layouts:
+
+```python
+@dataclass(frozen=True)
+class RowLayout:
+    number: int
+    ...
+    clients: tuple[ClientRange, ...] = ()
+
+
+# Newest first.
+LAYOUTS = (
+    RowLayout(2, ..., clients=(ClientRange(2142),)),         # 2142 and later
+    RowLayout(1, ..., clients=(ClientRange(1286, 2138),)),
+)
+
+for layout in client_order(LAYOUTS, lambda layout: layout.clients):
+    try:
+        return _read_rows(data, layout)
+    except ValueError as error:
+        breaks.append(f"Layout {layout.number}: {error}")
+```
+
+Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
+`territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss` and `quest.dbss`.
+`tests/test_client_versions.py` fails when two layouts of one of them claim the
+same client. When the same bytes mean different things on different clients,
+`covering(choices, clients)` returns the choice whose ranges cover the client, or
+None: `totalquestcounttype.bss` names its values by `CppEnums.QuestType` on
+clients 1109 to 2492 (`older` in `_bss/totalquestcount/tables.py`) and by the
+live enum otherwise. Ask for the raw number with `effective_client()` only when
+no range fits the question; its tables re-parse on every change of the version.
+
+A client change drops every handler's `_data_cache` slots. The records cache
+re-parses only the tables whose build asked for the client: after
+`effective_client()` on any change of the version, after `client_order()` or
+`covering()` only when the client moves into another range. A patch on the live client
+keeps them all.
 
 ## Import Rules
 

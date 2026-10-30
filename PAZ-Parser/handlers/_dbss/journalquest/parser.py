@@ -25,6 +25,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from _common.binary import u32, u32_hi, u32_lo
+from _common.client_versions import ClientRange, client_order
 from _common.record_reader import RecordReader
 
 
@@ -115,12 +116,15 @@ class BookLayout:
 
     number: int
     read_fields: Callable[[RecordReader], dict]
+    # Test clients this layout reads (the doc's Versions table, written by
+    # check_docs); they only order the tries (`client_versions.py`).
+    clients: tuple[ClientRange, ...] = ()
 
 
 # Newest first.
 LAYOUTS = (
-    BookLayout(2, _book_fields_layout_2),
-    BookLayout(1, _book_fields_layout_1),
+    BookLayout(2, _book_fields_layout_2, clients=(ClientRange(2142),)),
+    BookLayout(1, _book_fields_layout_1, clients=(ClientRange(1286, 2138),)),
 )
 
 
@@ -168,7 +172,7 @@ def parse_journalquest_records(data: bytes, offset_data: bytes) -> list[dict]:
     """
     offset_rows = parse_journalquest_offset_records(offset_data)
     breaks: list[str] = []
-    for layout in LAYOUTS:
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
         try:
             return _read_books(data, offset_rows, layout)
         except ValueError as error:

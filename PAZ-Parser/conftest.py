@@ -28,10 +28,13 @@ for path in (PAZ_PARSER_DIR, HANDLERS_DIR):
 def _english_after_each_test() -> Iterator[None]:
     # set_handler_lang() is process-wide, and BdoApi applies the saved
     # language when it is built or saves settings; tests expect English.
+    # set_handler_client() is too, and BdoApi sets it on every folder load;
+    # tests expect no client (the live reading).
     yield
-    from bdo_preview import set_handler_lang
+    from bdo_preview import set_handler_client, set_handler_lang
 
     set_handler_lang("en")
+    set_handler_client(None)
 
 
 def _is_xdist_worker(config: pytest.Config) -> bool:

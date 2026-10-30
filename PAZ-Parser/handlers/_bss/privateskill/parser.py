@@ -19,6 +19,7 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass
 
+from _common.client_versions import ClientRange, client_order
 from _common.counted_rows import read_counted_structs
 from _common.pabr_offset import PABR_MAGIC
 from _common.pabr_strings import checked_string_table_start
@@ -58,12 +59,17 @@ class RowLayout:
     number: int
     row: struct.Struct
     class_slots: int
+    # Test clients this layout reads (the doc's Versions table, written by
+    # check_docs); they only order the tries (`client_versions.py`).
+    clients: tuple[ClientRange, ...] = ()
 
 
 # Newest first.
 LAYOUTS = (
-    RowLayout(2, struct.Struct("<IQ"), _LAYOUT_2_CLASS_SLOTS),
-    RowLayout(1, struct.Struct(f"<I{_LAYOUT_1_CLASS_SLOTS}s"), _LAYOUT_1_CLASS_SLOTS),
+    RowLayout(2, struct.Struct("<IQ"), _LAYOUT_2_CLASS_SLOTS, clients=(ClientRange(1267),)),
+    RowLayout(
+        1, struct.Struct(f"<I{_LAYOUT_1_CLASS_SLOTS}s"), _LAYOUT_1_CLASS_SLOTS, clients=(ClientRange(1194, 1261),)
+    ),
 )
 
 
@@ -115,7 +121,7 @@ def parse_privateskill(data: bytes) -> PrivateSkillTable:
     """
     end = checked_string_table_start(data, FILE_NAME)
     breaks: list[str] = []
-    for layout in LAYOUTS:
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
         try:
             return _table(layout, _read_rows(data, end, layout))
         except ValueError as error:

@@ -5,7 +5,9 @@ The enum names come from the client Lua (`CppEnums.QuestRegionType` in
 `global_define_cpp_enum.luac`, the `__eQuestType_*` order of
 `panel_window_quest_all.luac`). The GAME sheet keys are the `_regionString`
 and `_typeString` tables of `panel_window_quest_all.luac`; values the Lua
-gives no key (the three Olvia Academy types) show their enum name.
+gives no key (the three Olvia Academy types) show their enum name. Clients
+1109 to 2492 number quest types in another enum (`older` of
+`QUEST_TYPE_TABLE`).
 """
 
 from __future__ import annotations
@@ -13,6 +15,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from types import MappingProxyType
 from typing import Mapping
+
+from _common.client_versions import ClientRange
 
 
 _HISTORY_REGION = "LUA_QUESTLIST_HISTORY_TXT_REGION_{}"
@@ -33,6 +37,10 @@ class QuestCountTable:
     key_column: str
     name_column: str
     count_meta: str
+    # Test clients whose Lua numbers the values this way; empty for the live enum.
+    clients: tuple[ClientRange, ...] = ()
+    # Tables of older enums, used on the clients in their ranges.
+    older: tuple[QuestCountTable, ...] = ()
 
 
 QUEST_REGION_NAMES: tuple[str, ...] = (
@@ -79,29 +87,18 @@ QUEST_REGION_TABLE = QuestCountTable(
     count_meta="regionCount",
 )
 
-QUEST_TYPE_TABLE = QuestCountTable(
-    file_name="totalquestcounttype.bss",
-    key_field="quest_type",
-    name_field="quest_type_name",
-    enum_names=QUEST_TYPE_NAMES,
-    name_keys=MappingProxyType(_TYPE_KEYS),
-    key_column="questTypeId",
-    name_column="questType",
-    count_meta="typeCount",
-)
-
-QUEST_COUNT_TABLES: tuple[QuestCountTable, ...] = (QUEST_REGION_TABLE, QUEST_TYPE_TABLE)
-
-# quest.dbss Layout 1 (clients 1717 to 2000) numbers quest types in
-# `CppEnums.QuestType` of global_define_cpp_enum.luac (read on client 1784), with
-# gaps. The data also holds 13 and 16 (the season pass and Growth Pass quest
-# lists), which that enum does not name.
+# Clients 1109 to 2492 number quest types in `CppEnums.QuestType` of
+# global_define_cpp_enum.luac, with gaps; client 2498 is the first whose Lua no
+# longer has it. Later clients only add values (Production 15 from client 1614),
+# so the newest form names them all. quest.dbss Layout 1 data also holds 13 and
+# 16 (the season pass and Growth Pass quest lists), which the enum does not name.
 _CPP_QUEST_TYPES: dict[int, str] = {
     0: "BlackSpirit", 1: "Story", 2: "Town", 3: "Adventure", 4: "Trade", 5: "Craft",
     6: "Repetition", 7: "Guild", 10: "Special", 11: "RegionMonsterKill", 15: "Production",
 }
-# The _typeString table of that client's panel_window_quest_all.luac: value N
-# reads TYPE_(N+1) up to Guild, then Special TYPE_10 and RegionMonsterKill TYPE_11.
+# Their quest window's _typeString table (checked on clients 1109, 1784 and
+# 2492): value N reads TYPE_(N+1) up to Guild, then Special TYPE_10 and
+# RegionMonsterKill TYPE_11.
 _CPP_TYPE_KEYS: dict[int, str] = {
     **{quest_type: _HISTORY_TYPE.format(quest_type + 1) for quest_type in range(8)},
     10: _HISTORY_TYPE.format(10),
@@ -117,4 +114,19 @@ CPP_ENUMS_QUEST_TYPE_TABLE = QuestCountTable(
     key_column="questTypeId",
     name_column="questType",
     count_meta="typeCount",
+    clients=(ClientRange(1109, 2492),),
 )
+
+QUEST_TYPE_TABLE = QuestCountTable(
+    file_name="totalquestcounttype.bss",
+    key_field="quest_type",
+    name_field="quest_type_name",
+    enum_names=QUEST_TYPE_NAMES,
+    name_keys=MappingProxyType(_TYPE_KEYS),
+    key_column="questTypeId",
+    name_column="questType",
+    count_meta="typeCount",
+    older=(CPP_ENUMS_QUEST_TYPE_TABLE,),
+)
+
+QUEST_COUNT_TABLES: tuple[QuestCountTable, ...] = (QUEST_REGION_TABLE, QUEST_TYPE_TABLE)

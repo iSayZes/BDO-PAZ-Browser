@@ -35,6 +35,7 @@ from _common.quest.reward_entry import (  # noqa: F401
     RewardEntryLayout,
     read_reward_list,
 )
+from _common.client_versions import ClientRange, client_order
 from _common.record_reader import RecordReader
 
 
@@ -89,12 +90,15 @@ class RowLayout:
     number: int
     reward_entry: RewardEntryLayout
     read_tail: Callable[[RecordReader], dict]
+    # Test clients this layout reads (the doc's Versions table, written by
+    # check_docs); they only order the tries (`client_versions.py`).
+    clients: tuple[ClientRange, ...] = ()
 
 
 # Newest first.
 LAYOUTS = (
-    RowLayout(2, REWARD_ENTRY_LAYOUT_2, _tail_layout_2),
-    RowLayout(1, REWARD_ENTRY_LAYOUT_1, _tail_layout_1),
+    RowLayout(2, REWARD_ENTRY_LAYOUT_2, _tail_layout_2, clients=(ClientRange(2923),)),
+    RowLayout(1, REWARD_ENTRY_LAYOUT_1, _tail_layout_1, clients=(ClientRange(1598, 2545),)),
 )
 
 
@@ -155,7 +159,7 @@ def parse_guildquest_records(data: bytes) -> list[dict]:
     row runs past the file or bytes follow the last of the counted rows.
     """
     breaks: list[str] = []
-    for layout in LAYOUTS:
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
         try:
             return _read_rows(data, layout)
         except ValueError as error:

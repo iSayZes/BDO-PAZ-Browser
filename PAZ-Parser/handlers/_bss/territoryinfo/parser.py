@@ -21,6 +21,7 @@ import struct
 from dataclasses import dataclass
 
 from _common.binary import u32
+from _common.client_versions import ClientRange, client_order
 from _common.pabr_offset import PABR_MAGIC
 from _common.pabr_strings import HEADER_SIZE, checked_string_table_start, read_string_table, string_at
 from _common.record_reader import RecordReader
@@ -61,19 +62,22 @@ class RowLayout:
     has_trade_keys: bool
     supply_key_format: str
     has_tail: bool
+    # Test clients this layout reads (the doc's Versions table, written by
+    # check_docs); they only order the tries (`client_versions.py`).
+    clients: tuple[ClientRange, ...] = ()
 
 
 # Newest first. Layouts 1 to 4 have no PABR header and store their strings inline.
 LAYOUTS = (
-    RowLayout(9, True, _U64, 3, False, "I", True),
-    RowLayout(8, True, _U64, 3, False, "H", True),
-    RowLayout(7, True, _U64, 3, True, "H", True),
-    RowLayout(6, True, _U64, 5, True, "H", True),
-    RowLayout(5, True, _U64, 5, True, "H", False),
-    RowLayout(4, False, _U64, 5, True, "H", False),
-    RowLayout(3, False, _U64, 3, True, "H", False),
-    RowLayout(2, False, _U32, 3, True, "H", False),
-    RowLayout(1, False, _U32, 1, True, "H", False),
+    RowLayout(9, True, _U64, 3, False, "I", True, clients=(ClientRange(2726),)),
+    RowLayout(8, True, _U64, 3, False, "H", True, clients=(ClientRange(2575, 2717),)),
+    RowLayout(7, True, _U64, 3, True, "H", True, clients=(ClientRange(2474, 2567),)),
+    RowLayout(6, True, _U64, 5, True, "H", True, clients=(ClientRange(1276, 2468),)),
+    RowLayout(5, True, _U64, 5, True, "H", False, clients=(ClientRange(805, 1267),)),
+    RowLayout(4, False, _U64, 5, True, "H", False, clients=(ClientRange(723, 794),)),
+    RowLayout(3, False, _U64, 3, True, "H", False, clients=(ClientRange(526, 711),)),
+    RowLayout(2, False, _U32, 3, True, "H", False, clients=(ClientRange(472, 521),)),
+    RowLayout(1, False, _U32, 1, True, "H", False, clients=(ClientRange(435, 466),)),
 )
 
 
@@ -154,7 +158,7 @@ def parse_territoryinfo_records(data: bytes) -> list[dict]:
         raise ValueError(f"{FILE_NAME} is too short to hold its row count")
     is_pabr = data[: len(PABR_MAGIC)] == PABR_MAGIC
     breaks: list[str] = []
-    for layout in LAYOUTS:
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
         if layout.is_pabr != is_pabr:
             continue
         try:

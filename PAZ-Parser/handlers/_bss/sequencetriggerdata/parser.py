@@ -35,6 +35,7 @@ from _bss.sequence_scripts.reader import (
     read_position,
     read_string_refs,
 )
+from _common.client_versions import ClientRange, client_order
 from _common.pabr_strings import checked_string_table_start
 from _common.record_reader import RecordReader
 
@@ -83,6 +84,9 @@ class RowLayout:
     text_fields: tuple[str, ...]
     has_region_count: bool
     flag_fields: tuple[str, ...]
+    # Test clients this layout reads (the doc's Versions table, written by
+    # check_docs); they only order the tries (`client_versions.py`).
+    clients: tuple[ClientRange, ...] = ()
 
     @cached_property
     def flags(self) -> struct.Struct:
@@ -91,15 +95,25 @@ class RowLayout:
 
 # Newest first.
 LAYOUTS = (
-    RowLayout(9, TEXT_FIELDS, True, FLAG_FIELDS),
-    RowLayout(8, TEXT_FIELDS, True, (*FLAG_FIELDS[:5], "unknown_region_keys_0d", "force_skip_sequence")),
-    RowLayout(7, TEXT_FIELDS, True, _LAYOUT_6_FLAGS),
-    RowLayout(6, TEXT_FIELDS, False, _LAYOUT_6_FLAGS),
-    RowLayout(5, _LAYOUT_2_TEXT_FIELDS, False, FLAG_FIELDS[:4]),
-    RowLayout(4, _LAYOUT_2_TEXT_FIELDS, False, FLAG_FIELDS[:3]),
-    RowLayout(3, _LAYOUT_2_TEXT_FIELDS, False, ("use_client_spawn", "unknown_43")),
-    RowLayout(2, _LAYOUT_2_TEXT_FIELDS, False, ("use_client_spawn",)),
-    RowLayout(1, _LAYOUT_1_TEXT_FIELDS, False, ("use_client_spawn",)),
+    RowLayout(9, TEXT_FIELDS, True, FLAG_FIELDS, clients=(
+        ClientRange(2156, 2163), ClientRange(2189, 2203), ClientRange(3229, 3235), ClientRange(3251),
+    )),
+    RowLayout(
+        8, TEXT_FIELDS, True, (*FLAG_FIELDS[:5], "unknown_region_keys_0d", "force_skip_sequence"),
+        clients=(ClientRange(3242, 3242),),
+    ),
+    RowLayout(7, TEXT_FIELDS, True, _LAYOUT_6_FLAGS, clients=(ClientRange(3111, 3212),)),
+    RowLayout(6, TEXT_FIELDS, False, _LAYOUT_6_FLAGS, clients=(ClientRange(2703, 3103),)),
+    RowLayout(5, _LAYOUT_2_TEXT_FIELDS, False, FLAG_FIELDS[:4], clients=(ClientRange(2602, 2695),)),
+    RowLayout(4, _LAYOUT_2_TEXT_FIELDS, False, FLAG_FIELDS[:3], clients=(ClientRange(2414, 2601),)),
+    RowLayout(
+        3, _LAYOUT_2_TEXT_FIELDS, False, ("use_client_spawn", "unknown_43"), clients=(ClientRange(2393, 2407),)
+    ),
+    RowLayout(2, _LAYOUT_2_TEXT_FIELDS, False, ("use_client_spawn",), clients=(ClientRange(2276, 2384),)),
+    RowLayout(
+        1, _LAYOUT_1_TEXT_FIELDS, False, ("use_client_spawn",),
+        clients=(ClientRange(2171, 2183), ClientRange(2207, 2269)),
+    ),
 )
 
 
@@ -158,7 +172,7 @@ def parse_sequencetriggerdata_records(data: bytes) -> list[dict]:
     """
     checked_string_table_start(data, FILE_NAME)
     breaks: list[str] = []
-    for layout in LAYOUTS:
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
         try:
             return _read_rows(data, layout)
         except ValueError as error:

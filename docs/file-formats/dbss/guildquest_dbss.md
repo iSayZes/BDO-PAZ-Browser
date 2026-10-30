@@ -614,7 +614,9 @@ clients 1784 and 3474.
 ## Layout 1
 
 On client 1784 a reward entry is 10 bytes longer, and the row ends with the
-boss fields of the source sheet in place of `unknown_values`.
+boss fields of the source sheet in place of `unknown_values`. Nothing in the
+file names its layout: the parser reads Layout 2 first and falls back to
+Layout 1 when the Layout 2 rows do not end at the end of the file.
 
 ### Row (variable: 100 bytes + texts and lists)
 

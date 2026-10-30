@@ -24,6 +24,7 @@ from tests.framework import (
 
 from _common.contents_group import contents_group_key
 from _common.lookup_index import IndexKind
+from _common.quest.reward_entry import REWARD_ENTRY_LAYOUT_1, RewardEntryLayout
 from .parser import FILE_NAME, OFFSET_FILE, REWARD_ENTRY_SIZE, parse_guildquest_records
 
 
@@ -201,12 +202,13 @@ def _str16(text: str) -> bytes:
     return struct.pack("<Q", len(text)) + text.encode("utf-16-le")
 
 
-def _reward(item_key: int, item_count: int) -> bytes:
+def _reward(item_key: int, item_count: int, entry_size: int = REWARD_ENTRY_SIZE) -> bytes:
     head = struct.pack("<IqiiBiIqHi", _REWARD_ITEM, 0, 0, 0, 15, 0, item_key, item_count, 0, 0)
-    return head + bytes(REWARD_ENTRY_SIZE - len(head))
+    return head + bytes(entry_size - len(head))
 
 
-def _row(quest_no: int, rewards: list[tuple[int, int]], groups: list[int], values: list[int]) -> bytes:
+def _row_head(quest_no: int, rewards: list[tuple[int, int]], groups: list[int], entry_size: int) -> bytes:
+    """The fields both layouts share, up to and including guild_quest_type."""
     return b"".join(
         [
             struct.pack("<I", quest_no),
@@ -218,15 +220,31 @@ def _row(quest_no: int, rewards: list[tuple[int, int]], groups: list[int], value
             _str16("Icon/Quest/0_Guild_Combat.dds"),
             struct.pack("<IIqB", 120, _SILVER, 50_000, 0),
             struct.pack("<I", len(rewards)),
-            *(_reward(key, count) for key, count in rewards),
+            *(_reward(key, count, entry_size) for key, count in rewards),
             # An empty select reward list, then unknown_select_rewards_00 and _04.
             struct.pack("<IIq", 0, 0, 6_800_000),
             struct.pack(f"<I{len(groups)}I", len(groups), *groups),
             struct.pack("<B", _SUBJUGATION),
+        ]
+    )
+
+
+def _row(quest_no: int, rewards: list[tuple[int, int]], groups: list[int], values: list[int]) -> bytes:
+    """A Layout 2 row."""
+    return b"".join(
+        [
+            _row_head(quest_no, rewards, groups, REWARD_ENTRY_SIZE),
             struct.pack(f"<I{len(values)}I", len(values), *values),
             struct.pack("<II", 1 if values else 0, 0),
         ]
     )
+
+
+def _row_layout_1(
+    quest_no: int, rewards: list[tuple[int, int]], groups: list[int], boss: tuple[int, int],
+    entry: RewardEntryLayout = REWARD_ENTRY_LAYOUT_1,
+) -> bytes:
+    return _row_head(quest_no, rewards, groups, entry.size) + struct.pack("<III", *boss, 0)
 
 
 def test_parser_reads_rows_and_rejects_bytes_after_them() -> None:
@@ -246,3 +264,24 @@ def test_parser_rejects_a_row_cut_short() -> None:
     row = _row(7, [(_SILVER, 1)], [], [])
     with pytest.raises(ValueError):
         parse_guildquest_records(struct.pack("<I", 1) + row[:-1])
+
+
+def test_parser_reads_layout_1_rows_with_their_boss_fields() -> None:
+    data = struct.pack("<I", 2) + _row_layout_1(1, [(_SILVER, 1_000), (9, 3)], [11], (3, 1)) + _row_layout_1(
+        2, [], [], (0, 0)
+    )
+
+    records = parse_guildquest_records(data)
+
+    assert [r["quest_no"] for r in records] == [1, 2]
+    first = records[0]
+    assert [(rw["item_key"], rw["item_count"]) for rw in first["base_rewards"]] == [(_SILVER, 1_000), (9, 3)]
+    assert (first["contents_group_hashes"], first["boss_spawn_type"], first["boss_spawn_cost"]) == ([11], 3, 1)
+    assert "unknown_values" not in first
+
+
+def test_a_file_that_fits_no_layout_names_where_each_broke() -> None:
+    data = struct.pack("<I", 1) + _row_layout_1(1, [(_SILVER, 1)], [], (0, 0)) + b"\x00"
+
+    with pytest.raises(ValueError, match=r"fits no known layout \(Layout 2: .*; Layout 1: 1 bytes follow"):
+        parse_guildquest_records(data)

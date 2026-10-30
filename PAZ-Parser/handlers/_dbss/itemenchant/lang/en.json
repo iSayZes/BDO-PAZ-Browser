@@ -16,6 +16,8 @@
     "durability": "Durability",
     "memoryFragment": "Memory Fragment",
     "stackable": "Stackable",
+    "instantUse": "Instant Use",
+    "timeLimit": "Time Limit",
     "marketable": "Marketable",
     "familyInventory": "Family Inventory",
     "trade": "Trade",

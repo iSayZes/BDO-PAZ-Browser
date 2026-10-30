@@ -16,6 +16,8 @@
     "durability": "Прочность",
     "memoryFragment": "Обрывки воспоминаний",
     "stackable": "Складывается",
+    "instantUse": "Мгновенное применение",
+    "timeLimit": "Таймер",
     "marketable": "Продажа на аукционе",
     "familyInventory": "Инвентарь аккаунта",
     "trade": "Торговля",

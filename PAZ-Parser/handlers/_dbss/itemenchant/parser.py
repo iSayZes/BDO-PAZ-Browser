@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import struct
-from collections.abc import Iterator
+from collections.abc import Callable, Iterable, Iterator
+from typing import TypeVar
 
 from _common.binary import u8, u16, u32, u64
 from _common.icon_index import clean_stored_icon_path
@@ -11,10 +12,21 @@ from _common.prefixed_string import locate_prefixed_ascii
 from _common.ui_texture import UI_TEXTURE_ICON_ROOT
 from _dbss.skill.parser import build_skill_buff_index
 from .contents_event import CONTENTS_EVENT_CUSTOMIZED_ITEM_BOX, CONTENTS_EVENT_MARBLE_DICE
-from .layout import BlockStrings, header_shift, messages_end, read_block_strings
+from .layout_1 import Layout1Block, read_block as read_layout_1_block
+from .layout_2 import BlockStrings, header_shift, messages_end, read_block_strings
+from .layouts import LAYOUT_1, block_layout
+from .stored_values import (
+    durability_value,
+    expiration_value,
+    family_inventory_value,
+    max_level_value,
+    trade_type_value,
+)
 
 
 _FILE_NAME = "itemenchant.dbss"
+
+Value = TypeVar("Value")
 
 # Keys are packed item keys (`_common/item_key.py`). Level 0 is the base item
 # and there is exactly one per item ID; an item has one record per level up to
@@ -29,6 +41,10 @@ _EQUIP_TYPE = 0x07
 _EQUIP_SLOT = 0x0E
 # 1 when copies of the item share one inventory slot.
 _STACKABLE = 0x43
+# 1 when the item takes effect on receipt instead of going into the inventory.
+_DO_APPLY_DIRECTLY = 0x44
+# Minutes until the item expires; 0 when it does not.
+_EXPIRATION_MINUTES = 0x45
 
 # When the item binds: 0 never, 1 when obtained, 2 when equipped. The flag
 # after it binds to the family instead of the character.
@@ -43,7 +59,7 @@ _CLASS_MASK = 0x4D
 # (`servant_slots.py`).
 _SERVANT_KINDS = 0x55
 
-# The fields below follow `unknown_5d` (`layout.py`): these offsets hold when
+# The fields below follow `unknown_5d` (`layout_2.py`): these offsets hold when
 # it is empty, and move by `header_shift` on servant gear.
 
 # Character level needed to use the item (i32, 2016 `_minLevel`); 0 or 1 when
@@ -52,7 +68,6 @@ _REQUIRED_LEVEL = 0x61
 # Highest character level that can use the item (i32, 2016 `_maxLevel`); the
 # tooltip shows it when `isMaxLevelRestricted()`. 0x7FFFFFFF when there is none.
 _MAX_LEVEL = 0x65
-_NO_MAX_LEVEL = 0x7FFF_FFFF
 # What using the item does, a `CppEnums.ContentsEventType` (u16,
 # `contents_event.py`), then its two i64 parameters.
 _CONTENTS_EVENT_TYPE = 0x86
@@ -69,8 +84,7 @@ _CHARACTER_ID = 0xAA
 # repair window Lua); 0 on items it cannot repair.
 _REPAIR_ENDURANCE_COUNT = 0xAC
 
-# Stored for items without durability.
-_NO_DURABILITY = 32_767
+# 32,767 for items without durability.
 _MAX_DURABILITY = 0xC5
 
 # The Central Market category and subcategory, LOC type 44 `str_id1` and
@@ -94,9 +108,8 @@ _CLASS_ENTRY_STRUCT = struct.Struct("<BI")
 # Central Market, and 2 when it can go in the Family Inventory.
 _MARKETABLE = 0x00
 _FAMILY_INVENTORY = 0x0D
-_FAMILY_INVENTORY_ALLOWED = 2
 # Three UTF-16 strings follow at +0x12 (a pet script, a box prompt, Exchange
-# Info; `layout.messages_end`); the enhancement type sits 13 bytes after the
+# Info; `layout_2.messages_end`); the enhancement type sits 13 bytes after the
 # last of them. It is the enhancement system (1 ordinary weapons and armour,
 # 19 Sovereign) and the group key of guaranteeenchantss.dbss; 0 when the item
 # has none.
@@ -175,16 +188,16 @@ def _header_fields(data: bytes, start: int) -> dict:
     are indexed directly instead of through the bounds-checked `u8`.
     """
     late = _late_fields_at(data, start)
-    durability = u16(data, late + _MAX_DURABILITY)
-    max_level = u32(data, late + _MAX_LEVEL)
     return {
         "grade": data[start + _GRADE],
         "equip_type": data[start + _EQUIP_TYPE],
         "equip_slot": data[start + _EQUIP_SLOT],
         "stackable": bool(data[start + _STACKABLE]),
+        "do_apply_directly": bool(data[start + _DO_APPLY_DIRECTLY]),
+        "expiration_minutes": expiration_value(u32(data, start + _EXPIRATION_MINUTES)),
         "vested_type": data[start + _VESTED_TYPE],
         "family_bound": bool(data[start + _FAMILY_BOUND]),
-        "trade_type": data[start + _TRADE_TYPE] if data[start + _FOR_TRADE] else None,
+        "trade_type": trade_type_value(data[start + _FOR_TRADE], data[start + _TRADE_TYPE]),
         "class_mask": u64(data, start + _CLASS_MASK),
         "servant_kinds": u32(data, start + _SERVANT_KINDS),
         "required_level": u32(data, late + _REQUIRED_LEVEL),
@@ -192,10 +205,10 @@ def _header_fields(data: bytes, start: int) -> dict:
         **_contents_event_params(data, late),
         "dyeable": bool(data[late + _DYEABLE]),
         "character_id": u16(data, late + _CHARACTER_ID),
+        "max_level": max_level_value(u32(data, late + _MAX_LEVEL)),
         # None sorts last and exports empty.
-        "max_level": None if max_level == _NO_MAX_LEVEL else max_level,
         "repair_endurance_count": data[late + _REPAIR_ENDURANCE_COUNT] or None,
-        "max_durability": None if durability == _NO_DURABILITY else durability,
+        "max_durability": durability_value(u16(data, late + _MAX_DURABILITY)),
         "market_category": data[late + _MARKET_CATEGORY],
         "market_sub_category": data[late + _MARKET_SUB_CATEGORY],
         "skill_keys": list(_skill_keys(data, late)),
@@ -218,7 +231,7 @@ def _after_icon_fields(data: bytes, icon_end: int, end: int) -> dict:
     tail = messages_end(data, icon_end, end)
     return {
         "marketable": bool(u8(data, icon_end + _MARKETABLE)),
-        "family_inventory": u8(data, icon_end + _FAMILY_INVENTORY) == _FAMILY_INVENTORY_ALLOWED,
+        "family_inventory": family_inventory_value(u8(data, icon_end + _FAMILY_INVENTORY)),
         "enhancement_type": u32(data, tail + _ENHANCEMENT_TYPE_AFTER_MESSAGES),
         "life_equip_type": u8(data, tail + _LIFE_EQUIP_TYPE_AFTER_MESSAGES),
         "life_restrict_type": u8(data, tail + _LIFE_RESTRICT_TYPE_AFTER_MESSAGES),
@@ -288,6 +301,36 @@ def base_records(
         yield row, fields, strings
 
 
+def _layout_1_block(data: bytes, row: dict) -> Layout1Block:
+    """The Layout 1 block of an offset row, read to its last byte."""
+    start = row["data_offset"]
+    try:
+        return read_layout_1_block(data, start, start + row["data_size"])
+    except ValueError as error:
+        raise ValueError(f"{_FILE_NAME} block for key {row['key']}: {error}") from error
+
+
+def _layout_1_records(data: bytes, offset_rows: list[dict]) -> Iterator[dict]:
+    """One record per level-0 row, with the fields and order of a Layout 2 record."""
+    max_levels = max_enchant_levels(offset_rows)
+    for row in base_rows(offset_rows):
+        block = _layout_1_block(data, row)
+        yield {
+            "item_id": row["item_id"],
+            "name_kr": block.name_kr,
+            "max_enchant_level": max_levels[row["item_id"]],
+            # None sorts last and exports empty.
+            "enchant_key": block.enchant_key or None,
+            "icon_path": _icon_path(block.icon),
+            **block.header,
+            **block.after_icon,
+            # Layout 1 stores no crystal group (itemenchant_dbss.md, Layout 1 Field Matches).
+            "crystal_group": None,
+            "second_string": block.second_string,
+            "block_size": row["data_size"],
+        }
+
+
 def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
     """Parse one row per item from its level-0 block, with its highest level.
 
@@ -295,10 +338,14 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
     `specialenchantitem.bss` store their own per level), and what else differs
     per level is not decoded, so they only contribute `max_enchant_level`. What
     the optional ASCII string after the icon (e.g. `ITEM_BIC_HIT_1`) means is
-    unconfirmed.
+    unconfirmed. Raises ValueError when the file fits no layout (`layouts.py`)
+    or a block breaks the layout of the file.
     """
-    records: list[dict] = []
     offset_rows = parse_itemenchantoffset_records(offset_data)
+    if block_layout(data, list(base_rows(offset_rows))) is LAYOUT_1:
+        return list(_layout_1_records(data, offset_rows))
+
+    records: list[dict] = []
     for row, fields, strings in base_records(data, offset_rows, _FILE_NAME):
         end = row["data_offset"] + row["data_size"]
         records.append({
@@ -312,6 +359,40 @@ def parse_itemenchant_records(data: bytes, offset_data: bytes) -> list[dict]:
     return records
 
 
+def _base_values(
+    data: bytes,
+    offset_data: bytes,
+    read_layout_2: Callable[[bytes, dict], Value],
+    read_layout_1: Callable[[Layout1Block], Value] | None,
+) -> Iterator[tuple[int, Value]]:
+    """(item ID, value) of each level-0 block inside the file, read with the file's layout.
+
+    `read_layout_2` reads the value from a Layout 2 block's offset row;
+    `read_layout_1` takes it from a Layout 1 block, and is None when Layout 1
+    does not store it. Blocks that run past the file are skipped.
+    """
+    rows = [
+        row
+        for row in base_rows(parse_itemenchantoffset_records(offset_data))
+        if row["data_offset"] + row["data_size"] <= len(data)
+    ]
+    if block_layout(data, rows) is not LAYOUT_1:
+        for row in rows:
+            yield row["item_id"], read_layout_2(data, row)
+    elif read_layout_1 is not None:
+        for row in rows:
+            yield row["item_id"], read_layout_1(_layout_1_block(data, row))
+
+
+def _items_by_value(pairs: Iterable[tuple[int, int]]) -> dict[int, tuple[int, ...]]:
+    """Map each non-zero value of (item ID, value) `pairs` to its item IDs, ascending."""
+    items_by_value: dict[int, list[int]] = {}
+    for item_id, value in pairs:
+        if value:
+            items_by_value.setdefault(value, []).append(item_id)
+    return {value: tuple(sorted(items)) for value, items in items_by_value.items()}
+
+
 def build_item_icon_index(data: bytes, offset_data: bytes) -> dict[int, str]:
     """Map item ID to icon path using only the level-0 (base item) records.
 
@@ -319,14 +400,12 @@ def build_item_icon_index(data: bytes, offset_data: bytes) -> dict[int, str]:
     the work to a third. The per-level icons of the items that change icon come
     from `specialenchantitem.bss` instead (`IndexKind.ITEM_KEY_ICON`).
     """
-    index: dict[int, str] = {}
-
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        if row["data_offset"] + row["data_size"] > len(data):
-            continue
-        index[row["item_id"]] = _icon_path(_block_strings(data, row).icon)
-
-    return index
+    return dict(_base_values(
+        data,
+        offset_data,
+        lambda data, row: _icon_path(_block_strings(data, row).icon),
+        lambda block: _icon_path(block.icon),
+    ))
 
 
 def build_enchant_key_item_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
@@ -335,35 +414,35 @@ def build_enchant_key_item_index(data: bytes, offset_data: bytes) -> dict[int, t
     Only level-0 records are read: every level of an item stores the key of
     its base block. Items with key 0 have no enhancement data and are left out.
     """
-    items_by_key: dict[int, list[int]] = {}
+    return _items_by_value(_base_values(
+        data,
+        offset_data,
+        lambda data, row: _block_strings(data, row).enchant_key,
+        lambda block: block.enchant_key,
+    ))
 
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        if row["data_offset"] + row["data_size"] > len(data):
-            continue
-        enchant_key = _block_strings(data, row).enchant_key
-        if enchant_key:
-            items_by_key.setdefault(enchant_key, []).append(row["item_id"])
 
-    return {key: tuple(sorted(items)) for key, items in items_by_key.items()}
+def _layout_2_enhancement_type(data: bytes, row: dict) -> int:
+    end = row["data_offset"] + row["data_size"]
+    return _enhancement_type(data, _block_strings(data, row).icon_end, end)
 
 
 def build_enhancement_type_item_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
     """Map an enhancement type (the guaranteeenchantss.dbss group) to its base item IDs, ascending.
 
     Only level-0 records are read, like the enchant key index. Items with
-    type 0 cannot be enhanced and are left out.
+    type 0 cannot be enhanced and are left out. Layout 1 stores no type.
     """
-    items_by_type: dict[int, list[int]] = {}
+    return _items_by_value(_base_values(data, offset_data, _layout_2_enhancement_type, None))
 
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        end = row["data_offset"] + row["data_size"]
-        if end > len(data):
-            continue
-        enhancement_type = _enhancement_type(data, _block_strings(data, row).icon_end, end)
-        if enhancement_type:
-            items_by_type.setdefault(enhancement_type, []).append(row["item_id"])
 
-    return {key: tuple(sorted(items)) for key, items in items_by_type.items()}
+def _layout_2_contents_event(data: bytes, row: dict) -> tuple[int, int]:
+    late = _late_fields_at(data, row["data_offset"])
+    return u16(data, late + _CONTENTS_EVENT_TYPE), _contents_event_params(data, late)["contents_event_param1"]
+
+
+def _layout_1_contents_event(block: Layout1Block) -> tuple[int, int]:
+    return block.header["contents_event_type"], block.header["contents_event_param1"]
 
 
 def _contents_event_item_index(data: bytes, offset_data: bytes, event_type: int) -> dict[int, tuple[int, ...]]:
@@ -371,16 +450,11 @@ def _contents_event_item_index(data: bytes, offset_data: bytes, event_type: int)
 
     Only level-0 records are read.
     """
+    events = _base_values(data, offset_data, _layout_2_contents_event, _layout_1_contents_event)
     items_by_param: dict[int, list[int]] = {}
-
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        if start + row["data_size"] > len(data):
-            continue
-        late = _late_fields_at(data, start)
-        if u16(data, late + _CONTENTS_EVENT_TYPE) == event_type:
-            param1 = _contents_event_params(data, late)["contents_event_param1"]
-            items_by_param.setdefault(param1, []).append(row["item_id"])
+    for item_id, (item_event_type, param1) in events:
+        if item_event_type == event_type:
+            items_by_param.setdefault(param1, []).append(item_id)
 
     return {param1: tuple(sorted(items)) for param1, items in items_by_param.items()}
 
@@ -408,22 +482,20 @@ def build_item_name_kr_index(data: bytes, offset_data: bytes) -> dict[int, str]:
 
     The fallback for items LOC type 0 does not name (`_common/item_key.py`).
     """
-    index: dict[int, str] = {}
-
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        if row["data_offset"] + row["data_size"] > len(data):
-            continue
-        name = _block_strings(data, row).name_kr.strip()
-        if name:
-            index[row["item_id"]] = name
-
-    return index
+    names = _base_values(
+        data,
+        offset_data,
+        lambda data, row: _block_strings(data, row).name_kr.strip(),
+        lambda block: block.name_kr.strip(),
+    )
+    return {item_id: name for item_id, name in names if name}
 
 
 def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:
     """Map base item ID to its grade, from the level-0 records.
 
     Every level of an item shares its name, so the base grade colours them all.
+    Both layouts store the grade at the same offset.
     """
     index: dict[int, int] = {}
 
@@ -436,28 +508,27 @@ def build_item_grade_index(data: bytes, offset_data: bytes) -> dict[int, int]:
     return index
 
 
+def _layout_2_character_id(data: bytes, row: dict) -> int:
+    return u16(data, _late_fields_at(data, row["data_offset"]) + _CHARACTER_ID)
+
+
 def build_character_item_index(data: bytes, offset_data: bytes) -> dict[int, int]:
     """Map character ID to the one base item that places or summons it.
 
     Only level-0 records are read. A character named by more than one item is
     left out, because it then has no single icon to borrow.
     """
-    items_by_character: dict[int, list[int]] = {}
-
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        if start + row["data_size"] > len(data):
-            continue
-
-        character_id = u16(data, _late_fields_at(data, start) + _CHARACTER_ID)
-        if character_id:
-            items_by_character.setdefault(character_id, []).append(row["item_id"])
-
+    characters = _base_values(data, offset_data, _layout_2_character_id, lambda block: block.header["character_id"])
     return {
         character_id: items[0]
-        for character_id, items in items_by_character.items()
+        for character_id, items in _items_by_value(characters).items()
         if len(items) == 1
     }
+
+
+def _layout_2_mesh_keys(data: bytes, row: dict) -> set[int]:
+    start = row["data_offset"]
+    return _mesh_keys(data, _late_fields_at(data, start), start + row["data_size"])
 
 
 def build_mesh_key_item_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:
@@ -465,18 +536,18 @@ def build_mesh_key_item_index(data: bytes, offset_data: bytes) -> dict[int, tupl
 
     The keys are those of itemeffectchange.dbss. Only level-0 records are
     read: every level of an item stores the same class entries (client 3482).
+    Layout 1 has no class entries.
     """
     items_by_mesh: dict[int, list[int]] = {}
-
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        end = start + row["data_size"]
-        if end > len(data):
-            continue
-        for mesh_key in _mesh_keys(data, _late_fields_at(data, start), end):
-            items_by_mesh.setdefault(mesh_key, []).append(row["item_id"])
+    for item_id, mesh_keys in _base_values(data, offset_data, _layout_2_mesh_keys, None):
+        for mesh_key in mesh_keys:
+            items_by_mesh.setdefault(mesh_key, []).append(item_id)
 
     return {mesh_key: tuple(sorted(items)) for mesh_key, items in items_by_mesh.items()}
+
+
+def _layout_2_skill_keys(data: bytes, row: dict) -> tuple[int, ...]:
+    return _skill_keys(data, _late_fields_at(data, row["data_offset"]))
 
 
 def build_buff_item_index(
@@ -491,15 +562,11 @@ def build_buff_item_index(
     no `skill.dbss` record (a few items store `0x1`) link nothing.
     """
     skill_buffs = build_skill_buff_index(skill_data, skill_offset_data)
+    item_skills = _base_values(data, offset_data, _layout_2_skill_keys, lambda block: block.header["skill_keys"])
     items_by_buff: dict[int, set[int]] = {}
-
-    for row in base_rows(parse_itemenchantoffset_records(offset_data)):
-        start = row["data_offset"]
-        if start + row["data_size"] > len(data):
-            continue
-
-        for skill_key in _skill_keys(data, _late_fields_at(data, start)):
+    for item_id, skill_keys in item_skills:
+        for skill_key in skill_keys:
             for buff_id in skill_buffs.get(skill_key, ()):
-                items_by_buff.setdefault(buff_id, set()).add(row["item_id"])
+                items_by_buff.setdefault(buff_id, set()).add(item_id)
 
     return {buff_id: tuple(sorted(items)) for buff_id, items in items_by_buff.items()}

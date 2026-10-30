@@ -1,7 +1,7 @@
-"""The variable-length parts of an itemenchant.dbss block, read front to back.
+"""The variable-length parts of an itemenchant.dbss Layout 2 block, read front to back.
 
-Two counted parts move everything after them (itemenchant_dbss.md, Block
-Structure):
+Two counted parts move everything after them (itemenchant_dbss.md, Layout 2
+Block):
 
 - `unknown_5d`, a u32 count and that many bytes inside the header. Every header
   field after it moves by the count, so `header_shift` returns it; the parser

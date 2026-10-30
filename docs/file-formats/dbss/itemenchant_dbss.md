@@ -30,14 +30,14 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | ------ | ------------------------ | --------------------- | --------------------- |
 | 2      | `itemenchant.dbss`       | 60,390,423 B (29.7%)  | 142,651,579 B (70.3%) |
 | 2      | `itemenchantoffset.dbss` | 2,032,160 B (100.0%)  | 0 B (0.0%)            |
-| 1      | `itemenchant.dbss`       | 100,729,969 B (58.6%) | 71,061,244 B (41.4%)  |
+| 1      | `itemenchant.dbss`       | 101,135,465 B (58.9%) | 70,655,748 B (41.1%)  |
 | 1      | `itemenchantoffset.dbss` | 1,216,508 B (100.0%)  | 0 B (0.0%)            |
 
 Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 3483   | Layout 2             | `37e1249bfa22`  |
+| 3483   | Layout 2             | `6879c16ee802`  |
 | 3482   | Layout 2             | `37e1249bfa22`  |
 | 3474   | Layout 2             | `37e1249bfa22`  |
 | 3473   | Layout 2             | `37e1249bfa22`  |
@@ -273,12 +273,12 @@ Every client the doc check read, and the layout its files fit.
 | 1804   | No documented layout | `37e1249bfa22`  |
 | 1794   | No documented layout | `37e1249bfa22`  |
 | 1790   | No documented layout | `37e1249bfa22`  |
-| 1784   | Layout 1             | `37e1249bfa22`  |
-| 1774   | Layout 1             | `37e1249bfa22`  |
-| 1771   | Layout 1             | `37e1249bfa22`  |
-| 1762   | Layout 1             | `37e1249bfa22`  |
-| 1759   | Layout 1             | `37e1249bfa22`  |
-| 1754   | Layout 1             | `37e1249bfa22`  |
+| 1784   | Layout 1             | `6879c16ee802`  |
+| 1774   | Layout 1             | `6879c16ee802`  |
+| 1771   | Layout 1             | `6879c16ee802`  |
+| 1762   | Layout 1             | `6879c16ee802`  |
+| 1759   | Layout 1             | `6879c16ee802`  |
+| 1754   | Layout 1             | `6879c16ee802`  |
 | 1749   | No documented layout | `37e1249bfa22`  |
 | 1743   | No documented layout | `37e1249bfa22`  |
 | 1737   | No documented layout | `37e1249bfa22`  |
@@ -821,16 +821,24 @@ lists sit in the header, and seven strings follow it: the Korean name, a
 condition script, the icon, the Korean description and three more texts.
 Fields from Layout 2's Icon Tail and Message Tail sit in the header or in a
 25-byte Tail at the end; the block does not end with `key_dup`. The file
-holds 127,893 blocks on client 1784, and every one walks to its last byte by
+holds 101,374 blocks on client 1784, and every one walks to its last byte by
 this layout. `itemenchantoffset.dbss` has the Layout 2 shape.
 
 As in Layout 2, the hex in a name after a counted list is the offset in a
 block whose lists are empty. On client 1784 the lists hold entries in few
-blocks: `unknown_old_ee` in 516, `unknown_old_13d` in 12 (items 4 to 8 and
-44168 to 45199), `unknown_old_14d` in 880, `unknown_old_440` in 31,841,
-`unknown_old_444` in 232, `unknown_tail_count` in 8,604 and
-`unknown_end_count` in 727. `unknown_old_43a` holds 1 to 6 entries in every
+blocks: `unknown_old_ee` in 244, `unknown_old_13d` in 12 (items 4 to 8 and
+44168 to 45199), `unknown_old_14d` in 879, `unknown_old_440` in 31,229,
+`unknown_old_444` in 232, `unknown_tail_count` in 7,879 and
+`unknown_end_count` in 591. `unknown_old_43a` holds 1 to 6 entries in every
 block.
+
+The browser reads both layouts. It tries them in client order on the first
+eight base blocks of the file and keeps the first layout that reads all of
+them: Layout 1 must walk each block to its last byte, Layout 2 to Message Tail
+`+0x2B`. One block is not enough, since 2,050 of the 42,559 base blocks of
+client 1784 also pass the Layout 2 walk. Layout 1 rows show no crystal group,
+enhancement type or item mesh keys, which this layout does not store (Layout 1
+Field Matches).
 
 ### Block (variable: 1,226 bytes + lists and strings, size from `itemenchantoffset.dbss`)
 
@@ -962,13 +970,14 @@ block.
 | `unknown_old_440_entries+0x08`          | u16[unknown_old_444]             | unknown_old_444_entries             | |
 | `unknown_old_444_entries+0x00`          | u8                               | unknown_old_44c                     | `0` or `1` |
 | `unknown_old_444_entries+0x01`          | u32[2]                           | unknown_old_44d                     | `9, 0` in most blocks |
-| `unknown_old_444_entries+0x09`          | i64                              | unknown_old_455                     | |
+| `unknown_old_444_entries+0x09`          | u32                              | enchant_key                         | As in Layout 2: with the block's level, the key of `enchantstaticstatus.dbss`; `0` when the item has no enhancement data. Every level stores the key of its base block; see Layout 1 Field Matches |
+| `unknown_old_444_entries+0x0D`          | u32                              | unknown_old_459                     | `0` in every block but item 720904's (`142`) |
 | `unknown_old_444_entries+0x11`          | i64                              | unknown_old_45d                     | `0x7FFFFFFFFFFFFFFF` in most blocks |
 | `unknown_old_444_entries+0x19`          | u16                              | unknown_old_465                     | |
 | `unknown_old_444_entries+0x1B`          | str16                            | name_kr                             | Korean item name |
-| `name_kr+0x00`                          | str16                            | unknown_condition                   | A condition script such as `!checkcompetition()` or `getlevel()>55;`; empty in 101,930 blocks; the place of the 2016 `_useConditionString` |
+| `name_kr+0x00`                          | str16                            | unknown_condition                   | A condition script such as `!checkcompetition()` or `getlevel()>55;`; empty in 79,995 blocks; the place of the 2016 `_useConditionString` |
 | `unknown_condition+0x00`                | str8                             | icon                                | Icon path, as in Layout 2 |
-| `icon+0x00`                             | str16                            | description_kr                      | Korean item description; empty in 5,294 blocks |
+| `icon+0x00`                             | str16                            | description_kr                      | Korean item description; empty in 4,272 blocks |
 | `description_kr+0x00`                   | str16                            | unknown_after_description_kr        | Holds the text of Layout 2's first `messages_kr` string, such as the pet script |
 | `unknown_after_description_kr+0x00`     | str8                             | unknown_second_string               | The ASCII string of Block Strings, such as `ITEM_BIC_HIT_1` |
 | `unknown_second_string+0x00`            | str16                            | unknown_after_unknown_second_string | Holds the text of Layout 2's second `messages_kr` string, the box prompt |
@@ -1039,9 +1048,19 @@ it into the row field its `Item_Table` loader fills from `RepairPrice`.
 values `1` to `4`); the server dump reads it as a u16 into the row field
 filled from `SpecialEventType`.
 
+`enchant_key` holds the client 3483 key on 41,264 of the 41,408 shared base
+items. On client 1784, 16,288 base blocks set it, every value is a key of that
+client's `enchantstaticstatus.dbss` (3,170 of its 3,934 keys), and all 58,815
+higher-level blocks repeat the key of their base block.
+
 `enhancement_group`, `enhancement_type`, `cron_enchant_control`,
-`is_notice_world_market`, `life_equip_type`, `life_restrict_type` and
-`unknown_limit` match no Layout 1 offset.
+`is_notice_world_market`, `life_equip_type`, `life_restrict_type`,
+`unknown_limit` and `crystal_group` match no Layout 1 offset. For
+`crystal_group`, no offset holds the client 3483 group of more than 70 of the
+219 shared crystals. Client 1784 has no `item_type` 20 (Life Skill gear)
+items, so the browser gives every Layout 1 row the values Layout 2 stores on
+items that are not Life Skill gear (`life_equip_type` `37`,
+`life_restrict_type` `15`).
 
 The private server's `DataSheets.bexcel` on client 1784 holds `Item_Table`,
 the sheet its `itemenchant.dbss` was built from. Its 50,116 base items match
@@ -1455,6 +1474,7 @@ Blackstar Longsword (715001) names mesh `336000` for the Warrior, the
 Items columns of `itemeffectchange.dbss` and
 [`itemmeshstaticstatus.bss`](../bss/itemmeshstaticstatus_bss.md), the mesh table:
 all 22,859 distinct `item_mesh_key` values of client 3483 are keys there.
+Layout 1 has no class entries, so the index is empty on clients 1754 to 1784.
 
 ## Block Strings
 

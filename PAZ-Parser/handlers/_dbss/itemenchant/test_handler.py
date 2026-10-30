@@ -172,6 +172,9 @@ CASE = HandlerCase(
                 "market_category",
                 "market_sub_category",
                 "stackable",
+                "do_apply_directly",
+                "expiration_minutes",
+                "time_limit",
                 "required_level",
                 "max_level",
                 "repair_endurance_count",
@@ -474,7 +477,7 @@ def test_every_block_opens_and_closes_with_its_packed_key(itemenchant_result: Ha
 
 def test_every_block_walks_to_its_name_and_icon(itemenchant_result: HandlerResult) -> None:
     """The counted lists lead to the Korean name and an icon path in every block, every level."""
-    from _dbss.itemenchant.layout import read_block_strings
+    from _dbss.itemenchant.layout_2 import read_block_strings
     from _dbss.itemenchant.parser import parse_itemenchantoffset_records
 
     source = itemenchant_result.source
@@ -793,6 +796,15 @@ def test_item_grade_tagged_wraps_the_name_in_its_grade_colour() -> None:
     # An unknown grade or a missing name stays plain.
     assert item_grade_tagged("Kzarka Longsword", len(ITEM_GRADE_COLORS)) == "Kzarka Longsword"
     assert item_grade_tagged("", 3) == ""
+
+
+def test_time_limit_shows_only_on_items_that_expire(itemenchant_result: HandlerResult) -> None:
+    from _dbss.itemenchant.handler import _time_limit_text
+
+    # The 3-day coupon and the 180-day Arsha of itemenchant_dbss.md.
+    assert (_time_limit_text(4_320), _time_limit_text(259_200), _time_limit_text(None)) == ("72h", "4320h", "")
+    bad = [r["item_id"] for r in itemenchant_result.records if bool(r["time_limit"]) != (r["expiration_minutes"] is not None)]
+    assert not bad, f"items whose time limit text and minutes disagree: {bad[:5]}"
 
 
 def test_item_name_kr_index_matches_the_korean_name_column(itemenchant_result: HandlerResult) -> None:

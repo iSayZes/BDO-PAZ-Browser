@@ -2,7 +2,7 @@
 
 The file has no offset index: a u32 count, then the blocks back to back in
 the order of itemenchantoffset.dbss. Each block ends where
-`_dbss.itemenchant.layout.front_end` finds the end of its Message Tail part,
+`_dbss.itemenchant.layout_2.front_end` finds the end of its Message Tail part,
 so the walk reads every block's lists and strings
 (itemenchantbackendtest_dbss.md).
 """
@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from _common.binary import u32
 from _common.pabr_offset import PabrOffsetRow
-from _dbss.itemenchant.layout import front_end
+from _dbss.itemenchant.layout_2 import front_end
 from _dbss.itemenchant.parser import base_records, offset_record
 
 FILE_NAME = "itemenchantbackendtest.dbss"

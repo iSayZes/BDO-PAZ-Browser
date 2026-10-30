@@ -2130,9 +2130,12 @@ for layout in client_order(LAYOUTS, lambda layout: layout.clients):
 ```
 
 Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
-`territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss` and `quest.dbss`.
-`tests/test_client_versions.py` fails when two layouts of one of them claim the
-same client. When the same bytes mean different things on different clients,
+`territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss` and
+`itemenchant.dbss`. `itemenchant.dbss` tries each layout on its first eight base
+blocks instead of the whole 194 MB file, then reads every block with the one
+that fits (`_dbss/itemenchant/layouts.py`); its lookup index builders pick the
+layout the same way. `tests/test_client_versions.py` fails when two layouts of
+one of them claim the same client. When the same bytes mean different things on different clients,
 `covering(choices, clients)` returns the choice whose ranges cover the client, or
 None: `totalquestcounttype.bss` names its values by `CppEnums.QuestType` on
 clients 1109 to 2492 (`older` in `_bss/totalquestcount/tables.py`) and by the

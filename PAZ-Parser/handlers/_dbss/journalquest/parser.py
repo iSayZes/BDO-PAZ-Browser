@@ -9,19 +9,27 @@ Each book record is self-describing:
 
 Strings are a u64 code-unit count followed by the text with no terminator: the
 first four are UTF-16LE, the two model names ASCII. Page quest IDs pack
-`(quest_id << 16) | quest_chain_id`. Full layout in
+`(quest_id << 16) | quest_chain_id`.
+
+Layout 1 (clients 1286 to 2138) books have no is_record_book, book name or
+model names; after the unlock text they hold a u32 and an ASCII icon path. Nothing in
+the file names its layout; the parser keeps the first layout, newest first,
+whose every book ends at its indexed size (`LAYOUTS`). Both layouts in
 docs/file-formats/dbss/journalquest_dbss.md.
 """
 
 from __future__ import annotations
 
 import struct
+from collections.abc import Callable
+from dataclasses import dataclass
 
 from _common.binary import u32, u32_hi, u32_lo
 from _common.record_reader import RecordReader
 
 
 _HEADER = struct.Struct("<IIB")
+_KEYS = struct.Struct("<II")
 _U32 = struct.Struct("<I")
 
 
@@ -65,15 +73,60 @@ def _page_ref(packed: int) -> dict:
     }
 
 
-def _parse_book(block: bytes, row: int, offset_record: dict) -> dict:
-    reader = RecordReader(block, 0, len(block), f"journalquest record {row}")
+def _book_fields_layout_2(reader: RecordReader) -> dict:
     group_id, entry_no, is_record_book = reader.unpack(_HEADER)
+    return {
+        "group_id": group_id,
+        "entry_no": entry_no,
+        "is_record_book": is_record_book,
+        "journal_title": reader.text(wide=True),
+        "subtitle": reader.text(wide=True),
+        "page_vol_title": reader.text(wide=True),
+        "unlock_condition": reader.text(wide=True),
+        "combine_model": reader.text(wide=False),
+        "static_model": reader.text(wide=False),
+    }
+
+
+def _book_fields_layout_1(reader: RecordReader) -> dict:
+    """Layout 1 stores no book name; its third string is the journal's unlock text."""
+    group_id, entry_no = reader.unpack(_KEYS)
     journal_title = reader.text(wide=True)
     subtitle = reader.text(wide=True)
-    page_vol_title = reader.text(wide=True)
     unlock_condition = reader.text(wide=True)
-    combine_model = reader.text(wide=False)
-    static_model = reader.text(wide=False)
+    (unknown_unlock_requirement_kr_00,) = reader.unpack(_U32)
+    return {
+        "group_id": group_id,
+        "entry_no": entry_no,
+        "journal_title": journal_title,
+        "subtitle": subtitle,
+        "unlock_condition": unlock_condition,
+        "unknown_unlock_requirement_kr_00": unknown_unlock_requirement_kr_00,
+        "unknown_icon_path": reader.text(wide=False),
+    }
+
+
+@dataclass(frozen=True)
+class BookLayout:
+    """One documented Book Record shape; `number` is its Layout N in the doc.
+
+    `read_fields` reads the fields before page_count.
+    """
+
+    number: int
+    read_fields: Callable[[RecordReader], dict]
+
+
+# Newest first.
+LAYOUTS = (
+    BookLayout(2, _book_fields_layout_2),
+    BookLayout(1, _book_fields_layout_1),
+)
+
+
+def _parse_book(block: bytes, row: int, offset_record: dict, layout: BookLayout) -> dict:
+    reader = RecordReader(block, 0, len(block), f"journalquest record {row}")
+    fields = layout.read_fields(reader)
     (page_count,) = reader.unpack(_U32)
     packed_ids = reader.unpack(struct.Struct(f"<{page_count}I"))
     (terminal,) = reader.unpack(_U32)
@@ -85,35 +138,39 @@ def _parse_book(block: bytes, row: int, offset_record: dict) -> dict:
         "row": row,
         "offset": offset_record["byte_offset"],
         "size": offset_record["byte_size"],
-        "group_id": group_id,
-        "entry_no": entry_no,
-        "is_record_book": is_record_book,
+        **fields,
         # Every page of a book belongs to one quest chain.
         "journal_cat_id": pages[0]["journal_cat_id"] if pages else 0,
-        "journal_title": journal_title,
-        "subtitle": subtitle,
-        "page_vol_title": page_vol_title,
-        "unlock_condition": unlock_condition,
         "page_count": page_count,
         "page_refs": pages,
         "page_refs_text": ", ".join(f"{p['journal_cat_id']}:{p['page_no']}" for p in pages),
-        "combine_model": combine_model,
-        "static_model": static_model,
         "terminal": terminal,
     }
 
 
-def parse_journalquest_records(data: bytes, offset_data: bytes) -> list[dict]:
-    """One book per offset row, in offset-file order.
-
-    Raises ValueError on the first record whose fields do not end exactly at
-    its indexed size: the layout has changed and later fields would be misread.
-    """
+def _read_books(data: bytes, offset_rows: list[dict], layout: BookLayout) -> list[dict]:
+    """Every book read with `layout`; raises ValueError on the first that does not end at its indexed size."""
     records: list[dict] = []
-    for row, offset_record in enumerate(parse_journalquest_offset_records(offset_data)):
+    for row, offset_record in enumerate(offset_rows):
         byte_offset = offset_record["byte_offset"]
         block = data[byte_offset:byte_offset + offset_record["byte_size"]]
         if len(block) != offset_record["byte_size"]:
             raise ValueError(f"journalquest record {row} exceeds file size")
-        records.append(_parse_book(block, row, offset_record))
+        records.append(_parse_book(block, row, offset_record, layout))
     return records
+
+
+def parse_journalquest_records(data: bytes, offset_data: bytes) -> list[dict]:
+    """One book per offset row, in offset-file order, read with the first layout that fits.
+
+    Raises ValueError, naming where each layout broke, when in every layout
+    some record's fields do not end exactly at its indexed size.
+    """
+    offset_rows = parse_journalquest_offset_records(offset_data)
+    breaks: list[str] = []
+    for layout in LAYOUTS:
+        try:
+            return _read_books(data, offset_rows, layout)
+        except ValueError as error:
+            breaks.append(f"Layout {layout.number}: {error}")
+    raise ValueError(f"journalquest.dbss fits no known layout ({'; '.join(breaks)})")

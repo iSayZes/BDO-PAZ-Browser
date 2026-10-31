@@ -10,6 +10,12 @@ bare number.
 
 from __future__ import annotations
 
+# vehicle_type of a character that is not a vehicle: the sheet's -1 written as
+# the enum's member count. The enum had two members fewer on clients 1784
+# and 2553, which store 63; on the live client 63 is GuildDragon.
+NO_VEHICLE_TYPE = 65
+NO_VEHICLE_TYPE_OLD = 63
+
 VEHICLE_TYPE_NAMES: dict[int, str] = {
     0: "Horse",
     1: "Cannon",

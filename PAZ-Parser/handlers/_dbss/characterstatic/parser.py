@@ -32,7 +32,7 @@ from _common.knowledge_script import knowledge_id_of
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
 from _common.client_versions import client_order
 from _common.prefixed_string import read_prefixed_at
-from .layouts import LAYOUT_3, LAYOUTS, RecordLayout
+from .layouts import LAYOUTS, RecordLayout
 
 _TAG = 0x08
 _TAG_VALUE = 0x15
@@ -44,9 +44,6 @@ _SOURCE_ITEM = 0x09
 _SAMPLE_RECORDS = 8
 # class_type on every row that is not a player character.
 NO_CLASS_TYPE = 101
-# vehicle_type on every row of the live client that is not a vehicle. The
-# records of this file store None there instead, whatever their layout.
-NO_VEHICLE_TYPE = LAYOUT_3.no_vehicle_type
 # name_kr of the records whose Korean name is only in label_kr.
 KOREAN_NAME_PLACEHOLDER = "UNKNOWN"
 # gc::CharacterKind member names of the 2016 client, in value order. The file

@@ -550,7 +550,7 @@ Counts on client 3474. A field named as in `characterstatic.dbss` holds that fil
 | `+0x34` | u32      | voice_bank_ref            | String-table index of `voice_bank` (`NPC_VCE_47343`); the empty string on 14,408 rows |
 | `+0x38` | u8       | unknown_38                | `1` on 87 rows: 66 of `npc_kind` `3`, 19 of `2`, 2 of `1`; see Open Questions |
 | `+0x39` | u8       | is_carrier                | `1` on 368 rows |
-| `+0x3A` | u8       | vehicle_type              | `CppEnums.VehicleType`; `65` when the character is not a vehicle |
+| `+0x3A` | u8       | vehicle_type              | `CppEnums.VehicleType`; `65` when the character is not a vehicle (`63` in Layout 1) |
 | `+0x3B` | i16      | team_no                   | `-1` on 567 rows, `1` to `7` on 306 |
 | `+0x3D` | u8       | unknown_3d                | `1` on 59 rows; `characterstatic.dbss` `unknown_a1` |
 | `+0x3E` | u8       | is_hidden_name            | `1` on 10,373 rows |
@@ -580,7 +580,7 @@ Counts on client 3474. A field named as in `characterstatic.dbss` holds that fil
 | `+0x6E` | u8       | vehicle_sub_type          | Non-zero on 100 rows (`1` to `4`) |
 | `+0x6F` | u8       | is_guild_vehicle          | `1` on 85 rows |
 | `+0x70` | u8       | unknown_70                | `10` on 24,112 rows; `characterstatic.dbss` `unknown_c2` |
-| `+0x71` | u8       | carriage_type             | Non-zero on 30 rows (`1` to `5`); a u32 in `characterstatic.dbss` |
+| `+0x71` | u8       | carriage_type             | Non-zero on 30 rows (`1` to `5`) |
 | `+0x72` | bytes[4] | unknown_72                | Always `0` |
 | `+0x76` | u8       | unknown_76                | `1` on 2,418 rows; `characterstatic.dbss` `unknown_contents_group_hashes_17` |
 
@@ -597,7 +597,9 @@ The entry layout is the one [npcsimply.bss](npcsimply_bss.md) uses: a u8 `is_wid
 
 ## Layout 1
 
-The client 1784 file (15,704 rows of 121 bytes). It has 4 more bytes after `model_path_hash` and a zero byte after `absolute_interaction`, and lacks `unknown_63` and `unknown_76`. Only Row differs from Layout 2. The parser reads only Layout 2.
+The client 1784 file (15,704 rows of 121 bytes). It has 4 more bytes after `model_path_hash` and a zero byte after `absolute_interaction`, and lacks `unknown_63` and `unknown_76`. Only Row differs from Layout 2. `vehicle_type` is `63` for "not a vehicle", as in `characterstatic.dbss` Layout 1 (`63` is GuildDragon on the live client), and still `63` on client 2553.
+
+The file holds no layout number; the parser reads it with the layout whose rows end where the string table starts, trying the one whose Versions clients cover the loaded client first. Layout 1 records hold None for `unknown_76`. On client 1784 all 15,704 rows equal `characterstatic.dbss` on the eleven fields both files hold, from `npc_kind` to `condition_script`.
 
 ### Row (121 bytes)
 

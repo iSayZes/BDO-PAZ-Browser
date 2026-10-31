@@ -9,7 +9,7 @@ from _common.character import character_loc_name, character_loc_title
 from _common.html import Column, e, error, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
-from _dbss.characterstatic.parser import NO_CLASS_TYPE, NO_VEHICLE_TYPE, npc_kind_name, npc_kind_text
+from _dbss.characterstatic.parser import NO_CLASS_TYPE, npc_kind_name, npc_kind_text
 
 from .parser import parse_charactersimply_records
 
@@ -33,9 +33,8 @@ def _record(raw: dict) -> dict:
         "npc_kind_name": npc_kind_name(raw["npc_kind"]),
         # 0 means "in no group".
         "character_group": raw["character_group"] or None,
-        # 65 means "not a vehicle".
-        "vehicle_type": None if vehicle_type == NO_VEHICLE_TYPE else vehicle_type,
-        "vehicle_type_name": VEHICLE_TYPE_NAMES.get(vehicle_type, ""),
+        # The parser stores None for "not a vehicle" (65 on the live client).
+        "vehicle_type_name": "" if vehicle_type is None else VEHICLE_TYPE_NAMES.get(vehicle_type, ""),
         # 101 means "not a player character".
         "class_type": None if raw["class_type"] == NO_CLASS_TYPE else raw["class_type"],
     }

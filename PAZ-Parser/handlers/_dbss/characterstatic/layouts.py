@@ -14,6 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from _common.client_versions import ClientRange
+from _common.vehicle_type import NO_VEHICLE_TYPE, NO_VEHICLE_TYPE_OLD
 
 
 @dataclass(frozen=True)
@@ -40,8 +41,7 @@ class RecordLayout:
     contents_group_count: int
     # Bytes from the end of contents_group_hashes to the end of the payload.
     tail_size: int
-    # vehicle_type on every row that is not a vehicle: the sheet's -1 written
-    # as the CppEnums.VehicleType member count of that client.
+    # vehicle_type on every row that is not a vehicle (`_common/vehicle_type.py`).
     no_vehicle_type: int
     # Test clients this layout reads (the doc's Versions table, written by
     # check_docs); they only order the tries (`client_versions.py`).
@@ -55,7 +55,7 @@ LAYOUT_3 = RecordLayout(
     tendency_on_dead=0x07, ocean_tendency=0x0B, max_hp=0x21, vehicle_type=0xA6, tribe_type=0xB3,
     level=0xC3, body_size=0xDB,
     holdable_item_count=0x0E, contents_group_count=0x18, tail_size=0x18,
-    no_vehicle_type=65,
+    no_vehicle_type=NO_VEHICLE_TYPE,
     clients=(ClientRange(3464),),
 )
 # Layout 3 without unknown_c7 after level and without the last tail byte.
@@ -66,7 +66,7 @@ LAYOUT_2 = RecordLayout(
     tendency_on_dead=0x07, ocean_tendency=0x0B, max_hp=0x21, vehicle_type=0xA6, tribe_type=0xB3,
     level=0xC3, body_size=0xD3,
     holdable_item_count=0x0E, contents_group_count=0x18, tail_size=0x17,
-    no_vehicle_type=65,
+    no_vehicle_type=NO_VEHICLE_TYPE,
     clients=(ClientRange(3335, 3458),),
 )
 LAYOUT_1 = RecordLayout(
@@ -76,7 +76,7 @@ LAYOUT_1 = RecordLayout(
     tendency_on_dead=0x08, ocean_tendency=0x0C, max_hp=0x22, vehicle_type=0xB9, tribe_type=0xC6,
     level=0xD5, body_size=0xE5,
     holdable_item_count=0x1E, contents_group_count=0x28, tail_size=0x13,
-    no_vehicle_type=63,
+    no_vehicle_type=NO_VEHICLE_TYPE_OLD,
     clients=(ClientRange(1685, 2011),),
 )
 # Newest first.

@@ -16,6 +16,7 @@
     "npcKind": "NPC Kind",
     "grade": "Grade",
     "level": "Level",
+    "maxHp": "Max HP",
     "tribe": "Species",
     "characterGroup": "Character Group",
     "karma": "Karma",

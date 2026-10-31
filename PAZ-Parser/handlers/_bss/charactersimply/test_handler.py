@@ -7,7 +7,7 @@ import pytest
 
 from _bss.charactersimply.parser import parse_charactersimply_records
 from _common.pabr_offset import parse_pabr_offset_rows
-from _dbss.characterstatic.parser import parse_characterstatic_records
+from _dbss.characterstatic.parser import NO_VEHICLE_TYPE, parse_characterstatic_records
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
@@ -23,7 +23,7 @@ from tests.framework import (
 
 # Fields both files store, by the same name, with the same meaning.
 _SHARED_FIELDS = (
-    "npc_kind", "grade", "level", "character_group", "class_type", "body_size",
+    "npc_kind", "grade", "level", "max_hp", "character_group", "class_type", "body_size",
     "vehicle_type", "model_path", "name_kr", "title_kr", "action_script", "condition_script",
 )
 
@@ -93,8 +93,9 @@ def test_charactersimply_bss(spec: Any, charactersimply_result: HandlerResult) -
 def test_rows_repeat_the_characterstatic_fields() -> None:
     """Both files hold the same characters, and every shared field the same value."""
     simple = {r["character_id"]: r for r in parse_charactersimply_records(load_binary_fixture("charactersimply.bss"))}
+    # characterstatic.dbss records store None for "not a vehicle"; this file keeps the stored 65.
     static = {
-        r["character_id"]: r
+        r["character_id"]: {**r, "vehicle_type": NO_VEHICLE_TYPE if r["vehicle_type"] is None else r["vehicle_type"]}
         for r in parse_characterstatic_records(
             load_binary_fixture("characterstatic.dbss"),
             parse_pabr_offset_rows(load_binary_fixture("characterstaticoffset.dbss")),

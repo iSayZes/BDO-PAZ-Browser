@@ -6,7 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_loc_name, character_loc_title
-from _common.contents_group import contents_group_key, contents_groups_text
+from _common.contents_group import assigned_contents_groups_text
 from _common.html import Column, e, error, icon_cell, sort_keys, table
 from _common.icon_index import IconKind, icon_path
 from _common.item_key import item_name_tagged
@@ -23,7 +23,6 @@ from _common.offset_table import (
 )
 from .parser import (
     NO_CLASS_TYPE,
-    NO_VEHICLE_TYPE,
     korean_name,
     korean_title,
     npc_kind_name,
@@ -34,19 +33,10 @@ from _common.vehicle_type import VEHICLE_TYPE_NAMES, vehicle_type_text
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
-# The contents group key of a character in no group.
-_NO_CONTENTS_GROUP = 0
 
 
 def _optional(value: int | None) -> str:
     return _EMPTY if value is None else e(value)
-
-
-def _contents_groups_text(group_hashes: tuple[int, ...]) -> str:
-    """`6, 1448`: the keys behind the hashes, a hash in hex where no key fits; '' for key 0 alone (no group)."""
-    if [contents_group_key(group_hash) for group_hash in group_hashes] == [_NO_CONTENTS_GROUP]:
-        return ""
-    return contents_groups_text(group_hashes)
 
 
 def character_static_offset_handler() -> OffsetTableHandler:
@@ -77,6 +67,7 @@ class CharacterStaticHandler(PreviewHandler):
             Column(cols["npcKind"], sort_key="npc_kind"),
             Column(cols["grade"], "num", sort_key="grade"),
             Column(cols["level"], "num", sort_key="level"),
+            Column(cols["maxHp"], "num", sort_key="max_hp"),
             # Sorts by the number; the cell adds the species label where there is one.
             Column(cols["tribe"], sort_key="tribe_type"),
             Column(cols["characterGroup"], "num", sort_key="character_group"),
@@ -148,6 +139,7 @@ class CharacterStaticHandler(PreviewHandler):
             row.append(e(npc_kind_text(r["npc_kind"])))
             row.append(e(r["grade"]))
             row.append(e(r["level"]))
+            row.append(e(r["max_hp"]))
             row.append(e(tribe_text(r["tribe_type"])))
             row.append(_optional(r["character_group"]))
             row.append(e(r["tendency_on_dead"]))
@@ -189,20 +181,21 @@ def _record(raw: dict) -> dict:
         "npc_kind_name": npc_kind_name(raw["npc_kind"]),
         "grade": raw["grade"],
         "level": raw["level"],
+        "max_hp": raw["max_hp"],
         "tribe_type": raw["tribe_type"],
         # 0 means "in no group".
         "character_group": raw["character_group"] or None,
         "tendency_on_dead": raw["tendency_on_dead"],
         "ocean_tendency": raw["ocean_tendency"],
-        # 65 means "not a vehicle".
-        "vehicle_type": None if vehicle_type == NO_VEHICLE_TYPE else vehicle_type,
-        "vehicle_type_name": VEHICLE_TYPE_NAMES.get(vehicle_type, ""),
+        # The parser stores None for "not a vehicle" (65 on the live client).
+        "vehicle_type": vehicle_type,
+        "vehicle_type_name": "" if vehicle_type is None else VEHICLE_TYPE_NAMES.get(vehicle_type, ""),
         # 101 means "not a player character".
         "class_type": None if raw["class_type"] == NO_CLASS_TYPE else raw["class_type"],
         "body_size": raw["body_size"],
         "ai_script": raw["ai_script"],
         "model_path": raw["model_path"],
-        "contents_groups": _contents_groups_text(raw["contents_group_hashes"]),
+        "contents_groups": assigned_contents_groups_text(raw["contents_group_hashes"]),
         "source_item_id": source_item_id,
         # The LOC name in the user's language, else the Korean name itemenchant.dbss stores.
         **pa_fields("source_item_name", item_name_tagged(source_item_id) if source_item_id else ""),

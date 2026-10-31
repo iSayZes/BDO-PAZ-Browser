@@ -16,6 +16,7 @@
     "npcKind": "Tipo de PNJ",
     "grade": "Grado",
     "level": "Nivel",
+    "maxHp": "Salud máx.",
     "tribe": "Especie",
     "characterGroup": "Grupo de personaje",
     "karma": "Alineamiento",

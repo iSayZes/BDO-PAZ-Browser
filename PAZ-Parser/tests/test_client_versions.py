@@ -11,6 +11,7 @@ from _common.data_deps import CLIENT, client_ranges_dep, client_ranges_digest, r
 from _bss.privateskill.parser import LAYOUTS as PRIVATESKILL_LAYOUTS
 from _bss.sequencetriggerdata.parser import LAYOUTS as SEQUENCETRIGGERDATA_LAYOUTS
 from _bss.territoryinfo.parser import LAYOUTS as TERRITORYINFO_LAYOUTS
+from _dbss.characterstatic.layouts import LAYOUTS as CHARACTERSTATIC_LAYOUTS
 from _dbss.guildquest.parser import LAYOUTS as GUILDQUEST_LAYOUTS, parse_guildquest_records
 from _dbss.itemenchant.layouts import LAYOUTS as ITEMENCHANT_LAYOUTS
 from _dbss.journalquest.parser import LAYOUTS as JOURNALQUEST_LAYOUTS
@@ -26,6 +27,7 @@ _HANDLER_LAYOUTS = {
     "privateskill.bss": PRIVATESKILL_LAYOUTS,
     "sequencetriggerdata.bss": SEQUENCETRIGGERDATA_LAYOUTS,
     "territoryinfo.bss": TERRITORYINFO_LAYOUTS,
+    "characterstatic.dbss": CHARACTERSTATIC_LAYOUTS,
     "guildquest.dbss": GUILDQUEST_LAYOUTS,
     "itemenchant.dbss": ITEMENCHANT_LAYOUTS,
     "journalquest.dbss": JOURNALQUEST_LAYOUTS,

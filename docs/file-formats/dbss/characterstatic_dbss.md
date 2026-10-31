@@ -23,7 +23,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | File                         | Known               | Unknown             |
 | ------ | ---------------------------- | ------------------- | ------------------- |
-| 3      | `characterstatic.dbss`       | 9,653,786 B (71.6%) | 3,837,865 B (28.4%) |
+| 3      | `characterstatic.dbss`       | 9,996,016 B (74.1%) | 3,495,635 B (25.9%) |
 | 3      | `characterstaticoffset.dbss` | 244,470 B (100.0%)  | 0 B (0.0%)          |
 | 2      | `characterstatic.dbss`       | 9,705,696 B (72.8%) | 3,633,548 B (27.2%) |
 | 2      | `characterstaticoffset.dbss` | 245,530 B (100.0%)  | 0 B (0.0%)          |
@@ -34,7 +34,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 3483   | Layout 3             | `b25fd9f1471e`  |
+| 3483   | Layout 3             | `1457284a7365`  |
 | 3482   | Layout 3             | `b25fd9f1471e`  |
 | 3474   | Layout 3             | `b25fd9f1471e`  |
 | 3473   | Layout 3             | `b25fd9f1471e`  |
@@ -568,15 +568,15 @@ Offsets are relative to `data_offset`. Every string is a u64 count and then its 
 | `name_kr+0x00`                | str16                           | label_kr                          | Internal Korean label |
 | `label_kr+0x00`               | str16                           | title_kr                          | Korean title, empty on most rows |
 | `title_kr+0x00`               | str8                            | voice_bank                        | Voice bank name (`NPC_VCE_47343`); non-empty on 10,145 rows |
-| `voice_bank+0x00`             | u32                             | carriage_type                     | Non-zero on 30 rows (`1` to `5`) |
-| `voice_bank+0x04`             | u8                              | unknown_voice_bank_04             | Always `0` |
+| `voice_bank+0x00` | u8 | carriage_type | Non-zero on 30 rows (`1` to `5`) |
+| `voice_bank+0x01` | u32 | unknown_voice_bank_01 | Always `0`; the client reads `carriage_type` as a u8 and then this u32 |
 | `voice_bank+0x05`             | i16                             | team_no                           | `-1` on 567 rows, `1` to `7` on 306, else `0` |
 | `voice_bank+0x07`             | u8                              | unknown_voice_bank_07             | `6` on 21,559 rows, `2` on 2,460 (all `npc_kind` `3`), `0` on 492, `1` on 41, `3` on 1 |
 | `voice_bank+0x08`             | i16                             | time_attack_type                  | `-1` on 24,536 rows, `1` to `3` on 17 |
 | `voice_bank+0x0A`             | u32                             | time_attack_limit_minute          | Non-zero on the 17 rows with a `time_attack_type` (`30`, `7`, `1`) |
 | `voice_bank+0x0E`             | u32                             | holdable_item_count               | Non-zero on 78 rows |
 | `voice_bank+0x12`             | u32[holdable_item_count]        | holdable_item_keys                | Item keys, e.g. `9056`: `56003, 56007, 56008, 56147` |
-| `holdable_item_keys+0x00`     | bytes[8]                        | unknown_holdable_item_keys_00     | Always `0` |
+| `holdable_item_keys+0x00` | u64 | unknown_holdable_item_keys_00 | Always `0` |
 | `holdable_item_keys+0x08`     | u32                             | unknown_holdable_item_keys_08     | `1000000` on 15,819 rows, `0` on 8,734 |
 | `holdable_item_keys+0x0C`     | u64                             | attribute_type_mask               | Bit `n` set for each `AttributeType` value `n`; see [Attribute Types](#attribute-types) |
 | `holdable_item_keys+0x14`     | u16                             | steal_drop_id                     | Non-zero on 526 rows |
@@ -584,8 +584,7 @@ Offsets are relative to `data_offset`. Every string is a u64 count and then its 
 | `holdable_item_keys+0x18`     | u32                             | contents_group_count              | `1` on 22,279 rows, up to `6` |
 | `holdable_item_keys+0x1C`     | u32[contents_group_count]       | contents_group_hashes             | One hash per contents group key; see [Contents Groups](#contents-groups) |
 | `contents_group_hashes+0x00`  | u8                              | class_type                        | Gameplay class enum; `101` on every non-player row, `0`-`46` on the 106 `playercharacterstatic.bss` members |
-| `contents_group_hashes+0x01`  | u8                              | repair_resources                  | `3` on 65 rows (siege structures such as `12821` "Field HQ" and the node forts), else `0` |
-| `contents_group_hashes+0x02`  | bytes[7]                        | unknown_contents_group_hashes_02  | Always `0` |
+| `contents_group_hashes+0x01` | u64 | repair_resources | `3` on 65 rows (siege structures such as `12821` "Field HQ" and the node forts), else `0`; `50` on 2 rows of client 1784 |
 | `contents_group_hashes+0x09`  | u32                             | source_item_id                    | Item that places or summons the character; `0` on most rows. See [Source Item](#source-item) |
 | `contents_group_hashes+0x0D`  | bytes[4]                        | unknown_contents_group_hashes_0d  | Always `0` |
 | `contents_group_hashes+0x11`  | u8                              | unknown_contents_group_hashes_11  | `1` on 759 rows: 551 of `npc_kind` `3`, 195 of `9`, 13 of `7` (`35129` Horse, `62414` Wooden Fence); else `0` |
@@ -609,7 +608,7 @@ The fixed block between `condition_script` and `ai_script`. Earlier versions of 
 | `+0x07`  | i32       | tendency_on_dead                | Karma change when the character dies; see [Karma](#karma) |
 | `+0x0B`  | i32       | ocean_tendency                  | Naval fame value on sea monsters and ships; see [Ocean Tendency](#ocean-tendency) |
 | `+0x0F`  | f32[3]    | box_size                        | `100.0, 100.0, 100.0` on most rows |
-| `+0x1B`  | u32       | unknown_1b                      | `1` on character `530` only, else `0` |
+| `+0x1B` | u32 | fusion_group_key | `1` on character `530` only, else `0`; the client's `isFusionCore()` is true where it is non-zero |
 | `+0x1F`  | u16       | collect_drop_id                 | Non-zero on 886 rows |
 | `+0x21`  | f32       | max_hp                          | `1.0` where the sheet cell is `0`; `10000.0` on Ehren (`47791`) |
 | `+0x25`  | u32       | max_mp                          | `1` where the sheet cell is `0` |
@@ -635,28 +634,27 @@ The fixed block between `condition_script` and `ai_script`. Earlier versions of 
 | `+0x9E`  | u8        | is_catchedable                  | `1` on 813 rows |
 | `+0x9F`  | u8        | unknown_9f                      | `1` on 24,344 rows, `0` on 209 |
 | `+0xA0`  | u8        | unknown_a0                      | `1` on 21,916 rows; `0` only on `npc_kind` `3` (2,637 rows) |
-| `+0xA1`  | u8        | unknown_a1                      | `1` on 59 rows, all `npc_kind` `3` |
+| `+0xA1` | u8 | is_canon | `1` on 59 rows, all `npc_kind` `3`; the client's `isCanon()` |
 | `+0xA2`  | u8        | unknown_a2                      | `1` on 77 rows |
 | `+0xA3`  | u8        | is_guild_vehicle                | `1` on 85 rows |
 | `+0xA4`  | u8        | is_using_vehicle_in_siege       | `1` on 92 rows |
 | `+0xA5`  | u8        | unknown_a5                      | `1` on 8 rows, all `npc_kind` `3` |
 | `+0xA6`  | u8        | vehicle_type                    | `CppEnums.VehicleType`; `65` when the character is not a vehicle. See [Vehicle Type](#vehicle-type) |
 | `+0xA7`  | u8        | vehicle_sub_type                | Non-zero on 100 rows (`1` to `4`) |
-| `+0xA8`  | u8        | unknown_a8                      | Non-zero on 153 rows (`1` to `12`) |
-| `+0xA9`  | bytes[7]  | unknown_a9                      | Always `0` |
+| `+0xA8` | u64 | unknown_a8 | Non-zero on 153 rows (`1` to `12`) |
 | `+0xB0`  | u8        | vehicle_seat_count              | `1` on 3,034 rows, up to `15` |
 | `+0xB1`  | u8        | vehicle_driver_ridable          | `1` on 3,303 rows |
-| `+0xB2`  | u8        | unknown_b2                      | `2` on 24,419 rows, `0` on 132, `1` on 2 |
+| `+0xB2` | u8 | unknown_b2 | `2` on 24,419 rows, `0` on 132, `1` on 2; the client's `isSummonedCharacterBySiegeObject()` is true exactly where it is `1` (client 1784) |
 | `+0xB3`  | u8        | tribe_type                      | See [Tribe Type](#tribe-type) |
 | `+0xB4`  | u8        | inventory_max                   | Non-zero on 507 rows |
 | `+0xB5`  | u8        | unknown_b5                      | `1` on 5,725 rows, 5,549 of them `npc_kind` `2` |
-| `+0xB6`  | u8        | unknown_b6                      | `1` on 2,313 rows, 2,312 of them `npc_kind` `2` |
+| `+0xB6` | u8 | is_important_npc | `1` on 2,313 rows, 2,312 of them `npc_kind` `2`; the client's `isImportantNpc()` |
 | `+0xB7`  | u8        | unknown_b7                      | `1` on 133 rows |
 | `+0xB8`  | u8        | unknown_b8                      | `1` on 1 row |
 | `+0xB9`  | u8        | unknown_b9                      | Always `0` |
 | `+0xBA`  | u8        | is_pushable                     | `1` on 1,705 rows |
 | `+0xBB`  | u8        | is_carrier                      | `1` on 368 rows |
-| `+0xBC`  | u8        | unknown_bc                      | `1` on 334 rows; see [Field Names](#field-names) |
+| `+0xBC` | u8 | is_taming | `1` on 334 rows; the client's `isTaming()`. See [Field Names](#field-names) |
 | `+0xBD`  | u8        | unknown_bd                      | `1` on 401 rows, all `npc_kind` `3` |
 | `+0xBE`  | u8        | unknown_be                      | `1` on exactly the 61 rows of `npc_kind` `0` |
 | `+0xBF`  | u8        | unknown_bf                      | `1` on 353 rows; see [Field Names](#field-names) |
@@ -681,8 +679,7 @@ The fixed block between `condition_script` and `ai_script`. Earlier versions of 
 | `+0x102` | i16       | spawn_end_hour                  | `-1` on 24,478 rows |
 | `+0x104` | u32       | voice_audio_count               | `1` on 113 rows |
 | `+0x108` | u8        | is_attacked_pvp_mode_only       | `1` on 1,290 rows |
-| `+0x109` | u8        | is_opti_monster                 | `1` on 54 rows, `2` on 13 |
-| `+0x10A` | bytes[3]  | unknown_10a                     | Always `0` |
+| `+0x109` | u32 | is_opti_monster | `1` on 54 rows, `2` on 13; one u32 in the client's reader, so a small enum and not a flag |
 | `+0x10D` | u8        | is_check_dps                    | `1` on 36 rows |
 | `+0x10E` | u16       | character_properties            | Non-zero on 1,703 rows |
 | `+0x110` | u16       | unknown_110                     | `1` to `3` on 42 rows |
@@ -728,11 +725,16 @@ Provides lookup rows for `characterstatic.dbss`. Rows sorted by `data_offset` co
 Before client 3464 the 8 bytes of `unknown_c7` and the last byte,
 `unknown_contents_group_hashes_17`, did not exist. Character Fields was 279
 bytes, so `ai_script` started at `condition_script+0x117` and the model path
-sat most often at `condition_script+291` (decimal) instead of `+299`. That
-the 8 bytes sit right after `level` comes from the client 1784 file, where
-`is_live_collect` follows `level` directly; the client before 3464 is not on hand
-to check it. Only Payload and Character Fields differ from Layout 3. The
-parser reads only Layout 3.
+sat most often at `condition_script+291` (decimal) instead of `+299`. The 8
+bytes sit right after `level`: in the client 1784 file `is_live_collect`
+follows `level` directly, and on client 3458 `body_size` read at `+0xD3` equals
+the client 3483 value on 24,324 of the 24,376 characters both hold. Only
+Payload and Character Fields differ from Layout 3.
+
+The file holds no layout number. The parser reads it with the first layout
+whose first eight records repeat their own ID and end at their index `size`,
+trying the layout whose Versions clients cover the loaded client first
+(`_dbss/characterstatic/layouts.py`).
 
 ### Payload (variable: 421 bytes, size from `characterstaticoffset.dbss`)
 
@@ -755,15 +757,15 @@ parser reads only Layout 3.
 | `name_kr+0x00`                | str16                     | label_kr                          |       |
 | `label_kr+0x00`               | str16                     | title_kr                          |       |
 | `title_kr+0x00`               | str8                      | voice_bank                        |       |
-| `voice_bank+0x00`             | u32                       | carriage_type                     |       |
-| `voice_bank+0x04`             | u8                        | unknown_voice_bank_04             |       |
+| `voice_bank+0x00` | u8 | carriage_type |  |
+| `voice_bank+0x01` | u32 | unknown_voice_bank_01 |  |
 | `voice_bank+0x05`             | i16                       | team_no                           |       |
 | `voice_bank+0x07`             | u8                        | unknown_voice_bank_07             |       |
 | `voice_bank+0x08`             | i16                       | time_attack_type                  |       |
 | `voice_bank+0x0A`             | u32                       | time_attack_limit_minute          |       |
 | `voice_bank+0x0E`             | u32                       | holdable_item_count               |       |
 | `voice_bank+0x12`             | u32[holdable_item_count]  | holdable_item_keys                |       |
-| `holdable_item_keys+0x00`     | bytes[8]                  | unknown_holdable_item_keys_00     |       |
+| `holdable_item_keys+0x00` | u64 | unknown_holdable_item_keys_00 |  |
 | `holdable_item_keys+0x08`     | u32                       | unknown_holdable_item_keys_08     |       |
 | `holdable_item_keys+0x0C`     | u64                       | attribute_type_mask               |       |
 | `holdable_item_keys+0x14`     | u16                       | steal_drop_id                     |       |
@@ -771,8 +773,7 @@ parser reads only Layout 3.
 | `holdable_item_keys+0x18`     | u32                       | contents_group_count              |       |
 | `holdable_item_keys+0x1C`     | u32[contents_group_count] | contents_group_hashes             |       |
 | `contents_group_hashes+0x00`  | u8                        | class_type                        |       |
-| `contents_group_hashes+0x01`  | u8                        | repair_resources                  |       |
-| `contents_group_hashes+0x02`  | bytes[7]                  | unknown_contents_group_hashes_02  |       |
+| `contents_group_hashes+0x01` | u64 | repair_resources |  |
 | `contents_group_hashes+0x09`  | u32                       | source_item_id                    |       |
 | `contents_group_hashes+0x0D`  | bytes[4]                  | unknown_contents_group_hashes_0d  |       |
 | `contents_group_hashes+0x11`  | u8                        | unknown_contents_group_hashes_11  |       |
@@ -791,7 +792,7 @@ parser reads only Layout 3.
 | `+0x07`  | i32       | tendency_on_dead                |       |
 | `+0x0B`  | i32       | ocean_tendency                  |       |
 | `+0x0F`  | f32[3]    | box_size                        |       |
-| `+0x1B`  | u32       | unknown_1b                      |       |
+| `+0x1B` | u32 | fusion_group_key |  |
 | `+0x1F`  | u16       | collect_drop_id                 |       |
 | `+0x21`  | f32       | max_hp                          |       |
 | `+0x25`  | u32       | max_mp                          |       |
@@ -817,28 +818,27 @@ parser reads only Layout 3.
 | `+0x9E`  | u8        | is_catchedable                  |       |
 | `+0x9F`  | u8        | unknown_9f                      |       |
 | `+0xA0`  | u8        | unknown_a0                      |       |
-| `+0xA1`  | u8        | unknown_a1                      |       |
+| `+0xA1` | u8 | is_canon |  |
 | `+0xA2`  | u8        | unknown_a2                      |       |
 | `+0xA3`  | u8        | is_guild_vehicle                |       |
 | `+0xA4`  | u8        | is_using_vehicle_in_siege       |       |
 | `+0xA5`  | u8        | unknown_a5                      |       |
 | `+0xA6`  | u8        | vehicle_type                    |       |
 | `+0xA7`  | u8        | vehicle_sub_type                |       |
-| `+0xA8`  | u8        | unknown_a8                      |       |
-| `+0xA9`  | bytes[7]  | unknown_a9                      |       |
+| `+0xA8` | u64 | unknown_a8 |  |
 | `+0xB0`  | u8        | vehicle_seat_count              |       |
 | `+0xB1`  | u8        | vehicle_driver_ridable          |       |
 | `+0xB2`  | u8        | unknown_b2                      |       |
 | `+0xB3`  | u8        | tribe_type                      |       |
 | `+0xB4`  | u8        | inventory_max                   |       |
 | `+0xB5`  | u8        | unknown_b5                      |       |
-| `+0xB6`  | u8        | unknown_b6                      |       |
+| `+0xB6` | u8 | is_important_npc |  |
 | `+0xB7`  | u8        | unknown_b7                      |       |
 | `+0xB8`  | u8        | unknown_b8                      |       |
 | `+0xB9`  | u8        | unknown_b9                      |       |
 | `+0xBA`  | u8        | is_pushable                     |       |
 | `+0xBB`  | u8        | is_carrier                      |       |
-| `+0xBC`  | u8        | unknown_bc                      |       |
+| `+0xBC` | u8 | is_taming |  |
 | `+0xBD`  | u8        | unknown_bd                      |       |
 | `+0xBE`  | u8        | unknown_be                      |       |
 | `+0xBF`  | u8        | unknown_bf                      |       |
@@ -862,8 +862,7 @@ parser reads only Layout 3.
 | `+0xFA`  | i16       | spawn_end_hour                  |       |
 | `+0xFC`  | u32       | voice_audio_count               |       |
 | `+0x100` | u8        | is_attacked_pvp_mode_only       |       |
-| `+0x101` | u8        | is_opti_monster                 |       |
-| `+0x102` | bytes[3]  | unknown_10a                     |       |
+| `+0x101` | u32 | is_opti_monster |  |
 | `+0x105` | u8        | is_check_dps                    |       |
 | `+0x106` | u16       | character_properties            |       |
 | `+0x108` | u16       | unknown_110                     |       |
@@ -886,6 +885,13 @@ Only Payload and Character Fields differ from Layout 2. Values on client 1784
 match the private server's `Character_Table` on every row; see [Field
 Names](#field-names).
 
+`vehicle_type` `63` means "not a vehicle" here; on client 3474 `63` is
+GuildDragon and `65` is "not a vehicle" (see [Vehicle Type](#vehicle-type)), so
+the parser takes the value from the layout and stores None for both. The
+client 1784 `CppEnums.VehicleType` (`global_define_cpp_enum.luac`) gives every
+value the file stores the name the live enum gives it; the one renamed value,
+`54` (GuildTeamBattleNPC, now Perica), is on no record.
+
 ### Payload (variable: 468 bytes, size from `characterstaticoffset.dbss`)
 
 | Offset                        | Type                      | Field                             | Notes |
@@ -907,28 +913,27 @@ Names](#field-names).
 | `name_kr+0x00`                | str16                     | label_kr                          | |
 | `label_kr+0x00`               | str16                     | title_kr                          | |
 | `title_kr+0x00`               | str8                      | voice_bank                        | |
-| `voice_bank+0x00`             | u32                       | carriage_type                     | |
-| `voice_bank+0x04`             | u8                        | unknown_voice_bank_04             | Always `0` |
+| `voice_bank+0x00` | u8 | carriage_type |  |
+| `voice_bank+0x01` | u32 | unknown_voice_bank_01 | Always `0` |
 | `voice_bank+0x05`             | i16                       | team_no                           | |
 | `voice_bank+0x07`             | u8                        | unknown_voice_bank_07             | |
-| `voice_bank+0x08`             | bytes[16]                 | unknown_old_voice_bank_08         | Always `0` |
+| `voice_bank+0x08` | bytes[16] | unknown_old_voice_bank_08 | Two str8 in the client's reader, both empty (`i64` count `0`) on every row; the offsets below hold only while they are empty |
 | `voice_bank+0x18`             | i16                       | time_attack_type                  | |
 | `voice_bank+0x1A`             | u32                       | time_attack_limit_minute          | |
 | `voice_bank+0x1E`             | u32                       | holdable_item_count               | |
 | `voice_bank+0x22`             | u32[holdable_item_count]  | holdable_item_keys                | |
-| `holdable_item_keys+0x00`     | bytes[4]                  | unknown_old_holdable_item_keys_00 | Always `0` |
+| `holdable_item_keys+0x00` | u32 | unknown_old_holdable_item_keys_00 | Count of a second u32 list in the client's reader; `0` on every row, so the list is empty |
 | `holdable_item_keys+0x04`     | f32                       | unknown_old_holdable_item_keys_04 | Always `1000.0` |
-| `holdable_item_keys+0x08`     | bytes[8]                  | unknown_holdable_item_keys_00     | Always `0` |
+| `holdable_item_keys+0x08` | u64 | unknown_holdable_item_keys_00 | Always `0` |
 | `holdable_item_keys+0x10`     | u32                       | unknown_holdable_item_keys_08     | Always `1000000` |
-| `holdable_item_keys+0x14`     | bytes[8]                  | unknown_old_holdable_item_keys_14 | Always `0` |
+| `holdable_item_keys+0x14` | u64 | unknown_old_holdable_item_keys_14 | Always `0` |
 | `holdable_item_keys+0x1C`     | u16                       | unknown_old_holdable_item_keys_1c | Always `1` |
 | `holdable_item_keys+0x1E`     | u64                       | attribute_type_mask               | |
 | `holdable_item_keys+0x26`     | u16                       | steal_drop_id                     | |
 | `holdable_item_keys+0x28`     | u32                       | contents_group_count              | |
 | `holdable_item_keys+0x2C`     | u32[contents_group_count] | contents_group_hashes             | |
 | `contents_group_hashes+0x00`  | u8                        | class_type                        | |
-| `contents_group_hashes+0x01`  | u8                        | repair_resources                  | |
-| `contents_group_hashes+0x02`  | bytes[7]                  | unknown_contents_group_hashes_02  | |
+| `contents_group_hashes+0x01` | u64 | repair_resources | `3` on 23 rows, `50` on 2, else `0` |
 | `contents_group_hashes+0x09`  | u32                       | source_item_id                    | |
 | `contents_group_hashes+0x0D`  | bytes[4]                  | unknown_contents_group_hashes_0d  | |
 | `contents_group_hashes+0x11`  | u8                        | unknown_contents_group_hashes_11  | |
@@ -947,15 +952,14 @@ Names](#field-names).
 | `+0x08`  | i32       | tendency_on_dead                | |
 | `+0x0C`  | i32       | ocean_tendency                  | |
 | `+0x10`  | f32[3]    | box_size                        | |
-| `+0x1C`  | u32       | unknown_1b                      | |
+| `+0x1C` | u32 | fusion_group_key |  |
 | `+0x20`  | u16       | collect_drop_id                 | |
 | `+0x22`  | f32       | max_hp                          | |
 | `+0x26`  | u32       | max_mp                          | |
 | `+0x2A`  | i16       | stun_gauge                      | Non-zero on 4 rows; `StunGauge` |
-| `+0x2C`  | u32       | sub_resource_point              | |
-| `+0x30`  | bytes[16] | unknown_2d                      | |
+| `+0x2C` | u32[5] | sub_resource_point | One 20-byte value in the client's reader; the sheet's `SubResourcePoint` is element 0, elements 1 to 4 are `0` on every row |
 | `+0x40`  | f32       | unknown_3d                      | |
-| `+0x44`  | bytes[8]  | unknown_41                      | |
+| `+0x44` | u32[2] | unknown_41 |  |
 | `+0x4C`  | u32       | regen_sub_resource_point        | |
 | `+0x50`  | u32       | active_regen_sub_resource_point | |
 | `+0x54`  | u32       | unknown_51                      | Always `0` |
@@ -967,37 +971,35 @@ Names](#field-names).
 | `+0x70`  | f32       | unknown_6d                      | |
 | `+0x74`  | u32       | suspension                      | |
 | `+0x78`  | u32[3]    | unknown_75                      | Always `0` |
-| `+0x84`  | bytes[12] | unknown_old_84                  | Always `0` |
+| `+0x84` | u32[3] | unknown_old_84 | Always `0` |
 | `+0x90`  | u32[3]    | max_varied_speed                | |
 | `+0x9C`  | f32       | unknown_8d                      | |
-| `+0xA0`  | bytes[8]  | unknown_91                      | Always `0` |
+| `+0xA0` | u32[2] | unknown_91 | Always `0` |
 | `+0xA8`  | u8        | is_fixed                        | |
 | `+0xA9`  | u8        | is_catchedable                  | |
 | `+0xAA`  | u8        | unknown_9f                      | |
 | `+0xAB`  | u8        | unknown_a0                      | |
-| `+0xAC`  | u8        | unknown_a1                      | |
+| `+0xAC` | u8 | is_canon |  |
 | `+0xAD`  | u8        | unknown_a2                      | |
-| `+0xAE`  | u8        | unknown_old_ae                  | `0` or `1`; no counterpart on client 3474 |
-| `+0xAF`  | bytes[7]  | unknown_old_af                  | Always `0` |
+| `+0xAE` | u64 | unknown_old_ae | `16` on one row, else `0`; no counterpart on client 3474 |
 | `+0xB6`  | u8        | is_guild_vehicle                | |
 | `+0xB7`  | u8        | is_using_vehicle_in_siege       | |
 | `+0xB8`  | u8        | unknown_a5                      | |
 | `+0xB9`  | u8        | vehicle_type                    | `63` when the character is not a vehicle |
 | `+0xBA`  | u8        | vehicle_sub_type                | |
-| `+0xBB`  | u8        | unknown_a8                      | Always `0` |
-| `+0xBC`  | bytes[7]  | unknown_a9                      | Always `0` |
+| `+0xBB` | u64 | unknown_a8 | Always `0` |
 | `+0xC3`  | u8        | vehicle_seat_count              | |
 | `+0xC4`  | u8        | vehicle_driver_ridable          | |
-| `+0xC5`  | u8        | unknown_b2                      | |
+| `+0xC5` | u8 | unknown_b2 | `2` on 15,584 rows, `0` on 119, `1` on 1; the client's `isSummonedCharacterBySiegeObject()` is true exactly where it is `1` |
 | `+0xC6`  | u8        | tribe_type                      | `CppEnums.TribeType` numbering |
 | `+0xC7`  | u8        | inventory_max                   | |
 | `+0xC8`  | u8        | unknown_b5                      | |
-| `+0xC9`  | u8        | unknown_b6                      | |
+| `+0xC9` | u8 | is_important_npc |  |
 | `+0xCA`  | u8        | unknown_b7                      | |
 | `+0xCB`  | u8        | unknown_b8                      | Always `0` |
 | `+0xCC`  | u8        | is_pushable                     | |
 | `+0xCD`  | u8        | is_carrier                      | |
-| `+0xCE`  | u8        | unknown_bc                      | |
+| `+0xCE` | u8 | is_taming |  |
 | `+0xCF`  | u8        | unknown_bd                      | |
 | `+0xD0`  | u8        | unknown_be                      | |
 | `+0xD1`  | u8        | unknown_bf                      | |
@@ -1021,8 +1023,7 @@ Names](#field-names).
 | `+0x10C` | i16       | spawn_end_hour                  | |
 | `+0x10E` | u32       | voice_audio_count               | |
 | `+0x112` | u8        | is_attacked_pvp_mode_only       | |
-| `+0x113` | u8        | is_opti_monster                 | |
-| `+0x114` | bytes[3]  | unknown_10a                     | |
+| `+0x113` | u32 | is_opti_monster | `1` on 26 rows, `2` on 16, else `0` |
 | `+0x117` | u8        | is_check_dps                    | |
 | `+0x118` | u32       | character_properties            | |
 | `+0x11C` | u8        | unknown_old_11c                 | Always `0` |
@@ -1143,16 +1144,49 @@ fields were named from the `Pc_Table` sheet. `regen_sub_resource_point` and
 client's `gc::CharacterStatStaticStatus` lists `_regenSubResourcePoint` before
 `_activeRegenSubResourcePoint`, which splits them.
 
-`unknown_bc` holds `isTaming` on all but 36 of the 16,396 client 1784 rows,
-and `unknown_bf` holds `isSiegeVehicle` on all but 57; with that many
-exceptions in a file compiled from the sheet, the byte likely holds a value
-derived from more than one column, and both stay unnamed. `unknown_1b` holds
-`FusionGroupKey` on its one non-zero row (`530`, value `1` in both), which is
-too little to name it here; [`charactersimply.bss`](../bss/charactersimply_bss.md)
-names the same field `fusion_group_key`. `is_live_collect` was matched through
+`unknown_bf` holds `isSiegeVehicle` on all but 57 of the 16,396 client 1784
+rows; with that many exceptions in a file compiled from the sheet, the byte
+likely holds a value derived from more than one column, and it stays unnamed.
+`is_taming` also differs from the sheet's `isTaming` on 36 rows, but the
+client's own getter returns this byte (see below). `fusion_group_key` holds
+`FusionGroupKey` on its one non-zero row (`530`, value `1` in both), the
+field [`charactersimply.bss`](../bss/charactersimply_bss.md) names
+`fusion_group_key`. `is_live_collect` was matched through
 `charactersimply.bss`, which holds the same value for every character: it
 agrees with `IsLiveCollect` on 16,058 of 16,058 client 3474 rows and on all
 15,704 rows of the client 1784 `charactersimply.bss`.
+
+### Client Getters And Field Widths
+
+The client's Lua reads a character's static record through
+`getCharacterStaticStatusWarpper(key):get()`. On client 1784 these getters
+return a Character Fields byte on all 15,704 characters, which names it:
+
+| Getter | Field | True on (client 1784) |
+| ------ | ----- | --------------------- |
+| `isCanon()` | `is_canon` | 45 rows |
+| `isImportantNpc()` | `is_important_npc` | 1,477 rows |
+| `isTaming()` | `is_taming` | 265 rows |
+| `isFusionCore()` | `fusion_group_key`, non-zero | 1 row |
+
+`isSummonedCharacterBySiegeObject()` is true exactly where `unknown_b2` is
+`1`, one character; the byte is `2` on 15,584 rows and `0` on 119, so it holds
+more than that flag and stays unnamed. `isSiegeBastille()`,
+`isSiegeFrameTower()` and `isWoodenFence()` test `vehicle_type` `37`, `39`
+and `41`. `isIntimacyNpc()` matches no single byte; `unknown_b5` comes closest,
+equal on 13,480 of 15,704.
+
+The Layout 1 field widths follow the client 1784 record reader, which reads
+one value per field in file order. Where it reads one value across bytes the
+doc had split, the doc follows it: `carriage_type` is a u8 followed by a u32
+that is `0` on every row, `repair_resources` is a u64, `is_opti_monster` is a
+u32 holding `0`, `1` or `2`, and `unknown_a8` and two zero runs are u64. These
+fields have the same bytes in Layouts 2 and 3 and hold the same values on
+client 3483, so all three layouts read them this way. The reader also splits
+the stat block (`sub_resource_point` is the first of five u32, `unknown_41`
+and `unknown_91` are two u32 each); the Layout 2 and 3 tables keep their byte
+runs there, the same as the
+[experience.bss Stat Body](../bss/experience_bss.md#stat-body-200-bytes).
 
 Sheet columns with no match in the file, such as `DropID`, `ExpectedPrice`,
 `AttackRange`, `ReSpawnType`, `IsEventSpawn` and the combat stat
@@ -1449,13 +1483,13 @@ Every member has a `characterstatic.dbss` record with `class_type` other than `1
   Bashim, `107` Protty Cave, `185` the Everfrost animals of Rumbling Marni's
   Stone (Square)). None is a [`monstergroup.dbss`](monstergroup_dbss.md) key
   (`1` to `36`).
-- Earlier names: `unknown_00` is the eight flags at `+0x00`, `tag` is `unknown_08`, `unknown_p` is `is_developing_contents`, `unknown_p3` is `character_group`, `unknown_p15` and `unknown_p167` are Character Fields `+0x0F` to `+0x11E` and the strings, `unknown_t23` is `repair_resources`, `unknown_t7` is `unknown_contents_group_hashes_11`, `unknown_tail_f32` is `reset_distance` and `unknown_t1` is `unknown_contents_group_hashes_17`.
+- Earlier names: `unknown_00` is the eight flags at `+0x00`, `tag` is `unknown_08`, `unknown_p` is `is_developing_contents`, `unknown_p3` is `character_group`, `unknown_p15` and `unknown_p167` are Character Fields `+0x0F` to `+0x11E` and the strings, `unknown_t23` is `repair_resources`, `unknown_t7` is `unknown_contents_group_hashes_11`, `unknown_tail_f32` is `reset_distance` and `unknown_t1` is `unknown_contents_group_hashes_17`. Later, `fusion_group_key` was `unknown_1b`, `is_canon` `unknown_a1`, `is_important_npc` `unknown_b6`, `is_taming` `unknown_bc`, and `unknown_voice_bank_01` was `unknown_voice_bank_04` (a u8 at `+0x04`); `unknown_contents_group_hashes_02`, `unknown_a9`, `unknown_10a`, `unknown_old_af` and Layout 1 `unknown_2d` are now part of the field before them.
 
 ## Open Questions
 
 ### What do the remaining flag bytes hold?
 
-Character Fields `+0x9F` to `+0xC2` and the tail bytes `unknown_voice_bank_07`, `unknown_holdable_item_keys_08`, `unknown_contents_group_hashes_11` and `_17` match no `Character_Table` column. Most split by `npc_kind` (`unknown_be` is `1` on exactly the player characters; `unknown_a1`, `unknown_a5`, `unknown_bd` and `unknown_c1` are set only on kind `3`), which points to values the compiler derives from other tables, such as `Servant_Table` for mounts. `unknown_b5` (`1` on 5,725 rows, mostly NPCs) is `1` exactly where the sheet's `TalkAble` is non-zero (15,704 of 15,704 client 1784 rows of `charactersimply.bss`, 16,051 of 16,058 on client 3474), but `TalkAble` holds a talk type (`1` to `3`), so the byte stays unnamed.
+The unnamed Character Fields bytes from `+0x9F` to `+0xC2` and the tail bytes `unknown_voice_bank_07`, `unknown_holdable_item_keys_08`, `unknown_contents_group_hashes_11` and `_17` match no `Character_Table` column. Most split by `npc_kind` (`unknown_be` is `1` on exactly the player characters; `unknown_a5`, `unknown_bd` and `unknown_c1` are set only on kind `3`), which points to values the compiler derives from other tables, such as `Servant_Table` for mounts. `unknown_b5` (`1` on 5,725 rows, mostly NPCs) is `1` exactly where the sheet's `TalkAble` is non-zero (15,704 of 15,704 client 1784 rows of `charactersimply.bss`, 16,051 of 16,058 on client 3474), but `TalkAble` holds a talk type (`1` to `3`), so the byte stays unnamed.
 
 ### What is `unknown_c7`?
 

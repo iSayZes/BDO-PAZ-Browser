@@ -16,6 +16,7 @@
     "npcKind": "Genre de PNJ",
     "grade": "Grade",
     "level": "Niveau",
+    "maxHp": "PV max.",
     "tribe": "Espèce",
     "characterGroup": "Groupe de personnage",
     "karma": "Karma",

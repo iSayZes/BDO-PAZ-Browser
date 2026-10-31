@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from _common.contents_group import contents_group_key, contents_groups_text
+from _common.contents_group import assigned_contents_groups_text, contents_group_key, contents_groups_text
 from _common.string_hash import key_hash
 
 
@@ -14,3 +14,9 @@ def test_contents_groups_text_falls_back_to_the_hash_in_hex() -> None:
     unknown = key_hash("not a key")
     assert contents_groups_text([key_hash("1307"), unknown]) == f"1307, 0x{unknown:08X}"
     assert contents_groups_text(()) == ""
+
+
+def test_key_0_alone_is_no_contents_group() -> None:
+    assert assigned_contents_groups_text([key_hash("0")]) == ""
+    assert assigned_contents_groups_text([key_hash("0"), key_hash("6")]) == "0, 6"
+    assert assigned_contents_groups_text([key_hash("662"), key_hash("1869")]) == "662, 1869"

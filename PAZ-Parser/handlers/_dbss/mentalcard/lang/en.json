@@ -10,6 +10,7 @@
     "knowledgeName": "Knowledge Name",
     "categoryId": "Category ID",
     "categoryName": "Category Name",
+    "knowledgeType": "Knowledge Type",
     "description": "Description",
     "minFavor": "Min Favor",
     "maxFavor": "Max Favor",
@@ -18,7 +19,13 @@
     "obtain": "Obtain",
     "learnedFrom": "Learned From",
     "learnedFromItems": "Learned From Items",
-    "position": "Position"
+    "position": "Position",
+    "mapStep": "Map Step",
+    "contentsGroups": "Contents Groups"
+  },
+  "knowledgeTypes": {
+    "0": "Normal",
+    "1": "Story"
   },
   "meta": {
     "count": "{count} knowledge cards · {with_node_name} category names"

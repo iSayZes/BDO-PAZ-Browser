@@ -2130,8 +2130,8 @@ for layout in client_order(LAYOUTS, lambda layout: layout.clients):
 ```
 
 Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
-`territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss` and
-`itemenchant.dbss`. `itemenchant.dbss` tries each layout on its first eight base
+`territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss`,
+`mentalcard.dbss` and `itemenchant.dbss`. `itemenchant.dbss` tries each layout on its first eight base
 blocks instead of the whole 194 MB file, then reads every block with the one
 that fits (`_dbss/itemenchant/layouts.py`); its lookup index builders pick the
 layout the same way. `tests/test_client_versions.py` fails when two layouts of

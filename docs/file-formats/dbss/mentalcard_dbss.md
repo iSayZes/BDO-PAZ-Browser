@@ -4,7 +4,7 @@
 
 Defines every knowledge entry (card). Each record holds the card ID, its owning knowledge category (theme), the amity conversation parameters and combo effect, the Korean source name, description and acquisition text, the icon path, and a world position. Used to build knowledge trees and place entries within the knowledge UI.
 
-Field names `cardKey`, `themeKey`, `minFavor`, `maxFavor` and `interest` follow the notes of [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor); the layout below was re-checked against our files. The combo field names follow the client Lua getters (`getBuffType`, `getVariedValue`, `getValidTurn`, `getApplyTurn`).
+Field names `cardKey`, `themeKey`, `minFavor`, `maxFavor` and `interest` follow the notes of [bdo-data-extractor](https://github.com/iDevelopThings/bdo-data-extractor); the layout below was re-checked against our files. The combo field names follow the client Lua getters (`getBuffType`, `getVariedValue`, `getValidTurn`, `getApplyTurn`). `is_general`, `is_developing_contents`, `knowledge_type`, `knowledge_level` and `contents_group_hashes` follow the `Card_Table` sheet of a private server on client 1784; see [Field Names](#field-names).
 
 ## Versions
 
@@ -21,7 +21,7 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | File                    | Known               | Unknown          |
 | ------ | ----------------------- | ------------------- | ---------------- |
-| 2      | `mentalcard.dbss`       | 6,178,315 B (95.6%) | 283,608 B (4.4%) |
+| 2      | `mentalcard.dbss`       | 6,323,279 B (97.9%) | 138,644 B (2.1%) |
 | 2      | `mentalcardoffset.dbss` | 151,268 B (100.0%)  | 0 B (0.0%)       |
 | 1      | `mentalcard.dbss`       | 4,105,848 B (95.7%) | 185,628 B (4.3%) |
 | 1      | `mentalcardoffset.dbss` | 102,932 B (100.0%)  | 0 B (0.0%)       |
@@ -30,7 +30,7 @@ Every client the doc check read, and the layout its files fit.
 
 | Client | Result   | Checked against |
 | ------ | -------- | --------------- |
-| 3483   | Layout 2 | `98e40a9793ec`  |
+| 3483   | Layout 2 | `5df5c37dd2d9`  |
 | 3482   | Layout 2 | `98e40a9793ec`  |
 | 3474   | Layout 2 | `98e40a9793ec`  |
 | 3473   | Layout 2 | `98e40a9793ec`  |
@@ -529,8 +529,8 @@ A 33-byte header (`+0x00` to `+0x20`), then the body.
 | --------------------- | --------------- | ------------------------- | --------------------------------------------------------------------------------------- |
 | `+0x00`               | u32             | card_id                   | Knowledge entry ID; equals the index key; LOC `str_type=34`, `str_id1`                  |
 | `+0x04`               | u16             | theme_id                  | Owning category in `mentaltheme.dbss`; LOC `str_type=9`                                 |
-| `+0x06`               | u8              | unknown_06                | Observed `0` or `1`; `1` on 172 cards, mostly story and adventure-log entries           |
-| `+0x07`               | u8              | unknown_07                | Observed `0` or `1`; `1` on 373 cards, almost all under theme `10399` (None)            |
+| `+0x06`               | u8              | is_general                | `0` or `1`; `1` on 172 cards, mostly story and adventure-log entries                    |
+| `+0x07`               | u8              | is_developing_contents    | `0` or `1`; `1` on 373 cards, almost all under theme `10399` (None)                     |
 | `+0x08`               | f32             | min_favor                 | Amity conversation favor, lower bound; whole numbers `0` to `72`                        |
 | `+0x0C`               | f32             | max_favor                 | Amity conversation favor, upper bound; whole numbers `0` to `100`                       |
 | `+0x10`               | f32             | interest                  | Amity conversation interest; whole numbers `0` to `100`                                 |
@@ -540,19 +540,19 @@ A 33-byte header (`+0x00` to `+0x20`), then the body.
 | `+0x1D`               | u32             | apply_turn                | Combo delay, `1` to `4`; the tooltip shows it plus one; `0` without a combo             |
 | `+0x21`               | str16           | name_kr                   | Korean card name; English form is LOC `str_type=34`, `str_id4=0`                        |
 | `name_kr+0x00`        | str16           | description_kr            | Korean description; English form is LOC `str_type=34`, `str_id4=1`                      |
-| `description_kr+0x00` | u8              | unknown_description_kr_00 | `0` or `1`; `1` on 474 cards, mostly adventure-log themes                               |
+| `description_kr+0x00` | u8              | knowledge_type            | `0` Normal, `1` Story; `1` on 474 cards, mostly adventure-log themes. See [Knowledge Type](#knowledge-type) |
 | `description_kr+0x01` | u8              | unknown_description_kr_01 | Always `0`                                                                              |
-| `description_kr+0x02` | u32             | unknown_description_kr_02 | `5` on 10,455 cards, `0` on 1,893, `1` to `4` on the rest                               |
+| `description_kr+0x02` | u32             | knowledge_level           | World map step that shows the card as `?`; `5` (no step) on 10,455 cards, `0` on 1,893, `1` to `4` on the rest. See [Knowledge Level](#knowledge-level) |
 | `description_kr+0x06` | str8            | icon_path                 | Always under `UI_Artwork/`, e.g. `UI_Artwork/IC_015879.dds`                             |
-| `icon_path+0x00`      | str16           | acquisition_kr            | Korean "how to obtain" text; English form is LOC `str_type=34`, `str_id4=2`             |
+| `icon_path+0x00`      | str16           | acquisition_kr            | Korean "how to obtain" text, also the world map hint (`getKeyword()`); English form is LOC `str_type=34`, `str_id4=2`; `UNKNOWN` on exactly the `is_developing_contents` cards |
 | `acquisition_kr+0x00` | f32[3]          | position                  | World `x`, `y` (height), `z`; all zero on 9,356 cards                                   |
 | `acquisition_kr+0x0C` | u8              | unknown_acquisition_kr_0c | `17` on 10,388 cards, otherwise `0` to `16`                                             |
 | `acquisition_kr+0x0D` | u32             | unknown_acquisition_kr_0d | `0`, `1` or `3`                                                                         |
-| `acquisition_kr+0x11` | u32             | hash_count                | `1` to `7`                                                                              |
-| `acquisition_kr+0x15` | u32[hash_count] | unknown_hashes            | Hash-like values; 271 distinct, lists share prefixes between cards                      |
-| `unknown_hashes+0x00` | bytes[5]        | unknown_end               | Always zero                                                                             |
+| `acquisition_kr+0x11` | u32             | contents_group_count      | `1` to `7`; never `0`                                                                   |
+| `acquisition_kr+0x15` | u32[contents_group_count] | contents_group_hashes | One string hash per contents group key, see Notes; 277 distinct, all keys (client 3483) |
+| `contents_group_hashes+0x00` | bytes[5] | unknown_end               | Always zero                                                                             |
 
-Earlier versions of this doc called `unknown_06` `theme_flag_a`, `unknown_07` `theme_flag_b`, `unknown_description_kr_00` `body_flag`, `unknown_description_kr_01` `unknown_after_body_flag`, `unknown_description_kr_02` `body_value`, `unknown_acquisition_kr_0c` `tail_kind`, `unknown_acquisition_kr_0d` `tail_value` and `unknown_hashes` `hashes`.
+Earlier versions of this doc called `is_general` `theme_flag_a` and then `unknown_06`, `is_developing_contents` `theme_flag_b` and then `unknown_07`, `knowledge_type` `body_flag` and then `unknown_description_kr_00`, `unknown_description_kr_01` `unknown_after_body_flag`, `knowledge_level` `body_value` and then `unknown_description_kr_02`, `unknown_acquisition_kr_0c` `tail_kind`, `unknown_acquisition_kr_0d` `tail_value`, `contents_group_count` `hash_count` and `contents_group_hashes` `hashes` and then `unknown_hashes`. The new names are the `Card_Table` columns; see [Field Names](#field-names).
 
 The combo fields build the tooltip's "Next combo effect" line: "After `{apply_turn + 1}` turns, `{Favor | Interest Level}` will increase by `{varied_value}` for `{valid_turn}` turns", or "None" when `buff_type` is `4`. Confirmed in game on 2026-09-27 and 2026-09-28 against 19 cards, 10 with a combo and 9 without; see Confirmed Examples. No card stores a decrease or a `buff_type` other than `0`, `1` and `4`.
 
@@ -591,7 +591,10 @@ Rows tile `mentalcard.dbss` exactly: the first record starts at `4`, each next r
 ## Layout 1
 
 On client 1784 `unknown_end` is 4 zero bytes, so each card is one byte
-shorter; every other field is as in Layout 2.
+shorter; every other field is as in Layout 2. The file holds no layout number:
+the handler reads it with the layout whose cards all end at their index `size`,
+trying the one whose Versions clients cover the loaded client first. All 7,635
+cards of client 1784 read this way and tile the file from byte `4` to its end.
 
 ### Card (variable: 96 bytes + strings and hashes)
 
@@ -599,8 +602,8 @@ shorter; every other field is as in Layout 2.
 | --------------------- | --------------- | ------------------------- | ------------------------ |
 | `+0x00`               | u32             | card_id                   |                          |
 | `+0x04`               | u16             | theme_id                  |                          |
-| `+0x06`               | u8              | unknown_06                |                          |
-| `+0x07`               | u8              | unknown_07                |                          |
+| `+0x06`               | u8              | is_general                |                          |
+| `+0x07`               | u8              | is_developing_contents    |                          |
 | `+0x08`               | f32             | min_favor                 |                          |
 | `+0x0C`               | f32             | max_favor                 |                          |
 | `+0x10`               | f32             | interest                  |                          |
@@ -610,17 +613,58 @@ shorter; every other field is as in Layout 2.
 | `+0x1D`               | u32             | apply_turn                |                          |
 | `+0x21`               | str16           | name_kr                   |                          |
 | `name_kr+0x00`        | str16           | description_kr            |                          |
-| `description_kr+0x00` | u8              | unknown_description_kr_00 |                          |
+| `description_kr+0x00` | u8              | knowledge_type            |                          |
 | `description_kr+0x01` | u8              | unknown_description_kr_01 |                          |
-| `description_kr+0x02` | u32             | unknown_description_kr_02 |                          |
+| `description_kr+0x02` | u32             | knowledge_level           |                          |
 | `description_kr+0x06` | str8            | icon_path                 |                          |
 | `icon_path+0x00`      | str16           | acquisition_kr            |                          |
 | `acquisition_kr+0x00` | f32[3]          | position                  |                          |
 | `acquisition_kr+0x0C` | u8              | unknown_acquisition_kr_0c |                          |
 | `acquisition_kr+0x0D` | u32             | unknown_acquisition_kr_0d |                          |
-| `acquisition_kr+0x11` | u32             | hash_count                |                          |
-| `acquisition_kr+0x15` | u32[hash_count] | unknown_hashes            |                          |
-| `unknown_hashes+0x00` | bytes[4]        | unknown_end               | Always zero              |
+| `acquisition_kr+0x11` | u32             | contents_group_count      |                          |
+| `acquisition_kr+0x15` | u32[contents_group_count] | contents_group_hashes |                |
+| `contents_group_hashes+0x00` | bytes[4] | unknown_end               | Always zero              |
+
+## Field Names
+
+The `Card_Table` sheet of a private server's `DataSheets.bexcel` on client 1784 has the columns `Key`, `Name`, `Desc`, `IsDevelopingContents`, `KnowledgeType`, `KnowledgeLevel`, `Picture`, `MainTheme`, `TranslationNote`, `isGeneral`, `MinDd`, `MaxDd`, `Hit`, `BuffType`, `VariedValue`, `ApplyTurn`, `ValidTurn`, `Keyword`, `position` and `ContentsGroupKey`. All 7,635 cards of the official client 1784 file have a sheet row, and 7,992 of the 12,604 cards of client 3483 do. Each field below matches its column by value on those cards; client 3483 differs where cards were changed since.
+
+| Field | Sheet column | Client 1784 | Client 3483 |
+| ----- | ------------ | ----------- | ----------- |
+| `is_general` | `isGeneral` | 7,635 of 7,635 | 7,992 of 7,992 |
+| `is_developing_contents` | `IsDevelopingContents` | 7,635 of 7,635 | 7,990 of 7,992 |
+| `knowledge_type` | `KnowledgeType` | 7,635 of 7,635 | 7,980 of 7,992 |
+| `knowledge_level` | `KnowledgeLevel`, an empty cell stored as `5` | 7,635 of 7,635 | 7,974 of 7,992 |
+| `acquisition_kr` | `Keyword`, except on `UNKNOWN` cards | 7,259 of 7,259 | 6,969 of 7,619 |
+| `position` | `position`, where the cell is set | 1,228 of 1,228 | 1,326 of 1,344 |
+| `contents_group_hashes` | `ContentsGroupKey`, one hash per key in sheet order | 7,635 of 7,635 | 7,486 of 7,992 |
+
+How the compiler writes a column:
+
+- `acquisition_kr` is `UNKNOWN` on exactly the cards with `is_developing_contents` `1` (376 on client 1784, 373 on client 3483), whatever their `Keyword` cell holds.
+- An empty `position` cell is not stored as zero: 1,162 of the 6,407 such cards on client 1784 hold a position, among them the NPC cards Islin Bartali (`1`) and Igor Bartali (`18`). The build fills it.
+- An empty `ContentsGroupKey` cell is stored as the hash of key `0` alone, as in `characterstatic.dbss`, so `contents_group_count` is never `0`.
+- `MainTheme` equals `theme_id` and `Picture` equals `icon_path` on all 7,635 cards of client 1784. The amity and combo columns do not hold the official values: `Hit`, `MinDd` and `MaxDd` equal `interest`, `min_favor` and `max_favor` on 1,205, 1,754 and 1,558 cards, and `BuffType`, `VariedValue`, `ApplyTurn` and `ValidTurn` equal the combo fields on 6,713, 461, 455 and 478.
+
+## Knowledge Type
+
+The sheet's `KnowledgeType` column comment reads "0 : normal, 1: Story". The client Lua fits it: `FromClient_Widget_Alert_NewKnowledge` (`panel_widget_alertarea_renew.luac`) reads `getMentalCardType()` from the static card and files a new card of type `0` under the New Knowledge alert and one of type `1` under `eALERT_NewStoryKnowledge`, which also opens a bubble. The getter name is not the column name, so the link rests on the two values and the word Story in both. Tungrad's Records #1 to #3 (`11521` to `11523`) are type `1`. The browser shows the type as Normal or Story.
+
+## Knowledge Level
+
+`knowledge_level` is not a grade. The sheet's `KnowledgeLevel` column comment (in English in the sheet) reads "Set the level of knowledge. When the map is illuminated in the order set here, the location is displayed as ? on the entire map.", with these values:
+
+| Value | Sheet comment |
+| ----- | ------------- |
+| `5` (empty cell) | No step (not shown) |
+| `0` | When the map is revealed for the first time |
+| `1` to `4` | Local reputation level 1 to 4 |
+
+The files agree: every card with a step of `0` to `4` has a position, 2,049 of 2,049 on client 3483 and 1,342 of 1,342 on client 1784, against 1,099 of the 10,555 cards with `5` on client 3483. The world map draws one knowledge marker per card (`FromClient_CreateKnowledge` in `new_worldmap_knowledge.luac`): a card the player has not learned shows the `?` texture and its `getKeyword()` text, which is `acquisition_kr`; a learned card shows its name. The Lua does not pick which cards get a marker, so the steps themselves are not visible there, and the comment does not say what "local reputation" is in game. The Sausan Scout, Sniper and Assassin (`4665` to `4667`) are steps `2`, `3` and `4`. The browser shows the value as Map Step, empty for `5`.
+
+## Knowledge Grades
+
+The S, A+, A, B and C grade of a monster's knowledge is not in this file. It is the player's level on the card: the target name line (`panel_widget_enemygauge_new.luac`) reads `getMentalKnowledge():getCardByKeyRaw(key):getLevel()` and, with the knowledge grade option (`__eKnowledgeGrade`) on, appends the `stringtable.bss` `GAME` text `MENTAL_OBJECTCARD_<level - 1>`: `[ C ]`, `[ B ]`, `[ A ]`, `[ A+ ]` and `[ S ]` for levels `1` to `5`. The pickup message (`nakmessage_renewel.luac`) shows the same level as one of five icons in `knowledge_01.dds`. Every card under the monster themes `10000` to `10399` (the range `acquire.luac` treats as monster knowledge) stores `knowledge_level` `0` or `5`, so the stored field does not set the grade.
 
 ## Confirmed Examples
 
@@ -659,6 +703,7 @@ Stored as no combo and shown as "None": `4024` Lost Lamb, `6066` Heidel Church B
 - The monsters, NPCs and gathering nodes in [knowledgelearning.dbss](knowledgelearning_dbss.md) table 0 add 506 character links on client 3458, 177 of them for cards no script grants (card `1643` "Rhyolite" from the Rhyolite node `11982`). Learned From merges both indexes, so card `4678` "Helm Tribe Chief Steel Nux" reads `Helm Tribe Chief, Steel Nux`. Its table 1 items fill Learned From Items (card `8579` "Gurnard" from the Gurnard fish `8279`).
 - Non-zero positions are on 3,147 cards in client 3458, mostly NPC, barterer and node-manager entries. They use the same world frame as the `exploration.bss` node positions: town cards sit exactly on their node (Olvia `3032`, Calpheon `3177`, Keplan `3176`), and NPC cards sit where the NPC stands (Igor Bartali `18`, Islin Bartali `1` and Marsella `6` are all within about 35 m of the Velia node at `18588, 76647`).
 - The index key is not a separate row identifier: it equals `card_id` on every row.
+- `contents_group_hashes` holds the same hash as the `characterstatic.dbss` [Contents Groups](characterstatic_dbss.md#contents-groups): the client's string hash of each key written in decimal (key `0` is `0x6016CFF7`). All 277 distinct hashes of client 3483 and all 173 of client 1784 turn back into keys; 2,129 cards of client 3483 hold key `0` alone.
 - How the conversation uses the values, per the [Black Desert Foundry, Story Exchange guide](https://www.blackdesertfoundry.com/story-exchange-guide/): a topic (card) has a fixed Interest Level and a Favor range. The NPC rolls its own Interest Level and Favor each conversation (from its `npcpersonality.dbss` ranges). The window then shows values relative to that NPC: Sparking Interest = topic interest / NPC interest (the chance of a positive reaction, always positive when the topic's is higher), and Interest gained = topic favor minus NPC favor. So the same card shows different numbers with different NPCs (that is how I see it in game, 2026-09-27), and a reading converts back to base values: `interest ≈ sparking × NPC interest`, `favor = interest gained + NPC favor`.
 - The guide's example is close to, but not equal to, the stored values: topic Shiel shows Interest Level `11` and Favor `31`-`39`; card `11` stored `10` and `33`-`38` before the 2026-09-27 update. Its NPC, Lorenzo Murray (`40015`), shows Interest `32` and Favor `15`, both inside his stored ranges (`31`-`34`, `15`-`19`).
 - The topic tooltip has two parts: **Attributes**, the card's own Interest Level and Favor range, and **Interaction Effect**, the values relative to the current NPC. For Lost Lamb with Oliviero it shows Attributes `23` / `33` ~ `37` and Interaction Effect Sparking Interest `23 (77%)`, Favor `2-6`, which fits the formulas above exactly with Oliviero at Interest Level `30` (23 / 30 = 77%) and Favor `31` (33 - 31 = 2, 37 - 31 = 6).
@@ -670,8 +715,8 @@ Stored as no combo and shown as "None": `4024` Lost Lamb, `6066` Heidel Church B
 
 ### Unknown Body And Tail Fields
 
-`unknown_06`, `unknown_07`, `unknown_description_kr_00`, `unknown_description_kr_02`, `unknown_acquisition_kr_0c`, `unknown_acquisition_kr_0d` and `unknown_hashes` are not decoded. `unknown_description_kr_02` 1 to 4 appears on single NPC cards such as the Sausan Scout, Sniper and Assassin, which suggests a small enum.
+`unknown_description_kr_01`, `unknown_acquisition_kr_0c` and `unknown_acquisition_kr_0d` are not decoded. No `Card_Table` column matches them, so the build fills them. `unknown_acquisition_kr_0c` is `16` on 6,237 of the 7,635 cards of client 1784 and `17` on 10,388 of the 12,604 cards of client 3483. `is_general` has no sheet comment and no client getter found yet.
 
 ### Position Meaning
 
-The position is a world point, but which one is not settled. Town and NPC cards sit on their node or NPC (see Notes). The Iliya Island card (`3030`, `159209, -7831, 292072`) sits about 22 m from the Iliya Island node (`1002`, `157320, 290939`), so it marks the island, the exploration source in its acquisition text, and not Igor Bartali in Velia, its amity source. The Velia card (`3001`, `152611, -7849, 290383`) is the odd one: it also sits on Iliya Island, about 47 m from that node, instead of on the Velia node. Among its sources, only Diega (Amity) is on Iliya Island, but Diega's own card (`387`) sits about 72 m from it.
+The position is a world point, but which one is not settled. Town and NPC cards sit on their node or NPC (see Notes). The Iliya Island card (`3030`, `159209, -7831, 292072`) sits about 22 m from the Iliya Island node (`1002`, `157320, 290939`), so it marks the island, the exploration source in its acquisition text, and not Igor Bartali in Velia, its amity source. The Velia card (`3001`, `152611, -7849, 290383`) is the odd one: it also sits on Iliya Island, about 47 m from that node, instead of on the Velia node. Among its sources, only Diega (Amity) is on Iliya Island, but Diega's own card (`387`) sits about 72 m from it. On client 1784 the same card stores `10069.5, -6413.13, 74166.3`, its `Card_Table` `position` cell, about 89 m from the Velia node, so the Iliya Island point came with a later client.

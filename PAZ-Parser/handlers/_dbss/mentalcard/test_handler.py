@@ -8,7 +8,14 @@ import pytest
 
 from _common.lookup_index import IndexKind
 from _dbss.mentalcard.combo import BuffType, combo_text
-from _dbss.mentalcard.parser import MentalCardRecord
+from _common.contents_group import contents_group_key
+from _dbss.mentalcard.parser import (
+    KNOWLEDGE_TYPE_NORMAL,
+    NO_MAP_STEP,
+    MentalCardRecord,
+    parse_mentalcard_records,
+)
+from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -46,8 +53,14 @@ CASE = HandlerCase(
         IndexKind.KNOWLEDGE_LEARNING_ITEMS: _KNOWLEDGE_LEARNING_ITEMS,
     },
     tests=[
-        SchemaTest(required_keys=["entry_id", "entry_name", "node_id", "node_name", "min_favor", "max_favor", "interest", "combo_text", "buff_type", "combo_value", "valid_turn", "apply_turn", "icon_path", "description", "obtain", "learned_from", "learned_from_item_ids", "learned_from_items", "position", "position_text"]),
+        SchemaTest(required_keys=["entry_id", "entry_name", "node_id", "node_name", "min_favor", "max_favor", "interest", "combo_text", "buff_type", "combo_value", "valid_turn", "apply_turn", "icon_path", "description", "obtain", "learned_from", "learned_from_item_ids", "learned_from_items", "position", "position_text", "knowledge_type", "map_step", "contents_groups"]),
         DeclaredCountTest(declared=header_count()),
+        # Normal or Story, the two KnowledgeType values of the sheet.
+        RangeTest(col="knowledge_type", min_val=0, max_val=1),
+        # The first map reveal or local reputation levels 1 to 4; None for no step.
+        RangeTest(col="map_step", min_val=0, max_val=4),
+        # The Sausan Scout shows on the map from local reputation level 2.
+        TargetTest(col="entry_id", value=4665, expected={"entry_name": "Sausan Scout", "map_step": 2}),
         # Recipe cards name their ingredients in yellow.
         PaFieldTest(field="description"),
         RangeTest(col="min_favor", min_val=0, max_val=math.inf),
@@ -123,8 +136,18 @@ def _card(buff_type: int, value: float = 0.0, valid_turn: int = 0, apply_turn: i
     return MentalCardRecord(
         card_id=1, theme_id=1, min_favor=0.0, max_favor=0.0, interest=0.0,
         buff_type=buff_type, varied_value=value, valid_turn=valid_turn, apply_turn=apply_turn,
-        name_kr="", description_kr="", icon_path="", acquisition_kr="", position=(0.0, 0.0, 0.0),
+        name_kr="", description_kr="", knowledge_type=KNOWLEDGE_TYPE_NORMAL, knowledge_level=NO_MAP_STEP,
+        icon_path="", acquisition_kr="", position=(0.0, 0.0, 0.0), contents_group_hashes=(),
     )
+
+
+def test_every_contents_group_hash_names_a_key() -> None:
+    records = parse_mentalcard_records(
+        load_binary_fixture("mentalcard.dbss"), load_binary_fixture("mentalcardoffset.dbss")
+    )
+
+    unknown = [record.card_id for record in records if None in map(contents_group_key, record.contents_group_hashes)]
+    assert not unknown, f"cards with a hash that is no contents group key: {unknown[:5]}"
 
 
 @pytest.mark.parametrize(

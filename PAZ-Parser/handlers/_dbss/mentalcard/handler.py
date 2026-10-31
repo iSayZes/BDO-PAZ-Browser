@@ -6,6 +6,7 @@ from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
 from _common.character import character_name
+from _common.contents_group import assigned_contents_groups_text
 from _common.html import Column, e, icon_cell, sort_keys, table, text_list_cell
 from _common.item_key import item_key_list_cell, item_key_text
 from _common.knowledge import LOC_KNOWLEDGE, knowledge_name, theme_name
@@ -21,7 +22,14 @@ from _common.offset_table import (
     size_column,
 )
 from .combo import combo_text, has_combo
-from .parser import MentalCardRecord, parse_mentalcard_offset_records, parse_mentalcard_records
+from .parser import (
+    KNOWLEDGE_TYPE_NORMAL,
+    KNOWLEDGE_TYPE_STORY,
+    NO_MAP_STEP,
+    MentalCardRecord,
+    parse_mentalcard_offset_records,
+    parse_mentalcard_records,
+)
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -31,6 +39,7 @@ _LOC_DESCRIPTION = 1
 _LOC_ACQUISITION = 2
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 3
+_KNOWLEDGE_TYPES = (KNOWLEDGE_TYPE_NORMAL, KNOWLEDGE_TYPE_STORY)
 # Characters whose action script grants the card, then the monsters, NPCs and
 # gathering nodes that teach it through knowledgelearning.dbss.
 _CHARACTER_INDEXES = (IndexKind.KNOWLEDGE_CHARACTERS, IndexKind.KNOWLEDGE_LEARNING_CHARACTERS)
@@ -108,6 +117,7 @@ class MentalCardHandler(PreviewHandler):
             Column(cols["knowledgeName"], sort_key="entry_name"),
             Column(cols["categoryId"], "num", sort_key="node_id"),
             Column(cols["categoryName"], sort_key="node_name"),
+            Column(cols["knowledgeType"], sort_key="knowledge_type"),
             Column(cols["description"], sort_key="description"),
             Column(cols["minFavor"], "num", sort_key="min_favor"),
             Column(cols["maxFavor"], "num", sort_key="max_favor"),
@@ -117,7 +127,15 @@ class MentalCardHandler(PreviewHandler):
             Column(cols["learnedFrom"]),
             Column(cols["learnedFromItems"]),
             Column(cols["position"]),
+            Column(cols["mapStep"], "num", sort_key="map_step"),
+            Column(cols["contentsGroups"], sort_key="contents_groups"),
         ]
+
+    def _knowledge_type_text(self, knowledge_type: int) -> str:
+        """`Story`: the type's name, or the bare value outside the two the sheet names."""
+        if knowledge_type not in _KNOWLEDGE_TYPES:
+            return str(knowledge_type)
+        return handler_text(self.lang, _LANG_DIR, f"knowledgeTypes.{knowledge_type}")
 
     def sortable_fields(self) -> tuple[str, ...]:
         return sort_keys(self._columns())
@@ -144,6 +162,7 @@ class MentalCardHandler(PreviewHandler):
                 "entry_name": knowledge_name(record.card_id) or record.name_kr,
                 "node_id": record.theme_id,
                 "node_name": theme_name(record.theme_id) if has_loc else "",
+                "knowledge_type": record.knowledge_type,
                 # Stored as floats but always whole numbers.
                 "min_favor": round(record.min_favor),
                 "max_favor": round(record.max_favor),
@@ -164,6 +183,9 @@ class MentalCardHandler(PreviewHandler):
                 **_learned_from_items_fields(record.card_id),
                 "position": list(record.position),
                 "position_text": _position_text(record.position),
+                # The world map step that shows the position as `?`; None for no step.
+                "map_step": None if record.knowledge_level == NO_MAP_STEP else record.knowledge_level,
+                "contents_groups": assigned_contents_groups_text(record.contents_group_hashes),
             }
             for record in parse_mentalcard_records(data, offset_raw)
         ]
@@ -187,6 +209,7 @@ class MentalCardHandler(PreviewHandler):
                 e(r["entry_name"] or _EMPTY),
                 e(r["node_id"]),
                 e(r["node_name"] or _EMPTY),
+                e(self._knowledge_type_text(r["knowledge_type"])),
                 pa_line_cell(r, "description"),
                 e(r["min_favor"]),
                 e(r["max_favor"]),
@@ -196,6 +219,8 @@ class MentalCardHandler(PreviewHandler):
                 text_list_cell(r["learned_from"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 item_key_list_cell(r["learned_from_item_ids"], _LIST_PREVIEW_ITEMS) or _EMPTY,
                 e(r["position_text"] or _EMPTY),
+                _EMPTY if r["map_step"] is None else e(r["map_step"]),
+                e(r["contents_groups"] or _EMPTY),
             ]
             for r in slice_
         ]

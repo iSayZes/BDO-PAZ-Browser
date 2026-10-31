@@ -627,7 +627,7 @@ Sample records confirmed from `mentaltheme.dbss`, `mentalthemeoffset.dbss`, `men
 
 ### What `is_copy_right_able` Changes In Game
 
-On client 3464 `is_copy_right_able` is `1` on 232 themes (94 of them under Trade), the 33 themes with a `bookshelf_item` among them. The sheet comment ties it to compiling knowledge into a book and to knowledge grades, and calpheonlabs reads it as the switch for the C/B/A/A+/S grades. The Knowledge window Lua (`panel_knowledge_main`, `panel_window_knowledge_renew`) has no theme getter for it: its only grade switch is the per-user display option `__eKnowledgeGrade`. The value also shows no link to the cards' `unknown_description_kr_02` in `mentalcard.dbss`. Which window shows the grades or the book compilation for these themes is not confirmed.
+On client 3464 `is_copy_right_able` is `1` on 232 themes (94 of them under Trade), the 33 themes with a `bookshelf_item` among them. The sheet comment ties it to compiling knowledge into a book and to knowledge grades, and calpheonlabs reads it as the switch for the C/B/A/A+/S grades. The Knowledge window Lua (`panel_knowledge_main`, `panel_window_knowledge_renew`) has no theme getter for it: its only grade switch is the per-user display option `__eKnowledgeGrade`. The value also shows no link to the cards' `knowledge_level` in `mentalcard.dbss`. Which window shows the grades or the book compilation for these themes is not confirmed.
 
 ### What Does `unknown_after_child_ids` Index?
 

@@ -33,14 +33,13 @@ from tests.runner import load_case
 
 _DATA_FILE = "pcgrowth.dbss"
 _OFFSET_FILE = "pcgrowthoffset.dbss"
-_SIMPLY_FILE = "pcgrowthsimply.bss"
 # Class types are a u8 key; character keys a u16.
 _MAX_CLASS_TYPE = 0xFF
 
 CASE = HandlerCase(
     handler_name=_DATA_FILE,
     data_file=_DATA_FILE,
-    companion_files={_OFFSET_FILE: _OFFSET_FILE, _SIMPLY_FILE: _SIMPLY_FILE},
+    companion_files={_OFFSET_FILE: _OFFSET_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
     loc_fields=["class_name", "combat_type_name", "description"],
@@ -63,6 +62,8 @@ CASE = HandlerCase(
                 "select_movie",
                 "gender",
                 "is_playable",
+                "is_open",
+                "default_life_skills",
                 "consume_actions",
                 "combat_type",
                 "class_weapons",
@@ -155,12 +156,6 @@ def test_playable_follows_the_playable_class_mask(pcgrowth_result: HandlerResult
         if r["is_playable"] != bool(PLAYABLE_CLASSES_MASK >> r["class_type"] & 1)
     ]
     assert not wrong, f"class types whose Playable flag disagrees with PLAYABLE_CLASSES_MASK: {wrong}"
-
-
-def test_playable_is_none_without_pcgrowthsimply() -> None:
-    result = run_case(replace(CASE, companion_files={_OFFSET_FILE: _OFFSET_FILE}, tests=[]))
-    assert result.records
-    assert all(r["is_playable"] is None for r in result.records)
 
 
 def test_label_hashes_match_stringtable() -> None:

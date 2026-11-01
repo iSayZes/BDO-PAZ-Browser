@@ -18,6 +18,7 @@ from _dbss.guildquest.parser import LAYOUTS as GUILDQUEST_LAYOUTS, parse_guildqu
 from _dbss.itemenchant.layouts import LAYOUTS as ITEMENCHANT_LAYOUTS
 from _dbss.journalquest.parser import LAYOUTS as JOURNALQUEST_LAYOUTS
 from _dbss.mentalcard.parser import LAYOUTS as MENTALCARD_LAYOUTS
+from _dbss.pcgrowth.parser import LAYOUTS as PCGROWTH_LAYOUTS
 from _dbss.quest.parser import _LAYOUTS as QUEST_LAYOUTS
 from _dbss.skill.parser import LAYOUTS as SKILL_LAYOUTS
 
@@ -37,6 +38,7 @@ _HANDLER_LAYOUTS = {
     "itemenchant.dbss": ITEMENCHANT_LAYOUTS,
     "journalquest.dbss": JOURNALQUEST_LAYOUTS,
     "mentalcard.dbss": MENTALCARD_LAYOUTS,
+    "pcgrowth.dbss": PCGROWTH_LAYOUTS,
     "quest.dbss": QUEST_LAYOUTS,
     "skill.dbss": SKILL_LAYOUTS,
 }

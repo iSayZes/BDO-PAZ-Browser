@@ -12,7 +12,6 @@ from _common.lang import handler_text, load_handler_strings
 from _common.loc import loc_tagged
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
 from _common.pa_text import pa_fields, pa_line_cell
-from _bss.pcgrowthsimply.parser import parse_pcgrowthsimply_records
 from .combat_types import combat_type_text, resource_type_text
 from .parser import parse_pcgrowth_records, parse_pcgrowthoffset_records
 from .text import class_display_name
@@ -20,7 +19,6 @@ from .text import class_display_name
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _OFFSET_FILE = "pcgrowthoffset.dbss"
-_SIMPLY_FILE = "pcgrowthsimply.bss"
 _EMPTY = "-"
 _LIST_PREVIEW_ITEMS = 3
 # LOC type 21 `str_id4` 1 is the class selection description.
@@ -75,7 +73,7 @@ class PcGrowthHandler(PreviewHandler):
 
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/{_OFFSET_FILE}", f"{folder}/{_SIMPLY_FILE}"]
+        return [f"{folder}/{_OFFSET_FILE}"]
 
     def get_records(
         self,
@@ -87,15 +85,10 @@ class PcGrowthHandler(PreviewHandler):
         if offset_raw is None:
             raise ValueError(f"{_OFFSET_FILE} companion not found.")
 
-        simply_raw = companions.get(_SIMPLY_FILE)
-        # Without pcgrowthsimply.bss the Playable column shows a dash.
-        playable = (
-            {row["class_type"]: row["is_playable"] for row in parse_pcgrowthsimply_records(simply_raw)}
-            if simply_raw
-            else {}
-        )
+        # is_open equals pcgrowthsimply.bss is_playable on every class of
+        # clients 1784 and 3483.
         return [
-            {**record, **_text_fields(record), "is_playable": playable.get(record["class_type"])}
+            {**record, **_text_fields(record), "is_playable": record["is_open"]}
             for record in parse_pcgrowth_records(data, offset_raw)
         ]
 
@@ -115,7 +108,7 @@ class PcGrowthHandler(PreviewHandler):
                 e(r["class_name"] or _EMPTY),
                 e(r["character_key"]),
                 e(genders.get(_GENDER_KEYS.get(r["gender"], ""), r["gender"])),
-                _EMPTY if r["is_playable"] is None else flag_cell(r["is_playable"]),
+                flag_cell(r["is_playable"]),
                 e(r["combat_type_name"]),
                 e(r["combat_resource_name"]),
                 item_key_list_cell(r["starter_weapons"], _LIST_PREVIEW_ITEMS) or _EMPTY,

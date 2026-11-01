@@ -19,486 +19,486 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | 1      | 1759 to 1862   | `pcgrowth.dbss`       | 63,228 | 82 Setup Block, 82 Presentation Block, 164 Model List, 82 Class Record, 82 Record, 144 Model Entry | 4 to 196, 55 on average |
 | 1      | 1759 to 1862   | `pcgrowthoffset.dbss` | 742    | 82 Offset Row                                                                                      | 9                       |
 
-| Layout | File                  | Known            | Unknown         |
-| ------ | --------------------- | ---------------- | --------------- |
-| 2      | `pcgrowth.dbss`       | 49,013 B (88.7%) | 6,267 B (11.3%) |
-| 2      | `pcgrowthoffset.dbss` | 427 B (100.0%)   | 0 B (0.0%)      |
-| 1      | `pcgrowth.dbss`       | 55,914 B (88.4%) | 7,314 B (11.6%) |
-| 1      | `pcgrowthoffset.dbss` | 742 B (100.0%)   | 0 B (0.0%)      |
+| Layout | File                  | Known            | Unknown        |
+| ------ | --------------------- | ---------------- | -------------- |
+| 2      | `pcgrowth.dbss`       | 52,178 B (94.4%) | 3,102 B (5.6%) |
+| 2      | `pcgrowthoffset.dbss` | 427 B (100.0%)   | 0 B (0.0%)     |
+| 1      | `pcgrowth.dbss`       | 61,424 B (97.1%) | 1,804 B (2.9%) |
+| 1      | `pcgrowthoffset.dbss` | 742 B (100.0%)   | 0 B (0.0%)     |
 
 Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 3483   | Layout 2             | `cbcdea2aeeed`  |
-| 3482   | Layout 2             | `cbcdea2aeeed`  |
-| 3474   | Layout 2             | `cbcdea2aeeed`  |
-| 3473   | Layout 2             | `cbcdea2aeeed`  |
-| 3464   | Layout 2             | `cbcdea2aeeed`  |
-| 3458   | Layout 2             | `cbcdea2aeeed`  |
-| 3454   | Layout 2             | `cbcdea2aeeed`  |
-| 3444   | Layout 2             | `cbcdea2aeeed`  |
-| 3435   | Layout 2             | `cbcdea2aeeed`  |
-| 3426   | Layout 2             | `cbcdea2aeeed`  |
-| 3418   | Layout 2             | `cbcdea2aeeed`  |
-| 3412   | Layout 2             | `cbcdea2aeeed`  |
-| 3402   | Layout 2             | `cbcdea2aeeed`  |
-| 3396   | Layout 2             | `cbcdea2aeeed`  |
-| 3387   | Layout 2             | `cbcdea2aeeed`  |
-| 3381   | Layout 2             | `cbcdea2aeeed`  |
-| 3373   | Layout 2             | `cbcdea2aeeed`  |
-| 3364   | Layout 2             | `cbcdea2aeeed`  |
-| 3356   | Layout 2             | `cbcdea2aeeed`  |
-| 3349   | Layout 2             | `cbcdea2aeeed`  |
-| 3342   | Layout 2             | `cbcdea2aeeed`  |
-| 3335   | Layout 2             | `cbcdea2aeeed`  |
-| 3326   | Layout 2             | `cbcdea2aeeed`  |
-| 3321   | Layout 2             | `cbcdea2aeeed`  |
-| 3314   | Layout 2             | `cbcdea2aeeed`  |
-| 3303   | No documented layout | `cbcdea2aeeed`  |
-| 3302   | No documented layout | `cbcdea2aeeed`  |
-| 3293   | No documented layout | `cbcdea2aeeed`  |
-| 3283   | No documented layout | `cbcdea2aeeed`  |
-| 3275   | No documented layout | `cbcdea2aeeed`  |
-| 3267   | No documented layout | `cbcdea2aeeed`  |
-| 3258   | No documented layout | `cbcdea2aeeed`  |
-| 3251   | No documented layout | `cbcdea2aeeed`  |
-| 3242   | No documented layout | `cbcdea2aeeed`  |
-| 3235   | No documented layout | `cbcdea2aeeed`  |
-| 3229   | No documented layout | `cbcdea2aeeed`  |
-| 3212   | No documented layout | `cbcdea2aeeed`  |
-| 3203   | No documented layout | `cbcdea2aeeed`  |
-| 3193   | No documented layout | `cbcdea2aeeed`  |
-| 3186   | No documented layout | `cbcdea2aeeed`  |
-| 3177   | No documented layout | `cbcdea2aeeed`  |
-| 3169   | No documented layout | `cbcdea2aeeed`  |
-| 3158   | No documented layout | `cbcdea2aeeed`  |
-| 3151   | No documented layout | `cbcdea2aeeed`  |
-| 3144   | No documented layout | `cbcdea2aeeed`  |
-| 3133   | No documented layout | `cbcdea2aeeed`  |
-| 3125   | No documented layout | `cbcdea2aeeed`  |
-| 3118   | No documented layout | `cbcdea2aeeed`  |
-| 3111   | No documented layout | `cbcdea2aeeed`  |
-| 3103   | No documented layout | `cbcdea2aeeed`  |
-| 3095   | No documented layout | `cbcdea2aeeed`  |
-| 3086   | No documented layout | `cbcdea2aeeed`  |
-| 3072   | No documented layout | `cbcdea2aeeed`  |
-| 3062   | No documented layout | `cbcdea2aeeed`  |
-| 3052   | No documented layout | `cbcdea2aeeed`  |
-| 3045   | No documented layout | `cbcdea2aeeed`  |
-| 3037   | No documented layout | `cbcdea2aeeed`  |
-| 3030   | No documented layout | `cbcdea2aeeed`  |
-| 3021   | No documented layout | `cbcdea2aeeed`  |
-| 3012   | No documented layout | `cbcdea2aeeed`  |
-| 3002   | No documented layout | `cbcdea2aeeed`  |
-| 2995   | No documented layout | `cbcdea2aeeed`  |
-| 2987   | No documented layout | `cbcdea2aeeed`  |
-| 2978   | No documented layout | `cbcdea2aeeed`  |
-| 2970   | No documented layout | `cbcdea2aeeed`  |
-| 2959   | No documented layout | `cbcdea2aeeed`  |
-| 2951   | No documented layout | `cbcdea2aeeed`  |
-| 2942   | No documented layout | `cbcdea2aeeed`  |
-| 2935   | No documented layout | `cbcdea2aeeed`  |
-| 2932   | No documented layout | `cbcdea2aeeed`  |
-| 2923   | No documented layout | `cbcdea2aeeed`  |
-| 2919   | No documented layout | `cbcdea2aeeed`  |
-| 2907   | No documented layout | `cbcdea2aeeed`  |
-| 2900   | No documented layout | `cbcdea2aeeed`  |
-| 2891   | No documented layout | `cbcdea2aeeed`  |
-| 2882   | No documented layout | `cbcdea2aeeed`  |
-| 2872   | No documented layout | `cbcdea2aeeed`  |
-| 2863   | No documented layout | `cbcdea2aeeed`  |
-| 2855   | No documented layout | `cbcdea2aeeed`  |
-| 2849   | No documented layout | `cbcdea2aeeed`  |
-| 2844   | No documented layout | `cbcdea2aeeed`  |
-| 2834   | No documented layout | `cbcdea2aeeed`  |
-| 2825   | No documented layout | `cbcdea2aeeed`  |
-| 2819   | No documented layout | `cbcdea2aeeed`  |
-| 2811   | No documented layout | `cbcdea2aeeed`  |
-| 2803   | No documented layout | `cbcdea2aeeed`  |
-| 2794   | No documented layout | `cbcdea2aeeed`  |
-| 2783   | No documented layout | `cbcdea2aeeed`  |
-| 2774   | No documented layout | `cbcdea2aeeed`  |
-| 2765   | No documented layout | `cbcdea2aeeed`  |
-| 2756   | No documented layout | `cbcdea2aeeed`  |
-| 2750   | No documented layout | `cbcdea2aeeed`  |
-| 2743   | No documented layout | `cbcdea2aeeed`  |
-| 2736   | No documented layout | `cbcdea2aeeed`  |
-| 2726   | No documented layout | `cbcdea2aeeed`  |
-| 2717   | No documented layout | `cbcdea2aeeed`  |
-| 2709   | No documented layout | `cbcdea2aeeed`  |
-| 2703   | No documented layout | `cbcdea2aeeed`  |
-| 2695   | No documented layout | `cbcdea2aeeed`  |
-| 2684   | No documented layout | `cbcdea2aeeed`  |
-| 2672   | No documented layout | `cbcdea2aeeed`  |
-| 2665   | No documented layout | `cbcdea2aeeed`  |
-| 2657   | No documented layout | `cbcdea2aeeed`  |
-| 2649   | No documented layout | `cbcdea2aeeed`  |
-| 2644   | No documented layout | `cbcdea2aeeed`  |
-| 2637   | No documented layout | `cbcdea2aeeed`  |
-| 2629   | No documented layout | `cbcdea2aeeed`  |
-| 2619   | No documented layout | `cbcdea2aeeed`  |
-| 2612   | No documented layout | `cbcdea2aeeed`  |
-| 2606   | No documented layout | `cbcdea2aeeed`  |
-| 2602   | No documented layout | `cbcdea2aeeed`  |
-| 2601   | No documented layout | `cbcdea2aeeed`  |
-| 2592   | No documented layout | `cbcdea2aeeed`  |
-| 2583   | No documented layout | `cbcdea2aeeed`  |
-| 2575   | No documented layout | `cbcdea2aeeed`  |
-| 2567   | No documented layout | `cbcdea2aeeed`  |
-| 2560   | No documented layout | `cbcdea2aeeed`  |
-| 2553   | No documented layout | `cbcdea2aeeed`  |
-| 2545   | No documented layout | `cbcdea2aeeed`  |
-| 2538   | No documented layout | `cbcdea2aeeed`  |
-| 2529   | No documented layout | `cbcdea2aeeed`  |
-| 2519   | No documented layout | `cbcdea2aeeed`  |
-| 2513   | No documented layout | `cbcdea2aeeed`  |
-| 2510   | No documented layout | `cbcdea2aeeed`  |
-| 2507   | No documented layout | `cbcdea2aeeed`  |
-| 2503   | No documented layout | `cbcdea2aeeed`  |
-| 2498   | No documented layout | `cbcdea2aeeed`  |
-| 2492   | No documented layout | `cbcdea2aeeed`  |
-| 2487   | No documented layout | `cbcdea2aeeed`  |
-| 2480   | No documented layout | `cbcdea2aeeed`  |
-| 2474   | No documented layout | `cbcdea2aeeed`  |
-| 2468   | No documented layout | `cbcdea2aeeed`  |
-| 2460   | No documented layout | `cbcdea2aeeed`  |
-| 2453   | No documented layout | `cbcdea2aeeed`  |
-| 2444   | No documented layout | `cbcdea2aeeed`  |
-| 2438   | No documented layout | `cbcdea2aeeed`  |
-| 2434   | No documented layout | `cbcdea2aeeed`  |
-| 2429   | No documented layout | `cbcdea2aeeed`  |
-| 2421   | No documented layout | `cbcdea2aeeed`  |
-| 2414   | No documented layout | `cbcdea2aeeed`  |
-| 2407   | No documented layout | `cbcdea2aeeed`  |
-| 2401   | No documented layout | `cbcdea2aeeed`  |
-| 2397   | No documented layout | `cbcdea2aeeed`  |
-| 2393   | No documented layout | `cbcdea2aeeed`  |
-| 2384   | No documented layout | `cbcdea2aeeed`  |
-| 2378   | No documented layout | `cbcdea2aeeed`  |
-| 2372   | No documented layout | `cbcdea2aeeed`  |
-| 2358   | No documented layout | `cbcdea2aeeed`  |
-| 2352   | No documented layout | `cbcdea2aeeed`  |
-| 2347   | No documented layout | `cbcdea2aeeed`  |
-| 2343   | No documented layout | `cbcdea2aeeed`  |
-| 2335   | No documented layout | `cbcdea2aeeed`  |
-| 2327   | No documented layout | `cbcdea2aeeed`  |
-| 2324   | No documented layout | `cbcdea2aeeed`  |
-| 2319   | No documented layout | `cbcdea2aeeed`  |
-| 2313   | No documented layout | `cbcdea2aeeed`  |
-| 2308   | No documented layout | `cbcdea2aeeed`  |
-| 2302   | No documented layout | `cbcdea2aeeed`  |
-| 2295   | No documented layout | `cbcdea2aeeed`  |
-| 2290   | No documented layout | `cbcdea2aeeed`  |
-| 2284   | No documented layout | `cbcdea2aeeed`  |
-| 2276   | No documented layout | `cbcdea2aeeed`  |
-| 2269   | No documented layout | `cbcdea2aeeed`  |
-| 2259   | No documented layout | `cbcdea2aeeed`  |
-| 2250   | No documented layout | `cbcdea2aeeed`  |
-| 2243   | No documented layout | `cbcdea2aeeed`  |
-| 2235   | No documented layout | `cbcdea2aeeed`  |
-| 2229   | No documented layout | `cbcdea2aeeed`  |
-| 2224   | No documented layout | `cbcdea2aeeed`  |
-| 2218   | No documented layout | `cbcdea2aeeed`  |
-| 2215   | No documented layout | `cbcdea2aeeed`  |
-| 2207   | No documented layout | `cbcdea2aeeed`  |
-| 2203   | No documented layout | `cbcdea2aeeed`  |
-| 2196   | No documented layout | `cbcdea2aeeed`  |
-| 2192   | No documented layout | `cbcdea2aeeed`  |
-| 2189   | No documented layout | `cbcdea2aeeed`  |
-| 2183   | No documented layout | `cbcdea2aeeed`  |
-| 2179   | No documented layout | `cbcdea2aeeed`  |
-| 2171   | No documented layout | `cbcdea2aeeed`  |
-| 2163   | No documented layout | `cbcdea2aeeed`  |
-| 2156   | No documented layout | `cbcdea2aeeed`  |
-| 2151   | No documented layout | `cbcdea2aeeed`  |
-| 2147   | No documented layout | `cbcdea2aeeed`  |
-| 2142   | No documented layout | `cbcdea2aeeed`  |
-| 2138   | No documented layout | `cbcdea2aeeed`  |
-| 2134   | No documented layout | `cbcdea2aeeed`  |
-| 2130   | No documented layout | `cbcdea2aeeed`  |
-| 2122   | No documented layout | `cbcdea2aeeed`  |
-| 2107   | No documented layout | `cbcdea2aeeed`  |
-| 2098   | No documented layout | `cbcdea2aeeed`  |
-| 2089   | No documented layout | `cbcdea2aeeed`  |
-| 2081   | No documented layout | `cbcdea2aeeed`  |
-| 2073   | No documented layout | `cbcdea2aeeed`  |
-| 2067   | No documented layout | `cbcdea2aeeed`  |
-| 2063   | No documented layout | `cbcdea2aeeed`  |
-| 2059   | No documented layout | `cbcdea2aeeed`  |
-| 2052   | No documented layout | `cbcdea2aeeed`  |
-| 2044   | No documented layout | `cbcdea2aeeed`  |
-| 2039   | No documented layout | `cbcdea2aeeed`  |
-| 2032   | No documented layout | `cbcdea2aeeed`  |
-| 2025   | No documented layout | `cbcdea2aeeed`  |
-| 2011   | No documented layout | `cbcdea2aeeed`  |
-| 2005   | No documented layout | `cbcdea2aeeed`  |
-| 2000   | No documented layout | `cbcdea2aeeed`  |
-| 1996   | No documented layout | `cbcdea2aeeed`  |
-| 1991   | No documented layout | `cbcdea2aeeed`  |
-| 1985   | No documented layout | `cbcdea2aeeed`  |
-| 1980   | No documented layout | `cbcdea2aeeed`  |
-| 1969   | No documented layout | `cbcdea2aeeed`  |
-| 1964   | No documented layout | `cbcdea2aeeed`  |
-| 1958   | No documented layout | `cbcdea2aeeed`  |
-| 1950   | No documented layout | `cbcdea2aeeed`  |
-| 1945   | No documented layout | `cbcdea2aeeed`  |
-| 1937   | No documented layout | `cbcdea2aeeed`  |
-| 1933   | No documented layout | `cbcdea2aeeed`  |
-| 1927   | No documented layout | `cbcdea2aeeed`  |
-| 1921   | No documented layout | `cbcdea2aeeed`  |
-| 1914   | No documented layout | `cbcdea2aeeed`  |
-| 1908   | No documented layout | `cbcdea2aeeed`  |
-| 1897   | No documented layout | `cbcdea2aeeed`  |
-| 1892   | No documented layout | `cbcdea2aeeed`  |
-| 1886   | No documented layout | `cbcdea2aeeed`  |
-| 1881   | No documented layout | `cbcdea2aeeed`  |
-| 1871   | No documented layout | `cbcdea2aeeed`  |
-| 1866   | No documented layout | `cbcdea2aeeed`  |
-| 1862   | Layout 1             | `cbcdea2aeeed`  |
-| 1854   | Layout 1             | `cbcdea2aeeed`  |
-| 1846   | Layout 1             | `cbcdea2aeeed`  |
-| 1838   | Layout 1             | `cbcdea2aeeed`  |
-| 1832   | Layout 1             | `cbcdea2aeeed`  |
-| 1826   | Layout 1             | `cbcdea2aeeed`  |
-| 1822   | Layout 1             | `cbcdea2aeeed`  |
-| 1818   | Layout 1             | `cbcdea2aeeed`  |
-| 1804   | Layout 1             | `cbcdea2aeeed`  |
-| 1794   | Layout 1             | `cbcdea2aeeed`  |
-| 1790   | Layout 1             | `cbcdea2aeeed`  |
-| 1784   | Layout 1             | `cbcdea2aeeed`  |
-| 1774   | Layout 1             | `cbcdea2aeeed`  |
-| 1771   | Layout 1             | `cbcdea2aeeed`  |
-| 1762   | Layout 1             | `cbcdea2aeeed`  |
-| 1759   | Layout 1             | `cbcdea2aeeed`  |
-| 1754   | No documented layout | `cbcdea2aeeed`  |
-| 1749   | No documented layout | `cbcdea2aeeed`  |
-| 1743   | No documented layout | `cbcdea2aeeed`  |
-| 1737   | No documented layout | `cbcdea2aeeed`  |
-| 1731   | No documented layout | `cbcdea2aeeed`  |
-| 1725   | No documented layout | `cbcdea2aeeed`  |
-| 1717   | No documented layout | `cbcdea2aeeed`  |
-| 1710   | No documented layout | `cbcdea2aeeed`  |
-| 1704   | No documented layout | `cbcdea2aeeed`  |
-| 1698   | No documented layout | `cbcdea2aeeed`  |
-| 1690   | No documented layout | `cbcdea2aeeed`  |
-| 1685   | No documented layout | `cbcdea2aeeed`  |
-| 1680   | No documented layout | `cbcdea2aeeed`  |
-| 1674   | No documented layout | `cbcdea2aeeed`  |
-| 1668   | No documented layout | `cbcdea2aeeed`  |
-| 1659   | No documented layout | `cbcdea2aeeed`  |
-| 1649   | No documented layout | `cbcdea2aeeed`  |
-| 1642   | No documented layout | `cbcdea2aeeed`  |
-| 1636   | No documented layout | `cbcdea2aeeed`  |
-| 1628   | No documented layout | `cbcdea2aeeed`  |
-| 1622   | No documented layout | `cbcdea2aeeed`  |
-| 1614   | No documented layout | `cbcdea2aeeed`  |
-| 1608   | No documented layout | `cbcdea2aeeed`  |
-| 1602   | No documented layout | `cbcdea2aeeed`  |
-| 1598   | No documented layout | `cbcdea2aeeed`  |
-| 1594   | No documented layout | `cbcdea2aeeed`  |
-| 1590   | No documented layout | `cbcdea2aeeed`  |
-| 1587   | No documented layout | `cbcdea2aeeed`  |
-| 1584   | No documented layout | `cbcdea2aeeed`  |
-| 1579   | No documented layout | `cbcdea2aeeed`  |
-| 1572   | No documented layout | `cbcdea2aeeed`  |
-| 1565   | No documented layout | `cbcdea2aeeed`  |
-| 1559   | No documented layout | `cbcdea2aeeed`  |
-| 1554   | No documented layout | `cbcdea2aeeed`  |
-| 1547   | No documented layout | `cbcdea2aeeed`  |
-| 1537   | No documented layout | `cbcdea2aeeed`  |
-| 1529   | No documented layout | `cbcdea2aeeed`  |
-| 1524   | No documented layout | `cbcdea2aeeed`  |
-| 1519   | No documented layout | `cbcdea2aeeed`  |
-| 1509   | No documented layout | `cbcdea2aeeed`  |
-| 1506   | No documented layout | `cbcdea2aeeed`  |
-| 1504   | No documented layout | `cbcdea2aeeed`  |
-| 1500   | No documented layout | `cbcdea2aeeed`  |
-| 1493   | No documented layout | `cbcdea2aeeed`  |
-| 1489   | No documented layout | `cbcdea2aeeed`  |
-| 1485   | No documented layout | `cbcdea2aeeed`  |
-| 1481   | No documented layout | `cbcdea2aeeed`  |
-| 1474   | No documented layout | `cbcdea2aeeed`  |
-| 1466   | No documented layout | `cbcdea2aeeed`  |
-| 1462   | No documented layout | `cbcdea2aeeed`  |
-| 1459   | No documented layout | `cbcdea2aeeed`  |
-| 1453   | No documented layout | `cbcdea2aeeed`  |
-| 1450   | No documented layout | `cbcdea2aeeed`  |
-| 1445   | No documented layout | `cbcdea2aeeed`  |
-| 1439   | No documented layout | `cbcdea2aeeed`  |
-| 1433   | No documented layout | `cbcdea2aeeed`  |
-| 1430   | No documented layout | `cbcdea2aeeed`  |
-| 1426   | No documented layout | `cbcdea2aeeed`  |
-| 1421   | No documented layout | `cbcdea2aeeed`  |
-| 1417   | No documented layout | `cbcdea2aeeed`  |
-| 1416   | No documented layout | `cbcdea2aeeed`  |
-| 1409   | No documented layout | `cbcdea2aeeed`  |
-| 1405   | No documented layout | `cbcdea2aeeed`  |
-| 1401   | No documented layout | `cbcdea2aeeed`  |
-| 1396   | No documented layout | `cbcdea2aeeed`  |
-| 1391   | No documented layout | `cbcdea2aeeed`  |
-| 1390   | No documented layout | `cbcdea2aeeed`  |
-| 1386   | No documented layout | `cbcdea2aeeed`  |
-| 1381   | No documented layout | `cbcdea2aeeed`  |
-| 1379   | No documented layout | `cbcdea2aeeed`  |
-| 1372   | No documented layout | `cbcdea2aeeed`  |
-| 1366   | No documented layout | `cbcdea2aeeed`  |
-| 1364   | No documented layout | `cbcdea2aeeed`  |
-| 1363   | No documented layout | `cbcdea2aeeed`  |
-| 1360   | No documented layout | `cbcdea2aeeed`  |
-| 1358   | No documented layout | `cbcdea2aeeed`  |
-| 1355   | No documented layout | `cbcdea2aeeed`  |
-| 1351   | No documented layout | `cbcdea2aeeed`  |
-| 1348   | No documented layout | `cbcdea2aeeed`  |
-| 1346   | No documented layout | `cbcdea2aeeed`  |
-| 1341   | No documented layout | `cbcdea2aeeed`  |
-| 1340   | No documented layout | `cbcdea2aeeed`  |
-| 1338   | No documented layout | `cbcdea2aeeed`  |
-| 1335   | No documented layout | `cbcdea2aeeed`  |
-| 1333   | No documented layout | `cbcdea2aeeed`  |
-| 1329   | No documented layout | `cbcdea2aeeed`  |
-| 1327   | No documented layout | `cbcdea2aeeed`  |
-| 1324   | No documented layout | `cbcdea2aeeed`  |
-| 1321   | No documented layout | `cbcdea2aeeed`  |
-| 1319   | No documented layout | `cbcdea2aeeed`  |
-| 1318   | No documented layout | `cbcdea2aeeed`  |
-| 1316   | No documented layout | `cbcdea2aeeed`  |
-| 1313   | No documented layout | `cbcdea2aeeed`  |
-| 1311   | No documented layout | `cbcdea2aeeed`  |
-| 1309   | No documented layout | `cbcdea2aeeed`  |
-| 1304   | No documented layout | `cbcdea2aeeed`  |
-| 1292   | No documented layout | `cbcdea2aeeed`  |
-| 1286   | No documented layout | `cbcdea2aeeed`  |
-| 1280   | No documented layout | `cbcdea2aeeed`  |
-| 1276   | No documented layout | `cbcdea2aeeed`  |
-| 1267   | No documented layout | `cbcdea2aeeed`  |
-| 1261   | No documented layout | `cbcdea2aeeed`  |
-| 1256   | No documented layout | `cbcdea2aeeed`  |
-| 1250   | No documented layout | `cbcdea2aeeed`  |
-| 1246   | No file              | `cbcdea2aeeed`  |
-| 1239   | No file              | `cbcdea2aeeed`  |
-| 1230   | No file              | `cbcdea2aeeed`  |
-| 1226   | No file              | `cbcdea2aeeed`  |
-| 1220   | No file              | `cbcdea2aeeed`  |
-| 1217   | No file              | `cbcdea2aeeed`  |
-| 1211   | No file              | `cbcdea2aeeed`  |
-| 1210   | No file              | `cbcdea2aeeed`  |
-| 1208   | No file              | `cbcdea2aeeed`  |
-| 1203   | No file              | `cbcdea2aeeed`  |
-| 1197   | No file              | `cbcdea2aeeed`  |
-| 1194   | No file              | `cbcdea2aeeed`  |
-| 1192   | No file              | `cbcdea2aeeed`  |
-| 1187   | No file              | `cbcdea2aeeed`  |
-| 1183   | No file              | `cbcdea2aeeed`  |
-| 1177   | No file              | `cbcdea2aeeed`  |
-| 1173   | No file              | `cbcdea2aeeed`  |
-| 1167   | No file              | `cbcdea2aeeed`  |
-| 1164   | No file              | `cbcdea2aeeed`  |
-| 1156   | No file              | `cbcdea2aeeed`  |
-| 1149   | No file              | `cbcdea2aeeed`  |
-| 1144   | No file              | `cbcdea2aeeed`  |
-| 1137   | No file              | `cbcdea2aeeed`  |
-| 1132   | No file              | `cbcdea2aeeed`  |
-| 1127   | No file              | `cbcdea2aeeed`  |
-| 1122   | No file              | `cbcdea2aeeed`  |
-| 1118   | No file              | `cbcdea2aeeed`  |
-| 1114   | No file              | `cbcdea2aeeed`  |
-| 1109   | No file              | `cbcdea2aeeed`  |
-| 1102   | No file              | `cbcdea2aeeed`  |
-| 1096   | No file              | `cbcdea2aeeed`  |
-| 1088   | No file              | `cbcdea2aeeed`  |
-| 1081   | No file              | `cbcdea2aeeed`  |
-| 1076   | No file              | `cbcdea2aeeed`  |
-| 1069   | No file              | `cbcdea2aeeed`  |
-| 1064   | No file              | `cbcdea2aeeed`  |
-| 1058   | No file              | `cbcdea2aeeed`  |
-| 1051   | No file              | `cbcdea2aeeed`  |
-| 1044   | No file              | `cbcdea2aeeed`  |
-| 1036   | No file              | `cbcdea2aeeed`  |
-| 1026   | No file              | `cbcdea2aeeed`  |
-| 1016   | No file              | `cbcdea2aeeed`  |
-| 1009   | No file              | `cbcdea2aeeed`  |
-| 1005   | No file              | `cbcdea2aeeed`  |
-| 1000   | No file              | `cbcdea2aeeed`  |
-| 998    | No file              | `cbcdea2aeeed`  |
-| 990    | No file              | `cbcdea2aeeed`  |
-| 979    | No file              | `cbcdea2aeeed`  |
-| 972    | No file              | `cbcdea2aeeed`  |
-| 963    | No file              | `cbcdea2aeeed`  |
-| 955    | No file              | `cbcdea2aeeed`  |
-| 946    | No file              | `cbcdea2aeeed`  |
-| 938    | No file              | `cbcdea2aeeed`  |
-| 927    | No file              | `cbcdea2aeeed`  |
-| 911    | No file              | `cbcdea2aeeed`  |
-| 904    | No file              | `cbcdea2aeeed`  |
-| 899    | No file              | `cbcdea2aeeed`  |
-| 894    | No file              | `cbcdea2aeeed`  |
-| 885    | No file              | `cbcdea2aeeed`  |
-| 879    | No file              | `cbcdea2aeeed`  |
-| 872    | No file              | `cbcdea2aeeed`  |
-| 864    | No file              | `cbcdea2aeeed`  |
-| 855    | No file              | `cbcdea2aeeed`  |
-| 853    | No file              | `cbcdea2aeeed`  |
-| 845    | No file              | `cbcdea2aeeed`  |
-| 837    | No file              | `cbcdea2aeeed`  |
-| 829    | No file              | `cbcdea2aeeed`  |
-| 822    | No file              | `cbcdea2aeeed`  |
-| 814    | No file              | `cbcdea2aeeed`  |
-| 805    | No file              | `cbcdea2aeeed`  |
-| 794    | No file              | `cbcdea2aeeed`  |
-| 787    | No file              | `cbcdea2aeeed`  |
-| 780    | No file              | `cbcdea2aeeed`  |
-| 771    | No file              | `cbcdea2aeeed`  |
-| 760    | No file              | `cbcdea2aeeed`  |
-| 748    | No file              | `cbcdea2aeeed`  |
-| 741    | No file              | `cbcdea2aeeed`  |
-| 736    | No file              | `cbcdea2aeeed`  |
-| 731    | No file              | `cbcdea2aeeed`  |
-| 723    | No file              | `cbcdea2aeeed`  |
-| 711    | No file              | `cbcdea2aeeed`  |
-| 707    | No file              | `cbcdea2aeeed`  |
-| 697    | No file              | `cbcdea2aeeed`  |
-| 689    | No file              | `cbcdea2aeeed`  |
-| 683    | No file              | `cbcdea2aeeed`  |
-| 678    | No file              | `cbcdea2aeeed`  |
-| 670    | No file              | `cbcdea2aeeed`  |
-| 661    | No file              | `cbcdea2aeeed`  |
-| 656    | No file              | `cbcdea2aeeed`  |
-| 652    | No file              | `cbcdea2aeeed`  |
-| 643    | No file              | `cbcdea2aeeed`  |
-| 637    | No file              | `cbcdea2aeeed`  |
-| 630    | No file              | `cbcdea2aeeed`  |
-| 627    | No file              | `cbcdea2aeeed`  |
-| 621    | No file              | `cbcdea2aeeed`  |
-| 617    | No file              | `cbcdea2aeeed`  |
-| 615    | No file              | `cbcdea2aeeed`  |
-| 606    | No file              | `cbcdea2aeeed`  |
-| 599    | No file              | `cbcdea2aeeed`  |
-| 592    | No file              | `cbcdea2aeeed`  |
-| 586    | No file              | `cbcdea2aeeed`  |
-| 577    | No file              | `cbcdea2aeeed`  |
-| 569    | No file              | `cbcdea2aeeed`  |
-| 561    | No file              | `cbcdea2aeeed`  |
-| 554    | No file              | `cbcdea2aeeed`  |
-| 542    | No file              | `cbcdea2aeeed`  |
-| 532    | No file              | `cbcdea2aeeed`  |
-| 531    | No file              | `cbcdea2aeeed`  |
-| 526    | No file              | `cbcdea2aeeed`  |
-| 521    | No file              | `cbcdea2aeeed`  |
-| 517    | No file              | `cbcdea2aeeed`  |
-| 510    | No file              | `cbcdea2aeeed`  |
-| 508    | No file              | `cbcdea2aeeed`  |
-| 504    | No file              | `cbcdea2aeeed`  |
-| 497    | No file              | `cbcdea2aeeed`  |
-| 491    | No file              | `cbcdea2aeeed`  |
-| 485    | No file              | `cbcdea2aeeed`  |
-| 478    | No file              | `cbcdea2aeeed`  |
-| 472    | No file              | `cbcdea2aeeed`  |
-| 466    | No file              | `cbcdea2aeeed`  |
-| 457    | No file              | `cbcdea2aeeed`  |
-| 452    | No file              | `cbcdea2aeeed`  |
-| 449    | No file              | `cbcdea2aeeed`  |
-| 435    | No file              | `cbcdea2aeeed`  |
+| 3483   | Layout 2             | `ed6888f41e4f`  |
+| 3482   | Layout 2             | `ed6888f41e4f`  |
+| 3474   | Layout 2             | `ed6888f41e4f`  |
+| 3473   | Layout 2             | `ed6888f41e4f`  |
+| 3464   | Layout 2             | `ed6888f41e4f`  |
+| 3458   | Layout 2             | `ed6888f41e4f`  |
+| 3454   | Layout 2             | `ed6888f41e4f`  |
+| 3444   | Layout 2             | `ed6888f41e4f`  |
+| 3435   | Layout 2             | `ed6888f41e4f`  |
+| 3426   | Layout 2             | `ed6888f41e4f`  |
+| 3418   | Layout 2             | `ed6888f41e4f`  |
+| 3412   | Layout 2             | `ed6888f41e4f`  |
+| 3402   | Layout 2             | `ed6888f41e4f`  |
+| 3396   | Layout 2             | `ed6888f41e4f`  |
+| 3387   | Layout 2             | `ed6888f41e4f`  |
+| 3381   | Layout 2             | `ed6888f41e4f`  |
+| 3373   | Layout 2             | `ed6888f41e4f`  |
+| 3364   | Layout 2             | `ed6888f41e4f`  |
+| 3356   | Layout 2             | `ed6888f41e4f`  |
+| 3349   | Layout 2             | `ed6888f41e4f`  |
+| 3342   | Layout 2             | `ed6888f41e4f`  |
+| 3335   | Layout 2             | `ed6888f41e4f`  |
+| 3326   | Layout 2             | `ed6888f41e4f`  |
+| 3321   | Layout 2             | `ed6888f41e4f`  |
+| 3314   | Layout 2             | `ed6888f41e4f`  |
+| 3303   | No documented layout | `ed6888f41e4f`  |
+| 3302   | No documented layout | `ed6888f41e4f`  |
+| 3293   | No documented layout | `ed6888f41e4f`  |
+| 3283   | No documented layout | `ed6888f41e4f`  |
+| 3275   | No documented layout | `ed6888f41e4f`  |
+| 3267   | No documented layout | `ed6888f41e4f`  |
+| 3258   | No documented layout | `ed6888f41e4f`  |
+| 3251   | No documented layout | `ed6888f41e4f`  |
+| 3242   | No documented layout | `ed6888f41e4f`  |
+| 3235   | No documented layout | `ed6888f41e4f`  |
+| 3229   | No documented layout | `ed6888f41e4f`  |
+| 3212   | No documented layout | `ed6888f41e4f`  |
+| 3203   | No documented layout | `ed6888f41e4f`  |
+| 3193   | No documented layout | `ed6888f41e4f`  |
+| 3186   | No documented layout | `ed6888f41e4f`  |
+| 3177   | No documented layout | `ed6888f41e4f`  |
+| 3169   | No documented layout | `ed6888f41e4f`  |
+| 3158   | No documented layout | `ed6888f41e4f`  |
+| 3151   | No documented layout | `ed6888f41e4f`  |
+| 3144   | No documented layout | `ed6888f41e4f`  |
+| 3133   | No documented layout | `ed6888f41e4f`  |
+| 3125   | No documented layout | `ed6888f41e4f`  |
+| 3118   | No documented layout | `ed6888f41e4f`  |
+| 3111   | No documented layout | `ed6888f41e4f`  |
+| 3103   | No documented layout | `ed6888f41e4f`  |
+| 3095   | No documented layout | `ed6888f41e4f`  |
+| 3086   | No documented layout | `ed6888f41e4f`  |
+| 3072   | No documented layout | `ed6888f41e4f`  |
+| 3062   | No documented layout | `ed6888f41e4f`  |
+| 3052   | No documented layout | `ed6888f41e4f`  |
+| 3045   | No documented layout | `ed6888f41e4f`  |
+| 3037   | No documented layout | `ed6888f41e4f`  |
+| 3030   | No documented layout | `ed6888f41e4f`  |
+| 3021   | No documented layout | `ed6888f41e4f`  |
+| 3012   | No documented layout | `ed6888f41e4f`  |
+| 3002   | No documented layout | `ed6888f41e4f`  |
+| 2995   | No documented layout | `ed6888f41e4f`  |
+| 2987   | No documented layout | `ed6888f41e4f`  |
+| 2978   | No documented layout | `ed6888f41e4f`  |
+| 2970   | No documented layout | `ed6888f41e4f`  |
+| 2959   | No documented layout | `ed6888f41e4f`  |
+| 2951   | No documented layout | `ed6888f41e4f`  |
+| 2942   | No documented layout | `ed6888f41e4f`  |
+| 2935   | No documented layout | `ed6888f41e4f`  |
+| 2932   | No documented layout | `ed6888f41e4f`  |
+| 2923   | No documented layout | `ed6888f41e4f`  |
+| 2919   | No documented layout | `ed6888f41e4f`  |
+| 2907   | No documented layout | `ed6888f41e4f`  |
+| 2900   | No documented layout | `ed6888f41e4f`  |
+| 2891   | No documented layout | `ed6888f41e4f`  |
+| 2882   | No documented layout | `ed6888f41e4f`  |
+| 2872   | No documented layout | `ed6888f41e4f`  |
+| 2863   | No documented layout | `ed6888f41e4f`  |
+| 2855   | No documented layout | `ed6888f41e4f`  |
+| 2849   | No documented layout | `ed6888f41e4f`  |
+| 2844   | No documented layout | `ed6888f41e4f`  |
+| 2834   | No documented layout | `ed6888f41e4f`  |
+| 2825   | No documented layout | `ed6888f41e4f`  |
+| 2819   | No documented layout | `ed6888f41e4f`  |
+| 2811   | No documented layout | `ed6888f41e4f`  |
+| 2803   | No documented layout | `ed6888f41e4f`  |
+| 2794   | No documented layout | `ed6888f41e4f`  |
+| 2783   | No documented layout | `ed6888f41e4f`  |
+| 2774   | No documented layout | `ed6888f41e4f`  |
+| 2765   | No documented layout | `ed6888f41e4f`  |
+| 2756   | No documented layout | `ed6888f41e4f`  |
+| 2750   | No documented layout | `ed6888f41e4f`  |
+| 2743   | No documented layout | `ed6888f41e4f`  |
+| 2736   | No documented layout | `ed6888f41e4f`  |
+| 2726   | No documented layout | `ed6888f41e4f`  |
+| 2717   | No documented layout | `ed6888f41e4f`  |
+| 2709   | No documented layout | `ed6888f41e4f`  |
+| 2703   | No documented layout | `ed6888f41e4f`  |
+| 2695   | No documented layout | `ed6888f41e4f`  |
+| 2684   | No documented layout | `ed6888f41e4f`  |
+| 2672   | No documented layout | `ed6888f41e4f`  |
+| 2665   | No documented layout | `ed6888f41e4f`  |
+| 2657   | No documented layout | `ed6888f41e4f`  |
+| 2649   | No documented layout | `ed6888f41e4f`  |
+| 2644   | No documented layout | `ed6888f41e4f`  |
+| 2637   | No documented layout | `ed6888f41e4f`  |
+| 2629   | No documented layout | `ed6888f41e4f`  |
+| 2619   | No documented layout | `ed6888f41e4f`  |
+| 2612   | No documented layout | `ed6888f41e4f`  |
+| 2606   | No documented layout | `ed6888f41e4f`  |
+| 2602   | No documented layout | `ed6888f41e4f`  |
+| 2601   | No documented layout | `ed6888f41e4f`  |
+| 2592   | No documented layout | `ed6888f41e4f`  |
+| 2583   | No documented layout | `ed6888f41e4f`  |
+| 2575   | No documented layout | `ed6888f41e4f`  |
+| 2567   | No documented layout | `ed6888f41e4f`  |
+| 2560   | No documented layout | `ed6888f41e4f`  |
+| 2553   | No documented layout | `ed6888f41e4f`  |
+| 2545   | No documented layout | `ed6888f41e4f`  |
+| 2538   | No documented layout | `ed6888f41e4f`  |
+| 2529   | No documented layout | `ed6888f41e4f`  |
+| 2519   | No documented layout | `ed6888f41e4f`  |
+| 2513   | No documented layout | `ed6888f41e4f`  |
+| 2510   | No documented layout | `ed6888f41e4f`  |
+| 2507   | No documented layout | `ed6888f41e4f`  |
+| 2503   | No documented layout | `ed6888f41e4f`  |
+| 2498   | No documented layout | `ed6888f41e4f`  |
+| 2492   | No documented layout | `ed6888f41e4f`  |
+| 2487   | No documented layout | `ed6888f41e4f`  |
+| 2480   | No documented layout | `ed6888f41e4f`  |
+| 2474   | No documented layout | `ed6888f41e4f`  |
+| 2468   | No documented layout | `ed6888f41e4f`  |
+| 2460   | No documented layout | `ed6888f41e4f`  |
+| 2453   | No documented layout | `ed6888f41e4f`  |
+| 2444   | No documented layout | `ed6888f41e4f`  |
+| 2438   | No documented layout | `ed6888f41e4f`  |
+| 2434   | No documented layout | `ed6888f41e4f`  |
+| 2429   | No documented layout | `ed6888f41e4f`  |
+| 2421   | No documented layout | `ed6888f41e4f`  |
+| 2414   | No documented layout | `ed6888f41e4f`  |
+| 2407   | No documented layout | `ed6888f41e4f`  |
+| 2401   | No documented layout | `ed6888f41e4f`  |
+| 2397   | No documented layout | `ed6888f41e4f`  |
+| 2393   | No documented layout | `ed6888f41e4f`  |
+| 2384   | No documented layout | `ed6888f41e4f`  |
+| 2378   | No documented layout | `ed6888f41e4f`  |
+| 2372   | No documented layout | `ed6888f41e4f`  |
+| 2358   | No documented layout | `ed6888f41e4f`  |
+| 2352   | No documented layout | `ed6888f41e4f`  |
+| 2347   | No documented layout | `ed6888f41e4f`  |
+| 2343   | No documented layout | `ed6888f41e4f`  |
+| 2335   | No documented layout | `ed6888f41e4f`  |
+| 2327   | No documented layout | `ed6888f41e4f`  |
+| 2324   | No documented layout | `ed6888f41e4f`  |
+| 2319   | No documented layout | `ed6888f41e4f`  |
+| 2313   | No documented layout | `ed6888f41e4f`  |
+| 2308   | No documented layout | `ed6888f41e4f`  |
+| 2302   | No documented layout | `ed6888f41e4f`  |
+| 2295   | No documented layout | `ed6888f41e4f`  |
+| 2290   | No documented layout | `ed6888f41e4f`  |
+| 2284   | No documented layout | `ed6888f41e4f`  |
+| 2276   | No documented layout | `ed6888f41e4f`  |
+| 2269   | No documented layout | `ed6888f41e4f`  |
+| 2259   | No documented layout | `ed6888f41e4f`  |
+| 2250   | No documented layout | `ed6888f41e4f`  |
+| 2243   | No documented layout | `ed6888f41e4f`  |
+| 2235   | No documented layout | `ed6888f41e4f`  |
+| 2229   | No documented layout | `ed6888f41e4f`  |
+| 2224   | No documented layout | `ed6888f41e4f`  |
+| 2218   | No documented layout | `ed6888f41e4f`  |
+| 2215   | No documented layout | `ed6888f41e4f`  |
+| 2207   | No documented layout | `ed6888f41e4f`  |
+| 2203   | No documented layout | `ed6888f41e4f`  |
+| 2196   | No documented layout | `ed6888f41e4f`  |
+| 2192   | No documented layout | `ed6888f41e4f`  |
+| 2189   | No documented layout | `ed6888f41e4f`  |
+| 2183   | No documented layout | `ed6888f41e4f`  |
+| 2179   | No documented layout | `ed6888f41e4f`  |
+| 2171   | No documented layout | `ed6888f41e4f`  |
+| 2163   | No documented layout | `ed6888f41e4f`  |
+| 2156   | No documented layout | `ed6888f41e4f`  |
+| 2151   | No documented layout | `ed6888f41e4f`  |
+| 2147   | No documented layout | `ed6888f41e4f`  |
+| 2142   | No documented layout | `ed6888f41e4f`  |
+| 2138   | No documented layout | `ed6888f41e4f`  |
+| 2134   | No documented layout | `ed6888f41e4f`  |
+| 2130   | No documented layout | `ed6888f41e4f`  |
+| 2122   | No documented layout | `ed6888f41e4f`  |
+| 2107   | No documented layout | `ed6888f41e4f`  |
+| 2098   | No documented layout | `ed6888f41e4f`  |
+| 2089   | No documented layout | `ed6888f41e4f`  |
+| 2081   | No documented layout | `ed6888f41e4f`  |
+| 2073   | No documented layout | `ed6888f41e4f`  |
+| 2067   | No documented layout | `ed6888f41e4f`  |
+| 2063   | No documented layout | `ed6888f41e4f`  |
+| 2059   | No documented layout | `ed6888f41e4f`  |
+| 2052   | No documented layout | `ed6888f41e4f`  |
+| 2044   | No documented layout | `ed6888f41e4f`  |
+| 2039   | No documented layout | `ed6888f41e4f`  |
+| 2032   | No documented layout | `ed6888f41e4f`  |
+| 2025   | No documented layout | `ed6888f41e4f`  |
+| 2011   | No documented layout | `ed6888f41e4f`  |
+| 2005   | No documented layout | `ed6888f41e4f`  |
+| 2000   | No documented layout | `ed6888f41e4f`  |
+| 1996   | No documented layout | `ed6888f41e4f`  |
+| 1991   | No documented layout | `ed6888f41e4f`  |
+| 1985   | No documented layout | `ed6888f41e4f`  |
+| 1980   | No documented layout | `ed6888f41e4f`  |
+| 1969   | No documented layout | `ed6888f41e4f`  |
+| 1964   | No documented layout | `ed6888f41e4f`  |
+| 1958   | No documented layout | `ed6888f41e4f`  |
+| 1950   | No documented layout | `ed6888f41e4f`  |
+| 1945   | No documented layout | `ed6888f41e4f`  |
+| 1937   | No documented layout | `ed6888f41e4f`  |
+| 1933   | No documented layout | `ed6888f41e4f`  |
+| 1927   | No documented layout | `ed6888f41e4f`  |
+| 1921   | No documented layout | `ed6888f41e4f`  |
+| 1914   | No documented layout | `ed6888f41e4f`  |
+| 1908   | No documented layout | `ed6888f41e4f`  |
+| 1897   | No documented layout | `ed6888f41e4f`  |
+| 1892   | No documented layout | `ed6888f41e4f`  |
+| 1886   | No documented layout | `ed6888f41e4f`  |
+| 1881   | No documented layout | `ed6888f41e4f`  |
+| 1871   | No documented layout | `ed6888f41e4f`  |
+| 1866   | No documented layout | `ed6888f41e4f`  |
+| 1862   | Layout 1             | `ed6888f41e4f`  |
+| 1854   | Layout 1             | `ed6888f41e4f`  |
+| 1846   | Layout 1             | `ed6888f41e4f`  |
+| 1838   | Layout 1             | `ed6888f41e4f`  |
+| 1832   | Layout 1             | `ed6888f41e4f`  |
+| 1826   | Layout 1             | `ed6888f41e4f`  |
+| 1822   | Layout 1             | `ed6888f41e4f`  |
+| 1818   | Layout 1             | `ed6888f41e4f`  |
+| 1804   | Layout 1             | `ed6888f41e4f`  |
+| 1794   | Layout 1             | `ed6888f41e4f`  |
+| 1790   | Layout 1             | `ed6888f41e4f`  |
+| 1784   | Layout 1             | `ed6888f41e4f`  |
+| 1774   | Layout 1             | `ed6888f41e4f`  |
+| 1771   | Layout 1             | `ed6888f41e4f`  |
+| 1762   | Layout 1             | `ed6888f41e4f`  |
+| 1759   | Layout 1             | `ed6888f41e4f`  |
+| 1754   | No documented layout | `ed6888f41e4f`  |
+| 1749   | No documented layout | `ed6888f41e4f`  |
+| 1743   | No documented layout | `ed6888f41e4f`  |
+| 1737   | No documented layout | `ed6888f41e4f`  |
+| 1731   | No documented layout | `ed6888f41e4f`  |
+| 1725   | No documented layout | `ed6888f41e4f`  |
+| 1717   | No documented layout | `ed6888f41e4f`  |
+| 1710   | No documented layout | `ed6888f41e4f`  |
+| 1704   | No documented layout | `ed6888f41e4f`  |
+| 1698   | No documented layout | `ed6888f41e4f`  |
+| 1690   | No documented layout | `ed6888f41e4f`  |
+| 1685   | No documented layout | `ed6888f41e4f`  |
+| 1680   | No documented layout | `ed6888f41e4f`  |
+| 1674   | No documented layout | `ed6888f41e4f`  |
+| 1668   | No documented layout | `ed6888f41e4f`  |
+| 1659   | No documented layout | `ed6888f41e4f`  |
+| 1649   | No documented layout | `ed6888f41e4f`  |
+| 1642   | No documented layout | `ed6888f41e4f`  |
+| 1636   | No documented layout | `ed6888f41e4f`  |
+| 1628   | No documented layout | `ed6888f41e4f`  |
+| 1622   | No documented layout | `ed6888f41e4f`  |
+| 1614   | No documented layout | `ed6888f41e4f`  |
+| 1608   | No documented layout | `ed6888f41e4f`  |
+| 1602   | No documented layout | `ed6888f41e4f`  |
+| 1598   | No documented layout | `ed6888f41e4f`  |
+| 1594   | No documented layout | `ed6888f41e4f`  |
+| 1590   | No documented layout | `ed6888f41e4f`  |
+| 1587   | No documented layout | `ed6888f41e4f`  |
+| 1584   | No documented layout | `ed6888f41e4f`  |
+| 1579   | No documented layout | `ed6888f41e4f`  |
+| 1572   | No documented layout | `ed6888f41e4f`  |
+| 1565   | No documented layout | `ed6888f41e4f`  |
+| 1559   | No documented layout | `ed6888f41e4f`  |
+| 1554   | No documented layout | `ed6888f41e4f`  |
+| 1547   | No documented layout | `ed6888f41e4f`  |
+| 1537   | No documented layout | `ed6888f41e4f`  |
+| 1529   | No documented layout | `ed6888f41e4f`  |
+| 1524   | No documented layout | `ed6888f41e4f`  |
+| 1519   | No documented layout | `ed6888f41e4f`  |
+| 1509   | No documented layout | `ed6888f41e4f`  |
+| 1506   | No documented layout | `ed6888f41e4f`  |
+| 1504   | No documented layout | `ed6888f41e4f`  |
+| 1500   | No documented layout | `ed6888f41e4f`  |
+| 1493   | No documented layout | `ed6888f41e4f`  |
+| 1489   | No documented layout | `ed6888f41e4f`  |
+| 1485   | No documented layout | `ed6888f41e4f`  |
+| 1481   | No documented layout | `ed6888f41e4f`  |
+| 1474   | No documented layout | `ed6888f41e4f`  |
+| 1466   | No documented layout | `ed6888f41e4f`  |
+| 1462   | No documented layout | `ed6888f41e4f`  |
+| 1459   | No documented layout | `ed6888f41e4f`  |
+| 1453   | No documented layout | `ed6888f41e4f`  |
+| 1450   | No documented layout | `ed6888f41e4f`  |
+| 1445   | No documented layout | `ed6888f41e4f`  |
+| 1439   | No documented layout | `ed6888f41e4f`  |
+| 1433   | No documented layout | `ed6888f41e4f`  |
+| 1430   | No documented layout | `ed6888f41e4f`  |
+| 1426   | No documented layout | `ed6888f41e4f`  |
+| 1421   | No documented layout | `ed6888f41e4f`  |
+| 1417   | No documented layout | `ed6888f41e4f`  |
+| 1416   | No documented layout | `ed6888f41e4f`  |
+| 1409   | No documented layout | `ed6888f41e4f`  |
+| 1405   | No documented layout | `ed6888f41e4f`  |
+| 1401   | No documented layout | `ed6888f41e4f`  |
+| 1396   | No documented layout | `ed6888f41e4f`  |
+| 1391   | No documented layout | `ed6888f41e4f`  |
+| 1390   | No documented layout | `ed6888f41e4f`  |
+| 1386   | No documented layout | `ed6888f41e4f`  |
+| 1381   | No documented layout | `ed6888f41e4f`  |
+| 1379   | No documented layout | `ed6888f41e4f`  |
+| 1372   | No documented layout | `ed6888f41e4f`  |
+| 1366   | No documented layout | `ed6888f41e4f`  |
+| 1364   | No documented layout | `ed6888f41e4f`  |
+| 1363   | No documented layout | `ed6888f41e4f`  |
+| 1360   | No documented layout | `ed6888f41e4f`  |
+| 1358   | No documented layout | `ed6888f41e4f`  |
+| 1355   | No documented layout | `ed6888f41e4f`  |
+| 1351   | No documented layout | `ed6888f41e4f`  |
+| 1348   | No documented layout | `ed6888f41e4f`  |
+| 1346   | No documented layout | `ed6888f41e4f`  |
+| 1341   | No documented layout | `ed6888f41e4f`  |
+| 1340   | No documented layout | `ed6888f41e4f`  |
+| 1338   | No documented layout | `ed6888f41e4f`  |
+| 1335   | No documented layout | `ed6888f41e4f`  |
+| 1333   | No documented layout | `ed6888f41e4f`  |
+| 1329   | No documented layout | `ed6888f41e4f`  |
+| 1327   | No documented layout | `ed6888f41e4f`  |
+| 1324   | No documented layout | `ed6888f41e4f`  |
+| 1321   | No documented layout | `ed6888f41e4f`  |
+| 1319   | No documented layout | `ed6888f41e4f`  |
+| 1318   | No documented layout | `ed6888f41e4f`  |
+| 1316   | No documented layout | `ed6888f41e4f`  |
+| 1313   | No documented layout | `ed6888f41e4f`  |
+| 1311   | No documented layout | `ed6888f41e4f`  |
+| 1309   | No documented layout | `ed6888f41e4f`  |
+| 1304   | No documented layout | `ed6888f41e4f`  |
+| 1292   | No documented layout | `ed6888f41e4f`  |
+| 1286   | No documented layout | `ed6888f41e4f`  |
+| 1280   | No documented layout | `ed6888f41e4f`  |
+| 1276   | No documented layout | `ed6888f41e4f`  |
+| 1267   | No documented layout | `ed6888f41e4f`  |
+| 1261   | No documented layout | `ed6888f41e4f`  |
+| 1256   | No documented layout | `ed6888f41e4f`  |
+| 1250   | No documented layout | `ed6888f41e4f`  |
+| 1246   | No file              | `ed6888f41e4f`  |
+| 1239   | No file              | `ed6888f41e4f`  |
+| 1230   | No file              | `ed6888f41e4f`  |
+| 1226   | No file              | `ed6888f41e4f`  |
+| 1220   | No file              | `ed6888f41e4f`  |
+| 1217   | No file              | `ed6888f41e4f`  |
+| 1211   | No file              | `ed6888f41e4f`  |
+| 1210   | No file              | `ed6888f41e4f`  |
+| 1208   | No file              | `ed6888f41e4f`  |
+| 1203   | No file              | `ed6888f41e4f`  |
+| 1197   | No file              | `ed6888f41e4f`  |
+| 1194   | No file              | `ed6888f41e4f`  |
+| 1192   | No file              | `ed6888f41e4f`  |
+| 1187   | No file              | `ed6888f41e4f`  |
+| 1183   | No file              | `ed6888f41e4f`  |
+| 1177   | No file              | `ed6888f41e4f`  |
+| 1173   | No file              | `ed6888f41e4f`  |
+| 1167   | No file              | `ed6888f41e4f`  |
+| 1164   | No file              | `ed6888f41e4f`  |
+| 1156   | No file              | `ed6888f41e4f`  |
+| 1149   | No file              | `ed6888f41e4f`  |
+| 1144   | No file              | `ed6888f41e4f`  |
+| 1137   | No file              | `ed6888f41e4f`  |
+| 1132   | No file              | `ed6888f41e4f`  |
+| 1127   | No file              | `ed6888f41e4f`  |
+| 1122   | No file              | `ed6888f41e4f`  |
+| 1118   | No file              | `ed6888f41e4f`  |
+| 1114   | No file              | `ed6888f41e4f`  |
+| 1109   | No file              | `ed6888f41e4f`  |
+| 1102   | No file              | `ed6888f41e4f`  |
+| 1096   | No file              | `ed6888f41e4f`  |
+| 1088   | No file              | `ed6888f41e4f`  |
+| 1081   | No file              | `ed6888f41e4f`  |
+| 1076   | No file              | `ed6888f41e4f`  |
+| 1069   | No file              | `ed6888f41e4f`  |
+| 1064   | No file              | `ed6888f41e4f`  |
+| 1058   | No file              | `ed6888f41e4f`  |
+| 1051   | No file              | `ed6888f41e4f`  |
+| 1044   | No file              | `ed6888f41e4f`  |
+| 1036   | No file              | `ed6888f41e4f`  |
+| 1026   | No file              | `ed6888f41e4f`  |
+| 1016   | No file              | `ed6888f41e4f`  |
+| 1009   | No file              | `ed6888f41e4f`  |
+| 1005   | No file              | `ed6888f41e4f`  |
+| 1000   | No file              | `ed6888f41e4f`  |
+| 998    | No file              | `ed6888f41e4f`  |
+| 990    | No file              | `ed6888f41e4f`  |
+| 979    | No file              | `ed6888f41e4f`  |
+| 972    | No file              | `ed6888f41e4f`  |
+| 963    | No file              | `ed6888f41e4f`  |
+| 955    | No file              | `ed6888f41e4f`  |
+| 946    | No file              | `ed6888f41e4f`  |
+| 938    | No file              | `ed6888f41e4f`  |
+| 927    | No file              | `ed6888f41e4f`  |
+| 911    | No file              | `ed6888f41e4f`  |
+| 904    | No file              | `ed6888f41e4f`  |
+| 899    | No file              | `ed6888f41e4f`  |
+| 894    | No file              | `ed6888f41e4f`  |
+| 885    | No file              | `ed6888f41e4f`  |
+| 879    | No file              | `ed6888f41e4f`  |
+| 872    | No file              | `ed6888f41e4f`  |
+| 864    | No file              | `ed6888f41e4f`  |
+| 855    | No file              | `ed6888f41e4f`  |
+| 853    | No file              | `ed6888f41e4f`  |
+| 845    | No file              | `ed6888f41e4f`  |
+| 837    | No file              | `ed6888f41e4f`  |
+| 829    | No file              | `ed6888f41e4f`  |
+| 822    | No file              | `ed6888f41e4f`  |
+| 814    | No file              | `ed6888f41e4f`  |
+| 805    | No file              | `ed6888f41e4f`  |
+| 794    | No file              | `ed6888f41e4f`  |
+| 787    | No file              | `ed6888f41e4f`  |
+| 780    | No file              | `ed6888f41e4f`  |
+| 771    | No file              | `ed6888f41e4f`  |
+| 760    | No file              | `ed6888f41e4f`  |
+| 748    | No file              | `ed6888f41e4f`  |
+| 741    | No file              | `ed6888f41e4f`  |
+| 736    | No file              | `ed6888f41e4f`  |
+| 731    | No file              | `ed6888f41e4f`  |
+| 723    | No file              | `ed6888f41e4f`  |
+| 711    | No file              | `ed6888f41e4f`  |
+| 707    | No file              | `ed6888f41e4f`  |
+| 697    | No file              | `ed6888f41e4f`  |
+| 689    | No file              | `ed6888f41e4f`  |
+| 683    | No file              | `ed6888f41e4f`  |
+| 678    | No file              | `ed6888f41e4f`  |
+| 670    | No file              | `ed6888f41e4f`  |
+| 661    | No file              | `ed6888f41e4f`  |
+| 656    | No file              | `ed6888f41e4f`  |
+| 652    | No file              | `ed6888f41e4f`  |
+| 643    | No file              | `ed6888f41e4f`  |
+| 637    | No file              | `ed6888f41e4f`  |
+| 630    | No file              | `ed6888f41e4f`  |
+| 627    | No file              | `ed6888f41e4f`  |
+| 621    | No file              | `ed6888f41e4f`  |
+| 617    | No file              | `ed6888f41e4f`  |
+| 615    | No file              | `ed6888f41e4f`  |
+| 606    | No file              | `ed6888f41e4f`  |
+| 599    | No file              | `ed6888f41e4f`  |
+| 592    | No file              | `ed6888f41e4f`  |
+| 586    | No file              | `ed6888f41e4f`  |
+| 577    | No file              | `ed6888f41e4f`  |
+| 569    | No file              | `ed6888f41e4f`  |
+| 561    | No file              | `ed6888f41e4f`  |
+| 554    | No file              | `ed6888f41e4f`  |
+| 542    | No file              | `ed6888f41e4f`  |
+| 532    | No file              | `ed6888f41e4f`  |
+| 531    | No file              | `ed6888f41e4f`  |
+| 526    | No file              | `ed6888f41e4f`  |
+| 521    | No file              | `ed6888f41e4f`  |
+| 517    | No file              | `ed6888f41e4f`  |
+| 510    | No file              | `ed6888f41e4f`  |
+| 508    | No file              | `ed6888f41e4f`  |
+| 504    | No file              | `ed6888f41e4f`  |
+| 497    | No file              | `ed6888f41e4f`  |
+| 491    | No file              | `ed6888f41e4f`  |
+| 485    | No file              | `ed6888f41e4f`  |
+| 478    | No file              | `ed6888f41e4f`  |
+| 472    | No file              | `ed6888f41e4f`  |
+| 466    | No file              | `ed6888f41e4f`  |
+| 457    | No file              | `ed6888f41e4f`  |
+| 452    | No file              | `ed6888f41e4f`  |
+| 449    | No file              | `ed6888f41e4f`  |
+| 435    | No file              | `ed6888f41e4f`  |
 
 <!-- versions:end -->
 
@@ -507,7 +507,6 @@ Every client the doc check read, and the layout its files fit.
 | File                              | Required | Role                                                        |
 | --------------------------------- | -------- | ----------------------------------------------------------- |
 | `pcgrowthoffset.dbss`             | Required | `class_type -> (offset, size)` of every record              |
-| `pcgrowthsimply.bss`              | Optional | Playable flag per class type, see [pcgrowthsimply](../bss/pcgrowthsimply_bss.md) |
 | `languagedata_en.loc`             | Optional | Class name and description (type 21), combat type (type 37), item names (type 0) |
 
 All multi-byte values are little-endian.
@@ -542,7 +541,7 @@ Offsets count from `data_offset`.
 | `+0x05`                | u16                | alterego_character_key   | `521` to `536`; LOC type 6 names them Combat Mercenary (`521` to `524`) and PC Mercenary (`536`) |
 | `+0x07`                | u16                | worker_character_key     | `201` to `214`; LOC type 6 names `201` Warrior_TEST, `206` Musa, `214` Guardian         |
 | `+0x09`                | u32                | unknown_09               | `0xED819B97` for character 1; the low byte is `0x96 + character_key` on class types 0 to 36 |
-| `+0x0D`                | u8                 | unknown_0d               | Always `101`                                                                            |
+| `+0x0D`                | u8                 | unknown_0d               | Always `101`; see Field Names                                                           |
 | `+0x0E`                | u32                | starter_count            | `0` to `3`                                                                              |
 | `+0x12`                | u32[starter_count] | starter_weapons          | Item IDs of the class's beginner weapons (Rusty Longsword, Round Shield); Wukong, Scholar, Kunoichi, Ninja, Archer, Seraph and Deadeye list three |
 | `starter_weapons+0x00` | Setup Block        | setup                    | See below                                                                               |
@@ -559,25 +558,24 @@ The `str16` strings store a u64 length in UTF-16 units, then the text, with no t
 
 ### Setup Block (99 bytes)
 
-Offsets count from the start of the block. The 99 bytes are the same on all 47 records of client 3464 except `+0x5E`.
+Offsets count from the start of the block. The 99 bytes are the same on all 47 records of client 3464 except `+0x5E`. The names come from the client 1784 `PC_Set_Table`, see Field Names.
 
-| Offset  | Type    | Field                | Notes                                                                    |
-| ------- | ------- | -------------------- | ------------------------------------------------------------------------ |
-| `+0x00` | f32[3]  | unknown_00           | `-154408.4`, `-335.9`, `135204.7`                                        |
-| `+0x0C` | u32     | unknown_0c           | `270`                                                                    |
-| `+0x10` | f32[3]  | unknown_10           | `-44361.7`, `1303.6`, `-1832.2`                                          |
-| `+0x1C` | u32     | unknown_1c           | `180`                                                                    |
-| `+0x20` | f32[12] | unknown_20           | Values from `-1315839.5` to `1143770.9`                                  |
-| `+0x50` | u32     | unknown_50           | `1`                                                                      |
-| `+0x54` | u32     | unknown_54           | `1`                                                                      |
-| `+0x58` | u32     | unknown_58           | `0`                                                                      |
-| `+0x5C` | u8      | unknown_5c           | `1`                                                                      |
-| `+0x5D` | u8      | unknown_5d           | `0`                                                                      |
-| `+0x5E` | u8      | combat_resource_type | `CppEnums.CombatResourceType`, see Notes; the only byte that differs per class |
-| `+0x5F` | u8      | unknown_5f           | `2`                                                                      |
-| `+0x60` | u8[3]   | unknown_60           | `0`                                                                      |
+| Offset  | Type    | Field                 | Notes                                                                    |
+| ------- | ------- | --------------------- | ------------------------------------------------------------------------ |
+| `+0x00` | f32[3]  | start_position        | `-154408.4`, `-335.9`, `135204.7`                                        |
+| `+0x0C` | u32     | start_direction       | `270`                                                                    |
+| `+0x10` | f32[3]  | new_start_position    | `-44361.7`, `1303.6`, `-1832.2`                                          |
+| `+0x1C` | u32     | new_start_direction   | `180`                                                                    |
+| `+0x20` | f32[3]  | new_start_position_2  | `-36121.8`, `27827.2`, `-420972.1`                                       |
+| `+0x2C` | f32[9]  | unknown_2c            | Values from `-1315839.5` to `1143770.9`; not in Layout 1                 |
+| `+0x50` | u32     | unknown_50            | `1`; see Field Names                                                     |
+| `+0x54` | u32     | unknown_54            | `1`; see Field Names                                                     |
+| `+0x58` | u32     | unknown_58            | `0`; see Field Names                                                     |
+| `+0x5C` | i16     | field_no              | `1`                                                                      |
+| `+0x5E` | u8      | combat_resource_type  | `CppEnums.CombatResourceType`, see Notes; the only byte that differs per class |
+| `+0x5F` | u32     | start_waypoint_no     | `2`                                                                      |
 
-### Presentation Block (variable: 71 bytes + 8 per pair)
+### Presentation Block (variable: 71 bytes + lists)
 
 Offsets count from the start of the block.
 
@@ -587,11 +585,16 @@ Offsets count from the start of the block.
 | `+0x0C`              | f32[3]             | awaken_combo_color | RGB of the awakening; equal to `combo_color` on 36 of 47 records                      |
 | `+0x18`              | u8                 | combat_type        | `__eAttackType`: `0` Direct (melee), `1` Range, `2` Magical; see Notes                |
 | `+0x19`              | u32[3]             | class_weapons      | Item IDs of the main, sub and awakening weapon (Warrior: Rusty Longsword, Round Shield, Mercenary's Steel Greatsword); `0` for none |
-| `+0x25`              | u16                | unknown_25         | `1` when the main weapon is set, else `0`                                             |
-| `+0x27`              | f32[6]             | unknown_27         | First value `230.0` to `270.0`, then `0.3` to `0.8`, `-0.5` to `-0.3`, `-38.0` to `50.0`, `0.0`, `0.0` |
-| `+0x3F`              | u32                | pair_count         | `0`, except `2` on Shai (class type 17)                                               |
-| `+0x43`              | u32[pair_count][2] | unknown_pairs      | 8 bytes per pair. Shai: u32 values `0, 31, 4, 31`                                     |
-| `unknown_pairs+0x00` | u32                | unknown_end        | `0`                                                                                   |
+| `+0x25`              | u8                 | is_open            | `1` on the playable classes; equals `pcgrowthsimply.bss` `is_playable` on every class of clients 1784 and 3483, and the browser's Playable column reads it |
+| `+0x26`              | u8                 | unknown_26         | `0`; see Field Names                                                                  |
+| `+0x27`              | f32[3]             | start_character_angle | The sheet's `StartCharacterAngle` with its last two values swapped: `230.0` to `270.0`, then `0.3` to `0.8`, `-0.5` to `-0.3` |
+| `+0x33`              | f32                | start_character_angle_y | `-38.0` to `50.0`                                                              |
+| `+0x37`              | u32                | unknown_37         | `0`; not in Layout 1                                                                  |
+| `+0x3B`              | u32                | unknown_list_count | `0` on every record                                                                   |
+| `+0x3F`              | u32[unknown_list_count] | unknown_list  | Empty                                                                                 |
+| `unknown_list+0x00`  | u32                | default_life_count | `0`, except `2` on Shai (class type 17)                                               |
+| `unknown_list+0x04`  | u32[default_life_count][2] | default_life_skills | (life skill, level) pairs: the sheet's `DefaultLifeType` and `DefaultLifeLevel`. Shai: `0, 31` and `4, 31`, Gathering and Alchemy at level 31 in `CppEnums.LifeExperienceType` order |
+| `default_life_skills+0x00` | u32          | unknown_end        | `0`; `pcgrowthsimply.bss` `unknown_06` copies it                                      |
 
 ### Model List (variable: 4 bytes + entries)
 
@@ -631,12 +634,12 @@ The rows are in file order, which is not key order: 46 down to 32, 15 down to 0,
 ## Layout 1
 
 On client 1784 the Class Record has no `unknown_09`, so `unknown_0d` follows
-`worker_character_key` and every later field sits 4 bytes earlier, and
-`unknown_20` of the Setup Block holds 3 floats instead of 12, so the block is
-63 bytes, and `unknown_27` of the Presentation Block holds 5 floats instead
-of 6. The Class Record, the Setup Block and the Presentation Block differ
-from Layout 2. Field
-names keep Layout 2's offsets, so `unknown_0d` sits at `+0x09` here.
+`worker_character_key` and every later field sits 4 bytes earlier, the Setup
+Block has no `unknown_2c`, so it is 63 bytes, and the Presentation Block has
+no `unknown_37`. The Class Record, the Setup Block and the Presentation Block
+differ from Layout 2. Field names keep Layout 2's offsets, so `unknown_0d`
+sits at `+0x09` here. The server dump of a private server on client 1784
+reads the record in this order (`ReadRecord_pcGrowth`, VA `0x140bbb460`).
 
 ### Class Record (variable: 102 bytes + starter weapons and text)
 
@@ -664,21 +667,19 @@ names keep Layout 2's offsets, so `unknown_0d` sits at `+0x09` here.
 
 | Offset  | Type   | Field                | Notes |
 | ------- | ------ | -------------------- | ----- |
-| `+0x00` | f32[3] | unknown_00           |       |
-| `+0x0C` | u32    | unknown_0c           |       |
-| `+0x10` | f32[3] | unknown_10           |       |
-| `+0x1C` | u32    | unknown_1c           |       |
-| `+0x20` | f32[3] | unknown_20           |       |
+| `+0x00` | f32[3] | start_position       |       |
+| `+0x0C` | u32    | start_direction      |       |
+| `+0x10` | f32[3] | new_start_position   |       |
+| `+0x1C` | u32    | new_start_direction  |       |
+| `+0x20` | f32[3] | new_start_position_2 |       |
 | `+0x2C` | u32    | unknown_50           |       |
 | `+0x30` | u32    | unknown_54           |       |
 | `+0x34` | u32    | unknown_58           |       |
-| `+0x38` | u8     | unknown_5c           |       |
-| `+0x39` | u8     | unknown_5d           |       |
+| `+0x38` | i16    | field_no             |       |
 | `+0x3A` | u8     | combat_resource_type |       |
-| `+0x3B` | u8     | unknown_5f           |       |
-| `+0x3C` | u8[3]  | unknown_60           |       |
+| `+0x3B` | u32    | start_waypoint_no    |       |
 
-### Presentation Block (variable: 67 bytes + 8 per pair)
+### Presentation Block (variable: 67 bytes + lists)
 
 | Offset               | Type               | Field              | Notes                                          |
 | -------------------- | ------------------ | ------------------ | ---------------------------------------------- |
@@ -686,11 +687,15 @@ names keep Layout 2's offsets, so `unknown_0d` sits at `+0x09` here.
 | `+0x0C`              | f32[3]             | awaken_combo_color |                                                |
 | `+0x18`              | u8                 | combat_type        |                                                |
 | `+0x19`              | u32[3]             | class_weapons      |                                                |
-| `+0x25`              | u16                | unknown_25         |                                                |
-| `+0x27`              | f32[5]             | unknown_27         | Shai (class type 17): `100.0`, `0.7`, `-0.3`, `-38.0`, `0.0` on client 1784 |
-| `+0x3B`              | u32                | pair_count         | `2` on Shai, else `0` on client 1784           |
-| `+0x3F`              | u32[pair_count][2] | unknown_pairs      |                                                |
-| `unknown_pairs+0x00` | u32                | unknown_end        |                                                |
+| `+0x25`              | u8                 | is_open            |                                                |
+| `+0x26`              | u8                 | unknown_26         |                                                |
+| `+0x27`              | f32[3]             | start_character_angle |                                             |
+| `+0x33`              | f32                | start_character_angle_y |                                           |
+| `+0x37`              | u32                | unknown_list_count |                                                |
+| `+0x3B`              | u32[unknown_list_count] | unknown_list  |                                                |
+| `unknown_list+0x00`  | u32                | default_life_count | `2` on Shai, else `0` on client 1784           |
+| `unknown_list+0x04`  | u32[default_life_count][2] | default_life_skills |                                     |
+| `default_life_skills+0x00` | u32          | unknown_end        |                                                |
 
 ## Localization
 
@@ -743,19 +748,54 @@ The 2016 client (build of 2016-01-11) ships with debug symbols, and its `gc::PcG
 | combat_type              | `MainAttackType`       | 22               |
 | class_weapons            | `DefaultVisibleWeapon`, `DefaultVisibleSubWeapon`, `DefaultVisibleAwakenWeapon` | 21 |
 
+The `PC_Set_Table` sheet of a private server on client 1784 holds the
+columns of the official client 1784 file in record order, and its server
+dump reads the record field by field (`ReadRecord_pcGrowth`, VA
+`0x140bbb460`; sheet loader `Load_PC_Set_Table`, VA `0x140894d40`). Matched
+over all 82 class types of the official client 1784 file:
+
+| Field                   | `PC_Set_Table` column              | Matching (of 82) | Client 3483 |
+| ----------------------- | ---------------------------------- | ---------------: | ----------- |
+| start_position          | `StartPosition`                    | 82 | Same values on all 47 |
+| start_direction         | `StartDirection`                   | 82 | Same |
+| new_start_position      | `NewStartPosition`                 | 82 | Same |
+| new_start_direction     | `NewStartDirection`                | 82 | Same |
+| new_start_position_2    | `NewStartPosition_2`               | 82 | Same; followed by the 9 floats of `unknown_2c` |
+| field_no                | `FieldNo` (`ReadColumnInt16B`)     | 82 | Same |
+| start_waypoint_no       | `StartWayPointNo`                  | 82 | Same |
+| combat_resource_type    | `CombatResourceType`               | 82 | |
+| is_open                 | `IsOpen`                           | 81; the sheet opens class 6, the file does not | Equals `pcgrowthsimply.bss` `is_playable` on all 47 |
+| start_character_angle   | `StartCharacterAngle`, last two values swapped | 82 | |
+| start_character_angle_y | `StartCharacterAngleY`             | 82 | |
+| default_life_skills     | `DefaultLifeType`, `DefaultLifeLevel` zipped | 82 | The same Shai pairs |
+| gender                  | `isWoman`                          | 81; the sheet makes class 3 female | |
+| weapon_models           | `FakeVisibleWeapon`, `FakeVisibleSubWeapon`, `FakeVisibleAwakenWeapon` | 82 | |
+
+The reads the sheet does not confirm keep their names:
+
+- `unknown_0d` is read where the loader stores `ParentsClass`, empty on
+  every sheet row, and the file stores `101` (no class, as `class_type`
+  `101` elsewhere) on all of them. The 2016 `_parentKey` sits there too.
+- `unknown_50`, `unknown_54` and `unknown_58` are read where the three
+  endurance decrease rates go (`WeaponEnduranceDecreseRate`,
+  `ArmorEnduranceDecreseRate`, `ArmorEnduranceArrowDecreseRate`). The sheet
+  holds `0` for all three on every row, the file `1`, `1` and `0`.
+- `unknown_26` is read into the member the loader fills from
+  `IsDevelopingContents`, `0` on every row of the sheet and the file.
+- `unknown_list` has no column and is empty on every client read; Layout 2
+  adds `unknown_37`, also `0`, and either of its two u32 could be the count.
+- The second model list repeats the first on every record; no column
+  fills it.
+
 ## Open Questions
 
-### Header Fields unknown_09 and unknown_0d
+### Header Field unknown_09
 
-`unknown_09` follows the character key in its low byte, and `unknown_0d` is always `101`. The 2016 struct has only `_parentKey` (a class type) between the worker key and the starter item list, so both are later additions or a reworked `_parentKey`.
+`unknown_09` follows the character key in its low byte. It came after client 1862: the client 1784 record and sheet have nothing there. `unknown_0d` is the `ParentsClass` read, see Field Names.
 
 ### Setup Block
 
-The 99 bytes are the same on every class except `combat_resource_type`. In the 2016 order the start position, three endurance decrease rates and `_fieldNo` come here. `unknown_10` (`-44361.7`, `1303.6`, `-1832.2`) is close to the server's `StartPosition` (`-44361, 1350, -1832`), and `unknown_00` and `unknown_0c` could be the newer `NewStartPosition` and its direction, but the server values (`-59881, -3758.18, 48109`) do not match, so neither is named yet.
-
-### Presentation Block
-
-`unknown_25` is `1` on exactly the playable classes, like the server's `IsOpen`, but it matches only 22 of 32 server rows. The f32[6] at `+0x27` do not match the server's `StartCharacterAngle` (`160, -0.6, 2.3`). The Shai pairs (`0, 31, 4, 31`) could also read as a zero u32 followed by `31, 4, 31, 0`.
+`unknown_2c` holds 9 floats that Layout 1 does not have, after `new_start_position_2`; they could be three more start positions. The endurance decrease rates in the `unknown_50` place read `1`, `1`, `0` where the sheet has `0`, see Field Names.
 
 ### Second Model List
 

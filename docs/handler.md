@@ -2131,13 +2131,17 @@ for layout in client_order(LAYOUTS, lambda layout: layout.clients):
 
 Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
 `territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss`,
-`mentalcard.dbss`, `itemenchant.dbss`, `characterstatic.dbss` and
-`charactersimply.bss`.
+`mentalcard.dbss`, `itemenchant.dbss`, `characterstatic.dbss`,
+`charactersimply.bss`, `skill.dbss` and `buff.dbss`.
 `itemenchant.dbss` tries each layout on its first eight base blocks instead of
 the whole 194 MB file, then reads every block with the one that fits
 (`_dbss/itemenchant/layouts.py`); its lookup index builders pick the layout the
 same way. `characterstatic.dbss` does the same with its first eight records
-(`_dbss/characterstatic/layouts.py`). Both character tables store None for the
+(`_dbss/characterstatic/layouts.py`). `skill.dbss` and `buff.dbss` read the whole
+file per layout instead: a `skill.dbss` Layout 1 record with no text and no linked
+skills also walks as Layout 2, and on client 1784 the first 66 do. `buff.dbss`
+Layouts 1 and 2 store u16 IDs in `buffoffset.dbss`; its view picks the row
+width whose rows end at the trailer's `rows_end`. Both character tables store None for the
 layout's "not a vehicle" value (`63` on clients 1784 and 2553, `65` later;
 `_common/vehicle_type.py`). `tests/test_client_versions.py` fails when two layouts of
 one of them claim the same client. When the same bytes mean different things on different clients,

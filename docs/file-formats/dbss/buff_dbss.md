@@ -25,486 +25,486 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 
 | Layout | File              | Known                | Unknown             |
 | ------ | ----------------- | -------------------- | ------------------- |
-| 3      | `buff.dbss`       | 10,730,716 B (85.4%) | 1,833,684 B (14.6%) |
+| 3      | `buff.dbss`       | 11,222,680 B (89.3%) | 1,341,720 B (10.7%) |
 | 3      | `buffoffset.dbss` | 536,708 B (100.0%)   | 0 B (0.0%)          |
-| 2      | `buff.dbss`       | 10,612,362 B (85.3%) | 1,830,445 B (14.7%) |
+| 2      | `buff.dbss`       | 11,103,457 B (89.2%) | 1,339,350 B (10.8%) |
 | 2      | `buffoffset.dbss` | 446,470 B (100.0%)   | 0 B (0.0%)          |
-| 1      | `buff.dbss`       | 8,537,203 B (84.8%)  | 1,525,400 B (15.2%) |
+| 1      | `buff.dbss`       | 8,956,688 B (89.0%)  | 1,105,915 B (11.0%) |
 | 1      | `buffoffset.dbss` | 381,370 B (100.0%)   | 0 B (0.0%)          |
 
 Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 3483   | Layout 3             | `c0345088db7c`  |
-| 3482   | Layout 3             | `c0345088db7c`  |
-| 3474   | Layout 3             | `c0345088db7c`  |
-| 3473   | Layout 3             | `c0345088db7c`  |
-| 3464   | Layout 3             | `c0345088db7c`  |
-| 3458   | Layout 2             | `c0345088db7c`  |
-| 3454   | Layout 2             | `c0345088db7c`  |
-| 3444   | Layout 2             | `c0345088db7c`  |
-| 3435   | Layout 2             | `c0345088db7c`  |
-| 3426   | Layout 2             | `c0345088db7c`  |
-| 3418   | Layout 2             | `c0345088db7c`  |
-| 3412   | Layout 2             | `c0345088db7c`  |
-| 3402   | Layout 2             | `c0345088db7c`  |
-| 3396   | Layout 2             | `c0345088db7c`  |
-| 3387   | Layout 2             | `c0345088db7c`  |
-| 3381   | Layout 2             | `c0345088db7c`  |
-| 3373   | Layout 2             | `c0345088db7c`  |
-| 3364   | Layout 2             | `c0345088db7c`  |
-| 3356   | Layout 2             | `c0345088db7c`  |
-| 3349   | Layout 2             | `c0345088db7c`  |
-| 3342   | Layout 2             | `c0345088db7c`  |
-| 3335   | Layout 2             | `c0345088db7c`  |
-| 3326   | Layout 2             | `c0345088db7c`  |
-| 3321   | Layout 2             | `c0345088db7c`  |
-| 3314   | Layout 2             | `c0345088db7c`  |
-| 3303   | Layout 2             | `c0345088db7c`  |
-| 3302   | Layout 2             | `c0345088db7c`  |
-| 3293   | Layout 2             | `c0345088db7c`  |
-| 3283   | Layout 2             | `c0345088db7c`  |
-| 3275   | Layout 2             | `c0345088db7c`  |
-| 3267   | Layout 2             | `c0345088db7c`  |
-| 3258   | Layout 2             | `c0345088db7c`  |
-| 3251   | Layout 2             | `c0345088db7c`  |
-| 3242   | Layout 2             | `c0345088db7c`  |
-| 3235   | Layout 2             | `c0345088db7c`  |
-| 3229   | Layout 2             | `c0345088db7c`  |
-| 3212   | Layout 2             | `c0345088db7c`  |
-| 3203   | Layout 2             | `c0345088db7c`  |
-| 3193   | Layout 2             | `c0345088db7c`  |
-| 3186   | Layout 2             | `c0345088db7c`  |
-| 3177   | Layout 2             | `c0345088db7c`  |
-| 3169   | Layout 2             | `c0345088db7c`  |
-| 3158   | Layout 2             | `c0345088db7c`  |
-| 3151   | Layout 2             | `c0345088db7c`  |
-| 3144   | Layout 2             | `c0345088db7c`  |
-| 3133   | Layout 2             | `c0345088db7c`  |
-| 3125   | Layout 2             | `c0345088db7c`  |
-| 3118   | Layout 2             | `c0345088db7c`  |
-| 3111   | Layout 2             | `c0345088db7c`  |
-| 3103   | Layout 2             | `c0345088db7c`  |
-| 3095   | Layout 2             | `c0345088db7c`  |
-| 3086   | Layout 2             | `c0345088db7c`  |
-| 3072   | Layout 2             | `c0345088db7c`  |
-| 3062   | Layout 2             | `c0345088db7c`  |
-| 3052   | Layout 2             | `c0345088db7c`  |
-| 3045   | Layout 2             | `c0345088db7c`  |
-| 3037   | Layout 2             | `c0345088db7c`  |
-| 3030   | Layout 2             | `c0345088db7c`  |
-| 3021   | Layout 2             | `c0345088db7c`  |
-| 3012   | Layout 2             | `c0345088db7c`  |
-| 3002   | Layout 2             | `c0345088db7c`  |
-| 2995   | Layout 2             | `c0345088db7c`  |
-| 2987   | Layout 2             | `c0345088db7c`  |
-| 2978   | Layout 2             | `c0345088db7c`  |
-| 2970   | Layout 2             | `c0345088db7c`  |
-| 2959   | Layout 2             | `c0345088db7c`  |
-| 2951   | Layout 2             | `c0345088db7c`  |
-| 2942   | Layout 2             | `c0345088db7c`  |
-| 2935   | Layout 2             | `c0345088db7c`  |
-| 2932   | Layout 2             | `c0345088db7c`  |
-| 2923   | No documented layout | `c0345088db7c`  |
-| 2919   | No documented layout | `c0345088db7c`  |
-| 2907   | No documented layout | `c0345088db7c`  |
-| 2900   | No documented layout | `c0345088db7c`  |
-| 2891   | No documented layout | `c0345088db7c`  |
-| 2882   | No documented layout | `c0345088db7c`  |
-| 2872   | No documented layout | `c0345088db7c`  |
-| 2863   | No documented layout | `c0345088db7c`  |
-| 2855   | No documented layout | `c0345088db7c`  |
-| 2849   | No documented layout | `c0345088db7c`  |
-| 2844   | No documented layout | `c0345088db7c`  |
-| 2834   | No documented layout | `c0345088db7c`  |
-| 2825   | No documented layout | `c0345088db7c`  |
-| 2819   | No documented layout | `c0345088db7c`  |
-| 2811   | No documented layout | `c0345088db7c`  |
-| 2803   | No documented layout | `c0345088db7c`  |
-| 2794   | No documented layout | `c0345088db7c`  |
-| 2783   | No documented layout | `c0345088db7c`  |
-| 2774   | No documented layout | `c0345088db7c`  |
-| 2765   | No documented layout | `c0345088db7c`  |
-| 2756   | No documented layout | `c0345088db7c`  |
-| 2750   | No documented layout | `c0345088db7c`  |
-| 2743   | No documented layout | `c0345088db7c`  |
-| 2736   | No documented layout | `c0345088db7c`  |
-| 2726   | No documented layout | `c0345088db7c`  |
-| 2717   | No documented layout | `c0345088db7c`  |
-| 2709   | No documented layout | `c0345088db7c`  |
-| 2703   | No documented layout | `c0345088db7c`  |
-| 2695   | No documented layout | `c0345088db7c`  |
-| 2684   | No documented layout | `c0345088db7c`  |
-| 2672   | No documented layout | `c0345088db7c`  |
-| 2665   | No documented layout | `c0345088db7c`  |
-| 2657   | No documented layout | `c0345088db7c`  |
-| 2649   | No documented layout | `c0345088db7c`  |
-| 2644   | No documented layout | `c0345088db7c`  |
-| 2637   | No documented layout | `c0345088db7c`  |
-| 2629   | No documented layout | `c0345088db7c`  |
-| 2619   | No documented layout | `c0345088db7c`  |
-| 2612   | No documented layout | `c0345088db7c`  |
-| 2606   | No documented layout | `c0345088db7c`  |
-| 2602   | No documented layout | `c0345088db7c`  |
-| 2601   | No documented layout | `c0345088db7c`  |
-| 2592   | No documented layout | `c0345088db7c`  |
-| 2583   | No documented layout | `c0345088db7c`  |
-| 2575   | No documented layout | `c0345088db7c`  |
-| 2567   | No documented layout | `c0345088db7c`  |
-| 2560   | No documented layout | `c0345088db7c`  |
-| 2553   | No documented layout | `c0345088db7c`  |
-| 2545   | No documented layout | `c0345088db7c`  |
-| 2538   | No documented layout | `c0345088db7c`  |
-| 2529   | No documented layout | `c0345088db7c`  |
-| 2519   | No documented layout | `c0345088db7c`  |
-| 2513   | No documented layout | `c0345088db7c`  |
-| 2510   | No documented layout | `c0345088db7c`  |
-| 2507   | No documented layout | `c0345088db7c`  |
-| 2503   | No documented layout | `c0345088db7c`  |
-| 2498   | No documented layout | `c0345088db7c`  |
-| 2492   | No documented layout | `c0345088db7c`  |
-| 2487   | No documented layout | `c0345088db7c`  |
-| 2480   | No documented layout | `c0345088db7c`  |
-| 2474   | No documented layout | `c0345088db7c`  |
-| 2468   | No documented layout | `c0345088db7c`  |
-| 2460   | No documented layout | `c0345088db7c`  |
-| 2453   | No documented layout | `c0345088db7c`  |
-| 2444   | No documented layout | `c0345088db7c`  |
-| 2438   | No documented layout | `c0345088db7c`  |
-| 2434   | No documented layout | `c0345088db7c`  |
-| 2429   | No documented layout | `c0345088db7c`  |
-| 2421   | No documented layout | `c0345088db7c`  |
-| 2414   | No documented layout | `c0345088db7c`  |
-| 2407   | No documented layout | `c0345088db7c`  |
-| 2401   | No documented layout | `c0345088db7c`  |
-| 2397   | No documented layout | `c0345088db7c`  |
-| 2393   | No documented layout | `c0345088db7c`  |
-| 2384   | No documented layout | `c0345088db7c`  |
-| 2378   | No documented layout | `c0345088db7c`  |
-| 2372   | No documented layout | `c0345088db7c`  |
-| 2358   | No documented layout | `c0345088db7c`  |
-| 2352   | No documented layout | `c0345088db7c`  |
-| 2347   | No documented layout | `c0345088db7c`  |
-| 2343   | No documented layout | `c0345088db7c`  |
-| 2335   | No documented layout | `c0345088db7c`  |
-| 2327   | No documented layout | `c0345088db7c`  |
-| 2324   | No documented layout | `c0345088db7c`  |
-| 2319   | No documented layout | `c0345088db7c`  |
-| 2313   | No documented layout | `c0345088db7c`  |
-| 2308   | No documented layout | `c0345088db7c`  |
-| 2302   | No documented layout | `c0345088db7c`  |
-| 2295   | No documented layout | `c0345088db7c`  |
-| 2290   | No documented layout | `c0345088db7c`  |
-| 2284   | No documented layout | `c0345088db7c`  |
-| 2276   | No documented layout | `c0345088db7c`  |
-| 2269   | No documented layout | `c0345088db7c`  |
-| 2259   | No documented layout | `c0345088db7c`  |
-| 2250   | No documented layout | `c0345088db7c`  |
-| 2243   | No documented layout | `c0345088db7c`  |
-| 2235   | No documented layout | `c0345088db7c`  |
-| 2229   | No documented layout | `c0345088db7c`  |
-| 2224   | No documented layout | `c0345088db7c`  |
-| 2218   | No documented layout | `c0345088db7c`  |
-| 2215   | No documented layout | `c0345088db7c`  |
-| 2207   | No documented layout | `c0345088db7c`  |
-| 2203   | No documented layout | `c0345088db7c`  |
-| 2196   | No documented layout | `c0345088db7c`  |
-| 2192   | No documented layout | `c0345088db7c`  |
-| 2189   | No documented layout | `c0345088db7c`  |
-| 2183   | No documented layout | `c0345088db7c`  |
-| 2179   | No documented layout | `c0345088db7c`  |
-| 2171   | No documented layout | `c0345088db7c`  |
-| 2163   | No documented layout | `c0345088db7c`  |
-| 2156   | No documented layout | `c0345088db7c`  |
-| 2151   | No documented layout | `c0345088db7c`  |
-| 2147   | No documented layout | `c0345088db7c`  |
-| 2142   | No documented layout | `c0345088db7c`  |
-| 2138   | No documented layout | `c0345088db7c`  |
-| 2134   | No documented layout | `c0345088db7c`  |
-| 2130   | No documented layout | `c0345088db7c`  |
-| 2122   | No documented layout | `c0345088db7c`  |
-| 2107   | No documented layout | `c0345088db7c`  |
-| 2098   | No documented layout | `c0345088db7c`  |
-| 2089   | No documented layout | `c0345088db7c`  |
-| 2081   | No documented layout | `c0345088db7c`  |
-| 2073   | No documented layout | `c0345088db7c`  |
-| 2067   | No documented layout | `c0345088db7c`  |
-| 2063   | No documented layout | `c0345088db7c`  |
-| 2059   | No documented layout | `c0345088db7c`  |
-| 2052   | No documented layout | `c0345088db7c`  |
-| 2044   | No documented layout | `c0345088db7c`  |
-| 2039   | No documented layout | `c0345088db7c`  |
-| 2032   | No documented layout | `c0345088db7c`  |
-| 2025   | No documented layout | `c0345088db7c`  |
-| 2011   | No documented layout | `c0345088db7c`  |
-| 2005   | No documented layout | `c0345088db7c`  |
-| 2000   | No documented layout | `c0345088db7c`  |
-| 1996   | No documented layout | `c0345088db7c`  |
-| 1991   | No documented layout | `c0345088db7c`  |
-| 1985   | No documented layout | `c0345088db7c`  |
-| 1980   | No documented layout | `c0345088db7c`  |
-| 1969   | No documented layout | `c0345088db7c`  |
-| 1964   | No documented layout | `c0345088db7c`  |
-| 1958   | No documented layout | `c0345088db7c`  |
-| 1950   | No documented layout | `c0345088db7c`  |
-| 1945   | No documented layout | `c0345088db7c`  |
-| 1937   | Layout 1             | `c0345088db7c`  |
-| 1933   | Layout 1             | `c0345088db7c`  |
-| 1927   | Layout 1             | `c0345088db7c`  |
-| 1921   | Layout 1             | `c0345088db7c`  |
-| 1914   | Layout 1             | `c0345088db7c`  |
-| 1908   | Layout 1             | `c0345088db7c`  |
-| 1897   | Layout 1             | `c0345088db7c`  |
-| 1892   | Layout 1             | `c0345088db7c`  |
-| 1886   | Layout 1             | `c0345088db7c`  |
-| 1881   | Layout 1             | `c0345088db7c`  |
-| 1871   | Layout 1             | `c0345088db7c`  |
-| 1866   | Layout 1             | `c0345088db7c`  |
-| 1862   | Layout 1             | `c0345088db7c`  |
-| 1854   | Layout 1             | `c0345088db7c`  |
-| 1846   | Layout 1             | `c0345088db7c`  |
-| 1838   | Layout 1             | `c0345088db7c`  |
-| 1832   | Layout 1             | `c0345088db7c`  |
-| 1826   | Layout 1             | `c0345088db7c`  |
-| 1822   | Layout 1             | `c0345088db7c`  |
-| 1818   | Layout 1             | `c0345088db7c`  |
-| 1804   | Layout 1             | `c0345088db7c`  |
-| 1794   | Layout 1             | `c0345088db7c`  |
-| 1790   | Layout 1             | `c0345088db7c`  |
-| 1784   | Layout 1             | `c0345088db7c`  |
-| 1774   | Layout 1             | `c0345088db7c`  |
-| 1771   | No documented layout | `c0345088db7c`  |
-| 1762   | No documented layout | `c0345088db7c`  |
-| 1759   | No documented layout | `c0345088db7c`  |
-| 1754   | No documented layout | `c0345088db7c`  |
-| 1749   | No documented layout | `c0345088db7c`  |
-| 1743   | No documented layout | `c0345088db7c`  |
-| 1737   | No documented layout | `c0345088db7c`  |
-| 1731   | No documented layout | `c0345088db7c`  |
-| 1725   | No documented layout | `c0345088db7c`  |
-| 1717   | No documented layout | `c0345088db7c`  |
-| 1710   | No documented layout | `c0345088db7c`  |
-| 1704   | No documented layout | `c0345088db7c`  |
-| 1698   | No documented layout | `c0345088db7c`  |
-| 1690   | No documented layout | `c0345088db7c`  |
-| 1685   | No documented layout | `c0345088db7c`  |
-| 1680   | No documented layout | `c0345088db7c`  |
-| 1674   | No documented layout | `c0345088db7c`  |
-| 1668   | No documented layout | `c0345088db7c`  |
-| 1659   | No documented layout | `c0345088db7c`  |
-| 1649   | No documented layout | `c0345088db7c`  |
-| 1642   | No documented layout | `c0345088db7c`  |
-| 1636   | No documented layout | `c0345088db7c`  |
-| 1628   | No documented layout | `c0345088db7c`  |
-| 1622   | No documented layout | `c0345088db7c`  |
-| 1614   | No documented layout | `c0345088db7c`  |
-| 1608   | No documented layout | `c0345088db7c`  |
-| 1602   | No documented layout | `c0345088db7c`  |
-| 1598   | No documented layout | `c0345088db7c`  |
-| 1594   | No documented layout | `c0345088db7c`  |
-| 1590   | No documented layout | `c0345088db7c`  |
-| 1587   | No documented layout | `c0345088db7c`  |
-| 1584   | No documented layout | `c0345088db7c`  |
-| 1579   | No documented layout | `c0345088db7c`  |
-| 1572   | No documented layout | `c0345088db7c`  |
-| 1565   | No documented layout | `c0345088db7c`  |
-| 1559   | No documented layout | `c0345088db7c`  |
-| 1554   | No documented layout | `c0345088db7c`  |
-| 1547   | No documented layout | `c0345088db7c`  |
-| 1537   | No documented layout | `c0345088db7c`  |
-| 1529   | No documented layout | `c0345088db7c`  |
-| 1524   | No documented layout | `c0345088db7c`  |
-| 1519   | No documented layout | `c0345088db7c`  |
-| 1509   | No documented layout | `c0345088db7c`  |
-| 1506   | No documented layout | `c0345088db7c`  |
-| 1504   | No documented layout | `c0345088db7c`  |
-| 1500   | No documented layout | `c0345088db7c`  |
-| 1493   | No documented layout | `c0345088db7c`  |
-| 1489   | No documented layout | `c0345088db7c`  |
-| 1485   | No documented layout | `c0345088db7c`  |
-| 1481   | No documented layout | `c0345088db7c`  |
-| 1474   | No documented layout | `c0345088db7c`  |
-| 1466   | No documented layout | `c0345088db7c`  |
-| 1462   | No documented layout | `c0345088db7c`  |
-| 1459   | No documented layout | `c0345088db7c`  |
-| 1453   | No documented layout | `c0345088db7c`  |
-| 1450   | No documented layout | `c0345088db7c`  |
-| 1445   | No documented layout | `c0345088db7c`  |
-| 1439   | No documented layout | `c0345088db7c`  |
-| 1433   | No documented layout | `c0345088db7c`  |
-| 1430   | No documented layout | `c0345088db7c`  |
-| 1426   | No documented layout | `c0345088db7c`  |
-| 1421   | No documented layout | `c0345088db7c`  |
-| 1417   | No documented layout | `c0345088db7c`  |
-| 1416   | No documented layout | `c0345088db7c`  |
-| 1409   | No documented layout | `c0345088db7c`  |
-| 1405   | No documented layout | `c0345088db7c`  |
-| 1401   | No documented layout | `c0345088db7c`  |
-| 1396   | No documented layout | `c0345088db7c`  |
-| 1391   | No documented layout | `c0345088db7c`  |
-| 1390   | No documented layout | `c0345088db7c`  |
-| 1386   | No documented layout | `c0345088db7c`  |
-| 1381   | No documented layout | `c0345088db7c`  |
-| 1379   | No documented layout | `c0345088db7c`  |
-| 1372   | No documented layout | `c0345088db7c`  |
-| 1366   | No documented layout | `c0345088db7c`  |
-| 1364   | No documented layout | `c0345088db7c`  |
-| 1363   | No documented layout | `c0345088db7c`  |
-| 1360   | No documented layout | `c0345088db7c`  |
-| 1358   | No documented layout | `c0345088db7c`  |
-| 1355   | No documented layout | `c0345088db7c`  |
-| 1351   | No documented layout | `c0345088db7c`  |
-| 1348   | No documented layout | `c0345088db7c`  |
-| 1346   | No documented layout | `c0345088db7c`  |
-| 1341   | No documented layout | `c0345088db7c`  |
-| 1340   | No documented layout | `c0345088db7c`  |
-| 1338   | No documented layout | `c0345088db7c`  |
-| 1335   | No documented layout | `c0345088db7c`  |
-| 1333   | No documented layout | `c0345088db7c`  |
-| 1329   | No documented layout | `c0345088db7c`  |
-| 1327   | No documented layout | `c0345088db7c`  |
-| 1324   | No documented layout | `c0345088db7c`  |
-| 1321   | No documented layout | `c0345088db7c`  |
-| 1319   | No documented layout | `c0345088db7c`  |
-| 1318   | No documented layout | `c0345088db7c`  |
-| 1316   | No documented layout | `c0345088db7c`  |
-| 1313   | No documented layout | `c0345088db7c`  |
-| 1311   | No documented layout | `c0345088db7c`  |
-| 1309   | No documented layout | `c0345088db7c`  |
-| 1304   | No documented layout | `c0345088db7c`  |
-| 1292   | No documented layout | `c0345088db7c`  |
-| 1286   | No documented layout | `c0345088db7c`  |
-| 1280   | No documented layout | `c0345088db7c`  |
-| 1276   | No documented layout | `c0345088db7c`  |
-| 1267   | No documented layout | `c0345088db7c`  |
-| 1261   | No documented layout | `c0345088db7c`  |
-| 1256   | No documented layout | `c0345088db7c`  |
-| 1250   | No documented layout | `c0345088db7c`  |
-| 1246   | No documented layout | `c0345088db7c`  |
-| 1239   | No documented layout | `c0345088db7c`  |
-| 1230   | No documented layout | `c0345088db7c`  |
-| 1226   | No documented layout | `c0345088db7c`  |
-| 1220   | No file              | `c0345088db7c`  |
-| 1217   | No file              | `c0345088db7c`  |
-| 1211   | No file              | `c0345088db7c`  |
-| 1210   | No file              | `c0345088db7c`  |
-| 1208   | No file              | `c0345088db7c`  |
-| 1203   | No file              | `c0345088db7c`  |
-| 1197   | No file              | `c0345088db7c`  |
-| 1194   | No file              | `c0345088db7c`  |
-| 1192   | No file              | `c0345088db7c`  |
-| 1187   | No file              | `c0345088db7c`  |
-| 1183   | No file              | `c0345088db7c`  |
-| 1177   | No file              | `c0345088db7c`  |
-| 1173   | No file              | `c0345088db7c`  |
-| 1167   | No file              | `c0345088db7c`  |
-| 1164   | No file              | `c0345088db7c`  |
-| 1156   | No file              | `c0345088db7c`  |
-| 1149   | No file              | `c0345088db7c`  |
-| 1144   | No file              | `c0345088db7c`  |
-| 1137   | No file              | `c0345088db7c`  |
-| 1132   | No file              | `c0345088db7c`  |
-| 1127   | No file              | `c0345088db7c`  |
-| 1122   | No file              | `c0345088db7c`  |
-| 1118   | No file              | `c0345088db7c`  |
-| 1114   | No file              | `c0345088db7c`  |
-| 1109   | No file              | `c0345088db7c`  |
-| 1102   | No file              | `c0345088db7c`  |
-| 1096   | No file              | `c0345088db7c`  |
-| 1088   | No file              | `c0345088db7c`  |
-| 1081   | No file              | `c0345088db7c`  |
-| 1076   | No file              | `c0345088db7c`  |
-| 1069   | No file              | `c0345088db7c`  |
-| 1064   | No file              | `c0345088db7c`  |
-| 1058   | No file              | `c0345088db7c`  |
-| 1051   | No file              | `c0345088db7c`  |
-| 1044   | No file              | `c0345088db7c`  |
-| 1036   | No file              | `c0345088db7c`  |
-| 1026   | No file              | `c0345088db7c`  |
-| 1016   | No file              | `c0345088db7c`  |
-| 1009   | No file              | `c0345088db7c`  |
-| 1005   | No file              | `c0345088db7c`  |
-| 1000   | No file              | `c0345088db7c`  |
-| 998    | No file              | `c0345088db7c`  |
-| 990    | No file              | `c0345088db7c`  |
-| 979    | No file              | `c0345088db7c`  |
-| 972    | No file              | `c0345088db7c`  |
-| 963    | No file              | `c0345088db7c`  |
-| 955    | No file              | `c0345088db7c`  |
-| 946    | No file              | `c0345088db7c`  |
-| 938    | No file              | `c0345088db7c`  |
-| 927    | No file              | `c0345088db7c`  |
-| 911    | No file              | `c0345088db7c`  |
-| 904    | No file              | `c0345088db7c`  |
-| 899    | No file              | `c0345088db7c`  |
-| 894    | No file              | `c0345088db7c`  |
-| 885    | No file              | `c0345088db7c`  |
-| 879    | No file              | `c0345088db7c`  |
-| 872    | No file              | `c0345088db7c`  |
-| 864    | No file              | `c0345088db7c`  |
-| 855    | No file              | `c0345088db7c`  |
-| 853    | No file              | `c0345088db7c`  |
-| 845    | No file              | `c0345088db7c`  |
-| 837    | No file              | `c0345088db7c`  |
-| 829    | No file              | `c0345088db7c`  |
-| 822    | No file              | `c0345088db7c`  |
-| 814    | No file              | `c0345088db7c`  |
-| 805    | No file              | `c0345088db7c`  |
-| 794    | No file              | `c0345088db7c`  |
-| 787    | No file              | `c0345088db7c`  |
-| 780    | No file              | `c0345088db7c`  |
-| 771    | No file              | `c0345088db7c`  |
-| 760    | No file              | `c0345088db7c`  |
-| 748    | No file              | `c0345088db7c`  |
-| 741    | No file              | `c0345088db7c`  |
-| 736    | No file              | `c0345088db7c`  |
-| 731    | No file              | `c0345088db7c`  |
-| 723    | No file              | `c0345088db7c`  |
-| 711    | No file              | `c0345088db7c`  |
-| 707    | No file              | `c0345088db7c`  |
-| 697    | No file              | `c0345088db7c`  |
-| 689    | No file              | `c0345088db7c`  |
-| 683    | No file              | `c0345088db7c`  |
-| 678    | No file              | `c0345088db7c`  |
-| 670    | No file              | `c0345088db7c`  |
-| 661    | No file              | `c0345088db7c`  |
-| 656    | No file              | `c0345088db7c`  |
-| 652    | No file              | `c0345088db7c`  |
-| 643    | No file              | `c0345088db7c`  |
-| 637    | No file              | `c0345088db7c`  |
-| 630    | No file              | `c0345088db7c`  |
-| 627    | No file              | `c0345088db7c`  |
-| 621    | No file              | `c0345088db7c`  |
-| 617    | No file              | `c0345088db7c`  |
-| 615    | No file              | `c0345088db7c`  |
-| 606    | No file              | `c0345088db7c`  |
-| 599    | No file              | `c0345088db7c`  |
-| 592    | No file              | `c0345088db7c`  |
-| 586    | No file              | `c0345088db7c`  |
-| 577    | No file              | `c0345088db7c`  |
-| 569    | No file              | `c0345088db7c`  |
-| 561    | No file              | `c0345088db7c`  |
-| 554    | No file              | `c0345088db7c`  |
-| 542    | No file              | `c0345088db7c`  |
-| 532    | No file              | `c0345088db7c`  |
-| 531    | No file              | `c0345088db7c`  |
-| 526    | No file              | `c0345088db7c`  |
-| 521    | No file              | `c0345088db7c`  |
-| 517    | No file              | `c0345088db7c`  |
-| 510    | No file              | `c0345088db7c`  |
-| 508    | No file              | `c0345088db7c`  |
-| 504    | No file              | `c0345088db7c`  |
-| 497    | No file              | `c0345088db7c`  |
-| 491    | No file              | `c0345088db7c`  |
-| 485    | No file              | `c0345088db7c`  |
-| 478    | No file              | `c0345088db7c`  |
-| 472    | No file              | `c0345088db7c`  |
-| 466    | No file              | `c0345088db7c`  |
-| 457    | No file              | `c0345088db7c`  |
-| 452    | No file              | `c0345088db7c`  |
-| 449    | No file              | `c0345088db7c`  |
-| 435    | No file              | `c0345088db7c`  |
+| 3483   | Layout 3             | `e6ed09a49f83`  |
+| 3482   | Layout 3             | `e6ed09a49f83`  |
+| 3474   | Layout 3             | `e6ed09a49f83`  |
+| 3473   | Layout 3             | `e6ed09a49f83`  |
+| 3464   | Layout 3             | `e6ed09a49f83`  |
+| 3458   | Layout 2             | `e6ed09a49f83`  |
+| 3454   | Layout 2             | `e6ed09a49f83`  |
+| 3444   | Layout 2             | `e6ed09a49f83`  |
+| 3435   | Layout 2             | `e6ed09a49f83`  |
+| 3426   | Layout 2             | `e6ed09a49f83`  |
+| 3418   | Layout 2             | `e6ed09a49f83`  |
+| 3412   | Layout 2             | `e6ed09a49f83`  |
+| 3402   | Layout 2             | `e6ed09a49f83`  |
+| 3396   | Layout 2             | `e6ed09a49f83`  |
+| 3387   | Layout 2             | `e6ed09a49f83`  |
+| 3381   | Layout 2             | `e6ed09a49f83`  |
+| 3373   | Layout 2             | `e6ed09a49f83`  |
+| 3364   | Layout 2             | `e6ed09a49f83`  |
+| 3356   | Layout 2             | `e6ed09a49f83`  |
+| 3349   | Layout 2             | `e6ed09a49f83`  |
+| 3342   | Layout 2             | `e6ed09a49f83`  |
+| 3335   | Layout 2             | `e6ed09a49f83`  |
+| 3326   | Layout 2             | `e6ed09a49f83`  |
+| 3321   | Layout 2             | `e6ed09a49f83`  |
+| 3314   | Layout 2             | `e6ed09a49f83`  |
+| 3303   | Layout 2             | `e6ed09a49f83`  |
+| 3302   | Layout 2             | `e6ed09a49f83`  |
+| 3293   | Layout 2             | `e6ed09a49f83`  |
+| 3283   | Layout 2             | `e6ed09a49f83`  |
+| 3275   | Layout 2             | `e6ed09a49f83`  |
+| 3267   | Layout 2             | `e6ed09a49f83`  |
+| 3258   | Layout 2             | `e6ed09a49f83`  |
+| 3251   | Layout 2             | `e6ed09a49f83`  |
+| 3242   | Layout 2             | `e6ed09a49f83`  |
+| 3235   | Layout 2             | `e6ed09a49f83`  |
+| 3229   | Layout 2             | `e6ed09a49f83`  |
+| 3212   | Layout 2             | `e6ed09a49f83`  |
+| 3203   | Layout 2             | `e6ed09a49f83`  |
+| 3193   | Layout 2             | `e6ed09a49f83`  |
+| 3186   | Layout 2             | `e6ed09a49f83`  |
+| 3177   | Layout 2             | `e6ed09a49f83`  |
+| 3169   | Layout 2             | `e6ed09a49f83`  |
+| 3158   | Layout 2             | `e6ed09a49f83`  |
+| 3151   | Layout 2             | `e6ed09a49f83`  |
+| 3144   | Layout 2             | `e6ed09a49f83`  |
+| 3133   | Layout 2             | `e6ed09a49f83`  |
+| 3125   | Layout 2             | `e6ed09a49f83`  |
+| 3118   | Layout 2             | `e6ed09a49f83`  |
+| 3111   | Layout 2             | `e6ed09a49f83`  |
+| 3103   | Layout 2             | `e6ed09a49f83`  |
+| 3095   | Layout 2             | `e6ed09a49f83`  |
+| 3086   | Layout 2             | `e6ed09a49f83`  |
+| 3072   | Layout 2             | `e6ed09a49f83`  |
+| 3062   | Layout 2             | `e6ed09a49f83`  |
+| 3052   | Layout 2             | `e6ed09a49f83`  |
+| 3045   | Layout 2             | `e6ed09a49f83`  |
+| 3037   | Layout 2             | `e6ed09a49f83`  |
+| 3030   | Layout 2             | `e6ed09a49f83`  |
+| 3021   | Layout 2             | `e6ed09a49f83`  |
+| 3012   | Layout 2             | `e6ed09a49f83`  |
+| 3002   | Layout 2             | `e6ed09a49f83`  |
+| 2995   | Layout 2             | `e6ed09a49f83`  |
+| 2987   | Layout 2             | `e6ed09a49f83`  |
+| 2978   | Layout 2             | `e6ed09a49f83`  |
+| 2970   | Layout 2             | `e6ed09a49f83`  |
+| 2959   | Layout 2             | `e6ed09a49f83`  |
+| 2951   | Layout 2             | `e6ed09a49f83`  |
+| 2942   | Layout 2             | `e6ed09a49f83`  |
+| 2935   | Layout 2             | `e6ed09a49f83`  |
+| 2932   | Layout 2             | `e6ed09a49f83`  |
+| 2923   | No documented layout | `e6ed09a49f83`  |
+| 2919   | No documented layout | `e6ed09a49f83`  |
+| 2907   | No documented layout | `e6ed09a49f83`  |
+| 2900   | No documented layout | `e6ed09a49f83`  |
+| 2891   | No documented layout | `e6ed09a49f83`  |
+| 2882   | No documented layout | `e6ed09a49f83`  |
+| 2872   | No documented layout | `e6ed09a49f83`  |
+| 2863   | No documented layout | `e6ed09a49f83`  |
+| 2855   | No documented layout | `e6ed09a49f83`  |
+| 2849   | No documented layout | `e6ed09a49f83`  |
+| 2844   | No documented layout | `e6ed09a49f83`  |
+| 2834   | No documented layout | `e6ed09a49f83`  |
+| 2825   | No documented layout | `e6ed09a49f83`  |
+| 2819   | No documented layout | `e6ed09a49f83`  |
+| 2811   | No documented layout | `e6ed09a49f83`  |
+| 2803   | No documented layout | `e6ed09a49f83`  |
+| 2794   | No documented layout | `e6ed09a49f83`  |
+| 2783   | No documented layout | `e6ed09a49f83`  |
+| 2774   | No documented layout | `e6ed09a49f83`  |
+| 2765   | No documented layout | `e6ed09a49f83`  |
+| 2756   | No documented layout | `e6ed09a49f83`  |
+| 2750   | No documented layout | `e6ed09a49f83`  |
+| 2743   | No documented layout | `e6ed09a49f83`  |
+| 2736   | No documented layout | `e6ed09a49f83`  |
+| 2726   | No documented layout | `e6ed09a49f83`  |
+| 2717   | No documented layout | `e6ed09a49f83`  |
+| 2709   | No documented layout | `e6ed09a49f83`  |
+| 2703   | No documented layout | `e6ed09a49f83`  |
+| 2695   | No documented layout | `e6ed09a49f83`  |
+| 2684   | No documented layout | `e6ed09a49f83`  |
+| 2672   | No documented layout | `e6ed09a49f83`  |
+| 2665   | No documented layout | `e6ed09a49f83`  |
+| 2657   | No documented layout | `e6ed09a49f83`  |
+| 2649   | No documented layout | `e6ed09a49f83`  |
+| 2644   | No documented layout | `e6ed09a49f83`  |
+| 2637   | No documented layout | `e6ed09a49f83`  |
+| 2629   | No documented layout | `e6ed09a49f83`  |
+| 2619   | No documented layout | `e6ed09a49f83`  |
+| 2612   | No documented layout | `e6ed09a49f83`  |
+| 2606   | No documented layout | `e6ed09a49f83`  |
+| 2602   | No documented layout | `e6ed09a49f83`  |
+| 2601   | No documented layout | `e6ed09a49f83`  |
+| 2592   | No documented layout | `e6ed09a49f83`  |
+| 2583   | No documented layout | `e6ed09a49f83`  |
+| 2575   | No documented layout | `e6ed09a49f83`  |
+| 2567   | No documented layout | `e6ed09a49f83`  |
+| 2560   | No documented layout | `e6ed09a49f83`  |
+| 2553   | No documented layout | `e6ed09a49f83`  |
+| 2545   | No documented layout | `e6ed09a49f83`  |
+| 2538   | No documented layout | `e6ed09a49f83`  |
+| 2529   | No documented layout | `e6ed09a49f83`  |
+| 2519   | No documented layout | `e6ed09a49f83`  |
+| 2513   | No documented layout | `e6ed09a49f83`  |
+| 2510   | No documented layout | `e6ed09a49f83`  |
+| 2507   | No documented layout | `e6ed09a49f83`  |
+| 2503   | No documented layout | `e6ed09a49f83`  |
+| 2498   | No documented layout | `e6ed09a49f83`  |
+| 2492   | No documented layout | `e6ed09a49f83`  |
+| 2487   | No documented layout | `e6ed09a49f83`  |
+| 2480   | No documented layout | `e6ed09a49f83`  |
+| 2474   | No documented layout | `e6ed09a49f83`  |
+| 2468   | No documented layout | `e6ed09a49f83`  |
+| 2460   | No documented layout | `e6ed09a49f83`  |
+| 2453   | No documented layout | `e6ed09a49f83`  |
+| 2444   | No documented layout | `e6ed09a49f83`  |
+| 2438   | No documented layout | `e6ed09a49f83`  |
+| 2434   | No documented layout | `e6ed09a49f83`  |
+| 2429   | No documented layout | `e6ed09a49f83`  |
+| 2421   | No documented layout | `e6ed09a49f83`  |
+| 2414   | No documented layout | `e6ed09a49f83`  |
+| 2407   | No documented layout | `e6ed09a49f83`  |
+| 2401   | No documented layout | `e6ed09a49f83`  |
+| 2397   | No documented layout | `e6ed09a49f83`  |
+| 2393   | No documented layout | `e6ed09a49f83`  |
+| 2384   | No documented layout | `e6ed09a49f83`  |
+| 2378   | No documented layout | `e6ed09a49f83`  |
+| 2372   | No documented layout | `e6ed09a49f83`  |
+| 2358   | No documented layout | `e6ed09a49f83`  |
+| 2352   | No documented layout | `e6ed09a49f83`  |
+| 2347   | No documented layout | `e6ed09a49f83`  |
+| 2343   | No documented layout | `e6ed09a49f83`  |
+| 2335   | No documented layout | `e6ed09a49f83`  |
+| 2327   | No documented layout | `e6ed09a49f83`  |
+| 2324   | No documented layout | `e6ed09a49f83`  |
+| 2319   | No documented layout | `e6ed09a49f83`  |
+| 2313   | No documented layout | `e6ed09a49f83`  |
+| 2308   | No documented layout | `e6ed09a49f83`  |
+| 2302   | No documented layout | `e6ed09a49f83`  |
+| 2295   | No documented layout | `e6ed09a49f83`  |
+| 2290   | No documented layout | `e6ed09a49f83`  |
+| 2284   | No documented layout | `e6ed09a49f83`  |
+| 2276   | No documented layout | `e6ed09a49f83`  |
+| 2269   | No documented layout | `e6ed09a49f83`  |
+| 2259   | No documented layout | `e6ed09a49f83`  |
+| 2250   | No documented layout | `e6ed09a49f83`  |
+| 2243   | No documented layout | `e6ed09a49f83`  |
+| 2235   | No documented layout | `e6ed09a49f83`  |
+| 2229   | No documented layout | `e6ed09a49f83`  |
+| 2224   | No documented layout | `e6ed09a49f83`  |
+| 2218   | No documented layout | `e6ed09a49f83`  |
+| 2215   | No documented layout | `e6ed09a49f83`  |
+| 2207   | No documented layout | `e6ed09a49f83`  |
+| 2203   | No documented layout | `e6ed09a49f83`  |
+| 2196   | No documented layout | `e6ed09a49f83`  |
+| 2192   | No documented layout | `e6ed09a49f83`  |
+| 2189   | No documented layout | `e6ed09a49f83`  |
+| 2183   | No documented layout | `e6ed09a49f83`  |
+| 2179   | No documented layout | `e6ed09a49f83`  |
+| 2171   | No documented layout | `e6ed09a49f83`  |
+| 2163   | No documented layout | `e6ed09a49f83`  |
+| 2156   | No documented layout | `e6ed09a49f83`  |
+| 2151   | No documented layout | `e6ed09a49f83`  |
+| 2147   | No documented layout | `e6ed09a49f83`  |
+| 2142   | No documented layout | `e6ed09a49f83`  |
+| 2138   | No documented layout | `e6ed09a49f83`  |
+| 2134   | No documented layout | `e6ed09a49f83`  |
+| 2130   | No documented layout | `e6ed09a49f83`  |
+| 2122   | No documented layout | `e6ed09a49f83`  |
+| 2107   | No documented layout | `e6ed09a49f83`  |
+| 2098   | No documented layout | `e6ed09a49f83`  |
+| 2089   | No documented layout | `e6ed09a49f83`  |
+| 2081   | No documented layout | `e6ed09a49f83`  |
+| 2073   | No documented layout | `e6ed09a49f83`  |
+| 2067   | No documented layout | `e6ed09a49f83`  |
+| 2063   | No documented layout | `e6ed09a49f83`  |
+| 2059   | No documented layout | `e6ed09a49f83`  |
+| 2052   | No documented layout | `e6ed09a49f83`  |
+| 2044   | No documented layout | `e6ed09a49f83`  |
+| 2039   | No documented layout | `e6ed09a49f83`  |
+| 2032   | No documented layout | `e6ed09a49f83`  |
+| 2025   | No documented layout | `e6ed09a49f83`  |
+| 2011   | No documented layout | `e6ed09a49f83`  |
+| 2005   | No documented layout | `e6ed09a49f83`  |
+| 2000   | No documented layout | `e6ed09a49f83`  |
+| 1996   | No documented layout | `e6ed09a49f83`  |
+| 1991   | No documented layout | `e6ed09a49f83`  |
+| 1985   | No documented layout | `e6ed09a49f83`  |
+| 1980   | No documented layout | `e6ed09a49f83`  |
+| 1969   | No documented layout | `e6ed09a49f83`  |
+| 1964   | No documented layout | `e6ed09a49f83`  |
+| 1958   | No documented layout | `e6ed09a49f83`  |
+| 1950   | No documented layout | `e6ed09a49f83`  |
+| 1945   | No documented layout | `e6ed09a49f83`  |
+| 1937   | Layout 1             | `e6ed09a49f83`  |
+| 1933   | Layout 1             | `e6ed09a49f83`  |
+| 1927   | Layout 1             | `e6ed09a49f83`  |
+| 1921   | Layout 1             | `e6ed09a49f83`  |
+| 1914   | Layout 1             | `e6ed09a49f83`  |
+| 1908   | Layout 1             | `e6ed09a49f83`  |
+| 1897   | Layout 1             | `e6ed09a49f83`  |
+| 1892   | Layout 1             | `e6ed09a49f83`  |
+| 1886   | Layout 1             | `e6ed09a49f83`  |
+| 1881   | Layout 1             | `e6ed09a49f83`  |
+| 1871   | Layout 1             | `e6ed09a49f83`  |
+| 1866   | Layout 1             | `e6ed09a49f83`  |
+| 1862   | Layout 1             | `e6ed09a49f83`  |
+| 1854   | Layout 1             | `e6ed09a49f83`  |
+| 1846   | Layout 1             | `e6ed09a49f83`  |
+| 1838   | Layout 1             | `e6ed09a49f83`  |
+| 1832   | Layout 1             | `e6ed09a49f83`  |
+| 1826   | Layout 1             | `e6ed09a49f83`  |
+| 1822   | Layout 1             | `e6ed09a49f83`  |
+| 1818   | Layout 1             | `e6ed09a49f83`  |
+| 1804   | Layout 1             | `e6ed09a49f83`  |
+| 1794   | Layout 1             | `e6ed09a49f83`  |
+| 1790   | Layout 1             | `e6ed09a49f83`  |
+| 1784   | Layout 1             | `e6ed09a49f83`  |
+| 1774   | Layout 1             | `e6ed09a49f83`  |
+| 1771   | No documented layout | `e6ed09a49f83`  |
+| 1762   | No documented layout | `e6ed09a49f83`  |
+| 1759   | No documented layout | `e6ed09a49f83`  |
+| 1754   | No documented layout | `e6ed09a49f83`  |
+| 1749   | No documented layout | `e6ed09a49f83`  |
+| 1743   | No documented layout | `e6ed09a49f83`  |
+| 1737   | No documented layout | `e6ed09a49f83`  |
+| 1731   | No documented layout | `e6ed09a49f83`  |
+| 1725   | No documented layout | `e6ed09a49f83`  |
+| 1717   | No documented layout | `e6ed09a49f83`  |
+| 1710   | No documented layout | `e6ed09a49f83`  |
+| 1704   | No documented layout | `e6ed09a49f83`  |
+| 1698   | No documented layout | `e6ed09a49f83`  |
+| 1690   | No documented layout | `e6ed09a49f83`  |
+| 1685   | No documented layout | `e6ed09a49f83`  |
+| 1680   | No documented layout | `e6ed09a49f83`  |
+| 1674   | No documented layout | `e6ed09a49f83`  |
+| 1668   | No documented layout | `e6ed09a49f83`  |
+| 1659   | No documented layout | `e6ed09a49f83`  |
+| 1649   | No documented layout | `e6ed09a49f83`  |
+| 1642   | No documented layout | `e6ed09a49f83`  |
+| 1636   | No documented layout | `e6ed09a49f83`  |
+| 1628   | No documented layout | `e6ed09a49f83`  |
+| 1622   | No documented layout | `e6ed09a49f83`  |
+| 1614   | No documented layout | `e6ed09a49f83`  |
+| 1608   | No documented layout | `e6ed09a49f83`  |
+| 1602   | No documented layout | `e6ed09a49f83`  |
+| 1598   | No documented layout | `e6ed09a49f83`  |
+| 1594   | No documented layout | `e6ed09a49f83`  |
+| 1590   | No documented layout | `e6ed09a49f83`  |
+| 1587   | No documented layout | `e6ed09a49f83`  |
+| 1584   | No documented layout | `e6ed09a49f83`  |
+| 1579   | No documented layout | `e6ed09a49f83`  |
+| 1572   | No documented layout | `e6ed09a49f83`  |
+| 1565   | No documented layout | `e6ed09a49f83`  |
+| 1559   | No documented layout | `e6ed09a49f83`  |
+| 1554   | No documented layout | `e6ed09a49f83`  |
+| 1547   | No documented layout | `e6ed09a49f83`  |
+| 1537   | No documented layout | `e6ed09a49f83`  |
+| 1529   | No documented layout | `e6ed09a49f83`  |
+| 1524   | No documented layout | `e6ed09a49f83`  |
+| 1519   | No documented layout | `e6ed09a49f83`  |
+| 1509   | No documented layout | `e6ed09a49f83`  |
+| 1506   | No documented layout | `e6ed09a49f83`  |
+| 1504   | No documented layout | `e6ed09a49f83`  |
+| 1500   | No documented layout | `e6ed09a49f83`  |
+| 1493   | No documented layout | `e6ed09a49f83`  |
+| 1489   | No documented layout | `e6ed09a49f83`  |
+| 1485   | No documented layout | `e6ed09a49f83`  |
+| 1481   | No documented layout | `e6ed09a49f83`  |
+| 1474   | No documented layout | `e6ed09a49f83`  |
+| 1466   | No documented layout | `e6ed09a49f83`  |
+| 1462   | No documented layout | `e6ed09a49f83`  |
+| 1459   | No documented layout | `e6ed09a49f83`  |
+| 1453   | No documented layout | `e6ed09a49f83`  |
+| 1450   | No documented layout | `e6ed09a49f83`  |
+| 1445   | No documented layout | `e6ed09a49f83`  |
+| 1439   | No documented layout | `e6ed09a49f83`  |
+| 1433   | No documented layout | `e6ed09a49f83`  |
+| 1430   | No documented layout | `e6ed09a49f83`  |
+| 1426   | No documented layout | `e6ed09a49f83`  |
+| 1421   | No documented layout | `e6ed09a49f83`  |
+| 1417   | No documented layout | `e6ed09a49f83`  |
+| 1416   | No documented layout | `e6ed09a49f83`  |
+| 1409   | No documented layout | `e6ed09a49f83`  |
+| 1405   | No documented layout | `e6ed09a49f83`  |
+| 1401   | No documented layout | `e6ed09a49f83`  |
+| 1396   | No documented layout | `e6ed09a49f83`  |
+| 1391   | No documented layout | `e6ed09a49f83`  |
+| 1390   | No documented layout | `e6ed09a49f83`  |
+| 1386   | No documented layout | `e6ed09a49f83`  |
+| 1381   | No documented layout | `e6ed09a49f83`  |
+| 1379   | No documented layout | `e6ed09a49f83`  |
+| 1372   | No documented layout | `e6ed09a49f83`  |
+| 1366   | No documented layout | `e6ed09a49f83`  |
+| 1364   | No documented layout | `e6ed09a49f83`  |
+| 1363   | No documented layout | `e6ed09a49f83`  |
+| 1360   | No documented layout | `e6ed09a49f83`  |
+| 1358   | No documented layout | `e6ed09a49f83`  |
+| 1355   | No documented layout | `e6ed09a49f83`  |
+| 1351   | No documented layout | `e6ed09a49f83`  |
+| 1348   | No documented layout | `e6ed09a49f83`  |
+| 1346   | No documented layout | `e6ed09a49f83`  |
+| 1341   | No documented layout | `e6ed09a49f83`  |
+| 1340   | No documented layout | `e6ed09a49f83`  |
+| 1338   | No documented layout | `e6ed09a49f83`  |
+| 1335   | No documented layout | `e6ed09a49f83`  |
+| 1333   | No documented layout | `e6ed09a49f83`  |
+| 1329   | No documented layout | `e6ed09a49f83`  |
+| 1327   | No documented layout | `e6ed09a49f83`  |
+| 1324   | No documented layout | `e6ed09a49f83`  |
+| 1321   | No documented layout | `e6ed09a49f83`  |
+| 1319   | No documented layout | `e6ed09a49f83`  |
+| 1318   | No documented layout | `e6ed09a49f83`  |
+| 1316   | No documented layout | `e6ed09a49f83`  |
+| 1313   | No documented layout | `e6ed09a49f83`  |
+| 1311   | No documented layout | `e6ed09a49f83`  |
+| 1309   | No documented layout | `e6ed09a49f83`  |
+| 1304   | No documented layout | `e6ed09a49f83`  |
+| 1292   | No documented layout | `e6ed09a49f83`  |
+| 1286   | No documented layout | `e6ed09a49f83`  |
+| 1280   | No documented layout | `e6ed09a49f83`  |
+| 1276   | No documented layout | `e6ed09a49f83`  |
+| 1267   | No documented layout | `e6ed09a49f83`  |
+| 1261   | No documented layout | `e6ed09a49f83`  |
+| 1256   | No documented layout | `e6ed09a49f83`  |
+| 1250   | No documented layout | `e6ed09a49f83`  |
+| 1246   | No documented layout | `e6ed09a49f83`  |
+| 1239   | No documented layout | `e6ed09a49f83`  |
+| 1230   | No documented layout | `e6ed09a49f83`  |
+| 1226   | No documented layout | `e6ed09a49f83`  |
+| 1220   | No file              | `e6ed09a49f83`  |
+| 1217   | No file              | `e6ed09a49f83`  |
+| 1211   | No file              | `e6ed09a49f83`  |
+| 1210   | No file              | `e6ed09a49f83`  |
+| 1208   | No file              | `e6ed09a49f83`  |
+| 1203   | No file              | `e6ed09a49f83`  |
+| 1197   | No file              | `e6ed09a49f83`  |
+| 1194   | No file              | `e6ed09a49f83`  |
+| 1192   | No file              | `e6ed09a49f83`  |
+| 1187   | No file              | `e6ed09a49f83`  |
+| 1183   | No file              | `e6ed09a49f83`  |
+| 1177   | No file              | `e6ed09a49f83`  |
+| 1173   | No file              | `e6ed09a49f83`  |
+| 1167   | No file              | `e6ed09a49f83`  |
+| 1164   | No file              | `e6ed09a49f83`  |
+| 1156   | No file              | `e6ed09a49f83`  |
+| 1149   | No file              | `e6ed09a49f83`  |
+| 1144   | No file              | `e6ed09a49f83`  |
+| 1137   | No file              | `e6ed09a49f83`  |
+| 1132   | No file              | `e6ed09a49f83`  |
+| 1127   | No file              | `e6ed09a49f83`  |
+| 1122   | No file              | `e6ed09a49f83`  |
+| 1118   | No file              | `e6ed09a49f83`  |
+| 1114   | No file              | `e6ed09a49f83`  |
+| 1109   | No file              | `e6ed09a49f83`  |
+| 1102   | No file              | `e6ed09a49f83`  |
+| 1096   | No file              | `e6ed09a49f83`  |
+| 1088   | No file              | `e6ed09a49f83`  |
+| 1081   | No file              | `e6ed09a49f83`  |
+| 1076   | No file              | `e6ed09a49f83`  |
+| 1069   | No file              | `e6ed09a49f83`  |
+| 1064   | No file              | `e6ed09a49f83`  |
+| 1058   | No file              | `e6ed09a49f83`  |
+| 1051   | No file              | `e6ed09a49f83`  |
+| 1044   | No file              | `e6ed09a49f83`  |
+| 1036   | No file              | `e6ed09a49f83`  |
+| 1026   | No file              | `e6ed09a49f83`  |
+| 1016   | No file              | `e6ed09a49f83`  |
+| 1009   | No file              | `e6ed09a49f83`  |
+| 1005   | No file              | `e6ed09a49f83`  |
+| 1000   | No file              | `e6ed09a49f83`  |
+| 998    | No file              | `e6ed09a49f83`  |
+| 990    | No file              | `e6ed09a49f83`  |
+| 979    | No file              | `e6ed09a49f83`  |
+| 972    | No file              | `e6ed09a49f83`  |
+| 963    | No file              | `e6ed09a49f83`  |
+| 955    | No file              | `e6ed09a49f83`  |
+| 946    | No file              | `e6ed09a49f83`  |
+| 938    | No file              | `e6ed09a49f83`  |
+| 927    | No file              | `e6ed09a49f83`  |
+| 911    | No file              | `e6ed09a49f83`  |
+| 904    | No file              | `e6ed09a49f83`  |
+| 899    | No file              | `e6ed09a49f83`  |
+| 894    | No file              | `e6ed09a49f83`  |
+| 885    | No file              | `e6ed09a49f83`  |
+| 879    | No file              | `e6ed09a49f83`  |
+| 872    | No file              | `e6ed09a49f83`  |
+| 864    | No file              | `e6ed09a49f83`  |
+| 855    | No file              | `e6ed09a49f83`  |
+| 853    | No file              | `e6ed09a49f83`  |
+| 845    | No file              | `e6ed09a49f83`  |
+| 837    | No file              | `e6ed09a49f83`  |
+| 829    | No file              | `e6ed09a49f83`  |
+| 822    | No file              | `e6ed09a49f83`  |
+| 814    | No file              | `e6ed09a49f83`  |
+| 805    | No file              | `e6ed09a49f83`  |
+| 794    | No file              | `e6ed09a49f83`  |
+| 787    | No file              | `e6ed09a49f83`  |
+| 780    | No file              | `e6ed09a49f83`  |
+| 771    | No file              | `e6ed09a49f83`  |
+| 760    | No file              | `e6ed09a49f83`  |
+| 748    | No file              | `e6ed09a49f83`  |
+| 741    | No file              | `e6ed09a49f83`  |
+| 736    | No file              | `e6ed09a49f83`  |
+| 731    | No file              | `e6ed09a49f83`  |
+| 723    | No file              | `e6ed09a49f83`  |
+| 711    | No file              | `e6ed09a49f83`  |
+| 707    | No file              | `e6ed09a49f83`  |
+| 697    | No file              | `e6ed09a49f83`  |
+| 689    | No file              | `e6ed09a49f83`  |
+| 683    | No file              | `e6ed09a49f83`  |
+| 678    | No file              | `e6ed09a49f83`  |
+| 670    | No file              | `e6ed09a49f83`  |
+| 661    | No file              | `e6ed09a49f83`  |
+| 656    | No file              | `e6ed09a49f83`  |
+| 652    | No file              | `e6ed09a49f83`  |
+| 643    | No file              | `e6ed09a49f83`  |
+| 637    | No file              | `e6ed09a49f83`  |
+| 630    | No file              | `e6ed09a49f83`  |
+| 627    | No file              | `e6ed09a49f83`  |
+| 621    | No file              | `e6ed09a49f83`  |
+| 617    | No file              | `e6ed09a49f83`  |
+| 615    | No file              | `e6ed09a49f83`  |
+| 606    | No file              | `e6ed09a49f83`  |
+| 599    | No file              | `e6ed09a49f83`  |
+| 592    | No file              | `e6ed09a49f83`  |
+| 586    | No file              | `e6ed09a49f83`  |
+| 577    | No file              | `e6ed09a49f83`  |
+| 569    | No file              | `e6ed09a49f83`  |
+| 561    | No file              | `e6ed09a49f83`  |
+| 554    | No file              | `e6ed09a49f83`  |
+| 542    | No file              | `e6ed09a49f83`  |
+| 532    | No file              | `e6ed09a49f83`  |
+| 531    | No file              | `e6ed09a49f83`  |
+| 526    | No file              | `e6ed09a49f83`  |
+| 521    | No file              | `e6ed09a49f83`  |
+| 517    | No file              | `e6ed09a49f83`  |
+| 510    | No file              | `e6ed09a49f83`  |
+| 508    | No file              | `e6ed09a49f83`  |
+| 504    | No file              | `e6ed09a49f83`  |
+| 497    | No file              | `e6ed09a49f83`  |
+| 491    | No file              | `e6ed09a49f83`  |
+| 485    | No file              | `e6ed09a49f83`  |
+| 478    | No file              | `e6ed09a49f83`  |
+| 472    | No file              | `e6ed09a49f83`  |
+| 466    | No file              | `e6ed09a49f83`  |
+| 457    | No file              | `e6ed09a49f83`  |
+| 452    | No file              | `e6ed09a49f83`  |
+| 449    | No file              | `e6ed09a49f83`  |
+| 435    | No file              | `e6ed09a49f83`  |
 
 <!-- versions:end -->
 
@@ -540,7 +540,7 @@ Observed records: 44,609 in the pre-2026-09-27 test fixture, 44,645 in the
 2026-09-27 client (3458), 44,683 on client 3464. The row counts elsewhere in
 this doc are from the pre-2026-09-27 fixture.
 
-### Record (variable: 201 bytes + text)
+### Record (variable: 174 bytes + text and tail)
 
 A record is a chain of fixed blocks and length-prefixed strings. The strings use
 the shared 8-byte prefix (u32 length, u32 zero, no terminator); UTF-16 lengths
@@ -566,8 +566,7 @@ The block starts at the end of the name string.
 
 | Offset  | Type    | Field           | Notes                                                                 |
 | ------- | ------- | --------------- | --------------------------------------------------------------------- |
-| `+0x00` | i16     | buff_level      | 1 to 999; `1` in 32,071 rows. Ranks buffs within a `group`; staged buffs count up, e.g. boss stages 1 to 10 |
-| `+0x02` | u8[2]   | unknown_02      | Always `0`                                                            |
+| `+0x00` | u32     | buff_level      | 1 to 999; `1` in 32,071 rows. Ranks buffs within a `group`; staged buffs count up, e.g. boss stages 1 to 10. The sheet's `Level`, see Field Names |
 | `+0x04` | u16     | group           | `0` in 28,199 rows. Buffs of one group replace each other by level, see Stacking |
 | `+0x06` | i16     | condition_type  | `0` in 44,390 rows; the trigger of types 1 and 4, see `condition_type` |
 | `+0x08` | u8      | effect_type     | 173 distinct values; see Enum Values                                  |
@@ -593,12 +592,13 @@ The block starts at the end of the name string.
 | `+0x5B` | i64     | param_10        | See `param_1`                                                         |
 | `+0x63` | u8      | is_debuff       | `1` on debuffs (14,432 rows on client 3464); the buff bar lists them apart (`HandleMOnAppliedBuff(buffIndex, isDebuff)`) |
 | `+0x64` | u8      | is_party_buff   | `1` in 407 rows, such as 57766 and 57767 (Evasion +8 and +12) and 57786 (All AP -5) |
-| `+0x65` | u16     | unknown_65      | Always `0`                                                            |
+| `+0x65` | u8      | unknown_65      | Always `0`; see Field Names                                           |
+| `+0x66` | u8      | unknown_66      | Always `0`; see Field Names                                           |
 | `+0x67` | u8      | is_overlapped   | `1` in 7,662 rows                                                     |
 | `+0x68` | u32     | duration_ms     | `0` in 30,016 rows; max `86400000` (24 h). `3600000` = 60 min        |
 | `+0x6C` | u32     | tick_ms         | Tick interval of periodic effects in milliseconds (`10000` = every 10 sec); see Notes |
-| `+0x70` | u64     | unknown_70      | Always `0`                                                            |
-| `+0x78` | u16     | unknown_78      | `0` in every row but buff 12605 (`1`)                                 |
+| `+0x70` | u64     | unknown_70      | Always `0`; see Field Names                                           |
+| `+0x78` | u16     | unknown_78      | `0` in every row but buff 12605 (`1`); see Field Names                |
 | `+0x7A` | u8      | need_equip_type | Equipment type the buff needs, an `itemenchant.dbss` `equip_type`; `0` in every row but buff 2078 (`13`), see Field Names |
 | `+0x7B` | u8[3]   | unknown_7b      | Copies of `itemenchant.dbss` `+0x08` to `+0x0A`; `0` in every row but buff 2078 (`0, 0, 1`) |
 | `+0x7E` | u8      | unknown_7e      | In the `itemenchant.dbss` `+0x0B` place; `1` in 44,588 rows (client 3464) |
@@ -609,22 +609,23 @@ The block starts at the end of the name string.
 | `+0x83` | u8      | remove_on_dead  | `1` when dying ends the buff; 33,944 rows                             |
 | `+0x84` | u8      | only_apply_to_character | `1` in 24,541 rows                                            |
 
-### Tail Block (27 bytes)
+### Tail Block (variable: 27 bytes + ui_effect)
 
 The block starts at the end of the description string. Mostly zero.
 
-| Offset  | Type | Field       | Notes                                        |
-| ------- | ---- | ----------- | -------------------------------------------- |
-| `+0x00` | u8   | unknown_00  | `1` in 34 rows                               |
-| `+0x01` | u8   | unknown_01  | `1` in 6 rows                                |
-| `+0x02` | u32  | unknown_02  | `0`, `1` or `2`                              |
+| Offset            | Type | Field       | Notes                                        |
+| ----------------- | ---- | ----------- | -------------------------------------------- |
+| `+0x00`           | u8   | unknown_00  | `1` in 34 rows; see Field Names              |
+| `+0x01`           | u8   | unknown_01  | `1` in 6 rows; see Field Names               |
+| `+0x02`           | u32  | unknown_02  | `0`, `1` or `2`; see Field Names             |
 | `+0x06` | u8   | amplification_type | `3` in 44,649 rows (client 3464), which set no `amplification_rate`; `1` or `0` in the 34 that do |
 | `+0x07` | i32  | amplification_rate | `0`, `1000000` or `-1000000`, per-million scale; set on 34 rows, such as the `구름막` and `비밀의 늪` debuffs (14360 to 14365) |
-| `+0x0B` | u8[12] | unknown_0b | Always `0`                                   |
-| `+0x17` | u8   | unknown_17  | `1` in 221 rows                              |
-| `+0x18` | u8   | stacking_category | 61 distinct values; item type such as food, draught or perfume, see Stacking |
-| `+0x19` | u8   | is_exclusive | `1` in 2,069 rows on client 3458, never with category `0`; applying the buff ends the other buffs of its category, see Stacking |
-| `+0x1A` | u8   | unknown_1a  | `6` in 18,895 rows, else `0` or `1`          |
+| `+0x0B`           | u32  | unknown_0b  | Always `0`                                   |
+| `+0x0F`           | str8 | ui_effect   | Empty in every row of clients 1784, 1937, 2932 and 3483; see Field Names |
+| `ui_effect+0x00`  | u8   | is_developing_contents | `1` on 207 rows (client 3483), exactly those whose name or icon is `UNKNOWN`; see Field Names |
+| `ui_effect+0x01`  | u8   | stacking_category | 61 distinct values; item type such as food, draught or perfume, see Stacking |
+| `ui_effect+0x02`  | u8   | is_exclusive | `1` in 2,069 rows on client 3458, never with category `0`; applying the buff ends the other buffs of its category, see Stacking |
+| `ui_effect+0x03`  | u8   | unknown_1a  | `6` in 18,895 rows, else `0` or `1`          |
 
 ### `buffoffset.dbss`
 
@@ -660,10 +661,10 @@ The block starts at the end of the description string. Mostly zero.
 
 Before client 3464 `buff_id` was a u16 in the record and in the
 `buffoffset.dbss` index rows, the layout of `characterstaticoffset.dbss`.
-Only the Record and the Index Row differ from Layout 3. The parser reads only
-Layout 3.
+Only the Record and the Index Row differ from Layout 3. The `buffoffset.dbss`
+view tells the two row widths apart by the trailer's `rows_end`.
 
-### Record (variable: 199 bytes + text)
+### Record (variable: 172 bytes + text and tail)
 
 | Offset             | Type        | Field       | Notes |
 | ------------------ | ----------- | ----------- | ----- |
@@ -688,21 +689,32 @@ Layout 3.
 ## Layout 1
 
 On client 1784 the Tail Block was 3 bytes shorter: it ends after
-`unknown_17`, with no `stacking_category`, `is_exclusive` or `unknown_1a`.
-The 24 bytes it keeps match Layout 3's first 24 in 36,134 of the 37,053
-records both clients share. Only the Tail Block differs from Layout 2.
+`is_developing_contents`, with no `stacking_category`, `is_exclusive` or `unknown_1a`;
+the parser holds None for the first two. The 24 bytes it keeps match Layout
+3's first 24 in 35,770 of the 36,745 records clients 1784 and 3483 share.
+Only the Tail Block differs from Layout 2.
 
-### Tail Block (24 bytes)
+`need_equip_slot` holds one value on every record of a Layout 1 client: `32`
+on clients 1774 and 1784, `34` on 1937 (Layout 3 stores `46` on all but buff
+2078). On client 1784 `32` is the `equip_slot` `itemenchant.dbss` stores for
+an item that goes in no slot. The parser keeps the stored value. The other
+eight bytes from stats `+0x7A` are `0, 0, 0, 0, 0, 2, 0` and `2` on every
+record of clients 1784, 1937 and 2932: `unknown_7e` is `0` there, as on the
+`itemenchant.dbss` non-equipment items, and turns `1` on 44,549 of 44,645
+records by client 3458.
 
-| Offset  | Type   | Field              | Notes |
-| ------- | ------ | ------------------ | ----- |
-| `+0x00` | u8     | unknown_00         |       |
-| `+0x01` | u8     | unknown_01         |       |
-| `+0x02` | u32    | unknown_02         |       |
-| `+0x06` | u8     | amplification_type |       |
-| `+0x07` | i32    | amplification_rate |       |
-| `+0x0B` | u8[12] | unknown_0b         |       |
-| `+0x17` | u8     | unknown_17         |       |
+### Tail Block (variable: 24 bytes + ui_effect)
+
+| Offset           | Type   | Field                  | Notes |
+| ---------------- | ------ | ---------------------- | ----- |
+| `+0x00`          | u8     | unknown_00             |       |
+| `+0x01`          | u8     | unknown_01             |       |
+| `+0x02`          | u32    | unknown_02             |       |
+| `+0x06`          | u8     | amplification_type     |       |
+| `+0x07`          | i32    | amplification_rate     |       |
+| `+0x0B`          | u32    | unknown_0b             |       |
+| `+0x0F`          | str8   | ui_effect              |       |
+| `ui_effect+0x00` | u8     | is_developing_contents |       |
 
 ## Enum Values
 
@@ -717,13 +729,20 @@ of the buffs that use each value.
 | 25    | 1,597 | Combat, skill and life EXP gain                    | `param_1` = bonus per million; `param_2` 0 combat, 1 skill, 2 life, 3 party (2 buffs, unlabelled); under 2, `param_3` = life skill as in type 80, `15` all |
 | 34    | 287   | Display buff (title, text and icon)                | All parameters `0` on 228; see Effect text           |
 | 38    | 5,683 | Knowledge unlock                                   | `param_1` = knowledge ID (LOC type 34 name); see Effect text |
-| 39    | 1,732 | All AP, positive or negative                       | `param_1` = `3`, `param_2` = amount                  |
-| 40    | 870   | All Accuracy                                       | `param_1` = `3`, `param_2` = amount                  |
-| 43    | 1,730 | All Damage Reduction                               | `param_1` = `3`, `param_2` = amount                  |
+| 39    | 1,732 | AP, positive or negative                           | `param_1` = attack type (see below), `param_2` = amount |
+| 40    | 870   | Accuracy                                           | `param_1` = attack type (see below), `param_2` = amount |
+| 43    | 1,730 | Damage Reduction                                   | `param_1` = attack type (see below), `param_2` = amount |
 | 45    | 8,311 | Damage multipliers (summons, monsters, siege, cannons) | `param_4` = damage per million (`5790000` = `Attack Damage 579%`); `param_1` maybe the attack type, see Effect text |
-| 46    | 1,831 | Species extra AP                                   | `param_1` = species: `0` Humans, `1` Demihumans, `2` Beasts, `3` Kamasylvian Monsters, `4` Edanian Monsters; `param_2` = amount, can be negative. `5` is unused ("Not in Use", Korean `미사용`), `6` mixes hunting effects whose amounts do not follow `param_2`; both unlabelled. 1,296 of 1,313 one-line texts match |
-| 49    | 1,378 | Crowd-control resistance                           | `param_1` = kind as in type 105: `0` Knockback/Floating, `1` Knockdown/Bound, `2` Grapple, `3` and `5` Stun/Stiffness/Freezing (stun and stiffness in Korean), `7` Fear, `8` All; `param_2` per million. `6` (bound in Korean) reads "Not in Use", unlabelled. 745 of 873 one-line texts match; the rest are kind 7 "Not in Use" |
+| 46    | 1,831 | Species extra AP                                   | `param_1` = species: `0` Humans, `1` Demihumans, `2` Beasts, `3` Kamasylvian Monsters, `4` Edanian Monsters; `param_2` = amount, can be negative. `5` is unused ("Not in Use", Korean `미사용`), `6` mixes hunting effects whose amounts do not follow `param_2`; both unlabelled. 1,296 of 1,313 one-line texts match. The client 1784 `Module_Table` names `3` undead, `4` reptile and `5` no species, earlier names of the same kinds |
+| 49    | 1,378 | Crowd-control resistance                           | `param_1` = kind as in type 105: `0` Knockback/Floating, `1` Knockdown/Bound, `2` Grapple, `3` and `5` Stun/Stiffness/Freezing (stun and stiffness in Korean), `7` Fear, `8` All; `param_2` per million. `6` (bound in Korean) reads "Not in Use", unlabelled. 745 of 873 one-line texts match; the rest are kind 7 "Not in Use". The client 1784 `Module_Table` lists `0` knockback, `1` knockdown, `2` grab, `3` stun, `4` guard break, `5` stiffness, `6` bound and `7` fear; no buff stores `4` |
 | 58    | 1,132 | Display buff (title, text and icon)                | All parameters `0` on 1,095; `param_1` is set on a few vision buffs, see Effect text |
+
+`param_1` of types 39 to 43 (and 106, 167, 174 and 175 in the sheet) is the
+attack type: `0` melee, `1` ranged, `2` magic, `3` all. The client 1784
+`Module_Table` describes it so, and the Korean names of the monster debuffs
+that store `0` to `2` agree (`몬스터 디버프 - 공격력 감소(근접)`, "monster
+debuff: AP down (melee)", and `(원거리)`, `(마법)` for ranged and magic). On
+client 3483, 1,042 of the 1,732 type 39 buffs store `0` to `2`.
 
 These are also confirmed against the English LOC type 5 text of their buffs. Percentages use the same per-million scale.
 
@@ -737,7 +756,7 @@ These are also confirmed against the English LOC type 5 text of their buffs. Per
 | 10    | 320  | Attack Speed                  | `param_1` per million                                             |
 | 11    | 312  | Casting Speed                 | `param_1` per million                                             |
 | 30    | 509  | Critical Hit Rate             | `param_1` per million                                             |
-| 41    | 804  | All Evasion                   | `param_1` = `3`, `param_2` = amount                               |
+| 41    | 804  | Evasion                       | `param_1` = attack type (see below), `param_2` = amount |
 | 80    | 180  | Life-skill EXP                | `param_1` = life skill, see below; `param_2` = amount             |
 | 93    | 238  | Special-attack extra damage   | `param_1` = attack kind: `0` all, `1` back, `2` down, `3` air, `4` critical, `5` speed, `6` counter; `param_2` per million |
 | 105   | 123  | Ignore resistance             | `param_1` = resistance kind: `0` knockback/floating, `1` knockdown/bound, `2` grapple, `3` stun/stiffness/freezing, `8` all; `param_2` per million |
@@ -756,7 +775,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 23    | 654  | Teleport                      | `param_1` = [teleport.dbss](teleport_dbss.md) section, `param_2` = key within it; see Effect text |
 | 24    | 95   | One-off EXP                   | `param_1` = amount, flat; `param_2` = `0` Combat, `1` Guild, `2` Skill |
 | 29    | 249  | Weight Limit                  | `param_1` in ten-thousandths of an LT (`1000000` = 100 LT)        |
-| 37    | 1,031 | Node registration            | `param_1` = node key (LOC type 29 name); `param_2` `1` on 37 town, city and investment bank nodes, meaning unknown |
+| 37    | 1,031 | Node registration            | `param_1` = node key (LOC type 29 name); `param_2` `1` on 37 town, city and investment bank nodes: the node is invested on discovery, `0` needs an investment (client 1784 `Module_Table`) |
 | 47    | 6    | Horse Capture Rate            | `param_1` per million                                             |
 | 48    | 123  | Set effect points             | `param_1` = set skill (LOC type 10 name), `param_2` = points the piece adds; see Effect text |
 | 50    | 144  | Mount EXP                     | `param_1` per million                                             |
@@ -766,7 +785,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 56    | 28   | Amity                         | `param_1` per million (`Amity +10%`)                              |
 | 57    | 225  | Item Drop Rate                | `param_1` per million; `param_2` `1` or `2` on 6 buffs with the same text, meaning unknown |
 | 59    | 31   | Jump Height                   | `param_1` = amount                                                |
-| 60    | 59   | One-off Contribution EXP      | `param_1` = `0` on all, `param_2` = amount; `param_3` `1` on all, meaning unknown |
+| 60    | 59   | One-off contribution          | `param_1` = `0` on all (a region key in the sheet), `param_2` = amount; `param_3` = `0` Contribution Points, `1` Contribution EXP, `2` Recover Used Contribution Points, see Effect text |
 | 62    | 10   | Skill points                  | `param_1` = `0` combat (`전투`) on all, `param_2` = points (`Skill Points (5)`) |
 | 63    | 11   | Worker Stamina recovery       | `param_1` = amount, one-off (`Recover 2 Worker Stamina`)          |
 | 66    | 87   | Energy Recovery               | `param_1` = amount (natural regeneration, `기운 자연 회복량`)        |
@@ -843,7 +862,8 @@ The numbering still holds: every type in the tables above matches its module
 (`9` `eMoveSpeedVariationRateBuffModule`, `38` `eCreateCardBuffModule` for
 knowledge, `46` `eDiceTribeDamageVariationAmountBuffModule` for species AP,
 `103` `eRegistWorkerBuffModule`), except `19` `eDeprecatedBuffModule`, which
-now holds the Sailor EXP buffs. Types from `132` came later and have no name.
+now holds the Sailor EXP buffs. Types from `132` came later; see Client
+1784 Module Names.
 
 The module names also fit most types without an Effect text, on client 3464:
 
@@ -892,6 +912,49 @@ Trip`). No buff stores `12`, `20` to `22`, `26`, `27`, `42`, `44`, `55`, `61`,
 `74`, `78`, `92`, `96`, `113` or `118`. The browser's Effect Type cell adds the
 module name for the types that fit (`9 MoveSpeedVariationRate`),
 from `_dbss/buff/effect/type_names.py`.
+
+The client 1784 `Module_Table` names `82` `특정 지역에서 몬스터 인식 안 함`
+("monsters in a region do not notice you", `param_1` the territory: `0`
+Balenos to `6` Southeastern Calpheon), which fits its buffs
+(`몬스터 인식 해제-메디아령`, "monster notice off: Mediah"); the 2016 name
+does not, so the cell keeps the bare number.
+
+### Client 1784 Module Names
+
+The `Module_Table` sheet of client 1784 (`datasheet_skilldatatable_buff.xlsm`,
+176 rows, `0` to `180` without `158`, `177` and `178`) gives each type a
+Korean name and a description of each parameter, `Param0` being `param_1`.
+For `132` to `150` and `159` it writes the module identifier after the Korean
+name (`귀환석 관련 모듈(eUseReturnStoneModule)`). The Effect Type cell takes
+that identifier where the buffs of client 3483 fit it:
+
+| Value | Module (without `e` and `BuffModule` or `Module`) | Buffs that store it |
+| ----- | ------------------------------------------------- | ------------------- |
+| 132   | UseReturnStone       | `귀환석` (return stone) |
+| 133   | UseCompass           | `나침반` (compass) |
+| 134   | VarySwimSpeedRate    | Swimming speed, see Enum Values |
+| 136   | VaryDamageToMonster  | Extra AP against monsters, see Enum Values |
+| 137   | VaryBreathGauge      | `숨게이지 회복` (breath gauge recovery) |
+| 138   | Chain                | Immobilizing debuffs such as `운전석 차단` (driver's seat blocked) |
+| 140   | NotifySelfPosition   | `몬스터용 - 자신의 위치 표시` (monster shows its own position) |
+| 141   | PetExperience        | `애완동물 레벨업 사료` (pet level-up feed) |
+| 142   | ReceiveTitleByBuff   | Obtain title, see Enum Values |
+| 143   | VaryStunGauge        | Groggy gauge buffs (`흑정령의 분노 - 중간 그로기 효과`) |
+| 146   | SuperArmor           | `30초간 슈퍼 아머`; `param_1` the duration in ms |
+| 147   | DecreaseWeightLevel  | `무게 패널티 감소` (weight penalty down) |
+| 148   | Fairy                | Fairy skills, see Enum Values |
+| 149   | PlayerLifeStat       | Life skill mastery, see Enum Values |
+| 159   | VaryGuardGague (the sheet's spelling) | `피해 : 가드추뎀` (extra damage to guard) |
+
+No buff stores `135` AddGuardType, `144` QuestBook, `145` MiniGame or `150`
+BreakSuperArmor. `139` RideOff (`좌석에서 내리게 하는 버프`, "buff that takes
+you off a seat") stays without a name: its five buffs are marks, unused
+rows and an event debuff (`오만한 명령 표식`, `미사용`, `겨울 이벤트 피크
+상태이상 유발`). The sheet names the later types in Korean only, such
+as `151` Black Spirit's Rage regeneration, `157` combat EXP from life skills
+(`param_2` with `100` = 1%), `160` all speeds, `169` healing reduction, `173` sailing speed (acceleration, speed,
+turn and brake per million) and `179` and `180` the attribute weapon checks
+(awakening and main weapon).
 
 ### Effect text
 
@@ -977,16 +1040,25 @@ The batch of 2026-10-03 was checked the same three ways:
   target's resistance (`저항 무시`). The kind word appears in 113 of the 127
   labelled names, the rest use a synonym (`기절`, also stun). Flashbang (206)
   stores kind `4` for `5000` and reads `Targets within the range will be
-  stunned for a while` in game. Kind `0` mixes resistances and stuns, `5`
-  guard crush and knockback, `19` (groggy) has two buffs; all three stay
-  unlabelled. Keeper Marg's stiffness (850, `6`, `1350`) reads `Stiffness for
-  1.35 sec`.
+  stunned for a while` in game. Kind `19` is Groggy: both its buffs read
+  `[액션제한] 그로기`, and the client 1784 `Module_Table` lists it as groggy
+  (`그로기`). Kind `0` mixes resistances and stuns, and `5` guard crush and
+  knockback, though the sheet calls `5` guard crush; both stay unlabelled.
+  Keeper Marg's stiffness (850, `6`, `1350`) reads `Stiffness for 1.35 sec`.
+  The sheet also lists `3` stand-down, `16` spin knockdown and `18`
+  mount-only knockdown, which no buff stores.
 - **24** and **60** one-off EXP: the amount equals the number in all 47 item
   names that carry one (`Guild EXP (200,000)`, `60 Contribution EXP`; one
   `5 Contribution EXP` item stores `1`). The [Event] Delicious Jeon, Sikhye and
   Braised Short Ribs descriptions (1000347 to 1000349) read `Contribution EXP
   +1,000`, the rendered text exactly, for a stored `1000`. The Skill EXP item
-  reads only `Skill EXP` in game; its buff 47499 stores `27500000`.
+  reads only `Skill EXP` in game; its buff 47499 stores `27500000`. Type 60
+  `param_3` picks what the amount adds to, as the client 1784
+  `Module_Table` lists it and the Korean names follow on client 3483: `0`
+  contribution points (13 buffs, `공헌도 포인트+5`), `1` contribution EXP (36,
+  `공헌도 경험치 60`) and `2` used points recovered (10, `공헌도 회복 3`). The
+  browser reads them `Contribution Points +5`, `Contribution EXP +60` and
+  `Recover 3 Used Contribution Points`.
 - **48** set effect points: a set piece applies a type 48 buff that adds
   `param_2` points to the set skill of `param_1`, and each level of that skill
   holds one tier of set effects. Combined Magic Crystal - Gervish (15662)
@@ -1481,34 +1553,44 @@ window.
 
 ### `condition_type` (stats block `+0x06`)
 
-The trigger of a type 1 or type 4 buff, confirmed against the English text of
-its buffs (counts are type 1 buffs):
+The trigger of the buff. The `BuffCondition_Table` sheet of client 1784 (16
+rows in the `item` workbooks; the 46-row copies in other workbooks are
+commented out) gives each value a trigger and the side it applies to. The
+counts are type 1 buffs on client 3458 and the texts their English LOC:
 
-| Value | Buffs | Trigger | Text |
-| ----- | ----: | ------- | ---- |
-| 0     | 1,524 | None: per tick (`tick_ms`) or one-off | |
-| 1     | 34    | On hits | `Recover 9 HP on Hits`; type 4 `Recover 9 MP/WP/SP on Hits` |
-| 3     | 28    | When struck, healing | `Recover 250 HP when struck` (no buff text; Infinite Fortitude 2805 and Purga: Sanguine Heart 9837 on bdocodex, buffs 12647 and 12648) |
-| 4     | 6     | When struck | `Retaliate 15 Fixed Damage when struck` |
-| 6     | 19    | On back attack hits | `Deal 15 Fixed Damage on Back Attack Hits` |
-| 9     | 16    | On critical hits, healing | `Recover 15 HP on Critical Hits` |
-| 10    | 34    | On critical hits, damage | `Deal 30 Fixed Damage on Critical Hits` |
+| Value | Trigger                 | Applied to | Type 1 buffs | Text |
+| ----- | ----------------------- | ---------- | -----------: | ---- |
+| 0     | None: per tick (`tick_ms`) or one-off | | 1,524 | |
+| 1     | Attacking               | Self       | 34           | `Recover 9 HP on Hits`; type 4 `Recover 9 MP/WP/SP on Hits` |
+| 2     | Attacking               | Target     | 1            | Buff 50046, `HP -100` from Ancient Magic Crystal - Temptation; the browser reads `Deal 100 Fixed Damage on Hits` |
+| 3     | Struck                  | Self       | 28           | `Recover 250 HP when struck` (no buff text; Infinite Fortitude 2805 and Purga: Sanguine Heart 9837 on bdocodex, buffs 12647 and 12648) |
+| 4     | Struck                  | Attacker   | 6            | `Retaliate 15 Fixed Damage when struck` |
+| 5     | Back attack             | Self       |              | 12 `(Self)` buffs of types 29 and 67: the Agony, Destruction and Enchantment crystals and the Giant's Belt `To_Self` buffs |
+| 6     | Back attack             | Target     | 19           | `Deal 15 Fixed Damage on Back Attack Hits` |
+| 7     | Struck by a back attack | Self       |              | |
+| 8     | Struck by a back attack | Attacker   |              | See below |
+| 9     | Critical hit            | Self       | 16           | `Recover 15 HP on Critical Hits` |
+| 10    | Critical hit            | Target     | 34           | `Deal 30 Fixed Damage on Critical Hits` |
+| 11    | Struck by a critical hit | Self      |              | |
+| 12    | Struck by a critical hit | Attacker  |              | |
+| 13    | The target dies         | Self       |              | |
+| 14    | The target dies         | Target     |              | |
+| 15    | Being killed            | Self       |              | |
+| 16    | Being killed            | Killer     |              | |
 
-Type 4 uses `8` for "when struck" instead of `3`: Fury of the Beast (354)
+Type 4 stores `8` where its text reads "when struck": Fury of the Beast (354)
 reads `Recover 5 WP each time when struck` on bdocodex, and its buff 80
-stores `5` under `8`. `2` (one buff, 50046, `HP -100`, Ancient Magic Crystal
-- Temptation on the target) and `5` (12 buffs, the "To_Self" effects of
-crystals and Giant's Belt, types 29 and 67) are open; their skills have no
-tooltip on bdocodex (see Open Questions). Fixed damage is stored negative and written as a
-positive amount.
+stores `5` under `8`. The sheet's `8` is a back attack applied to the
+attacker; the browser follows the text. Fixed damage is stored negative and
+written as a positive amount.
 
 ### Stacking (`stacking_category`, `is_exclusive`, `group`, `buff_level`)
 
 Two mechanisms decide which buffs replace each other:
 
-- **Category.** `stacking_category` (tail `+0x18`) is the item type the
+- **Category.** `stacking_category` (tail `ui_effect+0x01`) is the item type the
   tooltips name (`※ Type: Draught`, `※ Type: Perfume`). A buff with
-  `is_exclusive` (tail `+0x19`) ends every active buff of its category, so
+  `is_exclusive` (tail `ui_effect+0x02`) ends every active buff of its category, so
   only the last item of that type used applies. Buffs without the flag
   leave their category alone.
 - **Group.** Buffs of one `group` are one slot, ranked by `buff_level`; no
@@ -1593,6 +1675,31 @@ The other values each hold one item family, all exclusive: GM's Blessing
 (12, 13), the event bundles (18, 19, 22, 27, 209 to 212), the Korean
 holiday feasts (28 to 32), Token of Desert Trading (20), test and
 development items (233 to 250, 252). 248 to 251 are not exclusive.
+
+## Server-Only Columns
+
+Every `Buff_Table` header of client 1784 marks `ApplyRate`, `ApplyToGroup`,
+`LimitCount`, `NeedEquipType`, `NewNeedEquipType`, `OnlyApplyToCharacter`,
+`RepeatTime` and `ValidityTime` with `%`, a server column, and `Param0` to
+`Param9` in 33 of its 36 workbooks; `explore` keeps `Param0` and `Param1`,
+`item_nothide` and `wiki` all ten. The client builds up to 2932 at least
+store `0` for them:
+
+| Client | Records | `apply_rate` `0` | `duration_ms` `0` | `tick_ms` `0` | Set parameters all `0` |
+| ------ | ------: | ---------------: | ----------------: | ------------: | ---------------------: |
+| 1774   | 36,965  | 36,965           | 36,965            | 36,965        | 30,282                 |
+| 1784   | 37,030  | 37,030           | 37,030            | 37,030        | 30,311                 |
+| 1937   | 38,135  | 38,135           | 38,135            | 38,135        | 31,388                 |
+| 2932   | 43,097  | 43,097           | 28,875            | 43,097        | 35,901                 |
+| 3458   | 44,645  | 90               | 30,033            | 43,448        | 1,334                  |
+| 3483   | 44,724  | 91               | 30,041            | 43,525        | 1,338                  |
+
+A stripped record keeps its `param_N_set` flags: they show which parameters
+the sheet row fills, not that the file holds them. On a file where
+`apply_rate` is `0` on every record, the browser shows the parameters of a
+record whose set parameters all read `0` as missing, with no Effect text
+(`Summon 0`, `Teleport to point 0/0` otherwise), and `apply_rate` as missing.
+A zero duration already shows a dash.
 
 ## Notes
 
@@ -1735,9 +1842,45 @@ The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::BuffSta
 | apply_rate | after `is_shown` | `_applyRate` | `ApplyRate` | 33,025 of 33,172 |
 | amplification_type | tail `+0x06` | - | `AmplificationType` | 11 of 12; server `0` is `3` |
 | amplification_rate | tail `+0x07` | - | `AmplificationRate` | 17 of 18 |
-| stacking_category | tail `+0x18` | - | `Category` | 803 of 842 |
+| stacking_category | tail `ui_effect+0x01` | - | `Category` | 803 of 842 |
 
 The `_needEquipType` names rest on the 2016 order and on items: the nine bytes at stats `+0x7A` are zero, `2`, `46` and `2` in the places of the `itemenchant.dbss` header bytes `+0x07` to `+0x0F` on non-equipment items (`equip_type` `0`, `equip_slot` `46`), and buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, a hood effect) stores `13, 0, 0, 1, 1, 2, 0, 6, 1`, the same bytes as all 229 items of `equip_type` `13` the server shares. The server's `NeedEquipType` is `0` on every row, buff 2078 included. `unknown_7e` breaks the pattern: it is `1` on 44,588 buffs where non-equipment items store `0` in that place (`_isUseAvatarMesh`), so it keeps its name.
+
+The server dump of a private server on client 1784 reads every field of the
+record (`ReadRecord_buff`, VA `0x14071fe90`) into a 0x178-byte struct, which
+its `Buff_Table` loader (VA `0x140857a80`) fills column by column, so a member
+names the column of each field. The 519 server table above has none of these
+columns:
+
+| Field | Offset | Member | Column | Notes |
+| ----- | ------ | ------ | ------ | ----- |
+| buff_level | stats `+0x00` | `+0x138` | `Level` | Read as one u32 (`ReadColumnInt`); its upper half is `0` on every record. `Category` and `CategoryLevel` are the members `+0x15C` and `+0x15D`, which the file does not hold |
+| is_party_buff | stats `+0x64` | `+0x170` | `ApplyToGroup` `1` | The sheet sets `1` on 124 `[Party]` item buffs |
+| unknown_65 | stats `+0x65` | `+0x171` | `ApplyToGroup` `4` | No row uses `4` |
+| unknown_66 | stats `+0x66` | `+0x172` | `ApplyToGroup` `2` | No row uses `2`. The 2016 `_isGuildBuff` is one of `unknown_65` and `unknown_66` by position |
+| unknown_70 | stats `+0x70` | `+0x118` | - | No column; the loader, `set()` and the reset never write it. The 2016 `_repeatBoomerangTime` by position |
+| unknown_78 | stats `+0x78` | `+0x15A` | `LimitCount` | The 2016 `_maxConditionApplyingCount`; `set()` rejects values from `101` up |
+| unknown_00 | tail `+0x00` | `+0x16D` | `IsToggle` | |
+| unknown_01 | tail `+0x01` | `+0x16E` | `ApplyToGroup` `3` | Set on 6 sheet rows (9982 to 9987), `0` in the file |
+| unknown_02 | tail `+0x02` | `+0x14C` | `DisplayOrder` | `set()` logs values above `2` |
+| unknown_0b | tail `+0x0B` | `+0x150` | - | No column, never written |
+| ui_effect | tail `+0x0F` | `+0xF8` | `UIEffect` | An 8-bit string the loader converts from the wide cell |
+| is_developing_contents | tail `ui_effect+0x00` | `+0x176` | `IsDevelopingContents` | The loader reads it first, and on `1` writes `UNKNOWN` for `BuffName`, `BuffIcon` and `Description` |
+
+Three of these are named from client data as well. `buff_level` is a u32 on
+every client read: its upper half is `0` on all records. `ui_effect` is a
+string count where the fixed read saw zeros, and the records still end at
+their size. `is_developing_contents` is `1` on exactly the records whose name
+or icon is `UNKNOWN`, on clients 1784 (46), 1937 (30), 2932 (214) and 3483
+(207). The other names rest on the server alone and stay in this table: on
+the live client those fields are `0`, or `0` but on one buff. The server
+also reads `UseMaxAttackType` (`+0x174`), `SiegeOnlyBuff` (`+0x175`) and
+`DontApplyBuffKeyList` (a u16 list at `+0x60`), and its sheets hold
+`IsAbsolute` and `NewNeedEquipType`, which the loader skips; none of them is
+in the file. Layout 3's `stacking_category` is `Category` (above); in the
+1784 sheets `CategoryLevel` is `1` only where `Category` is set, which is how
+`is_exclusive` behaves, so `is_exclusive` is probably `CategoryLevel`. No
+client 1784 file stores either.
 
 `tick_ms` matches `RepeatTime` on 914 of 6,911 server rows because the server leaves 5,953 of them as `-`; on the 27,215 rows where it is a number, 27,073 agree. The server sets `only_apply_to_character` on 4,357 fewer buffs than the client; I read that as patches since the server data. `amplification_type`, `amplification_rate` and `stacking_category` are newer than the 2016 struct, so their names rest on the server column.
 
@@ -1753,9 +1896,11 @@ open.
 ### What do the ten parameters mean per effect type?
 
 `param_1` through `param_10` change meaning with `effect_type`. The types in
-Enum Values are confirmed; the rest have not been worked out. For 39, 40, 41
-and 43 `param_1` is `3`; bdo-data-extractor reads it as the target (`0` melee,
-`1` ranged, `2` magic, `3` all).
+Enum Values are confirmed; the rest have not been worked out. The client
+1784 `Module_Table` describes the parameters of each type (see Client 1784
+Module Names); a description counts here only where the buffs agree with it,
+since some are older than the data (type 23's "X, Y, Z" against the
+teleport section and key).
 
 ### What names the type 180 property keys?
 
@@ -1777,36 +1922,16 @@ Sycraia, would then be Sycraia Underwater Ruins. They are not
 `regiongroupinfo.bss` keys either: 153 is Valtarra Mountains there, but 155
 is Tooth Fairy Forest and 199 Pit of the Undying. A client file that lists
 these numbers next to zones or character IDs would settle it; otherwise
-they are server data and the column keeps the dash.
+they are server data and the column keeps the dash. The client 1784
+`Module_Table` describes `param_1` of types 179 and 180 (the attribute weapon
+checks) with 153 Valtarra, 154 Okiara (`오기에르`) and 155 Narc only.
 
 ### What is type 176 `param_1`?
 
-It is `17` on all 48 buffs. `instancefield.dbss` key 17 is `CrimsonField`,
+It is `17` on all 48 buffs, and the client 1784 `Module_Table` row for 176
+describes no parameter. `instancefield.dbss` key 17 is `CrimsonField`,
 which does not fit test teleports into the `A1_` fields, so it is probably a
 teleport kind or mode. A second value on any buff would show what it does.
-
-### What do `condition_type` 2 and 5 mean?
-
-`2` is on one buff, 50046 (`HP -100` on the target), from Ancient Magic
-Crystal - Temptation (15504). `5` is on 12 `(Self)` buffs, among them 50048,
-50042 and 50039 from the Agony, Destruction and Enchantment crystals (15505,
-15503, 15502) and the Giant's Belt `To_Self` buffs 50294, 50296 and 50299
-(skill [Giant's Belt_Lv. 1](https://bdocodex.com/us/skill/50112/)), which no
-item in `itemenchant.dbss` casts. bdocodex lists only the crystals' transfuse
-stats, not the triggered effects. LOC ties each crystal to a weapon of the
-same name and a skill used with it (`Only available by using a Temptation
-skill with a Temptation weapon`). The crystals cannot be checked in game:
-[Grumpy Green's crystal list](https://grumpygreen.cricket/crystal-npc/) names
-Magic Crystal - Temptation, Destruction, Agony and Enchantment among the
-crystals deleted on 2024-01-31. A Giant's Belt tooltip or a skill text that
-names the trigger would settle `5`.
-
-### Is `buff_level` a level or a category?
-
-bdo-data-extractor splits `+0x00` into `i16 Category`, `u8 CategoryLevel` and
-`u8 Level`. The two bytes are zero in every record here, the i16 counts up
-on staged buffs such as boss stages, and it ranks the buffs of one `group`
-(see Notes), so it is kept as `buff_level` until the client names it.
 
 ## In-Game Checks
 

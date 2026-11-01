@@ -641,7 +641,7 @@ Read it with `parse_pabr_u32_offset_rows()`.
 
 Before client 3464 the `buff_ids` slots were u16, so the Skill Record was 20
 bytes shorter and `description` started at `N+102`; see `buff_ids`. Only the
-Skill Record differs from Layout 3. The parser reads only Layout 3.
+Skill Record differs from Layout 3.
 
 ### Skill Record (variable: 190 bytes + text and key lists)
 
@@ -707,6 +707,14 @@ An empty `special_weapon_hit_effects` list followed
 `related_cool_time_skill_keys`, and `unknown_end` did not exist yet. Only the
 Skill Record differs from Layout 2. Field names keep Layout 3's offsets.
 
+The record size does not tell Layouts 1 and 2 apart: the 2 bytes of
+`unknown_n4c` and `unknown_end` make up for the 4 of
+`special_weapon_hit_effect_count`. A record with an empty `description` and
+`script` and no linked skills walks to its size in both, as 8,458 of the
+22,932 records of client 1784 do, the first 66 in index order among them. The
+parser therefore keeps the first layout, in client order, under which every
+record of the file ends at its size.
+
 ### Skill Record (variable: 190 bytes + text and key lists)
 
 | Offset                 | Type                   | Field               | Notes |
@@ -737,7 +745,7 @@ Skill Record differs from Layout 2. Field names keep Layout 3's offsets.
 | `action_name+0x45`     | u8                     | is_usable_when_alive |      |
 | `action_name+0x46`     | u32                    | global_reuse_cycle  |       |
 | `action_name+0x4A`     | u16                    | reuse_group         |       |
-| `action_name+0x4C`     | u32                    | cooldown_ms         | Equals Layout 3's value in 22,275 of the 23,635 records both clients share |
+| `action_name+0x4C`     | u32                    | cooldown_ms         | Equals Layout 3's value in 21,375 of the 22,743 records clients 1784 and 3483 share |
 | `action_name+0x50`     | u16[10]                | buff_ids            |       |
 | `action_name+0x64`     | str16                  | description         |       |
 | `description+0x00`     | str16                  | script              |       |
@@ -760,8 +768,8 @@ Skill Record differs from Layout 2. Field names keep Layout 3's offsets.
 | `next_skill_keys+0x08` | u32[related_cool_time_skill_count] | related_cool_time_skill_keys | |
 | `related_cool_time_skill_keys+0x00` | u32       | special_weapon_hit_effect_count | `0` on every record of client 1784 |
 | `related_cool_time_skill_keys+0x04` | u32[special_weapon_hit_effect_count] | special_weapon_hit_effects | The `SpecialWeaponHitEffect` column, empty on every sheet row |
-| `special_weapon_hit_effects+0x00` | f32         | target_search_angle |       |
-| `special_weapon_hit_effects+0x04` | u8          | is_except_cool_time | Equals Layout 3's value in 23,634 of the 23,635 shared records |
+| `special_weapon_hit_effects+0x00` | f32         | target_search_angle | `-1.0` on 22,361 records of client 1784, `0.0` on 571 |
+| `special_weapon_hit_effects+0x04` | u8          | is_except_cool_time | Equals Layout 3's value in 22,742 of the 22,743 records clients 1784 and 3483 share |
 
 ## Skill Keys
 
@@ -971,7 +979,11 @@ values fit the u16 the doc gave them before.
   the action name. The 2016 `_dontUse` sits right after `_key` instead. On
   client 3474 it is `1` on 8,738 records, and on Wizard it follows the
   damage line of the tooltip on 7 of 8 skills checked in game, see the
-  `skillsimply.dbss` Notes.
+  `skillsimply.dbss` Notes. It is not the `DoCheckHit` column: on the
+  server's own file the two agree on 25,343 of 26,639 sheet rows, with 895
+  attack skills that have no `DoCheckHit` and 243 the other way. No other
+  attack column matches it (`ApplyNumber`, `VariedHit`, `StunValue`, the
+  attack dice, the `Skill_Attack_Table` sheet).
 - `do_require_point_need` is set by `set()` when `require_hp`,
   `resource_cost` or `require_sub_resource_point` is not `0`, and holds
   exactly that on all 30,487 records of client 3474 (`1` on 3,582).
@@ -1039,4 +1051,7 @@ event buffs such as "[Event] Energy of Happiness"; on the 1784 file it is
 on 18 records of client 3474, the "Blessing of Taebaek" and "Asadal" ranks
 (10189 to 10217), and its second byte is always `0`. `unknown_n4c` (always
 `0`) and `unknown_after_next_skill_keys` (member `+0x2B0`, always `0`) have
-no column either.
+no column either. The client 1784 exe's record reader (VA `0x1416bd980`)
+stores them at `+0x166` and `+0x1A4` of its 0x1B0-byte record. No code that
+reads either member turned up in the server dump or the client, and no
+client Lua method reads `+0x1A4`.

@@ -148,9 +148,10 @@ _MORNING_LIGHT_ATTRIBUTES = {0: "Sun", 1: "Moon", 2: "Earth"}
 
 # Type 14 `param_1`, from the Korean buff names (`[액션제한] 넉다운`, "action
 # limit: knockdown"); Flashbang's kind 4 reads "will be stunned" in game. The
-# second set ignores the target's resistance (`저항 무시`). Kind 0 mixes
-# resistances and stuns, 5 guard crush and knockback, 19 is groggy on two
-# buffs: all three stay unlabelled.
+# second set ignores the target's resistance (`저항 무시`). Kind 19 is groggy
+# in the names of both its buffs and in the client 1784 `Module_Table`. Kind
+# 0 mixes resistances and stuns, and 5 guard crush and knockback though the
+# sheet calls it guard crush: both stay unlabelled.
 _CROWD_CONTROL = {
     1: "Knockback",
     2: "Knockdown",
@@ -160,6 +161,7 @@ _CROWD_CONTROL = {
     12: "Floating",
     13: "Air Smash",
     14: "Down Smash",
+    19: "Groggy",
     22: "Freezing",
     15: "Bound (Ignores Resistance)",
     17: "Knockdown (Ignores Resistance)",
@@ -200,6 +202,25 @@ _RESISTANCES = {
 # `param_1` of types 89 (flat) and 181 (per million). Kind 3 of type 181 is a
 # single passive (`단련 경험치`, "training EXP") and stays unlabelled.
 _BREATH_STRENGTH_HEALTH = {0: "Breath", 1: "Strength", 2: "Health"}
+
+# `param_1` of types 39 to 43: the attack type, as the client 1784
+# `Module_Table` describes it and the Korean names of the monster debuffs
+# read it (`공격력 감소(근접)`, "AP down (melee)").
+_ATTACK_TYPES = {0: "Melee", 1: "Ranged", 2: "Magic", 3: "All"}
+
+# Type 60 `param_3`, from the client 1784 `Module_Table` and the Korean names:
+# `공헌도 포인트` (points), `공헌도 경험치` (EXP), `공헌도 회복` (used points back).
+_CONTRIBUTION = (
+    *kinds(3, "{kind}", {0: "Contribution Points", 1: "Contribution EXP"}, 2),
+    EffectLine(
+        "Used Contribution Points",
+        2,
+        when={3: 2},
+        kind_labels={3: "Recover Used"},
+        is_signed=False,
+        template="Recover {amount} {label}",
+    ),
+)
 
 # Type 83 `param_2`, in the words of the skills that apply the buffs; the
 # Korean names agree (비료, 강수량, 온도).
@@ -245,12 +266,10 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     ),
     29: (EffectLine("Weight Limit", 1, WEIGHT),),
     30: (EffectLine("Critical Hit Rate", 1, PERCENT),),
-    # param_1 3 is all targets. bdo-data-extractor reads 0 to 2 as melee,
-    # ranged and magic; no buff with those has English text, so no label.
-    39: kinds(1, "All AP", {3: "All"}, 2),
-    40: kinds(1, "All Accuracy", {3: "All"}, 2),
-    41: kinds(1, "All Evasion", {3: "All"}, 2),
-    43: kinds(1, "All Damage Reduction", {3: "All"}, 2),
+    39: kinds(1, "{kind} AP", _ATTACK_TYPES, 2),
+    40: kinds(1, "{kind} Accuracy", _ATTACK_TYPES, 2),
+    41: kinds(1, "{kind} Evasion", _ATTACK_TYPES, 2),
+    43: kinds(1, "{kind} Damage Reduction", _ATTACK_TYPES, 2),
     # Summon, monster, siege and cannon damage as a share of attack; player
     # skills do not use it. param_1 may be the attack type (2 on magic).
     45: (EffectLine("Attack Damage", 4, PERCENT, is_signed=False),),
@@ -288,8 +307,9 @@ EFFECT_LINES: dict[int, tuple[EffectLine, ...]] = {
     56: (EffectLine("Amity", 1, PERCENT),),
     57: (EffectLine("Item Drop Rate", 1, PERCENT),),
     59: (EffectLine("Jump Height", 1),),
-    # One-off, like the `60 Contribution EXP` item that stores 60.
-    60: kinds(1, "{kind} EXP", {0: "Contribution"}, 2),
+    # One-off, like the `60 Contribution EXP` item that stores 60. param_1 is
+    # a region key in the sheet and 0 on every buff.
+    60: _CONTRIBUTION,
     # `Skill Points (5)` stores 5; param_1 0 is combat (`전투`) on all.
     62: kinds(1, "Skill Points", {0: "Combat"}, 2),
     63: (recovery("Worker Stamina", 1),),
@@ -526,7 +546,9 @@ OVER_TIME_EFFECTS: dict[int, OverTimeEffect] = {
     1: OverTimeEffect(
         "HP",
         recover_on={1: "on Hits", 3: "when struck", 9: "on Critical Hits"},
+        # BuffCondition_Table of client 1784: 2 applies to the target on hits.
         fixed_damage_on={
+            2: FixedDamage("Deal", "on Hits"),
             4: FixedDamage("Retaliate", "when struck"),
             6: FixedDamage("Deal", "on Back Attack Hits"),
             10: FixedDamage("Deal", "on Critical Hits"),

@@ -12,7 +12,6 @@ from _common.item_key import item_key_list_cell, item_key_text
 from _common.lang import handler_text, load_handler_strings
 from _common.lookup_index import IndexKind, index_entries, lookup
 from _common.pa_text import pa_cell, pa_fields, pa_html, pa_key
-from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _common.offset_table import (
     OffsetColumn,
     OffsetTableHandler,
@@ -21,7 +20,7 @@ from _common.offset_table import (
     size_column,
 )
 from .effect import EFFECT_TYPE_NAMES, EffectInput, effect_text, effect_type_text, param_labels
-from .parser import PARAM_COUNT, parse_buff_records
+from .parser import PARAM_COUNT, parse_buff_offset_rows, parse_buff_records
 from .title import extract_title_pa, title_leaders
 
 
@@ -51,11 +50,47 @@ def _skill_buff_lists() -> list[tuple[int, ...]]:
     return [buff_ids for buff_ids in index_entries(IndexKind.SKILL_BUFFS).values() if isinstance(buff_ids, tuple)]
 
 
+def _params(record: dict) -> list[int | None]:
+    return [record[f"param_{index}"] for index in range(1, PARAM_COUNT + 1)]
+
+
+def _strips_server_columns(records: list[dict]) -> bool:
+    """True for a build whose file lost the server-only `Buff_Table` columns.
+
+    Clients up to 2932 at least store `0` for `apply_rate` on every record,
+    where the live client stores `1000000` on nearly all; their sheets mark
+    the parameters, `ApplyRate`, `ValidityTime` and `RepeatTime` as server
+    columns, and the build that made the client file left them out.
+    """
+    return bool(records) and all(record["apply_rate"] == 0 for record in records)
+
+
+def _has_stripped_params(record: dict) -> bool:
+    """A record of a stripped file whose set parameters all read 0.
+
+    The workbooks that keep their parameters (`item_nothide`, `wiki` and
+    `explore` on client 1784) write all of them, so a stripped record has no
+    non-zero parameter left.
+    """
+    return any(record["params_set"]) and not any(_params(record))
+
+
+def _clear_stripped_values(record: dict) -> None:
+    """What a stripped build did not store: None renders a dash and sorts last.
+
+    Call after the effect text, which reads the parameters.
+    """
+    record["apply_rate"] = None
+    if record["has_stripped_params"]:
+        record.update({f"param_{index}": None for index in range(1, PARAM_COUNT + 1)})
+
+
 def _effect_input(record: dict) -> EffectInput:
     """The fields the effect of a buff record reads."""
     return EffectInput(
         record["effect_type"],
-        [record[f"param_{index}"] for index in range(1, PARAM_COUNT + 1)],
+        # None where get_records found the parameters stripped.
+        [value or 0 for value in _params(record)],
         tick_ms=record["tick_ms"],
         condition_type=record["condition_type"],
         # get_records turns a zero duration into None for sorting.
@@ -64,8 +99,10 @@ def _effect_input(record: dict) -> EffectInput:
     )
 
 
-def _param_cell(value: int, label: str | None) -> str:
+def _param_cell(value: int | None, label: str | None) -> str:
     """`25000 (2.5%)`: the stored value, then what it means for the effect type."""
+    if value is None:
+        return _EMPTY
     if not label:
         return e(value)
     short = truncate(label, _PARAM_LABEL_CHARS)
@@ -93,7 +130,7 @@ def buff_offset_handler() -> OffsetTableHandler:
             offset_column("offset", "dataOffset"),
             size_column("size", "size"),
         ],
-        offset_records(parse_pabr_u32_offset_rows, "buff_id"),
+        offset_records(parse_buff_offset_rows, "buff_id"),
     )
 
 
@@ -174,16 +211,21 @@ class BuffHandler(PreviewHandler):
         if not offset_data:
             raise ValueError(f"{_OFFSET_FILE} companion not found")
 
-        records = parse_buff_records(data, parse_pabr_u32_offset_rows(offset_data))
+        records = parse_buff_records(data, offset_data)
+        is_stripped = _strips_server_columns(records)
         for record in records:
+            record["has_stripped_params"] = is_stripped and _has_stripped_params(record)
             raw = _raw_description(record["buff_id"], record["description_kr"])
             record.update(pa_fields("title", extract_title_pa(raw)))
             record.update(pa_fields("description", raw))
-            record["effect"] = effect_text(_effect_input(record))
+            # Zeros of a stripped record read as "Summon 0" or "Teleport to point 0/0".
+            record["effect"] = "" if record["has_stripped_params"] else effect_text(_effect_input(record))
             record["effect_type_name"] = EFFECT_TYPE_NAMES.get(record["effect_type"], "")
             record["duration"] = format_duration(record["duration_ms"])
             # 0 means no duration. None renders a dash and sorts last.
             record["duration_ms"] = record["duration_ms"] or None
+            if is_stripped:
+                _clear_stripped_values(record)
             item_ids = _applying_items(record["buff_id"])
             record["applied_by_item_ids"] = item_ids
             record["applied_by"] = [item_key_text(item_id) for item_id in item_ids]

@@ -72,11 +72,11 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `bossinfostaicstatusmanager.bss` | Boss Info window bosses: PABR variable records of tab, character and reinforced form, texture keys, main rewards, world position and weekly spawn times | [bossinfostaicstatusmanager](file-formats/bss/bossinfostaicstatusmanager_bss.md) | 2 | 1 |
 | `bossmonsterhpsyncstaticstatus.bss` | Three boss characters with a world sector box and two unknown numbers (Garmoth, Gift Box, Baby Vell) | [bossmonsterhpsyncstaticstatus](file-formats/bss/bossmonsterhpsyncstaticstatus_bss.md) | 2 | 0 |
 | `branchquest.bss` | PABR crossroad quest groups: per group the quest that opens the crossroad, the crossroad choices and a later quest, as 9-byte rows of group key, quest chain, quest ID and role | [branchquest](file-formats/bss/branchquest_bss.md) | 1 | 0 |
-| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/dbss/buff_dbss.md) | 6 | 2 |
+| `buff.dbss` | Master buff table, internal Korean names, level, effect type, ten parameters, duration, icon and description | [buff](file-formats/dbss/buff_dbss.md) | 4 | 2 |
 | `buffcondition.dbss` | Empty table: a u32 count of 0 and no records | [empty](file-formats/dbss/empty_dbss.md) | 1 | 0 |
 | `buffconditionoffset.dbss` | Empty offset companion for `buffcondition.dbss`: a u32 count of 0 | [empty](file-formats/dbss/empty_dbss.md) | 1 | 0 |
 | `buffitemautousestaticstatus.bss` | PABR list of the items the buff item auto-use can use: `autousebuffitemcategoryinfo.bss` category key, item key and a u8 (9-byte rows) | [buffitemautousestaticstatus](file-formats/bss/buffitemautousestaticstatus_bss.md) | 1 | 0 |
-| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/dbss/buff_dbss.md) | 6 | 2 |
+| `buffoffset.dbss` | PABR index into `buff.dbss`, maps buff_id → offset/size | [buff](file-formats/dbss/buff_dbss.md) | 4 | 2 |
 | `buffsimply.bss` | PABR compact buff table, 32-byte rows with buff ID, icon path and `effect_name` string indices, `is_shown`, `is_debuff`, `remove_on_dead` and the equipment the buff needs | [buffsimply](file-formats/bss/buffsimply_bss.md) | 1 | 0 |
 | `buildingbuff.dbss` | Villa buffs on sale: four lists by `Count_Villa` (only the first used) of buff index, skill number and silver cost | [buildingbuff](file-formats/dbss/buildingbuff_dbss.md) | 1 | 0 |
 | `buildingbuffoffset.dbss` | Index into `buildingbuff.dbss`, same lists, maps (list, buff index) → offset/size | [buildingbuff](file-formats/dbss/buildingbuff_dbss.md) | 1 | 0 |

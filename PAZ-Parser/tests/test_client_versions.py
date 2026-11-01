@@ -12,12 +12,14 @@ from _bss.charactersimply.parser import LAYOUTS as CHARACTERSIMPLY_LAYOUTS
 from _bss.privateskill.parser import LAYOUTS as PRIVATESKILL_LAYOUTS
 from _bss.sequencetriggerdata.parser import LAYOUTS as SEQUENCETRIGGERDATA_LAYOUTS
 from _bss.territoryinfo.parser import LAYOUTS as TERRITORYINFO_LAYOUTS
+from _dbss.buff.parser import LAYOUTS as BUFF_LAYOUTS
 from _dbss.characterstatic.layouts import LAYOUTS as CHARACTERSTATIC_LAYOUTS
 from _dbss.guildquest.parser import LAYOUTS as GUILDQUEST_LAYOUTS, parse_guildquest_records
 from _dbss.itemenchant.layouts import LAYOUTS as ITEMENCHANT_LAYOUTS
 from _dbss.journalquest.parser import LAYOUTS as JOURNALQUEST_LAYOUTS
 from _dbss.mentalcard.parser import LAYOUTS as MENTALCARD_LAYOUTS
 from _dbss.quest.parser import _LAYOUTS as QUEST_LAYOUTS
+from _dbss.skill.parser import LAYOUTS as SKILL_LAYOUTS
 
 
 _OLD = (ClientRange(1194, 1261),)
@@ -29,12 +31,14 @@ _HANDLER_LAYOUTS = {
     "privateskill.bss": PRIVATESKILL_LAYOUTS,
     "sequencetriggerdata.bss": SEQUENCETRIGGERDATA_LAYOUTS,
     "territoryinfo.bss": TERRITORYINFO_LAYOUTS,
+    "buff.dbss": BUFF_LAYOUTS,
     "characterstatic.dbss": CHARACTERSTATIC_LAYOUTS,
     "guildquest.dbss": GUILDQUEST_LAYOUTS,
     "itemenchant.dbss": ITEMENCHANT_LAYOUTS,
     "journalquest.dbss": JOURNALQUEST_LAYOUTS,
     "mentalcard.dbss": MENTALCARD_LAYOUTS,
     "quest.dbss": QUEST_LAYOUTS,
+    "skill.dbss": SKILL_LAYOUTS,
 }
 
 

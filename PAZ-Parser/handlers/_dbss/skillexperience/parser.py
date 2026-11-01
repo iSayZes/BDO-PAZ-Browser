@@ -15,7 +15,7 @@ Each `*offset.dbss` companion is the bare u16 offset table of
 `_common/pabr_offset.py` (`parse_bare_offset_rows`): a u32 count, then
 [u16 level][u32 offset][u32 size] rows, the offset pointing at the row's
 u32 level. Neither file stores the rows in level order; the parser returns
-them by level. Full layouts in docs/file-formats/skillexperience_dbss.md,
+them by level. Full layouts in docs/file-formats/dbss/skillexperience_dbss.md,
 guildskillexperience_dbss.md and productexperience_dbss.md.
 """
 

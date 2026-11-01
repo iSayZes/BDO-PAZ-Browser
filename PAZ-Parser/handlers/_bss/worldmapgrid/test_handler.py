@@ -19,6 +19,7 @@ from tests.framework import (
     run_case,
 )
 
+from .kinds import GRID_KINDS
 from .parser import (
     CELL_COUNT,
     CELL_UNITS,
@@ -54,6 +55,10 @@ _TOWN_WAYPOINTS = (
 # area 7 is Balvege Island (region 365).
 _CRON_CASTLE_AREA, _CRON_CASTLE = 1, 15
 _BALVEGE_AREA, _BALVEGE_ISLAND = 7, 365
+# regiongroupinfo.bss groups 2 (Altar of Agris, Balenos) and 258 (Unjongga
+# Street, Land of the Morning Light) share the field type value 2.
+_SHARED_VALUE, _ALTAR_OF_AGRIS, _UNJONGGA_STREET = 2, 2, 258
+_COMPANIONS = {kind.file_name: kind.companions for kind in GRID_KINDS}
 
 
 def _distinct_cells(source: CaseInput) -> int:
@@ -63,18 +68,20 @@ def _distinct_cells(source: CaseInput) -> int:
     return len(set(data[CELLS_AT:table_start]))
 
 
-def _case(file_name: str, companion: str | None, tests: list) -> HandlerCase:
+def _case(file_name: str, tests: list, *, row_per_value: bool = True) -> HandlerCase:
+    """A grid case; `row_per_value` is False for the grid that splits a value into several rows."""
+    count_tests = [DeclaredCountTest(declared=_distinct_cells)] if row_per_value else []
     return HandlerCase(
         handler_name=file_name,
         data_file=file_name,
-        companion_files={companion: companion} if companion else {},
+        companion_files={name: name for name in _COMPANIONS[file_name]},
         loc_file="languagedata_en.loc",
         uses_loc=True,
         loc_fields=["name"],
         internal_path=f"gamecommondata/binary/{file_name}",
         tests=[
             SchemaTest(required_keys=_REQUIRED_KEYS),
-            DeclaredCountTest(declared=_distinct_cells),
+            *count_tests,
             RangeTest(col="value", min_val=0, max_val=_MAX_BYTE),
             UserLanguageTest(fields=["name"]),
             *tests,
@@ -82,26 +89,26 @@ def _case(file_name: str, companion: str | None, tests: list) -> HandlerCase:
     )
 
 
-TERRITORY_CASE = _case("worldmapterritorytypedata.bss", None, [
+TERRITORY_CASE = _case("worldmapterritorytypedata.bss", [
     TargetTest(col="value", value=_CALPHEON, expected={"keys": [_CALPHEON], "name": "Calpheon"}),
 ])
-MAJOR_SIEGE_REGION_CASE = _case("worldmapmajorsiegeregiontypedata.bss", None, [
+MAJOR_SIEGE_REGION_CASE = _case("worldmapmajorsiegeregiontypedata.bss", [
     TargetTest(col="value", value=_VALENCIA, expected={"keys": [_VALENCIA], "name": "Valencia"}),
     TargetTest(col="value", value=_MAX_BYTE, expected={"keys": [], "name": None}),
 ])
-MAJOR_SIEGE_TERRITORY_CASE = _case("worldmapmajorsiegeterritorytypedata.bss", None, [
+MAJOR_SIEGE_TERRITORY_CASE = _case("worldmapmajorsiegeterritorytypedata.bss", [
     TargetTest(col="value", value=_VALENCIA, expected={"keys": [_VALENCIA], "name": "Valencia"}),
 ])
-CONQUEST_TERRITORY_CASE = _case("worldmapterritorytypedataforconquest.bss", None, [
+CONQUEST_TERRITORY_CASE = _case("worldmapterritorytypedataforconquest.bss", [
     # The cell stores the territory key + 1; 0 is the frame.
     TargetTest(col="value", value=_BALENOS + 1, expected={"keys": [_BALENOS], "name": "Balenos"}),
     TargetTest(col="value", value=0, expected={"keys": [], "name": None}),
 ])
-FIELD_TYPE_CASE = _case("worldmapfieldtypedata.bss", "regiongroupinfo.bss", [])
-SIEGE_REGION_CASE = _case("worldmapsiegeregionforconquest.bss", "villagesiegeinfo.bss", [
+FIELD_TYPE_CASE = _case("worldmapfieldtypedata.bss", [], row_per_value=False)
+SIEGE_REGION_CASE = _case("worldmapsiegeregionforconquest.bss", [
     TargetTest(col="value", value=_CRON_CASTLE_AREA, expected={"keys": [_CRON_CASTLE]}),
 ])
-OCEAN_SIEGE_REGION_CASE = _case("worldmapoceansiegeregionforconquest.bss", "oceansiegeinfo.bss", [
+OCEAN_SIEGE_REGION_CASE = _case("worldmapoceansiegeregionforconquest.bss", [
     TargetTest(col="value", value=_BALVEGE_AREA, expected={"keys": [_BALVEGE_ISLAND]}),
 ])
 
@@ -159,6 +166,27 @@ def test_field_type_values_are_region_group_low_bytes() -> None:
     assert any(record["keys"] for record in records)
     for record in records:
         assert all(key & _MAX_BYTE == record["value"] for key in record["keys"]), record
+
+
+def test_field_type_rows_cover_each_value() -> None:
+    result = _result(FIELD_TYPE_CASE)
+    assert {record["value"] for record in result.records} == set(
+        read_cells(result.source.data, "worldmapfieldtypedata.bss")
+    )
+
+
+def test_field_type_value_rows_have_distinct_keys() -> None:
+    keys_by_value: dict[int, list[tuple[int, ...]]] = {}
+    for record in _result(FIELD_TYPE_CASE).records:
+        keys_by_value.setdefault(record["value"], []).append(tuple(record["keys"]))
+    for value, keys in keys_by_value.items():
+        assert len(keys) == len(set(keys)), value
+
+
+def test_field_type_shared_value_has_a_row_per_group() -> None:
+    rows = [record for record in _result(FIELD_TYPE_CASE).records if record["value"] == _SHARED_VALUE]
+    assert [_ALTAR_OF_AGRIS] in [record["keys"] for record in rows]
+    assert [_UNJONGGA_STREET] in [record["keys"] for record in rows]
 
 
 def test_towns_lie_in_their_territory() -> None:

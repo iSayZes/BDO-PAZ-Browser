@@ -2,7 +2,7 @@
 
 The file has no gear names; the lang files name types 0 to 4 after the
 developer comment on the 1784 `Enchant_Safetymode` sheet (see
-docs/file-formats/itemenchantsafety_dbss.md). Type 5 has no name there and
+docs/file-formats/dbss/itemenchantsafety_dbss.md). Type 5 has no name there and
 shows a dash.
 """
 from __future__ import annotations

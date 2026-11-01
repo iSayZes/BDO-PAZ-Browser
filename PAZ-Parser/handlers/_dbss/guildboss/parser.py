@@ -4,7 +4,7 @@
                          | i32 skill_point_exp | i64 guild_money)
 
 `guildbossoffset.dbss` points at each row's `unknown_02`, so the walk from
-the start needs no index. Layout 1 in docs/file-formats/guildboss_dbss.md.
+the start needs no index. Layout 1 in docs/file-formats/dbss/guildboss_dbss.md.
 """
 
 from __future__ import annotations

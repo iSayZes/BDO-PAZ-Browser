@@ -6,7 +6,7 @@ count, the tiers and a zero u32. A tier is a u32 point threshold, the u16 `skill
 u64-prefixed UTF-16 strings: set title, threshold label and bonus lines.
 `skillpieceoffset.dbss` points 2 bytes into each record, past the key prefix,
 so the walk from the start needs no index. Layout in
-docs/file-formats/skillpiece_dbss.md.
+docs/file-formats/dbss/skillpiece_dbss.md.
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@
 `gc::ExpToSkillExpRateStaticStatus`; the rate is a server-only column, so the
 client file holds `0`. `exptoskillexprateoffset.dbss` (u32 count, then u32
 level, offset and size per row) points 4 bytes into a row, at `level_dup`.
-Layout 1 in docs/file-formats/exptoskillexprate_dbss.md.
+Layout 1 in docs/file-formats/dbss/exptoskillexprate_dbss.md.
 """
 
 from __future__ import annotations

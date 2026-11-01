@@ -28,7 +28,7 @@ class FileSearchMixin(ApiState):
         self._mark_activity()
         paths = self._file_search_hits(query).paths
         page = paths[offset:offset + SEARCH_PAGE_SIZE]
-        return {"total": len(paths), "items": [search_result(path) for path in page]}
+        return {"total": len(paths), "items": [search_result(path, self._shown_path(path)) for path in page]}
 
     def _file_search_hits(self, query: str) -> FileSearchHits:
         """Every match of `query`, searched again only for a new query or entry list."""

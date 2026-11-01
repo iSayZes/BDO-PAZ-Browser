@@ -1,7 +1,8 @@
-"""A folder load reuses the entry cache only while the meta version and the archive files match."""
+"""A folder load reuses the entry cache only while the meta version, the meta file and the archive files match; the content key follows the archive rows."""
 from __future__ import annotations
 
 import json
+import os
 import struct
 from pathlib import Path
 
@@ -88,3 +89,38 @@ def test_a_deleted_archive_parses_again(tmp_path: Path) -> None:
 
     assert parse.calls == 2
     assert {entry.archive_name for entry in api._entries} == {"pad00001.paz"}
+
+
+def test_a_repacked_meta_file_parses_again_and_drops_the_lookup_indexes(tmp_path: Path) -> None:
+    paz_root = _client(tmp_path, "PAD00001.PAZ")
+    parse = _CountingParse()
+    api = Api()
+    _load(api, paz_root, parse)
+    assert api.cache_dir is not None
+    index_cache = api.cache_dir / bdo_index_cache.CACHE_FILE
+    index_cache.write_bytes(b"built from the old offsets")
+
+    # Same version, archives and size; only the modification time tells.
+    meta = paz_root / "pad00000.meta"
+    later = meta.stat().st_mtime_ns + 2_000_000_000
+    os.utime(meta, ns=(later, later))
+    _load(api, paz_root, parse)
+
+    assert parse.calls == 2
+    assert not index_cache.exists()
+
+
+def test_a_rewritten_archive_row_gives_a_new_content_key(tmp_path: Path) -> None:
+    paz_root = _client(tmp_path, "PAD00001.PAZ")
+    meta = paz_root / "pad00000.meta"
+    meta.write_bytes(struct.pack("<IIIII", _VERSION, 1, 1, 0x1234ABCD, 4_096))
+    api = Api()
+    _load(api, paz_root, _CountingParse())
+    before = api._content_key
+
+    meta.write_bytes(struct.pack("<IIIII", _VERSION, 1, 1, 0x1234ABCE, 4_096))
+    _load(api, paz_root, _CountingParse())
+
+    assert before is not None and api._content_key is not None
+    assert api._content_key != before
+    assert api._content_key.startswith(f"{_VERSION}-")

@@ -5,7 +5,7 @@
 Each row holds the buff ID, string-table indices for the icon path and
 `effect_name`, `is_shown` and a few bytes copied from the `buff.dbss` stats and
 tail blocks, among them `is_debuff`, `remove_on_dead` and the equipment type and
-slot the buff needs. Full layout in docs/file-formats/buffsimply_bss.md.
+slot the buff needs. Full layout in docs/file-formats/bss/buffsimply_bss.md.
 """
 
 from __future__ import annotations

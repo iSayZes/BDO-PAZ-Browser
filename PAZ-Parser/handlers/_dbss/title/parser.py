@@ -11,7 +11,7 @@ from its counts:
 
 `str16` / `str8` are a u64 count, then UTF-16LE / ASCII text. The count of
 `title_text_kr` is the title's length; earlier readings took it for a style
-value. Full layout in docs/file-formats/title_dbss.md.
+value. Full layout in docs/file-formats/dbss/title_dbss.md.
 """
 
 from __future__ import annotations

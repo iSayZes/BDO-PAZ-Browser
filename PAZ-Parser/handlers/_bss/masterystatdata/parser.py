@@ -9,7 +9,7 @@
 
 The first six files hold one group. The gathering and processing tables
 hold one group per type, numbered from 0, until the string table; some
-groups are empty. Full layout in docs/file-formats/masterystatdata_bss.md.
+groups are empty. Full layout in docs/file-formats/bss/masterystatdata_bss.md.
 """
 
 from __future__ import annotations

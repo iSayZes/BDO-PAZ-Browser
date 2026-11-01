@@ -18,18 +18,20 @@ from tests.framework import (
 )
 
 from .parser import FILE_NAME, HEAD_FIELDS, HEAD_START, NAMED_HEAD_FIELDS, parse_gameoption
+from .run_fields import BODY_RUNS
 
 
 _U32 = struct.Struct("<I")
 _TRAILER_SIZE = 8
 _PSTR_HEAD = struct.Struct("<BI")
+_SHOWN_RUN_FIELDS = sum(field.is_shown for run in BODY_RUNS for field in run.fields)
 
 
 def _declared_rows(source: CaseInput) -> int:
-    """One row per named head field plus the `string_count` the string table declares."""
+    """One row per named head and run field plus the `string_count` the string table declares."""
     (table_start,) = _U32.unpack_from(source.data, len(source.data) - _TRAILER_SIZE)
     (string_count,) = _U32.unpack_from(source.data, table_start)
-    return len(NAMED_HEAD_FIELDS) + string_count
+    return len(NAMED_HEAD_FIELDS) + _SHOWN_RUN_FIELDS + string_count
 
 
 def _head_offset(name: str) -> int:
@@ -51,12 +53,17 @@ CASE = HandlerCase(
     loc_fields=[],
     internal_path=f"gamecommondata/binary/{FILE_NAME}",
     tests=[
-        SchemaTest(required_keys=["offset", "field", "value", "text"]),
+        SchemaTest(required_keys=["offset", "sheet", "field", "value", "text"]),
         DeclaredCountTest(declared=_declared_rows),
-        # Layout 2 offsets (gameoption_bss.md).
-        TargetTest(col="field", value="inn_rental_time", expected={"offset": 0x28}),
+        # Layout 6 offsets (gameoption_bss.md).
+        TargetTest(col="field", value="inn_rental_time", expected={"offset": 0x28, "sheet": "BattleOption"}),
         TargetTest(col="field", value="re_awakening_item_key", expected={"offset": 0xC1}),
-        TargetTest(col="field", value="strings[0]", expected={"offset": None}),
+        TargetTest(col="field", value="mating_regist_time", expected={"sheet": "ServantOption"}),
+        TargetTest(col="field", value="client_version", expected={"sheet": "MovementVerifyOption"}),
+        TargetTest(col="field", value="world_chat_condition", expected={"sheet": "EtcOption"}),
+        TargetTest(col="field", value="reservation_arsha_price", expected={"sheet": "GuildOption"}),
+        TargetTest(col="field", value="item_market_register_count_per_user", expected={"sheet": "ItemMarket"}),
+        TargetTest(col="field", value="strings[0]", expected={"offset": None, "sheet": None}),
     ],
 )
 
@@ -76,7 +83,7 @@ def test_gameoption_bss(spec: Any, gameoption_result: HandlerResult) -> None:
 
 
 def test_head_fields_sit_at_their_layout_offsets(gameoption_result: HandlerResult) -> None:
-    head = [r for r in gameoption_result.records if r["offset"] is not None]
+    head = [r for r in gameoption_result.records if r["sheet"] == "BattleOption"]
     assert [r["offset"] for r in head] == [_head_offset(r["field"]) for r in head]
 
 
@@ -84,18 +91,32 @@ def test_head_ends_at_0xc5() -> None:
     assert _head_offset("re_awakening_item_key") + 4 == 0xC5
 
 
-def test_the_body_runs_to_the_string_table(gameoption_result: HandlerResult) -> None:
-    data = gameoption_result.source.data
-    option = parse_gameoption(data)
-    (table_start,) = _U32.unpack_from(data, len(data) - _TRAILER_SIZE)
-    assert option.body_offset + option.body_size == table_start
+def test_the_runs_follow_the_head_without_gaps(gameoption_result: HandlerResult) -> None:
+    option = parse_gameoption(gameoption_result.source.data)
+    assert option.body_error == ""
+    offsets = [value.offset for value in option.runs]
+    ends = [value.offset + value.size for value in option.runs]
+    assert offsets[0] == 0xC5
+    assert offsets[1:] == ends[:-1]
 
 
-def test_the_condition_ref_points_into_the_string_table(gameoption_result: HandlerResult) -> None:
+def test_the_counted_arrays_hold_their_count(gameoption_result: HandlerResult) -> None:
+    runs = {value.field.name: value.value for value in parse_gameoption(gameoption_result.source.data).runs}
+    counted = [field for run in BODY_RUNS for field in run.fields if field.count and not field.count.isdigit()]
+    assert counted
+    for field in counted:
+        array = runs[field.name]
+        assert isinstance(array, tuple), field.name
+        assert len(array) == runs[field.count], field.name
+
+
+def test_the_condition_refs_point_into_the_string_table(gameoption_result: HandlerResult) -> None:
     strings = [r for r in gameoption_result.records if r["offset"] is None]
-    (ref,) = [r for r in gameoption_result.records if r["field"] == "final_level_up_condition_ref"]
-    assert 0 <= ref["value"] < len(strings)
-    assert ref["text"] == strings[ref["value"]]["value"]
+    refs = [r for r in gameoption_result.records if r["field"].endswith("_condition_ref")]
+    assert {r["field"] for r in refs} == {"final_level_up_condition_ref", "tutorial_condition_ref"}
+    for ref in refs:
+        assert 0 <= ref["value"] < len(strings)
+        assert ref["text"] == strings[ref["value"]]["value"]
 
 
 def _file(head: bytes, body: bytes, strings: tuple[str, ...]) -> bytes:
@@ -115,11 +136,29 @@ def _head_bytes() -> bytes:
     )
 
 
+def _empty_body() -> bytes:
+    """Every run with each counted array empty."""
+    return b"".join(
+        b"\0" * struct.calcsize(f"<{field.count if field.count.isdigit() else ''}{field.fmt}")
+        for run in BODY_RUNS
+        for field in run.fields
+        if not field.count or field.count.isdigit()
+    )
+
+
 def test_a_built_file_reads_back() -> None:
-    option = parse_gameoption(_file(_head_bytes(), b"\1\2\3", ("0", "x")))
-    assert option.body_offset == 0xC5
-    assert option.body_size == 3
+    option = parse_gameoption(_file(_head_bytes(), _empty_body() + b"\1\2\3", ("0", "x")))
+    assert option.body_error == ""
+    assert option.runs[0].offset == 0xC5
+    assert option.runs[-1].offset + option.runs[-1].size == 0xC5 + len(_empty_body())
     assert option.strings == ("0", "x")
+
+
+def test_a_short_body_keeps_the_head() -> None:
+    option = parse_gameoption(_file(_head_bytes(), b"\1\2\3", ("0",)))
+    assert option.runs == ()
+    assert option.body_error
+    assert len(option.head) == len(HEAD_FIELDS)
 
 
 @pytest.mark.parametrize(

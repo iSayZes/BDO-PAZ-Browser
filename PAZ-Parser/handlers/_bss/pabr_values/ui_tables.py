@@ -1,6 +1,6 @@
 """Layouts of the quiz, photo mode and world map option tables that fit the PABR value tables.
 
-Each file's doc is `docs/file-formats/<stem>_bss.md`. The quiz names follow
+Each file's doc is `docs/file-formats/bss/<stem>_bss.md`. The quiz names follow
 the `Social_Quiz` sheet of a private server's `DataSheets.bexcel` on client
 1784, the photo mode name the client Lua of client 3482. No source names a
 field of `worldmapoptionstaticstatusmanager.bss`, so its view shows the row

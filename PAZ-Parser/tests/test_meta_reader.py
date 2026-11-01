@@ -1,4 +1,4 @@
-"""`read_meta_entries`: the file table of `pad00000.meta` (docs/paz-meta.md).
+"""`read_meta_entries`: the file table of `pad00000.meta` (docs/file-formats/other/pad00000_meta.md).
 
 The client test skips without a client.
 """
@@ -36,7 +36,7 @@ def _encrypted(block: bytes) -> bytes:
 
 
 def _meta_bytes(extra: bytes = b"", name_index_shift: int = 0) -> bytes:
-    """A two-archive `.meta` holding `_FILES`, laid out as docs/paz-meta.md describes."""
+    """A two-archive `.meta` holding `_FILES`, laid out as docs/file-formats/other/pad00000_meta.md describes."""
     names = [name for _folder, name, *_ in _FILES]
     rows = b"".join(
         struct.pack("<7I", 0xC0FFEE, folder, index + name_index_shift, archive, offset, compressed, original)

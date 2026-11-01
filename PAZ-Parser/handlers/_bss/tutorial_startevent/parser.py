@@ -12,7 +12,7 @@
 
 Panel and control names are stored as their `ascii_key_hash()`; `do_lua`
 indexes the string table. `tutorial.bss` steps name these rows by `key`.
-Layout 1 in docs/file-formats/tutorial_startevent_bss.md.
+Layout 1 in docs/file-formats/bss/tutorial_startevent_bss.md.
 """
 
 from __future__ import annotations

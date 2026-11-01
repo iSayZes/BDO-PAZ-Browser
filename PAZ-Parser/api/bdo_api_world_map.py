@@ -1,4 +1,4 @@
-"""The Map view's tiles and pin icons: built once per client into the cache folder (WorldMapMixin).
+"""The Map view's tiles and pin icons: built once per client content key into the cache folder (WorldMapMixin).
 
 The first open shows a prompt with the tile count and an estimated size; its
 OK turns on the "Keep map updated" setting and starts the build. With the
@@ -34,10 +34,10 @@ from world_map_build import (
     BuildStopped,
     RadarSource,
     build_map,
+    content_folder,
     read_manifest,
     read_radar,
     remove_other_maps,
-    version_folder,
     worker_count,
 )
 
@@ -66,9 +66,9 @@ class WorldMapMixin(ApiState):
         """
         self._mark_activity()
         with self._map_lock:
-            if self._cache_dir is None or self._meta_version is None or not self._is_map_current():
+            if self._cache_dir is None or self._content_key is None or not self._is_map_current():
                 return {}
-            folder = version_folder(self._cache_dir, self._meta_version)
+            folder = content_folder(self._cache_dir, self._content_key)
             index = read_icon_index(folder)
             return index if index is not None else self._build_map_icons(folder)
 
@@ -111,21 +111,21 @@ class WorldMapMixin(ApiState):
         "error" is the message of a failed build or None. "iconUrl" is the
         URL template of the pin icons (`get_map_icons`), `{name}` for a name.
         """
-        if self._cache_dir is None or self._meta_version is None:
+        if self._cache_dir is None or self._meta_version is None or self._content_key is None:
             return {"state": "noFolder"}
         if self._map_stop is not None:
             progress = self._map_progress
             return {"state": "building", "progress": progress.to_dict() if progress else None}
 
-        folder = version_folder(self._cache_dir, self._meta_version)
+        folder = content_folder(self._cache_dir, self._content_key)
         manifest = read_manifest(folder)
         if manifest is not None and manifest.is_current(self._meta_version):
             if self._server is None:
                 return {"state": "prompt", "tiles": 0, "bytes": 0, "error": "Local server not available"}
             return {
                 "state": "ready",
-                "tileUrl": self._server.serve_map(folder, self._meta_version),
-                "iconUrl": self._server.map_icon_url(self._meta_version),
+                "tileUrl": self._server.serve_map(folder, self._content_key),
+                "iconUrl": self._server.map_icon_url(self._content_key),
                 "bounds": manifest.bounds.to_dict(),
                 "minZoom": MIN_ZOOM,
                 "maxZoom": MAX_ZOOM + _EXTRA_ZOOM,
@@ -148,9 +148,9 @@ class WorldMapMixin(ApiState):
         return self._map_sectors
 
     def _is_map_current(self) -> bool:
-        if self._cache_dir is None or self._meta_version is None:
+        if self._cache_dir is None or self._meta_version is None or self._content_key is None:
             return False
-        manifest = read_manifest(version_folder(self._cache_dir, self._meta_version))
+        manifest = read_manifest(content_folder(self._cache_dir, self._content_key))
         return manifest is not None and manifest.is_current(self._meta_version)
 
     # ── Building ─────────────────────────────────────────────────────────────
@@ -166,7 +166,13 @@ class WorldMapMixin(ApiState):
             if self._map_stop is not None or self._is_map_current():
                 return
             sectors = self._radar_sectors()
-            if not sectors or self._paz_root is None or self._cache_dir is None or self._meta_version is None:
+            if (
+                not sectors
+                or self._paz_root is None
+                or self._cache_dir is None
+                or self._meta_version is None
+                or self._content_key is None
+            ):
                 return
             sources: dict[Sector, RadarSource] = {
                 sector: (self._paz_root / entry.archive_name, entry) for sector, entry in sectors.items()
@@ -175,15 +181,15 @@ class WorldMapMixin(ApiState):
             self._map_stop = stop
             self._map_progress = None
             self._map_error = None
-            args = (sources, self._cache_dir, self._meta_version, stop)
+            args = (sources, self._cache_dir, self._content_key, self._meta_version, stop)
             threading.Thread(target=self._run_map_build, args=args, daemon=True).start()
             state = self._map_state()
         self._push_js(f"app.onMapStateChanged({json.dumps(state)})")
 
     def _run_map_build(
-        self, sources: dict[Sector, RadarSource], cache_dir: Path, version: int, stop: threading.Event
+        self, sources: dict[Sector, RadarSource], cache_dir: Path, key: str, version: int, stop: threading.Event
     ) -> None:
-        target = version_folder(cache_dir, version)
+        target = content_folder(cache_dir, key)
         error: str | None = None
         was_stopped = False
         try:
@@ -260,10 +266,10 @@ class WorldMapMixin(ApiState):
             self._map_sectors = None
             self._map_error = None
         if self._server is not None:
-            self._server.serve_map(None, 0)
+            self._server.serve_map(None, "")
 
     def _release_world_map(self) -> None:
         """Before the map folder is deleted: stop a build and stop serving the tiles."""
         self._stop_map_build()
         if self._server is not None:
-            self._server.serve_map(None, 0)
+            self._server.serve_map(None, "")

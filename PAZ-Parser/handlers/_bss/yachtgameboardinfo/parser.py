@@ -8,7 +8,7 @@
 
 The three indexes point into the string table. Client 1784 rows have no
 `is_use_matching` (Layout 1); this reads the live layout. Layouts in
-docs/file-formats/yachtgameboardinfo_bss.md.
+docs/file-formats/bss/yachtgameboardinfo_bss.md.
 """
 
 from __future__ import annotations

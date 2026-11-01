@@ -8,7 +8,7 @@
          | u32 icon_texture_index | u32 name_kr_index | u32 desc_kr_index
 
 The three indexes point into the string table. Layout in
-docs/file-formats/yachthandrank_bss.md.
+docs/file-formats/bss/yachthandrank_bss.md.
 """
 
 from __future__ import annotations

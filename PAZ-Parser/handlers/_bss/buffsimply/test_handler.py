@@ -19,7 +19,6 @@ from tests.framework import (
 
 from _bss.buffsimply.parser import build_buff_icon_index
 from _common.buff import buff_icon_path
-from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _dbss.buff.parser import parse_buff_records
 from _dbss.itemenchant.slot_labels import NO_SLOT
 
@@ -94,14 +93,13 @@ def test_buffsimply_bss(spec: Any, buffsimply_result: HandlerResult) -> None:
 def test_rows_copy_their_buff_dbss_record(buffsimply_result: HandlerResult) -> None:
     """Same buffs in buffoffset.dbss order, with the same copied fields."""
     source = buffsimply_result.source
-    offset_rows = parse_pabr_u32_offset_rows(source.file(_BUFF_OFFSET_FILE))
     fields = (
         "buff_id", "icon_path", "is_shown", "effect_name",
         "is_debuff", "remove_on_dead", "need_equip_type", "need_equip_slot",
     )
     expected = [
         {field: record[field] for field in fields}
-        for record in parse_buff_records(source.file(_BUFF_FILE), offset_rows)
+        for record in parse_buff_records(source.file(_BUFF_FILE), source.file(_BUFF_OFFSET_FILE))
     ]
 
     actual = [{field: record[field] for field in fields} for record in buffsimply_result.records]

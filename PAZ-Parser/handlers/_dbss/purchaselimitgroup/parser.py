@@ -4,7 +4,7 @@ A u32 row count, then 9-byte rows packed with no padding: the u32 group
 number, the u8 limit type (`CppEnums.CashPurchaseLimitType`) and the i32
 number of purchases the group allows. `purchaselimitgroupoffset.dbss`
 points at the start of each row. Layout 1 in
-docs/file-formats/purchaselimitgroup_dbss.md.
+docs/file-formats/dbss/purchaselimitgroup_dbss.md.
 """
 
 from __future__ import annotations

@@ -3,7 +3,7 @@
     u32 count | count x (u32 dice_preset_key | u32 dice_preset_key_dup | u32[5] dice_keys)
 
 `yachtdicepresetoffset.dbss` points at `dice_preset_key_dup`. Layout in
-docs/file-formats/yachtdicepreset_dbss.md.
+docs/file-formats/dbss/yachtdicepreset_dbss.md.
 """
 
 from __future__ import annotations

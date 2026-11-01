@@ -7,6 +7,15 @@ reads the docs and `PAZ-Parser/tests/test_format_docs.py` runs its checks on
 every doc that has a `## Layout` section. Start a new doc from
 [`_template.md`](file-formats/_template.md).
 
+A doc is named `<file stem>_<extension>.md` and sits in the folder of its
+group, the groups of the wiki's side bar: `bss/regioninfo_bss.md`,
+`dbss/buff_dbss.md`, `lua/` for the `.luac` docs, and `other/` for every
+other format (`other/languagedata_loc.md`, `other/pad00000_meta.md`).
+`format_docs/doc_paths.py` holds the rule. `lua/luascript_luac.md` is the
+layout of every `.luac`; each other doc in `lua/` describes one script and
+follows that doc's Script Docs section instead of the layout format
+(`format_docs/script_docs.py` checks it).
+
 ## Doc Order
 
 | Section             | Content                                                                 |
@@ -45,7 +54,11 @@ A file whose layout changed between clients keeps every known layout. Layout
 1 is the oldest; a new layout takes the next number, and the sections go
 newest first, so the current layout is always the first one. A layout
 older than Layout 1, found later in an older client, becomes Layout 1 and
-the others move up by one; the doc check then rewrites Versions for them.
+the others move up by one; the doc check then rewrites Versions for them:
+`check_docs.py --version all` reads every client again (the layouts
+changed), drops a Sizes row whose
+newest client now fits another layout and starts a range at the first
+client that still fits its layout.
 
 - The newest layout is written in full and has a `### File Layout`.
 - An older layout lists only the structures that differ from the next newer
@@ -103,7 +116,7 @@ layout tables and the check leaves them alone.
 
 | Type                                | Meaning                                                    | Size |
 | ----------------------------------- | ---------------------------------------------------------- | ---- |
-| `u8` `i8` `u16` `i16` `u32` `i32` `u64` `i64` `f32` `f64` | Little-endian numbers             | 1, 2, 4 or 8 |
+| `u8` `i8` `u16` `i16` `u32` `i32` `u64` `i64` `f16` `f32` `f64` | Little-endian numbers; `f16` is a half float | 1, 2, 4 or 8 |
 | `bytes[N]`, `bytes[field]`          | Bytes with no inner layout                                 | N, or the field's value |
 | `char[N]`, `char[field]`            | ASCII characters, e.g. `char[4]` for `PABR`                | N, or the field's value |
 | `char16[N]`, `char16[field]`        | UTF-16LE code units                                        | 2 x N, or 2 x the field's value |
@@ -116,6 +129,7 @@ layout tables and the check leaves them alone.
 | `Name[N]`, `Name[field]`            | Several of them                                            | count x its size |
 | `Name[..field]`, `Name[..end]`      | Repeated up to the offset a field holds, or to the end of the enclosing structure; in a top-level table `..end` stops at the first `EOF-` row | the bytes up to there |
 | `Name[while field != V]`            | Repeated up to the first one whose `field` is `V`, that one excluded; `field` is a field of `Name` | count x its size |
+| `T[sum field]`                      | As many as the values of `field` add up to over every structure repeated earlier in the same structure (`Vertex[sum vertex_count]` after `Material[material_count]`); a repeat its condition leaves out adds 0 | total x size of T |
 | `bytes[rest]`                       | The bytes left in a structure whose size comes from an offset file | the rest |
 | `bytes[scan]`                       | Bytes whose end only a scan finds, in a structure with no size from outside; named `unknown_*`, the scan in Notes, later rows count from it | what the scan finds |
 | `T if field = V`, `T if field != V` | Present only when the condition holds; `size` names the structure's size from its offset file | T's size, or 0 |
@@ -229,24 +243,40 @@ folder: the rows of [`documented-formats.md`](documented-formats.md) that
 link to the doc, and every file a ``### `x.dbss` `` heading names. A row
 names a file by its name, or by its full PAZ path when several folders hold
 a file of that name or the family has no single name
-(`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`). It walks
+(`mapdata_real/spawnplacementfieldgrid/1/7/fileinfo.bss`). `pad00000.meta`
+is not in the archives, so it is read from the PAZ folder itself. A row that
+names a family by pattern (`*.bwp`, `*.luac`) gives no file by the pattern;
+the sample files in parentheses after it (`*.bwp` (`mapdata_realexplore2.bwp`))
+are read. It walks
 them by each layout, newest first, and takes the first layout every file
 walks to its last byte by. Three tables follow:
 
 | Table    | Rows                    | Columns                                                       |
 | -------- | ----------------------- | ------------------------------------------------------------- |
-| Sizes    | One per layout per file | Layout, Clients, Checked (the client the numbers come from), File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
+| Sizes    | One per layout per file | Layout, Clients, File, Bytes, Records (per repeated structure), Row bytes (of the most frequent structure) |
 | Coverage | One per layout per file | Layout, File, Known and Unknown bytes over the whole file, every instance of every field counted |
-| Clients  | One per client read     | Client, Result: `Layout N`; `No documented layout` when the files are there but no layout of the doc reads them; `No file` when none of the doc's files is in that client's `.meta` |
+| Clients  | One per client read     | Client, Result: `Layout N`; `No documented layout` when the files are there but no layout of the doc reads them; `No file` when none of the doc's files is in that client's `.meta`; Checked against: the layouts hash the result was read against |
 
 - A client range only widens: each check adds its client to the layout it
   fits, and a layout's row stays once a client has fit it. The newest layout
   reads `<first client> and later`, an older one `<first> to <last>`.
 - Sizes and coverage come from the newest client checked for that layout;
-  an older client never overwrites them.
+  an older client never overwrites them. That client is the last of the
+  row's range, or for `<first client> and later` the newest Clients row
+  with that layout. `--version all` reads the newest
+  client first: after a renumber the row a client used to give is dropped
+  once that client is read again, before an older client's fresh row could
+  merge into it and go with it.
 - The Clients table keeps every client the check read, newest first; a
   client read again takes its new result. `No file` means the name is not in
   the `.meta`, so an archive missing from a pruned folder is not one.
+- A client without a `.bss` / `.dbss` file reads its NA copy, the same name
+  with `#na#` in front (`#na#eventmanagement.bss`,
+  `gamecommondata/binary/#na#x.bss` for a full path), under the file's own
+  name. Clients 837 to 1246 ship some tables only under that name; client
+  1000 has 244 `.bss` files outside `detaildialog/` with it. The browser
+  reads them by the same rule (`paz/na_copy.py`, see
+  [NA Copies](handler.md#na-copies)).
 - When a client keeps a second copy of a file in a language folder (client
   531 has `regioninfo_linkandcheckvalid2.bss` in `binary/` and `binary/en/`),
   the check reads the base copy. Two copies at the same depth are ambiguous:
@@ -255,6 +285,26 @@ walks to its last byte by. Three tables follow:
   one of them.
 - A doc whose layout holds `bytes[scan]` cannot be walked and keeps its
   markers only.
+- The Clients table's Checked against column holds a hash of what the check
+  read that client against, such as `37e1249bfa22`: the layout tables
+  (structure names and sizes; field offsets, types and names) and the doc's
+  files. Line numbers, notes and prose leave it as it is. A client whose row
+  holds the doc's current hash is not read again, and a client every doc
+  checked before is not opened at all. After a layout change each row keeps
+  its old hash until a run reads that client again, so a stopped run goes on
+  where it left off. A row from before the column (`-`) is read again once.
+  The wiki leaves the column out.
+- `--recheck` reads the clients a run reaches whatever their row holds. A
+  change to the walk or the coverage count raises `CHECK_VERSION` in
+  `PAZ-Parser/format_docs/fingerprint.py`, which changes every doc's hash.
+- A run on worker processes hands each doc's change to the main process,
+  which writes the docs every 2 minutes (`FLUSH_SECONDS`), at the end and
+  when the run stops. A PC crash loses at most the last 2 minutes of
+  clients, which the next run reads again.
+- The workers check the docs of up to 3 clients at once
+  (`CLIENTS_IN_FLIGHT`) and keep those clients open, so they go on with the
+  next client while one walks a large file (`itemenchantbackendtest.dbss`
+  takes 14 s on client 3426). Each client is still reported in order.
 
 | Command                                              | Checks                                                      |
 | ---------------------------------------------------- | ----------------------------------------------------------- |
@@ -263,11 +313,13 @@ walks to its last byte by. Three tables follow:
 | `python check_docs.py buffsimply_bss.md`             | Named docs                                                  |
 | `python check_docs.py --all --paz-folder DIR --client N` | Another client's folder, by hand, with its real client number |
 | `python check_docs.py --all --version 2107`          | One of my test clients, `F:/BDO Projects/_TestClient/<region>/2107/Paz` in whichever region folder (`NAEU`) holds it |
-| `python check_docs.py --all --version all`           | Every test client of every region folder, oldest first, then the live client; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
-| `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on, to resume one that stopped |
+| `python check_docs.py --all --version all`           | The live client, then every test client of every region folder, newest first; one client number in two regions stops the run, as Versions names a client by its number alone; a folder whose `.meta` does not hold its name (a repack) is skipped, and so is the live client while `BlackDesert64.exe` runs or when a test client has its number |
+| `python check_docs.py --all --version all --from 2063` | The same run from test client 2063 on to older ones, to resume one that stopped |
+| `python check_docs.py itemenchantbackend_dbss.md --version all --from 3418 --to 1964` | Only the clients from 3418 down to 1964; `--to` alone stops the run at that client |
+| `python check_docs.py --all --version 1784 --recheck` | Test client 1784 again for every doc, also where Versions list it against the same layouts; with `--version all`, every client |
 | `python check_docs.py --all --docs-only`             | The doc rules only, no game files                           |
 | `python check_docs.py buffsimply_bss.md --no-write`  | Which layout each doc's files fit; Versions stay as they are |
-| `python check_docs.py --all --version 2107 --jobs 4`  | The same check on four worker processes; the default is one per core, and `--jobs 1` checks in one process |
+| `python check_docs.py --all --version 2107 --jobs 4`  | The same check on four worker processes; the default is sixteen (or the core count when lower), and `--jobs 1` checks in one process |
 
 Without `--paz-folder` or `--version` the check reads the PAZ folder last
 opened in the app, the live client, and names it by the number its `.meta` holds. A

@@ -6,7 +6,7 @@ The main file is a u32 count and one 9-byte row per item:
 
 `employeeloyalismitemoffset.dbss` is a bare offset table of 12-byte
 [u32 item_id][u32 offset][u32 size] rows; the offset points at
-`loyalism_type`. Full layout in docs/file-formats/employeeloyalismitem_dbss.md.
+`loyalism_type`. Full layout in docs/file-formats/dbss/employeeloyalismitem_dbss.md.
 """
 
 from __future__ import annotations

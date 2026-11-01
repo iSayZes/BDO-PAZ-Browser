@@ -31,6 +31,13 @@ def _journal_text(group_id: int, entry_no: int, field_id: int) -> str:
     return strip_pa_tags(_journal_tagged(group_id, entry_no, field_id)).strip()
 
 
+def _flag_text(flag: int | None, yes: str, no: str) -> str:
+    """Yes or No, and `-` for a book whose layout has no such flag."""
+    if flag is None:
+        return "-"
+    return yes if flag else no
+
+
 def _offset_meta(records: list[dict], lang: str) -> str:
     groups = len({record["group_id"] for record in records})
     return handler_text(lang, _LANG_DIR, "meta.offsetCount", count=len(records), groups=groups)
@@ -107,7 +114,8 @@ class JournalQuestDbssHandler(PreviewHandler):
             record["unlock_condition_en"] = unlock_en
             record["journal_title_text"] = title_en or record["journal_title"]
             record["subtitle_text"] = subtitle_en or record["subtitle"]
-            record["page_vol_title_text"] = volume_en or record["page_vol_title"]
+            # Layout 1 books have no book name, record-book flag or model names.
+            record["page_vol_title_text"] = volume_en or record.get("page_vol_title", "")
             # Unlock conditions name their quests in game colours, in LOC and in Korean.
             record.update(
                 pa_fields("unlock_condition_text", unlock_tagged if unlock_en else record["unlock_condition"])
@@ -141,9 +149,9 @@ class JournalQuestDbssHandler(PreviewHandler):
                 text_list_cell(r["page_titles"], _LIST_PREVIEW_ITEMS),
                 pa_cell(r, "unlock_condition_text"),
                 e(r["page_count"]),
-                e(yes if r["is_record_book"] else no),
-                e(r["combine_model"]),
-                e(r["static_model"]),
+                e(_flag_text(r.get("is_record_book"), yes, no)),
+                e(r.get("combine_model", "")),
+                e(r.get("static_model", "")),
             ]
             for r in slice_
         ]

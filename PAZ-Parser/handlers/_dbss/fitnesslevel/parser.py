@@ -11,7 +11,7 @@ Each row is:
 
 `fitnessleveloffset.dbss` repeats the block shape with 12-byte
 [u32 level][u32 offset][u32 size] rows; its block index is the fitness type.
-Full layout in docs/file-formats/fitnesslevel_dbss.md.
+Full layout in docs/file-formats/dbss/fitnesslevel_dbss.md.
 """
 
 from __future__ import annotations

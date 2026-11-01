@@ -12,6 +12,8 @@ from _bss.stringtable.text import LOC_UI_STRING
 from _common.knowledge import LOC_KNOWLEDGE
 from _common.quest.reward_entry import (
     FAMILY_STAT_OFFSET,
+    REWARD_ENTRY_LAYOUT_1,
+    REWARD_ENTRY_LAYOUT_2,
     REWARD_ENTRY_SIZE,
     REWARD_EXP_GRADE,
     REWARD_EXPLORE_EXP,
@@ -41,6 +43,12 @@ _ADD_FEVER_POINT = 0xA4
 _UNKNOWN_A8 = 0xA8
 _SEASON_NO = 0xA9
 _EXPLORE_EXP = 0xAA
+# The same members in a 188-byte Layout 1 entry.
+_LAYOUT_1_MAX_FEVER_POINT = 0xA6
+_LAYOUT_1_ADD_FEVER_POINT = 0xAA
+_LAYOUT_1_UNKNOWN_A8 = 0xAE
+_LAYOUT_1_SEASON_NO = 0xAF
+_LAYOUT_1_EXPLORE_EXP = 0xB4
 _CARD = 9550
 
 
@@ -97,6 +105,32 @@ def test_tail_members_sit_at_their_offsets(fmt: str, offset: int, field: str) ->
 
 def test_explore_exp_ends_the_entry() -> None:
     assert _EXPLORE_EXP + struct.calcsize("<q") == REWARD_ENTRY_SIZE
+
+
+def test_entry_layouts_have_the_documented_sizes() -> None:
+    assert REWARD_ENTRY_LAYOUT_2.size == REWARD_ENTRY_SIZE == 178
+    assert REWARD_ENTRY_LAYOUT_1.size == 188
+
+
+@pytest.mark.parametrize(("fmt", "offset", "field"), [
+    ("<i", _MENTAL_CARD_KEY, "mental_card_key"),
+    ("<B", _EXP_GRADE, "exp_grade"),
+    ("<I", _LAYOUT_1_MAX_FEVER_POINT, "max_fever_point"),
+    ("<I", _LAYOUT_1_ADD_FEVER_POINT, "add_fever_point"),
+    ("<B", _LAYOUT_1_UNKNOWN_A8, "unknown_a8"),
+    ("<B", _LAYOUT_1_SEASON_NO, "season_no"),
+    ("<q", _LAYOUT_1_EXPLORE_EXP, "explore_exp"),
+])
+def test_layout_1_tail_members_sit_at_their_offsets(fmt: str, offset: int, field: str) -> None:
+    raw = bytearray(REWARD_ENTRY_LAYOUT_1.size)
+    struct.pack_into(fmt, raw, offset, 0x7B)
+    reader = RecordReader(bytes(raw), 0, len(raw), "entry")
+
+    entry = read_reward_entry(reader, REWARD_ENTRY_LAYOUT_1)
+
+    assert reader.at_end()
+    assert entry[field] == 0x7B
+    assert len(bytes.fromhex(entry["unknown_9c"])) == 10
 
 
 def test_list_reads_its_count_then_the_entries() -> None:

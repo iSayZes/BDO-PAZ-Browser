@@ -12,10 +12,10 @@ A row's input key covers the table's own inputs:
 - the PAZ identity of the table and of every companion it declares: archive
   name, the archive's CRC and size from the meta file, offset and sizes
 
-Shared data is not in the key. LOC and the lookup indexes change with nearly
-every patch, so a row instead records the digest of only what its build read
-(`_common/data_deps.py`), and a patch that leaves a table and that data alone
-keeps its row.
+Shared data is not in the key. LOC, the lookup indexes and the client version
+change with nearly every patch, so a row instead records the digest of only
+what its build read (`_common/data_deps.py`), and a patch that leaves a table
+and that data alone keeps its row.
 """
 
 from __future__ import annotations
@@ -32,7 +32,16 @@ from weakref import WeakKeyDictionary
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 # The handlers folder the entry point put on the path (bdo_preview.use_handlers_dir).
-from _common.data_deps import INDEX_PREFIX, LOC, index_dep, note_read, recording
+from _common.data_deps import (
+    CLIENT,
+    CLIENT_RANGES_PREFIX,
+    INDEX_PREFIX,
+    LOC,
+    client_ranges_digest,
+    index_dep,
+    note_read,
+    recording,
+)
 from paz.bdo_records_cache import RecordsCache, RecordsStamp
 from paz.source_fingerprint import project_module_of, source_fingerprints
 from table_sort import TableSort
@@ -76,6 +85,7 @@ class DataDigests:
 
     def __init__(self) -> None:
         self._digests: dict[str, str] = {}
+        self._client: int | None = None
         self._generation = 0
         self._lock = threading.Lock()
 
@@ -84,6 +94,9 @@ class DataDigests:
         return self._generation
 
     def get(self, name: str) -> str:
+        if name.startswith(CLIENT_RANGES_PREFIX):
+            # Named by the layout ranges it covers, so derived from the client.
+            return client_ranges_digest(name, self._client)
         return self._digests.get(name, ABSENT)
 
     def set_loc(self, raw: bytes | None) -> None:
@@ -95,6 +108,13 @@ class DataDigests:
         """The lookup indexes now installed, as digests by kind value."""
         values = {index_dep(kind_value): digest for kind_value, digest in digests.items()}
         self._replace(lambda name: name.startswith(INDEX_PREFIX), values)
+
+    def set_client(self, client: int | None) -> None:
+        """The client version handlers now read files as, or None when there is none."""
+        with self._lock:
+            self._client = client
+        values = {} if client is None else {CLIENT: str(client)}
+        self._replace(lambda name: name == CLIENT, values)
 
     def _replace(self, owns: Callable[[str], bool], values: Mapping[str, str]) -> None:
         with self._lock:

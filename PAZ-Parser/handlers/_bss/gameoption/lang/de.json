@@ -1,11 +1,13 @@
 {
   "columns": {
     "offset": "Offset",
+    "sheet": "Tabelle",
     "field": "Feld",
     "value": "Wert",
     "text": "Text"
   },
   "meta": {
-    "count": "{fields} Felder, {strings} Texte, {body} Bytes nicht entschlüsselt"
+    "count": "{fields} Felder, {strings} Texte, {body} Bytes nicht entschlüsselt",
+    "body_error": "Der Datensatz nach dem Kopf folgt nicht dem dokumentierten Layout ({reason}); nur der Kopf wird angezeigt."
   }
 }

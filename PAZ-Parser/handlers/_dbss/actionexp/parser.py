@@ -11,7 +11,7 @@ Each row is:
 `key_prefix` repeats the row's level. `actionexpoffset.dbss` has the same
 block shape with 12-byte [u32 level][u32 offset][u32 size] rows; its block
 index is the class type and each offset points past the row's key_prefix.
-Full layout in docs/file-formats/actionexp_dbss.md.
+Full layout in docs/file-formats/dbss/actionexp_dbss.md.
 """
 
 from __future__ import annotations

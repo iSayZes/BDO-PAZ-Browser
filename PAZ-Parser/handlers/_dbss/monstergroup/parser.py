@@ -4,7 +4,7 @@
     monstergroup.dbss:       u32 count | (u16 key copy | u16 group_key, u32 member_count,
                                           member_count x (u16 character_key, u32 percent)) ...
 
-Full layout in docs/file-formats/monstergroup_dbss.md.
+Full layout in docs/file-formats/dbss/monstergroup_dbss.md.
 """
 
 from __future__ import annotations

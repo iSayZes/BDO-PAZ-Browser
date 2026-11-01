@@ -6,7 +6,7 @@ row), the key again, the gathering kind, time and HP, the product drop
 group, three tool slots with a drop group each, 12 unknown bytes, the action
 point and two spawn times. `collectoffset.dbss` points 2 bytes into a row,
 at the name, so the walk from the start needs no index. Layout 2 in
-docs/file-formats/collect_dbss.md.
+docs/file-formats/dbss/collect_dbss.md.
 """
 
 from __future__ import annotations

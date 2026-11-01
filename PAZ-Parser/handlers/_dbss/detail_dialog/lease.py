@@ -2,7 +2,7 @@
 
 A lease option's action is `buyItemByPoint(item, 0, 1, 5, cost)`: the item key,
 two fixed values, a fixed `5` and the contribution point cost. Full notes in
-docs/file-formats/detail_dialog_dbss.md. `Lease` and its text live in
+docs/file-formats/dbss/detail_dialog_dbss.md. `Lease` and its text live in
 `_common/lease.py`.
 """
 

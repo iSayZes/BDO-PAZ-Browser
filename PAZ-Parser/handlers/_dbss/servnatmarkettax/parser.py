@@ -6,7 +6,7 @@
 `ToClient_GetServantMarketTaxPercent()` by 10,000 for the percent it shows.
 `servnatmarkettaxoffset.dbss` (u32 count, then u32 level, offset and size
 per row) points at the row start. Layout 1 in
-docs/file-formats/servnatmarkettax_dbss.md.
+docs/file-formats/dbss/servnatmarkettax_dbss.md.
 """
 
 from __future__ import annotations

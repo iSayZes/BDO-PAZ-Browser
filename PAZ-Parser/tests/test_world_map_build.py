@@ -12,11 +12,11 @@ from world_map_build import (
     BuildProgress,
     BuildStopped,
     build_map,
+    content_folder,
     read_manifest,
     remove_other_maps,
     sea_path,
     tile_path,
-    version_folder,
 )
 
 Image = pytest.importorskip("PIL.Image")
@@ -132,9 +132,9 @@ def test_read_manifest_is_none_when_missing_or_malformed(tmp_path: Path) -> None
 
 
 def test_remove_other_maps_keeps_only_the_given_one(tmp_path: Path) -> None:
-    keep = version_folder(tmp_path, 3464)
-    old = version_folder(tmp_path, 3458)
-    leftover = keep.with_name("3465.building")
+    keep = content_folder(tmp_path, "3464-0123456789abcdef")
+    old = content_folder(tmp_path, "3464-fedcba9876543210")
+    leftover = keep.with_name("3465-0123456789abcdef.building")
     for folder in (keep, old, leftover):
         folder.mkdir(parents=True)
 

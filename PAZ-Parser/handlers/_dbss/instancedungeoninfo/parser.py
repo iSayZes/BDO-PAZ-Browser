@@ -4,7 +4,7 @@
 
 `field_no` is a `Field_Table` key and `enter_rotation` is in radians.
 `instancedungeoninfooffset.dbss` holds bare u32-keyed index rows (key,
-absolute offset, size 22). Layout in docs/file-formats/instancedungeoninfo_dbss.md.
+absolute offset, size 22). Layout in docs/file-formats/dbss/instancedungeoninfo_dbss.md.
 """
 
 from __future__ import annotations

@@ -3,7 +3,7 @@
     PABR | u32 count | count x (u16 barter_region_key, u16 character_id)
     | u32 0 (empty string table) | u32 string_table_start | u32 0
 
-Full layout in docs/file-formats/barter_npclist_bss.md.
+Full layout in docs/file-formats/bss/barter_npclist_bss.md.
 """
 
 from __future__ import annotations

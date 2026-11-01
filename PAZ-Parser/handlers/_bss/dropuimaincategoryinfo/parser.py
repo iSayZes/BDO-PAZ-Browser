@@ -5,7 +5,7 @@
 
 Each row holds the tab key, its territory (LOC type 12) and the string table
 index of its icon texture key. `dropuihuntinggroundinfo.bss` puts each hunting
-ground on a tab. Layout in docs/file-formats/dropuimaincategoryinfo_bss.md.
+ground on a tab. Layout in docs/file-formats/bss/dropuimaincategoryinfo_bss.md.
 """
 
 from __future__ import annotations

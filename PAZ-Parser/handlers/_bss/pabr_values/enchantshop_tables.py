@@ -1,6 +1,6 @@
 """Layouts of the small enchant and shop tables that fit the PABR value tables.
 
-Each file's doc is `docs/file-formats/<stem>_bss.md`
+Each file's doc is `docs/file-formats/bss/<stem>_bss.md`
 (`cashproductcategorytagorder_dbss.md` for the one `.dbss`). The names of
 `enchant_blackstonestack.bss` and `mansionrentaldiscount.bss` follow the
 `Enchant_BlackStoneStack`, `MantionRental_Percent` and

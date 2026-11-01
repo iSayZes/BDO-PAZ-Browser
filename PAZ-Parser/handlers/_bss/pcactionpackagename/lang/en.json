@@ -4,6 +4,7 @@
     "className": "Class",
     "section": "Section",
     "equipType": "Equip Type",
+    "equipTypeName": "Equip Type Name",
     "vehicleType": "Vehicle Type",
     "package": "Package"
   },

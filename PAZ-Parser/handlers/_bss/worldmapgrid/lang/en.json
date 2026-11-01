@@ -15,6 +15,6 @@
     "range": "{low} to {high}"
   },
   "meta": {
-    "count": "{count} cell values"
+    "count": "{count} rows"
   }
 }

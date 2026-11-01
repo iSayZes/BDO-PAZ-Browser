@@ -6,7 +6,7 @@
 `yachtbasecard.dbss` and `yachtclasstypetextureinfo.dbss` write each row's
 key twice; their `*offset.dbss` index points at the second copy, so the
 rows can be walked from the count without it. Only the payload differs per
-table. Layouts in docs/file-formats/yacht*_dbss.md.
+table. Layouts in docs/file-formats/dbss/yacht*_dbss.md.
 """
 
 from __future__ import annotations

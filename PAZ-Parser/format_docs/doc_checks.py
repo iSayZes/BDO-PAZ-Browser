@@ -10,7 +10,7 @@ from .model import Layout, Problem, Section, Structure
 from .names import OFFSET_FIELD, SIZE_FIELD
 from .reader import FILE_LAYOUT, companion_key, layout_number, read_layout
 from .structure_checks import StructureSizes, check_structure
-from .type_grammar import structure_type
+from .type_grammar import parse_type, structure_type
 from .versions import marker_span
 
 _DROPPED_SECTIONS = ("Suggested UI Layout",)
@@ -74,6 +74,7 @@ def check_doc(text: str, folder: Path | None = None) -> tuple[Problem, ...]:
         for structure in layout.structures:
             problems.extend(check_structure(structure, sizes, _newer_field_names(layouts[:index], structure.name)))
             problems.extend(_offset_file_problems(structure, resolved))
+            problems.extend(_sum_problems(structure, resolved))
     return tuple(sorted(problems, key=lambda problem: problem.line))
 
 
@@ -188,6 +189,22 @@ def _sizes(structures: Mapping[str, Structure]) -> StructureSizes:
         for name, structure in structures.items()
         if structure.size is not None
     }
+
+
+def _sum_problems(structure: Structure, resolved: Mapping[str, Structure]) -> list[Problem]:
+    """A `[sum field]` count adds up `field` of a structure repeated earlier in the same structure."""
+    problems: list[Problem] = []
+    summable: set[str] = set()
+    for field in structure.fields:
+        spec = parse_type(field.type_text)
+        if isinstance(spec, str):
+            continue
+        if spec.count is not None and spec.count.kind == "sum" and spec.count.value not in summable:
+            problems.append(Problem(field.line, f"`[sum {spec.count.value}]` needs an earlier repeated structure with a field `{spec.count.value}`"))
+        element = resolved.get(spec.name) if spec.is_structure and spec.count is not None else None
+        if element is not None:
+            summable.update(element_field.name for element_field in element.fields)
+    return problems
 
 
 def _offset_file_problems(structure: Structure, resolved: Mapping[str, Structure]) -> list[Problem]:

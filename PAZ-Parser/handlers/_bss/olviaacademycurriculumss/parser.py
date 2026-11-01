@@ -14,7 +14,7 @@ str16 is a u64 count and UTF-16LE text, str8 a u64 count and ASCII text.
 Every title, description and preview text is a RESOURCE sheet key; every
 quest a packed quest ID. No PABR magic, no string table.
 
-Layout 1 in docs/file-formats/olviaacademycurriculumss_bss.md.
+Layout 1 in docs/file-formats/bss/olviaacademycurriculumss_bss.md.
 """
 
 from __future__ import annotations

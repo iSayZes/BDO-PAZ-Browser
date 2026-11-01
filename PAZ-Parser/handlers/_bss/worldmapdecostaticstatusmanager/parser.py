@@ -5,7 +5,7 @@
          | f32 location_z | f32 scale | f32 rotation | u16 unknown_world_map_object_file_14
 
 No PABR magic and no string table. Layout 1 in
-docs/file-formats/worldmapdecostaticstatusmanager_bss.md.
+docs/file-formats/bss/worldmapdecostaticstatusmanager_bss.md.
 """
 
 from __future__ import annotations

@@ -7,7 +7,7 @@ Two maps with no PABR magic and no trailer:
     u32 leader_skill_count | Leader Skill[leader_skill_count]
         (u16 pet_id | u32 leader_base_skill_id)
 
-Layout 1 in docs/file-formats/petupgraderesult_bss.md.
+Layout 1 in docs/file-formats/bss/petupgraderesult_bss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@ string table. A row is a fixed head (key, item, material and count), a
 u64-prefixed UTF-16LE condition script and a 12-byte tail (result item and
 two unknown u32). `alchemystonechangeoffset.dbss` points at each row's
 `item_id`, 4 bytes past its key. Layout in
-docs/file-formats/alchemystonechange_dbss.md.
+docs/file-formats/dbss/alchemystonechange_dbss.md.
 """
 
 from __future__ import annotations

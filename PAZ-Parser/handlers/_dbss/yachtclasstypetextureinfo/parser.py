@@ -3,7 +3,7 @@
     u32 count | count x (u32 class_type | u32 class_type_dup | str8 texture_id)
 
 `yachtclasstypetextureinfooffset.dbss` points at `class_type_dup`. Layout in
-docs/file-formats/yachtclasstypetextureinfo_dbss.md.
+docs/file-formats/dbss/yachtclasstypetextureinfo_dbss.md.
 """
 
 from __future__ import annotations

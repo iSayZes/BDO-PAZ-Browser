@@ -7,7 +7,7 @@ The offset file holds `table_count` index tables, each `u32 count` plus
     u32 source_id | u32 source_type | u8 0 | u32 card_id
 
 Table 0 is characters (`source_type` 0), table 1 items (`source_type` 1).
-Full layout in docs/file-formats/knowledgelearning_dbss.md.
+Full layout in docs/file-formats/dbss/knowledgelearning_dbss.md.
 """
 
 from __future__ import annotations

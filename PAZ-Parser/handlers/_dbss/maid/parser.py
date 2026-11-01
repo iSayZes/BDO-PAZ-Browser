@@ -9,7 +9,7 @@
 
 `maidoffset.dbss` points at each row's `character_key`, after the key
 prefix, so the walk from the start needs no index. Layout 1 in
-docs/file-formats/maid_dbss.md.
+docs/file-formats/dbss/maid_dbss.md.
 """
 
 from __future__ import annotations

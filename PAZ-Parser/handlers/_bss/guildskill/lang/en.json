@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "Skill No.",
+    "skill": "Skill",
+    "skillLevel": "Skill Level",
+    "treeColumn": "Tree Column",
+    "treeRow": "Tree Row"
+  },
+  "meta": {
+    "count": "{count} guild skills"
+  }
+}

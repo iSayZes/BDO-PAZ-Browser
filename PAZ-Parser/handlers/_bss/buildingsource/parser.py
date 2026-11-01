@@ -7,7 +7,7 @@ a u8 work animation, three u64-counted lists (u32 repair item keys, i64
 repair item counts, then after a u64 repair time the u32 repair percents)
 and a u32 `unknown_repair_percents_00`. `unknown_after_rows` is `0` on
 clients 1784 and 3474; the parser rejects any other value, since what would
-follow it is unknown. Layout in docs/file-formats/buildingsource_bss.md.
+follow it is unknown. Layout in docs/file-formats/bss/buildingsource_bss.md.
 """
 
 from __future__ import annotations

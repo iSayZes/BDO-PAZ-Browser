@@ -6,7 +6,7 @@
 
 One record per `regioninfo.bss` region, in hash order rather than key order.
 Each list matches that region's `pc_delivery_region_keys` in `regioninfo.bss`. Full
-layout in docs/file-formats/regioninfo_linkandcheckvalid2_bss.md.
+layout in docs/file-formats/bss/regioninfo_linkandcheckvalid2_bss.md.
 """
 
 from __future__ import annotations

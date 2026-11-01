@@ -29,6 +29,13 @@ def test_each_list_holds_its_sheet_columns() -> None:
     assert len(record["level_icon_uvs"]) == LEVEL_COUNT
 
 
+def test_the_icon_image_is_a_texture_path() -> None:
+    # `MonsterIconImage`, the sheet the regions cut from (personalmonsteretc_bss.md, Strings).
+    record = _record()
+    assert record["monster_icon_image"].lower().endswith(".dds")
+    assert isinstance(record["total_accept_condition"], str)
+
+
 def test_every_icon_region_is_one_icon_size() -> None:
     # Each region cuts one icon of `icon_size` out of the sheet (personalmonsteretc_bss.md, Icon Regions).
     record = _record()

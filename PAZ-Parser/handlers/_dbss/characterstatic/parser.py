@@ -1,22 +1,25 @@
 """`characterstatic.dbss` records, located through `characterstaticoffset.dbss`.
 
 Each offset row points just past a two-byte inline copy of the character ID.
-The payload opens with eight flag bytes and two scripts, then a fixed
-287-byte block of character fields, then six strings back to back:
+The payload opens with eight flag bytes and two scripts, then a fixed block of
+character fields, then six strings back to back (Layout 3 shown):
 
     u8[8] flags | u8 0x15 | action_script | condition_script
-    | character fields: u8 | u16 character_id | i16 | u8 npc_kind | u8 grade
-      | i32 tendency_on_dead | i32 ocean_tendency | ... | u8 vehicle_type @ +0xA6 | ...
+    | character fields (287 bytes): u8 | u16 character_id | i16 | u8 npc_kind
+      | u8 grade | i32 tendency_on_dead | i32 ocean_tendency | ... | u8 vehicle_type @ +0xA6 | ...
     | ai_script | model_path | name_kr | label_kr | title_kr | voice_bank
     | ... | u32 holdable_item_count | u32[] | ... | u32 contents_group_count | u32[]
     | u8 class_type | ... | u32 source_item_id | ... (24 bytes)
+
+Layouts 1 and 2 move the fields and fixed runs (`layouts.py`); a file is read
+with the first layout, in client order, that reads its first records.
 
 Every string is a u64 count and its text: UTF-16LE for the scripts and the
 three Korean strings, ASCII for the AI script (the stem of an `.ai` file,
 `9999`, `PC`), the model path and the voice bank. Each contents group is
 stored as the client's string hash of its decimal key, which
 `_common/contents_group.py` turns back into the key. Full layout in
-docs/file-formats/characterstatic_dbss.md.
+docs/file-formats/dbss/characterstatic_dbss.md.
 """
 
 from __future__ import annotations
@@ -27,36 +30,20 @@ from collections.abc import Iterator
 from _common.binary import whole_float
 from _common.knowledge_script import knowledge_id_of
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_offset_rows
+from _common.client_versions import client_order
 from _common.prefixed_string import read_prefixed_at
+from .layouts import LAYOUTS, RecordLayout
 
 _TAG = 0x08
 _TAG_VALUE = 0x15
 _ACTION_SCRIPT = 0x09
-# From the first byte after condition_script, the start of the character fields.
-_CHARACTER_ID = 0x01
-_CHARACTER_GROUP = 0x03
-_NPC_KIND = 0x05
-_GRADE = 0x06
-_TENDENCY_ON_DEAD = 0x07
-_OCEAN_TENDENCY = 0x0B
-_VEHICLE_TYPE = 0xA6
-_TRIBE_TYPE = 0xB3
-_LEVEL = 0xC3
-_BODY_SIZE = 0xDB
-# The AI script follows the character fields.
-_CHARACTER_FIELDS_SIZE = 0x11F
-# From the end of voice_bank, then from the end of holdable_item_keys.
-_HOLDABLE_ITEM_COUNT = 0x0E
-_CONTENTS_GROUP_COUNT = 0x18
-# From the end of contents_group_hashes, which the payload ends 24 bytes after.
+# From the end of contents_group_hashes, the same in every layout.
 _CLASS_TYPE = 0x00
 _SOURCE_ITEM = 0x09
-_TAIL_SIZE = 0x18
+# How many records a layout must read to be picked.
+_SAMPLE_RECORDS = 8
 # class_type on every row that is not a player character.
 NO_CLASS_TYPE = 101
-# vehicle_type on every row that is not a vehicle: the sheet's -1 written as
-# the CppEnums.VehicleType member count.
-NO_VEHICLE_TYPE = 65
 # name_kr of the records whose Korean name is only in label_kr.
 KOREAN_NAME_PLACEHOLDER = "UNKNOWN"
 # gc::CharacterKind member names of the 2016 client, in value order. The file
@@ -102,15 +89,15 @@ def _read_strings(data: bytes, pos: int, end: int, wide: tuple[bool, ...]) -> tu
     return texts, pos
 
 
-def _parse_record(data: bytes, row: PabrOffsetRow) -> dict:
+def _parse_record(data: bytes, row: PabrOffsetRow, layout: RecordLayout) -> dict:
     character_id = row.entry_id
     try:
-        return _parse_payload(data, row)
+        return _parse_payload(data, row, layout)
     except ValueError as ex:
         raise ValueError(f"character {character_id}: {ex}") from ex
 
 
-def _parse_payload(data: bytes, row: PabrOffsetRow) -> dict:
+def _parse_payload(data: bytes, row: PabrOffsetRow, layout: RecordLayout) -> dict:
     start = row.offset
     end = start + row.size
     character_id = row.entry_id
@@ -120,32 +107,36 @@ def _parse_payload(data: bytes, row: PabrOffsetRow) -> dict:
         raise ValueError("record does not carry the 0x15 tag")
 
     (action_script, condition_script), pos = _read_strings(data, start + _ACTION_SCRIPT, end, (True, True))
-    if pos + _CHARACTER_FIELDS_SIZE > end:
+    if pos + layout.character_fields_size > end:
         raise ValueError("record ends inside its character fields")
-    if struct.unpack_from("<H", data, pos + _CHARACTER_ID)[0] != character_id:
+    if struct.unpack_from("<H", data, pos + layout.character_id)[0] != character_id:
         raise ValueError("record does not repeat its own ID")
 
     (ai_script, model_path, name_kr, label_kr, title_kr, _voice_bank), voice_end = _read_strings(
-        data, pos + _CHARACTER_FIELDS_SIZE, end, (False, False, True, True, True, False)
+        data, pos + layout.character_fields_size, end, (False, False, True, True, True, False)
     )
-    _holdable_items, holdable_end = _read_u32_list(data, voice_end + _HOLDABLE_ITEM_COUNT, end)
-    contents_group_hashes, tail = _read_u32_list(data, holdable_end + _CONTENTS_GROUP_COUNT, end)
-    if tail + _TAIL_SIZE != end:
-        raise ValueError(f"record ends {end - tail} bytes after its contents groups, not {_TAIL_SIZE}")
+    _holdable_items, holdable_end = _read_u32_list(data, voice_end + layout.holdable_item_count, end)
+    contents_group_hashes, tail = _read_u32_list(data, holdable_end + layout.contents_group_count, end)
+    if tail + layout.tail_size != end:
+        raise ValueError(f"record ends {end - tail} bytes after its contents groups, not {layout.tail_size}")
+    vehicle_type = data[pos + layout.vehicle_type]
     return {
         "character_id": character_id,
         "action_script": action_script,
         "condition_script": condition_script,
         "knowledge_id": knowledge_id_of(action_script),
-        "character_group": _I16.unpack_from(data, pos + _CHARACTER_GROUP)[0],
-        "npc_kind": data[pos + _NPC_KIND],
-        "grade": data[pos + _GRADE],
-        "tendency_on_dead": _I32.unpack_from(data, pos + _TENDENCY_ON_DEAD)[0],
-        "ocean_tendency": _I32.unpack_from(data, pos + _OCEAN_TENDENCY)[0],
-        "vehicle_type": data[pos + _VEHICLE_TYPE],
-        "tribe_type": data[pos + _TRIBE_TYPE],
-        "level": _U32.unpack_from(data, pos + _LEVEL)[0],
-        "body_size": whole_float(_F32.unpack_from(data, pos + _BODY_SIZE)[0]),
+        "character_group": _I16.unpack_from(data, pos + layout.character_group)[0],
+        "npc_kind": data[pos + layout.npc_kind],
+        "grade": data[pos + layout.grade],
+        "tendency_on_dead": _I32.unpack_from(data, pos + layout.tendency_on_dead)[0],
+        "ocean_tendency": _I32.unpack_from(data, pos + layout.ocean_tendency)[0],
+        # The sheet's HP; a cell of 0 is stored as 1.0.
+        "max_hp": whole_float(_F32.unpack_from(data, pos + layout.max_hp)[0]),
+        # None where the layout's value means "not a vehicle".
+        "vehicle_type": None if vehicle_type == layout.no_vehicle_type else vehicle_type,
+        "tribe_type": data[pos + layout.tribe_type],
+        "level": _U32.unpack_from(data, pos + layout.level)[0],
+        "body_size": whole_float(_F32.unpack_from(data, pos + layout.body_size)[0]),
         "contents_group_hashes": contents_group_hashes,
         "class_type": data[tail + _CLASS_TYPE],
         "source_item_id": _U32.unpack_from(data, tail + _SOURCE_ITEM)[0],
@@ -158,13 +149,38 @@ def _parse_payload(data: bytes, row: PabrOffsetRow) -> dict:
     }
 
 
+def _break(data: bytes, rows: list[PabrOffsetRow], layout: RecordLayout) -> str | None:
+    """Where `layout` fails on the first `_SAMPLE_RECORDS` rows, or None when it reads them all."""
+    for row in rows[:_SAMPLE_RECORDS]:
+        try:
+            _parse_record(data, row, layout)
+        except (ValueError, struct.error) as error:
+            return f"Layout {layout.number}: {error}"
+    return None
+
+
+def record_layout(data: bytes, rows: list[PabrOffsetRow]) -> RecordLayout:
+    """The first layout, in client order, that reads the first records `rows` point at.
+
+    Raises ValueError, naming where each layout broke, when none fits.
+    """
+    breaks: list[str] = []
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
+        broke = _break(data, rows, layout)
+        if broke is None:
+            return layout
+        breaks.append(broke)
+    raise ValueError(f"characterstatic.dbss fits no known layout ({'; '.join(breaks)})")
+
+
 def parse_characterstatic_records(data: bytes, rows: list[PabrOffsetRow]) -> list[dict]:
     """Parse every record the offset table points at, in offset-table order.
 
-    Raises ValueError on the first malformed record: after a bad string length
-    every later field would be misread.
+    Raises ValueError when no layout fits, or on the first malformed record:
+    after a bad string length every later field would be misread.
     """
-    return [_parse_record(data, row) for row in rows]
+    layout = record_layout(data, rows)
+    return [_parse_record(data, row, layout) for row in rows]
 
 
 def korean_name(name_kr: str, label_kr: str) -> str:
@@ -188,12 +204,18 @@ def korean_title(title_kr: str) -> str:
 def _readable_records(data: bytes, offset_data: bytes) -> Iterator[dict]:
     """Every record that parses, in offset-table order, for the lookup index builders.
 
-    A malformed record is skipped rather than failing the whole index: the
-    preview of this table reports it instead.
+    A malformed record, or every record of a file no layout fits, is skipped
+    rather than failing the whole index: the preview of this table reports it
+    instead.
     """
-    for row in parse_pabr_offset_rows(offset_data):
+    rows = parse_pabr_offset_rows(offset_data)
+    try:
+        layout = record_layout(data, rows)
+    except ValueError:
+        return
+    for row in rows:
         try:
-            yield _parse_record(data, row)
+            yield _parse_record(data, row, layout)
         except (ValueError, struct.error):
             continue
 

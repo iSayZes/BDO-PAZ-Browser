@@ -5,7 +5,7 @@
 
 Each row holds the EXP a sailor needs at that level and, per employee ability,
 an index into the string table of dice expressions (`1D5+30`). Full layout in
-docs/file-formats/employeeexp_bss.md.
+docs/file-formats/bss/employeeexp_bss.md.
 """
 
 from __future__ import annotations

@@ -2,14 +2,26 @@
 from __future__ import annotations
 
 import struct
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
 
-from format_docs import check_doc, read_layouts
+from format_docs import check_doc, check_run, read_layouts
 from format_docs.check_run import Client, Status, UnreadableFile, check_doc_file
 from format_docs.doc_fit import fit_layouts
-from format_docs.versions import ClientCheck, VersionRow, merge_clients, merge_rows, read_clients, read_rows, render_rows, write_rows
+from format_docs.doc_index import doc_files, index_rows
+from format_docs.versions import (
+    ClientCheck,
+    VersionRow,
+    current_rows,
+    merge_clients,
+    merge_rows,
+    read_clients,
+    read_rows,
+    render_rows,
+    write_rows,
+)
 from format_docs.walk_model import LayoutFit, LayoutMiss, Unwalkable
 
 VERSIONS = (
@@ -218,6 +230,48 @@ def test_rows_of_other_layouts_are_never_dropped() -> None:
     assert [row.layout for row in merged] == [2, 1]
 
 
+def test_a_row_whose_checked_client_moved_to_another_layout_is_dropped() -> None:
+    # Layout 1 became Layout 2 when an older Layout 1 was found: the old row still names client 3464.
+    stale = VersionRow(1, 3401, 3464, "test.bss", 90, "2 Row", "8", 86, 4)
+    clients = merge_clients([], [ClientCheck(3464, 2, True), ClientCheck(3401, 1, True)])
+
+    assert current_rows([stale, _version(2, 3464, 100)], clients) == (_version(2, 3464, 100),)
+
+
+def test_a_range_whose_first_client_moved_starts_at_the_first_client_that_still_fits() -> None:
+    row = VersionRow(2, 3356, 3483, "test.bss", 100, "2 Row", "8", 96, 4)
+    clients = merge_clients([], [ClientCheck(3483, 2, True), ClientCheck(3402, 2, True), ClientCheck(3356, 1, True)])
+
+    assert [(kept.first, kept.checked) for kept in current_rows([row], clients)] == [(3402, 3483)]
+
+
+def test_clients_the_table_does_not_hold_or_without_a_layout_leave_a_row_as_it_is() -> None:
+    row = VersionRow(1, 1784, 3002, "test.bss", 100, "2 Row", "8", 96, 4)
+    # A doc of several files: client 1784 misses another file, so the doc reads No file there.
+    clients = merge_clients([], [ClientCheck(3002, 1, True), ClientCheck(1784, None, False), ClientCheck(805, 1, True)])
+
+    assert current_rows([row], ()) == (row,)
+    assert current_rows([row], clients) == (row,)
+
+
+def test_a_renumber_read_newest_first_keeps_every_layouts_rows_across_flushes() -> None:
+    # An older Layout 1 was found at 3300: Layouts 1 and 2 became 2 and 3. check_docs writes in timed flushes,
+    # so each client lands on a text whose older clients still hold the stale numbers.
+    stale_rows = [VersionRow(2, 3464, 3483, "test.bss", 110, "2 Row", "8", 106, 4), _version(1, 3401, 90)]
+    stale_rows[1] = replace(stale_rows[1], checked=3458)
+    stale_clients = merge_clients([], [ClientCheck(3483, 2, True), ClientCheck(3458, 1, True), ClientCheck(3401, 1, True)])
+    text = write_rows(_doc(COUNTED, ROW), stale_rows, stale_clients, newest_layout=2)
+    fresh = ((3483, 3, 110), (3458, 2, 90), (3401, 2, 90), (3300, 1, 70))
+
+    for client, layout, size in fresh:
+        update = check_run.VersionsUpdate(3, ClientCheck(client, layout, True), (_version(layout, client, size),))
+        text = check_run.apply_updates(text, [update])
+
+    assert [(row.layout, row.first, row.checked, row.size) for row in read_rows(text)] == [
+        (3, 3483, 3483, 110), (2, 3401, 3458, 90), (1, 3300, 3300, 70)
+    ]
+
+
 def test_the_versions_block_round_trips_and_names_the_newest_layout_and_later() -> None:
     rows = merge_rows([], [_version(2, 3464, 1_000), _version(1, 3401, 900)])
     clients = merge_clients([], [ClientCheck(3464, 2, True), ClientCheck(3401, 1, True), ClientCheck(2107, None, True), ClientCheck(1230, None, False)])
@@ -235,69 +289,246 @@ def test_a_client_read_again_keeps_only_its_new_result_and_the_newest_client_com
     assert merged == (ClientCheck(3474, 2, True), ClientCheck(1784, 1, True), ClientCheck(1230, 1, True))
 
 
+ONE_ROW = struct.pack("<I", 1) + struct.pack("<II", 1, 0)
+ROWS_INDEX = {"test_bss.md": [("test.bss", "Rows")]}
+
+
+def _client(number: int, reads: list[int] | None = None) -> Client:
+    """A client holding `test.bss` with one row; `reads` collects its number on every read."""
+    def read_file(name: str) -> bytes | None:
+        if reads is not None:
+            reads.append(number)
+        return ONE_ROW if name == "test.bss" else None
+
+    return Client(number, read_file)
+
+
 def test_check_doc_file_writes_versions_once_and_then_reports_ok(tmp_path: Path) -> None:
     doc = tmp_path / "test_bss.md"
     doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
-    data = struct.pack("<I", 1) + struct.pack("<II", 1, 0)
-    client = Client(3473, lambda name: data if name == "test.bss" else None)
-    rows = {"test_bss.md": [("test.bss", "Rows")]}
 
-    first = check_doc_file(doc, rows, client)
-    second = check_doc_file(doc, rows, client)
+    first = check_doc_file(doc, ROWS_INDEX, _client(3473))
+    second = check_doc_file(doc, ROWS_INDEX, _client(3473), recheck=True)
 
     assert (first.status, second.status) == (Status.UPDATED, Status.OK)
-    assert "| 1      | 3473 and later | 3473" in doc.read_text(encoding="utf-8")
+    assert "| 1      | 3473 and later | `test.bss`" in doc.read_text(encoding="utf-8")
     assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3473, 1, True),)
 
 
-def test_a_client_without_the_docs_files_is_recorded_as_no_file_once(tmp_path: Path) -> None:
+def test_a_client_checked_against_the_same_layouts_is_not_read_again(tmp_path: Path) -> None:
     doc = tmp_path / "test_bss.md"
     doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
-    client = Client(794, lambda name: None)
-    rows = {"test_bss.md": [("test.bss", "Rows")]}
+    reads: list[int] = []
+    check_doc_file(doc, ROWS_INDEX, _client(3473, reads))
+    reads.clear()
 
-    first = check_doc_file(doc, rows, client)
-    second = check_doc_file(doc, rows, client)
+    again = check_doc_file(doc, ROWS_INDEX, _client(3473, reads))
+    forced = check_doc_file(doc, ROWS_INDEX, _client(3473, reads), recheck=True)
 
-    assert (first.status, second.status) == (Status.UPDATED, Status.SKIPPED)
-    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(794, None, False),)
-    assert read_rows(doc.read_text(encoding="utf-8")) == ()
+    assert again.status is Status.CHECKED_BEFORE
+    assert not again.status.stops_commit
+    assert forced.status is Status.OK
+    assert reads == [3473]
+    assert len(_fingerprints(doc)) == 1
 
 
-def test_a_file_the_reader_cannot_pick_skips_the_doc_and_keeps_its_versions(tmp_path: Path) -> None:
+def test_a_client_without_the_file_reads_its_na_copy_under_the_doc_file_name(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    na_only = Client(1000, lambda name: ONE_ROW if name == "#na#test.bss" else None)
+
+    outcome = check_doc_file(doc, ROWS_INDEX, na_only)
+
+    assert outcome.status is Status.UPDATED
+    assert "| 1      | 1000 and later | `test.bss`" in doc.read_text(encoding="utf-8")
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(1000, 1, True),)
+
+
+def test_a_client_with_both_copies_reads_the_plain_one(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    both = Client(1000, lambda name: {"test.bss": ONE_ROW, "#na#test.bss": b""}.get(name))
+
+    outcome = check_doc_file(doc, ROWS_INDEX, both)
+
+    assert outcome.status is Status.UPDATED
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(1000, 1, True),)
+
+
+def _fingerprints(doc: Path) -> dict[int, str]:
+    return {check.client: check.fingerprint for check in read_clients(doc.read_text(encoding="utf-8"))}
+
+
+def test_a_note_edit_keeps_the_clients_and_a_layout_edit_reads_each_one_again(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    for number in (1784, 3473):
+        check_doc_file(doc, ROWS_INDEX, _client(number))
+    noted = doc.read_text(encoding="utf-8").replace("| u32 | key | note |", "| u32 | key | the row key |")
+    doc.write_text(noted, encoding="utf-8")
+
+    assert check_doc_file(doc, ROWS_INDEX, _client(1784)).status is Status.CHECKED_BEFORE
+
+    old = _fingerprints(doc)
+    doc.write_text(noted.replace("| unknown_04 |", "| value |"), encoding="utf-8")
+    first = check_doc_file(doc, ROWS_INDEX, _client(3473))
+    between = _fingerprints(doc)
+    second = check_doc_file(doc, ROWS_INDEX, _client(1784))
+
+    assert (first.status, second.status) == (Status.UPDATED, Status.UPDATED)
+    assert between[1784] == old[1784] != between[3473]
+    assert _fingerprints(doc) == {1784: between[3473], 3473: between[3473]}
+
+
+def _sizes_block(sizes: str) -> str:
+    coverage = "| Layout | File | Known | Unknown |\n| --- | --- | --- | --- |\n| 2 | `test.bss` | 96 B | 4 B |\n| 1 | `test.bss` | 86 B | 4 B |\n"
+    clients = (
+        "| Client | Result | Checked against |\n| --- | --- | --- |\n"
+        "| 3483 | Layout 2 | - |\n| 3464 | Layout 2 | - |\n| 3458 | Layout 1 | - |\n| 3401 | Layout 1 | - |\n"
+    )
+    return _doc(COUNTED, ROW).replace("-->\n\n<!-- versions:end", f"-->\n\n{sizes}\n{coverage}\n{clients}\n<!-- versions:end")
+
+
+def test_the_sizes_rows_take_their_newest_client_from_the_range_end_or_the_clients_table() -> None:
+    sizes = (
+        "| Layout | Clients | File | Bytes | Records | Row bytes |\n| --- | --- | --- | --- | --- | --- |\n"
+        "| 2 | 3464 and later | `test.bss` | 100 | 2 Row | 8 |\n| 1 | 3401 to 3458 | `test.bss` | 90 | 2 Row | 8 |\n"
+    )
+
+    assert [(row.layout, row.first, row.checked) for row in read_rows(_sizes_block(sizes))] == [(2, 3464, 3483), (1, 3401, 3458)]
+
+
+def test_a_sizes_table_with_the_old_checked_column_is_still_read() -> None:
+    sizes = (
+        "| Layout | Clients | Checked | File | Bytes | Records | Row bytes |\n| --- | --- | --- | --- | --- | --- | --- |\n"
+        "| 2 | 3464 and later | 3483 | `test.bss` | 100 | 2 Row | 8 |\n| 1 | 3401 to 3458 | 3458 | `test.bss` | 90 | 2 Row | 8 |\n"
+    )
+
+    assert [(row.layout, row.first, row.checked) for row in read_rows(_sizes_block(sizes))] == [(2, 3464, 3483), (1, 3401, 3458)]
+
+
+def test_a_doc_whose_layouts_read_back_empty_is_skipped_and_writes_nothing(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     doc = tmp_path / "test_bss.md"
     doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
     before = doc.read_text(encoding="utf-8")
+    # what a worker read while another rewrote the doc it shares layouts with
+    monkeypatch.setattr(check_run, "read_layouts", lambda text, folder=None: ((), ()))
 
-    def ambiguous(name: str) -> bytes | None:
-        raise UnreadableFile(f"2 files are called {name}")
-
-    outcome = check_doc_file(doc, {"test_bss.md": [("test.bss", "Rows")]}, Client(531, ambiguous))
+    outcome = check_doc_file(doc, ROWS_INDEX, Client(1058, lambda name: None))
 
     assert outcome.status is Status.SKIPPED
-    assert outcome.messages == ("2 files are called test.bss",)
     assert doc.read_text(encoding="utf-8") == before
 
 
-def test_a_doc_not_in_the_layout_format_is_skipped_not_reported(tmp_path: Path) -> None:
-    doc = tmp_path / "test_ai.md"
-    doc.write_text("# `*.ai` Format\n\n## Purpose\n\nScripts.\n\n```text\n<state/>\n```\n", encoding="utf-8")
+def test_a_deferred_write_leaves_the_doc_and_hands_back_what_a_direct_write_stores(tmp_path: Path) -> None:
+    deferred, direct = tmp_path / "deferred" / "test_bss.md", tmp_path / "direct" / "test_bss.md"
+    for doc in (deferred, direct):
+        doc.parent.mkdir()
+        doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
+    before = deferred.read_text(encoding="utf-8")
 
-    outcome = check_doc_file(doc, {}, None)
+    held = check_doc_file(deferred, ROWS_INDEX, _client(3473), defer_write=True)
+    written = check_doc_file(direct, ROWS_INDEX, _client(3473))
 
-    assert outcome.status is Status.NOT_CONVERTED
-    assert not outcome.status.stops_commit
+    assert held.status is written.status is Status.UPDATED
+    assert deferred.read_text(encoding="utf-8") == before
+    assert held.update is not None and held.update.apply(before) == direct.read_text(encoding="utf-8")
+    assert written.update is None
 
 
-def test_check_doc_file_names_the_client_and_place_when_no_layout_fits(tmp_path: Path) -> None:
+def test_a_clients_table_without_fingerprints_is_read_and_each_row_checked_again(tmp_path: Path) -> None:
+    doc = tmp_path / "test_bss.md"
+    old_table = (
+        "Every client the doc check read, and the layout its files fit.\n\n"
+        "| Client | Result   |\n| ------ | -------- |\n| 3473   | Layout 1 |\n"
+    )
+    doc.write_text(_doc(COUNTED, ROW).replace("-->\n\n<!-- versions:end", f"-->\n\n{old_table}\n<!-- versions:end"), encoding="utf-8")
+
+    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3473, 1, True),)
+    assert _fingerprints(doc) == {3473: ""}
+    assert check_doc_file(doc, ROWS_INDEX, _client(3473)).status is Status.UPDATED
+    assert "| Client | Result   | Checked against |" in doc.read_text(encoding="utf-8")
+    assert _fingerprints(doc)[3473] != ""
+
+
+def test_updates_applied_in_one_go_match_them_applied_one_by_one(tmp_path: Path) -> None:
     doc = tmp_path / "test_bss.md"
     doc.write_text(_doc(COUNTED, ROW), encoding="utf-8")
-    client = Client(3480, lambda name: struct.pack("<I", 1) + b"\x00" * 9)
+    before = doc.read_text(encoding="utf-8")
+    updates = []
+    for number in (1784, 3473, 3483):
+        outcome = check_doc_file(doc, ROWS_INDEX, _client(number), defer_write=True)
+        assert outcome.update is not None
+        updates.append(outcome.update)
 
-    outcome = check_doc_file(doc, {"test_bss.md": [("test.bss", "Rows")]}, client)
+    one_by_one = before
+    for update in updates:
+        one_by_one = update.apply(one_by_one)
 
-    assert outcome.status is Status.NO_FIT
-    assert outcome.messages[0] == "client 3480 fits no layout of test.bss"
-    assert outcome.messages[1].startswith("Layout 1 breaks in test.bss: ")
-    assert read_clients(doc.read_text(encoding="utf-8")) == (ClientCheck(3480, None, True),)
-    assert "| 3480   | No documented layout |" in doc.read_text(encoding="utf-8")
+    assert check_run.apply_updates(before, updates) == one_by_one
+    assert check_run.apply_updates(before, []) == before
+
+
+# Two kinds of part, picked by `kind`, then one f16 value per vertex both kinds count.
+SUMMED = _table(
+    "File Layout",
+    ("+0x00", "u8", "kind"),
+    ("+0x01", "u8", "part_count"),
+    ("+0x02", "Part[part_count] if kind = 0", "parts"),
+    ("parts+0x00", "Wide Part[part_count] if kind = 1", "wide_parts"),
+    ("wide_parts+0x00", "f16[sum vertex_count]", "vertices"),
+)
+PART = _table("Part (2 bytes)", ("+0x00", "u16", "vertex_count"))
+WIDE_PART = _table("Wide Part (4 bytes)", ("+0x00", "u16", "vertex_count"), ("+0x02", "u16", "unknown_02"))
+
+
+@pytest.mark.parametrize(
+    ("data", "vertices"),
+    [
+        (bytes([0, 2]) + struct.pack("<HH", 1, 2) + struct.pack("<3e", 0.5, 1.0, 1.5), 3),
+        (bytes([1, 1]) + struct.pack("<HH", 2, 9) + struct.pack("<2e", 0.5, 1.0), 2),
+    ],
+)
+def test_a_sum_count_adds_up_a_field_of_the_parts_read_before_it(data: bytes, vertices: int) -> None:
+    fit = _fit(_doc(SUMMED, PART, WIDE_PART), {"test.bss": data})
+
+    assert isinstance(fit, LayoutFit)
+    assert fit.files[0].size == len(data)
+    assert vertices * 2 == len(data) - 2 - fit.files[0].rows["Part" if data[0] == 0 else "Wide Part"].total
+
+
+def test_a_sum_count_that_reads_past_the_file_does_not_fit() -> None:
+    data = bytes([0, 1]) + struct.pack("<H", 4) + struct.pack("<3e", 0.5, 1.0, 1.5)
+
+    misses = _fit(_doc(SUMMED, PART, WIDE_PART), {"test.bss": data})
+
+    assert isinstance(misses, tuple)
+
+
+def test_a_sum_count_needs_an_earlier_repeated_structure_with_the_field() -> None:
+    layout = SUMMED.replace("f16[sum vertex_count]", "f16[sum index_count]")
+
+    problems = [str(problem) for problem in check_doc(_doc(layout, PART, WIDE_PART))]
+
+    assert any("`[sum index_count]` needs an earlier repeated structure with a field `index_count`" in p for p in problems)
+
+
+def test_a_sum_count_over_no_parts_is_zero() -> None:
+    fit = _fit(_doc(SUMMED, PART, WIDE_PART), {"test.bss": bytes([0, 0])})
+
+    assert isinstance(fit, LayoutFit)
+
+
+def test_a_pattern_row_reads_the_sample_files_named_after_it() -> None:
+    index = (
+        "| File | Description | Docs | Open Questions | In-Game Checks |\n"
+        "| --- | --- | --- | --- | --- |\n"
+        "| `*.pam` (`a.pam`, `b.pam`) | Meshes | [mesh](file-formats/other/mesh_pam.md) | 0 | 0 |\n"
+        "| `*.ai` | Scripts | [aiscript](file-formats/other/aiscript_ai.md) | 0 | 0 |\n"
+        "| `quest.bss` (`#na#quest.bss`) | Quests | [quest](file-formats/bss/quest_bss.md) | 0 | 0 |\n"
+    )
+    rows = index_rows(index)
+
+    assert doc_files("mesh_pam.md", (), rows) == ("a.pam", "b.pam")
+    assert doc_files("aiscript_ai.md", (), rows) == ()
+    assert doc_files("quest_bss.md", (), rows) == ("quest.bss",)

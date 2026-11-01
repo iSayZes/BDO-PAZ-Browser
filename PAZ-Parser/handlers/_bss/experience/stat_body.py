@@ -5,7 +5,7 @@ class type, and `servantexperience.dbss` records hold it with the mount
 values that name `max_hp` and `max_mp`. The `unknown_*` names use offsets
 from the start of the body, so every file names a field alike. The luck and
 speed limits follow the `Pc_Table` and `Servant_Table` sheet columns. Layout in
-docs/file-formats/experience_bss.md, Stat Body.
+docs/file-formats/bss/experience_bss.md, Stat Body.
 """
 
 from __future__ import annotations

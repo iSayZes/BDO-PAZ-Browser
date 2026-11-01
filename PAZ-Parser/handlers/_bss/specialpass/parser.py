@@ -12,7 +12,7 @@
 
 The three indices point into the string table. Clients 2107 to 2765 have a
 42-byte row without `content_type` and a 26-byte step without
-`reward_point` (Layout 1). Layout 2 in docs/file-formats/specialpass_bss.md.
+`reward_point` (Layout 1). Layout 2 in docs/file-formats/bss/specialpass_bss.md.
 """
 
 from __future__ import annotations

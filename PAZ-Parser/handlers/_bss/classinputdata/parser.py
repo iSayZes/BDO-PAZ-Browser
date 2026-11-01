@@ -7,7 +7,7 @@
 
 Each command is a `CppEnums.ActionInputType` value (`ACTION_INPUT_TYPES`).
 The string table holds no strings. Layout 1 in
-docs/file-formats/classinputdata_bss.md.
+docs/file-formats/bss/classinputdata_bss.md.
 """
 
 from __future__ import annotations

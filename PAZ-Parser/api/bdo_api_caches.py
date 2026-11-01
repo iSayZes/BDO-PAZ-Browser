@@ -133,7 +133,10 @@ class CacheMixin(ApiState):
         self._open_cache_dir(self._paz_root)
         assert self._cache_dir is not None
         try:
-            save_cache(self._cache_dir, CachedEntries(self._meta_version, self._archive_files, self._entries))
+            save_cache(
+                self._cache_dir,
+                CachedEntries(self._meta_version, self._archive_files, self._meta_stamp, self._entries),
+            )
         except OSError:
             # Not fatal: the next start parses the meta file again.
             logging.warning("Could not write the PAZ index cache in %s", self._cache_dir, exc_info=True)
@@ -144,8 +147,8 @@ class CacheMixin(ApiState):
     def _open_thumbnail_cache(self) -> None:
         """Open the loaded folder's thumbnail cache; none before its PAZ index is in."""
         self._close_thumbnail_cache()
-        if self._cache_dir is not None and self._meta_version is not None:
-            self._thumbnail_cache = ThumbnailCache(self._cache_dir, self._meta_version)
+        if self._cache_dir is not None and self._content_key is not None:
+            self._thumbnail_cache = ThumbnailCache(self._cache_dir, self._content_key)
 
     def _close_thumbnail_cache(self) -> None:
         if self._thumbnail_cache is not None:

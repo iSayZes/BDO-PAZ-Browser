@@ -14,7 +14,7 @@ that each start with a u8 class type (`read_class_entries()`). The trigger
 tables place their rows in the world with an f32 x, y, z position
 (`read_position()`).
 
-See docs/file-formats/sequencedatatable_bss.md, sequence_skill_bss.md,
+See docs/file-formats/bss/sequencedatatable_bss.md, sequence_skill_bss.md,
 tutorial_equipment_bss.md, videotriggerdata_bss.md and
 sequencetriggerdata_bss.md.
 """

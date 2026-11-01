@@ -6,7 +6,7 @@
 The rows are the 2016 `gc::PetDetectPositionStaticStatus` packed with no
 padding. `petdetectpositionoffset.dbss` points at each row's key, so the
 walk from the start needs no index. Layout 1 in
-docs/file-formats/petdetectposition_dbss.md.
+docs/file-formats/dbss/petdetectposition_dbss.md.
 """
 
 from __future__ import annotations

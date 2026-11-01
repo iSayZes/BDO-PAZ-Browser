@@ -8,7 +8,7 @@
 
 `event_name` indexes the string table; `event_name_hash` is its `key_hash()`.
 The file is compiled from `fieldwalkingcamera/fieldwalkingcameradata.xml`.
-Layout 1 in docs/file-formats/fieldwalkingcameradata_bss.md.
+Layout 1 in docs/file-formats/bss/fieldwalkingcameradata_bss.md.
 """
 
 from __future__ import annotations

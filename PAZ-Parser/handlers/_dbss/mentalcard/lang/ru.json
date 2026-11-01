@@ -10,6 +10,7 @@
     "knowledgeName": "Название знания",
     "categoryId": "ID категории",
     "categoryName": "Название категории",
+    "knowledgeType": "Тип знания",
     "description": "Описание",
     "minFavor": "Мин. дружба",
     "maxFavor": "Макс. дружба",
@@ -18,7 +19,13 @@
     "obtain": "Получение",
     "learnedFrom": "Источник знания",
     "learnedFromItems": "Источник знания (предметы)",
-    "position": "Позиция"
+    "position": "Позиция",
+    "mapStep": "Этап карты",
+    "contentsGroups": "Группы контента"
+  },
+  "knowledgeTypes": {
+    "0": "Обычное",
+    "1": "История"
   },
   "meta": {
     "count": "Карточек знаний: {count} · названий категорий: {with_node_name}"

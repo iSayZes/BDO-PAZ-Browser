@@ -10,7 +10,7 @@
 `desc_ref` and `image_ref` index the string table: the Korean description
 and the artwork path under `ui_texture/`. The five dice are the server-only
 `VarySize_0` to `_4` rolls, `1D1+0` on every client row. Full layout in
-docs/file-formats/encyclopedia_bss.md.
+docs/file-formats/bss/encyclopedia_bss.md.
 """
 
 from __future__ import annotations

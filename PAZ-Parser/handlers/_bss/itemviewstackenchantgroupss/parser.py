@@ -4,7 +4,7 @@
                          | u32[group_count] group_enchant_keys)
 
 Every key of a group has its own row with the whole group. Layout in
-docs/file-formats/itemviewstackenchantgroupss_bss.md.
+docs/file-formats/bss/itemviewstackenchantgroupss_bss.md.
 """
 
 from __future__ import annotations

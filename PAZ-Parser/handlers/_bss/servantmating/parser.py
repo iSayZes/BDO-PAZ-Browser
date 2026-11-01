@@ -5,7 +5,7 @@
          | u16 result_min_grade | u16 imperial_steed_character_id
          | u32 imperial_steed_rate
 
-Layout 2 in docs/file-formats/servantmating_bss.md.
+Layout 2 in docs/file-formats/bss/servantmating_bss.md.
 """
 
 from __future__ import annotations

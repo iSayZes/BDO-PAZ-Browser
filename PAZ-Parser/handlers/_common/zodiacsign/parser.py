@@ -9,7 +9,7 @@
 
 Every string is a u64 UTF-16 code-unit count plus UTF-16LE text. The records
 run back to back and the last one ends at end of file. Full layout in
-docs/file-formats/zodiacsign_dbss.md.
+docs/file-formats/dbss/zodiacsign_dbss.md.
 """
 from __future__ import annotations
 

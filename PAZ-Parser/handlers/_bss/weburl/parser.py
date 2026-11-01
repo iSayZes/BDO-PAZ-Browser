@@ -8,7 +8,7 @@ The list has no count. String 0 is the first URL's text (the string table is
 in first-use order), so the URLs after the first run up to the `url_ref` of
 `0` that `unknown_after_urls` holds, 4 bytes before the string table.
 
-Layout 2 in docs/file-formats/weburl_bss.md.
+Layout 2 in docs/file-formats/bss/weburl_bss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@
 
 Records are byte-packed with no alignment, so they are walked, not searched
 for. Region names come from LOC type 17 keyed by `region_key`; the string table
-holds the Korean source names. Full layout in docs/file-formats/regioninfo_bss.md.
+holds the Korean source names. Full layout in docs/file-formats/bss/regioninfo_bss.md.
 """
 
 from __future__ import annotations

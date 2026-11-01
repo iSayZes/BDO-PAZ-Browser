@@ -4,7 +4,7 @@
                          | 5 steps x 5 materials x (u32 item_key | u64 need_count))
 
 Step N (from 0) enhances the accessory to level N + 1. The file has no
-offset index. Layout 1 in docs/file-formats/accessorystepup_dbss.md.
+offset index. Layout 1 in docs/file-formats/dbss/accessorystepup_dbss.md.
 """
 
 from __future__ import annotations

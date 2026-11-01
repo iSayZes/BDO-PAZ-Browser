@@ -8,6 +8,7 @@ from bdo_preview import PreviewHandler
 from _common.buff import buff_label, buff_list_cell
 from _common.character import character_name
 from _common.character_group import character_group_cell, character_group_text
+from _common.duration import format_duration
 from _common.html import Column, e, flag_cell, icon_cell, record_link, sort_keys, table
 from _common.item_grade import item_grade_tagged
 from _common.lang import handler_text, load_handler_strings
@@ -52,12 +53,19 @@ _LINK_CLASS = "record-link"
 _CUSTOMIZED_ITEM_PATH = f"gamecommondata/binary/{CUSTOMIZED_ITEM_FILE}"
 # A required level of 0 or 1 means the item has none.
 _NO_LEVEL_LIMIT = 1
+_MS_PER_MINUTE = 60_000
 
 
 def _item_description_tagged(item_id: int) -> str:
     """The item's LOC description with its PA tags, or ''; the file stores none of its own."""
     text = loc_tagged(_LOC_TYPE_ITEM, item_id, _LOC_ITEM_DESCRIPTION)
     return "" if text == LOC_NULL else text
+
+
+def _time_limit_text(expiration_minutes: int | None) -> str:
+    if expiration_minutes is None:
+        return ""
+    return format_duration(expiration_minutes * _MS_PER_MINUTE)
 
 
 def _item_name(record: dict) -> str:
@@ -101,6 +109,8 @@ def _with_links(record: dict, values: dict[str, str], classes: str, slot: str, w
         # 0 means "cannot be enhanced"; None sorts last and exports empty.
         "enhancement_type": record["enhancement_type"] or None,
         "binding": binding_label(record["vested_type"], record["family_bound"], values),
+        # "72h" for 4,320 minutes; '' when the item does not expire.
+        "time_limit": _time_limit_text(record["expiration_minutes"]),
         "trade": trade_label(record["trade_type"], values),
         # In its grade colour, as the game draws item names; Korean when LOC has no row.
         **pa_fields("item_name", item_grade_tagged(_item_name(record), record["grade"])),
@@ -212,6 +222,9 @@ class ItemEnchantHandler(PreviewHandler):
             Column(cols["durability"], "num", sort_key="max_durability"),
             Column(cols["memoryFragment"], "num", sort_key="repair_endurance_count"),
             Column(cols["stackable"], sort_key="stackable"),
+            Column(cols["instantUse"], sort_key="do_apply_directly"),
+            # Sorts by the minutes; the cell shows them as a duration.
+            Column(cols["timeLimit"], "num", sort_key="expiration_minutes"),
             Column(cols["marketable"], sort_key="marketable"),
             Column(cols["familyInventory"], sort_key="family_inventory"),
             Column(cols["trade"], sort_key="trade"),
@@ -313,6 +326,8 @@ class ItemEnchantHandler(PreviewHandler):
                 _optional_cell(record["max_durability"]),
                 _optional_cell(record["repair_endurance_count"]),
                 flag_cell(record["stackable"]),
+                flag_cell(record["do_apply_directly"]),
+                e(record["time_limit"] or _EMPTY),
                 flag_cell(record["marketable"]),
                 flag_cell(record["family_inventory"]),
                 e(record["trade"] or _EMPTY),

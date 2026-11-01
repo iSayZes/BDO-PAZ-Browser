@@ -5,7 +5,7 @@
          | u32 contents_group_count | u32[contents_group_count] contents_group_hashes
 
 `title` is a `RESOURCE` sheet key, `icon_texture` a texture key. Layout 1 in
-docs/file-formats/contentsschedulerss_bss.md.
+docs/file-formats/bss/contentsschedulerss_bss.md.
 """
 
 from __future__ import annotations

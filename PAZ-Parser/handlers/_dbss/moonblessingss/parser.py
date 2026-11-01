@@ -9,7 +9,7 @@
 
 A reward entry is the 178-byte quest reward entry of `quest.dbss`
 (`_common/quest/reward_entry.py`). Layout 1 in
-docs/file-formats/moonblessingss_dbss.md.
+docs/file-formats/dbss/moonblessingss_dbss.md.
 """
 
 from __future__ import annotations

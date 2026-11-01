@@ -10,7 +10,7 @@
     Preset Item: u32 item_key | i32 | u8 equip_slot_no | u8 index
 
 Every array but the counted ones has a fixed length. Layout 4 (client 3474
-and later) in docs/file-formats/solareoptionstaticstatusmanager_bss.md; older
+and later) in docs/file-formats/bss/solareoptionstaticstatusmanager_bss.md; older
 clients store fixed item blocks per tier, which this parser does not read.
 """
 

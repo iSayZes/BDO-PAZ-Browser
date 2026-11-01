@@ -8,7 +8,7 @@
 
 The four text fields are indexes into the string table
 (`_bss/sequence_scripts/reader.py`). Layout 2 (the live client) in
-docs/file-formats/sequencedatatable_bss.md.
+docs/file-formats/bss/sequencedatatable_bss.md.
 """
 
 from __future__ import annotations

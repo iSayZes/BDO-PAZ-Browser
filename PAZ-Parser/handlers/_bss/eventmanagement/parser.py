@@ -5,8 +5,8 @@
     | string table | u32 string_table_start | u32 0
 
 Every text of both tables is a string table index (`*_ref`); the records
-carry the index and its text. Layout 1 in
-docs/file-formats/eventmanagement_bss.md.
+carry the index and its text. Layout 4 in
+docs/file-formats/bss/eventmanagement_bss.md.
 """
 
 from __future__ import annotations

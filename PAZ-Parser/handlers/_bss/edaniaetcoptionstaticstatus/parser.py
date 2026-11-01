@@ -10,7 +10,7 @@
 
 The file stores no row count: one row per `__eEdaniaRegion` castle, in enum
 order, up to the settings. Full layout in
-docs/file-formats/edaniaetcoptionstaticstatus_bss.md.
+docs/file-formats/bss/edaniaetcoptionstaticstatus_bss.md.
 """
 
 from __future__ import annotations

@@ -35,9 +35,12 @@ from .bdo_api_file_search import FileSearchMixin
 from .bdo_api_preview import PreviewMixin
 from .bdo_api_search import SearchMixin
 from .bdo_api_map_pins import MapPinsMixin
+from .bdo_api_model_rigs import ModelRigsMixin
+from .bdo_api_model_textures import ModelTexturesMixin
 from .bdo_api_world_map import WorldMapMixin
 from .bdo_tree import build_tree, collect_entries, count_entries, find_node, handled_entries
-from paz.bdo_cache import CachedEntries, archive_files, load_cache, read_meta_version, save_cache
+from paz.bdo_cache import CachedEntries, archive_files, load_cache, meta_stamp, read_meta_version, save_cache
+from paz.bdo_content_key import content_key
 from paz.bdo_thumbnail_cache import ThumbnailCache
 from paz.bdo_index_cache import (
     IndexCacheData,
@@ -50,7 +53,8 @@ from paz.bdo_meta_reader import read_bdo_meta
 from bdo_models import PazEntry
 from paz.bdo_paz_extract import extract_entry, find_single_meta_file, parse_meta_file
 from paz.bdo_payload_cache import cached_read_entry_payload, clear_payload_cache
-from bdo_preview import StreamPreviewHandler, get_handler, set_handler_lang
+from paz.na_copy import find_or_na_copy
+from bdo_preview import StreamPreviewHandler, get_handler, set_handler_client, set_handler_lang
 from _common.pa_text import set_show_pa_tags
 from ui_text import ui_text
 
@@ -90,7 +94,7 @@ def _data_folder(text: str) -> str | None:
     return str(path)
 
 
-class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin):
+class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMixin, HandlerUpdateMixin, WorldMapMixin, MapPinsMixin, ModelTexturesMixin, ModelRigsMixin):
     """Backend the UI calls through pywebview; the CLI loads folders through it too."""
 
     @property
@@ -376,20 +380,34 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         meta_path = find_single_meta_file(paz_root)
         current_version = read_meta_version(meta_path)
         self._meta_version = current_version
-        self._set_archive_ids(read_bdo_meta(meta_path))
+        # Handlers read the folder as its own .meta version (planner.md,
+        # Multi-Version Support, step 3); a chosen client will override it.
+        set_handler_client(current_version)
+        self._data_digests.set_client(current_version)
+        meta = read_bdo_meta(meta_path)
+        self._set_archive_ids(meta)
+        self._content_key = content_key(meta)
         self._archive_files = archive_files(paz_root)
+        self._meta_stamp = meta_stamp(meta_path)
         cached = load_cache(self._cache_dir)
 
-        if cached and cached.version == current_version and cached.archive_files == self._archive_files:
+        if (
+            cached
+            and cached.version == current_version
+            and cached.archive_files == self._archive_files
+            and cached.meta_stamp == self._meta_stamp
+        ):
             entries = cached.entries
             msg = {"key": "status.loadedFromCache", "args": {"count": f"{len(entries):,}", "version": current_version}}
         else:
             if cached and cached.version == current_version:
-                # Archives were added or deleted: the indexes were built without
-                # the tables of the new ones, and their version still matches.
+                # Archives were added, deleted or repacked: the indexes were built
+                # from the old tables, and their version still matches.
                 drop_index_cache(self._cache_dir)
             entries = parse(meta_path)
-            save_cache(self._cache_dir, CachedEntries(current_version, self._archive_files, entries))
+            save_cache(
+                self._cache_dir, CachedEntries(current_version, self._archive_files, self._meta_stamp, entries)
+            )
             msg = {"key": "status.parsedAndCached", "args": {"count": f"{len(entries):,}", "version": current_version}}
 
         self._entries = entries
@@ -398,6 +416,9 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         self._icon_entry_cache.clear()
         self._icon_data_url_cache.clear()
         self._icon_preview_images.clear()
+        self._model_texture_urls.clear()
+        self._model_skeletons.clear()
+        self._model_rig_index = None
         self._open_thumbnail_cache()
         self._tree_data = build_tree(entries)
         self._handled_view = None
@@ -455,7 +476,7 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         show a dash.
         """
         from _common.lookup_index import IndexKind, clear_indexes, init_index  # noqa: PLC0415
-        from _common.lookup_builders import build_indexes  # noqa: PLC0415
+        from _common.lookup_builders import IndexSpec, build_indexes, skipped_tables  # noqa: PLC0415
         from .bdo_lookup_indexes import index_fingerprint  # noqa: PLC0415
 
         if self._cache_dir is None:
@@ -470,9 +491,12 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         if cached and cached.version == version:
             loaded = cached
         else:
+            skipped: list[IndexSpec] = []
             try:
                 indexes = build_indexes(
-                    self._load_companion_sync, lambda path: self._entry_ignoring_case(path) is not None
+                    self._load_companion_sync,
+                    lambda path: self._entry_ignoring_case(path) is not None,
+                    on_skip=skipped.append,
                 )
             except Exception as ex:
                 logging.warning("Could not build the lookup indexes", exc_info=True)
@@ -480,6 +504,10 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
                     {"key": "status.indexFailed", "args": {"message": str(ex)}}
                 )
                 return
+            if skipped:
+                self._push_status(
+                    {"key": "status.indexSkipped", "args": {"tables": skipped_tables(skipped)}}
+                )
 
             loaded = IndexCacheData(version, indexes, index_digests(indexes))
             if indexes:
@@ -501,7 +529,7 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         self._data_digests.set_indexes(loaded.digests)
 
     def _load_companion_sync(self, internal_path: str) -> bytes | None:
-        entry = self._entry_map.get(_norm(internal_path))
+        entry = self.get_entry(internal_path)
         if not entry or not self._paz_root:
             return None
         try:
@@ -532,7 +560,13 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
         return result
 
     def get_entry(self, internal_path: str) -> PazEntry | None:
-        return self._entry_map.get(_norm(internal_path))
+        """The entry at `internal_path`, else a table's NA copy (`paz/na_copy.py`), or None.
+
+        Companions, lookup indexes and the records cache read other tables
+        through here, so a client that ships `#na#characterstatic.bss` alone
+        still gives `characterstatic.bss` to every table that asks for it.
+        """
+        return find_or_na_copy(self._entry_map.get, _norm(internal_path))
 
     def read_entry(self, internal_path: str) -> bytes:
         entry = self.get_entry(internal_path)
@@ -591,7 +625,11 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
             return []
 
         dirs  = sorted((k, v) for k, v in node.items() if isinstance(v, dict))
-        files = sorted((k, v) for k, v in node.items() if isinstance(v, PazEntry))
+        # By the name the row shows, so an NA copy sorts under its plain name.
+        files = sorted(
+            (self._file_row(_norm(v.internal_path)) for v in node.values() if isinstance(v, PazEntry)),
+            key=lambda row: row["name"],
+        )
 
         result: list[dict] = []
 
@@ -615,14 +653,13 @@ class Api(PreviewMixin, SearchMixin, FileSearchMixin, CacheUsageMixin, UpdateMix
                 "icon":        FOLDER_ICON,
                 "has_children": bool(child_node),
             })
-        for name, entry in files:
-            result.append({
-                "id":   _norm(entry.internal_path),
-                "name": name,
-                "type": "file",
-                **file_row_fields(name),
-            })
+        result.extend(files)
         return result
+
+    def _file_row(self, path: str) -> dict:
+        """The tree row of the file at normalised `path`, named as `_shown_path()` shows it."""
+        name = self._shown_path(path).rsplit("/", 1)[-1]
+        return {"id": path, "name": name, "type": "file", **file_row_fields(name)}
 
     # ── Extraction ────────────────────────────────────────────────────────────
 

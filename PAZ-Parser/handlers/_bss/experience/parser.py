@@ -5,7 +5,7 @@
 
 There is no group count: the groups fill the space up to 200 zero bytes (one
 stat body) before the string table. Full layout in
-docs/file-formats/experience_bss.md.
+docs/file-formats/bss/experience_bss.md.
 """
 
 from __future__ import annotations

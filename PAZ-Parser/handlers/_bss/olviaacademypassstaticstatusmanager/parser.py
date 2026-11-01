@@ -7,7 +7,7 @@ One pass per `__eOlviaAcademyPassType_*` value, in the order the pass window
 walks them (`PASS_TYPE_NAMES`). The passes have no count: they run up to the
 string table, which holds no strings.
 
-Layout 1 in docs/file-formats/olviaacademypassstaticstatusmanager_bss.md.
+Layout 1 in docs/file-formats/bss/olviaacademypassstaticstatusmanager_bss.md.
 """
 
 from __future__ import annotations

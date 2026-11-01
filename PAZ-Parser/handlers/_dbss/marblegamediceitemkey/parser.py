@@ -4,7 +4,7 @@
 
 `marblegamediceitemkeyoffset.dbss` (u32 count, then u32 key, offset and size
 per row) points at each key. Layout 1 in
-docs/file-formats/marblegamediceitemkey_dbss.md.
+docs/file-formats/dbss/marblegamediceitemkey_dbss.md.
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@
 
 `alreadyclearspecialquest(group)` in `quest.dbss` action scripts names a
 group by its key. A packed quest ID is `(quest_id << 16) | quest_chain_id`.
-The string table is empty. Layout in docs/file-formats/specialquestinfo_bss.md.
+The string table is empty. Layout in docs/file-formats/bss/specialquestinfo_bss.md.
 """
 
 from __future__ import annotations

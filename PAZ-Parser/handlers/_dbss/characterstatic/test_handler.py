@@ -42,7 +42,7 @@ STATIC_CASE = HandlerCase(
         SchemaTest(
             required_keys=[
                 "character_id", "name", "title", "label_kr", "action_script", "condition_script",
-                "knowledge_id", "npc_kind", "npc_kind_name", "grade", "level", "tribe_type", "character_group",
+                "knowledge_id", "npc_kind", "npc_kind_name", "grade", "level", "max_hp", "tribe_type", "character_group",
                 "tendency_on_dead", "ocean_tendency", "vehicle_type", "vehicle_type_name", "class_type",
                 "body_size", "ai_script", "model_path", "contents_groups",
                 "source_item_id", "source_item_name", "payload_size",

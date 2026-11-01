@@ -7,7 +7,7 @@
 The first 8 bytes are the row key (the 2016 `gc::HouseInfoViewPositionKey`).
 `houseinfoviewpositionoffset.dbss` holds the same 8-byte key, then the
 offset and size of the row, after a u32 count with no magic. Layout 1 in
-docs/file-formats/houseinfoviewposition_dbss.md.
+docs/file-formats/dbss/houseinfoviewposition_dbss.md.
 """
 
 from __future__ import annotations

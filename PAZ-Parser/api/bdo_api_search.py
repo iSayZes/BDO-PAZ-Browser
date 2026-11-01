@@ -193,12 +193,14 @@ class SearchMixin(ApiState):
         if not offsets:
             return None
         offsets.sort()
+        path = _norm(entry.internal_path)
+        name = self._shown_path(path).rsplit("/", 1)[-1]
         return {
-            "path":  _norm(entry.internal_path),
-            "name":  Path(entry.internal_path).name,
+            "path":  path,
+            "name":  name,
             "count": len(offsets),
             "first": offsets[0],
-            **file_row_fields(Path(entry.internal_path).name),
+            **file_row_fields(name),
         }
 
     def _run_global_search(

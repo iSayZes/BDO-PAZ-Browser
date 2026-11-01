@@ -5,7 +5,7 @@
 
 The two u16 halves of `key` repeat as `unknown_04` and `unknown_06`, then in
 swapped order as `unknown_08` and `unknown_0a`. Layout 1 in
-docs/file-formats/simplesequence_bss.md.
+docs/file-formats/bss/simplesequence_bss.md.
 """
 
 from __future__ import annotations

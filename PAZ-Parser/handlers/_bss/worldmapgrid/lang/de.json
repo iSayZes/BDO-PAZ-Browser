@@ -15,6 +15,6 @@
     "range": "{low} bis {high}"
   },
   "meta": {
-    "count": "{count} Zellenwerte"
+    "count": "{count} Zeilen"
   }
 }

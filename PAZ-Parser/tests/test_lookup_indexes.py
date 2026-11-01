@@ -4,7 +4,7 @@ import sys
 
 from paz.source_fingerprint import project_modules
 from _common.lookup_index import IndexKind
-from _common.lookup_builders import INDEX_SPECS, IndexSpec, build_indexes
+from _common.lookup_builders import INDEX_SPECS, IndexSpec, build_indexes, skipped_tables
 
 _FENCE_CHARACTER = 2053
 _FENCE_ITEM = 58011
@@ -49,6 +49,21 @@ def test_spec_with_a_missing_source_is_skipped() -> None:
     indexes = build_indexes(payloads.get, lambda _: False, specs)
 
     assert set(indexes) == {"item_icon"}
+
+
+def test_a_source_that_does_not_parse_drops_only_its_own_spec() -> None:
+    def fails(*_: bytes) -> dict:
+        raise ValueError("does not fit the layout")
+
+    failing = IndexSpec(IndexKind.QUEST_ICON, ("folder/a.bss",), fails)
+    specs = (failing, _spec(IndexKind.ITEM_ICON, "folder/a.bss"))
+    skipped: list[IndexSpec] = []
+
+    indexes = build_indexes({"folder/a.bss": b"A"}.get, lambda _: False, specs, on_skip=skipped.append)
+
+    assert set(indexes) == {"item_icon"}
+    assert skipped == [failing]
+    assert skipped_tables(skipped) == "a.bss"
 
 
 def test_characters_borrow_the_icon_of_their_item() -> None:

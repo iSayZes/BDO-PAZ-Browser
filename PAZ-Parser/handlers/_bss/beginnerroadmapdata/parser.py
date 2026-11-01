@@ -9,7 +9,7 @@
 The `*_ref` fields index the string table; the records hold their text.
 `event_parameters` is `-1` where unused; the first is the event category,
 the second its target UI.
-Layout 1 in docs/file-formats/beginnerroadmapdata_bss.md.
+Layout 1 in docs/file-formats/bss/beginnerroadmapdata_bss.md.
 """
 
 from __future__ import annotations

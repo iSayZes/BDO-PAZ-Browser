@@ -5,6 +5,7 @@ from pathlib import Path
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
 
+from _common.client_versions import covering
 from _common.html import Column, e, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
 from _bss.stringtable.parser import GAME_SHEET
@@ -18,18 +19,27 @@ _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 
 
-def quest_count_records(quest_table: QuestCountTable, data: bytes, hashes: KeyHashes) -> list[dict]:
-    """One record per value; names only when the file holds the whole enum.
+def _naming_table(quest_table: QuestCountTable, value_count: int) -> QuestCountTable | None:
+    """The table that names the values, or None.
 
-    A shorter file comes from an older client whose enum order is not
-    confirmed (client 1784), so its values get an empty name.
+    An older enum names the file on the clients in its range. Otherwise the
+    live enum names it when the file holds the whole enum; a shorter file
+    comes from a client whose enum order is not confirmed.
     """
+    older = covering(quest_table.older, lambda table: table.clients)
+    if older is not None:
+        return older
+    return quest_table if value_count >= len(quest_table.enum_names) else None
+
+
+def quest_count_records(quest_table: QuestCountTable, data: bytes, hashes: KeyHashes) -> list[dict]:
+    """One record per value, with the name the client's quest window shows, else ''."""
     counts = parse_quest_counts(data, quest_table.file_name)
-    has_names = len(counts) >= len(quest_table.enum_names)
+    naming = _naming_table(quest_table, len(counts))
     return [
         {
             quest_table.key_field: value,
-            quest_table.name_field: value_name(quest_table, hashes, value) if has_names else "",
+            quest_table.name_field: "" if naming is None else value_name(naming, hashes, value),
             "quest_count": count,
         }
         for value, count in enumerate(counts)

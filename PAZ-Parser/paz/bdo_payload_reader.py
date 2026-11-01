@@ -10,8 +10,8 @@ from bdo_models import PazEntry
 
 _CIPHER: IceCipher = IceCipher(BDO_ICE_KEY)
 
-# First byte of a compressed payload that the sizes alone do not flag.
-_HEADER_ONLY_MAGIC = 0x6E
+# The long header in front of a compressed or header-only payload (`bdo_decompress._Header`).
+_HEADER_SIZE = 9
 
 
 # ── ICE decrypt ───────────────────────────────────────────────────────────────
@@ -66,19 +66,19 @@ def is_encrypted(entry: PazEntry) -> bool:
 
 
 def needs_decompress(entry: PazEntry, decrypted: bytes) -> bool:
-    """True when the decrypted payload is BDO-compressed.
+    """True when the decrypted payload starts with a BDO header.
 
-    Flagged by a size mismatch, the 0x6E magic byte or an LZ4 header. The
-    0x6E check is skipped when the bytes already equal the expected
-    uncompressed size, those bytes are stored raw, not compressed.
+    The sizes tell. A payload with a header is smaller than the file
+    (compressed, flag 0x6F) or at least 9 bytes larger (stored behind the
+    header, flag 0x6E). A plain payload is the file itself, padded to the
+    8-byte ICE block at most. Its first byte does not tell: official plain
+    files start with 0x6E or 0x6F too (`questgroup.dbss` on client 3482,
+    `itemtrade.bss` on client 435, padded). The rule matches every
+    non-empty file on clients 435, 1485, 2519, 3482 and 3483.
     """
     return (
         entry.uncompressed_size > entry.compressed_size
-        or (
-            len(decrypted) > 0
-            and decrypted[0] == _HEADER_ONLY_MAGIC
-            and len(decrypted) != entry.uncompressed_size
-        )
+        or entry.compressed_size >= entry.uncompressed_size + _HEADER_SIZE
         # A private server repack stores small files as LZ4 even when that
         # makes them larger (client 376350: 2,160 bytes for a 2,140-byte
         # `.bss`), so the sizes do not flag them.

@@ -11,7 +11,7 @@ pieces. A gear set (`set_option_type` 0) fills `skill_keys` and
 `equip_items`, a furniture set (1) `installation_items` and `points`.
 `setoptionoffset.dbss` (u32 count, then u16 key, u32 offset and u32 size per
 row, no PABR magic) points at the row start. Layout 1 in
-docs/file-formats/setoption_dbss.md.
+docs/file-formats/dbss/setoption_dbss.md.
 """
 
 from __future__ import annotations

@@ -2,7 +2,8 @@
 
 A grid holds 4,317,184 cells, so the table lists each value with what it
 joins to (`kinds.py`), its cell count and its bounding box, in cells and in
-world units.
+world units. The region group grid gives a value two groups share one row
+per group (`region_groups.py`).
 """
 
 from __future__ import annotations
@@ -16,16 +17,17 @@ from table_sort import SORT_ASC, TableSort
 from _common.html import Column, e, text_list_cell
 from _common.lang import handler_text
 from _common.row_table import RowTableHandler
-from .kinds import CellJoin, GridKind
-from .parser import CellArea, cell_areas, read_cells, world_x, world_z
+from .cell_join import GridRow
+from .kinds import GridKind
+from .parser import read_cells, world_x, world_z
 
 _LANG_DIR = Path(__file__).parent / "lang"
 _EMPTY = "-"
 _MAX_KEYS = 4
-_NO_JOIN = CellJoin((), ())
 
 
-def _record(area: CellArea, join: CellJoin) -> dict:
+def _record(row: GridRow) -> dict:
+    area, join = row.area, row.join
     return {
         "value": area.value,
         "keys": list(join.keys),
@@ -53,19 +55,14 @@ class WorldMapGridHandler(RowTableHandler):
         self.file_name = kind.file_name
 
     def companions(self, entry: PazEntry) -> list[str]:
-        if self.kind.companion is None:
-            return []
         folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/{self.kind.companion}"]
+        return [f"{folder}/{name}" for name in self.kind.companions]
 
     def default_sort(self) -> TableSort | None:
         return TableSort("value", SORT_ASC)
 
     def read_records(self, data: bytes, companions: dict[str, bytes]) -> list[dict]:
-        areas = cell_areas(read_cells(data, self.file_name))
-        companion = companions.get(self.kind.companion) if self.kind.companion else None
-        joins = self.kind.join([area.value for area in areas], companion)
-        return [_record(area, joins.get(area.value, _NO_JOIN)) for area in areas]
+        return [_record(row) for row in self.kind.rows(read_cells(data, self.file_name), companions)]
 
     def columns(self, labels: Mapping[str, str]) -> list[Column]:
         return [

@@ -1,7 +1,7 @@
 """`skill.dbss`: the rule record of every skill rank.
 
 `skilloffset.dbss` maps each skill key (`skill_no << 16 | level`) to its
-record. A record, in order:
+record. A record, in order (Layout 3 shown):
 
     u32 skill_key | u32 level_1_key | u8 is_attack_skill
     | ascii action_name | u32 action_hash | u8[35] learning requirements
@@ -13,8 +13,14 @@ record. A record, in order:
     | u32 m + m x u32 related_cool_time_skill_keys | f32 target_search_angle
     | u8 is_except_cool_time | u8[2]
 
+Layout 2 (clients 3242 to 3458) stores `buff_ids` as u16. Layout 1 (clients
+1481 to 2243) also has no `unknown_n4c` in the reuse rules, a u32 list of
+`special_weapon_hit_effects` after `related_cool_time_skill_keys` and no
+`unknown_end`. Nothing in the file names its layout, so it is read with the
+first layout, in client order, that reads every record.
+
 Strings are a u64 unit count plus UTF-16LE (text) or ASCII (action_name).
-Full layout in docs/file-formats/skill_dbss.md.
+Full layout in docs/file-formats/dbss/skill_dbss.md.
 """
 
 from __future__ import annotations
@@ -22,6 +28,7 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass
 
+from _common.client_versions import ClientRange, client_order
 from _common.inline_text import decode_inline_text
 from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.record_reader import RecordReader
@@ -31,7 +38,6 @@ _U8 = struct.Struct("<B")
 _U32 = struct.Struct("<I")
 _KEY_PAIR = struct.Struct("<II")
 _BUFF_SLOTS = 10
-_BUFF_IDS = struct.Struct(f"<{_BUFF_SLOTS}I")
 # is_prompt_for_learning to need_skill_no_2: the learning rules, which
 # skillsimply.dbss also holds.
 _LEARNING_SIZE = 35
@@ -39,12 +45,49 @@ _LEARNING_SIZE = 35
 _HP_COST_SIZE = 5
 # require_sub_resource_point and sub_resource_type.
 _SUB_RESOURCE_SIZE = 5
-# need_item_key to unknown_n4c: the item cost and the reuse rules.
-_USE_RULES_SIZE = 21
 # is_usable_while_in_cool_time to link_tooltip_skill_key.
 _SCRIPT_TAIL_SIZE = 36
-# f32 target_search_angle, u8 is_except_cool_time and u8[2] unknown_end.
-_END_SIZE = 7
+
+
+@dataclass(frozen=True)
+class SkillLayout:
+    """One documented Skill Record shape; `number` is its Layout N in the doc."""
+
+    number: int
+    # need_item_key to cooldown_ms: the item cost and the reuse rules, with
+    # unknown_n4c (21 bytes) or without it (19).
+    use_rules_size: int
+    # Ten buff ID slots, u32 or u16.
+    buff_ids: struct.Struct
+    # Layout 1 only: a u32 list of special_weapon_hit_effects after
+    # related_cool_time_skill_keys.
+    has_special_weapon_hit_effects: bool
+    # f32 target_search_angle, u8 is_except_cool_time and, from Layout 2 on,
+    # u8[2] unknown_end.
+    end_size: int
+    # Test clients this layout reads (the doc's Versions table, written by
+    # check_docs); they only order the tries (`client_versions.py`).
+    clients: tuple[ClientRange, ...] = ()
+
+
+_U32_BUFF_IDS = struct.Struct(f"<{_BUFF_SLOTS}I")
+_U16_BUFF_IDS = struct.Struct(f"<{_BUFF_SLOTS}H")
+
+# Newest first.
+LAYOUTS = (
+    SkillLayout(
+        3, use_rules_size=21, buff_ids=_U32_BUFF_IDS, has_special_weapon_hit_effects=False, end_size=7,
+        clients=(ClientRange(3464),),
+    ),
+    SkillLayout(
+        2, use_rules_size=21, buff_ids=_U16_BUFF_IDS, has_special_weapon_hit_effects=False, end_size=7,
+        clients=(ClientRange(3242, 3458),),
+    ),
+    SkillLayout(
+        1, use_rules_size=19, buff_ids=_U16_BUFF_IDS, has_special_weapon_hit_effects=True, end_size=5,
+        clients=(ClientRange(1481, 2243),),
+    ),
+)
 
 
 @dataclass(frozen=True)
@@ -74,7 +117,7 @@ def _key_list(reader: RecordReader) -> tuple[int, ...]:
     return reader.unpack(struct.Struct(f"<{count}I"))
 
 
-def parse_skill_record(data: bytes, row: PabrOffsetRow) -> SkillRecord:
+def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillLayout) -> SkillRecord:
     """Walk one record. Raises ValueError when it does not end at its index size."""
     label = f"skill 0x{row.entry_id:08X}"
     reader = RecordReader(data, row.offset, row.offset + row.size, label)
@@ -90,17 +133,19 @@ def parse_skill_record(data: bytes, row: PabrOffsetRow) -> SkillRecord:
     (resource_cost,) = reader.unpack(_U32)
     reader.skip(_SUB_RESOURCE_SIZE)
     (stamina_cost,) = reader.unpack(_U32)
-    reader.skip(_USE_RULES_SIZE)
+    reader.skip(layout.use_rules_size)
     (cooldown_ms,) = reader.unpack(_U32)
     # The IDs fill the front slots; the rest are zero.
-    buff_ids = tuple(buff_id for buff_id in reader.unpack(_BUFF_IDS) if buff_id)
+    buff_ids = tuple(buff_id for buff_id in reader.unpack(layout.buff_ids) if buff_id)
     description_kr = reader.text(wide=True)
     script = reader.text(wide=True)
     reader.skip(_SCRIPT_TAIL_SIZE)
     next_skill_keys = _key_list(reader)
     reader.unpack(_U32)  # unknown_after_next_skill_keys
     related_cool_time_skill_keys = _key_list(reader)
-    reader.skip(_END_SIZE)
+    if layout.has_special_weapon_hit_effects:
+        _key_list(reader)
+    reader.skip(layout.end_size)
     if not reader.at_end():
         raise ValueError(f"{label} ends {reader.remaining()} bytes before its index size")
 
@@ -119,12 +164,21 @@ def parse_skill_record(data: bytes, row: PabrOffsetRow) -> SkillRecord:
 
 
 def parse_skill_records(data: bytes, offset_data: bytes) -> list[SkillRecord]:
-    """One record per index row, in index order.
+    """One record per index row, in index order, read with the first layout
+    (in client order) under which every record ends exactly at its index size.
 
-    Raises ValueError on the first record that does not end exactly at its
-    index size: the layout has changed and later fields would be misread.
+    The whole file decides: a Layout 1 record with an empty description and
+    script also walks as Layout 2, and on client 1784 the first 66 records do.
+    Raises ValueError, naming where each layout broke, when none fits.
     """
-    return [parse_skill_record(data, row) for row in parse_pabr_u32_offset_rows(offset_data)]
+    rows = parse_pabr_u32_offset_rows(offset_data)
+    breaks: list[str] = []
+    for layout in client_order(LAYOUTS, lambda layout: layout.clients):
+        try:
+            return [_parse_record(data, row, layout) for row in rows]
+        except ValueError as error:
+            breaks.append(f"Layout {layout.number}: {error}")
+    raise ValueError(f"skill.dbss fits no known layout ({'; '.join(breaks)})")
 
 
 def build_skill_buff_index(data: bytes, offset_data: bytes) -> dict[int, tuple[int, ...]]:

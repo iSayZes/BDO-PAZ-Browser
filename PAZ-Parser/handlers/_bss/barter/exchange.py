@@ -7,7 +7,7 @@
 The item keys pack `enchant_level << 24 | item_id`. `barter_special.bss`
 holds it at row +0x06, `bartersubgroup.bss` at entry +0x0C, and
 `barter_normal.bss` entries have the same row as `barter_special.bss`. Layout in
-docs/file-formats/bartersubgroup_bss.md, "Exchange (56 bytes)".
+docs/file-formats/bss/bartersubgroup_bss.md, "Exchange (56 bytes)".
 """
 
 from __future__ import annotations

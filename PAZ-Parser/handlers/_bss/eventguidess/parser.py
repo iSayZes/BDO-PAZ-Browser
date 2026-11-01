@@ -9,7 +9,7 @@
 
 No PABR magic and no string table. `start_time` and `end_time` are UTC Unix
 seconds; `rewards` are item keys. Layout 1 in
-docs/file-formats/eventguidess_bss.md.
+docs/file-formats/bss/eventguidess_bss.md.
 """
 
 from __future__ import annotations

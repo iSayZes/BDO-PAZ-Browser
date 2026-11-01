@@ -4,7 +4,7 @@
     | u32 string_table_start | u32 0
 
 Each entry is a map key, the same key again and the group's highest upgrade
-level. Full layout in docs/file-formats/plantupgradeparam_bss.md.
+level. Full layout in docs/file-formats/bss/plantupgradeparam_bss.md.
 """
 
 from __future__ import annotations

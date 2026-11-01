@@ -6,7 +6,7 @@
     u32 key | utf16 name_kr | u32 n + n x utf16 line | u8[5] reserved
 
 Strings are a u64 UTF-16 code-unit count plus UTF-16LE text. Full layout in
-docs/file-formats/base_dialog_dbss.md.
+docs/file-formats/dbss/base_dialog_dbss.md.
 """
 
 from __future__ import annotations

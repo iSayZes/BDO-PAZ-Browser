@@ -1,7 +1,7 @@
 """A forgiving XML reader for client AI scripts (`.ai`).
 
 Many `.ai` files fail a strict XML parser even after escaping `<` in
-attribute values (counts in docs/file-formats/aiscript_ai.md). This reader takes them
+attribute values (counts in docs/file-formats/other/aiscript_ai.md). This reader takes them
 as written:
 
 - A quoted attribute value is read whole, so `cmp="<="` and `expr="a>0&&b"` work.

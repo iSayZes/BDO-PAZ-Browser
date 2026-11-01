@@ -1,6 +1,6 @@
 """Layouts of the server option tables that fit the PABR value tables.
 
-Each file's doc is `docs/file-formats/<stem>_bss.md`. The field names follow
+Each file's doc is `docs/file-formats/bss/<stem>_bss.md`. The field names follow
 the sheets of a private server's `DataSheets.bexcel` on client 1784
 (`WorldMarketVariedPrice`, `WorldMarketVariedTradeCount`,
 `DynamicBSSOption_Table`, `LightUserBonus_Table`, `FamilyPointStat`,

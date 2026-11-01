@@ -2,7 +2,7 @@
 
 It runs over the key's UTF-16LE bytes with seed `0xC5EDE`. On client 3464 it
 reproduces every `key_hash` and `sheet_hash` of `stringtable.bss` and the LOC
-type 59 `str_id1` of every TextBind name (docs/file-formats/stringtable_bss.md).
+type 59 `str_id1` of every TextBind name (docs/file-formats/bss/stringtable_bss.md).
 Action and file names are hashed over their ASCII bytes with the same seed
 (`ascii_key_hash`): `manufacture.bss` actions, `collectresourcename.dbss`
 file names and the `servantbuff.dbss` action names.

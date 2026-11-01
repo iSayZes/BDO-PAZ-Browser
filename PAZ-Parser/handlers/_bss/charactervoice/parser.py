@@ -7,7 +7,7 @@
 
 Each `voice_types` entry indexes the string table (`PC_VCE_1Warrior_1`).
 The two lists and counts are appearance types 0 and 1. Layout 2 in
-docs/file-formats/charactervoice_bss.md; client 794 (Layout 1) stores the
+docs/file-formats/bss/charactervoice_bss.md; client 794 (Layout 1) stores the
 names inline and is not read.
 """
 

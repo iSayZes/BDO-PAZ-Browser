@@ -8,7 +8,7 @@
 
 `command_index` points into the string table: the key binding text of the
 step, such as `<{KeyBind:MoveBack}> + <{KeyBind:Kick}>`. Full layout in
-docs/file-formats/skillcomboguide_bss.md.
+docs/file-formats/bss/skillcomboguide_bss.md.
 """
 
 from __future__ import annotations

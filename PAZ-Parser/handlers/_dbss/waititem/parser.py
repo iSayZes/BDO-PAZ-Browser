@@ -3,7 +3,7 @@
 A u32 row count, then 17-byte rows with no `PABR` magic and no string
 table: the key, the packed item key, the item ID and level split out, and
 the u32 `wait_second` (the client 1784 sheet's `WaitSecond`). `waititemoffset.dbss` points at each row's `item_key`, 4
-bytes past its key. Layout in docs/file-formats/waititem_dbss.md.
+bytes past its key. Layout in docs/file-formats/dbss/waititem_dbss.md.
 """
 
 from __future__ import annotations

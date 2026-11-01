@@ -5,7 +5,7 @@
 
 There is no row count: the rows fill the space up to the string table. The
 stat body is the one of `experience.bss` level records (`_bss/experience/
-stat_body.py`). Layout in docs/file-formats/hardcorecharacterstatstaticstatus_bss.md.
+stat_body.py`). Layout in docs/file-formats/bss/hardcorecharacterstatstaticstatus_bss.md.
 """
 
 from __future__ import annotations

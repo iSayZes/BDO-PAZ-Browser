@@ -12,7 +12,9 @@ import webview
 
 from bdo_models import PazEntry
 from bdo_preview import PreviewHandler
+from paz.bdo_cache import MetaStamp
 from paz.bdo_thumbnail_cache import ThumbnailCache
+from paz.na_copy import find_or_na_copy, shown_name
 from table_sort import TableSort
 
 from updates.releases import Release
@@ -26,6 +28,11 @@ from .bdo_api_helpers import FileSearchHits, _norm
 from .bdo_recent_tables import RecentTables
 from .bdo_records_prefill import RecordsPrefill
 from .bdo_records_store import DataDigests, RecordStore
+
+if TYPE_CHECKING:
+    from par_skeleton import Skeleton
+
+    from .bdo_api_model_rigs import RigIndex
 
 
 class ApiState:
@@ -57,6 +64,14 @@ class ApiState:
         # norm path -> (decoded image, preview data URL), oldest first.
         self._icon_preview_images: dict[str, tuple[Any, str]] = {}
         self._thumbnail_cache: ThumbnailCache | None = None
+        # Model view textures: PAZ path -> PNG data URL, oldest first (`ModelTexturesMixin`).
+        self._model_texture_urls: dict[str, str] = {}
+        self._model_texture_lock = threading.Lock()
+        # Model view skeletons and clips (`ModelRigsMixin`): parsed skeletons by
+        # PAZ path, oldest first, and the folder index of .pab and .paa files.
+        self._model_skeletons: dict[str, Skeleton] = {}
+        self._model_rig_index: RigIndex | None = None
+        self._model_rig_lock = threading.Lock()
         self._tree_data: dict = {}
         # "Show only handled tables": the tree, file search, global search
         # and extraction see only the entries a binary handler reads.
@@ -80,6 +95,10 @@ class ApiState:
         self._meta_version: int | None = None
         # `pad*.paz` names on disk, saved with the entry cache (`paz/bdo_cache.py`).
         self._archive_files: tuple[str, ...] = ()
+        # Size and mtime of the meta file, saved with the entry cache too.
+        self._meta_stamp: MetaStamp = MetaStamp(0, 0)
+        # Version plus archive row digest (`paz/bdo_content_key.py`): the thumbnail and map key.
+        self._content_key: str | None = None
         # The status `load_folder()` returned, shown again after the cache pass.
         self._folder_status: dict | None = None
         # Archive file name -> (CRC, size) from the meta file, for cache keys.
@@ -121,9 +140,16 @@ class ApiState:
         self._folder_text_ready.wait()
 
     def _entry_ignoring_case(self, path: str) -> PazEntry | None:
-        """The entry at the normalised `path` in any letter case, or None."""
-        folded = path.lower()
+        """The entry at the normalised `path` in any letter case, else a table's NA copy, or None."""
+        return find_or_na_copy(self._entry_folded, path.lower())
+
+    def _entry_folded(self, folded: str) -> PazEntry | None:
         return self._entry_map.get(folded) or self._entry_map_folded.get(folded)
+
+    def _shown_path(self, path: str) -> str:
+        """The normalised `path` as the tree and the searches show it: a table's
+        NA copy under its plain name, unless the folder has a plain copy too."""
+        return shown_name(path, self._entry_map.__contains__)
 
     def _read_any_case(self, path: str) -> bytes | None:
         """The file at `path` in any letter case, or None when the folder has none."""

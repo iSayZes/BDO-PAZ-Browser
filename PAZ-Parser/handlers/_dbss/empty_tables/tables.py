@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-# Tables the client ships with a u32 count of 0 (docs/file-formats/empty_dbss.md).
+# Tables the client ships with a u32 count of 0 (docs/file-formats/dbss/empty_dbss.md).
 # Each main file and its offset companion is only that count;
 # itemcouponreward.dbss has 12 zero bytes after it. itemcouponrewardoffset.dbss
 # declares 4 entries and has its own raw view in _dbss/itemcouponreward/.

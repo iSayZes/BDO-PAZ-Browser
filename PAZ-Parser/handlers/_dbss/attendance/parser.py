@@ -15,7 +15,7 @@
 
 `attendanceoffset.dbss` (u32 count, then u16 key, u32 offset and u32 size per
 row, no PABR magic) points at the row start. Layout 3 in
-docs/file-formats/attendance_dbss.md; client 1784 to 2107 rows (Layout 2) end before
+docs/file-formats/dbss/attendance_dbss.md; client 1784 to 2107 rows (Layout 2) end before
 `guild_level_count`.
 """
 

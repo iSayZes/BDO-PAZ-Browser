@@ -8,7 +8,7 @@ The key is the `instancefield.dbss` field key. Title and description are
 `GAME` sheet keys, the image a `ui_texture` path with a pixel region.
 Field names follow the `InstanceEnterPosition` sheet columns (MaxUser,
 MaxTeamCount, isSeasonOnly, MinUser, isShowNameWnehCamoflage,
-restrictTerritory). Full layout in docs/file-formats/instancefieldmapinfo_bss.md.
+restrictTerritory). Full layout in docs/file-formats/bss/instancefieldmapinfo_bss.md.
 """
 
 from __future__ import annotations

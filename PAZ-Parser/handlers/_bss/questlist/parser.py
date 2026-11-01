@@ -6,7 +6,7 @@ and `repetitionquest.bss` share one layout.
     | string table | u32 string_table_start | u32 0
 
 Every text (group names, condition lines, condition scripts, event dates) is
-an index into the string table. Full layout in docs/file-formats/newquest_bss.md.
+an index into the string table. Full layout in docs/file-formats/bss/newquest_bss.md.
 """
 
 from __future__ import annotations

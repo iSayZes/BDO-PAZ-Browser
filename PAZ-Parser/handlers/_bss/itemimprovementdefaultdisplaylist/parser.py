@@ -1,7 +1,7 @@
 """`itemimprovementdefaultdisplaylist.bss`: the stones the Reform window lists by default.
 
 A `PABR` table of u32 stone item IDs with an empty string table. Layout in
-docs/file-formats/itemimprovementdefaultdisplaylist_bss.md.
+docs/file-formats/bss/itemimprovementdefaultdisplaylist_bss.md.
 """
 
 from __future__ import annotations

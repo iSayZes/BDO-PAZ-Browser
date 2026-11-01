@@ -5,7 +5,7 @@ u32 hash of the action name, the name as a u64-prefixed ASCII string, the
 same hash again, and two u64-prefixed UTF-16LE condition scripts (visible,
 enable). `manufactureconditionoffset.dbss` points 4 bytes into a record, at
 the name, so the walk from the start needs no index. Layout in
-docs/file-formats/manufacturecondition_dbss.md.
+docs/file-formats/dbss/manufacturecondition_dbss.md.
 """
 
 from __future__ import annotations

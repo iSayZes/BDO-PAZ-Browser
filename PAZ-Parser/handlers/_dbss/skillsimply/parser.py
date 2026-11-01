@@ -17,7 +17,7 @@ record. A record, in order:
     | u8[9] | u8 is_except_cool_time | u32 n + n x u32 related_cool_time_skill_keys | u8 need_buff_module_type
 
 Full layout and the sheet columns behind the names in
-docs/file-formats/skillsimply_dbss.md.
+docs/file-formats/dbss/skillsimply_dbss.md.
 """
 
 from __future__ import annotations

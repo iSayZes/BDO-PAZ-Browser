@@ -16,7 +16,10 @@ from .offsets import Offset, parse_offset
 from .type_grammar import NUMBER_SIZES, STRING_HEADS, UNIT_SIZES, Clause, Condition, TypeSpec, parse_type
 from .walk_model import FieldBytes, FileFit, RowStats, Unwalkable, WalkError
 
-_FORMATS = {"u8": "B", "i8": "b", "u16": "H", "i16": "h", "u32": "I", "i32": "i", "u64": "Q", "i64": "q", "f32": "f", "f64": "d"}
+_FORMATS = {
+    "u8": "B", "i8": "b", "u16": "H", "i16": "h", "u32": "I", "i32": "i", "u64": "Q", "i64": "q",
+    "f16": "e", "f32": "f", "f64": "d",
+}
 _STRING_UNITS = {"str8": 1, "str16": 2}
 _NUMBER, _STRING, _STRUCTURE = "number", "string", "structure"
 
@@ -49,6 +52,8 @@ class _Plan:
     offset_names: tuple[str, ...]
     size_names: tuple[str, ...]
     notes_sizes: bool
+    # The fields `[sum field]` counts in this structure add up over its earlier repeated structures.
+    summed: frozenset[str]
 
 
 Values = dict[str, int | float | str]
@@ -190,7 +195,14 @@ class _Walker:
     def _element_count(self, structure: Structure, row: _Row, pos: int, values: Values) -> int:
         spec = row.spec
         assert spec.count is not None
-        outer = int(spec.count.value) if spec.count.kind == "fixed" else self._value(structure, row, str(spec.count.value), pos, values)
+        kind = spec.count.kind
+        if kind == "fixed":
+            outer = int(spec.count.value)
+        elif kind == "sum":
+            # A repeat with no elements, or one its condition left out, adds 0.
+            outer = int(values.get(_sum_key(str(spec.count.value)), 0))
+        else:
+            outer = self._value(structure, row, str(spec.count.value), pos, values)
         inner = spec.inner if isinstance(spec.inner, int) or spec.inner is None else self._value(structure, row, spec.inner, pos, values)
         return outer * (inner or 1)
 
@@ -230,9 +242,12 @@ class _Walker:
         count = spec.count
         if count is None:
             return self._structure(element, pos, end)[0]
-        if count.kind in ("fixed", "field"):
+        if count.kind in ("fixed", "field", "sum"):
+            summed = self._plan(structure).summed
             for _ in range(self._element_count(structure, row, pos, values)):
-                pos = self._structure(element, pos, end)[0]
+                pos, element_values = self._structure(element, pos, end)
+                if summed:
+                    self._add_sums(element, row, pos, summed, element_values, values)
             return pos
         if count.kind == "while":
             return self._read_while(element, row, pos, end)
@@ -246,6 +261,15 @@ class _Walker:
         if pos != target:
             raise WalkError(structure.name, row.field.name, pos, f"the last {element.name} ends at 0x{pos:X}, past 0x{target:X}")
         return pos
+
+    def _add_sums(self, element: Structure, row: _Row, pos: int, summed: frozenset[str], element_values: Values, values: Values) -> None:
+        """Add the summed fields one repeated `element` holds to the running totals in `values`."""
+        for name in summed & element_values.keys():
+            value = element_values[name]
+            if not isinstance(value, int):
+                raise WalkError(element.name, row.field.name, pos, f"`{name}` holds {value!r}, not a count to add up")
+            key = _sum_key(name)
+            values[key] = int(values.get(key, 0)) + value
 
     def _read_while(self, element: Structure, row: _Row, pos: int, end: int | None) -> int:
         """Repeat `element` up to the first one whose stop field holds the stop value, that one left out."""
@@ -344,7 +368,13 @@ def _plan(structure: Structure) -> _Plan:
         offset_names,
         size_names,
         bool(offset_names and size_names) and (structure.size is None or structure.size.external is None),
+        frozenset(str(row.spec.count.value) for row in rows if row.spec.count is not None and row.spec.count.kind == "sum"),
     )
+
+
+def _sum_key(name: str) -> str:
+    """The `values` key of the running total of `name`; a space keeps it apart from every field name."""
+    return f"sum {name}"
 
 
 def _row(structure: Structure, field: Field) -> _Row:

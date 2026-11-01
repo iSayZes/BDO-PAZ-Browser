@@ -4,7 +4,7 @@
 scales `trade_exp` by a distance factor that is 1.0 at 1,000 distance, then
 by the item's `GetSellingTradeExpRate` in millionths, cutting off the
 fraction and keeping at least 1 EXP after each step. The formula and the
-readings that confirm it are in docs/file-formats/tradeexperiencess_bss.md.
+readings that confirm it are in docs/file-formats/bss/tradeexperiencess_bss.md.
 """
 
 from __future__ import annotations

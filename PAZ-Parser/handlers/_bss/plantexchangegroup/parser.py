@@ -4,7 +4,7 @@
 
 Each row maps a production key (the `plantzone.dbss` join) to the
 `itemexchangesource.bss` exchange the node works, and carries a Korean
-"node - work type" label. Full layout in docs/file-formats/plantexchangegroup_bss.md.
+"node - work type" label. Full layout in docs/file-formats/bss/plantexchangegroup_bss.md.
 """
 
 from __future__ import annotations

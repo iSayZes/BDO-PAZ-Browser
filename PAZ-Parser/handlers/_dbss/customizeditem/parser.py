@@ -7,7 +7,7 @@
 `item_key` packs `enchant_level << 24 | item_id`. `customizeditemoffset.dbss`
 (u32 count, then u16 key, u32 offset and u32 size per row) points 2 bytes
 into a record, at `item_count`. Layout 1 in
-docs/file-formats/customizeditem_dbss.md.
+docs/file-formats/dbss/customizeditem_dbss.md.
 """
 
 from __future__ import annotations

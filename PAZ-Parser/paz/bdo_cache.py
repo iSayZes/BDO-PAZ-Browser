@@ -11,6 +11,12 @@ The cache also records the archive files the folder held (`archive_files`).
 Adding archives to a client folder, or deleting some, keeps its meta version
 (the `stringtable/` archives added to an old client 435 folder stayed hidden),
 so a cache is only current when both match.
+
+A repack rewrites `pad00000.meta` with new entry offsets under the same
+version and archive names, and its entry count, so its size, can stay the
+same: a cached entry list then reads every moved file from its old offset.
+The cache records the meta file's size and modification time (`meta_stamp`)
+and is only current when that matches too.
 """
 from __future__ import annotations
 
@@ -27,14 +33,27 @@ from bdo_models import PazEntry
 
 CACHE_FILE = "paz_browser.cache"
 # Raised when the saved layout changes; 1 was a pickled list of entries, 2 had
-# no archive file list.
-CACHE_FORMAT = 3
+# no archive file list, 3 had no meta stamp.
+CACHE_FORMAT = 4
+
+
+class MetaStamp(NamedTuple):
+    """Size and modification time of the meta file; a repack changes the time."""
+
+    size: int
+    mtime_ns: int
 
 
 class CachedEntries(NamedTuple):
     version: int
     archive_files: tuple[str, ...]
+    meta_stamp: MetaStamp
     entries: list[PazEntry]
+
+
+def meta_stamp(meta_path: Path) -> MetaStamp:
+    stat = meta_path.stat()
+    return MetaStamp(stat.st_size, stat.st_mtime_ns)
 
 
 def archive_files(paz_root: Path) -> tuple[str, ...]:
@@ -86,6 +105,7 @@ def _columns(cached: CachedEntries) -> dict:
         "format": CACHE_FORMAT,
         "version": cached.version,
         "archive_files": list(cached.archive_files),
+        "meta_stamp": list(cached.meta_stamp),
         "archives": archives,
         "archive": _u32_bytes(archive_index[entry.archive_name] for entry in entries),
         "paths": [entry.internal_path for entry in entries],
@@ -105,9 +125,12 @@ def _entries_from_columns(data: object) -> CachedEntries | None:
         return None
     version = data["version"]
     files = data["archive_files"]
+    stamp = data["meta_stamp"]
     archives = data["archives"]
     paths = data["paths"]
-    if not isinstance(version, int) or not all(isinstance(column, list) for column in (files, archives, paths)):
+    if not isinstance(version, int) or not all(isinstance(column, list) for column in (files, stamp, archives, paths)):
+        return None
+    if len(stamp) != len(MetaStamp._fields) or not all(isinstance(value, int) for value in stamp):
         return None
     columns = [_u32_array(data[name]) for name in ("archive", "offset", "compressed", "uncompressed")]
     if any(len(column) != len(paths) for column in columns):
@@ -117,7 +140,8 @@ def _entries_from_columns(data: object) -> CachedEntries | None:
     # compression_type and encryption_type are always 0 (`parse_paz_file`).
     # Every step runs in C: zip, map, tuple.__new__ and repeat.
     rows = zip(map(archives.__getitem__, archive), paths, offset, compressed, uncompressed, repeat(0), repeat(0))
-    return CachedEntries(version, tuple(files), list(map(tuple.__new__, repeat(PazEntry), rows)))
+    entries = list(map(tuple.__new__, repeat(PazEntry), rows))
+    return CachedEntries(version, tuple(files), MetaStamp(*stamp), entries)
 
 
 def _u32_bytes(values: Iterable[int]) -> bytes:

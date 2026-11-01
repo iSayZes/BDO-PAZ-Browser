@@ -4,7 +4,7 @@
     | u32 0 (empty string table) | u32 string_table_start | u32 0
 
 `discount_point` is in units of 0.0001% (`CppDefine.e1Percent` = 10000).
-Full layout in docs/file-formats/barterlifelevelinfo_bss.md.
+Full layout in docs/file-formats/bss/barterlifelevelinfo_bss.md.
 """
 
 from __future__ import annotations

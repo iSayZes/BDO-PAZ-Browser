@@ -12,7 +12,7 @@ and `action_hash` is the lookup3 hash of the same name over its ASCII bytes.
 `first_item_key` repeats `materials[0].item_key`. The names of `check_time`,
 `success_percent` and `installation_type` are the `Manufacture_Table` sheet
 columns and the 2016 client's `gc::ManufactureStaticStatus` members. Full
-layout in docs/file-formats/manufacture_bss.md.
+layout in docs/file-formats/bss/manufacture_bss.md.
 """
 
 from __future__ import annotations

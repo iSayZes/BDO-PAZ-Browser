@@ -7,7 +7,7 @@ six u32 required item keys and their six u64 counts, a u8 category, a u32
 count of u16 guild house character keys, and a u32 guild skill key.
 `guildmanufactureoffset.dbss` points 4 bytes into a row, at the exchange
 key, so the walk from the start needs no index. Layout 2 in
-docs/file-formats/guildmanufacture_dbss.md.
+docs/file-formats/dbss/guildmanufacture_dbss.md.
 """
 
 from __future__ import annotations

@@ -16,6 +16,7 @@
     "npcKind": "NPC-Art",
     "grade": "Rang",
     "level": "Stufe",
+    "maxHp": "Max. LP",
     "tribe": "Spezies",
     "characterGroup": "Charaktergruppe",
     "karma": "Karma",

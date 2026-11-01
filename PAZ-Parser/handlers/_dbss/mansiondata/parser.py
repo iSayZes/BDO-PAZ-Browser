@@ -5,7 +5,7 @@
 
 `mansiondataoffset.dbss` (u32 count, then u16 key, offset and size per
 row) points 2 bytes into a row, at `character_key_dup`. Layout 1 in
-docs/file-formats/mansiondata_dbss.md.
+docs/file-formats/dbss/mansiondata_dbss.md.
 """
 
 from __future__ import annotations

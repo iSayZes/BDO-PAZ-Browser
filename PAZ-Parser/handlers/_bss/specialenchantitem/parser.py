@@ -5,7 +5,7 @@
 Each row holds a packed item key, the level the client shows, and string-table
 indices for the icon path and the Korean name of that level. It copies the
 per-level icons of `itemenchant.dbss` for these items. Full layout in
-docs/file-formats/specialenchantitem_bss.md.
+docs/file-formats/bss/specialenchantitem_bss.md.
 """
 
 from __future__ import annotations

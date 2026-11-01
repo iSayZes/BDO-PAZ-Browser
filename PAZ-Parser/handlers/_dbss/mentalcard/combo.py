@@ -3,7 +3,7 @@
 The amity tooltip's "Next combo effect" line reads "After {apply_turn + 1}
 turns, {stat} will increase by {varied_value} for {valid_turn} turns", or
 "None" when `buff_type` is 4. Checked in game on 19 cards (see
-docs/file-formats/mentalcard_dbss.md). Records keep the raw values, so sorting
+docs/file-formats/dbss/mentalcard_dbss.md). Records keep the raw values, so sorting
 and export stay exact.
 """
 

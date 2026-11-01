@@ -6,7 +6,7 @@
 
 No row count: the rows run to the string table, one per class type from `0`
 (`80` bytes each). An empty slot is all zero. Full layout in
-docs/file-formats/skillquickslotinfo_bss.md.
+docs/file-formats/bss/skillquickslotinfo_bss.md.
 """
 
 from __future__ import annotations

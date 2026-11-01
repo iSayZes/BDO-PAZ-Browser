@@ -9,7 +9,7 @@
 
 `minigamefindpatternoffset.dbss` has the same groups, with (u16 key, u32
 offset, u32 size) rows that point 2 bytes into a row, at `pattern_index_dup`.
-Layout 1 in docs/file-formats/minigamefindpattern_dbss.md.
+Layout 1 in docs/file-formats/dbss/minigamefindpattern_dbss.md.
 """
 
 from __future__ import annotations

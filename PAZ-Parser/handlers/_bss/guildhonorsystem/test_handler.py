@@ -138,7 +138,7 @@ def _built_file() -> bytes:
 def test_a_built_file_reads_back() -> None:
     system = parse_guildhonorsystem(_built_file())
     assert tuple(system.head) == HEAD_FIELDS
-    assert system.head["unknown_08"] == -2
+    assert system.head["min_guild_fame"] == -2
     assert system.change_reasons == [
         {"key": 7, "description_kr": "a", "point": -25, "reason_param": 8, "key_dup": 7, "reason_type": _ADD_BOSS_SUMMON}
     ]

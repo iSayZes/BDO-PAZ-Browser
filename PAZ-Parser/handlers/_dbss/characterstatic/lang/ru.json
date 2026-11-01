@@ -16,6 +16,7 @@
     "npcKind": "Вид НИП",
     "grade": "Ранг",
     "level": "Уровень",
+    "maxHp": "Макс. HP",
     "tribe": "Вид",
     "characterGroup": "Группа персонажа",
     "karma": "Карма",

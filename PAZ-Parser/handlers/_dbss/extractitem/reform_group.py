@@ -5,7 +5,7 @@ reform's result is the row's `item_id` and its input is `result_item_id`.
 Some (result, input) pairs have records in more than one group; the group
 that also holds `result_material_id` as a stone in
 `itemimprovementsource.dbss` picks one. See the Notes in
-docs/file-formats/extractitem_dbss.md.
+docs/file-formats/dbss/extractitem_dbss.md.
 """
 
 from __future__ import annotations

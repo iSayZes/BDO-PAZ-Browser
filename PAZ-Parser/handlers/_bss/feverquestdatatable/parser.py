@@ -4,7 +4,7 @@
 
     row: u16 quest_chain_id | u16 quest_id | u32 consumption_fever_point
 
-The string table is empty. Layout in docs/file-formats/feverquestdatatable_bss.md.
+The string table is empty. Layout in docs/file-formats/bss/feverquestdatatable_bss.md.
 """
 
 from __future__ import annotations

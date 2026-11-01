@@ -3,7 +3,7 @@
 `alchemycharge.dbss`, `alchemyupgrade.dbss` and their `*offset.dbss` indexes
 hold rows of three u32 values; the group index is the alchemy stone type.
 An index row is `(item_id, offset, size)`. Layout in
-docs/file-formats/alchemycharge_dbss.md.
+docs/file-formats/dbss/alchemycharge_dbss.md.
 """
 
 from __future__ import annotations

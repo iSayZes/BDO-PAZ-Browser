@@ -8,7 +8,7 @@
 The string table is empty in every file of client 3482. A spawn is a
 variable-size record: a character key only when `has_character` is 1, then
 counted waypoint, index position and spawn condition lists. Layouts in
-docs/file-formats/x_y_bss.md, fieldgridinfo_bss.md and fileinfo_bss.md.
+docs/file-formats/bss/x_y_bss.md, fieldgridinfo_bss.md and fileinfo_bss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@
 A row holds the Korean dev name, servant kind, tier, grade, coat colors,
 breeding count, lifespan, prices, flags and two u8 lists of
 `vehicleskill.dbss` keys (the skills the servant starts with, and the
-stallion skills). Layout 2 in docs/file-formats/servant_bss.md.
+stallion skills). Layout 2 in docs/file-formats/bss/servant_bss.md.
 """
 
 from __future__ import annotations

@@ -8,7 +8,7 @@ One block per tier, found through `titlebufflistoffset.dbss`:
 
 `label_kr` reads "칭호 50개 습득 : " and `effect_kr` holds the bonuses with
 their values in PA colour tags. Full layout in
-docs/file-formats/titlebufflist_dbss.md.
+docs/file-formats/dbss/titlebufflist_dbss.md.
 """
 
 from __future__ import annotations

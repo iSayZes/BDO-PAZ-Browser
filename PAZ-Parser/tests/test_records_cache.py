@@ -9,7 +9,9 @@ from pathlib import Path
 
 import pytest
 
-from _common.data_deps import LOC, index_dep, recording
+from _common.client_versions import ClientRange, client_order
+from _common.data_deps import CLIENT, LOC, index_dep, recording
+from _common.effective_client import effective_client
 from _common.loc import loc_text
 from _common.lookup_index import IndexKind, lookup
 from api.bdo_records_prefill import PrefillProgress, RecordsPrefill
@@ -276,6 +278,14 @@ def test_setting_indexes_replaces_every_index_digest(digests: DataDigests) -> No
     assert digests.get(LOC) != ABSENT
 
 
+def test_the_client_digest_is_its_version_until_cleared(digests: DataDigests) -> None:
+    digests.set_client(1784)
+    assert digests.get(CLIENT) == "1784"
+
+    digests.set_client(None)
+    assert digests.get(CLIENT) == ABSENT
+
+
 # ── RecordStore ──────────────────────────────────────────────────────────────
 
 
@@ -320,6 +330,38 @@ def test_new_loc_rebuilds_only_tables_that_read_it(store: RecordStore, digests: 
 
     assert reads_loc.builds == 2
     assert reads_nothing.builds == 1
+
+
+def test_another_client_rebuilds_only_tables_that_read_it(store: RecordStore, digests: DataDigests) -> None:
+    digests.set_client(1784)
+    reads_client = _Handler(effective_client)
+    reads_nothing = _Handler()
+    _records_through(store, reads_client)
+    _records_through(store, reads_nothing, _COMPANION)
+
+    digests.set_client(3483)
+    _records_through(store, reads_client)
+    _records_through(store, reads_nothing, _COMPANION)
+
+    assert reads_client.builds == 2
+    assert reads_nothing.builds == 1
+
+
+def test_a_patch_keeps_tables_that_only_ordered_layouts_by_the_client(
+    store: RecordStore, digests: DataDigests
+) -> None:
+    layouts = ((ClientRange(3251),), (ClientRange(1717, 2000),))
+    orders_layouts = _Handler(lambda: client_order(layouts, lambda clients: clients))
+    digests.set_client(3483)
+    _records_through(store, orders_layouts)
+
+    digests.set_client(3484)  # a patch: still the newest layout's range
+    _records_through(store, orders_layouts)
+    assert orders_layouts.builds == 1
+
+    digests.set_client(1784)  # another layout's range
+    _records_through(store, orders_layouts)
+    assert orders_layouts.builds == 2
 
 
 def test_a_build_that_overlapped_a_data_change_is_not_saved(store: RecordStore, digests: DataDigests) -> None:

@@ -8,7 +8,7 @@
     entry: u32 unknown_00 (always 0) | u32 condition_ref | u16 subgroup_key
 
 `condition_ref` indexes the string table; string 0 is empty (no condition).
-Full layout in docs/file-formats/itemmaingroup_bss.md.
+Full layout in docs/file-formats/bss/itemmaingroup_bss.md.
 """
 
 from __future__ import annotations

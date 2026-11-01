@@ -3,7 +3,7 @@
 The enchant key is the u32 that `itemenchant.dbss` stores just before an
 item's Korean name; many items share one key. Block `level` holds the stats of
 the item at that level and what the attempt to reach it costs. Layout and
-evidence are in docs/file-formats/enchantstaticstatus_dbss.md.
+evidence are in docs/file-formats/dbss/enchantstaticstatus_dbss.md.
 """
 
 from __future__ import annotations

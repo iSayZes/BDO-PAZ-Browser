@@ -4,7 +4,7 @@
     | string table | u32 table_start | u32 0
 
 Each key is a packed item key (enchant level << 24 | item ID), ascending.
-Layout 1 in docs/file-formats/challengerewardlist_bss.md.
+Layout 1 in docs/file-formats/bss/challengerewardlist_bss.md.
 """
 
 from __future__ import annotations

@@ -7,7 +7,7 @@
 The 14 relation points are, in order, the `RELATION_FIELDS` below.
 `interiorrelationpointoffset.dbss` (PABR, u16 key, offset, size 0) points 2
 bytes into a row, at `character_key_dup`. Layout 1 in
-docs/file-formats/interiorrelationpoint_dbss.md.
+docs/file-formats/dbss/interiorrelationpoint_dbss.md.
 """
 
 from __future__ import annotations

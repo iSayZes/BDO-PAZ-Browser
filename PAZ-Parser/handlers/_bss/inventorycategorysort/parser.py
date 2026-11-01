@@ -5,7 +5,7 @@
     | u8 category_key_dup
 
 No PABR magic and no string table. Layout 1 in
-docs/file-formats/inventorycategorysort_bss.md.
+docs/file-formats/bss/inventorycategorysort_bss.md.
 """
 
 from __future__ import annotations

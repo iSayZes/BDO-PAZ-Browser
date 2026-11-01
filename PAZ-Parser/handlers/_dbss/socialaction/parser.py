@@ -10,7 +10,7 @@
 
 `socialactionoffset.dbss` (u32 count, then u16 key, u32 offset and u32 size
 per row) points just past the u16 key, at `social_action_key_dup`, and its
-size leaves the key out. Layout 1 in docs/file-formats/socialaction_dbss.md.
+size leaves the key out. Layout 1 in docs/file-formats/dbss/socialaction_dbss.md.
 """
 
 from __future__ import annotations

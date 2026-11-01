@@ -8,7 +8,7 @@ the condition first. With every string empty a record is 732 bytes; the
 
 `loc_index` is `str_id4` of the button text in LOC type 32 (`str_id1` is the
 character ID). Slots the client gives no LOC text have `None`.
-Full layout in docs/file-formats/characterfunction_dbss.md.
+Full layout in docs/file-formats/dbss/characterfunction_dbss.md.
 """
 
 from __future__ import annotations

@@ -3,7 +3,7 @@
 The file and its `alchemyupgradeoffset.dbss` index use the grouped walk in
 `_common/grouped_rows.py`. A main row is
 `(stone_type, item_id, experience)`.
-Layout in docs/file-formats/alchemyupgrade_dbss.md.
+Layout in docs/file-formats/dbss/alchemyupgrade_dbss.md.
 """
 
 from __future__ import annotations

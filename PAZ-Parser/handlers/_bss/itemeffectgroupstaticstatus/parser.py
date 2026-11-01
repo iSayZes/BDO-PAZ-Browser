@@ -9,7 +9,7 @@ No PABR magic and no string table. `item_group_type` is an
 `itemgroupingstaticstatus.bss` group type, `color` hex text (`1D3F48`),
 `color_rgb` the same colour as three bytes (`00 00 00` where the text is set)
 and `name` the `RESOURCE` sheet string hash of the effect name. Layout 4 in
-docs/file-formats/itemeffectgroupstaticstatus_bss.md.
+docs/file-formats/bss/itemeffectgroupstaticstatus_bss.md.
 """
 
 from __future__ import annotations

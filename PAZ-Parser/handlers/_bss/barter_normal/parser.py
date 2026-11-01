@@ -9,7 +9,7 @@
 
 An entry with a `barter_sub_group` names a `bartersubgroup.bss` group of the
 same list and leaves its own Exchange zero. Full layout in
-docs/file-formats/barter_normal_bss.md; the Exchange is read by
+docs/file-formats/bss/barter_normal_bss.md; the Exchange is read by
 `_bss/barter/exchange.py`, the two lists by `_bss/barter/group_lists.py`.
 """
 

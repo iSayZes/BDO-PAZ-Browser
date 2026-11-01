@@ -18,7 +18,8 @@ from tests.framework import (
     run_case,
 )
 
-from _bss.sequence_scripts.reader import cutscene_file_hash
+from _bss.sequence_scripts.reader import CUTSCENE_FILE_SUFFIX, cutscene_file_hash
+from _bss.sequencetriggerdata.parser import FILE_NAME as SEQUENCE_TRIGGER_DATA
 from .parser import CUTSCENE_FILE_NAME, SEQUENCE_FILE_NAME, SLOT_FIELDS
 
 
@@ -40,32 +41,42 @@ def _class_entries(source: CaseInput) -> int:
     return total
 
 
-def _case(file_name: str, cutscene_file_name: str) -> HandlerCase:
+def _case(file_name: str, cutscene_file_name: str, companion_files: dict[str, str], sequence_path: str) -> HandlerCase:
     return HandlerCase(
         handler_name=file_name,
         data_file=file_name,
-        companion_files={},
+        companion_files=companion_files,
         loc_file="languagedata_en.loc",
         uses_loc=True,
         loc_fields=["class_name", *_ITEM_NAME_FIELDS],
         internal_path=f"gamecommondata/binary/{file_name}",
         tests=[
             SchemaTest(required_keys=[
-                "file_name_hash", "cutscene_file_name", "class_type", "class_name", *SLOT_FIELDS, *_ITEM_NAME_FIELDS,
+                "file_name_hash", "cutscene_file_name", "sequence_path", "class_type", "class_name", *SLOT_FIELDS, *_ITEM_NAME_FIELDS,
             ]),
             DeclaredCountTest(declared=_class_entries),
             TargetTest(
                 col="cutscene_file_name",
                 value=cutscene_file_name,
-                expected={"file_name_hash": cutscene_file_hash(cutscene_file_name), "class_type": _WARRIOR},
+                expected={
+                    "file_name_hash": cutscene_file_hash(cutscene_file_name),
+                    "sequence_path": sequence_path,
+                    "class_type": _WARRIOR,
+                },
             ),
             UserLanguageTest(fields=["class_name"]),
         ],
     )
 
 
-SEQUENCE_CASE = _case(SEQUENCE_FILE_NAME, "CS_Tutorial_Illezra_00.pas")
-CUTSCENE_CASE = _case(CUTSCENE_FILE_NAME, "CS_Tutorial_00_Illezra_0000.pas")
+SEQUENCE_CASE = _case(
+    SEQUENCE_FILE_NAME,
+    "CS_Tutorial_Illezra_00.pas",
+    {SEQUENCE_TRIGGER_DATA: SEQUENCE_TRIGGER_DATA},
+    "IllezraTutorial/CS_Tutorial_Illezra_00",
+)
+# Cutscenes have no trigger row, so the cutscene table reads no companion.
+CUTSCENE_CASE = _case(CUTSCENE_FILE_NAME, "CS_Tutorial_00_Illezra_0000.pas", {}, "")
 CASES = [SEQUENCE_CASE, CUTSCENE_CASE]
 _RESULTS: dict[str, HandlerResult] = {}
 _SPECS = [(case, spec) for case in CASES for spec in case.tests]
@@ -95,3 +106,10 @@ def test_class_types_repeat_once_per_row(case: HandlerCase) -> None:
     keys = [(r["file_name_hash"], r["class_type"]) for r in _result(case).records]
     assert len(keys) == len(set(keys))
 
+
+def test_every_sequence_row_has_its_trigger_path() -> None:
+    """Every sequencetutorial_equipment.bss row keys a sequencetriggerdata.bss
+    sequence of the same file name, without `.pas`."""
+    for r in _result(SEQUENCE_CASE).records:
+        stem = r["cutscene_file_name"].removesuffix(CUTSCENE_FILE_SUFFIX)
+        assert r["sequence_path"].rsplit("/", 1)[-1] == stem, r["cutscene_file_name"]

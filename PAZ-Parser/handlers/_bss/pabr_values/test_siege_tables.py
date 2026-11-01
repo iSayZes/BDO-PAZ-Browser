@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 
+from _bss.worldmapgrid.parser import read_cells
 from tests.fixtures import load_binary_fixture
 
 from .handler import PabrValuesBssHandler
@@ -19,6 +20,8 @@ _DAY_OPTION = "siegedayoption.bss"
 _TERRITORY_OPTION = "siegeterritoryoptionstaticstatus.bss"
 _OCCUPY_COLOR = "siegeoccupycolor.bss"
 _MAP_COLOR_TABLES = (_SIEGE_INFO, _VILLAGE_SIEGE_INFO)
+# The grid whose cells hold villagesiegeinfo.bss area numbers (worldmapgrid_bss.md).
+_NODE_WAR_GRID = "worldmapsiegeregionforconquest.bss"
 _WEEK_DAYS = ("sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday")
 # CppEnums.VillageSiegeType: Sunday 0 to Saturday 6, then _Count.
 _DAY_COUNT = 7
@@ -53,9 +56,15 @@ def test_no_territory_has_two_siege_areas() -> None:
 def test_no_node_region_belongs_to_two_areas() -> None:
     records = _records(_VILLAGE_SIEGE_INFO)
     keys = [key for record in records for key in record["region_keys"]]
-    numbers = [record["unknown_region_keys_00"] for record in records]
+    numbers = [record["area_number"] for record in records]
     assert keys and len(keys) == len(set(keys))
     assert len(numbers) == len(set(numbers))
+
+
+def test_every_node_war_grid_value_is_an_area_number() -> None:
+    numbers = {record["area_number"] for record in _records(_VILLAGE_SIEGE_INFO)}
+    cells = read_cells(load_binary_fixture(_NODE_WAR_GRID), _NODE_WAR_GRID)
+    assert set(cells) <= numbers
 
 
 def test_the_day_option_is_one_record_of_seven_day_lists() -> None:

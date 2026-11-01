@@ -7,7 +7,7 @@
 
 No PABR magic and no string table. `mesh_key` is the `item_mesh_key` of
 the itemenchant.dbss class entries, `mesh_file` a `.pac` path under
-`character/model/`. Layout 1 in docs/file-formats/itemmeshstaticstatus_bss.md.
+`character/model/`. Layout 1 in docs/file-formats/bss/itemmeshstaticstatus_bss.md.
 """
 
 from __future__ import annotations

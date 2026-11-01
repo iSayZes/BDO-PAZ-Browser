@@ -7,7 +7,7 @@ A buff of effect type 23 names a point by section (`param_1`) and key
 (`param_2`). The offset file holds the same sections without a section count,
 as (index, offset, size) rows, where index is the record's position in its
 section, not its key.
-Full layout in docs/file-formats/teleport_dbss.md.
+Full layout in docs/file-formats/dbss/teleport_dbss.md.
 """
 
 from __future__ import annotations

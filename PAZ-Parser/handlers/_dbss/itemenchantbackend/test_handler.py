@@ -32,6 +32,7 @@ from tests.offset_rows import offset_row_problems
 
 from _common.pabr_offset import PabrOffsetRow
 from _dbss.itemenchant.parser import parse_itemenchant_records
+from .layout import read_block
 from .parser import FILE_NAME, KEY_FROM_END, OFFSET_FILE, parse_itemenchantbackend_records
 
 
@@ -42,7 +43,19 @@ _PEN = 20
 _ANCIENT_SPIRIT_VIPER = 15653
 _ANCIENT_SPIRIT_GROUP = 101
 _OQUILLA_SAIL_BALANCE = 607887
-_ITEMS = (_KZARKA_GAUNTLET, _ANCIENT_SPIRIT_VIPER, _OQUILLA_SAIL_BALANCE)
+# Black Stone (Weapon), Caphras Stone and the crystal open the windows of
+# `eConnectUiType` 0 (BlackStone), 28 (Caphras) and 1 (Socket) in connectui.luac;
+# the other items open none (-1).
+_BLACK_STONE_WEAPON = 16001
+_CAPHRAS_STONE = 721003
+_CONNECT_UI = {
+    _BLACK_STONE_WEAPON: 0,
+    _CAPHRAS_STONE: 28,
+    _ANCIENT_SPIRIT_VIPER: 1,
+    _KZARKA_GAUNTLET: -1,
+    _OQUILLA_SAIL_BALANCE: -1,
+}
+_ITEMS = (_KZARKA_GAUNTLET, _ANCIENT_SPIRIT_VIPER, _OQUILLA_SAIL_BALANCE, _BLACK_STONE_WEAPON, _CAPHRAS_STONE)
 # PABR magic, then the u32 count.
 _COUNT_OFFSET = 4
 _KEY = struct.Struct("<I")
@@ -109,14 +122,25 @@ def test_records_hold_the_itemenchant_crystal_group(files: SplitFiles) -> None:
     assert by_item[_KZARKA_GAUNTLET]["max_enchant_level"] == _PEN
 
 
-def test_a_block_that_ends_with_another_key_fails(files: SplitFiles) -> None:
+def test_every_block_walks_to_its_key(files: SplitFiles) -> None:
+    for row in files.back_rows:
+        assert read_block(files.back, row.offset, row.offset + row.size).key == row.entry_id
+
+
+def test_records_hold_the_connect_ui_window(files: SplitFiles) -> None:
+    records = parse_itemenchantbackend_records(files.back, files.back_offset)
+
+    assert {record["item_id"]: record["connect_ui"] for record in records} == _CONNECT_UI
+
+
+def test_a_block_one_byte_short_fails(files: SplitFiles) -> None:
     # The base block of Kzarka Gauntlet, one byte short.
     shifted = pabr_offset(
         PabrOffsetRow(row.entry_id, row.offset, row.size - 1) if row.entry_id == _KZARKA_GAUNTLET else row
         for row in files.back_rows
     )
 
-    with pytest.raises(ValueError, match="ends with key"):
+    with pytest.raises(ValueError, match="the walk ends"):
         parse_itemenchantbackend_records(files.back, shifted)
 
 

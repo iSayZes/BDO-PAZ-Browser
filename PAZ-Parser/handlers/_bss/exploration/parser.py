@@ -5,7 +5,7 @@
 
 Records tile the file exactly, so they are walked, not searched for. Node names
 come from LOC type 29 keyed by `node_key`; the string table holds the Korean
-source names. Full layout in docs/file-formats/exploration_bss.md.
+source names. Full layout in docs/file-formats/bss/exploration_bss.md.
 """
 
 from __future__ import annotations

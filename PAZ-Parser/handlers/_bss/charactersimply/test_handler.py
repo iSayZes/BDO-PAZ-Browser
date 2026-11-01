@@ -23,7 +23,7 @@ from tests.framework import (
 
 # Fields both files store, by the same name, with the same meaning.
 _SHARED_FIELDS = (
-    "npc_kind", "grade", "level", "character_group", "class_type", "body_size",
+    "npc_kind", "grade", "level", "max_hp", "character_group", "class_type", "body_size",
     "vehicle_type", "model_path", "name_kr", "title_kr", "action_script", "condition_script",
 )
 

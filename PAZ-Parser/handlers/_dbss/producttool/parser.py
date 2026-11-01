@@ -7,7 +7,7 @@
 `producttooloffset.dbss` holds bare u32-keyed index rows that point at
 `item_key_dup`, just past each record's first key. The records fill the file,
 so the parser reads them in order without the index. Layout in
-docs/file-formats/producttool_dbss.md.
+docs/file-formats/dbss/producttool_dbss.md.
 """
 
 from __future__ import annotations

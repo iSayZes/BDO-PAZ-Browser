@@ -11,7 +11,7 @@
 Cells run column by column (cell index = column * height + row); cell type
 `2` holds a skill. `uipracticeskilltreelayout.bss` keeps one such grid per
 class and reads its cells with `read_cells`. Full layout in
-docs/file-formats/uiguildskilltreelayout_bss.md.
+docs/file-formats/bss/uiguildskilltreelayout_bss.md.
 """
 
 from __future__ import annotations

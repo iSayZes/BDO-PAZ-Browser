@@ -1,6 +1,6 @@
 """Layouts of the small item tables that fit the PABR value tables.
 
-Each file's doc is `docs/file-formats/<stem>_bss.md` (`itemprotector_dbss.md`
+Each file's doc is `docs/file-formats/bss/<stem>_bss.md` (`itemprotector_dbss.md`
 for the one `.dbss`). The names follow the sheets of a private server's
 `DataSheets.bexcel` on client 1784: `Enchant_Protect` (`itemprotector.dbss`),
 `Auto_Warehouse_Order_Filter` (`itemmovedata.bss`), `MedalTable`

@@ -6,7 +6,7 @@ type 116 names a hunting ground by key; the `HUNTING_GROUND_NAME_KR` lookup
 index holds the Korean name for the keys LOC leaves out. The
 `CHARACTER_HUNTING_GROUNDS` index lists the hunting grounds whose monster list
 holds a character, so tables keyed by monster need no companion for it. See
-docs/file-formats/dropuihuntinggroundinfo_bss.md.
+docs/file-formats/bss/dropuihuntinggroundinfo_bss.md.
 """
 
 from __future__ import annotations

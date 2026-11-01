@@ -7,7 +7,7 @@ The lists have no count: they run up to the string table, which holds no
 strings, and list `n` is `__ePlayerLifeStatType` `n` (`0` Collecting to
 `9` Sail, empty lists up to `14`). Each value is a `buff.dbss` effect type.
 
-Layout 1 in docs/file-formats/lifeequipitemstaticstatusmanager_bss.md.
+Layout 1 in docs/file-formats/bss/lifeequipitemstaticstatusmanager_bss.md.
 """
 
 from __future__ import annotations

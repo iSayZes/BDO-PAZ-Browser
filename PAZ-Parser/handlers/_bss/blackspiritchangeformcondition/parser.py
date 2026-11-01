@@ -3,7 +3,7 @@
     str16 change_condition
 
 The whole file is one u64-counted UTF-16LE condition script. Layout 1 in
-docs/file-formats/blackspiritchangeformcondition_bss.md.
+docs/file-formats/bss/blackspiritchangeformcondition_bss.md.
 """
 
 from __future__ import annotations

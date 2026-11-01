@@ -12,7 +12,7 @@ record is preceded by a copy of its key, and walks as:
 
 Strings are a u64 unit count plus UTF-16LE or ASCII. The Korean text is
 localized in LOC type 39, keyed `(key, text_id, 0, field)`. Full layout in
-docs/file-formats/detail_dialog_dbss.md.
+docs/file-formats/dbss/detail_dialog_dbss.md.
 """
 
 from __future__ import annotations

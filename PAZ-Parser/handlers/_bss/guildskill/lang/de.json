@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "Talent-Nr.",
+    "skill": "Talent",
+    "skillLevel": "Talentstufe",
+    "treeColumn": "Baumspalte",
+    "treeRow": "Baumzeile"
+  },
+  "meta": {
+    "count": "{count} Gildentalente"
+  }
+}

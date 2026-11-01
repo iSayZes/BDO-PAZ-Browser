@@ -6,7 +6,7 @@
     Entry: u16 unknown_00 | u8 unknown_02
 
 No count gives the number of entries; they run up to the string table.
-Layout 1 in docs/file-formats/employeejobslotstaticstatus_bss.md.
+Layout 1 in docs/file-formats/bss/employeejobslotstaticstatus_bss.md.
 """
 
 from __future__ import annotations

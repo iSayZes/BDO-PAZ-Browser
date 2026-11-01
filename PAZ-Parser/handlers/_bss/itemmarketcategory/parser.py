@@ -10,7 +10,7 @@
          | u32 unknown_filter2_values_00
     category value: u8 category_no | u32 name_ref (string table index)
 
-Layout in docs/file-formats/itemmarketcategory_bss.md.
+Layout in docs/file-formats/bss/itemmarketcategory_bss.md.
 """
 
 from __future__ import annotations

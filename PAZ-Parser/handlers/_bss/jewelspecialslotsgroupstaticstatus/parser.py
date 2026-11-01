@@ -6,7 +6,7 @@
     row: u8 slot | u32 group_count | group_count x u16 group
 
 The groups are `jewelgroupstaticstatus.bss` group numbers. Layout in
-docs/file-formats/jewelspecialslotsgroupstaticstatus_bss.md.
+docs/file-formats/bss/jewelspecialslotsgroupstaticstatus_bss.md.
 """
 
 from __future__ import annotations

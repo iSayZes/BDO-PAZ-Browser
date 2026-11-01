@@ -5,7 +5,7 @@
 
 The file stores no count and no key. `minigamefindtooloffset.dbss` holds the
 same blocks as a u32 row count and (u8 enchant_level, u32 offset, u32 size)
-rows. Layout 2 in docs/file-formats/minigamefindtool_dbss.md.
+rows. Layout 2 in docs/file-formats/dbss/minigamefindtool_dbss.md.
 """
 
 from __future__ import annotations

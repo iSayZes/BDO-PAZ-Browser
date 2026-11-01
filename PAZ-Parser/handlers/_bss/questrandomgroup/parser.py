@@ -6,7 +6,7 @@
         | u16 quest_chain_id | u16 draw_count | u16 unknown_12 | u32 unknown_14
         | bytes[8] unknown_18
 
-The string table is empty. Layout in docs/file-formats/questrandomgroup_bss.md.
+The string table is empty. Layout in docs/file-formats/bss/questrandomgroup_bss.md.
 """
 
 from __future__ import annotations

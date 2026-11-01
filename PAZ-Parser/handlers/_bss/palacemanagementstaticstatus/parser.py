@@ -13,7 +13,7 @@
     Manufacture Board: u16 board_key | u32 board_name_ref | u32 item_count
         | item_count x (u16 item_index | u32 exchange_key)
 
-Full layout in docs/file-formats/palacemanagementstaticstatus_bss.md.
+Full layout in docs/file-formats/bss/palacemanagementstaticstatus_bss.md.
 """
 
 from __future__ import annotations

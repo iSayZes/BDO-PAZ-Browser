@@ -8,7 +8,7 @@
          | f32 position_x | f32 position_y | f32 position_z | f32 min_ap
     reward item: u32 item_key | 4 bytes padding | i64 count
 
-No PABR magic. Full layout in docs/file-formats/elementalmonsterstat_bss.md.
+No PABR magic. Full layout in docs/file-formats/bss/elementalmonsterstat_bss.md.
 """
 
 from __future__ import annotations

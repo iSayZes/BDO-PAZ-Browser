@@ -6,7 +6,7 @@
     Item: u32 item_key | u64 count
 
 `servantupgradeoffset.dbss` indexes each upgrade per ship and target ship.
-Layout 1 in docs/file-formats/servantupgrade_dbss.md.
+Layout 1 in docs/file-formats/dbss/servantupgrade_dbss.md.
 """
 
 from __future__ import annotations

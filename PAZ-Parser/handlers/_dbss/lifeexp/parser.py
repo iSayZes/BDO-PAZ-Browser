@@ -10,7 +10,7 @@ Each row is:
 
 `lifeexpoffset.dbss` has the same shape with 12-byte
 [u32 level][u32 offset][u32 size] rows; its block index is the life skill.
-Full layout in docs/file-formats/lifeexp_dbss.md.
+Full layout in docs/file-formats/dbss/lifeexp_dbss.md.
 """
 
 from __future__ import annotations

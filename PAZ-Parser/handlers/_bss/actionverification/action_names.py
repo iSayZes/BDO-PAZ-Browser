@@ -4,7 +4,7 @@ The file stores each action name only as its `ascii_key_hash`. These are the
 29 `ActionName` values of the `ActionVerification_Table` sheet of a private
 server on client 1784; on client 3474 every `action_hash` in the file is the
 hash of one of them. A hash that is not one of them gets no name.
-See "Action Names" in docs/file-formats/actionverification_bss.md.
+See "Action Names" in docs/file-formats/bss/actionverification_bss.md.
 """
 
 from __future__ import annotations

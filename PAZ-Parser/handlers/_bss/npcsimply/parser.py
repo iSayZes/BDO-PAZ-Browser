@@ -4,7 +4,7 @@
 
 Each row maps a character ID to its primary SpawnType role and string-table
 indexes for the action script, Korean name and Korean role text. Full layout in
-docs/file-formats/npcsimply_bss.md.
+docs/file-formats/bss/npcsimply_bss.md.
 """
 
 from __future__ import annotations

@@ -4,7 +4,7 @@
                          | u32 boss_spawn_key_dup | f32 unknown_14)
 
 No PABR magic and no string table. Layout 1 in
-docs/file-formats/guildbossfieldinfo_bss.md.
+docs/file-formats/bss/guildbossfieldinfo_bss.md.
 """
 
 from __future__ import annotations

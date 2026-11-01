@@ -7,7 +7,7 @@
 The groups follow `CppEnums.InstantCashType` in order; the file stores no
 group count. An entry is the 2016 `gc::InstantCashItem::value_type`, its
 padding left as the server wrote it. Layout 1 in
-docs/file-formats/cashproduct_instant_bss.md.
+docs/file-formats/bss/cashproduct_instant_bss.md.
 """
 
 from __future__ import annotations

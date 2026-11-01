@@ -11,7 +11,7 @@
     effect: str8 effect_name | u8 loop | i16 pos_x | i16 pos_y
     sound: u16 audio_index | u16 audio_index_b | u8 console_play
 
-Layout 1 in docs/file-formats/nakmessagerenewelss_bss.md.
+Layout 1 in docs/file-formats/bss/nakmessagerenewelss_bss.md.
 """
 
 from __future__ import annotations

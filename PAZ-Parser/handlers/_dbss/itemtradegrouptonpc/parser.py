@@ -8,7 +8,7 @@ and three bytes the server copies from the item (`TradeType`, `CommerceType`,
 `PriceType`); the price and stock members between them are zero on the live
 client. No `PABR` magic and no string table. `itemtradegrouptonpcoffset.dbss`
 points at each group, so reading the groups in order needs no index. Layout
-in docs/file-formats/itemtradegrouptonpc_dbss.md.
+in docs/file-formats/dbss/itemtradegrouptonpc_dbss.md.
 """
 
 from __future__ import annotations

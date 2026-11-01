@@ -3,7 +3,7 @@
 `PABR`, a u32 array with no count (entry N is the max level of fitness type N,
 in the `fitnesslevel.dbss` block order), then the 12-byte PABR trailer whose
 middle u32 is the end of the array. Full layout in
-docs/file-formats/fitnessmaxlevel_bss.md.
+docs/file-formats/bss/fitnessmaxlevel_bss.md.
 """
 
 from __future__ import annotations

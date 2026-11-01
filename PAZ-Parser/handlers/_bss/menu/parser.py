@@ -4,7 +4,7 @@
 
 Each row holds the category ID, its icon as a region of a sprite sheet, its
 hotkey, its title as a UI string key with the key's sheet, and how many
-`submenu.bss` entries it has. Full layout in docs/file-formats/menu_bss.md.
+`submenu.bss` entries it has. Full layout in docs/file-formats/bss/menu_bss.md.
 """
 
 from __future__ import annotations

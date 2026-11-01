@@ -16,6 +16,7 @@
     "npcKind": "NPC 종류",
     "grade": "등급",
     "level": "레벨",
+    "maxHp": "최대 생명력",
     "tribe": "종",
     "characterGroup": "캐릭터 그룹",
     "karma": "성향",

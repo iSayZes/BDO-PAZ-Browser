@@ -5,7 +5,7 @@ Keyed `(product_id, 0, service code, field)`: field 0 is the product name and
 `str_id3` is the same on nearly every product of one LOC file (12 in the en,
 de, fr and sp files, 8 in ru), and a few products also or only have rows
 under another code. The code most products use wins, else the lowest one.
-See "Type 50" in docs/file-formats/languagedata_loc.md.
+See "Type 50" in docs/file-formats/other/languagedata_loc.md.
 """
 
 from __future__ import annotations

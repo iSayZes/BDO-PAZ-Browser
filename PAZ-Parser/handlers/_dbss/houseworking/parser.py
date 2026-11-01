@@ -6,7 +6,7 @@
 
 The row key sits after the work list. `houseworkingoffset.dbss` (u32
 count, then u16 key, offset and size per row) points at the row start.
-Layout 2 in docs/file-formats/houseworking_dbss.md; clients before it
+Layout 2 in docs/file-formats/dbss/houseworking_dbss.md; clients before it
 store the exchange key as a u16 (Layout 1), which this parser does not read.
 """
 

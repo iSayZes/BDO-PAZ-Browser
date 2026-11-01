@@ -4,7 +4,7 @@
 
 `trainingvehicleoffset.dbss` points at each row's `character_key_dup`, so
 the walk from the start needs no index. Layout 1 in
-docs/file-formats/trainingvehicle_dbss.md.
+docs/file-formats/dbss/trainingvehicle_dbss.md.
 """
 
 from __future__ import annotations

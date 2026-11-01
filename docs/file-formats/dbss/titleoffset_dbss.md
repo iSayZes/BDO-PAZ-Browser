@@ -1,0 +1,521 @@
+# `titleoffset.dbss` Format
+
+## Purpose
+
+ID-keyed index into `title.dbss`. Maps each title ID to the byte offset and block size of the corresponding record in the main data file.
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
+
+| Layout | Clients        | File               | Bytes  | Records             | Row bytes |
+| ------ | -------------- | ------------------ | ------ | ------------------- | --------- |
+| 1      | 1230 and later | `titleoffset.dbss` | 38,152 | 3,179 Offset Record | 12        |
+
+| Layout | File               | Known             | Unknown    |
+| ------ | ------------------ | ----------------- | ---------- |
+| 1      | `titleoffset.dbss` | 38,152 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   | Checked against |
+| ------ | -------- | --------------- |
+| 3483   | Layout 1 | `f4675a7cedbb`  |
+| 3482   | Layout 1 | `f4675a7cedbb`  |
+| 3474   | Layout 1 | `f4675a7cedbb`  |
+| 3473   | Layout 1 | `f4675a7cedbb`  |
+| 3464   | Layout 1 | `f4675a7cedbb`  |
+| 3458   | Layout 1 | `f4675a7cedbb`  |
+| 3454   | Layout 1 | `f4675a7cedbb`  |
+| 3444   | Layout 1 | `f4675a7cedbb`  |
+| 3435   | Layout 1 | `f4675a7cedbb`  |
+| 3426   | Layout 1 | `f4675a7cedbb`  |
+| 3418   | Layout 1 | `f4675a7cedbb`  |
+| 3412   | Layout 1 | `f4675a7cedbb`  |
+| 3402   | Layout 1 | `f4675a7cedbb`  |
+| 3396   | Layout 1 | `f4675a7cedbb`  |
+| 3387   | Layout 1 | `f4675a7cedbb`  |
+| 3381   | Layout 1 | `f4675a7cedbb`  |
+| 3373   | Layout 1 | `f4675a7cedbb`  |
+| 3364   | Layout 1 | `f4675a7cedbb`  |
+| 3356   | Layout 1 | `f4675a7cedbb`  |
+| 3349   | Layout 1 | `f4675a7cedbb`  |
+| 3342   | Layout 1 | `f4675a7cedbb`  |
+| 3335   | Layout 1 | `f4675a7cedbb`  |
+| 3326   | Layout 1 | `f4675a7cedbb`  |
+| 3321   | Layout 1 | `f4675a7cedbb`  |
+| 3314   | Layout 1 | `f4675a7cedbb`  |
+| 3303   | Layout 1 | `f4675a7cedbb`  |
+| 3302   | Layout 1 | `f4675a7cedbb`  |
+| 3293   | Layout 1 | `f4675a7cedbb`  |
+| 3283   | Layout 1 | `f4675a7cedbb`  |
+| 3275   | Layout 1 | `f4675a7cedbb`  |
+| 3267   | Layout 1 | `f4675a7cedbb`  |
+| 3258   | Layout 1 | `f4675a7cedbb`  |
+| 3251   | Layout 1 | `f4675a7cedbb`  |
+| 3242   | Layout 1 | `f4675a7cedbb`  |
+| 3235   | Layout 1 | `f4675a7cedbb`  |
+| 3229   | Layout 1 | `f4675a7cedbb`  |
+| 3212   | Layout 1 | `f4675a7cedbb`  |
+| 3203   | Layout 1 | `f4675a7cedbb`  |
+| 3193   | Layout 1 | `f4675a7cedbb`  |
+| 3186   | Layout 1 | `f4675a7cedbb`  |
+| 3177   | Layout 1 | `f4675a7cedbb`  |
+| 3169   | Layout 1 | `f4675a7cedbb`  |
+| 3158   | Layout 1 | `f4675a7cedbb`  |
+| 3151   | Layout 1 | `f4675a7cedbb`  |
+| 3144   | Layout 1 | `f4675a7cedbb`  |
+| 3133   | Layout 1 | `f4675a7cedbb`  |
+| 3125   | Layout 1 | `f4675a7cedbb`  |
+| 3118   | Layout 1 | `f4675a7cedbb`  |
+| 3111   | Layout 1 | `f4675a7cedbb`  |
+| 3103   | Layout 1 | `f4675a7cedbb`  |
+| 3095   | Layout 1 | `f4675a7cedbb`  |
+| 3086   | Layout 1 | `f4675a7cedbb`  |
+| 3072   | Layout 1 | `f4675a7cedbb`  |
+| 3062   | Layout 1 | `f4675a7cedbb`  |
+| 3052   | Layout 1 | `f4675a7cedbb`  |
+| 3045   | Layout 1 | `f4675a7cedbb`  |
+| 3037   | Layout 1 | `f4675a7cedbb`  |
+| 3030   | Layout 1 | `f4675a7cedbb`  |
+| 3021   | Layout 1 | `f4675a7cedbb`  |
+| 3012   | Layout 1 | `f4675a7cedbb`  |
+| 3002   | Layout 1 | `f4675a7cedbb`  |
+| 2995   | Layout 1 | `f4675a7cedbb`  |
+| 2987   | Layout 1 | `f4675a7cedbb`  |
+| 2978   | Layout 1 | `f4675a7cedbb`  |
+| 2970   | Layout 1 | `f4675a7cedbb`  |
+| 2959   | Layout 1 | `f4675a7cedbb`  |
+| 2951   | Layout 1 | `f4675a7cedbb`  |
+| 2942   | Layout 1 | `f4675a7cedbb`  |
+| 2935   | Layout 1 | `f4675a7cedbb`  |
+| 2932   | Layout 1 | `f4675a7cedbb`  |
+| 2923   | Layout 1 | `f4675a7cedbb`  |
+| 2919   | Layout 1 | `f4675a7cedbb`  |
+| 2907   | Layout 1 | `f4675a7cedbb`  |
+| 2900   | Layout 1 | `f4675a7cedbb`  |
+| 2891   | Layout 1 | `f4675a7cedbb`  |
+| 2882   | Layout 1 | `f4675a7cedbb`  |
+| 2872   | Layout 1 | `f4675a7cedbb`  |
+| 2863   | Layout 1 | `f4675a7cedbb`  |
+| 2855   | Layout 1 | `f4675a7cedbb`  |
+| 2849   | Layout 1 | `f4675a7cedbb`  |
+| 2844   | Layout 1 | `f4675a7cedbb`  |
+| 2834   | Layout 1 | `f4675a7cedbb`  |
+| 2825   | Layout 1 | `f4675a7cedbb`  |
+| 2819   | Layout 1 | `f4675a7cedbb`  |
+| 2811   | Layout 1 | `f4675a7cedbb`  |
+| 2803   | Layout 1 | `f4675a7cedbb`  |
+| 2794   | Layout 1 | `f4675a7cedbb`  |
+| 2783   | Layout 1 | `f4675a7cedbb`  |
+| 2774   | Layout 1 | `f4675a7cedbb`  |
+| 2765   | Layout 1 | `f4675a7cedbb`  |
+| 2756   | Layout 1 | `f4675a7cedbb`  |
+| 2750   | Layout 1 | `f4675a7cedbb`  |
+| 2743   | Layout 1 | `f4675a7cedbb`  |
+| 2736   | Layout 1 | `f4675a7cedbb`  |
+| 2726   | Layout 1 | `f4675a7cedbb`  |
+| 2717   | Layout 1 | `f4675a7cedbb`  |
+| 2709   | Layout 1 | `f4675a7cedbb`  |
+| 2703   | Layout 1 | `f4675a7cedbb`  |
+| 2695   | Layout 1 | `f4675a7cedbb`  |
+| 2684   | Layout 1 | `f4675a7cedbb`  |
+| 2672   | Layout 1 | `f4675a7cedbb`  |
+| 2665   | Layout 1 | `f4675a7cedbb`  |
+| 2657   | Layout 1 | `f4675a7cedbb`  |
+| 2649   | Layout 1 | `f4675a7cedbb`  |
+| 2644   | Layout 1 | `f4675a7cedbb`  |
+| 2637   | Layout 1 | `f4675a7cedbb`  |
+| 2629   | Layout 1 | `f4675a7cedbb`  |
+| 2619   | Layout 1 | `f4675a7cedbb`  |
+| 2612   | Layout 1 | `f4675a7cedbb`  |
+| 2606   | Layout 1 | `f4675a7cedbb`  |
+| 2602   | Layout 1 | `f4675a7cedbb`  |
+| 2601   | Layout 1 | `f4675a7cedbb`  |
+| 2592   | Layout 1 | `f4675a7cedbb`  |
+| 2583   | Layout 1 | `f4675a7cedbb`  |
+| 2575   | Layout 1 | `f4675a7cedbb`  |
+| 2567   | Layout 1 | `f4675a7cedbb`  |
+| 2560   | Layout 1 | `f4675a7cedbb`  |
+| 2553   | Layout 1 | `f4675a7cedbb`  |
+| 2545   | Layout 1 | `f4675a7cedbb`  |
+| 2538   | Layout 1 | `f4675a7cedbb`  |
+| 2529   | Layout 1 | `f4675a7cedbb`  |
+| 2519   | Layout 1 | `f4675a7cedbb`  |
+| 2513   | Layout 1 | `f4675a7cedbb`  |
+| 2510   | Layout 1 | `f4675a7cedbb`  |
+| 2507   | Layout 1 | `f4675a7cedbb`  |
+| 2503   | Layout 1 | `f4675a7cedbb`  |
+| 2498   | Layout 1 | `f4675a7cedbb`  |
+| 2492   | Layout 1 | `f4675a7cedbb`  |
+| 2487   | Layout 1 | `f4675a7cedbb`  |
+| 2480   | Layout 1 | `f4675a7cedbb`  |
+| 2474   | Layout 1 | `f4675a7cedbb`  |
+| 2468   | Layout 1 | `f4675a7cedbb`  |
+| 2460   | Layout 1 | `f4675a7cedbb`  |
+| 2453   | Layout 1 | `f4675a7cedbb`  |
+| 2444   | Layout 1 | `f4675a7cedbb`  |
+| 2438   | Layout 1 | `f4675a7cedbb`  |
+| 2434   | Layout 1 | `f4675a7cedbb`  |
+| 2429   | Layout 1 | `f4675a7cedbb`  |
+| 2421   | Layout 1 | `f4675a7cedbb`  |
+| 2414   | Layout 1 | `f4675a7cedbb`  |
+| 2407   | Layout 1 | `f4675a7cedbb`  |
+| 2401   | Layout 1 | `f4675a7cedbb`  |
+| 2397   | Layout 1 | `f4675a7cedbb`  |
+| 2393   | Layout 1 | `f4675a7cedbb`  |
+| 2384   | Layout 1 | `f4675a7cedbb`  |
+| 2378   | Layout 1 | `f4675a7cedbb`  |
+| 2372   | Layout 1 | `f4675a7cedbb`  |
+| 2358   | Layout 1 | `f4675a7cedbb`  |
+| 2352   | Layout 1 | `f4675a7cedbb`  |
+| 2347   | Layout 1 | `f4675a7cedbb`  |
+| 2343   | Layout 1 | `f4675a7cedbb`  |
+| 2335   | Layout 1 | `f4675a7cedbb`  |
+| 2327   | Layout 1 | `f4675a7cedbb`  |
+| 2324   | Layout 1 | `f4675a7cedbb`  |
+| 2319   | Layout 1 | `f4675a7cedbb`  |
+| 2313   | Layout 1 | `f4675a7cedbb`  |
+| 2308   | Layout 1 | `f4675a7cedbb`  |
+| 2302   | Layout 1 | `f4675a7cedbb`  |
+| 2295   | Layout 1 | `f4675a7cedbb`  |
+| 2290   | Layout 1 | `f4675a7cedbb`  |
+| 2284   | Layout 1 | `f4675a7cedbb`  |
+| 2276   | Layout 1 | `f4675a7cedbb`  |
+| 2269   | Layout 1 | `f4675a7cedbb`  |
+| 2259   | Layout 1 | `f4675a7cedbb`  |
+| 2250   | Layout 1 | `f4675a7cedbb`  |
+| 2243   | Layout 1 | `f4675a7cedbb`  |
+| 2235   | Layout 1 | `f4675a7cedbb`  |
+| 2229   | Layout 1 | `f4675a7cedbb`  |
+| 2224   | Layout 1 | `f4675a7cedbb`  |
+| 2218   | Layout 1 | `f4675a7cedbb`  |
+| 2215   | Layout 1 | `f4675a7cedbb`  |
+| 2207   | Layout 1 | `f4675a7cedbb`  |
+| 2203   | Layout 1 | `f4675a7cedbb`  |
+| 2196   | Layout 1 | `f4675a7cedbb`  |
+| 2192   | Layout 1 | `f4675a7cedbb`  |
+| 2189   | Layout 1 | `f4675a7cedbb`  |
+| 2183   | Layout 1 | `f4675a7cedbb`  |
+| 2179   | Layout 1 | `f4675a7cedbb`  |
+| 2171   | Layout 1 | `f4675a7cedbb`  |
+| 2163   | Layout 1 | `f4675a7cedbb`  |
+| 2156   | Layout 1 | `f4675a7cedbb`  |
+| 2151   | Layout 1 | `f4675a7cedbb`  |
+| 2147   | Layout 1 | `f4675a7cedbb`  |
+| 2142   | Layout 1 | `f4675a7cedbb`  |
+| 2138   | Layout 1 | `f4675a7cedbb`  |
+| 2134   | Layout 1 | `f4675a7cedbb`  |
+| 2130   | Layout 1 | `f4675a7cedbb`  |
+| 2122   | Layout 1 | `f4675a7cedbb`  |
+| 2107   | Layout 1 | `f4675a7cedbb`  |
+| 2098   | Layout 1 | `f4675a7cedbb`  |
+| 2089   | Layout 1 | `f4675a7cedbb`  |
+| 2081   | Layout 1 | `f4675a7cedbb`  |
+| 2073   | Layout 1 | `f4675a7cedbb`  |
+| 2067   | Layout 1 | `f4675a7cedbb`  |
+| 2063   | Layout 1 | `f4675a7cedbb`  |
+| 2059   | Layout 1 | `f4675a7cedbb`  |
+| 2052   | Layout 1 | `f4675a7cedbb`  |
+| 2044   | Layout 1 | `f4675a7cedbb`  |
+| 2039   | Layout 1 | `f4675a7cedbb`  |
+| 2032   | Layout 1 | `f4675a7cedbb`  |
+| 2025   | Layout 1 | `f4675a7cedbb`  |
+| 2011   | Layout 1 | `f4675a7cedbb`  |
+| 2005   | Layout 1 | `f4675a7cedbb`  |
+| 2000   | Layout 1 | `f4675a7cedbb`  |
+| 1996   | Layout 1 | `f4675a7cedbb`  |
+| 1991   | Layout 1 | `f4675a7cedbb`  |
+| 1985   | Layout 1 | `f4675a7cedbb`  |
+| 1980   | Layout 1 | `f4675a7cedbb`  |
+| 1969   | Layout 1 | `f4675a7cedbb`  |
+| 1964   | Layout 1 | `f4675a7cedbb`  |
+| 1958   | Layout 1 | `f4675a7cedbb`  |
+| 1950   | Layout 1 | `f4675a7cedbb`  |
+| 1945   | Layout 1 | `f4675a7cedbb`  |
+| 1937   | Layout 1 | `f4675a7cedbb`  |
+| 1933   | Layout 1 | `f4675a7cedbb`  |
+| 1927   | Layout 1 | `f4675a7cedbb`  |
+| 1921   | Layout 1 | `f4675a7cedbb`  |
+| 1914   | Layout 1 | `f4675a7cedbb`  |
+| 1908   | Layout 1 | `f4675a7cedbb`  |
+| 1897   | Layout 1 | `f4675a7cedbb`  |
+| 1892   | Layout 1 | `f4675a7cedbb`  |
+| 1886   | Layout 1 | `f4675a7cedbb`  |
+| 1881   | Layout 1 | `f4675a7cedbb`  |
+| 1871   | Layout 1 | `f4675a7cedbb`  |
+| 1866   | Layout 1 | `f4675a7cedbb`  |
+| 1862   | Layout 1 | `f4675a7cedbb`  |
+| 1854   | Layout 1 | `f4675a7cedbb`  |
+| 1846   | Layout 1 | `f4675a7cedbb`  |
+| 1838   | Layout 1 | `f4675a7cedbb`  |
+| 1832   | Layout 1 | `f4675a7cedbb`  |
+| 1826   | Layout 1 | `f4675a7cedbb`  |
+| 1822   | Layout 1 | `f4675a7cedbb`  |
+| 1818   | Layout 1 | `f4675a7cedbb`  |
+| 1804   | Layout 1 | `f4675a7cedbb`  |
+| 1794   | Layout 1 | `f4675a7cedbb`  |
+| 1790   | Layout 1 | `f4675a7cedbb`  |
+| 1784   | Layout 1 | `f4675a7cedbb`  |
+| 1774   | Layout 1 | `f4675a7cedbb`  |
+| 1771   | Layout 1 | `f4675a7cedbb`  |
+| 1762   | Layout 1 | `f4675a7cedbb`  |
+| 1759   | Layout 1 | `f4675a7cedbb`  |
+| 1754   | Layout 1 | `f4675a7cedbb`  |
+| 1749   | Layout 1 | `f4675a7cedbb`  |
+| 1743   | Layout 1 | `f4675a7cedbb`  |
+| 1737   | Layout 1 | `f4675a7cedbb`  |
+| 1731   | Layout 1 | `f4675a7cedbb`  |
+| 1725   | Layout 1 | `f4675a7cedbb`  |
+| 1717   | Layout 1 | `f4675a7cedbb`  |
+| 1710   | Layout 1 | `f4675a7cedbb`  |
+| 1704   | Layout 1 | `f4675a7cedbb`  |
+| 1698   | Layout 1 | `f4675a7cedbb`  |
+| 1690   | Layout 1 | `f4675a7cedbb`  |
+| 1685   | Layout 1 | `f4675a7cedbb`  |
+| 1680   | Layout 1 | `f4675a7cedbb`  |
+| 1674   | Layout 1 | `f4675a7cedbb`  |
+| 1668   | Layout 1 | `f4675a7cedbb`  |
+| 1659   | Layout 1 | `f4675a7cedbb`  |
+| 1649   | Layout 1 | `f4675a7cedbb`  |
+| 1642   | Layout 1 | `f4675a7cedbb`  |
+| 1636   | Layout 1 | `f4675a7cedbb`  |
+| 1628   | Layout 1 | `f4675a7cedbb`  |
+| 1622   | Layout 1 | `f4675a7cedbb`  |
+| 1614   | Layout 1 | `f4675a7cedbb`  |
+| 1608   | Layout 1 | `f4675a7cedbb`  |
+| 1602   | Layout 1 | `f4675a7cedbb`  |
+| 1598   | Layout 1 | `f4675a7cedbb`  |
+| 1594   | Layout 1 | `f4675a7cedbb`  |
+| 1590   | Layout 1 | `f4675a7cedbb`  |
+| 1587   | Layout 1 | `f4675a7cedbb`  |
+| 1584   | Layout 1 | `f4675a7cedbb`  |
+| 1579   | Layout 1 | `f4675a7cedbb`  |
+| 1572   | Layout 1 | `f4675a7cedbb`  |
+| 1565   | Layout 1 | `f4675a7cedbb`  |
+| 1559   | Layout 1 | `f4675a7cedbb`  |
+| 1554   | Layout 1 | `f4675a7cedbb`  |
+| 1547   | Layout 1 | `f4675a7cedbb`  |
+| 1537   | Layout 1 | `f4675a7cedbb`  |
+| 1529   | Layout 1 | `f4675a7cedbb`  |
+| 1524   | Layout 1 | `f4675a7cedbb`  |
+| 1519   | Layout 1 | `f4675a7cedbb`  |
+| 1509   | Layout 1 | `f4675a7cedbb`  |
+| 1506   | Layout 1 | `f4675a7cedbb`  |
+| 1504   | Layout 1 | `f4675a7cedbb`  |
+| 1500   | Layout 1 | `f4675a7cedbb`  |
+| 1493   | Layout 1 | `f4675a7cedbb`  |
+| 1489   | Layout 1 | `f4675a7cedbb`  |
+| 1485   | Layout 1 | `f4675a7cedbb`  |
+| 1481   | Layout 1 | `f4675a7cedbb`  |
+| 1474   | Layout 1 | `f4675a7cedbb`  |
+| 1466   | Layout 1 | `f4675a7cedbb`  |
+| 1462   | Layout 1 | `f4675a7cedbb`  |
+| 1459   | Layout 1 | `f4675a7cedbb`  |
+| 1453   | Layout 1 | `f4675a7cedbb`  |
+| 1450   | Layout 1 | `f4675a7cedbb`  |
+| 1445   | Layout 1 | `f4675a7cedbb`  |
+| 1439   | Layout 1 | `f4675a7cedbb`  |
+| 1433   | Layout 1 | `f4675a7cedbb`  |
+| 1430   | Layout 1 | `f4675a7cedbb`  |
+| 1426   | Layout 1 | `f4675a7cedbb`  |
+| 1421   | Layout 1 | `f4675a7cedbb`  |
+| 1417   | Layout 1 | `f4675a7cedbb`  |
+| 1416   | Layout 1 | `f4675a7cedbb`  |
+| 1409   | Layout 1 | `f4675a7cedbb`  |
+| 1405   | Layout 1 | `f4675a7cedbb`  |
+| 1401   | Layout 1 | `f4675a7cedbb`  |
+| 1396   | Layout 1 | `f4675a7cedbb`  |
+| 1391   | Layout 1 | `f4675a7cedbb`  |
+| 1390   | Layout 1 | `f4675a7cedbb`  |
+| 1386   | Layout 1 | `f4675a7cedbb`  |
+| 1381   | Layout 1 | `f4675a7cedbb`  |
+| 1379   | Layout 1 | `f4675a7cedbb`  |
+| 1372   | Layout 1 | `f4675a7cedbb`  |
+| 1366   | Layout 1 | `f4675a7cedbb`  |
+| 1364   | Layout 1 | `f4675a7cedbb`  |
+| 1363   | Layout 1 | `f4675a7cedbb`  |
+| 1360   | Layout 1 | `f4675a7cedbb`  |
+| 1358   | Layout 1 | `f4675a7cedbb`  |
+| 1355   | Layout 1 | `f4675a7cedbb`  |
+| 1351   | Layout 1 | `f4675a7cedbb`  |
+| 1348   | Layout 1 | `f4675a7cedbb`  |
+| 1346   | Layout 1 | `f4675a7cedbb`  |
+| 1341   | Layout 1 | `f4675a7cedbb`  |
+| 1340   | Layout 1 | `f4675a7cedbb`  |
+| 1338   | Layout 1 | `f4675a7cedbb`  |
+| 1335   | Layout 1 | `f4675a7cedbb`  |
+| 1333   | Layout 1 | `f4675a7cedbb`  |
+| 1329   | Layout 1 | `f4675a7cedbb`  |
+| 1327   | Layout 1 | `f4675a7cedbb`  |
+| 1324   | Layout 1 | `f4675a7cedbb`  |
+| 1321   | Layout 1 | `f4675a7cedbb`  |
+| 1319   | Layout 1 | `f4675a7cedbb`  |
+| 1318   | Layout 1 | `f4675a7cedbb`  |
+| 1316   | Layout 1 | `f4675a7cedbb`  |
+| 1313   | Layout 1 | `f4675a7cedbb`  |
+| 1311   | Layout 1 | `f4675a7cedbb`  |
+| 1309   | Layout 1 | `f4675a7cedbb`  |
+| 1304   | Layout 1 | `f4675a7cedbb`  |
+| 1292   | Layout 1 | `f4675a7cedbb`  |
+| 1286   | Layout 1 | `f4675a7cedbb`  |
+| 1280   | Layout 1 | `f4675a7cedbb`  |
+| 1276   | Layout 1 | `f4675a7cedbb`  |
+| 1267   | Layout 1 | `f4675a7cedbb`  |
+| 1261   | Layout 1 | `f4675a7cedbb`  |
+| 1256   | Layout 1 | `f4675a7cedbb`  |
+| 1250   | Layout 1 | `f4675a7cedbb`  |
+| 1246   | Layout 1 | `f4675a7cedbb`  |
+| 1239   | Layout 1 | `f4675a7cedbb`  |
+| 1230   | Layout 1 | `f4675a7cedbb`  |
+| 1226   | No file  | `f4675a7cedbb`  |
+| 1220   | No file  | `f4675a7cedbb`  |
+| 1217   | No file  | `f4675a7cedbb`  |
+| 1211   | No file  | `f4675a7cedbb`  |
+| 1210   | No file  | `f4675a7cedbb`  |
+| 1208   | No file  | `f4675a7cedbb`  |
+| 1203   | No file  | `f4675a7cedbb`  |
+| 1197   | No file  | `f4675a7cedbb`  |
+| 1194   | No file  | `f4675a7cedbb`  |
+| 1192   | No file  | `f4675a7cedbb`  |
+| 1187   | No file  | `f4675a7cedbb`  |
+| 1183   | No file  | `f4675a7cedbb`  |
+| 1177   | No file  | `f4675a7cedbb`  |
+| 1173   | No file  | `f4675a7cedbb`  |
+| 1167   | No file  | `f4675a7cedbb`  |
+| 1164   | No file  | `f4675a7cedbb`  |
+| 1156   | No file  | `f4675a7cedbb`  |
+| 1149   | No file  | `f4675a7cedbb`  |
+| 1144   | No file  | `f4675a7cedbb`  |
+| 1137   | No file  | `f4675a7cedbb`  |
+| 1132   | No file  | `f4675a7cedbb`  |
+| 1127   | No file  | `f4675a7cedbb`  |
+| 1122   | No file  | `f4675a7cedbb`  |
+| 1118   | No file  | `f4675a7cedbb`  |
+| 1114   | No file  | `f4675a7cedbb`  |
+| 1109   | No file  | `f4675a7cedbb`  |
+| 1102   | No file  | `f4675a7cedbb`  |
+| 1096   | No file  | `f4675a7cedbb`  |
+| 1088   | No file  | `f4675a7cedbb`  |
+| 1081   | No file  | `f4675a7cedbb`  |
+| 1076   | No file  | `f4675a7cedbb`  |
+| 1069   | No file  | `f4675a7cedbb`  |
+| 1064   | No file  | `f4675a7cedbb`  |
+| 1058   | No file  | `f4675a7cedbb`  |
+| 1051   | No file  | `f4675a7cedbb`  |
+| 1044   | No file  | `f4675a7cedbb`  |
+| 1036   | No file  | `f4675a7cedbb`  |
+| 1026   | No file  | `f4675a7cedbb`  |
+| 1016   | No file  | `f4675a7cedbb`  |
+| 1009   | No file  | `f4675a7cedbb`  |
+| 1005   | No file  | `f4675a7cedbb`  |
+| 1000   | No file  | `f4675a7cedbb`  |
+| 998    | No file  | `f4675a7cedbb`  |
+| 990    | No file  | `f4675a7cedbb`  |
+| 979    | No file  | `f4675a7cedbb`  |
+| 972    | No file  | `f4675a7cedbb`  |
+| 963    | No file  | `f4675a7cedbb`  |
+| 955    | No file  | `f4675a7cedbb`  |
+| 946    | No file  | `f4675a7cedbb`  |
+| 938    | No file  | `f4675a7cedbb`  |
+| 927    | No file  | `f4675a7cedbb`  |
+| 911    | No file  | `f4675a7cedbb`  |
+| 904    | No file  | `f4675a7cedbb`  |
+| 899    | No file  | `f4675a7cedbb`  |
+| 894    | No file  | `f4675a7cedbb`  |
+| 885    | No file  | `f4675a7cedbb`  |
+| 879    | No file  | `f4675a7cedbb`  |
+| 872    | No file  | `f4675a7cedbb`  |
+| 864    | No file  | `f4675a7cedbb`  |
+| 855    | No file  | `f4675a7cedbb`  |
+| 853    | No file  | `f4675a7cedbb`  |
+| 845    | No file  | `f4675a7cedbb`  |
+| 837    | No file  | `f4675a7cedbb`  |
+| 829    | No file  | `f4675a7cedbb`  |
+| 822    | No file  | `f4675a7cedbb`  |
+| 814    | No file  | `f4675a7cedbb`  |
+| 805    | No file  | `f4675a7cedbb`  |
+| 794    | No file  | `f4675a7cedbb`  |
+| 787    | No file  | `f4675a7cedbb`  |
+| 780    | No file  | `f4675a7cedbb`  |
+| 771    | No file  | `f4675a7cedbb`  |
+| 760    | No file  | `f4675a7cedbb`  |
+| 748    | No file  | `f4675a7cedbb`  |
+| 741    | No file  | `f4675a7cedbb`  |
+| 736    | No file  | `f4675a7cedbb`  |
+| 731    | No file  | `f4675a7cedbb`  |
+| 723    | No file  | `f4675a7cedbb`  |
+| 711    | No file  | `f4675a7cedbb`  |
+| 707    | No file  | `f4675a7cedbb`  |
+| 697    | No file  | `f4675a7cedbb`  |
+| 689    | No file  | `f4675a7cedbb`  |
+| 683    | No file  | `f4675a7cedbb`  |
+| 678    | No file  | `f4675a7cedbb`  |
+| 670    | No file  | `f4675a7cedbb`  |
+| 661    | No file  | `f4675a7cedbb`  |
+| 656    | No file  | `f4675a7cedbb`  |
+| 652    | No file  | `f4675a7cedbb`  |
+| 643    | No file  | `f4675a7cedbb`  |
+| 637    | No file  | `f4675a7cedbb`  |
+| 630    | No file  | `f4675a7cedbb`  |
+| 627    | No file  | `f4675a7cedbb`  |
+| 621    | No file  | `f4675a7cedbb`  |
+| 617    | No file  | `f4675a7cedbb`  |
+| 615    | No file  | `f4675a7cedbb`  |
+| 606    | No file  | `f4675a7cedbb`  |
+| 599    | No file  | `f4675a7cedbb`  |
+| 592    | No file  | `f4675a7cedbb`  |
+| 586    | No file  | `f4675a7cedbb`  |
+| 577    | No file  | `f4675a7cedbb`  |
+| 569    | No file  | `f4675a7cedbb`  |
+| 561    | No file  | `f4675a7cedbb`  |
+| 554    | No file  | `f4675a7cedbb`  |
+| 542    | No file  | `f4675a7cedbb`  |
+| 532    | No file  | `f4675a7cedbb`  |
+| 531    | No file  | `f4675a7cedbb`  |
+| 526    | No file  | `f4675a7cedbb`  |
+| 521    | No file  | `f4675a7cedbb`  |
+| 517    | No file  | `f4675a7cedbb`  |
+| 510    | No file  | `f4675a7cedbb`  |
+| 508    | No file  | `f4675a7cedbb`  |
+| 504    | No file  | `f4675a7cedbb`  |
+| 497    | No file  | `f4675a7cedbb`  |
+| 491    | No file  | `f4675a7cedbb`  |
+| 485    | No file  | `f4675a7cedbb`  |
+| 478    | No file  | `f4675a7cedbb`  |
+| 472    | No file  | `f4675a7cedbb`  |
+| 466    | No file  | `f4675a7cedbb`  |
+| 457    | No file  | `f4675a7cedbb`  |
+| 452    | No file  | `f4675a7cedbb`  |
+| 449    | No file  | `f4675a7cedbb`  |
+| 435    | No file  | `f4675a7cedbb`  |
+
+<!-- versions:end -->
+
+## Layout 1
+
+All multi-byte values are little-endian.
+
+### File Layout
+
+| Offset  | Type                 | Field   | Notes                    |
+| ------- | -------------------- | ------- | ------------------------ |
+| `+0x00` | u32                  | count   | Number of offset records; `3,048` in the pre-2026-09-27 fixture, `3,172` in the 2026-09-27 client |
+| `+0x04` | Offset Record[count] | records | See Offset Record        |
+
+### Offset Record (12 bytes)
+
+| Offset  | Type | Field    | Notes                                          |
+| ------- | ---- | -------- | ---------------------------------------------- |
+| `+0x00` | u32  | title_id | Unique title identifier                        |
+| `+0x04` | u32  | offset   | Byte offset into `title.dbss`                  |
+| `+0x08` | u32  | size     | Byte count of the record block in `title.dbss` |
+
+To read a title record: seek to `offset` in `title.dbss` and read `size` bytes.
+
+## Notes
+
+- Parsed by the shared `parse_offset_table` helper in `_common/binary.py`, also used by other `*offset.dbss` companion files.
+- The file is exactly `4 + count × 12` bytes in both files, and the lowest `offset` is `4`: the first title record follows the `title.dbss` u32 count.

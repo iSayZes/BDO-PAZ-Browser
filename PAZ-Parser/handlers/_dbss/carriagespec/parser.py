@@ -6,7 +6,7 @@
                          | u8 non_stack_trade | u8 stack_trade | u8 expiration_period_trade)
 
 `carriagespecoffset.dbss` points at each row's `carriage_key`, so the walk
-from the start needs no index. Layout 1 in docs/file-formats/carriagespec_dbss.md.
+from the start needs no index. Layout 1 in docs/file-formats/dbss/carriagespec_dbss.md.
 """
 
 from __future__ import annotations

@@ -8,7 +8,7 @@ padding left out (`_isIntegrity`, `_nodeExpType`, `_nodeLevel`,
 `_requiredExperience`).
 
 The trailer's middle u32 is the end of the rows. Full layout in
-docs/file-formats/nodeexperience_bss.md.
+docs/file-formats/bss/nodeexperience_bss.md.
 """
 
 from __future__ import annotations

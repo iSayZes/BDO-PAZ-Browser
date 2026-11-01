@@ -6,7 +6,7 @@
     Reward (16 bytes): u32 item_id | bytes[4] unknown_04 | u64 count
 
 The four lists are the victory, defeat and liberation rewards and a fourth
-list. Full layout in docs/file-formats/rosewarrewardstaticstatus_bss.md.
+list. Full layout in docs/file-formats/bss/rosewarrewardstaticstatus_bss.md.
 """
 
 from __future__ import annotations

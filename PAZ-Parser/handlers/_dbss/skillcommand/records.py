@@ -12,7 +12,7 @@ each class's Skill Guide; a number can sit in more than one class row
 
 The old Shadow Arena rows `17051` to `17174` reuse numbers that `skill.dbss`
 gives to Tamer and Valkyrie skills, so they get no `skill.dbss` link.
-docs/file-formats/skillcommand_dbss.md.
+docs/file-formats/dbss/skillcommand_dbss.md.
 """
 
 from __future__ import annotations

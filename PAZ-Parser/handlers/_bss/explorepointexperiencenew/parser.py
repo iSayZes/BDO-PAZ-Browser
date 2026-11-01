@@ -4,7 +4,7 @@ one more contribution point, by the points it already holds.
     u32 row_count | row_count x (u16 contribution_points, u64 exp)
 
 No PABR magic and no trailer: the rows fill the file. Full layout in
-docs/file-formats/explorepointexperiencenew_bss.md.
+docs/file-formats/bss/explorepointexperiencenew_bss.md.
 """
 
 from __future__ import annotations

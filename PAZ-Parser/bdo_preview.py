@@ -15,6 +15,11 @@ from typing import Protocol
 
 from bdo_models import PazEntry
 from gc_pause import gc_paused
+from par_mesh import parse_mesh
+from paz.na_copy import plain_name
+from par_animation import parse_animation
+from par_skeleton import parse_skeleton
+from preview_model import RIG_CLIP, RIG_MESH, RIG_SKELETON, RigView, clip_meta, model_meta, model_view_html, skeleton_meta
 from preview_views import image_meta, image_view_html, text_view_html
 from record_fields import record_matches
 from table_sort import SORT_DESC, TableSort, sort_order
@@ -341,17 +346,24 @@ def render_text_view(data: bytes, entry: PazEntry) -> str:
     return text_view_html(content, encoding, note, highlight)
 
 
-class TextHandler(PreviewHandler):
-    """Renders plain text files. Does not produce a parsed view."""
+class ViewHandler(PreviewHandler):
+    """A view of the whole file (text, image, model, video, hex) with no records.
 
-    # The tab the UI shows this view under, next to Hex.
-    view_label_key = "preview.tabText"
+    has_parsed_view() is False for these, so the record methods are never called.
+    """
 
     def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
         raise NotImplementedError
 
     def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
         raise NotImplementedError
+
+
+class TextHandler(ViewHandler):
+    """Renders plain text files. Does not produce a parsed view."""
+
+    # The tab the UI shows this view under, next to Hex.
+    view_label_key = "preview.tabText"
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         return render_text_view(data, entry)
@@ -359,16 +371,10 @@ class TextHandler(PreviewHandler):
 
 # ── DDS / Image ───────────────────────────────────────────────────────────────
 
-class DdsHandler(PreviewHandler):
+class DdsHandler(ViewHandler):
     """Renders DDS / image files. Does not produce a parsed view."""
 
     view_label_key = "preview.tabImage"
-
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        raise NotImplementedError
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         name = Path(entry.internal_path).name
@@ -394,18 +400,46 @@ class DdsHandler(PreviewHandler):
         return image_view_html(f"data:image/png;base64,{b64}", name, image_meta(img.width, img.height, data))
 
 
+# ── 3D model ──────────────────────────────────────────────────────────────────
+
+class ModelHandler(ViewHandler):
+    """Draws the PAR meshes (`.pam`, `.pcm`, `.pac`), skeletons (`.pab`) and clips (`.paa`)
+    in a WebGL view (ui/js/features/model-view.js); a `.pac` can be posed and played on its skeleton."""
+
+    view_label_key = "preview.tabModel"
+
+    def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
+        extension = Path(entry.internal_path).suffix.lower()
+        if extension == ".pab":
+            skeleton = parse_skeleton(data)
+            return model_view_html(b"", b"", b"", [], skeleton_meta(skeleton.bone_count), RigView(RIG_SKELETON))
+        if extension == ".paa":
+            animation = parse_animation(data)
+            return model_view_html(b"", b"", b"", [], clip_meta(len(animation.nodes), animation.duration),
+                                   RigView(RIG_CLIP))
+        mesh = parse_mesh(data)
+        submeshes = [(part.first_index, part.index_count, part.texture) for part in mesh.submeshes]
+        skin = mesh.skin
+        # A mesh with no triangles shows its note, posed or not.
+        rig = None if skin is None or not skin.palette or not mesh.triangle_count else RigView(
+            RIG_MESH, skin.palette, skin.bone_indices.tobytes(), skin.bone_weights.tobytes(),
+        )
+        return model_view_html(
+            mesh.positions.tobytes(),
+            b"" if mesh.uvs is None else mesh.uvs.tobytes(),
+            mesh.indices.tobytes(),
+            submeshes,
+            model_meta(mesh.vertex_count, mesh.triangle_count, len(mesh.submeshes)),
+            rig,
+        )
+
+
 # ── Streamed previews ────────────────────────────────────────────────────────
 
-class StreamPreviewHandler(PreviewHandler):
+class StreamPreviewHandler(ViewHandler):
     """Renders a primary preview from a local stream URL instead of raw bytes."""
 
     mime_type = "application/octet-stream"
-
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        raise NotImplementedError
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        raise NotImplementedError
 
     def render_stream(self, stream_url: str, entry: PazEntry) -> str:
         raise NotImplementedError
@@ -431,16 +465,10 @@ class VideoHandler(StreamPreviewHandler):
 
 # ── Hex dump ──────────────────────────────────────────────────────────────────
 
-class HexHandler(PreviewHandler):
+class HexHandler(ViewHandler):
     """Renders raw hex dump. Does not produce a parsed view."""
 
     _ROW = 16
-
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:
-        raise NotImplementedError
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:
-        raise NotImplementedError
 
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str:
         return self.render_page(data, 0)
@@ -484,7 +512,7 @@ class HexHandler(PreviewHandler):
 
 # ── Alt-view (two-tab: primary render + alternate render) ─────────────────────
 
-class AltViewHandler(PreviewHandler):
+class AltViewHandler(ViewHandler):
     """Two-tab handler with a primary view (e.g. text) and an alternate view (e.g. rendered).
 
     Override render() for the primary tab and render_alt() for the secondary tab.
@@ -493,12 +521,6 @@ class AltViewHandler(PreviewHandler):
 
     primary_label_key: str = "preview.tabText"
     alt_label_key: str = "preview.tabRendered"
-
-    def get_records(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> list[dict]:  # noqa: ARG002
-        raise NotImplementedError
-
-    def render_records_page(self, records: list[dict], page: int, page_size: int) -> str:  # noqa: ARG002
-        raise NotImplementedError
 
     @abstractmethod
     def render(self, data: bytes, entry: PazEntry, companions: dict[str, bytes]) -> str: ...
@@ -534,6 +556,7 @@ class SvgHandler(AltViewHandler):
 # ── Registry ──────────────────────────────────────────────────────────────────
 
 _image_handler = DdsHandler()
+_model_handler = ModelHandler()
 _webm_handler = VideoHandler("video/webm")
 
 _REGISTRY: dict[str, PreviewHandler] = {
@@ -550,6 +573,8 @@ _REGISTRY: dict[str, PreviewHandler] = {
         ".dds", ".dds1", ".dds11",
         ".png", ".jpg", ".bmp", ".gif", ".tga", ".tif",
     )},
+    # PAR meshes (static, collision, character), skeletons and animation clips
+    **{ext: _model_handler for ext in (".pam", ".pcm", ".pac", ".pab", ".paa")},
     ".webm": _webm_handler,
     ".svg": SvgHandler(),
 }
@@ -565,6 +590,9 @@ _PLUGIN_FAILURES: dict[str, str] = {}
 
 _hex_handler = HexHandler()
 _handler_lang = PreviewHandler.lang
+# The client version handlers read the loaded folder as; None before a folder
+# loads. Handlers read it through `_common/effective_client.py`.
+_handler_client: int | None = None
 
 # Files named only by their grid cell (`553_364.bss`, the spawn grid cells in
 # `mapdata_*/spawnplacementfieldgrid/`) share one format and one registry key.
@@ -573,7 +601,12 @@ _GRID_CELL_NAME = _re.compile(r"^\d+_\d+\.bss$")
 
 
 def _name_key(name: str) -> str:
-    """The registry key of a lower-case file name: `x_y.bss` for a grid cell, else the name."""
+    """The registry key of a lower-case file name: `x_y.bss` for a grid cell, else the name.
+
+    A table's NA copy looks up its plain name (`#na#quest.bss` reads as
+    `quest.bss`, `paz/na_copy.py`).
+    """
+    name = plain_name(name)
     return GRID_CELL_KEY if name[:1].isdigit() and _GRID_CELL_NAME.match(name) else name
 
 
@@ -588,10 +621,7 @@ def get_handler(name: str, ext: str) -> PreviewHandler:
 
 def has_parsed_view(handler: PreviewHandler) -> bool:
     """True when the handler builds records, so get_records() may be called."""
-    return not isinstance(
-        handler,
-        (HexHandler, TextHandler, DdsHandler, AltViewHandler, StreamPreviewHandler),
-    )
+    return not isinstance(handler, ViewHandler)
 
 
 def register_handler(key: str, handler: PreviewHandler) -> None:
@@ -613,6 +643,24 @@ def set_handler_lang(lang: str) -> None:
     _hex_handler.lang = lang
     if is_change:
         clear_handler_caches()
+
+
+def set_handler_client(client: int | None) -> None:
+    """Set the client version handlers read the loaded folder as.
+
+    Today the `.meta` version of the folder. Tables parsed for another client
+    may hold another reading of the same bytes, so a change drops them.
+    """
+    global _handler_client
+    is_change = client != _handler_client
+    _handler_client = client
+    if is_change:
+        clear_handler_caches()
+
+
+def handler_client() -> int | None:
+    """The client version set by `set_handler_client()`, or None before a folder loads."""
+    return _handler_client
 
 
 def parsed_handlers() -> list[PreviewHandler]:

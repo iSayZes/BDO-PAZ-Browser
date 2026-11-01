@@ -6,7 +6,7 @@
 
 One step per gear category, grade (TRI, TET, PEN) and Caphras level: the total
 Caphras Stones to reach the level and the stats the item has at it. Full
-layout in docs/file-formats/cronenchant_bss.md.
+layout in docs/file-formats/bss/cronenchant_bss.md.
 """
 
 from __future__ import annotations

@@ -5,7 +5,7 @@ u16 minigame key, the same key again, the i16 energy on a success and on a
 failure, the u32 `itemmaingroup.bss` drop group and the u8 vehicle type the
 player must be on. `minigamerewardoffset.dbss` points 2 bytes into a row, at
 the second key, so the walk from the start needs no index. Layout in
-docs/file-formats/minigamereward_dbss.md.
+docs/file-formats/dbss/minigamereward_dbss.md.
 """
 
 from __future__ import annotations

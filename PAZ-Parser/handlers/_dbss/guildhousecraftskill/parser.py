@@ -4,7 +4,7 @@ A u32 row count, then 20-byte rows: the i32 `houseinforeceipe.dbss` key, the
 same key again, an unknown u16 and five u16 skill numbers (`0` in an unused
 slot). `guildhousecraftskilloffset.dbss` points 4 bytes into a row, at the
 second key, so the walk from the start needs no index. Layout 1 in
-docs/file-formats/guildhousecraftskill_dbss.md.
+docs/file-formats/dbss/guildhousecraftskill_dbss.md.
 """
 
 from __future__ import annotations

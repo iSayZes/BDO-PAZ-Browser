@@ -9,7 +9,7 @@
 
     trailer: u32 0 | u32 trailer offset | u32 0
 
-Full layout and the cell type values in docs/file-formats/uigrowthpasslayout_bss.md.
+Full layout and the cell type values in docs/file-formats/bss/uigrowthpasslayout_bss.md.
 """
 
 from __future__ import annotations

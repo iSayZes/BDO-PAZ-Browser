@@ -6,7 +6,7 @@
     Position (16 bytes): f32 x | f32 y | f32 z | f32 unknown_0c
 
 The count comes before the territory key. Full layout in
-docs/file-formats/siege2024revivepositionstaticstatus_bss.md.
+docs/file-formats/bss/siege2024revivepositionstaticstatus_bss.md.
 """
 
 from __future__ import annotations

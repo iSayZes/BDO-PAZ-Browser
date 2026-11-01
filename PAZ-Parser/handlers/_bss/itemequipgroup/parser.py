@@ -7,7 +7,7 @@
 `checkequipitemgroup(group, min, max)` and `checkinventoryitemgroup(group,
 min, max)` conditions in `quest.dbss` and `detail_dialog.dbss` name a group by
 its key. The string table is empty. Layout in
-docs/file-formats/itemequipgroup_bss.md.
+docs/file-formats/bss/itemequipgroup_bss.md.
 """
 
 from __future__ import annotations

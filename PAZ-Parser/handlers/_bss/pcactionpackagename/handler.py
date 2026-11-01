@@ -1,7 +1,8 @@
 """pcactionpackagename.bss preview handler: one row per action chart package of a class.
 
-Empty cells get no row. The class name is LOC type 21, the section label
-comes from the handler's lang file.
+Empty cells get no row. The class name is LOC type 21, the equip type name
+comes from `equip_types.py` and the section label from the handler's lang
+file.
 """
 
 from __future__ import annotations
@@ -15,6 +16,7 @@ from _common.class_type import class_name
 from _common.html import Column, e
 from _common.lang import load_handler_strings
 from _common.row_table import RowTableHandler
+from .equip_types import equip_type_name
 from .parser import FILE_NAME, parse_pcactionpackagename
 
 
@@ -32,6 +34,7 @@ class PcActionPackageNameBssHandler(RowTableHandler):
             Column(labels["className"], sort_key="class_name"),
             Column(labels["section"], sort_key="section_name"),
             Column(labels["equipType"], "num", sort_key="equip_type"),
+            Column(labels["equipTypeName"], sort_key="equip_type_name"),
             Column(labels["vehicleType"], sort_key="vehicle_name"),
             Column(labels["package"], sort_key="package"),
         ]
@@ -47,6 +50,7 @@ class PcActionPackageNameBssHandler(RowTableHandler):
                 **record,
                 "class_name": class_name(record["class_type"]),
                 "section_name": sections[record["section"]],
+                "equip_type_name": equip_type_name(record["equip_type"]),
             }
             for record in parse_pcactionpackagename(data)
         ]
@@ -57,6 +61,7 @@ class PcActionPackageNameBssHandler(RowTableHandler):
             e(record["class_name"]),
             e(record["section_name"]),
             _optional(record["equip_type"]),
+            _optional(record["equip_type_name"] or None),
             _optional(record["vehicle_name"]),
             e(record["package"]),
         ]

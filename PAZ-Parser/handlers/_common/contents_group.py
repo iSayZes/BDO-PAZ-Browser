@@ -13,6 +13,8 @@ from _common.string_hash import KEY_HASH_SEED, hashlittle
 
 # Contents group keys are 16-bit (2016 `KeyType<short>`); client 3474 uses up to 8,122.
 _CONTENTS_GROUP_KEY_COUNT = 0x8000
+# The key of a row in no contents group.
+NO_CONTENTS_GROUP = 0
 
 
 @cache
@@ -36,3 +38,14 @@ def contents_groups_text(group_hashes: tuple[int, ...] | list[int]) -> str:
         key = contents_group_key(group_hash)
         texts.append(f"0x{group_hash:08X}" if key is None else str(key))
     return ", ".join(texts)
+
+
+def assigned_contents_groups_text(group_hashes: tuple[int, ...] | list[int]) -> str:
+    """`contents_groups_text()`, or '' for key `0` alone.
+
+    `characterstatic.dbss` and `mentalcard.dbss` store an empty sheet cell as
+    the hash of key `0`, so key `0` alone means "in no contents group".
+    """
+    if [contents_group_key(group_hash) for group_hash in group_hashes] == [NO_CONTENTS_GROUP]:
+        return ""
+    return contents_groups_text(group_hashes)

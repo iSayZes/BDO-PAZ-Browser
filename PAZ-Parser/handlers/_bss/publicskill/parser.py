@@ -5,7 +5,7 @@
 
 `unknown_04` is `0` on every checked client; with no rows behind it its row
 size is unknown, so any other value is rejected. Layout 1 in
-docs/file-formats/publicskill_bss.md.
+docs/file-formats/bss/publicskill_bss.md.
 """
 
 from __future__ import annotations

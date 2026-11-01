@@ -6,7 +6,7 @@
          | u64 hand_rank_count | hand_rank_count x u32 hand_rank_key
          | u32 knowledge_key | u8 deck_limit | u8 roll_count_max
 
-The string table is empty. Layout in docs/file-formats/yachtnpcdiceinfo_bss.md.
+The string table is empty. Layout in docs/file-formats/bss/yachtnpcdiceinfo_bss.md.
 """
 
 from __future__ import annotations

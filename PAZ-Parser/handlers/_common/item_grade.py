@@ -6,7 +6,7 @@
 `PAGlobalFunc_SetItemTextColorByItemGrade` in the client Lua
 (`include/global_util`), which also wraps a name in the grade's `<PAColor>`
 tag (`PAGlobalFunc_ReturnAppliedItemColorTextForNewUI`). See
-docs/file-formats/itemenchant_dbss.md.
+docs/file-formats/dbss/itemenchant_dbss.md.
 """
 
 from __future__ import annotations

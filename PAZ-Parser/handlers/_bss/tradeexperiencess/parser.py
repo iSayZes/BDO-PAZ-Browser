@@ -3,7 +3,7 @@
     u32 count | count x u64 trade_exp
 
 Row r holds the value for Trading level r + 1. Layout 1 in
-docs/file-formats/tradeexperiencess_bss.md.
+docs/file-formats/bss/tradeexperiencess_bss.md.
 """
 
 from __future__ import annotations

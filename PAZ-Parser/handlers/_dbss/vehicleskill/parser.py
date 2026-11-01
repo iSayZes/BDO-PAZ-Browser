@@ -5,7 +5,7 @@
 Each record holds the Korean name, EXP and price values, the icon, three
 key-command and description texts, the training servants, the contents group
 hashes, a condition script and the ship skill order. Layout in
-docs/file-formats/vehicleskill_dbss.md.
+docs/file-formats/dbss/vehicleskill_dbss.md.
 """
 
 from __future__ import annotations

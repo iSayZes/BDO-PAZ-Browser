@@ -10,7 +10,7 @@ import re
 from collections.abc import Sequence
 from html import escape
 
-from format_docs.versions import read_clients
+from format_docs.versions import read_clients, without_fingerprints
 
 from .doc_source import DocSection, DocSource
 from .layout_html import layouts_card
@@ -83,7 +83,7 @@ def _doc_head(doc: DocSource, layout_count: int, links: LinkMap) -> str:
 
 def _versions_card(doc: DocSource, links: LinkMap) -> str:
     section = doc.section("Versions")
-    content = render_markdown(section.markdown, links) if section else ""
+    content = render_markdown(without_fingerprints(section.markdown), links) if section else ""
     return (
         '<section class="card" aria-labelledby="versions"><div class="card-head"><h2 id="versions">Versions</h2></div>'
         f'<div class="card-body">{content or _VERSIONS_EMPTY}</div></section>'

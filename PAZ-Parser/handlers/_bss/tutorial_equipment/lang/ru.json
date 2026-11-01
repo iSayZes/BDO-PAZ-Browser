@@ -1,6 +1,7 @@
 {
   "columns": {
     "cutsceneFile": "Файл кат-сцены",
+    "sequenceFile": "Файл последовательности",
     "classType": "Тип класса",
     "className": "Класс",
     "mainWeapon": "Основное оружие",

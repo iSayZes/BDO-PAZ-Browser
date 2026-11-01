@@ -5,7 +5,7 @@
 
 `itemenchantsafetyoffset.dbss` (u32 count, then u32 type, offset and size
 per row) points at the row start. Layout 1 in
-docs/file-formats/itemenchantsafety_dbss.md.
+docs/file-formats/dbss/itemenchantsafety_dbss.md.
 """
 
 from __future__ import annotations

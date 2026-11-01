@@ -1,7 +1,7 @@
 """Layouts of the small option tables, one entry per file.
 
 The layout types are in `layout.py`. Each file's doc is
-`docs/file-formats/<stem>_bss.md`; field names follow the doc, and
+`docs/file-formats/bss/<stem>_bss.md`; field names follow the doc, and
 `unknown_*` fields get no column.
 """
 

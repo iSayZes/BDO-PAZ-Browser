@@ -5,7 +5,7 @@ index (together the u32 `detail_dialog.dbss` key the index stores), a u64 count,
 `itemexchangebynpc.dbss` keys, and the NPC key and dialog index again.
 `displayexchangeitemnpcoffset.dbss` points 4 bytes into a row, at the count,
 so the walk from the start needs no index. Layout 1 in
-docs/file-formats/displayexchangeitemnpc_dbss.md.
+docs/file-formats/dbss/displayexchangeitemnpc_dbss.md.
 """
 
 from __future__ import annotations

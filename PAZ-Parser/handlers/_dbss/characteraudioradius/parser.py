@@ -4,7 +4,7 @@
 
 `characteraudioradiusoffset.dbss` points at each row's `character_key`, so
 the walk from the start needs no index. Layout 1 in
-docs/file-formats/characteraudioradius_dbss.md.
+docs/file-formats/dbss/characteraudioradius_dbss.md.
 """
 
 from __future__ import annotations

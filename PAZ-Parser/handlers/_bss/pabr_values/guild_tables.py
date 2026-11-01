@@ -70,12 +70,6 @@ GUILD_TABLES: tuple[ValueTable, ...] = (
     ),
     ValueTable("guildright.bss", (ValueField("index", "B", "rightIndex"), _GRADE), RowCount.COUNTED),
     ValueTable(
-        "guildskill.bss",
-        (ValueField("skill_level", "H", "skillLevel"), ValueField("skill_no", "H", "skillId", _SKILL_NAME)),
-        RowCount.COUNTED,
-        first_fields=("skill_no",),
-    ),
-    ValueTable(
         "guildspecialskillright.bss",
         (ValueField("guild_skill_no", "H", "skillId", _SKILL_NAME), _GRADE),
         RowCount.COUNTED,

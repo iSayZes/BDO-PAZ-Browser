@@ -1,4 +1,4 @@
-"""Builds the format docs wiki: a static site from docs/file-formats/.
+"""Builds the format docs wiki: a static site from docs/file-formats/<group>/.
 
 `render_site` renders an index page, one page per doc and `formats.js` with
 the list both page kinds show; `build_site` writes them with the static CSS
@@ -12,7 +12,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 
-from format_docs import TEMPLATE_PREFIX
+from format_docs import format_doc_paths
 from format_docs.doc_index import index_rows
 from format_docs.versions import read_clients, read_rows
 
@@ -49,18 +49,18 @@ class RenderedSite:
 
 def render_site(docs_dir: Path) -> RenderedSite:
     """Renders the wiki for `docs_dir` (the repo's docs/ folder) without writing it."""
-    docs = [read_doc(path) for path in sorted((docs_dir / FORMATS_DIR).glob("*.md")) if not path.name.startswith(TEMPLATE_PREFIX)]
+    docs = [read_doc(path) for path in format_doc_paths(docs_dir / FORMATS_DIR)]
     documented = docs_dir / DOCUMENTED_FORMATS
     rows = index_rows(documented.read_text(encoding="utf-8")) if documented.exists() else {}
     entries = [format_entry(doc, rows.get(doc.path.name, [])) for doc in docs]
     readme = docs_dir.parent / README
     totals = game_totals(readme.read_text(encoding="utf-8")) if readme.exists() else {}
-    links = _links({doc.path.name: doc.page for doc in docs})
+    pages = {_repo_path(docs_dir, doc.path): doc.page for doc in docs}
     axis = _timeline_axis(doc.text for doc in docs)
     files = {
         FORMATS_SCRIPT: formats_script(entries, documented_counts(rows), totals),
         INDEX_PAGE: index_page(),
-        **{doc.page: doc_page(doc, links, axis) for doc in docs},
+        **{doc.page: doc_page(doc, _links(pages, _repo_path(docs_dir, doc.path.parent)), axis) for doc in docs},
     }
     return RenderedSite(files, len(docs), sum(1 for doc in docs if doc.is_converted))
 
@@ -85,17 +85,22 @@ def _timeline_axis(texts: Iterable[str]) -> tuple[int, ...]:
     return tuple(sorted(clients))
 
 
-def _links(pages: dict[str, str]):
-    """Maps a link in a format doc: another doc goes to its page, other repo files to GitHub."""
+def _repo_path(docs_dir: Path, path: Path) -> str:
+    """`path` from the repo root, as a link resolves to it: `docs/file-formats/dbss/buff_dbss.md`."""
+    return posixpath.join(docs_dir.name, path.relative_to(docs_dir).as_posix())
+
+
+def _links(pages: dict[str, str], folder: str):
+    """Maps a link in a format doc in `folder` (from the repo root): another doc goes to its page, other repo files to GitHub."""
 
     def resolve(url: str) -> str:
         if url.startswith(("http://", "https://", "#", "mailto:")):
             return url
         path, _, anchor = url.partition("#")
         suffix = f"#{anchor}" if anchor else ""
-        if path in pages:
-            return pages[path] + suffix
-        repo_path = posixpath.normpath(posixpath.join("docs", FORMATS_DIR, path))
+        repo_path = posixpath.normpath(posixpath.join(folder, path))
+        if repo_path in pages:
+            return pages[repo_path] + suffix
         return f"{REPO_URL}/blob/main/{repo_path}{suffix}"
 
     return resolve

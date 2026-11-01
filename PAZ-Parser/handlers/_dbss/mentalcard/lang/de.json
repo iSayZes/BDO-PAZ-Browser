@@ -10,6 +10,7 @@
     "knowledgeName": "Wissensname",
     "categoryId": "Kategorie-ID",
     "categoryName": "Kategoriename",
+    "knowledgeType": "Wissenstyp",
     "description": "Beschreibung",
     "minFavor": "Min. Freundschaft",
     "maxFavor": "Max. Freundschaft",
@@ -18,7 +19,13 @@
     "obtain": "Erhalten",
     "learnedFrom": "Erlernt durch",
     "learnedFromItems": "Erlernt durch Gegenstände",
-    "position": "Position"
+    "position": "Position",
+    "mapStep": "Kartenstufe",
+    "contentsGroups": "Inhaltsgruppen"
+  },
+  "knowledgeTypes": {
+    "0": "Normal",
+    "1": "Geschichte"
   },
   "meta": {
     "count": "{count} Wissenskarten · {with_node_name} Kategorienamen"

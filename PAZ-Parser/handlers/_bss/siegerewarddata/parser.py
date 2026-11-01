@@ -21,7 +21,7 @@
     Release Medal (6 bytes): u16 count | u32 item_id
 
 The file has no row count: the Grid Block starts at +0x04. Full layout in
-docs/file-formats/siegerewarddata_bss.md.
+docs/file-formats/bss/siegerewarddata_bss.md.
 """
 
 from __future__ import annotations

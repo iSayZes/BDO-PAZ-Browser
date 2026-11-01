@@ -2,7 +2,7 @@
 
 One u8, the 2016 `gc::VehicleSkillStaticStatusManager::_count`, which the
 client Lua reads as `vehicleSkillStaticStatus_skillCount()`. Layout 1 in
-docs/file-formats/vehicleskillcount_dbss.md.
+docs/file-formats/dbss/vehicleskillcount_dbss.md.
 """
 
 from __future__ import annotations

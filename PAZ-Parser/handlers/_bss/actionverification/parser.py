@@ -4,7 +4,7 @@
     | action_count x (u32 action_hash | u32 able_call_time))
     | string table (0 strings) | u32 string_table_start | u32 0
 
-Layout in docs/file-formats/actionverification_bss.md.
+Layout in docs/file-formats/bss/actionverification_bss.md.
 """
 
 from __future__ import annotations

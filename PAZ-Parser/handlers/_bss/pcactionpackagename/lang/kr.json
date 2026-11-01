@@ -4,6 +4,7 @@
     "className": "직업",
     "section": "구분",
     "equipType": "장비 유형",
+    "equipTypeName": "장비 유형 이름",
     "vehicleType": "탑승물 종류",
     "package": "패키지"
   },

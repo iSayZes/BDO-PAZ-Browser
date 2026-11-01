@@ -1,4 +1,4 @@
-"""The Pearl Abyss checksum of `pad00000.meta` and the PAZ headers (docs/paz-meta.md, Checksum).
+"""The Pearl Abyss checksum of `pad00000.meta` and the PAZ headers (docs/file-formats/other/pad00000_meta.md, Checksum).
 
 Bob Jenkins' lookup3 `hashlittle` with its own start value and final mix. A
 row's path hash is the checksum of the file's path; an archive's checksum is

@@ -6,7 +6,7 @@
            | u32 image (string index) | u16 | u16 character_id
 
 `boss_key` is the key of `boss_spawn.bss`. Full layout in
-docs/file-formats/boss_spawnlevel_bss.md.
+docs/file-formats/bss/boss_spawnlevel_bss.md.
 """
 
 from __future__ import annotations

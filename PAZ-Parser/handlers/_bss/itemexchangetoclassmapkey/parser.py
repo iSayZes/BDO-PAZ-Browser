@@ -4,7 +4,7 @@
 
 The reverse of `itemexchangetoclass.dbss`: every item key that file lists,
 once, with the `key` of its row. The string table is empty. Layout in
-docs/file-formats/itemexchangetoclassmapkey_bss.md.
+docs/file-formats/bss/itemexchangetoclassmapkey_bss.md.
 """
 
 from __future__ import annotations

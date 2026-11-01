@@ -10,7 +10,7 @@ The file is groups back to back to its end, each a u32 row count and rows:
 `specialemployeeinfostaticstatusoffset.dbss` holds a u32 group count and
 the same groups of index rows (u16 type, u32 offset, u32 size), each
 pointing at a row start. Layout 1 in
-docs/file-formats/specialemployeeinfostaticstatus_dbss.md.
+docs/file-formats/dbss/specialemployeeinfostaticstatus_dbss.md.
 """
 
 from __future__ import annotations

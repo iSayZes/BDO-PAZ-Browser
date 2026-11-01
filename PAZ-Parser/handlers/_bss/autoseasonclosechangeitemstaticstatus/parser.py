@@ -13,7 +13,7 @@ graduation settings.
     season challenge: u16 challenge_key | u32 item_id | u8 unknown_06 | u8 unknown_07
     character type: u8 unknown_00 | u8 unknown_01
 
-Layout 1 in docs/file-formats/autoseasonclosechangeitemstaticstatus_bss.md.
+Layout 1 in docs/file-formats/bss/autoseasonclosechangeitemstaticstatus_bss.md.
 """
 
 from __future__ import annotations

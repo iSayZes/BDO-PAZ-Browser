@@ -3,7 +3,7 @@
     PABR | u32 count | u16 character_key x count | string table (0 strings)
     | u32 string_table_start | u32 0
 
-Layout in docs/file-formats/cutscenecharacterdata_bss.md.
+Layout in docs/file-formats/bss/cutscenecharacterdata_bss.md.
 """
 
 from __future__ import annotations

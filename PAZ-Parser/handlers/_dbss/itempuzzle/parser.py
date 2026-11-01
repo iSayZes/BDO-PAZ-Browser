@@ -8,7 +8,7 @@
 The 2016 `gc::ItemPuzzleStaticStatus` packed. `puzzle_item_keys` is the grid
 row by row, `0` for an empty cell. `itempuzzleoffset.dbss` (u32 count, then
 u16 puzzle key, u32 offset, u32 size per row) points at the row start.
-Layout 1 in docs/file-formats/itempuzzle_dbss.md.
+Layout 1 in docs/file-formats/dbss/itempuzzle_dbss.md.
 """
 
 from __future__ import annotations

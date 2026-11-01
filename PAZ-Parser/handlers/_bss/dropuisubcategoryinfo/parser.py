@@ -5,7 +5,7 @@
 
 Each row holds the category key (LOC type 115) and the string table indexes
 of its Korean name and its button icon texture key. Layout in
-docs/file-formats/dropuisubcategoryinfo_bss.md.
+docs/file-formats/bss/dropuisubcategoryinfo_bss.md.
 """
 
 from __future__ import annotations

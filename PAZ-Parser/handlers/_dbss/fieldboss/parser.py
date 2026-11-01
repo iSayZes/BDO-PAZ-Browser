@@ -4,7 +4,7 @@ A u32 row count, then 33-byte rows with no `PABR` magic and no string
 table: the key, a byte, the character ID, 12 zero bytes, a byte and 15 zero
 bytes.
 `fieldbossoffset.dbss` points at each row's first byte after the key.
-Layout in docs/file-formats/fieldboss_dbss.md.
+Layout in docs/file-formats/dbss/fieldboss_dbss.md.
 """
 
 from __future__ import annotations

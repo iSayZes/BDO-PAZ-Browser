@@ -6,7 +6,7 @@
 
 `ability_indexes` are `skillawakeningability.dbss` ability indexes, in the
 order the Skill Add-on window lists them. Layout 1 in
-docs/file-formats/skillawakeningability2_bss.md.
+docs/file-formats/bss/skillawakeningability2_bss.md.
 """
 
 from __future__ import annotations

@@ -7,7 +7,7 @@
     Rewards: u64 count | count x Reward (_common/reward_items.py)
     Booty: u16 territory_key | u64 item_count | item_count x u32 item_ids
 
-Full layout in docs/file-formats/majorsiegerewardstaticstatus_bss.md.
+Full layout in docs/file-formats/bss/majorsiegerewardstaticstatus_bss.md.
 """
 
 from __future__ import annotations

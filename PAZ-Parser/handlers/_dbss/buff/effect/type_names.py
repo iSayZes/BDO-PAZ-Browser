@@ -1,4 +1,5 @@
-"""Names of the effect types, from the 2016 client's `gc::BuffModule::Type`.
+"""Names of the effect types, from the 2016 client's `gc::BuffModule::Type`
+and the client 1784 `Module_Table` sheet.
 
 The 2016 enum numbers the buff modules `0` to `131` (`eBuffModuleCount`
 `132`), and the current effect types still follow it: every type with an
@@ -8,8 +9,14 @@ CreateCard for knowledge, `103` RegistWorker). Names are kept, without the
 buffs on client 3464 fit them. Left out: `19` DeprecatedBuffModule (now
 Sailor EXP), `13` HungerStateVariationAmount, `15` ShieldGuardVariationAmount,
 `82` CollectorEquipment and `124` VaryGuildProtectMemberCount, whose buffs
-do not fit the name; the `16` types no buff uses; and every type from `132`,
-which came later. See docs/file-formats/buff_dbss.md, Enum Values.
+do not fit the name; and the `16` types no buff uses.
+
+From `132` the names are the module identifiers the client 1784 sheet writes
+next to each Korean module name (`귀환석 관련 모듈(eUseReturnStoneModule)`),
+for the types whose buffs on client 3483 fit them. Left out: `135`, `144`,
+`145` and `150`, which no buff uses, `139` RideOff, whose buffs do not fit,
+and the types the sheet gives no identifier. See
+docs/file-formats/dbss/buff_dbss.md, Enum Values.
 """
 
 from __future__ import annotations
@@ -126,6 +133,22 @@ EFFECT_TYPE_NAMES: dict[int, str] = {
     129: "VaryMaxAdrenalin",
     130: "AddedBiddingRateAtItemMarket",
     131: "SellTradeItemPriceRate",
+    132: "UseReturnStone",
+    133: "UseCompass",
+    134: "VarySwimSpeedRate",
+    136: "VaryDamageToMonster",
+    137: "VaryBreathGauge",
+    138: "Chain",
+    140: "NotifySelfPosition",
+    141: "PetExperience",
+    142: "ReceiveTitleByBuff",
+    143: "VaryStunGauge",
+    146: "SuperArmor",
+    147: "DecreaseWeightLevel",
+    148: "Fairy",
+    149: "PlayerLifeStat",
+    # The sheet's spelling.
+    159: "VaryGuardGague",
 }
 
 

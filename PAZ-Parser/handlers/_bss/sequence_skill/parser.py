@@ -7,7 +7,7 @@ listed for a tutorial sequence or cutscene.
     class: u8 class_type | u64 skill_count | u16 skill_nos[skill_count]
 
 A row stores only the hash of its file name (`_bss/sequence_scripts/reader.py`).
-Layout 1 in docs/file-formats/sequence_skill_bss.md.
+Layout 1 in docs/file-formats/bss/sequence_skill_bss.md.
 """
 
 from __future__ import annotations

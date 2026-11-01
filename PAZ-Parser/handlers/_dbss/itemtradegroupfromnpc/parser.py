@@ -11,7 +11,7 @@ open with a counted condition string, the Layout 1 entry of
 string's end. The record keys match `_dbss/itemtradegrouptonpc/parser.py`, so
 its handler draws both tables; `territory_trade_no` and `is_for_magnate` are
 the `BuyingFromNpc_Table` columns only this file fills. Layout in
-docs/file-formats/itemtradegroupfromnpc_dbss.md.
+docs/file-formats/dbss/itemtradegroupfromnpc_dbss.md.
 """
 
 from __future__ import annotations

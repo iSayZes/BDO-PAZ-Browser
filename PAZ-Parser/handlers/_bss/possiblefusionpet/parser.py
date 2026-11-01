@@ -5,7 +5,7 @@ No PABR magic and no trailer:
     u32 count | Row[count] (u8 variant | u8 species | u8 unknown_02 | u8 tier | u16 pet_id)
 
 The four key bytes are the fusion key of `pet.dbss`; the rows are sorted by
-it read as a u32. Layout 1 in docs/file-formats/possiblefusionpet_bss.md.
+it read as a u32. Layout 1 in docs/file-formats/bss/possiblefusionpet_bss.md.
 """
 
 from __future__ import annotations

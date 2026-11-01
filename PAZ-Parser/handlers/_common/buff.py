@@ -3,7 +3,7 @@
 `buff.dbss` and `buffsimply.bss` store the same icon paths, and every table
 that names a buff (`buff.dbss`, `buffsimply.bss`, the `skill.dbss` and
 `itemenchant.dbss` Buffs columns) reads its English text from LOC type 5,
-keyed by buff ID. See docs/file-formats/buff_dbss.md.
+keyed by buff ID. See docs/file-formats/dbss/buff_dbss.md.
 """
 
 from __future__ import annotations

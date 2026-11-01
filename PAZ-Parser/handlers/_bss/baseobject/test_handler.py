@@ -27,7 +27,7 @@ from .parser import FILE_NAME, KEY_FIELD, PLACE_FLAG_FIELDS, parse_baseobject_re
 _COUNT_OFFSET = 4
 _OBJECT_OFFSET_FILE = "characterobjectoffset.dbss"
 _IDENTITY = [[1.0 if row == col else 0.0 for col in range(4)] for row in range(4)]
-_NO_HOUSE_NUMBER = -1
+_NO_HOUSEHOLD = -1
 # gc::ObjectKind values of the 2016 client.
 _KIND_INSTALLATION = 2
 _KIND_INN_ROOM = 5
@@ -55,9 +55,9 @@ CASE = HandlerCase(
                 "armor_material",
                 "object_kind",
                 "installation_type",
-                "unknown_05",
-                "unknown_45",
-                "unknown_85",
+                "parent_world_tm",
+                "child_world_tm",
+                "household_index",
                 "is_collision",
                 "is_siege_tent",
                 "unknown_8b",
@@ -85,7 +85,7 @@ CASE = HandlerCase(
         TargetTest(
             col=KEY_FIELD,
             value=_GOLDEN_HAND_VASE,
-            expected={"object_kind": _KIND_INSTALLATION, "layer_count": 0, "unknown_05": _IDENTITY},
+            expected={"object_kind": _KIND_INSTALLATION, "layer_count": 0, "parent_world_tm": _IDENTITY},
         ),
         TargetTest(
             col=KEY_FIELD,
@@ -122,13 +122,23 @@ def test_both_layer_counts_agree(baseobject_result: HandlerResult) -> None:
     assert not wrong, wrong[:5]
 
 
-def test_only_houses_carry_matrices_and_a_house_number(baseobject_result: HandlerResult) -> None:
-    """A row without hull layers keeps both identity matrices and no house number."""
+def test_only_houses_carry_matrices_and_a_household(baseobject_result: HandlerResult) -> None:
+    """A row without hull layers keeps both identity matrices and no household index."""
     wrong = [
         record[KEY_FIELD]
         for record in baseobject_result.records
         if record["layer_count"] == 0
-        and (record["unknown_05"] != _IDENTITY or record["unknown_45"] != _IDENTITY or record["unknown_85"] != _NO_HOUSE_NUMBER)
+        and (record["parent_world_tm"] != _IDENTITY or record["child_world_tm"] != _IDENTITY or record["household_index"] != _NO_HOUSEHOLD)
+    ]
+    assert not wrong, wrong[:5]
+
+
+def test_both_world_transforms_share_the_rotation(baseobject_result: HandlerResult) -> None:
+    """The child transform moves the parent one: only the translation row differs."""
+    wrong = [
+        record[KEY_FIELD]
+        for record in baseobject_result.records
+        if record["parent_world_tm"][:3] != record["child_world_tm"][:3]
     ]
     assert not wrong, wrong[:5]
 
@@ -160,9 +170,9 @@ def test_a_small_table_reads_back() -> None:
     house, vase = parse_baseobject_records(_pabr(rows, 2))
 
     assert (house[KEY_FIELD], house["object_kind"], house["layer_count"], house["unknown_90"]) == (3823, 5, 2, 2)
-    assert (house["hull_count"], house["face_count"], house["unknown_85"]) == (3, 28, 7)
+    assert (house["hull_count"], house["face_count"], house["household_index"]) == (3, 28, 7)
     assert (house["is_outside"], house["is_floor"], house["is_inside"]) == (1, 1, 0)
-    assert house["unknown_05"] == _IDENTITY
+    assert house["parent_world_tm"] == _IDENTITY
     assert (vase[KEY_FIELD], vase["layer_count"], vase["face_count"], vase["is_on_the_table"]) == (16111, 0, 0, 1)
 
 

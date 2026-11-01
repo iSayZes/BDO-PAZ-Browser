@@ -7,7 +7,7 @@ Every table in the skill cluster (`skill.dbss`, `skilltype.dbss`,
 
 and LOC type 10 names a skill by its number alone, so every rank of one skill
 shares a name. LOC type 13 holds each rank's own text, keyed by skill number
-and level. See docs/file-formats/skill_dbss.md.
+and level. See docs/file-formats/dbss/skill_dbss.md.
 """
 
 from __future__ import annotations
@@ -79,7 +79,7 @@ def skill_description_tagged(skill_no: int, level: int, description_kr: str) -> 
     says something else; guild skills keep a usage hint in the first and
     their effect in the second. Without either, the rank's Korean
     `skill.dbss` text, the source of type 13. See
-    docs/file-formats/skill_dbss.md.
+    docs/file-formats/dbss/skill_dbss.md.
     """
     skill_text = loc_tagged(LOC_SKILL, skill_no, _LOC_DESCRIPTION_ID4)
     rank_text = loc_lookup(LOC_SKILL_RANK, skill_no, level).strip()

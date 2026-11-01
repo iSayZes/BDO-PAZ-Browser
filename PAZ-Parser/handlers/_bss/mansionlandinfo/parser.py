@@ -8,7 +8,7 @@
          | f32 unknown_40 | f32 unknown_44 | f32 unknown_48 | f32 unknown_4c
          | u8 unknown_50 | f32[3] unknown_51
 
-Full layout in docs/file-formats/mansionlandinfo_bss.md.
+Full layout in docs/file-formats/bss/mansionlandinfo_bss.md.
 """
 
 from __future__ import annotations

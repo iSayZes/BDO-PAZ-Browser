@@ -9,7 +9,7 @@
 A str16 is a u64 count of UTF-16LE code units, then the text.
 `skillcommandoffset.dbss` (u32 count, then u16 skill number, offset and size
 per row) points 2 bytes into a row, at `skill_no_dup`. Layout 4 in
-docs/file-formats/skillcommand_dbss.md; the older Layouts 1 to 3 lack
+docs/file-formats/dbss/skillcommand_dbss.md; the older Layouts 1 to 3 lack
 `extra_param`, then `console_command_kr`, then `skill_no_dup`, and this
 parser does not read them.
 """

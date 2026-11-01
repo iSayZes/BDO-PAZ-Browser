@@ -452,8 +452,10 @@ def test_korean_title_survives_without_loc() -> None:
         (149, [15, 0, 100], "Life Skill Mastery +100"),
         # A [Life Skill Season] single-tool mastery.
         (149, [0, 2, 580], ""),
-        # Targets other than 3 (all) have no confirmed label.
-        (39, [0, 8], ""),
+        # Attack types from the client 1784 Module_Table and the monster
+        # debuff names (`공격력 감소(근접)`).
+        (39, [0, 8], "Melee AP +8"),
+        (43, [2, -5], "Magic Damage Reduction -5"),
         # A zero amount.
         (43, [3, 0], ""),
         (46, [3, -12], "Extra AP Against Kamasylvian Monsters -12"),
@@ -479,9 +481,14 @@ def test_korean_title_survives_without_loc() -> None:
         (14, [20, 4000], "Stun (Ignores Resistance) for 4 sec"),
         # Kind 0 mixes resistances and stuns.
         (14, [0, 3000], ""),
+        # `[액션제한] 그로기`.
+        (14, [19, 2000], "Groggy for 2 sec"),
         (24, [27500000, 2], "Skill EXP +27,500,000"),
         (24, [200000, 1], "Guild EXP +200,000"),
         (60, [0, 60, 1], "Contribution EXP +60"),
+        # `공헌도 포인트+5` and `공헌도 회복 3`.
+        (60, [0, 5, 0], "Contribution Points +5"),
+        (60, [0, 3, 2], "Recover 3 Used Contribution Points"),
         # Package durations in minutes, worded like the item names.
         (97, [1, 43200], "Value Pack for 30 days"),
         (97, [15, 1440], "Secret Book of Old Moon for 1 day"),
@@ -622,8 +629,11 @@ def test_ticking_damage_kind(icon_path: str, duration_ms: int, expected: str) ->
         (1, 250, 0, 3, "Recover 250 HP when struck"),
         # Fury of the Beast: "Recover 5 WP each time when struck".
         (4, 5, 0, 8, "Recover 5 MP/WP/SP when struck"),
+        # Ancient Magic Crystal - Temptation, `HP -100` on the target:
+        # BuffCondition_Table 2 is "on attack, applied to the target".
+        (1, -100, 0, 2, "Deal 100 Fixed Damage on Hits"),
         # A condition with no confirmed wording.
-        (1, -100, 0, 2, ""),
+        (1, -100, 0, 5, ""),
     ],
 )
 def test_over_time_text(
@@ -647,8 +657,8 @@ def test_over_time_text(
         (EffectInput(120, [0, 15000]), {1: "Rate", 2: "1.5%"}),
         (EffectInput(4, [250], tick_ms=10000), {1: "every 10 sec"}),
         (EffectInput(1, [-15], condition_type=4), {1: "when struck"}),
-        # No confirmed meaning: no labels at all.
-        (EffectInput(39, [0, 8]), {}),
+        (EffectInput(39, [0, 8]), {1: "Melee"}),
+        (EffectInput(60, [0, 3, 2]), {3: "Recover Used"}),
         (EffectInput(16, [521]), {1: "Group"}),
         (EffectInput(72, [0, 8, 1, 0]), {1: "All Towns"}),
         (EffectInput(73, [0, 5]), {2: "Southwestern Calpheon"}),
@@ -797,3 +807,26 @@ def test_minutes_text(minutes: int, expected: str) -> None:
     from _dbss.buff.effect.units import minutes_text
 
     assert minutes_text(minutes) == expected
+
+
+def _stripped_test_record(apply_rate: int, params: list[int], params_set: list[bool]) -> dict:
+    record = {f"param_{index}": value for index, value in enumerate(params + [0] * (10 - len(params)), 1)}
+    return {**record, "apply_rate": apply_rate, "params_set": tuple(params_set + [False] * (10 - len(params_set)))}
+
+
+def test_a_file_with_no_apply_rate_lost_its_server_columns() -> None:
+    from _dbss.buff.handler import _strips_server_columns
+
+    stripped = [_stripped_test_record(0, [], []), _stripped_test_record(0, [3, 8], [True, True])]
+    live = [*stripped, _stripped_test_record(1000000, [3, 8], [True, True])]
+
+    assert _strips_server_columns(stripped) and not _strips_server_columns(live)
+
+
+def test_only_set_parameters_that_all_read_zero_count_as_stripped() -> None:
+    from _dbss.buff.handler import _has_stripped_params
+
+    assert _has_stripped_params(_stripped_test_record(0, [0, 0], [True, True]))
+    # A workbook that keeps its parameters, and a buff with none set.
+    assert not _has_stripped_params(_stripped_test_record(0, [3, 8], [True, True]))
+    assert not _has_stripped_params(_stripped_test_record(0, [], []))

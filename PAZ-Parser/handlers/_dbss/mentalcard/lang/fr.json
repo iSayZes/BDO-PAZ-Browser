@@ -10,6 +10,7 @@
     "knowledgeName": "Nom de la connaissance",
     "categoryId": "ID de catégorie",
     "categoryName": "Nom de catégorie",
+    "knowledgeType": "Type de connaissance",
     "description": "Description",
     "minFavor": "Amitié min.",
     "maxFavor": "Amitié max.",
@@ -18,7 +19,13 @@
     "obtain": "Obtenir",
     "learnedFrom": "Apprise auprès de",
     "learnedFromItems": "Apprise grâce aux objets",
-    "position": "Position"
+    "position": "Position",
+    "mapStep": "Étape de carte",
+    "contentsGroups": "Groupes de contenu"
+  },
+  "knowledgeTypes": {
+    "0": "Normal",
+    "1": "Histoire"
   },
   "meta": {
     "count": "{count} cartes de connaissance · {with_node_name} noms de catégorie"

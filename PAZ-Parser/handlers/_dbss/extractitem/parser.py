@@ -5,7 +5,7 @@ is four slots of a u32 item ID and its u64 count: the reformed item, the
 item the extraction uses up, the gear returned and the reform stone
 returned. `extractitemoffset.dbss` points at each row's
 `item_id`, so the walk from the start needs no index. Layout in
-docs/file-formats/extractitem_dbss.md.
+docs/file-formats/dbss/extractitem_dbss.md.
 """
 
 from __future__ import annotations

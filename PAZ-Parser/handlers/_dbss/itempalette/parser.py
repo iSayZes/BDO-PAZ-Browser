@@ -5,7 +5,7 @@
 `palette_type` is a row of `dyeingpalette.dbss` and `palette_index` a colour
 in it. `itempaletteoffset.dbss` (u32 count, then u32 item key, offset and
 size per row) points at the row start. Layout 1 in
-docs/file-formats/itempalette_dbss.md.
+docs/file-formats/dbss/itempalette_dbss.md.
 """
 
 from __future__ import annotations

@@ -1,7 +1,8 @@
-"""HTML of the built-in text and image previews: a toolbar line, then the view.
+"""HTML of the built-in text, image and model previews: a toolbar line, then the view.
 
-TextHandler and DdsHandler (bdo_preview.py) call these. The controls carry
-data-action attributes that ui/js/features/preview-views.js handles.
+TextHandler and DdsHandler (bdo_preview.py) call these; the model view is in
+preview_model.py. The controls carry data-action attributes that
+ui/js/features/preview-views.js handles.
 """
 from __future__ import annotations
 
@@ -32,7 +33,7 @@ def _icon(name: str) -> str:
     return f'<svg class="icon" aria-hidden="true"><use href="#icon-{name}"></use></svg>'
 
 
-def _count(key: str, count: int) -> str:
+def count_text(key: str, count: int) -> str:
     return ui_text(f"{key}One" if count == 1 else f"{key}Many", count=f"{count:,}")
 
 
@@ -68,7 +69,7 @@ def text_view_html(
     (`xml_highlight.highlight_xml_lines`); without it each line is escaped text.
     """
     lines = text_lines(text)
-    meta = [_count("preview.line", len(lines)), _ENCODING_NAMES.get(encoding, encoding.upper())]
+    meta = [count_text("preview.line", len(lines)), _ENCODING_NAMES.get(encoding, encoding.upper())]
     ending = line_ending(text)
     if ending:
         meta.append(ending)
@@ -117,11 +118,11 @@ def image_meta(width: int | None, height: int | None, data: bytes, kind: str = "
     dds = dds_format(data)
     if dds:
         fmt, mips = dds
-        parts += [fmt, _count("preview.mip", mips)]
+        parts += [fmt, count_text("preview.mip", mips)]
     return " · ".join(parts)
 
 
-def _segmented(action: str, label_key: str, options: list[tuple[str, str]], active: str) -> str:
+def segmented_control(action: str, label_key: str, options: list[tuple[str, str]], active: str) -> str:
     buttons = "".join(
         f'<button type="button" class="{"active" if value == active else ""}" '
         f'data-action="{action}" data-value="{value}" aria-pressed="{"true" if value == active else "false"}">'
@@ -135,9 +136,9 @@ def _segmented(action: str, label_key: str, options: list[tuple[str, str]], acti
 
 def image_view_html(src: str, name: str, meta: str) -> str:
     """The image with zoom (Fit, 100%, 200%), background and a pixel readout."""
-    zoom = _segmented("image-zoom", "preview.zoom",
+    zoom = segmented_control("image-zoom", "preview.zoom",
                       [("fit", ui_text("preview.zoomFit")), ("1", "100%"), ("2", "200%")], "fit")
-    background = _segmented("image-background", "preview.background",
+    background = segmented_control("image-background", "preview.background",
                             [("checker", ui_text("preview.bgChecker")),
                              ("dark", ui_text("preview.bgDark")),
                              ("light", ui_text("preview.bgLight"))], "checker")

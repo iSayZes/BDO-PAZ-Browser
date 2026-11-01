@@ -8,7 +8,7 @@
     row:   i64 accumulated_advantage | u32 discount_rate
 
 The trade group types are the codes of `itemtradegrouptonpc.dbss`
-`trade_group_type`. Full layout in docs/file-formats/itemtradeetc_bss.md.
+`trade_group_type`. Full layout in docs/file-formats/bss/itemtradeetc_bss.md.
 """
 
 from __future__ import annotations

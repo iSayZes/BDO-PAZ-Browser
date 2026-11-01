@@ -8,7 +8,7 @@
     groups: u32 count, count x (u8 group key, u32 n, u32[n] values)
 
 The textures are string table indexes holding texture keys. Full layout in
-docs/file-formats/bossinfostaicstatusmanager_bss.md.
+docs/file-formats/bss/bossinfostaicstatusmanager_bss.md.
 """
 
 from __future__ import annotations

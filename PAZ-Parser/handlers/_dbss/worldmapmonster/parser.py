@@ -5,7 +5,7 @@
 
 Each record holds two Korean label lines and a name, the world position, the
 marker illustration and an optional condition script. Full layout in
-docs/file-formats/worldmapmonster_dbss.md.
+docs/file-formats/dbss/worldmapmonster_dbss.md.
 """
 
 from __future__ import annotations

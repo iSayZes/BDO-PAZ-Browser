@@ -414,7 +414,7 @@ class PreviewMixin(ApiState):
         if internal_path.startswith(_DISK_VIRTUAL_PREFIX + "/"):
             return self._load_disk_entry(internal_path)
 
-        entry = self._entry_map.get(_norm(internal_path))
+        entry = self.get_entry(internal_path)
         if not entry or not self._paz_root:
             return {"error": ui_text("errors.entryNotFound")}
 
@@ -509,7 +509,7 @@ class PreviewMixin(ApiState):
             if data is None:
                 return {"error": ui_text("errors.diskFileNotLoaded", name=name)}
         else:
-            entry = self._entry_map.get(norm)
+            entry = self.get_entry(norm)
             if not entry or not self._paz_root:
                 return {"error": ui_text("errors.entryNotFound")}
             try:
@@ -593,7 +593,7 @@ class PreviewMixin(ApiState):
         else:
             if self._cached_path == norm and self._cached_data is not None:
                 data = self._cached_data
-            elif norm in self._entry_map and self._paz_root:
+            elif self.get_entry(norm) is not None and self._paz_root:
                 try:
                     data = self.read_entry(norm)
                 except Exception as ex:

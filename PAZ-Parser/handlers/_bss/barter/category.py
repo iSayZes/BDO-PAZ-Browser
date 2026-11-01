@@ -2,7 +2,7 @@
 
 Bit N of the mask is category N, the `__eBarterCategory_*` value whose label
 the Barter information window (`panel_window_barterinfosearch.luac`) reads
-from the GAME sheet key below. See docs/file-formats/bartersubgroup_bss.md,
+from the GAME sheet key below. See docs/file-formats/bss/bartersubgroup_bss.md,
 "Barter Categories".
 """
 

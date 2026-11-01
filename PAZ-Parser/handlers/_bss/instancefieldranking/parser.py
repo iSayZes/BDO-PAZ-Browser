@@ -5,7 +5,7 @@
     Row: u16 instance_field_type | u32 ranking_count | u32[ranking_count] ranking_idxs
 
 `ranking_idxs` are `ranking_idx` keys of `instancefieldrankingmanage.bss`.
-Layout 1 in docs/file-formats/instancefieldranking_bss.md.
+Layout 1 in docs/file-formats/bss/instancefieldranking_bss.md.
 """
 
 from __future__ import annotations

@@ -2,6 +2,7 @@
   "columns": {
     "fileNameHash": "Datei-Hash",
     "cutsceneFile": "Zwischensequenz-Datei",
+    "sequenceFile": "Sequenzdatei",
     "classType": "Klassentyp",
     "className": "Klasse",
     "skillCount": "Anzahl Talente",

@@ -153,7 +153,7 @@ Extension handlers are useful for generic fallback previews.
 
 The **Show only handled tables** setting keeps a file in the tree when
 `is_handled_file()` (`bdo_preview.py`) finds a registered key for it by the
-same order, built-in text and image views aside. A new handler shows up there
+same order, built-in text, image and model views aside. A new handler shows up there
 with no second list to update. An extension key such as `.dbss` would count
 every file of that extension as handled, so register known formats by name.
 
@@ -162,6 +162,33 @@ built-in text keys, and the `.ai` and `.cl` handlers replace them. `is_plugin_ke
 handler from the built-in one, so such a file counts as handled, and
 `reload_plugins()` puts the built-in view back before it imports the
 handlers again.
+
+### NA Copies
+
+Clients 837 to 1246 ship 27 to 33,774 `.bss` / `.dbss` files only as
+`#na#<name>` (`#na#eventmanagement.bss`), never next to a plain copy. Such a
+file is an NA copy, and the browser treats it as the table of its plain name.
+The rule is in `paz/na_copy.py`; the browser and `check_docs.py` share it.
+
+| Where | What happens to `gamecommondata/binary/#na#eventmanagement.bss` |
+|-------|------------------------------------------------------------------|
+| Handler lookup | Looks up the key `eventmanagement.bss`, so it opens with that handler and counts as handled |
+| Tree, file search, content search | Listed as `eventmanagement.bss`; the row opens the stored `#na#` path, which the details pane shows |
+| Lookups by path | `Api.get_entry()` finds the NA copy for `gamecommondata/binary/eventmanagement.bss` when the client has no plain copy: companions, lookup indexes, the records cache and links into another table all read through it |
+| File search, `--list`, `--file`, `--records` | A pattern or name matches the plain name too (`event*.bss`, `eventmanagement.bss`) |
+| `--list`, `--file`, extraction | Print and write the stored `#na#` name |
+
+A plain copy wins: a lookup by path takes it first, and an NA copy next to its
+plain copy keeps its `#na#` name in the tree. Spaces after the prefix go too
+(client 1000 ships `#na# cashshoose.bss`, shown as `cashshoose.bss`). Only
+`.bss` and `.dbss` files follow the rule. `#na#default` and `#na#userdefault.xml` keep their names,
+because their plain copies hold other bytes on every client up to 3482.
+
+Handlers read the live layout only, so an old client's table that does not fit
+it fails as any other file that does not fit: the Parsed tab shows the error,
+and a lookup index whose table does not parse is left out (the others are
+built). The status line names those tables (`status.indexSkipped`) when the
+indexes are built; a later launch loads them from the index cache without it.
 
 ## Handler Template
 
@@ -705,15 +732,19 @@ row is reused only while all of these match:
 - the table and every path `companions()` returns: archive, archive CRC and size,
   offset and sizes
 - the LOC text and each lookup index the build read, by content digest
+- the client version, or only the layout range it falls in, when the build asked
+  for it ([Client Version](#client-version))
 
 So `get_records()` has to follow a few rules:
 
-- **Read shared data only through `_common/loc.py` and `_common/lookup_index.py`.**
-  Their functions report each read to `_common/data_deps.py`; a build that never read
-  LOC keeps its row when a patch changes LOC. A module-level memo of LOC text or an
-  index value would hide the read and serve another language's text.
-- **Depend only on the payload, the declared companions, LOC, the lookup indexes and
-  `self.lang`.** Anything else, such as a setting or the time, is not in the key.
+- **Read shared data only through `_common/loc.py`, `_common/lookup_index.py`,
+  `_common/effective_client.py` and `_common/client_versions.py`.** Their functions report each read to
+  `_common/data_deps.py`; a build that never read LOC keeps its row when a patch
+  changes LOC. A module-level memo of LOC text, an index value or the client would
+  hide the read and serve another language's text or another client's reading.
+- **Depend only on the payload, the declared companions, LOC, the lookup indexes,
+  the client version and `self.lang`.** Anything else, such as a setting or the
+  time, is not in the key.
 - **Return picklable plain values** (dicts, lists, tuples, str, int, float, bool,
   None), and do not change the records after returning them: a background thread
   pickles them.
@@ -792,7 +823,9 @@ Companion files are passed into `get_records()` as:
 companions: dict[str, bytes]
 ```
 
-The dictionary is keyed by basename.
+The dictionary is keyed by basename, the name the handler asked for. A client
+that ships the companion only as its [NA copy](#na-copies) gives that copy
+under the plain name.
 
 `data` and every companion hold exactly the file's recorded size: a stored
 (uncompressed) `.bss` is padded to the 8-byte ICE block in the archive, and the
@@ -960,6 +993,15 @@ tag pills).
 bytes for `title.dbss`.
 
 The CLI `--records` table and JSON keep display-only fields, to show the tags.
+
+## Built-in Views
+
+The text, image, model, video and hex views in `bdo_preview.py` subclass
+`ViewHandler`: they render the whole file under one tab (`view_label_key`)
+and have no records, so `has_parsed_view()` is False for them. The Model
+view reads `.pam`, `.pcm` and `.pac` with `par_mesh.py`, draws them in
+`ui/js/features/model-renderer.js` (WebGL 2) and fetches each texture by
+file name through `Api.get_model_texture` (`api/bdo_api_model_textures.py`).
 
 ## Raw Hex Preview
 
@@ -1321,10 +1363,11 @@ Results are
 cached by `paz/bdo_index_cache.py` in `paz_browser_indexes.cache` in the
 client's cache folder, keyed by `IndexKind.value` (renaming a value orphans its cached data
 until the rebuild) and invalidated on the PAZ meta version or when the code that
-builds them changes. A folder load also deletes it when the `pad*.paz` files on
-disk differ from the ones the PAZ entry cache (`paz/bdo_cache.py`) recorded under
-the same meta version, as when archives are added to or deleted from a client
-folder that keeps its `pad00000.meta`. The cache stores `builder_fingerprint()` (through
+builds them changes. A folder load also deletes it when the PAZ entry cache
+(`paz/bdo_cache.py`) is rebuilt under the same meta version: the `pad*.paz`
+files on disk differ from the ones it recorded, as when archives are added to
+or deleted from a client folder, or the size or modification time of
+`pad00000.meta` differs, as after a repack. The cache stores `builder_fingerprint()` (through
 `index_fingerprint()` in `api/bdo_lookup_indexes.py`), a hash of
 `_common/lookup_builders.py` plus every project module it imports and the JSON
 files beside them (`paz/source_fingerprint.py`), so editing a builder, a helper
@@ -1388,7 +1431,7 @@ IDs (`LookupValue`).
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in
-[itemenchant.dbss](file-formats/itemenchant_dbss.md), moved back by the
+[itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md), moved back by the
 `unknown_5d` byte count on mount and ship gear); characters named by zero
 or several items are left out. The `characterobject.dbss` Item column reads it.
 The `characterstatic.dbss` `source_item_id` holds the same link for 4,874 of
@@ -1399,7 +1442,7 @@ read it.
 `getknowledge(<id>);` action script grants it, in ascending ID order.
 `KNOWLEDGE_LEARNING_CHARACTERS` maps a card to the monsters, NPCs and
 gathering nodes that teach it through
-[knowledgelearning.dbss](file-formats/knowledgelearning_dbss.md) table 0, also
+[knowledgelearning.dbss](file-formats/dbss/knowledgelearning_dbss.md) table 0, also
 in ascending ID order. The two overlap but neither covers the other, so the
 `mentalcard.dbss` Learned From column reads both and merges them.
 `KNOWLEDGE_LEARNING_ITEMS` maps a card to the items that teach it (table 1),
@@ -1407,13 +1450,13 @@ in ascending ID order; the Learned From Items column shows them with
 `item_key_list_cell()`.
 
 `CHARACTER_AI_SCRIPT` maps a character to the AI script its
-[characterstatic.dbss](file-formats/characterstatic_dbss.md) record names, a
+[characterstatic.dbss](file-formats/dbss/characterstatic_dbss.md) record names, a
 file stem as written (`Monsters_Main_Manager`). The `.ai` handler reads the
 whole index and keeps the characters whose stem matches its file, without
 case, for its Used by box.
 
 `CHARACTER_NAME_KR` maps a character to its Korean
-[characterstatic.dbss](file-formats/characterstatic_dbss.md#korean-strings)
+[characterstatic.dbss](file-formats/dbss/characterstatic_dbss.md#korean-strings)
 name: `name_kr`, or `label_kr` where `name_kr` is the `UNKNOWN` placeholder.
 `character_name()` in `_common/character.py` falls back to it when LOC type
 6 has no name, as `item_name()` does with `ITEM_NAME_KR`, with no `(KR)`
@@ -1429,7 +1472,7 @@ type 6 has no title, so the Title columns of `employeespawninfo.dbss`,
 characters the English LOC leaves out, 50 of them `<메이드 통합>`.
 
 `CHARACTER_GROUP_MEMBERS` maps each non-zero
-[`character_group`](file-formats/characterstatic_dbss.md#character-group) to
+[`character_group`](file-formats/dbss/characterstatic_dbss.md#character-group) to
 its character IDs, ascending (258 groups on client 3474). Read it through
 `_common/character_group.py`: `character_group_names(group)` gives the
 distinct member names (`character_name()`, so LOC then Korean),
@@ -1441,7 +1484,7 @@ Kill Groups columns of `quest.dbss` and `guildquest.dbss`, and the
 `itemenchant.dbss` Event Param 1 column names the group of a soul collector.
 
 `CHARACTER_LEASES` maps a character to every `buyItemByPoint(...)` lease
-option in its dialogs ([detail_dialog.dbss](file-formats/detail_dialog_dbss.md)),
+option in its dialogs ([detail_dialog.dbss](file-formats/dbss/detail_dialog_dbss.md)),
 in dialog order and without repeats, as flat `(item_id, cost)` pairs. It is
 built by `build_character_lease_index()` in `_dbss/detail_dialog/parser.py`.
 Read it through `dialog_leases(character_id)` in `_common/lease.py`, which
@@ -1474,7 +1517,7 @@ is not loaded or has no type 59 text for the name. The records follow the
 count back to back, so the spec reads `textbind.dbss` alone.
 
 `BUFF_ICON` maps a buff ID to its icon. It reads
-[buffsimply.bss](file-formats/buffsimply_bss.md), which stores the same icon
+[buffsimply.bss](file-formats/bss/buffsimply_bss.md), which stores the same icon
 paths as `buff.dbss` in fixed 32-byte rows (1.4 MB against 12 MB of
 variable-length records). Buffs without an icon or with the `UNKNOWN`
 placeholder are left out. Read it through `IconKind.BUFF`, or through
@@ -1485,7 +1528,7 @@ there normalizes the stored paths for both buff tables.
 `ITEM_KEY_ICON` maps a packed item key (`enchant_level << 24 | item_id`) to
 the icon of that level, for the 551 items whose icon or name changes with
 their level (Sovereign weapons, Fallen God armor, PEN Nouver sub-weapons). It
-reads [specialenchantitem.bss](file-formats/specialenchantitem_bss.md), which
+reads [specialenchantitem.bss](file-formats/bss/specialenchantitem_bss.md), which
 copies those per-level icons out of `itemenchant.dbss` in fixed 19-byte rows
 (175 KB); `ITEM_ICON` reads level-0 blocks only and cannot reach them. Read it
 through `item_key_icon_path(item_key)` in `_common/item_key.py`, which falls
@@ -1513,7 +1556,7 @@ level, `Blackstar Helmet (19)`, including levels whose LOC type 79 name is just
 the item name (`Preonne Belt (3)`).
 
 `ITEM_GRADE` maps a base item ID to its grade (`+0x06` in
-[itemenchant.dbss](file-formats/itemenchant_dbss.md)), which the game draws
+[itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md)), which the game draws
 the name in. `item_key_list_cell()` reads it through
 `item_key_text_tagged()`, which wraps the name in the grade's `<PAColor>`
 tag, so every item list (and the `buff.dbss` Applied By and `teleport.dbss`
@@ -1552,11 +1595,11 @@ of them changes an icon an existing table shows:
 `PRODUCTION_ITEMS` maps a worker production key to the packed item keys
 (`enchant_level << 24 | item_id`) of its exchange's product drop group:
 the `exchange_key` in
-[plantexchangegroup.bss](file-formats/plantexchangegroup_bss.md) is an
-[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) row, whose
-`product_drop_key` is an [itemmaingroup.bss](file-formats/itemmaingroup_bss.md)
+[plantexchangegroup.bss](file-formats/bss/plantexchangegroup_bss.md) is an
+[itemexchangesource.bss](file-formats/bss/itemexchangesource_bss.md) row, whose
+`product_drop_key` is an [itemmaingroup.bss](file-formats/bss/itemmaingroup_bss.md)
 group, whose subgroups list the items in
-[itemsubgroup.dbss](file-formats/itemsubgroup_dbss.md).
+[itemsubgroup.dbss](file-formats/dbss/itemsubgroup_dbss.md).
 `PRODUCTION_LUCK_ITEMS` does the same for the exchange's `luck_drop_key`.
 Only the few hundred production exchanges and their groups are kept, so no
 table needs the 3 MB `itemexchangesource.bss` or the 13 MB
@@ -1576,7 +1619,7 @@ Items and Luck Drops columns and the `plantzone.dbss` Produced Items and Luck
 Drops columns read them that way.
 
 `EXCHANGE_NAME_KR` maps every
-[itemexchangesource.bss](file-formats/itemexchangesource_bss.md) key to its
+[itemexchangesource.bss](file-formats/bss/itemexchangesource_bss.md) key to its
 Korean name, `''` for the rows without one, so it also tells which keys have
 a row. It is built by `build_exchange_name_kr_index()` in
 `_bss/itemexchangesource/parser.py`. Read it through `_common/item_exchange.py`:
@@ -1589,7 +1632,7 @@ the `houseinforeceipe.dbss` Exchanges column and the `guildmanufacture.dbss`
 Exchange column use them.
 
 `SKILL_BUFFS` and `BUFF_ITEMS` are the item to buff link. An item's
-`itemenchant.dbss` skill keys name [skill.dbss](file-formats/skill_dbss.md)
+`itemenchant.dbss` skill keys name [skill.dbss](file-formats/dbss/skill_dbss.md)
 records, whose `buff_ids` are the item's buffs (item 761880 -> skill 47683 ->
 buffs 48723 to 48728). `SKILL_BUFFS` maps a skill key to its buff IDs in slot
 order, leaving out skills without buffs; read it through `skill_buff_ids()` in
@@ -1602,27 +1645,27 @@ every base item whose skills apply it, in ascending ID order; the
 tables, so `BUFF_ITEMS` costs no second read of `itemenchant.dbss`.
 
 `ENCHANT_KEY_ITEMS` maps an
-[enchantstaticstatus.dbss](file-formats/enchantstaticstatus_dbss.md) enchant
+[enchantstaticstatus.dbss](file-formats/dbss/enchantstaticstatus_dbss.md) enchant
 key to the base items whose `itemenchant.dbss` block stores it, in ascending
 ID order; keys no item uses and items with key `0` are left out. It is built
 by `build_enchant_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same key. The
 `enchantstaticstatus.dbss` Items column and the
-[itemviewstackenchantgroupss.bss](file-formats/itemviewstackenchantgroupss_bss.md)
+[itemviewstackenchantgroupss.bss](file-formats/bss/itemviewstackenchantgroupss_bss.md)
 Items and Group Items columns read it; `itemenchant.dbss` shows each item's
 own key as its Enchant Key column.
 
 `ENHANCEMENT_TYPE_ITEMS` maps an enhancement type (`enhancement_type` after
-the icon in [itemenchant.dbss](file-formats/itemenchant_dbss.md)) to its base
+the icon in [itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md)) to its base
 items, in ascending ID order; type `0` is left out. It is built by
 `build_enhancement_type_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks. The
-[guaranteeenchantss.dbss](file-formats/guaranteeenchantss_dbss.md) Items
+[guaranteeenchantss.dbss](file-formats/dbss/guaranteeenchantss_dbss.md) Items
 column reads it; `itemenchant.dbss` shows each item's own type as its
 Enhancement Type column.
 
 `MARBLE_DICE_GROUP_ITEMS` maps a
-[marblegamediceitemgroup.dbss](file-formats/marblegamediceitemgroup_dbss.md)
+[marblegamediceitemgroup.dbss](file-formats/dbss/marblegamediceitemgroup_dbss.md)
 group key to the base items with contents event `98` whose
 `contents_event_param1` names it, in ascending ID order. It is built by
 `build_marble_dice_group_item_index()` in `_dbss/itemenchant/parser.py`
@@ -1632,7 +1675,7 @@ and `marblegamediceitemkey.dbss` read it through
 `linked_item_ids()` in `_common/linked_items.py`.
 
 `CUSTOMIZED_ITEM_BOXES` maps a
-[customizeditem.dbss](file-formats/customizeditem_dbss.md) key to the base
+[customizeditem.dbss](file-formats/dbss/customizeditem_dbss.md) key to the base
 items with contents event `31` (CustomizedItemBox) whose
 `contents_event_param1` names it, in ascending ID order. It is built by
 `build_customized_item_box_index()` in `_dbss/itemenchant/parser.py`, which
@@ -1640,17 +1683,17 @@ shares the level-0 walk with the marble dice index. The `customizeditem.dbss`
 Boxes column reads it through `_common/linked_items.py`.
 
 `MESH_KEY_ITEMS` maps an item mesh key (`item_mesh_key` in the
-[itemenchant.dbss](file-formats/itemenchant_dbss.md) Class Entry list, the key
-of [itemeffectchange.dbss](file-formats/itemeffectchange_dbss.md)) to the base
+[itemenchant.dbss](file-formats/dbss/itemenchant_dbss.md) Class Entry list, the key
+of [itemeffectchange.dbss](file-formats/dbss/itemeffectchange_dbss.md)) to the base
 items that wear it for any class type, in ascending ID order. It is built by
 `build_mesh_key_item_index()` in `_dbss/itemenchant/parser.py` from the
 level-0 blocks, since every level of an item stores the same class entries.
 The Items columns of `itemeffectchange.dbss` and
-[itemmeshstaticstatus.bss](file-formats/itemmeshstaticstatus_bss.md) read it
+[itemmeshstaticstatus.bss](file-formats/bss/itemmeshstaticstatus_bss.md) read it
 through `_common/linked_items.py`.
 
 `NODE_PARENT` maps a worldmap sub-node (`is_sub_node` in
-[exploration.bss](file-formats/exploration_bss.md)) to the one node it links
+[exploration.bss](file-formats/bss/exploration_bss.md)) to the one node it links
 to in the worldmap graph, its parent; sub-nodes with no link or several are
 left out. Read it through `full_node_name()` in `_common/node.py`, which names
 a sub-node `Bambu Valley - Mining` where LOC type 29 alone says `Mining`; the
@@ -1674,7 +1717,7 @@ every link is listed under both its ends; `map_nodes.py` keeps the links
 between two map nodes for the Map view's link lines. It is built by
 `build_node_link_index()` in `_bwp/waypoint/worldmap.py`.
 
-`TELEPORT_BUFFS` maps a [teleport.dbss](file-formats/teleport_dbss.md) point
+`TELEPORT_BUFFS` maps a [teleport.dbss](file-formats/dbss/teleport_dbss.md) point
 to the effect type 23 buffs that go there, and `TELEPORT_BUFF_NAME_KR` maps
 those buffs to their Korean names; the point ID packs section and key
 (`teleport_point_id()` in `_common/teleport.py`, which also reads both
@@ -1688,7 +1731,7 @@ over every node (`build_teleport_nearest_node_index()` in
 Lab (12 m)` for the `buff.dbss` Effect text of type 23.
 
 `LIGHTSTONE_SETS` maps a Lightstone item to the
-[lightstoneset.bss](file-formats/lightstoneset_bss.md) sets it counts toward,
+[lightstoneset.bss](file-formats/bss/lightstoneset_bss.md) sets it counts toward,
 in ascending set ID order: a member to every set that lists it, and a
 substitute (an Amplified Lightstone) to the sets of its base Lightstone. It
 is built by `build_lightstone_set_index()` in `_bss/lightstoneset/parser.py`.
@@ -1697,7 +1740,7 @@ Read it through `item_set_ids()` in `_bss/lightstoneset/item_sets.py`, whose
 `itemenchant.dbss` Lightstone Sets column uses both.
 
 `INSTANCE_FIELD_NAME` maps an
-[instancefield.dbss](file-formats/instancefield_dbss.md) key to the field's
+[instancefield.dbss](file-formats/dbss/instancefield_dbss.md) key to the field's
 internal ASCII name (`A1_001`, `Solare_Arena_Kell`); no LOC type names the
 fields. It is built by `build_instance_field_name_index()` in
 `_dbss/instancefield/parser.py`. Read it through `instance_field_name()` in
@@ -1705,7 +1748,7 @@ fields. It is built by `build_instance_field_name_index()` in
 
 `INSTANCE_FIELD_TITLE` maps the same key to the `GAME` sheet hash of the
 field's title key in
-[instancefieldmapinfo.bss](file-formats/instancefieldmapinfo_bss.md)
+[instancefieldmapinfo.bss](file-formats/bss/instancefieldmapinfo_bss.md)
 (`INSTANCEDUNGEONDATA_A1_001_NAME`), so the text follows the loaded LOC
 language without a rebuild. It is built by
 `build_instance_field_title_index()` in `_bss/instancefieldmapinfo/parser.py`
@@ -1716,7 +1759,7 @@ Single Path`). `instance_field_label()` there joins both indexes; the
 Magnus: The Great Single Path (A1_001)`, and the `instancefield.dbss` Title
 column uses the title alone.
 
-`FIELD_NAME` maps a [fieldinfo.bss](file-formats/fieldinfo_bss.md) field
+`FIELD_NAME` maps a [fieldinfo.bss](file-formats/bss/fieldinfo_bss.md) field
 number to the field's name as the file writes it (`월드`, `A1_001`). It is
 built by `build_field_name_index()` in `_bss/fieldinfo/parser.py` and read
 through `field_no_label()` in `_bss/fieldinfo/names.py`, which gives an `A1_`
@@ -1726,7 +1769,7 @@ has the same name. The Field columns of `instancefield.dbss` and
 `field_no_link()` links to the `fieldinfo.bss` row.
 
 `CHARACTER_HUNTING_GROUNDS` maps a monster character key to the
-[dropuihuntinggroundinfo.bss](file-formats/dropuihuntinggroundinfo_bss.md)
+[dropuihuntinggroundinfo.bss](file-formats/bss/dropuihuntinggroundinfo_bss.md)
 hunting grounds whose `monster_ids` list it, ascending, and
 `HUNTING_GROUND_NAME_KR` maps a hunting ground key to its Korean name.
 `build_character_hunting_ground_index()` and
@@ -1738,7 +1781,7 @@ hunting grounds whose `monster_ids` list it, ascending, and
 `character_hunting_grounds(character_keys)` joins the zones of several
 characters; `hunting_ground_list_cell(keys, names, max_items)` links each zone
 to its row with a hoverable count of the rest. The
-[monstergroup.dbss](file-formats/monstergroup_dbss.md) Hunting Grounds column
+[monstergroup.dbss](file-formats/dbss/monstergroup_dbss.md) Hunting Grounds column
 uses them, and the `worldmapmonster.dbss` Hunting Ground column names its
 zone with `hunting_ground_name()`.
 
@@ -1783,9 +1826,12 @@ full-size art some tables use as icons (the 2560 x 1440 journal artwork).
 Thumbnails are built one at a time, since each JS call runs on its own thread
 and a screen of large textures would otherwise starve the window thread, and
 each finished one is stored in `paz_browser_thumbnails.sqlite` in the client's
-cache folder (`paz/bdo_thumbnail_cache.py`), cleared when the meta version changes. A
-large texture therefore costs its read (about 1 s for a 14 MB file, mostly
-decompression) once per client version, not once per session.
+cache folder (`paz/bdo_thumbnail_cache.py`), cleared when the client's content
+key changes: the meta version plus a digest of the checksum and size of every
+archive row in `pad00000.meta` (`paz/bdo_content_key.py`), so a patch and a
+repack under the same version both clear it. A large texture therefore costs
+its read (about 1 s for a 14 MB file, mostly decompression) once per client
+content, not once per session.
 
 Icons are looked up by kind and entity ID through `_common/icon_index.py`,
 never by hand-written template:
@@ -2047,6 +2093,69 @@ Rules:
   means tab search and CSV export also see the localized values.
 - Do not put translated labels directly in `render_records_page()`, because the HTML layer
   should be format-agnostic.
+
+## Client Version
+
+`effective_client()` in `_common/effective_client.py` returns the client version the
+loaded folder is read as: today the `.meta` version of the folder, set on every
+folder load (`bdo_preview.set_handler_client`). It returns None when no folder is
+loaded or the exe predates the setter; read the file as the live client then.
+
+A handler with more than one layout keeps the first layout that reads the file to
+its end; the client only decides which layout it tries first. Each layout declares
+the test clients it reads as `ClientRange`s (`_common/client_versions.py`), taken
+from the Versions table of the format doc, which `check_docs.py` writes; a layout
+with no checked client declares none. Loop over `client_order()` instead of the
+layouts:
+
+```python
+@dataclass(frozen=True)
+class RowLayout:
+    number: int
+    ...
+    clients: tuple[ClientRange, ...] = ()
+
+
+# Newest first.
+LAYOUTS = (
+    RowLayout(2, ..., clients=(ClientRange(2142),)),         # 2142 and later
+    RowLayout(1, ..., clients=(ClientRange(1286, 2138),)),
+)
+
+for layout in client_order(LAYOUTS, lambda layout: layout.clients):
+    try:
+        return _read_rows(data, layout)
+    except ValueError as error:
+        breaks.append(f"Layout {layout.number}: {error}")
+```
+
+Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
+`territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss`,
+`mentalcard.dbss`, `itemenchant.dbss`, `characterstatic.dbss`,
+`charactersimply.bss`, `skill.dbss`, `buff.dbss` and `pcgrowth.dbss`.
+`itemenchant.dbss` tries each layout on its first eight base blocks instead of
+the whole 194 MB file, then reads every block with the one that fits
+(`_dbss/itemenchant/layouts.py`); its lookup index builders pick the layout the
+same way. `characterstatic.dbss` does the same with its first eight records
+(`_dbss/characterstatic/layouts.py`). `skill.dbss` and `buff.dbss` read the whole
+file per layout instead: a `skill.dbss` Layout 1 record with no text and no linked
+skills also walks as Layout 2, and on client 1784 the first 66 do. `buff.dbss`
+Layouts 1 and 2 store u16 IDs in `buffoffset.dbss`; its view picks the row
+width whose rows end at the trailer's `rows_end`. Both character tables store None for the
+layout's "not a vehicle" value (`63` on clients 1784 and 2553, `65` later;
+`_common/vehicle_type.py`). `tests/test_client_versions.py` fails when two layouts of
+one of them claim the same client. When the same bytes mean different things on different clients,
+`covering(choices, clients)` returns the choice whose ranges cover the client, or
+None: `totalquestcounttype.bss` names its values by `CppEnums.QuestType` on
+clients 1109 to 2492 (`older` in `_bss/totalquestcount/tables.py`) and by the
+live enum otherwise. Ask for the raw number with `effective_client()` only when
+no range fits the question; its tables re-parse on every change of the version.
+
+A client change drops every handler's `_data_cache` slots. The records cache
+re-parses only the tables whose build asked for the client: after
+`effective_client()` on any change of the version, after `client_order()` or
+`covering()` only when the client moves into another range. A patch on the live client
+keeps them all.
 
 ## Import Rules
 

@@ -4,7 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from format_docs import check_doc, converted_docs, is_converted, read_layouts
+from format_docs import check_doc, converted_docs, format_doc_paths, is_converted, read_layouts
+from format_docs.script_docs import is_script_doc, script_doc_problems
 from format_docs.markdown import split_row
 from format_docs.model import Field
 from format_docs.names import name_problems
@@ -48,20 +49,36 @@ def test_a_doc_in_the_layout_format_has_no_problems() -> None:
     assert _messages(_doc(FILE_LAYOUT, ROW)) == []
 
 
-# Text and graph formats; their layout form is still open (todo.md, Tier 7).
-NOT_BINARY_TABLES = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md", "waypoint_bwp.md"})
+# Docs not in the layout format yet; their layout form is still open (todo.md, Tier 2).
+NOT_IN_LAYOUT_FORM = frozenset({"aiscript_ai.md", "combolist_cl.md", "languagedata_loc.md"})
 
 
-def test_every_bss_and_dbss_doc_is_in_the_layout_format() -> None:
-    docs = {path.name for path in DOCS_DIR.glob("*.md") if not path.name.startswith("_")}
+def test_every_doc_but_the_script_docs_is_in_the_layout_format() -> None:
+    docs = {path.name for path in format_doc_paths(DOCS_DIR) if not is_script_doc(path)}
     converted = {path.name for path in converted_docs(DOCS_DIR)}
 
-    assert sorted(docs - converted - NOT_BINARY_TABLES) == []
+    assert sorted(docs - converted - NOT_IN_LAYOUT_FORM) == []
+
+
+@pytest.mark.parametrize("path", [path for path in format_doc_paths(DOCS_DIR) if is_script_doc(path)], ids=lambda path: path.name)
+def test_every_script_doc_passes(path: Path) -> None:
+    assert [str(problem) for problem in script_doc_problems(path.read_text(encoding="utf-8"))] == []
+
+
+def test_a_script_doc_needs_its_sections_in_order_and_the_four_call_columns() -> None:
+    calls = "## Calls Into Client Data\n\n| Call | Notes |\n| --- | --- |\n| `ToClient_x()` | x |\n"
+    text = f"# `x.luac`\n\n## Versions\n\nClient 3483.\n\n## Purpose\n\nA window.\n\n{calls}\n## Field Names\n\nNone.\n"
+
+    assert [problem.message for problem in script_doc_problems(text)] == [
+        "`## Field Names` is not a script doc section",
+        "sections go Purpose, Calls Into Client Data, Enums Used, Versions, Open Questions",
+        "the call table has the columns Call | What the script does with it | Format doc field | Client",
+    ]
 
 
 @pytest.mark.parametrize("path", converted_docs(DOCS_DIR), ids=lambda path: path.name)
 def test_every_converted_doc_passes(path: Path) -> None:
-    assert [str(problem) for problem in check_doc(path.read_text(encoding="utf-8"), DOCS_DIR)] == []
+    assert [str(problem) for problem in check_doc(path.read_text(encoding="utf-8"), path.parent)] == []
 
 
 def test_a_fixed_size_must_equal_the_sum_of_the_fields() -> None:
@@ -227,6 +244,9 @@ def test_unknown_after_and_dup_names_point_at_a_field_of_the_structure() -> None
         ("Row[row_count]", None, 0),
         ("Row[..table_start]", None, 0),
         ("Row[while key != 200]", None, 0),
+        ("Row[sum vertex_count]", None, 0),
+        ("f16[2]", 4, 4),
+        ("u16[sum index_count] if wide = 0", None, 0),
         ("bytes[rest]", None, 0),
     ],
 )
@@ -238,7 +258,7 @@ def test_type_sizes(text: str, size: int | None, part: int) -> None:
     assert fixed_part(spec, {"Row": 8}) == part
 
 
-@pytest.mark.parametrize("text", ["row[]", "u24", "bytes", "str16[2][2]", "char[rest]", "Row[a b]"])
+@pytest.mark.parametrize("text", ["row[]", "u24", "bytes", "str16[2][2]", "char[rest]", "Row[a b]", "Row[sum a.b]"])
 def test_types_outside_the_grammar_are_rejected(text: str) -> None:
     assert isinstance(parse_type(text), str)
 

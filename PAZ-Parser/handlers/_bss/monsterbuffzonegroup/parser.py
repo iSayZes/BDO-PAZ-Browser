@@ -5,7 +5,7 @@
     Entry: u16 character_key | u8 unknown_02 | u16 character_key_dup | u16 unknown_05
            | u32 character_count | u16[character_count] character_keys
 
-Layout 1 in docs/file-formats/monsterbuffzonegroup_bss.md.
+Layout 1 in docs/file-formats/bss/monsterbuffzonegroup_bss.md.
 """
 
 from __future__ import annotations

@@ -8,7 +8,7 @@
 A colour's position in its row is the `palette_index` that
 `itempalette.dbss` stores. `dyeingpaletteoffset.dbss` (u32 count, then u8
 palette type, u32 offset, u32 size per row) points 1 byte into a row, at
-`unknown_01`. Layout 1 in docs/file-formats/dyeingpalette_dbss.md.
+`unknown_01`. Layout 1 in docs/file-formats/dbss/dyeingpalette_dbss.md.
 """
 
 from __future__ import annotations

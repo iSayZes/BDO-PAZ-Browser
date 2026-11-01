@@ -2,7 +2,7 @@
 
 The file is a u32 list count, then per list a u32 item count, that many u32
 item IDs and a trailing u8 potion type (the list's key). See
-docs/file-formats/fairypotion_dbss.md.
+docs/file-formats/dbss/fairypotion_dbss.md.
 """
 
 from __future__ import annotations

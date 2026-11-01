@@ -76,7 +76,7 @@ def save_index_cache(cache_dir: Path, fingerprint: str, data: IndexCacheData) ->
 
 
 def drop_index_cache(cache_dir: Path) -> None:
-    """Delete the cache, for a client whose archive files changed under the same meta version."""
+    """Delete the cache, for a client whose archive files or meta file changed under the same meta version."""
     (cache_dir / CACHE_FILE).unlink(missing_ok=True)
 
 

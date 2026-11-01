@@ -5,7 +5,7 @@
     Row: u32 entry_count | entry_count x Entry
     Entry (25 bytes): u8 unknown_00 | 2 x (u32 day_of_week | u32 hour | u32 minute)
 
-Full layout in docs/file-formats/edaniapvpdayoptionstaticstatus_bss.md.
+Full layout in docs/file-formats/bss/edaniapvpdayoptionstaticstatus_bss.md.
 """
 
 from __future__ import annotations

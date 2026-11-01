@@ -6,7 +6,7 @@
     Group: u8 unknown_00 | u32 position_count | position_count x Position
     Position (17 bytes): f32 x | f32 y | f32 z | f32 unknown_0c | u8 unknown_10
 
-Full layout in docs/file-formats/oceansiegereviveposition_bss.md.
+Full layout in docs/file-formats/bss/oceansiegereviveposition_bss.md.
 """
 
 from __future__ import annotations

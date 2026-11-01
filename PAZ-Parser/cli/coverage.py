@@ -26,6 +26,10 @@ from .stdio import error, progress, write_raw
 _PROGRESS_EVERY = 250
 # Error texts are cut to this many characters.
 _MAX_ERROR_LENGTH = 300
+# A handler that catches its own parse error returns one record with this
+# field, the text of its error page (`ERROR_FIELD` in `_common/row_table.py`;
+# the core may not import that module, see `handler_api.py`).
+ERROR_FIELD = "_error"
 
 # (entry, handler) -> the file's bytes and its companions.
 ReadFile = Callable[[PazEntry, PreviewHandler], tuple[bytes, dict[str, bytes]]]
@@ -87,12 +91,19 @@ def check_file(read: ReadFile, entry: PazEntry, handler: PreviewHandler) -> File
         return FileResult(entry.internal_path, key, False, None, describe_error(ex), _elapsed(started))
     finally:
         handler.release_data(data)
+    if records and ERROR_FIELD in records[0]:  # the handler caught its parse error and shows it as a page
+        return FileResult(entry.internal_path, key, False, None, _one_line(str(records[0][ERROR_FIELD])), _elapsed(started))
     return FileResult(entry.internal_path, key, True, len(records), None, _elapsed(started))
 
 
 def describe_error(ex: BaseException) -> str:
     """`Type: message` on one line, cut to `_MAX_ERROR_LENGTH`."""
-    text = " ".join(f"{type(ex).__name__}: {ex}".split())
+    return _one_line(f"{type(ex).__name__}: {ex}")
+
+
+def _one_line(text: str) -> str:
+    """`text` on one line, cut to `_MAX_ERROR_LENGTH`."""
+    text = " ".join(text.split())
     return text if len(text) <= _MAX_ERROR_LENGTH else text[: _MAX_ERROR_LENGTH - 1] + "…"
 
 

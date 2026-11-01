@@ -8,7 +8,7 @@
 The first list is the trade item barters, the second the material barters.
 `bartersubgroup.bss` groups have a bare entry count as their head,
 `barter_normal.bss` groups a u16 region key before it. Layouts in
-docs/file-formats/bartersubgroup_bss.md and barter_normal_bss.md.
+docs/file-formats/bss/bartersubgroup_bss.md and barter_normal_bss.md.
 """
 
 from __future__ import annotations

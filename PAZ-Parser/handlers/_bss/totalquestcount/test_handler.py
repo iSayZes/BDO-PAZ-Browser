@@ -7,6 +7,7 @@ from typing import Any
 
 import pytest
 
+from bdo_preview import set_handler_client
 from tests.fixtures import load_binary_fixture
 from tests.framework import (
     CaseInput,
@@ -120,6 +121,25 @@ def test_a_file_shorter_than_the_enum_gets_no_names(quest_table: QuestCountTable
 def test_a_file_with_the_whole_enum_gets_names(quest_table: QuestCountTable) -> None:
     records = quest_count_records(quest_table, _counts_file(len(quest_table.enum_names) + 1), {})
     assert [r[quest_table.name_field] for r in records] == [*quest_table.enum_names, ""]
+
+
+def test_a_client_in_the_older_enum_range_gets_its_names() -> None:
+    set_handler_client(1784)  # 17 values, fewer than the live enum's 20
+
+    records = quest_count_records(QUEST_TYPE_TABLE, _counts_file(17), {})
+
+    names = [r[QUEST_TYPE_TABLE.name_field] for r in records]
+    assert names[:8] == ["BlackSpirit", "Story", "Town", "Adventure", "Trade", "Craft", "Repetition", "Guild"]
+    assert (names[10], names[11], names[15]) == ("Special", "RegionMonsterKill", "Production")
+    assert names[13] == names[16] == ""
+
+
+def test_a_client_after_the_older_enum_follows_the_live_rule() -> None:
+    set_handler_client(2498)  # first client without CppEnums.QuestType
+
+    records = quest_count_records(QUEST_TYPE_TABLE, _counts_file(17), {})
+
+    assert [r[QUEST_TYPE_TABLE.name_field] for r in records] == [""] * 17
 
 
 def test_an_array_end_inside_a_value_raises() -> None:

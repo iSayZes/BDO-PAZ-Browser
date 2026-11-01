@@ -6,7 +6,7 @@
          | u8 is_center_alignment
 
 Both string indexes point into the PABR string table at the end of the
-file. Layout 2 in docs/file-formats/letter_bss.md; clients before it
+file. Layout 2 in docs/file-formats/bss/letter_bss.md; clients before it
 have no center alignment byte (Layout 1), which this parser does not read.
 """
 

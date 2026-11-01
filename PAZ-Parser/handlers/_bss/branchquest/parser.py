@@ -6,7 +6,7 @@
     group: u32 row_count | row_count x row
     row:   u32 group_key | u16 quest_chain_id | u16 quest_id | u8 is_root_quest
 
-Layout in docs/file-formats/branchquest_bss.md.
+Layout in docs/file-formats/bss/branchquest_bss.md.
 """
 
 from __future__ import annotations

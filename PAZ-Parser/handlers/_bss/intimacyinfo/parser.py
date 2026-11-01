@@ -8,7 +8,7 @@
          | u16 quest_group (type 0) or dialog_index (other types) | u16 quest_id
          | u32 unknown_quest_id_02
 
-Layout 1 in docs/file-formats/intimacyinfo_bss.md.
+Layout 1 in docs/file-formats/bss/intimacyinfo_bss.md.
 """
 
 from __future__ import annotations

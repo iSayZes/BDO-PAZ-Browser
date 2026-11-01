@@ -16,6 +16,8 @@
     "durability": "Haltbarkeit",
     "memoryFragment": "Erinnerungsfragment",
     "stackable": "Stapelbar",
+    "instantUse": "Direkte Verwendung",
+    "timeLimit": "Zeitlimit",
     "marketable": "Marktfähig",
     "familyInventory": "Familieninventar",
     "trade": "Handel",

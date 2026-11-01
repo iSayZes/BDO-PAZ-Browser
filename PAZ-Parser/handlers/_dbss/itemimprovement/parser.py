@@ -6,7 +6,7 @@ the result and input item IDs and a 13-byte tail with the reform group at
 `+1`; the stone records hold five unknown values and a 10-byte tail of
 category, group and the default display flag. Each `*offset.dbss` index points
 4 bytes into a record, past the key, so the walk from the start needs no
-index. Layouts in docs/file-formats/itemimprovement_dbss.md and
+index. Layouts in docs/file-formats/dbss/itemimprovement_dbss.md and
 itemimprovementsource_dbss.md.
 """
 

@@ -6,7 +6,7 @@
     | empty string table | u32 end_of_records | u32 0
 
 `stack` closes each record, after its groups. Full layout in
-docs/file-formats/enchantfailcountexpstaticstatus_bss.md (Layout 2).
+docs/file-formats/bss/enchantfailcountexpstaticstatus_bss.md (Layout 2).
 """
 
 from __future__ import annotations

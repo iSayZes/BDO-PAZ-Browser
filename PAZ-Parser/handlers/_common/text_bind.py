@@ -6,7 +6,7 @@ and `{TextBind:NAME}` in item, Pearl Shop, skill and `stringtable.bss` text.
 Both name one text: LOC type 59 with `str_id1` the `key_hash()` of NAME and
 four variants in `str_id4`, or the Korean `textbind.dbss` record of the same
 key. The browser shows variant 0, the PC text
-(docs/file-formats/textbind_dbss.md).
+(docs/file-formats/dbss/textbind_dbss.md).
 
 This module only finds and replaces placeholders; `_common/loc.py` supplies the
 text of a name (LOC first, then `korean_text_bind()`), since every LOC read

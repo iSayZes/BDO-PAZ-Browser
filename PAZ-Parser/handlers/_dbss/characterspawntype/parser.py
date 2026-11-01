@@ -3,7 +3,7 @@
     u32 count | count x (u16 character_id | u8[46] role flags)
 
 Each flag byte is 0 or 1 and its index is the client's `CppEnums.SpawnType`
-value. Full layout in docs/file-formats/characterspawntype_dbss.md.
+value. Full layout in docs/file-formats/dbss/characterspawntype_dbss.md.
 """
 
 from __future__ import annotations

@@ -1,11 +1,13 @@
 {
   "columns": {
     "offset": "Décalage",
+    "sheet": "Feuille",
     "field": "Champ",
     "value": "Valeur",
     "text": "Texte"
   },
   "meta": {
-    "count": "{fields} champs, {strings} textes, {body} octets non décodés"
+    "count": "{fields} champs, {strings} textes, {body} octets non décodés",
+    "body_error": "L'enregistrement après l'en-tête ne suit pas la structure documentée ({reason}) ; seul l'en-tête est affiché."
   }
 }

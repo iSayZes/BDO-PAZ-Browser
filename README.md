@@ -53,8 +53,9 @@ To run from source or write handlers, see [Requirements](#requirements).
 - A Map view next to Files in the toolbar: the world map in Leaflet, built from the client's radar images (`ui_texture/new_ui_common_forlua/widget/rader/minimap_data_pack/rader_X_Y.dds`, one 128 px image per 12,800-unit sector). The first open asks to build the map tiles into the cache folder: on client 3464, 9,802 JPEG tiles over zoom 1 to 7, 216 MB, 13 s with 8 worker processes. Sectors without a radar image, and 2,803 sectors of placeholder art listed in `world_map.py` (client 3464), get one of 12 open sea images picked at random. The map uses world units, so the readout under the cursor shows the game's X and Z.
 - The world map's nodes on the Map view: 1,074 nodes on client 3464, each with the game icon of its kind (32 px at every zoom) at its `mapdata_realexplore2.bwp` waypoint and its name as tooltip, and the graph's 1,230 links between them, drawn while both ends show, blue when an end is an open-sea node (Margoria, Ross Sea, Vadabin, Juur Sea) and orange on land (sub-nodes read `Velia - Bahar Investment Bank`). Main nodes show at every zoom, sub-nodes from zoom 6. A Filters panel has a node search (every match, at any zoom), Hide All, layer chips (Player, Markers) and a Nodes card with a toggle, icon and count per kind, a Links option and a shown / total badge. Only the node kinds start on; Player and Markers stay disabled until such a pin exists, and Player turns on when a player pin appears. The filter choices are saved in `paz_config.json` and come back on the next start.
 - Map pins from other programs while the app runs: a local HTTP API with a `player` pin (one at a time) and `marker` pins at world positions. Pins can carry one of 29 game world map icons, built with the map tiles from the client's files (the node and position icons of `worldmap_grand_base.xml`, and the radar's own-character pointer for `player`). A marker placed with `save` comes back after a restart, and a click on a pin opens a Remove button. See [Map API](docs/map-api.md).
-- Previews for text, hex dumps, DDS images and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row. Each file type opens on the tab last picked for it (Parsed, Text or Hex) when the file has that tab, else on its first tab; the tab is saved per extension in `paz_config.json`, with `.bss` and `.dbss` as one type and `.dds`, `.dds1` and `.dds11` as another.
+- Previews for text, hex dumps, DDS images, 3D models and the parsed tables of the formats in [Supported Formats](#supported-formats). Hex and table tabs are paged, so a large file opens without loading every row. Each file type opens on the tab last picked for it (Parsed, Text or Hex) when the file has that tab, else on its first tab; the tab is saved per extension in `paz_config.json`, with `.bss` and `.dbss` as one type and `.dds`, `.dds1` and `.dds11` as another.
 - Text files show numbered lines, their encoding (UTF-8 or CP949) and line ending, with a Wrap lines toggle. XML files (`.xml`, `.ai`, `.cl`, `.mxml`, `.weathercolortablexml`, `.xmp`, `.svg`) colour tags, attributes, values and comments. Images show their size, and for DDS the format and mip count (`DXT5 · 11 mips`), with Fit, 100% and 200% zoom, three backgrounds and the color of the pixel under the cursor. Both have a Hex tab next to them.
+- Meshes (`.pam` static objects, `.pcm` simple meshes, `.pac` character meshes), skeletons (`.pab`) and animation clips (`.paa`) open on a Model tab: the vertex, triangle and submesh counts, the mesh drawn with WebGL with its textures (found by name in the mesh's folder, `object/texture/` or `character/texture/`, with a count of the ones found), in a tint per submesh, or as a wireframe; drag to orbit, right-drag to pan, the wheel to zoom and a double-click or Reset camera to fit it again. A `.pac` shows its most detailed LOD and finds its skeleton: the nearest `.pab` up its folders that holds the bones it names. Bones draws that skeleton over the mesh, and Animation lists the `.paa` clips of the matching `character/motion/` folder (type to search); a picked clip plays on the bones and the mesh, with Play / Pause and the time. A skeleton (`.pab`) opens on the Model tab as its bones, and a clip (`.paa`) plays itself on the skeleton under the matching `character/model/` folder that holds most of its bones. See [mesh_pam](https://isayzes.github.io/BDO-PAZ-Browser/mesh_pam.html), [mesh_pcm](https://isayzes.github.io/BDO-PAZ-Browser/mesh_pcm.html), [mesh_pac](https://isayzes.github.io/BDO-PAZ-Browser/mesh_pac.html), [skeleton_pab](https://isayzes.github.io/BDO-PAZ-Browser/skeleton_pab.html) and [animation_paa](https://isayzes.github.io/BDO-PAZ-Browser/animation_paa.html).
 - NPC and monster AI scripts (`.ai`) get an AI Script tab: a summary of states, HP gates, variables, the characters that run the script (from `characterstatic.dbss`), macros and imports, behavior filter chips, then one row per state with its developer comment, behavior, cycle time, actions, transitions with their conditions (`300 < distance ≤ 500`, character IDs with names), and the states that lead to it. State names jump to their row; a Text tab keeps the XML. See [aiscript](https://isayzes.github.io/BDO-PAZ-Browser/aiscript_ai.html).
 - Class combo lists (`.cl`) get a Combo List tab: one row per combo with its weapon type, the skills it checks as learned and off cooldown (named from LOC), and its steps with skill names, pad keys and the keyboard and mouse input of each action. A Text tab keeps the XML. See [combolist](https://isayzes.github.io/BDO-PAZ-Browser/combolist_cl.html).
 - Parsed tables sort on any column across all pages. A table opens sorted by its first column, highest first, and remembers another sort per file.
@@ -82,7 +83,7 @@ rebuilds it from `docs/file-formats/` whenever a release changes the docs.
 
 - `.bss`: 402 of 402 files with a handler.
 - `.dbss`: 374 of 374 files with a handler.
-- Other formats: 31 with a handler.
+- Other formats: 36 with a handler.
 
 ## Requirements
 
@@ -262,9 +263,10 @@ folders in the data folder, marks those whose PAZ folder is gone and deletes
 one with its **Delete**.
 
 **Keep map updated** is turned on by the Map view's first build. With it on,
-a folder load whose client has no finished map (after a game patch) builds
-the tiles and pin icons again in the background, and the old client's map is
-deleted once the new one is in place.
+a folder load whose client has no finished map (after a game patch, or a
+repack that changed an archive's checksum or size in `pad00000.meta`) builds
+the tiles and pin icons again in the background, and the old map is deleted
+once the new one is in place.
 
 `paz_config.json` carries a `config_version`. A newer app updates older
 settings on load; settings it can't read are renamed to
@@ -354,9 +356,11 @@ and `--limit` too, and prints JSON as a bare list.
 
 `--coverage [pattern]` runs every handler that builds records over every file
 it reads in the loaded client, the way `--records` would, without LOC or
-lookup indexes. A file passes when its records build, and an error ends only
-that file. The text output lists the failing files with their handler key and
-error, and the pass count goes to stderr. `--json` writes an object with
+lookup indexes. A file passes when its records build. It fails when reading
+or parsing raises, or when the handler returns its "could not be parsed"
+record (the error page the GUI shows); an error ends only that file. The
+text output lists the failing files with their handler key and error, and
+the pass count goes to stderr. `--json` writes an object with
 `client_version`, `files`, `passed`, `failed` and `results` (every file:
 `file`, `handler`, `ok`, `records`, `error`, `seconds`); `--csv` writes the
 same rows. Run on an older client, the failures are the tables whose layout
@@ -376,7 +380,8 @@ PAZ-Parser/
 ├── bdo_app.py              # Entry point, GUI launch + CLI argument parsing
 ├── bdo_models.py           # Data models (shared by all handlers)
 ├── bdo_preview.py          # Preview handler registry + built-in handlers
-├── preview_views.py        # Text and image view markup, DDS header facts
+├── preview_views.py        # Text, image and model view markup, DDS header facts
+├── par_mesh.py             # Geometry of the .pam, .pcm and .pac meshes for the Model view
 ├── bdo_server.py           # Local HTTP server: stream preview, map tiles, map API
 ├── world_map.py            # Map tile grid: radar sectors, tile pyramid, sea fillers
 ├── world_map_build.py      # Map tile build in a process pool, into the cache folder
@@ -440,13 +445,15 @@ PAZ-Parser/
 │   ├── bdo_api_handler_updates.py# Handler pack update on start, Check now, restart, versions
 │   ├── bdo_api_world_map.py# Map view state, build prompt, background builds, pin icons (WorldMapMixin)
 │   ├── bdo_api_map_pins.py # Map pins for the page and the popup's Remove (MapPinsMixin)
+│   ├── bdo_api_model_textures.py# Model view textures by file name (ModelTexturesMixin)
 │   └── config_migrations.py# paz_config.json versions and the steps between them
 │
 ├── paz/                    # PAZ archive reading and caching
 │   ├── bdo_cache.py        # PAZ index cache
-│   ├── bdo_checksum.py     # Pearl Abyss checksum of archives and paths (docs/paz-meta.md)
+│   ├── bdo_checksum.py     # Pearl Abyss checksum of archives and paths (pad00000_meta.md)
+│   ├── bdo_content_key.py  # Meta version + archive row digest: thumbnail and map cache key
 │   ├── bdo_ice.py          # ICE cipher implementation
-│   ├── bdo_meta_reader.py  # pad00000.meta: archive table and full file list (docs/paz-meta.md)
+│   ├── bdo_meta_reader.py  # pad00000.meta: archive table and full file list (pad00000_meta.md)
 │   ├── bdo_payload_cache.py# LRU payload cache
 │   ├── bdo_payload_reader.py# Entry payload read: ICE decryption, then decompression
 │   ├── bdo_decompress.py   # BDO decompression: Python decoder, _bdo_native when installed
@@ -455,6 +462,7 @@ PAZ-Parser/
 │   ├── bdo_thumbnail_cache.py# Icon thumbnail cache (SQLite, in the cache folder)
 │   ├── bdo_records_cache.py# Parsed table cache (SQLite, in the cache folder)
 │   ├── bdo_paz_extract.py  # File extraction logic
+│   ├── na_copy.py          # NA copies (#na#x.bss): plain name, lookup fallback
 │   └── bdo_paz_reader.py   # PAZ archive parser
 │
 ├── native/                 # _bdo_native, the decoders in Rust (see Native Decoders)
@@ -510,8 +518,7 @@ docs/
 ├── format-docs.md          # How a format doc is written; format_docs/ checks it
 ├── style-guide.md          # UI color palette and component reference
 ├── benchmarking.md         # benchmark.py workloads, stages and comparable runs
-├── paz-meta.md             # pad00000.meta layout: archive table, file table, name blocks
-└── file-formats/           # Per-format binary layout documentation
+└── file-formats/           # Format docs in bss/, dbss/ and other/ (other/pad00000_meta.md: the PAZ index)
 
 browser.py                  # Starts the app: GUI, or a CLI command
 benchmark.py                # Decode benchmarks (see docs/benchmarking.md)

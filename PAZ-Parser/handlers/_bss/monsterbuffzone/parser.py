@@ -4,7 +4,7 @@
                          | u32 unknown_10 | u8 unknown_14 | u8 unknown_15)
 
 `unknown_14` and `unknown_15` repeat the key's second and first byte. Layout 1
-in docs/file-formats/monsterbuffzone_bss.md.
+in docs/file-formats/bss/monsterbuffzone_bss.md.
 """
 
 from __future__ import annotations

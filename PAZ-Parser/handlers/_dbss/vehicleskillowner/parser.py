@@ -5,7 +5,7 @@
             | u32 skill_count | skill_count x 16-byte Skill
 
 Each skill is a `vehicleskill.dbss` key with its learn weight (`able`), EXP
-value and learn flag. Layout 2 in docs/file-formats/vehicleskillowner_dbss.md.
+value and learn flag. Layout 2 in docs/file-formats/dbss/vehicleskillowner_dbss.md.
 """
 
 from __future__ import annotations

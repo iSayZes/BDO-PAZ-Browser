@@ -4,7 +4,7 @@
     | u32 unknown_06) | string table | u32 string_table_start | u32 0
 
 `name_index` points into the string table, which holds the Korean class names
-(`pcgrowth.dbss` `name_kr`). Full layout in docs/file-formats/pcgrowthsimply_bss.md.
+(`pcgrowth.dbss` `name_kr`). Full layout in docs/file-formats/bss/pcgrowthsimply_bss.md.
 """
 
 from __future__ import annotations

@@ -9,11 +9,11 @@ Level 0 is the base item. LOC type 0 names an item by its ID alone, so every
 level of one item shares a name; LOC type 79 (`str_id1` item ID, `str_id2`
 level) names the levels of a few hundred items on their own (`DEC: Sovereign
 Longsword`, `Wailing Fallen God's Armor`). See
-docs/file-formats/itemenchant_dbss.md and specialenchantitem_bss.md.
+docs/file-formats/dbss/itemenchant_dbss.md and specialenchantitem_bss.md.
 
 A few hundred items also change icon with their level (Sovereign weapons,
 Fallen God armor); `item_key_icon_path()` picks that icon when there is one.
-See docs/file-formats/specialenchantitem_bss.md. Item lists draw each name in
+See docs/file-formats/bss/specialenchantitem_bss.md. Item lists draw each name in
 its grade colour (`_common/item_grade.py`).
 """
 

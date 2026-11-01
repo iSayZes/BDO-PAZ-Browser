@@ -1,0 +1,587 @@
+# `questprogressgroup.bss` Format
+
+## Purpose
+
+Groups of quest chains, each chain with the quest it starts at and the quest that finishes its story. Groups 1 and 2 are the chains of the two Land of the Morning Light quest boards: in every chain of group 1, `final_quest_id` is the quest the board's Lua treats as the end of the story (it shows the chain at 100% once that quest is cleared). The plain PABR file holds the groups, then an empty string table.
+
+## Versions
+
+<!-- versions:begin - written by the doc check from the PAZ folder; edits between the markers are overwritten -->
+
+Sizes and coverage from the newest client of each row. The newest layout is the current one.
+
+| Layout | Clients        | File                     | Bytes | Records           | Row bytes |
+| ------ | -------------- | ------------------------ | ----- | ----------------- | --------- |
+| 1      | 2107 and later | `questprogressgroup.bss` | 342   | 25 Entry, 9 Group | 10        |
+
+| Layout | File                     | Known          | Unknown    |
+| ------ | ------------------------ | -------------- | ---------- |
+| 1      | `questprogressgroup.bss` | 342 B (100.0%) | 0 B (0.0%) |
+
+Every client the doc check read, and the layout its files fit.
+
+| Client | Result   | Checked against |
+| ------ | -------- | --------------- |
+| 3483   | Layout 1 | `2e5989cc5571`  |
+| 3482   | Layout 1 | `2e5989cc5571`  |
+| 3474   | Layout 1 | `2e5989cc5571`  |
+| 3473   | Layout 1 | `2e5989cc5571`  |
+| 3464   | Layout 1 | `2e5989cc5571`  |
+| 3458   | Layout 1 | `2e5989cc5571`  |
+| 3454   | Layout 1 | `2e5989cc5571`  |
+| 3444   | Layout 1 | `2e5989cc5571`  |
+| 3435   | Layout 1 | `2e5989cc5571`  |
+| 3426   | Layout 1 | `2e5989cc5571`  |
+| 3418   | Layout 1 | `2e5989cc5571`  |
+| 3412   | Layout 1 | `2e5989cc5571`  |
+| 3402   | Layout 1 | `2e5989cc5571`  |
+| 3396   | Layout 1 | `2e5989cc5571`  |
+| 3387   | Layout 1 | `2e5989cc5571`  |
+| 3381   | Layout 1 | `2e5989cc5571`  |
+| 3373   | Layout 1 | `2e5989cc5571`  |
+| 3364   | Layout 1 | `2e5989cc5571`  |
+| 3356   | Layout 1 | `2e5989cc5571`  |
+| 3349   | Layout 1 | `2e5989cc5571`  |
+| 3342   | Layout 1 | `2e5989cc5571`  |
+| 3335   | Layout 1 | `2e5989cc5571`  |
+| 3326   | Layout 1 | `2e5989cc5571`  |
+| 3321   | Layout 1 | `2e5989cc5571`  |
+| 3314   | Layout 1 | `2e5989cc5571`  |
+| 3303   | Layout 1 | `2e5989cc5571`  |
+| 3302   | Layout 1 | `2e5989cc5571`  |
+| 3293   | Layout 1 | `2e5989cc5571`  |
+| 3283   | Layout 1 | `2e5989cc5571`  |
+| 3275   | Layout 1 | `2e5989cc5571`  |
+| 3267   | Layout 1 | `2e5989cc5571`  |
+| 3258   | Layout 1 | `2e5989cc5571`  |
+| 3251   | Layout 1 | `2e5989cc5571`  |
+| 3242   | Layout 1 | `2e5989cc5571`  |
+| 3235   | Layout 1 | `2e5989cc5571`  |
+| 3229   | Layout 1 | `2e5989cc5571`  |
+| 3212   | Layout 1 | `2e5989cc5571`  |
+| 3203   | Layout 1 | `2e5989cc5571`  |
+| 3193   | Layout 1 | `2e5989cc5571`  |
+| 3186   | Layout 1 | `2e5989cc5571`  |
+| 3177   | Layout 1 | `2e5989cc5571`  |
+| 3169   | Layout 1 | `2e5989cc5571`  |
+| 3158   | Layout 1 | `2e5989cc5571`  |
+| 3151   | Layout 1 | `2e5989cc5571`  |
+| 3144   | Layout 1 | `2e5989cc5571`  |
+| 3133   | Layout 1 | `2e5989cc5571`  |
+| 3125   | Layout 1 | `2e5989cc5571`  |
+| 3118   | Layout 1 | `2e5989cc5571`  |
+| 3111   | Layout 1 | `2e5989cc5571`  |
+| 3103   | Layout 1 | `2e5989cc5571`  |
+| 3095   | Layout 1 | `2e5989cc5571`  |
+| 3086   | Layout 1 | `2e5989cc5571`  |
+| 3072   | Layout 1 | `2e5989cc5571`  |
+| 3062   | Layout 1 | `2e5989cc5571`  |
+| 3052   | Layout 1 | `2e5989cc5571`  |
+| 3045   | Layout 1 | `2e5989cc5571`  |
+| 3037   | Layout 1 | `2e5989cc5571`  |
+| 3030   | Layout 1 | `2e5989cc5571`  |
+| 3021   | Layout 1 | `2e5989cc5571`  |
+| 3012   | Layout 1 | `2e5989cc5571`  |
+| 3002   | Layout 1 | `2e5989cc5571`  |
+| 2995   | Layout 1 | `2e5989cc5571`  |
+| 2987   | Layout 1 | `2e5989cc5571`  |
+| 2978   | Layout 1 | `2e5989cc5571`  |
+| 2970   | Layout 1 | `2e5989cc5571`  |
+| 2959   | Layout 1 | `2e5989cc5571`  |
+| 2951   | Layout 1 | `2e5989cc5571`  |
+| 2942   | Layout 1 | `2e5989cc5571`  |
+| 2935   | Layout 1 | `2e5989cc5571`  |
+| 2932   | Layout 1 | `2e5989cc5571`  |
+| 2923   | Layout 1 | `2e5989cc5571`  |
+| 2919   | Layout 1 | `2e5989cc5571`  |
+| 2907   | Layout 1 | `2e5989cc5571`  |
+| 2900   | Layout 1 | `2e5989cc5571`  |
+| 2891   | Layout 1 | `2e5989cc5571`  |
+| 2882   | Layout 1 | `2e5989cc5571`  |
+| 2872   | Layout 1 | `2e5989cc5571`  |
+| 2863   | Layout 1 | `2e5989cc5571`  |
+| 2855   | Layout 1 | `2e5989cc5571`  |
+| 2849   | Layout 1 | `2e5989cc5571`  |
+| 2844   | Layout 1 | `2e5989cc5571`  |
+| 2834   | Layout 1 | `2e5989cc5571`  |
+| 2825   | Layout 1 | `2e5989cc5571`  |
+| 2819   | Layout 1 | `2e5989cc5571`  |
+| 2811   | Layout 1 | `2e5989cc5571`  |
+| 2803   | Layout 1 | `2e5989cc5571`  |
+| 2794   | Layout 1 | `2e5989cc5571`  |
+| 2783   | Layout 1 | `2e5989cc5571`  |
+| 2774   | Layout 1 | `2e5989cc5571`  |
+| 2765   | Layout 1 | `2e5989cc5571`  |
+| 2756   | Layout 1 | `2e5989cc5571`  |
+| 2750   | Layout 1 | `2e5989cc5571`  |
+| 2743   | Layout 1 | `2e5989cc5571`  |
+| 2736   | Layout 1 | `2e5989cc5571`  |
+| 2726   | Layout 1 | `2e5989cc5571`  |
+| 2717   | Layout 1 | `2e5989cc5571`  |
+| 2709   | Layout 1 | `2e5989cc5571`  |
+| 2703   | Layout 1 | `2e5989cc5571`  |
+| 2695   | Layout 1 | `2e5989cc5571`  |
+| 2684   | Layout 1 | `2e5989cc5571`  |
+| 2672   | Layout 1 | `2e5989cc5571`  |
+| 2665   | Layout 1 | `2e5989cc5571`  |
+| 2657   | Layout 1 | `2e5989cc5571`  |
+| 2649   | Layout 1 | `2e5989cc5571`  |
+| 2644   | Layout 1 | `2e5989cc5571`  |
+| 2637   | Layout 1 | `2e5989cc5571`  |
+| 2629   | Layout 1 | `2e5989cc5571`  |
+| 2619   | Layout 1 | `2e5989cc5571`  |
+| 2612   | Layout 1 | `2e5989cc5571`  |
+| 2606   | Layout 1 | `2e5989cc5571`  |
+| 2602   | Layout 1 | `2e5989cc5571`  |
+| 2601   | Layout 1 | `2e5989cc5571`  |
+| 2592   | Layout 1 | `2e5989cc5571`  |
+| 2583   | Layout 1 | `2e5989cc5571`  |
+| 2575   | Layout 1 | `2e5989cc5571`  |
+| 2567   | Layout 1 | `2e5989cc5571`  |
+| 2560   | Layout 1 | `2e5989cc5571`  |
+| 2553   | Layout 1 | `2e5989cc5571`  |
+| 2545   | Layout 1 | `2e5989cc5571`  |
+| 2538   | Layout 1 | `2e5989cc5571`  |
+| 2529   | Layout 1 | `2e5989cc5571`  |
+| 2519   | Layout 1 | `2e5989cc5571`  |
+| 2513   | Layout 1 | `2e5989cc5571`  |
+| 2510   | Layout 1 | `2e5989cc5571`  |
+| 2507   | Layout 1 | `2e5989cc5571`  |
+| 2503   | Layout 1 | `2e5989cc5571`  |
+| 2498   | Layout 1 | `2e5989cc5571`  |
+| 2492   | Layout 1 | `2e5989cc5571`  |
+| 2487   | Layout 1 | `2e5989cc5571`  |
+| 2480   | Layout 1 | `2e5989cc5571`  |
+| 2474   | Layout 1 | `2e5989cc5571`  |
+| 2468   | Layout 1 | `2e5989cc5571`  |
+| 2460   | Layout 1 | `2e5989cc5571`  |
+| 2453   | Layout 1 | `2e5989cc5571`  |
+| 2444   | Layout 1 | `2e5989cc5571`  |
+| 2438   | Layout 1 | `2e5989cc5571`  |
+| 2434   | Layout 1 | `2e5989cc5571`  |
+| 2429   | Layout 1 | `2e5989cc5571`  |
+| 2421   | Layout 1 | `2e5989cc5571`  |
+| 2414   | Layout 1 | `2e5989cc5571`  |
+| 2407   | Layout 1 | `2e5989cc5571`  |
+| 2401   | Layout 1 | `2e5989cc5571`  |
+| 2397   | Layout 1 | `2e5989cc5571`  |
+| 2393   | Layout 1 | `2e5989cc5571`  |
+| 2384   | Layout 1 | `2e5989cc5571`  |
+| 2378   | Layout 1 | `2e5989cc5571`  |
+| 2372   | Layout 1 | `2e5989cc5571`  |
+| 2358   | Layout 1 | `2e5989cc5571`  |
+| 2352   | Layout 1 | `2e5989cc5571`  |
+| 2347   | Layout 1 | `2e5989cc5571`  |
+| 2343   | Layout 1 | `2e5989cc5571`  |
+| 2335   | Layout 1 | `2e5989cc5571`  |
+| 2327   | Layout 1 | `2e5989cc5571`  |
+| 2324   | Layout 1 | `2e5989cc5571`  |
+| 2319   | Layout 1 | `2e5989cc5571`  |
+| 2313   | Layout 1 | `2e5989cc5571`  |
+| 2308   | Layout 1 | `2e5989cc5571`  |
+| 2302   | Layout 1 | `2e5989cc5571`  |
+| 2295   | Layout 1 | `2e5989cc5571`  |
+| 2290   | Layout 1 | `2e5989cc5571`  |
+| 2284   | Layout 1 | `2e5989cc5571`  |
+| 2276   | Layout 1 | `2e5989cc5571`  |
+| 2269   | Layout 1 | `2e5989cc5571`  |
+| 2259   | Layout 1 | `2e5989cc5571`  |
+| 2250   | Layout 1 | `2e5989cc5571`  |
+| 2243   | Layout 1 | `2e5989cc5571`  |
+| 2235   | Layout 1 | `2e5989cc5571`  |
+| 2229   | Layout 1 | `2e5989cc5571`  |
+| 2224   | Layout 1 | `2e5989cc5571`  |
+| 2218   | Layout 1 | `2e5989cc5571`  |
+| 2215   | Layout 1 | `2e5989cc5571`  |
+| 2207   | Layout 1 | `2e5989cc5571`  |
+| 2203   | Layout 1 | `2e5989cc5571`  |
+| 2196   | Layout 1 | `2e5989cc5571`  |
+| 2192   | Layout 1 | `2e5989cc5571`  |
+| 2189   | Layout 1 | `2e5989cc5571`  |
+| 2183   | Layout 1 | `2e5989cc5571`  |
+| 2179   | Layout 1 | `2e5989cc5571`  |
+| 2171   | Layout 1 | `2e5989cc5571`  |
+| 2163   | Layout 1 | `2e5989cc5571`  |
+| 2156   | Layout 1 | `2e5989cc5571`  |
+| 2151   | Layout 1 | `2e5989cc5571`  |
+| 2147   | Layout 1 | `2e5989cc5571`  |
+| 2142   | Layout 1 | `2e5989cc5571`  |
+| 2138   | Layout 1 | `2e5989cc5571`  |
+| 2134   | Layout 1 | `2e5989cc5571`  |
+| 2130   | Layout 1 | `2e5989cc5571`  |
+| 2122   | Layout 1 | `2e5989cc5571`  |
+| 2107   | Layout 1 | `2e5989cc5571`  |
+| 2098   | No file  | `2e5989cc5571`  |
+| 2089   | No file  | `2e5989cc5571`  |
+| 2081   | No file  | `2e5989cc5571`  |
+| 2073   | No file  | `2e5989cc5571`  |
+| 2067   | No file  | `2e5989cc5571`  |
+| 2063   | No file  | `2e5989cc5571`  |
+| 2059   | No file  | `2e5989cc5571`  |
+| 2052   | No file  | `2e5989cc5571`  |
+| 2044   | No file  | `2e5989cc5571`  |
+| 2039   | No file  | `2e5989cc5571`  |
+| 2032   | No file  | `2e5989cc5571`  |
+| 2025   | No file  | `2e5989cc5571`  |
+| 2011   | No file  | `2e5989cc5571`  |
+| 2005   | No file  | `2e5989cc5571`  |
+| 2000   | No file  | `2e5989cc5571`  |
+| 1996   | No file  | `2e5989cc5571`  |
+| 1991   | No file  | `2e5989cc5571`  |
+| 1985   | No file  | `2e5989cc5571`  |
+| 1980   | No file  | `2e5989cc5571`  |
+| 1969   | No file  | `2e5989cc5571`  |
+| 1964   | No file  | `2e5989cc5571`  |
+| 1958   | No file  | `2e5989cc5571`  |
+| 1950   | No file  | `2e5989cc5571`  |
+| 1945   | No file  | `2e5989cc5571`  |
+| 1937   | No file  | `2e5989cc5571`  |
+| 1933   | No file  | `2e5989cc5571`  |
+| 1927   | No file  | `2e5989cc5571`  |
+| 1921   | No file  | `2e5989cc5571`  |
+| 1914   | No file  | `2e5989cc5571`  |
+| 1908   | No file  | `2e5989cc5571`  |
+| 1897   | No file  | `2e5989cc5571`  |
+| 1892   | No file  | `2e5989cc5571`  |
+| 1886   | No file  | `2e5989cc5571`  |
+| 1881   | No file  | `2e5989cc5571`  |
+| 1871   | No file  | `2e5989cc5571`  |
+| 1866   | No file  | `2e5989cc5571`  |
+| 1862   | No file  | `2e5989cc5571`  |
+| 1854   | No file  | `2e5989cc5571`  |
+| 1846   | No file  | `2e5989cc5571`  |
+| 1838   | No file  | `2e5989cc5571`  |
+| 1832   | No file  | `2e5989cc5571`  |
+| 1826   | No file  | `2e5989cc5571`  |
+| 1822   | No file  | `2e5989cc5571`  |
+| 1818   | No file  | `2e5989cc5571`  |
+| 1804   | No file  | `2e5989cc5571`  |
+| 1794   | No file  | `2e5989cc5571`  |
+| 1790   | No file  | `2e5989cc5571`  |
+| 1784   | No file  | `2e5989cc5571`  |
+| 1774   | No file  | `2e5989cc5571`  |
+| 1771   | No file  | `2e5989cc5571`  |
+| 1762   | No file  | `2e5989cc5571`  |
+| 1759   | No file  | `2e5989cc5571`  |
+| 1754   | No file  | `2e5989cc5571`  |
+| 1749   | No file  | `2e5989cc5571`  |
+| 1743   | No file  | `2e5989cc5571`  |
+| 1737   | No file  | `2e5989cc5571`  |
+| 1731   | No file  | `2e5989cc5571`  |
+| 1725   | No file  | `2e5989cc5571`  |
+| 1717   | No file  | `2e5989cc5571`  |
+| 1710   | No file  | `2e5989cc5571`  |
+| 1704   | No file  | `2e5989cc5571`  |
+| 1698   | No file  | `2e5989cc5571`  |
+| 1690   | No file  | `2e5989cc5571`  |
+| 1685   | No file  | `2e5989cc5571`  |
+| 1680   | No file  | `2e5989cc5571`  |
+| 1674   | No file  | `2e5989cc5571`  |
+| 1668   | No file  | `2e5989cc5571`  |
+| 1659   | No file  | `2e5989cc5571`  |
+| 1649   | No file  | `2e5989cc5571`  |
+| 1642   | No file  | `2e5989cc5571`  |
+| 1636   | No file  | `2e5989cc5571`  |
+| 1628   | No file  | `2e5989cc5571`  |
+| 1622   | No file  | `2e5989cc5571`  |
+| 1614   | No file  | `2e5989cc5571`  |
+| 1608   | No file  | `2e5989cc5571`  |
+| 1602   | No file  | `2e5989cc5571`  |
+| 1598   | No file  | `2e5989cc5571`  |
+| 1594   | No file  | `2e5989cc5571`  |
+| 1590   | No file  | `2e5989cc5571`  |
+| 1587   | No file  | `2e5989cc5571`  |
+| 1584   | No file  | `2e5989cc5571`  |
+| 1579   | No file  | `2e5989cc5571`  |
+| 1572   | No file  | `2e5989cc5571`  |
+| 1565   | No file  | `2e5989cc5571`  |
+| 1559   | No file  | `2e5989cc5571`  |
+| 1554   | No file  | `2e5989cc5571`  |
+| 1547   | No file  | `2e5989cc5571`  |
+| 1537   | No file  | `2e5989cc5571`  |
+| 1529   | No file  | `2e5989cc5571`  |
+| 1524   | No file  | `2e5989cc5571`  |
+| 1519   | No file  | `2e5989cc5571`  |
+| 1509   | No file  | `2e5989cc5571`  |
+| 1506   | No file  | `2e5989cc5571`  |
+| 1504   | No file  | `2e5989cc5571`  |
+| 1500   | No file  | `2e5989cc5571`  |
+| 1493   | No file  | `2e5989cc5571`  |
+| 1489   | No file  | `2e5989cc5571`  |
+| 1485   | No file  | `2e5989cc5571`  |
+| 1481   | No file  | `2e5989cc5571`  |
+| 1474   | No file  | `2e5989cc5571`  |
+| 1466   | No file  | `2e5989cc5571`  |
+| 1462   | No file  | `2e5989cc5571`  |
+| 1459   | No file  | `2e5989cc5571`  |
+| 1453   | No file  | `2e5989cc5571`  |
+| 1450   | No file  | `2e5989cc5571`  |
+| 1445   | No file  | `2e5989cc5571`  |
+| 1439   | No file  | `2e5989cc5571`  |
+| 1433   | No file  | `2e5989cc5571`  |
+| 1430   | No file  | `2e5989cc5571`  |
+| 1426   | No file  | `2e5989cc5571`  |
+| 1421   | No file  | `2e5989cc5571`  |
+| 1417   | No file  | `2e5989cc5571`  |
+| 1416   | No file  | `2e5989cc5571`  |
+| 1409   | No file  | `2e5989cc5571`  |
+| 1405   | No file  | `2e5989cc5571`  |
+| 1401   | No file  | `2e5989cc5571`  |
+| 1396   | No file  | `2e5989cc5571`  |
+| 1391   | No file  | `2e5989cc5571`  |
+| 1390   | No file  | `2e5989cc5571`  |
+| 1386   | No file  | `2e5989cc5571`  |
+| 1381   | No file  | `2e5989cc5571`  |
+| 1379   | No file  | `2e5989cc5571`  |
+| 1372   | No file  | `2e5989cc5571`  |
+| 1366   | No file  | `2e5989cc5571`  |
+| 1364   | No file  | `2e5989cc5571`  |
+| 1363   | No file  | `2e5989cc5571`  |
+| 1360   | No file  | `2e5989cc5571`  |
+| 1358   | No file  | `2e5989cc5571`  |
+| 1355   | No file  | `2e5989cc5571`  |
+| 1351   | No file  | `2e5989cc5571`  |
+| 1348   | No file  | `2e5989cc5571`  |
+| 1346   | No file  | `2e5989cc5571`  |
+| 1341   | No file  | `2e5989cc5571`  |
+| 1340   | No file  | `2e5989cc5571`  |
+| 1338   | No file  | `2e5989cc5571`  |
+| 1335   | No file  | `2e5989cc5571`  |
+| 1333   | No file  | `2e5989cc5571`  |
+| 1329   | No file  | `2e5989cc5571`  |
+| 1327   | No file  | `2e5989cc5571`  |
+| 1324   | No file  | `2e5989cc5571`  |
+| 1321   | No file  | `2e5989cc5571`  |
+| 1319   | No file  | `2e5989cc5571`  |
+| 1318   | No file  | `2e5989cc5571`  |
+| 1316   | No file  | `2e5989cc5571`  |
+| 1313   | No file  | `2e5989cc5571`  |
+| 1311   | No file  | `2e5989cc5571`  |
+| 1309   | No file  | `2e5989cc5571`  |
+| 1304   | No file  | `2e5989cc5571`  |
+| 1292   | No file  | `2e5989cc5571`  |
+| 1286   | No file  | `2e5989cc5571`  |
+| 1280   | No file  | `2e5989cc5571`  |
+| 1276   | No file  | `2e5989cc5571`  |
+| 1267   | No file  | `2e5989cc5571`  |
+| 1261   | No file  | `2e5989cc5571`  |
+| 1256   | No file  | `2e5989cc5571`  |
+| 1250   | No file  | `2e5989cc5571`  |
+| 1246   | No file  | `2e5989cc5571`  |
+| 1239   | No file  | `2e5989cc5571`  |
+| 1230   | No file  | `2e5989cc5571`  |
+| 1226   | No file  | `2e5989cc5571`  |
+| 1220   | No file  | `2e5989cc5571`  |
+| 1217   | No file  | `2e5989cc5571`  |
+| 1211   | No file  | `2e5989cc5571`  |
+| 1210   | No file  | `2e5989cc5571`  |
+| 1208   | No file  | `2e5989cc5571`  |
+| 1203   | No file  | `2e5989cc5571`  |
+| 1197   | No file  | `2e5989cc5571`  |
+| 1194   | No file  | `2e5989cc5571`  |
+| 1192   | No file  | `2e5989cc5571`  |
+| 1187   | No file  | `2e5989cc5571`  |
+| 1183   | No file  | `2e5989cc5571`  |
+| 1177   | No file  | `2e5989cc5571`  |
+| 1173   | No file  | `2e5989cc5571`  |
+| 1167   | No file  | `2e5989cc5571`  |
+| 1164   | No file  | `2e5989cc5571`  |
+| 1156   | No file  | `2e5989cc5571`  |
+| 1149   | No file  | `2e5989cc5571`  |
+| 1144   | No file  | `2e5989cc5571`  |
+| 1137   | No file  | `2e5989cc5571`  |
+| 1132   | No file  | `2e5989cc5571`  |
+| 1127   | No file  | `2e5989cc5571`  |
+| 1122   | No file  | `2e5989cc5571`  |
+| 1118   | No file  | `2e5989cc5571`  |
+| 1114   | No file  | `2e5989cc5571`  |
+| 1109   | No file  | `2e5989cc5571`  |
+| 1102   | No file  | `2e5989cc5571`  |
+| 1096   | No file  | `2e5989cc5571`  |
+| 1088   | No file  | `2e5989cc5571`  |
+| 1081   | No file  | `2e5989cc5571`  |
+| 1076   | No file  | `2e5989cc5571`  |
+| 1069   | No file  | `2e5989cc5571`  |
+| 1064   | No file  | `2e5989cc5571`  |
+| 1058   | No file  | `2e5989cc5571`  |
+| 1051   | No file  | `2e5989cc5571`  |
+| 1044   | No file  | `2e5989cc5571`  |
+| 1036   | No file  | `2e5989cc5571`  |
+| 1026   | No file  | `2e5989cc5571`  |
+| 1016   | No file  | `2e5989cc5571`  |
+| 1009   | No file  | `2e5989cc5571`  |
+| 1005   | No file  | `2e5989cc5571`  |
+| 1000   | No file  | `2e5989cc5571`  |
+| 998    | No file  | `2e5989cc5571`  |
+| 990    | No file  | `2e5989cc5571`  |
+| 979    | No file  | `2e5989cc5571`  |
+| 972    | No file  | `2e5989cc5571`  |
+| 963    | No file  | `2e5989cc5571`  |
+| 955    | No file  | `2e5989cc5571`  |
+| 946    | No file  | `2e5989cc5571`  |
+| 938    | No file  | `2e5989cc5571`  |
+| 927    | No file  | `2e5989cc5571`  |
+| 911    | No file  | `2e5989cc5571`  |
+| 904    | No file  | `2e5989cc5571`  |
+| 899    | No file  | `2e5989cc5571`  |
+| 894    | No file  | `2e5989cc5571`  |
+| 885    | No file  | `2e5989cc5571`  |
+| 879    | No file  | `2e5989cc5571`  |
+| 872    | No file  | `2e5989cc5571`  |
+| 864    | No file  | `2e5989cc5571`  |
+| 855    | No file  | `2e5989cc5571`  |
+| 853    | No file  | `2e5989cc5571`  |
+| 845    | No file  | `2e5989cc5571`  |
+| 837    | No file  | `2e5989cc5571`  |
+| 829    | No file  | `2e5989cc5571`  |
+| 822    | No file  | `2e5989cc5571`  |
+| 814    | No file  | `2e5989cc5571`  |
+| 805    | No file  | `2e5989cc5571`  |
+| 794    | No file  | `2e5989cc5571`  |
+| 787    | No file  | `2e5989cc5571`  |
+| 780    | No file  | `2e5989cc5571`  |
+| 771    | No file  | `2e5989cc5571`  |
+| 760    | No file  | `2e5989cc5571`  |
+| 748    | No file  | `2e5989cc5571`  |
+| 741    | No file  | `2e5989cc5571`  |
+| 736    | No file  | `2e5989cc5571`  |
+| 731    | No file  | `2e5989cc5571`  |
+| 723    | No file  | `2e5989cc5571`  |
+| 711    | No file  | `2e5989cc5571`  |
+| 707    | No file  | `2e5989cc5571`  |
+| 697    | No file  | `2e5989cc5571`  |
+| 689    | No file  | `2e5989cc5571`  |
+| 683    | No file  | `2e5989cc5571`  |
+| 678    | No file  | `2e5989cc5571`  |
+| 670    | No file  | `2e5989cc5571`  |
+| 661    | No file  | `2e5989cc5571`  |
+| 656    | No file  | `2e5989cc5571`  |
+| 652    | No file  | `2e5989cc5571`  |
+| 643    | No file  | `2e5989cc5571`  |
+| 637    | No file  | `2e5989cc5571`  |
+| 630    | No file  | `2e5989cc5571`  |
+| 627    | No file  | `2e5989cc5571`  |
+| 621    | No file  | `2e5989cc5571`  |
+| 617    | No file  | `2e5989cc5571`  |
+| 615    | No file  | `2e5989cc5571`  |
+| 606    | No file  | `2e5989cc5571`  |
+| 599    | No file  | `2e5989cc5571`  |
+| 592    | No file  | `2e5989cc5571`  |
+| 586    | No file  | `2e5989cc5571`  |
+| 577    | No file  | `2e5989cc5571`  |
+| 569    | No file  | `2e5989cc5571`  |
+| 561    | No file  | `2e5989cc5571`  |
+| 554    | No file  | `2e5989cc5571`  |
+| 542    | No file  | `2e5989cc5571`  |
+| 532    | No file  | `2e5989cc5571`  |
+| 531    | No file  | `2e5989cc5571`  |
+| 526    | No file  | `2e5989cc5571`  |
+| 521    | No file  | `2e5989cc5571`  |
+| 517    | No file  | `2e5989cc5571`  |
+| 510    | No file  | `2e5989cc5571`  |
+| 508    | No file  | `2e5989cc5571`  |
+| 504    | No file  | `2e5989cc5571`  |
+| 497    | No file  | `2e5989cc5571`  |
+| 491    | No file  | `2e5989cc5571`  |
+| 485    | No file  | `2e5989cc5571`  |
+| 478    | No file  | `2e5989cc5571`  |
+| 472    | No file  | `2e5989cc5571`  |
+| 466    | No file  | `2e5989cc5571`  |
+| 457    | No file  | `2e5989cc5571`  |
+| 452    | No file  | `2e5989cc5571`  |
+| 449    | No file  | `2e5989cc5571`  |
+| 435    | No file  | `2e5989cc5571`  |
+
+<!-- versions:end -->
+
+## Companion Files
+
+| File                  | Required | Role                                                              |
+| --------------------- | -------- | ----------------------------------------------------------------- |
+| `languagedata_en.loc` | Optional | Quest titles, LOC type 18 at `str_id1=quest_chain_id`, `str_id2=quest_id` |
+
+All multi-byte values are little-endian.
+
+## Layout 1
+
+### File Layout
+
+| Offset              | Type         | Field              | Notes                                           |
+| ------------------- | ------------ | ------------------ | ----------------------------------------------- |
+| `+0x00`             | char[4]      | magic              | ASCII `PABR`                                    |
+| `+0x04`             | u32          | count              | Number of groups                                |
+| `+0x08`             | Group[count] | groups             | Variable-size groups, back to back; see Group   |
+| `groups+0x00`       | String Table | string_table       | See String Table                                |
+| `string_table+0x00` | u32          | string_table_start | Offset of `string_count`, where the groups end  |
+| `string_table+0x04` | u32          | zero               | Always `0`                                      |
+
+The string table has the shape `itemequipgroup.bss` and `exploration.bss` use (`_common/pabr_strings.py`). Walking `count` groups ends exactly at `string_table_start`.
+
+### Group (variable: 8 bytes + entries)
+
+| Offset  | Type               | Field       | Notes                                      |
+| ------- | ------------------ | ----------- | ------------------------------------------ |
+| `+0x00` | u32                | group_key   | Unique                                     |
+| `+0x04` | u32                | quest_count | Number of entries                          |
+| `+0x08` | Entry[quest_count] | entries     | One quest chain each; see Entry            |
+
+### Entry (10 bytes)
+
+| Offset  | Type | Field          | Notes                                                                 |
+| ------- | ---- | -------------- | --------------------------------------------------------------------- |
+| `+0x00` | u32  | group_key      | Equal to the enclosing Group's `group_key` in every entry             |
+| `+0x04` | u16  | quest_chain_id | LOC type 18 `str_id1`; no chain is in two entries                     |
+| `+0x06` | u16  | quest_id       | LOC type 18 `str_id2`; `1` except for chain 5901 (`101`)              |
+| `+0x08` | u16  | final_quest_id | A quest of the same chain, the one that finishes it; see Final Quests |
+
+`quest_chain_id` and `quest_id` together are the quest key, the `(quest_id << 16) | quest_chain_id` of `allquestlist.bss` read as two u16 values.
+
+### String Table (variable: 4 bytes + strings)
+
+| Offset  | Type               | Field        | Notes                                          |
+| ------- | ------------------ | ------------ | ---------------------------------------------- |
+| `+0x00` | u32                | string_count | Number of strings; `0` on client 3474          |
+| `+0x04` | pstr[string_count] | strings      | No entry reads a string                        |
+
+## Groups
+
+On client 3474 the file holds 9 groups with 25 entries. Key 4 is not used.
+
+| Group Key | Chains                     | Quests                                                                        |
+| --------: | -------------------------- | ----------------------------------------------------------------------------- |
+| 1         | 8503 to 8509, 8511         | The eight story chains of the first Land of the Morning Light quest board     |
+| 2         | 8529 to 8536               | The eight story chains of the second board, each ending with `Back to Yuunru` |
+| 3         | 5901                       | `[Main] Defeat Ancient Weapons` (101) to `[Main] Defeat <Furious> Aakman Temple monsters` (701), quests picked by `gethardcorerankpoint()` |
+| 5 to 8    | 9500, 9501, 9502, 9503     | One `[Bonus] Skill Up for ...` chain each: Cooking, Alchemy, Hunting, Training |
+| 9         | 9103, 9104, 9105           | The Edania story chains of Orbita, Nymphamaré and Tenebraum                   |
+| 10        | 9110                       | `[Edana's Defense Gear] A Piece of Secret` to `[Crafting] NOV (IX) Edana - Furystride` |
+
+## Final Quests
+
+`final_quest_id` names a quest of the entry's own chain in all 25 entries, and both quests have a LOC type 18 title (client 3474). The final quest is not always the highest quest ID of the chain: side quests can follow it.
+
+The Land of the Morning Light board Lua (`panel_morningland_questboard_all.luac`, `panel_morningland_questboard2_all.luac`) keeps its own table per chain: a weight per quest and a `_finalId`. `getProgressPercent(index)` adds the weights of the cleared quests and returns 100 once `_finalId` is cleared.
+
+| Group | Chains | Against the Lua `_finalId` (client 3474)                                                       |
+| ----: | -----: | ---------------------------------------------------------------------------------------------- |
+| 1     | 8      | Equal in all 8 (8511: `16` of 18 quests, 8508: `30` of 37)                                     |
+| 2     | 8      | The file names `Back to Yuunru`, the highest quest of each chain, whose condition is clearing the Lua `_finalId` (8529: `26`, condition `clearquest(8529,22)<or>clearquest(8529,25)`, `_finalId` 25) |
+
+In `quest.dbss` the final quest ends the chain's main line and the higher quest IDs branch off earlier quests: 8511/16 `Deep Night, Suspicious Dolswe` ends the 1 to 16 line, while 8511/17 and 8511/18 require quests 8 and 9; in group 9, 9104/29 `Grim Tidings` ends the 1 to 29 line, while 9104/30 requires quest 15.
+
+## Field Names
+
+The names come from the data. The file is not in the client 1784 archive. A private server's `DataSheets.bexcel` and compiled `binary/` folder on client 1784 have no sheet or file for it, and no text in the server dump or the 2016 PDB has `ProgressGroup` in it; their `QuestProgress` names are the quest state flags (`gc::QuestProgressType`, `QuestProgressingState`, `IsQuestProgressing`). `final_quest_id` follows the group 1 match with the board's `_finalId` and the group 2 conditions above.
+
+## Notes
+
+- Decompressed size on client 3474: `342` bytes, 9 groups and 25 entries, `8 + 9 * 8 + 25 * 10 + 12`.
+- The Land of the Morning Light hidden chains on the boards' `_hiddenPercentInfo` lists (8510, 8512 to 8515, 8524, 8537 to 8541) are not in the file.
+- The entries of group 1 are not in board order: the file lists 8511, 8504, 8505, 8506, 8508, 8507, 8503, 8509, the board 8503 to 8509, then 8511.
+- None of the 3,073 client Lua files (`luacscript/x64/`, client 3474) names the file or calls a function with `QuestProgressGroup` in its name. `progressGroup` in `panel_window_quest_all_2.luac` (`makeProgressGroup`, `setProgressGroup`) groups the quests in progress in the quest window and reads no group key.
+
+## Open Questions
+
+### Which Code Reads the Group Keys
+
+The board Lua hard-codes its chains, weights and `_finalId` values and does not read this file, so the reader is client or server code that the Lua does not show. Group key 4 is missing, and why groups 5 to 8 hold one chain each instead of one group for the four `[Bonus] Skill Up` chains is not known. On group 2 the Lua `_finalId` is one to four quests before the file's `final_quest_id`, and the second board's `getProgressPercent` returns 100 at `_finalId`, so whatever reads the file's `Back to Yuunru` value is not the board's percentage.

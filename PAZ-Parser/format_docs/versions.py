@@ -1,33 +1,46 @@
 """The `## Versions` section: which clients each layout fits, with sizes and coverage.
 
-The doc check writes it between the two markers. Rows only grow: a client
-widens its layout's range, and sizes come from the newest client checked.
+The doc check writes it between the two markers. A client widens its
+layout's range, and sizes come from the newest client checked: the last client of
+a row's range, or for the newest layout the newest Clients row that fits it
+(the Sizes table holds no column for it). Rows shrink
+only after a renumber, when the Clients table says a client of a row now
+fits another layout (`current_rows`).
 The Clients table lists every client the doc check read, with the layout
 the files fit, `No documented layout` when they are there but no layout of
 the doc reads them, or `No file` when none of the doc's files is in that
 client.
+
+Each Clients row also holds the fingerprint of the layouts it was read against
+(`fingerprint.py`); the doc check skips a client whose row holds the doc's
+current one.
 """
 from __future__ import annotations
 
 import re
 from collections.abc import Iterable, Sequence
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 
 from .markdown import numbered_lines, tables
 from .walk_model import FileFit, LayoutFit
 
 VERSIONS_BEGIN = "<!-- versions:begin"
 VERSIONS_END = "<!-- versions:end -->"
-_LEAD = "Sizes and coverage from the client in the Checked column. The newest layout is the current one."
-_SIZES_HEADER = ("Layout", "Clients", "Checked", "File", "Bytes", "Records", "Row bytes")
+_LEAD = "Sizes and coverage from the newest client of each row. The newest layout is the current one."
+_SIZES_HEADER = ("Layout", "Clients", "File", "Bytes", "Records", "Row bytes")
+# The Sizes table while it named the newest client in a Checked column; read until every doc is rewritten.
+_OLD_SIZES_HEADER = ("Layout", "Clients", "Checked", "File", "Bytes", "Records", "Row bytes")
 _COVERAGE_HEADER = ("Layout", "File", "Known", "Unknown")
 _CLIENTS_LEAD = "Every client the doc check read, and the layout its files fit."
-_CLIENTS_HEADER = ("Client", "Result")
+_CLIENTS_HEADER = ("Client", "Result", "Checked against")
+# The Clients table before its rows held a fingerprint; such rows are read as never checked against one.
+_OLD_CLIENTS_HEADER = ("Client", "Result")
 NO_FILE = "No file"
 NO_LAYOUT = "No documented layout"
 _LAYOUT_RESULT = re.compile(r"^Layout (?P<layout>\d+)$")
 _CLIENTS = re.compile(r"^(?P<first>\d+)(?: to (?P<last>\d+)| and later)?$")
 _BYTES = re.compile(r"^(?P<bytes>[\d,]+)(?: B|$)")
+_NO_FINGERPRINT = "-"
 # A structure walked once (a string table, a header) says nothing about the record count.
 _SINGLE = 1
 
@@ -52,11 +65,14 @@ class ClientCheck:
     """A client the doc check read: the layout its files fit, or None when none does.
 
     `has_file` tells the two Nones apart: the files are there but no documented layout reads them, or none is there.
+    `fingerprint` is that of the layouts the files were read against, empty for a row from before rows held one; it
+    takes no part in comparing two checks.
     """
 
     client: int
     layout: int | None
     has_file: bool
+    fingerprint: str = field(default="", compare=False)
 
     @property
     def result(self) -> str:
@@ -83,6 +99,31 @@ def merge_rows(old: Iterable[VersionRow], new: Iterable[VersionRow]) -> tuple[Ve
     return tuple(sorted(merged.values(), key=lambda row: (-row.layout, row.file)))
 
 
+def current_rows(rows: Iterable[VersionRow], clients: Sequence[ClientCheck]) -> tuple[VersionRow, ...]:
+    """`rows` without what a renumber left stale, judged by the Clients table.
+
+    A row whose newest client now fits another layout is dropped, and a
+    range whose first client does starts at the next client that still fits.
+    Only another layout number counts: a client the table does not hold, or
+    one without a layout (a doc of several files is `No file` where one of
+    them is missing), leaves a row as it is.
+    """
+    layouts = {check.client: check.layout for check in clients if check.layout is not None}
+
+    def moved(client: int, layout: int) -> bool:
+        return layouts.get(client, layout) != layout
+
+    kept: list[VersionRow] = []
+    for row in rows:
+        if moved(row.checked, row.layout):
+            continue
+        if moved(row.first, row.layout):
+            fitting = [client for client, layout in layouts.items() if layout == row.layout and row.first < client <= row.checked]
+            row = replace(row, first=min(fitting, default=row.checked))
+        kept.append(row)
+    return tuple(kept)
+
+
 def merge_clients(old: Iterable[ClientCheck], new: Iterable[ClientCheck]) -> tuple[ClientCheck, ...]:
     """`old` with `new` added, newest client first; a client read again takes its new result."""
     merged = {check.client: check for check in old}
@@ -95,18 +136,21 @@ def read_clients(text: str) -> tuple[ClientCheck, ...]:
     block = _block(text)
     if block is None:
         return ()
-    table = next((table for table in tables(numbered_lines(block)) if table.header == _CLIENTS_HEADER), None)
+    headers = (_CLIENTS_HEADER, _OLD_CLIENTS_HEADER)
+    table = next((table for table in tables(numbered_lines(block)) if table.header in headers), None)
     if table is None:
         return ()
     checks: list[ClientCheck] = []
     for _, cells in table.rows:
-        if not _is_row(cells, _CLIENTS_HEADER):
+        if not _is_row(cells, table.header):
             continue
-        match = _LAYOUT_RESULT.match(cells[1])
+        client, result, *rest = cells
+        fingerprint = rest[0].strip("`") if rest and rest[0] != _NO_FINGERPRINT else ""
+        match = _LAYOUT_RESULT.match(result)
         if match:
-            checks.append(ClientCheck(int(cells[0]), int(match.group("layout")), True))
-        elif cells[1] in (NO_FILE, NO_LAYOUT):
-            checks.append(ClientCheck(int(cells[0]), None, cells[1] == NO_LAYOUT))
+            checks.append(ClientCheck(int(client), int(match.group("layout")), True, fingerprint))
+        elif result in (NO_FILE, NO_LAYOUT):
+            checks.append(ClientCheck(int(client), None, result == NO_LAYOUT, fingerprint))
     return merge_clients((), checks)
 
 
@@ -116,7 +160,7 @@ def read_rows(text: str) -> tuple[VersionRow, ...]:
     if block is None:
         return ()
     found = tables(numbered_lines(block))
-    sizes = next((table for table in found if table.header == _SIZES_HEADER), None)
+    sizes = next((table for table in found if table.header in (_SIZES_HEADER, _OLD_SIZES_HEADER)), None)
     coverage = next((table for table in found if table.header == _COVERAGE_HEADER), None)
     if sizes is None or coverage is None:
         return ()
@@ -125,18 +169,34 @@ def read_rows(text: str) -> tuple[VersionRow, ...]:
         for _, cells in coverage.rows
         if _is_row(cells, _COVERAGE_HEADER)
     }
+    clients = read_clients(text)
     rows: list[VersionRow] = []
     for _, cells in sizes.rows:
-        if not _is_row(cells, _SIZES_HEADER):
+        if not _is_row(cells, sizes.header):
             continue
-        layout, clients, checked, file, size, records, row_bytes = cells
-        match = _CLIENTS.match(clients)
-        if not match or not checked.isdigit():
+        if sizes.header == _OLD_SIZES_HEADER:
+            layout, clients_cell, checked_cell, file, size, records, row_bytes = cells
+        else:
+            layout, clients_cell, file, size, records, row_bytes = cells
+            checked_cell = ""
+        match = _CLIENTS.match(clients_cell)
+        if not match:
             continue
+        first = int(match.group("first"))
+        checked = int(checked_cell) if checked_cell.isdigit() else _newest_client(match, int(layout), first, clients)
         name = file.strip("`")
         known, unknown = covered.get((int(layout), name), (0, 0))
-        rows.append(VersionRow(int(layout), int(match.group("first")), int(checked), name, _bytes(size), records, row_bytes, known, unknown))
+        rows.append(VersionRow(int(layout), first, checked, name, _bytes(size), records, row_bytes, known, unknown))
     return tuple(rows)
+
+
+def _newest_client(match: re.Match[str], layout: int, first: int, clients: Sequence[ClientCheck]) -> int:
+    """The client a row's sizes come from: its last client, or for `<first> and later` the newest that fits its layout."""
+    if match.group("last"):
+        return int(match.group("last"))
+    if not match.group(0).endswith("later"):
+        return first
+    return max((check.client for check in clients if check.layout == layout and check.client >= first), default=first)
 
 
 def write_rows(text: str, rows: Sequence[VersionRow], clients: Sequence[ClientCheck], newest_layout: int) -> str:
@@ -157,14 +217,14 @@ def render_rows(rows: Sequence[VersionRow], clients: Sequence[ClientCheck], newe
     if rows:
         parts.append(_sizes_and_coverage(rows, newest_layout))
     if clients:
-        results = [(str(check.client), check.result) for check in clients]
+        results = [(str(check.client), check.result, _fingerprint_cell(check)) for check in clients]
         parts.append(f"{_CLIENTS_LEAD}\n\n{_table(_CLIENTS_HEADER, results)}")
     return "\n\n".join(parts)
 
 
 def _sizes_and_coverage(rows: Sequence[VersionRow], newest_layout: int) -> str:
     sizes = [
-        (str(row.layout), clients_text(row, newest_layout), str(row.checked), f"`{row.file}`", f"{row.size:,}", row.records, row.row_bytes)
+        (str(row.layout), clients_text(row, newest_layout), f"`{row.file}`", f"{row.size:,}", row.records, row.row_bytes)
         for row in rows
     ]
     coverage = [
@@ -185,6 +245,28 @@ def _row(layout: int, client: int, file: FileFit) -> VersionRow:
     else:
         row_bytes = f"{main.smallest:,} to {main.largest:,}, {round(main.average):,} on average"
     return VersionRow(layout, client, client, file.file, file.size, records or "-", row_bytes, file.known, file.unknown)
+
+
+def without_fingerprints(markdown: str) -> str:
+    """`markdown` with the Checked against column left out of its Clients table, for readers who only want the results."""
+    lines: list[str] = []
+    in_clients = False
+    for line in markdown.splitlines():
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")] if line.lstrip().startswith("|") else []
+        if tuple(cells) == _CLIENTS_HEADER:
+            in_clients = True
+        elif not cells:
+            in_clients = False
+        lines.append(_table_line(cells[:-1]) if in_clients else line)
+    return "\n".join(lines)
+
+
+def _table_line(cells: Sequence[str]) -> str:
+    return "| " + " | ".join(cells) + " |"
+
+
+def _fingerprint_cell(check: ClientCheck) -> str:
+    return f"`{check.fingerprint}`" if check.fingerprint else _NO_FINGERPRINT
 
 
 def clients_text(row: VersionRow, newest_layout: int) -> str:

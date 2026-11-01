@@ -5,7 +5,7 @@
 The tail is the PABR string table of `exploration.bss` with no strings. Each
 row is u16 npc_id | u16 quest_chain_id | u16 quest_id | u16 dialog_index;
 `dialog_index << 16 | npc_id` is a `detail_dialog.dbss` key. Full layout in
-docs/file-formats/acceptquest_bss.md and completequest_bss.md.
+docs/file-formats/bss/acceptquest_bss.md and completequest_bss.md.
 """
 
 from __future__ import annotations

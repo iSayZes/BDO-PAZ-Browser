@@ -1,0 +1,12 @@
+{
+  "columns": {
+    "skillNo": "기술 번호",
+    "skill": "기술",
+    "skillLevel": "기술 레벨",
+    "treeColumn": "트리 열",
+    "treeRow": "트리 행"
+  },
+  "meta": {
+    "count": "길드 기술 {count}개"
+  }
+}

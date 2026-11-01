@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from _bss.worldmapgrid.kinds import NONE_VALUE
+from _bss.worldmapgrid.parser import read_cells
 from tests.fixtures import load_binary_fixture
 
 from .handler import PabrValuesBssHandler
@@ -13,6 +15,8 @@ from .parser import parse_value_table
 _TABLES = {value_table.file_name: value_table for value_table in OCEAN_SIEGE_TABLES}
 _INFO = "oceansiegeinfo.bss"
 _TERRITORY_OPTION = "oceansiegeterritoryoption.bss"
+# The grid whose cells hold oceansiegeinfo.bss area numbers, 255 outside the areas (worldmapgrid_bss.md).
+_OCEAN_GRID = "worldmapoceansiegeregionforconquest.bss"
 # CppEnums.VillageSiegeType: Sunday 0 to Saturday 6, then _Count.
 _DAY_COUNT = 7
 
@@ -31,9 +35,15 @@ def test_each_map_color_is_stored_twice() -> None:
         assert record["unknown_04"] == record["map_color"], record
 
 
-def test_the_number_after_the_regions_is_unique() -> None:
-    numbers = [record["unknown_region_keys_00"] for record in _records(_INFO)]
+def test_each_area_number_is_unique() -> None:
+    numbers = [record["area_number"] for record in _records(_INFO)]
     assert len(numbers) == len(set(numbers))
+
+
+def test_every_blue_battlefield_grid_value_is_an_area_number() -> None:
+    numbers = {record["area_number"] for record in _records(_INFO)}
+    cells = read_cells(load_binary_fixture(_OCEAN_GRID), _OCEAN_GRID)
+    assert set(cells) - {NONE_VALUE} <= numbers
 
 
 def test_no_island_belongs_to_two_areas() -> None:

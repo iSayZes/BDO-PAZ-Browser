@@ -17,6 +17,7 @@ _BODY = """<main class="page">
       <button type="button" data-ext="bss">.bss</button>
       <button type="button" data-ext="dbss">.dbss</button>
       <button type="button" data-ext="other">Other</button>
+      <button type="button" data-ext="lua">.luac</button>
     </div>
     <button type="button" class="toggle" id="onlyQ" aria-pressed="false"><span class="cnt q" aria-hidden="true">?</span>Has open questions</button>
     <button type="button" class="toggle" id="onlyIg" aria-pressed="false"><span class="cnt ig" aria-hidden="true">⌖</span>Has in-game checks</button>

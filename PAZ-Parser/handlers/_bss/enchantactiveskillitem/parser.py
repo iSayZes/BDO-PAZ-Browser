@@ -4,7 +4,7 @@
 
 `item_key` packs `enchant_level << 24 | item_id`, `skill_key`
 `skill_no << 16 | level`. Layout 1 in
-docs/file-formats/enchantactiveskillitem_bss.md.
+docs/file-formats/bss/enchantactiveskillitem_bss.md.
 """
 
 from __future__ import annotations

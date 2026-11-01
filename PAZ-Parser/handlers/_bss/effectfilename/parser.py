@@ -8,7 +8,7 @@
 
 No row count follows the magic: the grids have a fixed size. Every ref
 indexes the string table; a ref to the empty string is an empty cell.
-Layout 2 in docs/file-formats/effectfilename_bss.md.
+Layout 2 in docs/file-formats/bss/effectfilename_bss.md.
 """
 
 from __future__ import annotations

@@ -54,7 +54,11 @@ jobs:
             echo "No handler pack published yet"
           fi
 
-      # Handlers import only the standard library, so this runs before the install.
+      # handler_pack.py loads the handlers through bdo_preview, which imports
+      # par_mesh and so numpy; the app requirements go in before the plan.
+      - name: Install the app dependencies
+        run: python -m pip install -r PAZ-Parser/requirements.txt
+
       - name: Plan the handler pack
         id: pack
         shell: bash

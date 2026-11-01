@@ -828,7 +828,7 @@ English text, by item names and bdocodex tooltips (see Effect text).
 | 160   | 29   | Movement, attack and casting speed rates | `param_1` Movement Speed, `param_2` Attack Speed, `param_3` Casting Speed, each per million and signed |
 | 168   | 16   | No Guard Gauge recovery       | No parameters                                                     |
 | 169   | 37   | Healing reduction             | `param_1` per million, shown negative (`Target's Recovery -10%`)  |
-| 176   | 48   | Teleport to an instance field | `param_3` = [instancefield.dbss](instancefield_dbss.md) key (`Teleport to Instance Field The Magnus: The Great Single Path (A1_001)`); `param_1` `17` on all, meaning unknown |
+| 176   | 48   | Teleport to an instance field | `param_3` = [instancefield.dbss](instancefield_dbss.md) key (`Teleport to Instance Field The Magnus: The Great Single Path (A1_001)`), `-1` for none; `param_1` = a kind below `20` (`17` on all), `param_2` = a number within the kind (`0` on all); see Open Questions |
 | 181   | 58   | Breath/Strength/Health EXP %  | `param_1` = kind as in type 89, `3` one training-EXP passive (unlabelled); `param_2` per million |
 | 186   | 4    | Black Shrine aura stat        | `param_1` = `1` fixed aura, `0` the aura the player picks (Light Orb); `param_2` = points; `param_3` = aura as type 187: `0` Sun, `1` Moon, `2` Earth |
 | 187   | 298  | Flat AP and DP                | `param_1` = AP, `param_2` = DP, both can be set; `param_3` = Land of the Morning Light attribute: `0` Sun, `1` Moon, `2` Earth |
@@ -908,7 +908,9 @@ Five types do not fit their module and keep no name: `13`
 `15` `eShieldGuardVariationAmountBuffModule` (`65376` Doomcaller's Oath),
 `19` (above), `82` `eCollectorEquipmentBuffModule` (`Monsters in Balenos are
 not aware.`) and `124` `eVaryGuildProtectMemberCountModule` (`Elephant Trap
-Trip`). No buff stores `12`, `20` to `22`, `26`, `27`, `42`, `44`, `55`, `61`,
+Trip`). The client 1784 server still registers these five types under the
+same module classes (see Client 1784 Server Modules): the numbering held and
+the buffs changed. No buff stores `12`, `20` to `22`, `26`, `27`, `42`, `44`, `55`, `61`,
 `74`, `78`, `92`, `96`, `113` or `118`. The browser's Effect Type cell adds the
 module name for the types that fit (`9 MoveSpeedVariationRate`),
 from `_dbss/buff/effect/type_names.py`.
@@ -944,7 +946,7 @@ that identifier where the buffs of client 3483 fit it:
 | 147   | DecreaseWeightLevel  | `무게 패널티 감소` (weight penalty down) |
 | 148   | Fairy                | Fairy skills, see Enum Values |
 | 149   | PlayerLifeStat       | Life skill mastery, see Enum Values |
-| 159   | VaryGuardGague (the sheet's spelling) | `피해 : 가드추뎀` (extra damage to guard) |
+| 159   | VaryGuardGauge       | `피해 : 가드추뎀` (extra damage to guard); the sheet writes `VaryGuardGague`, the server class `VaryGuardGauge` |
 
 No buff stores `135` AddGuardType, `144` QuestBook, `145` MiniGame or `150`
 BreakSuperArmor. `139` RideOff (`좌석에서 내리게 하는 버프`, "buff that takes
@@ -955,6 +957,79 @@ as `151` Black Spirit's Rage regeneration, `157` combat EXP from life skills
 (`param_2` with `100` = 1%), `160` all speeds, `169` healing reduction, `173` sailing speed (acceleration, speed,
 turn and brake per million) and `179` and `180` the attribute weapon checks
 (awakening and main weapon).
+
+### Client 1784 Server Modules
+
+A memory dump of the client 1784 game server program, as a CN private server
+ran it, registers one module object per effect type (VA `0x140f97690`). Its
+code and struct offsets come from Pearl Abyss's build; the private server
+team edited some sheets up to 2026-03. Each module's `gc::` base constructor
+writes `0x100` plus the type into `+0x68`, and the table stores the module at
+`table[+0x68 & 0xFF]` (VA `0x1407214d0`). Read with the vftable each
+constructor stores, this gives one class for every type from `0` to `180`.
+124 class names equal the names in `type_names.py` before these additions;
+`142` is `ReceiveTitleByBuffModule`, the sheet's identifier, and `159` is
+spelled `VaryGuardGauge`. `158` BackAttack, `177` SmokeShot and `178`
+ExitToRealWorld have classes but no `Module_Table` row. `181`
+`gc::FitnesAddExpRateBuffModule` is in the shared `gc::` code with no server
+registration; its 58 buffs are the Breath, Strength and Health EXP rates.
+
+The Effect Type cell takes the class name from `151` where the buffs of
+client 3483 fit it (names without `BuffModule` or `Module`):
+
+| Value | Server class | Buffs that store it |
+| ----- | ------------ | ------------------- |
+| 151   | RegenApVariationAmount        | Black Spirit's Rage recovery (`흑정령의 분노 회복량 +0.5%`) |
+| 153   | OnLanternLight                | Light sources (`아타니스의 반딧불`, "Atanis's fireflies") |
+| 155   | ServantLearnSkillAddRate      | `탑승물 기술 습득확률 증가` (mount skill learning chance) |
+| 157   | ExperienceAddPercentByLife    | `(17)패시브 : 연금의 즐거움` and the gathering version |
+| 160   | VarySpeedRate                 | Movement, attack and casting speed, see Enum Values |
+| 164   | DiscountFeeAtWorldTradeMarket | Marketplace proceeds +5% (`거상의 반지`) |
+| 165   | VarySiegeRevivalCoolTime      | `부활 대기 시간 감소` (revival wait down) |
+| 168   | GuardGaugeStopRecovery        | No Guard Gauge recovery, see Enum Values |
+| 169   | HealingReduction              | Healing reduction, see Enum Values |
+| 171   | ServantStatusSupplement       | Ship turning, acceleration, speed and braking +1% |
+| 172   | VaryShipPossibleWeight        | `대양 선박 적재 무게 증가 + 50LT` (ocean ship load) |
+| 173   | VaryShipStatPassive           | Ship damage and sailing speed (`쾌속항로(선박 이속)`) |
+| 176   | EnterToInstanceDungeon        | Teleport to an instance field, see Enum Values |
+| 179   | AwakensProperties             | Attribute checks of the awakening weapon (`나크의 축복 (각성)`) |
+| 180   | Properties                    | Extra damage against zone monsters, see Effect text |
+| 181   | FitnesAddExpRate (the class's spelling) | Breath, Strength and Health EXP, see Enum Values |
+
+The other classes stay out of the cell because their buffs do not fit or no
+buff uses them:
+
+| Value | Server class | Buffs on client 3483 |
+| ----- | ------------ | -------------------- |
+| 12    | BasicStatVariationAmount | None |
+| 19    | Deprecated | Sailor EXP |
+| 20    | FearCharacter | None |
+| 21, 22 | ProductAddHitVariationAmount, ProductAddSpeedRateVariationAmount | None |
+| 26, 27 | ProductAddMultipleResultRateVariationAmount, ProductAddReturnedMaterialRateVariationAmount | None |
+| 42, 44 | DiceHiddenDVVariationAmount, DiceHiddenPVVariationAmount | None |
+| 55    | VaryReduceValueOfQuestDemand | None |
+| 61    | EnterDungeon | None |
+| 74    | VarySuperSkillRate | None |
+| 78    | VaryWheaterPenaltyResistance | None |
+| 92    | ResistanceSiegeWeapon | None |
+| 96    | ResistanceAddedAttack | None |
+| 113   | CallHandlerToAI | None |
+| 118   | DecreaseWPRate | None |
+| 152   | RegistExpeditionUnit | `청해의 가호(선박 내구도 회복)` (ship durability recovery) |
+| 154   | KBMoveSpeedVariationRate | `선박 탐지파(레이더)` (ship radar) |
+| 156   | InjuryRegenVariationAmount | None |
+| 158   | BackAttack | None |
+| 161   | ShadowArenaRadar | None |
+| 162   | Fever | Item drop quantity `100%` to `300%`, on and off |
+| 163   | ShadowArenaTeamRevive | None |
+| 166   | VarySightRange | None |
+| 167   | PenetrationPvVariationAmount | `골든벨 (전투 경험치 획득량 +100%)` (combat EXP) |
+| 170   | FootHold | `주무기 해제` (main weapon removed) |
+| 174, 175 | DiceHitRateVariationAmount, DiceDVRateVariationAmount | None |
+| 177   | SmokeShot | Sight limits (`에레테아의 망각 시야 제한`) |
+| 178   | ExitToRealWorld | Exits from the Abyss and to Seoul (`심연의 혈관 : 검은모래의 세상으로`) |
+
+`13`, `15`, `82`, `124`, `135`, `139`, `144`, `145` and `150` are covered above.
 
 ### Effect text
 
@@ -1846,36 +1921,44 @@ The 2016 client (build of 2016-01-11) ships with debug symbols. Its `gc::BuffSta
 
 The `_needEquipType` names rest on the 2016 order and on items: the nine bytes at stats `+0x7A` are zero, `2`, `46` and `2` in the places of the `itemenchant.dbss` header bytes `+0x07` to `+0x0F` on non-equipment items (`equip_type` `0`, `equip_slot` `46`), and buff 2078 (`[장착용] 두건 효과 : 정체 감추기`, a hood effect) stores `13, 0, 0, 1, 1, 2, 0, 6, 1`, the same bytes as all 229 items of `equip_type` `13` the server shares. The server's `NeedEquipType` is `0` on every row, buff 2078 included. `unknown_7e` breaks the pattern: it is `1` on 44,588 buffs where non-equipment items store `0` in that place (`_isUseAvatarMesh`), so it keeps its name.
 
-The server dump of a private server on client 1784 reads every field of the
-record (`ReadRecord_buff`, VA `0x14071fe90`) into a 0x178-byte struct, which
-its `Buff_Table` loader (VA `0x140857a80`) fills column by column, so a member
-names the column of each field. The 519 server table above has none of these
-columns:
+The client 1784 server program (see Client 1784 Server Modules) reads every
+field of the record (`ReadRecord_buff`, VA `0x14071fe90`) into a 0x178-byte
+struct, which its `Buff_Table` loader (VA `0x140857a80`) fills column by
+column, so a member names the column of each field. The client 1784 exe holds
+the same loader (VA `0x1411528f0`), and its `ReadRecord_buff` (VA
+`0x140fb5630`) writes the struct that loader fills, field by field in file
+order: the same columns and the same field-to-column mapping as the server,
+at other offsets (Client member). The 519 server table above has none of
+these columns:
 
-| Field | Offset | Member | Column | Notes |
-| ----- | ------ | ------ | ------ | ----- |
-| buff_level | stats `+0x00` | `+0x138` | `Level` | Read as one u32 (`ReadColumnInt`); its upper half is `0` on every record. `Category` and `CategoryLevel` are the members `+0x15C` and `+0x15D`, which the file does not hold |
-| is_party_buff | stats `+0x64` | `+0x170` | `ApplyToGroup` `1` | The sheet sets `1` on 124 `[Party]` item buffs |
-| unknown_65 | stats `+0x65` | `+0x171` | `ApplyToGroup` `4` | No row uses `4` |
-| unknown_66 | stats `+0x66` | `+0x172` | `ApplyToGroup` `2` | No row uses `2`. The 2016 `_isGuildBuff` is one of `unknown_65` and `unknown_66` by position |
-| unknown_70 | stats `+0x70` | `+0x118` | - | No column; the loader, `set()` and the reset never write it. The 2016 `_repeatBoomerangTime` by position |
-| unknown_78 | stats `+0x78` | `+0x15A` | `LimitCount` | The 2016 `_maxConditionApplyingCount`; `set()` rejects values from `101` up |
-| unknown_00 | tail `+0x00` | `+0x16D` | `IsToggle` | |
-| unknown_01 | tail `+0x01` | `+0x16E` | `ApplyToGroup` `3` | Set on 6 sheet rows (9982 to 9987), `0` in the file |
-| unknown_02 | tail `+0x02` | `+0x14C` | `DisplayOrder` | `set()` logs values above `2` |
-| unknown_0b | tail `+0x0B` | `+0x150` | - | No column, never written |
-| ui_effect | tail `+0x0F` | `+0xF8` | `UIEffect` | An 8-bit string the loader converts from the wide cell |
-| is_developing_contents | tail `ui_effect+0x00` | `+0x176` | `IsDevelopingContents` | The loader reads it first, and on `1` writes `UNKNOWN` for `BuffName`, `BuffIcon` and `Description` |
+| Field | Offset | Member | Client member | Column | Notes |
+| ----- | ------ | ------ | ------------- | ------ | ----- |
+| buff_level | stats `+0x00` | `+0x138` | `+0x130` | `Level` | Read as one u32 (`ReadColumnInt`); its upper half is `0` on every record. `Category` and `CategoryLevel` are the members `+0x15C` and `+0x15D`, which the file does not hold |
+| is_party_buff | stats `+0x64` | `+0x170` | `+0x166` | `ApplyToGroup` `1` | The sheet sets `1` on 124 `[Party]` item buffs |
+| unknown_65 | stats `+0x65` | `+0x171` | `+0x167` | `ApplyToGroup` `4` | No row uses `4` |
+| unknown_66 | stats `+0x66` | `+0x172` | `+0x168` | `ApplyToGroup` `2` | No row uses `2`. The 2016 `_isGuildBuff` is one of `unknown_65` and `unknown_66` by position |
+| unknown_70 | stats `+0x70` | `+0x118` | `+0x118` | - | No column; the loader, `set()` and the reset never write it. The 2016 `_repeatBoomerangTime` by position |
+| unknown_78 | stats `+0x78` | `+0x15A` | `+0x152` | `LimitCount` | The 2016 `_maxConditionApplyingCount`; `set()` rejects values from `101` up |
+| unknown_00 | tail `+0x00` | `+0x16D` | `+0x163` | `IsToggle` | |
+| unknown_01 | tail `+0x01` | `+0x16E` | `+0x164` | `ApplyToGroup` `3` | Set on 6 sheet rows (9982 to 9987), `0` in the file |
+| unknown_02 | tail `+0x02` | `+0x14C` | `+0x144` | `DisplayOrder` | `set()` logs values above `2` |
+| unknown_0b | tail `+0x0B` | `+0x150` | `+0x148` | - | No column, never written |
+| ui_effect | tail `+0x0F` | `+0xF8` | `+0xF8` | `UIEffect` | An 8-bit string the loader converts from the wide cell |
+| is_developing_contents | tail `ui_effect+0x00` | `+0x176` | `+0x16C` | `IsDevelopingContents` | The loader reads it first, and on `1` writes `UNKNOWN` for `BuffName`, `BuffIcon` and `Description` |
 
 Three of these are named from client data as well. `buff_level` is a u32 on
 every client read: its upper half is `0` on all records. `ui_effect` is a
 string count where the fixed read saw zeros, and the records still end at
 their size. `is_developing_contents` is `1` on exactly the records whose name
 or icon is `UNKNOWN`, on clients 1784 (46), 1937 (30), 2932 (214) and 3483
-(207). The other names rest on the server alone and stay in this table: on
-the live client those fields are `0`, or `0` but on one buff. The server
-also reads `UseMaxAttackType` (`+0x174`), `SiegeOnlyBuff` (`+0x175`) and
-`DontApplyBuffKeyList` (a u16 list at `+0x60`), and its sheets hold
+(207). The other names rest on the server and the client 1784 loader and
+stay in this table: on the live client those fields are `0`, or `0` but on
+one buff. The server also reads `UseMaxAttackType` (`+0x174`, client
+`+0x16A`), `SiegeOnlyBuff` (`+0x175`, client `+0x16B`) and
+`DontApplyBuffKeyList` (a u16 list at `+0x60`) from the sheet; neither
+`ReadRecord_buff` reads them from the file. The client 1784 exe names a
+`FromClient_AppliedBuffUIEffect` event for `ui_effect`; no Lua file of client
+3483 registers it. The sheets hold
 `IsAbsolute` and `NewNeedEquipType`, which the loader skips; none of them is
 in the file. Layout 3's `stacking_category` is `Category` (above); in the
 1784 sheets `CategoryLevel` is `1` only where `Category` is set, which is how
@@ -1926,12 +2009,25 @@ they are server data and the column keeps the dash. The client 1784
 `Module_Table` describes `param_1` of types 179 and 180 (the attribute weapon
 checks) with 153 Valtarra, 154 Okiara (`오기에르`) and 155 Narc only.
 
-### What is type 176 `param_1`?
+The client 1784 server checks only the range: the validity checks of the
+two modules (VA `0x140dd6000` for 179, `0x140dd60e0` for 180) accept
+`param_1` from `0` to `199` (`CMP qword [module+0x08], 0xC7`), so the keys
+index a fixed set of 200 properties, and no data table is looked up there.
+Client 3483 uses `51` to `199` on type 180 (35 values) and `153` to `155` on
+type 179. No other server code compares a module with type `0xB3` or
+`0xB4`; where a key is matched against its target is not traced.
 
-It is `17` on all 48 buffs, and the client 1784 `Module_Table` row for 176
-describes no parameter. `instancefield.dbss` key 17 is `CrimsonField`,
-which does not fit test teleports into the `A1_` fields, so it is probably a
-teleport kind or mode. A second value on any buff would show what it does.
+### What are the type 176 kinds?
+
+The client 1784 server's `EnterToInstanceDungeonBuffModuleForServer` reads
+the parameters as follows. Its check (VA `0x140dd51c0`) wants `param_1` below
+`20` and `param_3` either `-1` or an instance field key. Its apply (VA
+`0x140dd4ee0`) builds the key `(param_1 << 16) | param_2` and enters the
+field `param_3` through VA `0x140f05970`, which rejects a `param_1` whose
+flag at manager `+0x199 + param_1` is clear. So `param_1` is a kind and
+`param_2` a number within it; `instancefield.dbss` key 17 (`CrimsonField`)
+is unrelated. All 48 buffs store `17` and `0`, and the `Module_Table` row for
+176 describes no parameter; no client table read so far names the kinds.
 
 ## In-Game Checks
 

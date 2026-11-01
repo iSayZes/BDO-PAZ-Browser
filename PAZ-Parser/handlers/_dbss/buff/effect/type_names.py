@@ -1,5 +1,5 @@
-"""Names of the effect types, from the 2016 client's `gc::BuffModule::Type`
-and the client 1784 `Module_Table` sheet.
+"""Names of the effect types, from the 2016 client's `gc::BuffModule::Type`,
+the client 1784 `Module_Table` sheet and the client 1784 server's module classes.
 
 The 2016 enum numbers the buff modules `0` to `131` (`eBuffModuleCount`
 `132`), and the current effect types still follow it: every type with an
@@ -15,8 +15,12 @@ From `132` the names are the module identifiers the client 1784 sheet writes
 next to each Korean module name (`귀환석 관련 모듈(eUseReturnStoneModule)`),
 for the types whose buffs on client 3483 fit them. Left out: `135`, `144`,
 `145` and `150`, which no buff uses, `139` RideOff, whose buffs do not fit,
-and the types the sheet gives no identifier. See
-docs/file-formats/dbss/buff_dbss.md, Enum Values.
+and the types the sheet gives no identifier.
+
+From `151` the names are the client 1784 server's module classes
+(`169` HealingReduction, `181` FitnesAddExpRate in the class's spelling), for
+the types whose buffs on client 3483 fit them; `159` also takes the server's spelling over the sheet's
+`VaryGuardGague`. See docs/file-formats/dbss/buff_dbss.md, Enum Values.
 """
 
 from __future__ import annotations
@@ -147,8 +151,23 @@ EFFECT_TYPE_NAMES: dict[int, str] = {
     147: "DecreaseWeightLevel",
     148: "Fairy",
     149: "PlayerLifeStat",
-    # The sheet's spelling.
-    159: "VaryGuardGague",
+    151: "RegenApVariationAmount",
+    153: "OnLanternLight",
+    155: "ServantLearnSkillAddRate",
+    157: "ExperienceAddPercentByLife",
+    159: "VaryGuardGauge",
+    160: "VarySpeedRate",
+    164: "DiscountFeeAtWorldTradeMarket",
+    165: "VarySiegeRevivalCoolTime",
+    168: "GuardGaugeStopRecovery",
+    169: "HealingReduction",
+    171: "ServantStatusSupplement",
+    172: "VaryShipPossibleWeight",
+    173: "VaryShipStatPassive",
+    176: "EnterToInstanceDungeon",
+    179: "AwakensProperties",
+    180: "Properties",
+    181: "FitnesAddExpRate",
 }
 
 

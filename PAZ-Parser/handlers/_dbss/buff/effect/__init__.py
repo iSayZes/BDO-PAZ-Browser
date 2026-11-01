@@ -12,7 +12,7 @@ interval and condition.
 - `named.py`: the types whose parameters name something in LOC.
 - `render.py`: the Effect text and the Param labels from those entries.
 - `units.py`: how amounts are scaled and written.
-- `type_names.py`: the 2016 client's names of the effect types.
+- `type_names.py`: the module names of the effect types.
 
 Kept out of `handler.py` so the tests can import it (see "Unit Tests" in
 docs/handler.md).

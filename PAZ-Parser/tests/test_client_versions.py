@@ -8,6 +8,7 @@ import pytest
 from bdo_preview import set_handler_client
 from _common.client_versions import ClientRange, client_order
 from _common.data_deps import CLIENT, client_ranges_dep, client_ranges_digest, recording
+from _bss.buffsimply.parser import LAYOUTS as BUFFSIMPLY_LAYOUTS
 from _bss.charactersimply.parser import LAYOUTS as CHARACTERSIMPLY_LAYOUTS
 from _bss.privateskill.parser import LAYOUTS as PRIVATESKILL_LAYOUTS
 from _bss.sequencetriggerdata.parser import LAYOUTS as SEQUENCETRIGGERDATA_LAYOUTS
@@ -28,6 +29,7 @@ _LIVE = (ClientRange(1267),)
 # Newest first, as handlers list them.
 _LAYOUTS = (("Layout 2", _LIVE), ("Layout 1", _OLD))
 _HANDLER_LAYOUTS = {
+    "buffsimply.bss": BUFFSIMPLY_LAYOUTS,
     "charactersimply.bss": CHARACTERSIMPLY_LAYOUTS,
     "privateskill.bss": PRIVATESKILL_LAYOUTS,
     "sequencetriggerdata.bss": SEQUENCETRIGGERDATA_LAYOUTS,

@@ -1518,8 +1518,8 @@ count back to back, so the spec reads `textbind.dbss` alone.
 
 `BUFF_ICON` maps a buff ID to its icon. It reads
 [buffsimply.bss](file-formats/bss/buffsimply_bss.md), which stores the same icon
-paths as `buff.dbss` in fixed 32-byte rows (1.4 MB against 12 MB of
-variable-length records). Buffs without an icon or with the `UNKNOWN`
+paths as `buff.dbss` in fixed rows of 32 bytes, 30 before client 3464 (1.4 MB
+against 12 MB of variable-length records). Buffs without an icon or with the `UNKNOWN`
 placeholder are left out. Read it through `IconKind.BUFF`, or through
 `buff_list_cell()` in `_common/buff.py`, which draws a buff list with icons
 (the Buffs columns of `skill.dbss` and `itemenchant.dbss`). `buff_icon_path()`
@@ -2132,7 +2132,8 @@ for layout in client_order(LAYOUTS, lambda layout: layout.clients):
 Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
 `territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss`,
 `mentalcard.dbss`, `itemenchant.dbss`, `characterstatic.dbss`,
-`charactersimply.bss`, `skill.dbss`, `buff.dbss` and `pcgrowth.dbss`.
+`charactersimply.bss`, `buffsimply.bss`, `skill.dbss`, `buff.dbss` and
+`pcgrowth.dbss`.
 `itemenchant.dbss` tries each layout on its first eight base blocks instead of
 the whole 194 MB file, then reads every block with the one that fits
 (`_dbss/itemenchant/layouts.py`); its lookup index builders pick the layout the

@@ -7,7 +7,7 @@ follow the app language. Meanings and evidence are in itemenchant_dbss.md.
 from __future__ import annotations
 
 from _bss.jewelgroupstaticstatus.names import NO_LIMIT, JewelGroup
-from _common.class_type import PLAYABLE_CLASSES_MASK, class_names, is_all_classes
+from _common.class_type import class_names, is_all_classes, playable_classes_mask
 from ui_text import fill_placeholders
 
 # "All except Agent" reads better than 34 class names; above this many
@@ -30,9 +30,10 @@ def classes_label(class_mask: int, values: dict[str, str]) -> str:
     """'All', 'All except ...' or the class names; '' when no class may use it."""
     if is_all_classes(class_mask):
         return values["allClasses"]
-    if not class_mask & PLAYABLE_CLASSES_MASK:
+    playable = playable_classes_mask()
+    if not class_mask & playable:
         return ""
-    missing_mask = PLAYABLE_CLASSES_MASK & ~class_mask
+    missing_mask = playable & ~class_mask
     if missing_mask.bit_count() <= _MAX_EXCEPTED_CLASSES:
         return fill_placeholders(values["allExcept"], classes=", ".join(class_names(missing_mask)))
     return ", ".join(class_names(class_mask))

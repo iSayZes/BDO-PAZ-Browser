@@ -126,6 +126,9 @@ class IndexKind(Enum):
     CHARACTER_HUNTING_GROUNDS = "character_hunting_grounds"
     # Korean dropuihuntinggroundinfo.bss names, the fallback when LOC type 116 has none.
     HUNTING_GROUND_NAME_KR = "hunting_ground_name_kr"
+    # `1` by each class type the client lets a player create (pcgrowthsimply.bss
+    # is_playable); read through _common/class_type.py.
+    PLAYABLE_CLASSES = "playable_classes"
 
 
 # Dependency name each read reports to `data_deps`, built once per kind.

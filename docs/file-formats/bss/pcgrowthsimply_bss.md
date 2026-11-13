@@ -526,7 +526,7 @@ PABR table with one fixed 10-byte row per class type and a string table of the K
 | `+0x05` | u8   | is_playable | `1` on 32 class types, `0` on 13, 14, 18, 22 and 36 to 46                |
 | `+0x06` | u32  | unknown_06  | Always `0`                                                               |
 
-`is_playable` equals `pcgrowth.dbss` `is_open` (the sheet's `IsOpen`) on every class of clients 1784 and 3483. The `is_playable` rows are exactly the class types of `PLAYABLE_CLASSES_MASK` in `_common/class_type.py`, the mask items use for "every class": 0 to 35 without 13, 14, 18 and 22. The string table holds 46 names for 47 rows.
+`is_playable` equals `pcgrowth.dbss` `is_open` (the sheet's `IsOpen`) on every class of clients 1784 and 3483. The `is_playable` rows are exactly the class types of `PLAYABLE_CLASSES_MASK` in `_common/class_type.py`, the mask items use for "every class": 0 to 35 without 13, 14, 18 and 22. On client 1784 they are 23 class types, without 3, 6, 7, 15, 30 and 32 to 35; the `PLAYABLE_CLASSES` lookup index carries each client's own set to the class labels. The string table holds 46 names for 47 rows.
 
 ### String Table (variable: 4 bytes + strings)
 

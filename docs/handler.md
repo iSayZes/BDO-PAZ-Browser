@@ -1223,7 +1223,12 @@ playable class names.
 Items store every playable class as `PLAYABLE_CLASSES_MASK` instead, which
 skips unused class types: test for it with `is_all_classes()`, a superset
 check that keeps working when a class is added, and name the playable
-classes of a mask with `class_names()`.
+classes of a mask with `class_names()`. Both read the playable classes of
+the loaded client from the `PLAYABLE_CLASSES` index (`pcgrowthsimply.bss`
+`is_playable`) through `playable_classes_mask()`, and use
+`PLAYABLE_CLASSES_MASK` (client 3458) only without it. Client 1784 has no
+classes 32 to 35 and sets bits 32 to 63 wherever bit 31 is set, so its
+labels must not take them from the 3458 mask.
 
 `html.py` has `truncate(text, max_len)` for long text cells,
 `text_list_cell(values, max_items)` for list cells, `icon_list_cell(entries,
@@ -1428,6 +1433,7 @@ IDs (`LookupValue`).
 | `FIELD_NAME`     | `fieldinfo.bss`                            | field name     |
 | `CHARACTER_HUNTING_GROUNDS` | `dropuihuntinggroundinfo.bss`   | hunting ground keys (tuple) |
 | `HUNTING_GROUND_NAME_KR` | `dropuihuntinggroundinfo.bss`      | Korean hunting ground name |
+| `PLAYABLE_CLASSES` | `pcgrowthsimply.bss`                   | `1` per playable class type |
 
 `CHARACTER_ITEM` maps a character to the one base item that places or summons
 it (`character_id` at `+0xAA` in

@@ -35,6 +35,7 @@ from _bss.itemexchangesource.parser import build_exchange_name_kr_index
 from _bss.lightstoneset.parser import build_lightstone_set_index
 from _bss.mansionpartinfo.parser import build_manor_part_icon_index
 from _bss.menu.parser import build_menu_icon_index, build_menu_icon_region_index
+from _bss.pcgrowthsimply.parser import build_playable_class_index
 from _bss.plantexchangegroup.parser import build_production_item_index, build_production_luck_item_index
 from _bss.questjournalvideoinfo.parser import build_quest_artwork_index
 from _bss.specialenchantitem.parser import build_item_key_icon_index
@@ -93,6 +94,7 @@ SKILL_OFFSET = f"{_BINARY}/skilloffset.dbss"
 SKILLTYPE = f"{_BINARY}/skilltype.dbss"
 SKILLTYPE_OFFSET = f"{_BINARY}/skilltypeoffset.dbss"
 BUFFSIMPLY = f"{_BINARY}/buffsimply.bss"
+PCGROWTHSIMPLY = f"{_BINARY}/pcgrowthsimply.bss"
 SPECIALENCHANTITEM = f"{_BINARY}/specialenchantitem.bss"
 QUESTJOURNALVIDEOINFO = f"{_BINARY}/questjournalvideoinfo.bss"
 MANSIONPARTINFO = f"{_BINARY}/mansionpartinfo.bss"
@@ -225,6 +227,8 @@ INDEX_SPECS: tuple[IndexSpec, ...] = (
     IndexSpec(IndexKind.TEXT_BIND_KR, (TEXTBIND,), build_text_bind_kr_index),
     # buffsimply.bss holds the buff.dbss icon paths in fixed rows, 1.4 MB against 12 MB.
     IndexSpec(IndexKind.BUFF_ICON, (BUFFSIMPLY,), build_buff_icon_index),
+    # The client's own playable classes for the class labels, one 10-byte row per class type.
+    IndexSpec(IndexKind.PLAYABLE_CLASSES, (PCGROWTHSIMPLY,), build_playable_class_index),
     # The per-level icons of itemenchant.dbss for the items that change icon, 175 KB.
     IndexSpec(IndexKind.ITEM_KEY_ICON, (SPECIALENCHANTITEM,), build_item_key_icon_index),
     # Icons only their own tables show today, a few KB each, indexed for later use.

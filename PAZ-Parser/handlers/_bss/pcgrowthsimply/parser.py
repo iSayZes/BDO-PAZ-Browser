@@ -36,3 +36,8 @@ def parse_pcgrowthsimply_records(data: bytes) -> list[dict]:
             "unknown_06": unknown_06,
         })
     return records
+
+
+def build_playable_class_index(data: bytes) -> dict[int, int]:
+    """`1` by every class type the client marks playable, for `IndexKind.PLAYABLE_CLASSES`."""
+    return {record["class_type"]: 1 for record in parse_pcgrowthsimply_records(data) if record["is_playable"]}

@@ -54,3 +54,11 @@ def pcgrowthsimply_result(request: Any) -> HandlerResult:
 @pytest.mark.parametrize("spec", CASE.tests, ids=case_id)
 def test_pcgrowthsimply_bss(spec: Any, pcgrowthsimply_result: HandlerResult) -> None:
     pcgrowthsimply_result.check(spec)
+
+
+def test_playable_class_index_holds_the_playable_rows(pcgrowthsimply_result: HandlerResult) -> None:
+    from _bss.pcgrowthsimply.parser import build_playable_class_index
+
+    index = build_playable_class_index(pcgrowthsimply_result.source.data)
+
+    assert set(index) == {r["class_type"] for r in pcgrowthsimply_result.records if r["is_playable"]}

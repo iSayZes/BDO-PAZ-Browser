@@ -3,12 +3,16 @@
     "skillNo": "N° de compétence",
     "icon": "Icône",
     "name": "Nom",
-    "kind": "Genre"
+    "kind": "Genre",
+    "awakeningType": "Éveil"
   },
   "kind": {
     "0": "Autre",
     "1": "Actif",
     "2": "Passif"
+  },
+  "awakeningType": {
+    "1": "Arme d'éveil"
   },
   "meta": {
     "count": "{count} compétences · {with_icon} avec icône"

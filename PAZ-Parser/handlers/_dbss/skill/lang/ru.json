@@ -5,6 +5,8 @@
     "icon": "Значок",
     "name": "Название",
     "description": "Описание",
+    "needLevel": "Требуемый уровень",
+    "needSkillPoint": "Очки навыков",
     "cooldown": "Перезарядка",
     "resourceCost": "Ресурс",
     "staminaCost": "Силы",

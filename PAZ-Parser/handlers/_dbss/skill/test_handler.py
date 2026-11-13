@@ -45,7 +45,8 @@ SKILL_CASE = HandlerCase(
     lookup_indexes={IndexKind.SKILL_ICON: {1759: _GRAVE_DIGGING_ICON}},
     tests=[
         SchemaTest(required_keys=[
-            "skill_key", "skill_no", "level", "icon_path", "name", "description", "cooldown_ms", "resource_cost",
+            "skill_key", "skill_no", "level", "icon_path", "name", "description", "need_level", "need_skill_point",
+            "cooldown_ms", "resource_cost",
             "stamina_cost", "buff_ids", "buffs",
             "next_skill_keys", "related_cool_time_skill_keys", "script",
         ]),
@@ -167,6 +168,24 @@ def test_guild_skill_effect_comes_from_loc_type_13(skill_result: HandlerResult) 
     assert "Guild Storage" in ample_storage["description"]
     assert not _HANGUL.search(ample_storage["description"])
 
+
+def test_learning_needs_match_skillsimply(skill_result: HandlerResult) -> None:
+    """skill.dbss and skillsimply.dbss hold the same level and skill point needs for every shared rank."""
+    from _dbss.skillsimply.parser import parse_skillsimply_records
+    from tests.fixtures import load_binary_fixture
+
+    simply = {
+        record.skill_key: (record.need_level, record.need_skill_point)
+        for record in parse_skillsimply_records(
+            load_binary_fixture("skillsimply.dbss"), load_binary_fixture("skillsimplyoffset.dbss")
+        )
+    }
+    # The view shows 0 as None.
+    needs = {r["skill_key"]: (r["need_level"] or 0, r["need_skill_point"] or 0) for r in skill_result.records}
+    shared = needs.keys() & simply.keys()
+
+    assert shared
+    assert {key: needs[key] for key in shared} == {key: simply[key] for key in shared}
 
 
 def test_build_skill_buff_index_keeps_slot_order() -> None:

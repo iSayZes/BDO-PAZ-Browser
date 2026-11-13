@@ -5,6 +5,8 @@
     "icon": "Symbol",
     "name": "Name",
     "description": "Beschreibung",
+    "needLevel": "Erforderliche Stufe",
+    "needSkillPoint": "Talentpunkte",
     "cooldown": "Abklingzeit",
     "resourceCost": "Ressource",
     "staminaCost": "Ausdauer",

@@ -5,6 +5,8 @@
     "icon": "Icône",
     "name": "Nom",
     "description": "Description",
+    "needLevel": "Niveau requis",
+    "needSkillPoint": "Points de compétence",
     "cooldown": "Temps de recharge",
     "resourceCost": "Ressource",
     "staminaCost": "Endurance",

@@ -3,12 +3,16 @@
     "skillNo": "Skill No",
     "icon": "Icon",
     "name": "Name",
-    "kind": "Kind"
+    "kind": "Kind",
+    "awakeningType": "Awakening"
   },
   "kind": {
     "0": "Other",
     "1": "Active",
     "2": "Passive"
+  },
+  "awakeningType": {
+    "1": "Awakening Weapon"
   },
   "meta": {
     "count": "{count} skills · {with_icon} with an icon"

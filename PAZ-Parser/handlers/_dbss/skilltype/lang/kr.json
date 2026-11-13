@@ -3,12 +3,16 @@
     "skillNo": "기술 번호",
     "icon": "아이콘",
     "name": "이름",
-    "kind": "종류"
+    "kind": "종류",
+    "awakeningType": "각성"
   },
   "kind": {
     "0": "기타",
     "1": "액티브",
     "2": "패시브"
+  },
+  "awakeningType": {
+    "1": "각성 무기"
   },
   "meta": {
     "count": "기술 {count}개 · 아이콘 있음 {with_icon}개"

@@ -40,6 +40,9 @@ def _record_dict(record: SkillRecord) -> dict:
         # English, then the Korean skilltype.dbss name, then the action name.
         **pa_fields("name", skill_name_tagged(record.skill_no) or record.action_name),
         "action_name": record.action_name,
+        # Zero sorts last as None, as in skillsimply.dbss.
+        "need_level": record.need_level or None,
+        "need_skill_point": record.need_skill_point or None,
         **pa_fields("description", skill_description_tagged(record.skill_no, record.level, record.description_kr)),
         # Zero means no cooldown; None sorts last.
         "cooldown_ms": record.cooldown_ms or None,
@@ -106,6 +109,8 @@ class SkillHandler(PreviewHandler):
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["name"], sort_key="name"),
             Column(cols["description"], sort_key="description"),
+            Column(cols["needLevel"], "num", sort_key="need_level"),
+            Column(cols["needSkillPoint"], "num", sort_key="need_skill_point"),
             Column(cols["cooldown"], "num", sort_key="cooldown_ms"),
             Column(cols["resourceCost"], "num", sort_key="resource_cost"),
             Column(cols["staminaCost"], "num", sort_key="stamina_cost"),
@@ -155,6 +160,8 @@ class SkillHandler(PreviewHandler):
                 icon_cell(r["icon_path"]),
                 pa_cell(r, "name"),
                 pa_cell(r, "description"),
+                e(r["need_level"] or _EMPTY),
+                e(r["need_skill_point"] or _EMPTY),
                 e(r["cooldown"] or _EMPTY),
                 e(r["resource_cost"] or _EMPTY),
                 e(r["stamina_cost"] or _EMPTY),

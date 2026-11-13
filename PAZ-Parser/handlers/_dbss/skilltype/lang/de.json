@@ -3,12 +3,16 @@
     "skillNo": "Talent-Nr.",
     "icon": "Symbol",
     "name": "Name",
-    "kind": "Art"
+    "kind": "Art",
+    "awakeningType": "Erweckung"
   },
   "kind": {
     "0": "Sonstiges",
     "1": "Aktiv",
     "2": "Passiv"
+  },
+  "awakeningType": {
+    "1": "Erweckungswaffe"
   },
   "meta": {
     "count": "{count} Talente · {with_icon} mit Symbol"

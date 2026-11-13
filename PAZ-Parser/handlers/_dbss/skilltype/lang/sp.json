@@ -3,12 +3,16 @@
     "skillNo": "N.º de habilidad",
     "icon": "Icono",
     "name": "Nombre",
-    "kind": "Tipo"
+    "kind": "Tipo",
+    "awakeningType": "Despertar"
   },
   "kind": {
     "0": "Otros",
     "1": "Activa",
     "2": "Pasiva"
+  },
+  "awakeningType": {
+    "1": "Arma del Despertar"
   },
   "meta": {
     "count": "{count} habilidades · {with_icon} con icono"

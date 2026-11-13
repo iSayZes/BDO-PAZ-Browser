@@ -17,7 +17,11 @@ _OFFSET_FILE = "skilltypeoffset.dbss"
 _EMPTY = "-"
 
 
-def _record_dict(record: SkillTypeRecord, kind_labels: dict[str, str]) -> dict:
+def _label(labels: dict[str, str], value: int) -> str:
+    return labels.get(str(value), str(value))
+
+
+def _record_dict(record: SkillTypeRecord, labels: dict) -> dict:
     return {
         "skill_key": record.skill_key,
         "skill_no": record.skill_no,
@@ -27,7 +31,10 @@ def _record_dict(record: SkillTypeRecord, kind_labels: dict[str, str]) -> dict:
         "name_kr": record.name_kr,
         "group_name_kr": record.group_name_kr,
         "kind": record.kind,
-        "kind_label": kind_labels.get(str(record.kind), str(record.kind)),
+        "kind_label": _label(labels["kind"], record.kind),
+        # 0, a normal skill, is None and an empty cell, so it sorts last.
+        "awakening_type": record.awakening_type or None,
+        "awakening_type_label": _label(labels["awakeningType"], record.awakening_type) if record.awakening_type else "",
     }
 
 
@@ -39,6 +46,7 @@ class SkillTypeHandler(PreviewHandler):
             Column(cols["icon"], sort_key="icon_path"),
             Column(cols["name"], sort_key="name"),
             Column(cols["kind"], sort_key="kind"),
+            Column(cols["awakeningType"], sort_key="awakening_type"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -58,11 +66,11 @@ class SkillTypeHandler(PreviewHandler):
         if offset_raw is None:
             raise ValueError(f"{_OFFSET_FILE} companion not found.")
 
-        kind_labels = load_handler_strings(self.lang, _LANG_DIR)["kind"]
+        labels = load_handler_strings(self.lang, _LANG_DIR)
         # The index order is arbitrary. Skill key order gives CSV export class
         # skills first; the table opens on its default skill number sort.
         records = sorted(parse_skilltype_records(data, offset_raw), key=lambda record: record.skill_key)
-        return [_record_dict(record, kind_labels) for record in records]
+        return [_record_dict(record, labels) for record in records]
 
     def render_records_page(
         self,
@@ -80,6 +88,7 @@ class SkillTypeHandler(PreviewHandler):
                 icon_cell(r["icon_path"]),
                 pa_cell(r, "name"),
                 e(r["kind_label"]),
+                e(r["awakening_type_label"] or _EMPTY),
             ]
             for r in slice_
         ]

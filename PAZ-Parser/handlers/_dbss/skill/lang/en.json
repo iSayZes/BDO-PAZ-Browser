@@ -5,6 +5,8 @@
     "icon": "Icon",
     "name": "Name",
     "description": "Description",
+    "needLevel": "Required Level",
+    "needSkillPoint": "Skill Points",
     "cooldown": "Cooldown",
     "resourceCost": "Resource",
     "staminaCost": "Stamina",

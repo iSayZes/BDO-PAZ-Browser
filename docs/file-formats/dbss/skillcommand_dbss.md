@@ -716,6 +716,15 @@ command and the controller command differ on 13 rows with both set. Of the
   and falls back to this row's.
 - The LOC type 2 command texts keep the key bindings and translate the
   conditions: `9565` is `<{KeyBind:Jump}> [after other skills]`.
+- Nothing in the file names its layout. The parser reads it with the first
+  layout, in client order, whose rows end at the end of the file; a field
+  the layout does not hold (`skill_no_dup`, `extra_param`,
+  `console_command_kr`) is empty. On clients 1256, 1341, 1346, 1554, 1559,
+  1784, 1945, 1950 and 3482 the rows read match the index count.
+- The table holds only the skills of the Skill Guide list. On client 1784
+  Archer has three rows, and Evasion (`3347`) has none; its command is in
+  [`commandtooltip.dbss`](commandtooltip_dbss.md) under its
+  [`skilltype.dbss`](skilltype_dbss.md) `pattern_control` key `ARCHER_20`.
 
 ## Open Questions
 

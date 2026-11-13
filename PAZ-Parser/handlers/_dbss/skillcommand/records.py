@@ -72,7 +72,8 @@ def skill_command_record(
         "name": loc_text(LOC_SKILL_COMMAND, skill_no, NAME_ID4) or row["name_kr"].strip(),
         "icon": ui_texture_path(clean_stored_icon_path(row["icon_path"]), UI_TEXTURE_ICON_ROOT),
         **pa_fields("command", _command(skill_no, COMMAND_ID4, row["command_kr"])),
-        **pa_fields("console_command", _command(skill_no, CONSOLE_COMMAND_ID4, row["console_command_kr"])),
+        # Layouts 1 and 2 have no controller command.
+        **pa_fields("console_command", _command(skill_no, CONSOLE_COMMAND_ID4, row["console_command_kr"] or "")),
         "class_types": list(class_types),
         "classes": _CLASS_SEPARATOR.join(class_name(class_type) for class_type in class_types) or None,
         "form": forms.get(str(row["extra_param"])),

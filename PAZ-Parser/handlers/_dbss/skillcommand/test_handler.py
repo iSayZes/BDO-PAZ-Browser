@@ -25,7 +25,8 @@ from tests.offset_rows import offset_row_problems
 
 from _bss.classskilllist.parser import FILE_NAME as CLASSSKILLLIST_FILE
 from _bss.classskilllist.parser import parse_classskilllist_records
-from .parser import FILE_NAME, OFFSET_FILE, parse_skillcommand_records, parse_skillcommandoffset_rows
+from bdo_preview import set_handler_client
+from .parser import FILE_NAME, LAYOUTS, OFFSET_FILE, RowLayout, parse_skillcommand_records, parse_skillcommandoffset_rows
 from .records import skill_classes
 
 
@@ -163,14 +164,22 @@ def _str16(text: str) -> bytes:
     return _STR16_COUNT.pack(len(raw) // 2) + raw
 
 
-def _row(skill_no: int, extra_param: int) -> bytes:
+_LAYOUT_BY_NUMBER = {layout.number: layout for layout in LAYOUTS}
+_CONSOLE_COMMAND = "<{KeyBind:Dash}> + <{KeyBind:Attack2}>"
+
+
+def _row(skill_no: int, extra_param: int, layout: RowLayout = LAYOUTS[0]) -> bytes:
+    """One row as the doc writes `layout`; a field the layout lacks is left out."""
     return (
-        struct.pack("<HH", skill_no, skill_no)
+        struct.pack("<H", skill_no)
+        + (struct.pack("<H", skill_no) if layout.has_skill_no_dup else b"")
         + _str16("<{KeyBind:Attack1}>")
         + _str16("화염구")
         + _str16("New_Icon/a.dds")
-        + struct.pack("<IBBBI", 7, 1, 0, extra_param, 0)
-        + _str16("")
+        + struct.pack("<IBB", 7, 1, 0)
+        + (struct.pack("<B", extra_param) if layout.has_extra_param else b"")
+        + struct.pack("<I", 0)
+        + (_str16(_CONSOLE_COMMAND) if layout.has_console_command else b"")
     )
 
 
@@ -191,9 +200,30 @@ def test_parse_reads_each_field() -> None:
         "awaken_command": 0,
         "extra_param": 0,
         "unknown_icon_path_07": 0,
-        "console_command_kr": "",
+        "console_command_kr": _CONSOLE_COMMAND,
     }
     assert records[1]["extra_param"] == 2
+
+
+@pytest.mark.parametrize("number", [3, 2, 1])
+def test_older_layouts_read_their_fields_and_leave_the_rest_none(number: int) -> None:
+    layout = _LAYOUT_BY_NUMBER[number]
+    data = struct.pack("<I", 2) + _row(819, 0, layout) + _row(3339, 0, layout)
+
+    first, second = parse_skillcommand_records(data)
+
+    assert (first["skill_no"], second["skill_no"]) == (819, 3339)
+    assert (first["name_kr"], first["pc_level_for_learning"], first["show_check"]) == ("화염구", 7, 1)
+    assert first["extra_param"] is None
+    assert first["skill_no_dup"] == (819 if layout.has_skill_no_dup else None)
+    assert first["console_command_kr"] == (_CONSOLE_COMMAND if layout.has_console_command else None)
+
+
+def test_the_layout_covering_the_client_is_tried_first() -> None:
+    set_handler_client(1784)
+
+    with pytest.raises(ValueError, match=r"fits no known layout \(Layout 3: .*; Layout 4: .*; Layout 2: .*; Layout 1: "):
+        parse_skillcommand_records(struct.pack("<I", 1) + bytes(1))
 
 
 def test_parse_rejects_rows_that_end_early() -> None:

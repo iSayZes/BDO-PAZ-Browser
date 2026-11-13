@@ -4,7 +4,9 @@
     "icon": "Icon",
     "name": "Name",
     "kind": "Kind",
-    "awakeningType": "Awakening"
+    "awakeningType": "Awakening",
+    "pcCommand": "PC Command",
+    "consoleCommand": "Console Command"
   },
   "kind": {
     "0": "Other",

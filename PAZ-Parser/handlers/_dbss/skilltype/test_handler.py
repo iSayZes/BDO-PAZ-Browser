@@ -5,6 +5,7 @@ from typing import Any
 
 import pytest
 
+from _dbss.commandtooltip.parser import FILE_NAME as COMMAND_TOOLTIP_FILE
 from _dbss.skillsimply.parser import parse_skillsimply_records
 from _dbss.skilltype.parser import build_skill_icon_index, build_skill_name_index
 from tests.framework import (
@@ -29,19 +30,21 @@ _GREATBOW_OF_LIGHT = 3458 << 16 | 1
 _AWAKENING_WEAPON = 1
 _AWAKENING_BRANCH = 1
 _ICON_ROOT = "ui_texture/icon/"
+# The Archer's Evasion, whose key command is only in commandtooltip.dbss.
+_EVASION = 3347 << 16 | 1
 
 CASE = HandlerCase(
     handler_name="skilltype.dbss",
     data_file="skilltype.dbss",
-    companion_files={_OFFSET_FILE: _OFFSET_FILE},
+    companion_files={_OFFSET_FILE: _OFFSET_FILE, COMMAND_TOOLTIP_FILE: COMMAND_TOOLTIP_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
-    loc_fields=["Name"],
+    loc_fields=["Name", "PC Command", "Console Command"],
     internal_path="gamecommondata/binary/skilltype.dbss",
     tests=[
         SchemaTest(required_keys=[
             "skill_key", "skill_no", "icon_path", "name", "name_kr", "kind", "kind_label", "awakening_type",
-            "awakening_type_label",
+            "awakening_type_label", "pattern_control", "pc_command", "console_command",
         ]),
         DeclaredCountTest(declared=header_count(offset=0)),
         DeclaredCountTest(declared=header_count(offset=4, companion=_OFFSET_FILE)),
@@ -56,6 +59,7 @@ CASE = HandlerCase(
             expected={"awakening_type": _AWAKENING_WEAPON, "awakening_type_label": "Awakening Weapon"},
         ),
         TargetTest(col="skill_key", value=_CALPHEON_FISHING_EXP, expected={"skill_no": 62380, "kind": 2}),
+        TargetTest(col="skill_key", value=_EVASION, expected={"pattern_control": "ARCHER_20"}),
     ],
 )
 
@@ -120,3 +124,11 @@ def test_awakening_weapon_skills_are_on_the_awakening_branch(skilltype_result: H
 
     assert awakening
     assert all(branches.get(key, _AWAKENING_BRANCH) == _AWAKENING_BRANCH for key in awakening)
+
+
+def test_every_pattern_control_has_its_command(skilltype_result: HandlerResult) -> None:
+    """`key_hash(pattern_control)` is a commandtooltip.dbss row, so each keyed skill shows a command."""
+    keyed = [r for r in skilltype_result.records if r["pattern_control"]]
+
+    assert keyed
+    assert all(r["pc_command"] for r in keyed)

@@ -4,7 +4,9 @@
     "icon": "Icône",
     "name": "Nom",
     "kind": "Genre",
-    "awakeningType": "Éveil"
+    "awakeningType": "Éveil",
+    "pcCommand": "Commandes PC",
+    "consoleCommand": "Commandes manette"
   },
   "kind": {
     "0": "Autre",

@@ -17,6 +17,7 @@ _ICON = "New_Icon/04_PC_Skill/01_PC_Skill/09_PEM_Skill/PEM_Skill_3458.dds"
 _ICON_PATH = "ui_texture/icon/new_icon/04_pc_skill/01_pc_skill/09_pem_skill/pem_skill_3458.dds"
 _AWAKENING_WEAPON = 1
 _ACTIVE = 1
+_PATTERN_CONTROL = "ARCHER_127"
 
 
 @dataclass(frozen=True)
@@ -26,8 +27,8 @@ class _Shape:
     has_movie_paths: bool
     # unknown_list_01 to is_developing_contents.
     flags_after_awakening_type: int
-    has_unknown_code_09: bool
-    has_unknown_code_0a: bool
+    has_unknown_pattern_control_09: bool
+    has_unknown_pattern_control_0a: bool
 
 
 _SHAPES = {
@@ -68,10 +69,10 @@ def _payload(shape: _Shape, *, icon: str = _ICON) -> bytes:
         + struct.pack("<II", 1, 0x6016CFF7)  # contents_group_hashes
         + struct.pack("<IH", 1, 3459)  # exclusive_skill_nos
         + b"\x00"  # condition
-        + _str16("ARCHER_127")  # unknown_code
-        + struct.pack("<BII", 1, 0, 0)  # branch, unknown_code_01, unknown_code_05
-        + (b"\x02" if shape.has_unknown_code_09 else b"")
-        + (_str16("") if shape.has_unknown_code_0a else b"")
+        + _str16(_PATTERN_CONTROL)
+        + struct.pack("<BII", 1, 0, 0)  # branch, unknown_pattern_control_01, unknown_pattern_control_05
+        + (b"\x02" if shape.has_unknown_pattern_control_09 else b"")
+        + (_str16("") if shape.has_unknown_pattern_control_0a else b"")
     )
 
 
@@ -89,6 +90,7 @@ def test_each_layout_reads_the_same_record(layout: int) -> None:
 
     assert (record.skill_key, record.name_kr, record.kind) == (_KEY, _NAME, _ACTIVE)
     assert (record.icon_path, record.awakening_type) == (_ICON_PATH, _AWAKENING_WEAPON)
+    assert record.pattern_control == _PATTERN_CONTROL
 
 
 def test_a_png_icon_is_not_a_skill_icon() -> None:

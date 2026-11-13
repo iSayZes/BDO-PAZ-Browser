@@ -4,7 +4,9 @@
     "icon": "Symbol",
     "name": "Name",
     "kind": "Art",
-    "awakeningType": "Erweckung"
+    "awakeningType": "Erweckung",
+    "pcCommand": "PC-Steuerung",
+    "consoleCommand": "Controller-Steuerung"
   },
   "kind": {
     "0": "Sonstiges",

@@ -9,13 +9,17 @@
     | ascii icon_path | utf16 | utf16 description | u8[5]
     | u64 n + n x u32 | u8 awakening_type | u8[3]
     | u32 n + n x u32 contents_group_hashes | u32 n + n x u16 exclusive_skill_nos
-    | u8 condition | utf16 | u8 branch | u32[2] | u8 | utf16
+    | u8 condition | utf16 pattern_control | u8 branch | u32[2] | u8 | utf16
 
 Layout 4 (clients 1529 to 2250) has two ASCII movie paths after
 `description`. Layout 3 (1519 to 1524) also ends after the u8 that follows
 the u32 pair, Layout 2 (1381 to 1509) after the u32 pair, and Layout 1 (1346
-to 1379) also has two bytes, not three, after `awakening_type`. Nothing in the file names its layout, so it is read with
-the first layout, in client order, that reads every record.
+to 1379) also has two bytes, not three, after `awakening_type`. Nothing in
+the file names its layout, so it is read with the first layout, in client
+order, that reads every record.
+
+`pattern_control` (`ARCHER_20`) is the string key whose `key_hash()` is the
+skill's `commandtooltip.dbss` row.
 
 Strings are a u64 unit count plus UTF-16LE (text) or ASCII (paths). Full
 layout in docs/file-formats/dbss/skilltype_dbss.md.
@@ -50,10 +54,10 @@ _AFTER_NEXT_RANKS_SIZE = 35
 _AFTER_DESCRIPTION_SIZE = 5
 # condition.
 _AFTER_EXCLUSIVES_SIZE = 1
-# branch, unknown_code_01 and unknown_code_05.
-_AFTER_CONDITION_SIZE = 9
-# unknown_code_09.
-_CODE_09_SIZE = 1
+# branch, unknown_pattern_control_01 and unknown_pattern_control_05.
+_AFTER_PATTERN_CONTROL_SIZE = 9
+# unknown_pattern_control_09.
+_PATTERN_CONTROL_09_SIZE = 1
 
 
 @dataclass(frozen=True)
@@ -66,10 +70,10 @@ class SkillTypeLayout:
     # unknown_list_01, unknown_list_02 and is_developing_contents after
     # awakening_type; Layout 1 has no unknown_list_02.
     flags_after_awakening_type: int
-    # The u8 unknown_code_09, from Layout 3 on.
-    has_unknown_code_09: bool
-    # The utf16 unknown_code_0a, from Layout 4 on.
-    has_unknown_code_0a: bool
+    # The u8 unknown_pattern_control_09, from Layout 3 on.
+    has_unknown_pattern_control_09: bool
+    # The utf16 unknown_pattern_control_0a, from Layout 4 on.
+    has_unknown_pattern_control_0a: bool
     # Test clients this layout reads (the doc's Versions table, written by
     # check_docs); they only order the tries (`client_versions.py`).
     clients: tuple[ClientRange, ...] = ()
@@ -77,16 +81,16 @@ class SkillTypeLayout:
 
 # Newest first.
 LAYOUTS = (
-    SkillTypeLayout(5, has_movie_paths=False, flags_after_awakening_type=3, has_unknown_code_09=True,
-                    has_unknown_code_0a=True, clients=(ClientRange(2259),)),
-    SkillTypeLayout(4, has_movie_paths=True, flags_after_awakening_type=3, has_unknown_code_09=True,
-                    has_unknown_code_0a=True, clients=(ClientRange(1529, 2250),)),
-    SkillTypeLayout(3, has_movie_paths=True, flags_after_awakening_type=3, has_unknown_code_09=True,
-                    has_unknown_code_0a=False, clients=(ClientRange(1519, 1524),)),
-    SkillTypeLayout(2, has_movie_paths=True, flags_after_awakening_type=3, has_unknown_code_09=False,
-                    has_unknown_code_0a=False, clients=(ClientRange(1381, 1509),)),
-    SkillTypeLayout(1, has_movie_paths=True, flags_after_awakening_type=2, has_unknown_code_09=False,
-                    has_unknown_code_0a=False, clients=(ClientRange(1346, 1379),)),
+    SkillTypeLayout(5, has_movie_paths=False, flags_after_awakening_type=3, has_unknown_pattern_control_09=True,
+                    has_unknown_pattern_control_0a=True, clients=(ClientRange(2259),)),
+    SkillTypeLayout(4, has_movie_paths=True, flags_after_awakening_type=3, has_unknown_pattern_control_09=True,
+                    has_unknown_pattern_control_0a=True, clients=(ClientRange(1529, 2250),)),
+    SkillTypeLayout(3, has_movie_paths=True, flags_after_awakening_type=3, has_unknown_pattern_control_09=True,
+                    has_unknown_pattern_control_0a=False, clients=(ClientRange(1519, 1524),)),
+    SkillTypeLayout(2, has_movie_paths=True, flags_after_awakening_type=3, has_unknown_pattern_control_09=False,
+                    has_unknown_pattern_control_0a=False, clients=(ClientRange(1381, 1509),)),
+    SkillTypeLayout(1, has_movie_paths=True, flags_after_awakening_type=2, has_unknown_pattern_control_09=False,
+                    has_unknown_pattern_control_0a=False, clients=(ClientRange(1346, 1379),)),
 )
 
 
@@ -99,6 +103,8 @@ class SkillTypeRecord:
     icon_path: str
     # CppEnums.SkillAwakeningType: 0 normal, 1 Awakening weapon.
     awakening_type: int
+    # The commandtooltip.dbss key, such as `ARCHER_20`; empty on most non-class skills.
+    pattern_control: str
 
     @property
     def skill_no(self) -> int:
@@ -156,11 +162,11 @@ def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillTypeLayout) -> S
     _skip_list(reader, _U32, _U32_SIZE)  # contents_group_hashes
     _skip_list(reader, _U32, _U16_SIZE)  # exclusive_skill_nos
     reader.skip(_AFTER_EXCLUSIVES_SIZE)
-    _skip_list(reader, _U64, _UTF16_UNIT)  # unknown_code
-    reader.skip(_AFTER_CONDITION_SIZE)
-    if layout.has_unknown_code_09:
-        reader.skip(_CODE_09_SIZE)
-    if layout.has_unknown_code_0a:
+    pattern_control = reader.text(wide=True)
+    reader.skip(_AFTER_PATTERN_CONTROL_SIZE)
+    if layout.has_unknown_pattern_control_09:
+        reader.skip(_PATTERN_CONTROL_09_SIZE)
+    if layout.has_unknown_pattern_control_0a:
         _skip_list(reader, _U64, _UTF16_UNIT)
     if not reader.at_end():
         raise ValueError(f"skill type 0x{row.entry_id:08X} ends {reader.remaining()} bytes before its index size")
@@ -172,6 +178,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillTypeLayout) -> S
         kind=kind,
         icon_path=_icon_path(stored_icon),
         awakening_type=awakening_type,
+        pattern_control=pattern_control,
     )
 
 

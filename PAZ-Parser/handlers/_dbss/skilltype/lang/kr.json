@@ -4,7 +4,9 @@
     "icon": "아이콘",
     "name": "이름",
     "kind": "종류",
-    "awakeningType": "각성"
+    "awakeningType": "각성",
+    "pcCommand": "PC 조작",
+    "consoleCommand": "콘솔 조작"
   },
   "kind": {
     "0": "기타",

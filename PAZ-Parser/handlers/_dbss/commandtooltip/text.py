@@ -8,6 +8,7 @@ can import it without loading the handler registry.
 from __future__ import annotations
 
 from _common.loc import loc_tagged, resolve_text_binds
+from _common.pa_text import pa_fields
 
 LOC_COMMAND_TOOLTIP = 55
 PC_VARIANT = 0
@@ -22,3 +23,14 @@ def command_text(key_hash: int, variant: int, text_kr: str) -> str:
     return loc_tagged(LOC_COMMAND_TOOLTIP, key_hash, variant) or resolve_text_binds(
         text_kr.replace(_LINE_BREAK, "\n")
     ).strip()
+
+
+def command_fields(key_hash: int, pc_command_kr: str, console_command_kr: str | None) -> dict:
+    """`pc_command` and `console_command` in the user's language, with their tagged copies.
+
+    Layout 1 rows have no console text (None); their `console_command` is empty.
+    """
+    return {
+        **pa_fields("pc_command", command_text(key_hash, PC_VARIANT, pc_command_kr)),
+        **pa_fields("console_command", command_text(key_hash, CONSOLE_VARIANT, console_command_kr or "")),
+    }

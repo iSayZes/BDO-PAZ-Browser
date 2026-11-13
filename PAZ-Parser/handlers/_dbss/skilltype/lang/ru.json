@@ -4,7 +4,9 @@
     "icon": "Значок",
     "name": "Название",
     "kind": "Вид",
-    "awakeningType": "Пробуждение"
+    "awakeningType": "Пробуждение",
+    "pcCommand": "Управление (ПК)",
+    "consoleCommand": "Управление (геймпад)"
   },
   "kind": {
     "0": "Прочее",

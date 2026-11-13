@@ -24,7 +24,9 @@ from tests.offset_rows import offset_row_problems
 
 from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _common.string_hash import key_hash
+from bdo_preview import set_handler_client
 from .parser import FILE_NAME, KEY_FIELD, OFFSET_FILE, parse_commandtooltip_records
+from .text import command_fields
 
 
 # The PABR magic before the index's count.
@@ -146,3 +148,29 @@ def test_parser_reads_a_row_and_rejects_extra_or_missing_bytes() -> None:
         parse_commandtooltip_records(data + b"\0")
     with pytest.raises(ValueError):
         parse_commandtooltip_records(data[:-1])
+
+
+def _layout_1_row(key: int, pc: str) -> bytes:
+    return struct.pack("<IQ", key, len(pc)) + pc.encode("utf-16-le") + struct.pack("<I", 0)
+
+
+def test_parser_reads_a_layout_1_row_without_a_console_text() -> None:
+    data = struct.pack("<I", 2) + _layout_1_row(7, "F") + _layout_1_row(8, "")
+
+    first, second = parse_commandtooltip_records(data)
+
+    assert (first[KEY_FIELD], first["pc_command_kr"], first["console_command_kr"]) == (7, "F", None)
+    assert (second[KEY_FIELD], second["pc_command_kr"]) == (8, "")
+
+
+def test_the_layout_covering_the_client_is_tried_first() -> None:
+    set_handler_client(1346)
+
+    with pytest.raises(ValueError, match=r"fits no known layout \(Layout 1: .*; Layout 2: "):
+        parse_commandtooltip_records(struct.pack("<I", 1) + bytes(1))
+
+
+def test_command_fields_leave_a_missing_console_text_empty() -> None:
+    fields = command_fields(7, "F", None)
+
+    assert (fields["pc_command"], fields["console_command"]) == ("F", "")

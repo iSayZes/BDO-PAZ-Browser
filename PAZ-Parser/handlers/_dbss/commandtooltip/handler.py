@@ -12,11 +12,11 @@ from _common.offset_table import (
     offset_text,
     size_column,
 )
-from _common.pa_text import pa_fields, pa_line_cell
+from _common.pa_text import pa_line_cell
 from _common.pabr_offset import parse_pabr_u32_offset_rows
 from _common.row_table import RowTableHandler
 from .parser import FILE_NAME, KEY_FIELD, parse_commandtooltip_records
-from .text import CONSOLE_VARIANT, PC_VARIANT, command_text
+from .text import command_fields
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -34,15 +34,6 @@ def command_tooltip_offset_handler() -> OffsetTableHandler:
     )
 
 
-def _display_fields(record: dict) -> dict:
-    """Both command texts in the user's language, with their tagged copies."""
-    key = record[KEY_FIELD]
-    return {
-        **pa_fields("pc_command", command_text(key, PC_VARIANT, record["pc_command_kr"])),
-        **pa_fields("console_command", command_text(key, CONSOLE_VARIANT, record["console_command_kr"])),
-    }
-
-
 class CommandTooltipHandler(RowTableHandler):
     file_name = FILE_NAME
     lang_dir = _LANG_DIR
@@ -55,7 +46,10 @@ class CommandTooltipHandler(RowTableHandler):
         ]
 
     def read_records(self, data: bytes, companions: dict[str, bytes]) -> list[dict]:
-        return [{**record, **_display_fields(record)} for record in parse_commandtooltip_records(data)]
+        return [
+            {**record, **command_fields(record[KEY_FIELD], record["pc_command_kr"], record["console_command_kr"])}
+            for record in parse_commandtooltip_records(data)
+        ]
 
     def cells(self, record: dict) -> list[str]:
         return [

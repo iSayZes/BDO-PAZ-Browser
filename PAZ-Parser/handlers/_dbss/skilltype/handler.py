@@ -1,5 +1,7 @@
+"""skilltype.dbss preview handler: each skill's name, icon, kind and its tooltip key command."""
 from __future__ import annotations
 
+from collections.abc import Mapping
 from pathlib import Path
 
 from bdo_models import PazEntry
@@ -7,8 +9,13 @@ from bdo_preview import PreviewHandler
 
 from _common.html import Column, e, icon_cell, sort_keys, table
 from _common.lang import handler_text, load_handler_strings
-from _common.pa_text import pa_cell, pa_fields
+from _common.pa_text import pa_cell, pa_fields, pa_line_cell
 from _common.skill import skill_name_tagged
+from _common.string_hash import key_hash
+from _dbss.commandtooltip.parser import FILE_NAME as COMMAND_TOOLTIP_FILE
+from _dbss.commandtooltip.parser import KEY_FIELD as COMMAND_TOOLTIP_KEY
+from _dbss.commandtooltip.parser import parse_commandtooltip_records
+from _dbss.commandtooltip.text import command_fields
 from .parser import SkillTypeRecord, parse_skilltype_records
 
 
@@ -21,7 +28,22 @@ def _label(labels: dict[str, str], value: int) -> str:
     return labels.get(str(value), str(value))
 
 
-def _record_dict(record: SkillTypeRecord, labels: dict) -> dict:
+def _command_tooltips(data: bytes | None) -> dict[int, dict]:
+    """`commandtooltip.dbss` rows by key hash; empty without the file. Raises ValueError when it does not parse."""
+    if data is None:
+        return {}
+    return {row[COMMAND_TOOLTIP_KEY]: row for row in parse_commandtooltip_records(data)}
+
+
+def _command_dict(pattern_control: str, tooltips: Mapping[int, dict]) -> dict:
+    """The keyboard and console pad commands of the skill's `commandtooltip.dbss` row, else empty texts."""
+    row = tooltips.get(key_hash(pattern_control)) if pattern_control else None
+    if row is None:
+        return {**pa_fields("pc_command", ""), **pa_fields("console_command", "")}
+    return command_fields(row[COMMAND_TOOLTIP_KEY], row["pc_command_kr"], row["console_command_kr"])
+
+
+def _record_dict(record: SkillTypeRecord, labels: dict, tooltips: Mapping[int, dict]) -> dict:
     return {
         "skill_key": record.skill_key,
         "skill_no": record.skill_no,
@@ -35,6 +57,8 @@ def _record_dict(record: SkillTypeRecord, labels: dict) -> dict:
         # 0, a normal skill, is None and an empty cell, so it sorts last.
         "awakening_type": record.awakening_type or None,
         "awakening_type_label": _label(labels["awakeningType"], record.awakening_type) if record.awakening_type else "",
+        "pattern_control": record.pattern_control,
+        **_command_dict(record.pattern_control, tooltips),
     }
 
 
@@ -47,6 +71,8 @@ class SkillTypeHandler(PreviewHandler):
             Column(cols["name"], sort_key="name"),
             Column(cols["kind"], sort_key="kind"),
             Column(cols["awakeningType"], sort_key="awakening_type"),
+            Column(cols["pcCommand"], sort_key="pc_command"),
+            Column(cols["consoleCommand"], sort_key="console_command"),
         ]
 
     def sortable_fields(self) -> tuple[str, ...]:
@@ -54,7 +80,7 @@ class SkillTypeHandler(PreviewHandler):
 
     def companions(self, entry: PazEntry) -> list[str]:
         folder = entry.internal_path.rsplit("/", 1)[0]
-        return [f"{folder}/{_OFFSET_FILE}"]
+        return [f"{folder}/{_OFFSET_FILE}", f"{folder}/{COMMAND_TOOLTIP_FILE}"]
 
     def get_records(
         self,
@@ -67,10 +93,11 @@ class SkillTypeHandler(PreviewHandler):
             raise ValueError(f"{_OFFSET_FILE} companion not found.")
 
         labels = load_handler_strings(self.lang, _LANG_DIR)
+        tooltips = _command_tooltips(companions.get(COMMAND_TOOLTIP_FILE))
         # The index order is arbitrary. Skill key order gives CSV export class
         # skills first; the table opens on its default skill number sort.
         records = sorted(parse_skilltype_records(data, offset_raw), key=lambda record: record.skill_key)
-        return [_record_dict(record, labels) for record in records]
+        return [_record_dict(record, labels, tooltips) for record in records]
 
     def render_records_page(
         self,
@@ -89,6 +116,8 @@ class SkillTypeHandler(PreviewHandler):
                 pa_cell(r, "name"),
                 e(r["kind_label"]),
                 e(r["awakening_type_label"] or _EMPTY),
+                pa_line_cell(r, "pc_command"),
+                pa_line_cell(r, "console_command"),
             ]
             for r in slice_
         ]

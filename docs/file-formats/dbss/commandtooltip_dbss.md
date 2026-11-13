@@ -612,9 +612,14 @@ set.
 - The sheet keys are `<CLASS>_<number>` (`WARRIOR_01`, `BLADER_102`) plus
   `COMMON_*`, `GUILD_*` and a few others. The `PatternControl` column of the
   `SkillType_Table_New` sheet of the same workbook names the key of each
-  skill, and `skilltype.dbss` holds these keys as `str16` text in its
-  `config` block: 7,535 of the 7,663 hashes of client 3483 are the hash of
-  such a text there.
+  skill, and `skilltype.dbss` holds these keys as its `pattern_control`
+  text: 7,535 of the 7,663 hashes of client 3483 are the hash of such a
+  text there, and every set `pattern_control` has a row here (clients 1346,
+  1524, 1529, 1784 and 3482). The `skilltype.dbss` handler shows each
+  skill's commands from this table.
+- Nothing in the file names its layout. The parser reads it with the first
+  layout, in client order, whose rows end at the end of the file; Layout 1
+  rows have no `console_command_kr`.
 - On client 3483, 5,726 `pc_command_kr` and 5,623 `console_command_kr`
   texts hold a `{KeyBind:...}` placeholder.
 - Client 1784 also has `simplecommandtooltip.dbss` and its offset file

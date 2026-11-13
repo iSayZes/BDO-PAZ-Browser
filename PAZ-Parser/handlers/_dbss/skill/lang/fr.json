@@ -7,6 +7,7 @@
     "description": "Description",
     "needLevel": "Niveau requis",
     "needSkillPoint": "Points de compétence",
+    "needSkills": "Compétences requises",
     "cooldown": "Temps de recharge",
     "resourceCost": "Ressource",
     "staminaCost": "Endurance",

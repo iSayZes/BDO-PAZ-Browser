@@ -821,6 +821,26 @@ cost for "Imminent Doom" (`0`). The skill tooltip Lua reads them as
 training ranks ("Staff Attack I" to "X", "Magic Arrow I" to "V"); whether the
 tooltip shows that is not checked.
 
+## Learning Requirements
+
+`need_skill_no_1` and `need_skill_no_2` name the skills that must be learned
+first; the handler's Required Skills column shows their names. On clients
+1784 and 3483 each `need_skill_level_*` is `1` where its skill number is set
+and `0` elsewhere, so the column leaves the level out. "Spirit Arrow II"
+(`3329`) needs "Spirit Arrow I" (`3328`) at level `1` and character level
+`16` on client 1784.
+
+`need_money_for_learning`, `need_item_key_for_learning` and
+`need_item_count_for_learning` are `0` on every record of client 1784 too.
+
+Client 1784's own file holds 22,209 ranks that the private server's
+`Skill_Table_New` sheets (Field Names) also have. `is_prompt_for_learning`
+equals `IsPrompt_ForLearning` on all of them, `need_skill_no_1` and
+`need_skill_no_2` equal their columns on 22,145 and 22,170. The other
+differences are sheet edits: "Earth Kick I" (`3343`) needs level `3` in the
+file and `1` in the sheet. No client Lua of client 1784 reads
+`is_prompt_for_learning`.
+
 ## `next_skill_keys` and `related_cool_time_skill_keys`
 
 Every key in both lists is a `skill.dbss` key (7,877 and 155 entries on

@@ -7,6 +7,7 @@
     "description": "설명",
     "needLevel": "요구 레벨",
     "needSkillPoint": "기술 포인트",
+    "needSkills": "선행 기술",
     "cooldown": "재사용 대기 시간",
     "resourceCost": "자원",
     "staminaCost": "행동력",

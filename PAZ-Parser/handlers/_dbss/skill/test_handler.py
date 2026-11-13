@@ -40,12 +40,15 @@ SKILL_CASE = HandlerCase(
     companion_files={_OFFSET_FILE: _OFFSET_FILE},
     loc_file="languagedata_en.loc",
     uses_loc=True,
-    loc_fields=["Name", "Description", "Buffs", "Next Skills", "Base Skill"],
+    loc_fields=["Name", "Description", "Required Skills", "Buffs", "Next Skills", "Base Skill"],
     internal_path="gamecommondata/binary/skill.dbss",
     lookup_indexes={IndexKind.SKILL_ICON: {1759: _GRAVE_DIGGING_ICON}},
     tests=[
         SchemaTest(required_keys=[
-            "skill_key", "skill_no", "level", "icon_path", "name", "description", "need_level", "need_skill_point",
+            "skill_key", "skill_no", "level", "icon_path", "name", "description", "is_prompt_for_learning",
+            "need_level", "need_skill_point", "need_money_for_learning", "need_item_key_for_learning",
+            "need_item_count_for_learning", "need_skill_level_1", "need_skill_no_1", "need_skill_level_2",
+            "need_skill_no_2", "need_skills",
             "cooldown_ms", "resource_cost",
             "stamina_cost", "buff_ids", "buffs",
             "next_skill_keys", "related_cool_time_skill_keys", "script",
@@ -62,6 +65,12 @@ SKILL_CASE = HandlerCase(
             col="skill_key",
             value=_GRAVE_DIGGING_I,
             expected={"skill_no": 1759, "name": "Grave Digging I", "icon_path": _GRAVE_DIGGING_ICON},
+        ),
+        # Grave Digging II is learned after Grave Digging I.
+        TargetTest(
+            col="skill_key",
+            value=_GRAVE_DIGGING_II,
+            expected={"need_skill_no_1": 1759, "need_skill_level_1": 1},
         ),
         TargetTest(col="skill_key", value=_DEAD_KEY, expected={"skill_no": 57005, "level": 1}),
     ],

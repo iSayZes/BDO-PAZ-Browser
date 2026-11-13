@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import struct
-from dataclasses import dataclass
+from dataclasses import astuple, dataclass
 
 import pytest
 
 from bdo_preview import set_handler_client
-from .parser import parse_skill_records
+from .parser import SkillLearning, parse_skill_records
 
 
 _KEY = 0x00020001  # skill 2, level 1
@@ -18,6 +18,20 @@ _COOLDOWN_MS = 12000
 _BUFF_IDS = (356, 353)
 _DESCRIPTION = "검술 수련"
 _SCRIPT = "ALL_AP_UP(1);"
+# Distinct values in every learning field, so a field read from the wrong bytes shows.
+_LEARNING = SkillLearning(
+    is_prompt_for_learning=1,
+    need_skill_point=3,
+    need_level=16,
+    need_money_for_learning=5_000_000_000,
+    need_item_key_for_learning=44195,
+    need_item_count_for_learning=7,
+    need_skill_level_1=1,
+    need_skill_no_1=3328,
+    need_skill_level_2=2,
+    need_skill_no_2=3347,
+)
+_LEARNING_BLOCK = struct.Struct("<BHIQIQHHHH")
 
 
 @dataclass(frozen=True)
@@ -59,7 +73,7 @@ def _record(shape: _Shape, key: int = _KEY, *, has_text_and_links: bool = True) 
         struct.pack("<IIB", key, key, 0)
         + _str8("")
         + struct.pack("<I", 0)  # action_hash
-        + bytes(35)  # learning rules
+        + _LEARNING_BLOCK.pack(*astuple(_LEARNING))
         + bytes(5)  # do_require_point_need, require_hp
         + struct.pack("<I", 0)  # resource_cost
         + bytes(5)  # require_sub_resource_point, sub_resource_type
@@ -98,6 +112,12 @@ def test_each_layout_reads_the_same_record(layout: int) -> None:
     assert (record.skill_key, record.cooldown_ms, record.buff_ids) == (_KEY, _COOLDOWN_MS, _BUFF_IDS)
     assert (record.description_kr, record.script) == (_DESCRIPTION, _SCRIPT)
     assert (record.next_skill_keys, record.related_cool_time_skill_keys) == ((_NEXT_KEY,), (_RELATED_KEY,))
+    assert record.learning == _LEARNING
+
+
+def test_need_skills_pairs_each_set_skill_with_its_level() -> None:
+    assert _LEARNING.need_skills == ((3328, 1), (3347, 2))
+    assert SkillLearning(0, 0, 0, 0, 0, 0, 0, 0, 1, 3347).need_skills == ((3347, 1),)
 
 
 def test_a_bare_layout_1_record_also_walks_as_layout_2() -> None:

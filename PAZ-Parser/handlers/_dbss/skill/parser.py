@@ -4,8 +4,11 @@
 record. A record, in order (Layout 3 shown):
 
     u32 skill_key | u32 level_1_key | u8 is_attack_skill
-    | ascii action_name | u32 action_hash | u8 | u16 need_skill_point
-    | u32 need_level | u8[28] other learning requirements
+    | ascii action_name | u32 action_hash | u8 is_prompt_for_learning
+    | u16 need_skill_point | u32 need_level | u64 need_money_for_learning
+    | u32 need_item_key_for_learning | u64 need_item_count_for_learning
+    | u16 need_skill_level_1 | u16 need_skill_no_1 | u16 need_skill_level_2
+    | u16 need_skill_no_2
     | u8 do_require_point_need | f32 require_hp | u32 resource_cost
     | u32 require_sub_resource_point | u8 sub_resource_type | u32 stamina_cost
     | u8[21] item cost and reuse rules | u32 cooldown_ms | u32[10] buff_ids
@@ -39,10 +42,9 @@ _U8 = struct.Struct("<B")
 _U32 = struct.Struct("<I")
 _KEY_PAIR = struct.Struct("<II")
 _BUFF_SLOTS = 10
-# is_prompt_for_learning to need_skill_no_2, the learning rules, which
-# skillsimply.dbss also holds: need_skill_point and need_level, then the
-# money, item and prerequisite skill fields.
-_LEARNING = struct.Struct("<xHI28x")
+# is_prompt_for_learning to need_skill_no_2, the learning rules. The skill
+# points, level and required skills are also in skillsimply.dbss.
+_LEARNING = struct.Struct("<BHIQIQHHHH")
 # do_require_point_need and require_hp.
 _HP_COST_SIZE = 5
 # require_sub_resource_point and sub_resource_type.
@@ -93,11 +95,32 @@ LAYOUTS = (
 
 
 @dataclass(frozen=True)
+class SkillLearning:
+    """What learning the rank takes; `0` in a field means no such requirement."""
+
+    is_prompt_for_learning: int
+    need_skill_point: int
+    need_level: int
+    need_money_for_learning: int
+    need_item_key_for_learning: int
+    need_item_count_for_learning: int
+    need_skill_level_1: int
+    need_skill_no_1: int
+    need_skill_level_2: int
+    need_skill_no_2: int
+
+    @property
+    def need_skills(self) -> tuple[tuple[int, int], ...]:
+        """The set `(skill_no, level)` pairs that must be learned first, in slot order."""
+        pairs = ((self.need_skill_no_1, self.need_skill_level_1), (self.need_skill_no_2, self.need_skill_level_2))
+        return tuple(pair for pair in pairs if pair[0])
+
+
+@dataclass(frozen=True)
 class SkillRecord:
     skill_key: int
     action_name: str
-    need_skill_point: int
-    need_level: int
+    learning: SkillLearning
     resource_cost: int
     stamina_cost: int
     cooldown_ms: int
@@ -132,7 +155,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillLayout) -> Skill
     reader.unpack(_U8)  # is_attack_skill
     action_name = reader.text(wide=False)
     reader.unpack(_U32)  # action_hash
-    need_skill_point, need_level = reader.unpack(_LEARNING)
+    learning = SkillLearning(*reader.unpack(_LEARNING))
     reader.skip(_HP_COST_SIZE)
     (resource_cost,) = reader.unpack(_U32)
     reader.skip(_SUB_RESOURCE_SIZE)
@@ -156,8 +179,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillLayout) -> Skill
     return SkillRecord(
         skill_key=key,
         action_name=action_name,
-        need_skill_point=need_skill_point,
-        need_level=need_level,
+        learning=learning,
         resource_cost=resource_cost,
         stamina_cost=stamina_cost,
         cooldown_ms=cooldown_ms,

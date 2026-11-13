@@ -7,6 +7,7 @@
     "description": "Descripción",
     "needLevel": "Nivel requerido",
     "needSkillPoint": "Puntos de habilidad",
+    "needSkills": "Habilidades requeridas",
     "cooldown": "Tiempo de reutilización",
     "resourceCost": "Recurso",
     "staminaCost": "Aguante",

@@ -15,7 +15,7 @@ from _common.pabr_offset import PabrOffsetRow, parse_pabr_u32_offset_rows
 from _common.pa_text import pa_cell, pa_fields, pa_key, pa_list_cell, pa_list_fields
 from _common.skill import skill_description_tagged, skill_name_tagged, split_skill_key
 from _common.offset_table import OffsetColumn, OffsetTableHandler, offset_column, size_column
-from .parser import SkillRecord, parse_skill_records
+from .parser import SkillLearning, SkillRecord, parse_skill_records
 
 
 _LANG_DIR = Path(__file__).parent / "lang"
@@ -25,10 +25,31 @@ _LIST_PREVIEW_ITEMS = 3
 _SCRIPT_PREVIEW_CHARS = 80
 
 
-def _skill_label_tagged(skill_key: int) -> str:
+def _skill_no_label_tagged(skill_no: int) -> str:
     """The skill's name with its PA tags (Prime skills are orange), else its number."""
-    skill_no = split_skill_key(skill_key)[0]
     return skill_name_tagged(skill_no) or str(skill_no)
+
+
+def _skill_label_tagged(skill_key: int) -> str:
+    return _skill_no_label_tagged(split_skill_key(skill_key)[0])
+
+
+def _learning_fields(learning: SkillLearning) -> dict:
+    return {
+        "is_prompt_for_learning": learning.is_prompt_for_learning,
+        # Zero sorts last as None, as in skillsimply.dbss.
+        "need_level": learning.need_level or None,
+        "need_skill_point": learning.need_skill_point or None,
+        "need_money_for_learning": learning.need_money_for_learning,
+        "need_item_key_for_learning": learning.need_item_key_for_learning,
+        "need_item_count_for_learning": learning.need_item_count_for_learning,
+        "need_skill_level_1": learning.need_skill_level_1,
+        "need_skill_no_1": learning.need_skill_no_1,
+        "need_skill_level_2": learning.need_skill_level_2,
+        "need_skill_no_2": learning.need_skill_no_2,
+        # Every set level is 1 on clients 1784 and 3483, so the labels name the skill only.
+        **pa_list_fields("need_skills", [_skill_no_label_tagged(no) for no, _level in learning.need_skills]),
+    }
 
 
 def _record_dict(record: SkillRecord) -> dict:
@@ -40,9 +61,7 @@ def _record_dict(record: SkillRecord) -> dict:
         # English, then the Korean skilltype.dbss name, then the action name.
         **pa_fields("name", skill_name_tagged(record.skill_no) or record.action_name),
         "action_name": record.action_name,
-        # Zero sorts last as None, as in skillsimply.dbss.
-        "need_level": record.need_level or None,
-        "need_skill_point": record.need_skill_point or None,
+        **_learning_fields(record.learning),
         **pa_fields("description", skill_description_tagged(record.skill_no, record.level, record.description_kr)),
         # Zero means no cooldown; None sorts last.
         "cooldown_ms": record.cooldown_ms or None,
@@ -111,6 +130,7 @@ class SkillHandler(PreviewHandler):
             Column(cols["description"], sort_key="description"),
             Column(cols["needLevel"], "num", sort_key="need_level"),
             Column(cols["needSkillPoint"], "num", sort_key="need_skill_point"),
+            Column(cols["needSkills"]),
             Column(cols["cooldown"], "num", sort_key="cooldown_ms"),
             Column(cols["resourceCost"], "num", sort_key="resource_cost"),
             Column(cols["staminaCost"], "num", sort_key="stamina_cost"),
@@ -162,6 +182,7 @@ class SkillHandler(PreviewHandler):
                 pa_cell(r, "description"),
                 e(r["need_level"] or _EMPTY),
                 e(r["need_skill_point"] or _EMPTY),
+                pa_list_cell(r[pa_key("need_skills")], _LIST_PREVIEW_ITEMS),
                 e(r["cooldown"] or _EMPTY),
                 e(r["resource_cost"] or _EMPTY),
                 e(r["stamina_cost"] or _EMPTY),

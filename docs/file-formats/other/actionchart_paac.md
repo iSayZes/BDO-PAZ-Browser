@@ -32,33 +32,497 @@ client loader the field notes come from; Layout 2 is the current one.
 
 Sizes and coverage from the newest client of each row. The newest layout is the current one.
 
-| Layout | Clients        | File                                                              | Bytes       | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Row bytes                |
-| ------ | -------------- | ----------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
-| 2      | 3258 and later | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 8,032,893   | 2,451 Animation, 60 U32 List, 60 U64 List, 167 Animation Event, 8 List Pair, 15 List Entry, 14 List Weight, 4 List Group, 263 Mesh Part, 1,549 Effect Attachment, 1,564 Effect Data, 1,564 Effect, 240 Unknown Row, 42 Slot Entry, 25,828 Branch Row, 2,137 Branch, 61,086 Action Row B, 23,211 Action, 139 Package, 574 Key Pair, 5,717 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | 22                       |
-| 2      | 3258 and later | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 7,991,869   | 2,503 Animation, 61 U32 List, 61 U64 List, 128 Animation Event, 10 List Pair, 17 List Entry, 15 List Weight, 5 List Group, 271 Mesh Part, 1,549 Effect Attachment, 1,564 Effect Data, 1,564 Effect, 240 Unknown Row, 42 Slot Entry, 55,134 Action Row B, 22,251 Action, 139 Package, 824 Key Pair, 2,014 Branch, 25,609 Branch Row, 11,031 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 22                       |
-| 2      | 3258 and later | `pc_actionchartpackagepcraw.paac`                                 | 134,345,673 | 74,498 Wide List, 103,365 Condition Set, 101,452 Condition Record, 97,156 U16 List                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | 18 to 250, 50 on average |
-| 1      | 1784           | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 6,459,012   | 1,865 Animation, 54 U32 List, 54 U64 List, 90 Animation Event, 4 List Pair, 3 List Entry, 2 List Weight, 2 List Group, 120 Mesh Part, 870 Effect Attachment, 885 Effect Data, 885 Effect, 195 Unknown Row, 32 Slot Entry, 553 Key Pair, 18,659 Branch Row, 1,877 Branch, 52,306 Action Row B, 20,012 Action, 127 Package, 5,172 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 22                       |
-| 1      | 1784           | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 6,239,372   | 1,919 Animation, 55 U32 List, 55 U64 List, 64 Animation Event, 6 List Pair, 5 List Entry, 3 List Weight, 3 List Group, 129 Mesh Part, 870 Effect Attachment, 885 Effect Data, 885 Effect, 195 Unknown Row, 32 Slot Entry, 776 Key Pair, 18,794 Branch Row, 1,742 Branch, 45,362 Action Row B, 18,925 Action, 127 Package, 10,935 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | 22                       |
-| 1      | 1784           | `pc_actionchartpackagepcraw.paac`                                 | 125,206,586 | 97,419 U16 List, 551,095 Condition Set, 87,411 Condition Record, 348,729 Wide List, 3,100 Switch Fields, 299,518 Frame Event, 498 Switch Chain Fields, 1,456 Mesh Fields, 1,725 Name Data Fields, 52,727 Data Fields, 763 Weapon Mesh Fields, 96,747 Effect Attachment, 93,857 Effect Data, 93,658 Effect Fields, 291 Lua Event Fields, 85 Battle FX Fields, 10,419 Two Value Fields, 762 Weapon Fields, 4,501 Camera Fields, 199 Effect Ground Fields, 2,022 Value Fields, 98,088 Attack Skill Fields, 533 Name Fields, 355 Jump Fields, 43 Bubble Fields, 1,082 Attack Fields, 55 Two Byte Fields, 20,606 Attack Arrow Skill Fields, 18 Switch Target Fields, 486 Light Fields, 2 Grenade Path Fields, 26 Camera Motion Fields, 1,146 Sword Trail Fields, 69 Byte Fields, 960 Decal Fields, 27 Glitter Fields, 48 Model Animation Fields, 976 Client Attack Fields, 9 Play Animation Fields, 1,808 Cannon Predict Fields, 11 Wave Fields, 686 Attack Arrow Fields, 88 Attack Catch Fields, 42 Attack Throw Fields, 76,993 Element, 307,067 Element Record, 585 Element Group | 8 to 256, 28 on average  |
+| Layout | Clients        | File                                                              | Bytes       | Records                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Row bytes                |
+| ------ | -------------- | ----------------------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
+| 2      | 3258 and later | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 8,032,893   | 2,451 Animation, 60 U32 List, 60 U64 List, 167 Animation Event, 8 List Pair, 15 List Entry, 14 List Weight, 4 List Group, 263 Mesh Part, 1,549 Effect Attachment, 1,564 Effect Data, 1,564 Effect, 240 Unknown Row, 42 Slot Entry, 25,828 Branch Row, 2,137 Branch, 61,086 Action Row B, 23,211 Action, 139 Package, 574 Key Pair, 5,717 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 22                       |
+| 2      | 3258 and later | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 7,991,869   | 2,503 Animation, 61 U32 List, 61 U64 List, 128 Animation Event, 10 List Pair, 17 List Entry, 15 List Weight, 5 List Group, 271 Mesh Part, 1,549 Effect Attachment, 1,564 Effect Data, 1,564 Effect, 240 Unknown Row, 42 Slot Entry, 55,134 Action Row B, 22,251 Action, 139 Package, 824 Key Pair, 2,014 Branch, 25,609 Branch Row, 11,031 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | 22                       |
+| 2      | 3258 and later | `pc_actionchartpackagepcraw.paac`                                 | 134,345,673 | 74,498 Wide List, 103,365 Condition Set, 101,452 Condition Record, 97,156 U16 List                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 18 to 250, 50 on average |
+| 1      | 1784           | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 6,459,012   | 1,865 Animation, 54 U32 List, 54 U64 List, 90 Animation Event, 4 List Pair, 3 List Entry, 2 List Weight, 2 List Group, 120 Mesh Part, 870 Effect Attachment, 885 Effect Data, 885 Effect, 195 Unknown Row, 32 Slot Entry, 553 Key Pair, 18,659 Branch Row, 1,877 Branch, 52,306 Action Row B, 20,012 Action Data, 20,012 Element Link, 20,012 Action, 127 Package, 5,172 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | 22                       |
+| 1      | 1784           | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 6,239,372   | 1,919 Animation, 55 U32 List, 55 U64 List, 64 Animation Event, 6 List Pair, 5 List Entry, 3 List Weight, 3 List Group, 129 Mesh Part, 870 Effect Attachment, 885 Effect Data, 885 Effect, 195 Unknown Row, 32 Slot Entry, 776 Key Pair, 18,794 Branch Row, 1,742 Branch, 45,362 Action Row B, 18,925 Action Data, 18,925 Element Link, 18,925 Action, 127 Package, 10,935 Action Row A                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | 22                       |
+| 1      | 1784           | `pc_actionchartpackagepcraw.paac`                                 | 125,206,586 | 97,419 U16 List, 551,095 Condition Set, 87,411 Condition Record, 348,729 Wide List, 3,100 Switch Fields, 299,518 Frame Event, 498 Switch Chain Fields, 1,456 Mesh Fields, 1,725 Name Data Fields, 52,727 Data Fields, 763 Weapon Mesh Fields, 96,747 Effect Attachment, 93,857 Effect Data, 93,658 Effect Fields, 291 Lua Event Fields, 85 Battle FX Fields, 10,419 Two Value Fields, 762 Weapon Fields, 4,501 Camera Fields, 199 Effect Ground Fields, 2,022 Value Fields, 98,088 Attack Skill Fields, 533 Name Fields, 355 Jump Fields, 43 Bubble Fields, 1,082 Attack Fields, 55 Two Byte Fields, 20,606 Attack Arrow Skill Fields, 18 Switch Target Fields, 486 Light Fields, 2 Grenade Path Fields, 26 Camera Motion Fields, 1,146 Sword Trail Fields, 69 Byte Fields, 960 Decal Fields, 27 Glitter Fields, 48 Model Animation Fields, 976 Client Attack Fields, 9 Play Animation Fields, 1,808 Cannon Predict Fields, 11 Wave Fields, 686 Attack Arrow Fields, 88 Attack Catch Fields, 42 Attack Throw Fields, 76,993 Element Parameters, 76,993 Element, 307,067 Element Record, 585 Element Group | 8 to 256, 28 on average  |
 
 | Layout | File                                                              | Known                | Unknown               |
 | ------ | ----------------------------------------------------------------- | -------------------- | --------------------- |
 | 2      | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 2,057,735 B (25.6%)  | 5,975,158 B (74.4%)   |
 | 2      | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 1,991,083 B (24.9%)  | 6,000,786 B (75.1%)   |
 | 2      | `pc_actionchartpackagepcraw.paac`                                 | 9,493,101 B (7.1%)   | 124,852,572 B (92.9%) |
-| 1      | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 1,709,544 B (26.5%)  | 4,749,468 B (73.5%)   |
-| 1      | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 1,634,213 B (26.2%)  | 4,605,159 B (73.8%)   |
-| 1      | `pc_actionchartpackagepcraw.paac`                                 | 24,417,723 B (19.5%) | 100,788,863 B (80.5%) |
+| 1      | `character/binaryactionchart/pc/3_pew/elfaction_noweapon.paac`    | 2,189,832 B (33.9%)  | 4,269,180 B (66.1%)   |
+| 1      | `character/binaryactionchart/pc/9_pem/elfmanaction_noweapon.paac` | 2,088,413 B (33.5%)  | 4,150,959 B (66.5%)   |
+| 1      | `pc_actionchartpackagepcraw.paac`                                 | 27,035,485 B (21.6%) | 98,171,101 B (78.4%)  |
 
 Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 3483   | Layout 2             | `256e7000675b`  |
-| 3258   | Layout 2             | `256e7000675b`  |
-| 2919   | No documented layout | `256e7000675b`  |
-| 2335   | No documented layout | `256e7000675b`  |
-| 1784   | Layout 1             | `256e7000675b`  |
+| 3483   | Layout 2             | `67a9d3b7974b`  |
+| 3482   | No file              | `67a9d3b7974b`  |
+| 3474   | No file              | `67a9d3b7974b`  |
+| 3473   | No file              | `67a9d3b7974b`  |
+| 3464   | No file              | `67a9d3b7974b`  |
+| 3458   | No file              | `67a9d3b7974b`  |
+| 3454   | No file              | `67a9d3b7974b`  |
+| 3444   | No file              | `67a9d3b7974b`  |
+| 3435   | No file              | `67a9d3b7974b`  |
+| 3426   | No file              | `67a9d3b7974b`  |
+| 3418   | No file              | `67a9d3b7974b`  |
+| 3412   | No file              | `67a9d3b7974b`  |
+| 3402   | No file              | `67a9d3b7974b`  |
+| 3396   | No file              | `67a9d3b7974b`  |
+| 3387   | No file              | `67a9d3b7974b`  |
+| 3381   | No file              | `67a9d3b7974b`  |
+| 3373   | No file              | `67a9d3b7974b`  |
+| 3364   | No file              | `67a9d3b7974b`  |
+| 3356   | No file              | `67a9d3b7974b`  |
+| 3349   | No file              | `67a9d3b7974b`  |
+| 3342   | No file              | `67a9d3b7974b`  |
+| 3335   | No file              | `67a9d3b7974b`  |
+| 3326   | No file              | `67a9d3b7974b`  |
+| 3321   | No file              | `67a9d3b7974b`  |
+| 3314   | No file              | `67a9d3b7974b`  |
+| 3303   | No file              | `67a9d3b7974b`  |
+| 3302   | No file              | `67a9d3b7974b`  |
+| 3293   | No file              | `67a9d3b7974b`  |
+| 3283   | No file              | `67a9d3b7974b`  |
+| 3275   | No file              | `67a9d3b7974b`  |
+| 3267   | No file              | `67a9d3b7974b`  |
+| 3258   | Layout 2             | `67a9d3b7974b`  |
+| 3251   | No file              | `67a9d3b7974b`  |
+| 3242   | No file              | `67a9d3b7974b`  |
+| 3235   | No file              | `67a9d3b7974b`  |
+| 3229   | No file              | `67a9d3b7974b`  |
+| 3212   | No file              | `67a9d3b7974b`  |
+| 3203   | No file              | `67a9d3b7974b`  |
+| 3193   | No file              | `67a9d3b7974b`  |
+| 3186   | No file              | `67a9d3b7974b`  |
+| 3177   | No file              | `67a9d3b7974b`  |
+| 3169   | No file              | `67a9d3b7974b`  |
+| 3158   | No file              | `67a9d3b7974b`  |
+| 3151   | No file              | `67a9d3b7974b`  |
+| 3144   | No file              | `67a9d3b7974b`  |
+| 3133   | No file              | `67a9d3b7974b`  |
+| 3125   | No file              | `67a9d3b7974b`  |
+| 3118   | No file              | `67a9d3b7974b`  |
+| 3111   | No file              | `67a9d3b7974b`  |
+| 3103   | No file              | `67a9d3b7974b`  |
+| 3095   | No file              | `67a9d3b7974b`  |
+| 3086   | No file              | `67a9d3b7974b`  |
+| 3072   | No file              | `67a9d3b7974b`  |
+| 3062   | No file              | `67a9d3b7974b`  |
+| 3052   | No file              | `67a9d3b7974b`  |
+| 3045   | No file              | `67a9d3b7974b`  |
+| 3037   | No file              | `67a9d3b7974b`  |
+| 3030   | No file              | `67a9d3b7974b`  |
+| 3021   | No file              | `67a9d3b7974b`  |
+| 3012   | No file              | `67a9d3b7974b`  |
+| 3002   | No file              | `67a9d3b7974b`  |
+| 2995   | No file              | `67a9d3b7974b`  |
+| 2987   | No file              | `67a9d3b7974b`  |
+| 2978   | No file              | `67a9d3b7974b`  |
+| 2970   | No file              | `67a9d3b7974b`  |
+| 2959   | No file              | `67a9d3b7974b`  |
+| 2951   | No file              | `67a9d3b7974b`  |
+| 2942   | No file              | `67a9d3b7974b`  |
+| 2935   | No file              | `67a9d3b7974b`  |
+| 2932   | No file              | `67a9d3b7974b`  |
+| 2923   | No file              | `67a9d3b7974b`  |
+| 2919   | No documented layout | `67a9d3b7974b`  |
+| 2907   | No file              | `67a9d3b7974b`  |
+| 2900   | No file              | `67a9d3b7974b`  |
+| 2891   | No file              | `67a9d3b7974b`  |
+| 2882   | No file              | `67a9d3b7974b`  |
+| 2872   | No file              | `67a9d3b7974b`  |
+| 2863   | No file              | `67a9d3b7974b`  |
+| 2855   | No file              | `67a9d3b7974b`  |
+| 2849   | No file              | `67a9d3b7974b`  |
+| 2844   | No file              | `67a9d3b7974b`  |
+| 2834   | No file              | `67a9d3b7974b`  |
+| 2825   | No file              | `67a9d3b7974b`  |
+| 2819   | No file              | `67a9d3b7974b`  |
+| 2811   | No file              | `67a9d3b7974b`  |
+| 2803   | No file              | `67a9d3b7974b`  |
+| 2794   | No file              | `67a9d3b7974b`  |
+| 2783   | No file              | `67a9d3b7974b`  |
+| 2774   | No file              | `67a9d3b7974b`  |
+| 2765   | No file              | `67a9d3b7974b`  |
+| 2756   | No file              | `67a9d3b7974b`  |
+| 2750   | No file              | `67a9d3b7974b`  |
+| 2743   | No file              | `67a9d3b7974b`  |
+| 2736   | No file              | `67a9d3b7974b`  |
+| 2726   | No file              | `67a9d3b7974b`  |
+| 2717   | No file              | `67a9d3b7974b`  |
+| 2709   | No file              | `67a9d3b7974b`  |
+| 2703   | No file              | `67a9d3b7974b`  |
+| 2695   | No file              | `67a9d3b7974b`  |
+| 2684   | No file              | `67a9d3b7974b`  |
+| 2672   | No file              | `67a9d3b7974b`  |
+| 2665   | No file              | `67a9d3b7974b`  |
+| 2657   | No file              | `67a9d3b7974b`  |
+| 2649   | No file              | `67a9d3b7974b`  |
+| 2644   | No file              | `67a9d3b7974b`  |
+| 2637   | No file              | `67a9d3b7974b`  |
+| 2629   | No file              | `67a9d3b7974b`  |
+| 2619   | No file              | `67a9d3b7974b`  |
+| 2612   | No file              | `67a9d3b7974b`  |
+| 2606   | No file              | `67a9d3b7974b`  |
+| 2602   | No file              | `67a9d3b7974b`  |
+| 2601   | No file              | `67a9d3b7974b`  |
+| 2592   | No file              | `67a9d3b7974b`  |
+| 2583   | No file              | `67a9d3b7974b`  |
+| 2575   | No file              | `67a9d3b7974b`  |
+| 2567   | No file              | `67a9d3b7974b`  |
+| 2560   | No file              | `67a9d3b7974b`  |
+| 2553   | No file              | `67a9d3b7974b`  |
+| 2545   | No file              | `67a9d3b7974b`  |
+| 2538   | No file              | `67a9d3b7974b`  |
+| 2529   | No file              | `67a9d3b7974b`  |
+| 2519   | No file              | `67a9d3b7974b`  |
+| 2513   | No file              | `67a9d3b7974b`  |
+| 2510   | No file              | `67a9d3b7974b`  |
+| 2507   | No file              | `67a9d3b7974b`  |
+| 2503   | No file              | `67a9d3b7974b`  |
+| 2498   | No file              | `67a9d3b7974b`  |
+| 2492   | No file              | `67a9d3b7974b`  |
+| 2487   | No file              | `67a9d3b7974b`  |
+| 2480   | No file              | `67a9d3b7974b`  |
+| 2474   | No file              | `67a9d3b7974b`  |
+| 2468   | No file              | `67a9d3b7974b`  |
+| 2460   | No file              | `67a9d3b7974b`  |
+| 2453   | No file              | `67a9d3b7974b`  |
+| 2444   | No file              | `67a9d3b7974b`  |
+| 2438   | No file              | `67a9d3b7974b`  |
+| 2434   | No file              | `67a9d3b7974b`  |
+| 2429   | No file              | `67a9d3b7974b`  |
+| 2421   | No file              | `67a9d3b7974b`  |
+| 2414   | No file              | `67a9d3b7974b`  |
+| 2407   | No file              | `67a9d3b7974b`  |
+| 2401   | No file              | `67a9d3b7974b`  |
+| 2397   | No file              | `67a9d3b7974b`  |
+| 2393   | No file              | `67a9d3b7974b`  |
+| 2384   | No file              | `67a9d3b7974b`  |
+| 2378   | No file              | `67a9d3b7974b`  |
+| 2372   | No file              | `67a9d3b7974b`  |
+| 2358   | No file              | `67a9d3b7974b`  |
+| 2352   | No file              | `67a9d3b7974b`  |
+| 2347   | No file              | `67a9d3b7974b`  |
+| 2343   | No file              | `67a9d3b7974b`  |
+| 2335   | No documented layout | `67a9d3b7974b`  |
+| 2327   | No file              | `67a9d3b7974b`  |
+| 2324   | No file              | `67a9d3b7974b`  |
+| 2319   | No file              | `67a9d3b7974b`  |
+| 2313   | No file              | `67a9d3b7974b`  |
+| 2308   | No file              | `67a9d3b7974b`  |
+| 2302   | No file              | `67a9d3b7974b`  |
+| 2295   | No file              | `67a9d3b7974b`  |
+| 2290   | No file              | `67a9d3b7974b`  |
+| 2284   | No file              | `67a9d3b7974b`  |
+| 2276   | No file              | `67a9d3b7974b`  |
+| 2269   | No file              | `67a9d3b7974b`  |
+| 2259   | No file              | `67a9d3b7974b`  |
+| 2250   | No file              | `67a9d3b7974b`  |
+| 2243   | No file              | `67a9d3b7974b`  |
+| 2235   | No file              | `67a9d3b7974b`  |
+| 2229   | No file              | `67a9d3b7974b`  |
+| 2224   | No file              | `67a9d3b7974b`  |
+| 2218   | No file              | `67a9d3b7974b`  |
+| 2215   | No file              | `67a9d3b7974b`  |
+| 2207   | No file              | `67a9d3b7974b`  |
+| 2203   | No file              | `67a9d3b7974b`  |
+| 2196   | No file              | `67a9d3b7974b`  |
+| 2192   | No file              | `67a9d3b7974b`  |
+| 2189   | No file              | `67a9d3b7974b`  |
+| 2183   | No file              | `67a9d3b7974b`  |
+| 2179   | No file              | `67a9d3b7974b`  |
+| 2171   | No file              | `67a9d3b7974b`  |
+| 2163   | No file              | `67a9d3b7974b`  |
+| 2156   | No file              | `67a9d3b7974b`  |
+| 2151   | No file              | `67a9d3b7974b`  |
+| 2147   | No file              | `67a9d3b7974b`  |
+| 2142   | No file              | `67a9d3b7974b`  |
+| 2138   | No file              | `67a9d3b7974b`  |
+| 2134   | No file              | `67a9d3b7974b`  |
+| 2130   | No file              | `67a9d3b7974b`  |
+| 2122   | No file              | `67a9d3b7974b`  |
+| 2107   | No file              | `67a9d3b7974b`  |
+| 2098   | No file              | `67a9d3b7974b`  |
+| 2089   | No file              | `67a9d3b7974b`  |
+| 2081   | No file              | `67a9d3b7974b`  |
+| 2073   | No file              | `67a9d3b7974b`  |
+| 2067   | No file              | `67a9d3b7974b`  |
+| 2063   | No file              | `67a9d3b7974b`  |
+| 2059   | No file              | `67a9d3b7974b`  |
+| 2052   | No file              | `67a9d3b7974b`  |
+| 2044   | No file              | `67a9d3b7974b`  |
+| 2039   | No file              | `67a9d3b7974b`  |
+| 2032   | No file              | `67a9d3b7974b`  |
+| 2025   | No file              | `67a9d3b7974b`  |
+| 2011   | No file              | `67a9d3b7974b`  |
+| 2005   | No file              | `67a9d3b7974b`  |
+| 2000   | No file              | `67a9d3b7974b`  |
+| 1996   | No file              | `67a9d3b7974b`  |
+| 1991   | No file              | `67a9d3b7974b`  |
+| 1985   | No file              | `67a9d3b7974b`  |
+| 1980   | No file              | `67a9d3b7974b`  |
+| 1969   | No file              | `67a9d3b7974b`  |
+| 1964   | No file              | `67a9d3b7974b`  |
+| 1958   | No file              | `67a9d3b7974b`  |
+| 1950   | No file              | `67a9d3b7974b`  |
+| 1945   | No file              | `67a9d3b7974b`  |
+| 1937   | No file              | `67a9d3b7974b`  |
+| 1933   | No file              | `67a9d3b7974b`  |
+| 1927   | No file              | `67a9d3b7974b`  |
+| 1921   | No file              | `67a9d3b7974b`  |
+| 1914   | No file              | `67a9d3b7974b`  |
+| 1908   | No file              | `67a9d3b7974b`  |
+| 1897   | No file              | `67a9d3b7974b`  |
+| 1892   | No file              | `67a9d3b7974b`  |
+| 1886   | No file              | `67a9d3b7974b`  |
+| 1881   | No file              | `67a9d3b7974b`  |
+| 1871   | No file              | `67a9d3b7974b`  |
+| 1866   | No file              | `67a9d3b7974b`  |
+| 1862   | No file              | `67a9d3b7974b`  |
+| 1854   | No file              | `67a9d3b7974b`  |
+| 1846   | No file              | `67a9d3b7974b`  |
+| 1838   | No file              | `67a9d3b7974b`  |
+| 1832   | No file              | `67a9d3b7974b`  |
+| 1826   | No file              | `67a9d3b7974b`  |
+| 1822   | No file              | `67a9d3b7974b`  |
+| 1818   | No file              | `67a9d3b7974b`  |
+| 1804   | No file              | `67a9d3b7974b`  |
+| 1794   | No file              | `67a9d3b7974b`  |
+| 1790   | No file              | `67a9d3b7974b`  |
+| 1784   | Layout 1             | `67a9d3b7974b`  |
+| 1774   | No file              | `67a9d3b7974b`  |
+| 1771   | No file              | `67a9d3b7974b`  |
+| 1762   | No file              | `67a9d3b7974b`  |
+| 1759   | No file              | `67a9d3b7974b`  |
+| 1754   | No file              | `67a9d3b7974b`  |
+| 1749   | No file              | `67a9d3b7974b`  |
+| 1743   | No file              | `67a9d3b7974b`  |
+| 1737   | No file              | `67a9d3b7974b`  |
+| 1731   | No file              | `67a9d3b7974b`  |
+| 1725   | No file              | `67a9d3b7974b`  |
+| 1717   | No file              | `67a9d3b7974b`  |
+| 1710   | No file              | `67a9d3b7974b`  |
+| 1704   | No file              | `67a9d3b7974b`  |
+| 1698   | No file              | `67a9d3b7974b`  |
+| 1690   | No file              | `67a9d3b7974b`  |
+| 1685   | No file              | `67a9d3b7974b`  |
+| 1680   | No file              | `67a9d3b7974b`  |
+| 1674   | No file              | `67a9d3b7974b`  |
+| 1668   | No file              | `67a9d3b7974b`  |
+| 1659   | No file              | `67a9d3b7974b`  |
+| 1649   | No file              | `67a9d3b7974b`  |
+| 1642   | No file              | `67a9d3b7974b`  |
+| 1636   | No file              | `67a9d3b7974b`  |
+| 1628   | No file              | `67a9d3b7974b`  |
+| 1622   | No file              | `67a9d3b7974b`  |
+| 1614   | No file              | `67a9d3b7974b`  |
+| 1608   | No file              | `67a9d3b7974b`  |
+| 1602   | No file              | `67a9d3b7974b`  |
+| 1598   | No file              | `67a9d3b7974b`  |
+| 1594   | No file              | `67a9d3b7974b`  |
+| 1590   | No file              | `67a9d3b7974b`  |
+| 1587   | No file              | `67a9d3b7974b`  |
+| 1584   | No file              | `67a9d3b7974b`  |
+| 1579   | No file              | `67a9d3b7974b`  |
+| 1572   | No file              | `67a9d3b7974b`  |
+| 1565   | No file              | `67a9d3b7974b`  |
+| 1559   | No file              | `67a9d3b7974b`  |
+| 1554   | No file              | `67a9d3b7974b`  |
+| 1547   | No file              | `67a9d3b7974b`  |
+| 1537   | No file              | `67a9d3b7974b`  |
+| 1529   | No file              | `67a9d3b7974b`  |
+| 1524   | No file              | `67a9d3b7974b`  |
+| 1519   | No file              | `67a9d3b7974b`  |
+| 1509   | No file              | `67a9d3b7974b`  |
+| 1506   | No file              | `67a9d3b7974b`  |
+| 1504   | No file              | `67a9d3b7974b`  |
+| 1500   | No file              | `67a9d3b7974b`  |
+| 1493   | No file              | `67a9d3b7974b`  |
+| 1489   | No file              | `67a9d3b7974b`  |
+| 1485   | No file              | `67a9d3b7974b`  |
+| 1481   | No file              | `67a9d3b7974b`  |
+| 1474   | No file              | `67a9d3b7974b`  |
+| 1466   | No file              | `67a9d3b7974b`  |
+| 1462   | No file              | `67a9d3b7974b`  |
+| 1459   | No file              | `67a9d3b7974b`  |
+| 1453   | No file              | `67a9d3b7974b`  |
+| 1450   | No file              | `67a9d3b7974b`  |
+| 1445   | No file              | `67a9d3b7974b`  |
+| 1439   | No file              | `67a9d3b7974b`  |
+| 1433   | No file              | `67a9d3b7974b`  |
+| 1430   | No file              | `67a9d3b7974b`  |
+| 1426   | No file              | `67a9d3b7974b`  |
+| 1421   | No file              | `67a9d3b7974b`  |
+| 1417   | No file              | `67a9d3b7974b`  |
+| 1416   | No file              | `67a9d3b7974b`  |
+| 1409   | No file              | `67a9d3b7974b`  |
+| 1405   | No file              | `67a9d3b7974b`  |
+| 1401   | No file              | `67a9d3b7974b`  |
+| 1396   | No file              | `67a9d3b7974b`  |
+| 1391   | No file              | `67a9d3b7974b`  |
+| 1390   | No file              | `67a9d3b7974b`  |
+| 1386   | No file              | `67a9d3b7974b`  |
+| 1381   | No file              | `67a9d3b7974b`  |
+| 1379   | No file              | `67a9d3b7974b`  |
+| 1372   | No file              | `67a9d3b7974b`  |
+| 1366   | No file              | `67a9d3b7974b`  |
+| 1364   | No file              | `67a9d3b7974b`  |
+| 1363   | No file              | `67a9d3b7974b`  |
+| 1360   | No file              | `67a9d3b7974b`  |
+| 1358   | No file              | `67a9d3b7974b`  |
+| 1355   | No file              | `67a9d3b7974b`  |
+| 1351   | No file              | `67a9d3b7974b`  |
+| 1348   | No file              | `67a9d3b7974b`  |
+| 1346   | No file              | `67a9d3b7974b`  |
+| 1341   | No file              | `67a9d3b7974b`  |
+| 1340   | No file              | `67a9d3b7974b`  |
+| 1338   | No file              | `67a9d3b7974b`  |
+| 1335   | No file              | `67a9d3b7974b`  |
+| 1333   | No file              | `67a9d3b7974b`  |
+| 1329   | No file              | `67a9d3b7974b`  |
+| 1327   | No file              | `67a9d3b7974b`  |
+| 1324   | No file              | `67a9d3b7974b`  |
+| 1321   | No file              | `67a9d3b7974b`  |
+| 1319   | No file              | `67a9d3b7974b`  |
+| 1318   | No file              | `67a9d3b7974b`  |
+| 1316   | No file              | `67a9d3b7974b`  |
+| 1313   | No file              | `67a9d3b7974b`  |
+| 1311   | No file              | `67a9d3b7974b`  |
+| 1309   | No file              | `67a9d3b7974b`  |
+| 1304   | No file              | `67a9d3b7974b`  |
+| 1292   | No file              | `67a9d3b7974b`  |
+| 1286   | No file              | `67a9d3b7974b`  |
+| 1280   | No file              | `67a9d3b7974b`  |
+| 1276   | No file              | `67a9d3b7974b`  |
+| 1267   | No file              | `67a9d3b7974b`  |
+| 1261   | No file              | `67a9d3b7974b`  |
+| 1256   | No file              | `67a9d3b7974b`  |
+| 1250   | No file              | `67a9d3b7974b`  |
+| 1246   | No file              | `67a9d3b7974b`  |
+| 1239   | No file              | `67a9d3b7974b`  |
+| 1230   | No file              | `67a9d3b7974b`  |
+| 1226   | No file              | `67a9d3b7974b`  |
+| 1220   | No file              | `67a9d3b7974b`  |
+| 1217   | No file              | `67a9d3b7974b`  |
+| 1211   | No file              | `67a9d3b7974b`  |
+| 1210   | No file              | `67a9d3b7974b`  |
+| 1208   | No file              | `67a9d3b7974b`  |
+| 1203   | No file              | `67a9d3b7974b`  |
+| 1197   | No file              | `67a9d3b7974b`  |
+| 1194   | No file              | `67a9d3b7974b`  |
+| 1192   | No file              | `67a9d3b7974b`  |
+| 1187   | No file              | `67a9d3b7974b`  |
+| 1183   | No file              | `67a9d3b7974b`  |
+| 1177   | No file              | `67a9d3b7974b`  |
+| 1173   | No file              | `67a9d3b7974b`  |
+| 1167   | No file              | `67a9d3b7974b`  |
+| 1164   | No file              | `67a9d3b7974b`  |
+| 1156   | No file              | `67a9d3b7974b`  |
+| 1149   | No file              | `67a9d3b7974b`  |
+| 1144   | No file              | `67a9d3b7974b`  |
+| 1137   | No file              | `67a9d3b7974b`  |
+| 1132   | No file              | `67a9d3b7974b`  |
+| 1127   | No file              | `67a9d3b7974b`  |
+| 1122   | No file              | `67a9d3b7974b`  |
+| 1118   | No file              | `67a9d3b7974b`  |
+| 1114   | No file              | `67a9d3b7974b`  |
+| 1109   | No file              | `67a9d3b7974b`  |
+| 1102   | No file              | `67a9d3b7974b`  |
+| 1096   | No file              | `67a9d3b7974b`  |
+| 1088   | No file              | `67a9d3b7974b`  |
+| 1081   | No file              | `67a9d3b7974b`  |
+| 1076   | No file              | `67a9d3b7974b`  |
+| 1069   | No file              | `67a9d3b7974b`  |
+| 1064   | No file              | `67a9d3b7974b`  |
+| 1058   | No file              | `67a9d3b7974b`  |
+| 1051   | No file              | `67a9d3b7974b`  |
+| 1044   | No file              | `67a9d3b7974b`  |
+| 1036   | No file              | `67a9d3b7974b`  |
+| 1026   | No file              | `67a9d3b7974b`  |
+| 1016   | No file              | `67a9d3b7974b`  |
+| 1009   | No file              | `67a9d3b7974b`  |
+| 1005   | No file              | `67a9d3b7974b`  |
+| 1000   | No file              | `67a9d3b7974b`  |
+| 998    | No file              | `67a9d3b7974b`  |
+| 990    | No file              | `67a9d3b7974b`  |
+| 979    | No file              | `67a9d3b7974b`  |
+| 972    | No file              | `67a9d3b7974b`  |
+| 963    | No file              | `67a9d3b7974b`  |
+| 955    | No file              | `67a9d3b7974b`  |
+| 946    | No file              | `67a9d3b7974b`  |
+| 938    | No file              | `67a9d3b7974b`  |
+| 927    | No file              | `67a9d3b7974b`  |
+| 911    | No file              | `67a9d3b7974b`  |
+| 904    | No file              | `67a9d3b7974b`  |
+| 899    | No file              | `67a9d3b7974b`  |
+| 894    | No file              | `67a9d3b7974b`  |
+| 885    | No file              | `67a9d3b7974b`  |
+| 879    | No file              | `67a9d3b7974b`  |
+| 872    | No file              | `67a9d3b7974b`  |
+| 864    | No file              | `67a9d3b7974b`  |
+| 855    | No file              | `67a9d3b7974b`  |
+| 853    | No file              | `67a9d3b7974b`  |
+| 845    | No file              | `67a9d3b7974b`  |
+| 837    | No file              | `67a9d3b7974b`  |
+| 829    | No file              | `67a9d3b7974b`  |
+| 822    | No file              | `67a9d3b7974b`  |
+| 814    | No file              | `67a9d3b7974b`  |
+| 805    | No file              | `67a9d3b7974b`  |
+| 794    | No file              | `67a9d3b7974b`  |
+| 787    | No file              | `67a9d3b7974b`  |
+| 780    | No file              | `67a9d3b7974b`  |
+| 771    | No file              | `67a9d3b7974b`  |
+| 760    | No file              | `67a9d3b7974b`  |
+| 748    | No file              | `67a9d3b7974b`  |
+| 741    | No file              | `67a9d3b7974b`  |
+| 736    | No file              | `67a9d3b7974b`  |
+| 731    | No file              | `67a9d3b7974b`  |
+| 723    | No file              | `67a9d3b7974b`  |
+| 711    | No file              | `67a9d3b7974b`  |
+| 707    | No file              | `67a9d3b7974b`  |
+| 697    | No file              | `67a9d3b7974b`  |
+| 689    | No file              | `67a9d3b7974b`  |
+| 683    | No file              | `67a9d3b7974b`  |
+| 678    | No file              | `67a9d3b7974b`  |
+| 670    | No file              | `67a9d3b7974b`  |
+| 661    | No file              | `67a9d3b7974b`  |
+| 656    | No file              | `67a9d3b7974b`  |
+| 652    | No file              | `67a9d3b7974b`  |
+| 643    | No file              | `67a9d3b7974b`  |
+| 637    | No file              | `67a9d3b7974b`  |
+| 630    | No file              | `67a9d3b7974b`  |
+| 627    | No file              | `67a9d3b7974b`  |
+| 621    | No file              | `67a9d3b7974b`  |
+| 617    | No file              | `67a9d3b7974b`  |
+| 615    | No file              | `67a9d3b7974b`  |
+| 606    | No file              | `67a9d3b7974b`  |
+| 599    | No file              | `67a9d3b7974b`  |
+| 592    | No file              | `67a9d3b7974b`  |
+| 586    | No file              | `67a9d3b7974b`  |
+| 577    | No file              | `67a9d3b7974b`  |
+| 569    | No file              | `67a9d3b7974b`  |
+| 561    | No file              | `67a9d3b7974b`  |
+| 554    | No file              | `67a9d3b7974b`  |
+| 542    | No file              | `67a9d3b7974b`  |
+| 532    | No file              | `67a9d3b7974b`  |
+| 531    | No file              | `67a9d3b7974b`  |
+| 526    | No file              | `67a9d3b7974b`  |
+| 521    | No file              | `67a9d3b7974b`  |
+| 517    | No file              | `67a9d3b7974b`  |
+| 510    | No file              | `67a9d3b7974b`  |
+| 508    | No file              | `67a9d3b7974b`  |
+| 504    | No file              | `67a9d3b7974b`  |
+| 497    | No file              | `67a9d3b7974b`  |
+| 491    | No file              | `67a9d3b7974b`  |
+| 485    | No file              | `67a9d3b7974b`  |
+| 478    | No file              | `67a9d3b7974b`  |
+| 472    | No file              | `67a9d3b7974b`  |
+| 466    | No file              | `67a9d3b7974b`  |
+| 457    | No file              | `67a9d3b7974b`  |
+| 452    | No file              | `67a9d3b7974b`  |
+| 449    | No file              | `67a9d3b7974b`  |
+| 435    | No file              | `67a9d3b7974b`  |
 
 <!-- versions:end -->
 
@@ -1077,8 +1541,8 @@ The fields after the sets depend on `type`; see Frame Event Types. On client 348
 | `unknown_sixth_rows+0x08` | u64 | first_data_size | `16` on every class chart action |
 | `unknown_sixth_rows+0x10` | bytes[first_data_size] | unknown_first_data | |
 | `unknown_first_data+0x00` | u16 | unknown_first_data_00 | |
-| `unknown_first_data+0x02` | u64 | second_data_size | `18` on every class chart action |
-| `unknown_first_data+0x0A` | bytes[second_data_size] | unknown_second_data | |
+| `unknown_first_data+0x02` | u64 | second_data_size | `18` on every class chart action (client 3483); `19` in Layout 1 |
+| `unknown_first_data+0x0A` | bytes[second_data_size] | unknown_second_data | Its first 16 bytes look like the Layout 1 Element Link (u32 `+0x04` is `0` on all 22,251 actions of `elfmanaction_noweapon.paac`, client 3483); not checked against the shared elements, which Layout 2 does not read yet |
 
 ### Action Row A (8 bytes)
 
@@ -1142,6 +1606,14 @@ The fields after the sets depend on `type`; see Frame Event Types. On client 348
 
 Client 1784, the layout the 1784 loader reads. The structures below differ
 from Layout 2; every other structure is the same.
+
+A class chart Action has no element of its own: its Element Link names the
+element in `pc_actionchartpackagepcraw.paac`. The named fields of the Action
+Data, Element Link and Element Parameters were matched against a private
+server's per-weapon summaries for client 1784, joined by action name, on
+`elfmanaction_noweapon.paac` (Archer, 4,126 actions with a summary entry) and
+`elfaction_noweapon.paac` (Ranger, 5,046). The counts in their Notes are
+"Archer / Ranger" and come from client 1784.
 
 ### File Layout
 
@@ -1210,7 +1682,7 @@ holds 87,411 condition records, 299,518 frame events and 76,993 elements in
 
 | Offset | Type | Field | Notes |
 | --- | --- | --- | --- |
-| `+0x00` | u32 | key | 64 of the 585 keys are `pcactionpackagename.bss` package hashes (client 1784) |
+| `+0x00` | u32 | key | 64 of the 585 keys are `pcactionpackagename.bss` package hashes (client 1784); a class chart Action's `element_group_key` |
 | `+0x04` | u64 | element_count | |
 | `+0x0C` | Element[element_count] | elements | |
 
@@ -1310,6 +1782,52 @@ holds 87,411 condition records, 299,518 frame events and 76,993 elements in
 | `actions+0x00` | Action With Element[action_count] if unknown_04 = 0 or unknown_05 = 0 | element_actions | |
 | `element_actions+0x00` | bytes[60] | unknown_tail | |
 
+### Action (variable: 78 bytes + lists and data)
+
+| Offset | Type | Field | Notes |
+| --- | --- | --- | --- |
+| `+0x00` | u32 | action_hash | |
+| `+0x04` | u64 | first_count | |
+| `+0x0C` | i32[first_count] | unknown_first_values | |
+| `unknown_first_values+0x00` | u64 | second_count | |
+| `unknown_first_values+0x08` | u32[second_count] | unknown_second_values | |
+| `unknown_second_values+0x00` | u64 | third_count | |
+| `unknown_second_values+0x08` | u16[third_count] | unknown_third_values | |
+| `unknown_third_values+0x00` | u64 | fourth_count | |
+| `unknown_third_values+0x08` | Action Row A[fourth_count] | unknown_fourth_rows | |
+| `unknown_fourth_rows+0x00` | u64 | fifth_count | |
+| `unknown_fourth_rows+0x08` | u16[fifth_count][2] | unknown_fifth_rows | |
+| `unknown_fifth_rows+0x00` | u64 | sixth_count | |
+| `unknown_fifth_rows+0x08` | Action Row B[sixth_count] | unknown_sixth_rows | |
+| `unknown_sixth_rows+0x00` | u32 | unknown_sixth_rows_00 | |
+| `unknown_sixth_rows+0x04` | u32 | unknown_sixth_rows_04 | |
+| `unknown_sixth_rows+0x08` | u64 | first_data_size | `16` on all 38,937 actions of the two charts |
+| `unknown_sixth_rows+0x10` | Action Data if first_data_size = 16 | action_data | |
+| `action_data+0x00` | bytes[first_data_size] if first_data_size != 16 | unknown_first_data | |
+| `unknown_first_data+0x00` | u16 | unknown_first_data_00 | |
+| `unknown_first_data+0x02` | u64 | second_data_size | `19` on all 38,937 |
+| `unknown_first_data+0x0A` | Element Link if second_data_size = 19 | element_link | |
+| `element_link+0x00` | bytes[second_data_size] if second_data_size != 19 | unknown_second_data | |
+
+### Action Data (16 bytes)
+
+| Offset | Type | Field | Notes |
+| --- | --- | --- | --- |
+| `+0x00` | f32 | move_speed | The summary's `MoveSpeed` on 439 of 492 / 458 of 509 |
+| `+0x04` | f32 | move_speed_dup | Same value as `move_speed` on all 38,937 actions |
+| `+0x08` | f32 | frame_count | The action's length in frames at 30 fps: `frame_count * 1000 / 30` is the summary's `TotalFrame` in ms, within 1, on 4,038 of 4,126 / 4,901 of 5,046 |
+| `+0x0C` | u32 | unknown_0c | `0` on 20,476 of the 38,937 |
+
+### Element Link (19 bytes)
+
+| Offset | Type | Field | Notes |
+| --- | --- | --- | --- |
+| `+0x00` | u32 | element_index | Index of the action's Element in its Element Group, counted in file order. The element's `action_name` is the action's name on every action of the five class charts checked (`1_phm`, `3_pew`, `8_pwm` both, `9_pem`: 18,925 to 20,012 each) |
+| `+0x04` | u32 | unknown_04 | `0` on all 38,937 |
+| `+0x08` | u32 | weapon_type | The summary's `WeaponType` on 1,333 of 1,333 / 2,224 of 2,224 |
+| `+0x0C` | u32 | element_group_key | The `key` of the Element Group in `pc_actionchartpackagepcraw.paac` |
+| `+0x10` | bytes[3] | unknown_10 | `0` on all 38,937 |
+
 ### Frame Event (variable: 20 bytes + sets and type fields)
 
 The fields after the sets depend on `type`; see Frame Event Types.
@@ -1404,8 +1922,9 @@ class and object charts and the 76,993 of the PcRaw file read with it.
 | `+0x38` | u32[2] | unknown_str_refs_38 | |
 | `+0x40` | u64 | record_count | |
 | `+0x48` | Element Record[record_count] | records | |
-| `records+0x00` | u64 | parameter_size | At most `0x158` |
-| `records+0x08` | bytes[parameter_size] | unknown_parameters | |
+| `records+0x00` | u64 | parameter_size | At most `0x158` in the loader; `337` on all 76,993 elements of the PcRaw file |
+| `records+0x08` | Element Parameters if parameter_size = 337 | parameters | |
+| `parameters+0x00` | bytes[parameter_size] if parameter_size != 337 | unknown_parameters | |
 
 ### Element Record (variable: 13 bytes + set and values)
 
@@ -1417,6 +1936,54 @@ class and object charts and the 76,993 of the PcRaw file read with it.
 | `set+0x00` | u32 | unknown_set_00 | |
 | `set+0x04` | u8 | value_count | |
 | `set+0x05` | u8[value_count] | values | |
+
+### Element Parameters (337 bytes)
+
+The summary attribute each field matches is in its Notes; the enum values
+are in the table after this one.
+
+| Offset | Type | Field | Notes |
+| --- | --- | --- | --- |
+| `+0x00` | bytes[8] | unknown_00 | |
+| `+0x08` | f32 | start_frame | `StartFrame` on 687 of 697 / 922 of 925 |
+| `+0x0C` | f32 | end_frame | `EndFrame` on 1,163 of 1,196 / 1,252 of 1,265; `-1` on 2,925 of the 2,930 / 3,777 of the 3,781 without one |
+| `+0x10` | f32 | animation_speed | `AnimationSpeed` on 1,746 of 1,796 / 2,392 of 2,432 |
+| `+0x14` | bytes[8] | unknown_14 | |
+| `+0x1C` | f32 | rotation | `Rotation` in minus radians (90 is `-pi/2`) on 574 of 575 / 640 of 640 |
+| `+0x20` | bytes[36] | unknown_20 | |
+| `+0x44` | i32 | unknown_44 | `-1` on 4,078 of the 4,082 / 4,769 of the 4,990 without a `StartAvoidTime`, but equal to it on only 18 of 44 / 45 of 56 |
+| `+0x48` | i32 | unknown_48 | `-1` on 4,078 of the 4,082 / 4,769 of the 4,990 without an `EndAvoidTime`, but equal to it on only 18 of 44 / 37 of 56 |
+| `+0x4C` | bytes[88] | unknown_4c | |
+| `+0xA4` | f32 | animation_speed_dup | Same value as `animation_speed` on all 76,993 elements of the PcRaw file |
+| `+0xA8` | bytes[64] | unknown_a8 | |
+| `+0xE8` | i32 | skill_no | `SkillNo` on 313 of 314 / 477 of 477; `0` on 62,269 of the 76,993 elements |
+| `+0xEC` | bytes[8] | unknown_ec | |
+| `+0xF4` | i32 | apply_sp | `ApplySp` on 334 of 334 / 440 of 531; `0` on all 3,792 Archer actions without one |
+| `+0xF8` | bytes[25] | unknown_f8 | |
+| `+0x111` | u8 | unknown_111 | `0` on 76,981 of the 76,993 |
+| `+0x112` | u8 | unknown_112 | `10` on all 76,993, as `RandomNumberRange` is in every summary entry; a constant, so not named |
+| `+0x113` | u8 | unknown_113 | `0` on all 76,993 |
+| `+0x114` | u8 | action_type | `ActionType` on 4,108 of 4,126 / 5,028 of 5,046; the misses are the 14 `Slope` actions and 4 others |
+| `+0x115` | u8 | move_direction | `MoveDirection` on 4,089 of 4,095 / 5,030 of 5,032 named values |
+| `+0x116` | u8 | sp_use_type | `SpUseType` on 872 of 879 / 1,224 of 1,320 |
+| `+0x117` | bytes[6] | unknown_117 | |
+| `+0x11D` | u8 | apply_speed_buff_type | `ApplySpeedBuffType` on 1,151 of 1,170 / 2,152 of 2,158 |
+| `+0x11E` | bytes[23] | unknown_11e | |
+| `+0x135` | u8 | navigation_type | Bit flags of `NavigationType` on 4,108 of 4,126 / 5,036 of 5,046 |
+| `+0x136` | bytes[11] | unknown_136 | |
+| `+0x141` | u8 | item_access_level | `ItemAccessLevel` on 587 of 587 / 702 of 702 |
+| `+0x142` | bytes[15] | unknown_142 | |
+
+The enum values below are the ones the matched actions use, unless the row
+names another source.
+
+| Field | Values |
+| --- | --- |
+| `action_type` | `Move` 0, `ForcedMove` 1, `Attack` 2, `ArrowAttack` 3, `Skill` 4, `ArrowSkill` 5, `CombineWave` 6, `Defence` 7, `Misc` 8, `Catch` 9, `Collect` 10, `Product_Prepare` 11, `Product_Failed` 12, `Product_Start` 13, `Product_Wait` 14, `Product_Progress` 15, `Product_Finish` 16, `RideOn_Prepare` 17, `RideOn_Failed` 19, `RideOff_Do` 21, `Arrest_Target` 30, `Die` 31, `Build_Tent` 34, `TakeDown_Tent` 35, `MiniGame17` 53, `UseItem` 58, `Manufacture` 59, `ClimbWall1` 60, `ClimbWall2` 61, `ClimbWall3` 62, `RepairItem` 64, `Taming_Start` 65, `Taming_Step1` 66, `Taming_Step2` 67, `Taming_End` 68, `ReadBook` 69, `Campfire` 70, `SwimmingStep` 71, `CanntSwimmingStep` 72, `UseInstallation_Prepare` 73, `UseInstallation_Do` 74, `UseInstallation_Failed` 75, `UsingInstallation` 76, `FinishUseInstallation` 77, `WaitIdle` 78, `Takedown_Cannon` 81, `SummonCharacter` 82, `Alchemy` 83, `Commond_Repair` 84, `ActiveSkill` 85, `Building_Upgrade` 86, `Banquet` 91, `DefencePose` 94, `Training` 95, `GrenadePrepare` 101, `GrenadeStart` 103, `Build_Tent_Kit` 105, `IceFishingMiniGame` 106 |
+| `move_direction` | `Foward` 0, `Foward_Direction` 2, `Backward_Direction` 3, `Foward_Direction_Fix` 4, `Backward_Direction_Fix` 5, `Foward_Camera_Direction` 8 (the server's spelling) |
+| `sp_use_type` | `Once` 0, `Continue` 1, `Recover` 2, `Stop` 3, `Reset` 4, `None` 5, the order of the server code's `ESpUseType`. The matched actions use 0, 1 and 3; `Recover` 2 is on 3,247 of 3,247 / 3,698 of 3,726 actions whose entry has no `SpUseType` |
+| `apply_speed_buff_type` | `Move` 0, `Attack` 1, `Cast` 2, `None` 3, the order of the server code's `EApplySpeedBuffType`. The matched actions use 0 and 1; `None` 3 is on all 2,956 / 2,888 actions whose entry has none |
+| `navigation_type` | `air` 0x01, `wall` 0x02, `reserved0` 0x04, `reserved1` 0x08, `ground` 0x10, `under_ground` 0x20, `water` 0x40, `under_water` 0x80 |
 
 ## Frame Event Types
 
@@ -1654,11 +2221,11 @@ items are, and how the 1784 fields (a u32, two strings and the Element
 Records) map onto `unknown_str_ref_34`, `unknown_38` and the fields after
 the items, is not known.
 
-### Which Field Holds SpUseType, ApplySp and StaminaSpeed
+### Which Field Holds StaminaSpeed
 
-The server's per-weapon summaries give each action a `TotalFrame`,
-`AnimationSpeed`, `SpUseType`, `ApplySp` and `StaminaSpeed`, and the client
-binary has none of these names. The Action's two data blocks, Action Row B
-and the Element parameters are the candidates; matching an action's values
-(Archer `BT_ROLL_L`: `TotalFrame` 1619, `ApplySp` 100) against them would
-name the fields. Client 1784 is the place to try, as its elements read.
+The server's per-weapon summaries give each action a `StaminaSpeed`. The
+other summary fields have their place in Layout 1 (Action Data and Element
+Parameters), but on client 1784 every Archer and Ranger action with a
+summary entry has `StaminaSpeed` `1`, so a match cannot place it. A client
+whose summaries have other values, together with its own Layout 1 charts,
+would answer it.

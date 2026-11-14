@@ -3,9 +3,20 @@
     "actionHash": "동작 해시",
     "action": "동작",
     "package": "패키지",
-    "animation": "애니메이션"
+    "animation": "애니메이션",
+    "skill": "기술",
+    "staminaCost": "지구력 소모량",
+    "staminaUse": "지구력 소모 방식"
   },
   "meta": {
     "count": "동작 {count}개"
+  },
+  "staminaUse": {
+    "0": "1회",
+    "1": "연속",
+    "2": "회복",
+    "3": "정지",
+    "4": "초기화",
+    "5": "없음"
   }
 }

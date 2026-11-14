@@ -10,6 +10,7 @@ from __future__ import annotations
 import struct
 from dataclasses import dataclass
 
+from .element_fields import action_data_fields, element_parameter_fields
 from .events import skip_condition_set
 from .layouts import ChartLayout
 from .reader import ChartReader
@@ -65,11 +66,14 @@ def read_element(reader: ChartReader, layout: ChartLayout) -> dict:
         element["unknown_items_00"] = reader.u32()
         element["unknown_items_04"] = reader.u64()
         element["unknown_items_0c"] = reader.u8()
-    element["unknown_parameters"] = reader.block().hex()
+    parameters = reader.block()
+    element["unknown_parameters"] = parameters.hex()
+    if layout.loader_element:
+        element.update(element_parameter_fields(parameters))
     return element
 
 
-def _read_action(reader: ChartReader) -> dict:
+def _read_action(reader: ChartReader, layout: ChartLayout) -> dict:
     action: dict = {"action_hash": reader.u32()}
     action["unknown_first_values"] = _values(reader, "i")
     action["unknown_second_values"] = _values(reader, "I")
@@ -79,9 +83,13 @@ def _read_action(reader: ChartReader) -> dict:
     action["unknown_sixth_rows"] = _rows(reader, "iHHIIHHH")
     action["unknown_sixth_rows_00"] = reader.u32()
     action["unknown_sixth_rows_04"] = reader.u32()
-    action["unknown_first_data"] = reader.block().hex()
+    first_data = reader.block()
+    action["unknown_first_data"] = first_data.hex()
     action["unknown_first_data_00"] = reader.u16()
-    action["unknown_second_data"] = reader.block().hex()
+    second_data = reader.block()
+    action["unknown_second_data"] = second_data.hex()
+    if layout.loader_element:
+        action.update(action_data_fields(first_data, second_data))
     return action
 
 
@@ -106,7 +114,7 @@ def read_package(reader: ChartReader, layout: ChartLayout) -> Package:
     with_element = not (flag_a and flag_b)
     actions = []
     for _ in range(reader.count()):
-        action = _read_action(reader)
+        action = _read_action(reader, layout)
         if with_element:
             action["element"] = read_element(reader, layout)
         actions.append(action)

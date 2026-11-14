@@ -3,9 +3,20 @@
     "actionHash": "Hash de acción",
     "action": "Acción",
     "package": "Paquete",
-    "animation": "Animación"
+    "animation": "Animación",
+    "skill": "Habilidad",
+    "staminaCost": "Coste de aguante",
+    "staminaUse": "Uso de aguante"
   },
   "meta": {
     "count": "{count} acciones"
+  },
+  "staminaUse": {
+    "0": "Una vez",
+    "1": "Continuo",
+    "2": "Recuperación",
+    "3": "Detener",
+    "4": "Reinicio",
+    "5": "Ninguno"
   }
 }

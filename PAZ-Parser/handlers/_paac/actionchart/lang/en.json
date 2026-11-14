@@ -3,9 +3,20 @@
     "actionHash": "Action Hash",
     "action": "Action",
     "package": "Package",
-    "animation": "Animation"
+    "animation": "Animation",
+    "skill": "Skill",
+    "staminaCost": "Stamina Cost",
+    "staminaUse": "Stamina Use"
   },
   "meta": {
     "count": "{count} actions"
+  },
+  "staminaUse": {
+    "0": "Once",
+    "1": "Continuous",
+    "2": "Recover",
+    "3": "Stop",
+    "4": "Reset",
+    "5": "None"
   }
 }

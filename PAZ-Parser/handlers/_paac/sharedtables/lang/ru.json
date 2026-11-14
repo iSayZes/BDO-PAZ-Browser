@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Ключ группы",
+    "action": "Действие",
+    "animation": "Анимация"
+  },
+  "meta": {
+    "count": "Общих элементов: {count}"
+  }
+}

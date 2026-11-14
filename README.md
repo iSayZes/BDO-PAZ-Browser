@@ -83,7 +83,7 @@ rebuilds it from `docs/file-formats/` whenever a release changes the docs.
 
 - `.bss`: 402 of 402 files with a handler.
 - `.dbss`: 374 of 374 files with a handler.
-- Other formats: 36 with a handler.
+- Other formats: 38 with a handler.
 
 ## Requirements
 

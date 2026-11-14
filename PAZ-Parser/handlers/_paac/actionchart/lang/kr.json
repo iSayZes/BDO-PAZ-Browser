@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "actionHash": "동작 해시",
+    "action": "동작",
+    "package": "패키지",
+    "animation": "애니메이션"
+  },
+  "meta": {
+    "count": "동작 {count}개"
+  }
+}

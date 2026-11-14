@@ -2138,8 +2138,9 @@ for layout in client_order(LAYOUTS, lambda layout: layout.clients):
 Handlers that do this: `privateskill.bss`, `sequencetriggerdata.bss`,
 `territoryinfo.bss`, `guildquest.dbss`, `journalquest.dbss`, `quest.dbss`,
 `mentalcard.dbss`, `itemenchant.dbss`, `characterstatic.dbss`,
-`charactersimply.bss`, `buffsimply.bss`, `skill.dbss`, `buff.dbss` and
-`pcgrowth.dbss`.
+`charactersimply.bss`, `buffsimply.bss`, `skill.dbss`, `buff.dbss`,
+`pcgrowth.dbss` and the `*.paac` action charts (`_paac/layouts.py`: the
+differences between client 1784 and 3483 are fields of one `ChartLayout`).
 `itemenchant.dbss` tries each layout on its first eight base blocks instead of
 the whole 194 MB file, then reads every block with the one that fits
 (`_dbss/itemenchant/layouts.py`); its lookup index builders pick the layout the

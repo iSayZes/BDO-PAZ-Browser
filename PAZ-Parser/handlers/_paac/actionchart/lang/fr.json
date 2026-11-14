@@ -1,0 +1,11 @@
+{
+  "columns": {
+    "actionHash": "Hash de l'action",
+    "action": "Action",
+    "package": "Paquet",
+    "animation": "Animation"
+  },
+  "meta": {
+    "count": "{count} actions"
+  }
+}

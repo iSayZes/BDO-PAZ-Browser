@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "chartHash": "Hash del chart",
+    "flagCount": "Bytes de indicador"
+  },
+  "meta": {
+    "count": "{count} charts de acción"
+  }
+}

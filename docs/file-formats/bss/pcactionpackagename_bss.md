@@ -1494,6 +1494,13 @@ paths, the folders of class blocks `6`, `15` and `32`.
   of the last hash map, so a PABR reader takes `0x35000000`
   (`0x3535FF60` on client 643) for `string_table_start`.
 - Clients 837 to 1102 have no `pcactionpackagename.bss`.
+- The packages are not files of their own: each class's
+  `character/binaryactionchart/pc/<folder>/<class>action_noweapon.paac`
+  holds them as packages keyed by `package_hash` (see
+  [`*.paac`](../other/actionchart_paac.md)). On client 3483, 4,449 of the
+  4,594 `pc/` paths in the string table are package keys of one of the 33
+  class charts; the other 145 belong to classes with no chart yet
+  (`pc/26_pbm/...`).
 
 ## Open Questions
 
@@ -1514,12 +1521,3 @@ its `*action_weapon` package first appeared in the string table:
 No 1784 sheet holds the names, the client 3483 PAZ index has no file whose
 name holds `weapon_copy`, and which weapon state loads the copy package is
 not in the file.
-
-### Where the Packages Without a File Live
-
-Of the 4,594 `pc/` paths in the string table (client 3483), 33 are
-`.paac` files under `character/binaryactionchart/`, all of them equip type
-`0` packages. The other 34th file there,
-`character/binaryactionchart/pc/pc_actionchartpackagepcraw.paac`
-(131 MB), is not named here and may hold the weapon, vehicle and cutscene
-packages; that needs a `.paac` doc first.

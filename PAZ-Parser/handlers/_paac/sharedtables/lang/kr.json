@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "그룹 키",
+    "action": "동작",
+    "animation": "애니메이션"
+  },
+  "meta": {
+    "count": "공유 요소 {count}개"
+  }
+}

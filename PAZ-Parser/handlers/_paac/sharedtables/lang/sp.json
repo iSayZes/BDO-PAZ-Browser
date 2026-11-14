@@ -1,0 +1,10 @@
+{
+  "columns": {
+    "groupKey": "Clave de grupo",
+    "action": "Acción",
+    "animation": "Animación"
+  },
+  "meta": {
+    "count": "{count} elementos compartidos"
+  }
+}

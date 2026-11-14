@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "chartHash": "Хеш чарта",
+    "flagCount": "Байты флагов"
+  },
+  "meta": {
+    "count": "Чартов действий: {count}"
+  }
+}

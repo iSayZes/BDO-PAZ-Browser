@@ -1,0 +1,9 @@
+{
+  "columns": {
+    "chartHash": "차트 해시",
+    "flagCount": "플래그 바이트"
+  },
+  "meta": {
+    "count": "액션 차트 {count}개"
+  }
+}

@@ -682,8 +682,8 @@ All formats are little-endian. Unknown fields are named `unknown_*`.
 | `skillpieceoffset.dbss` | Index into `skillpiece.dbss`, maps the set skill number to offset/size (10-byte rows, offset past the u16 key prefix) | [skillpiece](file-formats/dbss/skillpiece_dbss.md) | 2 | 0 |
 | `skillquickslotinfo.bss` | PABR quick slot skills per class type: 20 slots of (u16 skill number, u16) per 80-byte class row, no row count | [skillquickslotinfo](file-formats/bss/skillquickslotinfo_bss.md) | 2 | 0 |
 | `skillselectuiinfo.bss` | Empty PABR table: a count of 0, no records and no strings; absent on client 1784 | [empty](file-formats/bss/empty_bss.md) | 2 | 0 |
-| `skillsimply.dbss` | Learning rules of every skill rank: class mask, required level and skill points, required skills, rank chain, exclusive skills | [skillsimply](file-formats/dbss/skillsimply_dbss.md) | 1 | 1 |
-| `skillsimplyoffset.dbss` | Bare u32-keyed index into `skillsimply.dbss` (no magic, no trailer) | [skillsimply](file-formats/dbss/skillsimply_dbss.md) | 1 | 1 |
+| `skillsimply.dbss` | Learning rules of every skill rank: class mask, required level and skill points, required skills, rank chain, exclusive skills | [skillsimply](file-formats/dbss/skillsimply_dbss.md) | 1 | 0 |
+| `skillsimplyoffset.dbss` | Bare u32-keyed index into `skillsimply.dbss` (no magic, no trailer) | [skillsimply](file-formats/dbss/skillsimply_dbss.md) | 1 | 0 |
 | `skilltype.dbss` | Presentation record of every skill: Korean name and family name, active/passive kind, icon path, Awakening type, the `commandtooltip.dbss` key of its key command, copies of the `skillsimply.dbss` learning rules | [skilltype](file-formats/dbss/skilltype_dbss.md) | 1 | 0 |
 | `skilltypeoffset.dbss` | PABR index into `skilltype.dbss`, same layout as `skilloffset.dbss` | [skilltype](file-formats/dbss/skilltype_dbss.md) | 1 | 0 |
 | `snowboard.bss` | PABR Snowfall Crasher snowboard courses: a 56-byte head, then per course its key, Korean name, mode (Item or Speed) and a chain of 50-byte checkpoints, then two lists of effect entries | [snowboard](file-formats/bss/snowboard_bss.md) | 2 | 0 |

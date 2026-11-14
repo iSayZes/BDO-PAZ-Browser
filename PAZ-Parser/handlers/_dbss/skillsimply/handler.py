@@ -64,6 +64,7 @@ def _record_dict(record: SkillSimplyRecord, strings: dict) -> dict:
         "is_except_cool_time": record.is_except_cool_time,
         "need_buff_module_type": record.need_buff_module_type,
         "contents_group_keys": list(record.contents_group_keys),
+        "is_auto_learn_skill_by_level": record.is_auto_learn_skill_by_level,
         # Zero means no requirement; None sorts last.
         "need_level": record.need_level or None,
         "need_skill_point": record.need_skill_point or None,

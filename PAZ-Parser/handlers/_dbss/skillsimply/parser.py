@@ -5,7 +5,7 @@ record. A record, in order:
 
     u32 skill_key | u32 level_1_key | u32 kind | u8 branch | u8
     | u32 n + n x u32 contents_group_hashes
-    | u8 | u32 need_level | u16 previous_rank_no
+    | u8 is_auto_learn_skill_by_level | u32 need_level | u16 previous_rank_no
     | u32 n + n x u32 next_rank_keys
     | u8 require_equip_type | u8 uses_main_weapon | u8 uses_sub_weapon | u8[4]
     | u8 require_equip_slot | u8 | u8[4] | u32 skill_owner_type | u8
@@ -35,7 +35,7 @@ _U32 = struct.Struct("<I")
 _U64 = struct.Struct("<Q")
 # skill_key, level_1_key, kind, branch, then unknown_0d.
 _HEAD = struct.Struct("<IIIBx")
-# unknown_h00, need_level, previous_rank_no.
+# is_auto_learn_skill_by_level, need_level, previous_rank_no.
 _RANK = struct.Struct("<BIH")
 # A copy of the 9-byte item equip type (require_equip_type, its weapon and
 # sub-weapon flags, four unknown bytes, require_equip_slot, one unknown byte),
@@ -55,6 +55,7 @@ class SkillSimplyRecord:
     kind: int
     branch: int
     contents_group_hashes: tuple[int, ...]
+    is_auto_learn_skill_by_level: bool
     need_level: int
     previous_rank_no: int
     next_rank_keys: tuple[int, ...]
@@ -104,7 +105,7 @@ def parse_skillsimply_record(data: bytes, row: PabrOffsetRow) -> SkillSimplyReco
         raise ValueError(f"record at 0x{row.offset:X} holds key 0x{key:08X}, index says 0x{row.entry_id:08X}")
 
     contents_group_hashes = _list(reader, _U32, "I")
-    _unknown_h00, need_level, previous_rank_no = reader.unpack(_RANK)
+    is_auto_learn_skill_by_level, need_level, previous_rank_no = reader.unpack(_RANK)
     next_rank_keys = _list(reader, _U32, "I")
     require_equip_type, uses_main_weapon, uses_sub_weapon, require_equip_slot, skill_owner_type = reader.unpack(_EQUIP)
     first_rank_key, is_fusion, condition, can_quick_slot, max_level, class_mask = reader.unpack(_CLASS)
@@ -121,6 +122,7 @@ def parse_skillsimply_record(data: bytes, row: PabrOffsetRow) -> SkillSimplyReco
         kind=kind,
         branch=branch,
         contents_group_hashes=contents_group_hashes,
+        is_auto_learn_skill_by_level=bool(is_auto_learn_skill_by_level),
         need_level=need_level,
         previous_rank_no=previous_rank_no,
         next_rank_keys=next_rank_keys,

@@ -18,16 +18,16 @@ Sizes and coverage from the newest client of each row. The newest layout is the 
 | 1      | 1680 and later | `skillsimply.dbss`       | 3,506,694 | 30,547 Skill Simply Record | 114 to 134, 115 on average |
 | 1      | 1680 and later | `skillsimplyoffset.dbss` | 366,568   | 30,547 Offset Row          | 12                         |
 
-| Layout | File                     | Known               | Unknown             |
-| ------ | ------------------------ | ------------------- | ------------------- |
-| 1      | `skillsimply.dbss`       | 2,498,643 B (71.3%) | 1,008,051 B (28.7%) |
-| 1      | `skillsimplyoffset.dbss` | 366,568 B (100.0%)  | 0 B (0.0%)          |
+| Layout | File                     | Known               | Unknown           |
+| ------ | ------------------------ | ------------------- | ----------------- |
+| 1      | `skillsimply.dbss`       | 2,529,190 B (72.1%) | 977,504 B (27.9%) |
+| 1      | `skillsimplyoffset.dbss` | 366,568 B (100.0%)  | 0 B (0.0%)        |
 
 Every client the doc check read, and the layout its files fit.
 
 | Client | Result               | Checked against |
 | ------ | -------------------- | --------------- |
-| 3483   | Layout 1             | `6c33ca381361`  |
+| 3483   | Layout 1             | `728a3243c1c0`  |
 | 3482   | Layout 1             | `6c33ca381361`  |
 | 3474   | Layout 1             | `6c33ca381361`  |
 | 3473   | Layout 1             | `6c33ca381361`  |
@@ -550,7 +550,7 @@ behind the names are in Field Names.
 | `+0x0D`                    | u8                    | unknown_0d          | `0` with `branch` `0`, else the other branch                       |
 | `+0x0E`                    | u32                   | contents_group_count | `1` on 29,916 records, up to `4`                                  |
 | `+0x12`                    | u32[contents_group_count] | contents_group_hashes | `key_hash()` of each contents group key in decimal; `0x6016CFF7` (key `0`, every region) is the first on 18,784 records; see Field Names |
-| `contents_group_hashes+0x00` | u8                  | unknown_h00         | `1` on 4,643 records, all at `0` skill points; see In-Game Checks  |
+| `contents_group_hashes+0x00` | u8                  | is_auto_learn_skill_by_level | `1` when the rank is learned on reaching `need_level`, without points; see below |
 | `contents_group_hashes+0x01` | u32                 | need_level          | Character level needed to learn it; see below                      |
 | `contents_group_hashes+0x05` | u16                 | previous_rank_no    | Skill number of the rank before it, `0` on the first rank          |
 | `contents_group_hashes+0x07` | u32                 | next_rank_count     | `0` on 26,056 records, `1` on 4,099, up to `5`                     |
@@ -599,7 +599,8 @@ empty lists. Earlier versions of this doc called `contents_group_count`
 `condition` `unknown_n17`, `max_level` `unknown_n1a` and `unknown_n1b`,
 `need_skill_level_1` and `need_skill_level_2` `has_need_skill_1` and
 `has_need_skill_2`, `is_except_cool_time` `unknown_e09`,
-`need_buff_module_type` `unknown_end`, `is_attack_skill` `unknown_e08` and
+`need_buff_module_type` `unknown_end`, `is_attack_skill` `unknown_e08`,
+`is_auto_learn_skill_by_level` `unknown_h00` and
 `related_cool_time_skill_keys` `base_skill_keys`.
 
 ### `skillsimplyoffset.dbss`
@@ -641,6 +642,38 @@ October 2026, and active players sit around 61 to 63. 152 of them also store
 `99` skill points, and 39 of the `99` records are named `(Not in Use)`, so
 both values lock out skills that are retired or not learned from the skill
 window.
+
+## `is_auto_learn_skill_by_level`
+
+The skill window and skill tooltip Lua (`panel_window_skill_global.luac`,
+`panel_tooltip_skillgroup_1.luac`) ask a rank `isAutoLearnSkillByLevel()`. In
+`BlackDesert64` on client 1784 that method reads no stored byte: it looks the
+rank up in the `skill.dbss` records and returns `1` when `need_level` is above
+`0`, `need_skill_point` is `0` and both `is_fusion` and
+`is_developing_contents` are `0`. The private server's `LearnSkill` on client
+1784 makes the same test on its rank record.
+
+This byte is that rule, stored: it equals the rule computed from
+`skill.dbss` on all 22,932 shared ranks of client 1784 and all 30,547 of
+client 3483. I read the method in the client 1784 executable only; client
+3483 is checked by the data alone.
+
+Checked in the running client 1784 (2026-11-14): `isAutoLearnSkillByLevel()`
+returns the stored byte on all 10 ranks tried. It is `1` on "Black Spirit:
+Bolt of Radiance I" (3963), "Bolt of Radiance I" (3417), "Earth Shatter I"
+(3367), "Black Spirit: Earth Shatter I" (3957), "Flute Buff" (88),
+"BathTub/Forest Wagon" (136), "Spirit Arrow I" (3328), "Evasion" (3347) and
+"Zephyr Leap" (3441), and `0` on "Grace of Sylvia I" (3381), which costs 3
+points.
+
+Ranks at `0` points without the flag are the ones the rule leaves out. On
+client 3483 there are 4,687: 4,482 with `need_level` `0` (granted by a quest
+or item, such as Wizard's "Access Awakening Requirement"), the 192 fusion
+skills at levels 56 to 58 and 13 fusion skills at `need_level` `0`. None of
+them is left out by `is_developing_contents` alone. The byte sits where the 2016 `gc::SkillStaticStatus` has
+`_isPromptForLearning`, but it is not the `IsPrompt_ForLearning` column: on
+client 3473, 4,715 shared ranks have the column at `1` and the byte at `0`.
+`skill.dbss` stores that column as `is_prompt_for_learning`.
 
 ## `need_skill_no_1` and `need_skill_no_2`
 
@@ -885,13 +918,8 @@ and the `has_need_skill_*` flags turn out to be the required skill's level.
 
 ### What do the remaining flags hold?
 
-`unknown_0d`, `unknown_h00` and `unknown_n11` match no column of
-`SkillType_Table_New` or `Skill_Table_New`. `unknown_h00` sits where the
-2016 `gc::SkillStaticStatus` has `_isPromptForLearning`, before the learning
-level and points, but it is not `IsPrompt_ForLearning`: on client 3473, 4,715
-shared ranks have the column at `1` and the byte at `0`. `skill.dbss` stores
-`IsPrompt_ForLearning` in its own byte (equal on 22,857 of 22,876 ranks,
-client 3474), so `unknown_h00` is a different flag. `unknown_n03` to
+`unknown_0d` and `unknown_n11` match no column of
+`SkillType_Table_New` or `Skill_Table_New`. `unknown_n03` to
 `unknown_n06` and `unknown_n08` are item equip type bytes (see above) with
 no column. `unknown_n09` sits where the 2016 struct has `_equippedItemKey`,
 right after `_requireEquipType`, but its four bytes are `0` on every record
@@ -901,25 +929,3 @@ the `RequireHP` and `NeedItemID_ForLearning` columns, which `skill.dbss`
 holds (`require_hp`, `need_item_key_for_learning`); whether the always-zero
 blocks here (`unknown_n2c`, `unknown_n36`, `unknown_e00`) copy them, the
 values cannot tell.
-
-## In-Game Checks
-
-### Is `unknown_h00` the Auto-Learn Flag?
-
-Needs class: Wizard (a new character below level 8)
-
-On client 3458 the byte is set on 4,643 records and none of them costs skill points. On
-Wizard it is set on the base skills, whose tooltips show "Required Skill
-Points : 0" ("Fireball IV", "Lightning V", "Teleport III"), and clear on
-Awakening and Prime skills. The skill window and skill tooltip Lua
-(`panel_window_skill_global.luac`, `panel_tooltip_skillgroup_1.luac`) read
-an "auto learn by level" flag (`isAutoLearnSkillByLevel`), which fits, but
-4,661 other records also cost 0 points without the flag (fusion and Black
-Spirit skills among them, and Wizard's "Access Awakening Requirement", which the awakening quest
-grants), so 0 points alone does not prove it.
-
-Level the character from 7 to 10 without opening the skill window, then open
-it. "Teleport I" (level 8) and "Magic Arrow II", "Concentrated Magic Arrow I"
-and "Healing Aura I" (level 10) all store `1`. If they show as learned with
-no Learn button, `unknown_h00` is the auto-learn flag; if they wait for a
-click, it is something else.

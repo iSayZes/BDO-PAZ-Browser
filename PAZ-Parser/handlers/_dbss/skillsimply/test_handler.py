@@ -53,7 +53,7 @@ CASE = HandlerCase(
             "skill_key", "skill_no", "level", "max_level", "icon_path", "name", "class_mask", "classes",
             "kind", "kind_label", "branch", "require_equip_type", "require_equip_slot", "weapon",
             "skill_owner_type", "is_fusion", "can_quick_slot", "condition", "is_except_cool_time",
-            "need_buff_module_type", "contents_group_keys",
+            "need_buff_module_type", "contents_group_keys", "is_auto_learn_skill_by_level",
             "need_level", "need_skill_point", "need_skill_nos", "need_skills", "previous_rank_no",
             "previous_rank", "next_rank_keys", "first_rank_key", "exclusive_skill_nos", "related_cool_time_skill_keys",
         ]),
@@ -80,6 +80,9 @@ CASE = HandlerCase(
         TargetTest(col="skill_key", value=_WATER_SPHERE_III, expected={"weapon": "Awakening"}),
         TargetTest(col="skill_key", value=_AMPLE_STORAGE_LV_26, expected={"skill_owner_type": _GUILD_OWNER}),
         TargetTest(col="skill_key", value=_FIREBALL_IV, expected={"skill_owner_type": _ACTOR_OWNER}),
+        # Fireball IV needs level 30 and 0 skill points (checked in game); Absolute: Dagger Stab costs points.
+        TargetTest(col="skill_key", value=_FIREBALL_IV, expected={"is_auto_learn_skill_by_level": True}),
+        TargetTest(col="skill_key", value=_ABSOLUTE_DAGGER_STAB, expected={"is_auto_learn_skill_by_level": False}),
     ],
 )
 
@@ -196,6 +199,17 @@ def test_cooldown_exempt_skills_are_black_spirit_skills(skillsimply_result: Hand
     assert exempt
     for record in exempt:
         assert record["name"].startswith("Black Spirit:"), record["skill_key"]
+
+
+def test_auto_learned_skills_need_a_level_and_no_points(skillsimply_result: HandlerResult) -> None:
+    """The client's isAutoLearnSkillByLevel rule; it also needs is_developing_contents clear in skill.dbss."""
+    auto_learned = [r for r in skillsimply_result.records if r["is_auto_learn_skill_by_level"]]
+    assert auto_learned
+    for record in auto_learned:
+        # need_level and need_skill_point read None at 0.
+        assert record["need_level"], record["skill_key"]
+        assert record["need_skill_point"] is None, record["skill_key"]
+        assert not record["is_fusion"], record["skill_key"]
 
 
 def test_records_open_in_skill_key_order(skillsimply_result: HandlerResult) -> None:

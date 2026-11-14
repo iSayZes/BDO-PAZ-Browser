@@ -657,6 +657,8 @@ This byte is that rule, stored: it equals the rule computed from
 `skill.dbss` on all 22,932 shared ranks of client 1784 and all 30,547 of
 client 3483. I read the method in the client 1784 executable only; client
 3483 is checked by the data alone.
+`test_auto_learn_flag_is_the_client_rule_over_skill_dbss` repeats the
+comparison on the installed client.
 
 Checked in the running client 1784 (2026-11-14): `isAutoLearnSkillByLevel()`
 returns the stored byte on all 10 ranks tried. It is `1` on "Black Spirit:

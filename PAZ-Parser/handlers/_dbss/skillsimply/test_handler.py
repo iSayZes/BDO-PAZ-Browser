@@ -6,6 +6,9 @@ from typing import Any
 import pytest
 
 from _common.class_type import ALL_CLASSES_MASK, class_types_in_mask
+from _dbss.skill.parser import parse_skill_records
+from _dbss.skillsimply.parser import parse_skillsimply_records
+from tests.fixtures import load_binary_fixture
 from tests.framework import (
     DeclaredCountTest,
     HandlerCase,
@@ -201,15 +204,25 @@ def test_cooldown_exempt_skills_are_black_spirit_skills(skillsimply_result: Hand
         assert record["name"].startswith("Black Spirit:"), record["skill_key"]
 
 
-def test_auto_learned_skills_need_a_level_and_no_points(skillsimply_result: HandlerResult) -> None:
-    """The client's isAutoLearnSkillByLevel rule; it also needs is_developing_contents clear in skill.dbss."""
-    auto_learned = [r for r in skillsimply_result.records if r["is_auto_learn_skill_by_level"]]
-    assert auto_learned
-    for record in auto_learned:
-        # need_level and need_skill_point read None at 0.
-        assert record["need_level"], record["skill_key"]
-        assert record["need_skill_point"] is None, record["skill_key"]
-        assert not record["is_fusion"], record["skill_key"]
+def test_auto_learn_flag_is_the_client_rule_over_skill_dbss() -> None:
+    """isAutoLearnSkillByLevel in client 1784: a level, no points, not fusion, not developing contents."""
+    simply = parse_skillsimply_records(
+        load_binary_fixture("skillsimply.dbss"), load_binary_fixture(_OFFSET_FILE)
+    )
+    flags = {record.skill_key: record.is_auto_learn_skill_by_level for record in simply}
+    rule = {
+        record.skill_key: (
+            record.learning.need_level > 0
+            and record.learning.need_skill_point == 0
+            and not record.is_fusion
+            and not record.is_developing_contents
+        )
+        for record in parse_skill_records(load_binary_fixture("skill.dbss"), load_binary_fixture("skilloffset.dbss"))
+    }
+    shared = flags.keys() & rule.keys()
+
+    assert any(flags[key] for key in shared)
+    assert {key: flags[key] for key in shared} == {key: rule[key] for key in shared}
 
 
 def test_records_open_in_skill_key_order(skillsimply_result: HandlerResult) -> None:

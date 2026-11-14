@@ -12,7 +12,8 @@ record. A record, in order (Layout 3 shown):
     | u8 do_require_point_need | f32 require_hp | u32 resource_cost
     | u32 require_sub_resource_point | u8 sub_resource_type | u32 stamina_cost
     | u8[21] item cost and reuse rules | u32 cooldown_ms | u32[10] buff_ids
-    | utf16 description | utf16 script | u8[36] flags and linked skills
+    | utf16 description | utf16 script | u8[5] | u8 is_developing_contents
+    | u8 is_fusion | u8[29] flags and linked skills
     | u32 n + n x u32 next_skill_keys | u32 0
     | u32 m + m x u32 related_cool_time_skill_keys | f32 target_search_angle
     | u8 is_except_cool_time | u8[2]
@@ -49,8 +50,9 @@ _LEARNING = struct.Struct("<BHIQIQHHHH")
 _HP_COST_SIZE = 5
 # require_sub_resource_point and sub_resource_type.
 _SUB_RESOURCE_SIZE = 5
-# is_usable_while_in_cool_time to link_tooltip_skill_key.
-_SCRIPT_TAIL_SIZE = 36
+# is_usable_while_in_cool_time to link_tooltip_skill_key (36 bytes); only
+# is_developing_contents and is_fusion are read.
+_SCRIPT_TAIL = struct.Struct("<5xBB29x")
 
 
 @dataclass(frozen=True)
@@ -127,6 +129,8 @@ class SkillRecord:
     buff_ids: tuple[int, ...]
     description_kr: str
     script: str
+    is_developing_contents: bool
+    is_fusion: bool
     next_skill_keys: tuple[int, ...]
     related_cool_time_skill_keys: tuple[int, ...]
 
@@ -166,7 +170,7 @@ def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillLayout) -> Skill
     buff_ids = tuple(buff_id for buff_id in reader.unpack(layout.buff_ids) if buff_id)
     description_kr = reader.text(wide=True)
     script = reader.text(wide=True)
-    reader.skip(_SCRIPT_TAIL_SIZE)
+    is_developing_contents, is_fusion = reader.unpack(_SCRIPT_TAIL)
     next_skill_keys = _key_list(reader)
     reader.unpack(_U32)  # unknown_after_next_skill_keys
     related_cool_time_skill_keys = _key_list(reader)
@@ -186,6 +190,8 @@ def _parse_record(data: bytes, row: PabrOffsetRow, layout: SkillLayout) -> Skill
         buff_ids=buff_ids,
         description_kr=decode_inline_text(description_kr),
         script=script,
+        is_developing_contents=bool(is_developing_contents),
+        is_fusion=bool(is_fusion),
         next_skill_keys=next_skill_keys,
         related_cool_time_skill_keys=related_cool_time_skill_keys,
     )
